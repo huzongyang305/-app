@@ -57,3 +57,6 @@ app.*.map.json
 
 # 开发期 manifest 备份：体积大且可由生成脚本重建
 /tool/backups/
+
+# 构建产物：APK 由本地构建生成，不入库
+/release/*.apk
