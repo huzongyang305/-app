@@ -21,7 +21,7 @@
 - **离线内容包**：可从系统文件选择器导入 JSON 内容包，覆盖或追加课程并立即生效，不需要联网或重装 APK
 - **系统备份文件（P5A）**：导出走系统“另存为”，可一键分享到文件管理器/云盘，也能从文件选择器恢复；旧版本写在应用目录的 `code_learn_backup.json` 仍可在「我的」里单独导入
 - **备份与存储加固**：备份格式带 `schema` 版本，未来版本的备份会被拒绝而不是覆盖数据；启动时执行幂等存储迁移，数据版本高于当前客户端时进入只读错误页，不清空任何内容；文件读写有 16 MB 上限与占用互斥保护
-- **发布合规与设备矩阵（P5A）**：`store/` 收录隐私政策、数据安全表单、内容分级、第三方许可与发布检查清单；Android CI 在 API 30 / 33 / 35 三档模拟器跑真机冒烟
+- **设备矩阵**：Android CI 在 API 30 / 33 / 35 三档模拟器上跑真机启动冒烟
 - 开发者工具：Base64、URL、进制转换、JSON、时间戳、MD5 / SHA-256 等
 - Material 3，蓝色主色调，支持深色模式与中英文界面切换
 
@@ -151,10 +151,9 @@ code_learn_app/
 │   ├── widgets/               # 卡片、代码块、选项、空状态等复用组件
 │   ├── theme/                 # Material 3 浅色 / 深色主题
 │   └── l10n/                  # 中英文界面文案
-├── store/                     # 商店素材与合规材料（图标、功能图、截图、隐私政策、许可清单）
 ├── android/keystore/          # 发布密钥库（不提交版本库）
 ├── integration_test/          # Android 真机/模拟器冒烟测试
-├── tool/                      # 内容生成、代码校验、品牌资源、沙箱与商店素材脚本
+├── tool/                      # 内容生成、代码校验、品牌资源与沙箱脚本
 └── test/                      # 内容完整性测试 + 端到端流程测试 + 金图视觉回归
 ```
 
@@ -175,7 +174,6 @@ flutter run                 # 连接 Android 模拟器或真机后执行
 | 传统启动图标 | `res/mipmap-*/ic_launcher.png`、`ic_launcher_round.png` | 48 / 72 / 96 / 144 / 192 px 五档密度 |
 | 启动画面 | `res/drawable/launch_background.xml`、`values-v31/styles.xml` | 品牌渐变 + 居中白色标记；Android 12+ 走系统 SplashScreen |
 | 应用名 | `res/values/strings.xml`、`values-en/strings.xml` | 中文「计算机与编程学习」/ 英文「CS & Coding」 |
-| 商店大图 | `store/icon_512.png` | 512×512，用于应用商店素材 |
 
 改图标只需运行（需要 Pillow + numpy）：
 
@@ -186,7 +184,7 @@ dart tool/check_brand_assets.dart    # 自检尺寸、安全区与资源引用
 
 矢量前景与脚本保持同一套几何参数（mark_scale=0.76、dy=0.028），自检会确认前景落在自适应图标 66×66dp 安全区内。
 
-## 打包与发布
+## 打包
 
 包名：`com.codelearn.study`（`android/app/build.gradle.kts` 的 `namespace` 与 `applicationId`）。
 如需换成自有域名，同时修改这两处并把 `MainActivity.kt` 移到对应包目录。
@@ -225,47 +223,13 @@ apksigner verify --verbose --print-certs build/app/outputs/flutter-apk/app-relea
 ```
 
 APK 权限仅 `POST_NOTIFICATIONS` / `RECEIVE_BOOT_COMPLETED` / `VIBRATE`，
-**没有** `INTERNET`，与隐私政策中“不联网”的说明一致。
-
-### 上架应用商店
-
-```bash
-flutter build appbundle --release
-```
-
-产物：`build/app/outputs/bundle/release/app-release.aab`（实测 75.8 MB；Play 会按设备下发单个 ABI，用户实际下载约 40 MB）。
-
-### 发布产物校验和（v1.1.0+2）
-
-| 产物 | 大小 | SHA-256 |
-| --- | ---: | --- |
-| `app-release.apk` | 80.3 MB | `6C3BD3F3B19BB8B56E81245026F4C70A4A97D69E7A7CFA5F4477C2BF6A17EC60` |
-| `app-release.aab` | 75.8 MB | `7D5FF4CD3715804A0764FDAC3C5722CF053B3BDBB83D345EEDFD800176E15CF8` |
-
-重新发布后请用 `Get-FileHash <产物> -Algorithm SHA256` 覆盖上表。
-
-### 商店合规材料
-
-`store/` 目录：
-
-| 文件 | 用途 |
-| --- | --- |
-| `PRIVACY_POLICY.md` / `privacy_policy.html` | 隐私政策（HTML 可直接部署成公开网址） |
-| `DATA_SAFETY.md` | Google Play 数据安全表单逐项答案 |
-| `CONTENT_RATING.md` | IARC 内容分级问卷预期答案 |
-| `THIRD_PARTY_LICENSES.md` | 第三方组件、沙箱运行时与内容来源许可 |
-| `RELEASE_CHECKLIST.md` | 发布前逐项检查（版本/签名/合规/构建/设备矩阵） |
-| `STORE_LISTING.md` | 中英文商店文案与素材清单 |
-
-> 隐私政策、数据安全与许可清单里的 `【待填写：…】` 占位符必须在正式提交前替换为真实主体与邮箱。
-
-> 若报 `Release app bundle failed to strip debug symbols`，说明本机 Android SDK 缺少 `cmdline-tools`（Flutter 用其中的 `apkanalyzer` 做后置校验）。安装方式：从 <https://dl.google.com/android/repository/commandlinetools-win-11076708_latest.zip> 解压到 `<SDK>/cmdline-tools/latest`，再重新执行。
+**没有** `INTERNET`，不依赖任何网络服务。
 
 ### 签名配置
 
 - 密钥库：`android/keystore/code_learn_release.jks`（别名 `codelearn`，RSA 2048，有效期 30 年）
 - 口令文件：`android/key.properties`（`storeFile` 相对 `android/app` 目录）
-- 两者都已加入 `.gitignore`，**不会**进入版本库，也没有被打包进 APK/AAB。
+- 两者都已加入 `.gitignore`，**不会**进入版本库，也没有被打包进 APK。
 
 务必单独备份这两个文件：密钥库一旦丢失，就无法再发布同一应用的升级包。协作者没有 `key.properties` 时，`release` 会自动回退到 debug 签名，保证仍可构建与安装。
 
@@ -274,11 +238,8 @@ flutter build appbundle --release
 `pubspec.yaml` 的 `version: 主.次.修订+构建号` 是唯一版本来源：
 
 - `versionName` = `主.次.修订`（当前 `1.1.0`），对用户可见；
-- `versionCode` = `+` 后的构建号，必须**严格递增**，应用商店据此判断升级；
+- `versionCode` = `+` 后的构建号，每次分发新版本必须**严格递增**；
 - 使用 `--split-per-abi` 时 Flutter 会按 ABI 自动叠加偏移，无需手工维护。
-
-发布流程：改 `pubspec.yaml`（构建号 +1）→ 按 `store/RELEASE_CHECKLIST.md` 逐项核对 →
-`flutter test` → `flutter build appbundle --release` → 上传 AAB。
 
 ### 构建环境说明
 
@@ -289,19 +250,14 @@ flutter build appbundle --release
 
 ```bash
 flutter analyze     # 静态检查（当前 0 issue）
-flutter test        # 123 项：内容完整性 + 端到端流程 + 金图视觉回归 + P5A 备份/迁移测试
+flutter test        # 138 项：内容完整性 + 端到端流程 + 金图视觉回归 + 备份/迁移测试
 dart tool/verify_sandbox_harness.dart   # 多语言沙箱离线校验（需本机有 Edge/Chrome）
 dart tool/check_brand_assets.dart       # 图标/启动页资源自检
 dart tool/check_apk_size.dart build/app/outputs/flutter-apk/app-release.apk 90   # APK 体积门禁
-flutter test tool/store_screenshot_test.dart   # 重新生成商店截图与 1024x500 功能图
 ```
 
 `.github/workflows/flutter-ci.yml` 会在 push / PR 时自动执行依赖安装、静态检查、全量测试、品牌资源检查、沙箱校验、金图视觉回归、release APK 构建与体积门禁；手机与平板首页金图位于 `test/goldens/`。
 `.github/workflows/android-device.yml` 另外在 API 30 / 33 / 35 三档模拟器上跑 `integration_test/app_smoke_test.dart` 启动冒烟。
-
-> 商店素材脚本直接调用 `RenderRepaintBoundary.toImage()` 写 PNG，不走 golden comparator；
-> 注意功能图里的文字必须放在 `Material` 祖先内，否则 `MaterialApp` 会套用“缺少 Material”的
-> 调试文本样式，在图上留下黄色双下划线。
 
 ## 如何新增知识点
 

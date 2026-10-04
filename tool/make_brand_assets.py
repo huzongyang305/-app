@@ -7,7 +7,6 @@
 #   android/app/src/main/res/mipmap-*/ic_launcher.png        传统启动图标（圆角方形）
 #   android/app/src/main/res/mipmap-*/ic_launcher_round.png  圆形启动图标
 #   android/app/src/main/res/drawable-*/splash_mark.png      启动页的白色标记
-#   store/icon_512.png                                       应用商店用大图
 #
 # 自适应图标（API 26+）的前景与背景是矢量绘制，见
 #   res/drawable/ic_launcher_foreground.xml
@@ -141,8 +140,6 @@ def main() -> None:
         # 启动页只需要白色标记本身，背景由 drawable 决定。
         mark = draw_code_mark(size, (255, 255, 255, 255), scale=0.62, dy=0.02)
         save(mark, res / f'drawable-{density}' / 'splash_mark.png')
-
-    save(launcher_icon(512, rounded_square_mask(512)), root / 'store' / 'icon_512.png')
 
 
 if __name__ == '__main__':
