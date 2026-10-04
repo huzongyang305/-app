@@ -49,6 +49,9 @@ app.*.map.json
 # Widget Preview related
 .widget_preview/
 
+# PowerShell 误把 $null 当成路径时会生成该文件，避免误提交
+$null
+
 # 发布签名：密钥库与口令绝不提交到版本库
 /android/key.properties
 /android/keystore/
