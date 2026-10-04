@@ -6,6 +6,7 @@ import '../models/lesson.dart';
 import '../models/quiz_answer.dart';
 import '../models/sandbox_language.dart';
 import '../screens/code_sandbox_screen.dart';
+import '../theme/app_theme.dart';
 import 'quiz_option_tile.dart';
 
 /// 统一渲染一道题的作答控件。
@@ -264,68 +265,55 @@ class _CodePreview extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerLow,
-        borderRadius: BorderRadius.circular(2),
+        borderRadius: AppRadii.card,
         border: Border.all(color: theme.colorScheme.outlineVariant),
       ),
-      child: Stack(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
             children: [
-              Row(
-                children: [
-                  const SizedBox(width: 12),
-                  Text(
-                    language?.id.toUpperCase() ?? 'CODE',
-                    style: theme.textTheme.labelSmall?.copyWith(
-                      fontSize: 10,
-                      letterSpacing: 0.8,
-                    ),
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    tooltip: context.tr('copy'),
-                    visualDensity: VisualDensity.compact,
-                    onPressed: () async {
-                      await Clipboard.setData(ClipboardData(text: code));
-                      if (!context.mounted) return;
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(context.trRead('codeCopied'))),
-                      );
-                    },
-                    icon: const Icon(Icons.copy, size: 17),
-                  ),
-                  if (language != null)
-                    TextButton.icon(
-                      onPressed: () => _run(context),
-                      icon: const Icon(Icons.play_arrow, size: 17),
-                      label: Text(context.tr('quizRunInSandbox')),
-                    ),
-                ],
-              ),
-              Divider(height: 1, color: theme.colorScheme.outlineVariant),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
-                child: SelectableText(
-                  code,
-                  style: TextStyle(
-                    color: theme.colorScheme.onSurface,
-                    fontFamily: 'monospace',
-                    fontSize: 13,
-                    height: 1.5,
-                  ),
+              const SizedBox(width: 12),
+              Text(
+                language?.id.toUpperCase() ?? 'CODE',
+                style: theme.textTheme.labelSmall?.copyWith(
+                  fontSize: 10,
+                  letterSpacing: 0.8,
                 ),
               ),
+              const Spacer(),
+              IconButton(
+                tooltip: context.tr('copy'),
+                visualDensity: VisualDensity.compact,
+                onPressed: () async {
+                  await Clipboard.setData(ClipboardData(text: code));
+                  if (!context.mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(context.trRead('codeCopied'))),
+                  );
+                },
+                icon: const Icon(Icons.copy, size: 17),
+              ),
+              if (language != null)
+                TextButton.icon(
+                  onPressed: () => _run(context),
+                  icon: const Icon(Icons.play_arrow, size: 17),
+                  label: Text(context.tr('quizRunInSandbox')),
+                ),
             ],
           ),
-          Positioned(
-            left: 0,
-            top: 0,
-            bottom: 0,
-            width: 3,
-            child: IgnorePointer(
-              child: ColoredBox(color: theme.colorScheme.primary),
+          Divider(height: 1, color: theme.colorScheme.outlineVariant),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
+            child: SelectableText(
+              code,
+              style: TextStyle(
+                color: theme.colorScheme.onSurface,
+                fontFamily: 'monospace',
+                fontSize: 13,
+                height: 1.5,
+              ),
             ),
           ),
         ],

@@ -8,6 +8,7 @@ import '../services/content_provider.dart';
 import '../services/exam_builder.dart';
 import '../models/quiz_answer.dart';
 import '../services/progress_provider.dart';
+import '../theme/app_theme.dart';
 import '../widgets/quiz_answer_panel.dart';
 import 'lesson_screen.dart';
 
@@ -253,9 +254,9 @@ class _ReportView extends StatelessWidget {
             style: theme.textTheme.displaySmall?.copyWith(
               fontWeight: FontWeight.bold,
               color: ratio >= 0.8
-                  ? const Color(0xFF16A34A)
+                  ? AppPalette.success
                   : ratio >= 0.6
-                  ? const Color(0xFFF59E0B)
+                  ? AppPalette.warning
                   : theme.colorScheme.error,
             ),
           ),
@@ -265,7 +266,10 @@ class _ReportView extends StatelessWidget {
         if (weakLessons.isEmpty)
           Card(
             child: ListTile(
-              leading: const Icon(Icons.emoji_events, color: Color(0xFF16A34A)),
+              leading: const Icon(
+                Icons.emoji_events,
+                color: AppPalette.success,
+              ),
               title: Text(context.tr('examAllCorrect')),
             ),
           )

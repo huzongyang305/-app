@@ -23,7 +23,7 @@
 - **备份与存储加固**：备份格式带 `schema` 版本，未来版本的备份会被拒绝而不是覆盖数据；启动时执行幂等存储迁移，数据版本高于当前客户端时进入只读错误页，不清空任何内容；文件读写有 16 MB 上限与占用互斥保护
 - **设备矩阵**：Android CI 在 API 30 / 33 / 35 三档模拟器上跑真机启动冒烟
 - 开发者工具：Base64、URL、进制转换、JSON、时间戳、MD5 / SHA-256 等
-- Material 3，蓝色主色调，支持深色模式与中英文界面切换
+- **现代极简界面（2026 风格）**：全局只用主色蓝 / 表面白 / 画布浅灰三种颜色，16px 统一圆角、单层柔和阴影、20px 页面边距与统一字体层级，动效克制在 280ms 以内，支持深色模式与中英文切换
 
 ### 分类与规模
 
@@ -43,6 +43,19 @@
 | 数学基础 | 9 | 44 | 跨语言对照 | 18 | 72 |
 | 图解专题 | 21 | 84 | 项目实战 | 5 | 20 |
 | 移动开发 | 12 | 58 | HTML 与 CSS | 14 | 68 |
+
+### 界面设计
+
+全站共用一套现代极简（Modern Minimal）设计令牌，定义在 `lib/theme/app_theme.dart`：
+
+| 维度 | 规则 |
+| --- | --- |
+| 颜色 | 只用主色蓝 `#2F6BFF`、表面白 `#FFFFFF`、画布浅灰 `#F5F6FA`；绿 / 红 / 橙仅用于答题对错等必要反馈 |
+| 圆角 | 卡片 16、控件 12、标签 10、底部弹层 24 |
+| 间距 | 4 的倍数，页面水平边距固定 20 |
+| 阴影 | 卡片只保留单层柔和阴影（`blur 20 / offset y 6`），不再叠加第二层 |
+| 字体 | 全站无衬线；标题 700、正文 400、标签 500~600，数字用表格数字对齐 |
+| 动效 | 140 / 200 / 280ms，统一 `easeOutCubic`，并遵循系统「减少动画」设置 |
 
 ## 题库质量
 
@@ -250,13 +263,13 @@ APK 权限仅 `POST_NOTIFICATIONS` / `RECEIVE_BOOT_COMPLETED` / `VIBRATE`，
 
 ```bash
 flutter analyze     # 静态检查（当前 0 issue）
-flutter test        # 138 项：内容完整性 + 端到端流程 + 金图视觉回归 + 备份/迁移测试
+flutter test        # 145 项：内容完整性 + 端到端流程 + 金图视觉回归 + 备份/迁移测试
 dart tool/verify_sandbox_harness.dart   # 多语言沙箱离线校验（需本机有 Edge/Chrome）
 dart tool/check_brand_assets.dart       # 图标/启动页资源自检
 dart tool/check_apk_size.dart build/app/outputs/flutter-apk/app-release.apk 90   # APK 体积门禁
 ```
 
-`.github/workflows/flutter-ci.yml` 会在 push / PR 时自动执行依赖安装、静态检查、全量测试、品牌资源检查、沙箱校验、金图视觉回归、release APK 构建与体积门禁；手机与平板首页金图位于 `test/goldens/`。
+`.github/workflows/flutter-ci.yml` 会在 push / PR 时自动执行依赖安装、静态检查、全量测试、品牌资源检查、沙箱校验、金图视觉回归、release APK 构建与体积门禁；金图覆盖首页（手机 / 平板 / 深色）、学习、工具、我的、教程与测验页，位于 `test/goldens/`。
 `.github/workflows/android-device.yml` 另外在 API 30 / 33 / 35 三档模拟器上跑 `integration_test/app_smoke_test.dart` 启动冒烟。
 
 ## 如何新增知识点

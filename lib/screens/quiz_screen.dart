@@ -294,15 +294,11 @@ class _FeedbackCard extends StatelessWidget {
       builder: (context, scale, child) =>
           Transform.scale(scale: scale, child: child),
       child: Container(
-        padding: const EdgeInsets.fromLTRB(16, 13, 14, 14),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.06),
-          border: Border(
-            left: BorderSide(color: color, width: 3),
-            top: BorderSide(color: theme.colorScheme.outlineVariant),
-            right: BorderSide(color: theme.colorScheme.outlineVariant),
-            bottom: BorderSide(color: theme.colorScheme.outlineVariant),
-          ),
+          color: color.withValues(alpha: 0.08),
+          borderRadius: AppRadii.card,
+          border: Border.all(color: color.withValues(alpha: 0.24)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

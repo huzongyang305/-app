@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme/app_theme.dart';
+
 /// 空状态提示：图标 + 文案。
 class EmptyState extends StatelessWidget {
   const EmptyState({
@@ -18,12 +20,20 @@ class EmptyState extends StatelessWidget {
     final theme = Theme.of(context);
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(32),
+        padding: const EdgeInsets.all(AppSpacing.xxl),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 36, color: theme.colorScheme.outline),
-            const SizedBox(height: 14),
+            Container(
+              width: 64,
+              height: 64,
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primary.withValues(alpha: 0.08),
+                borderRadius: AppRadii.card,
+              ),
+              child: Icon(icon, size: 28, color: theme.colorScheme.primary),
+            ),
+            const SizedBox(height: AppSpacing.lg),
             Text(
               message,
               textAlign: TextAlign.center,
@@ -31,7 +41,10 @@ class EmptyState extends StatelessWidget {
                 color: theme.colorScheme.onSurfaceVariant,
               ),
             ),
-            if (action != null) ...[const SizedBox(height: 16), action!],
+            if (action != null) ...[
+              const SizedBox(height: AppSpacing.lg),
+              action!,
+            ],
           ],
         ),
       ),

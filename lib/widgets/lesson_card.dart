@@ -6,9 +6,7 @@ import '../models/quiz_result.dart';
 import '../theme/app_theme.dart';
 import 'index_card.dart';
 
-/// 知识点索引条目：序号、标题、简介与等宽元数据。
-///
-/// 条目之间靠细线分隔，不再使用独立阴影卡片。
+/// 知识点卡片：紧凑标题、低饱和元数据与单一主色状态提示。
 class LessonCard extends StatelessWidget {
   const LessonCard({
     super.key,
@@ -29,11 +27,7 @@ class LessonCard extends StatelessWidget {
   final QuizResult? quizResult;
   final VoidCallback onTap;
   final VoidCallback? onFavoriteTap;
-
-  /// 课程内的序号（第 N 课），为空表示不展示。
   final int? courseIndex;
-
-  /// 平铺模式：去掉描边与卡片底色，用于分类页的连续课程列表。
   final bool flat;
   final Color? accentColor;
 
@@ -41,28 +35,21 @@ class LessonCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final localeCode = context.strings.localeCode;
-    final accent =
-        accentColor ??
-        (isLearned
-            ? theme.colorScheme.primary
-            : theme.colorScheme.outlineVariant);
-
-    final meta = <String>[
-      context.difficultyLabel(lesson.difficulty),
-      '${lesson.minutes} ${context.tr('minutes')}',
-      '${lesson.quiz.length} ${context.tr('questions')}',
-      if (quizResult != null) '${quizResult!.correct}/${quizResult!.total}',
-    ];
+    final accent = accentColor ?? theme.colorScheme.primary;
 
     return Semantics(
       button: true,
       label: lesson.title.of(localeCode),
       child: IndexCard(
-        accent: accent,
-        bordered: !flat,
-        background: flat ? theme.colorScheme.surface : null,
+        accent: isLearned ? accent : null,
+        shadow: !flat,
         onTap: onTap,
-        padding: const EdgeInsets.fromLTRB(14, 12, 6, 12),
+        padding: const EdgeInsets.fromLTRB(
+          AppSpacing.lg,
+          AppSpacing.lg,
+          AppSpacing.sm,
+          AppSpacing.lg,
+        ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -71,32 +58,44 @@ class LessonCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    textBaseline: TextBaseline.alphabetic,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       if (courseIndex != null) ...[
-                        MonoLabel(
-                          courseIndex!.toString().padLeft(2, '0'),
-                          color: theme.colorScheme.primary,
-                          size: 12,
-                          weight: FontWeight.w700,
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 3,
+                          ),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.primary.withValues(
+                              alpha: 0.10,
+                            ),
+                            borderRadius: AppRadii.chip,
+                          ),
+                          child: Text(
+                            courseIndex!.toString().padLeft(2, '0'),
+                            style: TextStyle(
+                              fontFamily: AppTheme.sansFamily,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700,
+                              color: theme.colorScheme.primary,
+                            ),
+                          ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppSpacing.sm),
                       ],
                       if (isLearned) ...[
                         Icon(
-                          Icons.check,
-                          size: 15,
+                          Icons.check_circle_rounded,
+                          size: 17,
                           color: theme.colorScheme.primary,
                         ),
-                        const SizedBox(width: 5),
+                        const SizedBox(width: 6),
                       ],
                       Expanded(
                         child: Text(
                           lesson.title.of(localeCode),
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
+                          style: theme.textTheme.titleMedium,
                         ),
                       ),
                     ],
@@ -104,19 +103,34 @@ class LessonCard extends StatelessWidget {
                   const SizedBox(height: 6),
                   Text(
                     lesson.summary.of(localeCode),
-                    style: theme.textTheme.bodySmall?.copyWith(height: 1.5),
+                    style: theme.textTheme.bodySmall,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 10),
-                  Row(
+                  const SizedBox(height: AppSpacing.md),
+                  Wrap(
+                    spacing: 6,
+                    runSpacing: 6,
                     children: [
-                      Expanded(
-                        child: MonoLabel(
-                          meta.join('   /   '),
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
+                      _MetaChip(
+                        icon: Icons.signal_cellular_alt_rounded,
+                        label: context.difficultyLabel(lesson.difficulty),
                       ),
+                      _MetaChip(
+                        icon: Icons.schedule_rounded,
+                        label: '${lesson.minutes} ${context.tr('minutes')}',
+                      ),
+                      _MetaChip(
+                        icon: Icons.quiz_outlined,
+                        label:
+                            '${lesson.quiz.length} ${context.tr('questions')}',
+                      ),
+                      if (quizResult != null)
+                        _MetaChip(
+                          icon: Icons.emoji_events_outlined,
+                          label: '${quizResult!.correct}/${quizResult!.total}',
+                          highlight: true,
+                        ),
                     ],
                   ),
                 ],
@@ -128,17 +142,58 @@ class LessonCard extends StatelessWidget {
                 visualDensity: VisualDensity.compact,
                 onPressed: onFavoriteTap,
                 icon: Icon(
-                  isFavorite ? Icons.star : Icons.star_border,
-                  size: 20,
+                  isFavorite ? Icons.star_rounded : Icons.star_border_rounded,
+                  size: 21,
                   color: isFavorite
-                      ? AppPalette.warning
+                      ? theme.colorScheme.primary
                       : theme.colorScheme.onSurfaceVariant,
                 ),
               )
             else
-              const SizedBox(width: 6),
+              const SizedBox(width: AppSpacing.sm),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _MetaChip extends StatelessWidget {
+  const _MetaChip({
+    required this.icon,
+    required this.label,
+    this.highlight = false,
+  });
+
+  final IconData icon;
+  final String label;
+  final bool highlight;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final color = highlight
+        ? theme.colorScheme.primary
+        : theme.colorScheme.onSurfaceVariant;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: highlight
+            ? theme.colorScheme.primary.withValues(alpha: 0.08)
+            : theme.colorScheme.surfaceContainerHighest,
+        borderRadius: AppRadii.chip,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 13, color: color),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: theme.textTheme.labelSmall?.copyWith(color: color),
+          ),
+        ],
       ),
     );
   }

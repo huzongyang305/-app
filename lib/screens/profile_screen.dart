@@ -400,27 +400,27 @@ class ProfileScreen extends StatelessWidget {
                         value:
                             '${(progress.averageQuizAccuracy * 100).round()}%',
                         label: context.tr('quizAverage'),
-                        color: const Color(0xFF16A34A),
+                        color: theme.colorScheme.onSurface,
                       ),
                       _StatItem(
                         value: '${progress.favoriteIds.length}',
                         label: context.tr('favorites'),
-                        color: const Color(0xFFF59E0B),
+                        color: theme.colorScheme.onSurface,
                       ),
                       _StatItem(
                         value: '${progress.notes.length}',
                         label: context.tr('notes'),
-                        color: const Color(0xFF7C3AED),
+                        color: theme.colorScheme.onSurface,
                       ),
                       _StatItem(
                         value: '${progress.totalWrongQuestions}',
                         label: context.tr('wrongBook'),
-                        color: const Color(0xFFDC2626),
+                        color: theme.colorScheme.onSurface,
                       ),
                       _StatItem(
                         value: '${progress.streakDays}',
                         label: context.tr('streak'),
-                        color: const Color(0xFF2563EB),
+                        color: theme.colorScheme.onSurface,
                       ),
                     ],
                   ),

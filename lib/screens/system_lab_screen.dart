@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../l10n/l10n_extension.dart';
+import '../theme/app_theme.dart';
 
 /// 网络与数据库机制的离线交互式时序演示。
 ///
@@ -350,7 +351,7 @@ class _TimelineTile extends StatelessWidget {
     final color = selected
         ? theme.colorScheme.primary
         : completed
-        ? const Color(0xFF16A34A)
+        ? AppPalette.success
         : theme.colorScheme.onSurfaceVariant;
     return InkWell(
       onTap: onTap,

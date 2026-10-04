@@ -1,26 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
-import 'package:flutter_highlight/themes/github.dart';
 import 'package:flutter_highlight/themes/monokai-sublime.dart';
 
 import '../l10n/l10n_extension.dart';
 import '../theme/app_theme.dart';
 
-/// 代码块：语法高亮 + 行号 + 一键复制。
-///
-/// 左侧电光蓝竖条与等宽行号构成「代码摘录」的视觉标记。
+/// 现代代码卡片：深色表面、统一 16px 圆角、等宽行号与一键复制。
 class CodeBlock extends StatelessWidget {
   const CodeBlock({super.key, required this.code, this.language});
 
   final String code;
   final String? language;
 
+  static const Color _codeSurface = AppPalette.nightBase;
+  static const Color _codeHeader = AppPalette.nightRaised;
+  static const Color _codeMuted = AppPalette.paperMutedOnNight;
+
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-    final highlightTheme = isDark ? monokaiSublimeTheme : githubTheme;
     final source = code.replaceAll(RegExp(r'\n$'), '');
     final lineCount = source.isEmpty ? 1 : '\n'.allMatches(source).length + 1;
     final lineNumbers = List<String>.generate(
@@ -29,100 +27,94 @@ class CodeBlock extends StatelessWidget {
     ).join('\n');
 
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: AppSpacing.md),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerLow,
-        borderRadius: BorderRadius.circular(2),
-        border: Border.all(color: theme.colorScheme.outlineVariant),
+        color: _codeSurface,
+        borderRadius: AppRadii.card,
       ),
-      child: Stack(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                padding: const EdgeInsets.only(left: 12, right: 2),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: theme.colorScheme.outlineVariant),
+          Container(
+            color: _codeHeader,
+            padding: const EdgeInsets.only(left: AppSpacing.lg, right: 4),
+            child: Row(
+              children: [
+                Text(
+                  (language ?? 'code').toUpperCase(),
+                  style: const TextStyle(
+                    fontFamily: AppTheme.sansFamily,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.6,
+                    color: _codeMuted,
                   ),
                 ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        (language ?? 'code').toUpperCase(),
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
-                          fontSize: 10,
-                          letterSpacing: 0.8,
-                        ),
+                const Spacer(),
+                IconButton(
+                  tooltip: context.tr('copyTooltip'),
+                  visualDensity: VisualDensity.compact,
+                  icon: const Icon(
+                    Icons.copy_rounded,
+                    size: 18,
+                    color: _codeMuted,
+                  ),
+                  onPressed: () async {
+                    await Clipboard.setData(ClipboardData(text: source));
+                    if (!context.mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(context.trRead('codeCopied')),
+                        duration: const Duration(seconds: 1),
                       ),
-                    ),
-                    IconButton(
-                      tooltip: context.tr('copyTooltip'),
-                      visualDensity: VisualDensity.compact,
-                      icon: const Icon(Icons.copy_all_outlined, size: 17),
-                      onPressed: () async {
-                        await Clipboard.setData(ClipboardData(text: source));
-                        if (!context.mounted) return;
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(context.trRead('codeCopied')),
-                            duration: const Duration(seconds: 1),
-                            behavior: SnackBarBehavior.floating,
-                          ),
-                        );
-                      },
-                    ),
-                  ],
+                    );
+                  },
                 ),
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 12, 8, 12),
-                    child: Text(
-                      lineNumbers,
-                      textAlign: TextAlign.right,
-                      style: const TextStyle(
-                        fontFamily: AppTheme.monoFamily,
-                        fontSize: 11,
-                        height: 1.45,
-                        color: Color(0xFF9A9C95),
-                      ),
-                    ),
-                  ),
-                  Container(width: 1, color: theme.colorScheme.outlineVariant),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: HighlightView(
-                        source,
-                        language: language,
-                        theme: highlightTheme,
-                        padding: const EdgeInsets.all(12),
-                        textStyle: const TextStyle(
-                          fontFamily: AppTheme.monoFamily,
-                          fontSize: 13,
-                          height: 1.45,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
-          Positioned(
-            left: 0,
-            top: 0,
-            bottom: 0,
-            width: 3,
-            child: IgnorePointer(
-              child: ColoredBox(color: theme.colorScheme.primary),
+          // IntrinsicHeight 让左侧行号栏、分隔线与代码区等高，
+          // 同时避免在 Markdown 的无界高度环境里出现无限约束。
+          IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(14, 14, 10, 14),
+                  child: Text(
+                    lineNumbers,
+                    textAlign: TextAlign.right,
+                    style: const TextStyle(
+                      fontFamily: AppTheme.monoFamily,
+                      fontSize: 11,
+                      height: 1.5,
+                      color: Color(0xFF5C6370),
+                    ),
+                  ),
+                ),
+                const VerticalDivider(
+                  width: 1,
+                  thickness: 1,
+                  color: AppPalette.nightRule,
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: HighlightView(
+                      source,
+                      language: language,
+                      theme: monokaiSublimeTheme,
+                      padding: const EdgeInsets.all(14),
+                      textStyle: const TextStyle(
+                        fontFamily: AppTheme.monoFamily,
+                        fontSize: 13,
+                        height: 1.5,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

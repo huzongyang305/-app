@@ -125,7 +125,7 @@ class _ExamSetupScreenState extends State<ExamSetupScreen> {
                       value: category.id,
                       secondary: Icon(
                         iconFromName(category.iconName),
-                        color: Color(0xFF000000 | category.colorValue),
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                       title: Text(
                         category.title.of(context.strings.localeCode),

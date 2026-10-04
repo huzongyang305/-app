@@ -6,6 +6,7 @@ import '../models/lesson.dart';
 import '../services/content_provider.dart';
 import '../services/progress_provider.dart';
 import '../services/recommendation_service.dart';
+import '../theme/app_theme.dart';
 import '../widgets/category_card.dart';
 import '../widgets/activity_chart.dart';
 import '../widgets/check_in_card.dart';
@@ -76,7 +77,12 @@ class HomeScreen extends StatelessWidget {
     );
 
     return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.page,
+        AppSpacing.sm,
+        AppSpacing.page,
+        AppSpacing.xxl,
+      ),
       children: [
         // 学习档案：等宽百分比 + 细线进度尺 + 已学/总数
         IndexCard(
@@ -147,9 +153,9 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.lg),
         const CheckInCard(),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.md),
         _RecentCard(content: content, progress: progress),
 
         // 今日推荐：到期复习 → 薄弱知识点 → 下一课
@@ -299,9 +305,9 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: AppSpacing.xl),
         SectionBand(index: '04', title: context.tr('categories')),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.md),
         GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -310,7 +316,7 @@ class HomeScreen extends StatelessWidget {
             crossAxisCount: 2,
             mainAxisSpacing: 10,
             crossAxisSpacing: 10,
-            mainAxisExtent: 148,
+            mainAxisExtent: 164,
           ),
           itemCount: content.categories.length,
           itemBuilder: (context, index) {

@@ -7,6 +7,7 @@ import '../data/learning_paths.dart';
 import '../l10n/l10n_extension.dart';
 import '../services/content_provider.dart';
 import '../services/progress_provider.dart';
+import '../theme/app_theme.dart';
 import 'exam_screen.dart';
 import 'lesson_screen.dart';
 
@@ -187,7 +188,7 @@ class _PathCard extends StatelessWidget {
                             : Icons.pending_outlined,
                         size: 18,
                         color: stagePassed
-                            ? const Color(0xFF16A34A)
+                            ? AppPalette.success
                             : theme.colorScheme.primary,
                       ),
                       const SizedBox(width: 8),

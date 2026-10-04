@@ -37,19 +37,15 @@ class QuizMetaPanel extends StatelessWidget {
       children: [
         if (label.isNotEmpty)
           Container(
-            padding: const EdgeInsets.fromLTRB(9, 5, 10, 5),
+            padding: const EdgeInsets.fromLTRB(10, 6, 12, 6),
             decoration: BoxDecoration(
-              border: Border(
-                left: BorderSide(color: theme.colorScheme.primary, width: 3),
-                top: BorderSide(color: theme.colorScheme.outlineVariant),
-                right: BorderSide(color: theme.colorScheme.outlineVariant),
-                bottom: BorderSide(color: theme.colorScheme.outlineVariant),
-              ),
+              color: theme.colorScheme.primary.withValues(alpha: 0.08),
+              borderRadius: AppRadii.chip,
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.code, size: 15, color: theme.colorScheme.primary),
+                Icon(Icons.code, size: 14, color: theme.colorScheme.primary),
                 const SizedBox(width: 6),
                 Text(
                   label,
@@ -57,7 +53,7 @@ class QuizMetaPanel extends StatelessWidget {
                     fontFamily: AppTheme.monoFamily,
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
-                    color: theme.colorScheme.onSurface,
+                    color: theme.colorScheme.primary,
                   ),
                 ),
               ],
@@ -67,14 +63,11 @@ class QuizMetaPanel extends StatelessWidget {
           const SizedBox(height: 10),
           Container(
             width: double.infinity,
+            clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
               color: theme.colorScheme.surfaceContainerLow,
-              border: Border(
-                left: BorderSide(color: theme.colorScheme.primary, width: 3),
-                top: BorderSide(color: theme.colorScheme.outlineVariant),
-                right: BorderSide(color: theme.colorScheme.outlineVariant),
-                bottom: BorderSide(color: theme.colorScheme.outlineVariant),
-              ),
+              borderRadius: AppRadii.card,
+              border: Border.all(color: theme.colorScheme.outlineVariant),
             ),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,

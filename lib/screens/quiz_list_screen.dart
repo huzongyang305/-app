@@ -113,7 +113,7 @@ class QuizListScreen extends StatelessWidget {
                         Icon(
                           iconFromName(category.iconName),
                           size: 18,
-                          color: Color(0xFF000000 | category.colorValue),
+                          color: theme.colorScheme.primary,
                         ),
                         const SizedBox(width: 8),
                         Text(

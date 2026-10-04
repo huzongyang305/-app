@@ -75,7 +75,7 @@ class LearnScreen extends StatelessWidget {
                 collapsedShape: const Border(),
                 leading: Icon(
                   iconFromName(category.iconName),
-                  color: Color(0xFF000000 | category.colorValue),
+                  color: theme.colorScheme.primary,
                 ),
                 title: Text(
                   category.title.of(context.strings.localeCode),

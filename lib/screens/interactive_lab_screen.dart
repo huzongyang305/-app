@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../l10n/l10n_extension.dart';
 import '../services/algorithm_lab.dart';
+import '../theme/app_theme.dart';
 
 /// 交互式学习实验室：逐步演示算法和常用数据结构操作。
 class InteractiveLabScreen extends StatefulWidget {
@@ -325,7 +326,7 @@ class _InteractiveLabScreenState extends State<InteractiveLabScreen> {
 
   Color _cellColor(LabStep step, int index, ThemeData theme) {
     if (step.found && step.mid == index) {
-      return const Color(0xFF16A34A);
+      return AppPalette.success;
     }
     if (step.mid == index ||
         step.activeIndex == index ||
@@ -336,7 +337,7 @@ class _InteractiveLabScreenState extends State<InteractiveLabScreen> {
   }
 
   Color _cellBorderColor(LabStep step, int index, ThemeData theme) {
-    if (step.found && step.mid == index) return const Color(0xFF16A34A);
+    if (step.found && step.mid == index) return AppPalette.success;
     if (step.mid == index ||
         step.activeIndex == index ||
         step.compareIndex == index) {

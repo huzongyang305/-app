@@ -91,7 +91,9 @@ class _AchievementCard extends StatelessWidget {
     final theme = Theme.of(context);
     final achievement = status.achievement;
     final earned = status.earned;
-    final accent = earned ? const Color(0xFFF59E0B) : theme.colorScheme.outline;
+    final accent = earned
+        ? theme.colorScheme.primary
+        : theme.colorScheme.outline;
 
     return Card(
       margin: EdgeInsets.zero,

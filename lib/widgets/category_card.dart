@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../l10n/l10n_extension.dart';
 import '../models/lesson_category.dart';
+import '../theme/app_theme.dart';
 import 'icon_mapper.dart';
 import 'index_card.dart';
 
-/// 首页分类索引卡：左侧分类竖标 + 等宽进度数据 + 细线进度尺。
+/// 分类卡片：统一主色、圆角图标容器与细进度条。
 class CategoryCard extends StatelessWidget {
   const CategoryCard({
     super.key,
@@ -21,29 +22,41 @@ class CategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final color = Color(0xFF000000 | category.colorValue);
     final total = category.lessons.length;
     final ratio = total == 0 ? 0.0 : learnedCount / total;
     final title = category.title.of(context.strings.localeCode);
+    final primary = theme.colorScheme.primary;
 
     return Semantics(
       button: true,
       label: '$title, $learnedCount/$total ${context.tr('lessons')}',
       child: IndexCard(
-        accent: color,
+        accent: learnedCount > 0 ? primary : null,
         onTap: onTap,
-        padding: const EdgeInsets.fromLTRB(13, 12, 12, 12),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Icon(iconFromName(category.iconName), color: color, size: 20),
+                Container(
+                  width: 38,
+                  height: 38,
+                  decoration: BoxDecoration(
+                    color: primary.withValues(alpha: 0.10),
+                    borderRadius: AppRadii.control,
+                  ),
+                  child: Icon(
+                    iconFromName(category.iconName),
+                    color: primary,
+                    size: 20,
+                  ),
+                ),
                 const Spacer(),
                 MonoLabel(
                   '${(ratio * 100).round()}%',
-                  color: color,
-                  size: 12,
+                  color: primary,
+                  size: 13,
                   weight: FontWeight.w700,
                 ),
               ],
@@ -51,37 +64,27 @@ class CategoryCard extends StatelessWidget {
             const Spacer(),
             Text(
               title,
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
+              style: theme.textTheme.titleMedium,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 4),
-            MonoLabel(
+            Text(
               '$learnedCount/$total ${context.tr('lessons')}',
-              color: theme.colorScheme.onSurfaceVariant,
+              style: theme.textTheme.bodySmall,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             Semantics(
               label: context.trArgs('progressSemantic', {
                 'value': '${(ratio * 100).round()}%',
               }),
-              child: SizedBox(
-                height: 3,
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: ColoredBox(
-                        color: theme.colorScheme.surfaceContainerHighest,
-                      ),
-                    ),
-                    FractionallySizedBox(
-                      alignment: Alignment.centerLeft,
-                      widthFactor: ratio.clamp(0.0, 1.0),
-                      child: ColoredBox(color: color),
-                    ),
-                  ],
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(3),
+                child: LinearProgressIndicator(
+                  value: ratio.clamp(0.0, 1.0),
+                  minHeight: 5,
+                  backgroundColor: theme.colorScheme.surfaceContainerHighest,
+                  valueColor: AlwaysStoppedAnimation<Color>(primary),
                 ),
               ),
             ),

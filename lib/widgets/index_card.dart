@@ -2,74 +2,86 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
 
-/// 索引卡：细线描边 + 2px 圆角，可用左侧竖标标记归属分类。
+/// 现代卡片容器：16px 圆角、柔和阴影、低对比描边。
 ///
-/// 这是「知识库 / 索引卡」设计语言的基础容器，替代原先的圆角阴影卡片。
+/// [accent] 会转化为一层极浅的主色底，用于表达选中或分类归属，
+/// 不会引入额外的高饱和色块。
 class IndexCard extends StatelessWidget {
   const IndexCard({
     super.key,
     required this.child,
     this.onTap,
     this.accent,
-    this.padding = const EdgeInsets.fromLTRB(14, 12, 12, 12),
+    this.padding = const EdgeInsets.all(AppSpacing.lg),
     this.semanticLabel,
     this.bordered = true,
     this.background,
+    this.shadow = true,
   });
 
   final Widget child;
   final VoidCallback? onTap;
-
-  /// 左侧 2px 竖标颜色，通常取分类色或主题主色。
   final Color? accent;
   final EdgeInsetsGeometry padding;
   final String? semanticLabel;
-
-  /// 平铺列表可关闭描边，仅靠分隔线与左侧竖标建立层级。
   final bool bordered;
   final Color? background;
+  final bool shadow;
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final shape = bordered
-        ? RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(2),
-            side: BorderSide(color: scheme.outlineVariant),
-          )
-        : RoundedRectangleBorder(borderRadius: BorderRadius.circular(2));
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final radius = AppRadii.card;
+    final tint = accent;
+    final fill =
+        background ??
+        (tint == null
+            ? scheme.surfaceContainerLow
+            : Color.alphaBlend(
+                tint.withValues(alpha: 0.05),
+                scheme.surfaceContainerLow,
+              ));
+
+    final decoration = BoxDecoration(
+      color: fill,
+      borderRadius: radius,
+      border: bordered
+          ? Border.all(
+              color: tint == null
+                  ? scheme.outlineVariant
+                  : tint.withValues(alpha: 0.18),
+            )
+          : null,
+      boxShadow: shadow ? AppShadows.soft(theme.brightness) : null,
+    );
 
     Widget content = Padding(padding: padding, child: child);
     if (onTap != null) {
-      content = InkWell(onTap: onTap, child: content);
+      content = InkWell(
+        onTap: onTap,
+        borderRadius: radius,
+        splashColor: scheme.primary.withValues(alpha: 0.06),
+        highlightColor: scheme.primary.withValues(alpha: 0.04),
+        child: content,
+      );
     }
+    // 透明 Material 让内嵌的 ListTile / InkWell 有正确的绘制层，
+    // 卡片底色仍由外层 DecoratedBox 提供，避免水波纹被遮挡。
+    content = Material(type: MaterialType.transparency, child: content);
 
     return Semantics(
       button: onTap != null,
       label: semanticLabel,
-      child: Material(
-        color: background ?? scheme.surfaceContainerLow,
-        shape: shape,
-        clipBehavior: Clip.antiAlias,
-        child: Stack(
-          children: [
-            content,
-            if (accent != null)
-              Positioned(
-                left: 0,
-                top: 0,
-                bottom: 0,
-                width: 2,
-                child: IgnorePointer(child: ColoredBox(color: accent!)),
-              ),
-          ],
-        ),
+      child: DecoratedBox(
+        decoration: decoration,
+        child: ClipRRect(borderRadius: radius, child: content),
       ),
     );
   }
 }
 
-/// 分区带：等宽小节编号 + 2px 竖标 + 标题，底部一条细分割线。
+/// 现代分区标题：主色索引胶囊 + 紧凑标题，不再使用竖条与分割线。
 class SectionBand extends StatelessWidget {
   const SectionBand({
     super.key,
@@ -80,7 +92,6 @@ class SectionBand extends StatelessWidget {
     this.accent,
   });
 
-  /// 目录式编号，例如「01」「02」。
   final String index;
   final String title;
   final String? subtitle;
@@ -92,60 +103,67 @@ class SectionBand extends StatelessWidget {
     final theme = Theme.of(context);
     final mark = accent ?? theme.colorScheme.primary;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 10),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(width: 2, height: 34, color: mark),
-              const SizedBox(width: 12),
-              MonoLabel(index, color: mark, size: 12, weight: FontWeight.w700),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      title,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    if (subtitle != null)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 2),
-                        child: Text(
-                          subtitle!,
-                          style: theme.textTheme.bodySmall,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                  ],
-                ),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.md),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+            decoration: BoxDecoration(
+              color: mark.withValues(alpha: 0.10),
+              borderRadius: AppRadii.chip,
+            ),
+            child: Text(
+              index,
+              style: TextStyle(
+                fontFamily: AppTheme.sansFamily,
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: mark,
               ),
-              ?trailing,
-            ],
+            ),
           ),
-        ),
-        Divider(height: 1, color: theme.colorScheme.outlineVariant),
-      ],
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  title,
+                  style: theme.textTheme.titleLarge,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                if (subtitle != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 2),
+                    child: Text(
+                      subtitle!,
+                      style: theme.textTheme.bodySmall,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          ?trailing,
+        ],
+      ),
     );
   }
 }
 
-/// 等宽数据标签：用于编号、百分比、计数等需要对齐的信息。
+/// 数据标签：使用无衬线 + 表格数字，保证计数和百分比对齐。
 class MonoLabel extends StatelessWidget {
   const MonoLabel(
     this.text, {
     super.key,
     this.color,
-    this.size = 11,
-    this.weight = FontWeight.w500,
+    this.size = 12,
+    this.weight = FontWeight.w600,
   });
 
   final String text;
@@ -161,9 +179,11 @@ class MonoLabel extends StatelessWidget {
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
-        fontFamily: AppTheme.monoFamily,
+        fontFamily: AppTheme.sansFamily,
         fontSize: size,
         fontWeight: weight,
+        height: 1.3,
+        fontFeatures: const [FontFeature.tabularFigures()],
         color: color ?? theme.colorScheme.onSurfaceVariant,
       ),
     );

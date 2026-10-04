@@ -343,7 +343,7 @@ class _LessonScreenState extends State<LessonScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(2),
+                    borderRadius: AppRadii.card,
                     child: Image.asset(
                       assetPath,
                       fit: BoxFit.contain,
@@ -351,7 +351,7 @@ class _LessonScreenState extends State<LessonScreen> {
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
                           color: theme.colorScheme.surfaceContainerHighest,
-                          borderRadius: BorderRadius.circular(2),
+                          borderRadius: AppRadii.card,
                         ),
                         child: Text(
                           config.alt ?? assetPath,
@@ -417,11 +417,10 @@ class _LessonScreenState extends State<LessonScreen> {
         color: theme.colorScheme.onSurface,
       ),
       blockquoteDecoration: BoxDecoration(
-        border: Border(
-          left: BorderSide(color: theme.colorScheme.primary, width: 3),
-        ),
+        color: theme.colorScheme.primary.withValues(alpha: 0.06),
+        borderRadius: AppRadii.control,
       ),
-      blockquotePadding: const EdgeInsets.fromLTRB(14, 8, 8, 8),
+      blockquotePadding: const EdgeInsets.fromLTRB(16, 12, 14, 12),
       tableBorder: TableBorder.all(color: theme.colorScheme.outlineVariant),
       tableCellsPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
       horizontalRuleDecoration: BoxDecoration(

@@ -5,6 +5,7 @@ import '../l10n/l10n_extension.dart';
 import '../models/lesson.dart';
 import '../services/content_provider.dart';
 import '../services/progress_provider.dart';
+import '../theme/app_theme.dart';
 import '../widgets/empty_state.dart';
 import '../widgets/icon_mapper.dart';
 import '../widgets/index_card.dart';
@@ -34,7 +35,8 @@ class CategoryScreen extends StatelessWidget {
       );
     }
 
-    final color = Color(0xFF000000 | category.colorValue);
+    // 现代极简：分类不再使用各自色相，统一主色，保证全局不超过三种颜色。
+    final color = Theme.of(context).colorScheme.primary;
     // 课程内按 order 排序，保证「推荐学习顺序」可用
     final ordered = <Lesson>[...category.lessons]
       ..sort((a, b) => a.order.compareTo(b.order));
@@ -51,11 +53,23 @@ class CategoryScreen extends StatelessWidget {
       // 分类概览
       IndexCard(
         accent: color,
-        padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: Row(
           children: [
-            Icon(iconFromName(category.iconName), color: color, size: 24),
-            const SizedBox(width: 12),
+            Container(
+              width: 42,
+              height: 42,
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.10),
+                borderRadius: AppRadii.control,
+              ),
+              child: Icon(
+                iconFromName(category.iconName),
+                color: color,
+                size: 22,
+              ),
+            ),
+            const SizedBox(width: AppSpacing.md),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,7 +96,7 @@ class CategoryScreen extends StatelessWidget {
           ],
         ),
       ),
-      const SizedBox(height: 4),
+      const SizedBox(height: AppSpacing.xs),
     ];
 
     // 推荐学习顺序：直接给出本课程下一篇未学内容
@@ -91,7 +105,7 @@ class CategoryScreen extends StatelessWidget {
       final targetIndex = ordered.indexOf(target) + 1;
       children.add(
         Padding(
-          padding: const EdgeInsets.only(top: 10),
+          padding: const EdgeInsets.only(top: AppSpacing.md),
           child: IndexCard(
             accent: color,
             padding: EdgeInsets.zero,
@@ -143,9 +157,7 @@ class CategoryScreen extends StatelessWidget {
           ),
         ),
       );
-      children.add(
-        Divider(height: 1, color: Theme.of(context).colorScheme.outlineVariant),
-      );
+      children.add(const SizedBox(height: AppSpacing.md));
     }
 
     return Scaffold(
@@ -153,7 +165,12 @@ class CategoryScreen extends StatelessWidget {
         title: Text(category.title.of(context.strings.localeCode)),
       ),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+        padding: const EdgeInsets.fromLTRB(
+          AppSpacing.page,
+          AppSpacing.sm,
+          AppSpacing.page,
+          AppSpacing.xxl,
+        ),
         children: children,
       ),
     );
