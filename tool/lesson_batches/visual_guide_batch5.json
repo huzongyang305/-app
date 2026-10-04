@@ -1,0 +1,182 @@
+{
+  "category": "visual_guide",
+  "lessons": [
+    {
+      "id": "visual_oauth_flow",
+      "title": { "zh": "图解 OAuth 2.0 授权码流程与 PKCE", "en": "OAuth 2.0 Flow Illustrated" },
+      "summary": {
+        "zh": "四种角色、授权码加 PKCE 全流程、令牌纪律与八类常见错误。",
+        "en": "Roles, authorization code with PKCE, token rules and pitfalls."
+      },
+      "file": "assets/content/visual_oauth_flow.md",
+      "minutes": 20,
+      "keywords": ["OAuth", "PKCE", "授权码", "令牌", "安全"],
+      "difficulty": "进阶",
+      "order": 15,
+      "quiz": [
+        {
+          "question": "目前推荐的 OAuth 授权模式是？",
+          "options": [
+            "隐式模式",
+            "授权码加 PKCE",
+            "密码模式",
+            "客户端凭证用于所有场景"
+          ],
+          "answer": 1,
+          "explanation": "授权码加 PKCE 适用于 Web、移动端与 SPA。选项一与选项三已被废弃；选项四只适合无用户的服务间调用。"
+        },
+        {
+          "question": "PKCE 中的 code_verifier 与 code_challenge 的关系是？",
+          "options": [
+            "两者完全相同",
+            "challenge 由 verifier 经哈希与编码得到，换令牌时提交 verifier 校验",
+            "verifier 由 challenge 加解密得到",
+            "两者都存到 localStorage"
+          ],
+          "answer": 1,
+          "explanation": "这样即使授权码被拦截，没有原始 verifier 也换不到令牌。选项一与选项三与事实不符；选项四存在安全风险。"
+        },
+        {
+          "question": "校验令牌签名时，明确指定允许的算法（如 RS256）是为了防？",
+          "options": [
+            "防止令牌过期",
+            "防止 alg=none 等算法混淆攻击",
+            "提升验证速度",
+            "减少令牌体积"
+          ],
+          "answer": 1,
+          "explanation": "不限制算法会让攻击者用弱算法或 none 绕过验签。选项一、三、四都不是该措施的目的。"
+        },
+        {
+          "question": "多个并发请求同时发现 access_token 过期，正确的处理是？",
+          "options": [
+            "每个请求各自刷新一次",
+            "刷新动作串行化，只刷新一次，其余请求复用新令牌",
+            "忽略 401 直接重试",
+            "把 refresh_token 写进 localStorage"
+          ],
+          "answer": 1,
+          "explanation": "并发刷新会互相使旧令牌失效，必须合并为一次刷新。选项一正是问题所在；选项三无效；选项四有安全风险。"
+        }
+      ]
+    },
+    {
+      "id": "visual_cdn_cache",
+      "title": { "zh": "图解 CDN 缓存与回源", "en": "CDN Caching Illustrated" },
+      "summary": {
+        "zh": "三层缓存结构、缓存头指令、ETag 校验与回源风暴防护。",
+        "en": "Cache layers, headers, validators and origin storm protection."
+      },
+      "file": "assets/content/visual_cdn_cache.md",
+      "minutes": 18,
+      "keywords": ["CDN", "缓存", "回源", "ETag", "命中率"],
+      "difficulty": "进阶",
+      "order": 16,
+      "quiz": [
+        {
+          "question": "带内容哈希的静态资源（如 app.a1b2c3.js）推荐使用什么缓存策略？",
+          "options": [
+            "no-store",
+            "public, max-age=31536000, immutable",
+            "no-cache",
+            "private, max-age=0"
+          ],
+          "answer": 1,
+          "explanation": "文件名变了就是新资源，因此可以长期强缓存。选项一完全不缓存；选项三要求每次校验；选项四只适合私有内容。"
+        },
+        {
+          "question": "HTML 入口页面更适合哪种缓存策略？",
+          "options": [
+            "immutable 长缓存",
+            "no-cache，每次都校验，保证能拿到新版本",
+            "no-store",
+            "不设置任何缓存头"
+          ],
+          "answer": 1,
+          "explanation": "HTML 是入口，必须能及时更新，但校验可省带宽。选项一会导致用户长期拿到旧版本；选项三浪费带宽；选项四行为不可控。"
+        },
+        {
+          "question": "缓存刚过期时大量请求同时回源，最有效的防护是？",
+          "options": [
+            "关闭 CDN",
+            "stale-while-revalidate 与请求合并（collapse）",
+            "延长源站超时",
+            "增加源站线程数"
+          ],
+          "answer": 1,
+          "explanation": "先返回旧内容并合并回源请求，可避免瞬时洪峰。选项一会失去 CDN 价值；选项三与选项四治标不治本。"
+        },
+        {
+          "question": "304 Not Modified 相比 200 的主要收益是？",
+          "options": [
+            "减少网络往返次数",
+            "省掉正文传输带宽，但仍有一次往返",
+            "完全不需要网络",
+            "提升服务端 CPU 性能"
+          ],
+          "answer": 1,
+          "explanation": "304 只返回状态，不传正文。选项一与选项三错误：仍然需要一次请求响应；选项四与客户端缓存无关。"
+        }
+      ]
+    },
+    {
+      "id": "visual_rate_limit_circuit",
+      "title": { "zh": "图解限流、熔断与降级", "en": "Rate Limiting and Circuit Breaking" },
+      "summary": {
+        "zh": "四种限流算法、熔断三态、四种降级手段与故障完整时序。",
+        "en": "Limiting algorithms, breaker states, fallbacks and timelines."
+      },
+      "file": "assets/content/visual_rate_limit_circuit.md",
+      "minutes": 20,
+      "keywords": ["限流", "熔断", "降级", "令牌桶", "超时"],
+      "difficulty": "进阶",
+      "order": 17,
+      "quiz": [
+        {
+          "question": "既能限制平均速率、又允许一定突发的限流算法是？",
+          "options": [
+            "固定窗口",
+            "令牌桶",
+            "漏桶",
+            "随机丢弃"
+          ],
+          "answer": 1,
+          "explanation": "令牌桶会按速率累积令牌，因此允许有上限的突发。选项一在窗口边界会放过两倍流量；选项二严格平滑不允许突发；选项四不可控。"
+        },
+        {
+          "question": "熔断器的三种状态是？",
+          "options": [
+            "开、关、暂停",
+            "闭合、打开、半开",
+            "正常、降级、恢复",
+            "冷、温、热"
+          ],
+          "answer": 1,
+          "explanation": "闭合正常放行，打开快速失败，半开放少量请求试探恢复。其余选项不是熔断器的标准状态。"
+        },
+        {
+          "question": "熔断器配置中，最小请求数参数的作用是？",
+          "options": [
+            "限制并发数",
+            "样本量不足时不触发熔断，避免抖动误判",
+            "限制重试次数",
+            "设置超时时间"
+          ],
+          "answer": 1,
+          "explanation": "请求量太小时失败率不具代表性，容易因个别失败误熔断。选项一、三、四分别对应其他参数。"
+        },
+        {
+          "question": "关于降级，下面哪种做法正确？",
+          "options": [
+            "所有接口一起降级",
+            "按业务优先级分级，先关非核心功能并保证核心链路",
+            "降级必须重新发布才能生效",
+            "降级只返回空白页"
+          ],
+          "answer": 1,
+          "explanation": "降级要保核心、关边缘，并且开关应能动态生效。选项一会让核心业务也停摆；选项三会延误故障处理；选项四没有兜底价值。"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,328 @@
+# 链表
+
+![链表](images/remaining_linked_list.webp)
+
+> 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟
+
+## 学习目标
+
+- 能用自己的话解释「链表」解决了什么问题，而不是只背术语。
+- 能说清 「链表」、「快慢指针」、「判环」、「指针」 之间的关系，并分别举出一个例子。
+- 能把本课知识放回「算法与数据结构」的知识体系，说明它和相邻主题的边界。
+- 能完成本课练习，并用验收标准检查自己的结果。
+
+> 一句话摘要：单链表实现、数组对比与快慢指针技巧。
+
+## 前置知识
+
+- 先完成上一课《栈与队列》；如果已经掌握，可以直接用本课练习自测。
+- 本课阶段：进阶。建议先掌握同一分类的基础课程，并能独立运行正文中的最小示例。
+- 开始前先复习：链表、快慢指针、判环。
+- 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
+
+
+## 结构与特点
+
+链表由节点组成，每个节点保存数据与指向下一个节点的指针。它不需要连续内存，插入删除是 `O(1)`，但随机访问是 `O(n)`。
+
+```python
+class Node:
+    def __init__(self, value, next_node=None):
+        self.value = value
+        self.next = next_node
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    def prepend(self, value):
+        self.head = Node(value, self.head)      # 头插：O(1)
+
+    def append(self, value):
+        node = Node(value)
+        if not self.head:
+            self.head = node
+            return
+        current = self.head
+        while current.next:                     # 尾插：O(n)
+            current = current.next
+        current.next = node
+
+    def remove(self, value):
+        dummy = Node(None, self.head)           # 哑节点简化边界处理
+        prev, current = dummy, self.head
+        while current:
+            if current.value == value:
+                prev.next = current.next
+                break
+            prev, current = current, current.next
+        self.head = dummy.next
+
+    def to_list(self):
+        result, current = [], self.head
+        while current:
+            result.append(current.value)
+            current = current.next
+        return result
+```
+
+## 与数组对比
+
+| 操作 | 数组 | 链表 |
+| --- | --- | --- |
+| 随机访问 | O(1) | O(n) |
+| 头部插入删除 | O(n) | O(1) |
+| 尾部插入 | 均摊 O(1) | O(1)（有尾指针） |
+| 内存 | 连续，缓存友好 | 分散，指针有额外开销 |
+
+实际工程中数组（`list` / `vector`）用得更多，因为缓存友好；链表适合频繁在中间插删、或节点需要在别处被引用的场景。
+
+## 快慢指针技巧
+
+```python
+def has_cycle(head):
+    slow = fast = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow is fast:
+            return True
+    return False
+
+def middle_node(head):
+    slow = fast = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+    return slow.value          # 快指针走两步，慢指针正好在中点
+```
+
+## 常见变体
+
+- **双向链表**：节点同时保存 prev 与 next，删除更简单（LRU 缓存用它）。
+- **循环链表**：尾节点指向头节点，适合轮询调度。
+- **跳表**：多层链表 + 随机索引，Redis 有序集合的实现基础。
+
+## 本课小结
+链表的核心是**指针操作与边界处理**：加哑节点能省掉一半的 `if`；快慢指针能优雅解决找中点、判环、找倒数第 k 个等问题。
+
+<!-- appendix:v1 -->
+
+## 常用操作速查
+
+| 操作 | 单链表 | 双向链表 | 说明 |
+| --- | --- | --- | --- |
+| 头部插入/删除 | O(1) | O(1) | 最擅长的场景 |
+| 尾部插入 | O(n)（无尾指针） | O(1) | 有尾指针也是 O(1) |
+| 已知节点后插入 | O(1) | O(1) | 需要先拿到节点 |
+| 删除已知节点 | O(n)（需前驱） | O(1) | 双向链表可直接删 |
+| 按下标访问 | O(n) | O(n) | 链表不适合随机访问 |
+| 反转 | O(n) | O(n) | 迭代改指针 |
+
+```python
+class Node:
+    __slots__ = ("value", "next")
+
+    def __init__(self, value, next=None):
+        self.value = value
+        self.next = next
+
+
+def reverse(head):
+    """迭代反转单链表，空间 O(1)。"""
+    prev, cur = None, head
+    while cur:
+        nxt = cur.next
+        cur.next = prev
+        prev, cur = cur, nxt
+    return prev
+
+
+def has_cycle(head):
+    """快慢指针判环；相遇后一指针回头可找环入口。"""
+    slow = fast = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow is fast:
+            return True
+    return False
+
+
+def merge_sorted(a, b):
+    """合并两个有序链表，复用节点不新建。"""
+    dummy = Node(0)
+    tail = dummy
+    while a and b:
+        if a.value <= b.value:      # <= 保证稳定
+            tail.next, a = a, a.next
+        else:
+            tail.next, b = b, b.next
+        tail = tail.next
+    tail.next = a or b
+    return dummy.next
+```
+
+## 快慢指针适用问题
+
+| 问题 | 做法 |
+| --- | --- |
+| 判断是否有环 | 快指针每次走 2 步，相遇即有环 |
+| 找环入口 | 相遇后一指针回到头部，二者同速前进 |
+| 找中间节点 | 快指针到尾时慢指针在中间 |
+| 找倒数第 k 个 | 快指针先走 k 步，再同速前进 |
+| 判断回文链表 | 找中点 + 反转后半段 + 比较 |
+
+## 常见错误对照表
+
+| 容易写错的做法 | 实际现象 | 原因与正确做法 |
+| --- | --- | --- |
+| 改指针前不保存 `next` | 链表断裂、丢失后续节点 | 先 `nxt = cur.next` 再改指向 |
+| 删除节点时没更新前驱 | 节点仍被引用 | 让 `prev.next = cur.next` |
+| 快慢指针没检查 `fast.next` | 空指针异常 | 条件写 `while fast and fast.next:` |
+| 用哨兵节点后又返回 `dummy` | 结果多一个假节点 | 返回 `dummy.next` |
+| 头节点被删除时忘记更新 head | 结果丢头 | 用哨兵节点简化边界 |
+| 认为链表插入总是 O(1) | 忽略了查找前驱的成本 | 明确「已知位置」才是 O(1) |
+| 用链表替代数组做随机访问 | 性能极差 | 数组更适合下标访问 |
+| 忘记处理空链表与单节点 | 边界崩溃 | 专门测试这两种输入 |
+| 反转后没更新头指针 | 遍历不到 | 返回新的头（原尾节点） |
+| 链表节点无 `__slots__` | 内存开销大 | 大量节点时用 `__slots__` 优化 |
+
+## 自测清单
+
+- [ ] 能手写迭代版反转链表。
+- [ ] 会用快慢指针判环并找入口。
+- [ ] 合并有序链表用哨兵节点简化边界。
+- [ ] 知道链表与数组各自的适用场景。
+- [ ] 测试覆盖空链表、单节点、偶数与奇数长度。
+
+## 动手练习
+
+<!-- practice-diversified:v1 -->
+
+> 本课练习重点：围绕「链表、快慢指针、判环」完成复述、实验和交付，每个结果都要能被别人检查。
+
+先手算 8 个元素的状态变化，再实现并统计操作次数与复杂度。
+
+### 练习 1：建立心智模型（10 分钟）
+
+合上教程，用 3～5 句话回答：
+
+1. 「链表」解决了什么问题？
+2. 如果没有它，会出现什么具体后果？
+3. 它和「快慢指针」是什么关系？
+
+**验收标准**：至少出现一个本课关键词，并写出一个反例、边界条件或失效场景。
+
+### 练习 2：做一次可控实验（20 分钟）
+
+从正文中选一个最小示例，完成以下操作：
+
+1. 先预测修改一个参数、输入或步骤后的结果。
+2. 再实际执行或逐步推演，记录真实结果。
+3. 如果结果与预测不同，写出差异原因。
+
+**验收标准**：留下「原例 → 改动 → 预测 → 结果 → 原因」五步记录。
+
+### 练习 3：交付一个小结果（30 分钟）
+
+给定 8～12 个手工构造的数据，写出每一步状态，并统计比较或交换次数。
+
+任务要求：
+
+- 结果必须能被别人检查，不能只写“我已经理解了”。
+- 至少覆盖「链表」和「快慢指针」两个关键词。
+- 写出 1 个仍然不确定的问题，以及下一步如何验证。
+
+> 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
+
+<!-- scaffold:v1 -->
+
+<!-- p2-enrichment:v1 -->
+
+## English Overview
+
+**Title:** Linked Lists
+
+**Summary:** Implementation, trade-offs and fast/slow pointers.
+
+**Category:** Algorithms  
+**Level:** 进阶  
+**Key terms:** 链表, 快慢指针, 判环, 指针
+
+> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
+
+## 内容元数据
+
+- 内容版本：v2.0
+- 最后更新：2026-10-03
+- 学习阶段：进阶
+- 适用环境：任意主流语言（伪代码与复杂度为主）
+- 内容来源：内置结构化课程与工程实践整理
+- 相关主题：链表、快慢指针、判环、指针
+- 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
+
+<!-- top50-rewrite:v1 -->
+
+## 课程专属精读：链表
+
+### 一、知识地图
+
+- **结构与特点**：链表由节点组成，每个节点保存数据与指向下一个节点的指针。它不需要连续内存，插入删除是 `O(1)`，但随机访问是 `O(n)`。
+- **与数组对比**：理解它的定义、输入、输出和失败边界。
+- **快慢指针技巧**：def has_cycle(head):
+- **常见变体**：链表的核心是**指针操作与边界处理**：加哑节点能省掉一半的 `if`；快慢指针能优雅解决找中点、判环、找倒数第 k 个等问题。
+- **常用操作速查**：理解它的定义、输入、输出和失败边界。
+- **快慢指针适用问题**：理解它的定义、输入、输出和失败边界。
+- **常见错误对照表**：理解它的定义、输入、输出和失败边界。
+- **自测清单**：理解它的定义、输入、输出和失败边界。
+
+### 二、机制与验证
+
+| 主题 | 需要回答的问题 | 验证方式 |
+| --- | --- | --- |
+| 结构与特点 | 它解决什么问题，输入和输出是什么？ | 最小示例、边界输入、日志或指标 |
+| 与数组对比 | 它解决什么问题，输入和输出是什么？ | 最小示例、边界输入、日志或指标 |
+| 快慢指针技巧 | 它解决什么问题，输入和输出是什么？ | 最小示例、边界输入、日志或指标 |
+| 常见变体 | 它解决什么问题，输入和输出是什么？ | 最小示例、边界输入、日志或指标 |
+| 常用操作速查 | 它解决什么问题，输入和输出是什么？ | 最小示例、边界输入、日志或指标 |
+| 快慢指针适用问题 | 它解决什么问题，输入和输出是什么？ | 最小示例、边界输入、日志或指标 |
+| 常见错误对照表 | 它解决什么问题，输入和输出是什么？ | 最小示例、边界输入、日志或指标 |
+| 自测清单 | 它解决什么问题，输入和输出是什么？ | 最小示例、边界输入、日志或指标 |
+
+### 三、专属检查问题
+
+1. 结构与特点 与相邻主题的边界是什么？
+2. 与数组对比 与相邻主题的边界是什么？
+3. 快慢指针技巧 与相邻主题的边界是什么？
+4. 常见变体 与相邻主题的边界是什么？
+5. 常用操作速查 与相邻主题的边界是什么？
+6. 快慢指针适用问题 与相邻主题的边界是什么？
+7. 常见错误对照表 与相邻主题的边界是什么？
+8. 自测清单 与相邻主题的边界是什么？
+
+### 四、故障排查
+
+1. 固定输入和环境，确认问题能复现。
+2. 找到第一个异常状态，不从最终错误倒猜。
+3. 只改变一个变量，记录预测和真实结果。
+4. 修复后补边界、失败和重复执行测试。
+
+<!-- p2-references:v1 -->
+
+## 参考资料与复核
+
+- 最后复核：2026-10-04
+- 下次复核：2027-04-04
+- 复核范围：版本兼容、API 行为、安全建议与工程实践
+- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+
+| 参考资料 | 本课用途 |
+| --- | --- |
+| [CP-Algorithms](https://cp-algorithms.com/) | 算法实现与复杂度 |
+| [MIT OpenCourseWare 6.006](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/) | 算法设计与分析 |
+
+> 本课主题：单链表实现、数组对比与快慢指针技巧。
+
+> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+

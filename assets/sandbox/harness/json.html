@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<pre id="sandbox-output" hidden></pre>
+<script>/*__COMMON__*/</script>
+<script>
+(function () {
+  __sandboxBegin();
+  try {
+    // JSON 模式：校验语法并格式化输出，方便看清结构。
+    __sandboxPush(JSON.stringify(JSON.parse(__USER_CODE__), null, 2));
+  } catch (error) {
+    __sandboxPush('Error: ' + (error && error.message ? error.message : String(error)));
+  }
+  __sandboxFinish();
+})();
+</script>
+</body>
+</html>

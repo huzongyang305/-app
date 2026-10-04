@@ -1,0 +1,25 @@
+{
+  "project_python_cli_todo": {
+    "category": "project_practice",
+    "language": "python",
+    "minutes": 110,
+    "title": {"zh": "实战：Python CLI 待办工具", "en": "Project: Python CLI Todo Tool"},
+    "summary": {"zh": "从空目录实现可安装、可测试、可发布的命令行待办工具，覆盖参数解析、原子写入、错误码与打包。", "en": "Build, test and package a command-line todo tool with safe persistence and exit codes."},
+    "keywords": ["CLI", "argparse", "JSON", "原子写入", "pytest"],
+    "scenario": "团队需要一个不依赖服务器的待办工具：支持添加、列出、完成和删除任务，数据保存在本机 JSON 文件中；即使进程中途退出，也不能留下半个损坏文件。工具要能从干净环境安装、运行测试并通过命令行完成一次完整操作。",
+    "stack": ["Python 3.12", "argparse", "pathlib", "json", "tempfile", "pytest"],
+    "outcomes": ["能把命令行输入、业务规则和文件存储拆成可测试的模块。", "能用临时文件加原子替换避免数据文件被写坏。", "能用退出码和标准输出区分成功、参数错误与数据错误。", "能生成可安装的 pyproject.toml 并验证安装后的入口命令。"],
+    "features": ["add 命令添加任务并生成稳定编号", "list 命令支持全部、未完成和已完成过滤", "done 命令更新状态并拒绝无效编号", "delete 命令删除任务并返回明确结果", "所有命令支持 --json 供脚本消费"],
+    "steps": ["定义任务模型、状态字段和错误类型", "先用 argparse 建立命令入口与参数约束", "把增删改查写成纯函数并补单元测试", "用临时文件写入后 os.replace 原子替换", "实现 --json 输出和稳定退出码", "在全新虚拟环境中安装并执行端到端验收"],
+    "code": "from pathlib import Path\nimport json, os, tempfile\n\nDATA = Path.home() / '.todo.json'\n\ndef save(tasks: list[dict]) -> None:\n    DATA.parent.mkdir(parents=True, exist_ok=True)\n    fd, temp_name = tempfile.mkstemp(dir=DATA.parent, prefix='.todo-')\n    try:\n        with os.fdopen(fd, 'w', encoding='utf-8') as handle:\n            json.dump(tasks, handle, ensure_ascii=False, indent=2)\n            handle.flush()\n            os.fsync(handle.fileno())\n        os.replace(temp_name, DATA)\n    finally:\n        if os.path.exists(temp_name):\n            os.unlink(temp_name)\n\ndef add(title: str) -> dict:\n    tasks = json.loads(DATA.read_text('utf-8')) if DATA.exists() else []\n    task = {'id': len(tasks) + 1, 'title': title, 'done': False}\n    tasks.append(task)\n    save(tasks)\n    return task",
+    "tests": ["添加两条任务后 list --json 返回稳定顺序和编号", "done 一个不存在编号时退出码不是 0 且数据不变", "模拟写入中断后原 JSON 文件仍可解析", "从干净虚拟环境 pip install -e . 后 todo --help 可运行"],
+    "pitfalls": [["直接覆盖原 JSON 文件", "写入中断时文件变成半截 JSON", "先写同目录临时文件再原子替换"], ["用全局可变状态保存任务", "测试互相污染且难以恢复", "让仓储函数显式接收路径"], ["所有错误都返回退出码 0", "脚本无法判断失败", "为参数、数据和运行时错误分配稳定退出码"], ["只测试成功路径", "空列表和重复编号在线上才暴露", "覆盖空数据、非法编号和损坏文件"]],
+    "extensions": ["增加 due 日期和 overdue 过滤", "把存储后端抽象为 SQLite 并保持 CLI 不变", "使用 GitHub Actions 自动构建 wheel 并执行安装测试"],
+    "quiz": [
+      {"question": "在端到端 Python CLI 待办项目中，命令行参数最适合在哪一层校验？", "options": ["直接散落在文件写入代码里", "入口层校验后调用纯业务函数", "只在 README 里说明", "交给操作系统处理"], "answer": 1, "explanation": "入口层负责把字符串参数转换成明确类型并尽快拒绝非法输入，业务层只接收已经满足约束的数据。这样单元测试可以不启动进程，CLI 测试又能验证退出码和提示文本；把校验散落在存储代码中会导致同一规则重复实现，也让错误分类和脚本调用变得不可预测。"},
+      {"question": "CLI 把待办数据写入 JSON 文件时，哪种写入方式更能避免文件损坏？", "options": ["先写同目录临时文件，再用 os.replace 原子替换", "打开目标文件后直接清空再写", "把内容追加到旧 JSON 末尾", "只调用 print 输出到终端"], "answer": 0, "explanation": "同目录临时文件写完并刷盘后再原子替换，读者要么看到完整旧版本，要么看到完整新版本，不会读到一半内容。直接清空目标文件会在断电、异常退出或磁盘写满时留下损坏文件；追加内容还会破坏 JSON 结构，让下一次读取直接失败。"},
+      {"question": "为 CLI 增加 --json 输出后，自动化测试最应该断言什么？", "options": ["终端颜色完全一致", "可解析的结构、字段语义和退出码", "文件大小必须为零", "帮助文本包含作者名字"], "answer": 1, "explanation": "脚本消费者依赖的是稳定字段、数据类型、成功或失败状态以及退出码，而不是颜色或排版。测试应把标准输出按 JSON 解析，逐项验证 id、title、done 等契约，并分别覆盖成功与错误响应；只比较整段字符串会把无害格式变化误判为回归。"},
+      {"question": "delete 命令在空列表上执行时，最合适的处理是什么？", "options": ["静默创建一条空任务", "删除整个数据文件", "返回可理解的未找到错误和非零退出码", "无限等待用户输入"], "answer": 2, "explanation": "空列表或编号不存在属于可预期的业务失败，应输出清楚的未找到信息并返回稳定的非零退出码，让调用脚本能够分支处理。静默成功会掩盖用户输入错误，删除整个文件则造成数据损失，等待输入会让无人值守脚本永久挂起，都不符合命令行工具的可预测性。"}
+    ]
+  }
+}

@@ -1,0 +1,218 @@
+{
+  "category": "python",
+  "lessons": [
+    {
+      "id": "python_decorators_generators",
+      "title": {
+        "zh": "Python 装饰器与生成器",
+        "en": "Python Decorators and Generators"
+      },
+      "summary": {
+        "zh": "掌握闭包、装饰器、yield、惰性序列和生成器性能。",
+        "en": "Learn closures, decorators, yield, lazy sequences and generator performance."
+      },
+      "file": "assets/content/python_decorators_generators.md",
+      "minutes": 24,
+      "keywords": [
+        "装饰器",
+        "生成器",
+        "yield",
+        "闭包"
+      ],
+      "difficulty": "高级",
+      "order": 13,
+      "quiz": [
+        {
+          "question": "关于「装饰器本质是接收函数并返回新函数的高…」，下列说法正确的是？",
+          "options": [
+            "装饰器本质是接收函数并返回新函数的高阶函数，常用于日志、缓存、权限和重试。",
+            "with 保证进入和退出成对执行，适合文件、锁、连接和事务。",
+            "pyproject.toml 统一声明构建、依赖和工具配置，锁文件保证可复现。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Python 装饰器与生成器》时应把该要点与「装饰器」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「生成器用 yield 逐个产出值 适…」，下列说法正确的是？",
+          "options": [
+            "生成器用 yield 逐个产出值，适合大文件和流式处理，避免一次性占用内存。",
+            "迭代器实现 __iter__ 和 __next__，耗尽后要持续抛出 StopIteration。",
+            "发布要管理版本、许可证、README、变更日志和制品签名。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Python 装饰器与生成器》时应把该要点与「装饰器」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「装饰器要保留原函数元数据 生成器要处…」，下列说法正确的是？",
+          "options": [
+            "装饰器要保留原函数元数据，生成器要处理关闭、异常和资源释放。",
+            "上下文管理器要正确处理异常、嵌套和异步资源。",
+            "性能优化先用 cProfile、py-spy 和基准测试定位，再考虑算法、缓存或原生扩展。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Python 装饰器与生成器》时应把该要点与「装饰器」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「Python 装饰器与生成器」的核心学习目标是什么？",
+          "options": [
+            "掌握闭包、装饰器、yield、惰性序列和生成器性能。",
+            "理解 with、enter/exit、迭代器协议和资源安全。",
+            "用 pyproject、锁文件和构建工具发布包，并做性能剖析。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "python_context_iterators",
+      "title": {
+        "zh": "Python 上下文管理器与迭代器协议",
+        "en": "Python Context Managers and Iterators"
+      },
+      "summary": {
+        "zh": "理解 with、enter/exit、迭代器协议和资源安全。",
+        "en": "Learn with, enter/exit, iterator protocol and resource safety."
+      },
+      "file": "assets/content/python_context_iterators.md",
+      "minutes": 22,
+      "keywords": [
+        "上下文管理器",
+        "迭代器",
+        "with",
+        "资源"
+      ],
+      "difficulty": "高级",
+      "order": 14,
+      "quiz": [
+        {
+          "question": "关于「with 保证进入和退出成对执行 适…」，下列说法正确的是？",
+          "options": [
+            "with 保证进入和退出成对执行，适合文件、锁、连接和事务。",
+            "装饰器本质是接收函数并返回新函数的高阶函数，常用于日志、缓存、权限和重试。",
+            "pyproject.toml 统一声明构建、依赖和工具配置，锁文件保证可复现。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Python 上下文管理器与迭代器协议》时应把该要点与「上下文管理器」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「迭代器实现 __iter__ 和 _…」，下列说法正确的是？",
+          "options": [
+            "迭代器实现 __iter__ 和 __next__，耗尽后要持续抛出 StopIteration。",
+            "生成器用 yield 逐个产出值，适合大文件和流式处理，避免一次性占用内存。",
+            "发布要管理版本、许可证、README、变更日志和制品签名。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Python 上下文管理器与迭代器协议》时应把该要点与「上下文管理器」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「上下文管理器要正确处理异常、嵌套和异…」，下列说法正确的是？",
+          "options": [
+            "上下文管理器要正确处理异常、嵌套和异步资源。",
+            "装饰器要保留原函数元数据，生成器要处理关闭、异常和资源释放。",
+            "性能优化先用 cProfile、py-spy 和基准测试定位，再考虑算法、缓存或原生扩展。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Python 上下文管理器与迭代器协议》时应把该要点与「上下文管理器」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「Python 上下文管理器与迭代器协议」的核心学习目标是什么？",
+          "options": [
+            "理解 with、enter/exit、迭代器协议和资源安全。",
+            "掌握闭包、装饰器、yield、惰性序列和生成器性能。",
+            "用 pyproject、锁文件和构建工具发布包，并做性能剖析。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "python_packaging_performance",
+      "title": {
+        "zh": "Python 打包、发布与性能",
+        "en": "Python Packaging, Publishing and Performance"
+      },
+      "summary": {
+        "zh": "用 pyproject、锁文件和构建工具发布包，并做性能剖析。",
+        "en": "Use pyproject, lock files and build tools, then profile performance."
+      },
+      "file": "assets/content/python_packaging_performance.md",
+      "minutes": 24,
+      "keywords": [
+        "打包",
+        "pyproject",
+        "性能剖析",
+        "发布"
+      ],
+      "difficulty": "高级",
+      "order": 15,
+      "quiz": [
+        {
+          "question": "关于「pyproject toml 统一声…」，下列说法正确的是？",
+          "options": [
+            "pyproject.toml 统一声明构建、依赖和工具配置，锁文件保证可复现。",
+            "装饰器本质是接收函数并返回新函数的高阶函数，常用于日志、缓存、权限和重试。",
+            "with 保证进入和退出成对执行，适合文件、锁、连接和事务。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Python 打包、发布与性能》时应把该要点与「打包」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「发布要管理版本、许可证、README…」，下列说法正确的是？",
+          "options": [
+            "发布要管理版本、许可证、README、变更日志和制品签名。",
+            "生成器用 yield 逐个产出值，适合大文件和流式处理，避免一次性占用内存。",
+            "迭代器实现 __iter__ 和 __next__，耗尽后要持续抛出 StopIteration。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Python 打包、发布与性能》时应把该要点与「打包」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「性能优化先用 cProfile、py…」，下列说法正确的是？",
+          "options": [
+            "性能优化先用 cProfile、py-spy 和基准测试定位，再考虑算法、缓存或原生扩展。",
+            "装饰器要保留原函数元数据，生成器要处理关闭、异常和资源释放。",
+            "上下文管理器要正确处理异常、嵌套和异步资源。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Python 打包、发布与性能》时应把该要点与「打包」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「Python 打包、发布与性能」的核心学习目标是什么？",
+          "options": [
+            "用 pyproject、锁文件和构建工具发布包，并做性能剖析。",
+            "掌握闭包、装饰器、yield、惰性序列和生成器性能。",
+            "理解 with、enter/exit、迭代器协议和资源安全。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    }
+  ]
+}

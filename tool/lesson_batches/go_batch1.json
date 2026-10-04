@@ -1,0 +1,355 @@
+{
+  "category": "go",
+  "lessons": [
+    {
+      "id": "go_pprof",
+      "title": { "zh": "Go 性能剖析与调优实战", "en": "Profiling & Tuning in Go" },
+      "summary": {
+        "zh": "pprof 六种剖析类型、基准测试规范与常见优化手段。",
+        "en": "pprof profiles, benchmarking and common optimizations."
+      },
+      "file": "assets/content/go_pprof.md",
+      "minutes": 18,
+      "keywords": ["pprof", "性能剖析", "基准测试", "benchstat", "GC", "火焰图"],
+      "difficulty": "进阶",
+      "order": 7,
+      "quiz": [
+        {
+          "question": "想知道「内存被谁占用」应该看哪种 profile？",
+          "options": [
+            "CPU profile",
+            "Heap profile 的 inuse_space",
+            "Goroutine profile",
+            "Trace"
+          ],
+          "answer": 1,
+          "explanation": "inuse_space 反映当前仍在占用的内存及其分配位置，最适合定位内存增长。选项一回答时间去处；选项三用于排查协程泄漏与阻塞；选项四看调度与 GC 时间线，不直接给出占用来源。"
+        },
+        {
+          "question": "写基准测试时，准备数据之后应该调用什么？",
+          "options": [
+            "b.ReportAllocs()",
+            "b.ResetTimer()",
+            "b.Fatal()",
+            "b.Skip()"
+          ],
+          "answer": 1,
+          "explanation": "ResetTimer 把准备阶段排除在计时之外，避免数据虚高；ReportAllocs 只负责报告分配次数。选项三会终止测试，选项四会跳过测试。"
+        },
+        {
+          "question": "为什么生产环境的 pprof 端口不能暴露到公网？",
+          "options": [
+            "会占用带宽",
+            "会泄露内部信息并可被用于性能攻击",
+            "会导致编译失败",
+            "浏览器无法访问"
+          ],
+          "answer": 1,
+          "explanation": "pprof 能看到调用栈、函数名与大量运行时细节，属于敏感信息，且采集本身消耗资源。选项一不是主要风险；选项三、四与暴露风险无关。"
+        },
+        {
+          "question": "关于 sync.Pool，正确的用法是？",
+          "options": [
+            "当作缓存长期保存业务对象",
+            "只存放可随时重建的临时对象",
+            "用它替代数据库连接池",
+            "它保证对象不会被回收"
+          ],
+          "answer": 1,
+          "explanation": "Pool 中的对象可能在任意 GC 时被清理，因此只能放可重建的临时缓冲。选项一、三会导致逻辑错误；选项四与事实相反。"
+        },
+        {
+          "question": "对比优化前后的基准数据，推荐？",
+          "options": [
+            "各跑一次直接比较",
+            "多次运行并用 benchstat 做统计对比",
+            "只看内存分配不看时间",
+            "用 Debug 构建跑基准"
+          ],
+          "answer": 1,
+          "explanation": "单次结果噪声大，benchstat 能给出统计意义上的差异与显著性。选项一容易得出错误结论；选项三忽略了时间维度；选项四会严重低估性能。"
+        }
+      ]
+    },
+    {
+      "id": "go_grpc",
+      "title": { "zh": "gRPC 与 Protobuf 实践", "en": "gRPC & Protobuf" },
+      "summary": {
+        "zh": "四种调用方式、契约演进规则与拦截器工程实践。",
+        "en": "Call types, contract evolution and interceptors."
+      },
+      "file": "assets/content/go_grpc.md",
+      "minutes": 18,
+      "keywords": ["gRPC", "Protobuf", "流式", "契约", "拦截器", "状态码"],
+      "difficulty": "进阶",
+      "order": 8,
+      "quiz": [
+        {
+          "question": "内部服务间高频调用，通常优先选择？",
+          "options": [
+            "REST 加 JSON",
+            "gRPC 加 Protobuf",
+            "WebSocket",
+            "文件交换"
+          ],
+          "answer": 1,
+          "explanation": "gRPC 序列化体积小、支持多路复用与流式，并且能从 .proto 生成强类型客户端与服务端，适合内部高频调用。选项一更适合对外与第三方集成；选项三用于双向实时通信；选项四不适用于同步 RPC。"
+        },
+        {
+          "question": "修改 .proto 时，哪种做法是安全的？",
+          "options": [
+            "修改已使用字段的编号",
+            "新增字段并给新编号",
+            "删除字段后复用其编号",
+            "把可选字段改成必填"
+          ],
+          "answer": 1,
+          "explanation": "只有向后兼容的变更（新增字段、不改变已有编号与类型）才能保证新旧版本互通。选项一、三会造成解析错乱；选项四会让旧客户端请求直接失败。"
+        },
+        {
+          "question": "客户端调用 gRPC 时必须注意？",
+          "options": [
+            "每次调用都设置 deadline",
+            "去掉 context 以提升性能",
+            "只在超时后重试无限次",
+            "关闭连接复用"
+          ],
+          "answer": 0,
+          "explanation": "没有 deadline 的调用可能永久挂起并耗尽连接与协程。选项二会失去取消能力；选项三会放大故障；选项四浪费 HTTP/2 多路复用的优势。"
+        },
+        {
+          "question": "服务端想把「参数非法」与「内部错误」区分开，正确做法是？",
+          "options": [
+            "返回不同的错误字符串",
+            "使用标准 status code（InvalidArgument / Internal）",
+            "都返回 nil 让客户端判断数据",
+            "统一返回 Internal"
+          ],
+          "answer": 1,
+          "explanation": "标准状态码是跨语言可识别的契约，客户端能据此做重试或提示。选项一让判断依赖字符串；选项三掩盖错误；选项四丢失语义。"
+        },
+        {
+          "question": "需要「一次请求、服务端持续推送多条结果」时，应该用？",
+          "options": [
+            "Unary",
+            "Server streaming",
+            "Client streaming",
+            "Bidirectional streaming"
+          ],
+          "answer": 1,
+          "explanation": "服务端流式正好对应「一个请求多个响应」。选项一只能返回一次；选项三方向相反；选项四用于双向交互，复杂度更高。"
+        }
+      ]
+    },
+    {
+      "id": "go_concurrency_patterns",
+      "title": { "zh": "Go 并发模式与 errgroup", "en": "Concurrency Patterns" },
+      "summary": {
+        "zh": "Worker Pool、Pipeline、Fan-in/Fan-out 与并发限流。",
+        "en": "Worker pool, pipeline, fan-out and concurrency limits."
+      },
+      "file": "assets/content/go_concurrency_patterns.md",
+      "minutes": 18,
+      "keywords": ["并发模式", "errgroup", "worker pool", "pipeline", "singleflight"],
+      "difficulty": "高级",
+      "order": 9,
+      "quiz": [
+        {
+          "question": "要把并发处理限制在固定数量，最简洁的做法是？",
+          "options": [
+            "为每个任务启动一个 goroutine",
+            "用 errgroup.SetLimit 或带缓冲 channel 作信号量",
+            "增加 GOMAXPROCS",
+            "用 time.Sleep 控制节奏"
+          ],
+          "answer": 1,
+          "explanation": "SetLimit 与信号量都能把并发度钉在固定值，避免打爆下游。选项一正是要避免的做法；选项三只影响并行执行的核数；选项四既不精确也不可取消。"
+        },
+        {
+          "question": "Pipeline 各阶段为什么通常要 defer close(out)？",
+          "options": [
+            "为了节省内存",
+            "让下游 range 能正常结束，避免永久阻塞",
+            "为了提升吞吐",
+            "为了让 panic 不传播"
+          ],
+          "answer": 1,
+          "explanation": "关闭 channel 后下游 range 才会退出，这是连式 goroutine 不泄漏的关键。选项一、三不是目的；选项四不成立，close 与 panic 传播无关。"
+        },
+        {
+          "question": "大量相同请求同时到达导致下游被打爆，可用什么合并？",
+          "options": [
+            "sync.Pool",
+            "singleflight",
+            "sync.Once",
+            "atomic 计数"
+          ],
+          "answer": 1,
+          "explanation": "singleflight 把同一 key 的并发调用合并成一次真实请求，其余共享结果，是缓存击穿的常用解法。选项一用于对象复用；选项三只保证初始化一次；选项四用于计数。"
+        },
+        {
+          "question": "关于并发中的错误处理，正确的是？",
+          "options": [
+            "goroutine 里的 panic 会安全终止该协程",
+            "goroutine 里未处理的 panic 会导致整个进程崩溃",
+            "errgroup 会自动捕获 panic",
+            "channel 传递错误即可忽略 panic"
+          ],
+          "answer": 1,
+          "explanation": "Go 中任何未恢复的 panic 都会终止整个进程，因此每个 goroutine 入口都应有 recover 与日志。选项一、三、四都低估了这一风险。"
+        },
+        {
+          "question": "简单的并发计数，最轻量的方案是？",
+          "options": [
+            "atomic.Int64",
+            "sync.Mutex",
+            "channel",
+            "sync.RWMutex"
+          ],
+          "answer": 0,
+          "explanation": "单值自增用原子操作最直接，无锁开销也更小。选项二、四能用但更重；选项三适合传递数据而非计数，容易写出复杂逻辑。"
+        }
+      ]
+    },
+    {
+      "id": "go_testing",
+      "title": { "zh": "Go 测试进阶：基准、模糊与集成", "en": "Advanced Testing in Go" },
+      "summary": {
+        "zh": "表驱动、模糊测试、集成测试隔离与竞态检测。",
+        "en": "Table-driven tests, fuzzing, integration isolation and race detection."
+      },
+      "file": "assets/content/go_testing.md",
+      "minutes": 18,
+      "keywords": ["Go测试", "表驱动", "模糊测试", "集成测试", "race", "覆盖率"],
+      "difficulty": "进阶",
+      "order": 10,
+      "quiz": [
+        {
+          "question": "模糊测试（fuzzing）最适合用来发现？",
+          "options": [
+            "性能瓶颈",
+            "边界输入导致的崩溃与断言失败",
+            "代码风格问题",
+            "依赖版本冲突"
+          ],
+          "answer": 1,
+          "explanation": "模糊测试由引擎自动生成输入并持续变异，擅长挖出解析器、校验逻辑的边界缺陷。选项一需要基准测试；选项三用格式化与 lint；选项四用依赖管理工具。"
+        },
+        {
+          "question": "集成测试与单元测试如何隔离？",
+          "options": [
+            "都放在同一个文件里",
+            "用构建标签或 testing.Short 区分",
+            "只靠注释说明",
+            "让集成测试永远不执行"
+          ],
+          "answer": 1,
+          "explanation": "构建标签（如 integration）或 Short 模式让本地快速测试与需要外部依赖的测试各走各的路径。选项一、三无法阻止默认执行；选项四等于没有集成测试。"
+        },
+        {
+          "question": "测试里等待异步结果，推荐做法是？",
+          "options": [
+            "time.Sleep 固定时长",
+            "通过 channel 或轮询条件直到满足（带超时）",
+            "多跑几次总能过",
+            "把断言放宽"
+          ],
+          "answer": 1,
+          "explanation": "基于条件等待既快又稳，超时可避免挂死。选项一在慢机器上会偶发失败；选项三、四掩盖问题而非解决。"
+        },
+        {
+          "question": "发现偶发的数据竞争，应该用什么工具？",
+          "options": [
+            "go vet",
+            "go test -race",
+            "go fmt",
+            "go build -ldflags"
+          ],
+          "answer": 1,
+          "explanation": "-race 是运行时的竞态检测器，配合压力测试能有效暴露数据竞争。选项一是静态检查，抓不到运行期竞态；选项三只格式化；选项四与竞态无关。"
+        },
+        {
+          "question": "表驱动测试的主要好处是？",
+          "options": [
+            "减少代码行数",
+            "一份逻辑覆盖多组输入，新增用例成本低",
+            "自动生成断言",
+            "提升运行速度"
+          ],
+          "answer": 1,
+          "explanation": "表驱动把用例与逻辑分离，补充边界只需加一行数据。选项一不是核心价值；选项三仍需手写断言；选项四与执行速度无关。"
+        }
+      ]
+    },
+    {
+      "id": "go_data_access",
+      "title": { "zh": "Go 数据访问与连接池", "en": "Data Access in Go" },
+      "summary": {
+        "zh": "database/sql 事务模板、连接池参数与批量写入。",
+        "en": "database/sql transactions, connection pool and batch writes."
+      },
+      "file": "assets/content/go_data_access.md",
+      "minutes": 18,
+      "keywords": ["database/sql", "连接池", "事务", "批量插入", "N+1", "参数化查询"],
+      "difficulty": "进阶",
+      "order": 11,
+      "quiz": [
+        {
+          "question": "数据库连接池的 SetMaxOpenConns 设置过大，会有什么后果？",
+          "options": [
+            "连接复用率提高",
+            "数据库连接被打满，整体性能下降",
+            "查询自动变快",
+            "事务自动串行化"
+          ],
+          "answer": 1,
+          "explanation": "连接数超过数据库承载能力会导致排队、内存上涨甚至拒绝服务，应按数据库能力设定。选项一、三与事实相反；选项四与隔离级别有关，与连接数无关。"
+        },
+        {
+          "question": "遍历 Query 结果集后，必须做什么？",
+          "options": [
+            "只需要 rows.Close()",
+            "关闭 rows 并检查 rows.Err()",
+            "重新执行一次查询",
+            "不需要任何处理"
+          ],
+          "answer": 1,
+          "explanation": "Close 释放连接，Err 能发现遍历过程中发生的错误，两者缺一不可。选项一漏掉中途错误；选项三、四都会导致问题被掩盖。"
+        },
+        {
+          "question": "批量插入大量数据，性能最好的写法是？",
+          "options": [
+            "循环里逐条 Exec",
+            "预编译语句加单个事务批量执行",
+            "每条记录开一个事务",
+            "用 SELECT 代替 INSERT"
+          ],
+          "answer": 1,
+          "explanation": "预编译减少解析开销，单事务减少提交与日志刷盘次数。选项一、三都会带来大量往返与提交开销；选项四语义错误。"
+        },
+        {
+          "question": "关于事务，正确的做法是？",
+          "options": [
+            "事务里调用外部 HTTP 接口",
+            "事务尽量短小，外部调用放在事务外",
+            "事务越大越好以提升吞吐",
+            "用 defer 回滚会导致提交失败"
+          ],
+          "answer": 1,
+          "explanation": "长事务会长期持锁并放大主从延迟，外部调用应移到事务外。选项一、三都会造成长事务；选项四错误，提交后再回滚会返回 ErrTxDone，可安全忽略。"
+        },
+        {
+          "question": "防止 SQL 注入的根本做法是？",
+          "options": [
+            "过滤单引号",
+            "一律使用参数化查询",
+            "把 SQL 写成大写",
+            "限制输入长度"
+          ],
+          "answer": 1,
+          "explanation": "参数化让数据与语句分离，从根本上避免注入。选项一可被绕过；选项三毫无作用；选项四只能减轻影响，不能防注入。"
+        }
+      ]
+    }
+  ]
+}

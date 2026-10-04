@@ -1,0 +1,345 @@
+{
+  "category": "flutter",
+  "lessons": [
+    {
+      "id": "mobile_react_native",
+      "title": { "zh": "React Native 跨平台开发", "en": "React Native" },
+      "summary": {
+        "zh": "新架构 JSI/Fabric/Hermes、列表虚拟化与桥接性能优化。",
+        "en": "JSI, Fabric, Hermes and list virtualization."
+      },
+      "file": "assets/content/mobile_react_native.md",
+      "minutes": 16,
+      "keywords": ["React Native", "跨平台", "Hermes", "Fabric", "FlatList"],
+      "difficulty": "进阶",
+      "order": 5,
+      "quiz": [
+        {
+          "question": "React Native 与 WebView 混合方案的关键区别是？",
+          "options": [
+            "RN 通过桥接渲染真实原生组件，不是网页",
+            "RN 只能在 iOS 上运行",
+            "RN 不使用 JavaScript",
+            "RN 无法调用原生能力"
+          ],
+          "answer": 0,
+          "explanation": "RN 用 JS 描述业务，最终渲染的是平台原生控件，所以体验接近原生；WebView 方案渲染的是网页。选项二忽略了 Android 支持；选项三与事实相反，RN 正是用 JS/TS 写业务；选项四也不成立，RN 可以通过原生模块调用平台能力。"
+        },
+        {
+          "question": "列表数据量大时应该使用哪个组件？",
+          "options": [
+            "ScrollView",
+            "View 加 for 循环",
+            "FlatList",
+            "Text"
+          ],
+          "answer": 2,
+          "explanation": "FlatList 做虚拟化，只渲染可见区域，内存与滚动性能都可控；ScrollView 会一次性创建全部子视图。选项一在长列表下内存暴涨；选项二会同时放大创建与布局开销；选项四与列表渲染无关。"
+        },
+        {
+          "question": "Hermes 引擎带来的主要收益是？",
+          "options": [
+            "提升图片解码速度",
+            "提升启动速度并降低内存占用",
+            "取代原生模块",
+            "让 JavaScript 支持多线程"
+          ],
+          "answer": 1,
+          "explanation": "Hermes 为移动端优化，通过预编译字节码减少启动解析时间并降低内存，是 RN 默认引擎。选项一属于图像库职责；选项三混淆了引擎与原生模块；选项四不成立，JS 仍然是单线程模型（Worker 是额外线程）。"
+        },
+        {
+          "question": "关于 RN 中的动画性能，正确做法是？",
+          "options": [
+            "在 JS 线程逐帧修改样式",
+            "用 Animated 或 Reanimated 让动画在原生线程执行",
+            "用 setTimeout 模拟动画",
+            "把动画放在 renderItem 里执行"
+          ],
+          "answer": 1,
+          "explanation": "动画在原生线程执行可以绕开 JS 线程繁忙导致的掉帧，这是 RN 动画的主流做法。选项一最容易掉帧；选项三时间不精确且同样占用 JS 线程；选项四会在每次渲染时重建动画，属于典型错误。"
+        },
+        {
+          "question": "图片在 RN 布局中不设置宽高会出现什么？",
+          "options": [
+            "自动按比例缩放，没有问题",
+            "图片自动使用屏幕宽度",
+            "可能不显示或导致布局异常",
+            "只会影响 iOS"
+          ],
+          "answer": 2,
+          "explanation": "RN 的 Image 没有像浏览器那样的固有尺寸，必须显式给出宽高或 aspectRatio，否则可能渲染不出或造成布局跳动。选项一、二都不成立；选项四与平台无关，Android 同样受影响。"
+        }
+      ]
+    },
+    {
+      "id": "mobile_compose",
+      "title": { "zh": "Jetpack Compose 声明式 UI", "en": "Jetpack Compose" },
+      "summary": {
+        "zh": "重组机制、状态提升、副作用与重组范围优化。",
+        "en": "Recomposition, state hoisting, side effects and performance."
+      },
+      "file": "assets/content/mobile_compose.md",
+      "minutes": 16,
+      "keywords": ["Compose", "声明式UI", "重组", "状态提升", "LazyColumn"],
+      "difficulty": "进阶",
+      "order": 6,
+      "quiz": [
+        {
+          "question": "在 composable 中发起网络请求，正确做法是？",
+          "options": [
+            "直接写在函数体里",
+            "放在 LaunchedEffect 中",
+            "放在 Modifier 里",
+            "放在 remember 的初始化块里"
+          ],
+          "answer": 1,
+          "explanation": "composable 会因为状态变化反复执行，请求必须放在有 key 控制的副作用里，LaunchedEffect 正是为此设计。选项一会导致每次重组都重新请求；选项三与副作用无关；选项四会在 remembered 值失效时重建，语义不清且难以取消。"
+        },
+        {
+          "question": "让 Compose 列表在增删后不错位，关键是？",
+          "options": [
+            "给 items 传稳定唯一的 key",
+            "把列表包在 Column 里",
+            "增加 items 的数量",
+            "用 remember 缓存整个列表"
+          ],
+          "answer": 0,
+          "explanation": "key 让 Compose 在重组时识别同一个条目，从而保留各自的内部状态。选项二会导致不做虚拟化；选项三与问题无关；选项四只是缓存数据，不能解决条目身份识别。"
+        },
+        {
+          "question": "关于派生状态 derivedStateOf，说法正确的是？",
+          "options": [
+            "它会把状态写入持久存储",
+            "它替代了所有 remember 用法",
+            "它能减少因状态频繁变化导致的重组",
+            "它只能用于列表滚动"
+          ],
+          "answer": 2,
+          "explanation": "derivedStateOf 让读取方只在派生结果真正变化时才重组，例如「是否滚动到顶部」这种布尔值，避免每像素滚动都触发重组。选项一混淆了持久化；选项二过度夸大；选项四限制了它的适用范围，它对任何派生计算都有效。"
+        },
+        {
+          "question": "状态提升（state hoisting）的主要目的是？",
+          "options": [
+            "让组件无状态、易于复用与测试",
+            "减少内存占用",
+            "提升渲染帧率",
+            "替代 ViewModel"
+          ],
+          "answer": 0,
+          "explanation": "把状态交给调用方管理，组件只接收值并回调事件，从而变成纯粹的展示层，复用与测试都更简单。选项二、三都不是主要收益；选项四不成立，状态提升与 ViewModel 是配合关系。"
+        },
+        {
+          "question": "下面哪种写法最容易造成无限重组？",
+          "options": [
+            "在 LaunchedEffect 中加载数据",
+            "在 composable 函数体里直接修改状态",
+            "用 remember 保存输入框内容",
+            "用 key 渲染列表项"
+          ],
+          "answer": 1,
+          "explanation": "在组合阶段修改状态会触发新一轮重组，形成循环。选项一是正确做法；选项三、四都是推荐实践，不会造成循环。"
+        }
+      ]
+    },
+    {
+      "id": "mobile_harmony",
+      "title": { "zh": "鸿蒙 ArkTS 应用开发", "en": "HarmonyOS ArkTS" },
+      "summary": {
+        "zh": "ArkTS 语言约束、ArkUI 声明式写法与 Stage 模型。",
+        "en": "ArkTS constraints, ArkUI declarative UI and Stage model."
+      },
+      "file": "assets/content/mobile_harmony.md",
+      "minutes": 16,
+      "keywords": ["鸿蒙", "HarmonyOS", "ArkTS", "ArkUI", "UIAbility"],
+      "difficulty": "进阶",
+      "order": 7,
+      "quiz": [
+        {
+          "question": "HarmonyOS 中承载界面的应用组件是？",
+          "options": ["Activity", "UIAbility", "Service", "Fragment"],
+          "answer": 1,
+          "explanation": "Stage 模型下用 UIAbility 承载界面能力，配合窗口与页面路由。选项一、四来自 Android 体系；选项三是 Android 的后台组件，不是鸿蒙的界面承载者。"
+        },
+        {
+          "question": "ArkTS 相比 TypeScript 的主要差异是？",
+          "options": [
+            "完全兼容所有动态特性",
+            "不支持类型系统",
+            "限制部分动态特性以提升运行性能与稳定性",
+            "只能在浏览器运行"
+          ],
+          "answer": 2,
+          "explanation": "ArkTS 在 TS 基础上禁用或限制 `any`、运行时动态属性等能力，让编译期能做更多检查、运行时更可控。选项一与设计目标相反；选项二说反了，它反而更强调静态类型；选项四错误，它面向鸿蒙应用。"
+        },
+        {
+          "question": "在 ArkUI 中让界面随数据变化刷新，应该怎么做？",
+          "options": [
+            "用普通成员变量保存数据",
+            "用 @State 等状态装饰器声明数据",
+            "手动调用重绘 API",
+            "把数据放在全局常量里"
+          ],
+          "answer": 1,
+          "explanation": "ArkUI 通过装饰器建立数据与 UI 的绑定，状态变化自动触发刷新。选项一不会触发更新；选项三不是 ArkUI 的模型；选项四无法变化，自然不会刷新。"
+        },
+        {
+          "question": "ForEach 渲染列表时必须注意什么？",
+          "options": [
+            "必须提供稳定唯一的 key",
+            "必须禁用虚拟化",
+            "必须按索引作为 key",
+            "必须每次重建全部节点"
+          ],
+          "answer": 0,
+          "explanation": "稳定 key 让框架识别条目身份，增删时才能正确复用节点与状态。选项二与性能优化方向相反；选项三在增删后会错位，是常见错误；选项四浪费性能。"
+        },
+        {
+          "question": "耗时计算放在 UI 线程会怎样？如何解决？",
+          "options": [
+            "无影响",
+            "导致界面卡顿，应放到 TaskPool 或 Worker",
+            "只影响启动速度",
+            "会自动并行执行"
+          ],
+          "answer": 1,
+          "explanation": "UI 线程被占用会直接表现为掉帧甚至无响应，鸿蒙提供 TaskPool 与 Worker 处理并发任务。选项一、三都低估了影响；选项四不成立，代码不会自动并行。"
+        }
+      ]
+    },
+    {
+      "id": "mobile_miniprogram",
+      "title": { "zh": "小程序开发要点", "en": "Mini Program Development" },
+      "summary": {
+        "zh": "双线程模型、setData 优化、分包加载与安全边界。",
+        "en": "Dual-thread model, setData cost, subpackages and security."
+      },
+      "file": "assets/content/mobile_miniprogram.md",
+      "minutes": 15,
+      "keywords": ["小程序", "setData", "分包", "rpx", "微信"],
+      "difficulty": "基础",
+      "order": 8,
+      "quiz": [
+        {
+          "question": "小程序性能瓶颈通常出现在哪里？",
+          "options": [
+            "逻辑层与渲染层之间的数据传输",
+            "CSS 解析速度",
+            "图片压缩算法",
+            "操作系统调度"
+          ],
+          "answer": 0,
+          "explanation": "逻辑层与渲染层分离，setData 的传输量与会调用次数直接决定渲染性能，因此要只传变化字段并合并调用。选项二、三、四都不是小程序的典型瓶颈。"
+        },
+        {
+          "question": "首屏加载过慢，最先考虑的手段是？",
+          "options": [
+            "把所有资源放进主包",
+            "主包瘦身并使用分包与预加载",
+            "增加页面数量",
+            "关闭缓存"
+          ],
+          "answer": 1,
+          "explanation": "主包体积直接影响下载与首屏启动时间，把非首屏资源移入分包并预加载是最直接的手段。选项一与优化方向相反；选项三增加资源；选项四会让重复资源反复下载。"
+        },
+        {
+          "question": "在小程序前端代码里保存支付密钥，会导致？",
+          "options": [
+            "性能提升",
+            "密钥随包体泄漏，存在资金风险",
+            "自动加密",
+            "只影响 iOS"
+          ],
+          "answer": 1,
+          "explanation": "小程序代码可被反编译，任何前端密钥都等同于公开，签名与金额校验必须放在服务端。选项一、三、四都是对安全边界的误解。"
+        },
+        {
+          "question": "为什么小程序里不能使用 document 与 window？",
+          "options": [
+            "因为没有浏览器 DOM 环境，逻辑层与渲染层分离",
+            "因为语法不支持",
+            "因为性能太差",
+            "因为需要付费开通"
+          ],
+          "answer": 0,
+          "explanation": "小程序的逻辑层运行在独立 JS 引擎中，没有 DOM/BOM，界面更新通过 setData 传递到渲染层。选项二、三、四都不是原因。"
+        },
+        {
+          "question": "适配不同机型屏幕尺寸，推荐使用哪个单位？",
+          "options": ["px", "rpx", "pt", "em 固定值"],
+          "answer": 1,
+          "explanation": "rpx 会按屏幕宽度等比换算，是实现自适应布局的官方单位。选项一是物理像素，机型间差异大；选项三用于 iOS 原生；选项四在小程序里同样缺少与屏幕宽度的换算关系。"
+        }
+      ]
+    },
+    {
+      "id": "mobile_performance",
+      "title": { "zh": "移动端性能优化实战", "en": "Mobile Performance" },
+      "summary": {
+        "zh": "启动、流畅度、内存与包体四个维度的指标与优化手段。",
+        "en": "Startup, smoothness, memory and app size optimization."
+      },
+      "file": "assets/content/mobile_performance.md",
+      "minutes": 18,
+      "keywords": ["性能优化", "冷启动", "卡顿", "内存", "包体"],
+      "difficulty": "进阶",
+      "order": 9,
+      "quiz": [
+        {
+          "question": "优化冷启动最有效的原则是？",
+          "options": [
+            "启动路径只保留首屏必需的初始化",
+            "把所有 SDK 改成同步初始化",
+            "增加启动页时长",
+            "关闭日志输出"
+          ],
+          "answer": 0,
+          "explanation": "冷启动时间主要由进程创建与初始化决定，把非必需 SDK 延迟到空闲时执行收益最大。选项二与优化方向相反；选项三只是掩盖等待；选项四收益有限且影响排查。"
+        },
+        {
+          "question": "判断性能问题只看平均值会有什么后果？",
+          "options": [
+            "计算更复杂",
+            "低端机与长尾问题被掩盖",
+            "数据更准确",
+            "没有影响"
+          ],
+          "answer": 1,
+          "explanation": "平均值会被高端机数据拉低，必须按设备档位看 P95/P99 才能发现真实体感问题。选项三与事实相反；选项一、四都不成立。"
+        },
+        {
+          "question": "图片导致内存暴涨，最常见的直接原因是？",
+          "options": [
+            "图片格式不是 PNG",
+            "按原图尺寸解码并整张读入内存",
+            "图片文件名太长",
+            "没有使用异步加载回调"
+          ],
+          "answer": 1,
+          "explanation": "位图内存与像素数成正比，4000×3000 的图解码后可能占用几十 MB，必须按目标显示尺寸降采样。选项一影响体积而非主因；选项三无关；选项四只是线程模型问题。"
+        },
+        {
+          "question": "主线程做文件或网络 IO 的直接后果是？",
+          "options": [
+            "电量增加但界面正常",
+            "界面卡顿甚至 ANR",
+            "只影响后台任务",
+            "自动切到子线程执行"
+          ],
+          "answer": 1,
+          "explanation": "主线程负责渲染与输入响应，任何阻塞都会直接表现为掉帧或无响应（Android 超时即 ANR）。选项一低估了影响；选项三不成立，主线程阻塞影响前台；选项四错误，代码不会自动切换线程。"
+        },
+        {
+          "question": "为了避免版本迭代后性能劣化，应该怎么做？",
+          "options": [
+            "只在发版前手动测一次",
+            "建立性能基线并纳入持续集成与发布检查",
+            "用模拟器数据作为基准",
+            "只在出现用户投诉后优化"
+          ],
+          "answer": 1,
+          "explanation": "性能需要像功能一样防回归：固定基线、自动采集、超阈值阻断发布。选项一无法发现渐进劣化；选项三数据不可信；选项四属于被动响应，代价最高。"
+        }
+      ]
+    }
+  ]
+}

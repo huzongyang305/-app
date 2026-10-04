@@ -1,0 +1,301 @@
+# 字符编码与 Unicode
+
+![字符编码与 Unicode](images/remaining_encoding.webp)
+
+> 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：13 分钟
+
+## 学习目标
+
+- 能用自己的话解释「字符编码与 Unicode」解决了什么问题，而不是只背术语。
+- 能说清 「编码」、「Unicode」、「UTF-8」、「ASCII」 之间的关系，并分别举出一个例子。
+- 能把本课知识放回「计算机基础」的知识体系，说明它和相邻主题的边界。
+- 能完成本课练习，并用验收标准检查自己的结果。
+
+> 一句话摘要：ASCII、Unicode 与 UTF-8 的关系，以及乱码的成因。
+
+## 前置知识
+
+- 先完成上一课《内存与缓存》；如果已经掌握，可以直接用本课练习自测。
+- 本课阶段：基础。建议会读写简单代码或命令，并理解变量、输入输出等基本概念。
+- 开始前先复习：编码、Unicode、UTF-8。
+- 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
+
+
+## 为什么需要编码
+
+计算机只存字节，字符必须映射成数字。这个映射规则就是字符编码。乱码的本质是**写入与读取用了不同的编码**。
+
+## 发展脉络
+
+| 编码 | 特点 |
+| --- | --- |
+| ASCII | 7 位表示 128 个字符，只有英文与符号 |
+| GBK / Latin-1 | 各地区的单/双字节扩展，互不兼容 |
+| Unicode | 为所有字符分配唯一码点（code point），如 `U+4E2D` 是「中」 |
+| UTF-8 | Unicode 的变长编码：英文 1 字节、中文通常 3 字节 |
+| UTF-16 / UTF-32 | 其他变长/定长实现，Java 字符串内部用 UTF-16 |
+
+## UTF-8 编码规则
+
+```text
+1 字节：0xxxxxxx                          ASCII 兼容
+2 字节：110xxxxx 10xxxxxx
+3 字节：1110xxxx 10xxxxxx 10xxxxxx        常用汉字在这段
+4 字节：11110xxx 10xxxxxx 10xxxxxx 10xxxxxx   表情等增补字符
+```
+
+```python
+text = "中A"
+data = text.encode("utf-8")
+print(data)              # b'\xe4\xb8\xadA'，共 4 字节
+print(len(text), len(data))   # 2 个字符，4 个字节
+print(data.decode("utf-8"))
+```
+
+## 常见坑
+
+1. 读写文件不指定编码，Windows 上默认可能是 GBK。
+2. 截断多字节字符会产生非法序列（所以不能按字节切分 UTF-8 文本）。
+3. 数据库表的字符集与连接字符集不一致会导致乱码。
+4. 字符串「长度」有歧义：字符数、字节数、显示宽度都不同。
+
+## 本课小结
+统一用 **UTF-8**，读写时显式指定编码，涉及长度计算时先想清楚要的是字符数还是字节数。
+
+<!-- appendix:v1 -->
+
+## 编码速查
+
+| 编码 | 单位 | 特点 | 适用 |
+| --- | --- | --- | --- |
+| ASCII | 1 字节 | 0 到 127，只覆盖英文 | 历史遗留 |
+| Latin-1 | 1 字节 | 0 到 255，西欧字符 | 老系统 |
+| GBK | 1 到 2 字节 | 中文兼容 ASCII | 国内旧系统 |
+| UTF-8 | 1 到 4 字节 | 兼容 ASCII，无字节序问题 | 网络与文件首选 |
+| UTF-16 | 2 或 4 字节 | 有字节序问题，需 BOM | Windows API、Java 内部 |
+| UTF-32 | 4 字节 | 定长，空间浪费 | 内部处理 |
+
+| Unicode 范围 | UTF-8 字节数 | 示例 |
+| --- | --- | --- |
+| U+0000 到 U+007F | 1 | ASCII |
+| U+0080 到 U+07FF | 2 | 拉丁扩展、希腊文 |
+| U+0800 到 U+FFFF | 3 | 中文、日文汉字 |
+| U+10000 到 U+10FFFF | 4 | Emoji、扩展汉字 |
+
+```python
+# 明确编码，避免平台差异
+text = "你好，世界"
+raw = text.encode("utf-8")
+print(len(text), len(raw))          # 5 与 15：中文 3 字节，标点 3 字节
+print(raw.decode("utf-8"))
+
+# 处理非法字节：忽略、替换或用替代字符
+bad = b"\xff\xfehello"
+print(bad.decode("utf-8", errors="replace"))
+
+# 读写文件统一 UTF-8
+from pathlib import Path
+path = Path("note.txt")
+path.write_text(text, encoding="utf-8")
+print(path.read_text(encoding="utf-8"))
+
+# 需要 BOM 以兼容 Excel 时可写 utf-8-sig
+Path("table.csv").write_text("名称,数量\n苹果,3\n", encoding="utf-8-sig")
+```
+
+## 常见错误对照表
+
+| 容易写错的做法 | 实际现象 | 原因与正确做法 |
+| --- | --- | --- |
+| 读写文件不指定编码 | Windows 上按 GBK 解码导致乱码 | 一律显式 `encoding="utf-8"` |
+| 认为 `len(str)` 等于字节数 | 长度与存储量不符 | 中文一个字通常 3 字节 |
+| 把 Unicode 与 UTF-8 混为一谈 | 概念错误 | Unicode 是字符集，UTF-8 是编码方式 |
+| 用 `errors="ignore"` 静默丢数据 | 数据悄悄缺失 | 用 `replace` 或记录错误并告警 |
+| 在 UTF-8 文件里加 BOM | 解析器把 BOM 当内容 | JSON 与配置文件用无 BOM 的 UTF-8 |
+| 按字节截断字符串 | 出现半个字符导致乱码 | 按字符或码位截断，或按字节但校验边界 |
+| 认为 UTF-16 与字节序无关 | 跨平台读取乱码 | 明确 BOM 或统一用 UTF-8 |
+| 用 `upper()` 比较国际化文本 | 某些语言结果不符 | 用 locale 感知的比较或大小写折叠 |
+| Emoji 用 1 个 Java char 表示 | 取到半个代理对 | 用码位 API（`codePointAt`） |
+| Base64 当作加密 | 数据可还原 | Base64 只是编码，不是加密 |
+
+## 自测清单
+
+- [ ] 能说出 Unicode 与 UTF-8 的区别。
+- [ ] 知道常用汉字在 UTF-8 中占 3 字节。
+- [ ] 读写文件一律显式指定编码。
+- [ ] 知道 BOM 的作用与副作用。
+- [ ] 处理非法字节时明确使用替换或告警策略。
+
+<!-- appendix:v4 -->
+
+## 补充：UTF-8 编码规则、乱码排查与代码实践
+
+### 码点、编码与字形：三个概念分清
+
+```text
+码点（Code Point）  字符在 Unicode 表中的编号，如「中」= U+4E2D
+编码（Encoding）    码点如何变成字节，如 UTF-8 用 3 字节表示 U+4E2D
+字形（Glyph）       字体把码点画出来的样子
+
+同一个码点在不同字体下字形可以不同；同一个字节序列用不同编码解释会得到不同字符
+```
+
+### UTF-8 的编码规则
+
+| 码点范围 | 字节数 | 首字节格式 | 后续字节 |
+| --- | --- | --- | --- |
+| U+0000 ~ U+007F | 1 | `0xxxxxxx` | —— |
+| U+0080 ~ U+07FF | 2 | `110xxxxx` | `10xxxxxx` |
+| U+0800 ~ U+FFFF | 3 | `1110xxxx` | `10xxxxxx` × 2 |
+| U+10000 ~ U+10FFFF | 4 | `11110xxx` | `10xxxxxx` × 3 |
+
+```text
+例：「中」= U+4E2D
+  二进制：0100 1110 0010 1101
+  填入三字节模板：1110[0100] 10[111000] 10[101101]
+  得到：E4 B8 AD   ← 这正是 UTF-8 下的三个字节
+
+自校验特性
+  · 首字节的高位决定了「这个词有多长」
+  · 后续字节都以 10 开头，因此从任意位置也能重新同步
+```
+
+### 常见乱码与成因对照
+
+| 现象 | 典型成因 | 修法 |
+| --- | --- | --- |
+| `ä¸æ–‡` | UTF-8 字节被按 Latin-1 解读 | 统一声明 UTF-8 |
+| `���` | 解码时遇到非法字节，被替换为 U+FFFD | 检查源文件与声明的编码是否一致 |
+| `涓枃` | UTF-8 被按 GBK 解读 | 读写两端统一 UTF-8 |
+| 首部多出 `ï»¿` | 把 UTF-8 BOM 当成正文字符 | 读文件时忽略 BOM |
+| Windows 下正常、Linux 乱码 | 依赖系统默认编码 | 显式指定 `encoding="utf-8"` |
+
+```bash
+# 排查：先看字节，再猜编码
+file -i data.txt                  # 查看文件声明的编码
+xxd data.txt | head -2            # 看真实字节
+iconv -f gbk -t utf-8 bad.txt > fixed.txt   # 尝试转码
+```
+
+### 各语言里的三个易错点
+
+| 语言 | 易错点 | 正确做法 |
+| --- | --- | --- |
+| Python | 不指定 encoding 会用平台默认 | 显式 `encoding="utf-8"`，读二进制用 `"rb"` |
+| JavaScript | 字符串按 UTF-16 存储，`length` 是码元数 | emoji 长度可能为 2，用 `[...str].length` 取真实字符数 |
+| Java | `String.length()` 同样是 UTF-16 码元数 | 用 `codePointCount` 统计真实字符 |
+
+```javascript
+const emoji = "👨‍👩‍👧";
+console.log(emoji.length);          // 8（码元数，含零宽连接符）
+console.log([...emoji].length);     // 5（码点数）
+// 真实「人类感知的字符」还需要按字素簇切分：
+console.log(Array.from(new Intl.Segmenter().segment(emoji)).length);  // 1
+```
+
+### BOM 该不该有
+
+```text
+UTF-8 BOM = EF BB BF（3 字节）
+
+· Windows 记事本有时会写入 BOM
+· 多数解析器能处理，但会污染首行内容（如 JSON 解析失败、CSV 首列名带怪字符）
+· 规范建议：UTF-8 不使用 BOM
+
+处理方式
+  · 读文件时用 utf-8-sig（Python）或手动跳过 BOM
+  · 服务端响应头声明 charset=utf-8，不要依赖 BOM
+```
+
+### 自查清单
+
+- [ ] 能说出码点、编码、字形的区别
+- [ ] 记得 UTF-8 的四种字节长度与首字节前缀
+- [ ] 遇到乱码会先看字节再判断编码
+- [ ] 知道 emoji 的 `length` 为什么不是 1
+- [ ] 知道 BOM 的作用与为什么要避免它
+
+## 动手练习
+
+<!-- practice-diversified:v1 -->
+
+> 本课练习重点：围绕「编码、Unicode、UTF-8」完成复述、实验和交付，每个结果都要能被别人检查。
+
+先用表格或时序图描述机制，再手算一个最小例子，最后用程序验证。
+
+### 练习 1：建立心智模型（10 分钟）
+
+合上教程，用 3～5 句话回答：
+
+1. 「字符编码与 Unicode」解决了什么问题？
+2. 如果没有它，会出现什么具体后果？
+3. 它和「Unicode」是什么关系？
+
+**验收标准**：至少出现一个本课关键词，并写出一个反例、边界条件或失效场景。
+
+### 练习 2：做一次可控实验（20 分钟）
+
+从正文中选一个最小示例，完成以下操作：
+
+1. 先预测修改一个参数、输入或步骤后的结果。
+2. 再实际执行或逐步推演，记录真实结果。
+3. 如果结果与预测不同，写出差异原因。
+
+**验收标准**：留下「原例 → 改动 → 预测 → 结果 → 原因」五步记录。
+
+### 练习 3：交付一个小结果（30 分钟）
+
+用表格、真值表或计算过程把抽象概念落到一个可核对的结果上。
+
+任务要求：
+
+- 结果必须能被别人检查，不能只写“我已经理解了”。
+- 至少覆盖「编码」和「Unicode」两个关键词。
+- 写出 1 个仍然不确定的问题，以及下一步如何验证。
+
+> 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
+
+<!-- scaffold:v1 -->
+
+<!-- p2-enrichment:v1 -->
+
+## English Overview
+
+**Title:** Character Encoding
+
+**Summary:** ASCII, Unicode, UTF-8 and why mojibake happens.
+
+**Category:** Fundamentals  
+**Level:** 基础  
+**Key terms:** 编码, Unicode, UTF-8, ASCII, 乱码
+
+> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
+
+## 内容元数据
+
+- 内容版本：v2.0
+- 最后更新：2026-10-03
+- 学习阶段：基础
+- 适用环境：通用计算机体系结构知识
+- 内容来源：内置结构化课程与工程实践整理
+- 相关主题：编码、Unicode、UTF-8、ASCII、乱码
+- 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
+
+<!-- p2-references:v1 -->
+
+## 参考资料与复核
+
+- 最后复核：2026-10-04
+- 下次复核：2027-04-04
+- 复核范围：版本兼容、API 行为、安全建议与工程实践
+- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+
+| 参考资料 | 本课用途 |
+| --- | --- |
+| [Linux Kernel Docs](https://docs.kernel.org/) | 操作系统与硬件接口 |
+| [Arm Architecture](https://developer.arm.com/documentation) | 处理器与内存体系结构 |
+
+> 本课主题：ASCII、Unicode 与 UTF-8 的关系，以及乱码的成因。
+
+> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+

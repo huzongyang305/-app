@@ -1,0 +1,30 @@
+[
+  {
+    "id": "security",
+    "title": {"zh": "安全与合规", "en": "Security & Compliance"},
+    "icon": "security",
+    "color": "DC2626",
+    "after": "network"
+  },
+  {
+    "id": "c",
+    "title": {"zh": "C 语言", "en": "C"},
+    "icon": "memory",
+    "color": "00599C",
+    "after": "cpp"
+  },
+  {
+    "id": "kotlin",
+    "title": {"zh": "Kotlin", "en": "Kotlin"},
+    "icon": "developer_board",
+    "color": "7F52FF",
+    "after": "java"
+  },
+  {
+    "id": "swift",
+    "title": {"zh": "Swift", "en": "Swift"},
+    "icon": "phone_iphone",
+    "color": "F05138",
+    "after": "kotlin"
+  }
+]

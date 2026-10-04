@@ -1,0 +1,25 @@
+{
+  "project_rag_agent_service": {
+    "category": "project_practice",
+    "language": "python",
+    "minutes": 140,
+    "title": {"zh": "实战：本地 RAG 客服 Agent", "en": "Project: Local RAG Support Agent"},
+    "summary": {"zh": "构建可离线演示的知识库问答 Agent，覆盖切分、检索、引用、工具调用、评测与安全护栏。", "en": "Build a citation-based RAG agent with retrieval, tools, evaluation and guardrails."},
+    "keywords": ["RAG", "Agent", "向量检索", "引用", "评测"],
+    "scenario": "客服团队需要回答产品文档问题。系统必须先从本地知识库检索证据，再生成带来源的回答；当证据不足时明确拒答，遇到订单查询等实时数据时调用受控工具，而不是让模型编造。",
+    "stack": ["Python 3.12", "向量索引", "Embedding", "检索器", "工具调用", "pytest"],
+    "outcomes": ["能把文档切分、索引、召回、重排和生成拆成独立阶段。", "能让每个回答携带可追溯的文档片段引用。", "能为 Agent 工具设置参数校验、超时和权限边界。", "能用离线评测集验证命中率、引用正确率和拒答率。"],
+    "features": ["导入 Markdown/PDF 文本并保留来源元数据", "混合关键词与向量检索并重排 Top-K", "回答只使用检索到的证据", "工具调用采用白名单和参数模式", "输出引用、置信度与拒答原因", "记录检索与生成阶段延迟"],
+    "steps": ["定义知识块、来源和评测样本模型", "实现清洗、切分与元数据保留", "建立可重复构建的向量索引", "实现召回、重排和上下文预算控制", "接入受控工具与引用格式化", "运行离线评测并修复未命中与幻觉案例"],
+    "code": "def answer_question(question: str, retriever, llm) -> dict:\n    hits = retriever.search(question, top_k=8)\n    if not hits or hits[0].score < 0.62:\n        return {'answer': '知识库中没有足够证据。', 'citations': [], 'grounded': False}\n    context = '\\n\\n'.join(\n        f'[{i+1}] {hit.text}\\nSource: {hit.source}' for i, hit in enumerate(hits[:4])\n    )\n    response = llm.generate(\n        system='Only answer from the supplied context. Cite every claim.',\n        user=f'Question: {question}\\n\\nContext:\\n{context}',\n    )\n    return {'answer': response, 'citations': [hit.source for hit in hits[:4]], 'grounded': True}",
+    "tests": ["问题有明确证据时回答包含正确来源编号", "知识库没有相关片段时系统拒答而不是编造", "工具收到越权参数时在调用前被拒绝", "索引重建后相同评测集结果保持稳定"],
+    "pitfalls": [["只做向量召回", "专有名词和编号经常漏检", "混合关键词检索并重排"], ["把全部文档塞进上下文", "成本高且中间信息被忽略", "限制 Top-K 并保留来源元数据"], ["无法拒答", "无证据时仍然生成答案", "设置低置信度和空召回兜底"], ["工具没有权限边界", "模型可读取或修改敏感数据", "白名单、参数校验和最小权限"]],
+    "extensions": ["加入多模态图片 OCR 与表格理解", "实现多轮对话查询改写", "把评测结果接入 CI 并阻止回归发布"],
+    "quiz": [
+      {"question": "RAG 客服 Agent 在生成答案前最关键的步骤是什么？", "options": ["先扩大上下文窗口", "先检索并筛选可引用的证据", "先提高模型温度", "先删除来源元数据"], "answer": 1, "explanation": "RAG 的核心是先检索到与问题相关且能追溯来源的证据，再把有限上下文交给模型生成。盲目扩大窗口会引入无关内容并提高成本，提高温度会让回答更不稳定，删除来源元数据则无法验证引用，这三者都无法解决知识来源与可信度问题。"},
+      {"question": "为什么生产级 RAG 通常要混合关键词检索与向量检索？", "options": ["让索引文件更大", "兼顾语义相似与错误码、编号等精确匹配", "可以完全取消重排", "避免保存文档来源"], "answer": 1, "explanation": "向量检索擅长语义相近但表达不同的内容，关键词检索则能稳定命中错误码、产品编号和专有名词。只依赖一种召回会产生盲区，混合后再做重排可以提升 Top-K 的覆盖率和排序质量；索引变大和取消重排都不是采用混合检索的目标。"},
+      {"question": "当知识库没有任何相关片段时，Agent 应该如何处理？", "options": ["根据常识自由回答", "把问题改写成另一个问题", "明确说明证据不足并拒答", "返回随机文档链接"], "answer": 2, "explanation": "无法获得可靠证据时，系统应把不确定性明确告诉用户，而不是通过模型常识补全看似合理的事实。自由回答会让用户无法区分知识与猜测，随机链接会破坏可信度；拒答还应记录原因，帮助运营补充文档并改进召回策略。"},
+      {"question": "为 Agent 工具设置白名单和参数校验的主要目的是什么？", "options": ["减少提示词长度", "提高模型参数量", "限制可执行操作并防止越权副作用", "让所有请求自动成功"], "answer": 2, "explanation": "模型可能生成错误参数或被提示注入诱导调用工具，因此权限不能依赖模型自觉。白名单限制工具范围，参数模式限制类型和取值，最小权限再限制数据边界，三者共同保证即使生成结果异常也不会执行越权写操作或读取敏感数据。"}
+    ]
+  }
+}

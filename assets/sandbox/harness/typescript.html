@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<pre id="sandbox-output" hidden></pre>
+<script>/*__COMMON__*/</script>
+<script>/*__RUNTIME_1__*/</script>
+<script>
+(function () {
+  __sandboxBegin();
+  try {
+    // 只用 sucrase 做语法转译（不联网、不做类型检查），再交给 JS 引擎执行。
+    var compiled = Sucrase.transform(__USER_CODE__, {
+      transforms: ['typescript', 'imports'],
+      filePath: 'sandbox.ts'
+    });
+    var runner = new Function('module', 'exports', 'require', compiled.code);
+    var moduleObject = { exports: {} };
+    var value = runner(moduleObject, moduleObject.exports, __sandboxRequire);
+    if (typeof value !== 'undefined') {
+      __sandboxPush('=> ' + __sandboxStringify(value));
+    }
+  } catch (error) {
+    __sandboxPush('Error: ' + (error && error.stack ? error.stack : String(error)));
+  }
+  __sandboxFinish();
+})();
+</script>
+</body>
+</html>

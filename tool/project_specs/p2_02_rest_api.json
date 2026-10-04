@@ -1,0 +1,25 @@
+{
+  "project_rest_api_sqlite": {
+    "category": "project_practice",
+    "language": "python",
+    "minutes": 120,
+    "title": {"zh": "实战：REST API 与 SQLite 事务服务", "en": "Project: REST API with SQLite Transactions"},
+    "summary": {"zh": "从接口契约到数据库事务，完成一个可测试、可回滚、支持幂等重试的库存预约服务。", "en": "Build a testable inventory reservation API with transactions and idempotent retries."},
+    "keywords": ["REST", "SQLite", "事务", "幂等", "API 契约"],
+    "scenario": "仓储系统需要对外开放库存预约接口。客户端会重试超时请求，多个请求可能同时竞争同一商品库存；服务必须返回稳定错误结构，并在任何失败路径下保证预约记录与库存数量一致。",
+    "stack": ["Python 3.12", "FastAPI", "Pydantic", "SQLite", "pytest", "TestClient"],
+    "outcomes": ["能用资源、状态码和错误模型表达清楚接口契约。", "能把库存判断与预约写入放进同一事务。", "能用唯一约束和幂等键处理重复请求。", "能用契约测试覆盖成功、冲突、校验失败和重试。"],
+    "features": ["创建库存预约并返回预约号", "查询预约状态与商品剩余库存", "取消未发货预约并恢复库存", "重复幂等键返回同一结果", "统一错误结构与请求追踪号"],
+    "steps": ["写清接口资源、请求字段和错误码", "设计商品、库存和预约三张表及唯一约束", "实现仓储层并明确事务边界", "实现创建、查询和取消用例", "注入并发与重复请求测试", "记录慢查询、冲突率和 P95 延迟"],
+    "code": "CREATE TABLE reservations (\n  id TEXT PRIMARY KEY,\n  sku TEXT NOT NULL,\n  quantity INTEGER NOT NULL CHECK (quantity > 0),\n  status TEXT NOT NULL,\n  idempotency_key TEXT NOT NULL UNIQUE\n);\n\nBEGIN IMMEDIATE;\nUPDATE inventory SET available = available - :qty\nWHERE sku = :sku AND available >= :qty;\n-- changes() 为 0 时抛出库存冲突并回滚\nINSERT INTO reservations(id, sku, quantity, status, idempotency_key)\nVALUES (:id, :sku, :qty, 'reserved', :key);\nCOMMIT;",
+    "tests": ["库存充足时创建预约并准确扣减一次", "库存不足返回 409 且预约表不新增记录", "相同幂等键重复提交返回同一预约号", "取消预约后库存恢复且重复取消不二次加回"],
+    "pitfalls": [["先查库存再单独更新", "并发请求造成超卖", "使用条件更新或事务锁"], ["把错误信息直接拼进响应", "泄露 SQL、路径或堆栈", "统一映射为稳定错误码"], ["幂等键只放在内存", "重启后重复请求仍会写两次", "数据库唯一约束持久化幂等键"], ["取消接口没有状态检查", "已发货订单被错误取消", "校验状态机并返回冲突错误"]],
+    "extensions": ["增加仓库维度和分区库存", "接入 OpenAPI 契约测试", "用 PostgreSQL 替换 SQLite 并做并发压测"],
+    "quiz": [
+      {"question": "REST 库存服务中，哪一个字段最适合作为客户端重试的幂等依据？", "options": ["响应时间", "客户端生成的幂等键", "数据库自增行号", "服务器随机数"], "answer": 1, "explanation": "客户端在第一次请求前生成幂等键，重试时保持不变，服务端才能识别两次请求属于同一业务操作。数据库行号和服务器随机数只在服务端生成，无法关联重试；响应时间更不具备业务含义，把它当键会让每次重试都被处理成新请求。"},
+      {"question": "为什么库存扣减与预约写入必须处于同一事务？", "options": ["可以减少 HTTP 请求头", "避免出现扣了库存却没有预约的半完成状态", "让 SQLite 文件更小", "自动提高并发能力"], "answer": 1, "explanation": "库存扣减和预约记录是同一次业务操作的两个事实，任一失败都必须一起回滚。若先扣库存再写预约，写预约失败会永久少库存；若先写预约再扣库存，则可能出现无库存的超卖预约，最终只能靠人工对账修复。"},
+      {"question": "库存不足时返回 409 而不是 500 的主要理由是什么？", "options": ["409 响应体更短", "409 表示请求与当前资源状态冲突，属于可预期业务结果", "500 只能用于数据库错误", "409 可以跳过认证"], "answer": 1, "explanation": "库存不足不是服务器崩溃，而是请求与当前库存状态冲突，409 能准确表达这种可预期的业务失败；500 表示未处理的服务端异常，会误导监控和重试策略。稳定区分业务冲突与系统故障，才能让客户端决定提示用户还是稍后重试。"},
+      {"question": "取消已发货预约时，服务端最稳妥的处理方式是什么？", "options": ["直接删除预约行", "把状态改回待处理", "校验状态机并返回 409 冲突", "返回 200 但不改数据"], "answer": 2, "explanation": "状态机规定已发货可能是终态或需要逆向流程，普通取消请求不能跳过业务规则。直接删行会丢失审计记录，改回待处理会造成状态倒退，静默成功则让调用方误以为库存已恢复；返回 409 并说明当前状态最清晰，也便于客户端进入人工处理流程。"}
+    ]
+  }
+}

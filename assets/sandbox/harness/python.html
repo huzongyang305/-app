@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<pre id="sandbox-output" hidden></pre>
+<script>/*__COMMON__*/</script>
+<script>
+(function () {
+  // Brython 默认用 document.currentScript.src 推断自身路径，内联脚本拿不到 src，
+  // 因此按当前页面地址预先给出绝对路径，避免它去解析非法 URL。
+  var base = location.href.split('#')[0].replace(/[^/]*$/, '');
+  window.__BRYTHON__ = { brython_path: base };
+})();
+</script>
+<script>/*__RUNTIME_1__*/</script>
+<script>/*__RUNTIME_2__*/</script>
+<script>
+(function () {
+  __sandboxBegin();
+  try {
+    brython();
+  } catch (error) {
+    __sandboxPush('Error: 初始化 Python 运行时失败：' + (error && error.message ? error.message : String(error)));
+    __sandboxFinish();
+    return;
+  }
+  // 沙箱页面可能通过 file:// 打开，Brython 在 file:// 下会关闭标准库导入；
+  // 这里把协议声明成 https，让内置的标准库正常导入（不会真的发起网络请求）。
+  if (__BRYTHON__.protocol === 'file') {
+    __BRYTHON__.protocol = 'https';
+  }
+  var before = window.__sandboxLogs.length;
+  try {
+    __BRYTHON__.runPythonSource(__USER_CODE__, 'sandbox_user_code');
+  } catch (error) {
+    // Brython 抛异常前已经把 traceback 打到 console.error，这里只做兜底。
+    if (window.__sandboxLogs.length === before) {
+      __sandboxPush('Error: ' + __sandboxStringify(error));
+    }
+  }
+  __sandboxFinish();
+})();
+</script>
+</body>
+</html>

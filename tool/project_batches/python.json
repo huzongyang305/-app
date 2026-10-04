@@ -1,0 +1,163 @@
+{
+  "category": "python",
+  "lessons": [
+    {
+      "id": "python_project_api",
+      "title": {
+        "zh": "实战：FastAPI 订单服务",
+        "en": "Project: FastAPI Order Service"
+      },
+      "summary": {
+        "zh": "用 FastAPI、Pydantic 和 SQLite 实现订单 API，覆盖校验、事务、错误处理和测试。",
+        "en": "Build an order API with FastAPI, Pydantic and SQLite."
+      },
+      "file": "assets/content/python_project_api.md",
+      "minutes": 120,
+      "keywords": [
+        "FastAPI",
+        "Pydantic",
+        "REST",
+        "SQLite",
+        "pytest"
+      ],
+      "difficulty": "高级",
+      "order": 13,
+      "quiz": [
+        {
+          "question": "创建订单接口最适合返回哪个状态码？",
+          "options": [
+            "201 Created",
+            "204 No Content",
+            "302 Found",
+            "500 Internal Server Error"
+          ],
+          "answer": 0,
+          "explanation": "创建成功应返回 201，并在响应体中给出新资源标识。"
+        },
+        {
+          "question": "为什么创建订单和扣库存要放在同一事务？",
+          "options": [
+            "减少代码行数",
+            "避免出现半条订单",
+            "提升网络速度",
+            "让接口返回 200"
+          ],
+          "answer": 1,
+          "explanation": "两者是同一业务操作，必须原子成功或原子回滚。"
+        },
+        {
+          "question": "幂等键的主要作用是什么？",
+          "options": [
+            "压缩响应体",
+            "提高数据库索引速度",
+            "避免重复请求产生重复订单",
+            "替代身份认证"
+          ],
+          "answer": 2,
+          "explanation": "客户端重试时，幂等键让服务识别并复用同一次处理结果。"
+        },
+        {
+          "question": "Pydantic 模型最适合承担什么职责？",
+          "options": [
+            "数据库迁移",
+            "请求结构校验和类型转换",
+            "页面渲染",
+            "日志采集"
+          ],
+          "answer": 1,
+          "explanation": "边界层校验能在进入业务逻辑前拦截非法输入。"
+        },
+        {
+          "question": "取消已支付订单应该返回什么？",
+          "options": [
+            "409 Conflict 并说明状态不允许",
+            "200 并静默成功",
+            "500 并记录未知错误",
+            "302 跳转首页"
+          ],
+          "answer": 0,
+          "explanation": "业务状态冲突应返回 409，让调用方明确知道请求与当前状态不符。"
+        }
+      ]
+    },
+    {
+      "id": "python_project_etl",
+      "title": {
+        "zh": "实战：CSV 到 SQLite 的 ETL 流水线",
+        "en": "Project: CSV to SQLite ETL Pipeline"
+      },
+      "summary": {
+        "zh": "实现可重复执行的抽取、清洗、校验和入库流水线，并输出数据质量报告。",
+        "en": "Build a repeatable CSV-to-SQLite ETL pipeline with quality checks."
+      },
+      "file": "assets/content/python_project_etl.md",
+      "minutes": 100,
+      "keywords": [
+        "ETL",
+        "CSV",
+        "SQLite",
+        "数据质量",
+        "幂等"
+      ],
+      "difficulty": "高级",
+      "order": 14,
+      "quiz": [
+        {
+          "question": "ETL 中 Extract 阶段的主要工作是什么？",
+          "options": [
+            "读取原始数据",
+            "清洗类型",
+            "建立索引",
+            "发布报表"
+          ],
+          "answer": 0,
+          "explanation": "抽取阶段只负责可靠获取原始数据，转换和加载在后续阶段完成。"
+        },
+        {
+          "question": "为什么要把脏记录写入拒绝文件？",
+          "options": [
+            "减少磁盘占用",
+            "便于定位和重新处理",
+            "提高数据库性能",
+            "避免测试"
+          ],
+          "answer": 1,
+          "explanation": "拒绝文件保留原始上下文，方便修正后重跑。"
+        },
+        {
+          "question": "幂等加载的核心条件是什么？",
+          "options": [
+            "每次清空数据库",
+            "使用稳定主键和可重复写入",
+            "关闭事务",
+            "只允许运行一次"
+          ],
+          "answer": 1,
+          "explanation": "稳定键加 upsert 能让同一批数据重复执行而不产生重复结果。"
+        },
+        {
+          "question": "金额字段在入库前最适合转换为什么？",
+          "options": [
+            "浮点数",
+            "字符串",
+            "整数分",
+            "布尔值"
+          ],
+          "answer": 2,
+          "explanation": "整数分避免浮点误差，适合金额精确计算。"
+        },
+        {
+          "question": "质量报告至少应包含什么？",
+          "options": [
+            "总记录、成功、跳过、失败和原因",
+            "只有成功条数",
+            "只有运行时间",
+            "数据库版本"
+          ],
+          "answer": 0,
+          "explanation": "分类统计和失败原因才能支持追责、修复和重跑。"
+        }
+      ]
+    }
+  ]
+}

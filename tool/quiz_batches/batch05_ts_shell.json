@@ -1,0 +1,338 @@
+{
+  "typescript": [
+    {
+      "question": "type 与 interface 的主要差别是？",
+      "options": [
+        "interface 支持声明合并、更适合对象契约；type 能表达联合、条件类型等更复杂的组合",
+        "type 不能描述对象",
+        "interface 不能继承",
+        "两者完全等价"
+      ],
+      "answer": 0,
+      "explanation": "对外发布的库常用 interface 便于使用者扩展，内部组合类型多用 type。"
+    },
+    {
+      "question": "as const 的作用是？",
+      "options": [
+        "把值推断为最窄的只读字面量类型（readonly 元组/字面量）",
+        "把值转换成常量并防止运行时修改",
+        "关闭类型检查",
+        "把变量提升到模块作用域"
+      ],
+      "answer": 0,
+      "explanation": "它只影响类型推断，运行时仍可被修改（需要 Object.freeze 才真正冻结）。"
+    }
+  ],
+  "ts_narrowing_generics": [
+    {
+      "question": "自定义类型守卫的返回类型应该写成？",
+      "options": [
+        "value is Foo",
+        "boolean",
+        "Foo | undefined",
+        "typeof Foo"
+      ],
+      "answer": 0,
+      "explanation": "返回 value is Foo 后，调用处在该分支内会被自动收窄为 Foo 类型。"
+    },
+    {
+      "question": "泛型约束 T extends { id: string } 的作用是？",
+      "options": [
+        "要求类型参数至少具备该形状，函数体内才能安全访问 id",
+        "给 T 设置默认值",
+        "把 T 转成字符串",
+        "让 T 只能在运行时确定"
+      ],
+      "answer": 0,
+      "explanation": "没有约束时不能访问 T 的成员，约束是泛型里获得类型安全的关键。"
+    }
+  ],
+  "ts_utility_types": [
+    {
+      "question": "Pick<T, K> 与 Omit<T, K> 的区别是？",
+      "options": [
+        "Pick 只保留 K 指定的字段，Omit 排除 K 指定的字段",
+        "两者完全等价",
+        "Pick 用于数组，Omit 用于对象",
+        "Omit 只能用于接口"
+      ],
+      "answer": 0,
+      "explanation": "对外暴露 DTO 时常用 Pick 选字段、Omit 去掉密码等敏感字段。"
+    },
+    {
+      "question": "Record<string, number> 表示？",
+      "options": [
+        "键为 string、值为 number 的对象类型",
+        "由 string 和 number 组成的元组",
+        "一个函数类型",
+        "联合类型 string | number"
+      ],
+      "answer": 0,
+      "explanation": "Record 常用于描述映射表、字典与配置项集合。"
+    }
+  ],
+  "ts_project": [
+    {
+      "question": "tsconfig 中 strict: true 会开启什么？",
+      "options": [
+        "strictNullChecks、noImplicitAny 等一组严格检查",
+        "只开启严格相等检查",
+        "自动格式化代码",
+        "跳过 node_modules 以外的检查"
+      ],
+      "answer": 0,
+      "explanation": "新项目应该默认开启 strict，从源头减少空值与隐式 any 带来的问题。"
+    },
+    {
+      "question": "tsconfig 里 paths 别名的作用与限制是？",
+      "options": [
+        "配置模块路径别名，但打包器/运行时也要同步支持才能生效",
+        "只在测试中生效",
+        "能替代 node_modules",
+        "会自动生成文件"
+      ],
+      "answer": 0,
+      "explanation": "tsc 只做类型解析，实际产物路径由打包器或运行时的解析规则决定。"
+    }
+  ],
+  "ts_decorators_pro": [
+    {
+      "question": "zod 与 class-validator 的差别是？",
+      "options": [
+        "zod 是 schema 优先，可从校验规则反推类型；class-validator 依赖装饰器与类的元数据",
+        "两者都只能校验字符串",
+        "zod 不支持嵌套校验",
+        "class-validator 不依赖 TypeScript"
+      ],
+      "answer": 0,
+      "explanation": "zod 的 schema 可推导出静态类型，天然让运行时校验与类型定义保持一致。"
+    },
+    {
+      "question": "NestJS 中装饰器主要承载什么职责？",
+      "options": [
+        "声明式地标注路由、依赖注入与参数校验等元数据",
+        "提升运行速度",
+        "做数据库迁移",
+        "替代类型系统"
+      ],
+      "answer": 0,
+      "explanation": "装饰器本质是元数据，真正的行为由框架在启动或请求时读取元数据后执行。"
+    }
+  ],
+  "ts_build_test": [
+    {
+      "question": "tsc --noEmit 的用途是？",
+      "options": [
+        "只做类型检查、不生成 JS 文件，适合放进 CI",
+        "把 TS 编译成 JS",
+        "生成类型声明文件",
+        "启动开发服务器"
+      ],
+      "answer": 0,
+      "explanation": "打包器通常不做类型检查，所以 CI 里要单独跑一次 tsc --noEmit 把类型问题拦住。"
+    },
+    {
+      "question": "TypeScript 的项目引用（references）与增量构建的价值是？",
+      "options": [
+        "把大项目拆成多个子项目，只重新编译发生变化的部分",
+        "自动修复类型错误",
+        "让运行时更快",
+        "替代单元测试"
+      ],
+      "answer": 0,
+      "explanation": "monorepo 中配合 composite 与 build 模式，可以显著缩短类型检查时间。"
+    }
+  ],
+  "ts_fullstack_project": [
+    {
+      "question": "用 OpenAPI 描述接口并生成客户端的好处是？",
+      "options": [
+        "契约由接口文档生成，减少手写类型与后端实际结构漂移",
+        "可以省略运行时校验",
+        "不再需要后端",
+        "自动处理鉴权"
+      ],
+      "answer": 0,
+      "explanation": "契约先行还能做 mock 与联调，接口变更时生成物会立即暴露不兼容点。"
+    },
+    {
+      "question": "Prisma 生成类型客户端的作用是？",
+      "options": [
+        "根据数据库 schema 生成类型安全的查询 API，字段错误在编译期暴露",
+        "自动为接口写文档",
+        "替代数据库索引",
+        "把 SQL 转成 NoSQL"
+      ],
+      "answer": 0,
+      "explanation": "ORM 的类型安全能让数据库字段改名这类破坏性变更在编译时就暴露。"
+    }
+  ],
+  "shell_bash": [
+    {
+      "question": "#!/usr/bin/env bash 相比 #!/bin/bash 的优势是？",
+      "options": [
+        "通过 PATH 查找 bash，兼容 bash 装在非标准路径的系统（如 macOS）",
+        "启动更快",
+        "可以省略脚本执行权限",
+        "能自动安装 bash"
+      ],
+      "answer": 0,
+      "explanation": "shebang 决定用哪个解释器执行脚本，可移植脚本推荐用 env 形式。"
+    },
+    {
+      "question": "source script.sh 与 bash script.sh 的关键区别是？",
+      "options": [
+        "source 在当前 shell 中执行，会修改当前环境；bash 会启动子 shell，变量不会带回来",
+        "source 只能执行一次",
+        "bash 会修改当前环境",
+        "两者完全等价"
+      ],
+      "answer": 0,
+      "explanation": "加载环境变量或函数库用 source，运行独立任务用 bash 更安全。"
+    }
+  ],
+  "shell_flow": [
+    {
+      "question": "脚本参数中 $1 与 \"$@\" 的区别是？",
+      "options": [
+        "$1 是第一个参数，\"$@\" 展开为全部参数且保留每个参数的边界",
+        "两者相同",
+        "$1 表示参数个数",
+        "\"$@\" 只能用于函数"
+      ],
+      "answer": 0,
+      "explanation": "转发参数时要用 \"$@\"（带引号），否则含空格的参数会被拆开。"
+    },
+    {
+      "question": "Shell 函数如何返回一个字符串结果？",
+      "options": [
+        "用 echo 输出，再由调用方用命令替换捕获；return 只能返回 0~255 的状态码",
+        "用 return 返回任意字符串",
+        "Shell 函数不能返回值",
+        "写入全局变量是唯一方式"
+      ],
+      "answer": 0,
+      "explanation": "return 表示成功/失败状态，真正的数据要靠标准输出传递。"
+    }
+  ],
+  "shell_pipeline": [
+    {
+      "question": "xargs 最常见的陷阱是？",
+      "options": [
+        "默认按空白拆分参数，含空格的文件名会被拆坏，应配合 find -print0 与 xargs -0",
+        "不能并发执行",
+        "只能用于文本文件",
+        "会修改源文件"
+      ],
+      "answer": 0,
+      "explanation": "用 -0 以 NUL 作为分隔符，才能安全处理任意文件名。"
+    },
+    {
+      "question": "tee 命令在管道中的作用是？",
+      "options": [
+        "把数据一路写入文件、一路继续传给下游命令",
+        "删除重复行",
+        "只查看文件头",
+        "并行执行两条命令"
+      ],
+      "answer": 0,
+      "explanation": "日志处理与调试中常用 tee 同时落盘与查看，配合 -a 追加写入。"
+    }
+  ],
+  "shell_robust": [
+    {
+      "question": "mktemp 相比自己拼临时文件名好在哪？",
+      "options": [
+        "以原子方式创建唯一文件，避免竞态与可预测文件名带来的安全风险",
+        "生成的文件会自动删除",
+        "写得更快",
+        "只能生成目录"
+      ],
+      "answer": 0,
+      "explanation": "可预测的 /tmp/xxx 名字容易被人抢注符号链接，mktemp 是标准做法。"
+    },
+    {
+      "question": "trap 'cleanup' EXIT INT TERM 的作用是？",
+      "options": [
+        "在脚本退出或收到中断/终止信号时执行清理逻辑",
+        "捕获所有命令的错误",
+        "让脚本无法被杀死",
+        "把输出重定向到文件"
+      ],
+      "answer": 0,
+      "explanation": "配合 set -e，trap EXIT 是保证临时文件与锁被释放的关键。"
+    }
+  ],
+  "shell_process_cron": [
+    {
+      "question": "nohup 与 & 的区别是？",
+      "options": [
+        "& 只把任务放到后台，nohup 让进程忽略挂断信号，退出终端后仍继续运行",
+        "两者完全等价",
+        "nohup 会把进程放到前台",
+        "& 会忽略 SIGHUP"
+      ],
+      "answer": 0,
+      "explanation": "长期运行的服务更推荐交给 systemd 管理，而不是 nohup 手工启动。"
+    },
+    {
+      "question": "查看 systemd 服务日志的常用命令是？",
+      "options": [
+        "journalctl -u 服务名 -f",
+        "tail -f /var/log/messages",
+        "dmesg | grep service",
+        "systemctl log"
+      ],
+      "answer": 0,
+      "explanation": "-u 指定单元，-f 持续跟踪输出，配合 --since 可定位特定时间段。"
+    }
+  ],
+  "shell_script_engineering": [
+    {
+      "question": "set -x 与 set -v 的区别是？",
+      "options": [
+        "-x 打印展开后实际执行的命令，-v 打印读入的原始脚本行",
+        "两者输出完全相同",
+        "-v 会关闭错误处理",
+        "-x 只能用于函数"
+      ],
+      "answer": 0,
+      "explanation": "-x 是排查脚本逻辑最常用的手段，可用 set +x 精确关闭某段。"
+    },
+    {
+      "question": "脚本要支持标准风格的短选项（-a -b 值），推荐用？",
+      "options": [
+        "getopts（或 GNU getopt / while + case 手动解析）",
+        "用 $1 依次取用即可",
+        "读取环境变量代替",
+        "用 sed 解析参数"
+      ],
+      "answer": 0,
+      "explanation": "getopts 是 POSIX 内置，能自动处理选项与参数绑定的细节。"
+    }
+  ],
+  "shell_container": [
+    {
+      "question": "容器里 PID 1 进程的特殊性是？",
+      "options": [
+        "它需要正确转发信号并回收子进程，否则 kill 无效或产生僵尸进程",
+        "它在宿主机上拥有 root 权限",
+        "它不能被杀死",
+        "它会自动重启容器"
+      ],
+      "answer": 0,
+      "explanation": "这是 entrypoint 脚本要用 exec 的原因，也可用 tini/dumb-init 作为 init。"
+    },
+    {
+      "question": "kubectl exec -it pod -- sh 的适用场景是？",
+      "options": [
+        "进入容器内部排查问题，前提是镜像里包含 shell",
+        "重新构建镜像",
+        "查看集群所有节点",
+        "修改 Deployment 副本数"
+      ],
+      "answer": 0,
+      "explanation": "生产环境常使用 distroless 镜像没有 shell，此时要以日志与指标为主要手段。"
+    }
+  ]
+}

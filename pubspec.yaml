@@ -1,0 +1,58 @@
+name: code_learn_app
+description: "计算机与编程学习：离线教程、代码示例与测验。"
+publish_to: 'none'
+version: 1.1.0+2
+
+environment:
+  sdk: ^3.13.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # 状态管理：ChangeNotifier + Provider，简单可靠
+  provider: ^6.1.5
+
+  # 本地存储：纯 Dart 键值数据库，完全离线，无需后端
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  path_provider: ^2.1.5
+
+  # Markdown 渲染与代码语法高亮
+  flutter_markdown: ^0.7.7
+  markdown: ^7.3.1
+  flutter_highlight: ^0.7.0
+  highlight: ^0.7.0
+
+  cupertino_icons: ^1.0.8
+  # 工具箱：哈希计算（MD5 / SHA-1 / SHA-256）
+  crypto: ^3.0.7
+
+  # 本地复习提醒：系统级本地通知，无需服务器与推送服务，完全离线
+  flutter_local_notifications: ^19.0.0
+  timezone: ^0.10.0
+  flutter_timezone: 5.1.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+  # 教程 Markdown 与内容索引全部内置在 assets 中
+  assets:
+    - assets/content/
+    - assets/content_en/
+    # 教程配图（示意图，可在 Markdown 中用 ![说明](images/xxx.png) 引用）
+    - assets/content/images/
+    # 离线代码沙箱：页面模板 + 各语言运行时（Flutter 不递归目录，需逐级列出）
+    - assets/sandbox/
+    - assets/sandbox/harness/
+    - assets/sandbox/brython/
+    - assets/sandbox/fengari/
+    - assets/sandbox/sqljs/
+    - assets/sandbox/sucrase/

@@ -1,0 +1,360 @@
+{
+  "category": "javascript",
+  "lessons": [
+    {
+      "id": "js_console_start",
+      "title": {
+        "zh": "JavaScript 控制台入门",
+        "en": "JavaScript Console Basics"
+      },
+      "summary": {
+        "zh": "在浏览器控制台运行第一行 JavaScript。",
+        "en": "Run your first JavaScript in the console."
+      },
+      "file": "assets/content/js_console_start.md",
+      "minutes": 15,
+      "keywords": [
+        "JavaScript 控制台入门",
+        "JavaScript",
+        "入门练习"
+      ],
+      "difficulty": "入门",
+      "order": -5,
+      "quiz": [
+        {
+          "question": "运行「JavaScript 控制台入门」的最小示例，预期输出是什么？",
+          "options": [
+            "result=5",
+            "result=23",
+            "编译失败",
+            "没有任何输出"
+          ],
+          "answer": 0,
+          "explanation": "示例计算 2 + 3，并输出 result=5。加法结果不是 23，程序也不应该编译失败或无输出；先运行最小示例并观察 stdout 是入门阶段最重要的验证动作。",
+          "type": "code",
+          "code": "const value = 2 + 3;\nconsole.log(`result=${value}`);"
+        },
+        {
+          "question": "「JavaScript 控制台入门」最容易出现的错误是？",
+          "options": [
+            "把 == 与 === 混用，造成隐式类型转换。",
+            "只要代码能运行，就不需要观察输出。",
+            "出错后应该直接重写整个程序。",
+            "边界输入不会影响入门程序。"
+          ],
+          "answer": 0,
+          "explanation": "把 == 与 === 混用，造成隐式类型转换。 其他选项把错误处理理解成跳过验证或推倒重写；正确做法是先阅读第一条错误信息，回到最小示例，只改变一个变量并复现问题。",
+          "type": "debug"
+        },
+        {
+          "question": "学习「JavaScript 控制台入门」时，正确的操作顺序是？",
+          "options": [
+            "运行最小示例 → 修改一个值 → 预测结果 → 验证输出",
+            "修改所有代码 → 删除测试 → 直接部署 → 再阅读错误",
+            "先优化性能 → 再写需求 → 最后运行",
+            "复制答案 → 不运行 → 认为已经掌握"
+          ],
+          "answer": 0,
+          "explanation": "入门学习应先运行最小示例，再修改一个值，写下预测并运行验证。一次修改多个变量会让失败原因无法定位，直接优化或部署也缺少正确性基线。",
+          "type": "order"
+        },
+        {
+          "question": "「JavaScript 控制台入门」的练习闭环应该怎么填空？",
+          "options": [
+            "最小示例 → 预测 → 运行 → 对比",
+            "直接上线 → 再观察",
+            "复制代码 → 不运行",
+            "优化性能 → 再写代码"
+          ],
+          "answer": 0,
+          "explanation": "最小示例、预测、运行、对比构成最小学习闭环。跳过运行或不记录结果都无法验证理解，先优化性能则容易在错误基线上做无效工作。",
+          "type": "fill"
+        }
+      ]
+    },
+    {
+      "id": "js_variables_types_intro",
+      "title": {
+        "zh": "JavaScript 变量与类型入门",
+        "en": "JavaScript Variables and Types"
+      },
+      "summary": {
+        "zh": "理解 let、const、类型转换和严格比较。",
+        "en": "Learn let, const, coercion and strict equality."
+      },
+      "file": "assets/content/js_variables_types_intro.md",
+      "minutes": 15,
+      "keywords": [
+        "JavaScript 变量与类型入门",
+        "JavaScript",
+        "入门练习"
+      ],
+      "difficulty": "入门",
+      "order": -4,
+      "quiz": [
+        {
+          "question": "运行「JavaScript 变量与类型入门」的最小示例，预期输出是什么？",
+          "options": [
+            "result=5",
+            "result=23",
+            "编译失败",
+            "没有任何输出"
+          ],
+          "answer": 0,
+          "explanation": "示例计算 2 + 3，并输出 result=5。加法结果不是 23，程序也不应该编译失败或无输出；先运行最小示例并观察 stdout 是入门阶段最重要的验证动作。",
+          "type": "code",
+          "code": "const value = 2 + 3;\nconsole.log(`result=${value}`);"
+        },
+        {
+          "question": "「JavaScript 变量与类型入门」最容易出现的错误是？",
+          "options": [
+            "把 == 与 === 混用，造成隐式类型转换。",
+            "只要代码能运行，就不需要观察输出。",
+            "出错后应该直接重写整个程序。",
+            "边界输入不会影响入门程序。"
+          ],
+          "answer": 0,
+          "explanation": "把 == 与 === 混用，造成隐式类型转换。 其他选项把错误处理理解成跳过验证或推倒重写；正确做法是先阅读第一条错误信息，回到最小示例，只改变一个变量并复现问题。",
+          "type": "debug"
+        },
+        {
+          "question": "学习「JavaScript 变量与类型入门」时，正确的操作顺序是？",
+          "options": [
+            "运行最小示例 → 修改一个值 → 预测结果 → 验证输出",
+            "修改所有代码 → 删除测试 → 直接部署 → 再阅读错误",
+            "先优化性能 → 再写需求 → 最后运行",
+            "复制答案 → 不运行 → 认为已经掌握"
+          ],
+          "answer": 0,
+          "explanation": "入门学习应先运行最小示例，再修改一个值，写下预测并运行验证。一次修改多个变量会让失败原因无法定位，直接优化或部署也缺少正确性基线。",
+          "type": "order"
+        },
+        {
+          "question": "「JavaScript 变量与类型入门」的练习闭环应该怎么填空？",
+          "options": [
+            "最小示例 → 预测 → 运行 → 对比",
+            "直接上线 → 再观察",
+            "复制代码 → 不运行",
+            "优化性能 → 再写代码"
+          ],
+          "answer": 0,
+          "explanation": "最小示例、预测、运行、对比构成最小学习闭环。跳过运行或不记录结果都无法验证理解，先优化性能则容易在错误基线上做无效工作。",
+          "type": "fill"
+        }
+      ]
+    },
+    {
+      "id": "js_conditions_loops",
+      "title": {
+        "zh": "JavaScript 条件与循环",
+        "en": "JavaScript Conditions and Loops"
+      },
+      "summary": {
+        "zh": "用分支和循环处理一组数据。",
+        "en": "Process data with branches and loops."
+      },
+      "file": "assets/content/js_conditions_loops.md",
+      "minutes": 15,
+      "keywords": [
+        "JavaScript 条件与循环",
+        "JavaScript",
+        "入门练习"
+      ],
+      "difficulty": "入门",
+      "order": -3,
+      "quiz": [
+        {
+          "question": "运行「JavaScript 条件与循环」的最小示例，预期输出是什么？",
+          "options": [
+            "result=5",
+            "result=23",
+            "编译失败",
+            "没有任何输出"
+          ],
+          "answer": 0,
+          "explanation": "示例计算 2 + 3，并输出 result=5。加法结果不是 23，程序也不应该编译失败或无输出；先运行最小示例并观察 stdout 是入门阶段最重要的验证动作。",
+          "type": "code",
+          "code": "const value = 2 + 3;\nconsole.log(`result=${value}`);"
+        },
+        {
+          "question": "「JavaScript 条件与循环」最容易出现的错误是？",
+          "options": [
+            "把 == 与 === 混用，造成隐式类型转换。",
+            "只要代码能运行，就不需要观察输出。",
+            "出错后应该直接重写整个程序。",
+            "边界输入不会影响入门程序。"
+          ],
+          "answer": 0,
+          "explanation": "把 == 与 === 混用，造成隐式类型转换。 其他选项把错误处理理解成跳过验证或推倒重写；正确做法是先阅读第一条错误信息，回到最小示例，只改变一个变量并复现问题。",
+          "type": "debug"
+        },
+        {
+          "question": "学习「JavaScript 条件与循环」时，正确的操作顺序是？",
+          "options": [
+            "运行最小示例 → 修改一个值 → 预测结果 → 验证输出",
+            "修改所有代码 → 删除测试 → 直接部署 → 再阅读错误",
+            "先优化性能 → 再写需求 → 最后运行",
+            "复制答案 → 不运行 → 认为已经掌握"
+          ],
+          "answer": 0,
+          "explanation": "入门学习应先运行最小示例，再修改一个值，写下预测并运行验证。一次修改多个变量会让失败原因无法定位，直接优化或部署也缺少正确性基线。",
+          "type": "order"
+        },
+        {
+          "question": "「JavaScript 条件与循环」的练习闭环应该怎么填空？",
+          "options": [
+            "最小示例 → 预测 → 运行 → 对比",
+            "直接上线 → 再观察",
+            "复制代码 → 不运行",
+            "优化性能 → 再写代码"
+          ],
+          "answer": 0,
+          "explanation": "最小示例、预测、运行、对比构成最小学习闭环。跳过运行或不记录结果都无法验证理解，先优化性能则容易在错误基线上做无效工作。",
+          "type": "fill"
+        }
+      ]
+    },
+    {
+      "id": "js_functions_intro",
+      "title": {
+        "zh": "JavaScript 函数入门",
+        "en": "JavaScript Functions"
+      },
+      "summary": {
+        "zh": "定义函数、传参、返回值和默认参数。",
+        "en": "Define functions with parameters and returns."
+      },
+      "file": "assets/content/js_functions_intro.md",
+      "minutes": 15,
+      "keywords": [
+        "JavaScript 函数入门",
+        "JavaScript",
+        "入门练习"
+      ],
+      "difficulty": "入门",
+      "order": -2,
+      "quiz": [
+        {
+          "question": "运行「JavaScript 函数入门」的最小示例，预期输出是什么？",
+          "options": [
+            "result=5",
+            "result=23",
+            "编译失败",
+            "没有任何输出"
+          ],
+          "answer": 0,
+          "explanation": "示例计算 2 + 3，并输出 result=5。加法结果不是 23，程序也不应该编译失败或无输出；先运行最小示例并观察 stdout 是入门阶段最重要的验证动作。",
+          "type": "code",
+          "code": "const value = 2 + 3;\nconsole.log(`result=${value}`);"
+        },
+        {
+          "question": "「JavaScript 函数入门」最容易出现的错误是？",
+          "options": [
+            "把 == 与 === 混用，造成隐式类型转换。",
+            "只要代码能运行，就不需要观察输出。",
+            "出错后应该直接重写整个程序。",
+            "边界输入不会影响入门程序。"
+          ],
+          "answer": 0,
+          "explanation": "把 == 与 === 混用，造成隐式类型转换。 其他选项把错误处理理解成跳过验证或推倒重写；正确做法是先阅读第一条错误信息，回到最小示例，只改变一个变量并复现问题。",
+          "type": "debug"
+        },
+        {
+          "question": "学习「JavaScript 函数入门」时，正确的操作顺序是？",
+          "options": [
+            "运行最小示例 → 修改一个值 → 预测结果 → 验证输出",
+            "修改所有代码 → 删除测试 → 直接部署 → 再阅读错误",
+            "先优化性能 → 再写需求 → 最后运行",
+            "复制答案 → 不运行 → 认为已经掌握"
+          ],
+          "answer": 0,
+          "explanation": "入门学习应先运行最小示例，再修改一个值，写下预测并运行验证。一次修改多个变量会让失败原因无法定位，直接优化或部署也缺少正确性基线。",
+          "type": "order"
+        },
+        {
+          "question": "「JavaScript 函数入门」的练习闭环应该怎么填空？",
+          "options": [
+            "最小示例 → 预测 → 运行 → 对比",
+            "直接上线 → 再观察",
+            "复制代码 → 不运行",
+            "优化性能 → 再写代码"
+          ],
+          "answer": 0,
+          "explanation": "最小示例、预测、运行、对比构成最小学习闭环。跳过运行或不记录结果都无法验证理解，先优化性能则容易在错误基线上做无效工作。",
+          "type": "fill"
+        }
+      ]
+    },
+    {
+      "id": "js_dom_intro",
+      "title": {
+        "zh": "JavaScript DOM 入门",
+        "en": "JavaScript DOM Basics"
+      },
+      "summary": {
+        "zh": "查找元素、修改文本并响应用户点击。",
+        "en": "Find elements, update text and handle clicks."
+      },
+      "file": "assets/content/js_dom_intro.md",
+      "minutes": 15,
+      "keywords": [
+        "JavaScript DOM 入门",
+        "JavaScript",
+        "入门练习"
+      ],
+      "difficulty": "入门",
+      "order": -1,
+      "quiz": [
+        {
+          "question": "运行「JavaScript DOM 入门」的最小示例，预期输出是什么？",
+          "options": [
+            "result=5",
+            "result=23",
+            "编译失败",
+            "没有任何输出"
+          ],
+          "answer": 0,
+          "explanation": "示例计算 2 + 3，并输出 result=5。加法结果不是 23，程序也不应该编译失败或无输出；先运行最小示例并观察 stdout 是入门阶段最重要的验证动作。",
+          "type": "code",
+          "code": "const value = 2 + 3;\nconsole.log(`result=${value}`);"
+        },
+        {
+          "question": "「JavaScript DOM 入门」最容易出现的错误是？",
+          "options": [
+            "把 == 与 === 混用，造成隐式类型转换。",
+            "只要代码能运行，就不需要观察输出。",
+            "出错后应该直接重写整个程序。",
+            "边界输入不会影响入门程序。"
+          ],
+          "answer": 0,
+          "explanation": "把 == 与 === 混用，造成隐式类型转换。 其他选项把错误处理理解成跳过验证或推倒重写；正确做法是先阅读第一条错误信息，回到最小示例，只改变一个变量并复现问题。",
+          "type": "debug"
+        },
+        {
+          "question": "学习「JavaScript DOM 入门」时，正确的操作顺序是？",
+          "options": [
+            "运行最小示例 → 修改一个值 → 预测结果 → 验证输出",
+            "修改所有代码 → 删除测试 → 直接部署 → 再阅读错误",
+            "先优化性能 → 再写需求 → 最后运行",
+            "复制答案 → 不运行 → 认为已经掌握"
+          ],
+          "answer": 0,
+          "explanation": "入门学习应先运行最小示例，再修改一个值，写下预测并运行验证。一次修改多个变量会让失败原因无法定位，直接优化或部署也缺少正确性基线。",
+          "type": "order"
+        },
+        {
+          "question": "「JavaScript DOM 入门」的练习闭环应该怎么填空？",
+          "options": [
+            "最小示例 → 预测 → 运行 → 对比",
+            "直接上线 → 再观察",
+            "复制代码 → 不运行",
+            "优化性能 → 再写代码"
+          ],
+          "answer": 0,
+          "explanation": "最小示例、预测、运行、对比构成最小学习闭环。跳过运行或不记录结果都无法验证理解，先优化性能则容易在错误基线上做无效工作。",
+          "type": "fill"
+        }
+      ]
+    }
+  ]
+}

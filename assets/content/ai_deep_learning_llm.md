@@ -1,0 +1,310 @@
+# 深度学习与大语言模型
+
+> 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：17 分钟
+
+## 学习目标
+
+- 能用自己的话解释「深度学习与大语言模型」解决了什么问题，而不是只背术语。
+- 能说清 「深度学习」、「Transformer」、「大模型」、「幻觉」 之间的关系，并分别举出一个例子。
+- 能把本课知识放回「AI 与智能体」的知识体系，说明它和相邻主题的边界。
+- 能完成本课练习，并用验收标准检查自己的结果。
+
+> 一句话摘要：神经网络训练、Transformer、幻觉与采样参数。
+
+## 前置知识
+
+- 先完成上一课《机器学习核心概念》；如果已经掌握，可以直接用本课练习自测。
+- 本课阶段：进阶。建议先掌握同一分类的基础课程，并能独立运行正文中的最小示例。
+- 开始前先复习：深度学习、Transformer、大模型。
+- 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
+
+
+![Transformer 解码器单层结构](images/transformer_blocks.webp)
+
+## 从神经元到网络
+
+```text
+z = w1*x1 + w2*x2 + ... + b
+a = activation(z)        常见激活：ReLU、GELU、Sigmoid
+```
+
+多层堆叠形成神经网络：浅层学局部模式，深层学语义。训练就是前向计算 → 反向传播求梯度 → 更新参数。
+
+```python
+# PyTorch 训练循环骨架
+for epoch in range(epochs):
+    model.train()
+    for x, y in train_loader:
+        optimizer.zero_grad()
+        loss = criterion(model(x), y)
+        loss.backward()
+        optimizer.step()
+    model.eval()
+```
+
+## 主流结构演进
+
+| 结构 | 核心思想 | 擅长 |
+| --- | --- | --- |
+| MLP | 全连接 | 表格数据、简单分类 |
+| CNN | 卷积 + 权值共享 | 图像、局部模式 |
+| RNN / LSTM | 循环 + 门控记忆 | 序列（早期方案） |
+| Transformer | 自注意力、可并行 | 文本、图像、多模态 |
+| Diffusion | 逐步去噪 | 图像与视频生成 |
+
+Transformer 的自注意力让任意两个位置直接交互，既缓解长距离依赖，又能充分利用 GPU，是大模型的基石。
+
+## 大语言模型怎么工作
+
+```text
+文本 -> 分词 Token -> 嵌入向量 + 位置信息
+     -> 多层 Transformer -> 下一个 token 的概率分布
+     -> 采样输出 -> 拼回文本，循环生成
+```
+
+要点：
+
+- **预训练**：在海量文本上学习语言规律，成本最高。
+- **微调（SFT / LoRA）**：用高质量数据对齐任务，LoRA 只训练少量参数。
+- **对齐（RLHF / DPO）**：用人类偏好让输出更有用、更安全。
+- **上下文窗口**：一次能读入的 token 上限，超长需要分块或压缩。
+- **幻觉**：模型按概率生成，可能编造事实，必须用检索与引用校验。
+
+## 采样参数
+
+```python
+response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[{"role": "user", "content": "用一句话解释注意力机制"}],
+    temperature=0.3,      # 越低越确定，越高越发散
+    top_p=0.9,            # 核采样：只从累积概率前 90% 中选
+    max_tokens=200,
+)
+```
+
+做抽取、分类、代码等确定性任务时调低 `temperature`；做创意写作时再调高。
+
+## 成本与部署形态
+
+| 形态 | 特点 |
+| --- | --- |
+| 闭源 API | 开箱即用、效果好，按 token 计费，数据出域 |
+| 开源权重本地部署 | 数据可控、可微调，需要 GPU 与运维 |
+| 小模型 + 蒸馏 | 延迟低、成本低，适合特定任务 |
+
+## 采样参数组合的实际效果
+
+| 参数 | 取值 | 适用场景 |
+| --- | --- | --- |
+| temperature | 0 ~ 0.3 | 抽取、分类、代码、事实问答（要确定性） |
+| temperature | 0.7 ~ 1.0 | 创意写作、头脑风暴（要多样性） |
+| top_p | 0.9 ~ 1.0 | 通常与 temperature 二选一调，不要同时大改 |
+| max_tokens | 按输出长度设上限 | 防止失控长输出，也控制成本 |
+| frequency_penalty | 0.1 ~ 0.5 | 抑制重复用词（长文生成时有用） |
+| stop | 指定结束标记 | 结构化输出时限定边界 |
+
+经验：**先固定 temperature=0 把任务跑通**，确认效果后如需多样性再调高；同时大幅调整 temperature 与 top_p 会让结果难以复现。
+
+上下文与成本的关系：输入 token 越多越贵且越容易分散注意力，因此长文档应先检索（RAG）或摘要，而不是整篇塞进去。常见做法是把稳定不变的内容（系统提示、示例）放在前缀以命中提示缓存，把变化内容放在后面。
+
+## 本课小结
+大模型的本质是**基于上下文的下一 token 预测**。理解 token、注意力、上下文窗口与采样参数，就知道它的能力边界在哪里。
+
+<!-- appendix:v1 -->
+
+## Transformer 结构速查
+
+| 组件 | 作用 |
+| --- | --- |
+| 词嵌入 | 把 Token 映射为向量 |
+| 位置编码 | 注入位置信息（RoPE 等） |
+| 多头自注意力 | 建模序列内的长距离依赖 |
+| 前馈网络 | 逐位置非线性变换，占多数参数 |
+| 残差与归一化 | 稳定训练，支持深层堆叠 |
+| 输出头 | 映射到词表概率分布 |
+
+| 注意力 | 可见范围 | 典型用途 |
+| --- | --- | --- |
+| 双向（Encoder） | 全序列 | 理解、嵌入、分类 |
+| 因果（Decoder） | 只能看左侧 | 生成式模型 |
+| 交叉注意力 | 编码器到解码器 | 翻译、语音识别 |
+
+## 训练三阶段速查
+
+| 阶段 | 数据 | 目标 | 成本 |
+| --- | --- | --- | --- |
+| 预训练 | 海量无标注文本 | 预测下一个 Token | 极高 |
+| 指令微调（SFT） | 指令与答案对 | 学会遵循指令 | 中 |
+| 偏好对齐（RLHF / DPO） | 人类偏好对比 | 更符合人类偏好与安全要求 | 中高 |
+
+## 推理参数速查
+
+| 参数 | 作用 | 建议 |
+| --- | --- | --- |
+| temperature | 控制随机性 | 事实类 0 到 0.3，创意类 0.7 到 1.0 |
+| top_p | 核采样阈值 | 与 temperature 二选一调整 |
+| top_k | 只保留前 k 个候选 | 需要强约束时使用 |
+| max_tokens | 输出上限 | 按业务设上限控制成本 |
+| stop | 停止序列 | 结构化输出时避免多余内容 |
+| presence/frequency penalty | 抑制重复 | 长文生成时适度使用 |
+| seed | 复现性（若支持） | 评测时固定 |
+
+```python
+import math
+
+def softmax(logits: list[float], temperature: float = 1.0) -> list[float]:
+    """温度采样：温度越低分布越尖锐，越高越平均。"""
+    if temperature <= 0:
+        raise ValueError("温度必须为正，贪心解码请单独实现")
+    scaled = [value / temperature for value in logits]
+    top = max(scaled)
+    exps = [math.exp(value - top) for value in scaled]
+    total = sum(exps)
+    return [value / total for value in exps]
+
+
+def top_p_filter(probs: list[float], top_p: float = 0.9) -> list[int]:
+    """核采样：累计概率达到 top_p 的最小候选集合。"""
+    order = sorted(range(len(probs)), key=lambda i: -probs[i])
+    kept, cumulative = [], 0.0
+    for index in order:
+        kept.append(index)
+        cumulative += probs[index]
+        if cumulative >= top_p:
+            break
+    return kept
+
+
+def attention_shapes(seq_len: int, d_model: int, heads: int) -> dict:
+    """多头注意力张量形状，便于排查维度错误。"""
+    d_head = d_model // heads
+    return {
+        "qkv": (seq_len, d_model),
+        "per_head": (heads, seq_len, d_head),
+        "attention_matrix": (heads, seq_len, seq_len),
+    }
+
+
+print([round(p, 3) for p in softmax([2.0, 1.0, 0.1], temperature=0.5)])
+print(attention_shapes(seq_len=1024, d_model=4096, heads=32))
+```
+
+## 幻觉与可控性速查
+
+| 手段 | 作用 | 限制 |
+| --- | --- | --- |
+| 检索增强（RAG） | 用外部依据约束回答 | 依赖检索质量 |
+| 结构化输出 | 限制格式，便于校验 | 不能保证内容正确 |
+| 引用来源 | 可溯源、可抽查 | 需要文档与位置信息 |
+| 拒答话术 | 无依据时明确说不知道 | 需要评测拒答率 |
+| 自一致性投票 | 多次采样取多数 | 成本成倍增加 |
+| 工具校验 | 用计算器、代码执行验证 | 需为工具结果设计兜底 |
+
+## 常见错误对照表
+
+| 容易踩的做法 | 实际现象 | 原因与正确做法 |
+| --- | --- | --- |
+| 认为模型「记住」了事实 | 幻觉频发 | 事实依赖外部数据源与检索 |
+| 只调 temperature 追求稳定 | 输出仍波动 | 固定 seed、降低温度、加结构化约束 |
+| 同时调 temperature 与 top_p | 效果难归因 | 一次只调一个参数 |
+| 忽略上下文长度 | 长文档被截断 | 分块检索或使用长上下文模型 |
+| 认为参数多必然更好 | 成本与延迟上升 | 按任务选型并做 A/B |
+| 不做输出校验 | 非法 JSON 进入系统 | 用 Schema 校验并重试 |
+| 认为微调能补知识 | 知识更新滞后 | 知识用 RAG，行为与格式用微调 |
+| 忽略位置编码长度限制 | 超长文本质量骤降 | 明确有效长度并做评测 |
+| 用测试集调推理参数 | 指标虚高 | 参数调优只看验证集 |
+| 不记录推理参数 | 线上问题无法复现 | 参数随请求一起入库 |
+
+## 自测清单
+
+- [ ] 能说出 Transformer 的主要组件与作用。
+- [ ] 记得预训练、SFT、偏好对齐三阶段的目标。
+- [ ] 会按任务设置温度与输出上限。
+- [ ] 知道幻觉只能抑制，无法根除，必须配合检索与校验。
+- [ ] 推理参数与模型版本进入请求日志。
+
+## 动手练习
+
+<!-- practice-diversified:v1 -->
+
+> 本课练习重点：围绕「深度学习、Transformer、大模型」完成复述、实验和交付，每个结果都要能被别人检查。
+
+先写评测样例，再改一个提示、模型或数据变量，最后比较质量、成本与安全。
+
+### 练习 1：建立心智模型（10 分钟）
+
+合上教程，用 3～5 句话回答：
+
+1. 「深度学习与大语言模型」解决了什么问题？
+2. 如果没有它，会出现什么具体后果？
+3. 它和「Transformer」是什么关系？
+
+**验收标准**：至少出现一个本课关键词，并写出一个反例、边界条件或失效场景。
+
+### 练习 2：做一次可控实验（20 分钟）
+
+从正文中选一个最小示例，完成以下操作：
+
+1. 先预测修改一个参数、输入或步骤后的结果。
+2. 再实际执行或逐步推演，记录真实结果。
+3. 如果结果与预测不同，写出差异原因。
+
+**验收标准**：留下「原例 → 改动 → 预测 → 结果 → 原因」五步记录。
+
+### 练习 3：交付一个小结果（30 分钟）
+
+构造 5 条小型离线样例，写清输入、期望输出、评分标准和失败案例。
+
+任务要求：
+
+- 结果必须能被别人检查，不能只写“我已经理解了”。
+- 至少覆盖「深度学习」和「Transformer」两个关键词。
+- 写出 1 个仍然不确定的问题，以及下一步如何验证。
+
+> 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
+
+<!-- scaffold:v1 -->
+
+<!-- p2-enrichment:v1 -->
+
+## English Overview
+
+**Title:** Deep Learning & LLMs
+
+**Summary:** Neural nets, Transformers, hallucination and sampling.
+
+**Category:** AI & Agents  
+**Level:** 进阶  
+**Key terms:** 深度学习, Transformer, 大模型, 幻觉, temperature
+
+> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
+
+## 内容元数据
+
+- 内容版本：v2.0
+- 最后更新：2026-10-03
+- 学习阶段：进阶
+- 适用环境：主流大模型 API、开源模型与向量数据库
+- 内容来源：内置结构化课程与工程实践整理
+- 相关主题：深度学习、Transformer、大模型、幻觉、temperature
+- 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
+
+<!-- p2-references:v1 -->
+
+## 参考资料与复核
+
+- 最后复核：2026-10-04
+- 下次复核：2027-04-04
+- 复核范围：版本兼容、API 行为、安全建议与工程实践
+- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+
+| 参考资料 | 本课用途 |
+| --- | --- |
+| [OpenAI Docs](https://platform.openai.com/docs/) | 模型 API、工具与评估 |
+| [Hugging Face Docs](https://huggingface.co/docs) | 模型、数据集与推理 |
+| [Model Context Protocol](https://modelcontextprotocol.io/) | Agent 工具与上下文协议 |
+
+> 本课主题：神经网络训练、Transformer、幻觉与采样参数。
+
+> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+

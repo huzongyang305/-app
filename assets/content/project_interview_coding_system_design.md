@@ -1,0 +1,440 @@
+# 面试冲刺：算法编码与系统设计高频题
+
+![面试冲刺：算法编码与系统设计高频题](images/remaining_project_interview_coding_system_design.webp)
+
+> 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：130 分钟
+
+## 学习目标
+
+- 能用输入规模、数据特征和失败边界选择合适的算法模式。
+- 能在编码前说清不变量、复杂度与测试用例。
+- 能用需求、接口、数据、容量、可靠性、监控六步完成系统设计。
+- 能在追问中说明瓶颈、降级、一致性和成本取舍。
+
+## 前置知识
+
+- 已完成本分类的基础与进阶课程，能独立运行正文中的最小示例。
+- 熟悉命令行、依赖管理、测试和 Git 基本操作。
+- 本课涉及：面试、算法模式、系统设计、复杂度、排障。
+
+## 项目背景
+
+你需要在有限时间内完成一轮算法编码和一轮系统设计。目标不是背题，而是稳定执行同一套流程：澄清输入输出与约束，写出最小例子，说明暴力法与优化方向，编码后验证边界，再用容量、可靠性和取舍回答设计追问。
+
+一句话摘要：用统一框架练习数组、哈希、滑动窗口、树、图、动态规划与系统设计，训练澄清、推导、编码和排障表达。
+
+## 技术栈
+
+- Python 3.12
+- pytest
+- 复杂度分析
+- 容量估算
+- 系统设计模板
+
+## 架构与数据流
+
+```text
+输入 → 参数校验 → 业务处理 → 持久化/外部调用 → 结果输出 → 指标与日志
+                 ↘ 失败分类 → 重试/回滚 → 错误响应
+```
+
+- 读路径要明确查询条件、分页方式和返回字段，避免一次加载全部数据。
+- 写路径要明确事务边界、幂等键和失败补偿，不能留下半完成状态。
+- 外部调用要设置超时、重试上限和降级策略。
+- 每个关键阶段都要留下日志、指标或测试证据。
+
+## 功能范围
+
+- [ ] 数组与哈希的前缀和与频率统计
+- [ ] 双指针、滑动窗口和二分答案模式
+- [ ] 树的遍历、递归边界与迭代改写
+- [ ] 图的最短路、拓扑排序与并查集
+- [ ] 动态规划的状态、转移、初始化和空间优化
+- [ ] 系统设计的容量估算与故障演练
+
+## 示例数据与边界
+
+| 场景 | 输入 | 期望结果 | 检查点 |
+| --- | --- | --- | --- |
+| 正常路径 | 合法的最小数据集 | 成功返回并写入正确数据 | 状态码、数据库记录、日志 |
+| 边界值 | 最大值、最小值或空集合 | 明确成功或给出可理解错误 | 不崩溃、不越界、不写半条数据 |
+| 非法输入 | 类型错误、缺字段、超长内容 | 返回校验错误并指出字段 | 错误结构统一且不泄露内部信息 |
+| 依赖失败 | 数据库不可用、超时、网络抖动 | 重试、降级或快速失败 | 可恢复、可观测、无重复副作用 |
+
+## 实施步骤
+
+### 步骤 1：复述问题并写出 2 到 3 个澄清问题
+
+- 输入与产出：先写清本步依赖的配置、数据和最终产物，再开始编码。
+- 验证方法：用最小请求、最小数据集或单元测试证明本步结果正确。
+- 失败处理：记录错误类型、回滚动作和重试条件，避免把问题带到下一步。
+- 证据留存：保留命令、输出、日志或截图，方便评审与复盘。
+
+### 步骤 2：用最小例子手动推导正确结果
+
+- 输入与产出：先写清本步依赖的配置、数据和最终产物，再开始编码。
+- 验证方法：用最小请求、最小数据集或单元测试证明本步结果正确。
+- 失败处理：记录错误类型、回滚动作和重试条件，避免把问题带到下一步。
+- 证据留存：保留命令、输出、日志或截图，方便评审与复盘。
+
+### 步骤 3：先给出可运行暴力解和复杂度
+
+- 输入与产出：先写清本步依赖的配置、数据和最终产物，再开始编码。
+- 验证方法：用最小请求、最小数据集或单元测试证明本步结果正确。
+- 失败处理：记录错误类型、回滚动作和重试条件，避免把问题带到下一步。
+- 证据留存：保留命令、输出、日志或截图，方便评审与复盘。
+
+### 步骤 4：识别可复用模式并优化关键步骤
+
+- 输入与产出：先写清本步依赖的配置、数据和最终产物，再开始编码。
+- 验证方法：用最小请求、最小数据集或单元测试证明本步结果正确。
+- 失败处理：记录错误类型、回滚动作和重试条件，避免把问题带到下一步。
+- 证据留存：保留命令、输出、日志或截图，方便评审与复盘。
+
+### 步骤 5：编码后逐项验证空值、重复、边界和规模
+
+- 输入与产出：先写清本步依赖的配置、数据和最终产物，再开始编码。
+- 验证方法：用最小请求、最小数据集或单元测试证明本步结果正确。
+- 失败处理：记录错误类型、回滚动作和重试条件，避免把问题带到下一步。
+- 证据留存：保留命令、输出、日志或截图，方便评审与复盘。
+
+### 步骤 6：用六步模板完成一次系统设计表达
+
+- 输入与产出：先写清本步依赖的配置、数据和最终产物，再开始编码。
+- 验证方法：用最小请求、最小数据集或单元测试证明本步结果正确。
+- 失败处理：记录错误类型、回滚动作和重试条件，避免把问题带到下一步。
+- 证据留存：保留命令、输出、日志或截图，方便评审与复盘。
+
+## 关键代码
+
+```python
+def longest_unique_substring(text: str) -> int:
+    last_seen: dict[str, int] = {}
+    left = 0
+    best = 0
+    for right, char in enumerate(text):
+        if char in last_seen and last_seen[char] >= left:
+            left = last_seen[char] + 1
+        last_seen[char] = right
+        best = max(best, right - left + 1)
+    return best
+
+# 关键不变量：窗口 [left, right] 内始终没有重复字符。
+assert longest_unique_substring('abcabcbb') == 3
+assert longest_unique_substring('') == 0
+```
+
+## 验证命令与预期输出
+
+先在干净环境执行启动和测试命令，再把真实输出记录到项目 README 或实施记录中。
+
+```text
+1. 安装依赖并启动项目
+2. 执行至少 3 条自动化测试，其中包含 1 条失败路径
+3. 用正常请求验证成功响应
+4. 用非法输入验证错误响应
+5. 重复执行一次，确认没有重复写入或副作用
+```
+
+预期输出必须包含：启动成功标志、测试通过数量、成功请求结果、错误状态码和重复执行的幂等结论。只写“运行正常”不算验收证据。
+
+## 建议目录结构
+
+```text
+src/
+  entry/        启动与配置
+  domain/       业务模型与规则
+  service/      用例编排
+  infra/        数据库、HTTP、消息等适配器
+tests/          单元、集成与接口测试
+```
+
+目录可以按语言习惯调整，但输入边界、业务规则和外部适配必须分层，不能全部堆在入口文件。
+
+## 质量门禁
+
+- [ ] 格式化和静态检查通过，不遗留明显警告。
+- [ ] 单元测试覆盖核心规则，集成测试覆盖数据库或外部边界。
+- [ ] 错误响应不泄露堆栈、SQL 和密钥。
+- [ ] 配置来自环境变量或配置文件，不硬编码敏感信息。
+- [ ] README 写清启动、测试、配置和回滚步骤。
+
+## 安全、成本与可观测性
+
+- 权限遵循最小授权，数据库账号、云资源和接口令牌都不能使用管理员默认权限。
+- 所有外部输入都要校验、限长并转义，错误信息不能泄露内部路径和 SQL。
+- 密钥通过环境变量或密钥管理服务注入，并记录轮换方式。
+- 为数据库连接、线程/协程、队列、文件和网络请求设置上限，避免资源耗尽。
+- 至少记录请求量、错误率、P95/P99 延迟、资源使用和成本趋势。
+- 出现异常时能从日志和指标还原时间线，而不是只看到一句“服务不可用”。
+
+## 测试与验收
+
+- 空字符串、单字符和全部重复字符返回正确长度
+- 窗口左边界不会倒退且复杂度保持线性
+- 树与图练习覆盖空结构、环和不可达节点
+- 系统设计包含容量估算、失败路径和监控指标
+
+### 验收记录表
+
+| 检查项 | 证据 | 结果 | 备注 |
+| --- | --- | --- | --- |
+| 最小路径可运行 | 启动命令与输出 |  |  |
+| 失败路径可恢复 | 错误日志与重试 |  |  |
+| 自动化测试通过 | 测试报告 |  |  |
+| 配置和密钥安全 | 配置检查 |  |  |
+
+## 常见问题
+
+| 问题 | 原因 | 解决 |
+| --- | --- | --- |
+| 拿到题就直接写代码 | 忽略范围、重复值和空输入导致返工 | 先澄清再编码 |
+| 只说最优解不说推导 | 面试官无法判断思路来源 | 从暴力法逐步优化 |
+| 编码后不主动测试 | 边界错误无法及时发现 | 用正常、边界和反例逐项验证 |
+| 系统设计只画组件 | 没有数据流、容量和故障取舍 | 按六步模板补充量化依据 |
+
+## 扩展任务
+
+- 用同一模式各完成 3 道变体题并总结差异
+- 把系统设计答案写成 10 分钟白板稿
+- 录制自己的讲解并检查遗漏的澄清与验证步骤
+
+## 性能、容量与故障演练
+
+| 维度 | 基线 | 压测方法 | 失败信号 |
+| --- | --- | --- | --- |
+| 延迟 | 记录 P50/P95/P99 | 用固定数据集逐步增加并发 | P99 持续上升或超时率增加 |
+| 吞吐 | 记录每秒处理量 | 逐步加压直到资源打满 | 队列积压、CPU/内存饱和 |
+| 存储 | 记录数据增长与索引大小 | 导入 10 倍数据并观察查询 | 磁盘、连接或锁等待成为瓶颈 |
+| 恢复 | 记录故障恢复时间 | 停止数据库、注入延迟或重复请求 | 数据不一致、重复副作用、无法回滚 |
+
+至少完成一次故障演练：先写下预期行为，再注入故障，最后对比真实行为并修正监控或代码。没有演练的容错设计只能算假设。
+
+## 实施记录与复盘
+
+每完成一步，记录以下内容：
+
+1. 本步的输入、命令和输出是什么？
+2. 遇到的最小失败是什么，如何定位和修复？
+3. 哪个假设被验证或推翻？
+4. 下一步的风险是什么，如何回滚？
+5. 如果数据量或并发扩大 10 倍，最先出现的瓶颈在哪里？
+
+## 动手练习
+
+### 练习 1：最小可运行版本（30 分钟）
+
+只实现最核心的一条路径，确保能启动、能返回结果、能运行测试。
+
+**验收标准**：留下启动命令、请求示例和成功输出。
+
+### 练习 2：失败路径（30 分钟）
+
+制造一次输入错误、依赖失败或超时，记录系统如何报错、如何恢复。
+
+**验收标准**：错误信息清晰，且不会破坏已有数据。
+
+### 练习 3：扩展一个功能（60 分钟）
+
+从扩展任务中选一项实现，并补一条自动化测试。
+
+**验收标准**：新功能通过测试，且原有测试不回归。
+
+## 本课小结
+
+- 项目课的核心不是堆功能，而是把输入、状态、错误和验收标准连接起来。
+- 先跑通最小路径，再补失败处理、测试和文档，最后才做性能优化。
+- 每个阶段都要留下可复现证据：命令、输出、测试和变更记录。
+- 完成后用扩展任务检验迁移能力，而不是只复制示例代码。
+
+## 完成标准
+
+- [ ] 能从干净环境按 README 启动项目。
+- [ ] 至少 3 条自动化测试通过，且包含一条失败路径。
+- [ ] 能演示一次错误、一次恢复和一次回滚。
+- [ ] 有一份资源或性能基线，能说明瓶颈在哪里。
+- [ ] 能说清一个尚未解决的问题和下一步验证方法。
+
+<!-- p2-enrichment:v1 -->
+
+## English Overview
+
+**Title:** Interview Sprint: Coding and System Design
+
+**Summary:** Practice coding patterns and system design with a repeatable interview framework.
+
+**Category:** Project Practice  
+**Level:** 高级  
+**Key terms:** 面试, 算法模式, 系统设计, 复杂度, 排障
+
+> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
+
+## 内容元数据
+
+- 内容版本：v2.0
+- 最后更新：2026-10-03
+- 学习阶段：高级
+- 适用环境：通用项目交付流程
+- 内容来源：内置结构化课程与工程实践整理
+- 相关主题：面试、算法模式、系统设计、复杂度、排障
+- 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
+
+## 项目专属规格：面试冲刺：算法编码与系统设计高频题
+
+### 核心场景
+
+用统一框架练习数组、哈希、滑动窗口、树、图、动态规划与系统设计，训练澄清、推导、编码和排障表达。 项目目标是把「面试、算法模式、系统设计、复杂度、排障」落实为可运行、可测试、可回滚的交付物。
+
+### 架构与数据流
+
+```text
+用户/输入 → 接口或命令 → 领域逻辑 → 存储/外部依赖 → 输出与监控
+                         ↘ 失败分类 → 重试/补偿 → 回滚
+```
+
+### 最小数据模型
+
+| 对象 | 关键字段 | 约束 |
+| --- | --- | --- |
+| 输入实体 | 面试、时间、来源 | 必填校验、长度限制、幂等键 |
+| 任务实体 | 状态、优先级、创建时间 | 状态迁移合法、不可重复执行 |
+| 结果实体 | 输出、错误码、耗时 | 可序列化、错误可解释 |
+| 审计记录 | 操作者、动作、结果、时间 | 不可篡改、可查询、脱敏 |
+
+### 验收场景
+
+1. 正常路径：最小输入得到预期输出，并留下日志与指标。
+2. 边界路径：空值、最大值、重复数据和超长内容得到明确处理。
+3. 失败路径：依赖超时或不可用时能快速失败、重试或降级。
+4. 幂等路径：同一请求执行两次不会产生重复副作用。
+5. 回滚路径：回滚后数据一致，且能说明恢复时间和影响范围。
+
+<!-- project-delivery:v1 -->
+
+## 项目交付物
+
+### 建议仓库结构
+
+```text
+src/
+tests/
+docs/
+README.md
+```
+
+### 测试矩阵
+
+| 层级 | 覆盖内容 | 最低数量 | 通过标准 |
+| --- | --- | ---: | --- |
+| 单元测试 | 领域规则、边界和错误分类 | 8 | 正常、边界、失败路径全部通过 |
+| 集成测试 | 数据库、网络、文件或平台边界 | 3 | 使用真实边界且可重复运行 |
+| 端到端测试 | 核心用户路径 | 1 | 从输入到输出完整跑通 |
+| 手动验收 | 文档中列出的 5 个场景 | 5 | 有命令、输出和结论记录 |
+
+### 验收数据
+
+```json
+{
+  "project": "project_interview_coding_system_design",
+  "input": {"case": "normal", "value": 5},
+  "expected": {"ok": true, "result": 5},
+  "failure_case": {"value": -1, "error": "validation_error"},
+  "idempotency_key": "demo-001"
+}
+```
+
+### 复盘模板
+
+| 问题 | 记录 |
+| --- | --- |
+| 原目标是什么？ | 用一句话描述可验收目标 |
+| 实际发生了什么？ | 时间线、指标和关键日志 |
+| 哪个假设被推翻？ | 根因与促成因素 |
+| 如何回滚？ | 步骤、耗时和数据校验 |
+| 下一步做什么？ | 负责人、期限和验证方式 |
+
+> 项目验收围绕「面试、算法模式、系统设计」：至少完成一次正常路径、一次边界输入、一次失败恢复和一次幂等检查。
+
+<!-- p2-references:v1 -->
+
+## 参考资料与复核
+
+- 最后复核：2026-10-04
+- 下次复核：2027-04-04
+- 复核范围：版本兼容、API 行为、安全建议与工程实践
+- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+
+| 参考资料 | 本课用途 |
+| --- | --- |
+| [The Twelve-Factor App](https://12factor.net/) | 可部署应用原则 |
+| [Google SRE Books](https://sre.google/books/) | 可观测性与发布工程 |
+
+> 本课主题：用统一框架练习数组、哈希、滑动窗口、树、图、动态规划与系统设计，训练澄清、推导、编码和排障表达。
+
+> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+
+<!-- full-english-guide:v1 -->
+
+## Full English Study Guide
+
+### Overview
+
+**Interview Sprint: Coding and System Design** focuses on Practice coding patterns and system design with a repeatable interview framework.
+
+### Learning Outcomes
+
+- Explain what **Interview Sprint: Coding and System Design** solves and when it should be used.
+- Identify inputs, outputs, state and failure boundaries.
+- Build a minimal reproducible example and observe the real result.
+- Test normal, boundary and failure paths.
+- Measure performance, resource cost or security impact before optimizing.
+- Document the decision, rollback path and remaining uncertainty.
+
+### Core Mental Model
+
+1. **Problem first:** define the exact problem before choosing a tool or pattern.
+2. **Smallest example:** reduce the system to one input and one observable output.
+3. **State and flow:** trace how data, control or responsibility moves through the system.
+4. **Boundaries:** identify invalid input, resource limits, timeouts and permission edges.
+5. **Evidence:** use tests, logs, metrics or reproductions instead of intuition.
+6. **Trade-offs:** compare correctness, latency, cost, complexity and operability.
+
+### Step-by-step Study Plan
+
+1. Read the Chinese lesson once and write down the main problem in one sentence.
+2. Run the smallest example and save the exact command and output.
+3. Change only one input or parameter and predict the result before running it.
+4. Introduce one failure and record how the system detects, reports and recovers.
+5. Write one test or checklist item for the normal, boundary and failure paths.
+6. Complete the quiz and explain every wrong answer in your own words.
+
+### Practice Tasks
+
+- Rebuild the minimal example from an empty directory.
+- Add one boundary test and one failure test.
+- Produce a short report containing the baseline, change, result and rollback.
+
+### Common Failure Modes
+
+- Treating a happy-path demo as production readiness.
+- Skipping boundary values and invalid inputs.
+- Optimizing before establishing a measurable baseline.
+- Hiding errors, permissions or resource limits.
+
+### Self-check Questions
+
+1. What is the smallest observable result that proves this lesson works?
+2. What input or state is most likely to break it?
+3. Which metric or test would reveal a regression?
+4. What is the rollback path?
+5. What is the cost of using this approach at 10x scale?
+6. Which adjacent topic is most often confused with this one?
+
+### Glossary
+
+- Topic: **Interview Sprint: Coding and System Design**
+- Related terms: 面试, 算法模式, 系统设计, 复杂度
+- Primary evidence: command output, tests, logs, metrics or reproductions
+
+> This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
+

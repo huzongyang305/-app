@@ -1,0 +1,163 @@
+{
+  "category": "java",
+  "lessons": [
+    {
+      "id": "java_project_inventory",
+      "title": {
+        "zh": "实战：Java 库存管理 REST 服务",
+        "en": "Project: Java Inventory REST Service"
+      },
+      "summary": {
+        "zh": "用 Spring Boot、JPA 和 JUnit 实现库存服务，覆盖校验、事务和并发扣减。",
+        "en": "Build an inventory REST service with Spring Boot and JPA."
+      },
+      "file": "assets/content/java_project_inventory.md",
+      "minutes": 120,
+      "keywords": [
+        "Spring Boot",
+        "JPA",
+        "事务",
+        "JUnit",
+        "库存"
+      ],
+      "difficulty": "高级",
+      "order": 13,
+      "quiz": [
+        {
+          "question": "避免库存超卖最可靠的做法是什么？",
+          "options": [
+            "先查询再更新",
+            "数据库条件更新或加锁",
+            "增加日志",
+            "只提高线程数"
+          ],
+          "answer": 1,
+          "explanation": "把判断和更新放进同一条原子 SQL 或加锁事务才能避免竞态。"
+        },
+        {
+          "question": "Spring 中哪个注解声明事务边界？",
+          "options": [
+            "@Transactional",
+            "@Controller",
+            "@Bean",
+            "@JsonProperty"
+          ],
+          "answer": 0,
+          "explanation": "@Transactional 让方法在事务中执行并按异常回滚。"
+        },
+        {
+          "question": "为什么接口要使用 DTO？",
+          "options": [
+            "减少数据库表",
+            "隔离外部契约和内部实体",
+            "自动生成索引",
+            "替代测试"
+          ],
+          "answer": 1,
+          "explanation": "DTO 能避免实体字段泄露，并让接口版本演进更自由。"
+        },
+        {
+          "question": "库存不足最适合返回哪个 HTTP 状态？",
+          "options": [
+            "200",
+            "409 Conflict",
+            "404",
+            "302"
+          ],
+          "answer": 1,
+          "explanation": "请求与当前库存状态冲突，409 能表达业务状态不允许。"
+        },
+        {
+          "question": "集成测试相比单元测试多覆盖了什么？",
+          "options": [
+            "数据库映射、事务和约束",
+            "语法",
+            "UI 颜色",
+            "网络协议"
+          ],
+          "answer": 0,
+          "explanation": "集成测试能验证 ORM、事务和真实数据库交互。"
+        }
+      ]
+    },
+    {
+      "id": "java_project_order_concurrency",
+      "title": {
+        "zh": "实战：Java 并发订单处理服务",
+        "en": "Project: Java Concurrent Order Processor"
+      },
+      "summary": {
+        "zh": "用 ExecutorService、BlockingQueue 和 CompletableFuture 处理订单，覆盖限流、超时和重试。",
+        "en": "Build a concurrent order processor with Java concurrency primitives."
+      },
+      "file": "assets/content/java_project_order_concurrency.md",
+      "minutes": 110,
+      "keywords": [
+        "并发",
+        "ExecutorService",
+        "BlockingQueue",
+        "CompletableFuture",
+        "超时"
+      ],
+      "difficulty": "高级",
+      "order": 14,
+      "quiz": [
+        {
+          "question": "I/O 密集任务线程池通常如何配置？",
+          "options": [
+            "线程数可大于 CPU 核心",
+            "只能单线程",
+            "必须为 0",
+            "与任务无关"
+          ],
+          "answer": 0,
+          "explanation": "I/O 等待期间线程让出 CPU，适度增加线程可提高吞吐，但要有上限。"
+        },
+        {
+          "question": "无界队列的主要风险是什么？",
+          "options": [
+            "内存持续增长",
+            "线程数太少",
+            "CPU 降频",
+            "日志丢失"
+          ],
+          "answer": 0,
+          "explanation": "任务积压没有上限时会耗尽内存，背压必须有界。"
+        },
+        {
+          "question": "orTimeout 的作用是什么？",
+          "options": [
+            "压缩响应",
+            "超时后完成异常",
+            "增加线程",
+            "关闭队列"
+          ],
+          "answer": 1,
+          "explanation": "超时会让 CompletableFuture 以异常完成，调用方能统一处理。"
+        },
+        {
+          "question": "重试为什么需要退避？",
+          "options": [
+            "减少日志",
+            "避免故障时放大流量",
+            "提高内存",
+            "让线程变多"
+          ],
+          "answer": 1,
+          "explanation": "指数退避和抖动能让下游有时间恢复。"
+        },
+        {
+          "question": "线程池关闭前应该做什么？",
+          "options": [
+            "立即 System.exit",
+            "停止接收新任务并等待已提交任务",
+            "清空日志",
+            "删除队列"
+          ],
+          "answer": 1,
+          "explanation": "优雅关闭先拒绝新任务，再给已提交任务完成时间。"
+        }
+      ]
+    }
+  ]
+}

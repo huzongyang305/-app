@@ -1,0 +1,163 @@
+{
+  "category": "go",
+  "lessons": [
+    {
+      "id": "go_project_rest_api",
+      "title": {
+        "zh": "实战：Go REST API 服务",
+        "en": "Project: Go REST API Service"
+      },
+      "summary": {
+        "zh": "用 net/http、SQLite 和优雅关闭实现商品 API，覆盖路由、校验和测试。",
+        "en": "Build a Go REST API with SQLite and graceful shutdown."
+      },
+      "file": "assets/content/go_project_rest_api.md",
+      "minutes": 120,
+      "keywords": [
+        "Go",
+        "net/http",
+        "SQLite",
+        "优雅关闭",
+        "测试"
+      ],
+      "difficulty": "高级",
+      "order": 14,
+      "quiz": [
+        {
+          "question": "Go 标准库中最常用的 HTTP 路由入口是什么？",
+          "options": [
+            "http.ServeMux",
+            "os.Args",
+            "encoding/json",
+            "sync.Mutex"
+          ],
+          "answer": 0,
+          "explanation": "ServeMux 负责把请求路径映射到 handler。"
+        },
+        {
+          "question": "为什么 http.Server 要设置超时？",
+          "options": [
+            "避免慢连接占满资源",
+            "增加颜色",
+            "压缩图片",
+            "自动生成文档"
+          ],
+          "answer": 0,
+          "explanation": "读写和空闲超时能防止恶意或异常连接长期占用。"
+        },
+        {
+          "question": "优雅关闭的第一步是什么？",
+          "options": [
+            "监听终止信号并停止接收新请求",
+            "立即 kill 进程",
+            "删除数据库",
+            "清空日志"
+          ],
+          "answer": 0,
+          "explanation": "先停止接收，再等待在途请求完成，最后关闭资源。"
+        },
+        {
+          "question": "httptest 主要用于什么？",
+          "options": [
+            "在不启动真实端口的情况下测试 handler",
+            "编译 C++",
+            "生成 UI",
+            "管理数据库"
+          ],
+          "answer": 0,
+          "explanation": "httptest 提供请求和响应记录器，适合稳定的 HTTP 单元测试。"
+        },
+        {
+          "question": "context 在服务中通常传递什么？",
+          "options": [
+            "取消、超时和请求范围数据",
+            "颜色",
+            "字体",
+            "磁盘容量"
+          ],
+          "answer": 0,
+          "explanation": "context 让下游调用感知取消和截止时间。"
+        }
+      ]
+    },
+    {
+      "id": "go_project_worker_pool",
+      "title": {
+        "zh": "实战：Go 并发抓取与 Worker Pool",
+        "en": "Project: Go Concurrent Crawler and Worker Pool"
+      },
+      "summary": {
+        "zh": "用 goroutine、channel、context 和 errgroup 实现带限流、重试和取消的抓取任务。",
+        "en": "Build a rate-limited concurrent crawler with Go concurrency primitives."
+      },
+      "file": "assets/content/go_project_worker_pool.md",
+      "minutes": 110,
+      "keywords": [
+        "goroutine",
+        "channel",
+        "context",
+        "worker pool",
+        "errgroup"
+      ],
+      "difficulty": "高级",
+      "order": 15,
+      "quiz": [
+        {
+          "question": "Worker Pool 的核心组成是什么？",
+          "options": [
+            "固定 worker 加任务队列",
+            "无限 goroutine",
+            "单线程循环",
+            "只用数据库"
+          ],
+          "answer": 0,
+          "explanation": "固定 worker 和有界队列能控制并发和资源。"
+        },
+        {
+          "question": "context 在并发抓取中的作用是什么？",
+          "options": [
+            "传播取消和超时",
+            "解析 HTML",
+            "压缩响应",
+            "生成日志格式"
+          ],
+          "answer": 0,
+          "explanation": "context 让所有子任务在父任务取消时及时退出。"
+        },
+        {
+          "question": "关闭 channel 的正确原则是什么？",
+          "options": [
+            "由发送方关闭",
+            "由任意接收方关闭",
+            "永远不关闭",
+            "每次发送后关闭"
+          ],
+          "answer": 0,
+          "explanation": "通常由唯一发送方关闭，接收方不负责关闭，避免向已关闭 channel 发送。"
+        },
+        {
+          "question": "限流器解决了什么问题？",
+          "options": [
+            "控制请求速率保护下游",
+            "提升颜色",
+            "减少代码行数",
+            "替代重试"
+          ],
+          "answer": 0,
+          "explanation": "限流防止瞬时流量压垮目标服务。"
+        },
+        {
+          "question": "如何检查 goroutine 泄漏？",
+          "options": [
+            "运行前后比较 goroutine 数量并使用阻塞分析",
+            "只看日志颜色",
+            "关闭数据库",
+            "增加超时"
+          ],
+          "answer": 0,
+          "explanation": "goroutine 数量持续增长通常意味着阻塞或缺少取消。"
+        }
+      ]
+    }
+  ]
+}

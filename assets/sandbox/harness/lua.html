@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<pre id="sandbox-output" hidden></pre>
+<script>/*__COMMON__*/</script>
+<script>var module = { exports: {} }; var exports = module.exports;</script>
+<script>/*__RUNTIME_1__*/</script>
+<script>
+(function () {
+  __sandboxBegin();
+  try {
+    // fengari 的浏览器包是 CommonJS 形式，这里读取上面准备好的 module.exports。
+    var fengari = module.exports;
+    var lua = fengari.lua;
+    var lauxlib = fengari.lauxlib;
+    var lualib = fengari.lualib;
+    var state = lauxlib.luaL_newstate();
+    lualib.luaL_openlibs(state);
+
+    // 用 JS 函数接管 print，输出进入沙箱日志而不是设备控制台。
+    lua.lua_pushcfunction(state, function (L) {
+      var top = lua.lua_gettop(L);
+      var parts = [];
+      for (var index = 1; index <= top; index++) {
+        var raw = lauxlib.luaL_tolstring(L, index, null);
+        parts.push(raw ? fengari.to_jsstring(raw) : 'nil');
+        lua.lua_pop(L, 1);
+      }
+      __sandboxPush(parts.join('\t'));
+      return 0;
+    });
+    lua.lua_setglobal(state, fengari.to_luastring('print'));
+
+    var status = lauxlib.luaL_loadstring(state, fengari.to_luastring(__USER_CODE__));
+    if (status === lua.LUA_OK) {
+      status = lua.lua_pcall(state, 0, lua.LUA_MULTRET, 0);
+    }
+    if (status !== lua.LUA_OK) {
+      __sandboxPush('Error: ' + lua.lua_tojsstring(state, -1));
+    }
+  } catch (error) {
+    __sandboxPush('Error: ' + (error && error.stack ? error.stack : String(error)));
+  }
+  __sandboxFinish();
+})();
+</script>
+</body>
+</html>

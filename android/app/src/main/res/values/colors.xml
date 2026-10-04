@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 品牌色：与 lib/theme/app_theme.dart 保持一致 -->
+    <color name="brand_primary">#FF6C8FF8</color>
+    <color name="brand_primary_deep">#FF4166D9</color>
+    <!-- 自适应图标背景（矢量渐变失败时的兜底色） -->
+    <color name="ic_launcher_background">#FF6C8FF8</color>
+    <!-- Flutter 首帧之前的窗口底色，避免白/黑闪屏 -->
+    <color name="normal_background_light">#FFF8FAFC</color>
+    <color name="normal_background_dark">#FF0F172A</color>
+</resources>

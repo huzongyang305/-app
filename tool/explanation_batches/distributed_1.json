@@ -1,0 +1,12 @@
+{
+  "distributed_fundamentals#0": "CAP 讨论的正是分区发生时的行为，与延迟无关，也不可能三者同时满足；分区无法避免，因此只能在一致性与可用性之间选择。",
+  "distributed_fundamentals#1": "只同步一次、全部确认、完全不等待分别对应异步、强同步与异步复制；半同步是至少一个副本确认即返回。",
+  "distributed_fundamentals#2": "忽略错误码、无限重试与超长超时都会放大故障；可重试接口的前提是幂等，配合请求 ID 与去重表。",
+  "distributed_fundamentals#3": "ACID 同样适用于关系型甚至部分 NoSQL，BASE 的约束更弱而非更强，两者也不等价；BASE 用最终一致换取可用性与扩展性。",
+  "distributed_fundamentals#4": "时钟漂移不会阻止节点启动、不会损坏磁盘、也不会造成网络中断；它的危害在于无法用本地时间判断事件先后，需要逻辑时钟或因果序。",
+  "distributed_short_url_project#0": "直接暴露自增 ID 容易被遍历，MD5 截断与时间戳都存在碰撞或被预测的风险；主流是发号器加进制转换，或随机码加唯一索引重试。",
+  "distributed_short_url_project#1": "压缩长链只省带宽、不影响跳转速度，加连接与写库分片针对的是写入侧；读多写少的瓶颈要靠 Redis 缓存短码到长链的映射。",
+  "distributed_short_url_project#2": "随机扩容、拍脑袋经验值与按代码行数都与容量无关；应使用利特尔法则估算并发并保留余量，再用压测校准。",
+  "distributed_short_url_project#3": "301 与 302 有明显差别，302 也可通过缓存头控制；301 会被浏览器长期缓存，导致统计失真且难以改链。",
+  "distributed_short_url_project#4": "越短并不越安全，连续可预测会被批量枚举，重复更是绝对不允许；ID 必须全局唯一、趋势递增且难以遍历。"
+}

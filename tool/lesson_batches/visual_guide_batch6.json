@@ -1,0 +1,182 @@
+{
+  "category": "visual_guide",
+  "lessons": [
+    {
+      "id": "visual_kafka_partition",
+      "title": { "zh": "图解 Kafka 分区、副本与再平衡", "en": "Kafka Partitions Illustrated" },
+      "summary": {
+        "zh": "分区与顺序、消费者组再平衡、ISR 副本机制与位点提交。",
+        "en": "Partitions, rebalancing, ISR replicas and offset commits."
+      },
+      "file": "assets/content/visual_kafka_partition.md",
+      "minutes": 20,
+      "keywords": ["Kafka", "分区", "再平衡", "ISR", "offset"],
+      "difficulty": "进阶",
+      "order": 18,
+      "quiz": [
+        {
+          "question": "在 Kafka 中，要保证「同一用户的动作有序」，应该？",
+          "options": [
+            "把所有消息发到同一个分区",
+            "把用户 ID 设为消息 key，使同一用户落到同一分区",
+            "增加消费者数量",
+            "开启事务"
+          ],
+          "answer": 1,
+          "explanation": "分区内有序，同 key 落同分区即可满足单业务键有序，同时保留并发。选项一牺牲全部并行度；选项三与顺序无关；选项四解决的是原子写入而非顺序。"
+        },
+        {
+          "question": "消费者组再平衡的主要代价是？",
+          "options": [
+            "磁盘写满",
+            "期间消费停顿，并从上次提交位点继续（可能重复消费）",
+            "分区数量自动增加",
+            "副本因子降低"
+          ],
+          "answer": 1,
+          "explanation": "再平衡会撤销并重新分配分区，消费短暂停止。选项一、三、四都不是再平衡的直接后果。"
+        },
+        {
+          "question": "`acks=all` 配合 `min.insync.replicas=2` 的意义是？",
+          "options": [
+            "只要主副本写入就算成功",
+            "至少两个副本确认后才算写入成功，避免主副本故障丢数据",
+            "提升吞吐量",
+            "减少分区数量"
+          ],
+          "answer": 1,
+          "explanation": "这是保证写入不丢的关键配置组合。选项一是 acks=1 的行为；选项三与事实相反，可靠性提升会牺牲部分吞吐；选项四与副本无关。"
+        },
+        {
+          "question": "为避免「消息被标记已消费但实际未处理」，正确的提交顺序是？",
+          "options": [
+            "先提交 offset，再处理消息",
+            "先处理成功，再手动提交 offset",
+            "完全依赖自动提交",
+            "处理与提交并行即可"
+          ],
+          "answer": 1,
+          "explanation": "处理成功后再提交，失败时消息会被重新消费。选项一正是丢消息的经典成因；选项三按时间自动提交，风险相同；选项四无法保证顺序。"
+        }
+      ]
+    },
+    {
+      "id": "visual_consistent_hashing",
+      "title": { "zh": "图解一致性哈希与数据分片", "en": "Consistent Hashing Illustrated" },
+      "summary": {
+        "zh": "取模扩容的问题、哈希环、虚拟节点、分片键选择与迁移流程。",
+        "en": "Modulo rehashing, hash rings, virtual nodes and migration."
+      },
+      "file": "assets/content/visual_consistent_hashing.md",
+      "minutes": 20,
+      "keywords": ["一致性哈希", "分片", "虚拟节点", "扩容", "热点"],
+      "difficulty": "进阶",
+      "order": 19,
+      "quiz": [
+        {
+          "question": "用「hash(key) % 节点数」分片，从 3 个节点扩到 4 个节点会怎样？",
+          "options": [
+            "只有 1/4 的数据需要迁移",
+            "几乎所有 key 的归属都会变化，导致大规模数据搬迁",
+            "数据不会变化",
+            "分区会自动复制"
+          ],
+          "answer": 1,
+          "explanation": "取模分片在节点数变化时会打乱绝大多数映射关系。选项一描述的是理想情况，取模做不到；选项三与选项四与事实不符。"
+        },
+        {
+          "question": "虚拟节点解决的核心问题是？",
+          "options": [
+            "减少内存占用",
+            "让节点在哈希环上分布更均匀，避免负载倾斜",
+            "提高哈希速度",
+            "降低副本数量"
+          ],
+          "answer": 1,
+          "explanation": "物理节点少时环上区间大小随机，容易倾斜；虚拟节点让区间均匀交错。选项一、三、四都不是它的作用。"
+        },
+        {
+          "question": "选择分片键时，最重要的三条标准是？",
+          "options": [
+            "短、好记、按字母排序",
+            "基数足够大、分布均匀、与常见查询匹配",
+            "必须自增、必须唯一、必须为数字",
+            "与业务无关、随机、不可预测"
+          ],
+          "answer": 1,
+          "explanation": "这三条决定分布质量与查询效率。选项一与选项四忽略了分布与查询；选项三过于机械，与分片无关。"
+        },
+        {
+          "question": "分片迁移期间保证不丢数据的关键手段是？",
+          "options": [
+            "直接切换流量",
+            "双写加校验，并在读未命中时回退读旧位置",
+            "先删除旧数据再写新数据",
+            "关闭索引"
+          ],
+          "answer": 1,
+          "explanation": "双写保证新数据不丢，回退读保证迁移期间查询正常。选项一会造成迁移窗口内的数据丢失；选项二是危险操作；选项四与迁移无关。"
+        }
+      ]
+    },
+    {
+      "id": "visual_vector_index",
+      "title": { "zh": "图解向量检索与 HNSW 索引", "en": "Vector Search and HNSW" },
+      "summary": {
+        "zh": "暴力检索的瓶颈、HNSW 分层图、三个关键参数与 Recall 评估。",
+        "en": "Brute force limits, HNSW layers, key parameters and recall."
+      },
+      "file": "assets/content/visual_vector_index.md",
+      "minutes": 20,
+      "keywords": ["向量检索", "HNSW", "ANN", "召回率", "RAG"],
+      "difficulty": "进阶",
+      "order": 20,
+      "quiz": [
+        {
+          "question": "HNSW 为什么能加速向量检索？",
+          "options": [
+            "它压缩了向量维度",
+            "用分层图从稀疏上层快速跳转，只在底层做小范围精细搜索",
+            "它只检索部分维度",
+            "它把向量转成标量"
+          ],
+          "answer": 1,
+          "explanation": "分层结构让搜索步数大幅减少，用近似换速度。选项一、三、四都不是 HNSW 的机制。"
+        },
+        {
+          "question": "在线查询延迟偏高时，优先调整哪个参数？",
+          "options": [
+            "efSearch",
+            "M",
+            "efConstruction",
+            "索引维度"
+          ],
+          "answer": 0,
+          "explanation": "efSearch 是查询期旋钮，直接决定搜索宽度与延迟。选项二与选项三主要影响索引质量与内存；选项四由模型决定，不能随意改。"
+        },
+        {
+          "question": "Recall@K 衡量的是？",
+          "options": [
+            "检索速度",
+            "ANN 结果与精确结果的重合比例，即检索质量",
+            "内存占用",
+            "索引构建时间"
+          ],
+          "answer": 1,
+          "explanation": "用暴力检索的结果作为基准，比较 ANN 命中多少。选项一、三、四分别对应延迟、内存与建库时间。"
+        },
+        {
+          "question": "向量索引里删除一条数据后，常见现象是？",
+          "options": [
+            "立刻彻底消失",
+            "多为软删除，仍可能被检索到，需要过滤或定期重建",
+            "索引自动重建",
+            "召回率自动提升"
+          ],
+          "answer": 1,
+          "explanation": "图索引结构难以即时删除节点，通常打失效标记并在查询时过滤。选项一、三、四与常见实现不符。"
+        }
+      ]
+    }
+  ]
+}

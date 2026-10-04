@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<pre id="sandbox-output" hidden></pre>
+<script>/*__COMMON__*/</script>
+<script>/*__RUNTIME_1__*/</script>
+<script>/*__RUNTIME_2__*/</script>
+<script>
+(function () {
+  __sandboxBegin();
+
+  function base64ToBytes(base64) {
+    var binary = atob(base64);
+    var bytes = new Uint8Array(binary.length);
+    for (var i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return bytes;
+  }
+
+  function cell(value) {
+    if (value === null || typeof value === 'undefined') return 'NULL';
+    if (typeof Uint8Array !== 'undefined' && value instanceof Uint8Array) {
+      return 'BLOB(' + value.length + ')';
+    }
+    return String(value);
+  }
+
+  function formatResults(results) {
+    if (!results || results.length === 0) return '执行成功（没有返回结果集）';
+    return results.map(function (result, index) {
+      var lines = [];
+      if (results.length > 1) lines.push('结果集 ' + (index + 1) + '：');
+      lines.push(result.columns.join(' | '));
+      lines.push(result.columns.map(function (name) {
+        return new Array(String(name).length + 1).join('-');
+      }).join('-+-'));
+      result.values.forEach(function (row) {
+        lines.push(row.map(cell).join(' | '));
+      });
+      return lines.join('\n');
+    }).join('\n\n');
+  }
+
+  try {
+    if (typeof WebAssembly === 'undefined') {
+      __sandboxPush('Error: 当前 WebView 版本过低（不支持 WebAssembly），无法运行 SQL 沙箱。');
+      __sandboxFinish();
+      return;
+    }
+    initSqlJs({ wasmBinary: base64ToBytes(window.SQL_WASM_BASE64).buffer }).then(function (SQL) {
+      var database = new SQL.Database();
+      try {
+        __sandboxPush(formatResults(database.exec(__USER_CODE__)));
+      } catch (error) {
+        __sandboxPush('Error: ' + (error && error.message ? error.message : String(error)));
+      } finally {
+        database.close();
+      }
+      __sandboxFinish();
+    }).catch(function (error) {
+      __sandboxPush('Error: 初始化 SQL 运行时失败：' + (error && error.message ? error.message : String(error)));
+      __sandboxFinish();
+    });
+  } catch (error) {
+    __sandboxPush('Error: ' + (error && error.stack ? error.stack : String(error)));
+    __sandboxFinish();
+  }
+})();
+</script>
+</body>
+</html>

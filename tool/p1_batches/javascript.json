@@ -1,0 +1,218 @@
+{
+  "category": "javascript",
+  "lessons": [
+    {
+      "id": "js_execution_context",
+      "title": {
+        "zh": "JavaScript 执行上下文与闭包",
+        "en": "JavaScript Execution Context and Closures"
+      },
+      "summary": {
+        "zh": "理解调用栈、词法作用域、闭包、this 和暂时性死区。",
+        "en": "Learn call stack, lexical scope, closures, this and temporal dead zone."
+      },
+      "file": "assets/content/js_execution_context.md",
+      "minutes": 24,
+      "keywords": [
+        "执行上下文",
+        "闭包",
+        "this",
+        "作用域"
+      ],
+      "difficulty": "高级",
+      "order": 13,
+      "quiz": [
+        {
+          "question": "关于「函数执行时创建词法环境和变量环境 闭…」，下列说法正确的是？",
+          "options": [
+            "函数执行时创建词法环境和变量环境，闭包保留对外层变量的引用。",
+            "垃圾回收从根对象出发标记可达对象，不再可达的对象才会被回收。",
+            "Node.js 用事件循环处理异步 IO，CPU 密集任务会阻塞所有请求。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《JavaScript 执行上下文与闭包》时应把该要点与「执行上下文」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「this 由调用方式决定 箭头函数捕…」，下列说法正确的是？",
+          "options": [
+            "this 由调用方式决定，箭头函数捕获外层 this。",
+            "全局变量、未注销监听器、闭包和缓存会长期持有对象造成泄漏。",
+            "cluster/worker_threads 分别适合多进程扩展和 CPU 并行，但共享状态要重新设计。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《JavaScript 执行上下文与闭包》时应把该要点与「执行上下文」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「let/const 存在暂时性死区 …」，下列说法正确的是？",
+          "options": [
+            "let/const 存在暂时性死区，声明前访问会抛 ReferenceError。",
+            "用堆快照对比、分配时间线和 Performance 面板定位内存与长任务。",
+            "后端要处理超时、取消、连接池、优雅关闭和结构化日志。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《JavaScript 执行上下文与闭包》时应把该要点与「执行上下文」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「JavaScript 执行上下文与闭包」的核心学习目标是什么？",
+          "options": [
+            "理解调用栈、词法作用域、闭包、this 和暂时性死区。",
+            "理解可达性、引用泄漏、堆快照和前端长任务。",
+            "覆盖异步 IO、事件循环、进程模型、错误处理和部署。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "js_memory_gc",
+      "title": {
+        "zh": "JavaScript 内存管理与垃圾回收",
+        "en": "JavaScript Memory and Garbage Collection"
+      },
+      "summary": {
+        "zh": "理解可达性、引用泄漏、堆快照和前端长任务。",
+        "en": "Learn reachability, leaks, heap snapshots and long tasks."
+      },
+      "file": "assets/content/js_memory_gc.md",
+      "minutes": 24,
+      "keywords": [
+        "内存",
+        "GC",
+        "堆快照",
+        "泄漏"
+      ],
+      "difficulty": "高级",
+      "order": 14,
+      "quiz": [
+        {
+          "question": "关于「垃圾回收从根对象出发标记可达对象 不…」，下列说法正确的是？",
+          "options": [
+            "垃圾回收从根对象出发标记可达对象，不再可达的对象才会被回收。",
+            "函数执行时创建词法环境和变量环境，闭包保留对外层变量的引用。",
+            "Node.js 用事件循环处理异步 IO，CPU 密集任务会阻塞所有请求。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《JavaScript 内存管理与垃圾回收》时应把该要点与「内存」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「全局变量、未注销监听器、闭包和缓存会…」，下列说法正确的是？",
+          "options": [
+            "全局变量、未注销监听器、闭包和缓存会长期持有对象造成泄漏。",
+            "this 由调用方式决定，箭头函数捕获外层 this。",
+            "cluster/worker_threads 分别适合多进程扩展和 CPU 并行，但共享状态要重新设计。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《JavaScript 内存管理与垃圾回收》时应把该要点与「内存」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「用堆快照对比、分配时间线和 Perf…」，下列说法正确的是？",
+          "options": [
+            "用堆快照对比、分配时间线和 Performance 面板定位内存与长任务。",
+            "let/const 存在暂时性死区，声明前访问会抛 ReferenceError。",
+            "后端要处理超时、取消、连接池、优雅关闭和结构化日志。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《JavaScript 内存管理与垃圾回收》时应把该要点与「内存」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「JavaScript 内存管理与垃圾回收」的核心学习目标是什么？",
+          "options": [
+            "理解可达性、引用泄漏、堆快照和前端长任务。",
+            "理解调用栈、词法作用域、闭包、this 和暂时性死区。",
+            "覆盖异步 IO、事件循环、进程模型、错误处理和部署。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "js_node_backend",
+      "title": {
+        "zh": "Node.js 后端工程",
+        "en": "Node.js Backend Engineering"
+      },
+      "summary": {
+        "zh": "覆盖异步 IO、事件循环、进程模型、错误处理和部署。",
+        "en": "Cover async IO, event loop, process model, errors and deployment."
+      },
+      "file": "assets/content/js_node_backend.md",
+      "minutes": 25,
+      "keywords": [
+        "Node.js",
+        "事件循环",
+        "后端",
+        "进程"
+      ],
+      "difficulty": "高级",
+      "order": 15,
+      "quiz": [
+        {
+          "question": "关于「Node js 用事件循环处理异步 …」，下列说法正确的是？",
+          "options": [
+            "Node.js 用事件循环处理异步 IO，CPU 密集任务会阻塞所有请求。",
+            "函数执行时创建词法环境和变量环境，闭包保留对外层变量的引用。",
+            "垃圾回收从根对象出发标记可达对象，不再可达的对象才会被回收。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Node.js 后端工程》时应把该要点与「Node.js」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「cluster/worker_thr…」，下列说法正确的是？",
+          "options": [
+            "cluster/worker_threads 分别适合多进程扩展和 CPU 并行，但共享状态要重新设计。",
+            "this 由调用方式决定，箭头函数捕获外层 this。",
+            "全局变量、未注销监听器、闭包和缓存会长期持有对象造成泄漏。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Node.js 后端工程》时应把该要点与「Node.js」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「后端要处理超时、取消、连接池、优雅关…」，下列说法正确的是？",
+          "options": [
+            "后端要处理超时、取消、连接池、优雅关闭和结构化日志。",
+            "let/const 存在暂时性死区，声明前访问会抛 ReferenceError。",
+            "用堆快照对比、分配时间线和 Performance 面板定位内存与长任务。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Node.js 后端工程》时应把该要点与「Node.js」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「Node.js 后端工程」的核心学习目标是什么？",
+          "options": [
+            "覆盖异步 IO、事件循环、进程模型、错误处理和部署。",
+            "理解调用栈、词法作用域、闭包、this 和暂时性死区。",
+            "理解可达性、引用泄漏、堆快照和前端长任务。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    }
+  ]
+}

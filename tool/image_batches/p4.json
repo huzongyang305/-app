@@ -1,0 +1,22 @@
+{
+  "project_python_cli_todo": {
+    "image": "images/remaining_project_python_cli_todo.webp",
+    "alt": "实战：Python CLI 待办工具"
+  },
+  "project_rest_api_sqlite": {
+    "image": "images/remaining_project_rest_api_sqlite.webp",
+    "alt": "实战：REST API 与 SQLite 事务服务"
+  },
+  "project_rag_agent_service": {
+    "image": "images/remaining_project_rag_agent_service.webp",
+    "alt": "实战：本地 RAG 客服 Agent"
+  },
+  "project_debug_performance_triage": {
+    "image": "images/remaining_project_debug_performance_triage.webp",
+    "alt": "实战：慢接口调试与性能定位"
+  },
+  "project_interview_coding_system_design": {
+    "image": "images/remaining_project_interview_coding_system_design.webp",
+    "alt": "面试冲刺：算法编码与系统设计高频题"
+  }
+}

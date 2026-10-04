@@ -1,0 +1,362 @@
+{
+  "go_basics": [
+    {
+      "question": "Go 中 := 与 = 的区别是？",
+      "options": [
+        ":= 声明并推导类型（只能用在函数内），= 只做赋值",
+        "两者完全等价",
+        "= 用于声明新变量",
+        ":= 可以用于包级变量"
+      ],
+      "answer": 0,
+      "explanation": ":= 至少要有左侧一个新变量，重复声明同一变量会编译报错。"
+    },
+    {
+      "question": "defer 语句的执行时机与顺序是？",
+      "options": [
+        "函数返回前执行，多个 defer 按后进先出（LIFO）顺序",
+        "立即执行",
+        "按书写顺序从上到下执行",
+        "只在 panic 时执行"
+      ],
+      "answer": 0,
+      "explanation": "defer 常用于释放锁、关闭文件；参数在 defer 时求值，这点容易踩坑。"
+    }
+  ],
+  "go_concurrency": [
+    {
+      "question": "向无缓冲 channel 发送数据会阻塞，直到？",
+      "options": [
+        "有接收方准备好接收（收发同步完成）",
+        "channel 被关闭",
+        "缓冲区写满",
+        "永远不阻塞"
+      ],
+      "answer": 0,
+      "explanation": "无缓冲 channel 是同步握手；带缓冲的在缓冲未满时不会阻塞。"
+    },
+    {
+      "question": "sync.WaitGroup 的典型用途是？",
+      "options": [
+        "等待一组 goroutine 全部完成",
+        "限制并发数量",
+        "传递取消信号",
+        "保护共享内存"
+      ],
+      "answer": 0,
+      "explanation": "Add 要在启动 goroutine 前调用，Done 一般用 defer，Wait 阻塞到计数归零。"
+    }
+  ],
+  "go_interfaces_errors": [
+    {
+      "question": "errors.Is 与 errors.As 的区别是？",
+      "options": [
+        "Is 判断错误链中是否包含目标错误值，As 把错误链中的特定类型提取出来",
+        "两者完全等价",
+        "Is 只能用于 panic",
+        "As 只能比较字符串"
+      ],
+      "answer": 0,
+      "explanation": "配合 %w 包装错误，Is/As 能穿透多层包装，比字符串比较可靠得多。"
+    },
+    {
+      "question": "类型断言 v, ok := x.(T) 中 ok 的含义是？",
+      "options": [
+        "断言是否成功，失败时 v 是该类型的零值而不是 panic",
+        "x 是否为 nil",
+        "T 是否为接口",
+        "x 是否实现了 String()"
+      ],
+      "answer": 0,
+      "explanation": "单返回值写法 x.(T) 断言失败会 panic，不确定时务必用双返回值形式。"
+    }
+  ],
+  "go_project": [
+    {
+      "question": "go mod tidy 的作用是？",
+      "options": [
+        "补齐代码需要但缺失的依赖，并移除不再使用的依赖",
+        "删除 go.sum",
+        "更新 Go 版本",
+        "格式化所有源码"
+      ],
+      "answer": 0,
+      "explanation": "提交前跑一次 go mod tidy，能保证 go.mod / go.sum 与代码一致。"
+    },
+    {
+      "question": "Go 项目中 cmd/ 与 internal/ 目录的约定是？",
+      "options": [
+        "cmd 放可执行程序入口，internal 下的包只允许本模块导入",
+        "cmd 放第三方依赖",
+        "internal 可以被任何模块导入",
+        "两者必须同时存在"
+      ],
+      "answer": 0,
+      "explanation": "internal 由编译器强制限制可见范围，适合放不希望对外暴露的实现。"
+    }
+  ],
+  "go_generics_stdlib": [
+    {
+      "question": "Go 泛型中的类型约束（如 comparable）作用是？",
+      "options": [
+        "限定类型参数能用哪些操作，保证代码对具体类型成立",
+        "限制函数的执行时间",
+        "声明接口的方法集",
+        "让类型在运行时确定"
+      ],
+      "answer": 0,
+      "explanation": "comparable 允许使用 == 与 !=；自定义约束可用接口 + 类型集合描述。"
+    },
+    {
+      "question": "context.WithTimeout 返回的 cancel 函数为什么必须调用？",
+      "options": [
+        "释放定时器等资源，避免上下文泄漏",
+        "否则程序会 panic",
+        "否则超时不会生效",
+        "只是代码风格要求"
+      ],
+      "answer": 0,
+      "explanation": "标准写法是 defer cancel()，即使操作提前完成也要调用。"
+    }
+  ],
+  "go_performance": [
+    {
+      "question": "sync.Pool 的典型用途是？",
+      "options": [
+        "复用临时对象，降低 GC 分配与回收压力",
+        "跨进程共享内存",
+        "做数据库连接池",
+        "替代互斥锁"
+      ],
+      "answer": 0,
+      "explanation": "池中对象可能在任意时刻被回收，因此不能存放必须长期存在的数据。"
+    },
+    {
+      "question": "pprof 采集 CPU 性能数据的原理是？",
+      "options": [
+        "以固定频率采样 goroutine 调用栈并统计",
+        "记录每一次函数调用",
+        "静态分析源码",
+        "统计内存分配次数"
+      ],
+      "answer": 0,
+      "explanation": "采样意味着耗时很短的函数可能不出现在结果里，需要结合多轮数据判断。"
+    }
+  ],
+  "go_microservice": [
+    {
+      "question": "Kubernetes 中 liveness 与 readiness 探针的区别是？",
+      "options": [
+        "liveness 失败会重启容器，readiness 失败只把实例从负载均衡中摘除",
+        "两者完全一样",
+        "readiness 失败会重启容器",
+        "liveness 只检查端口"
+      ],
+      "answer": 0,
+      "explanation": "启动慢的服务要配合 startupProbe，避免 liveness 在初始化阶段误杀。"
+    },
+    {
+      "question": "gRPC 相比 REST + JSON 的主要优势是？",
+      "options": [
+        "基于 HTTP/2 多路复用与 Protobuf，强类型、序列化体积小、支持流式调用",
+        "不需要定义接口",
+        "只能用于浏览器",
+        "自动处理鉴权"
+      ],
+      "answer": 0,
+      "explanation": "内部服务间高频调用适合 gRPC，对外公开接口仍常选 REST 以便调试与兼容。"
+    }
+  ],
+  "rust_basics": [
+    {
+      "question": "Rust 中 mut 关键字的作用是？",
+      "options": [
+        "让绑定可变，允许修改值或取得可变借用",
+        "把变量变成常量",
+        "延长变量生命周期",
+        "让变量跨线程共享"
+      ],
+      "answer": 0,
+      "explanation": "Rust 默认不可变，mut 是显式声明，编译器据此检查借用冲突。"
+    },
+    {
+      "question": "rustup 与 cargo 的分工是？",
+      "options": [
+        "rustup 管理工具链与版本，cargo 管理项目、依赖与构建",
+        "两者完全等价",
+        "cargo 负责安装工具链",
+        "rustup 负责编译代码"
+      ],
+      "answer": 0,
+      "explanation": "常用命令：rustup update 升级工具链，cargo build / test / run 操作项目。"
+    }
+  ],
+  "rust_ownership": [
+    {
+      "question": "为什么把 String 赋给另一个变量会「移动」，而 i32 是复制？",
+      "options": [
+        "i32 等实现了 Copy 的类型按位复制，String 持有堆内存只能移动所有权",
+        "String 是特殊语法",
+        "i32 存放在堆上",
+        "两者都会移动"
+      ],
+      "answer": 0,
+      "explanation": "如果 String 也复制，就会出现两处释放同一块内存的问题，这正是 Rust 要避免的。"
+    },
+    {
+      "question": "String 与 &str 的关系是？",
+      "options": [
+        "String 拥有堆上的字符串，&str 是对字符串数据的借用切片",
+        "两者完全等价",
+        "&str 拥有堆内存",
+        "String 不能转换成 &str"
+      ],
+      "answer": 0,
+      "explanation": "函数参数用 &str 更通用，String 可通过 &s 或 s.as_str() 借用。"
+    }
+  ],
+  "rust_types_traits": [
+    {
+      "question": "dyn Trait 与泛型 T: Trait 的核心区别是？",
+      "options": [
+        "dyn 是运行时动态分发（trait object，需指针），泛型是编译期单态化静态分发",
+        "两者生成相同代码",
+        "泛型只能用于结构体",
+        "dyn 不能在集合中使用"
+      ],
+      "answer": 0,
+      "explanation": "需要把不同类型放进同一个集合时用 Box<dyn Trait>，性能敏感处用泛型。"
+    },
+    {
+      "question": "Rust 的孤儿规则（orphan rule）限制是？",
+      "options": [
+        "只有 trait 或目标类型至少有一个定义在当前 crate 时才能实现该 trait",
+        "只能在标准库中实现 trait",
+        "任何类型都能实现任何 trait",
+        "trait 不能有默认实现"
+      ],
+      "answer": 0,
+      "explanation": "该规则避免不同 crate 对同一类型产生冲突的 trait 实现。"
+    }
+  ],
+  "rust_concurrency_cargo": [
+    {
+      "question": "Send 与 Sync 两个 auto trait 的区别是？",
+      "options": [
+        "Send 表示所有权可安全转移到别的线程，Sync 表示可被多线程共享引用",
+        "两者含义相同",
+        "Sync 表示可以发送到线程",
+        "Send 只用于值类型"
+      ],
+      "answer": 0,
+      "explanation": "Rc 既不是 Send 也不是 Sync，Arc 两者都满足，所以跨线程共享要用 Arc。"
+    },
+    {
+      "question": "cargo build --release 相比默认开发构建的差别是？",
+      "options": [
+        "开启优化并关闭调试断言，编译更慢但运行更快",
+        "只改变输出目录",
+        "会跳过依赖编译",
+        "会自动运行测试"
+      ],
+      "answer": 0,
+      "explanation": "基准测试与性能分析必须用 --release，否则数据没有参考价值。"
+    }
+  ],
+  "rust_errors_iterators": [
+    {
+      "question": "Rust 迭代器是「惰性」的，这意味着？",
+      "options": [
+        "不调用消费方法（collect/sum/for）就不会真正执行",
+        "只能遍历一次",
+        "不能链式调用",
+        "每次调用都要分配内存"
+      ],
+      "answer": 0,
+      "explanation": "适配器如 map/filter 只是构建新迭代器，零成本抽象正来源于这种惰性组合。"
+    },
+    {
+      "question": "collect::<Result<Vec<_>, _>>() 的作用是？",
+      "options": [
+        "把一组 Result 收集成 Result<Vec<_>, _>，遇到 Err 就短路返回错误",
+        "把 Result 转成字符串",
+        "忽略所有错误",
+        "统计成功数量"
+      ],
+      "answer": 0,
+      "explanation": "这是把「逐个解析可能失败的元素」写成一行的常用技巧。"
+    }
+  ],
+  "rust_unsafe_ffi": [
+    {
+      "question": "#[repr(C)] 在 FFI 场景中的作用是？",
+      "options": [
+        "让结构体使用 C 的内存布局，保证与 C 端结构体一致",
+        "让结构体自动实现 Copy",
+        "禁止结构体被复制",
+        "把结构体放到堆上"
+      ],
+      "answer": 0,
+      "explanation": "Rust 默认布局不保证字段顺序，跨语言传递结构体必须显式声明 C 布局。"
+    },
+    {
+      "question": "unsafe impl Send for MyType {} 的语义是？",
+      "options": [
+        "由程序员向编译器承诺该类型跨线程使用是安全的",
+        "编译器自动验证线程安全",
+        "让类型变成不可变",
+        "禁止该类型跨线程"
+      ],
+      "answer": 0,
+      "explanation": "这是不受编译器保护的承诺，一旦判断错误就会产生数据竞争。"
+    }
+  ],
+  "rust_cli_project": [
+    {
+      "question": "clap 的 derive 模式如何声明命令行参数？",
+      "options": [
+        "在结构体上加 #[derive(Parser)]，字段用 #[arg(...)] 描述",
+        "手写 match 解析 std::env::args()",
+        "在 Cargo.toml 中声明",
+        "用宏生成 shell 脚本"
+      ],
+      "answer": 0,
+      "explanation": "derive 模式把参数定义变成类型，编译期即可检查字段与类型。"
+    },
+    {
+      "question": "命令行工具如何向调用方返回失败状态？",
+      "options": [
+        "main 返回 Result 或使用 std::process::exit(非零码)",
+        "只能打印日志",
+        "必须抛 panic",
+        "返回值只能是字符串"
+      ],
+      "answer": 0,
+      "explanation": "非零退出码是 shell 脚本判断成功与否的依据，CI 中尤其重要。"
+    }
+  ],
+  "rust_async_tokio": [
+    {
+      "question": "tokio::select! 的作用是？",
+      "options": [
+        "同时等待多个 future，最先完成的分支胜出并取消其余分支",
+        "按顺序依次等待",
+        "只能等待超时",
+        "创建新的线程池"
+      ],
+      "answer": 0,
+      "explanation": "常用于「请求 vs 超时 vs 取消信号」的竞争场景。"
+    },
+    {
+      "question": "#[tokio::main] 宏做的事情是？",
+      "options": [
+        "把 async fn main 包装成同步入口，启动运行时并阻塞等待结果",
+        "把代码编译成多线程",
+        "自动加锁",
+        "替代 Cargo.toml 配置"
+      ],
+      "answer": 0,
+      "explanation": "展开后等价于手动创建 Runtime 并调用 block_on；多线程运行时可加 flavor 参数。"
+    }
+  ]
+}

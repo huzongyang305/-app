@@ -1,0 +1,370 @@
+# 小程序开发要点
+
+![小程序开发要点](images/category_mobile_miniprogram.webp)
+
+> 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：15 分钟
+
+## 学习目标
+
+- 能用自己的话解释「小程序开发要点」解决了什么问题，而不是只背术语。
+- 能说清 「小程序」、「setData」、「分包」、「rpx」 之间的关系，并分别举出一个例子。
+- 能把本课知识放回「移动开发」的知识体系，说明它和相邻主题的边界。
+- 能完成本课练习，并用验收标准检查自己的结果。
+
+> 一句话摘要：双线程模型、setData 优化、分包加载与安全边界。
+
+## 前置知识
+
+- 先完成上一课《鸿蒙 ArkTS 应用开发》；如果已经掌握，可以直接用本课练习自测。
+- 本课阶段：基础。建议会读写简单代码或命令，并理解变量、输入输出等基本概念。
+- 开始前先复习：小程序、setData、分包。
+- 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
+
+
+## 运行模型速查
+
+| 层 | 作用 | 限制 |
+| --- | --- | --- |
+| 逻辑层 | 执行业务 JS（JSCore / V8） | 没有 DOM，不能直接用浏览器 API |
+| 渲染层 | 由宿主渲染，通过消息通信 | 不能直接操作节点样式 |
+| 通信 | `setData` 跨层传输 | 数据量与频率是性能瓶颈 |
+| 分包 | 主包 + 多个分包 | 主包体积有上限，需合理拆分 |
+
+## 常用能力对照
+
+| 需求 | 微信小程序 | 通用说明 |
+| --- | --- | --- |
+| 页面结构 | WXML | 模板语法，数据绑定 |
+| 样式 | WXSS | 类似 CSS，尺寸用 `rpx` |
+| 逻辑 | JS/TS（Page/Component） | 页面与组件分离 |
+| 本地存储 | `wx.setStorageSync` | 有容量上限 |
+| 网络 | `wx.request` | 需配置合法域名，仅 HTTPS |
+| 登录 | `wx.login` + 服务端换取 | 不暴露会话密钥 |
+| 支付 | 统一下单 + 支付回调 | 金额与签名在服务端校验 |
+| 分包加载 | `subpackages` | 主包只放首屏必需资源 |
+
+```javascript
+// 列表页：分页加载 + 防抖触底，避免重复请求
+Page({
+  data: { items: [], page: 1, loading: false, hasMore: true },
+
+  onLoad() {
+    this.loadMore();
+  },
+
+  onReachBottom() {
+    this.loadMore();
+  },
+
+  async loadMore() {
+    if (this.data.loading || !this.data.hasMore) return;   // 双重防抖
+    this.setData({ loading: true });
+    try {
+      const res = await wx.request({
+        url: "https://api.example.com/items",
+        data: { page: this.data.page, size: 20 },
+      });
+      const list = res.data.items || [];
+      // 合并数据再一次性 setData，减少跨层通信次数
+      this.setData({
+        items: this.data.items.concat(list),
+        page: this.data.page + 1,
+        hasMore: list.length === 20,
+        loading: false,
+      });
+    } catch (error) {
+      this.setData({ loading: false });
+      wx.showToast({ title: "加载失败", icon: "none" });
+    }
+  },
+});
+```
+
+## 性能与体验速查
+
+| 问题 | 手段 |
+| --- | --- |
+| 首屏慢 | 主包瘦身、分包预加载、骨架屏 |
+| `setData` 卡顿 | 只传变化字段、合并调用、避免传大对象 |
+| 长列表卡 | 虚拟列表或分段渲染，减少节点数量 |
+| 图片体积大 | 压缩、CDN 裁剪参数、按需加载 |
+| 频繁请求 | 合并接口、缓存、请求取消 |
+| 审核被拒 | 隐私政策、用户授权、类目资质齐全 |
+
+## 常见错误对照表
+
+| 容易踩的做法 | 实际现象 | 原因与正确做法 |
+| --- | --- | --- |
+| 用 `setData` 传整个大数组 | 渲染卡顿 | 只更新变化项（用路径写法） |
+| 直接用 `document`/`window` | 运行报错 | 小程序没有 DOM，用官方 API |
+| 未配置请求域名 | 真机请求失败 | 在小程序后台配置合法域名 |
+| 把密钥写在前端代码 | 泄漏 | 敏感操作全部走服务端 |
+| 主包塞入大量资源 | 超限无法上传 | 资源放分包或 CDN |
+| 忽略 `rpx` 与 `px` 差异 | 不同机型尺寸错乱 | 用 `rpx` 做自适应 |
+| 不做登录态校验 | 会话过期后请求全失败 | 统一封装请求并处理重新登录 |
+
+## 自测清单
+
+- [ ] 理解逻辑层与渲染层分离对性能的影响。
+- [ ] 会用分包与预加载优化首屏。
+- [ ] `setData` 只传变化字段并合并调用。
+- [ ] 敏感逻辑与密钥只在服务端处理。
+- [ ] 隐私、授权与类目资质在上线前确认。
+
+<!-- appendix:v3 -->
+
+## 零基础详解：小程序开发要点
+
+### 一句话说清它是什么
+
+小程序是「运行在宿主 App 里的轻量应用」，用 **WXML + WXSS + JS/TS** 三件套编写。
+它最大的特点是：**逻辑层与渲染层分离，数据通过 `setData` 单向传递**。
+
+### 用生活比喻理解
+
+| 概念 | 比喻 | 说明 |
+| --- | --- | --- |
+| WXML | 骨架 | 描述结构（类似 HTML） |
+| WXSS | 皮肤 | 描述样式（类似 CSS） |
+| JS/TS | 神经 | 逻辑与数据 |
+| `setData` | 快递员 | 把数据从逻辑层送到渲染层 |
+| 分包 | 分册装订 | 减小首屏体积 |
+
+### 页面文件结构
+
+```text
+pages/orders/
+  orders.wxml      结构
+  orders.wxss      样式
+  orders.ts        逻辑
+  orders.json      页面配置
+app.json           全局配置（页面注册、窗口、分包）
+app.ts             应用生命周期
+```
+
+### 一个页面的完整写法
+
+```xml
+<!-- orders.wxml -->
+<view class="page">
+  <view wx:if="{{loading}}" class="tip">加载中…</view>
+  <view wx:elif="{{error}}" class="tip error">{{error}}</view>
+  <view wx:elif="{{orders.length === 0}}" class="tip">暂无订单</view>
+  <view wx:else>
+    <view
+      wx:for="{{orders}}"
+      wx:key="id"
+      class="card"
+      bindtap="onTapOrder"
+      data-id="{{item.id}}"
+    >
+      <text class="title">{{item.title}}</text>
+      <text class="amount">¥{{item.amount}}</text>
+    </view>
+  </view>
+</view>
+```
+
+```typescript
+// orders.ts
+Page({
+  data: {
+    orders: [] as Order[],
+    loading: true,
+    error: "",
+  },
+
+  onLoad() {
+    void this.loadOrders();
+  },
+
+  async loadOrders() {
+    this.setData({ loading: true, error: "" });
+    try {
+      const res = await wx.request<{ items: Order[] }>({ url: "/api/orders" });
+      this.setData({ orders: res.data.items, loading: false });
+    } catch (e) {
+      this.setData({ error: "加载失败，请稍后重试", loading: false });
+    }
+  },
+
+  onTapOrder(e: WechatMiniprogram.TouchEvent) {
+    const id = e.currentTarget.dataset.id as string;
+    wx.navigateTo({ url: `/pages/detail/detail?id=${id}` });
+  },
+});
+```
+
+### setData 的三条纪律
+
+```typescript
+// 1. 只传变化的部分，不要整体传
+this.setData({ "orders[0].title": "新标题" });
+
+// 2. 高频更新要合并，别在循环里反复 setData
+const patch: Record<string, unknown> = {};
+for (const item of changed) patch[`orders[${item.index}].title`] = item.title;
+this.setData(patch);
+
+// 3. 不要传大对象或函数
+this.setData({ list: hugeArray });        // 数据量大时会明显卡顿
+```
+
+| 原则 | 原因 |
+| --- | --- |
+| 最小化数据 | 跨线程通信成本高 |
+| 合并更新 | 每次 setData 都是一次通信 |
+| 不传函数 | 只支持可序列化数据 |
+
+**长列表用 `recycle-view` 或虚拟列表组件**，直接 `wx:for` 上千条会卡。
+
+### 分包与体积控制
+
+```json
+// app.json
+{
+  "pages": ["pages/index/index"],
+  "subPackages": [
+    {
+      "root": "packageOrders",
+      "pages": ["list/list", "detail/detail"]
+    }
+  ],
+  "preloadRule": {
+    "pages/index/index": { "network": "all", "packages": ["packageOrders"] }
+  }
+}
+```
+
+| 手段 | 效果 |
+| --- | --- |
+| 分包 | 首屏只加载主包 |
+| 预加载规则 | 空闲时提前下载分包 |
+| 图片放 CDN | 不占包体积 |
+| 按需引入组件库 | 避免整库打包 |
+
+### 常见 API 与能力
+
+| 需求 | API |
+| --- | --- |
+| 请求 | `wx.request` |
+| 存储 | `wx.setStorageSync` / `wx.getStorageSync` |
+| 登录 | `wx.login` 换 code，服务端换 openid |
+| 支付 | `wx.requestPayment` |
+| 分享 | `onShareAppMessage` |
+| 扫码 | `wx.scanCode` |
+
+**敏感信息（如 session_key、密钥）只能放服务端**，小程序端一律不可信。
+
+### 新手最容易踩的八个坑
+
+| 坑 | 现象 | 正确做法 |
+| --- | --- | --- |
+| 频繁 setData | 界面卡顿 | 合并更新、只传变化字段 |
+| 传大数组 | 通信开销大 | 分页或虚拟列表 |
+| `wx:for` 缺 `wx:key` | 列表状态错乱 | 用稳定唯一字段 |
+| 把密钥放前端 | 泄露 | 放服务端 |
+| 不处理请求失败 | 白屏 | 四态齐全 |
+| 主包塞太多页面 | 首屏加载慢 | 分包 |
+| 用 `data-*` 传复杂对象 | 序列化丢失 | 只传 id，自己查数据 |
+| 忽略审核规范 | 上架被拒 | 提前查类目与内容要求 |
+
+### 学完自测
+
+- [ ] 能说出 WXML、WXSS、JS 各自负责什么。
+- [ ] 知道 `setData` 为什么要注意性能。
+- [ ] 能说出 `wx:key` 的作用。
+- [ ] 知道为什么要分包。
+- [ ] 能说出哪类信息绝不能放小程序端。
+
+## 动手练习
+
+<!-- practice-diversified:v1 -->
+
+> 本课练习重点：围绕「小程序、setData、分包」完成复述、实验和交付，每个结果都要能被别人检查。
+
+先做一个最小 Widget，再切换状态与约束，最后在窄屏和深色模式下验证布局。
+
+### 练习 1：建立心智模型（10 分钟）
+
+合上教程，用 3～5 句话回答：
+
+1. 「小程序开发要点」解决了什么问题？
+2. 如果没有它，会出现什么具体后果？
+3. 它和「setData」是什么关系？
+
+**验收标准**：至少出现一个本课关键词，并写出一个反例、边界条件或失效场景。
+
+### 练习 2：做一次可控实验（20 分钟）
+
+从正文中选一个最小示例，完成以下操作：
+
+1. 先预测修改一个参数、输入或步骤后的结果。
+2. 再实际执行或逐步推演，记录真实结果。
+3. 如果结果与预测不同，写出差异原因。
+
+**验收标准**：留下「原例 → 改动 → 预测 → 结果 → 原因」五步记录。
+
+### 练习 3：交付一个小结果（30 分钟）
+
+创建一个最小 Widget，分别验证正常输入、空数据和超长文本三种状态。
+
+任务要求：
+
+- 结果必须能被别人检查，不能只写“我已经理解了”。
+- 至少覆盖「小程序」和「setData」两个关键词。
+- 写出 1 个仍然不确定的问题，以及下一步如何验证。
+
+> 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
+
+## 本课小结
+
+- 核心问题：「小程序开发要点」不是孤立术语，而是在「移动开发」中解决一类具体问题。
+- 关键关系：先分清「小程序」与「setData」的职责，再理解「分包」的适用边界。
+- 判断标准：能解释正常场景、边界条件和失败场景，才算真正掌握。
+- 下一步：完成练习后，用自己的话写下 3 条要点，再去做本课测验。
+
+<!-- scaffold:v1 -->
+
+<!-- p2-enrichment:v1 -->
+
+## English Overview
+
+**Title:** Mini Program Development
+
+**Summary:** Dual-thread model, setData cost, subpackages and security.
+
+**Category:** Mobile Development  
+**Level:** 基础  
+**Key terms:** 小程序, setData, 分包, rpx, 微信
+
+> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
+
+## 内容元数据
+
+- 内容版本：v2.0
+- 最后更新：2026-10-03
+- 学习阶段：基础
+- 适用环境：Flutter 3.x / Dart 3.x
+- 内容来源：内置结构化课程与工程实践整理
+- 相关主题：小程序、setData、分包、rpx、微信
+- 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
+
+<!-- p2-references:v1 -->
+
+## 参考资料与复核
+
+- 最后复核：2026-10-04
+- 下次复核：2027-04-04
+- 复核范围：版本兼容、API 行为、安全建议与工程实践
+- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+
+| 参考资料 | 本课用途 |
+| --- | --- |
+| [Flutter 官方文档](https://docs.flutter.dev/) | 框架、组件与发布流程 |
+| [Dart 官方文档](https://dart.dev/guides) | 语言、异步与工具链 |
+
+> 本课主题：双线程模型、setData 优化、分包加载与安全边界。
+
+> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+

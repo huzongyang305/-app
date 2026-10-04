@@ -1,0 +1,564 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:provider/provider.dart';
+
+import '../l10n/l10n_extension.dart';
+import '../models/lesson.dart';
+import '../services/content_provider.dart';
+import '../services/progress_provider.dart';
+import '../services/settings_provider.dart';
+import '../services/tts_service.dart';
+import '../widgets/markdown_code_builder.dart';
+import '../widgets/responsive_content.dart';
+import 'quiz_screen.dart';
+
+/// 教程详情页：Markdown 正文 + 代码块 + 收藏 / 笔记 / 测验入口。
+class LessonScreen extends StatefulWidget {
+  const LessonScreen({super.key, required this.lesson});
+
+  final Lesson lesson;
+
+  @override
+  State<LessonScreen> createState() => _LessonScreenState();
+}
+
+class _LessonScreenState extends State<LessonScreen> {
+  late final Future<String> _markdownFuture;
+  late final TtsService _ttsService;
+  final ScrollController _scrollController = ScrollController();
+  bool _speaking = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _ttsService = const TtsService();
+    final localeCode = context.read<SettingsProvider>().localeCode;
+    _markdownFuture = context.read<ContentProvider>().markdownOf(
+      widget.lesson,
+      preferEnglish: localeCode == 'en',
+    );
+
+    // 打开教程即视为已学习，记录到本地进度。
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final progress = context.read<ProgressProvider>();
+      progress.markLearned(widget.lesson.id);
+      final offset = progress.readingOffset(widget.lesson.id);
+      if (offset > 0 && _scrollController.hasClients) {
+        _scrollController.jumpTo(
+          offset.clamp(0, _scrollController.position.maxScrollExtent),
+        );
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _ttsService.stop();
+    if (_scrollController.hasClients) {
+      context.read<ProgressProvider>().saveReadingOffset(
+        widget.lesson.id,
+        _scrollController.offset,
+      );
+    }
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  /// 使用设备内置 TTS 朗读正文；没有完整英文正文时自动按中文朗读。
+  Future<void> _toggleSpeech() async {
+    if (_speaking) {
+      await _ttsService.stop();
+      if (mounted) setState(() => _speaking = false);
+      return;
+    }
+
+    final messenger = ScaffoldMessenger.of(context);
+    final body = await _markdownFuture;
+    if (!mounted) return;
+    if (TtsService.prepareSpeechText(body).isEmpty) {
+      messenger.showSnackBar(
+        SnackBar(content: Text(context.trRead('ttsNoReadableText'))),
+      );
+      return;
+    }
+
+    final requestedLocale = context.read<SettingsProvider>().localeCode;
+    final speechLocale = widget.lesson.hasEnglishBody && requestedLocale == 'en'
+        ? 'en'
+        : 'zh';
+    final started = await _ttsService.speak(
+      text: body,
+      localeCode: speechLocale,
+      onDone: () {
+        if (mounted) setState(() => _speaking = false);
+      },
+    );
+    if (!mounted) return;
+    setState(() => _speaking = started);
+    if (!started) {
+      messenger.showSnackBar(
+        SnackBar(content: Text(context.trRead('ttsUnavailable'))),
+      );
+    }
+  }
+
+  /// 复制「标题 + 摘要 + 正文」到剪贴板。
+  ///
+  /// 本 App 完全离线，不加分享依赖，用剪贴板作为等价的分发手段：
+  /// 粘贴到聊天工具、笔记或邮件里同样是「分享全文」。
+  Future<void> _copyFullText() async {
+    final messenger = ScaffoldMessenger.of(context);
+    final localeCode = context.read<SettingsProvider>().localeCode;
+    final copiedLabel = context.trRead('lessonCopied');
+    final failedTemplate = context.trRead('copyFailed');
+    try {
+      final body = await _markdownFuture;
+      final text =
+          '${widget.lesson.title.of(localeCode)}\n\n'
+          '${widget.lesson.summary.of(localeCode)}\n\n'
+          '$body';
+      await Clipboard.setData(ClipboardData(text: text));
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(copiedLabel),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    } catch (error) {
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(failedTemplate.replaceAll('{error}', '$error')),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+  }
+
+  /// 教程正文里的链接：离线场景下不直接跳浏览器，改为可复制的面板。
+  Future<void> _showLinkSheet(String href) async {
+    final title = context.trRead('linkSheetTitle');
+    final hint = context.trRead('linkHint');
+    final copyLabel = context.trRead('copyLink');
+    await showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (sheetContext) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 4, 20, 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(title, style: Theme.of(sheetContext).textTheme.titleMedium),
+              const SizedBox(height: 10),
+              SelectableText(
+                href,
+                style: const TextStyle(fontFamily: 'monospace', fontSize: 13),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                hint,
+                style: Theme.of(sheetContext).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(sheetContext).colorScheme.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Align(
+                alignment: Alignment.centerRight,
+                child: FilledButton.icon(
+                  onPressed: () async {
+                    final messenger = ScaffoldMessenger.of(sheetContext);
+                    await Clipboard.setData(ClipboardData(text: href));
+                    if (!sheetContext.mounted) return;
+                    Navigator.of(sheetContext).pop();
+                    messenger.showSnackBar(
+                      SnackBar(
+                        content: Text(copyLabel),
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.copy_all_outlined, size: 18),
+                  label: Text(copyLabel),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final progress = context.watch<ProgressProvider>();
+    final content = context.watch<ContentProvider>();
+    final localeCode = context.strings.localeCode;
+    final isFavorite = progress.isFavorite(widget.lesson.id);
+    final isLearned = progress.isLearned(widget.lesson.id);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.lesson.title.of(localeCode)),
+        actions: [
+          IconButton(
+            tooltip: context.tr(_speaking ? 'ttsStopReading' : 'ttsReadAloud'),
+            icon: Icon(_speaking ? Icons.stop_circle : Icons.volume_up),
+            onPressed: _toggleSpeech,
+          ),
+          IconButton(
+            tooltip: context.tr('copyLesson'),
+            icon: const Icon(Icons.copy_all_outlined),
+            onPressed: _copyFullText,
+          ),
+          IconButton(
+            tooltip: context.tr('favorites'),
+            icon: Icon(
+              isFavorite ? Icons.star : Icons.star_border,
+              color: isFavorite ? const Color(0xFFF59E0B) : null,
+            ),
+            onPressed: () => progress.toggleFavorite(widget.lesson.id),
+          ),
+          IconButton(
+            tooltip: context.tr('noteTitle'),
+            icon: const Icon(Icons.edit_note),
+            onPressed: _openNoteEditor,
+          ),
+        ],
+      ),
+      body: FutureBuilder<String>(
+        future: _markdownFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text('${snapshot.error}'));
+          }
+
+          final rawMarkdown = snapshot.data ?? '';
+          final showEnglishFallback =
+              localeCode == 'en' && !widget.lesson.hasEnglishBody;
+          final renderedMarkdown = showEnglishFallback
+              ? '> ${context.trArgs('lessonEnglishFallback', {'available': content.englishLessonCount, 'total': content.totalLessons})}\n\n$rawMarkdown'
+              : rawMarkdown;
+          final article = _buildMarkdown(context, renderedMarkdown, theme);
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              if (constraints.maxWidth < AppBreakpoints.wideReading) {
+                return article;
+              }
+              return Row(
+                key: const ValueKey('lesson-wide-layout'),
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(
+                    width: 320,
+                    child: _LessonOverviewPane(
+                      lesson: widget.lesson,
+                      isLearned: isLearned,
+                    ),
+                  ),
+                  const VerticalDivider(width: 1),
+                  Expanded(child: article),
+                ],
+              );
+            },
+          );
+        },
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+          child: Row(
+            children: [
+              if (widget.lesson.quiz.isNotEmpty) ...[
+                Expanded(
+                  child: FilledButton.icon(
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => QuizScreen(lesson: widget.lesson),
+                      ),
+                    ),
+                    icon: const Icon(Icons.quiz_outlined),
+                    label: Text(context.tr('startQuiz')),
+                  ),
+                ),
+                const SizedBox(width: 10),
+              ],
+              OutlinedButton.icon(
+                onPressed: () {
+                  if (isLearned) {
+                    progress.unmarkLearned(widget.lesson.id);
+                  } else {
+                    progress.markLearned(widget.lesson.id);
+                  }
+                },
+                icon: Icon(
+                  isLearned ? Icons.check_circle : Icons.check_circle_outline,
+                  size: 18,
+                ),
+                label: Text(
+                  isLearned ? context.tr('learned') : context.tr('markLearned'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMarkdown(BuildContext context, String data, ThemeData theme) {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 860),
+        child: Markdown(
+          data: data,
+          controller: _scrollController,
+          selectable: true,
+          styleSheet: _styleSheet(theme),
+          builders: {'pre': CodeBlockBuilder()},
+          // 正文内的链接：离线场景下弹出可复制的面板，而不是跳浏览器。
+          onTapLink: (text, href, title) {
+            if (href == null || href.trim().isEmpty) return;
+            _showLinkSheet(href.trim());
+          },
+          // 多模态配图：Markdown 里写 ![说明](images/xxx.webp) 即可渲染资产图片
+          imageDirectory: 'assets/content/',
+          sizedImageBuilder: (config) {
+            final raw = config.uri.toString();
+            final assetPath = raw.startsWith('assets/')
+                ? raw
+                : 'assets/content/$raw';
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.asset(
+                      assetPath,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.surfaceContainerHighest,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          config.alt ?? assetPath,
+                          style: theme.textTheme.bodySmall,
+                        ),
+                      ),
+                    ),
+                  ),
+                  if (config.alt != null && config.alt!.isNotEmpty) ...[
+                    const SizedBox(height: 6),
+                    Text(
+                      config.alt!,
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  /// 针对正文调整 Markdown 排版，保证中文阅读行高舒适。
+  MarkdownStyleSheet _styleSheet(ThemeData theme) {
+    final scale = context.watch<SettingsProvider>().readingFontScale;
+    return MarkdownStyleSheet.fromTheme(theme).copyWith(
+      h1: theme.textTheme.headlineSmall?.copyWith(
+        fontWeight: FontWeight.bold,
+        fontSize: 24 * scale,
+      ),
+      h2: theme.textTheme.titleLarge?.copyWith(
+        fontWeight: FontWeight.bold,
+        fontSize: 20 * scale,
+      ),
+      h3: theme.textTheme.titleMedium?.copyWith(
+        fontWeight: FontWeight.w600,
+        fontSize: 16 * scale,
+      ),
+      p: theme.textTheme.bodyMedium?.copyWith(
+        height: 1.7,
+        fontSize: 14 * scale,
+      ),
+      listBullet: theme.textTheme.bodyMedium?.copyWith(
+        height: 1.7,
+        fontSize: 14 * scale,
+      ),
+      code: TextStyle(
+        fontFamily: 'monospace',
+        fontSize: 13 * scale,
+        backgroundColor: theme.colorScheme.surfaceContainerHighest,
+        color: theme.colorScheme.onSurface,
+      ),
+      blockquoteDecoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.6),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      blockquotePadding: const EdgeInsets.all(12),
+      tableBorder: TableBorder.all(color: theme.colorScheme.outlineVariant),
+      tableCellsPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+    );
+  }
+
+  /// 底部弹窗编辑笔记，保存到本地 Hive。
+  Future<void> _openNoteEditor() async {
+    final progress = context.read<ProgressProvider>();
+    final savedMessage = context.tr('noteSaved');
+    final controller = TextEditingController(
+      text: progress.noteOf(widget.lesson.id)?.content ?? '',
+    );
+
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (sheetContext) {
+        return Padding(
+          padding: EdgeInsets.only(
+            left: 16,
+            right: 16,
+            top: 16,
+            bottom: MediaQuery.of(sheetContext).viewInsets.bottom + 16,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                context.tr('noteTitle'),
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: controller,
+                minLines: 4,
+                maxLines: 8,
+                autofocus: true,
+                decoration: InputDecoration(hintText: context.tr('noteHint')),
+              ),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.of(sheetContext).pop(),
+                    child: Text(context.tr('cancel')),
+                  ),
+                  const SizedBox(width: 8),
+                  FilledButton(
+                    onPressed: () async {
+                      final navigator = Navigator.of(sheetContext);
+                      final messenger = ScaffoldMessenger.of(context);
+                      await progress.saveNote(
+                        widget.lesson.id,
+                        controller.text,
+                      );
+                      if (!sheetContext.mounted) return;
+                      navigator.pop();
+                      messenger.showSnackBar(
+                        SnackBar(
+                          content: Text(savedMessage),
+                          behavior: SnackBarBehavior.floating,
+                          duration: const Duration(seconds: 1),
+                        ),
+                      );
+                    },
+                    child: Text(context.tr('save')),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+    controller.dispose();
+  }
+}
+
+/// 平板 / 横屏教程页左栏：稳定的课程概览，不挤占正文阅读宽度。
+class _LessonOverviewPane extends StatelessWidget {
+  const _LessonOverviewPane({required this.lesson, required this.isLearned});
+
+  final Lesson lesson;
+  final bool isLearned;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final locale = context.strings.localeCode;
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(20, 22, 20, 28),
+      children: [
+        Chip(
+          avatar: Icon(
+            isLearned ? Icons.check_circle : Icons.school_outlined,
+            size: 18,
+          ),
+          label: Text(context.difficultyLabel(lesson.difficulty)),
+        ),
+        const SizedBox(height: 14),
+        Text(
+          lesson.title.of(locale),
+          style: theme.textTheme.headlineSmall?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          lesson.summary.of(locale),
+          style: theme.textTheme.bodyMedium?.copyWith(
+            height: 1.6,
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+        ),
+        const SizedBox(height: 20),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            Chip(
+              avatar: const Icon(Icons.schedule, size: 17),
+              label: Text('${lesson.minutes} ${context.tr('minutes')}'),
+            ),
+            Chip(
+              avatar: const Icon(Icons.quiz_outlined, size: 17),
+              label: Text('${lesson.quiz.length} ${context.tr('navQuiz')}'),
+            ),
+          ],
+        ),
+        const SizedBox(height: 22),
+        Text(
+          context.tr('overallProgress'),
+          style: theme.textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 8),
+        LinearProgressIndicator(value: isLearned ? 1 : 0, minHeight: 6),
+        const SizedBox(height: 20),
+        Text(
+          lesson.keywords.take(10).join(' · '),
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+        ),
+      ],
+    );
+  }
+}

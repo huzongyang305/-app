@@ -1,0 +1,355 @@
+{
+  "category": "typescript",
+  "lessons": [
+    {
+      "id": "ts_type_challenges",
+      "title": { "zh": "TypeScript 类型体操进阶", "en": "Advanced Type Programming" },
+      "summary": {
+        "zh": "条件类型、infer、映射类型与模板字面量类型的组合用法。",
+        "en": "Conditional types, infer, mapped and template literal types."
+      },
+      "file": "assets/content/ts_type_challenges.md",
+      "minutes": 18,
+      "keywords": ["条件类型", "infer", "映射类型", "模板字面量类型", "类型体操"],
+      "difficulty": "高级",
+      "order": 7,
+      "quiz": [
+        {
+          "question": "想在条件类型中「取出」数组元素类型，应该用？",
+          "options": [
+            "T extends Array<infer U> ? U : never",
+            "T extends any[] ? T : never",
+            "keyof T",
+            "ReturnType<T>"
+          ],
+          "answer": 0,
+          "explanation": "infer 用于在条件类型中声明并捕获待推断的类型变量，这是提取类型信息的标准手法。选项二返回数组类型本身而没有取出元素；选项三得到键的联合；选项四用于取函数返回类型。"
+        },
+        {
+          "question": "映射类型中 `[K in keyof T as ...]` 的 as 子句作用是？",
+          "options": [
+            "类型断言",
+            "键重映射，可改名或过滤键",
+            "声明默认值",
+            "继承其他接口"
+          ],
+          "answer": 1,
+          "explanation": "as 子句能把原键映射成新键（如 getX），返回 never 还能过滤掉该键。选项一是运行期断言，与类型层构造无关；选项三、四不是 as 的语义。"
+        },
+        {
+          "question": "条件类型对联合类型会自动「分配」，想阻断这种分配应该？",
+          "options": [
+            "用 any 包一层",
+            "用 [T] extends [U] 这种方括号写法",
+            "把联合改成交叉类型",
+            "加 readonly"
+          ],
+          "answer": 1,
+          "explanation": "方括号让类型不再是被检查的裸类型参数，从而阻止分布式行为，这是控制联合分支的常用技巧。选项一破坏类型安全；选项三改变了语义；选项四与分配无关。"
+        },
+        {
+          "question": "关于类型体操的工程建议，正确的是？",
+          "options": [
+            "越复杂越能体现水平",
+            "拆分命名类型、写注释与类型测试，控制复杂度",
+            "所有类型都用 any 兜底",
+            "类型逻辑可以替代运行时校验"
+          ],
+          "answer": 1,
+          "explanation": "复杂类型会拖慢编译并让报错难懂，需要拆分、注释与类型级测试。选项一忽略维护成本；选项三放弃类型安全；选项四错误，类型在编译后消失。"
+        },
+        {
+          "question": "模板字面量类型最典型的用途是？",
+          "options": [
+            "约束字符串键的命名格式（如 getX、onX）",
+            "在运行时拼接字符串",
+            "替代正则表达式",
+            "加密字符串"
+          ],
+          "answer": 0,
+          "explanation": "模板字面量类型能在类型层拼装与约束字符串形态，配合映射类型可自动生成访问器或事件方法签名。选项一正是其典型用途之外的错误描述（正确项是约束键名）；选项二、三、四都属于运行期能力。"
+        }
+      ]
+    },
+    {
+      "id": "ts_node_backend",
+      "title": { "zh": "TypeScript Node 后端开发", "en": "Node Backend in TypeScript" },
+      "summary": {
+        "zh": "框架选型、分层职责、schema 校验与生产必做项。",
+        "en": "Framework choice, layering, schema validation and production checklist."
+      },
+      "file": "assets/content/ts_node_backend.md",
+      "minutes": 18,
+      "keywords": ["Node后端", "Fastify", "NestJS", "zod", "优雅关闭", "健康检查"],
+      "difficulty": "进阶",
+      "order": 8,
+      "quiz": [
+        {
+          "question": "处理请求体时，最安全的做法是？",
+          "options": [
+            "直接把 request.body 断言为业务类型",
+            "用 schema 做运行时校验，再用推断出的类型",
+            "只做 TypeScript 类型标注",
+            "信任前端传来的字段"
+          ],
+          "answer": 1,
+          "explanation": "外部输入必须做运行时校验，schema 同时提供类型推断，做到一次定义两处受益。选项一、三只存在于编译期，运行时字段缺失照样崩溃；选项四忽略攻击与脏数据。"
+        },
+        {
+          "question": "收到 SIGTERM 时，服务应该？",
+          "options": [
+            "立刻退出进程",
+            "停止接收新请求并等待在途请求完成后再退出",
+            "忽略信号",
+            "重启自身"
+          ],
+          "answer": 1,
+          "explanation": "优雅关闭能避免发布或缩容时中断用户请求。选项一会造成大量 5xx 或被中断的写操作；选项三会导致被强杀；选项四不属于进程职责，应由编排系统负责。"
+        },
+        {
+          "question": "liveness 与 readiness 探针的分工是？",
+          "options": [
+            "两者完全一样",
+            "liveness 判断进程是否需重启，readiness 判断是否可接流量",
+            "liveness 检查依赖，readiness 检查磁盘",
+            "readiness 失败应重启容器"
+          ],
+          "answer": 1,
+          "explanation": "liveness 失败触发重启，readiness 失败只从负载均衡摘除，职责不能混用。选项一、三、四都会导致误重启或错误摘流。"
+        },
+        {
+          "question": "关于错误响应，推荐的做法是？",
+          "options": [
+            "所有错误都返回 200 和错误文案",
+            "统一错误结构（code、message、details）并使用合适状态码",
+            "直接返回异常堆栈",
+            "只返回状态码不带任何信息"
+          ],
+          "answer": 1,
+          "explanation": "统一结构便于前端稳定处理，状态码表达语义，details 提供字段级信息。选项一让客户端无法区分成败；选项三泄露实现细节；选项四让调用方无从判断原因。"
+        },
+        {
+          "question": "配置项在什么时候校验最合适？",
+          "options": [
+            "第一次用到时再校验",
+            "服务启动时集中校验，缺失必填项直接退出",
+            "上线后由监控发现",
+            "由运维人工检查"
+          ],
+          "answer": 1,
+          "explanation": "启动时失败能立即暴露问题，避免带病运行到半夜才崩。选项一、三、四都会把问题推迟到更危险的时刻。"
+        }
+      ]
+    },
+    {
+      "id": "ts_monorepo",
+      "title": { "zh": "Monorepo 工程实践", "en": "Monorepo Engineering" },
+      "summary": {
+        "zh": "workspace 依赖方向、任务缓存与版本发布流程。",
+        "en": "Workspace dependency rules, task caching and releases."
+      },
+      "file": "assets/content/ts_monorepo.md",
+      "minutes": 18,
+      "keywords": ["Monorepo", "pnpm", "Turborepo", "Changesets", "依赖图", "缓存"],
+      "difficulty": "进阶",
+      "order": 9,
+      "quiz": [
+        {
+          "question": "Monorepo 中正确的依赖方向是？",
+          "options": [
+            "packages 可以依赖 apps",
+            "apps 依赖 packages，packages 之间不成环",
+            "所有包互相依赖最灵活",
+            "包之间必须完全独立"
+          ],
+          "answer": 1,
+          "explanation": "单向依赖才能保证构建顺序确定、影响面可分析。选项一、三会导致循环依赖与构建混乱；选项四不现实，共享逻辑需要被依赖。"
+        },
+        {
+          "question": "为了引用本地包而不是已发布版本，应该使用？",
+          "options": [
+            "file: 协议",
+            "workspace:* 协议",
+            "直接写最新版本号",
+            "npm link"
+          ],
+          "answer": 1,
+          "explanation": "workspace 协议明确表达「使用本地工作区包」，发布时由工具替换为真实版本。选项一不可移植；选项三可能装到发布版本；选项四是手工手段，不适合团队协作。"
+        },
+        {
+          "question": "CI 中让流水线更快的关键做法是？",
+          "options": [
+            "每次全量构建所有包",
+            "基于依赖图与缓存只跑受影响的任务",
+            "关闭测试",
+            "减少包数量"
+          ],
+          "answer": 1,
+          "explanation": "任务编排工具根据输入哈希与依赖图跳过未变化的任务，并复用远程缓存。选项一浪费算力；选项三牺牲质量；选项四不是提速手段。"
+        },
+        {
+          "question": "共享包变更后，最需要做什么？",
+          "options": [
+            "直接发布到 npm",
+            "触发下游应用的测试并标注影响面",
+            "只在提交信息里说明",
+            "等上线后观察"
+          ],
+          "answer": 1,
+          "explanation": "共享包变更影响面大，CI 需要跑下游测试并让评审者看到影响范围。选项一可能发布未验证代码；选项三、四都把风险留到线上。"
+        },
+        {
+          "question": "Monorepo 的主要风险是？",
+          "options": [
+            "无法共享代码",
+            "仓库变大、依赖方向易失控、单次改动影响多个应用",
+            "不能使用 TypeScript",
+            "无法做 CI"
+          ],
+          "answer": 1,
+          "explanation": "这些是 Monorepo 的典型代价，需要通过依赖约束、受影响范围构建与 CODEOWNERS 缓解。选项一、三、四与事实不符。"
+        }
+      ]
+    },
+    {
+      "id": "ts_testing",
+      "title": { "zh": "TypeScript 测试策略", "en": "Testing in TypeScript" },
+      "summary": {
+        "zh": "Vitest、Testing Library 与 MSW 的组合用法。",
+        "en": "Vitest, Testing Library and MSW in practice."
+      },
+      "file": "assets/content/ts_testing.md",
+      "minutes": 18,
+      "keywords": ["Vitest", "TestingLibrary", "MSW", "组件测试", "覆盖率"],
+      "difficulty": "进阶",
+      "order": 10,
+      "quiz": [
+        {
+          "question": "模拟后端接口时，最贴近真实调用链的做法是？",
+          "options": [
+            "直接 mock fetch 函数",
+            "用 MSW 在网络层拦截请求",
+            "把接口封装 mock 掉",
+            "跳过接口相关测试"
+          ],
+          "answer": 1,
+          "explanation": "MSW 拦截网络请求，业务代码走完整的请求链，能发现序列化与错误处理问题。选项二才是正确项，那么选项一的问题在于替换了底层实现、容易与真实行为脱节；选项三会把待测逻辑一起 mock 掉；选项四降低覆盖。"
+        },
+        {
+          "question": "组件测试应该断言什么？",
+          "options": [
+            "组件内部 state 的值",
+            "用户可见的行为与文本",
+            "私有方法的调用次数",
+            "样式类的具体字符串"
+          ],
+          "answer": 1,
+          "explanation": "面向用户行为的断言在重构后依然成立。选项一、三与实现强耦合，改名或重写即失败；选项四让样式调整破坏测试。"
+        },
+        {
+          "question": "测试里等待异步结果，推荐使用？",
+          "options": [
+            "固定 setTimeout 延时",
+            "findBy 系列查询或带轮询的断言（自动等待）",
+            "多跑几次",
+            "把断言改成弱断言"
+          ],
+          "answer": 1,
+          "explanation": "自动等待的查询会在超时前持续重试，既快又稳。选项一在慢机器上偶发失败；选项三、四掩盖问题。"
+        },
+        {
+          "question": "测试资源分层建议是？",
+          "options": [
+            "全部写成端到端测试",
+            "约 70% 单元、20% 集成、10% 端到端",
+            "只写单元测试",
+            "只靠手工测试"
+          ],
+          "answer": 1,
+          "explanation": "金字塔结构让反馈快、维护成本低，端到端只覆盖核心旅程。选项一慢且脆弱；选项三漏掉集成问题；选项四无法持续。"
+        },
+        {
+          "question": "关于覆盖率，正确的理解是？",
+          "options": [
+            "必须追求 100%",
+            "无断言的测试也能拉高覆盖率，应关注分支与断言质量",
+            "完全没有价值",
+            "只看行覆盖即可"
+          ],
+          "answer": 1,
+          "explanation": "覆盖率是发现盲区的工具，不是目标；分支覆盖与断言质量更能反映有效性。选项一、四误导优化方向；选项三否定其价值。"
+        }
+      ]
+    },
+    {
+      "id": "ts_build_performance",
+      "title": { "zh": "类型检查与构建性能优化", "en": "Build & Typecheck Performance" },
+      "summary": {
+        "zh": "定位类型检查热点、增量构建与 CI 分工。",
+        "en": "Diagnosing typecheck hotspots, incremental builds and CI split."
+      },
+      "file": "assets/content/ts_build_performance.md",
+      "minutes": 16,
+      "keywords": ["类型检查性能", "incremental", "项目引用", "skipLibCheck", "体积门禁"],
+      "difficulty": "高级",
+      "order": 11,
+      "quiz": [
+        {
+          "question": "定位「哪些文件最耗类型检查时间」，应该用？",
+          "options": [
+            "tsc --noEmit --extendedDiagnostics 与 --generateTrace",
+            "console.time 包住所有函数",
+            "看浏览器性能面板",
+            "增加内存限制"
+          ],
+          "answer": 0,
+          "explanation": "extendedDiagnostics 给出总体时间与规模，generateTrace 能定位到具体文件与类型操作。选项一与类型检查无关；选项三测的是运行时；选项四不是诊断手段。"
+        },
+        {
+          "question": "skipLibCheck 的实际作用是？",
+          "options": [
+            "跳过所有类型检查",
+            "跳过 .d.ts 声明文件的检查，加快编译",
+            "跳过 node_modules 的下载",
+            "跳过测试文件"
+          ],
+          "answer": 1,
+          "explanation": "它只影响声明文件，能显著提速，但依赖内部的类型冲突也不会被发现。选项一严重夸大；选项三、四与它无关。"
+        },
+        {
+          "question": "大仓库中让类型检查只覆盖改动部分，常用？",
+          "options": [
+            "删除 tsconfig",
+            "项目引用（composite）加增量构建",
+            "把所有文件合成一个",
+            "关闭严格模式"
+          ],
+          "answer": 1,
+          "explanation": "项目引用把仓库拆成多个可独立编译的单元，配合 composite 与 tsbuildinfo 只重建受影响部分。选项一会失去配置；选项三让编译更慢；选项四牺牲类型安全。"
+        },
+        {
+          "question": "CI 中打包器与类型检查的分工是？",
+          "options": [
+            "打包器会做类型检查，无需额外步骤",
+            "打包器只转译，须单独运行 tsc --noEmit",
+            "类型检查会替代打包",
+            "两者都不需要"
+          ],
+          "answer": 1,
+          "explanation": "esbuild、SWC、Vite 等只剥离类型不做检查，因此 CI 必须单独跑类型门禁。选项一、三、四都会让类型错误进入线上。"
+        },
+        {
+          "question": "哪种类型写法最容易拖慢编译？",
+          "options": [
+            "拆分的命名接口",
+            "上千成员的巨型联合类型与无深度限制的递归类型",
+            "使用 Pick 与 Omit",
+            "给函数写返回类型"
+          ],
+          "answer": 1,
+          "explanation": "巨量联合与深递归会让类型推导呈指数级膨胀，应拆分并限制递归深度。选项一、三、四都是推荐实践，对性能影响很小。"
+        }
+      ]
+    }
+  ]
+}

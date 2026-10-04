@@ -1,0 +1,377 @@
+# 实战：实现一个多线程任务队列
+
+![实战：实现一个多线程任务队列](images/remaining_os_project.webp)
+
+> 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟
+
+## 学习目标
+
+- 能用自己的话解释「实战：实现一个多线程任务队列」解决了什么问题，而不是只背术语。
+- 能说清 「实战」、「线程池」、「条件变量」、「背压」 之间的关系，并分别举出一个例子。
+- 能把本课知识放回「操作系统」的知识体系，说明它和相邻主题的边界。
+- 能完成本课练习，并用验收标准检查自己的结果。
+
+> 一句话摘要：竞态、死锁、优雅退出与背压四类问题实操。
+
+## 前置知识
+
+- 先完成上一课《系统启动与权限安全》；如果已经掌握，可以直接用本课练习自测。
+- 本课阶段：高级。建议具备同一方向的完整基础，能阅读较长的代码、配置或系统设计说明。
+- 开始前先复习：实战、线程池、条件变量。
+- 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
+
+
+## 目标
+
+用线程池 + 有界阻塞队列实现任务队列，亲手遇到并解决**竞态、死锁、优雅退出**三类操作系统级问题。
+
+## 需求
+
+1. 固定 N 个 worker 线程从队列取任务执行。
+2. 队列有上限，满时生产者阻塞（背压）而不是无限堆积。
+3. 支持提交任务、等待全部完成、优雅关闭（处理完在途任务再退出）。
+4. 记录每个任务耗时与失败原因。
+
+## 关键实现点
+
+| 问题 | 方案 |
+| --- | --- |
+| 队列线程安全 | 互斥锁 + 条件变量（Go 用 channel、Java 用 BlockingQueue） |
+| 背压 | 有界队列 + 满时阻塞或拒绝 |
+| 优雅退出 | 关闭标志 + 唤醒所有等待者 + join 全部 worker |
+| 异常隔离 | 每个任务包 try/catch，避免一个任务异常杀死 worker |
+
+## 必须做的实验
+
+1. **竞态复现**：先写一个无锁计数器版本，观察结果偏小；加锁后再测。
+2. **死锁复现**：故意让两个任务以相反顺序获取两把锁，观察卡死；再统一加锁顺序修复。
+3. **优雅退出验证**：提交 1000 个任务后立即请求关闭，确认没有任务丢失也没有线程泄漏。
+4. **背压验证**：任务生产速度远大于消费时，确认内存不增长（队列长度稳定在上限）。
+
+## 观测手段
+
+`top -H` 看线程状态、`jstack`/`gdb` 看线程栈、`/proc/<pid>/status` 看线程数与上下文切换；在压测中观察 CPU 使用率与队列长度的关系。
+
+## 常见坑
+
+1. 用无界队列「解决」阻塞，结果 OOM。
+2. 关闭时只设标志不唤醒等待线程，worker 永远卡在条件变量上。
+3. 忘记在 finally 中释放锁导致死锁。
+4. 任务里做阻塞 IO，导致 worker 数量决定了并发上限（应区分 IO 密集型与 CPU 密集型线程池）。
+
+## 交付物与评分标准
+
+**交付物**：线程池实现（含提交、等待、优雅关闭 API）+ 单元测试（并发正确性）+ 三份实验记录：竞态复现（结果偏小）、死锁复现（卡住）与背压验证（队列长度稳定在上限）。
+
+**评分标准**：正确性 40%（并发测试万次通过，无任务丢失）、退出与清理 25%（关闭时处理完在途任务且无线程泄漏）、背压 20%（有界队列且内存不增长）、文档 15%（能解释为什么这样设计）。
+
+**常见失败案例**：① 用无界队列"解决"阻塞，压力下 OOM；② 关闭时只设标志不唤醒等待线程，worker 永久卡住；③ 忘记在 finally 中释放锁；④ 任务里做阻塞 IO，导致并发度被线程数限制。
+
+## 本课小结
+这个实战覆盖了操作系统的核心概念：**并发与同步（锁/条件变量）、调度与背压、优雅退出与资源回收**；把一个队列写对，比背十遍定义都有用。
+
+<!-- appendix:v1 -->
+
+## 任务队列设计速查
+
+| 组件 | 职责 | 关键点 |
+| --- | --- | --- |
+| 队列 | 缓冲与背压 | 有界、支持超时与关闭 |
+| 工作池 | 执行任务 | 线程数与任务类型匹配 |
+| 调度 | 优先级与公平 | 避免饥饿 |
+| 结果通道 | 回传结果 | 有缓冲，避免阻塞 |
+| 取消机制 | 停止任务 | 通过 context 或标志传播 |
+| 持久化 | 崩溃恢复 | 任务与状态落盘 |
+| 观测 | 指标与日志 | 队列长度、延迟、失败率 |
+
+## 并发与线程数速查
+
+| 任务类型 | 线程数建议 | 理由 |
+| --- | --- | --- |
+| CPU 密集 | 约等于核数 | 避免上下文切换开销 |
+| IO 密集 | 核数 ×（1 + 等待占比/计算占比） | 等待期间让出 CPU |
+| 混合 | 拆分两类池 | 防止相互阻塞 |
+| 虚拟线程（Java 21+） | 按任务量创建 | 适合高并发 IO |
+
+```python
+import queue
+import threading
+import time
+from dataclasses import dataclass, field
+
+@dataclass
+class Metrics:
+    processed: int = 0
+    failed: int = 0
+    total_wait_ms: float = 0.0
+    total_run_ms: float = 0.0
+
+    def summary(self) -> dict:
+        processed = max(1, self.processed)
+        return {
+            "processed": self.processed,
+            "failed": self.failed,
+            "avg_wait_ms": round(self.total_wait_ms / processed, 2),
+            "avg_run_ms": round(self.total_run_ms / processed, 2),
+        }
+
+@dataclass
+class TaskQueue:
+    """有界任务队列 + 优雅关闭：支持背压与在途任务完成。"""
+
+    capacity: int = 32
+    workers: int = 4
+    metrics: Metrics = field(default_factory=Metrics)
+
+    def __post_init__(self):
+        self.queue: queue.Queue = queue.Queue(maxsize=self.capacity)
+        self.stop_event = threading.Event()
+        self.threads = []
+
+    def start(self, handler) -> None:
+        for index in range(self.workers):
+            thread = threading.Thread(
+                target=self._worker, args=(handler,), name=f"worker-{index}", daemon=True
+            )
+            thread.start()
+            self.threads.append(thread)
+
+    def submit(self, item, timeout: float = 0.5) -> bool:
+        try:
+            self.queue.put((item, time.monotonic()), timeout=timeout)
+            return True
+        except queue.Full:
+            return False        # 背压：调用方决定等待、降级或丢弃
+
+    def _worker(self, handler) -> None:
+        while not self.stop_event.is_set() or not self.queue.empty():
+            try:
+                item, enqueued = self.queue.get(timeout=0.2)
+            except queue.Empty:
+                continue
+            started = time.monotonic()
+            self.metrics.total_wait_ms += (started - enqueued) * 1000
+            try:
+                handler(item)
+                self.metrics.processed += 1
+            except Exception:
+                self.metrics.failed += 1
+            finally:
+                self.metrics.total_run_ms += (time.monotonic() - started) * 1000
+                self.queue.task_done()
+
+    def shutdown(self, timeout: float = 5.0) -> bool:
+        self.stop_event.set()
+        for thread in self.threads:
+            thread.join(timeout=timeout)
+        return not any(thread.is_alive() for thread in self.threads)
+
+def process(item) -> None:
+    if item == "boom":
+        raise ValueError("任务失败")
+    time.sleep(0.01)
+
+tq = TaskQueue(capacity=4, workers=2)
+tq.start(process)
+for task in ["a", "b", "boom", "c"]:
+    tq.submit(task)
+time.sleep(0.4)
+print(tq.shutdown(), tq.metrics.summary())
+```
+
+## 常见错误对照表
+
+| 容易踩的做法 | 实际现象 | 原因与正确做法 |
+| --- | --- | --- |
+| 队列无界 | 内存持续增长直至 OOM | 用有界队列 + 拒绝策略实现背压 |
+| 关闭时直接杀线程 | 任务半途中断、数据不一致 | 停止接收 + 等待在途完成 |
+| 任务不幂等 | 重试产生副作用 | 用幂等键与状态机 |
+| 异常未捕获 | 工作线程静默退出 | 在 worker 内统一捕获并记录 |
+| 线程数与任务类型不匹配 | CPU 空转或切换过多 | 按 CPU/IO 类型分配 |
+| 无指标监控 | 队列积压不可见 | 记录队列长度、等待与执行时间 |
+| 无取消机制 | 无法停止长任务 | 用 context 或标志位检查 |
+| 崩溃丢任务 | 重启后任务消失 | 关键任务持久化 + 恢复扫描 |
+| 死锁式等待结果 | 队列满且调用方阻塞 | 结果通道有缓冲或异步回传 |
+| 忽略优雅退出测试 | 上线才发现丢任务 | 写测试覆盖关闭路径 |
+
+## 自测清单
+
+- [ ] 队列有界，并定义明确的拒绝策略。
+- [ ] 支持优雅关闭，等在途任务完成。
+- [ ] 任务幂等，失败可安全重试。
+- [ ] 线程数按任务类型设置，CPU 与 IO 分离。
+- [ ] 有队列长度、等待时间与失败率监控。
+
+<!-- scaffold:v1 -->
+
+<!-- exercise-guard:v1 -->
+
+## 动手练习
+
+### 练习 1：概念复述（10 分钟）
+
+合上教程，用 3～5 句话解释「实战：实现一个多线程任务队列」解决什么问题，并写出一个边界条件。
+
+**验收标准**：至少使用一个本课关键词，并给出一个反例。
+
+### 练习 2：示例改写（20 分钟）
+
+从正文选一个最小示例，先预测修改一个输入后的结果，再实际验证并记录差异。
+
+**验收标准**：留下「原例 → 改动 → 预测 → 结果 → 原因」五步记录。
+
+### 练习 3：迁移任务（30 分钟）
+
+用伪代码或小脚本模拟一次调度、竞争或资源分配，并记录至少 5 个状态变化。
+
+- 至少覆盖「实战」和「线程池」两个关键词。
+- 产出一个别人可以检查的结果。
+- 写出一个仍不确定的问题和验证方法。
+
+<!-- project-verification:v1 -->
+
+## 验证命令与预期输出
+
+项目代码不能只看“能编译”，还要能按固定命令复现结果。下表给出最低验证集：
+
+| 阶段 | 命令 | 预期输出 |
+| --- | --- | --- |
+| 安装依赖 | `python -m pip install -r requirements.txt` | 依赖安装完成，没有版本冲突 |
+| 语法检查 | `python -m compileall .` | 所有模块编译通过 |
+| 运行测试 | `python -m pytest -q` | 测试全部通过，失败用例数为 0 |
+| 启动示例 | `python main.py` | 服务启动并输出监听地址 |
+
+### 验收证据
+
+- [ ] 保存依赖安装和启动命令的完整输出。
+- [ ] 至少运行 3 条测试，其中包含一条非法输入或失败路径。
+- [ ] 重复执行同一操作两次，确认没有重复写入或副作用。
+- [ ] 记录一次失败状态码、错误日志和恢复步骤。
+- [ ] 在 README 中写明环境版本、启动方式和回滚方式。
+
+### 回归与回滚
+
+1. 先在一个可丢弃的目录或临时数据库执行，避免污染真实数据。
+2. 修改一处逻辑后重跑全部验证命令，确认没有回归。
+3. 若失败，回滚到上一个可运行版本并保留失败日志。
+4. 定位原因后补一条自动化测试，再重新执行发布流程。
+5. 把教训写入项目复盘或本课笔记，形成下一次的检查项。
+
+<!-- p2-enrichment:v1 -->
+
+## English Overview
+
+**Title:** Project: Thread Pool Queue
+
+**Summary:** Races, deadlocks, graceful shutdown and backpressure.
+
+**Category:** Operating Systems  
+**Level:** 高级  
+**Key terms:** 实战, 线程池, 条件变量, 背压, 优雅退出
+
+> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
+
+## 内容元数据
+
+- 内容版本：v2.0
+- 最后更新：2026-10-03
+- 学习阶段：高级
+- 适用环境：Linux 6.x / POSIX
+- 内容来源：内置结构化课程与工程实践整理
+- 相关主题：实战、线程池、条件变量、背压、优雅退出
+- 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
+
+## 项目专属规格：实战：实现一个多线程任务队列
+
+### 核心场景
+
+竞态、死锁、优雅退出与背压四类问题实操。 项目目标是把「实战、线程池、条件变量、背压、优雅退出」落实为可运行、可测试、可回滚的交付物。
+
+### 架构与数据流
+
+```text
+用户/输入 → 接口或命令 → 领域逻辑 → 存储/外部依赖 → 输出与监控
+                         ↘ 失败分类 → 重试/补偿 → 回滚
+```
+
+### 最小数据模型
+
+| 对象 | 关键字段 | 约束 |
+| --- | --- | --- |
+| 输入实体 | 实战、时间、来源 | 必填校验、长度限制、幂等键 |
+| 任务实体 | 状态、优先级、创建时间 | 状态迁移合法、不可重复执行 |
+| 结果实体 | 输出、错误码、耗时 | 可序列化、错误可解释 |
+| 审计记录 | 操作者、动作、结果、时间 | 不可篡改、可查询、脱敏 |
+
+### 验收场景
+
+1. 正常路径：最小输入得到预期输出，并留下日志与指标。
+2. 边界路径：空值、最大值、重复数据和超长内容得到明确处理。
+3. 失败路径：依赖超时或不可用时能快速失败、重试或降级。
+4. 幂等路径：同一请求执行两次不会产生重复副作用。
+5. 回滚路径：回滚后数据一致，且能说明恢复时间和影响范围。
+
+<!-- project-delivery:v1 -->
+
+## 项目交付物
+
+### 建议仓库结构
+
+```text
+src/
+tests/
+docs/
+README.md
+```
+
+### 测试矩阵
+
+| 层级 | 覆盖内容 | 最低数量 | 通过标准 |
+| --- | --- | ---: | --- |
+| 单元测试 | 领域规则、边界和错误分类 | 8 | 正常、边界、失败路径全部通过 |
+| 集成测试 | 数据库、网络、文件或平台边界 | 3 | 使用真实边界且可重复运行 |
+| 端到端测试 | 核心用户路径 | 1 | 从输入到输出完整跑通 |
+| 手动验收 | 文档中列出的 5 个场景 | 5 | 有命令、输出和结论记录 |
+
+### 验收数据
+
+```json
+{
+  "project": "os_project",
+  "input": {"case": "normal", "value": 5},
+  "expected": {"ok": true, "result": 5},
+  "failure_case": {"value": -1, "error": "validation_error"},
+  "idempotency_key": "demo-001"
+}
+```
+
+### 复盘模板
+
+| 问题 | 记录 |
+| --- | --- |
+| 原目标是什么？ | 用一句话描述可验收目标 |
+| 实际发生了什么？ | 时间线、指标和关键日志 |
+| 哪个假设被推翻？ | 根因与促成因素 |
+| 如何回滚？ | 步骤、耗时和数据校验 |
+| 下一步做什么？ | 负责人、期限和验证方式 |
+
+> 项目验收围绕「实战、线程池、条件变量」：至少完成一次正常路径、一次边界输入、一次失败恢复和一次幂等检查。
+
+<!-- p2-references:v1 -->
+
+## 参考资料与复核
+
+- 最后复核：2026-10-04
+- 下次复核：2027-04-04
+- 复核范围：版本兼容、API 行为、安全建议与工程实践
+- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+
+| 参考资料 | 本课用途 |
+| --- | --- |
+| [Linux Kernel Docs](https://docs.kernel.org/) | 进程、内存、I/O 与调度 |
+| [Linux man-pages](https://man7.org/linux/man-pages/) | 系统调用与用户态接口 |
+
+> 本课主题：竞态、死锁、优雅退出与背压四类问题实操。
+
+> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+

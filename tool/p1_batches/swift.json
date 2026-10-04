@@ -1,0 +1,573 @@
+{
+  "category": "swift",
+  "lessons": [
+    {
+      "id": "swift_basics",
+      "title": {
+        "zh": "Swift 基础与可选类型",
+        "en": "Swift Basics and Optionals"
+      },
+      "summary": {
+        "zh": "掌握 let/var、可选绑定、值类型和错误处理。",
+        "en": "Learn let/var, optional binding, value types and error handling."
+      },
+      "file": "assets/content/swift_basics.md",
+      "minutes": 20,
+      "keywords": [
+        "Swift",
+        "Optional",
+        "值类型",
+        "错误处理"
+      ],
+      "difficulty": "基础",
+      "order": 1,
+      "quiz": [
+        {
+          "question": "关于「Optional 表示可能有值也可能…」，下列说法正确的是？",
+          "options": [
+            "Optional 表示可能有值也可能为 nil，要用 if let、guard let 或模式匹配安全解包。",
+            "参数标签让调用点更可读，闭包捕获外部变量并延长其生命周期。",
+            "优先使用 struct 和协议组合表达可组合的值语义，需要共享身份时再用 class。",
+            "Array 有序可重复，Set 去重无序，Dictionary 按键索引且键必须可哈希。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Swift 基础与可选类型》时应把该要点与「Swift」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「struct 是值类型 class …」，下列说法正确的是？",
+          "options": [
+            "struct 是值类型，class 是引用类型，赋值和传参语义不同。",
+            "逃逸闭包可能在函数返回后执行，捕获 self 时要注意循环引用。",
+            "ARC 自动管理引用计数，但强引用环需要 weak 或 unowned 打破。",
+            "泛型让算法与具体类型解耦，where 子句表达类型约束。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Swift 基础与可选类型》时应把该要点与「Swift」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「throws、Result 和 do…」，下列说法正确的是？",
+          "options": [
+            "throws、Result 和 do-catch 让可恢复错误在类型系统中显式表达。",
+            "协议定义能力，协议扩展提供默认实现，但默认实现不会自动获得动态派发。",
+            "值类型复制时可能采用写时复制，语义不可变不代表每次赋值都深拷贝。",
+            "协议关联类型让协议更灵活，但也会影响存在类型和类型擦除。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Swift 基础与可选类型》时应把该要点与「Swift」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「Swift 基础与可选类型」的核心学习目标是什么？",
+          "options": [
+            "掌握 let/var、可选绑定、值类型和错误处理。",
+            "理解参数标签、闭包捕获、逃逸闭包和协议扩展。",
+            "比较值语义、继承、协议组合和自动引用计数。",
+            "掌握 Array/Dictionary/Set、泛型约束和协议关联类型。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "swift_functions",
+      "title": {
+        "zh": "Swift 函数、闭包与协议",
+        "en": "Swift Functions, Closures and Protocols"
+      },
+      "summary": {
+        "zh": "理解参数标签、闭包捕获、逃逸闭包和协议扩展。",
+        "en": "Learn argument labels, captures, escaping closures and protocol extensions."
+      },
+      "file": "assets/content/swift_functions.md",
+      "minutes": 22,
+      "keywords": [
+        "函数",
+        "闭包",
+        "逃逸闭包",
+        "协议"
+      ],
+      "difficulty": "进阶",
+      "order": 2,
+      "quiz": [
+        {
+          "question": "关于「参数标签让调用点更可读 闭包捕获外部…」，下列说法正确的是？",
+          "options": [
+            "参数标签让调用点更可读，闭包捕获外部变量并延长其生命周期。",
+            "Optional 表示可能有值也可能为 nil，要用 if let、guard let 或模式匹配安全解包。",
+            "优先使用 struct 和协议组合表达可组合的值语义，需要共享身份时再用 class。",
+            "Array 有序可重复，Set 去重无序，Dictionary 按键索引且键必须可哈希。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Swift 函数、闭包与协议》时应把该要点与「函数」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「逃逸闭包可能在函数返回后执行 捕获 …」，下列说法正确的是？",
+          "options": [
+            "逃逸闭包可能在函数返回后执行，捕获 self 时要注意循环引用。",
+            "struct 是值类型，class 是引用类型，赋值和传参语义不同。",
+            "ARC 自动管理引用计数，但强引用环需要 weak 或 unowned 打破。",
+            "泛型让算法与具体类型解耦，where 子句表达类型约束。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Swift 函数、闭包与协议》时应把该要点与「函数」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「协议定义能力 协议扩展提供默认实现 …」，下列说法正确的是？",
+          "options": [
+            "协议定义能力，协议扩展提供默认实现，但默认实现不会自动获得动态派发。",
+            "throws、Result 和 do-catch 让可恢复错误在类型系统中显式表达。",
+            "值类型复制时可能采用写时复制，语义不可变不代表每次赋值都深拷贝。",
+            "协议关联类型让协议更灵活，但也会影响存在类型和类型擦除。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Swift 函数、闭包与协议》时应把该要点与「函数」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「Swift 函数、闭包与协议」的核心学习目标是什么？",
+          "options": [
+            "理解参数标签、闭包捕获、逃逸闭包和协议扩展。",
+            "掌握 let/var、可选绑定、值类型和错误处理。",
+            "比较值语义、继承、协议组合和自动引用计数。",
+            "掌握 Array/Dictionary/Set、泛型约束和协议关联类型。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "swift_oop",
+      "title": {
+        "zh": "Swift 结构体、类与 ARC",
+        "en": "Swift Structs, Classes and ARC"
+      },
+      "summary": {
+        "zh": "比较值语义、继承、协议组合和自动引用计数。",
+        "en": "Compare value semantics, inheritance, protocol composition and ARC."
+      },
+      "file": "assets/content/swift_oop.md",
+      "minutes": 23,
+      "keywords": [
+        "struct",
+        "class",
+        "ARC",
+        "协议组合"
+      ],
+      "difficulty": "进阶",
+      "order": 3,
+      "quiz": [
+        {
+          "question": "关于「优先使用 struct 和协议组合表…」，下列说法正确的是？",
+          "options": [
+            "优先使用 struct 和协议组合表达可组合的值语义，需要共享身份时再用 class。",
+            "Optional 表示可能有值也可能为 nil，要用 if let、guard let 或模式匹配安全解包。",
+            "参数标签让调用点更可读，闭包捕获外部变量并延长其生命周期。",
+            "Array 有序可重复，Set 去重无序，Dictionary 按键索引且键必须可哈希。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Swift 结构体、类与 ARC》时应把该要点与「struct」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「ARC 自动管理引用计数 但强引用环…」，下列说法正确的是？",
+          "options": [
+            "ARC 自动管理引用计数，但强引用环需要 weak 或 unowned 打破。",
+            "struct 是值类型，class 是引用类型，赋值和传参语义不同。",
+            "逃逸闭包可能在函数返回后执行，捕获 self 时要注意循环引用。",
+            "泛型让算法与具体类型解耦，where 子句表达类型约束。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Swift 结构体、类与 ARC》时应把该要点与「struct」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「值类型复制时可能采用写时复制 语义不…」，下列说法正确的是？",
+          "options": [
+            "值类型复制时可能采用写时复制，语义不可变不代表每次赋值都深拷贝。",
+            "throws、Result 和 do-catch 让可恢复错误在类型系统中显式表达。",
+            "协议定义能力，协议扩展提供默认实现，但默认实现不会自动获得动态派发。",
+            "协议关联类型让协议更灵活，但也会影响存在类型和类型擦除。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Swift 结构体、类与 ARC》时应把该要点与「struct」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「Swift 结构体、类与 ARC」的核心学习目标是什么？",
+          "options": [
+            "比较值语义、继承、协议组合和自动引用计数。",
+            "掌握 let/var、可选绑定、值类型和错误处理。",
+            "理解参数标签、闭包捕获、逃逸闭包和协议扩展。",
+            "掌握 Array/Dictionary/Set、泛型约束和协议关联类型。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "swift_collections",
+      "title": {
+        "zh": "Swift 集合与泛型",
+        "en": "Swift Collections and Generics"
+      },
+      "summary": {
+        "zh": "掌握 Array/Dictionary/Set、泛型约束和协议关联类型。",
+        "en": "Learn Array/Dictionary/Set, generic constraints and associated types."
+      },
+      "file": "assets/content/swift_collections.md",
+      "minutes": 22,
+      "keywords": [
+        "集合",
+        "泛型",
+        "约束",
+        "关联类型"
+      ],
+      "difficulty": "进阶",
+      "order": 4,
+      "quiz": [
+        {
+          "question": "关于「Array 有序可重复 Set 去重…」，下列说法正确的是？",
+          "options": [
+            "Array 有序可重复，Set 去重无序，Dictionary 按键索引且键必须可哈希。",
+            "Optional 表示可能有值也可能为 nil，要用 if let、guard let 或模式匹配安全解包。",
+            "参数标签让调用点更可读，闭包捕获外部变量并延长其生命周期。",
+            "优先使用 struct 和协议组合表达可组合的值语义，需要共享身份时再用 class。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Swift 集合与泛型》时应把该要点与「集合」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「泛型让算法与具体类型解耦 where…」，下列说法正确的是？",
+          "options": [
+            "泛型让算法与具体类型解耦，where 子句表达类型约束。",
+            "struct 是值类型，class 是引用类型，赋值和传参语义不同。",
+            "逃逸闭包可能在函数返回后执行，捕获 self 时要注意循环引用。",
+            "ARC 自动管理引用计数，但强引用环需要 weak 或 unowned 打破。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Swift 集合与泛型》时应把该要点与「集合」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「协议关联类型让协议更灵活 但也会影响…」，下列说法正确的是？",
+          "options": [
+            "协议关联类型让协议更灵活，但也会影响存在类型和类型擦除。",
+            "throws、Result 和 do-catch 让可恢复错误在类型系统中显式表达。",
+            "协议定义能力，协议扩展提供默认实现，但默认实现不会自动获得动态派发。",
+            "值类型复制时可能采用写时复制，语义不可变不代表每次赋值都深拷贝。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Swift 集合与泛型》时应把该要点与「集合」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「Swift 集合与泛型」的核心学习目标是什么？",
+          "options": [
+            "掌握 Array/Dictionary/Set、泛型约束和协议关联类型。",
+            "掌握 let/var、可选绑定、值类型和错误处理。",
+            "理解参数标签、闭包捕获、逃逸闭包和协议扩展。",
+            "比较值语义、继承、协议组合和自动引用计数。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "swift_async",
+      "title": {
+        "zh": "Swift 并发与 async/await",
+        "en": "Swift Concurrency and async/await"
+      },
+      "summary": {
+        "zh": "理解 async/await、Task、Actor、取消和 Sendable。",
+        "en": "Learn async/await, Task, Actor, cancellation and Sendable."
+      },
+      "file": "assets/content/swift_async.md",
+      "minutes": 25,
+      "keywords": [
+        "async",
+        "Actor",
+        "Task",
+        "Sendable"
+      ],
+      "difficulty": "高级",
+      "order": 5,
+      "quiz": [
+        {
+          "question": "关于「async/await 把异步代码写…」，下列说法正确的是？",
+          "options": [
+            "async/await 把异步代码写成顺序结构，Task 提供取消和优先级。",
+            "Optional 表示可能有值也可能为 nil，要用 if let、guard let 或模式匹配安全解包。",
+            "参数标签让调用点更可读，闭包捕获外部变量并延长其生命周期。",
+            "优先使用 struct 和协议组合表达可组合的值语义，需要共享身份时再用 class。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Swift 并发与 async/await》时应把该要点与「async」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「Actor 隔离可变状态 跨隔离边界…」，下列说法正确的是？",
+          "options": [
+            "Actor 隔离可变状态，跨隔离边界传递的数据要满足 Sendable。",
+            "struct 是值类型，class 是引用类型，赋值和传参语义不同。",
+            "逃逸闭包可能在函数返回后执行，捕获 self 时要注意循环引用。",
+            "ARC 自动管理引用计数，但强引用环需要 weak 或 unowned 打破。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Swift 并发与 async/await》时应把该要点与「async」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「取消是协作式的 长任务要在关键点检查…」，下列说法正确的是？",
+          "options": [
+            "取消是协作式的，长任务要在关键点检查取消并释放资源。",
+            "throws、Result 和 do-catch 让可恢复错误在类型系统中显式表达。",
+            "协议定义能力，协议扩展提供默认实现，但默认实现不会自动获得动态派发。",
+            "值类型复制时可能采用写时复制，语义不可变不代表每次赋值都深拷贝。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Swift 并发与 async/await》时应把该要点与「async」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「Swift 并发与 async/await」的核心学习目标是什么？",
+          "options": [
+            "理解 async/await、Task、Actor、取消和 Sendable。",
+            "掌握 let/var、可选绑定、值类型和错误处理。",
+            "理解参数标签、闭包捕获、逃逸闭包和协议扩展。",
+            "比较值语义、继承、协议组合和自动引用计数。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "swift_swiftui",
+      "title": {
+        "zh": "SwiftUI 与状态管理",
+        "en": "SwiftUI and State Management"
+      },
+      "summary": {
+        "zh": "覆盖声明式视图、状态包装器、数据流和性能。",
+        "en": "Cover declarative views, property wrappers, data flow and performance."
+      },
+      "file": "assets/content/swift_swiftui.md",
+      "minutes": 24,
+      "keywords": [
+        "SwiftUI",
+        "状态",
+        "数据流",
+        "视图"
+      ],
+      "difficulty": "高级",
+      "order": 6,
+      "quiz": [
+        {
+          "question": "关于「SwiftUI 视图是状态的函数 状…」，下列说法正确的是？",
+          "options": [
+            "SwiftUI 视图是状态的函数，状态变化驱动视图重新计算。",
+            "Optional 表示可能有值也可能为 nil，要用 if let、guard let 或模式匹配安全解包。",
+            "参数标签让调用点更可读，闭包捕获外部变量并延长其生命周期。",
+            "优先使用 struct 和协议组合表达可组合的值语义，需要共享身份时再用 class。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《SwiftUI 与状态管理》时应把该要点与「SwiftUI」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「@State 管局部值 @Obser…」，下列说法正确的是？",
+          "options": [
+            "@State 管局部值，@Observable/ObservableObject 管共享模型，环境对象跨层级传递。",
+            "struct 是值类型，class 是引用类型，赋值和传参语义不同。",
+            "逃逸闭包可能在函数返回后执行，捕获 self 时要注意循环引用。",
+            "ARC 自动管理引用计数，但强引用环需要 weak 或 unowned 打破。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《SwiftUI 与状态管理》时应把该要点与「SwiftUI」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「避免在 body 中做重计算和副作用…」，下列说法正确的是？",
+          "options": [
+            "避免在 body 中做重计算和副作用，用稳定标识减少无效重建。",
+            "throws、Result 和 do-catch 让可恢复错误在类型系统中显式表达。",
+            "协议定义能力，协议扩展提供默认实现，但默认实现不会自动获得动态派发。",
+            "值类型复制时可能采用写时复制，语义不可变不代表每次赋值都深拷贝。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《SwiftUI 与状态管理》时应把该要点与「SwiftUI」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「SwiftUI 与状态管理」的核心学习目标是什么？",
+          "options": [
+            "覆盖声明式视图、状态包装器、数据流和性能。",
+            "掌握 let/var、可选绑定、值类型和错误处理。",
+            "理解参数标签、闭包捕获、逃逸闭包和协议扩展。",
+            "比较值语义、继承、协议组合和自动引用计数。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "swift_testing",
+      "title": {
+        "zh": "Swift 测试与性能",
+        "en": "Swift Testing and Performance"
+      },
+      "summary": {
+        "zh": "用 XCTest、异步测试、依赖注入和 Instruments 验证质量。",
+        "en": "Use XCTest, async tests, dependency injection and Instruments."
+      },
+      "file": "assets/content/swift_testing.md",
+      "minutes": 23,
+      "keywords": [
+        "XCTest",
+        "异步测试",
+        "Instruments",
+        "依赖注入"
+      ],
+      "difficulty": "高级",
+      "order": 7,
+      "quiz": [
+        {
+          "question": "关于「测试通过协议和依赖注入隔离网络、时间…」，下列说法正确的是？",
+          "options": [
+            "测试通过协议和依赖注入隔离网络、时间和文件系统。",
+            "Optional 表示可能有值也可能为 nil，要用 if let、guard let 或模式匹配安全解包。",
+            "参数标签让调用点更可读，闭包捕获外部变量并延长其生命周期。",
+            "优先使用 struct 和协议组合表达可组合的值语义，需要共享身份时再用 class。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Swift 测试与性能》时应把该要点与「XCTest」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「异步测试要等待确定性条件 不能用固定…」，下列说法正确的是？",
+          "options": [
+            "异步测试要等待确定性条件，不能用固定 sleep。",
+            "struct 是值类型，class 是引用类型，赋值和传参语义不同。",
+            "逃逸闭包可能在函数返回后执行，捕获 self 时要注意循环引用。",
+            "ARC 自动管理引用计数，但强引用环需要 weak 或 unowned 打破。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Swift 测试与性能》时应把该要点与「XCTest」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「性能问题用 Instruments …」，下列说法正确的是？",
+          "options": [
+            "性能问题用 Instruments 观察 CPU、内存、线程和主线程阻塞。",
+            "throws、Result 和 do-catch 让可恢复错误在类型系统中显式表达。",
+            "协议定义能力，协议扩展提供默认实现，但默认实现不会自动获得动态派发。",
+            "值类型复制时可能采用写时复制，语义不可变不代表每次赋值都深拷贝。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Swift 测试与性能》时应把该要点与「XCTest」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「Swift 测试与性能」的核心学习目标是什么？",
+          "options": [
+            "用 XCTest、异步测试、依赖注入和 Instruments 验证质量。",
+            "掌握 let/var、可选绑定、值类型和错误处理。",
+            "理解参数标签、闭包捕获、逃逸闭包和协议扩展。",
+            "比较值语义、继承、协议组合和自动引用计数。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "swift_project",
+      "title": {
+        "zh": "实战：SwiftUI iOS 客户端",
+        "en": "Project: SwiftUI iOS Client"
+      },
+      "summary": {
+        "zh": "实现列表、详情、网络、缓存、状态恢复和错误提示。",
+        "en": "Build list, detail, network, cache, state restoration and error UI."
+      },
+      "file": "assets/content/swift_project.md",
+      "minutes": 130,
+      "keywords": [
+        "iOS 项目",
+        "SwiftUI",
+        "网络",
+        "缓存"
+      ],
+      "difficulty": "高级",
+      "order": 8,
+      "quiz": [
+        {
+          "question": "关于「把页面状态建模为明确枚举 避免加载、…」，下列说法正确的是？",
+          "options": [
+            "把页面状态建模为明确枚举，避免加载、错误和空数据状态互相矛盾。",
+            "Optional 表示可能有值也可能为 nil，要用 if let、guard let 或模式匹配安全解包。",
+            "参数标签让调用点更可读，闭包捕获外部变量并延长其生命周期。",
+            "优先使用 struct 和协议组合表达可组合的值语义，需要共享身份时再用 class。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《实战：SwiftUI iOS 客户端》时应把该要点与「iOS 项目」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「网络层提供超时、重试、缓存和取消 视…」，下列说法正确的是？",
+          "options": [
+            "网络层提供超时、重试、缓存和取消，视图层只处理呈现。",
+            "struct 是值类型，class 是引用类型，赋值和传参语义不同。",
+            "逃逸闭包可能在函数返回后执行，捕获 self 时要注意循环引用。",
+            "ARC 自动管理引用计数，但强引用环需要 weak 或 unowned 打破。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《实战：SwiftUI iOS 客户端》时应把该要点与「iOS 项目」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「验收要覆盖弱网、后台恢复、动态字体和…」，下列说法正确的是？",
+          "options": [
+            "验收要覆盖弱网、后台恢复、动态字体和深色模式。",
+            "throws、Result 和 do-catch 让可恢复错误在类型系统中显式表达。",
+            "协议定义能力，协议扩展提供默认实现，但默认实现不会自动获得动态派发。",
+            "值类型复制时可能采用写时复制，语义不可变不代表每次赋值都深拷贝。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《实战：SwiftUI iOS 客户端》时应把该要点与「iOS 项目」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「实战：SwiftUI iOS 客户端」的核心学习目标是什么？",
+          "options": [
+            "实现列表、详情、网络、缓存、状态恢复和错误提示。",
+            "掌握 let/var、可选绑定、值类型和错误处理。",
+            "理解参数标签、闭包捕获、逃逸闭包和协议扩展。",
+            "比较值语义、继承、协议组合和自动引用计数。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,378 @@
+{
+  "flutter_basics": {
+    "image": "images/category_flutter_basics.png",
+    "alt": "Flutter 基础与 Widget 树"
+  },
+  "flutter_state": {
+    "image": "images/category_flutter_state.png",
+    "alt": "Flutter 状态管理与性能"
+  },
+  "flutter_release": {
+    "image": "images/category_flutter_release.png",
+    "alt": "实战：Flutter 打包发布 Android"
+  },
+  "mobile_kotlin": {
+    "image": "images/category_mobile_kotlin.png",
+    "alt": "Kotlin 与 Android 开发"
+  },
+  "mobile_swift": {
+    "image": "images/category_mobile_swift.png",
+    "alt": "Swift 与 iOS 开发"
+  },
+  "mobile_react_native": {
+    "image": "images/category_mobile_react_native.png",
+    "alt": "React Native 跨平台开发"
+  },
+  "mobile_compose": {
+    "image": "images/category_mobile_compose.png",
+    "alt": "Jetpack Compose 声明式 UI"
+  },
+  "mobile_harmony": {
+    "image": "images/category_mobile_harmony.png",
+    "alt": "鸿蒙 ArkTS 应用开发"
+  },
+  "mobile_miniprogram": {
+    "image": "images/category_mobile_miniprogram.png",
+    "alt": "小程序开发要点"
+  },
+  "mobile_performance": {
+    "image": "images/category_mobile_performance.png",
+    "alt": "移动端性能优化实战"
+  },
+  "flutter_widget_intro": {
+    "image": "images/category_flutter_widget_intro.png",
+    "alt": "Flutter Widget 入门"
+  },
+  "flutter_layout_intro": {
+    "image": "images/category_flutter_layout_intro.png",
+    "alt": "Flutter 布局入门"
+  },
+  "html_basics": {
+    "image": "images/category_html_basics.png",
+    "alt": "HTML 基础与语义化"
+  },
+  "css_basics": {
+    "image": "images/category_css_basics.png",
+    "alt": "CSS 基础：选择器与盒模型"
+  },
+  "css_layout": {
+    "image": "images/category_css_layout.png",
+    "alt": "CSS 布局：Flex、Grid 与响应式"
+  },
+  "css_render_animation": {
+    "image": "images/category_css_render_animation.png",
+    "alt": "浏览器渲染与 CSS 动画"
+  },
+  "css_advanced": {
+    "image": "images/category_css_advanced.png",
+    "alt": "CSS 进阶：变量、伪类与现代特性"
+  },
+  "html_css_project": {
+    "image": "images/category_html_css_project.png",
+    "alt": "实战：响应式落地页"
+  },
+  "web_performance": {
+    "image": "images/category_web_performance.png",
+    "alt": "前端性能优化实战"
+  },
+  "css_design_tokens": {
+    "image": "images/category_css_design_tokens.png",
+    "alt": "设计令牌与样式架构"
+  },
+  "a11y_aria": {
+    "image": "images/category_a11y_aria.png",
+    "alt": "可访问性与 ARIA 实战"
+  },
+  "browser_rendering": {
+    "image": "images/category_browser_rendering.png",
+    "alt": "浏览器渲染与事件循环深入"
+  },
+  "web_pwa_offline": {
+    "image": "images/category_web_pwa_offline.png",
+    "alt": "PWA 与离线能力"
+  },
+  "web_components": {
+    "image": "images/category_web_components.png",
+    "alt": "Web Components 实战"
+  },
+  "html_tags_intro": {
+    "image": "images/category_html_tags_intro.png",
+    "alt": "HTML 标签入门"
+  },
+  "css_selectors_intro": {
+    "image": "images/category_css_selectors_intro.png",
+    "alt": "CSS 选择器入门"
+  },
+  "git_basics": {
+    "image": "images/category_git_basics.png",
+    "alt": "Git 版本控制"
+  },
+  "cli": {
+    "image": "images/category_cli.png",
+    "alt": "命令行基础"
+  },
+  "debugging": {
+    "image": "images/category_debugging.png",
+    "alt": "调试与日志"
+  },
+  "docker": {
+    "image": "images/category_docker.png",
+    "alt": "Docker 容器基础"
+  },
+  "ci_cd": {
+    "image": "images/category_ci_cd.png",
+    "alt": "CI/CD 与 GitHub Actions"
+  },
+  "kubernetes": {
+    "image": "images/category_kubernetes.png",
+    "alt": "Kubernetes 基础"
+  },
+  "observability": {
+    "image": "images/category_observability.png",
+    "alt": "可观测性：日志、指标与链路"
+  },
+  "terraform": {
+    "image": "images/category_terraform.png",
+    "alt": "Terraform 与基础设施即代码"
+  },
+  "linux_performance": {
+    "image": "images/category_linux_performance.png",
+    "alt": "Linux 性能分析"
+  },
+  "gateway": {
+    "image": "images/category_gateway.png",
+    "alt": "API 网关与负载均衡"
+  },
+  "toolchain_project": {
+    "image": "images/category_toolchain_project.png",
+    "alt": "实战：搭一条完整 CI/CD 流水线"
+  },
+  "gitops_argocd": {
+    "image": "images/category_gitops_argocd.png",
+    "alt": "GitOps 与 ArgoCD"
+  },
+  "git_intro": {
+    "image": "images/category_git_intro.png",
+    "alt": "Git 入门"
+  },
+  "cli_intro": {
+    "image": "images/category_cli_intro.png",
+    "alt": "命令行入门"
+  },
+  "distributed_fundamentals": {
+    "image": "images/category_distributed_fundamentals.png",
+    "alt": "分布式系统原理"
+  },
+  "microservices": {
+    "image": "images/category_microservices.png",
+    "alt": "微服务拆分与治理"
+  },
+  "messaging_events": {
+    "image": "images/category_messaging_events.png",
+    "alt": "消息队列与事件驱动"
+  },
+  "high_availability": {
+    "image": "images/category_high_availability.png",
+    "alt": "高可用与容量规划"
+  },
+  "distributed_short_url_project": {
+    "image": "images/category_distributed_short_url_project.png",
+    "alt": "实战：设计一个短链服务"
+  },
+  "distributed_consensus": {
+    "image": "images/category_distributed_consensus.png",
+    "alt": "共识与复制：Raft 实战要点"
+  },
+  "distributed_id": {
+    "image": "images/category_distributed_id.png",
+    "alt": "分布式 ID 与发号器"
+  },
+  "distributed_rate_limit": {
+    "image": "images/category_distributed_rate_limit.png",
+    "alt": "限流与熔断算法专题"
+  },
+  "distributed_cache": {
+    "image": "images/category_distributed_cache.png",
+    "alt": "分布式缓存架构"
+  },
+  "distributed_multisite": {
+    "image": "images/category_distributed_multisite.png",
+    "alt": "单元化与多活架构"
+  },
+  "design_patterns": {
+    "image": "images/category_design_patterns.png",
+    "alt": "设计模式与 SOLID"
+  },
+  "testing_strategy": {
+    "image": "images/category_testing_strategy.png",
+    "alt": "测试策略"
+  },
+  "requirements_modeling": {
+    "image": "images/category_requirements_modeling.png",
+    "alt": "需求分析与建模"
+  },
+  "se_test_design": {
+    "image": "images/category_se_test_design.png",
+    "alt": "测试用例设计方法"
+  },
+  "se_tdd_refactor": {
+    "image": "images/category_se_tdd_refactor.png",
+    "alt": "TDD 与重构"
+  },
+  "se_quality_metrics": {
+    "image": "images/category_se_quality_metrics.png",
+    "alt": "质量度量与工程门禁"
+  },
+  "sdl_security": {
+    "image": "images/category_sdl_security.png",
+    "alt": "安全开发生命周期（SDL）"
+  },
+  "se_code_review": {
+    "image": "images/category_se_code_review.png",
+    "alt": "代码评审方法与实践"
+  },
+  "se_tech_writing": {
+    "image": "images/category_se_tech_writing.png",
+    "alt": "技术写作与文档工程"
+  },
+  "se_postmortem": {
+    "image": "images/category_se_postmortem.png",
+    "alt": "故障复盘与事故管理"
+  },
+  "se_oncall": {
+    "image": "images/category_se_oncall.png",
+    "alt": "On-Call 与告警治理"
+  },
+  "se_tech_debt": {
+    "image": "images/category_se_tech_debt.png",
+    "alt": "技术债务管理"
+  },
+  "math_vectors_matrices": {
+    "image": "images/category_math_vectors_matrices.png",
+    "alt": "线性代数：向量与矩阵"
+  },
+  "math_eigen_svd": {
+    "image": "images/category_math_eigen_svd.png",
+    "alt": "特征值、SVD 与降维"
+  },
+  "math_calculus_gradient": {
+    "image": "images/category_math_calculus_gradient.png",
+    "alt": "微积分与梯度下降"
+  },
+  "math_probability_stats": {
+    "image": "images/category_math_probability_stats.png",
+    "alt": "概率统计与假设检验"
+  },
+  "math_information_theory": {
+    "image": "images/category_math_information_theory.png",
+    "alt": "信息论：熵与交叉熵"
+  },
+  "math_convex_optimization": {
+    "image": "images/category_math_convex_optimization.png",
+    "alt": "凸优化与约束优化"
+  },
+  "math_graph_combinatorics": {
+    "image": "images/category_math_graph_combinatorics.png",
+    "alt": "图论与组合数学"
+  },
+  "math_numerical_linear_algebra": {
+    "image": "images/category_math_numerical_linear_algebra.png",
+    "alt": "数值线性代数"
+  },
+  "math_set_function_intro": {
+    "image": "images/category_math_set_function_intro.png",
+    "alt": "集合与函数入门"
+  },
+  "cross_first_program": {
+    "image": "images/category_cross_first_program.png",
+    "alt": "九种语言的第一个程序"
+  },
+  "cross_types_variables": {
+    "image": "images/category_cross_types_variables.png",
+    "alt": "类型与变量：九种语言横向对照"
+  },
+  "cross_collections": {
+    "image": "images/category_cross_collections.png",
+    "alt": "集合类型：九种语言横向对照"
+  },
+  "cross_concurrency": {
+    "image": "images/category_cross_concurrency.png",
+    "alt": "并发写法：九种语言横向对照"
+  },
+  "cross_errors_testing": {
+    "image": "images/category_cross_errors_testing.png",
+    "alt": "错误处理与测试：九种语言横向对照"
+  },
+  "cross_package_manage": {
+    "image": "images/category_cross_package_manage.png",
+    "alt": "包管理与依赖：九种生态横向对照"
+  },
+  "cross_build_release": {
+    "image": "images/category_cross_build_release.png",
+    "alt": "构建与发布产物：九种生态横向对照"
+  },
+  "cross_logging_observability": {
+    "image": "images/category_cross_logging_observability.png",
+    "alt": "日志与可观测性：九种生态横向对照"
+  },
+  "cross_cli_args": {
+    "image": "images/category_cross_cli_args.png",
+    "alt": "命令行参数解析：九种语言横向对照"
+  },
+  "cross_string_regex": {
+    "image": "images/category_cross_string_regex.png",
+    "alt": "字符串与正则：九种语言横向对照"
+  },
+  "cross_time_timezone": {
+    "image": "images/category_cross_time_timezone.png",
+    "alt": "时间与时区：九种语言横向对照"
+  },
+  "cross_serialization": {
+    "image": "images/category_cross_serialization.png",
+    "alt": "序列化格式：JSON、YAML、Protobuf 横向对照"
+  },
+  "cross_performance_profiling": {
+    "image": "images/category_cross_performance_profiling.png",
+    "alt": "性能剖析与基准测试：九种生态横向对照"
+  },
+  "cross_ci_config": {
+    "image": "images/category_cross_ci_config.png",
+    "alt": "CI 流水线配置：九种生态横向对照"
+  },
+  "cross_security_ecosystem": {
+    "image": "images/category_cross_security_ecosystem.png",
+    "alt": "依赖安全与密钥管理：九种生态横向对照"
+  },
+  "cross_db_access": {
+    "image": "images/category_cross_db_access.png",
+    "alt": "数据库访问与 ORM：九种生态横向对照"
+  },
+  "cross_api_contract": {
+    "image": "images/category_cross_api_contract.png",
+    "alt": "接口文档与契约测试：跨生态对照"
+  },
+  "cross_i18n": {
+    "image": "images/category_cross_i18n.png",
+    "alt": "国际化与本地化：跨生态对照"
+  },
+  "project_requirements_design": {
+    "image": "images/category_project_requirements_design.png",
+    "alt": "需求到设计：把想法拆成可交付任务"
+  },
+  "project_coding_workflow": {
+    "image": "images/category_project_coding_workflow.png",
+    "alt": "编码工作流：小步提交与可评审的改动"
+  },
+  "project_testing_quality": {
+    "image": "images/category_project_testing_quality.png",
+    "alt": "测试与质量门禁：把问题挡在上线前"
+  },
+  "project_deploy_ops": {
+    "image": "images/category_project_deploy_ops.png",
+    "alt": "部署与运维：稳定发布与快速回滚"
+  },
+  "project_retro_improve": {
+    "image": "images/category_project_retro_improve.png",
+    "alt": "复盘与改进：让团队一次比一次快"
+  }
+}

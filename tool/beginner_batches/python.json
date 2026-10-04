@@ -1,0 +1,360 @@
+{
+  "category": "python",
+  "lessons": [
+    {
+      "id": "python_first_script",
+      "title": {
+        "zh": "Python 第一个脚本",
+        "en": "Python First Script"
+      },
+      "summary": {
+        "zh": "从安装、运行到输出第一行结果。",
+        "en": "Install, run and print your first result."
+      },
+      "file": "assets/content/python_first_script.md",
+      "minutes": 15,
+      "keywords": [
+        "Python 第一个脚本",
+        "Python",
+        "入门练习"
+      ],
+      "difficulty": "入门",
+      "order": -5,
+      "quiz": [
+        {
+          "question": "运行「Python 第一个脚本」的最小示例，预期输出是什么？",
+          "options": [
+            "result=5",
+            "result=23",
+            "编译失败",
+            "没有任何输出"
+          ],
+          "answer": 0,
+          "explanation": "示例计算 2 + 3，并输出 result=5。加法结果不是 23，程序也不应该编译失败或无输出；先运行最小示例并观察 stdout 是入门阶段最重要的验证动作。",
+          "type": "code",
+          "code": "value = 2 + 3\nprint(f\"result={value}\")"
+        },
+        {
+          "question": "「Python 第一个脚本」最容易出现的错误是？",
+          "options": [
+            "忘记转换 input() 返回的字符串，直接参与算术会抛 TypeError。",
+            "只要代码能运行，就不需要观察输出。",
+            "出错后应该直接重写整个程序。",
+            "边界输入不会影响入门程序。"
+          ],
+          "answer": 0,
+          "explanation": "忘记转换 input() 返回的字符串，直接参与算术会抛 TypeError。 其他选项把错误处理理解成跳过验证或推倒重写；正确做法是先阅读第一条错误信息，回到最小示例，只改变一个变量并复现问题。",
+          "type": "debug"
+        },
+        {
+          "question": "学习「Python 第一个脚本」时，正确的操作顺序是？",
+          "options": [
+            "运行最小示例 → 修改一个值 → 预测结果 → 验证输出",
+            "修改所有代码 → 删除测试 → 直接部署 → 再阅读错误",
+            "先优化性能 → 再写需求 → 最后运行",
+            "复制答案 → 不运行 → 认为已经掌握"
+          ],
+          "answer": 0,
+          "explanation": "入门学习应先运行最小示例，再修改一个值，写下预测并运行验证。一次修改多个变量会让失败原因无法定位，直接优化或部署也缺少正确性基线。",
+          "type": "order"
+        },
+        {
+          "question": "「Python 第一个脚本」的练习闭环应该怎么填空？",
+          "options": [
+            "最小示例 → 预测 → 运行 → 对比",
+            "直接上线 → 再观察",
+            "复制代码 → 不运行",
+            "优化性能 → 再写代码"
+          ],
+          "answer": 0,
+          "explanation": "最小示例、预测、运行、对比构成最小学习闭环。跳过运行或不记录结果都无法验证理解，先优化性能则容易在错误基线上做无效工作。",
+          "type": "fill"
+        }
+      ]
+    },
+    {
+      "id": "python_input_output",
+      "title": {
+        "zh": "Python 输入与输出",
+        "en": "Python Input and Output"
+      },
+      "summary": {
+        "zh": "读取用户输入、转换类型并格式化输出。",
+        "en": "Read input, convert types and format output."
+      },
+      "file": "assets/content/python_input_output.md",
+      "minutes": 15,
+      "keywords": [
+        "Python 输入与输出",
+        "Python",
+        "入门练习"
+      ],
+      "difficulty": "入门",
+      "order": -4,
+      "quiz": [
+        {
+          "question": "运行「Python 输入与输出」的最小示例，预期输出是什么？",
+          "options": [
+            "result=5",
+            "result=23",
+            "编译失败",
+            "没有任何输出"
+          ],
+          "answer": 0,
+          "explanation": "示例计算 2 + 3，并输出 result=5。加法结果不是 23，程序也不应该编译失败或无输出；先运行最小示例并观察 stdout 是入门阶段最重要的验证动作。",
+          "type": "code",
+          "code": "value = 2 + 3\nprint(f\"result={value}\")"
+        },
+        {
+          "question": "「Python 输入与输出」最容易出现的错误是？",
+          "options": [
+            "忘记转换 input() 返回的字符串，直接参与算术会抛 TypeError。",
+            "只要代码能运行，就不需要观察输出。",
+            "出错后应该直接重写整个程序。",
+            "边界输入不会影响入门程序。"
+          ],
+          "answer": 0,
+          "explanation": "忘记转换 input() 返回的字符串，直接参与算术会抛 TypeError。 其他选项把错误处理理解成跳过验证或推倒重写；正确做法是先阅读第一条错误信息，回到最小示例，只改变一个变量并复现问题。",
+          "type": "debug"
+        },
+        {
+          "question": "学习「Python 输入与输出」时，正确的操作顺序是？",
+          "options": [
+            "运行最小示例 → 修改一个值 → 预测结果 → 验证输出",
+            "修改所有代码 → 删除测试 → 直接部署 → 再阅读错误",
+            "先优化性能 → 再写需求 → 最后运行",
+            "复制答案 → 不运行 → 认为已经掌握"
+          ],
+          "answer": 0,
+          "explanation": "入门学习应先运行最小示例，再修改一个值，写下预测并运行验证。一次修改多个变量会让失败原因无法定位，直接优化或部署也缺少正确性基线。",
+          "type": "order"
+        },
+        {
+          "question": "「Python 输入与输出」的练习闭环应该怎么填空？",
+          "options": [
+            "最小示例 → 预测 → 运行 → 对比",
+            "直接上线 → 再观察",
+            "复制代码 → 不运行",
+            "优化性能 → 再写代码"
+          ],
+          "answer": 0,
+          "explanation": "最小示例、预测、运行、对比构成最小学习闭环。跳过运行或不记录结果都无法验证理解，先优化性能则容易在错误基线上做无效工作。",
+          "type": "fill"
+        }
+      ]
+    },
+    {
+      "id": "python_if_else",
+      "title": {
+        "zh": "Python 条件判断",
+        "en": "Python Conditionals"
+      },
+      "summary": {
+        "zh": "用 if、elif、else 表达分支和边界。",
+        "en": "Use if, elif and else for decisions."
+      },
+      "file": "assets/content/python_if_else.md",
+      "minutes": 15,
+      "keywords": [
+        "Python 条件判断",
+        "Python",
+        "入门练习"
+      ],
+      "difficulty": "入门",
+      "order": -3,
+      "quiz": [
+        {
+          "question": "运行「Python 条件判断」的最小示例，预期输出是什么？",
+          "options": [
+            "result=5",
+            "result=23",
+            "编译失败",
+            "没有任何输出"
+          ],
+          "answer": 0,
+          "explanation": "示例计算 2 + 3，并输出 result=5。加法结果不是 23，程序也不应该编译失败或无输出；先运行最小示例并观察 stdout 是入门阶段最重要的验证动作。",
+          "type": "code",
+          "code": "value = 2 + 3\nprint(f\"result={value}\")"
+        },
+        {
+          "question": "「Python 条件判断」最容易出现的错误是？",
+          "options": [
+            "忘记转换 input() 返回的字符串，直接参与算术会抛 TypeError。",
+            "只要代码能运行，就不需要观察输出。",
+            "出错后应该直接重写整个程序。",
+            "边界输入不会影响入门程序。"
+          ],
+          "answer": 0,
+          "explanation": "忘记转换 input() 返回的字符串，直接参与算术会抛 TypeError。 其他选项把错误处理理解成跳过验证或推倒重写；正确做法是先阅读第一条错误信息，回到最小示例，只改变一个变量并复现问题。",
+          "type": "debug"
+        },
+        {
+          "question": "学习「Python 条件判断」时，正确的操作顺序是？",
+          "options": [
+            "运行最小示例 → 修改一个值 → 预测结果 → 验证输出",
+            "修改所有代码 → 删除测试 → 直接部署 → 再阅读错误",
+            "先优化性能 → 再写需求 → 最后运行",
+            "复制答案 → 不运行 → 认为已经掌握"
+          ],
+          "answer": 0,
+          "explanation": "入门学习应先运行最小示例，再修改一个值，写下预测并运行验证。一次修改多个变量会让失败原因无法定位，直接优化或部署也缺少正确性基线。",
+          "type": "order"
+        },
+        {
+          "question": "「Python 条件判断」的练习闭环应该怎么填空？",
+          "options": [
+            "最小示例 → 预测 → 运行 → 对比",
+            "直接上线 → 再观察",
+            "复制代码 → 不运行",
+            "优化性能 → 再写代码"
+          ],
+          "answer": 0,
+          "explanation": "最小示例、预测、运行、对比构成最小学习闭环。跳过运行或不记录结果都无法验证理解，先优化性能则容易在错误基线上做无效工作。",
+          "type": "fill"
+        }
+      ]
+    },
+    {
+      "id": "python_loops",
+      "title": {
+        "zh": "Python 循环入门",
+        "en": "Python Loops"
+      },
+      "summary": {
+        "zh": "用 for 和 while 重复执行任务并避免死循环。",
+        "en": "Repeat work with for and while loops."
+      },
+      "file": "assets/content/python_loops.md",
+      "minutes": 15,
+      "keywords": [
+        "Python 循环入门",
+        "Python",
+        "入门练习"
+      ],
+      "difficulty": "入门",
+      "order": -2,
+      "quiz": [
+        {
+          "question": "运行「Python 循环入门」的最小示例，预期输出是什么？",
+          "options": [
+            "result=5",
+            "result=23",
+            "编译失败",
+            "没有任何输出"
+          ],
+          "answer": 0,
+          "explanation": "示例计算 2 + 3，并输出 result=5。加法结果不是 23，程序也不应该编译失败或无输出；先运行最小示例并观察 stdout 是入门阶段最重要的验证动作。",
+          "type": "code",
+          "code": "value = 2 + 3\nprint(f\"result={value}\")"
+        },
+        {
+          "question": "「Python 循环入门」最容易出现的错误是？",
+          "options": [
+            "忘记转换 input() 返回的字符串，直接参与算术会抛 TypeError。",
+            "只要代码能运行，就不需要观察输出。",
+            "出错后应该直接重写整个程序。",
+            "边界输入不会影响入门程序。"
+          ],
+          "answer": 0,
+          "explanation": "忘记转换 input() 返回的字符串，直接参与算术会抛 TypeError。 其他选项把错误处理理解成跳过验证或推倒重写；正确做法是先阅读第一条错误信息，回到最小示例，只改变一个变量并复现问题。",
+          "type": "debug"
+        },
+        {
+          "question": "学习「Python 循环入门」时，正确的操作顺序是？",
+          "options": [
+            "运行最小示例 → 修改一个值 → 预测结果 → 验证输出",
+            "修改所有代码 → 删除测试 → 直接部署 → 再阅读错误",
+            "先优化性能 → 再写需求 → 最后运行",
+            "复制答案 → 不运行 → 认为已经掌握"
+          ],
+          "answer": 0,
+          "explanation": "入门学习应先运行最小示例，再修改一个值，写下预测并运行验证。一次修改多个变量会让失败原因无法定位，直接优化或部署也缺少正确性基线。",
+          "type": "order"
+        },
+        {
+          "question": "「Python 循环入门」的练习闭环应该怎么填空？",
+          "options": [
+            "最小示例 → 预测 → 运行 → 对比",
+            "直接上线 → 再观察",
+            "复制代码 → 不运行",
+            "优化性能 → 再写代码"
+          ],
+          "answer": 0,
+          "explanation": "最小示例、预测、运行、对比构成最小学习闭环。跳过运行或不记录结果都无法验证理解，先优化性能则容易在错误基线上做无效工作。",
+          "type": "fill"
+        }
+      ]
+    },
+    {
+      "id": "python_list_dict_basics",
+      "title": {
+        "zh": "Python 列表与字典入门",
+        "en": "Python Lists and Dictionaries"
+      },
+      "summary": {
+        "zh": "用列表保存顺序数据，用字典按键查找。",
+        "en": "Store ordered data in lists and keyed data in dictionaries."
+      },
+      "file": "assets/content/python_list_dict_basics.md",
+      "minutes": 15,
+      "keywords": [
+        "Python 列表与字典入门",
+        "Python",
+        "入门练习"
+      ],
+      "difficulty": "入门",
+      "order": -1,
+      "quiz": [
+        {
+          "question": "运行「Python 列表与字典入门」的最小示例，预期输出是什么？",
+          "options": [
+            "result=5",
+            "result=23",
+            "编译失败",
+            "没有任何输出"
+          ],
+          "answer": 0,
+          "explanation": "示例计算 2 + 3，并输出 result=5。加法结果不是 23，程序也不应该编译失败或无输出；先运行最小示例并观察 stdout 是入门阶段最重要的验证动作。",
+          "type": "code",
+          "code": "value = 2 + 3\nprint(f\"result={value}\")"
+        },
+        {
+          "question": "「Python 列表与字典入门」最容易出现的错误是？",
+          "options": [
+            "忘记转换 input() 返回的字符串，直接参与算术会抛 TypeError。",
+            "只要代码能运行，就不需要观察输出。",
+            "出错后应该直接重写整个程序。",
+            "边界输入不会影响入门程序。"
+          ],
+          "answer": 0,
+          "explanation": "忘记转换 input() 返回的字符串，直接参与算术会抛 TypeError。 其他选项把错误处理理解成跳过验证或推倒重写；正确做法是先阅读第一条错误信息，回到最小示例，只改变一个变量并复现问题。",
+          "type": "debug"
+        },
+        {
+          "question": "学习「Python 列表与字典入门」时，正确的操作顺序是？",
+          "options": [
+            "运行最小示例 → 修改一个值 → 预测结果 → 验证输出",
+            "修改所有代码 → 删除测试 → 直接部署 → 再阅读错误",
+            "先优化性能 → 再写需求 → 最后运行",
+            "复制答案 → 不运行 → 认为已经掌握"
+          ],
+          "answer": 0,
+          "explanation": "入门学习应先运行最小示例，再修改一个值，写下预测并运行验证。一次修改多个变量会让失败原因无法定位，直接优化或部署也缺少正确性基线。",
+          "type": "order"
+        },
+        {
+          "question": "「Python 列表与字典入门」的练习闭环应该怎么填空？",
+          "options": [
+            "最小示例 → 预测 → 运行 → 对比",
+            "直接上线 → 再观察",
+            "复制代码 → 不运行",
+            "优化性能 → 再写代码"
+          ],
+          "answer": 0,
+          "explanation": "最小示例、预测、运行、对比构成最小学习闭环。跳过运行或不记录结果都无法验证理解，先优化性能则容易在错误基线上做无效工作。",
+          "type": "fill"
+        }
+      ]
+    }
+  ]
+}

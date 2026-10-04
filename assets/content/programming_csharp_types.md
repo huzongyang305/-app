@@ -1,0 +1,390 @@
+# 变量、类型与字符串
+
+![变量、类型与字符串](images/remaining_csharp_types.webp)
+
+> 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：15 分钟
+
+## 学习目标
+
+- 能用自己的话解释「变量、类型与字符串」解决了什么问题，而不是只背术语。
+- 能说清 「值类型」、「引用类型」、「可空类型」、「TryParse」 之间的关系，并分别举出一个例子。
+- 能把本课知识放回「C#」的知识体系，说明它和相邻主题的边界。
+- 能完成本课练习，并用验收标准检查自己的结果。
+
+> 一句话摘要：值类型与引用类型、可空类型、类型转换与字符串处理。
+
+## 前置知识
+
+- 先完成上一课《C# 与 .NET 平台》；如果已经掌握，可以直接用本课练习自测。
+- 本课阶段：基础。建议会读写简单代码或命令，并理解变量、输入输出等基本概念。
+- 开始前先复习：值类型、引用类型、可空类型。
+- 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
+
+
+## 值类型与引用类型
+
+```csharp
+int count = 42;             // 值类型：直接存数据
+double pi = 3.14159;
+bool ok = true;
+char letter = 'A';
+decimal money = 19.99m;     // 高精度十进制，适合金额
+
+string name = "tom";        // 引用类型：存对象引用
+int[] nums = { 1, 2, 3 };
+var list = new List<int>();
+```
+
+值类型赋值复制数据；引用类型赋值只复制引用，两个变量指向同一对象。
+
+## 可空类型
+
+```csharp
+int? maybeCount = null;
+Console.WriteLine(maybeCount ?? 0);              // 空值合并
+Console.WriteLine(maybeCount?.ToString() ?? "无");
+
+string? nickname = null;
+int length = nickname?.Length ?? 0;              // 安全访问
+```
+
+开启可空引用类型后，编译器会警告「可能为 null 的解引用」，这是 C# 减少空指针异常的核心手段。
+
+## 类型转换
+
+```csharp
+int small = 100;
+long big = small;                      // 隐式转换（安全）
+
+double d = 3.99;
+int truncated = (int)d;                // 显式转换：3
+
+string text = "123";
+int parsed = int.Parse(text);           // 失败抛 FormatException
+bool success = int.TryParse(text, out int value);   // 更安全的写法
+
+object boxed = 42;                      // 装箱
+int unboxed = (int)boxed;               // 拆箱
+```
+
+优先使用 `TryParse`，避免用异常控制正常流程。
+
+## 字符串
+
+```csharp
+string name = "小明";
+int age = 18;
+
+string message = $"你好 {name}，明年 {age + 1} 岁";   // 字符串插值
+string joined = string.Join(", ", new[] { "a", "b" });
+bool same = string.Equals("abc", "ABC", StringComparison.OrdinalIgnoreCase);
+
+string raw = """
+    多行文本
+    保留格式
+    """;
+```
+
+字符串不可变，循环拼接应使用 `StringBuilder`：
+
+```csharp
+var sb = new StringBuilder();
+for (int i = 0; i < 3; i++) sb.Append(i).Append(',');
+Console.WriteLine(sb.ToString());
+```
+
+## 本课小结
+记住三点：**值类型复制数据、引用类型共享对象、可空类型用 `?.` 与 `??` 安全处理**。
+
+<!-- appendix:v1 -->
+
+## 类型速查
+
+| 类型 | 大小 | 说明 | 字面量示例 |
+| --- | --- | --- | --- |
+| `bool` | 1 字节 | 真假 | `true` |
+| `char` | 2 字节 | UTF-16 字符 | `'a'` |
+| `int` | 4 字节 | 最常用整数 | `42` |
+| `long` | 8 字节 | 大整数，需后缀 | `42L` |
+| `double` | 8 字节 | 默认浮点 | `3.14` |
+| `float` | 4 字节 | 需后缀 | `3.14f` |
+| `decimal` | 16 字节 | 金额，精度高 | `19.99m` |
+| `string` | 引用类型 | 不可变字符串 | `"hello"` |
+| `DateTime` | 结构体 | 时间点 | `DateTime.UtcNow` |
+| `Guid` | 结构体 | 唯一标识 | `Guid.NewGuid()` |
+| `object` | 引用类型 | 所有类型的基类 | 装箱后使用 |
+
+值类型与引用类型对照：
+
+| 维度 | 值类型（struct / int） | 引用类型（class / string） |
+| --- | --- | --- |
+| 赋值 | 复制内容 | 复制引用 |
+| 存储位置 | 通常在栈或内联 | 托管堆 |
+| 可为 null | 需 `int?` 等可空类型 | 默认可为 null（开启可空注解后需声明） |
+| 相等比较 | 默认按内容 | 默认按引用，`string` 重写为按内容 |
+
+## 字符串与格式化速查
+
+| 目的 | 写法 |
+| --- | --- |
+| 插值 | `$"你好 {name}"` |
+| 格式化数字 | `$"{price:F2}"`、`$"{count:N0}"` |
+| 对齐 | `$"{name,-10}\|"`（左对齐 10 位） |
+| 逐字字符串 | `@"C:\temp\a.txt"` |
+| 多行字符串 | `"""..."""`（C# 11+） |
+| 拼接大文本 | `StringBuilder` |
+| 拆分与连接 | `string.Split(',')`、`string.Join(",", list)` |
+| 忽略大小写比较 | `string.Equals(a, b, StringComparison.OrdinalIgnoreCase)` |
+| 判空 | `string.IsNullOrWhiteSpace(s)` |
+
+```csharp
+decimal price = 19.9m;
+int count = 3;
+Console.WriteLine($"总价：{price * count:F2}");      // 总价：59.70
+
+string? input = null;
+int value = int.TryParse(input, out var parsed) ? parsed : 0;   // 不抛异常
+
+if (string.IsNullOrWhiteSpace(input))
+{
+    Console.WriteLine("请填写内容");
+}
+```
+
+## 常见错误对照表
+
+| 容易写错的做法 | 实际现象 | 原因与正确做法 |
+| --- | --- | --- |
+| 用 `double` 算金额 | 出现 0.30000000000000004 之类的误差 | 金额一律用 `decimal`，并明确舍入模式 |
+| `int.Parse("abc")` | `FormatException` | 用户输入用 `int.TryParse` |
+| `left == right` 比较字符串 | 大多数情况可用，但受文化影响 | 明确指定 `StringComparison.Ordinal` 或 `OrdinalIgnoreCase` |
+| 循环里用 `+=` 拼字符串 | 生成大量临时对象 | 用 `StringBuilder` |
+| 大量修改 `string` | 每次都是新对象 | 需要可变时用 `Span<char>` 或 `StringBuilder` |
+| 溢出未检查 | 结果静默回绕 | 用 `checked` 块，或使用 `long` / `BigInteger` |
+| `int?` 直接参与运算 | 编译错误或结果为 null | 用 `?? 0` 或先判 `HasValue` |
+| 忽略可空引用警告 | 运行时 `NullReferenceException` | 开启 `<Nullable>enable</Nullable>` 并处理警告 |
+| 用 `==` 比较浮点 | 结果不稳定 | 用容差比较，或改用 `decimal` |
+| 隐式类型转换丢精度 | 数据被截断 | 显式 `checked` 转换或用更大类型 |
+
+## 自测清单
+
+- [ ] 金额一律用 `decimal`，不用 `double`。
+- [ ] 用户输入用 `TryParse`，不依赖异常控制流程。
+- [ ] 字符串比较明确指定 `StringComparison`。
+- [ ] 知道值类型与引用类型在赋值时的差异。
+- [ ] 开启了可空引用类型并认真对待警告。
+
+<!-- appendix:v2 -->
+
+## 零基础详解：值类型、引用类型与可空类型
+
+### 一句话说清它是什么
+
+C# 把类型分成两类：**值类型**（数据直接放在变量里）和**引用类型**（变量存地址，数据在堆上）。
+再配上可空类型 `?`，空引用问题就能在编译期被大量拦下。
+
+### 值类型 vs 引用类型
+
+| 对比 | 值类型 | 引用类型 |
+| --- | --- | --- |
+| 常见类型 | `int`、`double`、`bool`、`char`、`struct`、`enum` | `string`、`class`、`array`、`record`、委托 |
+| 存放 | 变量本身含数据 | 变量存引用，对象在堆上 |
+| 赋值 | 复制一份，互不影响 | 复制引用，指向同一对象 |
+| 能否为 null | 默认不能（可加 `?`） | 可以 |
+| 释放 | 随作用域结束 | 由垃圾回收器管理 |
+
+```csharp
+int a = 1;
+int b = a;
+b = 2;                 // a 仍是 1
+
+var list1 = new List<int> { 1 };
+var list2 = list1;
+list2.Add(2);          // list1 也变成 [1, 2]
+```
+
+### 可空类型：让编译器帮你防空
+
+```csharp
+string? maybeName = null;
+
+// 1. 判空
+if (maybeName is not null)
+{
+    Console.WriteLine(maybeName.Length);
+}
+
+// 2. 空合并与空条件
+var name = maybeName ?? "匿名";
+var length = maybeName?.Length ?? 0;
+```
+
+| 写法 | 含义 |
+| --- | --- |
+| `string?` | 这个变量可能为 null |
+| `?.` | 为空就返回 null，不再往下取 |
+| `??` | 为空时取右边的默认值 |
+| `??=` | 为空时赋值 |
+| `!` | 告诉编译器「我确定不为空」（慎用） |
+
+### `var`、`dynamic`、`object` 三者别混
+
+| 关键字 | 类型确定时机 | 类型安全 | 建议 |
+| --- | --- | --- | --- |
+| `var` | 编译期（由右侧推导） | 安全 | **日常首选** |
+| `object` | 编译期（基类） | 需要拆箱转换 | 少用 |
+| `dynamic` | 运行时 | 不安全 | 只在互操作时用 |
+
+### 常用类型与精度
+
+| 类型 | 用途 | 注意 |
+| --- | --- | --- |
+| `int` / `long` | 整数 | 默认 int，超大用 long |
+| `double` | 科学计算 | 有精度误差，别比相等 |
+| `decimal` | **金额** | 精度高、范围小，金融场景首选 |
+| `char` / `string` | 字符与文本 | string 不可变 |
+| `DateTime` / `DateTimeOffset` | 时间 | 跨时区用 Offset |
+| `Guid` | 唯一标识 | 分布式 ID 常用 |
+
+```csharp
+decimal price = 19.99m;        // 金额必须加 m 后缀
+double ratio = 1.0 / 3;
+Console.WriteLine(price * 3);            // 59.97
+Console.WriteLine($"{ratio:F4}");        // 0.3333
+```
+
+### 字符串处理三件套
+
+```csharp
+string raw = "  Hello, C#  ";
+var trimmed = raw.Trim();                       // 去首尾空格
+var upper = trimmed.ToUpperInvariant();         // 大写
+var parts = trimmed.Split(", ");                // 拆分
+
+// 大量拼接用 StringBuilder，避免产生大量临时字符串
+var sb = new System.Text.StringBuilder();
+foreach (var p in parts) sb.Append(p).Append('|');
+Console.WriteLine(sb);
+```
+
+### 新手最容易踩的七个坑
+
+| 坑 | 现象 | 正确做法 |
+| --- | --- | --- |
+| 金额用 `double` | 出现 0.30000000000000004 | 改用 `decimal` 并加 `m` |
+| 浮点直接比相等 | 条件几乎不成立 | 用误差或 `decimal` |
+| 忘了 `?` | 可空警告或运行时空引用 | 声明可空类型并显式处理 |
+| 滥用 `!` | 掩盖真实空值风险 | 优先判空或用 `??` |
+| `int` 溢出 | 结果异常 | 用 `long` 或 `checked` |
+| 字符串循环拼接 | 性能差 | 用 `StringBuilder` |
+| `var` 用过头 | 阅读时看不出类型 | 类型不明显时写全类型 |
+
+### 手把手练习：金额结算
+
+```csharp
+using System.Globalization;
+
+decimal unitPrice = 19.99m;
+int quantity = 3;
+decimal discountRate = 0.9m;
+
+decimal total = unitPrice * quantity * discountRate;
+decimal rounded = Math.Round(total, 2, MidpointRounding.AwayFromZero);
+
+Console.WriteLine($"原价 {unitPrice * quantity:C}");
+Console.WriteLine($"折扣后 {rounded:C}");
+Console.WriteLine($"格式化示例 {rounded.ToString("N2", CultureInfo.InvariantCulture)}");
+```
+
+### 学完自测
+
+- [ ] 能说出值类型和引用类型在赋值时的差别。
+- [ ] 能解释 `?.`、`??`、`??=` 各自的含义。
+- [ ] 知道金额为什么必须用 `decimal`。
+- [ ] 能说出 `var`、`object`、`dynamic` 的区别。
+- [ ] 知道什么时候该用 `StringBuilder`。
+
+## 动手练习
+
+<!-- practice-diversified:v1 -->
+
+> 本课练习重点：围绕「值类型、引用类型、可空类型」完成复述、实验和交付，每个结果都要能被别人检查。
+
+先建最小控制台程序，再补类型、异步和异常路径，最后用 dotnet test 验证。
+
+### 练习 1：建立心智模型（10 分钟）
+
+合上教程，用 3～5 句话回答：
+
+1. 「变量、类型与字符串」解决了什么问题？
+2. 如果没有它，会出现什么具体后果？
+3. 它和「引用类型」是什么关系？
+
+**验收标准**：至少出现一个本课关键词，并写出一个反例、边界条件或失效场景。
+
+### 练习 2：做一次可控实验（20 分钟）
+
+从正文中选一个最小示例，完成以下操作：
+
+1. 先预测修改一个参数、输入或步骤后的结果。
+2. 再实际执行或逐步推演，记录真实结果。
+3. 如果结果与预测不同，写出差异原因。
+
+**验收标准**：留下「原例 → 改动 → 预测 → 结果 → 原因」五步记录。
+
+### 练习 3：交付一个小结果（30 分钟）
+
+写一个控制台小程序，补一个正例、一个边界值和一个异常路径。
+
+任务要求：
+
+- 结果必须能被别人检查，不能只写“我已经理解了”。
+- 至少覆盖「值类型」和「引用类型」两个关键词。
+- 写出 1 个仍然不确定的问题，以及下一步如何验证。
+
+> 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
+
+<!-- scaffold:v1 -->
+
+<!-- p2-enrichment:v1 -->
+
+## English Overview
+
+**Title:** Types & Strings
+
+**Summary:** Value/reference types, nullable, casting and strings.
+
+**Category:** C#  
+**Level:** 基础  
+**Key terms:** 值类型, 引用类型, 可空类型, TryParse, StringBuilder
+
+> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
+
+## 内容元数据
+
+- 内容版本：v2.0
+- 最后更新：2026-10-03
+- 学习阶段：基础
+- 适用环境：.NET 9 / C# 13
+- 内容来源：内置结构化课程与工程实践整理
+- 相关主题：值类型、引用类型、可空类型、TryParse、StringBuilder
+- 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
+
+<!-- p2-references:v1 -->
+
+## 参考资料与复核
+
+- 最后复核：2026-10-04
+- 下次复核：2027-04-04
+- 复核范围：版本兼容、API 行为、安全建议与工程实践
+- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+
+| 参考资料 | 本课用途 |
+| --- | --- |
+| [C# 官方指南](https://learn.microsoft.com/dotnet/csharp/) | 语言、异步与模式匹配 |
+| [.NET 文档](https://learn.microsoft.com/dotnet/) | 运行时、GC 与发布 |
+
+> 本课主题：值类型与引用类型、可空类型、类型转换与字符串处理。
+
+> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+

@@ -1,0 +1,167 @@
+{
+  "cpp_project#2": {
+    "question": "在 CMake 项目中开启 AddressSanitizer 和 UndefinedBehaviorSanitizer，最合理的做法是？",
+    "options": ["只在 Release 构建中开启", "在 Debug/CI 构建中加入 -fsanitize=address,undefined 并链接 sanitizer 运行时", "用宏替换所有类型", "关闭所有编译器警告"],
+    "answer": 1,
+    "explanation": "Sanitizer 适合在开发、测试和 CI 构建中启用，它需要编译与链接阶段同时加入对应参数。Release 产物通常不开启以避免性能与部署依赖问题；关闭警告或替换类型都无法发现越界、泄漏和未定义行为。",
+    "type": "single"
+  },
+  "se_quality_metrics#0": {
+    "question": "变更失败率（Change Failure Rate）主要衡量什么？",
+    "options": ["代码总行数", "进入生产环境的变更中需要回滚或紧急修复的比例", "单元测试数量", "开发者人数"],
+    "answer": 1,
+    "explanation": "变更失败率反映交付质量：变更进入生产后有多少导致故障、回滚或热修。它需要与发布频率、恢复时间等指标一起看，单独提高或降低都没有意义；代码行数、测试数量和人数都不是该指标的定义。",
+    "type": "single"
+  },
+  "cross_db_access#1": {
+    "question": "使用 ORM 读取订单列表后再逐条查询用户，出现 N+1 查询，最直接的修复方式是？",
+    "options": ["给每条查询加日志", "使用批量查询、预加载或 JOIN 一次性取回关联数据", "把循环改成递归", "关闭数据库连接池"],
+    "answer": 1,
+    "explanation": "N+1 的根因是父查询一次、每个子项再查一次，数据量增大后数据库往返次数线性上升。批量查询、预加载关联或 JOIN 能减少往返；加日志只便于观察，递归与关闭连接池都不能解决查询次数问题。",
+    "type": "single"
+  },
+  "python_project_api#0": {
+    "question": "下面 FastAPI 代码中，请求 quantity 为 0 时会怎样？",
+    "options": ["创建订单成功", "Pydantic 校验失败并返回 422", "服务崩溃返回 500", "自动改成数量 1"],
+    "answer": 1,
+    "explanation": "quantity 使用 Field(gt=0) 声明为必须大于 0，0 不满足约束，请求会在进入业务逻辑前被 Pydantic 拦截并返回 422。FastAPI 不会自动修正非法值，也不会把校验错误当成服务器内部错误。",
+    "type": "code",
+    "code": "class CreateOrder(BaseModel):\n    sku: str = Field(min_length=1)\n    quantity: int = Field(gt=0, le=99)"
+  },
+  "python_project_etl#0": {
+    "question": "同一份 CSV 重复执行这段写入代码，数据库中会发生什么？",
+    "options": ["每次都新增重复订单", "因为 INSERT OR REPLACE，相同主键会被覆盖不会重复", "数据库被清空", "只写入最后一行"],
+    "answer": 1,
+    "explanation": "INSERT OR REPLACE 以主键或唯一键判断冲突，相同 order_id 会替换原记录，因此重复运行同一批数据不会把金额累计两次。前提是表上存在正确的唯一键，否则重复数据仍会插入。",
+    "type": "code",
+    "code": "db.executemany(\n    'INSERT OR REPLACE INTO orders(order_id, amount_cents) VALUES (?, ?)',\n    rows,\n)"
+  },
+  "cpp_project_http#0": {
+    "question": "这段服务代码访问 GET /health 时会返回什么？",
+    "options": ["404", "JSON 字符串 {\"status\":\"ok\"} 和 200", "HTML 页面", "自动跳转首页"],
+    "answer": 1,
+    "explanation": "路由把 GET /health 绑定到返回 JSON 的处理函数，默认状态码为 200。代码没有设置重定向或 HTML 响应，因此客户端会收到 application/json 内容和健康状态字段。",
+    "type": "code",
+    "code": "svr.Get(\"/health\", [](const auto&, auto& res) {\n  res.set_content(R\"({\"status\":\"ok\"})\", \"application/json\");\n});"
+  },
+  "cpp_project_taskdb#0": {
+    "question": "任务 ID 明明存在却查询失败，最可能的原因是？",
+    "options": ["数据库文件太大", "SQL 使用字符串拼接导致条件错误或注入风险", "CMake 版本过低", "标准库没有 include"],
+    "answer": 1,
+    "explanation": "字符串拼接会把引号、空格和特殊字符直接写进 SQL，容易造成条件错误甚至 SQL 注入。任务查询应按参数绑定传入 ID，并在找不到记录时返回明确错误；数据库大小、构建工具和头文件不会造成这类逻辑错误。",
+    "type": "debug",
+    "code": "std::string sql = \"SELECT * FROM tasks WHERE id = \" + id;"
+  },
+  "java_project_inventory#0": {
+    "question": "当库存不足时，下面这段扣减方法会怎样？",
+    "options": ["返回 true 并扣成负数", "条件更新影响 0 行，抛出异常并回滚事务", "自动补充库存", "只记录日志不回滚"],
+    "answer": 1,
+    "explanation": "deductIfEnough 把库存判断和扣减放进同一条原子更新，库存不足时影响行数为 0，方法抛出异常触发事务回滚。这样能避免先查再减导致的并发超卖，也不会产生负数库存。",
+    "type": "code",
+    "code": "int updated = stockRepository.deductIfEnough(skuId, quantity);\nif (updated == 0) throw new IllegalStateException(\"insufficient stock\");"
+  },
+  "java_project_order_concurrency#0": {
+    "question": "下面代码在支付查询超过 2 秒时会发生什么？",
+    "options": ["永远阻塞", "future 以超时异常完成并进入 exceptionally 分支", "自动重试三次", "线程池立即关闭"],
+    "answer": 1,
+    "explanation": "orTimeout 会让 CompletableFuture 在超过 2 秒后以 TimeoutException 完成，exceptionally 再把异常转换成失败结果。这样慢任务不会阻塞其他订单，但调用方仍需决定是否重试以及如何记录失败原因。",
+    "type": "debug",
+    "code": "CompletableFuture.supplyAsync(() -> queryPayment(orderId), pool)\n    .orTimeout(2, TimeUnit.SECONDS)\n    .exceptionally(error -> Result.failed(orderId, error));"
+  },
+  "js_project_node_api#0": {
+    "question": "请求体缺少 title 时，下面代码会返回什么？",
+    "options": ["201 Created", "422 和包含字段错误的 JSON", "500 Internal Server Error", "204 No Content"],
+    "answer": 1,
+    "explanation": "CreateTask.safeParse 校验失败时不会抛异常，代码显式返回 422 并把 Zod 的错误列表放进响应体。422 表示请求格式正确但语义校验未通过，201 只在创建成功后返回。",
+    "type": "code",
+    "code": "const result = CreateTask.safeParse(req.body);\nif (!result.success) return res.status(422).json({ error: result.error.issues });"
+  },
+  "js_project_realtime_chat#0": {
+    "question": "服务端收到重复的消息 ID 时，正确的处理顺序是？",
+    "options": ["先广播，再检查 ID", "先按 ID 去重并确认，再决定是否广播给房间成员", "只广播给发送者", "直接关闭连接"],
+    "answer": 1,
+    "explanation": "重连和客户端重试都可能重复发送同一消息，服务端必须先按消息 ID 去重，再向房间成员广播并返回确认。先广播会造成重复显示；只广播给发送者或直接断线都不符合聊天协议语义。",
+    "type": "order",
+    "code": "if (seen.has(msg.id)) return ack(msg.id);\nseen.add(msg.id);\nbroadcast(room, msg);\nack(msg.id);"
+  },
+  "csharp_project_inventory_cli#0": {
+    "question": "库存扣减成功需要同时更新哪两项数据？",
+    "options": ["商品名称和颜色", "库存数量与库存变动流水", "CLI 帮助文本", "数据库版本号"],
+    "answer": 1,
+    "explanation": "库存数量是当前状态，库存流水是审计记录，两者必须在同一事务中更新，否则会出现账实不符或无法追溯的问题。名称、颜色、帮助文本和数据库版本都与库存扣减的业务完整性无关。",
+    "type": "fill",
+    "code": "扣减库存：UPDATE stock SET quantity = quantity - ? WHERE sku = ? AND quantity >= ?;\n记录流水：INSERT INTO stock_flow(sku, delta, reason) VALUES (?, ?, ?);"
+  },
+  "csharp_project_blazor_admin#0": {
+    "question": "两个客服同时编辑同一订单时，EF Core 并发令牌会怎样？",
+    "options": ["后提交者静默覆盖先提交者", "版本不匹配时更新失败并提示重试", "自动合并所有字段", "锁定整个数据库"],
+    "answer": 1,
+    "explanation": "并发令牌把版本号或时间戳纳入更新条件，第二个提交者发现版本已变化时更新影响 0 行，框架抛出并发异常。应用应捕获异常并提示用户刷新后重试，而不是静默覆盖造成数据丢失；对订单状态这类关键字段，静默覆盖往往比直接失败更危险。",
+    "type": "debug",
+    "code": "builder.Property(o => o.Version).IsConcurrencyToken();"
+  },
+  "go_project_rest_api#0": {
+    "question": "下面 HTTP 服务设置了 ReadHeaderTimeout，主要目的是什么？",
+    "options": ["限制响应体大小", "防止慢速请求长期占用连接", "自动压缩 JSON", "提升日志级别"],
+    "answer": 1,
+    "explanation": "ReadHeaderTimeout 限制读取请求头的最长时间，可以缓解慢速连接和资源占用问题。它不负责响应体大小、压缩或日志级别，这些需要单独的中间件或服务器配置。",
+    "type": "code",
+    "code": "server := &http.Server{\n  Addr: \":8080\",\n  Handler: mux,\n  ReadHeaderTimeout: 2 * time.Second,\n}"
+  },
+  "go_project_worker_pool#0": {
+    "question": "超时取消后，worker 中哪一行能让任务尽快退出？",
+    "options": ["results <- fetch(url)", "case <-ctx.Done(): return", "for {}", "close(jobs)"],
+    "answer": 1,
+    "explanation": "worker 在 select 中同时等待任务和 context 取消，ctx.Done 关闭后立即返回，避免继续抓取或阻塞在队列上。无限循环会持续占资源，向结果通道发送数据可能再次阻塞，关闭 jobs 也不是 worker 的职责。",
+    "type": "order",
+    "code": "select {\ncase <-ctx.Done():\n  return\ncase url, ok := <-jobs:\n  if !ok { return }\n}"
+  },
+  "rust_project_axum_api#0": {
+    "question": "访问这段 Axum 服务的 /health 路由会得到什么？",
+    "options": ["纯文本 pong", "JSON {\"status\":\"ok\"} 和 200", "404 Not Found", "WebSocket 升级"],
+    "answer": 1,
+    "explanation": "get 把 /health 绑定到返回 Json 的异步处理函数，Axum 自动序列化并设置 application/json 与 200 状态码。代码没有 WebSocket 升级或重定向逻辑。",
+    "type": "code",
+    "code": "let app = Router::new().route(\n    \"/health\",\n    get(|| async { Json(json!({\"status\":\"ok\"})) }),\n);"
+  },
+  "rust_project_downloader#0": {
+    "question": "Semaphore 许可被耗尽时，新下载任务会怎样？",
+    "options": ["立即失败退出", "等待已有任务释放许可后再开始", "自动提高并发上限", "绕过网络请求"],
+    "answer": 1,
+    "explanation": "acquire_owned 在许可耗尽时会异步等待，直到某个任务完成并释放 permit。信号量只限制并发，不会自动提高上限或绕过请求；如果等待过久，应通过超时和取消策略控制。",
+    "type": "fill",
+    "code": "let permit = semaphore.clone().acquire_owned().await?;"
+  },
+  "ts_project_cli#0": {
+    "question": "配置中缺少 concurrency 字段时，Zod schema 会怎样？",
+    "options": ["抛出解析错误", "使用默认值 4", "变成 null", "自动设为 0"],
+    "answer": 1,
+    "explanation": "字段声明了 default(4)，输入缺失时 Zod 会填入默认值；如果字段存在但类型或范围错误，才会返回校验错误。默认值让常见配置更简单，但边界校验仍然保留。",
+    "type": "code",
+    "code": "const Config = z.object({\n  concurrency: z.number().int().min(1).max(32).default(4),\n});"
+  },
+  "ts_project_websocket_dashboard#0": {
+    "question": "判别联合消息协议中，type 字段的作用是什么？",
+    "options": ["控制图表颜色", "让 TypeScript 按消息分支收窄类型", "压缩 WebSocket 帧", "替代运行时校验"],
+    "answer": 1,
+    "explanation": "type 是字面量判别字段，TypeScript 根据它把联合类型收窄到具体消息结构。运行时仍要用 schema 校验网络数据，因为类型信息编译后不存在；颜色、压缩和校验都不是它的职责。",
+    "type": "order",
+    "code": "const Message = z.discriminatedUnion('type', [\n  z.object({ type: z.literal('metric'), ts: z.number(), qps: z.number() }),\n  z.object({ type: z.literal('heartbeat'), ts: z.number() }),\n]);"
+  },
+  "shell_project_deploy#0": {
+    "question": "脚本中 set -euo pipefail 会让哪种情况立即失败？",
+    "options": ["任意命令返回非零、使用未定义变量或管道中任一命令失败", "只有语法错误", "磁盘写满时", "只在交互终端中"],
+    "answer": 0,
+    "explanation": "严格模式让脚本在命令失败、变量未定义和管道任一环节失败时立即退出，避免带着错误继续发布。它不能替代显式的错误处理和健康检查，磁盘写满等异常仍需业务逻辑捕获并回滚。",
+    "type": "code",
+    "code": "#!/usr/bin/env bash\nset -euo pipefail"
+  },
+  "shell_project_log_analysis#0": {
+    "question": "日志文件为空时，这段脚本中的错误率计算应该返回什么？",
+    "options": ["0", "NaN", "脚本崩溃", "无限大"],
+    "answer": 0,
+    "explanation": "脚本在 awk BEGIN 中显式判断分母 t 是否大于 0，为空时输出 0，避免除零并保证日报格式稳定。错误率没有样本时不能用 NaN 或无限大表示，脚本也不应因此中断。",
+    "type": "fill",
+    "code": "awk -v e=\"$Errors\" -v t=\"$Total\" 'BEGIN { if (t>0) printf \"%.4f\", e/t; else print 0 }'"
+  }
+}

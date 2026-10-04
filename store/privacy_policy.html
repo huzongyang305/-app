@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>隐私政策 · 计算机与编程学习</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    margin: 0 auto; max-width: 780px; padding: 32px 20px 64px;
+    font: 16px/1.75 -apple-system, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+    color: #1f2430; background: #ffffff;
+  }
+  h1 { font-size: 26px; margin: 0 0 6px; }
+  h2 { font-size: 19px; margin: 32px 0 8px; border-left: 4px solid #3b6ef5; padding-left: 10px; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 15px; }
+  th, td { border: 1px solid #d8dfea; padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: #f2f6ff; }
+  code { background: #f2f4f8; padding: 1px 5px; border-radius: 4px; font-size: 14px; }
+  .meta { color: #5a6478; font-size: 14px; }
+  .note { background: #fff7e6; border: 1px solid #f0d9a8; border-radius: 8px; padding: 12px 14px; }
+  ul { padding-left: 22px; }
+  @media (prefers-color-scheme: dark) {
+    body { color: #e6eaf2; background: #12151c; }
+    h2 { border-color: #6c8ff8; }
+    th, td { border-color: #333a49; }
+    th { background: #1c2230; }
+    code { background: #1c2230; }
+    .meta { color: #9aa4b8; }
+    .note { background: #2a2313; border-color: #5c4a1d; }
+  }
+</style>
+</head>
+<body>
+<h1>隐私政策</h1>
+<p class="meta">应用：计算机与编程学习（CS &amp; Coding）· 包名 <code>com.codelearn.study</code><br>
+开发者：【待填写：开发者或公司全称】<br>
+隐私联系邮箱：【待填写：隐私事务联系邮箱】<br>
+最后更新 / 生效日期：2026-10-04</p>
+
+<p class="note">发布前必须把页面中的 <strong>【待填写：…】</strong> 占位符替换为真实信息，
+并把本页面部署到可公开访问的网址后填入 Google Play 后台的“隐私政策”字段。</p>
+
+<h2>一、摘要</h2>
+<ul>
+  <li>本应用是纯离线学习应用：不注册账号、不联网、不收集、不上传、不共享任何个人信息。</li>
+  <li>Release 版 APK / AAB 未声明 <code>android.permission.INTERNET</code>，应用本身不具备联网能力。</li>
+  <li>不包含广告、统计分析、崩溃上报或第三方追踪 SDK。</li>
+  <li>学习进度、收藏、笔记、测验成绩与设置只保存在设备本地的 Hive 数据库。</li>
+  <li>备份导出、备份分享、内容包导入只在用户主动操作时通过 Android 系统文件选择器完成。</li>
+</ul>
+
+<h2>二、不收集的信息</h2>
+<p>不收集姓名、邮箱、电话、地址、账号、密码等身份信息；不收集设备标识符（IMEI、Android ID、广告 ID）；
+不收集位置、通讯录、相册、麦克风、摄像头、短信、通话记录；不收集学习行为用于广告或分析。</p>
+
+<h2>三、本地保存的数据</h2>
+<table>
+  <tr><th>数据</th><th>说明</th><th>位置</th></tr>
+  <tr><td>学习进度</td><td>已学知识点、学习时长、连续天数</td><td>Hive 盒子 <code>app_data</code></td></tr>
+  <tr><td>测验成绩</td><td>每课得分、正确率、错题记录</td><td>Hive 盒子 <code>app_data</code></td></tr>
+  <tr><td>收藏与笔记</td><td>收藏的知识点、手写笔记</td><td>Hive 盒子 <code>app_data</code></td></tr>
+  <tr><td>设置项</td><td>深色模式、语言、提醒时间</td><td>Hive 盒子 <code>app_data</code></td></tr>
+  <tr><td>备份文件</td><td>用户主动导出/分享时生成</td><td>用户选择的位置或应用缓存</td></tr>
+</table>
+<p>以上数据位于应用私有目录，其他应用无法读取。卸载应用或在系统设置中“清除数据”即可全部删除。</p>
+
+<h2>四、Android 权限</h2>
+<table>
+  <tr><th>权限</th><th>用途</th></tr>
+  <tr><td><code>POST_NOTIFICATIONS</code></td><td>发送“复习提醒”本地通知，用户可拒绝或随时关闭</td></tr>
+  <tr><td><code>RECEIVE_BOOT_COMPLETED</code></td><td>重启手机后恢复已安排的本地提醒</td></tr>
+</table>
+<p>文件读写不使用存储权限：导入、导出、分享均通过 Storage Access Framework，
+应用只能访问用户当次明确选择的文件；分享使用临时只读 <code>FileProvider</code> URI。</p>
+
+<h2>五、代码沙箱</h2>
+<p>「工具 → 代码沙箱」在 WebView 中离线执行代码：运行时随安装包打包，网络加载已关闭，
+禁止读取其他本地文件，执行结束或超时后立即销毁临时页面。沙箱不会上传代码，也不会写入学习数据。</p>
+
+<h2>六、儿童隐私</h2>
+<p>应用内容面向大众，不针对 13 岁以下儿童定向收集数据；由于不收集任何个人信息，
+也不含广告与社交功能，未成年人可在离线状态下安全使用。</p>
+
+<h2>七、第三方组件</h2>
+<p>应用使用 Flutter、Provider、Hive、flutter_markdown、Brython、Fengari、sql.js、Sucrase 等开源组件，
+它们只在设备本地运行，不会把数据发送给其作者。完整清单见 <code>store/THIRD_PARTY_LICENSES.md</code>，
+应用内“关于 → 开源许可”可查看 Flutter 自动生成的完整许可文本。</p>
+
+<h2>八、数据保留与删除</h2>
+<ul>
+  <li>应用不上传数据，开发者不持有任何用户数据副本；</li>
+  <li>删除方式：Android 设置 → 应用 → 计算机与编程学习 → 存储 → 清除数据；</li>
+  <li>或直接卸载应用，应用私有目录中的数据会一并删除；</li>
+  <li>用户自行导出的备份文件保存在用户选择的位置，需要用户自行删除。</li>
+</ul>
+
+<h2>九、政策变更</h2>
+<p>如果未来版本新增联网、账号或统计功能，本政策会同步更新并在应用内与商店页面提示。</p>
+
+<h2>十、联系方式</h2>
+<p>隐私相关问题请联系：【待填写：隐私事务联系邮箱】。</p>
+
+<hr>
+<h2>English Summary</h2>
+<p>This app (<code>com.codelearn.study</code>) is a fully offline computer-science learning app.</p>
+<ul>
+  <li>We do <strong>not</strong> collect, transmit, or share any personal data. No accounts, ads,
+      analytics or tracking SDKs.</li>
+  <li>The release build does not declare the <code>INTERNET</code> permission.</li>
+  <li>Progress, favorites, notes, quiz results and settings live only in the app's private
+      Hive database on your device.</li>
+  <li><code>POST_NOTIFICATIONS</code> powers optional local reminders;
+      <code>RECEIVE_BOOT_COMPLETED</code> restores them after a reboot.</li>
+  <li>File import/export uses the Storage Access Framework and only touches files you pick.
+      Sharing uses a temporary read-only <code>FileProvider</code> URI.</li>
+  <li>The code sandbox runs in an offline WebView with network disabled and destroys its
+      temporary page after each run.</li>
+  <li>Delete all local data via Android Settings → Apps → Storage → Clear data, or by
+      uninstalling the app.</li>
+</ul>
+<p>Developer / contact: 【待填写：开发者或公司全称 / contact email】. Last updated: 2026-10-04.</p>
+</body>
+</html>

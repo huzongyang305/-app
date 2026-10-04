@@ -1,0 +1,465 @@
+{
+  "flutter_basics": [
+    {
+      "question": "让 Row 中的子项按比例占满剩余宽度，应该使用？",
+      "options": ["Expanded(flex: n)", "SizedBox(width: 100)", "Container(color: ...)", "Padding"],
+      "answer": 0,
+      "explanation": "Expanded 会按 flex 比例瓜分剩余空间；SizedBox 是固定尺寸，Container 只负责装饰与约束。"
+    },
+    {
+      "question": "热重载（hot reload）与热重启（hot restart）的关键区别是？",
+      "options": [
+        "热重载保留当前 State，热重启会清空状态重新运行",
+        "热重载必须重启模拟器",
+        "热重启能保留 State，热重载不能",
+        "两者完全等价"
+      ],
+      "answer": 0,
+      "explanation": "热重载只重新执行 build，State 与页面栈保留；热重启会重新运行 main，所有状态归零。"
+    }
+  ],
+  "flutter_state": [
+    {
+      "question": "ChangeNotifier 子类中通知界面刷新的方法是？",
+      "options": ["notifyListeners()", "setState()", "updateUI()", "refresh()"],
+      "answer": 0,
+      "explanation": "ChangeNotifier 通过 notifyListeners() 通知订阅者重建；setState 属于 StatefulWidget 自身。"
+    },
+    {
+      "question": "订阅 Provider 时，只希望在某个字段变化时重建，应该用？",
+      "options": [
+        "context.select<Model, T>((m) => m.field)",
+        "context.read<Model>()",
+        "Provider.of<Model>(context, listen: false)",
+        "直接在 State 里存一份副本"
+      ],
+      "answer": 0,
+      "explanation": "select 会把重建范围收窄到指定字段，其余字段变化不会触发重建。"
+    }
+  ],
+  "flutter_release": [
+    {
+      "question": "flutter build appbundle 的产物格式是？",
+      "options": [".aab（Android App Bundle）", ".apk", ".ipa", ".jar"],
+      "answer": 0,
+      "explanation": "appbundle 生成 .aab，由商店按设备配置拆分下发；apk 才是直接安装包。"
+    },
+    {
+      "question": "Android 的 minSdk / targetSdk 在哪个文件中配置？",
+      "options": [
+        "android/app/build.gradle(.kts) 的 defaultConfig",
+        "pubspec.yaml 的 flutter 段",
+        "AndroidManifest.xml 的 application 标签",
+        "lib/main.dart 顶部常量"
+      ],
+      "answer": 0,
+      "explanation": "SDK 版本属于 Android 构建配置，写在 app 模块的 defaultConfig 里。"
+    }
+  ],
+  "mobile_kotlin": [
+    {
+      "question": "Kotlin 中 val 与 var 的区别是？",
+      "options": [
+        "val 声明后引用不可重新赋值，var 可以",
+        "val 是常量编译期替换，var 是变量",
+        "val 只能用于基本类型",
+        "两者只是命名风格不同"
+      ],
+      "answer": 0,
+      "explanation": "val 是只读引用（对象内部仍可能可变），var 可以再次赋值。"
+    },
+    {
+      "question": "在 Activity 中启动一个随生命周期自动取消的协程，常用写法是？",
+      "options": [
+        "lifecycleScope.launch { }",
+        "Thread { }.start()",
+        "GlobalScope.launch { }",
+        "runBlocking { }"
+      ],
+      "answer": 0,
+      "explanation": "lifecycleScope 绑定组件生命周期，销毁时自动取消，避免泄漏。"
+    }
+  ],
+  "mobile_swift": [
+    {
+      "question": "Swift 中 struct 与 class 的关键区别是？",
+      "options": [
+        "struct 是值类型（复制语义），class 是引用类型（共享实例）",
+        "struct 不能有方法",
+        "class 不能实现协议",
+        "struct 只能存基本类型"
+      ],
+      "answer": 0,
+      "explanation": "赋值或传参时 struct 会复制，class 传递的是同一个对象引用。"
+    },
+    {
+      "question": "guard let 与 if let 相比，最明显的特点是？",
+      "options": [
+        "guard 的条件不满足时必须在当前作用域退出（return/throw 等）",
+        "guard 不能解包可选值",
+        "guard 会忽略失败情况",
+        "guard 只能用于循环内部"
+      ],
+      "answer": 0,
+      "explanation": "guard 用于「提前返回」，解包后的变量在后续作用域继续可用，能减少嵌套层级。"
+    }
+  ],
+  "html_basics": [
+    {
+      "question": "<main> 标签在一个页面中应该出现几次？",
+      "options": ["1 次", "最多 2 次", "每个 section 一次", "不限次数"],
+      "answer": 0,
+      "explanation": "main 表示页面的唯一主体内容区域，辅助技术依赖它快速跳到正文。"
+    },
+    {
+      "question": "表单里 label 的 for 属性作用是？",
+      "options": [
+        "关联对应控件，点标签文字也能聚焦/勾选控件",
+        "给控件设置默认值",
+        "设置校验规则",
+        "控制控件的宽度"
+      ],
+      "answer": 0,
+      "explanation": "for 与控件的 id 对应，扩大点击热区，也让读屏软件正确播报标签。"
+    }
+  ],
+  "css_basics": [
+    {
+      "question": "margin: 10px 20px 表示？",
+      "options": ["上下 10px、左右 20px", "上 10px、左右 20px、下 0", "左右 10px、上下 20px", "四边都是 15px"],
+      "answer": 0,
+      "explanation": "两值写法：第一个是上下，第二个是左右；这是 CSS 简写的通用规则。"
+    },
+    {
+      "question": "下面哪组属性默认会被子元素继承？",
+      "options": ["color、font-size", "margin、padding", "border、background", "width、height"],
+      "answer": 0,
+      "explanation": "与文字排版相关的属性可继承；盒模型与尺寸类属性默认不继承。"
+    }
+  ],
+  "css_layout": [
+    {
+      "question": "position: absolute 的元素相对于谁定位？",
+      "options": [
+        "最近的已定位祖先（position 不为 static）",
+        "永远是浏览器视口",
+        "永远是父元素的父元素",
+        "距离最近的兄弟元素"
+      ],
+      "answer": 0,
+      "explanation": "找不到已定位祖先时才回退到初始包含块，所以父元素常设 position: relative。"
+    },
+    {
+      "question": "Flex/Grid 中 gap 相比用 margin 控制间距的优势是？",
+      "options": [
+        "只作用于项目之间，不会在首尾留下多余间距",
+        "能改变元素层级",
+        "会自动换行",
+        "能替代 padding"
+      ],
+      "answer": 0,
+      "explanation": "gap 只计算项目之间的间隔，省去 :last-child 之类的边界处理。"
+    }
+  ],
+  "css_render_animation": [
+    {
+      "question": "用 transform 和 opacity 做动画性能更好的原因是？",
+      "options": [
+        "只需合成层处理，通常不触发布局与重绘",
+        "浏览器对这两个属性做了特殊解析",
+        "它们会自动开启硬件解码",
+        "它们不会改变像素"
+      ],
+      "answer": 0,
+      "explanation": "合成阶段动画跳过 layout/paint，是 60fps 动画的首选属性。"
+    },
+    {
+      "question": "will-change 使用不当的主要风险是？",
+      "options": [
+        "滥用会创建大量合成层，占用显存并可能更卡",
+        "会让动画失效",
+        "会阻止事件冒泡",
+        "会强制同步布局"
+      ],
+      "answer": 0,
+      "explanation": "will-change 应只在动画前后短时间使用，长期挂在元素上是常见的性能反模式。"
+    }
+  ],
+  "css_advanced": [
+    {
+      "question": "@layer 的主要作用是？",
+      "options": [
+        "显式声明样式层叠顺序，降低特异性带来的覆盖混乱",
+        "把样式打包成一个文件",
+        "让样式只在特定浏览器生效",
+        "替代媒体查询"
+      ],
+      "answer": 0,
+      "explanation": "@layer 定义层叠层，后声明的层优先级更高，便于组织第三方与自有样式。"
+    },
+    {
+      "question": "clamp(1rem, 2.5vw, 2rem) 的含义是？",
+      "options": [
+        "在 1rem 与 2rem 之间按 2.5vw 弹性取值",
+        "三选一的随机值",
+        "固定等于 2.5vw",
+        "先取 1rem 再取 2rem"
+      ],
+      "answer": 0,
+      "explanation": "clamp(最小值, 首选值, 最大值) 用于流体排版，兼顾小屏与超大屏的可读性。"
+    }
+  ],
+  "html_css_project": [
+    {
+      "question": "想让页面跟随系统深色模式，应该用哪个媒体查询？",
+      "options": ["prefers-color-scheme", "min-width", "orientation", "print"],
+      "answer": 0,
+      "explanation": "prefers-color-scheme: dark 可读取系统主题偏好，据此覆盖 CSS 变量实现深色模式。"
+    },
+    {
+      "question": "Lighthouse / axe 这类工具在项目中的主要用途是？",
+      "options": [
+        "自动检测性能、可访问性与最佳实践问题",
+        "自动压缩图片",
+        "替代单元测试",
+        "生成 HTML 结构"
+      ],
+      "answer": 0,
+      "explanation": "它们给出可执行的审计报告（对比度、语义、加载指标），适合接入 CI 做回归。"
+    }
+  ],
+  "web_performance": [
+    {
+      "question": "preload 与 prefetch 的区别是？",
+      "options": [
+        "preload 提前加载当前页面马上要用的资源，prefetch 预取后续可能用到的资源",
+        "preload 用于图片，prefetch 用于字体",
+        "两者等价，只是写法不同",
+        "preload 只能用于 JS"
+      ],
+      "answer": 0,
+      "explanation": "preload 提升当前页关键资源优先级；prefetch 在空闲时预取下一个页面的资源。"
+    },
+    {
+      "question": "减小 JS 体积最常用的组合手段是？",
+      "options": [
+        "代码分割 + tree shaking + 压缩（gzip/br）",
+        "把 JS 内联进 HTML",
+        "增加 polyfill",
+        "使用更多依赖"
+      ],
+      "answer": 0,
+      "explanation": "按路由拆包、剔除未用导出、传输层压缩，三者叠加才有效果。"
+    }
+  ],
+  "python_variables": [
+    {
+      "question": "Python 中 is 与 == 的区别是？",
+      "options": [
+        "== 比较值是否相等，is 比较是否为同一个对象",
+        "两者完全等价",
+        "is 比较值，== 比较地址",
+        "is 只能用于数字"
+      ],
+      "answer": 0,
+      "explanation": "小整数有缓存容易让人误会，判断 None 才应该用 is None。"
+    },
+    {
+      "question": "a = [1, 2]; b = a; b.append(3) 之后 a 是？",
+      "options": ["[1, 2, 3]", "[1, 2]", "报错", "[3]"],
+      "answer": 0,
+      "explanation": "b 与 a 指向同一个列表对象，就地修改会影响双方；需要副本要用 a.copy() 或 a[:]。"
+    }
+  ],
+  "python_functions": [
+    {
+      "question": "*args 与 **kwargs 的区别是？",
+      "options": [
+        "*args 收集位置参数成元组，**kwargs 收集关键字参数成字典",
+        "*args 是字典，**kwargs 是元组",
+        "两者都必须写在参数最前面",
+        "只能用于类方法"
+      ],
+      "answer": 0,
+      "explanation": "顺序固定为普通参数 → *args → 默认参数 → **kwargs。"
+    },
+    {
+      "question": "lambda 最典型的使用场景是？",
+      "options": [
+        "作为 sorted(key=...)、map 等只需要一次的小函数",
+        "实现复杂业务逻辑",
+        "替代类定义",
+        "写多行流程控制"
+      ],
+      "answer": 0,
+      "explanation": "lambda 只能写单个表达式，复杂逻辑应改用 def，保持可读性。"
+    }
+  ],
+  "python_control_flow": [
+    {
+      "question": "range(1, 10, 2) 生成的序列是？",
+      "options": ["1, 3, 5, 7, 9", "1, 2, 3, …, 10", "2, 4, 6, 8, 10", "1, 3, 5, 7"],
+      "answer": 0,
+      "explanation": "range(start, stop, step) 不包含 stop，所以到 9 结束。"
+    },
+    {
+      "question": "break 与 continue 的区别是？",
+      "options": [
+        "break 结束整个循环，continue 跳过本次进入下一次",
+        "break 跳过本次，continue 结束循环",
+        "两者都结束循环",
+        "continue 只能用于 while"
+      ],
+      "answer": 0,
+      "explanation": "循环里做筛选用 continue，命中条件要收工用 break。"
+    }
+  ],
+  "python_data_structures": [
+    {
+      "question": "a = [0, 1, 2, 3, 4] 时 a[1:4] 的结果是？",
+      "options": ["[1, 2, 3]", "[1, 2, 3, 4]", "[0, 1, 2, 3]", "[2, 3, 4]"],
+      "answer": 0,
+      "explanation": "切片左闭右开，包含起始索引、不包含结束索引。"
+    },
+    {
+      "question": "作为字典键的对象必须满足？",
+      "options": [
+        "可哈希（通常是不可变类型，如 str、int、tuple）",
+        "必须是字符串",
+        "必须是整数",
+        "可以是任意对象"
+      ],
+      "answer": 0,
+      "explanation": "字典用哈希值定位键，列表、字典这类可变对象不可哈希，不能当键。"
+    }
+  ],
+  "python_oop": [
+    {
+      "question": "__str__ 与 __repr__ 的区别是？",
+      "options": [
+        "__str__ 面向用户可读，__repr__ 面向开发者调试",
+        "两者完全相同",
+        "__repr__ 只能返回数字",
+        "__str__ 用于类本身"
+      ],
+      "answer": 0,
+      "explanation": "print 走 __str__，交互式环境与容器展示走 __repr__；调试时优先实现 __repr__。"
+    },
+    {
+      "question": "@classmethod 与 @staticmethod 的区别是？",
+      "options": [
+        "classmethod 第一个参数是 cls 可访问类本身，staticmethod 不接收自动参数",
+        "两者完全等价",
+        "staticmethod 能访问实例属性",
+        "classmethod 只能用于继承"
+      ],
+      "answer": 0,
+      "explanation": "classmethod 常用于替代构造器（from_xxx），staticmethod 只是放在类命名空间里的普通函数。"
+    }
+  ],
+  "python_errors_files": [
+    {
+      "question": "读取一个不存在的文件，会抛出哪个异常？",
+      "options": ["FileNotFoundError", "KeyError", "TypeError", "IndexError"],
+      "answer": 0,
+      "explanation": "FileNotFoundError 是 OSError 的子类，捕获时也可以按 OSError 处理。"
+    },
+    {
+      "question": "自定义异常类通常继承自？",
+      "options": ["Exception", "BaseException", "object", "Error"],
+      "answer": 0,
+      "explanation": "继承 Exception 可被常规 except 捕获，也便于按业务分层定义异常体系。"
+    }
+  ],
+  "python_modules_stdlib": [
+    {
+      "question": "为什么不推荐 from module import *？",
+      "options": [
+        "会导入大量名字，可能覆盖同名变量，代码可读性变差",
+        "语法已经被废弃",
+        "只能用于标准库",
+        "会导致循环导入崩溃"
+      ],
+      "answer": 0,
+      "explanation": "显式导入能让读者一眼看出名字来源，也避免命名冲突。"
+    },
+    {
+      "question": "pathlib.Path 相比手写字符串拼接路径的优势是？",
+      "options": [
+        "跨平台分隔符自动处理，并自带 exists / read_text 等方法",
+        "速度更快",
+        "能替代 os.environ",
+        "会自动创建目录"
+      ],
+      "answer": 0,
+      "explanation": "用 / 运算符拼路径更直观，也不用担心 Windows 的反斜杠转义。"
+    }
+  ],
+  "python_typing_testing": [
+    {
+      "question": "mypy 这类工具的作用是？",
+      "options": [
+        "在运行前做静态类型检查，发现类型不一致",
+        "给代码自动提速",
+        "替代 pytest",
+        "把 Python 编译成机器码"
+      ],
+      "answer": 0,
+      "explanation": "类型注解本身不影响运行，mypy / pyright 才让注解产生工程价值。"
+    },
+    {
+      "question": "pytest 中 fixture 的主要用途是？",
+      "options": [
+        "提供可复用的测试前置准备与清理逻辑",
+        "断言异常",
+        "生成测试报告",
+        "跳过全部用例"
+      ],
+      "answer": 0,
+      "explanation": "fixture 通过依赖注入复用资源（数据库连接、临时目录），yield 之前准备、之后清理。"
+    }
+  ],
+  "python_concurrency": [
+    {
+      "question": "GIL 带来的实际影响是？",
+      "options": [
+        "多线程无法并行执行 Python 字节码，CPU 密集任务难以提速",
+        "多线程完全不可用",
+        "所有 IO 操作都会阻塞",
+        "进程之间无法通信"
+      ],
+      "answer": 0,
+      "explanation": "IO 等待时会释放 GIL，所以多线程适合 IO 密集；CPU 密集应使用多进程或原生扩展。"
+    },
+    {
+      "question": "asyncio.gather 的作用是？",
+      "options": [
+        "并发调度并等待多个协程，按顺序返回结果",
+        "阻塞主线程直到所有任务结束",
+        "创建新的进程池",
+        "把协程转换成线程"
+      ],
+      "answer": 0,
+      "explanation": "gather 让多个协程在同一事件循环内并发执行，是并发请求聚合的常用写法。"
+    }
+  ],
+  "python_project": [
+    {
+      "question": "给 requests 请求设置 timeout 的意义是？",
+      "options": [
+        "避免网络异常时请求无限期挂起",
+        "提高服务器响应速度",
+        "自动重试失败请求",
+        "绕过反爬限制"
+      ],
+      "answer": 0,
+      "explanation": "生产脚本必须设置超时与重试，否则一个慢请求就可能卡住整个任务。"
+    },
+    {
+      "question": "pandas 中把 DataFrame 保存成 CSV 的方法是？",
+      "options": ["df.to_csv('out.csv', index=False)", "df.save('out.csv')", "df.export('out.csv')", "df.write_csv('out.csv')"],
+      "answer": 0,
+      "explanation": "to_csv 是写出方法，index=False 可避免多出一列行号。"
+    }
+  ]
+}

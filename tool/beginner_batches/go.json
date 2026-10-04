@@ -1,0 +1,360 @@
+{
+  "category": "go",
+  "lessons": [
+    {
+      "id": "go_first_program",
+      "title": {
+        "zh": "Go 第一个程序",
+        "en": "Go First Program"
+      },
+      "summary": {
+        "zh": "用 go run 运行最小程序并理解包结构。",
+        "en": "Run a minimal Go program and understand packages."
+      },
+      "file": "assets/content/go_first_program.md",
+      "minutes": 15,
+      "keywords": [
+        "Go 第一个程序",
+        "Go",
+        "入门练习"
+      ],
+      "difficulty": "入门",
+      "order": -5,
+      "quiz": [
+        {
+          "question": "运行「Go 第一个程序」的最小示例，预期输出是什么？",
+          "options": [
+            "result=5",
+            "result=23",
+            "编译失败",
+            "没有任何输出"
+          ],
+          "answer": 0,
+          "explanation": "示例计算 2 + 3，并输出 result=5。加法结果不是 23，程序也不应该编译失败或无输出；先运行最小示例并观察 stdout 是入门阶段最重要的验证动作。",
+          "type": "code",
+          "code": "package main\nimport \"fmt\"\nfunc main() { fmt.Println(2 + 3) }"
+        },
+        {
+          "question": "「Go 第一个程序」最容易出现的错误是？",
+          "options": [
+            "忽略函数返回的 error，导致错误被静默吞掉。",
+            "只要代码能运行，就不需要观察输出。",
+            "出错后应该直接重写整个程序。",
+            "边界输入不会影响入门程序。"
+          ],
+          "answer": 0,
+          "explanation": "忽略函数返回的 error，导致错误被静默吞掉。 其他选项把错误处理理解成跳过验证或推倒重写；正确做法是先阅读第一条错误信息，回到最小示例，只改变一个变量并复现问题。",
+          "type": "debug"
+        },
+        {
+          "question": "学习「Go 第一个程序」时，正确的操作顺序是？",
+          "options": [
+            "运行最小示例 → 修改一个值 → 预测结果 → 验证输出",
+            "修改所有代码 → 删除测试 → 直接部署 → 再阅读错误",
+            "先优化性能 → 再写需求 → 最后运行",
+            "复制答案 → 不运行 → 认为已经掌握"
+          ],
+          "answer": 0,
+          "explanation": "入门学习应先运行最小示例，再修改一个值，写下预测并运行验证。一次修改多个变量会让失败原因无法定位，直接优化或部署也缺少正确性基线。",
+          "type": "order"
+        },
+        {
+          "question": "「Go 第一个程序」的练习闭环应该怎么填空？",
+          "options": [
+            "最小示例 → 预测 → 运行 → 对比",
+            "直接上线 → 再观察",
+            "复制代码 → 不运行",
+            "优化性能 → 再写代码"
+          ],
+          "answer": 0,
+          "explanation": "最小示例、预测、运行、对比构成最小学习闭环。跳过运行或不记录结果都无法验证理解，先优化性能则容易在错误基线上做无效工作。",
+          "type": "fill"
+        }
+      ]
+    },
+    {
+      "id": "go_variables_input",
+      "title": {
+        "zh": "Go 变量与输入",
+        "en": "Go Variables and Input"
+      },
+      "summary": {
+        "zh": "声明变量、读取输入并处理错误。",
+        "en": "Declare variables, read input and handle errors."
+      },
+      "file": "assets/content/go_variables_input.md",
+      "minutes": 15,
+      "keywords": [
+        "Go 变量与输入",
+        "Go",
+        "入门练习"
+      ],
+      "difficulty": "入门",
+      "order": -4,
+      "quiz": [
+        {
+          "question": "运行「Go 变量与输入」的最小示例，预期输出是什么？",
+          "options": [
+            "result=5",
+            "result=23",
+            "编译失败",
+            "没有任何输出"
+          ],
+          "answer": 0,
+          "explanation": "示例计算 2 + 3，并输出 result=5。加法结果不是 23，程序也不应该编译失败或无输出；先运行最小示例并观察 stdout 是入门阶段最重要的验证动作。",
+          "type": "code",
+          "code": "package main\nimport \"fmt\"\nfunc main() { fmt.Println(2 + 3) }"
+        },
+        {
+          "question": "「Go 变量与输入」最容易出现的错误是？",
+          "options": [
+            "忽略函数返回的 error，导致错误被静默吞掉。",
+            "只要代码能运行，就不需要观察输出。",
+            "出错后应该直接重写整个程序。",
+            "边界输入不会影响入门程序。"
+          ],
+          "answer": 0,
+          "explanation": "忽略函数返回的 error，导致错误被静默吞掉。 其他选项把错误处理理解成跳过验证或推倒重写；正确做法是先阅读第一条错误信息，回到最小示例，只改变一个变量并复现问题。",
+          "type": "debug"
+        },
+        {
+          "question": "学习「Go 变量与输入」时，正确的操作顺序是？",
+          "options": [
+            "运行最小示例 → 修改一个值 → 预测结果 → 验证输出",
+            "修改所有代码 → 删除测试 → 直接部署 → 再阅读错误",
+            "先优化性能 → 再写需求 → 最后运行",
+            "复制答案 → 不运行 → 认为已经掌握"
+          ],
+          "answer": 0,
+          "explanation": "入门学习应先运行最小示例，再修改一个值，写下预测并运行验证。一次修改多个变量会让失败原因无法定位，直接优化或部署也缺少正确性基线。",
+          "type": "order"
+        },
+        {
+          "question": "「Go 变量与输入」的练习闭环应该怎么填空？",
+          "options": [
+            "最小示例 → 预测 → 运行 → 对比",
+            "直接上线 → 再观察",
+            "复制代码 → 不运行",
+            "优化性能 → 再写代码"
+          ],
+          "answer": 0,
+          "explanation": "最小示例、预测、运行、对比构成最小学习闭环。跳过运行或不记录结果都无法验证理解，先优化性能则容易在错误基线上做无效工作。",
+          "type": "fill"
+        }
+      ]
+    },
+    {
+      "id": "go_conditions",
+      "title": {
+        "zh": "Go 条件判断",
+        "en": "Go Conditionals"
+      },
+      "summary": {
+        "zh": "用 if 和 switch 表达分支。",
+        "en": "Express branches with if and switch."
+      },
+      "file": "assets/content/go_conditions.md",
+      "minutes": 15,
+      "keywords": [
+        "Go 条件判断",
+        "Go",
+        "入门练习"
+      ],
+      "difficulty": "入门",
+      "order": -3,
+      "quiz": [
+        {
+          "question": "运行「Go 条件判断」的最小示例，预期输出是什么？",
+          "options": [
+            "result=5",
+            "result=23",
+            "编译失败",
+            "没有任何输出"
+          ],
+          "answer": 0,
+          "explanation": "示例计算 2 + 3，并输出 result=5。加法结果不是 23，程序也不应该编译失败或无输出；先运行最小示例并观察 stdout 是入门阶段最重要的验证动作。",
+          "type": "code",
+          "code": "package main\nimport \"fmt\"\nfunc main() { fmt.Println(2 + 3) }"
+        },
+        {
+          "question": "「Go 条件判断」最容易出现的错误是？",
+          "options": [
+            "忽略函数返回的 error，导致错误被静默吞掉。",
+            "只要代码能运行，就不需要观察输出。",
+            "出错后应该直接重写整个程序。",
+            "边界输入不会影响入门程序。"
+          ],
+          "answer": 0,
+          "explanation": "忽略函数返回的 error，导致错误被静默吞掉。 其他选项把错误处理理解成跳过验证或推倒重写；正确做法是先阅读第一条错误信息，回到最小示例，只改变一个变量并复现问题。",
+          "type": "debug"
+        },
+        {
+          "question": "学习「Go 条件判断」时，正确的操作顺序是？",
+          "options": [
+            "运行最小示例 → 修改一个值 → 预测结果 → 验证输出",
+            "修改所有代码 → 删除测试 → 直接部署 → 再阅读错误",
+            "先优化性能 → 再写需求 → 最后运行",
+            "复制答案 → 不运行 → 认为已经掌握"
+          ],
+          "answer": 0,
+          "explanation": "入门学习应先运行最小示例，再修改一个值，写下预测并运行验证。一次修改多个变量会让失败原因无法定位，直接优化或部署也缺少正确性基线。",
+          "type": "order"
+        },
+        {
+          "question": "「Go 条件判断」的练习闭环应该怎么填空？",
+          "options": [
+            "最小示例 → 预测 → 运行 → 对比",
+            "直接上线 → 再观察",
+            "复制代码 → 不运行",
+            "优化性能 → 再写代码"
+          ],
+          "answer": 0,
+          "explanation": "最小示例、预测、运行、对比构成最小学习闭环。跳过运行或不记录结果都无法验证理解，先优化性能则容易在错误基线上做无效工作。",
+          "type": "fill"
+        }
+      ]
+    },
+    {
+      "id": "go_loops",
+      "title": {
+        "zh": "Go 循环入门",
+        "en": "Go Loops"
+      },
+      "summary": {
+        "zh": "用 for 和 range 遍历数据。",
+        "en": "Iterate with for and range."
+      },
+      "file": "assets/content/go_loops.md",
+      "minutes": 15,
+      "keywords": [
+        "Go 循环入门",
+        "Go",
+        "入门练习"
+      ],
+      "difficulty": "入门",
+      "order": -2,
+      "quiz": [
+        {
+          "question": "运行「Go 循环入门」的最小示例，预期输出是什么？",
+          "options": [
+            "result=5",
+            "result=23",
+            "编译失败",
+            "没有任何输出"
+          ],
+          "answer": 0,
+          "explanation": "示例计算 2 + 3，并输出 result=5。加法结果不是 23，程序也不应该编译失败或无输出；先运行最小示例并观察 stdout 是入门阶段最重要的验证动作。",
+          "type": "code",
+          "code": "package main\nimport \"fmt\"\nfunc main() { fmt.Println(2 + 3) }"
+        },
+        {
+          "question": "「Go 循环入门」最容易出现的错误是？",
+          "options": [
+            "忽略函数返回的 error，导致错误被静默吞掉。",
+            "只要代码能运行，就不需要观察输出。",
+            "出错后应该直接重写整个程序。",
+            "边界输入不会影响入门程序。"
+          ],
+          "answer": 0,
+          "explanation": "忽略函数返回的 error，导致错误被静默吞掉。 其他选项把错误处理理解成跳过验证或推倒重写；正确做法是先阅读第一条错误信息，回到最小示例，只改变一个变量并复现问题。",
+          "type": "debug"
+        },
+        {
+          "question": "学习「Go 循环入门」时，正确的操作顺序是？",
+          "options": [
+            "运行最小示例 → 修改一个值 → 预测结果 → 验证输出",
+            "修改所有代码 → 删除测试 → 直接部署 → 再阅读错误",
+            "先优化性能 → 再写需求 → 最后运行",
+            "复制答案 → 不运行 → 认为已经掌握"
+          ],
+          "answer": 0,
+          "explanation": "入门学习应先运行最小示例，再修改一个值，写下预测并运行验证。一次修改多个变量会让失败原因无法定位，直接优化或部署也缺少正确性基线。",
+          "type": "order"
+        },
+        {
+          "question": "「Go 循环入门」的练习闭环应该怎么填空？",
+          "options": [
+            "最小示例 → 预测 → 运行 → 对比",
+            "直接上线 → 再观察",
+            "复制代码 → 不运行",
+            "优化性能 → 再写代码"
+          ],
+          "answer": 0,
+          "explanation": "最小示例、预测、运行、对比构成最小学习闭环。跳过运行或不记录结果都无法验证理解，先优化性能则容易在错误基线上做无效工作。",
+          "type": "fill"
+        }
+      ]
+    },
+    {
+      "id": "go_functions_intro",
+      "title": {
+        "zh": "Go 函数入门",
+        "en": "Go Functions"
+      },
+      "summary": {
+        "zh": "定义函数、多返回值和错误处理。",
+        "en": "Define functions with multiple returns and errors."
+      },
+      "file": "assets/content/go_functions_intro.md",
+      "minutes": 15,
+      "keywords": [
+        "Go 函数入门",
+        "Go",
+        "入门练习"
+      ],
+      "difficulty": "入门",
+      "order": -1,
+      "quiz": [
+        {
+          "question": "运行「Go 函数入门」的最小示例，预期输出是什么？",
+          "options": [
+            "result=5",
+            "result=23",
+            "编译失败",
+            "没有任何输出"
+          ],
+          "answer": 0,
+          "explanation": "示例计算 2 + 3，并输出 result=5。加法结果不是 23，程序也不应该编译失败或无输出；先运行最小示例并观察 stdout 是入门阶段最重要的验证动作。",
+          "type": "code",
+          "code": "package main\nimport \"fmt\"\nfunc main() { fmt.Println(2 + 3) }"
+        },
+        {
+          "question": "「Go 函数入门」最容易出现的错误是？",
+          "options": [
+            "忽略函数返回的 error，导致错误被静默吞掉。",
+            "只要代码能运行，就不需要观察输出。",
+            "出错后应该直接重写整个程序。",
+            "边界输入不会影响入门程序。"
+          ],
+          "answer": 0,
+          "explanation": "忽略函数返回的 error，导致错误被静默吞掉。 其他选项把错误处理理解成跳过验证或推倒重写；正确做法是先阅读第一条错误信息，回到最小示例，只改变一个变量并复现问题。",
+          "type": "debug"
+        },
+        {
+          "question": "学习「Go 函数入门」时，正确的操作顺序是？",
+          "options": [
+            "运行最小示例 → 修改一个值 → 预测结果 → 验证输出",
+            "修改所有代码 → 删除测试 → 直接部署 → 再阅读错误",
+            "先优化性能 → 再写需求 → 最后运行",
+            "复制答案 → 不运行 → 认为已经掌握"
+          ],
+          "answer": 0,
+          "explanation": "入门学习应先运行最小示例，再修改一个值，写下预测并运行验证。一次修改多个变量会让失败原因无法定位，直接优化或部署也缺少正确性基线。",
+          "type": "order"
+        },
+        {
+          "question": "「Go 函数入门」的练习闭环应该怎么填空？",
+          "options": [
+            "最小示例 → 预测 → 运行 → 对比",
+            "直接上线 → 再观察",
+            "复制代码 → 不运行",
+            "优化性能 → 再写代码"
+          ],
+          "answer": 0,
+          "explanation": "最小示例、预测、运行、对比构成最小学习闭环。跳过运行或不记录结果都无法验证理解，先优化性能则容易在错误基线上做无效工作。",
+          "type": "fill"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,182 @@
+{
+  "category": "cross_language",
+  "lessons": [
+    {
+      "id": "cross_performance_profiling",
+      "title": { "zh": "性能剖析与基准测试：九种生态横向对照", "en": "Profiling and Benchmarking" },
+      "summary": {
+        "zh": "各语言剖析工具、火焰图阅读法、基准测试五纪律与常见性能根因。",
+        "en": "Profilers, flame graphs, benchmark discipline and common causes."
+      },
+      "file": "assets/content/cross_performance_profiling.md",
+      "minutes": 20,
+      "keywords": ["性能", "剖析", "火焰图", "基准测试", "分位数"],
+      "difficulty": "进阶",
+      "order": 12,
+      "quiz": [
+        {
+          "question": "性能优化的正确流程是？",
+          "options": [
+            "先改代码，效果不好再回退",
+            "先测量建基线，再定位热点，改一处后复测",
+            "直接换更快的语言",
+            "增加机器数量"
+          ],
+          "answer": 1,
+          "explanation": "没有测量就没有优化，必须基于数据定位并复测验证。选项一属于碰运气；选项二与选项三是成本极高的猜测性方案。"
+        },
+        {
+          "question": "火焰图中某个函数条特别宽，说明？",
+          "options": [
+            "代码行数多",
+            "调用层级深",
+            "该函数占用时间最多，是优先优化对象",
+            "内存占用大"
+          ],
+          "answer": 2,
+          "explanation": "火焰图横轴是采样时间占比，越宽说明耗时越多。选项一、二、四都不是宽度的含义（层级看纵轴，内存需要另外的工具）。"
+        },
+        {
+          "question": "做基准测试时，为什么要加预热（warmup）？",
+          "options": [
+            "为了增加测试次数",
+            "因为 JIT 编译与缓存会让前几次偏慢，预热后数据才稳定",
+            "为了节省时间",
+            "为了模拟生产流量"
+          ],
+          "answer": 1,
+          "explanation": "预热能让 JIT、连接池与缓存进入稳定状态，避免首轮偏慢影响结论。选项一与选项三不是目的；选项四需要专门的压测而不是 warmup。"
+        },
+        {
+          "question": "评估接口性能时，为什么不能只看平均延迟？",
+          "options": [
+            "平均值计算容易出错",
+            "平均值会掩盖长尾，P95 与 P99 才能反映最差用户体验",
+            "平均值只能用于内存",
+            "平均值单位不一致"
+          ],
+          "answer": 1,
+          "explanation": "少量极慢请求会被大量快请求平均掉，用户体验由高分位决定。选项一、三、四都不是核心原因。"
+        }
+      ]
+    },
+    {
+      "id": "cross_ci_config",
+      "title": { "zh": "CI 流水线配置：九种生态横向对照", "en": "CI Pipeline Configuration" },
+      "summary": {
+        "zh": "五阶段流水线、九种生态命令对照、缓存与并行的提速手段。",
+        "en": "Five-stage pipeline, ecosystem commands, caching and parallelism."
+      },
+      "file": "assets/content/cross_ci_config.md",
+      "minutes": 18,
+      "keywords": ["CI", "流水线", "缓存", "制品", "门禁"],
+      "difficulty": "进阶",
+      "order": 13,
+      "quiz": [
+        {
+          "question": "CI 流水线的标准阶段顺序是？",
+          "options": [
+            "构建 → 测试 → 安装依赖 → 检查",
+            "检出代码 → 安装依赖 → 静态检查 → 测试 → 构建制品",
+            "测试 → 构建 → 安装依赖 → 检查",
+            "检查 → 构建 → 安装依赖 → 测试"
+          ],
+          "answer": 1,
+          "explanation": "先装依赖才能检查与测试，测试通过后再构建产物最省资源。其余选项顺序颠倒，会在依赖缺失或未验证的情况下构建。"
+        },
+        {
+          "question": "CI 中安装 Node 依赖应该用哪个命令？",
+          "options": [
+            "npm install",
+            "npm ci",
+            "npm update",
+            "逐个 npm install 依赖"
+          ],
+          "answer": 1,
+          "explanation": "npm ci 严格按锁文件安装，保证可复现。选项一与选项三可能改写版本；选项四既慢又容易漏。"
+        },
+        {
+          "question": "缓存依赖时，缓存键的最佳选择是？",
+          "options": [
+            "固定的字符串",
+            "包含锁文件哈希的键，并配置 restore-keys 兜底",
+            "当前时间戳",
+            "随机字符串"
+          ],
+          "answer": 1,
+          "explanation": "锁文件变化时缓存自动失效，未变化时命中。选项一永远不会失效，可能用到过期依赖；选项三与选项四会导致缓存始终不命中。"
+        },
+        {
+          "question": "为什么制品要用 commit SHA 命名？",
+          "options": [
+            "名字更短",
+            "可追溯到具体提交，便于回滚与排查",
+            "节省存储空间",
+            "方便排序"
+          ],
+          "answer": 1,
+          "explanation": "哈希能唯一对应代码版本，是回滚与定位的依据。选项一、三、四都不是目的。"
+        }
+      ]
+    },
+    {
+      "id": "cross_security_ecosystem",
+      "title": { "zh": "依赖安全与密钥管理：九种生态横向对照", "en": "Dependency and Secret Security" },
+      "summary": {
+        "zh": "各生态依赖扫描工具、供应链四类风险、密钥泄露处置顺序。",
+        "en": "Scanning tools, supply-chain risks and secret rotation order."
+      },
+      "file": "assets/content/cross_security_ecosystem.md",
+      "minutes": 18,
+      "keywords": ["安全", "依赖扫描", "密钥", "供应链", "轮换"],
+      "difficulty": "进阶",
+      "order": 14,
+      "quiz": [
+        {
+          "question": "发现密钥被提交到 Git 仓库后，第一步应该做什么？",
+          "options": [
+            "立刻清理 Git 历史",
+            "立刻吊销并轮换密钥",
+            "删除仓库重新上传",
+            "写进 README 提醒同事"
+          ],
+          "answer": 1,
+          "explanation": "只要密钥还有效，泄露就可能被利用，必须优先让它失效。选项一会让密钥在清理期间持续有效；选项三会造成更大损失；选项四毫无作用。"
+        },
+        {
+          "question": "供应链风险中，最容易被忽略的是？",
+          "options": [
+            "直接依赖的已知漏洞",
+            "间接依赖（传递依赖）中的已知漏洞",
+            "自己的业务代码",
+            "操作系统补丁"
+          ],
+          "answer": 1,
+          "explanation": "传递依赖不由你直接声明，容易被漏扫。选项一通常有扫描工具覆盖；选项三与选项四不属于依赖供应链范畴。"
+        },
+        {
+          "question": "关于密钥管理，下面哪种做法是正确的？",
+          "options": [
+            "写进代码方便本地调试",
+            "代码只读环境变量，密钥存密钥服务并按最小权限访问",
+            "所有环境共用一把密钥",
+            "打印到日志便于排查"
+          ],
+          "answer": 1,
+          "explanation": "密钥外置加最小权限是标准实践。选项一与选项四会造成泄露；选项三使一处泄露影响全部环境。"
+        },
+        {
+          "question": "防止 SQL 注入最根本的做法是？",
+          "options": [
+            "过滤单引号",
+            "隐藏数据库错误信息",
+            "使用参数化查询，把 SQL 结构与数据分离",
+            "限制请求频率"
+          ],
+          "answer": 2,
+          "explanation": "参数化查询从机制上消除注入可能。选项一容易被绕过；选项二与选项四只是缓解或无关手段。"
+        }
+      ]
+    }
+  ]
+}

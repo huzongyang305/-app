@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 启动页背景：与图标同款品牌渐变 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:angle="315"
+        android:type="linear"
+        android:startColor="#FF6C8FF8"
+        android:endColor="#FF4166D9" />
+</shape>

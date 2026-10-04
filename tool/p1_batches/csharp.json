@@ -1,0 +1,218 @@
+{
+  "category": "csharp",
+  "lessons": [
+    {
+      "id": "csharp_records_patterns",
+      "title": {
+        "zh": "C# Record、模式匹配与不可变数据",
+        "en": "C# Records, Pattern Matching and Immutable Data"
+      },
+      "summary": {
+        "zh": "用 record、with、模式匹配和不可变集合表达领域数据。",
+        "en": "Use records, with, pattern matching and immutable collections."
+      },
+      "file": "assets/content/csharp_records_patterns.md",
+      "minutes": 24,
+      "keywords": [
+        "record",
+        "模式匹配",
+        "不可变",
+        "with"
+      ],
+      "difficulty": "高级",
+      "order": 11,
+      "quiz": [
+        {
+          "question": "关于「record 提供值相等和简洁语法 …」，下列说法正确的是？",
+          "options": [
+            "record 提供值相等和简洁语法，with 可创建修改部分属性的副本。",
+            "IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果。",
+            "减少短生命周期大对象分配能显著降低 GC 压力和停顿。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《C# Record、模式匹配与不可变数据》时应把该要点与「record」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「模式匹配支持类型、属性、位置和关系模…」，下列说法正确的是？",
+          "options": [
+            "模式匹配支持类型、属性、位置和关系模式，让分支表达更清晰。",
+            "CancellationToken 要贯穿调用链，并在阻塞点检查取消。",
+            "Span 和 Memory 提供无复制切片能力，但有生命周期和栈限制。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《C# Record、模式匹配与不可变数据》时应把该要点与「record」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「不可变数据减少共享修改 但要注意集合…」，下列说法正确的是？",
+          "options": [
+            "不可变数据减少共享修改，但要注意集合深层不可变与复制成本。",
+            "await foreach 和 await using 保证异步迭代与资源释放正确。",
+            "用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《C# Record、模式匹配与不可变数据》时应把该要点与「record」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「C# Record、模式匹配与不可变数据」的核心学习目标是什么？",
+          "options": [
+            "用 record、with、模式匹配和不可变集合表达领域数据。",
+            "理解 IAsyncEnumerable、CancellationToken 和异步资源释放。",
+            "理解代际 GC、分配热点、Span、ArrayPool 和基准测试。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "csharp_async_streams",
+      "title": {
+        "zh": "C# 异步流与取消",
+        "en": "C# Async Streams and Cancellation"
+      },
+      "summary": {
+        "zh": "理解 IAsyncEnumerable、CancellationToken 和异步资源释放。",
+        "en": "Learn IAsyncEnumerable, CancellationToken and async disposal."
+      },
+      "file": "assets/content/csharp_async_streams.md",
+      "minutes": 24,
+      "keywords": [
+        "IAsyncEnumerable",
+        "CancellationToken",
+        "异步流",
+        "取消"
+      ],
+      "difficulty": "高级",
+      "order": 12,
+      "quiz": [
+        {
+          "question": "关于「IAsyncEnumerable 按…」，下列说法正确的是？",
+          "options": [
+            "IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果。",
+            "record 提供值相等和简洁语法，with 可创建修改部分属性的副本。",
+            "减少短生命周期大对象分配能显著降低 GC 压力和停顿。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《C# 异步流与取消》时应把该要点与「IAsyncEnumerable」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「CancellationToken …」，下列说法正确的是？",
+          "options": [
+            "CancellationToken 要贯穿调用链，并在阻塞点检查取消。",
+            "模式匹配支持类型、属性、位置和关系模式，让分支表达更清晰。",
+            "Span 和 Memory 提供无复制切片能力，但有生命周期和栈限制。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《C# 异步流与取消》时应把该要点与「IAsyncEnumerable」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「await foreach 和 aw…」，下列说法正确的是？",
+          "options": [
+            "await foreach 和 await using 保证异步迭代与资源释放正确。",
+            "不可变数据减少共享修改，但要注意集合深层不可变与复制成本。",
+            "用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《C# 异步流与取消》时应把该要点与「IAsyncEnumerable」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「C# 异步流与取消」的核心学习目标是什么？",
+          "options": [
+            "理解 IAsyncEnumerable、CancellationToken 和异步资源释放。",
+            "用 record、with、模式匹配和不可变集合表达领域数据。",
+            "理解代际 GC、分配热点、Span、ArrayPool 和基准测试。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "csharp_gc_performance",
+      "title": {
+        "zh": "C# GC、Span 与性能优化",
+        "en": "C# GC, Span and Performance"
+      },
+      "summary": {
+        "zh": "理解代际 GC、分配热点、Span、ArrayPool 和基准测试。",
+        "en": "Learn generational GC, allocations, Span, ArrayPool and benchmarking."
+      },
+      "file": "assets/content/csharp_gc_performance.md",
+      "minutes": 25,
+      "keywords": [
+        "GC",
+        "Span",
+        "ArrayPool",
+        "BenchmarkDotNet"
+      ],
+      "difficulty": "高级",
+      "order": 13,
+      "quiz": [
+        {
+          "question": "关于「减少短生命周期大对象分配能显著降低 …」，下列说法正确的是？",
+          "options": [
+            "减少短生命周期大对象分配能显著降低 GC 压力和停顿。",
+            "record 提供值相等和简洁语法，with 可创建修改部分属性的副本。",
+            "IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《C# GC、Span 与性能优化》时应把该要点与「GC」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「Span 和 Memory 提供无复…」，下列说法正确的是？",
+          "options": [
+            "Span 和 Memory 提供无复制切片能力，但有生命周期和栈限制。",
+            "模式匹配支持类型、属性、位置和关系模式，让分支表达更清晰。",
+            "CancellationToken 要贯穿调用链，并在阻塞点检查取消。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《C# GC、Span 与性能优化》时应把该要点与「GC」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「用 BenchmarkDotNet …」，下列说法正确的是？",
+          "options": [
+            "用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化。",
+            "不可变数据减少共享修改，但要注意集合深层不可变与复制成本。",
+            "await foreach 和 await using 保证异步迭代与资源释放正确。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《C# GC、Span 与性能优化》时应把该要点与「GC」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「C# GC、Span 与性能优化」的核心学习目标是什么？",
+          "options": [
+            "理解代际 GC、分配热点、Span、ArrayPool 和基准测试。",
+            "用 record、with、模式匹配和不可变集合表达领域数据。",
+            "理解 IAsyncEnumerable、CancellationToken 和异步资源释放。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    }
+  ]
+}

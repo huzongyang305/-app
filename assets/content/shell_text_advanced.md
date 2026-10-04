@@ -1,0 +1,346 @@
+# 文本处理进阶：awk、sed 与正则
+
+![文本处理进阶：awk、sed 与正则](images/remaining_shell_text_advanced.webp)
+
+> 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：18 分钟
+
+## 学习目标
+
+- 能用自己的话解释「文本处理进阶：awk、sed 与正则」解决了什么问题，而不是只背术语。
+- 能说清 「awk」、「sed」、「grep」、「正则」 之间的关系，并分别举出一个例子。
+- 能把本课知识放回「Shell」的知识体系，说明它和相邻主题的边界。
+- 能完成本课练习，并用验收标准检查自己的结果。
+
+> 一句话摘要：awk 按列统计、sed 流式编辑与正则选择原则。
+
+## 前置知识
+
+- 先完成上一课《Shell 与 Docker/K8s 交互》；如果已经掌握，可以直接用本课练习自测。
+- 本课阶段：进阶。建议先掌握同一分类的基础课程，并能独立运行正文中的最小示例。
+- 开始前先复习：awk、sed、grep。
+- 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
+
+
+## 三者分工速查
+
+| 工具 | 定位 | 最适合 |
+| --- | --- | --- |
+| grep | 按行筛选 | 找包含/不包含某模式的行 |
+| sed | 流式替换与编辑 | 批量替换、按行号增删 |
+| awk | 面向字段的小语言 | 按列统计、条件聚合、格式化输出 |
+
+经验：**只筛选用 grep，只替换用 sed，要按列计算就用 awk**；能用 awk 一次完成，就别串联五个命令。
+
+## awk 速查
+
+| 需求 | 写法 |
+| --- | --- |
+| 指定分隔符 | `awk -F, '{print $3}'` |
+| 按条件过滤 | `awk '$3 > 100 {print $1}'` |
+| 求和与计数 | `awk '{sum += $2} END {print sum, NR}'` |
+| 分组统计 | `awk '{count[$1]++} END {for (k in count) print k, count[k]}'` |
+| 格式化输出 | `awk '{printf "%-10s %6.2f\n", $1, $2}'` |
+| 内置变量 | `NR` 行号、`NF` 字段数、`FS` 分隔符、`OFS` 输出分隔符 |
+| 多文件处理 | `awk 'FNR==1 {print "== " FILENAME}'` |
+
+```bash
+# 统计访问日志里每个 IP 的请求数与平均响应大小
+awk '{count[$1]++; bytes[$1] += $10}
+     END {for (ip in count) printf "%-16s %6d %10.1f\n", ip, count[ip], bytes[ip]/count[ip]}' \
+  access.log | sort -k2 -nr | head -10
+
+# 按状态码区间分类统计
+awk '{ if ($9 >= 500) server_errors++
+       else if ($9 >= 400) client_errors++
+       else ok++ }
+     END { printf "2xx/3xx=%d 4xx=%d 5xx=%d\n", ok, client_errors, server_errors }' access.log
+```
+
+## sed 速查
+
+| 需求 | 写法 |
+| --- | --- |
+| 替换首个匹配 | `sed 's/old/new/'` |
+| 替换全部 | `sed 's/old/new/g'` |
+| 按行号操作 | `sed -n '10,20p'` |
+| 删除匹配行 | `sed '/^#/d'` |
+| 原地修改（先备份） | `sed -i.bak 's/old/new/g' file` |
+| 多表达式 | `sed -e 's/a/b/' -e 's/c/d/'` |
+| 引用捕获组 | `sed -E 's/^([0-9]+)-/\1:/'` |
+
+注意：GNU sed 与 BSD/macOS sed 的 `-i` 参数不同，跨平台脚本要封装或用临时文件。
+
+## 正则速查
+
+| 写法 | 含义 |
+| --- | --- |
+| `^` `$` | 行首与行尾 |
+| `.` | 任意单字符 |
+| `*` `+` `?` | 重复零次以上、一次以上、零或一次 |
+| `[abc]` `[^abc]` | 字符集合与取反 |
+| `\b` | 词边界 |
+| `(a\|b)` | 分组与或（ERE） |
+| `[[:digit:]]` | POSIX 字符类，兼容性更好 |
+
+建议：纯字符串搜索用 `grep -F`（关闭正则），避免 `*`、`.` 等被当元字符。
+
+## 常见错误对照表
+
+| 容易踩的做法 | 实际现象 | 原因与正确做法 |
+| --- | --- | --- |
+| awk 不指定分隔符处理 CSV | 列错位 | 用 `-F,` |
+| 用 `$0` 与 `$1` 混淆 | 输出整行而非首列 | `$0` 是整行，`$1` 是首字段 |
+| sed 直接 `-i` 不备份 | 改错无法回滚 | 用 `-i.bak` 或先 `cp` |
+| 把变量直接拼进正则 | 特殊字符导致误匹配 | 用 `grep -F` 或转义 |
+| 用 `==` 比较字符串之外的数值 | 结果不符预期 | 数值比较用 `awk '$3 > 100'` |
+| 忘记 `LC_ALL=C` | 大文件排序统计慢 | 纯 ASCII 场景可加速 |
+| 串联过多管道 | 维护困难、多次遍历 | 用一个 awk 完成 |
+| 对二进制文件跑文本工具 | 输出乱码 | 先 `file` 判断类型 |
+
+## 自测清单
+
+- [ ] 能按需求选 grep、sed 或 awk。
+- [ ] 会用 awk 做分组统计与格式化输出。
+- [ ] 知道 `NR`、`NF`、`FNR`、`FS` 等内置变量的含义。
+- [ ] sed 原地修改前先备份，并注意 GNU 与 BSD 差异。
+- [ ] 纯字符串搜索使用 `grep -F`。
+
+<!-- appendix:v3 -->
+
+## 零基础详解：高级文本处理工具箱
+
+### 一句话说清它是什么
+
+除了管道三剑客，Linux 还有一批「专治某类文本问题」的小工具。
+认清每个工具的强项，就能用一条管道解决过去要写脚本的活。
+
+### 工具定位表
+
+| 工具 | 专治 | 典型用法 |
+| --- | --- | --- |
+| `cut` | 按固定分隔符取列 | `cut -d: -f1` |
+| `paste` | 把多个文件按行并排 | `paste a.txt b.txt` |
+| `tr` | 字符替换与删除 | `tr 'a-z' 'A-Z'` |
+| `sort` | 排序与去重 | `sort -u -k2,2n` |
+| `uniq` | 相邻去重与计数 | `uniq -c` |
+| `comm` | 比较两个已排序文件 | `comm -12 a b` |
+| `diff` | 比较内容差异 | `diff -u a b` |
+| `wc` | 统计行/词/字符 | `wc -l` |
+| `split` | 大文件切分 | `split -l 1000 big.txt part_` |
+| `sed` | 流式替换与提取 | `sed -n '10,20p'` |
+| `awk` | 按列计算与格式化 | `awk -F, '{sum+=$3} END{print sum}'` |
+
+### 一行一例
+
+```bash
+# 取第 1 与第 3 列（以逗号分隔）
+cut -d, -f1,3 data.csv
+
+# 大小写转换与删除空行
+tr 'a-z' 'A-Z' < input.txt
+tr -d '\r' < windows.txt > unix.txt        # 去掉 Windows 换行符
+
+# 按第 2 列数字排序，去重后取前 10
+sort -k2,2n data.txt | uniq | head -n 10
+
+# 只保留两个文件共有的行
+comm -12 <(sort a.txt) <(sort b.txt)
+
+# 生成带行号的差异补丁
+diff -u old.txt new.txt > change.patch
+
+# 统计目录下各扩展名的数量
+find . -type f | sed 's/.*\.//' | sort | uniq -c | sort -rn
+
+# 按列求和并格式化输出
+awk -F, 'NR>1 {sum += $3; count++} END {printf "共 %d 条，合计 %.2f\n", count, sum}' sales.csv
+```
+
+### 正则的三档强度
+
+| 写法 | 支持 | 说明 |
+| --- | --- | --- |
+| `grep` | 基本正则 | `+`、`?` 要转义 |
+| `grep -E` | 扩展正则 | 常用写法，推荐 |
+| `grep -P` | Perl 正则 | 支持 `\d`、`\w`、环视 |
+| `sed -E` | 扩展正则 | 替换时更易读 |
+
+```bash
+grep -E '^(ERROR|WARN)' app.log
+grep -P '(?<=user_id=)\d+' app.log        # 环视提取，GNU grep 支持
+sed -E 's/([0-9]{4})-([0-9]{2})-([0-9]{2})/\3\/\2\/\1/' dates.txt
+```
+
+### awk 的三个必会块
+
+```awk
+BEGIN   { FS=","; print "开始统计" }      # 处理前执行一次
+        { sum += $3; count++ }             # 每一行执行
+END     { printf "平均 %.2f\n", sum / count }   # 处理后执行一次
+```
+
+```bash
+# 按第一列分组求和
+awk -F, '{sum[$1] += $3} END {for (k in sum) print k, sum[k]}' sales.csv
+
+# 只处理匹配的行
+awk -F, '$1 == "2026-10" {print $2, $3}' sales.csv
+
+# 过滤掉表头与空行
+awk -F, 'NR > 1 && NF > 0' data.csv
+```
+
+### 处理大文件的原则
+
+| 原则 | 原因 |
+| --- | --- |
+| 用流式工具（sed、awk） | 不用把整个文件读进内存 |
+| 避免多次遍历 | 一次 awk 能做完就别串五个命令 |
+| 善用 `LC_ALL=C` | 按字节比较比按语言环境快很多 |
+| 排序大文件加 `-S` | 提高排序使用的内存 |
+| 先 `head` 验证管道 | 避免跑完才发现格式错 |
+
+```bash
+LC_ALL=C sort -S 2G -T /data/tmp big.txt > sorted.txt
+```
+
+### 新手最容易踩的八个坑
+
+| 坑 | 现象 | 正确做法 |
+| --- | --- | --- |
+| 用 `cut` 处理多空格分隔 | 取不到正确列 | 改用 `awk '{print $3}'` |
+| `uniq` 前不排序 | 结果偏小 | 先 `sort` |
+| 在 `sed` 里用 `\d` | 不生效 | 用 `[0-9]` 或 `sed -E` |
+| 处理 Windows 换行 | 出现 `\r` 导致匹配失败 | `tr -d '\r'` 或 `dos2unix` |
+| 忘记引号包正则 | shell 先把 `*` 展开 | 正则一律加单引号 |
+| 大文件用 `sort` 未指定临时目录 | 临时空间不足 | 加 `-T` 指定目录 |
+| 直接改源文件 | 出错无法回滚 | 先输出到临时文件再 `mv` |
+| 忽略语言环境影响排序 | 结果与预期不同 | 需要字节序时设 `LC_ALL=C` |
+
+### 手把手练习：分析访问日志
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+readonly LOG="${1:-access.log}"
+
+echo "=== 总览 ==="
+awk 'END {print "总请求数:", NR}' "$LOG"
+
+echo "=== 状态码分布 ==="
+awk '{codes[$9]++} END {for (c in codes) printf "%s %d\n", c, codes[c]}' "$LOG" \
+  | sort -k2,2nr
+
+echo "=== 最多访问的 5 个路径 ==="
+awk '{paths[$7]++} END {for (p in paths) print paths[p], p}' "$LOG" \
+  | sort -rn | head -n 5
+
+echo "=== 传输量前 3 的 IP（按字节）==="
+awk '{bytes[$1] += $10} END {for (ip in bytes) print bytes[ip], ip}' "$LOG" \
+  | sort -rn | head -n 3
+
+echo "=== 5xx 错误的时间分布（按小时）==="
+awk '$9 ~ /^5/ {gsub(/\[/, "", $4); split($4, t, ":"); hours[t[2]]++}
+     END {for (h in hours) printf "%s 时: %d\n", h, hours[h]}' "$LOG" | sort
+```
+
+### 学完自测
+
+- [ ] 能说出 cut 与 awk 在取列上的取舍。
+- [ ] 知道 `grep`、`grep -E`、`grep -P` 的区别。
+- [ ] 能说出 awk 的 BEGIN、主体、END 三块执行时机。
+- [ ] 知道处理 Windows 换行要先做什么。
+- [ ] 能说出大文件处理的两条性能原则。
+
+## 动手练习
+
+<!-- practice-diversified:v1 -->
+
+> 本课练习重点：围绕「awk、sed、grep」完成复述、实验和交付，每个结果都要能被别人检查。
+
+先加严格模式，再在临时目录验证成功与失败路径，最后补回滚。
+
+### 练习 1：建立心智模型（10 分钟）
+
+合上教程，用 3～5 句话回答：
+
+1. 「文本处理进阶：awk、sed 与正则」解决了什么问题？
+2. 如果没有它，会出现什么具体后果？
+3. 它和「sed」是什么关系？
+
+**验收标准**：至少出现一个本课关键词，并写出一个反例、边界条件或失效场景。
+
+### 练习 2：做一次可控实验（20 分钟）
+
+从正文中选一个最小示例，完成以下操作：
+
+1. 先预测修改一个参数、输入或步骤后的结果。
+2. 再实际执行或逐步推演，记录真实结果。
+3. 如果结果与预测不同，写出差异原因。
+
+**验收标准**：留下「原例 → 改动 → 预测 → 结果 → 原因」五步记录。
+
+### 练习 3：交付一个小结果（30 分钟）
+
+写一个带 `set -euo pipefail` 的脚本，并用临时目录验证成功与失败路径。
+
+任务要求：
+
+- 结果必须能被别人检查，不能只写“我已经理解了”。
+- 至少覆盖「awk」和「sed」两个关键词。
+- 写出 1 个仍然不确定的问题，以及下一步如何验证。
+
+> 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
+
+## 本课小结
+
+- 核心问题：「文本处理进阶：awk、sed 与正则」不是孤立术语，而是在「Shell」中解决一类具体问题。
+- 关键关系：先分清「awk」与「sed」的职责，再理解「grep」的适用边界。
+- 判断标准：能解释正常场景、边界条件和失败场景，才算真正掌握。
+- 下一步：完成练习后，用自己的话写下 3 条要点，再去做本课测验。
+
+<!-- scaffold:v1 -->
+
+<!-- p2-enrichment:v1 -->
+
+## English Overview
+
+**Title:** Advanced Text Processing
+
+**Summary:** awk field processing, sed editing and regex choices.
+
+**Category:** Shell  
+**Level:** 进阶  
+**Key terms:** awk, sed, grep, 正则, 文本处理, 日志分析
+
+> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
+
+## 内容元数据
+
+- 内容版本：v2.0
+- 最后更新：2026-10-03
+- 学习阶段：进阶
+- 适用环境：Bash 5 / POSIX Shell
+- 内容来源：内置结构化课程与工程实践整理
+- 相关主题：awk、sed、grep、正则、文本处理、日志分析
+- 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
+
+<!-- p2-references:v1 -->
+
+## 参考资料与复核
+
+- 最后复核：2026-10-04
+- 下次复核：2027-04-04
+- 复核范围：版本兼容、API 行为、安全建议与工程实践
+- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+
+| 参考资料 | 本课用途 |
+| --- | --- |
+| [GNU Bash Manual](https://www.gnu.org/software/bash/manual/) | Bash 语法与行为 |
+| [POSIX Shell](https://pubs.opengroup.org/onlinepubs/9799919799/) | 可移植 Shell 标准 |
+
+> 本课主题：awk 按列统计、sed 流式编辑与正则选择原则。
+
+> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+

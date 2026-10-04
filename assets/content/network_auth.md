@@ -1,0 +1,273 @@
+# 认证与授权
+
+![认证与授权](images/remaining_auth_oauth.webp)
+
+> 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：15 分钟
+
+## 学习目标
+
+- 能用自己的话解释「认证与授权」解决了什么问题，而不是只背术语。
+- 能说清 「认证」、「授权」、「JWT」、「OAuth2」 之间的关系，并分别举出一个例子。
+- 能把本课知识放回「网络」的知识体系，说明它和相邻主题的边界。
+- 能完成本课练习，并用验收标准检查自己的结果。
+
+> 一句话摘要：Session/JWT/OAuth2 对比、声明校验与权限模型。
+
+## 前置知识
+
+- 先完成上一课《实战：抓包分析一次真实请求》；如果已经掌握，可以直接用本课练习自测。
+- 本课阶段：高级。建议具备同一方向的完整基础，能阅读较长的代码、配置或系统设计说明。
+- 开始前先复习：认证、授权、JWT。
+- 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
+
+
+## 两个概念先分清
+
+**认证（Authentication）**回答"你是谁"；**授权（Authorization）**回答"你能做什么"。二者常被混为一谈，但实现与故障排查完全不同：401 是没通过认证，403 是已认证但无权限。
+
+## 会话方案对比
+
+| 方案 | 存储 | 优点 | 缺点 |
+| --- | --- | --- | --- |
+| Session + Cookie | 服务端存会话 | 可即时失效、实现简单 | 多实例需共享存储（Redis） |
+| JWT | 客户端存令牌 | 无状态、易水平扩展 | 无法即时撤销、令牌膨胀 |
+| OAuth2 / OIDC | 授权服务器 | 标准协议、支持第三方登录 | 流程复杂，需正确校验 |
+
+实践建议：**同为自有系统，Session + Redis 更简单可靠**；需要跨服务无状态或对外提供 API 时用 JWT，并把有效期设短（如 15 分钟）配刷新令牌。
+
+## JWT 的正确用法
+
+三段式：header.payload.signature。要点：① 必须校验签名与算法（拒绝 `alg: none`）；② 校验 exp/nbf/iss/aud 四个声明；③ 载荷只放非敏感信息（任何人都能解码）；④ 用密钥轮换（kid）支持平滑换钥；⑤ 泄露后无法撤销，因此要配合短期有效 + 黑名单/版本号机制。
+
+## OAuth2 四种授权模式
+
+| 模式 | 适用 | 注意 |
+| --- | --- | --- |
+| 授权码 + PKCE | 前端与移动端（推荐） | 必须用 PKCE，禁止隐式模式 |
+| 客户端凭证 | 服务间调用 | 只代表应用身份，无用户上下文 |
+| 密码模式 | 遗留系统 | 已被标准弃用，新项目不要用 |
+| 设备码 | 电视等无输入设备 | 用户在另一设备确认 |
+
+## 权限模型与落地
+
+| 模型 | 说明 | 适用 |
+| --- | --- | --- |
+| RBAC | 用户 → 角色 → 权限 | 绝大多数后台系统 |
+| ABAC | 按属性（部门、时间、资源标签）动态判定 | 复杂合规要求 |
+| ReBAC | 按关系图判定（如"文档的协作者"） | 协作类产品 |
+
+落地要点：**每次请求都在服务端鉴权**（不能只靠前端隐藏按钮）；资源级校验必须带 owner 条件（防水平越权）；权限变更后要有生效机制（Session 方案可即时失效，JWT 需配合版本号）。
+
+## 本课小结
+认证与授权的核心是**分清身份与权限、选对令牌形态、并在每次请求上做服务端校验**；401/403 的区分、JWT 的四项声明校验、资源级 owner 检查是三个最容易出问题的点。
+
+<!-- appendix:v1 -->
+
+## 认证与授权速查
+
+| 概念 | 含义 |
+| --- | --- |
+| 认证（AuthN） | 你是谁 |
+| 授权（AuthZ） | 你能做什么 |
+| 401 Unauthorized | 未认证或凭证失效 |
+| 403 Forbidden | 已认证但无权限 |
+| 会话 Cookie | 服务端保存状态，浏览器自动携带 |
+| Token | 客户端持有凭证，服务端校验签名 |
+| JWT | 自包含声明，注意无法主动失效 |
+
+## OAuth 2.0 授权模式速查
+
+| 模式 | 适用 | 说明 |
+| --- | --- | --- |
+| 授权码 + PKCE | 移动端、SPA、Web | 推荐默认选择 |
+| 客户端凭证 | 服务间调用 | 无用户上下文 |
+| 设备码 | 电视、CLI | 在另一设备完成授权 |
+| 隐式模式 | 已废弃 | 令牌暴露在 URL |
+| 密码模式 | 已废弃 | 直接传用户名口令 |
+
+令牌使用速查：
+
+| 令牌 | 生命周期 | 存放位置 |
+| --- | --- | --- |
+| access_token | 短（分钟级） | 内存，避免长期存储 |
+| refresh_token | 长（天到月） | 安全存储，可吊销 |
+| id_token | 短 | 前端解析用户信息（校验签名） |
+
+```python
+import base64
+import hashlib
+import hmac
+import json
+import secrets
+import time
+
+def b64url(data: bytes) -> str:
+    return base64.urlsafe_b64encode(data).rstrip(b"=").decode()
+
+
+def create_jwt(payload: dict, secret: bytes) -> str:
+    """极简 JWT 生成（HS256）：生产请用成熟库。"""
+    header = {"alg": "HS256", "typ": "JWT"}
+    body = {**payload, "exp": int(time.time()) + 900, "iat": int(time.time())}
+    segments = [
+        b64url(json.dumps(header, separators=(",", ":")).encode()),
+        b64url(json.dumps(body, separators=(",", ":")).encode()),
+    ]
+    signing_input = ".".join(segments).encode()
+    signature = hmac.new(secret, signing_input, hashlib.sha256).digest()
+    return ".".join(segments + [b64url(signature)])
+
+
+def verify_jwt(token: str, secret: bytes, issuer: str) -> dict:
+    """校验签名、有效期与签发者，任一不符即拒绝。"""
+    try:
+        header_b64, payload_b64, signature_b64 = token.split(".")
+    except ValueError as exc:
+        raise ValueError("令牌格式错误") from exc
+
+    signing_input = f"{header_b64}.{payload_b64}".encode()
+    expected = b64url(hmac.new(secret, signing_input, hashlib.sha256).digest())
+    if not hmac.compare_digest(expected, signature_b64):
+        raise ValueError("签名校验失败")
+
+    payload = json.loads(base64.urlsafe_b64decode(payload_b64 + "=="))
+    if payload.get("exp", 0) < time.time():
+        raise ValueError("令牌已过期")
+    if payload.get("iss") != issuer:
+        raise ValueError("签发者不匹配")
+    if "aud" not in payload:
+        raise ValueError("缺少受众声明")
+    return payload
+
+
+def new_pkce_pair() -> tuple[str, str]:
+    """PKCE：客户端生成 code_verifier 与对应的 challenge。"""
+    verifier = secrets.token_urlsafe(64)
+    challenge = b64url(hashlib.sha256(verifier.encode()).digest())
+    return verifier, challenge
+
+
+secret_key = b"demo-secret"
+token = create_jwt({"sub": "user-1", "iss": "https://auth.example.com", "aud": "api"}, secret_key)
+print(verify_jwt(token, secret_key, "https://auth.example.com")["sub"])
+print(new_pkce_pair()[1][:16])
+```
+
+## 权限模型速查
+
+| 模型 | 结构 | 适用 |
+| --- | --- | --- |
+| RBAC | 用户到角色到权限 | 大多数管理系统 |
+| ABAC | 基于属性（部门、时间、地点） | 细粒度策略 |
+| ReBAC | 基于关系（Google Zanzibar） | 文档与组织共享 |
+| ACL | 每资源一张访问列表 | 简单共享场景 |
+
+越权防护三层：**资源归属校验 + 角色权限校验 + 数据层过滤**（WHERE user_id = 当前用户）。
+
+## 常见错误对照表
+
+| 容易踩的做法 | 实际现象 | 原因与正确做法 |
+| --- | --- | --- |
+| 不校验 JWT 的 exp 与 aud | 过期或被错用的令牌有效 | 校验签名、exp、iss、aud 全部声明 |
+| 用 JWT 存敏感数据 | 信息泄漏 | JWT 只含必要标识，敏感数据放服务端 |
+| 只校验登录不校验归属 | 水平越权 | 每次访问校验资源归属 |
+| access_token 有效期过长 | 泄漏影响面大 | 短过期 + refresh_token 轮换 |
+| refresh_token 不可吊销 | 被盗后长期可用 | 支持吊销与轮换，检测重放 |
+| 令牌放 localStorage | XSS 可窃取 | 优先 HttpOnly Cookie 或内存 |
+| 到处用隐式模式 | 令牌出现在 URL | 用授权码 + PKCE |
+| 密码明文或弱哈希 | 拖库即失守 | Argon2id + 随机盐 |
+| 登录后不重置会话 ID | 会话固定攻击 | 登录成功后重新生成会话 |
+| 权限判断散落各处 | 容易漏判 | 集中式鉴权中间件 + 数据层过滤 |
+
+## 自测清单
+
+- [ ] 分得清 401 与 403 的使用场景。
+- [ ] 令牌校验覆盖签名、exp、iss、aud。
+- [ ] 移动端与 SPA 使用授权码 + PKCE。
+- [ ] 所有资源访问都校验归属（防水平越权）。
+- [ ] 会话登录后重置，令牌可吊销并可轮换。
+
+## 动手练习
+
+<!-- practice-diversified:v1 -->
+
+> 本课练习重点：围绕「认证、授权、JWT」完成复述、实验和交付，每个结果都要能被别人检查。
+
+先抓一次真实请求或画出协议交互，再注入延迟或丢包，最后解释每层变化。
+
+### 练习 1：建立心智模型（10 分钟）
+
+合上教程，用 3～5 句话回答：
+
+1. 「认证与授权」解决了什么问题？
+2. 如果没有它，会出现什么具体后果？
+3. 它和「授权」是什么关系？
+
+**验收标准**：至少出现一个本课关键词，并写出一个反例、边界条件或失效场景。
+
+### 练习 2：做一次可控实验（20 分钟）
+
+从正文中选一个最小示例，完成以下操作：
+
+1. 先预测修改一个参数、输入或步骤后的结果。
+2. 再实际执行或逐步推演，记录真实结果。
+3. 如果结果与预测不同，写出差异原因。
+
+**验收标准**：留下「原例 → 改动 → 预测 → 结果 → 原因」五步记录。
+
+### 练习 3：交付一个小结果（30 分钟）
+
+画出一张报文或时序图，标出每一跳的地址、协议、状态和可能失败点。
+
+任务要求：
+
+- 结果必须能被别人检查，不能只写“我已经理解了”。
+- 至少覆盖「认证」和「授权」两个关键词。
+- 写出 1 个仍然不确定的问题，以及下一步如何验证。
+
+> 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
+
+<!-- scaffold:v1 -->
+
+<!-- p2-enrichment:v1 -->
+
+## English Overview
+
+**Title:** Authentication & Authorization
+
+**Summary:** Session/JWT/OAuth2, claim validation and permission models.
+
+**Category:** Networking  
+**Level:** 高级  
+**Key terms:** 认证, 授权, JWT, OAuth2, RBAC
+
+> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
+
+## 内容元数据
+
+- 内容版本：v2.0
+- 最后更新：2026-10-03
+- 学习阶段：高级
+- 适用环境：TCP/IP、HTTP/2、HTTP/3 与现代网络栈
+- 内容来源：内置结构化课程与工程实践整理
+- 相关主题：认证、授权、JWT、OAuth2、RBAC
+- 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
+
+<!-- p2-references:v1 -->
+
+## 参考资料与复核
+
+- 最后复核：2026-10-04
+- 下次复核：2027-04-04
+- 复核范围：版本兼容、API 行为、安全建议与工程实践
+- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+
+| 参考资料 | 本课用途 |
+| --- | --- |
+| [RFC Editor](https://www.rfc-editor.org/) | 互联网协议标准 |
+| [MDN HTTP](https://developer.mozilla.org/docs/Web/HTTP) | HTTP 语义与浏览器行为 |
+
+> 本课主题：Session/JWT/OAuth2 对比、声明校验与权限模型。
+
+> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+

@@ -1,0 +1,289 @@
+# 故障复盘与事故管理
+
+![故障复盘与事故管理](images/category_se_postmortem.webp)
+
+> 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟
+
+## 学习目标
+
+- 能用自己的话解释「故障复盘与事故管理」解决了什么问题，而不是只背术语。
+- 能说清 「复盘」、「事故管理」、「Postmortem」、「时间线」 之间的关系，并分别举出一个例子。
+- 能把本课知识放回「软件工程」的知识体系，说明它和相邻主题的边界。
+- 能完成本课练习，并用验收标准检查自己的结果。
+
+> 一句话摘要：事故分级、时间线记录、多因归因与改进项闭环。
+
+## 前置知识
+
+- 先完成上一课《技术写作与文档工程》；如果已经掌握，可以直接用本课练习自测。
+- 本课阶段：进阶。建议先掌握同一分类的基础课程，并能独立运行正文中的最小示例。
+- 开始前先复习：复盘、事故管理、Postmortem。
+- 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
+
+
+## 事故分级速查
+
+| 级别 | 影响范围 | 响应要求 | 复盘要求 |
+| --- | --- | --- | --- |
+| P0 | 全站不可用或数据丢失 | 立即全员响应 | 必须复盘，24 小时内出初稿 |
+| P1 | 核心功能大面积受影响 | 15 分钟内响应 | 必须复盘 |
+| P2 | 部分用户受影响 | 1 小时内响应 | 视情况复盘 |
+| P3 | 体验下降、无实质损失 | 工作时间处理 | 记录即可 |
+
+分级的目的是让响应强度与影响匹配，避免小事惊动全员、大事无人牵头。
+
+## 复盘原则速查
+
+| 原则 | 说明 |
+| --- | --- |
+| 对事不对人 | 目标是改进系统，不是追责个人 |
+| 时间线优先 | 先把事实按时间排出来，再讨论原因 |
+| 多因归因 | 事故通常是多个条件叠加，避免单一「根本原因」 |
+| 关注系统 | 问「为什么这个错误能造成这么大影响」 |
+| 可验证结论 | 改进项必须可检查、有负责人与期限 |
+| 公开透明 | 报告团队可见，避免同类问题重复发生 |
+
+## 时间线模板
+
+```text
+T0    (10:02) 变更发布，监控无异常
+T0+3m (10:05) 错误率从 0.1% 升至 4%，告警触发
+T0+5m (10:07) 值班同学确认告警并开始排查
+T0+12m(10:14) 定位到新版本引入的缓存键冲突
+T0+15m(10:17) 决定回滚
+T0+20m(10:22) 回滚完成，错误率回落到 0.2%
+T0+30m(10:32) 确认数据一致性，事故结束
+```
+
+时间线要记录**决策点**（为什么回滚而不是修复）与**信息缺口**（哪段时间没有监控覆盖）。
+
+```python
+from dataclasses import dataclass, field
+from datetime import datetime, timedelta
+
+@dataclass
+class TimelineEvent:
+    offset_minutes: int
+    description: str
+    is_decision: bool = False
+
+@dataclass
+class ActionItem:
+    description: str
+    owner: str
+    due_days: int
+    category: str                # detect / mitigate / prevent
+
+    def priority(self) -> str:
+        return {"detect": "P0", "mitigate": "P1", "prevent": "P2"}.get(self.category, "P2")
+
+@dataclass
+class Postmortem:
+    title: str
+    severity: str
+    started_at: datetime
+    duration_minutes: int = 0
+    events: list = field(default_factory=list)
+    actions: list = field(default_factory=list)
+
+    def add_event(self, offset: int, description: str, is_decision: bool = False) -> None:
+        self.events.append(TimelineEvent(offset, description, is_decision))
+
+    def add_action(self, description: str, owner: str, due_days: int, category: str) -> None:
+        self.actions.append(ActionItem(description, owner, due_days, category))
+
+    def detector_lag(self) -> int:
+        """发现时延：从事故发生到告警的时间，衡量监控能力。"""
+        for event in sorted(self.events, key=lambda e: e.offset_minutes):
+            if "告警" in event.description or "发现" in event.description:
+                return event.offset_minutes
+        return self.duration_minutes
+
+    def quality_check(self) -> list:
+        """复盘质量自检：没有改进项的复盘等于没做。"""
+        problems = []
+        if len(self.events) < 3:
+            problems.append("时间线过于简略")
+        if not any(event.is_decision for event in self.events):
+            problems.append("未记录关键决策点")
+        if not self.actions:
+            problems.append("缺少改进项")
+        if not any(action.category == "detect" for action in self.actions):
+            problems.append("未改进发现能力（监控与告警）")
+        return problems
+
+report = Postmortem("缓存键冲突导致错误率上升", "P1", datetime.now(), duration_minutes=30)
+report.add_event(3, "错误率升高，告警触发")
+report.add_event(12, "定位到缓存键冲突", is_decision=True)
+report.add_event(20, "回滚完成，指标恢复")
+report.add_action("缓存键加入环境前缀", "张三", 3, "prevent")
+print(report.detector_lag(), report.quality_check())
+```
+
+## 改进项分类速查
+
+| 类别 | 目标 | 示例 |
+| --- | --- | --- |
+| 发现（detect） | 更早发现 | 增加关键路径监控、缩短告警延迟 |
+| 缓解（mitigate） | 更快恢复 | 一键回滚、限流开关、降级预案 |
+| 预防（prevent） | 降低发生概率 | 修复根因、增加测试与校验 |
+
+健康的改进结构应三者都有；只做「预防」而忽略发现与缓解，意味着下次仍会长时间不可用。
+
+## 常见错误对照表
+
+| 容易踩的做法 | 实际现象 | 原因与正确做法 |
+| --- | --- | --- |
+| 复盘变成追责会 | 信息隐瞒、无人敢报 | 对事不对人，聚焦系统改进 |
+| 只写一个「根本原因」 | 同类问题再次发生 | 多因归因，检查为何没被挡住 |
+| 改进项没有负责人与期限 | 永远是待办 | 每条改进项有 owner 与截止时间 |
+| 只做预防不做发现与缓解 | 下次仍然长时间失血 | 三类改进都要有 |
+| 事故期间不记录时间点 | 复盘靠回忆、失真 | 值班时同步记录时间线 |
+| 复盘报告不公开 | 其他团队重复踩坑 | 团队可见并归档 |
+| 恢复后立刻关闭跟踪 | 改进项烂尾 | 定期回顾改进项完成率 |
+
+## 自测清单
+
+- [ ] 事故分级明确，响应强度与影响匹配。
+- [ ] 复盘报告含时间线、决策点与信息缺口。
+- [ ] 改进项覆盖发现、缓解、预防三类。
+- [ ] 每条改进项有负责人与期限并可跟踪。
+- [ ] 复盘对事不对人，报告团队可见。
+
+## 动手练习
+
+<!-- practice-diversified:v1 -->
+
+> 本课练习重点：围绕「复盘、事故管理、Postmortem」完成复述、实验和交付，每个结果都要能被别人检查。
+
+先写验收标准，再做最小交付，最后用评审、测试或复盘验证。
+
+### 练习 1：建立心智模型（10 分钟）
+
+合上教程，用 3～5 句话回答：
+
+1. 「故障复盘与事故管理」解决了什么问题？
+2. 如果没有它，会出现什么具体后果？
+3. 它和「事故管理」是什么关系？
+
+**验收标准**：至少出现一个本课关键词，并写出一个反例、边界条件或失效场景。
+
+### 练习 2：做一次可控实验（20 分钟）
+
+从正文中选一个最小示例，完成以下操作：
+
+1. 先预测修改一个参数、输入或步骤后的结果。
+2. 再实际执行或逐步推演，记录真实结果。
+3. 如果结果与预测不同，写出差异原因。
+
+**验收标准**：留下「原例 → 改动 → 预测 → 结果 → 原因」五步记录。
+
+### 练习 3：交付一个小结果（30 分钟）
+
+为一个真实小功能写一页设计、检查表或评审记录，并让同伴能照着执行。
+
+任务要求：
+
+- 结果必须能被别人检查，不能只写“我已经理解了”。
+- 至少覆盖「复盘」和「事故管理」两个关键词。
+- 写出 1 个仍然不确定的问题，以及下一步如何验证。
+
+> 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
+
+## 本课小结
+
+- 核心问题：「故障复盘与事故管理」不是孤立术语，而是在「软件工程」中解决一类具体问题。
+- 关键关系：先分清「复盘」与「事故管理」的职责，再理解「Postmortem」的适用边界。
+- 判断标准：能解释正常场景、边界条件和失败场景，才算真正掌握。
+- 下一步：完成练习后，用自己的话写下 3 条要点，再去做本课测验。
+
+<!-- scaffold:v1 -->
+
+<!-- p2-enrichment:v1 -->
+
+## English Overview
+
+**Title:** Postmortem & Incident Management
+
+**Summary:** Severity levels, timelines, blameless analysis and action items.
+
+**Category:** Software Engineering  
+**Level:** 进阶  
+**Key terms:** 复盘, 事故管理, Postmortem, 时间线, 改进项, SLO
+
+> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
+
+## 内容元数据
+
+- 内容版本：v2.0
+- 最后更新：2026-10-03
+- 学习阶段：进阶
+- 适用环境：通用软件工程实践
+- 内容来源：内置结构化课程与工程实践整理
+- 相关主题：复盘、事故管理、Postmortem、时间线、改进项、SLO
+- 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
+
+<!-- top50-rewrite:v1 -->
+
+## 课程专属精读：故障复盘与事故管理
+
+### 一、知识地图
+
+- **事故分级速查**：理解它的定义、输入、输出和失败边界。
+- **复盘原则速查**：理解它的定义、输入、输出和失败边界。
+- **时间线模板**：T0    (10:02) 变更发布，监控无异常
+- **改进项分类速查**：理解它的定义、输入、输出和失败边界。
+- **常见错误对照表**：理解它的定义、输入、输出和失败边界。
+- **自测清单**：理解它的定义、输入、输出和失败边界。
+- **练习 1：建立心智模型（10 分钟）**：合上教程，用 3～5 句话回答：
+- **练习 2：做一次可控实验（20 分钟）**：从正文中选一个最小示例，完成以下操作：
+
+### 二、机制与验证
+
+| 主题 | 需要回答的问题 | 验证方式 |
+| --- | --- | --- |
+| 事故分级速查 | 它解决什么问题，输入和输出是什么？ | 最小示例、边界输入、日志或指标 |
+| 复盘原则速查 | 它解决什么问题，输入和输出是什么？ | 最小示例、边界输入、日志或指标 |
+| 时间线模板 | 它解决什么问题，输入和输出是什么？ | 最小示例、边界输入、日志或指标 |
+| 改进项分类速查 | 它解决什么问题，输入和输出是什么？ | 最小示例、边界输入、日志或指标 |
+| 常见错误对照表 | 它解决什么问题，输入和输出是什么？ | 最小示例、边界输入、日志或指标 |
+| 自测清单 | 它解决什么问题，输入和输出是什么？ | 最小示例、边界输入、日志或指标 |
+| 练习 1：建立心智模型（10 分钟） | 它解决什么问题，输入和输出是什么？ | 最小示例、边界输入、日志或指标 |
+| 练习 2：做一次可控实验（20 分钟） | 它解决什么问题，输入和输出是什么？ | 最小示例、边界输入、日志或指标 |
+
+### 三、专属检查问题
+
+1. 事故分级速查 与相邻主题的边界是什么？
+2. 复盘原则速查 与相邻主题的边界是什么？
+3. 时间线模板 与相邻主题的边界是什么？
+4. 改进项分类速查 与相邻主题的边界是什么？
+5. 常见错误对照表 与相邻主题的边界是什么？
+6. 自测清单 与相邻主题的边界是什么？
+7. 练习 1：建立心智模型（10 分钟） 与相邻主题的边界是什么？
+8. 练习 2：做一次可控实验（20 分钟） 与相邻主题的边界是什么？
+
+### 四、故障排查
+
+1. 固定输入和环境，确认问题能复现。
+2. 找到第一个异常状态，不从最终错误倒猜。
+3. 只改变一个变量，记录预测和真实结果。
+4. 修复后补边界、失败和重复执行测试。
+
+<!-- p2-references:v1 -->
+
+## 参考资料与复核
+
+- 最后复核：2026-10-04
+- 下次复核：2027-04-04
+- 复核范围：版本兼容、API 行为、安全建议与工程实践
+- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+
+| 参考资料 | 本课用途 |
+| --- | --- |
+| [Martin Fowler](https://martinfowler.com/) | 架构、重构与持续交付 |
+| [Google SWE Book Resources](https://abseil.io/resources/swe-book) | 代码评审与工程规范 |
+
+> 本课主题：事故分级、时间线记录、多因归因与改进项闭环。
+
+> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+

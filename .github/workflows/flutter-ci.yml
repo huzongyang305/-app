@@ -1,0 +1,55 @@
+name: Flutter CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Static analysis
+        run: flutter analyze --no-pub
+      - name: Unit, content and visual regression tests
+        run: flutter test --no-pub
+      - name: Brand asset checks
+        run: dart tool/check_brand_assets.dart
+      - name: Setup Chrome for sandbox verification
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+      - name: Verify offline sandbox harness
+        env:
+          CHROME_EXECUTABLE: chrome
+        run: dart tool/verify_sandbox_harness.dart
+      - name: Build release APK
+        # 不能用 --no-pub：插件注册文件需要按 release 模式重新生成，
+        # 否则会残留 debug 模式的 integration_test 插件引用导致编译失败。
+        run: flutter build apk --release
+      - name: Enforce release APK size budget
+        run: dart tool/check_apk_size.dart build/app/outputs/flutter-apk/app-release.apk 90
+      - name: Upload visual diff artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-regression-diffs
+          path: |
+            test/failures/**
+            **/*.diff.png
+          if-no-files-found: ignore
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-learn-release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error

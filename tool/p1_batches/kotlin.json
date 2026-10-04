@@ -1,0 +1,573 @@
+{
+  "category": "kotlin",
+  "lessons": [
+    {
+      "id": "kotlin_basics",
+      "title": {
+        "zh": "Kotlin 基础与空安全",
+        "en": "Kotlin Basics and Null Safety"
+      },
+      "summary": {
+        "zh": "掌握 val/var、类型推断、可空类型和安全调用。",
+        "en": "Learn val/var, type inference, nullable types and safe calls."
+      },
+      "file": "assets/content/kotlin_basics.md",
+      "minutes": 20,
+      "keywords": [
+        "Kotlin",
+        "空安全",
+        "val",
+        "类型推断"
+      ],
+      "difficulty": "基础",
+      "order": 1,
+      "quiz": [
+        {
+          "question": "关于「val 声明只读引用 var 可重新…」，下列说法正确的是？",
+          "options": [
+            "val 声明只读引用，var 可重新赋值，集合内容是否可变由具体类型决定。",
+            "默认参数和命名参数能减少重载，扩展函数让外部类型获得新能力但不修改原类。",
+            "数据类自动生成 equals、hashCode、toString 和 copy，适合承载值语义。",
+            "集合操作链默认立即求值，每一步可能创建中间集合。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Kotlin 基础与空安全》时应把该要点与「Kotlin」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「可空类型在编译期强制处理 ? 、?:…」，下列说法正确的是？",
+          "options": [
+            "可空类型在编译期强制处理，?.、?: 和 let 是常用安全操作。",
+            "高阶函数接收或返回函数，inline 能减少 Lambda 对象和调用开销。",
+            "密封类限制子类型集合，配合 when 可以做穷尽分支检查。",
+            "Sequence 采用惰性求值，适合长链和大数据，但小数据可能更慢。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Kotlin 基础与空安全》时应把该要点与「Kotlin」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「类型推断减少样板代码 但公开 API…」，下列说法正确的是？",
+          "options": [
+            "类型推断减少样板代码，但公开 API 仍应显式写出关键类型。",
+            "扩展函数是静态解析的，不能在运行时多态覆盖。",
+            "委托把实现交给其他对象，by lazy 和接口委托是常见用法。",
+            "Mutable 与只读接口表达不同契约，不能把只读接口误认为深度不可变。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Kotlin 基础与空安全》时应把该要点与「Kotlin」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「Kotlin 基础与空安全」的核心学习目标是什么？",
+          "options": [
+            "掌握 val/var、类型推断、可空类型和安全调用。",
+            "理解默认参数、扩展函数、高阶函数和内联。",
+            "覆盖主构造器、数据类、密封类、伴生对象和委托。",
+            "理解 List/Set/Map、操作链、序列惰性求值和性能差异。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "kotlin_functions",
+      "title": {
+        "zh": "Kotlin 函数、Lambda 与扩展",
+        "en": "Kotlin Functions, Lambdas and Extensions"
+      },
+      "summary": {
+        "zh": "理解默认参数、扩展函数、高阶函数和内联。",
+        "en": "Learn default arguments, extension functions, higher-order functions and inline."
+      },
+      "file": "assets/content/kotlin_functions.md",
+      "minutes": 22,
+      "keywords": [
+        "函数",
+        "Lambda",
+        "扩展函数",
+        "inline"
+      ],
+      "difficulty": "进阶",
+      "order": 2,
+      "quiz": [
+        {
+          "question": "关于「默认参数和命名参数能减少重载 扩展函…」，下列说法正确的是？",
+          "options": [
+            "默认参数和命名参数能减少重载，扩展函数让外部类型获得新能力但不修改原类。",
+            "val 声明只读引用，var 可重新赋值，集合内容是否可变由具体类型决定。",
+            "数据类自动生成 equals、hashCode、toString 和 copy，适合承载值语义。",
+            "集合操作链默认立即求值，每一步可能创建中间集合。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Kotlin 函数、Lambda 与扩展》时应把该要点与「函数」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「高阶函数接收或返回函数 inline…」，下列说法正确的是？",
+          "options": [
+            "高阶函数接收或返回函数，inline 能减少 Lambda 对象和调用开销。",
+            "可空类型在编译期强制处理，?.、?: 和 let 是常用安全操作。",
+            "密封类限制子类型集合，配合 when 可以做穷尽分支检查。",
+            "Sequence 采用惰性求值，适合长链和大数据，但小数据可能更慢。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Kotlin 函数、Lambda 与扩展》时应把该要点与「函数」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「扩展函数是静态解析的 不能在运行时多…」，下列说法正确的是？",
+          "options": [
+            "扩展函数是静态解析的，不能在运行时多态覆盖。",
+            "类型推断减少样板代码，但公开 API 仍应显式写出关键类型。",
+            "委托把实现交给其他对象，by lazy 和接口委托是常见用法。",
+            "Mutable 与只读接口表达不同契约，不能把只读接口误认为深度不可变。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Kotlin 函数、Lambda 与扩展》时应把该要点与「函数」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「Kotlin 函数、Lambda 与扩展」的核心学习目标是什么？",
+          "options": [
+            "理解默认参数、扩展函数、高阶函数和内联。",
+            "掌握 val/var、类型推断、可空类型和安全调用。",
+            "覆盖主构造器、数据类、密封类、伴生对象和委托。",
+            "理解 List/Set/Map、操作链、序列惰性求值和性能差异。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "kotlin_oop",
+      "title": {
+        "zh": "Kotlin 类、对象与属性",
+        "en": "Kotlin Classes, Objects and Properties"
+      },
+      "summary": {
+        "zh": "覆盖主构造器、数据类、密封类、伴生对象和委托。",
+        "en": "Cover primary constructors, data classes, sealed classes, companions and delegation."
+      },
+      "file": "assets/content/kotlin_oop.md",
+      "minutes": 23,
+      "keywords": [
+        "类",
+        "数据类",
+        "密封类",
+        "委托"
+      ],
+      "difficulty": "进阶",
+      "order": 3,
+      "quiz": [
+        {
+          "question": "关于「数据类自动生成 equals、has…」，下列说法正确的是？",
+          "options": [
+            "数据类自动生成 equals、hashCode、toString 和 copy，适合承载值语义。",
+            "val 声明只读引用，var 可重新赋值，集合内容是否可变由具体类型决定。",
+            "默认参数和命名参数能减少重载，扩展函数让外部类型获得新能力但不修改原类。",
+            "集合操作链默认立即求值，每一步可能创建中间集合。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Kotlin 类、对象与属性》时应把该要点与「类」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「密封类限制子类型集合 配合 when…」，下列说法正确的是？",
+          "options": [
+            "密封类限制子类型集合，配合 when 可以做穷尽分支检查。",
+            "可空类型在编译期强制处理，?.、?: 和 let 是常用安全操作。",
+            "高阶函数接收或返回函数，inline 能减少 Lambda 对象和调用开销。",
+            "Sequence 采用惰性求值，适合长链和大数据，但小数据可能更慢。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Kotlin 类、对象与属性》时应把该要点与「类」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「委托把实现交给其他对象 by laz…」，下列说法正确的是？",
+          "options": [
+            "委托把实现交给其他对象，by lazy 和接口委托是常见用法。",
+            "类型推断减少样板代码，但公开 API 仍应显式写出关键类型。",
+            "扩展函数是静态解析的，不能在运行时多态覆盖。",
+            "Mutable 与只读接口表达不同契约，不能把只读接口误认为深度不可变。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Kotlin 类、对象与属性》时应把该要点与「类」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「Kotlin 类、对象与属性」的核心学习目标是什么？",
+          "options": [
+            "覆盖主构造器、数据类、密封类、伴生对象和委托。",
+            "掌握 val/var、类型推断、可空类型和安全调用。",
+            "理解默认参数、扩展函数、高阶函数和内联。",
+            "理解 List/Set/Map、操作链、序列惰性求值和性能差异。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "kotlin_collections",
+      "title": {
+        "zh": "Kotlin 集合、序列与函数式操作",
+        "en": "Kotlin Collections, Sequences and Functional Operations"
+      },
+      "summary": {
+        "zh": "理解 List/Set/Map、操作链、序列惰性求值和性能差异。",
+        "en": "Learn collections, chains, lazy sequences and performance differences."
+      },
+      "file": "assets/content/kotlin_collections.md",
+      "minutes": 22,
+      "keywords": [
+        "集合",
+        "Sequence",
+        "map",
+        "惰性求值"
+      ],
+      "difficulty": "进阶",
+      "order": 4,
+      "quiz": [
+        {
+          "question": "关于「集合操作链默认立即求值 每一步可能创…」，下列说法正确的是？",
+          "options": [
+            "集合操作链默认立即求值，每一步可能创建中间集合。",
+            "val 声明只读引用，var 可重新赋值，集合内容是否可变由具体类型决定。",
+            "默认参数和命名参数能减少重载，扩展函数让外部类型获得新能力但不修改原类。",
+            "数据类自动生成 equals、hashCode、toString 和 copy，适合承载值语义。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Kotlin 集合、序列与函数式操作》时应把该要点与「集合」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「Sequence 采用惰性求值 适合…」，下列说法正确的是？",
+          "options": [
+            "Sequence 采用惰性求值，适合长链和大数据，但小数据可能更慢。",
+            "可空类型在编译期强制处理，?.、?: 和 let 是常用安全操作。",
+            "高阶函数接收或返回函数，inline 能减少 Lambda 对象和调用开销。",
+            "密封类限制子类型集合，配合 when 可以做穷尽分支检查。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Kotlin 集合、序列与函数式操作》时应把该要点与「集合」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「Mutable 与只读接口表达不同契…」，下列说法正确的是？",
+          "options": [
+            "Mutable 与只读接口表达不同契约，不能把只读接口误认为深度不可变。",
+            "类型推断减少样板代码，但公开 API 仍应显式写出关键类型。",
+            "扩展函数是静态解析的，不能在运行时多态覆盖。",
+            "委托把实现交给其他对象，by lazy 和接口委托是常见用法。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Kotlin 集合、序列与函数式操作》时应把该要点与「集合」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「Kotlin 集合、序列与函数式操作」的核心学习目标是什么？",
+          "options": [
+            "理解 List/Set/Map、操作链、序列惰性求值和性能差异。",
+            "掌握 val/var、类型推断、可空类型和安全调用。",
+            "理解默认参数、扩展函数、高阶函数和内联。",
+            "覆盖主构造器、数据类、密封类、伴生对象和委托。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "kotlin_coroutines",
+      "title": {
+        "zh": "Kotlin 协程与 Flow",
+        "en": "Kotlin Coroutines and Flow"
+      },
+      "summary": {
+        "zh": "理解挂起函数、作用域、取消、结构化并发和 Flow。",
+        "en": "Learn suspend functions, scopes, cancellation, structured concurrency and Flow."
+      },
+      "file": "assets/content/kotlin_coroutines.md",
+      "minutes": 25,
+      "keywords": [
+        "协程",
+        "suspend",
+        "Flow",
+        "取消"
+      ],
+      "difficulty": "高级",
+      "order": 5,
+      "quiz": [
+        {
+          "question": "关于「协程用挂起代替阻塞 结构化并发保证父…」，下列说法正确的是？",
+          "options": [
+            "协程用挂起代替阻塞，结构化并发保证父作用域能等待和取消子任务。",
+            "val 声明只读引用，var 可重新赋值，集合内容是否可变由具体类型决定。",
+            "默认参数和命名参数能减少重载，扩展函数让外部类型获得新能力但不修改原类。",
+            "数据类自动生成 equals、hashCode、toString 和 copy，适合承载值语义。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Kotlin 协程与 Flow》时应把该要点与「协程」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「取消是协作式的 阻塞调用和未检查循环…」，下列说法正确的是？",
+          "options": [
+            "取消是协作式的，阻塞调用和未检查循环可能忽略取消。",
+            "可空类型在编译期强制处理，?.、?: 和 let 是常用安全操作。",
+            "高阶函数接收或返回函数，inline 能减少 Lambda 对象和调用开销。",
+            "密封类限制子类型集合，配合 when 可以做穷尽分支检查。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Kotlin 协程与 Flow》时应把该要点与「协程」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「Flow 适合冷数据流 StateF…」，下列说法正确的是？",
+          "options": [
+            "Flow 适合冷数据流，StateFlow 和 SharedFlow 分别面向状态与事件广播。",
+            "类型推断减少样板代码，但公开 API 仍应显式写出关键类型。",
+            "扩展函数是静态解析的，不能在运行时多态覆盖。",
+            "委托把实现交给其他对象，by lazy 和接口委托是常见用法。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Kotlin 协程与 Flow》时应把该要点与「协程」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「Kotlin 协程与 Flow」的核心学习目标是什么？",
+          "options": [
+            "理解挂起函数、作用域、取消、结构化并发和 Flow。",
+            "掌握 val/var、类型推断、可空类型和安全调用。",
+            "理解默认参数、扩展函数、高阶函数和内联。",
+            "覆盖主构造器、数据类、密封类、伴生对象和委托。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "kotlin_android",
+      "title": {
+        "zh": "Kotlin Android 架构",
+        "en": "Kotlin Android Architecture"
+      },
+      "summary": {
+        "zh": "用 ViewModel、Repository、生命周期和依赖注入组织 Android 应用。",
+        "en": "Organize Android apps with ViewModel, Repository, lifecycle and DI."
+      },
+      "file": "assets/content/kotlin_android.md",
+      "minutes": 25,
+      "keywords": [
+        "Android",
+        "ViewModel",
+        "Repository",
+        "生命周期"
+      ],
+      "difficulty": "高级",
+      "order": 6,
+      "quiz": [
+        {
+          "question": "关于「UI 层只负责渲染和事件 业务状态放…」，下列说法正确的是？",
+          "options": [
+            "UI 层只负责渲染和事件，业务状态放在 ViewModel，数据访问放在 Repository。",
+            "val 声明只读引用，var 可重新赋值，集合内容是否可变由具体类型决定。",
+            "默认参数和命名参数能减少重载，扩展函数让外部类型获得新能力但不修改原类。",
+            "数据类自动生成 equals、hashCode、toString 和 copy，适合承载值语义。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Kotlin Android 架构》时应把该要点与「Android」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「配置变更和进程重建要求状态可保存、可…」，下列说法正确的是？",
+          "options": [
+            "配置变更和进程重建要求状态可保存、可恢复。",
+            "可空类型在编译期强制处理，?.、?: 和 let 是常用安全操作。",
+            "高阶函数接收或返回函数，inline 能减少 Lambda 对象和调用开销。",
+            "密封类限制子类型集合，配合 when 可以做穷尽分支检查。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Kotlin Android 架构》时应把该要点与「Android」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「依赖注入、协程作用域和生命周期必须匹…」，下列说法正确的是？",
+          "options": [
+            "依赖注入、协程作用域和生命周期必须匹配，避免泄漏和重复请求。",
+            "类型推断减少样板代码，但公开 API 仍应显式写出关键类型。",
+            "扩展函数是静态解析的，不能在运行时多态覆盖。",
+            "委托把实现交给其他对象，by lazy 和接口委托是常见用法。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Kotlin Android 架构》时应把该要点与「Android」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「Kotlin Android 架构」的核心学习目标是什么？",
+          "options": [
+            "用 ViewModel、Repository、生命周期和依赖注入组织 Android 应用。",
+            "掌握 val/var、类型推断、可空类型和安全调用。",
+            "理解默认参数、扩展函数、高阶函数和内联。",
+            "覆盖主构造器、数据类、密封类、伴生对象和委托。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "kotlin_testing",
+      "title": {
+        "zh": "Kotlin 测试与协程测试",
+        "en": "Kotlin Testing and Coroutine Tests"
+      },
+      "summary": {
+        "zh": "覆盖单元测试、协程测试、假对象和测试调度器。",
+        "en": "Cover unit tests, coroutine tests, fakes and test dispatchers."
+      },
+      "file": "assets/content/kotlin_testing.md",
+      "minutes": 23,
+      "keywords": [
+        "JUnit",
+        "协程测试",
+        "Fake",
+        "调度器"
+      ],
+      "difficulty": "高级",
+      "order": 7,
+      "quiz": [
+        {
+          "question": "关于「协程测试要使用 TestDispat…」，下列说法正确的是？",
+          "options": [
+            "协程测试要使用 TestDispatcher 控制虚拟时间，避免真实等待和偶发失败。",
+            "val 声明只读引用，var 可重新赋值，集合内容是否可变由具体类型决定。",
+            "默认参数和命名参数能减少重载，扩展函数让外部类型获得新能力但不修改原类。",
+            "数据类自动生成 equals、hashCode、toString 和 copy，适合承载值语义。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Kotlin 测试与协程测试》时应把该要点与「JUnit」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「优先使用 Fake 和明确接口隔离外…」，下列说法正确的是？",
+          "options": [
+            "优先使用 Fake 和明确接口隔离外部依赖，减少脆弱的 mock 链路。",
+            "可空类型在编译期强制处理，?.、?: 和 let 是常用安全操作。",
+            "高阶函数接收或返回函数，inline 能减少 Lambda 对象和调用开销。",
+            "密封类限制子类型集合，配合 when 可以做穷尽分支检查。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Kotlin 测试与协程测试》时应把该要点与「JUnit」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「测试要覆盖取消、超时和异常传播 而不…」，下列说法正确的是？",
+          "options": [
+            "测试要覆盖取消、超时和异常传播，而不只是正常返回。",
+            "类型推断减少样板代码，但公开 API 仍应显式写出关键类型。",
+            "扩展函数是静态解析的，不能在运行时多态覆盖。",
+            "委托把实现交给其他对象，by lazy 和接口委托是常见用法。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Kotlin 测试与协程测试》时应把该要点与「JUnit」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「Kotlin 测试与协程测试」的核心学习目标是什么？",
+          "options": [
+            "覆盖单元测试、协程测试、假对象和测试调度器。",
+            "掌握 val/var、类型推断、可空类型和安全调用。",
+            "理解默认参数、扩展函数、高阶函数和内联。",
+            "覆盖主构造器、数据类、密封类、伴生对象和委托。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "kotlin_project",
+      "title": {
+        "zh": "实战：Kotlin Android 客户端",
+        "en": "Project: Kotlin Android Client"
+      },
+      "summary": {
+        "zh": "实现列表、详情、网络、缓存、加载状态和错误恢复。",
+        "en": "Build list, detail, network, cache, loading and error recovery."
+      },
+      "file": "assets/content/kotlin_project.md",
+      "minutes": 130,
+      "keywords": [
+        "Android 项目",
+        "网络",
+        "缓存",
+        "状态"
+      ],
+      "difficulty": "高级",
+      "order": 8,
+      "quiz": [
+        {
+          "question": "关于「把界面状态建模为加载、成功、空、失败…」，下列说法正确的是？",
+          "options": [
+            "把界面状态建模为加载、成功、空、失败四种，避免多个布尔值互相冲突。",
+            "val 声明只读引用，var 可重新赋值，集合内容是否可变由具体类型决定。",
+            "默认参数和命名参数能减少重载，扩展函数让外部类型获得新能力但不修改原类。",
+            "数据类自动生成 equals、hashCode、toString 和 copy，适合承载值语义。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《实战：Kotlin Android 客户端》时应把该要点与「Android 项目」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「网络层要有超时、重试、缓存和错误映射…」，下列说法正确的是？",
+          "options": [
+            "网络层要有超时、重试、缓存和错误映射，UI 只消费领域结果。",
+            "可空类型在编译期强制处理，?.、?: 和 let 是常用安全操作。",
+            "高阶函数接收或返回函数，inline 能减少 Lambda 对象和调用开销。",
+            "密封类限制子类型集合，配合 when 可以做穷尽分支检查。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《实战：Kotlin Android 客户端》时应把该要点与「Android 项目」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「项目验收要覆盖旋转、断网、重复请求和…」，下列说法正确的是？",
+          "options": [
+            "项目验收要覆盖旋转、断网、重复请求和进程恢复。",
+            "类型推断减少样板代码，但公开 API 仍应显式写出关键类型。",
+            "扩展函数是静态解析的，不能在运行时多态覆盖。",
+            "委托把实现交给其他对象，by lazy 和接口委托是常见用法。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《实战：Kotlin Android 客户端》时应把该要点与「Android 项目」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「实战：Kotlin Android 客户端」的核心学习目标是什么？",
+          "options": [
+            "实现列表、详情、网络、缓存、加载状态和错误恢复。",
+            "掌握 val/var、类型推断、可空类型和安全调用。",
+            "理解默认参数、扩展函数、高阶函数和内联。",
+            "覆盖主构造器、数据类、密封类、伴生对象和委托。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    }
+  ]
+}

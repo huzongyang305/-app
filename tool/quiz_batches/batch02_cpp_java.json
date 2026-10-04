@@ -1,0 +1,515 @@
+{
+  "cpp_basics": [
+    {
+      "question": "#include 的头文件展开发生在编译流程的哪个阶段？",
+      "options": ["预处理", "编译", "汇编", "链接"],
+      "answer": 0,
+      "explanation": "预处理负责展开 #include、宏替换与条件编译，之后才进入真正的语法分析。"
+    },
+    {
+      "question": "把多个源文件分开编译的主要好处是？",
+      "options": [
+        "改动一个文件只需重编该文件，缩短构建时间",
+        "可以省略头文件",
+        "运行时更省内存",
+        "不再需要链接器"
+      ],
+      "answer": 0,
+      "explanation": "分离编译配合增量构建，是大项目能快速迭代的基础。"
+    }
+  ],
+  "cpp_types": [
+    {
+      "question": "C++ 中 auto 的含义是？",
+      "options": [
+        "由编译器根据初始化表达式推导出的静态类型",
+        "运行时动态类型",
+        "任意类型（不做检查）",
+        "等同于 void"
+      ],
+      "answer": 0,
+      "explanation": "auto 只是省写类型，类型在编译期确定，与 Python 的动态类型完全不同。"
+    },
+    {
+      "question": "把负数赋给 size_t 或无符号变量时会发生什么？",
+      "options": [
+        "按模转换成一个很大的正数，比较与循环容易出错",
+        "编译直接失败",
+        "运行时抛出异常",
+        "自动取绝对值"
+      ],
+      "answer": 0,
+      "explanation": "有符号与无符号混用是经典陷阱，例如 for (size_t i = n - 1; i >= 0; --i) 会死循环。"
+    }
+  ],
+  "cpp_control_functions": [
+    {
+      "question": "inline 关键字在现代 C++ 中的主要含义是？",
+      "options": [
+        "允许函数定义出现在多个编译单元而只保留一份，并给编译器内联建议",
+        "强制编译器必须内联展开",
+        "让函数在运行时更慢",
+        "把函数放到堆上"
+      ],
+      "answer": 0,
+      "explanation": "是否真正内联由优化器决定，inline 现在的核心作用是处理 ODR（单一定义规则）。"
+    },
+    {
+      "question": "关于默认参数，下面说法正确的是？",
+      "options": [
+        "一旦某个参数有默认值，它右边的参数都必须有默认值",
+        "默认参数可以写在函数体内部",
+        "默认参数必须在调用处指定",
+        "默认参数只能用于构造函数"
+      ],
+      "answer": 0,
+      "explanation": "默认值从右往左连续给出，通常在头文件声明中写一次即可。"
+    }
+  ],
+  "cpp_pointers": [
+    {
+      "question": "数组名在大多数表达式中会退化（decay）成什么？",
+      "options": [
+        "指向首元素的指针",
+        "指向数组末尾的指针",
+        "一个副本数组",
+        "整数长度"
+      ],
+      "answer": 0,
+      "explanation": "退化会丢失长度信息，所以传参时通常还要额外传大小，或改用 std::array / std::span。"
+    },
+    {
+      "question": "const int* p 与 int* const p 的区别是？",
+      "options": [
+        "前者不能通过 p 改值，后者 p 本身不能改指向",
+        "两者完全相同",
+        "前者 p 不能改指向，后者不能改值",
+        "都表示 p 和值都不能改"
+      ],
+      "answer": 0,
+      "explanation": "看 const 修饰谁：const 在 * 左边修饰指向的值，在 * 右边修饰指针本身。"
+    }
+  ],
+  "cpp_memory": [
+    {
+      "question": "new/delete 与 malloc/free 的关键区别是？",
+      "options": [
+        "new 会调用构造函数并返回正确类型，malloc 只返回原始内存",
+        "malloc 会自动调用析构函数",
+        "new 分配在栈上",
+        "两者可以完全互换使用"
+      ],
+      "answer": 0,
+      "explanation": "混用 new 与 free（或 malloc 与 delete）属于未定义行为。"
+    },
+    {
+      "question": "weak_ptr 的作用是？",
+      "options": [
+        "观察 shared_ptr 管理的对象但不增加引用计数，用于打破循环引用",
+        "独占对象所有权",
+        "替代 unique_ptr",
+        "自动销毁所指对象"
+      ],
+      "answer": 0,
+      "explanation": "weak_ptr 使用前需要用 lock() 提升为 shared_ptr，并检查对象是否仍存活。"
+    }
+  ],
+  "cpp_oop": [
+    {
+      "question": "拷贝构造函数的典型签名是？",
+      "options": [
+        "ClassName(const ClassName& other)",
+        "ClassName(ClassName other)",
+        "void ClassName(ClassName& other)",
+        "ClassName& operator=(const ClassName&)"
+      ],
+      "answer": 0,
+      "explanation": "必须传引用，否则按值传参又要拷贝，会无限递归；最后那个是拷贝赋值运算符。"
+    },
+    {
+      "question": "非静态成员函数中的 this 指针指向？",
+      "options": [
+        "调用该函数的当前对象",
+        "类的所有实例",
+        "全局对象",
+        "父类对象"
+      ],
+      "answer": 0,
+      "explanation": "this 是隐式的第一个参数，静态成员函数没有 this。"
+    }
+  ],
+  "cpp_templates": [
+    {
+      "question": "模板的实现通常要写在头文件里的原因是？",
+      "options": [
+        "实例化点必须能看到完整定义才能生成代码",
+        "模板不能跨文件编译",
+        "头文件里的代码运行更快",
+        "写在 .cpp 会导致语法错误"
+      ],
+      "answer": 0,
+      "explanation": "也可用显式实例化把定义放进 .cpp，但会限制可用的类型集合。"
+    },
+    {
+      "question": "std::vector<int> 在编译过程中属于？",
+      "options": [
+        "由类模板实例化出来的具体类型",
+        "运行时动态生成的类型",
+        "一种宏",
+        "一个接口"
+      ],
+      "answer": 0,
+      "explanation": "模板本身不产生代码，实例化才会为具体类型生成一份实现。"
+    }
+  ],
+  "cpp_stl": [
+    {
+      "question": "std::map 与 std::unordered_map 的底层结构区别是？",
+      "options": [
+        "map 通常用红黑树（有序），unordered_map 用哈希表（无序、平均 O(1)）",
+        "两者底层都是数组",
+        "map 用哈希表，unordered_map 用树",
+        "两者都是链表"
+      ],
+      "answer": 0,
+      "explanation": "需要按 key 顺序遍历时选 map，只追求平均查找速度时选 unordered_map。"
+    },
+    {
+      "question": "下面哪种操作最容易让 vector 的迭代器失效？",
+      "options": [
+        "插入元素触发扩容，或删除元素导致后续元素移动",
+        "只读遍历",
+        "调用 size()",
+        "调用 empty()"
+      ],
+      "answer": 0,
+      "explanation": "删除元素常用 it = v.erase(it) 接收返回的新迭代器来避免悬空。"
+    }
+  ],
+  "cpp_modern": [
+    {
+      "question": "模板参数中的 T&& 通常被称为？",
+      "options": [
+        "转发引用（universal reference），配合 std::forward 实现完美转发",
+        "右值引用，只能绑定右值",
+        "左值引用",
+        "常量引用"
+      ],
+      "answer": 0,
+      "explanation": "发生类型推导时 T&& 会按实参折叠成左值或右值引用，这是完美转发的基础。"
+    },
+    {
+      "question": "std::string_view 的特点是？",
+      "options": [
+        "不拥有内存的字符串视图，避免拷贝但要注意被引用对象的生命周期",
+        "会自动复制一份字符串",
+        "只能表示 ASCII",
+        "可以安全保存到对象外部长期使用"
+      ],
+      "answer": 0,
+      "explanation": "string_view 常用于只读参数，但指向临时字符串时会悬空，需要格外小心。"
+    }
+  ],
+  "cpp_tooling": [
+    {
+      "question": "clang-format 的典型用途是？",
+      "options": [
+        "按统一配置自动格式化代码风格",
+        "检查内存越界",
+        "生成单元测试",
+        "管理依赖版本"
+      ],
+      "answer": 0,
+      "explanation": "把 .clang-format 提交到仓库并接入 CI，能省掉大量风格争论。"
+    },
+    {
+      "question": "clang-tidy 与 AddressSanitizer 的区别是？",
+      "options": [
+        "clang-tidy 做静态检查（不运行程序），ASan 在运行时检测内存错误",
+        "两者都在运行时工作",
+        "clang-tidy 只能检查注释",
+        "ASan 能替代单元测试"
+      ],
+      "answer": 0,
+      "explanation": "静态检查 + 运行时检测互补，配合使用覆盖的问题面更广。"
+    }
+  ],
+  "cpp_project": [
+    {
+      "question": "CMake 中 target_link_libraries(app PRIVATE fmt) 的作用是？",
+      "options": [
+        "给 app 目标声明需要链接的库及其传递属性",
+        "把 fmt 源码拷进项目",
+        "设置 C++ 标准",
+        "开启调试符号"
+      ],
+      "answer": 0,
+      "explanation": "基于目标（target）的写法会携带 include 路径等使用要求，比全局变量更清晰。"
+    },
+    {
+      "question": "把单元测试接入 CI 的主要价值是？",
+      "options": [
+        "每次提交自动验证，尽早发现回归",
+        "让代码运行更快",
+        "替代代码评审",
+        "自动修复 bug"
+      ],
+      "answer": 0,
+      "explanation": "CI 上跑 ctest 能保证「测试在别人机器上也通过」，是团队协作的质量底线。"
+    }
+  ],
+  "java_basics": [
+    {
+      "question": "javac 与 java 两个命令的分工是？",
+      "options": [
+        "javac 把源码编译成 .class 字节码，java 启动 JVM 运行字节码",
+        "javac 运行程序，java 编译程序",
+        "两者都可以编译和运行",
+        "javac 用于打包 jar"
+      ],
+      "answer": 0,
+      "explanation": "Maven/Gradle 只是把这两步以及依赖管理自动化了。"
+    },
+    {
+      "question": "Java 程序入口方法的正确签名是？",
+      "options": [
+        "public static void main(String[] args)",
+        "public void main(String[] args)",
+        "static int main(String[] args)",
+        "void main()"
+      ],
+      "answer": 0,
+      "explanation": "JVM 需要 public + static 才能在未创建对象时按约定调用入口方法。"
+    }
+  ],
+  "java_types": [
+    {
+      "question": "Java 中 String 的不可变性意味着？",
+      "options": [
+        "字符串内容创建后不能修改，拼接会产生新对象",
+        "String 变量不能再赋值",
+        "String 可以当基本类型使用",
+        "String 只能存 ASCII"
+      ],
+      "answer": 0,
+      "explanation": "不可变让字符串可安全共享与缓存哈希，但频繁拼接要改用 StringBuilder。"
+    },
+    {
+      "question": "用 double 计算金额的主要风险是？",
+      "options": [
+        "二进制浮点无法精确表示十进制小数，会出现舍入误差",
+        "double 精度太高浪费内存",
+        "double 不能做加减乘除",
+        "double 会自动四舍五入"
+      ],
+      "answer": 0,
+      "explanation": "金额场景应使用 BigDecimal，并明确指定舍入模式与小数位。"
+    }
+  ],
+  "java_control_methods": [
+    {
+      "question": "Java 14+ 的 switch 表达式相比传统 switch 的优势是？",
+      "options": [
+        "用 -> 避免 case 穿透，并可直接作为表达式返回值",
+        "可以替代 if-else 的范围判断",
+        "不再需要 default 分支",
+        "支持字符串以外的任意类型"
+      ],
+      "answer": 0,
+      "explanation": "多分支用 yield 返回值，编译期还能检查是否覆盖所有枚举常量。"
+    },
+    {
+      "question": "带标签的 break（break outer;）的作用是？",
+      "options": [
+        "跳出被标记的外层循环，而不只是当前循环",
+        "跳出方法",
+        "跳出 switch",
+        "抛出异常"
+      ],
+      "answer": 0,
+      "explanation": "嵌套循环中需要一次性退出时要靠标签，但多数情况可重构为提取方法 + return。"
+    }
+  ],
+  "java_oop": [
+    {
+      "question": "record 类型的主要特点是？",
+      "options": [
+        "自动生成构造器、访问器、equals/hashCode/toString，适合承载不可变数据",
+        "可以继承其他类",
+        "字段默认可变",
+        "只能包含静态方法"
+      ],
+      "answer": 0,
+      "explanation": "record 是透明的数据载体，不能继承类，但可以实现接口。"
+    },
+    {
+      "question": "用 enum 替代 int 常量的好处是？",
+      "options": [
+        "类型安全、可读性好，还能携带字段与方法",
+        "占用内存更少",
+        "可以参与算术运算",
+        "能自动转换成数据库字段"
+      ],
+      "answer": 0,
+      "explanation": "enum 会做类型检查，编译期就能拦住传错状态值的问题。"
+    }
+  ],
+  "java_inheritance": [
+    {
+      "question": "@Override 注解的价值是？",
+      "options": [
+        "让编译器检查是否真的重写了父类/接口方法，避免拼写错误",
+        "强制方法不能被再次重写",
+        "提升运行速度",
+        "让方法变成静态"
+      ],
+      "answer": 0,
+      "explanation": "写成 @Overide 或签名不一致时编译器会报错，是廉价而有效的保护。"
+    },
+    {
+      "question": "父类引用指向子类对象并调用被重写的方法时，执行的是？",
+      "options": [
+        "子类的实现（运行时多态）",
+        "父类的实现",
+        "两者都会执行",
+        "抛出不支持的异常"
+      ],
+      "answer": 0,
+      "explanation": "方法调用在运行时按实际对象类型分派，这就是多态的核心。"
+    }
+  ],
+  "java_collections": [
+    {
+      "question": "ArrayList 与 LinkedList 的选择依据是？",
+      "options": [
+        "随机访问多用 ArrayList，频繁在两端增删可考虑 LinkedList",
+        "LinkedList 随机访问更快",
+        "ArrayList 不能扩容",
+        "LinkedList 不允许重复元素"
+      ],
+      "answer": 0,
+      "explanation": "ArrayList 是数组实现，按下标访问 O(1)；LinkedList 按下标访问需要遍历。"
+    },
+    {
+      "question": "遍历 Map 时更推荐的写法是？",
+      "options": [
+        "遍历 entrySet()（或使用 forEach），一次取到键值",
+        "遍历 keySet() 再用 get 取值",
+        "遍历 values() 再反查键",
+        "用下标循环"
+      ],
+      "answer": 0,
+      "explanation": "keySet + get 在 HashMap 上等于做了两次查找，entrySet 更直接。"
+    }
+  ],
+  "java_exceptions": [
+    {
+      "question": "在 finally 中写 return 的风险是？",
+      "options": [
+        "会覆盖 try 中的返回值甚至吞掉异常",
+        "会编译失败",
+        "会让 finally 不执行",
+        "会触发内存泄漏"
+      ],
+      "answer": 0,
+      "explanation": "finally 应只做资源释放，避免在里面写 return 或抛出新异常。"
+    },
+    {
+      "question": "抛出异常时想保留原始异常信息，正确做法是？",
+      "options": [
+        "new RuntimeException(\"处理失败\", cause)",
+        "e.printStackTrace() 后返回 null",
+        "丢弃 cause 只留消息",
+        "把异常转成字符串再拼接"
+      ],
+      "answer": 0,
+      "explanation": "传入 cause 能保留完整调用链，排查时不会丢失根因。"
+    }
+  ],
+  "java_lambda_stream": [
+    {
+      "question": "Stream 的 collect 与 forEach 的区别是？",
+      "options": [
+        "collect 是终止操作，把结果汇总成集合；forEach 用于副作用",
+        "两者都返回 Stream",
+        "forEach 会延迟执行",
+        "collect 只能用于并行流"
+      ],
+      "answer": 0,
+      "explanation": "在流里修改外部状态是常见坏味道，能 collect 就优先 collect。"
+    },
+    {
+      "question": "方法引用 String::length 等价于哪个 lambda？",
+      "options": ["s -> s.length()", "() -> String.length()", "s -> String(s)", "(a, b) -> a.length()"],
+      "answer": 0,
+      "explanation": "方法引用是 lambda 的语法糖，可读性更好，也能表达构造器引用 Class::new。"
+    }
+  ],
+  "java_concurrency": [
+    {
+      "question": "synchronized 与 ReentrantLock 的关系是？",
+      "options": [
+        "synchronized 是语法内置锁，ReentrantLock 提供可中断、超时、公平锁等更灵活的能力",
+        "两者完全等价",
+        "ReentrantLock 不能加锁",
+        "synchronized 支持超时获取"
+      ],
+      "answer": 0,
+      "explanation": "简单互斥优先用 synchronized；需要 tryLock 超时或条件变量时再用 Lock。"
+    },
+    {
+      "question": "使用线程池相比直接 new Thread 的优势是？",
+      "options": [
+        "复用线程、限制并发规模、避免频繁创建销毁的开销",
+        "线程池里的线程不会出错",
+        "线程池能自动修复死锁",
+        "线程池不需要关闭"
+      ],
+      "answer": 0,
+      "explanation": "务必使用有界队列与合适的拒绝策略，避免任务无限堆积导致内存溢出。"
+    }
+  ],
+  "java_tooling": [
+    {
+      "question": "JUnit 5 中编写参数化测试使用哪个注解？",
+      "options": ["@ParameterizedTest", "@RepeatTest", "@TheoryTest", "@ParameterTest"],
+      "answer": 0,
+      "explanation": "配合 @ValueSource / @CsvSource 提供数据，同样的逻辑可覆盖多组输入。"
+    },
+    {
+      "question": "Gradle 中 settings.gradle 与 build.gradle 的分工是？",
+      "options": [
+        "settings 定义项目结构（包含哪些模块），build 定义构建逻辑与依赖",
+        "两者作用完全相同",
+        "build 定义模块，settings 定义依赖",
+        "settings 只在 Windows 生效"
+      ],
+      "answer": 0,
+      "explanation": "多模块 Gradle 项目靠 settings.gradle 聚合子模块。"
+    }
+  ],
+  "java_project": [
+    {
+      "question": "@RestController 与 @Controller 的差别是？",
+      "options": [
+        "@RestController 默认把返回值序列化为 JSON（相当于 @Controller + @ResponseBody）",
+        "@RestController 只支持 XML",
+        "@Controller 只能返回 JSON",
+        "两者不能混用"
+      ],
+      "answer": 0,
+      "explanation": "返回视图页面时用 @Controller，写 REST API 时用 @RestController 更省事。"
+    },
+    {
+      "question": "JPA 中 N+1 查询问题的常见解法是？",
+      "options": [
+        "用 join fetch / @EntityGraph 一次性预加载关联数据",
+        "把实体改成 record",
+        "关闭事务",
+        "增加更多 @Transactional"
+      ],
+      "answer": 0,
+      "explanation": "N+1 的典型现象是 1 条主查询 + N 条关联查询，用批量抓取或联表抓取可以解决。"
+    }
+  ]
+}

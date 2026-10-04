@@ -1,0 +1,318 @@
+# API 网关与负载均衡
+
+![API 网关与负载均衡](images/category_gateway.webp)
+
+> 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟
+
+## 学习目标
+
+- 能用自己的话解释「API 网关与负载均衡」解决了什么问题，而不是只背术语。
+- 能说清 「API 网关」、「负载均衡」、「限流」、「熔断」 之间的关系，并分别举出一个例子。
+- 能把本课知识放回「工具链」的知识体系，说明它和相邻主题的边界。
+- 能完成本课练习，并用验收标准检查自己的结果。
+
+> 一句话摘要：路由鉴权限流、四层/七层与优雅下线。
+
+## 前置知识
+
+- 先完成上一课《Linux 性能分析》；如果已经掌握，可以直接用本课练习自测。
+- 本课阶段：高级。建议具备同一方向的完整基础，能阅读较长的代码、配置或系统设计说明。
+- 开始前先复习：API 网关、负载均衡、限流。
+- 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
+
+
+## 网关解决什么问题
+
+把跨切面能力从业务服务里抽出来，统一在入口处理：
+
+| 能力 | 说明 |
+| --- | --- |
+| 路由 | 按域名/路径/请求头分发到不同服务 |
+| 认证鉴权 | 统一校验 Token、签发与刷新 |
+| 限流熔断 | 保护后端，防止雪崩 |
+| 协议转换 | HTTP ↔ gRPC，外部 REST 内部 RPC |
+| 可观测 | 统一日志、指标与链路埋点 |
+| 灰度发布 | 按权重、用户标签、地域分流 |
+
+常见实现：Nginx、Kong、APISIX、Envoy、Spring Cloud Gateway，以及云厂商的托管网关。
+
+## 负载均衡的层级
+
+| 层级 | 依据 | 代表 | 特点 |
+| --- | --- | --- | --- |
+| 四层 L4 | IP + 端口 | LVS、NLB | 性能高，不理解内容 |
+| 七层 L7 | HTTP 内容 | Nginx、Envoy、ALB | 可按路径/头路由，能做灰度 |
+
+## 常见算法
+
+1. 轮询 / 加权轮询：简单均匀，适合同构节点。
+2. 最少连接：适合长连接与耗时差异大的服务。
+3. 一致性哈希：同一用户固定到同一节点，利于缓存命中。
+4. 最短响应时间 / P2C：按实时指标选择，适合异构环境。
+
+## 健康检查与故障处理
+
+健康检查分主动（定时探活）与被动（根据请求失败率摘除）。摘除要配合**优雅下线**：先停止接收新请求，等待在途请求完成，再从注册中心摘除，避免发布时出现 502。
+
+## 限流与熔断
+
+| 策略 | 说明 |
+| --- | --- |
+| 令牌桶 / 漏桶 | 控制平均速率并允许一定突发 |
+| 并发限制 | 限制同时处理的请求数，保护线程池 |
+| 熔断 | 失败率超阈值后快速失败一段时间，避免连锁故障 |
+| 降级 | 返回缓存或默认值，保证核心链路可用 |
+
+限流要区分维度：按 IP、按用户、按接口、按全局；生产环境通常组合使用。
+
+## 实践清单
+
+1. 网关自身要能水平扩展，不能成为单点。
+2. 超时、重试要成对配置：重试要有上限并加退避，非幂等接口禁止重试。
+3. 灰度发布按小流量开始，观察错误率与延迟再逐步放大。
+4. 统一注入 request-id / trace-id，串联日志与链路。
+5. 配置变更走代码化与评审（网关配置错误的影响面是全局的）。
+
+## 配置片段与限流算法
+
+| 场景 | 配置要点 |
+| --- | --- |
+| 路由到后端 | Nginx `location /api/ { proxy_pass http://backend; }`，转发时带 X-Real-IP 与 X-Forwarded-For |
+| 超时与重试 | `proxy_connect_timeout`、`proxy_read_timeout`；重试只对幂等请求开启并限制次数 |
+| 限流 | `limit_req_zone` 按 IP/接口维度，令牌桶允许突发 |
+| 熔断降级 | 网关层错误率超阈值时返回兜底内容或缓存 |
+| 灰度 | 按请求头/用户标签/权重分流到不同后端版本 |
+
+限流算法选择：**令牌桶**（允许突发、平均速率受控，最常用）、**漏桶**（恒定速率、适合削峰）、**滑动窗口**（统计精确、内存开销大）、**并发数限制**（保护线程池，与速率互补）。生产通常组合使用：入口按 IP 限流 + 用户维度限流 + 后端并发限制。
+
+排查网关问题的顺序：`curl -v` 确认状态码与响应头 → 看网关访问日志（upstream_addr、upstream_status、request_time）→ 确认是网关本身还是后端 → 检查 upstream 健康检查与权重配置。**5xx 集中在某一台后端**时优先怀疑实例而非网关。
+
+## 本课小结
+网关是**南北向流量的统一入口**，负责路由、鉴权、限流、可观测与灰度；负载均衡决定流量落到哪个实例。二者配合优雅下线与熔断降级，才能撑住真实流量。
+
+<!-- appendix:v1 -->
+
+## 四层与七层对照
+
+| 维度 | 四层（L4） | 七层（L7） |
+| --- | --- | --- |
+| 依据 | IP + 端口 | URL、Header、Cookie |
+| 性能 | 更高、延迟更低 | 略低但功能强 |
+| 能力 | 转发、连接保持 | 路由、鉴权、改写、限流 |
+| 典型 | LVS、NLB | Nginx、Envoy、ALB |
+| TLS | 透传或终止 | 终止并可做内容检查 |
+
+## 负载均衡算法速查
+
+| 算法 | 特点 | 适用 |
+| --- | --- | --- |
+| 轮询 | 简单均匀 | 后端同质 |
+| 加权轮询 | 按能力分配 | 机器规格不同 |
+| 最少连接 | 按当前负载 | 请求耗时差异大 |
+| 一致性哈希 | 同一 key 固定后端 | 缓存命中与有状态服务 |
+| 最短响应时间 | 按实测延迟 | 延迟敏感 |
+| 随机 | 实现简单 | 后端数量多且同质 |
+
+## 弹性策略速查
+
+| 策略 | 作用 | 关键参数 |
+| --- | --- | --- |
+| 超时 | 防止无限等待 | 连接、读写分开设置 |
+| 重试 | 处理瞬时故障 | 仅幂等、退避、上限 |
+| 熔断 | 快速失败保护下游 | 错误率阈值、半开探测 |
+| 限流 | 保护自身与下游 | 令牌桶、按用户维度 |
+| 降级 | 保核心功能 | 返回缓存或默认值 |
+| 隔离 | 防相互影响 | 线程池或连接池隔离 |
+
+```python
+import time
+from collections import deque
+from dataclasses import dataclass, field
+from enum import Enum
+
+class State(Enum):
+    CLOSED = "closed"
+    OPEN = "open"
+    HALF_OPEN = "half_open"
+
+@dataclass
+class CircuitBreaker:
+    """熔断器：连续失败打开，冷却后放少量请求探测。"""
+
+    failure_threshold: int = 5
+    cooldown_seconds: float = 10.0
+    half_open_probes: int = 3
+    state: State = State.CLOSED
+    failures: int = 0
+    probes: int = 0
+    opened_at: float = 0.0
+
+    def allow(self, now: float | None = None) -> bool:
+        now = time.monotonic() if now is None else now
+        if self.state is State.OPEN:
+            if now - self.opened_at >= self.cooldown_seconds:
+                self.state = State.HALF_OPEN
+                self.probes = 0
+            else:
+                return False
+        if self.state is State.HALF_OPEN and self.probes >= self.half_open_probes:
+            return False
+        return True
+
+    def record(self, success: bool, now: float | None = None) -> None:
+        now = time.monotonic() if now is None else now
+        if success:
+            if self.state is State.HALF_OPEN:
+                self.state = State.CLOSED
+                self.failures = 0
+            else:
+                self.failures = 0
+            return
+        if self.state is State.HALF_OPEN:
+            self.probes += 1
+            self.state = State.OPEN
+            self.opened_at = now
+            return
+        self.failures += 1
+        if self.failures >= self.failure_threshold:
+            self.state = State.OPEN
+            self.opened_at = now
+
+@dataclass
+class Backoff:
+    """指数退避 + 抖动，避免重试风暴。"""
+
+    base: float = 0.1
+    factor: float = 2.0
+    max_delay: float = 5.0
+    history: deque = field(default_factory=lambda: deque(maxlen=32))
+
+    def next_delay(self, attempt: int, jitter: float = 0.3) -> float:
+        delay = min(self.max_delay, self.base * (self.factor ** attempt))
+        return round(delay * (1 + jitter * ((attempt % 3) - 1)), 4)
+
+breaker = CircuitBreaker()
+for _ in range(6):
+    breaker.record(False)
+print(breaker.state, breaker.allow())
+print([Backoff().next_delay(i) for i in range(5)])
+```
+
+## 发布与下线速查
+
+| 阶段 | 动作 |
+| --- | --- |
+| 预热 | 新实例先接少量流量 |
+| 就绪检查 | 通过后才注册到负载均衡 |
+| 灰度 | 按比例放量并观察指标 |
+| 下线 | 先从负载均衡摘除，再等在途请求结束 |
+| 回滚 | 指标异常立即切回上一版本 |
+
+## 常见错误对照表
+
+| 容易踩的做法 | 实际现象 | 原因与正确做法 |
+| --- | --- | --- |
+| 重试非幂等请求 | 重复下单或扣款 | 只重试幂等方法，或用幂等键 |
+| 重试无退避 | 故障放大 | 指数退避 + 抖动 + 上限 |
+| 超时设置过长 | 线程与连接被占满 | 连接与读取超时分开设 |
+| 熔断无半开探测 | 恢复后仍不可用 | 冷却后放少量探测请求 |
+| 下线直接杀进程 | 用户看到 502 | 先摘流量再等在途结束 |
+| 一致性哈希无虚拟节点 | 数据倾斜 | 加虚拟节点或调权重 |
+| 限流只按 IP | NAT 后误伤 | 叠加用户与接口维度 |
+| 忽略健康检查频率 | 故障实例仍接流量 | 合理间隔 + 连续失败阈值 |
+| 所有服务共用一个连接池 | 相互影响 | 按依赖隔离 |
+| 无灰度直接全量 | 故障影响全站 | 灰度 + 自动回滚 |
+
+## 自测清单
+
+- [ ] 能按需求选择四层或七层网关。
+- [ ] 负载均衡算法与后端特性匹配。
+- [ ] 重试仅用于幂等请求且有退避上限。
+- [ ] 熔断、限流、降级、隔离策略齐备。
+- [ ] 发布与下线都有优雅过渡。
+
+## 动手练习
+
+<!-- practice-diversified:v1 -->
+
+> 本课练习重点：围绕「API 网关、负载均衡、限流」完成复述、实验和交付，每个结果都要能被别人检查。
+
+先在临时环境执行完整命令链，再模拟失败，最后验证回滚和清理。
+
+### 练习 1：建立心智模型（10 分钟）
+
+合上教程，用 3～5 句话回答：
+
+1. 「API 网关与负载均衡」解决了什么问题？
+2. 如果没有它，会出现什么具体后果？
+3. 它和「负载均衡」是什么关系？
+
+**验收标准**：至少出现一个本课关键词，并写出一个反例、边界条件或失效场景。
+
+### 练习 2：做一次可控实验（20 分钟）
+
+从正文中选一个最小示例，完成以下操作：
+
+1. 先预测修改一个参数、输入或步骤后的结果。
+2. 再实际执行或逐步推演，记录真实结果。
+3. 如果结果与预测不同，写出差异原因。
+
+**验收标准**：留下「原例 → 改动 → 预测 → 结果 → 原因」五步记录。
+
+### 练习 3：交付一个小结果（30 分钟）
+
+在一个临时目录或本地仓库执行完整命令链，并记录失败时的回滚办法。
+
+任务要求：
+
+- 结果必须能被别人检查，不能只写“我已经理解了”。
+- 至少覆盖「API 网关」和「负载均衡」两个关键词。
+- 写出 1 个仍然不确定的问题，以及下一步如何验证。
+
+> 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
+
+<!-- scaffold:v1 -->
+
+<!-- p2-enrichment:v1 -->
+
+## English Overview
+
+**Title:** API Gateway & Load Balancing
+
+**Summary:** Routing, auth, rate limiting and load balancing.
+
+**Category:** Toolchain  
+**Level:** 高级  
+**Key terms:** API 网关, 负载均衡, 限流, 熔断, 优雅下线
+
+> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
+
+## 内容元数据
+
+- 内容版本：v2.0
+- 最后更新：2026-10-03
+- 学习阶段：高级
+- 适用环境：Git / Docker / Kubernetes / CI 平台
+- 内容来源：内置结构化课程与工程实践整理
+- 相关主题：API 网关、负载均衡、限流、熔断、优雅下线
+- 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
+
+<!-- p2-references:v1 -->
+
+## 参考资料与复核
+
+- 最后复核：2026-10-04
+- 下次复核：2027-04-04
+- 复核范围：版本兼容、API 行为、安全建议与工程实践
+- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+
+| 参考资料 | 本课用途 |
+| --- | --- |
+| [Git 文档](https://git-scm.com/doc) | 版本控制与协作 |
+| [Docker 文档](https://docs.docker.com/) | 容器与镜像 |
+| [Kubernetes 文档](https://kubernetes.io/docs/) | 编排与运维 |
+
+> 本课主题：路由鉴权限流、四层/七层与优雅下线。
+
+> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+

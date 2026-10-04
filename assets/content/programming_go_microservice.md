@@ -1,0 +1,405 @@
+# Go 微服务与可观测
+
+![Go 微服务与可观测](images/remaining_go_microservice.webp)
+
+> 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：16 分钟
+
+## 学习目标
+
+- 能用自己的话解释「Go 微服务与可观测」解决了什么问题，而不是只背术语。
+- 能说清 「Go」、「微服务」、「Prometheus」、「OpenTelemetry」 之间的关系，并分别举出一个例子。
+- 能把本课知识放回「Go」的知识体系，说明它和相邻主题的边界。
+- 能完成本课练习，并用验收标准检查自己的结果。
+
+> 一句话摘要：配置校验、结构化日志、指标链路与优雅关闭。
+
+## 前置知识
+
+- 先完成上一课《Go 性能优化与内存》；如果已经掌握，可以直接用本课练习自测。
+- 本课阶段：基础。建议会读写简单代码或命令，并理解变量、输入输出等基本概念。
+- 开始前先复习：Go、微服务、Prometheus。
+- 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
+
+
+## 服务骨架
+
+一个可上线的 Go 服务至少包含：配置加载与校验、日志、HTTP/gRPC 入口、健康检查、指标暴露、优雅关闭。目录上常用 `cmd/server`（入口）+ `internal/`（业务与适配器）。
+
+## 配置与日志
+
+配置从环境变量/文件读取后**必须校验**（缺端口、非法 URL 要在启动时失败，而不是运行时才发现）。日志用标准库 `log/slog` 输出结构化 JSON，字段包含 request_id、user_id、耗时与错误，便于检索聚合。
+
+## 可观测三件套
+
+| 维度 | 方案 |
+| --- | --- |
+| 指标 | Prometheus 客户端暴露 /metrics（QPS、延迟直方图、错误计数、goroutine 数） |
+| 链路 | OpenTelemetry 自动埋点，trace_id 注入日志 |
+| 日志 | slog + 结构化字段，集中采集 |
+
+延迟指标要用**直方图**而不是平均值，才能算出 P95/P99。
+
+## 优雅关闭
+
+```text
+signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)
+<-ctx.Done()
+server.Shutdown(timeoutCtx)   // 停止接收新请求，等待在途请求完成
+```
+
+顺序很关键：先停止接收新流量，等在途请求结束，再关闭数据库与消息队列连接，最后退出。
+
+## 常见坑
+
+1. 没设超时与重试预算，故障时线程/连接被占满。
+2. 健康检查只 ping 自己，没有检查依赖（应区分 liveness 与 readiness）。
+3. 容器里 goroutine 泄漏或文件句柄未关，长时间运行后内存与 fd 上涨。
+4. 配置写死在代码里，改环境要重新构建。
+
+## 本课小结
+Go 微服务的上线标准：**配置校验 + 结构化日志 + 指标/链路 + 优雅关闭 + 健康检查**，缺一项在高并发下都会变成事故。
+
+<!-- appendix:v1 -->
+
+## 服务骨架速查
+
+| 主题 | 建议做法 |
+| --- | --- |
+| 配置加载 | 启动时读取环境变量并校验，缺失必填项直接失败 |
+| 依赖装配 | `main` 里显式构造依赖并注入，避免全局变量 |
+| 路由 | `http.ServeMux` 或轻量框架，版本前缀 `/api/v1` |
+| 中间件 | 恢复 panic、日志、请求 ID、鉴权、限流 |
+| 优雅关闭 | 监听 `SIGTERM`，先停止接流量再等待在途请求 |
+| 健康检查 | `/livez` 只看进程，`/readyz` 检查依赖 |
+| 可观测 | 结构化日志 + 指标 + 链路 ID |
+| 错误返回 | 统一错误码与 HTTP 状态码映射 |
+
+```go
+func main() {
+	ctx, stop := signal.NotifyContext(context.Background(),
+		syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
+
+	cfg, err := config.Load()          // 启动即校验配置
+	if err != nil {
+		log.Fatalf("配置错误：%v", err)
+	}
+
+	srv := &http.Server{
+		Addr:              cfg.Addr,
+		Handler:           newRouter(cfg),
+		ReadHeaderTimeout: 5 * time.Second,
+	}
+
+	go func() {
+		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			log.Fatalf("服务异常退出：%v", err)
+		}
+	}()
+
+	<-ctx.Done()                        // 等待终止信号
+	log.Println("开始优雅关闭")
+
+	shutdownCtx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+	if err := srv.Shutdown(shutdownCtx); err != nil {
+		log.Printf("关闭超时：%v", err)
+	}
+	log.Println("已退出")
+}
+```
+
+## 可观测性速查
+
+| 维度 | 关键内容 |
+| --- | --- |
+| 日志 | 结构化（JSON）、带 `trace_id`、按级别输出，不打印敏感信息 |
+| 指标 | QPS、错误率、P95/P99 延迟、并发数、队列长度、goroutine 数 |
+| 链路 | 入口生成 trace id，跨服务透传（HTTP Header / gRPC Metadata） |
+| 告警 | 基于 SLO 与错误预算，避免噪声告警 |
+| 健康 | `/livez` 与 `/readyz` 分开，readiness 检查下游依赖 |
+
+## 常见错误对照表
+
+| 容易踩的做法 | 实际现象 | 原因与正确做法 |
+| --- | --- | --- |
+| 直接 `srv.Close()` 关闭 | 在途请求被中断 | 用 `Shutdown` + 超时 |
+| 只监听 SIGINT | 容器里收不到停止信号 | 同时监听 SIGTERM |
+| 配置缺失时用默认值硬扛 | 线上行为诡异 | 必填项启动即校验并失败 |
+| readiness 检查所有依赖 | 下游抖动导致全实例摘除 | 只检查关键依赖，或分级降级 |
+| 健康检查做重活 | 探针超时、误重启 | 轻量返回状态 |
+| 日志用字符串拼接 | 无法结构化查询 | 用 `slog` 的键值对 |
+| 缺少请求 ID | 跨服务排查困难 | 入口生成并透传 |
+| goroutine 泄漏 | 内存持续上涨 | 每次请求都带 context 并可取消 |
+| 不做限流与超时 | 单个慢依赖拖垮服务 | 客户端设超时、重试上限，服务端限流 |
+| 重试无退避与幂等 | 放大故障、重复写入 | 指数退避 + 幂等键 |
+
+## 自测清单
+
+- [ ] 服务能优雅关闭并等待在途请求完成。
+- [ ] 配置在启动时校验，缺失必填项直接失败。
+- [ ] 日志结构化并带 trace id，指标覆盖延迟与错误率。
+- [ ] 所有外部调用都有超时、限流与重试上限。
+- [ ] `/livez` 与 `/readyz` 语义分离。
+
+<!-- appendix:v3 -->
+
+## 零基础详解：Go 微服务的工程要点
+
+### 一句话说清它是什么
+
+一个能上线的 Go 服务，除了业务逻辑，还必须具备四件事：
+**能启动、能探活、能优雅退出、能被观测**。缺一件就会在发布或故障时出问题。
+
+### 用生活比喻理解
+
+| 概念 | 比喻 | 说明 |
+| --- | --- | --- |
+| 健康检查 | 体检报告 | 告诉编排系统能不能接流量 |
+| 优雅关闭 | 收摊流程 | 不再接单，把手上活干完 |
+| 中间件 | 安检通道 | 统一做日志、恢复、鉴权 |
+| 指标 | 仪表盘 | 用数字描述运行状态 |
+| 配置校验 | 出发前检查 | 启动时就把错误暴露出来 |
+
+### 一个标准的服务骨架
+
+```go
+package main
+
+import (
+    "context"
+    "errors"
+    "log/slog"
+    "net/http"
+    "os"
+    "os/signal"
+    "syscall"
+    "time"
+)
+
+func main() {
+    ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+    defer stop()
+
+    cfg, err := LoadConfig()                 // 1. 启动就校验配置
+    if err != nil {
+        slog.Error("配置无效", "err", err)
+        os.Exit(1)
+    }
+
+    mux := http.NewServeMux()
+    mux.HandleFunc("/healthz/live", func(w http.ResponseWriter, _ *http.Request) {
+        w.WriteHeader(http.StatusOK)
+    })
+    mux.HandleFunc("/healthz/ready", func(w http.ResponseWriter, _ *http.Request) {
+        if err := checkDependencies(ctx); err != nil {
+            http.Error(w, "未就绪", http.StatusServiceUnavailable)
+            return
+        }
+        w.WriteHeader(http.StatusOK)
+    })
+    mux.Handle("/api/", WithRecovery(WithLogging(apiHandler())))
+
+    srv := &http.Server{
+        Addr:              cfg.Addr,
+        Handler:           mux,
+        ReadHeaderTimeout: 5 * time.Second,   // 2. 必须设超时
+        ReadTimeout:       15 * time.Second,
+        WriteTimeout:      15 * time.Second,
+        IdleTimeout:       60 * time.Second,
+    }
+
+    go func() {
+        if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+            slog.Error("服务启动失败", "err", err)
+            stop()
+        }
+    }()
+    slog.Info("服务已启动", "addr", cfg.Addr)
+
+    <-ctx.Done()                             // 3. 等待退出信号
+    slog.Info("开始优雅关闭")
+
+    shutdownCtx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+    defer cancel()
+    if err := srv.Shutdown(shutdownCtx); err != nil {
+        slog.Error("关闭超时", "err", err)
+    }
+}
+```
+
+### 两个探针的分工
+
+| 路径 | 检查内容 | 失败后果 |
+| --- | --- | --- |
+| `/healthz/live` | 进程是否还活着（不查依赖） | 重启容器 |
+| `/healthz/ready` | 依赖是否可用、是否完成预热 | 只摘流量 |
+
+**把数据库检查放进 liveness 会引起重启风暴**：数据库抖一下，所有实例全部重启。
+
+### 中间件的两个必备件
+
+```go
+func WithRecovery(next http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        defer func() {
+            if rec := recover(); rec != nil {
+                slog.Error("请求 panic", "path", r.URL.Path, "err", rec)
+                http.Error(w, "内部错误", http.StatusInternalServerError)
+            }
+        }()
+        next.ServeHTTP(w, r)
+    })
+}
+
+func WithLogging(next http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        start := time.Now()
+        next.ServeHTTP(w, r)
+        slog.Info("请求完成",
+            "method", r.Method, "path", r.URL.Path,
+            "cost", time.Since(start).String())
+    })
+}
+```
+
+### 可观测性三件套
+
+| 支柱 | Go 里的常见做法 | 回答什么问题 |
+| --- | --- | --- |
+| 指标 | Prometheus + 直方图 | 整体趋势、告警 |
+| 日志 | `log/slog` 结构化输出 | 发生了什么 |
+| 链路 | OpenTelemetry + trace id | 这次请求慢在哪 |
+
+**延迟要用直方图而不是平均值**，否则 P95、P99 根本算不出来。
+
+### 配置与依赖
+
+```go
+type Config struct {
+    Addr        string
+    DatabaseURL string
+    JWTSecret   string
+}
+
+func LoadConfig() (Config, error) {
+    cfg := Config{
+        Addr:        envOr("ADDR", ":8080"),
+        DatabaseURL: os.Getenv("DATABASE_URL"),
+        JWTSecret:   os.Getenv("JWT_SECRET"),
+    }
+    if cfg.DatabaseURL == "" {
+        return cfg, errors.New("缺少 DATABASE_URL")
+    }
+    if len(cfg.JWTSecret) < 32 {
+        return cfg, errors.New("JWT_SECRET 至少要 32 个字符")
+    }
+    return cfg, nil
+}
+```
+
+### 新手最容易踩的八个坑
+
+| 坑 | 现象 | 正确做法 |
+| --- | --- | --- |
+| 不设 HTTP 超时 | 慢连接耗尽连接数 | 至少设 ReadHeaderTimeout |
+| liveness 检查依赖 | 下游抖动引发重启风暴 | 依赖放 readiness |
+| 直接 `os.Exit` | 在途请求被中断 | 用 `srv.Shutdown` |
+| panic 不恢复 | 单个请求打挂整个进程 | 加 Recovery 中间件 |
+| 配置不校验 | 运行到一半才崩 | 启动时全量校验 |
+| 日志用字符串拼接 | 无法检索字段 | 用结构化日志 |
+| 指标只有平均值 | 长尾问题看不见 | 用直方图算分位数 |
+| 关闭没有超时 | 卡住不退出 | 给 Shutdown 带 context 超时 |
+
+### 学完自测
+
+- [ ] 能说出 liveness 与 readiness 的分工。
+- [ ] 知道为什么 HTTP 服务必须设置超时。
+- [ ] 能说出优雅关闭的三个步骤。
+- [ ] 知道为什么延迟指标要用直方图。
+- [ ] 能说出启动时校验配置的好处。
+
+## 动手练习
+
+<!-- practice-diversified:v1 -->
+
+> 本课练习重点：围绕「Go、微服务、Prometheus」完成复述、实验和交付，每个结果都要能被别人检查。
+
+先写最小程序并用 go test 验证，再补 context、并发上限和错误传播。
+
+### 练习 1：建立心智模型（10 分钟）
+
+合上教程，用 3～5 句话回答：
+
+1. 「Go 微服务与可观测」解决了什么问题？
+2. 如果没有它，会出现什么具体后果？
+3. 它和「微服务」是什么关系？
+
+**验收标准**：至少出现一个本课关键词，并写出一个反例、边界条件或失效场景。
+
+### 练习 2：做一次可控实验（20 分钟）
+
+从正文中选一个最小示例，完成以下操作：
+
+1. 先预测修改一个参数、输入或步骤后的结果。
+2. 再实际执行或逐步推演，记录真实结果。
+3. 如果结果与预测不同，写出差异原因。
+
+**验收标准**：留下「原例 → 改动 → 预测 → 结果 → 原因」五步记录。
+
+### 练习 3：交付一个小结果（30 分钟）
+
+写一个可运行的小程序，并用 `go test` 或 `go vet` 验证结果。
+
+任务要求：
+
+- 结果必须能被别人检查，不能只写“我已经理解了”。
+- 至少覆盖「Go」和「微服务」两个关键词。
+- 写出 1 个仍然不确定的问题，以及下一步如何验证。
+
+> 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
+
+<!-- scaffold:v1 -->
+
+<!-- p2-enrichment:v1 -->
+
+## English Overview
+
+**Title:** Go Microservices
+
+**Summary:** Config, logging, metrics and graceful shutdown.
+
+**Category:** Go  
+**Level:** 基础  
+**Key terms:** Go, 微服务, Prometheus, OpenTelemetry, 优雅关闭
+
+> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
+
+## 内容元数据
+
+- 内容版本：v2.0
+- 最后更新：2026-10-03
+- 学习阶段：基础
+- 适用环境：Go 1.24+
+- 内容来源：内置结构化课程与工程实践整理
+- 相关主题：Go、微服务、Prometheus、OpenTelemetry、优雅关闭
+- 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
+
+<!-- p2-references:v1 -->
+
+## 参考资料与复核
+
+- 最后复核：2026-10-04
+- 下次复核：2027-04-04
+- 复核范围：版本兼容、API 行为、安全建议与工程实践
+- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+
+| 参考资料 | 本课用途 |
+| --- | --- |
+| [Go 官方文档](https://go.dev/doc/) | 语言、并发与工具链 |
+| [Go 标准库](https://pkg.go.dev/std) | 标准库 API |
+
+> 本课主题：配置校验、结构化日志、指标链路与优雅关闭。
+
+> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+

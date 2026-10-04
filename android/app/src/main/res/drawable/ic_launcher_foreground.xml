@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 自适应图标前景：白色尖括号标记，内容位于 66x66dp 安全区内 -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:pathData="M40.9,32.4 L26.1,52.1 L40.9,71.8"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="9.4"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:pathData="M62.2,30.7 L45.8,73.4"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="9.4"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M67.1,32.4 L81.9,52.1 L67.1,71.8"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="9.4"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+</vector>

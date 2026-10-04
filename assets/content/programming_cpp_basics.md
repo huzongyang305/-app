@@ -1,0 +1,464 @@
+# C++ 环境与编译流程
+
+![环境与编译流程](images/remaining_cpp_basics.webp)
+
+> 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：15 分钟
+
+## 学习目标
+
+- 能用自己的话解释「环境与编译流程」解决了什么问题，而不是只背术语。
+- 能说清 「C++」、「g++」、「编译」、「链接」 之间的关系，并分别举出一个例子。
+- 能把本课知识放回「C++」的知识体系，说明它和相邻主题的边界。
+- 能完成本课练习，并用验收标准检查自己的结果。
+
+> 一句话摘要：预处理 → 编译 → 汇编 → 链接，以及头文件与命名空间。
+
+## 前置知识
+
+- 会进行基本的文件、命令行或浏览器操作；遇到不熟悉的术语先查本课关键词。
+- 本课阶段：基础。建议会读写简单代码或命令，并理解变量、输入输出等基本概念。
+- 开始前先复习：C++、g++、编译。
+- 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
+
+
+## 从源码到可执行文件
+
+```text
+hello.cpp
+   ↓ 预处理（展开 #include、#define，生成 .i）
+   ↓ 编译（翻译成汇编，生成 .s）
+   ↓ 汇编（生成目标文件 .o / .obj）
+   ↓ 链接（合并目标文件与库，生成可执行文件）
+hello.exe
+```
+
+理解这条链路能解释很多问题：找不到函数定义是**链接错误**，语法问题是**编译错误**，宏展开异常则发生在**预处理**阶段。
+
+## 第一个程序
+
+```cpp
+#include <iostream>      // 输入输出流
+
+int main() {             // 程序入口，返回 int
+    std::cout << "Hello, C++!" << std::endl;
+    return 0;            // 0 表示正常退出
+}
+```
+
+编译运行：
+
+```bash
+g++ -std=c++20 -Wall -Wextra -O2 hello.cpp -o hello
+./hello
+
+clang++ -std=c++20 hello.cpp -o hello     # Clang
+cl /std:c++20 /EHsc hello.cpp             # MSVC
+```
+
+常用选项：`-std=` 指定标准，`-Wall -Wextra` 打开警告，`-O2` 优化，`-g` 生成调试信息。
+
+## 头文件与源文件
+
+```cpp
+// math_utils.h —— 声明
+#pragma once
+int add(int a, int b);
+
+// math_utils.cpp —— 定义
+#include "math_utils.h"
+int add(int a, int b) { return a + b; }
+
+// main.cpp
+#include <iostream>
+#include "math_utils.h"
+int main() { std::cout << add(1, 2); }
+```
+
+约定：**声明放头文件、定义放源文件**；头文件用 `#pragma once` 或 include guard 防止重复包含。
+
+## 命名空间与标准库
+
+```cpp
+#include <iostream>
+#include <string>
+
+namespace app {
+    std::string name = "demo";
+}
+
+int main() {
+    std::cout << app::name << '\n';
+    // 不推荐在头文件里写 using namespace std;
+}
+```
+
+## 常见坑
+
+1. `main` 忘记 `return` 时 C++ 会隐式返回 0，但其他有返回值的函数不写 `return` 是未定义行为。
+2. 头文件里定义全局变量会导致多重定义，应使用 `inline` 变量或 `extern` 声明。
+3. 未初始化的基本类型变量值是随机的，务必显式初始化。
+
+## 本课小结
+掌握「预处理 → 编译 → 汇编 → 链接」四步，再配合 `-Wall -Wextra`，能提前消灭大量问题。
+
+<!-- appendix:v1 -->
+
+## 编译流程速查
+
+| 阶段 | 输入 | 输出 | 常见问题 |
+| --- | --- | --- | --- |
+| 预处理 | `.cpp` + 头文件 | 展开后的源文件 | 宏定义错误、重复包含 |
+| 编译 | 预处理结果 | 汇编代码 | 语法错误、类型错误 |
+| 汇编 | 汇编代码 | 目标文件 `.o` | 少见 |
+| 链接 | 多个 `.o` + 库 | 可执行文件 | `undefined reference`、重复定义 |
+
+常用命令速查：
+
+| 目的 | 命令 |
+| --- | --- |
+| 一步编译 | `g++ -std=c++20 -Wall -Wextra -O2 main.cpp -o app` |
+| 只编译不链接 | `g++ -c main.cpp -o main.o` |
+| 多文件链接 | `g++ main.o util.o -o app` |
+| 带调试信息 | `g++ -g main.cpp -o app` |
+| 预处理后查看 | `g++ -E main.cpp \| less` |
+| 生成汇编 | `g++ -S main.cpp` |
+| 链接库 | `g++ main.cpp -lm -lpthread` |
+| 查看符号 | `nm -C app \| head` |
+| 查看动态依赖 | `ldd app` |
+| 反汇编 | `objdump -d -M intel app` |
+| 静态检查 | `clang-tidy main.cpp -- -std=c++20` |
+| 格式化 | `clang-format -i main.cpp` |
+
+## 头文件与工程组织速查
+
+```cpp
+// widget.h：声明放头文件，用 include guard 或 #pragma once 防重复包含
+#pragma once
+#include <string>
+
+class Widget {
+public:
+    explicit Widget(std::string name);
+    void draw() const;
+
+private:
+    std::string name_;
+};
+```
+
+```cpp
+// widget.cpp：实现放源文件
+#include "widget.h"
+#include <iostream>
+
+Widget::Widget(std::string name) : name_(std::move(name)) {}
+
+void Widget::draw() const {
+    std::cout << name_ << '\n';
+}
+```
+
+| 约定 | 说明 |
+| --- | --- |
+| 声明与实现分离 | 头文件放声明，源文件放实现 |
+| 头文件只包含必要内容 | 能用前置声明就少 `#include`，减少编译依赖 |
+| 使用 `#pragma once` | 简单可靠，主流编译器都支持 |
+| 命名空间 | 避免全局符号冲突，不使用 `using namespace std;` |
+| 编译选项 | 开发期 `-Wall -Wextra -Werror -g`，发布期 `-O2` |
+
+## 常见错误对照表
+
+| 报错信息 | 含义 | 处理方式 |
+| --- | --- | --- |
+| `fatal error: xxx.h: No such file or directory` | 头文件路径不对 | 用 `-I` 指定包含目录 |
+| `undefined reference to 'foo()'` | 声明有、实现缺失或没链接库 | 补实现或加库（注意库的顺序） |
+| `multiple definition of 'x'` | 同一符号被多次定义 | 变量声明放头文件用 `extern`，定义放源文件 |
+| `error: 'x' was not declared in this scope` | 未声明或未包含头文件 | 检查拼写、作用域与包含 |
+| `expected ';' after ...` | 语法错误 | 看行号与上一行是否漏分号 |
+| `redefinition of 'struct X'` | 头文件没防重复包含 | 加 `#pragma once` |
+| `invalid conversion from 'const char*' to 'char*'` | 字符串字面量是只读 | 用 `const char*` 或 `std::string` |
+| `warning: comparison of integer expressions of different signedness` | 有符号与无符号比较 | 统一类型，或用 `static_cast` 明确转换 |
+| 程序崩溃但编译通过 | 运行时错误 | 用 `-g` + gdb，或 ASan 定位 |
+
+## 自测清单
+
+- [ ] 能说清「预处理、编译、汇编、链接」四个阶段。
+- [ ] 会用 `-c` 分离编译，再统一链接。
+- [ ] 知道 `undefined reference` 属于链接错误。
+- [ ] 头文件用 `#pragma once`，声明与实现分离。
+- [ ] 开发期打开 `-Wall -Wextra`，调试期加 `-g`。
+
+<!-- appendix:v2 -->
+
+## 零基础详解：C++ 程序从一行文字变成可执行文件
+
+### 一句话说清它是什么
+
+C++ 是**编译型**语言：你写的源码要先整体「翻译」成机器码，才能运行。
+好处是运行快、控制力强；代价是必须先过编译这一关，语法错误藏不住。
+
+### 用生活比喻理解编译过程
+
+| 阶段 | 比喻 | 实际做了什么 |
+| --- | --- | --- |
+| 预处理 | 把参考资料剪贴进正文 | 展开 `#include`、`#define` |
+| 编译 | 把中文翻成英文 | 源码 → 汇编代码，检查语法 |
+| 汇编 | 排成机器能读的格式 | 汇编码 → 目标文件 `.o` |
+| 链接 | 把各章装订成一本书 | 合并目标文件与库，生成可执行文件 |
+
+一句话记忆：**编译管语法，链接管「这个人到底在不在」**。
+
+### 逐行拆解第一个程序
+
+```cpp
+#include <iostream>          // 引入输入输出库
+
+int main() {                 // 程序入口，必须有且只有一个
+    std::cout << "Hello\n";  // 向屏幕输出
+    return 0;                // 返回 0 表示正常结束
+}
+```
+
+| 行 | 代码 | 在做什么 | 为什么这么写 |
+| --- | --- | --- | --- |
+| 1 | `#include <iostream>` | 告诉编译器「我要用输入输出」 | 这是预处理指令，行尾不加分号 |
+| 3 | `int main()` | 定义程序入口 | 操作系统从这个函数开始执行 |
+| 4 | `std::cout << ...` | 把内容送到标准输出 | `<<` 的方向就是「数据流向屏幕」 |
+| 4 | `"Hello\n"` | 字符串里的 `\n` 是换行 | 不加 `\n` 输出会和后面连在一起 |
+| 5 | `return 0;` | 告诉系统程序正常结束 | 每个语句都要分号 |
+
+### 编译运行的实际命令
+
+```bash
+g++ -std=c++20 -Wall -Wextra -O2 hello.cpp -o hello
+./hello
+```
+
+| 参数 | 作用 |
+| --- | --- |
+| `-std=c++20` | 使用 C++20 标准，避免用到过时写法 |
+| `-Wall -Wextra` | 打开常见警告，很多 bug 在这里就被拦住 |
+| `-O2` | 开启优化，发布版本常用 |
+| `-o hello` | 指定生成的可执行文件名 |
+
+### 新手最容易踩的八个坑
+
+| 坑 | 现象 | 正确做法 |
+| --- | --- | --- |
+| 忘写分号 | 报错常常指向**下一行** | 看报错行号的上一行 |
+| 用了中文标点 | 一堆莫名其妙的语法错误 | 括号、分号、逗号一律用英文半角 |
+| 变量未初始化 | 输出随机值 | 定义时就给初值 `int n = 0;` |
+| 忘写 `#include` | 提示找不到 `std::cout` | 按需包含对应头文件 |
+| 只有声明没有定义 | `undefined reference` 链接错误 | 补上函数实现，或把 `.cpp` 一起编译 |
+| 头文件重复包含 | `redefinition` 重定义 | 头文件加 `#pragma once` |
+| 整数除法 | `5 / 2` 得到 `2` | 想要小数先转 `double` |
+| 数组越界 | 有时正常有时乱码 | 用 `std::vector` 加 `at()` 或边界检查 |
+
+### 三类错误要会区分
+
+| 错误类型 | 出现阶段 | 典型信息 | 说明 |
+| --- | --- | --- | --- |
+| 编译错误 | 编译 | `expected ';'` | 语法写错，最容易修 |
+| 链接错误 | 链接 | `undefined reference to` | 函数声明了但找不到实现 |
+| 运行时错误 | 运行 | 崩溃、乱码 | 越界、空指针、未初始化，最难查 |
+
+### 手把手练习：输入两个数，输出四则运算结果
+
+```cpp
+#include <iomanip>
+#include <iostream>
+
+int main() {
+    double a = 0, b = 0;
+    std::cout << "请输入两个数：";
+    if (!(std::cin >> a >> b)) {
+        std::cout << "输入不是数字\n";
+        return 1;
+    }
+    if (b == 0) {
+        std::cout << "除数不能为 0\n";
+        return 1;
+    }
+    std::cout << std::fixed << std::setprecision(2)
+              << "和=" << a + b << " 差=" << a - b
+              << " 积=" << a * b << " 商=" << a / b << '\n';
+    return 0;
+}
+```
+
+### 学完自测
+
+- [ ] 能按顺序说出预处理、编译、汇编、链接四步。
+- [ ] 能解释编译错误和链接错误的区别。
+- [ ] 知道 `main` 的返回值代表什么。
+- [ ] 能说出三个必须加分号的位置。
+- [ ] 能独立用 `g++` 编译并运行一个源文件。
+
+## 动手练习
+
+<!-- practice-diversified:v1 -->
+
+> 本课练习重点：围绕「C++、g++、编译」完成复述、实验和交付，每个结果都要能被别人检查。
+
+先开启警告编译最小程序，再验证内存与边界，最后用 Sanitizer 跑一遍。
+
+### 练习 1：建立心智模型（10 分钟）
+
+合上教程，用 3～5 句话回答：
+
+1. 「环境与编译流程」解决了什么问题？
+2. 如果没有它，会出现什么具体后果？
+3. 它和「g++」是什么关系？
+
+**验收标准**：至少出现一个本课关键词，并写出一个反例、边界条件或失效场景。
+
+### 练习 2：做一次可控实验（20 分钟）
+
+从正文中选一个最小示例，完成以下操作：
+
+1. 先预测修改一个参数、输入或步骤后的结果。
+2. 再实际执行或逐步推演，记录真实结果。
+3. 如果结果与预测不同，写出差异原因。
+
+**验收标准**：留下「原例 → 改动 → 预测 → 结果 → 原因」五步记录。
+
+### 练习 3：交付一个小结果（30 分钟）
+
+写一个可独立编译的小程序，开启 `-Wall -Wextra`，确保没有警告。
+
+任务要求：
+
+- 结果必须能被别人检查，不能只写“我已经理解了”。
+- 至少覆盖「C++」和「g++」两个关键词。
+- 写出 1 个仍然不确定的问题，以及下一步如何验证。
+
+> 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
+
+<!-- scaffold:v1 -->
+
+<!-- p2-enrichment:v1 -->
+
+## English Overview
+
+**Title:** Build Pipeline
+
+**Summary:** Preprocess, compile, assemble, link; headers and namespaces.
+
+**Category:** C++  
+**Level:** 基础  
+**Key terms:** C++, g++, 编译, 链接, 头文件, namespace
+
+> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
+
+## 内容元数据
+
+- 内容版本：v2.0
+- 最后更新：2026-10-03
+- 学习阶段：基础
+- 适用环境：C++20 / GCC 13+ 或 Clang 17+
+- 内容来源：内置结构化课程与工程实践整理
+- 相关主题：C++、g++、编译、链接、头文件、namespace
+- 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
+
+<!-- full-english-guide:v1 -->
+
+## Full English Study Guide
+
+### Overview
+
+**Build Pipeline** focuses on Preprocess, compile, assemble, link; headers and namespaces.
+
+### Learning Outcomes
+
+- Explain what **Build Pipeline** solves and when it should be used.
+- Identify inputs, outputs, state and failure boundaries.
+- Build a minimal reproducible example and observe the real result.
+- Test normal, boundary and failure paths.
+- Measure performance, resource cost or security impact before optimizing.
+- Document the decision, rollback path and remaining uncertainty.
+
+### Core Mental Model
+
+1. **Problem first:** define the exact problem before choosing a tool or pattern.
+2. **Smallest example:** reduce the system to one input and one observable output.
+3. **State and flow:** trace how data, control or responsibility moves through the system.
+4. **Boundaries:** identify invalid input, resource limits, timeouts and permission edges.
+5. **Evidence:** use tests, logs, metrics or reproductions instead of intuition.
+6. **Trade-offs:** compare correctness, latency, cost, complexity and operability.
+
+### Step-by-step Study Plan
+
+1. Read the Chinese lesson once and write down the main problem in one sentence.
+2. Run the smallest example and save the exact command and output.
+3. Change only one input or parameter and predict the result before running it.
+4. Introduce one failure and record how the system detects, reports and recovers.
+5. Write one test or checklist item for the normal, boundary and failure paths.
+6. Complete the quiz and explain every wrong answer in your own words.
+
+### Practice Tasks
+
+- Rebuild the minimal example from an empty directory.
+- Add one boundary test and one failure test.
+- Produce a short report containing the baseline, change, result and rollback.
+
+### Common Failure Modes
+
+- Treating a happy-path demo as production readiness.
+- Skipping boundary values and invalid inputs.
+- Optimizing before establishing a measurable baseline.
+- Hiding errors, permissions or resource limits.
+
+### Self-check Questions
+
+1. What is the smallest observable result that proves this lesson works?
+2. What input or state is most likely to break it?
+3. Which metric or test would reveal a regression?
+4. What is the rollback path?
+5. What is the cost of using this approach at 10x scale?
+6. Which adjacent topic is most often confused with this one?
+
+### Glossary
+
+- Topic: **Build Pipeline**
+- Related terms: C++, g++, 编译, 链接
+- Primary evidence: command output, tests, logs, metrics or reproductions
+
+> This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
+
+<!-- bilingual-outline:v1 -->
+
+## Bilingual Section Outline
+
+| 中文小节 | English section |
+| --- | --- |
+| 学习目标 | Learning Objectives |
+| 前置知识 | Pre-knowledge |
+| 从源码到可执行文件 | From source to executable |
+| 第一个程序 | First program |
+| 头文件与源文件 | Header and Source Files |
+| 命名空间与标准库 | Namespaces and Standard Libraries |
+| 常见坑 | Common pits |
+| 本课小结 | Lesson Summary |
+| 编译流程速查 | Quick Look at the Compilation Process |
+| 头文件与工程组织速查 | Head Documents and Engineering Organization Quick Look |
+
+> 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
+
+<!-- p2-references:v1 -->
+
+## 参考资料与复核
+
+- 最后复核：2026-10-04
+- 下次复核：2027-04-04
+- 复核范围：版本兼容、API 行为、安全建议与工程实践
+- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+
+| 参考资料 | 本课用途 |
+| --- | --- |
+| [C++ 标准库参考](https://en.cppreference.com/w/cpp) | 语言、标准库与并发 |
+| [ISO C++](https://isocpp.org/) | 标准动态、指南与最佳实践 |
+
+> 本课主题：预处理 → 编译 → 汇编 → 链接，以及头文件与命名空间。
+
+> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+

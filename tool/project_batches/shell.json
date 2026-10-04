@@ -1,0 +1,163 @@
+{
+  "category": "shell",
+  "lessons": [
+    {
+      "id": "shell_project_deploy",
+      "title": {
+        "zh": "实战：Shell 零停机部署脚本",
+        "en": "Project: Zero-Downtime Shell Deployment"
+      },
+      "summary": {
+        "zh": "用 Bash 实现构建、切换、健康检查和自动回滚的部署脚本。",
+        "en": "Build a deployment script with health checks and rollback."
+      },
+      "file": "assets/content/shell_project_deploy.md",
+      "minutes": 100,
+      "keywords": [
+        "Bash",
+        "部署",
+        "健康检查",
+        "回滚",
+        "幂等"
+      ],
+      "difficulty": "高级",
+      "order": 14,
+      "quiz": [
+        {
+          "question": "set -euo pipefail 的作用是什么？",
+          "options": [
+            "命令失败、未定义变量和管道错误都能被发现",
+            "自动加密",
+            "提升网速",
+            "生成文档"
+          ],
+          "answer": 0,
+          "explanation": "严格模式让脚本尽早失败，避免带着错误继续执行。"
+        },
+        {
+          "question": "为什么用软链接切换版本？",
+          "options": [
+            "原子切换且保留旧版本",
+            "减少磁盘",
+            "替代健康检查",
+            "加密文件"
+          ],
+          "answer": 0,
+          "explanation": "软链接切换是原子操作，旧版本保留便于回滚。"
+        },
+        {
+          "question": "部署脚本为什么需要锁？",
+          "options": [
+            "防止并发部署互相覆盖",
+            "减少日志",
+            "加速网络",
+            "替代测试"
+          ],
+          "answer": 0,
+          "explanation": "锁能保证同一时刻只有一个部署流程操作线上目录。"
+        },
+        {
+          "question": "健康检查失败后应该怎么做？",
+          "options": [
+            "自动回滚并再次检查",
+            "继续发布",
+            "删除日志",
+            "重启机器"
+          ],
+          "answer": 0,
+          "explanation": "回滚后仍需验证服务恢复，避免二次故障。"
+        },
+        {
+          "question": "shellcheck 的价值是什么？",
+          "options": [
+            "静态发现常见 Shell 错误",
+            "自动写业务逻辑",
+            "压缩图片",
+            "管理数据库"
+          ],
+          "answer": 0,
+          "explanation": "shellcheck 能发现引号、变量和命令组合等常见陷阱。"
+        }
+      ]
+    },
+    {
+      "id": "shell_project_log_analysis",
+      "title": {
+        "zh": "实战：Shell 日志分析与告警",
+        "en": "Project: Shell Log Analysis and Alerting"
+      },
+      "summary": {
+        "zh": "用 awk、grep、jq 和 cron 实现日志聚合、阈值告警与日报。",
+        "en": "Build log aggregation and alerting with Shell tools."
+      },
+      "file": "assets/content/shell_project_log_analysis.md",
+      "minutes": 90,
+      "keywords": [
+        "awk",
+        "jq",
+        "日志分析",
+        "告警",
+        "cron"
+      ],
+      "difficulty": "高级",
+      "order": 15,
+      "quiz": [
+        {
+          "question": "awk 最适合处理什么任务？",
+          "options": [
+            "按字段流式过滤和聚合",
+            "渲染网页",
+            "编译 C++",
+            "管理容器"
+          ],
+          "answer": 0,
+          "explanation": "awk 擅长按列处理文本并计算聚合值。"
+        },
+        {
+          "question": "为什么日志分析要流式处理？",
+          "options": [
+            "避免把大文件全部读入内存",
+            "提升颜色",
+            "减少字段",
+            "替代排序"
+          ],
+          "answer": 0,
+          "explanation": "流式管道的内存占用稳定，适合大日志。"
+        },
+        {
+          "question": "空日志时最先要避免什么？",
+          "options": [
+            "除零错误",
+            "网络请求",
+            "权限提升",
+            "文件编码"
+          ],
+          "answer": 0,
+          "explanation": "计算比率前必须检查总数，否则脚本会失败。"
+        },
+        {
+          "question": "日报文件为什么要原子替换？",
+          "options": [
+            "避免读者看到半成品",
+            "减少磁盘",
+            "替代锁",
+            "加密内容"
+          ],
+          "answer": 0,
+          "explanation": "先写临时文件再 rename，保证文件要么完整要么不存在。"
+        },
+        {
+          "question": "日志轮转对脚本有什么影响？",
+          "options": [
+            "文件可能被重命名或截断",
+            "日志格式自动改变",
+            "时间时区消失",
+            "awk 失效"
+          ],
+          "answer": 0,
+          "explanation": "脚本需要处理轮转边界，避免漏读或重复读取。"
+        }
+      ]
+    }
+  ]
+}

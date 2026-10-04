@@ -1,0 +1,384 @@
+# Socket 编程实战
+
+![Socket 编程实战](images/remaining_socket_programming.webp)
+
+> 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟
+
+## 学习目标
+
+- 能用自己的话解释「Socket 编程实战」解决了什么问题，而不是只背术语。
+- 能说清 「Socket」、「TCP」、「粘包」、「epoll」 之间的关系，并分别举出一个例子。
+- 能把本课知识放回「网络」的知识体系，说明它和相邻主题的边界。
+- 能完成本课练习，并用验收标准检查自己的结果。
+
+> 一句话摘要：TCP 服务端流程、IO 模型、粘包处理与连接管理。
+
+## 前置知识
+
+- 先完成上一课《网络攻击与防护》；如果已经掌握，可以直接用本课练习自测。
+- 本课阶段：高级。建议具备同一方向的完整基础，能阅读较长的代码、配置或系统设计说明。
+- 开始前先复习：Socket、TCP、粘包。
+- 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
+
+
+## TCP 服务端的标准流程
+
+```text
+socket() → bind() → listen() → accept() → recv()/send() → close()
+客户端：socket() → connect() → send()/recv() → close()
+```
+
+`listen` 的 backlog 是已完成三次握手但尚未被 accept 的队列上限，过小会在高并发下丢连接；`accept` 返回的是新连接套接字，监听套接字继续接收新连接。
+
+## 阻塞、非阻塞与多路复用
+
+| 模型 | 特点 | 适用 |
+| --- | --- | --- |
+| 阻塞 IO | 一连接一线程，编程简单 | 低并发 |
+| 非阻塞 + 轮询 | 不阻塞但空转浪费 CPU | 少见 |
+| IO 多路复用 | epoll/kqueue 统一等待，事件驱动 | 高并发主流 |
+| 异步 IO | 内核完成读写后回调 | io_uring 等 |
+
+边缘触发（ET）必须循环读到 EAGAIN，水平触发（LT）可只读一次；ET 性能更好但更容易写错。
+
+## 粘包与拆包
+
+TCP 是字节流，没有消息边界。三种拆包方案：
+
+1. **长度前缀**（最常用）：先读 4 字节长度，再读正文。
+2. **分隔符**：如换行分隔，正文需转义。
+3. **定长消息**：实现简单但不灵活。
+
+写代码时必须处理「读到的字节数少于期望」的情况，循环读满为止，并设置总超时防止恶意连接拖死线程。
+
+## 常用套接字选项
+
+| 选项 | 作用 |
+| --- | --- |
+| TCP_NODELAY | 关闭 Nagle 算法，降低小包延迟 |
+| SO_REUSEADDR | 快速重启时复用端口 |
+| SO_KEEPALIVE | 探测死连接（周期长，通常配合应用层心跳） |
+| SO_RCVBUF / SO_SNDBUF | 调整缓冲区大小影响吞吐 |
+| SO_LINGER | 控制关闭时是否等待发送完 |
+
+## 连接管理实践
+
+1. 客户端使用**连接池**，避免大量 TIME_WAIT 与握手开销。
+2. 应用层心跳 + 超时断连，及时发现半开连接。
+3. 设置读写超时，避免线程被慢客户端长期占用。
+4. 慢客户端要有背压：发送队列满则断开或降级。
+5. 优雅关闭：先停止接收新请求，处理完在途请求再关闭。
+
+## 本课小结
+Socket 编程的难点不在 API，而在**边界与生命周期**：消息怎么定界、连接何时超时、异常如何收敛、资源怎样释放。
+
+<!-- appendix:v1 -->
+
+## 常用选项速查
+
+| 选项 | 作用 |
+| --- | --- |
+| `SO_REUSEADDR` | 允许复用处于 TIME_WAIT 的端口，便于快速重启 |
+| `SO_REUSEPORT` | 多进程监听同一端口做负载均衡（Linux） |
+| `SO_KEEPALIVE` | 开启 TCP 保活探测（默认 2 小时，通常需调） |
+| `TCP_NODELAY` | 关闭 Nagle 算法，降低小包延迟 |
+| `TCP_CORK` | 尽量聚合小包后一次发送（与 NODELAY 相反） |
+| `SO_RCVBUF` / `SO_SNDBUF` | 收发缓冲区大小 |
+| `TCP_QUICKACK` | 立即确认，降低延迟 |
+| `SO_LINGER` | 控制 close 行为（慎用，可能产生 RST） |
+
+## 粘包与半包速查
+
+| 方案 | 说明 | 适用 |
+| --- | --- | --- |
+| 固定长度 | 每帧长度固定 | 定长协议 |
+| 分隔符 | 如换行、`\r\n` | 文本协议 |
+| 长度前缀 | 前 4 字节表示长度 | 二进制协议，最通用 |
+| 自描述格式 | Protobuf、MessagePack 自带结构 | RPC |
+
+注意：TCP 是字节流，没有消息边界；UDP 有数据报边界但会丢包与乱序。
+
+```python
+import socket
+import struct
+import threading
+
+def send_message(sock: socket.socket, payload: bytes) -> None:
+    """长度前缀协议：4 字节大端长度 + 内容。"""
+    sock.sendall(struct.pack("!I", len(payload)) + payload)
+
+
+def recv_exactly(sock: socket.socket, size: int) -> bytes:
+    """读取恰好 size 字节，处理半包。"""
+    chunks, remaining = [], size
+    while remaining > 0:
+        chunk = sock.recv(remaining)
+        if not chunk:
+            raise ConnectionError("连接已关闭")
+        chunks.append(chunk)
+        remaining -= len(chunk)
+    return b"".join(chunks)
+
+
+def recv_message(sock: socket.socket) -> bytes:
+    """按长度前缀读取一条完整消息。"""
+    header = recv_exactly(sock, 4)
+    (length,) = struct.unpack("!I", header)
+    if length > 8 * 1024 * 1024:
+        raise ValueError("消息过大，拒绝处理")
+    return recv_exactly(sock, length)
+
+
+def start_echo_server(host="127.0.0.1", port=0, backlog=128):
+    """带 backlog 与超时的最小服务端，返回监听端口。"""
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    server.bind((host, port))
+    server.listen(backlog)
+    bound_port = server.getsockname()[1]
+
+    def serve():
+        conn, _ = server.accept()
+        with conn:
+            conn.settimeout(5)
+            data = recv_message(conn)
+            send_message(conn, data.upper())
+        server.close()
+
+    threading.Thread(target=serve, daemon=True).start()
+    return bound_port
+
+
+port = start_echo_server()
+client = socket.create_connection(("127.0.0.1", port), timeout=3)
+try:
+    send_message(client, b"hello socket")
+    print(recv_message(client))
+finally:
+    client.close()
+```
+
+## IO 多路复用速查
+
+| 机制 | 复杂度 | 特点 |
+| --- | --- | --- |
+| `select` | O(n) | 有 FD 数量上限，跨平台 |
+| `poll` | O(n) | 无上限，仍要遍历 |
+| `epoll`（Linux） | O(1) 事件就绪 | 水平与边缘触发，适合高并发 |
+| `kqueue`（BSD/macOS） | O(1) | 功能类似 epoll |
+| IOCP（Windows） | 完成通知 | 真正的异步 IO 模型 |
+
+边缘触发（ET）必须一次读到 `EAGAIN`，否则事件不再通知；水平触发（LT）未读完会持续通知，更容易写对。
+
+## 常见错误对照表
+
+| 容易踩的做法 | 实际现象 | 原因与正确做法 |
+| --- | --- | --- |
+| 认为一次 `recv` 能拿到完整消息 | 偶发解析失败 | TCP 是字节流，必须处理半包 |
+| 用 `send` 不检查返回值 | 数据被截断 | 用 `sendall` 或循环发送 |
+| 忘记设置超时 | 请求永久挂起 | 设置连接与读写超时 |
+| 无长度上限 | 被超大消息打爆内存 | 校验长度并设上限 |
+| ET 模式只读一次 | 数据滞留、连接假死 | 循环读到 `EAGAIN` |
+| 忘记关闭连接 | 句柄泄漏 | `with` 或 `finally` 关闭 |
+| 不做心跳 | 半开连接长期占用 | 应用层心跳 + 超时回收 |
+| 多进程监听同一端口用 REUSEADDR | 仍只有一个进程收到连接 | 用 `SO_REUSEPORT` |
+| 盲目开启 `SO_LINGER=0` | 直接发 RST，对端丢失数据 | 一般保持默认关闭流程 |
+| 忽视字节序 | 跨平台解析错误 | 网络字节序统一用大端 |
+
+## 自测清单
+
+- [ ] 能实现长度前缀协议并正确处理半包。
+- [ ] 所有连接都有超时与大小上限。
+- [ ] 知道 `SO_REUSEADDR` 与 `SO_REUSEPORT` 的区别。
+- [ ] 理解 ET 与 LT 的差异及 ET 的读法要求。
+- [ ] 会用连接池或长连接减少握手开销。
+
+## 动手练习
+
+<!-- practice-diversified:v1 -->
+
+> 本课练习重点：围绕「Socket、TCP、粘包」完成复述、实验和交付，每个结果都要能被别人检查。
+
+先抓一次真实请求或画出协议交互，再注入延迟或丢包，最后解释每层变化。
+
+### 练习 1：建立心智模型（10 分钟）
+
+合上教程，用 3～5 句话回答：
+
+1. 「Socket 编程实战」解决了什么问题？
+2. 如果没有它，会出现什么具体后果？
+3. 它和「TCP」是什么关系？
+
+**验收标准**：至少出现一个本课关键词，并写出一个反例、边界条件或失效场景。
+
+### 练习 2：做一次可控实验（20 分钟）
+
+从正文中选一个最小示例，完成以下操作：
+
+1. 先预测修改一个参数、输入或步骤后的结果。
+2. 再实际执行或逐步推演，记录真实结果。
+3. 如果结果与预测不同，写出差异原因。
+
+**验收标准**：留下「原例 → 改动 → 预测 → 结果 → 原因」五步记录。
+
+### 练习 3：交付一个小结果（30 分钟）
+
+画出一张报文或时序图，标出每一跳的地址、协议、状态和可能失败点。
+
+任务要求：
+
+- 结果必须能被别人检查，不能只写“我已经理解了”。
+- 至少覆盖「Socket」和「TCP」两个关键词。
+- 写出 1 个仍然不确定的问题，以及下一步如何验证。
+
+> 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
+
+<!-- scaffold:v1 -->
+
+<!-- project-verification:v1 -->
+
+## 验证命令与预期输出
+
+项目代码不能只看“能编译”，还要能按固定命令复现结果。下表给出最低验证集：
+
+| 阶段 | 命令 | 预期输出 |
+| --- | --- | --- |
+| 安装依赖 | `python -m pip install -r requirements.txt` | 依赖安装完成，没有版本冲突 |
+| 语法检查 | `python -m compileall .` | 所有模块编译通过 |
+| 运行测试 | `python -m pytest -q` | 测试全部通过，失败用例数为 0 |
+| 启动示例 | `python main.py` | 服务启动并输出监听地址 |
+
+### 验收证据
+
+- [ ] 保存依赖安装和启动命令的完整输出。
+- [ ] 至少运行 3 条测试，其中包含一条非法输入或失败路径。
+- [ ] 重复执行同一操作两次，确认没有重复写入或副作用。
+- [ ] 记录一次失败状态码、错误日志和恢复步骤。
+- [ ] 在 README 中写明环境版本、启动方式和回滚方式。
+
+### 回归与回滚
+
+1. 先在一个可丢弃的目录或临时数据库执行，避免污染真实数据。
+2. 修改一处逻辑后重跑全部验证命令，确认没有回归。
+3. 若失败，回滚到上一个可运行版本并保留失败日志。
+4. 定位原因后补一条自动化测试，再重新执行发布流程。
+5. 把教训写入项目复盘或本课笔记，形成下一次的检查项。
+
+<!-- p2-enrichment:v1 -->
+
+## English Overview
+
+**Title:** Socket Programming
+
+**Summary:** TCP server flow, IO models, framing and connection management.
+
+**Category:** Networking  
+**Level:** 高级  
+**Key terms:** Socket, TCP, 粘包, epoll, 连接池
+
+> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
+
+## 内容元数据
+
+- 内容版本：v2.0
+- 最后更新：2026-10-03
+- 学习阶段：高级
+- 适用环境：TCP/IP、HTTP/2、HTTP/3 与现代网络栈
+- 内容来源：内置结构化课程与工程实践整理
+- 相关主题：Socket、TCP、粘包、epoll、连接池
+- 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
+
+## 项目专属规格：Socket 编程实战
+
+### 核心场景
+
+TCP 服务端流程、IO 模型、粘包处理与连接管理。 项目目标是把「Socket、TCP、粘包、epoll、连接池」落实为可运行、可测试、可回滚的交付物。
+
+### 架构与数据流
+
+```text
+用户/输入 → 接口或命令 → 领域逻辑 → 存储/外部依赖 → 输出与监控
+                         ↘ 失败分类 → 重试/补偿 → 回滚
+```
+
+### 最小数据模型
+
+| 对象 | 关键字段 | 约束 |
+| --- | --- | --- |
+| 输入实体 | Socket、时间、来源 | 必填校验、长度限制、幂等键 |
+| 任务实体 | 状态、优先级、创建时间 | 状态迁移合法、不可重复执行 |
+| 结果实体 | 输出、错误码、耗时 | 可序列化、错误可解释 |
+| 审计记录 | 操作者、动作、结果、时间 | 不可篡改、可查询、脱敏 |
+
+### 验收场景
+
+1. 正常路径：最小输入得到预期输出，并留下日志与指标。
+2. 边界路径：空值、最大值、重复数据和超长内容得到明确处理。
+3. 失败路径：依赖超时或不可用时能快速失败、重试或降级。
+4. 幂等路径：同一请求执行两次不会产生重复副作用。
+5. 回滚路径：回滚后数据一致，且能说明恢复时间和影响范围。
+
+<!-- project-delivery:v1 -->
+
+## 项目交付物
+
+### 建议仓库结构
+
+```text
+src/
+tests/
+docs/
+README.md
+```
+
+### 测试矩阵
+
+| 层级 | 覆盖内容 | 最低数量 | 通过标准 |
+| --- | --- | ---: | --- |
+| 单元测试 | 领域规则、边界和错误分类 | 8 | 正常、边界、失败路径全部通过 |
+| 集成测试 | 数据库、网络、文件或平台边界 | 3 | 使用真实边界且可重复运行 |
+| 端到端测试 | 核心用户路径 | 1 | 从输入到输出完整跑通 |
+| 手动验收 | 文档中列出的 5 个场景 | 5 | 有命令、输出和结论记录 |
+
+### 验收数据
+
+```json
+{
+  "project": "socket_programming",
+  "input": {"case": "normal", "value": 5},
+  "expected": {"ok": true, "result": 5},
+  "failure_case": {"value": -1, "error": "validation_error"},
+  "idempotency_key": "demo-001"
+}
+```
+
+### 复盘模板
+
+| 问题 | 记录 |
+| --- | --- |
+| 原目标是什么？ | 用一句话描述可验收目标 |
+| 实际发生了什么？ | 时间线、指标和关键日志 |
+| 哪个假设被推翻？ | 根因与促成因素 |
+| 如何回滚？ | 步骤、耗时和数据校验 |
+| 下一步做什么？ | 负责人、期限和验证方式 |
+
+> 项目验收围绕「Socket、TCP、粘包」：至少完成一次正常路径、一次边界输入、一次失败恢复和一次幂等检查。
+
+<!-- p2-references:v1 -->
+
+## 参考资料与复核
+
+- 最后复核：2026-10-04
+- 下次复核：2027-04-04
+- 复核范围：版本兼容、API 行为、安全建议与工程实践
+- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+
+| 参考资料 | 本课用途 |
+| --- | --- |
+| [RFC Editor](https://www.rfc-editor.org/) | 互联网协议标准 |
+| [MDN HTTP](https://developer.mozilla.org/docs/Web/HTTP) | HTTP 语义与浏览器行为 |
+
+> 本课主题：TCP 服务端流程、IO 模型、粘包处理与连接管理。
+
+> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+

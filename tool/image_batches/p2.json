@@ -1,0 +1,474 @@
+{
+  "ai_mcp": {
+    "image": "images/lesson_ai_mcp.png",
+    "alt": "MCP 模型上下文协议"
+  },
+  "ai_a2a": {
+    "image": "images/lesson_ai_a2a.png",
+    "alt": "A2A Agent 协作协议"
+  },
+  "ai_context_engineering": {
+    "image": "images/lesson_ai_context_engineering.png",
+    "alt": "上下文工程"
+  },
+  "ai_tool_calling": {
+    "image": "images/lesson_ai_tool_calling.png",
+    "alt": "工具调用与结构化输出"
+  },
+  "ai_computer_use": {
+    "image": "images/lesson_ai_computer_use.png",
+    "alt": "Computer Use 与桌面自动化"
+  },
+  "ai_browser_agent": {
+    "image": "images/lesson_ai_browser_agent.png",
+    "alt": "浏览器 Agent"
+  },
+  "ai_coding_agent": {
+    "image": "images/lesson_ai_coding_agent.png",
+    "alt": "代码 Agent 与软件工程自动化"
+  },
+  "ai_agent_security": {
+    "image": "images/lesson_ai_agent_security.png",
+    "alt": "Agent 安全、权限与沙箱"
+  },
+  "ai_guardrails": {
+    "image": "images/lesson_ai_guardrails.png",
+    "alt": "安全护栏与内容审核"
+  },
+  "ai_graphrag": {
+    "image": "images/lesson_ai_graphrag.png",
+    "alt": "GraphRAG 与知识图谱检索"
+  },
+  "ai_vlm": {
+    "image": "images/lesson_ai_vlm.png",
+    "alt": "视觉语言模型 VLM"
+  },
+  "ai_diffusion": {
+    "image": "images/lesson_ai_diffusion.png",
+    "alt": "扩散模型与图像生成"
+  },
+  "ai_realtime_api": {
+    "image": "images/lesson_ai_realtime_api.png",
+    "alt": "Realtime API 与语音交互"
+  },
+  "ai_model_serving": {
+    "image": "images/lesson_ai_model_serving.png",
+    "alt": "大模型推理服务与 GPU 优化"
+  },
+  "ai_governance": {
+    "image": "images/lesson_ai_governance.png",
+    "alt": "AI 治理、合规与风险"
+  },
+  "c_basics": {
+    "image": "images/lesson_c_basics.png",
+    "alt": "C 基础语法与编译流程"
+  },
+  "c_types": {
+    "image": "images/lesson_c_types.png",
+    "alt": "C 类型、运算符与转换"
+  },
+  "c_control_functions": {
+    "image": "images/lesson_c_control_functions.png",
+    "alt": "C 控制流、函数与作用域"
+  },
+  "c_pointers": {
+    "image": "images/lesson_c_pointers.png",
+    "alt": "C 指针与内存模型"
+  },
+  "c_arrays_strings": {
+    "image": "images/lesson_c_arrays_strings.png",
+    "alt": "C 数组、字符串与缓冲区"
+  },
+  "c_structs": {
+    "image": "images/lesson_c_structs.png",
+    "alt": "C 结构体、联合体与内存布局"
+  },
+  "c_preprocessor": {
+    "image": "images/lesson_c_preprocessor.png",
+    "alt": "C 预处理、宏与头文件"
+  },
+  "c_files": {
+    "image": "images/lesson_c_files.png",
+    "alt": "C 文件、错误处理与资源管理"
+  },
+  "c_debugging": {
+    "image": "images/lesson_c_debugging.png",
+    "alt": "C 调试、Sanitizer 与性能"
+  },
+  "c_project": {
+    "image": "images/lesson_c_project.png",
+    "alt": "实战：C 命令行任务管理器"
+  },
+  "algo_shortest_paths": {
+    "image": "images/lesson_algo_shortest_paths.png",
+    "alt": "最短路算法专题"
+  },
+  "algo_mst": {
+    "image": "images/lesson_algo_mst.png",
+    "alt": "最小生成树与图剪枝"
+  },
+  "algo_topological": {
+    "image": "images/lesson_algo_topological.png",
+    "alt": "拓扑排序与 DAG 应用"
+  },
+  "algo_np_approximation": {
+    "image": "images/lesson_algo_np_approximation.png",
+    "alt": "NP 完全性与近似算法"
+  },
+  "algo_computational_geometry": {
+    "image": "images/lesson_algo_computational_geometry.png",
+    "alt": "计算几何基础"
+  },
+  "algo_persistent_parallel": {
+    "image": "images/lesson_algo_persistent_parallel.png",
+    "alt": "持久化数据结构与并行算法"
+  },
+  "db_postgresql_deep": {
+    "image": "images/lesson_db_postgresql_deep.png",
+    "alt": "PostgreSQL 深入实践"
+  },
+  "db_graph": {
+    "image": "images/lesson_db_graph.png",
+    "alt": "图数据库与关系查询"
+  },
+  "db_time_series": {
+    "image": "images/lesson_db_time_series.png",
+    "alt": "时序数据库与监控数据"
+  },
+  "db_migration_governance": {
+    "image": "images/lesson_db_migration_governance.png",
+    "alt": "数据库迁移与 Schema 治理"
+  },
+  "db_permissions_security": {
+    "image": "images/lesson_db_permissions_security.png",
+    "alt": "数据库权限与安全"
+  },
+  "db_backup_recovery": {
+    "image": "images/lesson_db_backup_recovery.png",
+    "alt": "数据库备份与恢复演练"
+  },
+  "fundamentals_pipeline": {
+    "image": "images/lesson_fundamentals_pipeline.png",
+    "alt": "CPU 流水线与指令级并行"
+  },
+  "fundamentals_simd": {
+    "image": "images/lesson_fundamentals_simd.png",
+    "alt": "SIMD 与向量化计算"
+  },
+  "fundamentals_cache_coherence": {
+    "image": "images/lesson_fundamentals_cache_coherence.png",
+    "alt": "缓存一致性、内存模型与 NUMA"
+  },
+  "fundamentals_storage_stack": {
+    "image": "images/lesson_fundamentals_storage_stack.png",
+    "alt": "SSD、存储栈与持久化"
+  },
+  "fundamentals_embedded_iot": {
+    "image": "images/lesson_fundamentals_embedded_iot.png",
+    "alt": "嵌入式与 IoT 基础"
+  },
+  "fundamentals_architecture_case": {
+    "image": "images/lesson_fundamentals_architecture_case.png",
+    "alt": "计算机体系结构综合案例"
+  },
+  "os_kernel_arch": {
+    "image": "images/lesson_os_kernel_arch.png",
+    "alt": "操作系统内核架构"
+  },
+  "os_io_scheduling": {
+    "image": "images/lesson_os_io_scheduling.png",
+    "alt": "I/O 调度与块设备"
+  },
+  "os_cgroups_namespaces": {
+    "image": "images/lesson_os_cgroups_namespaces.png",
+    "alt": "cgroups、namespaces 与容器"
+  },
+  "os_io_uring": {
+    "image": "images/lesson_os_io_uring.png",
+    "alt": "io_uring 与异步 I/O"
+  },
+  "os_rtos": {
+    "image": "images/lesson_os_rtos.png",
+    "alt": "实时操作系统与确定性"
+  },
+  "os_linux_troubleshooting": {
+    "image": "images/lesson_os_linux_troubleshooting.png",
+    "alt": "Linux 性能与故障排查"
+  },
+  "network_ipv6": {
+    "image": "images/lesson_network_ipv6.png",
+    "alt": "IPv6 原理与迁移"
+  },
+  "network_nat_vpn": {
+    "image": "images/lesson_network_nat_vpn.png",
+    "alt": "NAT、隧道与 VPN"
+  },
+  "network_p2p": {
+    "image": "images/lesson_network_p2p.png",
+    "alt": "P2P 网络与 NAT 穿透"
+  },
+  "network_smtp": {
+    "image": "images/lesson_network_smtp.png",
+    "alt": "SMTP、邮件协议与反垃圾"
+  },
+  "network_bgp": {
+    "image": "images/lesson_network_bgp.png",
+    "alt": "BGP 与互联网路由"
+  },
+  "network_performance": {
+    "image": "images/lesson_network_performance.png",
+    "alt": "网络性能调优"
+  },
+  "kotlin_basics": {
+    "image": "images/lesson_kotlin_basics.png",
+    "alt": "Kotlin 基础与空安全"
+  },
+  "kotlin_functions": {
+    "image": "images/lesson_kotlin_functions.png",
+    "alt": "Kotlin 函数、Lambda 与扩展"
+  },
+  "kotlin_oop": {
+    "image": "images/lesson_kotlin_oop.png",
+    "alt": "Kotlin 类、对象与属性"
+  },
+  "kotlin_collections": {
+    "image": "images/lesson_kotlin_collections.png",
+    "alt": "Kotlin 集合、序列与函数式操作"
+  },
+  "kotlin_coroutines": {
+    "image": "images/lesson_kotlin_coroutines.png",
+    "alt": "Kotlin 协程与 Flow"
+  },
+  "kotlin_android": {
+    "image": "images/lesson_kotlin_android.png",
+    "alt": "Kotlin Android 架构"
+  },
+  "kotlin_testing": {
+    "image": "images/lesson_kotlin_testing.png",
+    "alt": "Kotlin 测试与协程测试"
+  },
+  "kotlin_project": {
+    "image": "images/lesson_kotlin_project.png",
+    "alt": "实战：Kotlin Android 客户端"
+  },
+  "swift_basics": {
+    "image": "images/lesson_swift_basics.png",
+    "alt": "Swift 基础与可选类型"
+  },
+  "swift_functions": {
+    "image": "images/lesson_swift_functions.png",
+    "alt": "Swift 函数、闭包与协议"
+  },
+  "swift_oop": {
+    "image": "images/lesson_swift_oop.png",
+    "alt": "Swift 结构体、类与 ARC"
+  },
+  "swift_collections": {
+    "image": "images/lesson_swift_collections.png",
+    "alt": "Swift 集合与泛型"
+  },
+  "swift_async": {
+    "image": "images/lesson_swift_async.png",
+    "alt": "Swift 并发与 async/await"
+  },
+  "swift_swiftui": {
+    "image": "images/lesson_swift_swiftui.png",
+    "alt": "SwiftUI 与状态管理"
+  },
+  "swift_testing": {
+    "image": "images/lesson_swift_testing.png",
+    "alt": "Swift 测试与性能"
+  },
+  "swift_project": {
+    "image": "images/lesson_swift_project.png",
+    "alt": "实战：SwiftUI iOS 客户端"
+  },
+  "python_decorators_generators": {
+    "image": "images/lesson_python_decorators_generators.png",
+    "alt": "Python 装饰器与生成器"
+  },
+  "python_context_iterators": {
+    "image": "images/lesson_python_context_iterators.png",
+    "alt": "Python 上下文管理器与迭代器协议"
+  },
+  "python_packaging_performance": {
+    "image": "images/lesson_python_packaging_performance.png",
+    "alt": "Python 打包、发布与性能"
+  },
+  "cpp_move_semantics": {
+    "image": "images/lesson_cpp_move_semantics.png",
+    "alt": "C++ 移动语义与右值引用"
+  },
+  "cpp_concepts_ranges": {
+    "image": "images/lesson_cpp_concepts_ranges.png",
+    "alt": "C++ Concepts 与 Ranges"
+  },
+  "cpp_concurrency_atomics": {
+    "image": "images/lesson_cpp_concurrency_atomics.png",
+    "alt": "C++ 并发、原子操作与内存序"
+  },
+  "java_modern_features": {
+    "image": "images/lesson_java_modern_features.png",
+    "alt": "现代 Java：Record、Sealed 与模式匹配"
+  },
+  "java_virtual_threads": {
+    "image": "images/lesson_java_virtual_threads.png",
+    "alt": "Java 虚拟线程与结构化并发"
+  },
+  "java_gc_tuning": {
+    "image": "images/lesson_java_gc_tuning.png",
+    "alt": "JVM 垃圾回收与性能调优"
+  },
+  "js_execution_context": {
+    "image": "images/lesson_js_execution_context.png",
+    "alt": "JavaScript 执行上下文与闭包"
+  },
+  "js_memory_gc": {
+    "image": "images/lesson_js_memory_gc.png",
+    "alt": "JavaScript 内存管理与垃圾回收"
+  },
+  "js_node_backend": {
+    "image": "images/lesson_js_node_backend.png",
+    "alt": "Node.js 后端工程"
+  },
+  "csharp_records_patterns": {
+    "image": "images/lesson_csharp_records_patterns.png",
+    "alt": "C# Record、模式匹配与不可变数据"
+  },
+  "csharp_async_streams": {
+    "image": "images/lesson_csharp_async_streams.png",
+    "alt": "C# 异步流与取消"
+  },
+  "csharp_gc_performance": {
+    "image": "images/lesson_csharp_gc_performance.png",
+    "alt": "C# GC、Span 与性能优化"
+  },
+  "rust_traits_generics": {
+    "image": "images/lesson_rust_traits_generics.png",
+    "alt": "Rust trait、泛型与关联类型"
+  },
+  "rust_smart_pointers": {
+    "image": "images/lesson_rust_smart_pointers.png",
+    "alt": "Rust 智能指针与内部可变性"
+  },
+  "rust_macros_wasm": {
+    "image": "images/lesson_rust_macros_wasm.png",
+    "alt": "Rust 宏、WASM 与跨平台"
+  },
+  "ts_type_level": {
+    "image": "images/lesson_ts_type_level.png",
+    "alt": "TypeScript 类型级编程"
+  },
+  "ts_runtime_validation": {
+    "image": "images/lesson_ts_runtime_validation.png",
+    "alt": "TypeScript 运行时校验与边界"
+  },
+  "ts_performance": {
+    "image": "images/lesson_ts_performance.png",
+    "alt": "TypeScript 编译与运行性能"
+  },
+  "go_generics_deep": {
+    "image": "images/lesson_go_generics_deep.png",
+    "alt": "Go 泛型深入与约束设计"
+  },
+  "go_profiling_deep": {
+    "image": "images/lesson_go_profiling_deep.png",
+    "alt": "Go 性能剖析与调优实战"
+  },
+  "go_cloud_native_security": {
+    "image": "images/lesson_go_cloud_native_security.png",
+    "alt": "Go 云原生服务安全与可靠性"
+  },
+  "shell_portability": {
+    "image": "images/lesson_shell_portability.png",
+    "alt": "Shell 可移植性与 POSIX 兼容"
+  },
+  "shell_security_hardening": {
+    "image": "images/lesson_shell_security_hardening.png",
+    "alt": "Shell 脚本安全加固"
+  },
+  "shell_automation_advanced": {
+    "image": "images/lesson_shell_automation_advanced.png",
+    "alt": "Shell 高级自动化与可观测性"
+  },
+  "security_threat_model": {
+    "image": "images/lesson_security_threat_model.png",
+    "alt": "威胁建模与 STRIDE"
+  },
+  "security_owasp_top10": {
+    "image": "images/lesson_security_owasp_top10.png",
+    "alt": "OWASP Top 10 实战"
+  },
+  "security_secure_coding": {
+    "image": "images/lesson_security_secure_coding.png",
+    "alt": "安全编码与输入校验"
+  },
+  "security_auth_session": {
+    "image": "images/lesson_security_auth_session.png",
+    "alt": "认证、会话与令牌安全"
+  },
+  "security_secrets": {
+    "image": "images/lesson_security_secrets.png",
+    "alt": "密钥与配置安全"
+  },
+  "security_supply_chain": {
+    "image": "images/lesson_security_supply_chain.png",
+    "alt": "软件供应链安全"
+  },
+  "security_container_k8s": {
+    "image": "images/lesson_security_container_k8s.png",
+    "alt": "容器与 Kubernetes 安全"
+  },
+  "security_cloud": {
+    "image": "images/lesson_security_cloud.png",
+    "alt": "云安全与 IAM"
+  },
+  "security_privacy": {
+    "image": "images/lesson_security_privacy.png",
+    "alt": "隐私合规与数据分级"
+  },
+  "security_fuzzing": {
+    "image": "images/lesson_security_fuzzing.png",
+    "alt": "模糊测试与漏洞验证"
+  },
+  "security_incident": {
+    "image": "images/lesson_security_incident.png",
+    "alt": "安全事件响应"
+  },
+  "security_sdl": {
+    "image": "images/lesson_security_sdl.png",
+    "alt": "安全开发生命周期实战"
+  },
+  "visual_git_states": {
+    "image": "images/visual_git_states.png",
+    "alt": "图解 Git 三区与提交流转"
+  },
+  "visual_tcp_handshake": {
+    "image": "images/visual_tcp_handshake.png",
+    "alt": "图解 TCP 握手、挥手与拥塞控制"
+  },
+  "visual_k8s_scheduling": {
+    "image": "images/visual_k8s_scheduling.png",
+    "alt": "图解 Kubernetes 调度与探针"
+  },
+  "visual_db_isolation": {
+    "image": "images/visual_db_isolation.png",
+    "alt": "图解数据库事务隔离级别"
+  },
+  "visual_mq_delivery": {
+    "image": "images/visual_mq_delivery.png",
+    "alt": "图解消息队列投递语义"
+  },
+  "visual_oauth_flow": {
+    "image": "images/visual_oauth_flow.png",
+    "alt": "图解 OAuth 2.0 授权码流程与 PKCE"
+  },
+  "visual_cdn_cache": {
+    "image": "images/visual_cdn_cache.png",
+    "alt": "图解 CDN 缓存与回源"
+  },
+  "visual_vector_index": {
+    "image": "images/visual_vector_index.png",
+    "alt": "图解向量检索与 HNSW 索引"
+  }
+}

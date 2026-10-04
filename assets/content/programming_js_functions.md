@@ -1,0 +1,391 @@
+# 函数、作用域与 this
+
+![函数、作用域与 this](images/remaining_js_functions.webp)
+
+> 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟
+
+## 学习目标
+
+- 能用自己的话解释「函数、作用域与 this」解决了什么问题，而不是只背术语。
+- 能说清 「函数」、「箭头函数」、「闭包」、「this」 之间的关系，并分别举出一个例子。
+- 能把本课知识放回「JavaScript」的知识体系，说明它和相邻主题的边界。
+- 能完成本课练习，并用验收标准检查自己的结果。
+
+> 一句话摘要：函数声明与箭头函数、闭包、this 绑定优先级与 bind/call/apply。
+
+## 前置知识
+
+- 先完成上一课《运算符与控制流》；如果已经掌握，可以直接用本课练习自测。
+- 本课阶段：进阶。建议先掌握同一分类的基础课程，并能独立运行正文中的最小示例。
+- 开始前先复习：函数、箭头函数、闭包。
+- 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
+
+
+## 三种定义方式
+
+```javascript
+function add(a, b) { return a + b; }        // 声明（有提升）
+const mul = function (a, b) { return a * b; };  // 表达式
+const div = (a, b) => a / b;                // 箭头函数
+const obj = () => ({ value: 1 });           // 返回对象要加括号
+```
+
+箭头函数没有自己的 `this` 和 `arguments`，不能当构造器，适合回调。
+
+## 参数
+
+```javascript
+function greet(name = '陌生人', ...others) {
+  console.log(name, others);
+}
+
+function sum({ a, b }, [c, d]) { return a + b + c + d; }   // 参数解构
+```
+
+## 作用域与闭包
+
+```javascript
+function createCounter() {
+  let count = 0;              // 外部无法直接访问
+  return {
+    increment: () => ++count,
+    value: () => count,
+  };
+}
+
+const counter = createCounter();
+counter.increment();
+console.log(counter.value());  // 1
+```
+
+闭包 = 函数 + 定义时捕获的词法环境。常用于私有状态、防抖节流和柯里化。
+
+## this 的绑定
+
+```javascript
+const user = {
+  name: 'tom',
+  say() { return this.name; },
+};
+
+user.say();                              // 'tom'：由调用方式决定
+const fn = user.say.bind(user);          // bind 永久绑定
+user.say.call({ name: 'alice' });         // 临时绑定
+```
+
+优先级：`new` > `bind` > `call/apply` > 对象方法 > 默认绑定；箭头函数不参与，取定义时外层的 `this`。
+
+## 本课小结
+理解**闭包**与 **this 绑定规则**，JS 的函数部分就通了；不确定 `this` 时优先用箭头函数或显式 `bind`。
+
+<!-- appendix:v1 -->
+
+## this 绑定速查
+
+| 调用方式 | `this` 指向 | 示例 |
+| --- | --- | --- |
+| 普通函数直接调用 | 严格模式下是 `undefined`，否则是全局对象 | `f()` |
+| 方法调用 | 调用它的对象 | `obj.f()` |
+| 显式绑定 | 传入的对象 | `f.call(obj)`、`f.apply(obj)` |
+| 硬绑定 | 永久绑定的对象 | `f.bind(obj)` |
+| `new` 调用 | 新创建的实例 | `new F()` |
+| 箭头函数 | 定义时外层作用域的 `this` | 不能被 `call` / `bind` 改变 |
+| 回调传方法引用后 | 丢失原对象 | `setTimeout(obj.f, 0)` 里的 `this` 不是 `obj` |
+
+```js
+const counter = {
+  count: 0,
+  // 方法简写：this 指向调用者
+  increment() {
+    this.count += 1;
+    return this;
+  },
+  // 箭头函数继承外层 this，这里的外层是模块作用域，不适合当方法
+  // reset: () => { this.count = 0; },
+};
+
+// 回调中保持 this 的三种写法
+class Timer {
+  constructor() { this.seconds = 0; }
+
+  startWithBind() { setInterval(this.tick.bind(this), 1000); }
+  startWithArrow() { setInterval(() => this.tick(), 1000); }
+  tick() { this.seconds += 1; }
+}
+```
+
+## 作用域与闭包速查
+
+| 概念 | 说明 |
+| --- | --- |
+| 函数作用域 | `var` 声明提升到函数顶部 |
+| 块级作用域 | `let` / `const` 只在 `{}` 内有效 |
+| 暂时性死区 | `let` 声明前访问会 `ReferenceError` |
+| 闭包 | 内层函数持有外层变量，外层返回后仍可访问 |
+| 提升 | 函数声明整体提升，`var` 只提升声明 |
+| 模块作用域 | 模块内变量默认不泄漏到全局 |
+
+```js
+// 闭包：计数器工厂
+function createCounter() {
+  let count = 0;
+  return {
+    inc: () => ++count,
+    value: () => count,
+  };
+}
+
+// 循环中捕获变量：let 每次迭代都创建新绑定
+const fns = [];
+for (let i = 0; i < 3; i++) fns.push(() => i);
+console.log(fns.map((f) => f()));   // [0, 1, 2]
+```
+
+## 常见错误对照表
+
+| 容易写错的做法 | 实际现象 | 原因与正确做法 |
+| --- | --- | --- |
+| 把对象方法当回调传递 | `this` 丢失，报 `undefined` | 用箭头函数包一层或 `bind` |
+| 给箭头函数用 `call` / `bind` | 不生效 | 箭头函数的 `this` 由定义位置决定 |
+| 用普通函数写对象方法却用 `this` | 取决于调用方式 | 用方法简写并确保以 `obj.f()` 调用 |
+| 在循环里用 `var` 创建闭包 | 所有闭包共享同一个变量 | 改用 `let` 或把值作为参数传入 |
+| 默认参数用了前面的参数但顺序写反 | 得到 `undefined` | 默认参数按从左到右求值，只能引用更靠前的参数 |
+| 参数超过 3 个仍按位置传 | 调用处难以理解 | 改用对象参数并解构 |
+| 忘记 `return` | 得到 `undefined` | 检查每个分支都有返回值 |
+| 箭头函数返回对象漏括号 | `SyntaxError` 或返回 `undefined` | 写成 `() => ({ a: 1 })` |
+| 递归函数没有终止条件 | 栈溢出 | 先写基准情形 |
+| 闭包长期持有大对象 | 内存占用高 | 用完置空引用或重构作用域 |
+
+## 自测清单
+
+- [ ] 能说出 `this` 的五种绑定规则与优先级。
+- [ ] 知道箭头函数没有自己的 `this`、`arguments` 与 `new`。
+- [ ] 会用闭包实现计数器或私有变量。
+- [ ] 循环里创建闭包时使用 `let` 或参数传值。
+- [ ] 参数较多时改用对象参数。
+
+<!-- appendix:v2 -->
+
+## 零基础详解：函数、作用域与闭包
+
+### 一句话说清它是什么
+
+函数是「可以反复使用的代码块」。在 JavaScript 里函数是**一等公民**：
+能赋给变量、当参数传、当返回值——这也是回调、Promise、React 的根基。
+
+### 四种写法对照
+
+```javascript
+function add(a, b) { return a + b; }        // 函数声明，会被提升
+const sub = function (a, b) { return a - b; };   // 函数表达式
+const mul = (a, b) => a * b;                // 箭头函数（表达式体）
+
+const obj = {
+  value: 1,
+  getValue() { return this.value; },        // 方法简写
+};
+```
+
+| 写法 | `this` 绑定 | 能否当构造函数 | 提升 |
+| --- | --- | --- | --- |
+| 函数声明 | 调用时决定 | 能 | 是 |
+| 函数表达式 | 调用时决定 | 能 | 否 |
+| 箭头函数 | **继承外层** | 不能 | 否 |
+| 方法简写 | 指向调用对象 | 不能 | —— |
+
+### 箭头函数为什么不适合做对象方法
+
+```javascript
+const counter = {
+  count: 0,
+  bad() {
+    setTimeout(() => this.count++, 10);   // 箭头函数继承外层 this：正确
+  },
+  wrong: () => {
+    // 这里的 this 不是 counter，而是定义时的外层
+  },
+};
+```
+
+记忆：**箭头函数没有自己的 `this`，它借用外层的。** 该用它写回调，不该用它写对象方法。
+
+### 参数的三件套
+
+```javascript
+function greet(name = "朋友", ...tags) {   // 默认值 + 剩余参数
+  return `你好，${name}${tags.length ? "（" + tags.join("/") + "）" : ""}`;
+}
+
+greet();                     // 你好，朋友
+greet("小明", "VIP", "新用户");   // 你好，小明（VIP/新用户）
+
+// 解构参数：调用时传对象，顺序无关
+function createUser({ name, age = 18 } = {}) {
+  return { name, age };
+}
+createUser({ name: "小红" });   // { name: '小红', age: 18 }
+```
+
+### 作用域与闭包
+
+```javascript
+function makeCounter() {
+  let count = 0;              // 外部访问不到
+  return function () {
+    count += 1;               // 但内部函数一直记得它
+    return count;
+  };
+}
+
+const next = makeCounter();
+next();   // 1
+next();   // 2
+```
+
+**闭包 = 函数 + 它出生时能看到的变量。** 哪怕外层函数已经执行完，
+这些变量依然被保留。常见用途：计数器、缓存、防抖节流。
+
+### 同步、回调与 Promise
+
+```javascript
+// 回调：容易嵌套过深
+readFile("a.txt", (err, data) => {
+  if (err) return console.error(err);
+  console.log(data);
+});
+
+// Promise + async/await：像写同步代码一样
+async function load() {
+  try {
+    const data = await readFileAsync("a.txt");
+    console.log(data);
+  } catch (error) {
+    console.error("读取失败：", error);
+  }
+}
+```
+
+### 新手最容易踩的七个坑
+
+| 坑 | 现象 | 正确做法 |
+| --- | --- | --- |
+| 忘写 `return` | 得到 undefined | 检查所有分支 |
+| 箭头函数当方法 | `this` 指错 | 用方法简写 |
+| 循环里创建函数用 `var` | 全部拿到最后一个值 | 用 `let` |
+| 忘写 `await` | 拿到 Promise 对象 | 在 `async` 函数里 await |
+| 参数顺序记错 | 传错值还查不出来 | 超过两个参数改用对象解构 |
+| 以为对象赋值是复制 | 改副本影响原对象 | 展开拷贝 `{...obj}` |
+| 递归无出口 | `RangeError: Maximum call stack size exceeded` | 先写终止条件 |
+
+### 手把手练习：防抖函数
+
+```javascript
+function debounce(fn, delay = 300) {
+  let timer = null;              // 闭包保存计时器
+  return function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn.apply(this, args), delay);
+  };
+}
+
+const search = debounce((keyword) => {
+  console.log("搜索：", keyword);
+}, 500);
+
+search("a");
+search("ab");
+search("abc");   // 只有最后一次会被执行
+```
+
+### 学完自测
+
+- [ ] 能说出箭头函数与普通函数在 `this` 上的区别。
+- [ ] 能解释闭包为什么能「记住」外层变量。
+- [ ] 能写出带默认值和剩余参数的函数。
+- [ ] 能说出 `await` 用在非 `async` 函数里会发生什么。
+- [ ] 能自己写出一个防抖或节流函数。
+
+## 动手练习
+
+<!-- practice-diversified:v1 -->
+
+> 本课练习重点：围绕「函数、箭头函数、闭包」完成复述、实验和交付，每个结果都要能被别人检查。
+
+先在 Node 或浏览器复现行为，再改写异步与错误路径，最后补测试。
+
+### 练习 1：建立心智模型（10 分钟）
+
+合上教程，用 3～5 句话回答：
+
+1. 「函数、作用域与 this」解决了什么问题？
+2. 如果没有它，会出现什么具体后果？
+3. 它和「箭头函数」是什么关系？
+
+**验收标准**：至少出现一个本课关键词，并写出一个反例、边界条件或失效场景。
+
+### 练习 2：做一次可控实验（20 分钟）
+
+从正文中选一个最小示例，完成以下操作：
+
+1. 先预测修改一个参数、输入或步骤后的结果。
+2. 再实际执行或逐步推演，记录真实结果。
+3. 如果结果与预测不同，写出差异原因。
+
+**验收标准**：留下「原例 → 改动 → 预测 → 结果 → 原因」五步记录。
+
+### 练习 3：交付一个小结果（30 分钟）
+
+在浏览器控制台或 Node.js 中写一个最小示例，列出至少 3 组输入输出。
+
+任务要求：
+
+- 结果必须能被别人检查，不能只写“我已经理解了”。
+- 至少覆盖「函数」和「箭头函数」两个关键词。
+- 写出 1 个仍然不确定的问题，以及下一步如何验证。
+
+> 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
+
+<!-- scaffold:v1 -->
+
+<!-- p2-enrichment:v1 -->
+
+## English Overview
+
+**Title:** Functions, Scope & this
+
+**Summary:** Function forms, closures, and this binding rules.
+
+**Category:** JavaScript  
+**Level:** 进阶  
+**Key terms:** 函数, 箭头函数, 闭包, this, bind, 作用域
+
+> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
+
+## 内容元数据
+
+- 内容版本：v2.0
+- 最后更新：2026-10-03
+- 学习阶段：进阶
+- 适用环境：Node.js 22+ / 现代浏览器
+- 内容来源：内置结构化课程与工程实践整理
+- 相关主题：函数、箭头函数、闭包、this、bind、作用域
+- 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
+
+<!-- p2-references:v1 -->
+
+## 参考资料与复核
+
+- 最后复核：2026-10-04
+- 下次复核：2027-04-04
+- 复核范围：版本兼容、API 行为、安全建议与工程实践
+- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+
+| 参考资料 | 本课用途 |
+| --- | --- |
+| [MDN JavaScript](https://developer.mozilla.org/docs/Web/JavaScript) | 语言、DOM 与运行时 |
+| [ECMAScript](https://ecma-international.org/publications-and-standards/standards/ecma-262/) | 语言标准 |
+
+> 本课主题：函数声明与箭头函数、闭包、this 绑定优先级与 bind/call/apply。
+
+> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+
