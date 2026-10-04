@@ -280,6 +280,7 @@ Future<void> main(List<String> args) async {
       browser: browser,
       url: fileUris[i],
       profileDir: profileDir.path,
+      expects: item.expects,
     );
     failures += _report('${item.language} #$i', item, output);
   }
@@ -316,6 +317,7 @@ Future<void> main(List<String> args) async {
       browser: browser,
       url: 'http://127.0.0.1:${server.port}/${item.language}$i',
       profileDir: profileDir.path,
+      expects: item.expects,
     );
     failures += _report('${item.language} #$i（联网检查）', item, output);
     if (extraRequests.isNotEmpty) {
@@ -383,10 +385,14 @@ void _cleanup(Directory dir) {
   }
 }
 
-Future<String> _runHeadless({
+/// 无头浏览器执行一次并解析输出节点。
+///
+/// 返回的第二项表示本次输出是否已包含全部期望文本，调用方据此决定是否重试。
+Future<({String output, bool complete})> _runHeadlessOnce({
   required String browser,
   required String url,
   required String profileDir,
+  required List<String> expects,
 }) async {
   final result = await Process.run(
     browser,
@@ -396,7 +402,8 @@ Future<String> _runHeadless({
       '--no-first-run',
       '--no-proxy-server',
       '--user-data-dir=$profileDir',
-      '--virtual-time-budget=20000',
+      // sql.js 等 WASM 运行时首次加载较慢，给足虚拟时间预算。
+      '--virtual-time-budget=30000',
       '--dump-dom',
       url,
     ],
@@ -407,9 +414,41 @@ Future<String> _runHeadless({
   final match = RegExp(r'<pre id="sandbox-output"[^>]*>([\s\S]*?)</pre>')
       .firstMatch(dom);
   if (match == null) {
-    return '(未取到输出节点)\n$dom';
+    final stderr = result.stderr.toString().trim();
+    final detail = StringBuffer('(未取到输出节点)');
+    if (stderr.isNotEmpty) detail.write('\nstderr: $stderr');
+    if (dom.isNotEmpty) detail.write('\n$dom');
+    return (output: detail.toString(), complete: false);
   }
-  return _unescapeHtml(match.group(1) ?? '').trim();
+  final output = _unescapeHtml(match.group(1) ?? '').trim();
+  final complete = expects.every(output.contains);
+  return (output: output, complete: complete);
+}
+
+/// 执行无头浏览器校验，对 WASM/运行时首次加载的时序抖动做有限重试。
+Future<String> _runHeadless({
+  required String browser,
+  required String url,
+  required String profileDir,
+  required List<String> expects,
+}) async {
+  const maxAttempts = 3;
+  String last = '';
+  for (var attempt = 1; attempt <= maxAttempts; attempt++) {
+    final outcome = await _runHeadlessOnce(
+      browser: browser,
+      url: url,
+      profileDir: profileDir,
+      expects: expects,
+    );
+    last = outcome.output;
+    if (outcome.complete) return last;
+    if (attempt < maxAttempts) {
+      // 首次加载 sql.js 等大体积运行时可能来不及写入输出节点，稍后重试。
+      await Future<void>.delayed(Duration(milliseconds: 1200 * attempt));
+    }
+  }
+  return last;
 }
 
 String _unescapeHtml(String text) => text
