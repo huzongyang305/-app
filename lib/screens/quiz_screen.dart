@@ -6,6 +6,7 @@ import '../models/lesson.dart';
 import '../models/quiz_answer.dart';
 import '../models/review_grade.dart';
 import '../services/progress_provider.dart';
+import '../theme/app_theme.dart';
 import '../widgets/quiz_answer_panel.dart';
 import '../widgets/responsive_content.dart';
 
@@ -181,7 +182,10 @@ class _QuizScreenState extends State<QuizScreen> {
           children: [
             Text(
               '${context.tr('question')} ${_index + 1}/${_questions.length}',
-              style: theme.textTheme.labelLarge?.copyWith(
+              style: TextStyle(
+                fontFamily: AppTheme.monoFamily,
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
                 color: theme.colorScheme.primary,
               ),
             ),
@@ -189,7 +193,7 @@ class _QuizScreenState extends State<QuizScreen> {
             if (best != null)
               Text(
                 '${context.tr('bestScore')}: ${best.correct}/${best.total}',
-                style: theme.textTheme.labelMedium?.copyWith(
+                style: theme.textTheme.labelSmall?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
               ),
@@ -200,9 +204,11 @@ class _QuizScreenState extends State<QuizScreen> {
           header: true,
           child: Text(
             _current.question,
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-              height: 1.5,
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontFamily: AppTheme.sansFamily,
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              height: 1.55,
             ),
           ),
         ),
@@ -279,7 +285,7 @@ class _FeedbackCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final color = isCorrect ? const Color(0xFF16A34A) : theme.colorScheme.error;
+    final color = isCorrect ? AppPalette.success : AppPalette.danger;
 
     return TweenAnimationBuilder<double>(
       tween: Tween<double>(begin: 0.85, end: 1),
@@ -288,11 +294,15 @@ class _FeedbackCard extends StatelessWidget {
       builder: (context, scale, child) =>
           Transform.scale(scale: scale, child: child),
       child: Container(
-        padding: const EdgeInsets.all(14),
+        padding: const EdgeInsets.fromLTRB(16, 13, 14, 14),
         decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.10),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: color.withValues(alpha: 0.4)),
+          color: color.withValues(alpha: 0.06),
+          border: Border(
+            left: BorderSide(color: color, width: 3),
+            top: BorderSide(color: theme.colorScheme.outlineVariant),
+            right: BorderSide(color: theme.colorScheme.outlineVariant),
+            bottom: BorderSide(color: theme.colorScheme.outlineVariant),
+          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -379,10 +389,10 @@ class _ResultView extends StatelessWidget {
     final theme = Theme.of(context);
     final ratio = total == 0 ? 0.0 : correct / total;
     final color = ratio >= 0.8
-        ? const Color(0xFF16A34A)
+        ? AppPalette.success
         : ratio >= 0.6
-        ? const Color(0xFFF59E0B)
-        : theme.colorScheme.error;
+        ? AppPalette.warning
+        : AppPalette.danger;
 
     return Center(
       child: SingleChildScrollView(
@@ -413,7 +423,8 @@ class _ResultView extends StatelessWidget {
                       Text(
                         '${(ratio * 100).round()}%',
                         style: theme.textTheme.headlineMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
+                          fontFamily: AppTheme.monoFamily,
+                          fontWeight: FontWeight.w700,
                           color: color,
                         ),
                       ),

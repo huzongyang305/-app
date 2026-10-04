@@ -4,13 +4,13 @@ import 'package:provider/provider.dart';
 import '../l10n/l10n_extension.dart';
 import '../models/lesson.dart';
 import '../services/content_provider.dart';
-import '../theme/app_theme.dart';
 import '../services/progress_provider.dart';
 import '../services/recommendation_service.dart';
 import '../widgets/category_card.dart';
 import '../widgets/activity_chart.dart';
 import '../widgets/check_in_card.dart';
 import '../widgets/empty_state.dart';
+import '../widgets/index_card.dart';
 import '../widgets/lesson_card.dart';
 import 'category_screen.dart';
 import 'lesson_screen.dart';
@@ -78,52 +78,70 @@ class HomeScreen extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
       children: [
-        // 总体学习进度
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            gradient: AppTheme.primaryGradient,
-            borderRadius: BorderRadius.circular(6),
-          ),
+        // 学习档案：等宽百分比 + 细线进度尺 + 已学/总数
+        IndexCard(
+          accent: theme.colorScheme.primary,
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 18),
+          semanticLabel:
+              '${context.tr('overallProgress')}, '
+              '${(ratio * 100).round()}%, '
+              '$learnedCount / $totalLessons ${context.tr('learnedLessons')}',
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Expanded(
-                    child: Text(
-                      context.tr('overallProgress'),
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          context.tr('overallProgress'),
+                          style: theme.textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          '$learnedCount / $totalLessons '
+                          '${context.tr('learnedLessons')}',
+                          style: theme.textTheme.bodySmall,
+                        ),
+                      ],
                     ),
                   ),
-                  Text(
+                  const SizedBox(width: 12),
+                  MonoLabel(
                     '${(ratio * 100).round()}%',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    size: 36,
+                    weight: FontWeight.w700,
+                    color: theme.colorScheme.primary,
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(4),
-                child: LinearProgressIndicator(
-                  value: ratio,
-                  minHeight: 7,
-                  backgroundColor: Colors.white.withValues(alpha: 0.15),
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    theme.colorScheme.primary,
+              const SizedBox(height: 14),
+              Semantics(
+                label: context.trArgs('progressSemantic', {
+                  'value': '${(ratio * 100).round()}%',
+                }),
+                child: SizedBox(
+                  height: 6,
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: ColoredBox(
+                          color: theme.colorScheme.surfaceContainerHighest,
+                        ),
+                      ),
+                      FractionallySizedBox(
+                        alignment: Alignment.centerLeft,
+                        widthFactor: ratio.clamp(0.0, 1.0),
+                        child: ColoredBox(color: theme.colorScheme.primary),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                '$learnedCount / $totalLessons ${context.tr('learnedLessons')}',
-                style: theme.textTheme.bodySmall?.copyWith(color: Colors.white),
               ),
             ],
           ),
@@ -137,8 +155,9 @@ class HomeScreen extends StatelessWidget {
         // 今日推荐：到期复习 → 薄弱知识点 → 下一课
         if (recommendations.isNotEmpty) ...[
           const SizedBox(height: 16),
-          Card(
-            clipBehavior: Clip.antiAlias,
+          IndexCard(
+            accent: theme.colorScheme.primary,
+            padding: EdgeInsets.zero,
             child: Column(
               children: [
                 ListTile(
@@ -186,8 +205,9 @@ class HomeScreen extends StatelessWidget {
         // 今日复习：按间隔重复到期队列
         if (progress.dueReviewCount > 0) ...[
           const SizedBox(height: 16),
-          Card(
-            clipBehavior: Clip.antiAlias,
+          IndexCard(
+            accent: theme.colorScheme.primary,
+            padding: EdgeInsets.zero,
             child: ListTile(
               leading: Icon(Icons.refresh, color: theme.colorScheme.primary),
               title: Text(
@@ -211,8 +231,8 @@ class HomeScreen extends StatelessWidget {
         ],
         if (nextLesson != null) ...[
           const SizedBox(height: 20),
-          _SectionTitle(title: context.tr('continueLearning')),
-          const SizedBox(height: 8),
+          SectionBand(index: '01', title: context.tr('continueLearning')),
+          const SizedBox(height: 12),
           LessonCard(
             lesson: nextLesson,
             isLearned: false,
@@ -224,12 +244,13 @@ class HomeScreen extends StatelessWidget {
         ],
 
         const SizedBox(height: 20),
-        _SectionTitle(title: context.tr('learningPaths')),
-        const SizedBox(height: 8),
-        Card(
-          clipBehavior: Clip.antiAlias,
+        SectionBand(index: '02', title: context.tr('learningPaths')),
+        const SizedBox(height: 12),
+        IndexCard(
+          accent: theme.colorScheme.primary,
+          padding: EdgeInsets.zero,
           child: ListTile(
-            leading: const Icon(Icons.route),
+            leading: Icon(Icons.route, color: theme.colorScheme.primary),
             title: Text(context.tr('learningPathsEntry')),
             subtitle: Text(context.tr('learningPathsHint')),
             trailing: const Icon(Icons.chevron_right),
@@ -242,8 +263,11 @@ class HomeScreen extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         // 快捷入口：测验与开发者工具
-        Card(
-          clipBehavior: Clip.antiAlias,
+        SectionBand(index: '03', title: context.tr('homeQuizExamTitle')),
+        const SizedBox(height: 12),
+        IndexCard(
+          accent: theme.colorScheme.primary,
+          padding: EdgeInsets.zero,
           child: Column(
             children: [
               ListTile(
@@ -276,17 +300,17 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 20),
-        _SectionTitle(title: context.tr('categories')),
-        const SizedBox(height: 8),
+        SectionBand(index: '04', title: context.tr('categories')),
+        const SizedBox(height: 12),
         GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           // 用固定高度而不是宽高比，避免窄屏上卡片内部内容溢出。
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            mainAxisSpacing: 12,
-            crossAxisSpacing: 12,
-            mainAxisExtent: 156,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
+            mainAxisExtent: 148,
           ),
           itemCount: content.categories.length,
           itemBuilder: (context, index) {
@@ -350,10 +374,11 @@ class _RecentCard extends StatelessWidget {
         .length;
     final ratio = catLessons.isEmpty ? 0.0 : learned / catLessons.length;
 
-    return Card(
-      clipBehavior: Clip.antiAlias,
+    return IndexCard(
+      accent: theme.colorScheme.primary,
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+        padding: EdgeInsets.zero,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -434,21 +459,6 @@ class _RecentCard extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _SectionTitle extends StatelessWidget {
-  const _SectionTitle({required this.title});
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      title,
-      style: Theme.of(context).textTheme.titleMedium
-          ?.copyWith(fontWeight: FontWeight.w600),
     );
   }
 }

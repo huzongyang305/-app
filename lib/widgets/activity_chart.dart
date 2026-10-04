@@ -19,6 +19,7 @@ class ActivityChart extends StatelessWidget {
           lineColor: theme.colorScheme.primary,
           fillColor: theme.colorScheme.primary.withValues(alpha: 0.14),
           gridColor: theme.colorScheme.outlineVariant,
+          surfaceColor: theme.colorScheme.surfaceContainerLow,
         ),
       ),
     );
@@ -31,12 +32,14 @@ class _ActivityPainter extends CustomPainter {
     required this.lineColor,
     required this.fillColor,
     required this.gridColor,
+    required this.surfaceColor,
   });
 
   final List<int> values;
   final Color lineColor;
   final Color fillColor;
   final Color gridColor;
+  final Color surfaceColor;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -91,7 +94,7 @@ class _ActivityPainter extends CustomPainter {
     for (var i = 0; i < values.length; i++) {
       final point = pointAt(i);
       canvas.drawCircle(point, 3, Paint()..color = lineColor);
-      canvas.drawCircle(point, 1.4, Paint()..color = Colors.white);
+      canvas.drawCircle(point, 1.4, Paint()..color = surfaceColor);
     }
   }
 

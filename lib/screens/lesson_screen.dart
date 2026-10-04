@@ -9,6 +9,7 @@ import '../services/content_provider.dart';
 import '../services/progress_provider.dart';
 import '../services/settings_provider.dart';
 import '../services/tts_service.dart';
+import '../theme/app_theme.dart';
 import '../widgets/markdown_code_builder.dart';
 import '../widgets/responsive_content.dart';
 import 'quiz_screen.dart';
@@ -218,7 +219,7 @@ class _LessonScreenState extends State<LessonScreen> {
             tooltip: context.tr('favorites'),
             icon: Icon(
               isFavorite ? Icons.star : Icons.star_border,
-              color: isFavorite ? const Color(0xFFF59E0B) : null,
+              color: isFavorite ? AppPalette.warning : null,
             ),
             onPressed: () => progress.toggleFavorite(widget.lesson.id),
           ),
@@ -321,6 +322,7 @@ class _LessonScreenState extends State<LessonScreen> {
           data: data,
           controller: _scrollController,
           selectable: true,
+          padding: const EdgeInsets.fromLTRB(20, 10, 20, 44),
           styleSheet: _styleSheet(theme),
           builders: {'pre': CodeBlockBuilder()},
           // 正文内的链接：离线场景下弹出可复制的面板，而不是跳浏览器。
@@ -341,7 +343,7 @@ class _LessonScreenState extends State<LessonScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(2),
                     child: Image.asset(
                       assetPath,
                       fit: BoxFit.contain,
@@ -349,7 +351,7 @@ class _LessonScreenState extends State<LessonScreen> {
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
                           color: theme.colorScheme.surfaceContainerHighest,
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(2),
                         ),
                         child: Text(
                           config.alt ?? assetPath,
@@ -381,38 +383,52 @@ class _LessonScreenState extends State<LessonScreen> {
     final scale = context.watch<SettingsProvider>().readingFontScale;
     return MarkdownStyleSheet.fromTheme(theme).copyWith(
       h1: theme.textTheme.headlineSmall?.copyWith(
-        fontWeight: FontWeight.bold,
+        fontFamily: AppTheme.serifFamily,
+        fontWeight: FontWeight.w700,
         fontSize: 24 * scale,
+        height: 1.35,
       ),
       h2: theme.textTheme.titleLarge?.copyWith(
-        fontWeight: FontWeight.bold,
-        fontSize: 20 * scale,
+        fontFamily: AppTheme.serifFamily,
+        fontWeight: FontWeight.w700,
+        fontSize: 21 * scale,
+        height: 1.4,
       ),
       h3: theme.textTheme.titleMedium?.copyWith(
-        fontWeight: FontWeight.w600,
-        fontSize: 16 * scale,
+        fontFamily: AppTheme.serifFamily,
+        fontWeight: FontWeight.w700,
+        fontSize: 17.5 * scale,
+        height: 1.5,
       ),
       p: theme.textTheme.bodyMedium?.copyWith(
-        height: 1.7,
-        fontSize: 14 * scale,
+        fontFamily: AppTheme.serifFamily,
+        height: 1.75,
+        fontSize: 16 * scale,
       ),
       listBullet: theme.textTheme.bodyMedium?.copyWith(
-        height: 1.7,
-        fontSize: 14 * scale,
+        fontFamily: AppTheme.serifFamily,
+        height: 1.75,
+        fontSize: 16 * scale,
       ),
       code: TextStyle(
-        fontFamily: 'monospace',
-        fontSize: 13 * scale,
+        fontFamily: AppTheme.monoFamily,
+        fontSize: 13.5 * scale,
         backgroundColor: theme.colorScheme.surfaceContainerHighest,
         color: theme.colorScheme.onSurface,
       ),
       blockquoteDecoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.6),
-        borderRadius: BorderRadius.circular(8),
+        border: Border(
+          left: BorderSide(color: theme.colorScheme.primary, width: 3),
+        ),
       ),
-      blockquotePadding: const EdgeInsets.all(12),
+      blockquotePadding: const EdgeInsets.fromLTRB(14, 8, 8, 8),
       tableBorder: TableBorder.all(color: theme.colorScheme.outlineVariant),
       tableCellsPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      horizontalRuleDecoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(color: theme.colorScheme.outlineVariant),
+        ),
+      ),
     );
   }
 

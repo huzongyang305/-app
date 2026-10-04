@@ -258,61 +258,74 @@ class _CodePreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final code = question.code ?? '';
     final language = SandboxLanguage.tryFromId(question.language);
+    final theme = Theme.of(context);
     return Container(
       width: double.infinity,
+      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: const Color(0xFF0F172A),
-        borderRadius: BorderRadius.circular(8),
+        color: theme.colorScheme.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(2),
+        border: Border.all(color: theme.colorScheme.outlineVariant),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Stack(
         children: [
-          Row(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(width: 12),
-              Text(
-                language?.id.toUpperCase() ?? 'CODE',
-                style: const TextStyle(
-                  color: Color(0xFF94A3B8),
-                  fontSize: 11,
-                  fontWeight: FontWeight.w700,
+              Row(
+                children: [
+                  const SizedBox(width: 12),
+                  Text(
+                    language?.id.toUpperCase() ?? 'CODE',
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      fontSize: 10,
+                      letterSpacing: 0.8,
+                    ),
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    tooltip: context.tr('copy'),
+                    visualDensity: VisualDensity.compact,
+                    onPressed: () async {
+                      await Clipboard.setData(ClipboardData(text: code));
+                      if (!context.mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(context.trRead('codeCopied'))),
+                      );
+                    },
+                    icon: const Icon(Icons.copy, size: 17),
+                  ),
+                  if (language != null)
+                    TextButton.icon(
+                      onPressed: () => _run(context),
+                      icon: const Icon(Icons.play_arrow, size: 17),
+                      label: Text(context.tr('quizRunInSandbox')),
+                    ),
+                ],
+              ),
+              Divider(height: 1, color: theme.colorScheme.outlineVariant),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
+                child: SelectableText(
+                  code,
+                  style: TextStyle(
+                    color: theme.colorScheme.onSurface,
+                    fontFamily: 'monospace',
+                    fontSize: 13,
+                    height: 1.5,
+                  ),
                 ),
               ),
-              const Spacer(),
-              IconButton(
-                tooltip: context.tr('copy'),
-                onPressed: () async {
-                  await Clipboard.setData(ClipboardData(text: code));
-                  if (!context.mounted) return;
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(context.trRead('codeCopied'))),
-                  );
-                },
-                icon: const Icon(
-                  Icons.copy,
-                  color: Color(0xFFCBD5E1),
-                  size: 18,
-                ),
-              ),
-              if (language != null)
-                TextButton.icon(
-                  onPressed: () => _run(context),
-                  icon: const Icon(Icons.play_arrow, size: 18),
-                  label: Text(context.tr('quizRunInSandbox')),
-                ),
             ],
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.fromLTRB(12, 0, 12, 14),
-            child: SelectableText(
-              code,
-              style: const TextStyle(
-                color: Color(0xFFE2E8F0),
-                fontFamily: 'monospace',
-                fontSize: 13,
-                height: 1.5,
-              ),
+          Positioned(
+            left: 0,
+            top: 0,
+            bottom: 0,
+            width: 3,
+            child: IgnorePointer(
+              child: ColoredBox(color: theme.colorScheme.primary),
             ),
           ),
         ],

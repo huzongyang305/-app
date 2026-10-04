@@ -16,21 +16,17 @@ class LessonGroupHeader extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(4, 18, 4, 10),
       child: Row(
         children: [
-          Container(
-            width: 3,
-            height: 16,
-            decoration: BoxDecoration(
-              color: accent,
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
-          const SizedBox(width: 8),
+          Container(width: 2, height: 18, color: accent),
+          const SizedBox(width: 10),
           Text(
             title,
             style: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: accent,
+              fontWeight: FontWeight.w700,
             ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Divider(height: 1, color: theme.colorScheme.outlineVariant),
           ),
         ],
       ),

@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../l10n/l10n_extension.dart';
 import '../models/lesson.dart';
+import '../theme/app_theme.dart';
 
-/// 测验题型提示与代码片段：代码输出、排错、排序、填空共用单选交互。
+/// 测验题型提示与代码片段。
+///
+/// 题型用等宽标签标注，代码片段使用与教程一致的左侧蓝竖条。
 class QuizMetaPanel extends StatelessWidget {
   const QuizMetaPanel({super.key, required this.question});
 
@@ -34,25 +37,27 @@ class QuizMetaPanel extends StatelessWidget {
       children: [
         if (label.isNotEmpty)
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            padding: const EdgeInsets.fromLTRB(9, 5, 10, 5),
             decoration: BoxDecoration(
-              color: theme.colorScheme.primaryContainer,
-              borderRadius: BorderRadius.circular(6),
+              border: Border(
+                left: BorderSide(color: theme.colorScheme.primary, width: 3),
+                top: BorderSide(color: theme.colorScheme.outlineVariant),
+                right: BorderSide(color: theme.colorScheme.outlineVariant),
+                bottom: BorderSide(color: theme.colorScheme.outlineVariant),
+              ),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  Icons.code,
-                  size: 16,
-                  color: theme.colorScheme.onPrimaryContainer,
-                ),
+                Icon(Icons.code, size: 15, color: theme.colorScheme.primary),
                 const SizedBox(width: 6),
                 Text(
                   label,
-                  style: theme.textTheme.labelMedium?.copyWith(
-                    color: theme.colorScheme.onPrimaryContainer,
+                  style: TextStyle(
+                    fontFamily: AppTheme.monoFamily,
+                    fontSize: 11,
                     fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
               ],
@@ -62,18 +67,23 @@ class QuizMetaPanel extends StatelessWidget {
           const SizedBox(height: 10),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFF0F172A),
-              borderRadius: BorderRadius.circular(8),
+              color: theme.colorScheme.surfaceContainerLow,
+              border: Border(
+                left: BorderSide(color: theme.colorScheme.primary, width: 3),
+                top: BorderSide(color: theme.colorScheme.outlineVariant),
+                right: BorderSide(color: theme.colorScheme.outlineVariant),
+                bottom: BorderSide(color: theme.colorScheme.outlineVariant),
+              ),
             ),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.fromLTRB(12, 11, 12, 11),
               child: SelectableText(
                 code,
-                style: const TextStyle(
-                  color: Color(0xFFE2E8F0),
-                  fontFamily: 'monospace',
+                style: TextStyle(
+                  color: theme.colorScheme.onSurface,
+                  fontFamily: AppTheme.monoFamily,
                   fontSize: 13,
                   height: 1.5,
                 ),

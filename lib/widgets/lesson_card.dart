@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 import '../l10n/l10n_extension.dart';
 import '../models/lesson.dart';
 import '../models/quiz_result.dart';
+import '../theme/app_theme.dart';
+import 'index_card.dart';
 
-/// 知识点卡片：标题、简介、时长、学习状态与测验成绩。
+/// 知识点索引条目：序号、标题、简介与等宽元数据。
+///
+/// 条目之间靠细线分隔，不再使用独立阴影卡片。
 class LessonCard extends StatelessWidget {
   const LessonCard({
     super.key,
@@ -15,6 +19,8 @@ class LessonCard extends StatelessWidget {
     this.quizResult,
     this.onFavoriteTap,
     this.courseIndex,
+    this.flat = false,
+    this.accentColor,
   });
 
   final Lesson lesson;
@@ -27,144 +33,112 @@ class LessonCard extends StatelessWidget {
   /// 课程内的序号（第 N 课），为空表示不展示。
   final int? courseIndex;
 
+  /// 平铺模式：去掉描边与卡片底色，用于分类页的连续课程列表。
+  final bool flat;
+  final Color? accentColor;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final localeCode = context.strings.localeCode;
+    final accent =
+        accentColor ??
+        (isLearned
+            ? theme.colorScheme.primary
+            : theme.colorScheme.outlineVariant);
 
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
+    final meta = <String>[
+      context.difficultyLabel(lesson.difficulty),
+      '${lesson.minutes} ${context.tr('minutes')}',
+      '${lesson.quiz.length} ${context.tr('questions')}',
+      if (quizResult != null) '${quizResult!.correct}/${quizResult!.total}',
+    ];
+
+    return Semantics(
+      button: true,
+      label: lesson.title.of(localeCode),
+      child: IndexCard(
+        accent: accent,
+        bordered: !flat,
+        background: flat ? theme.colorScheme.surface : null,
         onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(14, 12, 8, 12),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        if (isLearned) ...[
-                          Icon(
-                            Icons.check_circle,
-                            size: 16,
-                            color: theme.colorScheme.primary,
-                          ),
-                          const SizedBox(width: 6),
-                        ],
-                        Expanded(
-                          child: Text(
-                            courseIndex == null
-                                ? lesson.title.of(localeCode)
-                                : context.trArgs('lessonIndex', {
-                                    'n': courseIndex,
-                                    'title': lesson.title.of(localeCode),
-                                  }),
-                            style: theme.textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
+        padding: const EdgeInsets.fromLTRB(14, 12, 6, 12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
+                    children: [
+                      if (courseIndex != null) ...[
+                        MonoLabel(
+                          courseIndex!.toString().padLeft(2, '0'),
+                          color: theme.colorScheme.primary,
+                          size: 12,
+                          weight: FontWeight.w700,
+                        ),
+                        const SizedBox(width: 8),
+                      ],
+                      if (isLearned) ...[
+                        Icon(
+                          Icons.check,
+                          size: 15,
+                          color: theme.colorScheme.primary,
+                        ),
+                        const SizedBox(width: 5),
+                      ],
+                      Expanded(
+                        child: Text(
+                          lesson.title.of(localeCode),
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      lesson.summary.of(localeCode),
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                        height: 1.4,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 10),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 6,
-                      children: [
-                        _MetaChip(
-                          icon: Icons.signal_cellular_alt,
-                          label: context.difficultyLabel(lesson.difficulty),
-                        ),
-                        _MetaChip(
-                          icon: Icons.schedule,
-                          label: '${lesson.minutes} ${context.tr('minutes')}',
-                        ),
-                        _MetaChip(
-                          icon: Icons.quiz_outlined,
-                          label:
-                              '${lesson.quiz.length} ${context.tr('questions')}',
-                        ),
-                        if (quizResult != null)
-                          _MetaChip(
-                            icon: Icons.emoji_events_outlined,
-                            label:
-                                '${quizResult!.correct}/${quizResult!.total}',
-                            highlight: true,
-                          ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              if (onFavoriteTap != null)
-                IconButton(
-                  tooltip: context.tr('favorites'),
-                  onPressed: onFavoriteTap,
-                  icon: Icon(
-                    isFavorite ? Icons.star : Icons.star_border,
-                    color: isFavorite
-                        ? const Color(0xFFF59E0B)
-                        : theme.colorScheme.onSurfaceVariant,
+                    ],
                   ),
-                )
-              else
-                const SizedBox(width: 8),
-            ],
-          ),
+                  const SizedBox(height: 6),
+                  Text(
+                    lesson.summary.of(localeCode),
+                    style: theme.textTheme.bodySmall?.copyWith(height: 1.5),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: MonoLabel(
+                          meta.join('   /   '),
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            if (onFavoriteTap != null)
+              IconButton(
+                tooltip: context.tr('favorites'),
+                visualDensity: VisualDensity.compact,
+                onPressed: onFavoriteTap,
+                icon: Icon(
+                  isFavorite ? Icons.star : Icons.star_border,
+                  size: 20,
+                  color: isFavorite
+                      ? AppPalette.warning
+                      : theme.colorScheme.onSurfaceVariant,
+                ),
+              )
+            else
+              const SizedBox(width: 6),
+          ],
         ),
-      ),
-    );
-  }
-}
-
-class _MetaChip extends StatelessWidget {
-  const _MetaChip({
-    required this.icon,
-    required this.label,
-    this.highlight = false,
-  });
-
-  final IconData icon;
-  final String label;
-  final bool highlight;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final color = highlight
-        ? theme.colorScheme.primary
-        : theme.colorScheme.onSurfaceVariant;
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(999),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 13, color: color),
-          const SizedBox(width: 4),
-          Text(
-            label,
-            style: theme.textTheme.labelSmall?.copyWith(color: color),
-          ),
-        ],
       ),
     );
   }

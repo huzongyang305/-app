@@ -140,6 +140,9 @@ void main() {
         matching: find.byType(Scrollable),
       ),
     );
+    // 横向语言条可能只把目标滚到边缘，确保完整露出后再点击。
+    await tester.ensureVisible(find.text('Python'));
+    await tester.pumpAndSettle();
 
     // 切换语言后示例代码随之切换
     await tester.tap(find.text('Python'));

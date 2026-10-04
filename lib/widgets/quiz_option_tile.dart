@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../l10n/l10n_extension.dart';
+import '../theme/app_theme.dart';
 
-/// 测验选项：支持单选、多选与作答后的对错配色。
+/// 测验选项：做成「可勾选的行」。
+///
+/// 左侧 3px 状态条表示选中/正确/错误，行与行之间只用一条细线分隔，
+/// 不再使用圆角胶囊或描边卡片。
 class QuizOptionTile extends StatelessWidget {
   const QuizOptionTile({
     super.key,
@@ -29,30 +33,26 @@ class QuizOptionTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    var borderColor = theme.colorScheme.outlineVariant;
-    var backgroundColor = theme.colorScheme.surface;
+    var stripe = Colors.transparent;
+    var background = Colors.transparent;
     IconData? trailingIcon;
     Color? trailingColor;
 
     if (answered) {
       if (correct) {
-        borderColor = const Color(0xFF16A34A);
-        backgroundColor = const Color(0xFF16A34A).withValues(alpha: 0.10);
-        trailingIcon = Icons.check_circle;
-        trailingColor = const Color(0xFF16A34A);
+        stripe = AppPalette.success;
+        background = AppPalette.success.withValues(alpha: 0.07);
+        trailingIcon = Icons.check;
+        trailingColor = AppPalette.success;
       } else if (selected) {
-        borderColor = theme.colorScheme.error;
-        backgroundColor = theme.colorScheme.errorContainer.withValues(
-          alpha: 0.5,
-        );
-        trailingIcon = Icons.cancel;
-        trailingColor = theme.colorScheme.error;
+        stripe = AppPalette.danger;
+        background = AppPalette.danger.withValues(alpha: 0.07);
+        trailingIcon = Icons.close;
+        trailingColor = AppPalette.danger;
       }
     } else if (selected) {
-      borderColor = theme.colorScheme.primary;
-      backgroundColor = theme.colorScheme.primaryContainer.withValues(
-        alpha: 0.32,
-      );
+      stripe = theme.colorScheme.primary;
+      background = theme.colorScheme.primary.withValues(alpha: 0.06);
     }
 
     final letter = String.fromCharCode(65 + index);
@@ -71,57 +71,60 @@ class QuizOptionTile extends StatelessWidget {
           : null,
       child: ExcludeSemantics(
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 220),
+          duration: const Duration(milliseconds: 200),
           curve: Curves.easeOut,
-          margin: const EdgeInsets.only(bottom: 10),
           decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: borderColor, width: 1.4),
+            color: background,
+            border: Border(
+              left: BorderSide(color: stripe, width: 3),
+              bottom: BorderSide(color: theme.colorScheme.outlineVariant),
+            ),
           ),
           child: InkWell(
-            borderRadius: BorderRadius.circular(8),
             onTap: answered ? null : () => onTap(index),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+              padding: const EdgeInsets.fromLTRB(12, 13, 8, 13),
               child: Row(
                 children: [
-                  Container(
-                    width: 26,
-                    height: 26,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: selected && !multiSelect
+                  if (multiSelect)
+                    Icon(
+                      selected
+                          ? Icons.check_box
+                          : Icons.check_box_outline_blank,
+                      size: 20,
+                      color: selected
                           ? theme.colorScheme.primary
-                          : theme.colorScheme.surfaceContainerHighest,
-                      borderRadius: BorderRadius.circular(multiSelect ? 4 : 6),
+                          : theme.colorScheme.onSurfaceVariant,
+                    )
+                  else
+                    SizedBox(
+                      width: 22,
+                      child: Text(
+                        letter,
+                        style: theme.textTheme.labelMedium?.copyWith(
+                          color: selected || correct
+                              ? theme.colorScheme.primary
+                              : theme.colorScheme.onSurfaceVariant,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
                     ),
-                    child: multiSelect
-                        ? Icon(
-                            selected
-                                ? Icons.check_box
-                                : Icons.check_box_outline_blank,
-                            size: 22,
-                            color: selected
-                                ? theme.colorScheme.primary
-                                : theme.colorScheme.onSurfaceVariant,
-                          )
-                        : Text(
-                            letter,
-                            style: theme.textTheme.labelMedium?.copyWith(
-                              color: selected
-                                  ? theme.colorScheme.onPrimary
-                                  : theme.colorScheme.onSurfaceVariant,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                  ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 10),
                   Expanded(
-                    child: Text(label, style: theme.textTheme.bodyMedium),
+                    child: Text(
+                      label,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontFamily: AppTheme.sansFamily,
+                        fontSize: 14.5,
+                        height: 1.5,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
                   ),
-                  if (trailingIcon != null)
-                    Icon(trailingIcon, color: trailingColor, size: 22),
+                  if (trailingIcon != null) ...[
+                    const SizedBox(width: 8),
+                    Icon(trailingIcon, color: trailingColor, size: 20),
+                  ],
                 ],
               ),
             ),

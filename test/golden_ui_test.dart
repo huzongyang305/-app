@@ -21,12 +21,16 @@ void main() {
     await content.load();
   });
 
-  Future<void> pumpApp(WidgetTester tester, Key key) async {
+  Future<void> pumpApp(
+    WidgetTester tester,
+    Key key, {
+    StorageService? storage,
+  }) async {
     await tester.pumpWidget(
       RepaintBoundary(
         key: key,
         child: CodeLearnApp(
-          storage: StorageService.inMemory(),
+          storage: storage ?? StorageService.inMemory(),
           contentProvider: content,
         ),
       ),
@@ -66,5 +70,36 @@ void main() {
       expect(find.byType(NavigationRail), findsOneWidget);
       expect(find.byType(NavigationBar), findsNothing);
     }
+  });
+
+  testWidgets('视觉回归：手机首页深色模式', (tester) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final storage = StorageService.inMemory();
+    await storage.write('theme_mode', 'dark');
+    const key = ValueKey('golden-phone-dark');
+    await pumpApp(tester, key, storage: storage);
+    if (_compareGoldens) {
+      await expectLater(
+        find.byKey(key),
+        matchesGoldenFile('goldens/home_phone_dark.png'),
+      );
+    } else {
+      expect(find.byType(NavigationBar), findsOneWidget);
+      expect(find.byType(NavigationRail), findsNothing);
+    }
+  });
+
+  testWidgets('英文界面可正常渲染', (tester) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final storage = StorageService.inMemory();
+    await storage.write('locale_code', 'en');
+    const key = ValueKey('golden-phone-en');
+    await pumpApp(tester, key, storage: storage);
+    expect(find.text('CS & Coding'), findsOneWidget);
+    expect(find.text('Overall progress'), findsOneWidget);
   });
 }
