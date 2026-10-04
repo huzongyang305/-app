@@ -39,14 +39,25 @@ void main() {
     expect(tester.getSize(find.byType(NavigationBar)).height, greaterThan(0));
 
     // 离线搜索：输入关键词后应能在内置课程里命中结果。
+    expect(find.byTooltip('搜索知识点'), findsOneWidget);
+    expect(find.byType(NavigationBar), findsOneWidget);
     await tester.tap(find.byTooltip('搜索知识点'));
-    await tester.pumpAndSettle();
+    final searchReady = await _waitFor(
+      tester,
+      () => find.byType(TextField).evaluate().isNotEmpty,
+      timeout: const Duration(seconds: 15),
+    );
+    expect(searchReady, isTrue, reason: '点击搜索后 15 秒内没有进入搜索页');
     expect(find.byType(TextField), findsOneWidget);
     await tester.enterText(find.byType(TextField), '函数');
-    await tester.pump(const Duration(milliseconds: 600));
+    // 搜索框有 280ms 防抖，这里让真实计时器先跑完。
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(milliseconds: 600)),
+    );
+    await tester.pump();
     final hasHits = await _waitFor(
       tester,
-      () => find.byType(ListTile).evaluate().isNotEmpty,
+      () => find.byType(Card).evaluate().isNotEmpty,
       timeout: const Duration(seconds: 20),
     );
     expect(hasHits, isTrue, reason: '离线搜索「函数」没有返回任何知识点');
