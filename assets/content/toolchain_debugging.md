@@ -1,5 +1,7 @@
 # 调试与日志
 
+![调试的复现、假设、验证、修复循环](images/diagram_debug_loop.webp)
+
 ![调试与日志](images/category_debugging.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：13 分钟

@@ -1,5 +1,7 @@
 # Terraform 与基础设施即代码
 
+![Terraform 从编写到应用的流程](images/diagram_terraform_flow.webp)
+
 ![Terraform 与基础设施即代码](images/category_terraform.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：15 分钟

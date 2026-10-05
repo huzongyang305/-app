@@ -1,5 +1,7 @@
 # 实战：Python CLI 待办工具
 
+![Python CLI 待办工具的结构](images/diagram_python_todo.webp)
+
 ![实战：Python CLI 待办工具](images/remaining_project_python_cli_todo.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：110 分钟

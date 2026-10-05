@@ -1,5 +1,7 @@
 # 数据库访问与 ORM：九种生态横向对照
 
+![原生驱动、ORM、查询构建器的对照](images/diagram_cross_db.webp)
+
 ![数据库访问与 ORM：九种生态横向对照](images/category_cross_db_access.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：20 分钟

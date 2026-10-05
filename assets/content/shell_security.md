@@ -1,5 +1,7 @@
 # Shell 脚本安全加固
 
+![Shell 脚本安全加固的四道防线](images/diagram_shell_security.webp)
+
 ![Shell 脚本安全加固](images/remaining_shell_security.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：18 分钟

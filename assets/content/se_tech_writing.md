@@ -1,5 +1,7 @@
 # 技术写作与文档工程
 
+![三类工程文档的定位](images/diagram_docs_types.webp)
+
 ![技术写作与文档工程](images/category_se_tech_writing.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：15 分钟

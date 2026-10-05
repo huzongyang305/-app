@@ -1,5 +1,7 @@
 # 时间与时区：九种语言横向对照
 
+![时间戳、时区与本地化显示的转换](images/diagram_cross_time.webp)
+
 ![时间与时区：九种语言横向对照](images/category_cross_time_timezone.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：20 分钟

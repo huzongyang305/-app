@@ -1,5 +1,7 @@
 # 实战：Shell 日志分析与告警
 
+![日志采集到告警的流水线](images/diagram_log_alert.webp)
+
 ![实战：Shell 日志分析与告警](images/remaining_shell_project_log_analysis.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：90 分钟

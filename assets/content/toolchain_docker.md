@@ -1,5 +1,7 @@
 # Docker 容器基础
 
+![容器与虚拟机的结构对比](images/diagram_container_vm.webp)
+
 ![Docker 容器基础](images/category_docker.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

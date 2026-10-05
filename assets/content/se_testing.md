@@ -1,5 +1,7 @@
 # 测试策略
 
+![测试金字塔的层次与配比](images/diagram_test_pyramid.webp)
+
 ![测试策略](images/category_testing_strategy.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：16 分钟

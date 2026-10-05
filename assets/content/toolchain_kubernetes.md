@@ -1,5 +1,7 @@
 # Kubernetes 基础
 
+![Kubernetes 从集群到容器的对象层次](images/diagram_k8s_objects.webp)
+
 ![Kubernetes 基础](images/category_kubernetes.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：17 分钟

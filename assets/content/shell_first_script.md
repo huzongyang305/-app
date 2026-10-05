@@ -1,5 +1,7 @@
 # Shell 第一个脚本
 
+![第一个 Shell 脚本的结构](images/diagram_shell_first.webp)
+
 ![Shell 第一个脚本](images/remaining_shell_first_script.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

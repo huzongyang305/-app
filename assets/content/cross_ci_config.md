@@ -1,5 +1,7 @@
 # CI 流水线配置：九种生态横向对照
 
+![跨生态的通用 CI 五阶段](images/diagram_cross_ci.webp)
+
 ![CI 流水线配置：九种生态横向对照](images/category_cross_ci_config.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：18 分钟

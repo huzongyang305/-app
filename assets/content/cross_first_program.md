@@ -1,5 +1,7 @@
 # 九种语言的第一个程序
 
+![三种运行方式的对照](images/diagram_cross_first.webp)
+
 ![九种语言的第一个程序](images/category_cross_first_program.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：18 分钟

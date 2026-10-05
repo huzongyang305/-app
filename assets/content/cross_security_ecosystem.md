@@ -1,5 +1,7 @@
 # 依赖安全与密钥管理：九种生态横向对照
 
+![依赖安全与密钥管理流程](images/diagram_cross_security.webp)
+
 ![依赖安全与密钥管理：九种生态横向对照](images/category_cross_security_ecosystem.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：18 分钟

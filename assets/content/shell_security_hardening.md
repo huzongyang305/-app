@@ -1,5 +1,7 @@
 # Shell 脚本安全加固
 
+![Shell 脚本的分层加固](images/diagram_shell_hardening.webp)
+
 ![Shell 脚本安全加固](images/lesson_shell_security_hardening.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

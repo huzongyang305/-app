@@ -1,5 +1,7 @@
 # 健壮与可移植的 Shell 脚本
 
+![健壮脚本的四个要点](images/diagram_shell_robust.webp)
+
 ![健壮与可移植的 Shell 脚本](images/remaining_shell_robust.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：15 分钟

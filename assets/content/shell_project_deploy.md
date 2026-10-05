@@ -1,5 +1,7 @@
 # 实战：Shell 零停机部署脚本
 
+![零停机部署的五个步骤](images/diagram_zero_downtime.webp)
+
 ![实战：Shell 零停机部署脚本](images/remaining_shell_project_deploy.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：100 分钟

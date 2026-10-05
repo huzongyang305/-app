@@ -1,5 +1,7 @@
 # 命令行基础
 
+![命令行常用操作的四步流程](images/diagram_cli_basics.webp)
+
 ![命令行基础](images/category_cli.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：14 分钟

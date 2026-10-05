@@ -1,5 +1,7 @@
 # Shell 变量与参数
 
+![Shell 位置参数与特殊变量的含义](images/diagram_shell_args.webp)
+
 ![Shell 变量与参数](images/remaining_shell_variables_args.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

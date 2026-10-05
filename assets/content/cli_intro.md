@@ -1,5 +1,7 @@
 # 命令行入门
 
+![命令行入门的五个基本动作](images/diagram_cli_intro.webp)
+
 ![命令行入门](images/category_cli_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

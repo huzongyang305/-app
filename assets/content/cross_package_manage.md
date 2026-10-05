@@ -1,5 +1,7 @@
 # 包管理与依赖：九种生态横向对照
 
+![九种生态的包管理器与锁文件](images/diagram_cross_package.webp)
+
 ![包管理与依赖：九种生态横向对照](images/category_cross_package_manage.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：20 分钟

@@ -1,5 +1,7 @@
 # Shell 与 Bash 脚本
 
+![Bash 脚本的基本构成](images/diagram_shell_basics.webp)
+
 ![Shell 与 Bash 脚本](images/remaining_shell_bash.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：14 分钟

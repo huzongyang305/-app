@@ -1,5 +1,7 @@
 # 质量度量与工程门禁
 
+![该度量与不该度量的指标对照](images/diagram_quality_metrics.webp)
+
 ![质量度量与工程门禁](images/category_se_quality_metrics.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：15 分钟

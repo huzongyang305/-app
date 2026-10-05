@@ -1,5 +1,7 @@
 # 实战：本地 RAG 客服 Agent
 
+![本地 RAG 客服 Agent 的处理流程](images/diagram_rag_service.webp)
+
 ![实战：本地 RAG 客服 Agent](images/remaining_project_rag_agent_service.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：140 分钟

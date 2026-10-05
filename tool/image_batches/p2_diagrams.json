@@ -1,0 +1,306 @@
+{
+  "git_basics": {
+    "image": "images/diagram_git_three_areas.webp",
+    "alt": "Git 工作区、暂存区与版本库流转"
+  },
+  "cli": {
+    "image": "images/diagram_cli_basics.webp",
+    "alt": "命令行常用操作的四步流程"
+  },
+  "debugging": {
+    "image": "images/diagram_debug_loop.webp",
+    "alt": "调试的复现、假设、验证、修复循环"
+  },
+  "docker": {
+    "image": "images/diagram_container_vm.webp",
+    "alt": "容器与虚拟机的结构对比"
+  },
+  "ci_cd": {
+    "image": "images/diagram_ci_pipeline.webp",
+    "alt": "持续集成流水线的五个阶段"
+  },
+  "kubernetes": {
+    "image": "images/diagram_k8s_objects.webp",
+    "alt": "Kubernetes 从集群到容器的对象层次"
+  },
+  "observability": {
+    "image": "images/diagram_observability_pillars.webp",
+    "alt": "日志、指标、链路追踪三大支柱"
+  },
+  "terraform": {
+    "image": "images/diagram_terraform_flow.webp",
+    "alt": "Terraform 从编写到应用的流程"
+  },
+  "linux_performance": {
+    "image": "images/diagram_linux_perf.webp",
+    "alt": "CPU、内存、磁盘、网络四类资源排查"
+  },
+  "gateway": {
+    "image": "images/diagram_api_gateway.webp",
+    "alt": "API 网关的接入、路由、策略与转发"
+  },
+  "toolchain_project": {
+    "image": "images/diagram_pipeline_project.webp",
+    "alt": "完整 CI/CD 流水线的六个阶段"
+  },
+  "gitops_argocd": {
+    "image": "images/diagram_gitops.webp",
+    "alt": "GitOps 以 Git 为期望状态的同步闭环"
+  },
+  "git_intro": {
+    "image": "images/diagram_git_intro.webp",
+    "alt": "第一次提交的三步操作"
+  },
+  "cli_intro": {
+    "image": "images/diagram_cli_intro.webp",
+    "alt": "命令行入门的五个基本动作"
+  },
+  "shell_bash": {
+    "image": "images/diagram_shell_basics.webp",
+    "alt": "Bash 脚本的基本构成"
+  },
+  "shell_flow": {
+    "image": "images/diagram_shell_flow.webp",
+    "alt": "Shell 条件、循环、函数与退出码"
+  },
+  "shell_pipeline": {
+    "image": "images/diagram_shell_pipeline.webp",
+    "alt": "文本处理流水线的六个核心工具"
+  },
+  "shell_robust": {
+    "image": "images/diagram_shell_robust.webp",
+    "alt": "健壮脚本的四个要点"
+  },
+  "shell_process_cron": {
+    "image": "images/diagram_shell_cron.webp",
+    "alt": "进程控制与定时任务"
+  },
+  "shell_script_engineering": {
+    "image": "images/diagram_shell_engineering.webp",
+    "alt": "Shell 脚本工程化的四个实践"
+  },
+  "shell_container": {
+    "image": "images/diagram_shell_container.webp",
+    "alt": "Shell 脚本在容器与集群中的位置"
+  },
+  "shell_text_advanced": {
+    "image": "images/diagram_shell_text_tools.webp",
+    "alt": "grep、sed、awk 三者分工"
+  },
+  "shell_ops_scripts": {
+    "image": "images/diagram_shell_ops.webp",
+    "alt": "运维脚本的三类常见场景"
+  },
+  "shell_ci_templates": {
+    "image": "images/diagram_shell_ci.webp",
+    "alt": "CI 流水线中的 Shell 脚本阶段"
+  },
+  "shell_security": {
+    "image": "images/diagram_shell_security.webp",
+    "alt": "Shell 脚本安全加固的四道防线"
+  },
+  "shell_json_yaml": {
+    "image": "images/diagram_jq_yq.webp",
+    "alt": "jq 与 yq 处理结构化数据"
+  },
+  "shell_project_deploy": {
+    "image": "images/diagram_zero_downtime.webp",
+    "alt": "零停机部署的五个步骤"
+  },
+  "shell_project_log_analysis": {
+    "image": "images/diagram_log_alert.webp",
+    "alt": "日志采集到告警的流水线"
+  },
+  "shell_portability": {
+    "image": "images/diagram_shell_posix.webp",
+    "alt": "Bash 扩展与 POSIX 兼容写法对照"
+  },
+  "shell_security_hardening": {
+    "image": "images/diagram_shell_hardening.webp",
+    "alt": "Shell 脚本的分层加固"
+  },
+  "shell_automation_advanced": {
+    "image": "images/diagram_shell_automation.webp",
+    "alt": "自动化脚本的四个进阶能力"
+  },
+  "shell_first_script": {
+    "image": "images/diagram_shell_first.webp",
+    "alt": "第一个 Shell 脚本的结构"
+  },
+  "shell_variables_args": {
+    "image": "images/diagram_shell_args.webp",
+    "alt": "Shell 位置参数与特殊变量的含义"
+  },
+  "shell_conditions": {
+    "image": "images/diagram_shell_conditions.webp",
+    "alt": "Shell 条件判断的四种结构"
+  },
+  "shell_loops": {
+    "image": "images/diagram_shell_loops.webp",
+    "alt": "Shell 三种循环与控制语句"
+  },
+  "shell_pipeline_intro": {
+    "image": "images/diagram_shell_pipe_intro.webp",
+    "alt": "标准输入输出与管道的连接方式"
+  },
+  "design_patterns": {
+    "image": "images/diagram_patterns.webp",
+    "alt": "设计模式的三类划分"
+  },
+  "testing_strategy": {
+    "image": "images/diagram_test_pyramid.webp",
+    "alt": "测试金字塔的层次与配比"
+  },
+  "requirements_modeling": {
+    "image": "images/diagram_requirements.webp",
+    "alt": "从需求到领域模型的过程"
+  },
+  "se_test_design": {
+    "image": "images/diagram_test_design.webp",
+    "alt": "六种经典测试用例设计方法"
+  },
+  "se_tdd_refactor": {
+    "image": "images/diagram_tdd_cycle.webp",
+    "alt": "TDD 红绿重构循环"
+  },
+  "se_quality_metrics": {
+    "image": "images/diagram_quality_metrics.webp",
+    "alt": "该度量与不该度量的指标对照"
+  },
+  "sdl_security": {
+    "image": "images/diagram_sdl.webp",
+    "alt": "安全左移的开发流程"
+  },
+  "se_code_review": {
+    "image": "images/diagram_code_review.webp",
+    "alt": "代码评审的完整流程"
+  },
+  "se_tech_writing": {
+    "image": "images/diagram_docs_types.webp",
+    "alt": "三类工程文档的定位"
+  },
+  "se_postmortem": {
+    "image": "images/diagram_incident.webp",
+    "alt": "事故处理与复盘流程"
+  },
+  "se_oncall": {
+    "image": "images/diagram_oncall.webp",
+    "alt": "On-Call 值班的告警闭环"
+  },
+  "se_tech_debt": {
+    "image": "images/diagram_tech_debt.webp",
+    "alt": "技术债务的四象限与处理策略"
+  },
+  "project_requirements_design": {
+    "image": "images/diagram_project_requirements.webp",
+    "alt": "从想法到排期的五个步骤"
+  },
+  "project_coding_workflow": {
+    "image": "images/diagram_coding_workflow.webp",
+    "alt": "编码工作流的五个环节"
+  },
+  "project_testing_quality": {
+    "image": "images/diagram_quality_gates.webp",
+    "alt": "四层质量门禁"
+  },
+  "project_deploy_ops": {
+    "image": "images/diagram_deploy_flow.webp",
+    "alt": "从构建到回滚的发布流程"
+  },
+  "project_retro_improve": {
+    "image": "images/diagram_retro_loop.webp",
+    "alt": "度量、复盘、改进、验证的闭环"
+  },
+  "project_python_cli_todo": {
+    "image": "images/diagram_python_todo.webp",
+    "alt": "Python CLI 待办工具的结构"
+  },
+  "project_rest_api_sqlite": {
+    "image": "images/diagram_rest_sqlite.webp",
+    "alt": "REST API 与 SQLite 事务的调用时序"
+  },
+  "project_rag_agent_service": {
+    "image": "images/diagram_rag_service.webp",
+    "alt": "本地 RAG 客服 Agent 的处理流程"
+  },
+  "project_debug_performance_triage": {
+    "image": "images/diagram_perf_triage.webp",
+    "alt": "慢接口定位的排查顺序"
+  },
+  "project_interview_coding_system_design": {
+    "image": "images/diagram_interview_prep.webp",
+    "alt": "算法编码与系统设计两条准备主线"
+  },
+  "cross_first_program": {
+    "image": "images/diagram_cross_first.webp",
+    "alt": "三种运行方式的对照"
+  },
+  "cross_types_variables": {
+    "image": "images/diagram_cross_types.webp",
+    "alt": "静态类型与动态类型的对照"
+  },
+  "cross_collections": {
+    "image": "images/diagram_cross_collections.webp",
+    "alt": "三种核心集合在语言中的对应"
+  },
+  "cross_concurrency": {
+    "image": "images/diagram_cross_concurrency.webp",
+    "alt": "线程、协程、事件循环三大并发模型"
+  },
+  "cross_errors_testing": {
+    "image": "images/diagram_cross_errors.webp",
+    "alt": "异常、错误值、结果类型三种错误处理流派"
+  },
+  "cross_package_manage": {
+    "image": "images/diagram_cross_package.webp",
+    "alt": "九种生态的包管理器与锁文件"
+  },
+  "cross_build_release": {
+    "image": "images/diagram_cross_build.webp",
+    "alt": "从源码到制品的构建流水线"
+  },
+  "cross_logging_observability": {
+    "image": "images/diagram_cross_logging.webp",
+    "alt": "结构化日志、指标、链路与告警"
+  },
+  "cross_cli_args": {
+    "image": "images/diagram_cross_cli.webp",
+    "alt": "命令行参数解析的四个共同概念"
+  },
+  "cross_string_regex": {
+    "image": "images/diagram_cross_strings.webp",
+    "alt": "可变与不可变字符串的对照"
+  },
+  "cross_time_timezone": {
+    "image": "images/diagram_cross_time.webp",
+    "alt": "时间戳、时区与本地化显示的转换"
+  },
+  "cross_serialization": {
+    "image": "images/diagram_cross_serialization.webp",
+    "alt": "JSON、YAML、Protobuf 的对比"
+  },
+  "cross_performance_profiling": {
+    "image": "images/diagram_cross_profiling.webp",
+    "alt": "性能剖析的五步流程"
+  },
+  "cross_ci_config": {
+    "image": "images/diagram_cross_ci.webp",
+    "alt": "跨生态的通用 CI 五阶段"
+  },
+  "cross_security_ecosystem": {
+    "image": "images/diagram_cross_security.webp",
+    "alt": "依赖安全与密钥管理流程"
+  },
+  "cross_db_access": {
+    "image": "images/diagram_cross_db.webp",
+    "alt": "原生驱动、ORM、查询构建器的对照"
+  },
+  "cross_api_contract": {
+    "image": "images/diagram_contract.webp",
+    "alt": "契约定义、代码生成与契约测试"
+  },
+  "cross_i18n": {
+    "image": "images/diagram_i18n_flow.webp",
+    "alt": "国际化的抽取、翻译、格式化与测试"
+  }
+}

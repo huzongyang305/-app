@@ -1,5 +1,7 @@
 # 编码工作流：小步提交与可评审的改动
 
+![编码工作流的五个环节](images/diagram_coding_workflow.webp)
+
 ![编码工作流：小步提交与可评审的改动](images/category_project_coding_workflow.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：18 分钟

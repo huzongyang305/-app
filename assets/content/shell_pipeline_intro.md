@@ -1,5 +1,7 @@
 # Shell 管道入门
 
+![标准输入输出与管道的连接方式](images/diagram_shell_pipe_intro.webp)
+
 ![Shell 管道入门](images/remaining_shell_pipeline_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

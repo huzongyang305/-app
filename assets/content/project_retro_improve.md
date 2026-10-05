@@ -1,5 +1,7 @@
 # 复盘与改进：让团队一次比一次快
 
+![度量、复盘、改进、验证的闭环](images/diagram_retro_loop.webp)
+
 ![复盘与改进：让团队一次比一次快](images/category_project_retro_improve.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：18 分钟

@@ -1,5 +1,7 @@
 # 实战：慢接口调试与性能定位
 
+![慢接口定位的排查顺序](images/diagram_perf_triage.webp)
+
 ![实战：慢接口调试与性能定位](images/remaining_project_debug_performance_triage.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：110 分钟

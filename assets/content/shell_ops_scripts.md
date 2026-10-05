@@ -1,5 +1,7 @@
 # 系统运维脚本实战
 
+![运维脚本的三类常见场景](images/diagram_shell_ops.webp)
+
 ![系统运维脚本实战](images/remaining_shell_ops_scripts.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：18 分钟

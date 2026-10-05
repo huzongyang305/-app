@@ -1,5 +1,7 @@
 # 并发写法：九种语言横向对照
 
+![线程、协程、事件循环三大并发模型](images/diagram_cross_concurrency.webp)
+
 ![并发写法：九种语言横向对照](images/category_cross_concurrency.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：22 分钟

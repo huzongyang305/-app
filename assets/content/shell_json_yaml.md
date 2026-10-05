@@ -1,5 +1,7 @@
 # 结构化数据处理：jq 与 yq
 
+![jq 与 yq 处理结构化数据](images/diagram_jq_yq.webp)
+
 ![结构化数据处理：jq 与 yq](images/remaining_shell_json_yaml.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

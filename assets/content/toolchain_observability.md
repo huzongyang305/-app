@@ -1,5 +1,7 @@
 # 可观测性：日志、指标与链路
 
+![日志、指标、链路追踪三大支柱](images/diagram_observability_pillars.webp)
+
 ![可观测性：日志、指标与链路](images/category_observability.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

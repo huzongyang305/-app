@@ -1,5 +1,7 @@
 # 文本处理进阶：awk、sed 与正则
 
+![grep、sed、awk 三者分工](images/diagram_shell_text_tools.webp)
+
 ![文本处理进阶：awk、sed 与正则](images/remaining_shell_text_advanced.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：18 分钟

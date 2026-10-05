@@ -1,5 +1,7 @@
 # 设计模式与 SOLID
 
+![设计模式的三类划分](images/diagram_patterns.webp)
+
 ![设计模式与 SOLID](images/category_design_patterns.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：16 分钟

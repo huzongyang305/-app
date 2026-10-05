@@ -1,5 +1,7 @@
 # 实战：搭一条完整的 CI/CD 流水线
 
+![完整 CI/CD 流水线的六个阶段](images/diagram_pipeline_project.webp)
+
 ![实战：搭一条完整 CI/CD 流水线](images/category_toolchain_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

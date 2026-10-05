@@ -1,5 +1,7 @@
 # Shell 可移植性与 POSIX 兼容
 
+![Bash 扩展与 POSIX 兼容写法对照](images/diagram_shell_posix.webp)
+
 ![Shell 可移植性与 POSIX 兼容](images/lesson_shell_portability.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：23 分钟

@@ -1,5 +1,7 @@
 # Shell 条件判断
 
+![Shell 条件判断的四种结构](images/diagram_shell_conditions.webp)
+
 ![Shell 条件判断](images/remaining_shell_conditions.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

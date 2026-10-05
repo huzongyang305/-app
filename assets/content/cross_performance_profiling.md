@@ -1,5 +1,7 @@
 # 性能剖析与基准测试：九种生态横向对照
 
+![性能剖析的五步流程](images/diagram_cross_profiling.webp)
+
 ![性能剖析与基准测试：九种生态横向对照](images/category_cross_performance_profiling.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：20 分钟

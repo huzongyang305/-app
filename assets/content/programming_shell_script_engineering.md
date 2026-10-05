@@ -1,5 +1,7 @@
 # Shell 脚本工程化
 
+![Shell 脚本工程化的四个实践](images/diagram_shell_engineering.webp)
+
 ![Shell 脚本工程化](images/remaining_shell_script_engineering.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：15 分钟

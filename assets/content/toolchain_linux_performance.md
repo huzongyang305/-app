@@ -1,5 +1,7 @@
 # Linux 性能分析
 
+![CPU、内存、磁盘、网络四类资源排查](images/diagram_linux_perf.webp)
+
 ![Linux 性能分析](images/category_linux_performance.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

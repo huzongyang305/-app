@@ -1,5 +1,7 @@
 # Git 版本控制
 
+![Git 工作区、暂存区与版本库流转](images/diagram_git_three_areas.webp)
+
 ![Git 版本控制](images/category_git_basics.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：15 分钟

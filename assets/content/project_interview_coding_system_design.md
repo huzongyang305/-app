@@ -1,5 +1,7 @@
 # 面试冲刺：算法编码与系统设计高频题
 
+![算法编码与系统设计两条准备主线](images/diagram_interview_prep.webp)
+
 ![面试冲刺：算法编码与系统设计高频题](images/remaining_project_interview_coding_system_design.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：130 分钟

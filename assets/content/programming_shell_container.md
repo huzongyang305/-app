@@ -1,5 +1,7 @@
 # Shell 与 Docker/K8s 交互
 
+![Shell 脚本在容器与集群中的位置](images/diagram_shell_container.webp)
+
 ![Shell 与 Docker/K8s 交互](images/remaining_shell_container.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：15 分钟

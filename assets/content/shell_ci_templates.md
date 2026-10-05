@@ -1,5 +1,7 @@
 # CI 脚本模板库
 
+![CI 流水线中的 Shell 脚本阶段](images/diagram_shell_ci.webp)
+
 ![CI 脚本模板库](images/remaining_shell_ci_templates.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

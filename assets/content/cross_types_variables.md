@@ -1,5 +1,7 @@
 # 类型与变量：九种语言横向对照
 
+![静态类型与动态类型的对照](images/diagram_cross_types.webp)
+
 ![类型与变量：九种语言横向对照](images/category_cross_types_variables.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：20 分钟

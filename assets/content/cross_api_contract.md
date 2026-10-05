@@ -1,5 +1,7 @@
 # 接口文档与契约测试：跨生态对照
 
+![契约定义、代码生成与契约测试](images/diagram_contract.webp)
+
 ![接口文档与契约测试：跨生态对照](images/category_cross_api_contract.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：18 分钟

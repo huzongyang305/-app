@@ -1,5 +1,7 @@
 # 测试与质量门禁：把问题挡在上线前
 
+![四层质量门禁](images/diagram_quality_gates.webp)
+
 ![测试与质量门禁：把问题挡在上线前](images/category_project_testing_quality.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：20 分钟

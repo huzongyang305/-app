@@ -1,5 +1,7 @@
 # Shell 高级自动化与可观测性
 
+![自动化脚本的四个进阶能力](images/diagram_shell_automation.webp)
+
 ![Shell 高级自动化与可观测性](images/lesson_shell_automation_advanced.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

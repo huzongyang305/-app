@@ -1,5 +1,7 @@
 # 日志与可观测性：九种生态横向对照
 
+![结构化日志、指标、链路与告警](images/diagram_cross_logging.webp)
+
 ![日志与可观测性：九种生态横向对照](images/category_cross_logging_observability.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：20 分钟

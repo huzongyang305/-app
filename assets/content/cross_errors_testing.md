@@ -1,5 +1,7 @@
 # 错误处理与测试：九种语言横向对照
 
+![异常、错误值、结果类型三种错误处理流派](images/diagram_cross_errors.webp)
+
 ![错误处理与测试：九种语言横向对照](images/category_cross_errors_testing.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：20 分钟

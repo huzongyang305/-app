@@ -1,5 +1,7 @@
 # 故障复盘与事故管理
 
+![事故处理与复盘流程](images/diagram_incident.webp)
+
 ![故障复盘与事故管理](images/category_se_postmortem.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

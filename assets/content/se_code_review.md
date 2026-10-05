@@ -1,5 +1,7 @@
 # 代码评审方法与实践
 
+![代码评审的完整流程](images/diagram_code_review.webp)
+
 ![代码评审方法与实践](images/category_se_code_review.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：16 分钟

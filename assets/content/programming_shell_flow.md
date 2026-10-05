@@ -1,5 +1,7 @@
 # Shell 流程控制与函数
 
+![Shell 条件、循环、函数与退出码](images/diagram_shell_flow.webp)
+
 ![Shell 流程控制与函数](images/remaining_shell_flow.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

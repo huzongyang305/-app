@@ -1,5 +1,7 @@
 # 构建与发布产物：九种生态横向对照
 
+![从源码到制品的构建流水线](images/diagram_cross_build.webp)
+
 ![构建与发布产物：九种生态横向对照](images/category_cross_build_release.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：20 分钟

@@ -1,5 +1,7 @@
 # 命令行参数解析：九种语言横向对照
 
+![命令行参数解析的四个共同概念](images/diagram_cross_cli.webp)
+
 ![命令行参数解析：九种语言横向对照](images/category_cross_cli_args.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：18 分钟

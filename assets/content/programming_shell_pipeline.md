@@ -1,5 +1,7 @@
 # Shell 文本处理流水线
 
+![文本处理流水线的六个核心工具](images/diagram_shell_pipeline.webp)
+
 ![Shell 文本处理流水线](images/remaining_shell_pipeline.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

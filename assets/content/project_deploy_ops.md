@@ -1,5 +1,7 @@
 # 部署与运维：稳定发布与快速回滚
 
+![从构建到回滚的发布流程](images/diagram_deploy_flow.webp)
+
 ![部署与运维：稳定发布与快速回滚](images/category_project_deploy_ops.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：20 分钟

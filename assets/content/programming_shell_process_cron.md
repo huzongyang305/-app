@@ -1,5 +1,7 @@
 # Shell 进程控制、定时任务与日志
 
+![进程控制与定时任务](images/diagram_shell_cron.webp)
+
 ![Shell 进程控制、定时任务与日志](images/remaining_shell_process_cron.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：15 分钟

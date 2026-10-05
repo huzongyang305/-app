@@ -1,5 +1,7 @@
 # TDD 与重构
 
+![TDD 红绿重构循环](images/diagram_tdd_cycle.webp)
+
 ![TDD 与重构](images/category_se_tdd_refactor.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：15 分钟

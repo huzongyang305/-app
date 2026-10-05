@@ -1,5 +1,7 @@
 # 字符串与正则：九种语言横向对照
 
+![可变与不可变字符串的对照](images/diagram_cross_strings.webp)
+
 ![字符串与正则：九种语言横向对照](images/category_cross_string_regex.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：18 分钟

@@ -1,5 +1,7 @@
 # GitOps 与 ArgoCD
 
+![GitOps 以 Git 为期望状态的同步闭环](images/diagram_gitops.webp)
+
 ![GitOps 与 ArgoCD](images/category_gitops_argocd.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：15 分钟

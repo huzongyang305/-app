@@ -1,5 +1,7 @@
 # Shell 循环入门
 
+![Shell 三种循环与控制语句](images/diagram_shell_loops.webp)
+
 ![Shell 循环入门](images/remaining_shell_loops.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

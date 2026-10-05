@@ -1,5 +1,7 @@
 # 需求到设计：把想法拆成可交付任务
 
+![从想法到排期的五个步骤](images/diagram_project_requirements.webp)
+
 ![需求到设计：把想法拆成可交付任务](images/category_project_requirements_design.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：20 分钟

@@ -208,7 +208,8 @@ function renderGrid(def) {
   const left = rowLabels.length > 0 ? LEFT + 150 : LEFT + 20;
   const top = colLabels.length > 0 ? 175 : 115;
   const right = RIGHT;
-  const bottom = 615;
+  // 有说明框时要给底部留出空间，否则最后一行单元格会被说明框盖住。
+  const bottom = def.notes && def.notes.length > 0 ? 500 : 615;
   const cellWidth = (right - left) / cols;
   const cellHeight = (bottom - top) / rows;
 

@@ -1,5 +1,7 @@
 # CI/CD 与 GitHub Actions
 
+![持续集成流水线的五个阶段](images/diagram_ci_pipeline.webp)
+
 ![CI/CD 与 GitHub Actions](images/category_ci_cd.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

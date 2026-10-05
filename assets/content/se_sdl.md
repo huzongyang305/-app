@@ -1,5 +1,7 @@
 # 安全开发生命周期（SDL）
 
+![安全左移的开发流程](images/diagram_sdl.webp)
+
 ![安全开发生命周期（SDL）](images/category_sdl_security.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

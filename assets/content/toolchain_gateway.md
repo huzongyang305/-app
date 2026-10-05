@@ -1,5 +1,7 @@
 # API 网关与负载均衡
 
+![API 网关的接入、路由、策略与转发](images/diagram_api_gateway.webp)
+
 ![API 网关与负载均衡](images/category_gateway.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

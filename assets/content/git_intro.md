@@ -1,5 +1,7 @@
 # Git 入门
 
+![第一次提交的三步操作](images/diagram_git_intro.webp)
+
 ![Git 入门](images/category_git_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

@@ -1,5 +1,7 @@
 # 测试用例设计方法
 
+![六种经典测试用例设计方法](images/diagram_test_design.webp)
+
 ![测试用例设计方法](images/category_se_test_design.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：15 分钟

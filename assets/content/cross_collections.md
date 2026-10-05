@@ -1,5 +1,7 @@
 # 集合类型：九种语言横向对照
 
+![三种核心集合在语言中的对应](images/diagram_cross_collections.webp)
+
 ![集合类型：九种语言横向对照](images/category_cross_collections.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：20 分钟

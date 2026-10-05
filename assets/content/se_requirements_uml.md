@@ -1,5 +1,7 @@
 # 需求分析与建模
 
+![从需求到领域模型的过程](images/diagram_requirements.webp)
+
 ![需求分析与建模](images/category_requirements_modeling.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

@@ -1,5 +1,7 @@
 # 技术债务管理
 
+![技术债务的四象限与处理策略](images/diagram_tech_debt.webp)
+
 ![技术债务管理](images/category_se_tech_debt.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟
