@@ -426,6 +426,9 @@ class AppStrings {
     // ── 代码块 ──
     'copyTooltip': {'zh': '复制', 'en': 'Copy'},
     'codeCopied': {'zh': '代码已复制', 'en': 'Code copied'},
+    'fullscreenCode': {'zh': '全屏查看代码', 'en': 'View code fullscreen'},
+    'exitFullscreen': {'zh': '退出全屏', 'en': 'Exit fullscreen'},
+    'codeLineCount': {'zh': '共 {n} 行', 'en': '{n} lines'},
     // ── 内容加载错误 ──
     'contentLoadFailed': {
       'zh': '课程内容加载失败：{error}',
