@@ -1,6 +1,7 @@
 import 'package:code_learn_app/models/lesson.dart';
 import 'package:code_learn_app/models/localized_text.dart';
 import 'package:code_learn_app/services/exam_builder.dart';
+import 'package:code_learn_app/services/practice_question_factory.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// 模拟考试组卷规则测试。
@@ -178,15 +179,24 @@ void main() {
     expect(paper.map((item) => item.lesson.id).toSet().length, 10);
   });
 
-  test('题号始终落在该知识点的题库范围内', () {
+  test('题号始终落在该知识点的完整题库范围内', () {
     final paper = buildExamPaper(makeLessons(60), size: 20, seed: 5);
     for (final item in paper) {
       expect(
         item.questionIndex,
-        inInclusiveRange(0, item.lesson.quiz.length - 1),
+        inInclusiveRange(0, item.lesson.allQuiz.length - 1),
       );
-      expect(item.question, item.lesson.quiz[item.questionIndex]);
+      expect(item.question, item.lesson.allQuiz[item.questionIndex]);
     }
+  });
+
+  test('语言课程会追加动态代码练习，非语言课程保持原题库', () {
+    final languageLesson = makeLessons(1, categoryId: 'python').single;
+    final otherLesson = makeLessons(1, categoryId: 'cat').single;
+
+    expect(languageLesson.allQuiz.length, languageLesson.quiz.length + 6);
+    expect(otherLesson.allQuiz.length, otherLesson.quiz.length);
+    expect(languageLesson.totalQuestionCount, languageLesson.allQuiz.length);
   });
 
   test('同一 seed 生成的考卷完全一致，便于复现问题', () {
@@ -264,15 +274,16 @@ void main() {
     expect(paper.every((item) => item.lesson.categoryId == 'python'), isTrue);
   });
 
-  test('examPoolSize 只统计有题目的知识点', () {
+  test('examPoolSize 会把有动态代码练习的语言课程计入题库', () {
     final lessons = <Lesson>[
       ...makeLessons(20, categoryId: 'python'),
       ...makeLessons(5, categoryId: 'java', withQuiz: false),
       ...makeLessons(3, categoryId: 'java'),
     ];
-    expect(examPoolSize(lessons), 23);
+    // 语言课程即使没有内置题目，也会由代码练习工厂补充 6 道动态题。
+    expect(examPoolSize(lessons), 28);
     expect(examPoolSize(lessons, categoryId: 'python'), 20);
-    expect(examPoolSize(lessons, categoryId: 'java'), 3);
+    expect(examPoolSize(lessons, categoryId: 'java'), 8);
     expect(examPoolSize(lessons, categoryId: 'go'), 0);
   });
 

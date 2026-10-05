@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../l10n/l10n_extension.dart';
 import '../models/lesson.dart';
 import '../services/content_provider.dart';
+import '../services/practice_question_factory.dart';
 import '../services/progress_provider.dart';
 import '../services/recommendation_service.dart';
 import '../theme/app_theme.dart';
@@ -225,7 +226,7 @@ class HomeScreen extends StatelessWidget {
                 final lesson = content.lessonById(
                   progress.dueReviewLessonIds.first,
                 );
-                if (lesson == null || lesson.quiz.isEmpty) return;
+                if (lesson == null || lesson.totalQuestionCount == 0) return;
                 Navigator.of(context).push(
                   MaterialPageRoute<void>(
                     builder: (_) => QuizScreen(lesson: lesson),

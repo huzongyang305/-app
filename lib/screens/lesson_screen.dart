@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../l10n/l10n_extension.dart';
 import '../models/lesson.dart';
 import '../services/content_provider.dart';
+import '../services/practice_question_factory.dart';
 import '../services/progress_provider.dart';
 import '../services/settings_provider.dart';
 import '../services/tts_service.dart';
@@ -210,9 +211,8 @@ class _LessonScreenState extends State<LessonScreen> {
       screen = CodeSandboxScreen(initialLanguageId: lab.substring(8));
     }
     if (screen == null || !mounted) return;
-    await Navigator.of(context).push(
-      MaterialPageRoute<void>(builder: (_) => screen!),
-    );
+    await Navigator.of(context)
+        .push(MaterialPageRoute<void>(builder: (_) => screen!));
   }
 
   int _interactiveMode() {
@@ -314,7 +314,7 @@ class _LessonScreenState extends State<LessonScreen> {
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
           child: Row(
             children: [
-              if (widget.lesson.quiz.isNotEmpty) ...[
+              if (widget.lesson.totalQuestionCount > 0) ...[
                 Expanded(
                   child: FilledButton.icon(
                     onPressed: () => Navigator.of(context).push(
@@ -613,7 +613,9 @@ class _LessonOverviewPane extends StatelessWidget {
             ),
             Chip(
               avatar: const Icon(Icons.quiz_outlined, size: 17),
-              label: Text('${lesson.quiz.length} ${context.tr('navQuiz')}'),
+              label: Text(
+                '${lesson.totalQuestionCount} ${context.tr('navQuiz')}',
+              ),
             ),
           ],
         ),

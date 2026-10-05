@@ -58,23 +58,38 @@ void main() {
     await settleWithIo(tester);
     expect(find.text('已复制标题、摘要与正文'), findsOneWidget);
 
-    // 打开测验。前几题是普通选择题，最后一题是 P0 填空题。
+    // 打开测验。题库 = 内置题 + 语言课程动态代码练习，逐题作答直到最后一题。
     await tester.tap(find.text('开始测验'));
     await tester.pumpAndSettle();
 
-    for (var i = 0; i < 3; i++) {
-      await tester.tap(find.byType(QuizOptionTile).first);
+    var answered = 0;
+    var sawCorrectFeedback = false;
+    while (answered < 30) {
+      final options = find.byType(QuizOptionTile);
+      if (options.evaluate().isNotEmpty) {
+        await tester.tap(options.first);
+      } else {
+        // 填空题：输入 print 后手动提交。
+        await tester.enterText(find.byType(TextField), 'print');
+      }
       await tester.pumpAndSettle();
+
+      final submit = find.text('提交答案');
+      if (submit.evaluate().isNotEmpty) {
+        await tester.tap(submit);
+        await tester.pumpAndSettle();
+      }
+      answered++;
+      if (find.text('回答正确').evaluate().isNotEmpty) {
+        sawCorrectFeedback = true;
+      }
+
+      if (find.text('查看结果').evaluate().isNotEmpty) break;
       await tester.tap(find.text('下一题'));
       await tester.pumpAndSettle();
     }
-
-    // 填空题：输入 print，提交后进入结果页。
-    await tester.enterText(find.byType(TextField), 'print');
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('提交答案'));
-    await tester.pumpAndSettle();
-    expect(find.text('回答正确'), findsOneWidget);
+    expect(answered, greaterThanOrEqualTo(4));
+    expect(sawCorrectFeedback, isTrue);
     await tester.tap(find.text('查看结果'));
     await tester.pumpAndSettle();
 

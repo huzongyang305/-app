@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import '../models/lesson.dart';
+import 'practice_question_factory.dart';
 
 /// 模拟考试中的一道题：来自某个知识点的某道选择题。
 class ExamQuestion {
@@ -9,7 +10,7 @@ class ExamQuestion {
   final Lesson lesson;
   final int questionIndex;
 
-  QuizQuestion get question => lesson.quiz[questionIndex];
+  QuizQuestion get question => lesson.allQuiz[questionIndex];
 }
 
 /// 生成一份考卷：按「基础 40% / 进阶 40% / 高级 20%」配比抽知识点，
@@ -26,7 +27,7 @@ List<ExamQuestion> buildExamPaper(
   final random = Random(seed);
   final pool =
       allLessons
-          .where((lesson) => lesson.quiz.isNotEmpty)
+          .where((lesson) => lesson.allQuiz.isNotEmpty)
           .where(
             (lesson) => categoryId == null || lesson.categoryId == categoryId,
           )
@@ -67,7 +68,7 @@ List<ExamQuestion> buildExamPaper(
       .map(
         (lesson) => ExamQuestion(
           lesson: lesson,
-          questionIndex: random.nextInt(lesson.quiz.length),
+          questionIndex: random.nextInt(lesson.allQuiz.length),
         ),
       )
       .toList();
@@ -76,7 +77,7 @@ List<ExamQuestion> buildExamPaper(
 /// 指定范围内可参与组卷的知识点数量（用于考前提示可选范围）。
 int examPoolSize(List<Lesson> allLessons, {String? categoryId}) {
   return allLessons
-      .where((lesson) => lesson.quiz.isNotEmpty)
+      .where((lesson) => lesson.allQuiz.isNotEmpty)
       .where((lesson) => categoryId == null || lesson.categoryId == categoryId)
       .length;
 }
@@ -91,7 +92,7 @@ List<ExamQuestion> _parseWrongQuestions(
 ) {
   final byId = <String, Lesson>{
     for (final lesson in allLessons)
-      if (lesson.quiz.isNotEmpty) lesson.id: lesson,
+      if (lesson.allQuiz.isNotEmpty) lesson.id: lesson,
   };
 
   final questions = <ExamQuestion>[];
@@ -102,7 +103,7 @@ List<ExamQuestion> _parseWrongQuestions(
     final lesson = byId[parts[0]];
     final index = int.tryParse(parts[1]);
     if (lesson == null || index == null) continue;
-    if (index < 0 || index >= lesson.quiz.length) continue;
+    if (index < 0 || index >= lesson.allQuiz.length) continue;
     if (!seen.add(key)) continue;
     questions.add(ExamQuestion(lesson: lesson, questionIndex: index));
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../l10n/l10n_extension.dart';
 import '../models/lesson.dart';
 import '../models/quiz_result.dart';
+import '../services/practice_question_factory.dart';
 import '../theme/app_theme.dart';
 import 'index_card.dart';
 
@@ -123,7 +124,7 @@ class LessonCard extends StatelessWidget {
                       _MetaChip(
                         icon: Icons.quiz_outlined,
                         label:
-                            '${lesson.quiz.length} ${context.tr('questions')}',
+                            '${lesson.totalQuestionCount} ${context.tr('questions')}',
                       ),
                       if (quizResult != null)
                         _MetaChip(

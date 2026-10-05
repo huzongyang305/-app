@@ -5,6 +5,7 @@ import '../l10n/l10n_extension.dart';
 import '../models/lesson.dart';
 import '../models/quiz_answer.dart';
 import '../models/review_grade.dart';
+import '../services/practice_question_factory.dart';
 import '../services/progress_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/quiz_answer_panel.dart';
@@ -30,7 +31,7 @@ class _QuizScreenState extends State<QuizScreen> {
   /// 用户完成三档自评后，展示「多少天后再复习」。
   int? _gradedDays;
 
-  List<QuizQuestion> get _questions => widget.lesson.quiz;
+  List<QuizQuestion> get _questions => widget.lesson.allQuiz;
   QuizQuestion get _current => _questions[_index];
   bool get _answered => _submitted;
 

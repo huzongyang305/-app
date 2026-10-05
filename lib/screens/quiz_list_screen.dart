@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../l10n/l10n_extension.dart';
 import '../services/content_provider.dart';
+import '../services/practice_question_factory.dart';
 import '../services/progress_provider.dart';
 import '../widgets/icon_mapper.dart';
 import '../widgets/lesson_card.dart';
@@ -133,7 +134,7 @@ class QuizListScreen extends StatelessWidget {
                       quizResult: progress.resultOf(lesson.id),
                       onTap: () => Navigator.of(context).push(
                         MaterialPageRoute<void>(
-                          builder: (_) => lesson.quiz.isEmpty
+                          builder: (_) => lesson.allQuiz.isEmpty
                               ? LessonScreen(lesson: lesson)
                               : QuizScreen(lesson: lesson),
                         ),
