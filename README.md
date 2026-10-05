@@ -253,7 +253,7 @@ APK 权限仅 `POST_NOTIFICATIONS` / `RECEIVE_BOOT_COMPLETED` / `VIBRATE`，
 
 `pubspec.yaml` 的 `version: 主.次.修订+构建号` 是唯一版本来源：
 
-- `versionName` = `主.次.修订`（当前 `1.1.4`），对用户可见；
+- `versionName` = `主.次.修订`（当前 `1.1.5`），对用户可见；
 - `versionCode` = `+` 后的构建号，每次分发新版本必须**严格递增**；
 - 使用 `--split-per-abi` 时 Flutter 会按 ABI 自动叠加偏移，无需手工维护。
 
@@ -266,7 +266,7 @@ APK 权限仅 `POST_NOTIFICATIONS` / `RECEIVE_BOOT_COMPLETED` / `VIBRATE`，
 
 ```bash
 flutter analyze     # 静态检查（当前 0 issue）
-flutter test        # 151 项：内容完整性 + 端到端流程 + 金图视觉回归 + 备份/迁移测试
+flutter test        # 152 项：内容完整性 + 端到端流程 + 金图视觉回归 + 备份/迁移测试
 dart tool/verify_sandbox_harness.dart   # 多语言沙箱离线校验（需本机有 Edge/Chrome）
 dart tool/check_brand_assets.dart       # 图标/启动页资源自检
 dart tool/check_apk_size.dart build/app/outputs/flutter-apk/app-release.apk 90   # APK 体积门禁
@@ -285,7 +285,7 @@ dart tool/check_apk_size.dart build/app/outputs/flutter-apk/app-release.apk 90  
    ```
    ````
 
-2. 在 `assets/content/manifest.json` 对应的分类里追加一条 lesson，填写 `id`、`title`、`summary`、`file`、`minutes`、`keywords` 和 3-5 道 `quiz` 题目。
+2. 在 `assets/content/manifest.json` 对应的分类里追加一条 lesson，填写 `id`、`title`、`summary`、`file`、`minutes`、`keywords` 和 `quiz` 题目（3-5 道基础题，另可加 1 道排序/填空/多选扩展题）。
 
 3. 题目字段按题型配置：
 

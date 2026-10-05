@@ -433,37 +433,43 @@ class _ItemPageState extends State<ItemPage> {
 
 ## 考点精讲：把测验题还原成判断过程
 
-本课有 5 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
+本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
 
 ### 考点 1：输入框内容这类局部 UI 状态推荐？
 
 - **正确判断**：StatefulWidget + setState
-- **判断依据**：能局部就不全局，重建范围最小。其他选项：数据库与文件适合持久化，全局状态（混淆了相邻概念，不能回答本题）适合跨页面共享。输入框这类局部状态用 StatefulWidget 加 setState 最简单，重建范围也最小。正确项「StatefulWidget + setState」完整覆盖了题目要求的关键点，没有遗漏前提。把题干「输入框内容这类局部 UI 状态推荐？」放回《Flutter 状态管理与性能》的「状态分层、重建范围控制与生命周期陷阱」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **判断依据**：正确答案是「StatefulWidget + setState」，本课在「本课小结」中说明：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层。能局部就不全局，重建范围最小。本课还在「零基础详解：状态管理与重建范围」中说明：状态管理要回答两个问题：这份状态归谁管、变化时要重建哪一部分。本课还在「测试策略」中说明：Widget 测试中通过 ChangeNotifierProvider.value 注入假数据，避免真实网络与数据库。
 - **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
 
 ### 考点 2：控制重建范围的有效手段是？
 
 - **正确判断**：用 const 与 Selector 只包裹依赖状态的子树
-- **判断依据**：配合 RepaintBoundary 可进一步隔离高频重绘。 其他选项：整页 Consumer 会让无关子树一起重建，禁用 setState 与增加 StatefulWidget（仅部分场景成立） 都不解决问题；const 与 Selector 才能真正缩小重建范围。
+- **判断依据**：正确答案是「用 const 与 Selector 只包裹依赖状态的子树」，本课在「重建范围控制」中说明：Consumer/Selector 只包裹真正依赖该状态的子树，而不是整页。配合 RepaintBoundary 可进一步隔离高频重绘。本课还在「零基础详解：状态管理与重建范围」中说明：状态管理要回答两个问题：这份状态归谁管、变化时要重建哪一部分。本课还在「本课小结」中说明：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层。
 - **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
 
 ### 考点 3：忘记在 dispose 中释放控制器会导致？
 
 - **正确判断**：内存泄漏与后台继续执行
-- **判断依据**：AnimationController、TextEditingController、订阅都必须释放。其他选项：忘记释放不会导致编译错误或无法打包，也不一定立刻卡顿。它会造成内存泄漏，控制器或订阅还会在后台继续执行。正确项「内存泄漏与后台继续执行」完整覆盖了题目要求的关键点，没有遗漏前提。错误项「UI 卡顿」在边界或失败路径上会得出错误结果。把题干「忘记在 dispose 中释放控制器会导致？」放回《Flutter 状态管理与性能》的「状态分层、重建范围控制与生命周期陷阱」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **判断依据**：正确答案是「内存泄漏与后台继续执行」，本课在「生命周期要点」中说明：initState 做一次初始化（注意不能在这里用 context 依赖），didChangeDependencies 响应依赖变化，dispose 释放控制器、订阅与定时器。AnimationController、TextEditingController、订阅都必须释放。本课还在「生命周期要点」中说明：忘记 dispose 是内存泄漏的常见来源（AnimationController、TextEditingController、StreamSubscription）。
 - **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
 
 ### 考点 4：ChangeNotifier 子类中通知界面刷新的方法是？
 
 - **正确判断**：notifyListeners()
-- **判断依据**：ChangeNotifier 通过 notifyListeners() 通知订阅者重建；setState 属于 StatefulWidget 自身。 其他选项：setState 属于 StatefulWidget 自身，refresh 与 updateUI 都不是框架 API；ChangeNotifier 通过 notifyListeners() 通知订阅者。
+- **判断依据**：ChangeNotifier 通过 notifyListeners() 通知订阅者重建。setState 属于 StatefulWidget 自身。针对「ChangeNotifier 子类中通知界面刷新…」，本课在「测试策略」中说明：状态类不依赖 Widget，可直接单测：构造 Provider → 调用方法 → 断言状态与通知次数（用 addListener 计数）。本课还在「零基础详解：状态管理与重建范围」中说明：能局部就不全局，能小范围就不整页刷新，这是 Flutter 性能与可维护性的核心。
 - **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
 
 ### 考点 5：订阅 Provider 时，只希望在某个字段变化时重建，应该用？
 
 - **正确判断**：context.select<Model, T>((m) => m.field)
-- **判断依据**：select 会把重建范围收窄到指定字段，其余字段变化不会触发重建。正确项「context.select<Model, T>((m) => m.field)」完整覆盖了题目要求的关键点，没有遗漏前提。错误项「context.read<Model>()」在边界或失败路径上会得出错误结果。错误项「Provider.of<Model>(context, listen: false)」适用于其他场景，但与本题的前提不匹配。错误项「直接在 State 里存一份副本」把因果关系颠倒了，不能作为正确结论。把题干「订阅 Provider 时，只希望在某个字段变化时重建，应该用？」放回《Flutter 状态管理与性能》的「状态分层、重建范围控制与生命周期陷阱」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **判断依据**：正确答案是「context.select<Model, T>((m) => m.field)」，本课在「零基础详解：状态管理与重建范围」中说明：context.select 只订阅需要的字段，只有这个字段变化才重建。select 会把重建范围收窄到指定字段，其余字段变化不会触发重建。本课还在「Provider 代码骨架」中说明：四条实践规则：状态类只暴露只读视图（List.unmodifiable）、notifyListeners 只在数据真变化时调用、读用 read、听用 watch/Consumer、Selector 只订阅需要的字段（如只关心 total 而不是整个 cart）。
 - **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
+
+### 考点 6：补全代码：「Flutter 状态管理与性能」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `____(create: (_) => CartProvider()),`
+
+- **正确判断**：ChangeNotifierProvider / changenotifierprovider
+- **判断依据**：正确答案是「ChangeNotifierProvider」，本课在「测试策略」中说明：Widget 测试中通过 ChangeNotifierProvider.value 注入假数据，避免真实网络与数据库。本课还在「重建范围控制」中说明：避免在 build 里做重活（排序、网络、JSON 解析），移到 initState 或状态层。本课还在「异步与错误处理」中说明：用 FutureBuilder 时务必处理三种状态：等待、错误、空数据。
+- **迁移检查**：不看题干，用自己的话补全这句话，再与标准答案对照。
 
 ## 本课复习清单
 
@@ -474,6 +480,7 @@ class _ItemPageState extends State<ItemPage> {
 - [ ] 不看解析，能说出「忘记在 dispose 中释放控制器会导致？」的判断依据。
 - [ ] 不看解析，能说出「ChangeNotifier 子类中通知界面刷新的方法是？」的判断依据。
 - [ ] 不看解析，能说出「订阅 Provider 时，只希望在某个字段变化时重建，应该用？」的判断依据。
+- [ ] 不看解析，能说出「补全代码：「Flutter 状态管理与性能」示例中，下面这行代码缺少哪个关键字或…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 

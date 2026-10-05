@@ -535,37 +535,43 @@ ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]
 
 ## 考点精讲：把测验题还原成判断过程
 
-本课有 5 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
+本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
 
 ### 考点 1：在分层架构中，Controller 的职责是？
 
 - **正确判断**：处理 HTTP 请求与响应
-- **判断依据**：Controller 只做协议转换，业务逻辑放 Service，数据访问放 Repository。 其他选项：Controller 只处理请求与响应，业务规则在 Service、数据访问在 Repository、事务在 Service 层声明。
+- **判断依据**：正确答案是「处理 HTTP 请求与响应」，本课在「项目结构」中说明：分层职责：controller 处理 HTTP、service 承载业务、repository 访问数据、model 表达数据结构。Controller 只做协议转换，业务逻辑放 Service，数据访问放 Repository。本课还在「本课小结」中说明：Spring Boot 的关键是分层 + 依赖注入 + 约定优于配置：controller 薄、service 厚、repository 只负责数据。
 - **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
 
 ### 考点 2：使用构造器注入的主要好处是？
 
 - **正确判断**：依赖显式且便于测试
-- **判断依据**：构造器注入让依赖不可变、显式，单元测试可直接传入 mock。其他选项：构造器注入让依赖显式、可声明为 final、便于测试替换。它与继承、代码长度、运行速度无关。正确项「依赖显式且便于测试」与题干要求一致，是本课知识点的准确定义。错误项「提升运行速度」属于相邻主题的说法，范围与本题要求不一致。错误项「避免继承」把不同概念混在一起，缺少题干限定的前提。错误项「代码更短」与课程给出的定义相冲突，不能回答题目所问。把题干「使用构造器注入的主要好处是？」放回《实战：Spring Boot REST API》的「分层结构、依赖注入、校验与集成测试」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **判断依据**：正确答案是「依赖显式且便于测试」，本课在「本课小结」中说明：Spring Boot 的关键是分层 + 依赖注入 + 约定优于配置：controller 薄、service 厚、repository 只负责数据。构造器注入让依赖不可变、显式，单元测试可直接传入 mock。本课还在「零基础详解：Java 项目实战骨架」中说明：一个可交付的 Java 服务要分层清晰、配置外置、能探活、能优雅关闭、有测试、能打包成镜像。
 - **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
 
 ### 考点 3：@Valid 注解在 @RequestBody 上的作用是？
 
 - **正确判断**：触发 Bean Validation 校验请求体
-- **判断依据**：校验不通过会抛 MethodArgumentNotValidException，由统一异常处理返回 400。其他选项：@Valid 触发 Bean Validation 校验请求体，与日志、返回值序列化、事务都无关。正确项「触发 Bean Validation 校验请求体」完整覆盖了题目要求的关键点，没有遗漏前提。错误项「返回 JSON（与课程定义不一致）」在边界或失败路径上会得出错误结果。错误项「开启事务」适用于其他场景，但与本题的前提不匹配。错误项「记录日志」忽略了题目中的限制条件，因此不成立。把题干「@Valid 注解在 @RequestBody 上的作用是？」放回《实战：Spring Boot REST API》的「分层结构、依赖注入、校验与集成测试」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **判断依据**：校验不通过会抛 MethodArgumentNotValidException，由统一异常处理返回 400。其他选项：@Valid 触发 Bean Validation 校验请求体，与日志、返回值序列化、事务都无关。针对「@Valid 注解在 @RequestBody …」，本课在「上线前检查」中说明：统一异常处理（@RestControllerAdvice）返回一致的错误结构。本课还在「零基础详解：Java 项目实战骨架」中说明：启动时校验配置，而不是运行到一半才发现缺变量。
 - **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
 
 ### 考点 4：@RestController 与 @Controller 的差别是？
 
 - **正确判断**：@RestController 默认把返回值序列化为 JSON（相当于 @Controller + @ResponseBody）
-- **判断依据**：返回视图页面时用 @Controller，写 REST API 时用 @RestController 更省事。 其他选项：@RestController 相当于 @Controller 加 @ResponseBody，默认返回 JSON，并非只能返回 JSON 或 XML。
+- **判断依据**：正确答案是「@RestController 默认把返回值序列化为 JSON（相当于 @Controller + @ResponseBody）」，本课在「项目结构」中说明：分层职责：controller 处理 HTTP、service 承载业务、repository 访问数据、model 表达数据结构。返回视图页面时用 @Controller，写 REST API 时用 @RestController 更省事。本课还在「零基础详解：Java 项目实战骨架」中说明：要点：DTO 与 Entity 分开，不要让接口结构跟着表结构走。
 - **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
 
 ### 考点 5：JPA 中 N+1 查询问题的常见解法是？
 
 - **正确判断**：用 join fetch / @EntityGraph 一次性预加载关联数据
-- **判断依据**：N+1 的典型现象是 1 条主查询 + N 条关联查询，用批量抓取或联表抓取可以解决。其他选项：N+1 源于逐条懒加载，解法是 join fetch 或 @EntityGraph 预加载。关闭事务或改 record 都无法解决。正确项「用 join fetch / @EntityGraph 一次性预加载关联数据」正面回答了题目所问，符合课程给出的定义与适用范围。错误项「把实体改成 record」属于相邻主题的说法，范围与本题要求不一致。错误项「增加更多 @Transactional（忽略了题干限定的前提）」与课程给出的定义相冲突，不能回答题目所问。把题干「JPA 中 N+1 查询问题的常见解法是？」放回《实战：Spring Boot REST API》的「分层结构、依赖注入、校验与集成测试」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **判断依据**：正确答案是「用 join fetch / @EntityGraph 一次性预加载关联数据」，本课在「数据模型与校验」中说明：record 天生适合做 API 的请求/响应模型。N+1 的典型现象是 1 条主查询 + N 条关联查询，用批量抓取或联表抓取可以解决。本课还在「零基础详解：Java 项目实战骨架」中说明：一个可交付的 Java 服务要分层清晰、配置外置、能探活、能优雅关闭、有测试、能打包成镜像。
 - **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
+
+### 考点 6：补全代码：「实战：Spring Boot REST API」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `@____(prefix = "app.retry")`
+
+- **正确判断**：ConfigurationProperties / configurationproperties
+- **判断依据**：正确答案是「ConfigurationProperties」，本课在「零基础详解：Java 项目实战骨架」中说明：能说出 Controller、Service、Repository 各自的职责。本课还在「零基础详解：Java 项目实战骨架」中说明：知道为什么 DTO 要与 Entity 分开。本课还在「零基础详解：Java 项目实战骨架」中说明：知道为什么要开启 graceful shutdown。
+- **迁移检查**：不看题干，用自己的话补全这句话，再与标准答案对照。
 
 ## 本课复习清单
 
@@ -576,6 +582,7 @@ ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]
 - [ ] 不看解析，能说出「@Valid 注解在 @RequestBody 上的作用是？」的判断依据。
 - [ ] 不看解析，能说出「@RestController 与 @Controller 的差别是？」的判断依据。
 - [ ] 不看解析，能说出「JPA 中 N+1 查询问题的常见解法是？」的判断依据。
+- [ ] 不看解析，能说出「补全代码：「实战：Spring Boot REST API」示例中，下面这行代码…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 

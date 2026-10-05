@@ -125,31 +125,37 @@ Dart 空安全区分可空和非空类型，`?`、`!`、`?.`、`??` 分别表达
 
 ## 考点精讲：把测验题还原成判断过程
 
-本课有 4 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
+本课有 5 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
 
 ### 考点 1：Flutter 中 build() 方法的核心职责是什么？
 
 - **正确判断**：根据当前状态描述这一帧要显示的 Widget 结构
-- **判断依据**：build() 是 Widget 与框架之间的约定：它读取当前不可变配置和 State，返回一棵描述界面的 Widget 树。真正把 Widget 树转换成绘制指令的是渲染管线，编译和网络请求也各有专门机制。把 build() 理解为「根据状态声明界面长什么样」，就能解释为什么它应当保持快速、无副作用，并且可以在状态变化后被反复调用。
+- **判断依据**：正确答案是「根据当前状态描述这一帧要显示的 Widget 结构」，本课在「Dart 与 Flutter 基础机制速览」中说明：build 方法根据当前状态返回 Widget 配置，框架比较新旧树并更新必要的渲染对象。build() 是 Widget 与框架之间的约定：它读取当前不可变配置和 State，返回一棵描述界面的 Widget 树。本课还在「一句话入门」中说明：理解 Widget、build 和最小应用结构。
 - **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
 
 ### 考点 2：在最小 Flutter 应用里，main() 与 runApp() 的分工是？
 
 - **正确判断**：main() 是程序入口，runApp() 把根 Widget 挂载到引擎
-- **判断依据**：Dart 虚拟机从 main() 开始执行，Flutter 应用也不例外；runApp() 接收一个根 Widget，把它交给框架并启动渲染与事件循环，因此根节点只需挂载一次。把 runApp() 写进 build() 会重复挂载导致报错或状态丢失。热重载由开发工具触发，与这两个函数的职责无关。
+- **判断依据**：正确答案是「main() 是程序入口，runApp() 把根 Widget 挂载到引擎」，本课在「一句话入门」中说明：理解 Widget、build 和最小应用结构。Dart 虚拟机从 main() 开始执行，Flutter 应用也不例外。本课还在「Dart 与 Flutter 基础机制速览」中说明：Flutter 使用 Dart 语言和自带渲染引擎，UI 由不可变 Widget 树描述。本课还在「Dart 与 Flutter 基础机制速览」中说明：build 方法根据当前状态返回 Widget 配置，框架比较新旧树并更新必要的渲染对象。
 - **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
 
 ### 考点 3：StatelessWidget 与 StatefulWidget 最本质的差别是？
 
 - **正确判断**：StatefulWidget 通过 State 保存可变状态并触发重建
-- **判断依据**：两者都是不可变配置，区别在于 StatefulWidget 会创建一个可长期存在的 State 对象，调用 setState() 后框架安排重建，从而把「状态变化」映射成「界面更新」。StatelessWidget 同样可以接收构造参数，只要字段是 final 就仍可 const；build() 也可能被父节点重建带动执行多次，所以「只执行一次」的说法并不成立。
+- **判断依据**：正确答案是「StatefulWidget 通过 State 保存可变状态并触发重建」，本课在「Dart 与 Flutter 基础机制速览」中说明：const 构造函数能在编译期复用对象，减少不必要的重建。两者都是不可变配置，区别在于 StatefulWidget 会创建一个可长期存在的 State 对象，调用 setState() 后框架安排重建，从而把「状态变化」映射成「界面更新」。本课还在「Dart 与 Flutter 基础机制速览」中说明：在 Widget 中使用异步结果前要检查 mounted，避免页面销毁后调用 setState。
 - **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
 
 ### 考点 4：运行本课最小示例后，屏幕上会看到什么？
 
 - **正确判断**：屏幕中央显示一行文本 Hello Flutter
-- **判断依据**：示例用 MaterialApp 提供应用骨架，Scaffold 提供页面容器，Center 让子节点在剩余空间里居中，Text 负责渲染字符串。因此最终效果是屏幕中央一行 Hello Flutter。若把 Center 换成 Padding 或 Align，文本位置会改变；若去掉 Scaffold，则会缺少 Material 应用所需的页面结构。
+- **判断依据**：正确答案是「屏幕中央显示一行文本 Hello Flutter」，本课在「Dart 与 Flutter 基础机制速览」中说明：父节点给子节点最大和最小约束，子节点在约束内选择尺寸并向上汇报，父节点决定放置位置。示例用 MaterialApp 提供应用骨架，Scaffold 提供页面容器，Center 让子节点在剩余空间里居中，Text 负责渲染字符串。本课还在「Dart 与 Flutter 基础机制速览」中说明：无状态 Widget 只依赖输入，状态变化由父级重建。
 - **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
+
+### 考点 5：填空：「Flutter Widget 入门」术语速查中，表示「Flutter 使用 Dart 语言和自带渲染引擎，UI 由不可变 Widget 树描述。`____` 方法根据当前状态返回 Widget 配置，框架比较新旧树并更新必要的渲染对象。Widget 很轻量，频繁重建本身不是问题，真正昂贵的是…」的术语是什么？
+
+- **正确判断**：build
+- **判断依据**：正确答案是「build」，本课在「Dart 与 Flutter 基础机制速览」中说明：Widget 很轻量，频繁重建本身不是问题，真正昂贵的是布局、绘制、图片解码和同步计算。本课还在「Dart 与 Flutter 基础机制速览」中说明：Flutter 使用 Dart 语言和自带渲染引擎，UI 由不可变 Widget 树描述。本课还在「Dart 与 Flutter 基础机制速览」中说明：const 构造函数能在编译期复用对象，减少不必要的重建。
+- **迁移检查**：把答案换成另一种等价写法，是否仍然正确？说明依据。
 
 ## 本课复习清单
 
@@ -159,6 +165,7 @@ Dart 空安全区分可空和非空类型，`?`、`!`、`?.`、`??` 分别表达
 - [ ] 不看解析，能说出「在最小 Flutter 应用里，main() 与 runApp() 的分工是？」的判断依据。
 - [ ] 不看解析，能说出「StatelessWidget 与 StatefulWidget 最本质的差别是…」的判断依据。
 - [ ] 不看解析，能说出「运行本课最小示例后，屏幕上会看到什么？」的判断依据。
+- [ ] 不看解析，能说出「填空：「Flutter Widget 入门」术语速查中，表示「Flutter 使…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -214,23 +221,6 @@ void main() {
 把数字 2 改成 10，预测并验证新结果。制造一个错误输入，写出错误信息和修复方法。
 
 自检：如果去掉这一节里的一个前提，结论会怎样变化？
-
-## 术语速查
-
-| 术语 | 本课语境 |
-| --- | --- |
-| `build` | Flutter 使用 Dart 语言和自带渲染引擎，UI 由不可变 Widget 树描述。`build` 方法根据当前状态返回 Widget 配置，框架比较新旧树并更新必要的渲染对象。Widget 很轻量，频繁重建本身不是问题，真正昂贵的是… |
-| `const` | Flutter 使用 Dart 语言和自带渲染引擎，UI 由不可变 Widget 树描述。`build` 方法根据当前状态返回 Widget 配置，框架比较新旧树并更新必要的渲染对象。Widget 很轻量，频繁重建本身不是问题，真正昂贵的是… |
-| `Row` | Flutter 布局遵循“约束向下、尺寸向上、父决定位置”。父节点给子节点最大和最小约束，子节点在约束内选择尺寸并向上汇报，父节点决定放置位置。`Row`、`Column`、`Stack`、`Expanded`、`Flexible` 和 `… |
-| `Column` | Flutter 布局遵循“约束向下、尺寸向上、父决定位置”。父节点给子节点最大和最小约束，子节点在约束内选择尺寸并向上汇报，父节点决定放置位置。`Row`、`Column`、`Stack`、`Expanded`、`Flexible` 和 `… |
-| `Stack` | Flutter 布局遵循“约束向下、尺寸向上、父决定位置”。父节点给子节点最大和最小约束，子节点在约束内选择尺寸并向上汇报，父节点决定放置位置。`Row`、`Column`、`Stack`、`Expanded`、`Flexible` 和 `… |
-| `Expanded` | Flutter 布局遵循“约束向下、尺寸向上、父决定位置”。父节点给子节点最大和最小约束，子节点在约束内选择尺寸并向上汇报，父节点决定放置位置。`Row`、`Column`、`Stack`、`Expanded`、`Flexible` 和 `… |
-| `Flexible` | Flutter 布局遵循“约束向下、尺寸向上、父决定位置”。父节点给子节点最大和最小约束，子节点在约束内选择尺寸并向上汇报，父节点决定放置位置。`Row`、`Column`、`Stack`、`Expanded`、`Flexible` 和 `… |
-| `ListView` | Flutter 布局遵循“约束向下、尺寸向上、父决定位置”。父节点给子节点最大和最小约束，子节点在约束内选择尺寸并向上汇报，父节点决定放置位置。`Row`、`Column`、`Stack`、`Expanded`、`Flexible` 和 `… |
-| `State` | 无状态 Widget 只依赖输入，状态变化由父级重建；有状态 Widget 通过 `State` 保存跨帧数据，`setState` 通知框架重新构建。`initState`、`didChangeDependencies`、`dispose… |
-| `setState` | 无状态 Widget 只依赖输入，状态变化由父级重建；有状态 Widget 通过 `State` 保存跨帧数据，`setState` 通知框架重新构建。`initState`、`didChangeDependencies`、`dispose… |
-| `initState` | 无状态 Widget 只依赖输入，状态变化由父级重建；有状态 Widget 通过 `State` 保存跨帧数据，`setState` 通知框架重新构建。`initState`、`didChangeDependencies`、`dispose… |
-| `didChangeDependencies` | 无状态 Widget 只依赖输入，状态变化由父级重建；有状态 Widget 通过 `State` 保存跨帧数据，`setState` 通知框架重新构建。`initState`、`didChangeDependencies`、`dispose… |
 
 ## English Overview
 

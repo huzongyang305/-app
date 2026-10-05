@@ -64,14 +64,15 @@ void main() {
     );
   });
 
-  test('每个知识点都有 3-5 道测验题且答案下标合法', () {
+  test('每个知识点都有 3-6 道测验题且答案下标合法', () {
     for (final category in categories) {
       for (final lesson in category.lessons) {
-        // GitHub 同步的开源阅读材料不带测验，其余知识点必须 3-5 题。
+        // GitHub 同步的开源阅读材料不带测验，其余知识点为 3-5 道基础题，
+        // 另可加 1 道排序/填空/多选扩展题。
         if (!lesson.id.startsWith('gh_')) {
           expect(
             lesson.quiz.length,
-            inInclusiveRange(3, 5),
+            inInclusiveRange(3, 6),
             reason: '${lesson.id} 的题量不符合要求',
           );
         }

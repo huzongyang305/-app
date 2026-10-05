@@ -354,31 +354,31 @@ public class WordCount {
 ### 考点 1：不允许重复元素的集合是？
 
 - **正确判断**：Set
-- **判断依据**：Set 保证元素唯一，HashSet 依赖 hashCode/equals，TreeSet 还会排序。其他选项：List 与数组允许重复，Queue 面向排队场景。只有 Set 保证元素不重复。正确项「Set」与本课示例和结论一致，可以直接用于实际编码。把题干「不允许重复元素的集合是？」放回《集合框架与泛型》的「List/Set/Map 的选择、遍历方式、泛型与通配符」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **判断依据**：Set 保证元素唯一，HashSet 依赖 hashCode/equals，TreeSet 还会排序。其他选项：List 与数组允许重复，Queue 面向排队场景。针对「不允许重复元素的集合是，」，本课在「零基础详解：List、Set、Map 怎么选」中说明：Java 的集合框架解决三件事：有序列表（List）、去重集合（Set）、键值映射（Map）。本课还在「泛型」中说明：泛型在编译后会类型擦除，因此不能 new T[]，也不能对泛型做 instanceof。
 - **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
 
 ### 考点 2：以下哪组集合类型更适合多线程并发访问？
 
 - **正确判断**：ConcurrentHashMap
-- **判断依据**：ConcurrentHashMap 和 CopyOnWriteArrayList 专为并发场景设计，分别适合高并发键值访问和读多写少的列表。普通 HashMap、ArrayList、LinkedList、HashSet、TreeMap 和 ArrayDeque 都不是线程安全容器，多线程修改时可能出现数据损坏或抛异常。
+- **判断依据**：ConcurrentHashMap 和 CopyOnWriteArrayList 专为并发场景设计，分别适合高并发键值访问和读多写少的列表。普通 HashMap、ArrayList、LinkedList、HashSet、TreeMap 和 ArrayDeque 都不是线程安全容器，多线程修改时可能出现数据损坏或抛异常。针对「以下哪组集合类型更适合多线程并发访问，」，本课在「泛型」中说明：泛型在编译后会类型擦除，因此不能 new T[]，也不能对泛型做 instanceof。
 - **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
 
 ### 考点 3：List.of(...) 返回的列表是？
 
 - **正确判断**：不可变列表
-- **判断依据**：List.of 创建不可变列表，添加或删除元素会抛 UnsupportedOperationException。 其他选项：List.of 返回不可变列表，add 会抛 UnsupportedOperationException；它也不是链表或线程安全实现。
+- **判断依据**：List.of 创建不可变列表，添加或删除元素会抛 UnsupportedOperationException。其他选项：List.of 返回不可变列表，add 会抛 UnsupportedOperationException。针对「List.of(...) 返回的列表是，」，本课在「本课小结」中说明：需要排序用 TreeMap/TreeSet，需要线程安全用 ConcurrentHashMap。
 - **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
 
 ### 考点 4：ArrayList 与 LinkedList 的选择依据是？
 
 - **正确判断**：随机访问多用 ArrayList
-- **判断依据**：ArrayList 是数组实现，按下标访问 O(1)。LinkedList 按下标访问需要遍历。其他选项：LinkedList 允许重复且随机访问慢，ArrayList 会自动扩容。正确项「随机访问多用 ArrayList」是该问题的规范说法，换成其他表述都会丢失条件。错误项「LinkedList 随机访问更快」适用于其他场景，但与本题的前提不匹配。错误项「ArrayList 不能扩容」把因果关系颠倒了，不能作为正确结论。错误项「LinkedList 不允许重复元素」属于相邻主题的说法，范围与本题要求不一致。把题干「ArrayList 与 LinkedList 的选择依据是？」放回《集合框架与泛型》的「List/Set/Map 的选择、遍历方式、泛型与通配符」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **判断依据**：正确答案是「随机访问多用 ArrayList」，本课在「List」中说明：ArrayList 随机访问快，LinkedList 中间插删快但实际使用较少（缓存不友好）。ArrayList 是数组实现，按下标访问 O(1)。本课还在「零基础详解：List、Set、Map 怎么选」中说明：Java 的集合框架解决三件事：有序列表（List）、去重集合（Set）、键值映射（Map）。本课还在「性能特征与并发容器」中说明：ConcurrentHashMap 不允许 null 键值。
 - **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
 
 ### 考点 5：下列哪些集合实现更适合高并发读写场景？请选择所有正确答案。
 
 - **正确判断**：ConcurrentHashMap、CopyOnWriteArrayList
-- **判断依据**：ArrayList 和 LinkedList 不是线程安全实现，多线程同时修改时需要外部同步。ConcurrentHashMap 通过分段或桶级并发控制支持高效并发访问，CopyOnWriteArrayList 则在写时复制底层数组，特别适合读多写少、遍历频繁的场景。选择并发集合时要同时考虑读写比例、一致性要求和内存开销；线程安全并不等于业务操作自动原子，复合操作仍可能需要额外同步。
+- **判断依据**：正确答案是「ConcurrentHashMap、CopyOnWriteArrayList」，本课在「性能特征与并发容器」中说明：并发容器：ConcurrentHashMap（分段/CAS，读几乎无锁）、CopyOnWriteArrayList（写时复制，适合读多写极少）、BlockingQueue（生产者-消费者）。ArrayList 和 LinkedList 不是线程安全实现，多线程同时修改时需要外部同步。本课还在「零基础详解：List、Set、Map 怎么选」中说明：不可变集合能防止意外修改，适合当返回值或常量。
 - **迁移检查**：每个正确项各自成立的条件是什么？有没有互相依赖。
 
 ## 本课复习清单

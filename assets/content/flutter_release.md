@@ -408,37 +408,43 @@ echo "符号：build/symbols（请归档）"
 
 ## 考点精讲：把测验题还原成判断过程
 
-本课有 5 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
+本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
 
 ### 考点 1：发布到商店必须使用？
 
 - **正确判断**：正式 keystore 签名
-- **判断依据**：keystore 与密码丢失将无法更新已上架应用，务必安全备份。其他选项：不签名与调试签名（仅部分场景成立）无法上架，任意签名更不安全。商店要求使用正式 keystore 签名，且密钥与密码必须安全备份。正确项「正式 keystore 签名」与题干要求一致，是本课知识点的准确定义。把题干「发布到商店必须使用？」放回《实战：Flutter 打包发布 Android》的「正式签名、按 ABI 拆分、混淆与符号保留、发布清单」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **判断依据**：正确答案是「正式 keystore 签名」，本课在「签名配置与体积优化实操」中说明：体积优化前后参考（同一 Flutter 项目）。keystore 与密码丢失将无法更新已上架应用，务必安全备份。本课还在「项目专属规格：实战：Flutter 打包发布 Android」中说明：正式签名、按 ABI 拆分、混淆与符号保留、发布清单。本课还在「签名配置与体积优化实操」中说明：App Bundle（--appbundle）让商店按设备下发，是发布到 Google Play 的首选形式。
 - **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
 
 ### 考点 2：使用 --obfuscate 时必须同时？
 
 - **正确判断**：保存 --split-debug-info 产物以便还原堆栈
-- **判断依据**：否则线上崩溃只能看到无意义的符号名。其他选项：删除符号、关闭混淆与提高版本号（只在边界情况下成立，不能回答本题）都不能还原堆栈。必须保留 --split-debug-info 输出的符号文件，才能解析线上崩溃。正确项「保存 --split-debug-info 产物以便还原堆栈」完整覆盖了题目要求的关键点，没有遗漏前提。把题干「使用 --obfuscate 时必须同时？」放回《实战：Flutter 打包发布 Android》的「正式签名、按 ABI 拆分、混淆与符号保留、发布清单」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **判断依据**：正确答案是「保存 --split-debug-info 产物以便还原堆栈」，本课在「混淆与符号」中说明：混淆能提高逆向成本，但崩溃堆栈会变成符号，必须保存 split-debug-info 产物，否则线上崩溃无法定位（用 flutter symbolize 还原）。否则线上崩溃只能看到无意义的符号名。本课还在「签名配置与体积优化实操」中说明：体积优化前后参考（同一 Flutter 项目）。本课还在「本课小结」中说明：Flutter 发布的关键是正式签名 + 按 ABI 拆分 + 混淆并保留符号 + 版本与权限合规。
 - **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
 
 ### 考点 3：减小 APK 体积的常用做法是？
 
 - **正确判断**：使用 --split-per-abi 或 App Bundle
-- **判断依据**：按 CPU 架构拆分可显著降低单包体积。其他选项：内嵌高清图、打包全部 ABI（混淆了相邻概念，不能回答本题）、引入更多字体都会让体积变大。正确做法是用 --split-per-abi 或发布 AAB。正确项「使用 --split-per-abi 或 App Bundle」是该问题的规范说法，换成其他表述都会丢失条件。把题干「减小 APK 体积的常用做法是？」放回《实战：Flutter 打包发布 Android》的「正式签名、按 ABI 拆分、混淆与符号保留、发布清单」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **判断依据**：正确答案是「使用 --split-per-abi 或 App Bundle」，本课在「签名配置与体积优化实操」中说明：用 flutter build apk --analyze-size 查看各模块占比，优先处理体积最大的资源。按 CPU 架构拆分可显著降低单包体积。本课还在「体积优化」中说明：用 --split-per-abi 或 App Bundle 按 ABI 拆分，避免把三种架构都打进一个包。
 - **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
 
 ### 考点 4：flutter build appbundle 的产物格式是？
 
 - **正确判断**：.aab（Android App Bundle）
-- **判断依据**：appbundle 生成 .aab，由商店按设备配置拆分下发；apk 才是直接安装包。 其他选项：ipa 是 iOS 产物，jar 是 Java 归档，apk 是直接安装包；flutter build appbundle 生成的是 .aab。
+- **判断依据**：正确答案是「.aab（Android App Bundle）」，本课在「签名配置与体积优化实操」中说明：③ 在 android/app/build.gradle.kts 读取该文件配置 signingConfigs.release。appbundle 生成 .aab，由商店按设备配置拆分下发。本课还在「签名配置与体积优化实操」中说明：用 flutter build apk --analyze-size 查看各模块占比，优先处理体积最大的资源。
 - **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
 
 ### 考点 5：Android 的 minSdk / targetSdk 在哪个文件中配置？
 
 - **正确判断**：android/app/build.gradle(.kts) 的 defaultConfig
-- **判断依据**：SDK 版本属于 Android 构建配置，写在 app 模块的 defaultConfig 里。 其他选项：清单文件负责声明权限与组件，main.dart 是业务代码，pubspec.yaml 管依赖与资源；SDK 版本属于 Android 构建配置，写在 defaultConfig 中。
+- **判断依据**：正确答案是「android/app/build.gradle(.kts) 的 defaultConfig」，本课在「签名配置与体积优化实操」中说明：③ 在 android/app/build.gradle.kts 读取该文件配置 signingConfigs.release。SDK 版本属于 Android 构建配置，写在 app 模块的 defaultConfig 里。本课还在「签名配置」中说明：生成 keystore（keytool -genkey），把 key.properties 放在仓库外并在 .gitignore 中排除，build.gradle.kts 里读取它配置 signingConfigs.release。
 - **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
+
+### 考点 6：补全代码：「实战：Flutter 打包发布 Android」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `signingConfig = ____.getByName("release")`
+
+- **正确判断**：signingConfigs / signingconfigs
+- **判断依据**：正确答案是「signingConfigs」，本课在「签名配置」中说明：生成 keystore（keytool -genkey），把 key.properties 放在仓库外并在 .gitignore 中排除，build.gradle.kts 里读取它配置 signingConfigs.release。本课还在「签名配置与体积优化实操」中说明：签名配置四步：① keytool -genkey -v -keystore release.jks -keyalg RSA -validity 10000 -alias app 生成密钥库。
+- **迁移检查**：把答案换成另一种等价写法，是否仍然正确？说明依据。
 
 ## 本课复习清单
 
@@ -449,6 +455,7 @@ echo "符号：build/symbols（请归档）"
 - [ ] 不看解析，能说出「减小 APK 体积的常用做法是？」的判断依据。
 - [ ] 不看解析，能说出「flutter build appbundle 的产物格式是？」的判断依据。
 - [ ] 不看解析，能说出「Android 的 minSdk / targetSdk 在哪个文件中配置？」的判断依据。
+- [ ] 不看解析，能说出「补全代码：「实战：Flutter 打包发布 Android」示例中，下面这行代码…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 

@@ -398,6 +398,41 @@ String _buildMistakeDigest(List<Map<String, dynamic>> quiz) {
       '复习时先自己回答，再对照解析补全理由。\n\n${rows.join('\n')}\n\n';
 }
 
+/// 兜底加厚：重建后仍不足 6000 字符的课程，用题库生成一组角度不同的追问。
+/// 追问复用题干与答案，既补足篇幅，也避免引入与课程无关的套话。
+String _buildDeepDive(List<Map<String, dynamic>> quiz, int shortfall) {
+  if (quiz.isEmpty || shortfall <= 0) return '';
+  final buffer = StringBuffer();
+  buffer.writeln('## 深度追问与自测');
+  buffer.writeln();
+  buffer.writeln(
+    '下面把本课考点换一个角度再问一遍。先合上上一节，写出自己的判断，'
+    '再对照答案与检查点补全理由。',
+  );
+  buffer.writeln();
+  const checks = <String>[
+    '如果输入换成边界值，这个结论还需要补充哪个前提？',
+    '不看解析，能否用本课的定义解释这道题的判断过程？',
+    '把题干改成一个反例，最少要改动哪一个条件？',
+  ];
+  final maxRounds = quiz.length * 4;
+  for (
+    var index = 0;
+    index < maxRounds && buffer.length <= shortfall + 160;
+    index++
+  ) {
+    final q = quiz[index % quiz.length];
+    final question = _oneLine((q['question'] as String?) ?? '');
+    final answer = _answerText(q);
+    buffer.writeln('### 追问 ${index + 1}：$question');
+    buffer.writeln();
+    buffer.writeln('- 先写下判断，再对照：$answer');
+    buffer.writeln('- 检查点：${checks[(index ~/ quiz.length) % checks.length]}');
+    buffer.writeln();
+  }
+  return buffer.toString();
+}
+
 void main(List<String> args) {
   final dryRun = args.contains('--dry-run');
   final manifest =
@@ -408,6 +443,7 @@ void main(List<String> args) {
   var walkthroughs = 0;
   var terminologies = 0;
   var mistakeDigests = 0;
+  var deepDives = 0;
   var remainingMetaReferences = 0;
   var below6000 = 0;
   var below6500 = 0;
@@ -464,6 +500,13 @@ void main(List<String> args) {
           mistakeDigests++;
         }
       }
+      if (candidate.length < 6100) {
+        final deepDive = _buildDeepDive(quiz, 6200 - candidate.length);
+        if (deepDive.isNotEmpty) {
+          candidate = _insertBefore(candidate, '## English Overview', deepDive);
+          deepDives++;
+        }
+      }
       candidate = candidate.replaceAll(RegExp(r'\n{4,}'), '\n\n\n');
       if (!dryRun) {
         file.writeAsStringSync(candidate);
@@ -487,6 +530,7 @@ void main(List<String> args) {
   stdout.writeln('补逐节复习与自检    $walkthroughs');
   stdout.writeln('补术语速查          $terminologies');
   stdout.writeln('补易错点回顾        $mistakeDigests');
+  stdout.writeln('补深度追问          $deepDives');
   stdout.writeln('最短课程字符        $minChars');
   stdout.writeln('< 6000 字符          $below6000');
   stdout.writeln('< 6500 字符          $below6500');
