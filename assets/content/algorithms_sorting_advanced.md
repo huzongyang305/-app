@@ -1,5 +1,7 @@
 # 基数排序、桶排序与外部排序
 
+![非比较排序与外部排序](images/diagram_algo_radix.webp)
+
 ![基数排序、桶排序与外部排序](images/remaining_sorting_advanced.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

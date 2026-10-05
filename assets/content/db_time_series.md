@@ -1,5 +1,7 @@
 # 时序数据库与监控数据
 
+![时序数据的写入特征与治理策略](images/diagram_db_time_series.webp)
+
 ![时序数据库与监控数据](images/lesson_db_time_series.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

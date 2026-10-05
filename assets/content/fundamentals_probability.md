@@ -1,5 +1,7 @@
 # 概率统计基础
 
+![从样本空间到贝叶斯与分布](images/diagram_fund_probability.webp)
+
 ![概率统计基础](images/remaining_probability.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

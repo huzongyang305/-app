@@ -1,5 +1,7 @@
 # 计算几何基础
 
+![计算几何的核心工具](images/diagram_algo_geometry.webp)
+
 ![计算几何基础](images/lesson_algo_computational_geometry.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：25 分钟

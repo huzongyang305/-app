@@ -1,5 +1,7 @@
 # 实战：做一个文档问答助手
 
+![文档问答助手的端到端架构](images/diagram_ai_rag_project.webp)
+
 ![实战：文档问答助手（RAG + Agent）](images/remaining_ai_rag_agent_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：17 分钟

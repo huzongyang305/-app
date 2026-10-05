@@ -1,5 +1,7 @@
 # 数据库设计与范式
 
+![从需求到三大范式的数据库设计流程](images/diagram_db_design.webp)
+
 ![数据库设计与范式](images/remaining_db_design.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

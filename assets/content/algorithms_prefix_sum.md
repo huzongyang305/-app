@@ -1,5 +1,7 @@
 # 前缀和与差分
 
+![前缀和与差分](images/diagram_algo_prefix.webp)
+
 ![前缀和与差分](images/remaining_prefix_sum.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

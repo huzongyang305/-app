@@ -1,5 +1,7 @@
 # 概率数据结构
 
+![布隆过滤器、HyperLogLog 与跳表](images/diagram_algo_probabilistic.webp)
+
 ![概率数据结构](images/remaining_probabilistic_structures.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

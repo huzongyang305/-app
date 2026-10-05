@@ -1,5 +1,7 @@
 # SQL 查询入门
 
+![SELECT 查询的执行顺序](images/diagram_db_query_intro.webp)
+
 ![SQL 查询入门](images/remaining_sql_query_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

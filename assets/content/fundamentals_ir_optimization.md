@@ -1,5 +1,7 @@
 # 中间代码与优化
 
+![中间表示与经典优化](images/diagram_fund_ir.webp)
+
 ![中间代码与优化](images/remaining_ir_optimization.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：17 分钟

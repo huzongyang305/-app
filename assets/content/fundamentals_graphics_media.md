@@ -1,5 +1,7 @@
 # 计算机图形学与多媒体
 
+![图形渲染管线](images/diagram_fund_graphics.webp)
+
 ![计算机图形学与多媒体](images/remaining_graphics_media.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

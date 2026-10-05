@@ -1,5 +1,7 @@
 # 模型评测与选型
 
+![模型评测的公开基准与私有评测集](images/diagram_ai_model_eval.webp)
+
 ![模型评测与选型](images/remaining_model_evaluation.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

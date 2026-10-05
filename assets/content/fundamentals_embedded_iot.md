@@ -1,5 +1,7 @@
 # 嵌入式与 IoT 基础
 
+![嵌入式与 IoT 的层次结构](images/diagram_fund_iot.webp)
+
 ![嵌入式与 IoT 基础](images/lesson_fundamentals_embedded_iot.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：25 分钟

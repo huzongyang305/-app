@@ -1,5 +1,7 @@
 # 线性查找入门
 
+![线性查找的逐项比较](images/diagram_algo_linear_search.webp)
+
 ![线性查找入门](images/remaining_linear_search_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

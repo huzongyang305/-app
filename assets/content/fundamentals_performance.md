@@ -1,5 +1,7 @@
 # 性能度量与并行体系结构
 
+![性能度量与 Amdahl 定律](images/diagram_fund_perf.webp)
+
 ![性能度量与并行体系结构](images/remaining_performance_metrics.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

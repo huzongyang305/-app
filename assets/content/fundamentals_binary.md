@@ -1,5 +1,7 @@
 # 二进制与进制转换
 
+![位、字节与进制转换](images/diagram_fund_binary.webp)
+
 ![二进制与进制转换](images/remaining_binary.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：12 分钟

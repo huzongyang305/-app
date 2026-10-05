@@ -1,5 +1,7 @@
 # 冒泡排序
 
+![冒泡排序的相邻比较与交换](images/diagram_algo_bubble.webp)
+
 ![冒泡排序](images/remaining_bubble_sort.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：12 分钟

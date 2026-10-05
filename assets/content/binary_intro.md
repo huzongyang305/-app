@@ -1,5 +1,7 @@
 # 二进制入门
 
+![二进制入门四步](images/diagram_fund_binary_intro.webp)
+
 ![二进制入门](images/remaining_binary_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

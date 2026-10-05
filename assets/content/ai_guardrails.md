@@ -1,5 +1,7 @@
 # 安全护栏与内容审核
 
+![输入、工具调用与输出三层安全护栏](images/diagram_ai_guardrails.webp)
+
 ![安全护栏与内容审核](images/lesson_ai_guardrails.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：22 分钟

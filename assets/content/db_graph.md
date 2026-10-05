@@ -1,5 +1,7 @@
 # 图数据库与关系查询
 
+![图数据库的模型、查询与算法](images/diagram_db_graph.webp)
+
 ![图数据库与关系查询](images/lesson_db_graph.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

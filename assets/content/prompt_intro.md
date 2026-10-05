@@ -1,5 +1,7 @@
 # 提示词入门
 
+![提示词的四个基本要素](images/diagram_ai_prompt_intro.webp)
+
 ![提示词入门](images/remaining_prompt_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

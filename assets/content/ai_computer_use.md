@@ -1,5 +1,7 @@
 # Computer Use 与桌面自动化
 
+![Computer Use 的观察与操作循环](images/diagram_ai_computer_use.webp)
+
 ![Computer Use 与桌面自动化](images/lesson_ai_computer_use.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

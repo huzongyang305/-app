@@ -1,5 +1,7 @@
 # SIMD 与向量化计算
 
+![标量与 SIMD 向量化对比](images/diagram_fund_simd.webp)
+
 ![SIMD 与向量化计算](images/lesson_fundamentals_simd.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

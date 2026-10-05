@@ -1,5 +1,7 @@
 # 实战：设计并优化一个订单库
 
+![订单库实战的五个步骤](images/diagram_db_project_flow.webp)
+
 ![实战：设计并优化一个订单库](images/remaining_database_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：17 分钟

@@ -1,5 +1,7 @@
 # 数据湖与湖仓一体
 
+![湖仓一体的分层架构](images/diagram_db_lakehouse_layers.webp)
+
 ![数据湖与湖仓一体](images/remaining_data_lakehouse.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：15 分钟

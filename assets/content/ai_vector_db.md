@@ -1,5 +1,7 @@
 # 向量数据库选型与调优
 
+![向量数据库选型与索引调优维度](images/diagram_ai_vector_db.webp)
+
 ![向量数据库选型与调优](images/remaining_vector_db.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

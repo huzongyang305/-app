@@ -1,5 +1,7 @@
 # 栈与队列
 
+![栈与队列的进出顺序对比](images/diagram_algo_stack_queue.webp)
+
 ![栈与队列](images/remaining_stack_queue.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：13 分钟

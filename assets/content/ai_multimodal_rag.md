@@ -1,5 +1,7 @@
 # 多模态 RAG
 
+![多模态 RAG 的解析与检索流程](images/diagram_ai_multimodal_rag.webp)
+
 ![多模态 RAG](images/remaining_multimodal_rag.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

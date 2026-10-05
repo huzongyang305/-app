@@ -1,5 +1,7 @@
 # 计算理论入门
 
+![自动机、文法与可计算性层次](images/diagram_fund_theory.webp)
+
 ![计算理论入门](images/remaining_computation_theory.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：15 分钟

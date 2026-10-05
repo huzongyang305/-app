@@ -1,5 +1,7 @@
 # 缓存淘汰算法
 
+![LRU、LFU 与 FIFO 淘汰策略](images/diagram_algo_cache_eviction.webp)
+
 ![缓存淘汰算法](images/remaining_cache_eviction.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：15 分钟

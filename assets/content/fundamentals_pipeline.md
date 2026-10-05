@@ -1,5 +1,7 @@
 # CPU 流水线与指令级并行
 
+![CPU 流水线的五个阶段](images/diagram_fund_pipeline.webp)
+
 ![CPU 流水线与指令级并行](images/lesson_fundamentals_pipeline.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：25 分钟

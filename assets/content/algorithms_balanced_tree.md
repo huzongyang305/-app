@@ -1,5 +1,7 @@
 # 平衡树实现
 
+![AVL、红黑树与 B+ 树的对比](images/diagram_algo_balanced_tree.webp)
+
 ![平衡树实现](images/remaining_balanced_tree.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

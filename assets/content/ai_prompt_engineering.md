@@ -1,5 +1,7 @@
 # 提示工程
 
+![提示工程从设计到评测的闭环](images/diagram_ai_prompt_engineering.webp)
+
 ![提示工程](images/remaining_ai_prompt_engineering.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：14 分钟

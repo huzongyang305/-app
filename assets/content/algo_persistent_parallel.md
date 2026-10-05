@@ -1,5 +1,7 @@
 # 持久化数据结构与并行算法
 
+![持久化数据结构与并行算法](images/diagram_algo_persistent.webp)
+
 ![持久化数据结构与并行算法](images/lesson_algo_persistent_parallel.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：26 分钟

@@ -1,5 +1,7 @@
 # 算法入门
 
+![算法的输入、步骤、输出与复杂度](images/diagram_algo_intro.webp)
+
 ![算法入门](images/remaining_algorithm_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

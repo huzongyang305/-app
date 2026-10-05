@@ -1,5 +1,7 @@
 # 表与 SQL 入门
 
+![表结构与主键约束示意](images/diagram_db_table_intro.webp)
+
 ![表与 SQL 入门](images/remaining_sql_table_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

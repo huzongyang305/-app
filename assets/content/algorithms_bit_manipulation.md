@@ -1,5 +1,7 @@
 # 位运算技巧
 
+![位运算的常用技巧](images/diagram_algo_bits.webp)
+
 ![位运算技巧](images/remaining_bit_manipulation.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

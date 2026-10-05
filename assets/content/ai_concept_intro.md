@@ -1,5 +1,7 @@
 # AI 概念入门
 
+![AI、机器学习与生成式 AI 的包含关系](images/diagram_ai_concept.webp)
+
 ![AI 概念入门](images/remaining_ai_concept_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

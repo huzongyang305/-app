@@ -1,5 +1,7 @@
 # 排序算法家族
 
+![常见排序算法的复杂度与稳定性](images/diagram_algo_sorting_family.webp)
+
 ![排序算法家族](images/remaining_sorting.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：17 分钟

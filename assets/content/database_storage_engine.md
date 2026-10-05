@@ -1,5 +1,7 @@
 # 存储引擎与 B+ 树实现
 
+![InnoDB 从 SQL 到磁盘的分层结构](images/diagram_db_storage_engine.webp)
+
 ![存储引擎与 B+ 树实现](images/remaining_storage_engine.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：17 分钟

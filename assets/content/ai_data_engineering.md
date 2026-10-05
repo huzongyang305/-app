@@ -1,5 +1,7 @@
 # 数据工程与标注
 
+![从数据清洗到数据血缘的流程](images/diagram_ai_data_engineering.webp)
+
 ![数据工程与标注](images/remaining_ai_data_engineering.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

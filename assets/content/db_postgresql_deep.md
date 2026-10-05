@@ -1,5 +1,7 @@
 # PostgreSQL 深入实践
 
+![PostgreSQL 的核心机制与实践要点](images/diagram_db_postgresql.webp)
+
 ![PostgreSQL 深入实践](images/lesson_db_postgresql_deep.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：26 分钟

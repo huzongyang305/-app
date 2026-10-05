@@ -1,5 +1,7 @@
 # 二分查找
 
+![二分查找的缩小过程](images/diagram_algo_binary_search.webp)
+
 ![二分查找](images/remaining_binary_search.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：12 分钟

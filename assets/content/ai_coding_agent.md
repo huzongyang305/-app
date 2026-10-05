@@ -1,5 +1,7 @@
 # 代码 Agent 与软件工程自动化
 
+![代码 Agent 从读代码到提交改动的流程](images/diagram_ai_coding_agent.webp)
+
 ![代码 Agent 与软件工程自动化](images/lesson_ai_coding_agent.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

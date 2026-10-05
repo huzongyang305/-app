@@ -1,5 +1,7 @@
 # 多智能体与编排
 
+![多智能体的三种协作模式](images/diagram_ai_multi_agent.webp)
+
 ![多智能体与编排](images/remaining_ai_multi_agent.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

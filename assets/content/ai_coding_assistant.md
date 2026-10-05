@@ -1,5 +1,7 @@
 # AI 编程助手与代码生成
 
+![AI 编程助手的使用流程与评审要点](images/diagram_ai_coding_assistant.webp)
+
 ![AI 编程助手与代码生成](images/remaining_ai_coding_assistant.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：14 分钟

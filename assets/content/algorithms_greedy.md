@@ -1,5 +1,7 @@
 # 贪心算法
 
+![贪心算法的选择与验证](images/diagram_algo_greedy.webp)
+
 ![贪心算法](images/remaining_greedy.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

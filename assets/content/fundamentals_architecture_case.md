@@ -1,5 +1,7 @@
 # 计算机体系结构综合案例
 
+![体系结构设计的权衡过程](images/diagram_fund_arch_case.webp)
+
 ![计算机体系结构综合案例](images/lesson_fundamentals_architecture_case.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：26 分钟

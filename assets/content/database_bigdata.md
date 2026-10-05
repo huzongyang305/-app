@@ -1,5 +1,7 @@
 # 大数据与批流处理
 
+![批处理与流处理的差异](images/diagram_db_batch_stream.webp)
+
 ![大数据与批流处理](images/remaining_bigdata_batch_stream.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

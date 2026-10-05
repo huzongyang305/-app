@@ -1,5 +1,7 @@
 # 离散数学与逻辑
 
+![离散数学的四个核心模块](images/diagram_fund_discrete.webp)
+
 ![离散数学与逻辑](images/remaining_discrete_math.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

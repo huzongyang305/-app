@@ -1,5 +1,7 @@
 # AI 治理、合规与风险
 
+![AI 治理的闭环流程](images/diagram_ai_governance.webp)
+
 ![AI 治理、合规与风险](images/lesson_ai_governance.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

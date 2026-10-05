@@ -1,5 +1,7 @@
 # Agent 成本与性能优化
 
+![Agent 成本与性能优化的主要手段](images/diagram_ai_cost_performance.webp)
+
 ![Agent 成本与性能优化](images/remaining_agent_cost_performance.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

@@ -1,5 +1,7 @@
 # 数据库权限与安全
 
+![数据库安全的五层防线](images/diagram_db_permissions.webp)
+
 ![数据库权限与安全](images/lesson_db_permissions_security.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

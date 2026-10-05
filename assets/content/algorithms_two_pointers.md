@@ -1,5 +1,7 @@
 # 双指针与滑动窗口
 
+![相向双指针与滑动窗口](images/diagram_algo_two_pointers.webp)
+
 ![双指针与滑动窗口](images/remaining_two_pointers.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

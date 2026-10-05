@@ -1,5 +1,7 @@
 # 语义分析与符号表
 
+![符号表、类型检查与控制流分析](images/diagram_fund_semantics.webp)
+
 ![语义分析与符号表](images/remaining_semantics_analysis.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：16 分钟

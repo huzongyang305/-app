@@ -1,5 +1,7 @@
 # 浏览器 Agent
 
+![浏览器 Agent 的工作流程与约束](images/diagram_ai_browser_agent.webp)
+
 ![浏览器 Agent](images/lesson_ai_browser_agent.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

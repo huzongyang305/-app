@@ -1,5 +1,7 @@
 # 上下文工程
 
+![上下文工程的选择、压缩与更新](images/diagram_ai_context_engineering.webp)
+
 ![上下文工程](images/lesson_ai_context_engineering.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：22 分钟

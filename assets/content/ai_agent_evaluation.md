@@ -1,5 +1,7 @@
 # Agent 评测实战
 
+![Agent 评测的维度与方法](images/diagram_ai_agent_eval.webp)
+
 ![Agent 评测实战](images/remaining_ai_agent_evaluation.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

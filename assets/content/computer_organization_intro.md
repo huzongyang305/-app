@@ -1,5 +1,7 @@
 # 计算机组成入门
 
+![计算机组成的基本结构](images/diagram_fund_org_intro.webp)
+
 ![计算机组成入门](images/remaining_computer_organization_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

@@ -1,5 +1,7 @@
 # SQL 高级查询
 
+![窗口函数与 CTE 的能力对比](images/diagram_db_sql_advanced.webp)
+
 ![SQL 高级查询](images/remaining_sql_advanced.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：15 分钟

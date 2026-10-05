@@ -1,5 +1,7 @@
 # NP 完全性与近似算法
 
+![P、NP、NP 完全与近似算法](images/diagram_algo_np.webp)
+
 ![NP 完全性与近似算法](images/lesson_algo_np_approximation.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：26 分钟

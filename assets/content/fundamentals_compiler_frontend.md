@@ -1,5 +1,7 @@
 # 编译前端：词法与语法分析
 
+![词法分析与语法分析流程](images/diagram_fund_frontend.webp)
+
 ![编译前端：词法与语法分析](images/remaining_compiler_frontend.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：16 分钟

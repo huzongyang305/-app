@@ -1,5 +1,7 @@
 # 数据库备份与恢复演练
 
+![从备份策略到时间点恢复的流程](images/diagram_db_backup_recovery.webp)
+
 ![数据库备份与恢复演练](images/lesson_db_backup_recovery.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：25 分钟

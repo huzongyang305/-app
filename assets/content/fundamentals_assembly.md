@@ -1,5 +1,7 @@
 # 指令集与汇编入门
 
+![从源码到机器指令与寄存器](images/diagram_fund_assembly.webp)
+
 ![指令集与汇编入门](images/remaining_assembly.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：15 分钟

@@ -1,5 +1,7 @@
 # 实战：把数据结构用起来
 
+![三个数据结构实战小项目](images/diagram_algo_project.webp)
+
 ![实战：把数据结构用起来](images/remaining_algorithms_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

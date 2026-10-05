@@ -1,5 +1,7 @@
 # Airflow 调度与数据质量
 
+![Airflow 调度与数据质量检查闭环](images/diagram_db_airflow_quality.webp)
+
 ![Airflow 调度与数据质量](images/remaining_airflow_quality.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：15 分钟

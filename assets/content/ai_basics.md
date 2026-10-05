@@ -1,5 +1,7 @@
 # AI、机器学习与生成式 AI
 
+![三类机器学习范式对比](images/diagram_ai_basics.webp)
+
 ![AI、机器学习与生成式 AI](images/remaining_ai_basics.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：13 分钟

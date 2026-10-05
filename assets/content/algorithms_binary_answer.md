@@ -1,5 +1,7 @@
 # 二分答案
 
+![二分答案的判定与收缩](images/diagram_algo_binary_answer.webp)
+
 ![二分答案](images/remaining_binary_answer.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

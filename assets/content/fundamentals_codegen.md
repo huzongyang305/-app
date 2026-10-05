@@ -1,5 +1,7 @@
 # 代码生成与寄存器分配
 
+![后端代码生成与寄存器分配](images/diagram_fund_codegen.webp)
+
 ![代码生成与寄存器分配](images/remaining_codegen_registers.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

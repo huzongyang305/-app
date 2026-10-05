@@ -1,5 +1,7 @@
 # 密码学原语
 
+![对称加密、非对称加密与哈希](images/diagram_fund_crypto.webp)
+
 ![密码学原语](images/remaining_cryptography.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

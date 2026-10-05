@@ -1,5 +1,7 @@
 # 嵌入、向量检索与 RAG
 
+![RAG 从文档入库到生成答案的流程](images/diagram_ai_embeddings_rag.webp)
+
 ![嵌入、向量检索与 RAG](images/remaining_ai_embeddings_rag.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

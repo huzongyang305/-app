@@ -1,5 +1,7 @@
 # AI 应用工程化：评测、安全与成本
 
+![AI 应用工程化的四个支柱](images/diagram_ai_engineering.webp)
+
 ![AI 应用工程化](images/remaining_ai_engineering.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：17 分钟

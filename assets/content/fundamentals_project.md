@@ -1,5 +1,7 @@
 # 实战：追踪一个程序的全生命周期
 
+![程序从源码到运行的全生命周期](images/diagram_fund_lifecycle.webp)
+
 ![实战：追踪程序的全生命周期](images/remaining_fundamentals_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟
