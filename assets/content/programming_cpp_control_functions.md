@@ -1,5 +1,7 @@
 # 控制流与函数
 
+![控制流与函数特性的组合](images/diagram_cpp_control_functions.webp)
+
 ![控制流与函数](images/remaining_cpp_control_functions.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

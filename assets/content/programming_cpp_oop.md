@@ -1,5 +1,7 @@
 # 类与面向对象
 
+![C++ 面向对象的五个层次](images/diagram_cpp_oop.webp)
+
 ![类与面向对象](images/remaining_cpp_oop.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：17 分钟

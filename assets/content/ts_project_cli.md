@@ -1,5 +1,7 @@
 # 实战：TypeScript 类型安全 CLI
 
+![类型安全 CLI 的实现流程](images/diagram_ts_cli_project.webp)
+
 ![实战：TypeScript 类型安全 CLI](images/remaining_ts_project_cli.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：110 分钟

@@ -1,5 +1,7 @@
 # C# 循环入门
 
+![C# 三种循环结构](images/diagram_cs_loops.webp)
+
 ![C# 循环入门](images/remaining_csharp_loops.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

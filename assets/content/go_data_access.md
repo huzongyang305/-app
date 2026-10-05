@@ -1,5 +1,7 @@
 # Go 数据访问：database/sql 与连接池
 
+![database/sql 的事务与连接池](images/diagram_go_data_access.webp)
+
 ![Go 数据访问与连接池](images/remaining_go_data_access.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：18 分钟

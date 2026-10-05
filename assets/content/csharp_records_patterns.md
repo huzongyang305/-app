@@ -1,5 +1,7 @@
 # C# Record、模式匹配与不可变数据
 
+![record 与模式匹配的配合](images/diagram_cs_records_patterns.webp)
+
 ![C# Record、模式匹配与不可变数据](images/lesson_csharp_records_patterns.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

@@ -1,5 +1,7 @@
 # Go 变量与输入
 
+![Go 变量声明与输入处理](images/diagram_go_variables.webp)
+
 ![Go 变量与输入](images/remaining_go_variables_input.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

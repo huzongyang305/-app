@@ -1,5 +1,7 @@
 # C++ 函数入门
 
+![值传递与引用传递的差异](images/diagram_cpp_functions_intro.webp)
+
 ![C++ 函数入门](images/remaining_cpp_functions_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

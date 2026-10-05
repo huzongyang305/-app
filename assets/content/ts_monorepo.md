@@ -1,5 +1,7 @@
 # Monorepo 工程实践
 
+![Monorepo 的包结构与依赖方向](images/diagram_ts_monorepo.webp)
+
 ![Monorepo 工程实践](images/remaining_ts_monorepo.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：18 分钟

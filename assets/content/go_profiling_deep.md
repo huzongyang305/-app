@@ -1,5 +1,7 @@
 # Go 性能剖析与调优实战
 
+![Go 性能剖析的完整流程](images/diagram_go_profiling_deep.webp)
+
 ![Go 性能剖析与调优实战](images/lesson_go_profiling_deep.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：25 分钟

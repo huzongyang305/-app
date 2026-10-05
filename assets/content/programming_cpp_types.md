@@ -1,5 +1,7 @@
 # 变量、类型与运算符
 
+![值类型、转换与常量正确性](images/diagram_cpp_types.webp)
+
 ![变量、类型与运算符](images/remaining_cpp_types.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

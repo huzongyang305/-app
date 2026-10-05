@@ -1,5 +1,7 @@
 # 异步编程与异常处理
 
+![async/await 的调用链与取消](images/diagram_cs_async.webp)
+
 ![异步编程与异常处理](images/remaining_csharp_async.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

@@ -1,5 +1,7 @@
 # C# 变量与输入
 
+![C# 变量、类型与输入转换](images/diagram_cs_variables.webp)
+
 ![C# 变量与输入](images/remaining_csharp_variables_input.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

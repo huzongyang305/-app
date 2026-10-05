@@ -1,5 +1,7 @@
 # 类型检查与构建性能优化
 
+![类型检查与构建性能优化步骤](images/diagram_ts_build_perf.webp)
+
 ![类型检查与构建性能优化](images/remaining_ts_build_performance.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

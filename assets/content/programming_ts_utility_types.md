@@ -1,5 +1,7 @@
 # TypeScript 工具类型与声明文件
 
+![常用工具类型与声明文件](images/diagram_ts_utility_types.webp)
+
 ![TypeScript 工具类型与声明文件](images/remaining_ts_utility_types.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

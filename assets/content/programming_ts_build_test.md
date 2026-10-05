@@ -1,5 +1,7 @@
 # TypeScript 构建工具链与测试
 
+![构建工具与测试工具的分工](images/diagram_ts_build_test.webp)
+
 ![TypeScript 构建工具链与测试](images/remaining_ts_build_test.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：16 分钟

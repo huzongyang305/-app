@@ -1,5 +1,7 @@
 # gRPC 与 Protobuf 实践
 
+![gRPC 的四种调用方式](images/diagram_go_grpc.webp)
+
 ![gRPC 与 Protobuf 实践](images/remaining_go_grpc.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：18 分钟

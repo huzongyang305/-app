@@ -1,5 +1,7 @@
 # 实战：TypeScript 实时监控面板
 
+![实时监控面板的消息链路](images/diagram_ts_ws_dashboard.webp)
+
 ![实战：TypeScript 实时监控面板](images/remaining_ts_project_websocket_dashboard.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：130 分钟

@@ -1,5 +1,7 @@
 # TypeScript 编译与运行性能
 
+![编译性能与运行性能的优化要点](images/diagram_ts_performance.webp)
+
 ![TypeScript 编译与运行性能](images/lesson_ts_performance.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

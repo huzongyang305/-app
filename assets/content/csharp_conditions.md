@@ -1,5 +1,7 @@
 # C# 条件判断
 
+![C# 条件分支与模式匹配](images/diagram_cs_conditions.webp)
+
 ![C# 条件判断](images/remaining_csharp_conditions.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

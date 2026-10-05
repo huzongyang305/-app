@@ -1,5 +1,7 @@
 # C++ 变量与输入输出
 
+![C++ 变量、类型与输入输出](images/diagram_cpp_variables.webp)
+
 ![C++ 变量与输入输出](images/remaining_cpp_variables_io.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

@@ -1,5 +1,7 @@
 # 模板与泛型编程
 
+![C++ 模板编程的五个层次](images/diagram_cpp_templates.webp)
+
 ![模板与泛型编程](images/remaining_cpp_templates.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

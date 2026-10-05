@@ -1,5 +1,7 @@
 # C++ 第一个程序
 
+![C++ 最小程序的编译与运行](images/diagram_cpp_first_program.webp)
+
 ![C++ 第一个程序](images/remaining_cpp_first_program.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

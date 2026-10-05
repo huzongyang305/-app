@@ -1,5 +1,7 @@
 # Go 函数入门
 
+![Go 函数的多返回值与错误处理](images/diagram_go_functions.webp)
+
 ![Go 函数入门](images/remaining_go_functions_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

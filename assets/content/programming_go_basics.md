@@ -1,5 +1,7 @@
 # Go 基础
 
+![Go 语言的核心特征](images/diagram_go_basics.webp)
+
 ![Go 基础](images/remaining_go_basics.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：15 分钟

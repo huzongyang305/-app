@@ -1,5 +1,7 @@
 # TypeScript 接口入门
 
+![interface 描述对象契约的常见成员](images/diagram_ts_interface.webp)
+
 ![TypeScript 接口入门](images/remaining_ts_interface_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

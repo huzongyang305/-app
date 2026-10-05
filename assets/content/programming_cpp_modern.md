@@ -1,5 +1,7 @@
 # 现代 C++ 特性
 
+![现代 C++ 的关键特性](images/diagram_cpp_modern.webp)
+
 ![现代 C++ 特性](images/remaining_cpp_modern.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：17 分钟

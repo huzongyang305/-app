@@ -1,5 +1,7 @@
 # 实战：C++ HTTP JSON 服务
 
+![C++ HTTP JSON 服务的请求链路](images/diagram_cpp_http_project.webp)
+
 ![实战：C++ HTTP JSON 服务](images/remaining_cpp_project_http.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：120 分钟

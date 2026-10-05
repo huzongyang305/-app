@@ -1,5 +1,7 @@
 # Go 接口与错误处理
 
+![隐式接口与错误链](images/diagram_go_interfaces_errors.webp)
+
 ![Go 接口与错误处理](images/remaining_go_interfaces_errors.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

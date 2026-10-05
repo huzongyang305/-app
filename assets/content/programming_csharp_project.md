@@ -1,5 +1,7 @@
 # 实战：ASP.NET Core Web API + EF Core
 
+![Web API 与 EF Core 的请求链路](images/diagram_cs_webapi_project.webp)
+
 ![实战：Web API + EF Core](images/remaining_csharp_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：18 分钟

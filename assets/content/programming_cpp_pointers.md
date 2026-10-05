@@ -1,5 +1,7 @@
 # 指针与引用
 
+![指针与引用的语义对比](images/diagram_cpp_pointers.webp)
+
 ![指针与引用](images/remaining_cpp_pointers.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

@@ -1,5 +1,7 @@
 # Go 微服务与可观测
 
+![Go 微服务的可观测与生命周期](images/diagram_go_microservice.webp)
+
 ![Go 微服务与可观测](images/remaining_go_microservice.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：16 分钟

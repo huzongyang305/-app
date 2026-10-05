@@ -1,5 +1,7 @@
 # 类、属性与对象
 
+![C# 类型系统的对象建模方式](images/diagram_cs_oop.webp)
+
 ![类、属性与对象](images/remaining_csharp_oop.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

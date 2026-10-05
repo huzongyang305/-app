@@ -1,5 +1,7 @@
 # TypeScript 类型收窄与泛型
 
+![五种类型收窄手段](images/diagram_ts_narrowing.webp)
+
 ![TypeScript 类型收窄与泛型](images/remaining_ts_narrowing_generics.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：16 分钟

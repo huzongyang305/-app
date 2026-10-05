@@ -1,5 +1,7 @@
 # TypeScript Node 后端开发
 
+![TypeScript Node 后端的分层结构](images/diagram_ts_node_backend.webp)
+
 ![TypeScript Node 后端开发](images/remaining_ts_node_backend.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：18 分钟

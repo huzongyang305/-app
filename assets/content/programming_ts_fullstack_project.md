@@ -1,5 +1,7 @@
 # TypeScript 实战：全栈类型安全
 
+![全栈类型安全的数据流](images/diagram_ts_fullstack.webp)
+
 ![TypeScript 实战：全栈类型安全](images/remaining_ts_fullstack_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

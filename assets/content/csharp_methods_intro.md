@@ -1,5 +1,7 @@
 # C# 方法入门
 
+![C# 方法的参数与返回值](images/diagram_cs_methods.webp)
+
 ![C# 方法入门](images/remaining_csharp_methods_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

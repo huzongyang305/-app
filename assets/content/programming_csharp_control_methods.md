@@ -1,5 +1,7 @@
 # 控制流与方法
 
+![控制流与参数修饰符、迭代器](images/diagram_cs_control_methods.webp)
+
 ![控制流与方法](images/remaining_csharp_control_methods.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：15 分钟

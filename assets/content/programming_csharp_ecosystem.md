@@ -1,5 +1,7 @@
 # 生态、测试与 Web 开发
 
+![.NET 生态的关键组成](images/diagram_cs_ecosystem.webp)
+
 ![生态、测试与 Web 开发](images/remaining_csharp_ecosystem.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

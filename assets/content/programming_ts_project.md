@@ -1,5 +1,7 @@
 # TypeScript 工程配置与实践
 
+![TypeScript 工程配置的四个环节](images/diagram_ts_project.webp)
+
 ![TypeScript 工程配置与实践](images/remaining_ts_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：15 分钟

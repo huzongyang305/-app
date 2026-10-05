@@ -1,5 +1,7 @@
 # C++ 环境与编译流程
 
+![C++ 从源码到可执行文件的四个阶段](images/diagram_cpp_build.webp)
+
 ![环境与编译流程](images/remaining_cpp_basics.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：15 分钟

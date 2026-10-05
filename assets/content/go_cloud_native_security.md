@@ -1,5 +1,7 @@
 # Go 云原生服务安全与可靠性
 
+![云原生服务的安全与可靠性层次](images/diagram_go_cloud_security.webp)
+
 ![Go 云原生服务安全与可靠性](images/lesson_go_cloud_native_security.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：25 分钟

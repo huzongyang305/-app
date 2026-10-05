@@ -1,5 +1,7 @@
 # 继承、接口与多态
 
+![继承、接口与多态关系](images/diagram_cs_inheritance.webp)
+
 ![继承、接口与多态](images/remaining_csharp_inheritance.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

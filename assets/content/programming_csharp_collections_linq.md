@@ -1,5 +1,7 @@
 # 集合、委托与 LINQ
 
+![集合类型与 LINQ 的选型](images/diagram_cs_collections_linq.webp)
+
 ![集合、委托与 LINQ](images/remaining_csharp_collections_linq.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

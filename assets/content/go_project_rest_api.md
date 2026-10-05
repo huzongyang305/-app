@@ -1,5 +1,7 @@
 # 实战：Go REST API 服务
 
+![Go REST API 的请求链路](images/diagram_go_rest_api.webp)
+
 ![实战：Go REST API 服务](images/remaining_go_project_rest_api.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：120 分钟

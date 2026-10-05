@@ -1,5 +1,7 @@
 # TypeScript 类型系统
 
+![TypeScript 类型系统的五个层次](images/diagram_ts_type_system.webp)
+
 ![TypeScript 类型系统](images/remaining_typescript.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：15 分钟

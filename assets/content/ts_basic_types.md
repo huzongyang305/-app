@@ -1,5 +1,7 @@
 # TypeScript 基础类型
 
+![TypeScript 基础类型一览](images/diagram_ts_basic_types.webp)
+
 ![TypeScript 基础类型](images/remaining_ts_basic_types.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

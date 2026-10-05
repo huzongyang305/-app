@@ -1,5 +1,7 @@
 # Go 性能剖析与调优实战
 
+![pprof 六种剖析类型](images/diagram_go_pprof.webp)
+
 ![Go 性能剖析与调优实战](images/remaining_go_pprof.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：18 分钟

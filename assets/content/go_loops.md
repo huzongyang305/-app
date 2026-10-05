@@ -1,5 +1,7 @@
 # Go 循环入门
 
+![Go for 循环的四种形态](images/diagram_go_loops.webp)
+
 ![Go 循环入门](images/remaining_go_loops.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

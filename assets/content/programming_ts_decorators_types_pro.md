@@ -1,5 +1,7 @@
 # TypeScript 进阶类型与框架实践
 
+![装饰器与进阶类型的适用场景](images/diagram_ts_decorators.webp)
+
 ![TypeScript 进阶类型与框架实践](images/remaining_ts_decorators_pro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

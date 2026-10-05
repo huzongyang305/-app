@@ -1,5 +1,7 @@
 # C# 与 .NET 第一个程序
 
+![创建并运行第一个 C# 项目](images/diagram_cs_first.webp)
+
 ![C# 与 .NET 第一个程序](images/remaining_csharp_dotnet_first.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

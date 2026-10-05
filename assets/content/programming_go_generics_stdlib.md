@@ -1,5 +1,7 @@
 # Go 泛型与标准库实战
 
+![Go 泛型与标准库要点](images/diagram_go_generics_stdlib.webp)
+
 ![Go 泛型与标准库实战](images/remaining_go_generics_stdlib.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：15 分钟

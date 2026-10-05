@@ -1,5 +1,7 @@
 # 实战：C# 库存管理 CLI
 
+![库存管理 CLI 的实现流程](images/diagram_cs_inventory_cli.webp)
+
 ![实战：C# 库存管理 CLI](images/remaining_csharp_project_inventory_cli.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：110 分钟

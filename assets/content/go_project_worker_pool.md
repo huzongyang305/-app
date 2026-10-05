@@ -1,5 +1,7 @@
 # 实战：Go 并发抓取与 Worker Pool
 
+![Go Worker Pool 的任务流转](images/diagram_go_worker_pool.webp)
+
 ![实战：Go 并发抓取与 Worker Pool](images/remaining_go_project_worker_pool.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：110 分钟

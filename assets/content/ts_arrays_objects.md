@@ -1,5 +1,7 @@
 # TypeScript 数组与对象
 
+![数组、元组与对象类型的建模方式](images/diagram_ts_arrays_objects.webp)
+
 ![TypeScript 数组与对象](images/remaining_ts_arrays_objects.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

@@ -1,5 +1,7 @@
 # TypeScript 函数类型
 
+![函数类型的参数、返回值与回调](images/diagram_ts_function_types.webp)
+
 ![TypeScript 函数类型](images/remaining_ts_function_types.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

@@ -1,5 +1,7 @@
 # Go 泛型深入与约束设计
 
+![Go 泛型约束与性能](images/diagram_go_generics_deep.webp)
+
 ![Go 泛型深入与约束设计](images/lesson_go_generics_deep.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

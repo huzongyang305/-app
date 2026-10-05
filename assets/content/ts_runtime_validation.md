@@ -1,5 +1,7 @@
 # TypeScript 运行时校验与边界
 
+![运行时校验把未知数据收敛为类型](images/diagram_ts_runtime_validation.webp)
+
 ![TypeScript 运行时校验与边界](images/lesson_ts_runtime_validation.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：23 分钟

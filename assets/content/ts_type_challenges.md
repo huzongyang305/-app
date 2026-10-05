@@ -1,5 +1,7 @@
 # TypeScript 类型体操进阶
 
+![类型体操的四类核心工具](images/diagram_ts_type_challenges.webp)
+
 ![TypeScript 类型体操进阶](images/remaining_ts_type_challenges.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：18 分钟

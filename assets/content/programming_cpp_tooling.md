@@ -1,5 +1,7 @@
 # 构建、调试与工程实践
 
+![C++ 工程工具链的五个环节](images/diagram_cpp_tooling.webp)
+
 ![构建、调试与工程实践](images/remaining_cpp_tooling.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

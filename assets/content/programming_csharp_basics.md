@@ -1,5 +1,7 @@
 # C# 与 .NET 平台
 
+![C# 从源码到 CLR 运行的分层](images/diagram_cs_platform.webp)
+
 ![C# 与 .NET 平台](images/remaining_csharp_basics.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：14 分钟

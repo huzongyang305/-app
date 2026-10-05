@@ -1,5 +1,7 @@
 # STL 容器与算法
 
+![STL 容器、迭代器与算法的选择](images/diagram_cpp_stl.webp)
+
 ![STL 容器与算法](images/remaining_cpp_stl.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

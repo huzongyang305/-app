@@ -1,5 +1,7 @@
 # Go 测试进阶：基准、模糊与集成
 
+![Go 测试的三种主要形态](images/diagram_go_testing.webp)
+
 ![Go 测试进阶：基准、模糊与集成](images/remaining_go_testing.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：18 分钟

@@ -1,5 +1,7 @@
 # 实战：用 CMake 组织多文件项目
 
+![CMake 多文件项目的组织方式](images/diagram_cpp_project.webp)
+
 ![实战：CMake 多文件项目](images/remaining_cpp_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：18 分钟
