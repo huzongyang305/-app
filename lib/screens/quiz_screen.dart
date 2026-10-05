@@ -80,6 +80,9 @@ class _QuizScreenState extends State<QuizScreen> {
     progress.scheduleReview(
       widget.lesson.id,
       perfect: _correctCount == _questions.length,
+      accuracy: _questions.isEmpty ? null : _correctCount / _questions.length,
+      wrongCount: progress.wrongCountFor(widget.lesson.id),
+      difficulty: widget.lesson.difficulty,
     );
     setState(() {
       _finished = true;
@@ -90,7 +93,13 @@ class _QuizScreenState extends State<QuizScreen> {
   /// 结果页的三档自评：覆盖刚才按成绩自动安排的复习时间。
   void _gradeReview(ReviewGrade grade) {
     final progress = context.read<ProgressProvider>();
-    progress.scheduleReviewWithGrade(widget.lesson.id, grade);
+    progress.scheduleReviewWithGrade(
+      widget.lesson.id,
+      grade,
+      accuracy: _questions.isEmpty ? null : _correctCount / _questions.length,
+      wrongCount: progress.wrongCountFor(widget.lesson.id),
+      difficulty: widget.lesson.difficulty,
+    );
     setState(() => _gradedDays = progress.nextReviewDays(widget.lesson.id));
   }
 

@@ -34,9 +34,9 @@ void main() {
       expect(progress.dueReviewCount, 0);
     });
 
-    test('全对时按 3 / 7 / 30 天逐级拉长并封顶', () async {
+    test('全对时间隔按 SM-2 系数逐步拉长并封顶', () async {
       await progress.markLearned('a');
-      for (final days in <int>[3, 7, 30, 30]) {
+      for (final days in <int>[3, 8, 22, 62, 180, 180]) {
         await progress.scheduleReview('a', perfect: true);
         expectDueInDays(progress, 'a', days);
       }
@@ -45,12 +45,40 @@ void main() {
     test('答错后立刻回落到 1 天，重新开始累积', () async {
       await progress.markLearned('a');
       await progress.scheduleReview('a', perfect: true); // 3 天
-      await progress.scheduleReview('a', perfect: true); // 7 天
+      await progress.scheduleReview('a', perfect: true); // 8 天
       await progress.scheduleReview('a', perfect: false);
       expectDueInDays(progress, 'a', 1);
 
+      // 遗忘后重复次数归零：先 1 天巩固，再回到 3 天。
+      await progress.scheduleReview('a', perfect: true);
+      expectDueInDays(progress, 'a', 1);
       await progress.scheduleReview('a', perfect: true);
       expectDueInDays(progress, 'a', 3);
+    });
+
+    test('正确率低、错题未清或课程难度高都会缩短间隔', () async {
+      await progress.scheduleReview('low', perfect: true);
+      await progress.scheduleReview('low', perfect: true);
+      expectDueInDays(progress, 'low', 3);
+
+      // 同样处在第二次复习：正确率低于 60% 时只有 2 天。
+      await progress.scheduleReview('weak', perfect: true, accuracy: 0.4);
+      await progress.scheduleReview('weak', perfect: true, accuracy: 0.4);
+      expectDueInDays(progress, 'weak', 2);
+
+      // 高级课程默认间隔更短（3 天 × 0.8 ≈ 2 天）。
+      await progress.scheduleReview('hard', perfect: true, difficulty: '高级');
+      await progress.scheduleReview('hard', perfect: true, difficulty: '高级');
+      expectDueInDays(progress, 'hard', 2);
+    });
+
+    test('模糊自评保持节奏并小幅拉长间隔', () async {
+      await progress.markLearned('a');
+      await progress.scheduleReview('a', perfect: true); // 3 天
+      final before = progress.easeFactorOf('a');
+      await progress.scheduleReviewWithGrade('a', ReviewGrade.fuzzy);
+      expectDueInDays(progress, 'a', 4);
+      expect(progress.easeFactorOf('a'), lessThan(before));
     });
 
     test('未标记已学也可单独写入复习计划，首次按第 1 级（1 天）计算', () async {
@@ -76,6 +104,9 @@ void main() {
       await progress.markLearned('a');
       expect(storage.read('review_due'), isA<Map>());
       expect(storage.read('review_stage'), isA<Map>());
+      expect(storage.read('review_ease'), isA<Map>());
+      expect(storage.read('review_interval'), isA<Map>());
+      expect(storage.read('review_repetitions'), isA<Map>());
       expect(ProgressProvider(storage).reviewDueAt('a'), isNotNull);
     });
   });
@@ -205,6 +236,18 @@ void main() {
       expect(progress.learnedIds, isEmpty);
       expect(progress.quizResults, isEmpty);
     });
+
+    test('导入空数据会清空自适应复习指标', () async {
+      await progress.scheduleReviewWithGrade('old', ReviewGrade.fuzzy);
+      expect(progress.reviewDueAt('old'), isNotNull);
+
+      await progress.importData(const <String, dynamic>{});
+
+      expect(progress.reviewDueAt('old'), isNull);
+      expect(progress.reviewGradeOf('old'), isNull);
+      expect(progress.easeFactorOf('old'), 2.5);
+      expect(progress.nextReviewDays('old'), 1);
+    });
   });
 
   group('三档复习自评', () {
@@ -214,7 +257,7 @@ void main() {
       progress = ProgressProvider(StorageService.inMemory());
     });
 
-    test('「记得」逐级拉长间隔：1 → 3 → 7 → 30 天', () async {
+    test('「记得」按 SM-2 逐级拉长间隔：1 → 3 → 8 → 22 → 62 → 180 天', () async {
       await progress.markLearned('a'); // 首次进入第 1 档
       expect(progress.nextReviewDays('a'), 1);
 
@@ -222,14 +265,19 @@ void main() {
       expect(progress.nextReviewDays('a'), 3);
 
       await progress.scheduleReviewWithGrade('a', ReviewGrade.remembered);
-      expect(progress.nextReviewDays('a'), 7);
+      expect(progress.nextReviewDays('a'), 8);
 
       await progress.scheduleReviewWithGrade('a', ReviewGrade.remembered);
-      expect(progress.nextReviewDays('a'), 30);
+      expect(progress.nextReviewDays('a'), 22);
 
-      // 到达最高档后保持 30 天，不会越界
       await progress.scheduleReviewWithGrade('a', ReviewGrade.remembered);
-      expect(progress.nextReviewDays('a'), 30);
+      expect(progress.nextReviewDays('a'), 62);
+
+      // 到达上限后保持 180 天，不会越界
+      await progress.scheduleReviewWithGrade('a', ReviewGrade.remembered);
+      expect(progress.nextReviewDays('a'), 180);
+      await progress.scheduleReviewWithGrade('a', ReviewGrade.remembered);
+      expect(progress.nextReviewDays('a'), 180);
     });
 
     test('「忘记了」回到第 1 档（1 天后）', () async {
@@ -237,20 +285,20 @@ void main() {
       for (var i = 0; i < 3; i++) {
         await progress.scheduleReviewWithGrade('a', ReviewGrade.remembered);
       }
-      expect(progress.nextReviewDays('a'), 30);
+      expect(progress.nextReviewDays('a'), 22);
 
       await progress.scheduleReviewWithGrade('a', ReviewGrade.forgot);
       expect(progress.nextReviewDays('a'), 1);
       expect(progress.reviewGradeOf('a'), ReviewGrade.forgot);
     });
 
-    test('「有点模糊」保持当前档位不前进', () async {
+    test('「有点模糊」小幅拉长间隔但不推进重复次数', () async {
       await progress.markLearned('a');
       await progress.scheduleReviewWithGrade('a', ReviewGrade.remembered);
       expect(progress.nextReviewDays('a'), 3);
 
       await progress.scheduleReviewWithGrade('a', ReviewGrade.fuzzy);
-      expect(progress.nextReviewDays('a'), 3);
+      expect(progress.nextReviewDays('a'), 4);
       expect(progress.reviewGradeOf('a'), ReviewGrade.fuzzy);
     });
 

@@ -1,9 +1,9 @@
 /// 复习自评档位：用户做完一轮复习后，对自己的掌握程度打分。
 ///
 /// 三档对应三种调度策略（见 ProgressProvider.scheduleReviewWithGrade）：
-///   · forgot     忘记了   → 回到第 1 档，1 天后再复习
-///   · fuzzy      有点模糊 → 保持当前档位，间隔不前进
-///   · remembered 记得     → 进入下一档，间隔逐级拉长（1 → 3 → 7 → 30 天）
+///   · forgot     忘记了   → 重复次数归零，1 天后再复习
+///   · fuzzy      有点模糊 → 重复次数不变，间隔小幅拉长
+///   · remembered 记得     → 重复次数 +1，间隔按 SM-2 系数逐步拉长
 enum ReviewGrade {
   forgot('forgot'),
   fuzzy('fuzzy'),

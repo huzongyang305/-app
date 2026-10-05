@@ -124,6 +124,8 @@ class Lesson {
     this.prerequisites = const <String>[],
     this.related = const <String>[],
     this.lab,
+    this.codeQuizLanguage,
+    this.codeQuizSlot,
   });
 
   final String id;
@@ -156,10 +158,20 @@ class Lesson {
   /// system_database / sandbox:python。为空表示本课没有专门实验。
   final String? lab;
 
+  /// 代码阅读题元数据（由 tool/annotate_code_reading.dart 写入）：
+  /// 语言名 + 槽位名，运行时据此生成一道代码理解题。
+  final String? codeQuizLanguage;
+  final String? codeQuizSlot;
+
+  bool get hasCodeQuiz =>
+      (codeQuizLanguage?.isNotEmpty ?? false) &&
+      (codeQuizSlot?.isNotEmpty ?? false);
+
   /// 是否提供可单独加载的完整英文正文。
   bool get hasEnglishBody => assetFileEn?.trim().isNotEmpty ?? false;
 
   factory Lesson.fromJson(Map<String, dynamic> json, String categoryId) {
+    final codeQuiz = (json['code_quiz'] as Map?)?.cast<String, dynamic>();
     return Lesson(
       id: json['id'] as String,
       categoryId: categoryId,
@@ -195,6 +207,8 @@ class Lesson {
       lab: (json['lab'] as String?)?.trim().isEmpty ?? true
           ? null
           : json['lab'] as String?,
+      codeQuizLanguage: codeQuiz?['language']?.toString(),
+      codeQuizSlot: codeQuiz?['slot']?.toString(),
     );
   }
 }

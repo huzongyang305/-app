@@ -26,6 +26,16 @@ class SettingsProvider extends ChangeNotifier {
     _reminderMinute = (minute is int && minute >= 0 && minute <= 59)
         ? minute
         : 0;
+
+    final history = _storage.read('search_history', defaultValue: const []);
+    if (history is List) {
+      _searchHistory = history
+          .map((item) => item.toString().trim())
+          .where((item) => item.isNotEmpty)
+          .toSet()
+          .take(12)
+          .toList();
+    }
   }
 
   final StorageService _storage;
@@ -37,6 +47,7 @@ class SettingsProvider extends ChangeNotifier {
   bool _reviewReminderEnabled = false;
   int _reminderHour = 20;
   int _reminderMinute = 0;
+  List<String> _searchHistory = <String>[];
 
   ThemeMode get themeMode => _themeMode;
   String get localeCode => _localeCode;
@@ -55,6 +66,9 @@ class SettingsProvider extends ChangeNotifier {
 
   int get reminderHour => _reminderHour;
   int get reminderMinute => _reminderMinute;
+
+  /// 最近搜索词，最新的在最前面，最多保留 12 条。
+  List<String> get searchHistory => List<String>.unmodifiable(_searchHistory);
 
   /// 「20:00」形式的提醒时间文本。
   String get reminderTimeLabel =>
@@ -89,6 +103,27 @@ class SettingsProvider extends ChangeNotifier {
     _reduceMotion = value;
     notifyListeners();
     await _storage.write('reduce_motion', value);
+  }
+
+  /// 记住一次搜索；重复词会移动到最前面。
+  Future<void> rememberSearch(String rawQuery) async {
+    final query = rawQuery.trim();
+    if (query.isEmpty) return;
+    _searchHistory
+      ..remove(query)
+      ..insert(0, query);
+    if (_searchHistory.length > 12) {
+      _searchHistory = _searchHistory.take(12).toList();
+    }
+    notifyListeners();
+    await _storage.write('search_history', _searchHistory);
+  }
+
+  Future<void> clearSearchHistory() async {
+    if (_searchHistory.isEmpty) return;
+    _searchHistory = <String>[];
+    notifyListeners();
+    await _storage.write('search_history', <String>[]);
   }
 
   /// 在浅色 / 深色 / 跟随系统之间循环切换。

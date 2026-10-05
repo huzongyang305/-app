@@ -5,6 +5,7 @@ import '../models/lesson.dart';
 import '../models/lesson_category.dart';
 import '../models/search_hit.dart';
 import 'offline_content_pack_service.dart';
+import 'search_service.dart';
 import 'storage_service.dart';
 
 /// 课程内容仓库：启动时解析 manifest.json，按需读取 Markdown 正文。
@@ -25,6 +26,7 @@ class ContentProvider extends ChangeNotifier {
   final List<LessonCategory> _categories = <LessonCategory>[];
   final Map<String, String> _markdownCache = <String, String>{};
   final Map<String, String> _plainTextCache = <String, String>{};
+  LessonSearchIndex? _searchIndex;
 
   bool _isLoading = true;
   String? _errorMessage;
@@ -65,6 +67,7 @@ class ContentProvider extends ChangeNotifier {
 
       _markdownCache.clear();
       _plainTextCache.clear();
+      _searchIndex = null;
 
       _categories
         ..clear()
@@ -151,60 +154,18 @@ class ContentProvider extends ChangeNotifier {
     return plain;
   }
 
-  /// 按关键词搜索标题、关键词、摘要与正文，标题命中优先。
-  Future<List<SearchHit>> search(String query) async {
-    final keyword = query.trim().toLowerCase();
-    if (keyword.isEmpty) return const [];
-
-    final hits = <_ScoredHit>[];
-    for (final category in _categories) {
-      for (final lesson in category.lessons) {
-        var score = 0;
-        final title = '${lesson.title.zh} ${lesson.title.en}'.toLowerCase();
-        final summary = '${lesson.summary.zh} ${lesson.summary.en}'
-            .toLowerCase();
-        final keywords = lesson.keywords.join(' ').toLowerCase();
-        final body = (await plainTextOf(lesson)).toLowerCase();
-
-        if (title.contains(keyword)) score += 5;
-        if (keywords.contains(keyword)) score += 3;
-        if (summary.contains(keyword)) score += 2;
-        if (body.contains(keyword)) score += 1;
-
-        if (score > 0) {
-          hits.add(
-            _ScoredHit(
-              hit: SearchHit(
-                lesson: lesson,
-                category: category,
-                snippet: _buildSnippet(body, keyword, lesson.summary.zh),
-              ),
-              score: score,
-            ),
-          );
-        }
-      }
+  /// 按关键词搜索标题、关键词、摘要与正文，支持拼音、同义词和筛选。
+  Future<List<SearchHit>> search(
+    String query, {
+    String? categoryId,
+    Set<String>? lessonIds,
+  }) async {
+    final keyword = query.trim();
+    if (keyword.isEmpty) return const <SearchHit>[];
+    final index = _searchIndex ??= LessonSearchIndex();
+    if (!index.isBuilt) {
+      await index.build(_categories, plainTextOf);
     }
-
-    hits.sort((a, b) => b.score.compareTo(a.score));
-    return hits.take(30).map((item) => item.hit).toList();
+    return index.search(keyword, categoryId: categoryId, lessonIds: lessonIds);
   }
-
-  String _buildSnippet(String body, String keyword, String fallback) {
-    final index = body.indexOf(keyword);
-    if (index < 0) return fallback;
-
-    final start = (index - 30).clamp(0, body.length);
-    final end = (index + keyword.length + 50).clamp(0, body.length);
-    final prefix = start > 0 ? '…' : '';
-    final suffix = end < body.length ? '…' : '';
-    return '$prefix${body.substring(start, end).trim()}$suffix';
-  }
-}
-
-class _ScoredHit {
-  const _ScoredHit({required this.hit, required this.score});
-
-  final SearchHit hit;
-  final int score;
 }

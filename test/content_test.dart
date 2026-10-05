@@ -831,7 +831,7 @@ void main() {
     }
   });
 
-  test('复习间隔按 1/3/7/30 天递增，答错回落', () async {
+  test('复习间隔按自适应算法递增，答错回落', () async {
     final progress = ProgressProvider(StorageService.inMemory());
 
     await progress.scheduleReview('demo', perfect: true);

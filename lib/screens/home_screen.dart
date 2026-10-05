@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../l10n/l10n_extension.dart';
 import '../models/lesson.dart';
 import '../services/content_provider.dart';
-import '../services/practice_question_factory.dart';
 import '../services/progress_provider.dart';
 import '../services/recommendation_service.dart';
 import '../theme/app_theme.dart';
@@ -18,7 +17,7 @@ import 'category_screen.dart';
 import 'lesson_screen.dart';
 import 'learning_path_screen.dart';
 import 'quiz_list_screen.dart';
-import 'quiz_screen.dart';
+import 'review_plan_screen.dart';
 import 'search_screen.dart';
 import 'tools_screen.dart';
 
@@ -222,17 +221,11 @@ class HomeScreen extends StatelessWidget {
               ),
               subtitle: Text(context.tr('todayReviewHint')),
               trailing: const Icon(Icons.chevron_right),
-              onTap: () {
-                final lesson = content.lessonById(
-                  progress.dueReviewLessonIds.first,
-                );
-                if (lesson == null || lesson.totalQuestionCount == 0) return;
-                Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => QuizScreen(lesson: lesson),
-                  ),
-                );
-              },
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => const ReviewPlanScreen(),
+                ),
+              ),
             ),
           ),
         ],

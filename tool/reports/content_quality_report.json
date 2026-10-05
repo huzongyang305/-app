@@ -1,0 +1,43 @@
+{
+  "generated_at": "2026-10-05T23:27:06.836279",
+  "lesson_count": 534,
+  "total_chars": 7362052,
+  "min_chars": 10004,
+  "image_count": 1059,
+  "lessons_with_image": 534,
+  "lessons_with_lab_section": 534,
+  "question_type_histogram": {
+    "single": 2395,
+    "multi": 133,
+    "fill": 347,
+    "order": 86,
+    "code": 15,
+    "debug": 78
+  },
+  "lessons_without_code_question": 49,
+  "error_count": 0,
+  "warning_count": 0,
+  "issues": [],
+  "template_sentences": [
+    {
+      "level": "warn",
+      "lesson_id": "flutter_basics",
+      "message": "模板化长句出现在 534 门课：先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到…"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "flutter_basics",
+      "message": "模板化长句出现在 440 门课：- **迁移检查**：遮住选项，只根据定义复述一次答案，再回…"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "flutter_basics",
+      "message": "模板化长句出现在 534 门课：> The full tutorial is written…"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "flutter_basics",
+      "message": "模板化长句出现在 534 门课：> App 完全离线展示文字链接，不会自动联网；需要延伸阅读…"
+    }
+  ]
+}

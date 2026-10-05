@@ -1,9 +1,12 @@
 import 'package:flutter/foundation.dart';
 
+import '../models/lesson.dart';
 import '../models/note.dart';
 import '../models/quiz_result.dart';
 import '../models/review_grade.dart';
 import 'backup_document_service.dart';
+import 'practice_question_factory.dart';
+import 'review_planner.dart';
 import 'storage_service.dart';
 
 /// 学习进度：已学知识点、收藏、笔记与测验成绩。
@@ -31,12 +34,21 @@ class ProgressProvider extends ChangeNotifier {
   final Map<String, String> _reviewDue = <String, String>{};
   final Map<String, int> _reviewStage = <String, int>{};
   final Map<String, String> _reviewGrade = <String, String>{};
+  final Map<String, double> _reviewEase = <String, double>{};
+  final Map<String, int> _reviewInterval = <String, int>{};
+  final Map<String, int> _reviewRepetitions = <String, int>{};
   final Set<String> _studyDays = <String>{};
   final Map<String, int> _dailyActivity = <String, int>{};
   String? _lastLessonId;
 
-  /// 复习间隔（天）：全对则逐级拉长，答错回到第 1 级。
-  static const List<int> _reviewIntervals = <int>[1, 3, 7, 30];
+  /// SM-2 风格的复习参数：难度系数越高，间隔拉长越快。
+  static const double _initialEase = 2.5;
+  static const double _minEase = 1.3;
+  static const double _maxEase = 3.0;
+  static const int _maxIntervalDays = 180;
+
+  /// 旧版固定档位，仅用于把老数据迁移成新的间隔天数。
+  static const List<int> _legacyIntervals = <int>[1, 3, 7, 30];
 
   Set<String> get learnedIds => _learnedIds;
   Set<String> get favoriteIds => _favoriteIds;
@@ -156,53 +168,125 @@ class ProgressProvider extends ChangeNotifier {
   }
 
   /// 复习调度：perfect 为真表示本次全对。
-  Future<void> scheduleReview(String lessonId, {required bool perfect}) async {
+  Future<void> scheduleReview(
+    String lessonId, {
+    required bool perfect,
+    double? accuracy,
+    int wrongCount = 0,
+    String difficulty = '基础',
+  }) async {
     // 兼容旧调用：全对视为「记得」，否则视为「忘记了」。
     await scheduleReviewWithGrade(
       lessonId,
       perfect ? ReviewGrade.remembered : ReviewGrade.forgot,
+      accuracy: accuracy,
+      wrongCount: wrongCount,
+      difficulty: difficulty,
     );
   }
 
-  /// 三档自评复习调度：忘记回到第 1 档，模糊保持当前档，记得进入下一档。
+  /// 三档自评 + SM-2 风格调度。
+  ///
+  /// · 记得：重复次数 +1，按「1 天 → 3 天 → 上次间隔 × 难度系数」拉长；
+  /// · 模糊：重复次数不变，间隔小幅增长，难度系数下调；
+  /// · 忘记：重复次数归零，间隔回到 1 天，难度系数下调。
+  ///
+  /// 另外，正确率低于 60%、错题本里仍有记录、课程本身越难，都会缩短间隔。
   Future<void> scheduleReviewWithGrade(
     String lessonId,
-    ReviewGrade grade,
-  ) async {
-    final maxStage = _reviewIntervals.length;
-    // 未建立复习计划时视为第 0 档：首次「记得」落到第 1 档（1 天），
-    // 与旧的 scheduleReview(perfect: true) 行为保持一致。
-    final current = _reviewStage[lessonId] ?? 0;
-    final int stage;
+    ReviewGrade grade, {
+    double? accuracy,
+    int wrongCount = 0,
+    String difficulty = '基础',
+  }) async {
+    final ease = (_reviewEase[lessonId] ?? _initialEase)
+        .clamp(_minEase, _maxEase)
+        .toDouble();
+    final repetitions = _reviewRepetitions[lessonId] ?? 0;
+    final previous = _reviewInterval[lessonId] ?? 0;
+
+    var nextEase = ease;
+    var nextRepetitions = repetitions;
+    var interval = previous;
     switch (grade) {
       case ReviewGrade.forgot:
-        stage = 1;
+        nextRepetitions = 0;
+        nextEase = ease - 0.25;
+        interval = 1;
       case ReviewGrade.fuzzy:
-        stage = current.clamp(1, maxStage);
+        nextEase = ease - 0.12;
+        interval = repetitions == 0 ? 1 : (previous * 1.2).round();
       case ReviewGrade.remembered:
-        stage = (current + 1).clamp(1, maxStage);
+        nextRepetitions = repetitions + 1;
+        nextEase = ease + 0.08;
+        if (nextRepetitions <= 1) {
+          interval = 1;
+        } else if (nextRepetitions == 2) {
+          interval = 3;
+        } else {
+          interval = (previous * nextEase).round();
+        }
     }
 
-    _reviewStage[lessonId] = stage;
+    if (accuracy != null && accuracy < 0.6) {
+      nextEase -= 0.15;
+      interval = (interval * 0.7).round();
+    }
+    if (wrongCount > 0) {
+      interval = (interval * 0.85).round();
+    }
+    interval = (interval * _difficultyFactor(difficulty)).round().clamp(
+      1,
+      _maxIntervalDays,
+    );
+    nextEase = nextEase.clamp(_minEase, _maxEase).toDouble();
+
+    _reviewEase[lessonId] = double.parse(nextEase.toStringAsFixed(3));
+    _reviewRepetitions[lessonId] = nextRepetitions;
+    _reviewInterval[lessonId] = interval;
+    _reviewStage[lessonId] = nextRepetitions + 1;
     _reviewGrade[lessonId] = grade.storageKey;
     _reviewDue[lessonId] = DateTime.now()
-        .add(Duration(days: _reviewIntervals[stage - 1]))
+        .add(Duration(days: interval))
         .toIso8601String();
     notifyListeners();
     await _persistReview();
   }
+
+  /// 课程难度对复习间隔的影响：入门内容可以放慢复习节奏，高级内容更密。
+  static double _difficultyFactor(String difficulty) => switch (difficulty) {
+    '入门' => 1.15,
+    '进阶' => 0.9,
+    '高级' => 0.8,
+    _ => 1.0,
+  };
 
   /// 某个知识点上次自评的档位（未评过则为 null）。
   ReviewGrade? reviewGradeOf(String lessonId) =>
       ReviewGrade.fromStorage(_reviewGrade[lessonId]);
 
   /// 某个知识点当前档位对应的复习间隔天数。
-  int nextReviewDays(String lessonId) {
-    final stage = (_reviewStage[lessonId] ?? 1).clamp(
-      1,
-      _reviewIntervals.length,
-    );
-    return _reviewIntervals[stage - 1];
+  int nextReviewDays(String lessonId) =>
+      (_reviewInterval[lessonId] ?? 1).clamp(1, _maxIntervalDays);
+
+  /// 当前记忆难度系数（越大表示越容易记住），供学习分析使用。
+  double easeFactorOf(String lessonId) => _reviewEase[lessonId] ?? _initialEase;
+
+  /// 今日复习计划：按逾期程度与用时排序，并给出总用时与顺延数量。
+  ReviewPlan reviewPlanFor(List<Lesson> lessons, {int budgetMinutes = 30}) {
+    final byId = <String, Lesson>{
+      for (final lesson in lessons)
+        if (lesson.totalQuestionCount > 0) lesson.id: lesson,
+    };
+    final candidates = <ReviewCandidate>[];
+    for (final lessonId in dueReviewLessonIds) {
+      final lesson = byId[lessonId];
+      if (lesson == null) continue;
+      candidates.add(
+        ReviewCandidate(lesson: lesson, dueAt: reviewDueAt(lessonId)),
+      );
+    }
+    return buildReviewPlan(candidates, budgetMinutes: budgetMinutes);
   }
 
   Future<void> _persistReview() async {
@@ -211,6 +295,15 @@ class ProgressProvider extends ChangeNotifier {
     await _storage.write(
       'review_grade',
       Map<String, String>.from(_reviewGrade),
+    );
+    await _storage.write('review_ease', Map<String, double>.from(_reviewEase));
+    await _storage.write(
+      'review_interval',
+      Map<String, int>.from(_reviewInterval),
+    );
+    await _storage.write(
+      'review_repetitions',
+      Map<String, int>.from(_reviewRepetitions),
     );
   }
 
@@ -250,9 +343,13 @@ class ProgressProvider extends ChangeNotifier {
       await _recordActivity(lessonId);
       await _markStudyToday();
       if (!_reviewDue.containsKey(lessonId)) {
+        _reviewEase.putIfAbsent(lessonId, () => _initialEase);
+        // 首次阅读本身算第 1 次成功重复：1 天后复习，再成功后进入 3 天。
+        _reviewRepetitions.putIfAbsent(lessonId, () => 1);
+        _reviewInterval[lessonId] = 1;
         _reviewStage[lessonId] = 1;
         _reviewDue[lessonId] = DateTime.now()
-            .add(Duration(days: _reviewIntervals.first))
+            .add(const Duration(days: 1))
             .toIso8601String();
         await _persistReview();
       }
@@ -373,6 +470,35 @@ class ProgressProvider extends ChangeNotifier {
         _reviewGrade[key.toString()] = value.toString();
       });
     }
+    final ease = _storage.read('review_ease');
+    if (ease is Map) {
+      ease.forEach((key, value) {
+        if (value is num) _reviewEase[key.toString()] = value.toDouble();
+      });
+    }
+    final interval = _storage.read('review_interval');
+    if (interval is Map) {
+      interval.forEach((key, value) {
+        if (value is int && value > 0) {
+          _reviewInterval[key.toString()] = value;
+        }
+      });
+    }
+    final repetitions = _storage.read('review_repetitions');
+    if (repetitions is Map) {
+      repetitions.forEach((key, value) {
+        if (value is int && value >= 0) {
+          _reviewRepetitions[key.toString()] = value;
+        }
+      });
+    }
+    // 老版本只存了档位：换算成等效的间隔天数与重复次数，保证升级后不丢进度。
+    for (final entry in _reviewStage.entries) {
+      if (_reviewInterval.containsKey(entry.key)) continue;
+      final level = entry.value.clamp(1, _legacyIntervals.length);
+      _reviewInterval[entry.key] = _legacyIntervals[level - 1];
+      _reviewRepetitions.putIfAbsent(entry.key, () => level - 1);
+    }
   }
 
   void _restoreStudyDays() {
@@ -415,6 +541,9 @@ class ProgressProvider extends ChangeNotifier {
         'review_due': Map<String, String>.from(_reviewDue),
         'review_stage': Map<String, int>.from(_reviewStage),
         'review_grade': Map<String, String>.from(_reviewGrade),
+        'review_ease': Map<String, double>.from(_reviewEase),
+        'review_interval': Map<String, int>.from(_reviewInterval),
+        'review_repetitions': Map<String, int>.from(_reviewRepetitions),
         'study_days': _studyDays.toList(),
         'daily_activity': Map<String, int>.from(_dailyActivity),
         'notes': _notes.map((key, value) => MapEntry(key, value.toJson())),
@@ -475,6 +604,18 @@ class ProgressProvider extends ChangeNotifier {
       'review_grade',
       (data['review_grade'] as Map?) ?? const {},
     );
+    await _storage.write(
+      'review_ease',
+      (data['review_ease'] as Map?) ?? const {},
+    );
+    await _storage.write(
+      'review_interval',
+      (data['review_interval'] as Map?) ?? const {},
+    );
+    await _storage.write(
+      'review_repetitions',
+      (data['review_repetitions'] as Map?) ?? const {},
+    );
     // 上次学习位置不在备份范围内，恢复时一并清掉，避免指向上一个设备的内容。
     await _storage.delete('last_lesson_id');
 
@@ -488,6 +629,10 @@ class ProgressProvider extends ChangeNotifier {
     _restoreWrongCounts();
     _reviewDue.clear();
     _reviewStage.clear();
+    _reviewGrade.clear();
+    _reviewEase.clear();
+    _reviewInterval.clear();
+    _reviewRepetitions.clear();
     _restoreReview();
     _studyDays.clear();
     _restoreStudyDays();

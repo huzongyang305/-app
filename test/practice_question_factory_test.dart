@@ -84,7 +84,7 @@ void main() {
     }
   });
 
-  test('高阶语言课程不生成通用代码练习，避免与正文脱节', () {
+  test('高阶语言课程不生成通用代码练习，只保留本课代码阅读题', () {
     final advanced = categories
         .where(
           (category) => PracticeQuestionFactory.supportsCategoryId(category.id),
@@ -94,8 +94,24 @@ void main() {
         .toList();
     expect(advanced, isNotEmpty);
     for (final lesson in advanced) {
+      // 通用模板练习仍然不生成，避免与高阶主题脱节。
       expect(PracticeQuestionFactory.questionsFor(lesson), isEmpty);
-      expect(lesson.totalQuestionCount, lesson.quiz.length);
+      // 手写题库里可能本来就有代码题，这里只核对新增的代码阅读题。
+      final staticCode = lesson.quiz
+          .where((question) => question.type == 'code')
+          .length;
+      final totalCode = lesson.allQuiz
+          .where((question) => question.type == 'code')
+          .length;
+      expect(
+        totalCode - staticCode,
+        lesson.hasCodeQuiz ? 1 : 0,
+        reason: lesson.id,
+      );
+      expect(
+        lesson.totalQuestionCount,
+        lesson.quiz.length + (lesson.hasCodeQuiz ? 1 : 0),
+      );
     }
   });
 

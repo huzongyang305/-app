@@ -20,6 +20,20 @@ class AppStrings {
       'zh': '支持搜索标题、关键词与教程正文',
       'en': 'Searches titles, keywords and content',
     },
+    'searchIndexing': {'zh': '正在建立本地搜索索引…', 'en': 'Building local index…'},
+    'searchPinyinHint': {
+      'zh': '支持中文、英文、拼音和首字母，例如「erfen」或「efcz」',
+      'en': 'Try Chinese, English, pinyin or initials, such as “erfen”.',
+    },
+    'searchHistory': {'zh': '最近搜索', 'en': 'Recent searches'},
+    'clearHistory': {'zh': '清空', 'en': 'Clear'},
+    'clear': {'zh': '清空', 'en': 'Clear'},
+    'searchFilterAll': {'zh': '全部', 'en': 'All'},
+    'searchFilterUnlearned': {'zh': '未学', 'en': 'Unlearned'},
+    'searchFilterFavorites': {'zh': '收藏', 'en': 'Favorites'},
+    'searchFilterWrong': {'zh': '错题', 'en': 'Wrong'},
+    'searchCategoryFilter': {'zh': '按分类筛选', 'en': 'Filter by category'},
+    'searchAllCategories': {'zh': '全部分类', 'en': 'All categories'},
     'categories': {'zh': '课程分类', 'en': 'Categories'},
     'continueLearning': {'zh': '继续学习', 'en': 'Continue learning'},
     'overallProgress': {'zh': '总体学习进度', 'en': 'Overall progress'},
@@ -134,6 +148,26 @@ class AppStrings {
     'todayReviewHint': {
       'zh': '按间隔重复安排，点一下开始复习',
       'en': 'Spaced repetition queue, tap to start',
+    },
+    'reviewPlanTitle': {'zh': '今日复习计划', 'en': 'Today\'s review plan'},
+    'reviewPlanSummary': {
+      'zh': '{count} 个知识点 · 预计 {minutes} 分钟',
+      'en': '{count} lessons · about {minutes} min',
+    },
+    'reviewPlanDeferred': {
+      'zh': '另有 {n} 个知识点超出今日时间预算，将顺延到明天',
+      'en': '{n} more lessons are deferred to tomorrow',
+    },
+    'reviewPlanOverdue': {'zh': '逾期 {n} 天', 'en': '{n} day(s) overdue'},
+    'reviewPlanToday': {'zh': '今天到期', 'en': 'Due today'},
+    'reviewPlanEstimate': {'zh': '预计 {n} 分钟', 'en': 'About {n} min'},
+    'reviewPlanEmpty': {
+      'zh': '今天没有待复习的知识点',
+      'en': 'Nothing due for review today',
+    },
+    'reviewPlanEmptyHint': {
+      'zh': '学完课程或完成测验后，这里会自动安排复习',
+      'en': 'Finish a lesson or quiz to schedule the next review',
     },
     'mockExam': {'zh': '模拟考试', 'en': 'Mock exam'},
     'mockExamHint': {

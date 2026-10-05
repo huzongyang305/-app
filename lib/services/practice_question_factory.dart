@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import '../models/lesson.dart';
+import 'code_reading_bank.dart';
 
 /// 代码练习工厂：为编程语言课程动态生成可判分的代码输出、排错与场景题。
 ///
@@ -337,12 +338,25 @@ class PracticeQuestionFactory {
 
 /// 在 UI 与组卷服务中统一使用完整题集，避免动态题只出现在某一个页面。
 extension LessonPracticeQuestions on Lesson {
+  /// 课程完整题集：手写题 + 代码阅读题 + 动态代码练习。
   List<QuizQuestion> get allQuiz => <QuizQuestion>[
     ...quiz,
+    if (hasCodeQuiz)
+      ?buildCodeReadingQuestion(
+        lessonId: id,
+        lessonTitle: title.zh,
+        language: codeQuizLanguage!,
+        slot: codeQuizSlot!,
+      ),
     ...PracticeQuestionFactory.questionsFor(this),
   ];
 
   int get totalQuestionCount => allQuiz.length;
+
+  /// 是否已经包含代码类题目（手写代码题、排错题或代码阅读题）。
+  bool get hasCodeQuestion => allQuiz.any(
+    (question) => question.type == 'code' || question.type == 'debug',
+  );
 }
 
 /// 单一语言的最小语法模板。模板用 {x}/{n}/{n1} 等占位符表示运行时变量。
