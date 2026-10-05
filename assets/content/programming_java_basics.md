@@ -94,7 +94,6 @@ public class Main {
 ## 本课小结
 JDK 提供工具、JVM 负责执行、字节码保证跨平台。理解类加载与 JIT 之后，再看性能与内存问题会清晰得多。
 
-<!-- appendix:v1 -->
 
 ## JDK 组成与命令速查
 
@@ -161,7 +160,6 @@ JDK 提供工具、JVM 负责执行、字节码保证跨平台。理解类加载
 - [ ] 遇到 `UnsupportedClassVersionError` 先查版本一致性。
 - [ ] 会用 `jstack`、`jmap` 做基础诊断。
 
-<!-- appendix:v2 -->
 
 ## 零基础详解：Java 程序为什么既要编译又要解释
 
@@ -294,7 +292,6 @@ public class Calculator {
 
 ## 动手练习
 
-<!-- practice-diversified:v1 -->
 
 > 本课练习重点：围绕「Java、JVM、JDK」完成复述、实验和交付，每个结果都要能被别人检查。
 
@@ -332,9 +329,59 @@ public class Calculator {
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-<!-- scaffold:v1 -->
 
-<!-- p2-enrichment:v1 -->
+
+## 考点精讲：把测验题还原成判断过程
+
+本课有 5 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
+
+### 考点 1：开发并编译 Java 程序需要安装？
+
+- **正确判断**：JDK
+- **判断依据**：JDK 包含 JRE、编译器 javac 与其他开发工具。其他选项：JRE 只能运行程序，JVM 是运行时本身，操作系统并不自带编译器。开发必须安装 JDK（内含 javac）。正确项「JDK」既符合定义也满足题干限定的场景，因此应当选择。错误项「只要操作系统」忽略了题目中的限制条件，因此不成立。把题干「开发并编译 Java 程序需要安装？」放回《环境与 JVM》的「JDK/JRE/JVM 区别、编译运行、包与类路径、JIT 与 GC」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
+
+### 考点 2：public class Hello 的源文件名必须是？
+
+- **正确判断**：Hello.java
+- **判断依据**：public 类的文件名必须与类名完全一致，包括大小写。其他选项：文件名必须与 public 类名完全一致且区分大小写。hello.java 或 Main.java 都会编译失败。正确项「Hello.java」抓住了题干的核心条件，是经得起边界检验的表述。错误项「任意名字」与课程给出的定义相冲突，不能回答题目所问。把题干「public class Hello 的源文件名必须是？」放回《环境与 JVM》的「JDK/JRE/JVM 区别、编译运行、包与类路径、JIT 与 GC」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
+
+### 考点 3：Java 实现「一次编写，到处运行」的关键是？
+
+- **正确判断**：编译成字节码
+- **判断依据**：源码编译成与平台无关的字节码，具体执行由该平台的 JVM 负责。其他选项：源码不能直接执行，也不是靠 C 语言实现。编译成字节码加各平台 JVM 才是跨平台的关键。正确项「编译成字节码」描述正确，能够解释题干场景中的现象与结果。错误项「使用 C 语言编写」与课程给出的定义相冲突，不能回答题目所问。错误项「每次重新编译」只看到了表面现象，没有解释题干真正考查的机制。错误项「源代码直接执行」在边界或失败路径上会得出错误结果。把题干「Java 实现「一次编写，到处运行」的关键是？」放回《环境与 JVM》的「JDK/JRE/JVM 区别、编译运行、包与类路径、JIT 与 GC」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
+
+### 考点 4：javac 与 java 两个命令的分工是？
+
+- **正确判断**：javac 把源码编译成 .class 字节码
+- **判断依据**：Maven/Gradle 只是把这两步以及依赖管理自动化了。其他选项：javac 负责编译、java 负责运行，jar 只用于打包。正确项「javac 把源码编译成 .class 字节码」与题干要求一致，是本课知识点的准确定义。错误项「javac 运行程序，java 编译程序」属于相邻主题的说法，范围与本题要求不一致。错误项「两者都可以编译和运行」把不同概念混在一起，缺少题干限定的前提。错误项「javac 用于打包 jar」与课程给出的定义相冲突，不能回答题目所问。把题干「javac 与 java 两个命令的分工是？」放回《环境与 JVM》的「JDK/JRE/JVM 区别、编译运行、包与类路径、JIT 与 GC」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
+
+### 考点 5：Java 程序入口方法的正确签名是？
+
+- **正确判断**：public static void main(String[] args)
+- **判断依据**：JVM 需要 public + static 才能在未创建对象时按约定调用入口方法。其他选项：入口必须是 public static void main(String[])，缺 static 或参数类型不对 JVM 都找不到入口。正确项「public static void main(String[] args)」正面回答了题目所问，符合课程给出的定义与适用范围。错误项「static int main(String[] args)」属于相邻主题的说法，范围与本题要求不一致。错误项「public void main(String[] args)」把不同概念混在一起，缺少题干限定的前提。错误项「void main()」只看到了表面现象，没有解释题干真正考查的机制。把题干「Java 程序入口方法的正确签名是？」放回《环境与 JVM》的「JDK/JRE/JVM 区别、编译运行、包与类路径、JIT 与 GC」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
+
+## 本课复习清单
+
+离开本课前，逐项确认：
+
+- [ ] 不看解析，能说出「开发并编译 Java 程序需要安装？」的判断依据。
+- [ ] 不看解析，能说出「public class Hello 的源文件名必须是？」的判断依据。
+- [ ] 不看解析，能说出「Java 实现「一次编写，到处运行」的关键是？」的判断依据。
+- [ ] 不看解析，能说出「javac 与 java 两个命令的分工是？」的判断依据。
+- [ ] 不看解析，能说出「Java 程序入口方法的正确签名是？」的判断依据。
+- [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
+- [ ] 把本课最容易混淆的两个概念写成一句话对照。
+
+| 复盘项 | 记录 |
+| --- | --- |
+| 已经能独立解释的考点 |  |
+| 仍然说不清的概念 |  |
+| 下一步验证动作 |  |
 
 ## English Overview
 
@@ -358,7 +405,6 @@ public class Calculator {
 - 相关主题：Java、JVM、JDK、javac、字节码、包
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-<!-- full-english-guide:v1 -->
 
 ## Full English Study Guide
 
@@ -423,7 +469,6 @@ public class Calculator {
 
 > This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
 
-<!-- bilingual-outline:v1 -->
 
 ## Bilingual Section Outline
 
@@ -442,7 +487,6 @@ public class Calculator {
 
 > 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
 
-<!-- p2-references:v1 -->
 
 ## 参考资料与复核
 

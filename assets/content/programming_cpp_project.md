@@ -136,7 +136,6 @@ clang-tidy src/*.cpp -- -Iinclude
 ## 本课小结
 多文件 + CMake + 测试 + sanitizer 是现代 C++ 项目的最小骨架；把它固化成模板，新项目直接复用。
 
-<!-- appendix:v1 -->
 
 ## 目录结构速查
 
@@ -217,7 +216,6 @@ add_test(NAME calc_test COMMAND calc_test)
 - [ ] ctest 能一条命令跑完全部测试。
 - [ ] CI 覆盖构建、测试与静态检查。
 
-<!-- appendix:v3 -->
 
 ## 零基础详解：C++ 项目实战骨架
 
@@ -440,7 +438,6 @@ cppcheck --enable=warning,performance src
 
 ## 动手练习
 
-<!-- practice-diversified:v1 -->
 
 > 本课练习重点：围绕「实战、CMake、CTest」完成复述、实验和交付，每个结果都要能被别人检查。
 
@@ -478,9 +475,7 @@ cppcheck --enable=warning,performance src
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-<!-- scaffold:v1 -->
 
-<!-- project-verification:v1 -->
 
 ## 验证命令与预期输出
 
@@ -508,7 +503,58 @@ cppcheck --enable=warning,performance src
 4. 定位原因后补一条自动化测试，再重新执行发布流程。
 5. 把教训写入项目复盘或本课笔记，形成下一次的检查项。
 
-<!-- p2-enrichment:v1 -->
+
+## 考点精讲：把测验题还原成判断过程
+
+本课有 5 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
+
+### 考点 1：C++ 项目中对外的头文件通常放在？
+
+- **正确判断**：include/
+- **判断依据**：include 放对外头文件，src 放实现，职责清晰也方便安装导出。其他选项：include/ 放对外头文件，src/ 放实现，tests/ 放测试，build/ 是构建产物并应加入 .gitignore。正确项「include/」既符合定义也满足题干限定的场景，因此应当选择。把题干「C++ 项目中对外的头文件通常放在？」放回《实战：CMake 多文件项目》的「include/src 分层、静态库、CTest 与 sanitizer」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
+
+### 考点 2：CTest 的作用是？
+
+- **正确判断**：运行并管理测试
+- **判断依据**：enable_testing + add_test 后可用 ctest 一键运行测试。其他选项：CTest 负责运行并汇总测试结果。格式化、优化、文档生成属于其他工具。正确项「运行并管理测试」抓住了题干的核心条件，是经得起边界检验的表述。错误项「编译优化」把不同概念混在一起，缺少题干限定的前提。错误项「生成文档」与课程给出的定义相冲突，不能回答题目所问。错误项「格式化代码」在边界或失败路径上会得出错误结果。把题干「CTest 的作用是？」放回《实战：CMake 多文件项目》的「include/src 分层、静态库、CTest 与 sanitizer」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
+
+### 考点 3：在 CMake 项目中开启 AddressSanitizer 和 UndefinedBehaviorSanitizer，最合理的做法是？
+
+- **正确判断**：在 Debug/CI 构建中加入 -fsanitize=address,undefined 并链接 sanitizer 运行时
+- **判断依据**：Sanitizer 适合在开发、测试和 CI 构建中启用，它需要编译与链接阶段同时加入对应参数。Release 产物通常不开启以避免性能与部署依赖问题。关闭警告或替换类型都无法发现越界、泄漏和未定义行为。正确项「在 Debug/CI 构建中加入 -fsanitize=address,undefined 并链接 sanitizer 运行时」是该问题的规范说法，换成其他表述都会丢失条件。错误项「用宏替换所有类型」把因果关系颠倒了，不能作为正确结论。错误项「关闭所有编译器警告」忽略了题目中的限制条件，因此不成立。错误项「只在 Release 构建中开启（只在 Release 或个别边界场景下成立，混淆了相邻概念，也没有覆盖题干给出的全部条件，不能作为答案）」属于相邻主题的说法，范围与本题要求不一致。把题干「在 CMake 项目中开启 AddressSanitizer 和 UndefinedBehaviorSanitizer，最合理的做法是？」放回《实战：CMake 多文件项目》的「include/src 分层、静态库、CTest 与 sanitizer」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
+
+### 考点 4：CMake 中 target_link_libraries(app PRIVATE fmt) 的作用是？
+
+- **正确判断**：给 app 目标声明需要链接的库及其传递属性
+- **判断依据**：基于目标（target）的写法会携带 include 路径等使用要求，比全局变量更清晰。其他选项：target_link_libraries 声明链接依赖及其使用要求（含 include 路径），不会拷贝源码或设置语言标准。正确项「给 app 目标声明需要链接的库及其传递属性」既符合定义也满足题干限定的场景，因此应当选择。错误项「把 fmt 源码拷进项目（仅部分场景成立）」把因果关系颠倒了，不能作为正确结论。错误项「设置 C++ 标准」忽略了题目中的限制条件，因此不成立。错误项「开启调试符号」属于相邻主题的说法，范围与本题要求不一致。把题干「CMake 中 target_link_libraries(app PRIVATE fmt) 的作用是？」放回《实战：CMake 多文件项目》的「include/src 分层、静态库、CTest 与 sanitizer」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
+
+### 考点 5：把单元测试接入 CI 的主要价值是？
+
+- **正确判断**：每次提交自动验证，尽早发现回归
+- **判断依据**：CI 上跑 ctest 能保证「测试在别人机器上也通过」，是团队协作的质量底线。其他选项：CI 的价值是每次提交自动验证。它不能替代评审或自动修 bug，也不会让代码运行更快。正确项「每次提交自动验证，尽早发现回归」抓住了题干的核心条件，是经得起边界检验的表述。错误项「自动修复 bug」把不同概念混在一起，缺少题干限定的前提。错误项「替代代码评审」在边界或失败路径上会得出错误结果。把题干「把单元测试接入 CI 的主要价值是？」放回《实战：CMake 多文件项目》的「include/src 分层、静态库、CTest 与 sanitizer」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
+
+## 本课复习清单
+
+离开本课前，逐项确认：
+
+- [ ] 不看解析，能说出「C++ 项目中对外的头文件通常放在？」的判断依据。
+- [ ] 不看解析，能说出「CTest 的作用是？」的判断依据。
+- [ ] 不看解析，能说出「在 CMake 项目中开启 AddressSanitizer 和 Undefin…」的判断依据。
+- [ ] 不看解析，能说出「CMake 中 target_link_libraries(app PRIVAT…」的判断依据。
+- [ ] 不看解析，能说出「把单元测试接入 CI 的主要价值是？」的判断依据。
+- [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
+- [ ] 把本课最容易混淆的两个概念写成一句话对照。
+
+| 复盘项 | 记录 |
+| --- | --- |
+| 已经能独立解释的考点 |  |
+| 仍然说不清的概念 |  |
+| 下一步验证动作 |  |
 
 ## English Overview
 
@@ -562,7 +608,6 @@ include/src 分层、静态库、CTest 与 sanitizer。 项目目标是把「实
 4. 幂等路径：同一请求执行两次不会产生重复副作用。
 5. 回滚路径：回滚后数据一致，且能说明恢复时间和影响范围。
 
-<!-- project-delivery:v1 -->
 
 ## 项目交付物
 
@@ -609,7 +654,6 @@ README.md
 
 > 项目验收围绕「实战、CMake、CTest」：至少完成一次正常路径、一次边界输入、一次失败恢复和一次幂等检查。
 
-<!-- full-english-guide:v1 -->
 
 ## Full English Study Guide
 
@@ -674,7 +718,6 @@ README.md
 
 > This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
 
-<!-- bilingual-outline:v1 -->
 
 ## Bilingual Section Outline
 
@@ -693,7 +736,6 @@ README.md
 
 > 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
 
-<!-- p2-references:v1 -->
 
 ## 参考资料与复核
 

@@ -52,7 +52,6 @@ Go 的并发哲学：**不要通过共享内存来通信，而要通过通信来
 ## 本课小结
 Go 并发的要点：**用 channel 传递数据、用 context 控制生命周期、用 WaitGroup 等待完成、用 -race 验证正确性**。
 
-<!-- appendix:v1 -->
 
 ## goroutine 与 channel 速查
 
@@ -129,7 +128,6 @@ func worker(ctx context.Context, jobs <-chan int, results chan<- int, wg *sync.W
 - [ ] 关键代码跑 `go test -race` 且无告警。
 - [ ] 所有并发任务都能被取消并设了超时。
 
-<!-- appendix:v3 -->
 
 ## 零基础详解：goroutine、channel 与「通过通信共享内存」
 
@@ -248,7 +246,6 @@ case result := <-ch:
 
 ## 动手练习
 
-<!-- practice-diversified:v1 -->
 
 > 本课练习重点：围绕「Go、goroutine、channel」完成复述、实验和交付，每个结果都要能被别人检查。
 
@@ -286,9 +283,59 @@ case result := <-ch:
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-<!-- scaffold:v1 -->
 
-<!-- p2-enrichment:v1 -->
+
+## 考点精讲：把测验题还原成判断过程
+
+本课有 5 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
+
+### 考点 1：向已关闭的 channel 发送数据会？
+
+- **正确判断**：panic
+- **判断依据**：只应由唯一的发送方负责关闭 channel。其他选项：向已关闭的 channel 发送不会返回错误、不会自动重开、也不会阻塞，而是直接 panic，因此关闭操作应由唯一发送方负责。正确项「panic」是该问题的规范说法，换成其他表述都会丢失条件。把题干「向已关闭的 channel 发送数据会？」放回《Go 并发：goroutine、channel 与 context》的「channel 通信、worker pool、context 取消与竞态检测」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
+
+### 考点 2：以下哪组是 Go 并发的正确实践？
+
+- **正确判断**：用 context 传播取消
+- **判断依据**：context 能让子任务感知取消和超时，worker 池与有界队列能控制资源上限。无限 goroutine 会耗尽内存和连接，向已关闭 channel 发送会 panic，多个 goroutine 无锁读写 map 会触发数据竞争，这些都不是可上线的并发实践。
+- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
+
+### 考点 3：检测数据竞争的官方手段是？
+
+- **正确判断**：go test -race
+- **判断依据**：-race 在运行时检测并发访问冲突，应加入 CI。其他选项：go vet 做静态检查，go fmt 只格式化，pprof 分析性能。检测数据竞争必须用 go test -race。正确项「go test -race」与题干要求一致，是本课知识点的准确定义。把题干「检测数据竞争的官方手段是？」放回《Go 并发：goroutine、channel 与 context》的「channel 通信、worker pool、context 取消与竞态检测」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
+
+### 考点 4：向无缓冲 channel 发送数据会阻塞，直到？
+
+- **正确判断**：有接收方准备好接收（收发同步完成）
+- **判断依据**：无缓冲 channel 是同步握手。带缓冲的在缓冲未满时不会阻塞。其他选项：无缓冲 channel 并非永不阻塞，也不依赖缓冲区或关闭。正确项「有接收方准备好接收（收发同步完成）」是该问题的规范说法，换成其他表述都会丢失条件。错误项「永远不阻塞」把因果关系颠倒了，不能作为正确结论。错误项「缓冲区写满」忽略了题目中的限制条件，因此不成立。错误项「channel 被关闭」属于相邻主题的说法，范围与本题要求不一致。把题干「向无缓冲 channel 发送数据会阻塞，直到？」放回《Go 并发：goroutine、channel 与 context》的「channel 通信、worker pool、context 取消与竞态检测」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
+
+### 考点 5：sync.WaitGroup 的典型用途是？
+
+- **正确判断**：等待一组 goroutine 全部完成
+- **判断依据**：Add 要在启动 goroutine 前调用，Done 一般用 defer，Wait 阻塞到计数归零。 其他选项：保护共享内存（仅部分场景成立）用 Mutex，传递取消用 context，限制并发数量用带缓冲 channel 或信号量；WaitGroup 用于等待一组 goroutine 结束。
+- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
+
+## 本课复习清单
+
+离开本课前，逐项确认：
+
+- [ ] 不看解析，能说出「向已关闭的 channel 发送数据会？」的判断依据。
+- [ ] 不看解析，能说出「以下哪组是 Go 并发的正确实践？」的判断依据。
+- [ ] 不看解析，能说出「检测数据竞争的官方手段是？」的判断依据。
+- [ ] 不看解析，能说出「向无缓冲 channel 发送数据会阻塞，直到？」的判断依据。
+- [ ] 不看解析，能说出「sync.WaitGroup 的典型用途是？」的判断依据。
+- [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
+- [ ] 把本课最容易混淆的两个概念写成一句话对照。
+
+| 复盘项 | 记录 |
+| --- | --- |
+| 已经能独立解释的考点 |  |
+| 仍然说不清的概念 |  |
+| 下一步验证动作 |  |
 
 ## English Overview
 
@@ -312,7 +359,6 @@ case result := <-ch:
 - 相关主题：Go、goroutine、channel、context、race
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-<!-- full-english-guide:v1 -->
 
 ## Full English Study Guide
 
@@ -377,7 +423,6 @@ case result := <-ch:
 
 > This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
 
-<!-- bilingual-outline:v1 -->
 
 ## Bilingual Section Outline
 
@@ -396,7 +441,6 @@ case result := <-ch:
 
 > 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
 
-<!-- p2-references:v1 -->
 
 ## 参考资料与复核
 

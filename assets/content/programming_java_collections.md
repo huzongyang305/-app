@@ -114,7 +114,6 @@ List<? super Integer> sink = new ArrayList<Number>(); // 下界通配符：可�
 ## 本课小结
 日常组合：`ArrayList` + `HashMap` + `HashSet` 覆盖 90% 场景；需要排序用 `TreeMap`/`TreeSet`，需要线程安全用 `ConcurrentHashMap`。
 
-<!-- appendix:v1 -->
 
 ## 集合选型速查
 
@@ -177,7 +176,6 @@ Map<String, List<Employee>> byDept = employees.stream()
 - [ ] 自定义对象放进 `HashSet` 或做 `HashMap` 键时，重写 `equals` + `hashCode`。
 - [ ] 多线程共享 Map 时优先用 `ConcurrentHashMap`。
 
-<!-- appendix:v3 -->
 
 ## 零基础详解：List、Set、Map 怎么选
 
@@ -311,7 +309,6 @@ public class WordCount {
 
 ## 动手练习
 
-<!-- practice-diversified:v1 -->
 
 > 本课练习重点：围绕「List、Set、Map」完成复述、实验和交付，每个结果都要能被别人检查。
 
@@ -349,9 +346,58 @@ public class WordCount {
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-<!-- scaffold:v1 -->
 
-<!-- p2-enrichment:v1 -->
+## 考点精讲：把测验题还原成判断过程
+
+本课有 5 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
+
+### 考点 1：不允许重复元素的集合是？
+
+- **正确判断**：Set
+- **判断依据**：Set 保证元素唯一，HashSet 依赖 hashCode/equals，TreeSet 还会排序。其他选项：List 与数组允许重复，Queue 面向排队场景。只有 Set 保证元素不重复。正确项「Set」与本课示例和结论一致，可以直接用于实际编码。把题干「不允许重复元素的集合是？」放回《集合框架与泛型》的「List/Set/Map 的选择、遍历方式、泛型与通配符」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
+
+### 考点 2：以下哪组集合类型更适合多线程并发访问？
+
+- **正确判断**：ConcurrentHashMap
+- **判断依据**：ConcurrentHashMap 和 CopyOnWriteArrayList 专为并发场景设计，分别适合高并发键值访问和读多写少的列表。普通 HashMap、ArrayList、LinkedList、HashSet、TreeMap 和 ArrayDeque 都不是线程安全容器，多线程修改时可能出现数据损坏或抛异常。
+- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
+
+### 考点 3：List.of(...) 返回的列表是？
+
+- **正确判断**：不可变列表
+- **判断依据**：List.of 创建不可变列表，添加或删除元素会抛 UnsupportedOperationException。 其他选项：List.of 返回不可变列表，add 会抛 UnsupportedOperationException；它也不是链表或线程安全实现。
+- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
+
+### 考点 4：ArrayList 与 LinkedList 的选择依据是？
+
+- **正确判断**：随机访问多用 ArrayList
+- **判断依据**：ArrayList 是数组实现，按下标访问 O(1)。LinkedList 按下标访问需要遍历。其他选项：LinkedList 允许重复且随机访问慢，ArrayList 会自动扩容。正确项「随机访问多用 ArrayList」是该问题的规范说法，换成其他表述都会丢失条件。错误项「LinkedList 随机访问更快」适用于其他场景，但与本题的前提不匹配。错误项「ArrayList 不能扩容」把因果关系颠倒了，不能作为正确结论。错误项「LinkedList 不允许重复元素」属于相邻主题的说法，范围与本题要求不一致。把题干「ArrayList 与 LinkedList 的选择依据是？」放回《集合框架与泛型》的「List/Set/Map 的选择、遍历方式、泛型与通配符」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
+
+### 考点 5：下列哪些集合实现更适合高并发读写场景？请选择所有正确答案。
+
+- **正确判断**：ConcurrentHashMap、CopyOnWriteArrayList
+- **判断依据**：ArrayList 和 LinkedList 不是线程安全实现，多线程同时修改时需要外部同步。ConcurrentHashMap 通过分段或桶级并发控制支持高效并发访问，CopyOnWriteArrayList 则在写时复制底层数组，特别适合读多写少、遍历频繁的场景。选择并发集合时要同时考虑读写比例、一致性要求和内存开销；线程安全并不等于业务操作自动原子，复合操作仍可能需要额外同步。
+- **迁移检查**：每个正确项各自成立的条件是什么？有没有互相依赖。
+
+## 本课复习清单
+
+离开本课前，逐项确认：
+
+- [ ] 不看解析，能说出「不允许重复元素的集合是？」的判断依据。
+- [ ] 不看解析，能说出「以下哪组集合类型更适合多线程并发访问？」的判断依据。
+- [ ] 不看解析，能说出「List.of(...) 返回的列表是？」的判断依据。
+- [ ] 不看解析，能说出「ArrayList 与 LinkedList 的选择依据是？」的判断依据。
+- [ ] 不看解析，能说出「下列哪些集合实现更适合高并发读写场景？请选择所有正确答案。」的判断依据。
+- [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
+- [ ] 把本课最容易混淆的两个概念写成一句话对照。
+
+| 复盘项 | 记录 |
+| --- | --- |
+| 已经能独立解释的考点 |  |
+| 仍然说不清的概念 |  |
+| 下一步验证动作 |  |
 
 ## English Overview
 
@@ -375,7 +421,6 @@ public class WordCount {
 - 相关主题：List、Set、Map、HashMap、泛型、类型擦除
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-<!-- p2-references:v1 -->
 
 ## 参考资料与复核
 

@@ -131,7 +131,6 @@ class UserControllerTest {
 ## 本课小结
 Spring Boot 的关键是**分层 + 依赖注入 + 约定优于配置**：controller 薄、service 厚、repository 只负责数据。
 
-<!-- appendix:v1 -->
 
 ## Spring Boot 注解速查
 
@@ -230,7 +229,6 @@ JPA 与事务速查：
 - [ ] 用 DTO 隔离实体，避免暴露敏感字段。
 - [ ] 数据库结构变更由迁移脚本管理。
 
-<!-- appendix:v3 -->
 
 ## 零基础详解：Java 项目实战骨架
 
@@ -469,7 +467,6 @@ ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]
 
 ## 动手练习
 
-<!-- practice-diversified:v1 -->
 
 > 本课练习重点：围绕「实战、Spring Boot、REST」完成复述、实验和交付，每个结果都要能被别人检查。
 
@@ -507,9 +504,7 @@ ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-<!-- scaffold:v1 -->
 
-<!-- project-verification:v1 -->
 
 ## 验证命令与预期输出
 
@@ -537,7 +532,58 @@ ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]
 4. 定位原因后补一条自动化测试，再重新执行发布流程。
 5. 把教训写入项目复盘或本课笔记，形成下一次的检查项。
 
-<!-- p2-enrichment:v1 -->
+
+## 考点精讲：把测验题还原成判断过程
+
+本课有 5 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
+
+### 考点 1：在分层架构中，Controller 的职责是？
+
+- **正确判断**：处理 HTTP 请求与响应
+- **判断依据**：Controller 只做协议转换，业务逻辑放 Service，数据访问放 Repository。 其他选项：Controller 只处理请求与响应，业务规则在 Service、数据访问在 Repository、事务在 Service 层声明。
+- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
+
+### 考点 2：使用构造器注入的主要好处是？
+
+- **正确判断**：依赖显式且便于测试
+- **判断依据**：构造器注入让依赖不可变、显式，单元测试可直接传入 mock。其他选项：构造器注入让依赖显式、可声明为 final、便于测试替换。它与继承、代码长度、运行速度无关。正确项「依赖显式且便于测试」与题干要求一致，是本课知识点的准确定义。错误项「提升运行速度」属于相邻主题的说法，范围与本题要求不一致。错误项「避免继承」把不同概念混在一起，缺少题干限定的前提。错误项「代码更短」与课程给出的定义相冲突，不能回答题目所问。把题干「使用构造器注入的主要好处是？」放回《实战：Spring Boot REST API》的「分层结构、依赖注入、校验与集成测试」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
+
+### 考点 3：@Valid 注解在 @RequestBody 上的作用是？
+
+- **正确判断**：触发 Bean Validation 校验请求体
+- **判断依据**：校验不通过会抛 MethodArgumentNotValidException，由统一异常处理返回 400。其他选项：@Valid 触发 Bean Validation 校验请求体，与日志、返回值序列化、事务都无关。正确项「触发 Bean Validation 校验请求体」完整覆盖了题目要求的关键点，没有遗漏前提。错误项「返回 JSON（与课程定义不一致）」在边界或失败路径上会得出错误结果。错误项「开启事务」适用于其他场景，但与本题的前提不匹配。错误项「记录日志」忽略了题目中的限制条件，因此不成立。把题干「@Valid 注解在 @RequestBody 上的作用是？」放回《实战：Spring Boot REST API》的「分层结构、依赖注入、校验与集成测试」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
+
+### 考点 4：@RestController 与 @Controller 的差别是？
+
+- **正确判断**：@RestController 默认把返回值序列化为 JSON（相当于 @Controller + @ResponseBody）
+- **判断依据**：返回视图页面时用 @Controller，写 REST API 时用 @RestController 更省事。 其他选项：@RestController 相当于 @Controller 加 @ResponseBody，默认返回 JSON，并非只能返回 JSON 或 XML。
+- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
+
+### 考点 5：JPA 中 N+1 查询问题的常见解法是？
+
+- **正确判断**：用 join fetch / @EntityGraph 一次性预加载关联数据
+- **判断依据**：N+1 的典型现象是 1 条主查询 + N 条关联查询，用批量抓取或联表抓取可以解决。其他选项：N+1 源于逐条懒加载，解法是 join fetch 或 @EntityGraph 预加载。关闭事务或改 record 都无法解决。正确项「用 join fetch / @EntityGraph 一次性预加载关联数据」正面回答了题目所问，符合课程给出的定义与适用范围。错误项「把实体改成 record」属于相邻主题的说法，范围与本题要求不一致。错误项「增加更多 @Transactional（忽略了题干限定的前提）」与课程给出的定义相冲突，不能回答题目所问。把题干「JPA 中 N+1 查询问题的常见解法是？」放回《实战：Spring Boot REST API》的「分层结构、依赖注入、校验与集成测试」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
+
+## 本课复习清单
+
+离开本课前，逐项确认：
+
+- [ ] 不看解析，能说出「在分层架构中，Controller 的职责是？」的判断依据。
+- [ ] 不看解析，能说出「使用构造器注入的主要好处是？」的判断依据。
+- [ ] 不看解析，能说出「@Valid 注解在 @RequestBody 上的作用是？」的判断依据。
+- [ ] 不看解析，能说出「@RestController 与 @Controller 的差别是？」的判断依据。
+- [ ] 不看解析，能说出「JPA 中 N+1 查询问题的常见解法是？」的判断依据。
+- [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
+- [ ] 把本课最容易混淆的两个概念写成一句话对照。
+
+| 复盘项 | 记录 |
+| --- | --- |
+| 已经能独立解释的考点 |  |
+| 仍然说不清的概念 |  |
+| 下一步验证动作 |  |
 
 ## English Overview
 
@@ -591,7 +637,6 @@ ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]
 4. 幂等路径：同一请求执行两次不会产生重复副作用。
 5. 回滚路径：回滚后数据一致，且能说明恢复时间和影响范围。
 
-<!-- project-delivery:v1 -->
 
 ## 项目交付物
 
@@ -638,7 +683,6 @@ README.md
 
 > 项目验收围绕「实战、Spring Boot、REST」：至少完成一次正常路径、一次边界输入、一次失败恢复和一次幂等检查。
 
-<!-- full-english-guide:v1 -->
 
 ## Full English Study Guide
 
@@ -703,7 +747,6 @@ README.md
 
 > This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
 
-<!-- bilingual-outline:v1 -->
 
 ## Bilingual Section Outline
 
@@ -722,7 +765,6 @@ README.md
 
 > 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
 
-<!-- p2-references:v1 -->
 
 ## 参考资料与复核
 

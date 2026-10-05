@@ -114,7 +114,6 @@ const data = await response.json();
 ## 本课小结
 异步三件套：**Promise 表达结果、async/await 写成同步风格、事件循环决定执行顺序**。并发请求用 `Promise.all`，别写成串行 await。
 
-<!-- appendix:v1 -->
 
 ## Promise 组合速查
 
@@ -172,7 +171,6 @@ const okCount = results.filter((r) => r.status === "fulfilled").length;
 - [ ] 能用 `Promise.all` 把串行请求改成并发请求。
 - [ ] 知道微任务（Promise）优先于宏任务（`setTimeout`）执行。
 
-<!-- appendix:v3 -->
 
 ## 零基础详解：事件循环、Promise 与 async/await
 
@@ -327,7 +325,6 @@ loadAll(["/api/a", "/api/b"]).then(({ ok, failed }) => {
 
 ## 动手练习
 
-<!-- practice-diversified:v1 -->
 
 > 本课练习重点：围绕「Promise、async、await」完成复述、实验和交付，每个结果都要能被别人检查。
 
@@ -365,9 +362,59 @@ loadAll(["/api/a", "/api/b"]).then(({ ok, failed }) => {
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-<!-- scaffold:v1 -->
 
-<!-- p2-enrichment:v1 -->
+
+## 考点精讲：把测验题还原成判断过程
+
+本课有 5 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
+
+### 考点 1：Promise.all 的行为是？
+
+- **正确判断**：全部成功才成功
+- **判断依据**：Promise.all 并行执行，全部 fulfilled 才成功。需要单个失败不影响整体时用 allSettled。其他选项：Promise.all 是全部成功才成功，任一失败立即 reject，并且不会自动取消其他任务。正确项「全部成功才成功」完整覆盖了题目要求的关键点，没有遗漏前提。错误项「任一成功即成功」在边界或失败路径上会得出错误结果。错误项「顺序执行」把因果关系颠倒了，不能作为正确结论。错误项「永远不会失败」忽略了题目中的限制条件，因此不成立。把题干「Promise.all 的行为是？」放回《异步编程》的「回调、Promise、async/await、事件循环与 fetch 实战」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
+
+### 考点 2：事件循环中微任务与宏任务的执行顺序是？
+
+- **正确判断**：每轮先清空微任务
+- **判断依据**：Promise.then 属于微任务，setTimeout 属于宏任务，微任务总在下一个宏任务之前执行完。其他选项：每个宏任务执行完会清空微任务队列，然后才进行渲染或进入下一个宏任务。正确项「每轮先清空微任务」完整覆盖了题目要求的关键点，没有遗漏前提。错误项「同时执行」适用于其他场景，但与本题的前提不匹配。错误项「随机」把因果关系颠倒了，不能作为正确结论。错误项「宏任务优先」忽略了题目中的限制条件，因此不成立。把题干「事件循环中微任务与宏任务的执行顺序是？」放回《异步编程》的「回调、Promise、async/await、事件循环与 fetch 实战」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
+
+### 考点 3：fetch 遇到 HTTP 404 时会？
+
+- **正确判断**：resolve
+- **判断依据**：fetch 只在网络层失败时 reject，4xx/5xx 仍算成功响应，需要手动检查 response.ok。其他选项：fetch 只在网络层失败时 reject。404 与 500 属于成功响应，需要检查 response.ok。正确项「resolve」正面回答了题目所问，符合课程给出的定义与适用范围。错误项「自动重试」把不同概念混在一起，缺少题干限定的前提。错误项「抛语法错误」与课程给出的定义相冲突，不能回答题目所问。把题干「fetch 遇到 HTTP 404 时会？」放回《异步编程》的「回调、Promise、async/await、事件循环与 fetch 实战」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
+
+### 考点 4：Promise.allSettled 与 Promise.all 的关键区别是？
+
+- **正确判断**：allSettled 等全部完成并返回每个任务的成功/失败状态，不会因单个失败而短路
+- **判断依据**：批量任务中允许部分失败时用 allSettled，必须全部成功才继续时用 all。其他选项：allSettled 永不 reject，会返回每个任务的状态。all 更快失败，但拿不到其余任务的结果。正确项「allSettled 等全部完成并返回每个任务的成功/失败状态，不会因单个失败而短路」是该问题的规范说法，换成其他表述都会丢失条件。错误项「两者返回结构相同」适用于其他场景，但与本题的前提不匹配。错误项「allSettled 更快」把因果关系颠倒了，不能作为正确结论。错误项「Promise.all 会忽略失败（只在边界情况下成立，不能回答本题）」属于相邻主题的说法，范围与本题要求不一致。把题干「Promise.allSettled 与 Promise.all 的关键区别是？」放回《异步编程》的「回调、Promise、async/await、事件循环与 fetch 实战」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
+
+### 考点 5：async 函数总是返回什么？
+
+- **正确判断**：Promise（返回非 Promise 值也会被包装）
+- **判断依据**：因此调用方需要 await 或 .then 处理，抛错会变成 rejected 的 Promise。其他选项：async 函数总是返回 Promise，即使 return 的是普通值也会被包装。正确项「Promise（返回非 Promise 值也会被包装）」既符合定义也满足题干限定的场景，因此应当选择。错误项「同步值」把因果关系颠倒了，不能作为正确结论。错误项「undefined（只在个别条件下成立）」属于相邻主题的说法，范围与本题要求不一致。错误项「回调函数」把不同概念混在一起，缺少题干限定的前提。把题干「async 函数总是返回什么？」放回《异步编程》的「回调、Promise、async/await、事件循环与 fetch 实战」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
+
+## 本课复习清单
+
+离开本课前，逐项确认：
+
+- [ ] 不看解析，能说出「Promise.all 的行为是？」的判断依据。
+- [ ] 不看解析，能说出「事件循环中微任务与宏任务的执行顺序是？」的判断依据。
+- [ ] 不看解析，能说出「fetch 遇到 HTTP 404 时会？」的判断依据。
+- [ ] 不看解析，能说出「Promise.allSettled 与 Promise.all 的关键区别是？」的判断依据。
+- [ ] 不看解析，能说出「async 函数总是返回什么？」的判断依据。
+- [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
+- [ ] 把本课最容易混淆的两个概念写成一句话对照。
+
+| 复盘项 | 记录 |
+| --- | --- |
+| 已经能独立解释的考点 |  |
+| 仍然说不清的概念 |  |
+| 下一步验证动作 |  |
 
 ## English Overview
 
@@ -391,7 +438,6 @@ loadAll(["/api/a", "/api/b"]).then(({ ok, failed }) => {
 - 相关主题：Promise、async、await、事件循环、fetch、微任务
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-<!-- full-english-guide:v1 -->
 
 ## Full English Study Guide
 
@@ -456,7 +502,6 @@ loadAll(["/api/a", "/api/b"]).then(({ ok, failed }) => {
 
 > This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
 
-<!-- bilingual-outline:v1 -->
 
 ## Bilingual Section Outline
 
@@ -475,7 +520,6 @@ loadAll(["/api/a", "/api/b"]).then(({ ok, failed }) => {
 
 > 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
 
-<!-- p2-references:v1 -->
 
 ## 参考资料与复核
 

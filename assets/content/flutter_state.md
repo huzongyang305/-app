@@ -85,7 +85,6 @@ context.read<CartProvider>().add(item);
 ## 本课小结
 Flutter 状态管理的核心是**分层与最小重建**：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层；再配合 const、Selector 与 RepaintBoundary 控制性能。
 
-<!-- appendix:v1 -->
 
 ## 状态分类速查
 
@@ -194,7 +193,6 @@ class CartItemTile extends StatelessWidget {
 - [ ] 控制器与订阅在 `dispose` 中释放。
 - [ ] 派生状态直接计算，不额外存储。
 
-<!-- appendix:v3 -->
 
 ## 零基础详解：状态管理与重建范围
 
@@ -395,7 +393,6 @@ class _ItemPageState extends State<ItemPage> {
 
 ## 动手练习
 
-<!-- practice-diversified:v1 -->
 
 > 本课练习重点：围绕「Flutter、状态管理、Provider」完成复述、实验和交付，每个结果都要能被别人检查。
 
@@ -433,9 +430,58 @@ class _ItemPageState extends State<ItemPage> {
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-<!-- scaffold:v1 -->
 
-<!-- p2-enrichment:v1 -->
+## 考点精讲：把测验题还原成判断过程
+
+本课有 5 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
+
+### 考点 1：输入框内容这类局部 UI 状态推荐？
+
+- **正确判断**：StatefulWidget + setState
+- **判断依据**：能局部就不全局，重建范围最小。其他选项：数据库与文件适合持久化，全局状态（混淆了相邻概念，不能回答本题）适合跨页面共享。输入框这类局部状态用 StatefulWidget 加 setState 最简单，重建范围也最小。正确项「StatefulWidget + setState」完整覆盖了题目要求的关键点，没有遗漏前提。把题干「输入框内容这类局部 UI 状态推荐？」放回《Flutter 状态管理与性能》的「状态分层、重建范围控制与生命周期陷阱」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
+
+### 考点 2：控制重建范围的有效手段是？
+
+- **正确判断**：用 const 与 Selector 只包裹依赖状态的子树
+- **判断依据**：配合 RepaintBoundary 可进一步隔离高频重绘。 其他选项：整页 Consumer 会让无关子树一起重建，禁用 setState 与增加 StatefulWidget（仅部分场景成立） 都不解决问题；const 与 Selector 才能真正缩小重建范围。
+- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
+
+### 考点 3：忘记在 dispose 中释放控制器会导致？
+
+- **正确判断**：内存泄漏与后台继续执行
+- **判断依据**：AnimationController、TextEditingController、订阅都必须释放。其他选项：忘记释放不会导致编译错误或无法打包，也不一定立刻卡顿。它会造成内存泄漏，控制器或订阅还会在后台继续执行。正确项「内存泄漏与后台继续执行」完整覆盖了题目要求的关键点，没有遗漏前提。错误项「UI 卡顿」在边界或失败路径上会得出错误结果。把题干「忘记在 dispose 中释放控制器会导致？」放回《Flutter 状态管理与性能》的「状态分层、重建范围控制与生命周期陷阱」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
+
+### 考点 4：ChangeNotifier 子类中通知界面刷新的方法是？
+
+- **正确判断**：notifyListeners()
+- **判断依据**：ChangeNotifier 通过 notifyListeners() 通知订阅者重建；setState 属于 StatefulWidget 自身。 其他选项：setState 属于 StatefulWidget 自身，refresh 与 updateUI 都不是框架 API；ChangeNotifier 通过 notifyListeners() 通知订阅者。
+- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
+
+### 考点 5：订阅 Provider 时，只希望在某个字段变化时重建，应该用？
+
+- **正确判断**：context.select<Model, T>((m) => m.field)
+- **判断依据**：select 会把重建范围收窄到指定字段，其余字段变化不会触发重建。正确项「context.select<Model, T>((m) => m.field)」完整覆盖了题目要求的关键点，没有遗漏前提。错误项「context.read<Model>()」在边界或失败路径上会得出错误结果。错误项「Provider.of<Model>(context, listen: false)」适用于其他场景，但与本题的前提不匹配。错误项「直接在 State 里存一份副本」把因果关系颠倒了，不能作为正确结论。把题干「订阅 Provider 时，只希望在某个字段变化时重建，应该用？」放回《Flutter 状态管理与性能》的「状态分层、重建范围控制与生命周期陷阱」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
+
+## 本课复习清单
+
+离开本课前，逐项确认：
+
+- [ ] 不看解析，能说出「输入框内容这类局部 UI 状态推荐？」的判断依据。
+- [ ] 不看解析，能说出「控制重建范围的有效手段是？」的判断依据。
+- [ ] 不看解析，能说出「忘记在 dispose 中释放控制器会导致？」的判断依据。
+- [ ] 不看解析，能说出「ChangeNotifier 子类中通知界面刷新的方法是？」的判断依据。
+- [ ] 不看解析，能说出「订阅 Provider 时，只希望在某个字段变化时重建，应该用？」的判断依据。
+- [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
+- [ ] 把本课最容易混淆的两个概念写成一句话对照。
+
+| 复盘项 | 记录 |
+| --- | --- |
+| 已经能独立解释的考点 |  |
+| 仍然说不清的概念 |  |
+| 下一步验证动作 |  |
 
 ## English Overview
 
@@ -459,7 +505,6 @@ class _ItemPageState extends State<ItemPage> {
 - 相关主题：Flutter、状态管理、Provider、性能、生命周期
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-<!-- p2-references:v1 -->
 
 ## 参考资料与复核
 

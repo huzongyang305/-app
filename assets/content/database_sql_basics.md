@@ -132,7 +132,6 @@ SELECT * FROM users u WHERE EXISTS (SELECT 1 FROM orders o WHERE o.user_id = u.i
 ## 本课小结
 先掌握「单表 CRUD + WHERE 条件 + 聚合分组 + JOIN」，就能覆盖大部分日常需求。
 
-<!-- appendix:v1 -->
 
 ## SQL 语句分类速查
 
@@ -234,7 +233,6 @@ UPDATE orders SET status = 'paid' WHERE id = 1001 AND status = 'created';
 
 ## 动手练习
 
-<!-- practice-diversified:v1 -->
 
 > 本课练习重点：围绕「SQL、SELECT、INSERT」完成复述、实验和交付，每个结果都要能被别人检查。
 
@@ -272,9 +270,59 @@ UPDATE orders SET status = 'paid' WHERE id = 1001 AND status = 'created';
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-<!-- scaffold:v1 -->
 
-<!-- p2-enrichment:v1 -->
+
+## 考点精讲：把测验题还原成判断过程
+
+本课有 5 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
+
+### 考点 1：要删除表中年龄大于 60 的记录，正确的写法是？
+
+- **正确判断**：DELETE FROM students WHERE age > 60;
+- **判断依据**：DELETE 配合 WHERE 精确删除；省略 WHERE 会清空整张表，DROP TABLE 则会删除表结构。 其他选项：删除行用 DELETE 加 WHERE；REMOVE 不是 SQL 关键字，DROP TABLE 会删掉整张表，不带 WHERE 会清空所有行。
+- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
+
+### 考点 2：对 GROUP BY 的结果做过滤，应该使用哪个关键字？
+
+- **正确判断**：HAVING
+- **判断依据**：WHERE 在分组前过滤行，HAVING 在分组后过滤组，可以配合聚合函数。其他选项：对分组结果过滤要用 HAVING。WHERE 在分组前过滤行，ORDER BY 与 LIMIT 负责排序与截断。正确项「HAVING」完整覆盖了题目要求的关键点，没有遗漏前提。把题干「对 GROUP BY 的结果做过滤，应该使用哪个关键字？」放回《SQL 基础》的「建表、增删改查、聚合分组与连接查询」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
+
+### 考点 3：执行 UPDATE 时忘记写 WHERE 会怎样？
+
+- **正确判断**：更新整张表的所有行
+- **判断依据**：没有 WHERE 条件时 UPDATE 会作用于全表，是生产事故的常见原因。其他选项：漏写 WHERE 会更新整张表，这是线上事故高发点。只有语法错误或显式事务回滚才能阻止它。正确项「更新整张表的所有行」描述正确，能够解释题干场景中的现象与结果。错误项「只更新第一行」与课程给出的定义相冲突，不能回答题目所问。错误项「报语法错误」只看到了表面现象，没有解释题干真正考查的机制。错误项「自动回滚」适用于其他场景，但与本题的前提不匹配。把题干「执行 UPDATE 时忘记写 WHERE 会怎样？」放回《SQL 基础》的「建表、增删改查、聚合分组与连接查询」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
+
+### 考点 4：COUNT(*) 与 COUNT(列名) 的关键区别是？
+
+- **正确判断**：COUNT(列名) 会忽略该列的 NULL 值
+- **判断依据**：统计非空值数量时必须用 COUNT(列名)，否则会把 NULL 行也算进去。其他选项：COUNT(列) 会忽略该列的 NULL，COUNT(*) 统计行数。语义差别才是关键，速度差异不是重点。正确项「COUNT(列名) 会忽略该列的 NULL 值」既符合定义也满足题干限定的场景，因此应当选择。错误项「COUNT(列名) 只能用于主键」忽略了题目中的限制条件，因此不成立。错误项「COUNT(*) 更慢」属于相邻主题的说法，范围与本题要求不一致。错误项「没有区别」把不同概念混在一起，缺少题干限定的前提。把题干「COUNT(*) 与 COUNT(列名) 的关键区别是？」放回《SQL 基础》的「建表、增删改查、聚合分组与连接查询」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
+
+### 考点 5：LEFT JOIN 后统计右表记录数，应该怎么写？
+
+- **正确判断**：COUNT(右表.主键)
+- **判断依据**：COUNT(*) 会把没有匹配的 NULL 行也计为 1，统计右表要用其主键列。其他选项：LEFT JOIN 后统计右表记录要用 COUNT(右表主键)，因为它忽略 NULL。COUNT(*) 会把未匹配的左表行也计入。正确项「COUNT(右表.主键)」既符合定义也满足题干限定的场景，因此应当选择。错误项「SUM(右表.id)」属于相邻主题的说法，范围与本题要求不一致。错误项「MAX(右表.id)」把不同概念混在一起，缺少题干限定的前提。把题干「LEFT JOIN 后统计右表记录数，应该怎么写？」放回《SQL 基础》的「建表、增删改查、聚合分组与连接查询」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
+
+## 本课复习清单
+
+离开本课前，逐项确认：
+
+- [ ] 不看解析，能说出「要删除表中年龄大于 60 的记录，正确的写法是？」的判断依据。
+- [ ] 不看解析，能说出「对 GROUP BY 的结果做过滤，应该使用哪个关键字？」的判断依据。
+- [ ] 不看解析，能说出「执行 UPDATE 时忘记写 WHERE 会怎样？」的判断依据。
+- [ ] 不看解析，能说出「COUNT(*) 与 COUNT(列名) 的关键区别是？」的判断依据。
+- [ ] 不看解析，能说出「LEFT JOIN 后统计右表记录数，应该怎么写？」的判断依据。
+- [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
+- [ ] 把本课最容易混淆的两个概念写成一句话对照。
+
+| 复盘项 | 记录 |
+| --- | --- |
+| 已经能独立解释的考点 |  |
+| 仍然说不清的概念 |  |
+| 下一步验证动作 |  |
 
 ## English Overview
 
@@ -298,7 +346,6 @@ UPDATE orders SET status = 'paid' WHERE id = 1001 AND status = 'created';
 - 相关主题：SQL、SELECT、INSERT、UPDATE、DELETE、JOIN
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-<!-- full-english-guide:v1 -->
 
 ## Full English Study Guide
 
@@ -363,7 +410,6 @@ UPDATE orders SET status = 'paid' WHERE id = 1001 AND status = 'created';
 
 > This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
 
-<!-- bilingual-outline:v1 -->
 
 ## Bilingual Section Outline
 
@@ -382,7 +428,6 @@ UPDATE orders SET status = 'paid' WHERE id = 1001 AND status = 'created';
 
 > 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
 
-<!-- p2-references:v1 -->
 
 ## 参考资料与复核
 

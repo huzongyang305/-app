@@ -122,7 +122,6 @@ public class TodoTests
 ## 本课小结
 最小可用的 .NET 后端 = **EF Core 持久化 + 最小 API 路由 + 依赖注入 + xUnit 测试**；跑通后再按需要加认证、缓存与容器化部署。
 
-<!-- appendix:v1 -->
 
 ## Web API 分层速查
 
@@ -204,7 +203,6 @@ public sealed class OrdersController : ControllerBase
 - [ ] 数据库结构由迁移脚本管理并接入 CI。
 - [ ] 统一错误响应格式，日志脱敏且带请求 ID。
 
-<!-- appendix:v3 -->
 
 ## 零基础详解：ASP.NET Core 项目实战
 
@@ -413,7 +411,6 @@ public class OrderEndpointTests(WebApplicationFactory<Program> factory)
 
 ## 动手练习
 
-<!-- practice-diversified:v1 -->
 
 > 本课练习重点：围绕「实战、ASP.NET Core、EF Core」完成复述、实验和交付，每个结果都要能被别人检查。
 
@@ -451,9 +448,7 @@ public class OrderEndpointTests(WebApplicationFactory<Program> factory)
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-<!-- scaffold:v1 -->
 
-<!-- project-verification:v1 -->
 
 ## 验证命令与预期输出
 
@@ -481,7 +476,58 @@ public class OrderEndpointTests(WebApplicationFactory<Program> factory)
 4. 定位原因后补一条自动化测试，再重新执行发布流程。
 5. 把教训写入项目复盘或本课笔记，形成下一次的检查项。
 
-<!-- p2-enrichment:v1 -->
+
+## 考点精讲：把测验题还原成判断过程
+
+本课有 5 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
+
+### 考点 1：生产环境管理数据库结构应优先使用？
+
+- **正确判断**：EF Core 迁移
+- **判断依据**：迁移可增量演进表结构并有版本记录，EnsureCreated 只适合原型。其他选项：迁移能版本化演进数据库结构。EnsureCreated 不适合需要持续演进的生产库，删除重建更不可取。正确项「EF Core 迁移」与本课示例和结论一致，可以直接用于实际编码。错误项「手写 SQL 文件」在边界或失败路径上会得出错误结果。把题干「生产环境管理数据库结构应优先使用？」放回《实战：Web API + EF Core》的「最小 API、DbContext、内存数据库测试与工程实践」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
+
+### 考点 2：使用 DTO 而不是直接暴露实体，主要好处是？
+
+- **正确判断**：隔离数据库结构与 API 契约
+- **判断依据**：DTO 让接口契约与表结构解耦，避免字段泄露与破坏性变更。其他选项：DTO 隔离数据库结构与对外契约，避免暴露敏感字段并在实体变更时保护接口。它不会自动加密或提升并发。正确项「隔离数据库结构与 API 契约」与本课示例和结论一致，可以直接用于实际编码。错误项「提高并发」只看到了表面现象，没有解释题干真正考查的机制。错误项「减少代码量（仅部分场景成立）」适用于其他场景，但与本题的前提不匹配。把题干「使用 DTO 而不是直接暴露实体，主要好处是？」放回《实战：Web API + EF Core》的「最小 API、DbContext、内存数据库测试与工程实践」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
+
+### 考点 3：ASP.NET Core 中注册在依赖注入容器里的 DbContext 默认生命周期是？
+
+- **正确判断**：Scoped（每请求一个）
+- **判断依据**：Scoped 保证一次请求内共享同一上下文，避免跨请求状态与线程问题。其他选项：DbContext 默认是 Scoped（每请求一个），因为它不是线程安全的。Singleton 会导致并发异常与状态错乱。正确项「Scoped（每请求一个）」完整覆盖了题目要求的关键点，没有遗漏前提。错误项「静态」适用于其他场景，但与本题的前提不匹配。错误项「Transient」忽略了题目中的限制条件，因此不成立。把题干「ASP.NET Core 中注册在依赖注入容器里的 DbContext 默认生命周期是？」放回《实战：Web API + EF Core》的「最小 API、DbContext、内存数据库测试与工程实践」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
+
+### 考点 4：在分层架构中，Repository 与 Service 的职责划分通常是？
+
+- **正确判断**：Repository 封装数据访问细节
+- **判断依据**：把数据访问与业务规则分开，测试时可以替换 Repository 而不依赖真实数据库。其他选项：Repository 封装数据访问，Service 承担业务规则与事务编排。处理 HTTP 状态码是 Controller 的职责。正确项「Repository 封装数据访问细节」与题干要求一致，是本课知识点的准确定义。错误项「Service 直接拼 SQL」忽略了题目中的限制条件，因此不成立。错误项「Repository 负责返回 HTTP 状态码」属于相邻主题的说法，范围与本题要求不一致。错误项「两者职责相同」把不同概念混在一起，缺少题干限定的前提。把题干「在分层架构中，Repository 与 Service 的职责划分通常是？」放回《实战：Web API + EF Core》的「最小 API、DbContext、内存数据库测试与工程实践」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
+
+### 考点 5：创建资源成功后返回 201 Created 并结合 CreatedAtAction 的好处是？
+
+- **正确判断**：既符合 REST 语义
+- **判断依据**：201 表示创建成功，Location 头让客户端知道下一步该请求哪个地址。其他选项：201 表示创建成功，Location 头给出新资源地址。它不会省略响应体，也不是拒绝请求。正确项「既符合 REST 语义」完整覆盖了题目要求的关键点，没有遗漏前提。错误项「表示请求被拒绝」在边界或失败路径上会得出错误结果。错误项「提升接口性能」适用于其他场景，但与本题的前提不匹配。错误项「可以省略响应体」忽略了题目中的限制条件，因此不成立。把题干「创建资源成功后返回 201 Created 并结合 CreatedAtAction 的好处是？」放回《实战：Web API + EF Core》的「最小 API、DbContext、内存数据库测试与工程实践」语境，逐项对照定义与边界条件，就能排除其余说法。
+- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
+
+## 本课复习清单
+
+离开本课前，逐项确认：
+
+- [ ] 不看解析，能说出「生产环境管理数据库结构应优先使用？」的判断依据。
+- [ ] 不看解析，能说出「使用 DTO 而不是直接暴露实体，主要好处是？」的判断依据。
+- [ ] 不看解析，能说出「ASP.NET Core 中注册在依赖注入容器里的 DbContext 默认生命…」的判断依据。
+- [ ] 不看解析，能说出「在分层架构中，Repository 与 Service 的职责划分通常是？」的判断依据。
+- [ ] 不看解析，能说出「创建资源成功后返回 201 Created 并结合 CreatedAtActio…」的判断依据。
+- [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
+- [ ] 把本课最容易混淆的两个概念写成一句话对照。
+
+| 复盘项 | 记录 |
+| --- | --- |
+| 已经能独立解释的考点 |  |
+| 仍然说不清的概念 |  |
+| 下一步验证动作 |  |
 
 ## English Overview
 
@@ -535,7 +581,6 @@ public class OrderEndpointTests(WebApplicationFactory<Program> factory)
 4. 幂等路径：同一请求执行两次不会产生重复副作用。
 5. 回滚路径：回滚后数据一致，且能说明恢复时间和影响范围。
 
-<!-- project-delivery:v1 -->
 
 ## 项目交付物
 
@@ -582,7 +627,6 @@ README.md
 
 > 项目验收围绕「实战、ASP.NET Core、EF Core」：至少完成一次正常路径、一次边界输入、一次失败恢复和一次幂等检查。
 
-<!-- full-english-guide:v1 -->
 
 ## Full English Study Guide
 
@@ -647,7 +691,6 @@ README.md
 
 > This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
 
-<!-- bilingual-outline:v1 -->
 
 ## Bilingual Section Outline
 
@@ -666,7 +709,6 @@ README.md
 
 > 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
 
-<!-- p2-references:v1 -->
 
 ## 参考资料与复核
 

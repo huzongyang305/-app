@@ -769,6 +769,36 @@ void main() {
     expect(count, greaterThanOrEqualTo(55));
   });
 
+  test('每课考点精讲与当前题库一致，且不含旧版元问题', () async {
+    for (final category in categories) {
+      for (final lesson in category.lessons) {
+        final markdown = await rootBundle.loadString(lesson.assetFile);
+        expect(markdown, contains('## 考点精讲'), reason: '${lesson.id} 缺少考点精讲');
+        final focusIndex = markdown.indexOf('## 考点精讲');
+        final englishIndex = markdown.indexOf('## English Overview');
+        expect(
+          focusIndex,
+          lessThan(englishIndex),
+          reason: '${lesson.id} 的考点精讲应放在英文概览之前',
+        );
+        expect(
+          RegExp(r'《[^》]+》的[“"]').hasMatch(markdown),
+          isFalse,
+          reason: '${lesson.id} 仍保留旧版元问题引用',
+        );
+        final normalized = markdown.replaceAll(RegExp(r'\s+'), '');
+        for (final question in lesson.quiz) {
+          final questionText = question.question.replaceAll(RegExp(r'\s+'), '');
+          expect(
+            normalized.contains(questionText),
+            isTrue,
+            reason: '${lesson.id} 的考点精讲没有覆盖题目：${question.question}',
+          );
+        }
+      }
+    }
+  });
+
   test('学习路径引用的知识点都存在且数量充足', () async {
     final provider = ContentProvider();
     await provider.load();
