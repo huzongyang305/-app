@@ -14,6 +14,7 @@ import '../theme/app_theme.dart';
 import '../widgets/markdown_code_builder.dart';
 import '../widgets/responsive_content.dart';
 import 'code_sandbox_screen.dart';
+import 'image_viewer_screen.dart';
 import 'interactive_lab_screen.dart';
 import 'quiz_screen.dart';
 import 'system_lab_screen.dart';
@@ -375,6 +376,14 @@ class _LessonScreenState extends State<LessonScreen> {
             final assetPath = raw.startsWith('assets/')
                 ? raw
                 : 'assets/content/$raw';
+            void openViewer() => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => ImageViewerScreen(
+                  assetPath: assetPath,
+                  caption: config.alt,
+                ),
+              ),
+            );
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Column(
@@ -382,29 +391,72 @@ class _LessonScreenState extends State<LessonScreen> {
                 children: [
                   ClipRRect(
                     borderRadius: AppRadii.card,
-                    child: Image.asset(
-                      assetPath,
-                      fit: BoxFit.contain,
-                      errorBuilder: (context, error, stackTrace) => Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.surfaceContainerHighest,
-                          borderRadius: AppRadii.card,
+                    child: Stack(
+                      children: [
+                        GestureDetector(
+                          onTap: openViewer,
+                          child: Image.asset(
+                            assetPath,
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Container(
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: theme
+                                        .colorScheme
+                                        .surfaceContainerHighest,
+                                    borderRadius: AppRadii.card,
+                                  ),
+                                  child: Text(
+                                    config.alt ?? assetPath,
+                                    style: theme.textTheme.bodySmall,
+                                  ),
+                                ),
+                          ),
                         ),
-                        child: Text(
-                          config.alt ?? assetPath,
-                          style: theme.textTheme.bodySmall,
+                        Positioned(
+                          right: 8,
+                          top: 8,
+                          child: Material(
+                            color: Colors.black.withValues(alpha: 0.55),
+                            shape: const CircleBorder(),
+                            child: IconButton(
+                              tooltip: context.tr('imageViewer'),
+                              visualDensity: VisualDensity.compact,
+                              onPressed: openViewer,
+                              icon: const Icon(
+                                Icons.zoom_out_map,
+                                size: 18,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
                   if (config.alt != null && config.alt!.isNotEmpty) ...[
                     const SizedBox(height: 6),
-                    Text(
-                      config.alt!,
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            config.alt!,
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          context.tr('imageViewer'),
+                          style: theme.textTheme.labelSmall?.copyWith(
+                            color: theme.colorScheme.primary,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ],
