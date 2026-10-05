@@ -1,5 +1,7 @@
 # Java 第一个类
 
+![第一个 Java 类的编写与运行](images/diagram_java_first.webp)
+
 ![Java 第一个类](images/remaining_java_first_class.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

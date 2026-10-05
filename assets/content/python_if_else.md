@@ -1,5 +1,7 @@
 # Python 条件判断
 
+![条件判断的分支结构](images/diagram_py_if.webp)
+
 ![Python 条件判断](images/remaining_python_if_else.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

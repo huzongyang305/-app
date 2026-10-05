@@ -1,5 +1,7 @@
 # 继承、接口与多态
 
+![类、抽象类、接口与多态](images/diagram_java_inheritance.webp)
+
 ![继承、接口与多态](images/remaining_java_inheritance.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

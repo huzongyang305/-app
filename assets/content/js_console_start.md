@@ -1,5 +1,7 @@
 # JavaScript 控制台入门
 
+![控制台入门四步](images/diagram_js_console.webp)
+
 ![JavaScript 控制台入门](images/remaining_js_console_start.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

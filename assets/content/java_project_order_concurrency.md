@@ -1,5 +1,7 @@
 # 实战：Java 并发订单处理服务
 
+![并发订单处理的流水线](images/diagram_java_order.webp)
+
 ![实战：Java 并发订单处理服务](images/remaining_java_project_order_concurrency.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：110 分钟

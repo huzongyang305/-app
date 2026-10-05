@@ -1,5 +1,7 @@
 # 模块、包与虚拟环境
 
+![模块、包、虚拟环境与依赖](images/diagram_py_modules.webp)
+
 ![模块、包与虚拟环境](images/remaining_python_modules_stdlib.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：14 分钟

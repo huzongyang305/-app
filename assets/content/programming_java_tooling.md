@@ -1,5 +1,7 @@
 # 构建、测试与生态
 
+![Java 构建、测试、日志与数据库工具](images/diagram_java_tooling.webp)
+
 ![构建、测试与生态](images/remaining_java_tooling.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

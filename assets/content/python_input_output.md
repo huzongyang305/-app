@@ -1,5 +1,7 @@
 # Python 输入与输出
 
+![输入、转换与格式化输出](images/diagram_py_io.webp)
+
 ![Python 输入与输出](images/remaining_python_input_output.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

@@ -1,5 +1,7 @@
 # Python 基础语法
 
+![Python 基础语法的四个要点](images/diagram_py_basics.webp)
+
 ![Python 基础语法](images/remaining_python_basics.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：12 分钟

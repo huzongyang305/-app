@@ -1,5 +1,7 @@
 # JavaScript 条件与循环
 
+![条件与循环入门](images/diagram_js_cond_loops.webp)
+
 ![JavaScript 条件与循环](images/remaining_js_conditions_loops.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

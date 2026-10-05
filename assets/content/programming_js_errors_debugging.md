@@ -1,5 +1,7 @@
 # 错误处理与调试
 
+![错误处理与调试手段](images/diagram_js_errors.webp)
+
 ![错误处理与调试](images/remaining_js_errors_debugging.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：14 分钟

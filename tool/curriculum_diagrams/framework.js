@@ -132,10 +132,30 @@ function longestLine(value) {
   return Math.max(...String(value).split('\n').map((line) => [...line].length));
 }
 
+/**
+ * 估算一行文本的像素宽度：中日韩字符按 1 个字宽计算，其余按 0.55 估算。
+ * 中英混排时按字符数估算会明显偏小，导致文字溢出卡片。
+ */
+function textWidth(value, size) {
+  let width = 0;
+  for (const char of String(value)) {
+    width += char.codePointAt(0) > 0x2e80 ? size : size * 0.55;
+  }
+  return width;
+}
+
 function fitSize(value, baseSize, maxChars, minSize) {
   const longest = longestLine(value);
   if (longest <= maxChars) return baseSize;
   return Math.max(minSize, Math.floor((baseSize * maxChars) / longest));
+}
+
+/** 按可用像素宽度收缩字号，避免中英混排文本溢出容器。 */
+function fitWidth(value, baseSize, maxWidth, minSize) {
+  const lines = String(value).split('\n');
+  const widest = Math.max(...lines.map((line) => textWidth(line, baseSize)));
+  if (widest <= maxWidth) return baseSize;
+  return Math.max(minSize, Math.floor((baseSize * maxWidth) / widest));
 }
 
 function palette(index) {
@@ -169,6 +189,8 @@ module.exports = {
   caption,
   svg,
   longestLine,
+  textWidth,
   fitSize,
+  fitWidth,
   palette,
 };

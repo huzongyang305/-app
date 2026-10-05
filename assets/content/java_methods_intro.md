@@ -1,5 +1,7 @@
 # Java 方法入门
 
+![方法定义、参数与返回值](images/diagram_java_methods.webp)
+
 ![Java 方法入门](images/remaining_java_methods_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

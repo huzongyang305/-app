@@ -1,5 +1,7 @@
 # JavaScript 变量与类型入门
 
+![变量、类型与模板字符串](images/diagram_js_var_intro.webp)
+
 ![JavaScript 变量与类型入门](images/remaining_js_variables_types_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

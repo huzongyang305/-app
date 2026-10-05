@@ -1,5 +1,7 @@
 # 函数、作用域与 this
 
+![函数定义方式、闭包与 this](images/diagram_js_functions_scope.webp)
+
 ![函数、作用域与 this](images/remaining_js_functions.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

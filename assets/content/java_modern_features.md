@@ -1,5 +1,7 @@
 # 现代 Java：Record、Sealed 与模式匹配
 
+![Record、Sealed 与模式匹配](images/diagram_java_modern.webp)
+
 ![现代 Java：Record、Sealed 与模式匹配](images/lesson_java_modern_features.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

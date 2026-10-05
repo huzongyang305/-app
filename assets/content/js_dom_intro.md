@@ -1,5 +1,7 @@
 # JavaScript DOM 入门
 
+![DOM 操作入门四步](images/diagram_js_dom_intro.webp)
+
 ![JavaScript DOM 入门](images/remaining_js_dom_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

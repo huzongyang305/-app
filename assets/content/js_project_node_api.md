@@ -1,5 +1,7 @@
 # 实战：Node.js + Express REST API
 
+![Express 请求处理链路](images/diagram_express_api.webp)
+
 ![实战：Node.js + Express REST API](images/remaining_js_project_node_api.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：120 分钟

@@ -1,5 +1,7 @@
 # 类型注解与测试
 
+![类型注解与 pytest 测试流程](images/diagram_py_typing.webp)
+
 ![类型注解与测试](images/remaining_python_typing_testing.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

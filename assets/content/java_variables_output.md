@@ -1,5 +1,7 @@
 # Java 变量与输出
 
+![变量声明与输出](images/diagram_java_vars.webp)
+
 ![Java 变量与输出](images/remaining_java_variables_output.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

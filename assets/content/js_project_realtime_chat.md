@@ -1,5 +1,7 @@
 # 实战：JavaScript 实时聊天室
 
+![实时聊天室的消息时序](images/diagram_chat_ws.webp)
+
 ![实战：JavaScript 实时聊天室](images/remaining_js_project_realtime_chat.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：120 分钟

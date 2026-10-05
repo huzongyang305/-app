@@ -1,5 +1,7 @@
 # Python 循环入门
 
+![for 与 while 循环](images/diagram_py_loops.webp)
+
 ![Python 循环入门](images/remaining_python_loops.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

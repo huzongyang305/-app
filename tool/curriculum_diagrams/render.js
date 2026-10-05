@@ -11,6 +11,7 @@ const {
   caption,
   svg,
   fitSize,
+  fitWidth,
   palette,
 } = require('./framework');
 
@@ -38,13 +39,13 @@ function renderFlow(def) {
       const [fill, stroke] = palette(index);
       body += box(170, y, 1030, y + height, '', { fill, stroke });
       body += text(210, y + height / 2, step.title, {
-        size: fitSize(step.title, 22, 12, 16),
+        size: fitWidth(step.title, 22, 320, 15),
         bold: true,
         anchor: 'start',
       });
       if (step.desc) {
         body += text(560, y + height / 2, step.desc, {
-          size: fitSize(step.desc, 19, 28, 14),
+          size: fitWidth(step.desc, 19, 520, 13),
           fill: C.muted,
           anchor: 'start',
         });
@@ -65,12 +66,12 @@ function renderFlow(def) {
     const [fill, stroke] = palette(index);
     body += box(x, top, x + width, bottom, '', { fill, stroke });
     body += text(x + width / 2, top + 48, step.title, {
-      size: fitSize(step.title, 23, Math.max(5, Math.floor(width / 15)), 16),
+      size: fitWidth(step.title, 23, width - 26, 14),
       bold: true,
     });
     if (step.desc) {
       body += text(x + width / 2, top + 135, step.desc, {
-        size: fitSize(step.desc, 18, Math.max(8, Math.floor(width / 11)), 13),
+        size: fitWidth(step.desc, 18, width - 28, 12),
         fill: C.muted,
       });
     }
@@ -104,12 +105,12 @@ function renderLayers(def) {
       stroke: layer.stroke || defaultStroke,
     });
     body += text(center, y + height / 2 - (layer.desc ? 13 : 0), layer.title, {
-      size: fitSize(layer.title, 22, 26, 16),
+      size: fitWidth(layer.title, 22, width - 40, 15),
       bold: true,
     });
     if (layer.desc) {
       body += text(center, y + height / 2 + 20, layer.desc, {
-        size: fitSize(layer.desc, 17, 46, 13),
+        size: fitWidth(layer.desc, 17, width - 40, 12),
         fill: C.muted,
       });
     }
@@ -127,20 +128,30 @@ function renderCompare(def) {
   const width = (RIGHT - LEFT - gap * (columns.length - 1)) / columns.length;
   const top = 125;
   const bottom = 620;
+  // 行距自适应：条目多且带说明框时压缩行距，避免最后一条压到说明框上。
+  const hasNotes = !!(def.notes && def.notes.length > 0);
+  const maxItems = Math.max(
+    1,
+    ...columns.map((column) => Math.min((column.items || []).length, 6)),
+  );
+  const itemTop = top + 112;
+  const itemLimit = hasNotes ? 500 : 600;
+  const itemGap =
+    maxItems > 1 ? Math.min(72, (itemLimit - itemTop) / (maxItems - 1)) : 72;
   columns.forEach((column, index) => {
     const [fill, stroke] = palette(index);
     const x = LEFT + index * (width + gap);
     body += rect(x, top, width, bottom - top, { fill, stroke });
     body += text(x + width / 2, top + 45, column.title, {
-      size: fitSize(column.title, 23, Math.max(6, Math.floor(width / 16)), 16),
+      size: fitWidth(column.title, 23, width - 30, 15),
       bold: true,
     });
     body += `<line x1="${x + 20}" y1="${top + 78}" x2="${x + width - 20}" y2="${top + 78}" stroke="${stroke}" stroke-width="1.5"/>`;
     (column.items || []).slice(0, 6).forEach((item, itemIndex) => {
-      const itemY = top + 118 + itemIndex * 72;
+      const itemY = itemTop + itemIndex * itemGap;
       body += text(x + 22, itemY, '●', { size: 14, fill: stroke, anchor: 'start' });
       body += text(x + 46, itemY, item, {
-        size: fitSize(item, 19, Math.max(8, Math.floor(width / 11)), 13),
+        size: fitWidth(item, 19, width - 70, 13),
         anchor: 'start',
       });
     });

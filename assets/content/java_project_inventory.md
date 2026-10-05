@@ -1,5 +1,7 @@
 # 实战：Java 库存管理 REST 服务
 
+![库存服务的一次请求时序](images/diagram_java_inventory.webp)
+
 ![实战：Java 库存管理 REST 服务](images/remaining_java_project_inventory.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：120 分钟

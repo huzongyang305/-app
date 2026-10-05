@@ -1,5 +1,7 @@
 # Python 列表与字典入门
 
+![列表与字典的对照](images/diagram_py_list_dict.webp)
+
 ![Python 列表与字典入门](images/remaining_python_list_dict_basics.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

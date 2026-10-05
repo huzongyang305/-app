@@ -1,5 +1,7 @@
 # 实战：爬虫与数据分析
 
+![爬虫与数据分析流程](images/diagram_py_scraper.webp)
+
 ![实战：爬虫与数据分析](images/remaining_python_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：18 分钟

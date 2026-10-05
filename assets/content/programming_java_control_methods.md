@@ -1,5 +1,7 @@
 # 控制流与方法
 
+![Java 分支、循环与方法](images/diagram_java_control.webp)
+
 ![控制流与方法](images/remaining_java_control_methods.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：14 分钟

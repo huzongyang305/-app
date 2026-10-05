@@ -1,5 +1,7 @@
 # Java 条件判断
 
+![Java 条件分支](images/diagram_java_if.webp)
+
 ![Java 条件判断](images/remaining_java_conditions.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

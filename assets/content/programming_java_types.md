@@ -1,5 +1,7 @@
 # 变量、类型与字符串
 
+![基本类型、包装类与字符串](images/diagram_java_types.webp)
+
 ![变量、类型与字符串](images/remaining_java_types.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：15 分钟

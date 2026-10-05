@@ -1,5 +1,7 @@
 # Lambda 与 Stream API
 
+![Lambda 与 Stream 的流水线](images/diagram_java_stream.webp)
+
 ![Lambda 与 Stream API](images/remaining_java_lambda_stream.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

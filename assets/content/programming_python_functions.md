@@ -1,5 +1,7 @@
 # 函数
 
+![Python 函数的定义、参数与返回值](images/diagram_py_functions.webp)
+
 ![函数](images/remaining_python_functions.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：15 分钟

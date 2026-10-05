@@ -1,5 +1,7 @@
 # 数组与常用方法
 
+![数组的增删改查与函数式方法](images/diagram_js_array_methods.webp)
+
 ![数组与常用方法](images/remaining_js_arrays.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：14 分钟

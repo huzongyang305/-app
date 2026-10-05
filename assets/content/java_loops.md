@@ -1,5 +1,7 @@
 # Java 循环入门
 
+![Java 三种循环与流程控制](images/diagram_java_loops.webp)
+
 ![Java 循环入门](images/remaining_java_loops.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

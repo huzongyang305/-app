@@ -1,5 +1,7 @@
 # 运算符与控制流
 
+![运算符与条件循环](images/diagram_js_control.webp)
+
 ![运算符与控制流](images/remaining_js_operators_control.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：13 分钟

@@ -1,5 +1,7 @@
 # 类与对象
 
+![Python 类、继承与多态](images/diagram_py_oop.webp)
+
 ![类与对象](images/remaining_python_oop.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

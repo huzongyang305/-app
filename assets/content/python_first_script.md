@@ -1,5 +1,7 @@
 # Python 第一个脚本
 
+![第一个 Python 脚本的四个步骤](images/diagram_py_first.webp)
+
 ![Python 第一个脚本](images/remaining_python_first_script.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

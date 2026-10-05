@@ -1,5 +1,7 @@
 # Python 打包、发布与性能
 
+![Python 打包、发布与性能优化](images/diagram_py_packaging.webp)
+
 ![Python 打包、发布与性能](images/lesson_python_packaging_performance.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

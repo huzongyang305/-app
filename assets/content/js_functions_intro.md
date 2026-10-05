@@ -1,5 +1,7 @@
 # JavaScript 函数入门
 
+![函数入门四步](images/diagram_js_func_intro.webp)
+
 ![JavaScript 函数入门](images/remaining_js_functions_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

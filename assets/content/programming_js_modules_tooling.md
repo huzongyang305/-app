@@ -1,5 +1,7 @@
 # 模块化与工程化
 
+![ES Module 与 CommonJS 对照](images/diagram_js_modules.webp)
+
 ![模块化与工程化](images/remaining_js_modules_tooling.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

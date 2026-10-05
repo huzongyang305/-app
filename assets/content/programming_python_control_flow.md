@@ -1,5 +1,7 @@
 # 控制流与推导式
 
+![Python 分支、循环与推导式](images/diagram_py_control.webp)
+
 ![控制流与推导式](images/remaining_python_control_flow.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：14 分钟

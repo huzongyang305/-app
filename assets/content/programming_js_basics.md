@@ -1,5 +1,7 @@
 # JavaScript 与运行环境
 
+![浏览器与 Node.js 两种运行环境](images/diagram_js_env.webp)
+
 ![JavaScript 与运行环境](images/remaining_js_basics.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：12 分钟

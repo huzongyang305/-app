@@ -1,5 +1,7 @@
 # DOM 与事件
 
+![DOM 选择、事件监听与委托](images/diagram_js_dom.webp)
+
 ![DOM 与事件](images/remaining_js_dom_events.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：14 分钟

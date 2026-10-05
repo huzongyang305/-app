@@ -1,5 +1,7 @@
 # 列表、元组、字典与集合
 
+![列表、元组、字典、集合的特性对照](images/diagram_py_containers.webp)
+
 ![列表、元组、字典与集合](images/remaining_python_data_structures.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：16 分钟

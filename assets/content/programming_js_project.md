@@ -1,5 +1,7 @@
 # 实战：Vite + React 待办应用
 
+![Vite 与 React 应用的结构](images/diagram_vite_react.webp)
+
 ![实战：Vite + React 待办应用](images/remaining_js_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：18 分钟

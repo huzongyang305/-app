@@ -1,5 +1,7 @@
 # 变量、类型与类型转换
 
+![var、let、const 三种声明方式](images/diagram_js_declare.webp)
+
 ![变量、类型与类型转换](images/remaining_js_types.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：14 分钟

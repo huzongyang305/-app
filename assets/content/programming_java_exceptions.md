@@ -1,5 +1,7 @@
 # 异常处理与文件 IO
 
+![Java 异常体系与资源管理](images/diagram_java_exceptions.webp)
+
 ![异常处理与文件 IO](images/remaining_java_exceptions.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

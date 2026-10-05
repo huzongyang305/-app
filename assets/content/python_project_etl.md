@@ -1,5 +1,7 @@
 # 实战：CSV 到 SQLite 的 ETL 流水线
 
+![CSV 到 SQLite 的 ETL 流程](images/diagram_py_etl.webp)
+
 ![实战：CSV 到 SQLite 的 ETL 流水线](images/remaining_python_project_etl.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：100 分钟
