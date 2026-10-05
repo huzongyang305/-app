@@ -331,6 +331,50 @@ UPDATE orders SET status = 'paid' WHERE id = 1001 AND status = 'created';
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `PRIMARY KEY` | 常用约束：`PRIMARY KEY` 主键、`NOT NULL` 非空、`UNIQUE` 唯一、`CHECK` 取值检查、`DEFAULT` 默认值。 |
+| `NOT NULL` | 常用约束：`PRIMARY KEY` 主键、`NOT NULL` 非空、`UNIQUE` 唯一、`CHECK` 取值检查、`DEFAULT` 默认值。 |
+| `UNIQUE` | 常用约束：`PRIMARY KEY` 主键、`NOT NULL` 非空、`UNIQUE` 唯一、`CHECK` 取值检查、`DEFAULT` 默认值。 |
+| `CHECK` | 常用约束：`PRIMARY KEY` 主键、`NOT NULL` 非空、`UNIQUE` 唯一、`CHECK` 取值检查、`DEFAULT` 默认值。 |
+| `DEFAULT` | 常用约束：`PRIMARY KEY` 主键、`NOT NULL` 非空、`UNIQUE` 唯一、`CHECK` 取值检查、`DEFAULT` 默认值。 |
+| `WHERE` | 重要**：`UPDATE` 和 `DELETE` 一定要写 `WHERE`，否则会作用到整张表。 |
+| `LEFT JOIN` | 三种写法的选择：**IN** 适合小结果集，**EXISTS** 适合大表相关判断，**JOIN** 适合同时取两张表的字段。`LEFT JOIN` 后统计时注意用 `COUNT(o.id)` 而不是 `COUNT(*)… |
+| `COUNT(o.id)` | 三种写法的选择：**IN** 适合小结果集，**EXISTS** 适合大表相关判断，**JOIN** 适合同时取两张表的字段。`LEFT JOIN` 后统计时注意用 `COUNT(o.id)` 而不是 `COUNT(*)… |
+| `COUNT(*)` | 三种写法的选择：**IN** 适合小结果集，**EXISTS** 适合大表相关判断，**JOIN** 适合同时取两张表的字段。`LEFT JOIN` 后统计时注意用 `COUNT(o.id)` 而不是 `COUNT(*)… |
+| `HAVING` | `WHERE` 在分组前过滤行，`HAVING` 在分组后过滤组——聚合条件的写法错误是常见报错来源。 |
+| `ORDER BY` | `SELECT` 中的别名通常不能在 `WHERE` 里使用（因为 WHERE 先执行），但在 `ORDER BY` 中可用。 |
+| `LIMIT` | `LIMIT` 最后执行，所以在子查询里做分页要小心与外层排序的配合。 |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：要删除表中年龄大于 60 的记录，正确的写法是？
+
+**参考回答**：正确答案是「DELETE FROM students WHERE age > 60;」，本课在「执行顺序的实际影响」中说明：WHERE 在分组前过滤行，HAVING 在分组后过滤组——聚合条件的写法错误是常见报错来源。DELETE 配合 WHERE 精确删除。本课还在「JOIN 与子查询实例」中说明：三种写法的选择：IN 适合小结果集，EXISTS 适合大表相关判断，JOIN 适合同时取两张表的字段。
+
+### 追问 2：对 GROUP BY 的结果做过滤，应该使用哪个关键字？
+
+**参考回答**：WHERE 在分组前过滤行，HAVING 在分组后过滤组，可以配合聚合函数。其他选项：对分组结果过滤要用 HAVING。针对「对 GROUP BY 的结果做过滤，应该使用哪个…」，本课在「执行顺序的实际影响」中说明：聚合函数不能直接写在 WHERE 中（应用 HAVING）。本课还在「查询子句执行顺序」中说明：理解顺序能解释两个常见疑问：为什么 WHERE 不能用 SELECT 里定义的别名（多数数据库），为什么聚合条件必须写 HAVING。
+
+### 追问 3：执行 UPDATE 时忘记写 WHERE 会怎样？
+
+**参考回答**：正确答案是「更新整张表的所有行」，本课在「增删改」中说明：重要：UPDATE 和 DELETE 一定要写 WHERE，否则会作用到整张表。没有 WHERE 条件时 UPDATE 会作用于全表，是生产事故的常见原因。本课还在「JOIN 与子查询实例」中说明：三种写法的选择：IN 适合小结果集，EXISTS 适合大表相关判断，JOIN 适合同时取两张表的字段。本课还在「执行顺序」中说明：SQL 的书写顺序和执行顺序不同，理解它有助于排查问题。
+
+### 追问 4：COUNT(*) 与 COUNT(列名) 的关键区别是？
+
+**参考回答**：正确答案是「COUNT(列名) 会忽略该列的 NULL 值」，本课在「建表」中说明：常用约束：PRIMARY KEY 主键、NOT NULL 非空、UNIQUE 唯一、CHECK 取值检查、DEFAULT 默认值。统计非空值数量时必须用 COUNT(列名)，否则会把 NULL 行也算进去。
+
+### 追问 5：LEFT JOIN 后统计右表记录数，应该怎么写？
+
+**参考回答**：正确答案是「COUNT(右表.主键)」，本课在「JOIN 与子查询实例」中说明：LEFT JOIN 后统计时注意用 COUNT(o.id) 而不是 COUNT()，否则没有订单的用户也会被算成 1。COUNT() 会把没有匹配的 NULL 行也计为 1，统计右表要用其主键列。
+
 ## English Overview
 
 **Title:** SQL Basics
@@ -451,4 +495,3 @@ UPDATE orders SET status = 'paid' WHERE id = 1001 AND status = 'created';
 > 本课主题：建表、增删改查、聚合分组与连接查询。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

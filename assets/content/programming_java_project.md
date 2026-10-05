@@ -592,6 +592,50 @@ ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `record` | `record` 天生适合做 API 的请求/响应模型；`@NotBlank`、`@Min` 由 Bean Validation 在入口处自动校验。 |
+| `@NotBlank` | `record` 天生适合做 API 的请求/响应模型；`@NotBlank`、`@Min` 由 Bean Validation 在入口处自动校验。 |
+| `@Min` | `record` 天生适合做 API 的请求/响应模型；`@NotBlank`、`@Min` 由 Bean Validation 在入口处自动校验。 |
+| `@RestControllerAdvice` | 统一异常处理（`@RestControllerAdvice`）返回一致的错误结构。 |
+| `application-{env}.yml` | 配置外部化（`application-{env}.yml` + 环境变量）。 |
+| `@SpringBootApplication` | \| `@SpringBootApplication` \| 启动类，组合配置与组件扫描 \| |
+| `@RestController` | \| `@RestController` \| REST 控制器，返回值序列化为 JSON \| |
+| `@RequestMapping` | \| `@RequestMapping` / `@GetMapping` / `@PostMapping` \| 路由映射 \| |
+| `@GetMapping` | \| `@RequestMapping` / `@GetMapping` / `@PostMapping` \| 路由映射 \| |
+| `@PostMapping` | \| `@RequestMapping` / `@GetMapping` / `@PostMapping` \| 路由映射 \| |
+| `@PathVariable` | \| `@PathVariable` / `@RequestParam` \| 路径变量 / 查询参数 \| |
+| `@RequestParam` | \| `@PathVariable` / `@RequestParam` \| 路径变量 / 查询参数 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：在分层架构中，Controller 的职责是？
+
+**参考回答**：正确答案是「处理 HTTP 请求与响应」，本课在「项目结构」中说明：分层职责：controller 处理 HTTP、service 承载业务、repository 访问数据、model 表达数据结构。Controller 只做协议转换，业务逻辑放 Service，数据访问放 Repository。本课还在「本课小结」中说明：Spring Boot 的关键是分层 + 依赖注入 + 约定优于配置：controller 薄、service 厚、repository 只负责数据。
+
+### 追问 2：使用构造器注入的主要好处是？
+
+**参考回答**：正确答案是「依赖显式且便于测试」，本课在「本课小结」中说明：Spring Boot 的关键是分层 + 依赖注入 + 约定优于配置：controller 薄、service 厚、repository 只负责数据。构造器注入让依赖不可变、显式，单元测试可直接传入 mock。本课还在「零基础详解·Java 项目实战骨架」中说明：一个可交付的 Java 服务要分层清晰、配置外置、能探活、能优雅关闭、有测试、能打包成镜像。
+
+### 追问 3：@Valid 注解在 @RequestBody 上的作用是？
+
+**参考回答**：校验不通过会抛 MethodArgumentNotValidException，由统一异常处理返回 400。其他选项：@Valid 触发 Bean Validation 校验请求体，与日志、返回值序列化、事务都无关。针对「@Valid 注解在 @RequestBody …」，本课在「上线前检查」中说明：统一异常处理（@RestControllerAdvice）返回一致的错误结构。本课还在「零基础详解·Java 项目实战骨架」中说明：启动时校验配置，而不是运行到一半才发现缺变量。
+
+### 追问 4：@RestController 与 @Controller 的差别是？
+
+**参考回答**：正确答案是「@RestController 默认把返回值序列化为 JSON（相当于 @Controller + @ResponseBody）」，本课在「项目结构」中说明：分层职责：controller 处理 HTTP、service 承载业务、repository 访问数据、model 表达数据结构。返回视图页面时用 @Controller，写 REST API 时用 @RestController 更省事。本课还在「零基础详解·Java 项目实战骨架」中说明：要点：DTO 与 Entity 分开，不要让接口结构跟着表结构走。
+
+### 追问 5：JPA 中 N+1 查询问题的常见解法是？
+
+**参考回答**：正确答案是「用 join fetch / @EntityGraph 一次性预加载关联数据」，本课在「数据模型与校验」中说明：record 天生适合做 API 的请求/响应模型。N+1 的典型现象是 1 条主查询 + N 条关联查询，用批量抓取或联表抓取可以解决。本课还在「零基础详解·Java 项目实战骨架」中说明：一个可交付的 Java 服务要分层清晰、配置外置、能探活、能优雅关闭、有测试、能打包成镜像。
+
 ## English Overview
 
 **Title:** Project: Spring Boot API
@@ -788,4 +832,3 @@ README.md
 > 本课主题：分层结构、依赖注入、校验与集成测试。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

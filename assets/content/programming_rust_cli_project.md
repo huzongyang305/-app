@@ -520,6 +520,50 @@ cross build --release --target x86_64-unknown-linux-musl
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `main.rs` | 做一个能读文件、过滤、统计并输出 JSON/表格的 CLI。结构：`main.rs`（解析参数与调度）、`lib.rs`（可测试的业务逻辑）、`tests/`（集成测试）。 |
+| `lib.rs` | 做一个能读文件、过滤、统计并输出 JSON/表格的 CLI。结构：`main.rs`（解析参数与调度）、`lib.rs`（可测试的业务逻辑）、`tests/`（集成测试）。 |
+| `tests/` | 做一个能读文件、过滤、统计并输出 JSON/表格的 CLI。结构：`main.rs`（解析参数与调度）、`lib.rs`（可测试的业务逻辑）、`tests/`（集成测试）。 |
+| `#[derive(Parser)]` | 用 derive 声明式定义参数：结构体加 `#[derive(Parser)]`，字段用 `#[arg(short, long, default_value_t)]`，子命令用 `#[derive(Subcommand… |
+| `#[arg(short, long, default_value_t)]` | 用 derive 声明式定义参数：结构体加 `#[derive(Parser)]`，字段用 `#[arg(short, long, default_value_t)]`，子命令用 `#[derive(Subcommand… |
+| `#[derive(Subcommand)]` | 用 derive 声明式定义参数：结构体加 `#[derive(Parser)]`，字段用 `#[arg(short, long, default_value_t)]`，子命令用 `#[derive(Subcommand… |
+| `--help` | 用 derive 声明式定义参数：结构体加 `#[derive(Parser)]`，字段用 `#[arg(short, long, default_value_t)]`，子命令用 `#[derive(Subcommand… |
+| `anyhow::Result` | 应用层用 `anyhow::Result` 一路 `?` 传播，并在 `main` 用 `fn main() -> anyhow::Result<()>` 统一打印错误与退出码；库层用 thiserror 定义可判定的错… |
+| `传播，并在` | 应用层用 `anyhow::Result` 一路 `?` 传播，并在 `main` 用 `fn main() -> anyhow::Result<()>` 统一打印错误与退出码；库层用 thiserror 定义可判定的错… |
+| `用` | 应用层用 `anyhow::Result` 一路 `?` 传播，并在 `main` 用 `fn main() -> anyhow::Result<()>` 统一打印错误与退出码；库层用 thiserror 定义可判定的错… |
+| `assert_cmd` | 单元测试覆盖解析与统计函数；集成测试用 `assert_cmd` 调用二进制并断言 stdout、stderr 与退出码。再加 `cargo clippy -- -D warnings` 与 `cargo fmt --c… |
+| `cargo clippy -- -D warnings` | 单元测试覆盖解析与统计函数；集成测试用 `assert_cmd` 调用二进制并断言 stdout、stderr 与退出码。再加 `cargo clippy -- -D warnings` 与 `cargo fmt --c… |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：Rust CLI 最常用的参数解析库是？
+
+**参考回答**：clap 的 derive 风格可自动生成 --help 与补全。其他选项：clap 是 Rust CLI 的参数解析事实标准。针对「Rust CLI 最常用的参数解析库是，」，本课在「本课小结」中说明：Rust CLI 的标准配方：clap 解析 + anyhow/thiserror 错误 + serde 序列化 + assertcmd 测试 + 多平台发布。本课还在「项目专属规格·Rust 实战·命令行工具」中说明：clap 解析、错误处理、assertcmd 测试与发布。
+
+### 追问 2：符合 Unix 习惯的输出方式是？
+
+**参考回答**：正确答案是「正常结果进 stdout」，本课在「错误处理与输出」中说明：输出遵循 Unix 习惯：正常结果到 stdout，日志与错误到 stderr，便于管道组合。这样才能与管道和其他命令正确组合。本课还在「零基础详解·写一个 Rust 命令行工具」中说明：能说出 clap、anyhow、thiserror 各自的分工。本课还在「本课小结」中说明：Rust CLI 的标准配方：clap 解析 + anyhow/thiserror 错误 + serde 序列化 + assertcmd 测试 + 多平台发布。
+
+### 追问 3：测试二进制行为（stdout/退出码）常用？
+
+**参考回答**：正确答案是「assert_cmd」，本课在「测试」中说明：集成测试用 assertcmd 调用二进制并断言 stdout、stderr 与退出码。assertcmd 可在集成测试中调用二进制并断言输出。本课还在「测试」中说明：再加 cargo clippy -- -D warnings 与 cargo fmt --check 进 CI。本课还在「错误处理与输出」中说明：应用层用 anyhow::Result 一路 ? 传播，并在 main 用 fn main() -> anyhow::Result<()> 统一打印错误与退出码。
+
+### 追问 4：clap 的 derive 模式如何声明命令行参数？
+
+**参考回答**：正确答案是「在结构体上加 #[derive(Parser)]」，本课在「参数解析·clap」中说明：用 derive 声明式定义参数：结构体加 #[derive(Parser)]，字段用 #[arg(short, long, defaultvaluet)]，子命令用 #[derive(Subcommand)]。derive 模式把参数定义变成类型，编译期即可检查字段与类型。本课还在「参数解析·clap」中说明：clap 自动生成 --help、补全与参数校验，比手写解析可靠得多。
+
+### 追问 5：命令行工具如何向调用方返回失败状态？
+
+**参考回答**：正确答案是「main 返回 Result 或使用 std::process::exit(非零码)」，本课在「零基础详解·写一个 Rust 命令行工具」中说明：main 返回 Result 时，出错会自动打印错误并以非 0 退出。非零退出码是 shell 脚本判断成功与否的依据，CI 中尤其重要。本课还在「错误处理与输出」中说明：应用层用 anyhow::Result 一路 ? 传播，并在 main 用 fn main() -> anyhow::Result<()> 统一打印错误与退出码。
+
 ## English Overview
 
 **Title:** Rust CLI Project
@@ -716,4 +760,3 @@ Cargo.toml
 > 本课主题：clap 解析、错误处理、assert_cmd 测试与发布。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

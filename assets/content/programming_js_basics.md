@@ -352,6 +352,50 @@ main();
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `document` | \| 操作 DOM \| 有（`document`） \| 无 \| |
+| `addEventListener` | \| 获取用户事件 \| 有（`addEventListener`） \| 无 \| |
+| `node:fs` | \| 读写本地文件 \| 受限（File API） \| 有（`node:fs`） \| |
+| `fetch` | \| 发起网络请求 \| `fetch` \| `fetch`（18+ 内置） \| |
+| `setTimeout` | \| 定时器 \| `setTimeout` / `setInterval` \| 同样支持 \| |
+| `setInterval` | \| 定时器 \| `setTimeout` / `setInterval` \| 同样支持 \| |
+| `window` | \| 全局对象 \| `window` \| `globalThis` \| |
+| `globalThis` | \| 全局对象 \| `window` \| `globalThis` \| |
+| `process.env` | \| 环境变量 \| 无（构建时注入） \| `process.env` \| |
+| `<script src="a.js">` | \| `<script src="a.js">` \| 阻塞解析 \| 立即按顺序执行 \| |
+| `<script async src="a.js">` | \| `<script async src="a.js">` \| 不阻塞 \| 下载完立刻执行（顺序不确定） \| |
+| `<script defer src="a.js">` | \| `<script defer src="a.js">` \| 不阻塞 \| DOM 解析完成后按顺序执行 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：下面哪项是浏览器提供、Node.js 没有的能力？
+
+**参考回答**：正确答案是「DOM 操作」，本课在「零基础详解·JavaScript 到底在哪里运行」中说明：JavaScript 是脚本语言：不需要提前编译，写完立刻由运行环境解释执行。DOM 属于浏览器宿主 API。本课还在「JavaScript 是什么」中说明：它既能跑在浏览器里操作页面，也能通过 Node.js 写服务端、命令行和桌面应用。本课还在「本课小结」中说明：先分清代码运行在浏览器还是 Node，再去查对应的 API。
+
+### 追问 2：<script defer> 的作用是？
+
+**参考回答**：正确答案是「HTML 解析完成后再执行脚本」，本课在「零基础详解·JavaScript 到底在哪里运行」中说明：JavaScript 是脚本语言：不需要提前编译，写完立刻由运行环境解释执行。defer 让脚本异步下载并在文档解析完成后按顺序执行，避免阻塞首屏渲染。本课还在「零基础详解·JavaScript 到底在哪里运行」中说明：脚本放在 </body> 前，或用 defer，能保证 HTML 先解析完，document 才可用。
+
+### 追问 3：ECMAScript 指的是？
+
+**参考回答**：正确答案是「JavaScript 的语言标准」，本课在「零基础详解·JavaScript 到底在哪里运行」中说明：同一门语言，能用的 API 取决于宿主环境——浏览器里没有 fs，Node 里没有 document。ECMAScript 是标准化规范，JavaScript 是它在浏览器与 Node 中的实现。本课还在「零基础详解·JavaScript 到底在哪里运行」中说明：它有两大宿主：浏览器（能操作页面）和 Node.js（能读写文件、起服务）。
+
+### 追问 4：let、const 与 var 的作用域区别是？
+
+**参考回答**：正确答案是「let/const 是块级作用域」，本课在「零基础详解·JavaScript 到底在哪里运行」中说明：能解释 const 声明的数组为什么还能 push。块级作用域让循环变量、if 块内的变量不再泄漏，是现代 JS 的默认选择。本课还在「零基础详解·JavaScript 到底在哪里运行」中说明：能说出浏览器和 Node 各自多出哪些能力。本课还在「零基础详解·JavaScript 到底在哪里运行」中说明：知道 var 与 let 在循环回调里的差别。
+
+### 追问 5："use strict" 严格模式的主要作用是？
+
+**参考回答**：正确答案是「把未声明就赋值等静默错误改为直接抛错」，本课在「本课小结」中说明：先分清代码运行在浏览器还是 Node，再去查对应的 API。ES Module 与 class 内部默认就是严格模式，因此现代代码很少手写它。本课还在「零基础详解·JavaScript 到底在哪里运行」中说明：同一门语言，能用的 API 取决于宿主环境——浏览器里没有 fs，Node 里没有 document。本课还在「JavaScript 是什么」中说明：它既能跑在浏览器里操作页面，也能通过 Node.js 写服务端、命令行和桌面应用。
+
 ## English Overview
 
 **Title:** JavaScript & Runtimes
@@ -472,4 +516,3 @@ main();
 > 本课主题：浏览器与 Node 的差异、运行方式、严格模式与代码质量工具。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

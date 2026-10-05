@@ -425,6 +425,50 @@ public class ParseDemo {
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `catch (IOException | SQLException e)` | 多异常捕获：`catch (IOException \| SQLException e)`。子类异常必须写在父类前面。 |
+| `AutoCloseable` | 实现 `AutoCloseable` 的资源会在代码块结束时自动关闭，异常也不会漏关。 |
+| `printStackTrace` | 捕获后要么处理、要么包装成业务异常抛出，不要 `printStackTrace` 后继续。 |
+| `IllegalArgumentException` | 尽早失败：参数校验失败立刻抛 `IllegalArgumentException`。 |
+| `Error` | \| `Error` \| 否 \| `OutOfMemoryError`、`StackOverflowError` \| 不捕获，交给进程处理 \| |
+| `OutOfMemoryError` | \| `Error` \| 否 \| `OutOfMemoryError`、`StackOverflowError` \| 不捕获，交给进程处理 \| |
+| `StackOverflowError` | \| `Error` \| 否 \| `OutOfMemoryError`、`StackOverflowError` \| 不捕获，交给进程处理 \| |
+| `IOException` | \| 受检异常 \| 是 \| `IOException`、`SQLException` \| 必须捕获或声明抛出 \| |
+| `SQLException` | \| 受检异常 \| 是 \| `IOException`、`SQLException` \| 必须捕获或声明抛出 \| |
+| `NullPointerException` | \| 运行时异常 \| 否 \| `NullPointerException`、`IllegalArgumentException` \| 修代码，少捕获 \| |
+| `try { ... } catch (...) { ... }` | \| 无异常时执行 \| `try { ... } catch (...) { ... }` 之后写正常逻辑 \| |
+| `finally { ... }` | \| 一定执行的清理 \| `finally { ... }` \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：受检异常（checked exception）必须如何处理？
+
+**参考回答**：正确答案是「必须捕获或声明抛出」，本课在「本课小结」中说明：受检异常强制调用方思考失败路径，运行时异常表达编程错误。编译器强制要求处理受检异常，这是 Java 区别于运行时异常的显著特征。本课还在「零基础详解·异常体系与资源管理」中说明：它分成受检异常（必须处理）和非受检异常（运行时问题）。本课还在「捕获与抛出」中说明：多异常捕获：catch (IOException | SQLException e)。
+
+### 追问 2：try-with-resources 要求资源对象实现哪个接口？
+
+**参考回答**：实现 AutoCloseable（或 Closeable）即可在代码块结束时自动 close。其他选项：try-with-resources 要求资源实现 AutoCloseable（Closeable 是它的子接口）。针对「try-with-resources 要求资源对…」，本课在「零基础详解·异常体系与资源管理」中说明：只要资源实现了 AutoCloseable，写在 try(...) 里就会自动关闭——比手写 finally 更安全。
+
+### 追问 3：多个 catch 子句的书写顺序要求是？
+
+**参考回答**：正确答案是「子类异常必须在前」，本课在「零基础详解·异常体系与资源管理」中说明：知道为什么不该写 catch (Exception e) {}。子类异常先捕获，否则父类分支会先匹配，编译器也会直接报错。本课还在「零基础详解·异常体系与资源管理」中说明：配套的 try-with-resources 负责自动关闭文件、连接这类资源。本课还在「捕获与抛出」中说明：多异常捕获：catch (IOException | SQLException e)。
+
+### 追问 4：在 finally 中写 return 的风险是？
+
+**参考回答**：正确答案是「会覆盖 try 中的返回值甚至吞掉异常」，本课在「使用建议」中说明：记录日志时保留原始异常：throw new ServiceException("下单失败", e);。finally 应只做资源释放，避免在里面写 return 或抛出新异常。本课还在「使用建议」中说明：捕获后要么处理、要么包装成业务异常抛出，不要 printStackTrace 后继续。本课还在「使用建议」中说明：尽早失败：参数校验失败立刻抛 IllegalArgumentException。
+
+### 追问 5：抛出异常时想保留原始异常信息，正确做法是？
+
+**参考回答**：正确答案是「new RuntimeException("处理失败", cause)」，本课在「使用建议」中说明：记录日志时保留原始异常：throw new ServiceException("下单失败", e);。传入 cause 能保留完整调用链，排查时不会丢失根因。本课还在「本课小结」中说明：资源一律交给 try-with-resources。本课还在「零基础详解·异常体系与资源管理」中说明：只要资源实现了 AutoCloseable，写在 try(...) 里就会自动关闭——比手写 finally 更安全。
+
 ## English Overview
 
 **Title:** Exceptions & IO
@@ -463,4 +507,3 @@ public class ParseDemo {
 > 本课主题：受检/非受检异常、try-with-resources、NIO.2 与自定义异常。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

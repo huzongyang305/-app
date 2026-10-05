@@ -262,6 +262,50 @@ print(sanitize_filename("../../etc/passwd"))
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `Content-Security-Policy` | `Content-Security-Policy`（限制脚本来源）、`Strict-Transport-Security`（强制 HTTPS）、`X-Content-Type-Options: nosniff`、`Ref… |
+| `Strict-Transport-Security` | `Content-Security-Policy`（限制脚本来源）、`Strict-Transport-Security`（强制 HTTPS）、`X-Content-Type-Options: nosniff`、`Ref… |
+| `X-Content-Type-Options: nosniff` | `Content-Security-Policy`（限制脚本来源）、`Strict-Transport-Security`（强制 HTTPS）、`X-Content-Type-Options: nosniff`、`Ref… |
+| `Referrer-Policy` | `Content-Security-Policy`（限制脚本来源）、`Strict-Transport-Security`（强制 HTTPS）、`X-Content-Type-Options: nosniff`、`Ref… |
+| `Permissions-Policy` | `Content-Security-Policy`（限制脚本来源）、`Strict-Transport-Security`（强制 HTTPS）、`X-Content-Type-Options: nosniff`、`Ref… |
+| `textContent` | \| XSS \| 未转义地插入用户输入 \| 输出编码、CSP、`textContent` \| |
+| `X-Frame-Options` | \| `X-Frame-Options` / `frame-ancestors` \| 防点击劫持 \| |
+| `frame-ancestors` | \| `X-Frame-Options` / `frame-ancestors` \| 防点击劫持 \| |
+| `Cross-Origin-Opener-Policy` | \| `Cross-Origin-Opener-Policy` \| 隔离窗口上下文 \| |
+| `HttpOnly` | \| `HttpOnly` \| 禁止 JS 读取，缓解 XSS 窃取 \| |
+| `Secure` | \| `Secure` \| 仅通过 HTTPS 传输 \| |
+| `SameSite=Lax` | \| `SameSite=Lax` \| 默认值，跨站 POST 不带 Cookie \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：防御 SQL 注入最有效的做法是？
+
+**参考回答**：正确答案是「使用参数化查询（预编译语句）」，本课在「本课小结」中说明：Web 安全的三条主线：输入不可信（转义与参数化）、权限最小化（服务端逐次鉴权）、纵深防御（CSP + 头 + 扫描 + 监控）。参数与 SQL 结构分离，从根本上消除拼接注入。本课还在「XSS 的三种形态」中说明：防御核心是「永不信任输入，按上下文转义输出」，并配合 CSP 限制脚本来源。本课还在「XSS 的三种形态」中说明：存储型（恶意内容入库，所有访问者中招）、反射型（通过链接参数回显）、DOM 型（前端 JS 直接把不可信数据写入 DOM）。
+
+### 追问 2：防御 CSRF 的常用组合是？
+
+**参考回答**：正确答案是「SameSite Cookie + CSRF Token」，本课在「安全开发流程」中说明：威胁建模（识别资产与攻击面）→ 安全编码规范 → 代码审计与 SAST → DAST/渗透测试 → 上线前检查 → 运行时监控与应急响应。SameSite 阻止跨站携带 Cookie，Token 校验请求来源合法性。本课还在「本课小结」中说明：Web 安全的三条主线：输入不可信（转义与参数化）、权限最小化（服务端逐次鉴权）、纵深防御（CSP + 头 + 扫描 + 监控）。
+
+### 追问 3：防御 XSS 的核心思路是？
+
+**参考回答**：转义要对 HTML/属性/JS/URL 上下文分别处理，CSP 作为兜底。其他选项：XSS 防御核心是按输出上下文转义并配合 CSP。针对「防御 XSS 的核心思路是，」，本课在「XSS 的三种形态」中说明：防御核心是「永不信任输入，按上下文转义输出」，并配合 CSP 限制脚本来源。
+
+### 追问 4：浏览器的同源策略包含哪三个要素？
+
+**参考回答**：正确答案是「协议、域名、端口必须完全一致」，这道题在问浏览器的同源策略包含哪三个要素，判断时要把题干限定的输入、边界与目标逐项对齐。跨源请求需要 CORS 响应头显式允许。课程摘要指出XSS/CSRF/SQL 注入/SSRF，会话安全与供应链，本课要判断的正是浏览器的同源策略包含哪三个要素。
+
+### 追问 5：CSP（内容安全策略）的主要作用是？
+
+**参考回答**：正确答案是「限制页面可加载/执行的脚本来源」，本课在「安全响应头」中说明：Content-Security-Policy（限制脚本来源）、Strict-Transport-Security（强制 HTTPS）、X-Content-Type-Options: nosniff、Referrer-Policy、Permissions-Policy。CSP 是纵深防御的一层，仍不能替代输出编码与输入校验。本课还在「认证与会话」中说明：口令用 Argon2/bcrypt 加盐存储，禁止明文与可逆加密。
+
 ## English Overview
 
 **Title:** Web Security
@@ -300,4 +344,3 @@ print(sanitize_filename("../../etc/passwd"))
 > 本课主题：XSS/CSRF/SQL 注入/SSRF、会话安全与供应链。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

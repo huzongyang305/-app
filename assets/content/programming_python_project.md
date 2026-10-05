@@ -528,6 +528,50 @@ pytest
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `timeout` | 要点：`timeout` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性。 |
+| `raise_for_status()` | 要点：`timeout` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性。 |
+| `fillna` | 常见清洗动作：去空白、统一大小写、类型转换、缺失值处理（`fillna` / `dropna`）、去重（`drop_duplicates`）。 |
+| `dropna` | 常见清洗动作：去空白、统一大小写、类型转换、缺失值处理（`fillna` / `dropna`）、去重（`drop_duplicates`）。 |
+| `drop_duplicates` | 常见清洗动作：去空白、统一大小写、类型转换、缺失值处理（`fillna` / `dropna`）、去重（`drop_duplicates`）。 |
+| `User-Agent` | 抓取遵守 robots.txt 与服务条款，控制频率、加 `User-Agent`。 |
+| `.py` | 用 Jupyter Notebook 探索，定型后沉淀为 `.py` 模块。 |
+| `requests.post(url, data={"k": "v"})` | \| 表单提交 \| `requests.post(url, data={"k": "v"})` \| |
+| `headers={"User-Agent": "..."}` | \| 自定义头 \| `headers={"User-Agent": "..."}` \| |
+| `resp.raise_for_status()` | \| 检查状态 \| `resp.raise_for_status()` \| |
+| `resp.json()` | \| 解析 JSON \| `resp.json()` \| |
+| `resp.text` | \| 读取文本 \| `resp.text`（配合 `resp.encoding`） \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：用 requests 发起请求时，下面哪项是必须的？
+
+**参考回答**：正确答案是「设置 timeout 并检查状态码」，本课在「抓取与解析」中说明：要点：timeout 必填，raiseforstatus() 检查状态码，选择器优先用稳定的 class 或 data 属性。timeout 防止请求悬挂，raiseforstatus() 让 4xx/5xx 立刻暴露。本课还在「项目专属规格·实战·爬虫与数据分析」中说明：requests 抓取、pandas 清洗统计与 matplotlib 可视化。
+
+### 追问 2：pandas 中按作者分组求均值应使用？
+
+**参考回答**：正确答案是「df.groupby('author')['x'].mean()」，本课在「项目专属规格·实战·爬虫与数据分析」中说明：requests 抓取、pandas 清洗统计与 matplotlib 可视化。groupby 用于分组聚合，是数据分析最常用的操作。本课还在「项目目标」中说明：抓取公开数据 → 清洗成表格 → 统计与可视化。本课还在「本课小结」中说明：这个项目的价值在于把请求、解析、DataFrame、可视化串成完整链路。
+
+### 追问 3：编写爬虫时最应该遵守的是？
+
+**参考回答**：正确答案是「遵守 robots.txt」，本课在「工程化建议」中说明：抓取遵守 robots.txt 与服务条款，控制频率、加 User-Agent。合法合规与不过度施压是爬虫的基本要求。本课还在「项目目标」中说明：抓取公开数据 → 清洗成表格 → 统计与可视化。本课还在「项目目标」中说明：这是 Python 最常见的落地场景，涉及网络请求、数据处理与文件读写。
+
+### 追问 4：给 requests 请求设置 timeout 的意义是？
+
+**参考回答**：正确答案是「避免网络异常时请求无限期挂起」，本课在「本课小结」中说明：这个项目的价值在于把请求、解析、DataFrame、可视化串成完整链路。生产脚本必须设置超时与重试，否则一个慢请求就可能卡住整个任务。本课还在「项目目标」中说明：这是 Python 最常见的落地场景，涉及网络请求、数据处理与文件读写。本课还在「工程化建议」中说明：把「抓取 / 清洗 / 分析 / 输出」拆成独立函数，便于测试与复用。
+
+### 追问 5：pandas 中把 DataFrame 保存成 CSV 的方法是？
+
+**参考回答**：正确答案是「df.to_csv('out.csv', index=False)」，本课在「工程化建议」中说明：长任务加日志与断点续跑（把已抓数据落盘）。tocsv 是写出方法，index=False 可避免多出一列行号。本课还在「本课小结」中说明：把它跑通，Python 的数据处理能力就入门了。本课还在「零基础详解·从零做一个 Python 小项目」中说明：一个能交付的 Python 项目，除了能跑，还要有：清晰目录、依赖声明、配置外置、日志、测试、一键运行。
+
 ## English Overview
 
 **Title:** Project: Scraping & Data
@@ -725,4 +769,3 @@ README.md
 > 本课主题：requests 抓取、pandas 清洗统计与 matplotlib 可视化。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

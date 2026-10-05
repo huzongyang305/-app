@@ -429,6 +429,11 @@ sealed interface ListUiState {
 - **判断依据**：正确答案是「viewModelScope」，本课在「零基础详解：Kotlin 与 Android 开发」中说明：能说出 viewModelScope 与 GlobalScope 的差别。本课还在「本课小结」中说明：Android 开发的关键是分层（UI/状态/数据）+ 空安全 + 协程：把状态交给 ViewModel、把耗时操作交给协程、把数据来源收敛到 Repository。
 - **迁移检查**：不看题干，用自己的话补全这句话，再与标准答案对照。
 
+### 补充考点 1：按照「Kotlin 与 Android 开发」从概念到实践的讲解顺序排列下列主题。
+
+- **正确判断**：语言特性速览 → Android 应用结构 → 生命周期与常见崩溃 → 打包发布
+- **判断依据**：在「Kotlin 与 Android 开发」中，正确顺序是：1. 语言特性速览 → 2. Android 应用结构 → 3. 生命周期与常见崩溃 → 4. 打包发布。「Kotlin 与 Android 开发」先建立概念，再解释运行机制，随后进入代码与工程实践，最后处理失败路径。在「Kotlin 与 Android 开发」里，如果把后一步放到前面，通常会缺少前一步产生的定义、输入或验证结果。
+
 ## 本课复习清单
 
 离开本课前，逐项确认：
@@ -447,6 +452,50 @@ sealed interface ListUiState {
 | 已经能独立解释的考点 |  |
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
+
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `?.` | \| 空安全 \| 类型区分可空与非空，`?.`/`?:`/`!!` 显式处理空值 \| |
+| `?:` | \| 空安全 \| 类型区分可空与非空，`?.`/`?:`/`!!` 显式处理空值 \| |
+| `!!` | \| 空安全 \| 类型区分可空与非空，`?.`/`?:`/`!!` 显式处理空值 \| |
+| `fun String.toSlug()` | \| 扩展函数 \| 给已有类加方法而不继承，如 `fun String.toSlug()` \| |
+| `suspend` | \| 协程 \| `suspend` + `launch`/`async`，用同步写法表达异步逻辑 \| |
+| `launch` | \| 协程 \| `suspend` + `launch`/`async`，用同步写法表达异步逻辑 \| |
+| `async` | \| 协程 \| `suspend` + `launch`/`async`，用同步写法表达异步逻辑 \| |
+| `sealed class Result` | \| 密封类 \| `sealed class Result` 表达有限状态，配合 when 穷尽检查 \| |
+| `by lazy` | \| 属性委托 \| `by lazy`、`by viewModels()` 减少样板代码 \| |
+| `by viewModels()` | \| 属性委托 \| `by lazy`、`by viewModels()` 减少样板代码 \| |
+| `viewLifecycleOwner` | 要点：**不要在 Activity 里写业务逻辑**；网络与数据库操作必须离开主线程（协程的 Dispatchers.IO）；用 `viewLifecycleOwner` 收集 Flow 避免泄漏。 |
+| `./gradlew bundleRelease` | `./gradlew bundleRelease` 产出 AAB；签名用 `keystore.properties` 外置并在 .gitignore 排除；用 `minifyEnabled true` 加混淆规则减小体积… |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：Kotlin 中表示「可能为空」的类型写法是？
+
+**参考回答**：正确答案是「String?」，本课在「零基础详解·Kotlin 与 Android 开发」中说明：能说出 String 与 String? 的区别。用问号标注可空类型，配合 ?. 与 ?: 显式处理空值。本课还在「本课小结」中说明：Android 开发的关键是分层（UI/状态/数据）+ 空安全 + 协程：把状态交给 ViewModel、把耗时操作交给协程、把数据来源收敛到 Repository。本课还在「Android 应用结构」中说明：网络与数据库操作必须离开主线程（协程的 Dispatchers.IO）。
+
+### 追问 2：Android 中承载界面状态、配置变更后仍存活的组件是？
+
+**参考回答**：Activity 旋转会重建，状态应放在 ViewModel 中。其他选项：Application 是进程级入口，Adapter 负责列表项绑定，Activity 在配置变更时会重建。针对「Android 中承载界面状态、配置变更后仍存活…」，本课在「生命周期与常见崩溃」中说明：配置变更（旋转）会重建 Activity，状态放 ViewModel 而非成员变量。本课还在「零基础详解·Kotlin 与 Android 开发」中说明：Android 侧的工程要点是：UI 层不写业务、状态放 ViewModel、耗时工作交给协程。
+
+### 追问 3：Android 上架 Google Play 推荐的产物格式是？
+
+**参考回答**：AAB 让商店按设备下发，减小下载体积。其他选项：JAR 不是 Android 产物，DEX 是字节码格式，APK 虽可安装但并非商店推荐。针对「Android 上架 Google Play 推…」，本课在「打包发布」中说明：./gradlew bundleRelease 产出 AAB。本课还在「生命周期与常见崩溃」中说明：主线程做 IO 会 ANR，所有磁盘与网络访问走协程。本课还在「零基础详解·Kotlin 与 Android 开发」中说明：Kotlin 是 Android 的官方首选语言，核心优势是空安全、简洁、协程。
+
+### 追问 4：Kotlin 中 val 与 var 的区别是？
+
+**参考回答**：正确答案是「val 声明后引用不可重新赋值，var 可以」，本课在「零基础详解·Kotlin 与 Android 开发」中说明：能说出 String 与 String? 的区别。val 是只读引用（对象内部仍可能可变），var 可以再次赋值。本课还在「生命周期与常见崩溃」中说明：持有 Activity/Context 的长时间引用会内存泄漏（用 applicationContext 或在 onDestroy 释放）。
+
+### 追问 5：在 Activity 中启动一个随生命周期自动取消的协程，常用写法是？
+
+**参考回答**：正确答案是「lifecycleScope.launch { }」，本课在「零基础详解·Kotlin 与 Android 开发」中说明：不要在 GlobalScope 里启动协程：它不受生命周期约束，容易泄漏。lifecycleScope 绑定组件生命周期，销毁时自动取消，避免泄漏。本课还在「生命周期与常见崩溃」中说明：后台启动 Service 受限，长任务改用 WorkManager 或前台服务。
 
 ## English Overview
 
@@ -486,4 +535,3 @@ sealed interface ListUiState {
 > 本课主题：空安全、协程、分层架构与打包发布。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

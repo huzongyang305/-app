@@ -371,6 +371,50 @@ jobs:
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `tsc --noEmit --extendedDiagnostics` | \| 生成耗时报告 \| `tsc --noEmit --extendedDiagnostics` \| 总时间、文件数、类型数 \| |
+| `tsc --noEmit --generateTrace trace` | \| 定位最慢文件 \| `tsc --noEmit --generateTrace trace` \| trace 里的耗时热点 \| |
+| `tsc --build --verbose` | \| 检查项目引用 \| `tsc --build --verbose` \| 是否真的增量 \| |
+| `vite build --mode analyze` | \| 打包分析 \| `vite build --mode analyze` 或 source-map-explorer \| 产物体积构成 \| |
+| `npx vite-bundle-visualizer` | \| 依赖体积 \| `npx vite-bundle-visualizer` \| 哪个依赖最大 \| |
+| `skipLibCheck: true` | \| `skipLibCheck: true` \| 跳过依赖声明文件检查 \| 依赖类型错误不会被发现 \| |
+| `composite` | \| 项目引用 + `composite` \| 只重检查改动项目 \| 配置复杂 \| |
+| `incremental` | \| `incremental` + `tsBuildInfoFile` \| 复用上次结果 \| 需要缓存产物 \| |
+| `tsBuildInfoFile` | \| `incremental` + `tsBuildInfoFile` \| 复用上次结果 \| 需要缓存产物 \| |
+| `include` | \| 收窄 `include` \| 减少参与文件 \| 需确保不漏文件 \| |
+| `tsc --noEmit` | \| 类型检查 \| `tsc --noEmit` \| 独立门禁，不可省略 \| |
+| `skipLibCheck` | \| 用 `skipLibCheck` 掩盖自身错误 \| 自己的类型错误仍在 \| 它只跳过 .d.ts，按需使用 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：定位「哪些文件最耗类型检查时间」，应该用？
+
+**参考回答**：正确答案是「tsc --noEmit --extendedDiagnostics 与 --generateTrace」，本课在「零基础详解·让 TypeScript 构建变快」中说明：大项目变慢通常来自三处：类型检查太慢、重复构建、缓存没命中。extendedDiagnostics 给出总体时间与规模，generateTrace 能定位到具体文件与类型操作。本课还在「零基础详解·让 TypeScript 构建变快」中说明：解决思路是：拆分项目、增量构建、并行与缓存，以及别让类型检查挡住开发。
+
+### 追问 2：skipLibCheck 的实际作用是？
+
+**参考回答**：正确答案是「跳过 .d.ts 声明文件的检查，加快编译」，本课在「零基础详解·让 TypeScript 构建变快」中说明：barrel 文件（index.ts 汇总导出）很方便，但会让类型检查范围大幅膨胀，大项目里要谨慎。它只影响声明文件，能显著提速，但依赖内部的类型冲突也不会被发现。本课还在「慢在哪里·先定位再优化」中说明：经验：大部分类型检查慢，来自过深的类型推导、过大的单一项目与无节制的第三方类型参与检查。
+
+### 追问 3：大仓库中让类型检查只覆盖改动部分，常用？
+
+**参考回答**：正确答案是「项目引用（composite）加增量构建」，本课在「零基础详解·让 TypeScript 构建变快」中说明：解决思路是：拆分项目、增量构建、并行与缓存，以及别让类型检查挡住开发。项目引用把仓库拆成多个可独立编译的单元，配合 composite 与 tsbuildinfo 只重建受影响部分。本课还在「零基础详解·让 TypeScript 构建变快」中说明：barrel 文件（index.ts 汇总导出）很方便，但会让类型检查范围大幅膨胀，大项目里要谨慎。
+
+### 追问 4：CI 中打包器与类型检查的分工是？
+
+**参考回答**：正确答案是「打包器只转译」，本课在「零基础详解·让 TypeScript 构建变快」中说明：不要指望打包器做类型检查，两边分工才能又快又稳。esbuild、SWC、Vite 等只剥离类型不做检查，因此 CI 必须单独跑类型门禁。本课还在「CI 中的分工」中说明：注意：打包器不做类型检查，CI 必须单独跑一次 tsc --noEmit。本课还在「零基础详解·让 TypeScript 构建变快」中说明：大项目变慢通常来自三处：类型检查太慢、重复构建、缓存没命中。
+
+### 追问 5：哪种类型写法最容易拖慢编译？
+
+**参考回答**：正确答案是「上千成员的巨型联合类型与无深度限制的递归类型」，本课在「慢在哪里·先定位再优化」中说明：经验：大部分类型检查慢，来自过深的类型推导、过大的单一项目与无节制的第三方类型参与检查。巨量联合与深递归会让类型推导呈指数级膨胀，应拆分并限制递归深度。本课还在「零基础详解·让 TypeScript 构建变快」中说明：知道为什么 barrel 文件会拖慢类型检查。本课还在「CI 中的分工」中说明：注意：打包器不做类型检查，CI 必须单独跑一次 tsc --noEmit。
+
 ## English Overview
 
 **Title:** Build & Typecheck Performance
@@ -409,4 +453,3 @@ jobs:
 > 本课主题：定位类型检查热点、增量构建与 CI 分工。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

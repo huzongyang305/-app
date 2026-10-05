@@ -404,6 +404,50 @@ fn main() {
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `Option<T>` | \| `Option<T>` \| 有值 Some(T) 或无值 None \| unwrap_or、map、and_then、? \| |
+| `Result<T, E>` | \| `Result<T, E>` \| 成功 Ok(T) 或失败 Err(E) \| `?`、map_err、unwrap_or_else \| |
+| `Option` | Rust 没有 null，空值必须用 `Option` 显式表达；错误必须用 `Result` 处理。`?` 运算符在错误时提前返回，是错误传播的标准写法。 |
+| `Result` | Rust 没有 null，空值必须用 `Option` 显式表达；错误必须用 `Result` 处理。`?` 运算符在错误时提前返回，是错误传播的标准写法。 |
+| `impl Trait for Type` | trait 类似接口，但支持默认实现、关联类型与泛型约束。`impl Trait for Type` 为类型实现行为；`T: Trait` 或 `where T: Trait` 约束泛型。与动态分发 `dyn Trait… |
+| `T: Trait` | trait 类似接口，但支持默认实现、关联类型与泛型约束。`impl Trait for Type` 为类型实现行为；`T: Trait` 或 `where T: Trait` 约束泛型。与动态分发 `dyn Trait… |
+| `where T: Trait` | trait 类似接口，但支持默认实现、关联类型与泛型约束。`impl Trait for Type` 为类型实现行为；`T: Trait` 或 `where T: Trait` 约束泛型。与动态分发 `dyn Trait… |
+| `dyn Trait` | trait 类似接口，但支持默认实现、关联类型与泛型约束。`impl Trait for Type` 为类型实现行为；`T: Trait` 或 `where T: Trait` 约束泛型。与动态分发 `dyn Trait… |
+| `Debug` | 常用内置 trait：`Debug`、`Clone`、`Copy`、`PartialEq`、`Display`、`Iterator`、`From/Into`。`#[derive(...)]` 可自动实现大部分。 |
+| `Clone` | 常用内置 trait：`Debug`、`Clone`、`Copy`、`PartialEq`、`Display`、`Iterator`、`From/Into`。`#[derive(...)]` 可自动实现大部分。 |
+| `Copy` | 常用内置 trait：`Debug`、`Clone`、`Copy`、`PartialEq`、`Display`、`Iterator`、`From/Into`。`#[derive(...)]` 可自动实现大部分。 |
+| `PartialEq` | 常用内置 trait：`Debug`、`Clone`、`Copy`、`PartialEq`、`Display`、`Iterator`、`From/Into`。`#[derive(...)]` 可自动实现大部分。 |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：Rust 没有 null，表达「可能没有值」用？
+
+**参考回答**：空值必须显式处理，从类型层面杜绝空指针异常。其他选项：Option<T> 用 Some/None 明确表达缺失并强制处理分支。针对「Rust 没有 null，表达可能没有值用，」，本课在「本课小结」中说明：Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：Option 管空值、Result 管错误、trait 管行为、enum + match 管状态。本课还在「Option 与 Result」中说明：Rust 没有 null，空值必须用 Option 显式表达。
+
+### 追问 2：? 运算符的作用是？
+
+**参考回答**：正确答案是「出错时提前返回并把错误向上传播」，本课在「Option 与 Result」中说明：? 运算符在错误时提前返回，是错误传播的标准写法。它是 Rust 错误传播的标准写法。本课还在「本课小结」中说明：Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：Option 管空值、Result 管错误、trait 管行为、enum + match 管状态。本课还在「trait·定义共享行为」中说明：trait 类似接口，但支持默认实现、关联类型与泛型约束。
+
+### 追问 3：使用泛型 T: Trait 属于哪种分发？
+
+**参考回答**：正确答案是「静态分发，零运行时开销」，本课在「trait·定义共享行为」中说明：与动态分发 dyn Trait 相比，泛型是静态分发、零开销。dyn Trait 才是动态分发，有虚表开销。本课还在「trait·定义共享行为」中说明：trait 类似接口，但支持默认实现、关联类型与泛型约束。本课还在「trait·定义共享行为」中说明：常用内置 trait：Debug、Clone、Copy、PartialEq、Display、Iterator、From/Into。
+
+### 追问 4：dyn Trait 与泛型 T: Trait 的核心区别是？
+
+**参考回答**：正确答案是「dyn 是运行时动态分发（trait object，需指针），泛型是编译期单态化静态分发」，本课在「trait·定义共享行为」中说明：与动态分发 dyn Trait 相比，泛型是静态分发、零开销。需要把不同类型放进同一个集合时用 Box<dyn Trait>，性能敏感处用泛型。本课还在「零基础详解·结构体、枚举与 trait」中说明：struct 把相关数据组合起来，enum 表达「几种可能之一」，trait 定义「共有的能力」。
+
+### 追问 5：Rust 的孤儿规则（orphan rule）限制是？
+
+**参考回答**：正确答案是「只有 trait 或目标类型至少有一个定义在当前 crate 时才能实现该 trait」，本课在「trait·定义共享行为」中说明：impl Trait for Type 为类型实现行为。该规则避免不同 crate 对同一类型产生冲突的 trait 实现。本课还在「trait·定义共享行为」中说明：#[derive(...)] 可自动实现大部分。本课还在「零基础详解·结构体、枚举与 trait」中说明：struct 把相关数据组合起来，enum 表达「几种可能之一」，trait 定义「共有的能力」。
+
 ## English Overview
 
 **Title:** Option, Result & Traits
@@ -442,4 +486,3 @@ fn main() {
 > 本课主题：空值与错误表达、trait 分发、模式匹配与智能指针。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

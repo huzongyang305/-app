@@ -351,6 +351,50 @@ console.log(JSON.stringify(index, null, 2));
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `Partial<T>` | \| `Partial<T>` / `Required<T>` \| 全部可选 / 全部必填 \| |
+| `Required<T>` | \| `Partial<T>` / `Required<T>` \| 全部可选 / 全部必填 \| |
+| `Pick<T, K>` | \| `Pick<T, K>` / `Omit<T, K>` \| 挑选字段 / 排除字段 \| |
+| `Omit<T, K>` | \| `Pick<T, K>` / `Omit<T, K>` \| 挑选字段 / 排除字段 \| |
+| `Record<K, V>` | \| `Record<K, V>` \| 构造键值映射类型 \| |
+| `Readonly<T>` | \| `Readonly<T>` \| 全部只读 \| |
+| `ReturnType<F>` | \| `ReturnType<F>` / `Parameters<F>` \| 提取函数返回值 / 参数类型 \| |
+| `Parameters<F>` | \| `ReturnType<F>` / `Parameters<F>` \| 提取函数返回值 / 参数类型 \| |
+| `Awaited<T>` | \| `Awaited<T>` \| 提取 Promise 的结果类型 \| |
+| `Exclude` | \| `Exclude` / `Extract` / `NonNullable` \| 联合类型的筛选 \| |
+| `Extract` | \| `Exclude` / `Extract` / `NonNullable` \| 联合类型的筛选 \| |
+| `NonNullable` | \| `Exclude` / `Extract` / `NonNullable` \| 联合类型的筛选 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：从类型中排除若干字段应使用？
+
+**参考回答**：Omit 用于隐藏敏感字段或裁剪 DTO。其他选项：Partial 让字段可选，Record 构造映射类型，Pick 是保留字段。针对「从类型中排除若干字段应使用，」，本课在「内置工具类型」中说明：这些工具类型在 API 层非常实用：创建请求 DTO 用 Pick，更新接口用 Partial，对外隐藏敏感字段用 Omit。本课还在「本课小结」中说明：工具类型让你从已有类型派生新类型，而不是重复声明。
+
+### 追问 2：把类型所有属性变为可选应使用？
+
+**参考回答**：Partial 常用于更新接口（PATCH）的请求体。其他选项：Readonly 让字段只读，Required 做相反操作，Exclude 作用于联合类型。针对「把类型所有属性变为可选应使用，」，本课在「内置工具类型」中说明：这些工具类型在 API 层非常实用：创建请求 DTO 用 Pick，更新接口用 Partial，对外隐藏敏感字段用 Omit。本课还在「映射类型与模板字面量类型」中说明：映射类型可以批量改造属性（如全部加 readonly、把值类型统一替换）。
+
+### 追问 3：.d.ts 文件的作用是？
+
+**参考回答**：正确答案是「为无类型的第三方库补充类型声明」，本课在「声明文件」中说明：.d.ts 为无类型的第三方库补类型：declare module 'legacy-lib' { export function run(x: string): void }。它让 JS 库也能获得类型提示与检查。本课还在「工程实践」中说明：用 type 定义联合与工具类型，interface 定义对象契约（可扩展、可合并）。
+
+### 追问 4：Pick<T, K> 与 Omit<T, K> 的区别是？
+
+**参考回答**：正确答案是「Pick 只保留 K 指定的字段」，本课在「零基础详解·工具类型与类型组合」中说明：能用工具类型从实体派生出对外与创建用的类型。对外暴露 DTO 时常用 Pick 选字段、Omit 去掉密码等敏感字段。本课还在「零基础详解·工具类型与类型组合」中说明：工具类型是 TypeScript 内置的「类型加工机」。本课还在「工程实践」中说明：用 type 定义联合与工具类型，interface 定义对象契约（可扩展、可合并）。
+
+### 追问 5：Record<string, number> 表示？
+
+**参考回答**：正确答案是「键为 string、值为 number 的对象类型」，本课在「本课小结」中说明：工具类型让你从已有类型派生新类型，而不是重复声明。Record 常用于描述映射表、字典与配置项集合。本课还在「映射类型与模板字面量类型」中说明：映射类型可以批量改造属性（如全部加 readonly、把值类型统一替换）。本课还在「零基础详解·工具类型与类型组合」中说明：工具类型是 TypeScript 内置的「类型加工机」。
+
 ## English Overview
 
 **Title:** Utility Types & Declarations
@@ -389,4 +433,3 @@ console.log(JSON.stringify(index, null, 2));
 > 本课主题：Partial/Pick/Omit/Record、映射类型与 .d.ts。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

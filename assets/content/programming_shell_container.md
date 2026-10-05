@@ -396,6 +396,50 @@ exec "$@"
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `docker build -t app:$GIT_SHA .` | \| 构建 \| `docker build -t app:$GIT_SHA .`，用提交号做标签便于回滚 \| |
+| `docker logs -f --tail 100 app` | \| 查看 \| `docker logs -f --tail 100 app`、`docker stats` \| |
+| `docker stats` | \| 查看 \| `docker logs -f --tail 100 app`、`docker stats` \| |
+| `docker exec -it app sh` | \| 进容器 \| `docker exec -it app sh`（生产容器通常不带 bash） \| |
+| `docker system prune -f` | \| 清理 \| `docker system prune -f`（谨慎，先 `docker ps -a` 确认） \| |
+| `docker ps -a` | \| 清理 \| `docker system prune -f`（谨慎，先 `docker ps -a` 确认） \| |
+| `docker ps -aq -f name=app` | 脚本里要判断容器是否存在（`docker ps -aq -f name=app`），并处理"已存在则先删"的逻辑；退出码检查不可省。 |
+| `exec "$@"` | 要点：① 用 `exec "$@"` 让主进程成为 PID 1，才能正确接收信号；② 用 `set -euo pipefail`；③ 等待依赖（数据库）时用循环 + 超时，而不是固定 sleep；④ 不在 entrypo… |
+| `set -euo pipefail` | 要点：① 用 `exec "$@"` 让主进程成为 PID 1，才能正确接收信号；② 用 `set -euo pipefail`；③ 等待依赖（数据库）时用循环 + 超时，而不是固定 sleep；④ 不在 entrypo… |
+| `get` | 排查顺序固定：`get`（看状态）→ `describe`（看事件）→ `logs`（看应用日志）→ `exec`（进容器验证）。 |
+| `describe` | 排查顺序固定：`get`（看状态）→ `describe`（看事件）→ `logs`（看应用日志）→ `exec`（进容器验证）。 |
+| `logs` | 排查顺序固定：`get`（看状态）→ `describe`（看事件）→ `logs`（看应用日志）→ `exec`（进容器验证）。 |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：容器 entrypoint 脚本里为什么要用 exec "$@"？
+
+**参考回答**：正确答案是「让主进程成为 PID 1」，本课在「容器内的 entrypoint 脚本」中说明：要点：① 用 exec "$@" 让主进程成为 PID 1，才能正确接收信号。否则容器停止时信号无法传到应用进程。本课还在「常用 Docker 命令脚本化」中说明：脚本里要判断容器是否存在（docker ps -aq -f name=app），并处理"已存在则先删"的逻辑。本课还在「本课小结」中说明：Shell 与容器的结合点是可重复的构建/部署/排查流程：镜像用不可变标签、entrypoint 用 exec 传递信号、排查按 get→describe→logs→exec 顺序进行。
+
+### 追问 2：依赖服务暂时不可用时，应该影响哪种探针？
+
+**参考回答**：readiness 失败只摘流量。让 liveness 失败会引发全量重启。针对「依赖服务暂时不可用时，应该影响哪种探针，」，本课在「零基础详解·容器里的 shell 脚本」中说明：依赖服务（数据库、下游接口）不可用时，应该影响 readiness，不要影响 liveness。本课还在「健康检查与就绪脚本」中说明：区分 liveness（失败重启）与 readiness（失败摘流量）——依赖不可用时只应影响 readiness，避免全量重启引发雪崩。
+
+### 追问 3：K8s 排查问题的推荐顺序是？
+
+**参考回答**：正确答案是「get → describe → logs → exec」，本课在「本课小结」中说明：Shell 与容器的结合点是可重复的构建/部署/排查流程：镜像用不可变标签、entrypoint 用 exec 传递信号、排查按 get→describe→logs→exec 顺序进行。先看状态与事件，再看应用日志，最后进容器验证。本课还在「kubectl 常用操作」中说明：排查顺序固定：get（看状态）→ describe（看事件）→ logs（看应用日志）→ exec（进容器验证）。
+
+### 追问 4：容器里 PID 1 进程的特殊性是？
+
+**参考回答**：正确答案是「它需要正确转发信号并回收子进程」，本课在「健康检查与就绪脚本」中说明：在容器里写一个 healthcheck 脚本：检查进程存活、端口可连、关键依赖可用，返回 0/1。这是 entrypoint 脚本要用 exec 的原因，也可用 tini/dumb-init 作为 init。本课还在「零基础详解·容器里的 shell 脚本」中说明：知道为什么容器里推荐用非 root 用户。本课还在「零基础详解·容器里的 shell 脚本」中说明：关键点：用 exec 形式（方括号数组），不要用 shell 形式（CMD python -m app），否则信号传不到应用。
+
+### 追问 5：kubectl exec -it pod -- sh 的适用场景是？
+
+**参考回答**：正确答案是「进入容器内部排查问题」，本课在「零基础详解·容器里的 shell 脚本」中说明：关键点：用 exec 形式（方括号数组），不要用 shell 形式（CMD python -m app），否则信号传不到应用。生产环境常使用 distroless 镜像没有 shell，此时要以日志与指标为主要手段。本课还在「容器内的 entrypoint 脚本」中说明：④ 不在 entrypoint 里做需要人工确认的破坏性操作。
+
 ## English Overview
 
 **Title:** Shell with Containers
@@ -434,4 +478,3 @@ exec "$@"
 > 本课主题：镜像标签、entrypoint 要点与 kubectl 排查顺序。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

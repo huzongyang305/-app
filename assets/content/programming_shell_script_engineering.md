@@ -403,6 +403,50 @@ shellcheck -S warning scripts/*.sh    # 静态检查
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `bin/` | 脚本多了就需要结构：`bin/`（入口）、`lib/`（公共函数）、`test/`（测试）、`README`（用法）。公共函数用 `source` 引入；入口脚本只做参数解析与调用。 |
+| `lib/` | 脚本多了就需要结构：`bin/`（入口）、`lib/`（公共函数）、`test/`（测试）、`README`（用法）。公共函数用 `source` 引入；入口脚本只做参数解析与调用。 |
+| `test/` | 脚本多了就需要结构：`bin/`（入口）、`lib/`（公共函数）、`test/`（测试）、`README`（用法）。公共函数用 `source` 引入；入口脚本只做参数解析与调用。 |
+| `README` | 脚本多了就需要结构：`bin/`（入口）、`lib/`（公共函数）、`test/`（测试）、`README`（用法）。公共函数用 `source` 引入；入口脚本只做参数解析与调用。 |
+| `source` | 脚本多了就需要结构：`bin/`（入口）、`lib/`（公共函数）、`test/`（测试）、`README`（用法）。公共函数用 `source` 引入；入口脚本只做参数解析与调用。 |
+| `command -v` | 依赖管理：检查必需命令（`command -v`），在 README 与 `--help` 中写明依赖；复杂依赖用包管理器或容器固化环境。 |
+| `--help` | 依赖管理：检查必需命令（`command -v`），在 README 与 `--help` 中写明依赖；复杂依赖用包管理器或容器固化环境。 |
+| `@test` | bats（Bash Automated Testing System）提供 `@test` 语法断言命令输出与退出码，是 Shell 最成熟的测试方案。测试要点：把逻辑写成可独立调用的函数、用临时目录隔离副作用、断言退出… |
+| `shellcheck -x script.sh` | \| ShellCheck \| 静态检查 \| `shellcheck -x script.sh` \| |
+| `shfmt -w -i 2 script.sh` | \| shfmt \| 格式化 \| `shfmt -w -i 2 script.sh` \| |
+| `bats tests/` | \| bats-core \| 单元测试 \| `bats tests/` \| |
+| `assert_output` | \| bats-assert \| 断言库 \| `assert_output`、`assert_success` \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：Shell 单元测试最成熟的框架是？
+
+**参考回答**：bats 提供 @test 语法，可断言输出与退出码。其他选项：pytest 属于 Python，RSpec 属于 Ruby，JUnit 属于 Java。针对「Shell 单元测试最成熟的框架是，」，本课在「单元测试·bats」中说明：bats（Bash Automated Testing System）提供 @test 语法断言命令输出与退出码，是 Shell 最成熟的测试方案。本课还在「本课小结」中说明：Shell 工程化 = 目录结构 + shellcheck/shfmt + bats 测试 + CI + 版本化发布。
+
+### 追问 2：Shell 静态检查的必装工具是？
+
+**参考回答**：shellcheck 能拦掉引号、未定义变量等大量低级事故。其他选项：clippy 面向 Rust，pylint 面向 Python，eslint 面向 JavaScript。针对「Shell 静态检查的必装工具是，」，本课在「本课小结」中说明：Shell 工程化 = 目录结构 + shellcheck/shfmt + bats 测试 + CI + 版本化发布。本课还在「静态检查与格式化」中说明：接入 CI 的命令通常是：shellcheck bin/ lib/ && shfmt -d . && bats test/。
+
+### 追问 3：脚本何时应该改用其他语言？
+
+**参考回答**：正确答案是「需要复杂数据结构」，本课在「何时改用别的语言」中说明：出现以下信号就该迁移：需要复杂数据结构或 JSON 处理、需要并发与重试、脚本超过几百行、多人长期维护。常见路径：Shell 做编排 → Python 做逻辑 → Go 分发二进制。本课还在「零基础详解·把脚本当工程来做」中说明：能在 CI 里同时跑 shellcheck 与 bats。本课还在「零基础详解·把脚本当工程来做」中说明：工程化的脚本要做到：能测、能查、能读、能重跑。
+
+### 追问 4：set -x 与 set -v 的区别是？
+
+**参考回答**：正确答案是「-x 打印展开后实际执行的命令」，本课在「静态检查与格式化」中说明：接入 CI 的命令通常是：shellcheck bin/ lib/ && shfmt -d . && bats test/。-x 是排查脚本逻辑最常用的手段，可用 set +x 精确关闭某段。本课还在「零基础详解·把脚本当工程来做」中说明：能在 CI 里同时跑 shellcheck 与 bats。本课还在「零基础详解·把脚本当工程来做」中说明：能用 bats 写一个「缺参数应失败」的用例。
+
+### 追问 5：脚本要支持标准风格的短选项（-a -b 值），推荐用？
+
+**参考回答**：正确答案是「getopts（或 GNU getopt / while + case 手动解析）」，本课在「零基础详解·把脚本当工程来做」中说明：工程化的脚本要做到：能测、能查、能读、能重跑。getopts 是 POSIX 内置，能自动处理选项与参数绑定的细节。本课还在「零基础详解·把脚本当工程来做」中说明：能写出带 usage 与 getopts 的脚本骨架。本课还在「零基础详解·把脚本当工程来做」中说明：脚本要让自己和调用方都能判断成功与否：出错就 exit 1，别默默继续。
+
 ## English Overview
 
 **Title:** Shell Engineering
@@ -441,4 +485,3 @@ shellcheck -S warning scripts/*.sh    # 静态检查
 > 本课主题：目录结构、bats 测试、shellcheck 与 CI 发布。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

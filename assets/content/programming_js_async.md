@@ -423,6 +423,50 @@ loadAll(["/api/a", "/api/b"]).then(({ ok, failed }) => {
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `async` | `async` 函数总是返回 Promise；`await` 只能在 async 函数或模块顶层使用。 |
+| `await` | `async` 函数总是返回 Promise；`await` 只能在 async 函数或模块顶层使用。 |
+| `fetch` | `fetch` 只在网络错误时 reject，**4xx/5xx 也会 resolve**，所以要检查 `response.ok`；超时可用 `AbortController` 实现。 |
+| `response.ok` | `fetch` 只在网络错误时 reject，**4xx/5xx 也会 resolve**，所以要检查 `response.ok`；超时可用 `AbortController` 实现。 |
+| `AbortController` | `fetch` 只在网络错误时 reject，**4xx/5xx 也会 resolve**，所以要检查 `response.ok`；超时可用 `AbortController` 实现。 |
+| `map` | 五个高频陷阱：① 在循环里 `await` 导致串行（应先用 `map` 收集 Promise 再 `Promise.all`）；② 忘记 `await` 使错误变成 unhandledRejection；③ 在 `fo… |
+| `Promise.all` | 五个高频陷阱：① 在循环里 `await` 导致串行（应先用 `map` 收集 Promise 再 `Promise.all`）；② 忘记 `await` 使错误变成 unhandledRejection；③ 在 `fo… |
+| `forEach` | 五个高频陷阱：① 在循环里 `await` 导致串行（应先用 `map` 收集 Promise 再 `Promise.all`）；② 忘记 `await` 使错误变成 unhandledRejection；③ 在 `fo… |
+| `Promise.all(list)` | \| `Promise.all(list)` \| 全部成功才算成功 \| 任一失败立即 reject \| 结果数组，顺序与输入一致 \| |
+| `Promise.allSettled(list)` | \| `Promise.allSettled(list)` \| 允许部分失败 \| 永不 reject \| `{status, value/reason}` 数组 \| |
+| `{status, value/reason}` | \| `Promise.allSettled(list)` \| 允许部分失败 \| 永不 reject \| `{status, value/reason}` 数组 \| |
+| `Promise.race(list)` | \| `Promise.race(list)` \| 取最快的一个（含失败） \| 最快的结果决定成败 \| 单个结果 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：Promise.all 的行为是？
+
+**参考回答**：正确答案是「全部成功才成功」，本课在「本课小结」中说明：异步三件套：Promise 表达结果、async/await 写成同步风格、事件循环决定执行顺序。Promise.all 并行执行，全部 fulfilled 才成功。本课还在「事件循环」中说明：每轮事件循环会清空所有微任务再执行下一个宏任务，所以下面输出顺序是 1 → 3 → 2。本课还在「并发编排与常见陷阱」中说明：④ 事件循环里混入 CPU 密集任务阻塞微任务。
+
+### 追问 2：事件循环中微任务与宏任务的执行顺序是？
+
+**参考回答**：正确答案是「每轮先清空微任务」，本课在「本课小结」中说明：异步三件套：Promise 表达结果、async/await 写成同步风格、事件循环决定执行顺序。Promise.then 属于微任务，setTimeout 属于宏任务，微任务总在下一个宏任务之前执行完。本课还在「事件循环」中说明：每轮事件循环会清空所有微任务再执行下一个宏任务，所以下面输出顺序是 1 → 3 → 2。本课还在「零基础详解·事件循环、Promise 与 async/await」中说明：能背出「同步 → 微任务 → 宏任务」的执行顺序。
+
+### 追问 3：fetch 遇到 HTTP 404 时会？
+
+**参考回答**：正确答案是「resolve」，本课在「fetch 实战」中说明：fetch 只在网络错误时 reject，4xx/5xx 也会 resolve，所以要检查 response.ok。fetch 只在网络层失败时 reject，4xx/5xx 仍算成功响应，需要手动检查 response.ok。本课还在「并发编排与常见陷阱」中说明：④ 事件循环里混入 CPU 密集任务阻塞微任务。本课还在「零基础详解·事件循环、Promise 与 async/await」中说明：规则：同步代码 → 微任务队列清空 → 取一个宏任务 → 再清空微任务 → 循环。
+
+### 追问 4：Promise.allSettled 与 Promise.all 的关键区别是？
+
+**参考回答**：正确答案是「allSettled 等全部完成并返回每个任务的成功/失败状态，不会因单个失败而短路」，本课在「零基础详解·事件循环、Promise 与 async/await」中说明：关键结论：setTimeout(fn, 0) 不会立刻执行，它排在所有微任务之后。批量任务中允许部分失败时用 allSettled，必须全部成功才继续时用 all。本课还在「async / await」中说明：await 只能在 async 函数或模块顶层使用。
+
+### 追问 5：async 函数总是返回什么？
+
+**参考回答**：正确答案是「Promise（返回非 Promise 值也会被包装）」，本课在「async / await」中说明：async 函数总是返回 Promise。因此调用方需要 await 或 .then 处理，抛错会变成 rejected 的 Promise。本课还在「零基础详解·事件循环、Promise 与 async/await」中说明：规则：同步代码 → 微任务队列清空 → 取一个宏任务 → 再清空微任务 → 循环。
+
 ## English Overview
 
 **Title:** Asynchronous JavaScript
@@ -543,4 +587,3 @@ loadAll(["/api/a", "/api/b"]).then(({ ok, failed }) => {
 > 本课主题：回调、Promise、async/await、事件循环与 fetch 实战。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

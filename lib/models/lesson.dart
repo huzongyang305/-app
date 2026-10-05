@@ -121,6 +121,9 @@ class Lesson {
     required this.minutes,
     required this.keywords,
     required this.quiz,
+    this.prerequisites = const <String>[],
+    this.related = const <String>[],
+    this.lab,
   });
 
   final String id;
@@ -142,6 +145,16 @@ class Lesson {
   final int minutes;
   final List<String> keywords;
   final List<QuizQuestion> quiz;
+
+  /// 推荐先学的知识点 ID；空列表表示可以从本课直接开始。
+  final List<String> prerequisites;
+
+  /// 推荐接着学的相关知识点 ID，用于横向扩展或跨语言对照。
+  final List<String> related;
+
+  /// 课程绑定的离线实验入口，例如 interactive / system_network /
+  /// system_database / sandbox:python。为空表示本课没有专门实验。
+  final String? lab;
 
   /// 是否提供可单独加载的完整英文正文。
   bool get hasEnglishBody => assetFileEn?.trim().isNotEmpty ?? false;
@@ -171,6 +184,17 @@ class Lesson {
                 QuizQuestion.fromJson((item as Map).cast<String, dynamic>()),
           )
           .toList(),
+      prerequisites: (json['prerequisites'] as List<dynamic>? ?? const [])
+          .map((item) => item.toString())
+          .where((item) => item.isNotEmpty)
+          .toList(),
+      related: (json['related'] as List<dynamic>? ?? const [])
+          .map((item) => item.toString())
+          .where((item) => item.isNotEmpty)
+          .toList(),
+      lab: (json['lab'] as String?)?.trim().isEmpty ?? true
+          ? null
+          : json['lab'] as String?,
     );
   }
 }

@@ -446,6 +446,11 @@ echo "符号：build/symbols（请归档）"
 - **判断依据**：正确答案是「signingConfigs」，本课在「签名配置」中说明：生成 keystore（keytool -genkey），把 key.properties 放在仓库外并在 .gitignore 中排除，build.gradle.kts 里读取它配置 signingConfigs.release。本课还在「签名配置与体积优化实操」中说明：签名配置四步：① keytool -genkey -v -keystore release.jks -keyalg RSA -validity 10000 -alias app 生成密钥库。
 - **迁移检查**：把答案换成另一种等价写法，是否仍然正确？说明依据。
 
+### 补充考点 1：按照「实战：Flutter 打包发布 Android」从概念到实践的讲解顺序排列下列主题。
+
+- **正确判断**：从调试到发布 → 签名配置 → 体积优化 → 混淆与符号
+- **判断依据**：在「实战：Flutter 打包发布 Android」中，正确顺序是：1. 从调试到发布 → 2. 签名配置 → 3. 体积优化 → 4. 混淆与符号。「实战：Flutter 打包发布 Android」先建立概念，再解释运行机制，随后进入代码与工程实践，最后处理失败路径。在「实战：Flutter 打包发布 Android」里，如果把后一步放到前面，通常会缺少前一步产生的定义、输入或验证结果。本课围绕正式签名、按 ABI 拆分、混淆与符号保留、发布清单。展开。
+
 ## 本课复习清单
 
 离开本课前，逐项确认：
@@ -464,6 +469,50 @@ echo "符号：build/symbols（请归档）"
 | 已经能独立解释的考点 |  |
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
+
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `flutter analyze` | \| 静态检查 \| `flutter analyze` \| 零 error，info 尽量清零 \| |
+| `flutter test` | \| 测试 \| `flutter test` \| 单元 + 组件 + 端到端 \| |
+| `flutter build apk --release` | \| 构建 \| `flutter build apk --release` 或 `--appbundle` \| 签名、混淆、ABI \| |
+| `--appbundle` | \| 构建 \| `flutter build apk --release` 或 `--appbundle` \| 签名、混淆、ABI \| |
+| `flutter build apk --analyze-size` | \| 产物校验 \| `flutter build apk --analyze-size` \| 各模块体积占比 \| |
+| `keytool -genkey` | 关键：**不要用调试签名发布**。生成 keystore（`keytool -genkey`），把 `key.properties` 放在仓库外并在 `.gitignore` 中排除，`build.gradle.kts`… |
+| `key.properties` | 关键：**不要用调试签名发布**。生成 keystore（`keytool -genkey`），把 `key.properties` 放在仓库外并在 `.gitignore` 中排除，`build.gradle.kts`… |
+| `.gitignore` | 关键：**不要用调试签名发布**。生成 keystore（`keytool -genkey`），把 `key.properties` 放在仓库外并在 `.gitignore` 中排除，`build.gradle.kts`… |
+| `build.gradle.kts` | 关键：**不要用调试签名发布**。生成 keystore（`keytool -genkey`），把 `key.properties` 放在仓库外并在 `.gitignore` 中排除，`build.gradle.kts`… |
+| `signingConfigs.release` | 关键：**不要用调试签名发布**。生成 keystore（`keytool -genkey`），把 `key.properties` 放在仓库外并在 `.gitignore` 中排除，`build.gradle.kts`… |
+| `--split-per-abi` | 用 `--split-per-abi` 或 App Bundle 按 ABI 拆分，避免把三种架构都打进一个包。 |
+| `--tree-shake-icons` | `--tree-shake-icons` 剔除未用图标字体（默认开启）。 |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：发布到商店必须使用？
+
+**参考回答**：正确答案是「正式 keystore 签名」，本课在「签名配置与体积优化实操」中说明：体积优化前后参考（同一 Flutter 项目）。keystore 与密码丢失将无法更新已上架应用，务必安全备份。本课还在「项目专属规格·实战·Flutter 打包发布 Android」中说明：正式签名、按 ABI 拆分、混淆与符号保留、发布清单。本课还在「签名配置与体积优化实操」中说明：App Bundle（--appbundle）让商店按设备下发，是发布到 Google Play 的首选形式。
+
+### 追问 2：使用 --obfuscate 时必须同时？
+
+**参考回答**：正确答案是「保存 --split-debug-info 产物以便还原堆栈」，本课在「混淆与符号」中说明：混淆能提高逆向成本，但崩溃堆栈会变成符号，必须保存 split-debug-info 产物，否则线上崩溃无法定位（用 flutter symbolize 还原）。否则线上崩溃只能看到无意义的符号名。本课还在「签名配置与体积优化实操」中说明：体积优化前后参考（同一 Flutter 项目）。本课还在「本课小结」中说明：Flutter 发布的关键是正式签名 + 按 ABI 拆分 + 混淆并保留符号 + 版本与权限合规。
+
+### 追问 3：减小 APK 体积的常用做法是？
+
+**参考回答**：正确答案是「使用 --split-per-abi 或 App Bundle」，本课在「签名配置与体积优化实操」中说明：用 flutter build apk --analyze-size 查看各模块占比，优先处理体积最大的资源。按 CPU 架构拆分可显著降低单包体积。本课还在「体积优化」中说明：用 --split-per-abi 或 App Bundle 按 ABI 拆分，避免把三种架构都打进一个包。
+
+### 追问 4：flutter build appbundle 的产物格式是？
+
+**参考回答**：正确答案是「.aab（Android App Bundle）」，本课在「签名配置与体积优化实操」中说明：③ 在 android/app/build.gradle.kts 读取该文件配置 signingConfigs.release。appbundle 生成 .aab，由商店按设备配置拆分下发。本课还在「签名配置与体积优化实操」中说明：用 flutter build apk --analyze-size 查看各模块占比，优先处理体积最大的资源。
+
+### 追问 5：Android 的 minSdk / targetSdk 在哪个文件中配置？
+
+**参考回答**：正确答案是「android/app/build.gradle(.kts) 的 defaultConfig」，本课在「签名配置与体积优化实操」中说明：③ 在 android/app/build.gradle.kts 读取该文件配置 signingConfigs.release。SDK 版本属于 Android 构建配置，写在 app 模块的 defaultConfig 里。本课还在「签名配置」中说明：生成 keystore（keytool -genkey），把 key.properties 放在仓库外并在 .gitignore 中排除，build.gradle.kts 里读取它配置 signingConfigs.release。
 
 ## English Overview
 
@@ -580,4 +629,3 @@ pubspec.yaml
 > 本课主题：正式签名、按 ABI 拆分、混淆与符号保留、发布清单。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

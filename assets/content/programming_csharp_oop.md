@@ -413,6 +413,50 @@ foreach (var line in order.Lines)
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `{ get; set; }` | 属性是字段的受控访问器，常见写法：`{ get; set; }`、`{ get; init; }`（仅初始化时赋值）、`{ get; private set; }`。 |
+| `{ get; init; }` | 属性是字段的受控访问器，常见写法：`{ get; set; }`、`{ get; init; }`（仅初始化时赋值）、`{ get; private set; }`。 |
+| `{ get; private set; }` | 属性是字段的受控访问器，常见写法：`{ get; set; }`、`{ get; init; }`（仅初始化时赋值）、`{ get; private set; }`。 |
+| `Equals` | record 自动生成构造器、`Equals`、`GetHashCode`、`ToString` 与 `with`，适合 DTO 与值对象。 |
+| `GetHashCode` | record 自动生成构造器、`Equals`、`GetHashCode`、`ToString` 与 `with`，适合 DTO 与值对象。 |
+| `ToString` | record 自动生成构造器、`Equals`、`GetHashCode`、`ToString` 与 `with`，适合 DTO 与值对象。 |
+| `with` | record 自动生成构造器、`Equals`、`GetHashCode`、`ToString` 与 `with`，适合 DTO 与值对象。 |
+| `const` | `const` 必须是编译期常量且隐式静态；`static readonly` 可在运行时初始化一次。 |
+| `static readonly` | `const` 必须是编译期常量且隐式静态；`static readonly` 可在运行时初始化一次。 |
+| `private readonly int _id;` | \| 字段 \| `private readonly int _id;` \| 私有、只读，`_camelCase` 命名 \| |
+| `_camelCase` | \| 字段 \| `private readonly int _id;` \| 私有、只读，`_camelCase` 命名 \| |
+| `public string Name { get; set; }` | \| 自动属性 \| `public string Name { get; set; }` \| 最常用 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：属性使用 { get; init; } 表示？
+
+**参考回答**：正确答案是「只能在对象初始化时赋值」，本课在「定义类」中说明：属性是字段的受控访问器，常见写法：{ get; set; }、{ get; init; }（仅初始化时赋值）、{ get; private set; }。init 访问器让属性在对象初始化后不可变，兼顾对象初始化器语法与不可变性。本课还在「零基础详解·类、属性与封装」中说明：required 让编译器强制调用方初始化该属性，init 让属性只在创建时能赋值。
+
+### 追问 2：record 的 with 表达式作用是？
+
+**参考回答**：正确答案是「生成一个修改了部分属性的新对象」，本课在「本课小结」中说明：C# 面向对象的核心：属性暴露状态、方法表达行为、record 表达不可变数据，不要直接公开字段。with 执行非破坏性修改，原对象保持不变，这是值语义的重要体现。本课还在「record·不可变数据模型」中说明：record 自动生成构造器、Equals、GetHashCode、ToString 与 with，适合 DTO 与值对象。
+
+### 追问 3：const 与 static readonly 的区别是？
+
+**参考回答**：正确答案是「const 是编译期常量」，本课在「静态成员与常量」中说明：static readonly 可在运行时初始化一次。const 在编译时替换到调用处，static readonly 在运行时初始化一次，可用于 DateTime.Now 等。本课还在「零基础详解·类、属性与封装」中说明：能说出 class 与 record 在比较语义上的差别。本课还在「本课小结」中说明：C# 面向对象的核心：属性暴露状态、方法表达行为、record 表达不可变数据，不要直接公开字段。
+
+### 追问 4：属性（property）相比 public 字段的优势是？
+
+**参考回答**：正确答案是「可在 get/set 中加校验与计算逻辑，并且能被接口约束、支持数据绑定」，本课在「零基础详解·类、属性与封装」中说明：对外看起来像字段，内部其实可以带校验、只读或计算逻辑。自动属性 { get; set; } 是语法糖，需要时再展开成带逻辑的完整属性。本课还在「定义类」中说明：属性是字段的受控访问器，常见写法：{ get; set; }、{ get; init; }（仅初始化时赋值）、{ get; private set; }。
+
+### 追问 5：sealed 关键字的作用是？
+
+**参考回答**：正确答案是「修饰类时禁止被继承」，本课在「零基础详解·类、属性与封装」中说明：知道 private set 与 init 分别限制了什么。sealed 可避免继承带来的行为不确定性，string 就是 sealed 类。本课还在「零基础详解·类、属性与封装」中说明：能说出 class 与 record 在比较语义上的差别。本课还在「record·不可变数据模型」中说明：record 自动生成构造器、Equals、GetHashCode、ToString 与 with，适合 DTO 与值对象。
+
 ## English Overview
 
 **Title:** Classes & Objects
@@ -451,4 +495,3 @@ foreach (var line in order.Lines)
 > 本课主题：属性与访问控制、对象初始化器、record 与静态成员。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

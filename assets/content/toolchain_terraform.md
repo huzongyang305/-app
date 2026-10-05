@@ -302,6 +302,50 @@ print(guard_production("prod", {"delete": 1}, allow_delete=False))
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `plan` | 用 `plan` 输出作为 PR 评论，让变更可见。 |
+| `terraform plan` | 定期 `terraform plan` 检测漂移（有人手工改过资源）。 |
+| `-auto-approve` | 用 `-auto-approve` 跑生产，跳过人工确认。 |
+| `terraform fmt -check` | 团队协作流程**：功能分支修改 → CI 执行 `terraform fmt -check`、`validate`、`plan` 并把 plan 结果贴到 PR → 人工评审（重点看 destroy/replace）→ … |
+| `validate` | 团队协作流程**：功能分支修改 → CI 执行 `terraform fmt -check`、`validate`、`plan` 并把 plan 结果贴到 PR → 人工评审（重点看 destroy/replace）→ … |
+| `terraform init` | \| `terraform init` \| 初始化后端与插件 \| 首次或换后端时执行 \| |
+| `terraform fmt` | \| `terraform fmt` \| 格式化代码 \| 提交前执行 \| |
+| `terraform validate` | \| `terraform validate` \| 语法与引用校验 \| 不访问远端 \| |
+| `terraform apply` | \| `terraform apply` \| 应用变更 \| 生产需评审与二次确认 \| |
+| `terraform destroy` | \| `terraform destroy` \| 销毁资源 \| 极度危险，需明确目标 \| |
+| `terraform state list` | \| `terraform state list` \| 查看已管理资源 \| 排查漂移 \| |
+| `terraform import` | \| `terraform import` \| 导入已存在资源 \| 导入后需校对配置 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：Terraform State 的核心作用是？
+
+**参考回答**：正确答案是「记录已创建资源与配置的映射关系」，本课在「为什么需要 IaC」中说明：基础设施即代码（IaC）把资源写成配置文件，纳入版本控制，用流程化的方式创建与变更。State 是 Terraform 判断资源增删改的依据。本课还在「模块化与协作要点」中说明：团队协作流程：功能分支修改 → CI 执行 terraform fmt -check、validate、plan 并把 plan 结果贴到 PR → 人工评审（重点看 destroy/replace）→ 合并后由受控流水线 apply → 记录 apply 输出与版本标签。
+
+### 追问 2：团队协作时 State 必须？
+
+**参考回答**：正确答案是「使用远程后端并加锁」，本课在「为什么需要 IaC」中说明：基础设施即代码（IaC）把资源写成配置文件，纳入版本控制，用流程化的方式创建与变更。远程状态 + 锁能避免多人同时 apply 互相覆盖。本课还在「状态管理」中说明：State 默认存在本地文件，团队协作必须改为远程后端（如 S3 + DynamoDB 锁、Terraform Cloud、OSS），否则多人同时 apply 会互相覆盖。
+
+### 追问 3：生产环境执行 apply 之前应该？
+
+**参考回答**：正确答案是「先 review plan 并人工确认」，本课在「工作流」中说明：其中 plan 是安全闸门：它展示将要新增、修改、销毁的资源，必须人工确认后再 apply。plan 会展示将要创建、修改与销毁的资源，是最后的安全闸门。本课还在「常见坑」中说明：用 -auto-approve 跑生产，跳过人工确认。本课还在「模块化与协作要点」中说明：团队协作流程：功能分支修改 → CI 执行 terraform fmt -check、validate、plan 并把 plan 结果贴到 PR → 人工评审（重点看 destroy/replace）→ 合并后由受控流水线 apply → 记录 apply 输出与版本标签。
+
+### 追问 4：把基础设施代码拆成模块（module）的好处是？
+
+**参考回答**：正确答案是「复用经过验证的配置」，本课在「模块化与协作要点」中说明：漂移处理：定期跑 terraform plan，若出现非本次变更的差异说明有人手工改过资源。模块要设计清晰的输入变量与输出，避免把整套环境耦合在一起。本课还在「最佳实践」中说明：定期 terraform plan 检测漂移（有人手工改过资源）。本课还在「环境隔离」中说明：常见做法有三种：目录隔离（envs/dev、envs/prod 各自一份配置）、工作区（workspace）、以及同一份模块 + 不同变量文件。
+
+### 追问 5：Terraform 与 Ansible 的定位差异是？
+
+**参考回答**：正确答案是「Terraform 声明式管理基础设施资源」，本课在「模块化与协作要点」中说明：漂移处理：定期跑 terraform plan，若出现非本次变更的差异说明有人手工改过资源。实际项目中常先用 Terraform 建资源，再用 Ansible 做系统初始化与配置。本课还在「模块化与协作要点」中说明：处理方式是把改动同步回代码（import 或补配置），而不是忽略差异——否则下次 apply 可能覆盖掉手工改动。
+
 ## English Overview
 
 **Title:** Terraform & IaC
@@ -341,4 +385,3 @@ print(guard_production("prod", {"delete": 1}, allow_delete=False))
 > 本课主题：Provider/State/Module、工作流与最佳实践。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

@@ -273,6 +273,50 @@ echo "token=$(mask "$API_TOKEN")"
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `print` | \| Python \| `print` \| `logging` + `structlog` \| 标准库够用，structlog 更易结构化 \| |
+| `logging` | \| Python \| `print` \| `logging` + `structlog` \| 标准库够用，structlog 更易结构化 \| |
+| `structlog` | \| Python \| `print` \| `logging` + `structlog` \| 标准库够用，structlog 更易结构化 \| |
+| `console.log` | \| JavaScript \| `console.log` \| `pino` / `winston` \| pino 性能好，默认 JSON \| |
+| `pino` | \| JavaScript \| `console.log` \| `pino` / `winston` \| pino 性能好，默认 JSON \| |
+| `winston` | \| JavaScript \| `console.log` \| `pino` / `winston` \| pino 性能好，默认 JSON \| |
+| `tslog` | \| TypeScript \| `console.log` \| `pino` / `tslog` \| 与 JS 相同，可加类型 \| |
+| `System.out` | \| Java \| `System.out` \| SLF4J + Logback / Log4j2 \| 门面 + 实现分离 \| |
+| `Console.WriteLine` | \| C# \| `Console.WriteLine` \| `Microsoft.Extensions.Logging` + Serilog \| 内建抽象 + 结构化后端 \| |
+| `Microsoft.Extensions.Logging` | \| C# \| `Console.WriteLine` \| `Microsoft.Extensions.Logging` + Serilog \| 内建抽象 + 结构化后端 \| |
+| `std::cout` | \| C++ \| `std::cout` \| spdlog / glog \| spdlog 轻量、格式灵活 \| |
+| `fmt.Println` | \| Go \| `fmt.Println` \| `log/slog` / zap / zerolog \| 标准库 slog 已够用 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：结构化日志相比普通文本日志的核心优势是？
+
+**参考回答**：正确答案是「字段固定可检索，可聚合」，本课在「一句话说清」中说明：可观测性回答三个问题：有没有问题（指标）、出了什么问题（日志）、问题在哪一环（链路）。结构化日志的价值在于可查询与可统计。本课还在「本课小结」中说明：可观测性三支柱互补：指标看趋势、日志看细节、链路看路径。本课还在「本课小结」中说明：日志要结构化：一行一个 JSON，字段稳定，带 trace id。
+
+### 追问 2：哪一类事件最适合用 warn 级别？
+
+**参考回答**：正确答案是「出现异常但已自动重试成功」，本课在「一句话说清」中说明：可观测性回答三个问题：有没有问题（指标）、出了什么问题（日志）、问题在哪一环（链路）。可恢复的异常属于 warn，需要关注但不必立即告警。本课还在「本课小结」中说明：可观测性三支柱互补：指标看趋势、日志看细节、链路看路径。本课还在「本课小结」中说明：日志要结构化：一行一个 JSON，字段稳定，带 trace id。
+
+### 追问 3：在容器环境里，日志应该输出到哪里？
+
+**参考回答**：正确答案是「标准输出（stdout），由平台统一收集」，本课在「一句话说清」中说明：各语言的日志库不同，但「结构化、分级、带上下文」三条要求一致。输出到标准输出是云原生的标准做法，平台负责收集与轮转。本课还在「本课小结」中说明：安全底线：任何密钥与个人敏感信息都不进日志。
+
+### 追问 4：关于日志安全，下面哪条是必须遵守的？
+
+**参考回答**：正确答案是「密钥与个人敏感信息一律不入日志」，本课在「本课小结」中说明：安全底线：任何密钥与个人敏感信息都不进日志。日志会被多方访问与长期留存，必须默认脱敏。本课还在「一句话说清」中说明：各语言的日志库不同，但「结构化、分级、带上下文」三条要求一致。
+
+### 追问 5：补全代码：「日志与可观测性：九种生态横向对照」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `processors=[____.processors.add_log_level,`
+
+**参考回答**：正确答案是「structlog」，这道题在问补全代码：日志与可观测性：九种生态横向对照示例中，下…sors.add_log_level,`，判断时要把题干限定的输入、边界与目标逐项对齐。本课示例中还能看到 `import structlog` 这样的用法，说明该关键字在本课代码中承担实际功能。
+
 ## English Overview
 
 **Title:** Logging and Observability
@@ -311,4 +355,3 @@ echo "token=$(mask "$API_TOKEN")"
 > 本课主题：结构化日志、级别选择、可观测性三支柱与日志安全底线。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

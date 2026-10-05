@@ -111,6 +111,11 @@
 - **判断依据**：正确答案是「IAsyncEnumerable」，本课在「核心知识」中说明：它解决的问题：把await foreach 和 await using 保证异步迭代与资源释放正确。本课示例中还能看到 `async IAsyncEnumerable<int> Countdown(int from)` 这样的用法，说明该关键字在本课代码中承担实际功能。
 - **迁移检查**：如果填成相近的另一个函数或关键字，程序会在哪一步出错？
 
+### 补充考点 1：按照「C# 异步流与取消」从概念到实践的讲解顺序排列下列主题。
+
+- **正确判断**：核心知识 → 关键流程 → 实践路径 → 常见误区
+- **判断依据**：在「C# 异步流与取消」中，正确顺序是：1. 核心知识 → 2. 关键流程 → 3. 实践路径 → 4. 常见误区。「C# 异步流与取消」先建立概念，再解释运行机制，随后进入代码与工程实践，最后处理失败路径。在「C# 异步流与取消」里，如果把后一步放到前面，通常会缺少前一步产生的定义、输入或验证结果。本课围绕理解 IAsyncEnumerable、CancellationToken 和异步资源释放。展开。
+
 ## 本课复习清单
 
 离开本课前，逐项确认：
@@ -192,6 +197,42 @@ await foreach (var value in Countdown(3))
 - 先写下判断，再对照：CancellationToken 要贯穿调用链，并在阻塞点检查取消。
 - 检查点：如果输入换成边界值，这个结论还需要补充哪个前提？
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `IAsyncEnumerable` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
+| `CancellationToken` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
+| `异步流` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
+| `取消` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：关于「IAsyncEnumerable 按…」，下列说法正确的是？
+
+**参考回答**：正确答案是「IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果。」，本课在「核心知识」中说明：它解决的问题：把IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果。，本课在「深度追问与自测」中说明：先写下判断，再对照：IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果。，本课在「本课小结」中说明：本课属于「C#」，核心关键词是 IAsyncEnumerable、CancellationToken、异步流、取消。
+
+### 追问 2：关于「CancellationToken …」，下列说法正确的是？
+
+**参考回答**：正确答案是「CancellationToken 要贯穿调用链，并在阻塞点检查取消。」，本课在「核心知识」中说明：它解决的问题：把CancellationToken 要贯穿调用链，并在阻塞点检查取消。，本课在「深度追问与自测」中说明：先写下判断，再对照：CancellationToken 要贯穿调用链，并在阻塞点检查取消。，本课在「核心知识」中说明：它解决的问题：把IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果。本课还在「本课小结」中说明：本课属于「C#」，核心关键词是 IAsyncEnumerable、CancellationToken、异步流、取消。
+
+### 追问 3：关于「await foreach 和 aw…」，下列说法正确的是？
+
+**参考回答**：正确答案是「await foreach 和 await using 保证异步迭代与资源释放正确。」，本课在「深度追问与自测」中说明：先写下判断，再对照：IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果。，本课在「本课小结」中说明：本课属于「C#」，核心关键词是 IAsyncEnumerable、CancellationToken、异步流、取消。，本课在核心知识中说明：它解决的问题：把await foreach 和 await using 保证异步迭代与资源释放正确。
+
+### 追问 4：「C# 异步流与取消」的核心学习目标是什么？
+
+**参考回答**：正确答案是「理解 IAsyncEnumerable」，本课在「本课小结」中说明：本课属于「C#」，核心关键词是 IAsyncEnumerable、CancellationToken、异步流、取消。，本课在核心知识中说明：它解决的问题：把await foreach 和 await using 保证异步迭代与资源释放正确。本课还在「深度追问与自测」中说明：先写下判断，再对照：CancellationToken 要贯穿调用链，并在阻塞点检查取消。
+
+### 追问 5：补全代码：「C# 异步流与取消」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `async ____<int> Countdown(int from)`
+
+**参考回答**：正确答案是「IAsyncEnumerable」，本课在「核心知识」中说明：它解决的问题：把IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果。本课还在「深度追问与自测」中说明：先写下判断，再对照：IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果。本课还在「核心知识」中说明：它解决的问题：把await foreach 和 await using 保证异步迭代与资源释放正确。
+
 ## English Overview
 
 **Title:** C# Async Streams and Cancellation
@@ -266,4 +307,3 @@ await foreach (var value in Countdown(3))
 > 本课主题：理解 IAsyncEnumerable、CancellationToken 和异步资源释放。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

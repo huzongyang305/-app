@@ -451,6 +451,50 @@ int main() {
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `auto` | C++11**：`auto`、lambda、右值引用与移动语义、智能指针、范围 for、`nullptr` |
+| `nullptr` | C++11**：`auto`、lambda、右值引用与移动语义、智能指针、范围 for、`nullptr` |
+| `make_unique` | C++14**：泛型 lambda、`make_unique`、返回值类型推导 |
+| `if constexpr` | C++17**：结构化绑定、`if constexpr`、`optional` / `variant` / `string_view`、并行算法 |
+| `optional` | C++17**：结构化绑定、`if constexpr`、`optional` / `variant` / `string_view`、并行算法 |
+| `variant` | C++17**：结构化绑定、`if constexpr`、`optional` / `variant` / `string_view`、并行算法 |
+| `string_view` | C++17**：结构化绑定、`if constexpr`、`optional` / `variant` / `string_view`、并行算法 |
+| `span` | C++20**：Concepts、Ranges、协程、`span`、三路比较 `<=>` |
+| `<=>` | C++20**：Concepts、Ranges、协程、`span`、三路比较 `<=>` |
+| `expected` | C++23**：`expected`、`print`、更多 ranges 支持 |
+| `print` | C++23**：`expected`、`print`、更多 ranges 支持 |
+| `T&&` | 右值引用 `T&&` 与 `std::move` 让「把资源搬走」变成廉价操作，这也是 `vector` 扩容高效的原因。 |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：std::move 的本质作用是？
+
+**参考回答**：正确答案是「把表达式转换为右值引用」，本课在「版本演进」中说明：C++11：auto、lambda、右值引用与移动语义、智能指针、范围 for、nullptr。move 本身不移动任何数据，只是类型转换。本课还在「移动语义」中说明：右值引用 T&& 与 std::move 让「把资源搬走」变成廉价操作，这也是 vector 扩容高效的原因。本课还在「各版本特性的实战取舍」中说明：开启 -std=c++20 前先确认工具链与依赖支持，编译选项与 CI 要同步更新。
+
+### 追问 2：std::optional<T> 用来表达？
+
+**参考回答**：正确答案是「可能没有值的对象」，本课在「版本演进」中说明：C++11：auto、lambda、右值引用与移动语义、智能指针、范围 for、nullptr。optional 明确表示「有值 / 无值」，比用魔法值或裸指针更清晰安全。本课还在「各版本特性的实战取舍」中说明：开启 -std=c++20 前先确认工具链与依赖支持，编译选项与 CI 要同步更新。本课还在「各版本特性的实战取舍」中说明：新代码优先用 constexpr、auto、结构化绑定、optional/variant、RAII 与智能指针。
+
+### 追问 3：for (const auto& [key, value] : map) 用到了哪个特性？
+
+**参考回答**：结构化绑定（C++17）把 pair/tuple/结构体一次解包成多个变量。其他选项：结构化绑定（C++17）一次解包多个值。针对「for (const auto& [key, v…」，本课在「各版本特性的实战取舍」中说明：新代码优先用 constexpr、auto、结构化绑定、optional/variant、RAII 与智能指针。本课还在「版本演进」中说明：C++17：结构化绑定、if constexpr、optional / variant / stringview、并行算法。
+
+### 追问 4：模板参数中的 T&& 通常被称为？
+
+**参考回答**：正确答案是「转发引用（universal reference），配合 std::forward 实现完美转发」，本课在「移动语义」中说明：右值引用 T&& 与 std::move 让「把资源搬走」变成廉价操作，这也是 vector 扩容高效的原因。发生类型推导时 T&& 会按实参折叠成左值或右值引用，这是完美转发的基础。本课还在「版本演进」中说明：C++23：expected、print、更多 ranges 支持。
+
+### 追问 5：std::string_view 的特点是？
+
+**参考回答**：正确答案是「不拥有内存的字符串视图」，本课在「零基础详解·现代 C++ 的十个好习惯」中说明：能解释 std::move 之后为什么不该再用原对象。stringview 常用于只读参数，但指向临时字符串时会悬空，需要格外小心。本课还在「本课小结」中说明：现代 C++ 的写法可以概括为：用值语义和智能指针管理资源、用 auto/范围 for 简化代码、用 Ranges 和算法替代手写循环、用标准并发库替代裸线程 API。
+
 ## English Overview
 
 **Title:** Modern C++
@@ -489,4 +533,3 @@ int main() {
 > 本课主题：移动语义、结构化绑定、optional/variant、Ranges 与并发。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

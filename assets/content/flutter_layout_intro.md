@@ -169,6 +169,11 @@ Dart 空安全区分可空和非空类型，`?`、`!`、`?.`、`??` 分别表达
 - **判断依据**：正确答案是「Expanded」，本课在「一句话入门」中说明：用 Row、Column 和 Expanded 完成基础布局。本课还在「Dart 与 Flutter 基础机制速览」中说明：Row、Column、Stack、Expanded、Flexible 和 ListView 各有布局规则。本课还在「Dart 与 Flutter 基础机制速览」中说明：async/await 让异步代码更易读，但 UI 线程仍然不能被长时间同步计算阻塞。
 - **迁移检查**：不看题干，用自己的话补全这句话，再与标准答案对照。
 
+### 补充考点 1：关于「Flutter 布局入门」，下列哪些说法是正确的？（多选）
+
+- **正确判断**：Row 沿水平主轴，Column 沿垂直主轴排列；按 flex 比例瓜分主轴上的剩余空间
+- **判断依据**：正确答案是「Row 沿水平主轴，Column 沿垂直主轴排列；按 flex 比例瓜分主轴上的剩余空间」。本课的两个判断点可以互相印证：正确答案是「Row 沿水平主轴，Column 沿垂直主轴排列」，本课在「Dart 与 Flutter 基础机制速览」中说明：父节点给子节点最大和最小约束，子节点在约束内选择尺寸并向…；用 Row、Column 和 Expanded 完成基础布局。。在「Flutter 布局入门」中，多选时不能只凭一个关键词选答案，要逐项核对题干限定的对象和边界。
+
 ## 本课复习清单
 
 离开本课前，逐项确认：
@@ -186,6 +191,50 @@ Dart 空安全区分可空和非空类型，`?`、`!`、`?.`、`??` 分别表达
 | 已经能独立解释的考点 |  |
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
+
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `build` | Flutter 使用 Dart 语言和自带渲染引擎，UI 由不可变 Widget 树描述。`build` 方法根据当前状态返回 Widget 配置，框架比较新旧树并更新必要的渲染对象。Widget 很轻量，频繁重建本身不… |
+| `const` | Flutter 使用 Dart 语言和自带渲染引擎，UI 由不可变 Widget 树描述。`build` 方法根据当前状态返回 Widget 配置，框架比较新旧树并更新必要的渲染对象。Widget 很轻量，频繁重建本身不… |
+| `Row` | Flutter 布局遵循“约束向下、尺寸向上、父决定位置”。父节点给子节点最大和最小约束，子节点在约束内选择尺寸并向上汇报，父节点决定放置位置。`Row`、`Column`、`Stack`、`Expanded`、`Fle… |
+| `Column` | Flutter 布局遵循“约束向下、尺寸向上、父决定位置”。父节点给子节点最大和最小约束，子节点在约束内选择尺寸并向上汇报，父节点决定放置位置。`Row`、`Column`、`Stack`、`Expanded`、`Fle… |
+| `Stack` | Flutter 布局遵循“约束向下、尺寸向上、父决定位置”。父节点给子节点最大和最小约束，子节点在约束内选择尺寸并向上汇报，父节点决定放置位置。`Row`、`Column`、`Stack`、`Expanded`、`Fle… |
+| `Expanded` | Flutter 布局遵循“约束向下、尺寸向上、父决定位置”。父节点给子节点最大和最小约束，子节点在约束内选择尺寸并向上汇报，父节点决定放置位置。`Row`、`Column`、`Stack`、`Expanded`、`Fle… |
+| `Flexible` | Flutter 布局遵循“约束向下、尺寸向上、父决定位置”。父节点给子节点最大和最小约束，子节点在约束内选择尺寸并向上汇报，父节点决定放置位置。`Row`、`Column`、`Stack`、`Expanded`、`Fle… |
+| `ListView` | Flutter 布局遵循“约束向下、尺寸向上、父决定位置”。父节点给子节点最大和最小约束，子节点在约束内选择尺寸并向上汇报，父节点决定放置位置。`Row`、`Column`、`Stack`、`Expanded`、`Fle… |
+| `State` | 无状态 Widget 只依赖输入，状态变化由父级重建；有状态 Widget 通过 `State` 保存跨帧数据，`setState` 通知框架重新构建。`initState`、`didChangeDependencies… |
+| `setState` | 无状态 Widget 只依赖输入，状态变化由父级重建；有状态 Widget 通过 `State` 保存跨帧数据，`setState` 通知框架重新构建。`initState`、`didChangeDependencies… |
+| `initState` | 无状态 Widget 只依赖输入，状态变化由父级重建；有状态 Widget 通过 `State` 保存跨帧数据，`setState` 通知框架重新构建。`initState`、`didChangeDependencies… |
+| `didChangeDependencies` | 无状态 Widget 只依赖输入，状态变化由父级重建；有状态 Widget 通过 `State` 保存跨帧数据，`setState` 通知框架重新构建。`initState`、`didChangeDependencies… |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：Row 与 Column 分别沿哪个方向排列子节点？
+
+**参考回答**：正确答案是「Row 沿水平主轴，Column 沿垂直主轴排列」，本课在「Dart 与 Flutter 基础机制速览」中说明：父节点给子节点最大和最小约束，子节点在约束内选择尺寸并向上汇报，父节点决定放置位置。Row 的主轴是水平方向，Column 的主轴是垂直方向。本课还在「Dart 与 Flutter 基础机制速览」中说明：Dart 空安全区分可空和非空类型，?、!、?.、?? 分别表达可空、断言、安全访问和默认值。
+
+### 追问 2：在 Row 或 Column 中，Expanded 起到什么作用？
+
+**参考回答**：正确答案是「按 flex 比例瓜分主轴上的剩余空间」，本课在「Dart 与 Flutter 基础机制速览」中说明：父节点给子节点最大和最小约束，子节点在约束内选择尺寸并向上汇报，父节点决定放置位置。Row 或 Column 先安置固定尺寸的子节点，再把主轴剩余空间按 flex 权重分给 Expanded 包裹的子节点，因此 Expanded 常用于让某一列或某个区域撑满可用空间。本课还在「Dart 与 Flutter 基础机制速览」中说明：Flutter 布局遵循“约束向下、尺寸向上、父决定位置”。
+
+### 追问 3：本课最小示例中的 Column 会把页面分成什么结构？
+
+**参考回答**：正确答案是「上下两块等高色块，中间是一条浅灰间隔」，本课在「Dart 与 Flutter 基础机制速览」中说明：Widget 很轻量，频繁重建本身不是问题，真正昂贵的是布局、绘制、图片解码和同步计算。示例在 Column 中放入 Expanded 色块、固定高度的 SizedBox 间隔和另一个色块，Expanded 会吃掉剩余高度，于是页面呈现上下两块等高分区的效果。本课还在「Dart 与 Flutter 基础机制速览」中说明：Row、Column、Stack、Expanded、Flexible 和 ListView 各有布局规则。
+
+### 追问 4：布局时出现 RenderFlex overflow 警告，通常意味着什么？
+
+**参考回答**：正确答案是「子节点在主轴上的总尺寸超过了可用约束」，本课在「Dart 与 Flutter 基础机制速览」中说明：溢出通常不是“孩子太大”这么简单，而是约束链中某一层没有提供可分配空间。RenderFlex 是 Row、Column 等弹性布局的渲染对象，当子节点尺寸总和超出父容器给出的约束时，它会在边缘报告溢出。本课还在「Dart 与 Flutter 基础机制速览」中说明：const 构造函数能在编译期复用对象，减少不必要的重建。
+
+### 追问 5：补全代码：「Flutter 布局入门」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `____(child: ColoredBox(color: Color(0xFF2F6BFF))),`
+
+**参考回答**：正确答案是「Expanded」，本课在「一句话入门」中说明：用 Row、Column 和 Expanded 完成基础布局。本课还在「Dart 与 Flutter 基础机制速览」中说明：Row、Column、Stack、Expanded、Flexible 和 ListView 各有布局规则。本课还在「Dart 与 Flutter 基础机制速览」中说明：async/await 让异步代码更易读，但 UI 线程仍然不能被长时间同步计算阻塞。
 
 ## English Overview
 

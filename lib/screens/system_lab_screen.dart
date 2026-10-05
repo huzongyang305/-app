@@ -8,7 +8,10 @@ import '../theme/app_theme.dart';
 /// 每个步骤包含标题和解释，用户用上一步/下一步观察共享状态如何变化。
 /// 页面不依赖动画才能理解内容，因此“减少动画”设置只会缩短过渡时间。
 class SystemLabScreen extends StatefulWidget {
-  const SystemLabScreen({super.key});
+  const SystemLabScreen({super.key, this.initialMode = 0});
+
+  /// 0 = HTTP / 网络时序，1 = 数据库事务。
+  final int initialMode;
 
   @override
   State<SystemLabScreen> createState() => _SystemLabScreenState();
@@ -18,8 +21,14 @@ class _SystemLabScreenState extends State<SystemLabScreen> {
   static const int _http = 0;
   static const int _transaction = 1;
 
-  int _mode = _http;
+  late int _mode;
   int _step = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _mode = widget.initialMode.clamp(_http, _transaction);
+  }
 
   static const List<_FlowStage> _httpStages = <_FlowStage>[
     _FlowStage('systemHttpDnsTitle', 'systemHttpDnsDetail', Icons.dns_outlined),

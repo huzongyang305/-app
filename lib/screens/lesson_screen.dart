@@ -12,7 +12,10 @@ import '../services/tts_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/markdown_code_builder.dart';
 import '../widgets/responsive_content.dart';
+import 'code_sandbox_screen.dart';
+import 'interactive_lab_screen.dart';
 import 'quiz_screen.dart';
+import 'system_lab_screen.dart';
 
 /// 教程详情页：Markdown 正文 + 代码块 + 收藏 / 笔记 / 测验入口。
 class LessonScreen extends StatefulWidget {
@@ -192,6 +195,35 @@ class _LessonScreenState extends State<LessonScreen> {
     );
   }
 
+  /// 从课程页直接进入绑定的离线实验；没有绑定入口时不显示按钮。
+  Future<void> _openLab() async {
+    final lab = widget.lesson.lab;
+    if (lab == null) return;
+    Widget? screen;
+    if (lab == 'interactive') {
+      screen = InteractiveLabScreen(initialMode: _interactiveMode());
+    } else if (lab == 'system_network') {
+      screen = const SystemLabScreen(initialMode: 0);
+    } else if (lab == 'system_database') {
+      screen = const SystemLabScreen(initialMode: 1);
+    } else if (lab.startsWith('sandbox:')) {
+      screen = CodeSandboxScreen(initialLanguageId: lab.substring(8));
+    }
+    if (screen == null || !mounted) return;
+    await Navigator.of(context).push(
+      MaterialPageRoute<void>(builder: (_) => screen!),
+    );
+  }
+
+  int _interactiveMode() {
+    final id = widget.lesson.id;
+    if (id.contains('bubble')) return 1;
+    if (id.contains('stack') || id.contains('queue')) return 2;
+    if (id.contains('insertion')) return 3;
+    if (id.contains('selection')) return 4;
+    return 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -205,6 +237,12 @@ class _LessonScreenState extends State<LessonScreen> {
       appBar: AppBar(
         title: Text(widget.lesson.title.of(localeCode)),
         actions: [
+          if (widget.lesson.lab != null)
+            IconButton(
+              tooltip: context.tr('openLab'),
+              icon: const Icon(Icons.science_outlined),
+              onPressed: _openLab,
+            ),
           IconButton(
             tooltip: context.tr(_speaking ? 'ttsStopReading' : 'ttsReadAloud'),
             icon: Icon(_speaking ? Icons.stop_circle : Icons.volume_up),
@@ -542,6 +580,28 @@ class _LessonOverviewPane extends StatelessWidget {
             color: theme.colorScheme.onSurfaceVariant,
           ),
         ),
+        if (lesson.prerequisites.isNotEmpty) ...[
+          const SizedBox(height: 16),
+          Text(
+            context.tr('prerequisites'),
+            style: theme.textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 6),
+          _LessonLinkChips(ids: lesson.prerequisites),
+        ],
+        if (lesson.related.isNotEmpty) ...[
+          const SizedBox(height: 14),
+          Text(
+            context.tr('relatedLessons'),
+            style: theme.textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 6),
+          _LessonLinkChips(ids: lesson.related),
+        ],
         const SizedBox(height: 20),
         Wrap(
           spacing: 8,
@@ -573,6 +633,43 @@ class _LessonOverviewPane extends StatelessWidget {
             color: theme.colorScheme.onSurfaceVariant,
           ),
         ),
+      ],
+    );
+  }
+}
+
+/// 先修与后续课程的跳转标签；找不到 ID 时静默跳过，避免脏数据崩溃。
+class _LessonLinkChips extends StatelessWidget {
+  const _LessonLinkChips({required this.ids});
+
+  final List<String> ids;
+
+  @override
+  Widget build(BuildContext context) {
+    final content = context.watch<ContentProvider>();
+    final locale = context.strings.localeCode;
+    final lessons = ids
+        .map(content.lessonById)
+        .whereType<Lesson>()
+        .take(5)
+        .toList();
+    if (lessons.isEmpty) return const SizedBox.shrink();
+    return Wrap(
+      spacing: 6,
+      runSpacing: 6,
+      children: [
+        for (final lesson in lessons)
+          ActionChip(
+            label: Text(
+              lesson.title.of(locale),
+              overflow: TextOverflow.ellipsis,
+            ),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => LessonScreen(lesson: lesson),
+              ),
+            ),
+          ),
       ],
     );
   }

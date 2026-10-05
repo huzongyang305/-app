@@ -415,6 +415,50 @@ if __name__ == "__main__":
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `ProcessPoolExecutor` | 线程池同理，把 `ProcessPoolExecutor` 换成 `ThreadPoolExecutor` 即可，适合 IO 密集场景。 |
+| `ThreadPoolExecutor` | 线程池同理，把 `ProcessPoolExecutor` 换成 `ThreadPoolExecutor` 即可，适合 IO 密集场景。 |
+| `await` | 异步是单线程内的事件循环协作：遇到 `await` 就让出控制权，适合高并发网络请求。 |
+| `time.sleep` | 注意：**异步函数里不能写阻塞调用**（如 `time.sleep`、同步 requests），否则整个事件循环被卡住，应改用 `asyncio.sleep`、`aiohttp` 等异步库。 |
+| `asyncio.sleep` | 注意：**异步函数里不能写阻塞调用**（如 `time.sleep`、同步 requests），否则整个事件循环被卡住，应改用 `asyncio.sleep`、`aiohttp` 等异步库。 |
+| `aiohttp` | 注意：**异步函数里不能写阻塞调用**（如 `time.sleep`、同步 requests），否则整个事件循环被卡住，应改用 `asyncio.sleep`、`aiohttp` 等异步库。 |
+| `asyncio` | \| 大量网络 / 文件 IO \| `asyncio` 或线程池 \| |
+| `threading` | \| 少量并发、代码简单 \| `threading` \| |
+| `multiprocessing` | \| CPU 密集计算 \| `multiprocessing` \| |
+| `multiprocessing.Queue` | \| 需要进程间通信 \| `multiprocessing.Queue` / `Pipe` \| |
+| `Pipe` | \| 需要进程间通信 \| `multiprocessing.Queue` / `Pipe` \| |
+| `async def` | \| 大量网络 / 文件 IO \| `asyncio` \| 单线程事件循环，开销最小 \| `async def`、`await`、`asyncio.gather` \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：CPython 中 CPU 密集型任务最适合用？
+
+**参考回答**：GIL 使多线程无法并行执行字节码，CPU 密集任务应该用多进程绕开 GIL。其他选项：GIL 让多线程在 CPU 密集场景无法并行，asyncio 与线程池同样受限。针对「CPython 中 CPU 密集型任务最适合用，」，本课在「GIL·Python 并发的关键前提」中说明：CPU 密集型任务用多线程无法提速，应该用多进程。本课还在「GIL·Python 并发的关键前提」中说明：IO 密集型任务在等待时会释放 GIL，多线程和异步都能显著提速。
+
+### 追问 2：asyncio 中最危险的做法是？
+
+**参考回答**：正确答案是「在协程中调用阻塞函数如 time.sleep」，本课在「异步 asyncio」中说明：注意：异步函数里不能写阻塞调用（如 time.sleep、同步 requests），否则整个事件循环被卡住，应改用 asyncio.sleep、aiohttp 等异步库。阻塞调用会占住事件循环，导致所有协程都无法推进，应改用异步库。本课还在「零基础详解·GIL、线程、进程与 asyncio」中说明：不要在协程里写阻塞调用（time.sleep、requests），它会卡住整个事件循环。
+
+### 追问 3：多线程共享计数变量时出现结果偏小，解决办法是？
+
+**参考回答**：正确答案是「用 Lock 保护读-改-写过程」，本课在「本课小结」中说明：记住一句话：IO 用异步或线程，计算用多进程。count += 1 不是原子操作，需要加锁或使用原子/线程安全的数据结构。本课还在「GIL·Python 并发的关键前提」中说明：CPU 密集型任务用多线程无法提速，应该用多进程。本课还在「零基础详解·GIL、线程、进程与 asyncio」中说明：Python 有 GIL（全局解释器锁），所以多线程不能并行跑 CPU 密集任务，但非常适合 IO 等待。
+
+### 追问 4：GIL 带来的实际影响是？
+
+**参考回答**：正确答案是「多线程无法并行执行 Python 字节码，CPU 密集任务难以提速」，本课在「零基础详解·GIL、线程、进程与 asyncio」中说明：Python 有 GIL（全局解释器锁），所以多线程不能并行跑 CPU 密集任务，但非常适合 IO 等待。IO 等待时会释放 GIL，所以多线程适合 IO 密集。本课还在「零基础详解·GIL、线程、进程与 asyncio」中说明：多进程之间不共享内存，所以进程不需要锁，但需要能序列化的数据。
+
+### 追问 5：asyncio.gather 的作用是？
+
+**参考回答**：正确答案是「并发调度并等待多个协程，按顺序返回结果」，本课在「本课小结」中说明：记住一句话：IO 用异步或线程，计算用多进程。gather 让多个协程在同一事件循环内并发执行，是并发请求聚合的常用写法。本课还在「零基础详解·GIL、线程、进程与 asyncio」中说明：CPU 密集的工作丢给 runinexecutor 或进程池。本课还在「多进程 multiprocessing」中说明：线程池同理，把 ProcessPoolExecutor 换成 ThreadPoolExecutor 即可，适合 IO 密集场景。
+
 ## English Overview
 
 **Title:** Concurrency & Async
@@ -535,4 +579,3 @@ if __name__ == "__main__":
 > 本课主题：GIL、多线程、多进程与 asyncio 的适用场景和写法。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

@@ -422,6 +422,50 @@ Console.WriteLine($"及格 {all.Count(x => x.Score >= 60)} 人");
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `List<T>` | 选择原则：有序可重复用 `List<T>`，键值查找用 `Dictionary<TKey,TValue>`，去重用 `HashSet<T>`。 |
+| `Dictionary<TKey,TValue>` | 选择原则：有序可重复用 `List<T>`，键值查找用 `Dictionary<TKey,TValue>`，去重用 `HashSet<T>`。 |
+| `HashSet<T>` | 选择原则：有序可重复用 `List<T>`，键值查找用 `Dictionary<TKey,TValue>`，去重用 `HashSet<T>`。 |
+| `ToList` | LINQ 是**延迟执行**的：只有遍历或调用 `ToList`/`Count`/`Sum` 时才真正执行。多次遍历同一个查询会重复计算，需要复用就提前 `ToList()`。 |
+| `Count` | LINQ 是**延迟执行**的：只有遍历或调用 `ToList`/`Count`/`Sum` 时才真正执行。多次遍历同一个查询会重复计算，需要复用就提前 `ToList()`。 |
+| `Sum` | LINQ 是**延迟执行**的：只有遍历或调用 `ToList`/`Count`/`Sum` 时才真正执行。多次遍历同一个查询会重复计算，需要复用就提前 `ToList()`。 |
+| `ToList()` | LINQ 是**延迟执行**的：只有遍历或调用 `ToList`/`Count`/`Sum` 时才真正执行。多次遍历同一个查询会重复计算，需要复用就提前 `ToList()`。 |
+| `Count() > 0` | \| 用 `Count() > 0` 判空 \| 遍历整个集合 \| 用 `Any()`，命中即返回 \| |
+| `Any()` | \| 用 `Count() > 0` 判空 \| 遍历整个集合 \| 用 `Any()`，命中即返回 \| |
+| `Where(...).First()` | \| `Where(...).First()` \| 可能抛异常 \| 不确定用 `FirstOrDefault()` 并判空 \| |
+| `FirstOrDefault()` | \| `Where(...).First()` \| 可能抛异常 \| 不确定用 `FirstOrDefault()` 并判空 \| |
+| `Queue<T>` | 集合选型速查：需要按下标访问用 `List<T>`；需要按键 O(1) 查找用 `Dictionary<TKey,TValue>`；需要去重或集合运算用 `HashSet<T>`；需要先进先出用 `Queue<T>`、后… |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：从 Dictionary 取键对应的值且不想抛异常，应使用？
+
+**参考回答**：TryGetValue 用 bool 返回值表示是否命中，避免 KeyNotFoundException。其他选项：直接下标访问会抛 KeyNotFoundException。针对「从 Dictionary 取键对应的值且不想抛异…」，本课在「LINQ 查询」中说明：LINQ 是延迟执行的：只有遍历或调用 ToList/Count/Sum 时才真正执行。本课还在「零基础详解·集合选择与 LINQ 查询」中说明：LINQ 是延迟执行：只写 Where 不会立刻计算，直到 foreach、ToList()、Count() 之类的操作才真正跑。
+
+### 追问 2：LINQ 查询是什么时候执行的？
+
+**参考回答**：正确答案是「遍历结果或调用 ToList/Count 等终止操作时」，本课在「LINQ 查询」中说明：LINQ 是延迟执行的：只有遍历或调用 ToList/Count/Sum 时才真正执行。LINQ 延迟执行，多次遍历会重复计算，需要复用时应先 ToList 物化。本课还在「零基础详解·集合选择与 LINQ 查询」中说明：LINQ 是延迟执行：只写 Where 不会立刻计算，直到 foreach、ToList()、Count() 之类的操作才真正跑。
+
+### 追问 3：Func<int, int, int> 表示什么？
+
+**参考回答**：正确答案是「接收两个 int 返回 int 的委托」，本课在「本课小结」中说明：集合负责存储，委托与 lambda 负责传行为，LINQ 负责声明式查询。Func 的最后一个类型参数是返回值类型，前面是参数类型。本课还在「委托、Lambda 与事件」中说明：委托是类型安全的方法指针，lambda 是匿名方法的简写，事件是对委托的封装（外部只能订阅/取消）。本课还在「LINQ 常见误用与集合选型」中说明：集合选型速查：需要按下标访问用 List<T>。
+
+### 追问 4：IEnumerable<T> 与 List<T> 的区别是？
+
+**参考回答**：正确答案是「IEnumerable 只承诺可以遍历（可能延迟计算、只读），List 是具体可变集合」，本课在「LINQ 常见误用与集合选型」中说明：可变集合不要跨线程共享，要么加锁，要么用不可变集合（System.Collections.Immutable）。方法签名用 IEnumerable 表达「只要可枚举」更灵活，需要增删时才用 List。本课还在「LINQ 常见误用与集合选型」中说明：集合选型速查：需要按下标访问用 List<T>。
+
+### 追问 5：LINQ 中先 Where 再 Select 的顺序为什么更好？
+
+**参考回答**：正确答案是「先过滤掉不需要的元素」，本课在「本课小结」中说明：集合负责存储，委托与 lambda 负责传行为，LINQ 负责声明式查询。对数据库查询尤其明显：顺序正确可以把过滤条件下推到 SQL，减少扫描行数。本课还在「LINQ 常见误用与集合选型」中说明：需要去重或集合运算用 HashSet<T>。本课还在「零基础详解·集合选择与 LINQ 查询」中说明：知道为什么判空要用 Any() 而不是 Count() > 0。
+
 ## English Overview
 
 **Title:** Collections, Delegates & LINQ
@@ -460,4 +504,3 @@ Console.WriteLine($"及格 {all.Count(x => x.Score >= 60)} 人");
 > 本课主题：List/Dictionary/HashSet、Action/Func/event 与 LINQ 查询。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

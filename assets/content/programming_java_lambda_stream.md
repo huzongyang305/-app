@@ -450,6 +450,50 @@ public class Report {
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `Supplier<T>` | \| `Supplier<T>` \| `() -> T` \| 提供值 \| |
+| `() -> T` | \| `Supplier<T>` \| `() -> T` \| 提供值 \| |
+| `Consumer<T>` | \| `Consumer<T>` \| `T -> void` \| 消费值 \| |
+| `T -> void` | \| `Consumer<T>` \| `T -> void` \| 消费值 \| |
+| `Function<T,R>` | \| `Function<T,R>` \| `T -> R` \| 转换 \| |
+| `T -> R` | \| `Function<T,R>` \| `T -> R` \| 转换 \| |
+| `Predicate<T>` | \| `Predicate<T>` \| `T -> boolean` \| 判断 \| |
+| `T -> boolean` | \| `Predicate<T>` \| `T -> boolean` \| 判断 \| |
+| `filter` | 中间操作（`filter`/`map`/`sorted`）不会立刻执行，只有遇到终止操作（`collect`/`forEach`/`count`/`reduce`）才会遍历一次。 |
+| `map` | 中间操作（`filter`/`map`/`sorted`）不会立刻执行，只有遇到终止操作（`collect`/`forEach`/`count`/`reduce`）才会遍历一次。 |
+| `sorted` | 中间操作（`filter`/`map`/`sorted`）不会立刻执行，只有遇到终止操作（`collect`/`forEach`/`count`/`reduce`）才会遍历一次。 |
+| `collect` | 中间操作（`filter`/`map`/`sorted`）不会立刻执行，只有遇到终止操作（`collect`/`forEach`/`count`/`reduce`）才会遍历一次。 |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：Stream 的中间操作（filter/map）什么时候真正执行？
+
+**参考回答**：正确答案是「遇到终止操作时才执行」，本课在「Stream 常用操作」中说明：中间操作（filter/map/sorted）不会立刻执行，只有遇到终止操作（collect/forEach/count/reduce）才会遍历一次。中间操作是惰性的，只有 collect/forEach/count 等终止操作才会触发一次遍历。本课还在「零基础详解·Lambda 与 Stream 流水线」中说明：能区分 Stream 的中间操作与终止操作。
+
+### 追问 2：函数式接口的判断标准是？
+
+**参考回答**：只有一个抽象方法的接口可以用 lambda 实现，@FunctionalInterface 只是编译期检查。其他选项：函数式接口的要求是只有一个抽象方法。针对「函数式接口的判断标准是，」，本课在「函数式接口」中说明：只有一个抽象方法的接口就是函数式接口，可以用 lambda 实现。本课还在「并行流与注意事项」中说明：并行流使用公共 ForkJoinPool，适合纯计算且数据量大。本课还在「本课小结」中说明：Lambda + Stream 让集合处理变成声明式：先说做什么（filter/map），再收集结果（collect）。
+
+### 追问 3：关于 Optional，推荐的做法是？
+
+**参考回答**：正确答案是「使用 orElse / ifPresent / orElseThrow」，本课在「函数式接口」中说明：只有一个抽象方法的接口就是函数式接口，可以用 lambda 实现。Optional.get() 在空值时会抛异常，应使用安全的取值方法。本课还在「并行流与注意事项」中说明：并行流使用公共 ForkJoinPool，适合纯计算且数据量大。
+
+### 追问 4：Stream 的 collect 与 forEach 的区别是？
+
+**参考回答**：正确答案是「collect 是终止操作，把结果汇总成集合」，本课在「Stream 常用操作」中说明：中间操作（filter/map/sorted）不会立刻执行，只有遇到终止操作（collect/forEach/count/reduce）才会遍历一次。在流里修改外部状态是常见坏味道，能 collect 就优先 collect。本课还在「零基础详解·Lambda 与 Stream 流水线」中说明：知道为什么中间操作不写终止操作就不会执行。
+
+### 追问 5：方法引用 String::length 等价于哪个 lambda？
+
+**参考回答**：方法引用是 lambda 的语法糖，可读性更好，也能表达构造器引用 Class::new。其他选项：方法引用把接收者作为隐式参数传入，因此 String::length 等价于 s -> s.length()。课程摘要指出函数式接口，方法引用，Stream 惰性求值，Optional 与并行流，本课要判断的正是方法引用String::length等价于哪个lambda。
+
 ## English Overview
 
 **Title:** Lambda & Streams
@@ -488,4 +532,3 @@ public class Report {
 > 本课主题：函数式接口、方法引用、Stream 惰性求值、Optional 与并行流。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

@@ -521,6 +521,50 @@ dotnet publish src/MyApp.Api -c Release -o out
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `dotnet restore` | 版本号尽量显式固定；`dotnet restore` 会按 lock 文件还原依赖，保证 CI 与本地一致。 |
+| `Add-Migration` | EF Core 把 LINQ 翻译成 SQL，配合迁移（`Add-Migration` / `Database.Migrate()`）管理表结构。 |
+| `Database.Migrate()` | EF Core 把 LINQ 翻译成 SQL，配合迁移（`Add-Migration` / `Database.Migrate()`）管理表结构。 |
+| `AddSingleton` | \| `AddSingleton` \| 整个应用一个实例 \| 无状态服务、配置、缓存 \| |
+| `AddScoped` | \| `AddScoped` \| 每个请求一个实例 \| `DbContext`、请求级服务 \| |
+| `DbContext` | \| `AddScoped` \| 每个请求一个实例 \| `DbContext`、请求级服务 \| |
+| `AddTransient` | \| `AddTransient` \| 每次解析都新建 \| 轻量无状态工具类 \| |
+| `[Fact]` | \| 定义测试 \| `[Fact]` \| |
+| `[Theory]` | \| 参数化 \| `[Theory]` + `[InlineData]` / `[MemberData]` \| |
+| `[InlineData]` | \| 参数化 \| `[Theory]` + `[InlineData]` / `[MemberData]` \| |
+| `[MemberData]` | \| 参数化 \| `[Theory]` + `[InlineData]` / `[MemberData]` \| |
+| `Assert.Equal(expected, actual)` | \| 断言相等 \| `Assert.Equal(expected, actual)` \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：.NET 的包管理器是？
+
+**参考回答**：NuGet 是 .NET 的包管理器，用 dotnet add package 安装依赖。其他选项：NuGet 是 .NET 的包管理器。针对「.NET 的包管理器是，」，本课在「ASP.NET Core 最小 API」中说明：内置依赖注入、配置、日志与中间件管道，是 .NET 后端开发的主流框架。本课还在「本课小结」中说明：C# 的工程能力 = NuGet 管依赖、xUnit 写测试、ASP.NET Core 做服务、EF Core 访问数据库。
+
+### 追问 2：xUnit 中 [Theory] 配合 [InlineData] 用于？
+
+**参考回答**：Theory 表示数据驱动测试，InlineData 提供每组参数，减少重复代码。其他选项：[Theory] 与 [InlineData] 提供参数化测试。针对「xUnit 中 [Theory] 配合 [Inl…」，本课在「ASP.NET Core 最小 API」中说明：内置依赖注入、配置、日志与中间件管道，是 .NET 后端开发的主流框架。本课还在「零基础详解·.NET 生态与工程实践」中说明：NET 生态的日常可以概括为四件事：建项目、装依赖、跑测试、发布。
+
+### 追问 3：EF Core 的主要作用是？
+
+**参考回答**：正确答案是「ORM：把对象与 LINQ 映射到数据库」，本课在「本课小结」中说明：C# 的工程能力 = NuGet 管依赖、xUnit 写测试、ASP.NET Core 做服务、EF Core 访问数据库。EF Core 负责对象关系映射，把 LINQ 翻译成 SQL，并配合迁移管理表结构。本课还在「单元测试」中说明：测试命名建议「方法场景期望」，一个测试只验证一件事。本课还在「零基础详解·.NET 生态与工程实践」中说明：规则：Singleton 不能直接依赖 Scoped，否则捕获了短生命周期对象。
+
+### 追问 4：ASP.NET Core 中间件的执行方式是？
+
+**参考回答**：正确答案是「按注册顺序组成管道依次调用」，本课在「NuGet 包管理」中说明：dotnet restore 会按 lock 文件还原依赖，保证 CI 与本地一致。顺序很关键：异常处理、认证、授权、静态文件、路由都有惯用的注册次序。本课还在「零基础详解·.NET 生态与工程实践」中说明：NET 生态的日常可以概括为四件事：建项目、装依赖、跑测试、发布。本课还在「零基础详解·.NET 生态与工程实践」中说明：能说出 Singleton 依赖 Scoped 会有什么问题。
+
+### 追问 5：IConfiguration 读取配置的特点（如 appsettings.json）是？
+
+**参考回答**：正确答案是「可组合多个配置源」，本课在「EF Core 数据访问」中说明：EF Core 把 LINQ 翻译成 SQL，配合迁移（Add-Migration / Database.Migrate()）管理表结构。用「键:子键」的格式读取嵌套值，部署时用环境变量覆盖敏感配置更安全。
+
 ## English Overview
 
 **Title:** Ecosystem & Web
@@ -559,4 +603,3 @@ dotnet publish src/MyApp.Api -c Release -o out
 > 本课主题：NuGet、xUnit 测试、ASP.NET Core 最小 API 与 EF Core。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

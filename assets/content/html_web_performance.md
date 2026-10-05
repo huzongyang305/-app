@@ -299,6 +299,50 @@ function reportWebVitals() {
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `PerformanceObserver` | 测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）。 |
+| `defer` | 关键路径**：首屏 CSS 内联，非关键 JS 用 `defer`/`async`，路由级代码分割。 |
+| `async` | 关键路径**：首屏 CSS 内联，非关键 JS 用 `defer`/`async`，路由级代码分割。 |
+| `preconnect` | 网络**：静态资源走 CDN、开启 HTTP/2 或 HTTP/3、避免域名分片、预连接关键域名（`preconnect`）。 |
+| `immutable` | 缓存**：带哈希的静态资源用 `immutable` 长缓存，HTML 用协商缓存。 |
+| `loading="lazy"` | 渲染**：首屏骨架屏、图片用 `loading="lazy"` 与 `decoding="async"`、避免布局抖动。 |
+| `decoding="async"` | 渲染**：首屏骨架屏、图片用 `loading="lazy"` 与 `decoding="async"`、避免布局抖动。 |
+| `scheduler.yield` | \| 长任务阻塞交互 \| 拆分任务（`scheduler.yield`、`requestIdleCallback`）、Web Worker 处理重计算 \| |
+| `requestIdleCallback` | \| 长任务阻塞交互 \| 拆分任务（`scheduler.yield`、`requestIdleCallback`）、Web Worker 处理重计算 \| |
+| `preload` | \| 提前加载 \| `preload` 关键资源、`preconnect` 关键域名、`fetchpriority="high"` \| |
+| `fetchpriority="high"` | \| 提前加载 \| `preload` 关键资源、`preconnect` 关键域名、`fetchpriority="high"` \| |
+| `ETag` | \| 缓存 \| 强缓存 + 指纹、协商缓存 `ETag` \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：三个核心 Web 指标的对应关系是？
+
+**参考回答**：正确答案是「LCP 管加载、INP 管响应、CLS 管稳定」，本课在「本课小结」中说明：前端性能优化围绕三个指标展开：LCP 管加载、INP 管响应、CLS 管稳定。LCP 是最大内容绘制、INP 是交互响应、CLS 是布局偏移。本课还在「项目专属规格·前端性能优化实战」中说明：LCP/INP/CLS 三指标、加载与运行时优化、排查流程。本课还在「排查流程」中说明：先用 Lighthouse 定位是加载问题还是运行时问题。
+
+### 追问 2：为减少布局偏移（CLS），图片应该？
+
+**参考回答**：正确答案是「预留宽高或使用 aspect-ratio」，本课在「本课小结」中说明：前端性能优化围绕三个指标展开：LCP 管加载、INP 管响应、CLS 管稳定。预留尺寸可避免加载完成后内容跳动。本课还在「加载优化清单」中说明：资源体积：开启 Brotli/gzip、图片转 WebP/AVIF、按需加载字体子集、移除未用 CSS（PurgeCSS）。本课还在「加载优化清单」中说明：渲染：首屏骨架屏、图片用 loading="lazy" 与 decoding="async"、避免布局抖动。
+
+### 追问 3：发现长任务阻塞交互时，优先考虑？
+
+**参考回答**：正确答案是「拆分任务或用 Web Worker」，本课在「排查流程」中说明：打开 Performance 面板录制用户操作，找长任务（红色三角）与强制同步布局（紫色）。长任务占用主线程，拆分或移出主线程才能改善 INP。本课还在「排查流程」中说明：优化后用同一环境复测并记录前后数据，避免凭感觉判断。本课还在「排查流程」中说明：用 Coverage 面板看未使用的 JS/CSS 占比。
+
+### 追问 4：preload 与 prefetch 的区别是？
+
+**参考回答**：正确答案是「preload 提前加载当前页面马上要用的资源」，本课在「加载优化清单」中说明：资源体积：开启 Brotli/gzip、图片转 WebP/AVIF、按需加载字体子集、移除未用 CSS（PurgeCSS）。preload 提升当前页关键资源优先级。本课还在「本课小结」中说明：先测量定位瓶颈，再按"资源体积 → 网络 → 渲染 → 运行时"的顺序逐项优化。本课还在「加载优化清单」中说明：网络：静态资源走 CDN、开启 HTTP/2 或 HTTP/3、避免域名分片、预连接关键域名（preconnect）。
+
+### 追问 5：减小 JS 体积最常用的组合手段是？
+
+**参考回答**：正确答案是「代码分割 + tree shaking + 压缩（gzip/br）」，本课在「加载优化清单」中说明：关键路径：首屏 CSS 内联，非关键 JS 用 defer/async，路由级代码分割。按路由拆包、剔除未用导出、传输层压缩，三者叠加才有效果。
+
 ## English Overview
 
 **Title:** Web Performance
@@ -412,4 +456,3 @@ README.md
 > 本课主题：LCP/INP/CLS 三指标、加载与运行时优化、排查流程。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

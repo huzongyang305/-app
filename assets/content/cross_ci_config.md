@@ -351,6 +351,50 @@ CI 只验证流水线覆盖的内容，不能保证没有缺陷。测试质量�
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `pip install -r requirements.txt` | \| Python \| `pip install -r requirements.txt` \| `ruff check` / `mypy` \| `pytest` \| `python -m build` \| |
+| `ruff check` | \| Python \| `pip install -r requirements.txt` \| `ruff check` / `mypy` \| `pytest` \| `python -m build` \| |
+| `mypy` | \| Python \| `pip install -r requirements.txt` \| `ruff check` / `mypy` \| `pytest` \| `python -m build` \| |
+| `pytest` | \| Python \| `pip install -r requirements.txt` \| `ruff check` / `mypy` \| `pytest` \| `python -m build` \| |
+| `python -m build` | \| Python \| `pip install -r requirements.txt` \| `ruff check` / `mypy` \| `pytest` \| `python -m build` \| |
+| `npm ci` | \| JavaScript \| `npm ci` \| `eslint` \| `vitest run` \| `npm run build` \| |
+| `eslint` | \| JavaScript \| `npm ci` \| `eslint` \| `vitest run` \| `npm run build` \| |
+| `vitest run` | \| JavaScript \| `npm ci` \| `eslint` \| `vitest run` \| `npm run build` \| |
+| `npm run build` | \| JavaScript \| `npm ci` \| `eslint` \| `vitest run` \| `npm run build` \| |
+| `tsc --noEmit` | \| TypeScript \| `npm ci` \| `tsc --noEmit` / `eslint` \| `vitest run` \| `tsup` / `vite build` \| |
+| `tsup` | \| TypeScript \| `npm ci` \| `tsc --noEmit` / `eslint` \| `vitest run` \| `tsup` / `vite build` \| |
+| `vite build` | \| TypeScript \| `npm ci` \| `tsc --noEmit` / `eslint` \| `vitest run` \| `tsup` / `vite build` \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：CI 流水线的标准阶段顺序是？
+
+**参考回答**：正确答案是「检出代码 → 安装依赖 → 静态检查 → 测试 → 构建制品」，本课在「深入补充·CI 流水线配置·九种生态横向对照」中说明：不同生态命令不同，但核心阶段一致：检出代码、安装依赖、缓存、检查、测试、构建、制品和发布。先装依赖才能检查与测试，测试通过后再构建产物最省资源。本课还在「本课小结」中说明：流水线结构固定：安装 → 静态检查 → 测试 → 构建 → 制品。本课还在「深入补充·CI 流水线配置·九种生态横向对照」中说明：为三种语言各写一条最小 CI：安装依赖、运行测试、构建产物、上传以 SHA 命名的制品。
+
+### 追问 2：CI 中安装 Node 依赖应该用哪个命令？
+
+**参考回答**：npm ci 严格按锁文件安装，保证可复现。「npm install」与「npm update」可能改写版本。针对「CI 中安装 Node 依赖应该用哪个命令，」，本课在「深入补充·CI 流水线配置·九种生态横向对照」中说明：Node 流水线使用 npm ci 安装锁文件依赖，缓存键包含 package-lock.json 哈希。本课还在「一句话说清」中说明：各生态的命令不同，但流水线的阶段完全一致。
+
+### 追问 3：缓存依赖时，缓存键的最佳选择是？
+
+**参考回答**：正确答案是「包含锁文件哈希的键」，本课在「深入补充·CI 流水线配置·九种生态横向对照」中说明：缓存只加速可重建内容，缓存键应包含锁文件和工具链版本。锁文件变化时缓存自动失效，未变化时命中。本课还在「深入补充·CI 流水线配置·九种生态横向对照」中说明：Node 流水线使用 npm ci 安装锁文件依赖，缓存键包含 package-lock.json 哈希。本课还在「深入补充·CI 流水线配置·九种生态横向对照」中说明：锁文件哈希、工具链版本、平台和必要的构建参数。
+
+### 追问 4：为什么制品要用 commit SHA 命名？
+
+**参考回答**：正确答案是「可追溯到具体提交」，本课在「深入补充·CI 流水线配置·九种生态横向对照」中说明：CI 流水线把代码变更自动变成可验证的构建产物。哈希能唯一对应代码版本，是回滚与定位的依据。本课还在「深入补充·CI 流水线配置·九种生态横向对照」中说明：流水线要设置超时、并发限制、重试和取消策略，避免卡死和资源泄漏。本课还在「深入补充·CI 流水线配置·九种生态横向对照」中说明：CI 只验证流水线覆盖的内容，不能保证没有缺陷。
+
+### 追问 5：补全代码：「CI 流水线配置：九种生态横向对照」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `____: # 新提交自动取消旧任务`
+
+**参考回答**：正确答案是「concurrency」，本课在「深入补充·CI 流水线配置·九种生态横向对照」中说明：CI 流水线把代码变更自动变成可验证的构建产物。本课还在「一句话说清」中说明：各生态的命令不同，但流水线的阶段完全一致。本课还在「本课小结」中说明：流水线结构固定：安装 → 静态检查 → 测试 → 构建 → 制品。
+
 ## English Overview
 
 **Title:** CI Pipeline Configuration
@@ -389,4 +433,3 @@ CI 只验证流水线覆盖的内容，不能保证没有缺陷。测试质量�
 > 本课主题：五阶段流水线、九种生态命令对照、缓存与并行的提速手段。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

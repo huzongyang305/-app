@@ -452,6 +452,50 @@ func (s *Server) ListUsers(ctx context.Context, req *userv1.ListUsersRequest) (*
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `.proto` | \| 契约 \| `.proto` 强类型 \| OpenAPI 或约定 \| |
+| `reserved` | \| 字段编号 \| 一经使用不可复用，废弃字段用 `reserved` \| |
+| `package` | \| `package` \| 带版本号，便于演进（`user.v1`） \| |
+| `user.v1` | \| `package` \| 带版本号，便于演进（`user.v1`） \| |
+| `OK` | \| `OK` \| 成功 \| 正常返回 \| |
+| `InvalidArgument` | \| `InvalidArgument` \| 参数错误 \| 校验失败 \| |
+| `NotFound` | \| `NotFound` \| 不存在 \| 资源没找到 \| |
+| `AlreadyExists` | \| `AlreadyExists` \| 已存在 \| 唯一键冲突 \| |
+| `PermissionDenied` | \| `PermissionDenied` \| 无权限 \| 越权访问 \| |
+| `Unauthenticated` | \| `Unauthenticated` \| 未认证 \| token 无效 \| |
+| `DeadlineExceeded` | \| `DeadlineExceeded` \| 超时 \| 上游超时 \| |
+| `Unavailable` | \| `Unavailable` \| 暂时不可用 \| 下游挂了 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：内部服务间高频调用，通常优先选择？
+
+**参考回答**：正确答案是「gRPC 加 Protobuf」，本课在「与 REST 的取舍速查」中说明：经验：内部服务用 gRPC，对外接口用 REST。gRPC 序列化体积小、支持多路复用与流式，并且能从 .proto 生成强类型客户端与服务端，适合内部高频调用。本课还在「零基础详解·gRPC 与 Protobuf」中说明：gRPC 是「用接口定义文件驱动」的服务间通信方式：先写 .proto，再自动生成客户端与服务端代码。
+
+### 追问 2：修改 .proto 时，哪种做法是安全的？
+
+**参考回答**：正确答案是「新增字段并给新编号」，本课在「零基础详解·gRPC 与 Protobuf」中说明：知道为什么 proto 字段编号不能复用。只有向后兼容的变更（新增字段、不改变已有编号与类型）才能保证新旧版本互通。本课还在「零基础详解·gRPC 与 Protobuf」中说明：要点：不要用 Internal 表示「用户不存在」，客户端需要靠状态码决定要不要重试。本课还在「零基础详解·gRPC 与 Protobuf」中说明：它基于 HTTP/2 + Protobuf，天然支持强类型与流式调用。
+
+### 追问 3：客户端调用 gRPC 时必须注意？
+
+**参考回答**：正确答案是「每次调用都设置 deadline」，本课在「零基础详解·gRPC 与 Protobuf」中说明：要点：不要用 Internal 表示「用户不存在」，客户端需要靠状态码决定要不要重试。没有 deadline 的调用可能永久挂起并耗尽连接与协程。本课还在「零基础详解·gRPC 与 Protobuf」中说明：gRPC 是「用接口定义文件驱动」的服务间通信方式：先写 .proto，再自动生成客户端与服务端代码。
+
+### 追问 4：服务端想把「参数非法」与「内部错误」区分开，正确做法是？
+
+**参考回答**：正确答案是「使用标准 status code（InvalidArgument / Internal）」，这道题在问服务端想把参数非法与内部错误区分开，正确做法是，判断时要把题干限定的输入、边界与目标逐项对齐。标准状态码是跨语言可识别的契约，客户端能据此做重试或提示。
+
+### 追问 5：需要「一次请求、服务端持续推送多条结果」时，应该用？
+
+**参考回答**：正确答案是「Server streaming」，这道题在问需要一次请求、服务端持续推送多条结果时，应该用，判断时要把题干限定的输入、边界与目标逐项对齐。服务端流式正好对应「一个请求多个响应」。课程摘要指出四种调用方式，契约演进规则与拦截器工程实践，本课要判断的正是需要一次请求、服务端持续推送多条结果时，应该用。
+
 ## English Overview
 
 **Title:** gRPC & Protobuf
@@ -490,4 +534,3 @@ func (s *Server) ListUsers(ctx context.Context, req *userv1.ListUsersRequest) (*
 > 本课主题：四种调用方式、契约演进规则与拦截器工程实践。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

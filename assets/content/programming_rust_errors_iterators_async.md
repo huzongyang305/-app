@@ -383,6 +383,50 @@ fn main() {
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `.context("加载配置失败")?` | 关键是**保留错误上下文**（`.context("加载配置失败")?`），同时避免把内部实现细节泄露成公开 API。 |
+| `map` | Rust 迭代器是惰性的，链式调用会被编译优化成普通循环，没有额外开销。常用组合：`map`/`filter`/`filter_map`/`fold`/`collect`/`enumerate`/`zip`/`flat_… |
+| `filter` | Rust 迭代器是惰性的，链式调用会被编译优化成普通循环，没有额外开销。常用组合：`map`/`filter`/`filter_map`/`fold`/`collect`/`enumerate`/`zip`/`flat_… |
+| `filter_map` | Rust 迭代器是惰性的，链式调用会被编译优化成普通循环，没有额外开销。常用组合：`map`/`filter`/`filter_map`/`fold`/`collect`/`enumerate`/`zip`/`flat_… |
+| `fold` | Rust 迭代器是惰性的，链式调用会被编译优化成普通循环，没有额外开销。常用组合：`map`/`filter`/`filter_map`/`fold`/`collect`/`enumerate`/`zip`/`flat_… |
+| `collect` | Rust 迭代器是惰性的，链式调用会被编译优化成普通循环，没有额外开销。常用组合：`map`/`filter`/`filter_map`/`fold`/`collect`/`enumerate`/`zip`/`flat_… |
+| `enumerate` | Rust 迭代器是惰性的，链式调用会被编译优化成普通循环，没有额外开销。常用组合：`map`/`filter`/`filter_map`/`fold`/`collect`/`enumerate`/`zip`/`flat_… |
+| `zip` | Rust 迭代器是惰性的，链式调用会被编译优化成普通循环，没有额外开销。常用组合：`map`/`filter`/`filter_map`/`fold`/`collect`/`enumerate`/`zip`/`flat_… |
+| `flat_map` | Rust 迭代器是惰性的，链式调用会被编译优化成普通循环，没有额外开销。常用组合：`map`/`filter`/`filter_map`/`fold`/`collect`/`enumerate`/`zip`/`flat_… |
+| `take_while` | Rust 迭代器是惰性的，链式调用会被编译优化成普通循环，没有额外开销。常用组合：`map`/`filter`/`filter_map`/`fold`/`collect`/`enumerate`/`zip`/`flat_… |
+| `collect::<Result<Vec<_>, _>>()` | 经验：能用迭代器表达就别写手写循环；`collect::<Result<Vec<_>, _>>()` 可以把一组 Result 收敛成 Result<Vec>，错误处理非常优雅。 |
+| `macro_rules!` | 声明式宏 `macro_rules!` 做模式匹配式代码生成；过程宏（derive/attribute/function-like）由 proc-macro crate 实现，`#[derive(Debug)]` 就是过… |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：库代码与应用代码的错误处理，推荐组合是？
+
+**参考回答**：正确答案是「库用 thiserror 定义错误类型，应用用 anyhow 简化传播」，本课在「本课小结」中说明：Rust 的工程三件套：分层的错误处理、零开销迭代器、以 tokio 为核心的异步并发。库需要让调用方可判定错误，应用更关注传播与上下文。本课还在「迭代器·零开销抽象」中说明：collect::<Result<Vec<>, >>() 可以把一组 Result 收敛成 Result<Vec>，错误处理非常优雅。
+
+### 追问 2：Rust 迭代器链会有运行时开销吗？
+
+**参考回答**：正确答案是「基本没有，会被优化成普通循环」，本课在「迭代器·零开销抽象」中说明：Rust 迭代器是惰性的，链式调用会被编译优化成普通循环，没有额外开销。迭代器是零开销抽象，编译后与手写循环等价。本课还在「本课小结」中说明：Rust 的工程三件套：分层的错误处理、零开销迭代器、以 tokio 为核心的异步并发。本课还在「异步与 tokio」中说明：async fn 返回 Future，需要运行时驱动（tokio 最常用）。
+
+### 追问 3：在异步运行时中执行 CPU 密集任务应该？
+
+**参考回答**：正确答案是「用 spawn_blocking 交给阻塞线程池」，本课在「异步与 tokio」中说明：不要阻塞异步运行时：CPU 密集或同步 IO 用 spawnblocking。阻塞异步线程会拖慢整个运行时。本课还在「迭代器·零开销抽象」中说明：collect::<Result<Vec<>, >>() 可以把一组 Result 收敛成 Result<Vec>，错误处理非常优雅。本课还在「异步与 tokio」中说明：async fn 返回 Future，需要运行时驱动（tokio 最常用）。
+
+### 追问 4：Rust 迭代器是「惰性」的，这意味着？
+
+**参考回答**：正确答案是「不调用消费方法（collect/sum/for）就不会真正执行」，本课在「迭代器·零开销抽象」中说明：Rust 迭代器是惰性的，链式调用会被编译优化成普通循环，没有额外开销。适配器如 map/filter 只是构建新迭代器，零成本抽象正来源于这种惰性组合。本课还在「零基础详解·错误处理与迭代器」中说明：迭代器则是「惰性流水线」：map、filter 只是搭好管道，真正计算发生在 collect 或 for 的时候。
+
+### 追问 5：collect::<Result<Vec<_>, _>>() 的作用是？
+
+**参考回答**：正确答案是「把一组 Result 收集成 Result<Vec<_>, _>，遇到 Err 就短路返回错误」，本课在「零基础详解·错误处理与迭代器」中说明：迭代器则是「惰性流水线」：map、filter 只是搭好管道，真正计算发生在 collect 或 for 的时候。这是把「逐个解析可能失败的元素」写成一行的常用技巧。本课还在「零基础详解·错误处理与迭代器」中说明：会用 collect 把一批 Result 合成一个 Result。
+
 ## English Overview
 
 **Title:** Errors, Iterators & Async
@@ -421,4 +465,3 @@ fn main() {
 > 本课主题：thiserror/anyhow、零开销迭代器与 tokio 异步要点。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

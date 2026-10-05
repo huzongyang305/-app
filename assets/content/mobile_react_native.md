@@ -371,6 +371,11 @@ const renderItem = useCallback(({ item }: { item: Item }) => <Row item={item} />
 - **判断依据**：正确答案是「useCallback」，本课在「零基础详解：React Native 跨平台开发」中说明：知道 useCallback 与 useMemo 各自稳定什么。本课还在「零基础详解：React Native 跨平台开发」中说明：知道 useEffect 的清理函数有什么用。
 - **迁移检查**：不看题干，用自己的话补全这句话，再与标准答案对照。
 
+### 补充考点 1：阅读「React Native 跨平台开发」的代码片段，下面哪项判断是正确的？
+
+- **正确判断**：RN 通过桥接渲染真实原生组件，不是网页
+- **判断依据**：正确答案是「RN 通过桥接渲染真实原生组件，不是网页」。这段代码来自「React Native 跨平台开发」的示例，判断时先看输入与输出，再检查条件、循环和边界。正确答案是「RN 通过桥接渲染真实原生组件，不是网页」，本课在「定位与原理」中说明：React Native（RN）用 JavaScript/TypeScript 写业务，通过桥接调用原生组件渲染真实…在「React Native 跨平台开发」中，如果只改一个条件，输出通常会随之改变，因此不能脱离代码前提作答。
+
 ## 本课复习清单
 
 离开本课前，逐项确认：
@@ -389,6 +394,50 @@ const renderItem = useCallback(({ item }: { item: Item }) => <Row item={item} />
 | 已经能独立解释的考点 |  |
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
+
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `View` | \| 基础容器 \| `View`、`ScrollView`、`SafeAreaView` \| |
+| `ScrollView` | \| 基础容器 \| `View`、`ScrollView`、`SafeAreaView` \| |
+| `SafeAreaView` | \| 基础容器 \| `View`、`ScrollView`、`SafeAreaView` \| |
+| `Text` | \| 文本 \| `Text`、`TextInput` \| |
+| `TextInput` | \| 文本 \| `Text`、`TextInput` \| |
+| `FlatList` | \| 列表 \| `FlatList`（大数据）、`SectionList` \| |
+| `SectionList` | \| 列表 \| `FlatList`（大数据）、`SectionList` \| |
+| `Image` | \| 图片 \| `Image`（需显式宽高或 `aspectRatio`） \| |
+| `aspectRatio` | \| 图片 \| `Image`（需显式宽高或 `aspectRatio`） \| |
+| `Pressable` | \| 触摸 \| `Pressable`、`TouchableOpacity` \| |
+| `TouchableOpacity` | \| 触摸 \| `Pressable`、`TouchableOpacity` \| |
+| `StyleSheet.create` | \| 样式 \| `StyleSheet.create`，单位是无量纲的 dp \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：React Native 与 WebView 混合方案的关键区别是？
+
+**参考回答**：正确答案是「RN 通过桥接渲染真实原生组件，不是网页」，本课在「定位与原理」中说明：React Native（RN）用 JavaScript/TypeScript 写业务，通过桥接调用原生组件渲染真实原生控件，而不是 WebView。RN 用 JS 描述业务，最终渲染的是平台原生控件，所以体验接近原生。本课还在「零基础详解·React Native 跨平台开发」中说明：React Native 用 JavaScript/TypeScript 写界面，再通过「桥」或 JSI 调用原生控件渲染。
+
+### 追问 2：列表数据量大时应该使用哪个组件？
+
+**参考回答**：FlatList 做虚拟化，只渲染可见区域，内存与滚动性能都可控。ScrollView 会一次性创建全部子视图。针对「列表数据量大时应该使用哪个组件，」，本课在「零基础详解·React Native 跨平台开发」中说明：关键点：长列表必须用 FlatList 或 FlashList，ScrollView 会一次性渲染全部子项。本课还在「定位与原理」中说明：它的价值是「一套业务代码 + 两种原生体验」，代价是需要理解 JS 线程与原生线程的通信边界。
+
+### 追问 3：Hermes 引擎带来的主要收益是？
+
+**参考回答**：正确答案是「提升启动速度并降低内存占用」，本课在「定位与原理」中说明：它的价值是「一套业务代码 + 两种原生体验」，代价是需要理解 JS 线程与原生线程的通信边界。Hermes 为移动端优化，通过预编译字节码减少启动解析时间并降低内存，是 RN 默认引擎。
+
+### 追问 4：关于 RN 中的动画性能，正确做法是？
+
+**参考回答**：正确答案是「用 Animated 或 Reanimated 让动画在原生线程执行」，这道题在问关于RN中的动画性能，正确做法是，判断时要把题干限定的输入、边界与目标逐项对齐。动画在原生线程执行可以绕开 JS 线程繁忙导致的掉帧，这是 RN 动画的主流做法。
+
+### 追问 5：图片在 RN 布局中不设置宽高会出现什么？
+
+**参考回答**：正确答案是「可能不显示或导致布局异常」，本课在「零基础详解·React Native 跨平台开发」中说明：它的核心心智是：UI 是状态的函数，改状态就自动重建界面。RN 的 Image 没有像浏览器那样的固有尺寸，必须显式给出宽高或 aspectRatio，否则可能渲染不出或造成布局跳动。
 
 ## English Overview
 
@@ -428,4 +477,3 @@ const renderItem = useCallback(({ item }: { item: Item }) => <Row item={item} />
 > 本课主题：新架构 JSI/Fabric/Hermes、列表虚拟化与桥接性能优化。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

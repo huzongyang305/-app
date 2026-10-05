@@ -8,7 +8,7 @@
     python tool/generate_diagrams.py            # 生成全部图
     python tool/generate_diagrams.py memory     # 只生成名字包含 memory 的图
 
-输出目录：assets/content/images/
+输出目录：assets/content/images/（默认 WebP，避免仓库里出现 PNG 引用）
 """
 
 from __future__ import annotations
@@ -125,10 +125,14 @@ def caption(draw: ImageDraw.ImageDraw, text: str, y: int = 680, width: int = 120
     draw.text(((width - text_width) / 2, y), text, font=use_font, fill=MUTED)
 
 
-def save(image: Image.Image, name: str) -> None:
+def save(image: Image.Image, name: str, ext: str = "webp") -> None:
+    """保存配图。默认输出 WebP；PNG 仅用于需要无损中间文件的场合。"""
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    path = OUT_DIR / f"{name}.png"
-    image.save(path, optimize=True)
+    path = OUT_DIR / f"{name}.{ext}"
+    if ext.lower() == "webp":
+        image.save(path, quality=92, method=6)
+    else:
+        image.save(path, optimize=True)
     print(f"  生成 {path}  ({path.stat().st_size // 1024} KB)")
 
 
@@ -450,6 +454,221 @@ def rag_pipeline() -> None:
     save(image, "rag_pipeline")
 
 
+def dns_resolution() -> None:
+    image, draw = new_canvas()
+    draw_title(draw, "DNS 解析：从域名到 IP 的查询链")
+    stages = [
+        ("浏览器缓存\n命中即返回", PRIMARY_SOFT, PRIMARY),
+        ("系统 DNS 缓存\n与 hosts 文件", ACCENT_SOFT, ACCENT),
+        ("递归解析器\n代表客户端查询", GREEN_SOFT, GREEN),
+        ("根 → 顶级域\n→ 权威服务器", WARN_SOFT, WARN),
+    ]
+    for index, (label, fill, outline) in enumerate(stages):
+        x = 55 + index * 285
+        box(draw, (x, 135, x + 235, 235), label, fill=fill, outline=outline, size=21)
+        if index < len(stages) - 1:
+            arrow(draw, (x + 235, 185), (x + 285, 185), color=LINE)
+    draw.text((60, 300), "递归解析器的查询过程", font=font(24, bold=True), fill=INK)
+    for index, label in enumerate(["根服务器\n返回 .com 的地址", "TLD 服务器\n返回权威服务器", "权威服务器\n返回 A/AAAA 记录"]):
+        x = 70 + index * 370
+        box(draw, (x, 355, x + 330, 465), label, fill=SURFACE, outline=LINE, size=21)
+        if index < 2:
+            arrow(draw, (x + 330, 410), (x + 370, 410), color=LINE)
+    draw.text((60, 520), "缓存决定了真实延迟：TTL 越长越省查询，变更生效越慢。", font=font(22), fill=MUTED)
+    draw.text((60, 565), "排查顺序：浏览器缓存 → 系统缓存 → 递归解析器 → 权威记录。", font=font(22), fill=MUTED)
+    caption(draw, "用 dig +trace 观察每一跳，不要只看最终返回值", 660, 1200)
+    save(image, "dns_resolution")
+
+
+def tcp_handshake() -> None:
+    image, draw = new_canvas()
+    draw_title(draw, "TCP 三次握手与连接状态")
+    box(draw, (90, 125, 360, 205), "客户端\nCLOSED → SYN_SENT", fill=PRIMARY_SOFT, outline=PRIMARY, size=21)
+    box(draw, (840, 125, 1110, 205), "服务端\nLISTEN → SYN_RCVD", fill=GREEN_SOFT, outline=GREEN, size=21)
+    draw.line([(225, 205), (225, 610)], fill=LINE, width=2)
+    draw.line([(975, 205), (975, 610)], fill=LINE, width=2)
+    arrow(draw, (225, 265), (975, 265), color=PRIMARY, label="SYN seq=x")
+    arrow(draw, (975, 355), (225, 355), color=GREEN, label="SYN+ACK seq=y ack=x+1")
+    arrow(draw, (225, 445), (975, 445), color=ACCENT, label="ACK ack=y+1")
+    box(draw, (420, 500, 780, 600), "双方确认：\n发送与接收能力都可用，连接建立", fill=WARN_SOFT, outline=WARN, size=21)
+    caption(draw, "为什么不是两次：第三次 ACK 才能确认服务端的 SYN 被收到", 660, 1200)
+    save(image, "tcp_handshake")
+
+
+def virtual_memory_paging() -> None:
+    image, draw = new_canvas()
+    draw_title(draw, "虚拟内存分页：页表负责地址翻译")
+    box(draw, (60, 135, 300, 555), "虚拟地址空间\n\n页 0\n页 1\n页 2\n页 3\n…", fill=PRIMARY_SOFT, outline=PRIMARY, size=22)
+    box(draw, (420, 180, 740, 510), "页表 Page Table\n\nVPN → PFN\n权限位 R/W/X\n有效位 valid\n脏位 dirty", fill=ACCENT_SOFT, outline=ACCENT, size=21)
+    box(draw, (870, 135, 1130, 555), "物理内存\n\n帧 7\n帧 2\n未分配\n帧 9\n…", fill=GREEN_SOFT, outline=GREEN, size=22)
+    arrow(draw, (300, 290), (420, 290), color=LINE, label="查表")
+    arrow(draw, (740, 340), (870, 340), color=LINE, label="映射")
+    box(draw, (300, 590, 900, 660), "TLB 命中直接得到物理地址；缺页时触发 page fault，由内核换入页面", fill=WARN_SOFT, outline=WARN, size=20)
+    caption(draw, "局部性好 → 命中率高 → 真实程序不必把整个地址空间放进内存", 690, 1200)
+    save(image, "virtual_memory_paging")
+
+
+def cache_hierarchy() -> None:
+    image, draw = new_canvas()
+    draw_title(draw, "存储层次：速度、容量与成本的权衡")
+    levels = [
+        ("寄存器", "~1 周期 · 几十个", PRIMARY_SOFT, PRIMARY),
+        ("L1 / L2 缓存", "~4~15 周期 · KB~MB", ACCENT_SOFT, ACCENT),
+        ("L3 缓存", "~30~50 周期 · 几 MB~几十 MB", GREEN_SOFT, GREEN),
+        ("主存 DRAM", "~100~300 周期 · GB 级", WARN_SOFT, WARN),
+        ("SSD / 磁盘", "微秒~毫秒 · TB 级", SURFACE, LINE),
+    ]
+    for index, (label, desc, fill, outline) in enumerate(levels):
+        left = 80 + index * 40
+        right = 1120 - index * 40
+        top = 125 + index * 100
+        box(draw, (left, top, right, top + 76), f"{label}\n{desc}", fill=fill, outline=outline, size=21)
+    caption(draw, "越往上越快越小越贵；缓存命中率决定程序是否被内存延迟拖住", 660, 1200)
+    save(image, "cache_hierarchy")
+
+
+def process_thread() -> None:
+    image, draw = new_canvas()
+    draw_title(draw, "进程与线程：资源所有权和执行流")
+    box(draw, (70, 125, 560, 590), "进程 Process\n\n独立虚拟地址空间\n代码 / 数据 / 堆\n打开的文件与信号\n至少一个主线程", fill=PRIMARY_SOFT, outline=PRIMARY, size=23)
+    for index, label in enumerate(["线程 1\n程序计数器\n栈 / 寄存器", "线程 2\n程序计数器\n栈 / 寄存器", "线程 3\n程序计数器\n栈 / 寄存器"]):
+        y = 180 + index * 125
+        box(draw, (650, y, 1120, y + 95), label, fill=GREEN_SOFT if index == 0 else ACCENT_SOFT, outline=GREEN if index == 0 else ACCENT, size=20)
+    draw.text((70, 620), "线程共享代码、堆和文件；线程私有 PC、寄存器与栈。", font=font(22), fill=MUTED)
+    caption(draw, "切换线程比切换进程轻，但共享数据必须同步", 660, 1200)
+    save(image, "process_thread")
+
+
+def deadlock() -> None:
+    image, draw = new_canvas()
+    draw_title(draw, "死锁四条件：循环等待一旦形成就无法推进")
+    positions = [(210, 135), (790, 135), (790, 485), (210, 485)]
+    labels = ["互斥\n资源不可共享", "占有并等待\n拿着 A 等 B", "不可抢占\n不能强行夺走", "循环等待\n互相等对方释放"]
+    for (x, y), label in zip(positions, labels):
+        box(draw, (x, y, x + 200, y + 120), label, fill=WARN_SOFT, outline=WARN, size=21)
+    arrow(draw, (410, 195), (790, 195), color=WARN)
+    arrow(draw, (890, 255), (890, 485), color=WARN)
+    arrow(draw, (790, 545), (410, 545), color=WARN)
+    arrow(draw, (310, 485), (310, 255), color=WARN)
+    draw.text((60, 640), "破解任一条件即可预防：统一加锁顺序、超时回退、资源预分配。", font=font(22), fill=MUTED)
+    caption(draw, "发现死锁后看重启成本：先止血，再补可观测性和锁顺序约束", 660, 1200)
+    save(image, "deadlock")
+
+
+def big_o() -> None:
+    image, draw = new_canvas()
+    draw_title(draw, "复杂度增长：输入变大后谁先失控")
+    origin = (130, 590)
+    draw.line([(origin[0], 110), origin], fill=INK, width=3)
+    draw.line([origin, (1120, origin[1])], fill=INK, width=3)
+    curves = [
+        ("O(1)", (20, 140, 20, 30), GREEN),
+        ("O(log n)", (20, 180, 180, 80), ACCENT),
+        ("O(n)", (20, 250, 900, 250), PRIMARY),
+        ("O(n log n)", (20, 300, 950, 420), WARN),
+        ("O(n²)", (20, 360, 900, 560), (220, 38, 38)),
+    ]
+    for label, (x, y, w, h), color in curves:
+        draw.line([(130 + x, 590 - y), (130 + x + w, 590 - y - h)], fill=color, width=5)
+        draw.text((130 + x + w + 8, 590 - y - h - 10), label, font=font(20, bold=True), fill=color)
+    draw.text((145, 620), "输入规模 n →", font=font(20), fill=MUTED)
+    draw.text((45, 95), "运行时间", font=font(20), fill=MUTED)
+    caption(draw, "复杂度只描述增长趋势；常数、缓存和实现细节决定同阶算法的实际差距", 660, 1200)
+    save(image, "big_o")
+
+
+def hash_table() -> None:
+    image, draw = new_canvas()
+    draw_title(draw, "哈希表：哈希函数把键映射到桶")
+    box(draw, (60, 180, 310, 320), "键 key\nalice\nbob\ncarol", fill=PRIMARY_SOFT, outline=PRIMARY, size=23)
+    box(draw, (410, 200, 650, 300), "哈希函数\nh(key) % N", fill=ACCENT_SOFT, outline=ACCENT, size=23)
+    arrow(draw, (310, 250), (410, 250), color=LINE)
+    for index in range(5):
+        y = 130 + index * 100
+        fill = GREEN_SOFT if index in (1, 3) else SURFACE
+        box(draw, (760, y, 1120, y + 70), f"桶 {index}" + ("\n→ alice → carol" if index == 3 else ("\n→ bob" if index == 1 else "")), fill=fill, outline=GREEN if index in (1, 3) else LINE, size=20)
+    arrow(draw, (650, 250), (760, 250), color=LINE, label="定位")
+    draw.text((60, 400), "冲突处理：链地址法把同桶元素串成链表；开放寻址法按探测序列找下一个空位。", font=font(21), fill=INK)
+    draw.text((60, 470), "负载因子升高会拉长查找链，通常需要在扩容和内存之间做取舍。", font=font(21), fill=MUTED)
+    caption(draw, "平均 O(1) 的前提是哈希均匀、负载因子受控、键不可变", 660, 1200)
+    save(image, "hash_table")
+
+
+def acid_transaction() -> None:
+    image, draw = new_canvas()
+    draw_title(draw, "数据库事务：ACID 与提交边界")
+    stages = [
+        ("BEGIN", "开启事务\n记录起始点", PRIMARY),
+        ("UPDATE", "写日志 WAL\n修改页缓存", ACCENT),
+        ("CHECK", "约束与锁检查\n冲突等待/回滚", WARN),
+        ("COMMIT", "日志落盘\n标记提交", GREEN),
+    ]
+    for index, (title, desc, color) in enumerate(stages):
+        x = 60 + index * 290
+        box(draw, (x, 150, x + 240, 300), f"{title}\n\n{desc}", fill=SURFACE, outline=color, size=22, bold=True)
+        if index < len(stages) - 1:
+            arrow(draw, (x + 240, 225), (x + 290, 225), color=color)
+    box(draw, (60, 360, 1120, 465), "A 原子性：全做或全不做    C 一致性：约束始终成立\nI 隔离性：并发事务互不看到中间态    D 持久性：提交后故障不丢", fill=PRIMARY_SOFT, outline=PRIMARY, size=23)
+    draw.text((60, 520), "隔离级别的本质：在并发异常和数据一致性之间选择代价。", font=font(22), fill=MUTED)
+    draw.text((60, 570), "读未提交、读已提交、可重复读、串行化，越往后隔离越强、并发越低。", font=font(22), fill=MUTED)
+    caption(draw, "先写日志再改数据：崩溃恢复靠 redo/undo 日志重放", 660, 1200)
+    save(image, "acid_transaction")
+
+
+def cap_theorem() -> None:
+    image, draw = new_canvas()
+    draw_title(draw, "CAP 与分布式取舍：网络分区时只能保两边")
+    points = [(600, 130), (250, 560), (950, 560)]
+    labels = ["C 一致性\n所有节点看到同一份数据", "A 可用性\n每个请求都能得到响应", "P 分区容忍\n网络断开仍能继续运行"]
+    colors = [PRIMARY, GREEN, WARN]
+    for (x, y), label, color in zip(points, labels, colors):
+        box(draw, (x - 180, y - 60, x + 180, y + 60), label, fill=SURFACE, outline=color, size=21)
+    draw.line([points[0], points[1]], fill=LINE, width=3)
+    draw.line([points[1], points[2]], fill=LINE, width=3)
+    draw.line([points[2], points[0]], fill=LINE, width=3)
+    box(draw, (420, 300, 780, 400), "真实系统：\n分区期间在 C 与 A 之间取舍，恢复后再收敛", fill=WARN_SOFT, outline=WARN, size=21)
+    draw.text((60, 640), "不要问“选哪两个”，先问：分区概率、业务能否降级、数据能否合并。", font=font(22), fill=MUTED)
+    caption(draw, "大多数业务需要的是分区期间的可控降级，而不是口号式 CAP", 660, 1200)
+    save(image, "cap_theorem")
+
+
+def transformer_attention() -> None:
+    image, draw = new_canvas()
+    draw_title(draw, "Transformer 注意力：每个 token 重新分配关注")
+    for index, token in enumerate(["我", "喜欢", "学习", "编程"]):
+        box(draw, (60 + index * 135, 130, 175 + index * 135, 200), token, fill=PRIMARY_SOFT, outline=PRIMARY, size=23)
+    draw.text((60, 245), "输入 token → 生成 Q / K / V 三组向量", font=font(22), fill=INK)
+    for index, label in enumerate(["Q\n查询", "K\n键", "V\n值"]):
+        box(draw, (90 + index * 340, 300, 360 + index * 340, 405), label, fill=ACCENT_SOFT, outline=ACCENT, size=24)
+    box(draw, (100, 470, 1100, 570), "Attention(Q,K,V) = softmax(QKᵀ / √d) · V\n每个 token 根据相关性对其他 token 的 V 做加权求和", fill=GREEN_SOFT, outline=GREEN, size=22)
+    draw.text((60, 610), "多头注意力让模型同时学习语法、指代、位置和语义等多组关系。", font=font(21), fill=MUTED)
+    caption(draw, "上下文越长，注意力的计算与 KV 缓存成本越高", 660, 1200)
+    save(image, "transformer_attention")
+
+
+def agent_loop() -> None:
+    image, draw = new_canvas()
+    draw_title(draw, "AI Agent 循环：观察、计划、行动、反思")
+    stages = [
+        ("观察\n读取任务与工具结果", PRIMARY_SOFT, PRIMARY),
+        ("计划\n拆解目标与下一步", ACCENT_SOFT, ACCENT),
+        ("行动\n调用工具/执行代码", GREEN_SOFT, GREEN),
+        ("反思\n校验结果与修正", WARN_SOFT, WARN),
+    ]
+    for index, (label, fill, outline) in enumerate(stages):
+        x = 80 + index * 285
+        box(draw, (x, 160, x + 235, 300), label, fill=fill, outline=outline, size=22)
+        if index < len(stages) - 1:
+            arrow(draw, (x + 235, 230), (x + 285, 230), color=LINE)
+    arrow(draw, (1015, 300), (1015, 500), color=LINE)
+    arrow(draw, (1015, 500), (195, 500), color=LINE)
+    arrow(draw, (195, 500), (195, 300), color=LINE, label="未完成则继续")
+    box(draw, (380, 390, 820, 465), "停止条件：任务完成 / 预算耗尽 / 需要人工确认", fill=SURFACE, outline=LINE, size=20)
+    draw.text((60, 560), "记忆提供上下文，工具提供行动能力，护栏限制危险操作和无限循环。", font=font(22), fill=MUTED)
+    caption(draw, "工程重点不是“会聊天”，而是可观测、可评测、可回滚的闭环", 660, 1200)
+    save(image, "agent_loop")
+
+
 DIAGRAMS = {
     "memory_layout": memory_layout,
     "call_stack": call_stack,
@@ -464,6 +683,18 @@ DIAGRAMS = {
     "jvm_memory": jvm_memory,
     "llm_inference": llm_inference,
     "rag_pipeline": rag_pipeline,
+    "dns_resolution": dns_resolution,
+    "tcp_handshake": tcp_handshake,
+    "virtual_memory_paging": virtual_memory_paging,
+    "cache_hierarchy": cache_hierarchy,
+    "process_thread": process_thread,
+    "deadlock": deadlock,
+    "big_o": big_o,
+    "hash_table": hash_table,
+    "acid_transaction": acid_transaction,
+    "cap_theorem": cap_theorem,
+    "transformer_attention": transformer_attention,
+    "agent_loop": agent_loop,
 }
 
 

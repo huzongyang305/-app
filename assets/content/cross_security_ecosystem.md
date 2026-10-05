@@ -281,6 +281,50 @@ func LoadConfig() (Config, error) {
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `pip-audit` | \| Python \| `pip-audit` / `safety` \| `requirements.lock` / `uv.lock` \| gitleaks / trufflehog \| |
+| `safety` | \| Python \| `pip-audit` / `safety` \| `requirements.lock` / `uv.lock` \| gitleaks / trufflehog \| |
+| `requirements.lock` | \| Python \| `pip-audit` / `safety` \| `requirements.lock` / `uv.lock` \| gitleaks / trufflehog \| |
+| `uv.lock` | \| Python \| `pip-audit` / `safety` \| `requirements.lock` / `uv.lock` \| gitleaks / trufflehog \| |
+| `npm audit` | \| JavaScript \| `npm audit` \| `package-lock.json` \| 同上 \| |
+| `package-lock.json` | \| JavaScript \| `npm audit` \| `package-lock.json` \| 同上 \| |
+| `dependencyManagement` | \| Java \| OWASP Dependency-Check \| 无（用 `dependencyManagement` 统一） \| 同上 \| |
+| `dotnet list package --vulnerable` | \| C# \| `dotnet list package --vulnerable` \| `packages.lock.json` \| 同上 \| |
+| `packages.lock.json` | \| C# \| `dotnet list package --vulnerable` \| `packages.lock.json` \| 同上 \| |
+| `govulncheck` | \| Go \| `govulncheck` \| `go.sum` \| 同上 \| |
+| `go.sum` | \| Go \| `govulncheck` \| `go.sum` \| 同上 \| |
+| `cargo audit` | \| Rust \| `cargo audit` \| `Cargo.lock` \| 同上 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：发现密钥被提交到 Git 仓库后，第一步应该做什么？
+
+**参考回答**：正确答案是「立刻吊销并轮换密钥」，本课在「一句话说清」中说明：供应链安全只做三件事：及时知道依赖有漏洞、密钥不进代码、输入永远不可信。只要密钥还有效，泄露就可能被利用，必须优先让它失效。本课还在「本课小结」中说明：供应链安全三件事：扫依赖、护密钥、校验输入。本课还在「本课小结」中说明：高危漏洞与密钥扫描应当成为 CI 门禁，而不是建议。
+
+### 追问 2：供应链风险中，最容易被忽略的是？
+
+**参考回答**：正确答案是「间接依赖（传递依赖）中的已知漏洞」，本课在「一句话说清」中说明：供应链安全只做三件事：及时知道依赖有漏洞、密钥不进代码、输入永远不可信。传递依赖不由你直接声明，容易被漏扫。本课还在「本课小结」中说明：供应链安全三件事：扫依赖、护密钥、校验输入。本课还在「本课小结」中说明：高危漏洞与密钥扫描应当成为 CI 门禁，而不是建议。
+
+### 追问 3：关于密钥管理，下面哪种做法是正确的？
+
+**参考回答**：正确答案是「代码只读环境变量」，本课在「本课小结」中说明：密钥泄露的处置顺序是先轮换、再清理、后加固。密钥外置加最小权限是标准实践。本课还在「密钥泄露后的处置顺序」中说明：顺序很重要：先轮换再清理历史，否则在被利用期间仍然有效。本课示例中还能看到 `密钥写进代码 代码只读环境变量` 这样的用法，说明该关键字在本课代码中承担实际功能。
+
+### 追问 4：防止 SQL 注入最根本的做法是？
+
+**参考回答**：正确答案是「使用参数化查询」，这道题在问防止SQL注入最根本的做法是，判断时要把题干限定的输入、边界与目标逐项对齐。参数化查询从机制上消除注入可能。课程摘要指出各生态依赖扫描工具，供应链四类风险，密钥泄露处置顺序，本课要判断的正是防止SQL注入最根本的做法是。
+
+### 追问 5：补全代码：「依赖安全与密钥管理：九种生态横向对照」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `npm audit --audit-level=high # ____ / TypeScript`
+
+**参考回答**：正确答案是「JavaScript」，这道题在问补全代码：依赖安全与密钥管理：九种生态横向对照示例中…igh#____/TypeScript`，判断时要把题干限定的输入、边界与目标逐项对齐。本课示例中还能看到 `npm audit --audit-level=high # JavaScript / TypeScript` 这样的用法，说明该关键字在本课代码中承担实际功能。
+
 ## English Overview
 
 **Title:** Dependency and Secret Security
@@ -319,4 +363,3 @@ func LoadConfig() (Config, error) {
 > 本课主题：各生态依赖扫描工具、供应链四类风险、密钥泄露处置顺序。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

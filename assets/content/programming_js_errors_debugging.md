@@ -427,6 +427,50 @@ for (const e of result.failed) console.warn(e.message);
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `try/catch` | 异步错误要额外注意：`try/catch` 只能捕获 `await` 的错误，**未处理的 Promise 拒绝**需要 `.catch()` 或 `window.addEventListener('unhandledr… |
+| `await` | 异步错误要额外注意：`try/catch` 只能捕获 `await` 的错误，**未处理的 Promise 拒绝**需要 `.catch()` 或 `window.addEventListener('unhandledr… |
+| `.catch()` | 异步错误要额外注意：`try/catch` 只能捕获 `await` 的错误，**未处理的 Promise 拒绝**需要 `.catch()` 或 `window.addEventListener('unhandledr… |
+| `window.onerror` | \| 捕获全局错误 \| `window.onerror` 与 `unhandledrejection` 上报到监控平台 \| |
+| `unhandledrejection` | \| 捕获全局错误 \| `window.onerror` 与 `unhandledrejection` 上报到监控平台 \| |
+| `console.time` | \| 定位慢代码 \| Performance 面板录制、`console.time`、`performance.mark/measure` \| |
+| `performance.mark/measure` | \| 定位慢代码 \| Performance 面板录制、`console.time`、`performance.mark/measure` \| |
+| `console.trace()` | \| 看异步调用栈 \| DevTools 的 Async 栈、`console.trace()` \| |
+| `多半是数据未就绪（加可选链与默认值）；` | 常见错误类型与处理**：`TypeError: Cannot read properties of undefined` 多半是数据未就绪（加可选链与默认值）；`ChunkLoadError` 通常是发版后旧页面请求旧 … |
+| `通常是发版后旧页面请求旧 chunk（提示用户刷新或做版本协商）；` | 常见错误类型与处理**：`TypeError: Cannot read properties of undefined` 多半是数据未就绪（加可选链与默认值）；`ChunkLoadError` 通常是发版后旧页面请求旧 … |
+| `SyntaxError` | \| `SyntaxError` \| 语法错误 \| 少括号、少逗号 \| |
+| `ReferenceError` | \| `ReferenceError` \| 使用未声明的变量 \| 拼写错误、作用域外访问 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：finally 代码块什么时候执行？
+
+**参考回答**：正确答案是「无论成功或失败都执行」，本课在「内存与性能」中说明：全局变量、未清理的定时器、未移除的监听器、闭包长期引用大对象 → 内存泄漏。finally 常用于清理资源，即使发生 return 或异常也会执行。本课还在「零基础详解·错误处理与调试方法」中说明：错误处理让程序在出错时走可预期的分支，调试则是「在不知道原因时，用工具一步步缩小范围」。本课还在「try / catch / finally」中说明：异步错误要额外注意：try/catch 只能捕获 await 的错误，未处理的 Promise 拒绝需要 .catch() 或 window.addEventListener('unhandledrejection', ...)。
+
+### 追问 2：定位报错位置最关键的信息是？
+
+**参考回答**：正确答案是「error.stack」，本课在「内存与性能」中说明：全局变量、未清理的定时器、未移除的监听器、闭包长期引用大对象 → 内存泄漏。stack 给出调用链与行号，message 只说明错误内容。本课还在「零基础详解·错误处理与调试方法」中说明：错误处理让程序在出错时走可预期的分支，调试则是「在不知道原因时，用工具一步步缩小范围」。本课还在「零基础详解·错误处理与调试方法」中说明：注意：await 之后如果不加 try/catch，错误会变成未处理的 Promise 拒绝。
+
+### 追问 3：未被捕获的 Promise 拒绝会导致？
+
+**参考回答**：正确答案是「变成 unhandledrejection，可能静默失败」，本课在「try / catch / finally」中说明：异步错误要额外注意：try/catch 只能捕获 await 的错误，未处理的 Promise 拒绝需要 .catch() 或 window.addEventListener('unhandledrejection', ...)。必须用 catch 处理，或监听 unhandledrejection 统一上报。本课还在「零基础详解·错误处理与调试方法」中说明：注意：await 之后如果不加 try/catch，错误会变成未处理的 Promise 拒绝。
+
+### 追问 4：让自定义错误继承 Error 的好处是？
+
+**参考回答**：正确答案是「保留堆栈信息」，本课在「调试工具与线上排错」中说明：线上排错三原则：① 上报要带 sourcemap 才能还原压缩后的堆栈（构建时生成并上传）。自定义错误便于在 catch 中按业务类型分支处理，而不是靠判断 message 字符串。本课还在「调试工具与线上排错」中说明：常见错误类型与处理：TypeError: Cannot read properties of undefined 多半是数据未就绪（加可选链与默认值）。
+
+### 追问 5：source map（.map 文件）的作用是？
+
+**参考回答**：正确答案是「把压缩/编译后的代码行号映射回源码，方便定位线上报错」，本课在「调试手段」中说明：定位顺序：看控制台第一条报错 → 点开 stack 找到自己的代码 → 在可疑处打条件断点 → 缩小复现范围。生产构建可上传 source map 到错误监控平台而不公开，兼顾安全与可定位性。本课还在「调试工具与线上排错」中说明：线上排错三原则：① 上报要带 sourcemap 才能还原压缩后的堆栈（构建时生成并上传）。
+
 ## English Overview
 
 **Title:** Errors & Debugging
@@ -465,4 +509,3 @@ for (const e of result.failed) console.warn(e.message);
 > 本课主题：Error 对象、try/catch、异步错误、内存泄漏与性能排查。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

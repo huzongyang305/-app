@@ -295,6 +295,50 @@ print(little_law(concurrency=20, latency_s=0.05))
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `si/so` | `si/so` 持续非零 → 内存不足在换页，性能会断崖式下降。 |
+| `%util` | `%util` 接近 100% 且 await 高 → 磁盘瓶颈。 |
+| `uptime` | 第一步用 `uptime` 与 `top` 看负载和 CPU 分布（us/sy/wa/id）；第二步用 `vmstat`、`iostat`、`free` 判断是 CPU、内存还是 IO 受限；第三步用 `pidstat`… |
+| `top` | 第一步用 `uptime` 与 `top` 看负载和 CPU 分布（us/sy/wa/id）；第二步用 `vmstat`、`iostat`、`free` 判断是 CPU、内存还是 IO 受限；第三步用 `pidstat`… |
+| `vmstat` | 第一步用 `uptime` 与 `top` 看负载和 CPU 分布（us/sy/wa/id）；第二步用 `vmstat`、`iostat`、`free` 判断是 CPU、内存还是 IO 受限；第三步用 `pidstat`… |
+| `iostat` | 第一步用 `uptime` 与 `top` 看负载和 CPU 分布（us/sy/wa/id）；第二步用 `vmstat`、`iostat`、`free` 判断是 CPU、内存还是 IO 受限；第三步用 `pidstat`… |
+| `free` | 第一步用 `uptime` 与 `top` 看负载和 CPU 分布（us/sy/wa/id）；第二步用 `vmstat`、`iostat`、`free` 判断是 CPU、内存还是 IO 受限；第三步用 `pidstat`… |
+| `pidstat` | 第一步用 `uptime` 与 `top` 看负载和 CPU 分布（us/sy/wa/id）；第二步用 `vmstat`、`iostat`、`free` 判断是 CPU、内存还是 IO 受限；第三步用 `pidstat`… |
+| `ss` | 第一步用 `uptime` 与 `top` 看负载和 CPU 分布（us/sy/wa/id）；第二步用 `vmstat`、`iostat`、`free` 判断是 CPU、内存还是 IO 受限；第三步用 `pidstat`… |
+| `perf` | 第一步用 `uptime` 与 `top` 看负载和 CPU 分布（us/sy/wa/id）；第二步用 `vmstat`、`iostat`、`free` 判断是 CPU、内存还是 IO 受限；第三步用 `pidstat`… |
+| `strace` | 第一步用 `uptime` 与 `top` 看负载和 CPU 分布（us/sy/wa/id）；第二步用 `vmstat`、`iostat`、`free` 判断是 CPU、内存还是 IO 受限；第三步用 `pidstat`… |
+| `pidstat -u 1` | 常用组合示例：怀疑 GC 频繁用 `pidstat -u 1` 观察 CPU 周期性峰值；怀疑锁竞争用 `perf lock` 或 `strace -c -p` 统计 futex 调用；怀疑 DNS 慢用 `strace… |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：系统负载很高但 CPU 空闲时间很多，最可能是？
+
+**参考回答**：正确答案是「在等待磁盘或网络 IO」，本课在「快速判断」中说明：负载高但 CPU 空闲 → 多在等 IO（磁盘或网络）。负载包含不可中断睡眠的进程，IO 等待同样会推高负载。本课还在「本课小结」中说明：性能分析的关键是分层定位：先用全局指标判断瓶颈类型，再逐层缩小到进程、函数与调用栈，最后用数据验证优化效果。本课还在「火焰图」中说明：perf record -F 99 -p <pid> -g -- sleep 30 采集后生成火焰图，横轴是时间占比，纵轴是调用栈。
+
+### 追问 2：火焰图中函数条越宽说明？
+
+**参考回答**：正确答案是「该函数占用 CPU 时间越多」，本课在「火焰图」中说明：越宽的函数占用 CPU 越多，是定位热点最直观的方式。横轴是时间占比，宽条即热点。本课还在「本课小结」中说明：性能分析的关键是分层定位：先用全局指标判断瓶颈类型，再逐层缩小到进程、函数与调用栈，最后用数据验证优化效果。本课还在「火焰图」中说明：perf record -F 99 -p <pid> -g -- sleep 30 采集后生成火焰图，横轴是时间占比，纵轴是调用栈。
+
+### 追问 3：性能优化的基本原则是？
+
+**参考回答**：正确答案是「先测量再优化」，本课在「一次完整排查流程」中说明：第二步用 vmstat、iostat、free 判断是 CPU、内存还是 IO 受限。没有测量就没有优化，改动要有对照数据。本课还在「一次完整排查流程」中说明：第四步用 perf、strace 深入函数与系统调用。本课还在「一套可复制的排查脚本」中说明：怀疑锁竞争用 perf lock 或 strace -c -p 统计 futex 调用。
+
+### 追问 4：iostat 中 %util 接近 100% 说明什么？
+
+**参考回答**：正确答案是「磁盘几乎一直处于忙碌状态」，本课在「快速判断」中说明：si/so 持续非零 → 内存不足在换页，性能会断崖式下降。还要结合 await 与队列长度判断：SSD 高 util 仍可能有可用余量。本课还在「先建立全局观」中说明：性能问题先分清四类资源：CPU、内存、磁盘 IO、网络。本课还在「快速判断」中说明：%util 接近 100% 且 await 高 → 磁盘瓶颈。
+
+### 追问 5：vmstat 输出中 si/so 持续非零说明？
+
+**参考回答**：正确答案是「系统正在频繁换页」，本课在「快速判断」中说明：si/so 持续非零 → 内存不足在换页，性能会断崖式下降。换页会带来巨大的延迟抖动，是最典型的「内存不足」信号。本课还在「一次完整排查流程」中说明：第二步用 vmstat、iostat、free 判断是 CPU、内存还是 IO 受限。本课还在「一次完整排查流程」中说明：第一步用 uptime 与 top 看负载和 CPU 分布（us/sy/wa/id）。
+
 ## English Overview
 
 **Title:** Linux Performance
@@ -334,4 +378,3 @@ print(little_law(concurrency=20, latency_s=0.05))
 > 本课主题：CPU/内存/IO/网络排查与火焰图。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

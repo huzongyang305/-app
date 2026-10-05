@@ -157,6 +157,11 @@ Dart 空安全区分可空和非空类型，`?`、`!`、`?.`、`??` 分别表达
 - **判断依据**：正确答案是「build」，本课在「Dart 与 Flutter 基础机制速览」中说明：Widget 很轻量，频繁重建本身不是问题，真正昂贵的是布局、绘制、图片解码和同步计算。本课还在「Dart 与 Flutter 基础机制速览」中说明：Flutter 使用 Dart 语言和自带渲染引擎，UI 由不可变 Widget 树描述。本课还在「Dart 与 Flutter 基础机制速览」中说明：const 构造函数能在编译期复用对象，减少不必要的重建。
 - **迁移检查**：把答案换成另一种等价写法，是否仍然正确？说明依据。
 
+### 补充考点 1：关于「Flutter Widget 入门」，下列哪些说法是正确的？（多选）
+
+- **正确判断**：根据当前状态描述这一帧要显示的 Widget 结构；main() 是程序入口，runApp() 把根 Widget 挂载到引擎
+- **判断依据**：正确答案是「根据当前状态描述这一帧要显示的 Widget 结构；main() 是程序入口，runApp() 把根 Widget 挂载到引擎」。本课的两个判断点可以互相印证：正确答案是「根据当前状态描述这一帧要显示的 Widget 结构」，本课在「Dart 与 Flutter 基础机制速览」中说明：build 方法根据当前状态返回 Widget 配置，…；理解 Widget、build 和最小应用结构。。在「Flutter Widget 入门」中，多选时不能只凭一个关键词选答案，要逐项核对题干限定的对象和边界。
+
 ## 本课复习清单
 
 离开本课前，逐项确认：
@@ -198,6 +203,7 @@ void main() {
       ),
     ),
   );
+}
 ```
 
 自检：这一节与相邻主题的边界在哪里？
@@ -221,6 +227,50 @@ void main() {
 把数字 2 改成 10，预测并验证新结果。制造一个错误输入，写出错误信息和修复方法。
 
 自检：如果去掉这一节里的一个前提，结论会怎样变化？
+
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `build` | Flutter 使用 Dart 语言和自带渲染引擎，UI 由不可变 Widget 树描述。`build` 方法根据当前状态返回 Widget 配置，框架比较新旧树并更新必要的渲染对象。Widget 很轻量，频繁重建本身不… |
+| `const` | Flutter 使用 Dart 语言和自带渲染引擎，UI 由不可变 Widget 树描述。`build` 方法根据当前状态返回 Widget 配置，框架比较新旧树并更新必要的渲染对象。Widget 很轻量，频繁重建本身不… |
+| `Row` | Flutter 布局遵循“约束向下、尺寸向上、父决定位置”。父节点给子节点最大和最小约束，子节点在约束内选择尺寸并向上汇报，父节点决定放置位置。`Row`、`Column`、`Stack`、`Expanded`、`Fle… |
+| `Column` | Flutter 布局遵循“约束向下、尺寸向上、父决定位置”。父节点给子节点最大和最小约束，子节点在约束内选择尺寸并向上汇报，父节点决定放置位置。`Row`、`Column`、`Stack`、`Expanded`、`Fle… |
+| `Stack` | Flutter 布局遵循“约束向下、尺寸向上、父决定位置”。父节点给子节点最大和最小约束，子节点在约束内选择尺寸并向上汇报，父节点决定放置位置。`Row`、`Column`、`Stack`、`Expanded`、`Fle… |
+| `Expanded` | Flutter 布局遵循“约束向下、尺寸向上、父决定位置”。父节点给子节点最大和最小约束，子节点在约束内选择尺寸并向上汇报，父节点决定放置位置。`Row`、`Column`、`Stack`、`Expanded`、`Fle… |
+| `Flexible` | Flutter 布局遵循“约束向下、尺寸向上、父决定位置”。父节点给子节点最大和最小约束，子节点在约束内选择尺寸并向上汇报，父节点决定放置位置。`Row`、`Column`、`Stack`、`Expanded`、`Fle… |
+| `ListView` | Flutter 布局遵循“约束向下、尺寸向上、父决定位置”。父节点给子节点最大和最小约束，子节点在约束内选择尺寸并向上汇报，父节点决定放置位置。`Row`、`Column`、`Stack`、`Expanded`、`Fle… |
+| `State` | 无状态 Widget 只依赖输入，状态变化由父级重建；有状态 Widget 通过 `State` 保存跨帧数据，`setState` 通知框架重新构建。`initState`、`didChangeDependencies… |
+| `setState` | 无状态 Widget 只依赖输入，状态变化由父级重建；有状态 Widget 通过 `State` 保存跨帧数据，`setState` 通知框架重新构建。`initState`、`didChangeDependencies… |
+| `initState` | 无状态 Widget 只依赖输入，状态变化由父级重建；有状态 Widget 通过 `State` 保存跨帧数据，`setState` 通知框架重新构建。`initState`、`didChangeDependencies… |
+| `didChangeDependencies` | 无状态 Widget 只依赖输入，状态变化由父级重建；有状态 Widget 通过 `State` 保存跨帧数据，`setState` 通知框架重新构建。`initState`、`didChangeDependencies… |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：Flutter 中 build() 方法的核心职责是什么？
+
+**参考回答**：正确答案是「根据当前状态描述这一帧要显示的 Widget 结构」，本课在「Dart 与 Flutter 基础机制速览」中说明：build 方法根据当前状态返回 Widget 配置，框架比较新旧树并更新必要的渲染对象。build() 是 Widget 与框架之间的约定：它读取当前不可变配置和 State，返回一棵描述界面的 Widget 树。本课还在「一句话入门」中说明：理解 Widget、build 和最小应用结构。
+
+### 追问 2：在最小 Flutter 应用里，main() 与 runApp() 的分工是？
+
+**参考回答**：正确答案是「main() 是程序入口，runApp() 把根 Widget 挂载到引擎」，本课在「一句话入门」中说明：理解 Widget、build 和最小应用结构。Dart 虚拟机从 main() 开始执行，Flutter 应用也不例外。本课还在「Dart 与 Flutter 基础机制速览」中说明：Flutter 使用 Dart 语言和自带渲染引擎，UI 由不可变 Widget 树描述。本课还在「Dart 与 Flutter 基础机制速览」中说明：build 方法根据当前状态返回 Widget 配置，框架比较新旧树并更新必要的渲染对象。
+
+### 追问 3：StatelessWidget 与 StatefulWidget 最本质的差别是？
+
+**参考回答**：正确答案是「StatefulWidget 通过 State 保存可变状态并触发重建」，本课在「Dart 与 Flutter 基础机制速览」中说明：const 构造函数能在编译期复用对象，减少不必要的重建。两者都是不可变配置，区别在于 StatefulWidget 会创建一个可长期存在的 State 对象，调用 setState() 后框架安排重建，从而把「状态变化」映射成「界面更新」。本课还在「Dart 与 Flutter 基础机制速览」中说明：在 Widget 中使用异步结果前要检查 mounted，避免页面销毁后调用 setState。
+
+### 追问 4：运行本课最小示例后，屏幕上会看到什么？
+
+**参考回答**：正确答案是「屏幕中央显示一行文本 Hello Flutter」，本课在「Dart 与 Flutter 基础机制速览」中说明：父节点给子节点最大和最小约束，子节点在约束内选择尺寸并向上汇报，父节点决定放置位置。示例用 MaterialApp 提供应用骨架，Scaffold 提供页面容器，Center 让子节点在剩余空间里居中，Text 负责渲染字符串。本课还在「Dart 与 Flutter 基础机制速览」中说明：无状态 Widget 只依赖输入，状态变化由父级重建。
+
+### 追问 5：填空：「Flutter Widget 入门」术语速查中，表示「Flutter 使用 Dart 语言和自带渲染引擎，UI 由不可变 Widget 树描述。`____` 方法根据当前状态返回 Widget 配置，框架比较新旧树并更新必要的渲染对象。Widget 很轻量，频繁重建本身不是问题，真正昂贵的是…」的术语是什么？
+
+**参考回答**：正确答案是「build」，本课在「Dart 与 Flutter 基础机制速览」中说明：Widget 很轻量，频繁重建本身不是问题，真正昂贵的是布局、绘制、图片解码和同步计算。本课还在「Dart 与 Flutter 基础机制速览」中说明：Flutter 使用 Dart 语言和自带渲染引擎，UI 由不可变 Widget 树描述。本课还在「Dart 与 Flutter 基础机制速览」中说明：const 构造函数能在编译期复用对象，减少不必要的重建。
 
 ## English Overview
 

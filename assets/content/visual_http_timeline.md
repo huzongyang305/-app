@@ -330,6 +330,50 @@ curl -s -o /dev/null -w '%{size_download} 字节 %{http_version}\n' \
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `time_namelookup` | \| `time_namelookup` \| DNS 解析耗时 \| DNS 服务器远、无缓存 \| |
+| `time_connect` | \| `time_connect` \| TCP 握手耗时 \| 网络距离远、丢包 \| |
+| `time_appconnect` | \| `time_appconnect` \| TLS 握手耗时 \| 证书链长、未启用会话复用 \| |
+| `time_starttransfer` | \| `time_starttransfer` \| 首字节时间 TTFB \| 服务端处理慢、数据库慢 \| |
+| `time_total` | \| `time_total` \| 总耗时 \| 内容太大、无压缩 \| |
+| `transform` | \| 合成 \| `transform`、`opacity` \| 最低，可交给 GPU \| |
+| `opacity` | \| 合成 \| `transform`、`opacity` \| 最低，可交给 GPU \| |
+| `dns-prefetch` | \| DNS \| 使用可靠 DNS、`dns-prefetch` \| |
+| `defer` | \| 渲染 \| 关键 CSS 内联、脚本 `defer`、图片预留尺寸 \| |
+| `curl -w` | \| 只看总耗时 \| 不知道瓶颈在哪 \| 用 `curl -w` 或 devtools 分段看 \| |
+| `aspect-ratio` | \| 图片不预留尺寸 \| 布局跳动，CLS 高 \| 设宽高或 `aspect-ratio` \| |
+| `async` | \| 用同步脚本阻塞解析 \| 首屏延迟 \| 用 `defer` 或 `async` \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：`curl -w` 输出中 `time_appconnect` 表示的是？
+
+**参考回答**：正确答案是「TLS 握手完成的耗时」，本课在「本课小结」中说明：一次请求的成本分布在 DNS、连接、TLS、服务端、传输、渲染 六处。timeappconnect 是应用层连接（含 TLS 握手）完成的时刻。本课还在「本课小结」中说明：用户感知的性能由 LCP、CLS、INP 三个指标共同决定，而不是单一的总耗时。本课还在「一句话说清」中说明：每一段都有自己的耗时，优化前先看清时间花在哪一段。
+
+### 追问 2：TTFB 偏高，最可能与哪一段有关？
+
+**参考回答**：正确答案是「DNS 解析」，本课在「一句话说清」中说明：DNS 解析 → TCP 握手 → TLS 握手 → HTTP 请求响应 → 浏览器渲染五段。TTFB 覆盖从请求发出到收到第一个字节的全过程，包含解析、连接与服务端处理。本课还在「一句话说清」中说明：在浏览器地址栏敲下回车到看见页面，中间至少经历。本课还在「本课小结」中说明：一次请求的成本分布在 DNS、连接、TLS、服务端、传输、渲染 六处。
+
+### 追问 3：做动画时优先修改哪两个属性，代价最低？
+
+**参考回答**：transform 与 opacity 通常只需合成，跳过布局与绘制。「width 与 height」、「margin 与 padding」、「top 与 left」都会触发几何变化，进而引起重排，代价最高。针对「做动画时优先修改哪两个属性，代价最低，」，本课在「浏览器渲染的五步」中说明：结论：动画优先改 transform 与 opacity，避免触发布局。
+
+### 追问 4：为避免累积布局偏移（CLS），图片应该？
+
+**参考回答**：正确答案是「提前预留宽高或使用 aspect-ratio」，这道题在问为避免累积布局偏移（CLS），图片应该，判断时要把题干限定的输入、边界与目标逐项对齐。预留尺寸能让浏览器提前占位，避免加载后内容跳动。课程摘要指出DNS，TCP，TLS，HTTP 与渲染五段时序，以及每段的优化手段，本课要判断的正是为避免累积布局偏移（CLS），图片应该。
+
+### 追问 5：补全代码：「图解一次网页请求的完整链路」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `│ ① DNS 解析：____.com → 93.184.216.34`
+
+**参考回答**：正确答案是「example」，本课在「一句话说清」中说明：DNS 解析 → TCP 握手 → TLS 握手 → HTTP 请求响应 → 浏览器渲染五段。本课示例中还能看到 `-o /dev/null -s https://example.com` 这样的用法，说明该关键字在本课代码中承担实际功能。
+
 ## English Overview
 
 **Title:** HTTP Request Timeline Illustrated
@@ -368,4 +412,3 @@ curl -s -o /dev/null -w '%{size_download} 字节 %{http_version}\n' \
 > 本课主题：DNS、TCP、TLS、HTTP 与渲染五段时序，以及每段的优化手段。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

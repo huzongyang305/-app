@@ -246,6 +246,11 @@ HTML 的核心是**语义与结构**：正确的标签本身就在描述内容�
 - **判断依据**：正确答案是「description」，本课在「可访问性基础」中说明：需要时用 ARIA 补充（优先用原生语义，ARIA 是补丁不是替代）。本课示例中还能看到 `<meta name="description" content="离线可用的计算机与编程学习课程" />` 这样的用法，说明该关键字在本课代码中承担实际功能。
 - **迁移检查**：把答案换成另一种等价写法，是否仍然正确？说明依据。
 
+### 补充考点 1：关于「HTML 基础与语义化」，下列哪些说法是正确的？（多选）
+
+- **正确判断**：button 元素；图片无法显示时展示
+- **判断依据**：正确答案是「button 元素；图片无法显示时展示」。本课的两个判断点可以互相印证：正确答案是「图片无法显示时展示」，本课在「语义化标签」中说明：用 div 堆页面叫"div 汤"：语义化标签能带来更好的可访问性、SEO 与代码可读性。装饰性图片也应写空 alt，…；文档结构、语义标签、表单与可访问性。。在「HTML 基础与语义化」中，多选时不能只凭一个关键词选答案，要逐项核对题干限定的对象和边界。
+
 ## 本课复习清单
 
 离开本课前，逐项确认：
@@ -264,6 +269,50 @@ HTML 的核心是**语义与结构**：正确的标签本身就在描述内容�
 | 已经能独立解释的考点 |  |
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
+
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `lang` | `lang` 影响屏幕阅读器与拼写检查；`viewport` 是移动端适配的前提；`charset=utf-8` 必须在 head 前 1024 字节内声明，否则中文可能乱码。 |
+| `viewport` | `lang` 影响屏幕阅读器与拼写检查；`viewport` 是移动端适配的前提；`charset=utf-8` 必须在 head 前 1024 字节内声明，否则中文可能乱码。 |
+| `charset=utf-8` | `lang` 影响屏幕阅读器与拼写检查；`viewport` 是移动端适配的前提；`charset=utf-8` 必须在 head 前 1024 字节内声明，否则中文可能乱码。 |
+| `div` | 用 `div` 堆页面叫"div 汤"：语义化标签能带来更好的可访问性、SEO 与代码可读性。 |
+| `ul/ol/dl` | 列表 `ul/ol/dl`、表格 `table/thead/tbody/th`、表单 `form/input/label/select/textarea`、多媒体 `img/audio/video/source`。要点：… |
+| `table/thead/tbody/th` | 列表 `ul/ol/dl`、表格 `table/thead/tbody/th`、表单 `form/input/label/select/textarea`、多媒体 `img/audio/video/source`。要点：… |
+| `form/input/label/select/textarea` | 列表 `ul/ol/dl`、表格 `table/thead/tbody/th`、表单 `form/input/label/select/textarea`、多媒体 `img/audio/video/source`。要点：… |
+| `img/audio/video/source` | 列表 `ul/ol/dl`、表格 `table/thead/tbody/th`、表单 `form/input/label/select/textarea`、多媒体 `img/audio/video/source`。要点：… |
+| `img` | 列表 `ul/ol/dl`、表格 `table/thead/tbody/th`、表单 `form/input/label/select/textarea`、多媒体 `img/audio/video/source`。要点：… |
+| `alt` | 列表 `ul/ol/dl`、表格 `table/thead/tbody/th`、表单 `form/input/label/select/textarea`、多媒体 `img/audio/video/source`。要点：… |
+| `label` | 列表 `ul/ol/dl`、表格 `table/thead/tbody/th`、表单 `form/input/label/select/textarea`、多媒体 `img/audio/video/source`。要点：… |
+| `for` | 列表 `ul/ol/dl`、表格 `table/thead/tbody/th`、表单 `form/input/label/select/textarea`、多媒体 `img/audio/video/source`。要点：… |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：img 标签的 alt 属性作用是？
+
+**参考回答**：正确答案是「图片无法显示时展示」，本课在「语义化标签」中说明：用 div 堆页面叫"div 汤"：语义化标签能带来更好的可访问性、SEO 与代码可读性。装饰性图片也应写空 alt，表示对辅助技术可忽略。本课还在「常用元素与属性」中说明：要点：img 必须写 alt（装饰性图片写空 alt）。本课还在「可访问性基础」中说明：图片有 alt、表单有 label、颜色对比度 ≥ 4.5:1。
+
+### 追问 2：页面上的可点击操作（非跳转）应该用？
+
+**参考回答**：正确答案是「button 元素」，本课在「语义化标签」中说明：用 div 堆页面叫"div 汤"：语义化标签能带来更好的可访问性、SEO 与代码可读性。button 天然可聚焦、可键盘触发，可访问性更好。本课还在「常用标签速查与骨架」中说明：一张典型页面的最小骨架：<!doctype html> → <html lang="zh-CN"> → <head>（charset、viewport、title、description、link）→ <body>（header/nav/main/section/footer）。
+
+### 追问 3：meta viewport 的作用是？
+
+**参考回答**：正确答案是「移动端页面适配的前提」，本课在「常用元素与属性」中说明：required/type/inputmode 提升移动端体验。缺少它移动端会按桌面宽度渲染并缩小整页。本课还在「常用标签速查与骨架」中说明：一张典型页面的最小骨架：<!doctype html> → <html lang="zh-CN"> → <head>（charset、viewport、title、description、link）→ <body>（header/nav/main/section/footer）。
+
+### 追问 4：<main> 标签在一个页面中应该出现几次？
+
+**参考回答**：正确答案是「1 次」，本课在「本课小结」中说明：HTML 的核心是语义与结构：正确的标签本身就在描述内容，CSS 负责外观、JS 负责行为，三者职责不要混淆。main 表示页面的唯一主体内容区域，辅助技术依赖它快速跳到正文。其他选项：main 表示页面唯一的主体内容区域，重复出现会让辅助技术无法判断正文位置，因此一个页面只应有一个。本课还在「常用元素与属性」中说明：列表 ul/ol/dl、表格 table/thead/tbody/th、表单 form/input/label/select/textarea、多媒体 img/audio/video/source。
+
+### 追问 5：表单里 label 的 for 属性作用是？
+
+**参考回答**：正确答案是「关联对应控件」，本课在「常用标签速查与骨架」中说明：同一表单里多个 submit 按钮要用 formaction 区分。for 与控件的 id 对应，扩大点击热区，也让读屏软件正确播报标签。本课还在「常用标签速查与骨架」中说明：易错点：label 的 for 必须等于输入框 id。本课还在「常用元素与属性」中说明：列表 ul/ol/dl、表格 table/thead/tbody/th、表单 form/input/label/select/textarea、多媒体 img/audio/video/source。
 
 ## English Overview
 
@@ -303,4 +352,3 @@ HTML 的核心是**语义与结构**：正确的标签本身就在描述内容�
 > 本课主题：文档结构、语义标签、表单与可访问性。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

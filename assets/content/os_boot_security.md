@@ -310,6 +310,50 @@ print(audit_critical_paths(["/etc", "/usr/bin/passwd"]))
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `ls -l` | \| 查看文件权限与特殊位 \| `ls -l` 看 rwx 与 s/t 标记；`stat -c '%a %n' <file>` 看八进制 \| |
+| `stat -c '%a %n' <file>` | \| 查看文件权限与特殊位 \| `ls -l` 看 rwx 与 s/t 标记；`stat -c '%a %n' <file>` 看八进制 \| |
+| `User=` | \| 限制服务权限 \| systemd 单元中加 `User=`、`NoNewPrivileges=true`、`ProtectSystem=strict` \| |
+| `NoNewPrivileges=true` | \| 限制服务权限 \| systemd 单元中加 `User=`、`NoNewPrivileges=true`、`ProtectSystem=strict` \| |
+| `ProtectSystem=strict` | \| 限制服务权限 \| systemd 单元中加 `User=`、`NoNewPrivileges=true`、`ProtectSystem=strict` \| |
+| `getpcaps <pid>` | \| 查看进程可用能力 \| `getpcaps <pid>` 或 `capsh --print` \| |
+| `capsh --print` | \| 查看进程可用能力 \| `getpcaps <pid>` 或 `capsh --print` \| |
+| `，仅按需` | \| 容器最小权限 \| `--read-only --cap-drop=ALL --user 1000:1000`，仅按需 `--cap-add` \| |
+| `lynis` | 排查思路：先用审计工具（`lynis`、`auditd`）找出配置偏差，再逐项收敛；**每次改动都要在测试环境验证服务仍能启动**，权限过紧会直接导致启动失败。 |
+| `auditd` | 排查思路：先用审计工具（`lynis`、`auditd`）找出配置偏差，再逐项收敛；**每次改动都要在测试环境验证服务仍能启动**，权限过紧会直接导致启动失败。 |
+| `blkid` | \| 启动后进入 emergency mode \| /etc/fstab 中挂载项错误 \| 检查 fstab 与磁盘 UUID（`blkid`） \| |
+| `systemctl status <svc>` | \| 服务起不来但系统正常 \| systemd 单元配置错误 \| `systemctl status <svc>` + `journalctl -u <svc> -n 50` \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：Secure Boot 的核心作用是？
+
+**参考回答**：正确答案是「校验引导链各环节的数字签名，防止被篡改」，本课在「启动流程」中说明：UEFI 取代 BIOS 的关键改进：GPT 分区、启动更快、支持 Secure Boot（校验 bootloader 与内核签名，防止引导链被篡改）。从固件到内核逐级验签，阻断引导型恶意软件。本课还在「本课小结」中说明：启动链的关键是信任传递（固件 → bootloader → 内核 → 用户空间），权限模型的关键是最小权限（用户/组 → capabilities → MAC → 命名空间与 cgroups）。
+
+### 追问 2：容器实现隔离依赖的内核特性是？
+
+**参考回答**：正确答案是「命名空间 + cgroups」，本课在「隔离·命名空间与 cgroups」中说明：容器不是虚拟机，它靠内核特性实现隔离：命名空间隔离视图（PID、网络、挂载、UTS、IPC、用户），cgroups 限制资源（CPU、内存、IO、进程数）。命名空间隔离视图，cgroups 限制资源。本课还在「本课小结」中说明：启动链的关键是信任传递（固件 → bootloader → 内核 → 用户空间），权限模型的关键是最小权限（用户/组 → capabilities → MAC → 命名空间与 cgroups）。
+
+### 追问 3：文件的 SUID 位表示？
+
+**参考回答**：正确答案是「执行时以文件所有者的身份运行」，本课在「用户与权限模型」中说明：特殊位：SUID（以文件所有者身份执行）、SGID（继承组或目录内文件继承组）、Sticky（目录内文件仅所有者可删，如 /tmp）。SUID 常用于 passwd 等需要特权的程序，滥用会带来提权风险。本课还在「安全加固清单」中说明：容器以非 root 运行、只读根文件系统、限制 capabilities。本课还在「用户与权限模型」中说明：root 权限过大，因此现代系统使用 capabilities 拆分特权（如 CAPNETBINDSERVICE 只允许绑定低端口、CAPSYSADMIN 仍然危险），配合最小权限原则降低风险。
+
+### 追问 4：UEFI/BIOS 在上电后的主要职责是？
+
+**参考回答**：正确答案是「自检硬件」，本课在「启动流程」中说明：initramfs 是临时根文件系统，内含挂载真正根分区所需的驱动与脚本。Secure Boot 在这一阶段校验引导程序的签名，把信任链传递下去。本课还在「安全加固清单」中说明：容器以非 root 运行、只读根文件系统、限制 capabilities。本课还在「安全加固清单」中说明：关键系统启用 Secure Boot 与磁盘加密（LUKS）。
+
+### 追问 5：Linux 中 umask 022 的作用是？
+
+**参考回答**：正确答案是「创建文件时从默认权限中屏蔽组与其他用户的写权限」，本课在「用户与权限模型」中说明：特殊位：SUID（以文件所有者身份执行）、SGID（继承组或目录内文件继承组）、Sticky（目录内文件仅所有者可删，如 /tmp）。新建文件默认 666、目录默认 777，再与 umask 取反后相与得到实际权限。本课还在「用户与权限模型」中说明：Linux 权限用「用户/组/其他 + rwx」九位表示（如 755、644）。
+
 ## English Overview
 
 **Title:** Boot & Security
@@ -348,4 +392,3 @@ print(audit_critical_paths(["/etc", "/usr/bin/passwd"]))
 > 本课主题：UEFI/Secure Boot、权限位、capabilities 与容器隔离。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

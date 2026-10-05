@@ -8,7 +8,10 @@ import '../theme/app_theme.dart';
 
 /// 交互式学习实验室：逐步演示算法和常用数据结构操作。
 class InteractiveLabScreen extends StatefulWidget {
-  const InteractiveLabScreen({super.key});
+  const InteractiveLabScreen({super.key, this.initialMode = 0});
+
+  /// 从课程页跳转时可指定要直接打开的演示。
+  final int initialMode;
 
   @override
   State<InteractiveLabScreen> createState() => _InteractiveLabScreenState();
@@ -35,7 +38,7 @@ class _InteractiveLabScreenState extends State<InteractiveLabScreen> {
   ];
   final List<int> _bubbleValues = const <int>[42, 17, 93, 8, 55, 24, 71];
 
-  int _mode = _binary;
+  late int _mode;
   int _stepIndex = 0;
   bool _playing = false;
   Timer? _timer;
@@ -45,6 +48,12 @@ class _InteractiveLabScreenState extends State<InteractiveLabScreen> {
   final List<String> _queue = <String>[];
   int _nextStackValue = 1;
   int _nextQueueValue = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _mode = widget.initialMode.clamp(_binary, _selection);
+  }
 
   @override
   void dispose() {

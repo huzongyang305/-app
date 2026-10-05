@@ -437,6 +437,50 @@ fetchUsers()
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `this` | 模块特性：自动严格模式、顶层 `this` 是 `undefined`、同一模块只执行一次、静态分析可做摇树优化（tree shaking）。 |
+| `undefined` | 模块特性：自动严格模式、顶层 `this` 是 `undefined`、同一模块只执行一次、静态分析可做摇树优化（tree shaking）。 |
+| `.mjs` | Node 中 `.mjs` 或 `package.json` 里的 `"type": "module"` 表示使用 ESM；新项目一律优先 ESM。 |
+| `package.json` | Node 中 `.mjs` 或 `package.json` 里的 `"type": "module"` 表示使用 ESM；新项目一律优先 ESM。 |
+| `"type": "module"` | Node 中 `.mjs` 或 `package.json` 里的 `"type": "module"` 表示使用 ESM；新项目一律优先 ESM。 |
+| `^4.17.21` | 语义化版本 `^4.17.21`：允许升级次版本与修订版本，不跨主版本。`package-lock.json` 必须提交，保证依赖可复现。 |
+| `package-lock.json` | 语义化版本 `^4.17.21`：允许升级次版本与修订版本，不跨主版本。`package-lock.json` 必须提交，保证依赖可复现。 |
+| `npm ci` | \| 锁定版本 \| 提交 lock 文件；CI 用 `npm ci` 而不是 `npm install` \| |
+| `npm install` | \| 锁定版本 \| 提交 lock 文件；CI 用 `npm ci` 而不是 `npm install` \| |
+| `import { x } from 'lib'` | \| 减少体积 \| 按需引入（`import { x } from 'lib'`）、用打包分析器找大依赖、优先 ESM 以便 tree-shaking \| |
+| `import()` | \| 代码分割 \| 路由级动态 `import()` 拆包，首屏只加载必要代码 \| |
+| `npm audit` | \| 供应链安全 \| 定期 `npm audit`、锁定版本、谨慎新增依赖 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：导出模块默认值的语法是？
+
+**参考回答**：正确答案是「export default function () {}」，本课在「本课小结」中说明：模块化解决「代码怎么组织」，npm 解决「依赖怎么管理」，打包工具解决「怎么在浏览器里高效运行」。export default 导出默认成员，导入时不需要花括号且可以自定义名称。本课还在「依赖与打包的实践要点」中说明：② 循环依赖使模块导出为 undefined（重构拆分或用延迟引用）。本课还在「依赖与打包的实践要点」中说明：③ ESM 与 CommonJS 混用出现 require is not defined（检查 package.json 的 type 与构建输出格式）。
+
+### 追问 2：package-lock.json 的主要作用是？
+
+**参考回答**：正确答案是「锁定依赖的确切版本」，本课在「本课小结」中说明：模块化解决「代码怎么组织」，npm 解决「依赖怎么管理」，打包工具解决「怎么在浏览器里高效运行」。lock 文件记录完整的依赖树与版本，团队与 CI 中应当提交它。本课还在「npm 与 package.json」中说明：package-lock.json 必须提交，保证依赖可复现。本课还在「依赖与打包的实践要点」中说明：常见坑：① 直接依赖与传递依赖版本冲突导致"本地能跑、CI 报错"（用 lock 文件与同一 Node 版本解决）。
+
+### 追问 3：版本号 ^4.17.21 表示允许升级到？
+
+**参考回答**：正确答案是「4.x.x 的最新版（不跨主版本）」，本课在「npm 与 package.json」中说明：语义化版本 ^4.17.21：允许升级次版本与修订版本，不跨主版本。^ 允许次版本与修订版本升级，主版本变化可能不兼容，因此被排除。本课还在「CommonJS（Node 旧标准）」中说明：Node 中 .mjs 或 package.json 里的 "type": "module" 表示使用 ESM。
+
+### 追问 4：ESM 与 CommonJS 的主要区别是？
+
+**参考回答**：正确答案是「ESM 是静态的 import/export」，本课在「模块语法速查」中说明：注意：浏览器里引用相对模块必须写扩展名（./util.js），Node 的 ESM 同样要求完整路径。静态结构让打包器能安全地删除未使用的导出，这是现代构建体积优化的基础。本课还在「ES Module」中说明：模块特性：自动严格模式、顶层 this 是 undefined、同一模块只执行一次、静态分析可做摇树优化（tree shaking）。
+
+### 追问 5：devDependencies 与 dependencies 的区别是？
+
+**参考回答**：正确答案是「只在开发，构建」，本课在「依赖与打包的实践要点」中说明：④ 只在开发环境生效的 process.env 变量在生产未注入，导致运行时报错。把测试框架、打包器放 devDependencies，能避免污染生产依赖树。本课还在「依赖与打包的实践要点」中说明：③ ESM 与 CommonJS 混用出现 require is not defined（检查 package.json 的 type 与构建输出格式）。
+
 ## English Overview
 
 **Title:** Modules & Tooling
@@ -475,4 +519,3 @@ fetchUsers()
 > 本课主题：ES Module、CommonJS、npm 与 package.json、常见构建工具。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

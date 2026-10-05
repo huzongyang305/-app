@@ -322,6 +322,50 @@ go test -bench . -benchmem -count=5 | tee bench.txt
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `cProfile` | \| Python \| `cProfile` / `py-spy` \| `timeit` / `pytest-benchmark` \| `tracemalloc` / `memray` \| |
+| `py-spy` | \| Python \| `cProfile` / `py-spy` \| `timeit` / `pytest-benchmark` \| `tracemalloc` / `memray` \| |
+| `timeit` | \| Python \| `cProfile` / `py-spy` \| `timeit` / `pytest-benchmark` \| `tracemalloc` / `memray` \| |
+| `pytest-benchmark` | \| Python \| `cProfile` / `py-spy` \| `timeit` / `pytest-benchmark` \| `tracemalloc` / `memray` \| |
+| `tracemalloc` | \| Python \| `cProfile` / `py-spy` \| `timeit` / `pytest-benchmark` \| `tracemalloc` / `memray` \| |
+| `memray` | \| Python \| `cProfile` / `py-spy` \| `timeit` / `pytest-benchmark` \| `tracemalloc` / `memray` \| |
+| `benchmark.js` | \| JavaScript \| Chrome DevTools Performance \| `benchmark.js` \| DevTools Memory \| |
+| `vitest bench` | \| TypeScript \| 同 JavaScript \| `vitest bench` / `tinybench` \| 同上 \| |
+| `tinybench` | \| TypeScript \| 同 JavaScript \| `vitest bench` / `tinybench` \| 同上 \| |
+| `testing.B` | \| Go \| pprof \| `testing.B` \| pprof heap \| |
+| `time` | \| Shell \| `time` / `hyperfine` \| hyperfine \| 无 \| |
+| `hyperfine` | \| Shell \| `time` / `hyperfine` \| hyperfine \| 无 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：性能优化的正确流程是？
+
+**参考回答**：正确答案是「先测量建基线，再定位热点，改一处后复测」，本课在「一句话说清」中说明：性能优化只有一条正确路径：先测量、再定位、改一处、复测。没有测量就没有优化，必须基于数据定位并复测验证。本课还在「本课小结」中说明：火焰图看宽度，基准测试看分位数，内存看分配次数。本课还在「一句话说清」中说明：各生态的工具名字不同，但「采样剖析 + 基准测试」这两件事完全一致。
+
+### 追问 2：火焰图中某个函数条特别宽，说明？
+
+**参考回答**：正确答案是「该函数占用时间最多」，本课在「本课小结」中说明：火焰图看宽度，基准测试看分位数，内存看分配次数。火焰图横轴是采样时间占比，越宽说明耗时越多。本课还在「一句话说清」中说明：各生态的工具名字不同，但「采样剖析 + 基准测试」这两件事完全一致。本课还在「本课小结」中说明：性能工作流的四步：测量 → 定位 → 单变量修改 → 复测。
+
+### 追问 3：做基准测试时，为什么要加预热（warmup）？
+
+**参考回答**：正确答案是「因为 JIT 编译与缓存会让前几次偏慢，预热后数据才稳定」，这道题在问做基准测试时，为什么要加预热（warmup），判断时要把题干限定的输入、边界与目标逐项对齐。预热能让 JIT、连接池与缓存进入稳定状态，避免首轮偏慢影响结论。
+
+### 追问 4：评估接口性能时，为什么不能只看平均延迟？
+
+**参考回答**：正确答案是「平均值会掩盖长尾」，这道题在问评估接口性能时，为什么不能只看平均延迟，判断时要把题干限定的输入、边界与目标逐项对齐。少量极慢请求会被大量快请求平均掉，用户体验由高分位决定。课程摘要指出各语言剖析工具，火焰图阅读法，基准测试五纪律与常见性能根因，本课要判断的正是评估接口性能时，为什么不能只看平均延迟。
+
+### 追问 5：补全代码：「性能剖析与基准测试：九种生态横向对照」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `go test -bench . -____ -count=5`
+
+**参考回答**：正确答案是「benchmem」，本课在「补充·基准测试的统计严谨性与性能门禁」中说明：关键路径有 CI 回归门禁（带余量阈值）。本课示例中还能看到 `go test -bench . -benchmem -count=5` 这样的用法，说明该关键字在本课代码中承担实际功能。
+
 ## English Overview
 
 **Title:** Profiling and Benchmarking
@@ -360,4 +404,3 @@ go test -bench . -benchmem -count=5 | tee bench.txt
 > 本课主题：各语言剖析工具、火焰图阅读法、基准测试五纪律与常见性能根因。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

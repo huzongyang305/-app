@@ -300,6 +300,50 @@ kubectl top pod <pod>                           # 实际资源用量
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `requests.cpu: 500m` | \| 资源请求 \| `requests.cpu: 500m` \| 调度依据（不是 limit） \| |
+| `nodeSelector: disktype=ssd` | \| 节点选择器 \| `nodeSelector: disktype=ssd` \| 只调度到特定节点 \| |
+| `nodeAffinity` | \| 亲和性 \| `nodeAffinity` / `podAntiAffinity` \| 靠拢或分散 \| |
+| `podAntiAffinity` | \| 亲和性 \| `nodeAffinity` / `podAntiAffinity` \| 靠拢或分散 \| |
+| `taints` | \| 污点与容忍 \| `taints` / `tolerations` \| 独占节点或隔离 \| |
+| `tolerations` | \| 污点与容忍 \| `taints` / `tolerations` \| 独占节点或隔离 \| |
+| `failureThreshold: 30` | \| startupProbe \| 是否完成初始化 \| 重启 \| `failureThreshold: 30`，间隔 2s \| |
+| `Pending` | \| `Pending` \| 没有合适节点 \| 资源不足、污点、PVC 未绑定 \| |
+| `ContainerCreating` | \| `ContainerCreating` \| 正在拉镜像或挂卷 \| 镜像仓库、密钥、存储 \| |
+| `CrashLoopBackOff` | \| `CrashLoopBackOff` \| 容器反复退出 \| 看 `logs --previous` 与探针配置 \| |
+| `logs --previous` | \| `CrashLoopBackOff` \| 容器反复退出 \| 看 `logs --previous` 与探针配置 \| |
+| `ImagePullBackOff` | \| `ImagePullBackOff` \| 拉不到镜像 \| 镜像名、镜像仓库凭据 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：调度器为 Pod 选择节点时，依据的是哪个资源字段？
+
+**参考回答**：调度按 requests 预留资源，limits 只限制运行时的上限。「limits」容易被误当作调度依据。针对「调度器为 Pod 选择节点时，依据的是哪个资源字段，」，本课在「调度器的两步决策」中说明：只写 limits 不写 requests 是常见错误：调度器会按 0 请求处理，导致节点超卖。本课还在「本课小结」中说明：调度只认 requests，limits 决定上限，两者都要写。本课还在「一句话说清」中说明：一个 Pod 从被创建到能接流量，要经过调度、启动、探针检查、注册端点四步。
+
+### 追问 2：依赖服务（如数据库）不可用时，应该影响哪个探针？
+
+**参考回答**：正确答案是「readinessProbe」，本课在「本课小结」中说明：调度只认 requests，limits 决定上限，两者都要写。readiness 失败只会摘除流量，避免把故障放大。本课还在「本课小结」中说明：Pod 的一生：调度 → 启动 → 探针 → 接流量，每一环都有对应的排查命令。本课还在「本课小结」中说明：三种探针职责不同：startup 保护启动、readiness 控制流量、liveness 负责重启。
+
+### 追问 3：startupProbe 的主要作用是？
+
+**参考回答**：正确答案是「保护启动慢的服务」，本课在「本课小结」中说明：三种探针职责不同：startup 保护启动、readiness 控制流量、liveness 负责重启。startupProbe 通过之前，liveness 不会介入，从而保护慢启动服务。本课还在「一句话说清」中说明：一个 Pod 从被创建到能接流量，要经过调度、启动、探针检查、注册端点四步。本课还在「一句话说清」中说明：Kubernetes 的核心是声明期望状态 + 控制循环纠正。
+
+### 追问 4：为了让滚动更新期间不中断服务，合理的策略配置是？
+
+**参考回答**：正确答案是「maxSurge=1，maxUnavailable=0」，这道题在问为了让滚动更新期间不中断服务，合理的策略配置是，判断时要把题干限定的输入、边界与目标逐项对齐。先多起一个新副本并等它就绪，再摘除旧副本，可保证可用副本不减少。课程摘要指出Pod 一生，调度两步决策，三种探针分工与优雅下线，本课要判断的正是为了让滚动更新期间不中断服务，合理的策略配置是。
+
+### 追问 5：补全代码：「图解 Kubernetes 调度与探针」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `____: 3`
+
+**参考回答**：正确答案是「failureThreshold」，这道题在问补全代码：图解Kubernetes调度与探针示例中，…函数名，请填入____，`____:3`，判断时要把题干限定的输入、边界与目标逐项对齐。本课示例中还能看到 `failureThreshold: 3` 这样的用法，说明该关键字在本课代码中承担实际功能。
+
 ## English Overview
 
 **Title:** Kubernetes Scheduling Illustrated
@@ -338,4 +382,3 @@ kubectl top pod <pod>                           # 实际资源用量
 > 本课主题：Pod 一生、调度两步决策、三种探针分工与优雅下线。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

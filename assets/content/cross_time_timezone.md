@@ -263,6 +263,50 @@ date -d "2026-03-05T06:02:11Z" +%s          # 解析为时间戳
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `datetime` | \| Python \| `datetime`（带 tzinfo） \| 显式传 `timezone.utc` \| `isoformat` \| |
+| `timezone.utc` | \| Python \| `datetime`（带 tzinfo） \| 显式传 `timezone.utc` \| `isoformat` \| |
+| `isoformat` | \| Python \| `datetime`（带 tzinfo） \| 显式传 `timezone.utc` \| `isoformat` \| |
+| `Date` | \| JavaScript \| `Date`（内部为毫秒时间戳） \| 用 `Intl` 格式化 \| `toISOString` \| |
+| `Intl` | \| JavaScript \| `Date`（内部为毫秒时间戳） \| 用 `Intl` 格式化 \| `toISOString` \| |
+| `toISOString` | \| JavaScript \| `Date`（内部为毫秒时间戳） \| 用 `Intl` 格式化 \| `toISOString` \| |
+| `Instant` | \| Java \| `Instant` / `ZonedDateTime` \| `ZoneId` \| `DateTimeFormatter` \| |
+| `ZonedDateTime` | \| Java \| `Instant` / `ZonedDateTime` \| `ZoneId` \| `DateTimeFormatter` \| |
+| `ZoneId` | \| Java \| `Instant` / `ZonedDateTime` \| `ZoneId` \| `DateTimeFormatter` \| |
+| `DateTimeFormatter` | \| Java \| `Instant` / `ZonedDateTime` \| `ZoneId` \| `DateTimeFormatter` \| |
+| `DateTimeOffset` | \| C# \| `DateTimeOffset` \| 内建偏移 \| `ToString("o")` \| |
+| `ToString("o")` | \| C# \| `DateTimeOffset` \| 内建偏移 \| `ToString("o")` \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：时间处理的三条铁律是？
+
+**参考回答**：正确答案是「存 UTC，传输 ISO 8601」，本课在「本课小结」中说明：三条铁律：存 UTC、传 ISO 8601、展示时再转本地。这是跨语言的通用约定，能避免绝大多数时区问题。本课还在「一句话说清」中说明：踩坑几乎都来自把「本地时间」当成「绝对时刻」。本课还在「一句话说清」中说明：存储用 UTC、传输用 ISO 8601、展示时才转本地时区。
+
+### 追问 2：「时刻」与「本地日期时间」的关键区别是？
+
+**参考回答**：正确答案是「时刻是时间轴上的点（与时区无关），本地日期时间只是墙上时钟读数」，本课在「四个必须分清的概念」中说明：只存本地日期时间是事故的开始：同一串数字在不同时区代表不同时刻。换算关系是「时刻 = 本地日期时间 + 时区规则」。本课还在「本课小结」中说明：记住换算关系：时刻 = 本地日期时间 + 时区规则。本课还在「一句话说清」中说明：踩坑几乎都来自把「本地时间」当成「绝对时刻」。
+
+### 追问 3：跨夏令时地区计算「明天同一时间」，正确做法是？
+
+**参考回答**：正确答案是「按日历单位加一天」，本课在「本课小结」中说明：涉及「天」的计算要用日历语义，而不是固定 24 小时。夏令时切换当天可能只有 23 小时或 25 小时，必须用日历语义。本课还在「四个必须分清的概念」中说明：只存本地日期时间是事故的开始：同一串数字在不同时区代表不同时刻。
+
+### 追问 4：数据库里存时间，更推荐的做法是？
+
+**参考回答**：正确答案是「统一存 UTC（带时区类型或整数时间戳）」，本课在「一句话说清」中说明：存储用 UTC、传输用 ISO 8601、展示时才转本地时区。统一存 UTC 才能在任意时区正确还原与比较。本课还在「本课小结」中说明：记住换算关系：时刻 = 本地日期时间 + 时区规则。
+
+### 追问 5：补全代码：「时间与时区：九种语言横向对照」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `const shown = new Intl.____("zh-CN", {`
+
+**参考回答**：正确答案是「DateTimeFormat」，这道题在问补全代码：时间与时区：九种语言横向对照示例中，下面这…Intl.____("zh-CN",{`，判断时要把题干限定的输入、边界与目标逐项对齐。本课示例中还能看到 `import java.time.format.DateTimeFormatter;` 这样的用法，说明该关键字在本课代码中承担实际功能。
+
 ## English Overview
 
 **Title:** Time and Time Zones
@@ -301,4 +345,3 @@ date -d "2026-03-05T06:02:11Z" +%s          # 解析为时间戳
 > 本课主题：时刻与本地时间、三条铁律、数据库字段选择与常见时区错误。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

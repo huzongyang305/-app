@@ -407,6 +407,50 @@ console.log(createUser({ name: "", email: "bad" }));
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `@Component` | 装饰器是函数，用于在类、方法、属性、参数上附加行为：`@Component`、`@Injectable`、`@Get('/users')`。经典用途是依赖注入、路由注册与元数据标注。 |
+| `@Injectable` | 装饰器是函数，用于在类、方法、属性、参数上附加行为：`@Component`、`@Injectable`、`@Get('/users')`。经典用途是依赖注入、路由注册与元数据标注。 |
+| `@Get('/users')` | 装饰器是函数，用于在类、方法、属性、参数上附加行为：`@Component`、`@Injectable`、`@Get('/users')`。经典用途是依赖注入、路由注册与元数据标注。 |
+| `React.FC` | 组件 props 显式声明接口，避免 `React.FC`（隐式 children 已不推荐）。 |
+| `React.ChangeEvent<HTMLInputElement>` | 事件用 `React.ChangeEvent<HTMLInputElement>` 等内置类型，不要手写。 |
+| `useState` | `useState` 泛型标注复杂状态；`useRef<HTMLDivElement>(null)` 明确可空。 |
+| `useRef<HTMLDivElement>(null)` | `useState` 泛型标注复杂状态；`useRef<HTMLDivElement>(null)` 明确可空。 |
+| `children: React.ReactNode` | 严格模式下 `children: React.ReactNode`，不要用 `JSX.Element`。 |
+| `JSX.Element` | 严格模式下 `children: React.ReactNode`，不要用 `JSX.Element`。 |
+| `@types/node` | 安装 `@types/node`，注意 ESM/CJS 的模块解析差异（moduleResolution: node16）。 |
+| `process.env.X!` | 环境变量用 zod 校验后再使用，避免 `process.env.X!` 满天飞。 |
+| `NodeJS.Timeout` | 用 `NodeJS.Timeout` 标注定时器，避免与 DOM 类型冲突。 |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：关于装饰器，下面说法正确的是？
+
+**参考回答**：正确答案是「它是实验特性，标准装饰器语义不同」，本课在「装饰器」中说明：注意：装饰器曾是实验特性（experimentalDecorators），TC39 标准装饰器语义不同。Angular/NestJS 依赖 experimentalDecorators，新项目应优先用组合。本课还在「本课小结」中说明：TypeScript 进阶的边界是可维护性：装饰器与类型体操解决特定问题，框架集成靠内置类型与边界校验。
+
+### 追问 2：React 组件 props 类型推荐的写法是？
+
+**参考回答**：正确答案是「显式声明 props 接口」，本课在「本课小结」中说明：TypeScript 进阶的边界是可维护性：装饰器与类型体操解决特定问题，框架集成靠内置类型与边界校验。React.FC 带隐式 children，已不推荐。本课还在「React 类型实践」中说明：组件 props 显式声明接口，避免 React.FC（隐式 children 已不推荐）。本课还在「类型体操进阶」中说明：类型体操要克制：能表达业务约束即可，过度复杂的类型会拖慢编译并让团队难以维护。
+
+### 追问 3：Node 中读取环境变量的推荐做法是？
+
+**参考回答**：正确答案是「先用 zod 等校验再使用」，本课在「Node 类型实践」中说明：环境变量用 zod 校验后再使用，避免 process.env.X! 满天飞。环境变量是外部输入，缺失或格式错误应在启动时就暴露。本课还在「类型体操进阶」中说明：类型体操要克制：能表达业务约束即可，过度复杂的类型会拖慢编译并让团队难以维护。本课还在「零基础详解·装饰器、运行时校验与工程实践」中说明：装饰器是「贴在类或方法上的元数据标签」，本身不干活，真正干活的是读取标签的框架。
+
+### 追问 4：zod 与 class-validator 的差别是？
+
+**参考回答**：正确答案是「zod 是 schema 优先，可从校验规则反推类型」，本课在「装饰器」中说明：新项目若不依赖框架，优先用高阶函数或组合替代。zod 的 schema 可推导出静态类型，天然让运行时校验与类型定义保持一致。本课还在「零基础详解·装饰器、运行时校验与工程实践」中说明：好处：一份 schema 同时提供运行时校验和静态类型，不会出现「类型写对了但数据不对」。本课还在「装饰器」中说明：装饰器是函数，用于在类、方法、属性、参数上附加行为：@Component、@Injectable、@Get('/users')。
+
+### 追问 5：NestJS 中装饰器主要承载什么职责？
+
+**参考回答**：正确答案是「声明式地标注路由」，本课在「零基础详解·装饰器、运行时校验与工程实践」中说明：而运行时校验解决类型系统管不到的那一半：接口返回的数据到底长什么样。装饰器本质是元数据，真正的行为由框架在启动或请求时读取元数据后执行。本课还在「装饰器速查」中说明：注意：TypeScript 有两套装饰器语义。本课还在「装饰器速查」中说明：旧版「实验性装饰器」需要 experimentalDecorators: true（NestJS、TypeORM 使用）。
+
 ## English Overview
 
 **Title:** Decorators & Framework Types
@@ -445,4 +489,3 @@ console.log(createUser({ name: "", email: "bad" }));
 > 本课主题：装饰器、类型体操进阶与 React/Node 类型实践。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

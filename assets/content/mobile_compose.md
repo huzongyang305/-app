@@ -380,6 +380,11 @@ LazyColumn(
 - **判断依据**：正确答案是「DisposableEffect」，本课在「零基础详解：Jetpack Compose 声明式 UI」中说明：能说出 LaunchedEffect 与 DisposableEffect 的适用场景。本课示例中还能看到 `DisposableEffect(Unit) {` 这样的用法，说明该关键字在本课代码中承担实际功能。
 - **迁移检查**：如果填成相近的另一个函数或关键字，程序会在哪一步出错？
 
+### 补充考点 1：阅读「Jetpack Compose 声明式 UI」的代码片段，下面哪项判断是正确的？
+
+- **正确判断**：放在 LaunchedEffect 中
+- **判断依据**：正确答案是「放在 LaunchedEffect 中」。这段代码来自「Jetpack Compose 声明式 UI」的示例，判断时先看输入与输出，再检查条件、循环和边界。正确答案是「放在 LaunchedEffect 中」，本课在「零基础详解·Jetpack Compose 声明式 UI」中说明：状态提升的好处：组件可复用、可测试、状态来源单一。composable …在「Jetpack Compose 声明式 UI」中，如果只改一个条件，输出通常会随之改变，因此不能脱离代码前提作答。
+
 ## 本课复习清单
 
 离开本课前，逐项确认：
@@ -398,6 +403,50 @@ LazyColumn(
 | 已经能独立解释的考点 |  |
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
+
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `@Composable` | \| 可组合函数 \| 标注 `@Composable` 的函数，描述一段 UI \| |
+| `LaunchedEffect` | \| 副作用 \| 在组合之外执行的动作（`LaunchedEffect`、`DisposableEffect`） \| |
+| `DisposableEffect` | \| 副作用 \| 在组合之外执行的动作（`LaunchedEffect`、`DisposableEffect`） \| |
+| `remember` | \| 记忆 \| `remember` 在重组间保留值 \| |
+| `mutableStateListOf()` | \| 可观察列表 \| `mutableStateListOf()` \| |
+| `LaunchedEffect(key) { }` | \| 副作用 \| `LaunchedEffect(key) { }`、`DisposableEffect(key)` \| |
+| `DisposableEffect(key)` | \| 副作用 \| `LaunchedEffect(key) { }`、`DisposableEffect(key)` \| |
+| `LazyColumn` | \| 列表 \| `LazyColumn` / `LazyRow` / `LazyVerticalGrid` \| |
+| `LazyRow` | \| 列表 \| `LazyColumn` / `LazyRow` / `LazyVerticalGrid` \| |
+| `LazyVerticalGrid` | \| 列表 \| `LazyColumn` / `LazyRow` / `LazyVerticalGrid` \| |
+| `Column` | \| 布局 \| `Column`、`Row`、`Box`、`ConstraintLayout` \| |
+| `Row` | \| 布局 \| `Column`、`Row`、`Box`、`ConstraintLayout` \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：在 composable 中发起网络请求，正确做法是？
+
+**参考回答**：正确答案是「放在 LaunchedEffect 中」，本课在「零基础详解·Jetpack Compose 声明式 UI」中说明：状态提升的好处：组件可复用、可测试、状态来源单一。composable 会因为状态变化反复执行，请求必须放在有 key 控制的副作用里，LaunchedEffect 正是为此设计。本课还在「零基础详解·Jetpack Compose 声明式 UI」中说明：能说出两类不能直接写在 Composable 里的操作。
+
+### 追问 2：让 Compose 列表在增删后不错位，关键是？
+
+**参考回答**：正确答案是「给 items 传稳定唯一的 key」，本课在「零基础详解·Jetpack Compose 声明式 UI」中说明：状态提升的好处：组件可复用、可测试、状态来源单一。key 让 Compose 在重组时识别同一个条目，从而保留各自的内部状态。本课还在「核心理念」中说明：Compose 用「函数描述 UI」取代 XML 布局：UI 是状态的函数，状态变了就重组（recompose）受影响的部分。
+
+### 追问 3：关于派生状态 derivedStateOf，说法正确的是？
+
+**参考回答**：正确答案是「它能减少因状态频繁变化导致的重组」，本课在「核心理念」中说明：Compose 用「函数描述 UI」取代 XML 布局：UI 是状态的函数，状态变了就重组（recompose）受影响的部分。derivedStateOf 让读取方只在派生结果真正变化时才重组，例如「是否滚动到顶部」这种布尔值，避免每像素滚动都触发重组。本课还在「零基础详解·Jetpack Compose 声明式 UI」中说明：状态变了，Compose 自动重组受影响的组件，你不需要手动找控件改内容。
+
+### 追问 4：状态提升（state hoisting）的主要目的是？
+
+**参考回答**：正确答案是「让组件无状态、易于复用与测试」，本课在「零基础详解·Jetpack Compose 声明式 UI」中说明：key 让 Compose 在数据变化时正确复用与移动元素，避免状态错位。把状态交给调用方管理，组件只接收值并回调事件，从而变成纯粹的展示层，复用与测试都更简单。本课还在「核心理念」中说明：理解重组的作用域与稳定性，是写好 Compose 的关键。本课还在「零基础详解·Jetpack Compose 声明式 UI」中说明：Compose 用 Kotlin 函数描述界面：UI = f(状态)。
+
+### 追问 5：下面哪种写法最容易造成无限重组？
+
+**参考回答**：正确答案是「在 composable 函数体里直接修改状态」，本课在「零基础详解·Jetpack Compose 声明式 UI」中说明：规则：Composable 函数体内应当只做「描述界面」的事，取数据与订阅要放进副作用 API。在组合阶段修改状态会触发新一轮重组，形成循环。本课还在「零基础详解·Jetpack Compose 声明式 UI」中说明：@Preview 可以在 Android Studio 里直接看效果，不用跑模拟器。
 
 ## English Overview
 
@@ -437,4 +486,3 @@ LazyColumn(
 > 本课主题：重组机制、状态提升、副作用与重组范围优化。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

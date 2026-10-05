@@ -392,6 +392,50 @@ echo "发布前检查全部通过"
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `dist/index.mjs` | 库项目常见组合：tsup 产出 `dist/index.mjs` 与 `dist/index.cjs` + tsc 生成 `.d.ts`，并在 package.json 用 `exports` 字段声明条件导出，避免"双… |
+| `dist/index.cjs` | 库项目常见组合：tsup 产出 `dist/index.mjs` 与 `dist/index.cjs` + tsc 生成 `.d.ts`，并在 package.json 用 `exports` 字段声明条件导出，避免"双… |
+| `.d.ts` | 库项目常见组合：tsup 产出 `dist/index.mjs` 与 `dist/index.cjs` + tsc 生成 `.d.ts`，并在 package.json 用 `exports` 字段声明条件导出，避免"双… |
+| `exports` | 库项目常见组合：tsup 产出 `dist/index.mjs` 与 `dist/index.cjs` + tsc 生成 `.d.ts`，并在 package.json 用 `exports` 字段声明条件导出，避免"双… |
+| `module` | `module`/`moduleResolution` 要与运行时一致（Node ESM 用 node16/nodenext，打包器用 bundler）；`target` 决定语法降级程度；库项目开启 `declarat… |
+| `moduleResolution` | `module`/`moduleResolution` 要与运行时一致（Node ESM 用 node16/nodenext，打包器用 bundler）；`target` 决定语法降级程度；库项目开启 `declarat… |
+| `target` | `module`/`moduleResolution` 要与运行时一致（Node ESM 用 node16/nodenext，打包器用 bundler）；`target` 决定语法降级程度；库项目开启 `declarat… |
+| `declaration` | `module`/`moduleResolution` 要与运行时一致（Node ESM 用 node16/nodenext，打包器用 bundler）；`target` 决定语法降级程度；库项目开启 `declarat… |
+| `declarationMap` | `module`/`moduleResolution` 要与运行时一致（Node ESM 用 node16/nodenext，打包器用 bundler）；`target` 决定语法降级程度；库项目开启 `declarat… |
+| `await` | vitest 与 Vite 共用配置，开箱支持 TS；测试要点：对纯函数做单元测试，对 HTTP/数据库用替身或内存实现做集成测试；异步用例要 `await` 并断言 reject（`await expect(fn())… |
+| `await expect(fn()).rejects.toThrow()` | vitest 与 Vite 共用配置，开箱支持 TS；测试要点：对纯函数做单元测试，对 HTTP/数据库用替身或内存实现做集成测试；异步用例要 `await` 并断言 reject（`await expect(fn())… |
+| `tsc --noEmit` | \| `tsc --noEmit` \| 全量类型检查，进 CI \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：库项目同时产出 ESM 与 CJS 常用？
+
+**参考回答**：正确答案是「tsup/esbuild 配合 tsc 生成 d.ts」，本课在「工具选型」中说明：库项目常见组合：tsup 产出 dist/index.mjs 与 dist/index.cjs + tsc 生成 .d.ts，并在 package.json 用 exports 字段声明条件导出，避免"双包危害"（同一依赖被加载两份）。打包器负责产物格式，tsc 负责类型声明。本课还在「零基础详解·构建产物与测试策略」中说明：知道为什么库要同时产出 ESM 与 CJS。
+
+### 追问 2：关于类型检查与打包，正确说法是？
+
+**参考回答**：正确答案是「两者分离」，本课在「本课小结」中说明：TypeScript 工具链的核心原则：类型检查与打包分离、产物格式与运行时对齐、类型行为也要测试。Vite/esbuild/swc 只转译不检查类型。本课还在「测试·vitest」中说明：vitest 与 Vite 共用配置，开箱支持 TS。本课还在「tsconfig 与产物一致」中说明：module/moduleResolution 要与运行时一致（Node ESM 用 node16/nodenext，打包器用 bundler）。
+
+### 追问 3：能拦掉漏写 await 的 lint 规则是？
+
+**参考回答**：正确答案是「no-floating-promises」，本课在「类型也要测」中说明：@typescript-eslint/no-floating-promises 能拦掉大量异步漏 await 的 bug，值得开启。它要求 Promise 被 await、return 或显式 void 处理。本课还在「本课小结」中说明：TypeScript 工具链的核心原则：类型检查与打包分离、产物格式与运行时对齐、类型行为也要测试。
+
+### 追问 4：tsc --noEmit 的用途是？
+
+**参考回答**：正确答案是「只做类型检查，不生成 JS 文件」，本课在「零基础详解·构建产物与测试策略」中说明：构建负责把源码变成能跑的产物（ESM、CJS、类型声明），测试负责证明它是对的。打包器通常不做类型检查，所以 CI 里要单独跑一次 tsc --noEmit 把类型问题拦住。本课还在「工具选型」中说明：库项目常见组合：tsup 产出 dist/index.mjs 与 dist/index.cjs + tsc 生成 .d.ts，并在 package.json 用 exports 字段声明条件导出，避免"双包危害"（同一依赖被加载两份）。
+
+### 追问 5：TypeScript 的项目引用（references）与增量构建的价值是？
+
+**参考回答**：正确答案是「把大项目拆成多个子项目」，本课在「测试·vitest」中说明：测试要点：对纯函数做单元测试，对 HTTP/数据库用替身或内存实现做集成测试。monorepo 中配合 composite 与 build 模式，可以显著缩短类型检查时间。本课还在「测试·vitest」中说明：vitest 与 Vite 共用配置，开箱支持 TS。本课还在「tsconfig 与产物一致」中说明：module/moduleResolution 要与运行时一致（Node ESM 用 node16/nodenext，打包器用 bundler）。
+
 ## English Overview
 
 **Title:** Build & Test
@@ -430,4 +474,3 @@ echo "发布前检查全部通过"
 > 本课主题：tsc/tsup/Vite 选型、双格式产物与 vitest 测试。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

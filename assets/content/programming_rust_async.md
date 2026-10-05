@@ -438,6 +438,50 @@ async fn main() {
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `async fn` | Rust 的 `async fn` 由编译器生成状态机，返回 `Future`；Future 是**惰性**的，必须被 `await` 或被 executor 驱动才会推进。标准库只提供 Future trait，运行时… |
+| `Future` | Rust 的 `async fn` 由编译器生成状态机，返回 `Future`；Future 是**惰性**的，必须被 `await` 或被 executor 驱动才会推进。标准库只提供 Future trait，运行时… |
+| `await` | Rust 的 `async fn` 由编译器生成状态机，返回 `Future`；Future 是**惰性**的，必须被 `await` 或被 executor 驱动才会推进。标准库只提供 Future trait，运行时… |
+| `#[tokio::main]` | \| 启动运行时 \| `#[tokio::main]` 或手动构建 Runtime \| |
+| `tokio::join!` | \| 并发等待全部 \| `tokio::join!` 或 `futures::future::join_all` \| |
+| `futures::future::join_all` | \| 并发等待全部 \| `tokio::join!` 或 `futures::future::join_all` \| |
+| `tokio::select!` | \| 竞速与超时 \| `tokio::select!`、`tokio::time::timeout` \| |
+| `tokio::time::timeout` | \| 竞速与超时 \| `tokio::select!`、`tokio::time::timeout` \| |
+| `tokio::spawn` | \| 后台任务 \| `tokio::spawn`（要求 Future: Send + 'static） \| |
+| `tokio::task::spawn_blocking` | \| 阻塞任务隔离 \| `tokio::task::spawn_blocking` \| |
+| `spawn_blocking` | 在异步任务里做阻塞操作**（同步 IO、CPU 密集），会卡住整个执行线程，应用 `spawn_blocking` 或限制线程数。 |
+| `tokio::sync::Mutex` | 用 std 的 Mutex 跨 await 持有**，会导致死锁或编译错误；应使用 `tokio::sync::Mutex`，且尽量缩短持锁范围。 |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：Rust 中 Future 的特性是？
+
+**参考回答**：正确答案是「惰性，必须被 await 或 executor 驱动」，本课在「异步模型要点」中说明：Future 是惰性的，必须被 await 或被 executor 驱动才会推进。Future 是状态机，不驱动就永远不会推进。本课还在「本课小结」中说明：Rust 异步的三句话：Future 惰性需被驱动、阻塞操作必须隔离、跨 await 的共享状态要用 tokio 同步原语。本课还在「五个高频坑」中说明：忘记 spawn 或 await，Future 根本不会执行（惰性）。
+
+### 追问 2：在异步任务中执行 CPU 密集计算应该？
+
+**参考回答**：正确答案是「用 spawn_blocking 隔离到阻塞线程池」，本课在「五个高频坑」中说明：在异步任务里做阻塞操作（同步 IO、CPU 密集），会卡住整个执行线程，应用 spawnblocking 或限制线程数。阻塞异步执行线程会拖慢整个运行时。本课还在「零基础详解·async/await 与 Tokio」中说明：能说出为什么不能在 async 里做 CPU 密集计算。本课还在「本课小结」中说明：Rust 异步的三句话：Future 惰性需被驱动、阻塞操作必须隔离、跨 await 的共享状态要用 tokio 同步原语。
+
+### 追问 3：跨 await 持有共享可变状态时推荐？
+
+**参考回答**：std Mutex 跨 await 易导致问题，tokio 提供的异步锁更合适。其他选项：跨 await 的共享状态建议使用 tokio::sync::Mutex 并缩短持锁范围。针对「跨 await 持有共享可变状态时推荐，」，本课在「五个高频坑」中说明：应使用 tokio::sync::Mutex，且尽量缩短持锁范围。本课还在「五个高频坑」中说明：用 std 的 Mutex 跨 await 持有，会导致死锁或编译错误。
+
+### 追问 4：tokio::select! 的作用是？
+
+**参考回答**：正确答案是「同时等待多个 future」，本课在「异步模型要点」中说明：标准库只提供 Future trait，运行时由生态提供（tokio 最常用）。常用于「请求 vs 超时 vs 取消信号」的竞争场景。本课还在「零基础详解·async/await 与 Tokio」中说明：知道什么时候用 join!、什么时候用 select!。本课还在「零基础详解·async/await 与 Tokio」中说明：知道 tokio::sync::Mutex 与标准库 Mutex 的使用差别。
+
+### 追问 5：#[tokio::main] 宏做的事情是？
+
+**参考回答**：正确答案是「把 async fn main 包装成同步入口」，本课在「异步模型要点」中说明：Rust 的 async fn 由编译器生成状态机，返回 Future。展开后等价于手动创建 Runtime 并调用 blockon。本课还在「零基础详解·async/await 与 Tokio」中说明：Rust 的 async fn 返回的是一个惰性的 Future：不 .await 就什么都不会发生。本课还在「异步模型要点」中说明：标准库只提供 Future trait，运行时由生态提供（tokio 最常用）。
+
 ## English Overview
 
 **Title:** Rust Async & tokio
@@ -476,4 +520,3 @@ async fn main() {
 > 本课主题：Future/executor 模型、tokio API 与五个高频坑。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

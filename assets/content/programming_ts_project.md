@@ -387,6 +387,50 @@ export default defineConfig({
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `strict` | \| `strict` \| 必开，含 strictNullChecks、noImplicitAny 等 \| |
+| `noUncheckedIndexedAccess` | \| `noUncheckedIndexedAccess` \| 数组下标访问返回 `T \\| undefined`，更安全 \| |
+| `T \| undefined` | \| `noUncheckedIndexedAccess` \| 数组下标访问返回 `T \\| undefined`，更安全 \| |
+| `exactOptionalPropertyTypes` | \| `exactOptionalPropertyTypes` \| 区分「缺失」与「undefined」 \| |
+| `paths` | \| `paths` \| 配置 `@/` 别名，避免 `../../..` \| |
+| `@/` | \| `paths` \| 配置 `@/` 别名，避免 `../../..` \| |
+| `../../..` | \| `paths` \| 配置 `@/` 别名，避免 `../../..` \| |
+| `moduleResolution: bundler/node16` | \| `moduleResolution: bundler/node16` \| 与打包器或 Node 实际行为对齐 \| |
+| `skipLibCheck` | \| `skipLibCheck` \| 加快编译（但会放过依赖的类型错误） \| |
+| `tsc --noEmit` | 打包器（Vite/esbuild/swc）只做转译，**不做类型检查**。因此 CI 必须单独跑 `tsc --noEmit`，否则类型错误会直接进生产。同理，`ts-node`/`tsx` 运行时也建议配类型检查脚本。 |
+| `ts-node` | 打包器（Vite/esbuild/swc）只做转译，**不做类型检查**。因此 CI 必须单独跑 `tsc --noEmit`，否则类型错误会直接进生产。同理，`ts-node`/`tsx` 运行时也建议配类型检查脚本。 |
+| `tsx` | 打包器（Vite/esbuild/swc）只做转译，**不做类型检查**。因此 CI 必须单独跑 `tsc --noEmit`，否则类型错误会直接进生产。同理，`ts-node`/`tsx` 运行时也建议配类型检查脚本。 |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：用 Vite/esbuild 打包时会做类型检查吗？
+
+**参考回答**：正确答案是「不会，只转译」，本课在「类型检查与构建分离」中说明：打包器（Vite/esbuild/swc）只做转译，不做类型检查。类型错误不会阻止打包，必须在 CI 单独执行类型检查。本课还在「类型检查与构建分离」中说明：同理，ts-node/tsx 运行时也建议配类型检查脚本。本课还在「零基础详解·工程配置、构建与类型检查」中说明：写代码时的类型检查、打包器负责的转译、CI 里的强制门禁。
+
+### 追问 2：接口返回数据应该如何处理？
+
+**参考回答**：正确答案是「用 zod 等做运行时校验后再使用」，本课在「本课小结」中说明：TypeScript 工程化的三件事：strict 打开、tsc 进 CI、边界做运行时校验。类型在运行时不存在，边界必须校验。本课还在「项目专属规格·TypeScript 工程配置与实践」中说明：strict、tsc --noEmit、zod 运行时校验与团队规范。本课还在「运行时校验不可省」中说明：类型在运行时不存在，接口返回、localStorage、URL 参数都可能是任意值。
+
+### 追问 3：团队禁止 any 后，处理未知数据应使用？
+
+**参考回答**：正确答案是「unknown + 类型收窄」，本课在「团队规范」中说明：禁止 any（用 unknown 或具体类型），ESLint 加 @typescript-eslint/no-explicit-any。unknown 强制显式校验，是最安全的未知类型。本课还在「运行时校验不可省」中说明：原则：外部数据必须先校验再收窄类型，把 unknown 变成可信类型。本课还在「项目专属规格·TypeScript 工程配置与实践」中说明：strict、tsc --noEmit、zod 运行时校验与团队规范。
+
+### 追问 4：tsconfig 中 strict: true 会开启什么？
+
+**参考回答**：正确答案是「strictNullChecks」，本课在「团队规范」中说明：逐步迁移 JS 项目：先 allowJs + checkJs，再逐文件开启严格模式。新项目应该默认开启 strict，从源头减少空值与隐式 any 带来的问题。本课还在「零基础详解·工程配置、构建与类型检查」中说明：能说出 strict 与 noUncheckedIndexedAccess 的作用。本课还在「运行时校验不可省」中说明：用 zod / valibot 在边界校验。
+
+### 追问 5：tsconfig 里 paths 别名的作用与限制是？
+
+**参考回答**：正确答案是「配置模块路径别名」，本课在「零基础详解·工程配置、构建与类型检查」中说明：能说出 strict 与 noUncheckedIndexedAccess 的作用。tsc 只做类型解析，实际产物路径由打包器或运行时的解析规则决定。本课还在「与框架集成」中说明：Node：@types/node 必装，注意 CommonJS/ESM 的模块解析差异。本课还在「团队规范」中说明：禁止 any（用 unknown 或具体类型），ESLint 加 @typescript-eslint/no-explicit-any。
+
 ## English Overview
 
 **Title:** TypeScript in Production
@@ -584,4 +628,3 @@ package.json
 > 本课主题：strict、tsc --noEmit、zod 运行时校验与团队规范。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

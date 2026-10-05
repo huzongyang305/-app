@@ -422,6 +422,50 @@ foreach (var m in methods)
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `virtual` | C# 类只能单继承；`virtual` 允许重写，`override` 重写，`sealed override` 禁止继续重写。 |
+| `override` | C# 类只能单继承；`virtual` 允许重写，`override` 重写，`sealed override` 禁止继续重写。 |
+| `sealed override` | C# 类只能单继承；`virtual` 允许重写，`override` 重写，`sealed override` 禁止继续重写。 |
+| `is` | `is` 配合模式匹配是最推荐的写法，`as` 失败返回 null 而不是抛异常。 |
+| `as` | `is` 配合模式匹配是最推荐的写法，`as` 失败返回 null 而不是抛异常。 |
+| `virtual/override` | 继承复用实现，接口定义契约，`virtual/override` 实现多态。实践中**优先组合与接口，避免深层继承树**。 |
+| `class Dog : Animal` | \| 基类继承 \| `class Dog : Animal` \| C# 只能单继承类 \| |
+| `class Repo : IRepo, IDisposable` | \| 接口实现 \| `class Repo : IRepo, IDisposable` \| 可实现多个接口 \| |
+| `abstract class Shape` | \| 抽象类 \| `abstract class Shape` \| 不能实例化，可含实现 \| |
+| `public abstract double Area();` | \| 抽象方法 \| `public abstract double Area();` \| 子类必须重写 \| |
+| `| 强烈建议加` | \| 重写 \| `public override double Area() => ...;` \| 强烈建议加 `override` \| |
+| `public sealed override void F()` | \| 密封 \| `public sealed override void F()` \| 禁止继续重写 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：重写基类虚方法使用的关键字是？
+
+**参考回答**：基类用 virtual 声明可重写，子类用 override 重写。new 只是隐藏基类成员。针对「重写基类虚方法使用的关键字是，」，本课在「继承与虚方法」中说明：virtual 允许重写，override 重写，sealed override 禁止继续重写。本课还在「本课小结」中说明：继承复用实现，接口定义契约，virtual/override 实现多态。本课还在「零基础详解·继承、接口与多态」中说明：知道 virtual 与 override 必须成对出现。
+
+### 追问 2：一个 C# 类可以实现多少个接口？
+
+**参考回答**：类只能单继承父类，但可以实现任意多个接口。其他选项：C# 类只能单继承，但接口可以任意多实现。针对「一个 C# 类可以实现多少个接口，」，本课在「抽象类与接口」中说明：接口描述「能做什么」，一个类可以实现多个接口。本课还在「零基础详解·继承、接口与多态」中说明：C# 只允许单继承类，但可以实现多个接口。本课还在「本课小结」中说明：继承复用实现，接口定义契约，virtual/override 实现多态。
+
+### 追问 3：使用 as 进行类型转换失败时返回？
+
+**参考回答**：as 失败返回 null，因此转换后要判空。强制转换 (T) 失败会抛 InvalidCastException。针对「使用 as 进行类型转换失败时返回，」，本课在「类型判断与安全转换」中说明：is 配合模式匹配是最推荐的写法，as 失败返回 null 而不是抛异常。本课还在「继承与虚方法」中说明：virtual 允许重写，override 重写，sealed override 禁止继续重写。本课还在「零基础详解·继承、接口与多态」中说明：继承表达「是一种」，接口表达「能做什么」。
+
+### 追问 4：抽象方法与虚方法的区别是？
+
+**参考回答**：正确答案是「抽象方法没有实现，非抽象子类必须重写」，本课在「零基础详解·继承、接口与多态」中说明：扩展方法必须写在静态类里，第一个参数带 this。抽象方法只能存在于抽象类中，用于强制子类给出实现。本课还在「零基础详解·继承、接口与多态」中说明：C# 只允许单继承类，但可以实现多个接口。本课还在「抽象类与接口」中说明：接口描述「能做什么」，一个类可以实现多个接口。
+
+### 追问 5：类型转换时 is 与 as 的使用差别是？
+
+**参考回答**：正确答案是「is 返回布尔值（可配合模式变量）」，本课在「类型判断与安全转换」中说明：is 配合模式匹配是最推荐的写法，as 失败返回 null 而不是抛异常。as 只能用于引用类型或可空类型，不能用于 int 这类值类型。本课还在「零基础详解·继承、接口与多态」中说明：能用 switch 模式匹配替代类型判断。本课还在「零基础详解·继承、接口与多态」中说明：知道 virtual 与 override 必须成对出现。
+
 ## English Overview
 
 **Title:** Inheritance & Interfaces
@@ -460,4 +504,3 @@ foreach (var m in methods)
 > 本课主题：virtual/override、抽象类与接口、模式匹配与 Object 成员重写。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

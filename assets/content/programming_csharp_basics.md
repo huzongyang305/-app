@@ -382,6 +382,50 @@ Console.WriteLine($"{celsius:F1}℃ = {fahrenheit:F1}℉");
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `Nullable` | 开启 `Nullable` 后编译器会检查可能的空引用，新项目建议默认打开。 |
+| `dotnet` | C# 代码跑在 .NET 上：**编译成 IL、由 CLR 托管执行**。掌握 `dotnet` CLI 与 csproj 配置即可开始任何类型的项目。 |
+| `.dll` | \| 程序集（Assembly） \| `.dll` / `.exe`，部署与版本单位 \| |
+| `.exe` | \| 程序集（Assembly） \| `.dll` / `.exe`，部署与版本单位 \| |
+| `.csproj` | \| NuGet \| 包管理器，依赖写在 `.csproj` \| |
+| `net8.0` | \| 目标框架（TFM） \| 如 `net8.0`、`net8.0-windows` \| |
+| `net8.0-windows` | \| 目标框架（TFM） \| 如 `net8.0`、`net8.0-windows` \| |
+| `dotnet --info` | \| 查看版本与 SDK \| `dotnet --info` \| |
+| `dotnet new console -o Hello` | \| 新建项目 \| `dotnet new console -o Hello` \| |
+| `dotnet new webapi -o Api` | \| 新建 Web API \| `dotnet new webapi -o Api` \| |
+| `dotnet new sln -n App` | \| 新建解决方案 \| `dotnet new sln -n App` \| |
+| `dotnet sln add Api/Api.csproj` | \| 添加项目到解决方案 \| `dotnet sln add Api/Api.csproj` \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：C# 源码编译后生成什么？
+
+**参考回答**：正确答案是「中间语言 IL」，本课在「零基础详解·.NET、CLI 与第一个 C# 程序」中说明：C# 是运行在 .NET 平台上的编译型语言：源码编译成中间语言（IL）。C# 编译成 IL，运行时由 CLR 通过 JIT 转成本机代码执行。本课还在「.NET 是什么」中说明：C# 运行在 .NET 平台之上：源码先编译成中间语言（IL），运行时由 CLR（公共语言运行时）通过 JIT 编译成本机代码，并负责垃圾回收与类型安全。
+
+### 追问 2：dotnet run 的作用是？
+
+**参考回答**：正确答案是「编译并运行当前项目」，本课在「本课小结」中说明：掌握 dotnet CLI 与 csproj 配置即可开始任何类型的项目。dotnet run 会先构建再运行。本课还在「零基础详解·.NET、CLI 与第一个 C# 程序」中说明：知道 dotnet run、dotnet build、dotnet publish 的区别。本课还在「零基础详解·.NET、CLI 与第一个 C# 程序」中说明：再由运行时（CLR）在目标机器上即时编译并执行，兼顾性能与跨平台。
+
+### 追问 3：在 csproj 中开启 <Nullable>enable</Nullable> 的好处是？
+
+**参考回答**：正确答案是「编译期提示可能的空引用」，本课在「项目文件」中说明：开启 Nullable 后编译器会检查可能的空引用，新项目建议默认打开。可空引用类型让编译器对可能为 null 的解引用给出警告，显著减少空指针异常。本课还在「.NET 是什么」中说明：C# 运行在 .NET 平台之上：源码先编译成中间语言（IL），运行时由 CLR（公共语言运行时）通过 JIT 编译成本机代码，并负责垃圾回收与类型安全。
+
+### 追问 4：C# 中 using 指令与 using 语句的区别是？
+
+**参考回答**：正确答案是「using 指令引入命名空间」，本课在「命名空间」中说明：命名空间用点号分层，通常与目录结构对应，用来避免类名冲突。using 语句会编译成 try/finally 调用 Dispose，是 C# 资源管理的标准写法。本课还在「零基础详解·.NET、CLI 与第一个 C# 程序」中说明：知道 dotnet run、dotnet build、dotnet publish 的区别。本课还在「第一个程序」中说明：也可以使用顶层语句，编译器会自动生成入口方法。
+
+### 追问 5：.NET SDK 与运行时的区别是？
+
+**参考回答**：正确答案是「SDK 包含编译器与 CLI 工具可以开发，运行时只能执行已编译程序」，本课在「零基础详解·.NET、CLI 与第一个 C# 程序」中说明：再由运行时（CLR）在目标机器上即时编译并执行，兼顾性能与跨平台。服务器部署可以只装 ASP.NET Core 运行时，开发机则装 SDK。本课还在「本课小结」中说明：掌握 dotnet CLI 与 csproj 配置即可开始任何类型的项目。本课还在「项目文件」中说明：开启 Nullable 后编译器会检查可能的空引用，新项目建议默认打开。
+
 ## English Overview
 
 **Title:** C# & .NET
@@ -502,4 +546,3 @@ Console.WriteLine($"{celsius:F1}℃ = {fahrenheit:F1}℉");
 > 本课主题：IL 与 CLR、dotnet CLI、项目文件与命名空间。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

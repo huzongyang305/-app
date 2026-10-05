@@ -164,6 +164,11 @@ Rust 的类型系统能在编译期阻止数据竞争：`Send` 表示类型可�
 - **判断依据**：正确答案是「mod」，这道题在问填空：RustCargo第一个程序术语速查中，表示C…引入当前作用域，`Carg…的术语是什么，判断时要把题干限定的输入、边界与目标逐项对齐。包由 crate 组成，库 crate 对外暴露 API，二进制 crate 提供可执行入口。
 - **迁移检查**：如果填成相近的另一个函数或关键字，程序会在哪一步出错？
 
+### 补充考点 1：阅读「Rust Cargo 第一个程序」的代码片段，下面哪项判断是正确的？
+
+- **正确判断**：cargo run 编译并运行，cargo check 只做类型检查不生成产物
+- **判断依据**：正确答案是「cargo run 编译并运行，cargo check 只做类型检查不生成产物」。这段代码来自「Rust Cargo 第一个程序」的示例，判断时先看输入与输出，再检查条件、循环和边界。正确答案是「cargo run 编译并运行，cargo check 只做类型检查不生成产物」，本课在「一句话入门」中说明：用 cargo new、run 和 check 创建项目。cargo run …在「Rust Cargo 第一个程序」中，如果只改一个条件，输出通常会随之改变，因此不能脱离代码前提作答。
+
 ## 本课复习清单
 
 离开本课前，逐项确认：
@@ -224,20 +229,47 @@ hello from Rust
 
 ## 术语速查
 
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
 | 术语 | 本课语境 |
 | --- | --- |
-| `mod` | Cargo 负责创建项目、管理依赖、编译和测试。包由 crate 组成，库 crate 对外暴露 API，二进制 crate 提供可执行入口。模块用 `mod` 组织代码，`pub` 控制可见性，`use` 把路径引入当前作用域。`Carg… |
-| `pub` | Cargo 负责创建项目、管理依赖、编译和测试。包由 crate 组成，库 crate 对外暴露 API，二进制 crate 提供可执行入口。模块用 `mod` 组织代码，`pub` 控制可见性，`use` 把路径引入当前作用域。`Carg… |
-| `use` | Cargo 负责创建项目、管理依赖、编译和测试。包由 crate 组成，库 crate 对外暴露 API，二进制 crate 提供可执行入口。模块用 `mod` 组织代码，`pub` 控制可见性，`use` 把路径引入当前作用域。`Carg… |
-| `Cargo.toml` | Cargo 负责创建项目、管理依赖、编译和测试。包由 crate 组成，库 crate 对外暴露 API，二进制 crate 提供可执行入口。模块用 `mod` 组织代码，`pub` 控制可见性，`use` 把路径引入当前作用域。`Carg… |
-| `Cargo.lock` | Cargo 负责创建项目、管理依赖、编译和测试。包由 crate 组成，库 crate 对外暴露 API，二进制 crate 提供可执行入口。模块用 `mod` 组织代码，`pub` 控制可见性，`use` 把路径引入当前作用域。`Carg… |
-| `&T` | Rust 用所有权在编译期管理内存：每个值有唯一所有者，所有者离开作用域时值被释放；赋值或传参会移动所有权，除非类型实现了 Copy。借用分为共享借用 `&T` 和可变借用 `&mut T`，同一时间要么多个共享借用，要么一个可变借用，不能… |
-| `&mut T` | Rust 用所有权在编译期管理内存：每个值有唯一所有者，所有者离开作用域时值被释放；赋值或传参会移动所有权，除非类型实现了 Copy。借用分为共享借用 `&T` 和可变借用 `&mut T`，同一时间要么多个共享借用，要么一个可变借用，不能… |
-| `let` | `let` 默认不可变，需要修改时加 `mut`。`if`、`match`、`while let` 和 `for` 都是表达式或控制结构，`match` 必须覆盖所有可能分支。`Option<T>` 表示可能有值，`Result<T,E>`… |
-| `mut` | `let` 默认不可变，需要修改时加 `mut`。`if`、`match`、`while let` 和 `for` 都是表达式或控制结构，`match` 必须覆盖所有可能分支。`Option<T>` 表示可能有值，`Result<T,E>`… |
-| `if` | `let` 默认不可变，需要修改时加 `mut`。`if`、`match`、`while let` 和 `for` 都是表达式或控制结构，`match` 必须覆盖所有可能分支。`Option<T>` 表示可能有值，`Result<T,E>`… |
-| `match` | `let` 默认不可变，需要修改时加 `mut`。`if`、`match`、`while let` 和 `for` 都是表达式或控制结构，`match` 必须覆盖所有可能分支。`Option<T>` 表示可能有值，`Result<T,E>`… |
-| `while let` | `let` 默认不可变，需要修改时加 `mut`。`if`、`match`、`while let` 和 `for` 都是表达式或控制结构，`match` 必须覆盖所有可能分支。`Option<T>` 表示可能有值，`Result<T,E>`… |
+| `mod` | Cargo 负责创建项目、管理依赖、编译和测试。包由 crate 组成，库 crate 对外暴露 API，二进制 crate 提供可执行入口。模块用 `mod` 组织代码，`pub` 控制可见性，`use` 把路径引入当… |
+| `pub` | Cargo 负责创建项目、管理依赖、编译和测试。包由 crate 组成，库 crate 对外暴露 API，二进制 crate 提供可执行入口。模块用 `mod` 组织代码，`pub` 控制可见性，`use` 把路径引入当… |
+| `use` | Cargo 负责创建项目、管理依赖、编译和测试。包由 crate 组成，库 crate 对外暴露 API，二进制 crate 提供可执行入口。模块用 `mod` 组织代码，`pub` 控制可见性，`use` 把路径引入当… |
+| `Cargo.toml` | Cargo 负责创建项目、管理依赖、编译和测试。包由 crate 组成，库 crate 对外暴露 API，二进制 crate 提供可执行入口。模块用 `mod` 组织代码，`pub` 控制可见性，`use` 把路径引入当… |
+| `Cargo.lock` | Cargo 负责创建项目、管理依赖、编译和测试。包由 crate 组成，库 crate 对外暴露 API，二进制 crate 提供可执行入口。模块用 `mod` 组织代码，`pub` 控制可见性，`use` 把路径引入当… |
+| `&T` | Rust 用所有权在编译期管理内存：每个值有唯一所有者，所有者离开作用域时值被释放；赋值或传参会移动所有权，除非类型实现了 Copy。借用分为共享借用 `&T` 和可变借用 `&mut T`，同一时间要么多个共享借用，要… |
+| `&mut T` | Rust 用所有权在编译期管理内存：每个值有唯一所有者，所有者离开作用域时值被释放；赋值或传参会移动所有权，除非类型实现了 Copy。借用分为共享借用 `&T` 和可变借用 `&mut T`，同一时间要么多个共享借用，要… |
+| `let` | `let` 默认不可变，需要修改时加 `mut`。`if`、`match`、`while let` 和 `for` 都是表达式或控制结构，`match` 必须覆盖所有可能分支。`Option<T>` 表示可能有值，`Re… |
+| `mut` | `let` 默认不可变，需要修改时加 `mut`。`if`、`match`、`while let` 和 `for` 都是表达式或控制结构，`match` 必须覆盖所有可能分支。`Option<T>` 表示可能有值，`Re… |
+| `if` | `let` 默认不可变，需要修改时加 `mut`。`if`、`match`、`while let` 和 `for` 都是表达式或控制结构，`match` 必须覆盖所有可能分支。`Option<T>` 表示可能有值，`Re… |
+| `match` | `let` 默认不可变，需要修改时加 `mut`。`if`、`match`、`while let` 和 `for` 都是表达式或控制结构，`match` 必须覆盖所有可能分支。`Option<T>` 表示可能有值，`Re… |
+| `while let` | `let` 默认不可变，需要修改时加 `mut`。`if`、`match`、`while let` 和 `for` 都是表达式或控制结构，`match` 必须覆盖所有可能分支。`Option<T>` 表示可能有值，`Re… |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：Cargo 项目中，cargo run 与 cargo check 的区别是？
+
+**参考回答**：正确答案是「cargo run 编译并运行，cargo check 只做类型检查不生成产物」，本课在「一句话入门」中说明：用 cargo new、run 和 check 创建项目。cargo run 先构建再执行二进制目标，适合验证功能。课程摘要指出用 cargo new，run 和 check 创建项目，本课要判断的正是Cargo项目中，cargorun与cargocheck的区别是。
+
+### 追问 2：Cargo.toml 文件在项目中承担什么职责？
+
+**参考回答**：正确答案是「描述项目元数据与依赖」，本课在「一句话入门」中说明：用 cargo new、run 和 check 创建项目。Cargo.toml 用 TOML 格式声明包名、版本、edition 与依赖，Cargo 读取它解析版本并组织构建。
+
+### 追问 3：Rust 中 println!("hello") 末尾的感叹号表示什么？
+
+**参考回答**：正确答案是「这是宏调用，编译期会展开成格式化代码」，这道题在问Rust中println!("hello")末尾的感叹号表示什么，判断时要把题干限定的输入、边界与目标逐项对齐。println! 是标准库提供的宏，感叹号是宏调用的标志。课程摘要指出用 cargo new，run 和 check 创建项目，本课要判断的正是Rust中println!("hello")末尾的感叹号表示什么。
+
+### 追问 4：Rust 可执行程序的入口是？
+
+**参考回答**：正确答案是「fn main()，与许多编译型语言一致」，这道题在问Rust可执行程序的入口是，判断时要把题干限定的输入、边界与目标逐项对齐。Rust 二进制 crate 从 fn main() 开始执行，可以返回值或 Result 以便报告错误。
+
+### 追问 5：填空：「Rust Cargo 第一个程序」术语速查中，表示「Cargo 负责创建项目、管理依赖、编译和测试。包由 crate 组成，库 crate 对外暴露 API，二进制 crate 提供可执行入口。模块用 `____` 组织代码，`pub` 控制可见性，`use` 把路径引入当前作用域。`Carg…」的术语是什么？
+
+**参考回答**：正确答案是「mod」，这道题在问填空：RustCargo第一个程序术语速查中，表示C…引入当前作用域，`Carg…的术语是什么，判断时要把题干限定的输入、边界与目标逐项对齐。包由 crate 组成，库 crate 对外暴露 API，二进制 crate 提供可执行入口。
 
 ## English Overview
 

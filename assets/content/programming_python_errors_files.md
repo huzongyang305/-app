@@ -442,6 +442,50 @@ except (FileNotFoundError, ValueError) as err:
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `ValueError` | 常见异常：`ValueError` 值不合法、`TypeError` 类型不匹配、`KeyError` 字典键不存在、`IndexError` 下标越界、`FileNotFoundError` 文件不存在。 |
+| `TypeError` | 常见异常：`ValueError` 值不合法、`TypeError` 类型不匹配、`KeyError` 字典键不存在、`IndexError` 下标越界、`FileNotFoundError` 文件不存在。 |
+| `KeyError` | 常见异常：`ValueError` 值不合法、`TypeError` 类型不匹配、`KeyError` 字典键不存在、`IndexError` 下标越界、`FileNotFoundError` 文件不存在。 |
+| `IndexError` | 常见异常：`ValueError` 值不合法、`TypeError` 类型不匹配、`KeyError` 字典键不存在、`IndexError` 下标越界、`FileNotFoundError` 文件不存在。 |
+| `FileNotFoundError` | 常见异常：`ValueError` 值不合法、`TypeError` 类型不匹配、`KeyError` 字典键不存在、`IndexError` 下标越界、`FileNotFoundError` 文件不存在。 |
+| `except Exception: pass` | 原则：**只捕获你真正能处理的异常**，不要写 `except Exception: pass` 把问题吞掉。 |
+| `with` | 用 `with` 打开文件，离开代码块会自动关闭，即使发生异常也安全。 |
+| `读、` | 常用模式：`r` 读、`w` 覆盖写、`a` 追加、`rb` 二进制读。**处理文本时始终显式指定 `encoding="utf-8"`**。 |
+| `覆盖写、` | 常用模式：`r` 读、`w` 覆盖写、`a` 追加、`rb` 二进制读。**处理文本时始终显式指定 `encoding="utf-8"`**。 |
+| `追加、` | 常用模式：`r` 读、`w` 覆盖写、`a` 追加、`rb` 二进制读。**处理文本时始终显式指定 `encoding="utf-8"`**。 |
+| `二进制读。**处理文本时始终显式指定` | 常用模式：`r` 读、`w` 覆盖写、`a` 追加、`rb` 二进制读。**处理文本时始终显式指定 `encoding="utf-8"`**。 |
+| `pathlib` | 异常用来处理「可预期的失败」，`with` 用来管理资源，`pathlib` 用来处理跨平台路径。 |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：try/except/finally 中的 finally 什么时候执行？
+
+**参考回答**：正确答案是「无论是否发生异常都会执行」，本课在「读写文件」中说明：用 with 打开文件，离开代码块会自动关闭，即使发生异常也安全。finally 用于释放资源，无论是否出现异常都会执行。本课还在「零基础详解·异常处理与文件读写」中说明：异常处理让程序出错时不崩溃，而是走另一条路。本课还在「零基础详解·异常处理与文件读写」中说明：能说出 try / except / else / finally 各自的执行时机。
+
+### 追问 2：读写文件推荐的写法是？
+
+**参考回答**：正确答案是「使用 with open(...) as file」，本课在「零基础详解·异常处理与文件读写」中说明：异常处理让程序出错时不崩溃，而是走另一条路。with 会在离开代码块时自动关闭文件，异常情况下也不会泄漏资源。本课还在「零基础详解·异常处理与文件读写」中说明：会用 with open(..., encoding="utf-8") 读写文本。本课还在「捕获异常」中说明：原则：只捕获你真正能处理的异常，不要写 except Exception: pass 把问题吞掉。
+
+### 追问 3：下面哪种异常处理方式最不推荐？
+
+**参考回答**：正确答案是「except Exception: pass 静默吞掉所有异常」，本课在「捕获异常」中说明：原则：只捕获你真正能处理的异常，不要写 except Exception: pass 把问题吞掉。静默吞异常会掩盖真实缺陷，应当只捕获能处理的异常并保留上下文。本课还在「本课小结」中说明：异常用来处理「可预期的失败」，with 用来管理资源，pathlib 用来处理跨平台路径。本课还在「零基础详解·异常处理与文件读写」中说明：能说出 try / except / else / finally 各自的执行时机。
+
+### 追问 4：读取一个不存在的文件，会抛出哪个异常？
+
+**参考回答**：FileNotFoundError 是 OSError 的子类，捕获时也可以按 OSError 处理。其他选项：IndexError 是下标越界、KeyError 是字典缺键、TypeError 是类型不匹配。针对「读取一个不存在的文件，会抛出哪个异常，」，本课在「捕获异常」中说明：常见异常：ValueError 值不合法、TypeError 类型不匹配、KeyError 字典键不存在、IndexError 下标越界、FileNotFoundError 文件不存在。
+
+### 追问 5：自定义异常类通常继承自？
+
+**参考回答**：继承 Exception 可被常规 except 捕获，也便于按业务分层定义异常体系。其他选项：BaseException 是包含 KeyboardInterrupt 在内的顶层基类。针对「自定义异常类通常继承自，」，本课在「零基础详解·异常处理与文件读写」中说明：能用 pathlib 拼接路径并判断文件是否存在。本课还在「零基础详解·异常处理与文件读写」中说明：两者经常一起用：读文件最容易出错，所以要用 try 包住。
+
 ## English Overview
 
 **Title:** Exceptions & Files
@@ -480,4 +524,3 @@ except (FileNotFoundError, ValueError) as err:
 > 本课主题：try/except/else/finally、自定义异常、with 读写文件与 pathlib。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

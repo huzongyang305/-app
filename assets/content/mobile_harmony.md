@@ -397,6 +397,50 @@ export default class EntryAbility extends UIAbility {
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `Column` | \| 布局容器 \| `Column`、`Row`、`Stack`、`Flex` \| |
+| `Row` | \| 布局容器 \| `Column`、`Row`、`Stack`、`Flex` \| |
+| `Stack` | \| 布局容器 \| `Column`、`Row`、`Stack`、`Flex` \| |
+| `Flex` | \| 布局容器 \| `Column`、`Row`、`Stack`、`Flex` \| |
+| `List` | \| 列表 \| `List` + `ListItem`，配合 `ForEach` \| |
+| `ListItem` | \| 列表 \| `List` + `ListItem`，配合 `ForEach` \| |
+| `ForEach` | \| 列表 \| `List` + `ListItem`，配合 `ForEach` \| |
+| `@State` | \| 状态 \| `@State`、`@Prop`、`@Link`、`@Provide`/`@Consume` \| |
+| `@Prop` | \| 状态 \| `@State`、`@Prop`、`@Link`、`@Provide`/`@Consume` \| |
+| `@Link` | \| 状态 \| `@State`、`@Prop`、`@Link`、`@Provide`/`@Consume` \| |
+| `@Provide` | \| 状态 \| `@State`、`@Prop`、`@Link`、`@Provide`/`@Consume` \| |
+| `@Consume` | \| 状态 \| `@State`、`@Prop`、`@Link`、`@Provide`/`@Consume` \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：HarmonyOS 中承载界面的应用组件是？
+
+**参考回答**：Stage 模型下用 UIAbility 承载界面能力，配合窗口与页面路由。「Service」、「UIAbility」来自 Android 体系。针对「HarmonyOS 中承载界面的应用组件是，」，本课在「零基础详解·鸿蒙 ArkTS 与 ArkUI」中说明：鸿蒙应用用 ArkTS（TypeScript 的超集）编写，界面用 ArkUI 声明式语法描述。本课还在「零基础详解·鸿蒙 ArkTS 与 ArkUI」中说明：心智与 Compose、SwiftUI 一致：状态驱动界面，改状态就自动刷新。
+
+### 追问 2：ArkTS 相比 TypeScript 的主要差异是？
+
+**参考回答**：正确答案是「限制部分动态特性以提升运行性能与稳定性」，这道题在问ArkTS相比TypeScript的主要差异是，判断时要把题干限定的输入、边界与目标逐项对齐。ArkTS 在 TS 基础上禁用或限制 any、运行时动态属性等能力，让编译期能做更多检查、运行时更可控。
+
+### 追问 3：在 ArkUI 中让界面随数据变化刷新，应该怎么做？
+
+**参考回答**：正确答案是「用 @State 等状态装饰器声明数据」，本课在「零基础详解·鸿蒙 ArkTS 与 ArkUI」中说明：鸿蒙应用用 ArkTS（TypeScript 的超集）编写，界面用 ArkUI 声明式语法描述。ArkUI 通过装饰器建立数据与 UI 的绑定，状态变化自动触发刷新。本课还在「零基础详解·鸿蒙 ArkTS 与 ArkUI」中说明：心智与 Compose、SwiftUI 一致：状态驱动界面，改状态就自动刷新。
+
+### 追问 4：ForEach 渲染列表时必须注意什么？
+
+**参考回答**：正确答案是「必须提供稳定唯一的 key」，这道题在问ForEach渲染列表时必须注意什么，判断时要把题干限定的输入、边界与目标逐项对齐。稳定 key 让框架识别条目身份，增删时才能正确复用节点与状态。课程摘要指出ArkTS 语言约束，ArkUI 声明式写法与 Stage 模型，本课要判断的正是ForEach渲染列表时必须注意什么。
+
+### 追问 5：耗时计算放在 UI 线程会怎样？如何解决？
+
+**参考回答**：正确答案是「导致界面卡顿」，这道题在问耗时计算放在UI线程会怎样，如何解决，判断时要把题干限定的输入、边界与目标逐项对齐。UI 线程被占用会直接表现为掉帧甚至无响应，鸿蒙提供 TaskPool 与 Worker 处理并发任务。耗时计算放在 UI 线程会怎样。
+
 ## English Overview
 
 **Title:** HarmonyOS ArkTS
@@ -435,4 +479,3 @@ export default class EntryAbility extends UIAbility {
 > 本课主题：ArkTS 语言约束、ArkUI 声明式写法与 Stage 模型。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

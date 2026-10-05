@@ -426,6 +426,50 @@ func main() {
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `。约束用接口描述可用操作，` | 类型参数写在方括号里：`func Max[T constraints.Ordered](a, b T) T`。约束用接口描述可用操作，`constraints` 包提供 Ordered、Integer 等常用约束。 |
+| `[T any]` | \| 类型参数 `[T any]` \| 让函数/类型适配多种类型 \| |
+| `T constraints.Ordered` | \| 约束 `T constraints.Ordered` \| 限制可用的运算符 \| |
+| `~int \| ~string` | \| 类型集合 `~int \\| ~string` \| 允许底层类型匹配的自定义类型 \| |
+| `http.HandleFunc` | 标准库自带生产可用的 HTTP 服务：`http.HandleFunc` 注册路由、`http.Server` 配置超时、`http.Client` 设置超时与连接复用。 |
+| `http.Server` | 标准库自带生产可用的 HTTP 服务：`http.HandleFunc` 注册路由、`http.Server` 配置超时、`http.Client` 设置超时与连接复用。 |
+| `http.Client` | 标准库自带生产可用的 HTTP 服务：`http.HandleFunc` 注册路由、`http.Server` 配置超时、`http.Client` 设置超时与连接复用。 |
+| `http.MaxBytesReader` | `http.MaxBytesReader` 限制请求体大小防内存打爆。 |
+| `http.Handler` | 中间件用函数包装 `http.Handler`（日志、鉴权、recover）。 |
+| `json:"name,omitempty"` | 结构体标签控制序列化：`json:"name,omitempty"` 省略空值；`json:"-"` 忽略字段；自定义 `MarshalJSON`/`UnmarshalJSON` 处理特殊格式（时间、枚举）。流式处理大 … |
+| `json:"-"` | 结构体标签控制序列化：`json:"name,omitempty"` 省略空值；`json:"-"` 忽略字段；自定义 `MarshalJSON`/`UnmarshalJSON` 处理特殊格式（时间、枚举）。流式处理大 … |
+| `MarshalJSON` | 结构体标签控制序列化：`json:"name,omitempty"` 省略空值；`json:"-"` 忽略字段；自定义 `MarshalJSON`/`UnmarshalJSON` 处理特殊格式（时间、枚举）。流式处理大 … |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：Go 泛型的类型参数写在？
+
+**参考回答**：正确答案是「方括号」，本课在「泛型（Go 1.18+）」中说明：类型参数写在方括号里：func Max[T constraints.Ordered](a, b T) T。形如 func Max[T constraints.Ordered](a, b T) T。本课还在「项目专属规格·Go 泛型与标准库实战」中说明：类型参数、net/http 超时与连接复用、encoding/json 标签。本课还在「本课小结」中说明：泛型负责类型安全的复用，标准库负责生产可用的基础能力：net/http 记得设超时与复用连接，encoding/json 用标签控制契约。
+
+### 追问 2：使用 net/http 的 Server 时最容易被忽略但必须设置的是？
+
+**参考回答**：正确答案是「读写与空闲超时」，本课在「本课小结」中说明：泛型负责类型安全的复用，标准库负责生产可用的基础能力：net/http 记得设超时与复用连接，encoding/json 用标签控制契约。不设超时会导致慢连接长期占用，最终耗尽连接数。本课还在「零基础详解·泛型与标准库常用武器」中说明：标准库则提供了日常最常用的工具：net/http、encoding/json、time、slices、maps。
+
+### 追问 3：结构体标签 json:"name,omitempty" 的作用是？
+
+**参考回答**：正确答案是「字段改名并在空值时省略」，本课在「encoding/json」中说明：结构体标签控制序列化：json:"name,omitempty" 省略空值。json:"-" 才是完全忽略该字段。本课还在「零基础详解·泛型与标准库常用武器」中说明：能说出结构体标签 omitempty 与 - 的区别。本课还在「零基础详解·泛型与标准库常用武器」中说明：标准库则提供了日常最常用的工具：net/http、encoding/json、time、slices、maps。
+
+### 追问 4：Go 泛型中的类型约束（如 comparable）作用是？
+
+**参考回答**：正确答案是「限定类型参数能用哪些操作」，本课在「项目专属规格·Go 泛型与标准库实战」中说明：类型参数、net/http 超时与连接复用、encoding/json 标签。comparable 允许使用 == 与 !=。本课还在「零基础详解·泛型与标准库常用武器」中说明：能写出一个带类型参数的函数并说明约束作用。本课还在「net/http 实战」中说明：标准库自带生产可用的 HTTP 服务：http.HandleFunc 注册路由、http.Server 配置超时、http.Client 设置超时与连接复用。
+
+### 追问 5：context.WithTimeout 返回的 cancel 函数为什么必须调用？
+
+**参考回答**：正确答案是「释放定时器等资源，避免上下文泄漏」，本课在「net/http 实战」中说明：标准库自带生产可用的 HTTP 服务：http.HandleFunc 注册路由、http.Server 配置超时、http.Client 设置超时与连接复用。标准写法是 defer cancel()，即使操作提前完成也要调用。本课还在「net/http 实战」中说明：中间件用函数包装 http.Handler（日志、鉴权、recover）。
+
 ## English Overview
 
 **Title:** Generics & Stdlib
@@ -540,4 +584,3 @@ go.mod
 > 本课主题：类型参数、net/http 超时与连接复用、encoding/json 标签。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

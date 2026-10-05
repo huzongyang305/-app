@@ -434,6 +434,50 @@ public class OrderStats {
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `volatile` | `volatile` 保证可见性与有序性，但**不保证原子性**，`count++` 仍需加锁或改用 `AtomicInteger`。 |
+| `count++` | `volatile` 保证可见性与有序性，但**不保证原子性**，`count++` 仍需加锁或改用 `AtomicInteger`。 |
+| `AtomicInteger` | `volatile` 保证可见性与有序性，但**不保证原子性**，`count++` 仍需加锁或改用 `AtomicInteger`。 |
+| `synchronized` | `synchronized` 与 `volatile` 建立 happens-before 关系，保证可见性。 |
+| `jstack` | 常见故障与排查**：① 队列无界导致任务堆积、内存暴涨；② 线程池被慢任务占满（下游超时未设），表现为所有请求排队；③ 父子任务共用同一个池导致死锁（父等待子，子排队）；④ 线程泄漏（线程名不带业务标识，无法定位来源）。… |
+| `ThreadPoolExecutor` | 常见故障与排查**：① 队列无界导致任务堆积、内存暴涨；② 线程池被慢任务占满（下游超时未设），表现为所有请求排队；③ 父子任务共用同一个池导致死锁（父等待子，子排队）；④ 线程泄漏（线程名不带业务标识，无法定位来源）。… |
+| `ReentrantLock` | \| 需要超时 / 可中断 / 公平 \| `ReentrantLock` \| 记得在 `finally` 中 `unlock()` \| |
+| `finally` | \| 需要超时 / 可中断 / 公平 \| `ReentrantLock` \| 记得在 `finally` 中 `unlock()` \| |
+| `unlock()` | \| 需要超时 / 可中断 / 公平 \| `ReentrantLock` \| 记得在 `finally` 中 `unlock()` \| |
+| `ReentrantReadWriteLock` | \| 读多写少 \| `ReentrantReadWriteLock` \| 读并发，写互斥 \| |
+| `LongAdder` | \| 原子计数 \| `AtomicInteger` / `LongAdder` \| 高并发下 `LongAdder` 吞吐更好 \| |
+| `ConcurrentHashMap` | \| 线程安全 Map \| `ConcurrentHashMap` \| 用 `computeIfAbsent` 做原子初始化 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：volatile 关键字保证了什么？
+
+**参考回答**：volatile 保证一个线程的写入对其他线程可见，但不保证复合操作（如 count++）的原子性。其他选项：volatile 只保证可见性与有序性，不保证原子性，所以 count++ 依然会丢失更新。针对「volatile 关键字保证了什么，」，本课在「共享状态与同步」中说明：volatile 保证可见性与有序性，但不保证原子性，count++ 仍需加锁或改用 AtomicInteger。本课还在「本课小结」中说明：并发三件事：可见性（volatile/synchronized）、原子性（锁/原子类）、有序性（happens-before）。
+
+### 追问 2：多个线程对共享计数变量自增导致结果偏小，最佳解决办法是？
+
+**参考回答**：正确答案是「使用 AtomicInteger 或加锁」，本课在「虚拟线程（Java 21+）」中说明：虚拟线程极轻量，适合高并发 IO 场景，不需要再为了吞吐写复杂的异步回调。自增是读-改-写三步，需要原子类或互斥锁来保证原子性。本课还在「Java 内存模型要点」中说明：每个线程有自己的工作内存，共享变量读写可能看不到最新值。本课还在「Java 内存模型要点」中说明：synchronized 与 volatile 建立 happens-before 关系，保证可见性。
+
+### 追问 3：虚拟线程（Java 21+）最适合哪类任务？
+
+**参考回答**：正确答案是「高并发 IO 等待」，本课在「虚拟线程（Java 21+）」中说明：虚拟线程极轻量，适合高并发 IO 场景，不需要再为了吞吐写复杂的异步回调。虚拟线程在阻塞时会让出载体线程，极适合大量 IO 等待场景，而不适合纯 CPU 计算。本课还在「线程池参数与常见故障」中说明：② 线程池被慢任务占满（下游超时未设），表现为所有请求排队。本课还在「本课小结」中说明：业务代码优先用线程池与 CompletableFuture，别手动 new Thread。
+
+### 追问 4：synchronized 与 ReentrantLock 的关系是？
+
+**参考回答**：正确答案是「synchronized 是语法内置锁」，本课在「Java 内存模型要点」中说明：synchronized 与 volatile 建立 happens-before 关系，保证可见性。简单互斥优先用 synchronized。本课还在「线程池参数与常见故障」中说明：② 线程池被慢任务占满（下游超时未设），表现为所有请求排队。本课还在「零基础详解·线程、线程池与并发工具」中说明：Java 的做法是：不要自己 new Thread，而是交给线程池。
+
+### 追问 5：使用线程池相比直接 new Thread 的优势是？
+
+**参考回答**：正确答案是「复用线程，限制并发规模」，本课在「本课小结」中说明：业务代码优先用线程池与 CompletableFuture，别手动 new Thread。务必使用有界队列与合适的拒绝策略，避免任务无限堆积导致内存溢出。本课还在「零基础详解·线程、线程池与并发工具」中说明：能说出为什么推荐线程池而不是直接 new Thread。本课还在「本课小结」中说明：并发三件事：可见性（volatile/synchronized）、原子性（锁/原子类）、有序性（happens-before）。
+
 ## English Overview
 
 **Title:** Concurrency
@@ -554,4 +598,3 @@ public class OrderStats {
 > 本课主题：线程与线程池、synchronized/volatile/原子类、CompletableFuture 与虚拟线程。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

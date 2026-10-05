@@ -344,6 +344,50 @@ case result := <-ch:
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `go f()` | \| `go f()` \| 启动 goroutine，几 KB 栈，可轻松开十万个 \| |
+| `chan T` | \| `chan T` \| 类型安全管道；无缓冲同步交接，有缓冲为队列 \| |
+| `select` | \| `select` \| 多路等待，可配合超时与退出信号 \| |
+| `context.WithTimeout` | 超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`。 |
+| `ctx.Done()` | 超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`。 |
+| `sync.WaitGroup` | 等待一组任务**：`sync.WaitGroup` 的 Add/Done/Wait。 |
+| `go test -race` | 竞态**：用 `go test -race` 检测，用 mutex 或 channel 消除。 |
+| `sync.Mutex` | 优先用 channel 传递所有权；确需共享时用 `sync.Mutex`/`RWMutex` 或 `sync/atomic`。读多写少用 `RWMutex`，计数器用 `atomic.Int64`。 |
+| `RWMutex` | 优先用 channel 传递所有权；确需共享时用 `sync.Mutex`/`RWMutex` 或 `sync/atomic`。读多写少用 `RWMutex`，计数器用 `atomic.Int64`。 |
+| `sync/atomic` | 优先用 channel 传递所有权；确需共享时用 `sync.Mutex`/`RWMutex` 或 `sync/atomic`。读多写少用 `RWMutex`，计数器用 `atomic.Int64`。 |
+| `atomic.Int64` | 优先用 channel 传递所有权；确需共享时用 `sync.Mutex`/`RWMutex` 或 `sync/atomic`。读多写少用 `RWMutex`，计数器用 `atomic.Int64`。 |
+| `go worker()` | \| 启动协程 \| `go worker()` \| 调度开销远小于线程 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：向已关闭的 channel 发送数据会？
+
+**参考回答**：只应由唯一的发送方负责关闭 channel。其他选项：向已关闭的 channel 发送不会返回错误、不会自动重开、也不会阻塞，而是直接 panic，因此关闭操作应由唯一发送方负责。针对「向已关闭的 channel 发送数据会，」，本课在「必须注意的坑」中说明：向已关闭的 channel 发送 会 panic。本课还在「零基础详解·goroutine、channel 与「通过通信共享内存」」中说明：结论：只由发送方关闭 channel，并且不要向已关闭的 channel 发送数据。
+
+### 追问 2：以下哪组是 Go 并发的正确实践？
+
+**参考回答**：正确答案是「用 context 传播取消」，本课在「本课小结」中说明：Go 并发的要点：用 channel 传递数据、用 context 控制生命周期、用 WaitGroup 等待完成、用 -race 验证正确性。context 能让子任务感知取消和超时，worker 池与有界队列能控制资源上限。本课还在「零基础详解·goroutine、channel 与「通过通信共享内存」」中说明：结论：只由发送方关闭 channel，并且不要向已关闭的 channel 发送数据。
+
+### 追问 3：检测数据竞争的官方手段是？
+
+**参考回答**：正确答案是「go test -race」，本课在「必须注意的坑」中说明：竞态：用 go test -race 检测，用 mutex 或 channel 消除。-race 在运行时检测并发访问冲突，应加入 CI。本课还在「本课小结」中说明：Go 并发的要点：用 channel 传递数据、用 context 控制生命周期、用 WaitGroup 等待完成、用 -race 验证正确性。本课还在「零基础详解·goroutine、channel 与「通过通信共享内存」」中说明：具体做法就是：用 goroutine 起任务，用 channel 在任务之间传数据，而不是到处加锁改同一个变量。
+
+### 追问 4：向无缓冲 channel 发送数据会阻塞，直到？
+
+**参考回答**：正确答案是「有接收方准备好接收（收发同步完成）」，本课在「必须注意的坑」中说明：凡是阻塞在 channel 或网络上的 goroutine，都要有退出路径。无缓冲 channel 是同步握手。本课还在「零基础详解·goroutine、channel 与「通过通信共享内存」」中说明：知道无缓冲与带缓冲 channel 的区别。本课还在「常见模式」中说明：扇出扇入：多个 goroutine 并行处理后汇总到一个 channel。
+
+### 追问 5：sync.WaitGroup 的典型用途是？
+
+**参考回答**：正确答案是「等待一组 goroutine 全部完成」，本课在「常见模式」中说明：超时与取消：context.WithTimeout 传递取消信号，所有阻塞操作都要监听 ctx.Done()。Add 要在启动 goroutine 前调用，Done 一般用 defer，Wait 阻塞到计数归零。本课还在「三个核心原语」中说明：Go 的并发哲学：不要通过共享内存来通信，而要通过通信来共享内存。本课还在「零基础详解·goroutine、channel 与「通过通信共享内存」」中说明：Go 的并发口号是「不要通过共享内存来通信，而要通过通信来共享内存」。
+
 ## English Overview
 
 **Title:** Go Concurrency
@@ -464,4 +508,3 @@ case result := <-ch:
 > 本课主题：channel 通信、worker pool、context 取消与竞态检测。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

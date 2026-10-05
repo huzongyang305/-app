@@ -359,6 +359,50 @@ async function fetchUser(url: string): Promise<ApiUser> {
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `string[]` | \| 数组与元组 \| `string[]`、`[number, string]`（定长且按位定型） \| |
+| `[number, string]` | \| 数组与元组 \| `string[]`、`[number, string]`（定长且按位定型） \| |
+| `{ id: number; name: string }` | \| 对象类型 \| `{ id: number; name: string }`、interface、type \| |
+| `A \| B` | \| 联合与交叉 \| `A \\| B`、`A & B` \| |
+| `A & B` | \| 联合与交叉 \| `A \\| B`、`A & B` \| |
+| `'success' \| 'error'` | \| 字面量类型 \| `'success' \\| 'error'`，把取值收敛为固定集合 \| |
+| `x is T` | 常见手段：typeof、instanceof、in、可辨识联合（discriminated union，用共同字段区分成员）、自定义类型守卫（`x is T`）以及断言函数。可辨识联合 + switch 穷尽检查是建模业… |
+| `tsc --noEmit` | 类型检查纳入 CI：`tsc --noEmit`，避免类型错误进主干。 |
+| `string` | \| 原始类型 \| `string`、`number`、`boolean`、`bigint`、`symbol` \| 小写，不用包装类型 \| |
+| `number` | \| 原始类型 \| `string`、`number`、`boolean`、`bigint`、`symbol` \| 小写，不用包装类型 \| |
+| `boolean` | \| 原始类型 \| `string`、`number`、`boolean`、`bigint`、`symbol` \| 小写，不用包装类型 \| |
+| `bigint` | \| 原始类型 \| `string`、`number`、`boolean`、`bigint`、`symbol` \| 小写，不用包装类型 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：TypeScript 的类型检查发生在什么时候？
+
+**参考回答**：类型只在编译期存在，产物是普通 JavaScript，运行时数据仍需校验。其他选项：类型只在编译期存在，运行时数据仍需校验。针对「TypeScript 的类型检查发生在什么时候，」，本课在「本课小结」中说明：TypeScript 的价值是把类型错误从运行时提前到编译期，并用类型表达业务约束。本课还在「为什么需要 TypeScript」中说明：TypeScript 在编译期做静态检查，同时保留 JS 的全部能力——类型只在编译期存在，产物仍是普通 JavaScript。
+
+### 追问 2：相比 any，unknown 的优势是？
+
+**参考回答**：正确答案是「更安全：使用前必须收窄类型」，本课在「基础类型」中说明：外部数据（接口返回、JSON）先当 unknown，校验后再收窄类型。unknown 表示未知类型，必须先判断或断言才能使用。本课还在「零基础详解·类型是「给 JavaScript 加的合同」」中说明：TypeScript = JavaScript + 类型系统。本课还在「零基础详解·类型是「给 JavaScript 加的合同」」中说明：能解释 unknown 比 any 安全在哪里。
+
+### 追问 3：接口返回的数据还需要运行时校验吗？
+
+**参考回答**：正确答案是「需要，类型在运行时不存在」，本课在「工程配置要点」中说明：运行时校验不能省：类型在运行时不存在，接口数据仍需 zod/valibot 之类做校验。类型断言不改变运行时数据，接口数据要用 zod 等做校验。本课还在「零基础详解·类型是「给 JavaScript 加的合同」」中说明：能说出 TypeScript 类型在运行时是否存在。本课还在「为什么需要 TypeScript」中说明：JavaScript 的类型错误只在运行时暴露。
+
+### 追问 4：type 与 interface 的主要差别是？
+
+**参考回答**：正确答案是「interface 支持声明合并」，本课在「interface 与 type」中说明：interface 适合描述对象与可扩展的契约（支持声明合并）。对外发布的库常用 interface 便于使用者扩展，内部组合类型多用 type。本课还在「interface 与 type」中说明：团队里通常约定：对象结构用 interface，复杂类型运算用 type。本课还在「零基础详解·类型是「给 JavaScript 加的合同」」中说明：TypeScript = JavaScript + 类型系统。
+
+### 追问 5：as const 的作用是？
+
+**参考回答**：正确答案是「把值推断为最窄的只读字面量类型（readonly 元组/字面量）」，本课在「工程配置要点」中说明：类型检查纳入 CI：tsc --noEmit，避免类型错误进主干。它只影响类型推断，运行时仍可被修改（需要 Object.freeze 才真正冻结）。本课还在「为什么需要 TypeScript」中说明：JavaScript 的类型错误只在运行时暴露。本课还在「工程配置要点」中说明：运行时校验不能省：类型在运行时不存在，接口数据仍需 zod/valibot 之类做校验。
+
 ## English Overview
 
 **Title:** TypeScript Types
@@ -479,4 +523,3 @@ async function fetchUser(url: string): Promise<ApiUser> {
 > 本课主题：类型收窄、泛型、工具类型与工程配置。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

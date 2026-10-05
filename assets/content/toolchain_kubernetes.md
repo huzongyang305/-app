@@ -354,6 +354,50 @@ spec:
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `requests` | `requests` 影响调度，`limits` 影响超限行为；**探针配错会导致容器反复重启**——readiness 失败只是摘流量，liveness 失败会重启容器。 |
+| `limits` | `requests` 影响调度，`limits` 影响超限行为；**探针配错会导致容器反复重启**——readiness 失败只是摘流量，liveness 失败会重启容器。 |
+| `get` | 排查顺序：`get`（状态）→ `describe`（事件）→ `logs`（应用日志）。 |
+| `describe` | 排查顺序：`get`（状态）→ `describe`（事件）→ `logs`（应用日志）。 |
+| `logs` | 排查顺序：`get`（状态）→ `describe`（事件）→ `logs`（应用日志）。 |
+| `kubectl describe pod` | \| Pod 一直 Pending \| `kubectl describe pod` 看 Events \| 资源不足、节点选择器/污点不匹配、PVC 未绑定 \| |
+| `kubectl logs --previous` | \| CrashLoopBackOff \| `kubectl logs --previous` \| 应用启动失败、配置缺失、探针过严 \| |
+| `kubectl get endpoints web` | \| Service 访问 503 \| `kubectl get endpoints web` \| selector 与 labels 不匹配，或 Pod 未 Ready \| |
+| `kubectl describe ingress` | \| Ingress 404 \| `kubectl describe ingress` \| path/host 规则不匹配、ingressClassName 错误 \| |
+| `exec` | 排错的黄金顺序：`get`（状态）→ `describe`（事件）→ `logs`（应用）→ `exec`（进容器验证）。 |
+| `kubectl get pods -n prod -o wide` | \| 查看资源列表 \| `kubectl get pods -n prod -o wide` \| |
+| `kubectl get pods -w` | \| 持续观察变化 \| `kubectl get pods -w` \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：Kubernetes 的核心工作方式是？
+
+**参考回答**：正确答案是「声明期望状态」，本课在「它解决什么问题」中说明：Docker 解决了「怎么打包与运行单个容器」，Kubernetes（K8s）解决集群级别的编排：调度、扩缩容、自愈、滚动发布、服务发现与配置管理。声明式 API + 控制循环是 K8s 的设计核心。本课还在「它解决什么问题」中说明：这就是「声明式 API + 控制循环」：你描述想要什么，而不是一步步命令怎么做。本课还在「一个最小 Deployment」中说明：探针配错会导致容器反复重启——readiness 失败只是摘流量，liveness 失败会重启容器。
+
+### 追问 2：K8s 中最小的调度单位是？
+
+**参考回答**：Pod 可包含一个或多个共享网络与存储的容器。其他选项：Deployment 是工作负载控制器，Node 是运行机器，容器是最小运行单元但不是调度单位。针对「K8s 中最小的调度单位是，」，本课在「本课小结」中说明：K8s 的关键是声明式 + 控制循环：Pod 是最小单位，Deployment 管副本，Service 管访问，探针管健康，HPA 管弹性。本课还在「Service 与 Ingress 完整示例」中说明：三层关系：Pod 提供能力 → Service 提供稳定入口 → Ingress 提供域名与路径路由。
+
+### 追问 3：readinessProbe 与 livenessProbe 的区别是？
+
+**参考回答**：正确答案是「readiness 失败摘除流量」，本课在「一个最小 Deployment」中说明：探针配错会导致容器反复重启——readiness 失败只是摘流量，liveness 失败会重启容器。配错探针会导致流量异常或容器反复重启，是常见故障源。本课还在「它解决什么问题」中说明：Docker 解决了「怎么打包与运行单个容器」，Kubernetes（K8s）解决集群级别的编排：调度、扩缩容、自愈、滚动发布、服务发现与配置管理。
+
+### 追问 4：Deployment 与 StatefulSet 的区别是？
+
+**参考回答**：正确答案是「Deployment 的 Pod 可互换」，本课在「什么时候不需要 K8s」中说明：K8s 的复杂度是真实成本：集群、网络、存储、证书、监控都要有人负责。数据库、消息队列等有状态组件通常用 StatefulSet 加 PVC。本课还在「Service 与 Ingress 完整示例」中说明：Service 的 selector 必须与 Pod 的 labels 完全匹配，否则 endpoints 为空（表现为 503）。
+
+### 追问 5：Kubernetes 中 Service 的作用是？
+
+**参考回答**：正确答案是「为一组 Pod 提供稳定的虚拟 IP 与负载均衡，屏蔽 Pod 重建带来的地址变化」，本课在「Service 与 Ingress 完整示例」中说明：三层关系：Pod 提供能力 → Service 提供稳定入口 → Ingress 提供域名与路径路由。ClusterIP、NodePort、LoadBalancer 与 Headless 是常见的几种 Service 形态。本课还在「五类常见故障与排错」中说明：排错的黄金顺序：get（状态）→ describe（事件）→ logs（应用）→ exec（进容器验证）。
+
 ## English Overview
 
 **Title:** Kubernetes Basics
@@ -393,4 +437,3 @@ spec:
 > 本课主题：声明式对象模型、Deployment/Service、探针与发布策略。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

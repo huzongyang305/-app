@@ -494,6 +494,50 @@ func TestRoundNegative(t *testing.T) {
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `go mod init github.com/you/app` | `go mod init github.com/you/app` 初始化模块；目录约定：`cmd/`（可执行入口）、`internal/`（仅本模块可见）、`pkg/`（对外可复用）、`api/`（接口定义）、`test… |
+| `cmd/` | `go mod init github.com/you/app` 初始化模块；目录约定：`cmd/`（可执行入口）、`internal/`（仅本模块可见）、`pkg/`（对外可复用）、`api/`（接口定义）、`test… |
+| `internal/` | `go mod init github.com/you/app` 初始化模块；目录约定：`cmd/`（可执行入口）、`internal/`（仅本模块可见）、`pkg/`（对外可复用）、`api/`（接口定义）、`test… |
+| `pkg/` | `go mod init github.com/you/app` 初始化模块；目录约定：`cmd/`（可执行入口）、`internal/`（仅本模块可见）、`pkg/`（对外可复用）、`api/`（接口定义）、`test… |
+| `api/` | `go mod init github.com/you/app` 初始化模块；目录约定：`cmd/`（可执行入口）、`internal/`（仅本模块可见）、`pkg/`（对外可复用）、`api/`（接口定义）、`test… |
+| `testdata/` | `go mod init github.com/you/app` 初始化模块；目录约定：`cmd/`（可执行入口）、`internal/`（仅本模块可见）、`pkg/`（对外可复用）、`api/`（接口定义）、`test… |
+| `go fmt ./...` | \| `go fmt ./...` \| 统一格式（官方风格，无争议） \| |
+| `go vet ./...` | \| `go vet ./...` \| 静态检查可疑代码 \| |
+| `go test ./... -race -cover` | \| `go test ./... -race -cover` \| 测试 + 竞态检测 + 覆盖率 \| |
+| `go test -bench=. -benchmem` | \| `go test -bench=. -benchmem` \| 基准测试与内存分配 \| |
+| `golangci-lint run` | \| `golangci-lint run` \| 聚合多种 linter \| |
+| `go mod tidy` | \| `go mod tidy` \| 清理与补齐依赖 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：Go 中最主流的测试写法是？
+
+**参考回答**：正确答案是「表驱动测试（切片 + t.Run）」，本课在「测试与基准」中说明：表驱动测试（table-driven）是 Go 的主流写法：用例写成切片，循环执行子测试 t.Run。示例如切片，循环执行子测试，便于增删用例与定位失败。本课还在「本课小结」中说明：Go 工程化的关键是统一工具链 + 表驱动测试 + pprof 定位 + 静态单文件部署。本课还在「项目专属规格·Go 工程实践」中说明：模块目录、表驱动测试、pprof 与静态单文件部署。
+
+### 追问 2：交叉编译到 Linux amd64 需要设置？
+
+**参考回答**：正确答案是「GOOS=linux GOARCH=amd64」，本课在「性能分析」中说明：标准库自带 net/http/pprof 或 runtime/pprof，可采集 CPU、内存、阻塞、goroutine 与 mutex profile。GOOS/GOARCH 控制目标平台。本课还在「模块与目录」中说明：go mod init github.com/you/app 初始化模块。本课还在「性能分析」中说明：排查顺序：先看指标定位资源类型，再用 pprof 找热点函数。
+
+### 追问 3：产出体积小、无动态依赖的可执行文件常用？
+
+**参考回答**：正确答案是「CGO_ENABLED=0 go build -ldflags "-s -w"」，本课在「模块与目录」中说明：目录约定：cmd/（可执行入口）、internal/（仅本模块可见）、pkg/（对外可复用）、api/（接口定义）、testdata/（测试数据）。静态链接 + 去掉符号表，适合放进 scratch 镜像。本课还在「构建与部署」中说明：配合多阶段 Docker 构建（builder 阶段编译，scratch/alpine 运行）可产出几 MB 的镜像。
+
+### 追问 4：go mod tidy 的作用是？
+
+**参考回答**：正确答案是「补齐代码需要但缺失的依赖」，本课在「零基础详解·Go 工程结构与测试」中说明：能说出 -race 与 -cover 的作用。提交前跑一次 go mod tidy，能保证 go.mod / go.sum 与代码一致。本课还在「本课小结」中说明：Go 工程化的关键是统一工具链 + 表驱动测试 + pprof 定位 + 静态单文件部署。本课还在「零基础详解·Go 工程结构与测试」中说明：测试则用标准库自带的 testing 包，不依赖第三方框架。
+
+### 追问 5：Go 项目中 cmd/ 与 internal/ 目录的约定是？
+
+**参考回答**：正确答案是「cmd 放可执行程序入口」，本课在「模块与目录」中说明：目录约定：cmd/（可执行入口）、internal/（仅本模块可见）、pkg/（对外可复用）、api/（接口定义）、testdata/（测试数据）。internal 由编译器强制限制可见范围，适合放不希望对外暴露的实现。本课还在「零基础详解·Go 工程结构与测试」中说明：Go 的工程约定非常固定：cmd 放入口、internal 放私有实现、pkg 放可复用库。
+
 ## English Overview
 
 **Title:** Go Project Practices
@@ -690,4 +734,3 @@ go.mod
 > 本课主题：模块目录、表驱动测试、pprof 与静态单文件部署。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

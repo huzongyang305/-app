@@ -325,6 +325,50 @@ USER nginx
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `.dockerignore` | 用 `.dockerignore` 排除 `node_modules`、`.git`、构建产物。 |
+| `node_modules` | 用 `.dockerignore` 排除 `node_modules`、`.git`、构建产物。 |
+| `.git` | 用 `.dockerignore` 排除 `node_modules`、`.git`、构建产物。 |
+| `USER` | 容器内不要用 root 运行，加 `USER` 指令。 |
+| `COPY . .` | 反例：先 `COPY . .` 再 `npm install`，任何一次源码改动都会导致依赖重新下载。 |
+| `npm install` | 反例：先 `COPY . .` 再 `npm install`，任何一次源码改动都会导致依赖重新下载。 |
+| `docker history <image>` | \| 镜像为什么这么大 \| `docker history <image>` 逐层看体积 \| |
+| `docker logs <container>` | \| 容器为什么起不来 \| `docker logs <container>`，再看 `docker inspect` 的退出码 \| |
+| `docker inspect` | \| 容器为什么起不来 \| `docker logs <container>`，再看 `docker inspect` 的退出码 \| |
+| `docker exec` | \| 容器里没有工具排查 \| 用 `docker exec` 进临时调试容器，或临时改用 alpine 版本 \| |
+| `depends_on` | 用 `depends_on` 配 `condition: service_healthy` 等待依赖就绪，而不是固定 sleep。 |
+| `condition: service_healthy` | 用 `depends_on` 配 `condition: service_healthy` 等待依赖就绪，而不是固定 sleep。 |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：容器与虚拟机最关键的区别是？
+
+**参考回答**：正确答案是「容器共享宿主内核，进程级隔离」，本课在「核心概念」中说明：卷（volume）：持久化数据，独立于容器生命周期。容器共享宿主内核，因此启动快、体积小。本课还在「核心概念」中说明：容器（container）：镜像的运行实例，可读写最上层。本课还在「多阶段构建的体积对比」中说明：体积下降带来的直接收益：拉取更快（CI 与扩容更快）、攻击面更小（无包管理器与 shell）、镜像仓库成本更低。
+
+### 追问 2：Dockerfile 使用多阶段构建的主要目的是？
+
+**参考回答**：正确答案是「减小最终镜像体积」，本课在「Dockerfile」中说明：用 .dockerignore 排除 nodemodules、.git、构建产物。只把构建产物复制到最终镜像，避免把编译工具链打进去。本课还在「核心概念」中说明：仓库（registry）：存放镜像，如 Docker Hub。本课还在「核心概念」中说明：卷（volume）：持久化数据，独立于容器生命周期。
+
+### 追问 3：容器删除后仍需保留的数据应该放在？
+
+**参考回答**：正确答案是「数据卷 volume」，本课在「Docker Compose·多容器编排」中说明：环境变量用 .env 文件，敏感值不入库。数据卷独立于容器生命周期，容器重建后数据仍然存在。本课还在「数据与网络」中说明：同一自定义网络中的容器可以用容器名互相访问（DNS 解析）。本课还在「本课小结」中说明：Docker 的三件套是镜像（怎么打包）、容器（怎么运行）、卷与网络（数据与通信）。
+
+### 追问 4：Docker 构建中镜像层缓存失效的常见原因是？
+
+**参考回答**：正确答案是「靠前指令（如 COPY 源码）的内容变化，导致其后所有层都要重建」，本课在「构建缓存与层顺序」中说明：Docker 按层缓存，只要某一层内容变化，其后所有层都会失效。把依赖声明与安装放在 COPY 源码之前，能最大化利用缓存。本课还在「Dockerfile」中说明：先复制依赖清单再复制源码，充分利用构建缓存。本课还在「Docker Compose·多容器编排」中说明：开发用 docker compose up -d，只重建变更服务用 up -d --build <service>。
+
+### 追问 5：docker run -p 8080:80 的含义是？
+
+**参考回答**：正确答案是「宿主机的 8080 端口映射到容器的 80 端口」，本课在「Docker Compose·多容器编排」中说明：ports 与 expose 混淆（前者对宿主开放，后者仅容器间可见）。格式是 -p 宿主端口:容器端口，绑定地址可写成 127.0.0.1:8080:80。本课还在「容器与虚拟机」中说明：容器打包的是应用 + 依赖 + 运行时，因此「在我机器上能跑」的问题基本消失。本课还在「核心概念」中说明：容器（container）：镜像的运行实例，可读写最上层。
+
 ## English Overview
 
 **Title:** Docker Basics
@@ -364,4 +408,3 @@ USER nginx
 > 本课主题：镜像、容器、Dockerfile 与数据卷。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

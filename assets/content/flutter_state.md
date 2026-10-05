@@ -471,6 +471,11 @@ class _ItemPageState extends State<ItemPage> {
 - **判断依据**：正确答案是「ChangeNotifierProvider」，本课在「测试策略」中说明：Widget 测试中通过 ChangeNotifierProvider.value 注入假数据，避免真实网络与数据库。本课还在「重建范围控制」中说明：避免在 build 里做重活（排序、网络、JSON 解析），移到 initState 或状态层。本课还在「异步与错误处理」中说明：用 FutureBuilder 时务必处理三种状态：等待、错误、空数据。
 - **迁移检查**：不看题干，用自己的话补全这句话，再与标准答案对照。
 
+### 补充考点 1：按照「Flutter 状态管理与性能」从概念到实践的讲解顺序排列下列主题。
+
+- **正确判断**：状态分层 → 重建范围控制 → 生命周期要点 → 异步与错误处理
+- **判断依据**：在「Flutter 状态管理与性能」中，正确顺序是：1. 状态分层 → 2. 重建范围控制 → 3. 生命周期要点 → 4. 异步与错误处理。「Flutter 状态管理与性能」先建立概念，再解释运行机制，随后进入代码与工程实践，最后处理失败路径。在「Flutter 状态管理与性能」里，如果把后一步放到前面，通常会缺少前一步产生的定义、输入或验证结果。
+
 ## 本课复习清单
 
 离开本课前，逐项确认：
@@ -489,6 +494,50 @@ class _ItemPageState extends State<ItemPage> {
 | 已经能独立解释的考点 |  |
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
+
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `const` | 用 `const` 构造器避免无谓重建。 |
+| `Consumer` | `Consumer`/`Selector` 只包裹真正依赖该状态的子树，而不是整页。 |
+| `Selector` | `Consumer`/`Selector` 只包裹真正依赖该状态的子树，而不是整页。 |
+| `ListView.builder` | 长列表用 `ListView.builder` + `itemExtent`（已知行高时）减少布局计算。 |
+| `itemExtent` | 长列表用 `ListView.builder` + `itemExtent`（已知行高时）减少布局计算。 |
+| `RepaintBoundary` | 复杂动画或频繁重绘区域用 `RepaintBoundary` 隔离。 |
+| `initState` | `initState` 做一次初始化（注意不能在这里用 context 依赖），`didChangeDependencies` 响应依赖变化，`dispose` 释放控制器、订阅与定时器。**忘记 dispose 是内存… |
+| `didChangeDependencies` | `initState` 做一次初始化（注意不能在这里用 context 依赖），`didChangeDependencies` 响应依赖变化，`dispose` 释放控制器、订阅与定时器。**忘记 dispose 是内存… |
+| `dispose` | `initState` 做一次初始化（注意不能在这里用 context 依赖），`didChangeDependencies` 响应依赖变化，`dispose` 释放控制器、订阅与定时器。**忘记 dispose 是内存… |
+| `if (!mounted) return;` | 用 FutureBuilder 时务必处理三种状态：等待、错误、空数据；页面卸载后不要再 setState（用 `if (!mounted) return;`）。分页加载要注意去重与并发请求的竞态（后发先至）。 |
+| `List.unmodifiable` | 四条实践规则：**状态类只暴露只读视图**（`List.unmodifiable`）、**notifyListeners 只在数据真变化时调用**、**读用 read、听用 watch/Consumer**、**Sele… |
+| `addListener` | 状态类不依赖 Widget，可直接单测：构造 Provider → 调用方法 → 断言状态与通知次数（用 `addListener` 计数）。Widget 测试中通过 `ChangeNotifierProvider.va… |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：输入框内容这类局部 UI 状态推荐？
+
+**参考回答**：正确答案是「StatefulWidget + setState」，本课在「本课小结」中说明：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层。能局部就不全局，重建范围最小。本课还在「零基础详解·状态管理与重建范围」中说明：状态管理要回答两个问题：这份状态归谁管、变化时要重建哪一部分。本课还在「测试策略」中说明：Widget 测试中通过 ChangeNotifierProvider.value 注入假数据，避免真实网络与数据库。
+
+### 追问 2：控制重建范围的有效手段是？
+
+**参考回答**：正确答案是「用 const 与 Selector 只包裹依赖状态的子树」，本课在「重建范围控制」中说明：Consumer/Selector 只包裹真正依赖该状态的子树，而不是整页。配合 RepaintBoundary 可进一步隔离高频重绘。本课还在「零基础详解·状态管理与重建范围」中说明：状态管理要回答两个问题：这份状态归谁管、变化时要重建哪一部分。本课还在「本课小结」中说明：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层。
+
+### 追问 3：忘记在 dispose 中释放控制器会导致？
+
+**参考回答**：正确答案是「内存泄漏与后台继续执行」，本课在「生命周期要点」中说明：initState 做一次初始化（注意不能在这里用 context 依赖），didChangeDependencies 响应依赖变化，dispose 释放控制器、订阅与定时器。AnimationController、TextEditingController、订阅都必须释放。本课还在「生命周期要点」中说明：忘记 dispose 是内存泄漏的常见来源（AnimationController、TextEditingController、StreamSubscription）。
+
+### 追问 4：ChangeNotifier 子类中通知界面刷新的方法是？
+
+**参考回答**：ChangeNotifier 通过 notifyListeners() 通知订阅者重建。setState 属于 StatefulWidget 自身。针对「ChangeNotifier 子类中通知界面刷新…」，本课在「测试策略」中说明：状态类不依赖 Widget，可直接单测：构造 Provider → 调用方法 → 断言状态与通知次数（用 addListener 计数）。本课还在「零基础详解·状态管理与重建范围」中说明：能局部就不全局，能小范围就不整页刷新，这是 Flutter 性能与可维护性的核心。
+
+### 追问 5：订阅 Provider 时，只希望在某个字段变化时重建，应该用？
+
+**参考回答**：正确答案是「context.select<Model, T>((m) => m.field)」，本课在「零基础详解·状态管理与重建范围」中说明：context.select 只订阅需要的字段，只有这个字段变化才重建。select 会把重建范围收窄到指定字段，其余字段变化不会触发重建。本课还在「Provider 代码骨架」中说明：四条实践规则：状态类只暴露只读视图（List.unmodifiable）、notifyListeners 只在数据真变化时调用、读用 read、听用 watch/Consumer、Selector 只订阅需要的字段（如只关心 total 而不是整个 cart）。
 
 ## English Overview
 
@@ -528,4 +577,3 @@ class _ItemPageState extends State<ItemPage> {
 > 本课主题：状态分层、重建范围控制与生命周期陷阱。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

@@ -546,6 +546,50 @@ class PriceTest {
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `System.out.println` | 用 SLF4J 门面 + Logback/Log4j2 实现，避免直接使用 `System.out.println`；日志要带上下文，且不要输出密码、令牌等敏感信息。 |
+| `pom.xml` | \| 配置格式 \| `pom.xml` \| `build.gradle(.kts)` \| |
+| `build.gradle(.kts)` | \| 配置格式 \| `pom.xml` \| `build.gradle(.kts)` \| |
+| `mvn compile` | \| 编译 \| `mvn compile` \| `gradle compileJava` \| |
+| `gradle compileJava` | \| 编译 \| `mvn compile` \| `gradle compileJava` \| |
+| `mvn test` | \| 测试 \| `mvn test` \| `gradle test` \| |
+| `gradle test` | \| 测试 \| `mvn test` \| `gradle test` \| |
+| `mvn package` | \| 打包 \| `mvn package` \| `gradle build` \| |
+| `gradle build` | \| 打包 \| `mvn package` \| `gradle build` \| |
+| `mvn package -DskipTests` | \| 跳过测试打包 \| `mvn package -DskipTests` \| `gradle build -x test` \| |
+| `gradle build -x test` | \| 跳过测试打包 \| `mvn package -DskipTests` \| `gradle build -x test` \| |
+| `mvn clean` | \| 清理 \| `mvn clean` \| `gradle clean` \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：Maven 与 Gradle 的主要作用是？
+
+**参考回答**：正确答案是「项目构建与依赖管理」，本课在「零基础详解·Java 工具链与工程实践」中说明：Java 的工具链负责四件事：编译、依赖管理、构建打包、测试与质量检查。它们负责编译、测试、打包和依赖解析，是现代 Java 项目的基础设施。本课还在「零基础详解·Java 工具链与工程实践」中说明：记得提交 gradle/wrapper 与 mvnw，这样别人不用装指定版本也能构建。本课还在「本课小结」中说明：Java 工程能力 = 构建工具 + 单测 + 日志 + 数据访问。
+
+### 追问 2：日志门面（facade）通常使用？
+
+**参考回答**：SLF4J 屏蔽具体日志实现，配合 Logback/Log4j2 使用，便于统一与替换。其他选项：SLF4J 是日志门面，可绑定 Logback 等实现。针对「日志门面（facade）通常使用，」，本课在「日志」中说明：用 SLF4J 门面 + Logback/Log4j2 实现，避免直接使用 System.out.println。本课还在「零基础详解·Java 工具链与工程实践」中说明：Java 的工具链负责四件事：编译、依赖管理、构建打包、测试与质量检查。
+
+### 追问 3：防止 SQL 注入的正确做法是？
+
+**参考回答**：正确答案是「使用 PreparedStatement 参数占位符」，本课在「数据库访问」中说明：永远使用 PreparedStatement 防 SQL 注入。预编译语句把参数与 SQL 结构分离，是防注入的标准手段。本课还在「零基础详解·Java 工具链与工程实践」中说明：记得提交 gradle/wrapper 与 mvnw，这样别人不用装指定版本也能构建。
+
+### 追问 4：JUnit 5 中编写参数化测试使用哪个注解？
+
+**参考回答**：配合 @ValueSource / @CsvSource 提供数据，同样的逻辑可覆盖多组输入。其他选项：JUnit 5 使用 @ParameterizedTest 搭配 @ValueSource 或 @CsvSource。本课示例中还能看到 `@ParameterizedTest` 这样的用法，说明该关键字在本课代码中承担实际功能。
+
+### 追问 5：Gradle 中 settings.gradle 与 build.gradle 的分工是？
+
+**参考回答**：正确答案是「settings 定义项目结构（包含哪些模块）」，本课在「数据库访问」中说明：JDBC 是基础，实际项目常用连接池（HikariCP）+ JPA/MyBatis。多模块 Gradle 项目靠 settings.gradle 聚合子模块。本课还在「本课小结」中说明：先掌握 JUnit 与 Maven/Gradle 的基本用法，再按项目需要引入框架。本课还在「零基础详解·Java 工具链与工程实践」中说明：现代项目基本都用 Maven 或 Gradle 中的一个，再配上 JUnit 与静态检查。
+
 ## English Overview
 
 **Title:** Build, Test & Ecosystem
@@ -584,4 +628,3 @@ class PriceTest {
 > 本课主题：Maven/Gradle、JUnit/Mockito、日志门面、JDBC 与常见框架选型。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

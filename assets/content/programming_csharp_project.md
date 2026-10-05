@@ -536,6 +536,50 @@ public class OrderEndpointTests(WebApplicationFactory<Program> factory)
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `dotnet ef migrations add Init` | 生产环境应使用 EF Core 迁移（`dotnet ef migrations add Init`）而不是 `EnsureCreated`。 |
+| `EnsureCreated` | 生产环境应使用 EF Core 迁移（`dotnet ef migrations add Init`）而不是 `EnsureCreated`。 |
+| `UseExceptionHandler` | 加 `UseExceptionHandler` 统一错误响应，日志用 ILogger。 |
+| `dotnet format --verify-no-changes` | CI 中执行 `dotnet format --verify-no-changes` 与 `dotnet test`。 |
+| `dotnet test` | CI 中执行 `dotnet format --verify-no-changes` 与 `dotnet test`。 |
+| `[Required]` | \| 请求校验 \| `[Required]`、`[Range]` 等数据注解 + `ModelState` \| |
+| `[Range]` | \| 请求校验 \| `[Required]`、`[Range]` 等数据注解 + `ModelState` \| |
+| `ModelState` | \| 请求校验 \| `[Required]`、`[Range]` 等数据注解 + `ModelState` \| |
+| `dotnet ef migrations add` | \| 数据库迁移 \| `dotnet ef migrations add` 生成脚本，CI 中执行 \| |
+| `IDbContextTransaction` | \| 事务 \| 在 Service 层使用 `IDbContextTransaction` 或 `SaveChanges` 一次提交 \| |
+| `SaveChanges` | \| 事务 \| 在 Service 层使用 `IDbContextTransaction` 或 `SaveChanges` 一次提交 \| |
+| `Skip/Take` | \| 分页 \| `Skip/Take` + 总数查询，或基于游标 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：生产环境管理数据库结构应优先使用？
+
+**参考回答**：正确答案是「EF Core 迁移」，本课在「注册服务」中说明：生产环境应使用 EF Core 迁移（dotnet ef migrations add Init）而不是 EnsureCreated。迁移可增量演进表结构并有版本记录，EnsureCreated 只适合原型。本课还在「工程实践」中说明：用 DTO 隔离数据库实体与 API 契约，避免直接暴露表结构。本课还在「项目专属规格·实战·Web API + EF Core」中说明：最小 API、DbContext、内存数据库测试与工程实践。
+
+### 追问 2：使用 DTO 而不是直接暴露实体，主要好处是？
+
+**参考回答**：正确答案是「隔离数据库结构与 API 契约」，本课在「工程实践」中说明：用 DTO 隔离数据库实体与 API 契约，避免直接暴露表结构。DTO 让接口契约与表结构解耦，避免字段泄露与破坏性变更。本课还在「项目专属规格·实战·Web API + EF Core」中说明：最小 API、DbContext、内存数据库测试与工程实践。本课还在「零基础详解·ASP.NET Core 项目实战」中说明：知道 ValidateOnStart 的好处。
+
+### 追问 3：ASP.NET Core 中注册在依赖注入容器里的 DbContext 默认生命周期是？
+
+**参考回答**：Scoped 保证一次请求内共享同一上下文，避免跨请求状态与线程问题。其他选项：DbContext 默认是 Scoped（每请求一个），因为它不是线程安全的。针对「ASP.NET Core 中注册在依赖注入容器里…」，本课在「零基础详解·ASP.NET Core 项目实战」中说明：一个可交付的 ASP.NET Core 服务要具备：分层清晰、依赖注入规范、配置校验、统一错误处理、健康检查、测试、容器化。
+
+### 追问 4：在分层架构中，Repository 与 Service 的职责划分通常是？
+
+**参考回答**：正确答案是「Repository 封装数据访问细节」，本课在「零基础详解·ASP.NET Core 项目实战」中说明：能说出 Api、Core、Infrastructure 的职责。把数据访问与业务规则分开，测试时可以替换 Repository 而不依赖真实数据库。
+
+### 追问 5：创建资源成功后返回 201 Created 并结合 CreatedAtAction 的好处是？
+
+**参考回答**：正确答案是「既符合 REST 语义」，本课在「零基础详解·ASP.NET Core 项目实战」中说明：知道 ValidateOnStart 的好处。201 表示创建成功，Location 头让客户端知道下一步该请求哪个地址。本课还在「工程实践」中说明：加 UseExceptionHandler 统一错误响应，日志用 ILogger。
+
 ## English Overview
 
 **Title:** Project: Web API + EF Core
@@ -732,4 +776,3 @@ README.md
 > 本课主题：最小 API、DbContext、内存数据库测试与工程实践。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

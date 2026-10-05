@@ -488,6 +488,11 @@ struct ItemListView: View {
 - **判断依据**：正确答案是「nickname」，本课在「零基础详解：Swift 与 iOS 开发」中说明：避免 ! 强制解包：nickname! 在 nil 时会直接崩溃。本课示例中还能看到 `if let nickname {` 这样的用法，说明该关键字在本课代码中承担实际功能。
 - **迁移检查**：不看题干，用自己的话补全这句话，再与标准答案对照。
 
+### 补充考点 1：阅读「Swift 与 iOS 开发」的代码片段，下面哪项判断是正确的？
+
+- **正确判断**：if let 或 guard let
+- **判断依据**：正确答案是「if let 或 guard let」。这段代码来自「Swift 与 iOS 开发」的示例，判断时先看输入与输出，再检查条件、循环和边界。正确答案是「if let 或 guard let」，本课在「本课小结」中说明：iOS 开发的关键是值类型 + 可选类型 + ARC 内存管理：用 struct 与协议组织代码、用可选类型显式处理缺失、…在「Swift 与 iOS 开发」中，如果只改一个条件，输出通常会随之改变，因此不能脱离代码前提作答。
+
 ## 本课复习清单
 
 离开本课前，逐项确认：
@@ -506,6 +511,50 @@ struct ItemListView: View {
 | 已经能独立解释的考点 |  |
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
+
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `String?` | \| 可选类型 \| `String?` 表示可能为 nil，用 `if let`/`guard let` 解包 \| |
+| `if let` | \| 可选类型 \| `String?` 表示可能为 nil，用 `if let`/`guard let` 解包 \| |
+| `guard let` | \| 可选类型 \| `String?` 表示可能为 nil，用 `if let`/`guard let` 解包 \| |
+| `[weak self]` | \| 闭包 \| 尾随闭包语法简洁，注意用 `[weak self]` 避免循环引用 \| |
+| `throws` | \| 错误处理 \| `throws` + `try/catch`，或用 Result 类型 \| |
+| `try/catch` | \| 错误处理 \| `throws` + `try/catch`，或用 Result 类型 \| |
+| `async/await` | \| 并发 \| `async/await` + `actor` 保证数据隔离 \| |
+| `actor` | \| 并发 \| `async/await` + `actor` 保证数据隔离 \| |
+| `@State` | SwiftUI 要点：视图是 struct（轻量重建）；`@State` 管局部状态、`@Binding` 传递、`@Observable` 管共享模型；用 `List`/`LazyVStack` 做长列表懒加载。 |
+| `@Binding` | SwiftUI 要点：视图是 struct（轻量重建）；`@State` 管局部状态、`@Binding` 传递、`@Observable` 管共享模型；用 `List`/`LazyVStack` 做长列表懒加载。 |
+| `@Observable` | SwiftUI 要点：视图是 struct（轻量重建）；`@State` 管局部状态、`@Binding` 传递、`@Observable` 管共享模型；用 `List`/`LazyVStack` 做长列表懒加载。 |
+| `List` | SwiftUI 要点：视图是 struct（轻量重建）；`@State` 管局部状态、`@Binding` 传递、`@Observable` 管共享模型；用 `List`/`LazyVStack` 做长列表懒加载。 |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：Swift 中解包可选类型的安全写法是？
+
+**参考回答**：正确答案是「if let 或 guard let」，本课在「本课小结」中说明：iOS 开发的关键是值类型 + 可选类型 + ARC 内存管理：用 struct 与协议组织代码、用可选类型显式处理缺失、用 weak 打破循环引用。强制解包遇到 nil 会崩溃，应使用可选绑定。本课还在「零基础详解·Swift 与 iOS 开发」中说明：Swift 的核心特性是可选类型、值语义、协议。本课还在「零基础详解·Swift 与 iOS 开发」中说明：避免 ! 强制解包：nickname! 在 nil 时会直接崩溃。
+
+### 追问 2：闭包捕获 self 时为避免循环引用应使用？
+
+**参考回答**：正确答案是「[weak self]」，本课在「生命周期与内存管理」中说明：ARC 自动引用计数：强引用成环就泄漏，闭包捕获 self 时用 [weak self]。ARC 下强引用成环会内存泄漏，用 weak 打破环。本课还在「零基础详解·Swift 与 iOS 开发」中说明：规则：闭包被 self 持有，且闭包又捕获 self 时，必须用 [weak self] 或 [unowned self]。
+
+### 追问 3：SwiftUI 中管理共享模型状态的常用方式是？
+
+**参考回答**：正确答案是「@Observable 等状态包装器」，本课在「iOS 应用结构」中说明：@State 管局部状态、@Binding 传递、@Observable 管共享模型。用状态包装器驱动视图重建，配合单向数据流。本课还在「打包发布」中说明：签名依赖证书与描述文件（开发/分发/企业三类）。本课还在「打包发布」中说明：CI 上常用 fastlane 自动化构建与上传。
+
+### 追问 4：Swift 中 struct 与 class 的关键区别是？
+
+**参考回答**：正确答案是「struct 是值类型（复制语义）」，本课在「本课小结」中说明：iOS 开发的关键是值类型 + 可选类型 + ARC 内存管理：用 struct 与协议组织代码、用可选类型显式处理缺失、用 weak 打破循环引用。赋值或传参时 struct 会复制，class 传递的是同一个对象引用。本课还在「零基础详解·Swift 与 iOS 开发」中说明：知道 struct 与 class 在赋值时的不同。
+
+### 追问 5：guard let 与 if let 相比，最明显的特点是？
+
+**参考回答**：正确答案是「guard 的条件不满足时必须在当前作用域退出（return/throw 等）」，本课在「零基础详解·Swift 与 iOS 开发」中说明：能说出 if let 与 guard let 的差别。guard 用于「提前返回」，解包后的变量在后续作用域继续可用，能减少嵌套层级。本课还在「iOS 应用结构」中说明：SwiftUI 要点：视图是 struct（轻量重建）。本课还在「生命周期与内存管理」中说明：App 生命周期从 App/Scene 委托演进到 SwiftUI 的 scenePhase。
 
 ## English Overview
 
@@ -545,4 +594,3 @@ struct ItemListView: View {
 > 本课主题：可选类型、值类型、ARC 与 SwiftUI 状态。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

@@ -381,6 +381,11 @@ public class WordCount {
 - **判断依据**：正确答案是「ConcurrentHashMap、CopyOnWriteArrayList」，本课在「性能特征与并发容器」中说明：并发容器：ConcurrentHashMap（分段/CAS，读几乎无锁）、CopyOnWriteArrayList（写时复制，适合读多写极少）、BlockingQueue（生产者-消费者）。ArrayList 和 LinkedList 不是线程安全实现，多线程同时修改时需要外部同步。本课还在「零基础详解：List、Set、Map 怎么选」中说明：不可变集合能防止意外修改，适合当返回值或常量。
 - **迁移检查**：每个正确项各自成立的条件是什么？有没有互相依赖。
 
+### 补充考点 1：按照「集合框架与泛型」从概念到实践的讲解顺序排列下列主题。
+
+- **正确判断**：集合体系 → List → Set → Map
+- **判断依据**：在「集合框架与泛型」中，正确顺序是：1. 集合体系 → 2. List → 3. Set → 4. Map。「集合框架与泛型」先建立概念，再解释运行机制，随后进入代码与工程实践，最后处理失败路径。在「集合框架与泛型」里，如果把后一步放到前面，通常会缺少前一步产生的定义、输入或验证结果。本课围绕List/Set/Map 的选择、遍历方式、泛型与通配符。展开。
+
 ## 本课复习清单
 
 离开本课前，逐项确认：
@@ -398,6 +403,50 @@ public class WordCount {
 | 已经能独立解释的考点 |  |
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
+
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `ArrayList` | `ArrayList` 随机访问快，`LinkedList` 中间插删快但实际使用较少（缓存不友好）。 |
+| `LinkedList` | `ArrayList` 随机访问快，`LinkedList` 中间插删快但实际使用较少（缓存不友好）。 |
+| `new T[]` | 泛型在编译后会**类型擦除**，因此不能 `new T[]`，也不能对泛型做 `instanceof`。 |
+| `instanceof` | 泛型在编译后会**类型擦除**，因此不能 `new T[]`，也不能对泛型做 `instanceof`。 |
+| `new ArrayList<>(10000)` | 扩容机制**：ArrayList 默认容量 10，扩容为 1.5 倍；HashMap 默认 16、负载因子 0.75，扩容翻倍并 rehash。已知规模时预设容量（`new ArrayList<>(10000)`）可避免… |
+| `ConcurrentHashMap` | 并发容器**：`ConcurrentHashMap`（分段/CAS，读几乎无锁）、`CopyOnWriteArrayList`（写时复制，适合读多写极少）、`BlockingQueue`（生产者-消费者）。注意：`Col… |
+| `CopyOnWriteArrayList` | 并发容器**：`ConcurrentHashMap`（分段/CAS，读几乎无锁）、`CopyOnWriteArrayList`（写时复制，适合读多写极少）、`BlockingQueue`（生产者-消费者）。注意：`Col… |
+| `BlockingQueue` | 并发容器**：`ConcurrentHashMap`（分段/CAS，读几乎无锁）、`CopyOnWriteArrayList`（写时复制，适合读多写极少）、`BlockingQueue`（生产者-消费者）。注意：`Col… |
+| `Collections.synchronizedMap` | 并发容器**：`ConcurrentHashMap`（分段/CAS，读几乎无锁）、`CopyOnWriteArrayList`（写时复制，适合读多写极少）、`BlockingQueue`（生产者-消费者）。注意：`Col… |
+| `HashMap` | 日常组合：`ArrayList` + `HashMap` + `HashSet` 覆盖 90% 场景；需要排序用 `TreeMap`/`TreeSet`，需要线程安全用 `ConcurrentHashMap`。 |
+| `HashSet` | 日常组合：`ArrayList` + `HashMap` + `HashSet` 覆盖 90% 场景；需要排序用 `TreeMap`/`TreeSet`，需要线程安全用 `ConcurrentHashMap`。 |
+| `TreeMap` | 日常组合：`ArrayList` + `HashMap` + `HashSet` 覆盖 90% 场景；需要排序用 `TreeMap`/`TreeSet`，需要线程安全用 `ConcurrentHashMap`。 |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：不允许重复元素的集合是？
+
+**参考回答**：Set 保证元素唯一，HashSet 依赖 hashCode/equals，TreeSet 还会排序。其他选项：List 与数组允许重复，Queue 面向排队场景。针对「不允许重复元素的集合是，」，本课在「零基础详解·List、Set、Map 怎么选」中说明：Java 的集合框架解决三件事：有序列表（List）、去重集合（Set）、键值映射（Map）。本课还在「泛型」中说明：泛型在编译后会类型擦除，因此不能 new T[]，也不能对泛型做 instanceof。
+
+### 追问 2：以下哪组集合类型更适合多线程并发访问？
+
+**参考回答**：ConcurrentHashMap 和 CopyOnWriteArrayList 专为并发场景设计，分别适合高并发键值访问和读多写少的列表。普通 HashMap、ArrayList、LinkedList、HashSet、TreeMap 和 ArrayDeque 都不是线程安全容器，多线程修改时可能出现数据损坏或抛异常。针对「以下哪组集合类型更适合多线程并发访问，」，本课在「泛型」中说明：泛型在编译后会类型擦除，因此不能 new T[]，也不能对泛型做 instanceof。
+
+### 追问 3：List.of(...) 返回的列表是？
+
+**参考回答**：List.of 创建不可变列表，添加或删除元素会抛 UnsupportedOperationException。其他选项：List.of 返回不可变列表，add 会抛 UnsupportedOperationException。针对「List.of(...) 返回的列表是，」，本课在「本课小结」中说明：需要排序用 TreeMap/TreeSet，需要线程安全用 ConcurrentHashMap。
+
+### 追问 4：ArrayList 与 LinkedList 的选择依据是？
+
+**参考回答**：正确答案是「随机访问多用 ArrayList」，本课在「List」中说明：ArrayList 随机访问快，LinkedList 中间插删快但实际使用较少（缓存不友好）。ArrayList 是数组实现，按下标访问 O(1)。本课还在「零基础详解·List、Set、Map 怎么选」中说明：Java 的集合框架解决三件事：有序列表（List）、去重集合（Set）、键值映射（Map）。本课还在「性能特征与并发容器」中说明：ConcurrentHashMap 不允许 null 键值。
+
+### 追问 5：下列哪些集合实现更适合高并发读写场景？请选择所有正确答案。
+
+**参考回答**：正确答案是「ConcurrentHashMap、CopyOnWriteArrayList」，本课在「性能特征与并发容器」中说明：并发容器：ConcurrentHashMap（分段/CAS，读几乎无锁）、CopyOnWriteArrayList（写时复制，适合读多写极少）、BlockingQueue（生产者-消费者）。ArrayList 和 LinkedList 不是线程安全实现，多线程同时修改时需要外部同步。本课还在「零基础详解·List、Set、Map 怎么选」中说明：不可变集合能防止意外修改，适合当返回值或常量。
 
 ## English Overview
 
@@ -437,4 +486,3 @@ public class WordCount {
 > 本课主题：List/Set/Map 的选择、遍历方式、泛型与通配符。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

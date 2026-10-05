@@ -563,6 +563,50 @@ cppcheck --enable=warning,performance src
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `include/` | 约定：`include/` 放对外头文件，`src/` 放实现，`tests/` 放测试，避免头文件与源文件混在一起。 |
+| `src/` | 约定：`include/` 放对外头文件，`src/` 放实现，`tests/` 放测试，避免头文件与源文件混在一起。 |
+| `tests/` | 约定：`include/` 放对外头文件，`src/` 放实现，`tests/` 放测试，避免头文件与源文件混在一起。 |
+| `-Werror` | 编译警告全开并当作错误（`-Werror`）。 |
+| `cmake --build` | CI 中跑 `cmake --build` + `ctest` + sanitizer。 |
+| `ctest` | CI 中跑 `cmake --build` + `ctest` + sanitizer。 |
+| `foo.h` | \| 一个类一个文件对 \| `foo.h` + `foo.cpp`，便于定位 \| |
+| `foo.cpp` | \| 一个类一个文件对 \| `foo.h` + `foo.cpp`，便于定位 \| |
+| `main.cpp` | \| 入口只有一处 \| `main.cpp` 只做参数解析与调用 \| |
+| `build/` | \| 构建目录不入库 \| `build/` 写进 `.gitignore` \| |
+| `.gitignore` | \| 构建目录不入库 \| `build/` 写进 `.gitignore` \| |
+| `compile_commands.json` | \| 静态检查 \| clang-tidy + `compile_commands.json` \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：C++ 项目中对外的头文件通常放在？
+
+**参考回答**：include 放对外头文件，src 放实现，职责清晰也方便安装导出。其他选项：include/ 放对外头文件，src/ 放实现，tests/ 放测试，build/ 是构建产物并应加入 .gitignore。针对「C++ 项目中对外的头文件通常放在，」，本课在「项目结构」中说明：约定：include/ 放对外头文件，src/ 放实现，tests/ 放测试，避免头文件与源文件混在一起。本课还在「零基础详解·C++ 项目实战骨架」中说明：头文件与实现分离：include/ 暴露给使用方，src/ 只放实现。
+
+### 追问 2：CTest 的作用是？
+
+**参考回答**：正确答案是「运行并管理测试」，本课在「本课小结」中说明：多文件 + CMake + 测试 + sanitizer 是现代 C++ 项目的最小骨架。enabletesting + addtest 后可用 ctest 一键运行测试。本课还在「工程习惯」中说明：CI 中跑 cmake --build + ctest + sanitizer。本课还在「零基础详解·C++ 项目实战骨架」中说明：把 .clang-format 与 .clang-tidy 提交到仓库，团队格式化结果才会一致。
+
+### 追问 3：在 CMake 项目中开启 AddressSanitizer 和 UndefinedBehaviorSanitizer，最合理的做法是？
+
+**参考回答**：正确答案是「在 Debug/CI 构建中加入 -fsanitize=address,undefined 并链接 sanitizer 运行时」，本课在「本课小结」中说明：多文件 + CMake + 测试 + sanitizer 是现代 C++ 项目的最小骨架。Sanitizer 适合在开发、测试和 CI 构建中启用，它需要编译与链接阶段同时加入对应参数。本课还在「工程习惯」中说明：CI 中跑 cmake --build + ctest + sanitizer。
+
+### 追问 4：CMake 中 target_link_libraries(app PRIVATE fmt) 的作用是？
+
+**参考回答**：正确答案是「给 app 目标声明需要链接的库及其传递属性」，本课在「项目专属规格·实战·CMake 多文件项目」中说明：include/src 分层、静态库、CTest 与 sanitizer。基于目标（target）的写法会携带 include 路径等使用要求，比全局变量更清晰。本课还在「零基础详解·C++ 项目实战骨架」中说明：一个可交付的 C++ 项目要有：CMake 构建、依赖管理、测试、静态检查、Sanitizer、CI。
+
+### 追问 5：把单元测试接入 CI 的主要价值是？
+
+**参考回答**：正确答案是「每次提交自动验证，尽早发现回归」，本课在「工程习惯」中说明：Debug 与 Release 分开构建目录。CI 上跑 ctest 能保证「测试在别人机器上也通过」，是团队协作的质量底线。本课还在「项目结构」中说明：约定：include/ 放对外头文件，src/ 放实现，tests/ 放测试，避免头文件与源文件混在一起。本课还在「零基础详解·C++ 项目实战骨架」中说明：一个可交付的 C++ 项目要有：CMake 构建、依赖管理、测试、静态检查、Sanitizer、CI。
+
 ## English Overview
 
 **Title:** Project: CMake Layout
@@ -759,4 +803,3 @@ README.md
 > 本课主题：include/src 分层、静态库、CTest 与 sanitizer。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

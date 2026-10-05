@@ -390,6 +390,50 @@ public class Calculator {
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `.class` | \| JVM \| 字节码执行引擎 \| 运行 `.class` 文件 \| |
+| `，运行时用全限定名` | 编译带包名的代码：`javac -d out src/com/example/app/Main.java`，运行时用全限定名 `java -cp out com.example.app.Main`。 |
+| `的每个部分都有含义：` | `public static void main(String[] args)` 的每个部分都有含义：`public` 让 JVM 能访问、`static` 无需实例化、`void` 无返回值、`String[] arg… |
+| `让 JVM 能访问、` | `public static void main(String[] args)` 的每个部分都有含义：`public` 让 JVM 能访问、`static` 无需实例化、`void` 无返回值、`String[] arg… |
+| `无需实例化、` | `public static void main(String[] args)` 的每个部分都有含义：`public` 让 JVM 能访问、`static` 无需实例化、`void` 无返回值、`String[] arg… |
+| `无返回值、` | `public static void main(String[] args)` 的每个部分都有含义：`public` 让 JVM 能访问、`static` 无需实例化、`void` 无返回值、`String[] arg… |
+| `-Xms/-Xmx` | 常用参数：`-Xms/-Xmx` 设初始与最大堆（生产建议设成相同值，避免动态扩缩）；`-Xmn` 新生代大小；`-XX:MetaspaceSize` 元空间；`-XX:+HeapDumpOnOutOfMemoryErr… |
+| `-Xmn` | 常用参数：`-Xms/-Xmx` 设初始与最大堆（生产建议设成相同值，避免动态扩缩）；`-Xmn` 新生代大小；`-XX:MetaspaceSize` 元空间；`-XX:+HeapDumpOnOutOfMemoryErr… |
+| `-XX:MetaspaceSize` | 常用参数：`-Xms/-Xmx` 设初始与最大堆（生产建议设成相同值，避免动态扩缩）；`-Xmn` 新生代大小；`-XX:MetaspaceSize` 元空间；`-XX:+HeapDumpOnOutOfMemoryErr… |
+| `-XX:+HeapDumpOnOutOfMemoryError` | 常用参数：`-Xms/-Xmx` 设初始与最大堆（生产建议设成相同值，避免动态扩缩）；`-Xmn` 新生代大小；`-XX:MetaspaceSize` 元空间；`-XX:+HeapDumpOnOutOfMemoryErr… |
+| `-XX:MaxGCPauseMillis` | 常用参数：`-Xms/-Xmx` 设初始与最大堆（生产建议设成相同值，避免动态扩缩）；`-Xmn` 新生代大小；`-XX:MetaspaceSize` 元空间；`-XX:+HeapDumpOnOutOfMemoryErr… |
+| `-Xlog:gc*` | 常用参数：`-Xms/-Xmx` 设初始与最大堆（生产建议设成相同值，避免动态扩缩）；`-Xmn` 新生代大小；`-XX:MetaspaceSize` 元空间；`-XX:+HeapDumpOnOutOfMemoryErr… |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：开发并编译 Java 程序需要安装？
+
+**参考回答**：JDK 包含 JRE、编译器 javac 与其他开发工具。其他选项：JRE 只能运行程序，JVM 是运行时本身，操作系统并不自带编译器。针对「开发并编译 Java 程序需要安装，」，本课在「本课小结」中说明：JDK 提供工具、JVM 负责执行、字节码保证跨平台。本课还在「零基础详解·Java 程序为什么既要编译又要解释」中说明：Java 先把源码编译成字节码（.class），再由 JVM 在运行时翻译成机器指令。
+
+### 追问 2：public class Hello 的源文件名必须是？
+
+**参考回答**：正确答案是「Hello.java」，本课在「零基础详解·Java 程序为什么既要编译又要解释」中说明：能独立用 javac 和 java 跑起来一个带包名的类。public 类的文件名必须与类名完全一致，包括大小写。本课还在「零基础详解·Java 程序为什么既要编译又要解释」中说明：Java 先把源码编译成字节码（.class），再由 JVM 在运行时翻译成机器指令。本课还在「零基础详解·Java 程序为什么既要编译又要解释」中说明：这叫「一次编写，到处运行」：只要有对应平台的 JVM，同一份字节码就能跑。
+
+### 追问 3：Java 实现「一次编写，到处运行」的关键是？
+
+**参考回答**：正确答案是「编译成字节码」，本课在「JDK、JRE 与 JVM」中说明：Java 的口号是「一次编写，到处运行」：源码编译成字节码，由各平台的 JVM 执行并负责内存管理与即时编译（JIT）。源码编译成与平台无关的字节码，具体执行由该平台的 JVM 负责。本课还在「零基础详解·Java 程序为什么既要编译又要解释」中说明：这叫「一次编写，到处运行」：只要有对应平台的 JVM，同一份字节码就能跑。本课还在「包与类路径」中说明：编译带包名的代码：javac -d out src/com/example/app/Main.java，运行时用全限定名 java -cp out com.example.app.Main。
+
+### 追问 4：javac 与 java 两个命令的分工是？
+
+**参考回答**：正确答案是「javac 把源码编译成 .class 字节码」，本课在「JDK、JRE 与 JVM」中说明：Java 的口号是「一次编写，到处运行」：源码编译成字节码，由各平台的 JVM 执行并负责内存管理与即时编译（JIT）。Maven/Gradle 只是把这两步以及依赖管理自动化了。本课还在「包与类路径」中说明：编译带包名的代码：javac -d out src/com/example/app/Main.java，运行时用全限定名 java -cp out com.example.app.Main。
+
+### 追问 5：Java 程序入口方法的正确签名是？
+
+**参考回答**：正确答案是「public static void main(String[] args)」，本课在「程序生命周期」中说明：public static void main(String[] args) 的每个部分都有含义：public 让 JVM 能访问、static 无需实例化、void 无返回值、String[] args 接收命令行参数。JVM 需要 public + static 才能在未创建对象时按约定调用入口方法。本课还在「零基础详解·Java 程序为什么既要编译又要解释」中说明：能独立用 javac 和 java 跑起来一个带包名的类。
+
 ## English Overview
 
 **Title:** JVM & Environment
@@ -510,4 +554,3 @@ public class Calculator {
 > 本课主题：JDK/JRE/JVM 区别、编译运行、包与类路径、JIT 与 GC。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

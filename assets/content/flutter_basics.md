@@ -423,6 +423,11 @@ class ItemList extends StatelessWidget {
 - **判断依据**：正确答案是「LayoutBuilder」，这道题在问补全代码：Flutter基础与Widget树示例中，…填入____，`return____(`，判断时要把题干限定的输入、边界与目标逐项对齐。本课示例中还能看到 `return LayoutBuilder(` 这样的用法，说明该关键字在本课代码中承担实际功能。
 - **迁移检查**：如果填成相近的另一个函数或关键字，程序会在哪一步出错？
 
+### 补充考点 1：关于「Flutter 基础与 Widget 树」，下列哪些说法是正确的？（多选）
+
+- **正确判断**：ListView.builder 懒加载；约束向下、尺寸向上、父决定位置
+- **判断依据**：正确答案是「ListView.builder 懒加载；约束向下、尺寸向上、父决定位置」。本课的两个判断点可以互相印证：正确答案是「约束向下、尺寸向上、父决定位置」，本课在「零基础详解·Widget、约束与布局」中说明：约束向下传递、尺寸向上汇报、父节点决定子节点位置。理解它才能解释 RenderF…；Widget 分类、布局三原则与常用布局对照。。在「Flutter 基础与 Widget 树」中，多选时不能只凭一个关键词选答案，要逐项核对题干限定的对象和边界。
+
 ## 本课复习清单
 
 离开本课前，逐项确认：
@@ -441,6 +446,50 @@ class ItemList extends StatelessWidget {
 | 已经能独立解释的考点 |  |
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
+
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `flutter run` | 调试技巧：`flutter run` 时按 `p` 打开布局检查器看约束；用 `debugPrint` 代替 print（长日志不被截断）；`flutter analyze` 进 CI 防低级错误。 |
+| `打开布局检查器看约束；用` | 调试技巧：`flutter run` 时按 `p` 打开布局检查器看约束；用 `debugPrint` 代替 print（长日志不被截断）；`flutter analyze` 进 CI 防低级错误。 |
+| `代替 print（长日志不被截断）；` | 调试技巧：`flutter run` 时按 `p` 打开布局检查器看约束；用 `debugPrint` 代替 print（长日志不被截断）；`flutter analyze` 进 CI 防低级错误。 |
+| `StatelessWidget` | \| 无状态 \| 不可变、由父级控制 \| `StatelessWidget`、`Text`、`Icon` \| |
+| `Text` | \| 无状态 \| 不可变、由父级控制 \| `StatelessWidget`、`Text`、`Icon` \| |
+| `Icon` | \| 无状态 \| 不可变、由父级控制 \| `StatelessWidget`、`Text`、`Icon` \| |
+| `StatefulWidget` | \| 有状态 \| 自身持有并修改状态 \| `StatefulWidget`、`TextField`、`AnimationController` \| |
+| `TextField` | \| 有状态 \| 自身持有并修改状态 \| `StatefulWidget`、`TextField`、`AnimationController` \| |
+| `AnimationController` | \| 有状态 \| 自身持有并修改状态 \| `StatefulWidget`、`TextField`、`AnimationController` \| |
+| `Row` | \| 布局 \| 控制子组件位置与尺寸 \| `Row`、`Column`、`Stack`、`Wrap` \| |
+| `Column` | \| 布局 \| 控制子组件位置与尺寸 \| `Row`、`Column`、`Stack`、`Wrap` \| |
+| `Stack` | \| 布局 \| 控制子组件位置与尺寸 \| `Row`、`Column`、`Stack`、`Wrap` \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：Flutter 布局的三条原则是？
+
+**参考回答**：正确答案是「约束向下、尺寸向上、父决定位置」，本课在「零基础详解·Widget、约束与布局」中说明：约束向下传递、尺寸向上汇报、父节点决定子节点位置。理解它才能解释 RenderFlex overflow 等报错。本课还在「常用 Widget 代码骨架」中说明：调试技巧：flutter run 时按 p 打开布局检查器看约束。本课还在「常用 Widget 代码骨架」中说明：flutter analyze 进 CI 防低级错误。
+
+### 追问 2：长列表应该使用？
+
+**参考回答**：正确答案是「ListView.builder 懒加载」，本课在「零基础详解·Widget、约束与布局」中说明：能说出长列表为什么必须用 builder。builder 只构建可见项，避免一次性创建大量 Widget。，本课在「本课小结」中说明：掌握布局三原则与 builder 懒加载，就能避免大部分性能与溢出问题。本课还在「常用 Widget 代码骨架」中说明：调试技巧：flutter run 时按 p 打开布局检查器看约束。
+
+### 追问 3：Flutter 在各平台 UI 高度一致的原因是？
+
+**参考回答**：正确答案是「自带渲染引擎直接绘制」，本课在「与 Android/iOS 的差异」中说明：Flutter 自带渲染引擎（Skia/Impeller）直接绘制，不依赖原生控件，因此跨平台 UI 完全一致。代价是包体较大，部分能力需插件桥接。本课还在「与 Android/iOS 的差异」中说明：代价是包体较大、需要自带字体与图标，且极少数原生控件（如地图、相机）需通过插件桥接。本课还在「一切皆 Widget」中说明：Widget 是不可变的配置描述，真正的渲染由 Element 与 RenderObject 完成，因此重建 Widget 很廉价，性能瓶颈通常在布局与绘制。
+
+### 追问 4：让 Row 中的子项按比例占满剩余宽度，应该使用？
+
+**参考回答**：正确答案是「Expanded(flex: n)」，本课在「布局三原则」中说明：理解这三点就能解释绝大多数 "RenderFlex overflowed" 报错：Row/Column 在主轴方向需要有限空间，子项应使用 Expanded/Flexible 或可滚动的 ListView。Expanded 会按 flex 比例瓜分剩余空间。本课还在「本课小结」中说明：Flutter 的核心心智模型是约束驱动的 Widget 树 + 不可变描述 + 状态驱动重建。
+
+### 追问 5：热重载（hot reload）与热重启（hot restart）的关键区别是？
+
+**参考回答**：正确答案是「热重载保留当前 State」，本课在「本课小结」中说明：掌握布局三原则与 builder 懒加载，就能避免大部分性能与溢出问题。热重载只重新执行 build，State 与页面栈保留。本课还在「零基础详解·Widget、约束与布局」中说明：看到 RenderFlex overflowed 就是子节点要的空间超过了父节点给的约束。本课还在「零基础详解·Widget、约束与布局」中说明：知道 Expanded 与 Flexible 的区别。
 
 ## English Overview
 
@@ -480,4 +529,3 @@ class ItemList extends StatelessWidget {
 > 本课主题：Widget 分类、布局三原则与常用布局对照。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

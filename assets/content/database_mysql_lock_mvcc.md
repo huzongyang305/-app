@@ -261,6 +261,50 @@ SELECT @@transaction_isolation;
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `SHOW ENGINE INNODB STATUS` | 查看当前事务与锁等待：`SHOW ENGINE INNODB STATUS`、performance_schema.data_locks / data_waits。 |
+| `SET n = n + 1` | 高并发计数用原子更新（`SET n = n + 1`）而不是先查后写。 |
+| `t(id PK, name, age)` | 以 InnoDB 可重复读为例，表 `t(id PK, name, age)`，`age` 上无索引： |
+| `age` | 以 InnoDB 可重复读为例，表 `t(id PK, name, age)`，`age` 上无索引： |
+| `SELECT * FROM t WHERE id = 5` | \| `SELECT * FROM t WHERE id = 5` \| 记录锁（仅 id=5 行） \| 走主键，锁范围最小 \| |
+| `UPDATE t SET name='x' WHERE id = 5` | \| `UPDATE t SET name='x' WHERE id = 5` \| 记录锁 \| 同上，未命中则可能加间隙锁 \| |
+| `UPDATE t SET name='x' WHERE age = 20` | \| `UPDATE t SET name='x' WHERE age = 20` \| **全表扫描 + 大量临键锁** \| age 无索引，几乎锁全表——线上事故高发点 \| |
+| `LATEST DETECTED DEADLOCK` | `SHOW ENGINE INNODB STATUS` 查看 `LATEST DETECTED DEADLOCK` 段落，能直接看到两个事务的 SQL、持有的锁与等待的锁。 |
+| `information_schema.innodb_trx` | 用 `information_schema.innodb_trx` 找长事务（trx_started 早、trx_rows_locked 多）。 |
+| `SELECT ... FOR UPDATE` | 修复手段：统一加锁顺序、缩小事务范围、给查询补索引、必要时用 `SELECT ... FOR UPDATE` 明确锁定顺序。 |
+| `WHERE id = 1 FOR UPDATE` | \| 记录锁（Record Lock） \| 单行索引记录 \| 锁住某一行 \| `WHERE id = 1 FOR UPDATE` \| |
+| `INSERT` | \| 插入意向锁 \| 间隙内 \| 插入前声明意图 \| `INSERT` 与间隙锁冲突时 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：InnoDB 的行锁加在什么之上？
+
+**参考回答**：查询未走索引时行锁会退化，导致锁大量记录。其他选项：行锁加在索引记录上。针对「InnoDB 的行锁加在什么之上，」，本课在「本课小结」中说明：记住「行锁加在索引上」与「RC/RR 的 Read View 差异」，多数锁问题都能解释。本课还在「InnoDB 的锁类型」中说明：关键点：InnoDB 的行锁是加在索引上的。本课还在「排查锁问题」中说明：定位长事务：查询 informationschema.innodbtrx，关注 trxstarted 与 trxrowslocked。
+
+### 追问 2：MVCC 的主要收益是？
+
+**参考回答**：通过 undo log 与 Read View 读取历史版本。其他选项：MVCC 让普通读不加锁、读写互不阻塞，从而提升并发。针对「MVCC 的主要收益是，」，本课在「为什么需要锁与多版本」中说明：InnoDB 用锁保证写写互斥，用 MVCC（多版本并发控制）让读写尽量不互相阻塞——读不加锁，写不阻塞读。本课还在「死锁排查步骤」中说明：用 informationschema.innodbtrx 找长事务（trxstarted 早、trxrowslocked 多）。
+
+### 追问 3：可重复读（RR）下 Read View 何时生成？
+
+**参考回答**：正确答案是「事务第一次查询时」，本课在「MVCC 的实现」中说明：可重复读（RR）在事务第一次查询时生成并沿用，因此同一事务内多次读结果一致。因此同一事务内多次快照读结果一致。本课还在「MVCC 的实现」中说明：读已提交（RC）每次查询都生成新的 Read View。本课还在「快照读与当前读」中说明：RR 下快照读避免了不可重复读，但当前读仍可能看到其他事务已提交的新数据，这也是「幻读」讨论的焦点：InnoDB 用间隙锁在当前读场景下阻止区间插入。
+
+### 追问 4：InnoDB 间隙锁（gap lock）的作用是？
+
+**参考回答**：间隙锁只在可重复读级别生效，会降低并发并增加死锁概率。其他选项：间隙锁锁住索引区间以阻止插入，从而抑制幻读。针对「InnoDB 间隙锁（gap lock）的作用是，」，本课在「排查锁问题」中说明：定位长事务：查询 informationschema.innodbtrx，关注 trxstarted 与 trxrowslocked。本课还在「快照读与当前读」中说明：RR 下快照读避免了不可重复读，但当前读仍可能看到其他事务已提交的新数据，这也是「幻读」讨论的焦点：InnoDB 用间隙锁在当前读场景下阻止区间插入。
+
+### 追问 5：快照读与当前读的区别是？
+
+**参考回答**：正确答案是「快照读读 MVCC 历史版本（普通 SELECT），当前读读最新版本并加锁（FOR UPDATE / UPDATE）」，本课在「为什么需要锁与多版本」中说明：InnoDB 用锁保证写写互斥，用 MVCC（多版本并发控制）让读写尽量不互相阻塞——读不加锁，写不阻塞读。理解两者差异才能解释「同一事务里读到旧值」这类现象。本课还在「MVCC 的实现」中说明：undo log 保存历史版本，通过回滚指针串成版本链。
+
 ## English Overview
 
 **Title:** MySQL Locks & MVCC
@@ -299,4 +343,3 @@ SELECT @@transaction_isolation;
 > 本课主题：行锁/间隙锁、undo log 与 Read View。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

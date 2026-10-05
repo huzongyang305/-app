@@ -316,6 +316,50 @@ body {
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `box-sizing: border-box` | 全局 `box-sizing: border-box` 与 CSS 变量（颜色、间距、圆角）。 |
+| `justify-content: space-between` | 导航用 Flex（`justify-content: space-between`），移动端折叠为汉堡菜单（可用 `<details>` 或 checkbox hack）。 |
+| `<details>` | 导航用 Flex（`justify-content: space-between`），移动端折叠为汉堡菜单（可用 `<details>` 或 checkbox hack）。 |
+| `+` | 特性卡片用 Grid：`repeat(auto-fill, minmax(260px, 1fr))` + `gap`。 |
+| `clamp()` | Hero 用 `clamp()` 控制字号，避免小屏溢出。 |
+| `prefers-color-scheme` | 用 `prefers-color-scheme` 覆盖变量实现深色主题；用 `prefers-reduced-motion` 关闭动画；CTA 按钮加 `:hover`/`:focus-visible` 状态反馈。动画只… |
+| `prefers-reduced-motion` | 用 `prefers-color-scheme` 覆盖变量实现深色主题；用 `prefers-reduced-motion` 关闭动画；CTA 按钮加 `:hover`/`:focus-visible` 状态反馈。动画只… |
+| `:hover` | 用 `prefers-color-scheme` 覆盖变量实现深色主题；用 `prefers-reduced-motion` 关闭动画；CTA 按钮加 `:hover`/`:focus-visible` 状态反馈。动画只… |
+| `:focus-visible` | 用 `prefers-color-scheme` 覆盖变量实现深色主题；用 `prefers-reduced-motion` 关闭动画；CTA 按钮加 `:hover`/`:focus-visible` 状态反馈。动画只… |
+| `header` | \| 页头 \| `header` \| 品牌、主导航、语言切换 \| |
+| `main` | \| 主体内容 \| `main` \| 唯一，包含各 section \| |
+| `section` | \| 特性区 \| `section` \| 每块有标题与简短说明 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：移动优先的写法是？
+
+**参考回答**：正确答案是「先写小屏样式」，本课在「目标与验收」中说明：用纯 HTML + CSS（不依赖框架）做一个产品落地页，要求：语义化结构、移动优先响应式、深色模式、可访问性达标、无布局抖动（CLS < 0.1）。移动优先能减少覆盖，且默认适配更差的设备。本课还在「本课小结」中说明：这个实战把 语义化 HTML + 盒模型 + Flex/Grid + 响应式 + 变量主题 串起来。本课还在「布局要点」中说明：导航用 Flex（justify-content: space-between），移动端折叠为汉堡菜单（可用 <details> 或 checkbox hack）。
+
+### 追问 2：特性卡片网格推荐用？
+
+**参考回答**：正确答案是「Grid 配 auto-fill 与 minmax」，本课在「目标与验收」中说明：用纯 HTML + CSS（不依赖框架）做一个产品落地页，要求：语义化结构、移动优先响应式、深色模式、可访问性达标、无布局抖动（CLS < 0.1）。列数随容器自适应，无需多个断点。本课还在「布局要点」中说明：特性卡片用 Grid：repeat(auto-fill, minmax(260px, 1fr)) + gap。
+
+### 追问 3：为防止累积布局偏移（CLS），图片应该？
+
+**参考回答**：正确答案是「同时设 width/height 或用 aspect-ratio 占位」，本课在「本课小结」中说明：这个实战把 语义化 HTML + 盒模型 + Flex/Grid + 响应式 + 变量主题 串起来。预留尺寸可避免加载完成后内容跳动。本课还在「项目专属规格·实战·响应式落地页」中说明：语义结构、Flex/Grid 布局、深色模式与质量检查。本课还在「结构规划」中说明：所有图片写 alt，所有交互元素可键盘到达。
+
+### 追问 4：想让页面跟随系统深色模式，应该用哪个媒体查询？
+
+**参考回答**：prefers-color-scheme: dark 可读取系统主题偏好，据此覆盖 CSS 变量实现深色模式。其他选项：min-width 控制断点，print 针对打印，orientation（仅部分场景成立） 针对横竖屏。针对「想让页面跟随系统深色模式，应该用哪个媒体查询，」，本课在「布局要点」中说明：定价表在小屏堆叠、大屏三列（媒体查询或 Grid 自适应）。本课还在「深色模式与动效」中说明：用 prefers-color-scheme 覆盖变量实现深色主题。
+
+### 追问 5：Lighthouse / axe 这类工具在项目中的主要用途是？
+
+**参考回答**：正确答案是「自动检测性能」，本课在「交付与自测流程」中说明：交付物建议：单一 HTML 文件或 index.html + styles.css 两文件结构、一份 README 说明断点与变量约定、三张不同宽度的截图。它们给出可执行的审计报告（对比度、语义、加载指标），适合接入 CI 做回归。本课还在「布局要点」中说明：全局 box-sizing: border-box 与 CSS 变量（颜色、间距、圆角）。
+
 ## English Overview
 
 **Title:** Project: Responsive Landing Page

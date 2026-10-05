@@ -274,6 +274,11 @@
 - **判断依据**：正确答案是「minmax」，本课在「响应式」中说明：优先用流式布局（%、fr、minmax、clamp）而非写多套断点。本课还在「常见坑」中说明：用 float 做布局（应用 Flex/Grid）。本课还在「布局问题的定位方法」中说明：用 outline: 1px solid red 快速定位溢出元素（比 border 不影响布局）。
 - **迁移检查**：把答案换成另一种等价写法，是否仍然正确？说明依据。
 
+### 补充考点 1：按照「CSS 布局：Flex、Grid 与响应式」从概念到实践的讲解顺序排列下列主题。
+
+- **正确判断**：Flexbox：一维布局 → Grid：二维布局 → 定位与层叠上下文 → 响应式
+- **判断依据**：在「CSS 布局：Flex、Grid 与响应式」中，正确顺序是：1. Flexbox：一维布局 → 2. Grid：二维布局 → 3. 定位与层叠上下文 → 4. 响应式。「CSS 布局：Flex、Grid 与响应式」先建立概念，再解释运行机制，随后进入代码与工程实践，最后处理失败路径。在「CSS 布局：Flex、Grid 与响应式」里，如果把后一步放到前面，通常会缺少前一步产生的定义、输入或验证结果。
+
 ## 本课复习清单
 
 离开本课前，逐项确认：
@@ -292,6 +297,50 @@
 | 已经能独立解释的考点 |  |
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
+
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `display: flex` | \| `display: flex` \| 开启弹性布局 \| |
+| `flex-direction` | \| `flex-direction` \| 主轴方向（row/column） \| |
+| `justify-content` | \| `justify-content` \| 主轴对齐（center/space-between） \| |
+| `align-items` | \| `align-items` \| 交叉轴对齐 \| |
+| `flex: 1` | \| `flex: 1` \| 可伸缩占据剩余空间 \| |
+| `gap` | \| `gap` \| 子项间距（不再用 margin 拼） \| |
+| `一行实现响应式卡片网格；` | 适用：整页骨架、卡片网格、对齐复杂的表单。`grid-template-columns: repeat(auto-fill, minmax(280px, 1fr))` 一行实现响应式卡片网格；`grid-template… |
+| `z-index` | `z-index` 只在定位元素或层叠上下文中生效；父元素创建了层叠上下文（transform、opacity < 1、filter）会限制子元素层级的比较范围。 |
+| `@media (min-width: 768px)` | 移动优先：先写小屏样式，再用 `@media (min-width: 768px)` 增强。 |
+| `clamp(1rem, 2.5vw, 1.5rem)` | `clamp(1rem, 2.5vw, 1.5rem)` 实现字号平滑缩放。 |
+| `@container` | 用容器查询 `@container` 让组件按自身宽度适配，而不是按视口。 |
+| `box-sizing: border-box` | 忘记 `box-sizing: border-box` 导致宽度计算出错。 |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：导航栏、按钮组这类一维排列优先用？
+
+**参考回答**：正确答案是「Flexbox」，本课在「本课小结」中说明：布局选择口诀：一维用 Flex、二维用 Grid、悬浮用定位、适配用响应式。Flex 处理一维对齐与分配剩余空间最简单。本课还在「Grid·二维布局」中说明：grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) 一行实现响应式卡片网格。本课还在「响应式」中说明：优先用流式布局（%、fr、minmax、clamp）而非写多套断点。
+
+### 追问 2：一行实现响应式卡片网格的写法是？
+
+**参考回答**：正确答案是「Grid 配 repeat(auto-fill, minmax(280px, 1fr))」，本课在「Grid·二维布局」中说明：grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) 一行实现响应式卡片网格。列数随容器宽度自动变化，无需写多套断点。本课还在「Grid·二维布局」中说明：适用：整页骨架、卡片网格、对齐复杂的表单。
+
+### 追问 3：做动画时应优先修改哪些属性？
+
+**参考回答**：正确答案是「transform 和 opacity」，本课在「定位与层叠上下文」中说明：父元素创建了层叠上下文（transform、opacity < 1、filter）会限制子元素层级的比较范围。它们只触发合成，避免回流与重绘。本课还在「本课小结」中说明：布局选择口诀：一维用 Flex、二维用 Grid、悬浮用定位、适配用响应式。本课还在「响应式」中说明：移动优先：先写小屏样式，再用 @media (min-width: 768px) 增强。
+
+### 追问 4：position: absolute 的元素相对于谁定位？
+
+**参考回答**：正确答案是「最近的已定位祖先（position 不为 static）」，本课在「布局问题的定位方法」中说明：调试手段：浏览器 DevTools 的盒子高亮能直接看到 padding/border/margin。找不到已定位祖先时才回退到初始包含块，所以父元素常设 position: relative。本课还在「定位与层叠上下文」中说明：z-index 只在定位元素或层叠上下文中生效。本课还在「布局问题的定位方法」中说明：用 outline: 1px solid red 快速定位溢出元素（比 border 不影响布局）。
+
+### 追问 5：Flex/Grid 中 gap 相比用 margin 控制间距的优势是？
+
+**参考回答**：正确答案是「只作用于项目之间」，本课在「定位与层叠上下文」中说明：父元素创建了层叠上下文（transform、opacity < 1、filter）会限制子元素层级的比较范围。gap 只计算项目之间的间隔，省去 :last-child 之类的边界处理。本课还在「Grid·二维布局」中说明：grid-template-areas 让页面骨架像画图一样可读。本课还在「布局问题的定位方法」中说明：调试手段：浏览器 DevTools 的盒子高亮能直接看到 padding/border/margin。
 
 ## English Overview
 
@@ -331,4 +380,3 @@
 > 本课主题：一维 Flex、二维 Grid、定位与移动优先响应式。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

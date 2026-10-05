@@ -92,6 +92,7 @@ const List<LearningPath> learningPaths = <LearningPath>[
     titleKey: 'pathAiEngineer',
     subtitleKey: 'pathAiEngineerSub',
     icon: Icons.psychology,
+    categoryIds: <String>['ai'],
     lessonIds: <String>[
       'ai_basics',
       'ml_fundamentals',
@@ -221,6 +222,44 @@ const List<LearningPath> learningPaths = <LearningPath>[
     subtitleKey: 'pathDevopsPlatformSub',
     icon: Icons.cloud,
     categoryIds: <String>['toolchain', 'distributed'],
+  ),
+  LearningPath(
+    id: 'html-css-web',
+    titleKey: 'pathHtmlCss',
+    subtitleKey: 'pathHtmlCssSub',
+    icon: Icons.web_asset,
+    categoryIds: <String>['html_css'],
+  ),
+  LearningPath(
+    id: 'math-for-ai',
+    titleKey: 'pathMathFoundation',
+    subtitleKey: 'pathMathFoundationSub',
+    icon: Icons.functions,
+    categoryIds: <String>['math'],
+    lessonIds: <String>['algorithms_project'],
+  ),
+  LearningPath(
+    id: 'shell-automation',
+    titleKey: 'pathShellAutomation',
+    subtitleKey: 'pathShellAutomationSub',
+    icon: Icons.terminal,
+    categoryIds: <String>['shell'],
+  ),
+  LearningPath(
+    id: 'software-quality',
+    titleKey: 'pathSoftwareEngineering',
+    subtitleKey: 'pathSoftwareEngineeringSub',
+    icon: Icons.verified_outlined,
+    categoryIds: <String>['software_engineering'],
+    lessonIds: <String>['project_debug_performance_triage'],
+  ),
+  LearningPath(
+    id: 'ai-product',
+    titleKey: 'pathAiProduct',
+    subtitleKey: 'pathAiProductSub',
+    icon: Icons.auto_awesome,
+    categoryIds: <String>['ai'],
+    lessonIds: <String>['project_rag_agent_service'],
   ),
 ];
 

@@ -449,6 +449,50 @@ func ListByIDs(ctx context.Context, db *sql.DB, ids []int) ([]User, error) {
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `database/sql` | \| `database/sql` \| 手写扫描 \| 低 \| 简单查询、完全掌控 SQL \| |
+| `SetMaxOpenConns` | \| `SetMaxOpenConns` \| 最大连接数 \| 按数据库承载能力设定，避免打满 \| |
+| `SetMaxIdleConns` | \| `SetMaxIdleConns` \| 空闲连接数 \| 与最大连接数接近，减少频繁建连 \| |
+| `SetConnMaxLifetime` | \| `SetConnMaxLifetime` \| 连接最长存活 \| 几分钟到半小时，避开数据库侧超时 \| |
+| `SetConnMaxIdleTime` | \| `SetConnMaxIdleTime` \| 空闲多久回收 \| 与负载波动匹配 \| |
+| `context` | \| `context` 超时 \| 单次查询超时 \| 每个查询都要设 \| |
+| `rows.Close()` | \| 用 `rows.Close()` 与检查 `rows.Err()` \| 释放连接并发现遍历中的错误 \| |
+| `rows.Err()` | \| 用 `rows.Close()` 与检查 `rows.Err()` \| 释放连接并发现遍历中的错误 \| |
+| `defer rows.Close()` | \| 忘记 `rows.Close()` \| 连接泄漏、池被耗尽 \| `defer rows.Close()` \| |
+| `sql.Open` | \| `sql.Open` 返回即认为连通 \| 首次查询才报错 \| 用 `PingContext` 验证 \| |
+| `PingContext` | \| `sql.Open` 返回即认为连通 \| 首次查询才报错 \| 用 `PingContext` 验证 \| |
+| `SELECT *` | \| 用 `SELECT *` \| 列变更导致扫描错位 \| 显式列出列 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：数据库连接池的 SetMaxOpenConns 设置过大，会有什么后果？
+
+**参考回答**：正确答案是「数据库连接被打满」，本课在「零基础详解·Go 访问数据库」中说明：Go 用 database/sql 统一访问各种数据库：连接池 + 预编译语句 + context + 事务 是四块基石。连接数超过数据库承载能力会导致排队、内存上涨甚至拒绝服务，应按数据库能力设定。本课还在「零基础详解·Go 访问数据库」中说明：不要把 sql.ErrNoRows 当成 500 错误返回给用户。本课还在「零基础详解·Go 访问数据库」中说明：知道 sql.Open 与 PingContext 的区别。
+
+### 追问 2：遍历 Query 结果集后，必须做什么？
+
+**参考回答**：正确答案是「关闭 rows 并检查 rows.Err()」，本课在「零基础详解·Go 访问数据库」中说明：Go 用 database/sql 统一访问各种数据库：连接池 + 预编译语句 + context + 事务 是四块基石。Close 释放连接，Err 能发现遍历过程中发生的错误，两者缺一不可。本课还在「零基础详解·Go 访问数据库」中说明：三个必须做的动作：defer rows.Close()、检查 rows.Err()、用 QueryContext 传 context。
+
+### 追问 3：批量插入大量数据，性能最好的写法是？
+
+**参考回答**：正确答案是「预编译语句加单个事务批量执行」，本课在「方案选型速查」中说明：要点：无论用哪种方案，SQL 与索引设计仍是性能的决定因素，ORM 只改变写法。预编译减少解析开销，单事务减少提交与日志刷盘次数。本课还在「零基础详解·Go 访问数据库」中说明：知道事务里为什么要注意 err 的声明方式。
+
+### 追问 4：关于事务，正确的做法是？
+
+**参考回答**：正确答案是「事务尽量短小，外部调用放在事务外」，本课在「零基础详解·Go 访问数据库」中说明：注意 defer 里闭合的是外层的 err 变量，所以要用 err = 而不是 :=。长事务会长期持锁并放大主从延迟，外部调用应移到事务外。本课还在「零基础详解·Go 访问数据库」中说明：知道事务里为什么要注意 err 的声明方式。
+
+### 追问 5：防止 SQL 注入的根本做法是？
+
+**参考回答**：正确答案是「一律使用参数化查询」，这道题在问防止SQL注入的根本做法是，判断时要把题干限定的输入、边界与目标逐项对齐。参数化让数据与语句分离，从根本上避免注入。课程摘要指出database/sql 事务模板，连接池参数与批量写入，本课要判断的正是防止SQL注入的根本做法是。
+
 ## English Overview
 
 **Title:** Data Access in Go
@@ -487,4 +531,3 @@ func ListByIDs(ctx context.Context, db *sql.DB, ids []int) ([]User, error) {
 > 本课主题：database/sql 事务模板、连接池参数与批量写入。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

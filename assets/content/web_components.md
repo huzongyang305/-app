@@ -288,6 +288,11 @@ customElements.define("lesson-card", LessonCard);
 - **判断依据**：正确答案是「attributeChangedCallback」，这道题在问补全代码：WebComponents实战示例中，下面…oldValue,newValue){`，判断时要把题干限定的输入、边界与目标逐项对齐。本课示例中还能看到 `attributeChangedCallback(name, oldValue, newValue) {` 这样的用法，说明该关键字在本课代码中承担实际功能。
 - **迁移检查**：把答案换成另一种等价写法，是否仍然正确？说明依据。
 
+### 补充考点 1：阅读「Web Components 实战」的代码片段，下面哪项判断是正确的？
+
+- **正确判断**：包含连字符
+- **判断依据**：正确答案是「包含连字符」。这段代码来自「Web Components 实战」的示例，判断时先看输入与输出，再检查条件、循环和边界。正确答案是「包含连字符」，本课在「项目专属规格·Web Components 实战」中说明：自定义元素生命周期、Shadow DOM 隔离与事件穿透。标准要求自定义元素名必须含连字符，以避免与未来 H…在「Web Components 实战」中，如果只改一个条件，输出通常会随之改变，因此不能脱离代码前提作答。
+
 ## 本课复习清单
 
 离开本课前，逐项确认：
@@ -306,6 +311,50 @@ customElements.define("lesson-card", LessonCard);
 | 已经能独立解释的考点 |  |
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
+
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `customElements.define` | \| 自定义元素 \| 通过 `customElements.define` 注册新标签 \| |
+| `<template>` | \| `<template>` \| 声明可复用的 DOM 片段，克隆后使用 \| |
+| `<slot>` | \| `<slot>` \| 允许外部插入内容（内容分发） \| |
+| `constructor` | \| `constructor` \| 元素创建时 \| 初始化状态，禁止访问子节点 \| |
+| `connectedCallback` | \| `connectedCallback` \| 插入文档 \| 渲染、绑定事件、发起请求 \| |
+| `disconnectedCallback` | \| `disconnectedCallback` \| 从文档移除 \| 解绑事件、清理定时器 \| |
+| `attributeChangedCallback` | \| `attributeChangedCallback` \| 监听属性变化 \| 同步属性到渲染 \| |
+| `adoptedCallback` | \| `adoptedCallback` \| 移动到新文档 \| 少见 \| |
+| `static get observedAttributes()` | 属性监听需要静态声明：`static get observedAttributes()`。 |
+| `part="name"` | \| 暴露指定内部结构给外部改样式 \| `part="name"` + `::part(name)` \| |
+| `::part(name)` | \| 暴露指定内部结构给外部改样式 \| `part="name"` + `::part(name)` \| |
+| `::slotted(selector)` | \| 插槽内容样式 \| `::slotted(selector)` \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：注册自定义元素时，标签名必须满足？
+
+**参考回答**：正确答案是「包含连字符」，本课在「项目专属规格·Web Components 实战」中说明：自定义元素生命周期、Shadow DOM 隔离与事件穿透。标准要求自定义元素名必须含连字符，以避免与未来 HTML 保留标签冲突。本课还在「四大组成速查」中说明：核心价值：框架无关、样式隔离、可长期维护——适合做设计系统与跨项目复用的基础组件。本课还在「与框架的关系」中说明：经验：设计系统的底层组件适合做成 Web Components，业务页面继续用框架。
+
+### 追问 2：为什么不应在 constructor 中访问子节点或属性？
+
+**参考回答**：正确答案是「此时元素尚未插入文档」，本课在「项目专属规格·Web Components 实战」中说明：自定义元素生命周期、Shadow DOM 隔离与事件穿透。constructor 阶段元素还没进入文档，读取属性可能与升级顺序相关，正确位置是 connectedCallback。本课还在「四大组成速查」中说明：核心价值：框架无关、样式隔离、可长期维护——适合做设计系统与跨项目复用的基础组件。本课还在「与框架的关系」中说明：经验：设计系统的底层组件适合做成 Web Components，业务页面继续用框架。
+
+### 追问 3：外部想定制 Shadow DOM 内部的样式，正确方式是？
+
+**参考回答**：正确答案是「通过 CSS 自定义属性或 ::part 暴露的接口」，本课在「自定义元素生命周期」中说明：属性监听需要静态声明：static get observedAttributes()。Shadow DOM 天然隔离样式，只开放变量与 ::part 这类显式接口，既可控又不破坏封装。
+
+### 追问 4：自定义事件要能穿透 Shadow 边界被外层接收，需要设置？
+
+**参考回答**：composed: true 允许事件跨 Shadow 边界传播，bubbles: true 让它向上冒泡，两者通常一起使用。「composed: true」、「detail: null」、「bubbles: false」都会阻止事件被外层正常收到或携带数据。
+
+### 追问 5：组件被移除后必须做什么以避免内存泄漏？
+
+**参考回答**：正确答案是「在 disconnectedCallback 中解绑事件并清理定时器」，这道题在问组件被移除后必须做什么以避免内存泄漏，判断时要把题干限定的输入、边界与目标逐项对齐。移除时解绑监听、清理定时器与订阅，才能让对象被回收。课程摘要指出自定义元素生命周期，Shadow DOM 隔离与事件穿透，本课要判断的正是组件被移除后必须做什么以避免内存泄漏。
 
 ## English Overview
 
@@ -420,4 +469,3 @@ README.md
 > 本课主题：自定义元素生命周期、Shadow DOM 隔离与事件穿透。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

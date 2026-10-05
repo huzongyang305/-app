@@ -409,6 +409,50 @@ pnpm turbo run typecheck --filter='...[origin/main]'
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `apps/` | \| `apps/` \| 可部署应用 \| 可以依赖 packages \| |
+| `packages/` | \| `packages/` \| 共享库与组件 \| 不依赖 apps，避免循环 \| |
+| `tooling/` | \| `tooling/` \| 构建配置与脚本 \| 被所有包复用 \| |
+| `packages/shared` | \| `packages/shared` \| 类型与 schema \| 前后端共享事实来源 \| |
+| `--filter` | \| 本地全量构建慢 \| 用受影响范围构建（`--filter`） \| |
+| `workspace:*` | \| 不使用 workspace 协议 \| 误装发布版而非本地包 \| 用 `workspace:*` \| |
+| `npm install` | \| 本地用 `npm install` \| lock 文件冲突 \| 统一包管理器并用 `--frozen-lockfile` \| |
+| `--frozen-lockfile` | \| 本地用 `npm install` \| lock 文件冲突 \| 统一包管理器并用 `--frozen-lockfile` \| |
+| `dependsOn: ["^build"]` | \| `dependsOn: ["^build"]` \| 先构建依赖的包 \| |
+| `outputs` | \| `outputs` \| 声明产物路径，用于缓存 \| |
+| `package.json` | \| 根 `package.json` 脚本 \| 用 `turbo run build` 一键跑全部 \| |
+| `turbo run build` | \| 根 `package.json` 脚本 \| 用 `turbo run build` 一键跑全部 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：Monorepo 中正确的依赖方向是？
+
+**参考回答**：正确答案是「apps 依赖 packages」，本课在「目录与依赖约定」中说明：规则：依赖方向单向，apps 依赖 packages，packages 之间不得循环依赖。单向依赖才能保证构建顺序确定、影响面可分析。本课还在「工具选型速查」中说明：最小可用组合：pnpm workspace（链接）+ Turborepo（任务与缓存）+ Changesets（发布）。
+
+### 追问 2：为了引用本地包而不是已发布版本，应该使用？
+
+**参考回答**：正确答案是「workspace:* 协议」，本课在「零基础详解·Monorepo 与多包协作」中说明：workspace: 让本地包直接链接，不用先发布到 npm。workspace 协议明确表达「使用本地工作区包」，发布时由工具替换为真实版本。本课还在「工具选型速查」中说明：最小可用组合：pnpm workspace（链接）+ Turborepo（任务与缓存）+ Changesets（发布）。本课还在「零基础详解·Monorepo 与多包协作」中说明：知道 workspace: 解决什么问题。
+
+### 追问 3：CI 中让流水线更快的关键做法是？
+
+**参考回答**：正确答案是「基于依赖图与缓存只跑受影响的任务」，本课在「零基础详解·Monorepo 与多包协作」中说明：代价是构建与 CI 必须做增量，否则会越来越慢。任务编排工具根据输入哈希与依赖图跳过未变化的任务，并复用远程缓存。课程摘要指出workspace 依赖方向，任务缓存与版本发布流程，本课要判断的正是CI中让流水线更快的关键做法是。
+
+### 追问 4：共享包变更后，最需要做什么？
+
+**参考回答**：正确答案是「触发下游应用的测试并标注影响面」，本课在「零基础详解·Monorepo 与多包协作」中说明：workspace: 让本地包直接链接，不用先发布到 npm。共享包变更影响面大，CI 需要跑下游测试并让评审者看到影响范围。本课还在「零基础详解·Monorepo 与多包协作」中说明：好处是跨包改动一次提交完成、类型即时联动。
+
+### 追问 5：Monorepo 的主要风险是？
+
+**参考回答**：正确答案是「仓库变大，依赖方向易失控」，本课在「目录与依赖约定」中说明：规则：依赖方向单向，apps 依赖 packages，packages 之间不得循环依赖。这些是 Monorepo 的典型代价，需要通过依赖约束、受影响范围构建与 CODEOWNERS 缓解。本课还在「零基础详解·Monorepo 与多包协作」中说明：Monorepo 是「把多个包放进同一个仓库」的组织方式。
+
 ## English Overview
 
 **Title:** Monorepo Engineering
@@ -447,4 +491,3 @@ pnpm turbo run typecheck --filter='...[origin/main]'
 > 本课主题：workspace 依赖方向、任务缓存与版本发布流程。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

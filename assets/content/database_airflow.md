@@ -264,6 +264,50 @@ WHERE dt = '{{ ds }}';
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `reschedule` | \| Sensor \| 等待上游就绪，但要用 `reschedule` 模式避免占满 worker \| |
+| `execution_timeout` | 超时与重试显式配置**：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值。 |
+| `retries` | 超时与重试显式配置**：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值。 |
+| `retry_delay` | 超时与重试显式配置**：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值。 |
+| `{{ ds }}` | \| 参数化 \| 用 `{{ ds }}`、`{{ data_interval_start }}` 而不是 `datetime.now()` \| |
+| `{{ data_interval_start }}` | \| 参数化 \| 用 `{{ ds }}`、`{{ data_interval_start }}` 而不是 `datetime.now()` \| |
+| `datetime.now()` | \| 参数化 \| 用 `{{ ds }}`、`{{ data_interval_start }}` 而不是 `datetime.now()` \| |
+| `>>` | \| 依赖 \| 用 `>>` 或 `set_upstream` 明确顺序 \| |
+| `set_upstream` | \| 依赖 \| 用 `>>` 或 `set_upstream` 明确顺序 \| |
+| `max_active_runs` | \| 并发控制 \| 用 `max_active_runs`、池与优先级 \| |
+| `on_failure_callback` | \| 通知 \| `on_failure_callback` 发送告警 \| |
+| `mode="reschedule"` | \| Sensor 用默认 poke 模式 \| 占满 worker \| 改 `mode="reschedule"` \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：Airflow 中保证任务可安全重跑的核心要求是？
+
+**参考回答**：重跑结果一致，backfill 与故障恢复才不会产生重复数据。其他选项：安全重跑的核心是幂等（分区覆盖写而非追加）。针对「Airflow 中保证任务可安全重跑的核心要求是，」，本课在「本课小结」中说明：Airflow 的价值是把数据加工变成可观测、可重跑的流程：用幂等与分区设计保证重跑安全，用质量检查与告警守住数据可信度。本课还在「调度设计原则」中说明：用幂等 + 分区覆盖替代"只跑一次"的假设。
+
+### 追问 2：Sensor 应使用哪种模式避免占满 worker？
+
+**参考回答**：reschedule 会让出 worker 槽位，等待期间不占用资源。其他选项：Sensor 应使用 reschedule 模式，等待期间释放 worker 槽位。针对「Sensor 应使用哪种模式避免占满 worker，」，本课在「DAG 与核心概念」中说明：核心概念还包括：调度周期（schedule）、执行日期（logical date / data interval）、重试策略、变量与连接（Variables/Connections）、传感器（Sensor，用于等待外部条件）。
+
+### 追问 3：下面哪项属于典型的数据质量检查？
+
+**参考回答**：正确答案是「行数波动与主键唯一性校验」，本课在「本课小结」中说明：Airflow 的价值是把数据加工变成可观测、可重跑的流程：用幂等与分区设计保证重跑安全，用质量检查与告警守住数据可信度。行数波动、唯一性、空值率、枚举合法性都是常见的入仓校验。本课还在「DAG 与核心概念」中说明：Airflow 用 DAG（有向无环图）描述任务依赖：DAG 是流程，Task 是具体步骤，Operator 决定 Task 做什么。
+
+### 追问 4：Airflow 的 catchup 参数控制什么？
+
+**参考回答**：正确答案是「是否自动补跑开始日期到当前之间遗漏的调度周期」，本课在「DAG 与核心概念」中说明：核心概念还包括：调度周期（schedule）、执行日期（logical date / data interval）、重试策略、变量与连接（Variables/Connections）、传感器（Sensor，用于等待外部条件）。依赖历史数据回填时开启，只关心当前数据的定时任务通常设为 False。本课还在「调度设计原则」中说明：任务粒度适中：太细会产生大量排队开销，太粗则失败重跑昂贵。
+
+### 追问 5：数据新鲜度（freshness）监控的意义是？
+
+**参考回答**：常见做法是断言最新分区时间或最大事件时间与当前时间的差值。其他选项：新鲜度监控用于发现数据未按时更新，避免下游基于陈旧数据决策。针对「数据新鲜度（freshness）监控的意义是，」，本课在「数据质量监控的六个检查」中说明：坏数据写入 dead-letter 表并保留原始分区，便于修复后重跑。
+
 ## English Overview
 
 **Title:** Airflow & Data Quality
@@ -302,4 +346,3 @@ WHERE dt = '{{ ds }}';
 > 本课主题：DAG/幂等/backfill 与六项数据质量检查。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

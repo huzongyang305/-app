@@ -422,6 +422,50 @@ static async Task Main()
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `async` | `async` 方法返回 `Task` / `Task<T>`；`await` 在等待期间释放线程，因此特别适合 IO 密集场景。 |
+| `Task` | `async` 方法返回 `Task` / `Task<T>`；`await` 在等待期间释放线程，因此特别适合 IO 密集场景。 |
+| `Task<T>` | `async` 方法返回 `Task` / `Task<T>`；`await` 在等待期间释放线程，因此特别适合 IO 密集场景。 |
+| `await` | `async` 方法返回 `Task` / `Task<T>`；`await` 在等待期间释放线程，因此特别适合 IO 密集场景。 |
+| `CancellationTokenSource` | 用 `CancellationTokenSource` 实现超时： |
+| `IDisposable` | 实现 `IDisposable` 的对象用 `using` 自动释放： |
+| `using` | 实现 `IDisposable` 的对象用 `using` 自动释放： |
+| `.Result` | 用 `.Result` 或 `.Wait()` 阻塞异步代码，容易死锁，应一路 `await`。 |
+| `.Wait()` | 用 `.Result` 或 `.Wait()` 阻塞异步代码，容易死锁，应一路 `await`。 |
+| `async void` | `async void` 只用于事件处理器，异常无法被捕获。 |
+| `SemaphoreSlim` | 大量并发要限制数量，可用 `SemaphoreSlim`。 |
+| `Task.WhenAll` | \| 批量并行 \| `Task.WhenAll`；不要用 `Task.WaitAll`（同步阻塞） \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：使用 await 等待 IO 的主要好处是？
+
+**参考回答**：正确答案是「等待期间不阻塞线程」，本课在「本课小结」中说明：异步的目标是不阻塞线程：IO 用 async/await、并发用 Task.WhenAll、可取消用 CancellationToken，异常与资源交给 try/catch 与 using。await 在等待期间释放当前线程，线程可以去处理其他请求，从而提高吞吐量。本课还在「async / await」中说明：await 在等待期间释放线程，因此特别适合 IO 密集场景。
+
+### 追问 2：在异步代码中使用 .Result 或 .Wait() 的风险是？
+
+**参考回答**：正确答案是「可能死锁并阻塞线程」，本课在「本课小结」中说明：异步的目标是不阻塞线程：IO 用 async/await、并发用 Task.WhenAll、可取消用 CancellationToken，异常与资源交给 try/catch 与 using。同步阻塞等待异步任务容易造成死锁，正确做法是一路 await 到底。本课还在「常见陷阱」中说明：用 .Result 或 .Wait() 阻塞异步代码，容易死锁，应一路 await。
+
+### 追问 3：async void 只适合用在什么场景？
+
+**参考回答**：async void 的异常无法被调用方捕获，只应用于事件处理器。其他选项：async void 只适合事件处理器，因为异常无法被调用方捕获。针对「async void 只适合用在什么场景，」，本课在「常见陷阱」中说明：async void 只用于事件处理器，异常无法被捕获。本课还在「并发控制与常见误用」中说明：② async void（除事件处理器外无法捕获异常）。本课还在「async / await」中说明：async 方法返回 Task / Task<T>。
+
+### 追问 4：CancellationToken 的作用是？
+
+**参考回答**：正确答案是「以协作方式请求取消异步操作（如请求超时、用户离开页面）」，本课在「并发控制与常见误用」中说明：⑤ 忘了传 CancellationToken，导致请求取消后后台仍继续算。取消是协作式的，方法内部要定期检查 token 或把它传给下游 API 才会生效。本课还在「零基础详解·async/await 与任务并行」中说明：async/await 让「等待 IO」的代码写起来像同步代码，但线程不会被卡住。
+
+### 追问 5：Task.WhenAll 相比逐个 await 的优势是？
+
+**参考回答**：正确答案是「多个任务同时进行」，本课在「常见陷阱」中说明：忘记 await 会让异常被吞掉，任务在后台失败。多个异常会被包装在 AggregateException 中，需要逐个检查各任务的异常。本课还在「并发控制与常见误用」中说明：④ 在循环里逐个 await 造成串行（应收集 Task 后 WhenAll）。本课还在「零基础详解·async/await 与任务并行」中说明：核心区别只有一句话：IO 密集用 async，CPU 密集用并行任务。
+
 ## English Overview
 
 **Title:** Async & Exceptions
@@ -542,4 +586,3 @@ static async Task Main()
 > 本课主题：async/await、Task 并发、CancellationToken、异常与 using。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

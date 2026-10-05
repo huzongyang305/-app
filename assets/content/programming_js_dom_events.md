@@ -417,6 +417,50 @@ list.addEventListener("click", (event) => {
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `textContent` | 插入用户输入时优先 `textContent`，使用 `innerHTML` 前必须转义，否则存在 XSS 风险。 |
+| `innerHTML` | 插入用户输入时优先 `textContent`，使用 `innerHTML` 前必须转义，否则存在 XSS 风险。 |
+| `removeEventListener` | 清理与正确性：组件卸载时移除监听器（`removeEventListener` 需同一函数引用）与取消定时器；`requestAnimationFrame` 适合逐帧更新；表单提交用 `preventDefault` 后… |
+| `requestAnimationFrame` | 清理与正确性：组件卸载时移除监听器（`removeEventListener` 需同一函数引用）与取消定时器；`requestAnimationFrame` 适合逐帧更新；表单提交用 `preventDefault` 后… |
+| `preventDefault` | 清理与正确性：组件卸载时移除监听器（`removeEventListener` 需同一函数引用）与取消定时器；`requestAnimationFrame` 适合逐帧更新；表单提交用 `preventDefault` 后… |
+| `document.querySelector(".card")` | \| 查单个元素 \| `document.querySelector(".card")` \| 返回第一个匹配或 `null` \| |
+| `null` | \| 查单个元素 \| `document.querySelector(".card")` \| 返回第一个匹配或 `null` \| |
+| `document.querySelectorAll(".card")` | \| 查全部元素 \| `document.querySelectorAll(".card")` \| 返回静态 NodeList，可 `forEach` \| |
+| `forEach` | \| 查全部元素 \| `document.querySelectorAll(".card")` \| 返回静态 NodeList，可 `forEach` \| |
+| `document.getElementById("app")` | \| 按 id 查 \| `document.getElementById("app")` \| 最快，但只按 id \| |
+| `el.textContent = "内容"` | \| 改文本 \| `el.textContent = "内容"` \| 安全，不解析 HTML \| |
+| `el.innerHTML = html` | \| 改 HTML \| `el.innerHTML = html` \| 有 XSS 风险，只用可信内容 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：事件委托能生效的前提是？
+
+**参考回答**：正确答案是「事件会冒泡到父元素」，本课在「本课小结」中说明：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据。事件冒泡让父元素可以统一处理子元素事件，动态新增的子元素也不需要重新绑定。本课还在「冒泡与事件委托」中说明：事件默认从目标向外冒泡（target → 祖先），因此可以在父元素上统一处理子元素事件。
+
+### 追问 2：把用户输入插入页面，安全的做法是？
+
+**参考回答**：textContent 把内容当纯文本，不会执行脚本。innerHTML 需先转义以防 XSS。针对「把用户输入插入页面，安全的做法是，」，本课在「选择与修改元素」中说明：插入用户输入时优先 textContent，使用 innerHTML 前必须转义，否则存在 XSS 风险。本课还在「本课小结」中说明：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据。
+
+### 追问 3：event.preventDefault() 的作用是？
+
+**参考回答**：正确答案是「阻止浏览器默认行为（如提交表单、跳转链接）」，本课在「事件与 DOM 的性能注意点」中说明：清理与正确性：组件卸载时移除监听器（removeEventListener 需同一函数引用）与取消定时器。preventDefault 取消默认行为，stopPropagation 才是阻止冒泡，两者常被混淆。本课还在「冒泡与事件委托」中说明：委托的好处：动态新增的元素无需重新绑定监听器。本课还在「零基础详解·DOM 操作与事件处理」中说明：DOM 是浏览器把 HTML 变成的一棵「节点树」，JS 通过它读写页面。
+
+### 追问 4：addEventListener 的第三个参数 capture: true 表示？
+
+**参考回答**：正确答案是「在捕获阶段触发监听（从外到内）」，本课在「冒泡与事件委托」中说明：事件默认从目标向外冒泡（target → 祖先），因此可以在父元素上统一处理子元素事件。事件先捕获到目标再冒泡回来，理解这个顺序才能处理好委托与阻止传播。本课还在「零基础详解·DOM 操作与事件处理」中说明：事件是「用户做了什么」的通知，你注册回调函数来决定怎么响应。
+
+### 追问 5：DOMContentLoaded 与 load 的区别是？
+
+**参考回答**：正确答案是「DOMContentLoaded 在 HTML 解析完成时触发」，本课在「零基础详解·DOM 操作与事件处理」中说明：能说出 querySelector 与 querySelectorAll 的区别。脚本尽早绑定事件应使用 DOMContentLoaded，统计完整加载耗时才用 load。
+
 ## English Overview
 
 **Title:** DOM & Events
@@ -455,4 +499,3 @@ list.addEventListener("click", (event) => {
 > 本课主题：元素选择与修改、事件监听、冒泡与事件委托、表单与本地存储。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

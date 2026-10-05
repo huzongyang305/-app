@@ -454,6 +454,50 @@ func DownloadAll(ctx context.Context, urls []string, limit int) ([]string, error
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `atomic.Int64` | \| 计数 \| `atomic.Int64` \| 比互斥锁更轻 \| |
+| `sync.Mutex` | \| 复合状态更新 \| `sync.Mutex` \| 临界区要尽量短 \| |
+| `sync.RWMutex` | \| 读多写少 \| `sync.RWMutex` \| 注意写者饥饿 \| |
+| `sync.Once` | \| 一次性初始化 \| `sync.Once` \| 配合包级变量 \| |
+| `sync.Pool` | \| 临时对象复用 \| `sync.Pool` \| 不能当缓存用 \| |
+| `context` | \| 取消传播 \| `context` \| 逐层传递并检查 \| |
+| `golang.org/x/sync/singleflight` | \| 去重合并 \| `golang.org/x/sync/singleflight` \| 缓存击穿场景 \| |
+| `SetLimit` | \| 无限制启动 goroutine \| 内存暴涨、下游被打爆 \| 用 `SetLimit` 或信号量限流 \| |
+| `defer close(out)` | \| 忘记 `defer close(out)` \| 下游 `range` 永久阻塞 \| 阶段结束时关闭 channel \| |
+| `range` | \| 忘记 `defer close(out)` \| 下游 `range` 永久阻塞 \| 阶段结束时关闭 channel \| |
+| `recover` | \| goroutine 里 panic 未处理 \| 进程崩溃 \| 在入口 `recover` 并记录 \| |
+| `ctx.Done()` | \| 忘记检查 `ctx.Done()` \| 取消后仍继续干活 \| 在循环与阻塞点检查 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：要把并发处理限制在固定数量，最简洁的做法是？
+
+**参考回答**：正确答案是「用 errgroup.SetLimit 或带缓冲 channel 作信号量」，本课在「零基础详解·六种常用并发模式」中说明：并发模式是「被反复验证过的 goroutine + channel 组合拳」。SetLimit 与信号量都能把并发度钉在固定值，避免打爆下游。本课还在「零基础详解·六种常用并发模式」中说明：每个阶段自己关闭自己的输出 channel，这是流水线不变式。本课还在「零基础详解·六种常用并发模式」中说明：能说出三种导致 goroutine 泄漏的原因。
+
+### 追问 2：Pipeline 各阶段为什么通常要 defer close(out)？
+
+**参考回答**：正确答案是「让下游 range 能正常结束」，本课在「零基础详解·六种常用并发模式」中说明：并发模式是「被反复验证过的 goroutine + channel 组合拳」。关闭 channel 后下游 range 才会退出，这是连式 goroutine 不泄漏的关键。本课还在「零基础详解·六种常用并发模式」中说明：能说出 pipeline 每阶段的关闭规则。本课还在「零基础详解·六种常用并发模式」中说明：知道 errgroup 的取消是怎么传播的。
+
+### 追问 3：大量相同请求同时到达导致下游被打爆，可用什么合并？
+
+**参考回答**：singleflight 把同一 key 的并发调用合并成一次真实请求，其余共享结果，是缓存击穿的常用解法。针对「大量相同请求同时到达导致下游被打爆，可用什么合并，」，本课在「零基础详解·六种常用并发模式」中说明：能说出 worker 池与 semaphore 的差别。本课还在「零基础详解·六种常用并发模式」中说明：记住这六种，日常大部分并发需求都能直接套用。
+
+### 追问 4：关于并发中的错误处理，正确的是？
+
+**参考回答**：正确答案是「goroutine 里未处理的 panic 会导致整个进程崩溃」，本课在「零基础详解·六种常用并发模式」中说明：知道 fan-in 需要谁来关闭 channel。Go 中任何未恢复的 panic 都会终止整个进程，因此每个 goroutine 入口都应有 recover 与日志。本课还在「零基础详解·六种常用并发模式」中说明：能说出三种导致 goroutine 泄漏的原因。
+
+### 追问 5：简单的并发计数，最轻量的方案是？
+
+**参考回答**：正确答案是「atomic.Int64」，这道题在问简单的并发计数，最轻量的方案是，判断时要把题干限定的输入、边界与目标逐项对齐。单值自增用原子操作最直接，无锁开销也更小。课程摘要指出Worker Pool，Pipeline，Fan-in/Fan-out 与并发限流，本课要判断的正是简单的并发计数，最轻量的方案是。
+
 ## English Overview
 
 **Title:** Concurrency Patterns
@@ -492,4 +536,3 @@ func DownloadAll(ctx context.Context, urls []string, limit int) ([]string, error
 > 本课主题：Worker Pool、Pipeline、Fan-in/Fan-out 与并发限流。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

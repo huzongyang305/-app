@@ -484,6 +484,50 @@ def test_negative_price_raises(bad_price: float) -> None:
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `typing` | 复杂类型用 `typing` 模块： |
+| `pyproject.toml` | 建议在 `pyproject.toml` 中统一配置： |
+| `unittest` | 标准库的 `unittest` 也能用，语法更啰嗦但无需第三方依赖；`doctest` 则可以直接运行文档字符串里的示例。 |
+| `doctest` | 标准库的 `unittest` 也能用，语法更啰嗦但无需第三方依赖；`doctest` 则可以直接运行文档字符串里的示例。 |
+| `def f(x: int) -> str:` | \| `def f(x: int) -> str:` \| 参数与返回值注解 \| |
+| `list[int]` | \| `list[int]` / `dict[str, int]` \| 内置泛型（Python 3.9+） \| |
+| `dict[str, int]` | \| `list[int]` / `dict[str, int]` \| 内置泛型（Python 3.9+） \| |
+| `int \| None` | \| `int \\| None` \| 可空类型（Python 3.10+） \| |
+| `Optional[int]` | \| `Optional[int]` \| 等价写法，需 `from typing import Optional` \| |
+| `from typing import Optional` | \| `Optional[int]` \| 等价写法，需 `from typing import Optional` \| |
+| `Union[int, str]` | \| `Union[int, str]` \| 联合类型 \| |
+| `Literal["a", "b"]` | \| `Literal["a", "b"]` \| 只能是给定字面量之一 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：Python 的类型注解在运行时的作用是？
+
+**参考回答**：正确答案是「不影响运行，只供工具和阅读使用」，本课在「零基础详解·类型注解与自动化测试」中说明：类型注解是写给工具和同事看的说明书，运行时不强制，但能让编辑器提前报错。注解默认不参与运行，需要 mypy 等静态检查工具才能发现类型问题。本课还在「本课小结」中说明：类型注解 + mypy 让错误在运行前暴露，pytest 让改动有回归保障。本课还在「为什么要类型注解」中说明：Python 是动态类型语言，但可以写类型注解让 IDE 和静态检查工具提前发现问题。
+
+### 追问 2：用 pytest 断言「抛出指定异常」的正确写法是？
+
+**参考回答**：正确答案是「with pytest.raises(ZeroDivisionError):」，本课在「本课小结」中说明：类型注解 + mypy 让错误在运行前暴露，pytest 让改动有回归保障。pytest.raises 作为上下文管理器使用，代码块内必须抛出指定异常，否则测试失败。本课还在「为什么要类型注解」中说明：Python 是动态类型语言，但可以写类型注解让 IDE 和静态检查工具提前发现问题。
+
+### 追问 3：str | None 这种写法表示？
+
+**参考回答**：正确答案是「字符串或空值」，本课在「零基础详解·类型注解与自动化测试」中说明：类型注解是写给工具和同事看的说明书，运行时不强制，但能让编辑器提前报错。它是联合类型，表示值可能是 str，也可能是 None，Python 3.10+ 支持这种写法。本课还在「用 pytest 写测试」中说明：doctest 则可以直接运行文档字符串里的示例。本课还在「用 pytest 写测试」中说明：标准库的 unittest 也能用，语法更啰嗦但无需第三方依赖。
+
+### 追问 4：mypy 这类工具的作用是？
+
+**参考回答**：正确答案是「在运行前做静态类型检查，发现类型不一致」，本课在「零基础详解·类型注解与自动化测试」中说明：自动化测试则是写给未来的自己的安全网，改代码时立刻知道有没有弄坏别的东西。类型注解本身不影响运行，mypy / pyright 才让注解产生工程价值。
+
+### 追问 5：pytest 中 fixture 的主要用途是？
+
+**参考回答**：正确答案是「提供可复用的测试前置准备与清理逻辑」，本课在「零基础详解·类型注解与自动化测试」中说明：能说出 fixture 与 parametrize 的用途。fixture 通过依赖注入复用资源（数据库连接、临时目录），yield 之前准备、之后清理。
+
 ## English Overview
 
 **Title:** Typing & Testing
@@ -522,4 +566,3 @@ def test_negative_price_raises(bad_price: float) -> None:
 > 本课主题：类型注解、mypy / ruff，以及用 pytest 写可维护的测试。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

@@ -209,20 +209,43 @@ C# 的 `for` 适合已知次数或需要下标的循环，`foreach` 适合遍历
 
 ## 术语速查
 
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
 | 术语 | 本课语境 |
 | --- | --- |
-| `for` | C# 的 `for` 适合已知次数或需要下标的循环，`foreach` 适合遍历实现 `IEnumerable` 的集合，`while` 先判断条件，`do-while` 至少执行一次。`foreach` 内部使用枚举器，集合在遍历期间被修… |
-| `foreach` | C# 的 `for` 适合已知次数或需要下标的循环，`foreach` 适合遍历实现 `IEnumerable` 的集合，`while` 先判断条件，`do-while` 至少执行一次。`foreach` 内部使用枚举器，集合在遍历期间被修… |
-| `IEnumerable` | C# 的 `for` 适合已知次数或需要下标的循环，`foreach` 适合遍历实现 `IEnumerable` 的集合，`while` 先判断条件，`do-while` 至少执行一次。`foreach` 内部使用枚举器，集合在遍历期间被修… |
-| `while` | C# 的 `for` 适合已知次数或需要下标的循环，`foreach` 适合遍历实现 `IEnumerable` 的集合，`while` 先判断条件，`do-while` 至少执行一次。`foreach` 内部使用枚举器，集合在遍历期间被修… |
-| `do-while` | C# 的 `for` 适合已知次数或需要下标的循环，`foreach` 适合遍历实现 `IEnumerable` 的集合，`while` 先判断条件，`do-while` 至少执行一次。`foreach` 内部使用枚举器，集合在遍历期间被修… |
-| `InvalidOperationException` | C# 的 `for` 适合已知次数或需要下标的循环，`foreach` 适合遍历实现 `IEnumerable` 的集合，`while` 先判断条件，`do-while` 至少执行一次。`foreach` 内部使用枚举器，集合在遍历期间被修… |
-| `break` | `break` 退出循环，`continue` 进入下一轮，`return` 直接离开方法。深层嵌套循环可以用 `goto` 跳出，但更好的做法是把搜索逻辑提取成返回结果的方法。LINQ 可以把筛选、映射和聚合写成声明式链式调用，适合表达“… |
-| `continue` | `break` 退出循环，`continue` 进入下一轮，`return` 直接离开方法。深层嵌套循环可以用 `goto` 跳出，但更好的做法是把搜索逻辑提取成返回结果的方法。LINQ 可以把筛选、映射和聚合写成声明式链式调用，适合表达“… |
-| `return` | `break` 退出循环，`continue` 进入下一轮，`return` 直接离开方法。深层嵌套循环可以用 `goto` 跳出，但更好的做法是把搜索逻辑提取成返回结果的方法。LINQ 可以把筛选、映射和聚合写成声明式链式调用，适合表达“… |
-| `goto` | `break` 退出循环，`continue` 进入下一轮，`return` 直接离开方法。深层嵌套循环可以用 `goto` 跳出，但更好的做法是把搜索逻辑提取成返回结果的方法。LINQ 可以把筛选、映射和聚合写成声明式链式调用，适合表达“… |
-| `StringBuilder` | 循环体里频繁分配对象、拼接字符串或查询集合会放大性能问题。字符串拼接应使用 `StringBuilder`，集合容量可预估时使用带初始容量的构造函数，避免多次扩容。`Count()` 对某些集合可能遍历全部元素，而 `Count` 属性是 … |
-| `Count()` | 循环体里频繁分配对象、拼接字符串或查询集合会放大性能问题。字符串拼接应使用 `StringBuilder`，集合容量可预估时使用带初始容量的构造函数，避免多次扩容。`Count()` 对某些集合可能遍历全部元素，而 `Count` 属性是 … |
+| `for` | C# 的 `for` 适合已知次数或需要下标的循环，`foreach` 适合遍历实现 `IEnumerable` 的集合，`while` 先判断条件，`do-while` 至少执行一次。`foreach` 内部使用枚举器… |
+| `foreach` | C# 的 `for` 适合已知次数或需要下标的循环，`foreach` 适合遍历实现 `IEnumerable` 的集合，`while` 先判断条件，`do-while` 至少执行一次。`foreach` 内部使用枚举器… |
+| `IEnumerable` | C# 的 `for` 适合已知次数或需要下标的循环，`foreach` 适合遍历实现 `IEnumerable` 的集合，`while` 先判断条件，`do-while` 至少执行一次。`foreach` 内部使用枚举器… |
+| `while` | C# 的 `for` 适合已知次数或需要下标的循环，`foreach` 适合遍历实现 `IEnumerable` 的集合，`while` 先判断条件，`do-while` 至少执行一次。`foreach` 内部使用枚举器… |
+| `do-while` | C# 的 `for` 适合已知次数或需要下标的循环，`foreach` 适合遍历实现 `IEnumerable` 的集合，`while` 先判断条件，`do-while` 至少执行一次。`foreach` 内部使用枚举器… |
+| `InvalidOperationException` | C# 的 `for` 适合已知次数或需要下标的循环，`foreach` 适合遍历实现 `IEnumerable` 的集合，`while` 先判断条件，`do-while` 至少执行一次。`foreach` 内部使用枚举器… |
+| `break` | `break` 退出循环，`continue` 进入下一轮，`return` 直接离开方法。深层嵌套循环可以用 `goto` 跳出，但更好的做法是把搜索逻辑提取成返回结果的方法。LINQ 可以把筛选、映射和聚合写成声明式… |
+| `continue` | `break` 退出循环，`continue` 进入下一轮，`return` 直接离开方法。深层嵌套循环可以用 `goto` 跳出，但更好的做法是把搜索逻辑提取成返回结果的方法。LINQ 可以把筛选、映射和聚合写成声明式… |
+| `return` | `break` 退出循环，`continue` 进入下一轮，`return` 直接离开方法。深层嵌套循环可以用 `goto` 跳出，但更好的做法是把搜索逻辑提取成返回结果的方法。LINQ 可以把筛选、映射和聚合写成声明式… |
+| `goto` | `break` 退出循环，`continue` 进入下一轮，`return` 直接离开方法。深层嵌套循环可以用 `goto` 跳出，但更好的做法是把搜索逻辑提取成返回结果的方法。LINQ 可以把筛选、映射和聚合写成声明式… |
+| `StringBuilder` | 循环体里频繁分配对象、拼接字符串或查询集合会放大性能问题。字符串拼接应使用 `StringBuilder`，集合容量可预估时使用带初始容量的构造函数，避免多次扩容。`Count()` 对某些集合可能遍历全部元素，而 `C… |
+| `Count()` | 循环体里频繁分配对象、拼接字符串或查询集合会放大性能问题。字符串拼接应使用 `StringBuilder`，集合容量可预估时使用带初始容量的构造函数，避免多次扩容。`Count()` 对某些集合可能遍历全部元素，而 `C… |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：C# 的 foreach 循环适合什么场景？
+
+**参考回答**：正确答案是「依次访问集合或数组中的每个元素，不需要下标」，本课在「for、foreach、while 与 do-while」中说明：C# 的 for 适合已知次数或需要下标的循环，foreach 适合遍历实现 IEnumerable 的集合，while 先判断条件，do-while 至少执行一次。foreach 让编译器通过迭代器依次取出元素，代码简洁且不易越界，适合只读遍历。本课还在「for、foreach、while 与 do-while」中说明：在循环中创建 lambda 时，C# 5 之后 foreach 的迭代变量每轮是独立变量，但 for 的循环变量仍然是同一个变量。
+
+### 追问 2：在循环中使用 break 与 continue 的区别是？
+
+**参考回答**：正确答案是「break 结束整个循环，continue 直接开始下一轮迭代」，本课在「for、foreach、while 与 do-while」中说明：break 退出循环，continue 进入下一轮，return 直接离开方法。break 让控制流离开当前循环。本课还在「for、foreach、while 与 do-while」中说明：在循环中创建 lambda 时，C# 5 之后 foreach 的迭代变量每轮是独立变量，但 for 的循环变量仍然是同一个变量。
+
+### 追问 3：需要一段「至少执行一次、之后再判断条件」的逻辑，应使用？
+
+**参考回答**：正确答案是「do-while 循环，条件写在循环体之后」，本课在「for、foreach、while 与 do-while」中说明：C# 的 for 适合已知次数或需要下标的循环，foreach 适合遍历实现 IEnumerable 的集合，while 先判断条件，do-while 至少执行一次。do-while 先执行循环体再判断条件，因此循环体至少运行一次，适合「先尝试、再决定是否重试」的流程。本课还在「集合修改、性能与提前退出」中说明：能在循环内判断的条件就直接判断，只有真正的异常情况才抛出或捕获。
+
+### 追问 4：阅读下面的 C# 代码，输出是什么？
+
+**参考回答**：循环变量从 0 开始，只要小于 3 就继续，因此依次执行 i=0、1、2，循环结束时 i 变成 3 但不再进入循环体。Console.Write 不换行，所以三个数字连续输出为 012。针对「阅读下面的 C# 代码，输出是什么，」，本课在「for、foreach、while 与 do-while」中说明：需要在循环内复制到局部变量，或把逻辑提取成方法。本课还在「for、foreach、while 与 do-while」中说明：深层嵌套循环可以用 goto 跳出，但更好的做法是把搜索逻辑提取成返回结果的方法。
 
 ## English Overview
 

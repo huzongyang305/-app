@@ -444,6 +444,50 @@ hyperfine './app --mode fast' './app --mode slow'   # 基准对比
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
+## 术语速查
+
+把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 本课语境 |
+| --- | --- |
+| `vcpkg.json` | 团队中应固定依赖版本（`vcpkg.json` / `conanfile.txt`），避免「我这儿能编译」。 |
+| `conanfile.txt` | 团队中应固定依赖版本（`vcpkg.json` / `conanfile.txt`），避免「我这儿能编译」。 |
+| `break main` | 常用命令：`break main`、`run`、`next`、`step`、`print var`、`bt`（调用栈）。 |
+| `run` | 常用命令：`break main`、`run`、`next`、`step`、`print var`、`bt`（调用栈）。 |
+| `next` | 常用命令：`break main`、`run`、`next`、`step`、`print var`、`bt`（调用栈）。 |
+| `step` | 常用命令：`break main`、`run`、`next`、`step`、`print var`、`bt`（调用栈）。 |
+| `print var` | 常用命令：`break main`、`run`、`next`、`step`、`print var`、`bt`（调用栈）。 |
+| `bt` | 常用命令：`break main`、`run`、`next`、`step`、`print var`、`bt`（调用栈）。 |
+| `clang-tidy` | 静态分析：`clang-tidy`、`cppcheck`、编译器警告全开（`-Wall -Wextra -Wpedantic`）。 |
+| `cppcheck` | 静态分析：`clang-tidy`、`cppcheck`、编译器警告全开（`-Wall -Wextra -Wpedantic`）。 |
+| `-Wall -Wextra -Wpedantic` | 静态分析：`clang-tidy`、`cppcheck`、编译器警告全开（`-Wall -Wextra -Wpedantic`）。 |
+| `-std=c++20` | \| `-std=c++20` \| 指定语言标准 \| |
+
+## 面试问答与自测
+
+下面把本课考点换成面试追问。先口述自己的答案，
+再对照参考回答检查是否遗漏了前提、边界或失败路径。
+
+### 追问 1：CMake 的定位是？
+
+**参考回答**：正确答案是「跨平台的构建系统生成器」，本课在「零基础详解·C++ 工具链全景」中说明：编译器、构建系统、包管理、格式化、静态分析、调试器、Sanitizer。CMake 生成 Makefile 或 Ninja 等构建文件，再调用编译器完成构建。本课还在「本课小结」中说明：工程化的关键是可复现：CMake 统一构建、包管理器锁定依赖、sanitizer + 单测守住质量、clang-tidy 统一风格。
+
+### 追问 2：AddressSanitizer 能发现哪类问题？
+
+**参考回答**：正确答案是「越界访问」，本课在「动态分析工具」中说明：建议在 CI 中始终跑一遍 sanitizer 构建，很多内存与并发问题只有它能发现。ASan 在运行时检测内存错误，配合 -g 能直接给出出错代码位置。本课还在「包管理」中说明：团队中应固定依赖版本（vcpkg.json / conanfile.txt），避免「我这儿能编译」。本课还在「测试与静态检查」中说明：静态分析：clang-tidy、cppcheck、编译器警告全开（-Wall -Wextra -Wpedantic）。
+
+### 追问 3：用 gdb 调试时，编译需要加哪个选项？
+
+**参考回答**：-g 生成调试符号，调试构建通常同时使用 -O0 -g。其他选项：-g 生成调试信息，gdb 才能显示源码行号。针对「用 gdb 调试时，编译需要加哪个选项，」，本课在「本课小结」中说明：工程化的关键是可复现：CMake 统一构建、包管理器锁定依赖、sanitizer + 单测守住质量、clang-tidy 统一风格。本课还在「编译与构建系统」中说明：多文件项目不适合手写 g++ 命令，需要构建系统。
+
+### 追问 4：clang-format 的典型用途是？
+
+**参考回答**：正确答案是「按统一配置自动格式化代码风格」，本课在「包管理」中说明：团队中应固定依赖版本（vcpkg.json / conanfile.txt），避免「我这儿能编译」。把 .clang-format 提交到仓库并接入 CI，能省掉大量风格争论。本课还在「零基础详解·C++ 工具链全景」中说明：编译器、构建系统、包管理、格式化、静态分析、调试器、Sanitizer。本课还在「动态分析工具」中说明：建议在 CI 中始终跑一遍 sanitizer 构建，很多内存与并发问题只有它能发现。
+
+### 追问 5：clang-tidy 与 AddressSanitizer 的区别是？
+
+**参考回答**：正确答案是「clang-tidy 做静态检查（不运行程序）」，本课在「零基础详解·C++ 工具链全景」中说明：能说出 clang-format、clang-tidy、Sanitizer 各自的作用。静态检查 + 运行时检测互补，配合使用覆盖的问题面更广。本课还在「测试与静态检查」中说明：静态分析：clang-tidy、cppcheck、编译器警告全开（-Wall -Wextra -Wpedantic）。
+
 ## English Overview
 
 **Title:** Build & Tooling
@@ -482,4 +526,3 @@ hyperfine './app --mode fast' './app --mode slow'   # 基准对比
 > 本课主题：CMake/Ninja、vcpkg/conan、gdb、sanitizer 与单元测试。
 
 > App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-

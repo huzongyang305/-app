@@ -38,6 +38,9 @@ class AppStrings {
     'lessons': {'zh': '个知识点', 'en': 'lessons'},
     'minutes': {'zh': '分钟', 'en': 'min'},
     'startQuiz': {'zh': '开始测验', 'en': 'Start quiz'},
+    'openLab': {'zh': '打开互动实验', 'en': 'Open interactive lab'},
+    'prerequisites': {'zh': '前置知识', 'en': 'Prerequisites'},
+    'relatedLessons': {'zh': '相关拓展', 'en': 'Related lessons'},
     'retakeQuiz': {'zh': '重新测验', 'en': 'Retake'},
     'viewLesson': {'zh': '查看教程', 'en': 'View lesson'},
     'markLearned': {'zh': '标记为已学', 'en': 'Mark as learned'},
@@ -348,6 +351,31 @@ class AppStrings {
     'pathDevopsPlatformSub': {
       'zh': 'Git/Docker → CI/CD → K8s/IaC → 可观测性 → 分布式可靠性',
       'en': 'Git/Docker → CI/CD → K8s/IaC → observability → distributed reliability',
+    },
+    'pathHtmlCss': {'zh': 'HTML 与 CSS 前端基础', 'en': 'HTML & CSS Foundations'},
+    'pathHtmlCssSub': {
+      'zh': '语义化 HTML → 选择器与盒模型 → Flex/Grid → 响应式实战',
+      'en': 'Semantic HTML → selectors/box model → Flex/Grid → responsive practice',
+    },
+    'pathMathFoundation': {'zh': 'AI 与算法数学基础', 'en': 'Math for AI & Algorithms'},
+    'pathMathFoundationSub': {
+      'zh': '集合函数 → 线代/微积分 → 概率统计 → 信息论 → 凸优化',
+      'en': 'Sets → linear algebra/calculus → probability → information theory → optimization',
+    },
+    'pathShellAutomation': {'zh': 'Shell 自动化工程师', 'en': 'Shell Automation Engineer'},
+    'pathShellAutomationSub': {
+      'zh': '语法与管道 → 条件/循环/函数 → 健壮性与安全 → 运维脚本 → 部署实战',
+      'en': 'Syntax/pipes → control flow/functions → robustness/security → ops scripts → deployment',
+    },
+    'pathSoftwareEngineering': {'zh': '软件工程与质量', 'en': 'Software Engineering & Quality'},
+    'pathSoftwareEngineeringSub': {
+      'zh': '需求与设计 → 测试策略 → TDD/重构 → 代码评审 → 故障复盘与质量门禁',
+      'en': 'Requirements/design → testing → TDD/refactoring → review → postmortem/quality gates',
+    },
+    'pathAiProduct': {'zh': 'AI 产品与 Agent 落地', 'en': 'AI Product & Agent Delivery'},
+    'pathAiProductSub': {
+      'zh': '提示与上下文 → RAG/向量库 → Agent 工具调用 → 评测/护栏 → 服务化落地',
+      'en': 'Prompting/context → RAG/vector DB → tool-calling agents → evals/guardrails → serving',
     },
     'pathDuration': {
       'zh': '约 {hours} 小时 · {lessons} 课',
