@@ -1,5 +1,7 @@
 # 分布式 ID 与发号器
 
+![分布式 ID 生成方案对比](images/diagram_dist_id.webp)
+
 ![分布式 ID 与发号器](images/category_distributed_id.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

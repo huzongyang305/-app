@@ -1,5 +1,7 @@
 # 虚拟内存与分页
 
+![虚拟内存与分页机制](images/diagram_os_virtual_memory.webp)
+
 ![虚拟内存分页与地址翻译](images/virtual_memory_paging.webp)
 
 ![虚拟内存与分页](images/remaining_virtual_memory.webp)

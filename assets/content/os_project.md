@@ -1,5 +1,7 @@
 # 实战：实现一个多线程任务队列
 
+![多线程任务队列的实现要点](images/diagram_os_task_project.webp)
+
 ![实战：实现一个多线程任务队列](images/remaining_os_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

@@ -1,5 +1,7 @@
 # 时间复杂度
 
+![常见时间复杂度的增长趋势](images/diagram_algo_time_complexity.webp)
+
 ![常见时间复杂度的增长趋势](images/big_o.webp)
 
 ![时间复杂度](images/remaining_time_complexity.webp)

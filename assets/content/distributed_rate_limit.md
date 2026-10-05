@@ -1,5 +1,7 @@
 # 限流与熔断算法专题
 
+![限流与熔断算法对比](images/diagram_dist_rate_limit.webp)
+
 ![限流与熔断算法专题](images/category_distributed_rate_limit.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

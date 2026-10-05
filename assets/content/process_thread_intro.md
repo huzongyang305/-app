@@ -1,5 +1,7 @@
 # 进程与线程入门
 
+![进程、线程与上下文切换](images/diagram_os_process_intro.webp)
+
 ![进程与线程入门](images/remaining_process_thread_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

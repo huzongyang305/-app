@@ -1,0 +1,118 @@
+{
+  "math_set_function_intro": {
+    "image": "images/diagram_math_set_function.webp",
+    "alt": "集合与映射的基本概念"
+  },
+  "math_vectors_matrices": {
+    "image": "images/diagram_math_vectors_matrices.webp",
+    "alt": "向量点积与矩阵乘法"
+  },
+  "math_eigen_svd": {
+    "image": "images/diagram_math_eigen_svd.webp",
+    "alt": "特征分解到 SVD 与 PCA"
+  },
+  "math_calculus_gradient": {
+    "image": "images/diagram_math_calculus.webp",
+    "alt": "梯度下降与反向传播"
+  },
+  "math_probability_stats": {
+    "image": "images/diagram_math_probability.webp",
+    "alt": "假设检验与 A/B 实验流程"
+  },
+  "math_information_theory": {
+    "image": "images/diagram_math_information.webp",
+    "alt": "熵、交叉熵与 KL 散度"
+  },
+  "math_convex_optimization": {
+    "image": "images/diagram_math_convex.webp",
+    "alt": "凸优化与正则化"
+  },
+  "math_graph_combinatorics": {
+    "image": "images/diagram_math_graph_combinatorics.webp",
+    "alt": "图论与组合计数"
+  },
+  "math_numerical_linear_algebra": {
+    "image": "images/diagram_math_numerical.webp",
+    "alt": "LU、QR 与 SVD 的选型"
+  },
+  "process_thread_intro": {
+    "image": "images/diagram_os_process_intro.webp",
+    "alt": "进程、线程与上下文切换"
+  },
+  "process_thread": {
+    "image": "images/diagram_os_process_thread.webp",
+    "alt": "进程与线程的区别"
+  },
+  "deadlock": {
+    "image": "images/diagram_os_deadlock.webp",
+    "alt": "死锁的四个必要条件"
+  },
+  "virtual_memory": {
+    "image": "images/diagram_os_virtual_memory.webp",
+    "alt": "虚拟内存与分页机制"
+  },
+  "os_filesystem_impl": {
+    "image": "images/diagram_os_filesystem.webp",
+    "alt": "文件系统与 RAID 的关键机制"
+  },
+  "os_kernel_arch": {
+    "image": "images/diagram_os_kernel_arch.webp",
+    "alt": "宏内核与微内核架构对比"
+  },
+  "os_rtos": {
+    "image": "images/diagram_os_rtos.webp",
+    "alt": "实时操作系统的关键概念"
+  },
+  "os_linux_troubleshooting": {
+    "image": "images/diagram_os_linux_troubleshoot.webp",
+    "alt": "Linux 性能排查的常用工具链"
+  },
+  "os_project": {
+    "image": "images/diagram_os_task_project.webp",
+    "alt": "多线程任务队列的实现要点"
+  },
+  "memory_cache": {
+    "image": "images/diagram_mem_cache.webp",
+    "alt": "存储层次与缓存局部性"
+  },
+  "time_complexity": {
+    "image": "images/diagram_algo_time_complexity.webp",
+    "alt": "常见时间复杂度的增长趋势"
+  },
+  "hash_table": {
+    "image": "images/diagram_algo_hash_table.webp",
+    "alt": "哈希表的冲突处理与扩容"
+  },
+  "transaction": {
+    "image": "images/diagram_db_transaction.webp",
+    "alt": "事务 ACID 与隔离级别"
+  },
+  "ai_deep_learning_llm": {
+    "image": "images/diagram_ai_dl_llm.webp",
+    "alt": "从神经网络到大语言模型"
+  },
+  "ai_agent_basics": {
+    "image": "images/diagram_ai_agent_basics.webp",
+    "alt": "ReAct 循环与工具调用"
+  },
+  "distributed_fundamentals": {
+    "image": "images/diagram_dist_fundamentals.webp",
+    "alt": "分布式系统的核心权衡"
+  },
+  "messaging_events": {
+    "image": "images/diagram_dist_messaging.webp",
+    "alt": "消息队列的投递与消费"
+  },
+  "distributed_short_url_project": {
+    "image": "images/diagram_dist_short_url.webp",
+    "alt": "短链服务的请求链路"
+  },
+  "distributed_id": {
+    "image": "images/diagram_dist_id.webp",
+    "alt": "分布式 ID 生成方案对比"
+  },
+  "distributed_rate_limit": {
+    "image": "images/diagram_dist_rate_limit.webp",
+    "alt": "限流与熔断算法对比"
+  }
+}

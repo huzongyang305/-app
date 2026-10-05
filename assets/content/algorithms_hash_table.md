@@ -1,5 +1,7 @@
 # 哈希表
 
+![哈希表的冲突处理与扩容](images/diagram_algo_hash_table.webp)
+
 ![哈希函数、桶与冲突处理](images/hash_table.webp)
 
 ![哈希表](images/remaining_hash_table.webp)

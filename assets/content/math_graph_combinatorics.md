@@ -1,5 +1,7 @@
 # 图论与组合数学
 
+![图论与组合计数](images/diagram_math_graph_combinatorics.webp)
+
 ![图论与组合数学](images/category_math_graph_combinatorics.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：18 分钟

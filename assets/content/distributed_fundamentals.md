@@ -1,5 +1,7 @@
 # 分布式系统原理
 
+![分布式系统的核心权衡](images/diagram_dist_fundamentals.webp)
+
 ![CAP 定理与网络分区取舍](images/cap_theorem.webp)
 
 ![分布式系统原理](images/category_distributed_fundamentals.webp)

@@ -1,5 +1,7 @@
 # AI Agent 基础
 
+![ReAct 循环与工具调用](images/diagram_ai_agent_basics.webp)
+
 ![AI Agent 的观察、计划、行动、反思循环](images/agent_loop.webp)
 
 ![AI Agent 基础](images/remaining_ai_agent_basics.webp)

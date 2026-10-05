@@ -1,5 +1,7 @@
 # 消息队列与事件驱动
 
+![消息队列的投递与消费](images/diagram_dist_messaging.webp)
+
 ![消息队列与事件驱动](images/category_messaging_events.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：16 分钟

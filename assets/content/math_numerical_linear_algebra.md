@@ -1,5 +1,7 @@
 # 数值线性代数
 
+![LU、QR 与 SVD 的选型](images/diagram_math_numerical.webp)
+
 ![数值线性代数](images/category_math_numerical_linear_algebra.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：18 分钟

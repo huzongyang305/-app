@@ -1,5 +1,7 @@
 # 特征值、SVD 与降维
 
+![特征分解到 SVD 与 PCA](images/diagram_math_eigen_svd.webp)
+
 ![特征值、SVD 与降维](images/category_math_eigen_svd.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：16 分钟

@@ -1,5 +1,7 @@
 # 进程与线程
 
+![进程与线程的区别](images/diagram_os_process_thread.webp)
+
 ![进程资源与线程私有执行状态](images/process_thread.webp)
 
 ![进程与线程](images/remaining_process_thread.webp)

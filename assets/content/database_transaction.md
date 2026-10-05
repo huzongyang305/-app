@@ -1,5 +1,7 @@
 # 事务
 
+![事务 ACID 与隔离级别](images/diagram_db_transaction.webp)
+
 ![数据库事务的 ACID 与提交边界](images/acid_transaction.webp)
 
 ![事务](images/remaining_transaction.webp)

@@ -1,5 +1,7 @@
 # 死锁
 
+![死锁的四个必要条件](images/diagram_os_deadlock.webp)
+
 ![死锁的四个必要条件](images/deadlock.webp)
 
 ![死锁](images/remaining_deadlock.webp)

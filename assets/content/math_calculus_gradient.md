@@ -1,5 +1,7 @@
 # 微积分与梯度下降
 
+![梯度下降与反向传播](images/diagram_math_calculus.webp)
+
 ![微积分与梯度下降](images/category_math_calculus_gradient.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：16 分钟

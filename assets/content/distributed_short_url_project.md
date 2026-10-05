@@ -1,5 +1,7 @@
 # 实战：设计一个短链服务
 
+![短链服务的请求链路](images/diagram_dist_short_url.webp)
+
 ![实战：设计一个短链服务](images/category_distributed_short_url_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：17 分钟

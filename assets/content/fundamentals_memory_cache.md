@@ -1,5 +1,7 @@
 # 内存与缓存
 
+![存储层次与缓存局部性](images/diagram_mem_cache.webp)
+
 ![寄存器到磁盘的存储层次](images/cache_hierarchy.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

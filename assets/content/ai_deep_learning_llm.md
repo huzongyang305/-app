@@ -1,5 +1,7 @@
 # 深度学习与大语言模型
 
+![从神经网络到大语言模型](images/diagram_ai_dl_llm.webp)
+
 ![Transformer 的 Q/K/V 注意力计算](images/transformer_attention.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：17 分钟

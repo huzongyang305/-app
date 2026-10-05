@@ -1,5 +1,7 @@
 # 信息论基础：熵、交叉熵与 KL 散度
 
+![熵、交叉熵与 KL 散度](images/diagram_math_information.webp)
+
 ![信息论：熵与交叉熵](images/category_math_information_theory.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

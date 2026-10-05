@@ -1,5 +1,7 @@
 # 实时操作系统与确定性
 
+![实时操作系统的关键概念](images/diagram_os_rtos.webp)
+
 ![实时操作系统与确定性](images/lesson_os_rtos.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：25 分钟

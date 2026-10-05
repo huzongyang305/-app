@@ -1,5 +1,7 @@
 # 概率统计与假设检验
 
+![假设检验与 A/B 实验流程](images/diagram_math_probability.webp)
+
 ![概率统计与假设检验](images/category_math_probability_stats.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：18 分钟

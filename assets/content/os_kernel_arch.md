@@ -1,5 +1,7 @@
 # 操作系统内核架构
 
+![宏内核与微内核架构对比](images/diagram_os_kernel_arch.webp)
+
 ![操作系统内核架构](images/lesson_os_kernel_arch.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

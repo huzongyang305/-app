@@ -1,5 +1,7 @@
 # Linux 性能与故障排查
 
+![Linux 性能排查的常用工具链](images/diagram_os_linux_troubleshoot.webp)
+
 ![Linux 性能与故障排查](images/lesson_os_linux_troubleshooting.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：25 分钟

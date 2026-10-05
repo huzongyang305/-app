@@ -1,5 +1,7 @@
 # 集合与函数入门
 
+![集合与映射的基本概念](images/diagram_math_set_function.webp)
+
 ![集合与函数入门](images/category_math_set_function_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

@@ -1,5 +1,7 @@
 # 线性代数：向量与矩阵
 
+![向量点积与矩阵乘法](images/diagram_math_vectors_matrices.webp)
+
 ![线性代数：向量与矩阵](images/category_math_vectors_matrices.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：16 分钟
