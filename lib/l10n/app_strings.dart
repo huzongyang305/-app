@@ -742,6 +742,48 @@ class AppStrings {
     'sandboxLangLua': {'zh': 'Lua', 'en': 'Lua'},
     'sandboxLangSql': {'zh': 'SQL', 'en': 'SQL'},
     'sandboxLangJson': {'zh': 'JSON', 'en': 'JSON'},
+    'sandboxLangScheme': {'zh': 'Scheme', 'en': 'Scheme'},
+    'sandboxLangMarkdown': {'zh': 'Markdown', 'en': 'Markdown'},
+    'sandboxLangRegex': {'zh': '正则表达式', 'en': 'Regex'},
+    'sandboxLangXml': {'zh': 'XML', 'en': 'XML'},
+    'sandboxLangCsv': {'zh': 'CSV', 'en': 'CSV'},
+    'sandboxCodeLabel': {'zh': '代码', 'en': 'Code'},
+    'sandboxStdin': {'zh': '标准输入（stdin）', 'en': 'Standard input'},
+    'sandboxStdinHint': {
+      'zh': '每行一条，供 input() / readLine() 依次读取',
+      'en': 'One value per line for input() / readLine()',
+    },
+    'sandboxStdinPlaceholder': {
+      'zh': '例如：\n小明 92\n小红 88',
+      'en': 'e.g.\nMing 92\nHong 88',
+    },
+    'sandboxFullscreen': {'zh': '全屏编辑', 'en': 'Full screen'},
+    'sandboxExamples': {'zh': '示例库', 'en': 'Examples'},
+    'sandboxExampleWithStdin': {
+      'zh': '含标准输入示例',
+      'en': 'Includes stdin sample',
+    },
+    'sandboxSnippets': {'zh': '我的片段', 'en': 'My snippets'},
+    'sandboxSnippetsUnavailable': {
+      'zh': '当前环境不支持本地片段库',
+      'en': 'Snippet library unavailable here',
+    },
+    'sandboxSaveSnippet': {'zh': '保存为片段', 'en': 'Save snippet'},
+    'sandboxSnippetTitle': {'zh': '片段名称', 'en': 'Snippet name'},
+    'sandboxSnippetSaved': {'zh': '片段已保存', 'en': 'Snippet saved'},
+    'sandboxSnippetEmpty': {'zh': '还没有保存的片段', 'en': 'No snippets yet'},
+    'sandboxSnippetEmptyHint': {
+      'zh': '写一段代码后点「保存为片段」，下次可以直接调用',
+      'en': 'Write some code and tap Save snippet to reuse it later',
+    },
+    'sandboxFavorite': {'zh': '收藏片段', 'en': 'Favorite'},
+    'sandboxShare': {'zh': '分享代码', 'en': 'Share code'},
+    'sandboxShared': {'zh': '已打开系统分享', 'en': 'Share sheet opened'},
+    'sandboxMore': {'zh': '更多操作', 'en': 'More'},
+    'sandboxFontSmaller': {'zh': '减小字号', 'en': 'Smaller font'},
+    'sandboxFontLarger': {'zh': '增大字号', 'en': 'Larger font'},
+    'sandboxEditorDone': {'zh': '完成', 'en': 'Done'},
+    'sandboxEditorHint': {'zh': '在这里输入代码', 'en': 'Type your code here'},
     'sandboxHintJavascript': {
       'zh': '支持 console.log 与表达式结果，适合练习语法、数组与算法。',
       'en': 'console.log and expression results; handy for syntax, arrays and algorithms.',
@@ -765,6 +807,26 @@ class AppStrings {
     'sandboxHintJson': {
       'zh': '校验 JSON 语法并格式化输出，方便检查接口数据。',
       'en': 'Validate and pretty-print JSON to inspect data payloads.',
+    },
+    'sandboxHintScheme': {
+      'zh': '内置 BiwaScheme 解释器：用 S 表达式练习函数式编程，标准输入用 (read-line) 读取。',
+      'en': 'Built-in BiwaScheme interpreter; read stdin with (read-line).',
+    },
+    'sandboxHintMarkdown': {
+      'zh': '离线渲染标题、列表、代码块、引用、链接与强调语法，直接返回生成的 HTML。',
+      'en': 'Offline Markdown rendering (headings, lists, code, quotes, links).',
+    },
+    'sandboxHintRegex': {
+      'zh': '第一行写正则表达式，第二行可写 flags（如 g、i），其余行是待匹配文本。',
+      'en': 'Line 1: pattern, line 2: flags, remaining lines: test text.',
+    },
+    'sandboxHintXml': {
+      'zh': '校验 XML 是否合法，并输出缩进格式化后的结构。',
+      'en': 'Validate XML and print an indented, formatted structure.',
+    },
+    'sandboxHintCsv': {
+      'zh': '解析 CSV（支持引号与逗号转义），输出逐行字段与 JSON 预览。',
+      'en': 'Parse CSV with quoted fields and preview rows as JSON.',
     },
     'toolsLocalOnly': {
       'zh': '全部在本地完成，不联网 · 共 {n} 个工具',

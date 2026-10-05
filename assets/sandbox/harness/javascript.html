@@ -11,6 +11,16 @@
 (function () {
   __sandboxBegin();
   try {
+    // 标准输入：readLine() / readline() 逐行读取，prompt() 也会消费一行。
+    var readLine = window.__sandboxReadLine;
+    window.readLine = readLine;
+    window.readline = readLine;
+    window.prompt = function (message) {
+      return readLine(message);
+    };
+    if (window.__sandboxStdinRemaining() > 0) {
+      __sandboxPush('（已预置 ' + window.__sandboxStdinRemaining() + ' 行标准输入）');
+    }
     // 用 Function 包一层，用户代码可以写 return 之外的任意语句。
     var runner = new Function(__USER_CODE__);
     var value = runner();

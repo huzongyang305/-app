@@ -28,6 +28,11 @@ class SettingsProvider extends ChangeNotifier {
     final selectedPath = _storage.read('selected_path_id', defaultValue: '');
     _selectedPathId = selectedPath is String ? selectedPath : '';
 
+    final sandboxScale = _storage.read('sandbox_font_scale', defaultValue: 1.0);
+    _sandboxFontScale = (sandboxScale is num)
+        ? sandboxScale.toDouble().clamp(0.8, 1.8)
+        : 1.0;
+
     _reviewReminderEnabled =
         _storage.read('review_reminder_enabled', defaultValue: false) == true;
     final goal = _storage.read('daily_goal_minutes', defaultValue: 20);
@@ -87,6 +92,7 @@ class SettingsProvider extends ChangeNotifier {
   double _codeFontScale = 1.0;
   bool _codeWrapLines = false;
   String _selectedPathId = '';
+  double _sandboxFontScale = 1.0;
   bool _reviewReminderEnabled = false;
   int _dailyGoalMinutes = 20;
   int _reviewSessionMinutes = 30;
@@ -119,6 +125,17 @@ class SettingsProvider extends ChangeNotifier {
 
   /// 用户选定的学习目标路径 ID；为空表示尚未选择目标。
   String get selectedPathId => _selectedPathId;
+
+  /// 代码沙箱编辑器的字号缩放（0.8 ~ 1.8）。
+  double get sandboxFontScale => _sandboxFontScale;
+
+  Future<void> setSandboxFontScale(double value) async {
+    final clamped = value.clamp(0.8, 1.8);
+    if ((_sandboxFontScale - clamped).abs() < 0.001) return;
+    _sandboxFontScale = clamped;
+    notifyListeners();
+    await _storage.write('sandbox_font_scale', clamped);
+  }
 
   Future<void> setCodeFontScale(double value) async {
     final clamped = value.clamp(0.8, 1.6);

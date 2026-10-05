@@ -87,6 +87,14 @@ class MainActivity : FlutterActivity() {
             listOf("sqljs/sql-wasm.js", "sqljs/sql-wasm-binary.js"),
         ),
         "json" to SandboxSpec("json.html", emptyList()),
+        "scheme" to SandboxSpec(
+            "scheme.html",
+            listOf("biwascheme/biwascheme-min.js"),
+        ),
+        "markdown" to SandboxSpec("markdown.html", emptyList()),
+        "regex" to SandboxSpec("regex.html", emptyList()),
+        "xml" to SandboxSpec("xml.html", emptyList()),
+        "csv" to SandboxSpec("csv.html", emptyList()),
     )
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
@@ -98,11 +106,13 @@ class MainActivity : FlutterActivity() {
                     "runJs" -> runCode(
                         "javascript",
                         call.argument<String>("code") ?: "",
+                        call.argument<String>("stdin") ?: "",
                         result,
                     )
                     "runCode" -> runCode(
                         call.argument<String>("language") ?: "javascript",
                         call.argument<String>("code") ?: "",
+                        call.argument<String>("stdin") ?: "",
                         result,
                     )
                     "destroySandbox" -> {
@@ -849,12 +859,17 @@ class MainActivity : FlutterActivity() {
     }
 
     /** 在后台线程拼接并写出页面（Python 运行时有好几 MB，避免卡住主线程）。 */
-    private fun runCode(language: String, code: String, result: MethodChannel.Result) {
+    private fun runCode(
+        language: String,
+        code: String,
+        stdin: String,
+        result: MethodChannel.Result,
+    ) {
         Thread {
             var page: File? = null
             var errorText: String? = null
             try {
-                page = writeSandboxPage(language, code)
+                page = writeSandboxPage(language, code, stdin)
             } catch (error: Exception) {
                 errorText = error.message ?: error.toString()
             }
@@ -907,23 +922,36 @@ class MainActivity : FlutterActivity() {
     }
 
     /** 生成沙箱页面并写入缓存目录，返回文件句柄。 */
-    private fun writeSandboxPage(language: String, code: String): File {
+    private fun writeSandboxPage(
+        language: String,
+        code: String,
+        stdin: String,
+    ): File {
         val dir = File(cacheDir, SANDBOX_DIR).apply { mkdirs() }
         val page = File(dir, "$language.html")
-        page.writeText(buildSandboxHtml(language, code), Charsets.UTF_8)
+        page.writeText(buildSandboxHtml(language, code, stdin), Charsets.UTF_8)
         return page
     }
 
-    private fun buildSandboxHtml(language: String, code: String): String {
+    private fun buildSandboxHtml(
+        language: String,
+        code: String,
+        stdin: String,
+    ): String {
         val spec = specs[language] ?: specs.getValue("javascript")
         var html = readSandboxAsset("harness/${spec.harness}")
         spec.runtimes.forEachIndexed { index, path ->
             val marker = "/*__RUNTIME_${index + 1}__*/"
             html = html.replace(marker, escapeInlineScript(readSandboxAsset(path)))
         }
+        // 标准输入按行注入公共脚本，再替换用户代码，避免相互干扰。
+        val commonContent = readSandboxAsset("harness/common.js").replace(
+            "__SANDBOX_STDIN_ARRAY__",
+            encodeJsArray(stdinLines(stdin)),
+        )
         html = html.replace(
             "/*__COMMON__*/",
-            escapeInlineScript(readSandboxAsset("harness/common.js")),
+            escapeInlineScript(commonContent),
         )
         // 用户代码最后替换，避免代码里出现同样的标记时被误替换。
         return html.replace("__USER_CODE__", encodeJsString(code))
@@ -946,6 +974,24 @@ class MainActivity : FlutterActivity() {
         .replace("</script", "<\\/script")
         .replace("\u2028", "\\u2028")
         .replace("\u2029", "\\u2029")
+
+    /** 把标准输入按行转成 JS 数组字面量，供公共脚本读取。 */
+    private fun encodeJsArray(lines: List<String>): String = lines.joinToString(
+        prefix = "[",
+        postfix = "]",
+        separator = ",",
+    ) { line ->
+        JSONObject.quote(line)
+            .replace("</script", "<\\/script")
+            .replace("\u2028", "\\u2028")
+            .replace("\u2029", "\\u2029")
+    }
+
+    /** 标准输入按行拆分；纯空输入返回空列表。 */
+    private fun stdinLines(stdin: String): List<String> {
+        if (stdin.isEmpty()) return emptyList()
+        return stdin.replace("\r\n", "\n").replace('\r', '\n').split('\n')
+    }
 
     private fun destroySandbox() {
         activeTimeout?.let { Handler(Looper.getMainLooper()).removeCallbacks(it) }

@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<pre id="sandbox-output" hidden></pre>
+<script>/*__COMMON__*/</script>
+<script>
+(function () {
+  function indent(node, depth, lines) {
+    var pad = new Array(depth + 1).join('  ');
+    if (node.nodeType === 3) {
+      var text = node.nodeValue.replace(/\s+/g, ' ').trim();
+      if (text) lines.push(pad + text);
+      return;
+    }
+    if (node.nodeType === 8) {
+      lines.push(pad + '<!--' + node.nodeValue.trim() + '-->');
+      return;
+    }
+    if (node.nodeType !== 1) return;
+    var attrs = '';
+    for (var i = 0; i < node.attributes.length; i++) {
+      var attr = node.attributes[i];
+      attrs += ' ' + attr.name + '="' + attr.value + '"';
+    }
+    var children = [];
+    for (var j = 0; j < node.childNodes.length; j++) {
+      var child = node.childNodes[j];
+      if (child.nodeType === 3 && !child.nodeValue.trim()) continue;
+      children.push(child);
+    }
+    if (!children.length) {
+      lines.push(pad + '<' + node.nodeName + attrs + '/>');
+      return;
+    }
+    var onlyText =
+      children.length === 1 && children[0].nodeType === 3;
+    if (onlyText) {
+      lines.push(
+        pad + '<' + node.nodeName + attrs + '>' +
+        children[0].nodeValue.replace(/\s+/g, ' ').trim() +
+        '</' + node.nodeName + '>'
+      );
+      return;
+    }
+    lines.push(pad + '<' + node.nodeName + attrs + '>');
+    for (var k = 0; k < children.length; k++) {
+      indent(children[k], depth + 1, lines);
+    }
+    lines.push(pad + '</' + node.nodeName + '>');
+  }
+
+  __sandboxBegin();
+  try {
+    var source = String(__USER_CODE__);
+    if (!source.trim()) {
+      __sandboxPush('请输入 XML 内容。');
+      __sandboxFinish();
+      return;
+    }
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(source, 'application/xml');
+    var error = doc.getElementsByTagName('parsererror');
+    if (error && error.length) {
+      __sandboxPush('XML 解析失败：');
+      __sandboxPush(error[0].textContent.replace(/\s+/g, ' ').trim());
+      __sandboxFinish();
+      return;
+    }
+    var root = doc.documentElement;
+    var elements = doc.getElementsByTagName('*').length;
+    var lines = [];
+    indent(root, 0, lines);
+    __sandboxPush('XML 格式正确：根元素 <' + root.nodeName + '>，共 ' + elements + ' 个元素。');
+    __sandboxPush('');
+    __sandboxPush(lines.join('\n'));
+  } catch (error) {
+    __sandboxPush('Error: ' + (error && error.stack ? error.stack : String(error)));
+  }
+  __sandboxFinish();
+})();
+</script>
+</body>
+</html>

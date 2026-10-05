@@ -32,6 +32,23 @@
 
   window.__sandboxStringify = stringify;
   window.__sandboxPush = push;
+
+  // 标准输入：原生层把用户在界面上填写的文本按行转换成 JS 数组字面量，
+  // 直接替换下面的占位标记后再内联执行。
+  var stdinLines = (__SANDBOX_STDIN_ARRAY__ || []).slice();
+  window.__sandboxStdinRemaining = function () {
+    return stdinLines.length;
+  };
+  window.__sandboxStdinLines = function () {
+    return stdinLines.slice();
+  };
+  window.__sandboxReadLine = function (promptText) {
+    if (promptText !== undefined && promptText !== null && promptText !== '') {
+      push(String(promptText));
+    }
+    if (!stdinLines.length) return null;
+    return stdinLines.shift();
+  };
   window.__sandboxBegin = function () {
     capturing = true;
     // 运行时脚本在加载阶段报的错提前记下来，用户能看到明确原因。

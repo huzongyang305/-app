@@ -17,12 +17,20 @@ class CodeSandboxService {
   static const List<SandboxLanguage> languages = SandboxLanguage.values;
 
   /// 执行代码并返回输出文本；出错时返回可直接展示的提示文本。
-  static Future<String> runCode(SandboxLanguage language, String code) async {
+  ///
+  /// [stdin] 是按行提供的标准输入，支持 stdin 的语言可以在代码里
+  /// 通过 input() / readLine() 读取。
+  static Future<String> runCode(
+    SandboxLanguage language,
+    String code, {
+    String stdin = '',
+  }) async {
     try {
       final result = await _channel
           .invokeMethod<String>('runCode', <String, Object?>{
             'language': language.id,
             'code': code,
+            'stdin': stdin,
           })
           .timeout(language.timeout);
       return (result ?? '').trim();

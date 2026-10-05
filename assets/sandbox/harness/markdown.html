@@ -1,0 +1,142 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<pre id="sandbox-output" hidden></pre>
+<script>/*__COMMON__*/</script>
+<script>
+(function () {
+  // 迷你 Markdown 渲染器：标题、粗体/斜体、行内代码、围栏代码、列表、
+  // 引用、分割线、链接与段落。只做离线可预期的子集，便于学习语法本身。
+  function escapeHtml(text) {
+    return String(text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function inline(text) {
+    var out = escapeHtml(text);
+    out = out.replace(/`([^`]+)`/g, '<code>$1</code>');
+    out = out.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    out = out.replace(/(^|[^*])\*([^*]+)\*/g, '$1<em>$2</em>');
+    out = out.replace(
+      /\[([^\]]+)\]\(([^)\s]+)\)/g,
+      '<a href="$2">$1</a>'
+    );
+    return out;
+  }
+
+  function render(source) {
+    var lines = String(source).replace(/\r\n?/g, '\n').split('\n');
+    var html = [];
+    var paragraph = [];
+    var listType = null;
+    var inCode = false;
+    var codeLines = [];
+
+    function flushParagraph() {
+      if (!paragraph.length) return;
+      html.push('<p>' + inline(paragraph.join(' ')) + '</p>');
+      paragraph = [];
+    }
+    function closeList() {
+      if (listType) {
+        html.push(listType === 'ol' ? '</ol>' : '</ul>');
+        listType = null;
+      }
+    }
+    function flushCode() {
+      html.push('<pre><code>' + escapeHtml(codeLines.join('\n')) + '</code></pre>');
+      codeLines = [];
+    }
+
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      if (/^```/.test(line)) {
+        flushParagraph();
+        closeList();
+        if (inCode) {
+          flushCode();
+          inCode = false;
+        } else {
+          inCode = true;
+        }
+        continue;
+      }
+      if (inCode) {
+        codeLines.push(line);
+        continue;
+      }
+      if (/^\s*$/.test(line)) {
+        flushParagraph();
+        closeList();
+        continue;
+      }
+      var heading = line.match(/^(#{1,6})\s+(.*)$/);
+      if (heading) {
+        flushParagraph();
+        closeList();
+        var level = heading[1].length;
+        html.push('<h' + level + '>' + inline(heading[2]) + '</h' + level + '>');
+        continue;
+      }
+      if (/^\s*([-*_])\s*\1\s*\1[\s\-*_]*$/.test(line)) {
+        flushParagraph();
+        closeList();
+        html.push('<hr>');
+        continue;
+      }
+      var quote = line.match(/^>\s?(.*)$/);
+      if (quote) {
+        flushParagraph();
+        closeList();
+        html.push('<blockquote>' + inline(quote[1]) + '</blockquote>');
+        continue;
+      }
+      var bullet = line.match(/^\s*[-*+]\s+(.*)$/);
+      var ordered = line.match(/^\s*\d+[.)]\s+(.*)$/);
+      if (bullet || ordered) {
+        flushParagraph();
+        var wanted = ordered ? 'ol' : 'ul';
+        if (listType !== wanted) {
+          closeList();
+          html.push(wanted === 'ol' ? '<ol>' : '<ul>');
+          listType = wanted;
+        }
+        html.push('<li>' + inline((bullet || ordered)[1]) + '</li>');
+        continue;
+      }
+      paragraph.push(line);
+    }
+    flushParagraph();
+    closeList();
+    if (inCode) flushCode();
+    return html.join('\n');
+  }
+
+  __sandboxBegin();
+  try {
+    var source = String(__USER_CODE__);
+    if (!source.trim()) {
+      __sandboxPush('请输入 Markdown 内容。');
+    } else {
+      var html = render(source);
+      var headings = (html.match(/<h[1-6]>/g) || []).length;
+      var blocks = (html.match(/<(p|pre|ul|ol|blockquote|hr)[ >]/g) || []).length;
+      __sandboxPush('已渲染 HTML（标题 ' + headings + ' 个 / 内容块 ' + blocks + ' 个）：');
+      __sandboxPush('');
+      __sandboxPush(html);
+    }
+  } catch (error) {
+    __sandboxPush('Error: ' + (error && error.stack ? error.stack : String(error)));
+  }
+  __sandboxFinish();
+})();
+</script>
+</body>
+</html>

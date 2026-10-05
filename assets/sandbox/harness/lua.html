@@ -35,6 +35,18 @@
     });
     lua.lua_setglobal(state, fengari.to_luastring('print'));
 
+    // 标准输入：readLine() 返回下一行，没有更多输入时返回 nil。
+    lua.lua_pushcfunction(state, function (L) {
+      var line = window.__sandboxReadLine();
+      if (line === null || line === undefined) {
+        lua.lua_pushnil(L);
+      } else {
+        lua.lua_pushstring(L, fengari.to_luastring(String(line)));
+      }
+      return 1;
+    });
+    lua.lua_setglobal(state, fengari.to_luastring('readLine'));
+
     var status = lauxlib.luaL_loadstring(state, fengari.to_luastring(__USER_CODE__));
     if (status === lua.LUA_OK) {
       status = lua.lua_pcall(state, 0, lua.LUA_MULTRET, 0);

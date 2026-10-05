@@ -2,6 +2,7 @@ import 'package:code_learn_app/models/sandbox_language.dart';
 import 'package:code_learn_app/screens/code_sandbox_screen.dart';
 import 'package:code_learn_app/services/code_sandbox_service.dart';
 import 'package:code_learn_app/services/settings_provider.dart';
+import 'package:code_learn_app/services/snippet_service.dart';
 import 'package:code_learn_app/services/storage_service.dart';
 import 'package:code_learn_app/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,58 @@ void main() {
     expect(SandboxLanguage.fromId('cobol'), SandboxLanguage.javascript);
   });
 
+  test('新增语言都带示例库，stdin 支持标记正确', () {
+    for (final id in <String>[
+      'scheme',
+      'markdown',
+      'regex',
+      'xml',
+      'csv',
+    ]) {
+      final language = SandboxLanguage.fromId(id);
+      expect(language.examples, isNotEmpty, reason: '$id 缺少示例');
+      expect(language.sampleCode.trim(), isNotEmpty, reason: '$id 缺少默认代码');
+    }
+    expect(SandboxLanguage.scheme.supportsStdin, isTrue);
+    expect(SandboxLanguage.python.supportsStdin, isTrue);
+    expect(SandboxLanguage.lua.supportsStdin, isTrue);
+    expect(SandboxLanguage.markdown.supportsStdin, isFalse);
+  });
+
+  test('片段库支持保存、收藏、按语言检索与删除', () async {
+    final storage = StorageService.inMemory();
+    final service = SnippetService(storage);
+    expect(service.snippets, isEmpty);
+
+    await service.upsert(
+      languageId: 'python',
+      title: '词频统计',
+      code: 'print("hi")',
+      stdin: '小明 92',
+      now: DateTime(2026, 1, 1, 10),
+    );
+    await service.upsert(
+      languageId: 'javascript',
+      title: '平方和',
+      code: 'console.log(1)',
+      now: DateTime(2026, 1, 2, 10),
+    );
+    expect(service.length, 2);
+    expect(service.forLanguage('python').single.stdin, '小明 92');
+
+    final id = service.forLanguage('python').single.id;
+    await service.toggleFavorite(id);
+    expect(service.snippets.first.id, id, reason: '收藏的片段排在最前');
+
+    await service.remove(id);
+    expect(service.length, 1);
+
+    // 重新构造服务验证持久化。
+    final restored = SnippetService(storage);
+    expect(restored.length, 1);
+    expect(restored.snippets.single.title, '平方和');
+  });
+
   test('所有语言在无插件环境下都返回提示而不是抛异常', () async {
     for (final language in SandboxLanguage.values) {
       final output = await CodeSandboxService.runCode(
@@ -59,6 +112,11 @@ void main() {
       SandboxLanguage.lua: 1,
       SandboxLanguage.sql: 2,
       SandboxLanguage.json: 0,
+      SandboxLanguage.scheme: 1,
+      SandboxLanguage.markdown: 0,
+      SandboxLanguage.regex: 0,
+      SandboxLanguage.xml: 0,
+      SandboxLanguage.csv: 0,
     };
     final common = await rootBundle.loadString(
       'assets/sandbox/harness/common.js',
@@ -91,6 +149,7 @@ void main() {
       'assets/sandbox/sqljs/sql-wasm.js',
       'assets/sandbox/sqljs/sql-wasm-binary.js',
       'assets/sandbox/sucrase/sucrase.bundle.js',
+      'assets/sandbox/biwascheme/biwascheme-min.js',
     ];
     for (final path in runtimes) {
       final content = await rootBundle.loadString(path);
@@ -147,10 +206,19 @@ void main() {
     // 切换语言后示例代码随之切换
     await tester.tap(find.text('Python'));
     await tester.pumpAndSettle();
-    final codeField = tester.widget<TextField>(find.byType(TextField));
+    final codeField = tester.widget<TextField>(find.byType(TextField).first);
     expect(codeField.controller?.text, contains('counts.get'));
 
+    // 标准输入支持：填入两行后运行，参数应一起传给原生层。
+    await tester.enterText(find.byType(TextField).at(1), '小明 92\n小红 88');
+    await tester.pump();
+
     // 测试环境没有原生插件，应显示降级提示而不是崩溃
+    await tester.scrollUntilVisible(
+      find.text('运行代码'),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
     await tester.tap(find.text('运行代码'));
     await tester.pump();
     await tester.pump();
@@ -159,6 +227,7 @@ void main() {
     final arguments = (received?.arguments as Map).cast<String, Object?>();
     expect(arguments['language'], 'python');
     expect(arguments['code'], contains('counts.get'));
+    expect(arguments['stdin'], contains('小明 92'));
 
     final output = tester.widget<SelectableText>(find.byType(SelectableText));
     expect(output.data, 'sum = 55');

@@ -35,6 +35,7 @@ class CodeLearnApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        Provider<StorageService>.value(value: storage),
         ChangeNotifierProvider(create: (_) => SettingsProvider(storage)),
         ChangeNotifierProvider(
           create: (_) => ProgressProvider(storage, now: clock),

@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<pre id="sandbox-output" hidden></pre>
+<script>/*__COMMON__*/</script>
+<script>
+(function () {
+  // 解析 CSV：支持逗号分隔、双引号包裹、引号内换行与 "" 转义。
+  function parse(text) {
+    var rows = [];
+    var row = [];
+    var field = '';
+    var quoted = false;
+    for (var i = 0; i < text.length; i++) {
+      var ch = text[i];
+      if (quoted) {
+        if (ch === '"') {
+          if (text[i + 1] === '"') {
+            field += '"';
+            i++;
+          } else {
+            quoted = false;
+          }
+        } else {
+          field += ch;
+        }
+        continue;
+      }
+      if (ch === '"') {
+        quoted = true;
+      } else if (ch === ',') {
+        row.push(field);
+        field = '';
+      } else if (ch === '\n') {
+        row.push(field);
+        rows.push(row);
+        row = [];
+        field = '';
+      } else if (ch !== '\r') {
+        field += ch;
+      }
+    }
+    if (field !== '' || row.length) {
+      row.push(field);
+      rows.push(row);
+    }
+    return rows.filter(function (item) {
+      return item.length > 1 || (item[0] || '').trim() !== '';
+    });
+  }
+
+  __sandboxBegin();
+  try {
+    var source = String(__USER_CODE__);
+    if (!source.trim()) {
+      __sandboxPush('请输入 CSV 内容，第一行作为表头。');
+      __sandboxFinish();
+      return;
+    }
+    var rows = parse(source);
+    if (!rows.length) {
+      __sandboxPush('没有解析到任何行。');
+      __sandboxFinish();
+      return;
+    }
+    var header = rows[0];
+    var body = rows.slice(1);
+    var limited = body.slice(0, 50);
+    __sandboxPush('共 ' + body.length + ' 行数据 / ' + header.length + ' 列：' + header.join(' | '));
+    __sandboxPush('');
+    var lines = [];
+    for (var i = 0; i < limited.length; i++) {
+      var cells = [];
+      for (var c = 0; c < header.length; c++) {
+        cells.push(header[c] + '=' + (limited[i][c] === undefined ? '' : limited[i][c]));
+      }
+      lines.push('第 ' + (i + 1) + ' 行：' + cells.join('，'));
+    }
+    __sandboxPush(lines.join('\n'));
+    if (body.length > limited.length) {
+      __sandboxPush('…… 其余 ' + (body.length - limited.length) + ' 行已省略');
+    }
+    __sandboxPush('');
+    __sandboxPush('JSON 预览：');
+    var objects = limited.map(function (item) {
+      var record = {};
+      for (var c2 = 0; c2 < header.length; c2++) {
+        record[header[c2]] = item[c2] === undefined ? '' : item[c2];
+      }
+      return record;
+    });
+    __sandboxPush(JSON.stringify(objects, null, 2));
+  } catch (error) {
+    __sandboxPush('Error: ' + (error && error.stack ? error.stack : String(error)));
+  }
+  __sandboxFinish();
+})();
+</script>
+</body>
+</html>

@@ -32,9 +32,25 @@
   if (__BRYTHON__.protocol === 'file') {
     __BRYTHON__.protocol = 'https';
   }
+  // 标准输入：把用户填写的文本按行注入 Python 的 input()。
+  var stdinJson = JSON.stringify(window.__sandboxStdinLines());
+  var prelude =
+    '__sandbox_stdin__ = ' + stdinJson + '\n' +
+    'def input(prompt=""):\n' +
+    '    if prompt:\n' +
+    '        print(prompt, end="")\n' +
+    '    if not __sandbox_stdin__:\n' +
+    '        raise EOFError("标准输入已用尽，请在沙箱的 stdin 输入框补充内容")\n' +
+    '    return __sandbox_stdin__.pop(0)\n' +
+    'try:\n' +
+    '    import builtins as __sandbox_builtins__\n' +
+    '    __sandbox_builtins__.input = input\n' +
+    'except Exception:\n' +
+    '    pass\n';
+  var source = prelude + __USER_CODE__;
   var before = window.__sandboxLogs.length;
   try {
-    __BRYTHON__.runPythonSource(__USER_CODE__, 'sandbox_user_code');
+    __BRYTHON__.runPythonSource(source, 'sandbox_user_code');
   } catch (error) {
     // Brython 抛异常前已经把 traceback 打到 console.error，这里只做兜底。
     if (window.__sandboxLogs.length === before) {

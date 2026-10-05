@@ -24,12 +24,16 @@ class _SandboxCase {
     this.language,
     this.code,
     this.expects, {
+    this.stdin = '',
     this.checkNetwork = false,
   });
 
   final String language;
   final String code;
   final List<String> expects;
+
+  /// 沙箱 stdin 输入框内容，按行拆分后注入页面。
+  final String stdin;
 
   /// 是否同时用 http:// 跑一遍，确认没有额外网络请求。
   final bool checkNetwork;
@@ -178,6 +182,62 @@ SELECT * FROM missing_table;
 ''',
     ['Error:'],
   ),
+  // —— 1.3 新增语言与标准输入 ——
+  _SandboxCase(
+    'javascript',
+    '''
+const name = readLine();
+const age = Number(readLine());
+console.log("name =", name);
+console.log("next year =", age + 1);
+''',
+    ['name = 小明', 'next year = 18'],
+    stdin: '小明\n17',
+    checkNetwork: true,
+  ),
+  _SandboxCase(
+    'python',
+    '''
+name = input()
+age = int(input())
+print("name =", name)
+print("next year =", age + 1)
+''',
+    ['name = 小明', 'next year = 18'],
+    stdin: '小明\n17',
+  ),
+  _SandboxCase(
+    'scheme',
+    '''
+(define (square x) (* x x))
+(display "square(12) = ")
+(display (square 12))
+(newline)
+(display (map square (list 1 2 3)))
+''',
+    ['square(12) = 144', '(1 4 9)'],
+    checkNetwork: true,
+  ),
+  _SandboxCase(
+    'markdown',
+    '# 标题\n\n- 一\n- 二\n\n**粗体** 与 `code`\n',
+    ['标题 1 个', '<h1>标题</h1>', '<strong>粗体</strong>', '<ul>'],
+  ),
+  _SandboxCase(
+    'regex',
+    '\\d{4}-\\d{2}-\\d{2}\ng\n订单 A: 2026-01-05 下单',
+    ['匹配数量：1', '2026-01-05'],
+  ),
+  _SandboxCase(
+    'xml',
+    '<book id="1"><title>Flutter</title><price>42.5</price><tag>移动</tag><tag>跨平台</tag></book>',
+    ['XML 格式正确', 'book', '跨平台'],
+  ),
+  _SandboxCase(
+    'csv',
+    'name,score\n"小,明",92\n小红,88\n',
+    ['共 2 行数据 / 2 列：name | score', '小,明', '小红'],
+  ),
 ];
 
 /// 语言 -> 需要内联的运行时文件（相对 assets/sandbox）。
@@ -188,6 +248,11 @@ const _runtimes = <String, List<String>>{
   'lua': ['fengari/fengari-web.bundle.js'],
   'sql': ['sqljs/sql-wasm.js', 'sqljs/sql-wasm-binary.js'],
   'json': [],
+  'scheme': ['biwascheme/biwascheme-min.js'],
+  'markdown': [],
+  'regex': [],
+  'xml': [],
+  'csv': [],
 };
 
 /// 按原生层的规则组装页面：先内联运行时，再替换用户代码（避免代码里出现标记时误替换）。
@@ -196,6 +261,7 @@ String assembleHarness({
   required String common,
   required List<String> runtimes,
   required String userCode,
+  String stdin = '',
 }) {
   var html = harness;
   for (var i = 0; i < runtimes.length; i++) {
@@ -208,12 +274,30 @@ String assembleHarness({
   if (!html.contains('/*__COMMON__*/')) {
     throw StateError('模板缺少标记 /*__COMMON__*/');
   }
-  html = html.replaceFirst('/*__COMMON__*/', escapeInlineScript(common));
+  // 标准输入按行注入公共脚本，规则与原生层保持一致。
+  final commonContent = common.replaceAll(
+    '__SANDBOX_STDIN_ARRAY__',
+    encodeJsArray(stdinLines(stdin)),
+  );
+  html = html.replaceFirst(
+    '/*__COMMON__*/',
+    escapeInlineScript(commonContent),
+  );
   if (!html.contains('__USER_CODE__')) {
     throw StateError('模板缺少标记 __USER_CODE__');
   }
   return html.replaceFirst('__USER_CODE__', encodeJsString(userCode));
 }
+
+/// 标准输入按行拆分；空输入返回空列表（与 MainActivity.stdinLines 一致）。
+List<String> stdinLines(String stdin) {
+  if (stdin.isEmpty) return const [];
+  return stdin.replaceAll('\r\n', '\n').replaceAll('\r', '\n').split('\n');
+}
+
+/// 把标准输入拼成 JS 数组字面量（与 MainActivity.encodeJsArray 一致）。
+String encodeJsArray(List<String> lines) =>
+    '[${lines.map(encodeJsString).join(',')}]';
 
 /// 内联脚本里出现 </script 会提前结束 script 标签，需要转义（JS 里含义不变）。
 String escapeInlineScript(String source) =>
@@ -262,6 +346,7 @@ Future<void> main(List<String> args) async {
       common: common,
       runtimes: (_runtimes[item.language] ?? const []).map(runtime).toList(),
       userCode: item.code,
+      stdin: item.stdin,
     );
     final file = File('${workDir.path}/${item.language}_$i.html')
       ..writeAsStringSync(html);
