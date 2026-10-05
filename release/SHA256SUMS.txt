@@ -10,3 +10,7 @@ ef24741c6148f386b21aab34e90f09f1ab75329025858d014e81525876aabf70  code-learn-v1.
 9cf7b788cc826d2bfaadc7510ffe040a3713150b82a7dfe5ed1ec65536300e65  code-learn-v1.1.5-arm64-v8a.apk
 bf9a04fc7b550af8885ce07f21a34fb0eb25bb1bab5cda9dabb26a25337fb2cb  code-learn-v1.1.5-armeabi-v7a.apk
 e3c201499ecb71f0edd774d7f3f1fb75a318a2702d9c3a49e0d7a0e173d90b5f  code-learn-v1.1.5-x86_64.apk
+87eadae928b6bb11bed1e70e5e24965a3b15b46c231a8853bcc7af10a06a168e  code-learn-v1.1.6-arm-universal.apk
+f3591b27c74a973aeee1a819cd61f7085b3d5f202f71fa30b488ad84c337fe43  code-learn-v1.1.6-arm64-v8a.apk
+604c395bb32d4ea1a830c16e331ce84cdb3e81786e599059b44d4f0e040ef6fc  code-learn-v1.1.6-armeabi-v7a.apk
+32a446e80b9639b68817ae9042cd33ee70d62a5083bb8fef5d45e1de783b9e5c  code-learn-v1.1.6-x86_64.apk

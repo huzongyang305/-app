@@ -208,26 +208,32 @@ dart tool/check_brand_assets.dart    # 自检尺寸、安全区与资源引用
 ### 直接分发 APK
 
 ```bash
-flutter build apk --release
-# 体积更小（每个 ABI 一个包，实测约 39~43 MB）
+# 推荐：ARM 双 ABI 通用包，覆盖绝大多数 Android 真机
+flutter build apk --release --target-platform android-arm,android-arm64
+# 按 ABI 拆分（含 x86_64 模拟器包，单包更小）
 flutter build apk --release --split-per-abi
+# 完整三 ABI 通用包（含 x86_64，仅本机验证用；体积会超过 CI 门禁）
+flutter build apk --release
 ```
 
 > ⚠️ 打包时**不要加 `--no-pub`**：`--no-pub` 会跳过插件注册文件重生成，
 > 导致 release 编译仍引用 debug 专用的 `integration_test` 插件而失败。
 > 先 `flutter pub get`，再执行不带 `--no-pub` 的构建命令即可。
 
-产物与实测体积（v1.1.0+2，本机 Flutter 3.13+ / AGP 9 环境）：
+产物与实测体积（v1.1.6+8，本机 Flutter 3.13+ / AGP 9 环境）：
 
 | 命令 | 产物 | 体积 |
 | --- | --- | ---: |
-| `flutter build apk --release` | `app-release.apk`（含 3 种 ABI） | 80.3 MB |
-| `--split-per-abi` | `app-arm64-v8a-release.apk` | 41.4 MB |
-| | `app-armeabi-v7a-release.apk` | 39.2 MB |
-| | `app-x86_64-release.apk` | 42.9 MB |
+| `--target-platform android-arm,android-arm64` | `app-release.apk`（ARM 双 ABI） | 80.6 MB |
+| `--split-per-abi` | `app-arm64-v8a-release.apk` | 62.8 MB |
+| | `app-armeabi-v7a-release.apk` | 60.6 MB |
+| | `app-x86_64-release.apk` | 64.3 MB |
+| `flutter build apk --release` | `app-release.apk`（3 ABI） | 101.8 MB，超过 90 MiB 门禁 |
 
-体积主要来自两部分：内置课程资产约 32 MB（534 篇 Markdown + 534 张配图 + 沙箱运行时），三种 ABI 的原生库合计约 60 MB。
-CI 里有体积门禁：`dart tool/check_apk_size.dart build/app/outputs/flutter-apk/app-release.apk 90`。
+体积主要来自两部分：内置课程资产约 49 MiB（534 篇 Markdown 15.2 MiB + 1059 张配图 33.4 MiB）
+与沙箱运行时等资源约 9 MiB；ARM 双 ABI 原生库约 37 MiB。
+CI 里有体积门禁，会对 ARM 通用包和三个 ABI 分包逐一执行
+`dart tool/check_apk_size.dart <apk> 90`。
 
 发布签名（`android/key.properties` 存在时走发布证书）：
 
@@ -253,7 +259,7 @@ APK 权限仅 `POST_NOTIFICATIONS` / `RECEIVE_BOOT_COMPLETED` / `VIBRATE`，
 
 `pubspec.yaml` 的 `version: 主.次.修订+构建号` 是唯一版本来源：
 
-- `versionName` = `主.次.修订`（当前 `1.1.5`），对用户可见；
+- `versionName` = `主.次.修订`（当前 `1.1.6`），对用户可见；
 - `versionCode` = `+` 后的构建号，每次分发新版本必须**严格递增**；
 - 使用 `--split-per-abi` 时 Flutter 会按 ABI 自动叠加偏移，无需手工维护。
 

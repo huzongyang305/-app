@@ -32,12 +32,21 @@ jobs:
         env:
           CHROME_EXECUTABLE: chrome
         run: dart tool/verify_sandbox_harness.dart
-      - name: Build release APK
+      - name: Build release APKs
         # 不能用 --no-pub：插件注册文件需要按 release 模式重新生成，
         # 否则会残留 debug 模式的 integration_test 插件引用导致编译失败。
-        run: flutter build apk --release
+        run: |
+          flutter build apk --release --target-platform android-arm,android-arm64
+          flutter build apk --release --split-per-abi
       - name: Enforce release APK size budget
-        run: dart tool/check_apk_size.dart build/app/outputs/flutter-apk/app-release.apk 90
+        run: |
+          for apk in \
+            build/app/outputs/flutter-apk/app-release.apk \
+            build/app/outputs/flutter-apk/app-arm64-v8a-release.apk \
+            build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk \
+            build/app/outputs/flutter-apk/app-x86_64-release.apk; do
+            dart tool/check_apk_size.dart "$apk" 90
+          done
       - name: Upload visual diff artifacts
         if: failure()
         uses: actions/upload-artifact@v4
@@ -51,5 +60,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: code-learn-release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: build/app/outputs/flutter-apk/*.apk
           if-no-files-found: error
