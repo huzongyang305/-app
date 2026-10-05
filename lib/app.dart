@@ -17,6 +17,7 @@ class CodeLearnApp extends StatelessWidget {
     required this.storage,
     this.notifications,
     this.contentProvider,
+    this.clock,
   });
 
   final StorageService storage;
@@ -27,12 +28,17 @@ class CodeLearnApp extends StatelessWidget {
   /// 测试可注入预加载内容仓库；正式运行留空，由 App 自己加载 assets。
   final ContentProvider? contentProvider;
 
+  /// 测试用固定时钟；正式运行留空，使用系统时间。
+  final DateTime Function()? clock;
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => SettingsProvider(storage)),
-        ChangeNotifierProvider(create: (_) => ProgressProvider(storage)),
+        ChangeNotifierProvider(
+          create: (_) => ProgressProvider(storage, now: clock),
+        ),
         if (contentProvider != null)
           ChangeNotifierProvider<ContentProvider>.value(value: contentProvider!)
         else

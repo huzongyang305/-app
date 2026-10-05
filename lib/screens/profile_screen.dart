@@ -9,6 +9,7 @@ import '../models/achievement.dart';
 import '../services/backup_crypto_service.dart';
 import '../services/backup_document_service.dart';
 import '../services/backup_file_service.dart';
+import '../services/auto_backup_service.dart';
 import '../services/content_provider.dart';
 import '../services/notification_service.dart';
 import '../services/offline_content_pack_service.dart';
@@ -17,6 +18,7 @@ import '../services/settings_provider.dart';
 import '../widgets/empty_state.dart';
 import '../widgets/lesson_card.dart';
 import 'analytics_screen.dart';
+import 'exam_screen.dart';
 import 'lesson_screen.dart';
 import 'quiz_screen.dart';
 import 'achievements_screen.dart';
@@ -754,6 +756,58 @@ class ProfileScreen extends StatelessWidget {
                   onChanged: settings.setReduceMotion,
                 ),
                 const Divider(height: 1),
+                ListTile(
+                  leading: const Icon(Icons.flag_outlined),
+                  title: Text(context.tr('dailyGoalSetting')),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: SegmentedButton<int>(
+                      segments: const [
+                        ButtonSegment(value: 10, label: Text('10')),
+                        ButtonSegment(value: 20, label: Text('20')),
+                        ButtonSegment(value: 30, label: Text('30')),
+                        ButtonSegment(value: 60, label: Text('60')),
+                      ],
+                      selected: {
+                        const [10, 20, 30, 60].contains(
+                          settings.dailyGoalMinutes,
+                        )
+                            ? settings.dailyGoalMinutes
+                            : 20,
+                      },
+                      showSelectedIcon: false,
+                      onSelectionChanged: (value) =>
+                          settings.setDailyGoalMinutes(value.first),
+                    ),
+                  ),
+                ),
+                const Divider(height: 1),
+                ListTile(
+                  leading: const Icon(Icons.timelapse),
+                  title: Text(context.tr('reviewSessionSetting')),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: SegmentedButton<int>(
+                      segments: const [
+                        ButtonSegment(value: 15, label: Text('15')),
+                        ButtonSegment(value: 30, label: Text('30')),
+                        ButtonSegment(value: 45, label: Text('45')),
+                        ButtonSegment(value: 60, label: Text('60')),
+                      ],
+                      selected: {
+                        const [15, 30, 45, 60].contains(
+                          settings.reviewSessionMinutes,
+                        )
+                            ? settings.reviewSessionMinutes
+                            : 30,
+                      },
+                      showSelectedIcon: false,
+                      onSelectionChanged: (value) =>
+                          settings.setReviewSessionMinutes(value.first),
+                    ),
+                  ),
+                ),
+                const Divider(height: 1),
                 SwitchListTile(
                   secondary: const Icon(Icons.notifications_active_outlined),
                   title: Text(context.tr('reviewReminder')),
@@ -782,6 +836,8 @@ class ProfileScreen extends StatelessWidget {
                     onTap: () => _pickReminderTime(context, settings),
                   ),
                 ],
+                const Divider(height: 1),
+                const _AutoBackupSection(),
                 const Divider(height: 1),
                 ListTile(
                   leading: const Icon(Icons.backup_outlined),
@@ -833,12 +889,12 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
 
-          // 错题本：答错的知识点可一键重做
+          // 错题本：答错的知识点可一键重做，并展示消灭率
           _SectionHeader(
             title: context.tr('wrongBook'),
             count: progress.totalWrongQuestions,
           ),
-          if (progress.totalWrongQuestions == 0)
+          if (progress.everWrongQuestions == 0)
             EmptyState(
               icon: Icons.task_alt,
               message: context.tr('noWrongQuestions'),
@@ -847,23 +903,63 @@ class ProfileScreen extends StatelessWidget {
             Card(
               child: Column(
                 children: [
-                  for (final lesson in content.allLessons.where(
-                    (lesson) => progress.wrongCountFor(lesson.id) > 0,
-                  ))
-                    ListTile(
-                      leading: const Icon(Icons.error_outline),
-                      title: Text(lesson.title.of(context.strings.localeCode)),
-                      subtitle: Text(
-                        '${context.tr('wrongCount')} '
-                        '${progress.wrongCountFor(lesson.id)}',
-                      ),
-                      trailing: const Icon(Icons.refresh),
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => QuizScreen(lesson: lesson),
+                  ListTile(
+                    leading: const Icon(Icons.auto_awesome_outlined),
+                    title: Text(context.tr('wrongResolved')),
+                    subtitle: Padding(
+                      padding: const EdgeInsets.only(top: 6),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: LinearProgressIndicator(
+                          value: progress.wrongResolvedRatio,
+                          minHeight: 6,
                         ),
                       ),
                     ),
+                    trailing: Text(
+                      context.trArgs('wrongResolvedValue', {
+                        'done': progress.resolvedWrongQuestions,
+                        'total': progress.everWrongQuestions,
+                      }),
+                      style: Theme.of(context).textTheme.labelMedium,
+                    ),
+                  ),
+                  if (progress.totalWrongQuestions > 0) ...[
+                    const Divider(height: 1),
+                    ListTile(
+                      leading: const Icon(Icons.play_circle_outline),
+                      title: Text(context.tr('wrongDrill')),
+                      subtitle: Text(context.tr('wrongDrillHint')),
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => const ExamScreen(
+                            wrongOnly: true,
+                            practiceMode: true,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Divider(height: 1),
+                    for (final lesson in content.allLessons.where(
+                      (lesson) => progress.wrongCountFor(lesson.id) > 0,
+                    ))
+                      ListTile(
+                        leading: const Icon(Icons.error_outline),
+                        title: Text(
+                          lesson.title.of(context.strings.localeCode),
+                        ),
+                        subtitle: Text(
+                          '${context.tr('wrongCount')} '
+                          '${progress.wrongCountFor(lesson.id)}',
+                        ),
+                        trailing: const Icon(Icons.refresh),
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => QuizScreen(lesson: lesson),
+                          ),
+                        ),
+                      ),
+                  ],
                 ],
               ),
             ),
@@ -1151,5 +1247,243 @@ class _SectionHeader extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+/// 自动备份设置：SAF 目录授权、频率、保留份数与立即备份。
+class _AutoBackupSection extends StatefulWidget {
+  const _AutoBackupSection();
+
+  @override
+  State<_AutoBackupSection> createState() => _AutoBackupSectionState();
+}
+
+class _AutoBackupSectionState extends State<_AutoBackupSection> {
+  String? _folder;
+  bool _busy = false;
+  bool _loadedFolder = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_loadedFolder) return;
+    _loadedFolder = true;
+    _refreshFolder();
+  }
+
+  Future<void> _refreshFolder() async {
+    final folder = await const AutoBackupService().currentFolder();
+    if (!mounted) return;
+    setState(() => _folder = folder);
+  }
+
+  Future<void> _pickFolder() async {
+    setState(() => _busy = true);
+    try {
+      final folder = await const AutoBackupService().pickFolder();
+      if (!mounted) return;
+      if (folder == null) {
+        _toast(context.trRead('autoBackupFolderCancelled'));
+        return;
+      }
+      setState(() => _folder = folder);
+      final settings = context.read<SettingsProvider>();
+      if (!settings.autoBackupEnabled) {
+        await settings.setAutoBackupEnabled(true);
+      }
+      if (mounted) _toast(context.trRead('autoBackupFolderSet'));
+    } on BackupFileException catch (error) {
+      if (mounted) {
+        _toast(
+          context
+              .trRead('autoBackupFailed')
+              .replaceAll('{error}', error.toString()),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  Future<void> _backupNow(
+    ProgressProvider progress,
+    SettingsProvider settings,
+  ) async {
+    setState(() => _busy = true);
+    try {
+      final result = await const AutoBackupService().writeBackup(
+        payload: jsonEncode(progress.exportData()),
+        suggestedName: AutoBackupService.backupFileName(progress.now),
+        keepCount: settings.autoBackupKeepCount,
+      );
+      if (!mounted) return;
+      if (result == null) {
+        _toast(context.trRead('autoBackupFolderNone'));
+        return;
+      }
+      await settings.markAutoBackupDone(progress.now);
+      if (!mounted) return;
+      _toast(
+        result.deleted > 0
+            ? context.trArgs('autoBackupPruned', {
+                'name': result.name,
+                'n': result.deleted,
+              })
+            : context.trArgs('autoBackupDone', {'name': result.name}),
+      );
+    } on BackupFileException catch (error) {
+      if (mounted) {
+        _toast(
+          context
+              .trRead('autoBackupFailed')
+              .replaceAll('{error}', error.toString()),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  void _toast(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final settings = context.watch<SettingsProvider>();
+    final progress = context.watch<ProgressProvider>();
+    final theme = Theme.of(context);
+    final last = settings.autoBackupLastAt;
+
+    return Column(
+      children: [
+        SwitchListTile(
+          secondary: const Icon(Icons.autorenew),
+          title: Text(context.tr('autoBackup')),
+          subtitle: Text(context.tr('autoBackupHint')),
+          value: settings.autoBackupEnabled,
+          onChanged: _busy
+              ? null
+              : (value) async {
+                  await settings.setAutoBackupEnabled(value);
+                  if (!value) {
+                    await const AutoBackupService().clearFolder();
+                    if (mounted) setState(() => _folder = null);
+                  } else if (_folder == null) {
+                    await _pickFolder();
+                  }
+                },
+        ),
+        if (settings.autoBackupEnabled) ...[
+          const Divider(height: 1),
+          ListTile(
+            leading: const Icon(Icons.folder_outlined),
+            title: Text(context.tr('autoBackupFolder')),
+            subtitle: Text(
+              _folder == null
+                  ? context.tr('autoBackupFolderNone')
+                  : _folderLabel(_folder!),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            trailing: const Icon(Icons.chevron_right, size: 18),
+            onTap: _busy ? null : _pickFolder,
+          ),
+          const Divider(height: 1),
+          ListTile(
+            leading: const Icon(Icons.schedule_outlined),
+            title: Text(context.tr('autoBackupInterval')),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: SegmentedButton<int>(
+                  segments: [
+                    ButtonSegment(
+                      value: 1,
+                      label: Text(context.tr('autoBackupDaily')),
+                    ),
+                    ButtonSegment(
+                      value: 7,
+                      label: Text(context.tr('autoBackupWeekly')),
+                    ),
+                  ],
+                  selected: {settings.autoBackupIntervalDays},
+                  showSelectedIcon: false,
+                  onSelectionChanged: (value) =>
+                      settings.setAutoBackupIntervalDays(value.first),
+                ),
+              ),
+            ),
+          ),
+          const Divider(height: 1),
+          ListTile(
+            leading: const Icon(Icons.inventory_outlined),
+            title: Text(context.tr('autoBackupKeep')),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: SegmentedButton<int>(
+                  segments: const [
+                    ButtonSegment(value: 3, label: Text('3')),
+                    ButtonSegment(value: 5, label: Text('5')),
+                    ButtonSegment(value: 10, label: Text('10')),
+                  ],
+                  selected: {settings.autoBackupKeepCount},
+                  showSelectedIcon: false,
+                  onSelectionChanged: (value) =>
+                      settings.setAutoBackupKeepCount(value.first),
+                ),
+              ),
+            ),
+          ),
+          const Divider(height: 1),
+          ListTile(
+            leading: const Icon(Icons.save_outlined),
+            title: Text(context.tr('autoBackupNow')),
+            subtitle: Text(
+              last == null
+                  ? context.tr('autoBackupNever')
+                  : context.trArgs('autoBackupLast', {
+                      'time': _formatBackupTime(last),
+                    }),
+            ),
+            trailing: _busy
+                ? const SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : Icon(
+                    Icons.chevron_right,
+                    size: 18,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+            onTap: _busy ? null : () => _backupNow(progress, settings),
+          ),
+        ],
+      ],
+    );
+  }
+
+  /// 在界面上只显示目录的最后两段，URI 前缀太长。
+  String _folderLabel(String uri) {
+    final decoded = Uri.decodeComponent(uri);
+    final parts = decoded
+        .split('/')
+        .where((part) => part.isNotEmpty && !part.startsWith('primary:'))
+        .toList();
+    if (parts.isEmpty) return decoded;
+    if (parts.length == 1) return parts.first;
+    return '${parts[parts.length - 2]}/${parts.last}';
+  }
+
+  String _formatBackupTime(DateTime time) {
+    String two(int value) => value.toString().padLeft(2, '0');
+    return '${time.year}-${two(time.month)}-${two(time.day)} '
+        '${two(time.hour)}:${two(time.minute)}';
   }
 }

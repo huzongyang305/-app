@@ -29,6 +29,15 @@ class _ExamSetupScreenState extends State<ExamSetupScreen> {
   String? _scope;
   int _size = 10;
 
+  /// 难度筛选：空集合表示不限。
+  final Set<String> _difficulties = <String>{};
+
+  /// 题型筛选：空集合表示不限。
+  final Set<String> _types = <String>{};
+
+  /// 练习模式：不限时；默认限时考试。
+  bool _practiceMode = false;
+
   /// 按题量换算考试时长：每 10 题约 15 分钟。
   int _minutesFor(int size) => (size * 1.5).round().clamp(5, 120);
 
@@ -46,12 +55,15 @@ class _ExamSetupScreenState extends State<ExamSetupScreen> {
     );
     final pool = wrongOnly
         ? wrongPool
-        : examPoolSize(content.allLessons, categoryId: categoryId);
-    var sizes = _sizeOptions.where((size) => size <= pool).toList();
-    if (sizes.isEmpty && pool > 0) sizes = <int>[pool];
-    final selectedSize = sizes.contains(_size)
-        ? _size
-        : (sizes.isEmpty ? 0 : sizes.first);
+        : examPoolSize(
+            content.allLessons,
+            categoryId: categoryId,
+            difficulties: _difficulties,
+            questionTypes: _types,
+          );
+    final maxSize = pool == 0 ? 0 : pool.clamp(1, 100);
+    final sizes = _sizeOptions.where((size) => size <= maxSize).toList();
+    final selectedSize = maxSize == 0 ? 0 : _size.clamp(1, maxSize);
 
     final scopeName = wrongOnly
         ? context.tr('wrongDrill')
@@ -78,6 +90,9 @@ class _ExamSetupScreenState extends State<ExamSetupScreen> {
                         categoryId: categoryId,
                         scopeTitle: scopeName,
                         wrongOnly: wrongOnly,
+                        difficulties: _difficulties,
+                        questionTypes: _types,
+                        practiceMode: _practiceMode,
                       ),
                     ),
                   ),
@@ -89,6 +104,26 @@ class _ExamSetupScreenState extends State<ExamSetupScreen> {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
         children: [
+          if (progress.examDraft != null) ...[
+            Card(
+              clipBehavior: Clip.antiAlias,
+              child: ListTile(
+                leading: Icon(
+                  Icons.restore,
+                  color: theme.colorScheme.primary,
+                ),
+                title: Text(context.tr('examResume')),
+                subtitle: Text(context.tr('examResumeHint')),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => const ExamScreen(resumeDraft: true),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+          ],
           // 范围
           _SectionTitle(title: context.tr('examScope')),
           Card(
@@ -140,6 +175,99 @@ class _ExamSetupScreenState extends State<ExamSetupScreen> {
             ),
           ),
 
+          if (!wrongOnly) ...[
+            // 难度筛选
+            _SectionTitle(title: context.tr('examDifficultyFilter')),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+                child: Wrap(
+                  spacing: 8,
+                  runSpacing: 4,
+                  children: [
+                    for (final entry
+                        in const <String, String>{
+                          '入门': 'difficultyBeginner',
+                          '基础': 'difficultyBasic',
+                          '进阶': 'difficultyIntermediate',
+                          '高级': 'difficultyAdvanced',
+                        }.entries)
+                      FilterChip(
+                        label: Text(context.tr(entry.value)),
+                        selected: _difficulties.contains(entry.key),
+                        onSelected: (selected) => setState(() {
+                          if (selected) {
+                            _difficulties.add(entry.key);
+                          } else {
+                            _difficulties.remove(entry.key);
+                          }
+                        }),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+
+            // 题型筛选
+            _SectionTitle(title: context.tr('examTypeFilter')),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+                child: Wrap(
+                  spacing: 8,
+                  runSpacing: 4,
+                  children: [
+                    for (final type in const <String>[
+                      'single',
+                      'multi',
+                      'fill',
+                      'order',
+                      'code',
+                      'debug',
+                    ])
+                      FilterChip(
+                        label: Text(_typeLabel(context, type)),
+                        selected: _types.contains(type),
+                        onSelected: (selected) => setState(() {
+                          if (selected) {
+                            _types.add(type);
+                          } else {
+                            _types.remove(type);
+                          }
+                        }),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+
+            // 限时考试 / 练习模式
+            _SectionTitle(title: context.tr('examMode')),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: SegmentedButton<bool>(
+                  segments: [
+                    ButtonSegment(
+                      value: false,
+                      label: Text(context.tr('examTimedMode')),
+                      icon: const Icon(Icons.timer_outlined, size: 16),
+                    ),
+                    ButtonSegment(
+                      value: true,
+                      label: Text(context.tr('examPracticeMode')),
+                      icon: const Icon(Icons.school_outlined, size: 16),
+                    ),
+                  ],
+                  selected: {_practiceMode},
+                  showSelectedIcon: false,
+                  onSelectionChanged: (value) =>
+                      setState(() => _practiceMode = value.first),
+                ),
+              ),
+            ),
+          ],
+
           // 题量
           _SectionTitle(title: context.tr('examQuestionsCount')),
           Card(
@@ -168,6 +296,31 @@ class _ExamSetupScreenState extends State<ExamSetupScreen> {
                           ),
                       ],
                     ),
+                  if (maxSize > 1) ...[
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(context.tr('examCustomCount')),
+                        ),
+                        Text(
+                          '$selectedSize ${context.tr('questions')}',
+                          style: theme.textTheme.labelMedium?.copyWith(
+                            color: theme.colorScheme.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Slider(
+                      value: selectedSize.toDouble(),
+                      min: 1,
+                      max: maxSize.toDouble(),
+                      divisions: maxSize > 1 ? maxSize - 1 : null,
+                      label: '$selectedSize',
+                      onChanged: (value) =>
+                          setState(() => _size = value.round()),
+                    ),
+                  ],
                   const SizedBox(height: 12),
                   Text(
                     '${context.tr('examPoolHint')}：'
@@ -180,7 +333,7 @@ class _ExamSetupScreenState extends State<ExamSetupScreen> {
                     const SizedBox(height: 4),
                     Text(
                       '${context.tr('examTimeHint')}：'
-                      '${_minutesFor(selectedSize)} ${context.tr('minutes')}',
+                      '${_practiceMode ? context.tr('examNoTimeLimit') : '${_minutesFor(selectedSize)} ${context.tr('minutes')}'}',
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
                       ),
@@ -221,3 +374,15 @@ class _SectionTitle extends StatelessWidget {
     );
   }
 }
+
+/// 题型筛选标签：把数据层题型映射到界面文案。
+String _typeLabel(BuildContext context, String type) => context.tr(
+  switch (type) {
+    'multi' => 'questionTypeMulti',
+    'fill' => 'questionTypeFill',
+    'order' => 'questionTypeOrder',
+    'code' => 'questionTypeCode',
+    'debug' => 'questionTypeDebug',
+    _ => 'questionTypeSingle',
+  },
+);

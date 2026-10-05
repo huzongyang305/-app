@@ -11,7 +11,8 @@ import 'storage_service.dart';
 
 /// 学习进度：已学知识点、收藏、笔记与测验成绩。
 class ProgressProvider extends ChangeNotifier {
-  ProgressProvider(this._storage) {
+  ProgressProvider(this._storage, {DateTime Function()? now})
+    : _now = now ?? DateTime.now {
     _learnedIds = _storage.readStringSet('learned_ids');
     _favoriteIds = _storage.readStringSet('favorite_ids');
     _restoreNotes();
@@ -21,9 +22,19 @@ class ProgressProvider extends ChangeNotifier {
     _restoreStudyDays();
     _restoreActivity();
     _restoreStudySeconds();
+    final dailyDate = _storage.read('daily_question_date', defaultValue: '');
+    _dailyQuestionDate = dailyDate is String ? dailyDate : '';
+    _dailyQuestionCorrect =
+        _storage.read('daily_question_correct', defaultValue: false) == true;
   }
 
   final StorageService _storage;
+
+  /// 可注入时钟：测试与金图使用固定时间，正式运行取系统时间。
+  final DateTime Function() _now;
+
+  /// 当前时间；按天统计与复习排期统一以它为准。
+  DateTime get now => _now();
 
   Set<String> _learnedIds = <String>{};
   Set<String> _favoriteIds = <String>{};
@@ -32,6 +43,7 @@ class ProgressProvider extends ChangeNotifier {
   final Map<String, Note> _notes = <String, Note>{};
   final Map<String, QuizResult> _quizResults = <String, QuizResult>{};
   final Map<String, int> _wrongCounts = <String, int>{};
+  final Set<String> _wrongEverKeys = <String>{};
   final Map<String, String> _reviewDue = <String, String>{};
   final Map<String, int> _reviewStage = <String, int>{};
   final Map<String, String> _reviewGrade = <String, String>{};
@@ -41,6 +53,9 @@ class ProgressProvider extends ChangeNotifier {
   final Set<String> _studyDays = <String>{};
   final Map<String, int> _dailyActivity = <String, int>{};
   final Map<String, int> _dailyStudySeconds = <String, int>{};
+  /// 每日一题的作答记录：当天日期键与是否答对。
+  String _dailyQuestionDate = '';
+  bool _dailyQuestionCorrect = false;
   String? _lastLessonId;
 
   /// SM-2 风格的复习参数：难度系数越高，间隔拉长越快。
@@ -100,6 +115,18 @@ class ProgressProvider extends ChangeNotifier {
 
   int get totalWrongQuestions => _wrongCounts.length;
 
+  /// 曾经答错过的题目总数（含已经消灭的）。
+  int get everWrongQuestions => _wrongEverKeys.length;
+
+  /// 已消灭错题数：曾经答错、且现在已经不在错题本里。
+  int get resolvedWrongQuestions =>
+      _wrongEverKeys.where((key) => !_wrongCounts.containsKey(key)).length;
+
+  /// 错题消灭率（0~1）；没有错题历史时为 0。
+  double get wrongResolvedRatio => everWrongQuestions == 0
+      ? 0
+      : resolvedWrongQuestions / everWrongQuestions;
+
   /// 错题本原始键集合（`知识点ID#题号`），供「错题重练」组卷使用。
   List<String> get wrongQuestionKeys =>
       List<String>.unmodifiable(_wrongCounts.keys);
@@ -110,7 +137,7 @@ class ProgressProvider extends ChangeNotifier {
 
   /// 今日待复习的知识点（已到期或逾期），按到期时间升序。
   List<String> get dueReviewLessonIds {
-    final now = DateTime.now();
+    final now = _now();
     final entries = _reviewDue.entries.where((entry) {
       final due = DateTime.tryParse(entry.value);
       return due != null && !due.isAfter(now);
@@ -127,7 +154,7 @@ class ProgressProvider extends ChangeNotifier {
   /// 连续学习天数：今天或昨天学过即算连续，中断一天则归零。
   int get streakDays {
     if (_studyDays.isEmpty) return 0;
-    var day = DateTime.now();
+    var day = _now();
     if (!_studyDays.contains(_dayKey(day))) {
       day = day.subtract(const Duration(days: 1));
       if (!_studyDays.contains(_dayKey(day))) return 0;
@@ -146,14 +173,14 @@ class ProgressProvider extends ChangeNotifier {
       '${day.day.toString().padLeft(2, '0')}';
 
   Future<void> _markStudyToday() async {
-    if (_studyDays.add(_dayKey(DateTime.now()))) {
+    if (_studyDays.add(_dayKey(_now()))) {
       await _storage.write('study_days', _studyDays.toList());
     }
   }
 
   /// 最近 [days] 天是否学习过（最后一项是今天），用于首页签到格子。
   List<bool> recentStudyDays(int days) {
-    final now = DateTime.now();
+    final now = _now();
     return List<bool>.generate(
       days,
       (index) => _studyDays.contains(
@@ -163,10 +190,10 @@ class ProgressProvider extends ChangeNotifier {
     );
   }
 
-  bool get signedToday => _studyDays.contains(_dayKey(DateTime.now()));
+  bool get signedToday => _studyDays.contains(_dayKey(_now()));
 
   /// 今日已记录的真实学习时长（秒），由教程页在离开时回传。
-  int get studySecondsToday => _dailyStudySeconds[_dayKey(DateTime.now())] ?? 0;
+  int get studySecondsToday => _dailyStudySeconds[_dayKey(_now())] ?? 0;
 
   /// 累计学习时长（分钟）。
   int get totalStudyMinutes =>
@@ -174,7 +201,7 @@ class ProgressProvider extends ChangeNotifier {
 
   /// 最近 [days] 天每天的学习时长（分钟，向上取整），最后一项是今天。
   List<int> dailyStudyMinutes(int days) {
-    final now = DateTime.now();
+    final now = _now();
     return List<int>.generate(days, (index) {
       final seconds =
           _dailyStudySeconds[_dayKey(
@@ -189,11 +216,15 @@ class ProgressProvider extends ChangeNotifier {
   int studyMinutesInLastDays(int days) =>
       dailyStudyMinutes(days).fold<int>(0, (sum, value) => sum + value);
 
+  /// 某一天的学习时长（分钟，向上取整），用于日历热力图。
+  int studyMinutesOn(DateTime day) =>
+      ((_dailyStudySeconds[_dayKey(day)] ?? 0) / 60).ceil();
+
   /// 记录一次真实学习时长；单次上限 2 小时，低于 5 秒的抖动直接忽略。
   Future<void> addStudySeconds(String lessonId, int seconds) async {
     final value = seconds.clamp(0, 7200);
     if (value < 5) return;
-    final key = _dayKey(DateTime.now());
+    final key = _dayKey(_now());
     _dailyStudySeconds[key] = (_dailyStudySeconds[key] ?? 0) + value;
     _lastLessonId = lessonId;
     await _markStudyToday();
@@ -207,7 +238,7 @@ class ProgressProvider extends ChangeNotifier {
 
   /// 最近 [days] 天每天的学习活动量（学完知识点或完成测验计 1 次）。
   List<int> dailyActivity(int days) {
-    final now = DateTime.now();
+    final now = _now();
     return List<int>.generate(
       days,
       (index) =>
@@ -223,7 +254,7 @@ class ProgressProvider extends ChangeNotifier {
   String? get lastLessonId => _lastLessonId;
 
   Future<void> _recordActivity(String lessonId) async {
-    final key = _dayKey(DateTime.now());
+    final key = _dayKey(_now());
     _dailyActivity[key] = (_dailyActivity[key] ?? 0) + 1;
     _lastLessonId = lessonId;
     await _storage.write(
@@ -237,6 +268,22 @@ class ProgressProvider extends ChangeNotifier {
   Future<void> checkInToday() async {
     await _markStudyToday();
     notifyListeners();
+  }
+
+  /// 今天是否已经作答每日一题。
+  bool get dailyQuestionAnsweredToday =>
+      _dailyQuestionDate == _dayKey(_now());
+
+  /// 今天每日一题的作答结果（未作答时为 false）。
+  bool get dailyQuestionCorrect => _dailyQuestionCorrect;
+
+  /// 记录每日一题的作答结果。
+  Future<void> markDailyQuestionAnswered({required bool correct}) async {
+    _dailyQuestionDate = _dayKey(_now());
+    _dailyQuestionCorrect = correct;
+    notifyListeners();
+    await _storage.write('daily_question_date', _dailyQuestionDate);
+    await _storage.write('daily_question_correct', correct);
   }
 
   /// 复习调度：perfect 为真表示本次全对。
@@ -318,7 +365,7 @@ class ProgressProvider extends ChangeNotifier {
     _reviewInterval[lessonId] = interval;
     _reviewStage[lessonId] = nextRepetitions + 1;
     _reviewGrade[lessonId] = grade.storageKey;
-    _reviewDue[lessonId] = DateTime.now()
+    _reviewDue[lessonId] = _now()
         .add(Duration(days: interval))
         .toIso8601String();
     notifyListeners();
@@ -345,10 +392,16 @@ class ProgressProvider extends ChangeNotifier {
   double easeFactorOf(String lessonId) => _reviewEase[lessonId] ?? _initialEase;
 
   /// 今日复习计划：按逾期程度与用时排序，并给出总用时与顺延数量。
-  ReviewPlan reviewPlanFor(List<Lesson> lessons, {int budgetMinutes = 30}) {
+  ReviewPlan reviewPlanFor(
+    List<Lesson> lessons, {
+    int budgetMinutes = 30,
+    String? categoryId,
+  }) {
     final byId = <String, Lesson>{
       for (final lesson in lessons)
-        if (lesson.totalQuestionCount > 0) lesson.id: lesson,
+        if (lesson.totalQuestionCount > 0 &&
+            (categoryId == null || lesson.categoryId == categoryId))
+          lesson.id: lesson,
     };
     final candidates = <ReviewCandidate>[];
     for (final lessonId in dueReviewLessonIds) {
@@ -359,6 +412,35 @@ class ProgressProvider extends ChangeNotifier {
       );
     }
     return buildReviewPlan(candidates, budgetMinutes: budgetMinutes);
+  }
+
+  /// 未来 [days] 天内到期、但今天还不用复习的内容，按到期时间升序。
+  ///
+  /// 用于「提前复习」与未来复习日历；今天已到期的内容不在这里重复出现。
+  List<ReviewCandidate> upcomingReviewCandidates(
+    List<Lesson> lessons, {
+    int days = 7,
+    String? categoryId,
+  }) {
+    final now = _now();
+    final today = DateTime(now.year, now.month, now.day);
+    final end = today.add(Duration(days: days));
+    final byId = <String, Lesson>{
+      for (final lesson in lessons)
+        if (lesson.totalQuestionCount > 0 &&
+            (categoryId == null || lesson.categoryId == categoryId))
+          lesson.id: lesson,
+    };
+    final result = <ReviewCandidate>[];
+    for (final entry in _reviewDue.entries) {
+      final due = DateTime.tryParse(entry.value);
+      if (due == null || !due.isAfter(now) || due.isAfter(end)) continue;
+      final lesson = byId[entry.key];
+      if (lesson == null) continue;
+      result.add(ReviewCandidate(lesson: lesson, dueAt: due));
+    }
+    result.sort((a, b) => a.dueAt!.compareTo(b.dueAt!));
+    return List<ReviewCandidate>.unmodifiable(result);
   }
 
   Future<void> _persistReview() async {
@@ -382,8 +464,22 @@ class ProgressProvider extends ChangeNotifier {
   Future<void> recordWrong(String lessonId, int questionIndex) async {
     final key = '$lessonId#$questionIndex';
     _wrongCounts[key] = (_wrongCounts[key] ?? 0) + 1;
+    _wrongEverKeys.add(key);
+    // 错题自动排入复习队列：把该课的复习时间提前到最迟 1 天后，
+    // 保证答错的知识点会尽快回到复习计划里。
+    final target = _now().add(const Duration(days: 1));
+    final current = DateTime.tryParse(_reviewDue[lessonId] ?? '');
+    if (current == null || current.isAfter(target)) {
+      _reviewEase.putIfAbsent(lessonId, () => _initialEase);
+      _reviewRepetitions.putIfAbsent(lessonId, () => 0);
+      _reviewInterval[lessonId] = 1;
+      _reviewStage[lessonId] = (_reviewRepetitions[lessonId] ?? 0) + 1;
+      _reviewDue[lessonId] = target.toIso8601String();
+      await _persistReview();
+    }
     notifyListeners();
     await _storage.write('wrong_counts', Map<String, int>.from(_wrongCounts));
+    await _storage.write('wrong_ever_keys', _wrongEverKeys.toList());
   }
 
   Future<void> clearWrong(String lessonId, int questionIndex) async {
@@ -420,7 +516,7 @@ class ProgressProvider extends ChangeNotifier {
         _reviewRepetitions.putIfAbsent(lessonId, () => 1);
         _reviewInterval[lessonId] = 1;
         _reviewStage[lessonId] = 1;
-        _reviewDue[lessonId] = DateTime.now()
+        _reviewDue[lessonId] = _now()
             .add(const Duration(days: 1))
             .toIso8601String();
         await _persistReview();
@@ -465,7 +561,7 @@ class ProgressProvider extends ChangeNotifier {
       final note = Note(
         lessonId: lessonId,
         content: trimmed,
-        updatedAt: DateTime.now(),
+        updatedAt: _now(),
         tags: normalizedTags,
       );
       _notes[lessonId] = note;
@@ -489,7 +585,7 @@ class ProgressProvider extends ChangeNotifier {
       correct: isBetter ? correct : previous.correct,
       total: total,
       attempts: attempts,
-      updatedAt: DateTime.now(),
+      updatedAt: _now(),
     );
     _quizResults[lessonId] = result;
     _quizIds.add(lessonId);
@@ -531,6 +627,15 @@ class ProgressProvider extends ChangeNotifier {
         }
       });
     }
+    final ever = _storage.read(
+      'wrong_ever_keys',
+      defaultValue: const <String>[],
+    );
+    _wrongEverKeys
+      ..clear()
+      ..addAll((ever as List).map((item) => item.toString()));
+    // 旧版本没有历史集合：把当前错题视为曾经答错，保证升级后数据可用。
+    _wrongEverKeys.addAll(_wrongCounts.keys);
   }
 
   void _restoreReview() {
@@ -622,6 +727,17 @@ class ProgressProvider extends ChangeNotifier {
     await _storage.write('reading_offset_$lessonId', offset);
   }
 
+  /// 模拟考试草稿：保存题目、作答与剩余时间，支持断点续考。
+  Map<String, dynamic>? get examDraft {
+    final raw = _storage.read('exam_draft');
+    return raw is Map ? raw.cast<String, dynamic>() : null;
+  }
+
+  Future<void> saveExamDraft(Map<String, dynamic> draft) =>
+      _storage.write('exam_draft', draft);
+
+  Future<void> clearExamDraft() => _storage.delete('exam_draft');
+
   /// 导出全部本地数据为可读 JSON（用于换机备份）。
   Map<String, dynamic> exportData() =>
       BackupDocumentService.prepareForExport(<String, dynamic>{
@@ -631,6 +747,7 @@ class ProgressProvider extends ChangeNotifier {
           (key, value) => MapEntry(key, value.toJson()),
         ),
         'wrong_counts': Map<String, int>.from(_wrongCounts),
+        'wrong_ever_keys': _wrongEverKeys.toList(),
         'review_due': Map<String, String>.from(_reviewDue),
         'review_stage': Map<String, int>.from(_reviewStage),
         'review_grade': Map<String, String>.from(_reviewGrade),
@@ -640,6 +757,8 @@ class ProgressProvider extends ChangeNotifier {
         'study_days': _studyDays.toList(),
         'daily_activity': Map<String, int>.from(_dailyActivity),
         'daily_study_seconds': Map<String, int>.from(_dailyStudySeconds),
+        'daily_question_date': _dailyQuestionDate,
+        'daily_question_correct': _dailyQuestionCorrect,
         'notes': _notes.map((key, value) => MapEntry(key, value.toJson())),
       });
 
@@ -667,6 +786,10 @@ class ProgressProvider extends ChangeNotifier {
 
     final wrong = (data['wrong_counts'] as Map?) ?? const {};
     await _storage.write('wrong_counts', wrong);
+    await _storage.write(
+      'wrong_ever_keys',
+      (data['wrong_ever_keys'] as List?) ?? const [],
+    );
 
     final notes = (data['notes'] as Map?) ?? const {};
     final noteIds = <String>[];
@@ -689,6 +812,14 @@ class ProgressProvider extends ChangeNotifier {
     await _storage.write(
       'daily_study_seconds',
       (data['daily_study_seconds'] as Map?) ?? const {},
+    );
+    await _storage.write(
+      'daily_question_date',
+      data['daily_question_date'] as String? ?? '',
+    );
+    await _storage.write(
+      'daily_question_correct',
+      data['daily_question_correct'] == true,
     );
     await _storage.write(
       'review_due',
@@ -724,6 +855,7 @@ class ProgressProvider extends ChangeNotifier {
     _quizIds = quizIds.toSet();
     _restoreQuizResults();
     _wrongCounts.clear();
+    _wrongEverKeys.clear();
     _restoreWrongCounts();
     _reviewDue.clear();
     _reviewStage.clear();
@@ -738,6 +870,10 @@ class ProgressProvider extends ChangeNotifier {
     _restoreActivity();
     _dailyStudySeconds.clear();
     _restoreStudySeconds();
+    final dailyDate = _storage.read('daily_question_date', defaultValue: '');
+    _dailyQuestionDate = dailyDate is String ? dailyDate : '';
+    _dailyQuestionCorrect =
+        _storage.read('daily_question_correct', defaultValue: false) == true;
     _notes.clear();
     _noteIds = noteIds.toSet();
     _restoreNotes();

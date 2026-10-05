@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.DocumentsContract
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.util.Base64
@@ -54,7 +55,11 @@ class MainActivity : FlutterActivity() {
     private var pendingContentPackResult: MethodChannel.Result? = null
     private var pendingBackupOpenResult: MethodChannel.Result? = null
     private var pendingBackupCreateResult: MethodChannel.Result? = null
+    private var pendingBackupFolderResult: MethodChannel.Result? = null
     private var pendingBackupPayload: String? = null
+    private val backupPrefs by lazy {
+        getSharedPreferences("code_learn_backup", MODE_PRIVATE)
+    }
     private var ttsChannel: MethodChannel? = null
     private var textToSpeech: TextToSpeech? = null
     private var ttsReady = false
@@ -179,6 +184,18 @@ class MainActivity : FlutterActivity() {
                         call.argument<String>("suggestedName"),
                         result,
                     )
+                    "pickBackupFolder" -> pickBackupFolder(result)
+                    "getBackupFolder" -> result.success(
+                        backupPrefs.getString(BACKUP_TREE_KEY, null),
+                    )
+                    "clearBackupFolder" -> clearBackupFolder(result)
+                    "writeAutoBackup" -> writeAutoBackup(
+                        call.argument<String>("payload"),
+                        call.argument<String>("suggestedName"),
+                        call.argument<Int>("keepCount") ?: DEFAULT_BACKUP_KEEP,
+                        result,
+                    )
+                    "listAutoBackups" -> listAutoBackups(result)
                     else -> result.notImplemented()
                 }
             }
@@ -464,10 +481,239 @@ class MainActivity : FlutterActivity() {
         }
     }
 
+    /** 让用户选择一个长期授权的备份目录（SAF 目录授权）。 */
+    private fun pickBackupFolder(result: MethodChannel.Result) {
+        if (hasPendingFileOperation()) {
+            result.error("picker_busy", "A file picker is already open", null)
+            return
+        }
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE).apply {
+            addFlags(
+                Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION or
+                    Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION,
+            )
+        }
+        pendingBackupFolderResult = result
+        try {
+            startActivityForResult(intent, BACKUP_FOLDER_REQUEST)
+        } catch (error: Exception) {
+            pendingBackupFolderResult = null
+            result.error(
+                "picker_unavailable",
+                error.message ?: "picker unavailable",
+                null,
+            )
+        }
+    }
+
+    private fun clearBackupFolder(result: MethodChannel.Result) {
+        val stored = backupPrefs.getString(BACKUP_TREE_KEY, null)
+        if (stored != null) {
+            try {
+                contentResolver.releasePersistableUriPermission(
+                    Uri.parse(stored),
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION,
+                )
+            } catch (_: Exception) {
+                // 权限可能已经被系统回收，忽略即可。
+            }
+        }
+        backupPrefs.edit().remove(BACKUP_TREE_KEY).apply()
+        result.success(true)
+    }
+
+    /** 把一份备份写入已授权的 SAF 目录，并清理超出保留份数的旧文件。 */
+    private fun writeAutoBackup(
+        payload: String?,
+        suggestedName: String?,
+        keepCount: Int,
+        result: MethodChannel.Result,
+    ) {
+        if (payload.isNullOrEmpty()) {
+            result.error("empty_backup", "Backup payload is empty", null)
+            return
+        }
+        if (payload.toByteArray(Charsets.UTF_8).size > MAX_BACKUP_BYTES) {
+            result.error("backup_too_large", "Backup exceeds 16 MB", null)
+            return
+        }
+        val stored = backupPrefs.getString(BACKUP_TREE_KEY, null)
+        if (stored == null) {
+            // 未选择目录时返回 null，由 Dart 侧提示用户先选择。
+            result.success(null)
+            return
+        }
+        val treeUri = Uri.parse(stored)
+        try {
+            val treeDocumentId = DocumentsContract.getTreeDocumentId(treeUri)
+            val parentUri = DocumentsContract.buildDocumentUriUsingTree(
+                treeUri,
+                treeDocumentId,
+            )
+            val fileName = safeBackupName(suggestedName)
+            val documentUri = DocumentsContract.createDocument(
+                contentResolver,
+                parentUri,
+                "application/json",
+                fileName,
+            ) ?: throw IllegalArgumentException("create document failed")
+            contentResolver.openOutputStream(documentUri, "wt")?.use { stream ->
+                stream.write(payload.toByteArray(Charsets.UTF_8))
+            } ?: throw IllegalArgumentException("empty content URI")
+
+            val deleted = pruneAutoBackups(treeUri, keepCount)
+            result.success(
+                mapOf(
+                    "name" to fileName,
+                    "deleted" to deleted,
+                ),
+            )
+        } catch (error: Exception) {
+            result.error(
+                "auto_backup_failed",
+                error.message ?: "auto backup failed",
+                null,
+            )
+        }
+    }
+
+    /** 列出备份目录中由本 App 写入的备份文件（按修改时间倒序）。 */
+    private fun listAutoBackups(result: MethodChannel.Result) {
+        val stored = backupPrefs.getString(BACKUP_TREE_KEY, null)
+        if (stored == null) {
+            result.success(emptyList<Map<String, Any>>())
+            return
+        }
+        val treeUri = Uri.parse(stored)
+        try {
+            val entries = queryAutoBackups(treeUri)
+            result.success(
+                entries.map { entry ->
+                    mapOf<String, Any>(
+                        "name" to entry.first,
+                        "modifiedAt" to entry.second,
+                    )
+                },
+            )
+        } catch (error: Exception) {
+            result.error(
+                "auto_backup_list_failed",
+                error.message ?: "list failed",
+                null,
+            )
+        }
+    }
+
+    /** 读取目录内符合命名规范的备份文件：文件名 + 修改时间（毫秒）。 */
+    private fun queryAutoBackups(treeUri: Uri): List<Pair<String, Long>> {
+        val collection = DocumentsContract.buildChildDocumentsUriUsingTree(
+            treeUri,
+            DocumentsContract.getTreeDocumentId(treeUri),
+        )
+        val entries = mutableListOf<Pair<String, Long>>()
+        contentResolver.query(
+            collection,
+            arrayOf(
+                DocumentsContract.Document.COLUMN_DISPLAY_NAME,
+                DocumentsContract.Document.COLUMN_LAST_MODIFIED,
+            ),
+            null,
+            null,
+            null,
+        )?.use { cursor ->
+            val nameIndex = cursor.getColumnIndex(
+                DocumentsContract.Document.COLUMN_DISPLAY_NAME,
+            )
+            val modifiedIndex = cursor.getColumnIndex(
+                DocumentsContract.Document.COLUMN_LAST_MODIFIED,
+            )
+            while (cursor.moveToNext()) {
+                val name = if (nameIndex >= 0) cursor.getString(nameIndex) else null
+                if (name == null || !isBackupFileName(name)) continue
+                val modified = if (modifiedIndex >= 0) {
+                    cursor.getLong(modifiedIndex)
+                } else {
+                    0L
+                }
+                entries.add(name to modified)
+            }
+        }
+        entries.sortByDescending { it.second }
+        return entries
+    }
+
+    /** 只保留最近 [keepCount] 份备份，返回删除数量。 */
+    private fun pruneAutoBackups(treeUri: Uri, keepCount: Int): Int {
+        if (keepCount <= 0) return 0
+        val collection = DocumentsContract.buildChildDocumentsUriUsingTree(
+            treeUri,
+            DocumentsContract.getTreeDocumentId(treeUri),
+        )
+        val stale = mutableListOf<String>()
+        contentResolver.query(
+            collection,
+            arrayOf(
+                DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+                DocumentsContract.Document.COLUMN_DISPLAY_NAME,
+                DocumentsContract.Document.COLUMN_LAST_MODIFIED,
+            ),
+            null,
+            null,
+            null,
+        )?.use { cursor ->
+            val idIndex = cursor.getColumnIndex(
+                DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+            )
+            val nameIndex = cursor.getColumnIndex(
+                DocumentsContract.Document.COLUMN_DISPLAY_NAME,
+            )
+            val modifiedIndex = cursor.getColumnIndex(
+                DocumentsContract.Document.COLUMN_LAST_MODIFIED,
+            )
+            val rows = mutableListOf<Triple<String, String, Long>>()
+            while (cursor.moveToNext()) {
+                val id = if (idIndex >= 0) cursor.getString(idIndex) else null
+                val name = if (nameIndex >= 0) cursor.getString(nameIndex) else null
+                if (id == null || name == null || !isBackupFileName(name)) continue
+                val modified = if (modifiedIndex >= 0) {
+                    cursor.getLong(modifiedIndex)
+                } else {
+                    0L
+                }
+                rows.add(Triple(id, name, modified))
+            }
+            rows.sortByDescending { it.third }
+            for (row in rows.drop(keepCount)) {
+                stale.add(row.first)
+            }
+        }
+        var deleted = 0
+        for (documentId in stale) {
+            try {
+                val documentUri = DocumentsContract.buildDocumentUriUsingTree(
+                    treeUri,
+                    documentId,
+                )
+                if (DocumentsContract.deleteDocument(contentResolver, documentUri)) {
+                    deleted++
+                }
+            } catch (_: Exception) {
+                // 单个文件删除失败不影响本次备份结果。
+            }
+        }
+        return deleted
+    }
+
+    private fun isBackupFileName(name: String): Boolean =
+        name.startsWith(BACKUP_FILE_PREFIX) && name.endsWith(".json", true)
+
     private fun hasPendingFileOperation(): Boolean =
         pendingContentPackResult != null ||
             pendingBackupOpenResult != null ||
-            pendingBackupCreateResult != null
+            pendingBackupCreateResult != null ||
+            pendingBackupFolderResult != null
 
     private fun safeBackupName(raw: String?): String {
         val cleaned = raw
@@ -490,6 +736,33 @@ class MainActivity : FlutterActivity() {
             CONTENT_PACK_REQUEST -> handleContentPackResult(resultCode, data)
             BACKUP_OPEN_REQUEST -> handleBackupOpenResult(resultCode, data)
             BACKUP_CREATE_REQUEST -> handleBackupCreateResult(resultCode, data)
+            BACKUP_FOLDER_REQUEST -> handleBackupFolderResult(resultCode, data)
+        }
+    }
+
+    private fun handleBackupFolderResult(resultCode: Int, data: Intent?) {
+        val result = pendingBackupFolderResult ?: return
+        pendingBackupFolderResult = null
+        val uri = data?.data
+        if (resultCode != Activity.RESULT_OK || uri == null) {
+            result.success(null)
+            return
+        }
+        try {
+            // 取得长期授权，重启 App 后仍可继续写入该目录。
+            contentResolver.takePersistableUriPermission(
+                uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION,
+            )
+            backupPrefs.edit().putString(BACKUP_TREE_KEY, uri.toString()).apply()
+            result.success(uri.toString())
+        } catch (error: Exception) {
+            result.error(
+                "folder_permission_failed",
+                error.message ?: "persist permission failed",
+                null,
+            )
         }
     }
 
@@ -569,6 +842,8 @@ class MainActivity : FlutterActivity() {
         pendingBackupOpenResult = null
         pendingBackupCreateResult?.error("activity_destroyed", "Activity destroyed", null)
         pendingBackupCreateResult = null
+        pendingBackupFolderResult?.error("activity_destroyed", "Activity destroyed", null)
+        pendingBackupFolderResult = null
         pendingBackupPayload = null
         super.onDestroy()
     }
@@ -810,6 +1085,10 @@ class MainActivity : FlutterActivity() {
         const val CONTENT_PACK_REQUEST = 4201
         const val BACKUP_OPEN_REQUEST = 4301
         const val BACKUP_CREATE_REQUEST = 4302
+        const val BACKUP_FOLDER_REQUEST = 4303
+        const val BACKUP_TREE_KEY = "auto_backup_tree_uri"
+        const val BACKUP_FILE_PREFIX = "code_learn_backup_"
+        const val DEFAULT_BACKUP_KEEP = 5
         const val MAX_CONTENT_PACK_BYTES = 8 * 1024 * 1024
         // 单次分享的文本上限（256 KB），超过则退回复制到剪贴板。
         const val MAX_SHARE_TEXT_BYTES = 256 * 1024

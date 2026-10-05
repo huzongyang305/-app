@@ -23,11 +23,23 @@ List<ExamQuestion> buildExamPaper(
   int? seed,
   String? categoryId,
   Set<String>? lessonIds,
+  Set<String>? difficulties,
+  Set<String>? questionTypes,
 }) {
   final random = Random(seed);
   final pool =
       allLessons
-          .where((lesson) => lesson.allQuiz.isNotEmpty)
+          .where(
+            (lesson) => lesson.allQuiz.any(
+              (question) => _typeAllowed(question, questionTypes),
+            ),
+          )
+          .where(
+            (lesson) =>
+                difficulties == null ||
+                difficulties.isEmpty ||
+                difficulties.contains(lesson.difficulty),
+          )
           .where(
             (lesson) => categoryId == null || lesson.categoryId == categoryId,
           )
@@ -68,18 +80,53 @@ List<ExamQuestion> buildExamPaper(
       .map(
         (lesson) => ExamQuestion(
           lesson: lesson,
-          questionIndex: random.nextInt(lesson.allQuiz.length),
+          questionIndex: _pickQuestionIndex(lesson, questionTypes, random),
         ),
       )
       .toList();
 }
 
 /// 指定范围内可参与组卷的知识点数量（用于考前提示可选范围）。
-int examPoolSize(List<Lesson> allLessons, {String? categoryId}) {
+int examPoolSize(
+  List<Lesson> allLessons, {
+  String? categoryId,
+  Set<String>? difficulties,
+  Set<String>? questionTypes,
+}) {
   return allLessons
-      .where((lesson) => lesson.allQuiz.isNotEmpty)
+      .where(
+        (lesson) => lesson.allQuiz.any(
+          (question) => _typeAllowed(question, questionTypes),
+        ),
+      )
+      .where(
+        (lesson) =>
+            difficulties == null ||
+            difficulties.isEmpty ||
+            difficulties.contains(lesson.difficulty),
+      )
       .where((lesson) => categoryId == null || lesson.categoryId == categoryId)
       .length;
+}
+
+/// 题型筛选：空集合表示不限制。
+bool _typeAllowed(QuizQuestion question, Set<String>? questionTypes) =>
+    questionTypes == null ||
+    questionTypes.isEmpty ||
+    questionTypes.contains(question.type);
+
+/// 在允许的题型中随机取一道，保证题量与题型筛选一致。
+int _pickQuestionIndex(
+  Lesson lesson,
+  Set<String>? questionTypes,
+  Random random,
+) {
+  final candidates = <int>[
+    for (var i = 0; i < lesson.allQuiz.length; i++)
+      if (_typeAllowed(lesson.allQuiz[i], questionTypes)) i,
+  ];
+  if (candidates.isEmpty) return random.nextInt(lesson.allQuiz.length);
+  return candidates[random.nextInt(candidates.length)];
 }
 
 /// 把错题本的键（`知识点ID#题号`）解析成题目列表。

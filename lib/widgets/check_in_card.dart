@@ -15,7 +15,7 @@ class CheckInCard extends StatelessWidget {
     final progress = context.watch<ProgressProvider>();
     final theme = Theme.of(context);
     final days = progress.recentStudyDays(7);
-    final now = DateTime.now();
+    final now = progress.now;
     final primary = theme.colorScheme.primary;
 
     return IndexCard(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../l10n/l10n_extension.dart';
@@ -6,8 +7,10 @@ import '../models/lesson.dart';
 import '../services/content_provider.dart';
 import '../services/learning_analytics.dart';
 import '../services/progress_provider.dart';
+import '../services/share_service.dart';
 import '../widgets/activity_chart.dart';
 import '../widgets/empty_state.dart';
+import '../widgets/study_heatmap.dart';
 import 'lesson_screen.dart';
 
 /// 学习分析：把本地学习记录整理成周期报告、分类掌握度和薄弱点。
@@ -31,9 +34,19 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
       periodDays: _periodDays,
     );
     final theme = Theme.of(context);
+    final languageRows = _languageStats(content, progress);
 
     return Scaffold(
-      appBar: AppBar(title: Text(context.tr('learningAnalytics'))),
+      appBar: AppBar(
+        title: Text(context.tr('learningAnalytics')),
+        actions: [
+          IconButton(
+            tooltip: context.tr('analyticsExport'),
+            icon: const Icon(Icons.ios_share),
+            onPressed: _exportReport,
+          ),
+        ],
+      ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 28),
         children: [
@@ -131,6 +144,35 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
           ),
           const SizedBox(height: 16),
           _SectionTitle(
+            title: context.tr('analyticsHeatmap'),
+            subtitle: context.tr('analyticsHeatmapHint'),
+          ),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
+              child: StudyHeatmap(
+                endDate: progress.now,
+                valueForDay: progress.studyMinutesOn,
+              ),
+            ),
+          ),
+          if (languageRows.isNotEmpty) ...[
+            const SizedBox(height: 16),
+            _SectionTitle(
+              title: context.tr('analyticsByLanguage'),
+              subtitle: context.tr('analyticsByLanguageHint'),
+            ),
+            Card(
+              child: Column(
+                children: [
+                  for (final stat in languageRows)
+                    _LanguageTile(stat: stat),
+                ],
+              ),
+            ),
+          ],
+          const SizedBox(height: 16),
+          _SectionTitle(
             title: context.tr('analyticsCategoryMastery'),
             subtitle: context.tr('analyticsCategoryMasteryHint'),
           ),
@@ -222,6 +264,111 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     );
   }
 
+  /// 把当前分析快照导出为文本报告；系统分享不可用时退回剪贴板。
+  Future<void> _exportReport() async {
+    final content = context.read<ContentProvider>();
+    final progress = context.read<ProgressProvider>();
+    final snapshot = LearningAnalytics.build(
+      categories: content.categories,
+      progress: progress,
+      periodDays: _periodDays,
+      now: progress.now,
+    );
+    final locale = context.strings.localeCode;
+    final buffer = StringBuffer()
+      ..writeln(context.trRead('analyticsReportTitle'))
+      ..writeln(
+        '${context.trRead('analyticsReportGenerated')}: '
+        '${_dateText(progress.now)}',
+      )
+      ..writeln(
+        '${context.trRead('analyticsReportOverall')}: '
+        '${snapshot.totalLearned}/${snapshot.totalLessons} '
+        '(${(snapshot.progressRatio * 100).round()}%)',
+      )
+      ..writeln(
+        '${context.trRead('analyticsStreak')}: ${snapshot.streakDays}',
+      )
+      ..writeln(
+        context.trReadArgs('analyticsReportPeriod', {
+          'n': snapshot.periodDays,
+        }),
+      )
+      ..writeln(
+        '${context.trRead('analyticsStudyTotal')}: '
+        '${snapshot.studyMinutes} ${context.trRead('minutes')}',
+      )
+      ..writeln(
+        '${context.trRead('analyticsActiveDays')}: ${snapshot.activeDays}',
+      )
+      ..writeln();
+    buffer.writeln('${context.trRead('analyticsCategoryMastery')}:');
+    for (final row in snapshot.categoryMastery) {
+      buffer.writeln(
+        '- ${row.category.title.of(locale)}: '
+        '${(row.masteryScore * 100).round()}%',
+      );
+    }
+    if (snapshot.weakLessons.isNotEmpty) {
+      buffer.writeln();
+      buffer.writeln('${context.trRead('analyticsReportWeak')}:');
+      for (final weak in snapshot.weakLessons.take(5)) {
+        buffer.writeln(
+          '- ${weak.lesson.title.of(locale)} '
+          '(${(weak.accuracy * 100).round()}%)',
+        );
+      }
+    }
+    if (snapshot.recommendedLesson != null) {
+      buffer
+        ..writeln()
+        ..writeln(
+          '${context.trRead('analyticsReportNext')}: '
+          '${snapshot.recommendedLesson!.title.of(locale)}',
+        );
+    }
+
+    final text = buffer.toString();
+    final shared = await const ShareService().shareText(
+      text,
+      subject: context.trRead('analyticsReportTitle'),
+    );
+    if (!shared) {
+      await Clipboard.setData(ClipboardData(text: text));
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(context.trRead('analyticsExportCopied'))),
+      );
+    }
+  }
+
+  String _dateText(DateTime value) =>
+      '${value.year}-${value.month.toString().padLeft(2, '0')}-'
+      '${value.day.toString().padLeft(2, '0')}';
+
+  /// 按课程分组（group）聚合语言学习数据。
+  List<_LanguageStat> _languageStats(
+    ContentProvider content,
+    ProgressProvider progress,
+  ) {
+    final rows = <String, _LanguageStat>{};
+    for (final lesson in content.allLessons) {
+      final group = lesson.group?.trim() ?? '';
+      if (group.isEmpty) continue;
+      final row = rows.putIfAbsent(group, () => _LanguageStat(group));
+      row.total++;
+      if (progress.isLearned(lesson.id)) row.learned++;
+      final result = progress.resultOf(lesson.id);
+      if (result != null) {
+        row.quizzed++;
+        row.accuracyTotal += result.accuracy;
+      }
+    }
+    final list = rows.values.toList()
+      ..sort((a, b) => b.total.compareTo(a.total));
+    return list.take(30).toList(growable: false);
+  }
+
   String _trendLabel(BuildContext context, int trend) {
     if (trend > 0) {
       return context.trArgs('analyticsTrendUp', {'n': trend});
@@ -231,6 +378,19 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     }
     return context.tr('analyticsTrendFlat');
   }
+}
+
+/// 按课程分组（语言）聚合的学习统计行。
+class _LanguageStat {
+  _LanguageStat(this.group);
+
+  final String group;
+  int total = 0;
+  int learned = 0;
+  int quizzed = 0;
+  double accuracyTotal = 0;
+
+  double get accuracy => quizzed == 0 ? 0 : accuracyTotal / quizzed;
 }
 
 class _OverviewCard extends StatelessWidget {
@@ -461,6 +621,68 @@ class _MasteryTile extends StatelessWidget {
             '${context.tr('quizAverage')} $accuracy · '
             '${mastery.estimatedMinutes} ${context.tr('minutes')}',
             maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// 单个语言（课程分组）的掌握度行：进度条 + 已学 / 正确率。
+class _LanguageTile extends StatelessWidget {
+  const _LanguageTile({required this.stat});
+
+  final _LanguageStat stat;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final ratio = stat.total == 0 ? 0.0 : stat.learned / stat.total;
+    final accuracy = stat.quizzed == 0 ? 0 : (stat.accuracy * 100).round();
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  stat.group,
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              Text(
+                '${(ratio * 100).round()}%',
+                style: theme.textTheme.labelLarge?.copyWith(
+                  color: theme.colorScheme.primary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 7),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(3),
+            child: LinearProgressIndicator(
+              value: ratio.clamp(0, 1),
+              minHeight: 6,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            context.trArgs('analyticsLanguageRow', {
+              'learned': stat.learned,
+              'total': stat.total,
+              'accuracy': accuracy,
+            }),
+            maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: theme.textTheme.bodySmall?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,

@@ -30,6 +30,36 @@ class SettingsProvider extends ChangeNotifier {
 
     _reviewReminderEnabled =
         _storage.read('review_reminder_enabled', defaultValue: false) == true;
+    final goal = _storage.read('daily_goal_minutes', defaultValue: 20);
+    _dailyGoalMinutes = (goal is int) ? goal.clamp(5, 240) : 20;
+    final session = _storage.read('review_session_minutes', defaultValue: 30);
+    _reviewSessionMinutes = (session is int) ? session.clamp(5, 120) : 30;
+    final celebrated = _storage.read(
+      'goal_celebrated_date',
+      defaultValue: '',
+    );
+    _goalCelebratedDate = celebrated is String ? celebrated : '';
+    _autoBackupEnabled =
+        _storage.read('auto_backup_enabled', defaultValue: false) == true;
+    final backupInterval = _storage.read(
+      'auto_backup_interval_days',
+      defaultValue: 1,
+    );
+    _autoBackupIntervalDays =
+        (backupInterval is int && (backupInterval == 1 || backupInterval == 7))
+        ? backupInterval
+        : 1;
+    final backupKeep = _storage.read(
+      'auto_backup_keep_count',
+      defaultValue: 5,
+    );
+    _autoBackupKeepCount = backupKeep is int
+        ? backupKeep.clamp(2, 20)
+        : 5;
+    final lastBackup = _storage.read('auto_backup_last_at', defaultValue: '');
+    _autoBackupLastAt = lastBackup is String
+        ? DateTime.tryParse(lastBackup)
+        : null;
     final hour = _storage.read('review_reminder_hour', defaultValue: 20);
     final minute = _storage.read('review_reminder_minute', defaultValue: 0);
     _reminderHour = (hour is int && hour >= 0 && hour <= 23) ? hour : 20;
@@ -58,6 +88,13 @@ class SettingsProvider extends ChangeNotifier {
   bool _codeWrapLines = false;
   String _selectedPathId = '';
   bool _reviewReminderEnabled = false;
+  int _dailyGoalMinutes = 20;
+  int _reviewSessionMinutes = 30;
+  String _goalCelebratedDate = '';
+  bool _autoBackupEnabled = false;
+  int _autoBackupIntervalDays = 1;
+  int _autoBackupKeepCount = 5;
+  DateTime? _autoBackupLastAt;
   int _reminderHour = 20;
   int _reminderMinute = 0;
   List<String> _searchHistory = <String>[];
@@ -107,6 +144,80 @@ class SettingsProvider extends ChangeNotifier {
 
   /// 是否开启每日复习提醒。
   bool get reviewReminderEnabled => _reviewReminderEnabled;
+
+  /// 每日学习目标（分钟），默认 20 分钟，可在设置中调整。
+  int get dailyGoalMinutes => _dailyGoalMinutes;
+
+  /// 每次复习场次的时间预算（分钟），默认 30 分钟。
+  int get reviewSessionMinutes => _reviewSessionMinutes;
+
+  /// 已经庆祝过目标的日期（yyyy-MM-dd），用于每天只提醒一次。
+  String get goalCelebratedDate => _goalCelebratedDate;
+
+  Future<void> setDailyGoalMinutes(int value) async {
+    final clamped = value.clamp(5, 240);
+    if (_dailyGoalMinutes == clamped) return;
+    _dailyGoalMinutes = clamped;
+    notifyListeners();
+    await _storage.write('daily_goal_minutes', clamped);
+  }
+
+  Future<void> setReviewSessionMinutes(int value) async {
+    final clamped = value.clamp(5, 120);
+    if (_reviewSessionMinutes == clamped) return;
+    _reviewSessionMinutes = clamped;
+    notifyListeners();
+    await _storage.write('review_session_minutes', clamped);
+  }
+
+  /// 记录某天已经庆祝过目标达成，避免重复发通知。
+  Future<void> markGoalCelebrated(String dayKey) async {
+    if (_goalCelebratedDate == dayKey) return;
+    _goalCelebratedDate = dayKey;
+    await _storage.write('goal_celebrated_date', dayKey);
+  }
+
+  /// 是否开启自动备份（备份到用户选定的 SAF 目录）。
+  bool get autoBackupEnabled => _autoBackupEnabled;
+
+  /// 自动备份间隔：1 = 每天，7 = 每周。
+  int get autoBackupIntervalDays => _autoBackupIntervalDays;
+
+  /// 备份目录中保留的最近份数。
+  int get autoBackupKeepCount => _autoBackupKeepCount;
+
+  /// 上次自动备份时间；从未备份过时为 null。
+  DateTime? get autoBackupLastAt => _autoBackupLastAt;
+
+  Future<void> setAutoBackupEnabled(bool value) async {
+    if (_autoBackupEnabled == value) return;
+    _autoBackupEnabled = value;
+    notifyListeners();
+    await _storage.write('auto_backup_enabled', value);
+  }
+
+  Future<void> setAutoBackupIntervalDays(int value) async {
+    final normalized = value == 7 ? 7 : 1;
+    if (_autoBackupIntervalDays == normalized) return;
+    _autoBackupIntervalDays = normalized;
+    notifyListeners();
+    await _storage.write('auto_backup_interval_days', normalized);
+  }
+
+  Future<void> setAutoBackupKeepCount(int value) async {
+    final clamped = value.clamp(2, 20);
+    if (_autoBackupKeepCount == clamped) return;
+    _autoBackupKeepCount = clamped;
+    notifyListeners();
+    await _storage.write('auto_backup_keep_count', clamped);
+  }
+
+  /// 记录一次自动备份成功的时间。
+  Future<void> markAutoBackupDone(DateTime value) async {
+    _autoBackupLastAt = value;
+    notifyListeners();
+    await _storage.write('auto_backup_last_at', value.toIso8601String());
+  }
 
   int get reminderHour => _reminderHour;
   int get reminderMinute => _reminderMinute;

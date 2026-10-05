@@ -4,8 +4,10 @@ import 'package:provider/provider.dart';
 import '../l10n/l10n_extension.dart';
 import '../models/lesson.dart';
 import '../services/content_provider.dart';
+import '../services/daily_question_service.dart';
 import '../services/progress_provider.dart';
 import '../services/recommendation_service.dart';
+import '../services/settings_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/category_card.dart';
 import '../widgets/activity_chart.dart';
@@ -14,8 +16,10 @@ import '../widgets/empty_state.dart';
 import '../widgets/index_card.dart';
 import '../widgets/lesson_card.dart';
 import 'category_screen.dart';
+import 'daily_question_screen.dart';
 import 'lesson_screen.dart';
 import 'learning_path_screen.dart';
+import 'flashcard_screen.dart';
 import 'quiz_list_screen.dart';
 import 'review_plan_screen.dart';
 import 'search_screen.dart';
@@ -154,7 +158,11 @@ class HomeScreen extends StatelessWidget {
         ),
 
         const SizedBox(height: AppSpacing.lg),
+        const _DailyGoalCard(),
+        const SizedBox(height: AppSpacing.md),
         const CheckInCard(),
+        const SizedBox(height: AppSpacing.md),
+        _DailyQuestionCard(progress: progress),
         const SizedBox(height: AppSpacing.md),
         _RecentCard(content: content, progress: progress),
 
@@ -208,27 +216,47 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ],
-        // 今日复习：按间隔重复到期队列
-        if (progress.dueReviewCount > 0) ...[
-          const SizedBox(height: 16),
-          IndexCard(
-            accent: theme.colorScheme.primary,
-            padding: EdgeInsets.zero,
-            child: ListTile(
-              leading: Icon(Icons.refresh, color: theme.colorScheme.primary),
-              title: Text(
-                '${context.tr('todayReview')} · ${progress.dueReviewCount}',
-              ),
-              subtitle: Text(context.tr('todayReviewHint')),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (_) => const ReviewPlanScreen(),
-                ),
-              ),
+        // 今日复习：没有到期内容时也保留入口，方便提前复习
+        const SizedBox(height: 16),
+        IndexCard(
+          accent: theme.colorScheme.primary,
+          padding: EdgeInsets.zero,
+          child: ListTile(
+            leading: Icon(Icons.refresh, color: theme.colorScheme.primary),
+            title: Text(
+              progress.dueReviewCount > 0
+                  ? '${context.tr('todayReview')} · ${progress.dueReviewCount}'
+                  : context.tr('reviewPlanTitle'),
+            ),
+            subtitle: Text(
+              progress.dueReviewCount > 0
+                  ? context.tr('todayReviewHint')
+                  : context.tr('reviewQueueEmptyHint'),
+            ),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(builder: (_) => const ReviewPlanScreen()),
             ),
           ),
-        ],
+        ),
+        // 闪卡复习：题目与笔记自动成卡，自评后写入间隔复习
+        const SizedBox(height: 12),
+        IndexCard(
+          accent: theme.colorScheme.primary,
+          padding: EdgeInsets.zero,
+          child: ListTile(
+            leading: Icon(
+              Icons.style_outlined,
+              color: theme.colorScheme.primary,
+            ),
+            title: Text(context.tr('flashcardTitle')),
+            subtitle: Text(context.tr('flashcardEntryHint')),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(builder: (_) => const FlashcardScreen()),
+            ),
+          ),
+        ),
         if (nextLesson != null) ...[
           const SizedBox(height: 20),
           SectionBand(index: '01', title: context.tr('continueLearning')),
@@ -341,10 +369,124 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
+/// 每日学习目标：今日已学分钟数与目标进度。
+class _DailyGoalCard extends StatelessWidget {
+  const _DailyGoalCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final progress = context.watch<ProgressProvider>();
+    final settings = context.watch<SettingsProvider>();
+    final theme = Theme.of(context);
+    final goal = settings.dailyGoalMinutes;
+    final done = (progress.studySecondsToday / 60).ceil();
+    final ratio = goal <= 0 ? 0.0 : (done / goal).clamp(0.0, 1.0);
+    final reached = done >= goal;
+    final accent = reached ? AppPalette.success : theme.colorScheme.primary;
+
+    return IndexCard(
+      accent: accent,
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+      semanticLabel: context.trArgs('dailyGoalProgress', {
+        'done': done,
+        'goal': goal,
+      }),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                reached ? Icons.flag : Icons.flag_outlined,
+                size: 18,
+                color: accent,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  reached
+                      ? context.tr('dailyGoalReached')
+                      : context.tr('dailyGoal'),
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              Text(
+                '$done/$goal ${context.tr('minutes')}',
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: ratio,
+              minHeight: 6,
+              color: accent,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 void _openLesson(BuildContext context, Lesson lesson) {
   Navigator.of(
     context,
   ).push(MaterialPageRoute<void>(builder: (_) => LessonScreen(lesson: lesson)));
+}
+
+/// 每日一题入口：展示今天的题目侧重与作答状态。
+class _DailyQuestionCard extends StatelessWidget {
+  const _DailyQuestionCard({required this.progress});
+
+  final ProgressProvider progress;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final content = context.watch<ContentProvider>();
+    final daily = DailyQuestionService.pick(content.allLessons, progress.now);
+    final answered = progress.dailyQuestionAnsweredToday;
+    final correct = answered && progress.dailyQuestionCorrect;
+    final accent = answered
+        ? (correct ? AppPalette.success : AppPalette.danger)
+        : theme.colorScheme.primary;
+
+    return IndexCard(
+      accent: accent,
+      padding: EdgeInsets.zero,
+      child: ListTile(
+        leading: Icon(
+          answered
+              ? (correct ? Icons.check_circle : Icons.cancel)
+              : Icons.today_outlined,
+          color: accent,
+        ),
+        title: Text(context.tr('dailyQuestionTitle')),
+        subtitle: Text(
+          daily == null
+              ? context.tr('dailyQuestionEmpty')
+              : answered
+              ? (correct
+                    ? context.tr('correct')
+                    : context.tr('dailyQuestionAnswered'))
+              : daily.lesson.title.of(context.strings.localeCode),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute<void>(builder: (_) => const DailyQuestionScreen()),
+        ),
+      ),
+    );
+  }
 }
 
 /// 最近学习进度 + 最近 7 天学习活动折线图。

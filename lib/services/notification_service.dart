@@ -17,7 +17,40 @@ class NotificationService {
 
   /// 每日提醒使用固定 ID，重复调度会覆盖上一条，不会堆积通知。
   static const int _dailyReviewId = 1001;
+  /// 目标达成通知使用另一个固定 ID，与每日提醒互不覆盖。
+  static const int _goalReachedId = 1002;
+  /// 每日一题提醒固定 ID。
+  static const int _dailyQuestionId = 1003;
   static const String _channelId = 'review_reminder';
+  static const String _questionChannelId = 'daily_question';
+
+  /// 通知点击后的跳转目标（review / daily_question）。
+  ///
+  /// 由通知回调写入，RootShell 监听后完成页面跳转；静态字段保证
+  /// 冷启动时也能读到点击通知带来的 payload。
+  static final ValueNotifier<String?> pendingPayload =
+      ValueNotifier<String?>(null);
+  static String? _pendingPayload;
+
+  static void _queuePayload(String? payload) {
+    if (payload == null || payload.isEmpty || payload == 'goal') return;
+    _pendingPayload = payload;
+    pendingPayload.value = payload;
+  }
+
+  /// 取出并清空待处理的跳转目标，没有时返回 null。
+  static String? consumePendingPayload() {
+    final value = _pendingPayload;
+    _pendingPayload = null;
+    if (pendingPayload.value != null) {
+      pendingPayload.value = null;
+    }
+    return value;
+  }
+
+  static void _handleNotificationResponse(NotificationResponse response) {
+    _queuePayload(response.payload);
+  }
 
   final FlutterLocalNotificationsPlugin _plugin =
       FlutterLocalNotificationsPlugin();
@@ -39,7 +72,17 @@ class NotificationService {
     try {
       const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
       const initSettings = InitializationSettings(android: androidInit);
-      await _plugin.initialize(initSettings);
+      await _plugin.initialize(
+        initSettings,
+        onDidReceiveNotificationResponse: _handleNotificationResponse,
+      );
+
+      // 冷启动：读取「点击通知启动 App」时携带的 payload。
+      final launch = await _plugin.getNotificationAppLaunchDetails();
+      final launchPayload = launch?.notificationResponse?.payload;
+      if (launchPayload != null && launchPayload.isNotEmpty) {
+        _queuePayload(launchPayload);
+      }
 
       final android = _plugin
           .resolvePlatformSpecificImplementation<
@@ -51,6 +94,14 @@ class NotificationService {
           // 通知渠道名由系统持久保存，切换语言不会刷新，因此用双语写法。
           '复习提醒 / Review reminder',
           description: '每日复习提醒 / Daily review reminder',
+          importance: Importance.defaultImportance,
+        ),
+      );
+      await android?.createNotificationChannel(
+        const AndroidNotificationChannel(
+          _questionChannelId,
+          '每日一题 / Daily question',
+          description: '每天一道练习题 / One practice question a day',
           importance: Importance.defaultImportance,
         ),
       );
@@ -175,6 +226,112 @@ class NotificationService {
       await _plugin.cancel(_dailyReviewId);
     } catch (error) {
       debugPrint('取消复习提醒失败：$error');
+    }
+  }
+
+  /// 安排「每天 [hour]:[minute] 推送每日一题」，带「去作答」操作按钮。
+  Future<void> scheduleDailyQuestion({
+    required int hour,
+    required int minute,
+    required bool isEnglish,
+  }) async {
+    await init();
+    if (!_available) return;
+    await _applySystemTimeZone();
+    try {
+      final now = tz.TZDateTime.now(tz.local);
+      var next = tz.TZDateTime(
+        tz.local,
+        now.year,
+        now.month,
+        now.day,
+        hour,
+        minute,
+      );
+      if (!next.isAfter(now)) {
+        next = tz.TZDateTime(
+          tz.local,
+          now.year,
+          now.month,
+          now.day + 1,
+          hour,
+          minute,
+        );
+      }
+      await _plugin.zonedSchedule(
+        _dailyQuestionId,
+        isEnglish ? 'Question of the day' : '每日一题',
+        isEnglish
+            ? 'One quick question keeps your skills sharp'
+            : '花一分钟做一道题，保持手感',
+        next,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            _questionChannelId,
+            '每日一题',
+            channelDescription: '每天一道练习题',
+            importance: Importance.defaultImportance,
+            priority: Priority.defaultPriority,
+            actions: <AndroidNotificationAction>[
+              AndroidNotificationAction(
+                'daily_question_answer',
+                isEnglish ? 'Answer now' : '去作答',
+                showsUserInterface: true,
+              ),
+            ],
+          ),
+        ),
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+        matchDateTimeComponents: DateTimeComponents.time,
+        payload: 'daily_question',
+      );
+    } catch (error) {
+      debugPrint('安排每日一题提醒失败：$error');
+    }
+  }
+
+  /// 撤销每日一题提醒。
+  Future<void> cancelDailyQuestion() async {
+    await init();
+    if (!_available) return;
+    try {
+      await _plugin.cancel(_dailyQuestionId);
+    } catch (error) {
+      debugPrint('取消每日一题提醒失败：$error');
+    }
+  }
+
+  /// 每日学习目标达成时立即发送一条祝贺通知。
+  ///
+  /// 调用方负责「每天只发一次」的去重；这里只负责展示。
+  Future<void> showGoalReached({
+    required int minutes,
+    required bool isEnglish,
+  }) async {
+    await init();
+    if (!_available) return;
+    try {
+      final title = isEnglish ? 'Daily goal reached' : '今日目标达成';
+      final body = isEnglish
+          ? 'You studied $minutes minutes today. Keep it up!'
+          : '今天已经学习 $minutes 分钟，继续保持！';
+      await _plugin.show(
+        _goalReachedId,
+        title,
+        body,
+        const NotificationDetails(
+          android: AndroidNotificationDetails(
+            _channelId,
+            '复习提醒',
+            channelDescription: '每天提醒今日到期的复习知识点',
+            importance: Importance.defaultImportance,
+            priority: Priority.defaultPriority,
+          ),
+        ),
+        payload: 'goal',
+      );
+    } catch (error) {
+      debugPrint('发送目标达成通知失败：$error');
     }
   }
 }

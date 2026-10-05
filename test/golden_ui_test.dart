@@ -40,6 +40,8 @@ void main() {
         child: CodeLearnApp(
           storage: storage ?? StorageService.inMemory(),
           contentProvider: content,
+          // 固定日期，避免金图随系统日期漂移。
+          clock: () => DateTime(2026, 1, 5, 9, 30),
         ),
       ),
     );

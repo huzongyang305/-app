@@ -10,6 +10,7 @@ import '../l10n/app_strings.dart';
 import '../l10n/l10n_extension.dart';
 import '../services/settings_provider.dart';
 import 'code_sandbox_screen.dart';
+import 'flashcard_screen.dart';
 import 'interactive_lab_screen.dart';
 import 'system_lab_screen.dart';
 
@@ -199,6 +200,22 @@ class ToolsScreen extends StatelessWidget {
                 MaterialPageRoute<void>(
                   builder: (_) => const InteractiveLabScreen(),
                 ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Card(
+            clipBehavior: Clip.antiAlias,
+            child: ListTile(
+              leading: Icon(
+                Icons.style_outlined,
+                color: theme.colorScheme.primary,
+              ),
+              title: Text(context.tr('flashcardTitle')),
+              subtitle: Text(context.tr('flashcardEntryHint')),
+              trailing: const Icon(Icons.chevron_right, size: 18),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(builder: (_) => const FlashcardScreen()),
               ),
             ),
           ),

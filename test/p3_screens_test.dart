@@ -27,6 +27,12 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('学习分析'), findsOneWidget);
+    // 新增热力图与语言掌握度后，分类掌握度需要滚动到可见位置。
+    await tester.scrollUntilVisible(
+      find.text('分类掌握度'),
+      280,
+      scrollable: find.byType(Scrollable).first,
+    );
     expect(find.text('分类掌握度'), findsOneWidget);
   });
 

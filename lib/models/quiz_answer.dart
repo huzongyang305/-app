@@ -38,6 +38,29 @@ class QuizAnswer {
     );
   }
 
+  /// 序列化为可持久化的 JSON，用于模拟考试断点续考。
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'selected': selectedIndexes.toList()..sort(),
+    'text': text,
+    'ordered': orderedIndexes,
+  };
+
+  factory QuizAnswer.fromJson(Map<String, dynamic> json) {
+    final selected = (json['selected'] as List<dynamic>? ?? const [])
+        .map((item) => item is int ? item : int.tryParse(item.toString()))
+        .whereType<int>()
+        .toSet();
+    final ordered = (json['ordered'] as List<dynamic>? ?? const [])
+        .map((item) => item is int ? item : int.tryParse(item.toString()))
+        .whereType<int>()
+        .toList();
+    return QuizAnswer(
+      selectedIndexes: selected,
+      text: json['text']?.toString() ?? '',
+      orderedIndexes: ordered,
+    );
+  }
+
   QuizAnswer toggleOption(int index) {
     final next = <int>{...selectedIndexes};
     if (!next.add(index)) next.remove(index);
