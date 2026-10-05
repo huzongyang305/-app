@@ -1,5 +1,7 @@
 # Kotlin 集合、序列与函数式操作
 
+![集合操作链与序列惰性求值](images/diagram_kt_collections.webp)
+
 ![Kotlin 集合、序列与函数式操作](images/lesson_kotlin_collections.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：22 分钟

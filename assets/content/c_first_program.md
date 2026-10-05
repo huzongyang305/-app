@@ -1,5 +1,7 @@
 # C 第一个程序
 
+![编译并运行最小 C 程序](images/diagram_c_first_program.webp)
+
 ![C 第一个程序](images/remaining_c_first_program.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

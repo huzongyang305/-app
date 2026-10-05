@@ -1,5 +1,7 @@
 # Swift 测试与性能
 
+![Swift 测试与性能验证流程](images/diagram_swift_testing.webp)
+
 ![Swift 测试与性能](images/lesson_swift_testing.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：23 分钟

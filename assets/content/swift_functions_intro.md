@@ -1,5 +1,7 @@
 # Swift 函数入门
 
+![Swift 函数参数标签与返回值](images/diagram_swift_functions_intro.webp)
+
 ![Swift 函数入门](images/remaining_swift_functions_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

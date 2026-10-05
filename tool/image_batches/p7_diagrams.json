@@ -1,0 +1,190 @@
+{
+  "c_basics": {
+    "image": "images/diagram_c_build.webp",
+    "alt": "C 程序从源码到可执行文件"
+  },
+  "c_first_program": {
+    "image": "images/diagram_c_first_program.webp",
+    "alt": "编译并运行最小 C 程序"
+  },
+  "c_variables_io": {
+    "image": "images/diagram_c_variables_io.webp",
+    "alt": "C 变量、格式化输入输出与检查"
+  },
+  "c_types": {
+    "image": "images/diagram_c_types.webp",
+    "alt": "C 类型、转换与未定义行为"
+  },
+  "c_conditions": {
+    "image": "images/diagram_c_conditions.webp",
+    "alt": "C 条件分支与常见错误"
+  },
+  "c_loops": {
+    "image": "images/diagram_c_loops.webp",
+    "alt": "C 循环结构与边界"
+  },
+  "c_functions_intro": {
+    "image": "images/diagram_c_functions.webp",
+    "alt": "C 函数的声明、定义与调用栈"
+  },
+  "c_control_functions": {
+    "image": "images/diagram_c_control_functions.webp",
+    "alt": "控制流、函数与作用域"
+  },
+  "c_arrays_strings": {
+    "image": "images/diagram_c_arrays_strings.webp",
+    "alt": "数组、字符串与缓冲区安全"
+  },
+  "c_files": {
+    "image": "images/diagram_c_files.webp",
+    "alt": "C 文件操作的完整流程"
+  },
+  "c_debugging": {
+    "image": "images/diagram_c_debugging.webp",
+    "alt": "C 调试与内存检查工具链"
+  },
+  "c_project": {
+    "image": "images/diagram_c_task_project.webp",
+    "alt": "C 命令行任务管理器实现流程"
+  },
+  "kotlin_basics": {
+    "image": "images/diagram_kt_basics.webp",
+    "alt": "Kotlin 基础与空安全"
+  },
+  "kotlin_first_program": {
+    "image": "images/diagram_kt_first_program.webp",
+    "alt": "编写并运行第一个 Kotlin 程序"
+  },
+  "kotlin_variables_null": {
+    "image": "images/diagram_kt_variables_null.webp",
+    "alt": "val/var 与可空类型处理"
+  },
+  "kotlin_conditions": {
+    "image": "images/diagram_kt_conditions.webp",
+    "alt": "Kotlin if 与 when 表达式"
+  },
+  "kotlin_loops": {
+    "image": "images/diagram_kt_loops.webp",
+    "alt": "Kotlin 循环与范围"
+  },
+  "kotlin_functions_intro": {
+    "image": "images/diagram_kt_functions_intro.webp",
+    "alt": "Kotlin 函数的参数与返回值"
+  },
+  "kotlin_functions": {
+    "image": "images/diagram_kt_functions.webp",
+    "alt": "Lambda、扩展函数与内联"
+  },
+  "kotlin_oop": {
+    "image": "images/diagram_kt_oop.webp",
+    "alt": "Kotlin 类、数据类与密封类"
+  },
+  "kotlin_collections": {
+    "image": "images/diagram_kt_collections.webp",
+    "alt": "集合操作链与序列惰性求值"
+  },
+  "kotlin_testing": {
+    "image": "images/diagram_kt_testing.webp",
+    "alt": "Kotlin 测试与协程测试"
+  },
+  "kotlin_android": {
+    "image": "images/diagram_kt_android.webp",
+    "alt": "Kotlin Android 应用的分层架构"
+  },
+  "kotlin_project": {
+    "image": "images/diagram_kt_android_project.webp",
+    "alt": "Kotlin Android 客户端的请求链路"
+  },
+  "swift_basics": {
+    "image": "images/diagram_swift_basics.webp",
+    "alt": "Swift 基础与可选类型"
+  },
+  "swift_first_program": {
+    "image": "images/diagram_swift_first_program.webp",
+    "alt": "编写并运行第一个 Swift 程序"
+  },
+  "swift_constants_variables": {
+    "image": "images/diagram_swift_constants_variables.webp",
+    "alt": "let 与 var 的区别"
+  },
+  "swift_conditions": {
+    "image": "images/diagram_swift_conditions.webp",
+    "alt": "Swift 条件、switch 与可选绑定"
+  },
+  "swift_loops": {
+    "image": "images/diagram_swift_loops.webp",
+    "alt": "Swift 循环与范围"
+  },
+  "swift_functions_intro": {
+    "image": "images/diagram_swift_functions_intro.webp",
+    "alt": "Swift 函数参数标签与返回值"
+  },
+  "swift_functions": {
+    "image": "images/diagram_swift_functions.webp",
+    "alt": "闭包捕获与协议扩展"
+  },
+  "swift_collections": {
+    "image": "images/diagram_swift_collections.webp",
+    "alt": "Swift 集合类型与泛型"
+  },
+  "swift_async": {
+    "image": "images/diagram_swift_async.webp",
+    "alt": "Swift 并发模型"
+  },
+  "swift_swiftui": {
+    "image": "images/diagram_swift_swiftui.webp",
+    "alt": "SwiftUI 状态与数据流"
+  },
+  "swift_testing": {
+    "image": "images/diagram_swift_testing.webp",
+    "alt": "Swift 测试与性能验证流程"
+  },
+  "swift_project": {
+    "image": "images/diagram_swift_ios_project.webp",
+    "alt": "SwiftUI iOS 客户端的数据流"
+  },
+  "flutter_widget_intro": {
+    "image": "images/diagram_mobile_flutter_widget.webp",
+    "alt": "Flutter Widget 到渲染的流程"
+  },
+  "flutter_layout_intro": {
+    "image": "images/diagram_mobile_flutter_layout.webp",
+    "alt": "Flutter 布局与约束"
+  },
+  "flutter_state": {
+    "image": "images/diagram_mobile_flutter_state.webp",
+    "alt": "状态分层与重建范围"
+  },
+  "flutter_release": {
+    "image": "images/diagram_mobile_flutter_release.webp",
+    "alt": "Flutter Android 发布流程"
+  },
+  "mobile_kotlin": {
+    "image": "images/diagram_mobile_kotlin.webp",
+    "alt": "Kotlin Android 开发的关键能力"
+  },
+  "mobile_swift": {
+    "image": "images/diagram_mobile_swift.webp",
+    "alt": "Swift 与 iOS 开发的关键能力"
+  },
+  "mobile_react_native": {
+    "image": "images/diagram_mobile_react_native.webp",
+    "alt": "React Native 新架构与性能优化"
+  },
+  "mobile_compose": {
+    "image": "images/diagram_mobile_compose.webp",
+    "alt": "Jetpack Compose 重组与状态"
+  },
+  "mobile_harmony": {
+    "image": "images/diagram_mobile_harmony.webp",
+    "alt": "鸿蒙 ArkTS 与 Stage 模型"
+  },
+  "mobile_miniprogram": {
+    "image": "images/diagram_mobile_miniprogram.webp",
+    "alt": "小程序双线程模型与分包"
+  },
+  "mobile_performance": {
+    "image": "images/diagram_mobile_performance.webp",
+    "alt": "移动端性能优化的四个维度"
+  }
+}

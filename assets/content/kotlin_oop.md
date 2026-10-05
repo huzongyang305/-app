@@ -1,5 +1,7 @@
 # Kotlin 类、对象与属性
 
+![Kotlin 类、数据类与密封类](images/diagram_kt_oop.webp)
+
 ![Kotlin 类、对象与属性](images/lesson_kotlin_oop.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：23 分钟

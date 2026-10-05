@@ -1,5 +1,7 @@
 # Kotlin 第一个程序
 
+![编写并运行第一个 Kotlin 程序](images/diagram_kt_first_program.webp)
+
 ![Kotlin 第一个程序](images/remaining_kotlin_first_program.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

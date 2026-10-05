@@ -1,5 +1,7 @@
 # Kotlin 与 Android 开发
 
+![Kotlin Android 开发的关键能力](images/diagram_mobile_kotlin.webp)
+
 ![Kotlin 与 Android 开发](images/category_mobile_kotlin.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：16 分钟

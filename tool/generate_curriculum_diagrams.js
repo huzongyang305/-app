@@ -75,6 +75,12 @@ const GROUPS = {
     './curriculum_diagrams/p6_security',
     './curriculum_diagrams/p6_htmlcss',
   ],
+  p7: [
+    './curriculum_diagrams/p7_c',
+    './curriculum_diagrams/p7_kotlin',
+    './curriculum_diagrams/p7_swift',
+    './curriculum_diagrams/p7_mobile',
+  ],
 };
 
 // 分组到批次文件名的映射；p0p1 沿用历史文件名，避免流程中断。
@@ -85,6 +91,7 @@ const BATCH_NAMES = {
   p4: 'p4_diagrams.json',
   p5: 'p5_diagrams.json',
   p6: 'p6_diagrams.json',
+  p7: 'p7_diagrams.json',
 };
 
 function loadGroup(name) {
@@ -99,6 +106,7 @@ const DIAGRAMS = Object.assign(
   loadGroup('p4'),
   loadGroup('p5'),
   loadGroup('p6'),
+  loadGroup('p7'),
 );
 
 const OUT_DIR = path.join(__dirname, '..', 'assets', 'content', 'images');

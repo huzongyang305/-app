@@ -1,5 +1,7 @@
 # 实战：Kotlin Android 客户端
 
+![Kotlin Android 客户端的请求链路](images/diagram_kt_android_project.webp)
+
 ![实战：Kotlin Android 客户端](images/lesson_kotlin_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：130 分钟

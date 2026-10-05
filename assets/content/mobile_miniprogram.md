@@ -1,5 +1,7 @@
 # 小程序开发要点
 
+![小程序双线程模型与分包](images/diagram_mobile_miniprogram.webp)
+
 ![小程序开发要点](images/category_mobile_miniprogram.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：15 分钟

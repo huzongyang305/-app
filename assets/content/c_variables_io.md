@@ -1,5 +1,7 @@
 # C 变量与输入输出
 
+![C 变量、格式化输入输出与检查](images/diagram_c_variables_io.webp)
+
 ![C 变量与输入输出](images/remaining_c_variables_io.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

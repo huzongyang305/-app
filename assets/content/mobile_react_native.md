@@ -1,5 +1,7 @@
 # React Native 跨平台开发
 
+![React Native 新架构与性能优化](images/diagram_mobile_react_native.webp)
+
 ![React Native 跨平台开发](images/category_mobile_react_native.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

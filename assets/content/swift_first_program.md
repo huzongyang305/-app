@@ -1,5 +1,7 @@
 # Swift 第一个程序
 
+![编写并运行第一个 Swift 程序](images/diagram_swift_first_program.webp)
+
 ![Swift 第一个程序](images/remaining_swift_first_program.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

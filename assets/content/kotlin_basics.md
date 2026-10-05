@@ -1,5 +1,7 @@
 # Kotlin 基础与空安全
 
+![Kotlin 基础与空安全](images/diagram_kt_basics.webp)
+
 ![Kotlin 基础与空安全](images/lesson_kotlin_basics.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：20 分钟

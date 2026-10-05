@@ -1,5 +1,7 @@
 # 鸿蒙 ArkTS 应用开发
 
+![鸿蒙 ArkTS 与 Stage 模型](images/diagram_mobile_harmony.webp)
+
 ![鸿蒙 ArkTS 应用开发](images/category_mobile_harmony.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

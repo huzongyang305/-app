@@ -1,5 +1,7 @@
 # Kotlin 变量与空值
 
+![val/var 与可空类型处理](images/diagram_kt_variables_null.webp)
+
 ![Kotlin 变量与空值](images/remaining_kotlin_variables_null.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

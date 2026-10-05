@@ -1,5 +1,7 @@
 # 实战：SwiftUI iOS 客户端
 
+![SwiftUI iOS 客户端的数据流](images/diagram_swift_ios_project.webp)
+
 ![实战：SwiftUI iOS 客户端](images/lesson_swift_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：130 分钟

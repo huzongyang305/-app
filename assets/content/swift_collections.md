@@ -1,5 +1,7 @@
 # Swift 集合与泛型
 
+![Swift 集合类型与泛型](images/diagram_swift_collections.webp)
+
 ![Swift 集合与泛型](images/lesson_swift_collections.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：22 分钟

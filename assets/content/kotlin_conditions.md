@@ -1,5 +1,7 @@
 # Kotlin 条件判断
 
+![Kotlin if 与 when 表达式](images/diagram_kt_conditions.webp)
+
 ![Kotlin 条件判断](images/remaining_kotlin_conditions.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

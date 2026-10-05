@@ -1,5 +1,7 @@
 # Flutter 状态管理与性能
 
+![状态分层与重建范围](images/diagram_mobile_flutter_state.webp)
+
 ![Flutter 状态管理与性能](images/category_flutter_state.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

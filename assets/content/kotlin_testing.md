@@ -1,5 +1,7 @@
 # Kotlin 测试与协程测试
 
+![Kotlin 测试与协程测试](images/diagram_kt_testing.webp)
+
 ![Kotlin 测试与协程测试](images/lesson_kotlin_testing.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：23 分钟

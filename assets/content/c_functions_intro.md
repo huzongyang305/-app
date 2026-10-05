@@ -1,5 +1,7 @@
 # C 函数入门
 
+![C 函数的声明、定义与调用栈](images/diagram_c_functions.webp)
+
 ![C 函数入门](images/remaining_c_functions_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

@@ -1,5 +1,7 @@
 # Swift 条件判断
 
+![Swift 条件、switch 与可选绑定](images/diagram_swift_conditions.webp)
+
 ![Swift 条件判断](images/remaining_swift_conditions.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

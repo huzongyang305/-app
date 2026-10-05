@@ -1,5 +1,7 @@
 # Kotlin 函数、Lambda 与扩展
 
+![Lambda、扩展函数与内联](images/diagram_kt_functions.webp)
+
 ![Kotlin 函数、Lambda 与扩展](images/lesson_kotlin_functions.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：22 分钟

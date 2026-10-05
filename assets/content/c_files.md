@@ -1,5 +1,7 @@
 # C 文件、错误处理与资源管理
 
+![C 文件操作的完整流程](images/diagram_c_files.webp)
+
 ![C 文件、错误处理与资源管理](images/lesson_c_files.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：23 分钟

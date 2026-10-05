@@ -1,5 +1,7 @@
 # Swift 并发与 async/await
 
+![Swift 并发模型](images/diagram_swift_async.webp)
+
 ![Swift 并发与 async/await](images/lesson_swift_async.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：25 分钟

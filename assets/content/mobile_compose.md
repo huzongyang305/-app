@@ -1,5 +1,7 @@
 # Jetpack Compose 声明式 UI
 
+![Jetpack Compose 重组与状态](images/diagram_mobile_compose.webp)
+
 ![Jetpack Compose 声明式 UI](images/category_mobile_compose.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

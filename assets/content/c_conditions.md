@@ -1,5 +1,7 @@
 # C 条件判断
 
+![C 条件分支与常见错误](images/diagram_c_conditions.webp)
+
 ![C 条件判断](images/remaining_c_conditions.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

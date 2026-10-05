@@ -1,5 +1,7 @@
 # 实战：C 命令行任务管理器
 
+![C 命令行任务管理器实现流程](images/diagram_c_task_project.webp)
+
 ![实战：C 命令行任务管理器](images/lesson_c_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：120 分钟

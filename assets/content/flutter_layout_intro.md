@@ -1,5 +1,7 @@
 # Flutter 布局入门
 
+![Flutter 布局与约束](images/diagram_mobile_flutter_layout.webp)
+
 ![Flutter 布局入门](images/category_flutter_layout_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

@@ -1,5 +1,7 @@
 # SwiftUI 与状态管理
 
+![SwiftUI 状态与数据流](images/diagram_swift_swiftui.webp)
+
 ![SwiftUI 与状态管理](images/lesson_swift_swiftui.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

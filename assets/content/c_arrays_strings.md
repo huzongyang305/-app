@@ -1,5 +1,7 @@
 # C 数组、字符串与缓冲区
 
+![数组、字符串与缓冲区安全](images/diagram_c_arrays_strings.webp)
+
 ![C 数组、字符串与缓冲区](images/lesson_c_arrays_strings.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：24 分钟

@@ -1,5 +1,7 @@
 # C 调试、Sanitizer 与性能
 
+![C 调试与内存检查工具链](images/diagram_c_debugging.webp)
+
 ![C 调试、Sanitizer 与性能](images/lesson_c_debugging.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：25 分钟

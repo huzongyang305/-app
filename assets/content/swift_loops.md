@@ -1,5 +1,7 @@
 # Swift 循环入门
 
+![Swift 循环与范围](images/diagram_swift_loops.webp)
+
 ![Swift 循环入门](images/remaining_swift_loops.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

@@ -1,5 +1,7 @@
 # C 类型、运算符与转换
 
+![C 类型、转换与未定义行为](images/diagram_c_types.webp)
+
 ![C 类型、运算符与转换](images/lesson_c_types.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：22 分钟

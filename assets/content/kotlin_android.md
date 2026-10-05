@@ -1,5 +1,7 @@
 # Kotlin Android 架构
 
+![Kotlin Android 应用的分层架构](images/diagram_kt_android.webp)
+
 ![Kotlin Android 架构](images/lesson_kotlin_android.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：25 分钟

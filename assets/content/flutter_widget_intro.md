@@ -1,5 +1,7 @@
 # Flutter Widget 入门
 
+![Flutter Widget 到渲染的流程](images/diagram_mobile_flutter_widget.webp)
+
 ![Flutter Widget 入门](images/category_flutter_widget_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

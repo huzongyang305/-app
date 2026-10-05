@@ -1,5 +1,7 @@
 # 实战：Flutter 打包发布 Android
 
+![Flutter Android 发布流程](images/diagram_mobile_flutter_release.webp)
+
 ![实战：Flutter 打包发布 Android](images/category_flutter_release.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

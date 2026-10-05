@@ -1,5 +1,7 @@
 # C 控制流、函数与作用域
 
+![控制流、函数与作用域](images/diagram_c_control_functions.webp)
+
 ![C 控制流、函数与作用域](images/lesson_c_control_functions.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：22 分钟

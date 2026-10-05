@@ -1,5 +1,7 @@
 # Kotlin 函数入门
 
+![Kotlin 函数的参数与返回值](images/diagram_kt_functions_intro.webp)
+
 ![Kotlin 函数入门](images/remaining_kotlin_functions_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

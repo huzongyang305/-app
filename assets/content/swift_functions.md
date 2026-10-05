@@ -1,5 +1,7 @@
 # Swift 函数、闭包与协议
 
+![闭包捕获与协议扩展](images/diagram_swift_functions.webp)
+
 ![Swift 函数、闭包与协议](images/lesson_swift_functions.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：22 分钟

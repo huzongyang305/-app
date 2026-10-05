@@ -1,5 +1,7 @@
 # Swift 常量与变量
 
+![let 与 var 的区别](images/diagram_swift_constants_variables.webp)
+
 ![Swift 常量与变量](images/remaining_swift_constants_variables.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

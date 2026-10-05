@@ -1,5 +1,7 @@
 # C 基础语法与编译流程
 
+![C 程序从源码到可执行文件](images/diagram_c_build.webp)
+
 ![C 基础语法与编译流程](images/lesson_c_basics.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：20 分钟

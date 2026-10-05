@@ -1,5 +1,7 @@
 # 移动端性能优化实战
 
+![移动端性能优化的四个维度](images/diagram_mobile_performance.webp)
+
 ![移动端性能优化实战](images/category_mobile_performance.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：18 分钟

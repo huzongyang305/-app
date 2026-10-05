@@ -1,5 +1,7 @@
 # Kotlin 循环入门
 
+![Kotlin 循环与范围](images/diagram_kt_loops.webp)
+
 ![Kotlin 循环入门](images/remaining_kotlin_loops.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟
