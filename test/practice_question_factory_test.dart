@@ -20,14 +20,24 @@ void main() {
         .toList();
   });
 
-  test('每个编程语言分类都有动态代码练习', () {
+  test('语言基础课程都有 6 道动态代码练习', () {
     final lessons = categories
         .where(
           (category) => PracticeQuestionFactory.supportsCategoryId(category.id),
         )
         .expand((category) => category.lessons)
+        .where(PracticeQuestionFactory.supports)
         .toList();
     expect(lessons, isNotEmpty);
+    expect(
+      lessons.length,
+      greaterThanOrEqualTo(70),
+      reason: '语言基础课程应覆盖全部 12 门语言',
+    );
+    expect(
+      lessons.map((lesson) => lesson.categoryId).toSet().length,
+      PracticeQuestionFactory.supportedCategoryIds.length,
+    );
 
     final questionTexts = <String, String>{};
     for (final lesson in lessons) {
@@ -74,13 +84,28 @@ void main() {
     }
   });
 
+  test('高阶语言课程不生成通用代码练习，避免与正文脱节', () {
+    final advanced = categories
+        .where(
+          (category) => PracticeQuestionFactory.supportsCategoryId(category.id),
+        )
+        .expand((category) => category.lessons)
+        .where((lesson) => !PracticeQuestionFactory.supports(lesson))
+        .toList();
+    expect(advanced, isNotEmpty);
+    for (final lesson in advanced) {
+      expect(PracticeQuestionFactory.questionsFor(lesson), isEmpty);
+      expect(lesson.totalQuestionCount, lesson.quiz.length);
+    }
+  });
+
   test('同一课程重复生成结果完全一致', () {
     final lesson = categories
         .firstWhere(
           (category) => PracticeQuestionFactory.supportsCategoryId(category.id),
         )
         .lessons
-        .first;
+        .firstWhere(PracticeQuestionFactory.supports);
     final first = PracticeQuestionFactory.questionsFor(lesson);
     final second = PracticeQuestionFactory.questionsFor(lesson);
     expect(

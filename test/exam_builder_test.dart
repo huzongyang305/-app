@@ -141,6 +141,7 @@ void main() {
     int count, {
     bool withQuiz = true,
     String categoryId = 'cat',
+    String Function(int index)? titleBuilder,
   }) {
     const difficulties = ['基础', '进阶', '高级'];
     return List<Lesson>.generate(count, (index) {
@@ -148,7 +149,10 @@ void main() {
         id: '${categoryId}_$index',
         categoryId: categoryId,
         difficulty: difficulties[index % difficulties.length],
-        title: LocalizedText(zh: '知识点 $index', en: 'Lesson $index'),
+        title: LocalizedText(
+          zh: titleBuilder?.call(index) ?? '知识点 $index',
+          en: 'Lesson $index',
+        ),
         summary: const LocalizedText(zh: '摘要', en: 'Summary'),
         assetFile: 'assets/content/lesson_$index.md',
         minutes: 10,
@@ -190,13 +194,20 @@ void main() {
     }
   });
 
-  test('语言课程会追加动态代码练习，非语言课程保持原题库', () {
-    final languageLesson = makeLessons(1, categoryId: 'python').single;
-    final otherLesson = makeLessons(1, categoryId: 'cat').single;
+  test('语言基础课程追加动态代码练习，高阶与非语言课程保持原题库', () {
+    final pair = makeLessons(
+      2,
+      categoryId: 'python',
+      titleBuilder: (index) => index == 0 ? 'Python 基础语法' : 'Python 并发与异步',
+    );
+    final basic = pair[0];
+    final advanced = pair[1];
+    final other = makeLessons(1, categoryId: 'cat').single;
 
-    expect(languageLesson.allQuiz.length, languageLesson.quiz.length + 6);
-    expect(otherLesson.allQuiz.length, otherLesson.quiz.length);
-    expect(languageLesson.totalQuestionCount, languageLesson.allQuiz.length);
+    expect(basic.allQuiz.length, basic.quiz.length + 6);
+    expect(basic.totalQuestionCount, basic.allQuiz.length);
+    expect(advanced.allQuiz.length, advanced.quiz.length);
+    expect(other.allQuiz.length, other.quiz.length);
   });
 
   test('同一 seed 生成的考卷完全一致，便于复现问题', () {
@@ -274,17 +285,31 @@ void main() {
     expect(paper.every((item) => item.lesson.categoryId == 'python'), isTrue);
   });
 
-  test('examPoolSize 会把有动态代码练习的语言课程计入题库', () {
+  test('examPoolSize 只统计真正有题目的知识点', () {
     final lessons = <Lesson>[
       ...makeLessons(20, categoryId: 'python'),
       ...makeLessons(5, categoryId: 'java', withQuiz: false),
       ...makeLessons(3, categoryId: 'java'),
     ];
-    // 语言课程即使没有内置题目，也会由代码练习工厂补充 6 道动态题。
-    expect(examPoolSize(lessons), 28);
+    // 合成课程的主题不在代码练习范围内，因此按内置题库统计。
+    expect(examPoolSize(lessons), 23);
     expect(examPoolSize(lessons, categoryId: 'python'), 20);
-    expect(examPoolSize(lessons, categoryId: 'java'), 8);
+    expect(examPoolSize(lessons, categoryId: 'java'), 3);
     expect(examPoolSize(lessons, categoryId: 'go'), 0);
+  });
+
+  test('语言基础课程补充的动态题会计入组卷池', () {
+    final basic = makeLessons(
+      1,
+      categoryId: 'go',
+      withQuiz: false,
+      titleBuilder: (_) => 'Go 基础',
+    ).single;
+    expect(basic.totalQuestionCount, 6);
+    expect(examPoolSize(<Lesson>[basic]), 1);
+    final paper = buildExamPaper(<Lesson>[basic], size: 3, seed: 2);
+    expect(paper, hasLength(1));
+    expect(paper.single.questionIndex, inInclusiveRange(0, 5));
   });
 
   test('范围内没有可用知识点时返回空考卷', () {

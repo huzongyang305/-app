@@ -30,8 +30,50 @@ class PracticeQuestionFactory {
   static final Map<String, List<QuizQuestion>> _cache =
       <String, List<QuizQuestion>>{};
 
+  /// 只给「语言基础机制」课程生成代码练习。
+  ///
+  /// 并发、GC、框架、类型体操等高阶课程的主题差异很大，通用代码模板容易
+  /// 与正文脱节，这些课程继续使用手写题库；基础语法、变量、条件、循环、
+  /// 函数、输入输出等课程与模板一一对应，才追加动态练习。
   static bool supports(Lesson lesson) =>
-      supportedCategoryIds.contains(lesson.categoryId);
+      supportsCategoryId(lesson.categoryId) && _isFundamental(lesson.title.zh);
+
+  static const List<String> _fundamentalTitleTokens = <String>[
+    '基础',
+    '变量',
+    '输入输出',
+    '输入与输出',
+    '条件',
+    '循环',
+    '控制流',
+    '第一个程序',
+    '第一个脚本',
+    '第一个类',
+    '第一个类型',
+    '控制台入门',
+    '函数入门',
+    '方法入门',
+    '函数类型',
+  ];
+
+  static bool _isFundamental(String title) {
+    final value = title.trim();
+    if (value == '函数' || value == '方法') return true;
+    return _fundamentalTitleTokens.any(value.contains);
+  }
+
+  /// 按课程主题决定先出哪一道代码输出题，让练习更贴近本课重点。
+  static String _leadTopic(String title) {
+    if (title.contains('循环') || title.contains('条件') || title.contains('控制流')) {
+      return 'loop';
+    }
+    if (title.contains('函数') ||
+        title.contains('方法') ||
+        title.contains('Lambda')) {
+      return 'function';
+    }
+    return 'variable';
+  }
 
   static bool supportsCategoryId(String categoryId) =>
       supportedCategoryIds.contains(categoryId);
@@ -40,6 +82,7 @@ class PracticeQuestionFactory {
   static List<QuizQuestion> questionsFor(Lesson lesson) {
     final cached = _cache[lesson.id];
     if (cached != null) return cached;
+    if (!supports(lesson)) return const <QuizQuestion>[];
     final spec = _specs[lesson.categoryId];
     if (spec == null) return const <QuizQuestion>[];
 
@@ -58,8 +101,8 @@ class PracticeQuestionFactory {
 
     final title = lesson.title.zh;
     final keyword = lesson.keywords.isNotEmpty ? lesson.keywords.first : title;
-    final questions = <QuizQuestion>[
-      _codeOutput(
+    final codeQuestions = <String, QuizQuestion>{
+      'variable': _codeOutput(
         lesson: lesson,
         spec: spec,
         code: render(spec.variable),
@@ -67,7 +110,7 @@ class PracticeQuestionFactory {
         seed: seed,
         variant: 0,
       ),
-      _codeOutput(
+      'loop': _codeOutput(
         lesson: lesson,
         spec: spec,
         code: render(spec.loop),
@@ -75,7 +118,7 @@ class PracticeQuestionFactory {
         seed: seed,
         variant: 1,
       ),
-      _codeOutput(
+      'function': _codeOutput(
         lesson: lesson,
         spec: spec,
         code: render(spec.function),
@@ -83,6 +126,14 @@ class PracticeQuestionFactory {
         seed: seed,
         variant: 2,
       ),
+    };
+    final lead = _leadTopic(title);
+    final order = <String>[
+      lead,
+      ...<String>['variable', 'loop', 'function'].where((item) => item != lead),
+    ];
+    final questions = <QuizQuestion>[
+      for (final key in order) codeQuestions[key]!,
       _debugSyntax(
         lesson: lesson,
         spec: spec,
@@ -217,9 +268,9 @@ class PracticeQuestionFactory {
     required int seed,
   }) {
     final label = _languageLabel(spec.language);
-    final correct = '先围绕$keyword写最小可运行示例，再用边界输入验证“$title”的结果';
+    final correct = '先围绕「$keyword」写最小可运行示例，再用边界输入验证“$title”的结果';
     final wrongs = <String>[
-      '只背下$title的结论，遇到新输入时凭感觉修改代码',
+      '只背下「$title」的结论，遇到新输入时凭感觉修改代码',
       '一次改完所有变量和依赖，再统一观察是否报错',
       '跳过错误信息，直接复制另一段代码直到能运行',
     ];
