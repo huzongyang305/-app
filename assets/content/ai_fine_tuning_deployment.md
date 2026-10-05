@@ -1,5 +1,7 @@
 # 模型微调与本地部署
 
+![LoRA、QLoRA 与量化部署](images/diagram_fine_tuning.webp)
+
 ![模型微调与本地部署](images/remaining_ai_fine_tuning_deployment.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：17 分钟

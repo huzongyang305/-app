@@ -1,5 +1,7 @@
 # Swift 结构体、类与 ARC
 
+![Swift 值类型、引用类型与 ARC](images/diagram_swift_arc.webp)
+
 ![Swift 结构体、类与 ARC](images/lesson_swift_oop.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：23 分钟

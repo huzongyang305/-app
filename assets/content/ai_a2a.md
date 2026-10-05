@@ -1,5 +1,7 @@
 # A2A Agent 协作协议
 
+![A2A Agent 任务委派时序](images/diagram_a2a.webp)
+
 ![A2A Agent 协作协议](images/lesson_ai_a2a.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：22 分钟

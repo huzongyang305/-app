@@ -1,5 +1,7 @@
 # 高可用与容量规划
 
+![高可用的冗余、故障域与容量水位](images/diagram_high_availability.webp)
+
 ![高可用与容量规划](images/category_high_availability.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：17 分钟

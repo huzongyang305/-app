@@ -1,5 +1,7 @@
 # 同步机制与经典问题
 
+![生产者消费者信号量时序](images/diagram_os_synchronization.webp)
+
 ![同步机制与经典问题](images/remaining_os_synchronization.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

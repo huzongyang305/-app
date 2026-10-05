@@ -1,5 +1,7 @@
 # C# 异步流与取消
 
+![C# async await 与异步流](images/diagram_csharp_async.webp)
+
 ![C# 异步流与取消](images/lesson_csharp_async_streams.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

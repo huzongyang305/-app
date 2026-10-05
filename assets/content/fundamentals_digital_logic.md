@@ -1,5 +1,7 @@
 # 数字逻辑与布尔代数
 
+![从逻辑门到全加器](images/diagram_digital_logic.webp)
+
 ![数字逻辑与布尔代数](images/remaining_digital_logic.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：15 分钟

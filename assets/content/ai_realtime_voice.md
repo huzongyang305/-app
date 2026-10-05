@@ -1,5 +1,7 @@
 # 实时语音对话
 
+![实时语音链路 VAD ASR LLM TTS](images/diagram_realtime_voice.webp)
+
 ![实时语音对话](images/remaining_ai_realtime_voice.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：15 分钟

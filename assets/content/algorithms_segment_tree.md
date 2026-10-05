@@ -1,5 +1,7 @@
 # 树状数组与线段树
 
+![线段树区间分解结构](images/diagram_segment_tree.webp)
+
 ![树状数组与线段树](images/remaining_segment_tree.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：17 分钟

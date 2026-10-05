@@ -1,5 +1,7 @@
 # 查询优化与执行计划
 
+![查询优化器从 SQL 到执行计划](images/diagram_query_optimization.webp)
+
 ![查询优化与执行计划](images/remaining_db_query_optimization.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

@@ -1,5 +1,7 @@
 # 编译与程序运行原理
 
+![从源码到可执行文件的编译四阶段](images/diagram_compiler.webp)
+
 ![编译与程序运行原理](images/remaining_compiler.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：14 分钟

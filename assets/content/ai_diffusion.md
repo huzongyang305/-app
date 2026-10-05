@@ -1,5 +1,7 @@
 # 扩散模型与图像生成
 
+![扩散模型加噪与去噪过程](images/diagram_diffusion.webp)
+
 ![扩散模型与图像生成](images/lesson_ai_diffusion.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

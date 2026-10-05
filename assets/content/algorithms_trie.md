@@ -1,5 +1,7 @@
 # 字典树（Trie）
 
+![Trie 前缀树结构](images/diagram_trie.webp)
+
 ![字典树（Trie）](images/remaining_trie.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

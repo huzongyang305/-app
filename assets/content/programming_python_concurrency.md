@@ -1,5 +1,7 @@
 # 并发与异步
 
+![Python 线程、进程与 asyncio 对比](images/diagram_python_concurrency.webp)
+
 ![并发与异步](images/remaining_python_concurrency.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

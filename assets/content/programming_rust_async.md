@@ -1,5 +1,7 @@
 # Rust 异步编程与 tokio
 
+![Rust Future 状态机与 tokio 调度](images/diagram_rust_async.webp)
+
 ![Rust 异步编程与 tokio](images/remaining_rust_async_tokio.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

@@ -1,5 +1,7 @@
 # Rust 智能指针与内部可变性
 
+![Rust 智能指针与内部可变性](images/diagram_rust_smart_pointers.webp)
+
 ![Rust 智能指针与内部可变性](images/lesson_rust_smart_pointers.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：25 分钟

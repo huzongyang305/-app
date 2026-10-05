@@ -1,5 +1,7 @@
 # 缓存一致性、内存模型与 NUMA
 
+![MESI 缓存一致性与 NUMA](images/diagram_cache_coherence.webp)
+
 ![缓存一致性、内存模型与 NUMA](images/lesson_fundamentals_cache_coherence.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：26 分钟

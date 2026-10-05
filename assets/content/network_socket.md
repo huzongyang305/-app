@@ -1,5 +1,7 @@
 # Socket 编程实战
 
+![TCP Socket 客户端服务端调用时序](images/diagram_socket_programming.webp)
+
 ![Socket 编程实战](images/remaining_socket_programming.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

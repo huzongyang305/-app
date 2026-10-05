@@ -1,5 +1,7 @@
 # GraphRAG 与知识图谱检索
 
+![GraphRAG 知识图谱增强检索](images/diagram_graphrag.webp)
+
 ![GraphRAG 与知识图谱检索](images/lesson_ai_graphrag.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

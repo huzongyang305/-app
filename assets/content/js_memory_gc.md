@@ -1,5 +1,7 @@
 # JavaScript 内存管理与垃圾回收
 
+![JavaScript 标记清除与分代回收](images/diagram_js_memory_gc.webp)
+
 ![JavaScript 内存管理与垃圾回收](images/lesson_js_memory_gc.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

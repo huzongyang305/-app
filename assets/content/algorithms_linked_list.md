@@ -1,5 +1,7 @@
 # 链表
 
+![单链表、双链表与环形链表](images/diagram_linked_list.webp)
+
 ![链表](images/remaining_linked_list.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

@@ -1,5 +1,7 @@
 # Python 上下文管理器与迭代器协议
 
+![上下文管理器与迭代器协议](images/diagram_python_context_iterators.webp)
+
 ![Python 上下文管理器与迭代器协议](images/lesson_python_context_iterators.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：22 分钟

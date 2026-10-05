@@ -1,5 +1,7 @@
 # I/O 调度与块设备
 
+![磁盘 IO 电梯调度顺序](images/diagram_io_scheduling.webp)
+
 ![I/O 调度与块设备](images/lesson_os_io_scheduling.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

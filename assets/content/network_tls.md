@@ -1,5 +1,7 @@
 # HTTPS 与 TLS
 
+![TLS 1.3 握手时序](images/diagram_tls.webp)
+
 ![HTTPS 与 TLS](images/remaining_tls.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：14 分钟

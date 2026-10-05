@@ -1,5 +1,7 @@
 # OLAP 与列式存储
 
+![行存与列存对比](images/diagram_columnar.webp)
+
 ![OLAP 与列式存储](images/remaining_olap_columnar.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

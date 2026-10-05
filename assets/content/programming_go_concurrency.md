@@ -1,5 +1,7 @@
 # Go 并发：goroutine、channel 与 context
 
+![Go goroutine channel context](images/diagram_go_concurrency.webp)
+
 ![Go 并发：goroutine、channel 与 context](images/remaining_go_concurrency.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

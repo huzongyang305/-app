@@ -1,5 +1,7 @@
 # 多模态 AI：图像、语音与视频
 
+![多模态模型编码、对齐与生成](images/diagram_multimodal.webp)
+
 ![多模态 AI：图像、语音与视频](images/remaining_ai_multimodal.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

@@ -1,5 +1,7 @@
 # 单调栈与单调队列
 
+![单调栈与下一个更大元素](images/diagram_monotonic_stack.webp)
+
 ![单调栈与单调队列](images/remaining_monotonic_stack.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

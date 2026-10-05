@@ -1,5 +1,7 @@
 # 字符串匹配
 
+![KMP next 数组与匹配过程](images/diagram_kmp.webp)
+
 ![字符串匹配](images/remaining_string_matching.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：15 分钟

@@ -1,5 +1,7 @@
 # 分布式缓存架构
 
+![缓存穿透、击穿与雪崩](images/diagram_cache_problems.webp)
+
 ![分布式缓存架构](images/category_distributed_cache.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：18 分钟

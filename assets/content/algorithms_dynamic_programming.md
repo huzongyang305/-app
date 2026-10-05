@@ -1,5 +1,7 @@
 # 动态规划入门
 
+![0/1 背包动态规划状态表](images/diagram_dp.webp)
+
 ![动态规划入门](images/remaining_dynamic_programming.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：18 分钟

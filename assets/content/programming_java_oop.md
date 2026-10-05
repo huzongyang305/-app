@@ -1,5 +1,7 @@
 # 类与对象
 
+![Java 类加载与对象创建](images/diagram_java_oop.webp)
+
 ![类与对象](images/remaining_java_oop.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

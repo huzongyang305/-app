@@ -1,5 +1,7 @@
 # 视觉语言模型 VLM
 
+![视觉语言模型结构与投影层](images/diagram_vlm.webp)
+
 ![视觉语言模型 VLM](images/lesson_ai_vlm.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

@@ -1,5 +1,7 @@
 # 链接与加载
 
+![静态链接与动态链接对比](images/diagram_linking_loading.webp)
+
 ![链接与加载](images/remaining_linking_loading.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

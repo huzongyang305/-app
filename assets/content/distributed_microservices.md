@@ -1,5 +1,7 @@
 # 微服务拆分与治理
 
+![微服务调用拓扑与数据边界](images/diagram_microservices.webp)
+
 ![微服务拆分与治理](images/category_microservices.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：16 分钟

@@ -1,5 +1,7 @@
 # 大模型推理服务与 GPU 优化
 
+![大模型推理服务批处理与 KV 缓存](images/diagram_model_serving.webp)
+
 ![大模型推理服务与 GPU 优化](images/lesson_ai_model_serving.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：26 分钟

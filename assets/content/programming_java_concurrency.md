@@ -1,5 +1,7 @@
 # 多线程与并发
 
+![synchronized、AQS 与线程池](images/diagram_java_concurrency.webp)
+
 ![多线程与并发](images/remaining_java_concurrency.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：17 分钟

@@ -1,5 +1,7 @@
 # 变量与数据类型
 
+![Python 变量绑定与可变对象](images/diagram_python_variables.webp)
+
 ![变量与数据类型](images/remaining_python_variables.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：14 分钟

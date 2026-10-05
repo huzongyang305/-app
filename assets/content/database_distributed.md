@@ -1,5 +1,7 @@
 # 分布式事务与共识
 
+![两阶段提交时序](images/diagram_distributed_transaction.webp)
+
 ![分布式事务与共识](images/remaining_distributed_transaction.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：17 分钟

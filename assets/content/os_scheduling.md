@@ -1,5 +1,7 @@
 # 进程调度
 
+![时间片轮转调度甘特图](images/diagram_scheduling.webp)
+
 ![进程调度](images/remaining_scheduling.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：13 分钟

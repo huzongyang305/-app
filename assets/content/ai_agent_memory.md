@@ -1,5 +1,7 @@
 # Agent 记忆系统
 
+![Agent 记忆分层结构](images/diagram_agent_memory.webp)
+
 ![Agent 记忆系统](images/remaining_agent_memory.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：15 分钟

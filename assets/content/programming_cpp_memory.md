@@ -1,5 +1,7 @@
 # 内存管理与智能指针
 
+![C++ 智能指针所有权模型](images/diagram_cpp_memory.webp)
+
 ![内存管理与智能指针](images/remaining_cpp_memory.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：17 分钟

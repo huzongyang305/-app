@@ -1,0 +1,394 @@
+{
+  "cpu": {
+    "image": "images/diagram_cpu.webp",
+    "alt": "CPU 指令周期的五个阶段"
+  },
+  "compiler": {
+    "image": "images/diagram_compiler.webp",
+    "alt": "从源码到可执行文件的编译四阶段"
+  },
+  "linking_loading": {
+    "image": "images/diagram_linking_loading.webp",
+    "alt": "静态链接与动态链接对比"
+  },
+  "float_and_check": {
+    "image": "images/diagram_float_and_check.webp",
+    "alt": "IEEE 754 浮点数与校验码"
+  },
+  "interrupt_exception": {
+    "image": "images/diagram_interrupt_exception.webp",
+    "alt": "中断处理时序与外设 DMA"
+  },
+  "digital_logic": {
+    "image": "images/diagram_digital_logic.webp",
+    "alt": "从逻辑门到全加器"
+  },
+  "encoding": {
+    "image": "images/diagram_encoding.webp",
+    "alt": "ASCII、UTF-8 与 UTF-16 编码对比"
+  },
+  "bus_io": {
+    "image": "images/diagram_bus_io.webp",
+    "alt": "总线、内存控制器与 IO 设备互连"
+  },
+  "fundamentals_cache_coherence": {
+    "image": "images/diagram_cache_coherence.webp",
+    "alt": "MESI 缓存一致性与 NUMA"
+  },
+  "fundamentals_storage_stack": {
+    "image": "images/diagram_storage_stack.webp",
+    "alt": "从文件 API 到闪存颗粒的存储栈"
+  },
+  "scheduling": {
+    "image": "images/diagram_scheduling.webp",
+    "alt": "时间片轮转调度甘特图"
+  },
+  "os_synchronization": {
+    "image": "images/diagram_os_synchronization.webp",
+    "alt": "生产者消费者信号量时序"
+  },
+  "file_system": {
+    "image": "images/diagram_file_system.webp",
+    "alt": "文件系统目录树与 inode 映射"
+  },
+  "ipc_io": {
+    "image": "images/diagram_ipc_io.webp",
+    "alt": "管道、共享内存与消息队列对比"
+  },
+  "os_io_scheduling": {
+    "image": "images/diagram_io_scheduling.webp",
+    "alt": "磁盘 IO 电梯调度顺序"
+  },
+  "os_cgroups_namespaces": {
+    "image": "images/diagram_cgroups_namespaces.webp",
+    "alt": "namespace 与 cgroup 的容器隔离边界"
+  },
+  "os_io_uring": {
+    "image": "images/diagram_io_uring.webp",
+    "alt": "io_uring 提交与完成队列"
+  },
+  "os_boot_security": {
+    "image": "images/diagram_boot_security.webp",
+    "alt": "从 UEFI 到用户态的启动链"
+  },
+  "http_basics": {
+    "image": "images/diagram_http_basics.webp",
+    "alt": "HTTP 请求与响应报文结构"
+  },
+  "tls": {
+    "image": "images/diagram_tls.webp",
+    "alt": "TLS 1.3 握手时序"
+  },
+  "ip_transport": {
+    "image": "images/diagram_ip_transport.webp",
+    "alt": "TCP IP 协议栈分层"
+  },
+  "link_layer": {
+    "image": "images/diagram_link_layer.webp",
+    "alt": "ARP 与交换机转发时序"
+  },
+  "socket_programming": {
+    "image": "images/diagram_socket_programming.webp",
+    "alt": "TCP Socket 客户端服务端调用时序"
+  },
+  "network_nat_vpn": {
+    "image": "images/diagram_nat_vpn.webp",
+    "alt": "NAT 与 VPN 的地址和隧道对比"
+  },
+  "network_bgp": {
+    "image": "images/diagram_network_bgp.webp",
+    "alt": "BGP 路由选择顺序"
+  },
+  "network_performance": {
+    "image": "images/diagram_network_performance.webp",
+    "alt": "网页请求延迟分解瀑布图"
+  },
+  "sql_basics": {
+    "image": "images/diagram_sql_join.webp",
+    "alt": "SQL JOIN 四种连接方式"
+  },
+  "index": {
+    "image": "images/diagram_database_index.webp",
+    "alt": "B+ 树索引结构"
+  },
+  "db_query_optimization": {
+    "image": "images/diagram_query_optimization.webp",
+    "alt": "查询优化器从 SQL 到执行计划"
+  },
+  "mysql_lock_mvcc": {
+    "image": "images/diagram_mvcc.webp",
+    "alt": "MVCC 版本链与 Read View"
+  },
+  "redis": {
+    "image": "images/diagram_redis.webp",
+    "alt": "Redis 事件循环、数据结构与持久化"
+  },
+  "distributed_transaction": {
+    "image": "images/diagram_distributed_transaction.webp",
+    "alt": "两阶段提交时序"
+  },
+  "olap_columnar": {
+    "image": "images/diagram_columnar.webp",
+    "alt": "行存与列存对比"
+  },
+  "search_index": {
+    "image": "images/diagram_search_index.webp",
+    "alt": "倒排索引与相关性打分"
+  },
+  "microservices": {
+    "image": "images/diagram_microservices.webp",
+    "alt": "微服务调用拓扑与数据边界"
+  },
+  "high_availability": {
+    "image": "images/diagram_high_availability.webp",
+    "alt": "高可用的冗余、故障域与容量水位"
+  },
+  "distributed_consensus": {
+    "image": "images/diagram_consensus.webp",
+    "alt": "Raft 日志复制时序"
+  },
+  "distributed_cache": {
+    "image": "images/diagram_cache_problems.webp",
+    "alt": "缓存穿透、击穿与雪崩"
+  },
+  "distributed_multisite": {
+    "image": "images/diagram_multisite.webp",
+    "alt": "单元化多活流量路由与数据同步"
+  },
+  "linked_list": {
+    "image": "images/diagram_linked_list.webp",
+    "alt": "单链表、双链表与环形链表"
+  },
+  "tree_bst": {
+    "image": "images/diagram_bst.webp",
+    "alt": "二叉搜索树结构"
+  },
+  "graph": {
+    "image": "images/diagram_graph.webp",
+    "alt": "邻接矩阵与邻接表对比"
+  },
+  "dynamic_programming": {
+    "image": "images/diagram_dp.webp",
+    "alt": "0/1 背包动态规划状态表"
+  },
+  "backtracking": {
+    "image": "images/diagram_backtracking.webp",
+    "alt": "回溯决策树与剪枝"
+  },
+  "union_find": {
+    "image": "images/diagram_union_find.webp",
+    "alt": "并查集合并与路径压缩"
+  },
+  "trie": {
+    "image": "images/diagram_trie.webp",
+    "alt": "Trie 前缀树结构"
+  },
+  "segment_tree": {
+    "image": "images/diagram_segment_tree.webp",
+    "alt": "线段树区间分解结构"
+  },
+  "monotonic_stack": {
+    "image": "images/diagram_monotonic_stack.webp",
+    "alt": "单调栈与下一个更大元素"
+  },
+  "string_matching": {
+    "image": "images/diagram_kmp.webp",
+    "alt": "KMP next 数组与匹配过程"
+  },
+  "network_flow": {
+    "image": "images/diagram_network_flow.webp",
+    "alt": "网络流残量网络与增广路径"
+  },
+  "algo_shortest_paths": {
+    "image": "images/diagram_shortest_paths.webp",
+    "alt": "Dijkstra 松弛过程"
+  },
+  "algo_mst": {
+    "image": "images/diagram_mst.webp",
+    "alt": "Kruskal 最小生成树选边过程"
+  },
+  "algo_topological": {
+    "image": "images/diagram_topological.webp",
+    "alt": "拓扑排序与入度队列"
+  },
+  "ml_fundamentals": {
+    "image": "images/diagram_ml_fundamentals.webp",
+    "alt": "欠拟合、过拟合与数据划分"
+  },
+  "ai_training": {
+    "image": "images/diagram_ai_training.webp",
+    "alt": "数据并行、模型并行与流水线并行"
+  },
+  "ai_fine_tuning_deployment": {
+    "image": "images/diagram_fine_tuning.webp",
+    "alt": "LoRA、QLoRA 与量化部署"
+  },
+  "ai_model_serving": {
+    "image": "images/diagram_model_serving.webp",
+    "alt": "大模型推理服务批处理与 KV 缓存"
+  },
+  "ai_multimodal": {
+    "image": "images/diagram_multimodal.webp",
+    "alt": "多模态模型编码、对齐与生成"
+  },
+  "ai_vlm": {
+    "image": "images/diagram_vlm.webp",
+    "alt": "视觉语言模型结构与投影层"
+  },
+  "ai_diffusion": {
+    "image": "images/diagram_diffusion.webp",
+    "alt": "扩散模型加噪与去噪过程"
+  },
+  "agent_memory": {
+    "image": "images/diagram_agent_memory.webp",
+    "alt": "Agent 记忆分层结构"
+  },
+  "ai_tool_calling": {
+    "image": "images/diagram_tool_calling.webp",
+    "alt": "模型工具调用时序"
+  },
+  "ai_mcp": {
+    "image": "images/diagram_mcp.webp",
+    "alt": "MCP Host Client Server 架构"
+  },
+  "ai_a2a": {
+    "image": "images/diagram_a2a.webp",
+    "alt": "A2A Agent 任务委派时序"
+  },
+  "ai_graphrag": {
+    "image": "images/diagram_graphrag.webp",
+    "alt": "GraphRAG 知识图谱增强检索"
+  },
+  "ai_agent_security": {
+    "image": "images/diagram_agent_security.webp",
+    "alt": "Agent 攻击面与防护措施"
+  },
+  "ai_realtime_voice": {
+    "image": "images/diagram_realtime_voice.webp",
+    "alt": "实时语音链路 VAD ASR LLM TTS"
+  },
+  "python_variables": {
+    "image": "images/diagram_python_variables.webp",
+    "alt": "Python 变量绑定与可变对象"
+  },
+  "python_concurrency": {
+    "image": "images/diagram_python_concurrency.webp",
+    "alt": "Python 线程、进程与 asyncio 对比"
+  },
+  "python_decorators_generators": {
+    "image": "images/diagram_python_decorators.webp",
+    "alt": "装饰器与生成器执行过程"
+  },
+  "python_context_iterators": {
+    "image": "images/diagram_python_context_iterators.webp",
+    "alt": "上下文管理器与迭代器协议"
+  },
+  "java_basics": {
+    "image": "images/diagram_java_runtime.webp",
+    "alt": "JDK JRE JVM 与字节码"
+  },
+  "java_oop": {
+    "image": "images/diagram_java_oop.webp",
+    "alt": "Java 类加载与对象创建"
+  },
+  "java_collections": {
+    "image": "images/diagram_java_collections.webp",
+    "alt": "HashMap 数组、链表与红黑树"
+  },
+  "java_concurrency": {
+    "image": "images/diagram_java_concurrency.webp",
+    "alt": "synchronized、AQS 与线程池"
+  },
+  "java_gc_tuning": {
+    "image": "images/diagram_java_gc.webp",
+    "alt": "JVM 分代堆与垃圾回收"
+  },
+  "java_virtual_threads": {
+    "image": "images/diagram_java_virtual_threads.webp",
+    "alt": "平台线程与虚拟线程对比"
+  },
+  "js_execution_context": {
+    "image": "images/diagram_js_execution_context.webp",
+    "alt": "JavaScript 执行上下文与作用域链"
+  },
+  "js_objects": {
+    "image": "images/diagram_js_objects.webp",
+    "alt": "JavaScript 原型链"
+  },
+  "js_async": {
+    "image": "images/diagram_js_async.webp",
+    "alt": "事件循环、微任务与宏任务"
+  },
+  "js_memory_gc": {
+    "image": "images/diagram_js_memory_gc.webp",
+    "alt": "JavaScript 标记清除与分代回收"
+  },
+  "c_pointers": {
+    "image": "images/diagram_c_pointers.webp",
+    "alt": "C 指针与内存分区"
+  },
+  "c_structs": {
+    "image": "images/diagram_c_structs.webp",
+    "alt": "C 结构体内存对齐"
+  },
+  "c_preprocessor": {
+    "image": "images/diagram_c_preprocessor.webp",
+    "alt": "C 预处理宏与头文件展开"
+  },
+  "cpp_memory": {
+    "image": "images/diagram_cpp_memory.webp",
+    "alt": "C++ 智能指针所有权模型"
+  },
+  "cpp_move_semantics": {
+    "image": "images/diagram_cpp_move.webp",
+    "alt": "C++ 移动语义与右值引用"
+  },
+  "cpp_concurrency_atomics": {
+    "image": "images/diagram_cpp_atomics.webp",
+    "alt": "C++ 原子操作与内存序"
+  },
+  "rust_smart_pointers": {
+    "image": "images/diagram_rust_smart_pointers.webp",
+    "alt": "Rust 智能指针与内部可变性"
+  },
+  "rust_async_tokio": {
+    "image": "images/diagram_rust_async.webp",
+    "alt": "Rust Future 状态机与 tokio 调度"
+  },
+  "go_concurrency": {
+    "image": "images/diagram_go_concurrency.webp",
+    "alt": "Go goroutine channel context"
+  },
+  "go_concurrency_patterns": {
+    "image": "images/diagram_go_patterns.webp",
+    "alt": "Go Worker Pool 与 Pipeline 模式"
+  },
+  "go_performance": {
+    "image": "images/diagram_go_gc.webp",
+    "alt": "Go 三色标记与 GC 调步"
+  },
+  "csharp_gc_performance": {
+    "image": "images/diagram_csharp_gc.webp",
+    "alt": "C# 分代垃圾回收与 LOH"
+  },
+  "csharp_async_streams": {
+    "image": "images/diagram_csharp_async.webp",
+    "alt": "C# async await 与异步流"
+  },
+  "kotlin_coroutines": {
+    "image": "images/diagram_kotlin_coroutines.webp",
+    "alt": "Kotlin 协程挂起与恢复"
+  },
+  "swift_oop": {
+    "image": "images/diagram_swift_arc.webp",
+    "alt": "Swift 值类型、引用类型与 ARC"
+  },
+  "ts_type_level": {
+    "image": "images/diagram_ts_types.webp",
+    "alt": "TypeScript 类型编程层次"
+  },
+  "flutter_basics": {
+    "image": "images/diagram_flutter_trees.webp",
+    "alt": "Flutter Widget、Element 与 RenderObject 三棵树"
+  }
+}

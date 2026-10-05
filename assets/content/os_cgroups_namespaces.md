@@ -1,5 +1,7 @@
 # cgroups、namespaces 与容器
 
+![namespace 与 cgroup 的容器隔离边界](images/diagram_cgroups_namespaces.webp)
+
 ![cgroups、namespaces 与容器](images/lesson_os_cgroups_namespaces.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：25 分钟

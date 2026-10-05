@@ -1,5 +1,7 @@
 # C++ 移动语义与右值引用
 
+![C++ 移动语义与右值引用](images/diagram_cpp_move.webp)
+
 ![C++ 移动语义与右值引用](images/lesson_cpp_move_semantics.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：25 分钟

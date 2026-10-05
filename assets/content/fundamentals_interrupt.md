@@ -1,5 +1,7 @@
 # 中断、异常与 DMA
 
+![中断处理时序与外设 DMA](images/diagram_interrupt_exception.webp)
+
 ![中断、异常与 DMA](images/remaining_interrupt_exception.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

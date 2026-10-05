@@ -1,5 +1,7 @@
 # TypeScript 类型级编程
 
+![TypeScript 类型编程层次](images/diagram_ts_types.webp)
+
 ![TypeScript 类型级编程](images/lesson_ts_type_level.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：25 分钟

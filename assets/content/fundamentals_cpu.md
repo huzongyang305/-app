@@ -1,5 +1,7 @@
 # CPU 工作原理
 
+![CPU 指令周期的五个阶段](images/diagram_cpu.webp)
+
 ![CPU 工作原理](images/remaining_cpu.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：15 分钟

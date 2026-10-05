@@ -1,5 +1,7 @@
 # Java 环境与 JVM
 
+![JDK JRE JVM 与字节码](images/diagram_java_runtime.webp)
+
 ![环境与 JVM](images/remaining_java_basics.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：14 分钟

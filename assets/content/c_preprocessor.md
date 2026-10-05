@@ -1,5 +1,7 @@
 # C 预处理、宏与头文件
 
+![C 预处理宏与头文件展开](images/diagram_c_preprocessor.webp)
+
 ![C 预处理、宏与头文件](images/lesson_c_preprocessor.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：22 分钟

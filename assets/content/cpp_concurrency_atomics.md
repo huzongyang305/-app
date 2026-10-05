@@ -1,5 +1,7 @@
 # C++ 并发、原子操作与内存序
 
+![C++ 原子操作与内存序](images/diagram_cpp_atomics.webp)
+
 ![C++ 并发、原子操作与内存序](images/lesson_cpp_concurrency_atomics.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：26 分钟

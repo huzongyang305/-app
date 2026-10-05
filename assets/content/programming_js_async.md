@@ -1,5 +1,7 @@
 # 异步编程
 
+![事件循环、微任务与宏任务](images/diagram_js_async.webp)
+
 ![异步编程](images/remaining_js_async.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

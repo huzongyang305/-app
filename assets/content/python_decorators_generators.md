@@ -1,5 +1,7 @@
 # Python 装饰器与生成器
 
+![装饰器与生成器执行过程](images/diagram_python_decorators.webp)
+
 ![Python 装饰器与生成器](images/lesson_python_decorators_generators.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

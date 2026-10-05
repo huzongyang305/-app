@@ -1,5 +1,7 @@
 # 树与二叉搜索树
 
+![二叉搜索树结构](images/diagram_bst.webp)
+
 ![树与二叉搜索树](images/remaining_tree_bst.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

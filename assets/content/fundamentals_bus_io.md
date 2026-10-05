@@ -1,5 +1,7 @@
 # 总线与 I/O 设备
 
+![总线、内存控制器与 IO 设备互连](images/diagram_bus_io.webp)
+
 ![总线与 I/O 设备](images/remaining_bus_io.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

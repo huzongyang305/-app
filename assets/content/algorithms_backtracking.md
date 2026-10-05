@@ -1,5 +1,7 @@
 # 回溯算法
 
+![回溯决策树与剪枝](images/diagram_backtracking.webp)
+
 ![回溯算法](images/remaining_backtracking.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：17 分钟

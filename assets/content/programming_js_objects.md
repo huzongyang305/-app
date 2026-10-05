@@ -1,5 +1,7 @@
 # 对象、原型与类
 
+![JavaScript 原型链](images/diagram_js_objects.webp)
+
 ![对象、原型与类](images/remaining_js_objects.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

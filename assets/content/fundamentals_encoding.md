@@ -1,5 +1,7 @@
 # 字符编码与 Unicode
 
+![ASCII、UTF-8 与 UTF-16 编码对比](images/diagram_encoding.webp)
+
 ![字符编码与 Unicode](images/remaining_encoding.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：13 分钟

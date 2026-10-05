@@ -1,5 +1,7 @@
 # C# GC、Span 与性能优化
 
+![C# 分代垃圾回收与 LOH](images/diagram_csharp_gc.webp)
+
 ![C# GC、Span 与性能优化](images/lesson_csharp_gc_performance.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：25 分钟

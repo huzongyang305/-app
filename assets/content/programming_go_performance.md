@@ -1,5 +1,7 @@
 # Go 性能优化与内存
 
+![Go 三色标记与 GC 调步](images/diagram_go_gc.webp)
+
 ![Go 性能优化与内存](images/remaining_go_performance.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

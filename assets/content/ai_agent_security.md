@@ -1,5 +1,7 @@
 # Agent 安全、权限与沙箱
 
+![Agent 攻击面与防护措施](images/diagram_agent_security.webp)
+
 ![Agent 安全、权限与沙箱](images/lesson_ai_agent_security.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

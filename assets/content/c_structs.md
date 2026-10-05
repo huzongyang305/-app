@@ -1,5 +1,7 @@
 # C 结构体、联合体与内存布局
 
+![C 结构体内存对齐](images/diagram_c_structs.webp)
+
 ![C 结构体、联合体与内存布局](images/lesson_c_structs.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：24 分钟

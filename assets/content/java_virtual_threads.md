@@ -1,5 +1,7 @@
 # Java 虚拟线程与结构化并发
 
+![平台线程与虚拟线程对比](images/diagram_java_virtual_threads.webp)
+
 ![Java 虚拟线程与结构化并发](images/lesson_java_virtual_threads.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

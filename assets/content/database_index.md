@@ -1,5 +1,7 @@
 # 索引
 
+![B+ 树索引结构](images/diagram_database_index.webp)
+
 ![索引](images/remaining_index.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

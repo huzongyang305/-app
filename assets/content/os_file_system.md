@@ -1,5 +1,7 @@
 # 文件系统基础
 
+![文件系统目录树与 inode 映射](images/diagram_file_system.webp)
+
 ![文件系统基础](images/remaining_file_system.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：13 分钟

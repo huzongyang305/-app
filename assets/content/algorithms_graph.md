@@ -1,5 +1,7 @@
 # 图与图算法
 
+![邻接矩阵与邻接表对比](images/diagram_graph.webp)
+
 ![图与图算法](images/remaining_graph.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：17 分钟

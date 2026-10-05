@@ -1,5 +1,7 @@
 # MySQL 锁与 MVCC
 
+![MVCC 版本链与 Read View](images/diagram_mvcc.webp)
+
 ![MySQL 锁与 MVCC](images/remaining_mysql_lock_mvcc.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：17 分钟

@@ -1,5 +1,7 @@
 # 并查集
 
+![并查集合并与路径压缩](images/diagram_union_find.webp)
+
 ![并查集](images/remaining_union_find.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

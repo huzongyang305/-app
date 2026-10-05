@@ -1,5 +1,7 @@
 # 集合框架与泛型
 
+![HashMap 数组、链表与红黑树](images/diagram_java_collections.webp)
+
 ![集合框架与泛型](images/remaining_java_collections.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

@@ -1,5 +1,7 @@
 # 拓扑排序与 DAG 应用
 
+![拓扑排序与入度队列](images/diagram_topological.webp)
+
 ![拓扑排序与 DAG 应用](images/lesson_algo_topological.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

@@ -1,5 +1,7 @@
 # 浮点数与校验码
 
+![IEEE 754 浮点数与校验码](images/diagram_float_and_check.webp)
+
 ![浮点数与校验码](images/remaining_float_and_check.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

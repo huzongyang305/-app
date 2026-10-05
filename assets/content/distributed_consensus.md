@@ -1,5 +1,7 @@
 # 共识与复制：Raft 实战要点
 
+![Raft 日志复制时序](images/diagram_consensus.webp)
+
 ![共识与复制：Raft 实战要点](images/category_distributed_consensus.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：18 分钟

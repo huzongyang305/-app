@@ -1,5 +1,7 @@
 # 进程间通信与 IO 模型
 
+![管道、共享内存与消息队列对比](images/diagram_ipc_io.webp)
+
 ![进程间通信与 IO 模型](images/remaining_ipc_io.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

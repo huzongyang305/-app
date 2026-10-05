@@ -1,5 +1,7 @@
 # BGP 与互联网路由
 
+![BGP 路由选择顺序](images/diagram_network_bgp.webp)
+
 ![BGP 与互联网路由](images/lesson_network_bgp.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：25 分钟

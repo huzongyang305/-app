@@ -1,5 +1,7 @@
 # 最短路算法专题
 
+![Dijkstra 松弛过程](images/diagram_shortest_paths.webp)
+
 ![最短路算法专题](images/lesson_algo_shortest_paths.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：26 分钟

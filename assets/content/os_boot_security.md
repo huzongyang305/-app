@@ -1,5 +1,7 @@
 # 系统启动与权限安全
 
+![从 UEFI 到用户态的启动链](images/diagram_boot_security.webp)
+
 ![系统启动与权限安全](images/remaining_os_boot_security.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

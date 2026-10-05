@@ -1,5 +1,7 @@
 # 机器学习核心概念
 
+![欠拟合、过拟合与数据划分](images/diagram_ml_fundamentals.webp)
+
 ![机器学习核心概念](images/remaining_ml_fundamentals.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

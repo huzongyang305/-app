@@ -1,5 +1,7 @@
 # C 指针与内存模型
 
+![C 指针与内存分区](images/diagram_c_pointers.webp)
+
 ![C 指针与内存模型](images/lesson_c_pointers.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：24 分钟

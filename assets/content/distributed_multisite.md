@@ -1,5 +1,7 @@
 # 单元化与多活架构
 
+![单元化多活流量路由与数据同步](images/diagram_multisite.webp)
+
 ![单元化与多活架构](images/category_distributed_multisite.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：18 分钟

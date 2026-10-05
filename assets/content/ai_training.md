@@ -1,5 +1,7 @@
 # 模型训练与分布式
 
+![数据并行、模型并行与流水线并行](images/diagram_ai_training.webp)
+
 ![模型训练与分布式](images/remaining_ai_training.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：17 分钟

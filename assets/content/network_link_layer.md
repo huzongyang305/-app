@@ -1,5 +1,7 @@
 # 链路层：以太网、ARP 与交换机
 
+![ARP 与交换机转发时序](images/diagram_link_layer.webp)
+
 ![链路层：以太网、ARP 与交换机](images/remaining_link_layer.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：15 分钟

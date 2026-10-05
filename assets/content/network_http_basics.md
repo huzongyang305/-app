@@ -1,5 +1,7 @@
 # HTTP 基础
 
+![HTTP 请求与响应报文结构](images/diagram_http_basics.webp)
+
 ![HTTP 基础](images/remaining_http_basics.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：14 分钟

@@ -1,5 +1,7 @@
 # 网络性能调优
 
+![网页请求延迟分解瀑布图](images/diagram_network_performance.webp)
+
 ![网络性能调优](images/lesson_network_performance.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：25 分钟

@@ -1,5 +1,7 @@
 # Kotlin 协程与 Flow
 
+![Kotlin 协程挂起与恢复](images/diagram_kotlin_coroutines.webp)
+
 ![Kotlin 协程与 Flow](images/lesson_kotlin_coroutines.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：25 分钟

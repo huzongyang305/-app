@@ -1,5 +1,7 @@
 # NAT、隧道与 VPN
 
+![NAT 与 VPN 的地址和隧道对比](images/diagram_nat_vpn.webp)
+
 ![NAT、隧道与 VPN](images/lesson_network_nat_vpn.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

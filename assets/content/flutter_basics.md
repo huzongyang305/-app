@@ -1,5 +1,7 @@
 # Flutter 基础与 Widget 树
 
+![Flutter Widget、Element 与 RenderObject 三棵树](images/diagram_flutter_trees.webp)
+
 ![Flutter 基础与 Widget 树](images/category_flutter_basics.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：16 分钟

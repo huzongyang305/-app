@@ -1,5 +1,7 @@
 # Go 并发模式与 errgroup
 
+![Go Worker Pool 与 Pipeline 模式](images/diagram_go_patterns.webp)
+
 ![Go 并发模式与 errgroup](images/remaining_go_concurrency_patterns.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：18 分钟

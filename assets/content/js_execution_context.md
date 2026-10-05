@@ -1,5 +1,7 @@
 # JavaScript 执行上下文与闭包
 
+![JavaScript 执行上下文与作用域链](images/diagram_js_execution_context.webp)
+
 ![JavaScript 执行上下文与闭包](images/lesson_js_execution_context.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

@@ -1,5 +1,7 @@
 # 最小生成树与图剪枝
 
+![Kruskal 最小生成树选边过程](images/diagram_mst.webp)
+
 ![最小生成树与图剪枝](images/lesson_algo_mst.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

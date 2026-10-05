@@ -1,5 +1,7 @@
 # 工具调用与结构化输出
 
+![模型工具调用时序](images/diagram_tool_calling.webp)
+
 ![工具调用与结构化输出](images/lesson_ai_tool_calling.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：22 分钟

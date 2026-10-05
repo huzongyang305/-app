@@ -1,5 +1,7 @@
 # 网络流与二分图匹配
 
+![网络流残量网络与增广路径](images/diagram_network_flow.webp)
+
 ![网络流与二分图匹配](images/remaining_network_flow.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：17 分钟

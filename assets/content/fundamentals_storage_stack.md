@@ -1,5 +1,7 @@
 # SSD、存储栈与持久化
 
+![从文件 API 到闪存颗粒的存储栈](images/diagram_storage_stack.webp)
+
 ![SSD、存储栈与持久化](images/lesson_fundamentals_storage_stack.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：25 分钟
