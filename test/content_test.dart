@@ -294,9 +294,64 @@ void main() {
       reason: '仍有 ${shortExplanations.length} 道解析少于 120 字符',
     );
 
+    final metaQuestions = questions
+        .where((question) => RegExp(r'《.+?》').hasMatch(question.question))
+        .toList();
+    expect(
+      metaQuestions,
+      isEmpty,
+      reason: '仍有 ${metaQuestions.length} 道复述课程标题的元问题',
+    );
+
+    final sentenceCounts = <String, int>{};
+    for (final question in questions) {
+      for (final sentence in question.explanation.split(RegExp(r'[。；\n]'))) {
+        final trimmed = sentence.trim();
+        if (trimmed.length < 12) continue;
+        sentenceCounts[trimmed] = (sentenceCounts[trimmed] ?? 0) + 1;
+      }
+    }
+    final templateSentences = sentenceCounts.entries
+        .where((entry) => entry.value >= 5)
+        .toList();
+    expect(
+      templateSentences,
+      isEmpty,
+      reason:
+          '解析中仍有 ${templateSentences.length} 种重复 5 次以上的模板句：'
+          '${templateSentences.take(3).map((entry) => entry.key).join(' / ')}',
+    );
+
     final singleChoiceQuestions = questions
         .where((question) => question.type == 'single')
         .toList();
+
+    var stronglyLongest = 0;
+    for (final question in singleChoiceQuestions) {
+      if (question.answerIndex >= question.options.length) continue;
+      final correctLength = question.options[question.answerIndex]
+          .trim()
+          .length;
+      var secondLongest = -1;
+      for (var index = 0; index < question.options.length; index++) {
+        if (index == question.answerIndex) continue;
+        final length = question.options[index].trim().length;
+        if (length > secondLongest) secondLongest = length;
+      }
+      if (secondLongest >= 0 && correctLength - secondLongest >= 8) {
+        stronglyLongest++;
+      }
+    }
+    final stronglyLongestRate =
+        stronglyLongest * 100 / singleChoiceQuestions.length;
+    expect(
+      stronglyLongestRate,
+      lessThan(30),
+      reason:
+          '正确项明显最长（差距>=8）的比例为 '
+          '${stronglyLongestRate.toStringAsFixed(1)}%',
+    );
+
     final answerCounts = <int, int>{};
     for (final question in singleChoiceQuestions) {
       answerCounts[question.answerIndex] =
