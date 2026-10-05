@@ -1,5 +1,7 @@
 # HTML 基础与语义化
 
+![语义化页面结构](images/diagram_web_html_semantic.webp)
+
 ![HTML 基础与语义化](images/category_html_basics.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

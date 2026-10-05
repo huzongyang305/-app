@@ -1,5 +1,7 @@
 # 认证与授权
 
+![OAuth2 授权码流程](images/diagram_net_oauth.webp)
+
 ![认证与授权](images/remaining_auth_oauth.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：15 分钟

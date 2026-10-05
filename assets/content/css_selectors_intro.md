@@ -1,5 +1,7 @@
 # CSS 选择器入门
 
+![CSS 选择器类型与特异性](images/diagram_web_css_selectors.webp)
+
 ![CSS 选择器入门](images/category_css_selectors_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

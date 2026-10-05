@@ -1,5 +1,7 @@
 # 威胁建模与 STRIDE
 
+![STRIDE 威胁建模流程](images/diagram_sec_threat_model.webp)
+
 ![威胁建模与 STRIDE](images/lesson_security_threat_model.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：22 分钟

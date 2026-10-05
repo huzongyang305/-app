@@ -1,5 +1,7 @@
 # HTML 标签入门
 
+![常用 HTML 标签与页面结构](images/diagram_web_html_tags.webp)
+
 ![HTML 标签入门](images/category_html_tags_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

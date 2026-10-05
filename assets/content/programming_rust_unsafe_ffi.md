@@ -1,5 +1,7 @@
 # Rust unsafe、FFI 与生态
 
+![unsafe 的能力与 FFI 互操作](images/diagram_rust_unsafe_ffi.webp)
+
 ![Rust unsafe、FFI 与生态](images/remaining_rust_unsafe_ffi.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

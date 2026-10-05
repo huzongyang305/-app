@@ -1,5 +1,7 @@
 # 实战：安全审计与漏洞修复
 
+![安全审计与漏洞修复流程](images/diagram_sec_audit_project.webp)
+
 ![实战：安全审计与漏洞修复](images/remaining_security_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：120 分钟

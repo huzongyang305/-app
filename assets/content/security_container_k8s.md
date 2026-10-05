@@ -1,5 +1,7 @@
 # 容器与 Kubernetes 安全
 
+![容器与 Kubernetes 安全层次](images/diagram_sec_k8s.webp)
+
 ![容器与 Kubernetes 安全](images/lesson_security_container_k8s.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：25 分钟

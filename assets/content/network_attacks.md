@@ -1,5 +1,7 @@
 # 网络攻击与防护
 
+![网络攻击与纵深防御层次](images/diagram_net_attacks.webp)
+
 ![网络攻击与防护](images/remaining_network_attacks.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

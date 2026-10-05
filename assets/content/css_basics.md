@@ -1,5 +1,7 @@
 # CSS 基础：选择器与盒模型
 
+![CSS 盒模型、单位与层叠](images/diagram_web_css_basics.webp)
+
 ![CSS 基础：选择器与盒模型](images/category_css_basics.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

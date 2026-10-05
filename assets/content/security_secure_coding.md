@@ -1,5 +1,7 @@
 # 安全编码与输入校验
 
+![安全编码的五个实践层次](images/diagram_sec_secure_coding.webp)
+
 ![安全编码与输入校验](images/lesson_security_secure_coding.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：22 分钟

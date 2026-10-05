@@ -1,5 +1,7 @@
 # 浏览器渲染与 CSS 动画
 
+![浏览器关键渲染路径](images/diagram_web_css_render.webp)
+
 ![浏览器渲染与 CSS 动画](images/category_css_render_animation.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：16 分钟

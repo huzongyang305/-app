@@ -1,5 +1,7 @@
 # 设计令牌与样式架构
 
+![设计令牌的三层结构](images/diagram_web_design_tokens.webp)
+
 ![设计令牌与样式架构](images/category_css_design_tokens.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

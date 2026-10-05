@@ -1,5 +1,7 @@
 # Rust Cargo 第一个程序
 
+![Cargo 项目的创建与构建流程](images/diagram_rust_cargo.webp)
+
 ![Rust Cargo 第一个程序](images/remaining_rust_cargo_first.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

@@ -1,5 +1,7 @@
 # Rust trait、泛型与关联类型
 
+![静态分发与动态分发对比](images/diagram_rust_traits_generics.webp)
+
 ![Rust trait、泛型与关联类型](images/lesson_rust_traits_generics.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：25 分钟

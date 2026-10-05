@@ -1,5 +1,7 @@
 # Rust 函数入门
 
+![Rust 函数的参数、返回值与表达式](images/diagram_rust_functions.webp)
+
 ![Rust 函数入门](images/remaining_rust_functions_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

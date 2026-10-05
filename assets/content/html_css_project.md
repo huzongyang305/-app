@@ -1,5 +1,7 @@
 # 实战：响应式落地页
 
+![响应式落地页的实现流程](images/diagram_web_landing_project.webp)
+
 ![实战：响应式落地页](images/category_html_css_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：17 分钟

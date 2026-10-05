@@ -1,5 +1,7 @@
 # Rust 实战：命令行工具
 
+![Rust 命令行工具的实现流程](images/diagram_rust_cli_project.webp)
+
 ![Rust 实战：命令行工具](images/remaining_rust_cli_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

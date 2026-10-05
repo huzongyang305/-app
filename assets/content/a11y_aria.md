@@ -1,5 +1,7 @@
 # 可访问性与 ARIA 实战
 
+![可访问性的原生优先与焦点管理](images/diagram_web_a11y.webp)
+
 ![可访问性与 ARIA 实战](images/category_a11y_aria.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

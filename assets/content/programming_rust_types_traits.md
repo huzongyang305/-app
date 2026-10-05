@@ -1,5 +1,7 @@
 # Rust 类型系统：Option、Result 与 trait
 
+![Option、Result、trait 与模式匹配](images/diagram_rust_types_traits.webp)
+
 ![Rust 类型系统：Option、Result 与 trait](images/remaining_rust_types_traits.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：16 分钟

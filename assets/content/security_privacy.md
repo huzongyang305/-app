@@ -1,5 +1,7 @@
 # 隐私合规与数据分级
 
+![隐私合规与数据分级流程](images/diagram_sec_privacy.webp)
+
 ![隐私合规与数据分级](images/lesson_security_privacy.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：22 分钟

@@ -1,5 +1,7 @@
 # 安全开发生命周期实战
 
+![安全开发生命周期的流程](images/diagram_sec_sdl.webp)
+
 ![安全开发生命周期实战](images/lesson_security_sdl.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

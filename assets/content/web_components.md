@@ -1,5 +1,7 @@
 # Web Components 实战
 
+![Web Components 的核心能力](images/diagram_web_components.webp)
+
 ![Web Components 实战](images/category_web_components.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：18 分钟

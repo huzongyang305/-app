@@ -1,5 +1,7 @@
 # 安全概念入门
 
+![资产、威胁、漏洞与风险的关系](images/diagram_sec_concepts.webp)
+
 ![安全概念入门](images/remaining_security_concept_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

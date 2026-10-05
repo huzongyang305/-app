@@ -1,5 +1,7 @@
 # 密码与哈希入门
 
+![加密、哈希与密码哈希的区别](images/diagram_sec_password_hash.webp)
+
 ![密码与哈希入门](images/remaining_password_hash_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

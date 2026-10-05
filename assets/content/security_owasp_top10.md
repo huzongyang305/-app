@@ -1,5 +1,7 @@
 # OWASP Top 10 实战
 
+![OWASP Top 10 常见风险与修复](images/diagram_sec_owasp.webp)
+
 ![OWASP Top 10 实战](images/lesson_security_owasp_top10.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：24 分钟

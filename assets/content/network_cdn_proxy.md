@@ -1,5 +1,7 @@
 # CDN、代理与缓存
 
+![CDN 边缘缓存与回源流程](images/diagram_net_cdn.webp)
+
 ![CDN、代理与缓存](images/remaining_cdn_proxy.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：13 分钟

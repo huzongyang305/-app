@@ -1,5 +1,7 @@
 # 软件供应链安全
 
+![软件供应链安全的四个环节](images/diagram_sec_supply_chain.webp)
+
 ![软件供应链安全](images/lesson_security_supply_chain.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

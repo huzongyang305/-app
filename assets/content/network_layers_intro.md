@@ -1,5 +1,7 @@
 # 网络分层入门
 
+![网络四层模型与协议对应](images/diagram_net_layers.webp)
+
 ![网络分层入门](images/remaining_network_layers_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

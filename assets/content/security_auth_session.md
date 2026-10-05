@@ -1,5 +1,7 @@
 # 认证、会话与令牌安全
 
+![会话与令牌安全的关键点](images/diagram_sec_auth_session.webp)
+
 ![认证、会话与令牌安全](images/lesson_security_auth_session.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：25 分钟

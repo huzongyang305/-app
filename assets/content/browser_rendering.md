@@ -1,5 +1,7 @@
 # 浏览器渲染与事件循环深入
 
+![事件循环与任务队列](images/diagram_web_event_loop.webp)
+
 ![浏览器渲染与事件循环深入](images/category_browser_rendering.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：18 分钟

@@ -1,5 +1,7 @@
 # Rust 条件判断
 
+![Rust 条件分支与模式匹配](images/diagram_rust_conditions.webp)
+
 ![Rust 条件判断](images/remaining_rust_conditions.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

@@ -1,5 +1,7 @@
 # Rust 错误处理、迭代器与异步
 
+![错误处理、迭代器与异步的配合](images/diagram_rust_errors_iterators.webp)
+
 ![Rust 错误处理、迭代器与异步](images/remaining_rust_errors_iterators.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

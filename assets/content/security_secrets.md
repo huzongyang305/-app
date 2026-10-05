@@ -1,5 +1,7 @@
 # 密钥与配置安全
 
+![密钥与配置的安全管理层次](images/diagram_sec_secrets.webp)
+
 ![密钥与配置安全](images/lesson_security_secrets.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：20 分钟

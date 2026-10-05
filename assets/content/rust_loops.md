@@ -1,5 +1,7 @@
 # Rust 循环入门
 
+![Rust 三种循环结构](images/diagram_rust_loops.webp)
+
 ![Rust 循环入门](images/remaining_rust_loops.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

@@ -1,5 +1,7 @@
 # 安全事件响应
 
+![安全事件响应的闭环流程](images/diagram_sec_incident.webp)
+
 ![安全事件响应](images/lesson_security_incident.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：25 分钟

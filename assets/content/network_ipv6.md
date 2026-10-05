@@ -1,5 +1,7 @@
 # IPv6 原理与迁移
 
+![IPv6 的特性与迁移策略](images/diagram_net_ipv6.webp)
+
 ![IPv6 原理与迁移](images/lesson_network_ipv6.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

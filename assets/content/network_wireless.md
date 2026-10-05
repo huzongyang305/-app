@@ -1,5 +1,7 @@
 # 无线与移动网络
 
+![Wi-Fi 与蜂窝网络的特征对比](images/diagram_net_wireless.webp)
+
 ![无线与移动网络](images/remaining_wireless_mobile.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

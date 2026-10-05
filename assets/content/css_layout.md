@@ -1,5 +1,7 @@
 # CSS 布局：Flex、Grid 与响应式
 
+![Flex 与 Grid 的布局对比](images/diagram_web_css_layout.webp)
+
 ![CSS 布局：Flex、Grid 与响应式](images/category_css_layout.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：16 分钟

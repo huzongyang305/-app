@@ -1,5 +1,7 @@
 # P2P 网络与 NAT 穿透
 
+![P2P 打洞与中继流程](images/diagram_net_p2p.webp)
+
 ![P2P 网络与 NAT 穿透](images/lesson_network_p2p.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

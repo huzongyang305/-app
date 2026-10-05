@@ -1,5 +1,7 @@
 # Rust 并发与 Cargo 工程
 
+![Rust 并发与工程工具](images/diagram_rust_concurrency.webp)
+
 ![Rust 并发与 Cargo 工程](images/remaining_rust_concurrency_cargo.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟

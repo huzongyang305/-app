@@ -1,5 +1,7 @@
 # PWA 与离线能力
 
+![Service Worker 缓存策略](images/diagram_web_pwa.webp)
+
 ![PWA 与离线能力](images/category_web_pwa_offline.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：18 分钟

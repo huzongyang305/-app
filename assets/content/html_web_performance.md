@@ -1,5 +1,7 @@
 # 前端性能优化实战
 
+![核心 Web 指标与优化方向](images/diagram_web_performance.webp)
+
 ![前端性能优化实战](images/category_web_performance.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：15 分钟

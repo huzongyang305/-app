@@ -1,5 +1,7 @@
 # TCP/IP 协议栈
 
+![TCP 三次握手与四次挥手](images/diagram_net_tcp_ip.webp)
+
 ![TCP 三次握手与连接状态迁移](images/tcp_handshake.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟

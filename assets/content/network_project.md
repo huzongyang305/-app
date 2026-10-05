@@ -1,5 +1,7 @@
 # 实战：抓包分析一次真实请求
 
+![一次请求的抓包分析流程](images/diagram_net_packet_project.webp)
+
 ![实战：抓包分析一次真实请求](images/remaining_network_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟

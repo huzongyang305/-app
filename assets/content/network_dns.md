@@ -1,5 +1,7 @@
 # DNS 域名解析
 
+![DNS 递归解析流程](images/diagram_net_dns.webp)
+
 ![DNS 从浏览器缓存到权威服务器的查询链](images/dns_resolution.webp)
 
 ![DNS 域名解析](images/remaining_dns.webp)

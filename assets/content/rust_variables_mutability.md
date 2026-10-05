@@ -1,5 +1,7 @@
 # Rust 变量与可变性
 
+![不可变默认与可变声明](images/diagram_rust_mutability.webp)
+
 ![Rust 变量与可变性](images/remaining_rust_variables_mutability.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

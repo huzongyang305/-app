@@ -1,5 +1,7 @@
 # HTTP/2 与 HTTP/3
 
+![HTTP/2 与 HTTP/3 的机制对比](images/diagram_net_http2_http3.webp)
+
 ![HTTP/2 与 HTTP/3](images/remaining_http2_http3.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：15 分钟

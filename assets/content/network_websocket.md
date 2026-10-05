@@ -1,5 +1,7 @@
 # WebSocket 与实时通信
 
+![WebSocket 握手与双向通信](images/diagram_net_websocket.webp)
+
 ![WebSocket 与实时通信](images/remaining_websocket.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：15 分钟

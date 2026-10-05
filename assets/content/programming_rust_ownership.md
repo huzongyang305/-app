@@ -1,5 +1,7 @@
 # Rust 所有权、借用与生命周期
 
+![所有权、借用与生命周期的关系](images/diagram_rust_ownership.webp)
+
 ![Rust 所有权、借用与生命周期](images/remaining_rust_ownership.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：16 分钟

@@ -1,5 +1,7 @@
 # IP 与端口入门
 
+![IP 地址、端口与连接的关系](images/diagram_net_ip_port.webp)
+
 ![IP 与端口入门](images/remaining_ip_port_intro.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：15 分钟

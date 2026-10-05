@@ -1,5 +1,7 @@
 # 云安全与 IAM
 
+![云安全与 IAM 的关键控制点](images/diagram_sec_cloud.webp)
+
 ![云安全与 IAM](images/lesson_security_cloud.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟

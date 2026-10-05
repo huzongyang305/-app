@@ -1,5 +1,7 @@
 # SMTP、邮件协议与反垃圾
 
+![邮件投递链路与认证机制](images/diagram_net_smtp.webp)
+
 ![SMTP、邮件协议与反垃圾](images/lesson_network_smtp.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：24 分钟
