@@ -297,70 +297,76 @@ class _FeedbackCard extends StatelessWidget {
     final theme = Theme.of(context);
     final color = isCorrect ? AppPalette.success : AppPalette.danger;
 
-    return TweenAnimationBuilder<double>(
-      tween: Tween<double>(begin: 0.85, end: 1),
-      duration: const Duration(milliseconds: 260),
-      curve: Curves.easeOutBack,
-      builder: (context, scale, child) =>
-          Transform.scale(scale: scale, child: child),
-      child: Container(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.08),
-          borderRadius: AppRadii.card,
-          border: Border.all(color: color.withValues(alpha: 0.24)),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  isCorrect ? Icons.check_circle : Icons.cancel,
-                  color: color,
-                  size: 20,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  isCorrect ? context.tr('correct') : context.tr('wrong'),
-                  style: theme.textTheme.titleSmall?.copyWith(
+    // liveRegion 让读屏软件在判定后立即播报结果，而不必等用户重新聚焦。
+    return Semantics(
+      container: true,
+      liveRegion: true,
+      label: isCorrect ? context.tr('correct') : context.tr('wrong'),
+      child: TweenAnimationBuilder<double>(
+        tween: Tween<double>(begin: 0.85, end: 1),
+        duration: const Duration(milliseconds: 260),
+        curve: Curves.easeOutBack,
+        builder: (context, scale, child) =>
+            Transform.scale(scale: scale, child: child),
+        child: Container(
+          padding: const EdgeInsets.all(AppSpacing.lg),
+          decoration: BoxDecoration(
+            color: color.withValues(alpha: 0.08),
+            borderRadius: AppRadii.card,
+            border: Border.all(color: color.withValues(alpha: 0.24)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    isCorrect ? Icons.check_circle : Icons.cancel,
                     color: color,
-                    fontWeight: FontWeight.bold,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    isCorrect ? context.tr('correct') : context.tr('wrong'),
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      color: color,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              if (expectedOutput?.trim().isNotEmpty ?? false) ...[
+                const SizedBox(height: 10),
+                Text(
+                  context.tr('quizExpectedOutput'),
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                SelectableText(
+                  expectedOutput!,
+                  style: const TextStyle(
+                    fontFamily: 'monospace',
+                    fontSize: 13,
+                    height: 1.5,
                   ),
                 ),
               ],
-            ),
-            if (expectedOutput?.trim().isNotEmpty ?? false) ...[
               const SizedBox(height: 10),
               Text(
-                context.tr('quizExpectedOutput'),
+                context.tr('explanation'),
                 style: theme.textTheme.labelMedium?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
               ),
               const SizedBox(height: 4),
-              SelectableText(
-                expectedOutput!,
-                style: const TextStyle(
-                  fontFamily: 'monospace',
-                  fontSize: 13,
-                  height: 1.5,
-                ),
+              Text(
+                explanation,
+                style: theme.textTheme.bodyMedium?.copyWith(height: 1.6),
               ),
             ],
-            const SizedBox(height: 10),
-            Text(
-              context.tr('explanation'),
-              style: theme.textTheme.labelMedium?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              explanation,
-              style: theme.textTheme.bodyMedium?.copyWith(height: 1.6),
-            ),
-          ],
+          ),
         ),
       ),
     );

@@ -63,6 +63,7 @@ class LearningAnalytics {
     required this.categoryMastery,
     required this.weakLessons,
     required this.recommendedLesson,
+    required this.studyMinutesPerDay,
   });
 
   final int periodDays;
@@ -76,6 +77,16 @@ class LearningAnalytics {
   final List<CategoryMastery> categoryMastery;
   final List<WeakLesson> weakLessons;
   final Lesson? recommendedLesson;
+
+  /// 最近 [periodDays] 天每天的真实学习时长（分钟），最后一项是今天。
+  final List<int> studyMinutesPerDay;
+
+  int get studyMinutes =>
+      studyMinutesPerDay.fold<int>(0, (sum, value) => sum + value);
+
+  int get averageStudyMinutesPerDay => studyMinutesPerDay.isEmpty
+      ? 0
+      : (studyMinutes / studyMinutesPerDay.length).round();
 
   int get activityTotal => activity.fold<int>(0, (sum, value) => sum + value);
 
@@ -197,6 +208,9 @@ class LearningAnalytics {
       categoryMastery: List<CategoryMastery>.unmodifiable(categoryRows),
       weakLessons: List<WeakLesson>.unmodifiable(weakRows.take(8)),
       recommendedLesson: recommended,
+      studyMinutesPerDay: List<int>.unmodifiable(
+        progress.dailyStudyMinutes(days),
+      ),
     );
   }
 

@@ -36,6 +36,16 @@ class ContentProvider extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
   ContentPackInfo? get offlinePackInfo =>
       _contentPackService.infoOf(_offlinePack);
+
+  /// 当前内容包校验和（SHA-256 十六进制）。
+  String? get offlinePackChecksum {
+    final pack = _offlinePack;
+    return pack == null ? null : OfflineContentPackService.checksumOf(pack);
+  }
+
+  /// 内容包更新记录，最新的在最前面。
+  List<ContentPackHistoryEntry> get offlinePackHistory =>
+      _contentPackService.readHistory();
   List<LessonCategory> get categories => List.unmodifiable(_categories);
 
   List<Lesson> get allLessons =>
@@ -123,14 +133,47 @@ class ContentProvider extends ChangeNotifier {
   }
 
   /// 从系统文件选择器导入 JSON 内容包，成功后立即重新加载课程。
-  Future<ContentPackInfo?> importOfflinePack() async {
+  ///
+  /// 支持整包覆盖与 delta 增量包：增量包需声明 base_version，
+  /// 合并前会校验 SHA-256；带 signature 的包还会做签名验证。
+  Future<ContentPackImportResult?> importOfflinePack() async {
     final raw = await _contentPackService.pickJsonFile();
     if (raw == null) return null;
-    final pack = _contentPackService.decode(raw);
-    await _contentPackService.persist(pack);
-    _offlinePack = pack;
+    final incoming = _contentPackService.decode(raw);
+    final existing = _contentPackService.readStoredPack();
+    final merged = _contentPackService.mergeForImport(existing, incoming);
+    final status = _contentPackService.statusFor(existing, merged.pack);
+    final checksum = OfflineContentPackService.checksumOf(merged.pack);
+    final signatureVerified = OfflineContentPackService.verifySignature(
+      incoming,
+    );
+
+    await _contentPackService.persist(merged.pack);
+    await _contentPackService.recordHistory(
+      ContentPackHistoryEntry(
+        version: merged.pack['version']?.toString() ?? '',
+        importedAt: DateTime.now(),
+        checksum: checksum,
+        delta: merged.delta,
+        added: merged.added,
+        updated: merged.updated,
+        removed: merged.removed,
+      ),
+    );
+    _offlinePack = merged.pack;
     await load();
-    return _contentPackService.infoOf(pack);
+    final info = _contentPackService.infoOf(merged.pack);
+    if (info == null) return null;
+    return ContentPackImportResult(
+      info: info,
+      status: status,
+      checksum: checksum,
+      signatureVerified: signatureVerified,
+      addedLessons: merged.added,
+      updatedLessons: merged.updated,
+      removedLessons: merged.removed,
+      delta: merged.delta,
+    );
   }
 
   Future<void> removeOfflinePack() async {

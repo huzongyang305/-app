@@ -138,6 +138,16 @@ class QuizOptionTile extends StatelessWidget {
                         ),
                       ),
                     ),
+                    // 除颜色外再用文字标注对错，方便色觉障碍用户分辨。
+                    if (answered && (correct || selected)) ...[
+                      const SizedBox(width: AppSpacing.sm),
+                      _StatusBadge(
+                        label: correct
+                            ? context.tr('quizBadgeCorrect')
+                            : context.tr('quizBadgeYourPick'),
+                        color: correct ? AppPalette.success : AppPalette.danger,
+                      ),
+                    ],
                     if (trailingIcon != null) ...[
                       const SizedBox(width: AppSpacing.sm),
                       Icon(trailingIcon, color: trailingColor, size: 21),
@@ -147,6 +157,35 @@ class QuizOptionTile extends StatelessWidget {
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// 答题状态文字徽标：形状与文字双重编码，不只依赖红绿颜色。
+class _StatusBadge extends StatelessWidget {
+  const _StatusBadge({required this.label, required this.color});
+
+  final String label;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: color.withValues(alpha: 0.4)),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontFamily: AppTheme.sansFamily,
+          fontSize: 10.5,
+          fontWeight: FontWeight.w700,
+          color: color,
         ),
       ),
     );

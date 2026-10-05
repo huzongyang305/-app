@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import '../l10n/l10n_extension.dart';
 import '../screens/fullscreen_code_screen.dart';
+import '../services/settings_provider.dart';
+import '../services/share_service.dart';
 import '../theme/app_theme.dart';
 import 'code_block_body.dart';
 
-/// 现代代码卡片：深色表面、统一 16px 圆角、等宽行号与一键复制。
+/// 现代代码卡片：深色表面、统一 16px 圆角、等宽行号与快捷工具条。
 ///
-/// 顶部工具条提供「全屏查看」与「复制」两个动作；正文渲染交给
-/// [CodeBlockBody]，与全屏代码页共用同一套语法高亮和行号样式。
+/// 工具条提供「分享 / 复制 / 全屏」三个动作，菜单里可调字号与换行方式；
+/// 正文渲染交给 [CodeBlockBody]，与全屏代码页共用同一套语法高亮和行号样式。
 class CodeBlock extends StatelessWidget {
   const CodeBlock({super.key, required this.code, this.language});
 
@@ -20,9 +23,17 @@ class CodeBlock extends StatelessWidget {
   static const Color _codeHeader = AppPalette.nightRaised;
   static const Color _codeMuted = AppPalette.paperMutedOnNight;
 
+  /// 菜单动作编码，避免在 UI 里散落字符串常量。
+  static const String _actionFontLarger = 'font_larger';
+  static const String _actionFontSmaller = 'font_smaller';
+  static const String _actionFontReset = 'font_reset';
+  static const String _actionToggleWrap = 'toggle_wrap';
+
   @override
   Widget build(BuildContext context) {
     final source = CodeBlockBody.normalizeSource(code);
+    final settings = context.watch<SettingsProvider>();
+    final fontSize = 13 * settings.codeFontScale;
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: AppSpacing.md),
@@ -52,6 +63,59 @@ class CodeBlock extends StatelessWidget {
                       color: _codeMuted,
                     ),
                   ),
+                ),
+                IconButton(
+                  tooltip: context.tr('codeShare'),
+                  visualDensity: VisualDensity.compact,
+                  icon: const Icon(
+                    Icons.ios_share_rounded,
+                    size: 18,
+                    color: _codeMuted,
+                  ),
+                  onPressed: () => _share(context, source),
+                ),
+                PopupMenuButton<String>(
+                  tooltip: context.tr('codeViewOptions'),
+                  icon: const Icon(
+                    Icons.text_fields_rounded,
+                    size: 18,
+                    color: _codeMuted,
+                  ),
+                  onSelected: (action) => _handleMenu(context, action),
+                  itemBuilder: (context) => [
+                    PopupMenuItem<String>(
+                      value: _actionFontLarger,
+                      child: _menuRow(
+                        Icons.text_increase_rounded,
+                        context.tr('codeFontLarger'),
+                      ),
+                    ),
+                    PopupMenuItem<String>(
+                      value: _actionFontSmaller,
+                      child: _menuRow(
+                        Icons.text_decrease_rounded,
+                        context.tr('codeFontSmaller'),
+                      ),
+                    ),
+                    PopupMenuItem<String>(
+                      value: _actionFontReset,
+                      child: _menuRow(
+                        Icons.restart_alt_rounded,
+                        context.tr('codeFontReset'),
+                      ),
+                    ),
+                    PopupMenuItem<String>(
+                      value: _actionToggleWrap,
+                      child: _menuRow(
+                        settings.codeWrapLines
+                            ? Icons.horizontal_rule_rounded
+                            : Icons.wrap_text_rounded,
+                        settings.codeWrapLines
+                            ? context.tr('codeWrapOff')
+                            : context.tr('codeWrapOn'),
+                      ),
+                    ),
+                  ],
                 ),
                 IconButton(
                   tooltip: context.tr('fullscreenCode'),
@@ -85,8 +149,50 @@ class CodeBlock extends StatelessWidget {
               ],
             ),
           ),
-          CodeBlockBody(source: source, language: language),
+          CodeBlockBody(
+            source: source,
+            language: language,
+            fontSize: fontSize,
+            wrapLines: settings.codeWrapLines,
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget _menuRow(IconData icon, String label) {
+    return Row(
+      children: [Icon(icon, size: 18), const SizedBox(width: 10), Text(label)],
+    );
+  }
+
+  Future<void> _handleMenu(BuildContext context, String action) async {
+    final settings = context.read<SettingsProvider>();
+    switch (action) {
+      case _actionFontLarger:
+        await settings.setCodeFontScale(settings.codeFontScale + 0.1);
+      case _actionFontSmaller:
+        await settings.setCodeFontScale(settings.codeFontScale - 0.1);
+      case _actionFontReset:
+        await settings.setCodeFontScale(1);
+      case _actionToggleWrap:
+        await settings.setCodeWrapLines(!settings.codeWrapLines);
+    }
+  }
+
+  /// 分享代码；系统分享不可用时回退为复制，保证功能始终可用。
+  Future<void> _share(BuildContext context, String source) async {
+    final shared = await const ShareService().shareText(
+      source,
+      subject: CodeBlockBody.displayLanguage(language),
+    );
+    if (!context.mounted || shared) return;
+    await Clipboard.setData(ClipboardData(text: source));
+    if (!context.mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(context.trRead('codeShareFallback')),
+        duration: const Duration(seconds: 2),
       ),
     );
   }

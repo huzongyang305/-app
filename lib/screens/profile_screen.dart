@@ -11,6 +11,7 @@ import '../services/backup_document_service.dart';
 import '../services/backup_file_service.dart';
 import '../services/content_provider.dart';
 import '../services/notification_service.dart';
+import '../services/offline_content_pack_service.dart';
 import '../services/progress_provider.dart';
 import '../services/settings_provider.dart';
 import '../widgets/empty_state.dart';
@@ -19,6 +20,7 @@ import 'analytics_screen.dart';
 import 'lesson_screen.dart';
 import 'quiz_screen.dart';
 import 'achievements_screen.dart';
+import 'notes_screen.dart';
 
 /// 我的：学习统计、收藏、笔记与设置。
 class ProfileScreen extends StatelessWidget {
@@ -259,28 +261,52 @@ class ProfileScreen extends StatelessWidget {
   ) async {
     final messenger = ScaffoldMessenger.of(context);
     try {
-      final info = await content.importOfflinePack();
+      final result = await content.importOfflinePack();
       if (!context.mounted) return;
-      messenger.showSnackBar(
-        SnackBar(
-          content: Text(
-            info == null
-                ? context.trRead('offlinePackCancelled')
-                : context.trRead('offlinePackImported'),
-          ),
+      if (result == null) {
+        messenger.showSnackBar(
+          SnackBar(content: Text(context.trRead('offlinePackCancelled'))),
+        );
+        return;
+      }
+      var message = switch (result.status) {
+        ContentPackUpdateStatus.imported => context.trRead(
+          'offlinePackImported',
         ),
-      );
+        ContentPackUpdateStatus.updated => context.trArgs('offlinePackNewer', {
+          'version': result.info.version,
+        }),
+        ContentPackUpdateStatus.sameVersion => context.trArgs(
+          'offlinePackSameVersion',
+          {'version': result.info.version},
+        ),
+        ContentPackUpdateStatus.downgraded => context.trArgs(
+          'offlinePackOlder',
+          {'version': result.info.version},
+        ),
+      };
+      if (result.delta) {
+        message =
+            '$message\n'
+            '${context.trArgs('offlinePackDeltaApplied', {'added': result.addedLessons, 'updated': result.updatedLessons, 'removed': result.removedLessons})}';
+      }
+      if (result.signatureVerified) {
+        message = '$message · ${context.trRead('offlinePackVerified')}';
+      }
+      messenger.showSnackBar(SnackBar(content: Text(message)));
     } catch (error) {
       if (!context.mounted) return;
-      messenger.showSnackBar(
-        SnackBar(
-          content: Text(
-            context
-                .trRead('offlinePackInvalid')
-                .replaceAll('{error}', '$error'),
-          ),
+      final message = switch (error) {
+        ContentPackException(message: 'checksum_failed') => context.trRead(
+          'offlinePackChecksumFailed',
         ),
-      );
+        ContentPackException(message: 'signature_failed') => context.trRead(
+          'offlinePackSignatureFailed',
+        ),
+        _ =>
+          context.trRead('offlinePackInvalid').replaceAll('{error}', '$error'),
+      };
+      messenger.showSnackBar(SnackBar(content: Text(message)));
     }
   }
 
@@ -288,11 +314,143 @@ class ProfileScreen extends StatelessWidget {
     BuildContext context,
     ContentProvider content,
   ) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(dialogContext.tr('offlinePackRemove')),
+        content: Text(dialogContext.tr('offlinePackRemoveConfirm')),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(dialogContext.tr('cancel')),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(dialogContext.tr('confirmAction')),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !context.mounted) return;
     await content.removeOfflinePack();
     if (!context.mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(context.trRead('offlinePackRemoved'))),
     );
+  }
+
+  /// 内容包管理面板：版本、校验和、更新记录与操作入口。
+  Future<void> _showOfflinePackManager(
+    BuildContext context,
+    ContentProvider content,
+  ) async {
+    final history = content.offlinePackHistory;
+    await showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      isScrollControlled: true,
+      builder: (sheetContext) => SafeArea(
+        child: ListView(
+          shrinkWrap: true,
+          padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
+          children: [
+            Text(
+              sheetContext.tr('offlinePackManage'),
+              style: Theme.of(sheetContext).textTheme.titleMedium
+                  ?.copyWith(fontWeight: FontWeight.w700),
+            ),
+            const SizedBox(height: 12),
+            Text(sheetContext.tr('offlinePackHint')),
+            const SizedBox(height: 16),
+            if (content.offlinePackInfo == null)
+              Text(
+                sheetContext.tr('offlinePackNone'),
+                style: Theme.of(sheetContext).textTheme.bodyMedium,
+              )
+            else ...[
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.inventory_2_outlined),
+                title: Text(content.offlinePackInfo!.name),
+                subtitle: Text(
+                  '${sheetContext.trArgs('offlinePackVersion', {'version': content.offlinePackInfo!.version})} · '
+                  '${sheetContext.trArgs('offlinePackLessons', {'count': content.offlinePackInfo!.lessonCount})}',
+                ),
+              ),
+              if (content.offlinePackChecksum != null)
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(Icons.verified_user_outlined),
+                  title: Text(sheetContext.tr('offlinePackVerified')),
+                  subtitle: Text(
+                    sheetContext.trArgs('offlinePackChecksum', {
+                      'value': content.offlinePackChecksum!.substring(0, 12),
+                    }),
+                    style: const TextStyle(
+                      fontFamily: 'monospace',
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+            ],
+            const SizedBox(height: 8),
+            Text(
+              sheetContext.tr('offlinePackHistory'),
+              style: Theme.of(sheetContext).textTheme.titleSmall
+                  ?.copyWith(fontWeight: FontWeight.w600),
+            ),
+            if (history.isEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Text(sheetContext.tr('offlinePackNoHistory')),
+              )
+            else
+              for (final entry in history)
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  dense: true,
+                  leading: Icon(
+                    entry.delta
+                        ? Icons.call_merge_outlined
+                        : Icons.download_done_outlined,
+                    size: 20,
+                  ),
+                  title: Text(entry.version),
+                  subtitle: Text(
+                    '${_formatPackTime(entry.importedAt)} · '
+                    '+${entry.added} / ~${entry.updated} / -${entry.removed}',
+                  ),
+                ),
+            const SizedBox(height: 12),
+            FilledButton.icon(
+              onPressed: () {
+                Navigator.of(sheetContext).pop();
+                _importOfflinePack(context, content);
+              },
+              icon: const Icon(Icons.upload_file_outlined),
+              label: Text(sheetContext.tr('offlinePackImport')),
+            ),
+            if (content.offlinePackInfo != null) ...[
+              const SizedBox(height: 8),
+              OutlinedButton.icon(
+                onPressed: () {
+                  Navigator.of(sheetContext).pop();
+                  _removeOfflinePack(context, content);
+                },
+                icon: const Icon(Icons.delete_outline),
+                label: Text(sheetContext.tr('offlinePackRemove')),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _formatPackTime(DateTime time) {
+    String two(int value) => value.toString().padLeft(2, '0');
+    return '${time.year}-${two(time.month)}-${two(time.day)} '
+        '${two(time.hour)}:${two(time.minute)}';
   }
 
   Future<String?> _askBackupPassword(
@@ -479,6 +637,26 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
 
+          // 我的笔记：跨课程检索、标签筛选与导出
+          const SizedBox(height: 10),
+          Card(
+            clipBehavior: Clip.antiAlias,
+            child: ListTile(
+              leading: Icon(
+                Icons.sticky_note_2_outlined,
+                color: theme.colorScheme.primary,
+              ),
+              title: Text(context.tr('notesTitle')),
+              subtitle: Text(
+                context.trArgs('notesCountHint', {'n': progress.notes.length}),
+              ),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(builder: (_) => const NotesScreen()),
+              ),
+            ),
+          ),
+
           // 设置
           Padding(
             padding: const EdgeInsets.fromLTRB(4, 20, 4, 8),
@@ -648,12 +826,8 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   trailing: content.offlinePackInfo == null
                       ? const Icon(Icons.download_outlined)
-                      : IconButton(
-                          tooltip: context.tr('offlinePackRemove'),
-                          icon: const Icon(Icons.delete_outline),
-                          onPressed: () => _removeOfflinePack(context, content),
-                        ),
-                  onTap: () => _importOfflinePack(context, content),
+                      : const Icon(Icons.chevron_right),
+                  onTap: () => _showOfflinePackManager(context, content),
                 ),
               ],
             ),

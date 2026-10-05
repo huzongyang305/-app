@@ -32,13 +32,20 @@ class LessonScreen extends StatefulWidget {
 class _LessonScreenState extends State<LessonScreen> {
   late final Future<String> _markdownFuture;
   late final TtsService _ttsService;
+  late final ProgressProvider _progress;
+
+  /// 进入教程的时间戳，离开时换算成本次学习时长。
+  late final DateTime _openedAt;
   final ScrollController _scrollController = ScrollController();
   bool _speaking = false;
 
   @override
   void initState() {
     super.initState();
+    _openedAt = DateTime.now();
     _ttsService = const TtsService();
+    // dispose() 里不能再查 Provider，提前保存引用。
+    _progress = context.read<ProgressProvider>();
     final localeCode = context.read<SettingsProvider>().localeCode;
     _markdownFuture = context.read<ContentProvider>().markdownOf(
       widget.lesson,
@@ -48,7 +55,7 @@ class _LessonScreenState extends State<LessonScreen> {
     // 打开教程即视为已学习，记录到本地进度。
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      final progress = context.read<ProgressProvider>();
+      final progress = _progress;
       progress.markLearned(widget.lesson.id);
       final offset = progress.readingOffset(widget.lesson.id);
       if (offset > 0 && _scrollController.hasClients) {
@@ -62,11 +69,14 @@ class _LessonScreenState extends State<LessonScreen> {
   @override
   void dispose() {
     _ttsService.stop();
+    final progress = _progress;
+    // 记录本次真实阅读时长（单次上限 2 小时，由 Provider 兜底）。
+    progress.addStudySeconds(
+      widget.lesson.id,
+      DateTime.now().difference(_openedAt).inSeconds,
+    );
     if (_scrollController.hasClients) {
-      context.read<ProgressProvider>().saveReadingOffset(
-        widget.lesson.id,
-        _scrollController.offset,
-      );
+      progress.saveReadingOffset(widget.lesson.id, _scrollController.offset);
     }
     _scrollController.dispose();
     super.dispose();
@@ -525,8 +535,10 @@ class _LessonScreenState extends State<LessonScreen> {
   Future<void> _openNoteEditor() async {
     final progress = context.read<ProgressProvider>();
     final savedMessage = context.tr('noteSaved');
-    final controller = TextEditingController(
-      text: progress.noteOf(widget.lesson.id)?.content ?? '',
+    final existing = progress.noteOf(widget.lesson.id);
+    final controller = TextEditingController(text: existing?.content ?? '');
+    final tagController = TextEditingController(
+      text: existing?.tags.join(', ') ?? '',
     );
 
     await showModalBottomSheet<void>(
@@ -557,6 +569,14 @@ class _LessonScreenState extends State<LessonScreen> {
                 decoration: InputDecoration(hintText: context.tr('noteHint')),
               ),
               const SizedBox(height: 12),
+              TextField(
+                controller: tagController,
+                decoration: InputDecoration(
+                  labelText: context.tr('noteTagsLabel'),
+                  hintText: context.tr('noteTagsHint'),
+                ),
+              ),
+              const SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -572,6 +592,9 @@ class _LessonScreenState extends State<LessonScreen> {
                       await progress.saveNote(
                         widget.lesson.id,
                         controller.text,
+                        tags: tagController.text
+                            .split(RegExp(r'[,，、]'))
+                            .toList(),
                       );
                       if (!sheetContext.mounted) return;
                       navigator.pop();
@@ -593,6 +616,7 @@ class _LessonScreenState extends State<LessonScreen> {
       },
     );
     controller.dispose();
+    tagController.dispose();
   }
 }
 

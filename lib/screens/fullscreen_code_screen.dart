@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import '../l10n/l10n_extension.dart';
+import '../services/settings_provider.dart';
+import '../services/share_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/code_block_body.dart';
 
@@ -26,6 +29,7 @@ class FullscreenCodeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final source = CodeBlockBody.normalizeSource(code);
+    final settings = context.watch<SettingsProvider>();
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: _overlayStyle,
@@ -44,15 +48,30 @@ class FullscreenCodeScreen extends StatelessWidget {
               // SelectionArea 让代码在手机长按即可选中复制。
               Expanded(
                 child: SelectionArea(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.only(bottom: AppSpacing.xxl),
-                    child: CodeBlockBody(
-                      source: source,
-                      language: language,
-                      fontSize: 14,
-                      padding: AppSpacing.lg,
-                    ),
-                  ),
+                  child: settings.codeWrapLines
+                      ? SingleChildScrollView(
+                          padding: const EdgeInsets.only(
+                            bottom: AppSpacing.xxl,
+                          ),
+                          child: CodeBlockBody(
+                            source: source,
+                            language: language,
+                            fontSize: 14 * settings.codeFontScale,
+                            padding: AppSpacing.lg,
+                            wrapLines: true,
+                          ),
+                        )
+                      : SingleChildScrollView(
+                          padding: const EdgeInsets.only(
+                            bottom: AppSpacing.xxl,
+                          ),
+                          child: CodeBlockBody(
+                            source: source,
+                            language: language,
+                            fontSize: 14 * settings.codeFontScale,
+                            padding: AppSpacing.lg,
+                          ),
+                        ),
                 ),
               ),
             ],
@@ -104,6 +123,15 @@ class FullscreenCodeScreen extends StatelessWidget {
             ),
           ),
           IconButton(
+            tooltip: context.tr('codeShare'),
+            onPressed: () => _shareCode(context, source),
+            icon: const Icon(
+              Icons.ios_share_rounded,
+              size: 20,
+              color: AppPalette.paperMutedOnNight,
+            ),
+          ),
+          IconButton(
             tooltip: context.tr('copyTooltip'),
             onPressed: () => _copyCode(context, source),
             icon: const Icon(
@@ -135,5 +163,15 @@ class FullscreenCodeScreen extends StatelessWidget {
         duration: const Duration(seconds: 1),
       ),
     );
+  }
+
+  /// 全屏页分享；平台通道不可用时静默回退到复制。
+  Future<void> _shareCode(BuildContext context, String source) async {
+    final shared = await const ShareService().shareText(
+      source,
+      subject: CodeBlockBody.displayLanguage(language),
+    );
+    if (!context.mounted || shared) return;
+    await _copyCode(context, source);
   }
 }

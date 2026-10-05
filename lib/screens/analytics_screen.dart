@@ -89,6 +89,42 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 14),
+                  Text(
+                    context.tr('analyticsStudyTime'),
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  ActivityChart(
+                    values: snapshot.studyMinutesPerDay,
+                    height: 60,
+                  ),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 18,
+                    runSpacing: 8,
+                    children: [
+                      _InlineMetric(
+                        label: context.tr('analyticsStudyTotal'),
+                        value: context.trArgs('analyticsMinutes', {
+                          'n': snapshot.studyMinutes,
+                        }),
+                      ),
+                      _InlineMetric(
+                        label: context.tr('analyticsStudyPerDay'),
+                        value: context.trArgs('analyticsMinutes', {
+                          'n': snapshot.averageStudyMinutesPerDay,
+                        }),
+                      ),
+                      _InlineMetric(
+                        label: context.tr('analyticsActiveDays'),
+                        value:
+                            '${snapshot.studyMinutesPerDay.where((m) => m > 0).length}',
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

@@ -99,6 +99,23 @@ class AppStrings {
     'save': {'zh': '保存', 'en': 'Save'},
     'cancel': {'zh': '取消', 'en': 'Cancel'},
     'noteSaved': {'zh': '笔记已保存', 'en': 'Note saved'},
+    'noteSave': {'zh': '保存笔记', 'en': 'Save note'},
+    'noteTagsLabel': {'zh': '标签', 'en': 'Tags'},
+    'noteTagsHint': {'zh': '用逗号分隔，例如：重点, 待复习', 'en': 'Comma separated'},
+    'notesTitle': {'zh': '我的笔记', 'en': 'My notes'},
+    'notesCountHint': {'zh': '共 {n} 条，可搜索、打标签并导出', 'en': '{n} notes'},
+    'notesSearchHint': {'zh': '搜索笔记内容或标签', 'en': 'Search notes'},
+    'notesAllTags': {'zh': '全部', 'en': 'All'},
+    'notesEmpty': {'zh': '还没有笔记，打开教程右上角即可记录', 'en': 'No notes yet'},
+    'notesEdit': {'zh': '编辑笔记', 'en': 'Edit note'},
+    'notesDelete': {'zh': '删除笔记', 'en': 'Delete note'},
+    'notesDeleted': {'zh': '笔记已删除', 'en': 'Note deleted'},
+    'notesExport': {'zh': '导出笔记', 'en': 'Export notes'},
+    'notesExportDone': {
+      'zh': '已复制 {n} 条笔记的 Markdown 到剪贴板',
+      'en': 'Copied {n} notes',
+    },
+    'searchClear': {'zh': '清空', 'en': 'Clear'},
     'noFavorites': {'zh': '还没有收藏，去教程页点星标吧', 'en': 'No favorites yet'},
     'noNotes': {'zh': '还没有笔记', 'en': 'No notes yet'},
     'noQuizRecord': {'zh': '还没有测验记录', 'en': 'No quiz records yet'},
@@ -144,6 +161,31 @@ class AppStrings {
       'zh': '每条路线把知识点排好顺序，跟着走即可',
       'en': 'Each route orders the lessons for you',
     },
+    'pathMyGoal': {'zh': '我的学习目标', 'en': 'My learning goal'},
+    'pathNoGoal': {
+      'zh': '选择一条学习路径作为目标，App 会按它推荐学习顺序',
+      'en': 'Pick a path as your goal to get an ordered study plan',
+    },
+    'pathSetGoal': {'zh': '设为目标', 'en': 'Set as goal'},
+    'pathGoalBadge': {'zh': '当前目标', 'en': 'Current goal'},
+    'pathStartHere': {'zh': '推荐从这里开始', 'en': 'Recommended start'},
+    'pathRecommendHint': {
+      'zh': '根据入学测评与学习记录动态调整',
+      'en': 'Adjusted by your placement quiz and progress',
+    },
+    'pathDiagnostic': {'zh': '入学测评', 'en': 'Placement quiz'},
+    'pathDiagnosticHint': {
+      'zh': '先做一次快速测评，定位薄弱知识点并生成补课清单',
+      'en': 'Take a quick quiz to find weak spots and build a review list',
+    },
+    'pathDiagnosticSize': {'zh': '共 {n} 题', 'en': '{n} questions'},
+    'pathRemediation': {'zh': '动态补课', 'en': 'Dynamic review'},
+    'pathRemediationEmpty': {
+      'zh': '暂无需要补课的知识点',
+      'en': 'Nothing to review right now',
+    },
+    'pathContinue': {'zh': '从推荐位置继续', 'en': 'Continue from recommendation'},
+    'pathGoalSwitched': {'zh': '已切换学习目标', 'en': 'Learning goal updated'},
     'todayReview': {'zh': '今日复习', 'en': 'Review today'},
     'todayReviewHint': {
       'zh': '按间隔重复安排，点一下开始复习',
@@ -512,6 +554,20 @@ class AppStrings {
     'fullscreenCode': {'zh': '全屏查看代码', 'en': 'View code fullscreen'},
     'exitFullscreen': {'zh': '退出全屏', 'en': 'Exit fullscreen'},
     'codeLineCount': {'zh': '共 {n} 行', 'en': '{n} lines'},
+    'codeShare': {'zh': '分享代码', 'en': 'Share code'},
+    'codeShareFallback': {
+      'zh': '系统分享不可用，已复制代码',
+      'en': 'Sharing unavailable, code copied instead',
+    },
+    'codeViewOptions': {'zh': '代码显示设置', 'en': 'Code display options'},
+    'codeFontLarger': {'zh': '增大字号', 'en': 'Larger code text'},
+    'codeFontSmaller': {'zh': '减小字号', 'en': 'Smaller code text'},
+    'codeFontReset': {'zh': '恢复默认字号', 'en': 'Reset code text size'},
+    'codeWrapOn': {'zh': '自动换行', 'en': 'Wrap long lines'},
+    'codeWrapOff': {'zh': '关闭自动换行', 'en': 'Turn off wrapping'},
+    'quizBadgeCorrect': {'zh': '正确', 'en': 'Correct'},
+    'quizBadgeYourPick': {'zh': '你的选择', 'en': 'Your answer'},
+    'confirmAction': {'zh': '确定', 'en': 'Confirm'},
     // ── 内容加载错误 ──
     'contentLoadFailed': {
       'zh': '课程内容加载失败：{error}',
@@ -662,6 +718,10 @@ class AppStrings {
     'analyticsTrendUp': {'zh': '多 {n} 次', 'en': '+{n}'},
     'analyticsTrendDown': {'zh': '少 {n} 次', 'en': '-{n}'},
     'analyticsTrendFlat': {'zh': '持平', 'en': 'No change'},
+    'analyticsStudyTime': {'zh': '学习时长', 'en': 'Study time'},
+    'analyticsStudyPerDay': {'zh': '日均', 'en': 'Daily average'},
+    'analyticsStudyTotal': {'zh': '累计时长', 'en': 'Total time'},
+    'analyticsMinutes': {'zh': '{n} 分钟', 'en': '{n} min'},
     'analyticsCategoryMastery': {'zh': '分类掌握度', 'en': 'Category mastery'},
     'analyticsCategoryMasteryHint': {
       'zh': '综合学习进度、测验正确率和错题数量估算',
@@ -1007,6 +1067,54 @@ class AppStrings {
     'offlinePackInvalid': {
       'zh': '内容包无效：{error}',
       'en': 'Invalid content pack: {error}',
+    },
+    'offlinePackManage': {'zh': '内容包管理', 'en': 'Manage content packs'},
+    'offlinePackVersion': {'zh': '版本 {version}', 'en': 'Version {version}'},
+    'offlinePackLessons': {'zh': '{count} 课', 'en': '{count} lessons'},
+    'offlinePackImportedAt': {'zh': '导入于 {time}', 'en': 'Imported {time}'},
+    'offlinePackChecksum': {'zh': '校验和 {value}', 'en': 'Checksum {value}'},
+    'offlinePackVerified': {
+      'zh': '校验和与签名验证通过',
+      'en': 'Checksum and signature verified',
+    },
+    'offlinePackChecksumOnly': {
+      'zh': '校验和通过（未签名）',
+      'en': 'Checksum verified (unsigned)',
+    },
+    'offlinePackChecksumFailed': {
+      'zh': '内容包校验失败，文件可能已损坏',
+      'en': 'Checksum failed; the file may be corrupted',
+    },
+    'offlinePackSignatureFailed': {
+      'zh': '内容包签名验证失败，已拒绝导入',
+      'en': 'Signature verification failed; import rejected',
+    },
+    'offlinePackNewer': {
+      'zh': '发现新版本 {version}，已更新',
+      'en': 'Updated to version {version}',
+    },
+    'offlinePackSameVersion': {
+      'zh': '当前已是版本 {version}，已重新载入',
+      'en': 'Version {version} is already installed; reloaded',
+    },
+    'offlinePackOlder': {
+      'zh': '该包版本较旧（{version}），已按覆盖方式导入',
+      'en': 'Older pack {version} imported as an override',
+    },
+    'offlinePackDeltaApplied': {
+      'zh': '已应用增量更新：新增 {added} 课，更新 {updated} 课，移除 {removed} 课',
+      'en': 'Delta applied: +{added} / ~{updated} / -{removed} lessons',
+    },
+    'offlinePackHistory': {'zh': '更新记录', 'en': 'Update history'},
+    'offlinePackNoHistory': {'zh': '暂无更新记录', 'en': 'No updates yet'},
+    'offlinePackRemoveConfirm': {
+      'zh': '移除后自定义课程将不再显示，确定继续吗？',
+      'en': 'Custom lessons will be hidden. Remove this pack?',
+    },
+    'offlinePackSignature': {'zh': '签名 {value}', 'en': 'Signature {value}'},
+    'offlinePackUnsupportedVersion': {
+      'zh': '内容包结构版本不受支持：{version}',
+      'en': 'Unsupported pack schema version: {version}',
     },
   };
 

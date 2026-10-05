@@ -18,6 +18,16 @@ class SettingsProvider extends ChangeNotifier {
 
     _reduceMotion = _storage.read('reduce_motion', defaultValue: false) == true;
 
+    final codeScale = _storage.read('code_font_scale', defaultValue: 1.0);
+    _codeFontScale = (codeScale is num)
+        ? codeScale.toDouble().clamp(0.8, 1.6)
+        : 1.0;
+    _codeWrapLines =
+        _storage.read('code_wrap_lines', defaultValue: false) == true;
+
+    final selectedPath = _storage.read('selected_path_id', defaultValue: '');
+    _selectedPathId = selectedPath is String ? selectedPath : '';
+
     _reviewReminderEnabled =
         _storage.read('review_reminder_enabled', defaultValue: false) == true;
     final hour = _storage.read('review_reminder_hour', defaultValue: 20);
@@ -44,6 +54,9 @@ class SettingsProvider extends ChangeNotifier {
   String _localeCode = 'zh';
   double _readingFontScale = 1.0;
   bool _reduceMotion = false;
+  double _codeFontScale = 1.0;
+  bool _codeWrapLines = false;
+  String _selectedPathId = '';
   bool _reviewReminderEnabled = false;
   int _reminderHour = 20;
   int _reminderMinute = 0;
@@ -60,6 +73,37 @@ class SettingsProvider extends ChangeNotifier {
 
   /// 减少界面动画，配合系统无障碍设置使用。
   bool get reduceMotion => _reduceMotion;
+
+  /// 代码块字号缩放（0.8 ~ 1.6），与正文缩放独立。
+  double get codeFontScale => _codeFontScale;
+
+  /// 代码块是否自动换行；关闭时保持横向滚动，避免长行被截断语义。
+  bool get codeWrapLines => _codeWrapLines;
+
+  /// 用户选定的学习目标路径 ID；为空表示尚未选择目标。
+  String get selectedPathId => _selectedPathId;
+
+  Future<void> setCodeFontScale(double value) async {
+    final clamped = value.clamp(0.8, 1.6);
+    if ((_codeFontScale - clamped).abs() < 0.001) return;
+    _codeFontScale = clamped;
+    notifyListeners();
+    await _storage.write('code_font_scale', clamped);
+  }
+
+  Future<void> setCodeWrapLines(bool value) async {
+    if (_codeWrapLines == value) return;
+    _codeWrapLines = value;
+    notifyListeners();
+    await _storage.write('code_wrap_lines', value);
+  }
+
+  Future<void> setSelectedPathId(String pathId) async {
+    if (_selectedPathId == pathId) return;
+    _selectedPathId = pathId;
+    notifyListeners();
+    await _storage.write('selected_path_id', pathId);
+  }
 
   /// 是否开启每日复习提醒。
   bool get reviewReminderEnabled => _reviewReminderEnabled;

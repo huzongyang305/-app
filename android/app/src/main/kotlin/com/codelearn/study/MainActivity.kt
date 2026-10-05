@@ -45,6 +45,7 @@ class MainActivity : FlutterActivity() {
     private val backupCryptoChannelName = "code_learn_app/backup_crypto"
     private val backupFileChannelName = "code_learn_app/backup_files"
     private val contentPackChannelName = "code_learn_app/content_pack"
+    private val shareChannelName = "code_learn_app/share"
     private val ttsChannelName = "code_learn_app/tts"
     private val assetCache = HashMap<String, String>()
     private var activeWebView: WebView? = null
@@ -146,6 +147,19 @@ class MainActivity : FlutterActivity() {
             .setMethodCallHandler { call, result ->
                 when (call.method) {
                     "pickJsonFile" -> pickContentPackFile(result)
+                    else -> result.notImplemented()
+                }
+            }
+
+        // 通用文本分享：代码块与笔记导出走系统分享面板，不访问网络。
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, shareChannelName)
+            .setMethodCallHandler { call, result ->
+                when (call.method) {
+                    "shareText" -> shareText(
+                        call.argument<String>("text"),
+                        call.argument<String>("subject"),
+                        result,
+                    )
                     else -> result.notImplemented()
                 }
             }
@@ -296,6 +310,40 @@ class MainActivity : FlutterActivity() {
     private fun notifyTtsFinished(method: String) {
         Handler(Looper.getMainLooper()).post {
             ttsChannel?.invokeMethod(method, null)
+        }
+    }
+
+    /**
+     * 通用文本分享：代码块、笔记导出等纯文本内容走这里。
+     *
+     * 只依赖系统 ACTION_SEND，不申请额外权限；分享面板不可用时返回 false，
+     * Dart 侧会退回复制到剪贴板。
+     */
+    private fun shareText(
+        text: String?,
+        subject: String?,
+        result: MethodChannel.Result,
+    ) {
+        if (text.isNullOrEmpty()) {
+            result.success(false)
+            return
+        }
+        if (text.toByteArray(Charsets.UTF_8).size > MAX_SHARE_TEXT_BYTES) {
+            result.success(false)
+            return
+        }
+        try {
+            val sendIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, text)
+                if (!subject.isNullOrEmpty()) {
+                    putExtra(Intent.EXTRA_SUBJECT, subject)
+                }
+            }
+            startActivity(Intent.createChooser(sendIntent, subject ?: "分享"))
+            result.success(true)
+        } catch (error: Exception) {
+            result.success(false)
         }
     }
 
@@ -763,6 +811,8 @@ class MainActivity : FlutterActivity() {
         const val BACKUP_OPEN_REQUEST = 4301
         const val BACKUP_CREATE_REQUEST = 4302
         const val MAX_CONTENT_PACK_BYTES = 8 * 1024 * 1024
+        // 单次分享的文本上限（256 KB），超过则退回复制到剪贴板。
+        const val MAX_SHARE_TEXT_BYTES = 256 * 1024
         const val MAX_BACKUP_BYTES = 16 * 1024 * 1024
         const val BACKUP_SHARE_DIR = "backup_share"
     }

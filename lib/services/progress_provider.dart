@@ -20,6 +20,7 @@ class ProgressProvider extends ChangeNotifier {
     _restoreReview();
     _restoreStudyDays();
     _restoreActivity();
+    _restoreStudySeconds();
   }
 
   final StorageService _storage;
@@ -39,6 +40,7 @@ class ProgressProvider extends ChangeNotifier {
   final Map<String, int> _reviewRepetitions = <String, int>{};
   final Set<String> _studyDays = <String>{};
   final Map<String, int> _dailyActivity = <String, int>{};
+  final Map<String, int> _dailyStudySeconds = <String, int>{};
   String? _lastLessonId;
 
   /// SM-2 风格的复习参数：难度系数越高，间隔拉长越快。
@@ -60,6 +62,36 @@ class ProgressProvider extends ChangeNotifier {
 
   Note? noteOf(String lessonId) => _notes[lessonId];
   QuizResult? resultOf(String lessonId) => _quizResults[lessonId];
+
+  /// 全部笔记标签（去重、按使用频率降序）。
+  List<String> get allNoteTags {
+    final counts = <String, int>{};
+    for (final note in _notes.values) {
+      for (final tag in note.tags) {
+        counts[tag] = (counts[tag] ?? 0) + 1;
+      }
+    }
+    final tags = counts.keys.toList()
+      ..sort((a, b) {
+        final byCount = counts[b]!.compareTo(counts[a]!);
+        return byCount != 0 ? byCount : a.compareTo(b);
+      });
+    return List<String>.unmodifiable(tags);
+  }
+
+  /// 跨课程笔记检索：按正文、标签和知识点 ID 匹配，按更新时间倒序。
+  List<Note> searchNotes(String query, {String? tag}) {
+    final keyword = query.trim().toLowerCase();
+    final results = _notes.values.where((note) {
+      if (tag != null && !note.tags.contains(tag)) return false;
+      if (keyword.isEmpty) return true;
+      if (note.content.toLowerCase().contains(keyword)) return true;
+      if (note.lessonId.toLowerCase().contains(keyword)) return true;
+      return note.tags.any((item) => item.toLowerCase().contains(keyword));
+    }).toList();
+    results.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+    return List<Note>.unmodifiable(results);
+  }
 
   /// 错题本：键为「知识点ID#题号」，值为答错次数。
   int wrongCountFor(String lessonId) => _wrongCounts.entries
@@ -132,6 +164,46 @@ class ProgressProvider extends ChangeNotifier {
   }
 
   bool get signedToday => _studyDays.contains(_dayKey(DateTime.now()));
+
+  /// 今日已记录的真实学习时长（秒），由教程页在离开时回传。
+  int get studySecondsToday => _dailyStudySeconds[_dayKey(DateTime.now())] ?? 0;
+
+  /// 累计学习时长（分钟）。
+  int get totalStudyMinutes =>
+      _dailyStudySeconds.values.fold<int>(0, (sum, value) => sum + value) ~/ 60;
+
+  /// 最近 [days] 天每天的学习时长（分钟，向上取整），最后一项是今天。
+  List<int> dailyStudyMinutes(int days) {
+    final now = DateTime.now();
+    return List<int>.generate(days, (index) {
+      final seconds =
+          _dailyStudySeconds[_dayKey(
+            now.subtract(Duration(days: days - 1 - index)),
+          )] ??
+          0;
+      return (seconds / 60).ceil();
+    }, growable: false);
+  }
+
+  /// 最近 [days] 天的学习时长合计（分钟）。
+  int studyMinutesInLastDays(int days) =>
+      dailyStudyMinutes(days).fold<int>(0, (sum, value) => sum + value);
+
+  /// 记录一次真实学习时长；单次上限 2 小时，低于 5 秒的抖动直接忽略。
+  Future<void> addStudySeconds(String lessonId, int seconds) async {
+    final value = seconds.clamp(0, 7200);
+    if (value < 5) return;
+    final key = _dayKey(DateTime.now());
+    _dailyStudySeconds[key] = (_dailyStudySeconds[key] ?? 0) + value;
+    _lastLessonId = lessonId;
+    await _markStudyToday();
+    await _storage.write(
+      'daily_study_seconds',
+      Map<String, int>.from(_dailyStudySeconds),
+    );
+    await _storage.write('last_lesson_id', lessonId);
+    notifyListeners();
+  }
 
   /// 最近 [days] 天每天的学习活动量（学完知识点或完成测验计 1 次）。
   List<int> dailyActivity(int days) {
@@ -373,8 +445,17 @@ class ProgressProvider extends ChangeNotifier {
     await _storage.write('favorite_ids', _favoriteIds.toList());
   }
 
-  Future<void> saveNote(String lessonId, String content) async {
+  Future<void> saveNote(
+    String lessonId,
+    String content, {
+    List<String> tags = const <String>[],
+  }) async {
     final trimmed = content.trim();
+    final normalizedTags = tags
+        .map((tag) => tag.trim())
+        .where((tag) => tag.isNotEmpty)
+        .toSet()
+        .toList(growable: false);
     if (trimmed.isEmpty) {
       _notes.remove(lessonId);
       _noteIds.remove(lessonId);
@@ -385,6 +466,7 @@ class ProgressProvider extends ChangeNotifier {
         lessonId: lessonId,
         content: trimmed,
         updatedAt: DateTime.now(),
+        tags: normalizedTags,
       );
       _notes[lessonId] = note;
       _noteIds.add(lessonId);
@@ -518,6 +600,17 @@ class ProgressProvider extends ChangeNotifier {
     _lastLessonId = _storage.read('last_lesson_id') as String?;
   }
 
+  void _restoreStudySeconds() {
+    final data = _storage.read('daily_study_seconds');
+    if (data is Map) {
+      data.forEach((key, value) {
+        if (value is int && value > 0) {
+          _dailyStudySeconds[key.toString()] = value;
+        }
+      });
+    }
+  }
+
   /// 教程滚动位置：按知识点记录，用于「继续上次位置阅读」。
   double readingOffset(String lessonId) {
     final value = _storage.read('reading_offset_$lessonId', defaultValue: 0.0);
@@ -546,6 +639,7 @@ class ProgressProvider extends ChangeNotifier {
         'review_repetitions': Map<String, int>.from(_reviewRepetitions),
         'study_days': _studyDays.toList(),
         'daily_activity': Map<String, int>.from(_dailyActivity),
+        'daily_study_seconds': Map<String, int>.from(_dailyStudySeconds),
         'notes': _notes.map((key, value) => MapEntry(key, value.toJson())),
       });
 
@@ -593,6 +687,10 @@ class ProgressProvider extends ChangeNotifier {
       (data['daily_activity'] as Map?) ?? const {},
     );
     await _storage.write(
+      'daily_study_seconds',
+      (data['daily_study_seconds'] as Map?) ?? const {},
+    );
+    await _storage.write(
       'review_due',
       (data['review_due'] as Map?) ?? const {},
     );
@@ -638,6 +736,8 @@ class ProgressProvider extends ChangeNotifier {
     _restoreStudyDays();
     _dailyActivity.clear();
     _restoreActivity();
+    _dailyStudySeconds.clear();
+    _restoreStudySeconds();
     _notes.clear();
     _noteIds = noteIds.toSet();
     _restoreNotes();

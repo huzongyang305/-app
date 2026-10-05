@@ -15,6 +15,7 @@ class CodeBlockBody extends StatelessWidget {
     this.language,
     this.fontSize = 13,
     this.padding = 14,
+    this.wrapLines = false,
   });
 
   /// 已去掉结尾换行的代码文本。
@@ -22,6 +23,12 @@ class CodeBlockBody extends StatelessWidget {
   final String? language;
   final double fontSize;
   final double padding;
+
+  /// 是否让超长行自动换行。
+  ///
+  /// 换行后逻辑行会占用多行显示，行号栏无法再与代码对齐，因此换行模式下
+  /// 自动隐藏行号，优先保证代码内容完整可读。
+  final bool wrapLines;
 
   /// 代码行数，至少为 1。
   static int lineCountOf(String source) =>
@@ -76,6 +83,30 @@ class CodeBlockBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // highlight 在 language 为 null 时会直接抛错；无语言围栏按纯文本处理。
+    final resolvedLanguage = (language ?? '').trim().isEmpty
+        ? 'plaintext'
+        : language;
+    if (wrapLines) {
+      return ColoredBox(
+        color: surfaceColor,
+        child: SizedBox(
+          width: double.infinity,
+          child: HighlightView(
+            source,
+            language: resolvedLanguage,
+            theme: monokaiSublimeTheme,
+            padding: EdgeInsets.all(padding),
+            textStyle: TextStyle(
+              fontFamily: AppTheme.monoFamily,
+              fontSize: fontSize,
+              height: 1.5,
+            ),
+          ),
+        ),
+      );
+    }
+
     final lineNumbers = List<String>.generate(
       lineCountOf(source),
       (index) => '${index + 1}',
@@ -109,7 +140,7 @@ class CodeBlockBody extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: HighlightView(
                 source,
-                language: language,
+                language: resolvedLanguage,
                 theme: monokaiSublimeTheme,
                 padding: EdgeInsets.all(padding),
                 textStyle: TextStyle(
