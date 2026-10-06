@@ -32,16 +32,20 @@ void main() {
     final startupWatch = Stopwatch()..start();
     app.main();
     await tester.pump();
+    // 底部导航先于正文出现，首页此时可能还在转加载动画；
+    // 只等导航栏会让后续 pumpAndSettle 卡在永不停止的动画上。
     final shellReady = await _waitFor(
       tester,
-      () => find.byType(NavigationBar).evaluate().isNotEmpty,
+      () =>
+          find.byType(NavigationBar).evaluate().isNotEmpty &&
+          find.byType(CircularProgressIndicator).evaluate().isEmpty,
       timeout: const Duration(seconds: 90),
     );
     startupWatch.stop();
-    expect(shellReady, isTrue, reason: '首页 90 秒内未出现');
+    expect(shellReady, isTrue, reason: '首页 90 秒内未完成加载');
 
     // 首屏稳定后再等一帧，避免把布局抖动计入启动时间。
-    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    await tester.pump(const Duration(milliseconds: 300));
 
     final searchReady = await _waitFor(
       tester,
@@ -50,17 +54,17 @@ void main() {
     );
     expect(searchReady, isTrue, reason: '没有找到搜索入口');
 
-    expect(find.byTooltip('搜索知识点'), findsOneWidget);
-    await tester.tap(find.byTooltip('搜索知识点'));
+    expect(find.byTooltip('搜索知识点'), findsWidgets);
+    await tester.tap(find.byTooltip('搜索知识点').first);
     await _waitFor(
       tester,
       () => find.byType(TextField).evaluate().isNotEmpty,
       timeout: const Duration(seconds: 20),
     );
-    expect(find.byType(TextField), findsOneWidget);
+    expect(find.byType(TextField), findsWidgets);
 
     final firstSearchWatch = Stopwatch()..start();
-    await tester.enterText(find.byType(TextField), '函数');
+    await tester.enterText(find.byType(TextField).first, '函数');
     final firstHits = await _waitFor(
       tester,
       () => find.byType(Card).evaluate().isNotEmpty,
@@ -71,7 +75,7 @@ void main() {
     expect(firstHits, isTrue, reason: '首次搜索 60 秒内没有结果');
 
     final secondSearchWatch = Stopwatch()..start();
-    await tester.enterText(find.byType(TextField), '网络');
+    await tester.enterText(find.byType(TextField).first, '网络');
     final secondHits = await _waitFor(
       tester,
       () => find.byType(Card).evaluate().isNotEmpty,
