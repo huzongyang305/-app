@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:code_learn_app/main.dart' as app;
+import 'package:code_learn_app/widgets/category_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -32,13 +33,13 @@ void main() {
     final startupWatch = Stopwatch()..start();
     app.main();
     await tester.pump();
-    // 底部导航先于正文出现，首页此时可能还在转加载动画；
-    // 只等导航栏会让后续 pumpAndSettle 卡在永不停止的动画上。
+    // 底部导航先于正文出现，首页此时可能还在转加载动画；必须等到
+    // 分类卡片真正渲染，否则会停在加载动画上，pumpAndSettle 永不收敛。
     final shellReady = await _waitFor(
       tester,
       () =>
           find.byType(NavigationBar).evaluate().isNotEmpty &&
-          find.byType(CircularProgressIndicator).evaluate().isEmpty,
+          find.byType(CategoryCard).evaluate().isNotEmpty,
       timeout: const Duration(seconds: 90),
     );
     startupWatch.stop();
