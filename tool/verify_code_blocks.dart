@@ -19,12 +19,18 @@ class Block {
     required this.language,
     required this.code,
     required this.line,
+    this.context = '',
   });
 
   final String lessonId;
   final String language;
   final String code;
   final int line;
+
+  /// 代码围栏前的一段正文，用于识别「代码排错」这类有意保留错误的示例。
+  final String context;
+
+  bool get isErrorExercise => _errorExerciseMarker.hasMatch(context);
 }
 
 Future<void> main(List<String> args) async {
@@ -33,17 +39,43 @@ Future<void> main(List<String> args) async {
   final failures = <String>[];
   final warnings = <String>[];
   final fragments = <String>[];
+  final intentional = <String>[];
   final counts = <String, List<int>>{};
 
-  // counts[语言] = [通过, 片段, 硬失败]
+  // counts[语言] = [通过, 片段, 硬失败, 排错练习]
   void record(String language, bool ok) {
-    final value = counts.putIfAbsent(language, () => [0, 0, 0]);
+    final value = counts.putIfAbsent(language, () => [0, 0, 0, 0]);
     value[ok ? 0 : 2]++;
   }
 
   void recordFragment(String language) {
-    final value = counts.putIfAbsent(language, () => [0, 0, 0]);
+    final value = counts.putIfAbsent(language, () => [0, 0, 0, 0]);
     value[1]++;
+  }
+
+  void recordIntentional(String language) {
+    final value = counts.putIfAbsent(language, () => [0, 0, 0, 0]);
+    value[3]++;
+  }
+
+  /// 记录代码块的最终归类；返回 true 表示不再计入硬失败。
+  ///
+  /// 只有「处在排错语境且确实校验失败」的代码块才按有意错误豁免，
+  /// 排错章节里其他能编译的代码块仍然正常参与校验。
+  bool settle(Block block, String language, bool accepted) {
+    if (accepted) {
+      record(language, true);
+      return true;
+    }
+    if (block.isErrorExercise) {
+      recordIntentional(language);
+      intentional.add(
+        '${block.lessonId}:${block.line} $language 代码排错练习（有意保留错误）',
+      );
+      return true;
+    }
+    record(language, false);
+    return false;
   }
 
   try {
@@ -68,8 +100,7 @@ Future<void> main(List<String> args) async {
         ]);
         final ok = result.exitCode == 0;
         final accepted = ok || _balanced(block.code, language);
-        record(language, accepted);
-        if (!accepted) {
+        if (!settle(block, language, accepted)) {
           failures.add(
             '${block.lessonId}:${block.line} $language ${result.stderr}',
           );
@@ -80,8 +111,7 @@ Future<void> main(List<String> args) async {
         final result = Process.runSync('node', ['--check', path]);
         final ok = result.exitCode == 0;
         final accepted = ok || _balanced(block.code, language);
-        record(language, accepted);
-        if (!accepted) {
+        if (!settle(block, language, accepted)) {
           failures.add(
             '${block.lessonId}:${block.line} $language ${result.stderr}',
           );
@@ -96,15 +126,17 @@ Future<void> main(List<String> args) async {
         ]);
         final ok = result.exitCode == 0;
         final accepted = ok || _balanced(block.code, language);
-        record(language, accepted);
-        if (!accepted) {
+        if (!settle(block, language, accepted)) {
           failures.add(
             '${block.lessonId}:${block.line} $language ${result.stderr}',
           );
         }
       } else if (language == 'cpp' || language == 'c') {
         if (!block.code.contains('main')) {
-          record(language, _balanced(block.code, language));
+          final accepted = _balanced(block.code, language);
+          if (!settle(block, language, accepted)) {
+            failures.add('${block.lessonId}:${block.line} $language 结构不平衡');
+          }
           continue;
         }
         final path =
@@ -123,15 +155,17 @@ Future<void> main(List<String> args) async {
         }
         final ok = result.exitCode == 0;
         final accepted = ok || _balanced(block.code, language);
-        record(language, accepted);
-        if (!accepted) {
+        if (!settle(block, language, accepted)) {
           failures.add(
             '${block.lessonId}:${block.line} $language ${result.stderr}',
           );
         }
       } else if (language == 'java') {
         if (!block.code.contains('class') || !block.code.contains('main')) {
-          record(language, _balanced(block.code, language));
+          final accepted = _balanced(block.code, language);
+          if (!settle(block, language, accepted)) {
+            failures.add('${block.lessonId}:${block.line} $language 结构不平衡');
+          }
           continue;
         }
         final classMatch =
@@ -142,16 +176,14 @@ Future<void> main(List<String> args) async {
         await File(path).writeAsString(block.code);
         final result = Process.runSync('javac', ['-d', temp.path, path]);
         final ok = result.exitCode == 0;
-        record(language, ok);
-        if (!ok) {
+        if (!settle(block, language, ok)) {
           failures.add(
             '${block.lessonId}:${block.line} $language ${result.stderr}',
           );
         }
       } else {
         final ok = _balanced(block.code, language);
-        record(language, ok);
-        if (!ok) {
+        if (!settle(block, language, ok)) {
           failures.add('${block.lessonId}:${block.line} $language 结构不平衡');
         }
       }
@@ -161,6 +193,7 @@ Future<void> main(List<String> args) async {
   }
 
   final hardFailures = <String>[];
+  final warnedCounts = <String, int>{};
   for (final failure in failures) {
     if (failure.contains('结构不平衡') ||
         failure.contains('程序包') ||
@@ -170,9 +203,16 @@ Future<void> main(List<String> args) async {
         failure.contains('not found') ||
         failure.contains('cannot find')) {
       warnings.add(failure);
+      final language = _failureLanguage(failure);
+      warnedCounts[language] = (warnedCounts[language] ?? 0) + 1;
     } else {
       hardFailures.add(failure);
     }
+  }
+  // 结构类问题最终归入告警，从失败计数里扣掉，保证表格与硬失败数一致。
+  for (final entry in warnedCounts.entries) {
+    final value = counts[entry.key];
+    if (value != null) value[2] -= entry.value;
   }
   failures
     ..clear()
@@ -184,15 +224,17 @@ Future<void> main(List<String> args) async {
     ..writeln('生成时间：${DateTime.now().toIso8601String()}')
     ..writeln()
     ..writeln('> 片段是课程里有意截取、无法独立编译的示例，不计入硬失败；')
+    ..writeln('> 排错练习是课程里有意保留错误的代码，同样不计入硬失败；')
     ..writeln('> 告警多为多行 Shell 命令或依赖演示环境导致的结构提示，')
     ..writeln('> 硬失败为 0 表示所有可执行代码块都能通过验证或已明确标注为片段。')
     ..writeln()
-    ..writeln('| 语言 | 通过 | 片段 | 告警 |')
-    ..writeln('| --- | ---: | ---: | ---: |');
+    ..writeln('| 语言 | 通过 | 片段 | 排错练习 | 失败 |')
+    ..writeln('| --- | ---: | ---: | ---: | ---: |');
   for (final entry
       in counts.entries.toList()..sort((a, b) => a.key.compareTo(b.key))) {
     buffer.writeln(
-      '| ${entry.key} | ${entry.value[0]} | ${entry.value[1]} | ${entry.value[2]} |',
+      '| ${entry.key} | ${entry.value[0]} | ${entry.value[1]} | '
+      '${entry.value[3]} | ${entry.value[2]} |',
     );
   }
   buffer
@@ -201,6 +243,9 @@ Future<void> main(List<String> args) async {
     ..writeln();
   for (final fragment in fragments.take(200)) {
     buffer.writeln('- $fragment');
+  }
+  for (final item in intentional.take(200)) {
+    buffer.writeln('- $item');
   }
   if (warnings.isEmpty) {
     buffer.writeln('- 无结构或依赖提示');
@@ -223,7 +268,8 @@ Future<void> main(List<String> args) async {
   await File(reportPath).writeAsString(buffer.toString(), flush: true);
   stdout.writeln(
     '验证代码块：${blocks.length} 个，硬失败 ${failures.length} 个，'
-    '片段 ${fragments.length} 个，提示 ${warnings.length} 个，报告：$reportPath',
+    '片段 ${fragments.length} 个，排错练习 ${intentional.length} 个，'
+    '提示 ${warnings.length} 个，报告：$reportPath',
   );
 }
 
@@ -236,6 +282,7 @@ Future<List<Block>> _collectBlocks() async {
     var inFence = false;
     var language = '';
     var start = 0;
+    var context = '';
     final body = <String>[];
     for (var index = 0; index < lines.length; index++) {
       final line = lines[index];
@@ -245,6 +292,10 @@ Future<List<Block>> _collectBlocks() async {
           language = line.trimLeft().substring(3).trim();
           start = index + 1;
           body.clear();
+          context = lines
+              .sublist(index > 12 ? index - 12 : 0, index)
+              .join(' ')
+              .replaceAll(RegExp(r'\s+'), ' ');
         } else {
           inFence = false;
           if (language.isNotEmpty && body.join('\n').trim().isNotEmpty) {
@@ -254,6 +305,7 @@ Future<List<Block>> _collectBlocks() async {
                 language: language,
                 code: body.join('\n'),
                 line: start,
+                context: context,
               ),
             );
           }
@@ -264,6 +316,18 @@ Future<List<Block>> _collectBlocks() async {
     }
   }
   return blocks;
+}
+
+/// 「代码排错」类练习的正文标记：围栏前的题干会点明代码有错、要找出修复。
+final RegExp _errorExerciseMarker = RegExp(
+  r'代码排错|找错|找出.{0,6}(错误|问题)|错在哪里|哪里出错|'
+  r'这段代码.{0,12}(无法运行|有错|报错|有问题)|最可能的修复',
+);
+
+/// 从 `lessonId:line language ...` 形式的失败记录里取出语言名。
+String _failureLanguage(String failure) {
+  final match = RegExp(r'^\S+:\d+\s+(\S+)').firstMatch(failure);
+  return (match?.group(1) ?? '').toLowerCase();
 }
 
 /// 图示类代码块不是程序，不参与括号配对检查。
@@ -301,7 +365,8 @@ bool _isLineCommentStart(String code, int index) {
 /// 语言相关的括号/引号配对检查：
 /// - 只有脚本类语言把 `#` 当行注释，HTML/CSS 里的 `#0b57d0` 是颜色值；
 /// - Python/Kotlin/Swift 支持三引号；
-/// - shell 的 `case` 分支写作 `pattern)`，没有配对的 `(`，需要单独放过。
+/// - shell 的 `case` 分支写作 `pattern)`，函数定义写作 `name() {`，
+///   两者都没有配对的 `(`，需要单独放过。
 bool _balanced(String code, [String language = '']) {
   final lang = language.toLowerCase();
   final hashComment = const <String>{
@@ -390,6 +455,13 @@ bool _balanced(String code, [String language = '']) {
       if (triple) index += 2;
       continue;
     }
+    if (shellLike &&
+        char == '(' &&
+        next == ')' &&
+        _isShellFunctionDefinition(code, index)) {
+      index++;
+      continue;
+    }
     if (char == '(' || char == '{' || char == '[') stack.add(char);
     if (char == ')' || char == '}' || char == ']') {
       if (shellLike && char == ')' && _isShellCasePattern(code, index)) {
@@ -429,4 +501,14 @@ bool _isShellCasePattern(String code, int index) {
   // `dev|prod)`、`*)`、`"$root"/*)` 等分支标签不包含空白；
   // 多行命令的收尾 `)` 前面通常有参数和空格，不能误判成分支标签。
   return pattern.isNotEmpty && !pattern.contains(RegExp(r'\s'));
+}
+
+/// shell 的函数定义 `name() {` / `function name() {`：`()` 只是声明标记。
+bool _isShellFunctionDefinition(String code, int index) {
+  final lineStart = code.lastIndexOf('\n', index) + 1;
+  final before = code.substring(lineStart, index).trim();
+  if (before.isEmpty) return false;
+  final lastToken = before.split(RegExp(r'\s+')).last;
+  return lastToken == 'function' ||
+      RegExp(r'^[A-Za-z_][A-Za-z0-9_]*$').hasMatch(lastToken);
 }

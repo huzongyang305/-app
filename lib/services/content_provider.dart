@@ -17,11 +17,16 @@ class ContentProvider extends ChangeNotifier {
     StorageService? storage,
     OfflineContentPackService? contentPackService,
   }) : _source = source ?? const AssetContentSource(),
+       _storage = storage,
        _contentPackService =
            contentPackService ?? OfflineContentPackService(storage: storage);
 
   final AssetContentSource _source;
+  final StorageService? _storage;
   final OfflineContentPackService _contentPackService;
+
+  /// 搜索索引持久缓存键；内容指纹变化时自动失效重建。
+  static const String searchCacheKey = 'search_index_cache_v1';
 
   final List<LessonCategory> _categories = <LessonCategory>[];
   final Map<String, String> _markdownCache = <String, String>{};
@@ -207,8 +212,33 @@ class ContentProvider extends ChangeNotifier {
     if (keyword.isEmpty) return const <SearchHit>[];
     final index = _searchIndex ??= LessonSearchIndex();
     if (!index.isBuilt) {
-      await index.build(_categories, plainTextOf);
+      final restored = _restoreSearchCache(index);
+      if (!restored) {
+        await index.build(_categories, plainTextOf);
+        await _persistSearchCache(index);
+      }
     }
     return index.search(keyword, categoryId: categoryId, lessonIds: lessonIds);
+  }
+
+  /// 尝试用上次构建的索引缓存直接恢复，避免 500+ 篇 Markdown 重新索引。
+  bool _restoreSearchCache(LessonSearchIndex index) {
+    final raw = _storage?.read(searchCacheKey);
+    if (raw is! Map) return false;
+    try {
+      return index.restoreFromCache(_categories, raw.cast<String, dynamic>());
+    } catch (_) {
+      return false;
+    }
+  }
+
+  Future<void> _persistSearchCache(LessonSearchIndex index) async {
+    final storage = _storage;
+    if (storage == null || !index.isBuilt) return;
+    try {
+      await storage.write(searchCacheKey, index.toCacheJson());
+    } catch (_) {
+      // 缓存写入失败不影响搜索功能，下次启动重新构建即可。
+    }
   }
 }

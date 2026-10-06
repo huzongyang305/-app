@@ -13,6 +13,9 @@ extension AppStringsExtension on BuildContext {
 
   String tr(String key) => strings.get(key);
 
+  /// 事件回调 / 异步流程里安全读取当前语言代码（不订阅 Provider）。
+  String get localeCodeRead => read<SettingsProvider>().localeCode;
+
   /// 带占位符的取词：trArgs('homeRecentCount', {'n': 3})。
   /// 词条里写 {n}，调用处传入实际值。
   String trArgs(String key, Map<String, Object?> args) {

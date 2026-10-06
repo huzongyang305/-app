@@ -708,6 +708,417 @@ echo "上一条命令的退出码：\$?"
 ''',
       ),
     ],
+  ),
+
+  java(
+    id: 'java',
+    labelKey: 'sandboxLangJava',
+    hintKey: 'sandboxHintJava',
+    timeout: Duration(seconds: 10),
+    executionMode: SandboxExecutionMode.trace,
+    sampleCode: '''
+public class Main {
+    public static void main(String[] args) {
+        int[] scores = {92, 88, 76};
+        int total = 0;
+        for (int score : scores) {
+            total += score;
+        }
+        System.out.println("平均分 = " + total / scores.length);
+    }
+}
+''',
+    examples: [
+      SandboxExample(
+        title: LocalizedText(zh: '类与对象', en: 'Class and object'),
+        code: '''
+class Student {
+    String name;
+    int score;
+
+    Student(String name, int score) {
+        this.name = name;
+        this.score = score;
+    }
+
+    boolean passed() {
+        return score >= 60;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Student s = new Student("小明", 86);
+        System.out.println(s.name + " 是否及格：" + s.passed());
+    }
+}
+''',
+      ),
+      SandboxExample(
+        title: LocalizedText(zh: '集合与循环', en: 'Collections and loops'),
+        code: '''
+import java.util.ArrayList;
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+        List<String> languages = new ArrayList<>();
+        languages.add("Java");
+        languages.add("Kotlin");
+        for (String item : languages) {
+            System.out.println("语言：" + item);
+        }
+    }
+}
+''',
+      ),
+    ],
+  ),
+  csharp(
+    id: 'csharp',
+    labelKey: 'sandboxLangCsharp',
+    hintKey: 'sandboxHintCsharp',
+    timeout: Duration(seconds: 10),
+    executionMode: SandboxExecutionMode.trace,
+    sampleCode: '''
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        int[] scores = { 92, 88, 76 };
+        int total = 0;
+        foreach (int score in scores)
+        {
+            total += score;
+        }
+        Console.WriteLine(\$"平均分 = {(double)total / scores.Length}");
+    }
+}
+''',
+    examples: [
+      SandboxExample(
+        title: LocalizedText(zh: '属性与字符串插值', en: 'Properties and interpolation'),
+        code: '''
+using System;
+
+class Student
+{
+    public string Name { get; }
+    public int Score { get; }
+
+    public Student(string name, int score)
+    {
+        Name = name;
+        Score = score;
+    }
+
+    public bool Passed => Score >= 60;
+}
+
+class Program
+{
+    static void Main()
+    {
+        var s = new Student("小红", 88);
+        Console.WriteLine(\$"{s.Name} 是否及格：{s.Passed}");
+    }
+}
+''',
+      ),
+      SandboxExample(
+        title: LocalizedText(zh: 'LINQ 查询', en: 'LINQ query'),
+        code: '''
+using System;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        int[] values = { 3, 1, 4, 1, 5, 9 };
+        var even = values.Where(v => v % 2 == 0).OrderBy(v => v);
+        Console.WriteLine(string.Join(", ", even));
+    }
+}
+''',
+      ),
+    ],
+  ),
+  dart(
+    id: 'dart',
+    labelKey: 'sandboxLangDart',
+    hintKey: 'sandboxHintDart',
+    timeout: Duration(seconds: 10),
+    executionMode: SandboxExecutionMode.trace,
+    sampleCode: '''
+void main() {
+  final scores = [92, 88, 76];
+  final total = scores.reduce((a, b) => a + b);
+  print("平均分 = \${total / scores.length}");
+}
+''',
+    examples: [
+      SandboxExample(
+        title: LocalizedText(zh: '空安全与集合', en: 'Null safety and collections'),
+        code: '''
+void main() {
+  String? nickname;
+  print(nickname ?? "匿名学习者");
+
+  final scores = {"小明": 92, "小红": 88};
+  scores.forEach((name, score) {
+    print("\$name: \$score");
+  });
+}
+''',
+      ),
+      SandboxExample(
+        title: LocalizedText(zh: '类与继承', en: 'Classes and inheritance'),
+        code: '''
+abstract class Animal {
+  String get name;
+  String speak();
+}
+
+class Dog implements Animal {
+  @override
+  String get name => "旺财";
+
+  @override
+  String speak() => "汪汪";
+}
+
+void main() {
+  final animal = Dog();
+  print("\${animal.name} 说 \${animal.speak()}");
+}
+''',
+      ),
+    ],
+  ),
+  golang(
+    id: 'go',
+    labelKey: 'sandboxLangGo',
+    hintKey: 'sandboxHintGo',
+    timeout: Duration(seconds: 10),
+    executionMode: SandboxExecutionMode.trace,
+    sampleCode: '''
+package main
+
+import "fmt"
+
+func main() {
+	scores := []int{92, 88, 76}
+	total := 0
+	for _, score := range scores {
+		total += score
+	}
+	fmt.Println("平均分 =", total/len(scores))
+}
+''',
+    examples: [
+      SandboxExample(
+        title: LocalizedText(zh: '结构体与错误处理', en: 'Structs and errors'),
+        code: '''
+package main
+
+import (
+	"errors"
+	"fmt"
+)
+
+func divide(a, b int) (int, error) {
+	if b == 0 {
+		return 0, errors.New("除数不能为 0")
+	}
+	return a / b, nil
+}
+
+func main() {
+	result, err := divide(10, 2)
+	if err != nil {
+		fmt.Println("出错了：", err)
+		return
+	}
+	fmt.Println("结果 =", result)
+}
+''',
+      ),
+      SandboxExample(
+        title: LocalizedText(zh: 'goroutine 与 channel', en: 'Goroutine and channel'),
+        code: '''
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+func main() {
+	var wg sync.WaitGroup
+	ch := make(chan int, 3)
+	for i := 1; i <= 3; i++ {
+		wg.Add(1)
+		go func(n int) {
+			defer wg.Done()
+			ch <- n * n
+		}(i)
+	}
+	wg.Wait()
+	close(ch)
+	for value := range ch {
+		fmt.Println("平方 =", value)
+	}
+}
+''',
+      ),
+    ],
+  ),
+  rust(
+    id: 'rust',
+    labelKey: 'sandboxLangRust',
+    hintKey: 'sandboxHintRust',
+    timeout: Duration(seconds: 10),
+    executionMode: SandboxExecutionMode.trace,
+    sampleCode: '''
+fn main() {
+    let scores = [92, 88, 76];
+    let total: i32 = scores.iter().sum();
+    println!("平均分 = {}", total as f64 / scores.len() as f64);
+}
+''',
+    examples: [
+      SandboxExample(
+        title: LocalizedText(zh: '所有权与借用', en: 'Ownership and borrowing'),
+        code: '''
+fn length_of(text: &str) -> usize {
+    text.chars().count()
+}
+
+fn main() {
+    let message = String::from("你好，Rust");
+    println!("长度 = {}", length_of(&message));
+    println!("仍然可用：{}", message);
+}
+''',
+      ),
+      SandboxExample(
+        title: LocalizedText(zh: '枚举与模式匹配', en: 'Enums and match'),
+        code: '''
+enum Shape {
+    Circle(f64),
+    Rectangle(f64, f64),
+}
+
+fn area(shape: &Shape) -> f64 {
+    match shape {
+        Shape::Circle(r) => 3.14159 * r * r,
+        Shape::Rectangle(w, h) => w * h,
+    }
+}
+
+fn main() {
+    let shape = Shape::Rectangle(3.0, 4.0);
+    println!("面积 = {}", area(&shape));
+}
+''',
+      ),
+    ],
+  ),
+  kotlin(
+    id: 'kotlin',
+    labelKey: 'sandboxLangKotlin',
+    hintKey: 'sandboxHintKotlin',
+    timeout: Duration(seconds: 10),
+    executionMode: SandboxExecutionMode.trace,
+    sampleCode: '''
+fun main() {
+    val scores = listOf(92, 88, 76)
+    println("平均分 = \${scores.average()}")
+}
+''',
+    examples: [
+      SandboxExample(
+        title: LocalizedText(zh: '数据类与空安全', en: 'Data class and null safety'),
+        code: '''
+data class Student(val name: String, val score: Int)
+
+fun main() {
+    val students = listOf(Student("小明", 92), Student("小红", 88))
+    students.forEach { println("\${it.name}: \${it.score}") }
+
+    val best: Student? = students.maxByOrNull { it.score }
+    println("最高分：\${best?.name ?: "暂无"}")
+}
+''',
+      ),
+      SandboxExample(
+        title: LocalizedText(zh: '扩展函数与 Lambda', en: 'Extension and lambda'),
+        code: '''
+fun List<Int>.averageText(): String = "%.1f".format(average())
+
+fun main() {
+    val scores = listOf(92, 88, 76)
+    println("平均分 = \${scores.averageText()}")
+
+    val passed = scores.filter { it >= 80 }.sorted()
+    println("80 分以上：\$passed")
+}
+''',
+      ),
+    ],
+  ),
+  swift(
+    id: 'swift',
+    labelKey: 'sandboxLangSwift',
+    hintKey: 'sandboxHintSwift',
+    timeout: Duration(seconds: 10),
+    executionMode: SandboxExecutionMode.trace,
+    sampleCode: '''
+let scores = [92, 88, 76]
+let total = scores.reduce(0, +)
+print("平均分 = \\(Double(total) / Double(scores.count))")
+''',
+    examples: [
+      SandboxExample(
+        title: LocalizedText(zh: '可选类型与解包', en: 'Optionals and unwrapping'),
+        code: '''
+struct Student {
+    let name: String
+    let score: Int
+}
+
+let students = [Student(name: "小明", score: 92), Student(name: "小红", score: 88)]
+let top = students.max { \$0.score < \$1.score }
+if let best = top {
+    print("最高分：\\(best.name) \\(best.score)")
+} else {
+    print("暂无数据")
+}
+''',
+      ),
+      SandboxExample(
+        title: LocalizedText(zh: '协议与泛型', en: 'Protocols and generics'),
+        code: '''
+protocol Describable {
+    var description: String { get }
+}
+
+struct Course: Describable {
+    let name: String
+    var description: String { "课程：\\(name)" }
+}
+
+func show<T: Describable>(_ item: T) {
+    print(item.description)
+}
+
+show(Course(name: "Swift 入门"))
+''',
+      ),
+    ],
   );
 
   const SandboxLanguage({
@@ -717,6 +1128,7 @@ echo "上一条命令的退出码：\$?"
     required this.timeout,
     required this.sampleCode,
     this.supportsStdin = false,
+    this.executionMode = SandboxExecutionMode.runtime,
     this.examples = const <SandboxExample>[],
   });
 
@@ -738,6 +1150,16 @@ echo "上一条命令的退出码：\$?"
   /// 是否支持标准输入（stdin）。
   final bool supportsStdin;
 
+  /// 执行方式：真运行时解释执行，或离线静态检查 + 输出追踪。
+  ///
+  /// Java / C# / Dart / Go / Rust / Kotlin / Swift 目前没有内置完整运行时，
+  /// 使用 [SandboxExecutionMode.trace] 在 Dart 侧做语法结构检查并追踪
+  /// println 一类输出语句；界面必须如实标注，不能宣称完整编译执行。
+  final SandboxExecutionMode executionMode;
+
+  /// 是否为离线静态检查 + 输出追踪模式。
+  bool get isTraceOnly => executionMode == SandboxExecutionMode.trace;
+
   /// 内置示例库（至少包含默认示例）。
   final List<SandboxExample> examples;
 
@@ -752,8 +1174,9 @@ echo "上一条命令的退出码：\$?"
   /// Markdown 围栏语言别名 -> 沙箱语言。
   ///
   /// 教程里的代码块使用 ```python、```js、```c 这类围栏名，这里统一映射到
-  /// 实际可执行的沙箱运行时；没有映射的语言（Java、C#、Go 等）表示当前
-  /// 沙箱不支持离线执行，界面需要给出明确提示而不是静默失败。
+  /// 实际可执行的沙箱运行时；其中 Java / C# / Dart / Go / Rust / Kotlin /
+  /// Swift 走 Dart 侧的教学模式（静态追踪），其余没有映射的语言表示当前
+  /// 沙箱不支持，界面需要给出明确提示而不是静默失败。
   static const Map<String, SandboxLanguage> _fenceAliases = {
     'js': SandboxLanguage.javascript,
     'javascript': SandboxLanguage.javascript,
@@ -790,6 +1213,20 @@ echo "上一条命令的退出码：\$?"
     'bash': SandboxLanguage.bash,
     'shell': SandboxLanguage.bash,
     'zsh': SandboxLanguage.bash,
+    'java': SandboxLanguage.java,
+    'cs': SandboxLanguage.csharp,
+    'csharp': SandboxLanguage.csharp,
+    'c#': SandboxLanguage.csharp,
+    'dotnet': SandboxLanguage.csharp,
+    'dart': SandboxLanguage.dart,
+    'go': SandboxLanguage.golang,
+    'golang': SandboxLanguage.golang,
+    'rs': SandboxLanguage.rust,
+    'rust': SandboxLanguage.rust,
+    'kt': SandboxLanguage.kotlin,
+    'kotlin': SandboxLanguage.kotlin,
+    'kts': SandboxLanguage.kotlin,
+    'swift': SandboxLanguage.swift,
   };
 
   /// 按教程代码块的围栏语言名查找可用的沙箱语言。
@@ -805,8 +1242,19 @@ echo "上一条命令的退出码：\$?"
   /// 当前沙箱支持的语言名列表，用于「不支持」时的提示文案。
   static String get supportedFenceNames =>
       'Python / JavaScript / TypeScript / C / C++ / Bash / SQL / JSON / Lua / '
-      'Scheme / Markdown / 正则 / XML / CSV';
+      'Scheme / Markdown / 正则 / XML / CSV / Java / C# / Dart / Go / Rust / '
+      'Kotlin / Swift';
 
   static SandboxLanguage fromId(String id) =>
       tryFromId(id) ?? SandboxLanguage.javascript;
+}
+
+/// 沙箱执行方式。
+enum SandboxExecutionMode {
+  /// 内置解释器 / 运行时真正执行代码（如 Python、JavaScript、C++ 教学子集）。
+  runtime,
+
+  /// 静态检查 + 输出追踪：能校验结构、给出诊断并推导简单输出，
+  /// 但不做完整编译，不支持标准库、反射、并发等高级能力。
+  trace,
 }

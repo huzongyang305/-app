@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../l10n/l10n_extension.dart';
 import '../models/note.dart';
 import '../services/content_provider.dart';
+import '../services/note_export_service.dart';
 import '../services/progress_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/empty_state.dart';
@@ -41,10 +42,34 @@ class _NotesScreenState extends State<NotesScreen> {
       appBar: AppBar(
         title: Text(context.tr('notesTitle')),
         actions: [
-          IconButton(
+          PopupMenuButton<String>(
             tooltip: context.tr('notesExport'),
             icon: const Icon(Icons.ios_share_rounded),
-            onPressed: notes.isEmpty ? null : () => _export(notes, content),
+            enabled: notes.isNotEmpty,
+            onSelected: (value) {
+              switch (value) {
+                case 'json':
+                  _exportJson(notes);
+                case 'stats':
+                  _showStats(notes);
+                default:
+                  _export(notes, content);
+              }
+            },
+            itemBuilder: (_) => [
+              PopupMenuItem<String>(
+                value: 'markdown',
+                child: Text(context.trRead('notesExportMarkdown')),
+              ),
+              PopupMenuItem<String>(
+                value: 'json',
+                child: Text(context.trRead('notesExportJson')),
+              ),
+              PopupMenuItem<String>(
+                value: 'stats',
+                child: Text(context.trRead('notesStats')),
+              ),
+            ],
           ),
         ],
       ),
@@ -208,20 +233,83 @@ class _NotesScreenState extends State<NotesScreen> {
 
   /// 导出为 Markdown 文本并复制到剪贴板，用户可自行粘贴到任意笔记应用。
   Future<void> _export(List<Note> notes, ContentProvider content) async {
-    final buffer = StringBuffer()..writeln('# 我的学习笔记\n');
-    for (final note in notes) {
-      buffer.writeln('## ${_lessonTitle(content, note)}');
-      if (note.tags.isNotEmpty) {
-        buffer.writeln('标签：${note.tags.map((tag) => '#$tag').join(' ')}');
-      }
-      buffer.writeln('更新时间：${formatNoteTime(note.updatedAt)}\n');
-      buffer.writeln('${note.content}\n');
-    }
-    await Clipboard.setData(ClipboardData(text: buffer.toString()));
+    final markdown = NoteExportService.toMarkdown(
+      notes,
+      titleOf: (lessonId) {
+        final lesson = content.lessonById(lessonId);
+        return lesson?.title.of(context.localeCodeRead) ?? lessonId;
+      },
+      tag: _tag,
+    );
+    await Clipboard.setData(ClipboardData(text: markdown));
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(context.trArgs('notesExportDone', {'n': notes.length})),
+        content: Text(
+          context.trReadArgs('notesExportDone', {'n': notes.length}),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _exportJson(List<Note> notes) async {
+    await Clipboard.setData(
+      ClipboardData(text: NoteExportService.toJson(notes)),
+    );
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          context.trReadArgs('notesExportJsonDone', {'n': notes.length}),
+        ),
+      ),
+    );
+  }
+
+  void _showStats(List<Note> notes) {
+    final stats = NoteExportService.statistics(notes);
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (sheetContext) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                sheetContext.tr('notesStats'),
+                style: Theme.of(sheetContext).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 10),
+              Text(
+                sheetContext.trArgs('notesStatsBody', {
+                  'total': stats.total,
+                  'nonEmpty': stats.nonEmpty,
+                  'chars': stats.totalCharacters,
+                }),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                sheetContext.tr('notesStatsTags'),
+                style: Theme.of(sheetContext).textTheme.titleSmall,
+              ),
+              const SizedBox(height: 6),
+              if (stats.topTags.isEmpty)
+                Text(sheetContext.tr('notesStatsEmpty'))
+              else
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 6,
+                  children: [
+                    for (final entry in stats.topTags)
+                      Chip(label: Text('${entry.key} ${entry.value}')),
+                  ],
+                ),
+            ],
+          ),
+        ),
       ),
     );
   }

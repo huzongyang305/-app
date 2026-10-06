@@ -12,6 +12,7 @@ import '../services/settings_provider.dart';
 import 'code_sandbox_screen.dart';
 import 'flashcard_screen.dart';
 import 'interactive_lab_screen.dart';
+import 'learning_hub_screen.dart';
 import 'system_lab_screen.dart';
 
 /// 离线开发者工具箱：输入 → 转换 → 复制，全部在本地完成，不联网。
@@ -216,6 +217,24 @@ class ToolsScreen extends StatelessWidget {
               trailing: const Icon(Icons.chevron_right, size: 18),
               onTap: () => Navigator.of(context).push(
                 MaterialPageRoute<void>(builder: (_) => const FlashcardScreen()),
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Card(
+            clipBehavior: Clip.antiAlias,
+            child: ListTile(
+              leading: Icon(
+                Icons.hub_outlined,
+                color: theme.colorScheme.primary,
+              ),
+              title: Text(context.tr('toolsLearningHub')),
+              subtitle: Text(context.tr('toolsLearningHubHint')),
+              trailing: const Icon(Icons.chevron_right, size: 18),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => const LearningHubScreen(),
+                ),
               ),
             ),
           ),

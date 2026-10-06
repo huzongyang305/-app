@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 
 import '../models/sandbox_language.dart';
+import 'sandbox_trace_engine.dart';
 
 /// 离线代码沙箱：通过 Android 原生 WebView 执行代码。
 ///
@@ -25,6 +26,16 @@ class CodeSandboxService {
     String code, {
     String stdin = '',
   }) async {
+    // Java / C# / Dart / Go / Rust / Kotlin / Swift 没有内置完整运行时，
+    // 走纯 Dart 的离线静态检查 + 输出追踪，不启动 WebView。
+    if (language.isTraceOnly) {
+      final result = SandboxTraceEngine.analyze(language, code);
+      final rendered = result.render(language);
+      final hint = stdin.trim().isEmpty
+          ? ''
+          : '\n\n提示：${language.id} 教学模式暂不读取标准输入，stdin 已忽略。';
+      return '$rendered$hint';
+    }
     try {
       final result = await _channel
           .invokeMethod<String>('runCode', <String, Object?>{

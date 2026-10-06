@@ -172,10 +172,18 @@ void main() {
     expect(SandboxLanguage.tryFromFence('sh'), SandboxLanguage.bash);
     expect(SandboxLanguage.tryFromFence('sql'), SandboxLanguage.sql);
     expect(SandboxLanguage.tryFromFence('markdown'), SandboxLanguage.markdown);
-    // 暂不支持离线编译的语言必须返回 null，界面据此给出提示。
-    expect(SandboxLanguage.tryFromFence('java'), isNull);
-    expect(SandboxLanguage.tryFromFence('csharp'), isNull);
-    expect(SandboxLanguage.tryFromFence('go'), isNull);
+    // 教学模式语言同样要能映射，才能进入沙箱做静态追踪。
+    expect(SandboxLanguage.tryFromFence('java'), SandboxLanguage.java);
+    expect(SandboxLanguage.tryFromFence('csharp'), SandboxLanguage.csharp);
+    expect(SandboxLanguage.tryFromFence('c#'), SandboxLanguage.csharp);
+    expect(SandboxLanguage.tryFromFence('dart'), SandboxLanguage.dart);
+    expect(SandboxLanguage.tryFromFence('go'), SandboxLanguage.golang);
+    expect(SandboxLanguage.tryFromFence('rs'), SandboxLanguage.rust);
+    expect(SandboxLanguage.tryFromFence('kotlin'), SandboxLanguage.kotlin);
+    expect(SandboxLanguage.tryFromFence('swift'), SandboxLanguage.swift);
+    // 完全未映射的语言必须返回 null，界面据此给出提示。
+    expect(SandboxLanguage.tryFromFence('haskell'), isNull);
+    expect(SandboxLanguage.tryFromFence('ruby'), isNull);
     expect(SandboxLanguage.tryFromFence(''), isNull);
   });
 
@@ -327,7 +335,10 @@ void main() {
           theme: AppTheme.light(),
           home: const Scaffold(
             body: SingleChildScrollView(
-              child: CodeBlock(code: 'class Main {}', language: 'java'),
+              child: CodeBlock(
+                code: 'main = putStrLn "hi"',
+                language: 'haskell',
+              ),
             ),
           ),
         ),

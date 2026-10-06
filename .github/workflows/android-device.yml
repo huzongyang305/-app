@@ -38,3 +38,22 @@ jobs:
           emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect
           disable-animations: true
           script: flutter test integration_test/app_smoke_test.dart -d emulator-5554 --no-pub
+      - name: Run Android performance baseline
+        uses: ReactiveCircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          target: google_apis
+          arch: x86_64
+          profile: pixel_7
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect
+          disable-animations: true
+          script: |
+            flutter test integration_test/app_performance_test.dart -d emulator-5554 --no-pub \
+              | tee performance-${{ matrix.api-level }}.log
+      - name: Archive performance baseline
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-baseline-api${{ matrix.api-level }}
+          path: performance-${{ matrix.api-level }}.log
+          if-no-files-found: warn

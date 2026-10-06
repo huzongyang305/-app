@@ -462,6 +462,28 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
+          if (_language.isTraceOnly) ...[
+            const SizedBox(height: 8),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Chip(
+                  label: Text(context.tr('sandboxTraceBadge')),
+                  visualDensity: VisualDensity.compact,
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    context.tr('sandboxTraceBanner'),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.tertiary,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
           const SizedBox(height: 12),
           SizedBox(
             height: 38,
@@ -531,15 +553,15 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
                 itemBuilder: (context) => [
                   PopupMenuItem(
                     value: 'save',
-                    child: Text(context.tr('sandboxSaveSnippet')),
+                    child: Text(context.trRead('sandboxSaveSnippet')),
                   ),
                   PopupMenuItem(
                     value: 'share',
-                    child: Text(context.tr('sandboxShare')),
+                    child: Text(context.trRead('sandboxShare')),
                   ),
                   PopupMenuItem(
                     value: 'copy',
-                    child: Text(context.tr('sandboxCopyCode')),
+                    child: Text(context.trRead('sandboxCopyCode')),
                   ),
                   PopupMenuItem(
                     value: 'clear',

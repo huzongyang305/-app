@@ -221,8 +221,8 @@ class CodeBlock extends StatelessWidget {
 
   /// 把教程代码块送进离线沙箱继续编辑和运行。
   ///
-  /// 围栏语言可映射到内置运行时就直接打开；Java、C#、Go 等暂不支持离线
-  /// 执行的语言会给出明确提示，避免用户点了没有反应。
+  /// 围栏语言可映射到内置运行时（含教学模式语言）就直接打开；完全未映射
+  /// 的语言会给出明确提示，避免用户点了没有反应。
   void _openSandbox(BuildContext context, String source) {
     final sandboxLanguage = SandboxLanguage.tryFromFence(language);
     if (sandboxLanguage == null) {

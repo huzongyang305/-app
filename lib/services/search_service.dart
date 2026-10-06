@@ -13,8 +13,127 @@ class LessonSearchIndex {
 
   final Map<String, _SearchDocument> _documents = <String, _SearchDocument>{};
   final Map<String, Set<String>> _postings = <String, Set<String>>{};
+  String _fingerprint = '';
+
+  /// 当前索引对应的内容指纹，用于判断持久缓存是否过期。
+  String get fingerprint => _fingerprint;
 
   bool get isBuilt => _documents.isNotEmpty;
+
+  /// 内容指纹：课程数量 + 每课 id 与标题的稳定哈希，避免缓存串版本。
+  static String fingerprintOf(List<LessonCategory> categories) {
+    final buffer = StringBuffer();
+    for (final category in categories) {
+      buffer
+        ..write(category.id)
+        ..write('#');
+      for (final lesson in category.lessons) {
+        buffer
+          ..write(lesson.id)
+          ..write(':')
+          ..write(lesson.title.zh)
+          ..write('|');
+      }
+    }
+    return _stableHash(buffer.toString()).toRadixString(16);
+  }
+
+  /// 把索引压缩成可写入 Hive 的基础类型结构。
+  ///
+  /// 正文只保留前 3000 个字符：足够覆盖关键词正文检索，又能显著缩小缓存。
+  Map<String, dynamic> toCacheJson() => <String, dynamic>{
+    'fingerprint': _fingerprint,
+    'documents': _documents.values
+        .map(
+          (doc) => <String>[
+            doc.lesson.id,
+            doc.category.id,
+            doc.title,
+            doc.summary,
+            doc.keywords,
+            doc.body.length > 3000 ? doc.body.substring(0, 3000) : doc.body,
+            doc.categoryText,
+            doc.pinyin,
+            doc.initials,
+          ],
+        )
+        .toList(growable: false),
+    'postings': _postings.map(
+      (token, ids) => MapEntry(token, ids.toList(growable: false)),
+    ),
+  };
+
+  /// 从缓存恢复索引；指纹不匹配或数据损坏时返回 false，由调用方重新构建。
+  bool restoreFromCache(
+    List<LessonCategory> categories,
+    Map<String, dynamic> cache,
+  ) {
+    final fingerprint = fingerprintOf(categories);
+    if (cache['fingerprint']?.toString() != fingerprint) return false;
+    final rawDocuments = cache['documents'];
+    if (rawDocuments is! List || rawDocuments.isEmpty) return false;
+
+    final lessons = <String, Lesson>{
+      for (final category in categories)
+        for (final lesson in category.lessons) lesson.id: lesson,
+    };
+    final byCategory = <String, LessonCategory>{
+      for (final category in categories) category.id: category,
+    };
+    final documents = <String, _SearchDocument>{};
+    for (final raw in rawDocuments) {
+      if (raw is! List || raw.length < 9) return false;
+      final lesson = lessons[raw[0].toString()];
+      final category = byCategory[raw[1].toString()];
+      if (lesson == null || category == null) return false;
+      documents[lesson.id] = _SearchDocument(
+        lesson: lesson,
+        category: category,
+        title: raw[2].toString(),
+        summary: raw[3].toString(),
+        keywords: raw[4].toString(),
+        body: raw[5].toString(),
+        categoryText: raw[6].toString(),
+        pinyin: raw[7].toString(),
+        initials: raw[8].toString(),
+      );
+    }
+
+    final postings = <String, Set<String>>{};
+    final rawPostings = cache['postings'];
+    if (rawPostings is Map) {
+      for (final entry in rawPostings.entries) {
+        final ids = entry.value;
+        if (ids is! List) return false;
+        postings[entry.key.toString()] = ids
+            .map((item) => item.toString())
+            .where(documents.containsKey)
+            .toSet();
+      }
+    }
+    if (postings.isEmpty) {
+      // 缓存里没有倒排表时用文档重建，保证功能完整。
+      for (final document in documents.values) {
+        for (final token in _tokensFor(
+          '${document.title} ${document.summary} ${document.keywords} '
+          '${document.categoryText} ${document.body}',
+        )) {
+          postings.putIfAbsent(token, () => <String>{}).add(
+            document.lesson.id,
+          );
+        }
+      }
+    }
+
+    _documents
+      ..clear()
+      ..addAll(documents);
+    _postings
+      ..clear()
+      ..addAll(postings);
+    _fingerprint = fingerprint;
+    return true;
+  }
 
   Future<void> build(
     List<LessonCategory> categories,
@@ -56,6 +175,7 @@ class LessonSearchIndex {
         }
       }
     }
+    _fingerprint = fingerprintOf(categories);
   }
 
   List<SearchHit> search(
@@ -363,3 +483,13 @@ String _initialsFor(String text) {
 
 String _clip(String text, int max) =>
     text.length <= max ? text : '${text.substring(0, max)}…';
+
+/// FNV-1a 32 位稳定哈希：跨进程、跨平台结果一致，适合做缓存指纹。
+int _stableHash(String text) {
+  var hash = 0x811c9dc5;
+  for (final unit in text.codeUnits) {
+    hash ^= unit;
+    hash = (hash * 0x01000193) & 0xFFFFFFFF;
+  }
+  return hash;
+}
