@@ -1,6 +1,6 @@
 # TypeScript 基础类型
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：40 分钟
 
 ![TypeScript 基础类型一览](images/diagram_ts_basic_types.webp)
 

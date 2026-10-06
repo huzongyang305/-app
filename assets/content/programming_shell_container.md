@@ -4,7 +4,7 @@
 
 ![Shell 与 Docker/K8s 交互](images/remaining_shell_container.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：15 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：40 分钟
 
 ## 学习目标
 

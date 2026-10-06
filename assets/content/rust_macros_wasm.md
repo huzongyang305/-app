@@ -1,6 +1,6 @@
 # Rust 宏、WASM 与跨平台
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：30 分钟
 
 ![宏、WASM 与跨平台的边界](images/diagram_rust_macros_wasm.webp)
 

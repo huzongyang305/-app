@@ -1,6 +1,6 @@
 # cgroups、namespaces 与容器
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：30 分钟
 
 ![namespace 与 cgroup 的容器隔离边界](images/diagram_cgroups_namespaces.webp)
 

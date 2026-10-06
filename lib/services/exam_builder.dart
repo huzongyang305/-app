@@ -13,7 +13,7 @@ class ExamQuestion {
   QuizQuestion get question => lesson.allQuiz[questionIndex];
 }
 
-/// 生成一份考卷：按「基础 40% / 进阶 40% / 高级 20%」配比抽知识点，
+/// 生成一份考卷：按难度权重抽知识点（基础/进阶/高级 = 2/2/1，入门权重 1），
 /// 每个知识点随机取一道题；同一知识点只出现一次。
 ///
 /// [categoryId] 为空表示全课程范围，否则只在指定分类内组卷。
@@ -47,12 +47,7 @@ List<ExamQuestion> buildExamPaper(
           .toList()
         ..shuffle(random);
 
-  final basicQuota = (size * 0.4).round();
-  final quotas = <String, int>{
-    '基础': basicQuota,
-    '进阶': basicQuota,
-    '高级': size - basicQuota * 2,
-  };
+  final quotas = _difficultyQuotas(pool, size);
 
   final picked = <Lesson>[];
   final used = <String>{};
@@ -84,6 +79,39 @@ List<ExamQuestion> buildExamPaper(
         ),
       )
       .toList();
+}
+
+/// 按难度梯度分配题目配额。
+///
+/// 权重沿用历史口径「基础/进阶/高级 = 2/2/1」，即 40% / 40% / 20%；
+/// 「入门」权重为 1，这样入门课不再被配额排除、只能靠兜底补位。
+/// 配额只在实际出现的难度之间按权重分摊，并用最大余数法补齐取整误差，
+/// 保证总和恰好等于 [size]。
+Map<String, int> _difficultyQuotas(List<Lesson> pool, int size) {
+  const ladder = <String>['入门', '基础', '进阶', '高级'];
+  const weights = <String, int>{'入门': 1, '基础': 2, '进阶': 2, '高级': 1};
+  final present = ladder.where(
+    (level) => pool.any((lesson) => lesson.difficulty == level),
+  ).toList();
+  if (present.isEmpty || size <= 0) return const <String, int>{};
+
+  final weightSum = present.fold<int>(0, (sum, level) => sum + weights[level]!);
+  final quotas = <String, int>{};
+  final remainders = <MapEntry<String, double>>[];
+  var assigned = 0;
+  for (final level in present) {
+    final exact = size * weights[level]! / weightSum;
+    final floor = exact.floor();
+    quotas[level] = floor;
+    assigned += floor;
+    remainders.add(MapEntry(level, exact - floor));
+  }
+  remainders.sort((a, b) => b.value.compareTo(a.value));
+  for (var i = 0; assigned < size; i++, assigned++) {
+    final level = remainders[i % remainders.length].key;
+    quotas[level] = quotas[level]! + 1;
+  }
+  return quotas;
 }
 
 /// 指定范围内可参与组卷的知识点数量（用于考前提示可选范围）。

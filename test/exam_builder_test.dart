@@ -235,6 +235,57 @@ void main() {
     expect(countOf('高级'), 2);
   });
 
+  /// 造一批轮流覆盖四档难度的知识点。
+  List<Lesson> makeFourLevelLessons(int count) {
+    const difficulties = ['入门', '基础', '进阶', '高级'];
+    return List<Lesson>.generate(count, (index) {
+      return Lesson(
+        id: 'cat_$index',
+        categoryId: 'cat',
+        difficulty: difficulties[index % difficulties.length],
+        title: LocalizedText(zh: '知识点 $index', en: 'Lesson $index'),
+        summary: const LocalizedText(zh: '摘要', en: 'Summary'),
+        assetFile: 'assets/content/lesson_$index.md',
+        minutes: 10,
+        keywords: const <String>['测试'],
+        quiz: const <QuizQuestion>[
+          QuizQuestion(
+            question: '题干 A',
+            options: ['1', '2', '3', '4'],
+            answerIndex: 0,
+            explanation: '解析 A',
+          ),
+        ],
+      );
+    });
+  }
+
+  test('四档难度都参与配额，入门课不再只靠兜底补位', () {
+    final paper = buildExamPaper(makeFourLevelLessons(80), size: 10, seed: 4);
+    int countOf(String difficulty) =>
+        paper.where((item) => item.lesson.difficulty == difficulty).length;
+    expect(countOf('入门'), 2);
+    expect(countOf('基础'), 3);
+    expect(countOf('进阶'), 3);
+    expect(countOf('高级'), 2);
+    expect(paper.length, 10);
+  });
+
+  test('只选入门难度时整卷来自入门课', () {
+    final paper = buildExamPaper(
+      makeFourLevelLessons(80),
+      size: 6,
+      seed: 6,
+      difficulties: const <String>{'入门'},
+    );
+    expect(paper.length, 6);
+    expect(
+      paper.every((item) => item.lesson.difficulty == '入门'),
+      isTrue,
+      reason: '入门配额不应被兜底逻辑挤掉',
+    );
+  });
+
   test('可选知识点不够时按实际数量出卷，不补重复题', () {
     final paper = buildExamPaper(makeLessons(4), size: 10, seed: 1);
     expect(paper.length, 4);

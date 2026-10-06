@@ -1,6 +1,6 @@
 # Computer Use 与桌面自动化
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：30 分钟
 
 ![Computer Use 的观察与操作循环](images/diagram_ai_computer_use.webp)
 

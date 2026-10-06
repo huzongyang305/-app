@@ -1,6 +1,6 @@
 # 鸿蒙 ArkTS 应用开发
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：30 分钟
 
 ![鸿蒙 ArkTS 与 Stage 模型](images/diagram_mobile_harmony.webp)
 

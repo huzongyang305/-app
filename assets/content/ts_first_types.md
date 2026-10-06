@@ -1,6 +1,6 @@
 # TypeScript 第一个类型
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：35 分钟
 
 ![从 JavaScript 到 TypeScript 的第一步](images/diagram_ts_first_types.webp)
 

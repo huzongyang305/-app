@@ -1,6 +1,6 @@
 # MCP 模型上下文协议
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：35 分钟
 
 ![MCP Host Client Server 架构](images/diagram_mcp.webp)
 

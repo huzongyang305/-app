@@ -1,6 +1,6 @@
 # Socket 编程实战
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：60 分钟
 
 ![TCP Socket 客户端服务端调用时序](images/diagram_socket_programming.webp)
 

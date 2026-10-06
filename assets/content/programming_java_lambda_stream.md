@@ -1,6 +1,6 @@
 # Lambda 与 Stream API
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：40 分钟
 
 ![Lambda 与 Stream 的流水线](images/diagram_java_stream.webp)
 

@@ -1,6 +1,6 @@
 # Flutter 布局入门
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：35 分钟
 
 ![Flutter 布局与约束](images/diagram_mobile_flutter_layout.webp)
 

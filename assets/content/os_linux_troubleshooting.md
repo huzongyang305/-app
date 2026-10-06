@@ -1,6 +1,6 @@
 # Linux 性能与故障排查
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：30 分钟
 
 ![Linux 性能排查的常用工具链](images/diagram_os_linux_troubleshoot.webp)
 

@@ -1,6 +1,6 @@
 # Jetpack Compose 声明式 UI
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：35 分钟
 
 ![Jetpack Compose 重组与状态](images/diagram_mobile_compose.webp)
 

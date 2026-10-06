@@ -1,6 +1,6 @@
 # gRPC 与 Protobuf 实践
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：35 分钟
 
 ![gRPC 的四种调用方式](images/diagram_go_grpc.webp)
 

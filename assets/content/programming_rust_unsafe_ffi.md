@@ -1,6 +1,6 @@
 # Rust unsafe、FFI 与生态
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：35 分钟
 
 ![unsafe 的能力与 FFI 互操作](images/diagram_rust_unsafe_ffi.webp)
 

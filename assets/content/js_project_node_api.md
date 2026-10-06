@@ -4,7 +4,7 @@
 
 ![实战：Node.js + Express REST API](images/remaining_js_project_node_api.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：120 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：60 分钟
 
 ## 学习目标
 

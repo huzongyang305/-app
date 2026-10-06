@@ -1,6 +1,6 @@
 # C# 异步流与取消
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：35 分钟
 
 ![C# async await 与异步流](images/diagram_csharp_async.webp)
 

@@ -1,6 +1,6 @@
 # Swift 常量与变量
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：30 分钟
 
 ![let 与 var 的区别](images/diagram_swift_constants_variables.webp)
 

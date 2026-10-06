@@ -1,6 +1,6 @@
 # TypeScript 类型级编程
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：35 分钟
 
 ![TypeScript 类型编程层次](images/diagram_ts_types.webp)
 

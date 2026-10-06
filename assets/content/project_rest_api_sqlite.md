@@ -4,7 +4,7 @@
 
 ![实战：REST API 与 SQLite 事务服务](images/remaining_project_rest_api_sqlite.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：120 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：60 分钟
 
 ## 学习目标
 

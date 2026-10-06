@@ -1,6 +1,6 @@
 # 文本处理进阶：awk、sed 与正则
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：35 分钟
 
 ![grep、sed、awk 三者分工](images/diagram_shell_text_tools.webp)
 

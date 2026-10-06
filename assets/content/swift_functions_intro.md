@@ -1,6 +1,6 @@
 # Swift 函数入门
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：40 分钟
 
 ![Swift 函数参数标签与返回值](images/diagram_swift_functions_intro.webp)
 

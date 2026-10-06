@@ -1,6 +1,6 @@
 # C# Record、模式匹配与不可变数据
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：30 分钟
 
 ![record 与模式匹配的配合](images/diagram_cs_records_patterns.webp)
 

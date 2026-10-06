@@ -1,6 +1,6 @@
 # CI/CD 与 GitHub Actions
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：25 分钟
 
 ![持续集成流水线的五个阶段](images/diagram_ci_pipeline.webp)
 

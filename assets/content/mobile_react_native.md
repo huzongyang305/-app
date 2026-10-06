@@ -1,6 +1,6 @@
 # React Native 跨平台开发
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：30 分钟
 
 ![React Native 新架构与性能优化](images/diagram_mobile_react_native.webp)
 

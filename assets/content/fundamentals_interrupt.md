@@ -1,6 +1,6 @@
 # 中断、异常与 DMA
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：30 分钟
 
 ![中断处理时序与外设 DMA](images/diagram_interrupt_exception.webp)
 

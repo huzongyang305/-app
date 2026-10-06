@@ -1,6 +1,6 @@
 # Kotlin 协程与 Flow
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：35 分钟
 
 ![Kotlin 协程挂起与恢复](images/diagram_kotlin_coroutines.webp)
 

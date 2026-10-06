@@ -4,7 +4,7 @@
 
 ![实战：本地 RAG 客服 Agent](images/remaining_project_rag_agent_service.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：140 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：60 分钟
 
 ## 学习目标
 

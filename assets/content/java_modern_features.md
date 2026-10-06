@@ -1,6 +1,6 @@
 # 现代 Java：Record、Sealed 与模式匹配
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：30 分钟
 
 ![Record、Sealed 与模式匹配](images/diagram_java_modern.webp)
 

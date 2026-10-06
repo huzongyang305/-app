@@ -1,6 +1,6 @@
 # Agent 成本与性能优化
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：25 分钟
 
 ![Agent 成本与性能优化的主要手段](images/diagram_ai_cost_performance.webp)
 

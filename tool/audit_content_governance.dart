@@ -8,6 +8,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'lesson_effort.dart';
+
 const String manifestPath = 'assets/content/manifest.json';
 const String defaultReportPath = 'tool/reports/content_governance_report.json';
 
@@ -104,6 +106,19 @@ void main(List<String> args) {
           codeQuiz: lesson['code_quiz'] is Map
               ? (lesson['code_quiz'] as Map).cast<String, dynamic>()
               : null,
+          order: lesson['order'] is int
+              ? lesson['order'] as int
+              : int.tryParse('${lesson['order']}') ?? 0,
+          difficulty: (lesson['difficulty'] ?? '基础').toString(),
+          prerequisites: ((lesson['prerequisites'] as List<dynamic>?) ?? const [])
+              .map(
+                (item) => item is Map ? item['id'].toString() : item.toString(),
+              )
+              .where((id) => id.isNotEmpty)
+              .toList(),
+          minutes: lesson['minutes'] is int
+              ? lesson['minutes'] as int
+              : int.tryParse('${lesson['minutes']}') ?? 0,
         ),
       );
     }
@@ -422,8 +437,22 @@ void main(List<String> args) {
     }
   }
 
-  final errors = issues.where((issue) => issue.level == 'error').toList();
-  final warnings = issues.where((issue) => issue.level == 'warn').toList();
+  // 学习路径不变量：难度不倒挂、先修在推荐顺序之前、order 连续、时长可复核。
+  final pathIssues = _auditLearningPath(lessons);
+  issues.addAll(pathIssues);
+  final difficultyInversions = _countKind(
+    pathIssues,
+    'difficulty_inversion',
+  );
+  final prerequisiteViolations = _countKind(
+    pathIssues,
+    'prerequisite_violation',
+  );
+  final orderGaps = _countKind(pathIssues, 'order_gap');
+  final minutesDrift = _countKind(pathIssues, 'minutes_drift');
+  final errorsAfterPath = issues.where((issue) => issue.level == 'error').toList();
+  final warningsAfterPath = issues.where((issue) => issue.level == 'warn').toList();
+
   final report = <String, dynamic>{
     'generated_at': DateTime.now().toUtc().toIso8601String(),
     'lesson_count': lessons.length,
@@ -431,8 +460,12 @@ void main(List<String> args) {
       0,
       (sum, lesson) => sum + lesson.quiz.length,
     ),
-    'error_count': errors.length,
-    'warning_count': warnings.length,
+    'error_count': errorsAfterPath.length,
+    'warning_count': warningsAfterPath.length,
+    'difficulty_inversions': difficultyInversions,
+    'prerequisite_violations': prerequisiteViolations,
+    'order_gaps': orderGaps,
+    'minutes_drift': minutesDrift,
     'placeholder_title_hits': placeholderTitleHits,
     'internal_question_id_hits': internalIdHits,
     'duplicate_review_sections': duplicateReviewSections,
@@ -493,19 +526,23 @@ void main(List<String> args) {
       '${repeatedMarkdownParagraphs.length}',
     );
     stdout.writeln('重复参考资料集合            ${duplicateReferenceSets.length}');
-    stdout.writeln('错误                        ${errors.length}');
-    stdout.writeln('警告                        ${warnings.length}');
-    if (errors.isNotEmpty) {
+    stdout.writeln('难度倒挂                    $difficultyInversions');
+    stdout.writeln('先修顺序倒挂                $prerequisiteViolations');
+    stdout.writeln('order 不连续分类            $orderGaps');
+    stdout.writeln('预计用时偏差                $minutesDrift');
+    stdout.writeln('错误                        ${errorsAfterPath.length}');
+    stdout.writeln('警告                        ${warningsAfterPath.length}');
+    if (errorsAfterPath.isNotEmpty) {
       stdout.writeln('');
       stdout.writeln('--- 错误（前 $top 条）---');
-      for (final issue in errors.take(top)) {
+      for (final issue in errorsAfterPath.take(top)) {
         stdout.writeln('${issue.lessonId}: ${issue.message}');
       }
     }
-    if (warnings.isNotEmpty) {
+    if (warningsAfterPath.isNotEmpty) {
       stdout.writeln('');
       stdout.writeln('--- 警告（前 $top 条）---');
-      for (final issue in warnings.take(top)) {
+      for (final issue in warningsAfterPath.take(top)) {
         stdout.writeln('${issue.lessonId}: ${issue.message}');
       }
     }
@@ -513,7 +550,8 @@ void main(List<String> args) {
     stdout.writeln('报告已写入 ${reportFile.path}');
   }
 
-  if (failOnIssue && (errors.isNotEmpty || warnings.isNotEmpty)) {
+  if (failOnIssue &&
+      (errorsAfterPath.isNotEmpty || warningsAfterPath.isNotEmpty)) {
     exitCode = 1;
   }
 }
@@ -776,6 +814,123 @@ String _short(String text, int maxLength) {
   return text.length <= maxLength ? text : '${text.substring(0, maxLength)}…';
 }
 
+int _countKind(List<GovernanceIssue> issues, String kind) =>
+    issues.where((issue) => issue.kind == kind).length;
+
+/// 学习路径不变量审计。
+///
+/// 1. 分类内 order 必须是 0..n-1 的连续编号；
+/// 2. 按 order 排序后难度必须非递减（推荐顺序即学习顺序）；
+/// 3. 先修课必须排在本课之前，且难度不得高于本课；
+/// 4. 预计用时必须等于 tool/lesson_effort.dart 的模型输出。
+List<GovernanceIssue> _auditLearningPath(List<GovernanceLesson> lessons) {
+  final issues = <GovernanceIssue>[];
+  final byId = <String, GovernanceLesson>{
+    for (final lesson in lessons) lesson.id: lesson,
+  };
+  final byCategory = <String, List<GovernanceLesson>>{};
+  for (final lesson in lessons) {
+    byCategory.putIfAbsent(lesson.categoryId, () => <GovernanceLesson>[]).add(lesson);
+  }
+
+  for (final entry in byCategory.entries) {
+    final ordered = <GovernanceLesson>[...entry.value]
+      ..sort((a, b) => a.order.compareTo(b.order));
+    for (var i = 0; i < ordered.length; i++) {
+      if (ordered[i].order != i) {
+        issues.add(
+          GovernanceIssue(
+            level: 'error',
+            lessonId: ordered[i].id,
+            kind: 'order_gap',
+            message:
+                '分类 ${entry.key} 的 order 必须是 0..${ordered.length - 1} 的连续编号，'
+                '「${ordered[i].title}」实际为 ${ordered[i].order}',
+          ),
+        );
+        break;
+      }
+    }
+    for (var i = 1; i < ordered.length; i++) {
+      final previous = ordered[i - 1];
+      final current = ordered[i];
+      if (difficultyRank(current.difficulty) <
+          difficultyRank(previous.difficulty)) {
+        issues.add(
+          GovernanceIssue(
+            level: 'error',
+            lessonId: current.id,
+            kind: 'difficulty_inversion',
+            message:
+                '推荐顺序出现难度倒挂：「${previous.title}」(${previous.difficulty}) '
+                '之后是更简单的「${current.title}」(${current.difficulty})',
+          ),
+        );
+      }
+    }
+    final position = <String, int>{
+      for (var i = 0; i < ordered.length; i++) ordered[i].id: i,
+    };
+    for (final lesson in ordered) {
+      for (final id in lesson.prerequisites) {
+        final prerequisite = byId[id];
+        if (prerequisite == null) continue;
+        if (difficultyRank(prerequisite.difficulty) >
+            difficultyRank(lesson.difficulty)) {
+          issues.add(
+            GovernanceIssue(
+              level: 'error',
+              lessonId: lesson.id,
+              kind: 'prerequisite_violation',
+              message:
+                  '先修「${prerequisite.title}」(${prerequisite.difficulty}) '
+                  '比本课(${lesson.difficulty})更难',
+            ),
+          );
+        }
+        final prerequisitePosition = position[id];
+        final selfPosition = position[lesson.id];
+        if (prerequisitePosition != null &&
+            selfPosition != null &&
+            prerequisitePosition >= selfPosition) {
+          issues.add(
+            GovernanceIssue(
+              level: 'error',
+              lessonId: lesson.id,
+              kind: 'prerequisite_violation',
+              message: '先修「${prerequisite.title}」没有排在「${lesson.title}」之前',
+            ),
+          );
+        }
+      }
+    }
+  }
+
+  for (final lesson in lessons) {
+    if (lesson.markdown.isEmpty) continue;
+    final effort = measureEffort(
+      lesson.markdown,
+      quizCount: lesson.quiz.length,
+      handsOn: isHandsOnLesson(id: lesson.id, title: lesson.title),
+    );
+    final ideal = estimateMinutes(effort);
+    if (lesson.minutes != ideal) {
+      issues.add(
+        GovernanceIssue(
+          level: 'error',
+          lessonId: lesson.id,
+          kind: 'minutes_drift',
+          message:
+              '预计用时 ${lesson.minutes} 分钟与内容量不符：'
+              '${effort.chars} 字 / ${effort.codeBlocks} 个代码块 / '
+              '${effort.quizCount} 题，模型应为 $ideal 分钟',
+        ),
+      );
+    }
+  }
+  return issues;
+}
+
 int _intOption(List<String> args, String prefix, int fallback) {
   for (final arg in args) {
     if (!arg.startsWith(prefix)) continue;
@@ -801,6 +956,10 @@ class GovernanceLesson {
     required this.markdown,
     required this.quiz,
     required this.codeQuiz,
+    required this.order,
+    required this.difficulty,
+    required this.prerequisites,
+    required this.minutes,
   });
 
   final String id;
@@ -810,6 +969,18 @@ class GovernanceLesson {
   final String markdown;
   final List<Map<String, dynamic>> quiz;
   final Map<String, dynamic>? codeQuiz;
+
+  /// 分类内推荐顺序（0 起连续编号）。
+  final int order;
+
+  /// 难度梯度：入门 / 基础 / 进阶 / 高级。
+  final String difficulty;
+
+  /// 先修知识点 ID。
+  final List<String> prerequisites;
+
+  /// 预计用时（分钟），必须与 tool/lesson_effort.dart 的模型一致。
+  final int minutes;
 }
 
 class GovernanceReference {

@@ -1,6 +1,6 @@
 # 浏览器 Agent
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：30 分钟
 
 ![浏览器 Agent 的工作流程与约束](images/diagram_ai_browser_agent.webp)
 

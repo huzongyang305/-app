@@ -1,6 +1,6 @@
 # Go 数据访问与连接池
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：35 分钟
 
 ![database/sql 的事务与连接池](images/diagram_go_data_access.webp)
 

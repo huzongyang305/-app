@@ -1,6 +1,6 @@
 # 实时数仓：从 Kafka 到 Flink
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：25 分钟
 
 ![从 Kafka 到 Flink 再到实时数仓的链路](images/diagram_db_realtime_warehouse.webp)
 

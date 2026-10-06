@@ -1,6 +1,6 @@
 # TypeScript 测试策略
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：40 分钟
 
 ![Vitest、Testing Library 与 MSW 的组合](images/diagram_ts_testing.webp)
 

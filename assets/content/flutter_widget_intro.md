@@ -1,6 +1,6 @@
 # Flutter Widget 入门
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：35 分钟
 
 ![Flutter Widget 到渲染的流程](images/diagram_mobile_flutter_widget.webp)
 

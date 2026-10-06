@@ -1,6 +1,6 @@
 # 索引
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：30 分钟
 
 ![B+ 树索引结构](images/diagram_database_index.webp)
 
@@ -366,7 +366,7 @@ CREATE INDEX idx_name_age ON students(name, age);
 
 - 内容版本：v2.0
 - 最后更新：2026-10-06
-- 学习阶段：入门
+- 学习阶段：基础
 - 适用环境：PostgreSQL / MySQL / SQLite 等主流数据库
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：索引、B+树、复合索引、最左前缀、EXPLAIN

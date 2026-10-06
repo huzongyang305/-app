@@ -1,6 +1,6 @@
 # Monorepo 工程实践
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：40 分钟
 
 ![Monorepo 的包结构与依赖方向](images/diagram_ts_monorepo.webp)
 

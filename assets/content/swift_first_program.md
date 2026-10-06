@@ -1,6 +1,6 @@
 # Swift 第一个程序
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：30 分钟
 
 ![编写并运行第一个 Swift 程序](images/diagram_swift_first_program.webp)
 

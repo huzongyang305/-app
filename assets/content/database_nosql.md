@@ -1,6 +1,6 @@
 # NoSQL 数据库
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：30 分钟
 
 ![四类 NoSQL 数据模型对比](images/diagram_db_nosql_family.webp)
 

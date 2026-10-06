@@ -1,6 +1,6 @@
 # 序列化格式：JSON、YAML、Protobuf 横向对照
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：40 分钟
 
 ![JSON、YAML、Protobuf 的对比](images/diagram_cross_serialization.webp)
 

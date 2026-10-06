@@ -1,6 +1,6 @@
 # Kotlin 第一个程序
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：35 分钟
 
 ![编写并运行第一个 Kotlin 程序](images/diagram_kt_first_program.webp)
 

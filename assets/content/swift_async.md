@@ -1,6 +1,6 @@
 # Swift 并发与 async/await
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：35 分钟
 
 ![Swift 并发模型](images/diagram_swift_async.webp)
 

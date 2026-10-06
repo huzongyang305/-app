@@ -579,11 +579,61 @@ void main() {
     }
   });
 
-  test('P2 难度顺序：首课不是高级，末课不是入门且冲突已修正', () {
+  test('P0 学习路径不变量：难度不倒挂、先修在前、order 连续', () {
+    const ladder = <String>['入门', '基础', '进阶', '高级'];
+    int rank(String difficulty) => ladder.indexOf(difficulty);
+    final byId = <String, Lesson>{
+      for (final category in categories)
+        for (final lesson in category.lessons) lesson.id: lesson,
+    };
+
     for (final category in categories) {
       if (category.lessons.isEmpty) continue;
       final ordered = <Lesson>[...category.lessons]
         ..sort((a, b) => a.order.compareTo(b.order));
+      // order 必须是 0..n-1 的连续编号，App 才能按推荐顺序学习。
+      for (var i = 0; i < ordered.length; i++) {
+        expect(
+          ordered[i].order,
+          i,
+          reason: '${category.id} 的 order 必须是连续编号',
+        );
+      }
+      // 难度沿推荐顺序非递减，避免「学完高级再学入门」。
+      for (var i = 1; i < ordered.length; i++) {
+        expect(
+          rank(ordered[i].difficulty),
+          greaterThanOrEqualTo(rank(ordered[i - 1].difficulty)),
+          reason:
+              '${category.id} 在「${ordered[i - 1].title.zh}」'
+              '(${ordered[i - 1].difficulty}) 之后出现更简单的'
+              '「${ordered[i].title.zh}」(${ordered[i].difficulty})',
+        );
+      }
+      // 先修课必须排在本课之前，且难度不得高于本课。
+      final position = <String, int>{
+        for (var i = 0; i < ordered.length; i++) ordered[i].id: i,
+      };
+      for (final lesson in ordered) {
+        for (final id in lesson.prerequisites) {
+          final prerequisite = byId[id];
+          expect(prerequisite, isNotNull, reason: '${lesson.id} 的先修 $id 不存在');
+          if (prerequisite == null) continue;
+          expect(
+            rank(prerequisite.difficulty),
+            lessThanOrEqualTo(rank(lesson.difficulty)),
+            reason: '先修 ${prerequisite.id} 比 ${lesson.id} 更难',
+          );
+          final prerequisitePosition = position[prerequisite.id];
+          if (prerequisitePosition != null) {
+            expect(
+              prerequisitePosition,
+              lessThan(position[lesson.id]!),
+              reason: '先修 ${prerequisite.id} 没有排在 ${lesson.id} 之前',
+            );
+          }
+        }
+      }
       expect(
         ordered.first.difficulty,
         isNot('高级'),
@@ -595,10 +645,6 @@ void main() {
         reason: '${category.id} 最后一课不应标为入门',
       );
     }
-    final byId = <String, Lesson>{
-      for (final category in categories)
-        for (final lesson in category.lessons) lesson.id: lesson,
-    };
     for (final entry in const <String, String>{
       'go_interfaces_errors': '进阶',
       'rust_ownership': '进阶',

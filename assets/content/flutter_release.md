@@ -1,6 +1,6 @@
 # 实战：Flutter 打包发布 Android
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：100 分钟
 
 ![Flutter Android 发布流程](images/diagram_mobile_flutter_release.webp)
 

@@ -1,6 +1,6 @@
 # 集合、委托与 LINQ
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：35 分钟
 
 ![集合类型与 LINQ 的选型](images/diagram_cs_collections_linq.webp)
 

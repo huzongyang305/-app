@@ -1,6 +1,6 @@
 # JavaScript 内存管理与垃圾回收
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：35 分钟
 
 ![JavaScript 标记清除与分代回收](images/diagram_js_memory_gc.webp)
 

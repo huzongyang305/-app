@@ -1,6 +1,6 @@
 # 容器与 Kubernetes 安全
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：30 分钟
 
 ![容器与 Kubernetes 安全层次](images/diagram_sec_k8s.webp)
 

@@ -1,6 +1,6 @@
 # GraphRAG 与知识图谱检索
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：30 分钟
 
 ![GraphRAG 知识图谱增强检索](images/diagram_graphrag.webp)
 

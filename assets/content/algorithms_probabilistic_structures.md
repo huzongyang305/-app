@@ -1,6 +1,6 @@
 # 概率数据结构
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：30 分钟
 
 ![布隆过滤器、HyperLogLog 与跳表](images/diagram_algo_probabilistic.webp)
 

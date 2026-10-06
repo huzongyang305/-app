@@ -1,6 +1,6 @@
 # TypeScript Node 后端开发
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：35 分钟
 
 ![TypeScript Node 后端的分层结构](images/diagram_ts_node_backend.webp)
 

@@ -1,6 +1,6 @@
 # 图解 Kubernetes 调度与探针
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：35 分钟
 
 ![图解 Kubernetes 调度与探针](images/visual_k8s_scheduling.webp)
 

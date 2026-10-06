@@ -1,6 +1,6 @@
 # Kotlin 变量与空值
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：35 分钟
 
 ![val/var 与可空类型处理](images/diagram_kt_variables_null.webp)
 

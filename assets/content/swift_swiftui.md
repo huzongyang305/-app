@@ -1,6 +1,6 @@
 # SwiftUI 与状态管理
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：30 分钟
 
 ![SwiftUI 状态与数据流](images/diagram_swift_swiftui.webp)
 

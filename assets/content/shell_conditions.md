@@ -1,6 +1,6 @@
 # Shell 条件判断
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：30 分钟
 
 ![Shell 条件判断的四种结构](images/diagram_shell_conditions.webp)
 

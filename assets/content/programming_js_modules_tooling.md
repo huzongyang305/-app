@@ -1,6 +1,6 @@
 # 模块化与工程化
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：40 分钟
 
 ![ES Module 与 CommonJS 对照](images/diagram_js_modules.webp)
 

@@ -1,6 +1,6 @@
 # Kotlin 函数入门
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：40 分钟
 
 ![Kotlin 函数的参数与返回值](images/diagram_kt_functions_intro.webp)
 

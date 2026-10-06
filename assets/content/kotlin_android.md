@@ -1,6 +1,6 @@
 # Kotlin Android 架构
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：35 分钟
 
 ![Kotlin Android 应用的分层架构](images/diagram_kt_android.webp)
 

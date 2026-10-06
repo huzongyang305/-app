@@ -4,7 +4,7 @@
 
 ![TypeScript 类型收窄与泛型](images/remaining_ts_narrowing_generics.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：16 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：35 分钟
 
 ## 学习目标
 

@@ -1,6 +1,6 @@
 # Flutter 状态管理与性能
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：40 分钟
 
 ![状态分层与重建范围](images/diagram_mobile_flutter_state.webp)
 

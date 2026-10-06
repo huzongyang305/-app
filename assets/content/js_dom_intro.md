@@ -1,6 +1,6 @@
 # JavaScript DOM 入门
 
-> 内容更新时间：2026-10-06
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：35 分钟
 
 ![DOM 操作入门四步](images/diagram_js_dom_intro.webp)
 
