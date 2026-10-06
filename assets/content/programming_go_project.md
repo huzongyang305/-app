@@ -55,6 +55,7 @@ GOOS=linux GOARCH=amd64 go build                 # 交叉编译
 配合多阶段 Docker 构建（builder 阶段编译，scratch/alpine 运行）可产出几 MB 的镜像。
 
 ## 本课小结
+
 Go 工程化的关键是**统一工具链 + 表驱动测试 + pprof 定位 + 静态单文件部署**；语言本身简单，工程规范才是团队效率的来源。
 
 ## 工程结构速查
@@ -130,7 +131,7 @@ func TestParseAmount(t *testing.T) {
 }
 ```
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易踩的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -145,7 +146,7 @@ func TestParseAmount(t *testing.T) {
 | 构建未加 `-trimpath` | 产物含本地路径 | 发布构建统一参数 |
 | 版本号写死在代码 | 无法追溯发布 | 用 `-ldflags` 注入版本 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 项目使用 `cmd/` 与 `internal/` 结构，`main` 只做装配。
 - [ ] 测试采用表驱动并覆盖错误分支。

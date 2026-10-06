@@ -117,7 +117,7 @@ func FetchOrder(client orderv1.OrderServiceClient, id int64) (*orderv1.Order, er
 | 可观测 | 透传 trace id，记录方法名、状态码与耗时 |
 | 兼容浏览器 | 通过 grpc-web 或网关转 REST |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易踩的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -129,7 +129,7 @@ func FetchOrder(client orderv1.OrderServiceClient, id int64) (*orderv1.Order, er
 | 大消息不分片 | 超限或内存问题 | 拆分或改用流式 |
 | 直接对外暴露 gRPC | 浏览器与第三方难接入 | 加网关或提供 REST 接口 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 能说清 gRPC 与 REST 的取舍。
 - [ ] 熟悉四种调用方式并会选型。

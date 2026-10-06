@@ -103,6 +103,7 @@ TEST_CASE("add works") {
 静态分析：`clang-tidy`、`cppcheck`、编译器警告全开（`-Wall -Wextra -Wpedantic`）。
 
 ## 本课小结
+
 工程化的关键是可复现：**CMake 统一构建、包管理器锁定依赖、sanitizer + 单测守住质量、clang-tidy 统一风格**。
 
 ## 编译器与告警速查
@@ -172,7 +173,7 @@ g++ -std=c++20 -O2 -DNDEBUG src/*.cpp -o build/app
 | 安装 | `cmake --install build --prefix dist` |
 | 清理 | `rm -rf build` |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 现象 | 原因 | 处理方式 |
 | --- | --- | --- |
@@ -186,7 +187,7 @@ g++ -std=c++20 -O2 -DNDEBUG src/*.cpp -o build/app
 | 静态库与动态库混用混乱 | 链接行为不一致 | 明确 `STATIC` / `SHARED` 并在文档里说明 |
 | 直接把所有源文件写死在构建脚本 | 维护困难 | 用 CMake 目标管理 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 开发期开启 `-Wall -Wextra -Werror -g` 与 sanitizer。
 - [ ] 会用 gdb 看栈与变量，会读 core dump。

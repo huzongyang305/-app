@@ -52,6 +52,7 @@
 4. 类型也要测试：用 `expectType` 或 `tsd` 校验类型行为。
 
 ## 本课小结
+
 工具类型让你**从已有类型派生新类型**，而不是重复声明；声明文件让整个生态可用。二者配合，TypeScript 才能真正成为"可执行的文档"。
 
 ## 工具类型速查
@@ -110,7 +111,7 @@ type Value = Awaited<Promise<number>>;   // number
 | 声明资源模块 | `declare module "*.svg" { const url: string; export default url; }` |
 | 全局类型 | `declare global { interface Window { __APP__: AppConfig } }` |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易写错的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -125,7 +126,7 @@ type Value = Awaited<Promise<number>>;   // number
 | 类型断言覆盖不兼容类型 | 运行时报错 | 先校验再断言 |
 | 在运行时依赖类型 | 类型在编译后被擦除 | 需要运行时校验时用 zod 等 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 会用 `Pick` / `Omit` / `Partial` 精准定义 DTO。
 - [ ] 会用映射类型批量改造字段。

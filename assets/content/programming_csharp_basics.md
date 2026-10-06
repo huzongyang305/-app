@@ -95,6 +95,7 @@ namespace Demo.Utils
 命名空间用点号分层，通常与目录结构对应，用来避免类名冲突。
 
 ## 本课小结
+
 C# 代码跑在 .NET 上：**编译成 IL、由 CLR 托管执行**。掌握 `dotnet` CLI 与 csproj 配置即可开始任何类型的项目。
 
 ## .NET 平台速查
@@ -142,7 +143,7 @@ C# 代码跑在 .NET 上：**编译成 IL、由 CLR 托管执行**。掌握 `dot
 </Project>
 ```
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 报错或现象 | 原因 | 处理方式 |
 | --- | --- | --- |
@@ -157,7 +158,7 @@ C# 代码跑在 .NET 上：**编译成 IL、由 CLR 托管执行**。掌握 `dot
 | `TreatWarningsAsErrors` 打开后构建失败 | 已有告警 | 先清零告警再开启门禁 |
 | 用 `dotnet run` 做生产部署 | 环境不一致 | 用 `dotnet publish` 产物部署 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 能说清 CLR、IL、JIT 与程序集的关系。
 - [ ] 会用 `dotnet new`、`build`、`run`、`test`、`publish`。

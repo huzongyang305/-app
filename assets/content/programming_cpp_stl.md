@@ -118,6 +118,7 @@ auto count = std::count_if(names.begin(), names.end(),
 四个高频坑：① **迭代器失效**（vector 扩容、erase 后继续用旧迭代器）；② **erase-remove 遗漏 erase**（remove 只移动元素不改变大小）；③ `map[key]` 会**默认构造**不存在的键（查询应用 find/at）；④ **自定义类型作 map 键**需提供严格弱序比较（operator< 要满足传递性，否则行为未定义）。
 
 ## 本课小结
+
 STL 的价值在于**容器 + 迭代器 + 算法**三者解耦。先把 `vector`、`unordered_map`、`sort`、`find` 用熟，再按需扩展。
 
 ## 容器选型速查
@@ -163,7 +164,7 @@ v.erase(std::remove_if(v.begin(), v.end(),
 auto sum = std::accumulate(v.begin(), v.end(), 0);  // 初始值 0 决定返回 int
 ```
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易写错的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -178,7 +179,7 @@ auto sum = std::accumulate(v.begin(), v.end(), 0);  // 初始值 0 决定返回 
 | `std::accumulate` 初始值写 `0` 累加 `double` | 结果被截断 | 初始值写 `0.0` |
 | `string_view` 指向临时字符串 | 悬空，读到垃圾数据 | 确保被引用对象生命周期长于视图 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 默认选 `vector`，能说出 `map` 与 `unordered_map` 的取舍。
 - [ ] 会写 `erase-remove` 惯用法删除元素。

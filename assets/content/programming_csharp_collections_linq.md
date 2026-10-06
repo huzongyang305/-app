@@ -99,6 +99,7 @@ LINQ 是**延迟执行**的：只有遍历或调用 `ToList`/`Count`/`Sum` 时�
 集合选型速查：需要按下标访问用 `List<T>`；需要按键 O(1) 查找用 `Dictionary<TKey,TValue>`；需要去重或集合运算用 `HashSet<T>`；需要先进先出用 `Queue<T>`、后进先出用 `Stack<T>`；需要并发访问用 `ConcurrentDictionary`。**可变集合不要跨线程共享**，要么加锁，要么用不可变集合（System.Collections.Immutable）。
 
 ## 本课小结
+
 集合负责存储，委托与 lambda 负责传行为，LINQ 负责声明式查询。三者组合是 C# 处理数据的主力。
 
 ## 集合选型速查
@@ -161,7 +162,7 @@ foreach (var order in orders)
 }
 ```
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易写错的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -176,7 +177,7 @@ foreach (var order in orders)
 | 自定义类型做 `HashSet` 元素 | 去重失效 | 重写 `Equals` + `GetHashCode`，或用 record |
 | 多线程共享 `Dictionary` | 数据损坏或异常 | 用 `ConcurrentDictionary` |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 能按「是否去重、是否有序、是否并发」选对集合。
 - [ ] 会用 `GroupBy` + `Select` 做分组统计。
@@ -360,7 +361,7 @@ Console.WriteLine($"及格 {all.Count(x => x.Score >= 60)} 人");
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-## 实践任务
+## 可运行练习
 
 本节围绕集合、委托与 LINQ安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 

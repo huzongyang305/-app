@@ -113,6 +113,7 @@ const data = await response.json();
 五个高频陷阱：① 在循环里 `await` 导致串行（应先用 `map` 收集 Promise 再 `Promise.all`）；② 忘记 `await` 使错误变成 unhandledRejection；③ 在 `forEach` 里用 await（forEach 不等待）；④ 事件循环里混入 CPU 密集任务阻塞微任务；⑤ 在组件卸载后才 setState（React 中会产生警告与竞态）。
 
 ## 本课小结
+
 异步三件套：**Promise 表达结果、async/await 写成同步风格、事件循环决定执行顺序**。并发请求用 `Promise.all`，别写成串行 await。
 
 ## Promise 组合速查
@@ -150,7 +151,7 @@ const results = await Promise.allSettled([fetchA(), fetchB()]);
 const okCount = results.filter((r) => r.status === "fulfilled").length;
 ```
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易写错的写法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -163,7 +164,7 @@ const okCount = results.filter((r) => r.status === "fulfilled").length;
 | `setTimeout(fn, 0)` 想先让 DOM 更新 | 顺序与预期不符 | 微任务（Promise）先于宏任务（定时器）执行 |
 | `await` 一个普通值 | 不会报错，会包一层 | 可以直接写同步值，但要注意可读性 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 能说出 `all`、`allSettled`、`race`、`any` 的差别。
 - [ ] 知道 `async` 函数一定返回 Promise。

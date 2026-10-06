@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-06T15:22:51.064125Z",
+  "generated_at": "2026-10-06T15:36:39.176618Z",
   "lesson_count": 542,
   "question_count": 3108,
   "error_count": 0,
@@ -13,6 +13,8 @@
   "duplicate_review_sections": 0,
   "stale_review_supplements": 0,
   "corrupt_term_tables": 0,
+  "lessons_missing_canonical_sections": 0,
+  "legacy_section_headings": 0,
   "code_questions_without_domain_link": 0,
   "explanations_with_meta_markers": 0,
   "language_mismatches": 0,

@@ -111,7 +111,7 @@ private fun LessonCard(title: String, onClick: () -> Unit) {
 | 动画 | 属性动画 | `animate*AsState`、`Transition` |
 | 复用 | `<include>`、自定义 View | 可组合函数天然复用 |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易踩的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -123,7 +123,7 @@ private fun LessonCard(title: String, onClick: () -> Unit) {
 | 把 `remember` 当全局缓存 | 状态意外保留或丢失 | 明确生命周期，必要时提升状态 |
 | 忽略 `Modifier` 顺序 | 内边距与裁剪效果不符合预期 | 顺序即执行顺序，按需调整 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 能解释声明式 UI 与重组的关系。
 - [ ] 状态用 `mutableStateOf`/`StateFlow`，副作用用 `LaunchedEffect`。
@@ -338,7 +338,7 @@ LazyColumn(
 - 判断标准：能解释正常场景、边界条件和失败场景，才算真正掌握。
 - 下一步：完成练习后，用自己的话写下 3 条要点，再去做本课测验。
 
-## 实践任务
+## 可运行练习
 
 本节围绕Jetpack Compose 声明式 UI安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 

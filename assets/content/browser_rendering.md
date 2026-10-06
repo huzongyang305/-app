@@ -113,7 +113,7 @@ if ("PerformanceObserver" in window) {
 | 字体 | 触发文字延迟 | `font-display: swap` + 预加载 |
 | 大图与视频 | 影响 LCP | 压缩、尺寸适配、`fetchpriority` |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易踩的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -126,7 +126,7 @@ if ("PerformanceObserver" in window) {
 | 忽略长任务 | 输入延迟（INP 差） | 拆片、Worker、`requestIdleCallback` |
 | 用 `left/top` 做动画 | 每帧布局 | 用 `transform` |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 能准确说出宏任务、微任务与渲染的执行顺序。
 - [ ] 知道微任务不结束就不会渲染。

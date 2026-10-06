@@ -112,6 +112,7 @@ long total = IntStream.rangeClosed(1, 1_000_000)
 性能取舍：小数据量（几百条）用普通循环往往更快——流有对象创建与装箱开销；可读性收益明显时用流，热点路径则实测后决定。基本类型流用 `IntStream/LongStream` 避免装箱，`mapToInt` + `sum` 比 `map` + `reduce` 更高效。
 
 ## 本课小结
+
 Lambda + Stream 让集合处理变成声明式：**先说做什么（filter/map），再收集结果（collect）**。代码更短，但要注意惰性求值与副作用。
 
 ## Stream 操作速查
@@ -162,7 +163,7 @@ Map<String, Integer> amountByCategory = orders.stream()
                 Collectors.summingInt(Order::amount)));
 ```
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易写错的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -178,7 +179,7 @@ Map<String, Integer> amountByCategory = orders.stream()
 | 大量装箱操作 | 性能下降 | 用 `mapToInt`、`IntStream` 等原始类型流 |
 | 用 `sorted()` 排大集合 | 慢且占内存 | 数据量大时考虑数据库排序或 TopK 结构 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 能列出常用中间操作与终止操作，并知道流是惰性的。
 - [ ] 会用 `Collectors.groupingBy` 做分组统计。
@@ -388,7 +389,7 @@ public class Report {
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-## 实践任务
+## 可运行练习
 
 本节围绕Lambda 与 Stream API安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 

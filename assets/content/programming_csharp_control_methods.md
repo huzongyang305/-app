@@ -104,6 +104,7 @@ public static IEnumerable<int> Evens(int limit)
 `yield return` 实现惰性求值，数据量大时能显著节省内存。
 
 ## 本课小结
+
 现代 C# 的写法：**switch 表达式做分支、表达式主体写短方法、ref/out/params 精确表达参数语义**。
 
 ## 控制流速查
@@ -174,7 +175,7 @@ IEnumerable<string> ReadNonEmpty(string path)
 }
 ```
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易写错的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -189,7 +190,7 @@ IEnumerable<string> ReadNonEmpty(string path)
 | 用 `goto` 跳转控制流程 | 可读性差 | 改用循环 + 条件判断 |
 | 方法过长（几百行） | 难以测试与复用 | 拆成多个小方法或服务 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 会用 `switch` 表达式与模式匹配。
 - [ ] 可选参数与命名参数使用得当。
@@ -385,7 +386,7 @@ Console.WriteLine($"{count} 人，平均 {average}，等级 {level}");
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-## 实践任务
+## 可运行练习
 
 本节围绕控制流与方法安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 

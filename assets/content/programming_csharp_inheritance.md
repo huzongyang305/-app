@@ -88,6 +88,7 @@ public override int GetHashCode() => HashCode.Combine(X, Y);
 ```
 
 ## 本课小结
+
 继承复用实现，接口定义契约，`virtual/override` 实现多态。实践中**优先组合与接口，避免深层继承树**。
 
 ## 继承与接口速查
@@ -142,7 +143,7 @@ public sealed class SystemClock : IClock
 }
 ```
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易写错的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -157,7 +158,7 @@ public sealed class SystemClock : IClock
 | 忘记 `sealed` 导致被随意继承 | 行为被破坏 | 不打算扩展的类加 `sealed` |
 | 自定义 `Equals` 后仍用 `==` 比较 | 结果不一致 | 明确重载 `==` 或统一用 `Equals` |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 能分辨 `abstract` / `virtual` / `override` / `sealed`。
 - [ ] 类型转换优先用模式匹配，而不是强制转换。
@@ -360,7 +361,7 @@ foreach (var m in methods)
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-## 实践任务
+## 可运行练习
 
 本节围绕继承、接口与多态安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 

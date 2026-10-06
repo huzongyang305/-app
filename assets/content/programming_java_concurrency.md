@@ -123,6 +123,7 @@ try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
 **常见故障与排查**：① 队列无界导致任务堆积、内存暴涨；② 线程池被慢任务占满（下游超时未设），表现为所有请求排队；③ 父子任务共用同一个池导致死锁（父等待子，子排队）；④ 线程泄漏（线程名不带业务标识，无法定位来源）。排查手段：`jstack` 看线程状态与堆栈、`ThreadPoolExecutor` 的 getActiveCount/getQueue.size 打点监控。
 
 ## 本课小结
+
 并发三件事：**可见性（volatile/synchronized）、原子性（锁/原子类）、有序性（happens-before）**。业务代码优先用线程池与 CompletableFuture，别手动 new Thread。
 
 ## 并发工具选型速查
@@ -166,7 +167,7 @@ ExecutorService pool = new ThreadPoolExecutor(
         new ThreadPoolExecutor.CallerRunsPolicy());
 ```
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易写错的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -182,7 +183,7 @@ ExecutorService pool = new ThreadPoolExecutor(
 | 忘记关闭线程池 | 进程无法退出、线程泄漏 | 用 `try/finally` 调用 `shutdown` + `awaitTermination` |
 | 虚拟线程里跑阻塞的本地锁 | 平台线程被钉住 | 虚拟线程适合 IO 等待，避免长时 `synchronized` |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 能说清 `volatile` 与 `Atomic` 的差别。
 - [ ] 线程池一律使用有界队列并明确拒绝策略。
@@ -370,7 +371,7 @@ public class OrderStats {
 - 产出一个别人可以检查的结果。
 - 写出一个仍不确定的问题和验证方法。
 
-## 实践任务
+## 可运行练习
 
 本节围绕多线程与并发安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 

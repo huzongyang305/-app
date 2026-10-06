@@ -102,6 +102,7 @@ Elements 看结构、Console 试代码、Network 看请求、Sources 打断点�
 清理与正确性：组件卸载时移除监听器（`removeEventListener` 需同一函数引用）与取消定时器；`requestAnimationFrame` 适合逐帧更新；表单提交用 `preventDefault` 后自行校验，避免页面刷新丢失状态。
 
 ## 本课小结
+
 DOM 操作记住三件事：**用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表**，并把用户内容当作不可信数据。
 
 ## DOM 查询与修改速查
@@ -145,7 +146,7 @@ list.addEventListener("click", (event) => {
 | 自定义校验 | `input.setCustomValidity("提示")` |
 | 触发原生校验 | `form.reportValidity()` |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易写错的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -160,7 +161,7 @@ list.addEventListener("click", (event) => {
 | 在循环里拼接 `innerHTML +=` | 反复重排，性能差、监听器丢失 | 先拼字符串或 DocumentFragment，最后一次性插入 |
 | 直接读 `element.style.width` | 拿到的是内联样式，可能是空字符串 | 用 `getComputedStyle(el).width` |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 会用 `querySelector` 与 `querySelectorAll` 查询元素。
 - [ ] 插入不可信文本时使用 `textContent`。

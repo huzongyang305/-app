@@ -93,13 +93,25 @@ int main() {
 }
 ```
 
-## 常见坑
+## 常见错误与排查
 
 1. `main` 忘记 `return` 时 C++ 会隐式返回 0，但其他有返回值的函数不写 `return` 是未定义行为。
 2. 头文件里定义全局变量会导致多重定义，应使用 `inline` 变量或 `extern` 声明。
 3. 未初始化的基本类型变量值是随机的，务必显式初始化。
+| 报错信息 | 含义 | 处理方式 |
+| --- | --- | --- |
+| `fatal error: xxx.h: No such file or directory` | 头文件路径不对 | 用 `-I` 指定包含目录 |
+| `undefined reference to 'foo()'` | 声明有、实现缺失或没链接库 | 补实现或加库（注意库的顺序） |
+| `multiple definition of 'x'` | 同一符号被多次定义 | 变量声明放头文件用 `extern`，定义放源文件 |
+| `error: 'x' was not declared in this scope` | 未声明或未包含头文件 | 检查拼写、作用域与包含 |
+| `expected ';' after ...` | 语法错误 | 看行号与上一行是否漏分号 |
+| `redefinition of 'struct X'` | 头文件没防重复包含 | 加 `#pragma once` |
+| `invalid conversion from 'const char*' to 'char*'` | 字符串字面量是只读 | 用 `const char*` 或 `std::string` |
+| `warning: comparison of integer expressions of different signedness` | 有符号与无符号比较 | 统一类型，或用 `static_cast` 明确转换 |
+| 程序崩溃但编译通过 | 运行时错误 | 用 `-g` + gdb，或 ASan 定位 |
 
 ## 本课小结
+
 掌握「预处理 → 编译 → 汇编 → 链接」四步，再配合 `-Wall -Wextra`，能提前消灭大量问题。
 
 ## 编译流程速查
@@ -165,21 +177,7 @@ void Widget::draw() const {
 | 命名空间 | 避免全局符号冲突，不使用 `using namespace std;` |
 | 编译选项 | 开发期 `-Wall -Wextra -Werror -g`，发布期 `-O2` |
 
-## 常见错误对照表
-
-| 报错信息 | 含义 | 处理方式 |
-| --- | --- | --- |
-| `fatal error: xxx.h: No such file or directory` | 头文件路径不对 | 用 `-I` 指定包含目录 |
-| `undefined reference to 'foo()'` | 声明有、实现缺失或没链接库 | 补实现或加库（注意库的顺序） |
-| `multiple definition of 'x'` | 同一符号被多次定义 | 变量声明放头文件用 `extern`，定义放源文件 |
-| `error: 'x' was not declared in this scope` | 未声明或未包含头文件 | 检查拼写、作用域与包含 |
-| `expected ';' after ...` | 语法错误 | 看行号与上一行是否漏分号 |
-| `redefinition of 'struct X'` | 头文件没防重复包含 | 加 `#pragma once` |
-| `invalid conversion from 'const char*' to 'char*'` | 字符串字面量是只读 | 用 `const char*` 或 `std::string` |
-| `warning: comparison of integer expressions of different signedness` | 有符号与无符号比较 | 统一类型，或用 `static_cast` 明确转换 |
-| 程序崩溃但编译通过 | 运行时错误 | 用 `-g` + gdb，或 ASan 定位 |
-
-## 自测清单
+## 复习与自测
 
 - [ ] 能说清「预处理、编译、汇编、链接」四个阶段。
 - [ ] 会用 `-c` 分离编译，再统一链接。

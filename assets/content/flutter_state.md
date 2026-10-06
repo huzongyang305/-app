@@ -84,6 +84,7 @@ context.read<CartProvider>().add(item);
 状态类不依赖 Widget，可直接单测：构造 Provider → 调用方法 → 断言状态与通知次数（用 `addListener` 计数）。Widget 测试中通过 `ChangeNotifierProvider.value` 注入假数据，避免真实网络与数据库。
 
 ## 本课小结
+
 Flutter 状态管理的核心是**分层与最小重建**：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层；再配合 const、Selector 与 RepaintBoundary 控制性能。
 
 ## 状态分类速查
@@ -170,7 +171,7 @@ class CartItemTile extends StatelessWidget {
 | `dispose` | 组件移除 | 取消订阅、释放控制器 |
 | `deactivate` | 从树中暂时移除 | 少见，谨慎使用 |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易踩的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -185,7 +186,7 @@ class CartItemTile extends StatelessWidget {
 | 依赖派生状态另存一份 | 两份数据不同步 | 直接计算派生值 |
 | 大对象频繁 `notifyListeners` | 卡顿 | 拆分模型或精细订阅 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 能判断状态应放在局部还是全局。
 - [ ] 会用 `select` 或 `Consumer` 缩小重建范围。
@@ -428,7 +429,7 @@ class _ItemPageState extends State<ItemPage> {
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-## 实践任务
+## 可运行练习
 
 本节围绕Flutter 状态管理与性能安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 
@@ -516,7 +517,7 @@ class _ItemPageState extends State<ItemPage> {
 
 ### 考点 2：代码补全·Flutter
 
-- **题目**：阅读「Flutter 状态管理与性能」正文里的这段代码代码，下面哪一项判断是正确的？
+- **题目**：阅读「Flutter 状态管理与性能」正文里的这段代码，下面哪一项判断是正确的？
 - **判断依据**：在「Flutter 状态管理与性能」里，这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。这段代码出自「Flutter 状态管理与性能」的正文示例，围绕Flutter、状态管理、Provider展开；把输入或边界换成空值、极值或失败情况后，结论要以「Flutter 状态管理与性能」的实际运行结果为准。
 
 ### 考点 3：概念判断·Flutter

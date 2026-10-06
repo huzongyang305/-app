@@ -55,6 +55,7 @@
 4. 用 `NodeJS.Timeout` 标注定时器，避免与 DOM 类型冲突。
 
 ## 本课小结
+
 TypeScript 进阶的边界是**可维护性**：装饰器与类型体操解决特定问题，框架集成靠内置类型与边界校验。
 
 ## 装饰器速查
@@ -117,7 +118,7 @@ class Service {
 | 类型声明 | `declare global { namespace NodeJS { interface ProcessEnv { DATABASE_URL: string } } }` |
 | 禁止 | 把密钥放前端环境变量（会被打包进产物） |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易踩的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -132,7 +133,7 @@ class Service {
 | 用装饰器替代依赖注入显式声明 | 依赖关系不可见 | 显式构造或框架标准写法 |
 | 忘记给环境变量声明类型 | `Property 'X' does not exist` | 补 `ProcessEnv` 声明 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 明确项目使用哪套装饰器语义，并统一配置。
 - [ ] 组件 props 有明确类型，可选字段有默认处理。

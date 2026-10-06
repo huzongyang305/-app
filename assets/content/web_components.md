@@ -152,7 +152,7 @@ customElements.define("lesson-card", LessonCard);
 
 经验：**设计系统的底层组件适合做成 Web Components，业务页面继续用框架。**
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易踩的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -165,7 +165,7 @@ customElements.define("lesson-card", LessonCard);
 | 在属性里传复杂对象 | 只能传字符串 | 用属性传 JSON 或直接设 JS 属性 |
 | 用 `innerHTML` 插用户输入 | XSS 风险 | 用 `textContent` 或转义 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 能注册自定义元素并实现四个生命周期回调。
 - [ ] 用 Shadow DOM 隔离样式，并开放变量与 `::part` 供定制。

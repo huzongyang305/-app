@@ -108,6 +108,7 @@ if (balance < amount) {
 4. 尽早失败：参数校验失败立刻抛 `IllegalArgumentException`。
 
 ## 本课小结
+
 受检异常强制调用方思考失败路径，运行时异常表达编程错误。资源一律交给 try-with-resources。
 
 ## 异常体系速查
@@ -147,7 +148,7 @@ public Order createOrder(OrderRequest request) {
 }
 ```
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易写错的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -162,7 +163,7 @@ public Order createOrder(OrderRequest request) {
 | 忘记关闭资源 | 文件句柄与连接泄漏 | 用 try-with-resources |
 | 受检异常在 `lambda` 里直接抛 | 编译不通过 | 包装成运行时异常，或在 lambda 内处理 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 分得清受检异常、运行时异常与 `Error` 的处理策略。
 - [ ] 捕获时始终传原始异常作为 cause。
@@ -363,7 +364,7 @@ public class ParseDemo {
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-## 实践任务
+## 可运行练习
 
 本节围绕异常处理与文件 IO安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 

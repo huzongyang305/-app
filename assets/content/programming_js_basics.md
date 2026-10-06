@@ -73,6 +73,7 @@ npx prettier --write .
 ESLint 抓潜在错误，Prettier 统一格式，两者配合是前端工程的标准配置。
 
 ## 本课小结
+
 先分清代码运行在浏览器还是 Node，再去查对应的 API；语言核心两者通用。
 
 ## 运行环境速查
@@ -110,7 +111,7 @@ ESLint 抓潜在错误，Prettier 统一格式，两者配合是前端工程的�
 | 调用栈 | `console.trace()` |
 | 断点 | 代码里写 `debugger;` |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 报错或现象 | 含义 | 处理方式 |
 | --- | --- | --- |
@@ -125,7 +126,7 @@ ESLint 抓潜在错误，Prettier 统一格式，两者配合是前端工程的�
 | `let` 重复声明 | `SyntaxError: Identifier has already been declared` | 同一作用域内不要重复声明 |
 | 严格模式才报的错（如未声明赋值） | 静默失败 | 用 ESM 或加 `"use strict"` 暴露问题 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 能说清浏览器与 Node 各自提供什么能力。
 - [ ] 知道 `defer` 与 `async` 的差别和使用场景。

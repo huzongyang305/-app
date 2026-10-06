@@ -36,7 +36,7 @@ console.log(document.querySelector("button").textContent);
 点击我
 ```
 
-## 常见错误
+## 常见错误与排查
 
 - 把 == 与 === 混用，造成隐式类型转换。
 - 复制命令时遗漏空格、引号或必要参数。
@@ -191,7 +191,7 @@ console.log(document.querySelector("button").textContent);
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
 
-## 逐节复习与自检
+## 复习与自测
 
 下面按正文顺序回顾每一节，并给出一个自检问题；说不清的地方回到原章节补课。
 

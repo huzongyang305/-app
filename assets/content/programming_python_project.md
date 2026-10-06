@@ -101,6 +101,7 @@ plt.savefig("tags.png", dpi=120)
 4. 用 Jupyter Notebook 探索，定型后沉淀为 `.py` 模块。
 
 ## 本课小结
+
 这个项目的价值在于把**请求、解析、DataFrame、可视化**串成完整链路。把它跑通，Python 的数据处理能力就入门了。
 
 ## requests 速查
@@ -158,7 +159,7 @@ except requests.RequestException as exc:
 | 时间处理 | `pd.to_datetime(df.created_at)` |
 | 导出 | `df.to_csv("out.csv", index=False, encoding="utf-8-sig")` |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易写错的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -173,7 +174,7 @@ except requests.RequestException as exc:
 | 日期字段当字符串比较 | 排序与筛选结果错误 | 先 `pd.to_datetime` |
 | 中文 CSV 在 Excel 打开乱码 | 编码不匹配 | 导出用 `utf-8-sig` |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 所有网络请求都设超时、重试与状态检查。
 - [ ] 抓取前确认目标站点的 robots 与使用条款。

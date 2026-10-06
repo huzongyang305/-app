@@ -134,6 +134,7 @@ clang-tidy src/*.cpp -- -Iinclude
 4. CI 中跑 `cmake --build` + `ctest` + sanitizer。
 
 ## 本课小结
+
 多文件 + CMake + 测试 + sanitizer 是现代 C++ 项目的最小骨架；把它固化成模板，新项目直接复用。
 
 ## 目录结构速查
@@ -193,7 +194,7 @@ add_test(NAME calc_test COMMAND calc_test)
 | 静态检查 | clang-tidy + `compile_commands.json` |
 | 流水线步骤 | 配置 → 构建 → 测试 → 静态检查 → 打包 |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 现象 | 原因 | 处理方式 |
 | --- | --- | --- |
@@ -207,7 +208,7 @@ add_test(NAME calc_test COMMAND calc_test)
 | 只在本地跑测试 | 回归无人发现 | 接入 CI 并设为合并门禁 |
 | 用 Debug 构建做性能测试 | 数据无意义 | 用 Release 并固定编译选项 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 目录分为 `include/`、`src/`、`tests/`。
 - [ ] `main.cpp` 只做编排，业务逻辑在库里可被测试。

@@ -119,6 +119,7 @@ EF Core 把 LINQ 翻译成 SQL，配合迁移（`Add-Migration` / `Database.Migr
 | 桌面 / 移动 | WPF、WinUI、MAUI |
 
 ## 本课小结
+
 C# 的工程能力 = **NuGet 管依赖、xUnit 写测试、ASP.NET Core 做服务、EF Core 访问数据库**。先把这几件用熟，再按业务扩展。
 
 ## 依赖注入速查
@@ -191,7 +192,7 @@ public class PriceTests
 | 迁移 | `dotnet ef migrations add Init`、`dotnet ef database update` |
 | 并发控制 | 并发令牌（`[ConcurrencyCheck]` / `RowVersion`） |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易踩的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -206,7 +207,7 @@ public class PriceTests
 | 直接用 `Console.WriteLine` | 生产日志无法收集 | 用 `ILogger<T>` 结构化日志 |
 | 连接字符串写死在代码里 | 泄漏与无法切换环境 | 用配置与环境变量 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 能说清 Singleton / Scoped / Transient 的取舍。
 - [ ] `DbContext` 使用 Scoped 生命周期。

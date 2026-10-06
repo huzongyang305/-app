@@ -46,6 +46,7 @@ serde + serde_json 处理配置与输出；大文件用 BufReader 逐行处理�
 用 `cargo build --release` 产出单文件二进制；交叉编译可用 cross 或 GitHub Actions 的矩阵构建多平台产物；发布到 crates.io 需完善 README、许可证与版本语义（SemVer）。
 
 ## 本课小结
+
 Rust CLI 的标准配方：**clap 解析 + anyhow/thiserror 错误 + serde 序列化 + assert_cmd 测试 + 多平台发布**；类型系统让这类工具几乎"发布即稳定"。
 
 ## 常用 crate 速查
@@ -130,7 +131,7 @@ fn counts_lines() {
 }
 ```
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易踩的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -145,7 +146,7 @@ fn counts_lines() {
 | 不写集成测试 | 参数解析改动无人发现 | 用 `assert_cmd` 测 stdout / 退出码 |
 | 发布未加 `--release` | 运行速度慢 | 发布用 `cargo build --release` |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 用 clap derive 定义参数并自动生成帮助。
 - [ ] 数据输出到 stdout，日志与进度到 stderr。

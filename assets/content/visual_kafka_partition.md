@@ -140,7 +140,7 @@ enable.idempotence=true
 正确顺序：处理成功 → 手动提交 offset
 ```
 
-## 新手最容易踩的八个坑
+## 常见错误与排查
 
 | 坑 | 现象 | 正确做法 |
 | --- | --- | --- |
@@ -156,6 +156,7 @@ enable.idempotence=true
 ![分区与副本职责对照图](images/p2_kafka_partition_compare.webp)
 
 ## 本课小结
+
 - 分区既是**并行单位**也是**顺序单位**：要单键有序就把业务键设为 key。
 - 再平衡会短暂停消费，减少它的关键是**稳定的消费者与合理超时**。
 - 可靠性三件套：**副本因子 3、`acks=all`、手动提交 offset**。
@@ -430,7 +431,7 @@ kafka-topics.sh --alter --topic orders --partitions 12 --bootstrap-server localh
 
 ### 考点 2：代码补全·Kafka
 
-- **题目**：这段代码代码是「图解 Kafka 分区、副本与再平衡」的示例片段，下面哪一项描述与它一致？
+- **题目**：这段代码是「图解 Kafka 分区、副本与再平衡」的示例片段，下面哪一项描述与它一致？
 - **判断依据**：在「图解 Kafka 分区、副本与再平衡」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「图解 Kafka 分区、副本与再平衡」的正文示例，围绕Kafka、分区、再平衡展开；把输入或边界换成空值、极值或失败情况后，结论要以「图解 Kafka 分区、副本与再平衡」的实际运行结果为准。
 
 ### 考点 3：概念判断·acks=all
@@ -447,6 +448,15 @@ kafka-topics.sh --alter --topic orders --partitions 12 --bootstrap-server localh
 
 - **题目**：补全代码：「图解 Kafka 分区、副本与再平衡」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `____.assignment.strategy=org.apache.kafka.clients.consumer.CooperativeStickyAssignor`
 - **判断依据**：在「图解 Kafka 分区、副本与再平衡」里，partition。回到「图解 Kafka 分区、副本与再平衡」的正文示例，用“补全代码”走一遍Kafka、分区、再平衡的完整流程，能复现的结论才可以保留。回到Kafka、分区、再平衡本身再看一遍：只有“partition”与题干“Kafka”的前提一致，结论才成立。
+
+## 复习与自测
+
+- [ ] 能把「一句话说清」的判断标准套到一个新例子上。
+- [ ] 能说清「一张图看懂主题与分区」的结论，并说出它的适用边界。
+- [ ] 能用自己的话复述「分区与顺序的关系」，并各举一个正例和反例。
+- [ ] 能解释「消费者组与再平衡」里最容易混淆的两个概念。
+- [ ] 能不看正文写出「副本与 ISR」的关键步骤。
+- [ ] 能用一句话说明「消费位点提交方式」解决什么问题。
 
 ## English Overview
 

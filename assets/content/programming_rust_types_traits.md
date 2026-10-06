@@ -4,7 +4,7 @@
 
 ![Rust 类型系统：Option、Result 与 trait](images/remaining_rust_types_traits.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：30 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：35 分钟
 
 ## 学习目标
 
@@ -51,6 +51,7 @@ trait 类似接口，但支持默认实现、关联类型与泛型约束。`impl
 | `Cow<T>` | 写时复制，兼顾借用与拥有 |
 
 ## 本课小结
+
 Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：**Option 管空值、Result 管错误、trait 管行为、enum + match 管状态**。
 
 ## Option 与 Result 速查
@@ -100,7 +101,7 @@ fn read_port(map: &std::collections::HashMap<String, String>) -> Result<u16, Con
 | 常用标准 trait | `Debug`、`Clone`、`Copy`、`PartialEq`、`Default`、`From`/`Into` |
 | 孤儿规则 | trait 或类型至少有一个属于当前 crate |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易写错的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -115,7 +116,7 @@ fn read_port(map: &std::collections::HashMap<String, String>) -> Result<u16, Con
 | 忘记处理 `None` 分支 | 编译错误（穷尽匹配） | 补分支或用组合子 |
 | 把一个巨大的 `Result` 到处传递 | 类型签名冗长 | 用 `anyhow`（应用层）或自定义错误枚举 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 用 `Option` 表达可能缺失，`Result` 表达可能失败。
 - [ ] 优先用 `?` 与组合子，避免 `unwrap()`。
@@ -342,7 +343,7 @@ fn main() {
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-## 实践任务
+## 可运行练习
 
 本节围绕Rust 类型系统：Option、Result 与 trait安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 

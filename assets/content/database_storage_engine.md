@@ -63,6 +63,7 @@ Buffer Pool 缓存数据页，用改良 LRU（分 young/old 区）避免全表�
 崩溃恢复流程：用 redo 重放已提交的修改，用 undo 回滚未提交事务，保证 ACID 中的持久性与原子性。
 
 ## 本课小结
+
 存储引擎的核心是**页 + B+ 树 + Buffer Pool + 日志**：B+ 树决定查询效率，Buffer Pool 决定内存命中，redo/undo/binlog 决定崩溃恢复与复制。
 
 ## 存储引擎对照
@@ -120,7 +121,7 @@ SELECT
 SELECT @@innodb_buffer_pool_size / 1024 / 1024 / 1024 AS pool_gb;
 ```
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易踩的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -135,7 +136,7 @@ SELECT @@innodb_buffer_pool_size / 1024 / 1024 / 1024 AS pool_gb;
 | 混用 MyISAM 与 InnoDB | 事务失效、锁粒度混乱 | 统一使用 InnoDB |
 | 只看 QPS 不看 IO | 掩盖磁盘瓶颈 | 同时监控 IOPS、延迟与命中率 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 能说清 redo、undo、binlog 的分工。
 - [ ] 记得聚簇索引叶子存整行，二级索引叶子存主键。

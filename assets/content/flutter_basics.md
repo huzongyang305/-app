@@ -71,6 +71,7 @@ Flutter 自带渲染引擎（Skia/Impeller）直接绘制，不依赖原生控�
 调试技巧：`flutter run` 时按 `p` 打开布局检查器看约束；用 `debugPrint` 代替 print（长日志不被截断）；`flutter analyze` 进 CI 防低级错误。
 
 ## 本课小结
+
 Flutter 的核心心智模型是**约束驱动的 Widget 树 + 不可变描述 + 状态驱动重建**；掌握布局三原则与 builder 懒加载，就能避免大部分性能与溢出问题。
 
 ## Widget 分类速查
@@ -139,7 +140,7 @@ Widget adaptiveGrid(BuildContext context, List<Widget> items) {
 }
 ```
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易踩的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -154,7 +155,7 @@ Widget adaptiveGrid(BuildContext context, List<Widget> items) {
 | 硬编码尺寸 | 小屏溢出 | 用相对尺寸与 `LayoutBuilder` |
 | 忘记 `dispose` 控制器 | 内存泄漏 | 在 `dispose` 中释放 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 能说出无状态与有状态组件的使用边界。
 - [ ] 会用 `Row`、`Column`、`Stack`、`Expanded` 完成常见布局。
@@ -380,7 +381,7 @@ class ItemList extends StatelessWidget {
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-## 实践任务
+## 可运行练习
 
 本节围绕Flutter 基础与 Widget 树安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 
@@ -462,7 +463,7 @@ class ItemList extends StatelessWidget {
 
 ### 考点 1：代码补全·Flutter
 
-- **题目**：下面这段代码代码摘自「Flutter 基础与 Widget 树」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
+- **题目**：下面这段代码摘自「Flutter 基础与 Widget 树」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 - **判断依据**：在「Flutter 基础与 Widget 树」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「Flutter 基础与 Widget 树」的正文示例，围绕Flutter、Widget、布局展开；把输入或边界换成空值、极值或失败情况后，结论要以「Flutter 基础与 Widget 树」的实际运行结果为准。
 
 ### 考点 2：概念判断·Flutter

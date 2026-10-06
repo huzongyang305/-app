@@ -57,6 +57,7 @@ vitest 与 Vite 共用配置，开箱支持 TS；测试要点：对纯函数做�
 顺序：`install → lint → tsc --noEmit → test --coverage → build`。构建产物要做体积检查（bundlesize/rollup-plugin-visualizer），防止依赖悄悄膨胀。
 
 ## 本课小结
+
 TypeScript 工具链的核心原则：**类型检查与打包分离、产物格式与运行时对齐、类型行为也要测试**。
 
 ## 构建产物速查
@@ -111,7 +112,7 @@ TypeScript 工具链的核心原则：**类型检查与打包分离、产物格�
 | `no-unnecessary-condition` | 找出永远为真/假的判断 |
 | `switch-exhaustiveness-check` | 要求 switch 覆盖联合所有成员 |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易踩的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -126,7 +127,7 @@ TypeScript 工具链的核心原则：**类型检查与打包分离、产物格�
 | 接口模拟散落在各处 | 维护困难 | 用 MSW 集中定义 handler |
 | 依赖 `ts-node` 直接跑生产 | 启动慢、类型未预检 | 构建后运行产物 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 库同时提供 ESM、CJS 与类型声明，并用 `exports` 暴露。
 - [ ] `package.json` 的 `files` 只包含发布所需内容。

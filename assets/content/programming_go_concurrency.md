@@ -39,18 +39,32 @@ Go 的并发哲学：**不要通过共享内存来通信，而要通过通信来
 3. **超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`。
 4. **等待一组任务**：`sync.WaitGroup` 的 Add/Done/Wait。
 
-## 必须注意的坑
+## 常见错误与排查
 
 - **goroutine 泄漏**：启动后无人回收。凡是阻塞在 channel 或网络上的 goroutine，都要有退出路径。
 - **向已关闭的 channel 发送** 会 panic；关闭方应是唯一的发送者。
 - **循环变量捕获**：Go 1.22 之前需显式复制变量。
 - **竞态**：用 `go test -race` 检测，用 mutex 或 channel 消除。
+| 容易写错的做法 | 实际现象 | 原因与正确做法 |
+| --- | --- | --- |
+| `wg.Add(1)` 写在 `go func()` 内部 | `Wait` 提前返回 | `Add` 必须在启动协程前调用 |
+| 向已关闭的 channel 发送 | panic | 只让发送方关闭，且关闭后不再发送 |
+| 读已关闭的 channel | 立刻返回零值 | 用 `v, ok := <-ch` 区分「零值」与「已关闭」 |
+| goroutine 内 panic 未捕获 | 整个进程崩溃 | 在 `recover` 中兜住并记录日志 |
+| 只发不收（或只收不发） | 死锁：`all goroutines are asleep` | 确保有对应接收方，或使用缓冲与超时 |
+| 在循环里用 `for _, v := range s { go func(){ use(v) }() }` | 旧版 Go 捕获同一变量导致数据错 | 把 `v` 作为参数传入闭包 |
+| 忘记 `defer cancel()` | context 泄漏 | 创建后立即 `defer cancel()` |
+| 用 `time.Sleep` 等待完成 | 不稳定、慢 | 用 `WaitGroup` 或 channel 同步 |
+| 共享 map 并发读写 | panic：`concurrent map writes` | 加锁或用 `sync.Map` |
+| 无限制启动 goroutine | 内存暴涨、调度开销大 | 用带缓冲的 channel 或 `errgroup.SetLimit` 限流 |
+| 直接 `fmt.Println` 调试并发 | 输出交织、无法定位 | 用结构化日志并带请求 ID |
 
 ## 共享状态的两条路
 
 优先用 channel 传递所有权；确需共享时用 `sync.Mutex`/`RWMutex` 或 `sync/atomic`。读多写少用 `RWMutex`，计数器用 `atomic.Int64`。
 
 ## 本课小结
+
 Go 并发的要点：**用 channel 传递数据、用 context 控制生命周期、用 WaitGroup 等待完成、用 -race 验证正确性**。
 
 ## goroutine 与 channel 速查
@@ -104,23 +118,7 @@ func worker(ctx context.Context, jobs <-chan int, results chan<- int, wg *sync.W
 | 共享状态较多 | 加锁，但优先考虑改用 channel 传递所有权 |
 | 检测数据竞争 | `go test -race` |
 
-## 常见错误对照表
-
-| 容易写错的做法 | 实际现象 | 原因与正确做法 |
-| --- | --- | --- |
-| `wg.Add(1)` 写在 `go func()` 内部 | `Wait` 提前返回 | `Add` 必须在启动协程前调用 |
-| 向已关闭的 channel 发送 | panic | 只让发送方关闭，且关闭后不再发送 |
-| 读已关闭的 channel | 立刻返回零值 | 用 `v, ok := <-ch` 区分「零值」与「已关闭」 |
-| goroutine 内 panic 未捕获 | 整个进程崩溃 | 在 `recover` 中兜住并记录日志 |
-| 只发不收（或只收不发） | 死锁：`all goroutines are asleep` | 确保有对应接收方，或使用缓冲与超时 |
-| 在循环里用 `for _, v := range s { go func(){ use(v) }() }` | 旧版 Go 捕获同一变量导致数据错 | 把 `v` 作为参数传入闭包 |
-| 忘记 `defer cancel()` | context 泄漏 | 创建后立即 `defer cancel()` |
-| 用 `time.Sleep` 等待完成 | 不稳定、慢 | 用 `WaitGroup` 或 channel 同步 |
-| 共享 map 并发读写 | panic：`concurrent map writes` | 加锁或用 `sync.Map` |
-| 无限制启动 goroutine | 内存暴涨、调度开销大 | 用带缓冲的 channel 或 `errgroup.SetLimit` 限流 |
-| 直接 `fmt.Println` 调试并发 | 输出交织、无法定位 | 用结构化日志并带请求 ID |
-
-## 自测清单
+## 复习与自测
 
 - [ ] 会用 `WaitGroup`、`channel`、`context` 控制协程生命周期。
 - [ ] 知道「谁发送谁关闭」的惯例，并用 `v, ok` 判断关闭。
@@ -281,7 +279,7 @@ case result := <-ch:
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-## 实践任务
+## 可运行练习
 
 本节围绕Go 并发：goroutine、channel 与 context安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 

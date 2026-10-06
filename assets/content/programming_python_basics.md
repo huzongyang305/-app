@@ -77,7 +77,7 @@ print(f"类型是 {type(age).__name__}")
 3. 用空行分隔逻辑段落。
 4. 给复杂的判断写注释，解释「为什么」而不是「做了什么」。
 
-## 常见错误速查
+## 常见错误与排查
 
 | 现象 | 原因 | 修正 |
 | --- | --- | --- |
@@ -86,8 +86,20 @@ print(f"类型是 {type(age).__name__}")
 | 函数默认值在多次调用间"记住了"旧数据 | 可变对象作默认参数 | 用 `None` 占位并在函数内创建 |
 | 判断相等结果不符预期 | 用了 `is` 比较值 | 值比较用 `==`，`is` 只判断同一对象 |
 | 循环里删元素漏项 | 遍历时修改列表 | 遍历副本 `for x in nums[:]` |
+| 容易写错的做法 | 实际现象 | 原因与正确做法 |
+| Tab 与空格混用缩进 | `TabError: inconsistent use of tabs and spaces` | 统一用 4 个空格，编辑器设置「Tab 转空格」 |
+| 忘了冒号 | `SyntaxError: expected ':'` | `if`、`for`、`while`、`def`、`class` 行末都要冒号 |
+| 用中文标点 | `SyntaxError: invalid character '：'` | 代码里的括号、引号、冒号必须用英文半角 |
+| `input()` 直接参与算术 | `TypeError: can only concatenate str` | `input()` 返回字符串，先 `int()` / `float()` |
+| `print "hello"` | `SyntaxError` | Python 3 中 `print` 是函数，必须加括号 |
+| 变量未定义就使用 | `NameError: name 'x' is not defined` | 先赋值再使用，注意拼写一致 |
+| 使用保留字作变量名 | `SyntaxError` | 避开 `class`、`def`、`lambda`、`None` 等关键字 |
+| 用 `=` 做比较 | `SyntaxError` | 比较相等用 `==` |
+| 字符串里出现未转义的引号 | `SyntaxError: unterminated string literal` | 用另一种引号包裹，或写 `\'` |
+| 代码块下没有内容 | `IndentationError: expected an indented block` | 至少写 `pass` 或实际语句 |
 
 ## 本课小结
+
 Python 的三大基础是：**缩进、变量、输入输出**。掌握它们之后，就可以开始写带分支和循环的小程序了。
 
 ## 语法速查
@@ -120,21 +132,6 @@ print(f"圆周率约等于 {3.14159:.2f}")     # 3.14
 print(f"编号 {7:04d}")                   # 编号 0007
 print("a", "b", sep="-", end="!\n")      # a-b!
 ```
-
-## 常见错误对照表
-
-| 容易写错的做法 | 实际现象 | 原因与正确做法 |
-| --- | --- | --- |
-| Tab 与空格混用缩进 | `TabError: inconsistent use of tabs and spaces` | 统一用 4 个空格，编辑器设置「Tab 转空格」 |
-| 忘了冒号 | `SyntaxError: expected ':'` | `if`、`for`、`while`、`def`、`class` 行末都要冒号 |
-| 用中文标点 | `SyntaxError: invalid character '：'` | 代码里的括号、引号、冒号必须用英文半角 |
-| `input()` 直接参与算术 | `TypeError: can only concatenate str` | `input()` 返回字符串，先 `int()` / `float()` |
-| `print "hello"` | `SyntaxError` | Python 3 中 `print` 是函数，必须加括号 |
-| 变量未定义就使用 | `NameError: name 'x' is not defined` | 先赋值再使用，注意拼写一致 |
-| 使用保留字作变量名 | `SyntaxError` | 避开 `class`、`def`、`lambda`、`None` 等关键字 |
-| 用 `=` 做比较 | `SyntaxError` | 比较相等用 `==` |
-| 字符串里出现未转义的引号 | `SyntaxError: unterminated string literal` | 用另一种引号包裹，或写 `\'` |
-| 代码块下没有内容 | `IndentationError: expected an indented block` | 至少写 `pass` 或实际语句 |
 
 ## 入门第一周练习清单
 
@@ -398,6 +395,15 @@ print("程序结束")   # 没有缩进，无论条件是否成立都会执行
 
 - **题目**：关于「Python 基础语法」，下列哪些说法是正确的？（多选）
 - **判断依据**：从第一个程序开始，掌握缩进、注释与输入输出。在「Python 基础语法」里，字符串 str」是否完整覆盖题干的输入、输出和失败路径，并排除「根据输入自动推断」、「int、str、tuple」这类相邻概念。「Python 基础语法」要求先交代python、缩进、print的前提再下结论，所以“int、str、tuple”只在题干“Python 基础语法”给定的条件下成立。
+
+## 复习与自测
+
+- [ ] 能用自己的话复述「为什么先学 Python」，并各举一个正例和反例。
+- [ ] 能解释「第一段程序」里最容易混淆的两个概念。
+- [ ] 能不看正文写出「缩进就是语法」的关键步骤。
+- [ ] 能用一句话说明「基本输入输出」解决什么问题。
+- [ ] 能把「代码风格建议」的判断标准套到一个新例子上。
+- [ ] 能说清「语法速查」的结论，并说出它的适用边界。
 
 ## English Overview
 

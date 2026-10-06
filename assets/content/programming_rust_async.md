@@ -43,13 +43,25 @@ Rust 的 `async fn` 由编译器生成状态机，返回 `Future`；Future 是**
 | 同步原语 | `tokio::sync::{Mutex, RwLock, mpsc, oneshot, Semaphore}` |
 | 阻塞任务隔离 | `tokio::task::spawn_blocking` |
 
-## 五个高频坑
+## 常见错误与排查
 
 1. **在异步任务里做阻塞操作**（同步 IO、CPU 密集），会卡住整个执行线程，应用 `spawn_blocking` 或限制线程数。
 2. **用 std 的 Mutex 跨 await 持有**，会导致死锁或编译错误；应使用 `tokio::sync::Mutex`，且尽量缩短持锁范围。
 3. **忘记 spawn 或 await**，Future 根本不会执行（惰性）。
 4. **spawn 的 Future 捕获了非 'static 引用**，编译失败；用 `Arc` 共享所有权或 `move` 闭包。
 5. **取消语义**：drop 掉 Future 即取消，但已发生的副作用不会回滚；关键操作要考虑取消后的清理与幂等。
+| 容易踩的做法 | 实际现象 | 原因与正确做法 |
+| --- | --- | --- |
+| 在 async 里调用阻塞 API | 整个运行时被卡住 | 用异步版本或 `spawn_blocking` |
+| 用 `std::sync::Mutex` 跨 `.await` | 编译错误或死锁风险 | 改用 `tokio::sync::Mutex` |
+| 忘记 `await` future | 任务从未执行（编译器会告警） | 补 `.await` |
+| `tokio::spawn` 捕获非 `'static` 引用 | 编译错误 | 用 `Arc` 共享或改用 `join!` |
+| 无限制 `spawn` | 内存暴涨 | 用 `Semaphore` 限制并发 |
+| 任务 panic 未观察 | 错误被静默丢弃 | 保存 `JoinHandle` 并处理 `Err` |
+| 在 `select!` 分支里做重活 | 阻塞运行时 | 只做轻量处理 |
+| 用 `thread::sleep` 做异步延迟 | 阻塞线程 | 用 `tokio::time::sleep` |
+| 单线程运行时跑阻塞任务 | 所有任务停摆 | 换多线程运行时或 `spawn_blocking` |
+| 不设超时 | 依赖故障时任务堆积 | 统一加 `timeout` 与取消 |
 
 ## 与线程模型的选择
 
@@ -63,6 +75,7 @@ Rust 的 `async fn` 由编译器生成状态机，返回 `Future`；Future 是**
 经验：**不要为了异步而异步**。异步的收益来自大量并发等待的场景；纯计算任务用 rayon 更简单直接。
 
 ## 本课小结
+
 Rust 异步的三句话：**Future 惰性需被驱动、阻塞操作必须隔离、跨 await 的共享状态要用 tokio 同步原语**。
 
 ## tokio 速查
@@ -126,22 +139,7 @@ async fn fetch(name: &str) -> String {
 | 单次初始化 | `tokio::sync::OnceCell` | 异步初始化 |
 | 取消传播 | `CancellationToken` | 统一取消一组任务 |
 
-## 常见错误对照表
-
-| 容易踩的做法 | 实际现象 | 原因与正确做法 |
-| --- | --- | --- |
-| 在 async 里调用阻塞 API | 整个运行时被卡住 | 用异步版本或 `spawn_blocking` |
-| 用 `std::sync::Mutex` 跨 `.await` | 编译错误或死锁风险 | 改用 `tokio::sync::Mutex` |
-| 忘记 `await` future | 任务从未执行（编译器会告警） | 补 `.await` |
-| `tokio::spawn` 捕获非 `'static` 引用 | 编译错误 | 用 `Arc` 共享或改用 `join!` |
-| 无限制 `spawn` | 内存暴涨 | 用 `Semaphore` 限制并发 |
-| 任务 panic 未观察 | 错误被静默丢弃 | 保存 `JoinHandle` 并处理 `Err` |
-| 在 `select!` 分支里做重活 | 阻塞运行时 | 只做轻量处理 |
-| 用 `thread::sleep` 做异步延迟 | 阻塞线程 | 用 `tokio::time::sleep` |
-| 单线程运行时跑阻塞任务 | 所有任务停摆 | 换多线程运行时或 `spawn_blocking` |
-| 不设超时 | 依赖故障时任务堆积 | 统一加 `timeout` 与取消 |
-
-## 自测清单
+## 复习与自测
 
 - [ ] 异步链路中不出现阻塞调用。
 - [ ] 跨 `.await` 的共享状态使用 `tokio::sync` 原语。
@@ -375,7 +373,7 @@ async fn main() {
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-## 实践任务
+## 可运行练习
 
 本节围绕Rust 异步编程与 tokio安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 

@@ -107,6 +107,7 @@ pytest --cov=. --cov-report=term    # 覆盖率
 标准库的 `unittest` 也能用，语法更啰嗦但无需第三方依赖；`doctest` 则可以直接运行文档字符串里的示例。
 
 ## 本课小结
+
 类型注解 + mypy 让错误在运行前暴露，pytest 让改动有回归保障。这两件事是 Python 项目从脚本走向工程的分界线。
 
 ## 类型注解速查
@@ -178,7 +179,7 @@ def test_missing_key_raises(users):
         users["nobody"]
 ```
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易写错的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -193,7 +194,7 @@ def test_missing_key_raises(users):
 | 测试依赖真实网络或数据库 | 不稳定、慢 | 用假实现或本地容器，测试保持离线 |
 | 忘记装开发依赖 | `ModuleNotFoundError: pytest` | 用 `requirements-dev.txt` 或 `pyproject` 分组声明 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 公开函数都写了参数与返回值注解。
 - [ ] 会用 `pytest.raises` 与 `pytest.approx`。

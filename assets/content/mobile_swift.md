@@ -55,6 +55,7 @@ SwiftUI 要点：视图是 struct（轻量重建）；`@State` 管局部状态�
 用 Xcode Archive 产出 ipa；签名依赖证书与描述文件（开发/分发/企业三类）；TestFlight 做灰度与内测；App Store 审核要点包括隐私清单（Privacy Manifest）、权限用途说明与 ATT 跟踪授权。CI 上常用 fastlane 自动化构建与上传。
 
 ## 本课小结
+
 iOS 开发的关键是**值类型 + 可选类型 + ARC 内存管理**：用 struct 与协议组织代码、用可选类型显式处理缺失、用 weak 打破循环引用。
 
 ## Swift 语法速查
@@ -152,7 +153,7 @@ struct LessonListView: View {
 | async let | 并发启动多个异步调用 |
 | actor | 保护可变状态的隔离单元 |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易踩的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -167,7 +168,7 @@ struct LessonListView: View {
 | 视图里堆业务逻辑 | 难测试 | 抽到 ViewModel 或 Store |
 | 不处理错误分支 | 静默失败 | 用 `Result` 或抛出并显式处理 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 优先使用 `let`、`struct` 与可选绑定。
 - [ ] 闭包捕获遵循 `[weak self]`，核对无循环引用。
@@ -445,7 +446,7 @@ struct ItemListView: View {
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-## 实践任务
+## 可运行练习
 
 本节围绕Swift 与 iOS 开发安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 

@@ -76,6 +76,7 @@ do { } while (condition);                // 至少执行一次
 `break` 结束循环，`continue` 跳过本轮；`forEach` 中不能用 `break`，需要提前退出就用 `for...of`。
 
 ## 本课小结
+
 现代写法：`===` 代替 `==`、`??` 代替 `||` 兜底、`?.` 避免层层判空、遍历数组优先 `for...of`。
 
 ## 运算符速查
@@ -123,7 +124,7 @@ action();
 const city = user?.address?.city ?? "未知";
 ```
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易写错的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -138,7 +139,7 @@ const city = user?.address?.city ?? "未知";
 | `NaN === NaN` | `false` | 用 `Number.isNaN(x)` |
 | `typeof x === "object"` 判数组 | 数组也是 `"object"` | 用 `Array.isArray(x)` |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 默认使用 `===` / `!==`，能说出 `??` 与 `\|\|` 的区别。
 - [ ] 记得七个假值，知道 `[]` 与 `"0"` 都是真值。

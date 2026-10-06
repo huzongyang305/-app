@@ -113,6 +113,7 @@ List<? super Integer> sink = new ArrayList<Number>(); // 下界通配符：可�
 **并发容器**：`ConcurrentHashMap`（分段/CAS，读几乎无锁）、`CopyOnWriteArrayList`（写时复制，适合读多写极少）、`BlockingQueue`（生产者-消费者）。注意：`Collections.synchronizedMap` 只是给每个方法加锁，遍历时仍需手动同步；`ConcurrentHashMap` 不允许 null 键值。
 
 ## 本课小结
+
 日常组合：`ArrayList` + `HashMap` + `HashSet` 覆盖 90% 场景；需要排序用 `TreeMap`/`TreeSet`，需要线程安全用 `ConcurrentHashMap`。
 
 ## 集合选型速查
@@ -154,7 +155,7 @@ Map<String, List<Employee>> byDept = employees.stream()
         .collect(Collectors.groupingBy(Employee::dept));
 ```
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易写错的写法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -168,7 +169,7 @@ Map<String, List<Employee>> byDept = employees.stream()
 | 遍历 `keySet()` 再 `get` | 多一次查找 | 遍历 `entrySet()` 一次拿键值 |
 | 用可变对象作 `HashMap` 的键 | 改字段后查不到 | 键应使用不可变对象（`String`、`record`） |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 能根据「是否去重、是否需要顺序、是否并发」选定集合类型。
 - [ ] 记得 `ArrayList` 随机访问快、`LinkedList` 两端操作快。
@@ -344,7 +345,7 @@ public class WordCount {
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-## 实践任务
+## 可运行练习
 
 本节围绕集合框架与泛型安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 

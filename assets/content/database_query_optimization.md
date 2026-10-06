@@ -89,6 +89,7 @@ FROM users u JOIN orders o ON o.user_id = u.id;
 4. 连接池大小要匹配数据库承载能力，不是越大越好。
 
 ## 本课小结
+
 优化闭环：**测量 → 看执行计划 → 改索引或 SQL → 再测量**。没有数据的优化都是猜测。
 
 ## EXPLAIN 字段速查
@@ -144,7 +145,7 @@ SELECT * FROM sys.statements_with_full_table_scans LIMIT 10;
 | 5 | 回归对比：执行时间、扫描行数、CPU 与 IO |
 | 6 | 上线后持续监控慢查询 |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易写错的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -159,7 +160,7 @@ SELECT * FROM sys.statements_with_full_table_scans LIMIT 10;
 | 忽略数据分布 | 优化效果不稳定 | 用真实数据量与分布验证 |
 | 改完不上监控 | 回归无人发现 | 加慢查询与执行时间监控 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 会读 `EXPLAIN` 的 `type`、`key`、`rows`、`Extra`。
 - [ ] 知道列上加函数会让索引失效。

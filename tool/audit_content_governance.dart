@@ -9,6 +9,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'lesson_effort.dart';
+import 'markdown_fences.dart';
 
 const String manifestPath = 'assets/content/manifest.json';
 const String defaultReportPath = 'tool/reports/content_governance_report.json';
@@ -56,6 +57,53 @@ const List<String> generatedMarkdownMarkers = <String>[
 
 /// P0/P1 语义卡口：这些缺陷是生成器留下的可见问题，一律按 error 处理。
 const String placeholderTitle = '本课主题';
+
+/// P1 结构统一：每门课都必须具备的 14 个规范章节（见 docs/content_standard.md）。
+const List<String> canonicalLessonSections = <String>[
+  '学习目标',
+  '前置知识',
+  '动手练习',
+  '考点精讲',
+  '故障现场',
+  '本课小结',
+  '参考资料与复核',
+  'English Overview',
+  '内容元数据',
+  '本课复习清单',
+  '术语速查',
+  '可运行练习',
+  '常见错误与排查',
+  '复习与自测',
+];
+
+/// 已被规范名取代的旧章节标题：再次出现说明生成器回退到旧命名。
+const List<String> legacyLessonSections = <String>[
+  '常见错误对照表',
+  '常见错误',
+  '常见错误速查',
+  '常见误区',
+  '常见坑',
+  '常见陷阱',
+  '常见问题',
+  '常见问题与对策',
+  '常见问题与排查顺序',
+  '常见风险速查',
+  '常见失败模式',
+  '常见反模式速查',
+  '反模式',
+  '失败模式',
+  '新手最容易踩的八个坑',
+  '新手最容易踩的六个坑',
+  '必须注意的坑',
+  '五个高频坑',
+  '三个经典坑',
+  '易错点回顾',
+  '自测清单',
+  '逐节复习与自检',
+  '深度追问与自测',
+  '本课自测清单与错误对照',
+  '实践任务',
+];
 
 const List<String> genericPythonQuestionMarkers = <String>[
   'bucket=[]',
@@ -134,6 +182,8 @@ void main(List<String> args) {
   var duplicateReviewSections = 0;
   var staleReviewSupplements = 0;
   var corruptTermTables = 0;
+  var missingSectionLessons = 0;
+  var legacySectionHeadings = 0;
   var codeQuestionsWithoutDomainLink = 0;
   var explanationsWithMeta = 0;
   var languageMismatches = 0;
@@ -166,6 +216,10 @@ void main(List<String> args) {
           staleReviewSupplements++;
         case 'corrupt_term_table':
           corruptTermTables++;
+        case 'missing_section':
+          missingSectionLessons++;
+        case 'legacy_section_heading':
+          legacySectionHeadings++;
       }
     }
     if (lesson.markdown.contains(placeholderTitle)) {
@@ -471,6 +525,8 @@ void main(List<String> args) {
     'duplicate_review_sections': duplicateReviewSections,
     'stale_review_supplements': staleReviewSupplements,
     'corrupt_term_tables': corruptTermTables,
+    'lessons_missing_canonical_sections': missingSectionLessons,
+    'legacy_section_headings': legacySectionHeadings,
     'code_questions_without_domain_link': codeQuestionsWithoutDomainLink,
     'explanations_with_meta_markers': explanationsWithMeta,
     'language_mismatches': languageMismatches,
@@ -514,6 +570,8 @@ void main(List<String> args) {
     stdout.writeln('重复复习章节                $duplicateReviewSections');
     stdout.writeln('残留复核补充                $staleReviewSupplements');
     stdout.writeln('损坏术语表                  $corruptTermTables');
+    stdout.writeln('缺规范章节课程              $missingSectionLessons');
+    stdout.writeln('残留旧章节标题              $legacySectionHeadings');
     stdout.writeln('代码题缺本课关联            $codeQuestionsWithoutDomainLink');
     stdout.writeln('解析机械模板句              $explanationsWithMeta');
     stdout.writeln('代码语言错配                $languageMismatches');
@@ -654,6 +712,34 @@ List<GovernanceIssue> _auditLessonStructure(GovernanceLesson lesson) {
     );
   }
   final termSection = _section(lesson.markdown, '术语速查');
+  final missingSections = <String>[
+    for (final title in canonicalLessonSections)
+      if (!_hasSection(lesson.markdown, title)) title,
+  ];
+  if (missingSections.isNotEmpty) {
+    issues.add(
+      GovernanceIssue(
+        level: 'error',
+        lessonId: lesson.id,
+        kind: 'missing_section',
+        message: '缺少规范章节：${missingSections.join('、')}',
+      ),
+    );
+  }
+  final legacySections = <String>[
+    for (final title in legacyLessonSections)
+      if (_hasSection(lesson.markdown, title)) title,
+  ];
+  if (legacySections.isNotEmpty) {
+    issues.add(
+      GovernanceIssue(
+        level: 'error',
+        lessonId: lesson.id,
+        kind: 'legacy_section_heading',
+        message: '残留旧章节标题：${legacySections.join('、')}',
+      ),
+    );
+  }
   final corruptRow = termSection.split('\n').any(
     (line) =>
         line.startsWith('|') &&
@@ -744,18 +830,34 @@ List<GovernanceReference> _extractReferences(String markdown) {
   return result;
 }
 
+RegExp _sectionHeadingPattern(String title) =>
+    RegExp('^##\\s+${RegExp.escape(title)}\\s*\$', multiLine: true);
+
+/// 把代码围栏内的行替换成等长空格：示例里的 `## 标题` 不是章节，
+/// 但保持长度不变，才能继续用匹配偏移量从原文截取章节正文。
+String _maskFencedLines(String markdown) {
+  final lines = markdown.split('\n');
+  final mask = markdownFenceMask(markdown);
+  final buffer = StringBuffer();
+  for (var index = 0; index < lines.length; index++) {
+    buffer.write(mask[index] ? ' ' * lines[index].length : lines[index]);
+    if (index < lines.length - 1) buffer.write('\n');
+  }
+  return buffer.toString();
+}
+
+bool _hasSection(String markdown, String title) =>
+    _sectionHeadingPattern(title).hasMatch(_maskFencedLines(markdown));
+
 String _section(String markdown, String title) {
-  final pattern = RegExp(
-    '^##\\s+${RegExp.escape(title)}\\s*\$',
-    multiLine: true,
-  );
-  final match = pattern.firstMatch(markdown);
+  final masked = _maskFencedLines(markdown);
+  final match = _sectionHeadingPattern(title).firstMatch(masked);
   if (match == null) return '';
   final start = match.end;
   final next = RegExp(
     r'^##\s+',
     multiLine: true,
-  ).firstMatch(markdown.substring(start));
+  ).firstMatch(masked.substring(start));
   return next == null
       ? markdown.substring(start)
       : markdown.substring(start, start + next.start);

@@ -56,6 +56,7 @@
 `./gradlew bundleRelease` 产出 AAB；签名用 `keystore.properties` 外置并在 .gitignore 排除；用 `minifyEnabled true` 加混淆规则减小体积；多渠道与不同环境通过 productFlavors 配置；上线前用 `lint` 检查权限与 API 使用问题。
 
 ## 本课小结
+
 Android 开发的关键是**分层（UI/状态/数据）+ 空安全 + 协程**：把状态交给 ViewModel、把耗时操作交给协程、把数据来源收敛到 Repository。
 
 ## Kotlin 语法速查
@@ -130,7 +131,7 @@ fun displayName(user: User?): String =
 | Foreground Service | 前台服务 | 需通知与权限说明 |
 | Room | 本地数据库 | 用 DAO 与 Flow 观察数据 |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易踩的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -145,7 +146,7 @@ fun displayName(user: User?): String =
 | 用字符串拼 SQL | 注入风险 | Room 或参数化查询 |
 | 权限未做兼容处理 | 新系统版本崩溃 | 按版本分支申请权限 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 空安全用 `?.`、`?:` 处理，`!!` 只出现在确定非空处。
 - [ ] 协程绑定合适作用域，禁止 `GlobalScope`。
@@ -386,7 +387,7 @@ sealed interface ListUiState {
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-## 实践任务
+## 可运行练习
 
 本节围绕Kotlin 与 Android 开发安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 

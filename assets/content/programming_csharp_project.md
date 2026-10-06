@@ -120,6 +120,7 @@ public class TodoTests
 5. CI 中执行 `dotnet format --verify-no-changes` 与 `dotnet test`。
 
 ## 本课小结
+
 最小可用的 .NET 后端 = **EF Core 持久化 + 最小 API 路由 + 依赖注入 + xUnit 测试**；跑通后再按需要加认证、缓存与容器化部署。
 
 ## Web API 分层速查
@@ -179,7 +180,7 @@ public sealed class OrdersController : ControllerBase
 | 配置 | `appsettings.json` + 环境变量覆盖，密钥不进仓库 |
 | 可观测 | 结构化日志 + 请求 ID + 指标 |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易踩的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -194,7 +195,7 @@ public sealed class OrdersController : ControllerBase
 | 用 `DateTime.Now` 存时间 | 跨时区不一致 | 统一 `DateTimeOffset.UtcNow` |
 | 乐观并发冲突不处理 | 用户数据被覆盖 | 捕获冲突并提示重试 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 分层清晰，Controller 只做协议转换。
 - [ ] 请求与响应都使用 DTO 并做校验。

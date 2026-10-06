@@ -158,7 +158,7 @@ print(to_css(TOKENS).splitlines()[1])
 print(validate_contrast("#0f172a", "#ffffff"), validate_contrast("#94a3b8", "#ffffff"))
 ```
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易踩的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -170,7 +170,7 @@ print(validate_contrast("#0f172a", "#ffffff"), validate_contrast("#94a3b8", "#ff
 | 忘记对比度校验 | 深色模式下文字看不清 | 自动化检查对比度 |
 | 令牌数量爆炸 | 无人知道该用哪个 | 保持刻度收敛，定期合并 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 令牌分原始、语义、组件三层。
 - [ ] 组件不写死颜色与尺寸，只引用语义令牌。

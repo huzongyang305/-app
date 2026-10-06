@@ -84,6 +84,7 @@ console.log([...range(1, 4)]);     // [1, 2, 3]
 ```
 
 ## 本课小结
+
 数组是 JS 最常用的结构：**查询用 find/filter、转换用 map、聚合用 reduce、排序记得传比较函数**。
 
 ## 数组方法速查（是否修改原数组）
@@ -125,7 +126,7 @@ const grouped = items.reduce((acc, item) => {
 }, {});
 ```
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易写错的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -142,7 +143,7 @@ const grouped = items.reduce((acc, item) => {
 | `push(...bigArray)` 传超大数组 | `RangeError: Maximum call stack size exceeded` | 大数据量用循环或 `concat` |
 | 用 `for...in` 遍历数组 | 拿到字符串下标，还可能带上自定义属性 | 用 `for...of` 或 `forEach` |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 能说出哪些方法会修改原数组，哪些返回新数组。
 - [ ] 数字排序一定传比较函数。

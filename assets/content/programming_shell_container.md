@@ -57,6 +57,7 @@ kubectl port-forward svc/app 8080:80      # 本地调试
 在容器里写一个 healthcheck 脚本：检查进程存活、端口可连、关键依赖可用，返回 0/1。区分 liveness（失败重启）与 readiness（失败摘流量）——**依赖不可用时只应影响 readiness**，避免全量重启引发雪崩。
 
 ## 本课小结
+
 Shell 与容器的结合点是**可重复的构建/部署/排查流程**：镜像用不可变标签、entrypoint 用 exec 传递信号、排查按 get→describe→logs→exec 顺序进行。
 
 ## 容器脚本速查
@@ -119,7 +120,7 @@ exec "$@"                          # 交给主进程，正确接收 SIGTERM
 | 查看发布状态 | `kubectl rollout status deploy/api` |
 | 回滚 | `kubectl rollout undo deploy/api` |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易踩的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -134,7 +135,7 @@ exec "$@"                          # 交给主进程，正确接收 SIGTERM
 | 初始化脚本不幂等 | 重启后重复执行导致数据错乱 | 先检查状态再操作 |
 | 用 `latest` 镜像标签 | 版本不可追溯 | 固定版本或 digest |
 
-## 自测清单
+## 复习与自测
 
 - [ ] entrypoint 使用 `exec "$@"`，信号能正确传递。
 - [ ] 日志输出到标准输出，由平台统一收集。

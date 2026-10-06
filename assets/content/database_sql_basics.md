@@ -131,6 +131,7 @@ SELECT * FROM users u WHERE EXISTS (SELECT 1 FROM orders o WHERE o.user_id = u.i
 4. 聚合函数不能直接写在 `WHERE` 中（应用 `HAVING`）。
 
 ## 本课小结
+
 先掌握「单表 CRUD + WHERE 条件 + 聚合分组 + JOIN」，就能覆盖大部分日常需求。
 
 ## SQL 语句分类速查
@@ -208,7 +209,7 @@ UPDATE orders SET status = 'paid' WHERE id = 1001 AND status = 'created';
 | 条件 | `CASE WHEN`、`IFNULL`、`COALESCE`、`NULLIF` |
 | 窗口 | `ROW_NUMBER`、`RANK`、`LAG`、`SUM() OVER` |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易写错的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -223,7 +224,7 @@ UPDATE orders SET status = 'paid' WHERE id = 1001 AND status = 'created';
 | 把聚合条件写进 `WHERE` | 语法错误 | 用 `HAVING` |
 | 用字符串拼接构造 SQL | 注入风险 | 使用参数化查询 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 能背出查询子句的执行顺序。
 - [ ] 分得清 `WHERE` 与 `HAVING`、`COUNT(*)` 与 `COUNT(col)`。

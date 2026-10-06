@@ -11,6 +11,8 @@ import 'package:code_learn_app/services/exam_builder.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../tool/markdown_fences.dart';
+
 /// 内容自检：保证内置课程与测验数据完整、可加载。
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -167,6 +169,116 @@ void main() {
         );
       }
     }
+  });
+
+  test('P1 结构统一：14 个规范章节齐全唯一、无旧同义标题且内容非空', () async {
+    const canonicalSections = <String>[
+      '学习目标',
+      '前置知识',
+      '动手练习',
+      '考点精讲',
+      '故障现场',
+      '本课小结',
+      '参考资料与复核',
+      'English Overview',
+      '内容元数据',
+      '本课复习清单',
+      '术语速查',
+      '可运行练习',
+      '常见错误与排查',
+      '复习与自测',
+    ];
+    // 已被规范名取代的旧标题：再次出现说明退回了旧命名。
+    const legacySections = <String>[
+      '常见错误对照表',
+      '常见错误',
+      '常见错误速查',
+      '常见误区',
+      '常见坑',
+      '常见陷阱',
+      '常见问题',
+      '常见问题与对策',
+      '常见问题与排查顺序',
+      '常见风险速查',
+      '常见失败模式',
+      '常见反模式速查',
+      '反模式',
+      '失败模式',
+      '新手最容易踩的八个坑',
+      '新手最容易踩的六个坑',
+      '必须注意的坑',
+      '五个高频坑',
+      '三个经典坑',
+      '易错点回顾',
+      '自测清单',
+      '逐节复习与自检',
+      '深度追问与自测',
+      '本课自测清单与错误对照',
+      '实践任务',
+    ];
+
+    // 代码围栏里的 `## 标题` 是示例文本，判定章节时要先屏蔽。
+    String maskFenced(String markdown) {
+      final lines = markdown.split('\n');
+      final mask = markdownFenceMask(markdown);
+      return <String>[
+        for (var index = 0; index < lines.length; index++)
+          mask[index] ? ' ' * lines[index].length : lines[index],
+      ].join('\n');
+    }
+
+    RegExp heading(String title) =>
+        RegExp('^##\\s+${RegExp.escape(title)}\\s*\$', multiLine: true);
+
+    String sectionBody(String markdown, String title) {
+      final match = heading(title).firstMatch(markdown);
+      if (match == null) return '';
+      final rest = markdown.substring(match.end);
+      final next = RegExp(r'^##\s+', multiLine: true).firstMatch(rest);
+      return next == null ? rest : rest.substring(0, next.start);
+    }
+
+    final missing = <String>[];
+    final duplicated = <String>[];
+    final legacy = <String>[];
+    final thin = <String>[];
+    for (final category in categories) {
+      for (final lesson in category.lessons) {
+        final markdown = await rootBundle.loadString(lesson.assetFile);
+        final checked = maskFenced(markdown);
+        for (final title in canonicalSections) {
+          final hits = heading(title).allMatches(checked).length;
+          if (hits == 0) missing.add('${lesson.id}:$title');
+          if (hits > 1) duplicated.add('${lesson.id}:$title($hits)');
+        }
+        for (final title in legacySections) {
+          if (heading(title).hasMatch(checked)) {
+            legacy.add('${lesson.id}:$title');
+          }
+        }
+        final checklistItems = RegExp(
+          r'^- \[ \] ',
+          multiLine: true,
+        ).allMatches(sectionBody(checked, '本课复习清单')).length;
+        if (checklistItems < 3) {
+          thin.add('${lesson.id}:本课复习清单($checklistItems)');
+        }
+        final termRows = sectionBody(checked, '术语速查')
+            .split('\n')
+            .where((line) => line.trimLeft().startsWith('|'))
+            .length;
+        // 表头 + 分隔行 + 至少 2 行术语，保证不是空壳章节。
+        if (termRows < 4) thin.add('${lesson.id}:术语速查($termRows)');
+      }
+    }
+    expect(missing, isEmpty, reason: '缺少规范章节：${missing.take(15).join('、')}');
+    expect(
+      duplicated,
+      isEmpty,
+      reason: '重复规范章节：${duplicated.take(15).join('、')}',
+    );
+    expect(legacy, isEmpty, reason: '残留旧标题：${legacy.take(15).join('、')}');
+    expect(thin, isEmpty, reason: '章节内容过薄：${thin.take(15).join('、')}');
   });
 
   test('九种语言分类都至少有 2 个项目课', () {

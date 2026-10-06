@@ -94,6 +94,7 @@ print(config["debug"])
 ```
 
 ## 本课小结
+
 异常用来处理「可预期的失败」，`with` 用来管理资源，`pathlib` 用来处理跨平台路径。
 
 ## 常见异常速查
@@ -163,7 +164,7 @@ for line in path.read_text(encoding="utf-8").splitlines():
     print(line.strip())
 ```
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易写错的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -177,7 +178,7 @@ for line in path.read_text(encoding="utf-8").splitlines():
 | 写入时忘了 `flush` / 关闭 | 进程被杀导致内容丢失 | 用 `with`，必要时 `file.flush()` + `os.fsync()` |
 | 捕获异常后返回 `None` | 调用方继续用空值出错 | 明确抛出或返回统一的结果对象 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 能列出五个以上常见异常并知道触发条件。
 - [ ] 处理文件一定写 `encoding="utf-8"` 并用 `with`。

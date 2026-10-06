@@ -59,6 +59,7 @@ Cargo 的 feature 机制能裁剪依赖体积，发布前用 `cargo tree` 检查
 只有三种情况值得：与 C 互操作、实现底层数据结构（自定义分配器、无锁结构）、性能极致优化且已被基准证明。其余场景用安全抽象替代，收益远大于风险。
 
 ## 本课小结
+
 unsafe 是**把编译器无法验证的契约写进注释与封装**；FFI 是 Rust 融入现有生态的桥梁；日常开发优先使用成熟 crate，把 unsafe 留在边界层。
 
 ## unsafe 能力与边界速查
@@ -117,7 +118,7 @@ pub unsafe fn read_config_checked() -> Result<Config, i32> {
 | 空指针 | C 指针可能为 null，传给 Rust 引用前必须检查 |
 | 文档 | `unsafe fn` 必须写 `# Safety` 说明前置条件 |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易写错的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -132,7 +133,7 @@ pub unsafe fn read_config_checked() -> Result<Config, i32> {
 | 为性能滥用 unsafe | 逻辑错误难以定位 | 先测量，确认瓶颈再优化 |
 | 缺少 Miri / sanitizer 验证 | 隐藏的内存错误 | 用 Miri、ASan 验证 unsafe 代码 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 清楚 unsafe 解锁与不解锁的能力边界。
 - [ ] 所有 `unsafe fn` 都有 `# Safety` 文档。

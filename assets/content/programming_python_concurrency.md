@@ -106,6 +106,7 @@ asyncio.run(main())
 | 需要进程间通信 | `multiprocessing.Queue` / `Pipe` |
 
 ## 本课小结
+
 记住一句话：**IO 用异步或线程，计算用多进程**；异步代码最怕混入阻塞调用。
 
 ## 并发方案选型速查
@@ -144,7 +145,7 @@ async def main():
 asyncio.run(main())
 ```
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易写错的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -159,7 +160,7 @@ asyncio.run(main())
 | 多进程直接改全局变量 | 父进程看不到变化 | 进程内存独立，用返回值或共享内存 / 队列 |
 | 用 `asyncio.run` 嵌套调用 | `RuntimeError: asyncio.run() cannot be called from a running event loop` | 顶层只调用一次，内部用 `await` 或 `create_task` |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 能按「IO 密集 / CPU 密集」正确选择 asyncio、多线程、多进程。
 - [ ] 知道 GIL 会释放的时机，以及为什么共享计数要加锁。

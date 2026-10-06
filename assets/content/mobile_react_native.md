@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
 | 图片内存 | 按需缩放、使用缓存库、及时释放 |
 | 动画掉帧 | 用 `Animated`/`Reanimated` 走原生线程，避免 JS 逐帧改样式 |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易踩的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
 | 把原生差异写死在业务里 | 维护成本高 | 抽平台适配层 |
 | 忽略返回键与安全区域 | Android 与刘海屏体验异常 | 处理 `BackHandler` 与安全区 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 能说清 RN 与 Flutter、原生、WebView 的取舍。
 - [ ] 知道 JSI、Fabric、TurboModules、Hermes 各自解决什么。
@@ -329,7 +329,7 @@ const renderItem = useCallback(({ item }: { item: Item }) => <Row item={item} />
 - 判断标准：能解释正常场景、边界条件和失败场景，才算真正掌握。
 - 下一步：完成练习后，用自己的话写下 3 条要点，再去做本课测验。
 
-## 实践任务
+## 可运行练习
 
 本节围绕React Native 跨平台开发安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 

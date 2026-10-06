@@ -223,7 +223,7 @@ const data = (await res.json()) as User;      // 危险
 const parsed = UserSchema.parse(await res.json());
 ```
 
-## 新手最容易踩的八个坑
+## 常见错误与排查
 
 | 坑 | 现象 | 正确做法 |
 | --- | --- | --- |
@@ -237,6 +237,7 @@ const parsed = UserSchema.parse(await res.json());
 | 用 JSON 传二进制 | 体积膨胀 | 用 base64 或二进制格式 |
 
 ## 本课小结
+
 - **可读性优先选 JSON 或 YAML，性能与类型优先选 Protobuf**。
 - 大整数与隐式类型是 JSON、YAML 最常见的两个坑。
 - Protobuf 的生命线是**字段编号兼容性**，改之前先想清楚。
@@ -424,6 +425,15 @@ payload = {"id": str(1234567890123456789)}   # 大整数用字符串
 
 - **题目**：补全代码：「序列化格式：JSON、YAML、Protobuf 横向对照」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `· 大整数超 2 的 53 次方时，____ 会丢精度，改用字符串`
 - **判断依据**：在「序列化格式：JSON、YAML、Protobuf 横向对照」里，JavaScript。「序列化格式：JSON、YAML、Protobuf 横向对照」要求先交代序列化、JSON、YAML的前提再下结论，所以“JavaScript”只在题干“序列化格式”给定的条件下成立。把“JavaScript”代回「序列化格式：JSON、YAML、Protobuf 横向对照」里“序列化格式”的例子核对，条件一旦改变，结论就要用序列化、JSON、YAML重新推导。
+
+## 复习与自测
+
+- [ ] 能用一句话说明「一句话说清」解决什么问题。
+- [ ] 能把「四种主流格式对比」的判断标准套到一个新例子上。
+- [ ] 能说清「JSON：最通用的交换格式」的结论，并说出它的适用边界。
+- [ ] 能用自己的话复述「YAML：配置首选，但要小心缩进」，并各举一个正例和反例。
+- [ ] 能解释「Protobuf：强类型加上小体积」里最容易混淆的两个概念。
+- [ ] 能不看正文写出「各语言的序列化写法」的关键步骤。
 
 ## English Overview
 

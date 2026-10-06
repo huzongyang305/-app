@@ -49,6 +49,7 @@
 结构体标签控制序列化：`json:"name,omitempty"` 省略空值；`json:"-"` 忽略字段；自定义 `MarshalJSON`/`UnmarshalJSON` 处理特殊格式（时间、枚举）。流式处理大 JSON 用 `json.Decoder`。
 
 ## 本课小结
+
 泛型负责类型安全的复用，标准库负责生产可用的基础能力：**net/http 记得设超时与复用连接，encoding/json 用标签控制契约**。
 
 ## 泛型速查
@@ -119,7 +120,7 @@ srv := &http.Server{
 }
 ```
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易写错的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -134,7 +135,7 @@ srv := &http.Server{
 | 逐行 `ReadString` 读大文件 | 内存与性能问题 | 用 `bufio.Scanner` 或流式解码 |
 | 忽略 `resp.Body.Close()` | 连接泄漏 | `defer resp.Body.Close()` |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 会用 `comparable` 与自定义约束写泛型。
 - [ ] `http.Server` 设置了完整的超时参数。

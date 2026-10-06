@@ -80,6 +80,7 @@ if (value == null) {}      // 同时判断 null 与 undefined
 ```
 
 ## 本课小结
+
 三条铁律：**默认 const、比较用 ===、空值判断用 ?? 或 == null**。理解 `+` 与 `-` 的隐式转换差异，能解释多数「诡异」行为。
 
 ## 类型判断速查
@@ -115,7 +116,7 @@ if (value == null) {}      // 同时判断 null 与 undefined
 | `null === undefined` | `false` | `===` 不做类型转换，推荐始终使用 |
 | `"5" - 1` | `4` | `-` 会转数字，而 `"5" + 1` 是 `"51"` |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易写错的写法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -128,7 +129,7 @@ if (value == null) {}      // 同时判断 null 与 undefined
 | `let x; x.toFixed(2)` | `TypeError` | `let` 声明未赋值是 `undefined`，先赋数字 |
 | 用 `==` 比较 `null` 与 `0` | `false`，但 `0 == ""` 是 `true` | 宽松相等陷阱多，直接上 `===` |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 能用 `typeof` 正确判断六种原始类型，知道 `typeof null` 是 `"object"`。
 - [ ] 判断数组用 `Array.isArray()` 而不是 `typeof`。

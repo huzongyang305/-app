@@ -129,6 +129,7 @@ class UserControllerTest {
 4. 用 Actuator 暴露健康检查，接入监控。
 
 ## 本课小结
+
 Spring Boot 的关键是**分层 + 依赖注入 + 约定优于配置**：controller 薄、service 厚、repository 只负责数据。
 
 ## Spring Boot 注解速查
@@ -204,7 +205,7 @@ JPA 与事务速查：
 | 乐观锁 | `@Version` 字段 + 捕获冲突后重试 |
 | 迁移 | Flyway / Liquibase 管理脚本 |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易踩的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -220,7 +221,7 @@ JPA 与事务速查：
 | 参数校验靠手写 if | 代码重复、遗漏 | 用 `@Valid` + 注解 |
 | 用 500 返回业务错误 | 客户端无法区分 | 用 `@ControllerAdvice` 映射合适状态码 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 分层职责清晰，Controller 不写业务逻辑。
 - [ ] 使用构造器注入，依赖不可变。

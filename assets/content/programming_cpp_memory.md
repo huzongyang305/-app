@@ -103,6 +103,7 @@ valgrind --leak-check=full ./main                      # Linux
 ```
 
 ## 本课小结
+
 现代 C++ 的原则是：**能用栈和智能指针就不用裸 new/delete**，让 RAII 负责释放，把内存问题交给类型系统。
 
 ## 智能指针选型速查
@@ -130,7 +131,7 @@ std::unique_ptr<Widget> moved = std::move(p);  // 转移所有权，p 变为 nul
 std::shared_ptr<Widget> shared2 = std::move(moved); // unique -> shared 也可
 ```
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易写错的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -155,7 +156,7 @@ std::shared_ptr<Widget> shared2 = std::move(moved); // unique -> shared 也可
 | `-Wall -Wextra` | 未使用变量、可疑比较 | 编译期即可发现 |
 | `clang-tidy` | 现代 C++ 反模式、可读性问题 | 静态检查，接入 CI |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 能说明 `unique_ptr`、`shared_ptr`、`weak_ptr` 的所有权差异。
 - [ ] 创建共享对象时使用 `make_shared`，不用裸 `new`。

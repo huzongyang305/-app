@@ -99,12 +99,24 @@ while ((line = await reader.ReadLineAsync()) != null)
 }
 ```
 
-## 常见陷阱
+## 常见错误与排查
 
 1. 用 `.Result` 或 `.Wait()` 阻塞异步代码，容易死锁，应一路 `await`。
 2. `async void` 只用于事件处理器，异常无法被捕获。
 3. 忘记 `await` 会让异常被吞掉，任务在后台失败。
 4. 大量并发要限制数量，可用 `SemaphoreSlim`。
+| 容易写错的做法 | 实际现象 | 原因与正确做法 |
+| --- | --- | --- |
+| `var s = FooAsync();` 没有 `await` | 拿到的是 `Task`，异常被吞 | 加上 `await`，或明确保存任务稍后处理 |
+| `task.Result` | 可能死锁、线程被占满 | 改成 `await task` |
+| `async void` 抛异常 | 进程可能直接崩溃 | 只用于事件处理器，并在内部 `try/catch` 全部包住 |
+| `Thread.Sleep(1000)` 在异步方法里 | 阻塞线程 | 改成 `await Task.Delay(1000)` |
+| `foreach` 里逐个 `await` | 串行执行，总耗时相加 | 无依赖时先收集任务，再 `WhenAll` |
+| 忘记传 `CancellationToken` | 用户取消后请求仍在跑 | 逐层传递 token 并检查 |
+| 在 `finally` 里 `await` 释放资源 | 代码冗长 | 用 `await using` |
+| 并发访问同一个 `DbContext` | `InvalidOperationException` | DbContext 不是线程安全的，每个请求一个实例 |
+| `.Wait()` 在 ASP.NET Core 请求线程 | 线程池饥饿 | 全链路异步：`async` 到底 |
+| `Task.Run` 包住 IO 调用 | 白白占用线程池线程 | IO 本身是异步的，直接 `await` 即可 |
 
 ## 并发控制与常见误用
 
@@ -121,6 +133,7 @@ while ((line = await reader.ReadLineAsync()) != null)
 **线程安全**：多个 Task 修改共享状态要用锁（`lock`/`SemaphoreSlim`）或并发集合（`ConcurrentDictionary`）；跨线程更新 UI 必须回到 UI 上下文（在 WPF/WinForms 中通过 Dispatcher/Invoke）。
 
 ## 本课小结
+
 异步的目标是**不阻塞线程**：IO 用 `async/await`、并发用 `Task.WhenAll`、可取消用 `CancellationToken`，异常与资源交给 try/catch 与 using。
 
 ## async / await 速查
@@ -162,22 +175,7 @@ var tasks = urls.Select(u => client.GetStringAsync(u)).ToList();
 string[] results = await Task.WhenAll(tasks);   // 总耗时接近最慢的一个
 ```
 
-## 常见错误对照表
-
-| 容易写错的做法 | 实际现象 | 原因与正确做法 |
-| --- | --- | --- |
-| `var s = FooAsync();` 没有 `await` | 拿到的是 `Task`，异常被吞 | 加上 `await`，或明确保存任务稍后处理 |
-| `task.Result` | 可能死锁、线程被占满 | 改成 `await task` |
-| `async void` 抛异常 | 进程可能直接崩溃 | 只用于事件处理器，并在内部 `try/catch` 全部包住 |
-| `Thread.Sleep(1000)` 在异步方法里 | 阻塞线程 | 改成 `await Task.Delay(1000)` |
-| `foreach` 里逐个 `await` | 串行执行，总耗时相加 | 无依赖时先收集任务，再 `WhenAll` |
-| 忘记传 `CancellationToken` | 用户取消后请求仍在跑 | 逐层传递 token 并检查 |
-| 在 `finally` 里 `await` 释放资源 | 代码冗长 | 用 `await using` |
-| 并发访问同一个 `DbContext` | `InvalidOperationException` | DbContext 不是线程安全的，每个请求一个实例 |
-| `.Wait()` 在 ASP.NET Core 请求线程 | 线程池饥饿 | 全链路异步：`async` 到底 |
-| `Task.Run` 包住 IO 调用 | 白白占用线程池线程 | IO 本身是异步的，直接 `await` 即可 |
-
-## 自测清单
+## 复习与自测
 
 - [ ] 默认返回 `Task` / `Task<T>`，只有事件处理器才用 `async void`。
 - [ ] 全程 `await`，不使用 `.Result` 与 `.Wait()`。
@@ -359,7 +357,7 @@ static async Task Main()
 - 产出一个别人可以检查的结果。
 - 写出一个仍不确定的问题和验证方法。
 
-## 实践任务
+## 可运行练习
 
 本节围绕异步编程与异常处理安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 

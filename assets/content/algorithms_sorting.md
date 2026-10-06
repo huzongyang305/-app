@@ -104,6 +104,7 @@ records.sort(key=lambda r: (r.age, r.name))   # 多关键字
 Python 的 Timsort 与 Java 的 TimSort 都是「归并 + 插入」的混合算法，对真实数据（部分有序）表现极好。
 
 ## 本课小结
+
 面试要能说出各算法的**复杂度、稳定性与适用场景**；工程中直接使用语言内置排序，除非有特殊约束（内存极小、外部排序、只需要 TopK）。
 
 ## 选择依据速查
@@ -167,7 +168,7 @@ def partition(arr, low, high):
 | Go | `sort.Slice` / `slices.Sort` | 不稳定 | 稳定版 `slices.SortStableFunc` |
 | Rust | `sort` / `sort_by` / `sort_unstable` | 前者稳定 | 不稳定版更快 |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易写错的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -182,7 +183,7 @@ def partition(arr, low, high):
 | 大文件一次性读入排序 | 内存溢出 | 外部归并排序 |
 | 忽略比较成本 | 复杂对象比较很慢 | 先提取 key 再排序（Schwartzian 变换） |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 能按稳定性、空间、数据特征选排序算法。
 - [ ] 知道快排最坏 O(n²) 的成因与规避手段。

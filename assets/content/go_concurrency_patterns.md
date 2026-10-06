@@ -104,7 +104,7 @@ func Demo() int {
 | 取消传播 | `context` | 逐层传递并检查 |
 | 去重合并 | `golang.org/x/sync/singleflight` | 缓存击穿场景 |
 
-## 常见错误对照表
+## 常见错误与排查
 
 | 容易踩的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
@@ -117,7 +117,7 @@ func Demo() int {
 | 在 worker 中用 `time.Sleep` 重试 | 无法取消 | 用 `select` 配合 `ctx.Done()` 与定时器 |
 | 重复请求各打一次下游 | 缓存击穿放大 | 用 singleflight 合并 |
 
-## 自测清单
+## 复习与自测
 
 - [ ] 会用 errgroup 限制并发并传播取消。
 - [ ] 能写出三阶段的 pipeline 且正确关闭 channel。
@@ -392,7 +392,7 @@ func DownloadAll(ctx context.Context, urls []string, limit int) ([]string, error
 - 判断标准：能解释正常场景、边界条件和失败场景，才算真正掌握。
 - 下一步：完成练习后，用自己的话写下 3 条要点，再去做本课测验。
 
-## 实践任务
+## 可运行练习
 
 本节围绕Go 并发模式与 errgroup安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 
