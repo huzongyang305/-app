@@ -353,6 +353,13 @@ export default defineConfig({
 
 ### 任务 2：只改一个条件
 
+把「TypeScript 构建工具链与测试」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把TypeScript的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「TypeScript 构建工具链与测试」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响TypeScript。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -422,39 +429,43 @@ export default defineConfig({
 
 | 术语 | 本课语境 |
 | --- | --- |
-| `[TypeScript, tsup, Vite, vitest, CI][index]` | 在「TypeScript 构建工具链与测试」里理解它的定义、输入和输出。 |
-| `[TypeScript, tsup, Vite, vitest, CI][index]` | 本课用它说明边界条件与失败路径。 |
-| `[TypeScript, tsup, Vite, vitest, CI][index]` | 结合「TypeScript 构建工具链与测试」的正文示例确认它的适用条件。 |
-| `[TypeScript, tsup, Vite, vitest, CI][index]` | 在「TypeScript 构建工具链与测试」里理解它的定义、输入和输出。 |
-| `[TypeScript, tsup, Vite, vitest, CI][index]` | 本课用它说明边界条件与失败路径。 |
+| `TypeScript` | 围绕“环境版本、配置和输入规模与目标环境不同，TypeScript 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。 |
+| `tsup` | 库项目常见组合：tsup 产出 dist/index.mjs 与 dist/index.cjs + tsc 生成 .d.ts，并在 package.json 用 exports 字段声明条件导出，避免"双包危害"（同一依赖被加载两份）。 |
+| `Vite` | Summary: tsc/tsup/Vite, dual output and vitest.。 |
+| `vitest` | Summary: tsc/tsup/Vite, dual output and vitest.。 |
+| `CI` | [ ] CI 覆盖 tsc --noEmit、lint、测试与打包。 |
 
 ## 考点精讲
 
-### 考点 1：库项目同时产出 ESM 与 CJS 常用？
+### 考点 1：概念判断·TypeScript
 
+- **题目**：库项目同时产出 ESM 与 CJS 常用？
 - **判断依据**：在「TypeScript 构建工具链与测试」里，tsup/esbuild 配合 tsc 生成 d.ts。打包器负责产物格式，tsc 负责类型声明。把“tsup/esbuild 配合 tsc”代回「TypeScript 构建工具链与测试」里“库项目同时产出 ESM 与 CJS 常用”的例子核对，条件一旦改变，结论就要用TypeScript、tsup、Vite重新推导。
 
-### 考点 2：这段 TypeScript 代码是「TypeScript 构建工具链与测试」的示例片段，下面哪一项描述与它一致？
+### 考点 2：代码补全·TypeScript
 
+- **题目**：这段 TypeScript 代码是「TypeScript 构建工具链与测试」的示例片段，下面哪一项描述与它一致？
 - **判断依据**：在「TypeScript 构建工具链与测试」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「TypeScript 构建工具链与测试」的正文示例，围绕TypeScript、tsup、Vite展开；把输入或边界换成空值、极值或失败情况后，结论要以「TypeScript 构建工具链与测试」的实际运行结果为准。
 
-### 考点 3：能拦掉漏写 await 的 lint 规则是？
+### 考点 3：概念判断·TypeScript
 
+- **题目**：能拦掉漏写 await 的 lint 规则是？
 - **判断依据**：在「TypeScript 构建工具链与测试」里，no-floating-promises。它要求 Promise 被 await、return 或显式 void 处理。在「TypeScript 构建工具链与测试」里判断这道题，要把TypeScript、tsup、Vite的条件、过程与失败路径逐项对齐，换成“能拦掉漏写 await 的 lint”这个场景，只有满足前提的结论才成立。
 
-### 考点 4：tsc --noEmit 的用途是？
+### 考点 4：概念判断·TypeScript
 
+- **题目**：tsc --noEmit 的用途是？
 - **判断依据**：在「TypeScript 构建工具链与测试」里，结论应落在「只做类型检查，不生成 JS 文件」。打包器通常不做类型检查，所以 CI 里要单独跑一次 tsc --noEmit 把类型问题拦住。在「TypeScript 构建工具链与测试」里，这道题要求区分概念与边界，「只做类型检查，不生成 JS 文件」只有在题干给出的前提下才成立，而「把 TS 编译成 JS」、「生成类型声明文件」缺少同一组条件。
 
-### 考点 5：围绕“TypeScript 构建工具链与测试”中的 TypeScript、tsup、Vite，下列哪两项是本课强调的实践判断？
+### 考点 5：多选辨析·TypeScript
 
+- **题目**：围绕“TypeScript 构建工具链与测试”中的 TypeScript、tsup、Vite，下列哪两项是本课强调的实践判断？
 - **判断依据**：在「TypeScript 构建工具链与测试」里，学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程。在TypeScript 构建工具链与测试里，判断 tsup 时要固定版本与边界输入，所以“验证 tsup 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 6：补全代码：「TypeScript 构建工具链与测试」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·"____": false
 
-`"____": false`
-
-- **判断依据**：在「TypeScript 构建工具链与测试」里，sideEffects。回到「TypeScript 构建工具链与测试」的正文示例，用“补全代码”走一遍TypeScript、tsup、Vite的完整流程，能复现的结论才可以保留。回到「TypeScript 构建工具链与测试」的正文示例，用“TypeScript”走一遍TypeScript、tsup、Vite的完整流程，能复现的结论才可以保留。
+- **题目**：补全代码：「TypeScript 构建工具链与测试」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `"____": false`
+- **判断依据**：在「TypeScript 构建工具链与测试」里，sideEffects。回到「TypeScript 构建工具链与测试」的正文示例，用“补全代码”走一遍TypeScript、tsup、Vite的完整流程，能复现的结论才可以保留。回到TypeScript、tsup、Vite本身再看一遍：只有“sideEffects”与题干“TypeScript”的前提一致，结论才成立。
 
 ## English Overview
 

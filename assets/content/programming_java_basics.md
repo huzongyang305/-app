@@ -340,6 +340,13 @@ jshell               # JDK 9+ 交互式 REPL，适合快速试验
 
 ### 任务 2：只改一个条件
 
+把「环境与 JVM」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把Java的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「环境与 JVM」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响Java。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -409,39 +416,43 @@ jshell               # JDK 9+ 交互式 REPL，适合快速试验
 
 | 术语 | 本课语境 |
 | --- | --- |
-| `[Java, JVM, JDK, javac, 字节码, 包][index]` | 在「环境与 JVM」里理解它的定义、输入和输出。 |
-| `[Java, JVM, JDK, javac, 字节码, 包][index]` | 本课用它说明边界条件与失败路径。 |
-| `[Java, JVM, JDK, javac, 字节码, 包][index]` | 结合「环境与 JVM」的正文示例确认它的适用条件。 |
-| `[Java, JVM, JDK, javac, 字节码, 包][index]` | 在「环境与 JVM」里理解它的定义、输入和输出。 |
-| `[Java, JVM, JDK, javac, 字节码, 包][index]` | 本课用它说明边界条件与失败路径。 |
-| `[Java, JVM, JDK, javac, 字节码, 包][index]` | 结合「环境与 JVM」的正文示例确认它的适用条件。 |
+| `Java` | 编译带包名的代码：javac -d out src/com/example/app/Main.java，运行时用全限定名 java -cp out com.example.app.Main。 |
+| `JVM` | public static void main(String[] args) 的每个部分都有含义：public 让 JVM 能访问、static 无需实例化、void 无返回值、String[] args 接收命令行参数。 |
+| `JDK` | JVM & Environment focuses on JDK/JRE/JVM, compiling, packages and classpath.。 |
+| `javac` | 编译带包名的代码：javac -d out src/com/example/app/Main.java，运行时用全限定名 java -cp out com.example.app.Main。 |
+| `字节码` | 它在「环境与 JVM」里是理解「字节码」的关键术语，用来解释定义、适用条件与失败路径；它与Java、JVM共同决定这一节的判断边界。复习时回到正文示例核对输入、输出和验证方式。 |
+| `包` | 它在「环境与 JVM」里是理解「包」的关键术语，用来解释定义、适用条件与失败路径；它与Java、JVM共同决定这一节的判断边界。复习时回到正文示例核对输入、输出和验证方式。 |
 
 ## 考点精讲
 
-### 考点 1：围绕“环境与 JVM”中的 Java、JVM、JDK，下列哪两项是本课强调的实践判断？
+### 考点 1：多选辨析·Java
 
+- **题目**：围绕“环境与 JVM”中的 Java、JVM、JDK，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把环境与 JVM拆成概念、示例与故障现场三部分，因此判断 Java 时必须同时交代输入、输出和失败路径，这使“学习 Java 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在环境与 JVM里，判断 JVM 时要固定版本与边界输入，所以“验证 JVM 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 2：public class Hello 的源文件名必须是？
+### 考点 2：概念判断·Java
 
+- **题目**：public class Hello 的源文件名必须是？
 - **判断依据**：在「环境与 JVM」里，Hello.java。public 类的文件名必须与类名完全一致，包括大小写。「环境与 JVM」要求先交代Java、JVM、JDK的前提再下结论，所以“Hello.java”只在题干“public class Hello 的源文件名必须是”给定的条件下成立。
 
-### 考点 3：Java 实现「一次编写，到处运行」的关键是？
+### 考点 3：概念判断·一次编写，到处运行
 
-- **判断依据**：源码编译成与平台无关的字节码，具体执行由该平台的 JVM 负责。围绕 Java 实现「一次编写，到处运行」的关键是。如果只凭关键词作答，很容易把「使用 C 语言编写」、「每次重新编译」与「编译成字节码」混在一起；回到「环境与 JVM」的正文示例，用“Java 实现一次编写”走一遍Java、JVM、JDK的完整流程，能复现的结论才可以保留。
+- **题目**：Java 实现「一次编写，到处运行」的关键是？
+- **判断依据**：源码编译成与平台无关的字节码，具体执行由该平台的 JVM 负责。如果只凭关键词作答，很容易把「使用 C 语言编写」、「每次重新编译」与「编译成字节码」混在一起；回到「环境与 JVM」的正文示例，用“Java 实现一次编写”走一遍Java、JVM、JDK的完整流程，能复现的结论才可以保留。
 
-### 考点 4：这段代码代码是「环境与 JVM」的示例片段，下面哪一项描述与它一致？
+### 考点 4：代码补全·Java
 
-- **判断依据**：在「环境与 JVM」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「环境与 JVM」的正文示例，围绕Java、JVM、JDK展开；把输入或边界换成空值、极值或失败情况后，结论要以「环境与 JVM」的实际运行结果为准。「环境与 JVM」要求先交代Java、JVM、JDK的前提再下结论，所以“这段代码只做静态声明，没有循环”只在题干“这段代码代码是环境与 JVM的示例片段”给定的条件下成立。
+- **题目**：这段代码代码是「环境与 JVM」的示例片段，下面哪一项描述与它一致？
+- **判断依据**：在「环境与 JVM」里，题干的正确项是这段代码只做静态声明，没有循环、分支或可观察输出，在「环境与 JVM」里它只能证明Java相关约束存在，不能替代真实运行证据。把输入或边界换成空值、极值或失败情况后，结论要以「环境与 JVM」的实际运行结果为准。「环境与 JVM」要求先交代Java、JVM、JDK的前提再下结论，所以“这段代码只做静态声明，没有循环”只在题干“这段代码代码是环境与 JVM的示例片段”给定的条件下成立。
 
-### 考点 5：Java 程序入口方法的正确签名是？
+### 考点 5：概念判断·Java
 
+- **题目**：Java 程序入口方法的正确签名是？
 - **判断依据**：在「环境与 JVM」里，public static void main(String[] args)。JVM 需要 public + static 才能在未创建对象时按约定调用入口方法。“Java”与「环境与 JVM」的术语表相呼应，只有符合Java、JVM、JDK约束的“public static void m”才是正文支持的结论。
 
-### 考点 6：补全代码：「环境与 JVM」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·Java
 
-`String name = sc.____;`
-
+- **题目**：补全代码：「环境与 JVM」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `String name = sc.____;`
 - **判断依据**：在「环境与 JVM」里，nextLine。在「环境与 JVM」里判断这道题，要把Java、JVM、JDK的条件、过程与失败路径逐项对齐，换成“补全代码”这个场景，只有满足前提的结论才成立。“JVM示例中”与「环境与 JVM」的术语表相呼应，只有符合Java、JVM、JDK约束的“nextLine”才是正文支持的结论。
 
 ## English Overview
@@ -473,18 +484,6 @@ jshell               # JDK 9+ 交互式 REPL，适合快速试验
 ### Learning Outcomes
 
 - Explain what **JVM & Environment** solves and when it should be used.
-
-### Core Mental Model
-
-### Step-by-step Study Plan
-
-### Practice Tasks
-
-### Common Failure Modes
-
-### Self-check Questions
-
-4. What is the rollback path?
 
 ### Glossary
 

@@ -72,13 +72,43 @@
 
 ### 步骤 2：定义 Zod 请求模型
 
+「实战：Node.js + Express REST API」的「步骤 2：定义 Zod 请求模型」一节补全如下：
+
+- 定位：这一节说明步骤 2：定义 Zod 请求模型在「实战：Node.js + Express REST API」知识体系里的位置。
+- 要点：本课涉及：Node.js、Express、SQLite、REST、Vitest。
+- 自检：能否用一个最小例子解释步骤 2：定义 Zod 请求模型？
+
 ### 步骤 3：实现 SQLite 表与参数化查询
+
+「实战：Node.js + Express REST API」的「步骤 3：实现 SQLite 表与参数化查询」一节补全如下：
+
+- 定位：这一节说明步骤 3：实现 SQLite 表与参数化查询在「实战：Node.js + Express REST API」知识体系里的位置。
+- 要点：一句话摘要：用 Express、SQLite 和 Vitest 实现任务 API，覆盖校验、错误中间件和测试。
+- 自检：能否用一个最小例子解释步骤 3：实现 SQLite 表与参数化查询？
 
 ### 步骤 4：加入统一错误中间件
 
+「实战：Node.js + Express REST API」的「步骤 4：加入统一错误中间件」一节补全如下：
+
+- 定位：这一节说明步骤 4：加入统一错误中间件在「实战：Node.js + Express REST API」知识体系里的位置。
+- 要点：症状：在本课的练习或生产场景里出现“本课的 Node.js 常规用例通过，但边界用例失败”。
+- 自检：能否用一个最小例子解释步骤 4：加入统一错误中间件？
+
 ### 步骤 5：用 supertest 写接口测试
 
+「实战：Node.js + Express REST API」的「步骤 5：用 supertest 写接口测试」一节补全如下：
+
+- 定位：这一节说明步骤 5：用 supertest 写接口测试在「实战：Node.js + Express REST API」知识体系里的位置。
+- 要点：复现：准备一组最小输入，只保留触发“本课的 Node.js 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+- 自检：能否用一个最小例子解释步骤 5：用 supertest 写接口测试？
+
 ### 步骤 6：补分页、排序和健康检查
+
+「实战：Node.js + Express REST API」的「步骤 6：补分页、排序和健康检查」一节补全如下：
+
+- 定位：这一节说明步骤 6：补分页、排序和健康检查在「实战：Node.js + Express REST API」知识体系里的位置。
+- 要点：定位：围绕“Node.js 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
+- 自检：能否用一个最小例子解释步骤 6：补分页、排序和健康检查？
 
 ## 关键代码
 
@@ -236,6 +266,13 @@ tests/          单元、集成与接口测试
 
 ### 任务 2：只改一个条件
 
+把「实战：Node.js + Express REST API」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把Node.js的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「实战：Node.js + Express REST API」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响Node.js。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -302,36 +339,42 @@ tests/          单元、集成与接口测试
 
 | 术语 | 本课语境 |
 | --- | --- |
-| `Node.js` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
-| `Express` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
-| `SQLite` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
-| `REST` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
-| `Vitest` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
+| `Node.js` | 用一句话说明「实战：Node.js + Express REST API」解决什么问题：用 Express、SQLite 和 Vitest 实现任务 API，覆盖校验、错误中间件和测试。 |
+| `Express` | 用一句话说明「实战：Node.js + Express REST API」解决什么问题：用 Express、SQLite 和 Vitest 实现任务 API，覆盖校验、错误中间件和测试。 |
+| `SQLite` | 用一句话说明「实战：Node.js + Express REST API」解决什么问题：用 Express、SQLite 和 Vitest 实现任务 API，覆盖校验、错误中间件和测试。 |
+| `REST` | 用一句话说明「实战：Node.js + Express REST API」解决什么问题：用 Express、SQLite 和 Vitest 实现任务 API，覆盖校验、错误中间件和测试。 |
+| `Vitest` | 用一句话说明「实战：Node.js + Express REST API」解决什么问题：用 Express、SQLite 和 Vitest 实现任务 API，覆盖校验、错误中间件和测试。 |
 
 ## 考点精讲
 
-### 考点 1：哪个库适合做请求结构校验？
+### 考点 1：概念判断·Node.js
 
+- **题目**：哪个库适合做请求结构校验？
 - **判断依据**：Zod 提供运行时校验和类型推断，适合 API 边界。作答时，先用Node.js建立输入与输出的基线，再把Zod代入边界条件核对，结论才能复现。把“Zod”代回「实战：Node.js + Express REST API」里“哪个库适合做请求结构校验”的例子核对，条件一旦改变，结论就要用Node.js、Express、SQLite重新推导。
 
-### 考点 2：创建资源成功最适合返回什么？
+### 考点 2：概念判断·Node.js
 
+- **题目**：创建资源成功最适合返回什么？
 - **判断依据**：201 表示资源已创建，并通常返回新资源标识。作答时，先用Node.js建立输入与输出的基线，再把201代入边界条件核对，结论才能复现。回到「实战：Node.js + Express REST API」的正文示例，用“创建资源成功最适合返回什么”走一遍Node.js、Express、SQLite的完整流程，能复现的结论才可以保留。
 
-### 考点 3：围绕“实战：Node.js + Express REST API”中的 Node.js、Express、SQLite，下列哪两项是本课强调的实践判断？
+### 考点 3：多选辨析·Node.js
 
+- **题目**：围绕“实战：Node.js + Express REST API”中的 Node.js、Express、SQLite，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把实战：Node.js + Express REST API拆成概念、示例与故障现场三部分，因此判断 Node.js 时必须同时交代输入、输出和失败路径，这使“学习 Node.js 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在实战：Node.js + Express REST API里，判断 Express 时要固定版本与边界输入，所以“验证 Express 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 4：统一错误中间件解决什么问题？
+### 考点 4：概念判断·Node.js
 
+- **题目**：统一错误中间件解决什么问题？
 - **判断依据**：统一结构能让客户端稳定解析错误并做重试或提示。在「实战：Node.js + Express REST API」里，作答时，先用Node.js建立输入与输出的基线，再把让错误响应格式一致代入边界条件核对，结论才能复现。在「实战：Node.js + Express REST API」里，这道题要求区分概念与边界，「让错误响应格式一致」只有在题干给出的前提下才成立，而「替代日志」、「压缩图片」缺少同一组条件。
 
-### 考点 5：请求体缺少 title 时，下面代码会返回什么？
+### 考点 5：代码补全·Node.js
 
+- **题目**：请求体缺少 title 时，下面代码会返回什么？
 - **判断依据**：在「实战：Node.js + Express REST API」里，422 和包含字段错误的 JSON。CreateTask.safeParse 校验失败时不会抛异常，代码显式返回 422 并把 Zod 的错误列表放进响应体。422 表示请求格式正确但语义校验未通过，201 只在创建成功后返回。
 
-### 考点 6：按照「实战：Node.js + Express REST API」从概念到实践的讲解顺序排列下列主题。
+### 考点 6：顺序排列·Node.js
 
+- **题目**：按照「实战：Node.js + Express REST API」从概念到实践的讲解顺序排列下列主题。
 - **判断依据**：结合Node.js、Express来看，正确的执行顺序是「项目背景 → 技术栈 → 架构与数据流 → 功能范围」。本课围绕用 Express、SQLite 和 Vitest 实现任务 API，覆盖校验、错误中间件和测试。把“项目背景”代回「实战：Node.js + Express REST API」里“按照实战”的例子核对，条件一旦改变，结论就要用Node.js、Express、SQLite重新推导。
 
 ## English Overview
@@ -476,3 +519,9 @@ package.json
    - 依据：结合Node.js、Express来看，正确的执行顺序是「项目背景 → 技术栈 → 架构与数据流 → 功能范围」。本课围绕用 Express、SQLite 和 Vitest 实现任务 API，覆盖校验、错误中间件和测试。把“项目背景”代回「实战：Node.js + Express REST API」里“按照实战”的例子核对，条件一旦改变，结论就要用Node.js、Express、SQLite重新推导。
 
 ### 迁移练习
+
+把「实战：Node.js + Express REST API」的结论迁移到相邻主题，每次迁移都写清预测与证据：
+
+1. 换输入：用Node.js处理一组你自己的数据，对比教材示例的结果差异。
+2. 换失败条件：制造一个Express相关的错误，说明如何从错误信息定位根因。
+3. 换规模：把数据量或并发度提高一个数量级，说明「实战：Node.js + Express REST API」的结论是否仍成立。

@@ -497,6 +497,13 @@ mvn -q versions:display-dependency-updates   # 检查可升级依赖
 
 ### 任务 2：只改一个条件
 
+把「构建、测试与生态」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把Maven的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「构建、测试与生态」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响Maven。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -570,40 +577,38 @@ mvn -q versions:display-dependency-updates   # 检查可升级依赖
 | `mvn compile` | \| 编译 \| `mvn compile` \| `gradle compileJava` \| |
 | `gradle compileJava` | \| 编译 \| `mvn compile` \| `gradle compileJava` \| |
 | `mvn test` | \| 测试 \| `mvn test` \| `gradle test` \| |
-| `gradle test` | \| 测试 \| `mvn test` \| `gradle test` \| |
-| `mvn package` | \| 打包 \| `mvn package` \| `gradle build` \| |
-| `gradle build` | \| 打包 \| `mvn package` \| `gradle build` \| |
-| `mvn package -DskipTests` | \| 跳过测试打包 \| `mvn package -DskipTests` \| `gradle build -x test` \| |
-| `gradle build -x test` | \| 跳过测试打包 \| `mvn package -DskipTests` \| `gradle build -x test` \| |
-| `mvn clean` | \| 清理 \| `mvn clean` \| `gradle clean` \| |
 
 ## 考点精讲
 
-### 考点 1：围绕“构建、测试与生态”中的 Maven、Gradle、JUnit，下列哪两项是本课强调的实践判断？
+### 考点 1：多选辨析·Maven
 
+- **题目**：围绕“构建、测试与生态”中的 Maven、Gradle、JUnit，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把构建、测试与生态拆成概念、示例与故障现场三部分，因此判断 Maven 时必须同时交代输入、输出和失败路径，这使“学习 Maven 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在构建、测试与生态里，判断 Gradle 时要固定版本与边界输入，所以“验证 Gradle 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 2：这段代码代码是「构建、测试与生态」的示例片段，下面哪一项描述与它一致？
+### 考点 2：代码补全·Maven
 
-- **判断依据**：在「构建、测试与生态」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「构建、测试与生态」的正文示例，围绕Maven、Gradle、JUnit展开；把输入或边界换成空值、极值或失败情况后，结论要以「构建、测试与生态」的实际运行结果为准。把“这段代码只做静态声明，没有循环”代回「构建、测试与生态」里“这段代码代码是构建、测试与生态的示例片段”的例子核对，条件一旦改变，结论就要用Maven、Gradle、JUnit重新推导。
+- **题目**：这段代码代码是「构建、测试与生态」的示例片段，下面哪一项描述与它一致？
+- **判断依据**：在「构建、测试与生态」里，题干的正确项是这段代码只做静态声明，没有循环、分支或可观察输出，在「构建、测试与生态」里它只能证明Maven相关约束存在，不能替代真实运行证据。把输入或边界换成空值、极值或失败情况后，结论要以「构建、测试与生态」的实际运行结果为准。把“这段代码只做静态声明，没有循环”代回「构建、测试与生态」里“这段代码代码是构建、测试与生态的示例片段”的例子核对，条件一旦改变，结论就要用Maven、Gradle、JUnit重新推导。
 
-### 考点 3：防止 SQL 注入的正确做法是？
+### 考点 3：概念判断·Maven
 
+- **题目**：防止 SQL 注入的正确做法是？
 - **判断依据**：在「构建、测试与生态」里，使用 PreparedStatement 参数占位符。预编译语句把参数与 SQL 结构分离，是防注入的标准手段。“注入的正确做法是”与「构建、测试与生态」的术语表相呼应，只有符合Maven、Gradle、JUnit约束的“使用 PreparedStatement”才是正文支持的结论。
 
-### 考点 4：JUnit 5 中编写参数化测试使用哪个注解？
+### 考点 4：概念判断·Maven
 
+- **题目**：JUnit 5 中编写参数化测试使用哪个注解？
 - **判断依据**：配合 @ValueSource / @CsvSource 提供数据，同样的逻辑可覆盖多组输入。在「构建、测试与生态」里，其他选项：JUnit 5 使用 @ParameterizedTest 搭配 @ValueSource 或 @CsvSource。在「构建、测试与生态」里，这道题要求区分概念与边界，「@ParameterizedTest」只有在题干给出的前提下才成立，而「@RepeatTest」、「@TheoryTest」缺少同一组条件。
 
-### 考点 5：Gradle 中 settings.gradle 与 build.gradle 的分工是？
+### 考点 5：概念判断·Maven
 
+- **题目**：Gradle 中 settings.gradle 与 build.gradle 的分工是？
 - **判断依据**：在「构建、测试与生态」里，settings 定义项目结构（包含哪些模块）。多模块 Gradle 项目靠 settings.gradle 聚合子模块。这道题的关键在「构建、测试与生态」的Maven、Gradle、JUnit：先确认题干“Gradle 中 settings.”问的是哪一步，再排除偷换前提的选项。
 
-### 考点 6：补全代码：「构建、测试与生态」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·Maven
 
-`____("org.junit.jupiter:junit-jupiter:5.11.0")`
-
-- **判断依据**：空格应填写「testImplementation」、「testimplementation」。回到「构建、测试与生态」的正文示例，用“补全代码”走一遍Maven、Gradle、JUnit的完整流程，能复现的结论才可以保留。回到「构建、测试与生态」的正文示例，用“测试与生态示例中”走一遍Maven、Gradle、JUnit的完整流程，能复现的结论才可以保留。
+- **题目**：补全代码：「构建、测试与生态」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `____("org.junit.jupiter:junit-jupiter:5.11.0")`
+- **判断依据**：空格应填写「testImplementation」、「testimplementation」。回到「构建、测试与生态」的正文示例，用“补全代码”走一遍Maven、Gradle、JUnit的完整流程，能复现的结论才可以保留。回到Maven、Gradle、JUnit本身再看一遍：只有“testImplementation”与题干“测试与生态示例中”的前提一致，结论才成立。
 
 ## English Overview
 

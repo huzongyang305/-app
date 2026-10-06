@@ -471,6 +471,13 @@ dotnet remove package Serilog
 
 ### 任务 2：只改一个条件
 
+把「生态、测试与 Web 开发」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把NuGet的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「生态、测试与 Web 开发」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响NuGet。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -545,40 +552,38 @@ dotnet remove package Serilog
 | `AddSingleton` | \| `AddSingleton` \| 整个应用一个实例 \| 无状态服务、配置、缓存 \| |
 | `AddScoped` | \| `AddScoped` \| 每个请求一个实例 \| `DbContext`、请求级服务 \| |
 | `DbContext` | \| `AddScoped` \| 每个请求一个实例 \| `DbContext`、请求级服务 \| |
-| `AddTransient` | \| `AddTransient` \| 每次解析都新建 \| 轻量无状态工具类 \| |
-| `[Fact]` | \| 定义测试 \| `[Fact]` \| |
-| `[Theory]` | \| 参数化 \| `[Theory]` + `[InlineData]` / `[MemberData]` \| |
-| `[InlineData]` | \| 参数化 \| `[Theory]` + `[InlineData]` / `[MemberData]` \| |
-| `[MemberData]` | \| 参数化 \| `[Theory]` + `[InlineData]` / `[MemberData]` \| |
-| `Assert.Equal(expected, actual)` | \| 断言相等 \| `Assert.Equal(expected, actual)` \| |
 
 ## 考点精讲
 
-### 考点 1：这段 C# 代码是「生态、测试与 Web 开发」的示例片段，下面哪一项描述与它一致？
+### 考点 1：代码补全·NuGet
 
+- **题目**：这段 C# 代码是「生态、测试与 Web 开发」的示例片段，下面哪一项描述与它一致？
 - **判断依据**：在「生态、测试与 Web 开发」里，这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。这段代码出自「生态、测试与 Web 开发」的正文示例，围绕NuGet、xUnit、ASP.NET Core展开；把输入或边界换成空值、极值或失败情况后，结论要以「生态、测试与 Web 开发」的实际运行结果为准。
 
-### 考点 2：xUnit 中 [Theory] 配合 [InlineData] 用于？
+### 考点 2：概念判断·NuGet
 
+- **题目**：xUnit 中 [Theory] 配合 [InlineData] 用于？
 - **判断依据**：Theory 表示数据驱动测试，InlineData 提供每组参数，减少重复代码。其他选项：[Theory] 与 [InlineData] 提供参数化测试。在「生态、测试与 Web 开发」里判断这道题，要把NuGet、xUnit、ASP.NET Core的条件、过程与失败路径逐项对齐，换成“xUnit 中 [Theory] 配”这个场景，只有满足前提的结论才成立。
 
-### 考点 3：EF Core 的主要作用是？
+### 考点 3：概念判断·NuGet
 
+- **题目**：EF Core 的主要作用是？
 - **判断依据**：在「生态、测试与 Web 开发」里，ORM：把对象与 LINQ 映射到数据库。EF Core 负责对象关系映射，把 LINQ 翻译成 SQL，并配合迁移管理表结构。回到「生态、测试与 Web 开发」的正文示例，用“EF Core 的主要作用是”走一遍NuGet、xUnit、ASP.NET Core的完整流程，能复现的结论才可以保留。
 
-### 考点 4：ASP.NET Core 中间件的执行方式是？
+### 考点 4：概念判断·NuGet
 
+- **题目**：ASP.NET Core 中间件的执行方式是？
 - **判断依据**：在「生态、测试与 Web 开发」里，结论应落在「按注册顺序组成管道依次调用」。顺序很关键：异常处理、认证、授权、静态文件、路由都有惯用的注册次序。在「生态、测试与 Web 开发」里，这道题要求区分概念与边界，「按注册顺序组成管道依次调用」只有在题干给出的前提下才成立，而「随机顺序执行」、「只执行最后一个」缺少同一组条件。
 
-### 考点 5：围绕“生态、测试与 Web 开发”中的 NuGet、xUnit、ASP.NET Core，下列哪两项是本课强调的实践判断？
+### 考点 5：多选辨析·NuGet
 
+- **题目**：围绕“生态、测试与 Web 开发”中的 NuGet、xUnit、ASP.NET Core，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把生态、测试与 Web 开发拆成概念、示例与故障现场三部分，因此判断 NuGet 时必须同时交代输入、输出和失败路径，这使“学习 NuGet 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在生态、测试与 Web 开发里，判断 xUnit 时要固定版本与边界输入，所以“验证 xUnit 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 6：补全代码：「生态、测试与 Web 开发」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·await db.____;
 
-`await db.____;`
-
-- **判断依据**：空格应填写「SaveChangesAsync」、「savechangesasync」。回到「生态、测试与 Web 开发」的正文示例，用“补全代码”走一遍NuGet、xUnit、ASP.NET Core的完整流程，能复现的结论才可以保留。回到「生态、测试与 Web 开发」的正文示例，用“开发示例中”走一遍NuGet、xUnit、ASP.NET Core的完整流程，能复现的结论才可以保留。
+- **题目**：补全代码：「生态、测试与 Web 开发」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `await db.____;`
+- **判断依据**：空格应填写「SaveChangesAsync」、「savechangesasync」。回到「生态、测试与 Web 开发」的正文示例，用“补全代码”走一遍NuGet、xUnit、ASP.NET Core的完整流程，能复现的结论才可以保留。回到NuGet、xUnit、ASP.NET Core本身再看一遍：只有“SaveChangesAsync”与题干“开发示例中”的前提一致，结论才成立。
 
 ## English Overview
 

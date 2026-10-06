@@ -386,6 +386,12 @@ class ItemList extends StatelessWidget {
 
 ### 任务 1：用自己的话画出结构
 
+不看书，用一张图说清「Flutter 基础与 Widget 树」的结构，画完再对照骨架：
+
+- 主干：一切皆 Widget → 布局三原则 → 常用布局对照 → 与 Android/iOS 的差异
+- 连接线：在每条边上标出输入、输出与失败路径。
+- 自检：能否用一句话说明Flutter与Widget的关系？
+
 ### 任务 2：做一次对比实验
 
 **验收标准**：表格里两个方案的结论不能完全一样；写下“在什么条件下应该换方案”。
@@ -451,38 +457,38 @@ class ItemList extends StatelessWidget {
 | `StatelessWidget` | \| 无状态 \| 不可变、由父级控制 \| `StatelessWidget`、`Text`、`Icon` \| |
 | `Text` | \| 无状态 \| 不可变、由父级控制 \| `StatelessWidget`、`Text`、`Icon` \| |
 | `Icon` | \| 无状态 \| 不可变、由父级控制 \| `StatelessWidget`、`Text`、`Icon` \| |
-| `StatefulWidget` | \| 有状态 \| 自身持有并修改状态 \| `StatefulWidget`、`TextField`、`AnimationController` \| |
-| `TextField` | \| 有状态 \| 自身持有并修改状态 \| `StatefulWidget`、`TextField`、`AnimationController` \| |
-| `AnimationController` | \| 有状态 \| 自身持有并修改状态 \| `StatefulWidget`、`TextField`、`AnimationController` \| |
-| `Row` | \| 布局 \| 控制子组件位置与尺寸 \| `Row`、`Column`、`Stack`、`Wrap` \| |
-| `Column` | \| 布局 \| 控制子组件位置与尺寸 \| `Row`、`Column`、`Stack`、`Wrap` \| |
-| `Stack` | \| 布局 \| 控制子组件位置与尺寸 \| `Row`、`Column`、`Stack`、`Wrap` \| |
 
 ## 考点精讲
 
-### 考点 1：下面这段代码代码摘自「Flutter 基础与 Widget 树」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
+### 考点 1：代码补全·Flutter
 
+- **题目**：下面这段代码代码摘自「Flutter 基础与 Widget 树」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 - **判断依据**：在「Flutter 基础与 Widget 树」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「Flutter 基础与 Widget 树」的正文示例，围绕Flutter、Widget、布局展开；把输入或边界换成空值、极值或失败情况后，结论要以「Flutter 基础与 Widget 树」的实际运行结果为准。
 
-### 考点 2：长列表应该使用？
+### 考点 2：概念判断·Flutter
 
+- **题目**：长列表应该使用？
 - **判断依据**：在「Flutter 基础与 Widget 树」里，ListView.builder 懒加载。builder 只构建可见项，避免一次性创建大量 Widget。这道题的关键在「Flutter 基础与 Widget 树」的Flutter、Widget、布局：先确认题干“长列表应该使用”问的是哪一步，再排除偷换前提的选项。
 
-### 考点 3：按“Flutter 基础与 Widget 树”中 Flutter、Widget、布局 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
+### 考点 3：顺序排列·Flutter
 
-- **判断依据**：正确的执行顺序是「先明确 Flutter 的输入、输出与约束」 → 「写出最小示例并核对 Widget 的基线结果」 → 「只改一个变量，记录边界与失败路径的变化」 → 「固定版本与证据，把“Flutter 基础与 Widget 树”的结论写成可复现记录」。在「Flutter 基础与 Widget 树」里，在本课的练习里，顺序应当是：先明确 Flutter 的输入、输出与约束 → 写出最小示例并核对 Widget 的基线结果 → 只改一个变量，记录边界与失败路径的变化 → 固定版本与证据，把本课的结论写成可复现记录。这个顺序把 Flutter 的输入、输出和约束放在最前面，在Flutter 基础与 Widget 树里避免概念没对齐就开始调参。第二步用 Widget 建立可核对的基线，在Flutter 基础与 Widget 树里第三步才允许改变一个变量并观察失败路径。
+- **题目**：按“Flutter 基础与 Widget 树”中 Flutter、Widget、布局 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
+- **判断依据**：在「Flutter 基础与 Widget 树」里，在本课的练习里，顺序应当是：先明确 Flutter 的输入、输出与约束 → 写出最小示例并核对 Widget 的基线结果 → 只改一个变量，记录边界与失败路径的变化 → 固定版本与证据，把本课的结论写成可复现记录。这个顺序把 Flutter 的输入、输出和约束放在最前面，在Flutter 基础与 Widget 树里避免概念没对齐就开始调参。第二步用 Widget 建立可核对的基线，在Flutter 基础与 Widget 树里第三步才允许改变一个变量并观察失败路径。
 
-### 考点 4：让 Row 中的子项按比例占满剩余宽度，应该使用？
+### 考点 4：概念判断·Flutter
 
+- **题目**：让 Row 中的子项按比例占满剩余宽度，应该使用？
 - **判断依据**：在「Flutter 基础与 Widget 树」里，结论应落在「Expanded(flex: n)」。Expanded 会按 flex 比例瓜分剩余空间。在「Flutter 基础与 Widget 树」里，这道题要求区分概念与边界，「Expanded(flex: n)」只有在题干给出的前提下才成立，而「SizedBox(width: 100)」、「Container(color: ...)」缺少同一组条件。
 
-### 考点 5：热重载（hot reload）与热重启（hot restart）的关键区别是？
+### 考点 5：概念判断·Flutter
 
+- **题目**：热重载（hot reload）与热重启（hot restart）的关键区别是？
 - **判断依据**：在「Flutter 基础与 Widget 树」里，热重载保留当前 State。热重载只重新执行 build，State 与页面栈保留。回到「Flutter 基础与 Widget 树」的正文示例，用“热重载（hot reload）与热重”走一遍Flutter、Widget、布局的完整流程，能复现的结论才可以保留。
 
-### 考点 6：关于「Flutter 基础与 Widget 树」，下列哪些说法是正确的？（多选）
+### 考点 6：多选辨析·Flutter
 
-- **判断依据**：在「Flutter 基础与 Widget 树」里，ListView.builder 懒加载；在「Flutter 基础与 Widget 树」里，约束向下、尺寸向上、父决定位置。Widget 分类、布局三原则与常用布局对照。把“ListView.builder 懒加载”代回「Flutter 基础与 Widget 树」里“Flutter 基础与 Widget 树”的例子核对，条件一旦改变，结论就要用Flutter、Widget、布局重新推导。
+- **题目**：关于「Flutter 基础与 Widget 树」，下列哪些说法是正确的？（多选）
+- **判断依据**：在「Flutter 基础与 Widget 树」里，约束向下、尺寸向上、父决定位置。Widget 分类、布局三原则与常用布局对照。把“ListView.builder 懒加载”代回「Flutter 基础与 Widget 树」里“Flutter 基础与 Widget 树”的例子核对，条件一旦改变，结论就要用Flutter、Widget、布局重新推导。
 
 ## English Overview
 

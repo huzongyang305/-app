@@ -548,6 +548,13 @@ ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]
 
 ### 任务 2：只改一个条件
 
+把「实战：Spring Boot REST API」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把实战的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「实战：Spring Boot REST API」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响实战。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -622,40 +629,38 @@ ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]
 | `@RestControllerAdvice` | 统一异常处理（`@RestControllerAdvice`）返回一致的错误结构。 |
 | `application-{env}.yml` | 配置外部化（`application-{env}.yml` + 环境变量）。 |
 | `@SpringBootApplication` | \| `@SpringBootApplication` \| 启动类，组合配置与组件扫描 \| |
-| `@RestController` | \| `@RestController` \| REST 控制器，返回值序列化为 JSON \| |
-| `@RequestMapping` | \| `@RequestMapping` / `@GetMapping` / `@PostMapping` \| 路由映射 \| |
-| `@GetMapping` | \| `@RequestMapping` / `@GetMapping` / `@PostMapping` \| 路由映射 \| |
-| `@PostMapping` | \| `@RequestMapping` / `@GetMapping` / `@PostMapping` \| 路由映射 \| |
-| `@PathVariable` | \| `@PathVariable` / `@RequestParam` \| 路径变量 / 查询参数 \| |
-| `@RequestParam` | \| `@PathVariable` / `@RequestParam` \| 路径变量 / 查询参数 \| |
 
 ## 考点精讲
 
-### 考点 1：围绕“实战：Spring Boot REST API”中的 实战、Spring Boot、REST，下列哪两项是本课强调的实践判断？
+### 考点 1：多选辨析·实战
 
+- **题目**：围绕“实战：Spring Boot REST API”中的 实战、Spring Boot、REST，下列哪两项是本课强调的实践判断？
 - **判断依据**：在「实战：Spring Boot REST API」里，学习 实战 时要同时说明输入、输出和失败路径，不能只看正常流程。在实战：Spring Boot REST API里，判断 Spring Boot 时要固定版本与边界输入，所以“验证 Spring Boot 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 2：使用构造器注入的主要好处是？
+### 考点 2：概念判断·实战
 
+- **题目**：使用构造器注入的主要好处是？
 - **判断依据**：在「实战：Spring Boot REST API」里，依赖显式且便于测试。构造器注入让依赖不可变、显式，单元测试可直接传入 mock。在「实战：Spring Boot REST API」里判断这道题，要把实战、Spring Boot、REST的条件、过程与失败路径逐项对齐，换成“使用构造器注入的主要好处是”这个场景，只有满足前提的结论才成立。
 
-### 考点 3：下面这段 Java 代码摘自「实战：Spring Boot REST API」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
+### 考点 3：代码补全·实战
 
+- **题目**：下面这段 Java 代码摘自「实战：Spring Boot REST API」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 - **判断依据**：在「实战：Spring Boot REST API」里，这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。这段代码出自「实战：Spring Boot REST API」的正文示例，围绕实战、Spring Boot、REST展开；把输入或边界换成空值、极值或失败情况后，结论要以「实战：Spring Boot REST API」的实际运行结果为准。
 
-### 考点 4：@RestController 与 @Controller 的差别是？
+### 考点 4：概念判断·实战
 
+- **题目**：@RestController 与 @Controller 的差别是？
 - **判断依据**：在「实战：Spring Boot REST API」里，结论应落在「@RestController 默认把返回值序列化为 JSON（相当于 @Controller + @ResponseBody）」。返回视图页面时用 @Controller，写 REST API 时用 @RestController 更省事。
 
-### 考点 5：JPA 中 N+1 查询问题的常见解法是？
+### 考点 5：概念判断·实战
 
+- **题目**：JPA 中 N+1 查询问题的常见解法是？
 - **判断依据**：在「实战：Spring Boot REST API」里，用 join fetch / @EntityGraph 一次性预加载关联数据。N+1 的典型现象是 1 条主查询 + N 条关联查询，用批量抓取或联表抓取可以解决。把“用 join fetch / @Enti”代回「实战：Spring Boot REST API」里“JPA 中 N+1 查询问题的常见解法是”的例子核对，条件一旦改变，结论就要用实战、Spring Boot、REST重新推导。
 
-### 考点 6：补全代码：「实战：Spring Boot REST API」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·实战
 
-`@____(prefix = "app.retry")`
-
-- **判断依据**：空格应填写「ConfigurationProperties」、「configurationproperties」。这道题的关键在「实战：Spring Boot REST API」的实战、Spring Boot、REST：先确认题干“补全代码”问的是哪一步，再排除偷换前提的选项。这道题的关键在「实战：Spring Boot REST API」的实战、Spring Boot、REST：先确认题干“Spring”问的是哪一步，再排除偷换前提的选项。
+- **题目**：补全代码：「实战：Spring Boot REST API」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `@____(prefix = "app.retry")`
+- **判断依据**：空格应填写「ConfigurationProperties」、「configurationproperties」。这道题的关键在「实战：Spring Boot REST API」的实战、Spring Boot、REST：先确认题干“补全代码”问的是哪一步，再排除偷换前提的选项。
 
 ## English Overview
 
@@ -761,18 +766,6 @@ README.md
 ### Learning Outcomes
 
 - Explain what **Project: Spring Boot API** solves and when it should be used.
-
-### Core Mental Model
-
-### Step-by-step Study Plan
-
-### Practice Tasks
-
-### Common Failure Modes
-
-### Self-check Questions
-
-4. What is the rollback path?
 
 ### Glossary
 

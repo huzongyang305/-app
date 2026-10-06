@@ -374,6 +374,13 @@ exec "$@"                          # 交给主进程，正确接收 SIGTERM
 
 ### 任务 2：只改一个条件
 
+把「Shell 与 Docker/K8s 交互」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把Shell的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「Shell 与 Docker/K8s 交互」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响Shell。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -443,38 +450,42 @@ exec "$@"                          # 交给主进程，正确接收 SIGTERM
 
 | 术语 | 本课语境 |
 | --- | --- |
-| `[Shell, Docker, Kubernetes, entrypoint, 健康检查][index]` | 在「Shell 与 Docker/K8s 交互」里理解它的定义、输入和输出。 |
-| `[Shell, Docker, Kubernetes, entrypoint, 健康检查][index]` | 本课用它说明边界条件与失败路径。 |
-| `[Shell, Docker, Kubernetes, entrypoint, 健康检查][index]` | 结合「Shell 与 Docker/K8s 交互」的正文示例确认它的适用条件。 |
-| `[Shell, Docker, Kubernetes, entrypoint, 健康检查][index]` | 在「Shell 与 Docker/K8s 交互」里理解它的定义、输入和输出。 |
-| `[Shell, Docker, Kubernetes, entrypoint, 健康检查][index]` | 本课用它说明边界条件与失败路径。 |
+| `Shell` | Shell 与容器的结合点是可重复的构建/部署/排查流程：镜像用不可变标签、entrypoint 用 exec 传递信号、排查按 get→describe→logs→exec 顺序进行。 |
+| `Docker` | 围绕“Docker 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。 |
+| `Kubernetes` | 开始前先复习：Shell、Docker、Kubernetes。 |
+| `entrypoint` | Shell 与容器的结合点是可重复的构建/部署/排查流程：镜像用不可变标签、entrypoint 用 exec 传递信号、排查按 get→describe→logs→exec 顺序进行。 |
+| `健康检查` | 它在「Shell 与 Docker/K8s 交互」里是理解「健康检查」的关键术语，用来解释定义、适用条件与失败路径；它与Shell、Docker共同决定这一节的判断边界。复习时回到正文示例核对输入、输出和验证方式。 |
 
 ## 考点精讲
 
-### 考点 1：围绕“Shell 与 Docker/K8s 交互”中的 Shell、Docker、Kubernetes，下列哪两项是本课强调的实践判断？
+### 考点 1：多选辨析·Shell
 
+- **题目**：围绕“Shell 与 Docker/K8s 交互”中的 Shell、Docker、Kubernetes，下列哪两项是本课强调的实践判断？
 - **判断依据**：在「Shell 与 Docker/K8s 交互」里，学习 Shell 时要同时说明输入、输出和失败路径，不能只看正常流程。在Shell 与 Docker/K8s 交互里，判断 Docker 时要固定版本与边界输入，所以“验证 Docker 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 2：依赖服务暂时不可用时，应该影响哪种探针？
+### 考点 2：概念判断·Shell
 
-- **判断依据**：在「Shell 与 Docker/K8s 交互」里，让 liveness 失败会引发全量重启。围绕 依赖服务暂时不可用时，应该影响哪种探针。在「Shell 与 Docker/K8s 交互」里，作答时，先用Shell建立输入与输出的基线，再把readiness代入边界条件核对，结论才能复现。
+- **题目**：依赖服务暂时不可用时，应该影响哪种探针？
+- **判断依据**：在「Shell 与 Docker/K8s 交互」里，让 liveness 失败会引发全量重启。在「Shell 与 Docker/K8s 交互」里，作答时，先用Shell建立输入与输出的基线，再把readiness代入边界条件核对，结论才能复现。回到「Shell 与 Docker/K8s 交互」的正文示例，用“依赖服务暂时不可用时”走一遍Shell、Docker、Kubernetes的完整流程，能复现的结论才可以保留。
 
-### 考点 3：K8s 排查问题的推荐顺序是？
+### 考点 3：概念判断·Shell
 
+- **题目**：K8s 排查问题的推荐顺序是？
 - **判断依据**：在「Shell 与 Docker/K8s 交互」里，get → describe → logs → exec。先看状态与事件，再看应用日志，最后进容器验证。回到「Shell 与 Docker/K8s 交互」的正文示例，用“K8s 排查问题的推荐顺序是”走一遍Shell、Docker、Kubernetes的完整流程，能复现的结论才可以保留。
 
-### 考点 4：阅读「Shell 与 Docker/K8s 交互」中的这段 Shell 代码，下面哪项判断最准确？
+### 考点 4：代码补全·Shell
 
+- **题目**：阅读「Shell 与 Docker/K8s 交互」中的这段 Shell 代码，下面哪项判断最准确？
 - **判断依据**：在「Shell 与 Docker/K8s 交互」里，结论应落在「镜像标签、entrypoint 要点与 kubectl 排查顺序」。在「Shell 与 Docker/K8s 交互」里，结论应落在镜像标签、entrypoint 要点与 kubectl 排查顺序。在「Shell 与 Docker/K8s 交互」里，这段 Shell 代码来自本课的本地示例，主要用来核对 Shell、Docker、Kubernetes、entrypoint 之间的输入、处理和输出关系，镜像标签、entrypoint 要点与 kubectl 排查顺序。
 
-### 考点 5：kubectl exec -it pod -- sh 的适用场景是？
+### 考点 5：概念判断·Shell
 
+- **题目**：kubectl exec -it pod -- sh 的适用场景是？
 - **判断依据**：在「Shell 与 Docker/K8s 交互」里，进入容器内部排查问题。生产环境常使用 distroless 镜像没有 shell，此时要以日志与指标为主要手段。“kubectl”与「Shell 与 Docker/K8s 交互」的术语表相呼应，只有符合Shell、Docker、Kubernetes约束的“进入容器内部排查问题”才是正文支持的结论。
 
-### 考点 6：补全代码：「Shell 与 Docker/K8s 交互」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·____: 5
 
-`____: 5`
-
+- **题目**：补全代码：「Shell 与 Docker/K8s 交互」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `____: 5`
 - **判断依据**：在「Shell 与 Docker/K8s 交互」里，periodSeconds。在「Shell 与 Docker/K8s 交互」里判断这道题，要把Shell、Docker、Kubernetes的条件、过程与失败路径逐项对齐，换成“补全代码”这个场景，只有满足前提的结论才成立。回到「Shell 与 Docker/K8s 交互」的正文示例，用“补全代码”走一遍Shell、Docker、Kubernetes的完整流程，能复现的结论才可以保留。
 
 ## English Overview

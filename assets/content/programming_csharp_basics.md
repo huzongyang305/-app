@@ -333,6 +333,13 @@ dotnet add package Newtonsoft.Json   # 添加 NuGet 包
 
 ### 任务 2：只改一个条件
 
+把「C# 与 .NET 平台」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把C#的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「C# 与 .NET 平台」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响C#。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -407,39 +414,37 @@ dotnet add package Newtonsoft.Json   # 添加 NuGet 包
 | `.exe` | \| 程序集（Assembly） \| `.dll` / `.exe`，部署与版本单位 \| |
 | `.csproj` | \| NuGet \| 包管理器，依赖写在 `.csproj` \| |
 | `net8.0` | \| 目标框架（TFM） \| 如 `net8.0`、`net8.0-windows` \| |
-| `net8.0-windows` | \| 目标框架（TFM） \| 如 `net8.0`、`net8.0-windows` \| |
-| `dotnet --info` | \| 查看版本与 SDK \| `dotnet --info` \| |
-| `dotnet new console -o Hello` | \| 新建项目 \| `dotnet new console -o Hello` \| |
-| `dotnet new webapi -o Api` | \| 新建 Web API \| `dotnet new webapi -o Api` \| |
-| `dotnet new sln -n App` | \| 新建解决方案 \| `dotnet new sln -n App` \| |
-| `dotnet sln add Api/Api.csproj` | \| 添加项目到解决方案 \| `dotnet sln add Api/Api.csproj` \| |
 
 ## 考点精讲
 
-### 考点 1：阅读「C# 与 .NET 平台」正文里的这段 C# 代码，下面哪一项判断是正确的？
+### 考点 1：代码补全·C#
 
-- **判断依据**：在「C# 与 .NET 平台」里，这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。这段代码出自「C# 与 .NET 平台」的正文示例，围绕C#、.NET、CLR展开；把输入或边界换成空值、极值或失败情况后，结论要以「C# 与 .NET 平台」的实际运行结果为准。“.NET”与「C# 与 .NET 平台」的术语表相呼应，只有符合C#、.NET、CLR约束的“这段代码把主要逻辑封装在函数或方法里”才是正文支持的结论。
+- **题目**：阅读「C# 与 .NET 平台」正文里的这段 C# 代码，下面哪一项判断是正确的？
+- **判断依据**：题干的正确项是这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行，在「C# 与 .NET 平台」里封装边界决定C#从哪一步开始生效。这段代码出自「C# 与 .NET 平台」的正文示例，围绕C#、.NET、CLR展开；把输入或边界换成空值、极值或失败情况后，结论要以「C# 与 .NET 平台」的实际运行结果为准。“.NET”与「C# 与 .NET 平台」的术语表相呼应，只有符合C#、.NET、CLR约束的“这段代码把主要逻辑封装在函数或方法里”才是正文支持的结论。
 
-### 考点 2：dotnet run 的作用是？
+### 考点 2：概念判断·C#
 
-- **判断依据**：dotnet run 会先构建再运行。围绕 dotnet run 的作用是。在「C# 与 .NET 平台」里，作答时，先用C#建立输入与输出的基线，再把编译并运行当前项目代入边界条件核对，结论才能复现。回到「C# 与 .NET 平台」的正文示例，用“dotnet run 的作用是”走一遍C#、.NET、CLR的完整流程，能复现的结论才可以保留。
+- **题目**：dotnet run 的作用是？
+- **判断依据**：dotnet run 会先构建再运行。在「C# 与 .NET 平台」里，作答时，先用C#建立输入与输出的基线，再把编译并运行当前项目代入边界条件核对，结论才能复现。回到「C# 与 .NET 平台」的正文示例，用“dotnet run 的作用是”走一遍C#、.NET、CLR的完整流程，能复现的结论才可以保留。
 
-### 考点 3：围绕“C# 与 .NET 平台”中的 C#、.NET、CLR，下列哪两项是本课强调的实践判断？
+### 考点 3：多选辨析·C#
 
+- **题目**：围绕“C# 与 .NET 平台”中的 C#、.NET、CLR，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把C# 与 .NET 平台拆成概念、示例与故障现场三部分，因此判断 C# 时必须同时交代输入、输出和失败路径，这使“学习 C# 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在C# 与 .NET 平台里，判断 .NET 时要固定版本与边界输入，所以“验证 .NET 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 4：C# 中 using 指令与 using 语句的区别是？
+### 考点 4：概念判断·C#
 
+- **题目**：C# 中 using 指令与 using 语句的区别是？
 - **判断依据**：在「C# 与 .NET 平台」里，结论应落在「using 指令引入命名空间」。using 语句会编译成 try/finally 调用 Dispose，是 C# 资源管理的标准写法。在「C# 与 .NET 平台」里，这道题要求区分概念与边界，「using 指令引入命名空间」只有在题干给出的前提下才成立，而「using 语句只能用于文件 IO」、「两者完全一样」缺少同一组条件。
 
-### 考点 5：.NET SDK 与运行时的区别是？
+### 考点 5：概念判断·C#
 
+- **题目**：.NET SDK 与运行时的区别是？
 - **判断依据**：在「C# 与 .NET 平台」里，SDK 包含编译器与 CLI 工具可以开发，运行时只能执行已编译程序。服务器部署可以只装 ASP.NET Core 运行时，开发机则装 SDK。这道题的关键在「C# 与 .NET 平台」的C#、.NET、CLR：先确认题干“.NET SDK 与运行时的区别是”问的是哪一步，再排除偷换前提的选项。
 
-### 考点 6：补全代码：「C# 与 .NET 平台」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·C#
 
-`Console.____($"{celsius:F1}℃ = {fahrenheit:F1}℉");`
-
+- **题目**：补全代码：「C# 与 .NET 平台」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `Console.____($"{celsius:F1}℃ = {fahrenheit:F1}℉");`
 - **判断依据**：在「C# 与 .NET 平台」里，WriteLine。在「C# 与 .NET 平台」里判断这道题，要把C#、.NET、CLR的条件、过程与失败路径逐项对齐，换成“补全代码”这个场景，只有满足前提的结论才成立。“.NET”与「C# 与 .NET 平台」的术语表相呼应，只有符合C#、.NET、CLR约束的“WriteLine”才是正文支持的结论。
 
 ## English Overview
@@ -471,18 +476,6 @@ dotnet add package Newtonsoft.Json   # 添加 NuGet 包
 ### Learning Outcomes
 
 - Explain what **C# & .NET** solves and when it should be used.
-
-### Core Mental Model
-
-### Step-by-step Study Plan
-
-### Practice Tasks
-
-### Common Failure Modes
-
-### Self-check Questions
-
-4. What is the rollback path?
 
 ### Glossary
 

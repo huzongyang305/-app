@@ -66,6 +66,16 @@ console.log(document.querySelector("button").textContent);
 
 ### 实验二：只改一个输入
 
+沿用「JavaScript DOM 入门」的最小示例做一次单变量实验：
+
+| 实验 | 改动 | 预测 | 实际 | 结论 |
+| --- | --- | --- | --- | --- |
+| 基线 | 保持「JavaScript DOM 入门」示例原样 |  |  |  |
+| 边界 | 把JavaScript DOM 入门换成空值或极值 |  |  |  |
+| 失败 | 给JavaScript传入非法输入 |  |  |  |
+
+做完后用一句话写出「JavaScript DOM 入门」的结论：输入怎么变，结果才怎么变。
+
 ### 实验三：制造一个可控错误
 
 把一个预期为数字的值改成字符串，或者访问不存在的属性。记录结果是 undefined、NaN 还是类型错误，并说明为什么。
@@ -117,6 +127,13 @@ console.log(document.querySelector("button").textContent);
 
 ### 任务 2：只改一个条件
 
+把「JavaScript DOM 入门」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把JavaScript DOM 入门的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「JavaScript DOM 入门」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响JavaScript DOM 入门。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -124,6 +141,11 @@ console.log(document.querySelector("button").textContent);
 ## 故障现场
 
 ### 现场 1：本课的 JavaScript DOM 入门 常规用例通过，但边界用例失败
+
+把这条结论放回「JavaScript DOM 入门」的完整流程里展开：
+
+- 正文依据：症状：在本课的练习或生产场景里出现“本课的 JavaScript 结果在两次运行之间不一致”。
+- 落地检查：把「现场 1：本课的 JavaScript DOM 入门 常规用例通过，但边界用例失败」改写成一条可执行的核对项，逐条验证输入、超时与失败路径。
 
 ### 现场 2：本课的 JavaScript 结果在两次运行之间不一致
 
@@ -204,9 +226,8 @@ console.log(document.querySelector("button").textContent);
 
 | 术语 | 本课语境 |
 | --- | --- |
-| `[JavaScript DOM 入门, JavaScript, 入门练习][index]` | 在「JavaScript DOM 入门」里理解它的定义、输入和输出。 |
-| `[JavaScript DOM 入门, JavaScript, 入门练习][index]` | 本课用它说明边界条件与失败路径。 |
-| `[JavaScript DOM 入门, JavaScript, 入门练习][index]` | 结合「JavaScript DOM 入门」的正文示例确认它的适用条件。 |
+| `JavaScript` | 参考判断：学习 JavaScript DOM 入门 时要同时说明输入、输出和失败路径，不能只看正常流程、验证 JavaScript 时要固定版本并覆盖边界输入，结论才可复现。 |
+| `入门练习` | “JavaScript DOM 入门”中的 JavaScript DOM 入门、JavaScript、入门练习，下列哪两项是本课强调的实践判断。 |
 
 ## 零基础精讲：把JavaScript DOM 入门真正讲透
 
@@ -216,6 +237,7 @@ console.log(document.querySelector("button").textContent);
 
 ### 逐步拆解
 
+1. 澄清输入与目标。先写清「JavaScript DOM 入门」要解决的问题、合法输入范围和成功标准，再进入后续步骤。
 2. 描述处理过程。把「JavaScript DOM 入门、JavaScript、入门练习」映射到具体步骤，每步都要求能单独验证。
 3. 定义输出。输出不仅包括正常结果，还包括错误码、日志、指标和资源释放状态。
 4. 找出一条失败路径。让错误尽早暴露，并说明重试、降级、回滚或人工处理的边界。
@@ -224,8 +246,8 @@ console.log(document.querySelector("button").textContent);
 ### 把正文串成一条执行链
 
 - **实验一：建立基线**：先原样运行上面的代码，记录命令、完整输出和退出状态
-- **实验三：制造一个可控错误**：实验三：制造一个可控错误
-- **引擎、事件循环与执行上下文**：引擎、事件循环与执行上下文
+- **实验三：制造一个可控错误**：在「JavaScript DOM 入门」里，「实验三：制造一个可控错误」这一步要先写清输入与预期，再记录实际结果和差异；结果不符时回到对应小节核对前提。
+- **引擎、事件循环与执行上下文**：在「JavaScript DOM 入门」里，「引擎、事件循环与执行上下文」这一步要先写清输入与预期，再记录实际结果和差异；结果不符时回到对应小节核对前提。
 - **变量、作用域与类型转换**：`var` 函数作用域且会提升，`let` 和 `const` 块级作用域并有暂时性死区
 
 ### 从测验反推易错点
@@ -354,25 +376,30 @@ console.log(document.querySelector("button").textContent);
 
 ## 考点精讲
 
-### 考点 1：下面这段 JavaScript 代码摘自「JavaScript DOM 入门」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
+### 考点 1：代码补全·JavaScript DOM 入门
 
-- **判断依据**：在「JavaScript DOM 入门」里，这段代码会产生可观察的输出，运行后能看到结果。这段代码出自「JavaScript DOM 入门」的正文示例，围绕JavaScript DOM 入门、JavaScript、入门练习展开；把输入或边界换成空值、极值或失败情况后，结论要以「JavaScript DOM 入门」的实际运行结果为准。
+- **题目**：下面这段 JavaScript 代码摘自「JavaScript DOM 入门」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
+- **判断依据**：在「JavaScript DOM 入门」里，题干的正确项是这段代码会产生可观察的输出，运行后能看到结果，在「JavaScript DOM 入门」里要结合JavaScript DOM 入门核对输出是否符合预期。这段代码出自「JavaScript DOM 入门」的正文示例，围绕JavaScript DOM 入门、JavaScript、入门练习展开；把输入或边界换成空值、极值或失败情况后，结论要以「JavaScript DOM 入门」的实际运行结果为准。
 
-### 考点 2：围绕“JavaScript DOM 入门”中的 JavaScript DOM 入门、JavaScript、入门练习，下列哪两项是本课强调的实践判断？
+### 考点 2：多选辨析·JavaScript DOM 入门
 
-- **判断依据**：在「JavaScript DOM 入门」里，学习 JavaScript DOM 入门 时要同时说明输入、输出和失败路径，不能只看正常流程；在「JavaScript DOM 入门」里，验证 JavaScript 时要固定版本并覆盖边界输入，结论才可复现。在「JavaScript DOM 入门」里判断这道题，要把JavaScript DOM 入门、JavaScript、入门练习的条件、过程与失败路径逐项对齐，换成“围绕JavaScript DOM 入”这个场景，只有满足前提的结论才成立。
+- **题目**：围绕“JavaScript DOM 入门”中的 JavaScript DOM 入门、JavaScript、入门练习，下列哪两项是本课强调的实践判断？
+- **判断依据**：题干的正确项是学习 JavaScript DOM 入门 时要同时说明输入、输出和失败路径，不能只看正常流程。在「JavaScript DOM 入门」里，验证 JavaScript 时要固定版本并覆盖边界输入，结论才可复现。在「JavaScript DOM 入门」里判断这道题，要把JavaScript DOM 入门、JavaScript、入门练习的条件、过程与失败路径逐项对齐，换成“围绕JavaScript DOM 入”这个场景，只有满足前提的结论才成立。
 
-### 考点 3：示例中 console.log(document.querySelector("button").textContent) 输出什么？
+### 考点 3：概念判断·JavaScript DOM 入门
 
+- **题目**：示例中 console.log(document.querySelector("button").textContent) 输出什么？
 - **判断依据**：在「JavaScript DOM 入门」里，点击我，读取的是按钮元素的文本内容。示例先把按钮挂载到 body，再通过选择器找到它并读取 textContent，因此输出创建时设置的文本「点击我」。“console.log(document.querySele”与「JavaScript DOM 入门」的术语表相呼应，只有符合JavaScript DOM 入门、JavaScript、入门练习约束的“点击我，读取的是按钮元素的文本内容”才是正文支持的结论。
 
-### 考点 4：要让按钮响应用户点击，应该使用哪个方法？
+### 考点 4：概念判断·JavaScript DOM 入门
 
+- **题目**：要让按钮响应用户点击，应该使用哪个方法？
 - **判断依据**：在「JavaScript DOM 入门」里，结论应落在「addEventListener("click", 处理函数)」。addEventListener 把事件类型与处理函数绑定到元素上，点击发生时浏览器调用处理函数并传入事件对象。要让按钮响应用户点击，应该使用哪个方法。「JavaScript DOM 入门」要求先交代JavaScript DOM 入门、JavaScript、入门练习的前提再下结论，所以“addEventListener("cl”只在题干“要让按钮响应用户点击”给定的条件下成立。
 
-### 考点 5：填空：在「JavaScript DOM 入门」的术语速查里，「JavaScript 是单线程执行模型，调用栈执行同步代码，事件循环在栈清空后处理任务队列和微任务队列。`____`、Promise、事件回调都通过异步机制排队执行。理解调用栈、任务队列和微任务的顺序，才能解释“为什么日志顺序和」描述的是哪个术语？
+### 考点 5：填空·____
 
-- **判断依据**：在「JavaScript DOM 入门」里，setTimeout。这道题的关键在「JavaScript DOM 入门」的JavaScript DOM 入门、JavaScript、入门练习：先确认题干“填空”问的是哪一步，再排除偷换前提的选项。这道题的关键在「JavaScript DOM 入门」的JavaScript DOM 入门、JavaScript、入门练习：先确认题干“在JavaScript”问的是哪一步，再排除偷换前提的选项。
+- **题目**：填空：在「JavaScript DOM 入门」的术语速查里，「JavaScript 是单线程执行模型，调用栈执行同步代码，事件循环在栈清空后处理任务队列和微任务队列。`____`、Promise、事件回调都通过异步机制排队执行。理解调用栈、任务队列和微任务的顺序，才能解释“为什么日志顺序和」描述的是哪个术语？
+- **判断依据**：在「JavaScript DOM 入门」里，setTimeout。这道题的关键在「JavaScript DOM 入门」的JavaScript DOM 入门、JavaScript、入门练习：先确认题干“填空”问的是哪一步，再排除偷换前提的选项。这道题的关键在JavaScript DOM 入门、JavaScript、入门练习：先确认题干“在JavaScript”问的是哪一步，再排除偷换前提的选项。
 
 ## English Overview
 
@@ -426,18 +453,20 @@ console.log(document.querySelector("button").textContent);
 ### 测验回顾
 
 1. 下面这段 JavaScript 代码摘自「JavaScript DOM 入门」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
-   - 依据：在「JavaScript DOM 入门」里，这段代码会产生可观察的输出，运行后能看到结果。这段代码出自「JavaScript DOM 入门」的正文示例，围绕JavaScript DOM 入门、JavaScript、入门练习展开；把输入或边界换成空值、极值或失败情况后，结论要以「JavaScript DOM 入门」的实际运行结果为准。
+   - 依据：在「JavaScript DOM 入门」里，题干的正确项是这段代码会产生可观察的输出，运行后能看到结果，在「JavaScript DOM 入门」里要结合JavaScript DOM 入门核对输出是否符合预期。这段代码出自「JavaScript DOM 入门」的正文示例，围绕JavaScript DOM 入门、JavaScript、入门练习展开；把输入或边界换成空值、极值或失败情况后，结论要以「JavaScript DOM 入门」的实际运行结果为准。
 2. 围绕“JavaScript DOM 入门”中的 JavaScript DOM 入门、JavaScript、入门练习，下列哪两项是本课强调的实践判断？
-   - 依据：在「JavaScript DOM 入门」里，学习 JavaScript DOM 入门 时要同时说明输入、输出和失败路径，不能只看正常流程；在「JavaScript DOM 入门」里，验证 JavaScript 时要固定版本并覆盖边界输入，结论才可复现。在「JavaScript DOM 入门」里判断这道题，要把JavaScript DOM 入门、JavaScript、入门练习的条件、过程与失败路径逐项对齐，换成“围绕JavaScript DOM 入”这个场景，只有满足前提的结论才成立。
+   - 依据：题干的正确项是学习 JavaScript DOM 入门 时要同时说明输入、输出和失败路径，不能只看正常流程。在「JavaScript DOM 入门」里，验证 JavaScript 时要固定版本并覆盖边界输入，结论才可复现。在「JavaScript DOM 入门」里判断这道题，要把JavaScript DOM 入门、JavaScript、入门练习的条件、过程与失败路径逐项对齐，换成“围绕JavaScript DOM 入”这个场景，只有满足前提的结论才成立。
 3. 示例中 console.log(document.querySelector("button").textContent) 输出什么？
    - 依据：在「JavaScript DOM 入门」里，点击我，读取的是按钮元素的文本内容。示例先把按钮挂载到 body，再通过选择器找到它并读取 textContent，因此输出创建时设置的文本「点击我」。“console.log(document.querySele”与「JavaScript DOM 入门」的术语表相呼应，只有符合JavaScript DOM 入门、JavaScript、入门练习约束的“点击我，读取的是按钮元素的文本内容”才是正文支持的结论。
 4. 要让按钮响应用户点击，应该使用哪个方法？
    - 依据：在「JavaScript DOM 入门」里，结论应落在「addEventListener("click", 处理函数)」。addEventListener 把事件类型与处理函数绑定到元素上，点击发生时浏览器调用处理函数并传入事件对象。要让按钮响应用户点击，应该使用哪个方法。「JavaScript DOM 入门」要求先交代JavaScript DOM 入门、JavaScript、入门练习的前提再下结论，所以“addEventListener("cl”只在题干“要让按钮响应用户点击”给定的条件下成立。
 5. 填空：在「JavaScript DOM 入门」的术语速查里，「JavaScript 是单线程执行模型，调用栈执行同步代码，事件循环在栈清空后处理任务队列和微任务队列。`____`、Promise、事件回调都通过异步机制排队执行。理解调用栈、任务队列和微任务的顺序，才能解释“为什么日志顺序和」描述的是哪个术语？
-   - 依据：在「JavaScript DOM 入门」里，setTimeout。这道题的关键在「JavaScript DOM 入门」的JavaScript DOM 入门、JavaScript、入门练习：先确认题干“填空”问的是哪一步，再排除偷换前提的选项。这道题的关键在「JavaScript DOM 入门」的JavaScript DOM 入门、JavaScript、入门练习：先确认题干“在JavaScript”问的是哪一步，再排除偷换前提的选项。
+   - 依据：在「JavaScript DOM 入门」里，setTimeout。这道题的关键在「JavaScript DOM 入门」的JavaScript DOM 入门、JavaScript、入门练习：先确认题干“填空”问的是哪一步，再排除偷换前提的选项。这道题的关键在JavaScript DOM 入门、JavaScript、入门练习：先确认题干“在JavaScript”问的是哪一步，再排除偷换前提的选项。
 
 ### 迁移练习
 
-- 第 1 次迁移：围绕「下面这段 JavaScript 代码摘自「JavaScript DOM 入门」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？」先写下预测，再运行本课示例，最后记录预测与实际的差异。参考答案是「这段代码会产生可观察的输出，运行后能看到结果。」。
-- 第 2 次迁移：围绕「围绕“JavaScript DOM 入门”中的 JavaScript DOM 入门、JavaScript、入门练习，下列哪两项是本课强调的实践判断？」先写下预测，再运行本课示例，最后记录预测与实际的差异。参考答案是「学习 JavaScript DOM 入门 时要同时说明输入、输出和失败路径，不能只看正常流程」。
-- 第 3 次迁移：围绕「示例中 console.log(document.querySelector("button").textContent) 输出什么？」先写下预测，再运行本课示例，最后记录预测与实际的差异。参考答案是「验证 JavaScript 时要固定版本并覆盖边界输入，结论才可复现」。
+把「JavaScript DOM 入门」的结论迁移到相邻主题，每次迁移都写清预测与证据：
+
+1. 换输入：用JavaScript DOM 入门处理一组你自己的数据，对比教材示例的结果差异。
+2. 换失败条件：制造一个JavaScript相关的错误，说明如何从错误信息定位根因。
+3. 换规模：把数据量或并发度提高一个数量级，说明「JavaScript DOM 入门」的结论是否仍成立。

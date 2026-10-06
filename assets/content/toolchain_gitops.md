@@ -279,6 +279,13 @@ print(detect_drift({"replicas": 3}, {"replicas": 5}))
 
 ### 任务 2：只改一个条件
 
+把「GitOps 与 ArgoCD」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把GitOps的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「GitOps 与 ArgoCD」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响GitOps。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -336,39 +343,43 @@ print(detect_drift({"replicas": 3}, {"replicas": 5}))
 
 | 术语 | 本课语境 |
 | --- | --- |
-| `[GitOps, ArgoCD, 声明式, 漂移, Sealed Secrets][index]` | 在「GitOps 与 ArgoCD」里理解它的定义、输入和输出。 |
-| `[GitOps, ArgoCD, 声明式, 漂移, Sealed Secrets][index]` | 本课用它说明边界条件与失败路径。 |
-| `[GitOps, ArgoCD, 声明式, 漂移, Sealed Secrets][index]` | 结合「GitOps 与 ArgoCD」的正文示例确认它的适用条件。 |
-| `[GitOps, ArgoCD, 声明式, 漂移, Sealed Secrets][index]` | 在「GitOps 与 ArgoCD」里理解它的定义、输入和输出。 |
-| `[GitOps, ArgoCD, 声明式, 漂移, Sealed Secrets][index]` | 本课用它说明边界条件与失败路径。 |
+| `GitOps` | GitOps 的价值是把部署状态收敛到 Git 这一个事实来源：可审计、可回滚、自动防漂移；ArgoCD 负责对账与同步，而密钥管理、环境隔离与同步策略是落地的三个关键点。 |
+| `ArgoCD` | 典型流程：提交代码 → CI 跑测试并构建镜像（tag 用 commit SHA）→ CI 更新配置仓库中的镜像 tag → ArgoCD 检测到差异 → 自动同步到集群 → 健康检查通过。 |
+| `声明式` | 声明式：系统的期望状态全部用配置描述（YAML/Helm/Kustomize）。 |
+| `漂移` | 它在「GitOps 与 ArgoCD」里是理解「漂移」的关键术语，用来解释定义、适用条件与失败路径；它与GitOps、ArgoCD共同决定这一节的判断边界。复习时回到正文示例核对输入、输出和验证方式。 |
+| `Sealed Secrets` | 密钥不入 Git：用 Sealed Secrets、External Secrets 或 SOPS 加密后提交。 |
 
 ## 考点精讲
 
-### 考点 1：GitOps 与传统 CD 的关键区别是？
+### 考点 1：概念判断·GitOps
 
+- **题目**：GitOps 与传统 CD 的关键区别是？
 - **判断依据**：在「GitOps 与 ArgoCD」里，由集群内控制器从 Git 拉取并持续对账。拉模型让集群不必把凭据交给外部流水线，并能持续纠正漂移。在「GitOps 与 ArgoCD」里判断这道题，要把GitOps、ArgoCD、声明式的条件、过程与失败路径逐项对齐，换成“GitOps 与传统 CD 的关键区”这个场景，只有满足前提的结论才成立。
 
-### 考点 2：ArgoCD 的 prune 开关作用是？
+### 考点 2：概念判断·GitOps
 
+- **题目**：ArgoCD 的 prune 开关作用是？
 - **判断依据**：在「GitOps 与 ArgoCD」里，删除 Git 中不存在的集群资源。属于危险开关，必须先在非生产环境验证。在「GitOps 与 ArgoCD」里判断这道题，要把GitOps、ArgoCD、声明式的条件、过程与失败路径逐项对齐，换成“ArgoCD 的 prune 开关作”这个场景，只有满足前提的结论才成立。
 
-### 考点 3：「GitOps 与 ArgoCD」的核心结论是什么？
+### 考点 3：概念判断·GitOps
 
-- **判断依据**：GitOps 与 ArgoCD：四原则、仓库结构、ArgoCD 概念与落地建议。在「GitOps 与 ArgoCD」里，把GitOps、ArgoCD、声明式放进最小示例验证，换成空值或极值后结论仍要成立。回到「GitOps 与 ArgoCD」的正文示例，用“GitOps 与 ArgoCD的核心”走一遍GitOps、ArgoCD、声明式的完整流程，能复现的结论才可以保留。
+- **题目**：「GitOps 与 ArgoCD」的核心结论是什么？
+- **判断依据**：题干的正确项是GitOps 与 ArgoCD：四原则、仓库结构、ArgoCD 概念与落地建议。在「GitOps 与 ArgoCD」里，把GitOps、ArgoCD、声明式放进最小示例验证，换成空值或极值后结论仍要成立。回到「GitOps 与 ArgoCD」的正文示例，用“GitOps 与 ArgoCD的核心”走一遍GitOps、ArgoCD、声明式的完整流程，能复现的结论才可以保留。
 
-### 考点 4：围绕“GitOps 与 ArgoCD”中的 GitOps、ArgoCD、声明式，下列哪两项是本课强调的实践判断？
+### 考点 4：多选辨析·GitOps
 
+- **题目**：围绕“GitOps 与 ArgoCD”中的 GitOps、ArgoCD、声明式，下列哪两项是本课强调的实践判断？
 - **判断依据**：结论应落在学习 GitOps 时要同时说明输入、输出和失败路径。本课把GitOps 与 ArgoCD拆成概念、示例与故障现场三部分，因此判断 GitOps 时必须同时交代输入、输出和失败路径，这使“学习 GitOps 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在GitOps 与 ArgoCD里，判断 ArgoCD 时要固定版本与边界输入，所以“验证 ArgoCD 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 5：GitOps 中敏感信息（如数据库口令）应如何管理？
+### 考点 5：概念判断·GitOps
 
+- **题目**：GitOps 中敏感信息（如数据库口令）应如何管理？
 - **判断依据**：在「GitOps 与 ArgoCD」里，使用 Sealed Secrets。也可以在集群内引入 External Secrets 从密钥服务动态拉取。把“使用 Sealed Secrets”代回「GitOps 与 ArgoCD」里“GitOps 中敏感信息（如数据库口令）应如何管理”的例子核对，条件一旦改变，结论就要用GitOps、ArgoCD、声明式重新推导。
 
-### 考点 6：补全代码：「GitOps 与 ArgoCD」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·GitOps
 
-`server: https://____.default.svc`
-
-- **判断依据**：在「GitOps 与 ArgoCD」里，kubernetes。这道题的关键在「GitOps 与 ArgoCD」的GitOps、ArgoCD、声明式：先确认题干“补全代码”问的是哪一步，再排除偷换前提的选项。这道题的关键在「GitOps 与 ArgoCD」的GitOps、ArgoCD、声明式：先确认题干“GitOps”问的是哪一步，再排除偷换前提的选项。
+- **题目**：补全代码：「GitOps 与 ArgoCD」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `server: https://____.default.svc`
+- **判断依据**：在「GitOps 与 ArgoCD」里，kubernetes。这道题的关键在「GitOps 与 ArgoCD」的GitOps、ArgoCD、声明式：先确认题干“补全代码”问的是哪一步，再排除偷换前提的选项。回到GitOps、ArgoCD、声明式本身再看一遍：只有“kubernetes”与题干“GitOps”的前提一致，结论才成立。
 
 ## English Overview
 

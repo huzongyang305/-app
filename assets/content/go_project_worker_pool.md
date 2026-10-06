@@ -71,13 +71,43 @@
 
 ### 步骤 2：创建任务与结果 channel
 
+「实战：Go 并发抓取与 Worker Pool」的「步骤 2：创建任务与结果 channel」一节补全如下：
+
+- 定位：这一节说明步骤 2：创建任务与结果 channel在「实战：Go 并发抓取与 Worker Pool」知识体系里的位置。
+- 要点：本课涉及：goroutine、channel、context、worker pool、errgroup。
+- 自检：能否用一个最小例子解释步骤 2：创建任务与结果 channel？
+
 ### 步骤 3：启动固定数量 worker
+
+「实战：Go 并发抓取与 Worker Pool」的「步骤 3：启动固定数量 worker」一节补全如下：
+
+- 定位：这一节说明步骤 3：启动固定数量 worker在「实战：Go 并发抓取与 Worker Pool」知识体系里的位置。
+- 要点：一句话摘要：用 goroutine、channel、context 和 errgroup 实现带限流、重试和取消的抓取任务。
+- 自检：能否用一个最小例子解释步骤 3：启动固定数量 worker？
 
 ### 步骤 4：加入限流器和重试逻辑
 
+「实战：Go 并发抓取与 Worker Pool」的「步骤 4：加入限流器和重试逻辑」一节补全如下：
+
+- 定位：这一节说明步骤 4：加入限流器和重试逻辑在「实战：Go 并发抓取与 Worker Pool」知识体系里的位置。
+- 要点：症状：在本课的练习或生产场景里出现“本课的 goroutine 常规用例通过，但边界用例失败”。
+- 自检：能否用一个最小例子解释步骤 4：加入限流器和重试逻辑？
+
 ### 步骤 5：用 errgroup 管理取消
 
+「实战：Go 并发抓取与 Worker Pool」的「步骤 5：用 errgroup 管理取消」一节补全如下：
+
+- 定位：这一节说明步骤 5：用 errgroup 管理取消在「实战：Go 并发抓取与 Worker Pool」知识体系里的位置。
+- 要点：复现：准备一组最小输入，只保留触发“本课的 goroutine 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+- 自检：能否用一个最小例子解释步骤 5：用 errgroup 管理取消？
+
 ### 步骤 6：压测并检查 goroutine 数量
+
+「实战：Go 并发抓取与 Worker Pool」的「步骤 6：压测并检查 goroutine 数量」一节补全如下：
+
+- 定位：这一节说明步骤 6：压测并检查 goroutine 数量在「实战：Go 并发抓取与 Worker Pool」知识体系里的位置。
+- 要点：定位：围绕“goroutine 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
+- 自检：能否用一个最小例子解释步骤 6：压测并检查 goroutine 数量？
 
 ## 关键代码
 
@@ -234,6 +264,13 @@ tests/          单元、集成与接口测试
 
 ### 任务 2：只改一个条件
 
+把「实战：Go 并发抓取与 Worker Pool」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把goroutine的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「实战：Go 并发抓取与 Worker Pool」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响goroutine。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -304,38 +341,42 @@ tests/          单元、集成与接口测试
 
 | 术语 | 本课语境 |
 | --- | --- |
-| `[goroutine, channel, context, worker pool, errgroup][index]` | 在「实战：Go 并发抓取与 Worker Pool」里理解它的定义、输入和输出。 |
-| `[goroutine, channel, context, worker pool, errgroup][index]` | 本课用它说明边界条件与失败路径。 |
-| `[goroutine, channel, context, worker pool, errgroup][index]` | 结合「实战：Go 并发抓取与 Worker Pool」的正文示例确认它的适用条件。 |
-| `[goroutine, channel, context, worker pool, errgroup][index]` | 在「实战：Go 并发抓取与 Worker Pool」里理解它的定义、输入和输出。 |
-| `[goroutine, channel, context, worker pool, errgroup][index]` | 本课用它说明边界条件与失败路径。 |
+| `goroutine` | 用一句话说明「实战：Go 并发抓取与 Worker Pool」解决什么问题：用 goroutine、channel、context 和 errgroup 实现带限流、重试和取消的抓取任务。 |
+| `channel` | 用一句话说明「实战：Go 并发抓取与 Worker Pool」解决什么问题：用 goroutine、channel、context 和 errgroup 实现带限流、重试和取消的抓取任务。 |
+| `context` | 用一句话说明「实战：Go 并发抓取与 Worker Pool」解决什么问题：用 goroutine、channel、context 和 errgroup 实现带限流、重试和取消的抓取任务。 |
+| `worker pool` | 用一句话说明「实战：Go 并发抓取与 Worker Pool」解决什么问题：用 goroutine、channel、context 和 errgroup 实现带限流、重试和取消的抓取任务。 |
+| `errgroup` | 用一句话说明「实战：Go 并发抓取与 Worker Pool」解决什么问题：用 goroutine、channel、context 和 errgroup 实现带限流、重试和取消的抓取任务。 |
 
 ## 考点精讲
 
-### 考点 1：围绕“实战：Go 并发抓取与 Worker Pool”中的 goroutine、channel、context，下列哪两项是本课强调的实践判断？
+### 考点 1：多选辨析·goroutine
 
+- **题目**：围绕“实战：Go 并发抓取与 Worker Pool”中的 goroutine、channel、context，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把实战：Go 并发抓取与 Worker Pool拆成概念、示例与故障现场三部分，因此判断 goroutine 时必须同时交代输入、输出和失败路径，这使“学习 goroutine 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在实战：Go 并发抓取与 Worker Pool里，判断 channel 时要固定版本与边界输入，所以“验证 channel 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 2：context 在并发抓取中的作用是什么？
+### 考点 2：概念判断·goroutine
 
-- **判断依据**：context 让所有子任务在父任务取消时及时退出。围绕 context 在并发抓取中的作用是什么。作答时，先用goroutine建立输入与输出的基线，再把传播取消和超时代入边界条件核对，结论才能复现。把“传播取消和超时”代回「实战：Go 并发抓取与 Worker Pool」里“context 在并发抓取中的作用是什么”的例子核对，条件一旦改变，结论就要用goroutine、channel、context重新推导。
+- **题目**：context 在并发抓取中的作用是什么？
+- **判断依据**：context 让所有子任务在父任务取消时及时退出。作答时，先用goroutine建立输入与输出的基线，再把传播取消和超时代入边界条件核对，结论才能复现。把“传播取消和超时”代回「实战：Go 并发抓取与 Worker Pool」里“context 在并发抓取中的作用是什么”的例子核对，条件一旦改变，结论就要用goroutine、channel、context重新推导。
 
-### 考点 3：下面这段 Go 代码摘自「实战：Go 并发抓取与 Worker Pool」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
+### 考点 3：代码补全·goroutine
 
+- **题目**：下面这段 Go 代码摘自「实战：Go 并发抓取与 Worker Pool」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 - **判断依据**：在「实战：Go 并发抓取与 Worker Pool」里，这段代码包含循环结构，同一段逻辑会被重复执行。这段代码出自「实战：Go 并发抓取与 Worker Pool」的正文示例，围绕goroutine、channel、context展开；把输入或边界换成空值、极值或失败情况后，结论要以「实战：Go 并发抓取与 Worker Pool」的实际运行结果为准。
 
-### 考点 4：限流器解决了什么问题？
+### 考点 4：概念判断·goroutine
 
-- **判断依据**：在「实战：Go 并发抓取与 Worker Pool」里，作答时，先用goroutine建立输入与输出的基线，再把控制请求速率保护下游代入边界条件核对，结论才能复现。在「实战：Go 并发抓取与 Worker Pool」里，这道题要求区分概念与边界，「控制请求速率保护下游」只有在题干给出的前提下才成立，而「替代重试」、「提升颜色」缺少同一组条件。围绕 限流器解决了什么问题？
+- **题目**：限流器解决了什么问题？
+- **判断依据**：在「实战：Go 并发抓取与 Worker Pool」里，作答时，先用goroutine建立输入与输出的基线，再把控制请求速率保护下游代入边界条件核对，结论才能复现。在「实战：Go 并发抓取与 Worker Pool」里，这道题要求区分概念与边界，「控制请求速率保护下游」只有在题干给出的前提下才成立，而「替代重试」、「提升颜色」缺少同一组条件。
 
-### 考点 5：如何检查 goroutine 泄漏？
+### 考点 5：概念判断·goroutine
 
+- **题目**：如何检查 goroutine 泄漏？
 - **判断依据**：在「实战：Go 并发抓取与 Worker Pool」里，运行前后比较 goroutine 数量并使用阻塞分析。goroutine 数量持续增长通常意味着阻塞或缺少取消。“如何检查”与「实战：Go 并发抓取与 Worker Pool」的术语表相呼应，只有符合goroutine、channel、context约束的“运行前后比较 goroutine 数量并”才是正文支持的结论。
 
-### 考点 6：补全代码：「实战：Go 并发抓取与 Worker Pool」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·"project": "____",
 
-`"project": "____",`
-
+- **题目**：补全代码：「实战：Go 并发抓取与 Worker Pool」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `"project": "____",`
 - **判断依据**：空格应填写「go_project_worker_pool」。这道题的关键在「实战：Go 并发抓取与 Worker Pool」的goroutine、channel、context：先确认题干“补全代码”问的是哪一步，再排除偷换前提的选项。把“goprojectworkerpool”代回「实战：Go 并发抓取与 Worker Pool」里“实战：Go 并发抓取与 Worker Pool示例中，下面这”的例子核对，条件一旦改变，结论就要用goroutine、channel、context重新推导。
 
 ## English Overview
@@ -468,11 +509,11 @@ go.mod
 1. 围绕“实战：Go 并发抓取与 Worker Pool”中的 goroutine、channel、context，下列哪两项是本课强调的实践判断？
    - 依据：本课把实战：Go 并发抓取与 Worker Pool拆成概念、示例与故障现场三部分，因此判断 goroutine 时必须同时交代输入、输出和失败路径，这使“学习 goroutine 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在实战：Go 并发抓取与 Worker Pool里，判断 channel 时要固定版本与边界输入，所以“验证 channel 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 2. context 在并发抓取中的作用是什么？
-   - 依据：context 让所有子任务在父任务取消时及时退出。围绕 context 在并发抓取中的作用是什么。作答时，先用goroutine建立输入与输出的基线，再把传播取消和超时代入边界条件核对，结论才能复现。把“传播取消和超时”代回「实战：Go 并发抓取与 Worker Pool」里“context 在并发抓取中的作用是什么”的例子核对，条件一旦改变，结论就要用goroutine、channel、context重新推导。
+   - 依据：context 让所有子任务在父任务取消时及时退出。作答时，先用goroutine建立输入与输出的基线，再把传播取消和超时代入边界条件核对，结论才能复现。把“传播取消和超时”代回「实战：Go 并发抓取与 Worker Pool」里“context 在并发抓取中的作用是什么”的例子核对，条件一旦改变，结论就要用goroutine、channel、context重新推导。
 3. 下面这段 Go 代码摘自「实战：Go 并发抓取与 Worker Pool」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
    - 依据：在「实战：Go 并发抓取与 Worker Pool」里，这段代码包含循环结构，同一段逻辑会被重复执行。这段代码出自「实战：Go 并发抓取与 Worker Pool」的正文示例，围绕goroutine、channel、context展开；把输入或边界换成空值、极值或失败情况后，结论要以「实战：Go 并发抓取与 Worker Pool」的实际运行结果为准。
 4. 限流器解决了什么问题？
-   - 依据：在「实战：Go 并发抓取与 Worker Pool」里，作答时，先用goroutine建立输入与输出的基线，再把控制请求速率保护下游代入边界条件核对，结论才能复现。在「实战：Go 并发抓取与 Worker Pool」里，这道题要求区分概念与边界，「控制请求速率保护下游」只有在题干给出的前提下才成立，而「替代重试」、「提升颜色」缺少同一组条件。围绕 限流器解决了什么问题？
+   - 依据：在「实战：Go 并发抓取与 Worker Pool」里，作答时，先用goroutine建立输入与输出的基线，再把控制请求速率保护下游代入边界条件核对，结论才能复现。在「实战：Go 并发抓取与 Worker Pool」里，这道题要求区分概念与边界，「控制请求速率保护下游」只有在题干给出的前提下才成立，而「替代重试」、「提升颜色」缺少同一组条件。
 5. 如何检查 goroutine 泄漏？
    - 依据：在「实战：Go 并发抓取与 Worker Pool」里，运行前后比较 goroutine 数量并使用阻塞分析。goroutine 数量持续增长通常意味着阻塞或缺少取消。“如何检查”与「实战：Go 并发抓取与 Worker Pool」的术语表相呼应，只有符合goroutine、channel、context约束的“运行前后比较 goroutine 数量并”才是正文支持的结论。
 6. 补全代码：「实战：Go 并发抓取与 Worker Pool」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
@@ -481,3 +522,9 @@ go.mod
    - 依据：空格应填写「go_project_worker_pool」。这道题的关键在「实战：Go 并发抓取与 Worker Pool」的goroutine、channel、context：先确认题干“补全代码”问的是哪一步，再排除偷换前提的选项。把“goprojectworkerpool”代回「实战：Go 并发抓取与 Worker Pool」里“实战：Go 并发抓取与 Worker Pool示例中，下面这”的例子核对，条件一旦改变，结论就要用goroutine、channel、context重新推导。
 
 ### 迁移练习
+
+把「实战：Go 并发抓取与 Worker Pool」的结论迁移到相邻主题，每次迁移都写清预测与证据：
+
+1. 换输入：用goroutine处理一组你自己的数据，对比教材示例的结果差异。
+2. 换失败条件：制造一个channel相关的错误，说明如何从错误信息定位根因。
+3. 换规模：把数据量或并发度提高一个数量级，说明「实战：Go 并发抓取与 Worker Pool」的结论是否仍成立。

@@ -298,6 +298,12 @@ spec:
 
 ### 任务 1：用自己的话画出结构
 
+不看书，用一张图说清「Kubernetes 基础」的结构，画完再对照骨架：
+
+- 主干：它解决什么问题 → 核心对象 → 一个最小 Deployment → 常用命令
+- 连接线：在每条边上标出输入、输出与失败路径。
+- 自检：能否用一句话说明Kubernetes与Pod的关系？
+
 ### 任务 2：做一次对比实验
 
 **验收标准**：表格里两个方案的结论不能完全一样；写下“在什么条件下应该换方案”。
@@ -362,39 +368,37 @@ spec:
 | `describe` | 排查顺序：`get`（状态）→ `describe`（事件）→ `logs`（应用日志）。 |
 | `logs` | 排查顺序：`get`（状态）→ `describe`（事件）→ `logs`（应用日志）。 |
 | `kubectl describe pod` | \| Pod 一直 Pending \| `kubectl describe pod` 看 Events \| 资源不足、节点选择器/污点不匹配、PVC 未绑定 \| |
-| `kubectl logs --previous` | \| CrashLoopBackOff \| `kubectl logs --previous` \| 应用启动失败、配置缺失、探针过严 \| |
-| `kubectl get endpoints web` | \| Service 访问 503 \| `kubectl get endpoints web` \| selector 与 labels 不匹配，或 Pod 未 Ready \| |
-| `kubectl describe ingress` | \| Ingress 404 \| `kubectl describe ingress` \| path/host 规则不匹配、ingressClassName 错误 \| |
-| `exec` | 排错的黄金顺序：`get`（状态）→ `describe`（事件）→ `logs`（应用）→ `exec`（进容器验证）。 |
-| `kubectl get pods -n prod -o wide` | \| 查看资源列表 \| `kubectl get pods -n prod -o wide` \| |
-| `kubectl get pods -w` | \| 持续观察变化 \| `kubectl get pods -w` \| |
 
 ## 考点精讲
 
-### 考点 1：这段代码代码是「Kubernetes 基础」的示例片段，下面哪一项描述与它一致？
+### 考点 1：代码补全·Kubernetes
 
+- **题目**：这段代码代码是「Kubernetes 基础」的示例片段，下面哪一项描述与它一致？
 - **判断依据**：在「Kubernetes 基础」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「Kubernetes 基础」的正文示例，围绕Kubernetes、Pod、Deployment展开；把输入或边界换成空值、极值或失败情况后，结论要以「Kubernetes 基础」的实际运行结果为准。
 
-### 考点 2：K8s 中最小的调度单位是？
+### 考点 2：概念判断·Kubernetes
 
+- **题目**：K8s 中最小的调度单位是？
 - **判断依据**：Pod 可包含一个或多个共享网络与存储的容器。在「Kubernetes 基础」里，其他选项：Deployment 是工作负载控制器，Node 是运行机器，容器是最小运行单元但不是调度单位。「Kubernetes 基础」要求先交代Kubernetes、Pod、Deployment的前提再下结论，所以“Pod”只在题干“K8s 中最小的调度单位是”给定的条件下成立。
 
-### 考点 3：围绕“Kubernetes 基础”中的 Kubernetes、Pod、Deployment，下列哪两项是本课强调的实践判断？
+### 考点 3：多选辨析·Kubernetes
 
+- **题目**：围绕“Kubernetes 基础”中的 Kubernetes、Pod、Deployment，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把Kubernetes 基础拆成概念、示例与故障现场三部分，因此判断 Kubernetes 时必须同时交代输入、输出和失败路径，这使“学习 Kubernetes 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在Kubernetes 基础里，判断 Pod 时要固定版本与边界输入，所以“验证 Pod 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 4：Deployment 与 StatefulSet 的区别是？
+### 考点 4：概念判断·Kubernetes
 
+- **题目**：Deployment 与 StatefulSet 的区别是？
 - **判断依据**：在「Kubernetes 基础」里，结论应落在「Deployment 的 Pod 可互换」。数据库、消息队列等有状态组件通常用 StatefulSet 加 PVC。在「Kubernetes 基础」里，这道题要求区分概念与边界，「Deployment 的 Pod 可互换」只有在题干给出的前提下才成立，而「两者完全等价」、「StatefulSet 不能挂载存储」缺少同一组条件。
 
-### 考点 5：Kubernetes 中 Service 的作用是？
+### 考点 5：概念判断·Kubernetes
 
+- **题目**：Kubernetes 中 Service 的作用是？
 - **判断依据**：在「Kubernetes 基础」里，为一组 Pod 提供稳定的虚拟 IP 与负载均衡，屏蔽 Pod 重建带来的地址变化。ClusterIP、NodePort、LoadBalancer 与 Headless 是常见的几种 Service 形态。回到「Kubernetes 基础」的正文示例，用“Kubernetes 中 Servi”走一遍Kubernetes、Pod、Deployment的完整流程，能复现的结论才可以保留。
 
-### 考点 6：补全代码：「Kubernetes 基础」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·____: nginx
 
-`____: nginx`
-
+- **题目**：补全代码：「Kubernetes 基础」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `____: nginx`
 - **判断依据**：空格应填写「ingressClassName」、「ingressclassname」。「Kubernetes 基础」要求先交代Kubernetes、Pod、Deployment的前提再下结论，所以“ingressClassName”只在题干“Kubernetes 基础示例中”给定的条件下成立。
 
 ## English Overview

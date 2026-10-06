@@ -409,6 +409,13 @@ buf generate
 
 ### 任务 2：只改一个条件
 
+把「gRPC 与 Protobuf 实践」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把gRPC的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「gRPC 与 Protobuf 实践」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响gRPC。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -483,39 +490,37 @@ buf generate
 | `user.v1` | \| `package` \| 带版本号，便于演进（`user.v1`） \| |
 | `OK` | \| `OK` \| 成功 \| 正常返回 \| |
 | `InvalidArgument` | \| `InvalidArgument` \| 参数错误 \| 校验失败 \| |
-| `NotFound` | \| `NotFound` \| 不存在 \| 资源没找到 \| |
-| `AlreadyExists` | \| `AlreadyExists` \| 已存在 \| 唯一键冲突 \| |
-| `PermissionDenied` | \| `PermissionDenied` \| 无权限 \| 越权访问 \| |
-| `Unauthenticated` | \| `Unauthenticated` \| 未认证 \| token 无效 \| |
-| `DeadlineExceeded` | \| `DeadlineExceeded` \| 超时 \| 上游超时 \| |
-| `Unavailable` | \| `Unavailable` \| 暂时不可用 \| 下游挂了 \| |
 
 ## 考点精讲
 
-### 考点 1：围绕“gRPC 与 Protobuf 实践”中的 gRPC、Protobuf、流式，下列哪两项是本课强调的实践判断？
+### 考点 1：多选辨析·gRPC
 
+- **题目**：围绕“gRPC 与 Protobuf 实践”中的 gRPC、Protobuf、流式，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把gRPC 与 Protobuf 实践拆成概念、示例与故障现场三部分，因此判断 gRPC 时必须同时交代输入、输出和失败路径，这使“学习 gRPC 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在gRPC 与 Protobuf 实践里，判断 Protobuf 时要固定版本与边界输入，所以“验证 Protobuf 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 2：修改 .proto 时，哪种做法是安全的？
+### 考点 2：概念判断·gRPC
 
+- **题目**：修改 .proto 时，哪种做法是安全的？
 - **判断依据**：在「gRPC 与 Protobuf 实践」里，新增字段并给新编号。只有向后兼容的变更（新增字段、不改变已有编号与类型）才能保证新旧版本互通。在「gRPC 与 Protobuf 实践」里判断这道题，要把gRPC、Protobuf、流式的条件、过程与失败路径逐项对齐，换成“修改 .proto 时”这个场景，只有满足前提的结论才成立。
 
-### 考点 3：客户端调用 gRPC 时必须注意？
+### 考点 3：概念判断·gRPC
 
+- **题目**：客户端调用 gRPC 时必须注意？
 - **判断依据**：在「gRPC 与 Protobuf 实践」里，每次调用都设置 deadline。没有 deadline 的调用可能永久挂起并耗尽连接与协程。把“每次调用都设置 deadline”代回「gRPC 与 Protobuf 实践」里“客户端调用 gRPC 时必须注意”的例子核对，条件一旦改变，结论就要用gRPC、Protobuf、流式重新推导。
 
-### 考点 4：服务端想把「参数非法」与「内部错误」区分开，正确做法是？
+### 考点 4：概念判断·参数非法
 
+- **题目**：服务端想把「参数非法」与「内部错误」区分开，正确做法是？
 - **判断依据**：在「gRPC 与 Protobuf 实践」里，结论应落在「使用标准 status code（InvalidArgument / Internal）」。标准状态码是跨语言可识别的契约，客户端能据此做重试或提示。在「gRPC 与 Protobuf 实践」里判断这道题，要把gRPC、Protobuf、流式的条件、过程与失败路径逐项对齐，换成“服务端想把参数非法与内部错误区分开”这个场景，只有满足前提的结论才成立。
 
-### 考点 5：阅读「gRPC 与 Protobuf 实践」正文里的这段 Go 代码，下面哪一项判断是正确的？
+### 考点 5：代码补全·gRPC
 
+- **题目**：阅读「gRPC 与 Protobuf 实践」正文里的这段 Go 代码，下面哪一项判断是正确的？
 - **判断依据**：在「gRPC 与 Protobuf 实践」里，这段代码包含条件分支，不同输入会走不同的执行路径。这段代码出自「gRPC 与 Protobuf 实践」的正文示例，围绕gRPC、Protobuf、流式展开；把输入或边界换成空值、极值或失败情况后，结论要以「gRPC 与 Protobuf 实践」的实际运行结果为准。
 
-### 考点 6：补全代码：「gRPC 与 Protobuf 实践」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·gRPC
 
-`return nil, status.Error(codes.____, "id 必须为正")`
-
+- **题目**：补全代码：「gRPC 与 Protobuf 实践」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `return nil, status.Error(codes.____, "id 必须为正")`
 - **判断依据**：空格应填写「InvalidArgument」、「invalidargument」。这道题的关键在「gRPC 与 Protobuf 实践」的gRPC、Protobuf、流式：先确认题干“补全代码”问的是哪一步，再排除偷换前提的选项。把“InvalidArgument”代回「gRPC 与 Protobuf 实践」里“gRPC 与 Protobuf 实践示例中”的例子核对，条件一旦改变，结论就要用gRPC、Protobuf、流式重新推导。
 
 ## English Overview

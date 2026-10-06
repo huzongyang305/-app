@@ -293,6 +293,13 @@ HAVING COUNT(*) > 5;
 
 ### 任务 2：只改一个条件
 
+把「SQL 基础」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把SQL的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「SQL 基础」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响SQL。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -349,40 +356,44 @@ HAVING COUNT(*) > 5;
 
 | 术语 | 本课语境 |
 | --- | --- |
-| `[SQL, SELECT, INSERT, UPDATE, DELETE, JOIN][index]` | 在「SQL 基础」里理解它的定义、输入和输出。 |
-| `[SQL, SELECT, INSERT, UPDATE, DELETE, JOIN][index]` | 本课用它说明边界条件与失败路径。 |
-| `[SQL, SELECT, INSERT, UPDATE, DELETE, JOIN][index]` | 结合「SQL 基础」的正文示例确认它的适用条件。 |
-| `[SQL, SELECT, INSERT, UPDATE, DELETE, JOIN][index]` | 在「SQL 基础」里理解它的定义、输入和输出。 |
-| `[SQL, SELECT, INSERT, UPDATE, DELETE, JOIN][index]` | 本课用它说明边界条件与失败路径。 |
-| `[SQL, SELECT, INSERT, UPDATE, DELETE, JOIN][index]` | 结合「SQL 基础」的正文示例确认它的适用条件。 |
+| `SQL` | 围绕“执行计划随统计信息或数据分布改变，SQL 的索引没有被用上，回表次数反而增加”检查调用链、输入数据和环境配置，先验证假设再改代码。 |
+| `SELECT` | 理解顺序能解释两个常见疑问：为什么 WHERE 不能用 SELECT 里定义的别名（多数数据库），为什么聚合条件必须写 HAVING。 |
+| `INSERT` | Related terms: SQL, SELECT, INSERT, UPDATE。 |
+| `UPDATE` | Related terms: SQL, SELECT, INSERT, UPDATE。 |
+| `DELETE` | 重要：UPDATE 和 DELETE 一定要写 WHERE，否则会作用到整张表。 |
+| `JOIN` | 三种写法的选择：IN 适合小结果集，EXISTS 适合大表相关判断，JOIN 适合同时取两张表的字段。 |
 
 ## 考点精讲
 
-### 考点 1：要删除表中年龄大于 60 的记录，正确的写法是？
+### 考点 1：概念判断·SQL
 
+- **题目**：要删除表中年龄大于 60 的记录，正确的写法是？
 - **判断依据**：在「SQL 基础」里，DELETE FROM students WHERE age > 60;。DELETE 配合 WHERE 精确删除。「SQL 基础」要求先交代SQL、SELECT、INSERT的前提再下结论，所以“DELETE FROM students”只在题干“要删除表中年龄大于 60 的记录”给定的条件下成立。
 
-### 考点 2：阅读「SQL 基础」正文里的这段 SQL 代码，下面哪一项判断是正确的？
+### 考点 2：代码补全·SQL
 
-- **判断依据**：在「SQL 基础」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「SQL 基础」的正文示例，围绕SQL、SELECT、INSERT展开；把输入或边界换成空值、极值或失败情况后，结论要以「SQL 基础」的实际运行结果为准。这道题的关键在「SQL 基础」的SQL、SELECT、INSERT：先确认题干“阅读SQL 基础正文里的这段 SQL”问的是哪一步，再排除偷换前提的选项。
+- **题目**：阅读「SQL 基础」正文里的这段 SQL 代码，下面哪一项判断是正确的？
+- **判断依据**：在「SQL 基础」里，题干的正确项是这段代码只做静态声明，没有循环、分支或可观察输出，在「SQL 基础」里它只能证明SQL相关约束存在，不能替代真实运行证据。把输入或边界换成空值、极值或失败情况后，结论要以「SQL 基础」的实际运行结果为准。这道题的关键在「SQL 基础」的SQL、SELECT、INSERT：先确认题干“阅读SQL 基础正文里的这段 SQL”问的是哪一步，再排除偷换前提的选项。
 
-### 考点 3：围绕“SQL 基础”中的 SQL、SELECT、INSERT，下列哪两项是本课强调的实践判断？
+### 考点 3：多选辨析·SQL
 
+- **题目**：围绕“SQL 基础”中的 SQL、SELECT、INSERT，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把SQL 基础拆成概念、示例与故障现场三部分，因此判断 SQL 时必须同时交代输入、输出和失败路径，这使“学习 SQL 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在SQL 基础里，判断 SELECT 时要固定版本与边界输入，所以“验证 SELECT 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 4：COUNT(*) 与 COUNT(列名) 的关键区别是？
+### 考点 4：概念判断·SQL
 
+- **题目**：COUNT(*) 与 COUNT(列名) 的关键区别是？
 - **判断依据**：在「SQL 基础」里，结论应落在「COUNT(列名) 会忽略该列的 NULL 值」。统计非空值数量时必须用 COUNT(列名)，否则会把 NULL 行也算进去。在「SQL 基础」里，这道题要求区分概念与边界，「COUNT(列名) 会忽略该列的 NULL 值」只有在题干给出的前提下才成立，而「COUNT(列名) 只能用于主键」、「COUNT(*) 更慢」缺少同一组条件。
 
-### 考点 5：LEFT JOIN 后统计右表记录数，应该怎么写？
+### 考点 5：概念判断·SQL
 
-- **判断依据**：在「SQL 基础」里，COUNT(右表.主键)。COUNT 会把没有匹配的 NULL 行也计为 1，统计右表要用其主键列。回到「SQL 基础」的正文示例，用“LEFT JOIN 后统计右表记录数”走一遍SQL、SELECT、INSERT的完整流程，能复现的结论才可以保留。回到「SQL 基础」的正文示例，用“LEFT”走一遍SQL、SELECT、INSERT的完整流程，能复现的结论才可以保留。
+- **题目**：LEFT JOIN 后统计右表记录数，应该怎么写？
+- **判断依据**：在「SQL 基础」里，COUNT(右表.主键)。COUNT 会把没有匹配的 NULL 行也计为 1，统计右表要用其主键列。回到「SQL 基础」的正文示例，用“LEFT JOIN 后统计右表记录数”走一遍SQL、SELECT、INSERT的完整流程，能复现的结论才可以保留。
 
-### 考点 6：补全代码：「SQL 基础」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·SQL
 
-`SELECT u.id, u.name, COUNT(o.id) AS orders, ____(SUM(o.amount), 0) AS total`
-
-- **判断依据**：在「SQL 基础」里，COALESCE。回到「SQL 基础」的正文示例，用“补全代码”走一遍SQL、SELECT、INSERT的完整流程，能复现的结论才可以保留。回到「SQL 基础」的正文示例，用“基础示例中”走一遍SQL、SELECT、INSERT的完整流程，能复现的结论才可以保留。
+- **题目**：补全代码：「SQL 基础」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `SELECT u.id, u.name, COUNT(o.id) AS orders, ____(SUM(o.amount), 0) AS total`
+- **判断依据**：在「SQL 基础」里，COALESCE。回到「SQL 基础」的正文示例，用“补全代码”走一遍SQL、SELECT、INSERT的完整流程，能复现的结论才可以保留。回到SQL、SELECT、INSERT本身再看一遍：只有“COALESCE”与题干“基础示例中”的前提一致，结论才成立。
 
 ## English Overview
 
@@ -413,18 +424,6 @@ HAVING COUNT(*) > 5;
 ### Learning Outcomes
 
 - Explain what **SQL Basics** solves and when it should be used.
-
-### Core Mental Model
-
-### Step-by-step Study Plan
-
-### Practice Tasks
-
-### Common Failure Modes
-
-### Self-check Questions
-
-4. What is the rollback path?
 
 ### Glossary
 

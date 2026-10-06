@@ -264,6 +264,13 @@ self.addEventListener("fetch", (event) => {
 
 ### 任务 2：只改一个条件
 
+把「PWA 与离线能力」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把PWA的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「PWA 与离线能力」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响PWA。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -320,40 +327,44 @@ self.addEventListener("fetch", (event) => {
 
 | 术语 | 本课语境 |
 | --- | --- |
-| `[PWA, ServiceWorker, 离线, 缓存策略, IndexedDB, BackgroundSync][index]` | 在「PWA 与离线能力」里理解它的定义、输入和输出。 |
-| `[PWA, ServiceWorker, 离线, 缓存策略, IndexedDB, BackgroundSync][index]` | 本课用它说明边界条件与失败路径。 |
-| `[PWA, ServiceWorker, 离线, 缓存策略, IndexedDB, BackgroundSync][index]` | 结合「PWA 与离线能力」的正文示例确认它的适用条件。 |
-| `[PWA, ServiceWorker, 离线, 缓存策略, IndexedDB, BackgroundSync][index]` | 在「PWA 与离线能力」里理解它的定义、输入和输出。 |
-| `[PWA, ServiceWorker, 离线, 缓存策略, IndexedDB, BackgroundSync][index]` | 本课用它说明边界条件与失败路径。 |
-| `[PWA, ServiceWorker, 离线, 缓存策略, IndexedDB, BackgroundSync][index]` | 结合「PWA 与离线能力」的正文示例确认它的适用条件。 |
+| `PWA` | 围绕“环境版本、配置和输入规模与目标环境不同，PWA 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。 |
+| `ServiceWorker` | 围绕“ServiceWorker 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。 |
+| `离线` | 关键关系：先分清「PWA」与「ServiceWorker」的职责，再理解「离线」的适用边界。 |
+| `缓存策略` | 它在「PWA 与离线能力」里是理解「缓存策略」的关键术语，用来解释定义、适用条件与失败路径；它与PWA、离线共同决定这一节的判断边界。复习时回到正文示例核对输入、输出和验证方式。 |
+| `IndexedDB` | 它在「PWA 与离线能力」里是理解「IndexedDB」的关键术语，用来解释定义、适用条件与失败路径；它与PWA、离线共同决定这一节的判断边界。复习时回到正文示例核对输入、输出和验证方式。 |
+| `BackgroundSync` | 它在「PWA 与离线能力」里是理解「BackgroundSync」的关键术语，用来解释定义、适用条件与失败路径；它与PWA、离线共同决定这一节的判断边界。复习时回到正文示例核对输入、输出和验证方式。 |
 
 ## 考点精讲
 
-### 考点 1：Service Worker 注册的前置条件是？
+### 考点 1：概念判断·PWA
 
+- **题目**：Service Worker 注册的前置条件是？
 - **判断依据**：在「PWA 与离线能力」里，必须使用 HTTPS（localhost 例外）。Service Worker 能拦截请求，属于高权限能力，因此要求安全上下文。回到「PWA 与离线能力」的正文示例，用“Service Worker 注册的”走一遍PWA、ServiceWorker、离线的完整流程，能复现的结论才可以保留。
 
-### 考点 2：阅读「PWA 与离线能力」正文里的这段 JavaScript 代码，下面哪一项判断是正确的？
+### 考点 2：代码补全·PWA
 
-- **判断依据**：在「PWA 与离线能力」里，这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。这段代码出自「PWA 与离线能力」的正文示例，围绕PWA、ServiceWorker、离线展开；把输入或边界换成空值、极值或失败情况后，结论要以「PWA 与离线能力」的实际运行结果为准。「PWA 与离线能力」要求先交代PWA、ServiceWorker、离线的前提再下结论，所以“这段代码把主要逻辑封装在函数或方法里”只在题干“阅读PWA 与离线能力正文里的这段 JavaScript 代”给定的条件下成立。
+- **题目**：阅读「PWA 与离线能力」正文里的这段 JavaScript 代码，下面哪一项判断是正确的？
+- **判断依据**：在「PWA 与离线能力」里，题干的正确项是这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行，在「PWA 与离线能力」里封装边界决定PWA从哪一步开始生效。把输入或边界换成空值、极值或失败情况后，结论要以「PWA 与离线能力」的实际运行结果为准。「PWA 与离线能力」要求先交代PWA、ServiceWorker、离线的前提再下结论，所以“这段代码把主要逻辑封装在函数或方法里”只在题干“阅读PWA 与离线能力正文里的这段 JavaScript 代”给定的条件下成立。
 
-### 考点 3：离线状态下用户提交了一个订单，正确做法是？
+### 考点 3：概念判断·PWA
 
+- **题目**：离线状态下用户提交了一个订单，正确做法是？
 - **判断依据**：在「PWA 与离线能力」里，存入本地队列并带幂等键，联网后重放。离线写操作要入队（通常用 IndexedDB），并带幂等键保证重放不会重复下单。在「PWA 与离线能力」里判断这道题，要把PWA、ServiceWorker、离线的条件、过程与失败路径逐项对齐，换成“离线状态下用户提交了一个订单”这个场景，只有满足前提的结论才成立。
 
-### 考点 4：围绕“PWA 与离线能力”中的 PWA、ServiceWorker、离线，下列哪两项是本课强调的实践判断？
+### 考点 4：多选辨析·PWA
 
+- **题目**：围绕“PWA 与离线能力”中的 PWA、ServiceWorker、离线，下列哪两项是本课强调的实践判断？
 - **判断依据**：结论应落在验证 ServiceWorker 时要固定版本并覆盖边界输入。本课把PWA 与离线能力拆成概念、示例与故障现场三部分，因此判断 PWA 时必须同时交代输入、输出和失败路径，这使“学习 PWA 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在PWA 与离线能力里，判断 ServiceWorker 时要固定版本与边界输入，所以“验证 ServiceWorker 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 5：发版后用户仍加载旧版 JS，最可能的原因是？
+### 考点 5：概念判断·PWA
 
+- **题目**：发版后用户仍加载旧版 JS，最可能的原因是？
 - **判断依据**：在「PWA 与离线能力」里，Service Worker 缓存策略没有随版本更新。缓存名或资源指纹未变时，SW 会继续返回旧资源，因此要用内容哈希或新的缓存版本号，并提供更新提示。把“Service Worker 缓存策略没”代回「PWA 与离线能力」里“发版后用户仍加载旧版 JS”的例子核对，条件一旦改变，结论就要用PWA、ServiceWorker、离线重新推导。
 
-### 考点 6：补全代码：「PWA 与离线能力」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·PWA
 
-`const registration = await navigator.____.register("/service-worker.js");`
-
-- **判断依据**：在「PWA 与离线能力」里，serviceWorker。「PWA 与离线能力」要求先交代PWA、ServiceWorker、离线的前提再下结论，所以“serviceWorker”只在题干“PWA 与离线能力示例中”给定的条件下成立。把“serviceWorker”代回「PWA 与离线能力」里“PWA 与离线能力示例中”的例子核对，条件一旦改变，结论就要用PWA、ServiceWorker、离线重新推导。
+- **题目**：补全代码：「PWA 与离线能力」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `const registration = await navigator.____.register("/service-worker.js");`
+- **判断依据**：把“serviceWorker”代回「PWA 与离线能力」里“PWA 与离线能力示例中”的例子核对，条件一旦改变，结论就要用PWA、ServiceWorker、离线重新推导。「PWA 与离线能力」要求先交代PWA、ServiceWorker、离线的前提再下结论，所以“serviceWorker”只在题干“与离线能力示例中”给定的条件下成立。
 
 ## English Overview
 

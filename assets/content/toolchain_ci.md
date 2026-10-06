@@ -257,6 +257,12 @@ jobs:
 
 ### 任务 1：用自己的话画出结构
 
+不看书，用一张图说清「CI/CD 与 GitHub Actions」的结构，画完再对照骨架：
+
+- 主干：持续集成与持续交付 → GitHub Actions 基本结构 → 构建与部署示例 → 流水线设计建议
+- 连接线：在每条边上标出输入、输出与失败路径。
+- 自检：能否用一句话说明CI与CD的关系？
+
 ### 任务 2：做一次对比实验
 
 **验收标准**：表格里两个方案的结论不能完全一样；写下“在什么条件下应该换方案”。
@@ -322,37 +328,37 @@ jobs:
 | `needs` | 要点：`npm ci` 与 lock 文件保证可复现；`needs` 建立阶段依赖；镜像用 `github.sha` 做不可变标签；密钥一律走 `secrets`。缓存依赖通常能让 CI 从数分钟压缩到一分钟内。 |
 | `github.sha` | 要点：`npm ci` 与 lock 文件保证可复现；`needs` 建立阶段依赖；镜像用 `github.sha` 做不可变标签；密钥一律走 `secrets`。缓存依赖通常能让 CI 从数分钟压缩到一分钟内。 |
 | `secrets` | 要点：`npm ci` 与 lock 文件保证可复现；`needs` 建立阶段依赖；镜像用 `github.sha` 做不可变标签；密钥一律走 `secrets`。缓存依赖通常能让 CI 从数分钟压缩到一分钟内。 |
-| `on` | \| `on` \| 触发条件 \| `push`、`pull_request`、`schedule`、`workflow_dispatch` \| |
-| `push` | \| `on` \| 触发条件 \| `push`、`pull_request`、`schedule`、`workflow_dispatch` \| |
-| `pull_request` | \| `on` \| 触发条件 \| `push`、`pull_request`、`schedule`、`workflow_dispatch` \| |
-| `schedule` | \| `on` \| 触发条件 \| `push`、`pull_request`、`schedule`、`workflow_dispatch` \| |
-| `workflow_dispatch` | \| `on` \| 触发条件 \| `push`、`pull_request`、`schedule`、`workflow_dispatch` \| |
-| `jobs` | \| `jobs` \| 并行任务集合 \| 测试、构建、部署各自一个 job \| |
 
 ## 考点精讲
 
-### 考点 1：按“CI/CD 与 GitHub Actions”中 CI、CD、GitHub Actions 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
+### 考点 1：顺序排列·CI
 
-- **判断依据**：正确的执行顺序是「先明确 CI 的输入、输出与约束」 → 「写出最小示例并核对 CD 的基线结果」 → 「只改一个变量，记录边界与失败路径的变化」 → 「固定版本与证据，把“CI/CD 与 GitHub Actions”的结论写成可复现记录」。在「CI/CD 与 GitHub Actions」里，在本课的练习里，顺序应当是：先明确 CI 的输入、输出与约束 → 写出最小示例并核对 CD 的基线结果 → 只改一个变量，记录边界与失败路径的变化 → 固定版本与证据，把本课的结论写成可复现记录。这个顺序把 CI 的输入、输出和约束放在最前面，在CI/CD 与 GitHub Actions里避免概念没对齐就开始调参。第二步用 CD 建立可核对的基线，在CI/CD 与 GitHub Actions里第三步才允许改变一个变量并观察失败路径。
+- **题目**：按“CI/CD 与 GitHub Actions”中 CI、CD、GitHub Actions 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
+- **判断依据**：在「CI/CD 与 GitHub Actions」里，在本课的练习里，顺序应当是：先明确 CI 的输入、输出与约束 → 写出最小示例并核对 CD 的基线结果 → 只改一个变量，记录边界与失败路径的变化 → 固定版本与证据，把本课的结论写成可复现记录。这个顺序把 CI 的输入、输出和约束放在最前面，在CI/CD 与 GitHub Actions里避免概念没对齐就开始调参。第二步用 CD 建立可核对的基线，在CI/CD 与 GitHub Actions里第三步才允许改变一个变量并观察失败路径。
 
-### 考点 2：围绕“CI/CD 与 GitHub Actions”中的 CI、CD、GitHub Actions，下列哪两项是本课强调的实践判断？
+### 考点 2：多选辨析·CI
 
+- **题目**：围绕“CI/CD 与 GitHub Actions”中的 CI、CD、GitHub Actions，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把CI/CD 与 GitHub Actions拆成概念、示例与故障现场三部分，因此判断 CI 时必须同时交代输入、输出和失败路径，这使“学习 CI 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在CI/CD 与 GitHub Actions里，判断 CD 时要固定版本与边界输入，所以“验证 CD 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 3：job 中使用 needs 关键字的作用是？
+### 考点 3：概念判断·CI
 
+- **题目**：job 中使用 needs 关键字的作用是？
 - **判断依据**：在「CI/CD 与 GitHub Actions」里，声明依赖的 job，等待其完成。needs 建立 job 之间的依赖顺序，例如测试通过后再构建部署。回到「CI/CD 与 GitHub Actions」的正文示例，用“job 中使用 needs 关键字的”走一遍CI、CD、GitHub Actions的完整流程，能复现的结论才可以保留。
 
-### 考点 4：CI 中配置依赖缓存的价值是？
+### 考点 4：概念判断·CI
 
+- **题目**：CI 中配置依赖缓存的价值是？
 - **判断依据**：缓存键要包含锁文件哈希，依赖变更时自动失效，避免用到过期缓存。在「CI/CD 与 GitHub Actions」里，作答时，先用CI建立输入与输出的基线，再把复用已下载的依赖代入边界条件核对，结论才能复现。在「CI/CD 与 GitHub Actions」里，这道题要求区分概念与边界，「复用已下载的依赖」只有在题干给出的前提下才成立，而「提升测试覆盖率」、「减少代码体积」缺少同一组条件。
 
-### 考点 5：把测试拆成多个并行 job 的代价是？
+### 考点 5：概念判断·CI
 
+- **题目**：把测试拆成多个并行 job 的代价是？
 - **判断依据**：在「CI/CD 与 GitHub Actions」里，需要额外传递构建产物。并行度、缓存与制品传递策略共同决定流水线的总时长。「CI/CD 与 GitHub Actions」要求先交代CI、CD、GitHub Actions的前提再下结论，所以“需要额外传递构建产物”只在题干“把测试拆成多个并行 job 的代价是”给定的条件下成立。
 
-### 考点 6：阅读「CI/CD 与 GitHub Actions」的代码片段，下面哪项判断是正确的？
+### 考点 6：排错·CI
 
+- **题目**：阅读「CI/CD 与 GitHub Actions」的代码片段，下面哪项判断是正确的？
 - **判断依据**：在「CI/CD 与 GitHub Actions」里，每次提交自动构建与测试。CI 让问题在提交后几分钟内暴露，而不是等到发布前。「CI/CD 与 GitHub Actions」要求先交代CI、CD、GitHub Actions的前提再下结论，所以“每次提交自动构建与测试”只在题干“阅读CI/CD 与 GitHub Actions的代码片段”给定的条件下成立。
 
 ## English Overview

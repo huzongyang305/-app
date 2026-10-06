@@ -381,6 +381,13 @@ for (const signal of ["SIGTERM", "SIGINT"] as const) {
 
 ### 任务 2：只改一个条件
 
+把「TypeScript Node 后端开发」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把Node后端的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「TypeScript Node 后端开发」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响Node后端。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -454,36 +461,37 @@ for (const signal of ["SIGTERM", "SIGINT"] as const) {
 | `any` | \| 用 `any` 传请求体 \| 类型安全失效 \| 校验后使用推断类型 \| |
 | `req.user` | \| 身份认证 \| 校验 token 并挂到 `req.user` \| 忘记区分 401 与 403 \| |
 | `code` | 关键**：对外只暴露安全信息，细节写进日志；给程序判断要用 `code`，不要让它去比较文案。 |
-| `unknown` | \| 用 `any` 接请求体 \| 类型形同虚设 \| 用 `unknown` 加 schema \| |
-| `app.close()` | \| 忘记优雅关闭 \| 发布时请求被中断 \| 监听信号并 `app.close()` \| |
-| `tsc --noEmit` | 写一个最小类型示例，先让 `tsc --noEmit` 通过，再故意制造一次类型错误。 |
 
 ## 考点精讲
 
-### 考点 1：这段 TypeScript 代码是「TypeScript Node 后端开发」的示例片段，下面哪一项描述与它一致？
+### 考点 1：代码补全·Node后端
 
+- **题目**：这段 TypeScript 代码是「TypeScript Node 后端开发」的示例片段，下面哪一项描述与它一致？
 - **判断依据**：在「TypeScript Node 后端开发」里，这段代码包含条件分支，不同输入会走不同的执行路径。这段代码出自「TypeScript Node 后端开发」的正文示例，围绕Node后端、Fastify、NestJS展开；把输入或边界换成空值、极值或失败情况后，结论要以「TypeScript Node 后端开发」的实际运行结果为准。
 
-### 考点 2：收到 SIGTERM 时，服务应该？
+### 考点 2：概念判断·Node后端
 
+- **题目**：收到 SIGTERM 时，服务应该？
 - **判断依据**：在「TypeScript Node 后端开发」里，停止接收新请求并等待在途请求完成后再退出。优雅关闭能避免发布或缩容时中断用户请求。把“停止接收新请求并等待在途请求完成后再退出”代回「TypeScript Node 后端开发」里“收到 SIGTERM 时”的例子核对，条件一旦改变，结论就要用Node后端、Fastify、NestJS重新推导。
 
-### 考点 3：围绕“TypeScript Node 后端开发”中的 Node后端、Fastify、NestJS，下列哪两项是本课强调的实践判断？
+### 考点 3：多选辨析·Node后端
 
+- **题目**：围绕“TypeScript Node 后端开发”中的 Node后端、Fastify、NestJS，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把TypeScript Node 后端开发拆成概念、示例与故障现场三部分，因此判断 Node后端 时必须同时交代输入、输出和失败路径，这使“学习 Node后端 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在TypeScript Node 后端开发里，判断 Fastify 时要固定版本与边界输入，所以“验证 Fastify 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 4：关于错误响应，推荐的做法是？
+### 考点 4：概念判断·Node后端
 
+- **题目**：关于错误响应，推荐的做法是？
 - **判断依据**：在「TypeScript Node 后端开发」里，结论应落在「统一错误结构（code、message、details）并使用合适状态码」。统一结构便于前端稳定处理，状态码表达语义，details 提供字段级信息。把“统一错误结构（code、message”代回「TypeScript Node 后端开发」里“错误响应”的例子核对，条件一旦改变，结论就要用Node后端、Fastify、NestJS重新推导。
 
-### 考点 5：配置项在什么时候校验最合适？
+### 考点 5：概念判断·Node后端
 
+- **题目**：配置项在什么时候校验最合适？
 - **判断依据**：在「TypeScript Node 后端开发」里，服务启动时集中校验。启动时失败能立即暴露问题，避免带病运行到半夜才崩。回到「TypeScript Node 后端开发」的正文示例，用“配置项在什么时候校验最合适”走一遍Node后端、Fastify、NestJS的完整流程，能复现的结论才可以保留。
 
-### 考点 6：补全代码：「TypeScript Node 后端开发」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·Node后端
 
-`const app = ____({ logger: { level: "info" } });`
-
+- **题目**：补全代码：「TypeScript Node 后端开发」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `const app = ____({ logger: { level: "info" } });`
 - **判断依据**：在「TypeScript Node 后端开发」里，Fastify。在「TypeScript Node 后端开发」里判断这道题，要把Node后端、Fastify、NestJS的条件、过程与失败路径逐项对齐，换成“补全代码”这个场景，只有满足前提的结论才成立。“TypeScript”与「TypeScript Node 后端开发」的术语表相呼应，只有符合Node后端、Fastify、NestJS约束的“Fastify”才是正文支持的结论。
 
 ## English Overview

@@ -378,6 +378,13 @@ describe("parseTags", () => {
 
 ### 任务 2：只改一个条件
 
+把「TypeScript 测试策略」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把Vitest的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「TypeScript 测试策略」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响Vitest。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -451,40 +458,38 @@ describe("parseTags", () => {
 | `vi.spyOn(obj, "m")` | \| `vi.spyOn(obj, "m")` \| 监视真实对象的方法 \| |
 | `vi.mock("module")` | \| `vi.mock("module")` \| 替换整个模块 \| |
 | `getByRole` | \| 用户能看到什么 \| 用 `getByRole`、`getByLabelText` \| |
-| `getByLabelText` | \| 用户能看到什么 \| 用 `getByRole`、`getByLabelText` \| |
-| `userEvent` | \| 用户能做什么 \| 用 `userEvent` 而不是直接触发事件 \| |
-| `getByTestId` | \| 用 `getByTestId` 满天飞 \| 测的是实现 \| 优先用语义化查询 \| |
-| `sleep` | \| 用 `sleep` 等异步 \| 慢且不稳定 \| 用 `waitFor` 或 `findBy` \| |
-| `waitFor` | \| 用 `sleep` 等异步 \| 慢且不稳定 \| 用 `waitFor` 或 `findBy` \| |
-| `findBy` | \| 用 `sleep` 等异步 \| 慢且不稳定 \| 用 `waitFor` 或 `findBy` \| |
 
 ## 考点精讲
 
-### 考点 1：阅读「TypeScript 测试策略」正文里的这段 TypeScript 代码，下面哪一项判断是正确的？
+### 考点 1：代码补全·Vitest
 
+- **题目**：阅读「TypeScript 测试策略」正文里的这段 TypeScript 代码，下面哪一项判断是正确的？
 - **判断依据**：在「TypeScript 测试策略」里，这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。这段代码出自「TypeScript 测试策略」的正文示例，围绕Vitest、TestingLibrary、MSW展开；把输入或边界换成空值、极值或失败情况后，结论要以「TypeScript 测试策略」的实际运行结果为准。
 
-### 考点 2：组件测试应该断言什么？
+### 考点 2：概念判断·Vitest
 
+- **题目**：组件测试应该断言什么？
 - **判断依据**：在「TypeScript 测试策略」里，作答时，先用Vitest建立输入与输出的基线，再把用户可见的行为与文本代入边界条件核对，结论才能复现。这道题的关键在「TypeScript 测试策略」的Vitest、TestingLibrary、MSW：先确认题干“组件测试应该断言什么”问的是哪一步，再排除偷换前提的选项。
 
-### 考点 3：测试里等待异步结果，推荐使用？
+### 考点 3：概念判断·Vitest
 
+- **题目**：测试里等待异步结果，推荐使用？
 - **判断依据**：在「TypeScript 测试策略」里，findBy 系列查询或带轮询的断言（自动等待）。自动等待的查询会在超时前持续重试，既快又稳。“测试里等待异步结果”与「TypeScript 测试策略」的术语表相呼应，只有符合Vitest、TestingLibrary、MSW约束的“findBy 系列查询或带轮询的断言（自”才是正文支持的结论。
 
-### 考点 4：围绕“TypeScript 测试策略”中的 Vitest、TestingLibrary、MSW，下列哪两项是本课强调的实践判断？
+### 考点 4：多选辨析·Vitest
 
+- **题目**：围绕“TypeScript 测试策略”中的 Vitest、TestingLibrary、MSW，下列哪两项是本课强调的实践判断？
 - **判断依据**：结论应落在验证 TestingLibrary 时要固定版本并覆盖边界输入。本课把TypeScript 测试策略拆成概念、示例与故障现场三部分，因此判断 Vitest 时必须同时交代输入、输出和失败路径，这使“学习 Vitest 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在TypeScript 测试策略里，判断 TestingLibrary 时要固定版本与边界输入，所以“验证 TestingLibrary 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 5：关于覆盖率，正确的理解是？
+### 考点 5：概念判断·Vitest
 
+- **题目**：关于覆盖率，正确的理解是？
 - **判断依据**：在「TypeScript 测试策略」里，作答时，先用Vitest建立输入与输出的基线，再把无断言的测试也能拉高覆盖率代入边界条件核对，结论才能复现。把“无断言的测试也能拉高覆盖率”代回「TypeScript 测试策略」里“正确的理解是”的例子核对，条件一旦改变，结论就要用Vitest、TestingLibrary、MSW重新推导。
 
-### 考点 6：补全代码：「TypeScript 测试策略」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·Vitest
 
-`beforeEach( => server.listen({ ____: "error" }));`
-
-- **判断依据**：空格应填写「onUnhandledRequest」、「onunhandledrequest」。这道题的关键在「TypeScript 测试策略」的Vitest、TestingLibrary、MSW：先确认题干“补全代码”问的是哪一步，再排除偷换前提的选项。这道题的关键在「TypeScript 测试策略」的Vitest、TestingLibrary、MSW：先确认题干“TypeScript”问的是哪一步，再排除偷换前提的选项。
+- **题目**：补全代码：「TypeScript 测试策略」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `beforeEach( => server.listen({ ____: "error" }));`
+- **判断依据**：空格应填写「onUnhandledRequest」、「onunhandledrequest」。这道题的关键在「TypeScript 测试策略」的Vitest、TestingLibrary、MSW：先确认题干“补全代码”问的是哪一步，再排除偷换前提的选项。
 
 ## English Overview
 

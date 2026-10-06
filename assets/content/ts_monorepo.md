@@ -367,6 +367,13 @@ export type ApiResult<T> =
 
 ### 任务 2：只改一个条件
 
+把「Monorepo 工程实践」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把Monorepo的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「Monorepo 工程实践」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响Monorepo。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -439,40 +446,38 @@ export type ApiResult<T> =
 | `packages/shared` | \| `packages/shared` \| 类型与 schema \| 前后端共享事实来源 \| |
 | `--filter` | \| 本地全量构建慢 \| 用受影响范围构建（`--filter`） \| |
 | `workspace:*` | \| 不使用 workspace 协议 \| 误装发布版而非本地包 \| 用 `workspace:*` \| |
-| `npm install` | \| 本地用 `npm install` \| lock 文件冲突 \| 统一包管理器并用 `--frozen-lockfile` \| |
-| `--frozen-lockfile` | \| 本地用 `npm install` \| lock 文件冲突 \| 统一包管理器并用 `--frozen-lockfile` \| |
-| `dependsOn: ["^build"]` | \| `dependsOn: ["^build"]` \| 先构建依赖的包 \| |
-| `outputs` | \| `outputs` \| 声明产物路径，用于缓存 \| |
-| `package.json` | \| 根 `package.json` 脚本 \| 用 `turbo run build` 一键跑全部 \| |
-| `turbo run build` | \| 根 `package.json` 脚本 \| 用 `turbo run build` 一键跑全部 \| |
 
 ## 考点精讲
 
-### 考点 1：下面这段 TypeScript 代码摘自「Monorepo 工程实践」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
+### 考点 1：代码补全·Monorepo
 
+- **题目**：下面这段 TypeScript 代码摘自「Monorepo 工程实践」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 - **判断依据**：在「Monorepo 工程实践」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「Monorepo 工程实践」的正文示例，围绕Monorepo、pnpm、Turborepo展开；把输入或边界换成空值、极值或失败情况后，结论要以「Monorepo 工程实践」的实际运行结果为准。
 
-### 考点 2：围绕“Monorepo 工程实践”中的 Monorepo、pnpm、Turborepo，下列哪两项是本课强调的实践判断？
+### 考点 2：多选辨析·Monorepo
 
+- **题目**：围绕“Monorepo 工程实践”中的 Monorepo、pnpm、Turborepo，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把Monorepo 工程实践拆成概念、示例与故障现场三部分，因此判断 Monorepo 时必须同时交代输入、输出和失败路径，这使“学习 Monorepo 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在Monorepo 工程实践里，判断 pnpm 时要固定版本与边界输入，所以“验证 pnpm 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 3：CI 中让流水线更快的关键做法是？
+### 考点 3：概念判断·Monorepo
 
+- **题目**：CI 中让流水线更快的关键做法是？
 - **判断依据**：在「Monorepo 工程实践」里，基于依赖图与缓存只跑受影响的任务。任务编排工具根据输入哈希与依赖图跳过未变化的任务，并复用远程缓存。把“基于依赖图与缓存只跑受影响的任务”代回「Monorepo 工程实践」里“CI 中让流水线更快的关键做法是”的例子核对，条件一旦改变，结论就要用Monorepo、pnpm、Turborepo重新推导。
 
-### 考点 4：共享包变更后，最需要做什么？
+### 考点 4：概念判断·Monorepo
 
+- **题目**：共享包变更后，最需要做什么？
 - **判断依据**：在「Monorepo 工程实践」里，结论应落在「触发下游应用的测试并标注影响面」。共享包变更影响面大，CI 需要跑下游测试并让评审者看到影响范围。在「Monorepo 工程实践」里，这道题要求区分概念与边界，「触发下游应用的测试并标注影响面」只有在题干给出的前提下才成立，而「等上线后观察」、「直接发布到 npm」缺少同一组条件。
 
-### 考点 5：Monorepo 的主要风险是？
+### 考点 5：概念判断·Monorepo
 
+- **题目**：Monorepo 的主要风险是？
 - **判断依据**：在「Monorepo 工程实践」里，仓库变大，依赖方向易失控。这些是 Monorepo 的典型代价，需要通过依赖约束、受影响范围构建与 CODEOWNERS 缓解。这道题的关键在「Monorepo 工程实践」的Monorepo、pnpm、Turborepo：先确认题干“Monorepo 的主要风险是”问的是哪一步，再排除偷换前提的选项。
 
-### 考点 6：补全代码：「Monorepo 工程实践」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·pnpm-____.yaml
 
-`pnpm-____.yaml`
-
-- **判断依据**：在「Monorepo 工程实践」里，workspace。「Monorepo 工程实践」要求先交代Monorepo、pnpm、Turborepo的前提再下结论，所以“workspace”只在题干“Monorepo 工程实践示例中”给定的条件下成立。把“workspace”代回「Monorepo 工程实践」里“Monorepo 工程实践示例中”的例子核对，条件一旦改变，结论就要用Monorepo、pnpm、Turborepo重新推导。
+- **题目**：补全代码：「Monorepo 工程实践」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `pnpm-____.yaml`
+- **判断依据**：把“workspace”代回「Monorepo 工程实践」里“Monorepo 工程实践示例中”的例子核对，条件一旦改变，结论就要用Monorepo、pnpm、Turborepo重新推导。「Monorepo 工程实践」要求先交代Monorepo、pnpm、Turborepo的前提再下结论，所以“workspace”只在题干“Monorepo”给定的条件下成立。
 
 ## English Overview
 

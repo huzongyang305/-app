@@ -365,6 +365,12 @@ static async Task Main()
 
 ### 任务 1：用自己的话画出结构
 
+不看书，用一张图说清「异步编程与异常处理」的结构，画完再对照骨架：
+
+- 主干：并发与取消 → 异常与资源释放 → 常见陷阱 → 并发控制与常见误用
+- 连接线：在每条边上标出输入、输出与失败路径。
+- 自检：能否用一句话说明async与await的关系？
+
 ### 任务 2：做一次对比实验
 
 **验收标准**：表格里两个方案的结论不能完全一样；写下“在什么条件下应该换方案”。
@@ -443,39 +449,37 @@ static async Task Main()
 | `await` | `async` 方法返回 `Task` / `Task<T>`；`await` 在等待期间释放线程，因此特别适合 IO 密集场景。 |
 | `CancellationTokenSource` | 用 `CancellationTokenSource` 实现超时： |
 | `IDisposable` | 实现 `IDisposable` 的对象用 `using` 自动释放： |
-| `using` | 实现 `IDisposable` 的对象用 `using` 自动释放： |
-| `.Result` | 用 `.Result` 或 `.Wait()` 阻塞异步代码，容易死锁，应一路 `await`。 |
-| `.Wait()` | 用 `.Result` 或 `.Wait()` 阻塞异步代码，容易死锁，应一路 `await`。 |
-| `async void` | `async void` 只用于事件处理器，异常无法被捕获。 |
-| `SemaphoreSlim` | 大量并发要限制数量，可用 `SemaphoreSlim`。 |
-| `Task.WhenAll` | \| 批量并行 \| `Task.WhenAll`；不要用 `Task.WaitAll`（同步阻塞） \| |
 
 ## 考点精讲
 
-### 考点 1：使用 await 等待 IO 的主要好处是？
+### 考点 1：概念判断·async
 
+- **题目**：使用 await 等待 IO 的主要好处是？
 - **判断依据**：在「异步编程与异常处理」里，等待期间不阻塞线程。await 在等待期间释放当前线程，线程可以去处理其他请求，从而提高吞吐量。这道题的关键在「异步编程与异常处理」的async、await、Task：先确认题干“使用 await 等待 IO 的主要”问的是哪一步，再排除偷换前提的选项。
 
-### 考点 2：在异步代码中使用 .Result 或 .Wait 的风险是？
+### 考点 2：概念判断·async
 
+- **题目**：在异步代码中使用 .Result 或 .Wait 的风险是？
 - **判断依据**：在「异步编程与异常处理」里，可能死锁并阻塞线程。同步阻塞等待异步任务容易造成死锁，正确做法是一路 await 到底。这道题的关键在「异步编程与异常处理」的async、await、Task：先确认题干“在异步代码中使用 .Result 或”问的是哪一步，再排除偷换前提的选项。把“可能死锁并阻塞线程”代回「异步编程与异常处理」里“在异步代码中使用 .Result 或 .Wait 的风险是”的例子核对，条件一旦改变，结论就要用async、await、Task重新推导。
 
-### 考点 3：阅读「异步编程与异常处理」正文里的这段 C# 代码，下面哪一项判断是正确的？
+### 考点 3：代码补全·async
 
-- **判断依据**：在「异步编程与异常处理」里，这段代码包含异常处理分支，失败时会走专门的补救路径。这段代码出自「异步编程与异常处理」的正文示例，围绕async、await、Task展开；把输入或边界换成空值、极值或失败情况后，结论要以「异步编程与异常处理」的实际运行结果为准。「异步编程与异常处理」要求先交代async、await、Task的前提再下结论，所以“这段代码包含异常处理分支”只在题干“阅读异步编程与异常处理正文里的这段 C 代码”给定的条件下成立。
+- **题目**：阅读「异步编程与异常处理」正文里的这段 C# 代码，下面哪一项判断是正确的？
+- **判断依据**：在「异步编程与异常处理」里，题干的正确项是这段代码包含异常处理分支，失败时会走专门的补救路径。把输入或边界换成空值、极值或失败情况后，结论要以「异步编程与异常处理」的实际运行结果为准。「异步编程与异常处理」要求先交代async、await、Task的前提再下结论，所以“这段代码包含异常处理分支”只在题干“阅读异步编程与异常处理正文里的这段 C 代码”给定的条件下成立。
 
-### 考点 4：围绕“异步编程与异常处理”中的 async、await、Task，下列哪两项是本课强调的实践判断？
+### 考点 4：多选辨析·async
 
+- **题目**：围绕“异步编程与异常处理”中的 async、await、Task，下列哪两项是本课强调的实践判断？
 - **判断依据**：结论应落在验证 await 时要固定版本并覆盖边界输入。本课把异步编程与异常处理拆成概念、示例与故障现场三部分，因此判断 async 时必须同时交代输入、输出和失败路径，这使“学习 async 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在异步编程与异常处理里，判断 await 时要固定版本与边界输入，所以“验证 await 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 5：Task.WhenAll 相比逐个 await 的优势是？
+### 考点 5：概念判断·async
 
+- **题目**：Task.WhenAll 相比逐个 await 的优势是？
 - **判断依据**：在「异步编程与异常处理」里，多个任务同时进行。多个异常会被包装在 AggregateException 中，需要逐个检查各任务的异常。「异步编程与异常处理」要求先交代async、await、Task的前提再下结论，所以“多个任务同时进行”只在题干“Task.WhenAll 相比逐个 await 的优势是”给定的条件下成立。
 
-### 考点 6：补全代码：「异步编程与异常处理」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·async
 
-`using var cts = new ____(TimeSpan.FromSeconds(5));`
-
+- **题目**：补全代码：「异步编程与异常处理」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `using var cts = new ____(TimeSpan.FromSeconds(5));`
 - **判断依据**：空格应填写「CancellationTokenSource」、「cancellationtokensource」。在「异步编程与异常处理」里判断这道题，要把async、await、Task的条件、过程与失败路径逐项对齐，换成“补全代码”这个场景，只有满足前提的结论才成立。回到「异步编程与异常处理」的正文示例，用“补全代码”走一遍async、await、Task的完整流程，能复现的结论才可以保留。
 
 ## English Overview
@@ -507,18 +511,6 @@ static async Task Main()
 ### Learning Outcomes
 
 - Explain what **Async & Exceptions** solves and when it should be used.
-
-### Core Mental Model
-
-### Step-by-step Study Plan
-
-### Practice Tasks
-
-### Common Failure Modes
-
-### Self-check Questions
-
-4. What is the rollback path?
 
 ### Glossary
 

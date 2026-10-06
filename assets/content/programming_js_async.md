@@ -386,6 +386,13 @@ task
 
 ### 任务 2：只改一个条件
 
+把「异步编程」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把Promise的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「异步编程」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响Promise。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -454,40 +461,44 @@ task
 
 | 术语 | 本课语境 |
 | --- | --- |
-| `[Promise, async, await, 事件循环, fetch, 微任务][index]` | 在「异步编程」里理解它的定义、输入和输出。 |
-| `[Promise, async, await, 事件循环, fetch, 微任务][index]` | 本课用它说明边界条件与失败路径。 |
-| `[Promise, async, await, 事件循环, fetch, 微任务][index]` | 结合「异步编程」的正文示例确认它的适用条件。 |
-| `[Promise, async, await, 事件循环, fetch, 微任务][index]` | 在「异步编程」里理解它的定义、输入和输出。 |
-| `[Promise, async, await, 事件循环, fetch, 微任务][index]` | 本课用它说明边界条件与失败路径。 |
-| `[Promise, async, await, 事件循环, fetch, 微任务][index]` | 结合「异步编程」的正文示例确认它的适用条件。 |
+| `Promise` | 围绕“环境版本、配置和输入规模与目标环境不同，Promise 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。 |
+| `async` | Asynchronous JavaScript focuses on Callbacks, promises, async/await, event loop and fetch.。 |
+| `await` | Asynchronous JavaScript focuses on Callbacks, promises, async/await, event loop and fetch.。 |
+| `事件循环` | Related terms: Promise, async, await, 事件循环。 |
+| `fetch` | Asynchronous JavaScript focuses on Callbacks, promises, async/await, event loop and fetch.。 |
+| `微任务` | [ ] 能背出「同步 → 微任务 → 宏任务」的执行顺序。 |
 
 ## 考点精讲
 
-### 考点 1：阅读「异步编程」正文里的这段 JavaScript 代码，下面哪一项判断是正确的？
+### 考点 1：代码补全·Promise
 
-- **判断依据**：在「异步编程」里，这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。这段代码出自「异步编程」的正文示例，围绕Promise、async、await展开；把输入或边界换成空值、极值或失败情况后，结论要以「异步编程」的实际运行结果为准。“阅读异步编程正文里的这段”与「异步编程」的术语表相呼应，只有符合Promise、async、await约束的“这段代码把主要逻辑封装在函数或方法里”才是正文支持的结论。
+- **题目**：阅读「异步编程」正文里的这段 JavaScript 代码，下面哪一项判断是正确的？
+- **判断依据**：在「异步编程」里，题干的正确项是这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行，在「异步编程」里封装边界决定Promise从哪一步开始生效。把输入或边界换成空值、极值或失败情况后，结论要以「异步编程」的实际运行结果为准。“阅读异步编程正文里的这段”与「异步编程」的术语表相呼应，只有符合Promise、async、await约束的“这段代码把主要逻辑封装在函数或方法里”才是正文支持的结论。
 
-### 考点 2：围绕“异步编程”中的 Promise、async、await，下列哪两项是本课强调的实践判断？
+### 考点 2：多选辨析·Promise
 
+- **题目**：围绕“异步编程”中的 Promise、async、await，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把异步编程拆成概念、示例与故障现场三部分，因此判断 Promise 时必须同时交代输入、输出和失败路径，这使“学习 Promise 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在异步编程里，判断 async 时要固定版本与边界输入，所以“验证 async 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 3：fetch 遇到 HTTP 404 时会？
+### 考点 3：概念判断·Promise
 
+- **题目**：fetch 遇到 HTTP 404 时会？
 - **判断依据**：在「异步编程」里，resolve。fetch 只在网络层失败时 reject，4xx/5xx 仍算成功响应，需要手动检查 response.ok。这道题的关键在「异步编程」的Promise、async、await：先确认题干“fetch 遇到 HTTP 404”问的是哪一步，再排除偷换前提的选项。
 
-### 考点 4：Promise.allSettled 与 Promise.all 的关键区别是？
+### 考点 4：概念判断·Promise
 
+- **题目**：Promise.allSettled 与 Promise.all 的关键区别是？
 - **判断依据**：在「异步编程」里，结论应落在「allSettled 等全部完成并返回每个任务的成功/失败状态，不会因单个失败而短路」。结论应落在allSettled 等全部完成并返回每个任务的成功/失败状态。批量任务中允许部分失败时用 allSettled，必须全部成功才继续时用 all。这道题的关键在「异步编程」的Promise、async、await：先确认题干“Promise.allSettled”问的是哪一步，再排除偷换前提的选项。
 
-### 考点 5：async 函数总是返回什么？
+### 考点 5：概念判断·Promise
 
+- **题目**：async 函数总是返回什么？
 - **判断依据**：在「异步编程」里，Promise（返回非 Promise 值也会被包装）。因此调用方需要 await 或 .then 处理，抛错会变成 rejected 的 Promise。“async”与「异步编程」的术语表相呼应，只有符合Promise、async、await约束的“Promise（返回非 Promise”才是正文支持的结论。
 
-### 考点 6：补全代码：「异步编程」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·Promise
 
-`const controller = new ____;`
-
-- **判断依据**：空格应填写「AbortController」、「abortcontroller」。回到「异步编程」的正文示例，用“补全代码”走一遍Promise、async、await的完整流程，能复现的结论才可以保留。回到「异步编程」的正文示例，用“异步编程示例中”走一遍Promise、async、await的完整流程，能复现的结论才可以保留。
+- **题目**：补全代码：「异步编程」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `const controller = new ____;`
+- **判断依据**：空格应填写「AbortController」、「abortcontroller」。回到「异步编程」的正文示例，用“补全代码”走一遍Promise、async、await的完整流程，能复现的结论才可以保留。回到Promise、async、await本身再看一遍：只有“AbortController”与题干“AbortController”的前提一致，结论才成立。
 
 ## English Overview
 
@@ -518,18 +529,6 @@ task
 ### Learning Outcomes
 
 - Explain what **Asynchronous JavaScript** solves and when it should be used.
-
-### Core Mental Model
-
-### Step-by-step Study Plan
-
-### Practice Tasks
-
-### Common Failure Modes
-
-### Self-check Questions
-
-4. What is the rollback path?
 
 ### Glossary
 

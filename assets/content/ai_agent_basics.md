@@ -266,6 +266,13 @@ tools = [{
 
 ### 任务 2：只改一个条件
 
+把「AI Agent 基础」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把Agent的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「AI Agent 基础」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响Agent。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -311,6 +318,7 @@ tools = [{
 
 ### 二、三个容易混淆的边界
 
+1. 澄清输入与目标。先写清「AI Agent 基础」要解决的问题、合法输入范围和成功标准，再进入后续步骤。
 2. **把“平均值”当成“全部”**：Agent 的指标好看，不代表尾部请求、冷启动或失败重试也好看。
 3. **把“当前版本”当成“永久行为”**：ReAct 依赖的默认值、API 或性能特征都可能随版本变化，需要固定版本并保留回归用例。
 
@@ -353,38 +361,42 @@ tools = [{
 
 | 术语 | 本课语境 |
 | --- | --- |
-| `[Agent, ReAct, 工具调用, MCP, 记忆][index]` | 在「AI Agent 基础」里理解它的定义、输入和输出。 |
-| `[Agent, ReAct, 工具调用, MCP, 记忆][index]` | 本课用它说明边界条件与失败路径。 |
-| `[Agent, ReAct, 工具调用, MCP, 记忆][index]` | 结合「AI Agent 基础」的正文示例确认它的适用条件。 |
-| `[Agent, ReAct, 工具调用, MCP, 记忆][index]` | 在「AI Agent 基础」里理解它的定义、输入和输出。 |
-| `[Agent, ReAct, 工具调用, MCP, 记忆][index]` | 本课用它说明边界条件与失败路径。 |
+| `Agent` | AI Agent Basics focuses on ReAct loop, tool calling, memory and MCP.。 |
+| `ReAct` | AI Agent Basics focuses on ReAct loop, tool calling, memory and MCP.。 |
+| `工具调用` | Related terms: Agent, ReAct, 工具调用, MCP。 |
+| `MCP` | AI Agent Basics focuses on ReAct loop, tool calling, memory and MCP.。 |
+| `记忆` | Agent = LLM + 工具 + 记忆 + 循环。 |
 
 ## 考点精讲
 
-### 考点 1：阅读「AI Agent 基础」正文里的这段 Python 代码，下面哪一项判断是正确的？
+### 考点 1：代码补全·Agent
 
-- **判断依据**：在「AI Agent 基础」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「AI Agent 基础」的正文示例，围绕Agent、ReAct、工具调用展开；把输入或边界换成空值、极值或失败情况后，结论要以「AI Agent 基础」的实际运行结果为准。“阅读AI”与「AI Agent 基础」的术语表相呼应，只有符合Agent、ReAct、工具调用约束的“这段代码只做静态声明，没有循环”才是正文支持的结论。
+- **题目**：阅读「AI Agent 基础」正文里的这段 Python 代码，下面哪一项判断是正确的？
+- **判断依据**：题干的正确项是这段代码只做静态声明，没有循环、分支或可观察输出，在「AI Agent 基础」里它只能证明Agent相关约束存在，不能替代真实运行证据。这段代码出自「AI Agent 基础」的正文示例，围绕Agent、ReAct、工具调用展开；把输入或边界换成空值、极值或失败情况后，结论要以「AI Agent 基础」的实际运行结果为准。“阅读AI”与「AI Agent 基础」的术语表相呼应，只有符合Agent、ReAct、工具调用约束的“这段代码只做静态声明，没有循环”才是正文支持的结论。
 
-### 考点 2：围绕“AI Agent 基础”中的 Agent、ReAct、工具调用，下列哪两项是本课强调的实践判断？
+### 考点 2：多选辨析·Agent
 
+- **题目**：围绕“AI Agent 基础”中的 Agent、ReAct、工具调用，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把AI Agent 基础拆成概念、示例与故障现场三部分，因此判断 Agent 时必须同时交代输入、输出和失败路径，这使“学习 Agent 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在AI Agent 基础里，判断 ReAct 时要固定版本与边界输入，所以“验证 ReAct 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 3：关于工具调用，下面说法正确的是？
+### 考点 3：概念判断·Agent
 
+- **题目**：关于工具调用，下面说法正确的是？
 - **判断依据**：在「AI Agent 基础」里，模型只决定调用哪个工具。执行权必须在应用侧，并做参数校验、权限控制与超时重试。在「AI Agent 基础」里判断这道题，要把Agent、ReAct、工具调用的条件、过程与失败路径逐项对齐，换成“关于工具调用”这个场景，只有满足前提的结论才成立。回到「AI Agent 基础」的正文示例，用“关于工具调用”走一遍Agent、ReAct、工具调用的完整流程，能复现的结论才可以保留。
 
-### 考点 4：Agent 的「规划」通常包含什么？
+### 考点 4：概念判断·规划
 
+- **题目**：Agent 的「规划」通常包含什么？
 - **判断依据**：在「AI Agent 基础」里，结论应落在「把目标拆成子任务」。规划与反思（reflection）配合，能让 Agent 在失败后换策略而不是重复同样的调用。在「AI Agent 基础」里，这道题要求区分概念与边界，「把目标拆成子任务」只有在题干给出的前提下才成立，而「只生成最终答案」、「只做向量检索」缺少同一组条件。
 
-### 考点 5：为 Agent 设计工具时最关键的要求是？
+### 考点 5：概念判断·Agent
 
+- **题目**：为 Agent 设计工具时最关键的要求是？
 - **判断依据**：在「AI Agent 基础」里，描述清晰，参数 schema 明确。工具描述就是给模型的「接口文档」，含糊的描述会导致错误调用与反复重试。“Agent”与「AI Agent 基础」的术语表相呼应，只有符合Agent、ReAct、工具调用约束的“描述清晰，参数 schema 明确”才是正文支持的结论。
 
-### 考点 6：补全代码：「AI Agent 基础」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·Agent
 
-`def run_agent(____: str) -> str:`
-
+- **题目**：补全代码：「AI Agent 基础」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `def run_agent(____: str) -> str:`
 - **判断依据**：在「AI Agent 基础」里，question。在「AI Agent 基础」里判断这道题，要把Agent、ReAct、工具调用的条件、过程与失败路径逐项对齐，换成“补全代码”这个场景，只有满足前提的结论才成立。“Agent”与「AI Agent 基础」的术语表相呼应，只有符合Agent、ReAct、工具调用约束的“question”才是正文支持的结论。
 
 ## English Overview
@@ -416,18 +428,6 @@ tools = [{
 ### Learning Outcomes
 
 - Explain what **AI Agent Basics** solves and when it should be used.
-
-### Core Mental Model
-
-### Step-by-step Study Plan
-
-### Practice Tasks
-
-### Common Failure Modes
-
-### Self-check Questions
-
-4. What is the rollback path?
 
 ### Glossary
 

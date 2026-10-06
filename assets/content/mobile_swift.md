@@ -451,6 +451,12 @@ struct ItemListView: View {
 
 ### 任务 1：用自己的话画出结构
 
+不看书，用一张图说清「Swift 与 iOS 开发」的结构，画完再对照骨架：
+
+- 主干：语言特性速览 → iOS 应用结构 → 生命周期与内存管理 → 打包发布
+- 连接线：在每条边上标出输入、输出与失败路径。
+- 自检：能否用一句话说明Swift与iOS的关系？
+
 ### 任务 2：做一次对比实验
 
 **验收标准**：表格里两个方案的结论不能完全一样；写下“在什么条件下应该换方案”。
@@ -516,37 +522,37 @@ struct ItemListView: View {
 | `[weak self]` | \| 闭包 \| 尾随闭包语法简洁，注意用 `[weak self]` 避免循环引用 \| |
 | `throws` | \| 错误处理 \| `throws` + `try/catch`，或用 Result 类型 \| |
 | `try/catch` | \| 错误处理 \| `throws` + `try/catch`，或用 Result 类型 \| |
-| `async/await` | \| 并发 \| `async/await` + `actor` 保证数据隔离 \| |
-| `actor` | \| 并发 \| `async/await` + `actor` 保证数据隔离 \| |
-| `@State` | SwiftUI 要点：视图是 struct（轻量重建）；`@State` 管局部状态、`@Binding` 传递、`@Observable` 管共享模型；用 `List`/`LazyVStack` 做长列表懒加载。 |
-| `@Binding` | SwiftUI 要点：视图是 struct（轻量重建）；`@State` 管局部状态、`@Binding` 传递、`@Observable` 管共享模型；用 `List`/`LazyVStack` 做长列表懒加载。 |
-| `@Observable` | SwiftUI 要点：视图是 struct（轻量重建）；`@State` 管局部状态、`@Binding` 传递、`@Observable` 管共享模型；用 `List`/`LazyVStack` 做长列表懒加载。 |
-| `List` | SwiftUI 要点：视图是 struct（轻量重建）；`@State` 管局部状态、`@Binding` 传递、`@Observable` 管共享模型；用 `List`/`LazyVStack` 做长列表懒加载。 |
 
 ## 考点精讲
 
-### 考点 1：围绕“Swift 与 iOS 开发”中的 Swift、iOS、SwiftUI，下列哪两项是本课强调的实践判断？
+### 考点 1：多选辨析·Swift
 
+- **题目**：围绕“Swift 与 iOS 开发”中的 Swift、iOS、SwiftUI，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把Swift 与 iOS 开发拆成概念、示例与故障现场三部分，因此判断 Swift 时必须同时交代输入、输出和失败路径，这使“学习 Swift 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在Swift 与 iOS 开发里，判断 iOS 时要固定版本与边界输入，所以“验证 iOS 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 2：按“Swift 与 iOS 开发”中 Swift、iOS、SwiftUI 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
+### 考点 2：顺序排列·Swift
 
-- **判断依据**：正确的执行顺序是「先明确 Swift 的输入、输出与约束」 → 「写出最小示例并核对 iOS 的基线结果」 → 「只改一个变量，记录边界与失败路径的变化」 → 「固定版本与证据，把“Swift 与 iOS 开发”的结论写成可复现记录」。在「Swift 与 iOS 开发」里，在本课的练习里，顺序应当是：先明确 Swift 的输入、输出与约束 → 写出最小示例并核对 iOS 的基线结果 → 只改一个变量，记录边界与失败路径的变化 → 固定版本与证据，把本课的结论写成可复现记录。这个顺序把 Swift 的输入、输出和约束放在最前面，在Swift 与 iOS 开发里避免概念没对齐就开始调参。第二步用 iOS 建立可核对的基线，在Swift 与 iOS 开发里第三步才允许改变一个变量并观察失败路径。
+- **题目**：按“Swift 与 iOS 开发”中 Swift、iOS、SwiftUI 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
+- **判断依据**：题干的正确项是固定版本与证据，把“Swift 与 iOS 开发”的结论写成可复现记录。在「Swift 与 iOS 开发」里，在本课的练习里，顺序应当是：先明确 Swift 的输入、输出与约束 → 写出最小示例并核对 iOS 的基线结果 → 只改一个变量，记录边界与失败路径的变化 → 固定版本与证据，把本课的结论写成可复现记录。这个顺序把 Swift 的输入、输出和约束放在最前面，在Swift 与 iOS 开发里避免概念没对齐就开始调参。第二步用 iOS 建立可核对的基线，在Swift 与 iOS 开发里第三步才允许改变一个变量并观察失败路径。
 
-### 考点 3：SwiftUI 中管理共享模型状态的常用方式是？
+### 考点 3：概念判断·Swift
 
+- **题目**：SwiftUI 中管理共享模型状态的常用方式是？
 - **判断依据**：在「Swift 与 iOS 开发」里，@Observable 等状态包装器。用状态包装器驱动视图重建，配合单向数据流。“SwiftUI”与「Swift 与 iOS 开发」的术语表相呼应，只有符合Swift、iOS、SwiftUI约束的“@Observable 等状态包装器”才是正文支持的结论。
 
-### 考点 4：Swift 中 struct 与 class 的关键区别是？
+### 考点 4：概念判断·Swift
 
+- **题目**：Swift 中 struct 与 class 的关键区别是？
 - **判断依据**：在「Swift 与 iOS 开发」里，结论应落在「struct 是值类型（复制语义）」。赋值或传参时 struct 会复制，class 传递的是同一个对象引用。在「Swift 与 iOS 开发」里，这道题要求区分概念与边界，「struct 是值类型（复制语义）」只有在题干给出的前提下才成立，而「struct 不能有方法」、「class 不能实现协议」缺少同一组条件。
 
-### 考点 5：guard let 与 if let 相比，最明显的特点是？
+### 考点 5：概念判断·Swift
 
+- **题目**：guard let 与 if let 相比，最明显的特点是？
 - **判断依据**：在「Swift 与 iOS 开发」里，guard 的条件不满足时必须在当前作用域退出（return/throw 等）。guard 用于「提前返回」，解包后的变量在后续作用域继续可用，能减少嵌套层级。回到「Swift 与 iOS 开发」的正文示例，用“guard let 与 if let”走一遍Swift、iOS、SwiftUI的完整流程，能复现的结论才可以保留。
 
-### 考点 6：阅读「Swift 与 iOS 开发」的代码片段，下面哪项判断是正确的？
+### 考点 6：排错·Swift
 
+- **题目**：阅读「Swift 与 iOS 开发」的代码片段，下面哪项判断是正确的？
 - **判断依据**：在「Swift 与 iOS 开发」里，if let 或 guard let。转换（仅部分场景成立）」、「强制解包。回到「Swift 与 iOS 开发」的正文示例，用“阅读Swift 与 iOS 开发的代”走一遍Swift、iOS、SwiftUI的完整流程，能复现的结论才可以保留。
 
 ## English Overview

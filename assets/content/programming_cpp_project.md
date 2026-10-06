@@ -513,6 +513,13 @@ double stddev(const std::vector<double>& values);
 
 ### 任务 2：只改一个条件
 
+把「实战：CMake 多文件项目」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把实战的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「实战：CMake 多文件项目」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响实战。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -584,39 +591,37 @@ double stddev(const std::vector<double>& values);
 | `-Werror` | 编译警告全开并当作错误（`-Werror`）。 |
 | `cmake --build` | CI 中跑 `cmake --build` + `ctest` + sanitizer。 |
 | `ctest` | CI 中跑 `cmake --build` + `ctest` + sanitizer。 |
-| `foo.h` | \| 一个类一个文件对 \| `foo.h` + `foo.cpp`，便于定位 \| |
-| `foo.cpp` | \| 一个类一个文件对 \| `foo.h` + `foo.cpp`，便于定位 \| |
-| `main.cpp` | \| 入口只有一处 \| `main.cpp` 只做参数解析与调用 \| |
-| `build/` | \| 构建目录不入库 \| `build/` 写进 `.gitignore` \| |
-| `.gitignore` | \| 构建目录不入库 \| `build/` 写进 `.gitignore` \| |
-| `compile_commands.json` | \| 静态检查 \| clang-tidy + `compile_commands.json` \| |
 
 ## 考点精讲
 
-### 考点 1：围绕“实战：CMake 多文件项目”中的 实战、CMake、CTest，下列哪两项是本课强调的实践判断？
+### 考点 1：多选辨析·实战
 
+- **题目**：围绕“实战：CMake 多文件项目”中的 实战、CMake、CTest，下列哪两项是本课强调的实践判断？
 - **判断依据**：在「实战：CMake 多文件项目」里，学习 实战 时要同时说明输入、输出和失败路径，不能只看正常流程。在实战：CMake 多文件项目里，判断 CMake 时要固定版本与边界输入，所以“验证 CMake 时要固定版本并覆盖边界输入，结论才可复现”才可复现。「实战：CMake 多文件项目」要求先交代实战、CMake、CTest的前提再下结论，所以“学习 实战 时要同时说明输入”只在题干“围绕实战”给定的条件下成立。
 
-### 考点 2：下面这段 C++ 代码摘自「实战：CMake 多文件项目」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
+### 考点 2：代码补全·实战
 
+- **题目**：下面这段 C++ 代码摘自「实战：CMake 多文件项目」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 - **判断依据**：在「实战：CMake 多文件项目」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「实战：CMake 多文件项目」的正文示例，围绕实战、CMake、CTest展开；把输入或边界换成空值、极值或失败情况后，结论要以「实战：CMake 多文件项目」的实际运行结果为准。
 
-### 考点 3：在 CMake 项目中开启 AddressSanitizer 和 UndefinedBehaviorSanitizer，最合理的做法是？
+### 考点 3：概念判断·实战
 
+- **题目**：在 CMake 项目中开启 AddressSanitizer 和 UndefinedBehaviorSanitizer，最合理的做法是？
 - **判断依据**：在「实战：CMake 多文件项目」里，在 Debug/CI 构建中加入 -fsanitize=address,undefined 并链接 sanitizer 运行时。Sanitizer 适合在开发、测试和 CI 构建中启用，它需要编译与链接阶段同时加入对应参数。回到「实战：CMake 多文件项目」的正文示例，用“在 CMake 项目中开启 Addr”走一遍实战、CMake、CTest的完整流程，能复现的结论才可以保留。
 
-### 考点 4：CMake 中 target_link_libraries(app PRIVATE fmt) 的作用是？
+### 考点 4：概念判断·实战
 
+- **题目**：CMake 中 target_link_libraries(app PRIVATE fmt) 的作用是？
 - **判断依据**：在「实战：CMake 多文件项目」里，结论应落在「给 app 目标声明需要链接的库及其传递属性」。基于目标（target）的写法会携带 include 路径等使用要求，比全局变量更清晰。在「实战：CMake 多文件项目」里，这道题要求区分概念与边界，「给 app 目标声明需要链接的库及其传递属性」只有在题干给出的前提下才成立，而「把 fmt 源码拷进项目（仅部分场景成立）」、「设置 C++ 标准」缺少同一组条件。
 
-### 考点 5：把单元测试接入 CI 的主要价值是？
+### 考点 5：概念判断·实战
 
+- **题目**：把单元测试接入 CI 的主要价值是？
 - **判断依据**：在「实战：CMake 多文件项目」里，每次提交自动验证，尽早发现回归。CI 上跑 ctest 能保证「测试在别人机器上也通过」，是团队协作的质量底线。把“每次提交自动验证，尽早发现回归”代回「实战：CMake 多文件项目」里“把单元测试接入 CI 的主要价值是”的例子核对，条件一旦改变，结论就要用实战、CMake、CTest重新推导。
 
-### 考点 6：补全代码：「实战：CMake 多文件项目」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·实战
 
-`____(app PRIVATE stats_core)`
-
+- **题目**：补全代码：「实战：CMake 多文件项目」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `____(app PRIVATE stats_core)`
 - **判断依据**：空格应填写「target_link_libraries」。「实战：CMake 多文件项目」要求先交代实战、CMake、CTest的前提再下结论，所以“targetlinklibraries”只在题干“实战：CMake 多文件项目示例中，下面这行代码缺少哪个关键”给定的条件下成立。
 
 ## English Overview
@@ -723,18 +728,6 @@ README.md
 ### Learning Outcomes
 
 - Explain what **Project: CMake Layout** solves and when it should be used.
-
-### Core Mental Model
-
-### Step-by-step Study Plan
-
-### Practice Tasks
-
-### Common Failure Modes
-
-### Self-check Questions
-
-4. What is the rollback path?
 
 ### Glossary
 

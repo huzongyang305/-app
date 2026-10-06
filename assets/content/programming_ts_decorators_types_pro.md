@@ -376,6 +376,13 @@ if (!result.success) {
 
 ### 任务 2：只改一个条件
 
+把「TypeScript 进阶类型与框架实践」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把TypeScript的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「TypeScript 进阶类型与框架实践」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响TypeScript。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -449,39 +456,37 @@ if (!result.success) {
 | `React.FC` | 组件 props 显式声明接口，避免 `React.FC`（隐式 children 已不推荐）。 |
 | `React.ChangeEvent<HTMLInputElement>` | 事件用 `React.ChangeEvent<HTMLInputElement>` 等内置类型，不要手写。 |
 | `useState` | `useState` 泛型标注复杂状态；`useRef<HTMLDivElement>(null)` 明确可空。 |
-| `useRef<HTMLDivElement>(null)` | `useState` 泛型标注复杂状态；`useRef<HTMLDivElement>(null)` 明确可空。 |
-| `children: React.ReactNode` | 严格模式下 `children: React.ReactNode`，不要用 `JSX.Element`。 |
-| `JSX.Element` | 严格模式下 `children: React.ReactNode`，不要用 `JSX.Element`。 |
-| `@types/node` | 安装 `@types/node`，注意 ESM/CJS 的模块解析差异（moduleResolution: node16）。 |
-| `process.env.X!` | 环境变量用 zod 校验后再使用，避免 `process.env.X!` 满天飞。 |
-| `NodeJS.Timeout` | 用 `NodeJS.Timeout` 标注定时器，避免与 DOM 类型冲突。 |
 
 ## 考点精讲
 
-### 考点 1：围绕“TypeScript 进阶类型与框架实践”中的 TypeScript、装饰器、类型体操，下列哪两项是本课强调的实践判断？
+### 考点 1：多选辨析·TypeScript
 
+- **题目**：围绕“TypeScript 进阶类型与框架实践”中的 TypeScript、装饰器、类型体操，下列哪两项是本课强调的实践判断？
 - **判断依据**：在「TypeScript 进阶类型与框架实践」里，学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程。在TypeScript 进阶类型与框架实践里，判断 装饰器 时要固定版本与边界输入，所以“验证 装饰器 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 2：阅读「TypeScript 进阶类型与框架实践」正文里的这段 TypeScript 代码，下面哪一项判断是正确的？
+### 考点 2：代码补全·TypeScript
 
+- **题目**：阅读「TypeScript 进阶类型与框架实践」正文里的这段 TypeScript 代码，下面哪一项判断是正确的？
 - **判断依据**：在「TypeScript 进阶类型与框架实践」里，这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。这段代码出自「TypeScript 进阶类型与框架实践」的正文示例，围绕TypeScript、装饰器、类型体操展开；把输入或边界换成空值、极值或失败情况后，结论要以「TypeScript 进阶类型与框架实践」的实际运行结果为准。
 
-### 考点 3：Node 中读取环境变量的推荐做法是？
+### 考点 3：概念判断·TypeScript
 
+- **题目**：Node 中读取环境变量的推荐做法是？
 - **判断依据**：在「TypeScript 进阶类型与框架实践」里，先用 zod 等校验再使用。环境变量是外部输入，缺失或格式错误应在启动时就暴露。回到「TypeScript 进阶类型与框架实践」的正文示例，用“Node 中读取环境变量的推荐做法是”走一遍TypeScript、装饰器、类型体操的完整流程，能复现的结论才可以保留。
 
-### 考点 4：zod 与 class-validator 的差别是？
+### 考点 4：概念判断·TypeScript
 
+- **题目**：zod 与 class-validator 的差别是？
 - **判断依据**：在「TypeScript 进阶类型与框架实践」里，结论应落在「zod 是 schema 优先，可从校验规则反推类型」。结论应落在zod 是 schema 优先。zod 的 schema 可推导出静态类型，天然让运行时校验与类型定义保持一致。这道题的关键在「TypeScript 进阶类型与框架实践」的TypeScript、装饰器、类型体操：先确认题干“zod 与 class-valida”问的是哪一步，再排除偷换前提的选项。
 
-### 考点 5：NestJS 中装饰器主要承载什么职责？
+### 考点 5：概念判断·TypeScript
 
+- **题目**：NestJS 中装饰器主要承载什么职责？
 - **判断依据**：在「TypeScript 进阶类型与框架实践」里，声明式地标注路由。装饰器本质是元数据，真正的行为由框架在启动或请求时读取元数据后执行。在「TypeScript 进阶类型与框架实践」里判断这道题，要把TypeScript、装饰器、类型体操的条件、过程与失败路径逐项对齐，换成“NestJS 中装饰器主要承载什么职”这个场景，只有满足前提的结论才成立。
 
-### 考点 6：补全代码：「TypeScript 进阶类型与框架实践」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·TypeScript
 
-`const result = UserSchema.____(payload);`
-
+- **题目**：补全代码：「TypeScript 进阶类型与框架实践」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `const result = UserSchema.____(payload);`
 - **判断依据**：在「TypeScript 进阶类型与框架实践」里，safeParse。「TypeScript 进阶类型与框架实践」要求先交代TypeScript、装饰器、类型体操的前提再下结论，所以“safeParse”只在题干“TypeScript 进阶类型与框架实践示例中”给定的条件下成立。
 
 ## English Overview

@@ -352,6 +352,13 @@ cargo doc --open           # 生成并打开文档
 
 ### 任务 2：只改一个条件
 
+把「Rust 并发与 Cargo 工程」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把Rust的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「Rust 并发与 Cargo 工程」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响Rust。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -427,40 +434,38 @@ cargo doc --open           # 生成并打开文档
 | `join` | \| `thread::spawn` + `join` \| 基础线程 \| |
 | `std::sync::mpsc` | \| `std::sync::mpsc` \| 线程间消息传递（多生产者单消费者） \| |
 | `Mutex<T>` | \| `Mutex<T>` / `RwLock<T>` \| 共享可变状态 \| |
-| `RwLock<T>` | \| `Mutex<T>` / `RwLock<T>` \| 共享可变状态 \| |
-| `Arc<T>` | \| `Arc<T>` \| 多线程共享所有权 \| |
-| `atomic` | \| `atomic` 类型 \| 无锁计数器与标志位 \| |
-| `rayon` | \| `rayon`（生态） \| 数据并行，把 `iter()` 换成 `par_iter()` \| |
-| `iter()` | \| `rayon`（生态） \| 数据并行，把 `iter()` 换成 `par_iter()` \| |
-| `par_iter()` | \| `rayon`（生态） \| 数据并行，把 `iter()` 换成 `par_iter()` \| |
 
 ## 考点精讲
 
-### 考点 1：围绕“Rust 并发与 Cargo 工程”中的 Rust、Send、Sync，下列哪两项是本课强调的实践判断？
+### 考点 1：多选辨析·Rust
 
-- **判断依据**：在「Rust 并发与 Cargo 工程」里，学习 Rust 时要同时说明输入、输出和失败路径，不能只看正常流程。在Rust 并发与 Cargo 工程里，判断 Send 时要固定版本与边界输入，所以“验证 Send 时要固定版本并覆盖边界输入，结论才可复现”才可复现。把“学习 Rust 时要同时说明输入”代回「Rust 并发与 Cargo 工程」里“围绕Rust 并发与 Cargo 工程中的 Rust、Sen”的例子核对，条件一旦改变，结论就要用Rust、Send、Sync重新推导。
+- **题目**：围绕“Rust 并发与 Cargo 工程”中的 Rust、Send、Sync，下列哪两项是本课强调的实践判断？
+- **判断依据**：在「Rust 并发与 Cargo 工程」里，题干的正确项是学习 Rust 时要同时说明输入、输出和失败路径，不能只看正常流程。在Rust 并发与 Cargo 工程里，判断 Send 时要固定版本与边界输入，所以“验证 Send 时要固定版本并覆盖边界输入，结论才可复现”才可复现。把“学习 Rust 时要同时说明输入”代回「Rust 并发与 Cargo 工程」里“围绕Rust 并发与 Cargo 工程中的 Rust、Sen”的例子核对，条件一旦改变，结论就要用Rust、Send、Sync重新推导。
 
-### 考点 2：多线程共享可变状态的经典组合是？
+### 考点 2：概念判断·Rust
 
+- **题目**：多线程共享可变状态的经典组合是？
 - **判断依据**：在「Rust 并发与 Cargo 工程」里，Arc<Mutex<T>>。Arc 提供共享所有权，Mutex 保证互斥访问。回到「Rust 并发与 Cargo 工程」的正文示例，用“多线程共享可变状态的经典组合是”走一遍Rust、Send、Sync的完整流程，能复现的结论才可以保留。
 
-### 考点 3：下面这段 Rust 代码摘自「Rust 并发与 Cargo 工程」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
+### 考点 3：代码补全·Rust
 
+- **题目**：下面这段 Rust 代码摘自「Rust 并发与 Cargo 工程」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 - **判断依据**：在「Rust 并发与 Cargo 工程」里，这段代码包含循环结构，同一段逻辑会被重复执行。这段代码出自「Rust 并发与 Cargo 工程」的正文示例，围绕Rust、Send、Sync展开；把输入或边界换成空值、极值或失败情况后，结论要以「Rust 并发与 Cargo 工程」的实际运行结果为准。
 
-### 考点 4：Send 与 Sync 两个 auto trait 的区别是？
+### 考点 4：概念判断·Rust
 
+- **题目**：Send 与 Sync 两个 auto trait 的区别是？
 - **判断依据**：在「Rust 并发与 Cargo 工程」里，结论应落在「Send 表示所有权可安全转移到别的线程」。Rc 既不是 Send 也不是 Sync，Arc 两者都满足，所以跨线程共享要用 Arc。在「Rust 并发与 Cargo 工程」里，这道题要求区分概念与边界，「Send 表示所有权可安全转移到别的线程」只有在题干给出的前提下才成立，而「Send 只用于值类型」、「Sync 表示可以发送到线程」缺少同一组条件。
 
-### 考点 5：cargo build --release 相比默认开发构建的差别是？
+### 考点 5：概念判断·Rust
 
+- **题目**：cargo build --release 相比默认开发构建的差别是？
 - **判断依据**：基准测试与性能分析必须用 --release，否则数据没有参考价值。在「Rust 并发与 Cargo 工程」里，其他选项：release 开启优化并关闭调试断言，运行更快、编译更慢。“cargo”与「Rust 并发与 Cargo 工程」的术语表相呼应，只有符合Rust、Send、Sync约束的“开启优化并关闭调试断言”才是正文支持的结论。
 
-### 考点 6：补全代码：「Rust 并发与 Cargo 工程」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·Rust
 
-`let mut value = counter.lock.____;`
-
-- **判断依据**：在「Rust 并发与 Cargo 工程」里，unwrap。回到「Rust 并发与 Cargo 工程」的正文示例，用“补全代码”走一遍Rust、Send、Sync的完整流程，能复现的结论才可以保留。回到「Rust 并发与 Cargo 工程」的正文示例，用“Rust”走一遍Rust、Send、Sync的完整流程，能复现的结论才可以保留。
+- **题目**：补全代码：「Rust 并发与 Cargo 工程」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `let mut value = counter.lock.____;`
+- **判断依据**：在「Rust 并发与 Cargo 工程」里，unwrap。回到「Rust 并发与 Cargo 工程」的正文示例，用“补全代码”走一遍Rust、Send、Sync的完整流程，能复现的结论才可以保留。回到Rust、Send、Sync本身再看一遍：只有“unwrap”与题干“Rust”的前提一致，结论才成立。
 
 ## English Overview
 

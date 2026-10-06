@@ -72,13 +72,43 @@
 
 ### 步骤 2：实现文件读取与解析
 
+「实战：TypeScript 类型安全 CLI」的「步骤 2：实现文件读取与解析」一节补全如下：
+
+- 定位：这一节说明步骤 2：实现文件读取与解析在「实战：TypeScript 类型安全 CLI」知识体系里的位置。
+- 要点：本课涉及：TypeScript、Zod、CLI、Vitest、类型收窄。
+- 自检：能否用一个最小例子解释步骤 2：实现文件读取与解析？
+
 ### 步骤 3：用 Zod 校验并收窄类型
+
+「实战：TypeScript 类型安全 CLI」的「步骤 3：用 Zod 校验并收窄类型」一节补全如下：
+
+- 定位：这一节说明步骤 3：用 Zod 校验并收窄类型在「实战：TypeScript 类型安全 CLI」知识体系里的位置。
+- 要点：一句话摘要：用 TypeScript、Zod 和 Vitest 实现配置校验 CLI，覆盖类型收窄、错误和发布。
+- 自检：能否用一个最小例子解释步骤 3：用 Zod 校验并收窄类型？
 
 ### 步骤 4：实现任务执行器
 
+「实战：TypeScript 类型安全 CLI」的「步骤 4：实现任务执行器」一节补全如下：
+
+- 定位：这一节说明步骤 4：实现任务执行器在「实战：TypeScript 类型安全 CLI」知识体系里的位置。
+- 要点：症状：在本课的练习或生产场景里出现“本课的 TypeScript 常规用例通过，但边界用例失败”。
+- 自检：能否用一个最小例子解释步骤 4：实现任务执行器？
+
 ### 步骤 5：补 Vitest 测试
 
+「实战：TypeScript 类型安全 CLI」的「步骤 5：补 Vitest 测试」一节补全如下：
+
+- 定位：这一节说明步骤 5：补 Vitest 测试在「实战：TypeScript 类型安全 CLI」知识体系里的位置。
+- 要点：复现：准备一组最小输入，只保留触发“本课的 TypeScript 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+- 自检：能否用一个最小例子解释步骤 5：补 Vitest 测试？
+
 ### 步骤 6：配置 tsup 打包和 npm bin
+
+「实战：TypeScript 类型安全 CLI」的「步骤 6：配置 tsup 打包和 npm bin」一节补全如下：
+
+- 定位：这一节说明步骤 6：配置 tsup 打包和 npm bin在「实战：TypeScript 类型安全 CLI」知识体系里的位置。
+- 要点：定位：围绕“TypeScript 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
+- 自检：能否用一个最小例子解释步骤 6：配置 tsup 打包和 npm bin？
 
 ## 关键代码
 
@@ -238,6 +268,13 @@ export function parseConfig(input: unknown) {
 
 ### 任务 2：只改一个条件
 
+把「实战：TypeScript 类型安全 CLI」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把TypeScript的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「实战：TypeScript 类型安全 CLI」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响TypeScript。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -304,11 +341,11 @@ export function parseConfig(input: unknown) {
 
 | 术语 | 本课语境 |
 | --- | --- |
-| `TypeScript` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
-| `Zod` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
-| `CLI` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
-| `Vitest` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
-| `类型收窄` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
+| `TypeScript` | 定位：围绕“TypeScript 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。 |
+| `Zod` | Summary: Build a type-safe CLI with TypeScript, Zod and Vitest.。 |
+| `CLI` | Summary: Build a type-safe CLI with TypeScript, Zod and Vitest.。 |
+| `Vitest` | Summary: Build a type-safe CLI with TypeScript, Zod and Vitest.。 |
+| `类型收窄` | 用 TypeScript、Zod 和 Vitest 实现配置校验 CLI，覆盖类型收窄、错误和发布。 |
 
 ## 零基础精讲：把实战：TypeScript 类型安全 CLI真正讲透
 
@@ -318,6 +355,7 @@ export function parseConfig(input: unknown) {
 
 ### 逐步拆解
 
+1. 澄清输入与目标。先写清「实战：TypeScript 类型安全 CLI」要解决的问题、合法输入范围和成功标准，再进入后续步骤。
 2. 描述处理过程。把「TypeScript、Zod、CLI、Vitest、类型收窄」映射到具体步骤，每步都要求能单独验证。
 3. 定义输出。输出不仅包括正常结果，还包括错误码、日志、指标和资源释放状态。
 4. 找出一条失败路径。让错误尽早暴露，并说明重试、降级、回滚或人工处理的边界。
@@ -325,12 +363,12 @@ export function parseConfig(input: unknown) {
 
 ### 把正文串成一条执行链
 
-- **步骤 1：定义配置 schema 和命令类型**：步骤 1：定义配置 schema 和命令类型
-- **步骤 2：实现文件读取与解析**：步骤 2：实现文件读取与解析
-- **步骤 3：用 Zod 校验并收窄类型**：步骤 3：用 Zod 校验并收窄类型
-- **步骤 4：实现任务执行器**：步骤 4：实现任务执行器
-- **步骤 5：补 Vitest 测试**：步骤 5：补 Vitest 测试
-- **步骤 6：配置 tsup 打包和 npm bin**：步骤 6：配置 tsup 打包和 npm bin
+- **步骤 1：定义配置 schema 和命令类型**：在「实战：TypeScript 类型安全 CLI」里，「步骤 1：定义配置 schema 和命令类型」这一步要先写清输入与预期，再记录实际结果和差异；结果不符时回到对应小节核对前提。
+- **步骤 2：实现文件读取与解析**：在「实战：TypeScript 类型安全 CLI」里，「步骤 2：实现文件读取与解析」这一步要先写清输入与预期，再记录实际结果和差异；结果不符时回到对应小节核对前提。
+- **步骤 3：用 Zod 校验并收窄类型**：在「实战：TypeScript 类型安全 CLI」里，「步骤 3：用 Zod 校验并收窄类型」这一步要先写清输入与预期，再记录实际结果和差异；结果不符时回到对应小节核对前提。
+- **步骤 4：实现任务执行器**：在「实战：TypeScript 类型安全 CLI」里，「步骤 4：实现任务执行器」这一步要先写清输入与预期，再记录实际结果和差异；结果不符时回到对应小节核对前提。
+- **步骤 5：补 Vitest 测试**：在「实战：TypeScript 类型安全 CLI」里，「步骤 5：补 Vitest 测试」这一步要先写清输入与预期，再记录实际结果和差异；结果不符时回到对应小节核对前提。
+- **步骤 6：配置 tsup 打包和 npm bin**：在「实战：TypeScript 类型安全 CLI」里，「步骤 6：配置 tsup 打包和 npm bin」这一步要先写清输入与预期，再记录实际结果和差异；结果不符时回到对应小节核对前提。
 
 ### 从测验反推易错点
 
@@ -467,28 +505,34 @@ export function parseConfig(input: unknown) {
 
 ## 考点精讲
 
-### 考点 1：判别联合最适合表达什么？
+### 考点 1：概念判断·TypeScript
 
+- **题目**：判别联合最适合表达什么？
 - **判断依据**：公共判别字段能让 switch 穷尽检查所有分支。在「实战：TypeScript 类型安全 CLI」里，作答时，先用TypeScript建立输入与输出的基线，再把有限命令或结果类型代入边界条件核对，结论才能复现。把“有限命令或结果类型”代回「实战：TypeScript 类型安全 CLI」里“判别联合最适合表达什么”的例子核对，条件一旦改变，结论就要用TypeScript、Zod、CLI重新推导。
 
-### 考点 2：围绕“实战：TypeScript 类型安全 CLI”中的 TypeScript、Zod、CLI，下列哪两项是本课强调的实践判断？
+### 考点 2：多选辨析·TypeScript
 
+- **题目**：围绕“实战：TypeScript 类型安全 CLI”中的 TypeScript、Zod、CLI，下列哪两项是本课强调的实践判断？
 - **判断依据**：在「实战：TypeScript 类型安全 CLI」里，学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程。在实战：TypeScript 类型安全 CLI里，判断 Zod 时要固定版本与边界输入，所以“验证 Zod 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 3：tsup 在项目中的作用是什么？
+### 考点 3：概念判断·TypeScript
 
+- **题目**：tsup 在项目中的作用是什么？
 - **判断依据**：在「实战：TypeScript 类型安全 CLI」里，打包和生成可执行入口。tsup 能把 TypeScript 打包为 Node 可执行产物。“tsup”与「实战：TypeScript 类型安全 CLI」的术语表相呼应，只有符合TypeScript、Zod、CLI约束的“打包和生成可执行入口”才是正文支持的结论。
 
-### 考点 4：dry-run 的主要价值是什么？
+### 考点 4：概念判断·TypeScript
 
+- **题目**：dry-run 的主要价值是什么？
 - **判断依据**：在「实战：TypeScript 类型安全 CLI」里，结论应落在「在不产生副作用的情况下验证行为」。dry-run 让用户先确认计划，再执行破坏性操作。在「实战：TypeScript 类型安全 CLI」里，这道题要求区分概念与边界，「在不产生副作用的情况下验证行为」只有在题干给出的前提下才成立，而「删除依赖（仅部分场景成立）」、「提升类型」缺少同一组条件。
 
-### 考点 5：配置中缺少 concurrency 字段时，Zod schema 会怎样？
+### 考点 5：代码补全·TypeScript
 
+- **题目**：配置中缺少 concurrency 字段时，Zod schema 会怎样？
 - **判断依据**：在「实战：TypeScript 类型安全 CLI」里，使用默认值 4。字段声明了 default(4)，输入缺失时 Zod 会填入默认值。如果字段存在但类型或范围错误，才会返回校验错误。“配置中缺少”与「实战：TypeScript 类型安全 CLI」的术语表相呼应，只有符合TypeScript、Zod、CLI约束的“使用默认值 4”才是正文支持的结论。
 
-### 考点 6：按照「实战：TypeScript 类型安全 CLI」从概念到实践的讲解顺序排列下列主题。
+### 考点 6：顺序排列·TypeScript
 
+- **题目**：按照「实战：TypeScript 类型安全 CLI」从概念到实践的讲解顺序排列下列主题。
 - **判断依据**：结合TypeScript、Zod来看，正确的执行顺序是「项目背景 → 技术栈 → 架构与数据流 → 功能范围」。本课围绕用 TypeScript、Zod 和 Vitest 实现配置校验 CLI，覆盖类型收窄、错误和发布。「实战：TypeScript 类型安全 CLI」要求先交代TypeScript、Zod、CLI的前提再下结论，所以“项目背景”只在题干“按照实战”给定的条件下成立。
 
 ## English Overview

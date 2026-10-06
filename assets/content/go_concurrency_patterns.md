@@ -398,6 +398,12 @@ func DownloadAll(ctx context.Context, urls []string, limit int) ([]string, error
 
 ### 任务 1：用自己的话画出结构
 
+不看书，用一张图说清「Go 并发模式与 errgroup」的结构，画完再对照骨架：
+
+- 主干：模式速查 → 并发安全原语速查 → 零基础详解：六种常用并发模式 → 实践任务
+- 连接线：在每条边上标出输入、输出与失败路径。
+- 自检：能否用一句话说明并发模式与errgroup的关系？
+
 ### 任务 2：做一次对比实验
 
 **验收标准**：表格里两个方案的结论不能完全一样；写下“在什么条件下应该换方案”。
@@ -476,39 +482,37 @@ func DownloadAll(ctx context.Context, urls []string, limit int) ([]string, error
 | `sync.Once` | \| 一次性初始化 \| `sync.Once` \| 配合包级变量 \| |
 | `sync.Pool` | \| 临时对象复用 \| `sync.Pool` \| 不能当缓存用 \| |
 | `context` | \| 取消传播 \| `context` \| 逐层传递并检查 \| |
-| `golang.org/x/sync/singleflight` | \| 去重合并 \| `golang.org/x/sync/singleflight` \| 缓存击穿场景 \| |
-| `SetLimit` | \| 无限制启动 goroutine \| 内存暴涨、下游被打爆 \| 用 `SetLimit` 或信号量限流 \| |
-| `defer close(out)` | \| 忘记 `defer close(out)` \| 下游 `range` 永久阻塞 \| 阶段结束时关闭 channel \| |
-| `range` | \| 忘记 `defer close(out)` \| 下游 `range` 永久阻塞 \| 阶段结束时关闭 channel \| |
-| `recover` | \| goroutine 里 panic 未处理 \| 进程崩溃 \| 在入口 `recover` 并记录 \| |
-| `ctx.Done()` | \| 忘记检查 `ctx.Done()` \| 取消后仍继续干活 \| 在循环与阻塞点检查 \| |
 
 ## 考点精讲
 
-### 考点 1：这段 Go 代码是「Go 并发模式与 errgroup」的示例片段，下面哪一项描述与它一致？
+### 考点 1：代码补全·并发模式
 
+- **题目**：这段 Go 代码是「Go 并发模式与 errgroup」的示例片段，下面哪一项描述与它一致？
 - **判断依据**：在「Go 并发模式与 errgroup」里，这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。这段代码出自「Go 并发模式与 errgroup」的正文示例，围绕并发模式、errgroup、worker pool展开；把输入或边界换成空值、极值或失败情况后，结论要以「Go 并发模式与 errgroup」的实际运行结果为准。
 
-### 考点 2：Pipeline 各阶段为什么通常要 defer close(out)？
+### 考点 2：概念判断·并发模式
 
+- **题目**：Pipeline 各阶段为什么通常要 defer close(out)？
 - **判断依据**：在「Go 并发模式与 errgroup」里，让下游 range 能正常结束。关闭 channel 后下游 range 才会退出，这是连式 goroutine 不泄漏的关键。把“让下游 range 能正常结束”代回「Go 并发模式与 errgroup」里“Pipeline 各阶段为什么通常要 defer close”的例子核对，条件一旦改变，结论就要用并发模式、errgroup、worker pool重新推导。
 
-### 考点 3：大量相同请求同时到达导致下游被打爆，可用什么合并？
+### 考点 3：概念判断·并发模式
 
+- **题目**：大量相同请求同时到达导致下游被打爆，可用什么合并？
 - **判断依据**：在「Go 并发模式与 errgroup」里，singleflight 把同一 key 的并发调用合并成一次真实请求，其余共享结果，是缓存击穿的常用解法。把“singleflight”代回「Go 并发模式与 errgroup」里“大量相同请求同时到达导致下游被打爆”的例子核对，条件一旦改变，结论就要用并发模式、errgroup、worker pool重新推导。
 
-### 考点 4：围绕“Go 并发模式与 errgroup”中的 并发模式、errgroup、worker pool，下列哪两项是本课强调的实践判断？
+### 考点 4：多选辨析·并发模式
 
+- **题目**：围绕“Go 并发模式与 errgroup”中的 并发模式、errgroup、worker pool，下列哪两项是本课强调的实践判断？
 - **判断依据**：结论应落在学习 并发模式 时要同时说明输入、输出和失败路径。本课把Go 并发模式与 errgroup拆成概念、示例与故障现场三部分，因此判断 并发模式 时必须同时交代输入、输出和失败路径，这使“学习 并发模式 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在Go 并发模式与 errgroup里，判断 errgroup 时要固定版本与边界输入，所以“验证 errgroup 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 5：简单的并发计数，最轻量的方案是？
+### 考点 5：概念判断·并发模式
 
+- **题目**：简单的并发计数，最轻量的方案是？
 - **判断依据**：在「Go 并发模式与 errgroup」里，atomic.Int64。单值自增用原子操作最直接，无锁开销也更小。“简单的并发计数”与「Go 并发模式与 errgroup」的术语表相呼应，只有符合并发模式、errgroup、worker pool约束的“atomic.Int64”才是正文支持的结论。
 
-### 考点 6：补全代码：「Go 并发模式与 errgroup」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·并发模式
 
-`g, ctx := ____.WithContext(ctx)`
-
+- **题目**：补全代码：「Go 并发模式与 errgroup」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `g, ctx := ____.WithContext(ctx)`
 - **判断依据**：在「Go 并发模式与 errgroup」里，errgroup。在「Go 并发模式与 errgroup」里判断这道题，要把并发模式、errgroup、worker pool的条件、过程与失败路径逐项对齐，换成“补全代码”这个场景，只有满足前提的结论才成立。“并发模式与”与「Go 并发模式与 errgroup」的术语表相呼应，只有符合并发模式、errgroup、worker pool约束的“errgroup”才是正文支持的结论。
 
 ## English Overview

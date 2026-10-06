@@ -394,6 +394,12 @@ public class Report {
 
 ### 任务 1：用自己的话画出结构
 
+不看书，用一张图说清「Lambda 与 Stream API」的结构，画完再对照骨架：
+
+- 主干：函数式接口 → Stream 常用操作 → 并行流与注意事项 → Stream 常见误用与性能提示
+- 连接线：在每条边上标出输入、输出与失败路径。
+- 自检：能否用一句话说明lambda与Stream的关系？
+
 ### 任务 2：做一次对比实验
 
 **验收标准**：表格里两个方案的结论不能完全一样；写下“在什么条件下应该换方案”。
@@ -472,39 +478,37 @@ public class Report {
 | `T -> void` | \| `Consumer<T>` \| `T -> void` \| 消费值 \| |
 | `Function<T,R>` | \| `Function<T,R>` \| `T -> R` \| 转换 \| |
 | `T -> R` | \| `Function<T,R>` \| `T -> R` \| 转换 \| |
-| `Predicate<T>` | \| `Predicate<T>` \| `T -> boolean` \| 判断 \| |
-| `T -> boolean` | \| `Predicate<T>` \| `T -> boolean` \| 判断 \| |
-| `filter` | 中间操作（`filter`/`map`/`sorted`）不会立刻执行，只有遇到终止操作（`collect`/`forEach`/`count`/`reduce`）才会遍历一次。 |
-| `map` | 中间操作（`filter`/`map`/`sorted`）不会立刻执行，只有遇到终止操作（`collect`/`forEach`/`count`/`reduce`）才会遍历一次。 |
-| `sorted` | 中间操作（`filter`/`map`/`sorted`）不会立刻执行，只有遇到终止操作（`collect`/`forEach`/`count`/`reduce`）才会遍历一次。 |
-| `collect` | 中间操作（`filter`/`map`/`sorted`）不会立刻执行，只有遇到终止操作（`collect`/`forEach`/`count`/`reduce`）才会遍历一次。 |
 
 ## 考点精讲
 
-### 考点 1：Stream 的中间操作（filter/map）什么时候真正执行？
+### 考点 1：概念判断·lambda
 
+- **题目**：Stream 的中间操作（filter/map）什么时候真正执行？
 - **判断依据**：在「Lambda 与 Stream API」里，遇到终止操作时才执行。中间操作是惰性的，只有 collect/forEach/count 等终止操作才会触发一次遍历。回到「Lambda 与 Stream API」的正文示例，用“Stream 的中间操作（filte”走一遍lambda、Stream、Optional的完整流程，能复现的结论才可以保留。
 
-### 考点 2：下面这段 Java 代码摘自「Lambda 与 Stream API」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
+### 考点 2：代码补全·lambda
 
+- **题目**：下面这段 Java 代码摘自「Lambda 与 Stream API」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 - **判断依据**：在「Lambda 与 Stream API」里，这段代码会产生可观察的输出，运行后能看到结果。这段代码出自「Lambda 与 Stream API」的正文示例，围绕lambda、Stream、Optional展开；把输入或边界换成空值、极值或失败情况后，结论要以「Lambda 与 Stream API」的实际运行结果为准。
 
-### 考点 3：围绕“Lambda 与 Stream API”中的 lambda、Stream、Optional，下列哪两项是本课强调的实践判断？
+### 考点 3：多选辨析·lambda
 
+- **题目**：围绕“Lambda 与 Stream API”中的 lambda、Stream、Optional，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把Lambda 与 Stream API拆成概念、示例与故障现场三部分，因此判断 lambda 时必须同时交代输入、输出和失败路径，这使“学习 lambda 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在Lambda 与 Stream API里，判断 Stream 时要固定版本与边界输入，所以“验证 Stream 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 4：Stream 的 collect 与 forEach 的区别是？
+### 考点 4：概念判断·lambda
 
+- **题目**：Stream 的 collect 与 forEach 的区别是？
 - **判断依据**：在「Lambda 与 Stream API」里，结论应落在「collect 是终止操作，把结果汇总成集合」。结论应落在collect 是终止操作。在流里修改外部状态是常见坏味道，能 collect 就优先 collect。在「Lambda 与 Stream API」里，这道题要求区分概念与边界，「collect 是终止操作，把结果汇总成集合」只有在题干给出的前提下才成立，而「collect 只能用于并行流」、「两者都返回 Stream」缺少同一组条件。
 
-### 考点 5：方法引用 String::length 等价于哪个 lambda？
+### 考点 5：概念判断·lambda
 
+- **题目**：方法引用 String::length 等价于哪个 lambda？
 - **判断依据**：方法引用是 lambda 的语法糖，可读性更好，也能表达构造器引用 Class::new。在「Lambda 与 Stream API」里，其他选项：方法引用把接收者作为隐式参数传入，因此 String::length 等价于 s -> s.length。「Lambda 与 Stream API」要求先交代lambda、Stream、Optional的前提再下结论，所以“s -> s.length”只在题干“方法引用 String”给定的条件下成立。
 
-### 考点 6：补全代码：「Lambda 与 Stream API」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·@____
 
-`@____`
-
+- **题目**：补全代码：「Lambda 与 Stream API」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `@____`
 - **判断依据**：空格应填写「FunctionalInterface」、「functionalinterface」。在「Lambda 与 Stream API」里判断这道题，要把lambda、Stream、Optional的条件、过程与失败路径逐项对齐，换成“补全代码”这个场景，只有满足前提的结论才成立。
 
 ## English Overview

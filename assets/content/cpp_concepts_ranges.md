@@ -28,7 +28,17 @@
 
 ### 2. Ranges 用 view 组合过滤、变换和截断，通常是惰性求值。
 
+把这条结论放回「C++ Concepts 与 Ranges」的完整流程里展开：
+
+- 正文依据：能用自己的话解释：Concepts 把模板约束写进接口，让错误信息更清晰并参与重载选择。
+- 落地检查：把「2. Ranges 用 view 组合过滤、变换和截断，通常是惰性求值。」改写成一条可执行的核对项，逐条验证输入、超时与失败路径。
+
 ### 3. 惰性 view 要注意底层容器生命周期和重复遍历成本。
+
+把这条结论放回「C++ Concepts 与 Ranges」的完整流程里展开：
+
+- 正文依据：能用自己的话解释：Ranges 用 view 组合过滤、变换和截断，通常是惰性求值。
+- 落地检查：把「3. 惰性 view 要注意底层容器生命周期和重复遍历成本。」改写成一条可执行的核对项，逐条验证输入、超时与失败路径。
 
 ## 关键流程
 
@@ -87,6 +97,13 @@ int main() {
 ```
 
 ### 任务 2：只改一个条件
+
+把「C++ Concepts 与 Ranges」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把Concepts的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「C++ Concepts 与 Ranges」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响Concepts。
 
 ### 任务 3：迁移到自己的数据
 
@@ -197,10 +214,10 @@ int main() {
 
 | 术语 | 本课语境 |
 | --- | --- |
-| `Concepts` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
-| `Ranges` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
-| `模板` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
-| `约束` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
+| `Concepts` | Summary: Constrain templates with Concepts and compose lazy pipelines with Ranges.。 |
+| `Ranges` | Summary: Constrain templates with Concepts and compose lazy pipelines with Ranges.。 |
+| `模板` | “C++ Concepts 与 Ranges”中的 Concepts、Ranges、模板，下列哪两项是本课强调的实践判断。 |
+| `约束` | 本课属于「C++」，核心关键词是 Concepts、Ranges、模板、约束。 |
 
 ## 零基础精讲：把C++ Concepts 与 Ranges真正讲透
 
@@ -210,6 +227,7 @@ int main() {
 
 ### 逐步拆解
 
+1. 澄清输入与目标。先写清「C++ Concepts 与 Ranges」要解决的问题、合法输入范围和成功标准，再进入后续步骤。
 2. 描述处理过程。把「Concepts、Ranges、模板、约束」映射到具体步骤，每步都要求能单独验证。
 3. 定义输出。输出不仅包括正常结果，还包括错误码、日志、指标和资源释放状态。
 4. 找出一条失败路径。让错误尽早暴露，并说明重试、降级、回滚或人工处理的边界。
@@ -217,12 +235,12 @@ int main() {
 
 ### 把正文串成一条执行链
 
-- **1. Concepts 把模板约束写进接口，让错误信息更清晰并参与重载选择。**：1. Concepts 把模板约束写进接口，让错误信息更清晰并参与重载选择
-- **2. Ranges 用 view 组合过滤、变换和截断，通常是惰性求值。**：2. Ranges 用 view 组合过滤、变换和截断，通常是惰性求值
-- **3. 惰性 view 要注意底层容器生命周期和重复遍历成本。**：3. 惰性 view 要注意底层容器生命周期和重复遍历成本
-- **考点 1：关于，下列说法正确的是？**：考点 1：关于，下列说法正确的是
-- **考点 2：关于，下列说法正确的是？**：考点 2：关于，下列说法正确的是
-- **考点 3：关于，下列说法正确的是？**：考点 3：关于，下列说法正确的是
+- **1. Concepts 把模板约束写进接口，让错误信息更清晰并参与重载选择。**：在「C++ Concepts 与 Ranges」里，「1. Concepts 把模板约束写进接口，让错误信息更清晰并参与重载选择。」这一步要先写清输入与预期，再记录实际结果和差异；结果不符时回到对应小节核对前提。
+- **2. Ranges 用 view 组合过滤、变换和截断，通常是惰性求值。**：在「C++ Concepts 与 Ranges」里，「2. Ranges 用 view 组合过滤、变换和截断，通常是惰性求值。」这一步要先写清输入与预期，再记录实际结果和差异；结果不符时回到对应小节核对前提。
+- **3. 惰性 view 要注意底层容器生命周期和重复遍历成本。**：在「C++ Concepts 与 Ranges」里，「3. 惰性 view 要注意底层容器生命周期和重复遍历成本。」这一步要先写清输入与预期，再记录实际结果和差异；结果不符时回到对应小节核对前提。
+- **考点 1：关于，下列说法正确的是？**：针对「C++ Concepts 与 Ranges」，先自问「关于，下列说法正确的是」；作答后回到对应考点核对判断依据。
+- **考点 2：关于，下列说法正确的是？**：针对「C++ Concepts 与 Ranges」，先自问「关于，下列说法正确的是」；作答后回到对应考点核对判断依据。
+- **考点 3：关于，下列说法正确的是？**：针对「C++ Concepts 与 Ranges」，先自问「关于，下列说法正确的是」；作答后回到对应考点核对判断依据。
 
 ### 从测验反推易错点
 
@@ -356,30 +374,34 @@ int main() {
 
 ## 考点精讲
 
-### 考点 1：围绕“C++ Concepts 与 Ranges”中的 Concepts、Ranges、模板，下列哪两项是本课强调的实践判断？
+### 考点 1：多选辨析·Concepts
 
+- **题目**：围绕“C++ Concepts 与 Ranges”中的 Concepts、Ranges、模板，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把C++ Concepts 与 Ranges拆成概念、示例与故障现场三部分，因此判断 Concepts 时必须同时交代输入、输出和失败路径，这使“学习 Concepts 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在C++ Concepts 与 Ranges里，判断 Ranges 时要固定版本与边界输入，所以“验证 Ranges 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 2：关于「Ranges 用 view 组合过滤、变换和截断，通常是惰性求值。」，下列说法正确的是？
+### 考点 2：概念判断·Concepts
 
+- **题目**：关于「Ranges 用 view 组合过滤、变换和截断，通常是惰性求值。」，下列说法正确的是？
 - **判断依据**：在「C++ Concepts 与 Ranges」里，Ranges 用 view 组合过滤、变换和截断，通常是惰性求值。“Ranges”与「C++ Concepts 与 Ranges」的术语表相呼应，只有符合Concepts、Ranges、模板约束的“Ranges 用 view 组合过滤”才是正文支持的结论。
 
-### 考点 3：关于「惰性 view 要注意底层容器生命周期和重复遍历成本。」，下列说法正确的是？
+### 考点 3：概念判断·Concepts
 
+- **题目**：关于「惰性 view 要注意底层容器生命周期和重复遍历成本。」，下列说法正确的是？
 - **判断依据**：在「C++ Concepts 与 Ranges」里，惰性 view 要注意底层容器生命周期和重复遍历成本。回到「C++ Concepts 与 Ranges」的正文示例，用“关于惰性 view 要注意底层容器生”走一遍Concepts、Ranges、模板的完整流程，能复现的结论才可以保留。
 
-### 考点 4：阅读「C++ Concepts 与 Ranges」正文里的这段 C++ 代码，下面哪一项判断是正确的？
+### 考点 4：代码补全·Concepts
 
+- **题目**：阅读「C++ Concepts 与 Ranges」正文里的这段 C++ 代码，下面哪一项判断是正确的？
 - **判断依据**：在「C++ Concepts 与 Ranges」里，这段代码会产生可观察的输出，运行后能看到结果。这段代码出自「C++ Concepts 与 Ranges」的正文示例，围绕Concepts、Ranges、模板展开；把输入或边界换成空值、极值或失败情况后，结论要以「C++ Concepts 与 Ranges」的实际运行结果为准。
 
-### 考点 5：补全代码：「C++ Concepts 与 Ranges」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 5：填空·Concepts
 
-`____ <std::integral T>`
+- **题目**：补全代码：「C++ Concepts 与 Ranges」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `____ <std::integral T>`
+- **判断依据**：在「C++ Concepts 与 Ranges」里，template。回到「C++ Concepts 与 Ranges」的正文示例，用“补全代码”走一遍Concepts、Ranges、模板的完整流程，能复现的结论才可以保留。回到Concepts、Ranges、模板本身再看一遍：只有“template”与题干“Concepts”的前提一致，结论才成立。
 
-- **判断依据**：在「C++ Concepts 与 Ranges」里，template。回到「C++ Concepts 与 Ranges」的正文示例，用“补全代码”走一遍Concepts、Ranges、模板的完整流程，能复现的结论才可以保留。回到「C++ Concepts 与 Ranges」的正文示例，用“Concepts”走一遍Concepts、Ranges、模板的完整流程，能复现的结论才可以保留。
+### 考点 6：顺序排列·Concepts
 
-### 考点 6：按照「C++ Concepts 与 Ranges」从概念到实践的讲解顺序排列下列主题。
-
+- **题目**：按照「C++ Concepts 与 Ranges」从概念到实践的讲解顺序排列下列主题。
 - **判断依据**：正确的执行顺序是「核心知识」 → 「关键流程」 → 「实践路径」 → 「常见误区」。本课围绕用 Concepts 约束模板，用 Ranges 组合惰性数据管道。在「C++ Concepts 与 Ranges」里判断这道题，要把Concepts、Ranges、模板的条件、过程与失败路径逐项对齐，换成“按照C++ Concepts 与 R”这个场景，只有满足前提的结论才成立。
 
 ## English Overview
@@ -473,8 +495,14 @@ int main() {
 5. 补全代码：「C++ Concepts 与 Ranges」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
 
 `____ <std::integral T>`
-   - 依据：在「C++ Concepts 与 Ranges」里，template。回到「C++ Concepts 与 Ranges」的正文示例，用“补全代码”走一遍Concepts、Ranges、模板的完整流程，能复现的结论才可以保留。回到「C++ Concepts 与 Ranges」的正文示例，用“Concepts”走一遍Concepts、Ranges、模板的完整流程，能复现的结论才可以保留。
-6. 按照「C++ Concepts 与 Ranges」从概念到实践的讲解顺序排列下列主题。
+   - 依据：在「C++ Concepts 与 Ranges」里，template。回到「C++ Concepts 与 Ranges」的正文示例，用“补全代码”走一遍Concepts、Ranges、模板的完整流程，能复现的结论才可以保留。回到Concepts、Ranges、模板本身再看一遍：只有“template”与题干“Concepts”的前提一致，结论才成立。
+1. 按照「C++ Concepts 与 Ranges」从概念到实践的讲解顺序排列下列主题。
    - 依据：正确的执行顺序是「核心知识」 → 「关键流程」 → 「实践路径」 → 「常见误区」。本课围绕用 Concepts 约束模板，用 Ranges 组合惰性数据管道。在「C++ Concepts 与 Ranges」里判断这道题，要把Concepts、Ranges、模板的条件、过程与失败路径逐项对齐，换成“按照C++ Concepts 与 R”这个场景，只有满足前提的结论才成立。
 
 ### 迁移练习
+
+把「C++ Concepts 与 Ranges」的结论迁移到相邻主题，每次迁移都写清预测与证据：
+
+1. 换输入：用Concepts处理一组你自己的数据，对比教材示例的结果差异。
+2. 换失败条件：制造一个Ranges相关的错误，说明如何从错误信息定位根因。
+3. 换规模：把数据量或并发度提高一个数量级，说明「C++ Concepts 与 Ranges」的结论是否仍成立。

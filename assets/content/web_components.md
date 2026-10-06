@@ -261,6 +261,13 @@ customElements.define("lesson-card", LessonCard);
 
 ### 任务 2：只改一个条件
 
+把「Web Components 实战」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把WebComponents的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「Web Components 实战」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响WebComponents。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -322,38 +329,38 @@ customElements.define("lesson-card", LessonCard);
 | `constructor` | \| `constructor` \| 元素创建时 \| 初始化状态，禁止访问子节点 \| |
 | `connectedCallback` | \| `connectedCallback` \| 插入文档 \| 渲染、绑定事件、发起请求 \| |
 | `disconnectedCallback` | \| `disconnectedCallback` \| 从文档移除 \| 解绑事件、清理定时器 \| |
-| `attributeChangedCallback` | \| `attributeChangedCallback` \| 监听属性变化 \| 同步属性到渲染 \| |
-| `adoptedCallback` | \| `adoptedCallback` \| 移动到新文档 \| 少见 \| |
-| `static get observedAttributes()` | 属性监听需要静态声明：`static get observedAttributes()`。 |
-| `part="name"` | \| 暴露指定内部结构给外部改样式 \| `part="name"` + `::part(name)` \| |
-| `::part(name)` | \| 暴露指定内部结构给外部改样式 \| `part="name"` + `::part(name)` \| |
-| `::slotted(selector)` | \| 插槽内容样式 \| `::slotted(selector)` \| |
 
 ## 考点精讲
 
-### 考点 1：注册自定义元素时，标签名必须满足？
+### 考点 1：概念判断·WebComponents
 
+- **题目**：注册自定义元素时，标签名必须满足？
 - **判断依据**：在「Web Components 实战」里，包含连字符。标准要求自定义元素名必须含连字符，以避免与未来 HTML 保留标签冲突。回到「Web Components 实战」的正文示例，用“注册自定义元素时”走一遍WebComponents、自定义元素、ShadowDOM的完整流程，能复现的结论才可以保留。
 
-### 考点 2：为什么不应在 constructor 中访问子节点或属性？
+### 考点 2：概念判断·WebComponents
 
+- **题目**：为什么不应在 constructor 中访问子节点或属性？
 - **判断依据**：在「Web Components 实战」里，此时元素尚未插入文档。constructor 阶段元素还没进入文档，读取属性可能与升级顺序相关，正确位置是 connectedCallback。「Web Components 实战」要求先交代WebComponents、自定义元素、ShadowDOM的前提再下结论，所以“此时元素尚未插入文档”只在题干“为什么不应在 constructor 中访问子节点或属性”给定的条件下成立。
 
-### 考点 3：围绕“Web Components 实战”中的 WebComponents、自定义元素、ShadowDOM，下列哪两项是本课强调的实践判断？
+### 考点 3：多选辨析·WebComponents
 
+- **题目**：围绕“Web Components 实战”中的 WebComponents、自定义元素、ShadowDOM，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把Web Components 实战拆成概念、示例与故障现场三部分，因此判断 WebComponents 时必须同时交代输入、输出和失败路径，这使“学习 WebComponents 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在Web Components 实战里，判断 自定义元素 时要固定版本与边界输入，所以“验证 自定义元素 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 4：按“Web Components 实战”中 WebComponents、自定义元素、ShadowDOM 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
+### 考点 4：顺序排列·WebComponents
 
-- **判断依据**：正确的执行顺序是「先明确 WebComponents 的输入、输出与约束」 → 「写出最小示例并核对 自定义元素 的基线结果」 → 「只改一个变量，记录边界与失败路径的变化」 → 「固定版本与证据，把“Web Components 实战”的结论写成可复现记录」。在「Web Components 实战」里，在本课的练习里，顺序应当是：先明确 WebComponents 的输入、输出与约束 → 写出最小示例并核对 自定义元素 的基线结果 → 只改一个变量，记录边界与失败路径的变化 → 固定版本与证据，把本课的结论写成可复现记录。这个顺序把 WebComponents 的输入、输出和约束放在最前面，在Web Components 实战里避免概念没对齐就开始调参。第二步用 自定义元素 建立可核对的基线，在Web Components 实战里第三步才允许改变一个变量并观察失败路径。
+- **题目**：按“Web Components 实战”中 WebComponents、自定义元素、ShadowDOM 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
+- **判断依据**：在「Web Components 实战」里，在本课的练习里，顺序应当是：先明确 WebComponents 的输入、输出与约束 → 写出最小示例并核对 自定义元素 的基线结果 → 只改一个变量，记录边界与失败路径的变化 → 固定版本与证据，把本课的结论写成可复现记录。这个顺序把 WebComponents 的输入、输出和约束放在最前面，在Web Components 实战里避免概念没对齐就开始调参。第二步用 自定义元素 建立可核对的基线，在Web Components 实战里第三步才允许改变一个变量并观察失败路径。
 
-### 考点 5：组件被移除后必须做什么以避免内存泄漏？
+### 考点 5：概念判断·WebComponents
 
+- **题目**：组件被移除后必须做什么以避免内存泄漏？
 - **判断依据**：在「Web Components 实战」里，在 disconnectedCallback 中解绑事件并清理定时器。移除时解绑监听、清理定时器与订阅，才能让对象被回收。「Web Components 实战」要求先交代WebComponents、自定义元素、ShadowDOM的前提再下结论，所以“在 disconnectedCallba”只在题干“组件被移除后必须做什么以避免内存泄漏”给定的条件下成立。
 
-### 考点 6：阅读「Web Components 实战」的代码片段，下面哪项判断是正确的？
+### 考点 6：排错·WebComponents
 
-- **判断依据**：在「Web Components 实战」里，包含连字符。这道题的关键在「Web Components 实战」的WebComponents、自定义元素、ShadowDOM：先确认题干“阅读Web Components 实”问的是哪一步，再排除偷换前提的选项。把“包含连字符”代回「Web Components 实战」里“阅读Web Components 实战的代码片段”的例子核对，条件一旦改变，结论就要用WebComponents、自定义元素、ShadowDOM重新推导。
+- **题目**：阅读「Web Components 实战」的代码片段，下面哪项判断是正确的？
+- **判断依据**：这道题的关键在「Web Components 实战」的WebComponents、自定义元素、ShadowDOM：先确认题干“阅读Web Components 实”问的是哪一步，再排除偷换前提的选项。把“包含连字符”代回「Web Components 实战」里“阅读Web Components 实战的代码片段”的例子核对，条件一旦改变，结论就要用WebComponents、自定义元素、ShadowDOM重新推导。
 
 ## English Overview
 

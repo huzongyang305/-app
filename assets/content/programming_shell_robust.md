@@ -349,6 +349,13 @@ fi
 
 ### 任务 2：只改一个条件
 
+把「健壮与可移植的 Shell 脚本」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把Shell的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「健壮与可移植的 Shell 脚本」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响Shell。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -418,39 +425,43 @@ fi
 
 | 术语 | 本课语境 |
 | --- | --- |
-| `[Shell, set -euo pipefail, trap, shellcheck, 安全][index]` | 在「健壮与可移植的 Shell 脚本」里理解它的定义、输入和输出。 |
-| `[Shell, set -euo pipefail, trap, shellcheck, 安全][index]` | 本课用它说明边界条件与失败路径。 |
-| `[Shell, set -euo pipefail, trap, shellcheck, 安全][index]` | 结合「健壮与可移植的 Shell 脚本」的正文示例确认它的适用条件。 |
-| `[Shell, set -euo pipefail, trap, shellcheck, 安全][index]` | 在「健壮与可移植的 Shell 脚本」里理解它的定义、输入和输出。 |
-| `[Shell, set -euo pipefail, trap, shellcheck, 安全][index]` | 本课用它说明边界条件与失败路径。 |
+| `Shell` | 围绕“环境版本、配置和输入规模与目标环境不同，Shell 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。 |
+| `set -euo pipefail` | 把「健壮与可移植的 Shell 脚本」的最小示例复制一份，只改一个条件再跑一次：。 |
+| `trap` | 脚本健壮性的四个关键词：fail fast（set -euo pipefail）、清理（trap）、校验（参数与依赖）、静态检查（shellcheck）。 |
+| `shellcheck` | 脚本健壮性的四个关键词：fail fast（set -euo pipefail）、清理（trap）、校验（参数与依赖）、静态检查（shellcheck）。 |
+| `安全` | 它在「健壮与可移植的 Shell 脚本」里是理解「安全」的关键术语，用来解释定义、适用条件与失败路径；它与Shell、trap共同决定这一节的判断边界。复习时回到正文示例核对输入、输出和验证方式。 |
 
 ## 考点精讲
 
-### 考点 1：set -euo pipefail 中 -u 的作用是？
+### 考点 1：概念判断·Shell
 
+- **题目**：set -euo pipefail 中 -u 的作用是？
 - **判断依据**：在「健壮与可移植的 Shell 脚本」里，使用未定义变量时报错退出。配合 -e（出错退出）与 pipefail（管道失败即失败）构成健壮性三件套。「健壮与可移植的 Shell 脚本」要求先交代Shell、set -euo pipefail、trap的前提再下结论，所以“使用未定义变量时报错退出”只在题干“set -euo pipefail 中 -u 的作用是”给定的条件下成立。
 
-### 考点 2：阅读「健壮与可移植的 Shell 脚本」中的这段 Shell 代码，下面哪项判断最准确？
+### 考点 2：代码补全·Shell
 
+- **题目**：阅读「健壮与可移植的 Shell 脚本」中的这段 Shell 代码，下面哪项判断最准确？
 - **判断依据**：在「健壮与可移植的 Shell 脚本」里，这段 Shell 代码来自本课的本地示例，主要用来核对 Shell、set -euo pipefail、trap、shellcheck 之间的输入、处理和输出关系，set -euo pipefail、trap 清理、安全写法与 shellcheck。
 
-### 考点 3：围绕“健壮与可移植的 Shell 脚本”中的 Shell、set -euo pipefail、trap，下列哪两项是本课强调的实践判断？
+### 考点 3：多选辨析·Shell
 
+- **题目**：围绕“健壮与可移植的 Shell 脚本”中的 Shell、set -euo pipefail、trap，下列哪两项是本课强调的实践判断？
 - **判断依据**：在「健壮与可移植的 Shell 脚本」里，学习 Shell 时要同时说明输入、输出和失败路径，不能只看正常流程。在健壮与可移植的 Shell 脚本里，判断 set -euo pipefail 时要固定版本与边界输入，所以“验证 set -euo pipefail 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 4：mktemp 相比自己拼临时文件名好在哪？
+### 考点 4：概念判断·Shell
 
+- **题目**：mktemp 相比自己拼临时文件名好在哪？
 - **判断依据**：在「健壮与可移植的 Shell 脚本」里，结论应落在「以原子方式创建唯一文件」。可预测的 /tmp/xxx 名字容易被人抢注符号链接，mktemp 是标准做法。在「健壮与可移植的 Shell 脚本」里，这道题要求区分概念与边界，「以原子方式创建唯一文件」只有在题干给出的前提下才成立，而「写得更快」、「生成的文件会自动删除」缺少同一组条件。
 
-### 考点 5：trap 'cleanup' EXIT INT TERM 的作用是？
+### 考点 5：概念判断·Shell
 
+- **题目**：trap 'cleanup' EXIT INT TERM 的作用是？
 - **判断依据**：在「健壮与可移植的 Shell 脚本」里，在脚本退出或收到中断/终止信号时执行清理逻辑。配合 set -e，trap EXIT 是保证临时文件与锁被释放的关键。回到「健壮与可移植的 Shell 脚本」的正文示例，用“trap 'cleanup' EXI”走一遍Shell、set -euo pipefail、trap的完整流程，能复现的结论才可以保留。
 
-### 考点 6：补全代码：「健壮与可移植的 Shell 脚本」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·____ script.sh
 
-`____ script.sh`
-
-- **判断依据**：在「健壮与可移植的 Shell 脚本」里，shellcheck。这道题的关键在「健壮与可移植的 Shell 脚本」的Shell、set -euo pipefail、trap：先确认题干“补全代码”问的是哪一步，再排除偷换前提的选项。这道题的关键在「健壮与可移植的 Shell 脚本」的Shell、set -euo pipefail、trap：先确认题干“健壮与可移植的”问的是哪一步，再排除偷换前提的选项。
+- **题目**：补全代码：「健壮与可移植的 Shell 脚本」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `____ script.sh`
+- **判断依据**：在「健壮与可移植的 Shell 脚本」里，shellcheck。这道题的关键在「健壮与可移植的 Shell 脚本」的Shell、set -euo pipefail、trap：先确认题干“补全代码”问的是哪一步，再排除偷换前提的选项。回到Shell、set -euo pipefail、trap本身再看一遍：只有“shellcheck”与题干“健壮与可移植的”的前提一致，结论才成立。
 
 ## English Overview
 

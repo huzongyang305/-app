@@ -316,6 +316,13 @@ console.log(greet(u));
 
 ### 任务 2：只改一个条件
 
+把「TypeScript 类型系统」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把TypeScript的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「TypeScript 类型系统」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响TypeScript。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -385,38 +392,42 @@ console.log(greet(u));
 
 | 术语 | 本课语境 |
 | --- | --- |
-| `[TypeScript, 类型, 泛型, 类型收窄, strict][index]` | 在「TypeScript 类型系统」里理解它的定义、输入和输出。 |
-| `[TypeScript, 类型, 泛型, 类型收窄, strict][index]` | 本课用它说明边界条件与失败路径。 |
-| `[TypeScript, 类型, 泛型, 类型收窄, strict][index]` | 结合「TypeScript 类型系统」的正文示例确认它的适用条件。 |
-| `[TypeScript, 类型, 泛型, 类型收窄, strict][index]` | 在「TypeScript 类型系统」里理解它的定义、输入和输出。 |
-| `[TypeScript, 类型, 泛型, 类型收窄, strict][index]` | 本课用它说明边界条件与失败路径。 |
+| `TypeScript` | TypeScript Types focuses on Narrowing, generics, utility types and strict mode.。 |
+| `类型` | 围绕“类型 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。 |
+| `泛型` | Related terms: TypeScript, 类型, 泛型, 类型收窄。 |
+| `类型收窄` | Related terms: TypeScript, 类型, 泛型, 类型收窄。 |
+| `strict` | TypeScript Types focuses on Narrowing, generics, utility types and strict mode.。 |
 
 ## 考点精讲
 
-### 考点 1：下面这段 TypeScript 代码摘自「TypeScript 类型系统」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
+### 考点 1：代码补全·TypeScript
 
+- **题目**：下面这段 TypeScript 代码摘自「TypeScript 类型系统」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 - **判断依据**：在「TypeScript 类型系统」里，这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。这段代码出自「TypeScript 类型系统」的正文示例，围绕TypeScript、类型、泛型展开；把输入或边界换成空值、极值或失败情况后，结论要以「TypeScript 类型系统」的实际运行结果为准。
 
-### 考点 2：围绕“TypeScript 类型系统”中的 TypeScript、类型、泛型，下列哪两项是本课强调的实践判断？
+### 考点 2：多选辨析·TypeScript
 
-- **判断依据**：在「TypeScript 类型系统」里，学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程。在TypeScript 类型系统里，判断 类型 时要固定版本与边界输入，所以“验证 类型 时要固定版本并覆盖边界输入，结论才可复现”才可复现。回到「TypeScript 类型系统」的正文示例，用“围绕TypeScript 类型系统中”走一遍TypeScript、类型、泛型的完整流程，能复现的结论才可以保留。
+- **题目**：围绕“TypeScript 类型系统”中的 TypeScript、类型、泛型，下列哪两项是本课强调的实践判断？
+- **判断依据**：在「TypeScript 类型系统」里，题干的正确项是学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程。在TypeScript 类型系统里，判断 类型 时要固定版本与边界输入，所以“验证 类型 时要固定版本并覆盖边界输入，结论才可复现”才可复现。回到「TypeScript 类型系统」的正文示例，用“围绕TypeScript 类型系统中”走一遍TypeScript、类型、泛型的完整流程，能复现的结论才可以保留。
 
-### 考点 3：接口返回的数据还需要运行时校验吗？
+### 考点 3：概念判断·TypeScript
 
-- **判断依据**：类型断言不改变运行时数据，接口数据要用 zod 等做校验。围绕 接口返回的数据还需要运行时校验吗。在「TypeScript 类型系统」里，如果只凭关键词作答，很容易把「只在生产需要」、「只在开发需要」与「需要，类型在运行时不存在」混在一起；在「TypeScript 类型系统」里判断这道题，要把TypeScript、类型、泛型的条件、过程与失败路径逐项对齐，换成“接口返回的数据还需要运行时校验吗”这个场景，只有满足前提的结论才成立。
+- **题目**：接口返回的数据还需要运行时校验吗？
+- **判断依据**：类型断言不改变运行时数据，接口数据要用 zod 等做校验。在「TypeScript 类型系统」里，如果只凭关键词作答，很容易把「只在生产需要」、「只在开发需要」与「需要，类型在运行时不存在」混在一起；在「TypeScript 类型系统」里判断这道题，要把TypeScript、类型、泛型的条件、过程与失败路径逐项对齐，换成“接口返回的数据还需要运行时校验吗”这个场景，只有满足前提的结论才成立。
 
-### 考点 4：type 与 interface 的主要差别是？
+### 考点 4：概念判断·TypeScript
 
+- **题目**：type 与 interface 的主要差别是？
 - **判断依据**：在「TypeScript 类型系统」里，结论应落在「interface 支持声明合并」。对外发布的库常用 interface 便于使用者扩展，内部组合类型多用 type。在「TypeScript 类型系统」里，这道题要求区分概念与边界，「interface 支持声明合并」只有在题干给出的前提下才成立，而「两者完全等价」、「type 不能描述对象」缺少同一组条件。
 
-### 考点 5：as const 的作用是？
+### 考点 5：概念判断·TypeScript
 
+- **题目**：as const 的作用是？
 - **判断依据**：在「TypeScript 类型系统」里，把值推断为最窄的只读字面量类型（readonly 元组/字面量）。它只影响类型推断，运行时仍可被修改（需要 Object.freeze 才真正冻结）。回到「TypeScript 类型系统」的正文示例，用“as const 的作用是”走一遍TypeScript、类型、泛型的完整流程，能复现的结论才可以保留。
 
-### 考点 6：补全代码：「TypeScript 类型系统」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·"____": true,
 
-`"____": true,`
-
+- **题目**：补全代码：「TypeScript 类型系统」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `"____": true,`
 - **判断依据**：空格应填写「noUncheckedIndexedAccess」、「nouncheckedindexedaccess」。在「TypeScript 类型系统」里判断这道题，要把TypeScript、类型、泛型的条件、过程与失败路径逐项对齐，换成“补全代码”这个场景，只有满足前提的结论才成立。
 
 ## English Overview
@@ -448,18 +459,6 @@ console.log(greet(u));
 ### Learning Outcomes
 
 - Explain what **TypeScript Types** solves and when it should be used.
-
-### Core Mental Model
-
-### Step-by-step Study Plan
-
-### Practice Tasks
-
-### Common Failure Modes
-
-### Self-check Questions
-
-4. What is the rollback path?
 
 ### Glossary
 

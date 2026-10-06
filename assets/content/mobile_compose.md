@@ -344,6 +344,12 @@ LazyColumn(
 
 ### 任务 1：用自己的话画出结构
 
+不看书，用一张图说清「Jetpack Compose 声明式 UI」的结构，画完再对照骨架：
+
+- 主干：核心理念 → 常用 API 速查 → 重组与性能速查 → 与 View 体系对照
+- 连接线：在每条边上标出输入、输出与失败路径。
+- 自检：能否用一句话说明Compose与声明式UI的关系？
+
 ### 任务 2：做一次对比实验
 
 **验收标准**：表格里两个方案的结论不能完全一样；写下“在什么条件下应该换方案”。
@@ -409,37 +415,37 @@ LazyColumn(
 | `remember` | \| 记忆 \| `remember` 在重组间保留值 \| |
 | `mutableStateListOf()` | \| 可观察列表 \| `mutableStateListOf()` \| |
 | `LaunchedEffect(key) { }` | \| 副作用 \| `LaunchedEffect(key) { }`、`DisposableEffect(key)` \| |
-| `DisposableEffect(key)` | \| 副作用 \| `LaunchedEffect(key) { }`、`DisposableEffect(key)` \| |
-| `LazyColumn` | \| 列表 \| `LazyColumn` / `LazyRow` / `LazyVerticalGrid` \| |
-| `LazyRow` | \| 列表 \| `LazyColumn` / `LazyRow` / `LazyVerticalGrid` \| |
-| `LazyVerticalGrid` | \| 列表 \| `LazyColumn` / `LazyRow` / `LazyVerticalGrid` \| |
-| `Column` | \| 布局 \| `Column`、`Row`、`Box`、`ConstraintLayout` \| |
-| `Row` | \| 布局 \| `Column`、`Row`、`Box`、`ConstraintLayout` \| |
 
 ## 考点精讲
 
-### 考点 1：按“Jetpack Compose 声明式 UI”中 Compose、声明式UI、重组 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
+### 考点 1：顺序排列·Compose
 
-- **判断依据**：正确的执行顺序是「先明确 Compose 的输入、输出与约束」 → 「写出最小示例并核对 声明式UI 的基线结果」 → 「只改一个变量，记录边界与失败路径的变化」 → 「固定版本与证据，把“Jetpack Compose 声明式 UI”的结论写成可复现记录」。在「Jetpack Compose 声明式 UI」里，在本课的练习里，顺序应当是：先明确 Compose 的输入、输出与约束 → 写出最小示例并核对 声明式UI 的基线结果 → 只改一个变量，记录边界与失败路径的变化 → 固定版本与证据，把本课的结论写成可复现记录。这个顺序把 Compose 的输入、输出和约束放在最前面，在Jetpack Compose 声明式 UI里避免概念没对齐就开始调参。第二步用 声明式UI 建立可核对的基线，在Jetpack Compose 声明式 UI里第三步才允许改变一个变量并观察失败路径。
+- **题目**：按“Jetpack Compose 声明式 UI”中 Compose、声明式UI、重组 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
+- **判断依据**：在「Jetpack Compose 声明式 UI」里，在本课的练习里，顺序应当是：先明确 Compose 的输入、输出与约束 → 写出最小示例并核对 声明式UI 的基线结果 → 只改一个变量，记录边界与失败路径的变化 → 固定版本与证据，把本课的结论写成可复现记录。这个顺序把 Compose 的输入、输出和约束放在最前面，在Jetpack Compose 声明式 UI里避免概念没对齐就开始调参。第二步用 声明式UI 建立可核对的基线，在Jetpack Compose 声明式 UI里第三步才允许改变一个变量并观察失败路径。
 
-### 考点 2：围绕“Jetpack Compose 声明式 UI”中的 Compose、声明式UI、重组，下列哪两项是本课强调的实践判断？
+### 考点 2：多选辨析·Compose
 
+- **题目**：围绕“Jetpack Compose 声明式 UI”中的 Compose、声明式UI、重组，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把Jetpack Compose 声明式 UI拆成概念、示例与故障现场三部分，因此判断 Compose 时必须同时交代输入、输出和失败路径，这使“学习 Compose 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在Jetpack Compose 声明式 UI里，判断 声明式UI 时要固定版本与边界输入，所以“验证 声明式UI 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 3：关于派生状态 derivedStateOf，说法正确的是？
+### 考点 3：概念判断·Compose
 
+- **题目**：关于派生状态 derivedStateOf，说法正确的是？
 - **判断依据**：在「Jetpack Compose 声明式 UI」里，它能减少因状态频繁变化导致的重组。derivedStateOf 让读取方只在派生结果真正变化时才重组，例如「是否滚动到顶部」这种布尔值，避免每像素滚动都触发重组。「Jetpack Compose 声明式 UI」要求先交代Compose、声明式UI、重组的前提再下结论，所以“它能减少因状态频繁变化导致的重组”只在题干“派生状态 derivedStateOf”给定的条件下成立。
 
-### 考点 4：状态提升（state hoisting）的主要目的是？
+### 考点 4：概念判断·Compose
 
+- **题目**：状态提升（state hoisting）的主要目的是？
 - **判断依据**：在「Jetpack Compose 声明式 UI」里，结论应落在「让组件无状态、易于复用与测试」。把状态交给调用方管理，组件只接收值并回调事件，从而变成纯粹的展示层，复用与测试都更简单。在「Jetpack Compose 声明式 UI」里，这道题要求区分概念与边界，「让组件无状态、易于复用与测试」只有在题干给出的前提下才成立，而「替代 ViewModel」、「减少内存占用」缺少同一组条件。
 
-### 考点 5：下面哪种写法最容易造成无限重组？
+### 考点 5：概念判断·Compose
 
+- **题目**：下面哪种写法最容易造成无限重组？
 - **判断依据**：在「Jetpack Compose 声明式 UI」里，在 composable 函数体里直接修改状态。在组合阶段修改状态会触发新一轮重组，形成循环。这道题的关键在「Jetpack Compose 声明式 UI」的Compose、声明式UI、重组：先确认题干“下面哪种写法最容易造成无限重组”问的是哪一步，再排除偷换前提的选项。
 
-### 考点 6：阅读「Jetpack Compose 声明式 UI」的代码片段，下面哪项判断是正确的？
+### 考点 6：排错·Compose
 
+- **题目**：阅读「Jetpack Compose 声明式 UI」的代码片段，下面哪项判断是正确的？
 - **判断依据**：在「Jetpack Compose 声明式 UI」里，放在 LaunchedEffect 中。在「Jetpack Compose 声明式 UI」里判断这道题，要把Compose、声明式UI、重组的条件、过程与失败路径逐项对齐，换成“阅读Jetpack Compose”这个场景，只有满足前提的结论才成立。
 
 ## English Overview

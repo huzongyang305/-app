@@ -335,6 +335,12 @@ const renderItem = useCallback(({ item }: { item: Item }) => <Row item={item} />
 
 ### 任务 1：用自己的话画出结构
 
+不看书，用一张图说清「React Native 跨平台开发」的结构，画完再对照骨架：
+
+- 主干：定位与原理 → 架构速查（新架构） → 常用组件与 API → 性能要点速查
+- 连接线：在每条边上标出输入、输出与失败路径。
+- 自检：能否用一句话说明React Native与跨平台的关系？
+
 ### 任务 2：做一次对比实验
 
 **验收标准**：表格里两个方案的结论不能完全一样；写下“在什么条件下应该换方案”。
@@ -400,38 +406,38 @@ const renderItem = useCallback(({ item }: { item: Item }) => <Row item={item} />
 | `Text` | \| 文本 \| `Text`、`TextInput` \| |
 | `TextInput` | \| 文本 \| `Text`、`TextInput` \| |
 | `FlatList` | \| 列表 \| `FlatList`（大数据）、`SectionList` \| |
-| `SectionList` | \| 列表 \| `FlatList`（大数据）、`SectionList` \| |
-| `Image` | \| 图片 \| `Image`（需显式宽高或 `aspectRatio`） \| |
-| `aspectRatio` | \| 图片 \| `Image`（需显式宽高或 `aspectRatio`） \| |
-| `Pressable` | \| 触摸 \| `Pressable`、`TouchableOpacity` \| |
-| `TouchableOpacity` | \| 触摸 \| `Pressable`、`TouchableOpacity` \| |
-| `StyleSheet.create` | \| 样式 \| `StyleSheet.create`，单位是无量纲的 dp \| |
 
 ## 考点精讲
 
-### 考点 1：按“React Native 跨平台开发”中 React Native、跨平台、Hermes 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
+### 考点 1：顺序排列·React Native
 
-- **判断依据**：正确的执行顺序是「先明确 React Native 的输入、输出与约束」 → 「写出最小示例并核对 跨平台 的基线结果」 → 「只改一个变量，记录边界与失败路径的变化」 → 「固定版本与证据，把“React Native 跨平台开发”的结论写成可复现记录」。在「React Native 跨平台开发」里，在本课的练习里，顺序应当是：先明确 React Native 的输入、输出与约束 → 写出最小示例并核对 跨平台 的基线结果 → 只改一个变量，记录边界与失败路径的变化 → 固定版本与证据，把本课的结论写成可复现记录。这个顺序把 React Native 的输入、输出和约束放在最前面，在React Native 跨平台开发里避免概念没对齐就开始调参。第二步用 跨平台 建立可核对的基线，在React Native 跨平台开发里第三步才允许改变一个变量并观察失败路径。
+- **题目**：按“React Native 跨平台开发”中 React Native、跨平台、Hermes 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
+- **判断依据**：题干的正确项是固定版本与证据，把“React Native 跨平台开发”的结论写成可复现记录。在「React Native 跨平台开发」里，在本课的练习里，顺序应当是：先明确 React Native 的输入、输出与约束 → 写出最小示例并核对 跨平台 的基线结果 → 只改一个变量，记录边界与失败路径的变化 → 固定版本与证据，把本课的结论写成可复现记录。这个顺序把 React Native 的输入、输出和约束放在最前面，在React Native 跨平台开发里避免概念没对齐就开始调参。第二步用 跨平台 建立可核对的基线，在React Native 跨平台开发里第三步才允许改变一个变量并观察失败路径。
 
-### 考点 2：围绕“React Native 跨平台开发”中的 React Native、跨平台、Hermes，下列哪两项是本课强调的实践判断？
+### 考点 2：多选辨析·React Native
 
+- **题目**：围绕“React Native 跨平台开发”中的 React Native、跨平台、Hermes，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把React Native 跨平台开发拆成概念、示例与故障现场三部分，因此判断 React Native 时必须同时交代输入、输出和失败路径，这使“学习 React Native 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在React Native 跨平台开发里，判断 跨平台 时要固定版本与边界输入，所以“验证 跨平台 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 3：Hermes 引擎带来的主要收益是？
+### 考点 3：概念判断·React Native
 
+- **题目**：Hermes 引擎带来的主要收益是？
 - **判断依据**：在「React Native 跨平台开发」里，提升启动速度并降低内存占用。Hermes 为移动端优化，通过预编译字节码减少启动解析时间并降低内存，是 RN 默认引擎。把“提升启动速度并降低内存占用”代回「React Native 跨平台开发」里“Hermes 引擎带来的主要收益是”的例子核对，条件一旦改变，结论就要用React Native、跨平台、Hermes重新推导。
 
-### 考点 4：关于 RN 中的动画性能，正确做法是？
+### 考点 4：概念判断·React Native
 
+- **题目**：关于 RN 中的动画性能，正确做法是？
 - **判断依据**：在「React Native 跨平台开发」里，结论应落在「用 Animated 或 Reanimated 让动画在原生线程执行」。动画在原生线程执行可以绕开 JS 线程繁忙导致的掉帧，这是 RN 动画的主流做法。这道题的关键在「React Native 跨平台开发」的React Native、跨平台、Hermes：先确认题干“关于 RN 中的动画性能”问的是哪一步，再排除偷换前提的选项。
 
-### 考点 5：图片在 RN 布局中不设置宽高会出现什么？
+### 考点 5：概念判断·React Native
 
+- **题目**：图片在 RN 布局中不设置宽高会出现什么？
 - **判断依据**：在「React Native 跨平台开发」里，可能不显示或导致布局异常。RN 的 Image 没有像浏览器那样的固有尺寸，必须显式给出宽高或 aspectRatio，否则可能渲染不出或造成布局跳动。回到「React Native 跨平台开发」的正文示例，用“图片在 RN 布局中不设置宽高会出现”走一遍React Native、跨平台、Hermes的完整流程，能复现的结论才可以保留。
 
-### 考点 6：阅读「React Native 跨平台开发」的代码片段，下面哪项判断是正确的？
+### 考点 6：排错·React Native
 
-- **判断依据**：在「React Native 跨平台开发」里，RN 通过桥接渲染真实原生组件，不是网页。这道题的关键在「React Native 跨平台开发」的React Native、跨平台、Hermes：先确认题干“阅读React Native 跨平台”问的是哪一步，再排除偷换前提的选项。这道题的关键在「React Native 跨平台开发」的React Native、跨平台、Hermes：先确认题干“阅读React”问的是哪一步，再排除偷换前提的选项。
+- **题目**：阅读「React Native 跨平台开发」的代码片段，下面哪项判断是正确的？
+- **判断依据**：在「React Native 跨平台开发」里，RN 通过桥接渲染真实原生组件，不是网页。这道题的关键在「React Native 跨平台开发」的React Native、跨平台、Hermes：先确认题干“阅读React Native 跨平台”问的是哪一步，再排除偷换前提的选项。
 
 ## English Overview
 

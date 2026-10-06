@@ -472,6 +472,13 @@ cross build --release --target x86_64-unknown-linux-musl
 
 ### 任务 2：只改一个条件
 
+把「Rust 实战：命令行工具」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把Rust的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「Rust 实战：命令行工具」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响Rust。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -542,38 +549,42 @@ cross build --release --target x86_64-unknown-linux-musl
 
 | 术语 | 本课语境 |
 | --- | --- |
-| `[Rust, CLI, clap, anyhow, 发布][index]` | 在「Rust 实战：命令行工具」里理解它的定义、输入和输出。 |
-| `[Rust, CLI, clap, anyhow, 发布][index]` | 本课用它说明边界条件与失败路径。 |
-| `[Rust, CLI, clap, anyhow, 发布][index]` | 结合「Rust 实战：命令行工具」的正文示例确认它的适用条件。 |
-| `[Rust, CLI, clap, anyhow, 发布][index]` | 在「Rust 实战：命令行工具」里理解它的定义、输入和输出。 |
-| `[Rust, CLI, clap, anyhow, 发布][index]` | 本课用它说明边界条件与失败路径。 |
+| `Rust` | Rust CLI 的标准配方：clap 解析 + anyhow/thiserror 错误 + serde 序列化 + assertcmd 测试 + 多平台发布；类型系统让这类工具几乎"发布即稳定"。 |
+| `CLI` | Rust CLI 的标准配方：clap 解析 + anyhow/thiserror 错误 + serde 序列化 + assertcmd 测试 + 多平台发布；类型系统让这类工具几乎"发布即稳定"。 |
+| `clap` | Rust CLI 的标准配方：clap 解析 + anyhow/thiserror 错误 + serde 序列化 + assertcmd 测试 + 多平台发布；类型系统让这类工具几乎"发布即稳定"。 |
+| `anyhow` | Rust CLI 的标准配方：clap 解析 + anyhow/thiserror 错误 + serde 序列化 + assertcmd 测试 + 多平台发布；类型系统让这类工具几乎"发布即稳定"。 |
+| `发布` | clap 解析、错误处理、assertcmd 测试与发布。 |
 
 ## 考点精讲
 
-### 考点 1：Rust CLI 最常用的参数解析库是？
+### 考点 1：概念判断·Rust
 
+- **题目**：Rust CLI 最常用的参数解析库是？
 - **判断依据**：clap 的 derive 风格可自动生成 --help 与补全。其他选项：clap 是 Rust CLI 的参数解析事实标准。在「Rust 实战：命令行工具」里判断这道题，要把Rust、CLI、clap的条件、过程与失败路径逐项对齐，换成“Rust CLI 最常用的参数解析库”这个场景，只有满足前提的结论才成立。
 
-### 考点 2：符合 Unix 习惯的输出方式是？
+### 考点 2：概念判断·Rust
 
-- **判断依据**：围绕 符合 Unix 习惯的输出方式是。在「Rust 实战：命令行工具」里，作答时，先用Rust建立输入与输出的基线，再把正常结果进 stdout代入边界条件核对，结论才能复现。这道题的关键在「Rust 实战：命令行工具」的Rust、CLI、clap：先确认题干“符合 Unix 习惯的输出方式是”问的是哪一步，再排除偷换前提的选项。
+- **题目**：符合 Unix 习惯的输出方式是？
+- **判断依据**：在「Rust 实战：命令行工具」里，作答时，先用Rust建立输入与输出的基线，再把正常结果进 stdout代入边界条件核对，结论才能复现。这道题的关键在「Rust 实战：命令行工具」的Rust、CLI、clap：先确认题干“符合 Unix 习惯的输出方式是”问的是哪一步，再排除偷换前提的选项。
 
-### 考点 3：测试二进制行为（stdout/退出码）常用？
+### 考点 3：概念判断·Rust
 
+- **题目**：测试二进制行为（stdout/退出码）常用？
 - **判断依据**：在「Rust 实战：命令行工具」里，assert_cmd。assertcmd 可在集成测试中调用二进制并断言输出。传播，并在 main 用 fn main -> anyhow::Result<> 统一打印错误与退出码。在「Rust 实战：命令行工具」里判断这道题，要把Rust、CLI、clap的条件、过程与失败路径逐项对齐，换成“测试二进制行为（stdout/退出码”这个场景，只有满足前提的结论才成立。
 
-### 考点 4：下面这段 Rust 代码摘自「Rust 实战：命令行工具」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
+### 考点 4：代码补全·Rust
 
-- **判断依据**：在「Rust 实战：命令行工具」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「Rust 实战：命令行工具」的正文示例，围绕Rust、CLI、clap展开；把输入或边界换成空值、极值或失败情况后，结论要以「Rust 实战：命令行工具」的实际运行结果为准。这道题的关键在「Rust 实战：命令行工具」的Rust、CLI、clap：先确认题干“下面这段 Rust 代码摘自Rust”问的是哪一步，再排除偷换前提的选项。
+- **题目**：下面这段 Rust 代码摘自「Rust 实战：命令行工具」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
+- **判断依据**：题干的正确项是这段代码只做静态声明，没有循环、分支或可观察输出，在「Rust 实战：命令行工具」里它只能证明Rust相关约束存在，不能替代真实运行证据。这段代码出自「Rust 实战：命令行工具」的正文示例，围绕Rust、CLI、clap展开；把输入或边界换成空值、极值或失败情况后，结论要以「Rust 实战：命令行工具」的实际运行结果为准。这道题的关键在「Rust 实战：命令行工具」的Rust、CLI、clap：先确认题干“下面这段 Rust 代码摘自Rust”问的是哪一步，再排除偷换前提的选项。
 
-### 考点 5：围绕“Rust 实战：命令行工具”中的 Rust、CLI、clap，下列哪两项是本课强调的实践判断？
+### 考点 5：多选辨析·Rust
 
+- **题目**：围绕“Rust 实战：命令行工具”中的 Rust、CLI、clap，下列哪两项是本课强调的实践判断？
 - **判断依据**：在「Rust 实战：命令行工具」里，学习 Rust 时要同时说明输入、输出和失败路径，不能只看正常流程。在Rust 实战：命令行工具里，判断 CLI 时要固定版本与边界输入，所以“验证 CLI 时要固定版本并覆盖边界输入，结论才可复现”才可复现。「Rust 实战：命令行工具」要求先交代Rust、CLI、clap的前提再下结论，所以“验证 CLI 时要固定版本并覆盖边界输入”只在题干“围绕Rust 实战”给定的条件下成立。
 
-### 考点 6：补全代码：「Rust 实战：命令行工具」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·Rust
 
-`let content = std::fs::____(&args.path)`
-
+- **题目**：补全代码：「Rust 实战：命令行工具」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `let content = std::fs::____(&args.path)`
 - **判断依据**：空格应填写「read_to_string」。「Rust 实战：命令行工具」要求先交代Rust、CLI、clap的前提再下结论，所以“readtostring”只在题干“Rust 实战”给定的条件下成立。把“readtostring”代回「Rust 实战：命令行工具」里“Rust 实战”的例子核对，条件一旦改变，结论就要用Rust、CLI、clap重新推导。
 
 ## English Overview
@@ -680,18 +691,6 @@ Cargo.toml
 ### Learning Outcomes
 
 - Explain what **Rust CLI Project** solves and when it should be used.
-
-### Core Mental Model
-
-### Step-by-step Study Plan
-
-### Practice Tasks
-
-### Common Failure Modes
-
-### Self-check Questions
-
-4. What is the rollback path?
 
 ### Glossary
 

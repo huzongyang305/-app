@@ -250,6 +250,13 @@ with DAG(
 
 ### 任务 2：只改一个条件
 
+把「Airflow 调度与数据质量」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把Airflow的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「Airflow 调度与数据质量」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响Airflow。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -311,40 +318,38 @@ with DAG(
 | `retry_delay` | 超时与重试显式配置**：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值。 |
 | `{{ ds }}` | \| 参数化 \| 用 `{{ ds }}`、`{{ data_interval_start }}` 而不是 `datetime.now()` \| |
 | `{{ data_interval_start }}` | \| 参数化 \| 用 `{{ ds }}`、`{{ data_interval_start }}` 而不是 `datetime.now()` \| |
-| `datetime.now()` | \| 参数化 \| 用 `{{ ds }}`、`{{ data_interval_start }}` 而不是 `datetime.now()` \| |
-| `>>` | \| 依赖 \| 用 `>>` 或 `set_upstream` 明确顺序 \| |
-| `set_upstream` | \| 依赖 \| 用 `>>` 或 `set_upstream` 明确顺序 \| |
-| `max_active_runs` | \| 并发控制 \| 用 `max_active_runs`、池与优先级 \| |
-| `on_failure_callback` | \| 通知 \| `on_failure_callback` 发送告警 \| |
-| `mode="reschedule"` | \| Sensor 用默认 poke 模式 \| 占满 worker \| 改 `mode="reschedule"` \| |
 
 ## 考点精讲
 
-### 考点 1：围绕“Airflow 调度与数据质量”中的 Airflow、DAG、幂等，下列哪两项是本课强调的实践判断？
+### 考点 1：多选辨析·Airflow
 
+- **题目**：围绕“Airflow 调度与数据质量”中的 Airflow、DAG、幂等，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把Airflow 调度与数据质量拆成概念、示例与故障现场三部分，因此判断 Airflow 时必须同时交代输入、输出和失败路径，这使“学习 Airflow 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在Airflow 调度与数据质量里，判断 DAG 时要固定版本与边界输入，所以“验证 DAG 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 2：Sensor 应使用哪种模式避免占满 worker？
+### 考点 2：概念判断·Airflow
 
+- **题目**：Sensor 应使用哪种模式避免占满 worker？
 - **判断依据**：在「Airflow 调度与数据质量」里，reschedule 会让出 worker 槽位，等待期间不占用资源。在「Airflow 调度与数据质量」里，其他选项：Sensor 应使用 reschedule 模式，等待期间释放 worker 槽位。回到「Airflow 调度与数据质量」的正文示例，用“Sensor 应使用哪种模式避免占满”走一遍Airflow、DAG、幂等的完整流程，能复现的结论才可以保留。
 
-### 考点 3：下面这段 SQL 代码摘自「Airflow 调度与数据质量」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
+### 考点 3：代码补全·Airflow
 
+- **题目**：下面这段 SQL 代码摘自「Airflow 调度与数据质量」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 - **判断依据**：在「Airflow 调度与数据质量」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「Airflow 调度与数据质量」的正文示例，围绕Airflow、DAG、幂等展开；把输入或边界换成空值、极值或失败情况后，结论要以「Airflow 调度与数据质量」的实际运行结果为准。
 
-### 考点 4：Airflow 的 catchup 参数控制什么？
+### 考点 4：概念判断·Airflow
 
+- **题目**：Airflow 的 catchup 参数控制什么？
 - **判断依据**：在「Airflow 调度与数据质量」里，结论应落在「是否自动补跑开始日期到当前之间遗漏的调度周期」。依赖历史数据回填时开启，只关心当前数据的定时任务通常设为 False。在「Airflow 调度与数据质量」里，这道题要求区分概念与边界，「是否自动补跑开始日期到当前之间遗漏的调度周期」只有在题干给出的前提下才成立，而「是否并行执行任务」、「是否发送告警」缺少同一组条件。
 
-### 考点 5：数据新鲜度（freshness）监控的意义是？
+### 考点 5：概念判断·Airflow
 
+- **题目**：数据新鲜度（freshness）监控的意义是？
 - **判断依据**：常见做法是断言最新分区时间或最大事件时间与当前时间的差值。在「Airflow 调度与数据质量」里，其他选项：新鲜度监控用于发现数据未按时更新，避免下游基于陈旧数据决策。“数据新鲜度（freshness）监控的意义是”与「Airflow 调度与数据质量」的术语表相呼应，只有符合Airflow、DAG、幂等约束的“发现数据未按时更新”才是正文支持的结论。
 
-### 考点 6：补全代码：「Airflow 调度与数据质量」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·Airflow
 
-`"____": lambda context: print(f"任务失败：{context['task_instance_key_str']}"),`
-
-- **判断依据**：空格应填写「on_failure_callback」。「Airflow 调度与数据质量」要求先交代Airflow、DAG、幂等的前提再下结论，所以“onfailurecallback”只在题干“Airflow 调度与数据质量示例中”给定的条件下成立。把“onfailurecallback”代回「Airflow 调度与数据质量」里“Airflow 调度与数据质量示例中”的例子核对，条件一旦改变，结论就要用Airflow、DAG、幂等重新推导。
+- **题目**：补全代码：「Airflow 调度与数据质量」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `"____": lambda context: print(f"任务失败：{context['task_instance_key_str']}"),`
+- **判断依据**：空格应填写「on_failure_callback」。把“onfailurecallback”代回「Airflow 调度与数据质量」里“Airflow 调度与数据质量示例中”的例子核对，条件一旦改变，结论就要用Airflow、DAG、幂等重新推导。「Airflow 调度与数据质量」要求先交代Airflow、DAG、幂等的前提再下结论，所以“onfailurecallback”只在题干“Airflow”给定的条件下成立。
 
 ## English Overview
 

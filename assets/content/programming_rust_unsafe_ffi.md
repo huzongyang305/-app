@@ -390,6 +390,13 @@ cargo test --release
 
 ### 任务 2：只改一个条件
 
+把「Rust unsafe、FFI 与生态」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把Rust的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「Rust unsafe、FFI 与生态」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响Rust。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -461,38 +468,42 @@ cargo test --release
 
 | 术语 | 本课语境 |
 | --- | --- |
-| `[Rust, unsafe, FFI, serde, tokio][index]` | 在「Rust unsafe、FFI 与生态」里理解它的定义、输入和输出。 |
-| `[Rust, unsafe, FFI, serde, tokio][index]` | 本课用它说明边界条件与失败路径。 |
-| `[Rust, unsafe, FFI, serde, tokio][index]` | 结合「Rust unsafe、FFI 与生态」的正文示例确认它的适用条件。 |
-| `[Rust, unsafe, FFI, serde, tokio][index]` | 在「Rust unsafe、FFI 与生态」里理解它的定义、输入和输出。 |
-| `[Rust, unsafe, FFI, serde, tokio][index]` | 本课用它说明边界条件与失败路径。 |
+| `Rust` | unsafe 是把编译器无法验证的契约写进注释与封装；FFI 是 Rust 融入现有生态的桥梁；日常开发优先使用成熟 crate，把 unsafe 留在边界层。 |
+| `unsafe` | unsafe 是把编译器无法验证的契约写进注释与封装；FFI 是 Rust 融入现有生态的桥梁；日常开发优先使用成熟 crate，把 unsafe 留在边界层。 |
+| `FFI` | unsafe 是把编译器无法验证的契约写进注释与封装；FFI 是 Rust 融入现有生态的桥梁；日常开发优先使用成熟 crate，把 unsafe 留在边界层。 |
+| `serde` | 它在「Rust unsafe、FFI 与生态」里是理解「serde」的关键术语，用来解释定义、适用条件与失败路径；它与Rust、unsafe共同决定这一节的判断边界。复习时回到正文示例核对输入、输出和验证方式。 |
+| `tokio` | 它在「Rust unsafe、FFI 与生态」里是理解「tokio」的关键术语，用来解释定义、适用条件与失败路径；它与Rust、unsafe共同决定这一节的判断边界。复习时回到正文示例核对输入、输出和验证方式。 |
 
 ## 考点精讲
 
-### 考点 1：unsafe 解锁的能力不包括？
+### 考点 1：概念判断·Rust
 
+- **题目**：unsafe 解锁的能力不包括？
 - **判断依据**：在「Rust unsafe、FFI 与生态」里，跳过借用检查的所有规则。unsafe 只解锁四类操作，其余规则仍然生效。在「Rust unsafe、FFI 与生态」里判断这道题，要把Rust、unsafe、FFI的条件、过程与失败路径逐项对齐，换成“unsafe 解锁的能力不包括”这个场景，只有满足前提的结论才成立。
 
-### 考点 2：跨 FFI 边界时必须注意？
+### 考点 2：概念判断·Rust
 
+- **题目**：跨 FFI 边界时必须注意？
 - **判断依据**：在「Rust unsafe、FFI 与生态」里，panic 不能跨越边界。布局要用 repr(C)，字符串要用 CString 等明确表示。「Rust unsafe、FFI 与生态」要求先交代Rust、unsafe、FFI的前提再下结论，所以“panic 不能跨越边界”只在题干“跨 FFI 边界时必须注意”给定的条件下成立。
 
-### 考点 3：围绕“Rust unsafe、FFI 与生态”中的 Rust、unsafe、FFI，下列哪两项是本课强调的实践判断？
+### 考点 3：多选辨析·Rust
 
+- **题目**：围绕“Rust unsafe、FFI 与生态”中的 Rust、unsafe、FFI，下列哪两项是本课强调的实践判断？
 - **判断依据**：在「Rust unsafe、FFI 与生态」里，学习 Rust 时要同时说明输入、输出和失败路径，不能只看正常流程。在Rust unsafe、FFI 与生态里，判断 unsafe 时要固定版本与边界输入，所以“验证 unsafe 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 4：#[repr(C)] 在 FFI 场景中的作用是？
+### 考点 4：概念判断·Rust
 
+- **题目**：#[repr(C)] 在 FFI 场景中的作用是？
 - **判断依据**：在「Rust unsafe、FFI 与生态」里，结论应落在「让结构体使用 C 的内存布局」。Rust 默认布局不保证字段顺序，跨语言传递结构体必须显式声明 C 布局。在「Rust unsafe、FFI 与生态」里，这道题要求区分概念与边界，「让结构体使用 C 的内存布局」只有在题干给出的前提下才成立，而「让结构体自动实现 Copy」、「禁止结构体被复制」缺少同一组条件。
 
-### 考点 5：这段 Rust 代码是「Rust unsafe、FFI 与生态」的示例片段，下面哪一项描述与它一致？
+### 考点 5：代码补全·Rust
 
+- **题目**：这段 Rust 代码是「Rust unsafe、FFI 与生态」的示例片段，下面哪一项描述与它一致？
 - **判断依据**：在「Rust unsafe、FFI 与生态」里，这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。这段代码出自「Rust unsafe、FFI 与生态」的正文示例，围绕Rust、unsafe、FFI展开；把输入或边界换成空值、极值或失败情况后，结论要以「Rust unsafe、FFI 与生态」的实际运行结果为准。
 
-### 考点 6：补全代码：「Rust unsafe、FFI 与生态」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·Rust
 
-`if index >= self.len || self.ptr.____ {`
-
+- **题目**：补全代码：「Rust unsafe、FFI 与生态」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `if index >= self.len || self.ptr.____ {`
 - **判断依据**：空格应填写「is_null」。这道题的关键在「Rust unsafe、FFI 与生态」的Rust、unsafe、FFI：先确认题干“补全代码”问的是哪一步，再排除偷换前提的选项。把“isnull”代回「Rust unsafe、FFI 与生态」里“Rust unsafe、FFI 与生态示例中”的例子核对，条件一旦改变，结论就要用Rust、unsafe、FFI重新推导。
 
 ## English Overview

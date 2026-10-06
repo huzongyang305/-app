@@ -359,6 +359,13 @@ console.log(handle({ status: "ok", data: { id: 2, tags: ["a"] } }));
 
 ### 任务 2：只改一个条件
 
+把「TypeScript 类型收窄与泛型」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把TypeScript的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「TypeScript 类型收窄与泛型」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响TypeScript。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -428,38 +435,42 @@ console.log(handle({ status: "ok", data: { id: 2, tags: ["a"] } }));
 
 | 术语 | 本课语境 |
 | --- | --- |
-| `[TypeScript, 类型收窄, 泛型, 可辨识联合, infer][index]` | 在「TypeScript 类型收窄与泛型」里理解它的定义、输入和输出。 |
-| `[TypeScript, 类型收窄, 泛型, 可辨识联合, infer][index]` | 本课用它说明边界条件与失败路径。 |
-| `[TypeScript, 类型收窄, 泛型, 可辨识联合, infer][index]` | 结合「TypeScript 类型收窄与泛型」的正文示例确认它的适用条件。 |
-| `[TypeScript, 类型收窄, 泛型, 可辨识联合, infer][index]` | 在「TypeScript 类型收窄与泛型」里理解它的定义、输入和输出。 |
-| `[TypeScript, 类型收窄, 泛型, 可辨识联合, infer][index]` | 本课用它说明边界条件与失败路径。 |
+| `TypeScript` | 围绕“环境版本、配置和输入规模与目标环境不同，TypeScript 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。 |
+| `类型收窄` | 围绕“类型收窄 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。 |
+| `泛型` | TypeScript 的类型能力集中在两处：收窄（把宽类型变窄） 与 泛型（让类型随输入变化）；掌握这两点，就能用类型把业务约束表达清楚。 |
+| `可辨识联合` | 可辨识联合 + switch 是建模业务状态最实用的模式：订单状态、请求结果、表单校验结果都可以这样写，新增一种状态时编译器会提示所有需要处理的位置。 |
+| `infer` | Narrowing & Generics focuses on Narrowing, discriminated unions, generics and infer.。 |
 
 ## 考点精讲
 
-### 考点 1：围绕“TypeScript 类型收窄与泛型”中的 TypeScript、类型收窄、泛型，下列哪两项是本课强调的实践判断？
+### 考点 1：多选辨析·TypeScript
 
+- **题目**：围绕“TypeScript 类型收窄与泛型”中的 TypeScript、类型收窄、泛型，下列哪两项是本课强调的实践判断？
 - **判断依据**：在「TypeScript 类型收窄与泛型」里，学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程。在TypeScript 类型收窄与泛型里，判断 类型收窄 时要固定版本与边界输入，所以“验证 类型收窄 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 2：阅读「TypeScript 类型收窄与泛型」正文里的这段 TypeScript 代码，下面哪一项判断是正确的？
+### 考点 2：代码补全·TypeScript
 
+- **题目**：阅读「TypeScript 类型收窄与泛型」正文里的这段 TypeScript 代码，下面哪一项判断是正确的？
 - **判断依据**：在「TypeScript 类型收窄与泛型」里，这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。这段代码出自「TypeScript 类型收窄与泛型」的正文示例，围绕TypeScript、类型收窄、泛型展开；把输入或边界换成空值、极值或失败情况后，结论要以「TypeScript 类型收窄与泛型」的实际运行结果为准。
 
-### 考点 3：infer 关键字用于？
+### 考点 3：概念判断·TypeScript
 
+- **题目**：infer 关键字用于？
 - **判断依据**：在「TypeScript 类型收窄与泛型」里，在条件类型中提取类型片段。它是 ReturnType、Awaited 等工具类型的实现基础。在「TypeScript 类型收窄与泛型」里判断这道题，要把TypeScript、类型收窄、泛型的条件、过程与失败路径逐项对齐，换成“infer 关键字用于”这个场景，只有满足前提的结论才成立。
 
-### 考点 4：自定义类型守卫的返回类型应该写成？
+### 考点 4：概念判断·TypeScript
 
+- **题目**：自定义类型守卫的返回类型应该写成？
 - **判断依据**：在「TypeScript 类型收窄与泛型」里，返回 value is Foo 后，调用处在该分支内会被自动收窄为 Foo 类型。在「TypeScript 类型收窄与泛型」里，其他选项：返回 Foo、undefined、typeof Foo 或 boolean 都不会让调用处收窄。在「TypeScript 类型收窄与泛型」里，这道题要求区分概念与边界，「value is Foo」只有在题干给出的前提下才成立，而「typeof Foo」、「boolean」缺少同一组条件。
 
-### 考点 5：泛型约束 T extends { id: string } 的作用是？
+### 考点 5：概念判断·TypeScript
 
+- **题目**：泛型约束 T extends { id: string } 的作用是？
 - **判断依据**：在「TypeScript 类型收窄与泛型」里，要求类型参数至少具备该形状。没有约束时不能访问 T 的成员，约束是泛型里获得类型安全的关键。回到「TypeScript 类型收窄与泛型」的正文示例，用“泛型约束 T extends { i”走一遍TypeScript、类型收窄、泛型的完整流程，能复现的结论才可以保留。
 
-### 考点 6：补全代码：「TypeScript 类型收窄与泛型」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·TypeScript
 
-`function ____(value: never): never {`
-
+- **题目**：补全代码：「TypeScript 类型收窄与泛型」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `function ____(value: never): never {`
 - **判断依据**：在「TypeScript 类型收窄与泛型」里，assertNever。在「TypeScript 类型收窄与泛型」里判断这道题，要把TypeScript、类型收窄、泛型的条件、过程与失败路径逐项对齐，换成“补全代码”这个场景，只有满足前提的结论才成立。回到「TypeScript 类型收窄与泛型」的正文示例，用“补全代码”走一遍TypeScript、类型收窄、泛型的完整流程，能复现的结论才可以保留。
 
 ## English Overview
@@ -491,18 +502,6 @@ console.log(handle({ status: "ok", data: { id: 2, tags: ["a"] } }));
 ### Learning Outcomes
 
 - Explain what **Narrowing & Generics** solves and when it should be used.
-
-### Core Mental Model
-
-### Step-by-step Study Plan
-
-### Practice Tasks
-
-### Common Failure Modes
-
-### Self-check Questions
-
-4. What is the rollback path?
 
 ### Glossary
 

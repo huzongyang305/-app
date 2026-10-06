@@ -428,6 +428,13 @@ echo "符号：build/symbols（请归档）"
 
 ### 任务 2：只改一个条件
 
+把「实战：Flutter 打包发布 Android」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把Flutter的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「实战：Flutter 打包发布 Android」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响Flutter。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -485,36 +492,42 @@ echo "符号：build/symbols（请归档）"
 
 | 术语 | 本课语境 |
 | --- | --- |
-| `[Flutter, 发布, 签名, 混淆, 体积优化][index]` | 在「实战：Flutter 打包发布 Android」里理解它的定义、输入和输出。 |
-| `[Flutter, 发布, 签名, 混淆, 体积优化][index]` | 本课用它说明边界条件与失败路径。 |
-| `[Flutter, 发布, 签名, 混淆, 体积优化][index]` | 结合「实战：Flutter 打包发布 Android」的正文示例确认它的适用条件。 |
-| `[Flutter, 发布, 签名, 混淆, 体积优化][index]` | 在「实战：Flutter 打包发布 Android」里理解它的定义、输入和输出。 |
-| `[Flutter, 发布, 签名, 混淆, 体积优化][index]` | 本课用它说明边界条件与失败路径。 |
+| `Flutter` | 用 flutter build apk --analyze-size 查看各模块占比，优先处理体积最大的资源；App Bundle（--appbundle）让商店按设备下发，是发布到 Google Play 的首选形式。 |
+| `发布` | 围绕“发布 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。 |
+| `签名` | 发布 Flutter 应用要做四件事：签名、定版本、减体积、留符号。 |
+| `混淆` | 正式签名、按 ABI 拆分、混淆与符号保留、发布清单。 |
+| `体积优化` | 它在「实战：Flutter 打包发布 Android」里是理解「体积优化」的关键术语，用来解释定义、适用条件与失败路径；它与Flutter、发布共同决定这一节的判断边界。复习时回到正文示例核对输入、输出和验证方式。 |
 
 ## 考点精讲
 
-### 考点 1：围绕“实战：Flutter 打包发布 Android”中的 Flutter、发布、签名，下列哪两项是本课强调的实践判断？
+### 考点 1：多选辨析·Flutter
 
+- **题目**：围绕“实战：Flutter 打包发布 Android”中的 Flutter、发布、签名，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把实战：Flutter 打包发布 Android拆成概念、示例与故障现场三部分，因此判断 Flutter 时必须同时交代输入、输出和失败路径，这使“学习 Flutter 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在实战：Flutter 打包发布 Android里，判断 发布 时要固定版本与边界输入，所以“验证 发布 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 2：这段代码代码是「实战：Flutter 打包发布 Android」的示例片段，下面哪一项描述与它一致？
+### 考点 2：代码补全·Flutter
 
+- **题目**：这段代码代码是「实战：Flutter 打包发布 Android」的示例片段，下面哪一项描述与它一致？
 - **判断依据**：在「实战：Flutter 打包发布 Android」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「实战：Flutter 打包发布 Android」的正文示例，围绕Flutter、发布、签名展开；把输入或边界换成空值、极值或失败情况后，结论要以「实战：Flutter 打包发布 Android」的实际运行结果为准。
 
-### 考点 3：减小 APK 体积的常用做法是？
+### 考点 3：概念判断·Flutter
 
+- **题目**：减小 APK 体积的常用做法是？
 - **判断依据**：在「实战：Flutter 打包发布 Android」里，使用 --split-per-abi 或 App Bundle。按 CPU 架构拆分可显著降低单包体积。在「实战：Flutter 打包发布 Android」里判断这道题，要把Flutter、发布、签名的条件、过程与失败路径逐项对齐，换成“减小 APK 体积的常用做法是”这个场景，只有满足前提的结论才成立。
 
-### 考点 4：flutter build appbundle 的产物格式是？
+### 考点 4：概念判断·Flutter
 
+- **题目**：flutter build appbundle 的产物格式是？
 - **判断依据**：在「实战：Flutter 打包发布 Android」里，结论应落在「.aab（Android App Bundle）」。appbundle 生成 .aab，由商店按设备配置拆分下发。在「实战：Flutter 打包发布 Android」里，这道题要求区分概念与边界，「.aab（Android App Bundle）」只有在题干给出的前提下才成立，而「.ipa（没有覆盖题干给出的条件）」、「.jar」缺少同一组条件。
 
-### 考点 5：Android 的 minSdk / targetSdk 在哪个文件中配置？
+### 考点 5：概念判断·Flutter
 
+- **题目**：Android 的 minSdk / targetSdk 在哪个文件中配置？
 - **判断依据**：在「实战：Flutter 打包发布 Android」里，android/app/build.gradle(.kts) 的 defaultConfig。SDK 版本属于 Android 构建配置，写在 app 模块的 defaultConfig 里。在「实战：Flutter 打包发布 Android」里判断这道题，要把Flutter、发布、签名的条件、过程与失败路径逐项对齐，换成“Android 的 minSdk /”这个场景，只有满足前提的结论才成立。
 
-### 考点 6：按照「实战：Flutter 打包发布 Android」从概念到实践的讲解顺序排列下列主题。
+### 考点 6：顺序排列·Flutter
 
+- **题目**：按照「实战：Flutter 打包发布 Android」从概念到实践的讲解顺序排列下列主题。
 - **判断依据**：正确的执行顺序是「从调试到发布」 → 「签名配置」 → 「体积优化」 → 「混淆与符号」。在本课中，正确顺序是：1. 从调试到发布 → 2. 签名配置 → 3. 体积优化 → 4. 混淆与符号。本课围绕正式签名、按 ABI 拆分、混淆与符号保留、发布清单。“按照实战”与「实战：Flutter 打包发布 Android」的术语表相呼应，只有符合Flutter、发布、签名约束的“从调试到发布”才是正文支持的结论。
 
 ## English Overview

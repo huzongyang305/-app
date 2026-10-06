@@ -287,6 +287,12 @@ case result := <-ch:
 
 ### 任务 1：用自己的话画出结构
 
+不看书，用一张图说清「Go 并发：goroutine、channel 与 context」的结构，画完再对照骨架：
+
+- 主干：三个核心原语 → 常见模式 → 必须注意的坑 → 共享状态的两条路
+- 连接线：在每条边上标出输入、输出与失败路径。
+- 自检：能否用一句话说明Go与goroutine的关系？
+
 ### 任务 2：做一次对比实验
 
 **验收标准**：表格里两个方案的结论不能完全一样；写下“在什么条件下应该换方案”。
@@ -365,39 +371,37 @@ case result := <-ch:
 | `context.WithTimeout` | 超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`。 |
 | `ctx.Done()` | 超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`。 |
 | `sync.WaitGroup` | 等待一组任务**：`sync.WaitGroup` 的 Add/Done/Wait。 |
-| `go test -race` | 竞态**：用 `go test -race` 检测，用 mutex 或 channel 消除。 |
-| `sync.Mutex` | 优先用 channel 传递所有权；确需共享时用 `sync.Mutex`/`RWMutex` 或 `sync/atomic`。读多写少用 `RWMutex`，计数器用 `atomic.Int64`。 |
-| `RWMutex` | 优先用 channel 传递所有权；确需共享时用 `sync.Mutex`/`RWMutex` 或 `sync/atomic`。读多写少用 `RWMutex`，计数器用 `atomic.Int64`。 |
-| `sync/atomic` | 优先用 channel 传递所有权；确需共享时用 `sync.Mutex`/`RWMutex` 或 `sync/atomic`。读多写少用 `RWMutex`，计数器用 `atomic.Int64`。 |
-| `atomic.Int64` | 优先用 channel 传递所有权；确需共享时用 `sync.Mutex`/`RWMutex` 或 `sync/atomic`。读多写少用 `RWMutex`，计数器用 `atomic.Int64`。 |
-| `go worker()` | \| 启动协程 \| `go worker()` \| 调度开销远小于线程 \| |
 
 ## 考点精讲
 
-### 考点 1：向已关闭的 channel 发送数据会？
+### 考点 1：概念判断·Go
 
+- **题目**：向已关闭的 channel 发送数据会？
 - **判断依据**：只应由唯一的发送方负责关闭 channel。其他选项：向已关闭的 channel 发送不会返回错误、不会自动重开、也不会阻塞，而是直接 panic，因此关闭操作应由唯一发送方负责。这道题的关键在「Go 并发：goroutine、channel 与 context」的Go、goroutine、channel：先确认题干“向已关闭的 channel 发送数据”问的是哪一步，再排除偷换前提的选项。
 
-### 考点 2：下面这段 Go 代码摘自「Go 并发：goroutine、channel 与 context」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
+### 考点 2：代码补全·Go
 
+- **题目**：下面这段 Go 代码摘自「Go 并发：goroutine、channel 与 context」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 - **判断依据**：在「Go 并发：goroutine、channel 与 context」里，这段代码包含循环结构，同一段逻辑会被重复执行。这段代码出自「Go 并发：goroutine、channel 与 context」的正文示例，围绕Go、goroutine、channel展开；把输入或边界换成空值、极值或失败情况后，结论要以「Go 并发：goroutine、channel 与 context」的实际运行结果为准。
 
-### 考点 3：检测数据竞争的官方手段是？
+### 考点 3：概念判断·Go
 
+- **题目**：检测数据竞争的官方手段是？
 - **判断依据**：在「Go 并发：goroutine、channel 与 context」里，go test -race。-race 在运行时检测并发访问冲突，应加入 CI。「Go 并发：goroutine、channel 与 context」要求先交代Go、goroutine、channel的前提再下结论，所以“go test -race”只在题干“检测数据竞争的官方手段是”给定的条件下成立。
 
-### 考点 4：向无缓冲 channel 发送数据会阻塞，直到？
+### 考点 4：概念判断·Go
 
-- **判断依据**：围绕 向无缓冲 channel 发送数据会阻塞，直到。在「Go 并发：goroutine、channel 与 context」里，作答时，先用Go建立输入与输出的基线，再把有接收方准备好接收（收发同步完成）代入边界条件核对，结论才能复现。在「Go 并发：goroutine、channel 与 context」里，这道题要求区分概念与边界，「有接收方准备好接收（收发同步完成）」只有在题干给出的前提下才成立，而「永远不阻塞」、「缓冲区写满」缺少同一组条件。
+- **题目**：向无缓冲 channel 发送数据会阻塞，直到？
+- **判断依据**：在「Go 并发：goroutine、channel 与 context」里，作答时，先用Go建立输入与输出的基线，再把有接收方准备好接收（收发同步完成）代入边界条件核对，结论才能复现。在「Go 并发：goroutine、channel 与 context」里，这道题要求区分概念与边界，「有接收方准备好接收（收发同步完成）」只有在题干给出的前提下才成立，而「永远不阻塞」、「缓冲区写满」缺少同一组条件。
 
-### 考点 5：围绕“Go 并发：goroutine、channel 与 context”中的 Go、goroutine、channel，下列哪两项是本课强调的实践判断？
+### 考点 5：多选辨析·Go
 
+- **题目**：围绕“Go 并发：goroutine、channel 与 context”中的 Go、goroutine、channel，下列哪两项是本课强调的实践判断？
 - **判断依据**：在「Go 并发：goroutine、channel 与 context」里，学习 Go 时要同时说明输入、输出和失败路径，不能只看正常流程。在Go 并发：goroutine、channel 与 context里，判断 goroutine 时要固定版本与边界输入，所以“验证 goroutine 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 6：补全代码：「Go 并发：goroutine、channel 与 context」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·Go
 
-`ctx, cancel := context.____(context.Background, 2*time.Second)`
-
+- **题目**：补全代码：「Go 并发：goroutine、channel 与 context」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `ctx, cancel := context.____(context.Background, 2*time.Second)`
 - **判断依据**：在「Go 并发：goroutine、channel 与 context」里，WithTimeout。在「Go 并发：goroutine、channel 与 context」里判断这道题，要把Go、goroutine、channel的条件、过程与失败路径逐项对齐，换成“补全代码”这个场景，只有满足前提的结论才成立。
 
 ## English Overview
@@ -429,18 +433,6 @@ case result := <-ch:
 ### Learning Outcomes
 
 - Explain what **Go Concurrency** solves and when it should be used.
-
-### Core Mental Model
-
-### Step-by-step Study Plan
-
-### Practice Tasks
-
-### Common Failure Modes
-
-### Self-check Questions
-
-4. What is the rollback path?
 
 ### Glossary
 

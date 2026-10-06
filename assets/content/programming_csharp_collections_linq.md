@@ -366,6 +366,12 @@ Console.WriteLine($"及格 {all.Count(x => x.Score >= 60)} 人");
 
 ### 任务 1：用自己的话画出结构
 
+不看书，用一张图说清「集合、委托与 LINQ」的结构，画完再对照骨架：
+
+- 主干：常用集合 → 委托、Lambda 与事件 → LINQ 查询 → LINQ 常见误用与集合选型
+- 连接线：在每条边上标出输入、输出与失败路径。
+- 自检：能否用一句话说明List与Dictionary的关系？
+
 ### 任务 2：做一次对比实验
 
 **验收标准**：表格里两个方案的结论不能完全一样；写下“在什么条件下应该换方案”。
@@ -440,40 +446,44 @@ Console.WriteLine($"及格 {all.Count(x => x.Score >= 60)} 人");
 
 | 术语 | 本课语境 |
 | --- | --- |
-| `[List, Dictionary, HashSet, 委托, LINQ, 延迟执行][index]` | 在「集合、委托与 LINQ」里理解它的定义、输入和输出。 |
-| `[List, Dictionary, HashSet, 委托, LINQ, 延迟执行][index]` | 本课用它说明边界条件与失败路径。 |
-| `[List, Dictionary, HashSet, 委托, LINQ, 延迟执行][index]` | 结合「集合、委托与 LINQ」的正文示例确认它的适用条件。 |
-| `[List, Dictionary, HashSet, 委托, LINQ, 延迟执行][index]` | 在「集合、委托与 LINQ」里理解它的定义、输入和输出。 |
-| `[List, Dictionary, HashSet, 委托, LINQ, 延迟执行][index]` | 本课用它说明边界条件与失败路径。 |
-| `[List, Dictionary, HashSet, 委托, LINQ, 延迟执行][index]` | 结合「集合、委托与 LINQ」的正文示例确认它的适用条件。 |
+| `List` | 选择原则：有序可重复用 List<T>，键值查找用 Dictionary<TKey,TValue>，去重用 HashSet<T>。 |
+| `Dictionary` | 围绕“Dictionary 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。 |
+| `HashSet` | 选择原则：有序可重复用 List<T>，键值查找用 Dictionary<TKey,TValue>，去重用 HashSet<T>。 |
+| `委托` | 常用集合 → 委托、Lambda 与事件 → LINQ 查询 → LINQ 常见误用与集合选型。 |
+| `LINQ` | LINQ 是延迟执行：只写 Where 不会立刻计算，直到 foreach、ToList()、Count() 之类的操作才真正跑。 |
+| `延迟执行` | [ ] 知道 LINQ 延迟执行，必要时 ToList() 物化。 |
 
 ## 考点精讲
 
-### 考点 1：下面这段 C# 代码摘自「集合、委托与 LINQ」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
+### 考点 1：代码补全·List
 
+- **题目**：下面这段 C# 代码摘自「集合、委托与 LINQ」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 - **判断依据**：在「集合、委托与 LINQ」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「集合、委托与 LINQ」的正文示例，围绕List、Dictionary、HashSet展开；把输入或边界换成空值、极值或失败情况后，结论要以「集合、委托与 LINQ」的实际运行结果为准。
 
-### 考点 2：LINQ 查询是什么时候执行的？
+### 考点 2：概念判断·List
 
+- **题目**：LINQ 查询是什么时候执行的？
 - **判断依据**：在「集合、委托与 LINQ」里，遍历结果或调用 ToList/Count 等终止操作时。LINQ 延迟执行，多次遍历会重复计算，需要复用时应先 ToList 物化。在「集合、委托与 LINQ」里判断这道题，要把List、Dictionary、HashSet的条件、过程与失败路径逐项对齐，换成“LINQ 查询是什么时候执行的”这个场景，只有满足前提的结论才成立。
 
-### 考点 3：Func<int, int, int> 表示什么？
+### 考点 3：概念判断·List
 
+- **题目**：Func<int, int, int> 表示什么？
 - **判断依据**：在「集合、委托与 LINQ」里，接收两个 int 返回 int 的委托。Func 的最后一个类型参数是返回值类型，前面是参数类型。回到「集合、委托与 LINQ」的正文示例，用“Func<int”走一遍List、Dictionary、HashSet的完整流程，能复现的结论才可以保留。
 
-### 考点 4：围绕“集合、委托与 LINQ”中的 List、Dictionary、HashSet，下列哪两项是本课强调的实践判断？
+### 考点 4：多选辨析·List
 
+- **题目**：围绕“集合、委托与 LINQ”中的 List、Dictionary、HashSet，下列哪两项是本课强调的实践判断？
 - **判断依据**：结论应落在学习 List 时要同时说明输入、输出和失败路径。本课把集合、委托与 LINQ拆成概念、示例与故障现场三部分，因此判断 List 时必须同时交代输入、输出和失败路径，这使“学习 List 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在集合、委托与 LINQ里，判断 Dictionary 时要固定版本与边界输入，所以“验证 Dictionary 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 5：LINQ 中先 Where 再 Select 的顺序为什么更好？
+### 考点 5：概念判断·List
 
+- **题目**：LINQ 中先 Where 再 Select 的顺序为什么更好？
 - **判断依据**：在「集合、委托与 LINQ」里，先过滤掉不需要的元素。对数据库查询尤其明显：顺序正确可以把过滤条件下推到 SQL，减少扫描行数。回到「集合、委托与 LINQ」的正文示例，用“LINQ 中先 Where 再 Se”走一遍List、Dictionary、HashSet的完整流程，能复现的结论才可以保留。
 
-### 考点 6：补全代码：「集合、委托与 LINQ」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·List
 
-`var first = users.____(u => u.Name == "nobody");`
-
-- **判断依据**：空格应填写「FirstOrDefault」、「firstordefault」。「集合、委托与 LINQ」要求先交代List、Dictionary、HashSet的前提再下结论，所以“FirstOrDefault”只在题干“集合、委托与 LINQ示例中”给定的条件下成立。把“FirstOrDefault”代回「集合、委托与 LINQ」里“集合、委托与 LINQ示例中”的例子核对，条件一旦改变，结论就要用List、Dictionary、HashSet重新推导。
+- **题目**：补全代码：「集合、委托与 LINQ」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `var first = users.____(u => u.Name == "nobody");`
+- **判断依据**：空格应填写「FirstOrDefault」、「firstordefault」。把“FirstOrDefault”代回「集合、委托与 LINQ」里“集合、委托与 LINQ示例中”的例子核对，条件一旦改变，结论就要用List、Dictionary、HashSet重新推导。「集合、委托与 LINQ」要求先交代List、Dictionary、HashSet的前提再下结论，所以“FirstOrDefault”只在题干“LINQ示例中”给定的条件下成立。
 
 ## English Overview
 

@@ -487,6 +487,13 @@ export default defineConfig({
 
 ### 任务 2：只改一个条件
 
+把「实战：Vite + React 待办应用」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把实战的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「实战：Vite + React 待办应用」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响实战。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -560,40 +567,38 @@ export default defineConfig({
 | `key` | 关键点：状态用不可变更新（`[...prev]`、`prev.map`），不要直接 `push`；列表必须有稳定 `key`；事件处理用箭头函数避免 `this` 问题。 |
 | `this` | 关键点：状态用不可变更新（`[...prev]`、`prev.map`），不要直接 `push`；列表必须有稳定 `key`；事件处理用箭头函数避免 `this` 问题。 |
 | `npm run build` | `npm run build` 产物是纯静态文件，可放 Nginx 或 CDN。 |
-| `import.meta.env` | 接口地址用 `import.meta.env` 注入，不要硬编码。 |
-| `package-lock.json` | 提交 `package-lock.json`，CI 用 `npm ci`。 |
-| `npm ci` | 提交 `package-lock.json`，CI 用 `npm ci`。 |
-| `function Item({ id }) { ... }` | \| 组件 \| 返回 UI 的函数 \| `function Item({ id }) { ... }` \| |
-| `const [list, setList] = useState([])` | \| State \| 组件内部状态 \| `const [list, setList] = useState([])` \| |
-| `useEffect(() => { ... }, [deps])` | \| 副作用 \| 请求、订阅、定时器 \| `useEffect(() => { ... }, [deps])` \| |
 
 ## 考点精讲
 
-### 考点 1：这段 JavaScript 代码是「实战：Vite + React 待办应用」的示例片段，下面哪一项描述与它一致？
+### 考点 1：代码补全·实战
 
+- **题目**：这段 JavaScript 代码是「实战：Vite + React 待办应用」的示例片段，下面哪一项描述与它一致？
 - **判断依据**：在「实战：Vite + React 待办应用」里，这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。这段代码出自「实战：Vite + React 待办应用」的正文示例，围绕实战、React、Vite展开；把输入或边界换成空值、极值或失败情况后，结论要以「实战：Vite + React 待办应用」的实际运行结果为准。
 
-### 考点 2：列表渲染时 key 的作用是？
+### 考点 2：概念判断·实战
 
+- **题目**：列表渲染时 key 的作用是？
 - **判断依据**：在「实战：Vite + React 待办应用」里，帮助 diff 算法识别元素，避免复用错位。稳定唯一的 key 能让 React 正确复用节点，使用下标会在增删时出问题。把“帮助 diff 算法识别元素”代回「实战：Vite + React 待办应用」里“列表渲染时 key 的作用是”的例子核对，条件一旦改变，结论就要用实战、React、Vite重新推导。
 
-### 考点 3：npm run build 之后产物是什么？
+### 考点 3：概念判断·实战
 
+- **题目**：npm run build 之后产物是什么？
 - **判断依据**：在「实战：Vite + React 待办应用」里，静态 HTML/CSS/JS 文件。Vite 产出 dist/ 静态资源，可直接部署到 Nginx 或 CDN。把“静态 HTML/CSS/JS 文件”代回「实战：Vite + React 待办应用」里“npm run build 之后产物是什么”的例子核对，条件一旦改变，结论就要用实战、React、Vite重新推导。
 
-### 考点 4：围绕“实战：Vite + React 待办应用”中的 实战、React、Vite，下列哪两项是本课强调的实践判断？
+### 考点 4：多选辨析·实战
 
+- **题目**：围绕“实战：Vite + React 待办应用”中的 实战、React、Vite，下列哪两项是本课强调的实践判断？
 - **判断依据**：在「实战：Vite + React 待办应用」里，学习 实战 时要同时说明输入、输出和失败路径，不能只看正常流程。结论应落在验证 React 时要固定版本并覆盖边界输入。在实战：Vite + React 待办应用里，判断 React 时要固定版本与边界输入，所以“验证 React 时要固定版本并覆盖边界输入，结论才可复现”才可复现。在「实战：Vite + React 待办应用」里，这道题要求区分概念与边界，验证 React 时要固定版本并覆盖边界输入，结论才可复现。
 
-### 考点 5：Vite 相比传统打包器在开发时的优势是？
+### 考点 5：概念判断·实战
 
+- **题目**：Vite 相比传统打包器在开发时的优势是？
 - **判断依据**：在「实战：Vite + React 待办应用」里，基于浏览器原生 ESM 按需编译。开发阶段不整体打包，生产构建仍使用 Rollup 做优化打包。回到「实战：Vite + React 待办应用」的正文示例，用“Vite 相比传统打包器在开发时的优”走一遍实战、React、Vite的完整流程，能复现的结论才可以保留。
 
-### 考点 6：补全代码：「实战：Vite + React 待办应用」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·实战
 
-`const controller = new ____;`
-
-- **判断依据**：空格应填写「AbortController」、「abortcontroller」。回到「实战：Vite + React 待办应用」的正文示例，用“补全代码”走一遍实战、React、Vite的完整流程，能复现的结论才可以保留。回到「实战：Vite + React 待办应用」的正文示例，用“Vite”走一遍实战、React、Vite的完整流程，能复现的结论才可以保留。
+- **题目**：补全代码：「实战：Vite + React 待办应用」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `const controller = new ____;`
+- **判断依据**：空格应填写「AbortController」、「abortcontroller」。回到「实战：Vite + React 待办应用」的正文示例，用“补全代码”走一遍实战、React、Vite的完整流程，能复现的结论才可以保留。回到实战、React、Vite本身再看一遍：只有“AbortController”与题干“Vite”的前提一致，结论才成立。
 
 ## English Overview
 
@@ -700,18 +705,6 @@ package.json
 ### Learning Outcomes
 
 - Explain what **Project: React Todo App** solves and when it should be used.
-
-### Core Mental Model
-
-### Step-by-step Study Plan
-
-### Practice Tasks
-
-### Common Failure Modes
-
-### Self-check Questions
-
-4. What is the rollback path?
 
 ### Glossary
 

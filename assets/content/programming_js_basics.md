@@ -304,6 +304,13 @@ console.table([{ a: 1 }, { a: 2 }]);   // 以表格展示
 
 ### 任务 2：只改一个条件
 
+把「JavaScript 与运行环境」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把JavaScript的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「JavaScript 与运行环境」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响JavaScript。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -377,40 +384,38 @@ console.table([{ a: 1 }, { a: 2 }]);   // 以表格展示
 | `fetch` | \| 发起网络请求 \| `fetch` \| `fetch`（18+ 内置） \| |
 | `setTimeout` | \| 定时器 \| `setTimeout` / `setInterval` \| 同样支持 \| |
 | `setInterval` | \| 定时器 \| `setTimeout` / `setInterval` \| 同样支持 \| |
-| `window` | \| 全局对象 \| `window` \| `globalThis` \| |
-| `globalThis` | \| 全局对象 \| `window` \| `globalThis` \| |
-| `process.env` | \| 环境变量 \| 无（构建时注入） \| `process.env` \| |
-| `<script src="a.js">` | \| `<script src="a.js">` \| 阻塞解析 \| 立即按顺序执行 \| |
-| `<script async src="a.js">` | \| `<script async src="a.js">` \| 不阻塞 \| 下载完立刻执行（顺序不确定） \| |
-| `<script defer src="a.js">` | \| `<script defer src="a.js">` \| 不阻塞 \| DOM 解析完成后按顺序执行 \| |
 
 ## 考点精讲
 
-### 考点 1：下面哪项是浏览器提供、Node.js 没有的能力？
+### 考点 1：概念判断·JavaScript
 
-- **判断依据**：围绕 下面哪项是浏览器提供、Node.js 没有的能力。作答时，先用JavaScript建立输入与输出的基线，再把DOM 操作代入边界条件核对，结论才能复现。这道题的关键在「JavaScript 与运行环境」的JavaScript、Node、浏览器：先确认题干“下面哪项是浏览器提供、Node.js”问的是哪一步，再排除偷换前提的选项。
+- **题目**：下面哪项是浏览器提供、Node.js 没有的能力？
+- **判断依据**：作答时，先用JavaScript建立输入与输出的基线，再把DOM 操作代入边界条件核对，结论才能复现。这道题的关键在「JavaScript 与运行环境」的JavaScript、Node、浏览器：先确认题干“下面哪项是浏览器提供、Node.js”问的是哪一步，再排除偷换前提的选项。
 
-### 考点 2：<script defer> 的作用是？
+### 考点 2：概念判断·JavaScript
 
+- **题目**：<script defer> 的作用是？
 - **判断依据**：在「JavaScript 与运行环境」里，HTML 解析完成后再执行脚本。defer 让脚本异步下载并在文档解析完成后按顺序执行，避免阻塞首屏渲染。回到「JavaScript 与运行环境」的正文示例，用“<script defer 的作用是”走一遍JavaScript、Node、浏览器的完整流程，能复现的结论才可以保留。
 
-### 考点 3：阅读「JavaScript 与运行环境」正文里的这段 JavaScript 代码，下面哪一项判断是正确的？
+### 考点 3：代码补全·JavaScript
 
+- **题目**：阅读「JavaScript 与运行环境」正文里的这段 JavaScript 代码，下面哪一项判断是正确的？
 - **判断依据**：在「JavaScript 与运行环境」里，这段代码会产生可观察的输出，运行后能看到结果。这段代码出自「JavaScript 与运行环境」的正文示例，围绕JavaScript、Node、浏览器展开；把输入或边界换成空值、极值或失败情况后，结论要以「JavaScript 与运行环境」的实际运行结果为准。
 
-### 考点 4：围绕“JavaScript 与运行环境”中的 JavaScript、Node、浏览器，下列哪两项是本课强调的实践判断？
+### 考点 4：多选辨析·JavaScript
 
+- **题目**：围绕“JavaScript 与运行环境”中的 JavaScript、Node、浏览器，下列哪两项是本课强调的实践判断？
 - **判断依据**：结论应落在验证 Node 时要固定版本并覆盖边界输入。本课把JavaScript 与运行环境拆成概念、示例与故障现场三部分，因此判断 JavaScript 时必须同时交代输入、输出和失败路径，这使“学习 JavaScript 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在JavaScript 与运行环境里，判断 Node 时要固定版本与边界输入，所以“验证 Node 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 5："use strict" 严格模式的主要作用是？
+### 考点 5：概念判断·JavaScript
 
+- **题目**："use strict" 严格模式的主要作用是？
 - **判断依据**：在「JavaScript 与运行环境」里，把未声明就赋值等静默错误改为直接抛错。ES Module 与 class 内部默认就是严格模式，因此现代代码很少手写它。把“把未声明就赋值等静默错误改为直接抛错”代回「JavaScript 与运行环境」里“"use strict" 严格模式的主要作用是”的例子核对，条件一旦改变，结论就要用JavaScript、Node、浏览器重新推导。
 
-### 考点 6：补全代码：「JavaScript 与运行环境」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·JavaScript
 
-`const name = (await rl.____("请输入姓名：")).trim;`
-
-- **判断依据**：在「JavaScript 与运行环境」里，question。是合法的，但 arr = [] 会报错。这道题的关键在「JavaScript 与运行环境」的JavaScript、Node、浏览器：先确认题干“补全代码”问的是哪一步，再排除偷换前提的选项。把“question”代回「JavaScript 与运行环境」里“JavaScript 与运行环境示例中”的例子核对，条件一旦改变，结论就要用JavaScript、Node、浏览器重新推导。
+- **题目**：补全代码：「JavaScript 与运行环境」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `const name = (await rl.____("请输入姓名：")).trim;`
+- **判断依据**：是合法的，但 arr = [] 会报错。这道题的关键在「JavaScript 与运行环境」的JavaScript、Node、浏览器：先确认题干“补全代码”问的是哪一步，再排除偷换前提的选项。把“question”代回「JavaScript 与运行环境」里“JavaScript 与运行环境示例中”的例子核对，条件一旦改变，结论就要用JavaScript、Node、浏览器重新推导。
 
 ## English Overview
 
@@ -441,18 +446,6 @@ console.table([{ a: 1 }, { a: 2 }]);   // 以表格展示
 ### Learning Outcomes
 
 - Explain what **JavaScript & Runtimes** solves and when it should be used.
-
-### Core Mental Model
-
-### Step-by-step Study Plan
-
-### Practice Tasks
-
-### Common Failure Modes
-
-### Self-check Questions
-
-4. What is the rollback path?
 
 ### Glossary
 

@@ -28,7 +28,17 @@
 
 ### 2. 配置变更和进程重建要求状态可保存、可恢复。
 
+把这条结论放回「Kotlin Android 架构」的完整流程里展开：
+
+- 正文依据：能用自己的话解释：UI 层只负责渲染和事件，业务状态放在 ViewModel，数据访问放在 Repository。
+- 落地检查：把「2. 配置变更和进程重建要求状态可保存、可恢复。」改写成一条可执行的核对项，逐条验证输入、超时与失败路径。
+
 ### 3. 依赖注入、协程作用域和生命周期必须匹配，避免泄漏和重复请求。
+
+把这条结论放回「Kotlin Android 架构」的完整流程里展开：
+
+- 正文依据：能用自己的话解释：依赖注入、协程作用域和生命周期必须匹配，避免泄漏和重复请求。
+- 落地检查：把「3. 依赖注入、协程作用域和生命周期必须匹配，避免泄漏和重复请求。」改写成一条可执行的核对项，逐条验证输入、超时与失败路径。
 
 ## 关键流程
 
@@ -103,6 +113,12 @@
 本节围绕Kotlin Android 架构安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 
 ### 任务 1：用自己的话画出结构
+
+不看书，用一张图说清「Kotlin Android 架构」的结构，画完再对照骨架：
+
+- 主干：核心知识 → 关键流程 → 实践路径 → 常见误区
+- 连接线：在每条边上标出输入、输出与失败路径。
+- 自检：能否用一句话说明Android与ViewModel的关系？
 
 ### 任务 2：做一次对比实验
 
@@ -184,6 +200,12 @@
 
 ### 语言专项实践：Kotlin Android 架构
 
+「Kotlin Android 架构」的「语言专项实践：Kotlin Android 架构」一节补全如下：
+
+- 定位：这一节说明语言专项实践：Kotlin Android 架构在「Kotlin Android 架构」知识体系里的位置。
+- 要点：合上教程，用 3～5 句话解释Kotlin Android 架构。
+- 自检：能否用一个最小例子解释语言专项实践：Kotlin Android 架构？
+
 ### 最小可运行示例
 
 ```kotlin
@@ -212,10 +234,10 @@ fun main() {
 
 | 术语 | 本课语境 |
 | --- | --- |
-| `Android` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
-| `ViewModel` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
-| `Repository` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
-| `生命周期` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
+| `Android` | 用一句话说明「Kotlin Android 架构」解决什么问题：用 ViewModel、Repository、生命周期和依赖注入组织 Android 应用。 |
+| `ViewModel` | 用一句话说明「Kotlin Android 架构」解决什么问题：用 ViewModel、Repository、生命周期和依赖注入组织 Android 应用。 |
+| `Repository` | 用一句话说明「Kotlin Android 架构」解决什么问题：用 ViewModel、Repository、生命周期和依赖注入组织 Android 应用。 |
+| `生命周期` | 二、运行时与内存模型：围绕「Android、ViewModel、Repository、生命周期」说明变量生命周期、资源释放、并发模型和错误传播。 |
 
 ## 零基础精讲：把Kotlin Android 架构真正讲透
 
@@ -225,6 +247,7 @@ fun main() {
 
 ### 逐步拆解
 
+1. 澄清输入与目标。先写清「Kotlin Android 架构」要解决的问题、合法输入范围和成功标准，再进入后续步骤。
 2. 描述处理过程。把「Android、ViewModel、Repository、生命周期」映射到具体步骤，每步都要求能单独验证。
 3. 定义输出。输出不仅包括正常结果，还包括错误码、日志、指标和资源释放状态。
 4. 找出一条失败路径。让错误尽早暴露，并说明重试、降级、回滚或人工处理的边界。
@@ -232,9 +255,9 @@ fun main() {
 
 ### 把正文串成一条执行链
 
-- **1. UI 层只负责渲染和事件，业务状态放在 ViewModel，数据访问放在 Repository。**：1. UI 层只负责渲染和事件，业务状态放在 ViewModel，数据访问放在 Repository
-- **2. 配置变更和进程重建要求状态可保存、可恢复。**：2. 配置变更和进程重建要求状态可保存、可恢复
-- **3. 依赖注入、协程作用域和生命周期必须匹配，避免泄漏和重复请求。**：3. 依赖注入、协程作用域和生命周期必须匹配，避免泄漏和重复请求
+- **1. UI 层只负责渲染和事件，业务状态放在 ViewModel，数据访问放在 Repository。**：在「Kotlin Android 架构」里，「1. UI 层只负责渲染和事件，业务状态放在 ViewModel，数据访问放在 Repository。」这一步要先写清输入与预期，再记录实际结果和差异；结果不符时回到对应小节核对前提。
+- **2. 配置变更和进程重建要求状态可保存、可恢复。**：在「Kotlin Android 架构」里，「2. 配置变更和进程重建要求状态可保存、可恢复。」这一步要先写清输入与预期，再记录实际结果和差异；结果不符时回到对应小节核对前提。
+- **3. 依赖注入、协程作用域和生命周期必须匹配，避免泄漏和重复请求。**：在「Kotlin Android 架构」里，「3. 依赖注入、协程作用域和生命周期必须匹配，避免泄漏和重复请求。」这一步要先写清输入与预期，再记录实际结果和差异；结果不符时回到对应小节核对前提。
 - **一、工具链**：| 阶段 | 推荐工具 | 验收标准 |
 - **二、运行时与内存模型**：围绕「Android、ViewModel、Repository、生命周期」说明变量生命周期、资源释放、并发模型和错误传播
 - **三、测试策略**：- 单元测试覆盖核心规则和边界
@@ -371,30 +394,34 @@ fun main() {
 
 ## 考点精讲
 
-### 考点 1：关于「UI 层只负责渲染和事件，业务状态放在 ViewModel，数据访问放在 Repository。」，下列说法正确的是？
+### 考点 1：概念判断·Android
 
+- **题目**：关于「UI 层只负责渲染和事件，业务状态放在 ViewModel，数据访问放在 Repository。」，下列说法正确的是？
 - **判断依据**：在「Kotlin Android 架构」里，UI 层只负责渲染和事件，业务状态放在 ViewModel，数据访问放在 Repository。“层只负责渲染和事件”与「Kotlin Android 架构」的术语表相呼应，只有符合Android、ViewModel、Repository约束的“UI 层只负责渲染和事件”才是正文支持的结论。
 
-### 考点 2：围绕“Kotlin Android 架构”中的 Android、ViewModel、Repository，下列哪两项是本课强调的实践判断？
+### 考点 2：多选辨析·Android
 
+- **题目**：围绕“Kotlin Android 架构”中的 Android、ViewModel、Repository，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把Kotlin Android 架构拆成概念、示例与故障现场三部分，因此判断 Android 时必须同时交代输入、输出和失败路径，这使“学习 Android 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在Kotlin Android 架构里，判断 ViewModel 时要固定版本与边界输入，所以“验证 ViewModel 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 3：关于「依赖注入、协程作用域和生命周期必须匹配，避免泄漏和重复请求。」，下列说法正确的是？
+### 考点 3：概念判断·Android
 
+- **题目**：关于「依赖注入、协程作用域和生命周期必须匹配，避免泄漏和重复请求。」，下列说法正确的是？
 - **判断依据**：在「Kotlin Android 架构」里，依赖注入、协程作用域和生命周期必须匹配，避免泄漏和重复请求。在「Kotlin Android 架构」里，如果只凭关键词作答，很容易把扩展函数是静态解析的，不能在运行时多态覆盖。回到「Kotlin Android 架构」的正文示例，用“关于依赖注入、协程作用域和生命周期必”走一遍Android、ViewModel、Repository的完整流程，能复现的结论才可以保留。
 
-### 考点 4：「Kotlin Android 架构」的核心学习目标是什么？
+### 考点 4：概念判断·Android
 
+- **题目**：「Kotlin Android 架构」的核心学习目标是什么？
 - **判断依据**：在「Kotlin Android 架构」里，这道题要求区分概念与边界，用 ViewModel，Repository只有在题干给出的前提下才成立，而掌握 val/var、类型推断、可空类型和安全调用。在「Kotlin Android 架构」里，理解默认参数、扩展函数、高阶函数和内联。在「Kotlin Android 架构」里，作答时，先用Android建立输入与输出的基线，再把用 ViewModel，Repository代入边界条件核对，结论才能复现。
 
-### 考点 5：补全代码：「Kotlin Android 架构」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 5：填空·Android
 
-`fun render(state: UiState) = if (state.loading) "loading" else state.____`
+- **题目**：补全代码：「Kotlin Android 架构」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `fun render(state: UiState) = if (state.loading) "loading" else state.____`
+- **判断依据**：这道题的关键在「Kotlin Android 架构」的Android、ViewModel、Repository：先确认题干“补全代码”问的是哪一步，再排除偷换前提的选项。把“title”代回「Kotlin Android 架构」里“Kotlin Android 架构示例中”的例子核对，条件一旦改变，结论就要用Android、ViewModel、Repository重新推导。
 
-- **判断依据**：在「Kotlin Android 架构」里，title。这道题的关键在「Kotlin Android 架构」的Android、ViewModel、Repository：先确认题干“补全代码”问的是哪一步，再排除偷换前提的选项。把“title”代回「Kotlin Android 架构」里“Kotlin Android 架构示例中”的例子核对，条件一旦改变，结论就要用Android、ViewModel、Repository重新推导。
+### 考点 6：排错·Android
 
-### 考点 6：阅读「Kotlin Android 架构」的代码片段，下面哪项判断是正确的？
-
+- **题目**：阅读「Kotlin Android 架构」的代码片段，下面哪项判断是正确的？
 - **判断依据**：在「Kotlin Android 架构」里，UI 层只负责渲染和事件，业务状态放在 ViewModel，数据访问放在 Repository。回到「Kotlin Android 架构」的正文示例，用“阅读Kotlin Android 架”走一遍Android、ViewModel、Repository的完整流程，能复现的结论才可以保留。
 
 ## English Overview
@@ -487,8 +514,14 @@ fun main() {
 5. 补全代码：「Kotlin Android 架构」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
 
 `fun render(state: UiState) = if (state.loading) "loading" else state.____`
-   - 依据：在「Kotlin Android 架构」里，title。这道题的关键在「Kotlin Android 架构」的Android、ViewModel、Repository：先确认题干“补全代码”问的是哪一步，再排除偷换前提的选项。把“title”代回「Kotlin Android 架构」里“Kotlin Android 架构示例中”的例子核对，条件一旦改变，结论就要用Android、ViewModel、Repository重新推导。
-6. 阅读「Kotlin Android 架构」的代码片段，下面哪项判断是正确的？
+   - 依据：这道题的关键在「Kotlin Android 架构」的Android、ViewModel、Repository：先确认题干“补全代码”问的是哪一步，再排除偷换前提的选项。把“title”代回「Kotlin Android 架构」里“Kotlin Android 架构示例中”的例子核对，条件一旦改变，结论就要用Android、ViewModel、Repository重新推导。
+1. 阅读「Kotlin Android 架构」的代码片段，下面哪项判断是正确的？
    - 依据：在「Kotlin Android 架构」里，UI 层只负责渲染和事件，业务状态放在 ViewModel，数据访问放在 Repository。回到「Kotlin Android 架构」的正文示例，用“阅读Kotlin Android 架”走一遍Android、ViewModel、Repository的完整流程，能复现的结论才可以保留。
 
 ### 迁移练习
+
+把「Kotlin Android 架构」的结论迁移到相邻主题，每次迁移都写清预测与证据：
+
+1. 换输入：用Android处理一组你自己的数据，对比教材示例的结果差异。
+2. 换失败条件：制造一个ViewModel相关的错误，说明如何从错误信息定位根因。
+3. 换规模：把数据量或并发度提高一个数量级，说明「Kotlin Android 架构」的结论是否仍成立。

@@ -28,7 +28,17 @@
 
 ### 2. CancellationToken 要贯穿调用链，并在阻塞点检查取消。
 
+把这条结论放回「C# 异步流与取消」的完整流程里展开：
+
+- 正文依据：能用自己的话解释：IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果。
+- 落地检查：把「2. CancellationToken 要贯穿调用链，并在阻塞点检查取消。」改写成一条可执行的核对项，逐条验证输入、超时与失败路径。
+
 ### 3. await foreach 和 await using 保证异步迭代与资源释放正确。
+
+把这条结论放回「C# 异步流与取消」的完整流程里展开：
+
+- 正文依据：能用自己的话解释：CancellationToken 要贯穿调用链，并在阻塞点检查取消。
+- 落地检查：把「3. await foreach 和 await using 保证异步迭代与资源释放正确。」改写成一条可执行的核对项，逐条验证输入、超时与失败路径。
 
 ## 关键流程
 
@@ -74,6 +84,12 @@
 本节围绕C# 异步流与取消安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 
 ### 任务 1：用自己的话画出结构
+
+不看书，用一张图说清「C# 异步流与取消」的结构，画完再对照骨架：
+
+- 主干：核心知识 → 关键流程 → 实践路径 → 常见误区
+- 连接线：在每条边上标出输入、输出与失败路径。
+- 自检：能否用一句话说明IAsyncEnumerable与CancellationToken的关系？
 
 ### 任务 2：做一次对比实验
 
@@ -196,10 +212,10 @@ await foreach (var value in Countdown(3))
 
 | 术语 | 本课语境 |
 | --- | --- |
-| `IAsyncEnumerable` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
-| `CancellationToken` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
-| `异步流` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
-| `取消` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
+| `IAsyncEnumerable` | 围绕“环境版本、配置和输入规模与目标环境不同，IAsyncEnumerable 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。 |
+| `CancellationToken` | 用一句话说明「C# 异步流与取消」解决什么问题：理解 IAsyncEnumerable、CancellationToken 和异步资源释放。 |
+| `异步流` | “C# 异步流与取消”中的 IAsyncEnumerable、CancellationToken、异步流，下列哪两项是本课强调的实践判断。 |
+| `取消` | 本课属于「C#」，核心关键词是 IAsyncEnumerable、CancellationToken、异步流、取消。 |
 
 ## 零基础精讲：把C# 异步流与取消真正讲透
 
@@ -209,6 +225,7 @@ await foreach (var value in Countdown(3))
 
 ### 逐步拆解
 
+1. 澄清输入与目标。先写清「C# 异步流与取消」要解决的问题、合法输入范围和成功标准，再进入后续步骤。
 2. 描述处理过程。把「IAsyncEnumerable、CancellationToken、异步流、取消」映射到具体步骤，每步都要求能单独验证。
 3. 定义输出。输出不仅包括正常结果，还包括错误码、日志、指标和资源释放状态。
 4. 找出一条失败路径。让错误尽早暴露，并说明重试、降级、回滚或人工处理的边界。
@@ -216,12 +233,12 @@ await foreach (var value in Countdown(3))
 
 ### 把正文串成一条执行链
 
-- **1. IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果。**：1. IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果
-- **2. CancellationToken 要贯穿调用链，并在阻塞点检查取消。**：2. CancellationToken 要贯穿调用链，并在阻塞点检查取消
-- **3. await foreach 和 await using 保证异步迭代与资源释放正确。**：3. await foreach 和 await using 保证异步迭代与资源释放正确
-- **考点 1：关于，下列说法正确的是？**：考点 1：关于，下列说法正确的是
-- **考点 2：关于，下列说法正确的是？**：考点 2：关于，下列说法正确的是
-- **考点 3：关于，下列说法正确的是？**：考点 3：关于，下列说法正确的是
+- **1. IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果。**：在「C# 异步流与取消」里，「1. IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果。」这一步要先写清输入与预期，再记录实际结果和差异；结果不符时回到对应小节核对前提。
+- **2. CancellationToken 要贯穿调用链，并在阻塞点检查取消。**：在「C# 异步流与取消」里，「2. CancellationToken 要贯穿调用链，并在阻塞点检查取消。」这一步要先写清输入与预期，再记录实际结果和差异；结果不符时回到对应小节核对前提。
+- **3. await foreach 和 await using 保证异步迭代与资源释放正确。**：在「C# 异步流与取消」里，「3. await foreach 和 await using 保证异步迭代与资源释放正确。」这一步要先写清输入与预期，再记录实际结果和差异；结果不符时回到对应小节核对前提。
+- **考点 1：关于，下列说法正确的是？**：针对「C# 异步流与取消」，先自问「关于，下列说法正确的是」；作答后回到对应考点核对判断依据。
+- **考点 2：关于，下列说法正确的是？**：针对「C# 异步流与取消」，先自问「关于，下列说法正确的是」；作答后回到对应考点核对判断依据。
+- **考点 3：关于，下列说法正确的是？**：针对「C# 异步流与取消」，先自问「关于，下列说法正确的是」；作答后回到对应考点核对判断依据。
 
 ### 从测验反推易错点
 
@@ -354,30 +371,34 @@ await foreach (var value in Countdown(3))
 
 ## 考点精讲
 
-### 考点 1：关于「IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果。」，下列说法正确的是？
+### 考点 1：概念判断·IAsyncEnumerable
 
+- **题目**：关于「IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果。」，下列说法正确的是？
 - **判断依据**：在「C# 异步流与取消」里，IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果。在「C# 异步流与取消」里，只要小数据能跑通，大规模和异常情况也一定正确。回到「C# 异步流与取消」的正文示例，用“关于IAsyncEnumerable”走一遍IAsyncEnumerable、CancellationToken、异步流的完整流程，能复现的结论才可以保留。
 
-### 考点 2：围绕“C# 异步流与取消”中的 IAsyncEnumerable、CancellationToken、异步流，下列哪两项是本课强调的实践判断？
+### 考点 2：多选辨析·IAsyncEnumerable
 
+- **题目**：围绕“C# 异步流与取消”中的 IAsyncEnumerable、CancellationToken、异步流，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把C# 异步流与取消拆成概念、示例与故障现场三部分，因此判断 IAsyncEnumerable 时必须同时交代输入、输出和失败路径，这使“学习 IAsyncEnumerable 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在C# 异步流与取消里，判断 CancellationToken 时要固定版本与边界输入，所以“验证 CancellationToken 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 3：阅读「C# 异步流与取消」正文里的这段 C# 代码，下面哪一项判断是正确的？
+### 考点 3：代码补全·IAsyncEnumerable
 
+- **题目**：阅读「C# 异步流与取消」正文里的这段 C# 代码，下面哪一项判断是正确的？
 - **判断依据**：在「C# 异步流与取消」里，这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。这段代码出自「C# 异步流与取消」的正文示例，围绕IAsyncEnumerable、CancellationToken、异步流展开；把输入或边界换成空值、极值或失败情况后，结论要以「C# 异步流与取消」的实际运行结果为准。
 
-### 考点 4：「C# 异步流与取消」的核心学习目标是什么？
+### 考点 4：概念判断·IAsyncEnumerable
 
+- **题目**：「C# 异步流与取消」的核心学习目标是什么？
 - **判断依据**：在「C# 异步流与取消」里，这道题要求区分概念与边界，理解 IAsyncEnumerable只有在题干给出的前提下才成立，而只要小数据能跑通，大规模和异常情况也一定正确。在「C# 异步流与取消」里，这道题要求区分概念与边界，「理解 IAsyncEnumerable」只有在题干给出的前提下才成立，而「只要小数据能跑通，大规模和异常情况也一定正确。
 
-### 考点 5：补全代码：「C# 异步流与取消」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 5：填空·IAsyncEnumerable
 
-`async ____<int> Countdown(int from)`
-
+- **题目**：补全代码：「C# 异步流与取消」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `async ____<int> Countdown(int from)`
 - **判断依据**：空格应填写「IAsyncEnumerable」、「iasyncenumerable」。在「C# 异步流与取消」里判断这道题，要把IAsyncEnumerable、CancellationToken、异步流的条件、过程与失败路径逐项对齐，换成“补全代码”这个场景，只有满足前提的结论才成立。
 
-### 考点 6：按照「C# 异步流与取消」从概念到实践的讲解顺序排列下列主题。
+### 考点 6：顺序排列·IAsyncEnumerable
 
+- **题目**：按照「C# 异步流与取消」从概念到实践的讲解顺序排列下列主题。
 - **判断依据**：结合IAsyncEnumerable、CancellationToken来看，正确的执行顺序是「核心知识 → 关键流程 → 实践路径 → 常见误区」。本课围绕理解 IAsyncEnumerable、CancellationToken 和异步资源释放。这道题的关键在「C# 异步流与取消」的IAsyncEnumerable、CancellationToken、异步流：先确认题干“按照C 异步流与取消从概念到实践的讲”问的是哪一步，再排除偷换前提的选项。
 
 ## English Overview
@@ -478,7 +499,13 @@ await foreach (var value in Countdown(3))
 
 `async ____<int> Countdown(int from)`
    - 依据：空格应填写「IAsyncEnumerable」、「iasyncenumerable」。在「C# 异步流与取消」里判断这道题，要把IAsyncEnumerable、CancellationToken、异步流的条件、过程与失败路径逐项对齐，换成“补全代码”这个场景，只有满足前提的结论才成立。
-6. 按照「C# 异步流与取消」从概念到实践的讲解顺序排列下列主题。
+1. 按照「C# 异步流与取消」从概念到实践的讲解顺序排列下列主题。
    - 依据：结合IAsyncEnumerable、CancellationToken来看，正确的执行顺序是「核心知识 → 关键流程 → 实践路径 → 常见误区」。本课围绕理解 IAsyncEnumerable、CancellationToken 和异步资源释放。这道题的关键在「C# 异步流与取消」的IAsyncEnumerable、CancellationToken、异步流：先确认题干“按照C 异步流与取消从概念到实践的讲”问的是哪一步，再排除偷换前提的选项。
 
 ### 迁移练习
+
+把「C# 异步流与取消」的结论迁移到相邻主题，每次迁移都写清预测与证据：
+
+1. 换输入：用IAsyncEnumerable处理一组你自己的数据，对比教材示例的结果差异。
+2. 换失败条件：制造一个CancellationToken相关的错误，说明如何从错误信息定位根因。
+3. 换规模：把数据量或并发度提高一个数量级，说明「C# 异步流与取消」的结论是否仍成立。

@@ -258,6 +258,13 @@ kubectl top pod <pod>                           # 实际资源用量
 
 ### 任务 2：只改一个条件
 
+把「图解 Kubernetes 调度与探针」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把Kubernetes的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「图解 Kubernetes 调度与探针」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响Kubernetes。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -304,6 +311,7 @@ kubectl top pod <pod>                           # 实际资源用量
 
 ### 二、三个容易混淆的边界
 
+1. 澄清输入与目标。先写清「图解 Kubernetes 调度与探针」要解决的问题、合法输入范围和成功标准，再进入后续步骤。
 2. **把“平均值”当成“全部”**：Kubernetes 的指标好看，不代表尾部请求、冷启动或失败重试也好看。
 3. **把“当前版本”当成“永久行为”**：调度 依赖的默认值、API 或性能特征都可能随版本变化，需要固定版本并保留回归用例。
 
@@ -346,35 +354,32 @@ kubectl top pod <pod>                           # 实际资源用量
 | `podAntiAffinity` | \| 亲和性 \| `nodeAffinity` / `podAntiAffinity` \| 靠拢或分散 \| |
 | `taints` | \| 污点与容忍 \| `taints` / `tolerations` \| 独占节点或隔离 \| |
 | `tolerations` | \| 污点与容忍 \| `taints` / `tolerations` \| 独占节点或隔离 \| |
-| `failureThreshold: 30` | \| startupProbe \| 是否完成初始化 \| 重启 \| `failureThreshold: 30`，间隔 2s \| |
-| `Pending` | \| `Pending` \| 没有合适节点 \| 资源不足、污点、PVC 未绑定 \| |
-| `ContainerCreating` | \| `ContainerCreating` \| 正在拉镜像或挂卷 \| 镜像仓库、密钥、存储 \| |
-| `CrashLoopBackOff` | \| `CrashLoopBackOff` \| 容器反复退出 \| 看 `logs --previous` 与探针配置 \| |
-| `logs --previous` | \| `CrashLoopBackOff` \| 容器反复退出 \| 看 `logs --previous` 与探针配置 \| |
-| `ImagePullBackOff` | \| `ImagePullBackOff` \| 拉不到镜像 \| 镜像名、镜像仓库凭据 \| |
 
 ## 考点精讲
 
-### 考点 1：围绕“图解 Kubernetes 调度与探针”中的 Kubernetes、调度、探针，下列哪两项是本课强调的实践判断？
+### 考点 1：多选辨析·Kubernetes
 
+- **题目**：围绕“图解 Kubernetes 调度与探针”中的 Kubernetes、调度、探针，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把图解 Kubernetes 调度与探针拆成概念、示例与故障现场三部分，因此判断 Kubernetes 时必须同时交代输入、输出和失败路径，这使“学习 Kubernetes 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在图解 Kubernetes 调度与探针里，判断 调度 时要固定版本与边界输入，所以“验证 调度 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 2：下面这段代码代码摘自「图解 Kubernetes 调度与探针」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
+### 考点 2：代码补全·Kubernetes
 
+- **题目**：下面这段代码代码摘自「图解 Kubernetes 调度与探针」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 - **判断依据**：在「图解 Kubernetes 调度与探针」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「图解 Kubernetes 调度与探针」的正文示例，围绕Kubernetes、调度、探针展开；把输入或边界换成空值、极值或失败情况后，结论要以「图解 Kubernetes 调度与探针」的实际运行结果为准。
 
-### 考点 3：startupProbe 的主要作用是？
+### 考点 3：概念判断·Kubernetes
 
+- **题目**：startupProbe 的主要作用是？
 - **判断依据**：在「图解 Kubernetes 调度与探针」里，保护启动慢的服务。startupProbe 通过之前，liveness 不会介入，从而保护慢启动服务。这道题的关键在「图解 Kubernetes 调度与探针」的Kubernetes、调度、探针：先确认题干“startupProbe 的主要作用”问的是哪一步，再排除偷换前提的选项。
 
-### 考点 4：为了让滚动更新期间不中断服务，合理的策略配置是？
+### 考点 4：概念判断·Kubernetes
 
+- **题目**：为了让滚动更新期间不中断服务，合理的策略配置是？
 - **判断依据**：在「图解 Kubernetes 调度与探针」里，结论应落在「maxSurge=1，maxUnavailable=0」。先多起一个新副本并等它就绪，再摘除旧副本，可保证可用副本不减少。这道题的关键在「图解 Kubernetes 调度与探针」的Kubernetes、调度、探针：先确认题干“为了让滚动更新期间不中断服务”问的是哪一步，再排除偷换前提的选项。
 
-### 考点 5：补全代码：「图解 Kubernetes 调度与探针」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 5：填空·____: 3
 
-`____: 3`
-
+- **题目**：补全代码：「图解 Kubernetes 调度与探针」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `____: 3`
 - **判断依据**：空格应填写「failureThreshold」、「failurethreshold」。这道题的关键在「图解 Kubernetes 调度与探针」的Kubernetes、调度、探针：先确认题干“补全代码”问的是哪一步，再排除偷换前提的选项。把“failureThreshold”代回「图解 Kubernetes 调度与探针」里“图解 Kubernetes 调度与探针示例中”的例子核对，条件一旦改变，结论就要用Kubernetes、调度、探针重新推导。
 
 ## English Overview

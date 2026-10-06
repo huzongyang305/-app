@@ -668,6 +668,7 @@ String _cleanExplanation(
     if (cleaned.contains('…')) continue;
     // 引号只在补句里成对出现；数量不成对说明旧模板句被断句切碎，直接丢弃残片。
     if (_hasUnbalancedQuotes(cleaned)) continue;
+    if (_isLegacyFragment(cleaned)) continue;
     if (explanationBoilerplateMarkers.any(cleaned.contains)) continue;
     final skeleton = _skeleton(cleaned);
     if (skeleton.length >= 8 && !skeletons.add(skeleton)) continue;
@@ -683,6 +684,8 @@ String _cleanExplanation(
   var text = linked.join();
   // 上一版补句用「；」连接两个分句，会被全角断句切成重复片段；并回逗号。
   text = text.replaceAll('；换成“', '，换成“');
+  // 标题复读预算：课程标题在一条解析里最多保留 3 次，多余的旧句先删掉。
+  text = _capTitleMentions(text, lesson.titleZh, 3);
   final missing = correctParts
       .where(
         (part) =>
@@ -691,18 +694,34 @@ String _cleanExplanation(
       )
       .toList();
   if (missing.isNotEmpty) {
-    text = '在「${lesson.titleZh}」里，${missing.join('；')}。$text';
+    text = '题干的正确项是${missing.join('；')}。$text';
   }
   // 补句必须带上课内唯一的锚点（题干节选或正确项），否则同一门课的多道题
   // 会生成一模一样的句子，等于制造新的模板。句式用稳定散列挑选，重跑不变。
   final anchor = correctParts.isEmpty
       ? ''
       : _shortAnswerAnchor(correctParts.first);
-  final excerpt = _questionExcerpt(question);
+  var excerpt = _questionExcerpt(question);
+  if (lesson.titleZh.isNotEmpty && excerpt.contains(lesson.titleZh)) {
+    excerpt = excerpt
+        .replaceAll(lesson.titleZh, '')
+        .replaceAll(RegExp(r'^[，,、：:\s]+|[，,、：:\s]+$'), '')
+        .trim();
+  }
+  if (excerpt.length < 4) excerpt = anchor;
+  final titleBudget = lesson.titleZh.length <= 3 ? 2 : 3;
+  var titleRemaining = titleBudget - _countTitleMentions(text, lesson.titleZh);
   var variant = _stableSeed('${lesson.id}|${question['question']}');
   if (!_linksToLesson(lesson, text)) {
-    text =
-        '$text${_lessonLinkSentence(lesson, variant, anchor: anchor, excerpt: excerpt)}';
+    final sentence = _lessonLinkSentence(
+      lesson,
+      variant,
+      anchor: anchor,
+      excerpt: excerpt,
+      allowTitle: titleRemaining > 0,
+    );
+    if (sentence.contains(lesson.titleZh)) titleRemaining--;
+    text = '$text$sentence';
     variant++;
   }
   var guard = 0;
@@ -712,12 +731,29 @@ String _cleanExplanation(
       variant,
       anchor: anchor,
       excerpt: excerpt,
+      allowTitle: titleRemaining > 0,
     );
+    if (sentence.contains(lesson.titleZh)) titleRemaining--;
     text = _endsWithPeriod(text) ? '$text$sentence' : '$text。$sentence';
     variant++;
     guard++;
   }
   if (!_endsWithPeriod(text)) text = '$text。';
+  // 同一道题可能同时留下「带标题」与「省略标题」两种补句，骨架相同的只留一句。
+  var deduped = _dropNearDuplicateSentences(text, lesson.titleZh);
+  // 去重后如果太短，用结构完全不同的补充句补回最低长度，避免下一轮再生成同款。
+  var refill = 0;
+  while (deduped.length < 120 && refill < 3) {
+    final sentence = _refillSentence(
+      lesson,
+      refill,
+      anchor: anchor,
+      excerpt: excerpt,
+    );
+    deduped = _endsWithPeriod(deduped) ? '$deduped$sentence' : '$deduped。$sentence';
+    refill++;
+  }
+  if (deduped.length >= 120) text = deduped;
   final normalized = _normalizePunctuation(text);
   if (normalized != raw) {
     stats.explanationsRewritten++;
@@ -742,6 +778,72 @@ bool _hasUnbalancedQuotes(String text) {
   return open != close;
 }
 
+/// 旧生成器留下的残句：`围绕 <题干>。`、`…再把X。`、`在「X」里，atomic。`。
+bool _isLegacyFragment(String sentence) {
+  if (sentence.startsWith('围绕 ') || sentence.startsWith('围绕　')) {
+    return true;
+  }
+  if (RegExp(r'再把[^。，；：]{1,14}。$').hasMatch(sentence)) return true;
+  return false;
+}
+
+
+/// 标题作为独立词出现的次数：避免把「复合索引」里的「索引」也算成复读。
+int _countTitleMentions(String text, String title) {
+  if (title.isEmpty) return 0;
+  var count = 0;
+  var index = 0;
+  while (true) {
+    final next = text.indexOf(title, index);
+    if (next < 0) return count;
+    final before = next == 0 ? '' : text.substring(next - 1, next);
+    if (!RegExp(r'[\u4e00-\u9fff]').hasMatch(before)) count++;
+    index = next + title.length;
+  }
+}
+
+/// 课程标题在解析里出现过多会变成复读，按预算删掉最早出现的冗余句。
+String _capTitleMentions(String text, String title, int maxMentions) {
+  if (title.isEmpty) return text;
+  var result = text;
+  var guard = 0;
+  while (_countTitleMentions(result, title) > maxMentions && guard < 8) {
+    final sentences = _splitSentences(result);
+    if (sentences.length <= 1) break;
+    final index = sentences.indexWhere(
+      (sentence) => sentence.contains(title) && sentence != sentences.last,
+    );
+    if (index < 0) break;
+    sentences.removeAt(index);
+    result = sentences.join();
+    guard++;
+  }
+  return result;
+}
+
+/// 去掉同一条解析里的近重复句：只差「正文里/「标题」里」称呼的句子保留一句。
+String _dropNearDuplicateSentences(String text, String title) {
+  final kept = <String>[];
+  final skeletons = <String>{};
+  for (final sentence in _splitSentences(text)) {
+    var probe = sentence;
+    if (title.isNotEmpty) {
+      probe = probe
+          .replaceAll('在「$title」里', '')
+          .replaceAll('「$title」', '')
+          .replaceAll(title, '');
+    }
+    probe = probe
+        .replaceAll('判断这道题时，', '判断这道题，')
+        .replaceAll('正文里', '里')
+        .replaceAll('本课', '');
+    final skeleton = _skeleton(probe);
+    if (skeleton.length >= 12 && !skeletons.add(skeleton)) continue;
+    kept.add(sentence);
+  }
+  return kept.join();
+}
+
 bool _linksToLesson(Lesson lesson, String text) {
   if (lesson.titleZh.isNotEmpty && text.contains(lesson.titleZh)) return true;
   return lesson.keywords.any(
@@ -755,23 +857,61 @@ String _lessonLinkSentence(
   int variant, {
   String anchor = '',
   String excerpt = '',
+  bool allowTitle = true,
 }) {
   final topic = _keywordPhrase(lesson);
   final focus = excerpt.isEmpty ? topic : excerpt;
   final answer = anchor.isEmpty ? topic : anchor;
-  return switch (variant % 6) {
+  if (allowTitle) {
+    return switch (variant % 6) {
+      0 =>
+        '在「${lesson.titleZh}」里判断这道题，要把$topic的条件、过程与失败路径逐项对齐，换成“$focus”这个场景，只有满足前提的结论才成立。',
+      1 =>
+        '回到「${lesson.titleZh}」的正文示例，用“$focus”走一遍$topic的完整流程，能复现的结论才可以保留。',
+      2 =>
+        '「${lesson.titleZh}」要求先交代$topic的前提再下结论，所以“$answer”只在题干“$focus”给定的条件下成立。',
+      3 =>
+        '把“$answer”代回「${lesson.titleZh}」里“$focus”的例子核对，条件一旦改变，结论就要用$topic重新推导。',
+      4 =>
+        '这道题的关键在「${lesson.titleZh}」的$topic：先确认题干“$focus”问的是哪一步，再排除偷换前提的选项。',
+      _ =>
+        '“$focus”与「${lesson.titleZh}」的术语表相呼应，只有符合$topic约束的“$answer”才是正文支持的结论。',
+    };
+  }
+  // 省略标题时偏移三种句式，避免和带标题版本生成同骨架的近重复句。
+  return switch ((variant + 3) % 6) {
     0 =>
-      '在「${lesson.titleZh}」里判断这道题，要把$topic的条件、过程与失败路径逐项对齐，换成“$focus”这个场景，只有满足前提的结论才成立。',
+      '换成“$focus”这个场景后，$topic的结论未必仍然成立，必须先看清前提。',
     1 =>
-      '回到「${lesson.titleZh}」的正文示例，用“$focus”走一遍$topic的完整流程，能复现的结论才可以保留。',
+      '回到正文示例，用“$focus”走一遍$topic的完整流程，能复现的结论才可以保留。',
     2 =>
-      '「${lesson.titleZh}」要求先交代$topic的前提再下结论，所以“$answer”只在题干“$focus”给定的条件下成立。',
+      '先交代$topic的前提再下结论，所以“$answer”只在题干给定的条件下成立。',
     3 =>
-      '把“$answer”代回「${lesson.titleZh}」里“$focus”的例子核对，条件一旦改变，结论就要用$topic重新推导。',
+      '“$answer”是否可用，取决于$topic在题干条件下的表现，不能直接套用相邻结论。',
     4 =>
-      '这道题的关键在「${lesson.titleZh}」的$topic：先确认题干“$focus”问的是哪一步，再排除偷换前提的选项。',
+      '先定位题干“$focus”问的是$topic里的哪一步，再排除偷换前提的选项。',
     _ =>
-      '“$focus”与「${lesson.titleZh}」的术语表相呼应，只有符合$topic约束的“$answer”才是正文支持的结论。',
+      '“$focus”与术语表相呼应，只有符合$topic约束的“$answer”才是正文支持的结论。',
+  };
+}
+
+/// 去重后补长度专用：三句结构互不相同，且不再重复课程标题。
+String _refillSentence(
+  Lesson lesson,
+  int variant, {
+  String anchor = '',
+  String excerpt = '',
+}) {
+  final topic = _keywordPhrase(lesson);
+  final focus = excerpt.isEmpty ? topic : excerpt;
+  final answer = anchor.isEmpty ? topic : anchor;
+  return switch (variant % 3) {
+    0 =>
+      '回到$topic本身再看一遍：只有“$answer”与题干“$focus”的前提一致，结论才成立。',
+    1 =>
+      '把$topic的输入、处理与输出串起来检查“$focus”，任何一步与正文不符的选项都要排除。',
+    _ =>
+      '“$answer”能不能成立，取决于$focus是否满足$topic的条件，不能把相邻结论直接套过来。',
   };
 }
 
@@ -797,7 +937,11 @@ String _questionExcerpt(Map<String, dynamic> question) {
       .where((chunk) => chunk.trim().length >= 4)
       .toList();
   var excerpt = chunks.isEmpty ? raw : chunks.first.trim();
-  if (excerpt.length > 30) excerpt = excerpt.substring(0, 30);
+  if (excerpt.length > 30) {
+    final cut = excerpt.substring(0, 30);
+    final lastBreak = cut.lastIndexOf(RegExp(r'[\s，,、：:；;（）()]'));
+    excerpt = lastBreak >= 12 ? cut.substring(0, lastBreak) : cut;
+  }
   return excerpt.length >= 4 ? excerpt : '';
 }
 
@@ -1135,15 +1279,48 @@ String _renderFocusSection(Lesson lesson) {
   final quiz = lesson.quiz;
   for (var index = 0; index < quiz.length; index++) {
     final question = quiz[index];
-    final questionText = (question['question'] ?? '').toString().trim();
+    // 题干压成一行：多行代码题直接当标题会把标题撑坏，完整题干放到正文第一行。
+    final questionText = (question['question'] ?? '')
+        .toString()
+        .replaceAll(RegExp(r'\s+'), ' ')
+        .trim();
     final explanation = (question['explanation'] ?? '').toString().trim();
     buffer
-      ..writeln('### 考点 ${index + 1}：$questionText')
+      ..writeln('### 考点 ${index + 1}：${_focusLabel(lesson, question)}')
       ..writeln()
+      ..writeln('- **题目**：$questionText')
       ..writeln('- **判断依据**：$explanation')
       ..writeln();
   }
   return buffer.toString();
+}
+
+/// 考点标题只保留「题型 + 关键词」；完整题干移到正文，避免超长标题撑坏导航。
+String _focusLabel(Lesson lesson, Map<String, dynamic> question) {
+  final type = (question['type'] ?? 'single').toString();
+  final text = (question['question'] ?? '').toString();
+  final kind = switch (type) {
+    'code' => '代码补全',
+    'debug' => '排错',
+    'order' => '顺序排列',
+    'fill' => '填空',
+    'multi' => '多选辨析',
+    _ => '概念判断',
+  };
+  String? term;
+  final code = RegExp(r'`([^`\n]{1,18})`').firstMatch(text)?.group(1);
+  if (code != null && code.trim().isNotEmpty) term = code.trim();
+  if (term == null) {
+    final quoted = RegExp(r'「([^」\n]{1,16})」').firstMatch(text)?.group(1);
+    if (quoted != null && quoted.trim().isNotEmpty) term = quoted.trim();
+  }
+  if (term == null || term == lesson.titleZh) {
+    term = lesson.keywords.isEmpty ? '' : lesson.keywords.first;
+  }
+  var label = term.isEmpty ? kind : '$kind·$term';
+  if (label.length > 24) label = label.substring(0, 24);
+  label = label.replaceAll(RegExp(r'[\s。；，、：:]+$'), '').trim();
+  return label.isEmpty ? kind : label;
 }
 
 /// 同一章节里重复出现的条目只保留第一次。

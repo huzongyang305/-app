@@ -320,6 +320,13 @@ type Value = Awaited<Promise<number>>;   // number
 
 ### 任务 2：只改一个条件
 
+把「TypeScript 工具类型与声明文件」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把TypeScript的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「TypeScript 工具类型与声明文件」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响TypeScript。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -393,39 +400,37 @@ type Value = Awaited<Promise<number>>;   // number
 | `Omit<T, K>` | \| `Pick<T, K>` / `Omit<T, K>` \| 挑选字段 / 排除字段 \| |
 | `Record<K, V>` | \| `Record<K, V>` \| 构造键值映射类型 \| |
 | `Readonly<T>` | \| `Readonly<T>` \| 全部只读 \| |
-| `ReturnType<F>` | \| `ReturnType<F>` / `Parameters<F>` \| 提取函数返回值 / 参数类型 \| |
-| `Parameters<F>` | \| `ReturnType<F>` / `Parameters<F>` \| 提取函数返回值 / 参数类型 \| |
-| `Awaited<T>` | \| `Awaited<T>` \| 提取 Promise 的结果类型 \| |
-| `Exclude` | \| `Exclude` / `Extract` / `NonNullable` \| 联合类型的筛选 \| |
-| `Extract` | \| `Exclude` / `Extract` / `NonNullable` \| 联合类型的筛选 \| |
-| `NonNullable` | \| `Exclude` / `Extract` / `NonNullable` \| 联合类型的筛选 \| |
 
 ## 考点精讲
 
-### 考点 1：围绕“TypeScript 工具类型与声明文件”中的 TypeScript、工具类型、映射类型，下列哪两项是本课强调的实践判断？
+### 考点 1：多选辨析·TypeScript
 
+- **题目**：围绕“TypeScript 工具类型与声明文件”中的 TypeScript、工具类型、映射类型，下列哪两项是本课强调的实践判断？
 - **判断依据**：在「TypeScript 工具类型与声明文件」里，学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程。在TypeScript 工具类型与声明文件里，判断 工具类型 时要固定版本与边界输入，所以“验证 工具类型 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 2：这段 TypeScript 代码是「TypeScript 工具类型与声明文件」的示例片段，下面哪一项描述与它一致？
+### 考点 2：代码补全·TypeScript
 
+- **题目**：这段 TypeScript 代码是「TypeScript 工具类型与声明文件」的示例片段，下面哪一项描述与它一致？
 - **判断依据**：在「TypeScript 工具类型与声明文件」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「TypeScript 工具类型与声明文件」的正文示例，围绕TypeScript、工具类型、映射类型展开；把输入或边界换成空值、极值或失败情况后，结论要以「TypeScript 工具类型与声明文件」的实际运行结果为准。
 
-### 考点 3：.d.ts 文件的作用是？
+### 考点 3：概念判断·TypeScript
 
+- **题目**：.d.ts 文件的作用是？
 - **判断依据**：在「TypeScript 工具类型与声明文件」里，为无类型的第三方库补充类型声明。它让 JS 库也能获得类型提示与检查。回到「TypeScript 工具类型与声明文件」的正文示例，用“.d.ts 文件的作用是”走一遍TypeScript、工具类型、映射类型的完整流程，能复现的结论才可以保留。
 
-### 考点 4：Pick<T, K> 与 Omit<T, K> 的区别是？
+### 考点 4：概念判断·TypeScript
 
+- **题目**：Pick<T, K> 与 Omit<T, K> 的区别是？
 - **判断依据**：在「TypeScript 工具类型与声明文件」里，结论应落在「Pick 只保留 K 指定的字段」。对外暴露 DTO 时常用 Pick 选字段、Omit 去掉密码等敏感字段。在「TypeScript 工具类型与声明文件」里，这道题要求区分概念与边界，「Pick 只保留 K 指定的字段」只有在题干给出的前提下才成立，而「两者完全等价」、「Omit 只能用于接口」缺少同一组条件。
 
-### 考点 5：Record<string, number> 表示？
+### 考点 5：概念判断·TypeScript
 
+- **题目**：Record<string, number> 表示？
 - **判断依据**：在「TypeScript 工具类型与声明文件」里，键为 string、值为 number 的对象类型。Record 常用于描述映射表、字典与配置项集合。“Record<string”与「TypeScript 工具类型与声明文件」的术语表相呼应，只有符合TypeScript、工具类型、映射类型约束的“键为 string”才是正文支持的结论。
 
-### 考点 6：补全代码：「TypeScript 工具类型与声明文件」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·type EventName =
 
-`type EventName = `on${____<Status>}`; // 模板字面量类型`
-
+- **题目**：补全代码：「TypeScript 工具类型与声明文件」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `type EventName = `on${____<Status>}`; // 模板字面量类型`
 - **判断依据**：在「TypeScript 工具类型与声明文件」里，Capitalize。「TypeScript 工具类型与声明文件」要求先交代TypeScript、工具类型、映射类型的前提再下结论，所以“Capitalize”只在题干“TypeScript 工具类型与声明文件示例中”给定的条件下成立。
 
 ## English Overview

@@ -285,6 +285,13 @@ ws.onclose = event => {
 
 ### 任务 2：只改一个条件
 
+把「WebSocket 与实时通信」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把WebSocket的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「WebSocket 与实时通信」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响WebSocket。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -330,6 +337,7 @@ ws.onclose = event => {
 
 ### 二、三个容易混淆的边界
 
+1. 澄清输入与目标。先写清「WebSocket 与实时通信」要解决的问题、合法输入范围和成功标准，再进入后续步骤。
 2. **把“平均值”当成“全部”**：WebSocket 的指标好看，不代表尾部请求、冷启动或失败重试也好看。
 3. **把“当前版本”当成“永久行为”**：SSE 依赖的默认值、API 或性能特征都可能随版本变化，需要固定版本并保留回归用例。
 
@@ -373,31 +381,35 @@ ws.onclose = event => {
 
 ## 考点精讲
 
-### 考点 1：WebSocket 与 HTTP 的关键区别是？
+### 考点 1：概念判断·WebSocket
 
+- **题目**：WebSocket 与 HTTP 的关键区别是？
 - **判断依据**：在「WebSocket 与实时通信」里，一次握手后在同一条连接上双向通信。HTTP 是请求-响应，WebSocket 支持服务端主动推送。回到「WebSocket 与实时通信」的正文示例，用“WebSocket 与 HTTP 的”走一遍WebSocket、SSE、心跳的完整流程，能复现的结论才可以保留。
 
-### 考点 2：WebSocket 断线后必须实现？
+### 考点 2：概念判断·WebSocket
 
+- **题目**：WebSocket 断线后必须实现？
 - **判断依据**：长连接会因网络与代理超时断开，客户端要能自愈并补齐消息。在「WebSocket 与实时通信」里，其他选项：断线后要实现心跳、指数退避重连与消息序号补齐。这道题的关键在「WebSocket 与实时通信」的WebSocket、SSE、心跳：先确认题干“WebSocket 断线后必须实现”问的是哪一步，再排除偷换前提的选项。
 
-### 考点 3：围绕“WebSocket 与实时通信”中的 WebSocket、SSE、心跳，下列哪两项是本课强调的实践判断？
+### 考点 3：多选辨析·WebSocket
 
+- **题目**：围绕“WebSocket 与实时通信”中的 WebSocket、SSE、心跳，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把WebSocket 与实时通信拆成概念、示例与故障现场三部分，因此判断 WebSocket 时必须同时交代输入、输出和失败路径，这使“学习 WebSocket 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在WebSocket 与实时通信里，判断 SSE 时要固定版本与边界输入，所以“验证 SSE 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 4：下面这段 JavaScript 代码摘自「WebSocket 与实时通信」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
+### 考点 4：代码补全·WebSocket
 
+- **题目**：下面这段 JavaScript 代码摘自「WebSocket 与实时通信」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 - **判断依据**：在「WebSocket 与实时通信」里，这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。这段代码出自「WebSocket 与实时通信」的正文示例，围绕WebSocket、SSE、心跳展开；把输入或边界换成空值、极值或失败情况后，结论要以「WebSocket 与实时通信」的实际运行结果为准。
 
-### 考点 5：SSE（Server-Sent Events）与 WebSocket 的主要区别是？
+### 考点 5：概念判断·WebSocket
 
+- **题目**：SSE（Server-Sent Events）与 WebSocket 的主要区别是？
 - **判断依据**：只需要服务器推送（如通知、进度）时 SSE 更简单，且能自动重连。在「WebSocket 与实时通信」里，其他选项：SSE 是服务器到客户端的单向文本流（基于 HTTP），WebSocket 是全双工，两者并不等价。“SSE（Server-Sent”与「WebSocket 与实时通信」的术语表相呼应，只有符合WebSocket、SSE、心跳约束的“SSE 是服务器到客户端的单向文本流（基”才是正文支持的结论。
 
-### 考点 6：补全代码：「WebSocket 与实时通信」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·WebSocket
 
-`this.ws = new ____(this.url);`
-
-- **判断依据**：在「WebSocket 与实时通信」里，WebSocket。回到「WebSocket 与实时通信」的正文示例，用“补全代码”走一遍WebSocket、SSE、心跳的完整流程，能复现的结论才可以保留。回到「WebSocket 与实时通信」的正文示例，用“WebSocket”走一遍WebSocket、SSE、心跳的完整流程，能复现的结论才可以保留。
+- **题目**：补全代码：「WebSocket 与实时通信」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `this.ws = new ____(this.url);`
+- **判断依据**：在「WebSocket 与实时通信」里，WebSocket。回到「WebSocket 与实时通信」的正文示例，用“补全代码”走一遍WebSocket、SSE、心跳的完整流程，能复现的结论才可以保留。回到WebSocket、SSE、心跳本身再看一遍：只有“WebSocket”与题干“WebSocket”的前提一致，结论才成立。
 
 ## English Overview
 

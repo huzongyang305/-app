@@ -392,6 +392,12 @@ sealed interface ListUiState {
 
 ### 任务 1：用自己的话画出结构
 
+不看书，用一张图说清「Kotlin 与 Android 开发」的结构，画完再对照骨架：
+
+- 主干：语言特性速览 → Android 应用结构 → 生命周期与常见崩溃 → 打包发布
+- 连接线：在每条边上标出输入、输出与失败路径。
+- 自检：能否用一句话说明Kotlin与Android的关系？
+
 ### 任务 2：做一次对比实验
 
 **验收标准**：表格里两个方案的结论不能完全一样；写下“在什么条件下应该换方案”。
@@ -453,36 +459,42 @@ sealed interface ListUiState {
 
 | 术语 | 本课语境 |
 | --- | --- |
-| `[Kotlin, Android, 协程, ViewModel, AAB][index]` | 在「Kotlin 与 Android 开发」里理解它的定义、输入和输出。 |
-| `[Kotlin, Android, 协程, ViewModel, AAB][index]` | 本课用它说明边界条件与失败路径。 |
-| `[Kotlin, Android, 协程, ViewModel, AAB][index]` | 结合「Kotlin 与 Android 开发」的正文示例确认它的适用条件。 |
-| `[Kotlin, Android, 协程, ViewModel, AAB][index]` | 在「Kotlin 与 Android 开发」里理解它的定义、输入和输出。 |
-| `[Kotlin, Android, 协程, ViewModel, AAB][index]` | 本课用它说明边界条件与失败路径。 |
+| `Kotlin` | 围绕“环境版本、配置和输入规模与目标环境不同，Kotlin 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。 |
+| `Android` | Android 开发的关键是分层（UI/状态/数据）+ 空安全 + 协程：把状态交给 ViewModel、把耗时操作交给协程、把数据来源收敛到 Repository。 |
+| `协程` | Android 开发的关键是分层（UI/状态/数据）+ 空安全 + 协程：把状态交给 ViewModel、把耗时操作交给协程、把数据来源收敛到 Repository。 |
+| `ViewModel` | Android 开发的关键是分层（UI/状态/数据）+ 空安全 + 协程：把状态交给 ViewModel、把耗时操作交给协程、把数据来源收敛到 Repository。 |
+| `AAB` | 它在「Kotlin 与 Android 开发」里是理解「AAB」的关键术语，用来解释定义、适用条件与失败路径；它与Kotlin、Android共同决定这一节的判断边界。复习时回到正文示例核对输入、输出和验证方式。 |
 
 ## 考点精讲
 
-### 考点 1：围绕“Kotlin 与 Android 开发”中的 Kotlin、Android、协程，下列哪两项是本课强调的实践判断？
+### 考点 1：多选辨析·Kotlin
 
+- **题目**：围绕“Kotlin 与 Android 开发”中的 Kotlin、Android、协程，下列哪两项是本课强调的实践判断？
 - **判断依据**：本课把Kotlin 与 Android 开发拆成概念、示例与故障现场三部分，因此判断 Kotlin 时必须同时交代输入、输出和失败路径，这使“学习 Kotlin 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在Kotlin 与 Android 开发里，判断 Android 时要固定版本与边界输入，所以“验证 Android 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 2：Android 中承载界面状态、配置变更后仍存活的组件是？
+### 考点 2：概念判断·Kotlin
 
+- **题目**：Android 中承载界面状态、配置变更后仍存活的组件是？
 - **判断依据**：在「Kotlin 与 Android 开发」里，Activity 旋转会重建，状态应放在 ViewModel 中。在「Kotlin 与 Android 开发」里，其他选项：Application 是进程级入口，Adapter 负责列表项绑定，Activity 在配置变更时会重建。
 
-### 考点 3：Android 上架 Google Play 推荐的产物格式是？
+### 考点 3：概念判断·Kotlin
 
+- **题目**：Android 上架 Google Play 推荐的产物格式是？
 - **判断依据**：AAB 让商店按设备下发，减小下载体积。其他选项：JAR 不是 Android 产物，DEX 是字节码格式，APK 虽可安装但并非商店推荐。如果只凭关键词作答，很容易把「JAR」、「APK」与「AAB」混在一起；这道题的关键在「Kotlin 与 Android 开发」的Kotlin、Android、协程：先确认题干“Android 上架 Google”问的是哪一步，再排除偷换前提的选项。
 
-### 考点 4：下面这段 Kotlin 代码摘自「Kotlin 与 Android 开发」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
+### 考点 4：代码补全·Kotlin
 
+- **题目**：下面这段 Kotlin 代码摘自「Kotlin 与 Android 开发」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 - **判断依据**：在「Kotlin 与 Android 开发」里，这段代码包含异常处理分支，失败时会走专门的补救路径。这段代码出自「Kotlin 与 Android 开发」的正文示例，围绕Kotlin、Android、协程展开；把输入或边界换成空值、极值或失败情况后，结论要以「Kotlin 与 Android 开发」的实际运行结果为准。
 
-### 考点 5：在 Activity 中启动一个随生命周期自动取消的协程，常用写法是？
+### 考点 5：概念判断·Kotlin
 
+- **题目**：在 Activity 中启动一个随生命周期自动取消的协程，常用写法是？
 - **判断依据**：在「Kotlin 与 Android 开发」里，lifecycleScope.launch { }。lifecycleScope 绑定组件生命周期，销毁时自动取消，避免泄漏。「Kotlin 与 Android 开发」要求先交代Kotlin、Android、协程的前提再下结论，所以“lifecycleScope.launc”只在题干“在 Activity 中启动一个随生命周期自动取消的协程”给定的条件下成立。
 
-### 考点 6：按照「Kotlin 与 Android 开发」从概念到实践的讲解顺序排列下列主题。
+### 考点 6：顺序排列·Kotlin
 
+- **题目**：按照「Kotlin 与 Android 开发」从概念到实践的讲解顺序排列下列主题。
 - **判断依据**：在「Kotlin 与 Android 开发」里，正确的执行顺序是「语言特性速览」 → 「Android 应用结构」 → 「生命周期与常见崩溃」 → 「打包发布」。在「Kotlin 与 Android 开发」里，在本课中，正确顺序是：1. 语言特性速览 → 2. Android 应用结构 → 3. 生命周期与常见崩溃 → 4. 打包发布。
 
 ## English Overview

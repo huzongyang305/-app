@@ -381,6 +381,12 @@ async fn main() {
 
 ### 任务 1：用自己的话画出结构
 
+不看书，用一张图说清「Rust 异步编程与 tokio」的结构，画完再对照骨架：
+
+- 主干：异步模型要点 → tokio 常用 API → 五个高频坑 → 与线程模型的选择
+- 连接线：在每条边上标出输入、输出与失败路径。
+- 自检：能否用一句话说明Rust与异步的关系？
+
 ### 任务 2：做一次对比实验
 
 **验收标准**：表格里两个方案的结论不能完全一样；写下“在什么条件下应该换方案”。
@@ -456,39 +462,43 @@ async fn main() {
 
 | 术语 | 本课语境 |
 | --- | --- |
-| `[Rust, 异步, tokio, Future, spawn_blocking][index]` | 在「Rust 异步编程与 tokio」里理解它的定义、输入和输出。 |
-| `[Rust, 异步, tokio, Future, spawn_blocking][index]` | 本课用它说明边界条件与失败路径。 |
-| `[Rust, 异步, tokio, Future, spawn_blocking][index]` | 结合「Rust 异步编程与 tokio」的正文示例确认它的适用条件。 |
-| `[Rust, 异步, tokio, Future, spawn_blocking][index]` | 在「Rust 异步编程与 tokio」里理解它的定义、输入和输出。 |
-| `[Rust, 异步, tokio, Future, spawn_blocking][index]` | 本课用它说明边界条件与失败路径。 |
+| `Rust` | Rust 的 async fn 由编译器生成状态机，返回 Future；Future 是惰性的，必须被 await 或被 executor 驱动才会推进。 |
+| `异步` | 围绕“异步 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。 |
+| `tokio` | 用 std 的 Mutex 跨 await 持有，会导致死锁或编译错误；应使用 tokio::sync::Mutex，且尽量缩短持锁范围。 |
+| `Future` | Rust 的 async fn 由编译器生成状态机，返回 Future；Future 是惰性的，必须被 await 或被 executor 驱动才会推进。 |
+| `spawn_blocking` | 在异步任务里做阻塞操作（同步 IO、CPU 密集），会卡住整个执行线程，应用 spawnblocking 或限制线程数。 |
 
 ## 考点精讲
 
-### 考点 1：Rust 中 Future 的特性是？
+### 考点 1：概念判断·Rust
 
+- **题目**：Rust 中 Future 的特性是？
 - **判断依据**：在「Rust 异步编程与 tokio」里，惰性，必须被 await 或 executor 驱动。Future 是状态机，不驱动就永远不会推进。“Rust”与「Rust 异步编程与 tokio」的术语表相呼应，只有符合Rust、异步、tokio约束的“惰性，必须被 await 或 execu”才是正文支持的结论。
 
-### 考点 2：在异步任务中执行 CPU 密集计算应该？
+### 考点 2：概念判断·Rust
 
+- **题目**：在异步任务中执行 CPU 密集计算应该？
 - **判断依据**：在「Rust 异步编程与 tokio」里，用 spawn_blocking 隔离到阻塞线程池。在「Rust 异步编程与 tokio」里判断这道题，要把Rust、异步、tokio的条件、过程与失败路径逐项对齐，换成“在异步任务中执行 CPU 密集计算应”这个场景，只有满足前提的结论才成立。
 
-### 考点 3：围绕“Rust 异步编程与 tokio”中的 Rust、异步、tokio，下列哪两项是本课强调的实践判断？
+### 考点 3：多选辨析·Rust
 
+- **题目**：围绕“Rust 异步编程与 tokio”中的 Rust、异步、tokio，下列哪两项是本课强调的实践判断？
 - **判断依据**：在「Rust 异步编程与 tokio」里，学习 Rust 时要同时说明输入、输出和失败路径，不能只看正常流程。在Rust 异步编程与 tokio里，判断 异步 时要固定版本与边界输入，所以“验证 异步 时要固定版本并覆盖边界输入，结论才可复现”才可复现。在「Rust 异步编程与 tokio」里，如果只凭关键词作答，很容易把验证 异步 时要固定版本并覆盖边界输入，结论才可复现、把 异步 的单次运行结果当成所有版本和规模都成立与验证 异步 时要固定版本并覆盖边界输入，结论才可复现。
 
-### 考点 4：tokio::select! 的作用是？
+### 考点 4：概念判断·Rust
 
+- **题目**：tokio::select! 的作用是？
 - **判断依据**：常用于「请求 vs 超时 vs 取消信号」的竞争场景。在「Rust 异步编程与 tokio」里，作答时，先用Rust建立输入与输出的基线，再把同时等待多个 future代入边界条件核对，结论才能复现。在「Rust 异步编程与 tokio」里，这道题要求区分概念与边界，「同时等待多个 future」只有在题干给出的前提下才成立，而「按顺序依次等待」、「只能等待超时」缺少同一组条件。
 
-### 考点 5：阅读「Rust 异步编程与 tokio」正文里的这段 Rust 代码，下面哪一项判断是正确的？
+### 考点 5：代码补全·Rust
 
+- **题目**：阅读「Rust 异步编程与 tokio」正文里的这段 Rust 代码，下面哪一项判断是正确的？
 - **判断依据**：在「Rust 异步编程与 tokio」里，这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。这段代码出自「Rust 异步编程与 tokio」的正文示例，围绕Rust、异步、tokio展开；把输入或边界换成空值、极值或失败情况后，结论要以「Rust 异步编程与 tokio」的实际运行结果为准。
 
-### 考点 6：补全代码：「Rust 异步编程与 tokio」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·Rust
 
-`let hash = tokio::task::____(|| {`
-
-- **判断依据**：空格应填写「spawn_blocking」。这道题的关键在「Rust 异步编程与 tokio」的Rust、异步、tokio：先确认题干“补全代码”问的是哪一步，再排除偷换前提的选项。这道题的关键在「Rust 异步编程与 tokio」的Rust、异步、tokio：先确认题干“Rust”问的是哪一步，再排除偷换前提的选项。
+- **题目**：补全代码：「Rust 异步编程与 tokio」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `let hash = tokio::task::____(|| {`
+- **判断依据**：空格应填写「spawn_blocking」。这道题的关键在「Rust 异步编程与 tokio」的Rust、异步、tokio：先确认题干“补全代码”问的是哪一步，再排除偷换前提的选项。回到Rust、异步、tokio本身再看一遍：只有“spawnblocking”与题干“Rust”的前提一致，结论才成立。
 
 ## English Overview
 

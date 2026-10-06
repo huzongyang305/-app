@@ -997,6 +997,9 @@ void main() {
     final templateHits = <String>[];
     final languageMismatches = <String>[];
     final referenceSets = <String, Map<String, List<String>>>{};
+    final emptySections = <String>[];
+    final templatePlaceholders = <String>[];
+    final genericTermRows = <String>[];
 
     for (final rawCategory in manifestJson['categories'] as List<dynamic>) {
       final category = (rawCategory as Map).cast<String, dynamic>();
@@ -1009,6 +1012,57 @@ void main() {
         final title = ((lesson['title'] as Map?)?['zh'] ?? id)
             .toString()
             .trim();
+
+        // P0：小节必须有正文；空标题与模板占位符一律视为缺陷。
+        final sectionHeadings = <(int, int, String)>[];
+        var inFenceForSections = false;
+        final markdownLines = markdown.split('\n');
+        for (var lineIndex = 0; lineIndex < markdownLines.length; lineIndex++) {
+          final line = markdownLines[lineIndex];
+          if (line.trimLeft().startsWith('```')) {
+            inFenceForSections = !inFenceForSections;
+            continue;
+          }
+          if (inFenceForSections) continue;
+          final match = RegExp(r'^(#{2,6})\s+(.*)$').firstMatch(line);
+          if (match != null) {
+            sectionHeadings.add((
+              lineIndex,
+              match.group(1)!.length,
+              match.group(2)!.trim(),
+            ));
+          }
+          if (line.contains('][index]')) {
+            templatePlaceholders.add('$id:${lineIndex + 1}');
+          }
+          if (line.contains('本课围绕该主题展开，结合正文与代码示例理解它的适用边界')) {
+            genericTermRows.add('$id:${lineIndex + 1}');
+          }
+        }
+        for (var headingIndex = 0;
+            headingIndex < sectionHeadings.length;
+            headingIndex++) {
+          final heading = sectionHeadings[headingIndex];
+          var end = markdownLines.length;
+          for (var next = headingIndex + 1;
+              next < sectionHeadings.length;
+              next++) {
+            if (sectionHeadings[next].$2 <= heading.$2) {
+              end = sectionHeadings[next].$1;
+              break;
+            }
+          }
+          var hasBody = false;
+          for (var lineIndex = heading.$1 + 1;
+              lineIndex < end;
+              lineIndex++) {
+            final trimmed = markdownLines[lineIndex].trim();
+            if (trimmed.isEmpty || trimmed.startsWith('#')) continue;
+            hasBody = true;
+            break;
+          }
+          if (!hasBody) emptySections.add('$id:${heading.$3}');
+        }
 
         // P0：H1 必须等于清单标题，占位符与内部题号一律视为缺陷。
         final h1 = RegExp(
@@ -1164,6 +1218,21 @@ void main() {
       duplicateReferences,
       isEmpty,
       reason: '仍有重复参考资料集合：${duplicateReferences.take(10).join('、')}',
+    );
+    expect(
+      emptySections,
+      isEmpty,
+      reason: '仍有空小节：${emptySections.take(10).join('、')}',
+    );
+    expect(
+      templatePlaceholders,
+      isEmpty,
+      reason: '仍有未解析模板占位符：${templatePlaceholders.take(10).join('、')}',
+    );
+    expect(
+      genericTermRows,
+      isEmpty,
+      reason: '术语表仍有套话：${genericTermRows.take(10).join('、')}',
     );
   });
 }

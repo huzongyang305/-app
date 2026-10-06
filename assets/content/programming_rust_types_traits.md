@@ -348,6 +348,12 @@ fn main() {
 
 ### 任务 1：用自己的话画出结构
 
+不看书，用一张图说清「Rust 类型系统：Option、Result 与 trait」的结构，画完再对照骨架：
+
+- 主干：Option 与 Result → trait：定义共享行为 → 模式匹配 → 智能指针
+- 连接线：在每条边上标出输入、输出与失败路径。
+- 自检：能否用一句话说明Rust与Option的关系？
+
 ### 任务 2：做一次对比实验
 
 **验收标准**：表格里两个方案的结论不能完全一样；写下“在什么条件下应该换方案”。
@@ -423,38 +429,42 @@ fn main() {
 
 | 术语 | 本课语境 |
 | --- | --- |
-| `[Rust, Option, Result, trait, 模式匹配][index]` | 在「Rust 类型系统：Option、Result 与 trait」里理解它的定义、输入和输出。 |
-| `[Rust, Option, Result, trait, 模式匹配][index]` | 本课用它说明边界条件与失败路径。 |
-| `[Rust, Option, Result, trait, 模式匹配][index]` | 结合「Rust 类型系统：Option、Result 与 trait」的正文示例确认它的适用条件。 |
-| `[Rust, Option, Result, trait, 模式匹配][index]` | 在「Rust 类型系统：Option、Result 与 trait」里理解它的定义、输入和输出。 |
-| `[Rust, Option, Result, trait, 模式匹配][index]` | 本课用它说明边界条件与失败路径。 |
+| `Rust` | Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：Option 管空值、Result 管错误、trait 管行为、enum + match 管状态。 |
+| `Option` | Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：Option 管空值、Result 管错误、trait 管行为、enum + match 管状态。 |
+| `Result` | Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：Option 管空值、Result 管错误、trait 管行为、enum + match 管状态。 |
+| `trait` | Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：Option 管空值、Result 管错误、trait 管行为、enum + match 管状态。 |
+| `模式匹配` | Option 与 Result → trait：定义共享行为 → 模式匹配 → 智能指针。 |
 
 ## 考点精讲
 
-### 考点 1：Rust 没有 null，表达「可能没有值」用？
+### 考点 1：概念判断·可能没有值
 
+- **题目**：Rust 没有 null，表达「可能没有值」用？
 - **判断依据**：空值必须显式处理，从类型层面杜绝空指针异常。在「Rust 类型系统：Option、Result 与 trait」里，其他选项：Option<T> 用 Some/None 明确表达缺失并强制处理分支。在「Rust 类型系统：Option、Result 与 trait」里判断这道题，要把Rust、Option、Result的条件、过程与失败路径逐项对齐，换成“Rust 没有 null”这个场景，只有满足前提的结论才成立。
 
-### 考点 2：围绕“Rust 类型系统：Option、Result 与 trait”中的 Rust、Option、Result，下列哪两项是本课强调的实践判断？
+### 考点 2：多选辨析·Rust
 
+- **题目**：围绕“Rust 类型系统：Option、Result 与 trait”中的 Rust、Option、Result，下列哪两项是本课强调的实践判断？
 - **判断依据**：在「Rust 类型系统：Option、Result 与 trait」里，学习 Rust 时要同时说明输入、输出和失败路径，不能只看正常流程。在Rust 类型系统：Option、Result 与 trait里，判断 Option 时要固定版本与边界输入，所以“验证 Option 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 3：这段 Rust 代码是「Rust 类型系统：Option、Result 与 trait」的示例片段，下面哪一项描述与它一致？
+### 考点 3：代码补全·Rust
 
+- **题目**：这段 Rust 代码是「Rust 类型系统：Option、Result 与 trait」的示例片段，下面哪一项描述与它一致？
 - **判断依据**：在「Rust 类型系统：Option、Result 与 trait」里，这段代码包含条件分支，不同输入会走不同的执行路径。这段代码出自「Rust 类型系统：Option、Result 与 trait」的正文示例，围绕Rust、Option、Result展开；把输入或边界换成空值、极值或失败情况后，结论要以「Rust 类型系统：Option、Result 与 trait」的实际运行结果为准。
 
-### 考点 4：dyn Trait 与泛型 T: Trait 的核心区别是？
+### 考点 4：概念判断·Rust
 
+- **题目**：dyn Trait 与泛型 T: Trait 的核心区别是？
 - **判断依据**：在「Rust 类型系统：Option、Result 与 trait」里，结论应落在「dyn 是运行时动态分发（trait object，需指针），泛型是编译期单态化静态分发」。结论应落在dyn 是运行时动态分发（trait object。需要把不同类型放进同一个集合时用 Box<dyn Trait>，性能敏感处用泛型。
 
-### 考点 5：Rust 的孤儿规则（orphan rule）限制是？
+### 考点 5：概念判断·Rust
 
+- **题目**：Rust 的孤儿规则（orphan rule）限制是？
 - **判断依据**：在「Rust 类型系统：Option、Result 与 trait」里，只有 trait 或目标类型至少有一个定义在当前 crate 时才能实现该 trait。该规则避免不同 crate 对同一类型产生冲突的 trait 实现。「Rust 类型系统：Option、Result 与 trait」要求先交代Rust、Option、Result的前提再下结论，所以“只有 trait 或目标类型至少有一个定”只在题干“Rust 的孤儿规则（orphan rule）限制是”给定的条件下成立。
 
-### 考点 6：补全代码：「Rust 类型系统：Option、Result 与 trait」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·Rust
 
-`raw.parse::<u16>.____(|source| ConfigError::Invalid {`
-
+- **题目**：补全代码：「Rust 类型系统：Option、Result 与 trait」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `raw.parse::<u16>.____(|source| ConfigError::Invalid {`
 - **判断依据**：空格应填写「map_err」。("不是合法年龄：{text}")) 这样的用法，说明该关键字在本课代码中承担实际功能。回到「Rust 类型系统：Option、Result 与 trait」的正文示例，用“补全代码”走一遍Rust、Option、Result的完整流程，能复现的结论才可以保留。
 
 ## English Overview

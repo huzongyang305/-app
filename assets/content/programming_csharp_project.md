@@ -483,6 +483,13 @@ dotnet ef migrations script --idempotent -o migrate.sql   # 生产用脚本
 
 ### 任务 2：只改一个条件
 
+把「实战：Web API + EF Core」的最小示例复制一份，只改一个条件再跑一次：
+
+- 改动点：只把实战的输入换成空值、极值或错误输入，其余保持不变。
+- 预测：先写下「实战：Web API + EF Core」在改动后的输出或错误信息，再运行。
+- 记录：对照改动前后的结果，指出差异出在哪一步。
+- 验收：换回原条件能复现原结果，改动只影响实战。
+
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
@@ -556,39 +563,37 @@ dotnet ef migrations script --idempotent -o migrate.sql   # 生产用脚本
 | `dotnet format --verify-no-changes` | CI 中执行 `dotnet format --verify-no-changes` 与 `dotnet test`。 |
 | `dotnet test` | CI 中执行 `dotnet format --verify-no-changes` 与 `dotnet test`。 |
 | `[Required]` | \| 请求校验 \| `[Required]`、`[Range]` 等数据注解 + `ModelState` \| |
-| `[Range]` | \| 请求校验 \| `[Required]`、`[Range]` 等数据注解 + `ModelState` \| |
-| `ModelState` | \| 请求校验 \| `[Required]`、`[Range]` 等数据注解 + `ModelState` \| |
-| `dotnet ef migrations add` | \| 数据库迁移 \| `dotnet ef migrations add` 生成脚本，CI 中执行 \| |
-| `IDbContextTransaction` | \| 事务 \| 在 Service 层使用 `IDbContextTransaction` 或 `SaveChanges` 一次提交 \| |
-| `SaveChanges` | \| 事务 \| 在 Service 层使用 `IDbContextTransaction` 或 `SaveChanges` 一次提交 \| |
-| `Skip/Take` | \| 分页 \| `Skip/Take` + 总数查询，或基于游标 \| |
 
 ## 考点精讲
 
-### 考点 1：下面这段 C# 代码摘自「实战：Web API + EF Core」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
+### 考点 1：代码补全·实战
 
+- **题目**：下面这段 C# 代码摘自「实战：Web API + EF Core」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 - **判断依据**：在「实战：Web API + EF Core」里，这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。这段代码出自「实战：Web API + EF Core」的正文示例，围绕实战、ASP.NET Core、EF Core展开；把输入或边界换成空值、极值或失败情况后，结论要以「实战：Web API + EF Core」的实际运行结果为准。
 
-### 考点 2：使用 DTO 而不是直接暴露实体，主要好处是？
+### 考点 2：概念判断·实战
 
+- **题目**：使用 DTO 而不是直接暴露实体，主要好处是？
 - **判断依据**：在「实战：Web API + EF Core」里，隔离数据库结构与 API 契约。DTO 让接口契约与表结构解耦，避免字段泄露与破坏性变更。“而不是直接暴露实体”与「实战：Web API + EF Core」的术语表相呼应，只有符合实战、ASP.NET Core、EF Core约束的“隔离数据库结构与 API 契约”才是正文支持的结论。
 
-### 考点 3：ASP.NET Core 中注册在依赖注入容器里的 DbContext 默认生命周期是？
+### 考点 3：概念判断·实战
 
+- **题目**：ASP.NET Core 中注册在依赖注入容器里的 DbContext 默认生命周期是？
 - **判断依据**：Scoped 保证一次请求内共享同一上下文，避免跨请求状态与线程问题。在「实战：Web API + EF Core」里，其他选项：DbContext 默认是 Scoped（每请求一个），因为它不是线程安全的。这道题的关键在「实战：Web API + EF Core」的实战、ASP.NET Core、EF Core：先确认题干“ASP.NET Core 中注册在依”问的是哪一步，再排除偷换前提的选项。
 
-### 考点 4：围绕“实战：Web API + EF Core”中的 实战、ASP.NET Core、EF Core，下列哪两项是本课强调的实践判断？
+### 考点 4：多选辨析·实战
 
+- **题目**：围绕“实战：Web API + EF Core”中的 实战、ASP.NET Core、EF Core，下列哪两项是本课强调的实践判断？
 - **判断依据**：结论应落在学习 实战 时要同时说明输入、输出和失败路径。在实战：Web API + EF Core里，判断 ASP.NET Core 时要固定版本与边界输入，所以“验证 ASP.NET Core 时要固定版本并覆盖边界输入，结论才可复现”才可复现。在「实战：Web API + EF Core」里，这道题要求区分概念与边界，学习 实战 时要同时说明输入、输出和失败路径，不能只看正常流程。
 
-### 考点 5：创建资源成功后返回 201 Created 并结合 CreatedAtAction 的好处是？
+### 考点 5：概念判断·实战
 
+- **题目**：创建资源成功后返回 201 Created 并结合 CreatedAtAction 的好处是？
 - **判断依据**：在「实战：Web API + EF Core」里，既符合 REST 语义。201 表示创建成功，Location 头让客户端知道下一步该请求哪个地址。在「实战：Web API + EF Core」里判断这道题，要把实战、ASP.NET Core、EF Core的条件、过程与失败路径逐项对齐，换成“创建资源成功后返回 201 Crea”这个场景，只有满足前提的结论才成立。
 
-### 考点 6：补全代码：「实战：Web API + EF Core」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+### 考点 6：填空·实战
 
-`app.____; // 统一转成 ProblemDetails`
-
+- **题目**：补全代码：「实战：Web API + EF Core」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `app.____; // 统一转成 ProblemDetails`
 - **判断依据**：空格应填写「UseExceptionHandler」、「useexceptionhandler」。// 统一转成 ProblemDetails 这样的用法，说明该关键字在本课代码中承担实际功能。在「实战：Web API + EF Core」里判断这道题，要把实战、ASP.NET Core、EF Core的条件、过程与失败路径逐项对齐，换成“补全代码”这个场景，只有满足前提的结论才成立。
 
 ## English Overview
@@ -695,18 +700,6 @@ README.md
 ### Learning Outcomes
 
 - Explain what **Project: Web API + EF Core** solves and when it should be used.
-
-### Core Mental Model
-
-### Step-by-step Study Plan
-
-### Practice Tasks
-
-### Common Failure Modes
-
-### Self-check Questions
-
-4. What is the rollback path?
 
 ### Glossary
 
