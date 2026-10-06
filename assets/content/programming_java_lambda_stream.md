@@ -1,14 +1,14 @@
 # Lambda 与 Stream API
 
+> 内容更新时间：2026-10-03
+
 ![Lambda 与 Stream 的流水线](images/diagram_java_stream.webp)
 
 ![Lambda 与 Stream API](images/remaining_java_lambda_stream.webp)
 
-> 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟
-
 ## 学习目标
 
-- 能用自己的话解释「Lambda 与 Stream API」解决了什么问题，而不是只背术语。
+- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
 - 能说清 「lambda」、「Stream」、「Optional」、「函数式接口」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「Java」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -21,7 +21,6 @@
 - 本课阶段：进阶。建议先掌握同一分类的基础课程，并能独立运行正文中的最小示例。
 - 开始前先复习：lambda、Stream、Optional。
 - 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
-
 
 ## 函数式接口
 
@@ -115,7 +114,6 @@ long total = IntStream.rangeClosed(1, 1_000_000)
 ## 本课小结
 Lambda + Stream 让集合处理变成声明式：**先说做什么（filter/map），再收集结果（collect）**。代码更短，但要注意惰性求值与副作用。
 
-
 ## Stream 操作速查
 
 | 类别 | 方法 | 作用 |
@@ -187,7 +185,6 @@ Map<String, Integer> amountByCategory = orders.stream()
 - [ ] `toMap` 时提供合并函数避免重复键异常。
 - [ ] 用 `Optional` 的 `orElse` / `orElseThrow` 替代 `get()`。
 - [ ] 并行流只用于纯 CPU 计算，且先做性能验证。
-
 
 ## 零基础详解：Lambda 与 Stream 流水线
 
@@ -355,7 +352,6 @@ public class Report {
 
 ## 动手练习
 
-
 > 本课练习重点：围绕「lambda、Stream、Optional」完成复述、实验和交付，每个结果都要能被别人检查。
 
 先跑通最小类与测试，再补异常和并发边界，最后观察线程与资源变化。
@@ -364,7 +360,7 @@ public class Report {
 
 合上教程，用 3～5 句话回答：
 
-1. 「Lambda 与 Stream API」解决了什么问题？
+1. 本课主题解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「Stream」是什么关系？
 
@@ -392,82 +388,53 @@ public class Report {
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-
 ## 实践任务
 
-本节围绕“Lambda 与 Stream API”安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
+本节围绕本课主题安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 
 ### 任务 1：用自己的话画出结构
 
-合上教程，用 5 句话说明“Lambda 与 Stream API”解决什么问题、输入是什么、输出是什么、失败时会怎样、与相邻概念的边界在哪里。画一张流程图或状态图，把每个节点标注成“输入 / 处理 / 输出 / 失败路径”之一。
-
-**验收标准**：图里至少有 5 个节点和 1 条失败路径；每个节点都能在正文中找到依据。
-
 ### 任务 2：做一次对比实验
-
-从正文里选两个差异最小的方案，列成 4 列表格：方案、前提、代价、适用边界。然后只改变一个条件（数据规模、并发度、精度或资源上限），记录结果变化。
 
 **验收标准**：表格里两个方案的结论不能完全一样；写下“在什么条件下应该换方案”。
 
 ### 任务 3：迁移到自己的场景
 
-把“Lambda 与 Stream API”的核心方法用到你熟悉的一个真实场景，写出一份 300 字以内的实施记录：目标、步骤、验证方式、仍然不确定的问题。
-
 **验收标准**：至少有一个可复现的命令、代码片段或数据样例；结论能被别人独立检查。
-
 
 ## 故障现场
 
-这一节把“Lambda 与 Stream API”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 lambda 常规用例通过，但边界用例失败
 
-### 现场 1：“Lambda 与 Stream API”的 lambda 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 lambda 常规用例通过，但边界用例失败”。
 
-**症状**：在“Lambda 与 Stream API”的练习或生产场景里出现““Lambda 与 Stream API”的 lambda 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““Lambda 与 Stream API”的 lambda 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 lambda 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“lambda 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“Lambda 与 Stream API”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 lambda 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““Lambda 与 Stream API”的 lambda 常规用例通过，但边界用例失败”写成一条自动化用例，并在“Lambda 与 Stream API”的验收清单里保留对应检查项。
+### 现场 2：本课的 Stream 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 Stream 结果在两次运行之间不一致”。
 
-### 现场 2：“Lambda 与 Stream API”的 Stream 结果在两次运行之间不一致
-
-**症状**：在“Lambda 与 Stream API”的练习或生产场景里出现““Lambda 与 Stream API”的 Stream 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““Lambda 与 Stream API”的 Stream 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 Stream 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“Stream 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“Lambda 与 Stream API”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+**预防**：把“本课的 Stream 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““Lambda 与 Stream API”的 Stream 结果在两次运行之间不一致”写成一条自动化用例，并在“Lambda 与 Stream API”的验收清单里保留对应检查项。
+### 现场 3：本课的验证只在开发机通过
 
-
-### 现场 3：“Lambda 与 Stream API”的验证只在开发机通过
-
-**症状**：在“Lambda 与 Stream API”的练习或生产场景里出现““Lambda 与 Stream API”的验证只在开发机通过”。
-
-**复现**：准备一组最小输入，只保留触发““Lambda 与 Stream API”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+**症状**：在本课的练习或生产场景里出现“本课的验证只在开发机通过”。
 
 **定位**：围绕“环境版本、配置和输入规模与目标环境不同，lambda 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：把“Lambda 与 Stream API”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
-
-**预防**：把““Lambda 与 Stream API”的验证只在开发机通过”写成一条自动化用例，并在“Lambda 与 Stream API”的验收清单里保留对应检查项。
-
-
-
 ## 版本与时效
-
-这一节记录“Lambda 与 Stream API”涉及的版本基线与升级检查点，避免把某个版本的默认行为当成永久结论。
 
 - Java 25 是当前 LTS，Java 21 仍是大量生产系统的基线
 - 虚拟线程、记录模式、结构化并发与分代 ZGC 是升级收益最大的部分
 - 升级前重点检查反射、字节码增强、序列化与第三方框架兼容性
-- 官方发布说明：https://www.oracle.com/java/technologies/javase/
 
 ### 升级检查清单
 
@@ -475,55 +442,6 @@ public class Report {
 - 只改一个版本变量，记录编译、测试、性能与产物体积的变化。
 - 重点回归默认值、弃用警告、序列化格式、并发语义和错误信息。
 - 升级完成后更新本课的“最后复核 / 下次复核”日期与版本说明。
-
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：Stream 的中间操作（filter/map）什么时候真正执行？
-
-- **正确判断**：遇到终止操作时才执行
-- **判断依据**：正确答案是「遇到终止操作时才执行」，本课在「Stream 常用操作」中说明：中间操作（filter/map/sorted）不会立刻执行，只有遇到终止操作（collect/forEach/count/reduce）才会遍历一次。中间操作是惰性的，只有 collect/forEach/count 等终止操作才会触发一次遍历。本课还在「零基础详解：Lambda 与 Stream 流水线」中说明：能区分 Stream 的中间操作与终止操作。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 2：函数式接口的判断标准是？
-
-- **正确判断**：只有一个抽象方法
-- **判断依据**：只有一个抽象方法的接口可以用 lambda 实现，@FunctionalInterface 只是编译期检查。其他选项：函数式接口的要求是只有一个抽象方法。针对「函数式接口的判断标准是，」，本课在「函数式接口」中说明：只有一个抽象方法的接口就是函数式接口，可以用 lambda 实现。本课还在「并行流与注意事项」中说明：并行流使用公共 ForkJoinPool，适合纯计算且数据量大。本课还在「本课小结」中说明：Lambda + Stream 让集合处理变成声明式：先说做什么（filter/map），再收集结果（collect）。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 3：关于 Optional，推荐的做法是？
-
-- **正确判断**：使用 orElse / ifPresent / orElseThrow
-- **判断依据**：正确答案是「使用 orElse / ifPresent / orElseThrow」，本课在「函数式接口」中说明：只有一个抽象方法的接口就是函数式接口，可以用 lambda 实现。Optional.get() 在空值时会抛异常，应使用安全的取值方法。本课还在「并行流与注意事项」中说明：并行流使用公共 ForkJoinPool，适合纯计算且数据量大。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 4：Stream 的 collect 与 forEach 的区别是？
-
-- **正确判断**：collect 是终止操作，把结果汇总成集合
-- **判断依据**：正确答案是「collect 是终止操作，把结果汇总成集合」，本课在「Stream 常用操作」中说明：中间操作（filter/map/sorted）不会立刻执行，只有遇到终止操作（collect/forEach/count/reduce）才会遍历一次。在流里修改外部状态是常见坏味道，能 collect 就优先 collect。本课还在「零基础详解：Lambda 与 Stream 流水线」中说明：知道为什么中间操作不写终止操作就不会执行。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 5：方法引用 String::length 等价于哪个 lambda？
-
-- **正确判断**：s -> s.length()
-- **判断依据**：方法引用是 lambda 的语法糖，可读性更好，也能表达构造器引用 Class::new。其他选项：方法引用把接收者作为隐式参数传入，因此 String::length 等价于 s -> s.length()。课程摘要指出函数式接口，方法引用，Stream 惰性求值，Optional 与并行流，本课要判断的正是方法引用String::length等价于哪个lambda。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 6：补全代码：「Lambda 与 Stream API」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `@____`
-
-- **正确判断**：FunctionalInterface / functionalinterface
-- **判断依据**：正确答案是「FunctionalInterface」，这道题在问补全代码：Lambda与StreamAPI示例中，下…或函数名，请填入____，`@____`，判断时要把题干限定的输入、边界与目标逐项对齐。本课示例中还能看到 `@FunctionalInterface` 这样的用法，说明该关键字在本课代码中承担实际功能。
-- **迁移检查**：不看题干，用自己的话补全这句话，再与标准答案对照。
-
-### 补充自测（2 题）
-
-1. 围绕“Lambda 与 Stream API”中的 lambda、Stream、Optional，下列哪两项是本课强调的实践判断？
-2. 下面这段 Java 代码复现了“Lambda 与 Stream API”中 lambda、Stream、Optional 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
 
 ## 本课复习清单
 
@@ -534,7 +452,7 @@ public class Report {
 - [ ] 不看解析，能说出「关于 Optional，推荐的做法是？」的判断依据。
 - [ ] 不看解析，能说出「Stream 的 collect 与 forEach 的区别是？」的判断依据。
 - [ ] 不看解析，能说出「方法引用 String::length 等价于哪个 lambda？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：「Lambda 与 Stream API」示例中，下面这行代码缺少哪个…」的判断依据。
+- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码缺少哪个…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -545,8 +463,6 @@ public class Report {
 | 下一步验证动作 |  |
 
 ## 术语速查
-
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
 | 术语 | 本课语境 |
 | --- | --- |
@@ -563,30 +479,33 @@ public class Report {
 | `sorted` | 中间操作（`filter`/`map`/`sorted`）不会立刻执行，只有遇到终止操作（`collect`/`forEach`/`count`/`reduce`）才会遍历一次。 |
 | `collect` | 中间操作（`filter`/`map`/`sorted`）不会立刻执行，只有遇到终止操作（`collect`/`forEach`/`count`/`reduce`）才会遍历一次。 |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：Stream 的中间操作（filter/map）什么时候真正执行？
 
-### 追问 1：Stream 的中间操作（filter/map）什么时候真正执行？
+- **判断依据**：正确答案是「遇到终止操作时才执行」。中间操作是惰性的，只有 collect/forEach/count 等终止操作才会触发一次遍历。判断这类题时，要把「遇到终止操作时才执行」放回题干限定的对象、输入和边界，「创建 Stream 时」、「JVM 空闲时」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「遇到终止操作时才执行」，本课在「Stream 常用操作」中说明：中间操作（filter/map/sorted）不会立刻执行，只有遇到终止操作（collect/forEach/count/reduce）才会遍历一次。中间操作是惰性的，只有 collect/forEach/count 等终止操作才会触发一次遍历。本课还在「零基础详解·Lambda 与 Stream 流水线」中说明：能区分 Stream 的中间操作与终止操作。
+### 考点 2：下面这段 Java 代码复现了“Lambda 与 Stream API”中 lambda、Stream、Optional 相关的一个常见故障，哪一项最准确地解释了问题？
 
-### 追问 2：函数式接口的判断标准是？
+- **判断依据**：本题应选「== 比较的是两个 String 对象的引用，不是内容（java_lambda_stream 第 2 题）；应使用 a.equals(b)」（java_lambda_stream 第 2 题）。本题应选== 比较的是两个 String 对象的引用，不是内容（java_lambda_stream 第 2 题）。应使用 a.equals(b)（java_lambda_stream 第 2 题）。本题应选== 比较的是两个 String 对象的引用，不是内容（javalambdastream 第 2 题）。
 
-**参考回答**：只有一个抽象方法的接口可以用 lambda 实现，@FunctionalInterface 只是编译期检查。其他选项：函数式接口的要求是只有一个抽象方法。针对「函数式接口的判断标准是，」，本课在「函数式接口」中说明：只有一个抽象方法的接口就是函数式接口，可以用 lambda 实现。本课还在「并行流与注意事项」中说明：并行流使用公共 ForkJoinPool，适合纯计算且数据量大。本课还在「本课小结」中说明：Lambda + Stream 让集合处理变成声明式：先说做什么（filter/map），再收集结果（collect）。
+### 考点 3：围绕“Lambda 与 Stream API”中的 lambda、Stream、Optional，下列哪两项是本课强调的实践判断？
 
-### 追问 3：关于 Optional，推荐的做法是？
+- **判断依据**：正确答案包括「验证 Stream 时要固定版本并覆盖边界输入，结论才可复现」、「学习 lambda 时要同时说明输入、输出和失败路径，不能只看正常流程」。符合题干条件的是验证 Stream 时要固定版本并覆盖边界输入。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 lambda 时必须同时交代输入、输出和失败路径，这使“学习 lambda 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 Stream 时要固定版本与边界输入，所以“验证 Stream 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-**参考回答**：正确答案是「使用 orElse / ifPresent / orElseThrow」，本课在「函数式接口」中说明：只有一个抽象方法的接口就是函数式接口，可以用 lambda 实现。Optional.get() 在空值时会抛异常，应使用安全的取值方法。本课还在「并行流与注意事项」中说明：并行流使用公共 ForkJoinPool，适合纯计算且数据量大。
+### 考点 4：Stream 的 collect 与 forEach 的区别是？
 
-### 追问 4：Stream 的 collect 与 forEach 的区别是？
+- **判断依据**：结论应落在「collect 是终止操作，把结果汇总成集合」。结论应落在collect 是终止操作。在流里修改外部状态是常见坏味道，能 collect 就优先 collect。这道题要求区分概念与边界，「collect 是终止操作，把结果汇总成集合」只有在题干给出的前提下才成立，而「collect 只能用于并行流」、「两者都返回 Stream」缺少同一组条件。
 
-**参考回答**：正确答案是「collect 是终止操作，把结果汇总成集合」，本课在「Stream 常用操作」中说明：中间操作（filter/map/sorted）不会立刻执行，只有遇到终止操作（collect/forEach/count/reduce）才会遍历一次。在流里修改外部状态是常见坏味道，能 collect 就优先 collect。本课还在「零基础详解·Lambda 与 Stream 流水线」中说明：知道为什么中间操作不写终止操作就不会执行。
+### 考点 5：方法引用 String::length 等价于哪个 lambda？
 
-### 追问 5：方法引用 String::length 等价于哪个 lambda？
+- **判断依据**：方法引用是 lambda 的语法糖，可读性更好，也能表达构造器引用 Class::new。其他选项：方法引用把接收者作为隐式参数传入，因此 String::length 等价于 s -> s.length()。判断这类题时，要把「s -> s.length()」放回题干限定的对象、输入和边界，「(a, b) -> a.length()」、「() -> String.length()」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：方法引用是 lambda 的语法糖，可读性更好，也能表达构造器引用 Class::new。其他选项：方法引用把接收者作为隐式参数传入，因此 String::length 等价于 s -> s.length()。课程摘要指出函数式接口，方法引用，Stream 惰性求值，Optional 与并行流，本课要判断的正是方法引用String::length等价于哪个lambda。
+### 考点 6：补全代码：「Lambda 与 Stream API」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+
+`@____`
+
+- **判断依据**：空格应填写「FunctionalInterface」、「functionalinterface」。解题的关键不是记住孤立术语，而是确认「FunctionalInterface 或 functionalinte…」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
 
 ## English Overview
 
@@ -594,11 +513,9 @@ public class Report {
 
 **Summary:** Functional interfaces, streams, Optional and parallel streams.
 
-**Category:** Java  
-**Level:** 进阶  
+**Category:** Java
+**Level:** 进阶
 **Key terms:** lambda, Stream, Optional, 函数式接口, collect, 并行流
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -616,13 +533,12 @@ public class Report {
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [Java SE API](https://docs.oracle.com/en/java/javase/) | 语言、标准库与 JVM |
-| [dev.java](https://dev.java/learn/) | 现代 Java 官方教程 |
+| [Java SE API](https://docs.oracle.com/en/java/javase/21/docs/api/) | 标准库 API |
+| [dev.java 学习](https://dev.java/learn/) | 现代 Java 官方教程 |
+| [Maven 指南](https://maven.apache.org/guides/) | 依赖、生命周期与构建 |
 
-> 本课主题：函数式接口、方法引用、Stream 惰性求值、Optional 与并行流。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+> 「Lambda 与 Stream API」的链接用于离线阅读后的延伸核对；App 不会自动联网。

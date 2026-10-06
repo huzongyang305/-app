@@ -907,4 +907,172 @@ void main() {
       reason: 'PNG 转 WebP 后不应再保留 PNG 文件',
     );
   });
+
+  test('P0/P1 内容治理：模板、标题预算、引用唯一和语言匹配', () async {
+    const expectedLanguageByCategory = <String, String>{
+      'python': 'python',
+      'c': 'c',
+      'cpp': 'cpp',
+      'java': 'java',
+      'javascript': 'javascript',
+      'typescript': 'typescript',
+      'csharp': 'csharp',
+      'go': 'go',
+      'rust': 'rust',
+      'kotlin': 'kotlin',
+      'swift': 'swift',
+      'shell': 'shell',
+    };
+    const markdownTemplateMarkers = <String>[
+      '先自己作答，再看「判断依据」',
+      '**迁移检查**',
+      '本课在「',
+      '本课还在「',
+      '本课在核心知识',
+      '本课还在核心知识',
+      '课程摘要指出',
+      '回到正文对应章节补足概念',
+      '把题干里的一个条件换成边界值',
+      '把现象和原因写在一起',
+    ];
+    const explanationTemplateMarkers = <String>[
+      '这道题对应的课程',
+      '修正后要重跑',
+      '本课在「',
+      '本课还在「',
+      '本课把「',
+      '本课在核心知识',
+      '本课还在核心知识',
+      '对照「',
+      '课程摘要',
+    ];
+
+    int countOccurrences(String text, String needle) {
+      if (needle.isEmpty) return 0;
+      var count = 0;
+      var index = 0;
+      while (true) {
+        final next = text.indexOf(needle, index);
+        if (next < 0) return count;
+        count++;
+        index = next + needle.length;
+      }
+    }
+
+    int countOccurrencesOutsideFocus(String text, String needle) {
+      if (needle.isEmpty) return 0;
+      final heading = RegExp(
+        r'^##\s+考点精讲\s*$',
+        multiLine: true,
+      ).firstMatch(text);
+      if (heading == null) return countOccurrences(text, needle);
+      final nextHeading = RegExp(
+        r'^##\s+',
+        multiLine: true,
+      ).firstMatch(text.substring(heading.end));
+      final end = nextHeading == null
+          ? text.length
+          : heading.end + nextHeading.start;
+      return countOccurrences(text.substring(0, heading.start), needle) +
+          countOccurrences(text.substring(end), needle);
+    }
+
+    List<String> referenceUrls(String markdown) {
+      final heading = RegExp(
+        r'^##\s+参考资料与复核\s*$',
+        multiLine: true,
+      ).firstMatch(markdown);
+      if (heading == null) return const <String>[];
+      final rest = markdown.substring(heading.end);
+      final next = RegExp(r'^##\s+', multiLine: true).firstMatch(rest);
+      final section = next == null ? rest : rest.substring(0, next.start);
+      return RegExp(r'\[[^\]]+\]\((https?://[^)\s]+)\)')
+          .allMatches(section)
+          .map((match) => match.group(1)!)
+          .toSet()
+          .toList()
+        ..sort();
+    }
+
+    final templateHits = <String>[];
+    final titleBudgetViolations = <String>[];
+    final languageMismatches = <String>[];
+    final referenceSets = <String, Map<String, List<String>>>{};
+
+    for (final rawCategory in manifestJson['categories'] as List<dynamic>) {
+      final category = (rawCategory as Map).cast<String, dynamic>();
+      final categoryId = category['id'].toString();
+      final expectedLanguage = expectedLanguageByCategory[categoryId];
+      for (final rawLesson in category['lessons'] as List<dynamic>) {
+        final lesson = (rawLesson as Map).cast<String, dynamic>();
+        final id = lesson['id'].toString();
+        final markdown = await rootBundle.loadString(lesson['file'].toString());
+        final title = ((lesson['title'] as Map?)?['zh'] ?? id).toString();
+        if (countOccurrencesOutsideFocus(markdown, title) > 10) {
+          titleBudgetViolations.add('$id(markdown)');
+        }
+        for (final marker in markdownTemplateMarkers) {
+          if (markdown.contains(marker)) {
+            templateHits.add('$id(markdown:$marker)');
+          }
+        }
+
+        final quiz = (lesson['quiz'] as List<dynamic>? ?? const [])
+            .map((raw) => (raw as Map).cast<String, dynamic>())
+            .toList();
+        for (var index = 0; index < quiz.length; index++) {
+          final question = quiz[index];
+          final explanation = (question['explanation'] ?? '').toString();
+          if (countOccurrences(explanation, title) > 2) {
+            titleBudgetViolations.add('$id#${index + 1}(explanation)');
+          }
+          for (final marker in explanationTemplateMarkers) {
+            if (explanation.contains(marker)) {
+              templateHits.add('$id#${index + 1}($marker)');
+            }
+          }
+          final language = (question['language'] ?? '').toString().trim();
+          if (expectedLanguage != null &&
+              language.isNotEmpty &&
+              language != expectedLanguage) {
+            languageMismatches.add(
+              '$id#${index + 1}($language!=$expectedLanguage)',
+            );
+          }
+        }
+
+        final signature = referenceUrls(markdown).join('\n');
+        referenceSets
+            .putIfAbsent(categoryId, () => <String, List<String>>{})
+            .putIfAbsent(signature, () => <String>[])
+            .add(id);
+      }
+    }
+
+    final duplicateReferences = <String>[];
+    for (final category in referenceSets.entries) {
+      for (final entry in category.value.entries) {
+        if (entry.value.length > 1) {
+          duplicateReferences.add('${category.key}:${entry.value.join('、')}');
+        }
+      }
+    }
+
+    expect(templateHits, isEmpty, reason: '仍有模板命中：${templateHits.join('、')}');
+    expect(
+      titleBudgetViolations,
+      isEmpty,
+      reason: '仍有标题复读：${titleBudgetViolations.join('、')}',
+    );
+    expect(
+      languageMismatches,
+      isEmpty,
+      reason: '仍有语言错配：${languageMismatches.join('、')}',
+    );
+    expect(
+      duplicateReferences,
+      isEmpty,
+      reason: '仍有重复参考资料集合：${duplicateReferences.join('、')}',
+    );
+  });
 }

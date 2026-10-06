@@ -1,14 +1,14 @@
-# 实战：Flutter 打包发布 Android
+# 本课主题
+
+> 内容更新时间：2026-10-03
 
 ![Flutter Android 发布流程](images/diagram_mobile_flutter_release.webp)
 
-![实战：Flutter 打包发布 Android](images/category_flutter_release.webp)
-
-> 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟
+![本课主题](images/category_flutter_release.webp)
 
 ## 学习目标
 
-- 能用自己的话解释「实战：Flutter 打包发布 Android」解决了什么问题，而不是只背术语。
+- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
 - 能说清 「Flutter」、「发布」、「签名」、「混淆」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「移动开发」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -18,10 +18,8 @@
 ## 前置知识
 
 - 先完成上一课《Flutter 状态管理与性能》；如果已经掌握，可以直接用本课练习自测。
-- 本课阶段：高级。建议具备同一方向的完整基础，能阅读较长的代码、配置或系统设计说明。
 - 开始前先复习：Flutter、发布、签名。
 - 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
-
 
 ## 从调试到发布
 
@@ -77,7 +75,6 @@ flutter build apk --release --obfuscate --split-debug-info=build/symbols
 
 ## 本课小结
 Flutter 发布的关键是**正式签名 + 按 ABI 拆分 + 混淆并保留符号 + 版本与权限合规**；跑通这四步，产物才算能上架。
-
 
 ## 发布清单速查
 
@@ -173,7 +170,6 @@ android {
 - [ ] 按 ABI 拆分或使用 app bundle 控制体积。
 - [ ] 权限最小化，环境地址由编译期注入。
 - [ ] 完成弱网、低端机与升级路径测试。
-
 
 ## 零基础详解：Flutter 打包与发布
 
@@ -343,7 +339,6 @@ echo "符号：build/symbols（请归档）"
 
 ## 动手练习
 
-
 > 本课练习重点：围绕「Flutter、发布、签名」完成复述、实验和交付，每个结果都要能被别人检查。
 
 先做一个最小 Widget，再切换状态与约束，最后在窄屏和深色模式下验证布局。
@@ -352,7 +347,7 @@ echo "符号：build/symbols（请归档）"
 
 合上教程，用 3～5 句话回答：
 
-1. 「实战：Flutter 打包发布 Android」解决了什么问题？
+1. 本课主题解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「发布」是什么关系？
 
@@ -380,7 +375,6 @@ echo "符号：build/symbols（请归档）"
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-
 ## 验证命令与预期输出
 
 项目代码不能只看“能编译”，还要能按固定命令复现结果。下表给出最低验证集：
@@ -407,10 +401,7 @@ echo "符号：build/symbols（请归档）"
 4. 定位原因后补一条自动化测试，再重新执行发布流程。
 5. 把教训写入项目复盘或本课笔记，形成下一次的检查项。
 
-
 ## 可运行练习
-
-下面 3 个任务围绕“实战：Flutter 打包发布 Android”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
 
 ### 任务 1：先跑通，再解释
 
@@ -435,116 +426,39 @@ echo "符号：build/symbols（请归档）"
 
 **预期输出**：符号：build/symbols（请归档）
 
-**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
-
 ### 任务 2：只改一个条件
-
-复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
-
-**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
 
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
 
-**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
-
-
 ## 故障现场
 
-这一节把“实战：Flutter 打包发布 Android”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 Flutter 常规用例通过，但边界用例失败
 
-### 现场 1：“实战：Flutter 打包发布 Android”的 Flutter 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 Flutter 常规用例通过，但边界用例失败”。
 
-**症状**：在“实战：Flutter 打包发布 Android”的练习或生产场景里出现““实战：Flutter 打包发布 Android”的 Flutter 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““实战：Flutter 打包发布 Android”的 Flutter 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 Flutter 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“Flutter 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“实战：Flutter 打包发布 Android”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 Flutter 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““实战：Flutter 打包发布 Android”的 Flutter 常规用例通过，但边界用例失败”写成一条自动化用例，并在“实战：Flutter 打包发布 Android”的验收清单里保留对应检查项。
+### 现场 2：本课的 发布 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 发布 结果在两次运行之间不一致”。
 
-### 现场 2：“实战：Flutter 打包发布 Android”的 发布 结果在两次运行之间不一致
-
-**症状**：在“实战：Flutter 打包发布 Android”的练习或生产场景里出现““实战：Flutter 打包发布 Android”的 发布 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““实战：Flutter 打包发布 Android”的 发布 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 发布 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“发布 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“实战：Flutter 打包发布 Android”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+**预防**：把“本课的 发布 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““实战：Flutter 打包发布 Android”的 发布 结果在两次运行之间不一致”写成一条自动化用例，并在“实战：Flutter 打包发布 Android”的验收清单里保留对应检查项。
+### 现场 3：本课的验证只在开发机通过
 
-
-### 现场 3：“实战：Flutter 打包发布 Android”的验证只在开发机通过
-
-**症状**：在“实战：Flutter 打包发布 Android”的练习或生产场景里出现““实战：Flutter 打包发布 Android”的验证只在开发机通过”。
-
-**复现**：准备一组最小输入，只保留触发““实战：Flutter 打包发布 Android”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+**症状**：在本课的练习或生产场景里出现“本课的验证只在开发机通过”。
 
 **定位**：围绕“环境版本、配置和输入规模与目标环境不同，Flutter 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
-
-**修复**：把“实战：Flutter 打包发布 Android”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
-
-**预防**：把““实战：Flutter 打包发布 Android”的验证只在开发机通过”写成一条自动化用例，并在“实战：Flutter 打包发布 Android”的验收清单里保留对应检查项。
-
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：发布到商店必须使用？
-
-- **正确判断**：正式 keystore 签名
-- **判断依据**：正确答案是「正式 keystore 签名」，本课在「签名配置与体积优化实操」中说明：体积优化前后参考（同一 Flutter 项目）。keystore 与密码丢失将无法更新已上架应用，务必安全备份。本课还在「项目专属规格：实战：Flutter 打包发布 Android」中说明：正式签名、按 ABI 拆分、混淆与符号保留、发布清单。本课还在「签名配置与体积优化实操」中说明：App Bundle（--appbundle）让商店按设备下发，是发布到 Google Play 的首选形式。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 2：使用 --obfuscate 时必须同时？
-
-- **正确判断**：保存 --split-debug-info 产物以便还原堆栈
-- **判断依据**：正确答案是「保存 --split-debug-info 产物以便还原堆栈」，本课在「混淆与符号」中说明：混淆能提高逆向成本，但崩溃堆栈会变成符号，必须保存 split-debug-info 产物，否则线上崩溃无法定位（用 flutter symbolize 还原）。否则线上崩溃只能看到无意义的符号名。本课还在「签名配置与体积优化实操」中说明：体积优化前后参考（同一 Flutter 项目）。本课还在「本课小结」中说明：Flutter 发布的关键是正式签名 + 按 ABI 拆分 + 混淆并保留符号 + 版本与权限合规。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 3：减小 APK 体积的常用做法是？
-
-- **正确判断**：使用 --split-per-abi 或 App Bundle
-- **判断依据**：正确答案是「使用 --split-per-abi 或 App Bundle」，本课在「签名配置与体积优化实操」中说明：用 flutter build apk --analyze-size 查看各模块占比，优先处理体积最大的资源。按 CPU 架构拆分可显著降低单包体积。本课还在「体积优化」中说明：用 --split-per-abi 或 App Bundle 按 ABI 拆分，避免把三种架构都打进一个包。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 4：flutter build appbundle 的产物格式是？
-
-- **正确判断**：.aab（Android App Bundle）
-- **判断依据**：正确答案是「.aab（Android App Bundle）」，本课在「签名配置与体积优化实操」中说明：③ 在 android/app/build.gradle.kts 读取该文件配置 signingConfigs.release。appbundle 生成 .aab，由商店按设备配置拆分下发。本课还在「签名配置与体积优化实操」中说明：用 flutter build apk --analyze-size 查看各模块占比，优先处理体积最大的资源。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 5：Android 的 minSdk / targetSdk 在哪个文件中配置？
-
-- **正确判断**：android/app/build.gradle(.kts) 的 defaultConfig
-- **判断依据**：正确答案是「android/app/build.gradle(.kts) 的 defaultConfig」，本课在「签名配置与体积优化实操」中说明：③ 在 android/app/build.gradle.kts 读取该文件配置 signingConfigs.release。SDK 版本属于 Android 构建配置，写在 app 模块的 defaultConfig 里。本课还在「签名配置」中说明：生成 keystore（keytool -genkey），把 key.properties 放在仓库外并在 .gitignore 中排除，build.gradle.kts 里读取它配置 signingConfigs.release。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 6：补全代码：「实战：Flutter 打包发布 Android」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `signingConfig = ____.getByName("release")`
-
-- **正确判断**：signingConfigs / signingconfigs
-- **判断依据**：正确答案是「signingConfigs」，本课在「签名配置」中说明：生成 keystore（keytool -genkey），把 key.properties 放在仓库外并在 .gitignore 中排除，build.gradle.kts 里读取它配置 signingConfigs.release。本课还在「签名配置与体积优化实操」中说明：签名配置四步：① keytool -genkey -v -keystore release.jks -keyalg RSA -validity 10000 -alias app 生成密钥库。
-- **迁移检查**：把答案换成另一种等价写法，是否仍然正确？说明依据。
-
-### 补充考点 1：按照「实战：Flutter 打包发布 Android」从概念到实践的讲解顺序排列下列主题。
-
-- **正确判断**：从调试到发布 → 签名配置 → 体积优化 → 混淆与符号
-- **判断依据**：在「实战：Flutter 打包发布 Android」中，正确顺序是：1. 从调试到发布 → 2. 签名配置 → 3. 体积优化 → 4. 混淆与符号。「实战：Flutter 打包发布 Android」先建立概念，再解释运行机制，随后进入代码与工程实践，最后处理失败路径。在「实战：Flutter 打包发布 Android」里，如果把后一步放到前面，通常会缺少前一步产生的定义、输入或验证结果。本课围绕正式签名、按 ABI 拆分、混淆与符号保留、发布清单。展开。
-
-### 补充自测（2 题）
-
-1. 围绕“实战：Flutter 打包发布 Android”中的 Flutter、发布、签名，下列哪两项是本课强调的实践判断？
-2. 下面这段 Dart 代码复现了“实战：Flutter 打包发布 Android”中 Flutter、发布、签名 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
 
 ## 本课复习清单
 
@@ -555,7 +469,7 @@ echo "符号：build/symbols（请归档）"
 - [ ] 不看解析，能说出「减小 APK 体积的常用做法是？」的判断依据。
 - [ ] 不看解析，能说出「flutter build appbundle 的产物格式是？」的判断依据。
 - [ ] 不看解析，能说出「Android 的 minSdk / targetSdk 在哪个文件中配置？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：「实战：Flutter 打包发布 Android」示例中，下面这行代码…」的判断依据。
+- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -566,8 +480,6 @@ echo "符号：build/symbols（请归档）"
 | 下一步验证动作 |  |
 
 ## 术语速查
-
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
 | 术语 | 本课语境 |
 | --- | --- |
@@ -584,30 +496,31 @@ echo "符号：build/symbols（请归档）"
 | `--split-per-abi` | 用 `--split-per-abi` 或 App Bundle 按 ABI 拆分，避免把三种架构都打进一个包。 |
 | `--tree-shake-icons` | `--tree-shake-icons` 剔除未用图标字体（默认开启）。 |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：围绕“实战：Flutter 打包发布 Android”中的 Flutter、发布、签名，下列哪两项是本课强调的实践判断？
 
-### 追问 1：发布到商店必须使用？
+- **判断依据**：正确答案包括「验证 发布 时要固定版本并覆盖边界输入，结论才可复现」、「学习 Flutter 时要同时说明输入、输出和失败路径，不能只看正常流程」。正确答案是验证 发布 时要固定版本并覆盖边界输入。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 Flutter 时必须同时交代输入、输出和失败路径，这使“学习 Flutter 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 发布 时要固定版本与边界输入，所以“验证 发布 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-**参考回答**：正确答案是「正式 keystore 签名」，本课在「签名配置与体积优化实操」中说明：体积优化前后参考（同一 Flutter 项目）。keystore 与密码丢失将无法更新已上架应用，务必安全备份。本课还在「项目专属规格·实战·Flutter 打包发布 Android」中说明：正式签名、按 ABI 拆分、混淆与符号保留、发布清单。本课还在「签名配置与体积优化实操」中说明：App Bundle（--appbundle）让商店按设备下发，是发布到 Google Play 的首选形式。
+### 考点 2：下面这段 Dart 代码复现了“实战：Flutter 打包发布 Android”中 Flutter、发布、签名 相关的一个常见故障，哪一项最准确地解释了问题？
 
-### 追问 2：使用 --obfuscate 时必须同时？
+- **判断依据**：本题应选「循环条件用了 <=，i == data.length 时抛出 RangeError；应改成 i < data.length」（flutter_release 第 2 题）。本题应选循环条件用了 <=，i == data.length 时抛出 RangeError。应改成 i < data.length（flutter_release 第 2 题）。应改成 i < data.length（flutterrelease 第 2 题）。
 
-**参考回答**：正确答案是「保存 --split-debug-info 产物以便还原堆栈」，本课在「混淆与符号」中说明：混淆能提高逆向成本，但崩溃堆栈会变成符号，必须保存 split-debug-info 产物，否则线上崩溃无法定位（用 flutter symbolize 还原）。否则线上崩溃只能看到无意义的符号名。本课还在「签名配置与体积优化实操」中说明：体积优化前后参考（同一 Flutter 项目）。本课还在「本课小结」中说明：Flutter 发布的关键是正式签名 + 按 ABI 拆分 + 混淆并保留符号 + 版本与权限合规。
+### 考点 3：减小 APK 体积的常用做法是？
 
-### 追问 3：减小 APK 体积的常用做法是？
+- **判断依据**：符合题干条件的是「使用 --split-per-abi 或 App Bundle」。按 CPU 架构拆分可显著降低单包体积。正确的判断需要逐项核对定义、版本和适用条件（flutterrelease 第 3 题）。正确的判断需要逐项核对定义、版本和适用条件（flutter_release 第 3 题）。
 
-**参考回答**：正确答案是「使用 --split-per-abi 或 App Bundle」，本课在「签名配置与体积优化实操」中说明：用 flutter build apk --analyze-size 查看各模块占比，优先处理体积最大的资源。按 CPU 架构拆分可显著降低单包体积。本课还在「体积优化」中说明：用 --split-per-abi 或 App Bundle 按 ABI 拆分，避免把三种架构都打进一个包。
+### 考点 4：flutter build appbundle 的产物格式是？
 
-### 追问 4：flutter build appbundle 的产物格式是？
+- **判断依据**：结论应落在「.aab（Android App Bundle）」。appbundle 生成 .aab，由商店按设备配置拆分下发。这道题要求区分概念与边界，「.aab（Android App Bundle）」只有在题干给出的前提下才成立，而「.ipa（没有覆盖题干给出的条件）」、「.jar」缺少同一组条件。
 
-**参考回答**：正确答案是「.aab（Android App Bundle）」，本课在「签名配置与体积优化实操」中说明：③ 在 android/app/build.gradle.kts 读取该文件配置 signingConfigs.release。appbundle 生成 .aab，由商店按设备配置拆分下发。本课还在「签名配置与体积优化实操」中说明：用 flutter build apk --analyze-size 查看各模块占比，优先处理体积最大的资源。
+### 考点 5：Android 的 minSdk / targetSdk 在哪个文件中配置？
 
-### 追问 5：Android 的 minSdk / targetSdk 在哪个文件中配置？
+- **判断依据**：正确答案是「android/app/build.gradle(.kts) 的 defaultConfig」。SDK 版本属于 Android 构建配置，写在 app 模块的 defaultConfig 里。判断这类题时，要把「android/app/build.gradle(.kts) 的 def…」放回题干限定的对象、输入和边界，「lib/main.dart 顶部常量」、「pubspec.yaml 的 flutter 段」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「android/app/build.gradle(.kts) 的 defaultConfig」，本课在「签名配置与体积优化实操」中说明：③ 在 android/app/build.gradle.kts 读取该文件配置 signingConfigs.release。SDK 版本属于 Android 构建配置，写在 app 模块的 defaultConfig 里。本课还在「签名配置」中说明：生成 keystore（keytool -genkey），把 key.properties 放在仓库外并在 .gitignore 中排除，build.gradle.kts 里读取它配置 signingConfigs.release。
+### 考点 6：按照「实战：Flutter 打包发布 Android」从概念到实践的讲解顺序排列下列主题。
+
+- **判断依据**：正确的执行顺序是「从调试到发布」 → 「签名配置」 → 「体积优化」 → 「混淆与符号」。在本课中，正确顺序是：1. 从调试到发布 → 2. 签名配置 → 3. 体积优化 → 4. 混淆与符号。本课围绕正式签名、按 ABI 拆分、混淆与符号保留、发布清单。
 
 ## English Overview
 
@@ -615,11 +528,9 @@ echo "符号：build/symbols（请归档）"
 
 **Summary:** Signing, ABI splits, obfuscation and release checklist.
 
-**Category:** Mobile Development  
-**Level:** 高级  
+**Category:** Mobile Development
+**Level:** 高级
 **Key terms:** Flutter, 发布, 签名, 混淆, 体积优化
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -631,7 +542,7 @@ echo "符号：build/symbols（请归档）"
 - 相关主题：Flutter、发布、签名、混淆、体积优化
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-## 项目专属规格：实战：Flutter 打包发布 Android
+## 项目专属规格：本课主题
 
 ### 核心场景
 
@@ -660,7 +571,6 @@ echo "符号：build/symbols（请归档）"
 3. 失败路径：依赖超时或不可用时能快速失败、重试或降级。
 4. 幂等路径：同一请求执行两次不会产生重复副作用。
 5. 回滚路径：回滚后数据一致，且能说明恢复时间和影响范围。
-
 
 ## 项目交付物
 
@@ -714,13 +624,12 @@ pubspec.yaml
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [Flutter 官方文档](https://docs.flutter.dev/) | 框架、组件与发布流程 |
-| [Dart 官方文档](https://dart.dev/guides) | 语言、异步与工具链 |
+| [Android 发布指南](https://docs.flutter.dev/deployment/android) | 签名、构建与发布 |
+| [Flutter 包与插件](https://docs.flutter.dev/packages-and-plugins) | 包管理、插件与平台通道 |
+| [Flutter 性能最佳实践](https://docs.flutter.dev/perf/best-practices) | 帧率、构建与内存优化 |
 
-> 本课主题：正式签名、按 ABI 拆分、混淆与符号保留、发布清单。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+> 「实战：Flutter 打包发布 Android」的链接用于离线阅读后的延伸核对；App 不会自动联网。

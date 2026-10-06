@@ -8,7 +8,7 @@
 
 ## 学习目标
 
-- 能用自己的话解释「Go 基础」解决了什么问题，而不是只背术语。
+- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
 - 能说清 「Go」、「goroutine」、「channel」、「并发」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「Go」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -21,7 +21,6 @@
 - 本课阶段：基础。建议会读写简单代码或命令，并理解变量、输入输出等基本概念。
 - 开始前先复习：Go、goroutine、channel。
 - 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
-
 
 ## 语言定位
 
@@ -69,7 +68,6 @@ Go 用 **goroutine** 与 **channel** 实现 CSP 模型：不要通过共享内�
 
 ## 本课小结
 Go 的设计哲学是**少即是多**：语法小、工具链统一、并发原语内置。掌握 goroutine + channel + 显式错误处理，就能写出可维护的云原生服务。
-
 
 ## 基础语法速查
 
@@ -160,7 +158,6 @@ func main() {
 - [ ] 切片、映射、结构体的差异与初始化方式清楚。
 - [ ] 提交前跑 `gofmt`、`go vet`、`go test`。
 - [ ] 知道接口的隐式实现与类型断言的安全写法。
-
 
 ## 零基础详解：Go 程序的骨架与「显式」哲学
 
@@ -308,7 +305,6 @@ func main() {
 
 ## 动手练习
 
-
 > 本课练习重点：围绕「Go、goroutine、channel」完成复述、实验和交付，每个结果都要能被别人检查。
 
 先写最小程序并用 go test 验证，再补 context、并发上限和错误传播。
@@ -317,7 +313,7 @@ func main() {
 
 合上教程，用 3～5 句话回答：
 
-1. 「Go 基础」解决了什么问题？
+1. 本课主题解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「goroutine」是什么关系？
 
@@ -345,80 +341,50 @@ func main() {
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-
-
 ## 实践任务
 
-本节围绕“Go 基础”安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
+本节围绕本课主题安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 
 ### 任务 1：用自己的话画出结构
 
-合上教程，用 5 句话说明“Go 基础”解决什么问题、输入是什么、输出是什么、失败时会怎样、与相邻概念的边界在哪里。画一张流程图或状态图，把每个节点标注成“输入 / 处理 / 输出 / 失败路径”之一。
-
-**验收标准**：图里至少有 5 个节点和 1 条失败路径；每个节点都能在正文中找到依据。
-
 ### 任务 2：做一次对比实验
-
-从正文里选两个差异最小的方案，列成 4 列表格：方案、前提、代价、适用边界。然后只改变一个条件（数据规模、并发度、精度或资源上限），记录结果变化。
 
 **验收标准**：表格里两个方案的结论不能完全一样；写下“在什么条件下应该换方案”。
 
 ### 任务 3：迁移到自己的场景
 
-把“Go 基础”的核心方法用到你熟悉的一个真实场景，写出一份 300 字以内的实施记录：目标、步骤、验证方式、仍然不确定的问题。
-
 **验收标准**：至少有一个可复现的命令、代码片段或数据样例；结论能被别人独立检查。
-
 
 ## 故障现场
 
-这一节把“Go 基础”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 Go 常规用例通过，但边界用例失败
 
-### 现场 1：“Go 基础”的 Go 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 Go 常规用例通过，但边界用例失败”。
 
-**症状**：在“Go 基础”的练习或生产场景里出现““Go 基础”的 Go 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““Go 基础”的 Go 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 Go 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“Go 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“Go 基础”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 Go 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““Go 基础”的 Go 常规用例通过，但边界用例失败”写成一条自动化用例，并在“Go 基础”的验收清单里保留对应检查项。
+### 现场 2：本课的 goroutine 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 goroutine 结果在两次运行之间不一致”。
 
-### 现场 2：“Go 基础”的 goroutine 结果在两次运行之间不一致
-
-**症状**：在“Go 基础”的练习或生产场景里出现““Go 基础”的 goroutine 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““Go 基础”的 goroutine 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 goroutine 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“goroutine 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“Go 基础”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+**预防**：把“本课的 goroutine 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““Go 基础”的 goroutine 结果在两次运行之间不一致”写成一条自动化用例，并在“Go 基础”的验收清单里保留对应检查项。
+### 现场 3：本课的验证只在开发机通过
 
-
-### 现场 3：“Go 基础”的验证只在开发机通过
-
-**症状**：在“Go 基础”的练习或生产场景里出现““Go 基础”的验证只在开发机通过”。
-
-**复现**：准备一组最小输入，只保留触发““Go 基础”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+**症状**：在本课的练习或生产场景里出现“本课的验证只在开发机通过”。
 
 **定位**：围绕“环境版本、配置和输入规模与目标环境不同，Go 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：把“Go 基础”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
-
-**预防**：把““Go 基础”的验证只在开发机通过”写成一条自动化用例，并在“Go 基础”的验收清单里保留对应检查项。
-
-
-
 ## 版本与时效
 
-这一节记录“Go 基础”涉及的版本基线与升级检查点，避免把某个版本的默认行为当成永久结论。
-
-- Go 1.25 是当前主线，泛型、range-over-func 与工具链持续增强
 - 升级前用 go vet、go test -race 与静态检查覆盖并发生命周期
 - 模块校验、最小版本选择与供应链安全是生产升级的重点
 - 官方发布说明：https://go.dev/doc/devel/release
@@ -430,55 +396,6 @@ func main() {
 - 重点回归默认值、弃用警告、序列化格式、并发语义和错误信息。
 - 升级完成后更新本课的“最后复核 / 下次复核”日期与版本说明。
 
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：Go 的并发模型基于什么？
-
-- **正确判断**：goroutine + channel（CSP）
-- **判断依据**：正确答案是「goroutine + channel（CSP）」，本课在「并发模型」中说明：Go 用 goroutine 与 channel 实现 CSP 模型：不要通过共享内存来通信，而要通过通信来共享内存。Go 提倡通过通信共享内存，而不是通过共享内存通信。本课还在「本课小结」中说明：掌握 goroutine + channel + 显式错误处理，就能写出可维护的云原生服务。本课还在「常见坑」中说明：goroutine 泄漏：启动后无人回收，要用 context 控制生命周期。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 2：Go 的错误处理方式是？
-
-- **正确判断**：函数显式返回 error 并检查
-- **判断依据**：正确答案是「函数显式返回 error 并检查」，本课在「本课小结」中说明：掌握 goroutine + channel + 显式错误处理，就能写出可维护的云原生服务。Go 用 error 返回值表达可预期失败，panic 只用于不可恢复错误。本课还在「零基础详解：Go 程序的骨架与「显式」哲学」中说明：它的核心哲学是「显式」——错误要显式返回。本课还在「零基础详解：Go 程序的骨架与「显式」哲学」中说明：能写出返回 (值, error) 的函数并正确处理错误。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 3：向 nil map 写入会怎样？
-
-- **正确判断**：panic，必须先 make
-- **判断依据**：正确答案是「panic，必须先 make」，本课在「常见坑」中说明：nil map 写入会 panic，必须 make 初始化。map 必须用 make 或字面量初始化后才能写入。本课还在「并发模型」中说明：channel 要有明确的关闭方，避免向已关闭的 channel 发送数据导致 panic。本课还在「并发模型」中说明：Go 用 goroutine 与 channel 实现 CSP 模型：不要通过共享内存来通信，而要通过通信来共享内存。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 4：Go 中 := 与 = 的区别是？
-
-- **正确判断**：:= 声明并推导类型（只能用在函数内），= 只做赋值
-- **判断依据**：正确答案是「:= 声明并推导类型（只能用在函数内），= 只做赋值」，本课在「工程实践」中说明：用 defer 释放资源（关闭文件、解锁），注意它在函数返回时执行。:= 至少要有左侧一个新变量，重复声明同一变量会编译报错。本课还在「工程实践」中说明：错误要带上文：fmt.Errorf("load config: %w", err)，用 errors.Is/As 判断。本课还在「语言定位」中说明：Go（Golang）由 Google 设计，主打简单、编译快、并发友好、部署方便：编译成单个静态可执行文件，自带垃圾回收与标准库，非常适合云原生、微服务与 CLI 工具（Docker、Kubernetes、etcd 都用它写）。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 5：defer 语句的执行时机与顺序是？
-
-- **正确判断**：函数返回前执行
-- **判断依据**：正确答案是「函数返回前执行」，本课在「工程实践」中说明：用 defer 释放资源（关闭文件、解锁），注意它在函数返回时执行。defer 常用于释放锁、关闭文件。本课还在「零基础详解：Go 程序的骨架与「显式」哲学」中说明：能说清 defer 的执行顺序和参数求值时机。本课还在「并发模型」中说明：channel 要有明确的关闭方，避免向已关闭的 channel 发送数据导致 panic。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 6：补全代码：「Go 基础」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `fmt.____("查询失败：", err)`
-
-- **正确判断**：Println / println
-- **判断依据**：正确答案是「Println」，本课在「零基础详解：Go 程序的骨架与「显式」哲学」中说明：能写出返回 (值, error) 的函数并正确处理错误。本课还在「工程实践」中说明：错误要带上文：fmt.Errorf("load config: %w", err)，用 errors.Is/As 判断。本课还在「并发模型」中说明：关键实践：用 context 传递取消与超时。
-- **迁移检查**：如果填成相近的另一个函数或关键字，程序会在哪一步出错？
-
-### 补充自测（2 题）
-
-1. 围绕“Go 基础”中的 Go、goroutine、channel，下列哪两项是本课强调的实践判断？
-2. 下面这段 Go 代码复现了“Go 基础”中 Go、goroutine、channel 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
-
 ## 本课复习清单
 
 离开本课前，逐项确认：
@@ -488,7 +405,6 @@ func main() {
 - [ ] 不看解析，能说出「向 nil map 写入会怎样？」的判断依据。
 - [ ] 不看解析，能说出「Go 中 := 与 = 的区别是？」的判断依据。
 - [ ] 不看解析，能说出「defer 语句的执行时机与顺序是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：「Go 基础」示例中，下面这行代码缺少哪个关键字或函数名？请填入 __…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -499,8 +415,6 @@ func main() {
 | 下一步验证动作 |  |
 
 ## 术语速查
-
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
 | 术语 | 本课语境 |
 | --- | --- |
@@ -517,30 +431,33 @@ func main() {
 | `go fmt` | 工具链：`go fmt` 统一格式、`go vet` 静态检查、`go test -race` 竞态检测。 |
 | `go vet` | 工具链：`go fmt` 统一格式、`go vet` 静态检查、`go test -race` 竞态检测。 |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：围绕“Go 基础”中的 Go、goroutine、channel，下列哪两项是本课强调的实践判断？
 
-### 追问 1：Go 的并发模型基于什么？
+- **判断依据**：正确答案包括「验证 goroutine 时要固定版本并覆盖边界输入，结论才可复现」、「学习 Go 时要同时说明输入、输出和失败路径，不能只看正常流程」。正确答案是验证 goroutine 时要固定版本并覆盖边界输入。在本课主题里，判断 goroutine 时要固定版本与边界输入，所以“验证 goroutine 时要固定版本并覆盖边界输入，结论才可复现”才可复现。判断这类题时，要把验证 goroutine 时要固定版本并覆盖边界输入，结论才可复现。
 
-**参考回答**：正确答案是「goroutine + channel（CSP）」，本课在「并发模型」中说明：Go 用 goroutine 与 channel 实现 CSP 模型：不要通过共享内存来通信，而要通过通信来共享内存。Go 提倡通过通信共享内存，而不是通过共享内存通信。本课还在「本课小结」中说明：掌握 goroutine + channel + 显式错误处理，就能写出可维护的云原生服务。本课还在「常见坑」中说明：goroutine 泄漏：启动后无人回收，要用 context 控制生命周期。
+### 考点 2：下面这段 Go 代码复现了“Go 基础”中 Go、goroutine、channel 相关的一个常见故障，哪一项最准确地解释了问题？
 
-### 追问 2：Go 的错误处理方式是？
+- **判断依据**：本题应选「循环条件用了 <=，i == len(data) 时越界，运行时 panic」。本题应选循环条件用了 <=，i == len(data) 时越界，运行时 panic（gobasics 第 2 题）。结合Go、goroutine来看，本题应选循环条件用了 <=。在这个复现里，要让 goroutine 的结果稳定，可以直接使用 for , v := range data 或把长度保存在局部变量中。
 
-**参考回答**：正确答案是「函数显式返回 error 并检查」，本课在「本课小结」中说明：掌握 goroutine + channel + 显式错误处理，就能写出可维护的云原生服务。Go 用 error 返回值表达可预期失败，panic 只用于不可恢复错误。本课还在「零基础详解·Go 程序的骨架与「显式」哲学」中说明：它的核心哲学是「显式」——错误要显式返回。本课还在「零基础详解·Go 程序的骨架与「显式」哲学」中说明：能写出返回 (值, error) 的函数并正确处理错误。
+### 考点 3：向 nil map 写入会怎样？
 
-### 追问 3：向 nil map 写入会怎样？
+- **判断依据**：符合题干条件的是「panic，必须先 make」。map 必须用 make 或字面量初始化后才能写入。正确的判断需要逐项核对定义、版本和适用条件（gobasics 第 3 题）。围绕 向 nil map 写入会怎样。如果只凭关键词作答，很容易把「忽略写入」、「返回 error」与「panic，必须先 make」混在一起；正确的判断需要逐项核对定义、版本和适用条件（go_basics 第 3 题）。
 
-**参考回答**：正确答案是「panic，必须先 make」，本课在「常见坑」中说明：nil map 写入会 panic，必须 make 初始化。map 必须用 make 或字面量初始化后才能写入。本课还在「并发模型」中说明：channel 要有明确的关闭方，避免向已关闭的 channel 发送数据导致 panic。本课还在「并发模型」中说明：Go 用 goroutine 与 channel 实现 CSP 模型：不要通过共享内存来通信，而要通过通信来共享内存。
+### 考点 4：Go 中 := 与 = 的区别是？
 
-### 追问 4：Go 中 := 与 = 的区别是？
+- **判断依据**：结论应落在「:= 声明并推导类型（只能用在函数内），= 只做赋值」。结论应落在:= 声明并推导类型（只能用在函数内）。:= 至少要有左侧一个新变量，重复声明同一变量会编译报错。这道题要求区分概念与边界，「:= 声明并推导类型（只能用在函数内），= 只做赋值」只有在题干给出的前提下才成立，而「两者完全等价」、「:= 可以用于包级变量（仅部分场景成立）」缺少同一组条件。
 
-**参考回答**：正确答案是「:= 声明并推导类型（只能用在函数内），= 只做赋值」，本课在「工程实践」中说明：用 defer 释放资源（关闭文件、解锁），注意它在函数返回时执行。:= 至少要有左侧一个新变量，重复声明同一变量会编译报错。本课还在「工程实践」中说明：错误要带上文：fmt.Errorf("load config: %w", err)，用 errors.Is/As 判断。本课还在「语言定位」中说明：Go（Golang）由 Google 设计，主打简单、编译快、并发友好、部署方便：编译成单个静态可执行文件，自带垃圾回收与标准库，非常适合云原生、微服务与 CLI 工具（Docker、Kubernetes、etcd 都用它写）。
+### 考点 5：defer 语句的执行时机与顺序是？
 
-### 追问 5：defer 语句的执行时机与顺序是？
+- **判断依据**：围绕 defer 语句的执行时机与顺序是。作答时，先用Go建立输入与输出的基线，再把函数返回前执行代入边界条件核对，结论才能复现。判断这类题时，要把「函数返回前执行」放回题干限定的对象、输入和边界，「立即执行」、「按书写顺序从上到下执行」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「函数返回前执行」，本课在「工程实践」中说明：用 defer 释放资源（关闭文件、解锁），注意它在函数返回时执行。defer 常用于释放锁、关闭文件。本课还在「零基础详解·Go 程序的骨架与「显式」哲学」中说明：能说清 defer 的执行顺序和参数求值时机。本课还在「并发模型」中说明：channel 要有明确的关闭方，避免向已关闭的 channel 发送数据导致 panic。
+### 考点 6：补全代码：「Go 基础」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+
+`fmt.____("查询失败：", err)`
+
+- **判断依据**：围绕 补全代码：本课主题示例中，下面这行代码缺少哪个关键字或函数名（gobasics 第 6 题）。… 作答时，先用Go建立输入与输出的基线，再把Println 或 println代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「Println 或 println」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
 
 ## English Overview
 
@@ -548,11 +465,9 @@ func main() {
 
 **Summary:** Goroutines, channels and explicit errors.
 
-**Category:** Go  
-**Level:** 基础  
+**Category:** Go
+**Level:** 基础
 **Key terms:** Go, goroutine, channel, 并发, error
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -564,7 +479,6 @@ func main() {
 - 相关主题：Go、goroutine、channel、并发、error
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-
 ## Full English Study Guide
 
 ### Overview
@@ -574,60 +488,23 @@ func main() {
 ### Learning Outcomes
 
 - Explain what **Go Basics** solves and when it should be used.
-- Identify inputs, outputs, state and failure boundaries.
-- Build a minimal reproducible example and observe the real result.
-- Test normal, boundary and failure paths.
-- Measure performance, resource cost or security impact before optimizing.
-- Document the decision, rollback path and remaining uncertainty.
 
 ### Core Mental Model
 
-1. **Problem first:** define the exact problem before choosing a tool or pattern.
-2. **Smallest example:** reduce the system to one input and one observable output.
-3. **State and flow:** trace how data, control or responsibility moves through the system.
-4. **Boundaries:** identify invalid input, resource limits, timeouts and permission edges.
-5. **Evidence:** use tests, logs, metrics or reproductions instead of intuition.
-6. **Trade-offs:** compare correctness, latency, cost, complexity and operability.
-
 ### Step-by-step Study Plan
-
-1. Read the Chinese lesson once and write down the main problem in one sentence.
-2. Run the smallest example and save the exact command and output.
-3. Change only one input or parameter and predict the result before running it.
-4. Introduce one failure and record how the system detects, reports and recovers.
-5. Write one test or checklist item for the normal, boundary and failure paths.
-6. Complete the quiz and explain every wrong answer in your own words.
 
 ### Practice Tasks
 
-- Rebuild the minimal example from an empty directory.
-- Add one boundary test and one failure test.
-- Produce a short report containing the baseline, change, result and rollback.
-
 ### Common Failure Modes
-
-- Treating a happy-path demo as production readiness.
-- Skipping boundary values and invalid inputs.
-- Optimizing before establishing a measurable baseline.
-- Hiding errors, permissions or resource limits.
 
 ### Self-check Questions
 
-1. What is the smallest observable result that proves this lesson works?
-2. What input or state is most likely to break it?
-3. Which metric or test would reveal a regression?
 4. What is the rollback path?
-5. What is the cost of using this approach at 10x scale?
-6. Which adjacent topic is most often confused with this one?
 
 ### Glossary
 
 - Topic: **Go Basics**
 - Related terms: Go, goroutine, channel, 并发
-- Primary evidence: command output, tests, logs, metrics or reproductions
-
-> This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
-
 
 ## Bilingual Section Outline
 
@@ -644,202 +521,18 @@ func main() {
 | 基础语法速查 | 基础语法速查 |
 | 常用命令速查 | 常用命令速查 |
 
-> 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
-
 
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [Go 官方文档](https://go.dev/doc/) | 语言、并发与工具链 |
-| [Go 标准库](https://pkg.go.dev/std) | 标准库 API |
+| [Go 并发](https://go.dev/talks/2012/concurrency.slide) | goroutine 与 channel |
+| [Go 官方教程](https://go.dev/tour/) | 语言基础与并发入门 |
+| [Effective Go](https://go.dev/doc/effective_go) | 惯用写法与接口设计 |
 
-> 本课主题：goroutine/channel 并发模型与显式错误处理。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-
-<!-- code-practice:v1:start -->
-
-## 代码练习（6 题）
-
-下面题目与课程测验同源：覆盖代码输出、排错与场景判断。建议先自己写出答案，再到「测验」里核对成绩。
-
-### 练习 1 · 代码输出
-
-在 Go 课程“Go 基础”的集合实验里，这段代码运行后输出什么？
-
-```go
-package main
-
-import "fmt"
-
-func main() {
-    x := 4
-    fmt.Println(x)
-}
-```
-
-- A. 4
-- B. 3
-- C. 5
-- D. 8
-
-**参考答案**：A. 4
-**参考输出**：`4`
-
-**解析**
-
-在 Go 课程“Go 基础”的集合代码实验里，程序先完成赋值、循环或函数调用，再把结果写到标准输出，因此正确结果是 4。
-判断 Go 课程“Go 基础”的代码输出时，要把“源码写了什么”和“运行时实际打印什么”分开；变量值和循环边界都会直接改变最终结果。
-把 4 当作基线后，可以只改一个输入或一个边界，再观察 Go 课程“Go 基础”的输出如何变化，这就是验证掌握程度的方法。
-
-### 练习 2 · 代码输出
-
-在 Go 课程“Go 基础”的条件实验里，这段代码运行后输出什么？
-
-```go
-package main
-
-import "fmt"
-
-func main() {
-    total := 0
-    for i := 1; i <= 5; i++ {
-        total += i
-    }
-    fmt.Println(total)
-}
-```
-
-- A. 16
-- B. 14
-- C. 30
-- D. 15
-
-**参考答案**：D. 15
-**参考输出**：`15`
-
-**解析**
-
-在 Go 课程“Go 基础”的条件代码实验里，程序先完成赋值、循环或函数调用，再把结果写到标准输出，因此正确结果是 15。
-判断 Go 课程“Go 基础”的代码输出时，要把“源码写了什么”和“运行时实际打印什么”分开；变量值和循环边界都会直接改变最终结果。
-把 15 当作基线后，可以只改一个输入或一个边界，再观察 Go 课程“Go 基础”的输出如何变化，这就是验证掌握程度的方法。
-
-### 练习 3 · 代码输出
-
-在 Go 课程“Go 基础”的错误处理实验里，这段代码运行后输出什么？
-
-```go
-package main
-
-import "fmt"
-
-func double(value int) int {
-    return value * 2
-}
-
-func main() {
-    fmt.Println(double(5))
-}
-```
-
-- A. 10
-- B. 11
-- C. 9
-- D. 20
-
-**参考答案**：A. 10
-**参考输出**：`10`
-
-**解析**
-
-在 Go 课程“Go 基础”的错误处理代码实验里，程序先完成赋值、循环或函数调用，再把结果写到标准输出，因此正确结果是 10。
-判断 Go 课程“Go 基础”的代码输出时，要把“源码写了什么”和“运行时实际打印什么”分开；变量值和循环边界都会直接改变最终结果。
-把 10 当作基线后，可以只改一个输入或一个边界，再观察 Go 课程“Go 基础”的输出如何变化，这就是验证掌握程度的方法。
-
-### 练习 4 · 代码排错
-
-Go 课程“Go 基础”的下面这段代码无法运行，最可能的修复是什么？
-
-```go
-package main
-
-import "fmt"
-
-func main() {
-    total := 0
-    for i := 1; i <= 5; i++
-        total += i
-    }
-    fmt.Println(total)
-}
-```
-
-- A. 重新安装运行时并清空所有缓存
-- B. 把变量名改成另一个单词即可
-- C. 在 for 语句末尾补上左花括号
-- D. 把输出语句整段删除，代码就会自动修复
-
-**参考答案**：C. 在 for 语句末尾补上左花括号
-
-**解析**
-
-Go 课程“Go 基础”里的这段代码无法通过编译或解析，关键原因是缺少了必要语法结构，正确修复是在 for 语句末尾补上左花括号。
-在 Go 课程“Go 基础”中，错误信息通常会指出出错行和期望符号；先读第一条错误，再检查这一行的括号、冒号、分号或花括号。
-修复后还要重新运行 Go 课程“Go 基础”的最小示例，确认输出恢复，并记录这次问题属于语法错误而不是逻辑错误。
-
-### 练习 5 · 代码排错
-
-Go 课程“Go 基础”的这段代码结果偏小，应该怎样修改？
-
-```go
-package main
-
-import "fmt"
-
-func main() {
-    total := 0
-    for i := 1; i < 5; i++ {
-        total += i
-    }
-    fmt.Println(total)
-}
-```
-
-- A. 把累加操作改成减法操作
-- B. 把循环条件 i < 5 改成 i <= 5
-- C. 把循环变量从 1 改成 0，其余保持不变
-- D. 把输出语句移到循环体内部
-
-**参考答案**：B. 把循环条件 i < 5 改成 i <= 5
-**修复后输出**：`15`
-
-**解析**
-
-Go 课程“Go 基础”里的循环边界少算了最后一项，当前输出是 10，而完整求和应为 15。
-正确修复是把循环条件 i < 5 改成 i <= 5；这类错误属于边界问题，代码能运行但结果偏离，所以比语法错误更隐蔽。
-验证 Go 课程“Go 基础”时至少选择首项、中间值和末尾值三个输入，比较手算结果与程序输出，才能发现类似偏差。
-
-### 练习 6 · 概念判断
-
-在 Go 课程“Go 基础”的学习或项目场景中，哪种做法最有助于得到可验证、可迁移的结果？
-
-- A. 一次改完所有变量和依赖，再统一观察是否报错
-- B. 只背下「Go 基础」的结论，遇到新输入时凭感觉修改代码
-- C. 先围绕「Go」写最小可运行示例，再用边界输入验证“Go 基础”的结果
-- D. 跳过错误信息，直接复制另一段代码直到能运行
-
-**参考答案**：C. 先围绕「Go」写最小可运行示例，再用边界输入验证“Go 基础”的结果
-
-**解析**
-
-在 Go 课程“Go 基础”里，Go不是孤立的名词，而是一组可以用输入、过程、输出和边界验证的行为。
-对 Go 课程“Go 基础”来说，先写最小可运行示例，再逐步增加边界输入，能把“感觉会了”转化成可以重复的证据。
-如果只背结论或一次改很多变量，出错时就无法判断是哪一步破坏了 Go 课程“Go 基础”的预期；先把变化隔离出来才容易定位。
-
-<!-- code-practice:v1:end -->
+> 「Go 基础」的链接用于离线阅读后的延伸核对；App 不会自动联网。

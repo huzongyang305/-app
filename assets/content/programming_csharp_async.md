@@ -1,14 +1,14 @@
 # 异步编程与异常处理
 
+> 内容更新时间：2026-10-03
+
 ![async/await 的调用链与取消](images/diagram_cs_async.webp)
 
 ![异步编程与异常处理](images/remaining_csharp_async.webp)
 
-> 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟
-
 ## 学习目标
 
-- 能用自己的话解释「异步编程与异常处理」解决了什么问题，而不是只背术语。
+- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
 - 能说清 「async」、「await」、「Task」、「CancellationToken」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「C#」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -21,7 +21,6 @@
 - 本课阶段：进阶。建议先掌握同一分类的基础课程，并能独立运行正文中的最小示例。
 - 开始前先复习：async、await、Task。
 - 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
-
 
 ## async / await
 
@@ -124,7 +123,6 @@ while ((line = await reader.ReadLineAsync()) != null)
 ## 本课小结
 异步的目标是**不阻塞线程**：IO 用 `async/await`、并发用 `Task.WhenAll`、可取消用 `CancellationToken`，异常与资源交给 try/catch 与 using。
 
-
 ## async / await 速查
 
 | 写法 | 含义 | 建议 |
@@ -186,7 +184,6 @@ string[] results = await Task.WhenAll(tasks);   // 总耗时接近最慢的一�
 - [ ] IO 密集用异步 API，CPU 密集才考虑 `Task.Run`。
 - [ ] 对外方法都接受并传递 `CancellationToken`。
 - [ ] 多个独立任务用 `Task.WhenAll` 并发执行。
-
 
 ## 零基础详解：async/await 与任务并行
 
@@ -340,13 +337,11 @@ static async Task Main()
 - [ ] 知道取消为什么要一路传递 `CancellationToken`。
 - [ ] 能判断一个场景该用 async 还是 `Task.Run`。
 
-
-
 ## 动手练习
 
 ### 练习 1：概念复述（10 分钟）
 
-合上教程，用 3～5 句话解释「异步编程与异常处理」解决什么问题，并写出一个边界条件。
+合上教程，用 3～5 句话解释本课主题解决什么问题，并写出一个边界条件。
 
 **验收标准**：至少使用一个本课关键词，并给出一个反例。
 
@@ -364,77 +359,49 @@ static async Task Main()
 - 产出一个别人可以检查的结果。
 - 写出一个仍不确定的问题和验证方法。
 
-
 ## 实践任务
 
-本节围绕“异步编程与异常处理”安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
+本节围绕本课主题安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 
 ### 任务 1：用自己的话画出结构
 
-合上教程，用 5 句话说明“异步编程与异常处理”解决什么问题、输入是什么、输出是什么、失败时会怎样、与相邻概念的边界在哪里。画一张流程图或状态图，把每个节点标注成“输入 / 处理 / 输出 / 失败路径”之一。
-
-**验收标准**：图里至少有 5 个节点和 1 条失败路径；每个节点都能在正文中找到依据。
-
 ### 任务 2：做一次对比实验
-
-从正文里选两个差异最小的方案，列成 4 列表格：方案、前提、代价、适用边界。然后只改变一个条件（数据规模、并发度、精度或资源上限），记录结果变化。
 
 **验收标准**：表格里两个方案的结论不能完全一样；写下“在什么条件下应该换方案”。
 
 ### 任务 3：迁移到自己的场景
 
-把“异步编程与异常处理”的核心方法用到你熟悉的一个真实场景，写出一份 300 字以内的实施记录：目标、步骤、验证方式、仍然不确定的问题。
-
 **验收标准**：至少有一个可复现的命令、代码片段或数据样例；结论能被别人独立检查。
-
 
 ## 故障现场
 
-这一节把“异步编程与异常处理”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 async 常规用例通过，但边界用例失败
 
-### 现场 1：“异步编程与异常处理”的 async 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 async 常规用例通过，但边界用例失败”。
 
-**症状**：在“异步编程与异常处理”的练习或生产场景里出现““异步编程与异常处理”的 async 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““异步编程与异常处理”的 async 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 async 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“async 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“异步编程与异常处理”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 async 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““异步编程与异常处理”的 async 常规用例通过，但边界用例失败”写成一条自动化用例，并在“异步编程与异常处理”的验收清单里保留对应检查项。
+### 现场 2：本课的 await 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 await 结果在两次运行之间不一致”。
 
-### 现场 2：“异步编程与异常处理”的 await 结果在两次运行之间不一致
-
-**症状**：在“异步编程与异常处理”的练习或生产场景里出现““异步编程与异常处理”的 await 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““异步编程与异常处理”的 await 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 await 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“await 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“异步编程与异常处理”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+**预防**：把“本课的 await 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““异步编程与异常处理”的 await 结果在两次运行之间不一致”写成一条自动化用例，并在“异步编程与异常处理”的验收清单里保留对应检查项。
+### 现场 3：本课的验证只在开发机通过
 
-
-### 现场 3：“异步编程与异常处理”的验证只在开发机通过
-
-**症状**：在“异步编程与异常处理”的练习或生产场景里出现““异步编程与异常处理”的验证只在开发机通过”。
-
-**复现**：准备一组最小输入，只保留触发““异步编程与异常处理”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+**症状**：在本课的练习或生产场景里出现“本课的验证只在开发机通过”。
 
 **定位**：围绕“环境版本、配置和输入规模与目标环境不同，async 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：把“异步编程与异常处理”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
-
-**预防**：把““异步编程与异常处理”的验证只在开发机通过”写成一条自动化用例，并在“异步编程与异常处理”的验收清单里保留对应检查项。
-
-
-
 ## 版本与时效
-
-这一节记录“异步编程与异常处理”涉及的版本基线与升级检查点，避免把某个版本的默认行为当成永久结论。
 
 - .NET 10 是当前 LTS 主线，C# 版本随 SDK 一起演进
 - 主构造函数、集合表达式、模式匹配与 AOT/裁剪是升级重点
@@ -448,55 +415,6 @@ static async Task Main()
 - 重点回归默认值、弃用警告、序列化格式、并发语义和错误信息。
 - 升级完成后更新本课的“最后复核 / 下次复核”日期与版本说明。
 
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：使用 await 等待 IO 的主要好处是？
-
-- **正确判断**：等待期间不阻塞线程
-- **判断依据**：正确答案是「等待期间不阻塞线程」，本课在「本课小结」中说明：异步的目标是不阻塞线程：IO 用 async/await、并发用 Task.WhenAll、可取消用 CancellationToken，异常与资源交给 try/catch 与 using。await 在等待期间释放当前线程，线程可以去处理其他请求，从而提高吞吐量。本课还在「async / await」中说明：await 在等待期间释放线程，因此特别适合 IO 密集场景。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 2：在异步代码中使用 .Result 或 .Wait() 的风险是？
-
-- **正确判断**：可能死锁并阻塞线程
-- **判断依据**：正确答案是「可能死锁并阻塞线程」，本课在「本课小结」中说明：异步的目标是不阻塞线程：IO 用 async/await、并发用 Task.WhenAll、可取消用 CancellationToken，异常与资源交给 try/catch 与 using。同步阻塞等待异步任务容易造成死锁，正确做法是一路 await 到底。本课还在「常见陷阱」中说明：用 .Result 或 .Wait() 阻塞异步代码，容易死锁，应一路 await。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 3：async void 只适合用在什么场景？
-
-- **正确判断**：事件处理器
-- **判断依据**：async void 的异常无法被调用方捕获，只应用于事件处理器。其他选项：async void 只适合事件处理器，因为异常无法被调用方捕获。针对「async void 只适合用在什么场景，」，本课在「常见陷阱」中说明：async void 只用于事件处理器，异常无法被捕获。本课还在「并发控制与常见误用」中说明：② async void（除事件处理器外无法捕获异常）。本课还在「async / await」中说明：async 方法返回 Task / Task<T>。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 4：CancellationToken 的作用是？
-
-- **正确判断**：以协作方式请求取消异步操作（如请求超时、用户离开页面）
-- **判断依据**：正确答案是「以协作方式请求取消异步操作（如请求超时、用户离开页面）」，本课在「并发控制与常见误用」中说明：⑤ 忘了传 CancellationToken，导致请求取消后后台仍继续算。取消是协作式的，方法内部要定期检查 token 或把它传给下游 API 才会生效。本课还在「零基础详解：async/await 与任务并行」中说明：async/await 让「等待 IO」的代码写起来像同步代码，但线程不会被卡住。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 5：Task.WhenAll 相比逐个 await 的优势是？
-
-- **正确判断**：多个任务同时进行
-- **判断依据**：正确答案是「多个任务同时进行」，本课在「常见陷阱」中说明：忘记 await 会让异常被吞掉，任务在后台失败。多个异常会被包装在 AggregateException 中，需要逐个检查各任务的异常。本课还在「并发控制与常见误用」中说明：④ 在循环里逐个 await 造成串行（应收集 Task 后 WhenAll）。本课还在「零基础详解：async/await 与任务并行」中说明：核心区别只有一句话：IO 密集用 async，CPU 密集用并行任务。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 6：补全代码：「异步编程与异常处理」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `using var cts = new ____(TimeSpan.FromSeconds(5));`
-
-- **正确判断**：CancellationTokenSource / cancellationtokensource
-- **判断依据**：正确答案是「CancellationTokenSource」，本课在「并发与取消」中说明：用 CancellationTokenSource 实现超时。本课还在「零基础详解：async/await 与任务并行」中说明：async/await 让「等待 IO」的代码写起来像同步代码，但线程不会被卡住。本课还在「异常与资源释放」中说明：实现 IDisposable 的对象用 using 自动释放。
-- **迁移检查**：不看题干，用自己的话补全这句话，再与标准答案对照。
-
-### 补充自测（2 题）
-
-1. 围绕“异步编程与异常处理”中的 async、await、Task，下列哪两项是本课强调的实践判断？
-2. 下面这段 C# 代码复现了“异步编程与异常处理”中 async、await、Task 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
-
 ## 本课复习清单
 
 离开本课前，逐项确认：
@@ -506,7 +424,6 @@ static async Task Main()
 - [ ] 不看解析，能说出「async void 只适合用在什么场景？」的判断依据。
 - [ ] 不看解析，能说出「CancellationToken 的作用是？」的判断依据。
 - [ ] 不看解析，能说出「Task.WhenAll 相比逐个 await 的优势是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：「异步编程与异常处理」示例中，下面这行代码缺少哪个关键字或函数名？请填…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -517,8 +434,6 @@ static async Task Main()
 | 下一步验证动作 |  |
 
 ## 术语速查
-
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
 | 术语 | 本课语境 |
 | --- | --- |
@@ -535,30 +450,33 @@ static async Task Main()
 | `SemaphoreSlim` | 大量并发要限制数量，可用 `SemaphoreSlim`。 |
 | `Task.WhenAll` | \| 批量并行 \| `Task.WhenAll`；不要用 `Task.WaitAll`（同步阻塞） \| |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：使用 await 等待 IO 的主要好处是？
 
-### 追问 1：使用 await 等待 IO 的主要好处是？
+- **判断依据**：正确答案是「等待期间不阻塞线程」。await 在等待期间释放当前线程，线程可以去处理其他请求，从而提高吞吐量。判断这类题时，要把「等待期间不阻塞线程」放回题干限定的对象、输入和边界，「自动重试」、「代码更短」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「等待期间不阻塞线程」，本课在「本课小结」中说明：异步的目标是不阻塞线程：IO 用 async/await、并发用 Task.WhenAll、可取消用 CancellationToken，异常与资源交给 try/catch 与 using。await 在等待期间释放当前线程，线程可以去处理其他请求，从而提高吞吐量。本课还在「async / await」中说明：await 在等待期间释放线程，因此特别适合 IO 密集场景。
+### 考点 2：在异步代码中使用 .Result 或 .Wait() 的风险是？
 
-### 追问 2：在异步代码中使用 .Result 或 .Wait() 的风险是？
+- **判断依据**：本题应选「可能死锁并阻塞线程」。同步阻塞等待异步任务容易造成死锁，正确做法是一路 await 到底。解题的关键不是记住孤立术语，而是确认「可能死锁并阻塞线程」是否完整覆盖题干的输入、输出和失败路径，并排除「丢失返回值」、「编译错误」这类相邻概念。
 
-**参考回答**：正确答案是「可能死锁并阻塞线程」，本课在「本课小结」中说明：异步的目标是不阻塞线程：IO 用 async/await、并发用 Task.WhenAll、可取消用 CancellationToken，异常与资源交给 try/catch 与 using。同步阻塞等待异步任务容易造成死锁，正确做法是一路 await 到底。本课还在「常见陷阱」中说明：用 .Result 或 .Wait() 阻塞异步代码，容易死锁，应一路 await。
+### 考点 3：下面这段 C# 代码复现了“异步编程与异常处理”中 async、await、Task 相关的一个常见故障，哪一项最准确地解释了问题？
 
-### 追问 3：async void 只适合用在什么场景？
+- **判断依据**：符合题干条件的是「循环条件用了 <=，i == data.Length 时抛出 IndexOutOfRangeException」。符合题干条件的是循环条件用了 <=，i == data.Length 时抛出 IndexOutOfRangeException。结合async、await来看，符合题干条件的是循环条件用了 <=。在这个复现里，async 的边界应改成 i < data.Length。
 
-**参考回答**：async void 的异常无法被调用方捕获，只应用于事件处理器。其他选项：async void 只适合事件处理器，因为异常无法被调用方捕获。针对「async void 只适合用在什么场景，」，本课在「常见陷阱」中说明：async void 只用于事件处理器，异常无法被捕获。本课还在「并发控制与常见误用」中说明：② async void（除事件处理器外无法捕获异常）。本课还在「async / await」中说明：async 方法返回 Task / Task<T>。
+### 考点 4：围绕“异步编程与异常处理”中的 async、await、Task，下列哪两项是本课强调的实践判断？
 
-### 追问 4：CancellationToken 的作用是？
+- **判断依据**：正确答案包括「验证 await 时要固定版本并覆盖边界输入，结论才可复现」、「学习 async 时要同时说明输入、输出和失败路径，不能只看正常流程」。结论应落在验证 await 时要固定版本并覆盖边界输入。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 async 时必须同时交代输入、输出和失败路径，这使“学习 async 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 await 时要固定版本与边界输入，所以“验证 await 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-**参考回答**：正确答案是「以协作方式请求取消异步操作（如请求超时、用户离开页面）」，本课在「并发控制与常见误用」中说明：⑤ 忘了传 CancellationToken，导致请求取消后后台仍继续算。取消是协作式的，方法内部要定期检查 token 或把它传给下游 API 才会生效。本课还在「零基础详解·async/await 与任务并行」中说明：async/await 让「等待 IO」的代码写起来像同步代码，但线程不会被卡住。
+### 考点 5：Task.WhenAll 相比逐个 await 的优势是？
 
-### 追问 5：Task.WhenAll 相比逐个 await 的优势是？
+- **判断依据**：正确答案是「多个任务同时进行」。多个异常会被包装在 AggregateException 中，需要逐个检查各任务的异常。判断这类题时，要把「多个任务同时进行」放回题干限定的对象、输入和边界，「会自动限制并发数」、「返回值是单个结果」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「多个任务同时进行」，本课在「常见陷阱」中说明：忘记 await 会让异常被吞掉，任务在后台失败。多个异常会被包装在 AggregateException 中，需要逐个检查各任务的异常。本课还在「并发控制与常见误用」中说明：④ 在循环里逐个 await 造成串行（应收集 Task 后 WhenAll）。本课还在「零基础详解·async/await 与任务并行」中说明：核心区别只有一句话：IO 密集用 async，CPU 密集用并行任务。
+### 考点 6：补全代码：「异步编程与异常处理」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+
+`using var cts = new ____(TimeSpan.FromSeconds(5));`
+
+- **判断依据**：空格应填写「CancellationTokenSource」、「cancellationtokensource」。解题的关键不是记住孤立术语，而是确认「CancellationTokenSource 或 cancellati…」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
 
 ## English Overview
 
@@ -566,11 +484,9 @@ static async Task Main()
 
 **Summary:** async/await, Task concurrency, cancellation and exceptions.
 
-**Category:** C#  
-**Level:** 进阶  
+**Category:** C#
+**Level:** 进阶
 **Key terms:** async, await, Task, CancellationToken, IDisposable
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -582,7 +498,6 @@ static async Task Main()
 - 相关主题：async、await、Task、CancellationToken、IDisposable
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-
 ## Full English Study Guide
 
 ### Overview
@@ -592,60 +507,23 @@ static async Task Main()
 ### Learning Outcomes
 
 - Explain what **Async & Exceptions** solves and when it should be used.
-- Identify inputs, outputs, state and failure boundaries.
-- Build a minimal reproducible example and observe the real result.
-- Test normal, boundary and failure paths.
-- Measure performance, resource cost or security impact before optimizing.
-- Document the decision, rollback path and remaining uncertainty.
 
 ### Core Mental Model
 
-1. **Problem first:** define the exact problem before choosing a tool or pattern.
-2. **Smallest example:** reduce the system to one input and one observable output.
-3. **State and flow:** trace how data, control or responsibility moves through the system.
-4. **Boundaries:** identify invalid input, resource limits, timeouts and permission edges.
-5. **Evidence:** use tests, logs, metrics or reproductions instead of intuition.
-6. **Trade-offs:** compare correctness, latency, cost, complexity and operability.
-
 ### Step-by-step Study Plan
-
-1. Read the Chinese lesson once and write down the main problem in one sentence.
-2. Run the smallest example and save the exact command and output.
-3. Change only one input or parameter and predict the result before running it.
-4. Introduce one failure and record how the system detects, reports and recovers.
-5. Write one test or checklist item for the normal, boundary and failure paths.
-6. Complete the quiz and explain every wrong answer in your own words.
 
 ### Practice Tasks
 
-- Rebuild the minimal example from an empty directory.
-- Add one boundary test and one failure test.
-- Produce a short report containing the baseline, change, result and rollback.
-
 ### Common Failure Modes
-
-- Treating a happy-path demo as production readiness.
-- Skipping boundary values and invalid inputs.
-- Optimizing before establishing a measurable baseline.
-- Hiding errors, permissions or resource limits.
 
 ### Self-check Questions
 
-1. What is the smallest observable result that proves this lesson works?
-2. What input or state is most likely to break it?
-3. Which metric or test would reveal a regression?
 4. What is the rollback path?
-5. What is the cost of using this approach at 10x scale?
-6. Which adjacent topic is most often confused with this one?
 
 ### Glossary
 
 - Topic: **Async & Exceptions**
 - Related terms: async, await, Task, CancellationToken
-- Primary evidence: command output, tests, logs, metrics or reproductions
-
-> This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
-
 
 ## Bilingual Section Outline
 
@@ -662,21 +540,18 @@ static async Task Main()
 | async / await 速查 | async / await 速查 |
 | 常见错误对照表 | Common mistakes对照表 |
 
-> 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
-
 
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [C# 官方指南](https://learn.microsoft.com/dotnet/csharp/) | 语言、异步与模式匹配 |
-| [.NET 文档](https://learn.microsoft.com/dotnet/) | 运行时、GC 与发布 |
+| [C# 异步编程](https://learn.microsoft.com/dotnet/csharp/asynchronous-programming/) | async/await 与取消 |
+| [Blazor 文档](https://learn.microsoft.com/aspnet/core/blazor/) | 组件、状态与交互 |
+| [C# 指南](https://learn.microsoft.com/dotnet/csharp/) | 语言语法与类型系统 |
 
-> 本课主题：async/await、Task 并发、CancellationToken、异常与 using。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+> 「异步编程与异常处理」的链接用于离线阅读后的延伸核对；App 不会自动联网。

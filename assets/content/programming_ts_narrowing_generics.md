@@ -8,7 +8,7 @@
 
 ## 学习目标
 
-- 能用自己的话解释「TypeScript 类型收窄与泛型」解决了什么问题，而不是只背术语。
+- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
 - 能说清 「TypeScript」、「类型收窄」、「泛型」、「可辨识联合」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「TypeScript」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -21,7 +21,6 @@
 - 本课阶段：入门。只需要基本计算机操作，不要求编程经验。
 - 开始前先复习：TypeScript、类型收窄、泛型。
 - 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
-
 
 ## 类型收窄的五种手段
 
@@ -52,7 +51,6 @@
 
 ## 本课小结
 TypeScript 的类型能力集中在两处：**收窄（把宽类型变窄）** 与 **泛型（让类型随输入变化）**；掌握这两点，就能用类型把业务约束表达清楚。
-
 
 ## 类型收窄速查
 
@@ -137,7 +135,6 @@ const names = pluck(users, "name");   // string[]
 - [ ] 会用 `keyof` 与泛型约束写出类型安全的取值函数。
 - [ ] 知道 `as` 不做运行时校验。
 - [ ] 在 `switch` 里用 `never` 做穷尽检查。
-
 
 ## 零基础详解：类型收窄与泛型
 
@@ -299,7 +296,6 @@ console.log(handle({ status: "ok", data: { id: 2, tags: ["a"] } }));
 
 ## 动手练习
 
-
 > 本课练习重点：围绕「TypeScript、类型收窄、泛型」完成复述、实验和交付，每个结果都要能被别人检查。
 
 先让类型检查通过，再制造一次类型错误，最后补运行时校验与测试。
@@ -308,7 +304,7 @@ console.log(handle({ status: "ok", data: { id: 2, tags: ["a"] } }));
 
 合上教程，用 3～5 句话回答：
 
-1. 「TypeScript 类型收窄与泛型」解决了什么问题？
+1. 本课主题解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「类型收窄」是什么关系？
 
@@ -336,11 +332,7 @@ console.log(handle({ status: "ok", data: { id: 2, tags: ["a"] } }));
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-
-
 ## 可运行练习
-
-下面 3 个任务围绕“TypeScript 类型收窄与泛型”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
 
 ### 任务 1：先跑通，再解释
 
@@ -365,75 +357,44 @@ console.log(safeGet(user, "name"));     // string | undefined
 console.log(handle({ status: "ok", data: { id: 2, tags: ["a"] } }));
 ```
 
-**预期输出**：运行后会输出与“TypeScript 类型收窄与泛型”相关的关键结果；请重点核对输出行数、最后一个数值和异常提示。
-
-**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
-
 ### 任务 2：只改一个条件
-
-复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
-
-**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
 
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
 
-**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
-
-
 ## 故障现场
 
-这一节把“TypeScript 类型收窄与泛型”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 TypeScript 常规用例通过，但边界用例失败
 
-### 现场 1：“TypeScript 类型收窄与泛型”的 TypeScript 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 TypeScript 常规用例通过，但边界用例失败”。
 
-**症状**：在“TypeScript 类型收窄与泛型”的练习或生产场景里出现““TypeScript 类型收窄与泛型”的 TypeScript 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““TypeScript 类型收窄与泛型”的 TypeScript 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 TypeScript 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“TypeScript 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“TypeScript 类型收窄与泛型”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 TypeScript 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““TypeScript 类型收窄与泛型”的 TypeScript 常规用例通过，但边界用例失败”写成一条自动化用例，并在“TypeScript 类型收窄与泛型”的验收清单里保留对应检查项。
+### 现场 2：本课的 类型收窄 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 类型收窄 结果在两次运行之间不一致”。
 
-### 现场 2：“TypeScript 类型收窄与泛型”的 类型收窄 结果在两次运行之间不一致
-
-**症状**：在“TypeScript 类型收窄与泛型”的练习或生产场景里出现““TypeScript 类型收窄与泛型”的 类型收窄 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““TypeScript 类型收窄与泛型”的 类型收窄 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 类型收窄 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“类型收窄 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“TypeScript 类型收窄与泛型”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+**预防**：把“本课的 类型收窄 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““TypeScript 类型收窄与泛型”的 类型收窄 结果在两次运行之间不一致”写成一条自动化用例，并在“TypeScript 类型收窄与泛型”的验收清单里保留对应检查项。
+### 现场 3：本课的验证只在开发机通过
 
-
-### 现场 3：“TypeScript 类型收窄与泛型”的验证只在开发机通过
-
-**症状**：在“TypeScript 类型收窄与泛型”的练习或生产场景里出现““TypeScript 类型收窄与泛型”的验证只在开发机通过”。
-
-**复现**：准备一组最小输入，只保留触发““TypeScript 类型收窄与泛型”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+**症状**：在本课的练习或生产场景里出现“本课的验证只在开发机通过”。
 
 **定位**：围绕“环境版本、配置和输入规模与目标环境不同，TypeScript 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：把“TypeScript 类型收窄与泛型”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
-
-**预防**：把““TypeScript 类型收窄与泛型”的验证只在开发机通过”写成一条自动化用例，并在“TypeScript 类型收窄与泛型”的验收清单里保留对应检查项。
-
-
-
 ## 版本与时效
 
-这一节记录“TypeScript 类型收窄与泛型”涉及的版本基线与升级检查点，避免把某个版本的默认行为当成永久结论。
-
 - TypeScript 5.x 主线持续收紧类型推导、装饰器与模块解析行为
-- strict、noUncheckedIndexedAccess、verbatimModuleSyntax 建议逐步打开
 - 升级前先跑 tsc --noEmit，再处理构建工具与 ESLint 规则差异
-- 官方发布说明：https://devblogs.microsoft.com/typescript/
 
 ### 升级检查清单
 
@@ -441,55 +402,6 @@ console.log(handle({ status: "ok", data: { id: 2, tags: ["a"] } }));
 - 只改一个版本变量，记录编译、测试、性能与产物体积的变化。
 - 重点回归默认值、弃用警告、序列化格式、并发语义和错误信息。
 - 升级完成后更新本课的“最后复核 / 下次复核”日期与版本说明。
-
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：可辨识联合靠什么区分成员？
-
-- **正确判断**：一个共同的字面量字段（如 type）
-- **判断依据**：正确答案是「一个共同的字面量字段（如 type）」，本课在「类型收窄的五种手段」中说明：可辨识联合 + switch 是建模业务状态最实用的模式：订单状态、请求结果、表单校验结果都可以这样写，新增一种状态时编译器会提示所有需要处理的位置。配合 switch 可实现穷尽检查，新增状态时编译器会提示。本课还在「本课小结」中说明：TypeScript 的类型能力集中在两处：收窄（把宽类型变窄） 与 泛型（让类型随输入变化）。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 2：外部接口数据最安全的类型标注是？
-
-- **正确判断**：unknown + 运行时校验后收窄
-- **判断依据**：正确答案是「unknown + 运行时校验后收窄」，本课在「类型收窄的五种手段」中说明：可辨识联合 + switch 是建模业务状态最实用的模式：订单状态、请求结果、表单校验结果都可以这样写，新增一种状态时编译器会提示所有需要处理的位置。any 放弃检查，unknown 强制你先校验再使用。本课还在「常见陷阱」中说明：滥用 any 让检查失效——外部数据先用 unknown，校验后再收窄。本课还在「本课小结」中说明：TypeScript 的类型能力集中在两处：收窄（把宽类型变窄） 与 泛型（让类型随输入变化）。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 3：infer 关键字用于？
-
-- **正确判断**：在条件类型中提取类型片段
-- **判断依据**：正确答案是「在条件类型中提取类型片段」，本课在「条件类型与 infer」中说明：infer 用于提取类型片段，例如提取函数返回类型、数组元素类型、Promise 的结果类型。它是 ReturnType、Awaited 等工具类型的实现基础。本课还在「泛型与约束」中说明：泛型让函数与组件在保持类型安全的前提下复用：function first<T>(list: T[]): T | undefined。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 4：自定义类型守卫的返回类型应该写成？
-
-- **正确判断**：value is Foo
-- **判断依据**：返回 value is Foo 后，调用处在该分支内会被自动收窄为 Foo 类型。其他选项：返回 Foo、undefined、typeof Foo 或 boolean 都不会让调用处收窄。针对「自定义类型守卫的返回类型应该写成，」，本课在「条件类型与 infer」中说明：infer 用于提取类型片段，例如提取函数返回类型、数组元素类型、Promise 的结果类型。本课还在「常见陷阱」中说明：过度断言 as 会掩盖错误，优先用类型守卫。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 5：泛型约束 T extends { id: string } 的作用是？
-
-- **正确判断**：要求类型参数至少具备该形状
-- **判断依据**：正确答案是「要求类型参数至少具备该形状」，本课在「泛型与约束」中说明：默认类型参数 <T = string> 提供缺省。没有约束时不能访问 T 的成员，约束是泛型里获得类型安全的关键。本课还在「泛型与约束」中说明：约束用 extends：<T extends { id: number }> 要求必须有 id。本课还在「常见陷阱」中说明：非空断言 ! 只是让编译器闭嘴，运行时该崩还是崩。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 6：补全代码：「TypeScript 类型收窄与泛型」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `function ____(value: never): never {`
-
-- **正确判断**：assertNever / assertnever
-- **判断依据**：正确答案是「assertNever」，本课在「零基础详解：类型收窄与泛型」中说明：知道 assertNever 为什么要接收 never。本课还在「泛型与约束」中说明：泛型让函数与组件在保持类型安全的前提下复用：function first<T>(list: T[]): T | undefined。本课还在「零基础详解：类型收窄与泛型」中说明：泛型是让函数对多种类型都成立，同时不丢类型信息。
-- **迁移检查**：把答案换成另一种等价写法，是否仍然正确？说明依据。
-
-### 补充自测（2 题）
-
-1. 围绕“TypeScript 类型收窄与泛型”中的 TypeScript、类型收窄、泛型，下列哪两项是本课强调的实践判断？
-2. 下面这段 JavaScript 代码复现了“TypeScript 类型收窄与泛型”中 TypeScript、类型收窄、泛型 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
 
 ## 本课复习清单
 
@@ -500,7 +412,7 @@ console.log(handle({ status: "ok", data: { id: 2, tags: ["a"] } }));
 - [ ] 不看解析，能说出「infer 关键字用于？」的判断依据。
 - [ ] 不看解析，能说出「自定义类型守卫的返回类型应该写成？」的判断依据。
 - [ ] 不看解析，能说出「泛型约束 T extends { id: string } 的作用是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：「TypeScript 类型收窄与泛型」示例中，下面这行代码缺少哪个关…」的判断依据。
+- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码缺少哪个关…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -511,8 +423,6 @@ console.log(handle({ status: "ok", data: { id: 2, tags: ["a"] } }));
 | 下一步验证动作 |  |
 
 ## 术语速查
-
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
 | 术语 | 本课语境 |
 | --- | --- |
@@ -529,30 +439,33 @@ console.log(handle({ status: "ok", data: { id: 2, tags: ["a"] } }));
 | `as` | 过度断言 `as` 会掩盖错误，优先用类型守卫。 |
 | `typeof` | \| `typeof` \| `if (typeof v === "string")` \| 原始类型 \| |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：围绕“TypeScript 类型收窄与泛型”中的 TypeScript、类型收窄、泛型，下列哪两项是本课强调的实践判断？
 
-### 追问 1：可辨识联合靠什么区分成员？
+- **判断依据**：正确答案包括「验证 类型收窄 时要固定版本并覆盖边界输入，结论才可复现」、「学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程」。正确答案是验证 类型收窄 时要固定版本并覆盖边界输入。在本课主题里，判断 类型收窄 时要固定版本与边界输入，所以“验证 类型收窄 时要固定版本并覆盖边界输入，结论才可复现”才可复现。判断这类题时，要把验证 类型收窄 时要固定版本并覆盖边界输入，结论才可复现。
 
-**参考回答**：正确答案是「一个共同的字面量字段（如 type）」，本课在「类型收窄的五种手段」中说明：可辨识联合 + switch 是建模业务状态最实用的模式：订单状态、请求结果、表单校验结果都可以这样写，新增一种状态时编译器会提示所有需要处理的位置。配合 switch 可实现穷尽检查，新增状态时编译器会提示。本课还在「本课小结」中说明：TypeScript 的类型能力集中在两处：收窄（把宽类型变窄） 与 泛型（让类型随输入变化）。
+### 考点 2：下面这段 TypeScript 代码复现了“TypeScript 类型收窄与泛型”中 TypeScript、类型收窄、泛型 相关的一个常见故障，哪一项最准确地解释了问题？
 
-### 追问 2：外部接口数据最安全的类型标注是？
+- **判断依据**：本题应选「循环条件用了 <=，最后一次访问 data[data.length] 得到 undefined」。本题应选循环条件用了 <=，最后一次访问 data[data.length] 得到 undefined（tsnarrowinggenerics 第 2 题）。结合TypeScript、类型收窄来看，本题应选循环条件用了 <=。在这个复现里，data[data.length] 是 TypeScript 相关位置上的 undefined，参与加法后把 total 变成 NaN。
 
-**参考回答**：正确答案是「unknown + 运行时校验后收窄」，本课在「类型收窄的五种手段」中说明：可辨识联合 + switch 是建模业务状态最实用的模式：订单状态、请求结果、表单校验结果都可以这样写，新增一种状态时编译器会提示所有需要处理的位置。any 放弃检查，unknown 强制你先校验再使用。本课还在「常见陷阱」中说明：滥用 any 让检查失效——外部数据先用 unknown，校验后再收窄。本课还在「本课小结」中说明：TypeScript 的类型能力集中在两处：收窄（把宽类型变窄） 与 泛型（让类型随输入变化）。
+### 考点 3：infer 关键字用于？
 
-### 追问 3：infer 关键字用于？
+- **判断依据**：符合题干条件的是「在条件类型中提取类型片段」。它是 ReturnType、Awaited 等工具类型的实现基础。正确的判断需要逐项核对定义、版本和适用条件（tsnarrowinggenerics 第 3 题）。正确的判断需要逐项核对定义、版本和适用条件（ts_narrowing_generics 第 3 题）。
 
-**参考回答**：正确答案是「在条件类型中提取类型片段」，本课在「条件类型与 infer」中说明：infer 用于提取类型片段，例如提取函数返回类型、数组元素类型、Promise 的结果类型。它是 ReturnType、Awaited 等工具类型的实现基础。本课还在「泛型与约束」中说明：泛型让函数与组件在保持类型安全的前提下复用：function first<T>(list: T[]): T | undefined。
+### 考点 4：自定义类型守卫的返回类型应该写成？
 
-### 追问 4：自定义类型守卫的返回类型应该写成？
+- **判断依据**：返回 value is Foo 后，调用处在该分支内会被自动收窄为 Foo 类型。其他选项：返回 Foo、undefined、typeof Foo 或 boolean 都不会让调用处收窄。这道题要求区分概念与边界，「value is Foo」只有在题干给出的前提下才成立，而「typeof Foo」、「boolean」缺少同一组条件。
 
-**参考回答**：返回 value is Foo 后，调用处在该分支内会被自动收窄为 Foo 类型。其他选项：返回 Foo、undefined、typeof Foo 或 boolean 都不会让调用处收窄。针对「自定义类型守卫的返回类型应该写成，」，本课在「条件类型与 infer」中说明：infer 用于提取类型片段，例如提取函数返回类型、数组元素类型、Promise 的结果类型。本课还在「常见陷阱」中说明：过度断言 as 会掩盖错误，优先用类型守卫。
+### 考点 5：泛型约束 T extends { id: string } 的作用是？
 
-### 追问 5：泛型约束 T extends { id: string } 的作用是？
+- **判断依据**：正确答案是「要求类型参数至少具备该形状」。没有约束时不能访问 T 的成员，约束是泛型里获得类型安全的关键。判断这类题时，要把「要求类型参数至少具备该形状」放回题干限定的对象、输入和边界，「给 T 设置默认值」、「把 T 转成字符串」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「要求类型参数至少具备该形状」，本课在「泛型与约束」中说明：默认类型参数 <T = string> 提供缺省。没有约束时不能访问 T 的成员，约束是泛型里获得类型安全的关键。本课还在「泛型与约束」中说明：约束用 extends：<T extends { id: number }> 要求必须有 id。本课还在「常见陷阱」中说明：非空断言 ! 只是让编译器闭嘴，运行时该崩还是崩。
+### 考点 6：补全代码：「TypeScript 类型收窄与泛型」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+
+`function ____(value: never): never {`
+
+- **判断依据**：围绕 补全代码：本课主题示例中，下面这行代… 作答时，先用TypeScript建立输入与输出的基线，再把assertNever 或 assertnever代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「assertNever 或 assertnever」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
 
 ## English Overview
 
@@ -560,11 +473,9 @@ console.log(handle({ status: "ok", data: { id: 2, tags: ["a"] } }));
 
 **Summary:** Narrowing, discriminated unions, generics and infer.
 
-**Category:** TypeScript  
-**Level:** 入门  
+**Category:** TypeScript
+**Level:** 入门
 **Key terms:** TypeScript, 类型收窄, 泛型, 可辨识联合, infer
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -576,7 +487,6 @@ console.log(handle({ status: "ok", data: { id: 2, tags: ["a"] } }));
 - 相关主题：TypeScript、类型收窄、泛型、可辨识联合、infer
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-
 ## Full English Study Guide
 
 ### Overview
@@ -586,60 +496,23 @@ console.log(handle({ status: "ok", data: { id: 2, tags: ["a"] } }));
 ### Learning Outcomes
 
 - Explain what **Narrowing & Generics** solves and when it should be used.
-- Identify inputs, outputs, state and failure boundaries.
-- Build a minimal reproducible example and observe the real result.
-- Test normal, boundary and failure paths.
-- Measure performance, resource cost or security impact before optimizing.
-- Document the decision, rollback path and remaining uncertainty.
 
 ### Core Mental Model
 
-1. **Problem first:** define the exact problem before choosing a tool or pattern.
-2. **Smallest example:** reduce the system to one input and one observable output.
-3. **State and flow:** trace how data, control or responsibility moves through the system.
-4. **Boundaries:** identify invalid input, resource limits, timeouts and permission edges.
-5. **Evidence:** use tests, logs, metrics or reproductions instead of intuition.
-6. **Trade-offs:** compare correctness, latency, cost, complexity and operability.
-
 ### Step-by-step Study Plan
-
-1. Read the Chinese lesson once and write down the main problem in one sentence.
-2. Run the smallest example and save the exact command and output.
-3. Change only one input or parameter and predict the result before running it.
-4. Introduce one failure and record how the system detects, reports and recovers.
-5. Write one test or checklist item for the normal, boundary and failure paths.
-6. Complete the quiz and explain every wrong answer in your own words.
 
 ### Practice Tasks
 
-- Rebuild the minimal example from an empty directory.
-- Add one boundary test and one failure test.
-- Produce a short report containing the baseline, change, result and rollback.
-
 ### Common Failure Modes
-
-- Treating a happy-path demo as production readiness.
-- Skipping boundary values and invalid inputs.
-- Optimizing before establishing a measurable baseline.
-- Hiding errors, permissions or resource limits.
 
 ### Self-check Questions
 
-1. What is the smallest observable result that proves this lesson works?
-2. What input or state is most likely to break it?
-3. Which metric or test would reveal a regression?
 4. What is the rollback path?
-5. What is the cost of using this approach at 10x scale?
-6. Which adjacent topic is most often confused with this one?
 
 ### Glossary
 
 - Topic: **Narrowing & Generics**
 - Related terms: TypeScript, 类型收窄, 泛型, 可辨识联合
-- Primary evidence: command output, tests, logs, metrics or reproductions
-
-> This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
-
 
 ## Bilingual Section Outline
 
@@ -656,21 +529,18 @@ console.log(handle({ status: "ok", data: { id: 2, tags: ["a"] } }));
 | 泛型约束速查 | 泛型约束速查 |
 | 常见错误对照表 | Common mistakes对照表 |
 
-> 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
-
 
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html) | 类型系统与编译配置 |
-| [Decorators 与模块](https://www.typescriptlang.org/docs/) | 语言特性与生态集成 |
+| [Everyday Types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html) | 常用类型与收窄 |
+| [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html) | 类型系统与语言指南 |
+| [声明文件](https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html) | 类型声明与发布 |
 
-> 本课主题：五种收窄手段、可辨识联合、泛型约束与 infer。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+> 「TypeScript 类型收窄与泛型」的链接用于离线阅读后的延伸核对；App 不会自动联网。

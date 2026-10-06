@@ -22,6 +22,14 @@ jobs:
         run: flutter analyze --no-pub
       - name: Unit, content and visual regression tests
         run: flutter test --no-pub
+      - name: Content governance and quality gates
+        run: |
+          dart tool/audit_content_governance.dart
+          dart tool/audit_content_quality.dart
+          dart tool/audit_content_depth.dart
+          dart tool/analyze_quiz_quality.dart
+          dart tool/verify_code_blocks.dart
+          dart tool/content_review_ledger.dart
       - name: Brand asset checks
         run: dart tool/check_brand_assets.dart
       - name: Setup Chrome for sandbox verification
@@ -60,8 +68,6 @@ jobs:
             build/app/outputs/flutter-apk/app-release.apk \
             build/app/outputs/flutter-apk/app-arm64-v8a-release.apk \
             build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-      - name: Generate content review ledger
-        run: dart tool/content_review_ledger.dart
       - name: Upload visual diff artifacts
         if: failure()
         uses: actions/upload-artifact@v4
@@ -84,4 +90,6 @@ jobs:
           path: |
             build/reports/**
             docs/content_review_ledger.*
+            tool/reports/*.json
+            tool/code_verification_report.md
           if-no-files-found: warn

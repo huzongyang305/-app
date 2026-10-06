@@ -1,14 +1,14 @@
-# Go 工程实践
+# 本课主题
 
-![Go 工程实践的四个环节](images/diagram_go_project.webp)
+![本课主题的四个环节](images/diagram_go_project.webp)
 
-![Go 工程实践](images/remaining_go_project.webp)
+![本课主题](images/remaining_go_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：16 分钟
 
 ## 学习目标
 
-- 能用自己的话解释「Go 工程实践」解决了什么问题，而不是只背术语。
+- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
 - 能说清 「Go」、「go mod」、「测试」、「pprof」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「Go」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -21,7 +21,6 @@
 - 本课阶段：基础。建议会读写简单代码或命令，并理解变量、输入输出等基本概念。
 - 开始前先复习：Go、go mod、测试。
 - 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
-
 
 ## 模块与目录
 
@@ -57,7 +56,6 @@ GOOS=linux GOARCH=amd64 go build                 # 交叉编译
 
 ## 本课小结
 Go 工程化的关键是**统一工具链 + 表驱动测试 + pprof 定位 + 静态单文件部署**；语言本身简单，工程规范才是团队效率的来源。
-
 
 ## 工程结构速查
 
@@ -154,7 +152,6 @@ func TestParseAmount(t *testing.T) {
 - [ ] CI 跑 `go vet`、`go test -race` 与覆盖率。
 - [ ] 发布构建使用 `-trimpath -ldflags="-s -w"`。
 - [ ] 依赖通过 `go.mod` 管理并执行 `go mod tidy`。
-
 
 ## 零基础详解：Go 工程结构与测试
 
@@ -371,7 +368,6 @@ func TestRoundNegative(t *testing.T) {
 
 ## 动手练习
 
-
 > 本课练习重点：围绕「Go、go mod、测试」完成复述、实验和交付，每个结果都要能被别人检查。
 
 先写最小程序并用 go test 验证，再补 context、并发上限和错误传播。
@@ -380,7 +376,7 @@ func TestRoundNegative(t *testing.T) {
 
 合上教程，用 3～5 句话回答：
 
-1. 「Go 工程实践」解决了什么问题？
+1. 本课主题解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「go mod」是什么关系？
 
@@ -408,8 +404,6 @@ func TestRoundNegative(t *testing.T) {
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-
-
 ## 验证命令与预期输出
 
 项目代码不能只看“能编译”，还要能按固定命令复现结果。下表给出最低验证集：
@@ -436,10 +430,7 @@ func TestRoundNegative(t *testing.T) {
 4. 定位原因后补一条自动化测试，再重新执行发布流程。
 5. 把教训写入项目复盘或本课笔记，形成下一次的检查项。
 
-
 ## 可运行练习
-
-下面 3 个任务围绕“Go 工程实践”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
 
 ### 任务 1：先跑通，再解释
 
@@ -453,72 +444,42 @@ func TestRoundNegative(t *testing.T) {
 }
 ```
 
-**预期输出**：沙箱会解析并格式化“Go 工程实践”中的这段 JSON；请重点检查键名、嵌套层级和数组元素。
-
-**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
-
 ### 任务 2：只改一个条件
-
-复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
-
-**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
 
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
 
-**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
-
-
 ## 故障现场
 
-这一节把“Go 工程实践”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 Go 常规用例通过，但边界用例失败
 
-### 现场 1：“Go 工程实践”的 Go 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 Go 常规用例通过，但边界用例失败”。
 
-**症状**：在“Go 工程实践”的练习或生产场景里出现““Go 工程实践”的 Go 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““Go 工程实践”的 Go 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 Go 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“Go 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“Go 工程实践”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 Go 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““Go 工程实践”的 Go 常规用例通过，但边界用例失败”写成一条自动化用例，并在“Go 工程实践”的验收清单里保留对应检查项。
+### 现场 2：本课的 go mod 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 go mod 结果在两次运行之间不一致”。
 
-### 现场 2：“Go 工程实践”的 go mod 结果在两次运行之间不一致
-
-**症状**：在“Go 工程实践”的练习或生产场景里出现““Go 工程实践”的 go mod 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““Go 工程实践”的 go mod 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 go mod 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“go mod 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“Go 工程实践”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+**预防**：把“本课的 go mod 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““Go 工程实践”的 go mod 结果在两次运行之间不一致”写成一条自动化用例，并在“Go 工程实践”的验收清单里保留对应检查项。
+### 现场 3：本课的验证只在开发机通过
 
-
-### 现场 3：“Go 工程实践”的验证只在开发机通过
-
-**症状**：在“Go 工程实践”的练习或生产场景里出现““Go 工程实践”的验证只在开发机通过”。
-
-**复现**：准备一组最小输入，只保留触发““Go 工程实践”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+**症状**：在本课的练习或生产场景里出现“本课的验证只在开发机通过”。
 
 **定位**：围绕“环境版本、配置和输入规模与目标环境不同，Go 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：把“Go 工程实践”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
-
-**预防**：把““Go 工程实践”的验证只在开发机通过”写成一条自动化用例，并在“Go 工程实践”的验收清单里保留对应检查项。
-
-
-
 ## 版本与时效
 
-这一节记录“Go 工程实践”涉及的版本基线与升级检查点，避免把某个版本的默认行为当成永久结论。
-
-- Go 1.25 是当前主线，泛型、range-over-func 与工具链持续增强
 - 升级前用 go vet、go test -race 与静态检查覆盖并发生命周期
 - 模块校验、最小版本选择与供应链安全是生产升级的重点
 - 官方发布说明：https://go.dev/doc/devel/release
@@ -530,55 +491,6 @@ func TestRoundNegative(t *testing.T) {
 - 重点回归默认值、弃用警告、序列化格式、并发语义和错误信息。
 - 升级完成后更新本课的“最后复核 / 下次复核”日期与版本说明。
 
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：Go 中最主流的测试写法是？
-
-- **正确判断**：表驱动测试（切片 + t.Run）
-- **判断依据**：正确答案是「表驱动测试（切片 + t.Run）」，本课在「测试与基准」中说明：表驱动测试（table-driven）是 Go 的主流写法：用例写成切片，循环执行子测试 t.Run。示例如切片，循环执行子测试，便于增删用例与定位失败。本课还在「本课小结」中说明：Go 工程化的关键是统一工具链 + 表驱动测试 + pprof 定位 + 静态单文件部署。本课还在「项目专属规格：Go 工程实践」中说明：模块目录、表驱动测试、pprof 与静态单文件部署。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 2：交叉编译到 Linux amd64 需要设置？
-
-- **正确判断**：GOOS=linux GOARCH=amd64
-- **判断依据**：正确答案是「GOOS=linux GOARCH=amd64」，本课在「性能分析」中说明：标准库自带 net/http/pprof 或 runtime/pprof，可采集 CPU、内存、阻塞、goroutine 与 mutex profile。GOOS/GOARCH 控制目标平台。本课还在「模块与目录」中说明：go mod init github.com/you/app 初始化模块。本课还在「性能分析」中说明：排查顺序：先看指标定位资源类型，再用 pprof 找热点函数。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 3：产出体积小、无动态依赖的可执行文件常用？
-
-- **正确判断**：CGO_ENABLED=0 go build -ldflags "-s -w"
-- **判断依据**：正确答案是「CGO_ENABLED=0 go build -ldflags "-s -w"」，本课在「模块与目录」中说明：目录约定：cmd/（可执行入口）、internal/（仅本模块可见）、pkg/（对外可复用）、api/（接口定义）、testdata/（测试数据）。静态链接 + 去掉符号表，适合放进 scratch 镜像。本课还在「构建与部署」中说明：配合多阶段 Docker 构建（builder 阶段编译，scratch/alpine 运行）可产出几 MB 的镜像。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 4：go mod tidy 的作用是？
-
-- **正确判断**：补齐代码需要但缺失的依赖
-- **判断依据**：正确答案是「补齐代码需要但缺失的依赖」，本课在「零基础详解：Go 工程结构与测试」中说明：能说出 -race 与 -cover 的作用。提交前跑一次 go mod tidy，能保证 go.mod / go.sum 与代码一致。本课还在「本课小结」中说明：Go 工程化的关键是统一工具链 + 表驱动测试 + pprof 定位 + 静态单文件部署。本课还在「零基础详解：Go 工程结构与测试」中说明：测试则用标准库自带的 testing 包，不依赖第三方框架。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 5：Go 项目中 cmd/ 与 internal/ 目录的约定是？
-
-- **正确判断**：cmd 放可执行程序入口
-- **判断依据**：正确答案是「cmd 放可执行程序入口」，本课在「模块与目录」中说明：目录约定：cmd/（可执行入口）、internal/（仅本模块可见）、pkg/（对外可复用）、api/（接口定义）、testdata/（测试数据）。internal 由编译器强制限制可见范围，适合放不希望对外暴露的实现。本课还在「零基础详解：Go 工程结构与测试」中说明：Go 的工程约定非常固定：cmd 放入口、internal 放私有实现、pkg 放可复用库。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 6：补全代码：「Go 工程实践」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `____=0 go build -ldflags "-s -w" -o app # 静态单文件，体积更小`
-
-- **正确判断**：CGO_ENABLED / cgo_enabled
-- **判断依据**：正确答案是「CGO_ENABLED」，本课在「项目专属规格：Go 工程实践」中说明：模块目录、表驱动测试、pprof 与静态单文件部署。本课还在「模块与目录」中说明：go mod init github.com/you/app 初始化模块。本课还在「测试与基准」中说明：基准测试用 testing.B，关注 ns/op 与 allocs/op。
-- **迁移检查**：不看题干，用自己的话补全这句话，再与标准答案对照。
-
-### 补充自测（2 题）
-
-1. 围绕“Go 工程实践”中的 Go、go mod、测试，下列哪两项是本课强调的实践判断？
-2. 下面这段 Go 代码复现了“Go 工程实践”中 Go、go mod、测试 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
-
 ## 本课复习清单
 
 离开本课前，逐项确认：
@@ -588,7 +500,6 @@ func TestRoundNegative(t *testing.T) {
 - [ ] 不看解析，能说出「产出体积小、无动态依赖的可执行文件常用？」的判断依据。
 - [ ] 不看解析，能说出「go mod tidy 的作用是？」的判断依据。
 - [ ] 不看解析，能说出「Go 项目中 cmd/ 与 internal/ 目录的约定是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：「Go 工程实践」示例中，下面这行代码缺少哪个关键字或函数名？请填入 …」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -599,8 +510,6 @@ func TestRoundNegative(t *testing.T) {
 | 下一步验证动作 |  |
 
 ## 术语速查
-
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
 | 术语 | 本课语境 |
 | --- | --- |
@@ -617,30 +526,33 @@ func TestRoundNegative(t *testing.T) {
 | `golangci-lint run` | \| `golangci-lint run` \| 聚合多种 linter \| |
 | `go mod tidy` | \| `go mod tidy` \| 清理与补齐依赖 \| |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：围绕“Go 工程实践”中的 Go、go mod、测试，下列哪两项是本课强调的实践判断？
 
-### 追问 1：Go 中最主流的测试写法是？
+- **判断依据**：正确答案包括「学习 Go 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 go mod 时要固定版本并覆盖边界输入，结论才可复现」。正确答案是学习 Go 时要同时说明输入、输出和失败路径。在本课主题里，判断 go mod 时要固定版本与边界输入，所以“验证 go mod 时要固定版本并覆盖边界输入，结论才可复现”才可复现。判断这类题时，要把学习 Go 时要同时说明输入、输出和失败路径，不能只看正常流程。
 
-**参考回答**：正确答案是「表驱动测试（切片 + t.Run）」，本课在「测试与基准」中说明：表驱动测试（table-driven）是 Go 的主流写法：用例写成切片，循环执行子测试 t.Run。示例如切片，循环执行子测试，便于增删用例与定位失败。本课还在「本课小结」中说明：Go 工程化的关键是统一工具链 + 表驱动测试 + pprof 定位 + 静态单文件部署。本课还在「项目专属规格·Go 工程实践」中说明：模块目录、表驱动测试、pprof 与静态单文件部署。
+### 考点 2：交叉编译到 Linux amd64 需要设置？
 
-### 追问 2：交叉编译到 Linux amd64 需要设置？
+- **判断依据**：本题应选「GOOS=linux GOARCH=amd64」。GOOS/GOARCH 控制目标平台。解题的关键不是记住孤立术语，而是确认「GOOS=linux GOARCH=amd64」是否完整覆盖题干的输入、输出和失败路径，并排除「CGO_ENABLED=1（仅部分场景成立）」、「-race」这类相邻概念。
 
-**参考回答**：正确答案是「GOOS=linux GOARCH=amd64」，本课在「性能分析」中说明：标准库自带 net/http/pprof 或 runtime/pprof，可采集 CPU、内存、阻塞、goroutine 与 mutex profile。GOOS/GOARCH 控制目标平台。本课还在「模块与目录」中说明：go mod init github.com/you/app 初始化模块。本课还在「性能分析」中说明：排查顺序：先看指标定位资源类型，再用 pprof 找热点函数。
+### 考点 3：下面这段 Go 代码复现了“Go 工程实践”中 Go、go mod、测试 相关的一个常见故障，哪一项最准确地解释了问题？
 
-### 追问 3：产出体积小、无动态依赖的可执行文件常用？
+- **判断依据**：符合题干条件的是「循环条件用了 <=，i == len(data) 时越界，运行时 panic」。符合题干条件的是循环条件用了 <=，i == len(data) 时越界，运行时 panic。结合Go、go mod来看，符合题干条件的是循环条件用了 <=。在这个复现里，要让 go mod 的结果稳定，可以直接使用 for , v := range data 或把长度保存在局部变量中。
 
-**参考回答**：正确答案是「CGO_ENABLED=0 go build -ldflags "-s -w"」，本课在「模块与目录」中说明：目录约定：cmd/（可执行入口）、internal/（仅本模块可见）、pkg/（对外可复用）、api/（接口定义）、testdata/（测试数据）。静态链接 + 去掉符号表，适合放进 scratch 镜像。本课还在「构建与部署」中说明：配合多阶段 Docker 构建（builder 阶段编译，scratch/alpine 运行）可产出几 MB 的镜像。
+### 考点 4：go mod tidy 的作用是？
 
-### 追问 4：go mod tidy 的作用是？
+- **判断依据**：结论应落在「补齐代码需要但缺失的依赖」。提交前跑一次 go mod tidy，能保证 go.mod / go.sum 与代码一致。这道题要求区分概念与边界，「补齐代码需要但缺失的依赖」只有在题干给出的前提下才成立，而「删除 go.sum」、「更新 Go 版本」缺少同一组条件。
 
-**参考回答**：正确答案是「补齐代码需要但缺失的依赖」，本课在「零基础详解·Go 工程结构与测试」中说明：能说出 -race 与 -cover 的作用。提交前跑一次 go mod tidy，能保证 go.mod / go.sum 与代码一致。本课还在「本课小结」中说明：Go 工程化的关键是统一工具链 + 表驱动测试 + pprof 定位 + 静态单文件部署。本课还在「零基础详解·Go 工程结构与测试」中说明：测试则用标准库自带的 testing 包，不依赖第三方框架。
+### 考点 5：Go 项目中 cmd/ 与 internal/ 目录的约定是？
 
-### 追问 5：Go 项目中 cmd/ 与 internal/ 目录的约定是？
+- **判断依据**：正确答案是「cmd 放可执行程序入口」。internal 由编译器强制限制可见范围，适合放不希望对外暴露的实现。判断这类题时，要把「cmd 放可执行程序入口」放回题干限定的对象、输入和边界，「cmd 放第三方依赖」、「两者必须同时存在」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「cmd 放可执行程序入口」，本课在「模块与目录」中说明：目录约定：cmd/（可执行入口）、internal/（仅本模块可见）、pkg/（对外可复用）、api/（接口定义）、testdata/（测试数据）。internal 由编译器强制限制可见范围，适合放不希望对外暴露的实现。本课还在「零基础详解·Go 工程结构与测试」中说明：Go 的工程约定非常固定：cmd 放入口、internal 放私有实现、pkg 放可复用库。
+### 考点 6：补全代码：「Go 工程实践」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+
+`____=0 go build -ldflags "-s -w" -o app   # 静态单文件，体积更小`
+
+- **判断依据**：空格应填写「CGO_ENABLED」、「cgo_enabled」。围绕 补全代码：本课主题示例中，下面这行代码缺少哪个关键字或函数… 作答时，先用Go建立输入与输出的基线，再把CGOENABLED 或 cgoenabled代入边界条件核对，结论才能复现。
 
 ## English Overview
 
@@ -648,11 +560,9 @@ func TestRoundNegative(t *testing.T) {
 
 **Summary:** Layout, table-driven tests, pprof and static builds.
 
-**Category:** Go  
-**Level:** 基础  
+**Category:** Go
+**Level:** 基础
 **Key terms:** Go, go mod, 测试, pprof, 交叉编译
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -664,7 +574,7 @@ func TestRoundNegative(t *testing.T) {
 - 相关主题：Go、go mod、测试、pprof、交叉编译
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-## 项目专属规格：Go 工程实践
+## 项目专属规格：本课主题
 
 ### 核心场景
 
@@ -693,7 +603,6 @@ func TestRoundNegative(t *testing.T) {
 3. 失败路径：依赖超时或不可用时能快速失败、重试或降级。
 4. 幂等路径：同一请求执行两次不会产生重复副作用。
 5. 回滚路径：回滚后数据一致，且能说明恢复时间和影响范围。
-
 
 ## 项目交付物
 
@@ -740,7 +649,6 @@ go.mod
 
 > 项目验收围绕「Go、go mod、测试」：至少完成一次正常路径、一次边界输入、一次失败恢复和一次幂等检查。
 
-
 ## Full English Study Guide
 
 ### Overview
@@ -750,60 +658,23 @@ go.mod
 ### Learning Outcomes
 
 - Explain what **Go Project Practices** solves and when it should be used.
-- Identify inputs, outputs, state and failure boundaries.
-- Build a minimal reproducible example and observe the real result.
-- Test normal, boundary and failure paths.
-- Measure performance, resource cost or security impact before optimizing.
-- Document the decision, rollback path and remaining uncertainty.
 
 ### Core Mental Model
 
-1. **Problem first:** define the exact problem before choosing a tool or pattern.
-2. **Smallest example:** reduce the system to one input and one observable output.
-3. **State and flow:** trace how data, control or responsibility moves through the system.
-4. **Boundaries:** identify invalid input, resource limits, timeouts and permission edges.
-5. **Evidence:** use tests, logs, metrics or reproductions instead of intuition.
-6. **Trade-offs:** compare correctness, latency, cost, complexity and operability.
-
 ### Step-by-step Study Plan
-
-1. Read the Chinese lesson once and write down the main problem in one sentence.
-2. Run the smallest example and save the exact command and output.
-3. Change only one input or parameter and predict the result before running it.
-4. Introduce one failure and record how the system detects, reports and recovers.
-5. Write one test or checklist item for the normal, boundary and failure paths.
-6. Complete the quiz and explain every wrong answer in your own words.
 
 ### Practice Tasks
 
-- Rebuild the minimal example from an empty directory.
-- Add one boundary test and one failure test.
-- Produce a short report containing the baseline, change, result and rollback.
-
 ### Common Failure Modes
-
-- Treating a happy-path demo as production readiness.
-- Skipping boundary values and invalid inputs.
-- Optimizing before establishing a measurable baseline.
-- Hiding errors, permissions or resource limits.
 
 ### Self-check Questions
 
-1. What is the smallest observable result that proves this lesson works?
-2. What input or state is most likely to break it?
-3. Which metric or test would reveal a regression?
 4. What is the rollback path?
-5. What is the cost of using this approach at 10x scale?
-6. Which adjacent topic is most often confused with this one?
 
 ### Glossary
 
 - Topic: **Go Project Practices**
 - Related terms: Go, go mod, 测试, pprof
-- Primary evidence: command output, tests, logs, metrics or reproductions
-
-> This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
-
 
 ## Bilingual Section Outline
 
@@ -820,21 +691,18 @@ go.mod
 | 工程结构速查 | 工程结构速查 |
 | 测试与构建速查 | Testing与Build速查 |
 
-> 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
-
 
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [Go 官方文档](https://go.dev/doc/) | 语言、并发与工具链 |
-| [Go 标准库](https://pkg.go.dev/std) | 标准库 API |
+| [Go pprof](https://pkg.go.dev/net/http/pprof) | 性能剖析与火焰图 |
+| [Effective Go](https://go.dev/doc/effective_go) | 惯用写法与接口设计 |
+| [Go 并发](https://go.dev/talks/2012/concurrency.slide) | goroutine 与 channel |
 
-> 本课主题：模块目录、表驱动测试、pprof 与静态单文件部署。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+> 「Go 工程实践」的链接用于离线阅读后的延伸核对；App 不会自动联网。

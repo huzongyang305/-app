@@ -1,14 +1,14 @@
-# 嵌入、向量检索与 RAG
+# 本课主题
+
+> 内容更新时间：2026-10-03
 
 ![RAG 从文档入库到生成答案的流程](images/diagram_ai_embeddings_rag.webp)
 
-![嵌入、向量检索与 RAG](images/remaining_ai_embeddings_rag.webp)
-
-> 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟
+![本课主题](images/remaining_ai_embeddings_rag.webp)
 
 ## 学习目标
 
-- 能用自己的话解释「嵌入、向量检索与 RAG」解决了什么问题，而不是只背术语。
+- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
 - 能说清 「嵌入」、「向量检索」、「RAG」、「分块」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「AI 与智能体」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -21,7 +21,6 @@
 - 本课阶段：进阶。建议先掌握同一分类的基础课程，并能独立运行正文中的最小示例。
 - 开始前先复习：嵌入、向量检索、RAG。
 - 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
-
 
 ## 嵌入：把文本变成向量
 
@@ -147,7 +146,6 @@ def answer(question: str) -> str:
 ## 本课小结
 RAG = **检索 + 生成**。它用外部知识弥补模型的知识截止与幻觉问题，是当前企业落地最常见的 LLM 架构。
 
-
 ## RAG 链路速查
 
 | 阶段 | 关键决策 | 常见做法 |
@@ -182,7 +180,6 @@ def cosine_similarity(a: list[float], b: list[float]) -> float:
     norm_b = math.sqrt(sum(y * y for y in b))
     return 0.0 if norm_a == 0 or norm_b == 0 else dot / (norm_a * norm_b)
 
-
 @dataclass
 class Chunk:
     doc_id: str
@@ -191,11 +188,9 @@ class Chunk:
     vector: list[float]
     metadata: dict
 
-
 def hybrid_score(vector_score: float, keyword_score: float, alpha: float = 0.7) -> float:
     """混合检索：向量分与关键词分加权，alpha 控制偏向。"""
     return alpha * vector_score + (1 - alpha) * keyword_score
-
 
 def retrieve(query_vec, chunks, top_k=5, filters=None, alpha=0.7, keyword_fn=None):
     """带元数据过滤与混合打分的检索。"""
@@ -209,7 +204,6 @@ def retrieve(query_vec, chunks, top_k=5, filters=None, alpha=0.7, keyword_fn=Non
     scored.sort(key=lambda item: -item[0])
     return scored[:top_k]
 
-
 def build_prompt(question: str, hits) -> str:
     """把检索片段编号后拼进提示，便于要求引用来源。"""
     context = "\n\n".join(
@@ -221,7 +215,6 @@ def build_prompt(question: str, hits) -> str:
         "回答末尾用 [编号] 标注引用来源。\n\n"
         f"资料：\n{context}\n\n问题：{question}"
     )
-
 
 print(round(cosine_similarity([1, 2, 3], [2, 4, 6]), 4))
 ```
@@ -262,7 +255,6 @@ print(round(cosine_similarity([1, 2, 3], [2, 4, 6]), 4))
 
 ## 动手练习
 
-
 > 本课练习重点：围绕「嵌入、向量检索、RAG」完成复述、实验和交付，每个结果都要能被别人检查。
 
 先写评测样例，再改一个提示、模型或数据变量，最后比较质量、成本与安全。
@@ -271,7 +263,7 @@ print(round(cosine_similarity([1, 2, 3], [2, 4, 6]), 4))
 
 合上教程，用 3～5 句话回答：
 
-1. 「嵌入、向量检索与 RAG」解决了什么问题？
+1. 本课主题解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「向量检索」是什么关系？
 
@@ -299,11 +291,7 @@ print(round(cosine_similarity([1, 2, 3], [2, 4, 6]), 4))
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-
-
 ## 可运行练习
-
-下面 3 个任务围绕“嵌入、向量检索与 RAG”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
 
 ### 任务 1：先跑通，再解释
 
@@ -317,7 +305,6 @@ def cosine_similarity(a: list[float], b: list[float]) -> float:
     norm_b = math.sqrt(sum(y * y for y in b))
     return 0.0 if norm_a == 0 or norm_b == 0 else dot / (norm_a * norm_b)
 
-
 @dataclass
 class Chunk:
     doc_id: str
@@ -326,11 +313,9 @@ class Chunk:
     vector: list[float]
     metadata: dict
 
-
 def hybrid_score(vector_score: float, keyword_score: float, alpha: float = 0.7) -> float:
     """混合检索：向量分与关键词分加权，alpha 控制偏向。"""
     return alpha * vector_score + (1 - alpha) * keyword_score
-
 
 def retrieve(query_vec, chunks, top_k=5, filters=None, alpha=0.7, keyword_fn=None):
     """带元数据过滤与混合打分的检索。"""
@@ -344,7 +329,6 @@ def retrieve(query_vec, chunks, top_k=5, filters=None, alpha=0.7, keyword_fn=Non
     scored.sort(key=lambda item: -item[0])
     return scored[:top_k]
 
-
 def build_prompt(question: str, hits) -> str:
     """把检索片段编号后拼进提示，便于要求引用来源。"""
     context = "\n\n".join(
@@ -357,75 +341,46 @@ def build_prompt(question: str, hits) -> str:
         f"资料：\n{context}\n\n问题：{question}"
     )
 
-
 print(round(cosine_similarity([1, 2, 3], [2, 4, 6]), 4))
 ```
 
-**预期输出**：运行后会输出与“嵌入、向量检索与 RAG”相关的关键结果；请重点核对输出行数、最后一个数值和异常提示。
-
-**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
-
 ### 任务 2：只改一个条件
-
-复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
-
-**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
 
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
 
-**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
-
-
 ## 故障现场
 
-这一节把“嵌入、向量检索与 RAG”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 嵌入 常规用例通过，但边界用例失败
 
-### 现场 1：“嵌入、向量检索与 RAG”的 嵌入 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 嵌入 常规用例通过，但边界用例失败”。
 
-**症状**：在“嵌入、向量检索与 RAG”的练习或生产场景里出现““嵌入、向量检索与 RAG”的 嵌入 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““嵌入、向量检索与 RAG”的 嵌入 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 嵌入 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“嵌入 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“嵌入、向量检索与 RAG”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 嵌入 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““嵌入、向量检索与 RAG”的 嵌入 常规用例通过，但边界用例失败”写成一条自动化用例，并在“嵌入、向量检索与 RAG”的验收清单里保留对应检查项。
+### 现场 2：本课的 向量检索 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 向量检索 结果在两次运行之间不一致”。
 
-### 现场 2：“嵌入、向量检索与 RAG”的 向量检索 结果在两次运行之间不一致
-
-**症状**：在“嵌入、向量检索与 RAG”的练习或生产场景里出现““嵌入、向量检索与 RAG”的 向量检索 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““嵌入、向量检索与 RAG”的 向量检索 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 向量检索 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“向量检索 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“嵌入、向量检索与 RAG”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
-
-**预防**：把““嵌入、向量检索与 RAG”的 向量检索 结果在两次运行之间不一致”写成一条自动化用例，并在“嵌入、向量检索与 RAG”的验收清单里保留对应检查项。
-
+**预防**：把“本课的 向量检索 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
 ### 现场 3：离线评测分数很高，线上仍然频繁给出错误答案
 
-**症状**：在“嵌入、向量检索与 RAG”的练习或生产场景里出现“离线评测分数很高，线上仍然频繁给出错误答案”。
-
-**复现**：准备一组最小输入，只保留触发“离线评测分数很高，线上仍然频繁给出错误答案”的必要条件，连续运行两次确认结果稳定。
-
 **定位**：围绕“评测集与真实输入分布不一致，嵌入 的提示词或检索结果没有覆盖失败场景”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“嵌入、向量检索与 RAG”建立固定评测集、边界题和对抗题，分别记录准确率、拒答率、延迟与 token 成本
-
-**预防**：把“离线评测分数很高，线上仍然频繁给出错误答案”写成一条自动化用例，并在“嵌入、向量检索与 RAG”的验收清单里保留对应检查项。
-
-
-## 深入补充：嵌入、向量检索与 RAG 的取舍与边界
+## 深入补充：本课主题 的取舍与边界
 
 ### 一、把概念放回真实约束
 
-学习“嵌入、向量检索与 RAG”时，最容易只记住结论而忽略前提。先写出三个约束：数据规模、时间预算、可接受的失败方式；再判断 嵌入 与 向量检索 在这些约束下是否仍然成立。只要约束改变，原来的最优解就可能变成错误解。
+学习本课主题时，最容易只记住结论而忽略前提。先写出三个约束：数据规模、时间预算、可接受的失败方式；再判断 嵌入 与 向量检索 在这些约束下是否仍然成立。只要约束改变，原来的最优解就可能变成错误解。
 
 | 维度 | 要回答的问题 | 常见做法 | 失败信号 |
 | --- | --- | --- | --- |
@@ -436,73 +391,23 @@ print(round(cosine_similarity([1, 2, 3], [2, 4, 6]), 4))
 
 ### 二、三个容易混淆的边界
 
-1. **把“能跑”当成“正确”**：嵌入、向量检索与 RAG 的示例通过，只说明这条输入路径可用；还要用空值、极值和并发路径验证。
 2. **把“平均值”当成“全部”**：嵌入 的指标好看，不代表尾部请求、冷启动或失败重试也好看。
 3. **把“当前版本”当成“永久行为”**：向量检索 依赖的默认值、API 或性能特征都可能随版本变化，需要固定版本并保留回归用例。
 
 ### 三、一个生产场景
 
-假设团队要在真实系统里使用“嵌入、向量检索与 RAG”：第一周先做小流量验证，记录 嵌入 的基线与异常；第二周扩大输入规模，观察 向量检索 是否成为瓶颈；第三周再做故障演练，主动注入超时、重复请求和依赖不可用，确认系统能降级、能重试、能恢复。每一步都要留下指标、日志和结论，而不是只留下“感觉更快了”。
+假设团队要在真实系统里使用本课主题：第一周先做小流量验证，记录 嵌入 的基线与异常；第二周扩大输入规模，观察 向量检索 是否成为瓶颈；第三周再做故障演练，主动注入超时、重复请求和依赖不可用，确认系统能降级、能重试、能恢复。每一步都要留下指标、日志和结论，而不是只留下“感觉更快了”。
 
 ### 四、自测清单
 
-- 能否用一句话说出“嵌入、向量检索与 RAG”解决的核心问题与不适用场景？
+- 能否用一句话说出本课主题解决的核心问题与不适用场景？
 - 能否画出 嵌入 的数据流或状态变化，并标出失败路径？
 - 能否给出一个反例，证明某个看似合理的结论在边界条件下不成立？
 - 能否写出一条可复现的验证命令，让别人独立得到相同结论？
 
 ### 五、AI 工程补充
 
-在“嵌入、向量检索与 RAG”里，模型输出只是系统的一部分：输入要先经过权限与数据质量检查，检索或工具调用要有超时和降级，输出要经过引用核验或规则校验，最后记录 token、延迟、失败类型和人工反馈。评测时至少准备固定题、边界题和对抗题，并把 嵌入 与 向量检索 的指标分开记录；否则一次提示词改动看似提升体验，实际可能只是评测样本泄漏或随机波动。
-
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：嵌入（Embedding）的作用是？
-
-- **正确判断**：把文本映射成语义向量
-- **判断依据**：正确答案是「把文本映射成语义向量」，本课在「嵌入：把文本变成向量」中说明：嵌入模型把文本映射成高维向量，语义相近的文本在向量空间中距离更近。语义相近的文本在向量空间中距离更近，是检索的基础。本课还在「混合检索与重排的调参」中说明：为什么需要混合：向量检索擅长语义相似（"怎么退货" ↔ "退款流程"），但对专有名词、代码标识符、型号编号容易失手。本课还在「向量数据库」中说明：检索流程：查询向量化 → 近似最近邻搜索（ANN）→ 取 Top-K → 可选重排序（Rerank）。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 2：RAG 的在线流程是？
-
-- **正确判断**：问题向量化 -> 检索片段 -> 拼入提示 -> 生成
-- **判断依据**：正确答案是「问题向量化 -> 检索片段 -> 拼入提示 -> 生成」，本课在「相似度速查」中说明：重要前提：查询与文档必须使用同一个嵌入模型与同一版本，否则向量空间不一致。RAG 用检索结果约束生成内容，从而减少幻觉并支持引用。本课还在「向量数据库」中说明：检索流程：查询向量化 → 近似最近邻搜索（ANN）→ 取 Top-K → 可选重排序（Rerank）。本课还在「混合检索与重排的调参」中说明：为什么需要混合：向量检索擅长语义相似（"怎么退货" ↔ "退款流程"），但对专有名词、代码标识符、型号编号容易失手。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 3：分块（Chunking）策略不当会导致？
-
-- **正确判断**：块太大噪声多
-- **判断依据**：正确答案是「块太大噪声多」，本课在「评测脚本要点」中说明：每次改分块、改嵌入模型、改提示后重跑同一套用例并对比，形成回归。分块质量直接决定检索质量，常用 300~800 token 并保留一定重叠。本课还在「影响效果的关键点」中说明：加入重排序（cross-encoder）通常能明显提升 Top-K 质量。本课还在「影响效果的关键点」中说明：检索质量比提示词更重要——检索不到，模型只能编。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 4：RAG 中引入重排序（Rerank）的目的是？
-
-- **正确判断**：对召回结果精排
-- **判断依据**：向量粗排追求召回，交叉编码器精排提升精度，通常能明显改善答案质量。其他选项：Rerank 对召回结果精排以提升 Top-K 相关性。针对「RAG 中引入重排序（Rerank）的目的是，」，本课在「混合检索与重排的调参」中说明：评测方法：固定问题集，分别跑纯向量、纯 BM25、混合、混合+重排四种配置，对比命中率、答案正确率、P95 延迟与每问成本，用数据决定是否值得引入重排。本课还在「影响效果的关键点」中说明：加入重排序（cross-encoder）通常能明显提升 Top-K 质量。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 5：文本分块时设置重叠（overlap）的主要原因是？
-
-- **正确判断**：避免语义在切分点被截断
-- **判断依据**：重叠让跨块的语义保持完整，常见为块长的 10%~20%。其他选项：重叠是为了避免语义在切分点被截断。针对「文本分块时设置重叠（overlap）的主要原因是，」，本课在「分块策略」中说明：常见起点是 300~800 token，重叠 10%~20%。本课还在「嵌入：把文本变成向量」中说明：嵌入模型把文本映射成高维向量，语义相近的文本在向量空间中距离更近。本课还在「影响效果的关键点」中说明：混合检索（关键词 BM25 + 向量）对专有名词与代码更友好。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 6：补全代码：「嵌入、向量检索与 RAG」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `response = client.____.create(`
-
-- **正确判断**：embeddings
-- **判断依据**：正确答案是「embeddings」，本课在「影响效果的关键点」中说明：混合检索（关键词 BM25 + 向量）对专有名词与代码更友好。本课还在「嵌入：把文本变成向量」中说明：相似度常用余弦相似度（只看向量方向，与长度无关）。本课还在「评测脚本要点」中说明：准备四类用例：可直接查到、需跨文档综合、无答案、含对抗性表述（提示注入）。
-- **迁移检查**：把答案换成另一种等价写法，是否仍然正确？说明依据。
-
-### 补充自测（2 题）
-
-1. 围绕“嵌入、向量检索与 RAG”中的 嵌入、向量检索、RAG，下列哪两项是本课强调的实践判断？
-2. 下面这段 Python 代码复现了“嵌入、向量检索与 RAG”中 嵌入、向量检索、RAG 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
+在本课主题里，模型输出只是系统的一部分：输入要先经过权限与数据质量检查，检索或工具调用要有超时和降级，输出要经过引用核验或规则校验，最后记录 token、延迟、失败类型和人工反馈。评测时至少准备固定题、边界题和对抗题，并把 嵌入 与 向量检索 的指标分开记录；否则一次提示词改动看似提升体验，实际可能只是评测样本泄漏或随机波动。
 
 ## 本课复习清单
 
@@ -513,7 +418,7 @@ print(round(cosine_similarity([1, 2, 3], [2, 4, 6]), 4))
 - [ ] 不看解析，能说出「分块（Chunking）策略不当会导致？」的判断依据。
 - [ ] 不看解析，能说出「RAG 中引入重排序（Rerank）的目的是？」的判断依据。
 - [ ] 不看解析，能说出「文本分块时设置重叠（overlap）的主要原因是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：「嵌入、向量检索与 RAG」示例中，下面这行代码缺少哪个关键字或函数名…」的判断依据。
+- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码缺少哪个关键字或函数名…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -525,8 +430,6 @@ print(round(cosine_similarity([1, 2, 3], [2, 4, 6]), 4))
 
 ## 术语速查
 
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
-
 | 术语 | 本课语境 |
 | --- | --- |
 | `嵌入` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
@@ -535,30 +438,33 @@ print(round(cosine_similarity([1, 2, 3], [2, 4, 6]), 4))
 | `分块` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
 | `重排序` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：嵌入（Embedding）的作用是？
 
-### 追问 1：嵌入（Embedding）的作用是？
+- **判断依据**：语义相近的文本在向量空间中距离更近，是检索的基础。围绕 嵌入（Embedding）的作用是。作答时，先用嵌入建立输入与输出的基线，再把把文本映射成语义向量代入边界条件核对，结论才能复现。判断这类题时，要把「把文本映射成语义向量」放回题干限定的对象、输入和边界，「加密数据」、「压缩文件」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「把文本映射成语义向量」，本课在「嵌入·把文本变成向量」中说明：嵌入模型把文本映射成高维向量，语义相近的文本在向量空间中距离更近。语义相近的文本在向量空间中距离更近，是检索的基础。本课还在「混合检索与重排的调参」中说明：为什么需要混合：向量检索擅长语义相似（"怎么退货" ↔ "退款流程"），但对专有名词、代码标识符、型号编号容易失手。本课还在「向量数据库」中说明：检索流程：查询向量化 → 近似最近邻搜索（ANN）→ 取 Top-K → 可选重排序（Rerank）。
+### 考点 2：围绕“嵌入、向量检索与 RAG”中的 嵌入、向量检索、RAG，下列哪两项是本课强调的实践判断？
 
-### 追问 2：RAG 的在线流程是？
+- **判断依据**：正确答案包括「验证 向量检索 时要固定版本并覆盖边界输入，结论才可复现」、「学习 嵌入 时要同时说明输入、输出和失败路径，不能只看正常流程」。本题应选验证 向量检索 时要固定版本并覆盖边界输入。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 嵌入 时必须同时交代输入、输出和失败路径，这使“学习 嵌入 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 向量检索 时要固定版本与边界输入，所以“验证 向量检索 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-**参考回答**：正确答案是「问题向量化 -> 检索片段 -> 拼入提示 -> 生成」，本课在「相似度速查」中说明：重要前提：查询与文档必须使用同一个嵌入模型与同一版本，否则向量空间不一致。RAG 用检索结果约束生成内容，从而减少幻觉并支持引用。本课还在「向量数据库」中说明：检索流程：查询向量化 → 近似最近邻搜索（ANN）→ 取 Top-K → 可选重排序（Rerank）。本课还在「混合检索与重排的调参」中说明：为什么需要混合：向量检索擅长语义相似（"怎么退货" ↔ "退款流程"），但对专有名词、代码标识符、型号编号容易失手。
+### 考点 3：下面这段 Python 代码复现了“嵌入、向量检索与 RAG”中 嵌入、向量检索、RAG 相关的一个常见故障，哪一项最准确地解释了问题？
 
-### 追问 3：分块（Chunking）策略不当会导致？
+- **判断依据**：符合题干条件的是「循环上界多走了 1 步，最后一次访问越界（ai_embeddings_rag 第 3 题）；应改成 range(len(data))」（ai_embeddings_rag 第 3 题）。符合题干条件的是循环上界多走了 1 步，最后一次访问越界（ai_embeddings_rag 第 3 题）。应改成 range(len(data))（ai_embeddings_rag 第 3 题）。符合题干条件的是循环上界多走了 1 步，最后一次访问越界（aiembeddingsrag 第 3 题）。
 
-**参考回答**：正确答案是「块太大噪声多」，本课在「评测脚本要点」中说明：每次改分块、改嵌入模型、改提示后重跑同一套用例并对比，形成回归。分块质量直接决定检索质量，常用 300~800 token 并保留一定重叠。本课还在「影响效果的关键点」中说明：加入重排序（cross-encoder）通常能明显提升 Top-K 质量。本课还在「影响效果的关键点」中说明：检索质量比提示词更重要——检索不到，模型只能编。
+### 考点 4：RAG 中引入重排序（Rerank）的目的是？
 
-### 追问 4：RAG 中引入重排序（Rerank）的目的是？
+- **判断依据**：向量粗排追求召回，交叉编码器精排提升精度，通常能明显改善答案质量。其他选项：Rerank 对召回结果精排以提升 Top-K 相关性。这道题要求区分概念与边界，「对召回结果精排」只有在题干给出的前提下才成立，而「压缩文档」、「减少存储」缺少同一组条件。
 
-**参考回答**：向量粗排追求召回，交叉编码器精排提升精度，通常能明显改善答案质量。其他选项：Rerank 对召回结果精排以提升 Top-K 相关性。针对「RAG 中引入重排序（Rerank）的目的是，」，本课在「混合检索与重排的调参」中说明：评测方法：固定问题集，分别跑纯向量、纯 BM25、混合、混合+重排四种配置，对比命中率、答案正确率、P95 延迟与每问成本，用数据决定是否值得引入重排。本课还在「影响效果的关键点」中说明：加入重排序（cross-encoder）通常能明显提升 Top-K 质量。
+### 考点 5：文本分块时设置重叠（overlap）的主要原因是？
 
-### 追问 5：文本分块时设置重叠（overlap）的主要原因是？
+- **判断依据**：重叠让跨块的语义保持完整，常见为块长的 10%~20%。其他选项：重叠是为了避免语义在切分点被截断。判断这类题时，要把「避免语义在切分点被截断」放回题干限定的对象、输入和边界，「加快检索」、「减小向量维度」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：重叠让跨块的语义保持完整，常见为块长的 10%~20%。其他选项：重叠是为了避免语义在切分点被截断。针对「文本分块时设置重叠（overlap）的主要原因是，」，本课在「分块策略」中说明：常见起点是 300~800 token，重叠 10%~20%。本课还在「嵌入·把文本变成向量」中说明：嵌入模型把文本映射成高维向量，语义相近的文本在向量空间中距离更近。本课还在「影响效果的关键点」中说明：混合检索（关键词 BM25 + 向量）对专有名词与代码更友好。
+### 考点 6：补全代码：「嵌入、向量检索与 RAG」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+
+`response = client.____.create(`
+
+- **判断依据**：围绕 补全代码：本课主题示例中，下面这行代码缺少哪个关… 作答时，先用嵌入建立输入与输出的基线，再把embeddings代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「embeddings」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
 
 ## English Overview
 
@@ -566,11 +472,9 @@ print(round(cosine_similarity([1, 2, 3], [2, 4, 6]), 4))
 
 **Summary:** Embeddings, vector stores, RAG and chunking.
 
-**Category:** AI & Agents  
-**Level:** 进阶  
+**Category:** AI & Agents
+**Level:** 进阶
 **Key terms:** 嵌入, 向量检索, RAG, 分块, 重排序
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -582,7 +486,6 @@ print(round(cosine_similarity([1, 2, 3], [2, 4, 6]), 4))
 - 相关主题：嵌入、向量检索、RAG、分块、重排序
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-
 ## Full English Study Guide
 
 ### Overview
@@ -592,60 +495,23 @@ print(round(cosine_similarity([1, 2, 3], [2, 4, 6]), 4))
 ### Learning Outcomes
 
 - Explain what **Embeddings & RAG** solves and when it should be used.
-- Identify inputs, outputs, state and failure boundaries.
-- Build a minimal reproducible example and observe the real result.
-- Test normal, boundary and failure paths.
-- Measure performance, resource cost or security impact before optimizing.
-- Document the decision, rollback path and remaining uncertainty.
 
 ### Core Mental Model
 
-1. **Problem first:** define the exact problem before choosing a tool or pattern.
-2. **Smallest example:** reduce the system to one input and one observable output.
-3. **State and flow:** trace how data, control or responsibility moves through the system.
-4. **Boundaries:** identify invalid input, resource limits, timeouts and permission edges.
-5. **Evidence:** use tests, logs, metrics or reproductions instead of intuition.
-6. **Trade-offs:** compare correctness, latency, cost, complexity and operability.
-
 ### Step-by-step Study Plan
-
-1. Read the Chinese lesson once and write down the main problem in one sentence.
-2. Run the smallest example and save the exact command and output.
-3. Change only one input or parameter and predict the result before running it.
-4. Introduce one failure and record how the system detects, reports and recovers.
-5. Write one test or checklist item for the normal, boundary and failure paths.
-6. Complete the quiz and explain every wrong answer in your own words.
 
 ### Practice Tasks
 
-- Rebuild the minimal example from an empty directory.
-- Add one boundary test and one failure test.
-- Produce a short report containing the baseline, change, result and rollback.
-
 ### Common Failure Modes
-
-- Treating a happy-path demo as production readiness.
-- Skipping boundary values and invalid inputs.
-- Optimizing before establishing a measurable baseline.
-- Hiding errors, permissions or resource limits.
 
 ### Self-check Questions
 
-1. What is the smallest observable result that proves this lesson works?
-2. What input or state is most likely to break it?
-3. Which metric or test would reveal a regression?
 4. What is the rollback path?
-5. What is the cost of using this approach at 10x scale?
-6. Which adjacent topic is most often confused with this one?
 
 ### Glossary
 
 - Topic: **Embeddings & RAG**
 - Related terms: 嵌入, 向量检索, RAG, 分块
-- Primary evidence: command output, tests, logs, metrics or reproductions
-
-> This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
-
 
 ## Bilingual Section Outline
 
@@ -662,22 +528,18 @@ print(round(cosine_similarity([1, 2, 3], [2, 4, 6]), 4))
 | 评测脚本要点 | 评测脚本要点 |
 | 混合检索与重排的调参 | 混合Retrieval与重排的调参 |
 
-> 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
-
 
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [OpenAI Docs](https://platform.openai.com/docs/) | 模型 API、工具与评估 |
-| [Hugging Face Docs](https://huggingface.co/docs) | 模型、数据集与推理 |
+| [LlamaIndex 文档](https://docs.llamaindex.ai/) | 索引、检索与数据框架 |
+| [OpenAI Cookbook](https://cookbook.openai.com/) | RAG、Agent 与工程示例 |
 | [Model Context Protocol](https://modelcontextprotocol.io/) | Agent 工具与上下文协议 |
 
-> 本课主题：语义向量、向量库、RAG 流程与分块策略。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+> 「嵌入、向量检索与 RAG」的链接用于离线阅读后的延伸核对；App 不会自动联网。

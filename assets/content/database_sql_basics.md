@@ -8,7 +8,7 @@
 
 ## 学习目标
 
-- 能用自己的话解释「SQL 基础」解决了什么问题，而不是只背术语。
+- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
 - 能说清 「SQL」、「SELECT」、「INSERT」、「UPDATE」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「数据库」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -21,7 +21,6 @@
 - 本课阶段：基础。建议会读写简单代码或命令，并理解变量、输入输出等基本概念。
 - 开始前先复习：SQL、SELECT、INSERT。
 - 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
-
 
 ## SQL 是什么
 
@@ -134,7 +133,6 @@ SELECT * FROM users u WHERE EXISTS (SELECT 1 FROM orders o WHERE o.user_id = u.i
 ## 本课小结
 先掌握「单表 CRUD + WHERE 条件 + 聚合分组 + JOIN」，就能覆盖大部分日常需求。
 
-
 ## SQL 语句分类速查
 
 | 类别 | 作用 | 常见语句 |
@@ -235,7 +233,6 @@ UPDATE orders SET status = 'paid' WHERE id = 1001 AND status = 'created';
 
 ## 动手练习
 
-
 > 本课练习重点：围绕「SQL、SELECT、INSERT」完成复述、实验和交付，每个结果都要能被别人检查。
 
 先写 schema 与查询，再补边界和失败数据，最后看执行计划与锁等待。
@@ -244,7 +241,7 @@ UPDATE orders SET status = 'paid' WHERE id = 1001 AND status = 'created';
 
 合上教程，用 3～5 句话回答：
 
-1. 「SQL 基础」解决了什么问题？
+1. 本课主题解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「SELECT」是什么关系？
 
@@ -272,11 +269,7 @@ UPDATE orders SET status = 'paid' WHERE id = 1001 AND status = 'created';
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-
-
 ## 可运行练习
-
-下面 3 个任务围绕“SQL 基础”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
 
 ### 任务 1：先跑通，再解释
 
@@ -298,113 +291,39 @@ GROUP BY city
 HAVING COUNT(*) > 5;
 ```
 
-**预期输出**：查询会返回“SQL 基础”示例数据中满足条件的行；列名、行数与排序以沙箱实际结果为准。
-
-**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
-
 ### 任务 2：只改一个条件
-
-复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
-
-**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
 
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
 
-**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
-
-
 ## 故障现场
 
-这一节把“SQL 基础”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 SQL 常规用例通过，但边界用例失败
 
-### 现场 1：“SQL 基础”的 SQL 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 SQL 常规用例通过，但边界用例失败”。
 
-**症状**：在“SQL 基础”的练习或生产场景里出现““SQL 基础”的 SQL 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““SQL 基础”的 SQL 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 SQL 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“SQL 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“SQL 基础”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 SQL 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““SQL 基础”的 SQL 常规用例通过，但边界用例失败”写成一条自动化用例，并在“SQL 基础”的验收清单里保留对应检查项。
+### 现场 2：本课的 SELECT 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 SELECT 结果在两次运行之间不一致”。
 
-### 现场 2：“SQL 基础”的 SELECT 结果在两次运行之间不一致
-
-**症状**：在“SQL 基础”的练习或生产场景里出现““SQL 基础”的 SELECT 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““SQL 基础”的 SELECT 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 SELECT 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“SELECT 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“SQL 基础”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
-
-**预防**：把““SQL 基础”的 SELECT 结果在两次运行之间不一致”写成一条自动化用例，并在“SQL 基础”的验收清单里保留对应检查项。
-
+**预防**：把“本课的 SELECT 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
 ### 现场 3：同一条 SQL 在数据量变大后突然变慢
 
-**症状**：在“SQL 基础”的练习或生产场景里出现“同一条 SQL 在数据量变大后突然变慢”。
-
-**复现**：准备一组最小输入，只保留触发“同一条 SQL 在数据量变大后突然变慢”的必要条件，连续运行两次确认结果稳定。
+**症状**：在本课的练习或生产场景里出现“同一条 SQL 在数据量变大后突然变慢”。
 
 **定位**：围绕“执行计划随统计信息或数据分布改变，SQL 的索引没有被用上，回表次数反而增加”检查调用链、输入数据和环境配置，先验证假设再改代码。
-
-**修复**：保存“SQL 基础”的执行计划与样本数据，比较扫描行数、回表次数和排序代价后再决定是否改索引
-
-**预防**：把“同一条 SQL 在数据量变大后突然变慢”写成一条自动化用例，并在“SQL 基础”的验收清单里保留对应检查项。
-
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：要删除表中年龄大于 60 的记录，正确的写法是？
-
-- **正确判断**：DELETE FROM students WHERE age > 60;
-- **判断依据**：正确答案是「DELETE FROM students WHERE age > 60;」，本课在「执行顺序的实际影响」中说明：WHERE 在分组前过滤行，HAVING 在分组后过滤组——聚合条件的写法错误是常见报错来源。DELETE 配合 WHERE 精确删除。本课还在「JOIN 与子查询实例」中说明：三种写法的选择：IN 适合小结果集，EXISTS 适合大表相关判断，JOIN 适合同时取两张表的字段。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 2：对 GROUP BY 的结果做过滤，应该使用哪个关键字？
-
-- **正确判断**：HAVING
-- **判断依据**：WHERE 在分组前过滤行，HAVING 在分组后过滤组，可以配合聚合函数。其他选项：对分组结果过滤要用 HAVING。针对「对 GROUP BY 的结果做过滤，应该使用哪个…」，本课在「执行顺序的实际影响」中说明：聚合函数不能直接写在 WHERE 中（应用 HAVING）。本课还在「查询子句执行顺序」中说明：理解顺序能解释两个常见疑问：为什么 WHERE 不能用 SELECT 里定义的别名（多数数据库），为什么聚合条件必须写 HAVING。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 3：执行 UPDATE 时忘记写 WHERE 会怎样？
-
-- **正确判断**：更新整张表的所有行
-- **判断依据**：正确答案是「更新整张表的所有行」，本课在「增删改」中说明：重要：UPDATE 和 DELETE 一定要写 WHERE，否则会作用到整张表。没有 WHERE 条件时 UPDATE 会作用于全表，是生产事故的常见原因。本课还在「JOIN 与子查询实例」中说明：三种写法的选择：IN 适合小结果集，EXISTS 适合大表相关判断，JOIN 适合同时取两张表的字段。本课还在「执行顺序」中说明：SQL 的书写顺序和执行顺序不同，理解它有助于排查问题。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 4：COUNT(*) 与 COUNT(列名) 的关键区别是？
-
-- **正确判断**：COUNT(列名) 会忽略该列的 NULL 值
-- **判断依据**：正确答案是「COUNT(列名) 会忽略该列的 NULL 值」，本课在「建表」中说明：常用约束：PRIMARY KEY 主键、NOT NULL 非空、UNIQUE 唯一、CHECK 取值检查、DEFAULT 默认值。统计非空值数量时必须用 COUNT(列名)，否则会把 NULL 行也算进去。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 5：LEFT JOIN 后统计右表记录数，应该怎么写？
-
-- **正确判断**：COUNT(右表.主键)
-- **判断依据**：正确答案是「COUNT(右表.主键)」，本课在「JOIN 与子查询实例」中说明：LEFT JOIN 后统计时注意用 COUNT(o.id) 而不是 COUNT()，否则没有订单的用户也会被算成 1。COUNT() 会把没有匹配的 NULL 行也计为 1，统计右表要用其主键列。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 6：补全代码：「SQL 基础」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `SELECT u.id, u.name, COUNT(o.id) AS orders, ____(SUM(o.amount), 0) AS total`
-
-- **正确判断**：COALESCE / coalesce
-- **判断依据**：正确答案是「COALESCE」，这道题在问补全代码：SQL基础示例中，下面这行代码缺少哪个关键…o.amount),0)AStotal`，判断时要把题干限定的输入、边界与目标逐项对齐。本课示例中还能看到 `SELECT u.id, u.name, COUNT(o.id) AS orders, COALESCE(SUM(o.amount), 0) AS total` 这样的用法，说明该关键字在本课代码中承担实际功能。
-- **迁移检查**：把答案换成另一种等价写法，是否仍然正确？说明依据。
-
-### 补充自测（2 题）
-
-1. 围绕“SQL 基础”中的 SQL、SELECT、INSERT，下列哪两项是本课强调的实践判断？
-2. 下面这段 Python 代码复现了“SQL 基础”中 SQL、SELECT、INSERT 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
 
 ## 本课复习清单
 
@@ -415,7 +334,6 @@ HAVING COUNT(*) > 5;
 - [ ] 不看解析，能说出「执行 UPDATE 时忘记写 WHERE 会怎样？」的判断依据。
 - [ ] 不看解析，能说出「COUNT(*) 与 COUNT(列名) 的关键区别是？」的判断依据。
 - [ ] 不看解析，能说出「LEFT JOIN 后统计右表记录数，应该怎么写？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：「SQL 基础」示例中，下面这行代码缺少哪个关键字或函数名？请填入 _…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -426,8 +344,6 @@ HAVING COUNT(*) > 5;
 | 下一步验证动作 |  |
 
 ## 术语速查
-
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
 | 术语 | 本课语境 |
 | --- | --- |
@@ -444,30 +360,33 @@ HAVING COUNT(*) > 5;
 | `ORDER BY` | `SELECT` 中的别名通常不能在 `WHERE` 里使用（因为 WHERE 先执行），但在 `ORDER BY` 中可用。 |
 | `LIMIT` | `LIMIT` 最后执行，所以在子查询里做分页要小心与外层排序的配合。 |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：要删除表中年龄大于 60 的记录，正确的写法是？
 
-### 追问 1：要删除表中年龄大于 60 的记录，正确的写法是？
+- **判断依据**：正确答案是「DELETE FROM students WHERE age > 60;」。正确答案是DELETE FROM students WHERE age > 60。DELETE 配合 WHERE 精确删除。判断这类题时，要把DELETE FROM students WHERE age > 60。
 
-**参考回答**：正确答案是「DELETE FROM students WHERE age > 60;」，本课在「执行顺序的实际影响」中说明：WHERE 在分组前过滤行，HAVING 在分组后过滤组——聚合条件的写法错误是常见报错来源。DELETE 配合 WHERE 精确删除。本课还在「JOIN 与子查询实例」中说明：三种写法的选择：IN 适合小结果集，EXISTS 适合大表相关判断，JOIN 适合同时取两张表的字段。
+### 考点 2：下面这段 Python 代码复现了“SQL 基础”中 SQL、SELECT、INSERT 相关的一个常见故障，哪一项最准确地解释了问题？
 
-### 追问 2：对 GROUP BY 的结果做过滤，应该使用哪个关键字？
+- **判断依据**：结合SQL、SELECT来看，本题应选「默认参数 bucket=[] 只在定义时创建一次，两次调用共享同一个列表」。本题应选默认参数 bucket=[] 只在定义时创建一次，两次调用共享同一个列表（sqlbasics 第 2 题）。结合SQL、SELECT来看，本题应选默认参数 bucket=[] 只在定义时创建一次。
 
-**参考回答**：WHERE 在分组前过滤行，HAVING 在分组后过滤组，可以配合聚合函数。其他选项：对分组结果过滤要用 HAVING。针对「对 GROUP BY 的结果做过滤，应该使用哪个…」，本课在「执行顺序的实际影响」中说明：聚合函数不能直接写在 WHERE 中（应用 HAVING）。本课还在「查询子句执行顺序」中说明：理解顺序能解释两个常见疑问：为什么 WHERE 不能用 SELECT 里定义的别名（多数数据库），为什么聚合条件必须写 HAVING。
+### 考点 3：围绕“SQL 基础”中的 SQL、SELECT、INSERT，下列哪两项是本课强调的实践判断？
 
-### 追问 3：执行 UPDATE 时忘记写 WHERE 会怎样？
+- **判断依据**：正确答案包括「学习 SQL 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 SELECT 时要固定版本并覆盖边界输入，结论才可复现」。符合题干条件的是学习 SQL 时要同时说明输入、输出和失败路径。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 SQL 时必须同时交代输入、输出和失败路径，这使“学习 SQL 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 SELECT 时要固定版本与边界输入，所以“验证 SELECT 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-**参考回答**：正确答案是「更新整张表的所有行」，本课在「增删改」中说明：重要：UPDATE 和 DELETE 一定要写 WHERE，否则会作用到整张表。没有 WHERE 条件时 UPDATE 会作用于全表，是生产事故的常见原因。本课还在「JOIN 与子查询实例」中说明：三种写法的选择：IN 适合小结果集，EXISTS 适合大表相关判断，JOIN 适合同时取两张表的字段。本课还在「执行顺序」中说明：SQL 的书写顺序和执行顺序不同，理解它有助于排查问题。
+### 考点 4：COUNT(*) 与 COUNT(列名) 的关键区别是？
 
-### 追问 4：COUNT(*) 与 COUNT(列名) 的关键区别是？
+- **判断依据**：结论应落在「COUNT(列名) 会忽略该列的 NULL 值」。统计非空值数量时必须用 COUNT(列名)，否则会把 NULL 行也算进去。这道题要求区分概念与边界，「COUNT(列名) 会忽略该列的 NULL 值」只有在题干给出的前提下才成立，而「COUNT(列名) 只能用于主键」、「COUNT(*) 更慢」缺少同一组条件。
 
-**参考回答**：正确答案是「COUNT(列名) 会忽略该列的 NULL 值」，本课在「建表」中说明：常用约束：PRIMARY KEY 主键、NOT NULL 非空、UNIQUE 唯一、CHECK 取值检查、DEFAULT 默认值。统计非空值数量时必须用 COUNT(列名)，否则会把 NULL 行也算进去。
+### 考点 5：LEFT JOIN 后统计右表记录数，应该怎么写？
 
-### 追问 5：LEFT JOIN 后统计右表记录数，应该怎么写？
+- **判断依据**：正确答案是「COUNT(右表.主键)」。COUNT() 会把没有匹配的 NULL 行也计为 1，统计右表要用其主键列。判断这类题时，要把「COUNT(右表.主键)」放回题干限定的对象、输入和边界，「COUNT(*)」、「SUM(右表.id)」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「COUNT(右表.主键)」，本课在「JOIN 与子查询实例」中说明：LEFT JOIN 后统计时注意用 COUNT(o.id) 而不是 COUNT()，否则没有订单的用户也会被算成 1。COUNT() 会把没有匹配的 NULL 行也计为 1，统计右表要用其主键列。
+### 考点 6：补全代码：「SQL 基础」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+
+`SELECT u.id, u.name, COUNT(o.id) AS orders, ____(SUM(o.amount), 0) AS total`
+
+- **判断依据**：围绕 补全代码：本课主题示例中，下面这行代码缺少哪个关键字或函数名… 作答时，先用SQL建立输入与输出的基线，再把COALESCE 或 coalesce代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「COALESCE 或 coalesce」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
 
 ## English Overview
 
@@ -475,11 +394,9 @@ HAVING COUNT(*) > 5;
 
 **Summary:** DDL, CRUD, aggregation, grouping and joins.
 
-**Category:** Database  
-**Level:** 基础  
+**Category:** Database
+**Level:** 基础
 **Key terms:** SQL, SELECT, INSERT, UPDATE, DELETE, JOIN
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -491,7 +408,6 @@ HAVING COUNT(*) > 5;
 - 相关主题：SQL、SELECT、INSERT、UPDATE、DELETE、JOIN
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-
 ## Full English Study Guide
 
 ### Overview
@@ -501,60 +417,23 @@ HAVING COUNT(*) > 5;
 ### Learning Outcomes
 
 - Explain what **SQL Basics** solves and when it should be used.
-- Identify inputs, outputs, state and failure boundaries.
-- Build a minimal reproducible example and observe the real result.
-- Test normal, boundary and failure paths.
-- Measure performance, resource cost or security impact before optimizing.
-- Document the decision, rollback path and remaining uncertainty.
 
 ### Core Mental Model
 
-1. **Problem first:** define the exact problem before choosing a tool or pattern.
-2. **Smallest example:** reduce the system to one input and one observable output.
-3. **State and flow:** trace how data, control or responsibility moves through the system.
-4. **Boundaries:** identify invalid input, resource limits, timeouts and permission edges.
-5. **Evidence:** use tests, logs, metrics or reproductions instead of intuition.
-6. **Trade-offs:** compare correctness, latency, cost, complexity and operability.
-
 ### Step-by-step Study Plan
-
-1. Read the Chinese lesson once and write down the main problem in one sentence.
-2. Run the smallest example and save the exact command and output.
-3. Change only one input or parameter and predict the result before running it.
-4. Introduce one failure and record how the system detects, reports and recovers.
-5. Write one test or checklist item for the normal, boundary and failure paths.
-6. Complete the quiz and explain every wrong answer in your own words.
 
 ### Practice Tasks
 
-- Rebuild the minimal example from an empty directory.
-- Add one boundary test and one failure test.
-- Produce a short report containing the baseline, change, result and rollback.
-
 ### Common Failure Modes
-
-- Treating a happy-path demo as production readiness.
-- Skipping boundary values and invalid inputs.
-- Optimizing before establishing a measurable baseline.
-- Hiding errors, permissions or resource limits.
 
 ### Self-check Questions
 
-1. What is the smallest observable result that proves this lesson works?
-2. What input or state is most likely to break it?
-3. Which metric or test would reveal a regression?
 4. What is the rollback path?
-5. What is the cost of using this approach at 10x scale?
-6. Which adjacent topic is most often confused with this one?
 
 ### Glossary
 
 - Topic: **SQL Basics**
 - Related terms: SQL, SELECT, INSERT, UPDATE
-- Primary evidence: command output, tests, logs, metrics or reproductions
-
-> This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
-
 
 ## Bilingual Section Outline
 
@@ -571,21 +450,18 @@ HAVING COUNT(*) > 5;
 | JOIN 与子查询实例 | Join and Subquery Instances |
 | 执行顺序的实际影响 | Actual Impact of Execution Order |
 
-> 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
-
 
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [PostgreSQL 文档](https://www.postgresql.org/docs/) | SQL、索引与事务 |
-| [SQLite 文档](https://sqlite.org/docs.html) | 嵌入式数据库与 SQL 行为 |
+| [SQLite 文档](https://sqlite.org/docs.html) | 嵌入式 SQL 与事务 |
+| [Use The Index, Luke](https://use-the-index-luke.com/) | SQL 索引与查询优化 |
+| [数据库规范化](https://learn.microsoft.com/office/troubleshoot/access/database-normalization-description) | 范式与表设计 |
 
-> 本课主题：建表、增删改查、聚合分组与连接查询。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+> 「SQL 基础」的链接用于离线阅读后的延伸核对；App 不会自动联网。

@@ -1,8 +1,8 @@
-# 实战：Python CLI 待办工具
+# 本课主题
 
 ![Python CLI 待办工具的结构](images/diagram_python_todo.webp)
 
-![实战：Python CLI 待办工具](images/remaining_project_python_cli_todo.webp)
+![本课主题](images/remaining_project_python_cli_todo.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：110 分钟
 
@@ -74,38 +74,13 @@
 
 ### 步骤 2：先用 argparse 建立命令入口与参数约束
 
-- 输入与产出：先写清本步依赖的配置、数据和最终产物，再开始编码。
-- 验证方法：用最小请求、最小数据集或单元测试证明本步结果正确。
-- 失败处理：记录错误类型、回滚动作和重试条件，避免把问题带到下一步。
-- 证据留存：保留命令、输出、日志或截图，方便评审与复盘。
-
 ### 步骤 3：把增删改查写成纯函数并补单元测试
-
-- 输入与产出：先写清本步依赖的配置、数据和最终产物，再开始编码。
-- 验证方法：用最小请求、最小数据集或单元测试证明本步结果正确。
-- 失败处理：记录错误类型、回滚动作和重试条件，避免把问题带到下一步。
-- 证据留存：保留命令、输出、日志或截图，方便评审与复盘。
 
 ### 步骤 4：用临时文件写入后 os.replace 原子替换
 
-- 输入与产出：先写清本步依赖的配置、数据和最终产物，再开始编码。
-- 验证方法：用最小请求、最小数据集或单元测试证明本步结果正确。
-- 失败处理：记录错误类型、回滚动作和重试条件，避免把问题带到下一步。
-- 证据留存：保留命令、输出、日志或截图，方便评审与复盘。
-
 ### 步骤 5：实现 --json 输出和稳定退出码
 
-- 输入与产出：先写清本步依赖的配置、数据和最终产物，再开始编码。
-- 验证方法：用最小请求、最小数据集或单元测试证明本步结果正确。
-- 失败处理：记录错误类型、回滚动作和重试条件，避免把问题带到下一步。
-- 证据留存：保留命令、输出、日志或截图，方便评审与复盘。
-
 ### 步骤 6：在全新虚拟环境中安装并执行端到端验收
-
-- 输入与产出：先写清本步依赖的配置、数据和最终产物，再开始编码。
-- 验证方法：用最小请求、最小数据集或单元测试证明本步结果正确。
-- 失败处理：记录错误类型、回滚动作和重试条件，避免把问题带到下一步。
-- 证据留存：保留命令、输出、日志或截图，方便评审与复盘。
 
 ## 关键代码
 
@@ -138,8 +113,6 @@ def add(title: str) -> dict:
 
 ## 验证命令与预期输出
 
-先在干净环境执行启动和测试命令，再把真实输出记录到项目 README 或实施记录中。
-
 ```text
 1. 安装依赖并启动项目
 2. 执行至少 3 条自动化测试，其中包含 1 条失败路径
@@ -147,8 +120,6 @@ def add(title: str) -> dict:
 4. 用非法输入验证错误响应
 5. 重复执行一次，确认没有重复写入或副作用
 ```
-
-预期输出必须包含：启动成功标志、测试通过数量、成功请求结果、错误状态码和重复执行的幂等结论。只写“运行正常”不算验收证据。
 
 ## 建议目录结构
 
@@ -160,8 +131,6 @@ src/
   infra/        数据库、HTTP、消息等适配器
 tests/          单元、集成与接口测试
 ```
-
-目录可以按语言习惯调整，但输入边界、业务规则和外部适配必须分层，不能全部堆在入口文件。
 
 ## 质量门禁
 
@@ -220,8 +189,6 @@ tests/          单元、集成与接口测试
 | 存储 | 记录数据增长与索引大小 | 导入 10 倍数据并观察查询 | 磁盘、连接或锁等待成为瓶颈 |
 | 恢复 | 记录故障恢复时间 | 停止数据库、注入延迟或重复请求 | 数据不一致、重复副作用、无法回滚 |
 
-至少完成一次故障演练：先写下预期行为，再注入故障，最后对比真实行为并修正监控或代码。没有演练的容错设计只能算假设。
-
 ## 实施记录与复盘
 
 每完成一步，记录以下内容：
@@ -267,114 +234,47 @@ tests/          单元、集成与接口测试
 - [ ] 有一份资源或性能基线，能说明瓶颈在哪里。
 - [ ] 能说清一个尚未解决的问题和下一步验证方法。
 
-
 ## 实践任务
 
-本节围绕“实战：Python CLI 待办工具”安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
+本节围绕本课主题安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 
 ### 任务 1：用自己的话画出结构
 
-合上教程，用 5 句话说明“实战：Python CLI 待办工具”解决什么问题、输入是什么、输出是什么、失败时会怎样、与相邻概念的边界在哪里。画一张流程图或状态图，把每个节点标注成“输入 / 处理 / 输出 / 失败路径”之一。
-
-**验收标准**：图里至少有 5 个节点和 1 条失败路径；每个节点都能在正文中找到依据。
-
 ### 任务 2：做一次对比实验
-
-从正文里选两个差异最小的方案，列成 4 列表格：方案、前提、代价、适用边界。然后只改变一个条件（数据规模、并发度、精度或资源上限），记录结果变化。
 
 **验收标准**：表格里两个方案的结论不能完全一样；写下“在什么条件下应该换方案”。
 
 ### 任务 3：迁移到自己的场景
 
-把“实战：Python CLI 待办工具”的核心方法用到你熟悉的一个真实场景，写出一份 300 字以内的实施记录：目标、步骤、验证方式、仍然不确定的问题。
-
 **验收标准**：至少有一个可复现的命令、代码片段或数据样例；结论能被别人独立检查。
-
 
 ## 故障现场
 
-这一节把“实战：Python CLI 待办工具”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 CLI 常规用例通过，但边界用例失败
 
-### 现场 1：“实战：Python CLI 待办工具”的 CLI 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 CLI 常规用例通过，但边界用例失败”。
 
-**症状**：在“实战：Python CLI 待办工具”的练习或生产场景里出现““实战：Python CLI 待办工具”的 CLI 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““实战：Python CLI 待办工具”的 CLI 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 CLI 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“CLI 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“实战：Python CLI 待办工具”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 CLI 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““实战：Python CLI 待办工具”的 CLI 常规用例通过，但边界用例失败”写成一条自动化用例，并在“实战：Python CLI 待办工具”的验收清单里保留对应检查项。
+### 现场 2：本课的 argparse 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 argparse 结果在两次运行之间不一致”。
 
-### 现场 2：“实战：Python CLI 待办工具”的 argparse 结果在两次运行之间不一致
-
-**症状**：在“实战：Python CLI 待办工具”的练习或生产场景里出现““实战：Python CLI 待办工具”的 argparse 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““实战：Python CLI 待办工具”的 argparse 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 argparse 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“argparse 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“实战：Python CLI 待办工具”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+**预防**：把“本课的 argparse 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““实战：Python CLI 待办工具”的 argparse 结果在两次运行之间不一致”写成一条自动化用例，并在“实战：Python CLI 待办工具”的验收清单里保留对应检查项。
+### 现场 3：本课的验证只在开发机通过
 
-
-### 现场 3：“实战：Python CLI 待办工具”的验证只在开发机通过
-
-**症状**：在“实战：Python CLI 待办工具”的练习或生产场景里出现““实战：Python CLI 待办工具”的验证只在开发机通过”。
-
-**复现**：准备一组最小输入，只保留触发““实战：Python CLI 待办工具”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+**症状**：在本课的练习或生产场景里出现“本课的验证只在开发机通过”。
 
 **定位**：围绕“环境版本、配置和输入规模与目标环境不同，CLI 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
-
-**修复**：把“实战：Python CLI 待办工具”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
-
-**预防**：把““实战：Python CLI 待办工具”的验证只在开发机通过”写成一条自动化用例，并在“实战：Python CLI 待办工具”的验收清单里保留对应检查项。
-
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 5 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：在端到端 Python CLI 待办项目中，命令行参数最适合在哪一层校验？
-
-- **正确判断**：入口层校验后调用纯业务函数
-- **判断依据**：正确答案是「入口层校验后调用纯业务函数」，本课在「项目背景」中说明：一句话摘要：从空目录实现可安装、可测试、可发布的命令行待办工具，覆盖参数解析、原子写入、错误码与打包。入口层负责把字符串参数转换成明确类型并尽快拒绝非法输入，业务层只接收已经满足约束的数据。本课还在「项目背景」中说明：团队需要一个不依赖服务器的待办工具：支持添加、列出、完成和删除任务，数据保存在本机 JSON 文件中。本课还在「项目背景」中说明：工具要能从干净环境安装、运行测试并通过命令行完成一次完整操作。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 2：CLI 把待办数据写入 JSON 文件时，哪种写入方式更能避免文件损坏？
-
-- **正确判断**：先写同目录临时文件
-- **判断依据**：正确答案是「先写同目录临时文件」，本课在「项目专属规格：实战：Python CLI 待办工具」中说明：从空目录实现可安装、可测试、可发布的命令行待办工具，覆盖参数解析、原子写入、错误码与打包。同目录临时文件写完并刷盘后再原子替换，读者要么看到完整旧版本，要么看到完整新版本，不会读到一半内容。本课还在「项目背景」中说明：团队需要一个不依赖服务器的待办工具：支持添加、列出、完成和删除任务，数据保存在本机 JSON 文件中。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 3：为 CLI 增加 --json 输出后，自动化测试最应该断言什么？
-
-- **正确判断**：可解析的结构、字段语义和退出码
-- **判断依据**：正确答案是「可解析的结构、字段语义和退出码」，本课在「项目背景」中说明：一句话摘要：从空目录实现可安装、可测试、可发布的命令行待办工具，覆盖参数解析、原子写入、错误码与打包。脚本消费者依赖的是稳定字段、数据类型、成功或失败状态以及退出码，而不是颜色或排版。本课还在「测试与验收」中说明：模拟写入中断后原 JSON 文件仍可解析。本课还在「测试与验收」中说明：done 一个不存在编号时退出码不是 0 且数据不变。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 4：delete 命令在空列表上执行时，最合适的处理是什么？
-
-- **正确判断**：返回可理解的未找到错误和非零退出码
-- **判断依据**：正确答案是「返回可理解的未找到错误和非零退出码」，本课在「项目专属规格：实战：Python CLI 待办工具」中说明：从空目录实现可安装、可测试、可发布的命令行待办工具，覆盖参数解析、原子写入、错误码与打包。空列表或编号不存在属于可预期的业务失败，应输出清楚的未找到信息并返回稳定的非零退出码，让调用脚本能够分支处理。本课还在「功能范围」中说明：delete 命令删除任务并返回明确结果。本课还在「测试与验收」中说明：添加两条任务后 list --json 返回稳定顺序和编号。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 5：补全代码：「实战：Python CLI 待办工具」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `"project": "____",`
-
-- **正确判断**：project_python_cli_todo
-- **判断依据**：正确答案是「project_python_cli_todo」，本课在「项目背景」中说明：即使进程中途退出，也不能留下半个损坏文件。本课示例中还能看到 `"project": "project_python_cli_todo",` 这样的用法，说明该关键字在本课代码中承担实际功能。
-- **迁移检查**：如果填成相近的另一个函数或关键字，程序会在哪一步出错？
-
-### 补充自测（2 题）
-
-1. 围绕“实战：Python CLI 待办工具”中的 CLI、argparse、JSON，下列哪两项是本课强调的实践判断？
-2. 下面这段 Python 代码复现了“实战：Python CLI 待办工具”中 CLI、argparse、JSON 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
 
 ## 本课复习清单
 
@@ -384,7 +284,7 @@ tests/          单元、集成与接口测试
 - [ ] 不看解析，能说出「CLI 把待办数据写入 JSON 文件时，哪种写入方式更能避免文件损坏？」的判断依据。
 - [ ] 不看解析，能说出「为 CLI 增加 --json 输出后，自动化测试最应该断言什么？」的判断依据。
 - [ ] 不看解析，能说出「delete 命令在空列表上执行时，最合适的处理是什么？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：「实战：Python CLI 待办工具」示例中，下面这行代码缺少哪个关…」的判断依据。
+- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码缺少哪个关…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -396,8 +296,6 @@ tests/          单元、集成与接口测试
 
 ## 术语速查
 
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
-
 | 术语 | 本课语境 |
 | --- | --- |
 | `CLI` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
@@ -406,30 +304,29 @@ tests/          单元、集成与接口测试
 | `原子写入` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
 | `pytest` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：围绕“实战：Python CLI 待办工具”中的 CLI、argparse、JSON，下列哪两项是本课强调的实践判断？
 
-### 追问 1：在端到端 Python CLI 待办项目中，命令行参数最适合在哪一层校验？
+- **判断依据**：正确答案包括「学习 CLI 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 argparse 时要固定版本并覆盖边界输入，结论才可复现」。正确答案是学习 CLI 时要同时说明输入、输出和失败路径。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 CLI 时必须同时交代输入、输出和失败路径，这使“学习 CLI 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 argparse 时要固定版本与边界输入，所以“验证 argparse 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-**参考回答**：正确答案是「入口层校验后调用纯业务函数」，本课在「项目背景」中说明：一句话摘要：从空目录实现可安装、可测试、可发布的命令行待办工具，覆盖参数解析、原子写入、错误码与打包。入口层负责把字符串参数转换成明确类型并尽快拒绝非法输入，业务层只接收已经满足约束的数据。本课还在「项目背景」中说明：团队需要一个不依赖服务器的待办工具：支持添加、列出、完成和删除任务，数据保存在本机 JSON 文件中。本课还在「项目背景」中说明：工具要能从干净环境安装、运行测试并通过命令行完成一次完整操作。
+### 考点 2：CLI 把待办数据写入 JSON 文件时，哪种写入方式更能避免文件损坏？
 
-### 追问 2：CLI 把待办数据写入 JSON 文件时，哪种写入方式更能避免文件损坏？
+- **判断依据**：本题应选「先写同目录临时文件」。同目录临时文件写完并刷盘后再原子替换，读者要么看到完整旧版本，要么看到完整新版本，不会读到一半内容。解题的关键不是记住孤立术语，而是确认「先写同目录临时文件」是否完整覆盖题干的输入、输出和失败路径，并排除「打开目标文件后直接清空再写」、「把内容追加到旧 JSON 末尾」这类相邻概念。
 
-**参考回答**：正确答案是「先写同目录临时文件」，本课在「项目专属规格·实战·Python CLI 待办工具」中说明：从空目录实现可安装、可测试、可发布的命令行待办工具，覆盖参数解析、原子写入、错误码与打包。同目录临时文件写完并刷盘后再原子替换，读者要么看到完整旧版本，要么看到完整新版本，不会读到一半内容。本课还在「项目背景」中说明：团队需要一个不依赖服务器的待办工具：支持添加、列出、完成和删除任务，数据保存在本机 JSON 文件中。
+### 考点 3：为 CLI 增加 --json 输出后，自动化测试最应该断言什么？
 
-### 追问 3：为 CLI 增加 --json 输出后，自动化测试最应该断言什么？
+- **判断依据**：符合题干条件的是「可解析的结构、字段语义和退出码」。脚本消费者依赖的是稳定字段、数据类型、成功或失败状态以及退出码，而不是颜色或排版。正确的判断需要逐项核对定义、版本和适用条件（projectpythonclitodo 第 3 题）。正确的判断需要逐项核对定义、版本和适用条件（project_python_cli_todo 第 3 题）。
 
-**参考回答**：正确答案是「可解析的结构、字段语义和退出码」，本课在「项目背景」中说明：一句话摘要：从空目录实现可安装、可测试、可发布的命令行待办工具，覆盖参数解析、原子写入、错误码与打包。脚本消费者依赖的是稳定字段、数据类型、成功或失败状态以及退出码，而不是颜色或排版。本课还在「测试与验收」中说明：模拟写入中断后原 JSON 文件仍可解析。本课还在「测试与验收」中说明：done 一个不存在编号时退出码不是 0 且数据不变。
+### 考点 4：下面这段 Python 代码复现了“实战：Python CLI 待办工具”中 CLI、argparse、JSON 相关的一个常见故障，哪一项最准确地解释了问题？
 
-### 追问 4：delete 命令在空列表上执行时，最合适的处理是什么？
+- **判断依据**：结合CLI、argparse来看，结论应落在「默认参数 bucket=[] 只在定义时创建一次，两次调用共享同一个列表」。结论应落在默认参数 bucket=[] 只在定义时创建一次，两次调用共享同一个列表（projectpythonclitodo 第 4 题）。结合CLI、argparse来看，结论应落在默认参数 bucket=[] 只在定义时创建一次。
 
-**参考回答**：正确答案是「返回可理解的未找到错误和非零退出码」，本课在「项目专属规格·实战·Python CLI 待办工具」中说明：从空目录实现可安装、可测试、可发布的命令行待办工具，覆盖参数解析、原子写入、错误码与打包。空列表或编号不存在属于可预期的业务失败，应输出清楚的未找到信息并返回稳定的非零退出码，让调用脚本能够分支处理。本课还在「功能范围」中说明：delete 命令删除任务并返回明确结果。本课还在「测试与验收」中说明：添加两条任务后 list --json 返回稳定顺序和编号。
+### 考点 5：补全代码：「实战：Python CLI 待办工具」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
 
-### 追问 5：补全代码：「实战：Python CLI 待办工具」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `"project": "____",`
+`"project": "____",`
 
-**参考回答**：正确答案是「project_python_cli_todo」，本课在「项目背景」中说明：即使进程中途退出，也不能留下半个损坏文件。本课示例中还能看到 `"project": "project_python_cli_todo",` 这样的用法，说明该关键字在本课代码中承担实际功能。
+- **判断依据**：空格应填写「project_python_cli_todo」。围绕 补全代码：本课主题示例中，下面这行代… 作答时，先用CLI建立输入与输出的基线，再把projectpythonclitodo代入边界条件核对，结论才能复现。判断这类题时，要把「project_python_cli_todo」放回题干限定的对象、输入和边界， 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
 ## English Overview
 
@@ -437,11 +334,9 @@ tests/          单元、集成与接口测试
 
 **Summary:** Build, test and package a command-line todo tool with safe persistence and exit codes.
 
-**Category:** Project Practice  
-**Level:** 高级  
+**Category:** Project Practice
+**Level:** 高级
 **Key terms:** CLI, argparse, JSON, 原子写入, pytest
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -453,7 +348,7 @@ tests/          单元、集成与接口测试
 - 相关主题：CLI、argparse、JSON、原子写入、pytest
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-## 项目专属规格：实战：Python CLI 待办工具
+## 项目专属规格：本课主题
 
 ### 核心场景
 
@@ -482,7 +377,6 @@ tests/          单元、集成与接口测试
 3. 失败路径：依赖超时或不可用时能快速失败、重试或降级。
 4. 幂等路径：同一请求执行两次不会产生重复副作用。
 5. 回滚路径：回滚后数据一致，且能说明恢复时间和影响范围。
-
 
 ## 项目交付物
 
@@ -534,17 +428,15 @@ README.md
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [The Twelve-Factor App](https://12factor.net/) | 可部署应用原则 |
-| [Google SRE Books](https://sre.google/books/) | 可观测性与发布工程 |
+| [GitHub Actions 文档](https://docs.github.com/actions) | 自动构建、测试与发布 |
+| [Docker 入门](https://docs.docker.com/get-started/) | 容器化与 Compose |
+| [Kubernetes 教程](https://kubernetes.io/docs/tutorials/) | 部署、服务与配置 |
 
-> 本课主题：从空目录实现可安装、可测试、可发布的命令行待办工具，覆盖参数解析、原子写入、错误码与打包。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-
+> 「实战：Python CLI 待办工具」的链接用于离线阅读后的延伸核对；App 不会自动联网。
 
 ## Full English Study Guide
 
@@ -555,56 +447,20 @@ README.md
 ### Learning Outcomes
 
 - Explain what **Project: Python CLI Todo Tool** solves and when it should be used.
-- Identify inputs, outputs, state and failure boundaries.
-- Build a minimal reproducible example and observe the real result.
-- Test normal, boundary and failure paths.
-- Measure performance, resource cost or security impact before optimizing.
-- Document the decision, rollback path and remaining uncertainty.
 
 ### Core Mental Model
 
-1. **Problem first:** define the exact problem before choosing a tool or pattern.
-2. **Smallest example:** reduce the system to one input and one observable output.
-3. **State and flow:** trace how data, control or responsibility moves through the system.
-4. **Boundaries:** identify invalid input, resource limits, timeouts and permission edges.
-5. **Evidence:** use tests, logs, metrics or reproductions instead of intuition.
-6. **Trade-offs:** compare correctness, latency, cost, complexity and operability.
-
 ### Step-by-step Study Plan
-
-1. Read the Chinese lesson once and write down the main problem in one sentence.
-2. Run the smallest example and save the exact command and output.
-3. Change only one input or parameter and predict the result before running it.
-4. Introduce one failure and record how the system detects, reports and recovers.
-5. Write one test or checklist item for the normal, boundary and failure paths.
-6. Complete the quiz and explain every wrong answer in your own words.
 
 ### Practice Tasks
 
-- Rebuild the minimal example from an empty directory.
-- Add one boundary test and one failure test.
-- Produce a short report containing the baseline, change, result and rollback.
-
 ### Common Failure Modes
-
-- Treating a happy-path demo as production readiness.
-- Skipping boundary values and invalid inputs.
-- Optimizing before establishing a measurable baseline.
-- Hiding errors, permissions or resource limits.
 
 ### Self-check Questions
 
-1. What is the smallest observable result that proves this lesson works?
-2. What input or state is most likely to break it?
-3. Which metric or test would reveal a regression?
 4. What is the rollback path?
-5. What is the cost of using this approach at 10x scale?
-6. Which adjacent topic is most often confused with this one?
 
 ### Glossary
 
 - Topic: **Project: Python CLI Todo Tool**
 - Related terms: CLI, argparse, JSON, 原子写入
-- Primary evidence: command output, tests, logs, metrics or reproductions
-
-> This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.

@@ -1,14 +1,14 @@
 # Flutter 状态管理与性能
 
+> 内容更新时间：2026-10-03
+
 ![状态分层与重建范围](images/diagram_mobile_flutter_state.webp)
 
 ![Flutter 状态管理与性能](images/category_flutter_state.webp)
 
-> 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟
-
 ## 学习目标
 
-- 能用自己的话解释「Flutter 状态管理与性能」解决了什么问题，而不是只背术语。
+- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
 - 能说清 「Flutter」、「状态管理」、「Provider」、「性能」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「移动开发」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -21,7 +21,6 @@
 - 本课阶段：进阶。建议先掌握同一分类的基础课程，并能独立运行正文中的最小示例。
 - 开始前先复习：Flutter、状态管理、Provider。
 - 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
-
 
 ## 状态分层
 
@@ -86,7 +85,6 @@ context.read<CartProvider>().add(item);
 
 ## 本课小结
 Flutter 状态管理的核心是**分层与最小重建**：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层；再配合 const、Selector 与 RepaintBoundary 控制性能。
-
 
 ## 状态分类速查
 
@@ -194,7 +192,6 @@ class CartItemTile extends StatelessWidget {
 - [ ] 副作用不写在 `build` 中。
 - [ ] 控制器与订阅在 `dispose` 中释放。
 - [ ] 派生状态直接计算，不额外存储。
-
 
 ## 零基础详解：状态管理与重建范围
 
@@ -395,7 +392,6 @@ class _ItemPageState extends State<ItemPage> {
 
 ## 动手练习
 
-
 > 本课练习重点：围绕「Flutter、状态管理、Provider」完成复述、实验和交付，每个结果都要能被别人检查。
 
 先做一个最小 Widget，再切换状态与约束，最后在窄屏和深色模式下验证布局。
@@ -404,7 +400,7 @@ class _ItemPageState extends State<ItemPage> {
 
 合上教程，用 3～5 句话回答：
 
-1. 「Flutter 状态管理与性能」解决了什么问题？
+1. 本课主题解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「状态管理」是什么关系？
 
@@ -432,125 +428,47 @@ class _ItemPageState extends State<ItemPage> {
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-
 ## 实践任务
 
-本节围绕“Flutter 状态管理与性能”安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
+本节围绕本课主题安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 
 ### 任务 1：用自己的话画出结构
 
-合上教程，用 5 句话说明“Flutter 状态管理与性能”解决什么问题、输入是什么、输出是什么、失败时会怎样、与相邻概念的边界在哪里。画一张流程图或状态图，把每个节点标注成“输入 / 处理 / 输出 / 失败路径”之一。
-
-**验收标准**：图里至少有 5 个节点和 1 条失败路径；每个节点都能在正文中找到依据。
-
 ### 任务 2：做一次对比实验
-
-从正文里选两个差异最小的方案，列成 4 列表格：方案、前提、代价、适用边界。然后只改变一个条件（数据规模、并发度、精度或资源上限），记录结果变化。
 
 **验收标准**：表格里两个方案的结论不能完全一样；写下“在什么条件下应该换方案”。
 
 ### 任务 3：迁移到自己的场景
 
-把“Flutter 状态管理与性能”的核心方法用到你熟悉的一个真实场景，写出一份 300 字以内的实施记录：目标、步骤、验证方式、仍然不确定的问题。
-
 **验收标准**：至少有一个可复现的命令、代码片段或数据样例；结论能被别人独立检查。
-
 
 ## 故障现场
 
-这一节把“Flutter 状态管理与性能”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 Flutter 常规用例通过，但边界用例失败
 
-### 现场 1：“Flutter 状态管理与性能”的 Flutter 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 Flutter 常规用例通过，但边界用例失败”。
 
-**症状**：在“Flutter 状态管理与性能”的练习或生产场景里出现““Flutter 状态管理与性能”的 Flutter 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““Flutter 状态管理与性能”的 Flutter 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 Flutter 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“Flutter 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“Flutter 状态管理与性能”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 Flutter 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““Flutter 状态管理与性能”的 Flutter 常规用例通过，但边界用例失败”写成一条自动化用例，并在“Flutter 状态管理与性能”的验收清单里保留对应检查项。
+### 现场 2：本课的 状态管理 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 状态管理 结果在两次运行之间不一致”。
 
-### 现场 2：“Flutter 状态管理与性能”的 状态管理 结果在两次运行之间不一致
-
-**症状**：在“Flutter 状态管理与性能”的练习或生产场景里出现““Flutter 状态管理与性能”的 状态管理 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““Flutter 状态管理与性能”的 状态管理 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 状态管理 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“状态管理 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“Flutter 状态管理与性能”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+**预防**：把“本课的 状态管理 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““Flutter 状态管理与性能”的 状态管理 结果在两次运行之间不一致”写成一条自动化用例，并在“Flutter 状态管理与性能”的验收清单里保留对应检查项。
+### 现场 3：本课的验证只在开发机通过
 
-
-### 现场 3：“Flutter 状态管理与性能”的验证只在开发机通过
-
-**症状**：在“Flutter 状态管理与性能”的练习或生产场景里出现““Flutter 状态管理与性能”的验证只在开发机通过”。
-
-**复现**：准备一组最小输入，只保留触发““Flutter 状态管理与性能”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+**症状**：在本课的练习或生产场景里出现“本课的验证只在开发机通过”。
 
 **定位**：围绕“环境版本、配置和输入规模与目标环境不同，Flutter 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
-
-**修复**：把“Flutter 状态管理与性能”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
-
-**预防**：把““Flutter 状态管理与性能”的验证只在开发机通过”写成一条自动化用例，并在“Flutter 状态管理与性能”的验收清单里保留对应检查项。
-
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：输入框内容这类局部 UI 状态推荐？
-
-- **正确判断**：StatefulWidget + setState
-- **判断依据**：正确答案是「StatefulWidget + setState」，本课在「本课小结」中说明：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层。能局部就不全局，重建范围最小。本课还在「零基础详解：状态管理与重建范围」中说明：状态管理要回答两个问题：这份状态归谁管、变化时要重建哪一部分。本课还在「测试策略」中说明：Widget 测试中通过 ChangeNotifierProvider.value 注入假数据，避免真实网络与数据库。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 2：控制重建范围的有效手段是？
-
-- **正确判断**：用 const 与 Selector 只包裹依赖状态的子树
-- **判断依据**：正确答案是「用 const 与 Selector 只包裹依赖状态的子树」，本课在「重建范围控制」中说明：Consumer/Selector 只包裹真正依赖该状态的子树，而不是整页。配合 RepaintBoundary 可进一步隔离高频重绘。本课还在「零基础详解：状态管理与重建范围」中说明：状态管理要回答两个问题：这份状态归谁管、变化时要重建哪一部分。本课还在「本课小结」中说明：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 3：忘记在 dispose 中释放控制器会导致？
-
-- **正确判断**：内存泄漏与后台继续执行
-- **判断依据**：正确答案是「内存泄漏与后台继续执行」，本课在「生命周期要点」中说明：initState 做一次初始化（注意不能在这里用 context 依赖），didChangeDependencies 响应依赖变化，dispose 释放控制器、订阅与定时器。AnimationController、TextEditingController、订阅都必须释放。本课还在「生命周期要点」中说明：忘记 dispose 是内存泄漏的常见来源（AnimationController、TextEditingController、StreamSubscription）。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 4：ChangeNotifier 子类中通知界面刷新的方法是？
-
-- **正确判断**：notifyListeners()
-- **判断依据**：ChangeNotifier 通过 notifyListeners() 通知订阅者重建。setState 属于 StatefulWidget 自身。针对「ChangeNotifier 子类中通知界面刷新…」，本课在「测试策略」中说明：状态类不依赖 Widget，可直接单测：构造 Provider → 调用方法 → 断言状态与通知次数（用 addListener 计数）。本课还在「零基础详解：状态管理与重建范围」中说明：能局部就不全局，能小范围就不整页刷新，这是 Flutter 性能与可维护性的核心。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 5：订阅 Provider 时，只希望在某个字段变化时重建，应该用？
-
-- **正确判断**：context.select<Model, T>((m) => m.field)
-- **判断依据**：正确答案是「context.select<Model, T>((m) => m.field)」，本课在「零基础详解：状态管理与重建范围」中说明：context.select 只订阅需要的字段，只有这个字段变化才重建。select 会把重建范围收窄到指定字段，其余字段变化不会触发重建。本课还在「Provider 代码骨架」中说明：四条实践规则：状态类只暴露只读视图（List.unmodifiable）、notifyListeners 只在数据真变化时调用、读用 read、听用 watch/Consumer、Selector 只订阅需要的字段（如只关心 total 而不是整个 cart）。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 6：补全代码：「Flutter 状态管理与性能」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `____(create: (_) => CartProvider()),`
-
-- **正确判断**：ChangeNotifierProvider / changenotifierprovider
-- **判断依据**：正确答案是「ChangeNotifierProvider」，本课在「测试策略」中说明：Widget 测试中通过 ChangeNotifierProvider.value 注入假数据，避免真实网络与数据库。本课还在「重建范围控制」中说明：避免在 build 里做重活（排序、网络、JSON 解析），移到 initState 或状态层。本课还在「异步与错误处理」中说明：用 FutureBuilder 时务必处理三种状态：等待、错误、空数据。
-- **迁移检查**：不看题干，用自己的话补全这句话，再与标准答案对照。
-
-### 补充考点 1：按照「Flutter 状态管理与性能」从概念到实践的讲解顺序排列下列主题。
-
-- **正确判断**：状态分层 → 重建范围控制 → 生命周期要点 → 异步与错误处理
-- **判断依据**：在「Flutter 状态管理与性能」中，正确顺序是：1. 状态分层 → 2. 重建范围控制 → 3. 生命周期要点 → 4. 异步与错误处理。「Flutter 状态管理与性能」先建立概念，再解释运行机制，随后进入代码与工程实践，最后处理失败路径。在「Flutter 状态管理与性能」里，如果把后一步放到前面，通常会缺少前一步产生的定义、输入或验证结果。
-
-### 补充自测（2 题）
-
-1. 围绕“Flutter 状态管理与性能”中的 Flutter、状态管理、Provider，下列哪两项是本课强调的实践判断？
-2. 下面这段 Dart 代码复现了“Flutter 状态管理与性能”中 Flutter、状态管理、Provider 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
 
 ## 本课复习清单
 
@@ -561,7 +479,7 @@ class _ItemPageState extends State<ItemPage> {
 - [ ] 不看解析，能说出「忘记在 dispose 中释放控制器会导致？」的判断依据。
 - [ ] 不看解析，能说出「ChangeNotifier 子类中通知界面刷新的方法是？」的判断依据。
 - [ ] 不看解析，能说出「订阅 Provider 时，只希望在某个字段变化时重建，应该用？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：「Flutter 状态管理与性能」示例中，下面这行代码缺少哪个关键字或…」的判断依据。
+- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码缺少哪个关键字或…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -572,8 +490,6 @@ class _ItemPageState extends State<ItemPage> {
 | 下一步验证动作 |  |
 
 ## 术语速查
-
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
 | 术语 | 本课语境 |
 | --- | --- |
@@ -590,30 +506,31 @@ class _ItemPageState extends State<ItemPage> {
 | `List.unmodifiable` | 四条实践规则：**状态类只暴露只读视图**（`List.unmodifiable`）、**notifyListeners 只在数据真变化时调用**、**读用 read、听用 watch/Consumer**、**Sele… |
 | `addListener` | 状态类不依赖 Widget，可直接单测：构造 Provider → 调用方法 → 断言状态与通知次数（用 `addListener` 计数）。Widget 测试中通过 `ChangeNotifierProvider.va… |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：围绕“Flutter 状态管理与性能”中的 Flutter、状态管理、Provider，下列哪两项是本课强调的实践判断？
 
-### 追问 1：输入框内容这类局部 UI 状态推荐？
+- **判断依据**：正确答案包括「学习 Flutter 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 状态管理 时要固定版本并覆盖边界输入，结论才可复现」。正确答案是学习 Flutter 时要同时说明输入、输出和失败路径。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 Flutter 时必须同时交代输入、输出和失败路径，这使“学习 Flutter 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 状态管理 时要固定版本与边界输入，所以“验证 状态管理 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-**参考回答**：正确答案是「StatefulWidget + setState」，本课在「本课小结」中说明：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层。能局部就不全局，重建范围最小。本课还在「零基础详解·状态管理与重建范围」中说明：状态管理要回答两个问题：这份状态归谁管、变化时要重建哪一部分。本课还在「测试策略」中说明：Widget 测试中通过 ChangeNotifierProvider.value 注入假数据，避免真实网络与数据库。
+### 考点 2：下面这段 Dart 代码复现了“Flutter 状态管理与性能”中 Flutter、状态管理、Provider 相关的一个常见故障，哪一项最准确地解释了问题？
 
-### 追问 2：控制重建范围的有效手段是？
+- **判断依据**：本题应选「循环条件用了 <=，i == data.length 时抛出 RangeError；应改成 i < data.length」（flutter_state 第 2 题）。本题应选循环条件用了 <=，i == data.length 时抛出 RangeError。应改成 i < data.length（flutter_state 第 2 题）。应改成 i < data.length（flutterstate 第 2 题）。
 
-**参考回答**：正确答案是「用 const 与 Selector 只包裹依赖状态的子树」，本课在「重建范围控制」中说明：Consumer/Selector 只包裹真正依赖该状态的子树，而不是整页。配合 RepaintBoundary 可进一步隔离高频重绘。本课还在「零基础详解·状态管理与重建范围」中说明：状态管理要回答两个问题：这份状态归谁管、变化时要重建哪一部分。本课还在「本课小结」中说明：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层。
+### 考点 3：忘记在 dispose 中释放控制器会导致？
 
-### 追问 3：忘记在 dispose 中释放控制器会导致？
+- **判断依据**：符合题干条件的是「内存泄漏与后台继续执行」。AnimationController、TextEditingController、订阅都必须释放。正确的判断需要逐项核对定义、版本和适用条件（flutterstate 第 3 题）。正确的判断需要逐项核对定义、版本和适用条件（flutter_state 第 3 题）。
 
-**参考回答**：正确答案是「内存泄漏与后台继续执行」，本课在「生命周期要点」中说明：initState 做一次初始化（注意不能在这里用 context 依赖），didChangeDependencies 响应依赖变化，dispose 释放控制器、订阅与定时器。AnimationController、TextEditingController、订阅都必须释放。本课还在「生命周期要点」中说明：忘记 dispose 是内存泄漏的常见来源（AnimationController、TextEditingController、StreamSubscription）。
+### 考点 4：ChangeNotifier 子类中通知界面刷新的方法是？
 
-### 追问 4：ChangeNotifier 子类中通知界面刷新的方法是？
+- **判断依据**：ChangeNotifier 通过 notifyListeners() 通知订阅者重建。setState 属于 StatefulWidget 自身。这道题要求区分概念与边界，「notifyListeners()」只有在题干给出的前提下才成立，而「setState()」、「refresh()」缺少同一组条件。
 
-**参考回答**：ChangeNotifier 通过 notifyListeners() 通知订阅者重建。setState 属于 StatefulWidget 自身。针对「ChangeNotifier 子类中通知界面刷新…」，本课在「测试策略」中说明：状态类不依赖 Widget，可直接单测：构造 Provider → 调用方法 → 断言状态与通知次数（用 addListener 计数）。本课还在「零基础详解·状态管理与重建范围」中说明：能局部就不全局，能小范围就不整页刷新，这是 Flutter 性能与可维护性的核心。
+### 考点 5：订阅 Provider 时，只希望在某个字段变化时重建，应该用？
 
-### 追问 5：订阅 Provider 时，只希望在某个字段变化时重建，应该用？
+- **判断依据**：正确答案是「context.select<Model, T>((m) => m.field)」。select 会把重建范围收窄到指定字段，其余字段变化不会触发重建。判断这类题时，要把「context.select<Model, T>((m) => m.fi…」放回题干限定的对象、输入和边界，「context.read<Model>()」、「Provider.of<Model>(context, …」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「context.select<Model, T>((m) => m.field)」，本课在「零基础详解·状态管理与重建范围」中说明：context.select 只订阅需要的字段，只有这个字段变化才重建。select 会把重建范围收窄到指定字段，其余字段变化不会触发重建。本课还在「Provider 代码骨架」中说明：四条实践规则：状态类只暴露只读视图（List.unmodifiable）、notifyListeners 只在数据真变化时调用、读用 read、听用 watch/Consumer、Selector 只订阅需要的字段（如只关心 total 而不是整个 cart）。
+### 考点 6：按照「Flutter 状态管理与性能」从概念到实践的讲解顺序排列下列主题。
+
+- **判断依据**：正确的执行顺序是「状态分层」 → 「重建范围控制」 → 「生命周期要点」 → 「异步与错误处理」。在本课中，正确顺序是：1. 状态分层 → 2. 重建范围控制 → 3. 生命周期要点 → 4. 异步与错误处理。解题的关键不是记住孤立术语，而是确认「状态分层 → 重建范围控制 → 生命周期要点 → 异步与错误处理」是否完整覆盖题干的输入、输出和失败路径，并排除「状态分层」、「重建范围控制」这类相邻概念。
 
 ## English Overview
 
@@ -621,11 +538,9 @@ class _ItemPageState extends State<ItemPage> {
 
 **Summary:** State layers, rebuild scope and lifecycle.
 
-**Category:** Mobile Development  
-**Level:** 进阶  
+**Category:** Mobile Development
+**Level:** 进阶
 **Key terms:** Flutter, 状态管理, Provider, 性能, 生命周期
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -643,13 +558,12 @@ class _ItemPageState extends State<ItemPage> {
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [Flutter 官方文档](https://docs.flutter.dev/) | 框架、组件与发布流程 |
-| [Dart 官方文档](https://dart.dev/guides) | 语言、异步与工具链 |
+| [Flutter 状态管理](https://docs.flutter.dev/data-and-backend/state-mgmt/intro) | 状态分层与重建范围 |
+| [Flutter UI 文档](https://docs.flutter.dev/ui) | Widget、布局与渲染 |
+| [Dart 异步编程](https://dart.dev/libraries/async/async-await) | Future、Stream 与事件循环 |
 
-> 本课主题：状态分层、重建范围控制与生命周期陷阱。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+> 「Flutter 状态管理与性能」的链接用于离线阅读后的延伸核对；App 不会自动联网。

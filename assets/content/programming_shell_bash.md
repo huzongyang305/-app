@@ -8,7 +8,7 @@
 
 ## 学习目标
 
-- 能用自己的话解释「Shell 与 Bash 脚本」解决了什么问题，而不是只背术语。
+- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
 - 能说清 「Shell」、「Bash」、「脚本」、「管道」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「Shell」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -21,7 +21,6 @@
 - 本课阶段：基础。建议会读写简单代码或命令，并理解变量、输入输出等基本概念。
 - 开始前先复习：Shell、Bash、脚本。
 - 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
-
 
 ## 为什么还要学 Shell
 
@@ -60,7 +59,6 @@ Shell 的精髓是组合：`grep` 过滤、`sed` 替换、`awk` 按列处理、`
 
 ## 本课小结
 Shell 的目标是**快速可靠地组合现有工具**。记住三件套 + 处处加引号，能避开 80% 的脚本事故；复杂需求果断换语言。
-
 
 ## Bash 语法速查
 
@@ -127,7 +125,6 @@ Shell 的目标是**快速可靠地组合现有工具**。记住三件套 + 处�
 - [ ] 用 `mktemp` 与 `trap` 管理临时资源。
 - [ ] 删除前校验目标非空，避免误删。
 - [ ] `cron` 任务使用绝对路径并记录日志。
-
 
 ## 零基础详解：Shell 脚本是「把命令写成文件」
 
@@ -261,7 +258,6 @@ echo "备份完成：$ARCHIVE"
 
 ## 动手练习
 
-
 > 本课练习重点：围绕「Shell、Bash、脚本」完成复述、实验和交付，每个结果都要能被别人检查。
 
 先加严格模式，再在临时目录验证成功与失败路径，最后补回滚。
@@ -270,7 +266,7 @@ echo "备份完成：$ARCHIVE"
 
 合上教程，用 3～5 句话回答：
 
-1. 「Shell 与 Bash 脚本」解决了什么问题？
+1. 本课主题解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「Bash」是什么关系？
 
@@ -298,11 +294,7 @@ echo "备份完成：$ARCHIVE"
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-
-
 ## 可运行练习
-
-下面 3 个任务围绕“Shell 与 Bash 脚本”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
 
 ### 任务 1：先跑通，再解释
 
@@ -318,73 +310,44 @@ echo "当前目录：$(pwd)"
 
 **预期输出**：当前目录：$(pwd)
 
-**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
-
 ### 任务 2：只改一个条件
-
-复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
-
-**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
 
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
 
-**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
-
-
 ## 故障现场
 
-这一节把“Shell 与 Bash 脚本”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 Shell 常规用例通过，但边界用例失败
 
-### 现场 1：“Shell 与 Bash 脚本”的 Shell 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 Shell 常规用例通过，但边界用例失败”。
 
-**症状**：在“Shell 与 Bash 脚本”的练习或生产场景里出现““Shell 与 Bash 脚本”的 Shell 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““Shell 与 Bash 脚本”的 Shell 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 Shell 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“Shell 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“Shell 与 Bash 脚本”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 Shell 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““Shell 与 Bash 脚本”的 Shell 常规用例通过，但边界用例失败”写成一条自动化用例，并在“Shell 与 Bash 脚本”的验收清单里保留对应检查项。
+### 现场 2：本课的 Bash 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 Bash 结果在两次运行之间不一致”。
 
-### 现场 2：“Shell 与 Bash 脚本”的 Bash 结果在两次运行之间不一致
-
-**症状**：在“Shell 与 Bash 脚本”的练习或生产场景里出现““Shell 与 Bash 脚本”的 Bash 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““Shell 与 Bash 脚本”的 Bash 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 Bash 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“Bash 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“Shell 与 Bash 脚本”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+**预防**：把“本课的 Bash 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““Shell 与 Bash 脚本”的 Bash 结果在两次运行之间不一致”写成一条自动化用例，并在“Shell 与 Bash 脚本”的验收清单里保留对应检查项。
+### 现场 3：本课的验证只在开发机通过
 
-
-### 现场 3：“Shell 与 Bash 脚本”的验证只在开发机通过
-
-**症状**：在“Shell 与 Bash 脚本”的练习或生产场景里出现““Shell 与 Bash 脚本”的验证只在开发机通过”。
-
-**复现**：准备一组最小输入，只保留触发““Shell 与 Bash 脚本”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+**症状**：在本课的练习或生产场景里出现“本课的验证只在开发机通过”。
 
 **定位**：围绕“环境版本、配置和输入规模与目标环境不同，Shell 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：把“Shell 与 Bash 脚本”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
-
-**预防**：把““Shell 与 Bash 脚本”的验证只在开发机通过”写成一条自动化用例，并在“Shell 与 Bash 脚本”的验收清单里保留对应检查项。
-
-
-
 ## 版本与时效
 
-这一节记录“Shell 与 Bash 脚本”涉及的版本基线与升级检查点，避免把某个版本的默认行为当成永久结论。
-
 - Bash 5.x 与 POSIX sh 的行为差异仍然是最常见的可移植性来源
-- 生产脚本建议用 shellcheck、set -euo pipefail 与显式错误处理
 - 升级前确认目标环境的 Bash 版本、内置命令与数组能力
-- 参考手册：https://www.gnu.org/software/bash/manual/
 
 ### 升级检查清单
 
@@ -392,55 +355,6 @@ echo "当前目录：$(pwd)"
 - 只改一个版本变量，记录编译、测试、性能与产物体积的变化。
 - 重点回归默认值、弃用警告、序列化格式、并发语义和错误信息。
 - 升级完成后更新本课的“最后复核 / 下次复核”日期与版本说明。
-
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：脚本开头 set -e 的作用是？
-
-- **正确判断**：命令失败时立即退出
-- **判断依据**：正确答案是「命令失败时立即退出」，本课在「必须掌握的健壮性设置」中说明：脚本开头常用的三件套：set -e（出错即退出）、set -u（使用未定义变量报错）、set -o pipefail（管道中任一命令失败即视为失败）。配合 set -u 与 pipefail 构成健壮性三件套。本课还在「零基础详解：Shell 脚本是「把命令写成文件」」中说明：能说出 set -euo pipefail 每一项的作用。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 2：单引号与双引号的关键区别是？
-
-- **正确判断**：单引号不展开变量，双引号会展开
-- **判断依据**：正确答案是「单引号不展开变量，双引号会展开」，本课在「零基础详解：Shell 脚本是「把命令写成文件」」中说明：口诀：变量一律加双引号，除非你非常确定不需要。需要变量展开用双引号，需要原样输出用单引号。本课还在「安全与可移植性」中说明：变量与路径一律加引号，防止空格与通配符展开导致误删。本课还在「必须掌握的健壮性设置」中说明：脚本开头常用的三件套：set -e（出错即退出）、set -u（使用未定义变量报错）、set -o pipefail（管道中任一命令失败即视为失败）。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 3：涉及复杂 JSON 解析与并发时建议？
-
-- **正确判断**：改用 Python 等语言
-- **判断依据**：正确答案是「改用 Python 等语言」，本课在「安全与可移植性」中说明：涉及复杂逻辑（JSON 解析、并发、错误重试）时优先改用 Python，别硬写 Bash。Bash 适合胶水与组合工具，复杂逻辑应换语言。本课还在「为什么还要学 Shell」中说明：Shell 是最通用的胶水语言：能把小工具组合成流水线，而且是所有 Linux 环境的默认存在。本课还在「必须掌握的健壮性设置」中说明：没有这些设置，脚本会在错误后继续执行，造成难以排查的问题。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 4：#!/usr/bin/env bash 相比 #!/bin/bash 的优势是？
-
-- **正确判断**：通过 PATH 查找 bash
-- **判断依据**：正确答案是「通过 PATH 查找 bash」，本课在「安全与可移植性」中说明：#!/usr/bin/env bash 比 #!/bin/sh 更可移植到不同发行版。shebang 决定用哪个解释器执行脚本，可移植脚本推荐用 env 形式。本课还在「为什么还要学 Shell」中说明：构建、部署、日志处理与自动化几乎都发生在命令行。本课还在「常见用途」中说明：本地开发脚本（一键启动、清理缓存）、CI 步骤、日志分析（统计错误码 Top10）、批量重命名与备份、容器入口脚本（entrypoint）。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 5：source script.sh 与 bash script.sh 的关键区别是？
-
-- **正确判断**：source 在当前 shell 中执行
-- **判断依据**：正确答案是「source 在当前 shell 中执行」，本课在「管道与文本处理」中说明：Shell 的精髓是组合：grep 过滤、sed 替换、awk 按列处理、sort/uniq 排序去重、cut 取列、xargs 批量执行、find 定位文件。加载环境变量或函数库用 source，运行独立任务用 bash 更安全。本课还在「管道与文本处理」中说明：处理大文件时用流式管道，避免全部读入内存。本课还在「本课小结」中说明：记住三件套 + 处处加引号，能避开 80% 的脚本事故。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 6：补全代码：「Shell 与 Bash 脚本」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `set -euo ____ # 健壮性三件套`
-
-- **正确判断**：pipefail
-- **判断依据**：正确答案是「pipefail」，本课在「零基础详解：Shell 脚本是「把命令写成文件」」中说明：能说出 set -euo pipefail 每一项的作用。本课还在「本课小结」中说明：记住三件套 + 处处加引号，能避开 80% 的脚本事故。本课还在「零基础详解：Shell 脚本是「把命令写成文件」」中说明：Shell 脚本就是把你在终端里一条条敲的命令，按顺序写进文件。
-- **迁移检查**：如果填成相近的另一个函数或关键字，程序会在哪一步出错？
-
-### 补充自测（2 题）
-
-1. 围绕“Shell 与 Bash 脚本”中的 Shell、Bash、脚本，下列哪两项是本课强调的实践判断？
-2. 下面这段 Python 代码复现了“Shell 与 Bash 脚本”中 Shell、Bash、脚本 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
 
 ## 本课复习清单
 
@@ -451,7 +365,7 @@ echo "当前目录：$(pwd)"
 - [ ] 不看解析，能说出「涉及复杂 JSON 解析与并发时建议？」的判断依据。
 - [ ] 不看解析，能说出「#!/usr/bin/env bash 相比 #!/bin/bash 的优势是？」的判断依据。
 - [ ] 不看解析，能说出「source script.sh 与 bash script.sh 的关键区别是…」的判断依据。
-- [ ] 不看解析，能说出「补全代码：「Shell 与 Bash 脚本」示例中，下面这行代码缺少哪个关键字或…」的判断依据。
+- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码缺少哪个关键字或…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -462,8 +376,6 @@ echo "当前目录：$(pwd)"
 | 下一步验证动作 |  |
 
 ## 术语速查
-
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
 | 术语 | 本课语境 |
 | --- | --- |
@@ -480,30 +392,33 @@ echo "当前目录：$(pwd)"
 | `$@` | \| 函数 \| `name() { ... }`，用 `$1 $2` 取参数，`$@` 取全部参数 \| |
 | `set -e` | 脚本开头常用的三件套：`set -e`（出错即退出）、`set -u`（使用未定义变量报错）、`set -o pipefail`（管道中任一命令失败即视为失败）。再加 `IFS=$'\n\t'` 让遍历更安全。没有这些设… |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：脚本开头 set -e 的作用是？
 
-### 追问 1：脚本开头 set -e 的作用是？
+- **判断依据**：正确答案是「命令失败时立即退出」。配合 set -u 与 pipefail 构成健壮性三件套。判断这类题时，要把「命令失败时立即退出」放回题干限定的对象、输入和边界，「输出调试信息」、「开启多线程」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「命令失败时立即退出」，本课在「必须掌握的健壮性设置」中说明：脚本开头常用的三件套：set -e（出错即退出）、set -u（使用未定义变量报错）、set -o pipefail（管道中任一命令失败即视为失败）。配合 set -u 与 pipefail 构成健壮性三件套。本课还在「零基础详解·Shell 脚本是「把命令写成文件」」中说明：能说出 set -euo pipefail 每一项的作用。
+### 考点 2：围绕“Shell 与 Bash 脚本”中的 Shell、Bash、脚本，下列哪两项是本课强调的实践判断？
 
-### 追问 2：单引号与双引号的关键区别是？
+- **判断依据**：正确答案包括「验证 Bash 时要固定版本并覆盖边界输入，结论才可复现」、「学习 Shell 时要同时说明输入、输出和失败路径，不能只看正常流程」。本题应选验证 Bash 时要固定版本并覆盖边界输入。在本课主题里，判断 Bash 时要固定版本与边界输入，所以“验证 Bash 时要固定版本并覆盖边界输入，结论才可复现”才可复现。解题的关键不是记住孤立术语，而是确认验证 Bash 时要固定版本并覆盖边界输入，结论才可复现。
 
-**参考回答**：正确答案是「单引号不展开变量，双引号会展开」，本课在「零基础详解·Shell 脚本是「把命令写成文件」」中说明：口诀：变量一律加双引号，除非你非常确定不需要。需要变量展开用双引号，需要原样输出用单引号。本课还在「安全与可移植性」中说明：变量与路径一律加引号，防止空格与通配符展开导致误删。本课还在「必须掌握的健壮性设置」中说明：脚本开头常用的三件套：set -e（出错即退出）、set -u（使用未定义变量报错）、set -o pipefail（管道中任一命令失败即视为失败）。
+### 考点 3：阅读「Shell 与 Bash 脚本」中的这段 Shell 代码，下面哪项判断最准确？
 
-### 追问 3：涉及复杂 JSON 解析与并发时建议？
+- **判断依据**：符合题干条件的是「变量引号、健壮性三件套与管道组合」。符合题干条件的是变量引号、健壮性三件套与管道组合。这段 Shell 代码来自本课的本地示例，主要用来核对 Shell、Bash、脚本、管道 之间的输入、处理和输出关系，变量引号、健壮性三件套与管道组合。如果只凭关键词作答，很容易把Shell、Bash、脚本 的结论只取决于关键字数量，与…、这段 Shell 代码可以跳过错误处理，因为运行成功后就…与变量引号、健壮性三件套与管道组合。
 
-**参考回答**：正确答案是「改用 Python 等语言」，本课在「安全与可移植性」中说明：涉及复杂逻辑（JSON 解析、并发、错误重试）时优先改用 Python，别硬写 Bash。Bash 适合胶水与组合工具，复杂逻辑应换语言。本课还在「为什么还要学 Shell」中说明：Shell 是最通用的胶水语言：能把小工具组合成流水线，而且是所有 Linux 环境的默认存在。本课还在「必须掌握的健壮性设置」中说明：没有这些设置，脚本会在错误后继续执行，造成难以排查的问题。
+### 考点 4：#!/usr/bin/env bash 相比 #!/bin/bash 的优势是？
 
-### 追问 4：#!/usr/bin/env bash 相比 #!/bin/bash 的优势是？
+- **判断依据**：结论应落在「通过 PATH 查找 bash」。/usr/bin/env bash 比 #。/bin/sh 更可移植到不同发行版。shebang 决定用哪个解释器执行脚本，可移植脚本推荐用 env 形式。这道题要求区分概念与边界，「通过 PATH 查找 bash」只有在题干给出的前提下才成立，而「启动更快」、「可以省略脚本执行权限」缺少同一组条件。
 
-**参考回答**：正确答案是「通过 PATH 查找 bash」，本课在「安全与可移植性」中说明：#!/usr/bin/env bash 比 #!/bin/sh 更可移植到不同发行版。shebang 决定用哪个解释器执行脚本，可移植脚本推荐用 env 形式。本课还在「为什么还要学 Shell」中说明：构建、部署、日志处理与自动化几乎都发生在命令行。本课还在「常见用途」中说明：本地开发脚本（一键启动、清理缓存）、CI 步骤、日志分析（统计错误码 Top10）、批量重命名与备份、容器入口脚本（entrypoint）。
+### 考点 5：source script.sh 与 bash script.sh 的关键区别是？
 
-### 追问 5：source script.sh 与 bash script.sh 的关键区别是？
+- **判断依据**：正确答案是「source 在当前 shell 中执行」。加载环境变量或函数库用 source，运行独立任务用 bash 更安全。判断这类题时，要把「source 在当前 shell 中执行」放回题干限定的对象、输入和边界，「source 只能执行一次」、「bash 会修改当前环境」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「source 在当前 shell 中执行」，本课在「管道与文本处理」中说明：Shell 的精髓是组合：grep 过滤、sed 替换、awk 按列处理、sort/uniq 排序去重、cut 取列、xargs 批量执行、find 定位文件。加载环境变量或函数库用 source，运行独立任务用 bash 更安全。本课还在「管道与文本处理」中说明：处理大文件时用流式管道，避免全部读入内存。本课还在「本课小结」中说明：记住三件套 + 处处加引号，能避开 80% 的脚本事故。
+### 考点 6：补全代码：「Shell 与 Bash 脚本」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+
+`set -euo ____                 # 健壮性三件套`
+
+- **判断依据**：围绕 补全代码：本课主题示例中，下面这行代码缺少… 作答时，先用Shell建立输入与输出的基线，再把pipefail代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「pipefail」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
 
 ## English Overview
 
@@ -511,11 +426,9 @@ echo "当前目录：$(pwd)"
 
 **Summary:** Quoting, strict mode and pipelines.
 
-**Category:** Shell  
-**Level:** 基础  
+**Category:** Shell
+**Level:** 基础
 **Key terms:** Shell, Bash, 脚本, 管道, set -e
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -527,7 +440,6 @@ echo "当前目录：$(pwd)"
 - 相关主题：Shell、Bash、脚本、管道、set -e
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-
 ## Full English Study Guide
 
 ### Overview
@@ -537,60 +449,23 @@ echo "当前目录：$(pwd)"
 ### Learning Outcomes
 
 - Explain what **Shell & Bash** solves and when it should be used.
-- Identify inputs, outputs, state and failure boundaries.
-- Build a minimal reproducible example and observe the real result.
-- Test normal, boundary and failure paths.
-- Measure performance, resource cost or security impact before optimizing.
-- Document the decision, rollback path and remaining uncertainty.
 
 ### Core Mental Model
 
-1. **Problem first:** define the exact problem before choosing a tool or pattern.
-2. **Smallest example:** reduce the system to one input and one observable output.
-3. **State and flow:** trace how data, control or responsibility moves through the system.
-4. **Boundaries:** identify invalid input, resource limits, timeouts and permission edges.
-5. **Evidence:** use tests, logs, metrics or reproductions instead of intuition.
-6. **Trade-offs:** compare correctness, latency, cost, complexity and operability.
-
 ### Step-by-step Study Plan
-
-1. Read the Chinese lesson once and write down the main problem in one sentence.
-2. Run the smallest example and save the exact command and output.
-3. Change only one input or parameter and predict the result before running it.
-4. Introduce one failure and record how the system detects, reports and recovers.
-5. Write one test or checklist item for the normal, boundary and failure paths.
-6. Complete the quiz and explain every wrong answer in your own words.
 
 ### Practice Tasks
 
-- Rebuild the minimal example from an empty directory.
-- Add one boundary test and one failure test.
-- Produce a short report containing the baseline, change, result and rollback.
-
 ### Common Failure Modes
-
-- Treating a happy-path demo as production readiness.
-- Skipping boundary values and invalid inputs.
-- Optimizing before establishing a measurable baseline.
-- Hiding errors, permissions or resource limits.
 
 ### Self-check Questions
 
-1. What is the smallest observable result that proves this lesson works?
-2. What input or state is most likely to break it?
-3. Which metric or test would reveal a regression?
 4. What is the rollback path?
-5. What is the cost of using this approach at 10x scale?
-6. Which adjacent topic is most often confused with this one?
 
 ### Glossary
 
 - Topic: **Shell & Bash**
 - Related terms: Shell, Bash, 脚本, 管道
-- Primary evidence: command output, tests, logs, metrics or reproductions
-
-> This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
-
 
 ## Bilingual Section Outline
 
@@ -607,21 +482,18 @@ echo "当前目录：$(pwd)"
 | 本课小结 | Summary |
 | Bash 语法速查 | Bash 语法速查 |
 
-> 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
-
 
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [GNU Bash Manual](https://www.gnu.org/software/bash/manual/) | Bash 语法与行为 |
-| [POSIX Shell](https://pubs.opengroup.org/onlinepubs/9799919799/) | 可移植 Shell 标准 |
+| [GNU Bash 手册](https://www.gnu.org/software/bash/manual/) | Bash 语法、展开与作业控制 |
+| [cron 手册](https://man7.org/linux/man-pages/man5/crontab.5.html) | 定时任务与调度 |
+| [jq 手册](https://jqlang.org/manual/) | JSON 查询与转换 |
 
-> 本课主题：变量引号、健壮性三件套与管道组合。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+> 「Shell 与 Bash 脚本」的链接用于离线阅读后的延伸核对；App 不会自动联网。

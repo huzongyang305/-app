@@ -1,14 +1,14 @@
 # 并发与异步
 
+> 内容更新时间：2026-10-03
+
 ![Python 线程、进程与 asyncio 对比](images/diagram_python_concurrency.webp)
 
 ![并发与异步](images/remaining_python_concurrency.webp)
 
-> 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：16 分钟
-
 ## 学习目标
 
-- 能用自己的话解释「并发与异步」解决了什么问题，而不是只背术语。
+- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
 - 能说清 「并发」、「并行」、「GIL」、「threading」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「Python」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -18,10 +18,8 @@
 ## 前置知识
 
 - 先完成上一课《类型注解与测试》；如果已经掌握，可以直接用本课练习自测。
-- 本课阶段：高级。建议具备同一方向的完整基础，能阅读较长的代码、配置或系统设计说明。
 - 开始前先复习：并发、并行、GIL。
 - 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
-
 
 ## GIL：Python 并发的关键前提
 
@@ -110,7 +108,6 @@ asyncio.run(main())
 ## 本课小结
 记住一句话：**IO 用异步或线程，计算用多进程**；异步代码最怕混入阻塞调用。
 
-
 ## 并发方案选型速查
 
 | 场景 | 推荐方案 | 理由 | 关键 API |
@@ -169,7 +166,6 @@ asyncio.run(main())
 - [ ] 协程里绝不出现阻塞调用。
 - [ ] 用信号量或线程池限制并发规模。
 - [ ] 用 `asyncio.gather` 并发等待多个协程，而不是逐个 `await`。
-
 
 ## 零基础详解：GIL、线程、进程与 asyncio
 
@@ -287,14 +283,12 @@ import time
 
 import httpx
 
-
 async def fetch(client: httpx.AsyncClient, url: str) -> tuple[str, int | str]:
     try:
         resp = await client.get(url, timeout=5)
         return url, resp.status_code
     except httpx.HTTPError as exc:
         return url, f"失败：{exc.__class__.__name__}"
-
 
 async def main(urls: list[str]) -> None:
     start = time.perf_counter()
@@ -303,7 +297,6 @@ async def main(urls: list[str]) -> None:
     for url, status in results:
         print(f"{status}  {url}")
     print(f"耗时 {time.perf_counter() - start:.2f} 秒")
-
 
 if __name__ == "__main__":
     asyncio.run(main(["https://example.com"] * 5))
@@ -319,7 +312,6 @@ if __name__ == "__main__":
 
 ## 动手练习
 
-
 > 本课练习重点：围绕「并发、并行、GIL」完成复述、实验和交付，每个结果都要能被别人检查。
 
 先写可运行脚本，再用类型注解与测试保护核心函数，最后处理真实输入。
@@ -328,7 +320,7 @@ if __name__ == "__main__":
 
 合上教程，用 3～5 句话回答：
 
-1. 「并发与异步」解决了什么问题？
+1. 本课主题解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「并行」是什么关系？
 
@@ -356,11 +348,7 @@ if __name__ == "__main__":
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-
-
 ## 可运行练习
-
-下面 3 个任务围绕“并发与异步”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
 
 ### 任务 1：先跑通，再解释
 
@@ -379,75 +367,41 @@ for t in threads:
     t.join()                   # 等待全部结束
 ```
 
-**预期输出**：运行后会输出与“并发与异步”相关的关键结果；请重点核对输出行数、最后一个数值和异常提示。
-
-**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
-
 ### 任务 2：只改一个条件
-
-复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
-
-**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
 
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
 
-**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
-
-
 ## 故障现场
 
-这一节把“并发与异步”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 并发 常规用例通过，但边界用例失败
 
-### 现场 1：“并发与异步”的 并发 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 并发 常规用例通过，但边界用例失败”。
 
-**症状**：在“并发与异步”的练习或生产场景里出现““并发与异步”的 并发 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““并发与异步”的 并发 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 并发 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“并发 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“并发与异步”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 并发 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““并发与异步”的 并发 常规用例通过，但边界用例失败”写成一条自动化用例，并在“并发与异步”的验收清单里保留对应检查项。
+### 现场 2：本课的 并行 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 并行 结果在两次运行之间不一致”。
 
-### 现场 2：“并发与异步”的 并行 结果在两次运行之间不一致
-
-**症状**：在“并发与异步”的练习或生产场景里出现““并发与异步”的 并行 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““并发与异步”的 并行 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 并行 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“并行 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“并发与异步”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+**预防**：把“本课的 并行 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““并发与异步”的 并行 结果在两次运行之间不一致”写成一条自动化用例，并在“并发与异步”的验收清单里保留对应检查项。
+### 现场 3：本课的验证只在开发机通过
 
-
-### 现场 3：“并发与异步”的验证只在开发机通过
-
-**症状**：在“并发与异步”的练习或生产场景里出现““并发与异步”的验证只在开发机通过”。
-
-**复现**：准备一组最小输入，只保留触发““并发与异步”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+**症状**：在本课的练习或生产场景里出现“本课的验证只在开发机通过”。
 
 **定位**：围绕“环境版本、配置和输入规模与目标环境不同，并发 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：把“并发与异步”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
-
-**预防**：把““并发与异步”的验证只在开发机通过”写成一条自动化用例，并在“并发与异步”的验收清单里保留对应检查项。
-
-
-
 ## 版本与时效
-
-这一节记录“并发与异步”涉及的版本基线与升级检查点，避免把某个版本的默认行为当成永久结论。
-
-- Python 3.14 为当前主线，3.15 处于预发布阶段；生产环境锁定 3.13/3.14 的补丁版本
-- 自由线程（no-GIL）与实验性 JIT 仍在演进，升级前先跑并发与 C 扩展兼容测试
-- 类型标注、tomllib、pathlib 与 asyncio 是近年变化最集中的区域
-- 官方发布说明：https://docs.python.org/3/whatsnew/
 
 ### 升级检查清单
 
@@ -455,55 +409,6 @@ for t in threads:
 - 只改一个版本变量，记录编译、测试、性能与产物体积的变化。
 - 重点回归默认值、弃用警告、序列化格式、并发语义和错误信息。
 - 升级完成后更新本课的“最后复核 / 下次复核”日期与版本说明。
-
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：CPython 中 CPU 密集型任务最适合用？
-
-- **正确判断**：多进程
-- **判断依据**：GIL 使多线程无法并行执行字节码，CPU 密集任务应该用多进程绕开 GIL。其他选项：GIL 让多线程在 CPU 密集场景无法并行，asyncio 与线程池同样受限。针对「CPython 中 CPU 密集型任务最适合用，」，本课在「GIL：Python 并发的关键前提」中说明：CPU 密集型任务用多线程无法提速，应该用多进程。本课还在「GIL：Python 并发的关键前提」中说明：IO 密集型任务在等待时会释放 GIL，多线程和异步都能显著提速。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 2：asyncio 中最危险的做法是？
-
-- **正确判断**：在协程中调用阻塞函数如 time.sleep
-- **判断依据**：正确答案是「在协程中调用阻塞函数如 time.sleep」，本课在「异步 asyncio」中说明：注意：异步函数里不能写阻塞调用（如 time.sleep、同步 requests），否则整个事件循环被卡住，应改用 asyncio.sleep、aiohttp 等异步库。阻塞调用会占住事件循环，导致所有协程都无法推进，应改用异步库。本课还在「零基础详解：GIL、线程、进程与 asyncio」中说明：不要在协程里写阻塞调用（time.sleep、requests），它会卡住整个事件循环。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 3：多线程共享计数变量时出现结果偏小，解决办法是？
-
-- **正确判断**：用 Lock 保护读-改-写过程
-- **判断依据**：正确答案是「用 Lock 保护读-改-写过程」，本课在「本课小结」中说明：记住一句话：IO 用异步或线程，计算用多进程。count += 1 不是原子操作，需要加锁或使用原子/线程安全的数据结构。本课还在「GIL：Python 并发的关键前提」中说明：CPU 密集型任务用多线程无法提速，应该用多进程。本课还在「零基础详解：GIL、线程、进程与 asyncio」中说明：Python 有 GIL（全局解释器锁），所以多线程不能并行跑 CPU 密集任务，但非常适合 IO 等待。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 4：GIL 带来的实际影响是？
-
-- **正确判断**：多线程无法并行执行 Python 字节码，CPU 密集任务难以提速
-- **判断依据**：正确答案是「多线程无法并行执行 Python 字节码，CPU 密集任务难以提速」，本课在「零基础详解：GIL、线程、进程与 asyncio」中说明：Python 有 GIL（全局解释器锁），所以多线程不能并行跑 CPU 密集任务，但非常适合 IO 等待。IO 等待时会释放 GIL，所以多线程适合 IO 密集。本课还在「零基础详解：GIL、线程、进程与 asyncio」中说明：多进程之间不共享内存，所以进程不需要锁，但需要能序列化的数据。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 5：asyncio.gather 的作用是？
-
-- **正确判断**：并发调度并等待多个协程，按顺序返回结果
-- **判断依据**：正确答案是「并发调度并等待多个协程，按顺序返回结果」，本课在「本课小结」中说明：记住一句话：IO 用异步或线程，计算用多进程。gather 让多个协程在同一事件循环内并发执行，是并发请求聚合的常用写法。本课还在「零基础详解：GIL、线程、进程与 asyncio」中说明：CPU 密集的工作丢给 runinexecutor 或进程池。本课还在「多进程 multiprocessing」中说明：线程池同理，把 ProcessPoolExecutor 换成 ThreadPoolExecutor 即可，适合 IO 密集场景。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 6：补全代码：「并发与异步」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `with ____() as pool:`
-
-- **正确判断**：ProcessPoolExecutor / processpoolexecutor
-- **判断依据**：正确答案是「ProcessPoolExecutor」，本课在「零基础详解：GIL、线程、进程与 asyncio」中说明：用 asyncio.sleep、httpx.AsyncClient、aiofiles 这类异步库。本课还在「多进程 multiprocessing」中说明：线程池同理，把 ProcessPoolExecutor 换成 ThreadPoolExecutor 即可，适合 IO 密集场景。
-- **迁移检查**：把答案换成另一种等价写法，是否仍然正确？说明依据。
-
-### 补充自测（2 题）
-
-1. 围绕“并发与异步”中的 并发、并行、GIL，下列哪两项是本课强调的实践判断？
-2. 下面这段 Python 代码复现了“并发与异步”中 并发、并行、GIL 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
 
 ## 本课复习清单
 
@@ -514,7 +419,6 @@ for t in threads:
 - [ ] 不看解析，能说出「多线程共享计数变量时出现结果偏小，解决办法是？」的判断依据。
 - [ ] 不看解析，能说出「GIL 带来的实际影响是？」的判断依据。
 - [ ] 不看解析，能说出「asyncio.gather 的作用是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：「并发与异步」示例中，下面这行代码缺少哪个关键字或函数名？请填入 __…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -525,8 +429,6 @@ for t in threads:
 | 下一步验证动作 |  |
 
 ## 术语速查
-
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
 | 术语 | 本课语境 |
 | --- | --- |
@@ -543,30 +445,33 @@ for t in threads:
 | `Pipe` | \| 需要进程间通信 \| `multiprocessing.Queue` / `Pipe` \| |
 | `async def` | \| 大量网络 / 文件 IO \| `asyncio` \| 单线程事件循环，开销最小 \| `async def`、`await`、`asyncio.gather` \| |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：围绕“并发与异步”中的 并发、并行、GIL，下列哪两项是本课强调的实践判断？
 
-### 追问 1：CPython 中 CPU 密集型任务最适合用？
+- **判断依据**：正确答案包括「验证 并行 时要固定版本并覆盖边界输入，结论才可复现」、「学习 并发 时要同时说明输入、输出和失败路径，不能只看正常流程」。正确答案是验证 并行 时要固定版本并覆盖边界输入。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 并发 时必须同时交代输入、输出和失败路径，这使“学习 并发 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 并行 时要固定版本与边界输入，所以“验证 并行 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-**参考回答**：GIL 使多线程无法并行执行字节码，CPU 密集任务应该用多进程绕开 GIL。其他选项：GIL 让多线程在 CPU 密集场景无法并行，asyncio 与线程池同样受限。针对「CPython 中 CPU 密集型任务最适合用，」，本课在「GIL·Python 并发的关键前提」中说明：CPU 密集型任务用多线程无法提速，应该用多进程。本课还在「GIL·Python 并发的关键前提」中说明：IO 密集型任务在等待时会释放 GIL，多线程和异步都能显著提速。
+### 考点 2：下面这段 Python 代码复现了“并发与异步”中 并发、并行、GIL 相关的一个常见故障，哪一项最准确地解释了问题？
 
-### 追问 2：asyncio 中最危险的做法是？
+- **判断依据**：本题应选「循环上界多走了 1 步，最后一次访问越界（python_concurrency 第 2 题）；应改成 range(len(data))」（python_concurrency 第 2 题）。本题应选循环上界多走了 1 步，最后一次访问越界（python_concurrency 第 2 题）。应改成 range(len(data))（python_concurrency 第 2 题）。本题应选循环上界多走了 1 步，最后一次访问越界（pythonconcurrency 第 2 题）。
 
-**参考回答**：正确答案是「在协程中调用阻塞函数如 time.sleep」，本课在「异步 asyncio」中说明：注意：异步函数里不能写阻塞调用（如 time.sleep、同步 requests），否则整个事件循环被卡住，应改用 asyncio.sleep、aiohttp 等异步库。阻塞调用会占住事件循环，导致所有协程都无法推进，应改用异步库。本课还在「零基础详解·GIL、线程、进程与 asyncio」中说明：不要在协程里写阻塞调用（time.sleep、requests），它会卡住整个事件循环。
+### 考点 3：多线程共享计数变量时出现结果偏小，解决办法是？
 
-### 追问 3：多线程共享计数变量时出现结果偏小，解决办法是？
+- **判断依据**：符合题干条件的是「用 Lock 保护读-改-写过程」。count += 1 不是原子操作，需要加锁或使用原子/线程安全的数据结构。正确的判断需要逐项核对定义、版本和适用条件（pythonconcurrency 第 3 题）。正确的判断需要逐项核对定义、版本和适用条件（python_concurrency 第 3 题）。
 
-**参考回答**：正确答案是「用 Lock 保护读-改-写过程」，本课在「本课小结」中说明：记住一句话：IO 用异步或线程，计算用多进程。count += 1 不是原子操作，需要加锁或使用原子/线程安全的数据结构。本课还在「GIL·Python 并发的关键前提」中说明：CPU 密集型任务用多线程无法提速，应该用多进程。本课还在「零基础详解·GIL、线程、进程与 asyncio」中说明：Python 有 GIL（全局解释器锁），所以多线程不能并行跑 CPU 密集任务，但非常适合 IO 等待。
+### 考点 4：GIL 带来的实际影响是？
 
-### 追问 4：GIL 带来的实际影响是？
+- **判断依据**：结论应落在「多线程无法并行执行 Python 字节码，CPU 密集任务难以提速」。结论应落在多线程无法并行执行 Python 字节码。IO 等待时会释放 GIL，所以多线程适合 IO 密集。这道题要求区分概念与边界，「多线程无法并行执行 Python 字节码，CPU 密集任务难以提速」只有在题干给出的前提下才成立，而「多线程完全不可用」、「所有 IO 操作都会阻塞（混淆了相邻概念，不能回答本题）」缺少同一组条件。
 
-**参考回答**：正确答案是「多线程无法并行执行 Python 字节码，CPU 密集任务难以提速」，本课在「零基础详解·GIL、线程、进程与 asyncio」中说明：Python 有 GIL（全局解释器锁），所以多线程不能并行跑 CPU 密集任务，但非常适合 IO 等待。IO 等待时会释放 GIL，所以多线程适合 IO 密集。本课还在「零基础详解·GIL、线程、进程与 asyncio」中说明：多进程之间不共享内存，所以进程不需要锁，但需要能序列化的数据。
+### 考点 5：asyncio.gather 的作用是？
 
-### 追问 5：asyncio.gather 的作用是？
+- **判断依据**：正确答案是「并发调度并等待多个协程，按顺序返回结果」。gather 让多个协程在同一事件循环内并发执行，是并发请求聚合的常用写法。判断这类题时，要把「并发调度并等待多个协程，按顺序返回结果」放回题干限定的对象、输入和边界，「把协程转换成线程」、「创建新的进程池」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「并发调度并等待多个协程，按顺序返回结果」，本课在「本课小结」中说明：记住一句话：IO 用异步或线程，计算用多进程。gather 让多个协程在同一事件循环内并发执行，是并发请求聚合的常用写法。本课还在「零基础详解·GIL、线程、进程与 asyncio」中说明：CPU 密集的工作丢给 runinexecutor 或进程池。本课还在「多进程 multiprocessing」中说明：线程池同理，把 ProcessPoolExecutor 换成 ThreadPoolExecutor 即可，适合 IO 密集场景。
+### 考点 6：补全代码：「并发与异步」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+
+`with ____() as pool:`
+
+- **判断依据**：空格应填写「ProcessPoolExecutor」、「processpoolexecutor」。解题的关键不是记住孤立术语，而是确认「ProcessPoolExecutor 或 processpoolexe…」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
 
 ## English Overview
 
@@ -574,11 +479,9 @@ for t in threads:
 
 **Summary:** GIL, threading, multiprocessing and asyncio.
 
-**Category:** Python  
-**Level:** 高级  
+**Category:** Python
+**Level:** 高级
 **Key terms:** 并发, 并行, GIL, threading, asyncio, 多进程
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -590,7 +493,6 @@ for t in threads:
 - 相关主题：并发、并行、GIL、threading、asyncio、多进程
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-
 ## Full English Study Guide
 
 ### Overview
@@ -600,60 +502,23 @@ for t in threads:
 ### Learning Outcomes
 
 - Explain what **Concurrency & Async** solves and when it should be used.
-- Identify inputs, outputs, state and failure boundaries.
-- Build a minimal reproducible example and observe the real result.
-- Test normal, boundary and failure paths.
-- Measure performance, resource cost or security impact before optimizing.
-- Document the decision, rollback path and remaining uncertainty.
 
 ### Core Mental Model
 
-1. **Problem first:** define the exact problem before choosing a tool or pattern.
-2. **Smallest example:** reduce the system to one input and one observable output.
-3. **State and flow:** trace how data, control or responsibility moves through the system.
-4. **Boundaries:** identify invalid input, resource limits, timeouts and permission edges.
-5. **Evidence:** use tests, logs, metrics or reproductions instead of intuition.
-6. **Trade-offs:** compare correctness, latency, cost, complexity and operability.
-
 ### Step-by-step Study Plan
-
-1. Read the Chinese lesson once and write down the main problem in one sentence.
-2. Run the smallest example and save the exact command and output.
-3. Change only one input or parameter and predict the result before running it.
-4. Introduce one failure and record how the system detects, reports and recovers.
-5. Write one test or checklist item for the normal, boundary and failure paths.
-6. Complete the quiz and explain every wrong answer in your own words.
 
 ### Practice Tasks
 
-- Rebuild the minimal example from an empty directory.
-- Add one boundary test and one failure test.
-- Produce a short report containing the baseline, change, result and rollback.
-
 ### Common Failure Modes
-
-- Treating a happy-path demo as production readiness.
-- Skipping boundary values and invalid inputs.
-- Optimizing before establishing a measurable baseline.
-- Hiding errors, permissions or resource limits.
 
 ### Self-check Questions
 
-1. What is the smallest observable result that proves this lesson works?
-2. What input or state is most likely to break it?
-3. Which metric or test would reveal a regression?
 4. What is the rollback path?
-5. What is the cost of using this approach at 10x scale?
-6. Which adjacent topic is most often confused with this one?
 
 ### Glossary
 
 - Topic: **Concurrency & Async**
 - Related terms: 并发, 并行, GIL, threading
-- Primary evidence: command output, tests, logs, metrics or reproductions
-
-> This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
-
 
 ## Bilingual Section Outline
 
@@ -670,21 +535,18 @@ for t in threads:
 | 并发方案选型速查 | Concurrency方案选型速查 |
 | 常见错误对照表 | Common mistakes对照表 |
 
-> 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
-
 
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [Python 官方文档](https://docs.python.org/3/) | 语言、标准库与版本行为 |
-| [Python Packaging](https://packaging.python.org/) | 包管理与发布 |
+| [asyncio 文档](https://docs.python.org/3/library/asyncio.html) | 异步 I/O 与并发任务 |
+| [Python 性能分析](https://docs.python.org/3/library/profile.html) | cProfile 与性能分析 |
+| [typing 文档](https://docs.python.org/3/library/typing.html) | 类型标注与泛型 |
 
-> 本课主题：GIL、多线程、多进程与 asyncio 的适用场景和写法。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+> 「并发与异步」的链接用于离线阅读后的延伸核对；App 不会自动联网。

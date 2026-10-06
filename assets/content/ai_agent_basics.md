@@ -1,16 +1,16 @@
-# AI Agent 基础
+# 本课主题
 
 ![ReAct 循环与工具调用](images/diagram_ai_agent_basics.webp)
 
 ![AI Agent 的观察、计划、行动、反思循环](images/agent_loop.webp)
 
-![AI Agent 基础](images/remaining_ai_agent_basics.webp)
+![本课主题](images/remaining_ai_agent_basics.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：17 分钟
 
 ## 学习目标
 
-- 能用自己的话解释「AI Agent 基础」解决了什么问题，而不是只背术语。
+- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
 - 能说清 「Agent」、「ReAct」、「工具调用」、「MCP」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「AI 与智能体」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -23,7 +23,6 @@
 - 本课阶段：基础。建议会读写简单代码或命令，并理解变量、输入输出等基本概念。
 - 开始前先复习：Agent、ReAct、工具调用。
 - 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
-
 
 ## Agent 与普通对话的区别
 
@@ -149,7 +148,6 @@ def run_agent(question: str) -> str:
 ## 本课小结
 Agent = **LLM + 工具 + 记忆 + 循环**。它的能力上限由工具决定，可靠性由循环控制、权限与评测决定。
 
-
 ## Agent 组成速查
 
 | 组成 | 作用 | 设计要点 |
@@ -208,7 +206,6 @@ Agent = **LLM + 工具 + 记忆 + 循环**。它的能力上限由工具决定�
 
 ## 动手练习
 
-
 > 本课练习重点：围绕「Agent、ReAct、工具调用」完成复述、实验和交付，每个结果都要能被别人检查。
 
 先写评测样例，再改一个提示、模型或数据变量，最后比较质量、成本与安全。
@@ -217,7 +214,7 @@ Agent = **LLM + 工具 + 记忆 + 循环**。它的能力上限由工具决定�
 
 合上教程，用 3～5 句话回答：
 
-1. 「AI Agent 基础」解决了什么问题？
+1. 本课主题解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「ReAct」是什么关系？
 
@@ -245,11 +242,7 @@ Agent = **LLM + 工具 + 记忆 + 循环**。它的能力上限由工具决定�
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-
-
 ## 可运行练习
-
-下面 3 个任务围绕“AI Agent 基础”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
 
 ### 任务 1：先跑通，再解释
 
@@ -271,71 +264,43 @@ tools = [{
 }]
 ```
 
-**预期输出**：运行后会输出与“AI Agent 基础”相关的关键结果；请重点核对输出行数、最后一个数值和异常提示。
-
-**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
-
 ### 任务 2：只改一个条件
-
-复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
-
-**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
 
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
 
-**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
-
-
 ## 故障现场
 
-这一节把“AI Agent 基础”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 Agent 常规用例通过，但边界用例失败
 
-### 现场 1：“AI Agent 基础”的 Agent 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 Agent 常规用例通过，但边界用例失败”。
 
-**症状**：在“AI Agent 基础”的练习或生产场景里出现““AI Agent 基础”的 Agent 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““AI Agent 基础”的 Agent 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 Agent 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“Agent 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“AI Agent 基础”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 Agent 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““AI Agent 基础”的 Agent 常规用例通过，但边界用例失败”写成一条自动化用例，并在“AI Agent 基础”的验收清单里保留对应检查项。
+### 现场 2：本课的 ReAct 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 ReAct 结果在两次运行之间不一致”。
 
-### 现场 2：“AI Agent 基础”的 ReAct 结果在两次运行之间不一致
-
-**症状**：在“AI Agent 基础”的练习或生产场景里出现““AI Agent 基础”的 ReAct 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““AI Agent 基础”的 ReAct 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 ReAct 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“ReAct 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“AI Agent 基础”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
-
-**预防**：把““AI Agent 基础”的 ReAct 结果在两次运行之间不一致”写成一条自动化用例，并在“AI Agent 基础”的验收清单里保留对应检查项。
-
+**预防**：把“本课的 ReAct 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
 ### 现场 3：离线评测分数很高，线上仍然频繁给出错误答案
 
-**症状**：在“AI Agent 基础”的练习或生产场景里出现“离线评测分数很高，线上仍然频繁给出错误答案”。
-
-**复现**：准备一组最小输入，只保留触发“离线评测分数很高，线上仍然频繁给出错误答案”的必要条件，连续运行两次确认结果稳定。
-
 **定位**：围绕“评测集与真实输入分布不一致，Agent 的提示词或检索结果没有覆盖失败场景”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“AI Agent 基础”建立固定评测集、边界题和对抗题，分别记录准确率、拒答率、延迟与 token 成本
-
-**预防**：把“离线评测分数很高，线上仍然频繁给出错误答案”写成一条自动化用例，并在“AI Agent 基础”的验收清单里保留对应检查项。
-
-
-## 深入补充：AI Agent 基础 的取舍与边界
+## 深入补充：本课主题 的取舍与边界
 
 ### 一、把概念放回真实约束
 
-学习“AI Agent 基础”时，最容易只记住结论而忽略前提。先写出三个约束：数据规模、时间预算、可接受的失败方式；再判断 Agent 与 ReAct 在这些约束下是否仍然成立。只要约束改变，原来的最优解就可能变成错误解。
+学习本课主题时，最容易只记住结论而忽略前提。先写出三个约束：数据规模、时间预算、可接受的失败方式；再判断 Agent 与 ReAct 在这些约束下是否仍然成立。只要约束改变，原来的最优解就可能变成错误解。
 
 | 维度 | 要回答的问题 | 常见做法 | 失败信号 |
 | --- | --- | --- | --- |
@@ -346,73 +311,23 @@ tools = [{
 
 ### 二、三个容易混淆的边界
 
-1. **把“能跑”当成“正确”**：AI Agent 基础 的示例通过，只说明这条输入路径可用；还要用空值、极值和并发路径验证。
 2. **把“平均值”当成“全部”**：Agent 的指标好看，不代表尾部请求、冷启动或失败重试也好看。
 3. **把“当前版本”当成“永久行为”**：ReAct 依赖的默认值、API 或性能特征都可能随版本变化，需要固定版本并保留回归用例。
 
 ### 三、一个生产场景
 
-假设团队要在真实系统里使用“AI Agent 基础”：第一周先做小流量验证，记录 Agent 的基线与异常；第二周扩大输入规模，观察 ReAct 是否成为瓶颈；第三周再做故障演练，主动注入超时、重复请求和依赖不可用，确认系统能降级、能重试、能恢复。每一步都要留下指标、日志和结论，而不是只留下“感觉更快了”。
+假设团队要在真实系统里使用本课主题：第一周先做小流量验证，记录 Agent 的基线与异常；第二周扩大输入规模，观察 ReAct 是否成为瓶颈；第三周再做故障演练，主动注入超时、重复请求和依赖不可用，确认系统能降级、能重试、能恢复。每一步都要留下指标、日志和结论，而不是只留下“感觉更快了”。
 
 ### 四、自测清单
 
-- 能否用一句话说出“AI Agent 基础”解决的核心问题与不适用场景？
+- 能否用一句话说出本课主题解决的核心问题与不适用场景？
 - 能否画出 Agent 的数据流或状态变化，并标出失败路径？
 - 能否给出一个反例，证明某个看似合理的结论在边界条件下不成立？
 - 能否写出一条可复现的验证命令，让别人独立得到相同结论？
 
 ### 五、AI 工程补充
 
-在“AI Agent 基础”里，模型输出只是系统的一部分：输入要先经过权限与数据质量检查，检索或工具调用要有超时和降级，输出要经过引用核验或规则校验，最后记录 token、延迟、失败类型和人工反馈。评测时至少准备固定题、边界题和对抗题，并把 Agent 与 ReAct 的指标分开记录；否则一次提示词改动看似提升体验，实际可能只是评测样本泄漏或随机波动。
-
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：Agent 与普通一问一答的关键区别是？
-
-- **正确判断**：能围绕目标循环调用工具并观察结果
-- **判断依据**：正确答案是「能围绕目标循环调用工具并观察结果」，本课在「ReAct 循环」中说明：循环必须有最大步数上限，否则可能无限调用工具。Agent 通过「思考-行动-观察」的循环逐步逼近目标。本课还在「ReAct 循环的可运行骨架」中说明：三个安全边界：工具白名单（模型不能调用未注册能力）、参数校验与异常兜底（工具失败要回传错误而非崩溃）、最大步数（防止无限循环烧钱）。本课还在「工具调用（Function Calling）」中说明：流程：把工具描述交给模型 → 模型返回「要调用哪个函数、参数是什么」→ 你的程序真正执行 → 把结果回传给模型 → 模型决定下一步。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 2：ReAct 循环的三个核心要素是？
-
-- **正确判断**：Thought，Action
-- **判断依据**：模型先推理，再选择动作，然后根据观察结果继续推理。其他选项：ReAct 循环是 Thought，Action 三要素。针对「ReAct 循环的三个核心要素是，」，本课在「本课小结」中说明：Agent = LLM + 工具 + 记忆 + 循环。本课还在「设计清单」中说明：设置最大步数、最大 token 与预算上限。本课还在「ReAct 循环的可运行骨架」中说明：三个安全边界：工具白名单（模型不能调用未注册能力）、参数校验与异常兜底（工具失败要回传错误而非崩溃）、最大步数（防止无限循环烧钱）。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 3：关于工具调用，下面说法正确的是？
-
-- **正确判断**：模型只决定调用哪个工具
-- **判断依据**：正确答案是「模型只决定调用哪个工具」，本课在「工具调用（Function Calling）」中说明：流程：把工具描述交给模型 → 模型返回「要调用哪个函数、参数是什么」→ 你的程序真正执行 → 把结果回传给模型 → 模型决定下一步。执行权必须在应用侧，并做参数校验、权限控制与超时重试。本课还在「工具调用（Function Calling）」中说明：模型只负责决定，执行必须由你的代码控制并做权限校验。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 4：Agent 的「规划」通常包含什么？
-
-- **正确判断**：把目标拆成子任务
-- **判断依据**：正确答案是「把目标拆成子任务」，本课在「记忆」中说明：上下文过长时需要压缩与遗忘策略：摘要历史、保留关键事实、按相关性检索，而不是无脑全塞。规划与反思（reflection）配合，能让 Agent 在失败后换策略而不是重复同样的调用。本课还在「MCP：模型上下文协议」中说明：MCP（Model Context Protocol）用统一协议把「工具与数据源」暴露给模型客户端。本课还在「设计清单」中说明：工具描述写清楚用途、参数与返回结构，模型才会用对。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 5：为 Agent 设计工具时最关键的要求是？
-
-- **正确判断**：描述清晰，参数 schema 明确
-- **判断依据**：正确答案是「描述清晰，参数 schema 明确」，本课在「设计清单」中说明：工具描述写清楚用途、参数与返回结构，模型才会用对。工具描述就是给模型的「接口文档」，含糊的描述会导致错误调用与反复重试。本课还在「设计清单」中说明：关键操作（转账、删除、发邮件）必须人工确认（Human-in-the-loop）。本课还在「本课小结」中说明：它的能力上限由工具决定，可靠性由循环控制、权限与评测决定。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 6：补全代码：「AI Agent 基础」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `def run_agent(____: str) -> str:`
-
-- **正确判断**：question
-- **判断依据**：正确答案是「question」，这道题在问补全代码：AIAgent基础示例中，下面这行代码缺少…ent(____:str)->str:`，判断时要把题干限定的输入、边界与目标逐项对齐。本课示例中还能看到 `def run_agent(question: str) -> str:` 这样的用法，说明该关键字在本课代码中承担实际功能。
-- **迁移检查**：不看题干，用自己的话补全这句话，再与标准答案对照。
-
-### 补充自测（2 题）
-
-1. 围绕“AI Agent 基础”中的 Agent、ReAct、工具调用，下列哪两项是本课强调的实践判断？
-2. 下面这段 Python 代码复现了“AI Agent 基础”中 Agent、ReAct、工具调用 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
+在本课主题里，模型输出只是系统的一部分：输入要先经过权限与数据质量检查，检索或工具调用要有超时和降级，输出要经过引用核验或规则校验，最后记录 token、延迟、失败类型和人工反馈。评测时至少准备固定题、边界题和对抗题，并把 Agent 与 ReAct 的指标分开记录；否则一次提示词改动看似提升体验，实际可能只是评测样本泄漏或随机波动。
 
 ## 本课复习清单
 
@@ -423,7 +338,6 @@ tools = [{
 - [ ] 不看解析，能说出「关于工具调用，下面说法正确的是？」的判断依据。
 - [ ] 不看解析，能说出「Agent 的「规划」通常包含什么？」的判断依据。
 - [ ] 不看解析，能说出「为 Agent 设计工具时最关键的要求是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：「AI Agent 基础」示例中，下面这行代码缺少哪个关键字或函数名？…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -435,8 +349,6 @@ tools = [{
 
 ## 术语速查
 
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
-
 | 术语 | 本课语境 |
 | --- | --- |
 | `，判断时要把题干限定的输入、边界与目标逐项对齐。本课示例中还能看到` | 判断依据**：正确答案是「question」，这道题在问补全代码：AIAgent基础示例中，下面这行代码缺少…ent(____:str)->str:`，判断时要把题干限定的输入、边界与目标逐项对齐。本课示例中还能看到 `… |
@@ -446,30 +358,33 @@ tools = [{
 | `MCP` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
 | `记忆` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：下面这段 Python 代码复现了“AI Agent 基础”中 Agent、ReAct、工具调用 相关的一个常见故障，哪一项最准确地解释了问题？
 
-### 追问 1：Agent 与普通一问一答的关键区别是？
+- **判断依据**：结合Agent、ReAct来看，正确答案是「默认参数 bucket=[] 只在定义时创建一次，两次调用共享同一个列表」。正确答案是默认参数 bucket=[] 只在定义时创建一次，两次调用共享同一个列表（aiagentbasics 第 1 题）。结合Agent、ReAct来看，正确答案是默认参数 bucket=[] 只在定义时创建一次。
 
-**参考回答**：正确答案是「能围绕目标循环调用工具并观察结果」，本课在「ReAct 循环」中说明：循环必须有最大步数上限，否则可能无限调用工具。Agent 通过「思考-行动-观察」的循环逐步逼近目标。本课还在「ReAct 循环的可运行骨架」中说明：三个安全边界：工具白名单（模型不能调用未注册能力）、参数校验与异常兜底（工具失败要回传错误而非崩溃）、最大步数（防止无限循环烧钱）。本课还在「工具调用（Function Calling）」中说明：流程：把工具描述交给模型 → 模型返回「要调用哪个函数、参数是什么」→ 你的程序真正执行 → 把结果回传给模型 → 模型决定下一步。
+### 考点 2：围绕“AI Agent 基础”中的 Agent、ReAct、工具调用，下列哪两项是本课强调的实践判断？
 
-### 追问 2：ReAct 循环的三个核心要素是？
+- **判断依据**：正确答案包括「学习 Agent 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 ReAct 时要固定版本并覆盖边界输入，结论才可复现」。本题应选学习 Agent 时要同时说明输入、输出和失败路径。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 Agent 时必须同时交代输入、输出和失败路径，这使“学习 Agent 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 ReAct 时要固定版本与边界输入，所以“验证 ReAct 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-**参考回答**：模型先推理，再选择动作，然后根据观察结果继续推理。其他选项：ReAct 循环是 Thought，Action 三要素。针对「ReAct 循环的三个核心要素是，」，本课在「本课小结」中说明：Agent = LLM + 工具 + 记忆 + 循环。本课还在「设计清单」中说明：设置最大步数、最大 token 与预算上限。本课还在「ReAct 循环的可运行骨架」中说明：三个安全边界：工具白名单（模型不能调用未注册能力）、参数校验与异常兜底（工具失败要回传错误而非崩溃）、最大步数（防止无限循环烧钱）。
+### 考点 3：关于工具调用，下面说法正确的是？
 
-### 追问 3：关于工具调用，下面说法正确的是？
+- **判断依据**：符合题干条件的是「模型只决定调用哪个工具」。执行权必须在应用侧，并做参数校验、权限控制与超时重试。正确的判断需要逐项核对定义、版本和适用条件（aiagentbasics 第 3 题）。正确的判断需要逐项核对定义、版本和适用条件（ai_agent_basics 第 3 题）。
 
-**参考回答**：正确答案是「模型只决定调用哪个工具」，本课在「工具调用（Function Calling）」中说明：流程：把工具描述交给模型 → 模型返回「要调用哪个函数、参数是什么」→ 你的程序真正执行 → 把结果回传给模型 → 模型决定下一步。执行权必须在应用侧，并做参数校验、权限控制与超时重试。本课还在「工具调用（Function Calling）」中说明：模型只负责决定，执行必须由你的代码控制并做权限校验。
+### 考点 4：Agent 的「规划」通常包含什么？
 
-### 追问 4：Agent 的「规划」通常包含什么？
+- **判断依据**：结论应落在「把目标拆成子任务」。规划与反思（reflection）配合，能让 Agent 在失败后换策略而不是重复同样的调用。这道题要求区分概念与边界，「把目标拆成子任务」只有在题干给出的前提下才成立，而「只生成最终答案」、「只做向量检索」缺少同一组条件。
 
-**参考回答**：正确答案是「把目标拆成子任务」，本课在「记忆」中说明：上下文过长时需要压缩与遗忘策略：摘要历史、保留关键事实、按相关性检索，而不是无脑全塞。规划与反思（reflection）配合，能让 Agent 在失败后换策略而不是重复同样的调用。本课还在「MCP·模型上下文协议」中说明：MCP（Model Context Protocol）用统一协议把「工具与数据源」暴露给模型客户端。本课还在「设计清单」中说明：工具描述写清楚用途、参数与返回结构，模型才会用对。
+### 考点 5：为 Agent 设计工具时最关键的要求是？
 
-### 追问 5：为 Agent 设计工具时最关键的要求是？
+- **判断依据**：正确答案是「描述清晰，参数 schema 明确」。工具描述就是给模型的「接口文档」，含糊的描述会导致错误调用与反复重试。判断这类题时，要把「描述清晰，参数 schema 明确」放回题干限定的对象、输入和边界，「工具数量越多越好」、「把多个功能塞进一个工具」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「描述清晰，参数 schema 明确」，本课在「设计清单」中说明：工具描述写清楚用途、参数与返回结构，模型才会用对。工具描述就是给模型的「接口文档」，含糊的描述会导致错误调用与反复重试。本课还在「设计清单」中说明：关键操作（转账、删除、发邮件）必须人工确认（Human-in-the-loop）。本课还在「本课小结」中说明：它的能力上限由工具决定，可靠性由循环控制、权限与评测决定。
+### 考点 6：补全代码：「AI Agent 基础」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+
+`def run_agent(____: str) -> str:`
+
+- **判断依据**：围绕 补全代码：本课主题示例中，下面这行代码缺少哪个关键… 作答时，先用Agent建立输入与输出的基线，再把question代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「question」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
 
 ## English Overview
 
@@ -477,11 +392,9 @@ tools = [{
 
 **Summary:** ReAct loop, tool calling, memory and MCP.
 
-**Category:** AI & Agents  
-**Level:** 基础  
+**Category:** AI & Agents
+**Level:** 基础
 **Key terms:** Agent, ReAct, 工具调用, MCP, 记忆
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -493,7 +406,6 @@ tools = [{
 - 相关主题：Agent、ReAct、工具调用、MCP、记忆
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-
 ## Full English Study Guide
 
 ### Overview
@@ -503,60 +415,23 @@ tools = [{
 ### Learning Outcomes
 
 - Explain what **AI Agent Basics** solves and when it should be used.
-- Identify inputs, outputs, state and failure boundaries.
-- Build a minimal reproducible example and observe the real result.
-- Test normal, boundary and failure paths.
-- Measure performance, resource cost or security impact before optimizing.
-- Document the decision, rollback path and remaining uncertainty.
 
 ### Core Mental Model
 
-1. **Problem first:** define the exact problem before choosing a tool or pattern.
-2. **Smallest example:** reduce the system to one input and one observable output.
-3. **State and flow:** trace how data, control or responsibility moves through the system.
-4. **Boundaries:** identify invalid input, resource limits, timeouts and permission edges.
-5. **Evidence:** use tests, logs, metrics or reproductions instead of intuition.
-6. **Trade-offs:** compare correctness, latency, cost, complexity and operability.
-
 ### Step-by-step Study Plan
-
-1. Read the Chinese lesson once and write down the main problem in one sentence.
-2. Run the smallest example and save the exact command and output.
-3. Change only one input or parameter and predict the result before running it.
-4. Introduce one failure and record how the system detects, reports and recovers.
-5. Write one test or checklist item for the normal, boundary and failure paths.
-6. Complete the quiz and explain every wrong answer in your own words.
 
 ### Practice Tasks
 
-- Rebuild the minimal example from an empty directory.
-- Add one boundary test and one failure test.
-- Produce a short report containing the baseline, change, result and rollback.
-
 ### Common Failure Modes
-
-- Treating a happy-path demo as production readiness.
-- Skipping boundary values and invalid inputs.
-- Optimizing before establishing a measurable baseline.
-- Hiding errors, permissions or resource limits.
 
 ### Self-check Questions
 
-1. What is the smallest observable result that proves this lesson works?
-2. What input or state is most likely to break it?
-3. Which metric or test would reveal a regression?
 4. What is the rollback path?
-5. What is the cost of using this approach at 10x scale?
-6. Which adjacent topic is most often confused with this one?
 
 ### Glossary
 
 - Topic: **AI Agent Basics**
 - Related terms: Agent, ReAct, 工具调用, MCP
-- Primary evidence: command output, tests, logs, metrics or reproductions
-
-> This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
-
 
 ## Bilingual Section Outline
 
@@ -573,22 +448,18 @@ tools = [{
 | ReAct 循环的可运行骨架 | Runnable skeleton of a ReAct cycle |
 | 本课小结 | Lesson Summary |
 
-> 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
-
 
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [OpenAI Docs](https://platform.openai.com/docs/) | 模型 API、工具与评估 |
-| [Hugging Face Docs](https://huggingface.co/docs) | 模型、数据集与推理 |
 | [Model Context Protocol](https://modelcontextprotocol.io/) | Agent 工具与上下文协议 |
+| [LangChain 文档](https://python.langchain.com/docs/) | Agent、RAG 与工作流编排 |
+| [OpenAI 开发者文档](https://platform.openai.com/docs/) | 模型 API、工具与评估 |
 
-> 本课主题：ReAct 循环、工具调用、记忆与 MCP。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+> 「AI Agent 基础」的链接用于离线阅读后的延伸核对；App 不会自动联网。

@@ -1,14 +1,14 @@
-# 实战：Vite + React 待办应用
+# 本课主题
 
 ![Vite 与 React 应用的结构](images/diagram_vite_react.webp)
 
-![实战：Vite + React 待办应用](images/remaining_js_project.webp)
+![本课主题](images/remaining_js_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：18 分钟
 
 ## 学习目标
 
-- 能用自己的话解释「实战：Vite + React 待办应用」解决了什么问题，而不是只背术语。
+- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
 - 能说清 「实战」、「React」、「Vite」、「useState」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「JavaScript」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -18,10 +18,8 @@
 ## 前置知识
 
 - 先完成上一课《模块化与工程化》；如果已经掌握，可以直接用本课练习自测。
-- 本课阶段：高级。建议具备同一方向的完整基础，能阅读较长的代码、配置或系统设计说明。
 - 开始前先复习：实战、React、Vite。
 - 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
-
 
 ## 初始化
 
@@ -128,7 +126,6 @@ export default defineConfig({
 ## 本课小结
 前端工程 = **组件化 UI + 不可变状态 + 异步数据获取 + 构建工具**。把这个小应用跑通，再学 React/Vue 的进阶概念会顺畅很多。
 
-
 ## React 核心速查
 
 | 概念 | 说明 | 常见写法 |
@@ -197,7 +194,6 @@ setState((prev) => ({
 - [ ] `useEffect` 依赖写全，并有清理逻辑。
 - [ ] 派生数据不额外存 state。
 - [ ] 提交前跑 lint 与测试，环境变量不写进代码。
-
 
 ## 零基础详解：从零做一个前端小项目
 
@@ -417,7 +413,6 @@ npm run preview        # 本地预览产物，而不是只看 dev
 
 ## 动手练习
 
-
 > 本课练习重点：围绕「实战、React、Vite」完成复述、实验和交付，每个结果都要能被别人检查。
 
 先在 Node 或浏览器复现行为，再改写异步与错误路径，最后补测试。
@@ -426,7 +421,7 @@ npm run preview        # 本地预览产物，而不是只看 dev
 
 合上教程，用 3～5 句话回答：
 
-1. 「实战：Vite + React 待办应用」解决了什么问题？
+1. 本课主题解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「React」是什么关系？
 
@@ -454,8 +449,6 @@ npm run preview        # 本地预览产物，而不是只看 dev
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-
-
 ## 验证命令与预期输出
 
 项目代码不能只看“能编译”，还要能按固定命令复现结果。下表给出最低验证集：
@@ -482,10 +475,7 @@ npm run preview        # 本地预览产物，而不是只看 dev
 4. 定位原因后补一条自动化测试，再重新执行发布流程。
 5. 把教训写入项目复盘或本课笔记，形成下一次的检查项。
 
-
 ## 可运行练习
-
-下面 3 个任务围绕“实战：Vite + React 待办应用”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
 
 ### 任务 1：先跑通，再解释
 
@@ -495,75 +485,44 @@ export default defineConfig({
 });
 ```
 
-**预期输出**：运行后会输出与“实战：Vite + React 待办应用”相关的关键结果；请重点核对输出行数、最后一个数值和异常提示。
-
-**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
-
 ### 任务 2：只改一个条件
-
-复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
-
-**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
 
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
 
-**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
-
-
 ## 故障现场
 
-这一节把“实战：Vite + React 待办应用”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 实战 常规用例通过，但边界用例失败
 
-### 现场 1：“实战：Vite + React 待办应用”的 实战 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 实战 常规用例通过，但边界用例失败”。
 
-**症状**：在“实战：Vite + React 待办应用”的练习或生产场景里出现““实战：Vite + React 待办应用”的 实战 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““实战：Vite + React 待办应用”的 实战 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 实战 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“实战 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“实战：Vite + React 待办应用”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 实战 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““实战：Vite + React 待办应用”的 实战 常规用例通过，但边界用例失败”写成一条自动化用例，并在“实战：Vite + React 待办应用”的验收清单里保留对应检查项。
+### 现场 2：本课的 React 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 React 结果在两次运行之间不一致”。
 
-### 现场 2：“实战：Vite + React 待办应用”的 React 结果在两次运行之间不一致
-
-**症状**：在“实战：Vite + React 待办应用”的练习或生产场景里出现““实战：Vite + React 待办应用”的 React 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““实战：Vite + React 待办应用”的 React 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 React 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“React 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“实战：Vite + React 待办应用”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+**预防**：把“本课的 React 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““实战：Vite + React 待办应用”的 React 结果在两次运行之间不一致”写成一条自动化用例，并在“实战：Vite + React 待办应用”的验收清单里保留对应检查项。
+### 现场 3：本课的验证只在开发机通过
 
-
-### 现场 3：“实战：Vite + React 待办应用”的验证只在开发机通过
-
-**症状**：在“实战：Vite + React 待办应用”的练习或生产场景里出现““实战：Vite + React 待办应用”的验证只在开发机通过”。
-
-**复现**：准备一组最小输入，只保留触发““实战：Vite + React 待办应用”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+**症状**：在本课的练习或生产场景里出现“本课的验证只在开发机通过”。
 
 **定位**：围绕“环境版本、配置和输入规模与目标环境不同，实战 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：把“实战：Vite + React 待办应用”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
-
-**预防**：把““实战：Vite + React 待办应用”的验证只在开发机通过”写成一条自动化用例，并在“实战：Vite + React 待办应用”的验收清单里保留对应检查项。
-
-
-
 ## 版本与时效
 
-这一节记录“实战：Vite + React 待办应用”涉及的版本基线与升级检查点，避免把某个版本的默认行为当成永久结论。
-
-- ECMAScript 2025/2026 持续加入新能力，Node 24 是当前 LTS 主线
 - 运行时要同时考虑浏览器基线、Node LTS 与打包工具的降级策略
 - 升级前用特性检测和构建目标矩阵验证，不要只在本机浏览器测试
-- 标准与兼容表：https://developer.mozilla.org/docs/Web/JavaScript
 
 ### 升级检查清单
 
@@ -571,55 +530,6 @@ export default defineConfig({
 - 只改一个版本变量，记录编译、测试、性能与产物体积的变化。
 - 重点回归默认值、弃用警告、序列化格式、并发语义和错误信息。
 - 升级完成后更新本课的“最后复核 / 下次复核”日期与版本说明。
-
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：React 中更新数组状态为什么不能直接 push？
-
-- **正确判断**：必须返回新引用才能触发重新渲染
-- **判断依据**：正确答案是「必须返回新引用才能触发重新渲染」，本课在「组件与状态」中说明：关键点：状态用不可变更新（[...prev]、prev.map），不要直接 push。状态比较基于引用，直接用 [...prev] 或 map 生成新数组才会触发更新。本课还在「项目专属规格：实战：Vite + React 待办应用」中说明：组件状态、不可变更新、异步请求与构建部署。本课还在「本课小结」中说明：前端工程 = 组件化 UI + 不可变状态 + 异步数据获取 + 构建工具。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 2：列表渲染时 key 的作用是？
-
-- **正确判断**：帮助 diff 算法识别元素，避免复用错位
-- **判断依据**：正确答案是「帮助 diff 算法识别元素，避免复用错位」，本课在「初始化」中说明：选 TypeScript 模板的理由：组件 props 与接口数据都有类型提示，重构更安全。稳定唯一的 key 能让 React 正确复用节点，使用下标会在增删时出问题。本课还在「本课小结」中说明：把这个小应用跑通，再学 React/Vue 的进阶概念会顺畅很多。本课还在「零基础详解：从零做一个前端小项目」中说明：一个能交付的前端项目要有：能跑起来的开发环境、清晰的分层、可打包的构建、可验证的测试。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 3：npm run build 之后产物是什么？
-
-- **正确判断**：静态 HTML/CSS/JS 文件
-- **判断依据**：正确答案是「静态 HTML/CSS/JS 文件」，本课在「上线清单」中说明：npm run build 产物是纯静态文件，可放 Nginx 或 CDN。Vite 产出 dist/ 静态资源，可直接部署到 Nginx 或 CDN。本课还在「上线清单」中说明：提交 package-lock.json，CI 用 npm ci。本课还在「零基础详解：从零做一个前端小项目」中说明：用 textContent 而不是 innerHTML：数据来自接口，必须当作不可信内容。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 4：React 中 useEffect 的依赖数组传空数组表示？
-
-- **正确判断**：只在组件挂载后执行一次
-- **判断依据**：正确答案是「只在组件挂载后执行一次」，本课在「零基础详解：从零做一个前端小项目」中说明：务必预览 dist：很多问题（相对路径、环境变量）只在产物里出现。依赖数组应写全所有用到的响应式值，遗漏会导致闭包读到过期数据。本课还在「零基础详解：从零做一个前端小项目」中说明：能说出 api、state、ui、utils 各自的职责。本课还在「项目专属规格：实战：Vite + React 待办应用」中说明：组件状态、不可变更新、异步请求与构建部署。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 5：Vite 相比传统打包器在开发时的优势是？
-
-- **正确判断**：基于浏览器原生 ESM 按需编译
-- **判断依据**：正确答案是「基于浏览器原生 ESM 按需编译」，本课在「上线清单」中说明：接口地址用 import.meta.env 注入，不要硬编码。开发阶段不整体打包，生产构建仍使用 Rollup 做优化打包。本课还在「零基础详解：从零做一个前端小项目」中说明：一个能交付的前端项目要有：能跑起来的开发环境、清晰的分层、可打包的构建、可验证的测试。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 6：补全代码：「实战：Vite + React 待办应用」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `const controller = new ____();`
-
-- **正确判断**：AbortController / abortcontroller
-- **判断依据**：正确答案是「AbortController」，这道题在问补全代码：实战：Vite+React待办应用示例中，…ntroller=new____();`，判断时要把题干限定的输入、边界与目标逐项对齐。本课示例中还能看到 `const controller = new AbortController();` 这样的用法，说明该关键字在本课代码中承担实际功能。
-- **迁移检查**：如果填成相近的另一个函数或关键字，程序会在哪一步出错？
-
-### 补充自测（2 题）
-
-1. 围绕“实战：Vite + React 待办应用”中的 实战、React、Vite，下列哪两项是本课强调的实践判断？
-2. 下面这段 JavaScript 代码复现了“实战：Vite + React 待办应用”中 实战、React、Vite 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
 
 ## 本课复习清单
 
@@ -630,7 +540,7 @@ export default defineConfig({
 - [ ] 不看解析，能说出「npm run build 之后产物是什么？」的判断依据。
 - [ ] 不看解析，能说出「React 中 useEffect 的依赖数组传空数组表示？」的判断依据。
 - [ ] 不看解析，能说出「Vite 相比传统打包器在开发时的优势是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：「实战：Vite + React 待办应用」示例中，下面这行代码缺少哪…」的判断依据。
+- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码缺少哪…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -641,8 +551,6 @@ export default defineConfig({
 | 下一步验证动作 |  |
 
 ## 术语速查
-
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
 | 术语 | 本课语境 |
 | --- | --- |
@@ -659,30 +567,33 @@ export default defineConfig({
 | `const [list, setList] = useState([])` | \| State \| 组件内部状态 \| `const [list, setList] = useState([])` \| |
 | `useEffect(() => { ... }, [deps])` | \| 副作用 \| 请求、订阅、定时器 \| `useEffect(() => { ... }, [deps])` \| |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：下面这段 JavaScript 代码复现了“实战：Vite + React 待办应用”中 实战、React、Vite 相关的一个常见故障，哪一项最准确地解释了问题？
 
-### 追问 1：React 中更新数组状态为什么不能直接 push？
+- **判断依据**：正确答案是「var 声明的 i 是函数级作用域，三个闭包最终都读到循环结束后的同一个值」。正确答案是var 声明的 i 是函数级作用域，三个闭包最终都读到循环结束后的同一个值（jsproject 第 1 题）。var 在循环结束后仍然保留最后一个值，在这个复现里三个闭包引用的是同一个 实战。在这个复现里，把 React 对应的 var 换成 let，每次迭代都会创建新的绑定，闭包就能分别捕获正确的值。
 
-**参考回答**：正确答案是「必须返回新引用才能触发重新渲染」，本课在「组件与状态」中说明：关键点：状态用不可变更新（[...prev]、prev.map），不要直接 push。状态比较基于引用，直接用 [...prev] 或 map 生成新数组才会触发更新。本课还在「项目专属规格·实战·Vite + React 待办应用」中说明：组件状态、不可变更新、异步请求与构建部署。本课还在「本课小结」中说明：前端工程 = 组件化 UI + 不可变状态 + 异步数据获取 + 构建工具。
+### 考点 2：列表渲染时 key 的作用是？
 
-### 追问 2：列表渲染时 key 的作用是？
+- **判断依据**：本题应选「帮助 diff 算法识别元素，避免复用错位」。本题应选帮助 diff 算法识别元素。稳定唯一的 key 能让 React 正确复用节点，使用下标会在增删时出问题。解题的关键不是记住孤立术语，而是确认「帮助 diff 算法识别元素，避免复用错位」是否完整覆盖题干的输入、输出和失败路径，并排除「声明类型（与课程定义不一致）」、「排序」这类相邻概念。
 
-**参考回答**：正确答案是「帮助 diff 算法识别元素，避免复用错位」，本课在「初始化」中说明：选 TypeScript 模板的理由：组件 props 与接口数据都有类型提示，重构更安全。稳定唯一的 key 能让 React 正确复用节点，使用下标会在增删时出问题。本课还在「本课小结」中说明：把这个小应用跑通，再学 React/Vue 的进阶概念会顺畅很多。本课还在「零基础详解·从零做一个前端小项目」中说明：一个能交付的前端项目要有：能跑起来的开发环境、清晰的分层、可打包的构建、可验证的测试。
+### 考点 3：npm run build 之后产物是什么？
 
-### 追问 3：npm run build 之后产物是什么？
+- **判断依据**：符合题干条件的是「静态 HTML/CSS/JS 文件」。Vite 产出 dist/ 静态资源，可直接部署到 Nginx 或 CDN。正确的判断需要逐项核对定义、版本和适用条件（jsproject 第 3 题）。正确的判断需要逐项核对定义、版本和适用条件（js_project 第 3 题）。
 
-**参考回答**：正确答案是「静态 HTML/CSS/JS 文件」，本课在「上线清单」中说明：npm run build 产物是纯静态文件，可放 Nginx 或 CDN。Vite 产出 dist/ 静态资源，可直接部署到 Nginx 或 CDN。本课还在「上线清单」中说明：提交 package-lock.json，CI 用 npm ci。本课还在「零基础详解·从零做一个前端小项目」中说明：用 textContent 而不是 innerHTML：数据来自接口，必须当作不可信内容。
+### 考点 4：围绕“实战：Vite + React 待办应用”中的 实战、React、Vite，下列哪两项是本课强调的实践判断？
 
-### 追问 4：React 中 useEffect 的依赖数组传空数组表示？
+- **判断依据**：正确答案包括「验证 React 时要固定版本并覆盖边界输入，结论才可复现」、「学习 实战 时要同时说明输入、输出和失败路径，不能只看正常流程」。结论应落在验证 React 时要固定版本并覆盖边界输入。在本课主题里，判断 React 时要固定版本与边界输入，所以“验证 React 时要固定版本并覆盖边界输入，结论才可复现”才可复现。这道题要求区分概念与边界，验证 React 时要固定版本并覆盖边界输入，结论才可复现。
 
-**参考回答**：正确答案是「只在组件挂载后执行一次」，本课在「零基础详解·从零做一个前端小项目」中说明：务必预览 dist：很多问题（相对路径、环境变量）只在产物里出现。依赖数组应写全所有用到的响应式值，遗漏会导致闭包读到过期数据。本课还在「零基础详解·从零做一个前端小项目」中说明：能说出 api、state、ui、utils 各自的职责。本课还在「项目专属规格·实战·Vite + React 待办应用」中说明：组件状态、不可变更新、异步请求与构建部署。
+### 考点 5：Vite 相比传统打包器在开发时的优势是？
 
-### 追问 5：Vite 相比传统打包器在开发时的优势是？
+- **判断依据**：正确答案是「基于浏览器原生 ESM 按需编译」。开发阶段不整体打包，生产构建仍使用 Rollup 做优化打包。判断这类题时，要把「基于浏览器原生 ESM 按需编译」放回题干限定的对象、输入和边界，「自动生成后端接口」、「不需要任何配置」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「基于浏览器原生 ESM 按需编译」，本课在「上线清单」中说明：接口地址用 import.meta.env 注入，不要硬编码。开发阶段不整体打包，生产构建仍使用 Rollup 做优化打包。本课还在「零基础详解·从零做一个前端小项目」中说明：一个能交付的前端项目要有：能跑起来的开发环境、清晰的分层、可打包的构建、可验证的测试。
+### 考点 6：补全代码：「实战：Vite + React 待办应用」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+
+`const controller = new ____();`
+
+- **判断依据**：空格应填写「AbortController」、「abortcontroller」。解题的关键不是记住孤立术语，而是确认「AbortController 或 abortcontroller」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
 
 ## English Overview
 
@@ -690,11 +601,9 @@ export default defineConfig({
 
 **Summary:** Components, immutable state, async data and build.
 
-**Category:** JavaScript  
-**Level:** 高级  
+**Category:** JavaScript
+**Level:** 高级
 **Key terms:** 实战, React, Vite, useState, useEffect
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -706,7 +615,7 @@ export default defineConfig({
 - 相关主题：实战、React、Vite、useState、useEffect
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-## 项目专属规格：实战：Vite + React 待办应用
+## 项目专属规格：本课主题
 
 ### 核心场景
 
@@ -735,7 +644,6 @@ export default defineConfig({
 3. 失败路径：依赖超时或不可用时能快速失败、重试或降级。
 4. 幂等路径：同一请求执行两次不会产生重复副作用。
 5. 回滚路径：回滚后数据一致，且能说明恢复时间和影响范围。
-
 
 ## 项目交付物
 
@@ -783,7 +691,6 @@ package.json
 
 > 项目验收围绕「实战、React、Vite」：至少完成一次正常路径、一次边界输入、一次失败恢复和一次幂等检查。
 
-
 ## Full English Study Guide
 
 ### Overview
@@ -793,60 +700,23 @@ package.json
 ### Learning Outcomes
 
 - Explain what **Project: React Todo App** solves and when it should be used.
-- Identify inputs, outputs, state and failure boundaries.
-- Build a minimal reproducible example and observe the real result.
-- Test normal, boundary and failure paths.
-- Measure performance, resource cost or security impact before optimizing.
-- Document the decision, rollback path and remaining uncertainty.
 
 ### Core Mental Model
 
-1. **Problem first:** define the exact problem before choosing a tool or pattern.
-2. **Smallest example:** reduce the system to one input and one observable output.
-3. **State and flow:** trace how data, control or responsibility moves through the system.
-4. **Boundaries:** identify invalid input, resource limits, timeouts and permission edges.
-5. **Evidence:** use tests, logs, metrics or reproductions instead of intuition.
-6. **Trade-offs:** compare correctness, latency, cost, complexity and operability.
-
 ### Step-by-step Study Plan
-
-1. Read the Chinese lesson once and write down the main problem in one sentence.
-2. Run the smallest example and save the exact command and output.
-3. Change only one input or parameter and predict the result before running it.
-4. Introduce one failure and record how the system detects, reports and recovers.
-5. Write one test or checklist item for the normal, boundary and failure paths.
-6. Complete the quiz and explain every wrong answer in your own words.
 
 ### Practice Tasks
 
-- Rebuild the minimal example from an empty directory.
-- Add one boundary test and one failure test.
-- Produce a short report containing the baseline, change, result and rollback.
-
 ### Common Failure Modes
-
-- Treating a happy-path demo as production readiness.
-- Skipping boundary values and invalid inputs.
-- Optimizing before establishing a measurable baseline.
-- Hiding errors, permissions or resource limits.
 
 ### Self-check Questions
 
-1. What is the smallest observable result that proves this lesson works?
-2. What input or state is most likely to break it?
-3. Which metric or test would reveal a regression?
 4. What is the rollback path?
-5. What is the cost of using this approach at 10x scale?
-6. Which adjacent topic is most often confused with this one?
 
 ### Glossary
 
 - Topic: **Project: React Todo App**
 - Related terms: 实战, React, Vite, useState
-- Primary evidence: command output, tests, logs, metrics or reproductions
-
-> This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
-
 
 ## Bilingual Section Outline
 
@@ -863,21 +733,18 @@ package.json
 | React 核心速查 | React 核心速查 |
 | 状态更新速查（不可变） | 状态更新速查（不可变） |
 
-> 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
-
 
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [MDN JavaScript](https://developer.mozilla.org/docs/Web/JavaScript) | 语言、DOM 与运行时 |
-| [ECMAScript](https://ecma-international.org/publications-and-standards/standards/ecma-262/) | 语言标准 |
+| [MDN Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) | Promise 与异步链 |
+| [MDN JavaScript 指南](https://developer.mozilla.org/docs/Web/JavaScript/Guide) | 语言基础与浏览器 API |
+| [Jest 文档](https://jestjs.io/docs/getting-started) | JavaScript 测试与断言 |
 
-> 本课主题：组件状态、不可变更新、异步请求与构建部署。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+> 「实战：Vite + React 待办应用」的链接用于离线阅读后的延伸核对；App 不会自动联网。

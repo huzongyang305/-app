@@ -1,14 +1,14 @@
-# Kotlin 与 Android 开发
+# 本课主题
 
 ![Kotlin Android 开发的关键能力](images/diagram_mobile_kotlin.webp)
 
-![Kotlin 与 Android 开发](images/category_mobile_kotlin.webp)
+![本课主题](images/category_mobile_kotlin.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：16 分钟
 
 ## 学习目标
 
-- 能用自己的话解释「Kotlin 与 Android 开发」解决了什么问题，而不是只背术语。
+- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
 - 能说清 「Kotlin」、「Android」、「协程」、「ViewModel」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「移动开发」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -21,7 +21,6 @@
 - 本课阶段：基础。建议会读写简单代码或命令，并理解变量、输入输出等基本概念。
 - 开始前先复习：Kotlin、Android、协程。
 - 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
-
 
 ## 语言特性速览
 
@@ -58,7 +57,6 @@
 
 ## 本课小结
 Android 开发的关键是**分层（UI/状态/数据）+ 空安全 + 协程**：把状态交给 ViewModel、把耗时操作交给协程、把数据来源收敛到 Repository。
-
 
 ## Kotlin 语法速查
 
@@ -155,8 +153,7 @@ fun displayName(user: User?): String =
 - [ ] ViewModel 不持有 View 或 Activity 引用。
 - [ ] 后台任务与权限按系统版本做兼容处理。
 
-
-## 零基础详解：Kotlin 与 Android 开发
+## 零基础详解：本课主题
 
 ### 一句话说清它是什么
 
@@ -353,7 +350,6 @@ sealed interface ListUiState {
 
 ## 动手练习
 
-
 > 本课练习重点：围绕「Kotlin、Android、协程」完成复述、实验和交付，每个结果都要能被别人检查。
 
 先做一个最小 Widget，再切换状态与约束，最后在窄屏和深色模式下验证布局。
@@ -362,7 +358,7 @@ sealed interface ListUiState {
 
 合上教程，用 3～5 句话回答：
 
-1. 「Kotlin 与 Android 开发」解决了什么问题？
+1. 本课主题解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「Android」是什么关系？
 
@@ -390,125 +386,47 @@ sealed interface ListUiState {
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-
 ## 实践任务
 
-本节围绕“Kotlin 与 Android 开发”安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
+本节围绕本课主题安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 
 ### 任务 1：用自己的话画出结构
 
-合上教程，用 5 句话说明“Kotlin 与 Android 开发”解决什么问题、输入是什么、输出是什么、失败时会怎样、与相邻概念的边界在哪里。画一张流程图或状态图，把每个节点标注成“输入 / 处理 / 输出 / 失败路径”之一。
-
-**验收标准**：图里至少有 5 个节点和 1 条失败路径；每个节点都能在正文中找到依据。
-
 ### 任务 2：做一次对比实验
-
-从正文里选两个差异最小的方案，列成 4 列表格：方案、前提、代价、适用边界。然后只改变一个条件（数据规模、并发度、精度或资源上限），记录结果变化。
 
 **验收标准**：表格里两个方案的结论不能完全一样；写下“在什么条件下应该换方案”。
 
 ### 任务 3：迁移到自己的场景
 
-把“Kotlin 与 Android 开发”的核心方法用到你熟悉的一个真实场景，写出一份 300 字以内的实施记录：目标、步骤、验证方式、仍然不确定的问题。
-
 **验收标准**：至少有一个可复现的命令、代码片段或数据样例；结论能被别人独立检查。
-
 
 ## 故障现场
 
-这一节把“Kotlin 与 Android 开发”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 Kotlin 常规用例通过，但边界用例失败
 
-### 现场 1：“Kotlin 与 Android 开发”的 Kotlin 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 Kotlin 常规用例通过，但边界用例失败”。
 
-**症状**：在“Kotlin 与 Android 开发”的练习或生产场景里出现““Kotlin 与 Android 开发”的 Kotlin 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““Kotlin 与 Android 开发”的 Kotlin 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 Kotlin 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“Kotlin 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“Kotlin 与 Android 开发”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 Kotlin 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““Kotlin 与 Android 开发”的 Kotlin 常规用例通过，但边界用例失败”写成一条自动化用例，并在“Kotlin 与 Android 开发”的验收清单里保留对应检查项。
+### 现场 2：本课的 Android 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 Android 结果在两次运行之间不一致”。
 
-### 现场 2：“Kotlin 与 Android 开发”的 Android 结果在两次运行之间不一致
-
-**症状**：在“Kotlin 与 Android 开发”的练习或生产场景里出现““Kotlin 与 Android 开发”的 Android 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““Kotlin 与 Android 开发”的 Android 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 Android 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“Android 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“Kotlin 与 Android 开发”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+**预防**：把“本课的 Android 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““Kotlin 与 Android 开发”的 Android 结果在两次运行之间不一致”写成一条自动化用例，并在“Kotlin 与 Android 开发”的验收清单里保留对应检查项。
+### 现场 3：本课的验证只在开发机通过
 
-
-### 现场 3：“Kotlin 与 Android 开发”的验证只在开发机通过
-
-**症状**：在“Kotlin 与 Android 开发”的练习或生产场景里出现““Kotlin 与 Android 开发”的验证只在开发机通过”。
-
-**复现**：准备一组最小输入，只保留触发““Kotlin 与 Android 开发”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+**症状**：在本课的练习或生产场景里出现“本课的验证只在开发机通过”。
 
 **定位**：围绕“环境版本、配置和输入规模与目标环境不同，Kotlin 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
-
-**修复**：把“Kotlin 与 Android 开发”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
-
-**预防**：把““Kotlin 与 Android 开发”的验证只在开发机通过”写成一条自动化用例，并在“Kotlin 与 Android 开发”的验收清单里保留对应检查项。
-
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：Kotlin 中表示「可能为空」的类型写法是？
-
-- **正确判断**：String?
-- **判断依据**：正确答案是「String?」，本课在「零基础详解：Kotlin 与 Android 开发」中说明：能说出 String 与 String? 的区别。用问号标注可空类型，配合 ?. 与 ?: 显式处理空值。本课还在「本课小结」中说明：Android 开发的关键是分层（UI/状态/数据）+ 空安全 + 协程：把状态交给 ViewModel、把耗时操作交给协程、把数据来源收敛到 Repository。本课还在「Android 应用结构」中说明：网络与数据库操作必须离开主线程（协程的 Dispatchers.IO）。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 2：Android 中承载界面状态、配置变更后仍存活的组件是？
-
-- **正确判断**：ViewModel
-- **判断依据**：Activity 旋转会重建，状态应放在 ViewModel 中。其他选项：Application 是进程级入口，Adapter 负责列表项绑定，Activity 在配置变更时会重建。针对「Android 中承载界面状态、配置变更后仍存活…」，本课在「生命周期与常见崩溃」中说明：配置变更（旋转）会重建 Activity，状态放 ViewModel 而非成员变量。本课还在「零基础详解：Kotlin 与 Android 开发」中说明：Android 侧的工程要点是：UI 层不写业务、状态放 ViewModel、耗时工作交给协程。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 3：Android 上架 Google Play 推荐的产物格式是？
-
-- **正确判断**：AAB
-- **判断依据**：AAB 让商店按设备下发，减小下载体积。其他选项：JAR 不是 Android 产物，DEX 是字节码格式，APK 虽可安装但并非商店推荐。针对「Android 上架 Google Play 推…」，本课在「打包发布」中说明：./gradlew bundleRelease 产出 AAB。本课还在「生命周期与常见崩溃」中说明：主线程做 IO 会 ANR，所有磁盘与网络访问走协程。本课还在「零基础详解：Kotlin 与 Android 开发」中说明：Kotlin 是 Android 的官方首选语言，核心优势是空安全、简洁、协程。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 4：Kotlin 中 val 与 var 的区别是？
-
-- **正确判断**：val 声明后引用不可重新赋值，var 可以
-- **判断依据**：正确答案是「val 声明后引用不可重新赋值，var 可以」，本课在「零基础详解：Kotlin 与 Android 开发」中说明：能说出 String 与 String? 的区别。val 是只读引用（对象内部仍可能可变），var 可以再次赋值。本课还在「生命周期与常见崩溃」中说明：持有 Activity/Context 的长时间引用会内存泄漏（用 applicationContext 或在 onDestroy 释放）。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 5：在 Activity 中启动一个随生命周期自动取消的协程，常用写法是？
-
-- **正确判断**：lifecycleScope.launch { }
-- **判断依据**：正确答案是「lifecycleScope.launch { }」，本课在「零基础详解：Kotlin 与 Android 开发」中说明：不要在 GlobalScope 里启动协程：它不受生命周期约束，容易泄漏。lifecycleScope 绑定组件生命周期，销毁时自动取消，避免泄漏。本课还在「生命周期与常见崩溃」中说明：后台启动 Service 受限，长任务改用 WorkManager 或前台服务。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 6：补全代码：「Kotlin 与 Android 开发」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `____.launch {`
-
-- **正确判断**：viewModelScope / viewmodelscope
-- **判断依据**：正确答案是「viewModelScope」，本课在「零基础详解：Kotlin 与 Android 开发」中说明：能说出 viewModelScope 与 GlobalScope 的差别。本课还在「本课小结」中说明：Android 开发的关键是分层（UI/状态/数据）+ 空安全 + 协程：把状态交给 ViewModel、把耗时操作交给协程、把数据来源收敛到 Repository。
-- **迁移检查**：不看题干，用自己的话补全这句话，再与标准答案对照。
-
-### 补充考点 1：按照「Kotlin 与 Android 开发」从概念到实践的讲解顺序排列下列主题。
-
-- **正确判断**：语言特性速览 → Android 应用结构 → 生命周期与常见崩溃 → 打包发布
-- **判断依据**：在「Kotlin 与 Android 开发」中，正确顺序是：1. 语言特性速览 → 2. Android 应用结构 → 3. 生命周期与常见崩溃 → 4. 打包发布。「Kotlin 与 Android 开发」先建立概念，再解释运行机制，随后进入代码与工程实践，最后处理失败路径。在「Kotlin 与 Android 开发」里，如果把后一步放到前面，通常会缺少前一步产生的定义、输入或验证结果。
-
-### 补充自测（2 题）
-
-1. 围绕“Kotlin 与 Android 开发”中的 Kotlin、Android、协程，下列哪两项是本课强调的实践判断？
-2. 下面这段 Dart 代码复现了“Kotlin 与 Android 开发”中 Kotlin、Android、协程 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
 
 ## 本课复习清单
 
@@ -519,7 +437,7 @@ sealed interface ListUiState {
 - [ ] 不看解析，能说出「Android 上架 Google Play 推荐的产物格式是？」的判断依据。
 - [ ] 不看解析，能说出「Kotlin 中 val 与 var 的区别是？」的判断依据。
 - [ ] 不看解析，能说出「在 Activity 中启动一个随生命周期自动取消的协程，常用写法是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：「Kotlin 与 Android 开发」示例中，下面这行代码缺少哪个…」的判断依据。
+- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码缺少哪个…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -530,8 +448,6 @@ sealed interface ListUiState {
 | 下一步验证动作 |  |
 
 ## 术语速查
-
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
 | 术语 | 本课语境 |
 | --- | --- |
@@ -548,30 +464,31 @@ sealed interface ListUiState {
 | `viewLifecycleOwner` | 要点：**不要在 Activity 里写业务逻辑**；网络与数据库操作必须离开主线程（协程的 Dispatchers.IO）；用 `viewLifecycleOwner` 收集 Flow 避免泄漏。 |
 | `./gradlew bundleRelease` | `./gradlew bundleRelease` 产出 AAB；签名用 `keystore.properties` 外置并在 .gitignore 排除；用 `minifyEnabled true` 加混淆规则减小体积… |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：围绕“Kotlin 与 Android 开发”中的 Kotlin、Android、协程，下列哪两项是本课强调的实践判断？
 
-### 追问 1：Kotlin 中表示「可能为空」的类型写法是？
+- **判断依据**：正确答案包括「学习 Kotlin 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 Android 时要固定版本并覆盖边界输入，结论才可复现」。正确答案是学习 Kotlin 时要同时说明输入、输出和失败路径。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 Kotlin 时必须同时交代输入、输出和失败路径，这使“学习 Kotlin 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 Android 时要固定版本与边界输入，所以“验证 Android 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-**参考回答**：正确答案是「String?」，本课在「零基础详解·Kotlin 与 Android 开发」中说明：能说出 String 与 String? 的区别。用问号标注可空类型，配合 ?. 与 ?: 显式处理空值。本课还在「本课小结」中说明：Android 开发的关键是分层（UI/状态/数据）+ 空安全 + 协程：把状态交给 ViewModel、把耗时操作交给协程、把数据来源收敛到 Repository。本课还在「Android 应用结构」中说明：网络与数据库操作必须离开主线程（协程的 Dispatchers.IO）。
+### 考点 2：Android 中承载界面状态、配置变更后仍存活的组件是？
 
-### 追问 2：Android 中承载界面状态、配置变更后仍存活的组件是？
+- **判断依据**：Activity 旋转会重建，状态应放在 ViewModel 中。其他选项：Application 是进程级入口，Adapter 负责列表项绑定，Activity 在配置变更时会重建。解题的关键不是记住孤立术语，而是确认「ViewModel」是否完整覆盖题干的输入、输出和失败路径，并排除「Adapter」、「Activity」这类相邻概念。
 
-**参考回答**：Activity 旋转会重建，状态应放在 ViewModel 中。其他选项：Application 是进程级入口，Adapter 负责列表项绑定，Activity 在配置变更时会重建。针对「Android 中承载界面状态、配置变更后仍存活…」，本课在「生命周期与常见崩溃」中说明：配置变更（旋转）会重建 Activity，状态放 ViewModel 而非成员变量。本课还在「零基础详解·Kotlin 与 Android 开发」中说明：Android 侧的工程要点是：UI 层不写业务、状态放 ViewModel、耗时工作交给协程。
+### 考点 3：Android 上架 Google Play 推荐的产物格式是？
 
-### 追问 3：Android 上架 Google Play 推荐的产物格式是？
+- **判断依据**：AAB 让商店按设备下发，减小下载体积。其他选项：JAR 不是 Android 产物，DEX 是字节码格式，APK 虽可安装但并非商店推荐。正确的判断需要逐项核对定义、版本和适用条件（mobilekotlin 第 3 题）。如果只凭关键词作答，很容易把「JAR」、「APK」与「AAB」混在一起；正确的判断需要逐项核对定义、版本和适用条件（mobile_kotlin 第 3 题）。
 
-**参考回答**：AAB 让商店按设备下发，减小下载体积。其他选项：JAR 不是 Android 产物，DEX 是字节码格式，APK 虽可安装但并非商店推荐。针对「Android 上架 Google Play 推…」，本课在「打包发布」中说明：./gradlew bundleRelease 产出 AAB。本课还在「生命周期与常见崩溃」中说明：主线程做 IO 会 ANR，所有磁盘与网络访问走协程。本课还在「零基础详解·Kotlin 与 Android 开发」中说明：Kotlin 是 Android 的官方首选语言，核心优势是空安全、简洁、协程。
+### 考点 4：下面这段 Dart 代码复现了“Kotlin 与 Android 开发”中 Kotlin、Android、协程 相关的一个常见故障，哪一项最准确地解释了问题？
 
-### 追问 4：Kotlin 中 val 与 var 的区别是？
+- **判断依据**：结论应落在「循环条件用了 <=，i == data.length 时抛出 RangeError；应改成 i < data.length」（mobile_kotlin 第 4 题）。结论应落在循环条件用了 <=，i == data.length 时抛出 RangeError。应改成 i < data.length（mobile_kotlin 第 4 题）。应改成 i < data.length（mobilekotlin 第 4 题）。
 
-**参考回答**：正确答案是「val 声明后引用不可重新赋值，var 可以」，本课在「零基础详解·Kotlin 与 Android 开发」中说明：能说出 String 与 String? 的区别。val 是只读引用（对象内部仍可能可变），var 可以再次赋值。本课还在「生命周期与常见崩溃」中说明：持有 Activity/Context 的长时间引用会内存泄漏（用 applicationContext 或在 onDestroy 释放）。
+### 考点 5：在 Activity 中启动一个随生命周期自动取消的协程，常用写法是？
 
-### 追问 5：在 Activity 中启动一个随生命周期自动取消的协程，常用写法是？
+- **判断依据**：正确答案是「lifecycleScope.launch { }」。lifecycleScope 绑定组件生命周期，销毁时自动取消，避免泄漏。判断这类题时，要把「lifecycleScope.launch { }」放回题干限定的对象、输入和边界，「runBlocking { }」、「GlobalScope.launch { }」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「lifecycleScope.launch { }」，本课在「零基础详解·Kotlin 与 Android 开发」中说明：不要在 GlobalScope 里启动协程：它不受生命周期约束，容易泄漏。lifecycleScope 绑定组件生命周期，销毁时自动取消，避免泄漏。本课还在「生命周期与常见崩溃」中说明：后台启动 Service 受限，长任务改用 WorkManager 或前台服务。
+### 考点 6：按照「Kotlin 与 Android 开发」从概念到实践的讲解顺序排列下列主题。
+
+- **判断依据**：正确的执行顺序是「语言特性速览」 → 「Android 应用结构」 → 「生命周期与常见崩溃」 → 「打包发布」。在本课中，正确顺序是：1. 语言特性速览 → 2. Android 应用结构 → 3. 生命周期与常见崩溃 → 4. 打包发布。
 
 ## English Overview
 
@@ -579,11 +496,9 @@ sealed interface ListUiState {
 
 **Summary:** Null safety, coroutines, layering and release.
 
-**Category:** Mobile Development  
-**Level:** 基础  
+**Category:** Mobile Development
+**Level:** 基础
 **Key terms:** Kotlin, Android, 协程, ViewModel, AAB
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -601,13 +516,12 @@ sealed interface ListUiState {
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [Flutter 官方文档](https://docs.flutter.dev/) | 框架、组件与发布流程 |
-| [Dart 官方文档](https://dart.dev/guides) | 语言、异步与工具链 |
+| [Android 发布指南](https://docs.flutter.dev/deployment/android) | 签名、构建与发布 |
+| [Dart 语言文档](https://dart.dev/language) | 语言语法、类型与空安全 |
+| [Flutter 性能最佳实践](https://docs.flutter.dev/perf/best-practices) | 帧率、构建与内存优化 |
 
-> 本课主题：空安全、协程、分层架构与打包发布。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+> 「Kotlin 与 Android 开发」的链接用于离线阅读后的延伸核对；App 不会自动联网。

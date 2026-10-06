@@ -1,14 +1,14 @@
-# 实战：爬虫与数据分析
+# 本课主题
 
 ![爬虫与数据分析流程](images/diagram_py_scraper.webp)
 
-![实战：爬虫与数据分析](images/remaining_python_project.webp)
+![本课主题](images/remaining_python_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：18 分钟
 
 ## 学习目标
 
-- 能用自己的话解释「实战：爬虫与数据分析」解决了什么问题，而不是只背术语。
+- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
 - 能说清 「实战」、「爬虫」、「pandas」、「requests」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「Python」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -18,10 +18,8 @@
 ## 前置知识
 
 - 先完成上一课《并发与异步》；如果已经掌握，可以直接用本课练习自测。
-- 本课阶段：高级。建议具备同一方向的完整基础，能阅读较长的代码、配置或系统设计说明。
 - 开始前先复习：实战、爬虫、pandas。
 - 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
-
 
 ## 项目目标
 
@@ -105,7 +103,6 @@ plt.savefig("tags.png", dpi=120)
 ## 本课小结
 这个项目的价值在于把**请求、解析、DataFrame、可视化**串成完整链路。把它跑通，Python 的数据处理能力就入门了。
 
-
 ## requests 速查
 
 | 目的 | 写法 |
@@ -184,7 +181,6 @@ except requests.RequestException as exc:
 - [ ] 分组统计用 `groupby` + 聚合函数。
 - [ ] 导出 CSV 指定编码与 `index=False`。
 
-
 ## 零基础详解：从零做一个 Python 小项目
 
 ### 一句话说清它是什么
@@ -258,13 +254,11 @@ LINE = re.compile(
     r"(?P<level>INFO|WARN|ERROR)\s+(?P<msg>.*)"
 )
 
-
 @dataclass(frozen=True)
 class Entry:
     ts: datetime
     level: str
     message: str
-
 
 def parse_line(line: str) -> Entry | None:
     match = LINE.match(line.strip())
@@ -283,7 +277,6 @@ from collections import Counter
 from collections.abc import Iterable
 
 from .parser import Entry
-
 
 def summarize(entries: Iterable[Entry]) -> dict[str, object]:
     levels = Counter(e.level for e in entries)
@@ -305,13 +298,11 @@ from pathlib import Path
 from .parser import parse_line
 from .report import summarize
 
-
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="loganalyzer", description="日志统计工具")
     parser.add_argument("path", type=Path, help="日志文件路径")
     parser.add_argument("-v", "--verbose", action="store_true", help="输出调试日志")
     return parser
-
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
@@ -338,7 +329,6 @@ def main(argv: list[str] | None = None) -> int:
         print(f"  {level}: {count}")
     return 0
 
-
 if __name__ == "__main__":
     sys.exit(main())
 ```
@@ -351,17 +341,14 @@ if __name__ == "__main__":
 # tests/test_parser.py
 from loganalyzer.parser import parse_line
 
-
 def test_parse_valid_line() -> None:
     entry = parse_line("2026-01-01 10:00:00 ERROR 数据库连接失败")
     assert entry is not None
     assert entry.level == "ERROR"
     assert entry.message == "数据库连接失败"
 
-
 def test_invalid_line_returns_none() -> None:
     assert parse_line("这不是日志") is None
-
 
 def test_trailing_space_is_tolerated() -> None:
     assert parse_line("2026-01-01 10:00:00 INFO  启动完成  ") is not None
@@ -404,7 +391,6 @@ pytest
 
 ## 动手练习
 
-
 > 本课练习重点：围绕「实战、爬虫、pandas」完成复述、实验和交付，每个结果都要能被别人检查。
 
 先写可运行脚本，再用类型注解与测试保护核心函数，最后处理真实输入。
@@ -413,7 +399,7 @@ pytest
 
 合上教程，用 3～5 句话回答：
 
-1. 「实战：爬虫与数据分析」解决了什么问题？
+1. 本课主题解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「爬虫」是什么关系？
 
@@ -440,8 +426,6 @@ pytest
 - 写出 1 个仍然不确定的问题，以及下一步如何验证。
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
-
-
 
 ## 验证命令与预期输出
 
@@ -470,10 +454,7 @@ pytest
 4. 定位原因后补一条自动化测试，再重新执行发布流程。
 5. 把教训写入项目复盘或本课笔记，形成下一次的检查项。
 
-
 ## 可运行练习
-
-下面 3 个任务围绕“实战：爬虫与数据分析”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
 
 ### 任务 1：先跑通，再解释
 
@@ -496,75 +477,41 @@ def fetch_quotes(page=1):
     return items
 ```
 
-**预期输出**：运行后会输出与“实战：爬虫与数据分析”相关的关键结果；请重点核对输出行数、最后一个数值和异常提示。
-
-**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
-
 ### 任务 2：只改一个条件
-
-复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
-
-**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
 
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
 
-**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
-
-
 ## 故障现场
 
-这一节把“实战：爬虫与数据分析”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 实战 常规用例通过，但边界用例失败
 
-### 现场 1：“实战：爬虫与数据分析”的 实战 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 实战 常规用例通过，但边界用例失败”。
 
-**症状**：在“实战：爬虫与数据分析”的练习或生产场景里出现““实战：爬虫与数据分析”的 实战 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““实战：爬虫与数据分析”的 实战 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 实战 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“实战 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“实战：爬虫与数据分析”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 实战 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““实战：爬虫与数据分析”的 实战 常规用例通过，但边界用例失败”写成一条自动化用例，并在“实战：爬虫与数据分析”的验收清单里保留对应检查项。
+### 现场 2：本课的 爬虫 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 爬虫 结果在两次运行之间不一致”。
 
-### 现场 2：“实战：爬虫与数据分析”的 爬虫 结果在两次运行之间不一致
-
-**症状**：在“实战：爬虫与数据分析”的练习或生产场景里出现““实战：爬虫与数据分析”的 爬虫 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““实战：爬虫与数据分析”的 爬虫 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 爬虫 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“爬虫 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“实战：爬虫与数据分析”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+**预防**：把“本课的 爬虫 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““实战：爬虫与数据分析”的 爬虫 结果在两次运行之间不一致”写成一条自动化用例，并在“实战：爬虫与数据分析”的验收清单里保留对应检查项。
+### 现场 3：本课的验证只在开发机通过
 
-
-### 现场 3：“实战：爬虫与数据分析”的验证只在开发机通过
-
-**症状**：在“实战：爬虫与数据分析”的练习或生产场景里出现““实战：爬虫与数据分析”的验证只在开发机通过”。
-
-**复现**：准备一组最小输入，只保留触发““实战：爬虫与数据分析”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+**症状**：在本课的练习或生产场景里出现“本课的验证只在开发机通过”。
 
 **定位**：围绕“环境版本、配置和输入规模与目标环境不同，实战 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：把“实战：爬虫与数据分析”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
-
-**预防**：把““实战：爬虫与数据分析”的验证只在开发机通过”写成一条自动化用例，并在“实战：爬虫与数据分析”的验收清单里保留对应检查项。
-
-
-
 ## 版本与时效
-
-这一节记录“实战：爬虫与数据分析”涉及的版本基线与升级检查点，避免把某个版本的默认行为当成永久结论。
-
-- Python 3.14 为当前主线，3.15 处于预发布阶段；生产环境锁定 3.13/3.14 的补丁版本
-- 自由线程（no-GIL）与实验性 JIT 仍在演进，升级前先跑并发与 C 扩展兼容测试
-- 类型标注、tomllib、pathlib 与 asyncio 是近年变化最集中的区域
-- 官方发布说明：https://docs.python.org/3/whatsnew/
 
 ### 升级检查清单
 
@@ -572,55 +519,6 @@ def fetch_quotes(page=1):
 - 只改一个版本变量，记录编译、测试、性能与产物体积的变化。
 - 重点回归默认值、弃用警告、序列化格式、并发语义和错误信息。
 - 升级完成后更新本课的“最后复核 / 下次复核”日期与版本说明。
-
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：用 requests 发起请求时，下面哪项是必须的？
-
-- **正确判断**：设置 timeout 并检查状态码
-- **判断依据**：正确答案是「设置 timeout 并检查状态码」，本课在「抓取与解析」中说明：要点：timeout 必填，raiseforstatus() 检查状态码，选择器优先用稳定的 class 或 data 属性。timeout 防止请求悬挂，raiseforstatus() 让 4xx/5xx 立刻暴露。本课还在「项目专属规格：实战：爬虫与数据分析」中说明：requests 抓取、pandas 清洗统计与 matplotlib 可视化。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 2：pandas 中按作者分组求均值应使用？
-
-- **正确判断**：df.groupby('author')['x'].mean()
-- **判断依据**：正确答案是「df.groupby('author')['x'].mean()」，本课在「项目专属规格：实战：爬虫与数据分析」中说明：requests 抓取、pandas 清洗统计与 matplotlib 可视化。groupby 用于分组聚合，是数据分析最常用的操作。本课还在「项目目标」中说明：抓取公开数据 → 清洗成表格 → 统计与可视化。本课还在「本课小结」中说明：这个项目的价值在于把请求、解析、DataFrame、可视化串成完整链路。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 3：编写爬虫时最应该遵守的是？
-
-- **正确判断**：遵守 robots.txt
-- **判断依据**：正确答案是「遵守 robots.txt」，本课在「工程化建议」中说明：抓取遵守 robots.txt 与服务条款，控制频率、加 User-Agent。合法合规与不过度施压是爬虫的基本要求。本课还在「项目目标」中说明：抓取公开数据 → 清洗成表格 → 统计与可视化。本课还在「项目目标」中说明：这是 Python 最常见的落地场景，涉及网络请求、数据处理与文件读写。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 4：给 requests 请求设置 timeout 的意义是？
-
-- **正确判断**：避免网络异常时请求无限期挂起
-- **判断依据**：正确答案是「避免网络异常时请求无限期挂起」，本课在「本课小结」中说明：这个项目的价值在于把请求、解析、DataFrame、可视化串成完整链路。生产脚本必须设置超时与重试，否则一个慢请求就可能卡住整个任务。本课还在「项目目标」中说明：这是 Python 最常见的落地场景，涉及网络请求、数据处理与文件读写。本课还在「工程化建议」中说明：把「抓取 / 清洗 / 分析 / 输出」拆成独立函数，便于测试与复用。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 5：pandas 中把 DataFrame 保存成 CSV 的方法是？
-
-- **正确判断**：df.to_csv('out.csv', index=False)
-- **判断依据**：正确答案是「df.to_csv('out.csv', index=False)」，本课在「工程化建议」中说明：长任务加日志与断点续跑（把已抓数据落盘）。tocsv 是写出方法，index=False 可避免多出一列行号。本课还在「本课小结」中说明：把它跑通，Python 的数据处理能力就入门了。本课还在「零基础详解：从零做一个 Python 小项目」中说明：一个能交付的 Python 项目，除了能跑，还要有：清晰目录、依赖声明、配置外置、日志、测试、一键运行。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 6：补全代码：「实战：爬虫与数据分析」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `response.____() # 4xx/5xx 直接抛异常`
-
-- **正确判断**：raise_for_status
-- **判断依据**：正确答案是「raise_for_status」，本课在「零基础详解：从零做一个 Python 小项目」中说明：返回退出码而不是 sys.exit() 到处写，这样测试可以直接调用 main([...])。本课还在「零基础详解：从零做一个 Python 小项目」中说明：知道为什么 main 要返回退出码而不是直接退出。本课还在「零基础详解：从零做一个 Python 小项目」中说明：装完就能用命令行的 loganalyzer 命令，不用记 python -m ...。
-- **迁移检查**：把答案换成另一种等价写法，是否仍然正确？说明依据。
-
-### 补充自测（2 题）
-
-1. 围绕“实战：爬虫与数据分析”中的 实战、爬虫、pandas，下列哪两项是本课强调的实践判断？
-2. 下面这段 Python 代码复现了“实战：爬虫与数据分析”中 实战、爬虫、pandas 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
 
 ## 本课复习清单
 
@@ -631,7 +529,7 @@ def fetch_quotes(page=1):
 - [ ] 不看解析，能说出「编写爬虫时最应该遵守的是？」的判断依据。
 - [ ] 不看解析，能说出「给 requests 请求设置 timeout 的意义是？」的判断依据。
 - [ ] 不看解析，能说出「pandas 中把 DataFrame 保存成 CSV 的方法是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：「实战：爬虫与数据分析」示例中，下面这行代码缺少哪个关键字或函数名？请…」的判断依据。
+- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码缺少哪个关键字或函数名？请…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -642,8 +540,6 @@ def fetch_quotes(page=1):
 | 下一步验证动作 |  |
 
 ## 术语速查
-
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
 | 术语 | 本课语境 |
 | --- | --- |
@@ -660,30 +556,33 @@ def fetch_quotes(page=1):
 | `resp.json()` | \| 解析 JSON \| `resp.json()` \| |
 | `resp.text` | \| 读取文本 \| `resp.text`（配合 `resp.encoding`） \| |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：下面这段 Python 代码复现了“实战：爬虫与数据分析”中 实战、爬虫、pandas 相关的一个常见故障，哪一项最准确地解释了问题？
 
-### 追问 1：用 requests 发起请求时，下面哪项是必须的？
+- **判断依据**：正确答案是「默认参数 bucket=[] 只在定义时创建一次，两次调用共享同一个列表」。正确答案是默认参数 bucket=[] 只在定义时创建一次，两次调用共享同一个列表（pythonproject 第 1 题）。在这个复现里，第二次调用看到的是 实战 留下的内容。在这个复现里，把 爬虫 相关的默认值改成 None，并在函数体内按需创建新列表，才能让每次调用都从干净状态开始。
 
-**参考回答**：正确答案是「设置 timeout 并检查状态码」，本课在「抓取与解析」中说明：要点：timeout 必填，raiseforstatus() 检查状态码，选择器优先用稳定的 class 或 data 属性。timeout 防止请求悬挂，raiseforstatus() 让 4xx/5xx 立刻暴露。本课还在「项目专属规格·实战·爬虫与数据分析」中说明：requests 抓取、pandas 清洗统计与 matplotlib 可视化。
+### 考点 2：pandas 中按作者分组求均值应使用？
 
-### 追问 2：pandas 中按作者分组求均值应使用？
+- **判断依据**：本题应选「df.groupby('author')['x'].mean()」。groupby 用于分组聚合，是数据分析最常用的操作。解题的关键不是记住孤立术语，而是确认「df.groupby('author')['x'].mean()」是否完整覆盖题干的输入、输出和失败路径，并排除「df.to_csv」、「df.head()」这类相邻概念。
 
-**参考回答**：正确答案是「df.groupby('author')['x'].mean()」，本课在「项目专属规格·实战·爬虫与数据分析」中说明：requests 抓取、pandas 清洗统计与 matplotlib 可视化。groupby 用于分组聚合，是数据分析最常用的操作。本课还在「项目目标」中说明：抓取公开数据 → 清洗成表格 → 统计与可视化。本课还在「本课小结」中说明：这个项目的价值在于把请求、解析、DataFrame、可视化串成完整链路。
+### 考点 3：围绕“实战：爬虫与数据分析”中的 实战、爬虫、pandas，下列哪两项是本课强调的实践判断？
 
-### 追问 3：编写爬虫时最应该遵守的是？
+- **判断依据**：正确答案包括「学习 实战 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 爬虫 时要固定版本并覆盖边界输入，结论才可复现」。符合题干条件的是学习 实战 时要同时说明输入、输出和失败路径。在本课主题里，判断 爬虫 时要固定版本与边界输入，所以“验证 爬虫 时要固定版本并覆盖边界输入，结论才可复现”才可复现。如果只凭关键词作答，很容易把学习 实战 时要同时说明输入、输出和失败路径，不能只看正…、只要 实战 的常规示例通过，就可以跳过边界与异常路径与学习 实战 时要同时说明输入、输出和失败路径，不能只看正常流程。
 
-**参考回答**：正确答案是「遵守 robots.txt」，本课在「工程化建议」中说明：抓取遵守 robots.txt 与服务条款，控制频率、加 User-Agent。合法合规与不过度施压是爬虫的基本要求。本课还在「项目目标」中说明：抓取公开数据 → 清洗成表格 → 统计与可视化。本课还在「项目目标」中说明：这是 Python 最常见的落地场景，涉及网络请求、数据处理与文件读写。
+### 考点 4：给 requests 请求设置 timeout 的意义是？
 
-### 追问 4：给 requests 请求设置 timeout 的意义是？
+- **判断依据**：结论应落在「避免网络异常时请求无限期挂起」。生产脚本必须设置超时与重试，否则一个慢请求就可能卡住整个任务。这道题要求区分概念与边界，「避免网络异常时请求无限期挂起」只有在题干给出的前提下才成立，而「自动重试失败请求」、「绕过反爬限制」缺少同一组条件。
 
-**参考回答**：正确答案是「避免网络异常时请求无限期挂起」，本课在「本课小结」中说明：这个项目的价值在于把请求、解析、DataFrame、可视化串成完整链路。生产脚本必须设置超时与重试，否则一个慢请求就可能卡住整个任务。本课还在「项目目标」中说明：这是 Python 最常见的落地场景，涉及网络请求、数据处理与文件读写。本课还在「工程化建议」中说明：把「抓取 / 清洗 / 分析 / 输出」拆成独立函数，便于测试与复用。
+### 考点 5：pandas 中把 DataFrame 保存成 CSV 的方法是？
 
-### 追问 5：pandas 中把 DataFrame 保存成 CSV 的方法是？
+- **判断依据**：正确答案是「df.to_csv('out.csv', index=False)」。tocsv 是写出方法，index=False 可避免多出一列行号。判断这类题时，要把「df.to_csv('out.csv', index=False)」放回题干限定的对象、输入和边界，「df.save('out.csv')」、「df.export('out.csv')」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「df.to_csv('out.csv', index=False)」，本课在「工程化建议」中说明：长任务加日志与断点续跑（把已抓数据落盘）。tocsv 是写出方法，index=False 可避免多出一列行号。本课还在「本课小结」中说明：把它跑通，Python 的数据处理能力就入门了。本课还在「零基础详解·从零做一个 Python 小项目」中说明：一个能交付的 Python 项目，除了能跑，还要有：清晰目录、依赖声明、配置外置、日志、测试、一键运行。
+### 考点 6：补全代码：「实战：爬虫与数据分析」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+
+`response.____()               # 4xx/5xx 直接抛异常`
+
+- **判断依据**：空格应填写「raise_for_status」。围绕 补全代码：本课主题示例中，下面这行代码缺少哪个关键字… 作答时，先用实战建立输入与输出的基线，再把raiseforstatus代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「raise_for_status」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
 
 ## English Overview
 
@@ -691,11 +590,9 @@ def fetch_quotes(page=1):
 
 **Summary:** Scrape, clean, analyze and visualize data.
 
-**Category:** Python  
-**Level:** 高级  
+**Category:** Python
+**Level:** 高级
 **Key terms:** 实战, 爬虫, pandas, requests, 可视化
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -707,7 +604,7 @@ def fetch_quotes(page=1):
 - 相关主题：实战、爬虫、pandas、requests、可视化
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-## 项目专属规格：实战：爬虫与数据分析
+## 项目专属规格：本课主题
 
 ### 核心场景
 
@@ -736,7 +633,6 @@ requests 抓取、pandas 清洗统计与 matplotlib 可视化。 项目目标是
 3. 失败路径：依赖超时或不可用时能快速失败、重试或降级。
 4. 幂等路径：同一请求执行两次不会产生重复副作用。
 5. 回滚路径：回滚后数据一致，且能说明恢复时间和影响范围。
-
 
 ## 项目交付物
 
@@ -784,7 +680,6 @@ README.md
 
 > 项目验收围绕「实战、爬虫、pandas」：至少完成一次正常路径、一次边界输入、一次失败恢复和一次幂等检查。
 
-
 ## Full English Study Guide
 
 ### Overview
@@ -794,60 +689,23 @@ README.md
 ### Learning Outcomes
 
 - Explain what **Project: Scraping & Data** solves and when it should be used.
-- Identify inputs, outputs, state and failure boundaries.
-- Build a minimal reproducible example and observe the real result.
-- Test normal, boundary and failure paths.
-- Measure performance, resource cost or security impact before optimizing.
-- Document the decision, rollback path and remaining uncertainty.
 
 ### Core Mental Model
 
-1. **Problem first:** define the exact problem before choosing a tool or pattern.
-2. **Smallest example:** reduce the system to one input and one observable output.
-3. **State and flow:** trace how data, control or responsibility moves through the system.
-4. **Boundaries:** identify invalid input, resource limits, timeouts and permission edges.
-5. **Evidence:** use tests, logs, metrics or reproductions instead of intuition.
-6. **Trade-offs:** compare correctness, latency, cost, complexity and operability.
-
 ### Step-by-step Study Plan
-
-1. Read the Chinese lesson once and write down the main problem in one sentence.
-2. Run the smallest example and save the exact command and output.
-3. Change only one input or parameter and predict the result before running it.
-4. Introduce one failure and record how the system detects, reports and recovers.
-5. Write one test or checklist item for the normal, boundary and failure paths.
-6. Complete the quiz and explain every wrong answer in your own words.
 
 ### Practice Tasks
 
-- Rebuild the minimal example from an empty directory.
-- Add one boundary test and one failure test.
-- Produce a short report containing the baseline, change, result and rollback.
-
 ### Common Failure Modes
-
-- Treating a happy-path demo as production readiness.
-- Skipping boundary values and invalid inputs.
-- Optimizing before establishing a measurable baseline.
-- Hiding errors, permissions or resource limits.
 
 ### Self-check Questions
 
-1. What is the smallest observable result that proves this lesson works?
-2. What input or state is most likely to break it?
-3. Which metric or test would reveal a regression?
 4. What is the rollback path?
-5. What is the cost of using this approach at 10x scale?
-6. Which adjacent topic is most often confused with this one?
 
 ### Glossary
 
 - Topic: **Project: Scraping & Data**
 - Related terms: 实战, 爬虫, pandas, requests
-- Primary evidence: command output, tests, logs, metrics or reproductions
-
-> This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
-
 
 ## Bilingual Section Outline
 
@@ -864,21 +722,18 @@ README.md
 | 本课小结 | Summary |
 | requests 速查 | requests 速查 |
 
-> 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
-
 
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [Python 官方文档](https://docs.python.org/3/) | 语言、标准库与版本行为 |
-| [Python Packaging](https://packaging.python.org/) | 包管理与发布 |
+| [Python 标准库](https://docs.python.org/3/library/) | 标准库 API 与模块 |
+| [sqlite3 文档](https://docs.python.org/3/library/sqlite3.html) | SQLite 持久化与事务 |
+| [typing 文档](https://docs.python.org/3/library/typing.html) | 类型标注与泛型 |
 
-> 本课主题：requests 抓取、pandas 清洗统计与 matplotlib 可视化。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+> 「实战：爬虫与数据分析」的链接用于离线阅读后的延伸核对；App 不会自动联网。

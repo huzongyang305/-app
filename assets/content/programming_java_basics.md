@@ -8,7 +8,7 @@
 
 ## 学习目标
 
-- 能用自己的话解释「环境与 JVM」解决了什么问题，而不是只背术语。
+- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
 - 能说清 「Java」、「JVM」、「JDK」、「javac」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「Java」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -21,7 +21,6 @@
 - 本课阶段：基础。建议会读写简单代码或命令，并理解变量、输入输出等基本概念。
 - 开始前先复习：Java、JVM、JDK。
 - 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
-
 
 ## JDK、JRE 与 JVM
 
@@ -96,7 +95,6 @@ public class Main {
 ## 本课小结
 JDK 提供工具、JVM 负责执行、字节码保证跨平台。理解类加载与 JIT 之后，再看性能与内存问题会清晰得多。
 
-
 ## JDK 组成与命令速查
 
 | 术语 | 含义 |
@@ -161,7 +159,6 @@ JDK 提供工具、JVM 负责执行、字节码保证跨平台。理解类加载
 - [ ] 知道 `JAVA_HOME` 与 `PATH` 的作用。
 - [ ] 遇到 `UnsupportedClassVersionError` 先查版本一致性。
 - [ ] 会用 `jstack`、`jmap` 做基础诊断。
-
 
 ## 零基础详解：Java 程序为什么既要编译又要解释
 
@@ -294,7 +291,6 @@ public class Calculator {
 
 ## 动手练习
 
-
 > 本课练习重点：围绕「Java、JVM、JDK」完成复述、实验和交付，每个结果都要能被别人检查。
 
 先跑通最小类与测试，再补异常和并发边界，最后观察线程与资源变化。
@@ -303,7 +299,7 @@ public class Calculator {
 
 合上教程，用 3～5 句话回答：
 
-1. 「环境与 JVM」解决了什么问题？
+1. 本课主题解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「JVM」是什么关系？
 
@@ -331,11 +327,7 @@ public class Calculator {
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-
-
 ## 可运行练习
-
-下面 3 个任务围绕“环境与 JVM”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
 
 ### 任务 1：先跑通，再解释
 
@@ -346,75 +338,45 @@ java Hello           # 启动 JVM 执行
 jshell               # JDK 9+ 交互式 REPL，适合快速试验
 ```
 
-**预期输出**：运行后会输出与“环境与 JVM”相关的关键结果；请重点核对输出行数、最后一个数值和异常提示。
-
-**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
-
 ### 任务 2：只改一个条件
-
-复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
-
-**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
 
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
 
-**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
-
-
 ## 故障现场
 
-这一节把“环境与 JVM”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 Java 常规用例通过，但边界用例失败
 
-### 现场 1：“环境与 JVM”的 Java 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 Java 常规用例通过，但边界用例失败”。
 
-**症状**：在“环境与 JVM”的练习或生产场景里出现““环境与 JVM”的 Java 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““环境与 JVM”的 Java 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 Java 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“Java 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“环境与 JVM”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 Java 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““环境与 JVM”的 Java 常规用例通过，但边界用例失败”写成一条自动化用例，并在“环境与 JVM”的验收清单里保留对应检查项。
+### 现场 2：本课的 JVM 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 JVM 结果在两次运行之间不一致”。
 
-### 现场 2：“环境与 JVM”的 JVM 结果在两次运行之间不一致
-
-**症状**：在“环境与 JVM”的练习或生产场景里出现““环境与 JVM”的 JVM 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““环境与 JVM”的 JVM 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 JVM 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“JVM 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“环境与 JVM”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+**预防**：把“本课的 JVM 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““环境与 JVM”的 JVM 结果在两次运行之间不一致”写成一条自动化用例，并在“环境与 JVM”的验收清单里保留对应检查项。
+### 现场 3：本课的验证只在开发机通过
 
-
-### 现场 3：“环境与 JVM”的验证只在开发机通过
-
-**症状**：在“环境与 JVM”的练习或生产场景里出现““环境与 JVM”的验证只在开发机通过”。
-
-**复现**：准备一组最小输入，只保留触发““环境与 JVM”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+**症状**：在本课的练习或生产场景里出现“本课的验证只在开发机通过”。
 
 **定位**：围绕“环境版本、配置和输入规模与目标环境不同，Java 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：把“环境与 JVM”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
-
-**预防**：把““环境与 JVM”的验证只在开发机通过”写成一条自动化用例，并在“环境与 JVM”的验收清单里保留对应检查项。
-
-
-
 ## 版本与时效
-
-这一节记录“环境与 JVM”涉及的版本基线与升级检查点，避免把某个版本的默认行为当成永久结论。
 
 - Java 25 是当前 LTS，Java 21 仍是大量生产系统的基线
 - 虚拟线程、记录模式、结构化并发与分代 ZGC 是升级收益最大的部分
 - 升级前重点检查反射、字节码增强、序列化与第三方框架兼容性
-- 官方发布说明：https://www.oracle.com/java/technologies/javase/
 
 ### 升级检查清单
 
@@ -422,55 +384,6 @@ jshell               # JDK 9+ 交互式 REPL，适合快速试验
 - 只改一个版本变量，记录编译、测试、性能与产物体积的变化。
 - 重点回归默认值、弃用警告、序列化格式、并发语义和错误信息。
 - 升级完成后更新本课的“最后复核 / 下次复核”日期与版本说明。
-
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：开发并编译 Java 程序需要安装？
-
-- **正确判断**：JDK
-- **判断依据**：JDK 包含 JRE、编译器 javac 与其他开发工具。其他选项：JRE 只能运行程序，JVM 是运行时本身，操作系统并不自带编译器。针对「开发并编译 Java 程序需要安装，」，本课在「本课小结」中说明：JDK 提供工具、JVM 负责执行、字节码保证跨平台。本课还在「零基础详解：Java 程序为什么既要编译又要解释」中说明：Java 先把源码编译成字节码（.class），再由 JVM 在运行时翻译成机器指令。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 2：public class Hello 的源文件名必须是？
-
-- **正确判断**：Hello.java
-- **判断依据**：正确答案是「Hello.java」，本课在「零基础详解：Java 程序为什么既要编译又要解释」中说明：能独立用 javac 和 java 跑起来一个带包名的类。public 类的文件名必须与类名完全一致，包括大小写。本课还在「零基础详解：Java 程序为什么既要编译又要解释」中说明：Java 先把源码编译成字节码（.class），再由 JVM 在运行时翻译成机器指令。本课还在「零基础详解：Java 程序为什么既要编译又要解释」中说明：这叫「一次编写，到处运行」：只要有对应平台的 JVM，同一份字节码就能跑。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 3：Java 实现「一次编写，到处运行」的关键是？
-
-- **正确判断**：编译成字节码
-- **判断依据**：正确答案是「编译成字节码」，本课在「JDK、JRE 与 JVM」中说明：Java 的口号是「一次编写，到处运行」：源码编译成字节码，由各平台的 JVM 执行并负责内存管理与即时编译（JIT）。源码编译成与平台无关的字节码，具体执行由该平台的 JVM 负责。本课还在「零基础详解：Java 程序为什么既要编译又要解释」中说明：这叫「一次编写，到处运行」：只要有对应平台的 JVM，同一份字节码就能跑。本课还在「包与类路径」中说明：编译带包名的代码：javac -d out src/com/example/app/Main.java，运行时用全限定名 java -cp out com.example.app.Main。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 4：javac 与 java 两个命令的分工是？
-
-- **正确判断**：javac 把源码编译成 .class 字节码
-- **判断依据**：正确答案是「javac 把源码编译成 .class 字节码」，本课在「JDK、JRE 与 JVM」中说明：Java 的口号是「一次编写，到处运行」：源码编译成字节码，由各平台的 JVM 执行并负责内存管理与即时编译（JIT）。Maven/Gradle 只是把这两步以及依赖管理自动化了。本课还在「包与类路径」中说明：编译带包名的代码：javac -d out src/com/example/app/Main.java，运行时用全限定名 java -cp out com.example.app.Main。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 5：Java 程序入口方法的正确签名是？
-
-- **正确判断**：public static void main(String[] args)
-- **判断依据**：正确答案是「public static void main(String[] args)」，本课在「程序生命周期」中说明：public static void main(String[] args) 的每个部分都有含义：public 让 JVM 能访问、static 无需实例化、void 无返回值、String[] args 接收命令行参数。JVM 需要 public + static 才能在未创建对象时按约定调用入口方法。本课还在「零基础详解：Java 程序为什么既要编译又要解释」中说明：能独立用 javac 和 java 跑起来一个带包名的类。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 6：补全代码：「环境与 JVM」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `String name = sc.____();`
-
-- **正确判断**：nextLine / nextline
-- **判断依据**：正确答案是「nextLine」，本课在「零基础详解：Java 程序为什么既要编译又要解释」中说明：nextInt() 之后紧接 nextLine() 会读到空串，这是最经典的坑。本课还在「零基础详解：Java 程序为什么既要编译又要解释」中说明：读数字后要多调用一次 nextLine() 吃掉换行符。本课还在「本课小结」中说明：JDK 提供工具、JVM 负责执行、字节码保证跨平台。
-- **迁移检查**：如果填成相近的另一个函数或关键字，程序会在哪一步出错？
-
-### 补充自测（2 题）
-
-1. 围绕“环境与 JVM”中的 Java、JVM、JDK，下列哪两项是本课强调的实践判断？
-2. 下面这段 Java 代码复现了“环境与 JVM”中 Java、JVM、JDK 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
 
 ## 本课复习清单
 
@@ -481,7 +394,6 @@ jshell               # JDK 9+ 交互式 REPL，适合快速试验
 - [ ] 不看解析，能说出「Java 实现「一次编写，到处运行」的关键是？」的判断依据。
 - [ ] 不看解析，能说出「javac 与 java 两个命令的分工是？」的判断依据。
 - [ ] 不看解析，能说出「Java 程序入口方法的正确签名是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：「环境与 JVM」示例中，下面这行代码缺少哪个关键字或函数名？请填入 …」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -492,8 +404,6 @@ jshell               # JDK 9+ 交互式 REPL，适合快速试验
 | 下一步验证动作 |  |
 
 ## 术语速查
-
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
 | 术语 | 本课语境 |
 | --- | --- |
@@ -510,30 +420,33 @@ jshell               # JDK 9+ 交互式 REPL，适合快速试验
 | `-XX:MaxGCPauseMillis` | 常用参数：`-Xms/-Xmx` 设初始与最大堆（生产建议设成相同值，避免动态扩缩）；`-Xmn` 新生代大小；`-XX:MetaspaceSize` 元空间；`-XX:+HeapDumpOnOutOfMemoryErr… |
 | `-Xlog:gc*` | 常用参数：`-Xms/-Xmx` 设初始与最大堆（生产建议设成相同值，避免动态扩缩）；`-Xmn` 新生代大小；`-XX:MetaspaceSize` 元空间；`-XX:+HeapDumpOnOutOfMemoryErr… |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：围绕“环境与 JVM”中的 Java、JVM、JDK，下列哪两项是本课强调的实践判断？
 
-### 追问 1：开发并编译 Java 程序需要安装？
+- **判断依据**：正确答案包括「学习 Java 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 JVM 时要固定版本并覆盖边界输入，结论才可复现」。正确答案是学习 Java 时要同时说明输入、输出和失败路径。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 Java 时必须同时交代输入、输出和失败路径，这使“学习 Java 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 JVM 时要固定版本与边界输入，所以“验证 JVM 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-**参考回答**：JDK 包含 JRE、编译器 javac 与其他开发工具。其他选项：JRE 只能运行程序，JVM 是运行时本身，操作系统并不自带编译器。针对「开发并编译 Java 程序需要安装，」，本课在「本课小结」中说明：JDK 提供工具、JVM 负责执行、字节码保证跨平台。本课还在「零基础详解·Java 程序为什么既要编译又要解释」中说明：Java 先把源码编译成字节码（.class），再由 JVM 在运行时翻译成机器指令。
+### 考点 2：public class Hello 的源文件名必须是？
 
-### 追问 2：public class Hello 的源文件名必须是？
+- **判断依据**：本题应选「Hello.java」。public 类的文件名必须与类名完全一致，包括大小写。解题的关键不是记住孤立术语，而是确认「Hello.java」是否完整覆盖题干的输入、输出和失败路径，并排除「Main.java」、「任意名字」这类相邻概念。
 
-**参考回答**：正确答案是「Hello.java」，本课在「零基础详解·Java 程序为什么既要编译又要解释」中说明：能独立用 javac 和 java 跑起来一个带包名的类。public 类的文件名必须与类名完全一致，包括大小写。本课还在「零基础详解·Java 程序为什么既要编译又要解释」中说明：Java 先把源码编译成字节码（.class），再由 JVM 在运行时翻译成机器指令。本课还在「零基础详解·Java 程序为什么既要编译又要解释」中说明：这叫「一次编写，到处运行」：只要有对应平台的 JVM，同一份字节码就能跑。
+### 考点 3：Java 实现「一次编写，到处运行」的关键是？
 
-### 追问 3：Java 实现「一次编写，到处运行」的关键是？
+- **判断依据**：符合题干条件的是「编译成字节码」。源码编译成与平台无关的字节码，具体执行由该平台的 JVM 负责。正确的判断需要逐项核对定义、版本和适用条件（javabasics 第 3 题）。围绕 Java 实现「一次编写，到处运行」的关键是。如果只凭关键词作答，很容易把「使用 C 语言编写」、「每次重新编译」与「编译成字节码」混在一起；正确的判断需要逐项核对定义、版本和适用条件（java_basics 第 3 题）。
 
-**参考回答**：正确答案是「编译成字节码」，本课在「JDK、JRE 与 JVM」中说明：Java 的口号是「一次编写，到处运行」：源码编译成字节码，由各平台的 JVM 执行并负责内存管理与即时编译（JIT）。源码编译成与平台无关的字节码，具体执行由该平台的 JVM 负责。本课还在「零基础详解·Java 程序为什么既要编译又要解释」中说明：这叫「一次编写，到处运行」：只要有对应平台的 JVM，同一份字节码就能跑。本课还在「包与类路径」中说明：编译带包名的代码：javac -d out src/com/example/app/Main.java，运行时用全限定名 java -cp out com.example.app.Main。
+### 考点 4：下面这段 Java 代码复现了“环境与 JVM”中 Java、JVM、JDK 相关的一个常见故障，哪一项最准确地解释了问题？
 
-### 追问 4：javac 与 java 两个命令的分工是？
+- **判断依据**：结论应落在「循环条件用了 <=，i == data.length 时抛出 ArrayIndexOutOfBoundsException」。结论应落在循环条件用了 <=，i == data.length 时抛出 ArrayIndexOutOfBoundsException。结合Java、JVM来看，结论应落在循环条件用了 <=。在这个复现里，Java 的边界应改成 i < data.length。
 
-**参考回答**：正确答案是「javac 把源码编译成 .class 字节码」，本课在「JDK、JRE 与 JVM」中说明：Java 的口号是「一次编写，到处运行」：源码编译成字节码，由各平台的 JVM 执行并负责内存管理与即时编译（JIT）。Maven/Gradle 只是把这两步以及依赖管理自动化了。本课还在「包与类路径」中说明：编译带包名的代码：javac -d out src/com/example/app/Main.java，运行时用全限定名 java -cp out com.example.app.Main。
+### 考点 5：Java 程序入口方法的正确签名是？
 
-### 追问 5：Java 程序入口方法的正确签名是？
+- **判断依据**：正确答案是「public static void main(String[] args)」。JVM 需要 public + static 才能在未创建对象时按约定调用入口方法。判断这类题时，要把「public static void main(String[] arg…」放回题干限定的对象、输入和边界，「static int main(String[] arg…」、「public void main(String[] ar…」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「public static void main(String[] args)」，本课在「程序生命周期」中说明：public static void main(String[] args) 的每个部分都有含义：public 让 JVM 能访问、static 无需实例化、void 无返回值、String[] args 接收命令行参数。JVM 需要 public + static 才能在未创建对象时按约定调用入口方法。本课还在「零基础详解·Java 程序为什么既要编译又要解释」中说明：能独立用 javac 和 java 跑起来一个带包名的类。
+### 考点 6：补全代码：「环境与 JVM」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+
+`String name = sc.____();`
+
+- **判断依据**：围绕 补全代码：本课主题示例中，下面这行代码缺少哪个关键字或函数… 作答时，先用Java建立输入与输出的基线，再把nextLine 或 nextline代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「nextLine 或 nextline」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
 
 ## English Overview
 
@@ -541,11 +454,9 @@ jshell               # JDK 9+ 交互式 REPL，适合快速试验
 
 **Summary:** JDK/JRE/JVM, compiling, packages and classpath.
 
-**Category:** Java  
-**Level:** 基础  
+**Category:** Java
+**Level:** 基础
 **Key terms:** Java, JVM, JDK, javac, 字节码, 包
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -557,7 +468,6 @@ jshell               # JDK 9+ 交互式 REPL，适合快速试验
 - 相关主题：Java、JVM、JDK、javac、字节码、包
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-
 ## Full English Study Guide
 
 ### Overview
@@ -567,60 +477,23 @@ jshell               # JDK 9+ 交互式 REPL，适合快速试验
 ### Learning Outcomes
 
 - Explain what **JVM & Environment** solves and when it should be used.
-- Identify inputs, outputs, state and failure boundaries.
-- Build a minimal reproducible example and observe the real result.
-- Test normal, boundary and failure paths.
-- Measure performance, resource cost or security impact before optimizing.
-- Document the decision, rollback path and remaining uncertainty.
 
 ### Core Mental Model
 
-1. **Problem first:** define the exact problem before choosing a tool or pattern.
-2. **Smallest example:** reduce the system to one input and one observable output.
-3. **State and flow:** trace how data, control or responsibility moves through the system.
-4. **Boundaries:** identify invalid input, resource limits, timeouts and permission edges.
-5. **Evidence:** use tests, logs, metrics or reproductions instead of intuition.
-6. **Trade-offs:** compare correctness, latency, cost, complexity and operability.
-
 ### Step-by-step Study Plan
-
-1. Read the Chinese lesson once and write down the main problem in one sentence.
-2. Run the smallest example and save the exact command and output.
-3. Change only one input or parameter and predict the result before running it.
-4. Introduce one failure and record how the system detects, reports and recovers.
-5. Write one test or checklist item for the normal, boundary and failure paths.
-6. Complete the quiz and explain every wrong answer in your own words.
 
 ### Practice Tasks
 
-- Rebuild the minimal example from an empty directory.
-- Add one boundary test and one failure test.
-- Produce a short report containing the baseline, change, result and rollback.
-
 ### Common Failure Modes
-
-- Treating a happy-path demo as production readiness.
-- Skipping boundary values and invalid inputs.
-- Optimizing before establishing a measurable baseline.
-- Hiding errors, permissions or resource limits.
 
 ### Self-check Questions
 
-1. What is the smallest observable result that proves this lesson works?
-2. What input or state is most likely to break it?
-3. Which metric or test would reveal a regression?
 4. What is the rollback path?
-5. What is the cost of using this approach at 10x scale?
-6. Which adjacent topic is most often confused with this one?
 
 ### Glossary
 
 - Topic: **JVM & Environment**
 - Related terms: Java, JVM, JDK, javac
-- Primary evidence: command output, tests, logs, metrics or reproductions
-
-> This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
-
 
 ## Bilingual Section Outline
 
@@ -637,21 +510,18 @@ jshell               # JDK 9+ 交互式 REPL，适合快速试验
 | JDK 组成与命令速查 | JDK 组成与命令速查 |
 | 环境变量速查 | 环境变量速查 |
 
-> 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
-
 
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [Java SE API](https://docs.oracle.com/en/java/javase/) | 语言、标准库与 JVM |
-| [dev.java](https://dev.java/learn/) | 现代 Java 官方教程 |
+| [JVM 规范](https://docs.oracle.com/javase/specs/jvms/se21/html/index.html) | 字节码与运行时行为 |
+| [Java GC 调优](https://docs.oracle.com/en/java/javase/21/gctuning/) | 垃圾回收与性能调优 |
+| [dev.java 学习](https://dev.java/learn/) | 现代 Java 官方教程 |
 
-> 本课主题：JDK/JRE/JVM 区别、编译运行、包与类路径、JIT 与 GC。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+> 「环境与 JVM」的链接用于离线阅读后的延伸核对；App 不会自动联网。

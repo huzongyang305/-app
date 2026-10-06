@@ -2,13 +2,13 @@
 
 ![CMake 多文件项目的组织方式](images/diagram_cpp_project.webp)
 
-![实战：CMake 多文件项目](images/remaining_cpp_project.webp)
+![本课主题](images/remaining_cpp_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：18 分钟
 
 ## 学习目标
 
-- 能用自己的话解释「实战：CMake 多文件项目」解决了什么问题，而不是只背术语。
+- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
 - 能说清 「实战」、「CMake」、「CTest」、「sanitizer」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「C++」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -18,10 +18,8 @@
 ## 前置知识
 
 - 先完成上一课《构建、调试与工程实践》；如果已经掌握，可以直接用本课练习自测。
-- 本课阶段：高级。建议具备同一方向的完整基础，能阅读较长的代码、配置或系统设计说明。
 - 开始前先复习：实战、CMake、CTest。
 - 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
-
 
 ## 项目结构
 
@@ -138,7 +136,6 @@ clang-tidy src/*.cpp -- -Iinclude
 ## 本课小结
 多文件 + CMake + 测试 + sanitizer 是现代 C++ 项目的最小骨架；把它固化成模板，新项目直接复用。
 
-
 ## 目录结构速查
 
 ```text
@@ -217,7 +214,6 @@ add_test(NAME calc_test COMMAND calc_test)
 - [ ] CMake 用 target 指令管理头文件与选项。
 - [ ] ctest 能一条命令跑完全部测试。
 - [ ] CI 覆盖构建、测试与静态检查。
-
 
 ## 零基础详解：C++ 项目实战骨架
 
@@ -440,7 +436,6 @@ cppcheck --enable=warning,performance src
 
 ## 动手练习
 
-
 > 本课练习重点：围绕「实战、CMake、CTest」完成复述、实验和交付，每个结果都要能被别人检查。
 
 先开启警告编译最小程序，再验证内存与边界，最后用 Sanitizer 跑一遍。
@@ -449,7 +444,7 @@ cppcheck --enable=warning,performance src
 
 合上教程，用 3～5 句话回答：
 
-1. 「实战：CMake 多文件项目」解决了什么问题？
+1. 本课主题解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「CMake」是什么关系？
 
@@ -477,8 +472,6 @@ cppcheck --enable=warning,performance src
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-
-
 ## 验证命令与预期输出
 
 项目代码不能只看“能编译”，还要能按固定命令复现结果。下表给出最低验证集：
@@ -505,10 +498,7 @@ cppcheck --enable=warning,performance src
 4. 定位原因后补一条自动化测试，再重新执行发布流程。
 5. 把教训写入项目复盘或本课笔记，形成下一次的检查项。
 
-
 ## 可运行练习
-
-下面 3 个任务围绕“实战：CMake 多文件项目”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
 
 ### 任务 1：先跑通，再解释
 
@@ -522,75 +512,44 @@ double median(std::vector<double> values);
 double stddev(const std::vector<double>& values);
 ```
 
-**预期输出**：运行后会输出与“实战：CMake 多文件项目”相关的关键结果；请重点核对输出行数、最后一个数值和异常提示。
-
-**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
-
 ### 任务 2：只改一个条件
-
-复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
-
-**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
 
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
 
-**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
-
-
 ## 故障现场
 
-这一节把“实战：CMake 多文件项目”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 实战 常规用例通过，但边界用例失败
 
-### 现场 1：“实战：CMake 多文件项目”的 实战 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 实战 常规用例通过，但边界用例失败”。
 
-**症状**：在“实战：CMake 多文件项目”的练习或生产场景里出现““实战：CMake 多文件项目”的 实战 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““实战：CMake 多文件项目”的 实战 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 实战 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“实战 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“实战：CMake 多文件项目”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 实战 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““实战：CMake 多文件项目”的 实战 常规用例通过，但边界用例失败”写成一条自动化用例，并在“实战：CMake 多文件项目”的验收清单里保留对应检查项。
+### 现场 2：本课的 CMake 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 CMake 结果在两次运行之间不一致”。
 
-### 现场 2：“实战：CMake 多文件项目”的 CMake 结果在两次运行之间不一致
-
-**症状**：在“实战：CMake 多文件项目”的练习或生产场景里出现““实战：CMake 多文件项目”的 CMake 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““实战：CMake 多文件项目”的 CMake 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 CMake 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“CMake 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“实战：CMake 多文件项目”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+**预防**：把“本课的 CMake 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““实战：CMake 多文件项目”的 CMake 结果在两次运行之间不一致”写成一条自动化用例，并在“实战：CMake 多文件项目”的验收清单里保留对应检查项。
+### 现场 3：本课的验证只在开发机通过
 
-
-### 现场 3：“实战：CMake 多文件项目”的验证只在开发机通过
-
-**症状**：在“实战：CMake 多文件项目”的练习或生产场景里出现““实战：CMake 多文件项目”的验证只在开发机通过”。
-
-**复现**：准备一组最小输入，只保留触发““实战：CMake 多文件项目”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+**症状**：在本课的练习或生产场景里出现“本课的验证只在开发机通过”。
 
 **定位**：围绕“环境版本、配置和输入规模与目标环境不同，实战 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：把“实战：CMake 多文件项目”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
-
-**预防**：把““实战：CMake 多文件项目”的验证只在开发机通过”写成一条自动化用例，并在“实战：CMake 多文件项目”的验收清单里保留对应检查项。
-
-
-
 ## 版本与时效
 
-这一节记录“实战：CMake 多文件项目”涉及的版本基线与升级检查点，避免把某个版本的默认行为当成永久结论。
-
 - C++23 已在主流工具链落地，C++26 进入定稿阶段
-- 模块、协程、ranges、std::expected 与 constexpr 能力持续增强
 - 升级前先统一编译器与标准库版本，再逐模块打开新标准
-- 编译器支持：https://en.cppreference.com/w/cpp/compiler_support
 
 ### 升级检查清单
 
@@ -598,55 +557,6 @@ double stddev(const std::vector<double>& values);
 - 只改一个版本变量，记录编译、测试、性能与产物体积的变化。
 - 重点回归默认值、弃用警告、序列化格式、并发语义和错误信息。
 - 升级完成后更新本课的“最后复核 / 下次复核”日期与版本说明。
-
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：C++ 项目中对外的头文件通常放在？
-
-- **正确判断**：include/
-- **判断依据**：include 放对外头文件，src 放实现，职责清晰也方便安装导出。其他选项：include/ 放对外头文件，src/ 放实现，tests/ 放测试，build/ 是构建产物并应加入 .gitignore。针对「C++ 项目中对外的头文件通常放在，」，本课在「项目结构」中说明：约定：include/ 放对外头文件，src/ 放实现，tests/ 放测试，避免头文件与源文件混在一起。本课还在「零基础详解：C++ 项目实战骨架」中说明：头文件与实现分离：include/ 暴露给使用方，src/ 只放实现。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 2：CTest 的作用是？
-
-- **正确判断**：运行并管理测试
-- **判断依据**：正确答案是「运行并管理测试」，本课在「本课小结」中说明：多文件 + CMake + 测试 + sanitizer 是现代 C++ 项目的最小骨架。enabletesting + addtest 后可用 ctest 一键运行测试。本课还在「工程习惯」中说明：CI 中跑 cmake --build + ctest + sanitizer。本课还在「零基础详解：C++ 项目实战骨架」中说明：把 .clang-format 与 .clang-tidy 提交到仓库，团队格式化结果才会一致。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 3：在 CMake 项目中开启 AddressSanitizer 和 UndefinedBehaviorSanitizer，最合理的做法是？
-
-- **正确判断**：在 Debug/CI 构建中加入 -fsanitize=address,undefined 并链接 sanitizer 运行时
-- **判断依据**：正确答案是「在 Debug/CI 构建中加入 -fsanitize=address,undefined 并链接 sanitizer 运行时」，本课在「本课小结」中说明：多文件 + CMake + 测试 + sanitizer 是现代 C++ 项目的最小骨架。Sanitizer 适合在开发、测试和 CI 构建中启用，它需要编译与链接阶段同时加入对应参数。本课还在「工程习惯」中说明：CI 中跑 cmake --build + ctest + sanitizer。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 4：CMake 中 target_link_libraries(app PRIVATE fmt) 的作用是？
-
-- **正确判断**：给 app 目标声明需要链接的库及其传递属性
-- **判断依据**：正确答案是「给 app 目标声明需要链接的库及其传递属性」，本课在「项目专属规格：实战：CMake 多文件项目」中说明：include/src 分层、静态库、CTest 与 sanitizer。基于目标（target）的写法会携带 include 路径等使用要求，比全局变量更清晰。本课还在「零基础详解：C++ 项目实战骨架」中说明：一个可交付的 C++ 项目要有：CMake 构建、依赖管理、测试、静态检查、Sanitizer、CI。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 5：把单元测试接入 CI 的主要价值是？
-
-- **正确判断**：每次提交自动验证，尽早发现回归
-- **判断依据**：正确答案是「每次提交自动验证，尽早发现回归」，本课在「工程习惯」中说明：Debug 与 Release 分开构建目录。CI 上跑 ctest 能保证「测试在别人机器上也通过」，是团队协作的质量底线。本课还在「项目结构」中说明：约定：include/ 放对外头文件，src/ 放实现，tests/ 放测试，避免头文件与源文件混在一起。本课还在「零基础详解：C++ 项目实战骨架」中说明：一个可交付的 C++ 项目要有：CMake 构建、依赖管理、测试、静态检查、Sanitizer、CI。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 6：补全代码：「实战：CMake 多文件项目」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `____(app PRIVATE stats_core)`
-
-- **正确判断**：target_link_libraries
-- **判断依据**：正确答案是「target_link_libraries」，本课在「零基础详解：C++ 项目实战骨架」中说明：用 std::optional 表达「可能解析失败」，比返回特殊值更清楚。本课还在「零基础详解：C++ 项目实战骨架」中说明：注意：ASan 与 TSan 不能同时开，要分成两个预设跑。本课还在「零基础详解：C++ 项目实战骨架」中说明：能说出 include/ 与 src/ 分离的好处。
-- **迁移检查**：如果填成相近的另一个函数或关键字，程序会在哪一步出错？
-
-### 补充自测（2 题）
-
-1. 围绕“实战：CMake 多文件项目”中的 实战、CMake、CTest，下列哪两项是本课强调的实践判断？
-2. 下面这段 C++ 代码复现了“实战：CMake 多文件项目”中 实战、CMake、CTest 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
 
 ## 本课复习清单
 
@@ -657,7 +567,7 @@ double stddev(const std::vector<double>& values);
 - [ ] 不看解析，能说出「在 CMake 项目中开启 AddressSanitizer 和 Undefin…」的判断依据。
 - [ ] 不看解析，能说出「CMake 中 target_link_libraries(app PRIVAT…」的判断依据。
 - [ ] 不看解析，能说出「把单元测试接入 CI 的主要价值是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：「实战：CMake 多文件项目」示例中，下面这行代码缺少哪个关键字或函…」的判断依据。
+- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码缺少哪个关键字或函…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -668,8 +578,6 @@ double stddev(const std::vector<double>& values);
 | 下一步验证动作 |  |
 
 ## 术语速查
-
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
 | 术语 | 本课语境 |
 | --- | --- |
@@ -686,30 +594,33 @@ double stddev(const std::vector<double>& values);
 | `.gitignore` | \| 构建目录不入库 \| `build/` 写进 `.gitignore` \| |
 | `compile_commands.json` | \| 静态检查 \| clang-tidy + `compile_commands.json` \| |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：围绕“实战：CMake 多文件项目”中的 实战、CMake、CTest，下列哪两项是本课强调的实践判断？
 
-### 追问 1：C++ 项目中对外的头文件通常放在？
+- **判断依据**：正确答案包括「学习 实战 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 CMake 时要固定版本并覆盖边界输入，结论才可复现」。正确答案是学习 实战 时要同时说明输入、输出和失败路径。在本课主题里，判断 CMake 时要固定版本与边界输入，所以“验证 CMake 时要固定版本并覆盖边界输入，结论才可复现”才可复现。判断这类题时，要把学习 实战 时要同时说明输入、输出和失败路径，不能只看正常流程（cppproject 第 1 题）。
 
-**参考回答**：include 放对外头文件，src 放实现，职责清晰也方便安装导出。其他选项：include/ 放对外头文件，src/ 放实现，tests/ 放测试，build/ 是构建产物并应加入 .gitignore。针对「C++ 项目中对外的头文件通常放在，」，本课在「项目结构」中说明：约定：include/ 放对外头文件，src/ 放实现，tests/ 放测试，避免头文件与源文件混在一起。本课还在「零基础详解·C++ 项目实战骨架」中说明：头文件与实现分离：include/ 暴露给使用方，src/ 只放实现。
+### 考点 2：下面这段 C++ 代码复现了“实战：CMake 多文件项目”中 实战、CMake、CTest 相关的一个常见故障，哪一项最准确地解释了问题？
 
-### 追问 2：CTest 的作用是？
+- **判断依据**：本题应选「循环条件用了 <=，i == data.size() 时越界访问，属于未定义行为」。本题应选循环条件用了 <=，i == data.size() 时越界访问，属于未定义行为。结合实战、CMake来看，本题应选循环条件用了 <=。在这个复现里，越界在 C++ 里属于未定义行为，实战 的结果可能崩溃也可能看似正常。
 
-**参考回答**：正确答案是「运行并管理测试」，本课在「本课小结」中说明：多文件 + CMake + 测试 + sanitizer 是现代 C++ 项目的最小骨架。enabletesting + addtest 后可用 ctest 一键运行测试。本课还在「工程习惯」中说明：CI 中跑 cmake --build + ctest + sanitizer。本课还在「零基础详解·C++ 项目实战骨架」中说明：把 .clang-format 与 .clang-tidy 提交到仓库，团队格式化结果才会一致。
+### 考点 3：在 CMake 项目中开启 AddressSanitizer 和 UndefinedBehaviorSanitizer，最合理的做法是？
 
-### 追问 3：在 CMake 项目中开启 AddressSanitizer 和 UndefinedBehaviorSanitizer，最合理的做法是？
+- **判断依据**：符合题干条件的是「在 Debug/CI 构建中加入 -fsanitize=address,undefined 并链接 sanitizer 运行时」。Sanitizer 适合在开发、测试和 CI 构建中启用，它需要编译与链接阶段同时加入对应参数。
 
-**参考回答**：正确答案是「在 Debug/CI 构建中加入 -fsanitize=address,undefined 并链接 sanitizer 运行时」，本课在「本课小结」中说明：多文件 + CMake + 测试 + sanitizer 是现代 C++ 项目的最小骨架。Sanitizer 适合在开发、测试和 CI 构建中启用，它需要编译与链接阶段同时加入对应参数。本课还在「工程习惯」中说明：CI 中跑 cmake --build + ctest + sanitizer。
+### 考点 4：CMake 中 target_link_libraries(app PRIVATE fmt) 的作用是？
 
-### 追问 4：CMake 中 target_link_libraries(app PRIVATE fmt) 的作用是？
+- **判断依据**：结论应落在「给 app 目标声明需要链接的库及其传递属性」。基于目标（target）的写法会携带 include 路径等使用要求，比全局变量更清晰。这道题要求区分概念与边界，「给 app 目标声明需要链接的库及其传递属性」只有在题干给出的前提下才成立，而「把 fmt 源码拷进项目（仅部分场景成立）」、「设置 C++ 标准」缺少同一组条件。
 
-**参考回答**：正确答案是「给 app 目标声明需要链接的库及其传递属性」，本课在「项目专属规格·实战·CMake 多文件项目」中说明：include/src 分层、静态库、CTest 与 sanitizer。基于目标（target）的写法会携带 include 路径等使用要求，比全局变量更清晰。本课还在「零基础详解·C++ 项目实战骨架」中说明：一个可交付的 C++ 项目要有：CMake 构建、依赖管理、测试、静态检查、Sanitizer、CI。
+### 考点 5：把单元测试接入 CI 的主要价值是？
 
-### 追问 5：把单元测试接入 CI 的主要价值是？
+- **判断依据**：正确答案是「每次提交自动验证，尽早发现回归」。CI 上跑 ctest 能保证「测试在别人机器上也通过」，是团队协作的质量底线。判断这类题时，要把「每次提交自动验证，尽早发现回归」放回题干限定的对象、输入和边界，「自动修复 bug」、「让代码运行更快」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「每次提交自动验证，尽早发现回归」，本课在「工程习惯」中说明：Debug 与 Release 分开构建目录。CI 上跑 ctest 能保证「测试在别人机器上也通过」，是团队协作的质量底线。本课还在「项目结构」中说明：约定：include/ 放对外头文件，src/ 放实现，tests/ 放测试，避免头文件与源文件混在一起。本课还在「零基础详解·C++ 项目实战骨架」中说明：一个可交付的 C++ 项目要有：CMake 构建、依赖管理、测试、静态检查、Sanitizer、CI。
+### 考点 6：补全代码：「实战：CMake 多文件项目」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+
+`____(app PRIVATE stats_core)`
+
+- **判断依据**：空格应填写「target_link_libraries」。围绕 补全代码：本课主题示例中，下面这行代码缺少哪… 作答时，先用实战建立输入与输出的基线，再把targetlinklibraries代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「target_link_libraries」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
 
 ## English Overview
 
@@ -717,11 +628,9 @@ double stddev(const std::vector<double>& values);
 
 **Summary:** Layout, library target, CTest and sanitizers.
 
-**Category:** C++  
-**Level:** 高级  
+**Category:** C++
+**Level:** 高级
 **Key terms:** 实战, CMake, CTest, sanitizer, 工程结构
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -733,7 +642,7 @@ double stddev(const std::vector<double>& values);
 - 相关主题：实战、CMake、CTest、sanitizer、工程结构
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-## 项目专属规格：实战：CMake 多文件项目
+## 项目专属规格：本课主题
 
 ### 核心场景
 
@@ -762,7 +671,6 @@ include/src 分层、静态库、CTest 与 sanitizer。 项目目标是把「实
 3. 失败路径：依赖超时或不可用时能快速失败、重试或降级。
 4. 幂等路径：同一请求执行两次不会产生重复副作用。
 5. 回滚路径：回滚后数据一致，且能说明恢复时间和影响范围。
-
 
 ## 项目交付物
 
@@ -809,7 +717,6 @@ README.md
 
 > 项目验收围绕「实战、CMake、CTest」：至少完成一次正常路径、一次边界输入、一次失败恢复和一次幂等检查。
 
-
 ## Full English Study Guide
 
 ### Overview
@@ -819,60 +726,23 @@ README.md
 ### Learning Outcomes
 
 - Explain what **Project: CMake Layout** solves and when it should be used.
-- Identify inputs, outputs, state and failure boundaries.
-- Build a minimal reproducible example and observe the real result.
-- Test normal, boundary and failure paths.
-- Measure performance, resource cost or security impact before optimizing.
-- Document the decision, rollback path and remaining uncertainty.
 
 ### Core Mental Model
 
-1. **Problem first:** define the exact problem before choosing a tool or pattern.
-2. **Smallest example:** reduce the system to one input and one observable output.
-3. **State and flow:** trace how data, control or responsibility moves through the system.
-4. **Boundaries:** identify invalid input, resource limits, timeouts and permission edges.
-5. **Evidence:** use tests, logs, metrics or reproductions instead of intuition.
-6. **Trade-offs:** compare correctness, latency, cost, complexity and operability.
-
 ### Step-by-step Study Plan
-
-1. Read the Chinese lesson once and write down the main problem in one sentence.
-2. Run the smallest example and save the exact command and output.
-3. Change only one input or parameter and predict the result before running it.
-4. Introduce one failure and record how the system detects, reports and recovers.
-5. Write one test or checklist item for the normal, boundary and failure paths.
-6. Complete the quiz and explain every wrong answer in your own words.
 
 ### Practice Tasks
 
-- Rebuild the minimal example from an empty directory.
-- Add one boundary test and one failure test.
-- Produce a short report containing the baseline, change, result and rollback.
-
 ### Common Failure Modes
-
-- Treating a happy-path demo as production readiness.
-- Skipping boundary values and invalid inputs.
-- Optimizing before establishing a measurable baseline.
-- Hiding errors, permissions or resource limits.
 
 ### Self-check Questions
 
-1. What is the smallest observable result that proves this lesson works?
-2. What input or state is most likely to break it?
-3. Which metric or test would reveal a regression?
 4. What is the rollback path?
-5. What is the cost of using this approach at 10x scale?
-6. Which adjacent topic is most often confused with this one?
 
 ### Glossary
 
 - Topic: **Project: CMake Layout**
 - Related terms: 实战, CMake, CTest, sanitizer
-- Primary evidence: command output, tests, logs, metrics or reproductions
-
-> This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
-
 
 ## Bilingual Section Outline
 
@@ -889,21 +759,18 @@ README.md
 | 目录结构速查 | 目录结构速查 |
 | 顶层 CMakeLists 参考 | 顶层 CMakeLists 参考 |
 
-> 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
-
 
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [C++ 标准库参考](https://en.cppreference.com/w/cpp) | 语言、标准库与并发 |
-| [ISO C++](https://isocpp.org/) | 标准动态、指南与最佳实践 |
+| [CMake 文档](https://cmake.org/documentation/) | 跨平台构建与依赖管理 |
+| [C++ 模板](https://en.cppreference.com/w/cpp/language/templates) | 模板、推导与泛型编程 |
+| [cppreference 标准库](https://en.cppreference.com/w/cpp/standard_library) | 标准库组件索引 |
 
-> 本课主题：include/src 分层、静态库、CTest 与 sanitizer。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+> 「实战：CMake 多文件项目」的链接用于离线阅读后的延伸核对；App 不会自动联网。

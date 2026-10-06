@@ -8,7 +8,7 @@
 
 ## 学习目标
 
-- 能用自己的话解释「JavaScript 与运行环境」解决了什么问题，而不是只背术语。
+- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
 - 能说清 「JavaScript」、「Node」、「浏览器」、「console」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「JavaScript」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -21,7 +21,6 @@
 - 本课阶段：基础。建议会读写简单代码或命令，并理解变量、输入输出等基本概念。
 - 开始前先复习：JavaScript、Node、浏览器。
 - 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
-
 
 ## JavaScript 是什么
 
@@ -75,7 +74,6 @@ ESLint 抓潜在错误，Prettier 统一格式，两者配合是前端工程的�
 
 ## 本课小结
 先分清代码运行在浏览器还是 Node，再去查对应的 API；语言核心两者通用。
-
 
 ## 运行环境速查
 
@@ -134,7 +132,6 @@ ESLint 抓潜在错误，Prettier 统一格式，两者配合是前端工程的�
 - [ ] 会用 `console.table`、`console.time`、`debugger` 调试。
 - [ ] 遇到 `undefined` 报错先查取值链上的空值。
 - [ ] 前端代码使用 ESM 导入，不混用 `require`。
-
 
 ## 零基础详解：JavaScript 到底在哪里运行
 
@@ -256,7 +253,6 @@ main();
 
 ## 动手练习
 
-
 > 本课练习重点：围绕「JavaScript、Node、浏览器」完成复述、实验和交付，每个结果都要能被别人检查。
 
 先在 Node 或浏览器复现行为，再改写异步与错误路径，最后补测试。
@@ -265,7 +261,7 @@ main();
 
 合上教程，用 3～5 句话回答：
 
-1. 「JavaScript 与运行环境」解决了什么问题？
+1. 本课主题解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「Node」是什么关系？
 
@@ -293,11 +289,7 @@ main();
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-
-
 ## 可运行练习
-
-下面 3 个任务围绕“JavaScript 与运行环境”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
 
 ### 任务 1：先跑通，再解释
 
@@ -310,73 +302,44 @@ console.table([{ a: 1 }, { a: 2 }]);   // 以表格展示
 
 **预期输出**：Hello, JavaScript!
 
-**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
-
 ### 任务 2：只改一个条件
-
-复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
-
-**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
 
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
 
-**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
-
-
 ## 故障现场
 
-这一节把“JavaScript 与运行环境”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 JavaScript 常规用例通过，但边界用例失败
 
-### 现场 1：“JavaScript 与运行环境”的 JavaScript 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 JavaScript 常规用例通过，但边界用例失败”。
 
-**症状**：在“JavaScript 与运行环境”的练习或生产场景里出现““JavaScript 与运行环境”的 JavaScript 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““JavaScript 与运行环境”的 JavaScript 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 JavaScript 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“JavaScript 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“JavaScript 与运行环境”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 JavaScript 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““JavaScript 与运行环境”的 JavaScript 常规用例通过，但边界用例失败”写成一条自动化用例，并在“JavaScript 与运行环境”的验收清单里保留对应检查项。
+### 现场 2：本课的 Node 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 Node 结果在两次运行之间不一致”。
 
-### 现场 2：“JavaScript 与运行环境”的 Node 结果在两次运行之间不一致
-
-**症状**：在“JavaScript 与运行环境”的练习或生产场景里出现““JavaScript 与运行环境”的 Node 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““JavaScript 与运行环境”的 Node 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 Node 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“Node 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“JavaScript 与运行环境”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+**预防**：把“本课的 Node 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““JavaScript 与运行环境”的 Node 结果在两次运行之间不一致”写成一条自动化用例，并在“JavaScript 与运行环境”的验收清单里保留对应检查项。
+### 现场 3：本课的验证只在开发机通过
 
-
-### 现场 3：“JavaScript 与运行环境”的验证只在开发机通过
-
-**症状**：在“JavaScript 与运行环境”的练习或生产场景里出现““JavaScript 与运行环境”的验证只在开发机通过”。
-
-**复现**：准备一组最小输入，只保留触发““JavaScript 与运行环境”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+**症状**：在本课的练习或生产场景里出现“本课的验证只在开发机通过”。
 
 **定位**：围绕“环境版本、配置和输入规模与目标环境不同，JavaScript 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：把“JavaScript 与运行环境”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
-
-**预防**：把““JavaScript 与运行环境”的验证只在开发机通过”写成一条自动化用例，并在“JavaScript 与运行环境”的验收清单里保留对应检查项。
-
-
-
 ## 版本与时效
 
-这一节记录“JavaScript 与运行环境”涉及的版本基线与升级检查点，避免把某个版本的默认行为当成永久结论。
-
-- ECMAScript 2025/2026 持续加入新能力，Node 24 是当前 LTS 主线
 - 运行时要同时考虑浏览器基线、Node LTS 与打包工具的降级策略
 - 升级前用特性检测和构建目标矩阵验证，不要只在本机浏览器测试
-- 标准与兼容表：https://developer.mozilla.org/docs/Web/JavaScript
 
 ### 升级检查清单
 
@@ -384,55 +347,6 @@ console.table([{ a: 1 }, { a: 2 }]);   // 以表格展示
 - 只改一个版本变量，记录编译、测试、性能与产物体积的变化。
 - 重点回归默认值、弃用警告、序列化格式、并发语义和错误信息。
 - 升级完成后更新本课的“最后复核 / 下次复核”日期与版本说明。
-
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：下面哪项是浏览器提供、Node.js 没有的能力？
-
-- **正确判断**：DOM 操作
-- **判断依据**：正确答案是「DOM 操作」，本课在「零基础详解：JavaScript 到底在哪里运行」中说明：JavaScript 是脚本语言：不需要提前编译，写完立刻由运行环境解释执行。DOM 属于浏览器宿主 API。本课还在「JavaScript 是什么」中说明：它既能跑在浏览器里操作页面，也能通过 Node.js 写服务端、命令行和桌面应用。本课还在「本课小结」中说明：先分清代码运行在浏览器还是 Node，再去查对应的 API。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 2：<script defer> 的作用是？
-
-- **正确判断**：HTML 解析完成后再执行脚本
-- **判断依据**：正确答案是「HTML 解析完成后再执行脚本」，本课在「零基础详解：JavaScript 到底在哪里运行」中说明：JavaScript 是脚本语言：不需要提前编译，写完立刻由运行环境解释执行。defer 让脚本异步下载并在文档解析完成后按顺序执行，避免阻塞首屏渲染。本课还在「零基础详解：JavaScript 到底在哪里运行」中说明：脚本放在 </body> 前，或用 defer，能保证 HTML 先解析完，document 才可用。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 3：ECMAScript 指的是？
-
-- **正确判断**：JavaScript 的语言标准
-- **判断依据**：正确答案是「JavaScript 的语言标准」，本课在「零基础详解：JavaScript 到底在哪里运行」中说明：同一门语言，能用的 API 取决于宿主环境——浏览器里没有 fs，Node 里没有 document。ECMAScript 是标准化规范，JavaScript 是它在浏览器与 Node 中的实现。本课还在「零基础详解：JavaScript 到底在哪里运行」中说明：它有两大宿主：浏览器（能操作页面）和 Node.js（能读写文件、起服务）。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 4：let、const 与 var 的作用域区别是？
-
-- **正确判断**：let/const 是块级作用域
-- **判断依据**：正确答案是「let/const 是块级作用域」，本课在「零基础详解：JavaScript 到底在哪里运行」中说明：能解释 const 声明的数组为什么还能 push。块级作用域让循环变量、if 块内的变量不再泄漏，是现代 JS 的默认选择。本课还在「零基础详解：JavaScript 到底在哪里运行」中说明：能说出浏览器和 Node 各自多出哪些能力。本课还在「零基础详解：JavaScript 到底在哪里运行」中说明：知道 var 与 let 在循环回调里的差别。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 5："use strict" 严格模式的主要作用是？
-
-- **正确判断**：把未声明就赋值等静默错误改为直接抛错
-- **判断依据**：正确答案是「把未声明就赋值等静默错误改为直接抛错」，本课在「本课小结」中说明：先分清代码运行在浏览器还是 Node，再去查对应的 API。ES Module 与 class 内部默认就是严格模式，因此现代代码很少手写它。本课还在「零基础详解：JavaScript 到底在哪里运行」中说明：同一门语言，能用的 API 取决于宿主环境——浏览器里没有 fs，Node 里没有 document。本课还在「JavaScript 是什么」中说明：它既能跑在浏览器里操作页面，也能通过 Node.js 写服务端、命令行和桌面应用。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 6：补全代码：「JavaScript 与运行环境」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `const name = (await rl.____("请输入姓名：")).trim();`
-
-- **正确判断**：question
-- **判断依据**：正确答案是「question」，本课在「零基础详解：JavaScript 到底在哪里运行」中说明：注意：const 锁的是「绑定」，不是内容。本课还在「零基础详解：JavaScript 到底在哪里运行」中说明：const arr = [1]; arr.push(2); 是合法的，但 arr = [] 会报错。本课还在「零基础详解：JavaScript 到底在哪里运行」中说明：它有两大宿主：浏览器（能操作页面）和 Node.js（能读写文件、起服务）。
-- **迁移检查**：不看题干，用自己的话补全这句话，再与标准答案对照。
-
-### 补充自测（2 题）
-
-1. 围绕“JavaScript 与运行环境”中的 JavaScript、Node、浏览器，下列哪两项是本课强调的实践判断？
-2. 下面这段 JavaScript 代码复现了“JavaScript 与运行环境”中 JavaScript、Node、浏览器 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
 
 ## 本课复习清单
 
@@ -443,7 +357,7 @@ console.table([{ a: 1 }, { a: 2 }]);   // 以表格展示
 - [ ] 不看解析，能说出「ECMAScript 指的是？」的判断依据。
 - [ ] 不看解析，能说出「let、const 与 var 的作用域区别是？」的判断依据。
 - [ ] 不看解析，能说出「"use strict" 严格模式的主要作用是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：「JavaScript 与运行环境」示例中，下面这行代码缺少哪个关键字…」的判断依据。
+- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码缺少哪个关键字…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -454,8 +368,6 @@ console.table([{ a: 1 }, { a: 2 }]);   // 以表格展示
 | 下一步验证动作 |  |
 
 ## 术语速查
-
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
 | 术语 | 本课语境 |
 | --- | --- |
@@ -472,30 +384,33 @@ console.table([{ a: 1 }, { a: 2 }]);   // 以表格展示
 | `<script async src="a.js">` | \| `<script async src="a.js">` \| 不阻塞 \| 下载完立刻执行（顺序不确定） \| |
 | `<script defer src="a.js">` | \| `<script defer src="a.js">` \| 不阻塞 \| DOM 解析完成后按顺序执行 \| |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：下面哪项是浏览器提供、Node.js 没有的能力？
 
-### 追问 1：下面哪项是浏览器提供、Node.js 没有的能力？
+- **判断依据**：围绕 下面哪项是浏览器提供、Node.js 没有的能力。作答时，先用JavaScript建立输入与输出的基线，再把DOM 操作代入边界条件核对，结论才能复现。判断这类题时，要把「DOM 操作」放回题干限定的对象、输入和边界，「数组方法」、「闭包」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「DOM 操作」，本课在「零基础详解·JavaScript 到底在哪里运行」中说明：JavaScript 是脚本语言：不需要提前编译，写完立刻由运行环境解释执行。DOM 属于浏览器宿主 API。本课还在「JavaScript 是什么」中说明：它既能跑在浏览器里操作页面，也能通过 Node.js 写服务端、命令行和桌面应用。本课还在「本课小结」中说明：先分清代码运行在浏览器还是 Node，再去查对应的 API。
+### 考点 2：<script defer> 的作用是？
 
-### 追问 2：<script defer> 的作用是？
+- **判断依据**：本题应选「HTML 解析完成后再执行脚本」。defer 让脚本异步下载并在文档解析完成后按顺序执行，避免阻塞首屏渲染。解题的关键不是记住孤立术语，而是确认「HTML 解析完成后再执行脚本」是否完整覆盖题干的输入、输出和失败路径，并排除「立即阻塞解析执行」、「异步下载但立即执行」这类相邻概念。
 
-**参考回答**：正确答案是「HTML 解析完成后再执行脚本」，本课在「零基础详解·JavaScript 到底在哪里运行」中说明：JavaScript 是脚本语言：不需要提前编译，写完立刻由运行环境解释执行。defer 让脚本异步下载并在文档解析完成后按顺序执行，避免阻塞首屏渲染。本课还在「零基础详解·JavaScript 到底在哪里运行」中说明：脚本放在 </body> 前，或用 defer，能保证 HTML 先解析完，document 才可用。
+### 考点 3：下面这段 JavaScript 代码复现了“JavaScript 与运行环境”中 JavaScript、Node、浏览器 相关的一个常见故障，哪一项最准确地解释了问题？
 
-### 追问 3：ECMAScript 指的是？
+- **判断依据**：符合题干条件的是「== 会先做类型转换，"0" 被转成数字 0 后与 false 相等」。符合题干条件的是== 会先做类型转换，"0" 被转成数字 0 后与 false 相等。在这个复现里，这让 JavaScript 的判断结果和直觉相反。在这个复现里，最后一行 input + 1 触发字符串拼接得到 "01"，要得到 Node 的严格结果，应使用 Number(input) === 0 或 === 比较。
 
-**参考回答**：正确答案是「JavaScript 的语言标准」，本课在「零基础详解·JavaScript 到底在哪里运行」中说明：同一门语言，能用的 API 取决于宿主环境——浏览器里没有 fs，Node 里没有 document。ECMAScript 是标准化规范，JavaScript 是它在浏览器与 Node 中的实现。本课还在「零基础详解·JavaScript 到底在哪里运行」中说明：它有两大宿主：浏览器（能操作页面）和 Node.js（能读写文件、起服务）。
+### 考点 4：围绕“JavaScript 与运行环境”中的 JavaScript、Node、浏览器，下列哪两项是本课强调的实践判断？
 
-### 追问 4：let、const 与 var 的作用域区别是？
+- **判断依据**：正确答案包括「验证 Node 时要固定版本并覆盖边界输入，结论才可复现」、「学习 JavaScript 时要同时说明输入、输出和失败路径，不能只看正常流程」。结论应落在验证 Node 时要固定版本并覆盖边界输入。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 JavaScript 时必须同时交代输入、输出和失败路径，这使“学习 JavaScript 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 Node 时要固定版本与边界输入，所以“验证 Node 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-**参考回答**：正确答案是「let/const 是块级作用域」，本课在「零基础详解·JavaScript 到底在哪里运行」中说明：能解释 const 声明的数组为什么还能 push。块级作用域让循环变量、if 块内的变量不再泄漏，是现代 JS 的默认选择。本课还在「零基础详解·JavaScript 到底在哪里运行」中说明：能说出浏览器和 Node 各自多出哪些能力。本课还在「零基础详解·JavaScript 到底在哪里运行」中说明：知道 var 与 let 在循环回调里的差别。
+### 考点 5："use strict" 严格模式的主要作用是？
 
-### 追问 5："use strict" 严格模式的主要作用是？
+- **判断依据**：正确答案是「把未声明就赋值等静默错误改为直接抛错」。ES Module 与 class 内部默认就是严格模式，因此现代代码很少手写它。判断这类题时，要把「把未声明就赋值等静默错误改为直接抛错」放回题干限定的对象、输入和边界，「提升脚本运行速度数倍（仅部分场景成立）」、「禁用所有全局变量」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「把未声明就赋值等静默错误改为直接抛错」，本课在「本课小结」中说明：先分清代码运行在浏览器还是 Node，再去查对应的 API。ES Module 与 class 内部默认就是严格模式，因此现代代码很少手写它。本课还在「零基础详解·JavaScript 到底在哪里运行」中说明：同一门语言，能用的 API 取决于宿主环境——浏览器里没有 fs，Node 里没有 document。本课还在「JavaScript 是什么」中说明：它既能跑在浏览器里操作页面，也能通过 Node.js 写服务端、命令行和桌面应用。
+### 考点 6：补全代码：「JavaScript 与运行环境」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+
+`const name = (await rl.____("请输入姓名：")).trim();`
+
+- **判断依据**：是合法的，但 arr = [] 会报错。围绕 补全代码：本课主题示例中，下面这行代码缺… 作答时，先用JavaScript建立输入与输出的基线，再把question代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「question」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
 
 ## English Overview
 
@@ -503,11 +418,9 @@ console.table([{ a: 1 }, { a: 2 }]);   // 以表格展示
 
 **Summary:** Browser vs Node, running code, strict mode and tooling.
 
-**Category:** JavaScript  
-**Level:** 基础  
+**Category:** JavaScript
+**Level:** 基础
 **Key terms:** JavaScript, Node, 浏览器, console, ECMAScript
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -519,7 +432,6 @@ console.table([{ a: 1 }, { a: 2 }]);   // 以表格展示
 - 相关主题：JavaScript、Node、浏览器、console、ECMAScript
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-
 ## Full English Study Guide
 
 ### Overview
@@ -529,60 +441,23 @@ console.table([{ a: 1 }, { a: 2 }]);   // 以表格展示
 ### Learning Outcomes
 
 - Explain what **JavaScript & Runtimes** solves and when it should be used.
-- Identify inputs, outputs, state and failure boundaries.
-- Build a minimal reproducible example and observe the real result.
-- Test normal, boundary and failure paths.
-- Measure performance, resource cost or security impact before optimizing.
-- Document the decision, rollback path and remaining uncertainty.
 
 ### Core Mental Model
 
-1. **Problem first:** define the exact problem before choosing a tool or pattern.
-2. **Smallest example:** reduce the system to one input and one observable output.
-3. **State and flow:** trace how data, control or responsibility moves through the system.
-4. **Boundaries:** identify invalid input, resource limits, timeouts and permission edges.
-5. **Evidence:** use tests, logs, metrics or reproductions instead of intuition.
-6. **Trade-offs:** compare correctness, latency, cost, complexity and operability.
-
 ### Step-by-step Study Plan
-
-1. Read the Chinese lesson once and write down the main problem in one sentence.
-2. Run the smallest example and save the exact command and output.
-3. Change only one input or parameter and predict the result before running it.
-4. Introduce one failure and record how the system detects, reports and recovers.
-5. Write one test or checklist item for the normal, boundary and failure paths.
-6. Complete the quiz and explain every wrong answer in your own words.
 
 ### Practice Tasks
 
-- Rebuild the minimal example from an empty directory.
-- Add one boundary test and one failure test.
-- Produce a short report containing the baseline, change, result and rollback.
-
 ### Common Failure Modes
-
-- Treating a happy-path demo as production readiness.
-- Skipping boundary values and invalid inputs.
-- Optimizing before establishing a measurable baseline.
-- Hiding errors, permissions or resource limits.
 
 ### Self-check Questions
 
-1. What is the smallest observable result that proves this lesson works?
-2. What input or state is most likely to break it?
-3. Which metric or test would reveal a regression?
 4. What is the rollback path?
-5. What is the cost of using this approach at 10x scale?
-6. Which adjacent topic is most often confused with this one?
 
 ### Glossary
 
 - Topic: **JavaScript & Runtimes**
 - Related terms: JavaScript, Node, 浏览器, console
-- Primary evidence: command output, tests, logs, metrics or reproductions
-
-> This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
-
 
 ## Bilingual Section Outline
 
@@ -599,21 +474,18 @@ console.table([{ a: 1 }, { a: 2 }]);   // 以表格展示
 | 运行环境速查 | 运行环境速查 |
 | 控制台速查 | 控制台速查 |
 
-> 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
-
 
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [MDN JavaScript](https://developer.mozilla.org/docs/Web/JavaScript) | 语言、DOM 与运行时 |
-| [ECMAScript](https://ecma-international.org/publications-and-standards/standards/ecma-262/) | 语言标准 |
+| [ECMAScript 标准](https://tc39.es/ecma262/) | JavaScript 语言标准 |
+| [Node.js 文档](https://nodejs.org/docs/latest/api/) | 服务端运行时与模块 |
+| [MDN JavaScript 指南](https://developer.mozilla.org/docs/Web/JavaScript/Guide) | 语言基础与浏览器 API |
 
-> 本课主题：浏览器与 Node 的差异、运行方式、严格模式与代码质量工具。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+> 「JavaScript 与运行环境」的链接用于离线阅读后的延伸核对；App 不会自动联网。

@@ -1,14 +1,14 @@
 # Go 并发：goroutine、channel 与 context
 
+> 内容更新时间：2026-10-03
+
 ![Go goroutine channel context](images/diagram_go_concurrency.webp)
 
 ![Go 并发：goroutine、channel 与 context](images/remaining_go_concurrency.webp)
 
-> 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：16 分钟
-
 ## 学习目标
 
-- 能用自己的话解释「Go 并发：goroutine、channel 与 context」解决了什么问题，而不是只背术语。
+- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
 - 能说清 「Go」、「goroutine」、「channel」、「context」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「Go」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -21,7 +21,6 @@
 - 本课阶段：进阶。建议先掌握同一分类的基础课程，并能独立运行正文中的最小示例。
 - 开始前先复习：Go、goroutine、channel。
 - 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
-
 
 ## 三个核心原语
 
@@ -53,7 +52,6 @@ Go 的并发哲学：**不要通过共享内存来通信，而要通过通信来
 
 ## 本课小结
 Go 并发的要点：**用 channel 传递数据、用 context 控制生命周期、用 WaitGroup 等待完成、用 -race 验证正确性**。
-
 
 ## goroutine 与 channel 速查
 
@@ -129,7 +127,6 @@ func worker(ctx context.Context, jobs <-chan int, results chan<- int, wg *sync.W
 - [ ] 共享数据一律加锁或用原子操作。
 - [ ] 关键代码跑 `go test -race` 且无告警。
 - [ ] 所有并发任务都能被取消并设了超时。
-
 
 ## 零基础详解：goroutine、channel 与「通过通信共享内存」
 
@@ -248,7 +245,6 @@ case result := <-ch:
 
 ## 动手练习
 
-
 > 本课练习重点：围绕「Go、goroutine、channel」完成复述、实验和交付，每个结果都要能被别人检查。
 
 先写最小程序并用 go test 验证，再补 context、并发上限和错误传播。
@@ -257,7 +253,7 @@ case result := <-ch:
 
 合上教程，用 3～5 句话回答：
 
-1. 「Go 并发：goroutine、channel 与 context」解决了什么问题？
+1. 本课主题解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「goroutine」是什么关系？
 
@@ -285,80 +281,50 @@ case result := <-ch:
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-
-
 ## 实践任务
 
-本节围绕“Go 并发：goroutine、channel 与 context”安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
+本节围绕本课主题安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 
 ### 任务 1：用自己的话画出结构
 
-合上教程，用 5 句话说明“Go 并发：goroutine、channel 与 context”解决什么问题、输入是什么、输出是什么、失败时会怎样、与相邻概念的边界在哪里。画一张流程图或状态图，把每个节点标注成“输入 / 处理 / 输出 / 失败路径”之一。
-
-**验收标准**：图里至少有 5 个节点和 1 条失败路径；每个节点都能在正文中找到依据。
-
 ### 任务 2：做一次对比实验
-
-从正文里选两个差异最小的方案，列成 4 列表格：方案、前提、代价、适用边界。然后只改变一个条件（数据规模、并发度、精度或资源上限），记录结果变化。
 
 **验收标准**：表格里两个方案的结论不能完全一样；写下“在什么条件下应该换方案”。
 
 ### 任务 3：迁移到自己的场景
 
-把“Go 并发：goroutine、channel 与 context”的核心方法用到你熟悉的一个真实场景，写出一份 300 字以内的实施记录：目标、步骤、验证方式、仍然不确定的问题。
-
 **验收标准**：至少有一个可复现的命令、代码片段或数据样例；结论能被别人独立检查。
-
 
 ## 故障现场
 
-这一节把“Go 并发：goroutine、channel 与 context”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 Go 常规用例通过，但边界用例失败
 
-### 现场 1：“Go 并发：goroutine、channel 与 context”的 Go 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 Go 常规用例通过，但边界用例失败”。
 
-**症状**：在“Go 并发：goroutine、channel 与 context”的练习或生产场景里出现““Go 并发：goroutine、channel 与 context”的 Go 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““Go 并发：goroutine、channel 与 context”的 Go 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 Go 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“Go 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“Go 并发：goroutine、channel 与 context”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 Go 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““Go 并发：goroutine、channel 与 context”的 Go 常规用例通过，但边界用例失败”写成一条自动化用例，并在“Go 并发：goroutine、channel 与 context”的验收清单里保留对应检查项。
+### 现场 2：本课的 goroutine 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 goroutine 结果在两次运行之间不一致”。
 
-### 现场 2：“Go 并发：goroutine、channel 与 context”的 goroutine 结果在两次运行之间不一致
-
-**症状**：在“Go 并发：goroutine、channel 与 context”的练习或生产场景里出现““Go 并发：goroutine、channel 与 context”的 goroutine 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““Go 并发：goroutine、channel 与 context”的 goroutine 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 goroutine 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“goroutine 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“Go 并发：goroutine、channel 与 context”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+**预防**：把“本课的 goroutine 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““Go 并发：goroutine、channel 与 context”的 goroutine 结果在两次运行之间不一致”写成一条自动化用例，并在“Go 并发：goroutine、channel 与 context”的验收清单里保留对应检查项。
+### 现场 3：本课的验证只在开发机通过
 
-
-### 现场 3：“Go 并发：goroutine、channel 与 context”的验证只在开发机通过
-
-**症状**：在“Go 并发：goroutine、channel 与 context”的练习或生产场景里出现““Go 并发：goroutine、channel 与 context”的验证只在开发机通过”。
-
-**复现**：准备一组最小输入，只保留触发““Go 并发：goroutine、channel 与 context”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+**症状**：在本课的练习或生产场景里出现“本课的验证只在开发机通过”。
 
 **定位**：围绕“环境版本、配置和输入规模与目标环境不同，Go 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：把“Go 并发：goroutine、channel 与 context”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
-
-**预防**：把““Go 并发：goroutine、channel 与 context”的验证只在开发机通过”写成一条自动化用例，并在“Go 并发：goroutine、channel 与 context”的验收清单里保留对应检查项。
-
-
-
 ## 版本与时效
 
-这一节记录“Go 并发：goroutine、channel 与 context”涉及的版本基线与升级检查点，避免把某个版本的默认行为当成永久结论。
-
-- Go 1.25 是当前主线，泛型、range-over-func 与工具链持续增强
 - 升级前用 go vet、go test -race 与静态检查覆盖并发生命周期
 - 模块校验、最小版本选择与供应链安全是生产升级的重点
 - 官方发布说明：https://go.dev/doc/devel/release
@@ -370,55 +336,6 @@ case result := <-ch:
 - 重点回归默认值、弃用警告、序列化格式、并发语义和错误信息。
 - 升级完成后更新本课的“最后复核 / 下次复核”日期与版本说明。
 
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：向已关闭的 channel 发送数据会？
-
-- **正确判断**：panic
-- **判断依据**：只应由唯一的发送方负责关闭 channel。其他选项：向已关闭的 channel 发送不会返回错误、不会自动重开、也不会阻塞，而是直接 panic，因此关闭操作应由唯一发送方负责。针对「向已关闭的 channel 发送数据会，」，本课在「必须注意的坑」中说明：向已关闭的 channel 发送 会 panic。本课还在「零基础详解：goroutine、channel 与「通过通信共享内存」」中说明：结论：只由发送方关闭 channel，并且不要向已关闭的 channel 发送数据。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 2：以下哪组是 Go 并发的正确实践？
-
-- **正确判断**：用 context 传播取消
-- **判断依据**：正确答案是「用 context 传播取消」，本课在「本课小结」中说明：Go 并发的要点：用 channel 传递数据、用 context 控制生命周期、用 WaitGroup 等待完成、用 -race 验证正确性。context 能让子任务感知取消和超时，worker 池与有界队列能控制资源上限。本课还在「零基础详解：goroutine、channel 与「通过通信共享内存」」中说明：结论：只由发送方关闭 channel，并且不要向已关闭的 channel 发送数据。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 3：检测数据竞争的官方手段是？
-
-- **正确判断**：go test -race
-- **判断依据**：正确答案是「go test -race」，本课在「必须注意的坑」中说明：竞态：用 go test -race 检测，用 mutex 或 channel 消除。-race 在运行时检测并发访问冲突，应加入 CI。本课还在「本课小结」中说明：Go 并发的要点：用 channel 传递数据、用 context 控制生命周期、用 WaitGroup 等待完成、用 -race 验证正确性。本课还在「零基础详解：goroutine、channel 与「通过通信共享内存」」中说明：具体做法就是：用 goroutine 起任务，用 channel 在任务之间传数据，而不是到处加锁改同一个变量。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 4：向无缓冲 channel 发送数据会阻塞，直到？
-
-- **正确判断**：有接收方准备好接收（收发同步完成）
-- **判断依据**：正确答案是「有接收方准备好接收（收发同步完成）」，本课在「必须注意的坑」中说明：凡是阻塞在 channel 或网络上的 goroutine，都要有退出路径。无缓冲 channel 是同步握手。本课还在「零基础详解：goroutine、channel 与「通过通信共享内存」」中说明：知道无缓冲与带缓冲 channel 的区别。本课还在「常见模式」中说明：扇出扇入：多个 goroutine 并行处理后汇总到一个 channel。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 5：sync.WaitGroup 的典型用途是？
-
-- **正确判断**：等待一组 goroutine 全部完成
-- **判断依据**：正确答案是「等待一组 goroutine 全部完成」，本课在「常见模式」中说明：超时与取消：context.WithTimeout 传递取消信号，所有阻塞操作都要监听 ctx.Done()。Add 要在启动 goroutine 前调用，Done 一般用 defer，Wait 阻塞到计数归零。本课还在「三个核心原语」中说明：Go 的并发哲学：不要通过共享内存来通信，而要通过通信来共享内存。本课还在「零基础详解：goroutine、channel 与「通过通信共享内存」」中说明：Go 的并发口号是「不要通过共享内存来通信，而要通过通信来共享内存」。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 6：补全代码：「Go 并发：goroutine、channel 与 context」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `ctx, cancel := context.____(context.Background(), 2*time.Second)`
-
-- **正确判断**：WithTimeout / withtimeout
-- **判断依据**：正确答案是「WithTimeout」，本课在「常见模式」中说明：超时与取消：context.WithTimeout 传递取消信号，所有阻塞操作都要监听 ctx.Done()。本课还在「常见模式」中说明：Worker Pool：固定 N 个 worker 从 channel 取任务，控制并发度。本课还在「常见模式」中说明：扇出扇入：多个 goroutine 并行处理后汇总到一个 channel。
-- **迁移检查**：把答案换成另一种等价写法，是否仍然正确？说明依据。
-
-### 补充自测（2 题）
-
-1. 围绕“Go 并发：goroutine、channel 与 context”中的 Go、goroutine、channel，下列哪两项是本课强调的实践判断？
-2. 下面这段 Go 代码复现了“Go 并发：goroutine、channel 与 context”中 Go、goroutine、channel 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
-
 ## 本课复习清单
 
 离开本课前，逐项确认：
@@ -428,7 +345,7 @@ case result := <-ch:
 - [ ] 不看解析，能说出「检测数据竞争的官方手段是？」的判断依据。
 - [ ] 不看解析，能说出「向无缓冲 channel 发送数据会阻塞，直到？」的判断依据。
 - [ ] 不看解析，能说出「sync.WaitGroup 的典型用途是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：「Go 并发：goroutine、channel 与 context」…」的判断依据。
+- [ ] 不看解析，能说出「补全代码：本课主题…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -439,8 +356,6 @@ case result := <-ch:
 | 下一步验证动作 |  |
 
 ## 术语速查
-
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
 | 术语 | 本课语境 |
 | --- | --- |
@@ -457,30 +372,33 @@ case result := <-ch:
 | `atomic.Int64` | 优先用 channel 传递所有权；确需共享时用 `sync.Mutex`/`RWMutex` 或 `sync/atomic`。读多写少用 `RWMutex`，计数器用 `atomic.Int64`。 |
 | `go worker()` | \| 启动协程 \| `go worker()` \| 调度开销远小于线程 \| |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：向已关闭的 channel 发送数据会？
 
-### 追问 1：向已关闭的 channel 发送数据会？
+- **判断依据**：只应由唯一的发送方负责关闭 channel。其他选项：向已关闭的 channel 发送不会返回错误、不会自动重开、也不会阻塞，而是直接 panic，因此关闭操作应由唯一发送方负责。判断这类题时，要把「panic」放回题干限定的对象、输入和边界，「自动重开」、「阻塞」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：只应由唯一的发送方负责关闭 channel。其他选项：向已关闭的 channel 发送不会返回错误、不会自动重开、也不会阻塞，而是直接 panic，因此关闭操作应由唯一发送方负责。针对「向已关闭的 channel 发送数据会，」，本课在「必须注意的坑」中说明：向已关闭的 channel 发送 会 panic。本课还在「零基础详解·goroutine、channel 与「通过通信共享内存」」中说明：结论：只由发送方关闭 channel，并且不要向已关闭的 channel 发送数据。
+### 考点 2：下面这段 Go 代码复现了“Go 并发：goroutine、channel 与 context”中 Go、goroutine、channel 相关的一个常见故障，哪一项最准确地解释了问题？
 
-### 追问 2：以下哪组是 Go 并发的正确实践？
+- **判断依据**：本题应选「循环条件用了 <=，i == len(data) 时越界，运行时 panic」。本题应选循环条件用了 <=，i == len(data) 时越界，运行时 panic（goconcurrency 第 2 题）。结合Go、goroutine来看，本题应选循环条件用了 <=。在这个复现里，要让 goroutine 的结果稳定，可以直接使用 for , v := range data 或把长度保存在局部变量中。
 
-**参考回答**：正确答案是「用 context 传播取消」，本课在「本课小结」中说明：Go 并发的要点：用 channel 传递数据、用 context 控制生命周期、用 WaitGroup 等待完成、用 -race 验证正确性。context 能让子任务感知取消和超时，worker 池与有界队列能控制资源上限。本课还在「零基础详解·goroutine、channel 与「通过通信共享内存」」中说明：结论：只由发送方关闭 channel，并且不要向已关闭的 channel 发送数据。
+### 考点 3：检测数据竞争的官方手段是？
 
-### 追问 3：检测数据竞争的官方手段是？
+- **判断依据**：符合题干条件的是「go test -race」。-race 在运行时检测并发访问冲突，应加入 CI。正确的判断需要逐项核对定义、版本和适用条件（goconcurrency 第 3 题）。正确的判断需要逐项核对定义、版本和适用条件（go_concurrency 第 3 题）。
 
-**参考回答**：正确答案是「go test -race」，本课在「必须注意的坑」中说明：竞态：用 go test -race 检测，用 mutex 或 channel 消除。-race 在运行时检测并发访问冲突，应加入 CI。本课还在「本课小结」中说明：Go 并发的要点：用 channel 传递数据、用 context 控制生命周期、用 WaitGroup 等待完成、用 -race 验证正确性。本课还在「零基础详解·goroutine、channel 与「通过通信共享内存」」中说明：具体做法就是：用 goroutine 起任务，用 channel 在任务之间传数据，而不是到处加锁改同一个变量。
+### 考点 4：向无缓冲 channel 发送数据会阻塞，直到？
 
-### 追问 4：向无缓冲 channel 发送数据会阻塞，直到？
+- **判断依据**：围绕 向无缓冲 channel 发送数据会阻塞，直到。作答时，先用Go建立输入与输出的基线，再把有接收方准备好接收（收发同步完成）代入边界条件核对，结论才能复现。这道题要求区分概念与边界，「有接收方准备好接收（收发同步完成）」只有在题干给出的前提下才成立，而「永远不阻塞」、「缓冲区写满」缺少同一组条件。
 
-**参考回答**：正确答案是「有接收方准备好接收（收发同步完成）」，本课在「必须注意的坑」中说明：凡是阻塞在 channel 或网络上的 goroutine，都要有退出路径。无缓冲 channel 是同步握手。本课还在「零基础详解·goroutine、channel 与「通过通信共享内存」」中说明：知道无缓冲与带缓冲 channel 的区别。本课还在「常见模式」中说明：扇出扇入：多个 goroutine 并行处理后汇总到一个 channel。
+### 考点 5：围绕“Go 并发：goroutine、channel 与 context”中的 Go、goroutine、channel，下列哪两项是本课强调的实践判断？
 
-### 追问 5：sync.WaitGroup 的典型用途是？
+- **判断依据**：正确答案包括「验证 goroutine 时要固定版本并覆盖边界输入，结论才可复现」、「学习 Go 时要同时说明输入、输出和失败路径，不能只看正常流程」。正确答案是验证 goroutine 时要固定版本并覆盖边界输入。在本课主题里，判断 goroutine 时要固定版本与边界输入，所以“验证 goroutine 时要固定版本并覆盖边界输入，结论才可复现”才可复现。判断这类题时，要把验证 goroutine 时要固定版本并覆盖边界输入，结论才可复现。
 
-**参考回答**：正确答案是「等待一组 goroutine 全部完成」，本课在「常见模式」中说明：超时与取消：context.WithTimeout 传递取消信号，所有阻塞操作都要监听 ctx.Done()。Add 要在启动 goroutine 前调用，Done 一般用 defer，Wait 阻塞到计数归零。本课还在「三个核心原语」中说明：Go 的并发哲学：不要通过共享内存来通信，而要通过通信来共享内存。本课还在「零基础详解·goroutine、channel 与「通过通信共享内存」」中说明：Go 的并发口号是「不要通过共享内存来通信，而要通过通信来共享内存」。
+### 考点 6：补全代码：「Go 并发：goroutine、channel 与 context」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+
+`ctx, cancel := context.____(context.Background(), 2*time.Second)`
+
+- **判断依据**：围绕 补全代码：Go 并发：goroutine、channel 与 co… 作答时，先用Go建立输入与输出的基线，再把WithTimeout 或 withtimeout代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「WithTimeout 或 withtimeout」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
 
 ## English Overview
 
@@ -488,11 +406,9 @@ case result := <-ch:
 
 **Summary:** Channels, worker pools, context and race detection.
 
-**Category:** Go  
-**Level:** 进阶  
+**Category:** Go
+**Level:** 进阶
 **Key terms:** Go, goroutine, channel, context, race
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -504,7 +420,6 @@ case result := <-ch:
 - 相关主题：Go、goroutine、channel、context、race
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-
 ## Full English Study Guide
 
 ### Overview
@@ -514,60 +429,23 @@ case result := <-ch:
 ### Learning Outcomes
 
 - Explain what **Go Concurrency** solves and when it should be used.
-- Identify inputs, outputs, state and failure boundaries.
-- Build a minimal reproducible example and observe the real result.
-- Test normal, boundary and failure paths.
-- Measure performance, resource cost or security impact before optimizing.
-- Document the decision, rollback path and remaining uncertainty.
 
 ### Core Mental Model
 
-1. **Problem first:** define the exact problem before choosing a tool or pattern.
-2. **Smallest example:** reduce the system to one input and one observable output.
-3. **State and flow:** trace how data, control or responsibility moves through the system.
-4. **Boundaries:** identify invalid input, resource limits, timeouts and permission edges.
-5. **Evidence:** use tests, logs, metrics or reproductions instead of intuition.
-6. **Trade-offs:** compare correctness, latency, cost, complexity and operability.
-
 ### Step-by-step Study Plan
-
-1. Read the Chinese lesson once and write down the main problem in one sentence.
-2. Run the smallest example and save the exact command and output.
-3. Change only one input or parameter and predict the result before running it.
-4. Introduce one failure and record how the system detects, reports and recovers.
-5. Write one test or checklist item for the normal, boundary and failure paths.
-6. Complete the quiz and explain every wrong answer in your own words.
 
 ### Practice Tasks
 
-- Rebuild the minimal example from an empty directory.
-- Add one boundary test and one failure test.
-- Produce a short report containing the baseline, change, result and rollback.
-
 ### Common Failure Modes
-
-- Treating a happy-path demo as production readiness.
-- Skipping boundary values and invalid inputs.
-- Optimizing before establishing a measurable baseline.
-- Hiding errors, permissions or resource limits.
 
 ### Self-check Questions
 
-1. What is the smallest observable result that proves this lesson works?
-2. What input or state is most likely to break it?
-3. Which metric or test would reveal a regression?
 4. What is the rollback path?
-5. What is the cost of using this approach at 10x scale?
-6. Which adjacent topic is most often confused with this one?
 
 ### Glossary
 
 - Topic: **Go Concurrency**
 - Related terms: Go, goroutine, channel, context
-- Primary evidence: command output, tests, logs, metrics or reproductions
-
-> This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
-
 
 ## Bilingual Section Outline
 
@@ -584,21 +462,18 @@ case result := <-ch:
 | 并发安全速查 | ConcurrencySecurity速查 |
 | 常见错误对照表 | Common mistakes对照表 |
 
-> 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
-
 
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [Go 官方文档](https://go.dev/doc/) | 语言、并发与工具链 |
-| [Go 标准库](https://pkg.go.dev/std) | 标准库 API |
+| [Go 并发](https://go.dev/talks/2012/concurrency.slide) | goroutine 与 channel |
+| [Go 内存模型](https://go.dev/ref/mem) | 并发读写与同步语义 |
+| [Effective Go](https://go.dev/doc/effective_go) | 惯用写法与接口设计 |
 
-> 本课主题：channel 通信、worker pool、context 取消与竞态检测。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+> 「Go 并发：goroutine、channel 与 context」的链接用于离线阅读后的延伸核对；App 不会自动联网。

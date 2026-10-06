@@ -1,14 +1,14 @@
-# 实战：Spring Boot REST API
+# 本课主题
 
 ![Spring Boot 应用的分层结构](images/diagram_spring_layers.webp)
 
-![实战：Spring Boot REST API](images/remaining_java_project.webp)
+![本课主题](images/remaining_java_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：18 分钟
 
 ## 学习目标
 
-- 能用自己的话解释「实战：Spring Boot REST API」解决了什么问题，而不是只背术语。
+- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
 - 能说清 「实战」、「Spring Boot」、「REST」、「依赖注入」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「Java」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -18,10 +18,8 @@
 ## 前置知识
 
 - 先完成上一课《构建、测试与生态》；如果已经掌握，可以直接用本课练习自测。
-- 本课阶段：高级。建议具备同一方向的完整基础，能阅读较长的代码、配置或系统设计说明。
 - 开始前先复习：实战、Spring Boot、REST。
 - 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
-
 
 ## 项目结构
 
@@ -133,7 +131,6 @@ class UserControllerTest {
 ## 本课小结
 Spring Boot 的关键是**分层 + 依赖注入 + 约定优于配置**：controller 薄、service 厚、repository 只负责数据。
 
-
 ## Spring Boot 注解速查
 
 | 注解 | 作用 |
@@ -230,7 +227,6 @@ JPA 与事务速查：
 - [ ] 事务声明在 Service 层，且不包含网络调用。
 - [ ] 用 DTO 隔离实体，避免暴露敏感字段。
 - [ ] 数据库结构变更由迁移脚本管理。
-
 
 ## 零基础详解：Java 项目实战骨架
 
@@ -469,7 +465,6 @@ ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]
 
 ## 动手练习
 
-
 > 本课练习重点：围绕「实战、Spring Boot、REST」完成复述、实验和交付，每个结果都要能被别人检查。
 
 先跑通最小类与测试，再补异常和并发边界，最后观察线程与资源变化。
@@ -478,7 +473,7 @@ ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]
 
 合上教程，用 3～5 句话回答：
 
-1. 「实战：Spring Boot REST API」解决了什么问题？
+1. 本课主题解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「Spring Boot」是什么关系？
 
@@ -506,8 +501,6 @@ ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-
-
 ## 验证命令与预期输出
 
 项目代码不能只看“能编译”，还要能按固定命令复现结果。下表给出最低验证集：
@@ -534,10 +527,7 @@ ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]
 4. 定位原因后补一条自动化测试，再重新执行发布流程。
 5. 把教训写入项目复盘或本课笔记，形成下一次的检查项。
 
-
 ## 可运行练习
-
-下面 3 个任务围绕“实战：Spring Boot REST API”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
 
 ### 任务 1：先跑通，再解释
 
@@ -554,75 +544,47 @@ ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]
 </dependencies>
 ```
 
-**预期输出**：沙箱会解析并格式化“实战：Spring Boot REST API”中的这段 XML；请重点检查标签闭合、属性和嵌套层级。
-
-**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
+**预期输出**：沙箱会解析并格式化本课主题中的这段 XML；请重点检查标签闭合、属性和嵌套层级。
 
 ### 任务 2：只改一个条件
-
-复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
-
-**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
 
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
 
-**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
-
-
 ## 故障现场
 
-这一节把“实战：Spring Boot REST API”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 实战 常规用例通过，但边界用例失败
 
-### 现场 1：“实战：Spring Boot REST API”的 实战 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 实战 常规用例通过，但边界用例失败”。
 
-**症状**：在“实战：Spring Boot REST API”的练习或生产场景里出现““实战：Spring Boot REST API”的 实战 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““实战：Spring Boot REST API”的 实战 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 实战 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“实战 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“实战：Spring Boot REST API”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 实战 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““实战：Spring Boot REST API”的 实战 常规用例通过，但边界用例失败”写成一条自动化用例，并在“实战：Spring Boot REST API”的验收清单里保留对应检查项。
+### 现场 2：本课的 Spring Boot 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 Spring Boot 结果在两次运行之间不一致”。
 
-### 现场 2：“实战：Spring Boot REST API”的 Spring Boot 结果在两次运行之间不一致
-
-**症状**：在“实战：Spring Boot REST API”的练习或生产场景里出现““实战：Spring Boot REST API”的 Spring Boot 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““实战：Spring Boot REST API”的 Spring Boot 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 Spring Boot 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“Spring Boot 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“实战：Spring Boot REST API”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+**预防**：把“本课的 Spring Boot 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““实战：Spring Boot REST API”的 Spring Boot 结果在两次运行之间不一致”写成一条自动化用例，并在“实战：Spring Boot REST API”的验收清单里保留对应检查项。
+### 现场 3：本课的验证只在开发机通过
 
-
-### 现场 3：“实战：Spring Boot REST API”的验证只在开发机通过
-
-**症状**：在“实战：Spring Boot REST API”的练习或生产场景里出现““实战：Spring Boot REST API”的验证只在开发机通过”。
-
-**复现**：准备一组最小输入，只保留触发““实战：Spring Boot REST API”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+**症状**：在本课的练习或生产场景里出现“本课的验证只在开发机通过”。
 
 **定位**：围绕“环境版本、配置和输入规模与目标环境不同，实战 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：把“实战：Spring Boot REST API”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
-
-**预防**：把““实战：Spring Boot REST API”的验证只在开发机通过”写成一条自动化用例，并在“实战：Spring Boot REST API”的验收清单里保留对应检查项。
-
-
-
 ## 版本与时效
-
-这一节记录“实战：Spring Boot REST API”涉及的版本基线与升级检查点，避免把某个版本的默认行为当成永久结论。
 
 - Java 25 是当前 LTS，Java 21 仍是大量生产系统的基线
 - 虚拟线程、记录模式、结构化并发与分代 ZGC 是升级收益最大的部分
 - 升级前重点检查反射、字节码增强、序列化与第三方框架兼容性
-- 官方发布说明：https://www.oracle.com/java/technologies/javase/
 
 ### 升级检查清单
 
@@ -630,55 +592,6 @@ ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]
 - 只改一个版本变量，记录编译、测试、性能与产物体积的变化。
 - 重点回归默认值、弃用警告、序列化格式、并发语义和错误信息。
 - 升级完成后更新本课的“最后复核 / 下次复核”日期与版本说明。
-
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：在分层架构中，Controller 的职责是？
-
-- **正确判断**：处理 HTTP 请求与响应
-- **判断依据**：正确答案是「处理 HTTP 请求与响应」，本课在「项目结构」中说明：分层职责：controller 处理 HTTP、service 承载业务、repository 访问数据、model 表达数据结构。Controller 只做协议转换，业务逻辑放 Service，数据访问放 Repository。本课还在「本课小结」中说明：Spring Boot 的关键是分层 + 依赖注入 + 约定优于配置：controller 薄、service 厚、repository 只负责数据。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 2：使用构造器注入的主要好处是？
-
-- **正确判断**：依赖显式且便于测试
-- **判断依据**：正确答案是「依赖显式且便于测试」，本课在「本课小结」中说明：Spring Boot 的关键是分层 + 依赖注入 + 约定优于配置：controller 薄、service 厚、repository 只负责数据。构造器注入让依赖不可变、显式，单元测试可直接传入 mock。本课还在「零基础详解：Java 项目实战骨架」中说明：一个可交付的 Java 服务要分层清晰、配置外置、能探活、能优雅关闭、有测试、能打包成镜像。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 3：@Valid 注解在 @RequestBody 上的作用是？
-
-- **正确判断**：触发 Bean Validation 校验请求体
-- **判断依据**：校验不通过会抛 MethodArgumentNotValidException，由统一异常处理返回 400。其他选项：@Valid 触发 Bean Validation 校验请求体，与日志、返回值序列化、事务都无关。针对「@Valid 注解在 @RequestBody …」，本课在「上线前检查」中说明：统一异常处理（@RestControllerAdvice）返回一致的错误结构。本课还在「零基础详解：Java 项目实战骨架」中说明：启动时校验配置，而不是运行到一半才发现缺变量。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 4：@RestController 与 @Controller 的差别是？
-
-- **正确判断**：@RestController 默认把返回值序列化为 JSON（相当于 @Controller + @ResponseBody）
-- **判断依据**：正确答案是「@RestController 默认把返回值序列化为 JSON（相当于 @Controller + @ResponseBody）」，本课在「项目结构」中说明：分层职责：controller 处理 HTTP、service 承载业务、repository 访问数据、model 表达数据结构。返回视图页面时用 @Controller，写 REST API 时用 @RestController 更省事。本课还在「零基础详解：Java 项目实战骨架」中说明：要点：DTO 与 Entity 分开，不要让接口结构跟着表结构走。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 5：JPA 中 N+1 查询问题的常见解法是？
-
-- **正确判断**：用 join fetch / @EntityGraph 一次性预加载关联数据
-- **判断依据**：正确答案是「用 join fetch / @EntityGraph 一次性预加载关联数据」，本课在「数据模型与校验」中说明：record 天生适合做 API 的请求/响应模型。N+1 的典型现象是 1 条主查询 + N 条关联查询，用批量抓取或联表抓取可以解决。本课还在「零基础详解：Java 项目实战骨架」中说明：一个可交付的 Java 服务要分层清晰、配置外置、能探活、能优雅关闭、有测试、能打包成镜像。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 6：补全代码：「实战：Spring Boot REST API」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `@____(prefix = "app.retry")`
-
-- **正确判断**：ConfigurationProperties / configurationproperties
-- **判断依据**：正确答案是「ConfigurationProperties」，本课在「零基础详解：Java 项目实战骨架」中说明：能说出 Controller、Service、Repository 各自的职责。本课还在「零基础详解：Java 项目实战骨架」中说明：知道为什么 DTO 要与 Entity 分开。本课还在「零基础详解：Java 项目实战骨架」中说明：知道为什么要开启 graceful shutdown。
-- **迁移检查**：不看题干，用自己的话补全这句话，再与标准答案对照。
-
-### 补充自测（2 题）
-
-1. 围绕“实战：Spring Boot REST API”中的 实战、Spring Boot、REST，下列哪两项是本课强调的实践判断？
-2. 下面这段 Java 代码复现了“实战：Spring Boot REST API”中 实战、Spring Boot、REST 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
 
 ## 本课复习清单
 
@@ -689,7 +602,7 @@ ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]
 - [ ] 不看解析，能说出「@Valid 注解在 @RequestBody 上的作用是？」的判断依据。
 - [ ] 不看解析，能说出「@RestController 与 @Controller 的差别是？」的判断依据。
 - [ ] 不看解析，能说出「JPA 中 N+1 查询问题的常见解法是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：「实战：Spring Boot REST API」示例中，下面这行代码…」的判断依据。
+- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -700,8 +613,6 @@ ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]
 | 下一步验证动作 |  |
 
 ## 术语速查
-
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
 | 术语 | 本课语境 |
 | --- | --- |
@@ -718,30 +629,33 @@ ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]
 | `@PathVariable` | \| `@PathVariable` / `@RequestParam` \| 路径变量 / 查询参数 \| |
 | `@RequestParam` | \| `@PathVariable` / `@RequestParam` \| 路径变量 / 查询参数 \| |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：围绕“实战：Spring Boot REST API”中的 实战、Spring Boot、REST，下列哪两项是本课强调的实践判断？
 
-### 追问 1：在分层架构中，Controller 的职责是？
+- **判断依据**：正确答案包括「验证 Spring Boot 时要固定版本并覆盖边界输入，结论才可复现」、「学习 实战 时要同时说明输入、输出和失败路径，不能只看正常流程」。正确答案是验证 Spring Boot 时要固定版本并覆盖边界输入。在本课主题里，判断 Spring Boot 时要固定版本与边界输入，所以“验证 Spring Boot 时要固定版本并覆盖边界输入，结论才可复现”才可复现。判断这类题时，要把验证 Spring Boot 时要固定版本并覆盖边界输入，结论才可复现。
 
-**参考回答**：正确答案是「处理 HTTP 请求与响应」，本课在「项目结构」中说明：分层职责：controller 处理 HTTP、service 承载业务、repository 访问数据、model 表达数据结构。Controller 只做协议转换，业务逻辑放 Service，数据访问放 Repository。本课还在「本课小结」中说明：Spring Boot 的关键是分层 + 依赖注入 + 约定优于配置：controller 薄、service 厚、repository 只负责数据。
+### 考点 2：使用构造器注入的主要好处是？
 
-### 追问 2：使用构造器注入的主要好处是？
+- **判断依据**：本题应选「依赖显式且便于测试」。构造器注入让依赖不可变、显式，单元测试可直接传入 mock。解题的关键不是记住孤立术语，而是确认「依赖显式且便于测试」是否完整覆盖题干的输入、输出和失败路径，并排除「提升运行速度」、「避免继承」这类相邻概念。
 
-**参考回答**：正确答案是「依赖显式且便于测试」，本课在「本课小结」中说明：Spring Boot 的关键是分层 + 依赖注入 + 约定优于配置：controller 薄、service 厚、repository 只负责数据。构造器注入让依赖不可变、显式，单元测试可直接传入 mock。本课还在「零基础详解·Java 项目实战骨架」中说明：一个可交付的 Java 服务要分层清晰、配置外置、能探活、能优雅关闭、有测试、能打包成镜像。
+### 考点 3：下面这段 Java 代码复现了“实战：Spring Boot REST API”中 实战、Spring Boot、REST 相关的一个常见故障，哪一项最准确地解释了问题？
 
-### 追问 3：@Valid 注解在 @RequestBody 上的作用是？
+- **判断依据**：符合题干条件的是「循环条件用了 <=，i == data.length 时抛出 ArrayIndexOutOfBoundsException」。符合题干条件的是循环条件用了 <=，i == data.length 时抛出 ArrayIndexOutOfBoundsException。结合实战、Spring Boot来看，符合题干条件的是循环条件用了 <=。在这个复现里，实战 的边界应改成 i < data.length。
 
-**参考回答**：校验不通过会抛 MethodArgumentNotValidException，由统一异常处理返回 400。其他选项：@Valid 触发 Bean Validation 校验请求体，与日志、返回值序列化、事务都无关。针对「@Valid 注解在 @RequestBody …」，本课在「上线前检查」中说明：统一异常处理（@RestControllerAdvice）返回一致的错误结构。本课还在「零基础详解·Java 项目实战骨架」中说明：启动时校验配置，而不是运行到一半才发现缺变量。
+### 考点 4：@RestController 与 @Controller 的差别是？
 
-### 追问 4：@RestController 与 @Controller 的差别是？
+- **判断依据**：结论应落在「@RestController 默认把返回值序列化为 JSON（相当于 @Controller + @ResponseBody）」。返回视图页面时用 @Controller，写 REST API 时用 @RestController 更省事。
 
-**参考回答**：正确答案是「@RestController 默认把返回值序列化为 JSON（相当于 @Controller + @ResponseBody）」，本课在「项目结构」中说明：分层职责：controller 处理 HTTP、service 承载业务、repository 访问数据、model 表达数据结构。返回视图页面时用 @Controller，写 REST API 时用 @RestController 更省事。本课还在「零基础详解·Java 项目实战骨架」中说明：要点：DTO 与 Entity 分开，不要让接口结构跟着表结构走。
+### 考点 5：JPA 中 N+1 查询问题的常见解法是？
 
-### 追问 5：JPA 中 N+1 查询问题的常见解法是？
+- **判断依据**：正确答案是「用 join fetch / @EntityGraph 一次性预加载关联数据」。N+1 的典型现象是 1 条主查询 + N 条关联查询，用批量抓取或联表抓取可以解决。判断这类题时，要把「用 join fetch / @EntityGraph 一次性预加载关联…」放回题干限定的对象、输入和边界，「把实体改成 record」、「关闭事务」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「用 join fetch / @EntityGraph 一次性预加载关联数据」，本课在「数据模型与校验」中说明：record 天生适合做 API 的请求/响应模型。N+1 的典型现象是 1 条主查询 + N 条关联查询，用批量抓取或联表抓取可以解决。本课还在「零基础详解·Java 项目实战骨架」中说明：一个可交付的 Java 服务要分层清晰、配置外置、能探活、能优雅关闭、有测试、能打包成镜像。
+### 考点 6：补全代码：「实战：Spring Boot REST API」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+
+`@____(prefix = "app.retry")`
+
+- **判断依据**：空格应填写「ConfigurationProperties」、「configurationproperties」。解题的关键不是记住孤立术语，而是确认「ConfigurationProperties 或 configurat…」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
 
 ## English Overview
 
@@ -749,11 +663,9 @@ ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]
 
 **Summary:** Layering, DI, validation and integration tests.
 
-**Category:** Java  
-**Level:** 高级  
+**Category:** Java
+**Level:** 高级
 **Key terms:** 实战, Spring Boot, REST, 依赖注入, 测试
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -765,7 +677,7 @@ ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]
 - 相关主题：实战、Spring Boot、REST、依赖注入、测试
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-## 项目专属规格：实战：Spring Boot REST API
+## 项目专属规格：本课主题
 
 ### 核心场景
 
@@ -794,7 +706,6 @@ ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]
 3. 失败路径：依赖超时或不可用时能快速失败、重试或降级。
 4. 幂等路径：同一请求执行两次不会产生重复副作用。
 5. 回滚路径：回滚后数据一致，且能说明恢复时间和影响范围。
-
 
 ## 项目交付物
 
@@ -841,7 +752,6 @@ README.md
 
 > 项目验收围绕「实战、Spring Boot、REST」：至少完成一次正常路径、一次边界输入、一次失败恢复和一次幂等检查。
 
-
 ## Full English Study Guide
 
 ### Overview
@@ -851,60 +761,23 @@ README.md
 ### Learning Outcomes
 
 - Explain what **Project: Spring Boot API** solves and when it should be used.
-- Identify inputs, outputs, state and failure boundaries.
-- Build a minimal reproducible example and observe the real result.
-- Test normal, boundary and failure paths.
-- Measure performance, resource cost or security impact before optimizing.
-- Document the decision, rollback path and remaining uncertainty.
 
 ### Core Mental Model
 
-1. **Problem first:** define the exact problem before choosing a tool or pattern.
-2. **Smallest example:** reduce the system to one input and one observable output.
-3. **State and flow:** trace how data, control or responsibility moves through the system.
-4. **Boundaries:** identify invalid input, resource limits, timeouts and permission edges.
-5. **Evidence:** use tests, logs, metrics or reproductions instead of intuition.
-6. **Trade-offs:** compare correctness, latency, cost, complexity and operability.
-
 ### Step-by-step Study Plan
-
-1. Read the Chinese lesson once and write down the main problem in one sentence.
-2. Run the smallest example and save the exact command and output.
-3. Change only one input or parameter and predict the result before running it.
-4. Introduce one failure and record how the system detects, reports and recovers.
-5. Write one test or checklist item for the normal, boundary and failure paths.
-6. Complete the quiz and explain every wrong answer in your own words.
 
 ### Practice Tasks
 
-- Rebuild the minimal example from an empty directory.
-- Add one boundary test and one failure test.
-- Produce a short report containing the baseline, change, result and rollback.
-
 ### Common Failure Modes
-
-- Treating a happy-path demo as production readiness.
-- Skipping boundary values and invalid inputs.
-- Optimizing before establishing a measurable baseline.
-- Hiding errors, permissions or resource limits.
 
 ### Self-check Questions
 
-1. What is the smallest observable result that proves this lesson works?
-2. What input or state is most likely to break it?
-3. Which metric or test would reveal a regression?
 4. What is the rollback path?
-5. What is the cost of using this approach at 10x scale?
-6. Which adjacent topic is most often confused with this one?
 
 ### Glossary
 
 - Topic: **Project: Spring Boot API**
 - Related terms: 实战, Spring Boot, REST, 依赖注入
-- Primary evidence: command output, tests, logs, metrics or reproductions
-
-> This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
-
 
 ## Bilingual Section Outline
 
@@ -921,21 +794,18 @@ README.md
 | 本课小结 | Summary |
 | Spring Boot 注解速查 | Spring Boot 注解速查 |
 
-> 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
-
 
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [Java SE API](https://docs.oracle.com/en/java/javase/) | 语言、标准库与 JVM |
-| [dev.java](https://dev.java/learn/) | 现代 Java 官方教程 |
+| [Gradle 文档](https://docs.gradle.org/current/userguide/userguide.html) | 构建脚本与依赖管理 |
+| [JUnit 用户指南](https://junit.org/junit5/docs/current/user-guide/) | 自动化测试与断言 |
+| [dev.java 学习](https://dev.java/learn/) | 现代 Java 官方教程 |
 
-> 本课主题：分层结构、依赖注入、校验与集成测试。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+> 「实战：Spring Boot REST API」的链接用于离线阅读后的延伸核对；App 不会自动联网。

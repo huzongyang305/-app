@@ -1,0 +1,18 @@
+{
+  "generated_at": "2026-10-06T12:03:14.344945Z",
+  "lesson_count": 542,
+  "question_count": 3086,
+  "error_count": 0,
+  "warning_count": 0,
+  "explanations_over_title_budget": 0,
+  "explanations_with_meta_markers": 0,
+  "markdown_over_title_budget": 0,
+  "language_mismatches": 0,
+  "repeated_explanation_sentence_classes": 0,
+  "repeated_markdown_paragraph_classes": 0,
+  "duplicate_reference_sets": 0,
+  "issues": [],
+  "top_repeated_explanation_sentences": [],
+  "top_repeated_markdown_paragraphs": [],
+  "duplicate_reference_set_details": []
+}

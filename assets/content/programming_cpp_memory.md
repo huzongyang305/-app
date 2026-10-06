@@ -8,7 +8,7 @@
 
 ## 学习目标
 
-- 能用自己的话解释「内存管理与智能指针」解决了什么问题，而不是只背术语。
+- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
 - 能说清 「内存」、「RAII」、「unique_ptr」、「shared_ptr」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「C++」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -21,7 +21,6 @@
 - 本课阶段：进阶。建议先掌握同一分类的基础课程，并能独立运行正文中的最小示例。
 - 开始前先复习：内存、RAII、unique_ptr。
 - 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
-
 
 ## 栈与堆
 
@@ -106,7 +105,6 @@ valgrind --leak-check=full ./main                      # Linux
 ## 本课小结
 现代 C++ 的原则是：**能用栈和智能指针就不用裸 new/delete**，让 RAII 负责释放，把内存问题交给类型系统。
 
-
 ## 智能指针选型速查
 
 | 指针 | 所有权 | 拷贝 | 典型用途 | 注意点 |
@@ -164,7 +162,6 @@ std::shared_ptr<Widget> shared2 = std::move(moved); // unique -> shared 也可
 - [ ] 知道 `shared_ptr` 循环引用要用 `weak_ptr` 打破。
 - [ ] 记得 `std::move` 之后源对象只能重新赋值。
 - [ ] 调试内存问题时知道用 ASan 或 Valgrind。
-
 
 ## 零基础详解：栈、堆与 RAII
 
@@ -319,7 +316,6 @@ int main() {
 
 ## 动手练习
 
-
 > 本课练习重点：围绕「内存、RAII、unique_ptr」完成复述、实验和交付，每个结果都要能被别人检查。
 
 先开启警告编译最小程序，再验证内存与边界，最后用 Sanitizer 跑一遍。
@@ -328,7 +324,7 @@ int main() {
 
 合上教程，用 3～5 句话回答：
 
-1. 「内存管理与智能指针」解决了什么问题？
+1. 本课主题解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「RAII」是什么关系？
 
@@ -356,11 +352,7 @@ int main() {
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-
-
 ## 可运行练习
-
-下面 3 个任务围绕“内存管理与智能指针”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
 
 ### 任务 1：先跑通，再解释
 
@@ -373,75 +365,44 @@ void demo() {
 }
 ```
 
-**预期输出**：运行后会输出与“内存管理与智能指针”相关的关键结果；请重点核对输出行数、最后一个数值和异常提示。
-
-**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
-
 ### 任务 2：只改一个条件
-
-复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
-
-**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
 
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
 
-**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
-
-
 ## 故障现场
 
-这一节把“内存管理与智能指针”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 内存 常规用例通过，但边界用例失败
 
-### 现场 1：“内存管理与智能指针”的 内存 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 内存 常规用例通过，但边界用例失败”。
 
-**症状**：在“内存管理与智能指针”的练习或生产场景里出现““内存管理与智能指针”的 内存 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““内存管理与智能指针”的 内存 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 内存 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“内存 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“内存管理与智能指针”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 内存 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““内存管理与智能指针”的 内存 常规用例通过，但边界用例失败”写成一条自动化用例，并在“内存管理与智能指针”的验收清单里保留对应检查项。
+### 现场 2：本课的 RAII 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 RAII 结果在两次运行之间不一致”。
 
-### 现场 2：“内存管理与智能指针”的 RAII 结果在两次运行之间不一致
-
-**症状**：在“内存管理与智能指针”的练习或生产场景里出现““内存管理与智能指针”的 RAII 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““内存管理与智能指针”的 RAII 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 RAII 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“RAII 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“内存管理与智能指针”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+**预防**：把“本课的 RAII 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““内存管理与智能指针”的 RAII 结果在两次运行之间不一致”写成一条自动化用例，并在“内存管理与智能指针”的验收清单里保留对应检查项。
+### 现场 3：本课的验证只在开发机通过
 
-
-### 现场 3：“内存管理与智能指针”的验证只在开发机通过
-
-**症状**：在“内存管理与智能指针”的练习或生产场景里出现““内存管理与智能指针”的验证只在开发机通过”。
-
-**复现**：准备一组最小输入，只保留触发““内存管理与智能指针”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+**症状**：在本课的练习或生产场景里出现“本课的验证只在开发机通过”。
 
 **定位**：围绕“环境版本、配置和输入规模与目标环境不同，内存 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：把“内存管理与智能指针”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
-
-**预防**：把““内存管理与智能指针”的验证只在开发机通过”写成一条自动化用例，并在“内存管理与智能指针”的验收清单里保留对应检查项。
-
-
-
 ## 版本与时效
 
-这一节记录“内存管理与智能指针”涉及的版本基线与升级检查点，避免把某个版本的默认行为当成永久结论。
-
 - C++23 已在主流工具链落地，C++26 进入定稿阶段
-- 模块、协程、ranges、std::expected 与 constexpr 能力持续增强
 - 升级前先统一编译器与标准库版本，再逐模块打开新标准
-- 编译器支持：https://en.cppreference.com/w/cpp/compiler_support
 
 ### 升级检查清单
 
@@ -449,53 +410,6 @@ void demo() {
 - 只改一个版本变量，记录编译、测试、性能与产物体积的变化。
 - 重点回归默认值、弃用警告、序列化格式、并发语义和错误信息。
 - 升级完成后更新本课的“最后复核 / 下次复核”日期与版本说明。
-
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 5 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：RAII 的核心思想是？
-
-- **正确判断**：把资源生命周期绑定到对象生命周期
-- **判断依据**：正确答案是「把资源生命周期绑定到对象生命周期」，本课在「RAII：C++ 的资源管理思想」中说明：资源获取即初始化：把资源的生命周期绑定到对象生命周期上，析构函数自动释放。RAII 让资源释放与对象析构绑定，异常安全且不会忘记释放。本课还在「零基础详解：栈、堆与 RAII」中说明：RAII 是 C++ 管理资源的核心思想：把资源的生命周期绑在对象上。本课还在「本课小结」中说明：现代 C++ 的原则是：能用栈和智能指针就不用裸 new/delete，让 RAII 负责释放，把内存问题交给类型系统。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 2：以下哪组做法有助于避免内存泄漏？
-
-- **正确判断**：使用智能指针并避免循环引用
-- **判断依据**：正确答案是「使用智能指针并避免循环引用」，本课在「本课小结」中说明：现代 C++ 的原则是：能用栈和智能指针就不用裸 new/delete，让 RAII 负责释放，把内存问题交给类型系统。智能指针通过 RAII 在对象离开作用域时自动释放资源，配合 weakptr 可以打破循环引用。本课还在「rule of zero / three / five」中说明：rule of zero：不需要手动管理资源时，不写析构、拷贝、移动函数。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 3：shared_ptr 相互引用形成环会导致？
-
-- **正确判断**：引用计数永不归零，内存泄漏
-- **判断依据**：正确答案是「引用计数永不归零，内存泄漏」，本课在「零基础详解：栈、堆与 RAII」中说明：程序的内存分成几块区域，最常打交道的是栈（自动管理、速度快、空间小）和堆（手动申请、空间大、需要自己管）。环中的对象互相持有 sharedptr，计数无法归零。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 4：new/delete 与 malloc/free 的关键区别是？
-
-- **正确判断**：new 会调用构造函数并返回正确类型
-- **判断依据**：正确答案是「new 会调用构造函数并返回正确类型」，本课在「RAII：C++ 的资源管理思想」中说明：资源获取即初始化：把资源的生命周期绑定到对象生命周期上，析构函数自动释放。混用 new 与 free（或 malloc 与 delete）属于未定义行为。本课还在「栈与堆」中说明：数组要用 new[] / delete[] 配对。本课还在「rule of zero / three / five」中说明：rule of three：需要自定义析构、拷贝构造、拷贝赋值中的一个，通常三个都要。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 5：下面代码用 new[] 分配数组，却可能产生未定义行为。应怎样修复？
-
-- **正确判断**：使用 delete[] p;
-- **判断依据**：正确答案是「使用 delete[] p;」，本课在「栈与堆」中说明：数组要用 new[] / delete[] 配对。new[] 分配的是数组对象，必须用 delete[] 与它配对。本课还在「rule of zero / three / five」中说明：rule of zero：不需要手动管理资源时，不写析构、拷贝、移动函数。
-- **迁移检查**：如果不修复这一处，程序会在哪一步失败？写出第一条错误信息。
-
-### 补充考点 1：关于「内存管理与智能指针」，下列哪些说法是正确的？（多选）
-
-- **正确判断**：使用智能指针并避免循环引用；把资源生命周期绑定到对象生命周期
-- **判断依据**：正确答案是「使用智能指针并避免循环引用；把资源生命周期绑定到对象生命周期」。本课的两个判断点可以互相印证：正确答案是「把资源生命周期绑定到对象生命周期」，本课在「RAII·C++ 的资源管理思想」中说明：资源获取即初始化：把资源的生命周期绑定到对象生命周期上，析构函数自动释放。RAII…；栈与堆、RAII、uniqueptr/sharedptr/weakptr 与内存问题排查。。在「内存管理与智能指针」中，多选时不能只凭一个关键词选答案，要逐项核对题干限定的对象和边界。
-
-### 补充自测（1 题）
-
-1. 按“内存管理与智能指针”中 内存、RAII、unique_ptr 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
 
 ## 本课复习清单
 
@@ -517,8 +431,6 @@ void demo() {
 
 ## 术语速查
 
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
-
 | 术语 | 本课语境 |
 | --- | --- |
 | `new[]` | 数组要用 `new[]` / `delete[]` 配对： |
@@ -534,30 +446,31 @@ void demo() {
 | `std::move` | \| `std::unique_ptr<T>` \| 独占 \| 禁止，只能 `std::move` \| 工厂返回值、类成员独占资源 \| 零额外开销，默认首选 \| |
 | `std::shared_ptr<T>` | \| `std::shared_ptr<T>` \| 共享（引用计数） \| 允许 \| 多方共同持有、异步回调 \| 有计数开销，小心循环引用 \| |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：RAII 的核心思想是？
 
-### 追问 1：RAII 的核心思想是？
+- **判断依据**：正确答案是「把资源生命周期绑定到对象生命周期」。RAII 让资源释放与对象析构绑定，异常安全且不会忘记释放。判断这类题时，要把「把资源生命周期绑定到对象生命周期」放回题干限定的对象、输入和边界，「手动 new/delete」、「使用垃圾回收」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「把资源生命周期绑定到对象生命周期」，本课在「RAII·C++ 的资源管理思想」中说明：资源获取即初始化：把资源的生命周期绑定到对象生命周期上，析构函数自动释放。RAII 让资源释放与对象析构绑定，异常安全且不会忘记释放。本课还在「零基础详解·栈、堆与 RAII」中说明：RAII 是 C++ 管理资源的核心思想：把资源的生命周期绑在对象上。本课还在「本课小结」中说明：现代 C++ 的原则是：能用栈和智能指针就不用裸 new/delete，让 RAII 负责释放，把内存问题交给类型系统。
+### 考点 2：以下哪组做法有助于避免内存泄漏？
 
-### 追问 2：以下哪组做法有助于避免内存泄漏？
+- **判断依据**：本题应选「使用智能指针并避免循环引用」。智能指针通过 RAII 在对象离开作用域时自动释放资源，配合 weakptr 可以打破循环引用。解题的关键不是记住孤立术语，而是确认「使用智能指针并避免循环引用」是否完整覆盖题干的输入、输出和失败路径，并排除「全部改用裸指针手工释放」、「只在进程退出时统一释放」这类相邻概念。
 
-**参考回答**：正确答案是「使用智能指针并避免循环引用」，本课在「本课小结」中说明：现代 C++ 的原则是：能用栈和智能指针就不用裸 new/delete，让 RAII 负责释放，把内存问题交给类型系统。智能指针通过 RAII 在对象离开作用域时自动释放资源，配合 weakptr 可以打破循环引用。本课还在「rule of zero / three / five」中说明：rule of zero：不需要手动管理资源时，不写析构、拷贝、移动函数。
+### 考点 3：按“内存管理与智能指针”中 内存、RAII、unique_ptr 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
 
-### 追问 3：shared_ptr 相互引用形成环会导致？
+- **判断依据**：正确的执行顺序是「先明确 内存 的输入、输出与约束」 → 「写出最小示例并核对 RAII 的基线结果」 → 「只改一个变量，记录边界与失败路径的变化」 → 「固定版本与证据，把本课的结论写成可复现记录」。在本课的练习里，顺序应当是：先明确 内存 的输入、输出与约束 → 写出最小示例并核对 RAII 的基线结果 → 只改一个变量，记录边界与失败路径的变化 → 固定版本与证据，把本课的结论写成可复现记录。这个顺序把 内存 的输入、输出和约束放在最前面，在本课主题里避免概念没对齐就开始调参。第二步用 RAII 建立可核对的基线，在本课主题里第三步才允许改变一个变量并观察失败路径。
 
-**参考回答**：正确答案是「引用计数永不归零，内存泄漏」，本课在「零基础详解·栈、堆与 RAII」中说明：程序的内存分成几块区域，最常打交道的是栈（自动管理、速度快、空间小）和堆（手动申请、空间大、需要自己管）。环中的对象互相持有 sharedptr，计数无法归零。
+### 考点 4：new/delete 与 malloc/free 的关键区别是？
 
-### 追问 4：new/delete 与 malloc/free 的关键区别是？
+- **判断依据**：结论应落在「new 会调用构造函数并返回正确类型」。混用 new 与 free（或 malloc 与 delete）属于未定义行为。这道题要求区分概念与边界，「new 会调用构造函数并返回正确类型」只有在题干给出的前提下才成立，而「malloc 会自动调用析构函数」、「new 分配在栈上」缺少同一组条件。
 
-**参考回答**：正确答案是「new 会调用构造函数并返回正确类型」，本课在「RAII·C++ 的资源管理思想」中说明：资源获取即初始化：把资源的生命周期绑定到对象生命周期上，析构函数自动释放。混用 new 与 free（或 malloc 与 delete）属于未定义行为。本课还在「栈与堆」中说明：数组要用 new[] / delete[] 配对。本课还在「rule of zero / three / five」中说明：rule of three：需要自定义析构、拷贝构造、拷贝赋值中的一个，通常三个都要。
+### 考点 5：下面代码用 new[] 分配数组，却可能产生未定义行为。应怎样修复？
 
-### 追问 5：下面代码用 new[] 分配数组，却可能产生未定义行为。应怎样修复？
+- **判断依据**：正确答案是「使用 delete[] p;」。正确答案是使用 delete[] p。new[] 分配的是数组对象，必须用 delete[] 与它配对。判断这类题时，要把使用 delete[] p。判断这类题时，要把「使用 delete[] p」放回题干限定的对象、输入和边界，「使用 free(p);」、「使用 delete p;」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「使用 delete[] p;」，本课在「栈与堆」中说明：数组要用 new[] / delete[] 配对。new[] 分配的是数组对象，必须用 delete[] 与它配对。本课还在「rule of zero / three / five」中说明：rule of zero：不需要手动管理资源时，不写析构、拷贝、移动函数。
+### 考点 6：关于「内存管理与智能指针」，下列哪些说法是正确的？（多选）
+
+- **判断依据**：正确答案包括「使用智能指针并避免循环引用」、「把资源生命周期绑定到对象生命周期」。正确答案是使用智能指针并避免循环引用。栈与堆、RAII、uniqueptr/sharedptr/weakptr 与内存问题排查。解题的关键不是记住孤立术语，而是确认使用智能指针并避免循环引用。
 
 ## English Overview
 
@@ -565,11 +478,9 @@ void demo() {
 
 **Summary:** Stack vs heap, RAII, smart pointers and memory bugs.
 
-**Category:** C++  
-**Level:** 进阶  
+**Category:** C++
+**Level:** 进阶
 **Key terms:** 内存, RAII, unique_ptr, shared_ptr, 内存泄漏
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -581,7 +492,6 @@ void demo() {
 - 相关主题：内存、RAII、unique_ptr、shared_ptr、内存泄漏
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-
 ## Full English Study Guide
 
 ### Overview
@@ -591,60 +501,23 @@ void demo() {
 ### Learning Outcomes
 
 - Explain what **Memory & Smart Pointers** solves and when it should be used.
-- Identify inputs, outputs, state and failure boundaries.
-- Build a minimal reproducible example and observe the real result.
-- Test normal, boundary and failure paths.
-- Measure performance, resource cost or security impact before optimizing.
-- Document the decision, rollback path and remaining uncertainty.
 
 ### Core Mental Model
 
-1. **Problem first:** define the exact problem before choosing a tool or pattern.
-2. **Smallest example:** reduce the system to one input and one observable output.
-3. **State and flow:** trace how data, control or responsibility moves through the system.
-4. **Boundaries:** identify invalid input, resource limits, timeouts and permission edges.
-5. **Evidence:** use tests, logs, metrics or reproductions instead of intuition.
-6. **Trade-offs:** compare correctness, latency, cost, complexity and operability.
-
 ### Step-by-step Study Plan
-
-1. Read the Chinese lesson once and write down the main problem in one sentence.
-2. Run the smallest example and save the exact command and output.
-3. Change only one input or parameter and predict the result before running it.
-4. Introduce one failure and record how the system detects, reports and recovers.
-5. Write one test or checklist item for the normal, boundary and failure paths.
-6. Complete the quiz and explain every wrong answer in your own words.
 
 ### Practice Tasks
 
-- Rebuild the minimal example from an empty directory.
-- Add one boundary test and one failure test.
-- Produce a short report containing the baseline, change, result and rollback.
-
 ### Common Failure Modes
-
-- Treating a happy-path demo as production readiness.
-- Skipping boundary values and invalid inputs.
-- Optimizing before establishing a measurable baseline.
-- Hiding errors, permissions or resource limits.
 
 ### Self-check Questions
 
-1. What is the smallest observable result that proves this lesson works?
-2. What input or state is most likely to break it?
-3. Which metric or test would reveal a regression?
 4. What is the rollback path?
-5. What is the cost of using this approach at 10x scale?
-6. Which adjacent topic is most often confused with this one?
 
 ### Glossary
 
 - Topic: **Memory & Smart Pointers**
 - Related terms: 内存, RAII, unique_ptr, shared_ptr
-- Primary evidence: command output, tests, logs, metrics or reproductions
-
-> This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
-
 
 ## Bilingual Section Outline
 
@@ -661,21 +534,18 @@ void demo() {
 | 本课小结 | Summary |
 | 智能指针选型速查 | 智能指针选型速查 |
 
-> 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
-
 
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [C++ 标准库参考](https://en.cppreference.com/w/cpp) | 语言、标准库与并发 |
-| [ISO C++](https://isocpp.org/) | 标准动态、指南与最佳实践 |
+| [C++ 内存管理](https://en.cppreference.com/w/cpp/memory) | RAII、智能指针与所有权 |
+| [cppreference C++ 语言](https://en.cppreference.com/w/cpp/language) | C++ 语言规则与语义 |
+| [cppreference 标准库](https://en.cppreference.com/w/cpp/standard_library) | 标准库组件索引 |
 
-> 本课主题：栈与堆、RAII、unique_ptr/shared_ptr/weak_ptr 与内存问题排查。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+> 「内存管理与智能指针」的链接用于离线阅读后的延伸核对；App 不会自动联网。

@@ -8,7 +8,7 @@
 
 ## 学习目标
 
-- 能用自己的话解释「C# 与 .NET 平台」解决了什么问题，而不是只背术语。
+- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
 - 能说清 「C#」、「.NET」、「CLR」、「IL」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「C#」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -21,7 +21,6 @@
 - 本课阶段：基础。建议会读写简单代码或命令，并理解变量、输入输出等基本概念。
 - 开始前先复习：C#、.NET、CLR。
 - 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
-
 
 ## .NET 是什么
 
@@ -98,7 +97,6 @@ namespace Demo.Utils
 ## 本课小结
 C# 代码跑在 .NET 上：**编译成 IL、由 CLR 托管执行**。掌握 `dotnet` CLI 与 csproj 配置即可开始任何类型的项目。
 
-
 ## .NET 平台速查
 
 | 概念 | 说明 |
@@ -166,7 +164,6 @@ C# 代码跑在 .NET 上：**编译成 IL、由 CLR 托管执行**。掌握 `dot
 - [ ] 项目开启 `<Nullable>enable</Nullable>` 并处理告警。
 - [ ] 依赖用 NuGet 管理，版本集中在 csproj。
 - [ ] 部署使用 `dotnet publish` 的产物。
-
 
 ## 零基础详解：.NET、CLI 与第一个 C# 程序
 
@@ -286,7 +283,6 @@ Console.WriteLine($"{celsius:F1}℃ = {fahrenheit:F1}℉");
 
 ## 动手练习
 
-
 > 本课练习重点：围绕「C#、.NET、CLR」完成复述、实验和交付，每个结果都要能被别人检查。
 
 先建最小控制台程序，再补类型、异步和异常路径，最后用 dotnet test 验证。
@@ -295,7 +291,7 @@ Console.WriteLine($"{celsius:F1}℃ = {fahrenheit:F1}℉");
 
 合上教程，用 3～5 句话回答：
 
-1. 「C# 与 .NET 平台」解决了什么问题？
+1. 本课主题解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「.NET」是什么关系？
 
@@ -323,11 +319,7 @@ Console.WriteLine($"{celsius:F1}℃ = {fahrenheit:F1}℉");
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-
-
 ## 可运行练习
-
-下面 3 个任务围绕“C# 与 .NET 平台”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
 
 ### 任务 1：先跑通，再解释
 
@@ -339,70 +331,41 @@ dotnet publish -c Release -o out     # 发布产物
 dotnet add package Newtonsoft.Json   # 添加 NuGet 包
 ```
 
-**预期输出**：运行后会输出与“C# 与 .NET 平台”相关的关键结果；请重点核对输出行数、最后一个数值和异常提示。
-
-**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
-
 ### 任务 2：只改一个条件
-
-复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
-
-**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
 
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
 
-**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
-
-
 ## 故障现场
 
-这一节把“C# 与 .NET 平台”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 C# 常规用例通过，但边界用例失败
 
-### 现场 1：“C# 与 .NET 平台”的 C# 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 C# 常规用例通过，但边界用例失败”。
 
-**症状**：在“C# 与 .NET 平台”的练习或生产场景里出现““C# 与 .NET 平台”的 C# 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““C# 与 .NET 平台”的 C# 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 C# 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“C# 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“C# 与 .NET 平台”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 C# 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““C# 与 .NET 平台”的 C# 常规用例通过，但边界用例失败”写成一条自动化用例，并在“C# 与 .NET 平台”的验收清单里保留对应检查项。
+### 现场 2：本课的 .NET 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 .NET 结果在两次运行之间不一致”。
 
-### 现场 2：“C# 与 .NET 平台”的 .NET 结果在两次运行之间不一致
-
-**症状**：在“C# 与 .NET 平台”的练习或生产场景里出现““C# 与 .NET 平台”的 .NET 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““C# 与 .NET 平台”的 .NET 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 .NET 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“.NET 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“C# 与 .NET 平台”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+**预防**：把“本课的 .NET 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““C# 与 .NET 平台”的 .NET 结果在两次运行之间不一致”写成一条自动化用例，并在“C# 与 .NET 平台”的验收清单里保留对应检查项。
+### 现场 3：本课的验证只在开发机通过
 
-
-### 现场 3：“C# 与 .NET 平台”的验证只在开发机通过
-
-**症状**：在“C# 与 .NET 平台”的练习或生产场景里出现““C# 与 .NET 平台”的验证只在开发机通过”。
-
-**复现**：准备一组最小输入，只保留触发““C# 与 .NET 平台”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+**症状**：在本课的练习或生产场景里出现“本课的验证只在开发机通过”。
 
 **定位**：围绕“环境版本、配置和输入规模与目标环境不同，C# 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：把“C# 与 .NET 平台”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
-
-**预防**：把““C# 与 .NET 平台”的验证只在开发机通过”写成一条自动化用例，并在“C# 与 .NET 平台”的验收清单里保留对应检查项。
-
-
-
 ## 版本与时效
-
-这一节记录“C# 与 .NET 平台”涉及的版本基线与升级检查点，避免把某个版本的默认行为当成永久结论。
 
 - .NET 10 是当前 LTS 主线，C# 版本随 SDK 一起演进
 - 主构造函数、集合表达式、模式匹配与 AOT/裁剪是升级重点
@@ -416,55 +379,6 @@ dotnet add package Newtonsoft.Json   # 添加 NuGet 包
 - 重点回归默认值、弃用警告、序列化格式、并发语义和错误信息。
 - 升级完成后更新本课的“最后复核 / 下次复核”日期与版本说明。
 
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：C# 源码编译后生成什么？
-
-- **正确判断**：中间语言 IL
-- **判断依据**：正确答案是「中间语言 IL」，本课在「零基础详解：.NET、CLI 与第一个 C# 程序」中说明：C# 是运行在 .NET 平台上的编译型语言：源码编译成中间语言（IL）。C# 编译成 IL，运行时由 CLR 通过 JIT 转成本机代码执行。本课还在「.NET 是什么」中说明：C# 运行在 .NET 平台之上：源码先编译成中间语言（IL），运行时由 CLR（公共语言运行时）通过 JIT 编译成本机代码，并负责垃圾回收与类型安全。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 2：dotnet run 的作用是？
-
-- **正确判断**：编译并运行当前项目
-- **判断依据**：正确答案是「编译并运行当前项目」，本课在「本课小结」中说明：掌握 dotnet CLI 与 csproj 配置即可开始任何类型的项目。dotnet run 会先构建再运行。本课还在「零基础详解：.NET、CLI 与第一个 C# 程序」中说明：知道 dotnet run、dotnet build、dotnet publish 的区别。本课还在「零基础详解：.NET、CLI 与第一个 C# 程序」中说明：再由运行时（CLR）在目标机器上即时编译并执行，兼顾性能与跨平台。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 3：在 csproj 中开启 <Nullable>enable</Nullable> 的好处是？
-
-- **正确判断**：编译期提示可能的空引用
-- **判断依据**：正确答案是「编译期提示可能的空引用」，本课在「项目文件」中说明：开启 Nullable 后编译器会检查可能的空引用，新项目建议默认打开。可空引用类型让编译器对可能为 null 的解引用给出警告，显著减少空指针异常。本课还在「.NET 是什么」中说明：C# 运行在 .NET 平台之上：源码先编译成中间语言（IL），运行时由 CLR（公共语言运行时）通过 JIT 编译成本机代码，并负责垃圾回收与类型安全。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 4：C# 中 using 指令与 using 语句的区别是？
-
-- **正确判断**：using 指令引入命名空间
-- **判断依据**：正确答案是「using 指令引入命名空间」，本课在「命名空间」中说明：命名空间用点号分层，通常与目录结构对应，用来避免类名冲突。using 语句会编译成 try/finally 调用 Dispose，是 C# 资源管理的标准写法。本课还在「零基础详解：.NET、CLI 与第一个 C# 程序」中说明：知道 dotnet run、dotnet build、dotnet publish 的区别。本课还在「第一个程序」中说明：也可以使用顶层语句，编译器会自动生成入口方法。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 5：.NET SDK 与运行时的区别是？
-
-- **正确判断**：SDK 包含编译器与 CLI 工具可以开发，运行时只能执行已编译程序
-- **判断依据**：正确答案是「SDK 包含编译器与 CLI 工具可以开发，运行时只能执行已编译程序」，本课在「零基础详解：.NET、CLI 与第一个 C# 程序」中说明：再由运行时（CLR）在目标机器上即时编译并执行，兼顾性能与跨平台。服务器部署可以只装 ASP.NET Core 运行时，开发机则装 SDK。本课还在「本课小结」中说明：掌握 dotnet CLI 与 csproj 配置即可开始任何类型的项目。本课还在「项目文件」中说明：开启 Nullable 后编译器会检查可能的空引用，新项目建议默认打开。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 6：补全代码：「C# 与 .NET 平台」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `Console.____($"{celsius:F1}℃ = {fahrenheit:F1}℉");`
-
-- **正确判断**：WriteLine / writeline
-- **判断依据**：正确答案是「WriteLine」，本课在「零基础详解：.NET、CLI 与第一个 C# 程序」中说明：顶层语句（直接写 Console.WriteLine）适合小脚本。本课还在「本课小结」中说明：C# 代码跑在 .NET 上：编译成 IL、由 CLR 托管执行。
-- **迁移检查**：如果填成相近的另一个函数或关键字，程序会在哪一步出错？
-
-### 补充自测（2 题）
-
-1. 围绕“C# 与 .NET 平台”中的 C#、.NET、CLR，下列哪两项是本课强调的实践判断？
-2. 下面这段 C# 代码复现了“C# 与 .NET 平台”中 C#、.NET、CLR 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
-
 ## 本课复习清单
 
 离开本课前，逐项确认：
@@ -474,7 +388,7 @@ dotnet add package Newtonsoft.Json   # 添加 NuGet 包
 - [ ] 不看解析，能说出「在 csproj 中开启 <Nullable>enable</Nullable>…」的判断依据。
 - [ ] 不看解析，能说出「C# 中 using 指令与 using 语句的区别是？」的判断依据。
 - [ ] 不看解析，能说出「.NET SDK 与运行时的区别是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：「C# 与 .NET 平台」示例中，下面这行代码缺少哪个关键字或函数名…」的判断依据。
+- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码缺少哪个关键字或函数名…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -485,8 +399,6 @@ dotnet add package Newtonsoft.Json   # 添加 NuGet 包
 | 下一步验证动作 |  |
 
 ## 术语速查
-
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
 | 术语 | 本课语境 |
 | --- | --- |
@@ -503,30 +415,33 @@ dotnet add package Newtonsoft.Json   # 添加 NuGet 包
 | `dotnet new sln -n App` | \| 新建解决方案 \| `dotnet new sln -n App` \| |
 | `dotnet sln add Api/Api.csproj` | \| 添加项目到解决方案 \| `dotnet sln add Api/Api.csproj` \| |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：下面这段 C# 代码复现了“C# 与 .NET 平台”中 C#、.NET、CLR 相关的一个常见故障，哪一项最准确地解释了问题？
 
-### 追问 1：C# 源码编译后生成什么？
+- **判断依据**：正确答案是「foreach 期间修改集合会抛出 InvalidOperationException，应遍历副本或使用 RemoveAll」。正确答案是foreach 期间修改集合会抛出 InvalidOperationException，应遍历副本或使用 RemoveAll（csharpbasics 第 1 题）。在这个复现里，C# 的修改与遍历发生了冲突。在这个复现里，要让 .NET 的结果稳定，可以遍历 items.ToList() 副本，或使用 items.RemoveAll(item => item % 2 == 0)。
 
-**参考回答**：正确答案是「中间语言 IL」，本课在「零基础详解·.NET、CLI 与第一个 C# 程序」中说明：C# 是运行在 .NET 平台上的编译型语言：源码编译成中间语言（IL）。C# 编译成 IL，运行时由 CLR 通过 JIT 转成本机代码执行。本课还在「.NET 是什么」中说明：C# 运行在 .NET 平台之上：源码先编译成中间语言（IL），运行时由 CLR（公共语言运行时）通过 JIT 编译成本机代码，并负责垃圾回收与类型安全。
+### 考点 2：dotnet run 的作用是？
 
-### 追问 2：dotnet run 的作用是？
+- **判断依据**：dotnet run 会先构建再运行。围绕 dotnet run 的作用是。作答时，先用C#建立输入与输出的基线，再把编译并运行当前项目代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「编译并运行当前项目」是否完整覆盖题干的输入、输出和失败路径，并排除「只还原依赖」、「启动数据库」这类相邻概念。
 
-**参考回答**：正确答案是「编译并运行当前项目」，本课在「本课小结」中说明：掌握 dotnet CLI 与 csproj 配置即可开始任何类型的项目。dotnet run 会先构建再运行。本课还在「零基础详解·.NET、CLI 与第一个 C# 程序」中说明：知道 dotnet run、dotnet build、dotnet publish 的区别。本课还在「零基础详解·.NET、CLI 与第一个 C# 程序」中说明：再由运行时（CLR）在目标机器上即时编译并执行，兼顾性能与跨平台。
+### 考点 3：围绕“C# 与 .NET 平台”中的 C#、.NET、CLR，下列哪两项是本课强调的实践判断？
 
-### 追问 3：在 csproj 中开启 <Nullable>enable</Nullable> 的好处是？
+- **判断依据**：正确答案包括「学习 C# 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 .NET 时要固定版本并覆盖边界输入，结论才可复现」。符合题干条件的是学习 C# 时要同时说明输入、输出和失败路径。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 C# 时必须同时交代输入、输出和失败路径，这使“学习 C# 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 .NET 时要固定版本与边界输入，所以“验证 .NET 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-**参考回答**：正确答案是「编译期提示可能的空引用」，本课在「项目文件」中说明：开启 Nullable 后编译器会检查可能的空引用，新项目建议默认打开。可空引用类型让编译器对可能为 null 的解引用给出警告，显著减少空指针异常。本课还在「.NET 是什么」中说明：C# 运行在 .NET 平台之上：源码先编译成中间语言（IL），运行时由 CLR（公共语言运行时）通过 JIT 编译成本机代码，并负责垃圾回收与类型安全。
+### 考点 4：C# 中 using 指令与 using 语句的区别是？
 
-### 追问 4：C# 中 using 指令与 using 语句的区别是？
+- **判断依据**：结论应落在「using 指令引入命名空间」。using 语句会编译成 try/finally 调用 Dispose，是 C# 资源管理的标准写法。这道题要求区分概念与边界，「using 指令引入命名空间」只有在题干给出的前提下才成立，而「using 语句只能用于文件 IO」、「两者完全一样」缺少同一组条件。
 
-**参考回答**：正确答案是「using 指令引入命名空间」，本课在「命名空间」中说明：命名空间用点号分层，通常与目录结构对应，用来避免类名冲突。using 语句会编译成 try/finally 调用 Dispose，是 C# 资源管理的标准写法。本课还在「零基础详解·.NET、CLI 与第一个 C# 程序」中说明：知道 dotnet run、dotnet build、dotnet publish 的区别。本课还在「第一个程序」中说明：也可以使用顶层语句，编译器会自动生成入口方法。
+### 考点 5：.NET SDK 与运行时的区别是？
 
-### 追问 5：.NET SDK 与运行时的区别是？
+- **判断依据**：正确答案是「SDK 包含编译器与 CLI 工具可以开发，运行时只能执行已编译程序」。正确答案是SDK 包含编译器与 CLI 工具可以开发。服务器部署可以只装 ASP.NET Core 运行时，开发机则装 SDK。判断这类题时，要把「SDK 包含编译器与 CLI 工具可以开发，运行时只能执行已编译程序」放回题干限定的对象、输入和边界，「运行时包含编译器」、「两者都必须安装才能运行程序（混淆了相邻概念，不能回答本题…」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「SDK 包含编译器与 CLI 工具可以开发，运行时只能执行已编译程序」，本课在「零基础详解·.NET、CLI 与第一个 C# 程序」中说明：再由运行时（CLR）在目标机器上即时编译并执行，兼顾性能与跨平台。服务器部署可以只装 ASP.NET Core 运行时，开发机则装 SDK。本课还在「本课小结」中说明：掌握 dotnet CLI 与 csproj 配置即可开始任何类型的项目。本课还在「项目文件」中说明：开启 Nullable 后编译器会检查可能的空引用，新项目建议默认打开。
+### 考点 6：补全代码：「C# 与 .NET 平台」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+
+`Console.____($"{celsius:F1}℃ = {fahrenheit:F1}℉");`
+
+- **判断依据**：围绕 补全代码：本课主题示例中，下面这行代码缺少哪个关… 作答时，先用C#建立输入与输出的基线，再把WriteLine 或 writeline代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「WriteLine 或 writeline」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
 
 ## English Overview
 
@@ -534,11 +449,9 @@ dotnet add package Newtonsoft.Json   # 添加 NuGet 包
 
 **Summary:** IL/CLR, dotnet CLI, project files and namespaces.
 
-**Category:** C#  
-**Level:** 基础  
+**Category:** C#
+**Level:** 基础
 **Key terms:** C#, .NET, CLR, IL, dotnet, csproj
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -550,7 +463,6 @@ dotnet add package Newtonsoft.Json   # 添加 NuGet 包
 - 相关主题：C#、.NET、CLR、IL、dotnet、csproj
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-
 ## Full English Study Guide
 
 ### Overview
@@ -560,60 +472,23 @@ dotnet add package Newtonsoft.Json   # 添加 NuGet 包
 ### Learning Outcomes
 
 - Explain what **C# & .NET** solves and when it should be used.
-- Identify inputs, outputs, state and failure boundaries.
-- Build a minimal reproducible example and observe the real result.
-- Test normal, boundary and failure paths.
-- Measure performance, resource cost or security impact before optimizing.
-- Document the decision, rollback path and remaining uncertainty.
 
 ### Core Mental Model
 
-1. **Problem first:** define the exact problem before choosing a tool or pattern.
-2. **Smallest example:** reduce the system to one input and one observable output.
-3. **State and flow:** trace how data, control or responsibility moves through the system.
-4. **Boundaries:** identify invalid input, resource limits, timeouts and permission edges.
-5. **Evidence:** use tests, logs, metrics or reproductions instead of intuition.
-6. **Trade-offs:** compare correctness, latency, cost, complexity and operability.
-
 ### Step-by-step Study Plan
-
-1. Read the Chinese lesson once and write down the main problem in one sentence.
-2. Run the smallest example and save the exact command and output.
-3. Change only one input or parameter and predict the result before running it.
-4. Introduce one failure and record how the system detects, reports and recovers.
-5. Write one test or checklist item for the normal, boundary and failure paths.
-6. Complete the quiz and explain every wrong answer in your own words.
 
 ### Practice Tasks
 
-- Rebuild the minimal example from an empty directory.
-- Add one boundary test and one failure test.
-- Produce a short report containing the baseline, change, result and rollback.
-
 ### Common Failure Modes
-
-- Treating a happy-path demo as production readiness.
-- Skipping boundary values and invalid inputs.
-- Optimizing before establishing a measurable baseline.
-- Hiding errors, permissions or resource limits.
 
 ### Self-check Questions
 
-1. What is the smallest observable result that proves this lesson works?
-2. What input or state is most likely to break it?
-3. Which metric or test would reveal a regression?
 4. What is the rollback path?
-5. What is the cost of using this approach at 10x scale?
-6. Which adjacent topic is most often confused with this one?
 
 ### Glossary
 
 - Topic: **C# & .NET**
 - Related terms: C#, .NET, CLR, IL
-- Primary evidence: command output, tests, logs, metrics or reproductions
-
-> This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
-
 
 ## Bilingual Section Outline
 
@@ -630,21 +505,18 @@ dotnet add package Newtonsoft.Json   # 添加 NuGet 包
 | .NET 平台速查 | .NET 平台速查 |
 | dotnet CLI 速查 | dotnet CLI 速查 |
 
-> 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
-
 
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [C# 官方指南](https://learn.microsoft.com/dotnet/csharp/) | 语言、异步与模式匹配 |
-| [.NET 文档](https://learn.microsoft.com/dotnet/) | 运行时、GC 与发布 |
+| [dotnet CLI](https://learn.microsoft.com/dotnet/core/tools/) | 构建、运行与发布命令 |
+| [.NET 文档](https://learn.microsoft.com/dotnet/) | 运行时、库与工具链 |
+| [C# 指南](https://learn.microsoft.com/dotnet/csharp/) | 语言语法与类型系统 |
 
-> 本课主题：IL 与 CLR、dotnet CLI、项目文件与命名空间。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+> 「C# 与 .NET 平台」的链接用于离线阅读后的延伸核对；App 不会自动联网。

@@ -1,8 +1,8 @@
-# 实战：本地 RAG 客服 Agent
+# 本课主题
 
 ![本地 RAG 客服 Agent 的处理流程](images/diagram_rag_service.webp)
 
-![实战：本地 RAG 客服 Agent](images/remaining_project_rag_agent_service.webp)
+![本课主题](images/remaining_project_rag_agent_service.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：140 分钟
 
@@ -75,38 +75,13 @@
 
 ### 步骤 2：实现清洗、切分与元数据保留
 
-- 输入与产出：先写清本步依赖的配置、数据和最终产物，再开始编码。
-- 验证方法：用最小请求、最小数据集或单元测试证明本步结果正确。
-- 失败处理：记录错误类型、回滚动作和重试条件，避免把问题带到下一步。
-- 证据留存：保留命令、输出、日志或截图，方便评审与复盘。
-
 ### 步骤 3：建立可重复构建的向量索引
-
-- 输入与产出：先写清本步依赖的配置、数据和最终产物，再开始编码。
-- 验证方法：用最小请求、最小数据集或单元测试证明本步结果正确。
-- 失败处理：记录错误类型、回滚动作和重试条件，避免把问题带到下一步。
-- 证据留存：保留命令、输出、日志或截图，方便评审与复盘。
 
 ### 步骤 4：实现召回、重排和上下文预算控制
 
-- 输入与产出：先写清本步依赖的配置、数据和最终产物，再开始编码。
-- 验证方法：用最小请求、最小数据集或单元测试证明本步结果正确。
-- 失败处理：记录错误类型、回滚动作和重试条件，避免把问题带到下一步。
-- 证据留存：保留命令、输出、日志或截图，方便评审与复盘。
-
 ### 步骤 5：接入受控工具与引用格式化
 
-- 输入与产出：先写清本步依赖的配置、数据和最终产物，再开始编码。
-- 验证方法：用最小请求、最小数据集或单元测试证明本步结果正确。
-- 失败处理：记录错误类型、回滚动作和重试条件，避免把问题带到下一步。
-- 证据留存：保留命令、输出、日志或截图，方便评审与复盘。
-
 ### 步骤 6：运行离线评测并修复未命中与幻觉案例
-
-- 输入与产出：先写清本步依赖的配置、数据和最终产物，再开始编码。
-- 验证方法：用最小请求、最小数据集或单元测试证明本步结果正确。
-- 失败处理：记录错误类型、回滚动作和重试条件，避免把问题带到下一步。
-- 证据留存：保留命令、输出、日志或截图，方便评审与复盘。
 
 ## 关键代码
 
@@ -127,8 +102,6 @@ def answer_question(question: str, retriever, llm) -> dict:
 
 ## 验证命令与预期输出
 
-先在干净环境执行启动和测试命令，再把真实输出记录到项目 README 或实施记录中。
-
 ```text
 1. 安装依赖并启动项目
 2. 执行至少 3 条自动化测试，其中包含 1 条失败路径
@@ -136,8 +109,6 @@ def answer_question(question: str, retriever, llm) -> dict:
 4. 用非法输入验证错误响应
 5. 重复执行一次，确认没有重复写入或副作用
 ```
-
-预期输出必须包含：启动成功标志、测试通过数量、成功请求结果、错误状态码和重复执行的幂等结论。只写“运行正常”不算验收证据。
 
 ## 建议目录结构
 
@@ -149,8 +120,6 @@ src/
   infra/        数据库、HTTP、消息等适配器
 tests/          单元、集成与接口测试
 ```
-
-目录可以按语言习惯调整，但输入边界、业务规则和外部适配必须分层，不能全部堆在入口文件。
 
 ## 质量门禁
 
@@ -209,8 +178,6 @@ tests/          单元、集成与接口测试
 | 存储 | 记录数据增长与索引大小 | 导入 10 倍数据并观察查询 | 磁盘、连接或锁等待成为瓶颈 |
 | 恢复 | 记录故障恢复时间 | 停止数据库、注入延迟或重复请求 | 数据不一致、重复副作用、无法回滚 |
 
-至少完成一次故障演练：先写下预期行为，再注入故障，最后对比真实行为并修正监控或代码。没有演练的容错设计只能算假设。
-
 ## 实施记录与复盘
 
 每完成一步，记录以下内容：
@@ -256,10 +223,7 @@ tests/          单元、集成与接口测试
 - [ ] 有一份资源或性能基线，能说明瓶颈在哪里。
 - [ ] 能说清一个尚未解决的问题和下一步验证方法。
 
-
 ## 可运行练习
-
-下面 3 个任务围绕“实战：本地 RAG 客服 Agent”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
 
 ### 任务 1：先跑通，再解释
 
@@ -278,107 +242,39 @@ def answer_question(question: str, retriever, llm) -> dict:
     return {'answer': response, 'citations': [hit.source for hit in hits[:4]], 'grounded': True}
 ```
 
-**预期输出**：运行后会输出与“实战：本地 RAG 客服 Agent”相关的关键结果；请重点核对输出行数、最后一个数值和异常提示。
-
-**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
-
 ### 任务 2：只改一个条件
-
-复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
-
-**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
 
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
 
-**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
-
-
 ## 故障现场
 
-这一节把“实战：本地 RAG 客服 Agent”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 RAG 常规用例通过，但边界用例失败
 
-### 现场 1：“实战：本地 RAG 客服 Agent”的 RAG 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 RAG 常规用例通过，但边界用例失败”。
 
-**症状**：在“实战：本地 RAG 客服 Agent”的练习或生产场景里出现““实战：本地 RAG 客服 Agent”的 RAG 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““实战：本地 RAG 客服 Agent”的 RAG 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 RAG 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“RAG 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“实战：本地 RAG 客服 Agent”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 RAG 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““实战：本地 RAG 客服 Agent”的 RAG 常规用例通过，但边界用例失败”写成一条自动化用例，并在“实战：本地 RAG 客服 Agent”的验收清单里保留对应检查项。
+### 现场 2：本课的 Agent 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 Agent 结果在两次运行之间不一致”。
 
-### 现场 2：“实战：本地 RAG 客服 Agent”的 Agent 结果在两次运行之间不一致
-
-**症状**：在“实战：本地 RAG 客服 Agent”的练习或生产场景里出现““实战：本地 RAG 客服 Agent”的 Agent 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““实战：本地 RAG 客服 Agent”的 Agent 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 Agent 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“Agent 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“实战：本地 RAG 客服 Agent”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+**预防**：把“本课的 Agent 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““实战：本地 RAG 客服 Agent”的 Agent 结果在两次运行之间不一致”写成一条自动化用例，并在“实战：本地 RAG 客服 Agent”的验收清单里保留对应检查项。
+### 现场 3：本课的验证只在开发机通过
 
-
-### 现场 3：“实战：本地 RAG 客服 Agent”的验证只在开发机通过
-
-**症状**：在“实战：本地 RAG 客服 Agent”的练习或生产场景里出现““实战：本地 RAG 客服 Agent”的验证只在开发机通过”。
-
-**复现**：准备一组最小输入，只保留触发““实战：本地 RAG 客服 Agent”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+**症状**：在本课的练习或生产场景里出现“本课的验证只在开发机通过”。
 
 **定位**：围绕“环境版本、配置和输入规模与目标环境不同，RAG 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
-
-**修复**：把“实战：本地 RAG 客服 Agent”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
-
-**预防**：把““实战：本地 RAG 客服 Agent”的验证只在开发机通过”写成一条自动化用例，并在“实战：本地 RAG 客服 Agent”的验收清单里保留对应检查项。
-
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 5 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：RAG 客服 Agent 在生成答案前最关键的步骤是什么？
-
-- **正确判断**：先检索并筛选可引用的证据
-- **判断依据**：正确答案是「先检索并筛选可引用的证据」，本课在「功能范围」中说明：导入 Markdown/PDF 文本并保留来源元数据。RAG 的核心是先检索到与问题相关且能追溯来源的证据，再把有限上下文交给模型生成。本课还在「项目背景」中说明：系统必须先从本地知识库检索证据，再生成带来源的回答。本课还在「项目背景」中说明：当证据不足时明确拒答，遇到订单查询等实时数据时调用受控工具，而不是让模型编造。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 2：为什么生产级 RAG 通常要混合关键词检索与向量检索？
-
-- **正确判断**：兼顾语义相似与错误码
-- **判断依据**：正确答案是「兼顾语义相似与错误码」，本课在「项目背景」中说明：一句话摘要：构建可离线演示的知识库问答 Agent，覆盖切分、检索、引用、工具调用、评测与安全护栏。向量检索擅长语义相近但表达不同的内容，关键词检索则能稳定命中错误码、产品编号和专有名词。本课还在「项目背景」中说明：系统必须先从本地知识库检索证据，再生成带来源的回答。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 3：当知识库没有任何相关片段时，Agent 应该如何处理？
-
-- **正确判断**：明确说明证据不足并拒答
-- **判断依据**：正确答案是「明确说明证据不足并拒答」，本课在「项目背景」中说明：当证据不足时明确拒答，遇到订单查询等实时数据时调用受控工具，而不是让模型编造。无法获得可靠证据时，系统应把不确定性明确告诉用户，而不是通过模型常识补全看似合理的事实。本课还在「项目专属规格：实战：本地 RAG 客服 Agent」中说明：构建可离线演示的知识库问答 Agent，覆盖切分、检索、引用、工具调用、评测与安全护栏。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 4：为 Agent 工具设置白名单和参数校验的主要目的是什么？
-
-- **正确判断**：限制可执行操作并防止越权副作用
-- **判断依据**：正确答案是「限制可执行操作并防止越权副作用」，本课在「项目背景」中说明：一句话摘要：构建可离线演示的知识库问答 Agent，覆盖切分、检索、引用、工具调用、评测与安全护栏。模型可能生成错误参数或被提示注入诱导调用工具，因此权限不能依赖模型自觉。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 5：补全代码：「实战：本地 RAG 客服 Agent」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `hits = retriever.search(____, top_k=8)`
-
-- **正确判断**：question
-- **判断依据**：正确答案是「question」，本课在「项目专属规格：实战：本地 RAG 客服 Agent」中说明：构建可离线演示的知识库问答 Agent，覆盖切分、检索、引用、工具调用、评测与安全护栏。本课示例中还能看到 `hits = retriever.search(question, top_k=8)` 这样的用法，说明该关键字在本课代码中承担实际功能。
-- **迁移检查**：把答案换成另一种等价写法，是否仍然正确？说明依据。
-
-### 补充自测（2 题）
-
-1. 围绕“实战：本地 RAG 客服 Agent”中的 RAG、Agent、向量检索，下列哪两项是本课强调的实践判断？
-2. 下面这段 Python 代码复现了“实战：本地 RAG 客服 Agent”中 RAG、Agent、向量检索 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
 
 ## 本课复习清单
 
@@ -388,7 +284,7 @@ def answer_question(question: str, retriever, llm) -> dict:
 - [ ] 不看解析，能说出「为什么生产级 RAG 通常要混合关键词检索与向量检索？」的判断依据。
 - [ ] 不看解析，能说出「当知识库没有任何相关片段时，Agent 应该如何处理？」的判断依据。
 - [ ] 不看解析，能说出「为 Agent 工具设置白名单和参数校验的主要目的是什么？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：「实战：本地 RAG 客服 Agent」示例中，下面这行代码缺少哪个关…」的判断依据。
+- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码缺少哪个关…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -400,8 +296,6 @@ def answer_question(question: str, retriever, llm) -> dict:
 
 ## 术语速查
 
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
-
 | 术语 | 本课语境 |
 | --- | --- |
 | `RAG` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
@@ -410,30 +304,29 @@ def answer_question(question: str, retriever, llm) -> dict:
 | `引用` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
 | `评测` | 本课围绕该主题展开，结合正文与代码示例理解它的适用边界。 |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：围绕“实战：本地 RAG 客服 Agent”中的 RAG、Agent、向量检索，下列哪两项是本课强调的实践判断？
 
-### 追问 1：RAG 客服 Agent 在生成答案前最关键的步骤是什么？
+- **判断依据**：正确答案包括「学习 RAG 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 Agent 时要固定版本并覆盖边界输入，结论才可复现」。正确答案是学习 RAG 时要同时说明输入、输出和失败路径。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 RAG 时必须同时交代输入、输出和失败路径，这使“学习 RAG 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 Agent 时要固定版本与边界输入，所以“验证 Agent 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-**参考回答**：正确答案是「先检索并筛选可引用的证据」，本课在「功能范围」中说明：导入 Markdown/PDF 文本并保留来源元数据。RAG 的核心是先检索到与问题相关且能追溯来源的证据，再把有限上下文交给模型生成。本课还在「项目背景」中说明：系统必须先从本地知识库检索证据，再生成带来源的回答。本课还在「项目背景」中说明：当证据不足时明确拒答，遇到订单查询等实时数据时调用受控工具，而不是让模型编造。
+### 考点 2：下面这段 Python 代码复现了“实战：本地 RAG 客服 Agent”中 RAG、Agent、向量检索 相关的一个常见故障，哪一项最准确地解释了问题？
 
-### 追问 2：为什么生产级 RAG 通常要混合关键词检索与向量检索？
+- **判断依据**：结合RAG、Agent来看，本题应选「默认参数 bucket=[] 只在定义时创建一次，两次调用共享同一个列表」。本题应选默认参数 bucket=[] 只在定义时创建一次，两次调用共享同一个列表（projectragagentservice 第 2 题）。结合RAG、Agent来看，本题应选默认参数 bucket=[] 只在定义时创建一次。
 
-**参考回答**：正确答案是「兼顾语义相似与错误码」，本课在「项目背景」中说明：一句话摘要：构建可离线演示的知识库问答 Agent，覆盖切分、检索、引用、工具调用、评测与安全护栏。向量检索擅长语义相近但表达不同的内容，关键词检索则能稳定命中错误码、产品编号和专有名词。本课还在「项目背景」中说明：系统必须先从本地知识库检索证据，再生成带来源的回答。
+### 考点 3：当知识库没有任何相关片段时，Agent 应该如何处理？
 
-### 追问 3：当知识库没有任何相关片段时，Agent 应该如何处理？
+- **判断依据**：符合题干条件的是「明确说明证据不足并拒答」。无法获得可靠证据时，系统应把不确定性明确告诉用户，而不是通过模型常识补全看似合理的事实。正确的判断需要逐项核对定义、版本和适用条件（projectragagentservice 第 3 题）。正确的判断需要逐项核对定义、版本和适用条件（project_rag_agent_service 第 3 题）。
 
-**参考回答**：正确答案是「明确说明证据不足并拒答」，本课在「项目背景」中说明：当证据不足时明确拒答，遇到订单查询等实时数据时调用受控工具，而不是让模型编造。无法获得可靠证据时，系统应把不确定性明确告诉用户，而不是通过模型常识补全看似合理的事实。本课还在「项目专属规格·实战·本地 RAG 客服 Agent」中说明：构建可离线演示的知识库问答 Agent，覆盖切分、检索、引用、工具调用、评测与安全护栏。
+### 考点 4：为 Agent 工具设置白名单和参数校验的主要目的是什么？
 
-### 追问 4：为 Agent 工具设置白名单和参数校验的主要目的是什么？
+- **判断依据**：结论应落在「限制可执行操作并防止越权副作用」。模型可能生成错误参数或被提示注入诱导调用工具，因此权限不能依赖模型自觉。这道题要求区分概念与边界，「限制可执行操作并防止越权副作用」只有在题干给出的前提下才成立，而「减少提示词长度」、「提高模型参数量」缺少同一组条件。
 
-**参考回答**：正确答案是「限制可执行操作并防止越权副作用」，本课在「项目背景」中说明：一句话摘要：构建可离线演示的知识库问答 Agent，覆盖切分、检索、引用、工具调用、评测与安全护栏。模型可能生成错误参数或被提示注入诱导调用工具，因此权限不能依赖模型自觉。
+### 考点 5：补全代码：「实战：本地 RAG 客服 Agent」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
 
-### 追问 5：补全代码：「实战：本地 RAG 客服 Agent」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `hits = retriever.search(____, top_k=8)`
+`hits = retriever.search(____, top_k=8)`
 
-**参考回答**：正确答案是「question」，本课在「项目专属规格·实战·本地 RAG 客服 Agent」中说明：构建可离线演示的知识库问答 Agent，覆盖切分、检索、引用、工具调用、评测与安全护栏。本课示例中还能看到 `hits = retriever.search(question, top_k=8)` 这样的用法，说明该关键字在本课代码中承担实际功能。
+- **判断依据**：围绕 补全代码：本课主题示例中，下面这行代… 作答时，先用RAG建立输入与输出的基线，再把question代入边界条件核对，结论才能复现。判断这类题时，要把「question」放回题干限定的对象、输入和边界， 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
 ## English Overview
 
@@ -441,11 +334,9 @@ def answer_question(question: str, retriever, llm) -> dict:
 
 **Summary:** Build a citation-based RAG agent with retrieval, tools, evaluation and guardrails.
 
-**Category:** Project Practice  
-**Level:** 高级  
+**Category:** Project Practice
+**Level:** 高级
 **Key terms:** RAG, Agent, 向量检索, 引用, 评测
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -457,7 +348,7 @@ def answer_question(question: str, retriever, llm) -> dict:
 - 相关主题：RAG、Agent、向量检索、引用、评测
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-## 项目专属规格：实战：本地 RAG 客服 Agent
+## 项目专属规格：本课主题
 
 ### 核心场景
 
@@ -486,7 +377,6 @@ def answer_question(question: str, retriever, llm) -> dict:
 3. 失败路径：依赖超时或不可用时能快速失败、重试或降级。
 4. 幂等路径：同一请求执行两次不会产生重复副作用。
 5. 回滚路径：回滚后数据一致，且能说明恢复时间和影响范围。
-
 
 ## 项目交付物
 
@@ -538,17 +428,15 @@ README.md
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [The Twelve-Factor App](https://12factor.net/) | 可部署应用原则 |
-| [Google SRE Books](https://sre.google/books/) | 可观测性与发布工程 |
+| [OpenAI Cookbook](https://cookbook.openai.com/) | AI 应用与评估实践 |
+| [OWASP ASVS](https://owasp.org/www-project-application-security-verification-standard/) | 项目安全验收 |
+| [Docker 入门](https://docs.docker.com/get-started/) | 容器化与 Compose |
 
-> 本课主题：构建可离线演示的知识库问答 Agent，覆盖切分、检索、引用、工具调用、评测与安全护栏。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-
+> 「实战：本地 RAG 客服 Agent」的链接用于离线阅读后的延伸核对；App 不会自动联网。
 
 ## Full English Study Guide
 
@@ -559,56 +447,20 @@ README.md
 ### Learning Outcomes
 
 - Explain what **Project: Local RAG Support Agent** solves and when it should be used.
-- Identify inputs, outputs, state and failure boundaries.
-- Build a minimal reproducible example and observe the real result.
-- Test normal, boundary and failure paths.
-- Measure performance, resource cost or security impact before optimizing.
-- Document the decision, rollback path and remaining uncertainty.
 
 ### Core Mental Model
 
-1. **Problem first:** define the exact problem before choosing a tool or pattern.
-2. **Smallest example:** reduce the system to one input and one observable output.
-3. **State and flow:** trace how data, control or responsibility moves through the system.
-4. **Boundaries:** identify invalid input, resource limits, timeouts and permission edges.
-5. **Evidence:** use tests, logs, metrics or reproductions instead of intuition.
-6. **Trade-offs:** compare correctness, latency, cost, complexity and operability.
-
 ### Step-by-step Study Plan
-
-1. Read the Chinese lesson once and write down the main problem in one sentence.
-2. Run the smallest example and save the exact command and output.
-3. Change only one input or parameter and predict the result before running it.
-4. Introduce one failure and record how the system detects, reports and recovers.
-5. Write one test or checklist item for the normal, boundary and failure paths.
-6. Complete the quiz and explain every wrong answer in your own words.
 
 ### Practice Tasks
 
-- Rebuild the minimal example from an empty directory.
-- Add one boundary test and one failure test.
-- Produce a short report containing the baseline, change, result and rollback.
-
 ### Common Failure Modes
-
-- Treating a happy-path demo as production readiness.
-- Skipping boundary values and invalid inputs.
-- Optimizing before establishing a measurable baseline.
-- Hiding errors, permissions or resource limits.
 
 ### Self-check Questions
 
-1. What is the smallest observable result that proves this lesson works?
-2. What input or state is most likely to break it?
-3. Which metric or test would reveal a regression?
 4. What is the rollback path?
-5. What is the cost of using this approach at 10x scale?
-6. Which adjacent topic is most often confused with this one?
 
 ### Glossary
 
 - Topic: **Project: Local RAG Support Agent**
 - Related terms: RAG, Agent, 向量检索, 引用
-- Primary evidence: command output, tests, logs, metrics or reproductions
-
-> This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.

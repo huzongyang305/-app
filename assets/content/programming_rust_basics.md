@@ -8,7 +8,7 @@
 
 ## 学习目标
 
-- 能用自己的话解释「Rust 基础」解决了什么问题，而不是只背术语。
+- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
 - 能说清 「Rust」、「所有权」、「借用」、「生命周期」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「Rust」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -21,7 +21,6 @@
 - 本课阶段：基础。建议会读写简单代码或命令，并理解变量、输入输出等基本概念。
 - 开始前先复习：Rust、所有权、借用。
 - 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
-
 
 ## 语言定位
 
@@ -70,7 +69,6 @@ Rust 用类型系统保证线程安全：`Send` 表示可跨线程转移，`Sync
 
 ## 本课小结
 Rust 用**所有权 + 借用检查 + 类型系统**把内存与并发错误前移到编译期。前期学习成本高，换来的是运行期几乎零开销的安全保障。
-
 
 ## 基础语法速查
 
@@ -153,7 +151,6 @@ fn main() {
 - [ ] 错误处理用 `Result` 而不是异常。
 - [ ] 常用命令中 `cargo check` 用于快速反馈。
 - [ ] 提交前跑 `cargo fmt` 与 `cargo clippy`。
-
 
 ## 零基础详解：Cargo、变量与第一个 Rust 程序
 
@@ -279,7 +276,6 @@ fn main() {
 
 ## 动手练习
 
-
 > 本课练习重点：围绕「Rust、所有权、借用」完成复述、实验和交付，每个结果都要能被别人检查。
 
 先让 cargo check 通过，再补所有权、错误和并发边界，最后运行 clippy。
@@ -288,7 +284,7 @@ fn main() {
 
 合上教程，用 3～5 句话回答：
 
-1. 「Rust 基础」解决了什么问题？
+1. 本课主题解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「所有权」是什么关系？
 
@@ -316,11 +312,7 @@ fn main() {
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-
-
 ## 可运行练习
-
-下面 3 个任务围绕“Rust 基础”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
 
 ### 任务 1：先跑通，再解释
 
@@ -334,70 +326,41 @@ cargo clippy            # 官方 lint，强烈建议每次提交前跑
 cargo fmt               # 统一格式
 ```
 
-**预期输出**：运行后会输出与“Rust 基础”相关的关键结果；请重点核对输出行数、最后一个数值和异常提示。
-
-**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
-
 ### 任务 2：只改一个条件
-
-复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
-
-**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
 
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
 
-**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
-
-
 ## 故障现场
 
-这一节把“Rust 基础”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 Rust 常规用例通过，但边界用例失败
 
-### 现场 1：“Rust 基础”的 Rust 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 Rust 常规用例通过，但边界用例失败”。
 
-**症状**：在“Rust 基础”的练习或生产场景里出现““Rust 基础”的 Rust 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““Rust 基础”的 Rust 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 Rust 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“Rust 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“Rust 基础”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 Rust 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““Rust 基础”的 Rust 常规用例通过，但边界用例失败”写成一条自动化用例，并在“Rust 基础”的验收清单里保留对应检查项。
+### 现场 2：本课的 所有权 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 所有权 结果在两次运行之间不一致”。
 
-### 现场 2：“Rust 基础”的 所有权 结果在两次运行之间不一致
-
-**症状**：在“Rust 基础”的练习或生产场景里出现““Rust 基础”的 所有权 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““Rust 基础”的 所有权 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 所有权 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“所有权 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“Rust 基础”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+**预防**：把“本课的 所有权 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““Rust 基础”的 所有权 结果在两次运行之间不一致”写成一条自动化用例，并在“Rust 基础”的验收清单里保留对应检查项。
+### 现场 3：本课的验证只在开发机通过
 
-
-### 现场 3：“Rust 基础”的验证只在开发机通过
-
-**症状**：在“Rust 基础”的练习或生产场景里出现““Rust 基础”的验证只在开发机通过”。
-
-**复现**：准备一组最小输入，只保留触发““Rust 基础”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+**症状**：在本课的练习或生产场景里出现“本课的验证只在开发机通过”。
 
 **定位**：围绕“环境版本、配置和输入规模与目标环境不同，Rust 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：把“Rust 基础”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
-
-**预防**：把““Rust 基础”的验证只在开发机通过”写成一条自动化用例，并在“Rust 基础”的验收清单里保留对应检查项。
-
-
-
 ## 版本与时效
-
-这一节记录“Rust 基础”涉及的版本基线与升级检查点，避免把某个版本的默认行为当成永久结论。
 
 - Rust 2024 edition 已成为主流，编译器与标准库保持快速小步演进
 - 异步运行时、trait 解析与借用检查规则的变化需要在 CI 中提前暴露
@@ -411,55 +374,6 @@ cargo fmt               # 统一格式
 - 重点回归默认值、弃用警告、序列化格式、并发语义和错误信息。
 - 升级完成后更新本课的“最后复核 / 下次复核”日期与版本说明。
 
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：Rust 在编译期保证内存安全依靠什么？
-
-- **正确判断**：所有权与借用检查
-- **判断依据**：所有权规则在编译期消灭悬垂指针、重复释放与数据竞争。其他选项：Rust 用所有权与借用检查在编译期消除悬垂引用与数据竞争，不依赖 GC。针对「Rust 在编译期保证内存安全依靠什么，」，本课在「学习曲线提示」中说明：建议：先理解所有权与借用规则，再学生命周期。本课还在「语言定位」中说明：Rust 是系统级语言，用编译期检查替代垃圾回收，做到内存安全与零成本抽象。本课还在「本课小结」中说明：Rust 用所有权 + 借用检查 + 类型系统把内存与并发错误前移到编译期。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 2：Rust 的借用规则是？
-
-- **正确判断**：要么多个不可变借用
-- **判断依据**：正确答案是「要么多个不可变借用」，本课在「学习曲线提示」中说明：建议：先理解所有权与借用规则，再学生命周期。这条规则从类型层面杜绝了数据竞争。本课还在「零基础详解：Cargo、变量与第一个 Rust 程序」中说明：它不靠垃圾回收，而是靠所有权规则在编译阶段保证不出现空指针、数据竞争这类问题。本课还在「本课小结」中说明：Rust 用所有权 + 借用检查 + 类型系统把内存与并发错误前移到编译期。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 3：Rust 中表示可能失败的操作使用什么类型？
-
-- **正确判断**：Result<T, E>
-- **判断依据**：Result 表示成功或失败，配合 ? 运算符传播错误。其他选项：Result<T, E> 表达可能失败，Option<T> 只表达可能没有值，Rust 没有异常机制。针对「Rust 中表示可能失败的操作使用什么类型，」，本课在「并发安全」中说明：Rust 用类型系统保证线程安全：Send 表示可跨线程转移，Sync 表示可被多线程共享引用。本课还在「工程实践」中说明：错误处理：库用 thiserror 定义错误类型，应用用 anyhow 简化传播。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 4：Rust 中 mut 关键字的作用是？
-
-- **正确判断**：让绑定可变
-- **判断依据**：正确答案是「让绑定可变」，本课在「并发安全」中说明：Arc<Mutex<T>> 是跨线程共享可变状态的经典组合。Rust 默认不可变，mut 是显式声明，编译器据此检查借用冲突。本课还在「并发安全」中说明：Rust 用类型系统保证线程安全：Send 表示可跨线程转移，Sync 表示可被多线程共享引用。本课还在「工程实践」中说明：cargo fmt、cargo clippy、cargo test 是标准三件套。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 5：rustup 与 cargo 的分工是？
-
-- **正确判断**：rustup 管理工具链与版本
-- **判断依据**：常用命令：rustup update 升级工具链，cargo build / test / run 操作项目。其他选项：rustup 管理工具链与版本。针对「rustup 与 cargo 的分工是，」，本课在「零基础详解：Cargo、变量与第一个 Rust 程序」中说明：它不靠垃圾回收，而是靠所有权规则在编译阶段保证不出现空指针、数据竞争这类问题。本课还在「学习曲线提示」中说明：遇到编译错误先读完整提示（Rust 的错误信息质量很高），必要时用 clone 让代码先跑通，再逐步消除不必要的拷贝。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 6：补全代码：「Rust 基础」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `fn ____(secret: i32, guess: i32) -> &'static str {`
-
-- **正确判断**：compare
-- **判断依据**：正确答案是「compare」，本课在「零基础详解：Cargo、变量与第一个 Rust 程序」中说明：能说出 cargo run 与 cargo build --release 的差别。本课还在「语言定位」中说明：它适合操作系统、嵌入式、网络中间件与高性能 CLI（Firefox、Linux 内核、Deno 都有 Rust 代码）。本课还在「类型系统」中说明：模式匹配（match）配合 enum 是 Rust 表达业务状态的常用方式，要求穷尽所有分支。
-- **迁移检查**：如果填成相近的另一个函数或关键字，程序会在哪一步出错？
-
-### 补充自测（2 题）
-
-1. 围绕“Rust 基础”中的 Rust、所有权、借用，下列哪两项是本课强调的实践判断？
-2. 下面这段 Rust 代码复现了“Rust 基础”中 Rust、所有权、借用 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
-
 ## 本课复习清单
 
 离开本课前，逐项确认：
@@ -469,7 +383,6 @@ cargo fmt               # 统一格式
 - [ ] 不看解析，能说出「Rust 中表示可能失败的操作使用什么类型？」的判断依据。
 - [ ] 不看解析，能说出「Rust 中 mut 关键字的作用是？」的判断依据。
 - [ ] 不看解析，能说出「rustup 与 cargo 的分工是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：「Rust 基础」示例中，下面这行代码缺少哪个关键字或函数名？请填入 …」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -480,8 +393,6 @@ cargo fmt               # 统一格式
 | 下一步验证动作 |  |
 
 ## 术语速查
-
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
 | 术语 | 本课语境 |
 | --- | --- |
@@ -498,30 +409,33 @@ cargo fmt               # 统一格式
 | `const MAX: u32 = 100;` | \| 常量 \| `const MAX: u32 = 100;` \| 必须标注类型 \| |
 | `static NAME: &str = "app";` | \| 静态变量 \| `static NAME: &str = "app";` \| 全程存活 \| |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：Rust 在编译期保证内存安全依靠什么？
 
-### 追问 1：Rust 在编译期保证内存安全依靠什么？
+- **判断依据**：所有权规则在编译期消灭悬垂指针、重复释放与数据竞争。其他选项：Rust 用所有权与借用检查在编译期消除悬垂引用与数据竞争，不依赖 GC。判断这类题时，要把「所有权与借用检查」放回题干限定的对象、输入和边界，「引用计数」、「手动 free」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：所有权规则在编译期消灭悬垂指针、重复释放与数据竞争。其他选项：Rust 用所有权与借用检查在编译期消除悬垂引用与数据竞争，不依赖 GC。针对「Rust 在编译期保证内存安全依靠什么，」，本课在「学习曲线提示」中说明：建议：先理解所有权与借用规则，再学生命周期。本课还在「语言定位」中说明：Rust 是系统级语言，用编译期检查替代垃圾回收，做到内存安全与零成本抽象。本课还在「本课小结」中说明：Rust 用所有权 + 借用检查 + 类型系统把内存与并发错误前移到编译期。
+### 考点 2：围绕“Rust 基础”中的 Rust、所有权、借用，下列哪两项是本课强调的实践判断？
 
-### 追问 2：Rust 的借用规则是？
+- **判断依据**：正确答案包括「验证 所有权 时要固定版本并覆盖边界输入，结论才可复现」、「学习 Rust 时要同时说明输入、输出和失败路径，不能只看正常流程」。本题应选验证 所有权 时要固定版本并覆盖边界输入。在本课主题里，判断 所有权 时要固定版本与边界输入，所以“验证 所有权 时要固定版本并覆盖边界输入，结论才可复现”才可复现。解题的关键不是记住孤立术语，而是确认验证 所有权 时要固定版本并覆盖边界输入，结论才可复现。
 
-**参考回答**：正确答案是「要么多个不可变借用」，本课在「学习曲线提示」中说明：建议：先理解所有权与借用规则，再学生命周期。这条规则从类型层面杜绝了数据竞争。本课还在「零基础详解·Cargo、变量与第一个 Rust 程序」中说明：它不靠垃圾回收，而是靠所有权规则在编译阶段保证不出现空指针、数据竞争这类问题。本课还在「本课小结」中说明：Rust 用所有权 + 借用检查 + 类型系统把内存与并发错误前移到编译期。
+### 考点 3：下面这段 Rust 代码复现了“Rust 基础”中 Rust、所有权、借用 相关的一个常见故障，哪一项最准确地解释了问题？
 
-### 追问 3：Rust 中表示可能失败的操作使用什么类型？
+- **判断依据**：符合题干条件的是「0..=data.len() 包含上界，i == len 时越界 panic；应使用 0..data.len()」（rust_basics 第 3 题）。符合题干条件的是0..=data.len() 包含上界，i == len 时越界 panic。应使用 0..data.len()（rust_basics 第 3 题）。应使用 0..data.len()（rustbasics 第 3 题）。
 
-**参考回答**：Result 表示成功或失败，配合 ? 运算符传播错误。其他选项：Result<T, E> 表达可能失败，Option<T> 只表达可能没有值，Rust 没有异常机制。针对「Rust 中表示可能失败的操作使用什么类型，」，本课在「并发安全」中说明：Rust 用类型系统保证线程安全：Send 表示可跨线程转移，Sync 表示可被多线程共享引用。本课还在「工程实践」中说明：错误处理：库用 thiserror 定义错误类型，应用用 anyhow 简化传播。
+### 考点 4：Rust 中 mut 关键字的作用是？
 
-### 追问 4：Rust 中 mut 关键字的作用是？
+- **判断依据**：Rust 默认不可变，mut 是显式声明，编译器据此检查借用冲突。围绕 Rust 中 mut 关键字的作用是。作答时，先用Rust建立输入与输出的基线，再把让绑定可变代入边界条件核对，结论才能复现。这道题要求区分概念与边界，「让绑定可变」只有在题干给出的前提下才成立，而「把变量变成常量」、「让变量跨线程共享」缺少同一组条件。
 
-**参考回答**：正确答案是「让绑定可变」，本课在「并发安全」中说明：Arc<Mutex<T>> 是跨线程共享可变状态的经典组合。Rust 默认不可变，mut 是显式声明，编译器据此检查借用冲突。本课还在「并发安全」中说明：Rust 用类型系统保证线程安全：Send 表示可跨线程转移，Sync 表示可被多线程共享引用。本课还在「工程实践」中说明：cargo fmt、cargo clippy、cargo test 是标准三件套。
+### 考点 5：rustup 与 cargo 的分工是？
 
-### 追问 5：rustup 与 cargo 的分工是？
+- **判断依据**：常用命令：rustup update 升级工具链，cargo build / test / run 操作项目。其他选项：rustup 管理工具链与版本。判断这类题时，要把「rustup 管理工具链与版本」放回题干限定的对象、输入和边界，「rustup 负责编译代码」、「cargo 负责安装工具链」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：常用命令：rustup update 升级工具链，cargo build / test / run 操作项目。其他选项：rustup 管理工具链与版本。针对「rustup 与 cargo 的分工是，」，本课在「零基础详解·Cargo、变量与第一个 Rust 程序」中说明：它不靠垃圾回收，而是靠所有权规则在编译阶段保证不出现空指针、数据竞争这类问题。本课还在「学习曲线提示」中说明：遇到编译错误先读完整提示（Rust 的错误信息质量很高），必要时用 clone 让代码先跑通，再逐步消除不必要的拷贝。
+### 考点 6：补全代码：「Rust 基础」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+
+`fn ____(secret: i32, guess: i32) -> &'static str {`
+
+- **判断依据**：围绕 补全代码：本课主题示例中，下面这行代码缺少哪个关键字或函数… 作答时，先用Rust建立输入与输出的基线，再把compare代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「compare」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
 
 ## English Overview
 
@@ -529,11 +443,9 @@ cargo fmt               # 统一格式
 
 **Summary:** Ownership, borrowing, Result and thread safety.
 
-**Category:** Rust  
-**Level:** 基础  
+**Category:** Rust
+**Level:** 基础
 **Key terms:** Rust, 所有权, 借用, 生命周期, Cargo
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -545,7 +457,6 @@ cargo fmt               # 统一格式
 - 相关主题：Rust、所有权、借用、生命周期、Cargo
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-
 ## Full English Study Guide
 
 ### Overview
@@ -555,60 +466,23 @@ cargo fmt               # 统一格式
 ### Learning Outcomes
 
 - Explain what **Rust Basics** solves and when it should be used.
-- Identify inputs, outputs, state and failure boundaries.
-- Build a minimal reproducible example and observe the real result.
-- Test normal, boundary and failure paths.
-- Measure performance, resource cost or security impact before optimizing.
-- Document the decision, rollback path and remaining uncertainty.
 
 ### Core Mental Model
 
-1. **Problem first:** define the exact problem before choosing a tool or pattern.
-2. **Smallest example:** reduce the system to one input and one observable output.
-3. **State and flow:** trace how data, control or responsibility moves through the system.
-4. **Boundaries:** identify invalid input, resource limits, timeouts and permission edges.
-5. **Evidence:** use tests, logs, metrics or reproductions instead of intuition.
-6. **Trade-offs:** compare correctness, latency, cost, complexity and operability.
-
 ### Step-by-step Study Plan
-
-1. Read the Chinese lesson once and write down the main problem in one sentence.
-2. Run the smallest example and save the exact command and output.
-3. Change only one input or parameter and predict the result before running it.
-4. Introduce one failure and record how the system detects, reports and recovers.
-5. Write one test or checklist item for the normal, boundary and failure paths.
-6. Complete the quiz and explain every wrong answer in your own words.
 
 ### Practice Tasks
 
-- Rebuild the minimal example from an empty directory.
-- Add one boundary test and one failure test.
-- Produce a short report containing the baseline, change, result and rollback.
-
 ### Common Failure Modes
-
-- Treating a happy-path demo as production readiness.
-- Skipping boundary values and invalid inputs.
-- Optimizing before establishing a measurable baseline.
-- Hiding errors, permissions or resource limits.
 
 ### Self-check Questions
 
-1. What is the smallest observable result that proves this lesson works?
-2. What input or state is most likely to break it?
-3. Which metric or test would reveal a regression?
 4. What is the rollback path?
-5. What is the cost of using this approach at 10x scale?
-6. Which adjacent topic is most often confused with this one?
 
 ### Glossary
 
 - Topic: **Rust Basics**
 - Related terms: Rust, 所有权, 借用, 生命周期
-- Primary evidence: command output, tests, logs, metrics or reproductions
-
-> This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
-
 
 ## Bilingual Section Outline
 
@@ -625,179 +499,18 @@ cargo fmt               # 统一格式
 | 本课小结 | Lesson Summary |
 | 基础语法速查 | Basic Grammar Quick Lookup |
 
-> 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
-
 
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
 | [The Rust Book](https://doc.rust-lang.org/book/) | 所有权、类型与工程实践 |
-| [Rust 标准库](https://doc.rust-lang.org/std/) | 标准库与并发 API |
+| [Cargo Book](https://doc.rust-lang.org/cargo/) | 依赖、工作区与发布 |
+| [Rust 测试](https://doc.rust-lang.org/book/ch11-00-testing.html) | 单元测试与集成测试 |
 
-> 本课主题：所有权、借用检查、Result 与并发安全。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
-
-<!-- code-practice:v1:start -->
-
-## 代码练习（6 题）
-
-下面题目与课程测验同源：覆盖代码输出、排错与场景判断。建议先自己写出答案，再到「测验」里核对成绩。
-
-### 练习 1 · 代码输出
-
-在 Rust 课程“Rust 基础”的集合实验里，这段代码运行后输出什么？
-
-```rust
-fn main() {
-    let x = 4;
-    println!("{}", x);
-}
-```
-
-- A. 5
-- B. 8
-- C. 4
-- D. 3
-
-**参考答案**：C. 4
-**参考输出**：`4`
-
-**解析**
-
-在 Rust 课程“Rust 基础”的集合代码实验里，程序先完成赋值、循环或函数调用，再把结果写到标准输出，因此正确结果是 4。
-判断 Rust 课程“Rust 基础”的代码输出时，要把“源码写了什么”和“运行时实际打印什么”分开；变量值和循环边界都会直接改变最终结果。
-把 4 当作基线后，可以只改一个输入或一个边界，再观察 Rust 课程“Rust 基础”的输出如何变化，这就是验证掌握程度的方法。
-
-### 练习 2 · 代码输出
-
-在 Rust 课程“Rust 基础”的条件实验里，这段代码运行后输出什么？
-
-```rust
-fn main() {
-    let mut total = 0;
-    for i in 1..=4 {
-        total += i;
-    }
-    println!("{}", total);
-}
-```
-
-- A. 10
-- B. 9
-- C. 20
-- D. 11
-
-**参考答案**：A. 10
-**参考输出**：`10`
-
-**解析**
-
-在 Rust 课程“Rust 基础”的条件代码实验里，程序先完成赋值、循环或函数调用，再把结果写到标准输出，因此正确结果是 10。
-判断 Rust 课程“Rust 基础”的代码输出时，要把“源码写了什么”和“运行时实际打印什么”分开；变量值和循环边界都会直接改变最终结果。
-把 10 当作基线后，可以只改一个输入或一个边界，再观察 Rust 课程“Rust 基础”的输出如何变化，这就是验证掌握程度的方法。
-
-### 练习 3 · 代码输出
-
-在 Rust 课程“Rust 基础”的错误处理实验里，这段代码运行后输出什么？
-
-```rust
-fn double(value: i32) -> i32 {
-    value * 2
-}
-
-fn main() {
-    println!("{}", double(4));
-}
-```
-
-- A. 16
-- B. 7
-- C. 9
-- D. 8
-
-**参考答案**：D. 8
-**参考输出**：`8`
-
-**解析**
-
-在 Rust 课程“Rust 基础”的错误处理代码实验里，程序先完成赋值、循环或函数调用，再把结果写到标准输出，因此正确结果是 8。
-判断 Rust 课程“Rust 基础”的代码输出时，要把“源码写了什么”和“运行时实际打印什么”分开；变量值和循环边界都会直接改变最终结果。
-把 8 当作基线后，可以只改一个输入或一个边界，再观察 Rust 课程“Rust 基础”的输出如何变化，这就是验证掌握程度的方法。
-
-### 练习 4 · 代码排错
-
-Rust 课程“Rust 基础”的下面这段代码无法运行，最可能的修复是什么？
-
-```rust
-fn main() {
-    let x = 4
-    println!("{}", x);
-}
-```
-
-- A. 把输出语句整段删除，代码就会自动修复
-- B. 重新安装运行时并清空所有缓存
-- C. 把变量名改成另一个单词即可
-- D. 在 let x = 4 这一行末尾补上分号
-
-**参考答案**：D. 在 let x = 4 这一行末尾补上分号
-
-**解析**
-
-Rust 课程“Rust 基础”里的这段代码无法通过编译或解析，关键原因是缺少了必要语法结构，正确修复是在 let x = 4 这一行末尾补上分号。
-在 Rust 课程“Rust 基础”中，错误信息通常会指出出错行和期望符号；先读第一条错误，再检查这一行的括号、冒号、分号或花括号。
-修复后还要重新运行 Rust 课程“Rust 基础”的最小示例，确认输出恢复，并记录这次问题属于语法错误而不是逻辑错误。
-
-### 练习 5 · 代码排错
-
-Rust 课程“Rust 基础”的这段代码结果偏小，应该怎样修改？
-
-```rust
-fn main() {
-    let mut total = 0;
-    for i in 1..4 {
-        total += i;
-    }
-    println!("{}", total);
-}
-```
-
-- A. 把输出语句移到循环体内部
-- B. 把累加操作改成减法操作
-- C. 把 1..4 改成 1..=4
-- D. 把循环变量从 1 改成 0，其余保持不变
-
-**参考答案**：C. 把 1..4 改成 1..=4
-**修复后输出**：`10`
-
-**解析**
-
-Rust 课程“Rust 基础”里的循环边界少算了最后一项，当前输出是 6，而完整求和应为 10。
-正确修复是把 1..4 改成 1..=4；这类错误属于边界问题，代码能运行但结果偏离，所以比语法错误更隐蔽。
-验证 Rust 课程“Rust 基础”时至少选择首项、中间值和末尾值三个输入，比较手算结果与程序输出，才能发现类似偏差。
-
-### 练习 6 · 概念判断
-
-在 Rust 课程“Rust 基础”的学习或项目场景中，哪种做法最有助于得到可验证、可迁移的结果？
-
-- A. 跳过错误信息，直接复制另一段代码直到能运行
-- B. 一次改完所有变量和依赖，再统一观察是否报错
-- C. 只背下「Rust 基础」的结论，遇到新输入时凭感觉修改代码
-- D. 先围绕「Rust」写最小可运行示例，再用边界输入验证“Rust 基础”的结果
-
-**参考答案**：D. 先围绕「Rust」写最小可运行示例，再用边界输入验证“Rust 基础”的结果
-
-**解析**
-
-在 Rust 课程“Rust 基础”里，Rust不是孤立的名词，而是一组可以用输入、过程、输出和边界验证的行为。
-对 Rust 课程“Rust 基础”来说，先写最小可运行示例，再逐步增加边界输入，能把“感觉会了”转化成可以重复的证据。
-如果只背结论或一次改很多变量，出错时就无法判断是哪一步破坏了 Rust 课程“Rust 基础”的预期；先把变化隔离出来才容易定位。
-
-<!-- code-practice:v1:end -->
+> 「Rust 基础」的链接用于离线阅读后的延伸核对；App 不会自动联网。

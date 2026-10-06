@@ -1,35 +1,34 @@
-# 索引
+# 本课主题
 
-![B+ 树索引结构](images/diagram_database_index.webp)
+> 内容更新时间：2026-10-03
 
-![索引](images/remaining_index.webp)
+![B+ 树本课主题结构](images/diagram_database_index.webp)
 
-> 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：15 分钟
+![本课主题](images/remaining_index.webp)
 
 ## 学习目标
 
-- 能用自己的话解释「索引」解决了什么问题，而不是只背术语。
-- 能说清 「索引」、「B+树」、「复合索引」、「最左前缀」 之间的关系，并分别举出一个例子。
+- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
+- 能说清 本课主题、「B+树」、「复合本课主题」、「最左前缀」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「数据库」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
 
-> 一句话摘要：B+ 树、最左前缀原则，以及索引什么时候失效。
+> 一句话摘要：B+ 树、最左前缀原则，以及本课主题什么时候失效。
 
 ## 前置知识
 
 - 先完成上一课《SQL 基础》；如果已经掌握，可以直接用本课练习自测。
 - 本课阶段：进阶。建议先掌握同一分类的基础课程，并能独立运行正文中的最小示例。
-- 开始前先复习：索引、B+树、复合索引。
+- 开始前先复习：本课主题、B+树、复合本课主题。
 - 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
 
+## 本课主题解决什么问题
 
-## 索引解决什么问题
+没有本课主题时，数据库只能**全表扫描**，逐行比对。本课主题就像书的目录，让数据库快速定位到目标数据，把 `O(n)` 的查找降到 `O(log n)`。
 
-没有索引时，数据库只能**全表扫描**，逐行比对。索引就像书的目录，让数据库快速定位到目标数据，把 `O(n)` 的查找降到 `O(log n)`。
+## B+ 树本课主题
 
-## B+ 树索引
-
-主流关系型数据库的索引底层多用 **B+ 树**：
+主流关系型数据库的本课主题底层多用 **B+ 树**：
 
 - 所有数据都在叶子节点，且按顺序用链表相连。
 - 非叶子节点只存键，可以容纳更多分支，树更矮。
@@ -50,39 +49,39 @@
 ```sql
 CREATE INDEX idx_students_city ON students(city);
 
--- 走索引：条件列是索引列
+-- 走本课主题：条件列是本课主题列
 SELECT * FROM students WHERE city = '上海';
 
--- 复合索引遵循最左前缀原则
+-- 复合本课主题遵循最左前缀原则
 CREATE INDEX idx_name_age ON students(name, age);
 -- 可用：WHERE name = ? / WHERE name = ? AND age = ?
 -- 不可用：WHERE age = ?
 ```
 
-## 什么时候索引会失效
+## 什么时候本课主题会失效
 
 ```sql
--- 在索引列上做运算或函数调用
+-- 在本课主题列上做运算或函数调用
 SELECT * FROM students WHERE YEAR(created_at) = 2024;
 
--- 以 % 开头的模糊查询无法使用普通索引
+-- 以 % 开头的模糊查询无法使用普通本课主题
 SELECT * FROM students WHERE name LIKE '%明';
 
 -- 类型隐式转换
 SELECT * FROM students WHERE phone = 13800000000;  -- phone 是字符串
 ```
 
-改写建议：把运算移到常量一侧，或使用覆盖索引、全文索引。
+改写建议：把运算移到常量一侧，或使用覆盖本课主题、全文本课主题。
 
-## 索引的代价
+## 本课主题的代价
 
-索引不是越多越好：
+本课主题不是越多越好：
 
 1. 占用额外磁盘空间。
-2. `INSERT / UPDATE / DELETE` 都要同步维护索引，写变慢。
-3. 优化器选错索引时反而更慢。
+2. `INSERT / UPDATE / DELETE` 都要同步维护本课主题，写变慢。
+3. 优化器选错本课主题时反而更慢。
 
-一般只为**高频查询条件、连接列、排序分组列**建立索引。
+一般只为**高频查询条件、连接列、排序分组列**建立本课主题。
 
 ## 用 EXPLAIN 验证
 
@@ -91,7 +90,7 @@ EXPLAIN QUERY PLAN
 SELECT * FROM students WHERE city = '上海';
 ```
 
-关注是否出现 `SCAN TABLE`（全表扫描）或 `SEARCH ... USING INDEX`（使用索引）。
+关注是否出现 `SCAN TABLE`（全表扫描）或 `SEARCH ... USING INDEX`（使用本课主题）。
 
 ## B+ 树查找过程示例
 
@@ -103,76 +102,75 @@ SELECT * FROM students WHERE city = '上海';
 叶子节点（第 3 次 IO）：页内二分查找 → 命中记录，返回
 ```
 
-千万级数据只需 **3 次磁盘 IO**，这就是索引快于全表扫描的根本原因。范围查询（`WHERE id BETWEEN 40 AND 60`）在叶子节点沿链表顺序读取，因此范围扫描同样高效。
+千万级数据只需 **3 次磁盘 IO**，这就是本课主题快于全表扫描的根本原因。范围查询（`WHERE id BETWEEN 40 AND 60`）在叶子节点沿链表顺序读取，因此范围扫描同样高效。
 
-## 索引失效实例对照
+## 本课主题失效实例对照
 
-| 写法 | 是否走索引 | 原因与改法 |
+| 写法 | 是否走本课主题 | 原因与改法 |
 | --- | --- | --- |
-| `WHERE city = '上海'` | 走 | 索引列直接比较 |
+| `WHERE city = '上海'` | 走 | 本课主题列直接比较 |
 | `WHERE YEAR(created_at) = 2024` | 不走 | 列上有函数，改为 `created_at >= '2024-01-01' AND created_at < '2025-01-01'` |
-| `WHERE name LIKE '%明'` | 不走 | 前缀未知，改为 `LIKE '明%'` 或用全文索引 |
+| `WHERE name LIKE '%明'` | 不走 | 前缀未知，改为 `LIKE '明%'` 或用全文本课主题 |
 | `WHERE phone = 13800000000`（phone 是字符串） | 可能不走 | 隐式类型转换，改为 `phone = '13800000000'` |
-| `WHERE a = 1 ORDER BY b`（索引为 a） | 需排序 | 建复合索引 `(a, b)` 让过滤与排序都走索引 |
-| `WHERE a = 1 OR b = 2`（只索引 a） | 可能不走 | 拆成两条查询 UNION，或分别建索引 |
-| 复合索引 `(a, b, c)` 上 `WHERE b = 2` | 不走 | 违反最左前缀，考虑单独为 b 建索引 |
+| `WHERE a = 1 ORDER BY b`（本课主题为 a） | 需排序 | 建复合本课主题 `(a, b)` 让过滤与排序都走本课主题 |
+| `WHERE a = 1 OR b = 2`（只本课主题 a） | 可能不走 | 拆成两条查询 UNION，或分别建本课主题 |
+| 复合本课主题 `(a, b, c)` 上 `WHERE b = 2` | 不走 | 违反最左前缀，考虑单独为 b 建本课主题 |
 
 验证方法始终是 `EXPLAIN`：看 type 是否为 `ref/range`、key 是否命中、rows 扫描行数是否显著下降。
 
-## 覆盖索引与索引下推
+## 覆盖本课主题与本课主题下推
 
-**覆盖索引**：查询需要的列全部包含在索引中，无需回表。
+**覆盖本课主题**：查询需要的列全部包含在本课主题中，无需回表。
 
-| 查询 | 索引 | 是否回表 |
+| 查询 | 本课主题 | 是否回表 |
 | --- | --- | --- |
 | `SELECT name FROM users WHERE city='上海'` | `(city)` | 回表（需取 name） |
 | 同上 | `(city, name)` | **不回表**，Extra 显示 Using index |
 | `SELECT * FROM users WHERE city='上海'` | `(city)` | 回表（需要全部列） |
 
-这也是 `SELECT *` 拖慢查询的一个具体原因：它几乎必然导致回表。建议列表查询只取需要的列，并为高频组合建复合索引。
+这也是 `SELECT *` 拖慢查询的一个具体原因：它几乎必然导致回表。建议列表查询只取需要的列，并为高频组合建复合本课主题。
 
-**索引下推（ICP, MySQL 5.6+）**：在存储引擎层就利用索引中的列过滤掉不满足条件的记录，减少回表次数。
+**本课主题下推（ICP, MySQL 5.6+）**：在存储引擎层就利用本课主题中的列过滤掉不满足条件的记录，减少回表次数。
 
 | 查询 | 有无 ICP | 效果 |
 | --- | --- | --- |
-| `WHERE name LIKE '张%' AND age = 20`，索引 `(name, age)` | 有 | 引擎层先按 name 与 age 双重过滤，再回表 |
+| `WHERE name LIKE '张%' AND age = 20`，本课主题 `(name, age)` | 有 | 引擎层先按 name 与 age 双重过滤，再回表 |
 | 同上 | 无（老版本） | 只按 name 过滤，全部回表后再筛 age |
 
-`EXPLAIN` 中 Extra 出现 `Using index condition` 即表示启用了索引下推；出现 `Using index` 表示覆盖索引；出现 `Using filesort` 或 `Using temporary` 则是需要优化的信号。
+`EXPLAIN` 中 Extra 出现 `Using index condition` 即表示启用了本课主题下推；出现 `Using index` 表示覆盖本课主题；出现 `Using filesort` 或 `Using temporary` 则是需要优化的信号。
 
 ## 本课小结
-索引是「用空间和写入速度换查询速度」。判断是否该建索引，先看查询频率和选择性。
+本课主题是「用空间和写入速度换查询速度」。判断是否该建本课主题，先看查询频率和选择性。
 
+## 本课主题失效与命中对照表
 
-## 索引失效与命中对照表
-
-| SQL 写法 | 能否用上索引 | 原因与改写建议 |
+| SQL 写法 | 能否用上本课主题 | 原因与改写建议 |
 | --- | --- | --- |
 | `WHERE name = 'abc'` | 能 | 等值查询，最理想 |
-| `WHERE name LIKE 'abc%'` | 能 | 前缀匹配可走索引 |
-| `WHERE name LIKE '%abc'` | 不能 | 左侧通配无法定位区间；改用全文索引或倒排方案 |
+| `WHERE name LIKE 'abc%'` | 能 | 前缀匹配可走本课主题 |
+| `WHERE name LIKE '%abc'` | 不能 | 左侧通配无法定位区间；改用全文本课主题或倒排方案 |
 | `WHERE YEAR(created_at) = 2024` | 不能 | 列被函数包裹；改写为 `created_at >= '2024-01-01' AND created_at < '2025-01-01'` |
 | `WHERE id + 1 = 10` | 不能 | 列参与运算；改成 `id = 9` |
-| `WHERE status = 1 OR user_id = 2` | 可能退化为全表扫描 | 用 `UNION ALL` 拆开，或建联合索引 |
-| `WHERE a = 1 AND c = 3`（索引为 `(a, b, c)`） | 只用到 a | 违反最左前缀；按查询顺序设计索引列 |
+| `WHERE status = 1 OR user_id = 2` | 可能退化为全表扫描 | 用 `UNION ALL` 拆开，或建联合本课主题 |
+| `WHERE a = 1 AND c = 3`（本课主题为 `(a, b, c)`） | 只用到 a | 违反最左前缀；按查询顺序设计本课主题列 |
 | `WHERE name = 123`（列为字符串） | 不能 | 隐式类型转换让列变成函数调用 |
-| `ORDER BY created_at LIMIT 10`（有该列索引） | 能 | 索引天然有序，可省掉排序 |
-| `ORDER BY a, b`（索引为 `(a, b)`） | 能 | 排序顺序要与索引列顺序一致 |
-| `SELECT *` 且需要回表 | 走索引但回表 | 只查必要列，或建覆盖索引 |
-| `WHERE deleted = 0 AND user_id = 5` | 能，但区分度低 | 低区分度列放联合索引右侧 |
+| `ORDER BY created_at LIMIT 10`（有该列本课主题） | 能 | 本课主题天然有序，可省掉排序 |
+| `ORDER BY a, b`（本课主题为 `(a, b)`） | 能 | 排序顺序要与本课主题列顺序一致 |
+| `SELECT *` 且需要回表 | 走本课主题但回表 | 只查必要列，或建覆盖本课主题 |
+| `WHERE deleted = 0 AND user_id = 5` | 能，但区分度低 | 低区分度列放联合本课主题右侧 |
 
-## 建索引速查
+## 建本课主题速查
 
 | 场景 | 建议 |
 | --- | --- |
-| 高频等值查询 | 单列或联合索引，把等值列放前面 |
-| 高频范围查询 | 范围列放联合索引最后一位 |
-| 排序 + 过滤 | 让索引顺序匹配 `WHERE` + `ORDER BY` |
-| 只查少量列 | 建覆盖索引，避免回表 |
-| 写入非常频繁的表 | 索引越少越好，每个索引都要维护 |
-| 区分度极低的列（性别、状态） | 单独建索引意义不大，考虑组合列 |
-| 前缀很长的字符串 | 用前缀索引 `INDEX(url(32))` 省空间 |
-| 大表加索引 | 用在线 DDL 工具，避开业务高峰 |
+| 高频等值查询 | 单列或联合本课主题，把等值列放前面 |
+| 高频范围查询 | 范围列放联合本课主题最后一位 |
+| 排序 + 过滤 | 让本课主题顺序匹配 `WHERE` + `ORDER BY` |
+| 只查少量列 | 建覆盖本课主题，避免回表 |
+| 写入非常频繁的表 | 本课主题越少越好，每个本课主题都要维护 |
+| 区分度极低的列（性别、状态） | 单独建本课主题意义不大，考虑组合列 |
+| 前缀很长的字符串 | 用前缀本课主题 `INDEX(url(32))` 省空间 |
+| 大表加本课主题 | 用在线 DDL 工具，避开业务高峰 |
 
 ## 排查速查
 
@@ -183,25 +181,24 @@ EXPLAIN SELECT id, name FROM users WHERE email = 'a@b.com';
 -- 2. 看真实耗时与扫描行数（MySQL 8）
 EXPLAIN ANALYZE SELECT id, name FROM users WHERE email = 'a@b.com';
 
--- 3. 看表的索引清单与区分度
+-- 3. 看表的本课主题清单与区分度
 SHOW INDEX FROM users;
 SELECT COUNT(DISTINCT email) / COUNT(*) AS selectivity FROM users;
 ```
 
-`EXPLAIN` 中值得警惕的信号：`type=ALL`（全表扫描）、`key=NULL`（没用索引）、`rows` 远大于预期、`Extra` 出现 `Using filesort` 或 `Using temporary`。
+`EXPLAIN` 中值得警惕的信号：`type=ALL`（全表扫描）、`key=NULL`（没用本课主题）、`rows` 远大于预期、`Extra` 出现 `Using filesort` 或 `Using temporary`。
 
 ## 自测清单
 
-- [ ] 能说出最左前缀原则，并据此排列联合索引列顺序。
-- [ ] 知道列上加函数、隐式类型转换会导致索引失效。
+- [ ] 能说出最左前缀原则，并据此排列联合本课主题列顺序。
+- [ ] 知道列上加函数、隐式类型转换会导致本课主题失效。
 - [ ] 会读 `EXPLAIN` 的 `type`、`key`、`rows`、`Extra` 四个字段。
-- [ ] 知道区分度低的列不适合单独建索引。
-- [ ] 能给高频查询设计覆盖索引，避免回表。
+- [ ] 知道区分度低的列不适合单独建本课主题。
+- [ ] 能给高频查询设计覆盖本课主题，避免回表。
 
 ## 动手练习
 
-
-> 本课练习重点：围绕「索引、B+树、复合索引」完成复述、实验和交付，每个结果都要能被别人检查。
+> 本课练习重点：围绕「本课主题、B+树、复合本课主题」完成复述、实验和交付，每个结果都要能被别人检查。
 
 先写 schema 与查询，再补边界和失败数据，最后看执行计划与锁等待。
 
@@ -209,7 +206,7 @@ SELECT COUNT(DISTINCT email) / COUNT(*) AS selectivity FROM users;
 
 合上教程，用 3～5 句话回答：
 
-1. 「索引」解决了什么问题？
+1. 本课主题解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「B+树」是什么关系？
 
@@ -232,149 +229,65 @@ SELECT COUNT(DISTINCT email) / COUNT(*) AS selectivity FROM users;
 任务要求：
 
 - 结果必须能被别人检查，不能只写“我已经理解了”。
-- 至少覆盖「索引」和「B+树」两个关键词。
+- 至少覆盖本课主题和「B+树」两个关键词。
 - 写出 1 个仍然不确定的问题，以及下一步如何验证。
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-
-
 ## 可运行练习
-
-下面 3 个任务围绕“索引”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
 
 ### 任务 1：先跑通，再解释
 
 ```sql
 CREATE INDEX idx_students_city ON students(city);
 
--- 走索引：条件列是索引列
+-- 走本课主题：条件列是本课主题列
 SELECT * FROM students WHERE city = '上海';
 
--- 复合索引遵循最左前缀原则
+-- 复合本课主题遵循最左前缀原则
 CREATE INDEX idx_name_age ON students(name, age);
 -- 可用：WHERE name = ? / WHERE name = ? AND age = ?
 -- 不可用：WHERE age = ?
 ```
 
-**预期输出**：查询会返回“索引”示例数据中满足条件的行；列名、行数与排序以沙箱实际结果为准。
-
-**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
-
 ### 任务 2：只改一个条件
-
-复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
-
-**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
 
 ### 任务 3：迁移到自己的数据
 
 用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
 
-**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
-
-
 ## 故障现场
 
-这一节把“索引”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 本课主题 常规用例通过，但边界用例失败
 
-### 现场 1：“索引”的 索引 常规用例通过，但边界用例失败
+### 现场 2：本课的 B+树 结果在两次运行之间不一致
 
-**症状**：在“索引”的练习或生产场景里出现““索引”的 索引 常规用例通过，但边界用例失败”。
+**症状**：在本课的练习或生产场景里出现“本课的 B+树 结果在两次运行之间不一致”。
 
-**复现**：准备一组最小输入，只保留触发““索引”的 索引 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
-
-**定位**：围绕“索引 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
-
-**修复**：为“索引”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
-
-**预防**：把““索引”的 索引 常规用例通过，但边界用例失败”写成一条自动化用例，并在“索引”的验收清单里保留对应检查项。
-
-
-### 现场 2：“索引”的 B+树 结果在两次运行之间不一致
-
-**症状**：在“索引”的练习或生产场景里出现““索引”的 B+树 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““索引”的 B+树 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 B+树 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“B+树 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“索引”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
-
-**预防**：把““索引”的 B+树 结果在两次运行之间不一致”写成一条自动化用例，并在“索引”的验收清单里保留对应检查项。
-
+**预防**：把“本课的 B+树 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
 ### 现场 3：同一条 SQL 在数据量变大后突然变慢
 
-**症状**：在“索引”的练习或生产场景里出现“同一条 SQL 在数据量变大后突然变慢”。
+**症状**：在本课的练习或生产场景里出现“同一条 SQL 在数据量变大后突然变慢”。
 
-**复现**：准备一组最小输入，只保留触发“同一条 SQL 在数据量变大后突然变慢”的必要条件，连续运行两次确认结果稳定。
+**定位**：围绕“执行计划随统计信息或数据分布改变，本课主题 的本课主题没有被用上，回表次数反而增加”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**定位**：围绕“执行计划随统计信息或数据分布改变，索引 的索引没有被用上，回表次数反而增加”检查调用链、输入数据和环境配置，先验证假设再改代码。
-
-**修复**：保存“索引”的执行计划与样本数据，比较扫描行数、回表次数和排序代价后再决定是否改索引
-
-**预防**：把“同一条 SQL 在数据量变大后突然变慢”写成一条自动化用例，并在“索引”的验收清单里保留对应检查项。
-
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：数据库索引主要用来加速哪类操作？
-
-- **正确判断**：查询数据
-- **判断依据**：正确答案是「查询数据」，本课在「覆盖索引与索引下推」中说明：建议列表查询只取需要的列，并为高频组合建复合索引。索引把全表扫描变成有序查找，显著加速查询。本课还在「索引解决什么问题」中说明：没有索引时，数据库只能全表扫描，逐行比对。本课还在「索引解决什么问题」中说明：索引就像书的目录，让数据库快速定位到目标数据，把 O(n) 的查找降到 O(log n)。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 2：关系型数据库常用的 B+ 树索引，其叶子节点有什么特点？
-
-- **正确判断**：按顺序用链表相连，便于范围查询
-- **判断依据**：正确答案是「按顺序用链表相连，便于范围查询」，本课在「B+ 树索引」中说明：所有数据都在叶子节点，且按顺序用链表相连。B+ 树所有键都在叶子节点，叶子之间用链表相连，因此范围查询和排序效率很高。本课还在「B+ 树索引」中说明：主流关系型数据库的索引底层多用 B+ 树。本课还在「B+ 树查找过程示例」中说明：范围查询（WHERE id BETWEEN 40 AND 60）在叶子节点沿链表顺序读取，因此范围扫描同样高效。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 3：为什么 WHERE name LIKE '%明' 通常用不上普通索引？
-
-- **正确判断**：模糊匹配以 % 开头
-- **判断依据**：正确答案是「模糊匹配以 % 开头」，本课在「覆盖索引与索引下推」中说明：建议列表查询只取需要的列，并为高频组合建复合索引。普通 B+ 树索引按前缀有序，以 % 开头相当于前缀未知，只能全表扫描。本课还在「用 EXPLAIN 验证」中说明：关注是否出现 SCAN TABLE（全表扫描）或 SEARCH ... USING INDEX（使用索引）。本课还在「排查速查」中说明：EXPLAIN 中值得警惕的信号：type=ALL（全表扫描）、key=NULL（没用索引）、rows 远大于预期、Extra 出现 Using filesort 或 Using temporary。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 4：联合索引 (a, b, c) 上，只对 b 做条件查询能否用上该索引？
-
-- **正确判断**：一般用不上（最左前缀原则）
-- **判断依据**：正确答案是「一般用不上（最左前缀原则）」，本课在「索引的代价」中说明：一般只为高频查询条件、连接列、排序分组列建立索引。B+ 树按 (a, b, c) 顺序排序，跳过 a 就无法定位区间。本课还在「索引解决什么问题」中说明：没有索引时，数据库只能全表扫描，逐行比对。本课还在「索引解决什么问题」中说明：索引就像书的目录，让数据库快速定位到目标数据，把 O(n) 的查找降到 O(log n)。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 5：覆盖索引带来的直接好处是？
-
-- **正确判断**：查询所需字段都在索引里
-- **判断依据**：EXPLAIN 中 Extra 出现 Using index 就表示用到了覆盖索引。其他选项：覆盖索引让查询所需字段都在索引里，无需回表。针对「覆盖索引带来的直接好处是，」，本课在「覆盖索引与索引下推」中说明：覆盖索引：查询需要的列全部包含在索引中，无需回表。本课还在「什么时候索引会失效」中说明：改写建议：把运算移到常量一侧，或使用覆盖索引、全文索引。本课还在「覆盖索引与索引下推」中说明：出现 Using index 表示覆盖索引。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 6：补全代码：「索引」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `SELECT * FROM students WHERE YEAR(____) = 2024;`
-
-- **正确判断**：created_at
-- **判断依据**：正确答案是「created_at」，本课在「索引的代价」中说明：INSERT / UPDATE / DELETE 都要同步维护索引，写变慢。本课还在「B+ 树查找过程示例」中说明：千万级数据只需 3 次磁盘 IO，这就是索引快于全表扫描的根本原因。本课还在「覆盖索引与索引下推」中说明：索引下推（ICP, MySQL 5.6+）：在存储引擎层就利用索引中的列过滤掉不满足条件的记录，减少回表次数。
-- **迁移检查**：如果填成相近的另一个函数或关键字，程序会在哪一步出错？
-
-### 补充自测（2 题）
-
-1. 围绕“索引”中的 索引、B+树、复合索引，下列哪两项是本课强调的实践判断？
-2. 下面这段 Python 代码复现了“索引”中 索引、B+树、复合索引 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
+**修复**：保存本课的执行计划与样本数据，比较扫描行数、回表次数和排序代价后再决定是否改本课主题
 
 ## 本课复习清单
 
 离开本课前，逐项确认：
 
-- [ ] 不看解析，能说出「数据库索引主要用来加速哪类操作？」的判断依据。
-- [ ] 不看解析，能说出「关系型数据库常用的 B+ 树索引，其叶子节点有什么特点？」的判断依据。
-- [ ] 不看解析，能说出「为什么 WHERE name LIKE '%明' 通常用不上普通索引？」的判断依据。
-- [ ] 不看解析，能说出「联合索引 (a, b, c) 上，只对 b 做条件查询能否用上该索引？」的判断依据。
-- [ ] 不看解析，能说出「覆盖索引带来的直接好处是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：「索引」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。…」的判断依据。
+- [ ] 不看解析，能说出「数据库本课主题主要用来加速哪类操作？」的判断依据。
+- [ ] 不看解析，能说出「关系型数据库常用的 B+ 树本课主题，其叶子节点有什么特点？」的判断依据。
+- [ ] 不看解析，能说出「为什么 WHERE name LIKE '%明' 通常用不上普通本课主题？」的判断依据。
+- [ ] 不看解析，能说出「联合本课主题 (a, b, c) 上，只对 b 做条件查询能否用上该本课主题？」的判断依据。
+- [ ] 不看解析，能说出「覆盖本课主题带来的直接好处是？」的判断依据。
+- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -386,47 +299,48 @@ CREATE INDEX idx_name_age ON students(name, age);
 
 ## 术语速查
 
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
-
 | 术语 | 本课语境 |
 | --- | --- |
-| `O(n)` | 没有索引时，数据库只能**全表扫描**，逐行比对。索引就像书的目录，让数据库快速定位到目标数据，把 `O(n)` 的查找降到 `O(log n)`。 |
-| `O(log n)` | 没有索引时，数据库只能**全表扫描**，逐行比对。索引就像书的目录，让数据库快速定位到目标数据，把 `O(n)` 的查找降到 `O(log n)`。 |
-| `INSERT / UPDATE / DELETE` | `INSERT / UPDATE / DELETE` 都要同步维护索引，写变慢。 |
-| `SCAN TABLE` | 关注是否出现 `SCAN TABLE`（全表扫描）或 `SEARCH ... USING INDEX`（使用索引）。 |
-| `SEARCH ... USING INDEX` | 关注是否出现 `SCAN TABLE`（全表扫描）或 `SEARCH ... USING INDEX`（使用索引）。 |
+| `O(n)` | 没有本课主题时，数据库只能**全表扫描**，逐行比对。本课主题就像书的目录，让数据库快速定位到目标数据，把 `O(n)` 的查找降到 `O(log n)`。 |
+| `O(log n)` | 没有本课主题时，数据库只能**全表扫描**，逐行比对。本课主题就像书的目录，让数据库快速定位到目标数据，把 `O(n)` 的查找降到 `O(log n)`。 |
+| `INSERT / UPDATE / DELETE` | `INSERT / UPDATE / DELETE` 都要同步维护本课主题，写变慢。 |
+| `SCAN TABLE` | 关注是否出现 `SCAN TABLE`（全表扫描）或 `SEARCH ... USING INDEX`（使用本课主题）。 |
+| `SEARCH ... USING INDEX` | 关注是否出现 `SCAN TABLE`（全表扫描）或 `SEARCH ... USING INDEX`（使用本课主题）。 |
 | `WHERE id = 42` | 以 `WHERE id = 42` 为例（假设每页存 100 个键、树高 3 层）： |
-| `WHERE id BETWEEN 40 AND 60` | 千万级数据只需 **3 次磁盘 IO**，这就是索引快于全表扫描的根本原因。范围查询（`WHERE id BETWEEN 40 AND 60`）在叶子节点沿链表顺序读取，因此范围扫描同样高效。 |
-| `WHERE city = '上海'` | \| `WHERE city = '上海'` \| 走 \| 索引列直接比较 \| |
+| `WHERE id BETWEEN 40 AND 60` | 千万级数据只需 **3 次磁盘 IO**，这就是本课主题快于全表扫描的根本原因。范围查询（`WHERE id BETWEEN 40 AND 60`）在叶子节点沿链表顺序读取，因此范围扫描同样高效。 |
+| `WHERE city = '上海'` | \| `WHERE city = '上海'` \| 走 \| 本课主题列直接比较 \| |
 | `WHERE YEAR(created_at) = 2024` | \| `WHERE YEAR(created_at) = 2024` \| 不走 \| 列上有函数，改为 `created_at >= '2024-01-01' AND created_at < '2025-01-01'… |
-| `WHERE name LIKE '%明'` | \| `WHERE name LIKE '%明'` \| 不走 \| 前缀未知，改为 `LIKE '明%'` 或用全文索引 \| |
-| `LIKE '明%'` | \| `WHERE name LIKE '%明'` \| 不走 \| 前缀未知，改为 `LIKE '明%'` 或用全文索引 \| |
+| `WHERE name LIKE '%明'` | \| `WHERE name LIKE '%明'` \| 不走 \| 前缀未知，改为 `LIKE '明%'` 或用全文本课主题 \| |
+| `LIKE '明%'` | \| `WHERE name LIKE '%明'` \| 不走 \| 前缀未知，改为 `LIKE '明%'` 或用全文本课主题 \| |
 | `WHERE phone = 13800000000` | \| `WHERE phone = 13800000000`（phone 是字符串） \| 可能不走 \| 隐式类型转换，改为 `phone = '13800000000'` \| |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：下面这段 Python 代码复现了“索引”中 索引、B+树、复合索引 相关的一个常见故障，哪一项最准确地解释了问题？
 
-### 追问 1：数据库索引主要用来加速哪类操作？
+- **判断依据**：结合索引、B+树来看，正确答案是「默认参数 bucket=[] 只在定义时创建一次，两次调用共享同一个列表」。结合本课主题、B+树来看，正确答案是「默认参数 bucket=[] 只在定义时创建一次，两次调用共享同一个列表」。正确答案是默认参数 bucket=[] 只在定义时创建一次，两次调用共享同一个列表（index 第 1 题）。
 
-**参考回答**：正确答案是「查询数据」，本课在「覆盖索引与索引下推」中说明：建议列表查询只取需要的列，并为高频组合建复合索引。索引把全表扫描变成有序查找，显著加速查询。本课还在「索引解决什么问题」中说明：没有索引时，数据库只能全表扫描，逐行比对。本课还在「索引解决什么问题」中说明：索引就像书的目录，让数据库快速定位到目标数据，把 O(n) 的查找降到 O(log n)。
+### 考点 2：围绕“索引”中的 索引、B+树、复合索引，下列哪两项是本课强调的实践判断？
 
-### 追问 2：关系型数据库常用的 B+ 树索引，其叶子节点有什么特点？
+- **判断依据**：正确答案包括「学习 索引 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 B+树 时要固定版本并覆盖边界输入，结论才可复现」。本题应选学习 本课主题 时要同时说明输入、输出和失败路径（index 第 2 题）。在本课主题里，判断 B+树 时要固定版本与边界输入，所以“验证 B+树 时要固定版本并覆盖边界输入，结论才可复现”才可复现。解题的关键不是记住孤立术语，而是确认学习 本课主题 时要同时说明输入、输出和失败路径，不能只看正常流程。
 
-**参考回答**：正确答案是「按顺序用链表相连，便于范围查询」，本课在「B+ 树索引」中说明：所有数据都在叶子节点，且按顺序用链表相连。B+ 树所有键都在叶子节点，叶子之间用链表相连，因此范围查询和排序效率很高。本课还在「B+ 树索引」中说明：主流关系型数据库的索引底层多用 B+ 树。本课还在「B+ 树查找过程示例」中说明：范围查询（WHERE id BETWEEN 40 AND 60）在叶子节点沿链表顺序读取，因此范围扫描同样高效。
+### 考点 3：为什么 WHERE name LIKE '%明' 通常用不上普通索引？
 
-### 追问 3：为什么 WHERE name LIKE '%明' 通常用不上普通索引？
+- **判断依据**：符合题干条件的是「模糊匹配以 % 开头」。普通 B+ 树本课主题按前缀有序，以 % 开头相当于前缀未知，只能全表扫描。正确的判断需要逐项核对定义、版本和适用条件（index 第 3 题）。如果只凭关键词作答，很容易把「本课主题只支持数字列」、「中文无法建本课主题」与「模糊匹配以 % 开头」混在一起；正确的判断需要逐项核对定义、版本和适用条件（index 第 3 题）。
 
-**参考回答**：正确答案是「模糊匹配以 % 开头」，本课在「覆盖索引与索引下推」中说明：建议列表查询只取需要的列，并为高频组合建复合索引。普通 B+ 树索引按前缀有序，以 % 开头相当于前缀未知，只能全表扫描。本课还在「用 EXPLAIN 验证」中说明：关注是否出现 SCAN TABLE（全表扫描）或 SEARCH ... USING INDEX（使用索引）。本课还在「排查速查」中说明：EXPLAIN 中值得警惕的信号：type=ALL（全表扫描）、key=NULL（没用索引）、rows 远大于预期、Extra 出现 Using filesort 或 Using temporary。
+### 考点 4：联合索引 (a, b, c) 上，只对 b 做条件查询能否用上该索引？
 
-### 追问 4：联合索引 (a, b, c) 上，只对 b 做条件查询能否用上该索引？
+- **判断依据**：结论应落在「一般用不上（最左前缀原则）」。B+ 树按 (a, b, c) 顺序排序，跳过 a 就无法定位区间。这道题要求区分概念与边界，「一般用不上（最左前缀原则）」只有在题干给出的前提下才成立，而「取决于表的数据量」、「一定能用上」缺少同一组条件。
 
-**参考回答**：正确答案是「一般用不上（最左前缀原则）」，本课在「索引的代价」中说明：一般只为高频查询条件、连接列、排序分组列建立索引。B+ 树按 (a, b, c) 顺序排序，跳过 a 就无法定位区间。本课还在「索引解决什么问题」中说明：没有索引时，数据库只能全表扫描，逐行比对。本课还在「索引解决什么问题」中说明：索引就像书的目录，让数据库快速定位到目标数据，把 O(n) 的查找降到 O(log n)。
+### 考点 5：覆盖索引带来的直接好处是？
 
-### 追问 5：覆盖索引带来的直接好处是？
+- **判断依据**：正确答案是「查询所需字段都在索引里」。EXPLAIN 中 Extra 出现 Using index 就表示用到了覆盖本课主题。其他选项：覆盖本课主题让查询所需字段都在本课主题里，无需回表。判断这类题时，要把「查询所需字段都在本课主题里」放回题干限定的对象、输入和边界，「减少本课主题数量」、「提升写入速度」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：EXPLAIN 中 Extra 出现 Using index 就表示用到了覆盖索引。其他选项：覆盖索引让查询所需字段都在索引里，无需回表。针对「覆盖索引带来的直接好处是，」，本课在「覆盖索引与索引下推」中说明：覆盖索引：查询需要的列全部包含在索引中，无需回表。本课还在「什么时候索引会失效」中说明：改写建议：把运算移到常量一侧，或使用覆盖索引、全文索引。本课还在「覆盖索引与索引下推」中说明：出现 Using index 表示覆盖索引。
+### 考点 6：补全代码：「索引」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+
+`SELECT * FROM students WHERE YEAR(____) = 2024;`
+
+- **判断依据**：空格应填写「created_at」。围绕 补全代码：本课主题示例中，下面这行代码缺少哪个关键字或函数名（index 第 6 题）。请填入… 作答时，先用索引建立输入与输出的基线，再把createdat代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「created_at」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
 
 ## English Overview
 
@@ -434,11 +348,9 @@ CREATE INDEX idx_name_age ON students(name, age);
 
 **Summary:** B+ trees, leftmost prefix and when indexes fail.
 
-**Category:** Database  
-**Level:** 进阶  
-**Key terms:** 索引, B+树, 复合索引, 最左前缀, EXPLAIN
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
+**Category:** Database
+**Level:** 进阶
+**Key terms:** 本课主题, B+树, 复合本课主题, 最左前缀, EXPLAIN
 
 ## 内容元数据
 
@@ -447,9 +359,8 @@ CREATE INDEX idx_name_age ON students(name, age);
 - 学习阶段：进阶
 - 适用环境：PostgreSQL / MySQL / SQLite 等主流数据库
 - 内容来源：内置结构化课程与工程实践整理
-- 相关主题：索引、B+树、复合索引、最左前缀、EXPLAIN
+- 相关主题：本课主题、B+树、复合本课主题、最左前缀、EXPLAIN
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
-
 
 ## Full English Study Guide
 
@@ -460,60 +371,23 @@ CREATE INDEX idx_name_age ON students(name, age);
 ### Learning Outcomes
 
 - Explain what **Indexes** solves and when it should be used.
-- Identify inputs, outputs, state and failure boundaries.
-- Build a minimal reproducible example and observe the real result.
-- Test normal, boundary and failure paths.
-- Measure performance, resource cost or security impact before optimizing.
-- Document the decision, rollback path and remaining uncertainty.
 
 ### Core Mental Model
 
-1. **Problem first:** define the exact problem before choosing a tool or pattern.
-2. **Smallest example:** reduce the system to one input and one observable output.
-3. **State and flow:** trace how data, control or responsibility moves through the system.
-4. **Boundaries:** identify invalid input, resource limits, timeouts and permission edges.
-5. **Evidence:** use tests, logs, metrics or reproductions instead of intuition.
-6. **Trade-offs:** compare correctness, latency, cost, complexity and operability.
-
 ### Step-by-step Study Plan
-
-1. Read the Chinese lesson once and write down the main problem in one sentence.
-2. Run the smallest example and save the exact command and output.
-3. Change only one input or parameter and predict the result before running it.
-4. Introduce one failure and record how the system detects, reports and recovers.
-5. Write one test or checklist item for the normal, boundary and failure paths.
-6. Complete the quiz and explain every wrong answer in your own words.
 
 ### Practice Tasks
 
-- Rebuild the minimal example from an empty directory.
-- Add one boundary test and one failure test.
-- Produce a short report containing the baseline, change, result and rollback.
-
 ### Common Failure Modes
-
-- Treating a happy-path demo as production readiness.
-- Skipping boundary values and invalid inputs.
-- Optimizing before establishing a measurable baseline.
-- Hiding errors, permissions or resource limits.
 
 ### Self-check Questions
 
-1. What is the smallest observable result that proves this lesson works?
-2. What input or state is most likely to break it?
-3. Which metric or test would reveal a regression?
 4. What is the rollback path?
-5. What is the cost of using this approach at 10x scale?
-6. Which adjacent topic is most often confused with this one?
 
 ### Glossary
 
 - Topic: **Indexes**
-- Related terms: 索引, B+树, 复合索引, 最左前缀
-- Primary evidence: command output, tests, logs, metrics or reproductions
-
-> This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
-
+- Related terms: 本课主题, B+树, 复合本课主题, 最左前缀
 
 ## Bilingual Section Outline
 
@@ -521,16 +395,14 @@ CREATE INDEX idx_name_age ON students(name, age);
 | --- | --- |
 | 学习目标 | Learning objectives |
 | 前置知识 | Prerequisites |
-| 索引解决什么问题 | Index解决什么问题 |
-| B+ 树索引 | B+ 树Index |
+| 本课主题解决什么问题 | Index解决什么问题 |
+| B+ 树本课主题 | B+ 树Index |
 | 创建与使用 | 创建与使用 |
-| 什么时候索引会失效 | 什么时候Index会失效 |
-| 索引的代价 | Index的代价 |
+| 什么时候本课主题会失效 | 什么时候Index会失效 |
+| 本课主题的代价 | Index的代价 |
 | 用 EXPLAIN 验证 | 用 EXPLAIN 验证 |
 | B+ 树查找过程示例 | B+ 树查找过程示例 |
-| 索引失效实例对照 | Index失效实例对照 |
-
-> 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
+| 本课主题失效实例对照 | Index失效实例对照 |
 
 
 ## 参考资料与复核
@@ -538,13 +410,12 @@ CREATE INDEX idx_name_age ON students(name, age);
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [PostgreSQL 文档](https://www.postgresql.org/docs/) | SQL、索引与事务 |
-| [SQLite 文档](https://sqlite.org/docs.html) | 嵌入式数据库与 SQL 行为 |
+| [MySQL 文档](https://dev.mysql.com/doc/) | 关系数据库与 InnoDB |
+| [Use The Index, Luke](https://use-the-index-luke.com/) | SQL 索引与查询优化 |
+| [JDBC 事务](https://docs.oracle.com/javase/tutorial/jdbc/basics/transactions.html) | 连接事务与回滚 |
 
-> 本课主题：B+ 树、最左前缀原则，以及索引什么时候失效。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+> 「索引」的链接用于离线阅读后的延伸核对；App 不会自动联网。

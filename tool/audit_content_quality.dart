@@ -176,9 +176,9 @@ void main(List<String> args) {
     }
   }
   issues.addAll(_findPrerequisiteCycles(lessons, allIds));
-  // 模板化长句是提示性信息：全库共享的学习支架会稳定复现，
-  // 因此写进报告的 template_sentences 字段，不参与错误/警告计数。
+  // 模板化长句属于内容治理失败条件，计入警告总数并参与 CI 门禁。
   final templateNotes = _findBoilerplate(lessons);
+  issues.addAll(templateNotes);
 
   final lessonsWithoutCodeQuestion = lessons
       .where((lesson) => !lesson.hasCodeQuestion)
@@ -243,7 +243,7 @@ void main(List<String> args) {
     stdout.writeln('报告已写入 tool/reports/content_quality_report.json');
   }
 
-  if (failOnIssue && errors.isNotEmpty) {
+  if (failOnIssue && (errors.isNotEmpty || warnings.isNotEmpty)) {
     exitCode = 1;
   }
 }

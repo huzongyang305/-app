@@ -1,14 +1,14 @@
-# HTTP 基础
+# 本课主题
 
 ![HTTP 请求与响应报文结构](images/diagram_http_basics.webp)
 
-![HTTP 基础](images/remaining_http_basics.webp)
+![本课主题](images/remaining_http_basics.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：14 分钟
 
 ## 学习目标
 
-- 能用自己的话解释「HTTP 基础」解决了什么问题，而不是只背术语。
+- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
 - 能说清 「HTTP」、「状态码」、「GET」、「POST」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「网络」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -21,7 +21,6 @@
 - 本课阶段：基础。建议会读写简单代码或命令，并理解变量、输入输出等基本概念。
 - 开始前先复习：HTTP、状态码、GET。
 - 如果某一步看不懂，先记录具体卡点，完成练习后再回头读一遍。
-
 
 ## HTTP 是什么
 
@@ -125,7 +124,6 @@ curl -X POST -d '{"a":1}' \
 ## 本课小结
 理解 HTTP 的关键是四件事：**方法、URL、头部、状态码**。调试接口时，先看状态码，再看请求头，最后看响应体。
 
-
 ## 方法与状态码速查
 
 | 方法 | 语义 | 幂等 | 安全 | 典型场景 |
@@ -206,7 +204,6 @@ ETag: "abc123"
 
 ## 动手练习
 
-
 > 本课练习重点：围绕「HTTP、状态码、GET」完成复述、实验和交付，每个结果都要能被别人检查。
 
 先抓一次真实请求或画出协议交互，再注入延迟或丢包，最后解释每层变化。
@@ -215,7 +212,7 @@ ETag: "abc123"
 
 合上教程，用 3～5 句话回答：
 
-1. 「HTTP 基础」解决了什么问题？
+1. 本课主题解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「状态码」是什么关系？
 
@@ -243,79 +240,51 @@ ETag: "abc123"
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-
-
 ## 实践任务
 
-本节围绕“HTTP 基础”安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
+本节围绕本课主题安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 
 ### 任务 1：用自己的话画出结构
 
-合上教程，用 5 句话说明“HTTP 基础”解决什么问题、输入是什么、输出是什么、失败时会怎样、与相邻概念的边界在哪里。画一张流程图或状态图，把每个节点标注成“输入 / 处理 / 输出 / 失败路径”之一。
-
-**验收标准**：图里至少有 5 个节点和 1 条失败路径；每个节点都能在正文中找到依据。
-
 ### 任务 2：做一次对比实验
-
-从正文里选两个差异最小的方案，列成 4 列表格：方案、前提、代价、适用边界。然后只改变一个条件（数据规模、并发度、精度或资源上限），记录结果变化。
 
 **验收标准**：表格里两个方案的结论不能完全一样；写下“在什么条件下应该换方案”。
 
 ### 任务 3：迁移到自己的场景
 
-把“HTTP 基础”的核心方法用到你熟悉的一个真实场景，写出一份 300 字以内的实施记录：目标、步骤、验证方式、仍然不确定的问题。
-
 **验收标准**：至少有一个可复现的命令、代码片段或数据样例；结论能被别人独立检查。
-
 
 ## 故障现场
 
-这一节把“HTTP 基础”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+### 现场 1：本课的 HTTP 常规用例通过，但边界用例失败
 
-### 现场 1：“HTTP 基础”的 HTTP 常规用例通过，但边界用例失败
+**症状**：在本课的练习或生产场景里出现“本课的 HTTP 常规用例通过，但边界用例失败”。
 
-**症状**：在“HTTP 基础”的练习或生产场景里出现““HTTP 基础”的 HTTP 常规用例通过，但边界用例失败”。
-
-**复现**：准备一组最小输入，只保留触发““HTTP 基础”的 HTTP 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 HTTP 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“HTTP 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：为“HTTP 基础”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+**预防**：把“本课的 HTTP 常规用例通过，但边界用例失败”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
-**预防**：把““HTTP 基础”的 HTTP 常规用例通过，但边界用例失败”写成一条自动化用例，并在“HTTP 基础”的验收清单里保留对应检查项。
+### 现场 2：本课的 状态码 结果在两次运行之间不一致
 
+**症状**：在本课的练习或生产场景里出现“本课的 状态码 结果在两次运行之间不一致”。
 
-### 现场 2：“HTTP 基础”的 状态码 结果在两次运行之间不一致
-
-**症状**：在“HTTP 基础”的练习或生产场景里出现““HTTP 基础”的 状态码 结果在两次运行之间不一致”。
-
-**复现**：准备一组最小输入，只保留触发““HTTP 基础”的 状态码 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+**复现**：准备一组最小输入，只保留触发“本课的 状态码 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
 
 **定位**：围绕“状态码 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
 
-**修复**：固定“HTTP 基础”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
-
-**预防**：把““HTTP 基础”的 状态码 结果在两次运行之间不一致”写成一条自动化用例，并在“HTTP 基础”的验收清单里保留对应检查项。
-
+**预防**：把“本课的 状态码 结果在两次运行之间不一致”写成一条自动化用例，并在本课的验收清单里保留对应检查项。
 
 ### 现场 3：请求偶发超时，但服务端监控看起来正常
 
-**症状**：在“HTTP 基础”的练习或生产场景里出现“请求偶发超时，但服务端监控看起来正常”。
+**症状**：在本课的练习或生产场景里出现“请求偶发超时，但服务端监控看起来正常”。
 
-**复现**：准备一组最小输入，只保留触发“请求偶发超时，但服务端监控看起来正常”的必要条件，连续运行两次确认结果稳定。
-
-**定位**：围绕“DNS、建连、TLS、服务处理与响应读取混在一条耗时里，平均值掩盖了某一阶段的长尾”检查调用链、输入数据和环境配置，先验证假设再改代码。
-
-**修复**：把“HTTP 基础”的链路按阶段打点并保留 trace，先区分解析、建连、重传还是服务处理，再调整超时与重试
-
-**预防**：把“请求偶发超时，但服务端监控看起来正常”写成一条自动化用例，并在“HTTP 基础”的验收清单里保留对应检查项。
-
-
-## 深入补充：HTTP 基础 的取舍与边界
+## 深入补充：本课主题 的取舍与边界
 
 ### 一、把概念放回真实约束
 
-学习“HTTP 基础”时，最容易只记住结论而忽略前提。先写出三个约束：数据规模、时间预算、可接受的失败方式；再判断 HTTP 与 状态码 在这些约束下是否仍然成立。只要约束改变，原来的最优解就可能变成错误解。
+学习本课主题时，最容易只记住结论而忽略前提。先写出三个约束：数据规模、时间预算、可接受的失败方式；再判断 HTTP 与 状态码 在这些约束下是否仍然成立。只要约束改变，原来的最优解就可能变成错误解。
 
 | 场景 | 协议或方案 | 延迟与可靠性 | 排障入口 |
 | --- | --- | --- | --- |
@@ -326,69 +295,19 @@ ETag: "abc123"
 
 ### 二、三个容易混淆的边界
 
-1. **把“能跑”当成“正确”**：HTTP 基础 的示例通过，只说明这条输入路径可用；还要用空值、极值和并发路径验证。
 2. **把“平均值”当成“全部”**：HTTP 的指标好看，不代表尾部请求、冷启动或失败重试也好看。
 3. **把“当前版本”当成“永久行为”**：状态码 依赖的默认值、API 或性能特征都可能随版本变化，需要固定版本并保留回归用例。
 
 ### 三、一个生产场景
 
-假设团队要在真实系统里使用“HTTP 基础”：第一周先做小流量验证，记录 HTTP 的基线与异常；第二周扩大输入规模，观察 状态码 是否成为瓶颈；第三周再做故障演练，主动注入超时、重复请求和依赖不可用，确认系统能降级、能重试、能恢复。每一步都要留下指标、日志和结论，而不是只留下“感觉更快了”。
+假设团队要在真实系统里使用本课主题：第一周先做小流量验证，记录 HTTP 的基线与异常；第二周扩大输入规模，观察 状态码 是否成为瓶颈；第三周再做故障演练，主动注入超时、重复请求和依赖不可用，确认系统能降级、能重试、能恢复。每一步都要留下指标、日志和结论，而不是只留下“感觉更快了”。
 
 ### 四、自测清单
 
-- 能否用一句话说出“HTTP 基础”解决的核心问题与不适用场景？
+- 能否用一句话说出本课主题解决的核心问题与不适用场景？
 - 能否画出 HTTP 的数据流或状态变化，并标出失败路径？
 - 能否给出一个反例，证明某个看似合理的结论在边界条件下不成立？
 - 能否写出一条可复现的验证命令，让别人独立得到相同结论？
-
-
-
-## 考点精讲：把测验题还原成判断过程
-
-本课有 5 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
-
-### 考点 1：HTTP 状态码 404 表示什么？
-
-- **正确判断**：请求的资源不存在
-- **判断依据**：正确答案是「请求的资源不存在」，本课在「状态码」中说明：5xx 服务端错误：500 内部错误、502 网关错误、503 服务不可用。404 Not Found 属于 4xx 客户端错误，表示服务器找不到请求的资源。本课还在「排查速查」中说明：调试顺序：先看状态码 → 再看请求头（Authorization、Content-Type、Cookie）→ 最后看请求体与响应体。本课还在「HTTP 是什么」中说明：HTTP（超文本传输协议）是浏览器与服务器之间的应用层通信协议，采用请求 / 响应模型：客户端发一个请求，服务器返回一个响应。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 2：下面哪个 HTTP 方法是幂等的？
-
-- **正确判断**：GET
-- **判断依据**：GET 重复执行不会改变资源状态，是幂等方法。POST 通常会创建新资源，不幂等。针对「下面哪个 HTTP 方法是幂等的，」，本课在「本课小结」中说明：理解 HTTP 的关键是四件事：方法、URL、头部、状态码。本课还在「本课小结」中说明：调试接口时，先看状态码，再看请求头，最后看响应体。本课还在「排查速查」中说明：调试顺序：先看状态码 → 再看请求头（Authorization、Content-Type、Cookie）→ 最后看请求体与响应体。
-- **迁移检查**：把题干里的一个条件换成边界值，原来的结论还成立吗？写出判断过程。
-
-### 考点 3：HTTP 是无状态的，浏览器通常靠什么维持登录状态？
-
-- **正确判断**：Cookie 与 Session
-- **判断依据**：正确答案是「Cookie 与 Session」，本课在「无状态与 Cookie」中说明：为了维持登录状态，常用机制是 Cookie + Session 或 Token。服务器通过 Set-Cookie 下发会话标识，浏览器后续请求自动携带 Cookie，从而识别用户。本课还在「无状态与 Cookie」中说明：HTTP 本身是无状态的，服务器默认不记得你上次是谁。本课还在「无状态与 Cookie」中说明：浏览器后续请求会自动带上 Cookie: sessionid=abc123。
-- **迁移检查**：遮住选项，只根据定义复述一次答案，再回来看哪个选项与复述一致。
-
-### 考点 4：POST 与 PUT 的典型区别是？
-
-- **正确判断**：PUT 通常幂等且用于全量更新
-- **判断依据**：正确答案是「PUT 通常幂等且用于全量更新」，本课在「本课小结」中说明：调试接口时，先看状态码，再看请求头，最后看响应体。幂等性意味着重复调用结果一致，这是接口设计的重要区分点。本课还在「本课小结」中说明：理解 HTTP 的关键是四件事：方法、URL、头部、状态码。本课还在「排查速查」中说明：用 curl -i 或浏览器 Network 面板都能一次拿到这些信息。
-- **迁移检查**：如果给某个错误选项去掉一个限定词，它会不会变成正确？说明理由。
-
-### 考点 5：把一次普通 HTTP/1.1 请求与响应的大致过程调整为正确顺序。
-
-- **正确判断**：1. 建立 TCP 连接 → 2. 客户端发送请求行、请求头和请求体 → 3. 服务器返回状态码、响应头和响应体 → 4. 客户端解析响应并渲染内容
-- **判断依据**：正确答案是「建立 TCP 连接 → 客户端发送请求行、请求头和请求体 → 服务器返回状态码、响应头和响应体 → 客户端解析响应并渲染内容」，本课在「HTTP 是什么」中说明：HTTP（超文本传输协议）是浏览器与服务器之间的应用层通信协议，采用请求 / 响应模型：客户端发一个请求，服务器返回一个响应。HTTP 依赖底层传输连接。本课还在「状态码」中说明：4xx 客户端错误：400 参数错误、401 未认证、403 无权限、404 不存在。
-- **迁移检查**：把每一步的输入与输出写出来，确认上下文确实衔接。
-
-### 补充考点 1：按照「HTTP 基础」从概念到实践的讲解顺序排列下列主题。
-
-- **正确判断**：HTTP 是什么 → 请求与响应 → 常用请求方法 → 状态码
-- **判断依据**：在「HTTP 基础」中，正确顺序是：1. HTTP 是什么 → 2. 请求与响应 → 3. 常用请求方法 → 4. 状态码。「HTTP 基础」先建立概念，再解释运行机制，随后进入代码与工程实践，最后处理失败路径。在「HTTP 基础」里，如果把后一步放到前面，通常会缺少前一步产生的定义、输入或验证结果。
-
-### 补充自测（2 题）
-
-1. 围绕“HTTP 基础”中的 HTTP、状态码、GET，下列哪两项是本课强调的实践判断？
-2. 下面这段 Python 代码复现了“HTTP 基础”中 HTTP、状态码、GET 相关的一个常见故障，哪一项最准确地解释了问题？
-
-这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
-
 
 ## 本课复习清单
 
@@ -410,8 +329,6 @@ ETag: "abc123"
 
 ## 术语速查
 
-把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
-
 | 术语 | 本课语境 |
 | --- | --- |
 | `2xx` | `2xx` 成功：`200 OK`、`201 Created`、`204 No Content`。 |
@@ -427,30 +344,31 @@ ETag: "abc123"
 | `ETag: "v1"` | \| 响应 \| `ETag: "v1"` \| 资源版本指纹 \| |
 | `Last-Modified: ...` | \| 响应 \| `Last-Modified: ...` \| 资源最后修改时间（精度到秒） \| |
 
-## 面试问答与自测
+## 考点精讲
 
-下面把本课考点换成面试追问。先口述自己的答案，
-再对照参考回答检查是否遗漏了前提、边界或失败路径。
+### 考点 1：HTTP 状态码 404 表示什么？
 
-### 追问 1：HTTP 状态码 404 表示什么？
+- **判断依据**：正确答案是「请求的资源不存在」。404 Not Found 属于 4xx 客户端错误，表示服务器找不到请求的资源。判断这类题时，要把「请求的资源不存在」放回题干限定的对象、输入和边界，「需要重新认证」、「服务器内部错误」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「请求的资源不存在」，本课在「状态码」中说明：5xx 服务端错误：500 内部错误、502 网关错误、503 服务不可用。404 Not Found 属于 4xx 客户端错误，表示服务器找不到请求的资源。本课还在「排查速查」中说明：调试顺序：先看状态码 → 再看请求头（Authorization、Content-Type、Cookie）→ 最后看请求体与响应体。本课还在「HTTP 是什么」中说明：HTTP（超文本传输协议）是浏览器与服务器之间的应用层通信协议，采用请求 / 响应模型：客户端发一个请求，服务器返回一个响应。
+### 考点 2：下面哪个 HTTP 方法是幂等的？
 
-### 追问 2：下面哪个 HTTP 方法是幂等的？
+- **判断依据**：GET 重复执行不会改变资源状态，是幂等方法。围绕 下面哪个 HTTP 方法是幂等的。作答时，先用HTTP建立输入与输出的基线，再把GET代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「GET」是否完整覆盖题干的输入、输出和失败路径，并排除「CONNECT」、「PATCH」这类相邻概念。
 
-**参考回答**：GET 重复执行不会改变资源状态，是幂等方法。POST 通常会创建新资源，不幂等。针对「下面哪个 HTTP 方法是幂等的，」，本课在「本课小结」中说明：理解 HTTP 的关键是四件事：方法、URL、头部、状态码。本课还在「本课小结」中说明：调试接口时，先看状态码，再看请求头，最后看响应体。本课还在「排查速查」中说明：调试顺序：先看状态码 → 再看请求头（Authorization、Content-Type、Cookie）→ 最后看请求体与响应体。
+### 考点 3：围绕“HTTP 基础”中的 HTTP、状态码、GET，下列哪两项是本课强调的实践判断？
 
-### 追问 3：HTTP 是无状态的，浏览器通常靠什么维持登录状态？
+- **判断依据**：正确答案包括「验证 状态码 时要固定版本并覆盖边界输入，结论才可复现」、「学习 HTTP 时要同时说明输入、输出和失败路径，不能只看正常流程」。符合题干条件的是验证 状态码 时要固定版本并覆盖边界输入。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 HTTP 时必须同时交代输入、输出和失败路径，这使“学习 HTTP 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 状态码 时要固定版本与边界输入，所以“验证 状态码 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-**参考回答**：正确答案是「Cookie 与 Session」，本课在「无状态与 Cookie」中说明：为了维持登录状态，常用机制是 Cookie + Session 或 Token。服务器通过 Set-Cookie 下发会话标识，浏览器后续请求自动携带 Cookie，从而识别用户。本课还在「无状态与 Cookie」中说明：HTTP 本身是无状态的，服务器默认不记得你上次是谁。本课还在「无状态与 Cookie」中说明：浏览器后续请求会自动带上 Cookie: sessionid=abc123。
+### 考点 4：下面这段 Python 代码复现了“HTTP 基础”中 HTTP、状态码、GET 相关的一个常见故障，哪一项最准确地解释了问题？
 
-### 追问 4：POST 与 PUT 的典型区别是？
+- **判断依据**：结论应落在「循环上界多走了 1 步，最后一次访问越界（http_basics 第 4 题）；应改成 range(len(data))」（http_basics 第 4 题）。结论应落在循环上界多走了 1 步，最后一次访问越界（http_basics 第 4 题）。应改成 range(len(data))（http_basics 第 4 题）。结论应落在循环上界多走了 1 步，最后一次访问越界（httpbasics 第 4 题）。
 
-**参考回答**：正确答案是「PUT 通常幂等且用于全量更新」，本课在「本课小结」中说明：调试接口时，先看状态码，再看请求头，最后看响应体。幂等性意味着重复调用结果一致，这是接口设计的重要区分点。本课还在「本课小结」中说明：理解 HTTP 的关键是四件事：方法、URL、头部、状态码。本课还在「排查速查」中说明：用 curl -i 或浏览器 Network 面板都能一次拿到这些信息。
+### 考点 5：把一次普通 HTTP/1.1 请求与响应的大致过程调整为正确顺序。
 
-### 追问 5：把一次普通 HTTP/1.1 请求与响应的大致过程调整为正确顺序。
+- **判断依据**：正确的执行顺序是「建立 TCP 连接」 → 「客户端发送请求行、请求头和请求体」 → 「服务器返回状态码、响应头和响应体」 → 「客户端解析响应并渲染内容」。判断这类题时，要把「建立 TCP 连接 → 客户端发送请求行、请求头和请求体 → 服务器返回…」放回题干限定的对象、输入和边界，「客户端解析响应并渲染内容」、「建立 TCP 连接」 等说法虽然包含相关术语，但范围或前提与本题不一致。
 
-**参考回答**：正确答案是「建立 TCP 连接 → 客户端发送请求行、请求头和请求体 → 服务器返回状态码、响应头和响应体 → 客户端解析响应并渲染内容」，本课在「HTTP 是什么」中说明：HTTP（超文本传输协议）是浏览器与服务器之间的应用层通信协议，采用请求 / 响应模型：客户端发一个请求，服务器返回一个响应。HTTP 依赖底层传输连接。本课还在「状态码」中说明：4xx 客户端错误：400 参数错误、401 未认证、403 无权限、404 不存在。
+### 考点 6：按照「HTTP 基础」从概念到实践的讲解顺序排列下列主题。
+
+- **判断依据**：正确的执行顺序是「HTTP 是什么」 → 「请求与响应」 → 「常用请求方法」 → 「状态码」。在本课中，正确顺序是：1. HTTP 是什么 → 2. 请求与响应 → 3. 常用请求方法 → 4. 状态码。解题的关键不是记住孤立术语，而是确认「HTTP 是什么 → 请求与响应 → 常用请求方法 → 状态码」是否完整覆盖题干的输入、输出和失败路径，并排除「HTTP 是什么」、「请求与响应」这类相邻概念。
 
 ## English Overview
 
@@ -458,11 +376,9 @@ ETag: "abc123"
 
 **Summary:** Request/response, methods, status codes and cookies.
 
-**Category:** Networking  
-**Level:** 基础  
+**Category:** Networking
+**Level:** 基础
 **Key terms:** HTTP, 状态码, GET, POST, Cookie, 请求
-
-> The full tutorial is written in Chinese. This bilingual overview helps English readers identify the topic, scope and key terms before studying the detailed examples.
 
 ## 内容元数据
 
@@ -474,7 +390,6 @@ ETag: "abc123"
 - 相关主题：HTTP、状态码、GET、POST、Cookie、请求
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-
 ## Full English Study Guide
 
 ### Overview
@@ -484,60 +399,23 @@ ETag: "abc123"
 ### Learning Outcomes
 
 - Explain what **HTTP Basics** solves and when it should be used.
-- Identify inputs, outputs, state and failure boundaries.
-- Build a minimal reproducible example and observe the real result.
-- Test normal, boundary and failure paths.
-- Measure performance, resource cost or security impact before optimizing.
-- Document the decision, rollback path and remaining uncertainty.
 
 ### Core Mental Model
 
-1. **Problem first:** define the exact problem before choosing a tool or pattern.
-2. **Smallest example:** reduce the system to one input and one observable output.
-3. **State and flow:** trace how data, control or responsibility moves through the system.
-4. **Boundaries:** identify invalid input, resource limits, timeouts and permission edges.
-5. **Evidence:** use tests, logs, metrics or reproductions instead of intuition.
-6. **Trade-offs:** compare correctness, latency, cost, complexity and operability.
-
 ### Step-by-step Study Plan
-
-1. Read the Chinese lesson once and write down the main problem in one sentence.
-2. Run the smallest example and save the exact command and output.
-3. Change only one input or parameter and predict the result before running it.
-4. Introduce one failure and record how the system detects, reports and recovers.
-5. Write one test or checklist item for the normal, boundary and failure paths.
-6. Complete the quiz and explain every wrong answer in your own words.
 
 ### Practice Tasks
 
-- Rebuild the minimal example from an empty directory.
-- Add one boundary test and one failure test.
-- Produce a short report containing the baseline, change, result and rollback.
-
 ### Common Failure Modes
-
-- Treating a happy-path demo as production readiness.
-- Skipping boundary values and invalid inputs.
-- Optimizing before establishing a measurable baseline.
-- Hiding errors, permissions or resource limits.
 
 ### Self-check Questions
 
-1. What is the smallest observable result that proves this lesson works?
-2. What input or state is most likely to break it?
-3. Which metric or test would reveal a regression?
 4. What is the rollback path?
-5. What is the cost of using this approach at 10x scale?
-6. Which adjacent topic is most often confused with this one?
 
 ### Glossary
 
 - Topic: **HTTP Basics**
 - Related terms: HTTP, 状态码, GET, POST
-- Primary evidence: command output, tests, logs, metrics or reproductions
-
-> This guide is an English study companion for the detailed Chinese lesson. It covers the learning path, mental model and acceptance questions; code examples and engineering details remain in the main tutorial.
-
 
 ## Bilingual Section Outline
 
@@ -554,21 +432,18 @@ ETag: "abc123"
 | 排查速查 | 排查速查 |
 | 缓存头的实际协商过程 | Cache头的实际协商过程 |
 
-> 该大纲把每个中文小节映射为英文标题，配合 Full English Study Guide 使用。
-
 
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
 - 下次复核：2027-04-04
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档与标准；本课正文为离线教学重组，不复制原文
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [RFC Editor](https://www.rfc-editor.org/) | 互联网协议标准 |
-| [MDN HTTP](https://developer.mozilla.org/docs/Web/HTTP) | HTTP 语义与浏览器行为 |
+| [RFC 9110 HTTP 语义](https://www.rfc-editor.org/rfc/rfc9110) | HTTP 方法、状态与缓存 |
+| [MDN HTTP](https://developer.mozilla.org/docs/Web/HTTP) | 浏览器视角的 HTTP |
+| [RFC 9112 HTTP/1.1](https://www.rfc-editor.org/rfc/rfc9112) | HTTP/1.1 报文与连接 |
 
-> 本课主题：请求响应模型、方法、状态码与 Cookie。
-
-> App 完全离线展示文字链接，不会自动联网；需要延伸阅读时可复制链接到浏览器。
+> 「HTTP 基础」的链接用于离线阅读后的延伸核对；App 不会自动联网。
