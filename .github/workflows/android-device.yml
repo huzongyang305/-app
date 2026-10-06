@@ -37,9 +37,11 @@ jobs:
           profile: pixel_7
           emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect
           disable-animations: true
-          # --no-dds：模拟器上启动 Dart Development Service 偶发失败会直接判为
-          # 测试加载失败，关掉它可以让冒烟测试只关注 App 本身。
-          script: flutter test integration_test/app_smoke_test.dart -d emulator-5554 --no-pub --no-dds
+          # 关闭 DDS 会让 integration_test 的金标流监听失败，因此保留 DDS，
+          # 只对偶发的 DDS 启动失败做一次重试。
+          script: |
+            flutter test integration_test/app_smoke_test.dart -d emulator-5554 --no-pub \
+              || flutter test integration_test/app_smoke_test.dart -d emulator-5554 --no-pub
       - name: Run Android performance baseline
         uses: ReactiveCircus/android-emulator-runner@v2
         with:
@@ -51,7 +53,7 @@ jobs:
           disable-animations: true
           script: |
             flutter test integration_test/app_performance_test.dart -d emulator-5554 --no-pub \
-              --no-dds > performance-${{ matrix.api-level }}.log 2>&1
+              > performance-${{ matrix.api-level }}.log 2>&1
             status=$?
             cat performance-${{ matrix.api-level }}.log
             exit $status
