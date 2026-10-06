@@ -251,7 +251,7 @@ flutter build apk --release
 > 导致 release 编译仍引用 debug 专用的 `integration_test` 插件而失败。
 > 先 `flutter pub get`，再执行不带 `--no-pub` 的构建命令即可。
 
-产物与实测体积（v1.3.3+13，本机 Flutter 3.13+ / AGP 9 环境）：
+产物与实测体积（v1.4.1+15，本机 Flutter 3.13+ / AGP 9 环境）：
 
 | 命令 | 产物 | 体积 |
 | --- | --- | ---: |
@@ -290,7 +290,7 @@ APK 权限仅 `POST_NOTIFICATIONS` / `RECEIVE_BOOT_COMPLETED` / `VIBRATE`，
 
 `pubspec.yaml` 的 `version: 主.次.修订+构建号` 是唯一版本来源：
 
-- `versionName` = `主.次.修订`（当前 `1.3.3`），对用户可见；
+- `versionName` = `主.次.修订`（当前 `1.4.1`），对用户可见；
 - `versionCode` = `+` 后的构建号，每次分发新版本必须**严格递增**；
 - 使用 `--split-per-abi` 时 Flutter 会按 ABI 自动叠加偏移，无需手工维护。
 
@@ -303,7 +303,7 @@ APK 权限仅 `POST_NOTIFICATIONS` / `RECEIVE_BOOT_COMPLETED` / `VIBRATE`，
 
 ```bash
 flutter analyze     # 静态检查（当前 0 issue）
-flutter test        # 199 项：内容完整性 + 端到端流程 + 金图视觉回归 + 备份/迁移/沙箱测试
+flutter test        # 260 项：内容完整性 + 端到端流程 + 金图视觉回归 + 备份/迁移/沙箱测试
 dart tool/verify_sandbox_harness.dart   # 多语言沙箱离线校验（需本机有 Edge/Chrome）
 dart tool/check_brand_assets.dart       # 图标/启动页资源自检
 dart tool/check_apk_size.dart build/app/outputs/flutter-apk/app-release.apk 90   # APK 体积门禁
