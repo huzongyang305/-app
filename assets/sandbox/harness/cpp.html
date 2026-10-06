@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<pre id="sandbox-output" hidden></pre>
+<script>/*__COMMON__*/</script>
+<script>/*__RUNTIME_1__*/</script>
+<script>
+(function () {
+  // C / C++ 教学子集：JSCPP 解释器。
+  // 兼容垫片：JSCPP 不能解析 (void) 形参列表，也不支持 std:: 限定名，
+  // 这里在送入解释器前做等价改写，让课程里的示例能直接运行。
+  function applyShims(source) {
+    var code = String(source).replace(/\(\s*void\s*\)/g, '()');
+    if (code.indexOf('std::') >= 0) {
+      code = code.replace(/std::/g, '');
+      if (!/using\s+namespace\s+std/.test(code)) {
+        code = code.replace(
+          /(#include\s*<iomanip>|#include\s*<iostream>)/,
+          '$1\nusing namespace std;'
+        );
+      }
+    }
+    return code;
+  }
+
+  // 把解释器抛出的原始错误翻译成学习者能看懂的中文提示。
+  function explain(error) {
+    var text = String(error && error.message ? error.message : error);
+    var library = text.match(/cannot find library:\s*([^\s]+)/);
+    if (library) {
+      return '沙箱运行的是 C/C++ 教学子集，暂不支持 <' + library[1] +
+        '> 这类标准库（STL 容器、算法、线程等）。';
+    }
+    if (/Time limit exceeded/i.test(text)) {
+      return '运行超时：请检查是否有死循环或过大的循环次数。';
+    }
+    if (/Parsing Failure/i.test(text)) {
+      return '这段代码用到了沙箱暂不支持的语法（类、模板、Lambda、std:: 限定名等）。' +
+        '沙箱支持变量、数组、函数、递归、指针、结构体与 printf / cout 等教学内容。';
+    }
+    return text;
+  }
+
+  __sandboxBegin();
+  try {
+    if (!window.JSCPP || typeof window.JSCPP.run !== 'function') {
+      __sandboxPush('Error: C/C++ 运行时加载失败');
+      __sandboxFinish();
+      return;
+    }
+    var stdinLines = window.__sandboxStdinLines();
+    if (stdinLines.length) {
+      __sandboxPush('（已预置 ' + stdinLines.length + ' 行标准输入）');
+    }
+    var buffer = '';
+    JSCPP.run(applyShims(__USER_CODE__), stdinLines.join('\n'), {
+      maxTimeout: 8000,
+      stdio: {
+        write: function (text) {
+          buffer += String(text);
+        }
+      }
+    });
+    if (buffer.length) {
+      // 去掉结尾换行，避免输出区多出空行。
+      buffer.replace(/\n$/, '').split('\n').forEach(function (line) {
+        __sandboxPush(line);
+      });
+    }
+  } catch (error) {
+    __sandboxPush('Error: ' + explain(error));
+  }
+  __sandboxFinish();
+})();
+</script>
+</body>
+</html>

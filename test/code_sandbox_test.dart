@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 import 'package:code_learn_app/models/sandbox_language.dart';
+import 'package:code_learn_app/models/sandbox_output.dart';
 import 'package:code_learn_app/screens/code_sandbox_screen.dart';
 import 'package:code_learn_app/services/code_sandbox_service.dart';
 import 'package:code_learn_app/services/settings_provider.dart';
 import 'package:code_learn_app/services/snippet_service.dart';
 import 'package:code_learn_app/services/storage_service.dart';
 import 'package:code_learn_app/theme/app_theme.dart';
+import 'package:code_learn_app/widgets/code_block.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -42,13 +46,7 @@ void main() {
   });
 
   test('新增语言都带示例库，stdin 支持标记正确', () {
-    for (final id in <String>[
-      'scheme',
-      'markdown',
-      'regex',
-      'xml',
-      'csv',
-    ]) {
+    for (final id in <String>['scheme', 'markdown', 'regex', 'xml', 'csv']) {
       final language = SandboxLanguage.fromId(id);
       expect(language.examples, isNotEmpty, reason: '$id 缺少示例');
       expect(language.sampleCode.trim(), isNotEmpty, reason: '$id 缺少默认代码');
@@ -117,6 +115,8 @@ void main() {
       SandboxLanguage.regex: 0,
       SandboxLanguage.xml: 0,
       SandboxLanguage.csv: 0,
+      SandboxLanguage.cpp: 1,
+      SandboxLanguage.bash: 1,
     };
     final common = await rootBundle.loadString(
       'assets/sandbox/harness/common.js',
@@ -150,11 +150,74 @@ void main() {
       'assets/sandbox/sqljs/sql-wasm-binary.js',
       'assets/sandbox/sucrase/sucrase.bundle.js',
       'assets/sandbox/biwascheme/biwascheme-min.js',
+      'assets/sandbox/jscpp/jscpp.bundle.js',
+      'assets/sandbox/bash/bashkit.bundle.js',
     ];
     for (final path in runtimes) {
       final content = await rootBundle.loadString(path);
       expect(content.length, greaterThan(1000), reason: '$path 内容异常');
     }
+    // Bash 运行时是二进制 WebAssembly，单独校验体积。
+    final wasm = await rootBundle.load('assets/sandbox/bash/bashkit.wasm');
+    expect(wasm.lengthInBytes, greaterThan(1000000));
+  });
+
+  test('教程代码块围栏语言能正确映射到沙箱语言', () {
+    expect(SandboxLanguage.tryFromFence('python'), SandboxLanguage.python);
+    expect(SandboxLanguage.tryFromFence('py'), SandboxLanguage.python);
+    expect(SandboxLanguage.tryFromFence('js'), SandboxLanguage.javascript);
+    expect(SandboxLanguage.tryFromFence('C++'), SandboxLanguage.cpp);
+    expect(SandboxLanguage.tryFromFence('c'), SandboxLanguage.cpp);
+    expect(SandboxLanguage.tryFromFence('bash'), SandboxLanguage.bash);
+    expect(SandboxLanguage.tryFromFence('sh'), SandboxLanguage.bash);
+    expect(SandboxLanguage.tryFromFence('sql'), SandboxLanguage.sql);
+    expect(SandboxLanguage.tryFromFence('markdown'), SandboxLanguage.markdown);
+    // 暂不支持离线编译的语言必须返回 null，界面据此给出提示。
+    expect(SandboxLanguage.tryFromFence('java'), isNull);
+    expect(SandboxLanguage.tryFromFence('csharp'), isNull);
+    expect(SandboxLanguage.tryFromFence('go'), isNull);
+    expect(SandboxLanguage.tryFromFence(''), isNull);
+  });
+
+  test('结构化表格标记会从文本中剥离并解码', () {
+    final payload = base64Encode(
+      utf8.encode(
+        '{"columns":["id","name"],"rows":[["1","小明"],["2","小红"]],'
+        '"truncated":true}',
+      ),
+    );
+    final parsed = SandboxStructuredOutput.parse(
+      'id | name\n1 | 小明\n##SANDBOX_TABLE##$payload',
+    );
+    expect(parsed.text, 'id | name\n1 | 小明');
+    expect(parsed.table, isNotNull);
+    expect(parsed.table!.columns, ['id', 'name']);
+    expect(parsed.table!.rows.length, 2);
+    expect(parsed.table!.rows[0], ['1', '小明']);
+    expect(parsed.table!.truncated, isTrue);
+  });
+
+  test('损坏的表格标记不会影响普通文本输出', () {
+    final parsed = SandboxStructuredOutput.parse(
+      'hello\n##SANDBOX_TABLE##not-base64!!',
+    );
+    expect(parsed.text, 'hello');
+    expect(parsed.table, isNull);
+  });
+
+  test('正则沙箱输入按约定解析并计算匹配位置', () {
+    final spec = SandboxRegexSpec.tryParse(
+      r'\d{4}-\d{2}-\d{2}'
+      '\ng\n订单 A: 2026-01-05 下单\n订单 B: 2025-12-31',
+    );
+    expect(spec, isNotNull);
+    expect(spec!.flags, 'g');
+    expect(spec.text, contains('订单 A'));
+    final regex = spec.compile();
+    expect(regex, isNotNull);
+    final matches = regex!.allMatches(spec.text).toList();
+    expect(matches.length, 2);
+    expect(matches.first.group(0), '2026-01-05');
   });
 
   testWidgets('沙箱页面可以切换语言并执行代码', (tester) async {
@@ -231,5 +294,50 @@ void main() {
 
     final output = tester.widget<SelectableText>(find.byType(SelectableText));
     expect(output.data, 'sum = 55');
+  });
+
+  testWidgets('教程代码块可以带着代码和语言打开沙箱', (tester) async {
+    await tester.pumpWidget(
+      ChangeNotifierProvider<SettingsProvider>(
+        create: (_) => SettingsProvider(StorageService.inMemory()),
+        child: MaterialApp(
+          theme: AppTheme.light(),
+          home: const Scaffold(
+            body: SingleChildScrollView(
+              child: CodeBlock(code: 'print("hi")', language: 'python'),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    await tester.tap(find.byIcon(Icons.terminal_rounded));
+    await tester.pumpAndSettle();
+
+    expect(find.text('代码沙箱'), findsOneWidget);
+    final field = tester.widget<TextField>(find.byType(TextField).first);
+    expect(field.controller?.text, 'print("hi")');
+  });
+
+  testWidgets('暂不支持离线执行的代码块会给出明确提示', (tester) async {
+    await tester.pumpWidget(
+      ChangeNotifierProvider<SettingsProvider>(
+        create: (_) => SettingsProvider(StorageService.inMemory()),
+        child: MaterialApp(
+          theme: AppTheme.light(),
+          home: const Scaffold(
+            body: SingleChildScrollView(
+              child: CodeBlock(code: 'class Main {}', language: 'java'),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    await tester.tap(find.byIcon(Icons.terminal_rounded));
+    await tester.pump();
+
+    expect(find.textContaining('暂不支持离线沙箱'), findsOneWidget);
+    expect(find.textContaining('当前支持'), findsOneWidget);
   });
 }

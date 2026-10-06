@@ -68,8 +68,15 @@ class MainActivity : FlutterActivity() {
     private var pendingTtsResult: MethodChannel.Result? = null
     private var activeTtsLastUtteranceId: String? = null
 
-    /** 语言 -> 页面模板 + 需要内联的运行时文件（相对 assets/sandbox）。 */
-    private data class SandboxSpec(val harness: String, val runtimes: List<String>)
+    /**
+     * 语言 -> 页面模板 + 需要内联的运行时文件（相对 assets/sandbox）。
+     * [wasm] 是需要按 base64 注入页面的 WebAssembly 二进制（Bash 使用）。
+     */
+    private data class SandboxSpec(
+        val harness: String,
+        val runtimes: List<String>,
+        val wasm: String? = null,
+    )
 
     private val specs = mapOf(
         "javascript" to SandboxSpec("javascript.html", emptyList()),
@@ -95,6 +102,12 @@ class MainActivity : FlutterActivity() {
         "regex" to SandboxSpec("regex.html", emptyList()),
         "xml" to SandboxSpec("xml.html", emptyList()),
         "csv" to SandboxSpec("csv.html", emptyList()),
+        "cpp" to SandboxSpec("cpp.html", listOf("jscpp/jscpp.bundle.js")),
+        "bash" to SandboxSpec(
+            "bash.html",
+            listOf("bash/bashkit.bundle.js"),
+            wasm = "bash/bashkit.wasm",
+        ),
     )
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
@@ -944,6 +957,14 @@ class MainActivity : FlutterActivity() {
             val marker = "/*__RUNTIME_${index + 1}__*/"
             html = html.replace(marker, escapeInlineScript(readSandboxAsset(path)))
         }
+        // WebAssembly 运行时（Bash）按 base64 注入：二进制资产在 APK 里是压缩存储的，
+        // 直接内联 base64 会让包体明显变大，因此只在执行时编码。
+        spec.wasm?.let { path ->
+            html = html.replace(
+                "/*__WASM_BASE64__*/",
+                "window.__SANDBOX_WASM_BASE64__ = ${JSONObject.quote(readSandboxAssetBase64(path))};",
+            )
+        }
         // 标准输入按行注入公共脚本，再替换用户代码，避免相互干扰。
         val commonContent = readSandboxAsset("harness/common.js").replace(
             "__SANDBOX_STDIN_ARRAY__",
@@ -963,6 +984,13 @@ class MainActivity : FlutterActivity() {
                 .bufferedReader(Charsets.UTF_8)
                 .use { it.readText() }
         }
+    }
+
+    /** 读取二进制运行时（WebAssembly）并转成 base64，不做缓存以控制常驻内存。 */
+    private fun readSandboxAssetBase64(relative: String): String {
+        val bytes = assets.open("flutter_assets/assets/sandbox/$relative")
+            .use { it.readBytes() }
+        return Base64.encodeToString(bytes, Base64.NO_WRAP)
     }
 
     /** 内联脚本里出现 </script 会提前结束标签，转义后 JS 语义不变。 */

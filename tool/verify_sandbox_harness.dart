@@ -59,6 +59,14 @@ obj.b.c;
 ''',
     ['Error:'],
   ),
+  // 输出上限：超过 2000 行时必须截断并给出明确提示，避免打满内存。
+  _SandboxCase(
+    'javascript',
+    '''
+for (let i = 0; i < 3000; i++) console.log("line " + i);
+''',
+    ['line 0', '输出已截断'],
+  ),
   _SandboxCase(
     'typescript',
     '''
@@ -218,25 +226,93 @@ print("next year =", age + 1)
     ['square(12) = 144', '(1 4 9)'],
     checkNetwork: true,
   ),
-  _SandboxCase(
-    'markdown',
-    '# 标题\n\n- 一\n- 二\n\n**粗体** 与 `code`\n',
-    ['标题 1 个', '<h1>标题</h1>', '<strong>粗体</strong>', '<ul>'],
-  ),
-  _SandboxCase(
-    'regex',
-    '\\d{4}-\\d{2}-\\d{2}\ng\n订单 A: 2026-01-05 下单',
-    ['匹配数量：1', '2026-01-05'],
-  ),
+  _SandboxCase('markdown', '# 标题\n\n- 一\n- 二\n\n**粗体** 与 `code`\n', [
+    '标题 1 个',
+    '<h1>标题</h1>',
+    '<strong>粗体</strong>',
+    '<ul>',
+  ]),
+  _SandboxCase('regex', '\\d{4}-\\d{2}-\\d{2}\ng\n订单 A: 2026-01-05 下单', [
+    '匹配数量：1',
+    '2026-01-05',
+  ]),
   _SandboxCase(
     'xml',
     '<book id="1"><title>Flutter</title><price>42.5</price><tag>移动</tag><tag>跨平台</tag></book>',
     ['XML 格式正确', 'book', '跨平台'],
   ),
+  _SandboxCase('csv', 'name,score\n"小,明",92\n小红,88\n', [
+    '共 2 行数据 / 2 列：name | score',
+    '小,明',
+    '小红',
+  ]),
   _SandboxCase(
-    'csv',
-    'name,score\n"小,明",92\n小红,88\n',
-    ['共 2 行数据 / 2 列：name | score', '小,明', '小红'],
+    'cpp',
+    '''
+#include <stdio.h>
+
+int main() {
+    int a, b;
+    scanf("%d %d", &a, &b);
+    printf("%d + %d = %d\\n", a, b, a + b);
+    return 0;
+}
+''',
+    ['3 + 4 = 7'],
+    stdin: '3 4',
+    checkNetwork: true,
+  ),
+  _SandboxCase(
+    'cpp',
+    '''
+#include <iostream>
+using namespace std;
+
+int fib(int n) { return n < 2 ? n : fib(n - 1) + fib(n - 2); }
+
+int main() {
+    for (int i = 0; i < 8; i++) cout << fib(i) << " ";
+    cout << endl;
+    return 0;
+}
+''',
+    ['0 1 1 2 3 5 8 13'],
+  ),
+  _SandboxCase(
+    'cpp',
+    '''
+#include <vector>
+int main() { return 0; }
+''',
+    ['暂不支持', 'vector'],
+  ),
+  _SandboxCase(
+    'bash',
+    '''
+#!/bin/bash
+total=0
+for i in 1 2 3 4 5; do
+  total=\$((total + i))
+done
+echo "sum=\$total"
+''',
+    ['sum=15'],
+    checkNetwork: true,
+  ),
+  _SandboxCase(
+    'bash',
+    '''
+echo "banana apple cherry" | tr ' ' '\\n' | sort
+''',
+    ['apple', 'banana', 'cherry'],
+  ),
+  _SandboxCase(
+    'bash',
+    '''
+python3 --version
+echo "exit=\$?"
+''',
+    ['command not found', 'exit=127'],
   ),
 ];
 
@@ -253,7 +329,12 @@ const _runtimes = <String, List<String>>{
   'regex': [],
   'xml': [],
   'csv': [],
+  'cpp': ['jscpp/jscpp.bundle.js'],
+  'bash': ['bash/bashkit.bundle.js'],
 };
+
+/// 需要以 base64 注入页面的 WebAssembly 运行时（与 MainActivity 的 wasm 字段一致）。
+const _wasmRuntimes = <String, String>{'bash': 'bash/bashkit.wasm'};
 
 /// 按原生层的规则组装页面：先内联运行时，再替换用户代码（避免代码里出现标记时误替换）。
 String assembleHarness({
@@ -262,6 +343,7 @@ String assembleHarness({
   required List<String> runtimes,
   required String userCode,
   String stdin = '',
+  String wasmBase64 = '',
 }) {
   var html = harness;
   for (var i = 0; i < runtimes.length; i++) {
@@ -279,14 +361,21 @@ String assembleHarness({
     '__SANDBOX_STDIN_ARRAY__',
     encodeJsArray(stdinLines(stdin)),
   );
-  html = html.replaceFirst(
-    '/*__COMMON__*/',
-    escapeInlineScript(commonContent),
-  );
+  html = html.replaceFirst('/*__COMMON__*/', escapeInlineScript(commonContent));
   if (!html.contains('__USER_CODE__')) {
     throw StateError('模板缺少标记 __USER_CODE__');
   }
-  return html.replaceFirst('__USER_CODE__', encodeJsString(userCode));
+  html = html.replaceFirst('__USER_CODE__', encodeJsString(userCode));
+  if (html.contains('/*__WASM_BASE64__*/')) {
+    if (wasmBase64.isEmpty) {
+      throw StateError('模板需要 WebAssembly 运行时，但没有提供对应二进制');
+    }
+    html = html.replaceFirst(
+      '/*__WASM_BASE64__*/',
+      'window.__SANDBOX_WASM_BASE64__ = ${jsonEncode(wasmBase64)};',
+    );
+  }
+  return html;
 }
 
 /// 标准输入按行拆分；空输入返回空列表（与 MainActivity.stdinLines 一致）。
@@ -337,19 +426,65 @@ Future<void> main(List<String> args) async {
   final fileUris = <String>[];
   final pages = <String, String>{};
   final sizes = <String, int>{};
+
+  // 无头浏览器在 load 事件后立刻 dump DOM，而 WebAssembly 运行时首次编译需要数秒。
+  // 这里让页面在加载时请求一个“慢响应”，把 load 事件推迟到编译完成之后。
+  // 只影响离线校验：App 内的 WebView 不依赖 load 事件。
+  final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
+  final extraRequests = <String>[];
+  unawaited(() async {
+    await for (final request in server) {
+      if (request.uri.path == '/__delay__') {
+        await Future<void>.delayed(const Duration(seconds: 6));
+        request.response.statusCode = HttpStatus.noContent;
+        await request.response.close();
+        continue;
+      }
+      final page = pages[request.uri.path];
+      if (page == null) {
+        // favicon 是浏览器自动请求，不算沙箱行为。
+        if (request.uri.path != '/favicon.ico') {
+          extraRequests.add(request.uri.toString());
+        }
+        request.response.statusCode = HttpStatus.notFound;
+      } else {
+        request.response.headers.contentType = ContentType(
+          'text',
+          'html',
+          charset: 'utf-8',
+        );
+        request.response.write(page);
+      }
+      await request.response.close();
+    }
+  }());
+
+  final delayTag =
+      '<img src="http://127.0.0.1:${server.port}/__delay__" alt="" '
+      'style="display:none">';
   for (var i = 0; i < _cases.length; i++) {
     final item = _cases[i];
     final harness = File('${sandboxDir.path}/harness/${item.language}.html')
         .readAsStringSync();
+    final wasmPath = _wasmRuntimes[item.language];
     final html = assembleHarness(
       harness: harness,
       common: common,
       runtimes: (_runtimes[item.language] ?? const []).map(runtime).toList(),
       userCode: item.code,
       stdin: item.stdin,
+      wasmBase64: wasmPath == null
+          ? ''
+          : base64Encode(
+              File('${sandboxDir.path}/$wasmPath').readAsBytesSync(),
+            ),
     );
+    // WASM 语言的首屏编译更慢，需要延时资源兜底。
+    final fileHtml = _wasmRuntimes.containsKey(item.language)
+        ? html.replaceFirst('<body>', '<body>\n$delayTag')
+        : html;
     final file = File('${workDir.path}/${item.language}_$i.html')
-      ..writeAsStringSync(html);
+      ..writeAsStringSync(fileHtml);
     fileUris.add(file.uri.toString());
     pages['/${item.language}$i'] = html;
     sizes[item.language] = html.length;
@@ -372,28 +507,6 @@ Future<void> main(List<String> args) async {
 
   // ② http:// 路径：确认运行时不会额外联网。
   stdout.writeln('== http:// 路径（检查额外网络请求）==');
-  final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
-  final extraRequests = <String>[];
-  unawaited(() async {
-    await for (final request in server) {
-      final page = pages[request.uri.path];
-      if (page == null) {
-        // favicon 是浏览器自动请求，不算沙箱行为。
-        if (request.uri.path != '/favicon.ico') {
-          extraRequests.add(request.uri.toString());
-        }
-        request.response.statusCode = HttpStatus.notFound;
-      } else {
-        request.response.headers.contentType = ContentType(
-          'text',
-          'html',
-          charset: 'utf-8',
-        );
-        request.response.write(page);
-      }
-      await request.response.close();
-    }
-  }());
   for (var i = 0; i < _cases.length; i++) {
     final item = _cases[i];
     if (!item.checkNetwork) continue;

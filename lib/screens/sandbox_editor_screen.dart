@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../l10n/l10n_extension.dart';
 import '../theme/app_theme.dart';
+import '../widgets/code_editor_field.dart';
 
 /// 全屏代码编辑器：横屏或长代码时使用，支持字号缩放。
 ///
@@ -64,17 +65,11 @@ class _SandboxEditorScreenState extends State<SandboxEditorScreen> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.md),
-          child: TextField(
+          child: CodeEditorField(
             controller: _controller,
             autofocus: true,
             expands: true,
-            maxLines: null,
-            minLines: null,
             textAlignVertical: TextAlignVertical.top,
-            autocorrect: false,
-            enableSuggestions: false,
-            keyboardType: TextInputType.multiline,
-            textInputAction: TextInputAction.newline,
             style: TextStyle(
               fontFamily: 'monospace',
               fontSize: 14 * _scale,

@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../l10n/l10n_extension.dart';
+import '../models/sandbox_language.dart';
+import '../screens/code_sandbox_screen.dart';
 import '../screens/fullscreen_code_screen.dart';
 import '../services/settings_provider.dart';
 import '../services/share_service.dart';
@@ -118,6 +120,16 @@ class CodeBlock extends StatelessWidget {
                   ],
                 ),
                 IconButton(
+                  tooltip: context.tr('sandboxOpenInSandbox'),
+                  visualDensity: VisualDensity.compact,
+                  icon: const Icon(
+                    Icons.terminal_rounded,
+                    size: 18,
+                    color: _codeMuted,
+                  ),
+                  onPressed: () => _openSandbox(context, source),
+                ),
+                IconButton(
                   tooltip: context.tr('fullscreenCode'),
                   visualDensity: VisualDensity.compact,
                   icon: const Icon(
@@ -203,6 +215,35 @@ class CodeBlock extends StatelessWidget {
       MaterialPageRoute<void>(
         fullscreenDialog: true,
         builder: (_) => FullscreenCodeScreen(code: code, language: language),
+      ),
+    );
+  }
+
+  /// 把教程代码块送进离线沙箱继续编辑和运行。
+  ///
+  /// 围栏语言可映射到内置运行时就直接打开；Java、C#、Go 等暂不支持离线
+  /// 执行的语言会给出明确提示，避免用户点了没有反应。
+  void _openSandbox(BuildContext context, String source) {
+    final sandboxLanguage = SandboxLanguage.tryFromFence(language);
+    if (sandboxLanguage == null) {
+      final label = CodeBlockBody.displayLanguage(language);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 4),
+          content: Text(
+            '${context.trReadArgs('sandboxUnsupportedBlock', {'lang': label})}\n'
+            '${context.trReadArgs('sandboxUnsupportedHint', {'languages': SandboxLanguage.supportedFenceNames})}',
+          ),
+        ),
+      );
+      return;
+    }
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => CodeSandboxScreen(
+          initialCode: source,
+          initialLanguageId: sandboxLanguage.id,
+        ),
       ),
     );
   }

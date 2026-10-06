@@ -46,6 +46,28 @@
     }).join('\n\n');
   }
 
+  // 结构化表格：把第一个结果集编码成 base64 JSON，Dart 侧渲染成真表格。
+  function toBase64Utf8(text) {
+    var bytes = new TextEncoder().encode(text);
+    var binary = '';
+    for (var i = 0; i < bytes.length; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return btoa(binary);
+  }
+
+  function structuredTable(result) {
+    var limit = Math.min(result.values.length, 200);
+    var rows = result.values.slice(0, limit).map(function (row) {
+      return row.map(cell);
+    });
+    return '##SANDBOX_TABLE##' + toBase64Utf8(JSON.stringify({
+      columns: result.columns.map(String),
+      rows: rows,
+      truncated: result.values.length > limit
+    }));
+  }
+
   try {
     if (typeof WebAssembly === 'undefined') {
       __sandboxPush('Error: 当前 WebView 版本过低（不支持 WebAssembly），无法运行 SQL 沙箱。');
@@ -55,7 +77,11 @@
     initSqlJs({ wasmBinary: base64ToBytes(window.SQL_WASM_BASE64).buffer }).then(function (SQL) {
       var database = new SQL.Database();
       try {
-        __sandboxPush(formatResults(database.exec(__USER_CODE__)));
+        var results = database.exec(__USER_CODE__);
+        __sandboxPush(formatResults(results));
+        if (results.length === 1) {
+          __sandboxPush(structuredTable(results[0]));
+        }
       } catch (error) {
         __sandboxPush('Error: ' + (error && error.message ? error.message : String(error)));
       } finally {

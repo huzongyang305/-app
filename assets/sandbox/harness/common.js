@@ -10,6 +10,12 @@
   var capturing = false;
   var finished = false;
 
+  // 输出上限：死循环或疯狂打印时，避免把 WebView 的内存吃满。
+  var MAX_LINES = 2000;
+  var MAX_CHARS = 200000;
+  var totalChars = 0;
+  var droppedLines = 0;
+
   function stringify(value) {
     try {
       if (typeof value === 'string') return value;
@@ -27,7 +33,24 @@
   }
 
   function push(line) {
-    logs.push(String(line));
+    var text = String(line);
+    // 结构化表格标记由运行时按行数上限自行收敛，不参与文本输出上限，
+    // 否则用户先打印大量日志时会把表格数据截断，界面就退化成了纯文本。
+    if (text.indexOf('##SANDBOX_TABLE##') === 0) {
+      logs.push(text);
+      return;
+    }
+    if (logs.length >= MAX_LINES || totalChars >= MAX_CHARS) {
+      droppedLines++;
+      return;
+    }
+    var room = MAX_CHARS - totalChars;
+    if (text.length > room) {
+      text = text.slice(0, room) + '…（本行过长已截断）';
+      droppedLines++;
+    }
+    totalChars += text.length + 1;
+    logs.push(text);
   }
 
   window.__sandboxStringify = stringify;
@@ -61,6 +84,11 @@
     if (finished) return;
     finished = true;
     var text = logs.join('\n');
+    if (droppedLines > 0) {
+      var notice = '…… 输出已截断：还有 ' + droppedLines + ' 行未显示（上限 ' +
+        MAX_LINES + ' 行 / ' + (MAX_CHARS / 1000) + ' 千字符）。';
+      text = text ? text + '\n' + notice : notice;
+    }
     var pre = document.getElementById('sandbox-output');
     if (pre) pre.textContent = text;
     try {

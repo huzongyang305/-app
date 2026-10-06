@@ -13,6 +13,8 @@ import '../services/snippet_service.dart';
 import '../services/settings_provider.dart';
 import '../services/storage_service.dart';
 import '../theme/app_theme.dart';
+import '../widgets/code_editor_field.dart';
+import '../widgets/sandbox_output_panel.dart';
 import 'sandbox_editor_screen.dart';
 
 /// 离线多语言代码沙箱：选语言 → 写代码 / 填标准输入 → 运行 → 看输出。
@@ -46,6 +48,9 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
   SnippetService? _snippets;
   String _output = '';
   bool _running = false;
+
+  /// 每次运行的令牌：用户中途停止或连续运行多次时，只接受最新一次的结果。
+  int _runToken = 0;
 
   @override
   void initState() {
@@ -95,6 +100,7 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
       return;
     }
     FocusScope.of(context).unfocus();
+    final token = ++_runToken;
     setState(() {
       _running = true;
       _output = '';
@@ -104,10 +110,23 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
       _code.text,
       stdin: _language.supportsStdin ? _stdin.text : '',
     );
-    if (!mounted) return;
+    if (!mounted || token != _runToken) return;
     setState(() {
       _running = false;
       _output = output;
+    });
+  }
+
+  /// 停止运行：销毁 WebView，并让正在等待的旧结果失效。
+  Future<void> _stop() async {
+    if (!_running) return;
+    final stopped = context.trRead('sandboxStopped');
+    _runToken++;
+    await CodeSandboxService.destroy();
+    if (!mounted) return;
+    setState(() {
+      _running = false;
+      _output = stopped;
     });
   }
 
@@ -144,6 +163,7 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
   }
 
   Future<void> _copy(String text, String messageKey) async {
+    if (text.isEmpty) return;
     await Clipboard.setData(ClipboardData(text: text));
     if (!mounted) return;
     ScaffoldMessenger.of(context)
@@ -160,9 +180,8 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
       await _copy(_code.text, 'codeCopied');
       return;
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(context.trRead('sandboxShared'))),
-    );
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(context.trRead('sandboxShared'))));
   }
 
   Future<void> _openFullscreen(SettingsProvider settings) async {
@@ -305,9 +324,7 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
                           );
                           return ListTile(
                             leading: Icon(
-                              snippet.favorite
-                                  ? Icons.star
-                                  : Icons.code,
+                              snippet.favorite ? Icons.star : Icons.code,
                               color: snippet.favorite
                                   ? AppPalette.warning
                                   : theme.colorScheme.primary,
@@ -536,14 +553,10 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
               ),
             ],
           ),
-          TextField(
+          CodeEditorField(
             controller: _code,
             minLines: 10,
             maxLines: 22,
-            autocorrect: false,
-            enableSuggestions: false,
-            keyboardType: TextInputType.multiline,
-            textInputAction: TextInputAction.newline,
             style: TextStyle(
               fontFamily: 'monospace',
               fontSize: 13 * scale,
@@ -610,19 +623,21 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
           Row(
             children: [
               Expanded(
-                child: FilledButton.icon(
-                  onPressed: _running ? null : _run,
-                  icon: _running
-                      ? const SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : const Icon(Icons.play_arrow),
-                  label: Text(
-                    context.tr(_running ? 'sandboxRunning' : 'sandboxRun'),
-                  ),
-                ),
+                child: _running
+                    ? FilledButton.icon(
+                        onPressed: _stop,
+                        style: FilledButton.styleFrom(
+                          backgroundColor: theme.colorScheme.error,
+                          foregroundColor: theme.colorScheme.onError,
+                        ),
+                        icon: const Icon(Icons.stop_rounded),
+                        label: Text(context.tr('sandboxStop')),
+                      )
+                    : FilledButton.icon(
+                        onPressed: _run,
+                        icon: const Icon(Icons.play_arrow),
+                        label: Text(context.tr('sandboxRun')),
+                      ),
               ),
               const SizedBox(width: 8),
               IconButton.filledTonal(
@@ -657,31 +672,20 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
                 visualDensity: VisualDensity.compact,
                 onPressed: _output.isEmpty
                     ? null
-                    : () => _copy(_output, 'sandboxOutputCopied'),
+                    : () => _copy(
+                        SandboxOutputPanel.plainText(_output),
+                        'sandboxOutputCopied',
+                      ),
                 icon: const Icon(Icons.copy, size: 18),
               ),
             ],
           ),
           const SizedBox(height: 4),
-          Container(
-            width: double.infinity,
-            constraints: const BoxConstraints(minHeight: 140),
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: AppPalette.slate900,
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: SelectableText(
-              _output.isEmpty ? context.tr('sandboxNoOutput') : _output,
-              style: TextStyle(
-                color: _output.isEmpty
-                    ? AppPalette.slate500
-                    : AppPalette.slate200,
-                fontFamily: 'monospace',
-                fontSize: 13 * scale,
-                height: 1.5,
-              ),
-            ),
+          SandboxOutputPanel(
+            language: _language,
+            output: _output,
+            source: _code.text,
+            fontSize: 13 * scale,
           ),
         ],
       ),

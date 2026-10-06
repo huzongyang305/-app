@@ -22,7 +22,7 @@
 - **自动备份（1.3）**：授权一个 SAF 文件夹后可每天 / 每周自动写入备份，自动保留最近 3 / 5 / 10 份并清理旧文件，全程离线
 - 收藏知识点、写本地笔记；笔记支持标签、跨课程搜索、Markdown 预览、编辑删除与一键导出到剪贴板
 - **代码块增强（P1）**：全屏阅读、一键复制、系统分享（不可用时自动回退复制）、字号调节与自动换行开关，设置会持久化
-- **多语言代码沙箱（1.3）**：JavaScript / TypeScript / Python / Lua / SQL / JSON / Scheme / Markdown / 正则 / XML / CSV 共 11 种语言，运行时全部内置、完全离线；支持标准输入、示例库、片段收藏与全屏编辑
+- **多语言代码沙箱（1.3.2）**：JavaScript / TypeScript / Python / Lua / SQL / JSON / Scheme / Markdown / 正则 / XML / CSV / C / C++ / Bash 共 13 种语言，运行时全部内置、完全离线；支持标准输入、示例库、片段收藏、全屏编辑、运行中停止、代码自动缩进与括号补全；教程代码块可一键「在沙箱打开」
 - **离线朗读（P2）**：教程页可用系统内置 TTS 朗读正文，代码块自动折叠成简短提示；没有可用语音引擎时给出明确提示，全程不联网
 - **交互式演示（P2）**：二分查找、冒泡 / 插入 / 选择排序、栈与队列的分步动画，以及 HTTP 请求链路、数据库事务隔离的时间线演示，自动尊重系统「减少动画」设置
 - **英文正文（P2）**：55 篇课程提供完整英文正文，其余课程提供英文概览与英文学习指南；语言开关会显示当前完整英文覆盖数量
@@ -79,7 +79,7 @@
 
 ## 代码沙箱
 
-「工具 → 代码沙箱」可以离线运行 11 种语言，运行时全部随 APK 打包（约 7.9 MB，压缩后进包约 2.2 MB）：
+「工具 → 代码沙箱」可以离线运行 13 种语言，运行时全部随 APK 打包（约 15 MB，按 APK 压缩后实际增量见下方体积门禁）：
 
 | 语言 | 运行时 | 说明 |
 | --- | --- | --- |
@@ -87,20 +87,24 @@
 | TypeScript | sucrase（本地打包，约 530 KB） | 类型标注 / 接口 / 枚举，只转译不类型检查 |
 | Python | Brython 3.14 + 标准库 | math、json、random、datetime 等都可导入 |
 | Lua | Fengari（Lua 5.3） | 语法与常用标准库，print 输出 |
-| SQL | sql.js（SQLite，wasm 内联 base64） | 建表、插入、查询，结果以表格文本输出 |
+| SQL | sql.js（SQLite，wasm 内联 base64） | 建表、插入、查询，结果渲染成真正的数据表格 |
 | JSON | 浏览器内置 JSON | 校验并格式化 |
 | Scheme | BiwaScheme（约 370 KB） | R7RS 子集，display / map / 递归等，支持 read-line |
-| Markdown | 自写迷你渲染器 | 标题、列表、粗体、行内代码、围栏代码、引用与链接的 HTML 预览 |
-| 正则表达式 | 浏览器内置 RegExp | 第一行写表达式、第二行写 flags，其余为待匹配文本，输出匹配位置与分组 |
+| Markdown | 自写迷你渲染器 | 标题、列表、粗体、行内代码、围栏代码、引用与链接；支持「预览 / HTML 源码」切换 |
+| 正则表达式 | 浏览器内置 RegExp | 第一行写表达式、第二行写 flags，其余为待匹配文本；匹配结果在原文中高亮显示 |
 | XML | 浏览器内置 DOMParser | 语法校验并缩进打印元素树，解析失败给出错误位置 |
-| CSV | 自写解析器 | 支持引号包裹、引号内换行与 `""` 转义，输出按表头对齐的记录与 JSON 预览 |
+| CSV | 自写解析器 | 支持引号包裹、引号内换行与 `""` 转义，渲染成表格并附 JSON 预览 |
+| C / C++ | JSCPP 2.0.9（本地打包，约 393 KB） | 教学子集：变量、数组、函数、递归、指针、结构体以及 printf / cout / scanf / cin；不支持 STL 容器、类、模板与 Lambda |
+| Bash | bashkit-wasm 0.18.2（WebAssembly，约 6.8 MB） | 变量、循环、条件、函数、管道、重定向与 grep / sed / awk / sort / wc / jq 等常用命令；文件只存在于沙箱虚拟文件系统 |
 
 编辑器与输入：
 
-- **标准输入**：除 Markdown / 正则 / XML / CSV 这类「正文即输入」的语言外，其余语言都有 stdin 输入框；JavaScript 用 `readLine()`、Python 用 `input()`、Scheme 用 `read-line`，各行按顺序消费，用尽时给出明确提示；
-- **示例库**：每种语言内置 2 个可直接运行的示例，一键载入代码与配套 stdin；
+- **标准输入**：除 Markdown / 正则 / XML / CSV 这类「正文即输入」的语言外，其余语言都有 stdin 输入框；JavaScript 用 `readLine()`、Python 用 `input()`、Scheme 用 `read-line`、C / C++ 用 `scanf` / `cin`，各行按顺序消费，用尽时给出明确提示；
+- **示例库**：每种语言内置多个可直接运行的示例，一键载入代码与配套 stdin；
 - **片段库**：可把当前代码存成片段（本地保存，上限 200 条，可收藏、可删除、按语言过滤）；
-- **全屏编辑**：编辑器可全屏展开，字号在 0.8×–1.8× 之间调节并持久化，另有复制、分享、清空与重置。
+- **编辑器增强**：Tab / Shift+Tab 对当前行或选中行缩进、反缩进，回车自动继承缩进并在成对括号中间展开，`()`、`[]`、`{}` 与引号自动补全；
+- **运行控制与结构化输出**：运行中可随时「停止」并立即销毁 WebView；输出超过 2000 行 / 20 万字符自动截断并提示；SQL / CSV 渲染表格，Markdown 支持预览，正则支持匹配高亮；
+- **全屏编辑与教程联动**：编辑器可全屏展开，字号在 0.8×–1.8× 之间调节并持久化；教程代码块可一键「在沙箱打开」，暂不支持离线执行的语言会明确提示当前支持范围。
 
 实现要点：
 
@@ -108,7 +112,7 @@
 - 组装好的页面写入应用缓存目录，用 `file://` 打开（避免超大内联页面走 `data:` 通道，也便于 Brython 在 `file://` 下正常导入内置标准库）；执行结束立即销毁 WebView 并删除临时页面；
 - WebView 开启 `blockNetworkLoads`，关闭 `allowFileAccessFromFileURLs`、`allowUniversalAccessFromFileURLs` 与 DOM 存储，沙箱不联网，也不会读取 App 的其它本地文件；
 - 单次执行由原生层兜底超时 30 秒，超时自动销毁 WebView；
-- 校验脚本：`dart tool/verify_sandbox_harness.dart`（用无头 Edge 跑 21 个用例、共 30 次执行，覆盖正常输出、错误分支、标准输入与 file:// 打开方式，并对 9 个用例额外用 http:// 跑一遍确认没有额外网络请求）。
+- 校验脚本：`dart tool/verify_sandbox_harness.dart`（用无头 Edge 跑 28 个用例、共 39 次执行，覆盖正常输出、错误分支、标准输入、输出截断与 file:// 打开方式，并对 11 个用例额外用 http:// 跑一遍确认没有额外网络请求）。
 
 ## 内容来源与复核
 
@@ -246,18 +250,18 @@ flutter build apk --release
 > 导致 release 编译仍引用 debug 专用的 `integration_test` 插件而失败。
 > 先 `flutter pub get`，再执行不带 `--no-pub` 的构建命令即可。
 
-产物与实测体积（v1.2.0+9，本机 Flutter 3.13+ / AGP 9 环境）：
+产物与实测体积（v1.3.2+12，本机 Flutter 3.13+ / AGP 9 环境）：
 
 | 命令 | 产物 | 体积 |
 | --- | --- | ---: |
-| `--target-platform android-arm,android-arm64` | `app-release.apk`（ARM 双 ABI） | 82.9 MB |
-| `--split-per-abi` | `app-arm64-v8a-release.apk` | 62.8 MB |
-| | `app-armeabi-v7a-release.apk` | 60.6 MB |
-| | `app-x86_64-release.apk` | 64.3 MB |
-| `flutter build apk --release` | `app-release.apk`（3 ABI） | 105.0 MB，超过 90 MiB 门禁 |
+| `--target-platform android-arm,android-arm64` | `app-release.apk`（ARM 双 ABI） | 85.5 MiB / 门禁 90 MiB |
+| `--split-per-abi` | `app-arm64-v8a-release.apk` | 66.7 MiB / 门禁 90 MiB |
+| | `app-armeabi-v7a-release.apk` | 64.6 MiB / 门禁 90 MiB |
+| | `app-x86_64-release.apk` | 68.2 MiB / 门禁 90 MiB |
+| `flutter build apk --release` | `app-release.apk`（3 ABI） | 超过 90 MiB 门禁，仅用于本机安装验证 |
 
 体积主要来自两部分：内置课程资产约 51 MiB（534 篇 Markdown 14.7 MiB + 1059 张配图 33.4 MiB）
-与沙箱运行时等资源约 8 MiB；ARM 双 ABI 原生库约 37 MiB。
+与沙箱运行时等资源约 15 MiB；ARM 双 ABI 原生库约 37 MiB。
 CI 里有体积门禁，会对 ARM 通用包和三个 ABI 分包逐一执行
 `dart tool/check_apk_size.dart <apk> 90`。
 
@@ -285,7 +289,7 @@ APK 权限仅 `POST_NOTIFICATIONS` / `RECEIVE_BOOT_COMPLETED` / `VIBRATE`，
 
 `pubspec.yaml` 的 `version: 主.次.修订+构建号` 是唯一版本来源：
 
-- `versionName` = `主.次.修订`（当前 `1.3.1`），对用户可见；
+- `versionName` = `主.次.修订`（当前 `1.3.2`），对用户可见；
 - `versionCode` = `+` 后的构建号，每次分发新版本必须**严格递增**；
 - 使用 `--split-per-abi` 时 Flutter 会按 ABI 自动叠加偏移，无需手工维护。
 

@@ -723,11 +723,32 @@ class AppStrings {
     'toolsTitle': {'zh': '开发者工具', 'en': 'Developer tools'},
     'sandboxTitle': {'zh': '代码沙箱', 'en': 'Code sandbox'},
     'sandboxHint': {
-      'zh': '离线运行 JavaScript / TypeScript / Python / Lua / SQL，无需联网。',
-      'en': 'Run JavaScript, TypeScript, Python, Lua and SQL fully offline.',
+      'zh': '离线运行 Python / JavaScript / TypeScript / C / C++ / Bash / SQL 等 13 种运行时，无需联网。',
+      'en': 'Run Python, JavaScript, TypeScript, C, C++, Bash, SQL and 6 more runtimes fully offline.',
     },
     'sandboxRun': {'zh': '运行代码', 'en': 'Run code'},
     'sandboxRunning': {'zh': '运行中…', 'en': 'Running…'},
+    'sandboxStop': {'zh': '停止运行', 'en': 'Stop'},
+    'sandboxStopped': {'zh': '已停止运行。', 'en': 'Run stopped.'},
+    'sandboxOpenInSandbox': {'zh': '在沙箱打开', 'en': 'Open in sandbox'},
+    'sandboxUnsupportedBlock': {
+      'zh': '代码块语言「{lang}」暂不支持离线沙箱',
+      'en': 'The "{lang}" code block cannot run in the offline sandbox',
+    },
+    'sandboxUnsupportedHint': {
+      'zh': '当前支持：{languages}',
+      'en': 'Available: {languages}',
+    },
+    'sandboxMarkdownPreview': {'zh': '预览', 'en': 'Preview'},
+    'sandboxMarkdownHtml': {'zh': 'HTML 源码', 'en': 'HTML'},
+    'sandboxRegexHighlight': {'zh': '匹配高亮', 'en': 'Highlight'},
+    'sandboxRegexPlain': {'zh': '原始文本', 'en': 'Plain text'},
+    'sandboxRegexNoMatch': {'zh': '没有匹配项', 'en': 'No matches'},
+    'sandboxTableRows': {'zh': '共 {n} 行', 'en': '{n} rows'},
+    'sandboxTableTruncated': {
+      'zh': '数据较多，仅展示前 {n} 行',
+      'en': 'Showing the first {n} rows',
+    },
     'sandboxClear': {'zh': '清空代码', 'en': 'Clear code'},
     'sandboxReset': {'zh': '恢复示例代码', 'en': 'Reset sample'},
     'sandboxCopyCode': {'zh': '复制代码', 'en': 'Copy code'},
@@ -747,6 +768,8 @@ class AppStrings {
     'sandboxLangRegex': {'zh': '正则表达式', 'en': 'Regex'},
     'sandboxLangXml': {'zh': 'XML', 'en': 'XML'},
     'sandboxLangCsv': {'zh': 'CSV', 'en': 'CSV'},
+    'sandboxLangCpp': {'zh': 'C / C++', 'en': 'C / C++'},
+    'sandboxLangBash': {'zh': 'Bash', 'en': 'Bash'},
     'sandboxCodeLabel': {'zh': '代码', 'en': 'Code'},
     'sandboxStdin': {'zh': '标准输入（stdin）', 'en': 'Standard input'},
     'sandboxStdinHint': {
@@ -827,6 +850,14 @@ class AppStrings {
     'sandboxHintCsv': {
       'zh': '解析 CSV（支持引号与逗号转义），输出逐行字段与 JSON 预览。',
       'en': 'Parse CSV with quoted fields and preview rows as JSON.',
+    },
+    'sandboxHintCpp': {
+      'zh': '离线 C / C++ 教学子集：支持变量、数组、函数、递归、指针、结构体与 printf / cout，标准输入用 scanf / cin 读取；暂不支持 STL 容器、类、模板与 Lambda。',
+      'en': 'Offline C/C++ teaching subset: variables, arrays, functions, recursion, pointers, structs, printf/cout and scanf/cin. STL containers, classes, templates and lambdas are not supported.',
+    },
+    'sandboxHintBash': {
+      'zh': '离线 Bash 解释器（WebAssembly）：支持变量、循环、条件、函数、管道、重定向与常用命令（echo / printf / grep / sed / awk / sort / wc / jq 等），文件操作只在沙箱虚拟文件系统内生效。',
+      'en': 'Offline Bash interpreter (WebAssembly): variables, loops, conditions, functions, pipes, redirection and common commands (echo, grep, sed, awk, sort, wc, jq). Files live in a sandboxed virtual filesystem only.',
     },
     'toolsLocalOnly': {
       'zh': '全部在本地完成，不联网 · 共 {n} 个工具',

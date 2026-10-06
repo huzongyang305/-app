@@ -565,6 +565,149 @@ title,author,year
 ''',
       ),
     ],
+  ),
+  cpp(
+    id: 'cpp',
+    labelKey: 'sandboxLangCpp',
+    hintKey: 'sandboxHintCpp',
+    timeout: Duration(seconds: 20),
+    supportsStdin: true,
+    sampleCode: '''
+// C / C++ 教学子集：支持变量、数组、函数、递归、指针与 printf / cout
+#include <stdio.h>
+
+int main() {
+    int n = 5;
+    int sum = 0;
+    for (int i = 1; i <= n; i++) {
+        sum += i;
+    }
+    printf("1 到 %d 的和 = %d\\n", n, sum);
+    return 0;
+}
+''',
+    examples: [
+      SandboxExample(
+        title: LocalizedText(zh: '求和（读取输入）', en: 'Sum with input'),
+        stdin: '3 4',
+        code: '''
+#include <stdio.h>
+
+int main() {
+    int a, b;
+    scanf("%d %d", &a, &b);
+    printf("%d + %d = %d\\n", a, b, a + b);
+    return 0;
+}
+''',
+      ),
+      SandboxExample(
+        title: LocalizedText(zh: '冒泡排序', en: 'Bubble sort'),
+        code: '''
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a[6] = {5, 2, 4, 1, 3, 6};
+    int n = 6;
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - 1 - i; j++) {
+            if (a[j] > a[j + 1]) {
+                int t = a[j];
+                a[j] = a[j + 1];
+                a[j + 1] = t;
+            }
+        }
+    }
+    for (int i = 0; i < n; i++) cout << a[i] << " ";
+    cout << endl;
+    return 0;
+}
+''',
+      ),
+      SandboxExample(
+        title: LocalizedText(zh: '递归与指针', en: 'Recursion and pointers'),
+        code: '''
+#include <stdio.h>
+
+int fib(int n) {
+    if (n < 2) return n;
+    return fib(n - 1) + fib(n - 2);
+}
+
+void swap(int *a, int *b) {
+    int t = *a;
+    *a = *b;
+    *b = t;
+}
+
+int main() {
+    printf("fib(10) = %d\\n", fib(10));
+    int x = 1, y = 2;
+    swap(&x, &y);
+    printf("交换后 x=%d y=%d\\n", x, y);
+    return 0;
+}
+''',
+      ),
+    ],
+  ),
+  bash(
+    id: 'bash',
+    labelKey: 'sandboxLangBash',
+    hintKey: 'sandboxHintBash',
+    timeout: Duration(seconds: 20),
+    sampleCode: '''
+#!/bin/bash
+# 变量、循环与算术运算
+total=0
+for i in 1 2 3 4 5; do
+  total=\$((total + i))
+done
+echo "1 到 5 的和 = \$total"
+''',
+    examples: [
+      SandboxExample(
+        title: LocalizedText(zh: '管道与文本处理', en: 'Pipes and text'),
+        code: '''
+#!/bin/bash
+# 管道把上一条命令的输出交给下一条
+echo "banana apple cherry" | tr ' ' '\\n' | sort
+printf 'a\\nb\\nc\\n' | wc -l
+''',
+      ),
+      SandboxExample(
+        title: LocalizedText(zh: '函数与参数', en: 'Functions and arguments'),
+        code: '''
+#!/bin/bash
+greet() {
+  echo "你好，\$1！"
+}
+
+square() {
+  echo \$((\$1 * \$1))
+}
+
+greet 学习者
+echo "9 的平方是 \$(square 9)"
+''',
+      ),
+      SandboxExample(
+        title: LocalizedText(zh: '条件与退出码', en: 'Conditions and exit codes'),
+        code: '''
+#!/bin/bash
+score=86
+if [ "\$score" -ge 60 ]; then
+  echo "及格：\$score"
+else
+  echo "不及格：\$score"
+fi
+
+cat /tmp/不存在.txt
+echo "上一条命令的退出码：\$?"
+''',
+      ),
+    ],
   );
 
   const SandboxLanguage({
@@ -605,6 +748,64 @@ title,author,year
     }
     return null;
   }
+
+  /// Markdown 围栏语言别名 -> 沙箱语言。
+  ///
+  /// 教程里的代码块使用 ```python、```js、```c 这类围栏名，这里统一映射到
+  /// 实际可执行的沙箱运行时；没有映射的语言（Java、C#、Go 等）表示当前
+  /// 沙箱不支持离线执行，界面需要给出明确提示而不是静默失败。
+  static const Map<String, SandboxLanguage> _fenceAliases = {
+    'js': SandboxLanguage.javascript,
+    'javascript': SandboxLanguage.javascript,
+    'mjs': SandboxLanguage.javascript,
+    'node': SandboxLanguage.javascript,
+    'ts': SandboxLanguage.typescript,
+    'typescript': SandboxLanguage.typescript,
+    'py': SandboxLanguage.python,
+    'python': SandboxLanguage.python,
+    'python3': SandboxLanguage.python,
+    'lua': SandboxLanguage.lua,
+    'sql': SandboxLanguage.sql,
+    'sqlite': SandboxLanguage.sql,
+    'mysql': SandboxLanguage.sql,
+    'json': SandboxLanguage.json,
+    'jsonc': SandboxLanguage.json,
+    'scheme': SandboxLanguage.scheme,
+    'scm': SandboxLanguage.scheme,
+    'rkt': SandboxLanguage.scheme,
+    'md': SandboxLanguage.markdown,
+    'markdown': SandboxLanguage.markdown,
+    'regex': SandboxLanguage.regex,
+    'regexp': SandboxLanguage.regex,
+    'xml': SandboxLanguage.xml,
+    'csv': SandboxLanguage.csv,
+    'c': SandboxLanguage.cpp,
+    'cpp': SandboxLanguage.cpp,
+    'c++': SandboxLanguage.cpp,
+    'cc': SandboxLanguage.cpp,
+    'cxx': SandboxLanguage.cpp,
+    'h': SandboxLanguage.cpp,
+    'hpp': SandboxLanguage.cpp,
+    'sh': SandboxLanguage.bash,
+    'bash': SandboxLanguage.bash,
+    'shell': SandboxLanguage.bash,
+    'zsh': SandboxLanguage.bash,
+  };
+
+  /// 按教程代码块的围栏语言名查找可用的沙箱语言。
+  ///
+  /// 形如 `python title=...` 的围栏信息字符串只取第一个单词。
+  static SandboxLanguage? tryFromFence(String? fence) {
+    final raw = (fence ?? '').trim().toLowerCase();
+    if (raw.isEmpty) return null;
+    final token = raw.split(RegExp(r'[\s,{]+')).first;
+    return _fenceAliases[token];
+  }
+
+  /// 当前沙箱支持的语言名列表，用于「不支持」时的提示文案。
+  static String get supportedFenceNames =>
+      'Python / JavaScript / TypeScript / C / C++ / Bash / SQL / JSON / Lua / '
+      'Scheme / Markdown / 正则 / XML / CSV';
 
   static SandboxLanguage fromId(String id) =>
       tryFromId(id) ?? SandboxLanguage.javascript;

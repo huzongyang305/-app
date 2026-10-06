@@ -53,6 +53,33 @@
     });
   }
 
+  // 结构化表格：首行表头 + 前 200 行数据，Dart 侧渲染成真表格。
+  function toBase64Utf8(text) {
+    var bytes = new TextEncoder().encode(text);
+    var binary = '';
+    for (var i = 0; i < bytes.length; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return btoa(binary);
+  }
+
+  function structuredTable(header, body) {
+    var limit = Math.min(body.length, 200);
+    var rows = [];
+    for (var i = 0; i < limit; i++) {
+      var cells = [];
+      for (var c = 0; c < header.length; c++) {
+        cells.push(body[i][c] === undefined ? '' : String(body[i][c]));
+      }
+      rows.push(cells);
+    }
+    return '##SANDBOX_TABLE##' + toBase64Utf8(JSON.stringify({
+      columns: header.map(String),
+      rows: rows,
+      truncated: body.length > limit
+    }));
+  }
+
   __sandboxBegin();
   try {
     var source = String(__USER_CODE__);
@@ -94,6 +121,7 @@
       return record;
     });
     __sandboxPush(JSON.stringify(objects, null, 2));
+    __sandboxPush(structuredTable(header, body));
   } catch (error) {
     __sandboxPush('Error: ' + (error && error.stack ? error.stack : String(error)));
   }
