@@ -204,7 +204,7 @@ heap>0: true
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `GC` | Summary: Learn heap regions, GC algorithms, pauses, allocation rate and tuning.。 |
 | `堆` | 它在「JVM 垃圾回收与性能调优」里是理解「堆」的关键术语，用来解释定义、适用条件与失败路径；它与GC、停顿共同决定这一节的判断边界。复习时回到正文示例核对输入、输出和验证方式。 |

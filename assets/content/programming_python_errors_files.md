@@ -468,7 +468,7 @@ finally:
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `ValueError` | 常见异常：`ValueError` 值不合法、`TypeError` 类型不匹配、`KeyError` 字典键不存在、`IndexError` 下标越界、`FileNotFoundError` 文件不存在。 |
 | `TypeError` | 常见异常：`ValueError` 值不合法、`TypeError` 类型不匹配、`KeyError` 字典键不存在、`IndexError` 下标越界、`FileNotFoundError` 文件不存在。 |

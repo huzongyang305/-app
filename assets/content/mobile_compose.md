@@ -407,7 +407,7 @@ LazyColumn(
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `@Composable` | \| 可组合函数 \| 标注 `@Composable` 的函数，描述一段 UI \| |
 | `LaunchedEffect` | \| 副作用 \| 在组合之外执行的动作（`LaunchedEffect`、`DisposableEffect`） \| |

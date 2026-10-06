@@ -450,7 +450,7 @@ class ItemList extends StatelessWidget {
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `flutter run` | 调试技巧：`flutter run` 时按 `p` 打开布局检查器看约束；用 `debugPrint` 代替 print（长日志不被截断）；`flutter analyze` 进 CI 防低级错误。 |
 | `打开布局检查器看约束；用` | 调试技巧：`flutter run` 时按 `p` 打开布局检查器看约束；用 `debugPrint` 代替 print（长日志不被截断）；`flutter analyze` 进 CI 防低级错误。 |

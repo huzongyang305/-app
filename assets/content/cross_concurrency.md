@@ -369,7 +369,7 @@ asyncio.run(main())
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `threading.Lock` | \| Python \| `threading.Lock` \| 有 GIL，CPU 密集要改多进程 \| |
 | `synchronized` | \| Java \| `synchronized`、`AtomicInteger`、并发集合 \| 注意加锁顺序防死锁 \| |

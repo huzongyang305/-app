@@ -449,7 +449,7 @@ public class Demo {
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `break` | 用 `break` 跳出、`continue` 跳过本轮；带标签的 `break outer;` 可以跳出多层循环。 |
 | `continue` | 用 `break` 跳出、`continue` 跳过本轮；带标签的 `break outer;` 可以跳出多层循环。 |

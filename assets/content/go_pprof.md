@@ -444,7 +444,7 @@ go tool pprof http://127.0.0.1:6060/debug/pprof/goroutine
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `strings.Builder` | \| 字符串拼接耗时 \| 用 `strings.Builder` 并预分配 \| |
 | `make([]T, 0, n)` | \| 切片扩容拷贝 \| `make([]T, 0, n)` \| |

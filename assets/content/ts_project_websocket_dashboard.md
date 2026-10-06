@@ -329,7 +329,7 @@ export type MetricMessage = Extract<z.infer<typeof Message>, { type: 'metric' }>
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `TypeScript` | 用一句话说明「实战：TypeScript 实时监控面板」解决什么问题：用 TypeScript、WebSocket 和 React 实现实时指标面板，覆盖消息协议、重连和图表更新。 |
 | `WebSocket` | 用一句话说明「实战：TypeScript 实时监控面板」解决什么问题：用 TypeScript、WebSocket 和 React 实现实时指标面板，覆盖消息协议、重连和图表更新。 |

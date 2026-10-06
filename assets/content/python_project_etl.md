@@ -339,7 +339,7 @@ def load(rows, db: sqlite3.Connection):
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `ETL` | Summary: Build a repeatable CSV-to-SQLite ETL pipeline with quality checks.。 |
 | `CSV` | Summary: Build a repeatable CSV-to-SQLite ETL pipeline with quality checks.。 |

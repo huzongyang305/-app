@@ -209,7 +209,7 @@ int main() {
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `Concepts` | Summary: Constrain templates with Concepts and compose lazy pipelines with Ranges.。 |
 | `Ranges` | Summary: Constrain templates with Concepts and compose lazy pipelines with Ranges.。 |

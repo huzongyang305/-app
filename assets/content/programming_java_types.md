@@ -416,7 +416,7 @@ public class Money {
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `null` | 基本类型不能为 `null`、不能当泛型参数；包装类可以，但拆箱时若为 `null` 会抛 `NullPointerException`。 |
 | `NullPointerException` | 基本类型不能为 `null`、不能当泛型参数；包装类可以，但拆箱时若为 `null` 会抛 `NullPointerException`。 |

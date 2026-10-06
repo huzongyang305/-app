@@ -359,7 +359,7 @@ SELECT @@innodb_buffer_pool_size / 1024 / 1024 / 1024 AS pool_gb;
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `OPTIMIZE TABLE` | \| 认为 delete 立即释放磁盘 \| 空间不回收 \| 需 `OPTIMIZE TABLE` 或重建 \| |
 | `InnoDB` | 围绕“执行计划随统计信息或数据分布改变，InnoDB 的索引没有被用上，回表次数反而增加”检查调用链、输入数据和环境配置，先验证假设再改代码。 |

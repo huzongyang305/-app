@@ -370,7 +370,7 @@ ws.onclose = event => {
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `Upgrade: websocket` | \| 握手 \| 一次带 `Upgrade: websocket` 的 HTTP 请求 \| |
 | `ip_hash` | \| 负载均衡 \| 需要会话粘性时用一致性哈希或 `ip_hash` \| |

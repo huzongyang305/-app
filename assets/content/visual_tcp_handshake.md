@@ -367,7 +367,7 @@ ss -tan | awk 'NR>1 {state[$1]++} END {for (s in state) print s, state[s]}' | so
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `TIME_WAIT` | \| `TIME_WAIT` \| 主动关闭方等待一段时间，确保最后的 ACK 到达 \| |
 | `CLOSE_WAIT` | \| `CLOSE_WAIT` 堆积 \| 程序收到 FIN 却没调用 close，是代码 bug \| |

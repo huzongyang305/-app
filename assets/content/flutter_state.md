@@ -500,7 +500,7 @@ class _ItemPageState extends State<ItemPage> {
 
 把「Flutter 状态管理与性能」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `Flutter` | Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层；再配合 const、Selector 与 RepaintBoundary 控制性能。 |
 | `状态管理` | 围绕“状态管理 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。 |

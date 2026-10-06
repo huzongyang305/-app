@@ -400,7 +400,7 @@ for (const [i, v] of ["x", "y"].entries()) console.log(i, v);
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `break` | `break` 结束循环，`continue` 跳过本轮；`forEach` 中不能用 `break`，需要提前退出就用 `for...of`。 |
 | `continue` | `break` 结束循环，`continue` 跳过本轮；`forEach` 中不能用 `break`，需要提前退出就用 `for...of`。 |

@@ -258,7 +258,7 @@ print(hash_password("s3cret")[:32] + "...")
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `os.urandom` | \| 生成 \| 使用密码学安全随机源（`os.urandom`、`secrets`） \| |
 | `secrets` | \| 生成 \| 使用密码学安全随机源（`os.urandom`、`secrets`） \| |

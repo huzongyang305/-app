@@ -311,7 +311,7 @@ with DAG(
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `reschedule` | \| Sensor \| 等待上游就绪，但要用 `reschedule` 模式避免占满 worker \| |
 | `execution_timeout` | 超时与重试显式配置**：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值。 |

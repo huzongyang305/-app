@@ -335,7 +335,7 @@ tests/          单元、集成与接口测试
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `Rust` | 用一句话说明「实战：Rust + Axum REST API」解决什么问题：用 Axum、SQLx 和 Tokio 实现任务 API，覆盖异步、错误处理和集成测试。 |
 | `Axum` | 用一句话说明「实战：Rust + Axum REST API」解决什么问题：用 Axum、SQLx 和 Tokio 实现任务 API，覆盖异步、错误处理和集成测试。 |

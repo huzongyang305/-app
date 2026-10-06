@@ -353,7 +353,7 @@ def binomial_probability(n: int, k: int, p: float) -> float:
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `P(A\|B) = P(A∩B) / P(B)` | \| 条件概率 \| `P(A\\|B) = P(A∩B) / P(B)` \| |
 | `P(A∩B) = P(A\|B)·P(B)` | \| 乘法公式 \| `P(A∩B) = P(A\\|B)·P(B)` \| |

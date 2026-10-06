@@ -305,7 +305,7 @@ const payload = verifyJwt(token, publicKey, {
 
 把「图解 OAuth 2.0 授权码流程与 PKCE」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `OAuth` | 用一句话说明「图解 OAuth 2.0 授权码流程与 PKCE」解决什么问题：四种角色、授权码加 PKCE 全流程、令牌纪律与八类常见错误。 |
 | `PKCE` | Summary: Roles, authorization code with PKCE, token rules and pitfalls.。 |

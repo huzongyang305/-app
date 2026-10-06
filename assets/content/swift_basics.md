@@ -187,7 +187,7 @@
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `Swift` | Swift Basics and Optionals focuses on Learn let/var, optional binding, value types and error handling.。 |
 | `Optional` | Swift Basics and Optionals focuses on Learn let/var, optional binding, value types and error handling.。 |

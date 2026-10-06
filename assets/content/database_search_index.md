@@ -396,7 +396,7 @@ PUT /articles
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `from + size` | 深分页**问题：`from + size` 越大越慢，应改用 `search_after` 游标。 |
 | `search_after` | 深分页**问题：`from + size` 越大越慢，应改用 `search_after` 游标。 |

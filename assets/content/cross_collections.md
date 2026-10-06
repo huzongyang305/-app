@@ -366,7 +366,7 @@ echo "${scores[小明]:-0}"
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `list` | \| Python \| `list` / `tuple` \| `dict` \| `set` \| |
 | `tuple` | \| Python \| `list` / `tuple` \| `dict` \| `set` \| |

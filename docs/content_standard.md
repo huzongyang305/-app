@@ -93,12 +93,40 @@ App 用 `manifest.json` 里每个课程的 `order` 字段渲染「推荐学习�
   `_dropCrossLessonRepeats` 丢掉，治理审计也会把机械模板句计入 error/warn。
 - 改写前后代码围栏数量必须一致，`unify_sections.dart` 以此为安全网，不一致直接中止。
 
-## 5. 校验入口
+## 5. 术语表与错误表（P2）
+
+### 术语速查
+
+- 每课必须有不少于 **4 条**术语，表头统一为 `| 术语 | 一句话说明 |`。
+- 术语必须是本课真实出现的概念（语法关键字、机制名、模型名），
+  不能是命令、代码片段、通用词（如「入门练习」）或课程标题本身。
+- 说明必须是一句能独立读懂的解释，不引用测验题干，也不写「关键术语」这类空话。
+- 入门课与项目实战课的词条由 `tool/rebuild_glossaries.dart` 的
+  `curatedGlossaries` 人工维护，跑一次工具即可幂等写回 Markdown。
+
+### 常见错误与排查
+
+- 统一使用三列表：`易错点 / 容易踩的做法 / 正确结论`。
+- 人工复核过的表要在章节下写复核标记：
+  `> 复核：已人工核对并重写（YYYY-MM-DD），每行对应本课的一个真实易错点。`
+- P1 用测验题自动生成的表头 `| 题目 | 容易踩的做法 | 正确结论 |`
+  再次出现即判为 `unreviewed_mistake_table`，必须重写后再保留。
+- 复核表由 `tool/review_mistake_tables.dart` 维护，同样幂等。
+
+### 待清理指标
+
+治理报告里的 `glossary_template_rows` 统计旧模板残留行（英文套话、
+同一说明被多个术语复用、命令当术语等）。它是 P3 的清理目标，
+按指标逐批下降，不计入 CI 卡口；P2 已完成的是入门课重建与口径卡口。
+
+## 6. 校验入口
 
 | 命令 | 作用 |
 | --- | --- |
 | `dart tool/rebalance_learning_path.dart --dry-run` | 预览先修、顺序、时长会怎么改 |
 | `dart tool/unify_sections.dart --dry-run` | 预览章节改名与补齐计划 |
+| `dart tool/rebuild_glossaries.dart --dry-run` | 预览术语表重建与表头统一 |
+| `dart tool/review_mistake_tables.dart --dry-run` | 预览错误表复核重写 |
 | `dart tool/audit_content_governance.dart` | 治理卡口：模板化、引用复用、难度/顺序/时长不变量 |
 | `dart tool/audit_content_structure.dart` | 结构缺陷 |
 | `dart tool/audit_content_quality.dart` | 题库质量与题型分布 |

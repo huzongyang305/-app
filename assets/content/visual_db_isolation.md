@@ -377,7 +377,7 @@ BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ;
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `UPDATE stock SET n=n-1 WHERE n>0` | 库存扣减偶发超卖。排查发现事务先读库存再写回，隔离级别只保证读一致性，不保证读后写不被覆盖。改用条件更新 `UPDATE stock SET n=n-1 WHERE n>0` 或加行锁后问题消失。 |
 | `事务` | 围绕“环境版本、配置和输入规模与目标环境不同，事务 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。 |

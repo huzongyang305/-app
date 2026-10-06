@@ -337,7 +337,7 @@ def task_two():
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `timeout` | 使用 `timeout` 尝试加锁，失败就释放已有资源重试。 |
 | `jstack` | 导出线程栈（Java 的 `jstack`、Linux 的 `gdb` 或 `pstack`）。 |

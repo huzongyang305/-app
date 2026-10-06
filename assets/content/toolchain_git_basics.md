@@ -323,7 +323,7 @@ git branch -d feature/login       # 删除已合并的分支
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `git restore file.txt` | \| 放弃工作区某个文件的修改 \| `git restore file.txt` \| |
 | `git restore --staged file.txt` | \| 取消暂存 \| `git restore --staged file.txt` \| |

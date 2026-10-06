@@ -450,7 +450,7 @@ console.log(Object.hasOwn(rabbit, "eats"));   // false，只查自己
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `Object.prototype` | 访问属性时会沿原型链向上查找，直到 `Object.prototype`，仍找不到才返回 `undefined`。 |
 | `undefined` | 访问属性时会沿原型链向上查找，直到 `Object.prototype`，仍找不到才返回 `undefined`。 |

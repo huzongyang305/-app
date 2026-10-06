@@ -392,7 +392,7 @@ async function fetchOrder(id: number): Promise<OrderResponse> {
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `enum` | 关键点**：把 `enum`、`required`、范围写进契约，客户端才能在编译期发现问题。 |
 | `required` | 关键点**：把 `enum`、`required`、范围写进契约，客户端才能在编译期发现问题。 |

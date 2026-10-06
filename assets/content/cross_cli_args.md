@@ -399,7 +399,7 @@ input="${1:?缺少输入文件}"
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `argparse` | \| Python \| `argparse` \| `click` / `typer` \| argparse 够用，typer 用类型注解 \| |
 | `click` | \| Python \| `argparse` \| `click` / `typer` \| argparse 够用，typer 用类型注解 \| |

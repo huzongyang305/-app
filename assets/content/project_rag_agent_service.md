@@ -333,7 +333,7 @@ def answer_question(question: str, retriever, llm) -> dict:
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `RAG` | Summary: Build a citation-based RAG agent with retrieval, tools, evaluation and guardrails.。 |
 | `Agent` | Summary: Build a citation-based RAG agent with retrieval, tools, evaluation and guardrails.。 |

@@ -339,7 +339,7 @@ DATABASE_URL = require("DATABASE_URL")
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `pip-audit` | \| Python \| `pip-audit` / `safety` \| `requirements.lock` / `uv.lock` \| gitleaks / trufflehog \| |
 | `safety` | \| Python \| `pip-audit` / `safety` \| `requirements.lock` / `uv.lock` \| gitleaks / trufflehog \| |

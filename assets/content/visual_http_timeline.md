@@ -373,7 +373,7 @@ curl -s -o /dev/null -w '%{size_download} 字节 %{http_version}\n' \
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `time_namelookup` | \| `time_namelookup` \| DNS 解析耗时 \| DNS 服务器远、无缓存 \| |
 | `time_connect` | \| `time_connect` \| TCP 握手耗时 \| 网络距离远、丢包 \| |

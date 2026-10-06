@@ -380,7 +380,7 @@ print(pipeline.gate(), pipeline.report())
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `ci` | \| 依赖锁定 \| 提交 lock 文件并用 `ci` 类安装命令 \| |
 | `install` | \| CI 用 `install` 而非 `ci` \| 依赖版本漂移 \| 用锁文件严格安装 \| |

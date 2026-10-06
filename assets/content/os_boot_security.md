@@ -357,7 +357,7 @@ print(audit_critical_paths(["/etc", "/usr/bin/passwd"]))
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `ls -l` | \| 查看文件权限与特殊位 \| `ls -l` 看 rwx 与 s/t 标记；`stat -c '%a %n' <file>` 看八进制 \| |
 | `stat -c '%a %n' <file>` | \| 查看文件权限与特殊位 \| `ls -l` 看 rwx 与 s/t 标记；`stat -c '%a %n' <file>` 看八进制 \| |

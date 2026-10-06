@@ -448,7 +448,7 @@ cache_key() {
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `install` | \| CI 用 `install` 而非锁定安装 \| 依赖版本漂移 \| 用 `--frozen-lockfile` / `npm ci` \| |
 | `--frozen-lockfile` | \| CI 用 `install` 而非锁定安装 \| 依赖版本漂移 \| 用 `--frozen-lockfile` / `npm ci` \| |

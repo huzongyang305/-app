@@ -207,7 +207,7 @@ await foreach (var value in Countdown(3))
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `IAsyncEnumerable` | 围绕“环境版本、配置和输入规模与目标环境不同，IAsyncEnumerable 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。 |
 | `CancellationToken` | 用一句话说明「C# 异步流与取消」解决什么问题：理解 IAsyncEnumerable、CancellationToken 和异步资源释放。 |

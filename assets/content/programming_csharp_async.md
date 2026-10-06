@@ -439,7 +439,7 @@ static async Task Main()
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `async` | `async` 方法返回 `Task` / `Task<T>`；`await` 在等待期间释放线程，因此特别适合 IO 密集场景。 |
 | `Task` | `async` 方法返回 `Task` / `Task<T>`；`await` 在等待期间释放线程，因此特别适合 IO 密集场景。 |

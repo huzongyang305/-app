@@ -570,7 +570,7 @@ mvn -q versions:display-dependency-updates   # 检查可升级依赖
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `System.out.println` | 用 SLF4J 门面 + Logback/Log4j2 实现，避免直接使用 `System.out.println`；日志要带上下文，且不要输出密码、令牌等敏感信息。 |
 | `pom.xml` | \| 配置格式 \| `pom.xml` \| `build.gradle(.kts)` \| |

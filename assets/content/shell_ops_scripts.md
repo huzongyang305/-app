@@ -507,7 +507,7 @@ echo "释放 $((before - after)) MB"
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `xargs -P4` | \| 限制并发数 \| `xargs -P4` 或自建信号量 \| |
 | `timeout 30s` | \| 超时控制 \| `timeout 30s` 或 `ssh -o ConnectTimeout=5` \| |

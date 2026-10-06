@@ -321,7 +321,7 @@ print(data.decode("utf-8"))
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `U+4E2D` | \| Unicode \| 为所有字符分配唯一码点（code point），如 `U+4E2D` 是「中」 \| |
 | `encoding="utf-8"` | \| 读写文件不指定编码 \| Windows 上按 GBK 解码导致乱码 \| 一律显式 `encoding="utf-8"` \| |

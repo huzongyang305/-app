@@ -224,10 +224,13 @@ console.log(document.querySelector("button").textContent);
 
 把「JavaScript DOM 入门」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
-| `JavaScript` | 参考判断：学习 JavaScript DOM 入门 时要同时说明输入、输出和失败路径，不能只看正常流程、验证 JavaScript 时要固定版本并覆盖边界输入，结论才可复现。 |
-| `入门练习` | “JavaScript DOM 入门”中的 JavaScript DOM 入门、JavaScript、入门练习，下列哪两项是本课强调的实践判断。 |
+| `DOM` | 浏览器把 HTML 解析成的对象树，JavaScript 通过它读写页面。 |
+| `querySelector` | 用 CSS 选择器找到第一个匹配元素，querySelectorAll 返回全部。 |
+| `textContent 与 innerHTML` | 前者按纯文本读写，后者会解析 HTML，有注入风险。 |
+| `事件监听` | addEventListener 把处理函数绑定到事件，回调里用 event 取详情。 |
+| `事件冒泡` | 事件从触发元素向上传播，可用 stopPropagation 阻止。 |
 
 ## 零基础精讲：把JavaScript DOM 入门真正讲透
 

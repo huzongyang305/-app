@@ -238,10 +238,13 @@ console.log(`count=${count}`);
 
 把「TypeScript 基础类型」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
-| `TypeScript` | 按“TypeScript 基础类型”中 TypeScript 基础类型、TypeScript、入门练习 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。 |
-| `入门练习` | 按“TypeScript 基础类型”中 TypeScript 基础类型、TypeScript、入门练习 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。 |
+| `联合类型` | 用 A \| B 表示取值属于其中一种，使用前要先收窄。 |
+| `字面量类型` | 把具体值当类型，如 "left" \| "right"，常配合联合使用。 |
+| `any 与 unknown` | any 关闭检查，unknown 强制先收窄，新代码优先用 unknown。 |
+| `类型别名 type` | 给复杂类型起名字，便于复用与阅读。 |
+| `null 与 undefined` | 在 strictNullChecks 下它们是独立类型，需要显式处理。 |
 
 ## 零基础精讲：把TypeScript 基础类型真正讲透
 

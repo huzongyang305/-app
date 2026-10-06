@@ -190,7 +190,7 @@
 
 把「Swift 并发与 async/await」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `async` | Swift Concurrency and async/await focuses on Learn async/await, Task, Actor, cancellation and Sendable.。 |
 | `Actor` | Swift Concurrency and async/await focuses on Learn async/await, Task, Actor, cancellation and Sendable.。 |

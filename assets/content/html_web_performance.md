@@ -331,7 +331,7 @@ function reportWebVitals() {
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `PerformanceObserver` | 测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）。 |
 | `defer` | 关键路径**：首屏 CSS 内联，非关键 JS 用 `defer`/`async`，路由级代码分割。 |

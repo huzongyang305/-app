@@ -428,7 +428,7 @@ fn main() {
 
 把「Rust 类型系统：Option、Result 与 trait」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `Rust` | Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：Option 管空值、Result 管错误、trait 管行为、enum + match 管状态。 |
 | `Option` | Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：Option 管空值、Result 管错误、trait 管行为、enum + match 管状态。 |

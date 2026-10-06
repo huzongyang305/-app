@@ -386,7 +386,7 @@ print(window.report())
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `trace_id` | 每条日志带 `trace_id`、`service`、`level`，方便串联。 |
 | `service` | 每条日志带 `trace_id`、`service`、`level`，方便串联。 |

@@ -422,7 +422,7 @@ Console.WriteLine($"格式化示例 {rounded.ToString("N2", CultureInfo.Invarian
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `TryParse` | 优先使用 `TryParse`，避免用异常控制正常流程。 |
 | `StringBuilder` | 字符串不可变，循环拼接应使用 `StringBuilder`： |

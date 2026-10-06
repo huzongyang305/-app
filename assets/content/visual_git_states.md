@@ -351,7 +351,7 @@ print(" -> ".join(steps))
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `add` | 看清一张流转图，`add`、`commit`、`reset`、`restore` 的差别就一目了然。 |
 | `commit` | 看清一张流转图，`add`、`commit`、`reset`、`restore` 的差别就一目了然。 |

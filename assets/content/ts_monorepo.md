@@ -438,7 +438,7 @@ export type ApiResult<T> =
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `apps/` | \| `apps/` \| 可部署应用 \| 可以依赖 packages \| |
 | `packages/` | \| `packages/` \| 共享库与组件 \| 不依赖 apps，避免循环 \| |

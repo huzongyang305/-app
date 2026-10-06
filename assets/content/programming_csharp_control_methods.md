@@ -468,7 +468,7 @@ Console.WriteLine($"{count} 人，平均 {average}，等级 {level}");
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `switch` | `switch` 表达式更紧凑；模式匹配能同时完成类型判断与变量声明。 |
 | `InvalidOperationException` | 遍历集合时不要修改集合结构，否则会抛 `InvalidOperationException`；需要增删就遍历副本。 |

@@ -336,7 +336,7 @@ print(len(s.encode()))   # 6（UTF-8 字节数）
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `"".join(parts)` | \| Python \| 不可变 \| `"".join(parts)` \| |
 | `parts.join("")` | \| JavaScript \| 不可变 \| `parts.join("")` 或数组累积 \| |

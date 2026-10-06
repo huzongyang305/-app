@@ -364,7 +364,7 @@ except ValueError as err:
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `try / catch` | \| 异常 \| Python、Java、C#、C++ \| `try / catch` 或 `except` \| 代码干净，但容易漏捕获 \| |
 | `except` | \| 异常 \| Python、Java、C#、C++ \| `try / catch` 或 `except` \| 代码干净，但容易漏捕获 \| |

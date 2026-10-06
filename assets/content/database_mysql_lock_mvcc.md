@@ -278,7 +278,7 @@ SELECT @@transaction_isolation;
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `SHOW ENGINE INNODB STATUS` | 查看当前事务与锁等待：`SHOW ENGINE INNODB STATUS`、performance_schema.data_locks / data_waits。 |
 | `SET n = n + 1` | 高并发计数用原子更新（`SET n = n + 1`）而不是先查后写。 |

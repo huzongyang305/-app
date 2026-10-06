@@ -450,7 +450,7 @@ describe("parseTags", () => {
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `findBy*` | \| 用固定延时等待 \| 偶发失败 \| 用 `findBy*` 等自动等待 \| |
 | `onUnhandledRequest: "error"` | \| 忽略未处理的请求 \| 测试静默通过 \| MSW 设 `onUnhandledRequest: "error"` \| |

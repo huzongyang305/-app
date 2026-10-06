@@ -58,6 +58,22 @@ const List<String> generatedMarkdownMarkers = <String>[
 /// P0/P1 语义卡口：这些缺陷是生成器留下的可见问题，一律按 error 处理。
 const String placeholderTitle = '本课主题';
 
+/// P2 术语表口径：统一表头与最少词条数。
+const String glossaryHeaderText = '| 术语 | 一句话说明 |';
+const int glossaryMinimumRows = 4;
+
+/// P1 自动生成的错误表表头：出现即说明这张表还没经过人工复核。
+const String generatedMistakeHeader = '| 题目 | 容易踩的做法 | 正确结论 |';
+
+/// 旧术语表模板的残留特征，用于统计（P3 继续清理，不计入 error）。
+const List<String> glossaryTemplateMarkers = <String>[
+  'Related terms:',
+  'focuses on',
+  '它在「',
+  '复习时回到正文',
+  '课程摘要',
+];
+
 /// P1 结构统一：每门课都必须具备的 14 个规范章节（见 docs/content_standard.md）。
 const List<String> canonicalLessonSections = <String>[
   '学习目标',
@@ -184,6 +200,10 @@ void main(List<String> args) {
   var corruptTermTables = 0;
   var missingSectionLessons = 0;
   var legacySectionHeadings = 0;
+  var thinGlossaries = 0;
+  var glossaryHeaderMismatches = 0;
+  var unreviewedMistakeTables = 0;
+  var glossaryTemplateRows = 0;
   var codeQuestionsWithoutDomainLink = 0;
   var explanationsWithMeta = 0;
   var languageMismatches = 0;
@@ -206,6 +226,9 @@ void main(List<String> args) {
     // 反而破坏了 H1、配图替代文本和正文；这里改为直接检查这些结构性缺陷。
     final structureIssues = _auditLessonStructure(lesson);
     issues.addAll(structureIssues);
+    glossaryTemplateRows += _glossaryTemplateRows(
+      _section(lesson.markdown, '术语速查'),
+    );
     for (final issue in structureIssues) {
       switch (issue.kind) {
         case 'internal_question_id':
@@ -220,6 +243,12 @@ void main(List<String> args) {
           missingSectionLessons++;
         case 'legacy_section_heading':
           legacySectionHeadings++;
+        case 'glossary_too_thin':
+          thinGlossaries++;
+        case 'glossary_header_mismatch':
+          glossaryHeaderMismatches++;
+        case 'unreviewed_mistake_table':
+          unreviewedMistakeTables++;
       }
     }
     if (lesson.markdown.contains(placeholderTitle)) {
@@ -527,6 +556,10 @@ void main(List<String> args) {
     'corrupt_term_tables': corruptTermTables,
     'lessons_missing_canonical_sections': missingSectionLessons,
     'legacy_section_headings': legacySectionHeadings,
+    'thin_glossaries': thinGlossaries,
+    'glossary_header_mismatches': glossaryHeaderMismatches,
+    'unreviewed_mistake_tables': unreviewedMistakeTables,
+    'glossary_template_rows': glossaryTemplateRows,
     'code_questions_without_domain_link': codeQuestionsWithoutDomainLink,
     'explanations_with_meta_markers': explanationsWithMeta,
     'language_mismatches': languageMismatches,
@@ -572,6 +605,10 @@ void main(List<String> args) {
     stdout.writeln('损坏术语表                  $corruptTermTables');
     stdout.writeln('缺规范章节课程              $missingSectionLessons');
     stdout.writeln('残留旧章节标题              $legacySectionHeadings');
+    stdout.writeln('术语表不足 4 条             $thinGlossaries');
+    stdout.writeln('术语表表头不符              $glossaryHeaderMismatches');
+    stdout.writeln('错误表未复核                $unreviewedMistakeTables');
+    stdout.writeln('术语表模板残留行(P3)        $glossaryTemplateRows');
     stdout.writeln('代码题缺本课关联            $codeQuestionsWithoutDomainLink');
     stdout.writeln('解析机械模板句              $explanationsWithMeta');
     stdout.writeln('代码语言错配                $languageMismatches');
@@ -712,6 +749,41 @@ List<GovernanceIssue> _auditLessonStructure(GovernanceLesson lesson) {
     );
   }
   final termSection = _section(lesson.markdown, '术语速查');
+  final termRows = _tableRows(termSection);
+  if (termRows.length < glossaryMinimumRows) {
+    issues.add(
+      GovernanceIssue(
+        level: 'error',
+        lessonId: lesson.id,
+        kind: 'glossary_too_thin',
+        message: '「术语速查」只有 ${termRows.length} 条术语，至少需要 $glossaryMinimumRows 条',
+      ),
+    );
+  }
+  final termHeader = termSection
+      .split('\n')
+      .map((line) => line.trim())
+      .firstWhere((line) => line.startsWith('|'), orElse: () => '');
+  if (termHeader.isNotEmpty && termHeader != glossaryHeaderText) {
+    issues.add(
+      GovernanceIssue(
+        level: 'error',
+        lessonId: lesson.id,
+        kind: 'glossary_header_mismatch',
+        message: '「术语速查」表头为「$termHeader」，应为「$glossaryHeaderText」',
+      ),
+    );
+  }
+  if (lesson.markdown.contains(generatedMistakeHeader)) {
+    issues.add(
+      GovernanceIssue(
+        level: 'error',
+        lessonId: lesson.id,
+        kind: 'unreviewed_mistake_table',
+        message: '「常见错误与排查」仍是未复核的自动生成表',
+      ),
+    );
+  }
   final missingSections = <String>[
     for (final title in canonicalLessonSections)
       if (!_hasSection(lesson.markdown, title)) title,
@@ -832,6 +904,47 @@ List<GovernanceReference> _extractReferences(String markdown) {
 
 RegExp _sectionHeadingPattern(String title) =>
     RegExp('^##\\s+${RegExp.escape(title)}\\s*\$', multiLine: true);
+
+/// 取出表格的数据行（跳过表头与分隔行）。
+List<String> _tableRows(String section) {
+  final rows = <String>[];
+  for (final line in section.split('\n')) {
+    final trimmed = line.trim();
+    if (!trimmed.startsWith('|')) continue;
+    if (trimmed.startsWith('| ---') || trimmed.startsWith('|---')) continue;
+    if (trimmed.startsWith('| 术语')) continue;
+    rows.add(trimmed);
+  }
+  return rows;
+}
+
+/// 统计术语表里仍是旧模板的行数：P3 继续清理，这里只做量化报告。
+int _glossaryTemplateRows(String section) {
+  final explanations = <String, int>{};
+  final parsed = <(String, String)>[];
+  for (final row in _tableRows(section)) {
+    final values = row
+        .split('|')
+        .map((cell) => cell.trim())
+        .where((cell) => cell.isNotEmpty)
+        .toList();
+    if (values.length < 2) continue;
+    final term = values[0].replaceAll('`', '');
+    final explanation = values[1];
+    parsed.add((term, explanation));
+    explanations[explanation] = (explanations[explanation] ?? 0) + 1;
+  }
+  var count = 0;
+  for (final (term, explanation) in parsed) {
+    final templated =
+        glossaryTemplateMarkers.any(explanation.contains) ||
+        (explanations[explanation] ?? 0) > 1 ||
+        explanation.startsWith('|') ||
+        RegExp(r'\s[-=]\s|\.py\b|\.js\b|\(\)|//|\.\./').hasMatch(term);
+    if (templated) count++;
+  }
+  return count;
+}
 
 /// 把代码围栏内的行替换成等长空格：示例里的 `## 标题` 不是章节，
 /// 但保持长度不变，才能继续用匹配偏移量从原文截取章节正文。

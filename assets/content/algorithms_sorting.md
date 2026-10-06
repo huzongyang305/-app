@@ -303,7 +303,7 @@ def insertion_sort(nums):
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `O(n)` | 数据接近有序时接近 `O(n)`，因此常被用作大排序算法在小数组上的收尾。 |
 | `sorted(x)` | \| Python \| `sorted(x)` / `x.sort()` \| 稳定 \| Timsort，`key` 只调用一次 \| |

@@ -440,7 +440,7 @@ void print(const std::string& text);     // 只读 + 避免拷贝：const 引用
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `break` | `break` 跳出循环，`continue` 跳过本轮；范围 for 内部不要修改容器大小。 |
 | `continue` | `break` 跳出循环，`continue` 跳过本轮；范围 for 内部不要修改容器大小。 |

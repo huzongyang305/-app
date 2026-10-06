@@ -330,7 +330,7 @@ tests/          单元、集成与接口测试
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `并发` | “实战：Java 并发订单处理服务”中的 并发、ExecutorService、BlockingQueue，下列哪两项是本课强调的实践判断。 |
 | `ExecutorService` | 用一句话说明「实战：Java 并发订单处理服务」解决什么问题：用 ExecutorService、BlockingQueue 和 CompletableFuture 处理订单，覆盖限流、超时和重试。 |

@@ -434,7 +434,7 @@ foreach (var line in order.Lines)
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `{ get; set; }` | 属性是字段的受控访问器，常见写法：`{ get; set; }`、`{ get; init; }`（仅初始化时赋值）、`{ get; private set; }`。 |
 | `{ get; init; }` | 属性是字段的受控访问器，常见写法：`{ get; set; }`、`{ get; init; }`（仅初始化时赋值）、`{ get; private set; }`。 |

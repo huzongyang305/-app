@@ -393,7 +393,7 @@ type Value = Awaited<Promise<number>>;   // number
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `Partial<T>` | \| `Partial<T>` / `Required<T>` \| 全部可选 / 全部必填 \| |
 | `Required<T>` | \| `Partial<T>` / `Required<T>` \| 全部可选 / 全部必填 \| |

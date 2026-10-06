@@ -232,7 +232,7 @@ fun main() {
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `Android` | 用一句话说明「Kotlin Android 架构」解决什么问题：用 ViewModel、Repository、生命周期和依赖注入组织 Android 应用。 |
 | `ViewModel` | 用一句话说明「Kotlin Android 架构」解决什么问题：用 ViewModel、Repository、生命周期和依赖注入组织 Android 应用。 |

@@ -508,7 +508,7 @@ print(Order("小明").item_count)         # 0
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `typing` | 复杂类型用 `typing` 模块： |
 | `pyproject.toml` | 建议在 `pyproject.toml` 中统一配置： |

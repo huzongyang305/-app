@@ -246,10 +246,13 @@ console.log(`total=${total}`);
 
 把「JavaScript 条件与循环」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
-| `JavaScript` | 按“JavaScript 条件与循环”中 JavaScript 条件与循环、JavaScript、入门练习 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。 |
-| `入门练习` | 按“JavaScript 条件与循环”中 JavaScript 条件与循环、JavaScript、入门练习 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。 |
+| `真值与假值` | 0、空字符串、null、undefined、NaN 在条件里等价于假。 |
+| `严格相等 ===` | 先比较类型再比较值，避免 == 带来的隐式类型转换。 |
+| `if-else` | 按条件选择分支执行，条件不成立时走 else。 |
+| `for 与 while` | for 适合次数确定的循环，while 适合条件驱动的循环。 |
+| `break 与 continue` | break 结束整个循环，continue 跳过本轮剩余语句。 |
 
 ## 零基础精讲：把JavaScript 条件与循环真正讲透
 

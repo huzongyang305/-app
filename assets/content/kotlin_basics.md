@@ -187,7 +187,7 @@
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `Kotlin` | Kotlin Basics and Null Safety focuses on Learn val/var, type inference, nullable types and safe calls.。 |
 | `空安全` | 围绕“空安全 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。 |

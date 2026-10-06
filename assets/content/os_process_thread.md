@@ -326,7 +326,7 @@ print(count)   # 很可能小于 200000
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `ps -eLf \| grep app` | \| 查看进程与线程 \| `ps -eLf \\| grep app`、`top -H -p <pid>` \| |
 | `top -H -p <pid>` | \| 查看进程与线程 \| `ps -eLf \\| grep app`、`top -H -p <pid>` \| |

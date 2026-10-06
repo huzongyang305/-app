@@ -373,7 +373,7 @@ def lru_cache_demo(func):
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `get` | \| `get` 命中后不更新位置 \| 退化成 FIFO \| 命中要移动到最近使用位置 \| |
 | `LRU` | noeviction（拒绝写入）、allkeys-lru / allkeys-lfu、volatile-lru（只淘汰带过期时间的 key）、random、ttl（优先淘汰即将过期）。 |

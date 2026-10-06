@@ -338,7 +338,7 @@ print(socket.gethostbyname("localhost"))
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `tcpdump` | 掌握这两张表，`tcpdump` 的输出就能从"看不懂的字符"变成结论。 |
 | `LISTEN` | \| `LISTEN` \| 服务端 \| 等待连接 \| |

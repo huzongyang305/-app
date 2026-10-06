@@ -474,7 +474,7 @@ func DownloadAll(ctx context.Context, urls []string, limit int) ([]string, error
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `atomic.Int64` | \| 计数 \| `atomic.Int64` \| 比互斥锁更轻 \| |
 | `sync.Mutex` | \| 复合状态更新 \| `sync.Mutex` \| 临界区要尽量短 \| |

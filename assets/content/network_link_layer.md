@@ -347,7 +347,7 @@ print(parse_mac("01:00:5e:00:00:01"))
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `arp -a` | 工具：`arp -a`、`ip neigh`、`tcpdump -e`（看 MAC）、交换机 `show mac address-table`。 |
 | `ip neigh` | 工具：`arp -a`、`ip neigh`、`tcpdump -e`（看 MAC）、交换机 `show mac address-table`。 |

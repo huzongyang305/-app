@@ -349,7 +349,7 @@ kubectl top pod <pod>                           # 实际资源用量
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `requests.cpu: 500m` | \| 资源请求 \| `requests.cpu: 500m` \| 调度依据（不是 limit） \| |
 | `nodeSelector: disktype=ssd` | \| 节点选择器 \| `nodeSelector: disktype=ssd` \| 只调度到特定节点 \| |

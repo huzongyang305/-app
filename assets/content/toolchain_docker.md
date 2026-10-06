@@ -342,7 +342,7 @@ docker volume create data          # 创建数据卷
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `.dockerignore` | 用 `.dockerignore` 排除 `node_modules`、`.git`、构建产物。 |
 | `node_modules` | 用 `.dockerignore` 排除 `node_modules`、`.git`、构建产物。 |

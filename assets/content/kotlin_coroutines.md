@@ -188,7 +188,7 @@
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `协程` | 围绕“环境版本、配置和输入规模与目标环境不同，协程 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。 |
 | `suspend` | Kotlin Coroutines and Flow focuses on Learn suspend functions, scopes, cancellation, structured concurrency and Flow.。 |

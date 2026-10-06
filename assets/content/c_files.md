@@ -252,7 +252,7 @@ wrote notes.txt
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `文件` | 参考判断：验证 errno 时要固定版本并覆盖边界输入，结论才可复现、学习 文件 时要同时说明输入、输出和失败路径，不能只看正常流程。 |
 | `errno` | Summary: Cover file IO, errno, return-value checks and resource cleanup.。 |

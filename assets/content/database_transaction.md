@@ -280,7 +280,7 @@ except sqlite3.Error as error:
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `ROLLBACK` | 捕获异常后显式 `ROLLBACK` 并释放连接。 |
 | `SELECT ... FOR UPDATE` | 当前读（`SELECT ... FOR UPDATE`）不受快照影响，会读取最新已提交数据并加锁，因此**同一事务里快照读与当前读可能看到不同结果**，这是排查"读到旧数据"类问题的关键。 |

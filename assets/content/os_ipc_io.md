@@ -297,7 +297,7 @@ print(socketpair_demo())
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `EAGAIN` | \| ET 模式未读到 EAGAIN \| 后续事件不再通知 \| 循环读到 `EAGAIN` \| |
 | `waitpid` | \| 僵尸进程堆积 \| 资源泄漏 \| `waitpid` 回收子进程 \| |

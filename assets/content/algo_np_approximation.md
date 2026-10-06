@@ -189,7 +189,7 @@ print(linear_search([3, 5, 8], 8))
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `NP` | Summary: Learn reductions, P/NP, NP-completeness, approximation ratios and parameterized algorithms.。 |
 | `归约` | 围绕“NP 的时间或空间复杂度在边界条件下失控，归约 的常数开销也被低估”检查调用链、输入数据和环境配置，先验证假设再改代码。 |

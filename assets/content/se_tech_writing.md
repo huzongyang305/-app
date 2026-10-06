@@ -428,7 +428,7 @@ print(runbook.render().splitlines()[0])
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `技术写作` | 围绕“技术写作 的接口边界没有写清楚，README 缺少可自动执行的验收条件”检查调用链、输入数据和环境配置，先验证假设再改代码。 |
 | `README` | Summary: Doc types, README and runbook templates, writing principles.。 |

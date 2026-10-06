@@ -480,7 +480,7 @@ std::vector<int> b = std::move(a); // 转移资源，a 之后不要使用其值
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `auto` | C++11**：`auto`、lambda、右值引用与移动语义、智能指针、范围 for、`nullptr` |
 | `nullptr` | C++11**：`auto`、lambda、右值引用与移动语义、智能指针、范围 for、`nullptr` |

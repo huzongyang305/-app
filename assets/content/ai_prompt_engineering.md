@@ -357,7 +357,7 @@ prompt = f"""把用户评论分类为 positive / negative / neutral。
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `{question}` | \| 变量化 \| 把动态部分抽为 `{question}`、`{context}`，避免拼接混乱 \| |
 | `{context}` | \| 变量化 \| 把动态部分抽为 `{question}`、`{context}`，避免拼接混乱 \| |

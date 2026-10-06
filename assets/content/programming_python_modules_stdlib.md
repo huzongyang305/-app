@@ -469,7 +469,7 @@ print(math.floor(3.7), sqrt(16), pi)
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `if __name__ == "__main__":` | `if __name__ == "__main__":` 里的代码只在直接运行该文件时执行，被导入时不执行： |
 | `from .text import slugify` | 包内推荐使用绝对导入；相对导入（`from .text import slugify`）只在包内部使用。 |

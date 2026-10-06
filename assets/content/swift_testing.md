@@ -222,7 +222,7 @@ test passed
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `XCTest` | Summary: Use XCTest, async tests, dependency injection and Instruments.。 |
 | `异步测试` | 二、运行时与内存模型：围绕「XCTest、异步测试、Instruments、依赖注入」说明变量生命周期、资源释放、并发模型和错误传播。 |

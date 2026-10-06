@@ -521,7 +521,7 @@ func TestRoundNegative(t *testing.T) {
 
 把「Go 工程实践」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `Go` | go mod init github.com/you/app 初始化模块；目录约定：cmd/（可执行入口）、internal/（仅本模块可见）、pkg/（对外可复用）、api/（接口定义）、testdata/（测试数据）。 |
 | `go mod` | go mod init github.com/you/app 初始化模块；目录约定：cmd/（可执行入口）、internal/（仅本模块可见）、pkg/（对外可复用）、api/（接口定义）、testdata/（测试数据）。 |

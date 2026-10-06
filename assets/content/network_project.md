@@ -377,7 +377,7 @@ print(timing.breakdown(), "瓶颈：", timing.bottleneck())
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `dig example.com +trace` | \| DNS \| `dig example.com +trace`、`nslookup` \| 递归查询过程、A/AAAA 记录、TTL \| |
 | `nslookup` | \| DNS \| `dig example.com +trace`、`nslookup` \| 递归查询过程、A/AAAA 记录、TTL \| |

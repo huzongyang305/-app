@@ -354,7 +354,7 @@ LIMIT 10;
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `partitions` | \| `partitions` \| 并行度上限 \| 按峰值吞吐与消费能力估算，只能增不能减 \| |
 | `replication.factor` | \| `replication.factor` \| 副本数 \| 生产至少 3 \| |

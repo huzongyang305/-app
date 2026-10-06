@@ -413,7 +413,7 @@ CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o app
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `python -m build` | \| Python \| `python -m build` \| `.whl` / `.tar.gz` \| `pip install` 后运行模块 \| |
 | `.whl` | \| Python \| `python -m build` \| `.whl` / `.tar.gz` \| `pip install` 后运行模块 \| |

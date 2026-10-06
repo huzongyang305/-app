@@ -288,7 +288,7 @@ mysql -u root verify -e "CHECK TABLE orders;"
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `--single-transaction` | \| 小库逻辑备份 \| mysqldump 加 `--single-transaction` \| InnoDB 一致性快照，不锁表 \| |
 | `--routines --triggers --events` | \| 备份完整性 \| 同时导出 `--routines --triggers --events` \| 否则恢复后缺存储过程与定时任务 \| |

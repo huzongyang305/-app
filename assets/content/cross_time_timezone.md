@@ -321,7 +321,7 @@ parsed = datetime.fromisoformat("2026-03-05T06:02:11+00:00")   # 解析
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `datetime` | \| Python \| `datetime`（带 tzinfo） \| 显式传 `timezone.utc` \| `isoformat` \| |
 | `timezone.utc` | \| Python \| `datetime`（带 tzinfo） \| 显式传 `timezone.utc` \| `isoformat` \| |

@@ -384,7 +384,7 @@ find . -name '*.png' -print0 | xargs -0 -n1 -P4 optipng -quiet
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `sed 's/old/new/g'` | \| sed \| 流式替换与删除 \| `sed 's/old/new/g'`、`sed -n '1,10p'` \| |
 | `sed -n '1,10p'` | \| sed \| 流式替换与删除 \| `sed 's/old/new/g'`、`sed -n '1,10p'` \| |

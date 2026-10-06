@@ -515,7 +515,7 @@ struct ItemListView: View {
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `String?` | \| 可选类型 \| `String?` 表示可能为 nil，用 `if let`/`guard let` 解包 \| |
 | `if let` | \| 可选类型 \| `String?` 表示可能为 nil，用 `if let`/`guard let` 解包 \| |

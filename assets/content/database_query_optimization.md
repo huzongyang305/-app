@@ -282,7 +282,7 @@ EXPLAIN (ANALYZE, BUFFERS) SELECT * FROM orders WHERE user_id = 42;
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `SCAN` | 关注点：是 `SCAN`（全表扫描）还是 `SEARCH ... USING INDEX`；预估行数与实际行数差异大不大；有没有额外的排序与临时表。 |
 | `SEARCH ... USING INDEX` | 关注点：是 `SCAN`（全表扫描）还是 `SEARCH ... USING INDEX`；预估行数与实际行数差异大不大；有没有额外的排序与临时表。 |

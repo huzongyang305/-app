@@ -395,7 +395,7 @@ npx @typescript/analyze-trace trace
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `tsc --noEmit --extendedDiagnostics` | \| 生成耗时报告 \| `tsc --noEmit --extendedDiagnostics` \| 总时间、文件数、类型数 \| |
 | `tsc --noEmit --generateTrace trace` | \| 定位最慢文件 \| `tsc --noEmit --generateTrace trace` \| trace 里的耗时热点 \| |

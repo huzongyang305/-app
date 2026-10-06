@@ -330,7 +330,7 @@ def rabin_karp(text: str, pattern: str, base: int = 131, mod: int = 10**9 + 7):
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `indexOf` | 实际开发很少手写 KMP：语言标准库的 `indexOf`、`find`、`strings.Index` 已高度优化；正则适合复杂模式但有回溯风险。需要自己实现的场景通常是：自定义多模式匹配、流式匹配或算法题。 |
 | `find` | 实际开发很少手写 KMP：语言标准库的 `indexOf`、`find`、`strings.Index` 已高度优化；正则适合复杂模式但有回溯风险。需要自己实现的场景通常是：自定义多模式匹配、流式匹配或算法题。 |

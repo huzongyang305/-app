@@ -356,7 +356,7 @@ console.log("2 sync");
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `setTimeout` | \| 宏任务（task） \| `setTimeout`、事件回调、网络回调 \| 每轮取一个执行 \| |
 | `queueMicrotask` | \| 微任务（microtask） \| Promise 回调、`queueMicrotask`、`MutationObserver` \| 每个宏任务之后清空全部 \| |

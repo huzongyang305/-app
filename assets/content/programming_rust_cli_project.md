@@ -548,7 +548,7 @@ cross build --release --target x86_64-unknown-linux-musl
 
 把「Rust 实战：命令行工具」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `Rust` | Rust CLI 的标准配方：clap 解析 + anyhow/thiserror 错误 + serde 序列化 + assertcmd 测试 + 多平台发布；类型系统让这类工具几乎"发布即稳定"。 |
 | `CLI` | Rust CLI 的标准配方：clap 解析 + anyhow/thiserror 错误 + serde 序列化 + assertcmd 测试 + 多平台发布；类型系统让这类工具几乎"发布即稳定"。 |

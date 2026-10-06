@@ -343,7 +343,7 @@ def create_order(payload: CreateOrder):
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `FastAPI` | 用一句话说明「实战：FastAPI 订单服务」解决什么问题：用 FastAPI、Pydantic 和 SQLite 实现订单 API，覆盖校验、事务、错误处理和测试。 |
 | `Pydantic` | 用一句话说明「实战：FastAPI 订单服务」解决什么问题：用 FastAPI、Pydantic 和 SQLite 实现订单 API，覆盖校验、事务、错误处理和测试。 |

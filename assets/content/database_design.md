@@ -353,7 +353,7 @@ CREATE TABLE order_items (
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `DECIMAL` | 金额用 `DECIMAL`，不要用浮点。 |
 | `is_active` | 布尔语义用明确命名（`is_active`）。 |

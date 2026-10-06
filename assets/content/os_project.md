@@ -329,7 +329,7 @@ print(tq.shutdown(), tq.metrics.summary())
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `top -H` | `top -H` 看线程状态、`jstack`/`gdb` 看线程栈、`/proc/<pid>/status` 看线程数与上下文切换；在压测中观察 CPU 使用率与队列长度的关系。 |
 | `jstack` | `top -H` 看线程状态、`jstack`/`gdb` 看线程栈、`/proc/<pid>/status` 看线程数与上下文切换；在压测中观察 CPU 使用率与队列长度的关系。 |

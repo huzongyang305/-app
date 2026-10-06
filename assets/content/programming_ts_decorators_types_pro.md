@@ -449,7 +449,7 @@ if (!result.success) {
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `@Component` | 装饰器是函数，用于在类、方法、属性、参数上附加行为：`@Component`、`@Injectable`、`@Get('/users')`。经典用途是依赖注入、路由注册与元数据标注。 |
 | `@Injectable` | 装饰器是函数，用于在类、方法、属性、参数上附加行为：`@Component`、`@Injectable`、`@Get('/users')`。经典用途是依赖注入、路由注册与元数据标注。 |

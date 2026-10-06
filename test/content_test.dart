@@ -171,7 +171,7 @@ void main() {
     }
   });
 
-  test('P1 结构统一：14 个规范章节齐全唯一、无旧同义标题且内容非空', () async {
+  test('P1/P2 结构统一：规范章节、术语表与复核标记全部达标', () async {
     const canonicalSections = <String>[
       '学习目标',
       '前置知识',
@@ -263,12 +263,25 @@ void main() {
         if (checklistItems < 3) {
           thin.add('${lesson.id}:本课复习清单($checklistItems)');
         }
-        final termRows = sectionBody(checked, '术语速查')
+        final glossary = sectionBody(checked, '术语速查');
+        final termRows = glossary
             .split('\n')
             .where((line) => line.trimLeft().startsWith('|'))
             .length;
-        // 表头 + 分隔行 + 至少 2 行术语，保证不是空壳章节。
-        if (termRows < 4) thin.add('${lesson.id}:术语速查($termRows)');
+        // 表头 + 分隔行 + 至少 4 行术语。
+        if (termRows < 6) {
+          thin.add('${lesson.id}:术语速查(${termRows - 2} 条)');
+        }
+        final termHeader = glossary
+            .split('\n')
+            .map((line) => line.trim())
+            .firstWhere((line) => line.startsWith('|'), orElse: () => '');
+        if (termHeader != '| 术语 | 一句话说明 |') {
+          thin.add('${lesson.id}:表头($termHeader)');
+        }
+        if (checked.contains('| 题目 | 容易踩的做法 | 正确结论 |')) {
+          thin.add('${lesson.id}:未复核的自动错误表');
+        }
       }
     }
     expect(missing, isEmpty, reason: '缺少规范章节：${missing.take(15).join('、')}');

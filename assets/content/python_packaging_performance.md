@@ -195,7 +195,7 @@ ok=True
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `打包` | 围绕“环境版本、配置和输入规模与目标环境不同，打包 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。 |
 | `pyproject` | Summary: Use pyproject, lock files and build tools, then profile performance.。 |

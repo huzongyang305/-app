@@ -339,7 +339,7 @@ tests/          单元、集成与接口测试
 
 把「实战：Go 并发抓取与 Worker Pool」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `goroutine` | 用一句话说明「实战：Go 并发抓取与 Worker Pool」解决什么问题：用 goroutine、channel、context 和 errgroup 实现带限流、重试和取消的抓取任务。 |
 | `channel` | 用一句话说明「实战：Go 并发抓取与 Worker Pool」解决什么问题：用 goroutine、channel、context 和 errgroup 实现带限流、重试和取消的抓取任务。 |

@@ -446,7 +446,7 @@ public class ParseDemo {
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `catch (IOException | SQLException e)` | 多异常捕获：`catch (IOException \| SQLException e)`。子类异常必须写在父类前面。 |
 | `AutoCloseable` | 实现 `AutoCloseable` 的资源会在代码块结束时自动关闭，异常也不会漏关。 |

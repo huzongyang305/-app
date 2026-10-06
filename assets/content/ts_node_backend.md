@@ -453,7 +453,7 @@ for (const signal of ["SIGTERM", "SIGINT"] as const) {
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `/livez` | \| 健康检查 \| `/livez` 只看进程，`/readyz` 检查关键依赖 \| |
 | `/readyz` | \| 健康检查 \| `/livez` 只看进程，`/readyz` 检查关键依赖 \| |

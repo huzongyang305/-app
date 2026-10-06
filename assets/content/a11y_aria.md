@@ -346,7 +346,7 @@ print(summary(audit_nodes(nodes)))
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `<button>` | \| 优先用原生元素 \| `<button>` 自带键盘与语义，比 `div` 加 ARIA 更可靠 \| |
 | `div` | \| 优先用原生元素 \| `<button>` 自带键盘与语义，比 `div` 加 ARIA 更可靠 \| |

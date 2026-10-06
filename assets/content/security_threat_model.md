@@ -183,7 +183,7 @@ print(digest[:12])
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `威胁建模` | 围绕“威胁建模 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。 |
 | `STRIDE` | Threat Modeling and STRIDE focuses on Identify security risks before coding with assets, boundaries and STRIDE.。 |

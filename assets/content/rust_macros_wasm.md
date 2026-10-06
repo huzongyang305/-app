@@ -212,7 +212,7 @@ fn main() {
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `宏` | 它在「Rust 宏、WASM 与跨平台」里是理解「宏」的关键术语，用来解释定义、适用条件与失败路径；它与WASM、跨平台共同决定这一节的判断边界。复习时回到正文示例核对输入、输出和验证方式。 |
 | `WASM` | Summary: Learn declarative macros, procedural macros, WASM boundaries and cross compilation.。 |

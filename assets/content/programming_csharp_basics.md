@@ -407,7 +407,7 @@ dotnet add package Newtonsoft.Json   # 添加 NuGet 包
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `Nullable` | 开启 `Nullable` 后编译器会检查可能的空引用，新项目建议默认打开。 |
 | `dotnet` | C# 代码跑在 .NET 上：**编译成 IL、由 CLR 托管执行**。掌握 `dotnet` CLI 与 csproj 配置即可开始任何类型的项目。 |

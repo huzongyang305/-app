@@ -389,7 +389,7 @@ if (response.status === "ok") {
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `T extends string ? A : B` | \| 条件类型 \| 按条件选择类型 \| `T extends string ? A : B` \| |
 | `infer` | \| `infer` \| 在条件类型中提取类型 \| `T extends Array<infer U> ? U : never` \| |

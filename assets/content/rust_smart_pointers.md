@@ -199,7 +199,7 @@ count=1
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `Box` | Summary: Learn Box, Rc, Arc, RefCell, Mutex and reference cycles.。 |
 | `Rc` | Summary: Learn Box, Rc, Arc, RefCell, Mutex and reference cycles.。 |

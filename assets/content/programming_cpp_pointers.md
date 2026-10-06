@@ -446,7 +446,7 @@ void print(const std::string& s);     // const 引用：只读且避免拷贝
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `std::array` | C++ 中更推荐 `std::array` 和 `std::vector`，它们自带大小信息，不容易越界。 |
 | `std::vector` | C++ 中更推荐 `std::array` 和 `std::vector`，它们自带大小信息，不容易越界。 |

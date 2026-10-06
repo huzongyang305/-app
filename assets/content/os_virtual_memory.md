@@ -366,7 +366,7 @@ print(working_set_pages(pages, 4))
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `ps -o min_flt,maj_flt` | \| 缺页次数 \| 页不在内存的次数 \| `ps -o min_flt,maj_flt`、`/proc/<pid>/stat` \| |
 | `/proc/<pid>/stat` | \| 缺页次数 \| 页不在内存的次数 \| `ps -o min_flt,maj_flt`、`/proc/<pid>/stat` \| |

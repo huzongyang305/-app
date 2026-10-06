@@ -200,7 +200,7 @@ point 2,3
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `Record` | 按“现代 Java：Record、Sealed 与模式匹配”中 Record、Sealed、模式匹配 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。 |
 | `Sealed` | Summary: Use records, sealed types and pattern matching for immutable data.。 |

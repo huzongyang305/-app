@@ -212,7 +212,7 @@ print(score("agent"))
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `推理服务` | 围绕“评测集与真实输入分布不一致，推理服务 的提示词或检索结果没有覆盖失败场景”检查调用链、输入数据和环境配置，先验证假设再改代码。 |
 | `KV Cache` | Summary: Cover batching, KV cache, quantization, parallelism and capacity planning.。 |

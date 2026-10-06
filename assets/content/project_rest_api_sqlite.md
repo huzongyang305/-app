@@ -340,7 +340,7 @@ COMMIT;
 
 把「实战：REST API 与 SQLite 事务服务」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `REST` | Explain what Project: REST API with SQLite Transactions solves and when it should be used.。 |
 | `SQLite` | Explain what Project: REST API with SQLite Transactions solves and when it should be used.。 |

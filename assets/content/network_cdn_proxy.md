@@ -299,7 +299,7 @@ server {
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `Cache-Control: max-age` | \| `Cache-Control: max-age` \| 强缓存：有效期内不发请求 \| |
 | `ETag` | \| `ETag` + `If-None-Match` \| 协商缓存：内容没变返回 304 \| |

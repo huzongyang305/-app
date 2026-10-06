@@ -336,7 +336,7 @@ int main() {
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `CMake` | 用一句话说明「实战：C++ HTTP JSON 服务」解决什么问题：用 CMake 构建一个提供 JSON API 的 C++ 服务，覆盖路由、校验、错误和测试。 |
 | `cpp-httplib` | 按“实战：C++ HTTP JSON 服务”中 CMake、cpp-httplib、JSON 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。 |

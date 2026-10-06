@@ -469,7 +469,7 @@ func ListByIDs(ctx context.Context, db *sql.DB, ids []int) ([]User, error) {
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `database/sql` | \| `database/sql` \| 手写扫描 \| 低 \| 简单查询、完全掌控 SQL \| |
 | `SetMaxOpenConns` | \| `SetMaxOpenConns` \| 最大连接数 \| 按数据库承载能力设定，避免打满 \| |

@@ -200,7 +200,7 @@ COMMIT
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `迁移` | 围绕“执行计划随统计信息或数据分布改变，迁移 的索引没有被用上，回表次数反而增加”检查调用链、输入数据和环境配置，先验证假设再改代码。 |
 | `Schema` | Summary: Design reversible, low-lock and verifiable online schema changes.。 |

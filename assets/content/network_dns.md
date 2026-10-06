@@ -344,7 +344,7 @@ print(resolve_with_timing("example.com"))
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `www.example.com` | 人记不住 IP 地址，于是有了域名。DNS（域名系统）负责把 `www.example.com` 这样的域名翻译成 IP 地址，是互联网的「电话簿」。 |
 | `example.com → 93.184.216.34` | \| A \| 域名 → IPv4 \| `example.com → 93.184.216.34` \| |

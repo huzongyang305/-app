@@ -385,7 +385,7 @@ console.log("2 同步");
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `setTimeout(fn, 0)` | \| `setTimeout(fn, 0)` 的真实含义 \| 最快也要等下一轮宏任务 \| |
 | `Promise.then` | \| 微任务 \| `Promise.then`、`queueMicrotask`、`await` 之后 \| 每个宏任务后全部清空 \| |

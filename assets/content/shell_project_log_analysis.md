@@ -328,7 +328,7 @@ printf 'total=%s errors=%s error_rate=%s\n' "$Total" "$Errors" "$Rate"
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `awk` | 用一句话说明「实战：Shell 日志分析与告警」解决什么问题：用 awk、grep、jq 和 cron 实现日志聚合、阈值告警与日报。 |
 | `jq` | 用一句话说明「实战：Shell 日志分析与告警」解决什么问题：用 awk、grep、jq 和 cron 实现日志聚合、阈值告警与日报。 |

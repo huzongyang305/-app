@@ -337,7 +337,7 @@ tests/          单元、集成与接口测试
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `Node.js` | 用一句话说明「实战：Node.js + Express REST API」解决什么问题：用 Express、SQLite 和 Vitest 实现任务 API，覆盖校验、错误中间件和测试。 |
 | `Express` | 用一句话说明「实战：Node.js + Express REST API」解决什么问题：用 Express、SQLite 和 Vitest 实现任务 API，覆盖校验、错误中间件和测试。 |

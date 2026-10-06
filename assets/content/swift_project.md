@@ -224,7 +224,7 @@
 
 把「实战：SwiftUI iOS 客户端」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `iOS 项目` | 围绕“环境版本、配置和输入规模与目标环境不同，iOS 项目 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。 |
 | `SwiftUI` | Project: SwiftUI iOS Client focuses on Build list, detail, network, cache, state restoration and error UI.。 |

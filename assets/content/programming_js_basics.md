@@ -377,7 +377,7 @@ console.table([{ a: 1 }, { a: 2 }]);   // 以表格展示
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `document` | \| 操作 DOM \| 有（`document`） \| 无 \| |
 | `addEventListener` | \| 获取用户事件 \| 有（`addEventListener`） \| 无 \| |

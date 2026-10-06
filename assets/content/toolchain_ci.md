@@ -321,7 +321,7 @@ jobs:
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `.github/workflows/*.yml` | \| workflow \| `.github/workflows/*.yml` 定义的一条流水线 \| |
 | `${{ secrets.TOKEN }}` | \| secrets \| 加密的敏感配置，如 `${{ secrets.TOKEN }}` \| |

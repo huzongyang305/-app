@@ -201,7 +201,7 @@ impl Doubler for i32 {
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `trait` | Summary: Learn trait bounds, static dispatch, dynamic dispatch and associated types.。 |
 | `泛型` | 围绕“泛型 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。 |

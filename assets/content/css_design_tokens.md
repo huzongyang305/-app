@@ -336,7 +336,7 @@ print(validate_contrast("#0f172a", "#ffffff"), validate_contrast("#94a3b8", "#ff
 
 ## 术语速查
 
-| 术语 | 本课语境 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | `--blue-600: #2563eb` | \| 原始令牌 \| 与业务无关的调色板与刻度 \| `--blue-600: #2563eb` \| |
 | `--color-primary` | \| 语义令牌 \| 表达用途，随主题切换 \| `--color-primary`、`--color-surface` \| |
