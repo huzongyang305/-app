@@ -37,7 +37,9 @@ jobs:
           profile: pixel_7
           emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect
           disable-animations: true
-          script: flutter test integration_test/app_smoke_test.dart -d emulator-5554 --no-pub
+          # --no-dds：模拟器上启动 Dart Development Service 偶发失败会直接判为
+          # 测试加载失败，关掉它可以让冒烟测试只关注 App 本身。
+          script: flutter test integration_test/app_smoke_test.dart -d emulator-5554 --no-pub --no-dds
       - name: Run Android performance baseline
         uses: ReactiveCircus/android-emulator-runner@v2
         with:
@@ -48,9 +50,11 @@ jobs:
           emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect
           disable-animations: true
           script: |
-            set -o pipefail
             flutter test integration_test/app_performance_test.dart -d emulator-5554 --no-pub \
-              | tee performance-${{ matrix.api-level }}.log
+              --no-dds > performance-${{ matrix.api-level }}.log 2>&1
+            status=$?
+            cat performance-${{ matrix.api-level }}.log
+            exit $status
       - name: Archive performance baseline
         if: always()
         uses: actions/upload-artifact@v4
