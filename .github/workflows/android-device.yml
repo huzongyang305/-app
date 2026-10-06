@@ -48,6 +48,7 @@ jobs:
           emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect
           disable-animations: true
           script: |
+            set -o pipefail
             flutter test integration_test/app_performance_test.dart -d emulator-5554 --no-pub \
               | tee performance-${{ matrix.api-level }}.log
       - name: Archive performance baseline
