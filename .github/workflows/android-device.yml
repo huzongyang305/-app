@@ -39,9 +39,7 @@ jobs:
           disable-animations: true
           # 关闭 DDS 会让 integration_test 的金标流监听失败，因此保留 DDS，
           # 只对偶发的 DDS 启动失败做一次重试。
-          script: |
-            flutter test integration_test/app_smoke_test.dart -d emulator-5554 --no-pub \
-              || flutter test integration_test/app_smoke_test.dart -d emulator-5554 --no-pub
+          script: flutter test integration_test/app_smoke_test.dart -d emulator-5554 --no-pub || flutter test integration_test/app_smoke_test.dart -d emulator-5554 --no-pub
       - name: Run Android performance baseline
         uses: ReactiveCircus/android-emulator-runner@v2
         with:
@@ -52,8 +50,7 @@ jobs:
           emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect
           disable-animations: true
           script: |
-            flutter test integration_test/app_performance_test.dart -d emulator-5554 --no-pub \
-              > performance-${{ matrix.api-level }}.log 2>&1
+            flutter test integration_test/app_performance_test.dart -d emulator-5554 --no-pub > performance-${{ matrix.api-level }}.log 2>&1
             status=$?
             cat performance-${{ matrix.api-level }}.log
             exit $status
