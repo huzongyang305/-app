@@ -1,14 +1,14 @@
-# 本课主题
+# Kotlin 与 Android 开发
 
 ![Kotlin Android 开发的关键能力](images/diagram_mobile_kotlin.webp)
 
-![本课主题](images/category_mobile_kotlin.webp)
+![Kotlin 与 Android 开发](images/category_mobile_kotlin.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：16 分钟
 
 ## 学习目标
 
-- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
+- 能用自己的话解释Kotlin 与 Android 开发解决了什么问题，而不是只背术语。
 - 能说清 「Kotlin」、「Android」、「协程」、「ViewModel」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「移动开发」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -153,7 +153,7 @@ fun displayName(user: User?): String =
 - [ ] ViewModel 不持有 View 或 Activity 引用。
 - [ ] 后台任务与权限按系统版本做兼容处理。
 
-## 零基础详解：本课主题
+## 零基础详解：Kotlin 与 Android 开发
 
 ### 一句话说清它是什么
 
@@ -358,7 +358,7 @@ sealed interface ListUiState {
 
 合上教程，用 3～5 句话回答：
 
-1. 本课主题解决了什么问题？
+1. Kotlin 与 Android 开发解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「Android」是什么关系？
 
@@ -388,7 +388,7 @@ sealed interface ListUiState {
 
 ## 实践任务
 
-本节围绕本课主题安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
+本节围绕Kotlin 与 Android 开发安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 
 ### 任务 1：用自己的话画出结构
 
@@ -437,7 +437,7 @@ sealed interface ListUiState {
 - [ ] 不看解析，能说出「Android 上架 Google Play 推荐的产物格式是？」的判断依据。
 - [ ] 不看解析，能说出「Kotlin 中 val 与 var 的区别是？」的判断依据。
 - [ ] 不看解析，能说出「在 Activity 中启动一个随生命周期自动取消的协程，常用写法是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码缺少哪个…」的判断依据。
+- [ ] 不看解析，能说出的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -449,46 +449,41 @@ sealed interface ListUiState {
 
 ## 术语速查
 
+把「Kotlin 与 Android 开发」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
 | 术语 | 本课语境 |
 | --- | --- |
-| `?.` | \| 空安全 \| 类型区分可空与非空，`?.`/`?:`/`!!` 显式处理空值 \| |
-| `?:` | \| 空安全 \| 类型区分可空与非空，`?.`/`?:`/`!!` 显式处理空值 \| |
-| `!!` | \| 空安全 \| 类型区分可空与非空，`?.`/`?:`/`!!` 显式处理空值 \| |
-| `fun String.toSlug()` | \| 扩展函数 \| 给已有类加方法而不继承，如 `fun String.toSlug()` \| |
-| `suspend` | \| 协程 \| `suspend` + `launch`/`async`，用同步写法表达异步逻辑 \| |
-| `launch` | \| 协程 \| `suspend` + `launch`/`async`，用同步写法表达异步逻辑 \| |
-| `async` | \| 协程 \| `suspend` + `launch`/`async`，用同步写法表达异步逻辑 \| |
-| `sealed class Result` | \| 密封类 \| `sealed class Result` 表达有限状态，配合 when 穷尽检查 \| |
-| `by lazy` | \| 属性委托 \| `by lazy`、`by viewModels()` 减少样板代码 \| |
-| `by viewModels()` | \| 属性委托 \| `by lazy`、`by viewModels()` 减少样板代码 \| |
-| `viewLifecycleOwner` | 要点：**不要在 Activity 里写业务逻辑**；网络与数据库操作必须离开主线程（协程的 Dispatchers.IO）；用 `viewLifecycleOwner` 收集 Flow 避免泄漏。 |
-| `./gradlew bundleRelease` | `./gradlew bundleRelease` 产出 AAB；签名用 `keystore.properties` 外置并在 .gitignore 排除；用 `minifyEnabled true` 加混淆规则减小体积… |
+| `[Kotlin, Android, 协程, ViewModel, AAB][index]` | 在「Kotlin 与 Android 开发」里理解它的定义、输入和输出。 |
+| `[Kotlin, Android, 协程, ViewModel, AAB][index]` | 本课用它说明边界条件与失败路径。 |
+| `[Kotlin, Android, 协程, ViewModel, AAB][index]` | 结合「Kotlin 与 Android 开发」的正文示例确认它的适用条件。 |
+| `[Kotlin, Android, 协程, ViewModel, AAB][index]` | 在「Kotlin 与 Android 开发」里理解它的定义、输入和输出。 |
+| `[Kotlin, Android, 协程, ViewModel, AAB][index]` | 本课用它说明边界条件与失败路径。 |
 
 ## 考点精讲
 
 ### 考点 1：围绕“Kotlin 与 Android 开发”中的 Kotlin、Android、协程，下列哪两项是本课强调的实践判断？
 
-- **判断依据**：正确答案包括「学习 Kotlin 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 Android 时要固定版本并覆盖边界输入，结论才可复现」。正确答案是学习 Kotlin 时要同时说明输入、输出和失败路径。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 Kotlin 时必须同时交代输入、输出和失败路径，这使“学习 Kotlin 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 Android 时要固定版本与边界输入，所以“验证 Android 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
+- **判断依据**：本课把Kotlin 与 Android 开发拆成概念、示例与故障现场三部分，因此判断 Kotlin 时必须同时交代输入、输出和失败路径，这使“学习 Kotlin 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在Kotlin 与 Android 开发里，判断 Android 时要固定版本与边界输入，所以“验证 Android 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
 ### 考点 2：Android 中承载界面状态、配置变更后仍存活的组件是？
 
-- **判断依据**：Activity 旋转会重建，状态应放在 ViewModel 中。其他选项：Application 是进程级入口，Adapter 负责列表项绑定，Activity 在配置变更时会重建。解题的关键不是记住孤立术语，而是确认「ViewModel」是否完整覆盖题干的输入、输出和失败路径，并排除「Adapter」、「Activity」这类相邻概念。
+- **判断依据**：在「Kotlin 与 Android 开发」里，Activity 旋转会重建，状态应放在 ViewModel 中。在「Kotlin 与 Android 开发」里，其他选项：Application 是进程级入口，Adapter 负责列表项绑定，Activity 在配置变更时会重建。
 
 ### 考点 3：Android 上架 Google Play 推荐的产物格式是？
 
-- **判断依据**：AAB 让商店按设备下发，减小下载体积。其他选项：JAR 不是 Android 产物，DEX 是字节码格式，APK 虽可安装但并非商店推荐。正确的判断需要逐项核对定义、版本和适用条件（mobilekotlin 第 3 题）。如果只凭关键词作答，很容易把「JAR」、「APK」与「AAB」混在一起；正确的判断需要逐项核对定义、版本和适用条件（mobile_kotlin 第 3 题）。
+- **判断依据**：AAB 让商店按设备下发，减小下载体积。其他选项：JAR 不是 Android 产物，DEX 是字节码格式，APK 虽可安装但并非商店推荐。如果只凭关键词作答，很容易把「JAR」、「APK」与「AAB」混在一起；这道题的关键在「Kotlin 与 Android 开发」的Kotlin、Android、协程：先确认题干“Android 上架 Google”问的是哪一步，再排除偷换前提的选项。
 
-### 考点 4：下面这段 Dart 代码复现了“Kotlin 与 Android 开发”中 Kotlin、Android、协程 相关的一个常见故障，哪一项最准确地解释了问题？
+### 考点 4：下面这段 Kotlin 代码摘自「Kotlin 与 Android 开发」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 
-- **判断依据**：结论应落在「循环条件用了 <=，i == data.length 时抛出 RangeError；应改成 i < data.length」（mobile_kotlin 第 4 题）。结论应落在循环条件用了 <=，i == data.length 时抛出 RangeError。应改成 i < data.length（mobile_kotlin 第 4 题）。应改成 i < data.length（mobilekotlin 第 4 题）。
+- **判断依据**：在「Kotlin 与 Android 开发」里，这段代码包含异常处理分支，失败时会走专门的补救路径。这段代码出自「Kotlin 与 Android 开发」的正文示例，围绕Kotlin、Android、协程展开；把输入或边界换成空值、极值或失败情况后，结论要以「Kotlin 与 Android 开发」的实际运行结果为准。
 
 ### 考点 5：在 Activity 中启动一个随生命周期自动取消的协程，常用写法是？
 
-- **判断依据**：正确答案是「lifecycleScope.launch { }」。lifecycleScope 绑定组件生命周期，销毁时自动取消，避免泄漏。判断这类题时，要把「lifecycleScope.launch { }」放回题干限定的对象、输入和边界，「runBlocking { }」、「GlobalScope.launch { }」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：在「Kotlin 与 Android 开发」里，lifecycleScope.launch { }。lifecycleScope 绑定组件生命周期，销毁时自动取消，避免泄漏。「Kotlin 与 Android 开发」要求先交代Kotlin、Android、协程的前提再下结论，所以“lifecycleScope.launc”只在题干“在 Activity 中启动一个随生命周期自动取消的协程”给定的条件下成立。
 
 ### 考点 6：按照「Kotlin 与 Android 开发」从概念到实践的讲解顺序排列下列主题。
 
-- **判断依据**：正确的执行顺序是「语言特性速览」 → 「Android 应用结构」 → 「生命周期与常见崩溃」 → 「打包发布」。在本课中，正确顺序是：1. 语言特性速览 → 2. Android 应用结构 → 3. 生命周期与常见崩溃 → 4. 打包发布。
+- **判断依据**：在「Kotlin 与 Android 开发」里，正确的执行顺序是「语言特性速览」 → 「Android 应用结构」 → 「生命周期与常见崩溃」 → 「打包发布」。在「Kotlin 与 Android 开发」里，在本课中，正确顺序是：1. 语言特性速览 → 2. Android 应用结构 → 3. 生命周期与常见崩溃 → 4. 打包发布。
 
 ## English Overview
 
@@ -509,7 +504,6 @@ sealed interface ListUiState {
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：Kotlin、Android、协程、ViewModel、AAB
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
-
 
 ## 参考资料与复核
 

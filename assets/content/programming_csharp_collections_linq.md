@@ -8,7 +8,7 @@
 
 ## 学习目标
 
-- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
+- 能用自己的话解释集合、委托与 LINQ解决了什么问题，而不是只背术语。
 - 能说清 「List」、「Dictionary」、「HashSet」、「委托」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「C#」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -332,7 +332,7 @@ Console.WriteLine($"及格 {all.Count(x => x.Score >= 60)} 人");
 
 合上教程，用 3～5 句话回答：
 
-1. 本课主题解决了什么问题？
+1. 集合、委托与 LINQ解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「Dictionary」是什么关系？
 
@@ -362,7 +362,7 @@ Console.WriteLine($"及格 {all.Count(x => x.Score >= 60)} 人");
 
 ## 实践任务
 
-本节围绕本课主题安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
+本节围绕集合、委托与 LINQ安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 
 ### 任务 1：用自己的话画出结构
 
@@ -436,48 +436,44 @@ Console.WriteLine($"及格 {all.Count(x => x.Score >= 60)} 人");
 
 ## 术语速查
 
+把「集合、委托与 LINQ」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
 | 术语 | 本课语境 |
 | --- | --- |
-| `List<T>` | 选择原则：有序可重复用 `List<T>`，键值查找用 `Dictionary<TKey,TValue>`，去重用 `HashSet<T>`。 |
-| `Dictionary<TKey,TValue>` | 选择原则：有序可重复用 `List<T>`，键值查找用 `Dictionary<TKey,TValue>`，去重用 `HashSet<T>`。 |
-| `HashSet<T>` | 选择原则：有序可重复用 `List<T>`，键值查找用 `Dictionary<TKey,TValue>`，去重用 `HashSet<T>`。 |
-| `ToList` | LINQ 是**延迟执行**的：只有遍历或调用 `ToList`/`Count`/`Sum` 时才真正执行。多次遍历同一个查询会重复计算，需要复用就提前 `ToList()`。 |
-| `Count` | LINQ 是**延迟执行**的：只有遍历或调用 `ToList`/`Count`/`Sum` 时才真正执行。多次遍历同一个查询会重复计算，需要复用就提前 `ToList()`。 |
-| `Sum` | LINQ 是**延迟执行**的：只有遍历或调用 `ToList`/`Count`/`Sum` 时才真正执行。多次遍历同一个查询会重复计算，需要复用就提前 `ToList()`。 |
-| `ToList()` | LINQ 是**延迟执行**的：只有遍历或调用 `ToList`/`Count`/`Sum` 时才真正执行。多次遍历同一个查询会重复计算，需要复用就提前 `ToList()`。 |
-| `Count() > 0` | \| 用 `Count() > 0` 判空 \| 遍历整个集合 \| 用 `Any()`，命中即返回 \| |
-| `Any()` | \| 用 `Count() > 0` 判空 \| 遍历整个集合 \| 用 `Any()`，命中即返回 \| |
-| `Where(...).First()` | \| `Where(...).First()` \| 可能抛异常 \| 不确定用 `FirstOrDefault()` 并判空 \| |
-| `FirstOrDefault()` | \| `Where(...).First()` \| 可能抛异常 \| 不确定用 `FirstOrDefault()` 并判空 \| |
-| `Queue<T>` | 集合选型速查：需要按下标访问用 `List<T>`；需要按键 O(1) 查找用 `Dictionary<TKey,TValue>`；需要去重或集合运算用 `HashSet<T>`；需要先进先出用 `Queue<T>`、后… |
+| `[List, Dictionary, HashSet, 委托, LINQ, 延迟执行][index]` | 在「集合、委托与 LINQ」里理解它的定义、输入和输出。 |
+| `[List, Dictionary, HashSet, 委托, LINQ, 延迟执行][index]` | 本课用它说明边界条件与失败路径。 |
+| `[List, Dictionary, HashSet, 委托, LINQ, 延迟执行][index]` | 结合「集合、委托与 LINQ」的正文示例确认它的适用条件。 |
+| `[List, Dictionary, HashSet, 委托, LINQ, 延迟执行][index]` | 在「集合、委托与 LINQ」里理解它的定义、输入和输出。 |
+| `[List, Dictionary, HashSet, 委托, LINQ, 延迟执行][index]` | 本课用它说明边界条件与失败路径。 |
+| `[List, Dictionary, HashSet, 委托, LINQ, 延迟执行][index]` | 结合「集合、委托与 LINQ」的正文示例确认它的适用条件。 |
 
 ## 考点精讲
 
-### 考点 1：下面这段 C# 代码复现了“集合、委托与 LINQ”中 List、Dictionary、HashSet 相关的一个常见故障，哪一项最准确地解释了问题？
+### 考点 1：下面这段 C# 代码摘自「集合、委托与 LINQ」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 
-- **判断依据**：正确答案是「循环条件用了 <=，i == data.Length 时抛出 IndexOutOfRangeException」。正确答案是循环条件用了 <=，i == data.Length 时抛出 IndexOutOfRangeException（csharpcollectionslinq 第 1 题）。结合List、Dictionary来看，正确答案是循环条件用了 <=。在这个复现里，List 的边界应改成 i < data.Length。
+- **判断依据**：在「集合、委托与 LINQ」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「集合、委托与 LINQ」的正文示例，围绕List、Dictionary、HashSet展开；把输入或边界换成空值、极值或失败情况后，结论要以「集合、委托与 LINQ」的实际运行结果为准。
 
 ### 考点 2：LINQ 查询是什么时候执行的？
 
-- **判断依据**：本题应选「遍历结果或调用 ToList/Count 等终止操作时」。LINQ 延迟执行，多次遍历会重复计算，需要复用时应先 ToList 物化。解题的关键不是记住孤立术语，而是确认「遍历结果或调用 ToList/Count 等终止操作时」是否完整覆盖题干的输入、输出和失败路径，并排除「编译时」、「GC 时」这类相邻概念。
+- **判断依据**：在「集合、委托与 LINQ」里，遍历结果或调用 ToList/Count 等终止操作时。LINQ 延迟执行，多次遍历会重复计算，需要复用时应先 ToList 物化。在「集合、委托与 LINQ」里判断这道题，要把List、Dictionary、HashSet的条件、过程与失败路径逐项对齐，换成“LINQ 查询是什么时候执行的”这个场景，只有满足前提的结论才成立。
 
 ### 考点 3：Func<int, int, int> 表示什么？
 
-- **判断依据**：符合题干条件的是「接收两个 int 返回 int 的委托」。Func 的最后一个类型参数是返回值类型，前面是参数类型。正确的判断需要逐项核对定义、版本和适用条件（csharpcollectionslinq 第 3 题）。正确的判断需要逐项核对定义、版本和适用条件（csharp_collections_linq 第 3 题）。
+- **判断依据**：在「集合、委托与 LINQ」里，接收两个 int 返回 int 的委托。Func 的最后一个类型参数是返回值类型，前面是参数类型。回到「集合、委托与 LINQ」的正文示例，用“Func<int”走一遍List、Dictionary、HashSet的完整流程，能复现的结论才可以保留。
 
 ### 考点 4：围绕“集合、委托与 LINQ”中的 List、Dictionary、HashSet，下列哪两项是本课强调的实践判断？
 
-- **判断依据**：正确答案包括「学习 List 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 Dictionary 时要固定版本并覆盖边界输入，结论才可复现」。结论应落在学习 List 时要同时说明输入、输出和失败路径。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 List 时必须同时交代输入、输出和失败路径，这使“学习 List 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 Dictionary 时要固定版本与边界输入，所以“验证 Dictionary 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
+- **判断依据**：结论应落在学习 List 时要同时说明输入、输出和失败路径。本课把集合、委托与 LINQ拆成概念、示例与故障现场三部分，因此判断 List 时必须同时交代输入、输出和失败路径，这使“学习 List 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在集合、委托与 LINQ里，判断 Dictionary 时要固定版本与边界输入，所以“验证 Dictionary 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
 ### 考点 5：LINQ 中先 Where 再 Select 的顺序为什么更好？
 
-- **判断依据**：正确答案是「先过滤掉不需要的元素」。对数据库查询尤其明显：顺序正确可以把过滤条件下推到 SQL，减少扫描行数。判断这类题时，要把「先过滤掉不需要的元素」放回题干限定的对象、输入和边界，「两者顺序无所谓」、「Where 会缓存全部结果」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：在「集合、委托与 LINQ」里，先过滤掉不需要的元素。对数据库查询尤其明显：顺序正确可以把过滤条件下推到 SQL，减少扫描行数。回到「集合、委托与 LINQ」的正文示例，用“LINQ 中先 Where 再 Se”走一遍List、Dictionary、HashSet的完整流程，能复现的结论才可以保留。
 
 ### 考点 6：补全代码：「集合、委托与 LINQ」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
 
 `var first = users.____(u => u.Name == "nobody");`
 
-- **判断依据**：空格应填写「FirstOrDefault」、「firstordefault」。解题的关键不是记住孤立术语，而是确认「FirstOrDefault 或 firstordefault」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
+- **判断依据**：空格应填写「FirstOrDefault」、「firstordefault」。「集合、委托与 LINQ」要求先交代List、Dictionary、HashSet的前提再下结论，所以“FirstOrDefault”只在题干“集合、委托与 LINQ示例中”给定的条件下成立。把“FirstOrDefault”代回「集合、委托与 LINQ」里“集合、委托与 LINQ示例中”的例子核对，条件一旦改变，结论就要用List、Dictionary、HashSet重新推导。
 
 ## English Overview
 
@@ -498,7 +494,6 @@ Console.WriteLine($"及格 {all.Count(x => x.Score >= 60)} 人");
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：List、Dictionary、HashSet、委托、LINQ、延迟执行
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
-
 
 ## 参考资料与复核
 

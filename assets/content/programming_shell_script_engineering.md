@@ -1,14 +1,14 @@
-# 本课主题
+# Shell 脚本工程化
 
-![本课主题的四个实践](images/diagram_shell_engineering.webp)
+![Shell 脚本工程化的四个实践](images/diagram_shell_engineering.webp)
 
-![本课主题](images/remaining_shell_script_engineering.webp)
+![Shell 脚本工程化](images/remaining_shell_script_engineering.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：15 分钟
 
 ## 学习目标
 
-- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
+- 能用自己的话解释Shell 脚本工程化解决了什么问题，而不是只背术语。
 - 能说清 「Shell」、「bats」、「shellcheck」、「CI」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「Shell」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -313,7 +313,7 @@ shellcheck -S warning scripts/*.sh    # 静态检查
 
 合上教程，用 3～5 句话回答：
 
-1. 本课主题解决了什么问题？
+1. Shell 脚本工程化解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「bats」是什么关系？
 
@@ -428,48 +428,43 @@ ensure_dir() {
 
 ## 术语速查
 
+把「Shell 脚本工程化」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
 | 术语 | 本课语境 |
 | --- | --- |
-| `bin/` | 脚本多了就需要结构：`bin/`（入口）、`lib/`（公共函数）、`test/`（测试）、`README`（用法）。公共函数用 `source` 引入；入口脚本只做参数解析与调用。 |
-| `lib/` | 脚本多了就需要结构：`bin/`（入口）、`lib/`（公共函数）、`test/`（测试）、`README`（用法）。公共函数用 `source` 引入；入口脚本只做参数解析与调用。 |
-| `test/` | 脚本多了就需要结构：`bin/`（入口）、`lib/`（公共函数）、`test/`（测试）、`README`（用法）。公共函数用 `source` 引入；入口脚本只做参数解析与调用。 |
-| `README` | 脚本多了就需要结构：`bin/`（入口）、`lib/`（公共函数）、`test/`（测试）、`README`（用法）。公共函数用 `source` 引入；入口脚本只做参数解析与调用。 |
-| `source` | 脚本多了就需要结构：`bin/`（入口）、`lib/`（公共函数）、`test/`（测试）、`README`（用法）。公共函数用 `source` 引入；入口脚本只做参数解析与调用。 |
-| `command -v` | 依赖管理：检查必需命令（`command -v`），在 README 与 `--help` 中写明依赖；复杂依赖用包管理器或容器固化环境。 |
-| `--help` | 依赖管理：检查必需命令（`command -v`），在 README 与 `--help` 中写明依赖；复杂依赖用包管理器或容器固化环境。 |
-| `@test` | bats（Bash Automated Testing System）提供 `@test` 语法断言命令输出与退出码，是 Shell 最成熟的测试方案。测试要点：把逻辑写成可独立调用的函数、用临时目录隔离副作用、断言退出… |
-| `shellcheck -x script.sh` | \| ShellCheck \| 静态检查 \| `shellcheck -x script.sh` \| |
-| `shfmt -w -i 2 script.sh` | \| shfmt \| 格式化 \| `shfmt -w -i 2 script.sh` \| |
-| `bats tests/` | \| bats-core \| 单元测试 \| `bats tests/` \| |
-| `assert_output` | \| bats-assert \| 断言库 \| `assert_output`、`assert_success` \| |
+| `[Shell, bats, shellcheck, CI, 工程化][index]` | 在「Shell 脚本工程化」里理解它的定义、输入和输出。 |
+| `[Shell, bats, shellcheck, CI, 工程化][index]` | 本课用它说明边界条件与失败路径。 |
+| `[Shell, bats, shellcheck, CI, 工程化][index]` | 结合「Shell 脚本工程化」的正文示例确认它的适用条件。 |
+| `[Shell, bats, shellcheck, CI, 工程化][index]` | 在「Shell 脚本工程化」里理解它的定义、输入和输出。 |
+| `[Shell, bats, shellcheck, CI, 工程化][index]` | 本课用它说明边界条件与失败路径。 |
 
 ## 考点精讲
 
 ### 考点 1：阅读「Shell 脚本工程化」中的这段 Shell 代码，下面哪项判断最准确？
 
-- **判断依据**：正确答案是「目录结构、bats 测试、shellcheck 与 CI 发布」。正确答案是目录结构、bats 测试、shellcheck 与 CI 发布。这段 Shell 代码来自本课的本地示例，主要用来核对 Shell、bats、shellcheck、CI 之间的输入、处理和输出关系，目录结构、bats 测试、shellcheck 与 CI 发布。
+- **判断依据**：在「Shell 脚本工程化」里，这段 Shell 代码来自本课的本地示例，主要用来核对 Shell、bats、shellcheck、CI 之间的输入、处理和输出关系，目录结构、bats 测试、shellcheck 与 CI 发布。回到「Shell 脚本工程化」的正文示例，用“阅读Shell 脚本工程化中的这段”走一遍Shell、bats、shellcheck的完整流程，能复现的结论才可以保留。
 
 ### 考点 2：Shell 静态检查的必装工具是？
 
-- **判断依据**：shellcheck 能拦掉引号、未定义变量等大量低级事故。其他选项：clippy 面向 Rust，pylint 面向 Python，eslint 面向 JavaScript。解题的关键不是记住孤立术语，而是确认「shellcheck」是否完整覆盖题干的输入、输出和失败路径，并排除「pylint」、「eslint」这类相邻概念。
+- **判断依据**：在「Shell 脚本工程化」里，shellcheck 能拦掉引号、未定义变量等大量低级事故。其他选项：clippy 面向 Rust，pylint 面向 Python，eslint 面向 JavaScript。在「Shell 脚本工程化」里判断这道题，要把Shell、bats、shellcheck的条件、过程与失败路径逐项对齐，换成“Shell 静态检查的必装工具是”这个场景，只有满足前提的结论才成立。
 
 ### 考点 3：围绕“Shell 脚本工程化”中的 Shell、bats、shellcheck，下列哪两项是本课强调的实践判断？
 
-- **判断依据**：正确答案包括「学习 Shell 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 bats 时要固定版本并覆盖边界输入，结论才可复现」。符合题干条件的是学习 Shell 时要同时说明输入、输出和失败路径。在本课主题里，判断 bats 时要固定版本与边界输入，所以“验证 bats 时要固定版本并覆盖边界输入，结论才可复现”才可复现。如果只凭关键词作答，很容易把学习 Shell 时要同时说明输入、输出和失败路径，不能…、只要 Shell 的常规示例通过，就可以跳过边界与异常路…与学习 Shell 时要同时说明输入、输出和失败路径，不能只看正常流程。
+- **判断依据**：在「Shell 脚本工程化」里，学习 Shell 时要同时说明输入、输出和失败路径，不能只看正常流程。在Shell 脚本工程化里，判断 bats 时要固定版本与边界输入，所以“验证 bats 时要固定版本并覆盖边界输入，结论才可复现”才可复现。在「Shell 脚本工程化」里判断这道题，要把Shell、bats、shellcheck的条件、过程与失败路径逐项对齐，换成“围绕Shell 脚本工程化中的 Sh”这个场景，只有满足前提的结论才成立。
 
 ### 考点 4：set -x 与 set -v 的区别是？
 
-- **判断依据**：结论应落在「-x 打印展开后实际执行的命令」。-x 是排查脚本逻辑最常用的手段，可用 set +x 精确关闭某段。这道题要求区分概念与边界，「-x 打印展开后实际执行的命令」只有在题干给出的前提下才成立，而「-x 只能用于函数」、「-v 会关闭错误处理」缺少同一组条件。
+- **判断依据**：在「Shell 脚本工程化」里，结论应落在「-x 打印展开后实际执行的命令」。-x 是排查脚本逻辑最常用的手段，可用 set +x 精确关闭某段。在「Shell 脚本工程化」里，这道题要求区分概念与边界，「-x 打印展开后实际执行的命令」只有在题干给出的前提下才成立，而「-x 只能用于函数」、「-v 会关闭错误处理」缺少同一组条件。
 
 ### 考点 5：脚本要支持标准风格的短选项（-a -b 值），推荐用？
 
-- **判断依据**：正确答案是「getopts（或 GNU getopt / while + case 手动解析）」。getopts 是 POSIX 内置，能自动处理选项与参数绑定的细节。判断这类题时，要把「getopts（或 GNU getopt / while + case …」放回题干限定的对象、输入和边界，「用 $1 依次取用即可（混淆了相邻概念，也没有覆盖题干给…」、「读取环境变量代替」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：在「Shell 脚本工程化」里，getopts（或 GNU getopt / while + case 手动解析）。getopts 是 POSIX 内置，能自动处理选项与参数绑定的细节。回到「Shell 脚本工程化」的正文示例，用“脚本要支持标准风格的短选项（-a -”走一遍Shell、bats、shellcheck的完整流程，能复现的结论才可以保留。
 
 ### 考点 6：补全代码：「Shell 脚本工程化」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
 
-`____() { log ERROR "$@"; }`
+`____ { log ERROR "$@"; }`
 
-- **判断依据**：空格应填写「log_error」。围绕 补全代码：本课主题示例中，下面这行代码缺少哪个关键… 作答时，先用Shell建立输入与输出的基线，再把logerror代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「log_error」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
+- **判断依据**：空格应填写「log_error」。这道题的关键在「Shell 脚本工程化」的Shell、bats、shellcheck：先确认题干“补全代码”问的是哪一步，再排除偷换前提的选项。把“logerror”代回「Shell 脚本工程化」里“Shell 脚本工程化示例中”的例子核对，条件一旦改变，结论就要用Shell、bats、shellcheck重新推导。
 
 ## English Overview
 
@@ -490,7 +485,6 @@ ensure_dir() {
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：Shell、bats、shellcheck、CI、工程化
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
-
 
 ## 参考资料与复核
 

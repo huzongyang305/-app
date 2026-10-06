@@ -8,7 +8,7 @@
 
 ## 学习目标
 
-- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
+- 能用自己的话解释Flutter 基础与 Widget 树解决了什么问题，而不是只背术语。
 - 能说清 「Flutter」、「Widget」、「布局」、「约束」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「移动开发」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -352,7 +352,7 @@ class ItemList extends StatelessWidget {
 
 合上教程，用 3～5 句话回答：
 
-1. 本课主题解决了什么问题？
+1. Flutter 基础与 Widget 树解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「Widget」是什么关系？
 
@@ -382,7 +382,7 @@ class ItemList extends StatelessWidget {
 
 ## 实践任务
 
-本节围绕本课主题安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
+本节围绕Flutter 基础与 Widget 树安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 
 ### 任务 1：用自己的话画出结构
 
@@ -431,7 +431,7 @@ class ItemList extends StatelessWidget {
 - [ ] 不看解析，能说出「Flutter 在各平台 UI 高度一致的原因是？」的判断依据。
 - [ ] 不看解析，能说出「让 Row 中的子项按比例占满剩余宽度，应该使用？」的判断依据。
 - [ ] 不看解析，能说出「热重载（hot reload）与热重启（hot restart）的关键区别是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码缺少哪…」的判断依据。
+- [ ] 不看解析，能说出的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -460,29 +460,29 @@ class ItemList extends StatelessWidget {
 
 ## 考点精讲
 
-### 考点 1：下面这段 Dart 代码复现了“Flutter 基础与 Widget 树”中 Flutter、Widget、布局 相关的一个常见故障，哪一项最准确地解释了问题？
+### 考点 1：下面这段代码代码摘自「Flutter 基础与 Widget 树」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 
-- **判断依据**：正确答案是「循环条件用了 <=，i == data.length 时抛出 RangeError；应改成 i < data.length」（flutter_basics 第 1 题）。正确答案是循环条件用了 <=，i == data.length 时抛出 RangeError。应改成 i < data.length（flutter_basics 第 1 题）。应改成 i < data.length（flutterbasics 第 1 题）。
+- **判断依据**：在「Flutter 基础与 Widget 树」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「Flutter 基础与 Widget 树」的正文示例，围绕Flutter、Widget、布局展开；把输入或边界换成空值、极值或失败情况后，结论要以「Flutter 基础与 Widget 树」的实际运行结果为准。
 
 ### 考点 2：长列表应该使用？
 
-- **判断依据**：本题应选「ListView.builder 懒加载」。builder 只构建可见项，避免一次性创建大量 Widget。解题的关键不是记住孤立术语，而是确认「ListView.builder 懒加载」是否完整覆盖题干的输入、输出和失败路径，并排除「SingleChildScrollView 包 Colu…」、「Wrap」这类相邻概念。
+- **判断依据**：在「Flutter 基础与 Widget 树」里，ListView.builder 懒加载。builder 只构建可见项，避免一次性创建大量 Widget。这道题的关键在「Flutter 基础与 Widget 树」的Flutter、Widget、布局：先确认题干“长列表应该使用”问的是哪一步，再排除偷换前提的选项。
 
 ### 考点 3：按“Flutter 基础与 Widget 树”中 Flutter、Widget、布局 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
 
-- **判断依据**：正确的执行顺序是「先明确 Flutter 的输入、输出与约束」 → 「写出最小示例并核对 Widget 的基线结果」 → 「只改一个变量，记录边界与失败路径的变化」 → 「固定版本与证据，把本课的结论写成可复现记录」。在本课的练习里，顺序应当是：先明确 Flutter 的输入、输出与约束 → 写出最小示例并核对 Widget 的基线结果 → 只改一个变量，记录边界与失败路径的变化 → 固定版本与证据，把本课的结论写成可复现记录。这个顺序把 Flutter 的输入、输出和约束放在最前面，在本课主题里避免概念没对齐就开始调参。第二步用 Widget 建立可核对的基线，在本课主题里第三步才允许改变一个变量并观察失败路径。
+- **判断依据**：正确的执行顺序是「先明确 Flutter 的输入、输出与约束」 → 「写出最小示例并核对 Widget 的基线结果」 → 「只改一个变量，记录边界与失败路径的变化」 → 「固定版本与证据，把“Flutter 基础与 Widget 树”的结论写成可复现记录」。在「Flutter 基础与 Widget 树」里，在本课的练习里，顺序应当是：先明确 Flutter 的输入、输出与约束 → 写出最小示例并核对 Widget 的基线结果 → 只改一个变量，记录边界与失败路径的变化 → 固定版本与证据，把本课的结论写成可复现记录。这个顺序把 Flutter 的输入、输出和约束放在最前面，在Flutter 基础与 Widget 树里避免概念没对齐就开始调参。第二步用 Widget 建立可核对的基线，在Flutter 基础与 Widget 树里第三步才允许改变一个变量并观察失败路径。
 
 ### 考点 4：让 Row 中的子项按比例占满剩余宽度，应该使用？
 
-- **判断依据**：结论应落在「Expanded(flex: n)」。Expanded 会按 flex 比例瓜分剩余空间。这道题要求区分概念与边界，「Expanded(flex: n)」只有在题干给出的前提下才成立，而「SizedBox(width: 100)」、「Container(color: ...)」缺少同一组条件。
+- **判断依据**：在「Flutter 基础与 Widget 树」里，结论应落在「Expanded(flex: n)」。Expanded 会按 flex 比例瓜分剩余空间。在「Flutter 基础与 Widget 树」里，这道题要求区分概念与边界，「Expanded(flex: n)」只有在题干给出的前提下才成立，而「SizedBox(width: 100)」、「Container(color: ...)」缺少同一组条件。
 
 ### 考点 5：热重载（hot reload）与热重启（hot restart）的关键区别是？
 
-- **判断依据**：正确答案是「热重载保留当前 State」。热重载只重新执行 build，State 与页面栈保留。判断这类题时，要把「热重载保留当前 State」放回题干限定的对象、输入和边界，「热重载必须重启模拟器」、「两者完全等价」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：在「Flutter 基础与 Widget 树」里，热重载保留当前 State。热重载只重新执行 build，State 与页面栈保留。回到「Flutter 基础与 Widget 树」的正文示例，用“热重载（hot reload）与热重”走一遍Flutter、Widget、布局的完整流程，能复现的结论才可以保留。
 
 ### 考点 6：关于「Flutter 基础与 Widget 树」，下列哪些说法是正确的？（多选）
 
-- **判断依据**：正确答案包括「ListView.builder 懒加载」、「约束向下、尺寸向上、父决定位置」。本题应选ListView.builder 懒加载。正确答案是ListView.builder 懒加载。Widget 分类、布局三原则与常用布局对照。
+- **判断依据**：在「Flutter 基础与 Widget 树」里，ListView.builder 懒加载；在「Flutter 基础与 Widget 树」里，约束向下、尺寸向上、父决定位置。Widget 分类、布局三原则与常用布局对照。把“ListView.builder 懒加载”代回「Flutter 基础与 Widget 树」里“Flutter 基础与 Widget 树”的例子核对，条件一旦改变，结论就要用Flutter、Widget、布局重新推导。
 
 ## English Overview
 
@@ -503,7 +503,6 @@ class ItemList extends StatelessWidget {
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：Flutter、Widget、布局、约束
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
-
 
 ## 参考资料与复核
 

@@ -1,14 +1,14 @@
-# 本课主题
+# JavaScript DOM 入门
 
 > 内容更新时间：2026-10-03
 
 ![DOM 操作入门四步](images/diagram_js_dom_intro.webp)
 
-![本课主题](images/remaining_js_dom_intro.webp)
+![JavaScript DOM 入门](images/remaining_js_dom_intro.webp)
 
 ## 学习目标
 
-- 先认识本课主题需要的工具、输入和输出。
+- 先认识JavaScript DOM 入门需要的工具、输入和输出。
 - 按步骤运行最小示例，并记录结果与错误。
 - 用一个边界输入验证自己是否真正掌握。
 
@@ -123,7 +123,7 @@ console.log(document.querySelector("button").textContent);
 
 ## 故障现场
 
-### 现场 1：本课的 本课主题 常规用例通过，但边界用例失败
+### 现场 1：本课的 JavaScript DOM 入门 常规用例通过，但边界用例失败
 
 ### 现场 2：本课的 JavaScript 结果在两次运行之间不一致
 
@@ -157,9 +157,9 @@ console.log(document.querySelector("button").textContent);
 
 - [ ] 不看解析，能说出「document.createElement("button") 的作用是？」的判断依据。
 - [ ] 不看解析，能说出「document.querySelector("button") 会返回什么？」的判断依据。
-- [ ] 不看解析，能说出「示例中 console.log(document.querySelector("…」的判断依据。
+- [ ] 不看解析，能说出的判断依据。
 - [ ] 不看解析，能说出「要让按钮响应用户点击，应该使用哪个方法？」的判断依据。
-- [ ] 不看解析，能说出「填空：本课主题术语速查中，表示「JavaScrip…」的判断依据。
+- [ ] 不看解析，能说出「填空：JavaScript DOM 入门术语速查中，表示的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -200,22 +200,15 @@ console.log(document.querySelector("button").textContent);
 
 ## 术语速查
 
+把「JavaScript DOM 入门」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
 | 术语 | 本课语境 |
 | --- | --- |
-| `setTimeout` | JavaScript 是单线程执行模型，调用栈执行同步代码，事件循环在栈清空后处理任务队列和微任务队列。`setTimeout`、Promise、事件回调都通过异步机制排队执行。理解调用栈、任务队列和微任务的顺序，才能解… |
-| `var` | `var` 函数作用域且会提升，`let` 和 `const` 块级作用域并有暂时性死区。`const` 禁止重新赋值，但对象内容仍可修改。JavaScript 有原始类型和对象类型，`==` 会做隐式类型转换，`===… |
-| `let` | `var` 函数作用域且会提升，`let` 和 `const` 块级作用域并有暂时性死区。`const` 禁止重新赋值，但对象内容仍可修改。JavaScript 有原始类型和对象类型，`==` 会做隐式类型转换，`===… |
-| `const` | `var` 函数作用域且会提升，`let` 和 `const` 块级作用域并有暂时性死区。`const` 禁止重新赋值，但对象内容仍可修改。JavaScript 有原始类型和对象类型，`==` 会做隐式类型转换，`===… |
-| `==` | `var` 函数作用域且会提升，`let` 和 `const` 块级作用域并有暂时性死区。`const` 禁止重新赋值，但对象内容仍可修改。JavaScript 有原始类型和对象类型，`==` 会做隐式类型转换，`===… |
-| `===` | `var` 函数作用域且会提升，`let` 和 `const` 块级作用域并有暂时性死区。`const` 禁止重新赋值，但对象内容仍可修改。JavaScript 有原始类型和对象类型，`==` 会做隐式类型转换，`===… |
-| `null` | `var` 函数作用域且会提升，`let` 和 `const` 块级作用域并有暂时性死区。`const` 禁止重新赋值，但对象内容仍可修改。JavaScript 有原始类型和对象类型，`==` 会做隐式类型转换，`===… |
-| `undefined` | `var` 函数作用域且会提升，`let` 和 `const` 块级作用域并有暂时性死区。`const` 禁止重新赋值，但对象内容仍可修改。JavaScript 有原始类型和对象类型，`==` 会做隐式类型转换，`===… |
-| `NaN` | `var` 函数作用域且会提升，`let` 和 `const` 块级作用域并有暂时性死区。`const` 禁止重新赋值，但对象内容仍可修改。JavaScript 有原始类型和对象类型，`==` 会做隐式类型转换，`===… |
-| `this` | 函数是一等对象，可以作为参数、返回值和对象属性。闭包让函数记住定义时的词法作用域，常用于回调、模块私有状态和工厂函数。`this` 的值取决于调用方式，普通调用、方法调用、构造函数和箭头函数规则不同；箭头函数不绑定自己的… |
-| `class` | 对象是键值集合，原型链提供属性查找和继承。`class` 是原型继承的语法糖，`extends` 和 `super` 简化继承写法。模块使用 `import`/`export` 显式声明依赖，避免全局污染。不可变数据、展… |
-| `extends` | 对象是键值集合，原型链提供属性查找和继承。`class` 是原型继承的语法糖，`extends` 和 `super` 简化继承写法。模块使用 `import`/`export` 显式声明依赖，避免全局污染。不可变数据、展… |
+| `[JavaScript DOM 入门, JavaScript, 入门练习][index]` | 在「JavaScript DOM 入门」里理解它的定义、输入和输出。 |
+| `[JavaScript DOM 入门, JavaScript, 入门练习][index]` | 本课用它说明边界条件与失败路径。 |
+| `[JavaScript DOM 入门, JavaScript, 入门练习][index]` | 结合「JavaScript DOM 入门」的正文示例确认它的适用条件。 |
 
-## 零基础精讲：把本课主题真正讲透
+## 零基础精讲：把JavaScript DOM 入门真正讲透
 
 ### 先建立一个直觉
 
@@ -223,7 +216,7 @@ console.log(document.querySelector("button").textContent);
 
 ### 逐步拆解
 
-2. 描述处理过程。把「本课主题、JavaScript、入门练习」映射到具体步骤，每步都要求能单独验证。
+2. 描述处理过程。把「JavaScript DOM 入门、JavaScript、入门练习」映射到具体步骤，每步都要求能单独验证。
 3. 定义输出。输出不仅包括正常结果，还包括错误码、日志、指标和资源释放状态。
 4. 找出一条失败路径。让错误尽早暴露，并说明重试、降级、回滚或人工处理的边界。
 5. 用一个小例子贯穿全过程。先手算或预测结果，再运行代码或实验，最后解释差异。
@@ -237,27 +230,19 @@ console.log(document.querySelector("button").textContent);
 
 ### 从测验反推易错点
 
-**检查点 1：下面这段 JavaScript 代码复现了本课主题中 JavaScript D…**
-
 - 参考判断：== 会先做类型转换，"0" 被转成数字 0 后与 false 相等。
 - 自问：如果去掉题干里的一个限定词，结论还成立吗？
 
-**检查点 2：围绕本课主题中的 本课主题、JavaScript、入…**
-
-- 参考判断：学习 本课主题 时要同时说明输入、输出和失败路径，不能只看正常流程、验证 JavaScript 时要固定版本并覆盖边界输入，结论才可复现
-- 解析：本课把本课主题拆成概念、示例与故障现场三部分，因此判断 本课主题 时必须同时交代输入、输出和失败路径，这使“学习 本课主题 时要同时说明输入、输出和失败路径，不能只看正常流程”成立；在本课主题里，判断 JavaScript 时要固定版本与边界输入，所以“验证 JavaScript 时要固定版本并覆盖边界输入，结论才可复现”才可复现。相反，“只要 本课主题 的常规示例通过，就可以跳过边界与异常路径”把一次正常示例当成全部情况，会漏掉本课的边界缺陷；“把 JavaScript 的单次运行结果当成所有版本和规模都成立”把单次结果外推成普遍结论，在本课主题里忽略了版本和规模变化。对照本课的故障现场与自测清单，就能用证据区分这两种判断。
-
-**检查点 3：示例中 console.log(document.querySelector("button").textC…**
+- 参考判断：学习 JavaScript DOM 入门 时要同时说明输入、输出和失败路径，不能只看正常流程、验证 JavaScript 时要固定版本并覆盖边界输入，结论才可复现
+- 解析：本课把JavaScript DOM 入门拆成概念、示例与故障现场三部分，因此判断 JavaScript DOM 入门 时必须同时交代输入、输出和失败路径，这使“学习 JavaScript DOM 入门 时要同时说明输入、输出和失败路径，不能只看正常流程”成立；在JavaScript DOM 入门里，判断 JavaScript 时要固定版本与边界输入，所以“验证 JavaScript 时要固定版本并覆盖边界输入，结论才可复现”才可复现。相反，“只要 JavaScript DOM 入门 的常规示例通过，就可以跳过边界与异常路径”把一次正常示例当成全部情况，会漏掉本课的边界缺陷；“把 JavaScript 的单次运行结果当成所有版本和规模都成立”把单次结果外推成普遍结论，在JavaScript DOM 入门里忽略了版本和规模变化。对照本课的故障现场与自测清单，就能用证据区分这两种判断。
 
 - 参考判断：点击我，读取的是按钮元素的文本内容
-- 解析：正确答案是「点击我，读取的是按钮元素的文本内容」，这道题在问示例中console.log(document.qu…n").textContent)输出什么，判断时要把题干限定的输入、边界与目标逐项对齐。示例先把按钮挂载到 body，再通过选择器找到它并读取 textContent，因此输出创建时设置的文本「点击我」。
+- 解析：正确答案是「点击我，读取的是按钮元素的文本内容」，这道题在问示例中conn").textContent)输出什么，判断时要把题干限定的输入、边界与目标逐项对齐。示例先把按钮挂载到 body，再通过选择器找到它并读取 textContent，因此输出创建时设置的文本「点击我」。
 
 **检查点 4：要让按钮响应用户点击，应该使用哪个方法？**
 
 - 参考判断：addEventListener("click", 处理函数)
 - 解析：正确答案是「addEventListener("click", 处理函数)」，这道题在问要让按钮响应用户点击，应该使用哪个方法，判断时要把题干限定的输入、边界与目标逐项对齐。addEventListener 把事件类型与处理函数绑定到元素上，点击发生时浏览器调用处理函数并传入事件对象。要让按钮响应用户点击，应该使用哪个方法。
-
-**检查点 5：填空：本课主题术语速查中，表示「JavaScript 是单线程执行模型，调用栈…**
 
 - 参考判断：setTimeout、settimeout
 
@@ -280,7 +265,7 @@ console.log(document.querySelector("button").textContent);
 
 ### 本课自测
 
-- [ ] 能用一句话解释本课主题在本课中的角色与边界。
+- [ ] 能用一句话解释JavaScript DOM 入门在本课中的角色与边界。
 - [ ] 能举出一个正常例子和一个失败例子。
 - [ ] 能说出最小验证步骤，以及需要记录的证据。
 - [ ] 能用一句话解释「JavaScript」在本课中的角色与边界。
@@ -290,9 +275,9 @@ console.log(document.querySelector("button").textContent);
 
 下面用不同约束重复同一套方法。每完成一轮，都把结论写进笔记，并只改变一个变量。
 
-#### 迁移案例 1：围绕本课主题做一次小实验
+#### 迁移案例 1：围绕JavaScript DOM 入门做一次小实验
 
-**目标**：在不改变课程主体的前提下，验证本课主题中的一个关键判断。
+**目标**：在不改变课程主体的前提下，验证JavaScript DOM 入门中的一个关键判断。
 
 **步骤**：
 1. 复述当前方案对本课的假设，写成一句可证伪的话。
@@ -313,7 +298,7 @@ console.log(document.querySelector("button").textContent);
 **步骤**：
 1. 复述当前方案对「入门练习」的假设，写成一句可证伪的话。
 
-#### 迁移案例 4：围绕本课主题做一次小实验
+#### 迁移案例 4：围绕JavaScript DOM 入门做一次小实验
 
 **步骤**：
 
@@ -325,7 +310,7 @@ console.log(document.querySelector("button").textContent);
 
 **步骤**：
 
-#### 迁移案例 7：围绕本课主题做一次小实验
+#### 迁移案例 7：围绕JavaScript DOM 入门做一次小实验
 
 **步骤**：
 
@@ -337,7 +322,7 @@ console.log(document.querySelector("button").textContent);
 
 **步骤**：
 
-#### 迁移案例 10：围绕本课主题做一次小实验
+#### 迁移案例 10：围绕JavaScript DOM 入门做一次小实验
 
 **步骤**：
 
@@ -349,7 +334,7 @@ console.log(document.querySelector("button").textContent);
 
 **步骤**：
 
-#### 迁移案例 13：围绕本课主题做一次小实验
+#### 迁移案例 13：围绕JavaScript DOM 入门做一次小实验
 
 **步骤**：
 
@@ -361,7 +346,7 @@ console.log(document.querySelector("button").textContent);
 
 **步骤**：
 
-#### 迁移案例 16：围绕本课主题做一次小实验
+#### 迁移案例 16：围绕JavaScript DOM 入门做一次小实验
 
 **步骤**：
 
@@ -369,25 +354,25 @@ console.log(document.querySelector("button").textContent);
 
 ## 考点精讲
 
-### 考点 1：下面这段 JavaScript 代码复现了“JavaScript DOM 入门”中 JavaScript DOM 入门、JavaScript、入门练习 相关的一个常见故障，哪一项最准确地解释了问题？
+### 考点 1：下面这段 JavaScript 代码摘自「JavaScript DOM 入门」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 
-- **判断依据**：正确答案是「== 会先做类型转换，"0" 被转成数字 0 后与 false 相等」。正确答案是== 会先做类型转换，"0" 被转成数字 0 后与 false 相等（jsdomintro 第 1 题）。这让 JavaScript DOM 入门 的判断结果和直觉相反。在这个复现里，最后一行 input + 1 触发字符串拼接得到 "01"，要得到 JavaScript 的严格结果，应使用 Number(input) === 0 或 === 比较。
+- **判断依据**：在「JavaScript DOM 入门」里，这段代码会产生可观察的输出，运行后能看到结果。这段代码出自「JavaScript DOM 入门」的正文示例，围绕JavaScript DOM 入门、JavaScript、入门练习展开；把输入或边界换成空值、极值或失败情况后，结论要以「JavaScript DOM 入门」的实际运行结果为准。
 
 ### 考点 2：围绕“JavaScript DOM 入门”中的 JavaScript DOM 入门、JavaScript、入门练习，下列哪两项是本课强调的实践判断？
 
-- **判断依据**：正确答案包括「学习 JavaScript DOM 入门 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 JavaScript 时要固定版本并覆盖边界输入，结论才可复现」。本题应选学习 本课主题 时要同时说明输入、输出和失败路径（jsdomintro 第 2 题）。
+- **判断依据**：在「JavaScript DOM 入门」里，学习 JavaScript DOM 入门 时要同时说明输入、输出和失败路径，不能只看正常流程；在「JavaScript DOM 入门」里，验证 JavaScript 时要固定版本并覆盖边界输入，结论才可复现。在「JavaScript DOM 入门」里判断这道题，要把JavaScript DOM 入门、JavaScript、入门练习的条件、过程与失败路径逐项对齐，换成“围绕JavaScript DOM 入”这个场景，只有满足前提的结论才成立。
 
 ### 考点 3：示例中 console.log(document.querySelector("button").textContent) 输出什么？
 
-- **判断依据**：符合题干条件的是「点击我，读取的是按钮元素的文本内容」。示例先把按钮挂载到 body，再通过选择器找到它并读取 textContent，因此输出创建时设置的文本「点击我」。正确的判断需要逐项核对定义、版本和适用条件（jsdomintro 第 3 题）。
+- **判断依据**：在「JavaScript DOM 入门」里，点击我，读取的是按钮元素的文本内容。示例先把按钮挂载到 body，再通过选择器找到它并读取 textContent，因此输出创建时设置的文本「点击我」。“console.log(document.querySele”与「JavaScript DOM 入门」的术语表相呼应，只有符合JavaScript DOM 入门、JavaScript、入门练习约束的“点击我，读取的是按钮元素的文本内容”才是正文支持的结论。
 
 ### 考点 4：要让按钮响应用户点击，应该使用哪个方法？
 
-- **判断依据**：结论应落在「addEventListener("click", 处理函数)」。addEventListener 把事件类型与处理函数绑定到元素上，点击发生时浏览器调用处理函数并传入事件对象。要让按钮响应用户点击，应该使用哪个方法。这道题要求区分概念与边界，「addEventListener("click", 处理函数)」只有在题干给出的前提下才成立，而「querySelector("click")（仅部分场景…」、「createElement("click")」缺少同一组条件。
+- **判断依据**：在「JavaScript DOM 入门」里，结论应落在「addEventListener("click", 处理函数)」。addEventListener 把事件类型与处理函数绑定到元素上，点击发生时浏览器调用处理函数并传入事件对象。要让按钮响应用户点击，应该使用哪个方法。「JavaScript DOM 入门」要求先交代JavaScript DOM 入门、JavaScript、入门练习的前提再下结论，所以“addEventListener("cl”只在题干“要让按钮响应用户点击”给定的条件下成立。
 
-### 考点 5：填空：「JavaScript DOM 入门」术语速查中，表示「JavaScript 是单线程执行模型，调用栈执行同步代码，事件循环在栈清空后处理任务队列和微任务队列。`____`、Promise、事件回调都通过异步机制排队执行。理解调用栈、任务队列和微任务的顺序，才能解释“为什么日志顺序和…」的术语是什么？
+### 考点 5：填空：在「JavaScript DOM 入门」的术语速查里，「JavaScript 是单线程执行模型，调用栈执行同步代码，事件循环在栈清空后处理任务队列和微任务队列。`____`、Promise、事件回调都通过异步机制排队执行。理解调用栈、任务队列和微任务的顺序，才能解释“为什么日志顺序和」描述的是哪个术语？
 
-- **判断依据**：围绕 填空：JavaScript DOM 入门术语速查中，表示Jav… 作答时，先用JavaScript DOM 入门建立输入与输出的基线，再把setTimeout 或 settimeout代入边界条件核对，结论才能复现。判断这类题时，要把「setTimeout 或 settimeout」放回题干限定的对象、输入和边界， 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：在「JavaScript DOM 入门」里，setTimeout。这道题的关键在「JavaScript DOM 入门」的JavaScript DOM 入门、JavaScript、入门练习：先确认题干“填空”问的是哪一步，再排除偷换前提的选项。这道题的关键在「JavaScript DOM 入门」的JavaScript DOM 入门、JavaScript、入门练习：先确认题干“在JavaScript”问的是哪一步，再排除偷换前提的选项。
 
 ## English Overview
 
@@ -397,7 +382,7 @@ console.log(document.querySelector("button").textContent);
 
 **Category:** JavaScript
 **Level:** 入门
-**Key terms:** 本课主题, JavaScript, 入门练习
+**Key terms:** JavaScript DOM 入门, JavaScript, 入门练习
 
 ## 内容元数据
 
@@ -406,9 +391,8 @@ console.log(document.querySelector("button").textContent);
 - 学习阶段：入门
 - 适用环境：Node.js 22+ / 现代浏览器
 - 内容来源：内置结构化课程与工程实践整理
-- 相关主题：本课主题、JavaScript、入门练习
+- 相关主题：JavaScript DOM 入门、JavaScript、入门练习
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
-
 
 ## 参考资料与复核
 
@@ -427,16 +411,33 @@ console.log(document.querySelector("button").textContent);
 
 ## 复习与迁移
 
-- 围绕「下面这段 JavaScript 代码复现了本课主题中 本课主题、JavaScript、入门练习 …」做迁移时，先记录输入、边界和预期，再观察本课主题对结果的影响，并用「== 会先做类型转换，"0" 被转成数字 0 后与 false 相等。」解释正常与失败路径。
-- 把JavaScript放进最小实验：固定版本和输入，只改变一个条件，记录输出差异，并说明「学习 本课主题 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 JavaS…」在什么前提下成立。
-- 复习「示例中 console.log(document.querySelector("button")…」时，不要只背结论；用入门练习的边界值复现一次，再把现象、原因和修复写成三步记录。
-- 如果把本课主题换成空值、极值或并发输入，「addEventListener("click", 处理函数)」是否仍然成立？写出验证命令和观察到的结果。
-- 围绕「填空：本课主题术语速查中，表示「JavaScript 是单线程执行模型，调用栈执行同步代码，事件…」做迁移时，先记录输入、边界和预期，再观察JavaScript对结果的影响，并用「setTimeout 或 settimeout」解释正常与失败路径。
-- 把入门练习放进最小实验：固定版本和输入，只改变一个条件，记录输出差异，并说明「== 会先做类型转换，"0" 被转成数字 0 后与 false 相等。」在什么前提下成立。
-- 复习「围绕本课主题中的 本课主题、JavaScript、入门练习，下列哪两项是本课强调的实践判断？」时，不要只背结论；用本课主题的边界值复现一次，再把现象、原因和修复写成三步记录。
-- 如果把JavaScript换成空值、极值或并发输入，「点击我，读取的是按钮元素的文本内容」是否仍然成立？写出验证命令和观察到的结果。
-- 围绕「要让按钮响应用户点击，应该使用哪个方法？」做迁移时，先记录输入、边界和预期，再观察入门练习对结果的影响，并用「addEventListener("click", 处理函数)」解释正常与失败路径。
-- 把本课主题放进最小实验：固定版本和输入，只改变一个条件，记录输出差异，并说明「setTimeout 或 settimeout」在什么前提下成立。
-- 复习「下面这段 JavaScript 代码复现了本课主题中 本课主题、JavaScript、入门练习 …」时，不要只背结论；用JavaScript的边界值复现一次，再把现象、原因和修复写成三步记录。
-- 如果把入门练习换成空值、极值或并发输入，「学习 本课主题 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 JavaS…」是否仍然成立？写出验证命令和观察到的结果。
-<!-- p0p1-review:end -->
+复习目标：把「JavaScript DOM 入门」的判断标准放回可复现的例子里。先自己作答，再对照依据；如果结论正确但理由不完整，回到正文补足前提。
+
+### 概念复述
+
+- 用一句话说明「JavaScript DOM 入门」解决什么问题：查找元素、修改文本并响应用户点击。
+- 写出JavaScript DOM 入门、JavaScript、入门练习之间的关系，并各举一个例子。
+- 说出本课最容易混淆的两个概念，以及区分它们的判据。
+
+### 正文逐节复核
+
+- **JavaScript 基础机制速览**：JavaScript 是单线程执行模型，调用栈执行同步代码，事件循环在栈清空后处理任务队列和微任务队列。
+
+### 测验回顾
+
+1. 下面这段 JavaScript 代码摘自「JavaScript DOM 入门」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
+   - 依据：在「JavaScript DOM 入门」里，这段代码会产生可观察的输出，运行后能看到结果。这段代码出自「JavaScript DOM 入门」的正文示例，围绕JavaScript DOM 入门、JavaScript、入门练习展开；把输入或边界换成空值、极值或失败情况后，结论要以「JavaScript DOM 入门」的实际运行结果为准。
+2. 围绕“JavaScript DOM 入门”中的 JavaScript DOM 入门、JavaScript、入门练习，下列哪两项是本课强调的实践判断？
+   - 依据：在「JavaScript DOM 入门」里，学习 JavaScript DOM 入门 时要同时说明输入、输出和失败路径，不能只看正常流程；在「JavaScript DOM 入门」里，验证 JavaScript 时要固定版本并覆盖边界输入，结论才可复现。在「JavaScript DOM 入门」里判断这道题，要把JavaScript DOM 入门、JavaScript、入门练习的条件、过程与失败路径逐项对齐，换成“围绕JavaScript DOM 入”这个场景，只有满足前提的结论才成立。
+3. 示例中 console.log(document.querySelector("button").textContent) 输出什么？
+   - 依据：在「JavaScript DOM 入门」里，点击我，读取的是按钮元素的文本内容。示例先把按钮挂载到 body，再通过选择器找到它并读取 textContent，因此输出创建时设置的文本「点击我」。“console.log(document.querySele”与「JavaScript DOM 入门」的术语表相呼应，只有符合JavaScript DOM 入门、JavaScript、入门练习约束的“点击我，读取的是按钮元素的文本内容”才是正文支持的结论。
+4. 要让按钮响应用户点击，应该使用哪个方法？
+   - 依据：在「JavaScript DOM 入门」里，结论应落在「addEventListener("click", 处理函数)」。addEventListener 把事件类型与处理函数绑定到元素上，点击发生时浏览器调用处理函数并传入事件对象。要让按钮响应用户点击，应该使用哪个方法。「JavaScript DOM 入门」要求先交代JavaScript DOM 入门、JavaScript、入门练习的前提再下结论，所以“addEventListener("cl”只在题干“要让按钮响应用户点击”给定的条件下成立。
+5. 填空：在「JavaScript DOM 入门」的术语速查里，「JavaScript 是单线程执行模型，调用栈执行同步代码，事件循环在栈清空后处理任务队列和微任务队列。`____`、Promise、事件回调都通过异步机制排队执行。理解调用栈、任务队列和微任务的顺序，才能解释“为什么日志顺序和」描述的是哪个术语？
+   - 依据：在「JavaScript DOM 入门」里，setTimeout。这道题的关键在「JavaScript DOM 入门」的JavaScript DOM 入门、JavaScript、入门练习：先确认题干“填空”问的是哪一步，再排除偷换前提的选项。这道题的关键在「JavaScript DOM 入门」的JavaScript DOM 入门、JavaScript、入门练习：先确认题干“在JavaScript”问的是哪一步，再排除偷换前提的选项。
+
+### 迁移练习
+
+- 第 1 次迁移：围绕「下面这段 JavaScript 代码摘自「JavaScript DOM 入门」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？」先写下预测，再运行本课示例，最后记录预测与实际的差异。参考答案是「这段代码会产生可观察的输出，运行后能看到结果。」。
+- 第 2 次迁移：围绕「围绕“JavaScript DOM 入门”中的 JavaScript DOM 入门、JavaScript、入门练习，下列哪两项是本课强调的实践判断？」先写下预测，再运行本课示例，最后记录预测与实际的差异。参考答案是「学习 JavaScript DOM 入门 时要同时说明输入、输出和失败路径，不能只看正常流程」。
+- 第 3 次迁移：围绕「示例中 console.log(document.querySelector("button").textContent) 输出什么？」先写下预测，再运行本课示例，最后记录预测与实际的差异。参考答案是「验证 JavaScript 时要固定版本并覆盖边界输入，结论才可复现」。

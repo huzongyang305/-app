@@ -1,14 +1,14 @@
-# 本课主题
+# TypeScript 类型系统
 
-![本课主题的五个层次](images/diagram_ts_type_system.webp)
+![TypeScript 类型系统的五个层次](images/diagram_ts_type_system.webp)
 
-![本课主题](images/remaining_typescript.webp)
+![TypeScript 类型系统](images/remaining_typescript.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：15 分钟
 
 ## 学习目标
 
-- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
+- 能用自己的话解释TypeScript 类型系统解决了什么问题，而不是只背术语。
 - 能说清 「TypeScript」、「类型」、「泛型」、「类型收窄」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「TypeScript」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -267,7 +267,7 @@ async function fetchUser(url: string): Promise<ApiUser> {
 
 合上教程，用 3～5 句话回答：
 
-1. 本课主题解决了什么问题？
+1. TypeScript 类型系统解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「类型」是什么关系？
 
@@ -369,7 +369,7 @@ console.log(greet(u));
 - [ ] 不看解析，能说出「接口返回的数据还需要运行时校验吗？」的判断依据。
 - [ ] 不看解析，能说出「type 与 interface 的主要差别是？」的判断依据。
 - [ ] 不看解析，能说出「as const 的作用是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码缺少哪个关键字或…」的判断依据。
+- [ ] 不看解析，能说出的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -381,48 +381,43 @@ console.log(greet(u));
 
 ## 术语速查
 
+把「TypeScript 类型系统」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
 | 术语 | 本课语境 |
 | --- | --- |
-| `string[]` | \| 数组与元组 \| `string[]`、`[number, string]`（定长且按位定型） \| |
-| `[number, string]` | \| 数组与元组 \| `string[]`、`[number, string]`（定长且按位定型） \| |
-| `{ id: number; name: string }` | \| 对象类型 \| `{ id: number; name: string }`、interface、type \| |
-| `A \| B` | \| 联合与交叉 \| `A \\| B`、`A & B` \| |
-| `A & B` | \| 联合与交叉 \| `A \\| B`、`A & B` \| |
-| `'success' \| 'error'` | \| 字面量类型 \| `'success' \\| 'error'`，把取值收敛为固定集合 \| |
-| `x is T` | 常见手段：typeof、instanceof、in、可辨识联合（discriminated union，用共同字段区分成员）、自定义类型守卫（`x is T`）以及断言函数。可辨识联合 + switch 穷尽检查是建模业… |
-| `tsc --noEmit` | 类型检查纳入 CI：`tsc --noEmit`，避免类型错误进主干。 |
-| `string` | \| 原始类型 \| `string`、`number`、`boolean`、`bigint`、`symbol` \| 小写，不用包装类型 \| |
-| `number` | \| 原始类型 \| `string`、`number`、`boolean`、`bigint`、`symbol` \| 小写，不用包装类型 \| |
-| `boolean` | \| 原始类型 \| `string`、`number`、`boolean`、`bigint`、`symbol` \| 小写，不用包装类型 \| |
-| `bigint` | \| 原始类型 \| `string`、`number`、`boolean`、`bigint`、`symbol` \| 小写，不用包装类型 \| |
+| `[TypeScript, 类型, 泛型, 类型收窄, strict][index]` | 在「TypeScript 类型系统」里理解它的定义、输入和输出。 |
+| `[TypeScript, 类型, 泛型, 类型收窄, strict][index]` | 本课用它说明边界条件与失败路径。 |
+| `[TypeScript, 类型, 泛型, 类型收窄, strict][index]` | 结合「TypeScript 类型系统」的正文示例确认它的适用条件。 |
+| `[TypeScript, 类型, 泛型, 类型收窄, strict][index]` | 在「TypeScript 类型系统」里理解它的定义、输入和输出。 |
+| `[TypeScript, 类型, 泛型, 类型收窄, strict][index]` | 本课用它说明边界条件与失败路径。 |
 
 ## 考点精讲
 
-### 考点 1：下面这段 TypeScript 代码复现了“TypeScript 类型系统”中 TypeScript、类型、泛型 相关的一个常见故障，哪一项最准确地解释了问题？
+### 考点 1：下面这段 TypeScript 代码摘自「TypeScript 类型系统」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 
-- **判断依据**：正确答案是「== 会先做类型转换，"0" 被转成数字 0 后与 false 相等」。正确答案是== 会先做类型转换，"0" 被转成数字 0 后与 false 相等（typescript 第 1 题）。在这个复现里，这让 TypeScript 的判断结果和直觉相反。在这个复现里，最后一行 input + 1 触发字符串拼接得到 "01"，要得到 类型 的严格结果，应使用 Number(input) === 0 或 === 比较。
+- **判断依据**：在「TypeScript 类型系统」里，这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。这段代码出自「TypeScript 类型系统」的正文示例，围绕TypeScript、类型、泛型展开；把输入或边界换成空值、极值或失败情况后，结论要以「TypeScript 类型系统」的实际运行结果为准。
 
 ### 考点 2：围绕“TypeScript 类型系统”中的 TypeScript、类型、泛型，下列哪两项是本课强调的实践判断？
 
-- **判断依据**：正确答案包括「学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 类型 时要固定版本并覆盖边界输入，结论才可复现」。本题应选学习 TypeScript 时要同时说明输入、输出和失败路径。在本课主题里，判断 类型 时要固定版本与边界输入，所以“验证 类型 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
+- **判断依据**：在「TypeScript 类型系统」里，学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程。在TypeScript 类型系统里，判断 类型 时要固定版本与边界输入，所以“验证 类型 时要固定版本并覆盖边界输入，结论才可复现”才可复现。回到「TypeScript 类型系统」的正文示例，用“围绕TypeScript 类型系统中”走一遍TypeScript、类型、泛型的完整流程，能复现的结论才可以保留。
 
 ### 考点 3：接口返回的数据还需要运行时校验吗？
 
-- **判断依据**：符合题干条件的是「需要，类型在运行时不存在」。类型断言不改变运行时数据，接口数据要用 zod 等做校验。正确的判断需要逐项核对定义、版本和适用条件（typescript 第 3 题）。围绕 接口返回的数据还需要运行时校验吗。如果只凭关键词作答，很容易把「只在生产需要」、「只在开发需要」与「需要，类型在运行时不存在」混在一起；正确的判断需要逐项核对定义、版本和适用条件（typescript 第 3 题）。
+- **判断依据**：类型断言不改变运行时数据，接口数据要用 zod 等做校验。围绕 接口返回的数据还需要运行时校验吗。在「TypeScript 类型系统」里，如果只凭关键词作答，很容易把「只在生产需要」、「只在开发需要」与「需要，类型在运行时不存在」混在一起；在「TypeScript 类型系统」里判断这道题，要把TypeScript、类型、泛型的条件、过程与失败路径逐项对齐，换成“接口返回的数据还需要运行时校验吗”这个场景，只有满足前提的结论才成立。
 
 ### 考点 4：type 与 interface 的主要差别是？
 
-- **判断依据**：结论应落在「interface 支持声明合并」。对外发布的库常用 interface 便于使用者扩展，内部组合类型多用 type。这道题要求区分概念与边界，「interface 支持声明合并」只有在题干给出的前提下才成立，而「两者完全等价」、「type 不能描述对象」缺少同一组条件。
+- **判断依据**：在「TypeScript 类型系统」里，结论应落在「interface 支持声明合并」。对外发布的库常用 interface 便于使用者扩展，内部组合类型多用 type。在「TypeScript 类型系统」里，这道题要求区分概念与边界，「interface 支持声明合并」只有在题干给出的前提下才成立，而「两者完全等价」、「type 不能描述对象」缺少同一组条件。
 
 ### 考点 5：as const 的作用是？
 
-- **判断依据**：正确答案是「把值推断为最窄的只读字面量类型（readonly 元组/字面量）」。它只影响类型推断，运行时仍可被修改（需要 Object.freeze 才真正冻结）。判断这类题时，要把「把值推断为最窄的只读字面量类型（readonly 元组/字面量）」放回题干限定的对象、输入和边界，「把值转换成常量并防止运行时修改（与课程定义不一致）」、「关闭类型检查」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：在「TypeScript 类型系统」里，把值推断为最窄的只读字面量类型（readonly 元组/字面量）。它只影响类型推断，运行时仍可被修改（需要 Object.freeze 才真正冻结）。回到「TypeScript 类型系统」的正文示例，用“as const 的作用是”走一遍TypeScript、类型、泛型的完整流程，能复现的结论才可以保留。
 
 ### 考点 6：补全代码：「TypeScript 类型系统」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
 
 `"____": true,`
 
-- **判断依据**：空格应填写「noUncheckedIndexedAccess」、「nouncheckedindexedaccess」。解题的关键不是记住孤立术语，而是确认「noUncheckedIndexedAccess 或 nouncheck…」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
+- **判断依据**：空格应填写「noUncheckedIndexedAccess」、「nouncheckedindexedaccess」。在「TypeScript 类型系统」里判断这道题，要把TypeScript、类型、泛型的条件、过程与失败路径逐项对齐，换成“补全代码”这个场景，只有满足前提的结论才成立。
 
 ## English Overview
 
@@ -485,7 +480,6 @@ console.log(greet(u));
 | 工程配置要点 | 工程配置要点 |
 | 本课小结 | Summary |
 | 类型速查 | Types速查 |
-
 
 ## 参考资料与复核
 

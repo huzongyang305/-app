@@ -8,7 +8,7 @@
 
 ## 学习目标
 
-- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
+- 能用自己的话解释异步编程解决了什么问题，而不是只背术语。
 - 能说清 「Promise」、「async」、「await」、「事件循环」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「JavaScript」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -332,7 +332,7 @@ loadAll(["/api/a", "/api/b"]).then(({ ok, failed }) => {
 
 合上教程，用 3～5 句话回答：
 
-1. 本课主题解决了什么问题？
+1. 异步编程解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「async」是什么关系？
 
@@ -450,48 +450,44 @@ task
 
 ## 术语速查
 
+把「异步编程」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
 | 术语 | 本课语境 |
 | --- | --- |
-| `async` | `async` 函数总是返回 Promise；`await` 只能在 async 函数或模块顶层使用。 |
-| `await` | `async` 函数总是返回 Promise；`await` 只能在 async 函数或模块顶层使用。 |
-| `fetch` | `fetch` 只在网络错误时 reject，**4xx/5xx 也会 resolve**，所以要检查 `response.ok`；超时可用 `AbortController` 实现。 |
-| `response.ok` | `fetch` 只在网络错误时 reject，**4xx/5xx 也会 resolve**，所以要检查 `response.ok`；超时可用 `AbortController` 实现。 |
-| `AbortController` | `fetch` 只在网络错误时 reject，**4xx/5xx 也会 resolve**，所以要检查 `response.ok`；超时可用 `AbortController` 实现。 |
-| `map` | 五个高频陷阱：① 在循环里 `await` 导致串行（应先用 `map` 收集 Promise 再 `Promise.all`）；② 忘记 `await` 使错误变成 unhandledRejection；③ 在 `fo… |
-| `Promise.all` | 五个高频陷阱：① 在循环里 `await` 导致串行（应先用 `map` 收集 Promise 再 `Promise.all`）；② 忘记 `await` 使错误变成 unhandledRejection；③ 在 `fo… |
-| `forEach` | 五个高频陷阱：① 在循环里 `await` 导致串行（应先用 `map` 收集 Promise 再 `Promise.all`）；② 忘记 `await` 使错误变成 unhandledRejection；③ 在 `fo… |
-| `Promise.all(list)` | \| `Promise.all(list)` \| 全部成功才算成功 \| 任一失败立即 reject \| 结果数组，顺序与输入一致 \| |
-| `Promise.allSettled(list)` | \| `Promise.allSettled(list)` \| 允许部分失败 \| 永不 reject \| `{status, value/reason}` 数组 \| |
-| `{status, value/reason}` | \| `Promise.allSettled(list)` \| 允许部分失败 \| 永不 reject \| `{status, value/reason}` 数组 \| |
-| `Promise.race(list)` | \| `Promise.race(list)` \| 取最快的一个（含失败） \| 最快的结果决定成败 \| 单个结果 \| |
+| `[Promise, async, await, 事件循环, fetch, 微任务][index]` | 在「异步编程」里理解它的定义、输入和输出。 |
+| `[Promise, async, await, 事件循环, fetch, 微任务][index]` | 本课用它说明边界条件与失败路径。 |
+| `[Promise, async, await, 事件循环, fetch, 微任务][index]` | 结合「异步编程」的正文示例确认它的适用条件。 |
+| `[Promise, async, await, 事件循环, fetch, 微任务][index]` | 在「异步编程」里理解它的定义、输入和输出。 |
+| `[Promise, async, await, 事件循环, fetch, 微任务][index]` | 本课用它说明边界条件与失败路径。 |
+| `[Promise, async, await, 事件循环, fetch, 微任务][index]` | 结合「异步编程」的正文示例确认它的适用条件。 |
 
 ## 考点精讲
 
-### 考点 1：下面这段 JavaScript 代码复现了“异步编程”中 Promise、async、await 相关的一个常见故障，哪一项最准确地解释了问题？
+### 考点 1：阅读「异步编程」正文里的这段 JavaScript 代码，下面哪一项判断是正确的？
 
-- **判断依据**：正确答案是「== 会先做类型转换，"0" 被转成数字 0 后与 false 相等」。正确答案是== 会先做类型转换，"0" 被转成数字 0 后与 false 相等（jsasync 第 1 题）。在这个复现里，这让 Promise 的判断结果和直觉相反。在这个复现里，最后一行 input + 1 触发字符串拼接得到 "01"，要得到 async 的严格结果，应使用 Number(input) === 0 或 === 比较。
+- **判断依据**：在「异步编程」里，这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。这段代码出自「异步编程」的正文示例，围绕Promise、async、await展开；把输入或边界换成空值、极值或失败情况后，结论要以「异步编程」的实际运行结果为准。“阅读异步编程正文里的这段”与「异步编程」的术语表相呼应，只有符合Promise、async、await约束的“这段代码把主要逻辑封装在函数或方法里”才是正文支持的结论。
 
 ### 考点 2：围绕“异步编程”中的 Promise、async、await，下列哪两项是本课强调的实践判断？
 
-- **判断依据**：正确答案包括「学习 Promise 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 async 时要固定版本并覆盖边界输入，结论才可复现」。本题应选学习 Promise 时要同时说明输入、输出和失败路径。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 Promise 时必须同时交代输入、输出和失败路径，这使“学习 Promise 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 async 时要固定版本与边界输入，所以“验证 async 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
+- **判断依据**：本课把异步编程拆成概念、示例与故障现场三部分，因此判断 Promise 时必须同时交代输入、输出和失败路径，这使“学习 Promise 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在异步编程里，判断 async 时要固定版本与边界输入，所以“验证 async 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
 ### 考点 3：fetch 遇到 HTTP 404 时会？
 
-- **判断依据**：符合题干条件的是「resolve」。fetch 只在网络层失败时 reject，4xx/5xx 仍算成功响应，需要手动检查 response.ok。正确的判断需要逐项核对定义、版本和适用条件（jsasync 第 3 题）。正确的判断需要逐项核对定义、版本和适用条件（js_async 第 3 题）。
+- **判断依据**：在「异步编程」里，resolve。fetch 只在网络层失败时 reject，4xx/5xx 仍算成功响应，需要手动检查 response.ok。这道题的关键在「异步编程」的Promise、async、await：先确认题干“fetch 遇到 HTTP 404”问的是哪一步，再排除偷换前提的选项。
 
 ### 考点 4：Promise.allSettled 与 Promise.all 的关键区别是？
 
-- **判断依据**：结论应落在「allSettled 等全部完成并返回每个任务的成功/失败状态，不会因单个失败而短路」。结论应落在allSettled 等全部完成并返回每个任务的成功/失败状态。批量任务中允许部分失败时用 allSettled，必须全部成功才继续时用 all。
+- **判断依据**：在「异步编程」里，结论应落在「allSettled 等全部完成并返回每个任务的成功/失败状态，不会因单个失败而短路」。结论应落在allSettled 等全部完成并返回每个任务的成功/失败状态。批量任务中允许部分失败时用 allSettled，必须全部成功才继续时用 all。这道题的关键在「异步编程」的Promise、async、await：先确认题干“Promise.allSettled”问的是哪一步，再排除偷换前提的选项。
 
 ### 考点 5：async 函数总是返回什么？
 
-- **判断依据**：正确答案是「Promise（返回非 Promise 值也会被包装）」。因此调用方需要 await 或 .then 处理，抛错会变成 rejected 的 Promise。判断这类题时，要把「Promise（返回非 Promise 值也会被包装）」放回题干限定的对象、输入和边界，「同步值」、「undefined（只在个别条件下成立）」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：在「异步编程」里，Promise（返回非 Promise 值也会被包装）。因此调用方需要 await 或 .then 处理，抛错会变成 rejected 的 Promise。“async”与「异步编程」的术语表相呼应，只有符合Promise、async、await约束的“Promise（返回非 Promise”才是正文支持的结论。
 
 ### 考点 6：补全代码：「异步编程」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
 
-`const controller = new ____();`
+`const controller = new ____;`
 
-- **判断依据**：空格应填写「AbortController」、「abortcontroller」。解题的关键不是记住孤立术语，而是确认「AbortController 或 abortcontroller」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
+- **判断依据**：空格应填写「AbortController」、「abortcontroller」。回到「异步编程」的正文示例，用“补全代码”走一遍Promise、async、await的完整流程，能复现的结论才可以保留。回到「异步编程」的正文示例，用“异步编程示例中”走一遍Promise、async、await的完整流程，能复现的结论才可以保留。
 
 ## English Overview
 
@@ -554,7 +550,6 @@ task
 | 本课小结 | Lesson Summary |
 | Promise 组合速查 | Promise Portfolio Quick Look |
 | async / await 速查 | async/await quick check |
-
 
 ## 参考资料与复核
 

@@ -1,14 +1,14 @@
-# 实战：ASP.NET Core Web API + EF Core
+# 实战：Web API + EF Core
 
 ![Web API 与 EF Core 的请求链路](images/diagram_cs_webapi_project.webp)
 
-![本课主题](images/remaining_csharp_project.webp)
+![实战：Web API + EF Core](images/remaining_csharp_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：18 分钟
 
 ## 学习目标
 
-- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
+- 能用自己的话解释实战：Web API + EF Core解决了什么问题，而不是只背术语。
 - 能说清 「实战」、「ASP.NET Core」、「EF Core」、「xUnit」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「C#」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -417,7 +417,7 @@ public class OrderEndpointTests(WebApplicationFactory<Program> factory)
 
 合上教程，用 3～5 句话回答：
 
-1. 本课主题解决了什么问题？
+1. 实战：Web API + EF Core解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「ASP.NET Core」是什么关系？
 
@@ -535,10 +535,8 @@ dotnet ef migrations script --idempotent -o migrate.sql   # 生产用脚本
 
 - [ ] 不看解析，能说出「生产环境管理数据库结构应优先使用？」的判断依据。
 - [ ] 不看解析，能说出「使用 DTO 而不是直接暴露实体，主要好处是？」的判断依据。
-- [ ] 不看解析，能说出「ASP.NET Core 中注册在依赖注入容器里的 DbContext 默认生命…」的判断依据。
+- [ ] 不看解析，能说出的判断依据。
 - [ ] 不看解析，能说出「在分层架构中，Repository 与 Service 的职责划分通常是？」的判断依据。
-- [ ] 不看解析，能说出「创建资源成功后返回 201 Created 并结合 CreatedAtActio…」的判断依据。
-- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码缺少哪…」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -567,31 +565,31 @@ dotnet ef migrations script --idempotent -o migrate.sql   # 生产用脚本
 
 ## 考点精讲
 
-### 考点 1：下面这段 C# 代码复现了“实战：Web API + EF Core”中 实战、ASP.NET Core、EF Core 相关的一个常见故障，哪一项最准确地解释了问题？
+### 考点 1：下面这段 C# 代码摘自「实战：Web API + EF Core」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 
-- **判断依据**：正确答案是「foreach 期间修改集合会抛出 InvalidOperationException，应遍历副本或使用 RemoveAll」。正确答案是foreach 期间修改集合会抛出 InvalidOperationException，应遍历副本或使用 RemoveAll（csharpproject 第 1 题）。在这个复现里，实战 的修改与遍历发生了冲突。在这个复现里，要让 ASP.NET Core 的结果稳定，可以遍历 items.ToList() 副本，或使用 items.RemoveAll(item => item % 2 == 0)。
+- **判断依据**：在「实战：Web API + EF Core」里，这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。这段代码出自「实战：Web API + EF Core」的正文示例，围绕实战、ASP.NET Core、EF Core展开；把输入或边界换成空值、极值或失败情况后，结论要以「实战：Web API + EF Core」的实际运行结果为准。
 
 ### 考点 2：使用 DTO 而不是直接暴露实体，主要好处是？
 
-- **判断依据**：本题应选「隔离数据库结构与 API 契约」。DTO 让接口契约与表结构解耦，避免字段泄露与破坏性变更。解题的关键不是记住孤立术语，而是确认「隔离数据库结构与 API 契约」是否完整覆盖题干的输入、输出和失败路径，并排除「提高并发」、「减少代码量（仅部分场景成立）」这类相邻概念。
+- **判断依据**：在「实战：Web API + EF Core」里，隔离数据库结构与 API 契约。DTO 让接口契约与表结构解耦，避免字段泄露与破坏性变更。“而不是直接暴露实体”与「实战：Web API + EF Core」的术语表相呼应，只有符合实战、ASP.NET Core、EF Core约束的“隔离数据库结构与 API 契约”才是正文支持的结论。
 
 ### 考点 3：ASP.NET Core 中注册在依赖注入容器里的 DbContext 默认生命周期是？
 
-- **判断依据**：Scoped 保证一次请求内共享同一上下文，避免跨请求状态与线程问题。其他选项：DbContext 默认是 Scoped（每请求一个），因为它不是线程安全的。正确的判断需要逐项核对定义、版本和适用条件（csharpproject 第 3 题）。
+- **判断依据**：Scoped 保证一次请求内共享同一上下文，避免跨请求状态与线程问题。在「实战：Web API + EF Core」里，其他选项：DbContext 默认是 Scoped（每请求一个），因为它不是线程安全的。这道题的关键在「实战：Web API + EF Core」的实战、ASP.NET Core、EF Core：先确认题干“ASP.NET Core 中注册在依”问的是哪一步，再排除偷换前提的选项。
 
 ### 考点 4：围绕“实战：Web API + EF Core”中的 实战、ASP.NET Core、EF Core，下列哪两项是本课强调的实践判断？
 
-- **判断依据**：正确答案包括「学习 实战 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 ASP.NET Core 时要固定版本并覆盖边界输入，结论才可复现」。结论应落在学习 实战 时要同时说明输入、输出和失败路径。在本课主题里，判断 ASP.NET Core 时要固定版本与边界输入，所以“验证 ASP.NET Core 时要固定版本并覆盖边界输入，结论才可复现”才可复现。这道题要求区分概念与边界，学习 实战 时要同时说明输入、输出和失败路径，不能只看正常流程。
+- **判断依据**：结论应落在学习 实战 时要同时说明输入、输出和失败路径。在实战：Web API + EF Core里，判断 ASP.NET Core 时要固定版本与边界输入，所以“验证 ASP.NET Core 时要固定版本并覆盖边界输入，结论才可复现”才可复现。在「实战：Web API + EF Core」里，这道题要求区分概念与边界，学习 实战 时要同时说明输入、输出和失败路径，不能只看正常流程。
 
 ### 考点 5：创建资源成功后返回 201 Created 并结合 CreatedAtAction 的好处是？
 
-- **判断依据**：正确答案是「既符合 REST 语义」。201 表示创建成功，Location 头让客户端知道下一步该请求哪个地址。判断这类题时，要把「既符合 REST 语义」放回题干限定的对象、输入和边界，「表示请求被拒绝」、「提升接口性能」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：在「实战：Web API + EF Core」里，既符合 REST 语义。201 表示创建成功，Location 头让客户端知道下一步该请求哪个地址。在「实战：Web API + EF Core」里判断这道题，要把实战、ASP.NET Core、EF Core的条件、过程与失败路径逐项对齐，换成“创建资源成功后返回 201 Crea”这个场景，只有满足前提的结论才成立。
 
 ### 考点 6：补全代码：「实战：Web API + EF Core」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
 
-`app.____();        // 统一转成 ProblemDetails`
+`app.____; // 统一转成 ProblemDetails`
 
-- **判断依据**：空格应填写「UseExceptionHandler」、「useexceptionhandler」。// 统一转成 ProblemDetails 这样的用法，说明该关键字在本课代码中承担实际功能。解题的关键不是记住孤立术语，而是确认「UseExceptionHandler 或 useexceptionha…」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
+- **判断依据**：空格应填写「UseExceptionHandler」、「useexceptionhandler」。// 统一转成 ProblemDetails 这样的用法，说明该关键字在本课代码中承担实际功能。在「实战：Web API + EF Core」里判断这道题，要把实战、ASP.NET Core、EF Core的条件、过程与失败路径逐项对齐，换成“补全代码”这个场景，只有满足前提的结论才成立。
 
 ## English Overview
 
@@ -613,7 +611,7 @@ dotnet ef migrations script --idempotent -o migrate.sql   # 生产用脚本
 - 相关主题：实战、ASP.NET Core、EF Core、xUnit、DTO
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-## 项目专属规格：本课主题
+## 项目专属规格：实战：Web API + EF Core
 
 ### 核心场景
 
@@ -729,7 +727,6 @@ README.md
 | 工程实践 | Engineering Practice |
 | 本课小结 | Lesson Summary |
 | Web API 分层速查 | Web API tiered quick lookup |
-
 
 ## 参考资料与复核
 

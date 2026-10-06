@@ -1,14 +1,14 @@
-# 本课主题
+# Web 安全攻防
 
 > 内容更新时间：2026-10-03
 
 ![常见 Web 漏洞与防护手段](images/diagram_net_web_security.webp)
 
-![本课主题](images/remaining_web_security.webp)
+![Web 安全攻防](images/remaining_web_security.webp)
 
 ## 学习目标
 
-- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
+- 能用自己的话解释Web 安全攻防解决了什么问题，而不是只背术语。
 - 能说清 「Web 安全」、「XSS」、「CSRF」、「SQL 注入」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「网络」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -168,7 +168,7 @@ print(sanitize_filename("../../etc/passwd"))
 
 合上教程，用 3～5 句话回答：
 
-1. 本课主题解决了什么问题？
+1. Web 安全攻防解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「XSS」是什么关系？
 
@@ -268,11 +268,11 @@ print(sanitize_filename("../../etc/passwd"))
 
 **症状**：在本课的练习或生产场景里出现“请求偶发超时，但服务端监控看起来正常”。
 
-## 深入补充：本课主题 的取舍与边界
+## 深入补充：Web 安全攻防 的取舍与边界
 
 ### 一、把概念放回真实约束
 
-学习本课主题时，最容易只记住结论而忽略前提。先写出三个约束：数据规模、时间预算、可接受的失败方式；再判断 Web 安全 与 XSS 在这些约束下是否仍然成立。只要约束改变，原来的最优解就可能变成错误解。
+学习Web 安全攻防时，最容易只记住结论而忽略前提。先写出三个约束：数据规模、时间预算、可接受的失败方式；再判断 Web 安全 与 XSS 在这些约束下是否仍然成立。只要约束改变，原来的最优解就可能变成错误解。
 
 | 场景 | 协议或方案 | 延迟与可靠性 | 排障入口 |
 | --- | --- | --- | --- |
@@ -288,11 +288,11 @@ print(sanitize_filename("../../etc/passwd"))
 
 ### 三、一个生产场景
 
-假设团队要在真实系统里使用本课主题：第一周先做小流量验证，记录 Web 安全 的基线与异常；第二周扩大输入规模，观察 XSS 是否成为瓶颈；第三周再做故障演练，主动注入超时、重复请求和依赖不可用，确认系统能降级、能重试、能恢复。每一步都要留下指标、日志和结论，而不是只留下“感觉更快了”。
+假设团队要在真实系统里使用Web 安全攻防：第一周先做小流量验证，记录 Web 安全 的基线与异常；第二周扩大输入规模，观察 XSS 是否成为瓶颈；第三周再做故障演练，主动注入超时、重复请求和依赖不可用，确认系统能降级、能重试、能恢复。每一步都要留下指标、日志和结论，而不是只留下“感觉更快了”。
 
 ### 四、自测清单
 
-- 能否用一句话说出本课主题解决的核心问题与不适用场景？
+- 能否用一句话说出Web 安全攻防解决的核心问题与不适用场景？
 - 能否画出 Web 安全 的数据流或状态变化，并标出失败路径？
 - 能否给出一个反例，证明某个看似合理的结论在边界条件下不成立？
 - 能否写出一条可复现的验证命令，让别人独立得到相同结论？
@@ -317,48 +317,43 @@ print(sanitize_filename("../../etc/passwd"))
 
 ## 术语速查
 
+把「Web 安全攻防」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
 | 术语 | 本课语境 |
 | --- | --- |
-| `Content-Security-Policy` | `Content-Security-Policy`（限制脚本来源）、`Strict-Transport-Security`（强制 HTTPS）、`X-Content-Type-Options: nosniff`、`Ref… |
-| `Strict-Transport-Security` | `Content-Security-Policy`（限制脚本来源）、`Strict-Transport-Security`（强制 HTTPS）、`X-Content-Type-Options: nosniff`、`Ref… |
-| `X-Content-Type-Options: nosniff` | `Content-Security-Policy`（限制脚本来源）、`Strict-Transport-Security`（强制 HTTPS）、`X-Content-Type-Options: nosniff`、`Ref… |
-| `Referrer-Policy` | `Content-Security-Policy`（限制脚本来源）、`Strict-Transport-Security`（强制 HTTPS）、`X-Content-Type-Options: nosniff`、`Ref… |
-| `Permissions-Policy` | `Content-Security-Policy`（限制脚本来源）、`Strict-Transport-Security`（强制 HTTPS）、`X-Content-Type-Options: nosniff`、`Ref… |
-| `textContent` | \| XSS \| 未转义地插入用户输入 \| 输出编码、CSP、`textContent` \| |
-| `X-Frame-Options` | \| `X-Frame-Options` / `frame-ancestors` \| 防点击劫持 \| |
-| `frame-ancestors` | \| `X-Frame-Options` / `frame-ancestors` \| 防点击劫持 \| |
-| `Cross-Origin-Opener-Policy` | \| `Cross-Origin-Opener-Policy` \| 隔离窗口上下文 \| |
-| `HttpOnly` | \| `HttpOnly` \| 禁止 JS 读取，缓解 XSS 窃取 \| |
-| `Secure` | \| `Secure` \| 仅通过 HTTPS 传输 \| |
-| `SameSite=Lax` | \| `SameSite=Lax` \| 默认值，跨站 POST 不带 Cookie \| |
+| `[Web 安全, XSS, CSRF, SQL 注入, CSP][index]` | 在「Web 安全攻防」里理解它的定义、输入和输出。 |
+| `[Web 安全, XSS, CSRF, SQL 注入, CSP][index]` | 本课用它说明边界条件与失败路径。 |
+| `[Web 安全, XSS, CSRF, SQL 注入, CSP][index]` | 结合「Web 安全攻防」的正文示例确认它的适用条件。 |
+| `[Web 安全, XSS, CSRF, SQL 注入, CSP][index]` | 在「Web 安全攻防」里理解它的定义、输入和输出。 |
+| `[Web 安全, XSS, CSRF, SQL 注入, CSP][index]` | 本课用它说明边界条件与失败路径。 |
 
 ## 考点精讲
 
 ### 考点 1：防御 SQL 注入最有效的做法是？
 
-- **判断依据**：正确答案是「使用参数化查询（预编译语句）」。参数与 SQL 结构分离，从根本上消除拼接注入。判断这类题时，要把「使用参数化查询（预编译语句）」放回题干限定的对象、输入和边界，「限制请求频率（仅部分场景成立）」、「隐藏错误信息」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：在「Web 安全攻防」里，使用参数化查询（预编译语句）。参数与 SQL 结构分离，从根本上消除拼接注入。这道题的关键在「Web 安全攻防」的Web 安全、XSS、CSRF：先确认题干“防御 SQL 注入最有效的做法是”问的是哪一步，再排除偷换前提的选项。这道题的关键在「Web 安全攻防」的Web 安全、XSS、CSRF：先确认题干“注入最有效的做法是”问的是哪一步，再排除偷换前提的选项。
 
 ### 考点 2：防御 CSRF 的常用组合是？
 
-- **判断依据**：本题应选「SameSite Cookie + CSRF Token」。SameSite 阻止跨站携带 Cookie，Token 校验请求来源合法性。解题的关键不是记住孤立术语，而是确认「SameSite Cookie + CSRF Token」是否完整覆盖题干的输入、输出和失败路径，并排除「CSP + 转义」、「限流 + 验证码」这类相邻概念。
+- **判断依据**：在「Web 安全攻防」里，SameSite Cookie + CSRF Token。SameSite 阻止跨站携带 Cookie，Token 校验请求来源合法性。把“SameSite Cookie + CS”代回「Web 安全攻防」里“防御 CSRF 的常用组合是”的例子核对，条件一旦改变，结论就要用Web 安全、XSS、CSRF重新推导。
 
 ### 考点 3：围绕“Web 安全攻防”中的 Web 安全、XSS、CSRF，下列哪两项是本课强调的实践判断？
 
-- **判断依据**：正确答案包括「验证 XSS 时要固定版本并覆盖边界输入，结论才可复现」、「学习 Web 安全 时要同时说明输入、输出和失败路径，不能只看正常流程」。符合题干条件的是验证 XSS 时要固定版本并覆盖边界输入。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 Web 安全 时必须同时交代输入、输出和失败路径，这使“学习 Web 安全 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 XSS 时要固定版本与边界输入，所以“验证 XSS 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
+- **判断依据**：本课把Web 安全攻防拆成概念、示例与故障现场三部分，因此判断 Web 安全 时必须同时交代输入、输出和失败路径，这使“学习 Web 安全 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在Web 安全攻防里，判断 XSS 时要固定版本与边界输入，所以“验证 XSS 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 4：下面这段 Python 代码复现了“Web 安全攻防”中 Web 安全、XSS、CSRF 相关的一个常见故障，哪一项最准确地解释了问题？
+### 考点 4：阅读「Web 安全攻防」正文里的这段 Python 代码，下面哪一项判断是正确的？
 
-- **判断依据**：结合Web 安全、XSS来看，结论应落在「total 只在函数内部赋值，函数外访问会抛出 NameError」。结论应落在total 只在函数内部赋值，函数外访问会抛出 NameError（websecurity 第 4 题）。结合Web 安全、XSS来看，结论应落在total 只在函数内部赋值。
+- **判断依据**：在「Web 安全攻防」里，这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。这段代码出自「Web 安全攻防」的正文示例，围绕Web 安全、XSS、CSRF展开；把输入或边界换成空值、极值或失败情况后，结论要以「Web 安全攻防」的实际运行结果为准。把“这段代码把主要逻辑封装在函数或方法里”代回「Web 安全攻防」里“阅读Web 安全攻防正文里的这段 Python 代码”的例子核对，条件一旦改变，结论就要用Web 安全、XSS、CSRF重新推导。
 
 ### 考点 5：CSP（内容安全策略）的主要作用是？
 
-- **判断依据**：正确答案是「限制页面可加载/执行的脚本来源」。CSP 是纵深防御的一层，仍不能替代输出编码与输入校验。判断这类题时，要把「限制页面可加载/执行的脚本来源」放回题干限定的对象、输入和边界，「加速页面渲染」、「加密传输内容」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：在「Web 安全攻防」里，限制页面可加载/执行的脚本来源。CSP 是纵深防御的一层，仍不能替代输出编码与输入校验。在「Web 安全攻防」里判断这道题，要把Web 安全、XSS、CSRF的条件、过程与失败路径逐项对齐，换成“CSP（内容安全策略）的主要作用是”这个场景，只有满足前提的结论才成立。
 
 ### 考点 6：补全代码：「Web 安全攻防」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
 
 `print(safe_redirect_target("https://cdn.____.com/a.js"))`
 
-- **判断依据**：围绕 补全代码：本课主题示例中，下面这行代码缺少哪个关键字或函… 作答时，先用Web 安全建立输入与输出的基线，再把example代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「example」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
+- **判断依据**：在「Web 安全攻防」里，example。在「Web 安全攻防」里判断这道题，要把Web 安全、XSS、CSRF的条件、过程与失败路径逐项对齐，换成“补全代码”这个场景，只有满足前提的结论才成立。回到「Web 安全攻防」的正文示例，用“补全代码”走一遍Web 安全、XSS、CSRF的完整流程，能复现的结论才可以保留。
 
 ## English Overview
 
@@ -379,7 +374,6 @@ print(sanitize_filename("../../etc/passwd"))
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：Web 安全、XSS、CSRF、SQL 注入、CSP
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
-
 
 ## 参考资料与复核
 

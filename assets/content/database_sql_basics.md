@@ -8,7 +8,7 @@
 
 ## 学习目标
 
-- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
+- 能用自己的话解释SQL 基础解决了什么问题，而不是只背术语。
 - 能说清 「SQL」、「SELECT」、「INSERT」、「UPDATE」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「数据库」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -241,7 +241,7 @@ UPDATE orders SET status = 'paid' WHERE id = 1001 AND status = 'created';
 
 合上教程，用 3～5 句话回答：
 
-1. 本课主题解决了什么问题？
+1. SQL 基础解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「SELECT」是什么关系？
 
@@ -345,48 +345,44 @@ HAVING COUNT(*) > 5;
 
 ## 术语速查
 
+把「SQL 基础」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
 | 术语 | 本课语境 |
 | --- | --- |
-| `PRIMARY KEY` | 常用约束：`PRIMARY KEY` 主键、`NOT NULL` 非空、`UNIQUE` 唯一、`CHECK` 取值检查、`DEFAULT` 默认值。 |
-| `NOT NULL` | 常用约束：`PRIMARY KEY` 主键、`NOT NULL` 非空、`UNIQUE` 唯一、`CHECK` 取值检查、`DEFAULT` 默认值。 |
-| `UNIQUE` | 常用约束：`PRIMARY KEY` 主键、`NOT NULL` 非空、`UNIQUE` 唯一、`CHECK` 取值检查、`DEFAULT` 默认值。 |
-| `CHECK` | 常用约束：`PRIMARY KEY` 主键、`NOT NULL` 非空、`UNIQUE` 唯一、`CHECK` 取值检查、`DEFAULT` 默认值。 |
-| `DEFAULT` | 常用约束：`PRIMARY KEY` 主键、`NOT NULL` 非空、`UNIQUE` 唯一、`CHECK` 取值检查、`DEFAULT` 默认值。 |
-| `WHERE` | 重要**：`UPDATE` 和 `DELETE` 一定要写 `WHERE`，否则会作用到整张表。 |
-| `LEFT JOIN` | 三种写法的选择：**IN** 适合小结果集，**EXISTS** 适合大表相关判断，**JOIN** 适合同时取两张表的字段。`LEFT JOIN` 后统计时注意用 `COUNT(o.id)` 而不是 `COUNT(*)… |
-| `COUNT(o.id)` | 三种写法的选择：**IN** 适合小结果集，**EXISTS** 适合大表相关判断，**JOIN** 适合同时取两张表的字段。`LEFT JOIN` 后统计时注意用 `COUNT(o.id)` 而不是 `COUNT(*)… |
-| `COUNT(*)` | 三种写法的选择：**IN** 适合小结果集，**EXISTS** 适合大表相关判断，**JOIN** 适合同时取两张表的字段。`LEFT JOIN` 后统计时注意用 `COUNT(o.id)` 而不是 `COUNT(*)… |
-| `HAVING` | `WHERE` 在分组前过滤行，`HAVING` 在分组后过滤组——聚合条件的写法错误是常见报错来源。 |
-| `ORDER BY` | `SELECT` 中的别名通常不能在 `WHERE` 里使用（因为 WHERE 先执行），但在 `ORDER BY` 中可用。 |
-| `LIMIT` | `LIMIT` 最后执行，所以在子查询里做分页要小心与外层排序的配合。 |
+| `[SQL, SELECT, INSERT, UPDATE, DELETE, JOIN][index]` | 在「SQL 基础」里理解它的定义、输入和输出。 |
+| `[SQL, SELECT, INSERT, UPDATE, DELETE, JOIN][index]` | 本课用它说明边界条件与失败路径。 |
+| `[SQL, SELECT, INSERT, UPDATE, DELETE, JOIN][index]` | 结合「SQL 基础」的正文示例确认它的适用条件。 |
+| `[SQL, SELECT, INSERT, UPDATE, DELETE, JOIN][index]` | 在「SQL 基础」里理解它的定义、输入和输出。 |
+| `[SQL, SELECT, INSERT, UPDATE, DELETE, JOIN][index]` | 本课用它说明边界条件与失败路径。 |
+| `[SQL, SELECT, INSERT, UPDATE, DELETE, JOIN][index]` | 结合「SQL 基础」的正文示例确认它的适用条件。 |
 
 ## 考点精讲
 
 ### 考点 1：要删除表中年龄大于 60 的记录，正确的写法是？
 
-- **判断依据**：正确答案是「DELETE FROM students WHERE age > 60;」。正确答案是DELETE FROM students WHERE age > 60。DELETE 配合 WHERE 精确删除。判断这类题时，要把DELETE FROM students WHERE age > 60。
+- **判断依据**：在「SQL 基础」里，DELETE FROM students WHERE age > 60;。DELETE 配合 WHERE 精确删除。「SQL 基础」要求先交代SQL、SELECT、INSERT的前提再下结论，所以“DELETE FROM students”只在题干“要删除表中年龄大于 60 的记录”给定的条件下成立。
 
-### 考点 2：下面这段 Python 代码复现了“SQL 基础”中 SQL、SELECT、INSERT 相关的一个常见故障，哪一项最准确地解释了问题？
+### 考点 2：阅读「SQL 基础」正文里的这段 SQL 代码，下面哪一项判断是正确的？
 
-- **判断依据**：结合SQL、SELECT来看，本题应选「默认参数 bucket=[] 只在定义时创建一次，两次调用共享同一个列表」。本题应选默认参数 bucket=[] 只在定义时创建一次，两次调用共享同一个列表（sqlbasics 第 2 题）。结合SQL、SELECT来看，本题应选默认参数 bucket=[] 只在定义时创建一次。
+- **判断依据**：在「SQL 基础」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「SQL 基础」的正文示例，围绕SQL、SELECT、INSERT展开；把输入或边界换成空值、极值或失败情况后，结论要以「SQL 基础」的实际运行结果为准。这道题的关键在「SQL 基础」的SQL、SELECT、INSERT：先确认题干“阅读SQL 基础正文里的这段 SQL”问的是哪一步，再排除偷换前提的选项。
 
 ### 考点 3：围绕“SQL 基础”中的 SQL、SELECT、INSERT，下列哪两项是本课强调的实践判断？
 
-- **判断依据**：正确答案包括「学习 SQL 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 SELECT 时要固定版本并覆盖边界输入，结论才可复现」。符合题干条件的是学习 SQL 时要同时说明输入、输出和失败路径。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 SQL 时必须同时交代输入、输出和失败路径，这使“学习 SQL 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 SELECT 时要固定版本与边界输入，所以“验证 SELECT 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
+- **判断依据**：本课把SQL 基础拆成概念、示例与故障现场三部分，因此判断 SQL 时必须同时交代输入、输出和失败路径，这使“学习 SQL 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在SQL 基础里，判断 SELECT 时要固定版本与边界输入，所以“验证 SELECT 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
 ### 考点 4：COUNT(*) 与 COUNT(列名) 的关键区别是？
 
-- **判断依据**：结论应落在「COUNT(列名) 会忽略该列的 NULL 值」。统计非空值数量时必须用 COUNT(列名)，否则会把 NULL 行也算进去。这道题要求区分概念与边界，「COUNT(列名) 会忽略该列的 NULL 值」只有在题干给出的前提下才成立，而「COUNT(列名) 只能用于主键」、「COUNT(*) 更慢」缺少同一组条件。
+- **判断依据**：在「SQL 基础」里，结论应落在「COUNT(列名) 会忽略该列的 NULL 值」。统计非空值数量时必须用 COUNT(列名)，否则会把 NULL 行也算进去。在「SQL 基础」里，这道题要求区分概念与边界，「COUNT(列名) 会忽略该列的 NULL 值」只有在题干给出的前提下才成立，而「COUNT(列名) 只能用于主键」、「COUNT(*) 更慢」缺少同一组条件。
 
 ### 考点 5：LEFT JOIN 后统计右表记录数，应该怎么写？
 
-- **判断依据**：正确答案是「COUNT(右表.主键)」。COUNT() 会把没有匹配的 NULL 行也计为 1，统计右表要用其主键列。判断这类题时，要把「COUNT(右表.主键)」放回题干限定的对象、输入和边界，「COUNT(*)」、「SUM(右表.id)」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：在「SQL 基础」里，COUNT(右表.主键)。COUNT 会把没有匹配的 NULL 行也计为 1，统计右表要用其主键列。回到「SQL 基础」的正文示例，用“LEFT JOIN 后统计右表记录数”走一遍SQL、SELECT、INSERT的完整流程，能复现的结论才可以保留。回到「SQL 基础」的正文示例，用“LEFT”走一遍SQL、SELECT、INSERT的完整流程，能复现的结论才可以保留。
 
 ### 考点 6：补全代码：「SQL 基础」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
 
 `SELECT u.id, u.name, COUNT(o.id) AS orders, ____(SUM(o.amount), 0) AS total`
 
-- **判断依据**：围绕 补全代码：本课主题示例中，下面这行代码缺少哪个关键字或函数名… 作答时，先用SQL建立输入与输出的基线，再把COALESCE 或 coalesce代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「COALESCE 或 coalesce」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
+- **判断依据**：在「SQL 基础」里，COALESCE。回到「SQL 基础」的正文示例，用“补全代码”走一遍SQL、SELECT、INSERT的完整流程，能复现的结论才可以保留。回到「SQL 基础」的正文示例，用“基础示例中”走一遍SQL、SELECT、INSERT的完整流程，能复现的结论才可以保留。
 
 ## English Overview
 
@@ -449,7 +445,6 @@ HAVING COUNT(*) > 5;
 | 执行顺序 | Execution Order |
 | JOIN 与子查询实例 | Join and Subquery Instances |
 | 执行顺序的实际影响 | Actual Impact of Execution Order |
-
 
 ## 参考资料与复核
 

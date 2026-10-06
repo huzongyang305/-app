@@ -8,7 +8,7 @@
 
 ## 学习目标
 
-- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
+- 能用自己的话解释Rust 类型系统：Option、Result 与 trait解决了什么问题，而不是只背术语。
 - 能说清 「Rust」、「Option」、「Result」、「trait」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「Rust」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -314,7 +314,7 @@ fn main() {
 
 合上教程，用 3～5 句话回答：
 
-1. 本课主题解决了什么问题？
+1. Rust 类型系统：Option、Result 与 trait解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「Option」是什么关系？
 
@@ -344,7 +344,7 @@ fn main() {
 
 ## 实践任务
 
-本节围绕本课主题安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
+本节围绕Rust 类型系统：Option、Result 与 trait安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 
 ### 任务 1：用自己的话画出结构
 
@@ -407,7 +407,7 @@ fn main() {
 - [ ] 不看解析，能说出「使用泛型 T: Trait 属于哪种分发？」的判断依据。
 - [ ] 不看解析，能说出「dyn Trait 与泛型 T: Trait 的核心区别是？」的判断依据。
 - [ ] 不看解析，能说出「Rust 的孤儿规则（orphan rule）限制是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：本课主题示例…」的判断依据。
+- [ ] 不看解析，能说出的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -419,48 +419,43 @@ fn main() {
 
 ## 术语速查
 
+把「Rust 类型系统：Option、Result 与 trait」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
 | 术语 | 本课语境 |
 | --- | --- |
-| `Option<T>` | \| `Option<T>` \| 有值 Some(T) 或无值 None \| unwrap_or、map、and_then、? \| |
-| `Result<T, E>` | \| `Result<T, E>` \| 成功 Ok(T) 或失败 Err(E) \| `?`、map_err、unwrap_or_else \| |
-| `Option` | Rust 没有 null，空值必须用 `Option` 显式表达；错误必须用 `Result` 处理。`?` 运算符在错误时提前返回，是错误传播的标准写法。 |
-| `Result` | Rust 没有 null，空值必须用 `Option` 显式表达；错误必须用 `Result` 处理。`?` 运算符在错误时提前返回，是错误传播的标准写法。 |
-| `impl Trait for Type` | trait 类似接口，但支持默认实现、关联类型与泛型约束。`impl Trait for Type` 为类型实现行为；`T: Trait` 或 `where T: Trait` 约束泛型。与动态分发 `dyn Trait… |
-| `T: Trait` | trait 类似接口，但支持默认实现、关联类型与泛型约束。`impl Trait for Type` 为类型实现行为；`T: Trait` 或 `where T: Trait` 约束泛型。与动态分发 `dyn Trait… |
-| `where T: Trait` | trait 类似接口，但支持默认实现、关联类型与泛型约束。`impl Trait for Type` 为类型实现行为；`T: Trait` 或 `where T: Trait` 约束泛型。与动态分发 `dyn Trait… |
-| `dyn Trait` | trait 类似接口，但支持默认实现、关联类型与泛型约束。`impl Trait for Type` 为类型实现行为；`T: Trait` 或 `where T: Trait` 约束泛型。与动态分发 `dyn Trait… |
-| `Debug` | 常用内置 trait：`Debug`、`Clone`、`Copy`、`PartialEq`、`Display`、`Iterator`、`From/Into`。`#[derive(...)]` 可自动实现大部分。 |
-| `Clone` | 常用内置 trait：`Debug`、`Clone`、`Copy`、`PartialEq`、`Display`、`Iterator`、`From/Into`。`#[derive(...)]` 可自动实现大部分。 |
-| `Copy` | 常用内置 trait：`Debug`、`Clone`、`Copy`、`PartialEq`、`Display`、`Iterator`、`From/Into`。`#[derive(...)]` 可自动实现大部分。 |
-| `PartialEq` | 常用内置 trait：`Debug`、`Clone`、`Copy`、`PartialEq`、`Display`、`Iterator`、`From/Into`。`#[derive(...)]` 可自动实现大部分。 |
+| `[Rust, Option, Result, trait, 模式匹配][index]` | 在「Rust 类型系统：Option、Result 与 trait」里理解它的定义、输入和输出。 |
+| `[Rust, Option, Result, trait, 模式匹配][index]` | 本课用它说明边界条件与失败路径。 |
+| `[Rust, Option, Result, trait, 模式匹配][index]` | 结合「Rust 类型系统：Option、Result 与 trait」的正文示例确认它的适用条件。 |
+| `[Rust, Option, Result, trait, 模式匹配][index]` | 在「Rust 类型系统：Option、Result 与 trait」里理解它的定义、输入和输出。 |
+| `[Rust, Option, Result, trait, 模式匹配][index]` | 本课用它说明边界条件与失败路径。 |
 
 ## 考点精讲
 
 ### 考点 1：Rust 没有 null，表达「可能没有值」用？
 
-- **判断依据**：空值必须显式处理，从类型层面杜绝空指针异常。其他选项：Option<T> 用 Some/None 明确表达缺失并强制处理分支。判断这类题时，要把「Option<T>」放回题干限定的对象、输入和边界，「NaN」、「Result<T, E>」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：空值必须显式处理，从类型层面杜绝空指针异常。在「Rust 类型系统：Option、Result 与 trait」里，其他选项：Option<T> 用 Some/None 明确表达缺失并强制处理分支。在「Rust 类型系统：Option、Result 与 trait」里判断这道题，要把Rust、Option、Result的条件、过程与失败路径逐项对齐，换成“Rust 没有 null”这个场景，只有满足前提的结论才成立。
 
 ### 考点 2：围绕“Rust 类型系统：Option、Result 与 trait”中的 Rust、Option、Result，下列哪两项是本课强调的实践判断？
 
-- **判断依据**：正确答案包括「学习 Rust 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 Option 时要固定版本并覆盖边界输入，结论才可复现」。本题应选学习 Rust 时要同时说明输入、输出和失败路径。在本课主题里，判断 Option 时要固定版本与边界输入，所以“验证 Option 时要固定版本并覆盖边界输入，结论才可复现”才可复现。解题的关键不是记住孤立术语，而是确认学习 Rust 时要同时说明输入、输出和失败路径，不能只看正常流程。
+- **判断依据**：在「Rust 类型系统：Option、Result 与 trait」里，学习 Rust 时要同时说明输入、输出和失败路径，不能只看正常流程。在Rust 类型系统：Option、Result 与 trait里，判断 Option 时要固定版本与边界输入，所以“验证 Option 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 3：下面这段 Rust 代码复现了“Rust 类型系统：Option、Result 与 trait”中 Rust、Option、Result 相关的一个常见故障，哪一项最准确地解释了问题？
+### 考点 3：这段 Rust 代码是「Rust 类型系统：Option、Result 与 trait」的示例片段，下面哪一项描述与它一致？
 
-- **判断依据**：符合题干条件的是「0..=data.len() 包含上界，i == len 时越界 panic；应使用 0..data.len()」（rust_types_traits 第 3 题）。符合题干条件的是0..=data.len() 包含上界，i == len 时越界 panic。应使用 0..data.len()（rust_types_traits 第 3 题）。应使用 0..data.len()（rusttypestraits 第 3 题）。
+- **判断依据**：在「Rust 类型系统：Option、Result 与 trait」里，这段代码包含条件分支，不同输入会走不同的执行路径。这段代码出自「Rust 类型系统：Option、Result 与 trait」的正文示例，围绕Rust、Option、Result展开；把输入或边界换成空值、极值或失败情况后，结论要以「Rust 类型系统：Option、Result 与 trait」的实际运行结果为准。
 
 ### 考点 4：dyn Trait 与泛型 T: Trait 的核心区别是？
 
-- **判断依据**：结论应落在「dyn 是运行时动态分发（trait object，需指针），泛型是编译期单态化静态分发」。结论应落在dyn 是运行时动态分发（trait object。需要把不同类型放进同一个集合时用 Box<dyn Trait>，性能敏感处用泛型。
+- **判断依据**：在「Rust 类型系统：Option、Result 与 trait」里，结论应落在「dyn 是运行时动态分发（trait object，需指针），泛型是编译期单态化静态分发」。结论应落在dyn 是运行时动态分发（trait object。需要把不同类型放进同一个集合时用 Box<dyn Trait>，性能敏感处用泛型。
 
 ### 考点 5：Rust 的孤儿规则（orphan rule）限制是？
 
-- **判断依据**：正确答案是「只有 trait 或目标类型至少有一个定义在当前 crate 时才能实现该 trait」。该规则避免不同 crate 对同一类型产生冲突的 trait 实现。判断这类题时，要把「只有 trait 或目标类型至少有一个定义在当前 crate 时才能实现…」放回题干限定的对象、输入和边界，「只能在标准库中实现 trait」、「trait 不能有默认实现」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：在「Rust 类型系统：Option、Result 与 trait」里，只有 trait 或目标类型至少有一个定义在当前 crate 时才能实现该 trait。该规则避免不同 crate 对同一类型产生冲突的 trait 实现。「Rust 类型系统：Option、Result 与 trait」要求先交代Rust、Option、Result的前提再下结论，所以“只有 trait 或目标类型至少有一个定”只在题干“Rust 的孤儿规则（orphan rule）限制是”给定的条件下成立。
 
 ### 考点 6：补全代码：「Rust 类型系统：Option、Result 与 trait」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
 
-`raw.parse::<u16>().____(|source| ConfigError::Invalid {`
+`raw.parse::<u16>.____(|source| ConfigError::Invalid {`
 
-- **判断依据**：空格应填写「map_err」。("不是合法年龄：{text}")) 这样的用法，说明该关键字在本课代码中承担实际功能。围绕 补全代码：Rust 类型系统：Option、Result 与 tr… 作答时，先用Rust建立输入与输出的基线，再把maperr代入边界条件核对，结论才能复现。
+- **判断依据**：空格应填写「map_err」。("不是合法年龄：{text}")) 这样的用法，说明该关键字在本课代码中承担实际功能。回到「Rust 类型系统：Option、Result 与 trait」的正文示例，用“补全代码”走一遍Rust、Option、Result的完整流程，能复现的结论才可以保留。
 
 ## English Overview
 
@@ -481,7 +476,6 @@ fn main() {
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：Rust、Option、Result、trait、模式匹配
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
-
 
 ## 参考资料与复核
 

@@ -52,6 +52,20 @@ const List<String> generatedMarkdownMarkers = <String>[
   '错误信息通常会指出出错行和期望符号',
 ];
 
+/// P0/P1 语义卡口：这些缺陷是生成器留下的可见问题，一律按 error 处理。
+const String placeholderTitle = '本课主题';
+
+const List<String> genericPythonQuestionMarkers = <String>[
+  'bucket=[]',
+  'items.remove(item)',
+  'range(len(data) + 1)',
+  '相关的一个常见故障',
+];
+
+final RegExp internalQuestionIdPattern = RegExp(
+  r'[（(]\s*[A-Za-z0-9_]+\s*第\s*\d+\s*题\s*[)）]',
+);
+
 void main(List<String> args) {
   final jsonOutput = args.contains('--json');
   final failOnIssue = !args.contains('--no-fail');
@@ -79,6 +93,10 @@ void main(List<String> args) {
           categoryId: categoryId,
           title: (((lesson['title'] as Map?)?['zh'] ?? lesson['id']).toString())
               .trim(),
+          keywords: ((lesson['keywords'] as List<dynamic>?) ?? const <dynamic>[])
+              .map((item) => item.toString().trim())
+              .where((item) => item.isNotEmpty)
+              .toList(),
           markdown: file.existsSync() ? file.readAsStringSync() : '',
           quiz: ((lesson['quiz'] as List<dynamic>?) ?? const [])
               .map((raw) => (raw as Map).cast<String, dynamic>())
@@ -96,9 +114,13 @@ void main(List<String> args) {
   final markdownParagraphs = <String, Set<String>>{};
   final referenceSetsByCategory =
       <String, Map<String, List<GovernanceLesson>>>{};
-  var explanationsOverTitleBudget = 0;
+  var placeholderTitleHits = 0;
+  var internalIdHits = 0;
+  var duplicateReviewSections = 0;
+  var staleReviewSupplements = 0;
+  var corruptTermTables = 0;
+  var codeQuestionsWithoutDomainLink = 0;
   var explanationsWithMeta = 0;
-  var markdownOverTitleBudget = 0;
   var languageMismatches = 0;
 
   for (final lesson in lessons) {
@@ -114,18 +136,31 @@ void main(List<String> args) {
       continue;
     }
 
-    final markdownTitleHits = _countOccurrencesOutsideFocus(
-      lesson.markdown,
-      lesson.title,
-    );
-    if (markdownTitleHits > 10) {
-      markdownOverTitleBudget++;
+    // 标题、占位符、内部题号与重复复习章节的语义卡口。
+    // 旧版按「标题出现次数」设预算，逼着生成器把真实标题改成「本课主题」占位符，
+    // 反而破坏了 H1、配图替代文本和正文；这里改为直接检查这些结构性缺陷。
+    final structureIssues = _auditLessonStructure(lesson);
+    issues.addAll(structureIssues);
+    for (final issue in structureIssues) {
+      switch (issue.kind) {
+        case 'internal_question_id':
+          internalIdHits++;
+        case 'duplicate_review_section':
+          duplicateReviewSections++;
+        case 'stale_review_supplement':
+          staleReviewSupplements++;
+        case 'corrupt_term_table':
+          corruptTermTables++;
+      }
+    }
+    if (lesson.markdown.contains(placeholderTitle)) {
+      placeholderTitleHits++;
       issues.add(
         GovernanceIssue(
-          level: 'warn',
+          level: 'error',
           lessonId: lesson.id,
-          kind: 'markdown_title_repetition',
-          message: '正文重复课程标题 $markdownTitleHits 次，预算上限为 10',
+          kind: 'placeholder_title',
+          message: '正文仍残留标题占位符「$placeholderTitle」',
         ),
       );
     }
@@ -161,15 +196,59 @@ void main(List<String> args) {
       final question = lesson.quiz[index];
       final explanation = (question['explanation'] ?? '').toString().trim();
       final questionNumber = index + 1;
-      final titleHits = _countOccurrences(explanation, lesson.title);
-      if (titleHits > 2) {
-        explanationsOverTitleBudget++;
+      final questionText = (question['question'] ?? '').toString();
+      final questionBlob = jsonEncode(question);
+      if (questionBlob.contains(placeholderTitle)) {
         issues.add(
           GovernanceIssue(
-            level: 'warn',
+            level: 'error',
             lessonId: lesson.id,
-            kind: 'explanation_title_repetition',
-            message: '第 $questionNumber 题解析重复课程标题 $titleHits 次，预算上限为 2',
+            kind: 'placeholder_title',
+            message: '第 $questionNumber 题仍残留标题占位符「$placeholderTitle」',
+          ),
+        );
+      }
+      if (internalQuestionIdPattern.hasMatch(questionBlob)) {
+        issues.add(
+          GovernanceIssue(
+            level: 'error',
+            lessonId: lesson.id,
+            kind: 'internal_question_id',
+            message: '第 $questionNumber 题残留内部题号',
+          ),
+        );
+      }
+      if (questionText.contains('…')) {
+        issues.add(
+          GovernanceIssue(
+            level: 'error',
+            lessonId: lesson.id,
+            kind: 'truncated_question_text',
+            message: '第 $questionNumber 题题干被截断',
+          ),
+        );
+      }
+      if (genericPythonQuestionMarkers.any(questionBlob.contains)) {
+        issues.add(
+          GovernanceIssue(
+            level: 'error',
+            lessonId: lesson.id,
+            kind: 'generic_python_question',
+            message: '第 $questionNumber 题仍是跨域套用的 Python 通用题',
+          ),
+        );
+      }
+      final questionType = (question['type'] ?? 'single').toString();
+      if ((questionType == 'code' || questionType == 'debug') &&
+          (question['code'] ?? '').toString().trim().isNotEmpty &&
+          !_mentionsLessonDomain(lesson, explanation)) {
+        codeQuestionsWithoutDomainLink++;
+        issues.add(
+          GovernanceIssue(
+            level: 'error',
+            lessonId: lesson.id,
+            kind: 'code_question_domain_link',
+            message: '第 $questionNumber 题代码题的解析没有对应本课主题或关键词',
           ),
         );
       }
@@ -354,9 +433,13 @@ void main(List<String> args) {
     ),
     'error_count': errors.length,
     'warning_count': warnings.length,
-    'explanations_over_title_budget': explanationsOverTitleBudget,
+    'placeholder_title_hits': placeholderTitleHits,
+    'internal_question_id_hits': internalIdHits,
+    'duplicate_review_sections': duplicateReviewSections,
+    'stale_review_supplements': staleReviewSupplements,
+    'corrupt_term_tables': corruptTermTables,
+    'code_questions_without_domain_link': codeQuestionsWithoutDomainLink,
     'explanations_with_meta_markers': explanationsWithMeta,
-    'markdown_over_title_budget': markdownOverTitleBudget,
     'language_mismatches': languageMismatches,
     'repeated_explanation_sentence_classes':
         repeatedExplanationSentences.length,
@@ -393,9 +476,13 @@ void main(List<String> args) {
   } else {
     stdout.writeln('课程总数                    ${report['lesson_count']}');
     stdout.writeln('题目总数                    ${report['question_count']}');
-    stdout.writeln('解析标题超预算              $explanationsOverTitleBudget');
+    stdout.writeln('标题占位符                  $placeholderTitleHits');
+    stdout.writeln('内部题号                    $internalIdHits');
+    stdout.writeln('重复复习章节                $duplicateReviewSections');
+    stdout.writeln('残留复核补充                $staleReviewSupplements');
+    stdout.writeln('损坏术语表                  $corruptTermTables');
+    stdout.writeln('代码题缺本课关联            $codeQuestionsWithoutDomainLink');
     stdout.writeln('解析机械模板句              $explanationsWithMeta');
-    stdout.writeln('正文标题超预算              $markdownOverTitleBudget');
     stdout.writeln('代码语言错配                $languageMismatches');
     stdout.writeln(
       '解析重复句类(>=5)           '
@@ -471,6 +558,88 @@ String? _codeShapeMismatch({
     return '代码形态与 Kotlin 不符';
   }
   return null;
+}
+
+/// 课程结构层面的 P0/P1 卡口：H1 标题、内部题号、复习章节与术语表。
+List<GovernanceIssue> _auditLessonStructure(GovernanceLesson lesson) {
+  final issues = <GovernanceIssue>[];
+  final h1 = RegExp(
+    r'^#\s+(.+)$',
+    multiLine: true,
+  ).firstMatch(lesson.markdown)?.group(1)?.trim();
+  if (h1 != lesson.title) {
+    issues.add(
+      GovernanceIssue(
+        level: 'error',
+        lessonId: lesson.id,
+        kind: 'heading_title_mismatch',
+        message: 'H1 标题为「$h1」，与清单标题「${lesson.title}」不一致',
+      ),
+    );
+  }
+  final idHits = internalQuestionIdPattern.allMatches(lesson.markdown).length;
+  if (idHits > 0) {
+    issues.add(
+      GovernanceIssue(
+        level: 'error',
+        lessonId: lesson.id,
+        kind: 'internal_question_id',
+        message: '正文残留 $idHits 处内部题号',
+      ),
+    );
+  }
+  final reviewHits = RegExp(
+    r'^##\s+复习与迁移\s*$',
+    multiLine: true,
+  ).allMatches(lesson.markdown).length;
+  if (reviewHits > 1) {
+    issues.add(
+      GovernanceIssue(
+        level: 'error',
+        lessonId: lesson.id,
+        kind: 'duplicate_review_section',
+        message: '正文有 $reviewHits 个「复习与迁移」章节',
+      ),
+    );
+  }
+  if (RegExp(
+    r'^[>\s]*#{1,6}\s*复核补充',
+    multiLine: true,
+  ).hasMatch(lesson.markdown)) {
+    issues.add(
+      GovernanceIssue(
+        level: 'error',
+        lessonId: lesson.id,
+        kind: 'stale_review_supplement',
+        message: '正文残留自动生成的「复核补充」章节',
+      ),
+    );
+  }
+  final termSection = _section(lesson.markdown, '术语速查');
+  final corruptRow = termSection.split('\n').any(
+    (line) =>
+        line.startsWith('|') &&
+        (line.contains('判断依据') || line.contains('正确答案是')),
+  );
+  if (corruptRow) {
+    issues.add(
+      GovernanceIssue(
+        level: 'error',
+        lessonId: lesson.id,
+        kind: 'corrupt_term_table',
+        message: '「术语速查」表格混入了解析残句',
+      ),
+    );
+  }
+  return issues;
+}
+
+/// 代码题解析必须落在本课主题或关键词上，避免跨域套题。
+bool _mentionsLessonDomain(GovernanceLesson lesson, String text) {
+  if (lesson.title.isNotEmpty && text.contains(lesson.title)) return true;
+  return lesson.keywords.any(
+    (keyword) => keyword.length >= 2 && text.contains(keyword),
+  );
 }
 
 String _normalizeAnswerText(String text) {
@@ -590,33 +759,6 @@ List<String> _splitSentences(String text) {
       .toList();
 }
 
-int _countOccurrences(String text, String needle) {
-  if (needle.isEmpty) return 0;
-  var count = 0;
-  var index = 0;
-  while (true) {
-    final next = text.indexOf(needle, index);
-    if (next < 0) return count;
-    count++;
-    index = next + needle.length;
-  }
-}
-
-int _countOccurrencesOutsideFocus(String text, String needle) {
-  if (needle.isEmpty) return 0;
-  final heading = RegExp(r'^##\s+考点精讲\s*$', multiLine: true).firstMatch(text);
-  if (heading == null) return _countOccurrences(text, needle);
-  final nextHeading = RegExp(
-    r'^##\s+',
-    multiLine: true,
-  ).firstMatch(text.substring(heading.end));
-  final end = nextHeading == null
-      ? text.length
-      : heading.end + nextHeading.start;
-  return _countOccurrences(text.substring(0, heading.start), needle) +
-      _countOccurrences(text.substring(end), needle);
-}
-
 String _short(String text, int maxLength) {
   return text.length <= maxLength ? text : '${text.substring(0, maxLength)}…';
 }
@@ -642,6 +784,7 @@ class GovernanceLesson {
     required this.id,
     required this.categoryId,
     required this.title,
+    required this.keywords,
     required this.markdown,
     required this.quiz,
     required this.codeQuiz,
@@ -650,6 +793,7 @@ class GovernanceLesson {
   final String id;
   final String categoryId;
   final String title;
+  final List<String> keywords;
   final String markdown;
   final List<Map<String, dynamic>> quiz;
   final Map<String, dynamic>? codeQuiz;

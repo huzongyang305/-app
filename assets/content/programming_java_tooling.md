@@ -1,14 +1,14 @@
-# 本课主题
+# 构建、测试与生态
 
 > 内容更新时间：2026-10-03
 
 ![Java 构建、测试、日志与数据库工具](images/diagram_java_tooling.webp)
 
-![本课主题](images/remaining_java_tooling.webp)
+![构建、测试与生态](images/remaining_java_tooling.webp)
 
 ## 学习目标
 
-- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
+- 能用自己的话解释构建、测试与生态解决了什么问题，而不是只背术语。
 - 能说清 「Maven」、「Gradle」、「JUnit」、「Mockito」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「Java」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -456,7 +456,7 @@ class PriceTest {
 
 合上教程，用 3～5 句话回答：
 
-1. 本课主题解决了什么问题？
+1. 构建、测试与生态解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「Gradle」是什么关系？
 
@@ -550,7 +550,7 @@ mvn -q versions:display-dependency-updates   # 检查可升级依赖
 - [ ] 不看解析，能说出「日志门面（facade）通常使用？」的判断依据。
 - [ ] 不看解析，能说出「防止 SQL 注入的正确做法是？」的判断依据。
 - [ ] 不看解析，能说出「JUnit 5 中编写参数化测试使用哪个注解？」的判断依据。
-- [ ] 不看解析，能说出「Gradle 中 settings.gradle 与 build.gradle …」的判断依据。
+- [ ] 不看解析，能说出的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -581,29 +581,29 @@ mvn -q versions:display-dependency-updates   # 检查可升级依赖
 
 ### 考点 1：围绕“构建、测试与生态”中的 Maven、Gradle、JUnit，下列哪两项是本课强调的实践判断？
 
-- **判断依据**：正确答案包括「学习 Maven 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 Gradle 时要固定版本并覆盖边界输入，结论才可复现」。正确答案是学习 Maven 时要同时说明输入、输出和失败路径。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 Maven 时必须同时交代输入、输出和失败路径，这使“学习 Maven 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 Gradle 时要固定版本与边界输入，所以“验证 Gradle 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
+- **判断依据**：本课把构建、测试与生态拆成概念、示例与故障现场三部分，因此判断 Maven 时必须同时交代输入、输出和失败路径，这使“学习 Maven 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在构建、测试与生态里，判断 Gradle 时要固定版本与边界输入，所以“验证 Gradle 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 2：下面这段 Java 代码复现了“构建、测试与生态”中 Maven、Gradle、JUnit 相关的一个常见故障，哪一项最准确地解释了问题？
+### 考点 2：这段代码代码是「构建、测试与生态」的示例片段，下面哪一项描述与它一致？
 
-- **判断依据**：本题应选「== 比较的是两个 String 对象的引用，不是内容（java_tooling 第 2 题）；应使用 a.equals(b)」（java_tooling 第 2 题）。本题应选== 比较的是两个 String 对象的引用，不是内容（java_tooling 第 2 题）。应使用 a.equals(b)（java_tooling 第 2 题）。本题应选== 比较的是两个 String 对象的引用，不是内容（javatooling 第 2 题）。
+- **判断依据**：在「构建、测试与生态」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「构建、测试与生态」的正文示例，围绕Maven、Gradle、JUnit展开；把输入或边界换成空值、极值或失败情况后，结论要以「构建、测试与生态」的实际运行结果为准。把“这段代码只做静态声明，没有循环”代回「构建、测试与生态」里“这段代码代码是构建、测试与生态的示例片段”的例子核对，条件一旦改变，结论就要用Maven、Gradle、JUnit重新推导。
 
 ### 考点 3：防止 SQL 注入的正确做法是？
 
-- **判断依据**：符合题干条件的是「使用 PreparedStatement 参数占位符」。预编译语句把参数与 SQL 结构分离，是防注入的标准手段。正确的判断需要逐项核对定义、版本和适用条件（javatooling 第 3 题）。正确的判断需要逐项核对定义、版本和适用条件（java_tooling 第 3 题）。
+- **判断依据**：在「构建、测试与生态」里，使用 PreparedStatement 参数占位符。预编译语句把参数与 SQL 结构分离，是防注入的标准手段。“注入的正确做法是”与「构建、测试与生态」的术语表相呼应，只有符合Maven、Gradle、JUnit约束的“使用 PreparedStatement”才是正文支持的结论。
 
 ### 考点 4：JUnit 5 中编写参数化测试使用哪个注解？
 
-- **判断依据**：配合 @ValueSource / @CsvSource 提供数据，同样的逻辑可覆盖多组输入。其他选项：JUnit 5 使用 @ParameterizedTest 搭配 @ValueSource 或 @CsvSource。这道题要求区分概念与边界，「@ParameterizedTest」只有在题干给出的前提下才成立，而「@RepeatTest」、「@TheoryTest」缺少同一组条件。
+- **判断依据**：配合 @ValueSource / @CsvSource 提供数据，同样的逻辑可覆盖多组输入。在「构建、测试与生态」里，其他选项：JUnit 5 使用 @ParameterizedTest 搭配 @ValueSource 或 @CsvSource。在「构建、测试与生态」里，这道题要求区分概念与边界，「@ParameterizedTest」只有在题干给出的前提下才成立，而「@RepeatTest」、「@TheoryTest」缺少同一组条件。
 
 ### 考点 5：Gradle 中 settings.gradle 与 build.gradle 的分工是？
 
-- **判断依据**：正确答案是「settings 定义项目结构（包含哪些模块）」。多模块 Gradle 项目靠 settings.gradle 聚合子模块。判断这类题时，要把「settings 定义项目结构（包含哪些模块）」放回题干限定的对象、输入和边界，「build 定义模块，settings 定义依赖」、「settings 只在 Windows 生效」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：在「构建、测试与生态」里，settings 定义项目结构（包含哪些模块）。多模块 Gradle 项目靠 settings.gradle 聚合子模块。这道题的关键在「构建、测试与生态」的Maven、Gradle、JUnit：先确认题干“Gradle 中 settings.”问的是哪一步，再排除偷换前提的选项。
 
 ### 考点 6：补全代码：「构建、测试与生态」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
 
 `____("org.junit.jupiter:junit-jupiter:5.11.0")`
 
-- **判断依据**：空格应填写「testImplementation」、「testimplementation」。解题的关键不是记住孤立术语，而是确认「testImplementation 或 testimplementat…」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
+- **判断依据**：空格应填写「testImplementation」、「testimplementation」。回到「构建、测试与生态」的正文示例，用“补全代码”走一遍Maven、Gradle、JUnit的完整流程，能复现的结论才可以保留。回到「构建、测试与生态」的正文示例，用“测试与生态示例中”走一遍Maven、Gradle、JUnit的完整流程，能复现的结论才可以保留。
 
 ## English Overview
 
@@ -624,7 +624,6 @@ mvn -q versions:display-dependency-updates   # 检查可升级依赖
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：Maven、Gradle、JUnit、Mockito、SLF4J、JDBC
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
-
 
 ## 参考资料与复核
 

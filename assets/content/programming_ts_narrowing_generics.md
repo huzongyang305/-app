@@ -8,7 +8,7 @@
 
 ## 学习目标
 
-- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
+- 能用自己的话解释TypeScript 类型收窄与泛型解决了什么问题，而不是只背术语。
 - 能说清 「TypeScript」、「类型收窄」、「泛型」、「可辨识联合」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「TypeScript」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -304,7 +304,7 @@ console.log(handle({ status: "ok", data: { id: 2, tags: ["a"] } }));
 
 合上教程，用 3～5 句话回答：
 
-1. 本课主题解决了什么问题？
+1. TypeScript 类型收窄与泛型解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「类型收窄」是什么关系？
 
@@ -412,7 +412,7 @@ console.log(handle({ status: "ok", data: { id: 2, tags: ["a"] } }));
 - [ ] 不看解析，能说出「infer 关键字用于？」的判断依据。
 - [ ] 不看解析，能说出「自定义类型守卫的返回类型应该写成？」的判断依据。
 - [ ] 不看解析，能说出「泛型约束 T extends { id: string } 的作用是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码缺少哪个关…」的判断依据。
+- [ ] 不看解析，能说出的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -424,48 +424,43 @@ console.log(handle({ status: "ok", data: { id: 2, tags: ["a"] } }));
 
 ## 术语速查
 
+把「TypeScript 类型收窄与泛型」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
 | 术语 | 本课语境 |
 | --- | --- |
-| `type` | \| 可辨识联合 \| 用共同字段（如 `type`）区分成员，配合 switch 穷尽检查 \| |
-| `x is T` | \| 类型守卫 \| 自定义 `x is T` 函数或断言函数 `asserts x is T` \| |
-| `asserts x is T` | \| 类型守卫 \| 自定义 `x is T` 函数或断言函数 `asserts x is T` \| |
-| `。约束用` | 泛型让函数与组件在保持类型安全的前提下复用：`function first<T>(list: T[]): T \| undefined`。约束用 `extends`：`<T extends { id: number }>… |
-| `<T extends { id: number }>` | 泛型让函数与组件在保持类型安全的前提下复用：`function first<T>(list: T[]): T \| undefined`。约束用 `extends`：`<T extends { id: number }>… |
-| `<T = string>` | 泛型让函数与组件在保持类型安全的前提下复用：`function first<T>(list: T[]): T \| undefined`。约束用 `extends`：`<T extends { id: number }>… |
-| `T extends U ? X : Y` | `T extends U ? X : Y` 在类型层面做分支；`infer` 用于提取类型片段，例如提取函数返回类型、数组元素类型、Promise 的结果类型。这是工具类型的实现基础。 |
-| `infer` | `T extends U ? X : Y` 在类型层面做分支；`infer` 用于提取类型片段，例如提取函数返回类型、数组元素类型、Promise 的结果类型。这是工具类型的实现基础。 |
-| `any` | 滥用 `any` 让检查失效——外部数据先用 `unknown`，校验后再收窄。 |
-| `unknown` | 滥用 `any` 让检查失效——外部数据先用 `unknown`，校验后再收窄。 |
-| `as` | 过度断言 `as` 会掩盖错误，优先用类型守卫。 |
-| `typeof` | \| `typeof` \| `if (typeof v === "string")` \| 原始类型 \| |
+| `[TypeScript, 类型收窄, 泛型, 可辨识联合, infer][index]` | 在「TypeScript 类型收窄与泛型」里理解它的定义、输入和输出。 |
+| `[TypeScript, 类型收窄, 泛型, 可辨识联合, infer][index]` | 本课用它说明边界条件与失败路径。 |
+| `[TypeScript, 类型收窄, 泛型, 可辨识联合, infer][index]` | 结合「TypeScript 类型收窄与泛型」的正文示例确认它的适用条件。 |
+| `[TypeScript, 类型收窄, 泛型, 可辨识联合, infer][index]` | 在「TypeScript 类型收窄与泛型」里理解它的定义、输入和输出。 |
+| `[TypeScript, 类型收窄, 泛型, 可辨识联合, infer][index]` | 本课用它说明边界条件与失败路径。 |
 
 ## 考点精讲
 
 ### 考点 1：围绕“TypeScript 类型收窄与泛型”中的 TypeScript、类型收窄、泛型，下列哪两项是本课强调的实践判断？
 
-- **判断依据**：正确答案包括「验证 类型收窄 时要固定版本并覆盖边界输入，结论才可复现」、「学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程」。正确答案是验证 类型收窄 时要固定版本并覆盖边界输入。在本课主题里，判断 类型收窄 时要固定版本与边界输入，所以“验证 类型收窄 时要固定版本并覆盖边界输入，结论才可复现”才可复现。判断这类题时，要把验证 类型收窄 时要固定版本并覆盖边界输入，结论才可复现。
+- **判断依据**：在「TypeScript 类型收窄与泛型」里，学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程。在TypeScript 类型收窄与泛型里，判断 类型收窄 时要固定版本与边界输入，所以“验证 类型收窄 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 2：下面这段 TypeScript 代码复现了“TypeScript 类型收窄与泛型”中 TypeScript、类型收窄、泛型 相关的一个常见故障，哪一项最准确地解释了问题？
+### 考点 2：阅读「TypeScript 类型收窄与泛型」正文里的这段 TypeScript 代码，下面哪一项判断是正确的？
 
-- **判断依据**：本题应选「循环条件用了 <=，最后一次访问 data[data.length] 得到 undefined」。本题应选循环条件用了 <=，最后一次访问 data[data.length] 得到 undefined（tsnarrowinggenerics 第 2 题）。结合TypeScript、类型收窄来看，本题应选循环条件用了 <=。在这个复现里，data[data.length] 是 TypeScript 相关位置上的 undefined，参与加法后把 total 变成 NaN。
+- **判断依据**：在「TypeScript 类型收窄与泛型」里，这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。这段代码出自「TypeScript 类型收窄与泛型」的正文示例，围绕TypeScript、类型收窄、泛型展开；把输入或边界换成空值、极值或失败情况后，结论要以「TypeScript 类型收窄与泛型」的实际运行结果为准。
 
 ### 考点 3：infer 关键字用于？
 
-- **判断依据**：符合题干条件的是「在条件类型中提取类型片段」。它是 ReturnType、Awaited 等工具类型的实现基础。正确的判断需要逐项核对定义、版本和适用条件（tsnarrowinggenerics 第 3 题）。正确的判断需要逐项核对定义、版本和适用条件（ts_narrowing_generics 第 3 题）。
+- **判断依据**：在「TypeScript 类型收窄与泛型」里，在条件类型中提取类型片段。它是 ReturnType、Awaited 等工具类型的实现基础。在「TypeScript 类型收窄与泛型」里判断这道题，要把TypeScript、类型收窄、泛型的条件、过程与失败路径逐项对齐，换成“infer 关键字用于”这个场景，只有满足前提的结论才成立。
 
 ### 考点 4：自定义类型守卫的返回类型应该写成？
 
-- **判断依据**：返回 value is Foo 后，调用处在该分支内会被自动收窄为 Foo 类型。其他选项：返回 Foo、undefined、typeof Foo 或 boolean 都不会让调用处收窄。这道题要求区分概念与边界，「value is Foo」只有在题干给出的前提下才成立，而「typeof Foo」、「boolean」缺少同一组条件。
+- **判断依据**：在「TypeScript 类型收窄与泛型」里，返回 value is Foo 后，调用处在该分支内会被自动收窄为 Foo 类型。在「TypeScript 类型收窄与泛型」里，其他选项：返回 Foo、undefined、typeof Foo 或 boolean 都不会让调用处收窄。在「TypeScript 类型收窄与泛型」里，这道题要求区分概念与边界，「value is Foo」只有在题干给出的前提下才成立，而「typeof Foo」、「boolean」缺少同一组条件。
 
 ### 考点 5：泛型约束 T extends { id: string } 的作用是？
 
-- **判断依据**：正确答案是「要求类型参数至少具备该形状」。没有约束时不能访问 T 的成员，约束是泛型里获得类型安全的关键。判断这类题时，要把「要求类型参数至少具备该形状」放回题干限定的对象、输入和边界，「给 T 设置默认值」、「把 T 转成字符串」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：在「TypeScript 类型收窄与泛型」里，要求类型参数至少具备该形状。没有约束时不能访问 T 的成员，约束是泛型里获得类型安全的关键。回到「TypeScript 类型收窄与泛型」的正文示例，用“泛型约束 T extends { i”走一遍TypeScript、类型收窄、泛型的完整流程，能复现的结论才可以保留。
 
 ### 考点 6：补全代码：「TypeScript 类型收窄与泛型」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
 
 `function ____(value: never): never {`
 
-- **判断依据**：围绕 补全代码：本课主题示例中，下面这行代… 作答时，先用TypeScript建立输入与输出的基线，再把assertNever 或 assertnever代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「assertNever 或 assertnever」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
+- **判断依据**：在「TypeScript 类型收窄与泛型」里，assertNever。在「TypeScript 类型收窄与泛型」里判断这道题，要把TypeScript、类型收窄、泛型的条件、过程与失败路径逐项对齐，换成“补全代码”这个场景，只有满足前提的结论才成立。回到「TypeScript 类型收窄与泛型」的正文示例，用“补全代码”走一遍TypeScript、类型收窄、泛型的完整流程，能复现的结论才可以保留。
 
 ## English Overview
 
@@ -528,7 +523,6 @@ console.log(handle({ status: "ok", data: { id: 2, tags: ["a"] } }));
 | 类型收窄速查 | Types收窄速查 |
 | 泛型约束速查 | 泛型约束速查 |
 | 常见错误对照表 | Common mistakes对照表 |
-
 
 ## 参考资料与复核
 

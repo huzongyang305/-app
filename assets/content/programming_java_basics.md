@@ -1,4 +1,4 @@
-# Java 环境与 JVM
+# 环境与 JVM
 
 ![JDK JRE JVM 与字节码](images/diagram_java_runtime.webp)
 
@@ -8,7 +8,7 @@
 
 ## 学习目标
 
-- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
+- 能用自己的话解释环境与 JVM解决了什么问题，而不是只背术语。
 - 能说清 「Java」、「JVM」、「JDK」、「javac」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「Java」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -299,7 +299,7 @@ public class Calculator {
 
 合上教程，用 3～5 句话回答：
 
-1. 本课主题解决了什么问题？
+1. 环境与 JVM解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「JVM」是什么关系？
 
@@ -405,48 +405,44 @@ jshell               # JDK 9+ 交互式 REPL，适合快速试验
 
 ## 术语速查
 
+把「环境与 JVM」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
 | 术语 | 本课语境 |
 | --- | --- |
-| `.class` | \| JVM \| 字节码执行引擎 \| 运行 `.class` 文件 \| |
-| `，运行时用全限定名` | 编译带包名的代码：`javac -d out src/com/example/app/Main.java`，运行时用全限定名 `java -cp out com.example.app.Main`。 |
-| `的每个部分都有含义：` | `public static void main(String[] args)` 的每个部分都有含义：`public` 让 JVM 能访问、`static` 无需实例化、`void` 无返回值、`String[] arg… |
-| `让 JVM 能访问、` | `public static void main(String[] args)` 的每个部分都有含义：`public` 让 JVM 能访问、`static` 无需实例化、`void` 无返回值、`String[] arg… |
-| `无需实例化、` | `public static void main(String[] args)` 的每个部分都有含义：`public` 让 JVM 能访问、`static` 无需实例化、`void` 无返回值、`String[] arg… |
-| `无返回值、` | `public static void main(String[] args)` 的每个部分都有含义：`public` 让 JVM 能访问、`static` 无需实例化、`void` 无返回值、`String[] arg… |
-| `-Xms/-Xmx` | 常用参数：`-Xms/-Xmx` 设初始与最大堆（生产建议设成相同值，避免动态扩缩）；`-Xmn` 新生代大小；`-XX:MetaspaceSize` 元空间；`-XX:+HeapDumpOnOutOfMemoryErr… |
-| `-Xmn` | 常用参数：`-Xms/-Xmx` 设初始与最大堆（生产建议设成相同值，避免动态扩缩）；`-Xmn` 新生代大小；`-XX:MetaspaceSize` 元空间；`-XX:+HeapDumpOnOutOfMemoryErr… |
-| `-XX:MetaspaceSize` | 常用参数：`-Xms/-Xmx` 设初始与最大堆（生产建议设成相同值，避免动态扩缩）；`-Xmn` 新生代大小；`-XX:MetaspaceSize` 元空间；`-XX:+HeapDumpOnOutOfMemoryErr… |
-| `-XX:+HeapDumpOnOutOfMemoryError` | 常用参数：`-Xms/-Xmx` 设初始与最大堆（生产建议设成相同值，避免动态扩缩）；`-Xmn` 新生代大小；`-XX:MetaspaceSize` 元空间；`-XX:+HeapDumpOnOutOfMemoryErr… |
-| `-XX:MaxGCPauseMillis` | 常用参数：`-Xms/-Xmx` 设初始与最大堆（生产建议设成相同值，避免动态扩缩）；`-Xmn` 新生代大小；`-XX:MetaspaceSize` 元空间；`-XX:+HeapDumpOnOutOfMemoryErr… |
-| `-Xlog:gc*` | 常用参数：`-Xms/-Xmx` 设初始与最大堆（生产建议设成相同值，避免动态扩缩）；`-Xmn` 新生代大小；`-XX:MetaspaceSize` 元空间；`-XX:+HeapDumpOnOutOfMemoryErr… |
+| `[Java, JVM, JDK, javac, 字节码, 包][index]` | 在「环境与 JVM」里理解它的定义、输入和输出。 |
+| `[Java, JVM, JDK, javac, 字节码, 包][index]` | 本课用它说明边界条件与失败路径。 |
+| `[Java, JVM, JDK, javac, 字节码, 包][index]` | 结合「环境与 JVM」的正文示例确认它的适用条件。 |
+| `[Java, JVM, JDK, javac, 字节码, 包][index]` | 在「环境与 JVM」里理解它的定义、输入和输出。 |
+| `[Java, JVM, JDK, javac, 字节码, 包][index]` | 本课用它说明边界条件与失败路径。 |
+| `[Java, JVM, JDK, javac, 字节码, 包][index]` | 结合「环境与 JVM」的正文示例确认它的适用条件。 |
 
 ## 考点精讲
 
 ### 考点 1：围绕“环境与 JVM”中的 Java、JVM、JDK，下列哪两项是本课强调的实践判断？
 
-- **判断依据**：正确答案包括「学习 Java 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 JVM 时要固定版本并覆盖边界输入，结论才可复现」。正确答案是学习 Java 时要同时说明输入、输出和失败路径。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 Java 时必须同时交代输入、输出和失败路径，这使“学习 Java 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 JVM 时要固定版本与边界输入，所以“验证 JVM 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
+- **判断依据**：本课把环境与 JVM拆成概念、示例与故障现场三部分，因此判断 Java 时必须同时交代输入、输出和失败路径，这使“学习 Java 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在环境与 JVM里，判断 JVM 时要固定版本与边界输入，所以“验证 JVM 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
 ### 考点 2：public class Hello 的源文件名必须是？
 
-- **判断依据**：本题应选「Hello.java」。public 类的文件名必须与类名完全一致，包括大小写。解题的关键不是记住孤立术语，而是确认「Hello.java」是否完整覆盖题干的输入、输出和失败路径，并排除「Main.java」、「任意名字」这类相邻概念。
+- **判断依据**：在「环境与 JVM」里，Hello.java。public 类的文件名必须与类名完全一致，包括大小写。「环境与 JVM」要求先交代Java、JVM、JDK的前提再下结论，所以“Hello.java”只在题干“public class Hello 的源文件名必须是”给定的条件下成立。
 
 ### 考点 3：Java 实现「一次编写，到处运行」的关键是？
 
-- **判断依据**：符合题干条件的是「编译成字节码」。源码编译成与平台无关的字节码，具体执行由该平台的 JVM 负责。正确的判断需要逐项核对定义、版本和适用条件（javabasics 第 3 题）。围绕 Java 实现「一次编写，到处运行」的关键是。如果只凭关键词作答，很容易把「使用 C 语言编写」、「每次重新编译」与「编译成字节码」混在一起；正确的判断需要逐项核对定义、版本和适用条件（java_basics 第 3 题）。
+- **判断依据**：源码编译成与平台无关的字节码，具体执行由该平台的 JVM 负责。围绕 Java 实现「一次编写，到处运行」的关键是。如果只凭关键词作答，很容易把「使用 C 语言编写」、「每次重新编译」与「编译成字节码」混在一起；回到「环境与 JVM」的正文示例，用“Java 实现一次编写”走一遍Java、JVM、JDK的完整流程，能复现的结论才可以保留。
 
-### 考点 4：下面这段 Java 代码复现了“环境与 JVM”中 Java、JVM、JDK 相关的一个常见故障，哪一项最准确地解释了问题？
+### 考点 4：这段代码代码是「环境与 JVM」的示例片段，下面哪一项描述与它一致？
 
-- **判断依据**：结论应落在「循环条件用了 <=，i == data.length 时抛出 ArrayIndexOutOfBoundsException」。结论应落在循环条件用了 <=，i == data.length 时抛出 ArrayIndexOutOfBoundsException。结合Java、JVM来看，结论应落在循环条件用了 <=。在这个复现里，Java 的边界应改成 i < data.length。
+- **判断依据**：在「环境与 JVM」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「环境与 JVM」的正文示例，围绕Java、JVM、JDK展开；把输入或边界换成空值、极值或失败情况后，结论要以「环境与 JVM」的实际运行结果为准。「环境与 JVM」要求先交代Java、JVM、JDK的前提再下结论，所以“这段代码只做静态声明，没有循环”只在题干“这段代码代码是环境与 JVM的示例片段”给定的条件下成立。
 
 ### 考点 5：Java 程序入口方法的正确签名是？
 
-- **判断依据**：正确答案是「public static void main(String[] args)」。JVM 需要 public + static 才能在未创建对象时按约定调用入口方法。判断这类题时，要把「public static void main(String[] arg…」放回题干限定的对象、输入和边界，「static int main(String[] arg…」、「public void main(String[] ar…」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：在「环境与 JVM」里，public static void main(String[] args)。JVM 需要 public + static 才能在未创建对象时按约定调用入口方法。“Java”与「环境与 JVM」的术语表相呼应，只有符合Java、JVM、JDK约束的“public static void m”才是正文支持的结论。
 
 ### 考点 6：补全代码：「环境与 JVM」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
 
-`String name = sc.____();`
+`String name = sc.____;`
 
-- **判断依据**：围绕 补全代码：本课主题示例中，下面这行代码缺少哪个关键字或函数… 作答时，先用Java建立输入与输出的基线，再把nextLine 或 nextline代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「nextLine 或 nextline」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
+- **判断依据**：在「环境与 JVM」里，nextLine。在「环境与 JVM」里判断这道题，要把Java、JVM、JDK的条件、过程与失败路径逐项对齐，换成“补全代码”这个场景，只有满足前提的结论才成立。“JVM示例中”与「环境与 JVM」的术语表相呼应，只有符合Java、JVM、JDK约束的“nextLine”才是正文支持的结论。
 
 ## English Overview
 
@@ -509,7 +505,6 @@ jshell               # JDK 9+ 交互式 REPL，适合快速试验
 | 本课小结 | Summary |
 | JDK 组成与命令速查 | JDK 组成与命令速查 |
 | 环境变量速查 | 环境变量速查 |
-
 
 ## 参考资料与复核
 

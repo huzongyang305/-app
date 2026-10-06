@@ -908,7 +908,7 @@ void main() {
     );
   });
 
-  test('P0/P1 内容治理：模板、标题预算、引用唯一和语言匹配', () async {
+  test('P0/P1 内容治理：H1、占位符、内部题号、复习章节与语言匹配', () async {
     const expectedLanguageByCategory = <String, String>{
       'python': 'python',
       'c': 'c',
@@ -923,6 +923,7 @@ void main() {
       'swift': 'swift',
       'shell': 'shell',
     };
+    const placeholderTitle = '本课主题';
     const markdownTemplateMarkers = <String>[
       '先自己作答，再看「判断依据」',
       '**迁移检查**',
@@ -934,6 +935,7 @@ void main() {
       '回到正文对应章节补足概念',
       '把题干里的一个条件换成边界值',
       '把现象和原因写在一起',
+      '错误信息通常会指出出错行和期望符号',
     ];
     const explanationTemplateMarkers = <String>[
       '这道题对应的课程',
@@ -946,35 +948,25 @@ void main() {
       '对照「',
       '课程摘要',
     ];
+    const genericPythonQuestionMarkers = <String>[
+      'bucket=[]',
+      'items.remove(item)',
+      'range(len(data) + 1)',
+      '相关的一个常见故障',
+    ];
+    final internalQuestionIdPattern = RegExp(
+      r'[（(]\s*[A-Za-z0-9_]+\s*第\s*\d+\s*题\s*[)）]',
+    );
 
-    int countOccurrences(String text, String needle) {
-      if (needle.isEmpty) return 0;
-      var count = 0;
-      var index = 0;
-      while (true) {
-        final next = text.indexOf(needle, index);
-        if (next < 0) return count;
-        count++;
-        index = next + needle.length;
-      }
-    }
-
-    int countOccurrencesOutsideFocus(String text, String needle) {
-      if (needle.isEmpty) return 0;
-      final heading = RegExp(
-        r'^##\s+考点精讲\s*$',
+    String sectionOf(String markdown, String heading) {
+      final match = RegExp(
+        '^##\\s+${RegExp.escape(heading)}\\s*\$',
         multiLine: true,
-      ).firstMatch(text);
-      if (heading == null) return countOccurrences(text, needle);
-      final nextHeading = RegExp(
-        r'^##\s+',
-        multiLine: true,
-      ).firstMatch(text.substring(heading.end));
-      final end = nextHeading == null
-          ? text.length
-          : heading.end + nextHeading.start;
-      return countOccurrences(text.substring(0, heading.start), needle) +
-          countOccurrences(text.substring(end), needle);
+      ).firstMatch(markdown);
+      if (match == null) return '';
+      final rest = markdown.substring(match.end);
+      final next = RegExp(r'^##\s+', multiLine: true).firstMatch(rest);
+      return next == null ? rest : rest.substring(0, next.start);
     }
 
     List<String> referenceUrls(String markdown) {
@@ -994,8 +986,15 @@ void main() {
         ..sort();
     }
 
+    final headingMismatches = <String>[];
+    final placeholderHits = <String>[];
+    final internalIdHits = <String>[];
+    final duplicateReviewSections = <String>[];
+    final staleReviewSupplements = <String>[];
+    final corruptTermTables = <String>[];
+    final truncatedStems = <String>[];
+    final genericPythonQuestions = <String>[];
     final templateHits = <String>[];
-    final titleBudgetViolations = <String>[];
     final languageMismatches = <String>[];
     final referenceSets = <String, Map<String, List<String>>>{};
 
@@ -1007,9 +1006,51 @@ void main() {
         final lesson = (rawLesson as Map).cast<String, dynamic>();
         final id = lesson['id'].toString();
         final markdown = await rootBundle.loadString(lesson['file'].toString());
-        final title = ((lesson['title'] as Map?)?['zh'] ?? id).toString();
-        if (countOccurrencesOutsideFocus(markdown, title) > 10) {
-          titleBudgetViolations.add('$id(markdown)');
+        final title = ((lesson['title'] as Map?)?['zh'] ?? id)
+            .toString()
+            .trim();
+
+        // P0：H1 必须等于清单标题，占位符与内部题号一律视为缺陷。
+        final h1 = RegExp(
+          r'^#\s+(.+)$',
+          multiLine: true,
+        ).firstMatch(markdown)?.group(1)?.trim();
+        if (h1 != title) {
+          headingMismatches.add('$id($h1)');
+        }
+        if (markdown.contains(placeholderTitle)) {
+          placeholderHits.add('$id(markdown)');
+        }
+        final markdownIdHits = internalQuestionIdPattern
+            .allMatches(markdown)
+            .length;
+        if (markdownIdHits > 0) {
+          internalIdHits.add('$id(markdown:$markdownIdHits)');
+        }
+
+        // P1：复习章节只能有一个，且不能残留自动生成的复核补充块。
+        final reviewHits = RegExp(
+          r'^##\s+复习与迁移\s*$',
+          multiLine: true,
+        ).allMatches(markdown).length;
+        if (reviewHits > 1) {
+          duplicateReviewSections.add('$id($reviewHits)');
+        }
+        if (RegExp(
+          r'^[>\s]*#{1,6}\s*复核补充',
+          multiLine: true,
+        ).hasMatch(markdown)) {
+          staleReviewSupplements.add(id);
+        }
+        final corruptTermRow = sectionOf(markdown, '术语速查')
+            .split('\n')
+            .any(
+              (line) =>
+                  line.startsWith('|') &&
+                  (line.contains('判断依据') || line.contains('正确答案是')),
+            );
+        if (corruptTermRow) {
+          corruptTermTables.add(id);
         }
         for (final marker in markdownTemplateMarkers) {
           if (markdown.contains(marker)) {
@@ -1023,8 +1064,19 @@ void main() {
         for (var index = 0; index < quiz.length; index++) {
           final question = quiz[index];
           final explanation = (question['explanation'] ?? '').toString();
-          if (countOccurrences(explanation, title) > 2) {
-            titleBudgetViolations.add('$id#${index + 1}(explanation)');
+          final questionText = (question['question'] ?? '').toString();
+          final questionBlob = jsonEncode(question);
+          if (questionBlob.contains(placeholderTitle)) {
+            placeholderHits.add('$id#${index + 1}(quiz)');
+          }
+          if (internalQuestionIdPattern.hasMatch(questionBlob)) {
+            internalIdHits.add('$id#${index + 1}(quiz)');
+          }
+          if (questionText.contains('…')) {
+            truncatedStems.add('$id#${index + 1}');
+          }
+          if (genericPythonQuestionMarkers.any(questionBlob.contains)) {
+            genericPythonQuestions.add('$id#${index + 1}');
           }
           for (final marker in explanationTemplateMarkers) {
             if (explanation.contains(marker)) {
@@ -1058,21 +1110,60 @@ void main() {
       }
     }
 
-    expect(templateHits, isEmpty, reason: '仍有模板命中：${templateHits.join('、')}');
     expect(
-      titleBudgetViolations,
+      headingMismatches,
       isEmpty,
-      reason: '仍有标题复读：${titleBudgetViolations.join('、')}',
+      reason: 'H1 与清单标题不一致：${headingMismatches.take(10).join('、')}',
+    );
+    expect(
+      placeholderHits,
+      isEmpty,
+      reason: '仍残留标题占位符：${placeholderHits.take(10).join('、')}',
+    );
+    expect(
+      internalIdHits,
+      isEmpty,
+      reason: '仍残留内部题号：${internalIdHits.take(10).join('、')}',
+    );
+    expect(
+      duplicateReviewSections,
+      isEmpty,
+      reason: '存在重复复习章节：${duplicateReviewSections.take(10).join('、')}',
+    );
+    expect(
+      staleReviewSupplements,
+      isEmpty,
+      reason: '残留自动生成复核补充：${staleReviewSupplements.take(10).join('、')}',
+    );
+    expect(
+      corruptTermTables,
+      isEmpty,
+      reason: '术语速查表格混入解析残句：${corruptTermTables.take(10).join('、')}',
+    );
+    expect(
+      truncatedStems,
+      isEmpty,
+      reason: '题干被截断：${truncatedStems.take(10).join('、')}',
+    );
+    expect(
+      genericPythonQuestions,
+      isEmpty,
+      reason: '仍残留跨域 Python 通用题：${genericPythonQuestions.take(10).join('、')}',
+    );
+    expect(
+      templateHits,
+      isEmpty,
+      reason: '仍有模板命中：${templateHits.take(10).join('、')}',
     );
     expect(
       languageMismatches,
       isEmpty,
-      reason: '仍有语言错配：${languageMismatches.join('、')}',
+      reason: '仍有语言错配：${languageMismatches.take(10).join('、')}',
     );
     expect(
       duplicateReferences,
       isEmpty,
-      reason: '仍有重复参考资料集合：${duplicateReferences.join('、')}',
+      reason: '仍有重复参考资料集合：${duplicateReferences.take(10).join('、')}',
     );
   });
 }

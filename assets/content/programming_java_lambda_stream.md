@@ -8,7 +8,7 @@
 
 ## 学习目标
 
-- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
+- 能用自己的话解释Lambda 与 Stream API解决了什么问题，而不是只背术语。
 - 能说清 「lambda」、「Stream」、「Optional」、「函数式接口」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「Java」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -360,7 +360,7 @@ public class Report {
 
 合上教程，用 3～5 句话回答：
 
-1. 本课主题解决了什么问题？
+1. Lambda 与 Stream API解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「Stream」是什么关系？
 
@@ -390,7 +390,7 @@ public class Report {
 
 ## 实践任务
 
-本节围绕本课主题安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
+本节围绕Lambda 与 Stream API安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 
 ### 任务 1：用自己的话画出结构
 
@@ -452,7 +452,7 @@ public class Report {
 - [ ] 不看解析，能说出「关于 Optional，推荐的做法是？」的判断依据。
 - [ ] 不看解析，能说出「Stream 的 collect 与 forEach 的区别是？」的判断依据。
 - [ ] 不看解析，能说出「方法引用 String::length 等价于哪个 lambda？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码缺少哪个…」的判断依据。
+- [ ] 不看解析，能说出的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -483,29 +483,29 @@ public class Report {
 
 ### 考点 1：Stream 的中间操作（filter/map）什么时候真正执行？
 
-- **判断依据**：正确答案是「遇到终止操作时才执行」。中间操作是惰性的，只有 collect/forEach/count 等终止操作才会触发一次遍历。判断这类题时，要把「遇到终止操作时才执行」放回题干限定的对象、输入和边界，「创建 Stream 时」、「JVM 空闲时」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：在「Lambda 与 Stream API」里，遇到终止操作时才执行。中间操作是惰性的，只有 collect/forEach/count 等终止操作才会触发一次遍历。回到「Lambda 与 Stream API」的正文示例，用“Stream 的中间操作（filte”走一遍lambda、Stream、Optional的完整流程，能复现的结论才可以保留。
 
-### 考点 2：下面这段 Java 代码复现了“Lambda 与 Stream API”中 lambda、Stream、Optional 相关的一个常见故障，哪一项最准确地解释了问题？
+### 考点 2：下面这段 Java 代码摘自「Lambda 与 Stream API」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 
-- **判断依据**：本题应选「== 比较的是两个 String 对象的引用，不是内容（java_lambda_stream 第 2 题）；应使用 a.equals(b)」（java_lambda_stream 第 2 题）。本题应选== 比较的是两个 String 对象的引用，不是内容（java_lambda_stream 第 2 题）。应使用 a.equals(b)（java_lambda_stream 第 2 题）。本题应选== 比较的是两个 String 对象的引用，不是内容（javalambdastream 第 2 题）。
+- **判断依据**：在「Lambda 与 Stream API」里，这段代码会产生可观察的输出，运行后能看到结果。这段代码出自「Lambda 与 Stream API」的正文示例，围绕lambda、Stream、Optional展开；把输入或边界换成空值、极值或失败情况后，结论要以「Lambda 与 Stream API」的实际运行结果为准。
 
 ### 考点 3：围绕“Lambda 与 Stream API”中的 lambda、Stream、Optional，下列哪两项是本课强调的实践判断？
 
-- **判断依据**：正确答案包括「验证 Stream 时要固定版本并覆盖边界输入，结论才可复现」、「学习 lambda 时要同时说明输入、输出和失败路径，不能只看正常流程」。符合题干条件的是验证 Stream 时要固定版本并覆盖边界输入。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 lambda 时必须同时交代输入、输出和失败路径，这使“学习 lambda 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 Stream 时要固定版本与边界输入，所以“验证 Stream 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
+- **判断依据**：本课把Lambda 与 Stream API拆成概念、示例与故障现场三部分，因此判断 lambda 时必须同时交代输入、输出和失败路径，这使“学习 lambda 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在Lambda 与 Stream API里，判断 Stream 时要固定版本与边界输入，所以“验证 Stream 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
 ### 考点 4：Stream 的 collect 与 forEach 的区别是？
 
-- **判断依据**：结论应落在「collect 是终止操作，把结果汇总成集合」。结论应落在collect 是终止操作。在流里修改外部状态是常见坏味道，能 collect 就优先 collect。这道题要求区分概念与边界，「collect 是终止操作，把结果汇总成集合」只有在题干给出的前提下才成立，而「collect 只能用于并行流」、「两者都返回 Stream」缺少同一组条件。
+- **判断依据**：在「Lambda 与 Stream API」里，结论应落在「collect 是终止操作，把结果汇总成集合」。结论应落在collect 是终止操作。在流里修改外部状态是常见坏味道，能 collect 就优先 collect。在「Lambda 与 Stream API」里，这道题要求区分概念与边界，「collect 是终止操作，把结果汇总成集合」只有在题干给出的前提下才成立，而「collect 只能用于并行流」、「两者都返回 Stream」缺少同一组条件。
 
 ### 考点 5：方法引用 String::length 等价于哪个 lambda？
 
-- **判断依据**：方法引用是 lambda 的语法糖，可读性更好，也能表达构造器引用 Class::new。其他选项：方法引用把接收者作为隐式参数传入，因此 String::length 等价于 s -> s.length()。判断这类题时，要把「s -> s.length()」放回题干限定的对象、输入和边界，「(a, b) -> a.length()」、「() -> String.length()」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：方法引用是 lambda 的语法糖，可读性更好，也能表达构造器引用 Class::new。在「Lambda 与 Stream API」里，其他选项：方法引用把接收者作为隐式参数传入，因此 String::length 等价于 s -> s.length。「Lambda 与 Stream API」要求先交代lambda、Stream、Optional的前提再下结论，所以“s -> s.length”只在题干“方法引用 String”给定的条件下成立。
 
 ### 考点 6：补全代码：「Lambda 与 Stream API」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
 
 `@____`
 
-- **判断依据**：空格应填写「FunctionalInterface」、「functionalinterface」。解题的关键不是记住孤立术语，而是确认「FunctionalInterface 或 functionalinte…」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
+- **判断依据**：空格应填写「FunctionalInterface」、「functionalinterface」。在「Lambda 与 Stream API」里判断这道题，要把lambda、Stream、Optional的条件、过程与失败路径逐项对齐，换成“补全代码”这个场景，只有满足前提的结论才成立。
 
 ## English Overview
 
@@ -526,7 +526,6 @@ public class Report {
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：lambda、Stream、Optional、函数式接口、collect、并行流
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
-
 
 ## 参考资料与复核
 

@@ -8,7 +8,7 @@
 
 ## 学习目标
 
-- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
+- 能用自己的话解释DOM 与事件解决了什么问题，而不是只背术语。
 - 能说清 「DOM」、「事件」、「冒泡」、「事件委托」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「JavaScript」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -327,7 +327,7 @@ list.addEventListener("click", (event) => {
 
 合上教程，用 3～5 句话回答：
 
-1. 本课主题解决了什么问题？
+1. DOM 与事件解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「事件」是什么关系？
 
@@ -422,7 +422,7 @@ button.removeEventListener('click', handleClick);   // 移除需传同一函数�
 - [ ] 不看解析，能说出「事件委托能生效的前提是？」的判断依据。
 - [ ] 不看解析，能说出「把用户输入插入页面，安全的做法是？」的判断依据。
 - [ ] 不看解析，能说出「event.preventDefault() 的作用是？」的判断依据。
-- [ ] 不看解析，能说出「addEventListener 的第三个参数 capture: true 表示…」的判断依据。
+- [ ] 不看解析，能说出的判断依据。
 - [ ] 不看解析，能说出「DOMContentLoaded 与 load 的区别是？」的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
@@ -435,48 +435,44 @@ button.removeEventListener('click', handleClick);   // 移除需传同一函数�
 
 ## 术语速查
 
+把「DOM 与事件」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
 | 术语 | 本课语境 |
 | --- | --- |
-| `textContent` | 插入用户输入时优先 `textContent`，使用 `innerHTML` 前必须转义，否则存在 XSS 风险。 |
-| `innerHTML` | 插入用户输入时优先 `textContent`，使用 `innerHTML` 前必须转义，否则存在 XSS 风险。 |
-| `removeEventListener` | 清理与正确性：组件卸载时移除监听器（`removeEventListener` 需同一函数引用）与取消定时器；`requestAnimationFrame` 适合逐帧更新；表单提交用 `preventDefault` 后… |
-| `requestAnimationFrame` | 清理与正确性：组件卸载时移除监听器（`removeEventListener` 需同一函数引用）与取消定时器；`requestAnimationFrame` 适合逐帧更新；表单提交用 `preventDefault` 后… |
-| `preventDefault` | 清理与正确性：组件卸载时移除监听器（`removeEventListener` 需同一函数引用）与取消定时器；`requestAnimationFrame` 适合逐帧更新；表单提交用 `preventDefault` 后… |
-| `document.querySelector(".card")` | \| 查单个元素 \| `document.querySelector(".card")` \| 返回第一个匹配或 `null` \| |
-| `null` | \| 查单个元素 \| `document.querySelector(".card")` \| 返回第一个匹配或 `null` \| |
-| `document.querySelectorAll(".card")` | \| 查全部元素 \| `document.querySelectorAll(".card")` \| 返回静态 NodeList，可 `forEach` \| |
-| `forEach` | \| 查全部元素 \| `document.querySelectorAll(".card")` \| 返回静态 NodeList，可 `forEach` \| |
-| `document.getElementById("app")` | \| 按 id 查 \| `document.getElementById("app")` \| 最快，但只按 id \| |
-| `el.textContent = "内容"` | \| 改文本 \| `el.textContent = "内容"` \| 安全，不解析 HTML \| |
-| `el.innerHTML = html` | \| 改 HTML \| `el.innerHTML = html` \| 有 XSS 风险，只用可信内容 \| |
+| `[DOM, 事件, 冒泡, 事件委托, localStorage, XSS][index]` | 在「DOM 与事件」里理解它的定义、输入和输出。 |
+| `[DOM, 事件, 冒泡, 事件委托, localStorage, XSS][index]` | 本课用它说明边界条件与失败路径。 |
+| `[DOM, 事件, 冒泡, 事件委托, localStorage, XSS][index]` | 结合「DOM 与事件」的正文示例确认它的适用条件。 |
+| `[DOM, 事件, 冒泡, 事件委托, localStorage, XSS][index]` | 在「DOM 与事件」里理解它的定义、输入和输出。 |
+| `[DOM, 事件, 冒泡, 事件委托, localStorage, XSS][index]` | 本课用它说明边界条件与失败路径。 |
+| `[DOM, 事件, 冒泡, 事件委托, localStorage, XSS][index]` | 结合「DOM 与事件」的正文示例确认它的适用条件。 |
 
 ## 考点精讲
 
-### 考点 1：下面这段 JavaScript 代码复现了“DOM 与事件”中 DOM、事件、冒泡 相关的一个常见故障，哪一项最准确地解释了问题？
+### 考点 1：这段 JavaScript 代码是「DOM 与事件」的示例片段，下面哪一项描述与它一致？
 
-- **判断依据**：正确答案是「循环条件用了 <=，最后一次访问 data[data.length] 得到 undefined」。正确答案是循环条件用了 <=，最后一次访问 data[data.length] 得到 undefined。结合DOM、事件来看，正确答案是循环条件用了 <=。在这个复现里，data[data.length] 是 DOM 相关位置上的 undefined，参与加法后把 total 变成 NaN。
+- **判断依据**：在「DOM 与事件」里，这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。这段代码出自「DOM 与事件」的正文示例，围绕DOM、事件、冒泡展开；把输入或边界换成空值、极值或失败情况后，结论要以「DOM 与事件」的实际运行结果为准。“JavaScript”与「DOM 与事件」的术语表相呼应，只有符合DOM、事件、冒泡约束的“这段代码把主要逻辑封装在函数或方法里”才是正文支持的结论。
 
 ### 考点 2：把用户输入插入页面，安全的做法是？
 
-- **判断依据**：textContent 把内容当纯文本，不会执行脚本。innerHTML 需先转义以防 XSS。解题的关键不是记住孤立术语，而是确认「textContent」是否完整覆盖题干的输入、输出和失败路径，并排除「document.write」、「eval」这类相邻概念。
+- **判断依据**：在「DOM 与事件」里，textContent 把内容当纯文本，不会执行脚本。在「DOM 与事件」里，innerHTML 需先转义以防 XSS。「DOM 与事件」要求先交代DOM、事件、冒泡的前提再下结论，所以“textContent”只在题干“把用户输入插入页面”给定的条件下成立。
 
-### 考点 3：event.preventDefault() 的作用是？
+### 考点 3：event.preventDefault 的作用是？
 
-- **判断依据**：符合题干条件的是「阻止浏览器默认行为（如提交表单、跳转链接）」。preventDefault 取消默认行为，stopPropagation 才是阻止冒泡，两者常被混淆。正确的判断需要逐项核对定义、版本和适用条件（jsdomevents 第 3 题）。
+- **判断依据**：在「DOM 与事件」里，阻止浏览器默认行为（如提交表单、跳转链接）。preventDefault 取消默认行为，stopPropagation 才是阻止冒泡，两者常被混淆。这道题的关键在「DOM 与事件」的DOM、事件、冒泡：先确认题干“event.preventDefau”问的是哪一步，再排除偷换前提的选项。
 
 ### 考点 4：围绕“DOM 与事件”中的 DOM、事件、冒泡，下列哪两项是本课强调的实践判断？
 
-- **判断依据**：正确答案包括「验证 事件 时要固定版本并覆盖边界输入，结论才可复现」、「学习 DOM 时要同时说明输入、输出和失败路径，不能只看正常流程」。结论应落在验证 事件 时要固定版本并覆盖边界输入。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 DOM 时必须同时交代输入、输出和失败路径，这使“学习 DOM 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 事件 时要固定版本与边界输入，所以“验证 事件 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
+- **判断依据**：结论应落在验证 事件 时要固定版本并覆盖边界输入。本课把DOM 与事件拆成概念、示例与故障现场三部分，因此判断 DOM 时必须同时交代输入、输出和失败路径，这使“学习 DOM 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在DOM 与事件里，判断 事件 时要固定版本与边界输入，所以“验证 事件 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
 ### 考点 5：DOMContentLoaded 与 load 的区别是？
 
-- **判断依据**：正确答案是「DOMContentLoaded 在 HTML 解析完成时触发」。脚本尽早绑定事件应使用 DOMContentLoaded，统计完整加载耗时才用 load。判断这类题时，要把「DOMContentLoaded 在 HTML 解析完成时触发」放回题干限定的对象、输入和边界，「两者同时触发」、「load 在解析完 HTML 时触发」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：在「DOM 与事件」里，DOMContentLoaded 在 HTML 解析完成时触发。脚本尽早绑定事件应使用 DOMContentLoaded，统计完整加载耗时才用 load。在「DOM 与事件」里判断这道题，要把DOM、事件、冒泡的条件、过程与失败路径逐项对齐，换成“DOMContentLoaded 与”这个场景，只有满足前提的结论才成立。
 
 ### 考点 6：补全代码：「DOM 与事件」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
 
-`button.____('click', handleClick);   // 移除需传同一函数引用`
+`button.____('click', handleClick); // 移除需传同一函数引用`
 
-- **判断依据**：空格应填写「removeEventListener」、「removeeventlistener」。解题的关键不是记住孤立术语，而是确认「removeEventListener 或 removeeventlis…」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
+- **判断依据**：空格应填写「removeEventListener」、「removeeventlistener」。「DOM 与事件」要求先交代DOM、事件、冒泡的前提再下结论，所以“removeEventListener”只在题干“DOM 与事件示例中”给定的条件下成立。把“removeEventListener”代回「DOM 与事件」里“DOM 与事件示例中”的例子核对，条件一旦改变，结论就要用DOM、事件、冒泡重新推导。
 
 ## English Overview
 
@@ -497,7 +493,6 @@ button.removeEventListener('click', handleClick);   // 移除需传同一函数�
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：DOM、事件、冒泡、事件委托、localStorage、XSS
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
-
 
 ## 参考资料与复核
 

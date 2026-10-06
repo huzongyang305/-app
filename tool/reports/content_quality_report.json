@@ -1,20 +1,20 @@
 {
-  "generated_at": "2026-10-06T20:03:35.028295",
+  "generated_at": "2026-10-06T20:45:16.590069",
   "lesson_count": 542,
-  "total_chars": 6137340,
-  "min_chars": 10039,
+  "total_chars": 6270330,
+  "min_chars": 10075,
   "image_count": 1067,
   "lessons_with_image": 542,
   "lessons_with_lab_section": 542,
   "question_type_histogram": {
-    "single": 1441,
+    "single": 1490,
     "multi": 544,
     "fill": 347,
     "order": 212,
-    "code": 45,
-    "debug": 497
+    "code": 415,
+    "debug": 78
   },
-  "lessons_without_code_question": 0,
+  "lessons_without_code_question": 36,
   "error_count": 0,
   "warning_count": 0,
   "issues": [],

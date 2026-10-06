@@ -1,14 +1,14 @@
-# 本课主题
+# TypeScript 工程配置与实践
 
 ![TypeScript 工程配置的四个环节](images/diagram_ts_project.webp)
 
-![本课主题](images/remaining_ts_project.webp)
+![TypeScript 工程配置与实践](images/remaining_ts_project.webp)
 
 > 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：15 分钟
 
 ## 学习目标
 
-- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
+- 能用自己的话解释TypeScript 工程配置与实践解决了什么问题，而不是只背术语。
 - 能说清 「TypeScript」、「tsconfig」、「strict」、「zod」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「TypeScript」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -268,7 +268,7 @@ export default defineConfig({
 
 合上教程，用 3～5 句话回答：
 
-1. 本课主题解决了什么问题？
+1. TypeScript 工程配置与实践解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「tsconfig」是什么关系？
 
@@ -387,7 +387,7 @@ import { api } from "@/lib/api";
 - [ ] 不看解析，能说出「团队禁止 any 后，处理未知数据应使用？」的判断依据。
 - [ ] 不看解析，能说出「tsconfig 中 strict: true 会开启什么？」的判断依据。
 - [ ] 不看解析，能说出「tsconfig 里 paths 别名的作用与限制是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码缺少哪个关…」的判断依据。
+- [ ] 不看解析，能说出的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -418,29 +418,29 @@ import { api } from "@/lib/api";
 
 ### 考点 1：围绕“TypeScript 工程配置与实践”中的 TypeScript、tsconfig、strict，下列哪两项是本课强调的实践判断？
 
-- **判断依据**：正确答案包括「学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 tsconfig 时要固定版本并覆盖边界输入，结论才可复现」。正确答案是学习 TypeScript 时要同时说明输入、输出和失败路径。在本课主题里，判断 tsconfig 时要固定版本与边界输入，所以“验证 tsconfig 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
+- **判断依据**：在「TypeScript 工程配置与实践」里，学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程。在TypeScript 工程配置与实践里，判断 tsconfig 时要固定版本与边界输入，所以“验证 tsconfig 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
 ### 考点 2：接口返回数据应该如何处理？
 
-- **判断依据**：作答时，先用TypeScript建立输入与输出的基线，再把用 zod 等做运行时校验后再使用代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「用 zod 等做运行时校验后再使用」是否完整覆盖题干的输入、输出和失败路径，并排除「加非空断言」、「直接断言为业务类型（仅部分场景成立）」这类相邻概念。
+- **判断依据**：在「TypeScript 工程配置与实践」里，作答时，先用TypeScript建立输入与输出的基线，再把用 zod 等做运行时校验后再使用代入边界条件核对，结论才能复现。“接口返回数据应该如何处理”与「TypeScript 工程配置与实践」的术语表相呼应，只有符合TypeScript、tsconfig、strict约束的“用 zod 等做运行时校验后再使用”才是正文支持的结论。
 
 ### 考点 3：团队禁止 any 后，处理未知数据应使用？
 
-- **判断依据**：符合题干条件的是「unknown + 类型收窄」。unknown 强制显式校验，是最安全的未知类型。正确的判断需要逐项核对定义、版本和适用条件（tsproject 第 3 题）。正确的判断需要逐项核对定义、版本和适用条件（ts_project 第 3 题）。
+- **判断依据**：在「TypeScript 工程配置与实践」里，unknown + 类型收窄。unknown 强制显式校验，是最安全的未知类型。把“unknown + 类型收窄”代回「TypeScript 工程配置与实践」里“团队禁止 any 后”的例子核对，条件一旦改变，结论就要用TypeScript、tsconfig、strict重新推导。
 
-### 考点 4：下面这段 TypeScript 代码复现了“TypeScript 工程配置与实践”中 TypeScript、tsconfig、strict 相关的一个常见故障，哪一项最准确地解释了问题？
+### 考点 4：下面这段 TypeScript 代码摘自「TypeScript 工程配置与实践」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 
-- **判断依据**：结论应落在「var 声明的 i 是函数级作用域，三个闭包最终都读到循环结束后的同一个值」。结论应落在var 声明的 i 是函数级作用域，三个闭包最终都读到循环结束后的同一个值。var 在循环结束后仍然保留最后一个值，在这个复现里三个闭包引用的是同一个 TypeScript。在这个复现里，把 tsconfig 对应的 var 换成 let，每次迭代都会创建新的绑定，闭包就能分别捕获正确的值。
+- **判断依据**：在「TypeScript 工程配置与实践」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「TypeScript 工程配置与实践」的正文示例，围绕TypeScript、tsconfig、strict展开；把输入或边界换成空值、极值或失败情况后，结论要以「TypeScript 工程配置与实践」的实际运行结果为准。
 
 ### 考点 5：tsconfig 里 paths 别名的作用与限制是？
 
-- **判断依据**：正确答案是「配置模块路径别名」。tsc 只做类型解析，实际产物路径由打包器或运行时的解析规则决定。判断这类题时，要把「配置模块路径别名」放回题干限定的对象、输入和边界，「只在测试中生效」、「会自动生成文件」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：在「TypeScript 工程配置与实践」里，配置模块路径别名。tsc 只做类型解析，实际产物路径由打包器或运行时的解析规则决定。把“配置模块路径别名”代回「TypeScript 工程配置与实践」里“tsconfig 里 paths 别名的作用与限制是”的例子核对，条件一旦改变，结论就要用TypeScript、tsconfig、strict重新推导。
 
 ### 考点 6：补全代码：「TypeScript 工程配置与实践」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
 
 `"____": true,`
 
-- **判断依据**：空格应填写「noUncheckedIndexedAccess」、「nouncheckedindexedaccess」。解题的关键不是记住孤立术语，而是确认「noUncheckedIndexedAccess 或 nouncheck…」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
+- **判断依据**：空格应填写「noUncheckedIndexedAccess」、「nouncheckedindexedaccess」。这道题的关键在「TypeScript 工程配置与实践」的TypeScript、tsconfig、strict：先确认题干“补全代码”问的是哪一步，再排除偷换前提的选项。
 
 ## English Overview
 
@@ -462,7 +462,7 @@ import { api } from "@/lib/api";
 - 相关主题：TypeScript、tsconfig、strict、zod、CI
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-## 项目专属规格：本课主题
+## 项目专属规格：TypeScript 工程配置与实践
 
 ### 核心场景
 
@@ -579,7 +579,6 @@ package.json
 | 本课小结 | Summary |
 | tsconfig 关键配置速查 | tsconfig 关键配置速查 |
 | 类型检查与构建的分工速查 | Types检查与Build的分工速查 |
-
 
 ## 参考资料与复核
 

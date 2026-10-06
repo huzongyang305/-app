@@ -8,7 +8,7 @@
 
 ## 学习目标
 
-- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
+- 能用自己的话解释Terraform 与基础设施即代码解决了什么问题，而不是只背术语。
 - 能说清 「Terraform」、「IaC」、「State」、「plan」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「工具链」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -212,7 +212,7 @@ print(guard_production("prod", {"delete": 1}, allow_delete=False))
 
 合上教程，用 3～5 句话回答：
 
-1. 本课主题解决了什么问题？
+1. Terraform 与基础设施即代码解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「IaC」是什么关系？
 
@@ -321,7 +321,7 @@ print(guard_production("prod", {"delete": 1}, allow_delete=False))
 - [ ] 不看解析，能说出「生产环境执行 apply 之前应该？」的判断依据。
 - [ ] 不看解析，能说出「把基础设施代码拆成模块（module）的好处是？」的判断依据。
 - [ ] 不看解析，能说出「Terraform 与 Ansible 的定位差异是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码缺少哪个关…」的判断依据。
+- [ ] 不看解析，能说出的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -333,48 +333,43 @@ print(guard_production("prod", {"delete": 1}, allow_delete=False))
 
 ## 术语速查
 
+把「Terraform 与基础设施即代码」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
 | 术语 | 本课语境 |
 | --- | --- |
-| `plan` | 用 `plan` 输出作为 PR 评论，让变更可见。 |
-| `terraform plan` | 定期 `terraform plan` 检测漂移（有人手工改过资源）。 |
-| `-auto-approve` | 用 `-auto-approve` 跑生产，跳过人工确认。 |
-| `terraform fmt -check` | 团队协作流程**：功能分支修改 → CI 执行 `terraform fmt -check`、`validate`、`plan` 并把 plan 结果贴到 PR → 人工评审（重点看 destroy/replace）→ … |
-| `validate` | 团队协作流程**：功能分支修改 → CI 执行 `terraform fmt -check`、`validate`、`plan` 并把 plan 结果贴到 PR → 人工评审（重点看 destroy/replace）→ … |
-| `terraform init` | \| `terraform init` \| 初始化后端与插件 \| 首次或换后端时执行 \| |
-| `terraform fmt` | \| `terraform fmt` \| 格式化代码 \| 提交前执行 \| |
-| `terraform validate` | \| `terraform validate` \| 语法与引用校验 \| 不访问远端 \| |
-| `terraform apply` | \| `terraform apply` \| 应用变更 \| 生产需评审与二次确认 \| |
-| `terraform destroy` | \| `terraform destroy` \| 销毁资源 \| 极度危险，需明确目标 \| |
-| `terraform state list` | \| `terraform state list` \| 查看已管理资源 \| 排查漂移 \| |
-| `terraform import` | \| `terraform import` \| 导入已存在资源 \| 导入后需校对配置 \| |
+| `[Terraform, IaC, State, plan, 模块][index]` | 在「Terraform 与基础设施即代码」里理解它的定义、输入和输出。 |
+| `[Terraform, IaC, State, plan, 模块][index]` | 本课用它说明边界条件与失败路径。 |
+| `[Terraform, IaC, State, plan, 模块][index]` | 结合「Terraform 与基础设施即代码」的正文示例确认它的适用条件。 |
+| `[Terraform, IaC, State, plan, 模块][index]` | 在「Terraform 与基础设施即代码」里理解它的定义、输入和输出。 |
+| `[Terraform, IaC, State, plan, 模块][index]` | 本课用它说明边界条件与失败路径。 |
 
 ## 考点精讲
 
-### 考点 1：下面这段 Python 代码复现了“Terraform 与基础设施即代码”中 Terraform、IaC、State 相关的一个常见故障，哪一项最准确地解释了问题？
+### 考点 1：阅读「Terraform 与基础设施即代码」正文里的这段代码代码，下面哪一项判断是正确的？
 
-- **判断依据**：正确答案是「循环上界多走了 1 步，最后一次访问越界（terraform 第 1 题）；应改成 range(len(data))」（terraform 第 1 题）。正确答案是循环上界多走了 1 步，最后一次访问越界（terraform 第 1 题）。应改成 range(len(data))（terraform 第 1 题）。结合Terraform、IaC来看，正确答案是循环上界多走了 1 步。
+- **判断依据**：在「Terraform 与基础设施即代码」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「Terraform 与基础设施即代码」的正文示例，围绕Terraform、IaC、State展开；把输入或边界换成空值、极值或失败情况后，结论要以「Terraform 与基础设施即代码」的实际运行结果为准。
 
 ### 考点 2：团队协作时 State 必须？
 
-- **判断依据**：远程状态 + 锁能避免多人同时 apply 互相覆盖。作答时，先用Terraform建立输入与输出的基线，再把使用远程后端并加锁代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「使用远程后端并加锁」是否完整覆盖题干的输入、输出和失败路径，并排除「提交到 Git」、「每次删除」这类相邻概念。
+- **判断依据**：远程状态 + 锁能避免多人同时 apply 互相覆盖。在「Terraform 与基础设施即代码」里，作答时，先用Terraform建立输入与输出的基线，再把使用远程后端并加锁代入边界条件核对，结论才能复现。“团队协作时”与「Terraform 与基础设施即代码」的术语表相呼应，只有符合Terraform、IaC、State约束的“使用远程后端并加锁”才是正文支持的结论。
 
 ### 考点 3：生产环境执行 apply 之前应该？
 
-- **判断依据**：符合题干条件的是「先 review plan 并人工确认」。plan 会展示将要创建、修改与销毁的资源，是最后的安全闸门。正确的判断需要逐项核对定义、版本和适用条件（terraform 第 3 题）。如果只凭关键词作答，很容易把「先删 State」、「关闭日志」与「先 review plan 并人工确认」混在一起；正确的判断需要逐项核对定义、版本和适用条件（terraform 第 3 题）。
+- **判断依据**：plan 会展示将要创建、修改与销毁的资源，是最后的安全闸门。在「Terraform 与基础设施即代码」里，如果只凭关键词作答，很容易把「先删 State」、「关闭日志」与「先 review plan 并人工确认」混在一起；「Terraform 与基础设施即代码」要求先交代Terraform、IaC、State的前提再下结论，所以“先 review plan 并人工确认”只在题干“生产环境执行 apply 之前应该”给定的条件下成立。
 
 ### 考点 4：围绕“Terraform 与基础设施即代码”中的 Terraform、IaC、State，下列哪两项是本课强调的实践判断？
 
-- **判断依据**：正确答案包括「验证 IaC 时要固定版本并覆盖边界输入，结论才可复现」、「学习 Terraform 时要同时说明输入、输出和失败路径，不能只看正常流程」。结论应落在验证 IaC 时要固定版本并覆盖边界输入。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 Terraform 时必须同时交代输入、输出和失败路径，这使“学习 Terraform 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 IaC 时要固定版本与边界输入，所以“验证 IaC 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
+- **判断依据**：结论应落在验证 IaC 时要固定版本并覆盖边界输入。本课把Terraform 与基础设施即代码拆成概念、示例与故障现场三部分，因此判断 Terraform 时必须同时交代输入、输出和失败路径，这使“学习 Terraform 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在Terraform 与基础设施即代码里，判断 IaC 时要固定版本与边界输入，所以“验证 IaC 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
 ### 考点 5：Terraform 与 Ansible 的定位差异是？
 
-- **判断依据**：正确答案是「Terraform 声明式管理基础设施资源」。实际项目中常先用 Terraform 建资源，再用 Ansible 做系统初始化与配置。判断这类题时，要把「Terraform 声明式管理基础设施资源」放回题干限定的对象、输入和边界，「Terraform 只能配置应用」、「Ansible 用于创建云资源」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：在「Terraform 与基础设施即代码」里，Terraform 声明式管理基础设施资源。实际项目中常先用 Terraform 建资源，再用 Ansible 做系统初始化与配置。在「Terraform 与基础设施即代码」里判断这道题，要把Terraform、IaC、State的条件、过程与失败路径逐项对齐，换成“Terraform 与 Ansibl”这个场景，只有满足前提的结论才成立。
 
 ### 考点 6：补全代码：「Terraform 与基础设施即代码」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
 
-`key            = "prod/network/____.tfstate"`
+`key = "prod/network/____.tfstate"`
 
-- **判断依据**：围绕 补全代码：本课主题示例中，下面这行代… 作答时，先用Terraform建立输入与输出的基线，再把terraform代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「terraform」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
+- **判断依据**：在「Terraform 与基础设施即代码」里，terraform。这道题的关键在「Terraform 与基础设施即代码」的Terraform、IaC、State：先确认题干“补全代码”问的是哪一步，再排除偷换前提的选项。这道题的关键在「Terraform 与基础设施即代码」的Terraform、IaC、State：先确认题干“Terraform”问的是哪一步，再排除偷换前提的选项。
 
 ## English Overview
 
@@ -395,7 +390,6 @@ print(guard_production("prod", {"delete": 1}, allow_delete=False))
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：Terraform、IaC、State、plan、模块
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
-
 
 ## 参考资料与复核
 

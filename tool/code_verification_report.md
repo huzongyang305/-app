@@ -1,6 +1,6 @@
 # 代码块验证报告
 
-生成时间：2026-10-06T20:05:21.431431
+生成时间：2026-10-06T20:39:32.377590
 
 > 片段是课程里有意截取、无法独立编译的示例，不计入硬失败；
 > 排错练习是课程里有意保留错误的代码，同样不计入硬失败；
@@ -58,12 +58,12 @@
 - cross_cli_args:99 java 已标注片段
 - flutter_release:111 yaml 已标注片段
 - fundamentals_assembly:155 asm 已标注片段
-- go_cloud_native_security:159 go 已标注片段
+- go_cloud_native_security:157 go 已标注片段
 - go_testing:271 yaml 已标注片段
 - programming_rust_cli_project:209 rust 已标注片段
 - programming_ts_narrowing_generics:219 typescript 已标注片段
 - shell_ci_templates:99 bash 已标注片段
-- shell_ci_templates:356 bash 已标注片段
+- shell_ci_templates:352 bash 已标注片段
 - ts_type_challenges:122 typescript 已标注片段
 - cross_collections:152 bash 结构不平衡
 - cross_collections:261 bash 结构不平衡

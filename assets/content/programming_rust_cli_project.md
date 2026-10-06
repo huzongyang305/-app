@@ -1,14 +1,14 @@
-# 本课主题
+# Rust 实战：命令行工具
 
 > 内容更新时间：2026-10-03
 
 ![Rust 命令行工具的实现流程](images/diagram_rust_cli_project.webp)
 
-![本课主题](images/remaining_rust_cli_project.webp)
+![Rust 实战：命令行工具](images/remaining_rust_cli_project.webp)
 
 ## 学习目标
 
-- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
+- 能用自己的话解释Rust 实战：命令行工具解决了什么问题，而不是只背术语。
 - 能说清 「Rust」、「CLI」、「clap」、「anyhow」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「Rust」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -401,7 +401,7 @@ cross build --release --target x86_64-unknown-linux-musl
 
 合上教程，用 3～5 句话回答：
 
-1. 本课主题解决了什么问题？
+1. Rust 实战：命令行工具解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「CLI」是什么关系？
 
@@ -538,48 +538,43 @@ cross build --release --target x86_64-unknown-linux-musl
 
 ## 术语速查
 
+把「Rust 实战：命令行工具」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
 | 术语 | 本课语境 |
 | --- | --- |
-| `main.rs` | 做一个能读文件、过滤、统计并输出 JSON/表格的 CLI。结构：`main.rs`（解析参数与调度）、`lib.rs`（可测试的业务逻辑）、`tests/`（集成测试）。 |
-| `lib.rs` | 做一个能读文件、过滤、统计并输出 JSON/表格的 CLI。结构：`main.rs`（解析参数与调度）、`lib.rs`（可测试的业务逻辑）、`tests/`（集成测试）。 |
-| `tests/` | 做一个能读文件、过滤、统计并输出 JSON/表格的 CLI。结构：`main.rs`（解析参数与调度）、`lib.rs`（可测试的业务逻辑）、`tests/`（集成测试）。 |
-| `#[derive(Parser)]` | 用 derive 声明式定义参数：结构体加 `#[derive(Parser)]`，字段用 `#[arg(short, long, default_value_t)]`，子命令用 `#[derive(Subcommand… |
-| `#[arg(short, long, default_value_t)]` | 用 derive 声明式定义参数：结构体加 `#[derive(Parser)]`，字段用 `#[arg(short, long, default_value_t)]`，子命令用 `#[derive(Subcommand… |
-| `#[derive(Subcommand)]` | 用 derive 声明式定义参数：结构体加 `#[derive(Parser)]`，字段用 `#[arg(short, long, default_value_t)]`，子命令用 `#[derive(Subcommand… |
-| `--help` | 用 derive 声明式定义参数：结构体加 `#[derive(Parser)]`，字段用 `#[arg(short, long, default_value_t)]`，子命令用 `#[derive(Subcommand… |
-| `anyhow::Result` | 应用层用 `anyhow::Result` 一路 `?` 传播，并在 `main` 用 `fn main() -> anyhow::Result<()>` 统一打印错误与退出码；库层用 thiserror 定义可判定的错… |
-| `传播，并在` | 应用层用 `anyhow::Result` 一路 `?` 传播，并在 `main` 用 `fn main() -> anyhow::Result<()>` 统一打印错误与退出码；库层用 thiserror 定义可判定的错… |
-| `用` | 应用层用 `anyhow::Result` 一路 `?` 传播，并在 `main` 用 `fn main() -> anyhow::Result<()>` 统一打印错误与退出码；库层用 thiserror 定义可判定的错… |
-| `assert_cmd` | 单元测试覆盖解析与统计函数；集成测试用 `assert_cmd` 调用二进制并断言 stdout、stderr 与退出码。再加 `cargo clippy -- -D warnings` 与 `cargo fmt --c… |
-| `cargo clippy -- -D warnings` | 单元测试覆盖解析与统计函数；集成测试用 `assert_cmd` 调用二进制并断言 stdout、stderr 与退出码。再加 `cargo clippy -- -D warnings` 与 `cargo fmt --c… |
+| `[Rust, CLI, clap, anyhow, 发布][index]` | 在「Rust 实战：命令行工具」里理解它的定义、输入和输出。 |
+| `[Rust, CLI, clap, anyhow, 发布][index]` | 本课用它说明边界条件与失败路径。 |
+| `[Rust, CLI, clap, anyhow, 发布][index]` | 结合「Rust 实战：命令行工具」的正文示例确认它的适用条件。 |
+| `[Rust, CLI, clap, anyhow, 发布][index]` | 在「Rust 实战：命令行工具」里理解它的定义、输入和输出。 |
+| `[Rust, CLI, clap, anyhow, 发布][index]` | 本课用它说明边界条件与失败路径。 |
 
 ## 考点精讲
 
 ### 考点 1：Rust CLI 最常用的参数解析库是？
 
-- **判断依据**：clap 的 derive 风格可自动生成 --help 与补全。其他选项：clap 是 Rust CLI 的参数解析事实标准。判断这类题时，要把「clap」放回题干限定的对象、输入和边界，「tokio」、「tracing」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：clap 的 derive 风格可自动生成 --help 与补全。其他选项：clap 是 Rust CLI 的参数解析事实标准。在「Rust 实战：命令行工具」里判断这道题，要把Rust、CLI、clap的条件、过程与失败路径逐项对齐，换成“Rust CLI 最常用的参数解析库”这个场景，只有满足前提的结论才成立。
 
 ### 考点 2：符合 Unix 习惯的输出方式是？
 
-- **判断依据**：围绕 符合 Unix 习惯的输出方式是。作答时，先用Rust建立输入与输出的基线，再把正常结果进 stdout代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「正常结果进 stdout」是否完整覆盖题干的输入、输出和失败路径，并排除「只在出错时输出」、「全部写文件」这类相邻概念。
+- **判断依据**：围绕 符合 Unix 习惯的输出方式是。在「Rust 实战：命令行工具」里，作答时，先用Rust建立输入与输出的基线，再把正常结果进 stdout代入边界条件核对，结论才能复现。这道题的关键在「Rust 实战：命令行工具」的Rust、CLI、clap：先确认题干“符合 Unix 习惯的输出方式是”问的是哪一步，再排除偷换前提的选项。
 
 ### 考点 3：测试二进制行为（stdout/退出码）常用？
 
-- **判断依据**：符合题干条件的是「assert_cmd」。assertcmd 可在集成测试中调用二进制并断言输出。传播，并在 main 用 fn main() -> anyhow::Result<()> 统一打印错误与退出码。正确的判断需要逐项核对定义、版本和适用条件（rustcliproject 第 3 题）。
+- **判断依据**：在「Rust 实战：命令行工具」里，assert_cmd。assertcmd 可在集成测试中调用二进制并断言输出。传播，并在 main 用 fn main -> anyhow::Result<> 统一打印错误与退出码。在「Rust 实战：命令行工具」里判断这道题，要把Rust、CLI、clap的条件、过程与失败路径逐项对齐，换成“测试二进制行为（stdout/退出码”这个场景，只有满足前提的结论才成立。
 
-### 考点 4：下面这段 Rust 代码复现了“Rust 实战：命令行工具”中 Rust、CLI、clap 相关的一个常见故障，哪一项最准确地解释了问题？
+### 考点 4：下面这段 Rust 代码摘自「Rust 实战：命令行工具」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 
-- **判断依据**：结论应落在「不可变借用 first 仍在使用时修改 data，违反借用规则，编译无法通过」。结论应落在不可变借用 first 仍在使用时修改 data，违反借用规则，编译无法通过。在这个复现里，Rust 的生命周期需要先结束。在这个复现里，要让 CLI 的结果可编译，可以先复制出值，或把读取与修改拆到两个作用域里。
+- **判断依据**：在「Rust 实战：命令行工具」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「Rust 实战：命令行工具」的正文示例，围绕Rust、CLI、clap展开；把输入或边界换成空值、极值或失败情况后，结论要以「Rust 实战：命令行工具」的实际运行结果为准。这道题的关键在「Rust 实战：命令行工具」的Rust、CLI、clap：先确认题干“下面这段 Rust 代码摘自Rust”问的是哪一步，再排除偷换前提的选项。
 
 ### 考点 5：围绕“Rust 实战：命令行工具”中的 Rust、CLI、clap，下列哪两项是本课强调的实践判断？
 
-- **判断依据**：正确答案包括「验证 CLI 时要固定版本并覆盖边界输入，结论才可复现」、「学习 Rust 时要同时说明输入、输出和失败路径，不能只看正常流程」。正确答案是验证 CLI 时要固定版本并覆盖边界输入。在本课主题里，判断 CLI 时要固定版本与边界输入，所以“验证 CLI 时要固定版本并覆盖边界输入，结论才可复现”才可复现。判断这类题时，要把验证 CLI 时要固定版本并覆盖边界输入，结论才可复现。
+- **判断依据**：在「Rust 实战：命令行工具」里，学习 Rust 时要同时说明输入、输出和失败路径，不能只看正常流程。在Rust 实战：命令行工具里，判断 CLI 时要固定版本与边界输入，所以“验证 CLI 时要固定版本并覆盖边界输入，结论才可复现”才可复现。「Rust 实战：命令行工具」要求先交代Rust、CLI、clap的前提再下结论，所以“验证 CLI 时要固定版本并覆盖边界输入”只在题干“围绕Rust 实战”给定的条件下成立。
 
 ### 考点 6：补全代码：「Rust 实战：命令行工具」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
 
 `let content = std::fs::____(&args.path)`
 
-- **判断依据**：空格应填写「read_to_string」。围绕 补全代码：本课主题示例中，下面这行代码缺少哪个… 作答时，先用Rust建立输入与输出的基线，再把readtostring代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「read_to_string」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
+- **判断依据**：空格应填写「read_to_string」。「Rust 实战：命令行工具」要求先交代Rust、CLI、clap的前提再下结论，所以“readtostring”只在题干“Rust 实战”给定的条件下成立。把“readtostring”代回「Rust 实战：命令行工具」里“Rust 实战”的例子核对，条件一旦改变，结论就要用Rust、CLI、clap重新推导。
 
 ## English Overview
 
@@ -601,7 +596,7 @@ cross build --release --target x86_64-unknown-linux-musl
 - 相关主题：Rust、CLI、clap、anyhow、发布
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-## 项目专属规格：本课主题
+## 项目专属规格：Rust 实战：命令行工具
 
 ### 核心场景
 
@@ -717,7 +712,6 @@ Cargo.toml
 | 发布 | Release |
 | 本课小结 | Summary |
 | 常用 crate 速查 | 常用 crate 速查 |
-
 
 ## 参考资料与复核
 

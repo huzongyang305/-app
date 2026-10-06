@@ -8,7 +8,7 @@
 
 ## 学习目标
 
-- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
+- 能用自己的话解释Kubernetes 基础解决了什么问题，而不是只背术语。
 - 能说清 「Kubernetes」、「Pod」、「Deployment」、「Service」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「工具链」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -264,7 +264,7 @@ spec:
 
 合上教程，用 3～5 句话回答：
 
-1. 本课主题解决了什么问题？
+1. Kubernetes 基础解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「Pod」是什么关系？
 
@@ -294,7 +294,7 @@ spec:
 
 ## 实践任务
 
-本节围绕本课主题安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
+本节围绕Kubernetes 基础安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 
 ### 任务 1：用自己的话画出结构
 
@@ -371,31 +371,31 @@ spec:
 
 ## 考点精讲
 
-### 考点 1：下面这段 Python 代码复现了“Kubernetes 基础”中 Kubernetes、Pod、Deployment 相关的一个常见故障，哪一项最准确地解释了问题？
+### 考点 1：这段代码代码是「Kubernetes 基础」的示例片段，下面哪一项描述与它一致？
 
-- **判断依据**：结合Kubernetes、Pod来看，正确答案是「默认参数 bucket=[] 只在定义时创建一次，两次调用共享同一个列表」。正确答案是默认参数 bucket=[] 只在定义时创建一次，两次调用共享同一个列表（kubernetes 第 1 题）。结合Kubernetes、Pod来看，正确答案是默认参数 bucket=[] 只在定义时创建一次。
+- **判断依据**：在「Kubernetes 基础」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「Kubernetes 基础」的正文示例，围绕Kubernetes、Pod、Deployment展开；把输入或边界换成空值、极值或失败情况后，结论要以「Kubernetes 基础」的实际运行结果为准。
 
 ### 考点 2：K8s 中最小的调度单位是？
 
-- **判断依据**：Pod 可包含一个或多个共享网络与存储的容器。其他选项：Deployment 是工作负载控制器，Node 是运行机器，容器是最小运行单元但不是调度单位。解题的关键不是记住孤立术语，而是确认「Pod」是否完整覆盖题干的输入、输出和失败路径，并排除「容器」、「Deployment」这类相邻概念。
+- **判断依据**：Pod 可包含一个或多个共享网络与存储的容器。在「Kubernetes 基础」里，其他选项：Deployment 是工作负载控制器，Node 是运行机器，容器是最小运行单元但不是调度单位。「Kubernetes 基础」要求先交代Kubernetes、Pod、Deployment的前提再下结论，所以“Pod”只在题干“K8s 中最小的调度单位是”给定的条件下成立。
 
 ### 考点 3：围绕“Kubernetes 基础”中的 Kubernetes、Pod、Deployment，下列哪两项是本课强调的实践判断？
 
-- **判断依据**：正确答案包括「学习 Kubernetes 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 Pod 时要固定版本并覆盖边界输入，结论才可复现」。符合题干条件的是学习 Kubernetes 时要同时说明输入、输出和失败路径。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 Kubernetes 时必须同时交代输入、输出和失败路径，这使“学习 Kubernetes 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 Pod 时要固定版本与边界输入，所以“验证 Pod 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
+- **判断依据**：本课把Kubernetes 基础拆成概念、示例与故障现场三部分，因此判断 Kubernetes 时必须同时交代输入、输出和失败路径，这使“学习 Kubernetes 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在Kubernetes 基础里，判断 Pod 时要固定版本与边界输入，所以“验证 Pod 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
 ### 考点 4：Deployment 与 StatefulSet 的区别是？
 
-- **判断依据**：结论应落在「Deployment 的 Pod 可互换」。数据库、消息队列等有状态组件通常用 StatefulSet 加 PVC。这道题要求区分概念与边界，「Deployment 的 Pod 可互换」只有在题干给出的前提下才成立，而「两者完全等价」、「StatefulSet 不能挂载存储」缺少同一组条件。
+- **判断依据**：在「Kubernetes 基础」里，结论应落在「Deployment 的 Pod 可互换」。数据库、消息队列等有状态组件通常用 StatefulSet 加 PVC。在「Kubernetes 基础」里，这道题要求区分概念与边界，「Deployment 的 Pod 可互换」只有在题干给出的前提下才成立，而「两者完全等价」、「StatefulSet 不能挂载存储」缺少同一组条件。
 
 ### 考点 5：Kubernetes 中 Service 的作用是？
 
-- **判断依据**：正确答案是「为一组 Pod 提供稳定的虚拟 IP 与负载均衡，屏蔽 Pod 重建带来的地址变化」。正确答案是为一组 Pod 提供稳定的虚拟 IP 与负载均衡。ClusterIP、NodePort、LoadBalancer 与 Headless 是常见的几种 Service 形态。
+- **判断依据**：在「Kubernetes 基础」里，为一组 Pod 提供稳定的虚拟 IP 与负载均衡，屏蔽 Pod 重建带来的地址变化。ClusterIP、NodePort、LoadBalancer 与 Headless 是常见的几种 Service 形态。回到「Kubernetes 基础」的正文示例，用“Kubernetes 中 Servi”走一遍Kubernetes、Pod、Deployment的完整流程，能复现的结论才可以保留。
 
 ### 考点 6：补全代码：「Kubernetes 基础」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
 
 `____: nginx`
 
-- **判断依据**：空格应填写「ingressClassName」、「ingressclassname」。解题的关键不是记住孤立术语，而是确认「ingressClassName 或 ingressclassname」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
+- **判断依据**：空格应填写「ingressClassName」、「ingressclassname」。「Kubernetes 基础」要求先交代Kubernetes、Pod、Deployment的前提再下结论，所以“ingressClassName”只在题干“Kubernetes 基础示例中”给定的条件下成立。
 
 ## English Overview
 
@@ -416,7 +416,6 @@ spec:
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：Kubernetes、Pod、Deployment、Service、探针、滚动更新
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
-
 
 ## 参考资料与复核
 

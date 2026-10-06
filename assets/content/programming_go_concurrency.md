@@ -8,7 +8,7 @@
 
 ## 学习目标
 
-- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
+- 能用自己的话解释Go 并发：goroutine、channel 与 context解决了什么问题，而不是只背术语。
 - 能说清 「Go」、「goroutine」、「channel」、「context」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「Go」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -253,7 +253,7 @@ case result := <-ch:
 
 合上教程，用 3～5 句话回答：
 
-1. 本课主题解决了什么问题？
+1. Go 并发：goroutine、channel 与 context解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「goroutine」是什么关系？
 
@@ -283,7 +283,7 @@ case result := <-ch:
 
 ## 实践任务
 
-本节围绕本课主题安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
+本节围绕Go 并发：goroutine、channel 与 context安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 
 ### 任务 1：用自己的话画出结构
 
@@ -345,7 +345,7 @@ case result := <-ch:
 - [ ] 不看解析，能说出「检测数据竞争的官方手段是？」的判断依据。
 - [ ] 不看解析，能说出「向无缓冲 channel 发送数据会阻塞，直到？」的判断依据。
 - [ ] 不看解析，能说出「sync.WaitGroup 的典型用途是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：本课主题…」的判断依据。
+- [ ] 不看解析，能说出的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -376,29 +376,29 @@ case result := <-ch:
 
 ### 考点 1：向已关闭的 channel 发送数据会？
 
-- **判断依据**：只应由唯一的发送方负责关闭 channel。其他选项：向已关闭的 channel 发送不会返回错误、不会自动重开、也不会阻塞，而是直接 panic，因此关闭操作应由唯一发送方负责。判断这类题时，要把「panic」放回题干限定的对象、输入和边界，「自动重开」、「阻塞」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：只应由唯一的发送方负责关闭 channel。其他选项：向已关闭的 channel 发送不会返回错误、不会自动重开、也不会阻塞，而是直接 panic，因此关闭操作应由唯一发送方负责。这道题的关键在「Go 并发：goroutine、channel 与 context」的Go、goroutine、channel：先确认题干“向已关闭的 channel 发送数据”问的是哪一步，再排除偷换前提的选项。
 
-### 考点 2：下面这段 Go 代码复现了“Go 并发：goroutine、channel 与 context”中 Go、goroutine、channel 相关的一个常见故障，哪一项最准确地解释了问题？
+### 考点 2：下面这段 Go 代码摘自「Go 并发：goroutine、channel 与 context」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
 
-- **判断依据**：本题应选「循环条件用了 <=，i == len(data) 时越界，运行时 panic」。本题应选循环条件用了 <=，i == len(data) 时越界，运行时 panic（goconcurrency 第 2 题）。结合Go、goroutine来看，本题应选循环条件用了 <=。在这个复现里，要让 goroutine 的结果稳定，可以直接使用 for , v := range data 或把长度保存在局部变量中。
+- **判断依据**：在「Go 并发：goroutine、channel 与 context」里，这段代码包含循环结构，同一段逻辑会被重复执行。这段代码出自「Go 并发：goroutine、channel 与 context」的正文示例，围绕Go、goroutine、channel展开；把输入或边界换成空值、极值或失败情况后，结论要以「Go 并发：goroutine、channel 与 context」的实际运行结果为准。
 
 ### 考点 3：检测数据竞争的官方手段是？
 
-- **判断依据**：符合题干条件的是「go test -race」。-race 在运行时检测并发访问冲突，应加入 CI。正确的判断需要逐项核对定义、版本和适用条件（goconcurrency 第 3 题）。正确的判断需要逐项核对定义、版本和适用条件（go_concurrency 第 3 题）。
+- **判断依据**：在「Go 并发：goroutine、channel 与 context」里，go test -race。-race 在运行时检测并发访问冲突，应加入 CI。「Go 并发：goroutine、channel 与 context」要求先交代Go、goroutine、channel的前提再下结论，所以“go test -race”只在题干“检测数据竞争的官方手段是”给定的条件下成立。
 
 ### 考点 4：向无缓冲 channel 发送数据会阻塞，直到？
 
-- **判断依据**：围绕 向无缓冲 channel 发送数据会阻塞，直到。作答时，先用Go建立输入与输出的基线，再把有接收方准备好接收（收发同步完成）代入边界条件核对，结论才能复现。这道题要求区分概念与边界，「有接收方准备好接收（收发同步完成）」只有在题干给出的前提下才成立，而「永远不阻塞」、「缓冲区写满」缺少同一组条件。
+- **判断依据**：围绕 向无缓冲 channel 发送数据会阻塞，直到。在「Go 并发：goroutine、channel 与 context」里，作答时，先用Go建立输入与输出的基线，再把有接收方准备好接收（收发同步完成）代入边界条件核对，结论才能复现。在「Go 并发：goroutine、channel 与 context」里，这道题要求区分概念与边界，「有接收方准备好接收（收发同步完成）」只有在题干给出的前提下才成立，而「永远不阻塞」、「缓冲区写满」缺少同一组条件。
 
 ### 考点 5：围绕“Go 并发：goroutine、channel 与 context”中的 Go、goroutine、channel，下列哪两项是本课强调的实践判断？
 
-- **判断依据**：正确答案包括「验证 goroutine 时要固定版本并覆盖边界输入，结论才可复现」、「学习 Go 时要同时说明输入、输出和失败路径，不能只看正常流程」。正确答案是验证 goroutine 时要固定版本并覆盖边界输入。在本课主题里，判断 goroutine 时要固定版本与边界输入，所以“验证 goroutine 时要固定版本并覆盖边界输入，结论才可复现”才可复现。判断这类题时，要把验证 goroutine 时要固定版本并覆盖边界输入，结论才可复现。
+- **判断依据**：在「Go 并发：goroutine、channel 与 context」里，学习 Go 时要同时说明输入、输出和失败路径，不能只看正常流程。在Go 并发：goroutine、channel 与 context里，判断 goroutine 时要固定版本与边界输入，所以“验证 goroutine 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
 ### 考点 6：补全代码：「Go 并发：goroutine、channel 与 context」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
 
-`ctx, cancel := context.____(context.Background(), 2*time.Second)`
+`ctx, cancel := context.____(context.Background, 2*time.Second)`
 
-- **判断依据**：围绕 补全代码：Go 并发：goroutine、channel 与 co… 作答时，先用Go建立输入与输出的基线，再把WithTimeout 或 withtimeout代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「WithTimeout 或 withtimeout」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
+- **判断依据**：在「Go 并发：goroutine、channel 与 context」里，WithTimeout。在「Go 并发：goroutine、channel 与 context」里判断这道题，要把Go、goroutine、channel的条件、过程与失败路径逐项对齐，换成“补全代码”这个场景，只有满足前提的结论才成立。
 
 ## English Overview
 
@@ -461,7 +461,6 @@ case result := <-ch:
 | goroutine 与 channel 速查 | goroutine 与 channel 速查 |
 | 并发安全速查 | ConcurrencySecurity速查 |
 | 常见错误对照表 | Common mistakes对照表 |
-
 
 ## 参考资料与复核
 

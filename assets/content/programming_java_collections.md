@@ -8,7 +8,7 @@
 
 ## 学习目标
 
-- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
+- 能用自己的话解释集合框架与泛型解决了什么问题，而不是只背术语。
 - 能说清 「List」、「Set」、「Map」、「HashMap」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「Java」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -316,7 +316,7 @@ public class WordCount {
 
 合上教程，用 3～5 句话回答：
 
-1. 本课主题解决了什么问题？
+1. 集合框架与泛型解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「Set」是什么关系？
 
@@ -346,7 +346,7 @@ public class WordCount {
 
 ## 实践任务
 
-本节围绕本课主题安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
+本节围绕集合框架与泛型安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 
 ### 任务 1：用自己的话画出结构
 
@@ -419,46 +419,42 @@ public class WordCount {
 
 ## 术语速查
 
+把「集合框架与泛型」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
 | 术语 | 本课语境 |
 | --- | --- |
-| `ArrayList` | `ArrayList` 随机访问快，`LinkedList` 中间插删快但实际使用较少（缓存不友好）。 |
-| `LinkedList` | `ArrayList` 随机访问快，`LinkedList` 中间插删快但实际使用较少（缓存不友好）。 |
-| `new T[]` | 泛型在编译后会**类型擦除**，因此不能 `new T[]`，也不能对泛型做 `instanceof`。 |
-| `instanceof` | 泛型在编译后会**类型擦除**，因此不能 `new T[]`，也不能对泛型做 `instanceof`。 |
-| `new ArrayList<>(10000)` | 扩容机制**：ArrayList 默认容量 10，扩容为 1.5 倍；HashMap 默认 16、负载因子 0.75，扩容翻倍并 rehash。已知规模时预设容量（`new ArrayList<>(10000)`）可避免… |
-| `ConcurrentHashMap` | 并发容器**：`ConcurrentHashMap`（分段/CAS，读几乎无锁）、`CopyOnWriteArrayList`（写时复制，适合读多写极少）、`BlockingQueue`（生产者-消费者）。注意：`Col… |
-| `CopyOnWriteArrayList` | 并发容器**：`ConcurrentHashMap`（分段/CAS，读几乎无锁）、`CopyOnWriteArrayList`（写时复制，适合读多写极少）、`BlockingQueue`（生产者-消费者）。注意：`Col… |
-| `BlockingQueue` | 并发容器**：`ConcurrentHashMap`（分段/CAS，读几乎无锁）、`CopyOnWriteArrayList`（写时复制，适合读多写极少）、`BlockingQueue`（生产者-消费者）。注意：`Col… |
-| `Collections.synchronizedMap` | 并发容器**：`ConcurrentHashMap`（分段/CAS，读几乎无锁）、`CopyOnWriteArrayList`（写时复制，适合读多写极少）、`BlockingQueue`（生产者-消费者）。注意：`Col… |
-| `HashMap` | 日常组合：`ArrayList` + `HashMap` + `HashSet` 覆盖 90% 场景；需要排序用 `TreeMap`/`TreeSet`，需要线程安全用 `ConcurrentHashMap`。 |
-| `HashSet` | 日常组合：`ArrayList` + `HashMap` + `HashSet` 覆盖 90% 场景；需要排序用 `TreeMap`/`TreeSet`，需要线程安全用 `ConcurrentHashMap`。 |
-| `TreeMap` | 日常组合：`ArrayList` + `HashMap` + `HashSet` 覆盖 90% 场景；需要排序用 `TreeMap`/`TreeSet`，需要线程安全用 `ConcurrentHashMap`。 |
+| `[List, Set, Map, HashMap, 泛型, 类型擦除][index]` | 在「集合框架与泛型」里理解它的定义、输入和输出。 |
+| `[List, Set, Map, HashMap, 泛型, 类型擦除][index]` | 本课用它说明边界条件与失败路径。 |
+| `[List, Set, Map, HashMap, 泛型, 类型擦除][index]` | 结合「集合框架与泛型」的正文示例确认它的适用条件。 |
+| `[List, Set, Map, HashMap, 泛型, 类型擦除][index]` | 在「集合框架与泛型」里理解它的定义、输入和输出。 |
+| `[List, Set, Map, HashMap, 泛型, 类型擦除][index]` | 本课用它说明边界条件与失败路径。 |
+| `[List, Set, Map, HashMap, 泛型, 类型擦除][index]` | 结合「集合框架与泛型」的正文示例确认它的适用条件。 |
 
 ## 考点精讲
 
 ### 考点 1：不允许重复元素的集合是？
 
-- **判断依据**：Set 保证元素唯一，HashSet 依赖 hashCode/equals，TreeSet 还会排序。其他选项：List 与数组允许重复，Queue 面向排队场景。判断这类题时，要把「Set」放回题干限定的对象、输入和边界，「List」、「数组」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：Set 保证元素唯一，HashSet 依赖 hashCode/equals，TreeSet 还会排序。其他选项：List 与数组允许重复，Queue 面向排队场景。这道题的关键在「集合框架与泛型」的List、Set、Map：先确认题干“不允许重复元素的集合是”问的是哪一步，再排除偷换前提的选项。
 
 ### 考点 2：以下哪组集合类型更适合多线程并发访问？
 
-- **判断依据**：ConcurrentHashMap 和 CopyOnWriteArrayList 专为并发场景设计，分别适合高并发键值访问和读多写少的列表。普通 HashMap、ArrayList、LinkedList、HashSet、TreeMap 和 ArrayDeque 都不是线程安全容器，多线程修改时可能出现数据损坏或抛异常。
+- **判断依据**：在「集合框架与泛型」里，ConcurrentHashMap 和 CopyOnWriteArrayList 专为并发场景设计，分别适合高并发键值访问和读多写少的列表。在「集合框架与泛型」里，普通 HashMap、ArrayList、LinkedList、HashSet、TreeMap 和 ArrayDeque 都不是线程安全容器，多线程修改时可能出现数据损坏或抛异常。
 
-### 考点 3：下面这段 Java 代码复现了“集合框架与泛型”中 List、Set、Map 相关的一个常见故障，哪一项最准确地解释了问题？
+### 考点 3：阅读「集合框架与泛型」正文里的这段 Java 代码，下面哪一项判断是正确的？
 
-- **判断依据**：符合题干条件的是「循环条件用了 <=，i == data.length 时抛出 ArrayIndexOutOfBoundsException」。符合题干条件的是循环条件用了 <=，i == data.length 时抛出 ArrayIndexOutOfBoundsException。在这个复现里，List 的边界应改成 i < data.length。在这个复现里，要让 Set 的结果稳定，可以用增强 for 循环直接遍历数组，或先把长度保存到局部变量再比较。
+- **判断依据**：在「集合框架与泛型」里，这段代码包含循环结构，同一段逻辑会被重复执行。这段代码出自「集合框架与泛型」的正文示例，围绕List、Set、Map展开；把输入或边界换成空值、极值或失败情况后，结论要以「集合框架与泛型」的实际运行结果为准。「集合框架与泛型」要求先交代List、Set、Map的前提再下结论，所以“这段代码包含循环结构”只在题干“阅读集合框架与泛型正文里的这段 Java 代码”给定的条件下成立。
 
 ### 考点 4：ArrayList 与 LinkedList 的选择依据是？
 
-- **判断依据**：结论应落在「随机访问多用 ArrayList」。ArrayList 是数组实现，按下标访问 O(1)。这道题要求区分概念与边界，「随机访问多用 ArrayList」只有在题干给出的前提下才成立，而「LinkedList 随机访问更快」、「ArrayList 不能扩容」缺少同一组条件。
+- **判断依据**：在「集合框架与泛型」里，结论应落在「随机访问多用 ArrayList」。ArrayList 是数组实现，按下标访问 O(1)。在「集合框架与泛型」里，这道题要求区分概念与边界，「随机访问多用 ArrayList」只有在题干给出的前提下才成立，而「LinkedList 随机访问更快」、「ArrayList 不能扩容」缺少同一组条件。
 
 ### 考点 5：下列哪些集合实现更适合高并发读写场景？请选择所有正确答案。
 
-- **判断依据**：正确答案包括「ConcurrentHashMap」、「CopyOnWriteArrayList」。正确答案是ConcurrentHashMap。ArrayList 和 LinkedList 不是线程安全实现，多线程同时修改时需要外部同步。判断这类题时，要把ConcurrentHashMap。
+- **判断依据**：在「集合框架与泛型」里，ConcurrentHashMap；在「集合框架与泛型」里，CopyOnWriteArrayList。在「集合框架与泛型」里，ArrayList 和 LinkedList 不是线程安全实现，多线程同时修改时需要外部同步。「集合框架与泛型」要求先交代List、Set、Map的前提再下结论，所以“ConcurrentHashMap”只在题干“下列哪些集合实现更适合高并发读写场景”给定的条件下成立。
 
 ### 考点 6：按照「集合框架与泛型」从概念到实践的讲解顺序排列下列主题。
 
-- **判断依据**：正确的执行顺序是「集合体系」 → 「List」 → 「Set」 → 「Map」。在本课中，正确顺序是：1. 集合体系 → 2. List → 3. Set → 4. Map。本课围绕List/Set/Map 的选择、遍历方式、泛型与通配符。
+- **判断依据**：正确的执行顺序是「集合体系」 → 「List」 → 「Set」 → 「Map」。在本课中，正确顺序是：1. 集合体系 → 2. List → 3. Set → 4. Map。本课围绕List/Set/Map 的选择、遍历方式、泛型与通配符。在「集合框架与泛型」里判断这道题，要把List、Set、Map的条件、过程与失败路径逐项对齐，换成“按照集合框架与泛型从概念到实践的讲解”这个场景，只有满足前提的结论才成立。
 
 ## English Overview
 
@@ -479,7 +475,6 @@ public class WordCount {
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：List、Set、Map、HashMap、泛型、类型擦除
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
-
 
 ## 参考资料与复核
 

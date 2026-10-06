@@ -1,4 +1,13 @@
-// P0/P1 内容治理主脚本。
+// 【已停用·请勿再运行】P0/P1 内容治理主脚本。
+//
+// 历史教训：本脚本用全局替换把真实标题改写成「本课主题」占位符，并把内部
+// 题号（lessonid 第 N 题）写进解析、重复生成「复习与迁移」章节。它产出的
+// 内容已经在 a19cc95 之后由 tool/repair_content_p0p1.dart 修复，重新运行
+// 本脚本会再把内容改坏。保留文件仅作为历史记录与语义卡口的反面样本。
+//
+// 需要修内容时请使用：
+//   dart tool/repair_content_p0p1.dart          # 试运行
+//   dart tool/repair_content_p0p1.dart --apply  # 写回
 //
 // 用法：
 //   dart run tool/apply_p0p1_governance.dart [--dry-run] [--lesson=<id>] [--samples=5]

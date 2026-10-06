@@ -8,7 +8,7 @@
 
 ## 学习目标
 
-- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
+- 能用自己的话解释Shell 与 Docker/K8s 交互解决了什么问题，而不是只背术语。
 - 能说清 「Shell」、「Docker」、「Kubernetes」、「entrypoint」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「Shell」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -306,7 +306,7 @@ exec "$@"
 
 合上教程，用 3～5 句话回答：
 
-1. 本课主题解决了什么问题？
+1. Shell 与 Docker/K8s 交互解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「Docker」是什么关系？
 
@@ -427,7 +427,7 @@ exec "$@"                          # 交给主进程，正确接收 SIGTERM
 - [ ] 不看解析，能说出「K8s 排查问题的推荐顺序是？」的判断依据。
 - [ ] 不看解析，能说出「容器里 PID 1 进程的特殊性是？」的判断依据。
 - [ ] 不看解析，能说出「kubectl exec -it pod -- sh 的适用场景是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码缺少…」的判断依据。
+- [ ] 不看解析，能说出的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -439,48 +439,43 @@ exec "$@"                          # 交给主进程，正确接收 SIGTERM
 
 ## 术语速查
 
+把「Shell 与 Docker/K8s 交互」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
 | 术语 | 本课语境 |
 | --- | --- |
-| `docker build -t app:$GIT_SHA .` | \| 构建 \| `docker build -t app:$GIT_SHA .`，用提交号做标签便于回滚 \| |
-| `docker logs -f --tail 100 app` | \| 查看 \| `docker logs -f --tail 100 app`、`docker stats` \| |
-| `docker stats` | \| 查看 \| `docker logs -f --tail 100 app`、`docker stats` \| |
-| `docker exec -it app sh` | \| 进容器 \| `docker exec -it app sh`（生产容器通常不带 bash） \| |
-| `docker system prune -f` | \| 清理 \| `docker system prune -f`（谨慎，先 `docker ps -a` 确认） \| |
-| `docker ps -a` | \| 清理 \| `docker system prune -f`（谨慎，先 `docker ps -a` 确认） \| |
-| `docker ps -aq -f name=app` | 脚本里要判断容器是否存在（`docker ps -aq -f name=app`），并处理"已存在则先删"的逻辑；退出码检查不可省。 |
-| `exec "$@"` | 要点：① 用 `exec "$@"` 让主进程成为 PID 1，才能正确接收信号；② 用 `set -euo pipefail`；③ 等待依赖（数据库）时用循环 + 超时，而不是固定 sleep；④ 不在 entrypo… |
-| `set -euo pipefail` | 要点：① 用 `exec "$@"` 让主进程成为 PID 1，才能正确接收信号；② 用 `set -euo pipefail`；③ 等待依赖（数据库）时用循环 + 超时，而不是固定 sleep；④ 不在 entrypo… |
-| `get` | 排查顺序固定：`get`（看状态）→ `describe`（看事件）→ `logs`（看应用日志）→ `exec`（进容器验证）。 |
-| `describe` | 排查顺序固定：`get`（看状态）→ `describe`（看事件）→ `logs`（看应用日志）→ `exec`（进容器验证）。 |
-| `logs` | 排查顺序固定：`get`（看状态）→ `describe`（看事件）→ `logs`（看应用日志）→ `exec`（进容器验证）。 |
+| `[Shell, Docker, Kubernetes, entrypoint, 健康检查][index]` | 在「Shell 与 Docker/K8s 交互」里理解它的定义、输入和输出。 |
+| `[Shell, Docker, Kubernetes, entrypoint, 健康检查][index]` | 本课用它说明边界条件与失败路径。 |
+| `[Shell, Docker, Kubernetes, entrypoint, 健康检查][index]` | 结合「Shell 与 Docker/K8s 交互」的正文示例确认它的适用条件。 |
+| `[Shell, Docker, Kubernetes, entrypoint, 健康检查][index]` | 在「Shell 与 Docker/K8s 交互」里理解它的定义、输入和输出。 |
+| `[Shell, Docker, Kubernetes, entrypoint, 健康检查][index]` | 本课用它说明边界条件与失败路径。 |
 
 ## 考点精讲
 
 ### 考点 1：围绕“Shell 与 Docker/K8s 交互”中的 Shell、Docker、Kubernetes，下列哪两项是本课强调的实践判断？
 
-- **判断依据**：正确答案包括「学习 Shell 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 Docker 时要固定版本并覆盖边界输入，结论才可复现」。正确答案是学习 Shell 时要同时说明输入、输出和失败路径。在本课主题里，判断 Docker 时要固定版本与边界输入，所以“验证 Docker 时要固定版本并覆盖边界输入，结论才可复现”才可复现。判断这类题时，要把学习 Shell 时要同时说明输入、输出和失败路径，不能只看正常流程。
+- **判断依据**：在「Shell 与 Docker/K8s 交互」里，学习 Shell 时要同时说明输入、输出和失败路径，不能只看正常流程。在Shell 与 Docker/K8s 交互里，判断 Docker 时要固定版本与边界输入，所以“验证 Docker 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
 ### 考点 2：依赖服务暂时不可用时，应该影响哪种探针？
 
-- **判断依据**：让 liveness 失败会引发全量重启。围绕 依赖服务暂时不可用时，应该影响哪种探针。作答时，先用Shell建立输入与输出的基线，再把readiness代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「readiness」是否完整覆盖题干的输入、输出和失败路径，并排除「liveness」、「两者都要」这类相邻概念。
+- **判断依据**：在「Shell 与 Docker/K8s 交互」里，让 liveness 失败会引发全量重启。围绕 依赖服务暂时不可用时，应该影响哪种探针。在「Shell 与 Docker/K8s 交互」里，作答时，先用Shell建立输入与输出的基线，再把readiness代入边界条件核对，结论才能复现。
 
 ### 考点 3：K8s 排查问题的推荐顺序是？
 
-- **判断依据**：符合题干条件的是「get → describe → logs → exec」。先看状态与事件，再看应用日志，最后进容器验证。正确的判断需要逐项核对定义、版本和适用条件（shellcontainer 第 3 题）。正确的判断需要逐项核对定义、版本和适用条件（shell_container 第 3 题）。
+- **判断依据**：在「Shell 与 Docker/K8s 交互」里，get → describe → logs → exec。先看状态与事件，再看应用日志，最后进容器验证。回到「Shell 与 Docker/K8s 交互」的正文示例，用“K8s 排查问题的推荐顺序是”走一遍Shell、Docker、Kubernetes的完整流程，能复现的结论才可以保留。
 
 ### 考点 4：阅读「Shell 与 Docker/K8s 交互」中的这段 Shell 代码，下面哪项判断最准确？
 
-- **判断依据**：结论应落在「镜像标签、entrypoint 要点与 kubectl 排查顺序」。结论应落在镜像标签、entrypoint 要点与 kubectl 排查顺序。这段 Shell 代码来自本课的本地示例，主要用来核对 Shell、Docker、Kubernetes、entrypoint 之间的输入、处理和输出关系，镜像标签、entrypoint 要点与 kubectl 排查顺序。
+- **判断依据**：在「Shell 与 Docker/K8s 交互」里，结论应落在「镜像标签、entrypoint 要点与 kubectl 排查顺序」。在「Shell 与 Docker/K8s 交互」里，结论应落在镜像标签、entrypoint 要点与 kubectl 排查顺序。在「Shell 与 Docker/K8s 交互」里，这段 Shell 代码来自本课的本地示例，主要用来核对 Shell、Docker、Kubernetes、entrypoint 之间的输入、处理和输出关系，镜像标签、entrypoint 要点与 kubectl 排查顺序。
 
 ### 考点 5：kubectl exec -it pod -- sh 的适用场景是？
 
-- **判断依据**：正确答案是「进入容器内部排查问题」。生产环境常使用 distroless 镜像没有 shell，此时要以日志与指标为主要手段。判断这类题时，要把「进入容器内部排查问题」放回题干限定的对象、输入和边界，「修改 Deployment 副本数」、「查看集群所有节点」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：在「Shell 与 Docker/K8s 交互」里，进入容器内部排查问题。生产环境常使用 distroless 镜像没有 shell，此时要以日志与指标为主要手段。“kubectl”与「Shell 与 Docker/K8s 交互」的术语表相呼应，只有符合Shell、Docker、Kubernetes约束的“进入容器内部排查问题”才是正文支持的结论。
 
 ### 考点 6：补全代码：「Shell 与 Docker/K8s 交互」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
 
 `____: 5`
 
-- **判断依据**：围绕 补全代码：本课主题示例中，下面… 作答时，先用Shell建立输入与输出的基线，再把periodSeconds 或 periodseconds代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「periodSeconds 或 periodseconds」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
+- **判断依据**：在「Shell 与 Docker/K8s 交互」里，periodSeconds。在「Shell 与 Docker/K8s 交互」里判断这道题，要把Shell、Docker、Kubernetes的条件、过程与失败路径逐项对齐，换成“补全代码”这个场景，只有满足前提的结论才成立。回到「Shell 与 Docker/K8s 交互」的正文示例，用“补全代码”走一遍Shell、Docker、Kubernetes的完整流程，能复现的结论才可以保留。
 
 ## English Overview
 
@@ -501,7 +496,6 @@ exec "$@"                          # 交给主进程，正确接收 SIGTERM
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：Shell、Docker、Kubernetes、entrypoint、健康检查
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
-
 
 ## 参考资料与复核
 

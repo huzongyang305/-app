@@ -1,14 +1,14 @@
-# 本课主题
+# 实战：Flutter 打包发布 Android
 
 > 内容更新时间：2026-10-03
 
 ![Flutter Android 发布流程](images/diagram_mobile_flutter_release.webp)
 
-![本课主题](images/category_flutter_release.webp)
+![实战：Flutter 打包发布 Android](images/category_flutter_release.webp)
 
 ## 学习目标
 
-- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
+- 能用自己的话解释实战：Flutter 打包发布 Android解决了什么问题，而不是只背术语。
 - 能说清 「Flutter」、「发布」、「签名」、「混淆」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「移动开发」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -347,7 +347,7 @@ echo "符号：build/symbols（请归档）"
 
 合上教程，用 3～5 句话回答：
 
-1. 本课主题解决了什么问题？
+1. 实战：Flutter 打包发布 Android解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「发布」是什么关系？
 
@@ -469,7 +469,7 @@ echo "符号：build/symbols（请归档）"
 - [ ] 不看解析，能说出「减小 APK 体积的常用做法是？」的判断依据。
 - [ ] 不看解析，能说出「flutter build appbundle 的产物格式是？」的判断依据。
 - [ ] 不看解析，能说出「Android 的 minSdk / targetSdk 在哪个文件中配置？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码…」的判断依据。
+- [ ] 不看解析，能说出的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -481,46 +481,41 @@ echo "符号：build/symbols（请归档）"
 
 ## 术语速查
 
+把「实战：Flutter 打包发布 Android」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
 | 术语 | 本课语境 |
 | --- | --- |
-| `flutter analyze` | \| 静态检查 \| `flutter analyze` \| 零 error，info 尽量清零 \| |
-| `flutter test` | \| 测试 \| `flutter test` \| 单元 + 组件 + 端到端 \| |
-| `flutter build apk --release` | \| 构建 \| `flutter build apk --release` 或 `--appbundle` \| 签名、混淆、ABI \| |
-| `--appbundle` | \| 构建 \| `flutter build apk --release` 或 `--appbundle` \| 签名、混淆、ABI \| |
-| `flutter build apk --analyze-size` | \| 产物校验 \| `flutter build apk --analyze-size` \| 各模块体积占比 \| |
-| `keytool -genkey` | 关键：**不要用调试签名发布**。生成 keystore（`keytool -genkey`），把 `key.properties` 放在仓库外并在 `.gitignore` 中排除，`build.gradle.kts`… |
-| `key.properties` | 关键：**不要用调试签名发布**。生成 keystore（`keytool -genkey`），把 `key.properties` 放在仓库外并在 `.gitignore` 中排除，`build.gradle.kts`… |
-| `.gitignore` | 关键：**不要用调试签名发布**。生成 keystore（`keytool -genkey`），把 `key.properties` 放在仓库外并在 `.gitignore` 中排除，`build.gradle.kts`… |
-| `build.gradle.kts` | 关键：**不要用调试签名发布**。生成 keystore（`keytool -genkey`），把 `key.properties` 放在仓库外并在 `.gitignore` 中排除，`build.gradle.kts`… |
-| `signingConfigs.release` | 关键：**不要用调试签名发布**。生成 keystore（`keytool -genkey`），把 `key.properties` 放在仓库外并在 `.gitignore` 中排除，`build.gradle.kts`… |
-| `--split-per-abi` | 用 `--split-per-abi` 或 App Bundle 按 ABI 拆分，避免把三种架构都打进一个包。 |
-| `--tree-shake-icons` | `--tree-shake-icons` 剔除未用图标字体（默认开启）。 |
+| `[Flutter, 发布, 签名, 混淆, 体积优化][index]` | 在「实战：Flutter 打包发布 Android」里理解它的定义、输入和输出。 |
+| `[Flutter, 发布, 签名, 混淆, 体积优化][index]` | 本课用它说明边界条件与失败路径。 |
+| `[Flutter, 发布, 签名, 混淆, 体积优化][index]` | 结合「实战：Flutter 打包发布 Android」的正文示例确认它的适用条件。 |
+| `[Flutter, 发布, 签名, 混淆, 体积优化][index]` | 在「实战：Flutter 打包发布 Android」里理解它的定义、输入和输出。 |
+| `[Flutter, 发布, 签名, 混淆, 体积优化][index]` | 本课用它说明边界条件与失败路径。 |
 
 ## 考点精讲
 
 ### 考点 1：围绕“实战：Flutter 打包发布 Android”中的 Flutter、发布、签名，下列哪两项是本课强调的实践判断？
 
-- **判断依据**：正确答案包括「验证 发布 时要固定版本并覆盖边界输入，结论才可复现」、「学习 Flutter 时要同时说明输入、输出和失败路径，不能只看正常流程」。正确答案是验证 发布 时要固定版本并覆盖边界输入。本课把本课主题拆成概念、示例与故障现场三部分，因此判断 Flutter 时必须同时交代输入、输出和失败路径，这使“学习 Flutter 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在本课主题里，判断 发布 时要固定版本与边界输入，所以“验证 发布 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
+- **判断依据**：本课把实战：Flutter 打包发布 Android拆成概念、示例与故障现场三部分，因此判断 Flutter 时必须同时交代输入、输出和失败路径，这使“学习 Flutter 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在实战：Flutter 打包发布 Android里，判断 发布 时要固定版本与边界输入，所以“验证 发布 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
-### 考点 2：下面这段 Dart 代码复现了“实战：Flutter 打包发布 Android”中 Flutter、发布、签名 相关的一个常见故障，哪一项最准确地解释了问题？
+### 考点 2：这段代码代码是「实战：Flutter 打包发布 Android」的示例片段，下面哪一项描述与它一致？
 
-- **判断依据**：本题应选「循环条件用了 <=，i == data.length 时抛出 RangeError；应改成 i < data.length」（flutter_release 第 2 题）。本题应选循环条件用了 <=，i == data.length 时抛出 RangeError。应改成 i < data.length（flutter_release 第 2 题）。应改成 i < data.length（flutterrelease 第 2 题）。
+- **判断依据**：在「实战：Flutter 打包发布 Android」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「实战：Flutter 打包发布 Android」的正文示例，围绕Flutter、发布、签名展开；把输入或边界换成空值、极值或失败情况后，结论要以「实战：Flutter 打包发布 Android」的实际运行结果为准。
 
 ### 考点 3：减小 APK 体积的常用做法是？
 
-- **判断依据**：符合题干条件的是「使用 --split-per-abi 或 App Bundle」。按 CPU 架构拆分可显著降低单包体积。正确的判断需要逐项核对定义、版本和适用条件（flutterrelease 第 3 题）。正确的判断需要逐项核对定义、版本和适用条件（flutter_release 第 3 题）。
+- **判断依据**：在「实战：Flutter 打包发布 Android」里，使用 --split-per-abi 或 App Bundle。按 CPU 架构拆分可显著降低单包体积。在「实战：Flutter 打包发布 Android」里判断这道题，要把Flutter、发布、签名的条件、过程与失败路径逐项对齐，换成“减小 APK 体积的常用做法是”这个场景，只有满足前提的结论才成立。
 
 ### 考点 4：flutter build appbundle 的产物格式是？
 
-- **判断依据**：结论应落在「.aab（Android App Bundle）」。appbundle 生成 .aab，由商店按设备配置拆分下发。这道题要求区分概念与边界，「.aab（Android App Bundle）」只有在题干给出的前提下才成立，而「.ipa（没有覆盖题干给出的条件）」、「.jar」缺少同一组条件。
+- **判断依据**：在「实战：Flutter 打包发布 Android」里，结论应落在「.aab（Android App Bundle）」。appbundle 生成 .aab，由商店按设备配置拆分下发。在「实战：Flutter 打包发布 Android」里，这道题要求区分概念与边界，「.aab（Android App Bundle）」只有在题干给出的前提下才成立，而「.ipa（没有覆盖题干给出的条件）」、「.jar」缺少同一组条件。
 
 ### 考点 5：Android 的 minSdk / targetSdk 在哪个文件中配置？
 
-- **判断依据**：正确答案是「android/app/build.gradle(.kts) 的 defaultConfig」。SDK 版本属于 Android 构建配置，写在 app 模块的 defaultConfig 里。判断这类题时，要把「android/app/build.gradle(.kts) 的 def…」放回题干限定的对象、输入和边界，「lib/main.dart 顶部常量」、「pubspec.yaml 的 flutter 段」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：在「实战：Flutter 打包发布 Android」里，android/app/build.gradle(.kts) 的 defaultConfig。SDK 版本属于 Android 构建配置，写在 app 模块的 defaultConfig 里。在「实战：Flutter 打包发布 Android」里判断这道题，要把Flutter、发布、签名的条件、过程与失败路径逐项对齐，换成“Android 的 minSdk /”这个场景，只有满足前提的结论才成立。
 
 ### 考点 6：按照「实战：Flutter 打包发布 Android」从概念到实践的讲解顺序排列下列主题。
 
-- **判断依据**：正确的执行顺序是「从调试到发布」 → 「签名配置」 → 「体积优化」 → 「混淆与符号」。在本课中，正确顺序是：1. 从调试到发布 → 2. 签名配置 → 3. 体积优化 → 4. 混淆与符号。本课围绕正式签名、按 ABI 拆分、混淆与符号保留、发布清单。
+- **判断依据**：正确的执行顺序是「从调试到发布」 → 「签名配置」 → 「体积优化」 → 「混淆与符号」。在本课中，正确顺序是：1. 从调试到发布 → 2. 签名配置 → 3. 体积优化 → 4. 混淆与符号。本课围绕正式签名、按 ABI 拆分、混淆与符号保留、发布清单。“按照实战”与「实战：Flutter 打包发布 Android」的术语表相呼应，只有符合Flutter、发布、签名约束的“从调试到发布”才是正文支持的结论。
 
 ## English Overview
 
@@ -542,7 +537,7 @@ echo "符号：build/symbols（请归档）"
 - 相关主题：Flutter、发布、签名、混淆、体积优化
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
-## 项目专属规格：本课主题
+## 项目专属规格：实战：Flutter 打包发布 Android
 
 ### 核心场景
 
@@ -617,7 +612,6 @@ pubspec.yaml
 | 下一步做什么？ | 负责人、期限和验证方式 |
 
 > 项目验收围绕「Flutter、发布、签名」：至少完成一次正常路径、一次边界输入、一次失败恢复和一次幂等检查。
-
 
 ## 参考资料与复核
 

@@ -8,7 +8,7 @@
 
 ## 学习目标
 
-- 能用自己的话解释本课主题解决了什么问题，而不是只背术语。
+- 能用自己的话解释TypeScript 构建工具链与测试解决了什么问题，而不是只背术语。
 - 能说清 「TypeScript」、「tsup」、「Vite」、「vitest」 之间的关系，并分别举出一个例子。
 - 能把本课知识放回「TypeScript」的知识体系，说明它和相邻主题的边界。
 - 能完成本课练习，并用验收标准检查自己的结果。
@@ -302,7 +302,7 @@ echo "发布前检查全部通过"
 
 合上教程，用 3～5 句话回答：
 
-1. 本课主题解决了什么问题？
+1. TypeScript 构建工具链与测试解决了什么问题？
 2. 如果没有它，会出现什么具体后果？
 3. 它和「tsup」是什么关系？
 
@@ -406,7 +406,7 @@ export default defineConfig({
 - [ ] 不看解析，能说出「能拦掉漏写 await 的 lint 规则是？」的判断依据。
 - [ ] 不看解析，能说出「tsc --noEmit 的用途是？」的判断依据。
 - [ ] 不看解析，能说出「TypeScript 的项目引用（references）与增量构建的价值是？」的判断依据。
-- [ ] 不看解析，能说出「补全代码：本课主题示例中，下面这行代码缺少哪个…」的判断依据。
+- [ ] 不看解析，能说出的判断依据。
 - [ ] 至少运行一次本课示例，记录输入、输出和一个边界情况。
 - [ ] 把本课最容易混淆的两个概念写成一句话对照。
 
@@ -418,48 +418,43 @@ export default defineConfig({
 
 ## 术语速查
 
+把「TypeScript 构建工具链与测试」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
 | 术语 | 本课语境 |
 | --- | --- |
-| `dist/index.mjs` | 库项目常见组合：tsup 产出 `dist/index.mjs` 与 `dist/index.cjs` + tsc 生成 `.d.ts`，并在 package.json 用 `exports` 字段声明条件导出，避免"双… |
-| `dist/index.cjs` | 库项目常见组合：tsup 产出 `dist/index.mjs` 与 `dist/index.cjs` + tsc 生成 `.d.ts`，并在 package.json 用 `exports` 字段声明条件导出，避免"双… |
-| `.d.ts` | 库项目常见组合：tsup 产出 `dist/index.mjs` 与 `dist/index.cjs` + tsc 生成 `.d.ts`，并在 package.json 用 `exports` 字段声明条件导出，避免"双… |
-| `exports` | 库项目常见组合：tsup 产出 `dist/index.mjs` 与 `dist/index.cjs` + tsc 生成 `.d.ts`，并在 package.json 用 `exports` 字段声明条件导出，避免"双… |
-| `module` | `module`/`moduleResolution` 要与运行时一致（Node ESM 用 node16/nodenext，打包器用 bundler）；`target` 决定语法降级程度；库项目开启 `declarat… |
-| `moduleResolution` | `module`/`moduleResolution` 要与运行时一致（Node ESM 用 node16/nodenext，打包器用 bundler）；`target` 决定语法降级程度；库项目开启 `declarat… |
-| `target` | `module`/`moduleResolution` 要与运行时一致（Node ESM 用 node16/nodenext，打包器用 bundler）；`target` 决定语法降级程度；库项目开启 `declarat… |
-| `declaration` | `module`/`moduleResolution` 要与运行时一致（Node ESM 用 node16/nodenext，打包器用 bundler）；`target` 决定语法降级程度；库项目开启 `declarat… |
-| `declarationMap` | `module`/`moduleResolution` 要与运行时一致（Node ESM 用 node16/nodenext，打包器用 bundler）；`target` 决定语法降级程度；库项目开启 `declarat… |
-| `await` | vitest 与 Vite 共用配置，开箱支持 TS；测试要点：对纯函数做单元测试，对 HTTP/数据库用替身或内存实现做集成测试；异步用例要 `await` 并断言 reject（`await expect(fn())… |
-| `await expect(fn()).rejects.toThrow()` | vitest 与 Vite 共用配置，开箱支持 TS；测试要点：对纯函数做单元测试，对 HTTP/数据库用替身或内存实现做集成测试；异步用例要 `await` 并断言 reject（`await expect(fn())… |
-| `tsc --noEmit` | \| `tsc --noEmit` \| 全量类型检查，进 CI \| |
+| `[TypeScript, tsup, Vite, vitest, CI][index]` | 在「TypeScript 构建工具链与测试」里理解它的定义、输入和输出。 |
+| `[TypeScript, tsup, Vite, vitest, CI][index]` | 本课用它说明边界条件与失败路径。 |
+| `[TypeScript, tsup, Vite, vitest, CI][index]` | 结合「TypeScript 构建工具链与测试」的正文示例确认它的适用条件。 |
+| `[TypeScript, tsup, Vite, vitest, CI][index]` | 在「TypeScript 构建工具链与测试」里理解它的定义、输入和输出。 |
+| `[TypeScript, tsup, Vite, vitest, CI][index]` | 本课用它说明边界条件与失败路径。 |
 
 ## 考点精讲
 
 ### 考点 1：库项目同时产出 ESM 与 CJS 常用？
 
-- **判断依据**：正确答案是「tsup/esbuild 配合 tsc 生成 d.ts」。打包器负责产物格式，tsc 负责类型声明。判断这类题时，要把「tsup/esbuild 配合 tsc 生成 d.ts」放回题干限定的对象、输入和边界，「只用 Babel（忽略了题干限定的前提）」、「webpack」 等说法虽然包含相关术语，但范围或前提与本题不一致。
+- **判断依据**：在「TypeScript 构建工具链与测试」里，tsup/esbuild 配合 tsc 生成 d.ts。打包器负责产物格式，tsc 负责类型声明。把“tsup/esbuild 配合 tsc”代回「TypeScript 构建工具链与测试」里“库项目同时产出 ESM 与 CJS 常用”的例子核对，条件一旦改变，结论就要用TypeScript、tsup、Vite重新推导。
 
-### 考点 2：下面这段 TypeScript 代码复现了“TypeScript 构建工具链与测试”中 TypeScript、tsup、Vite 相关的一个常见故障，哪一项最准确地解释了问题？
+### 考点 2：这段 TypeScript 代码是「TypeScript 构建工具链与测试」的示例片段，下面哪一项描述与它一致？
 
-- **判断依据**：本题应选「== 会先做类型转换，"0" 被转成数字 0 后与 false 相等」。本题应选== 会先做类型转换，"0" 被转成数字 0 后与 false 相等。在这个复现里，这让 TypeScript 的判断结果和直觉相反。在这个复现里，最后一行 input + 1 触发字符串拼接得到 "01"，要得到 tsup 的严格结果，应使用 Number(input) === 0 或 === 比较。
+- **判断依据**：在「TypeScript 构建工具链与测试」里，这段代码只做静态声明，没有循环、分支或可观察输出。这段代码出自「TypeScript 构建工具链与测试」的正文示例，围绕TypeScript、tsup、Vite展开；把输入或边界换成空值、极值或失败情况后，结论要以「TypeScript 构建工具链与测试」的实际运行结果为准。
 
 ### 考点 3：能拦掉漏写 await 的 lint 规则是？
 
-- **判断依据**：符合题干条件的是「no-floating-promises」。它要求 Promise 被 await、return 或显式 void 处理。正确的判断需要逐项核对定义、版本和适用条件（tsbuildtest 第 3 题）。正确的判断需要逐项核对定义、版本和适用条件（ts_build_test 第 3 题）。
+- **判断依据**：在「TypeScript 构建工具链与测试」里，no-floating-promises。它要求 Promise 被 await、return 或显式 void 处理。在「TypeScript 构建工具链与测试」里判断这道题，要把TypeScript、tsup、Vite的条件、过程与失败路径逐项对齐，换成“能拦掉漏写 await 的 lint”这个场景，只有满足前提的结论才成立。
 
 ### 考点 4：tsc --noEmit 的用途是？
 
-- **判断依据**：结论应落在「只做类型检查，不生成 JS 文件」。打包器通常不做类型检查，所以 CI 里要单独跑一次 tsc --noEmit 把类型问题拦住。这道题要求区分概念与边界，「只做类型检查，不生成 JS 文件」只有在题干给出的前提下才成立，而「把 TS 编译成 JS」、「生成类型声明文件」缺少同一组条件。
+- **判断依据**：在「TypeScript 构建工具链与测试」里，结论应落在「只做类型检查，不生成 JS 文件」。打包器通常不做类型检查，所以 CI 里要单独跑一次 tsc --noEmit 把类型问题拦住。在「TypeScript 构建工具链与测试」里，这道题要求区分概念与边界，「只做类型检查，不生成 JS 文件」只有在题干给出的前提下才成立，而「把 TS 编译成 JS」、「生成类型声明文件」缺少同一组条件。
 
 ### 考点 5：围绕“TypeScript 构建工具链与测试”中的 TypeScript、tsup、Vite，下列哪两项是本课强调的实践判断？
 
-- **判断依据**：正确答案包括「验证 tsup 时要固定版本并覆盖边界输入，结论才可复现」、「学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程」。正确答案是验证 tsup 时要固定版本并覆盖边界输入。在本课主题里，判断 tsup 时要固定版本与边界输入，所以“验证 tsup 时要固定版本并覆盖边界输入，结论才可复现”才可复现。判断这类题时，要把验证 tsup 时要固定版本并覆盖边界输入，结论才可复现。
+- **判断依据**：在「TypeScript 构建工具链与测试」里，学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程。在TypeScript 构建工具链与测试里，判断 tsup 时要固定版本与边界输入，所以“验证 tsup 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
 
 ### 考点 6：补全代码：「TypeScript 构建工具链与测试」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
 
 `"____": false`
 
-- **判断依据**：围绕 补全代码：本课主题示例中，下面这行… 作答时，先用TypeScript建立输入与输出的基线，再把sideEffects 或 sideeffects代入边界条件核对，结论才能复现。解题的关键不是记住孤立术语，而是确认「sideEffects 或 sideeffects」是否完整覆盖题干的输入、输出和失败路径，并排除这类相邻概念。
+- **判断依据**：在「TypeScript 构建工具链与测试」里，sideEffects。回到「TypeScript 构建工具链与测试」的正文示例，用“补全代码”走一遍TypeScript、tsup、Vite的完整流程，能复现的结论才可以保留。回到「TypeScript 构建工具链与测试」的正文示例，用“TypeScript”走一遍TypeScript、tsup、Vite的完整流程，能复现的结论才可以保留。
 
 ## English Overview
 
@@ -480,7 +475,6 @@ export default defineConfig({
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：TypeScript、tsup、Vite、vitest、CI
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
-
 
 ## 参考资料与复核
 
