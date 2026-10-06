@@ -1,6 +1,6 @@
 # Agent 成本与性能优化
 
-> 内容更新时间：2026-10-03
+> 内容更新时间：2026-10-06
 
 ![Agent 成本与性能优化的主要手段](images/diagram_ai_cost_performance.webp)
 
@@ -423,7 +423,7 @@ print(round(task.total(), 5), task.cache_hit_rate(), task.optimization_hint())
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
+- 最后更新：2026-10-06
 - 学习阶段：高级
 - 适用环境：主流大模型 API、开源模型与向量数据库
 - 内容来源：内置结构化课程与工程实践整理

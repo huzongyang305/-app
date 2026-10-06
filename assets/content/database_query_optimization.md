@@ -1,6 +1,6 @@
 # 查询优化与执行计划
 
-> 内容更新时间：2026-10-03
+> 内容更新时间：2026-10-06
 
 ![查询优化器从 SQL 到执行计划](images/diagram_query_optimization.webp)
 
@@ -335,7 +335,7 @@ EXPLAIN (ANALYZE, BUFFERS) SELECT * FROM orders WHERE user_id = 42;
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
+- 最后更新：2026-10-06
 - 学习阶段：进阶
 - 适用环境：PostgreSQL / MySQL / SQLite 等主流数据库
 - 内容来源：内置结构化课程与工程实践整理

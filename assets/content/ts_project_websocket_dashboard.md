@@ -4,7 +4,7 @@
 
 ![实战：TypeScript 实时监控面板](images/remaining_ts_project_websocket_dashboard.webp)
 
-> 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：130 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：130 分钟
 
 ## 学习目标
 
@@ -382,7 +382,7 @@ export type MetricMessage = Extract<z.infer<typeof Message>, { type: 'metric' }>
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
+- 最后更新：2026-10-06
 - 学习阶段：高级
 - 适用环境：TypeScript 5.x / Node.js 22+
 - 内容来源：内置结构化课程与工程实践整理

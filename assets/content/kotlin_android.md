@@ -1,6 +1,6 @@
 # Kotlin Android 架构
 
-> 内容更新时间：2026-10-03
+> 内容更新时间：2026-10-06
 
 ![Kotlin Android 应用的分层架构](images/diagram_kt_android.webp)
 
@@ -437,7 +437,7 @@ fun main() {
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
+- 最后更新：2026-10-06
 - 学习阶段：高级
 - 适用环境：Kotlin 2.x / Android SDK
 - 内容来源：内置结构化课程与工程实践整理

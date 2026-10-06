@@ -1,6 +1,6 @@
 # TypeScript 基础类型
 
-> 内容更新时间：2026-10-03
+> 内容更新时间：2026-10-06
 
 ![TypeScript 基础类型一览](images/diagram_ts_basic_types.webp)
 
@@ -415,6 +415,11 @@ count=4
 - **题目**：运行下面的 TypeScript 代码，控制台输出是什么？
 - **判断依据**：values 被标注为 number[]，数组中的 1、2、3 都是数字。reduce 从初始值 0 开始，依次执行 0+1、1+2、3+3，最终得到 6。这道题要求区分概念与边界，「6」只有在题干给出的前提下才成立，而「123」、「0」缺少同一组条件。“运行下面的”与「TypeScript 基础类型」的术语表相呼应，只有符合TypeScript 基础类型、TypeScript、入门练习约束的“6”才是正文支持的结论。
 
+### 考点 5：填空·TypeScript 基础类型
+
+- **题目**：补全代码：声明一个不允许修改内容的字符串数组，应写成 ____ string[] = ["a"];。
+- **判断依据**：readonly string[] 等价于 ReadonlyArray<string>，它禁止调用 push、pop 等会修改数组内容的成员，读取与遍历不受影响。TypeScript 基础类型 的正文说明，readonly 修饰只在编译期生效，运行时的数组仍然可以变化；如果要让变量绑定也不可重新赋值，还需要用 const 声明。
+
 ## English Overview
 
 **Title:** TypeScript Basic Types
@@ -428,7 +433,7 @@ count=4
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
+- 最后更新：2026-10-06
 - 学习阶段：入门
 - 适用环境：TypeScript 5.x / Node.js 22+
 - 内容来源：内置结构化课程与工程实践整理

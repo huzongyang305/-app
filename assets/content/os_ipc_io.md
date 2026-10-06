@@ -1,6 +1,6 @@
 # 进程间通信与 IO 模型
 
-> 内容更新时间：2026-10-03
+> 内容更新时间：2026-10-06
 
 ![管道、共享内存与消息队列对比](images/diagram_ipc_io.webp)
 
@@ -350,7 +350,7 @@ print(socketpair_demo())
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
+- 最后更新：2026-10-06
 - 学习阶段：进阶
 - 适用环境：Linux 6.x / POSIX
 - 内容来源：内置结构化课程与工程实践整理
@@ -371,6 +371,65 @@ print(socketpair_demo())
 | [Linux man-pages](https://man7.org/linux/man-pages/) | 系统调用与用户态接口 |
 
 > 「进程间通信与 IO 模型」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+
+## 代码对照与验证
+
+这一节用 Python 标准库演示进程间通信的三种典型方式，并对照它们的适用场景。
+
+### 对照一：管道传递结构化数据
+
+```python
+from multiprocessing import Pipe, Process
+
+def worker(sender):
+    sender.send({"task": "resize", "size": [640, 480]})
+    sender.close()
+
+if __name__ == "__main__":
+    receiver, sender = Pipe(duplex=False)
+    process = Process(target=worker, args=(sender,))
+    process.start()
+    sender.close()
+    print(receiver.recv())
+    process.join()
+```
+
+管道适合点对点、消息量适中的场景：发送方写入的对象会被序列化，接收方按顺序读出。
+
+### 对照二：共享内存与锁
+
+```python
+from multiprocessing import Lock, Process, Value
+
+def increment(counter, lock):
+    for _ in range(1000):
+        with lock:
+            counter.value += 1
+
+if __name__ == "__main__":
+    counter = Value("i", 0)
+    lock = Lock()
+    processes = [Process(target=increment, args=(counter, lock)) for _ in range(4)]
+    [p.start() for p in processes]
+    [p.join() for p in processes]
+    print(counter.value)
+```
+
+共享内存避免复制开销，但并发写必须加锁；漏掉锁会出现丢失更新，且难以复现。
+
+### 对照三：三种机制怎么选
+
+| 机制 | 适合的数据 | 主要成本 |
+| --- | --- | --- |
+| 管道 / 队列 | 消息、任务派发 | 序列化与复制 |
+| 共享内存 | 大块数组、图像缓冲 | 同步与生命周期管理 |
+| 文件与套接字 | 跨机器、持久化数据 | 延迟与协议设计 |
+
+### 验证清单
+
+- 每个进程都明确退出条件，主进程会等待子进程回收。
+- 共享状态都有锁或原子操作保护，并通过多次运行验证结果稳定。
+- 跨机器场景优先用套接字或消息队列，而不是共享内存。
 
 ## 复习与迁移
 

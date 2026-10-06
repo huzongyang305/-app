@@ -1,6 +1,6 @@
 # C++ Concepts 与 Ranges
 
-> 内容更新时间：2026-10-03
+> 内容更新时间：2026-10-06
 
 ![Concepts 与 Ranges 的职责对比](images/diagram_cpp_concepts_ranges.webp)
 
@@ -417,7 +417,7 @@ int main() {
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
+- 最后更新：2026-10-06
 - 学习阶段：高级
 - 适用环境：C++20 / GCC 13+ 或 Clang 17+
 - 内容来源：内置结构化课程与工程实践整理

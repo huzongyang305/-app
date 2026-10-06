@@ -1,6 +1,6 @@
 # 图解消息队列投递语义
 
-> 内容更新时间：2026-10-03
+> 内容更新时间：2026-10-06
 
 ![图解消息队列投递语义](images/visual_mq_delivery.webp)
 
@@ -162,6 +162,8 @@ kafka-consumer-groups.sh --describe --group my-group --bootstrap-server localhos
 | 重试无退避 | 重试风暴 | 指数退避加抖动 |
 | 大消息塞队列 | 吞吐骤降 | 只传引用，内容放对象存储 |
 | 不监控 lag | 堆积到故障才发现 | 对 lag 设告警 |
+
+![投递语义与消费端要求对照图](images/p2_mq_delivery_compare.webp)
 
 ## 本课小结
 - 三种语义中，**至少一次投递加消费端幂等**是工程上最实用的组合。
@@ -614,7 +616,7 @@ ON CONFLICT (order_no) DO NOTHING;
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
+- 最后更新：2026-10-06
 - 学习阶段：进阶
 - 适用环境：通用图解与系统原理
 - 内容来源：内置结构化课程与工程实践整理

@@ -159,6 +159,10 @@ Map<String, dynamic> _buildReport(
     0,
     (sum, item) => sum + item.characters,
   );
+  final totalRawCharacters = entries.fold<int>(
+    0,
+    (sum, item) => sum + item.rawCharacters,
+  );
   return <String, dynamic>{
     'generated_at': DateTime.now().toUtc().toIso8601String(),
     'content_version': manifest['content_version']?.toString() ?? '',
@@ -169,9 +173,13 @@ Map<String, dynamic> _buildReport(
     'lesson_count': entries.length,
     'category_count': byCategory.length,
     'total_characters': totalCharacters,
+    'total_raw_characters': totalRawCharacters,
     'average_characters': entries.isEmpty
         ? 0
         : (totalCharacters / entries.length).round(),
+    'average_raw_characters': entries.isEmpty
+        ? 0
+        : (totalRawCharacters / entries.length).round(),
     'machine_passed': machinePassed.length,
     'machine_warnings': entries.length - machinePassed.length,
     'template_hits': entries.fold<int>(
@@ -219,15 +227,17 @@ String _renderMarkdown(Map<String, dynamic> report) {
     ..writeln('| 低风险 | ${report['risk_low']} |')
     ..writeln('| 已人工复核 | ${report['reviewed']} |')
     ..writeln('| 待人工复核 | ${report['pending_review']} |')
-    ..writeln('| 平均字数 | ${report['average_characters']} |')
+    ..writeln('| 平均字数（去空白） | ${report['average_characters']} |')
+    ..writeln('| 平均字数（原始字符） | ${report['average_raw_characters']} |')
+    ..writeln('| 总字数（原始字符） | ${report['total_raw_characters']} |')
     ..writeln()
     ..writeln('> 说明：机器校验只覆盖结构与完整性问题，不能替代人工事实核对。')
     ..writeln('> 没有审核人记录的课程保持 pending，不伪造审核结果。')
     ..writeln()
     ..writeln('## 课程明细')
     ..writeln()
-    ..writeln('| 课程 | 分类 | 字数 | 题目 | 模板 | 引用集合 | 语言错配 | 风险 | 人工复核 |')
-    ..writeln('| --- | --- | --- | --- | --- | --- | --- | --- | --- |');
+    ..writeln('| 课程 | 分类 | 字数(去空白) | 原始字数 | 题目 | 模板 | 引用集合 | 语言错配 | 风险 | 人工复核 |')
+    ..writeln('| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |');
   for (final raw in (report['lessons'] as List)) {
     final item = (raw as Map).cast<String, dynamic>();
     final review = item['review_status'] == 'reviewed'
@@ -236,7 +246,7 @@ String _renderMarkdown(Map<String, dynamic> report) {
     final reference = item['duplicate_reference_set'] == true ? '重复' : '唯一';
     buffer.writeln(
       '| ${item['title']} | ${item['category_id']} | '
-      '${item['characters']} | ${item['questions']} | '
+      '${item['characters']} | ${item['raw_characters']} | ${item['questions']} | '
       '${item['template_hits']} | $reference | '
       '${item['language_mismatches']} | ${item['risk_priority']} | $review |',
     );
@@ -250,6 +260,7 @@ class _LedgerEntry {
     required this.categoryId,
     required this.title,
     required this.characters,
+    required this.rawCharacters,
     required this.questions,
     required this.codeBlocks,
     required this.images,
@@ -267,6 +278,7 @@ class _LedgerEntry {
   final String categoryId;
   final String title;
   final int characters;
+  final int rawCharacters;
   final int questions;
   final int codeBlocks;
   final int images;
@@ -287,6 +299,9 @@ class _LedgerEntry {
     required bool duplicateReferenceSet,
   }) {
     final issues = <String>[];
+    // 同时记录去空白字数与原始字符数：审计工具用原始字符数，
+    // 台账此前只报去空白字数，两个口径曾对不上。
+    final rawCharacters = markdown.length;
     final characters = markdown.replaceAll(RegExp(r'\s'), '').length;
     final fences = RegExp(r'^```', multiLine: true).allMatches(markdown).length;
     final codeBlocks = fences ~/ 2;
@@ -334,6 +349,7 @@ class _LedgerEntry {
       categoryId: categoryId,
       title: title is Map ? title['zh']?.toString() ?? '' : '$title',
       characters: characters,
+      rawCharacters: rawCharacters,
       questions: questions,
       codeBlocks: codeBlocks,
       images: images,
@@ -353,6 +369,7 @@ class _LedgerEntry {
     'category_id': categoryId,
     'title': title,
     'characters': characters,
+    'raw_characters': rawCharacters,
     'questions': questions,
     'code_blocks': codeBlocks,
     'images': images,

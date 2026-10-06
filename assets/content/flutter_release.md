@@ -1,6 +1,6 @@
 # 实战：Flutter 打包发布 Android
 
-> 内容更新时间：2026-10-03
+> 内容更新时间：2026-10-06
 
 ![Flutter Android 发布流程](images/diagram_mobile_flutter_release.webp)
 
@@ -543,8 +543,8 @@ echo "符号：build/symbols（请归档）"
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
-- 学习阶段：高级
+- 最后更新：2026-10-06
+- 学习阶段：基础
 - 适用环境：Flutter 3.x / Dart 3.x
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：Flutter、发布、签名、混淆、体积优化

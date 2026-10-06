@@ -1,6 +1,6 @@
 # 图解 Kubernetes 调度与探针
 
-> 内容更新时间：2026-10-03
+> 内容更新时间：2026-10-06
 
 ![图解 Kubernetes 调度与探针](images/visual_k8s_scheduling.webp)
 
@@ -201,6 +201,8 @@ kubectl top pod <pod>                           # 实际资源用量
 | 镜像标签用 latest | 版本不可控 | 用 commit SHA |
 | 不看 describe 只看 logs | 找不到调度或拉镜像问题 | 先看事件再看日志 |
 
+![Pod 调度过程与三类探针对照图](images/p2_k8s_scheduling_compare.webp)
+
 ## 本课小结
 - Pod 的一生：**调度 → 启动 → 探针 → 接流量**，每一环都有对应的排查命令。
 - 三种探针职责不同：**startup 保护启动、readiness 控制流量、liveness 负责重启**。
@@ -395,7 +397,7 @@ kubectl top pod <pod>                           # 实际资源用量
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
+- 最后更新：2026-10-06
 - 学习阶段：进阶
 - 适用环境：通用图解与系统原理
 - 内容来源：内置结构化课程与工程实践整理

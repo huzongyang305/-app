@@ -4,7 +4,7 @@
 
 ![认证与授权](images/remaining_auth_oauth.webp)
 
-> 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：15 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：15 分钟
 
 ## 学习目标
 
@@ -325,6 +325,58 @@ print(new_pkce_pair()[1][:16])
 | `OAuth2` | Summary: Session/JWT/OAuth2, claim validation and permission models.。 |
 | `RBAC` | 它在「认证与授权」里是理解「RBAC」的关键术语，用来解释定义、适用条件与失败路径；它与认证、授权共同决定这一节的判断边界。复习时回到正文示例核对输入、输出和验证方式。 |
 
+## 代码对照与验证
+
+这一节把授权码流程拆成可观察的每一步，并给出令牌校验的最小实现。
+
+### 对照一：授权码 + PKCE 流程
+
+```text
+浏览器                应用后端              授权服务器
+  |-- 1. 生成 code_verifier 与 code_challenge -->|
+  |-- 2. 跳转授权端点（带 challenge） ---------->|
+  |<-- 3. 返回授权码 ----------------------------|
+  |-- 4. 用授权码 + verifier 换令牌 ------------>|
+  |<-- 5. 返回 access_token / refresh_token -----|
+```
+
+PKCE 让公开客户端不必内置密钥：即使授权码被截获，没有 `code_verifier` 也换不到令牌。
+
+### 对照二：JWT 载荷校验
+
+```python
+import base64
+import hashlib
+import hmac
+import json
+
+def b64url(data: bytes) -> str:
+    return base64.urlsafe_b64encode(data).rstrip(b"=").decode()
+
+header = b64url(json.dumps({"alg": "HS256", "typ": "JWT"}).encode())
+payload = b64url(json.dumps({"sub": "u1", "exp": 1893456000}).encode())
+signing_input = f"{header}.{payload}".encode()
+signature = b64url(hmac.new(b"secret", signing_input, hashlib.sha256).digest())
+token = f"{header}.{payload}.{signature}"
+print(token.split(".")[2] == signature)
+```
+
+校验时必须先验证签名，再检查 `exp`、`aud`、`iss`；顺序颠倒会让攻击者用未签名的载荷探测系统。
+
+### 对照三：常见错误对照
+
+| 错误做法 | 后果 | 修正 |
+| --- | --- | --- |
+| 把令牌放在 URL 参数 | 进入日志与浏览器历史 | 用 Authorization 头或 HttpOnly Cookie |
+| 只在前端校验过期 | 过期令牌仍可访问接口 | 服务端每次校验签名与 exp |
+| refresh_token 永不过期 | 泄露后长期可用 | 轮换并绑定设备或会话 |
+
+### 验证清单
+
+- 授权码只能使用一次，重放会被拒绝。
+- 令牌校验同时检查签名、有效期、受众与签发者。
+- 退出登录会失效服务端会话，而不只是清除本地存储。
+
 ## 考点精讲
 
 ### 考点 1：概念判断·认证
@@ -370,8 +422,8 @@ print(new_pkce_pair()[1][:16])
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
-- 学习阶段：高级
+- 最后更新：2026-10-06
+- 学习阶段：进阶
 - 适用环境：TCP/IP、HTTP/2、HTTP/3 与现代网络栈
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：认证、授权、JWT、OAuth2、RBAC

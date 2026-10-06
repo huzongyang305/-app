@@ -1,6 +1,6 @@
 # Flutter 状态管理与性能
 
-> 内容更新时间：2026-10-03
+> 内容更新时间：2026-10-06
 
 ![状态分层与重建范围](images/diagram_mobile_flutter_state.webp)
 
@@ -552,8 +552,8 @@ class _ItemPageState extends State<ItemPage> {
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
-- 学习阶段：进阶
+- 最后更新：2026-10-06
+- 学习阶段：入门
 - 适用环境：Flutter 3.x / Dart 3.x
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：Flutter、状态管理、Provider、性能、生命周期

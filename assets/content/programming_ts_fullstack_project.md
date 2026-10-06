@@ -1,6 +1,6 @@
 # TypeScript 实战：全栈类型安全
 
-> 内容更新时间：2026-10-03
+> 内容更新时间：2026-10-06
 
 ![全栈类型安全的数据流](images/diagram_ts_fullstack.webp)
 
@@ -530,7 +530,7 @@ export function parseCreateOrder(body: unknown): CreateOrderInput {
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
+- 最后更新：2026-10-06
 - 学习阶段：高级
 - 适用环境：TypeScript 5.x / Node.js 22+
 - 内容来源：内置结构化课程与工程实践整理

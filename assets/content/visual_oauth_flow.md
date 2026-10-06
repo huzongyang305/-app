@@ -1,6 +1,6 @@
 # 图解 OAuth 2.0 授权码流程与 PKCE
 
-> 内容更新时间：2026-10-03
+> 内容更新时间：2026-10-06
 
 ![图解 OAuth 2.0 授权码流程与 PKCE](images/visual_oauth_flow.webp)
 
@@ -154,6 +154,8 @@ async function getToken(): Promise<string> {
 | 只判是否有令牌 | 越权访问 | 资源级鉴权 |
 | 并发刷新令牌 | 互相覆盖失效 | 刷新串行化 |
 | scope 申请过大 | 权限泛滥 | 最小权限 |
+
+![授权码流程与 PKCE 对照图](images/p2_oauth_flow_compare.webp)
 
 ## 本课小结
 - 推荐唯一组合：**授权码 + PKCE**；隐式与密码模式已废弃。
@@ -350,7 +352,7 @@ const payload = verifyJwt(token, publicKey, {
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
+- 最后更新：2026-10-06
 - 学习阶段：进阶
 - 适用环境：通用图解与系统原理
 - 内容来源：内置结构化课程与工程实践整理

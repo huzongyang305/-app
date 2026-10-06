@@ -4,7 +4,7 @@
 
 ![设计模式与 SOLID](images/category_design_patterns.webp)
 
-> 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：16 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：16 分钟
 
 ## 学习目标
 
@@ -488,6 +488,61 @@ print(service.place(Order(200, VipDiscount())), len(notifier.sent))
 
 <!-- p0-depth-v2:end -->
 
+## 代码对照与验证
+
+这一节把设计模式还原成「问题、结构、代价」三段，并给出可运行的策略模式实现。
+
+### 对照一：策略模式消除条件分支
+
+```python
+from dataclasses import dataclass
+from typing import Callable
+
+@dataclass
+class Order:
+    amount: float
+    kind: str
+
+pricing: dict[str, Callable[[Order], float]] = {
+    "normal": lambda order: order.amount,
+    "vip": lambda order: order.amount * 0.9,
+    "promo": lambda order: order.amount - 20,
+}
+
+def total(order: Order) -> float:
+    return pricing[order.kind](order)
+
+print(total(Order(100, "vip")))
+print(total(Order(100, "promo")))
+```
+
+把变化点封装成策略，新增折扣只需要注册一个函数，而不是修改调用方的分支。
+
+### 对照二：模式选型速查
+
+| 模式 | 解决的问题 | 引入的代价 |
+| --- | --- | --- |
+| 策略 | 多种算法可替换 | 类或函数数量增加 |
+| 工厂 | 创建逻辑集中 | 需要维护注册表 |
+| 观察者 | 一对多通知 | 事件顺序与内存泄漏风险 |
+| 装饰器 | 动态叠加职责 | 调试时调用链变长 |
+
+### 对照三：不该用模式的时候
+
+```text
+只有一个实现，且短期内不会变化      -> 直接写函数
+需求尚未稳定，分支少于三处          -> 先用简单条件
+模式引入的间接层无法被测试覆盖      -> 说明抽象收益不成立
+```
+
+模式是为了隔离已确认的变化点；在没有变化点的地方引入抽象，只会增加阅读成本。
+
+### 验证清单
+
+- 每个模式都能对应到一个具体的扩展场景。
+- 新增一种实现无需修改既有调用方。
+- 抽象层的单元测试覆盖了各分支，而不是只测正常路径。
+
 ## 考点精讲
 
 ### 考点 1：概念判断·设计模式
@@ -533,7 +588,7 @@ print(service.place(Order(200, VipDiscount())), len(notifier.sent))
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
+- 最后更新：2026-10-06
 - 学习阶段：入门
 - 适用环境：通用软件工程实践
 - 内容来源：内置结构化课程与工程实践整理

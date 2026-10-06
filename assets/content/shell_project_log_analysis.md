@@ -4,7 +4,7 @@
 
 ![实战：Shell 日志分析与告警](images/remaining_shell_project_log_analysis.webp)
 
-> 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：90 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：90 分钟
 
 ## 学习目标
 
@@ -381,7 +381,7 @@ printf 'total=%s errors=%s error_rate=%s\n' "$Total" "$Errors" "$Rate"
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
+- 最后更新：2026-10-06
 - 学习阶段：高级
 - 适用环境：Bash 5 / POSIX Shell
 - 内容来源：内置结构化课程与工程实践整理

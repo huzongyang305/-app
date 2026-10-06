@@ -4,7 +4,7 @@
 
 ![高可用与容量规划](images/category_high_availability.webp)
 
-> 内容更新时间：2026-10-03 · 学习阶段：基础 · 预计用时：17 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：17 分钟
 
 ## 学习目标
 
@@ -335,7 +335,7 @@ print(budget.remaining_ratio(), budget.policy())
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
+- 最后更新：2026-10-06
 - 学习阶段：基础
 - 适用环境：分布式系统与云原生基础设施
 - 内容来源：内置结构化课程与工程实践整理
@@ -356,6 +356,60 @@ print(budget.remaining_ratio(), budget.policy())
 | [Microsoft 云设计模式](https://learn.microsoft.com/azure/architecture/patterns/) | 重试、熔断与队列模式 |
 
 > 「高可用与容量规划」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+
+## 代码对照与验证
+
+这一节把冗余、健康检查与故障切换串成一条可演练的链路。
+
+### 对照一：健康检查与就绪判断
+
+```python
+import time
+
+class Health:
+    def __init__(self):
+        self.last_success = time.time()
+
+    def mark_success(self):
+        self.last_success = time.time()
+
+    def is_ready(self, timeout=3.0):
+        return time.time() - self.last_success < timeout
+
+health = Health()
+health.mark_success()
+print(health.is_ready())
+print(health.is_ready(timeout=-1))
+```
+
+存活检查回答「进程要不要重启」，就绪检查回答「能不能接流量」。把两者混用会导致
+依赖抖动时所有实例同时被摘除。
+
+### 对照二：故障切换时序
+
+```text
+主节点心跳正常       主节点失联              新主节点选出
+  |--------------------X----------------------|
+  检测窗口           选举窗口             流量恢复
+  （秒级）           （秒级）             （需要客户端重连）
+```
+
+切换时间等于检测加选举加上层重连，评估可用性时要把三段都算进去。
+
+### 对照三：单点排查清单
+
+| 层次 | 常见单点 | 冗余方式 |
+| --- | --- | --- |
+| 接入 | 单个网关或 VIP | 多实例 + 健康探测 |
+| 应用 | 单副本部署 | 多副本 + 反亲和调度 |
+| 数据 | 单主库 | 主从/多副本 + 自动切换 |
+| 依赖 | 单可用区 | 跨可用区部署 |
+
+### 验证清单
+
+- 至少做过一次真实的主节点故障演练，而不只是理论推演。
+- 切换期间客户端有重试与退避，不会雪崩。
+- 演练后有记录：检测耗时、切换耗时、影响范围。
 
 ## 复习与迁移
 

@@ -1,6 +1,6 @@
 # TypeScript 测试策略
 
-> 内容更新时间：2026-10-03
+> 内容更新时间：2026-10-06
 
 ![Vitest、Testing Library 与 MSW 的组合](images/diagram_ts_testing.webp)
 
@@ -504,7 +504,7 @@ describe("parseTags", () => {
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
+- 最后更新：2026-10-06
 - 学习阶段：进阶
 - 适用环境：TypeScript 5.x / Node.js 22+
 - 内容来源：内置结构化课程与工程实践整理

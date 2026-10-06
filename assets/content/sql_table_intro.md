@@ -1,6 +1,6 @@
 # 表与 SQL 入门
 
-> 内容更新时间：2026-10-03
+> 内容更新时间：2026-10-06
 
 ![表结构与主键约束示意](images/diagram_db_table_intro.webp)
 
@@ -432,6 +432,11 @@ id | name
 - **题目**：补全 SQL：创建一张学生表应使用 ____ students (id INTEGER PRIMARY KEY, name TEXT);。
 - **判断依据**：CREATE TABLE 用来定义表名、列名、数据类型和约束。示例中的 id INTEGER PRIMARY KEY 表示主键，通常会唯一标识每一行。这道题要求区分概念与边界，「CREATE TABLE 或 create table」只有在题干给出的前提下才成立，而缺少同一组条件。把“CREATE TABLE”代回「表与 SQL 入门」里“补全 SQL”的例子核对，条件一旦改变，结论就要用表与 SQL 入门、数据库、入门练习重新推导。
 
+### 考点 5：填空·表与 SQL 入门
+
+- **题目**：补全 SQL：让某列的取值在整张表里不重复，应在列定义后加上 ____ 约束。
+- **判断依据**：UNIQUE 约束保证这一列或多列组合的取值在表中不重复，数据库会为它建立唯一索引。表与 SQL 入门 的正文在建表示例里同时使用了 PRIMARY KEY 与 UNIQUE：主键既唯一又非空，而且一张表只能有一个；UNIQUE 允许多个列各自声明，也允许插入 NULL，两者语义不能互相替代。
+
 ## English Overview
 
 **Title:** Tables and SQL Basics
@@ -445,7 +450,7 @@ id | name
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
+- 最后更新：2026-10-06
 - 学习阶段：入门
 - 适用环境：PostgreSQL / MySQL / SQLite 等主流数据库
 - 内容来源：内置结构化课程与工程实践整理

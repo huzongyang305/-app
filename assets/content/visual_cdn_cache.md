@@ -1,6 +1,6 @@
 # 图解 CDN 缓存与回源
 
-> 内容更新时间：2026-10-03
+> 内容更新时间：2026-10-06
 
 ![图解 CDN 缓存与回源](images/visual_cdn_cache.webp)
 
@@ -164,6 +164,8 @@ cdn-cli purge --prefix https://example.com/assets/
 | 忽略 Vary 头 | 缓存了错误变体 | 明确 Vary 字段 |
 | 不监控命中率 | 成本高且慢 | 设命中率告警 |
 | 私有数据设 public | 泄露 | 私有内容不缓存或 private |
+
+![CDN 请求路径与缓存策略对照图](images/p2_cdn_cache_compare.webp)
 
 ## 本课小结
 - CDN 的效果由**缓存键与 TTL** 决定，配置前先想清楚哪些内容可以共享。
@@ -450,7 +452,7 @@ cdn-cli purge --prefix https://example.com/assets/
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
+- 最后更新：2026-10-06
 - 学习阶段：进阶
 - 适用环境：通用图解与系统原理
 - 内容来源：内置结构化课程与工程实践整理

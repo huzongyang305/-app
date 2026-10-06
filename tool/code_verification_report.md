@@ -1,6 +1,6 @@
 # 代码块验证报告
 
-生成时间：2026-10-06T22:00:16.476249
+生成时间：2026-10-06T22:52:15.388305
 
 > 片段是课程里有意截取、无法独立编译的示例，不计入硬失败；
 > 排错练习是课程里有意保留错误的代码，同样不计入硬失败；
@@ -18,7 +18,7 @@
 | cpp | 142 | 0 | 0 | 0 |
 | cron | 1 | 0 | 0 | 0 |
 | csharp | 122 | 0 | 0 | 0 |
-| css | 7 | 0 | 0 | 0 |
+| css | 10 | 0 | 0 | 0 |
 | dart | 19 | 0 | 0 | 0 |
 | dockerfile | 7 | 0 | 0 | 0 |
 | gitignore | 1 | 0 | 0 | 0 |
@@ -40,18 +40,18 @@
 | powershell | 2 | 0 | 0 | 0 |
 | properties | 5 | 0 | 0 | 0 |
 | protobuf | 4 | 0 | 0 | 0 |
-| python | 696 | 0 | 0 | 0 |
+| python | 704 | 0 | 0 | 0 |
 | rust | 81 | 1 | 0 | 0 |
 | sql | 76 | 0 | 0 | 0 |
 | swift | 35 | 0 | 0 | 0 |
-| text | 1192 | 0 | 0 | 0 |
+| text | 1200 | 0 | 0 | 0 |
 | toml | 4 | 0 | 0 | 0 |
 | ts | 9 | 0 | 0 | 0 |
 | tsx | 7 | 0 | 0 | 0 |
 | typescript | 110 | 2 | 0 | 0 |
 | verilog | 1 | 0 | 0 | 0 |
 | xml | 14 | 0 | 0 | 0 |
-| yaml | 36 | 2 | 0 | 0 |
+| yaml | 37 | 2 | 0 | 0 |
 
 ## 片段与依赖提示
 
@@ -82,8 +82,8 @@
 - shell_ops_scripts:230 bash 结构不平衡
 - shell_security:168 bash 结构不平衡
 - shell_security:269 bash 结构不平衡
-- visual_concurrency_schedule:216 bash 结构不平衡
-- visual_concurrency_schedule:303 bash 结构不平衡
+- visual_concurrency_schedule:218 bash 结构不平衡
+- visual_concurrency_schedule:305 bash 结构不平衡
 
 ## 失败明细
 

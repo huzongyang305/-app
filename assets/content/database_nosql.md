@@ -1,6 +1,6 @@
 # NoSQL 数据库
 
-> 内容更新时间：2026-10-03
+> 内容更新时间：2026-10-06
 
 ![四类 NoSQL 数据模型对比](images/diagram_db_nosql_family.webp)
 
@@ -342,7 +342,7 @@ print(choose_store({"full_text": True}))
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
+- 最后更新：2026-10-06
 - 学习阶段：进阶
 - 适用环境：PostgreSQL / MySQL / SQLite 等主流数据库
 - 内容来源：内置结构化课程与工程实践整理

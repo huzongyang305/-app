@@ -1,6 +1,6 @@
 # Rust 实战：命令行工具
 
-> 内容更新时间：2026-10-03
+> 内容更新时间：2026-10-06
 
 ![Rust 命令行工具的实现流程](images/diagram_rust_cli_project.webp)
 
@@ -600,7 +600,7 @@ cross build --release --target x86_64-unknown-linux-musl
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
+- 最后更新：2026-10-06
 - 学习阶段：高级
 - 适用环境：Rust 1.85+ / Cargo
 - 内容来源：内置结构化课程与工程实践整理

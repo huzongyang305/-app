@@ -1,6 +1,6 @@
 # 密码学原语
 
-> 内容更新时间：2026-10-03
+> 内容更新时间：2026-10-06
 
 ![对称加密、非对称加密与哈希](images/diagram_fund_crypto.webp)
 
@@ -311,7 +311,7 @@ print(hash_password("s3cret")[:32] + "...")
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
+- 最后更新：2026-10-06
 - 学习阶段：高级
 - 适用环境：通用计算机体系结构知识
 - 内容来源：内置结构化课程与工程实践整理
@@ -332,6 +332,63 @@ print(hash_password("s3cret")[:32] + "...")
 | [Linux 内核文档](https://docs.kernel.org/) | 操作系统与硬件接口 |
 
 > 「密码学原语」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+
+## 代码对照与验证
+
+这一节把「对称加密、非对称加密、摘要与签名」放回可验证的代码里：先算出摘要，
+再做完整性校验，最后理解 TLS 为什么需要两套密钥。
+
+### 对照一：摘要与雪崩效应
+
+```python
+import hashlib
+
+payload = b"transfer:100"
+digest = hashlib.sha256(payload).hexdigest()
+print(digest)
+print(hashlib.sha256(b"transfer:101").hexdigest())
+```
+
+输入只改一个字符，摘要就会完全不同，这就是雪崩效应，也是校验数据没有被篡改的基础。
+
+### 对照二：HMAC 完整性校验
+
+```python
+import hashlib
+import hmac
+
+key = b"shared-secret"
+message = b"amount=100&to=alice"
+mac = hmac.new(key, message, hashlib.sha256).hexdigest()
+
+recomputed = hmac.new(key, message, hashlib.sha256).hexdigest()
+print(mac == recomputed)
+print(hmac.compare_digest(mac, recomputed))
+```
+
+直接比较摘要可能泄露时序信息，`compare_digest` 用恒定时间比较，是生产代码的默认做法。
+
+### 对照三：混合加密的密钥分工
+
+```text
+发送方                                             接收方
+  |-- 用对称密钥加密数据 --------------------------->|
+  |-- 用接收方公钥加密对称密钥 -------------------->|
+  |                                                 |-- 用私钥解出对称密钥
+  |                                                 |-- 用对称密钥解密数据
+```
+
+对称密钥负责速度，非对称密钥负责分发。TLS 握手正是先协商出会话密钥，
+再用它加密后续流量，因此证书只需要保证公钥可信。
+
+### 验证清单
+
+| 检查项 | 通过标准 |
+| --- | --- |
+| 摘要 | 改变一个字节后摘要完全不同 |
+| 完整性 | 用 HMAC 或 AEAD 校验，不直接比较明文摘要 |
+| 密钥管理 | 私钥不进入日志、镜像和版本库 |
+| 协议 | 明确使用 AEAD 模式，避免自行拼接加密与 MAC |
 
 ## 复习与迁移
 

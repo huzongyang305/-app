@@ -4,7 +4,7 @@
 
 ![CSS 布局：Flex、Grid 与响应式](images/category_css_layout.webp)
 
-> 内容更新时间：2026-10-03 · 学习阶段：入门 · 预计用时：16 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：16 分钟
 
 ## 学习目标
 
@@ -355,7 +355,7 @@
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
+- 最后更新：2026-10-06
 - 学习阶段：入门
 - 适用环境：现代浏览器（Chrome/Firefox/Safari）
 - 内容来源：内置结构化课程与工程实践整理
@@ -376,6 +376,73 @@
 | [MDN 无障碍](https://developer.mozilla.org/docs/Web/Accessibility) | 可访问性与语义 |
 
 > 「CSS 布局：Flex、Grid 与响应式」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+
+## 代码对照与验证
+
+这一节用三组对照把 `display`、`position` 与响应式断点串起来：先看默认流式布局，
+再逐条替换属性，最后观察盒模型与定位的变化。
+
+### 对照一：Flex 与 Grid 解决不同问题
+
+```css
+.row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+```
+
+Flex 适合一维排列，Grid 适合二维网格。用 `auto-fit` 搭配 `minmax` 可以在容器
+变窄时自动减少列数，不需要额外媒体查询。
+
+### 对照二：盒模型与 `box-sizing`
+
+```css
+.card {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 16px;
+  border: 1px solid #d0d7de;
+}
+```
+
+默认的 `content-box` 会让 `width` 再加上内边距和边框，从而撑破父容器；
+`border-box` 把内边距和边框算进宽度，是布局可预测的前提。
+
+### 对照三：定位与层叠上下文
+
+```css
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #ffffff;
+}
+
+.badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+```
+
+`sticky` 在滚动到阈值前表现为相对定位，之后固定在容器内；`absolute` 则相对最近的
+定位祖先定位，因此父元素通常需要 `position: relative`。
+
+### 验证清单
+
+| 检查项 | 通过标准 |
+| --- | --- |
+| 一维排列 | 用 Flex 实现且间距由 `gap` 控制，没有用 margin 堆叠 |
+| 二维网格 | 用 Grid 实现，窗口变窄时列数自动变化 |
+| 盒模型 | 设置 `border-box` 后，加内边距不会撑破容器 |
+| 定位 | `absolute` 元素相对预期的父元素定位，`z-index` 生效 |
 
 ## 复习与迁移
 

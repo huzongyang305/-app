@@ -4,7 +4,7 @@
 
 ![Terraform 与基础设施即代码](images/category_terraform.webp)
 
-> 内容更新时间：2026-10-03 · 学习阶段：高级 · 预计用时：15 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：15 分钟
 
 ## 学习目标
 
@@ -395,7 +395,7 @@ print(guard_production("prod", {"delete": 1}, allow_delete=False))
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
+- 最后更新：2026-10-06
 - 学习阶段：高级
 - 适用环境：Git / Docker / Kubernetes / CI 平台
 - 内容来源：内置结构化课程与工程实践整理

@@ -4,7 +4,7 @@
 
 ![分布式事务与共识](images/remaining_distributed_transaction.webp)
 
-> 内容更新时间：2026-10-03 · 学习阶段：进阶 · 预计用时：17 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：17 分钟
 
 ## 学习目标
 
@@ -364,7 +364,7 @@ print(tolerant_write(2, 3), tolerant_write(1, 3))     # True False
 ## 内容元数据
 
 - 内容版本：v2.0
-- 最后更新：2026-10-03
+- 最后更新：2026-10-06
 - 学习阶段：进阶
 - 适用环境：PostgreSQL / MySQL / SQLite 等主流数据库
 - 内容来源：内置结构化课程与工程实践整理

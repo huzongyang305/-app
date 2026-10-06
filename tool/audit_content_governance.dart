@@ -740,6 +740,10 @@ Iterable<String> _extractParagraphs(String markdown) sync* {
         line.startsWith('<!--')) {
       continue;
     }
+    // 元数据行（更新 / 复核 / 版本时间戳）在多课之间天然重复，
+    // 不是正文冗余，排除在段落重复统计之外。
+    final metadata = line.replaceFirst(RegExp(r'^>\s*'), '');
+    if (_metadataPrefixes.any(metadata.startsWith)) continue;
     final normalized = line
         .replaceFirst(RegExp(r'^[-*+\d.\s]+'), '')
         .replaceAll(RegExp(r'[*_`]+'), '')
@@ -750,6 +754,15 @@ Iterable<String> _extractParagraphs(String markdown) sync* {
     yield normalized;
   }
 }
+
+const List<String> _metadataPrefixes = <String>[
+  '内容更新时间：',
+  '内容版本：',
+  '最后更新：',
+  '最后复核：',
+  '下次复核：',
+  '质量版本：',
+];
 
 List<String> _splitSentences(String text) {
   return text
