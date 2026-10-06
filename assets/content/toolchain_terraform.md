@@ -245,6 +245,106 @@ print(guard_production("prod", {"delete": 1}, allow_delete=False))
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
 
+## 可运行练习
+
+下面 3 个任务围绕“Terraform 与基础设施即代码”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
+
+### 任务 1：先跑通，再解释
+
+```python
+import json
+import subprocess
+
+def plan_summary(plan_file: str = "plan.tfplan") -> dict:
+    """把 plan 转为可审阅的摘要：新增、修改、销毁各多少。"""
+    proc = subprocess.run(
+        ["terraform", "show", "-json", plan_file],
+        capture_output=True, text=True, check=True,
+    )
+    data = json.loads(proc.stdout)
+    actions = {"create": 0, "update": 0, "delete": 0, "replace": 0}
+    for change in data.get("resource_changes", []):
+        for action in change["change"]["actions"]:
+            if action == "create":
+                actions["create"] += 1
+            elif action == "update":
+                actions["update"] += 1
+            elif action == "delete":
+                actions["delete"] += 1
+            elif action == "delete" and "create" in change["change"]["actions"]:
+                actions["replace"] += 1
+    risky = actions["delete"] > 0 or actions["replace"] > 0
+    return {"actions": actions, "needs_review": risky}
+
+def guard_production(workspace: str, actions: dict, allow_delete: bool = False) -> str:
+    """生产保护：存在销毁或替换时要求显式授权。"""
+    if workspace == "prod" and (actions.get("delete") or actions.get("replace")) and not allow_delete:
+        return "阻止：生产环境存在销毁或替换，需人工批准"
+    return "允许执行"
+
+print(guard_production("prod", {"delete": 1}, allow_delete=False))
+```
+
+**预期输出**：运行后会输出与“Terraform 与基础设施即代码”相关的关键结果；请重点核对输出行数、最后一个数值和异常提示。
+
+**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
+
+### 任务 2：只改一个条件
+
+复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
+
+**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
+
+### 任务 3：迁移到自己的数据
+
+用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
+
+**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
+
+
+## 故障现场
+
+这一节把“Terraform 与基础设施即代码”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+
+### 现场 1：“Terraform 与基础设施即代码”的 Terraform 常规用例通过，但边界用例失败
+
+**症状**：在“Terraform 与基础设施即代码”的练习或生产场景里出现““Terraform 与基础设施即代码”的 Terraform 常规用例通过，但边界用例失败”。
+
+**复现**：准备一组最小输入，只保留触发““Terraform 与基础设施即代码”的 Terraform 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“Terraform 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：为“Terraform 与基础设施即代码”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+
+**预防**：把““Terraform 与基础设施即代码”的 Terraform 常规用例通过，但边界用例失败”写成一条自动化用例，并在“Terraform 与基础设施即代码”的验收清单里保留对应检查项。
+
+
+### 现场 2：“Terraform 与基础设施即代码”的 IaC 结果在两次运行之间不一致
+
+**症状**：在“Terraform 与基础设施即代码”的练习或生产场景里出现““Terraform 与基础设施即代码”的 IaC 结果在两次运行之间不一致”。
+
+**复现**：准备一组最小输入，只保留触发““Terraform 与基础设施即代码”的 IaC 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“IaC 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：固定“Terraform 与基础设施即代码”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+
+**预防**：把““Terraform 与基础设施即代码”的 IaC 结果在两次运行之间不一致”写成一条自动化用例，并在“Terraform 与基础设施即代码”的验收清单里保留对应检查项。
+
+
+### 现场 3：“Terraform 与基础设施即代码”的验证只在开发机通过
+
+**症状**：在“Terraform 与基础设施即代码”的练习或生产场景里出现““Terraform 与基础设施即代码”的验证只在开发机通过”。
+
+**复现**：准备一组最小输入，只保留触发““Terraform 与基础设施即代码”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“环境版本、配置和输入规模与目标环境不同，Terraform 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：把“Terraform 与基础设施即代码”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
+
+**预防**：把““Terraform 与基础设施即代码”的验证只在开发机通过”写成一条自动化用例，并在“Terraform 与基础设施即代码”的验收清单里保留对应检查项。
+
+
 ## 考点精讲：把测验题还原成判断过程
 
 本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
@@ -284,6 +384,14 @@ print(guard_production("prod", {"delete": 1}, allow_delete=False))
 - **正确判断**：terraform
 - **判断依据**：正确答案是「terraform」，本课在「最佳实践」中说明：定期 terraform plan 检测漂移（有人手工改过资源）。本课还在「工作流」中说明：标准流程是 init → fmt → validate → plan → apply → destroy。本课还在「最佳实践」中说明：用 plan 输出作为 PR 评论，让变更可见。
 - **迁移检查**：如果填成相近的另一个函数或关键字，程序会在哪一步出错？
+
+### 补充自测（2 题）
+
+1. 围绕“Terraform 与基础设施即代码”中的 Terraform、IaC、State，下列哪两项是本课强调的实践判断？
+2. 下面这段 Python 代码复现了“Terraform 与基础设施即代码”中 Terraform、IaC、State 相关的一个常见故障，哪一项最准确地解释了问题？
+
+这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
+
 
 ## 本课复习清单
 

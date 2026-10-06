@@ -535,6 +535,103 @@ ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]
 5. 把教训写入项目复盘或本课笔记，形成下一次的检查项。
 
 
+## 可运行练习
+
+下面 3 个任务围绕“实战：Spring Boot REST API”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
+
+### 任务 1：先跑通，再解释
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+  </dependency>
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-validation</artifactId>
+  </dependency>
+</dependencies>
+```
+
+**预期输出**：沙箱会解析并格式化“实战：Spring Boot REST API”中的这段 XML；请重点检查标签闭合、属性和嵌套层级。
+
+**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
+
+### 任务 2：只改一个条件
+
+复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
+
+**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
+
+### 任务 3：迁移到自己的数据
+
+用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
+
+**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
+
+
+## 故障现场
+
+这一节把“实战：Spring Boot REST API”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+
+### 现场 1：“实战：Spring Boot REST API”的 实战 常规用例通过，但边界用例失败
+
+**症状**：在“实战：Spring Boot REST API”的练习或生产场景里出现““实战：Spring Boot REST API”的 实战 常规用例通过，但边界用例失败”。
+
+**复现**：准备一组最小输入，只保留触发““实战：Spring Boot REST API”的 实战 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“实战 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：为“实战：Spring Boot REST API”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+
+**预防**：把““实战：Spring Boot REST API”的 实战 常规用例通过，但边界用例失败”写成一条自动化用例，并在“实战：Spring Boot REST API”的验收清单里保留对应检查项。
+
+
+### 现场 2：“实战：Spring Boot REST API”的 Spring Boot 结果在两次运行之间不一致
+
+**症状**：在“实战：Spring Boot REST API”的练习或生产场景里出现““实战：Spring Boot REST API”的 Spring Boot 结果在两次运行之间不一致”。
+
+**复现**：准备一组最小输入，只保留触发““实战：Spring Boot REST API”的 Spring Boot 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“Spring Boot 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：固定“实战：Spring Boot REST API”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+
+**预防**：把““实战：Spring Boot REST API”的 Spring Boot 结果在两次运行之间不一致”写成一条自动化用例，并在“实战：Spring Boot REST API”的验收清单里保留对应检查项。
+
+
+### 现场 3：“实战：Spring Boot REST API”的验证只在开发机通过
+
+**症状**：在“实战：Spring Boot REST API”的练习或生产场景里出现““实战：Spring Boot REST API”的验证只在开发机通过”。
+
+**复现**：准备一组最小输入，只保留触发““实战：Spring Boot REST API”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“环境版本、配置和输入规模与目标环境不同，实战 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：把“实战：Spring Boot REST API”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
+
+**预防**：把““实战：Spring Boot REST API”的验证只在开发机通过”写成一条自动化用例，并在“实战：Spring Boot REST API”的验收清单里保留对应检查项。
+
+
+
+## 版本与时效
+
+这一节记录“实战：Spring Boot REST API”涉及的版本基线与升级检查点，避免把某个版本的默认行为当成永久结论。
+
+- Java 25 是当前 LTS，Java 21 仍是大量生产系统的基线
+- 虚拟线程、记录模式、结构化并发与分代 ZGC 是升级收益最大的部分
+- 升级前重点检查反射、字节码增强、序列化与第三方框架兼容性
+- 官方发布说明：https://www.oracle.com/java/technologies/javase/
+
+### 升级检查清单
+
+- 先固定当前版本，跑通全部示例与测验，再升级工具链。
+- 只改一个版本变量，记录编译、测试、性能与产物体积的变化。
+- 重点回归默认值、弃用警告、序列化格式、并发语义和错误信息。
+- 升级完成后更新本课的“最后复核 / 下次复核”日期与版本说明。
+
+
 ## 考点精讲：把测验题还原成判断过程
 
 本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
@@ -574,6 +671,14 @@ ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]
 - **正确判断**：ConfigurationProperties / configurationproperties
 - **判断依据**：正确答案是「ConfigurationProperties」，本课在「零基础详解：Java 项目实战骨架」中说明：能说出 Controller、Service、Repository 各自的职责。本课还在「零基础详解：Java 项目实战骨架」中说明：知道为什么 DTO 要与 Entity 分开。本课还在「零基础详解：Java 项目实战骨架」中说明：知道为什么要开启 graceful shutdown。
 - **迁移检查**：不看题干，用自己的话补全这句话，再与标准答案对照。
+
+### 补充自测（2 题）
+
+1. 围绕“实战：Spring Boot REST API”中的 实战、Spring Boot、REST，下列哪两项是本课强调的实践判断？
+2. 下面这段 Java 代码复现了“实战：Spring Boot REST API”中 实战、Spring Boot、REST 相关的一个常见故障，哪一项最准确地解释了问题？
+
+这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
+
 
 ## 本课复习清单
 

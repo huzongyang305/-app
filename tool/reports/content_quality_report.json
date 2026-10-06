@@ -1,20 +1,20 @@
 {
-  "generated_at": "2026-10-05T23:27:06.836279",
-  "lesson_count": 534,
-  "total_chars": 7362052,
-  "min_chars": 10004,
-  "image_count": 1059,
-  "lessons_with_image": 534,
-  "lessons_with_lab_section": 534,
+  "generated_at": "2026-10-06T14:06:03.808859",
+  "lesson_count": 542,
+  "total_chars": 8802130,
+  "min_chars": 11690,
+  "image_count": 1067,
+  "lessons_with_image": 542,
+  "lessons_with_lab_section": 542,
   "question_type_histogram": {
-    "single": 2395,
-    "multi": 133,
+    "single": 1441,
+    "multi": 544,
     "fill": 347,
-    "order": 86,
+    "order": 212,
     "code": 15,
-    "debug": 78
+    "debug": 527
   },
-  "lessons_without_code_question": 49,
+  "lessons_without_code_question": 0,
   "error_count": 0,
   "warning_count": 0,
   "issues": [],
@@ -32,12 +32,37 @@
     {
       "level": "warn",
       "lesson_id": "flutter_basics",
+      "message": "模板化长句出现在 541 门课：这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作…"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "flutter_basics",
       "message": "模板化长句出现在 534 门课：> The full tutorial is written…"
     },
     {
       "level": "warn",
       "lesson_id": "flutter_basics",
-      "message": "模板化长句出现在 534 门课：> App 完全离线展示文字链接，不会自动联网；需要延伸阅读…"
+      "message": "模板化长句出现在 542 门课：> App 完全离线展示文字链接，不会自动联网；需要延伸阅读…"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "flutter_release",
+      "message": "模板化长句出现在 420 门课：**验收标准**：代码能正常运行；逐行解释每个变量的值如何变…"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "flutter_release",
+      "message": "模板化长句出现在 420 门课：复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值…"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "flutter_release",
+      "message": "模板化长句出现在 420 门课：**验收标准**：留下“原结果 → 改动 → 预测 → 实际…"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "flutter_release",
+      "message": "模板化长句出现在 420 门课：**验收标准**：代码不少于 10 行，至少包含 1 个边界…"
     }
   ]
 }

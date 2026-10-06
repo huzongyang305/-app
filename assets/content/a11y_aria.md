@@ -239,6 +239,118 @@ print(summary(audit_nodes(nodes)))
 5. 把教训写入项目复盘或本课笔记，形成下一次的检查项。
 
 
+## 可运行练习
+
+下面 3 个任务围绕“可访问性与 ARIA 实战”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
+
+### 任务 1：先跑通，再解释
+
+```python
+from dataclasses import dataclass, field
+
+@dataclass
+class A11yIssue:
+    selector: str
+    rule: str
+    severity: str        # blocker / major / minor
+    suggestion: str
+
+def audit_nodes(nodes: list) -> list:
+    """极简可访问性审计：检查常见阻断项。"""
+    issues = []
+    for node in nodes:
+        tag = node.get("tag", "")
+        if tag == "img" and "alt" not in node:
+            issues.append(A11yIssue(node["id"], "图片缺少 alt", "blocker", "补充 alt 或标记为装饰"))
+        if tag == "div" and node.get("clickable"):
+            issues.append(A11yIssue(node["id"], "可点击的 div", "blocker", "改用 button 或补 role/tabindex/键盘事件"))
+        if node.get("iconOnlyButton") and not node.get("ariaLabel"):
+            issues.append(A11yIssue(node["id"], "图标按钮缺少名称", "major", "添加 aria-label"))
+        if node.get("input") and not node.get("hasLabel"):
+            issues.append(A11yIssue(node["id"], "输入框没有标签", "major", "用 label for 关联"))
+        if node.get("outlineNone") and not node.get("focusVisibleStyle"):
+            issues.append(A11yIssue(node["id"], "移除了焦点样式", "major", "用 :focus-visible 自定义"))
+        if node.get("contrast", 10) < 4.5 and not node.get("largeText"):
+            issues.append(A11yIssue(node["id"], "对比度不足", "major", "提高对比度到 4.5:1"))
+    return issues
+
+def summary(issues: list) -> dict:
+    counts = {}
+    for issue in issues:
+        counts[issue.severity] = counts.get(issue.severity, 0) + 1
+    return {
+        "counts": counts,
+        "blocking": [i.selector for i in issues if i.severity == "blocker"],
+    }
+
+nodes = [
+    {"id": "hero-img", "tag": "img"},
+    {"id": "card", "tag": "div", "clickable": True},
+    {"id": "close-btn", "iconOnlyButton": True},
+]
+print(summary(audit_nodes(nodes)))
+```
+
+**预期输出**：运行后会输出与“可访问性与 ARIA 实战”相关的关键结果；请重点核对输出行数、最后一个数值和异常提示。
+
+**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
+
+### 任务 2：只改一个条件
+
+复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
+
+**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
+
+### 任务 3：迁移到自己的数据
+
+用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
+
+**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
+
+
+## 故障现场
+
+这一节把“可访问性与 ARIA 实战”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+
+### 现场 1：“可访问性与 ARIA 实战”的 可访问性 常规用例通过，但边界用例失败
+
+**症状**：在“可访问性与 ARIA 实战”的练习或生产场景里出现““可访问性与 ARIA 实战”的 可访问性 常规用例通过，但边界用例失败”。
+
+**复现**：准备一组最小输入，只保留触发““可访问性与 ARIA 实战”的 可访问性 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“可访问性 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：为“可访问性与 ARIA 实战”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+
+**预防**：把““可访问性与 ARIA 实战”的 可访问性 常规用例通过，但边界用例失败”写成一条自动化用例，并在“可访问性与 ARIA 实战”的验收清单里保留对应检查项。
+
+
+### 现场 2：“可访问性与 ARIA 实战”的 ARIA 结果在两次运行之间不一致
+
+**症状**：在“可访问性与 ARIA 实战”的练习或生产场景里出现““可访问性与 ARIA 实战”的 ARIA 结果在两次运行之间不一致”。
+
+**复现**：准备一组最小输入，只保留触发““可访问性与 ARIA 实战”的 ARIA 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“ARIA 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：固定“可访问性与 ARIA 实战”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+
+**预防**：把““可访问性与 ARIA 实战”的 ARIA 结果在两次运行之间不一致”写成一条自动化用例，并在“可访问性与 ARIA 实战”的验收清单里保留对应检查项。
+
+
+### 现场 3：“可访问性与 ARIA 实战”的验证只在开发机通过
+
+**症状**：在“可访问性与 ARIA 实战”的练习或生产场景里出现““可访问性与 ARIA 实战”的验证只在开发机通过”。
+
+**复现**：准备一组最小输入，只保留触发““可访问性与 ARIA 实战”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“环境版本、配置和输入规模与目标环境不同，可访问性 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：把“可访问性与 ARIA 实战”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
+
+**预防**：把““可访问性与 ARIA 实战”的验证只在开发机通过”写成一条自动化用例，并在“可访问性与 ARIA 实战”的验收清单里保留对应检查项。
+
+
 ## 考点精讲：把测验题还原成判断过程
 
 本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
@@ -283,6 +395,14 @@ print(summary(audit_nodes(nodes)))
 
 - **正确判断**：用 button 标签
 - **判断依据**：正确答案是「用 button 标签」。这段代码来自「可访问性与 ARIA 实战」的示例，判断时先看输入与输出，再检查条件、循环和边界。正确答案是「用 button 标签」，本课在「项目专属规格·可访问性与 ARIA 实战」中说明：原生优先原则、常用 ARIA 属性与键盘焦点管理。原生 button 自带键盘可达、焦点管理与语义，是唯…在「可访问性与 ARIA 实战」中，如果只改一个条件，输出通常会随之改变，因此不能脱离代码前提作答。
+
+### 补充自测（2 题）
+
+1. 围绕“可访问性与 ARIA 实战”中的 可访问性、ARIA、无障碍，下列哪两项是本课强调的实践判断？
+2. 按“可访问性与 ARIA 实战”中 可访问性、ARIA、无障碍 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
+
+这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
+
 
 ## 本课复习清单
 

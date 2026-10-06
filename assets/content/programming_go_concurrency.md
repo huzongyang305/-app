@@ -287,6 +287,90 @@ case result := <-ch:
 
 
 
+## 实践任务
+
+本节围绕“Go 并发：goroutine、channel 与 context”安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
+
+### 任务 1：用自己的话画出结构
+
+合上教程，用 5 句话说明“Go 并发：goroutine、channel 与 context”解决什么问题、输入是什么、输出是什么、失败时会怎样、与相邻概念的边界在哪里。画一张流程图或状态图，把每个节点标注成“输入 / 处理 / 输出 / 失败路径”之一。
+
+**验收标准**：图里至少有 5 个节点和 1 条失败路径；每个节点都能在正文中找到依据。
+
+### 任务 2：做一次对比实验
+
+从正文里选两个差异最小的方案，列成 4 列表格：方案、前提、代价、适用边界。然后只改变一个条件（数据规模、并发度、精度或资源上限），记录结果变化。
+
+**验收标准**：表格里两个方案的结论不能完全一样；写下“在什么条件下应该换方案”。
+
+### 任务 3：迁移到自己的场景
+
+把“Go 并发：goroutine、channel 与 context”的核心方法用到你熟悉的一个真实场景，写出一份 300 字以内的实施记录：目标、步骤、验证方式、仍然不确定的问题。
+
+**验收标准**：至少有一个可复现的命令、代码片段或数据样例；结论能被别人独立检查。
+
+
+## 故障现场
+
+这一节把“Go 并发：goroutine、channel 与 context”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+
+### 现场 1：“Go 并发：goroutine、channel 与 context”的 Go 常规用例通过，但边界用例失败
+
+**症状**：在“Go 并发：goroutine、channel 与 context”的练习或生产场景里出现““Go 并发：goroutine、channel 与 context”的 Go 常规用例通过，但边界用例失败”。
+
+**复现**：准备一组最小输入，只保留触发““Go 并发：goroutine、channel 与 context”的 Go 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“Go 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：为“Go 并发：goroutine、channel 与 context”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+
+**预防**：把““Go 并发：goroutine、channel 与 context”的 Go 常规用例通过，但边界用例失败”写成一条自动化用例，并在“Go 并发：goroutine、channel 与 context”的验收清单里保留对应检查项。
+
+
+### 现场 2：“Go 并发：goroutine、channel 与 context”的 goroutine 结果在两次运行之间不一致
+
+**症状**：在“Go 并发：goroutine、channel 与 context”的练习或生产场景里出现““Go 并发：goroutine、channel 与 context”的 goroutine 结果在两次运行之间不一致”。
+
+**复现**：准备一组最小输入，只保留触发““Go 并发：goroutine、channel 与 context”的 goroutine 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“goroutine 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：固定“Go 并发：goroutine、channel 与 context”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+
+**预防**：把““Go 并发：goroutine、channel 与 context”的 goroutine 结果在两次运行之间不一致”写成一条自动化用例，并在“Go 并发：goroutine、channel 与 context”的验收清单里保留对应检查项。
+
+
+### 现场 3：“Go 并发：goroutine、channel 与 context”的验证只在开发机通过
+
+**症状**：在“Go 并发：goroutine、channel 与 context”的练习或生产场景里出现““Go 并发：goroutine、channel 与 context”的验证只在开发机通过”。
+
+**复现**：准备一组最小输入，只保留触发““Go 并发：goroutine、channel 与 context”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“环境版本、配置和输入规模与目标环境不同，Go 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：把“Go 并发：goroutine、channel 与 context”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
+
+**预防**：把““Go 并发：goroutine、channel 与 context”的验证只在开发机通过”写成一条自动化用例，并在“Go 并发：goroutine、channel 与 context”的验收清单里保留对应检查项。
+
+
+
+## 版本与时效
+
+这一节记录“Go 并发：goroutine、channel 与 context”涉及的版本基线与升级检查点，避免把某个版本的默认行为当成永久结论。
+
+- Go 1.25 是当前主线，泛型、range-over-func 与工具链持续增强
+- 升级前用 go vet、go test -race 与静态检查覆盖并发生命周期
+- 模块校验、最小版本选择与供应链安全是生产升级的重点
+- 官方发布说明：https://go.dev/doc/devel/release
+
+### 升级检查清单
+
+- 先固定当前版本，跑通全部示例与测验，再升级工具链。
+- 只改一个版本变量，记录编译、测试、性能与产物体积的变化。
+- 重点回归默认值、弃用警告、序列化格式、并发语义和错误信息。
+- 升级完成后更新本课的“最后复核 / 下次复核”日期与版本说明。
+
+
 ## 考点精讲：把测验题还原成判断过程
 
 本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
@@ -326,6 +410,14 @@ case result := <-ch:
 - **正确判断**：WithTimeout / withtimeout
 - **判断依据**：正确答案是「WithTimeout」，本课在「常见模式」中说明：超时与取消：context.WithTimeout 传递取消信号，所有阻塞操作都要监听 ctx.Done()。本课还在「常见模式」中说明：Worker Pool：固定 N 个 worker 从 channel 取任务，控制并发度。本课还在「常见模式」中说明：扇出扇入：多个 goroutine 并行处理后汇总到一个 channel。
 - **迁移检查**：把答案换成另一种等价写法，是否仍然正确？说明依据。
+
+### 补充自测（2 题）
+
+1. 围绕“Go 并发：goroutine、channel 与 context”中的 Go、goroutine、channel，下列哪两项是本课强调的实践判断？
+2. 下面这段 Go 代码复现了“Go 并发：goroutine、channel 与 context”中 Go、goroutine、channel 相关的一个常见故障，哪一项最准确地解释了问题？
+
+这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
+
 
 ## 本课复习清单
 

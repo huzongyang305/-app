@@ -260,6 +260,131 @@ print(pipeline.gate(), pipeline.report())
 5. 把教训写入项目复盘或本课笔记，形成下一次的检查项。
 
 
+## 可运行练习
+
+下面 3 个任务围绕“实战：搭一条完整 CI/CD 流水线”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
+
+### 任务 1：先跑通，再解释
+
+```python
+from dataclasses import dataclass, field
+from enum import Enum
+
+class Stage(Enum):
+    LINT = "lint"
+    TEST = "test"
+    BUILD = "build"
+    SECURITY = "security"
+    DEPLOY_CANARY = "deploy_canary"
+    DEPLOY_FULL = "deploy_full"
+
+@dataclass
+class StageResult:
+    stage: Stage
+    ok: bool
+    duration_s: float
+    detail: str = ""
+
+@dataclass
+class Pipeline:
+    results: list = field(default_factory=list)
+
+    def run_stage(self, stage: Stage, checker, **kwargs) -> StageResult:
+        started = __import__("time").monotonic()
+        try:
+            ok, detail = checker(**kwargs)
+        except Exception as exc:                  # 任何异常都视为失败
+            ok, detail = False, str(exc)
+        result = StageResult(stage, ok, round(__import__("time").monotonic() - started, 3), detail)
+        self.results.append(result)
+        return result
+
+    def gate(self) -> tuple[bool, str]:
+        """门禁：任一步失败即阻止继续。"""
+        for result in self.results:
+            if not result.ok:
+                return False, f"{result.stage.value} 失败：{result.detail}"
+        return True, "全部通过"
+
+    def report(self) -> dict:
+        return {
+            "stages": [r.stage.value for r in self.results],
+            "failed": [r.stage.value for r in self.results if not r.ok],
+            "total_seconds": round(sum(r.duration_s for r in self.results), 3),
+        }
+
+def lint() -> tuple[bool, str]:
+    return True, "无告警"
+
+def high_severity_vulns() -> tuple[bool, str]:
+    return False, "发现 1 个高危依赖漏洞"
+
+pipeline = Pipeline()
+pipeline.run_stage(Stage.LINT, lint)
+pipeline.run_stage(Stage.SECURITY, high_severity_vulns)
+print(pipeline.gate(), pipeline.report())
+```
+
+**预期输出**：运行后会输出与“实战：搭一条完整 CI/CD 流水线”相关的关键结果；请重点核对输出行数、最后一个数值和异常提示。
+
+**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
+
+### 任务 2：只改一个条件
+
+复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
+
+**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
+
+### 任务 3：迁移到自己的数据
+
+用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
+
+**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
+
+
+## 故障现场
+
+这一节把“实战：搭一条完整 CI/CD 流水线”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+
+### 现场 1：“实战：搭一条完整 CI/CD 流水线”的 实战 常规用例通过，但边界用例失败
+
+**症状**：在“实战：搭一条完整 CI/CD 流水线”的练习或生产场景里出现““实战：搭一条完整 CI/CD 流水线”的 实战 常规用例通过，但边界用例失败”。
+
+**复现**：准备一组最小输入，只保留触发““实战：搭一条完整 CI/CD 流水线”的 实战 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“实战 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：为“实战：搭一条完整 CI/CD 流水线”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+
+**预防**：把““实战：搭一条完整 CI/CD 流水线”的 实战 常规用例通过，但边界用例失败”写成一条自动化用例，并在“实战：搭一条完整 CI/CD 流水线”的验收清单里保留对应检查项。
+
+
+### 现场 2：“实战：搭一条完整 CI/CD 流水线”的 CI/CD 结果在两次运行之间不一致
+
+**症状**：在“实战：搭一条完整 CI/CD 流水线”的练习或生产场景里出现““实战：搭一条完整 CI/CD 流水线”的 CI/CD 结果在两次运行之间不一致”。
+
+**复现**：准备一组最小输入，只保留触发““实战：搭一条完整 CI/CD 流水线”的 CI/CD 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“CI/CD 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：固定“实战：搭一条完整 CI/CD 流水线”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+
+**预防**：把““实战：搭一条完整 CI/CD 流水线”的 CI/CD 结果在两次运行之间不一致”写成一条自动化用例，并在“实战：搭一条完整 CI/CD 流水线”的验收清单里保留对应检查项。
+
+
+### 现场 3：“实战：搭一条完整 CI/CD 流水线”的验证只在开发机通过
+
+**症状**：在“实战：搭一条完整 CI/CD 流水线”的练习或生产场景里出现““实战：搭一条完整 CI/CD 流水线”的验证只在开发机通过”。
+
+**复现**：准备一组最小输入，只保留触发““实战：搭一条完整 CI/CD 流水线”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“环境版本、配置和输入规模与目标环境不同，实战 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：把“实战：搭一条完整 CI/CD 流水线”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
+
+**预防**：把““实战：搭一条完整 CI/CD 流水线”的验证只在开发机通过”写成一条自动化用例，并在“实战：搭一条完整 CI/CD 流水线”的验收清单里保留对应检查项。
+
+
 ## 考点精讲：把测验题还原成判断过程
 
 本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
@@ -299,6 +424,14 @@ print(pipeline.gate(), pipeline.report())
 - **正确判断**：toolchain_project
 - **判断依据**：正确答案是「toolchain_project」，本课在「交付物」中说明：流水线配置文件、一次成功与一次失败的运行链接、回滚演练记录、以及"从提交到上线耗时"的基线数据。本课还在「交付物与评分标准」中说明：交付物：流水线配置文件（含 lint/test/build/镜像/部署五阶段）、一次成功与一次失败的运行链接、回滚演练记录、以及"从提交到上线"的耗时基线。本课还在「必须验证的故障场景」中说明：让新版本错误率升高，验证自动回滚是否触发。
 - **迁移检查**：不看题干，用自己的话补全这句话，再与标准答案对照。
+
+### 补充自测（2 题）
+
+1. 围绕“实战：搭一条完整 CI/CD 流水线”中的 实战、CI/CD、质量门禁，下列哪两项是本课强调的实践判断？
+2. 下面这段 Python 代码复现了“实战：搭一条完整 CI/CD 流水线”中 实战、CI/CD、质量门禁 相关的一个常见故障，哪一项最准确地解释了问题？
+
+这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
+
 
 ## 本课复习清单
 

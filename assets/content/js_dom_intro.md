@@ -111,6 +111,96 @@ JavaScript 是单线程执行模型，调用栈执行同步代码，事件循环
 
 Promise 表示未来完成或失败的结果，`async/await` 让异步代码更接近同步写法，但不会把异步变成阻塞。错误要用 try/catch 或 `.catch` 处理，多个独立任务可以用 `Promise.all`，需要全部结束再汇总可以用 `Promise.allSettled`。DOM 操作应批量进行，避免在循环中反复读写布局；事件监听要注意冒泡、捕获、默认行为和移除监听器，防止内存泄漏。
 
+## 可运行练习
+
+下面 3 个任务围绕“JavaScript DOM 入门”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
+
+### 任务 1：先跑通，再解释
+
+```javascript
+const button = document.createElement("button");
+button.textContent = "点击我";
+document.body.append(button);
+console.log(document.querySelector("button").textContent);
+```
+
+**预期输出**：运行后会输出与“JavaScript DOM 入门”相关的关键结果；请重点核对输出行数、最后一个数值和异常提示。
+
+**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
+
+### 任务 2：只改一个条件
+
+复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
+
+**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
+
+### 任务 3：迁移到自己的数据
+
+用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
+
+**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
+
+
+## 故障现场
+
+这一节把“JavaScript DOM 入门”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+
+### 现场 1：“JavaScript DOM 入门”的 JavaScript DOM 入门 常规用例通过，但边界用例失败
+
+**症状**：在“JavaScript DOM 入门”的练习或生产场景里出现““JavaScript DOM 入门”的 JavaScript DOM 入门 常规用例通过，但边界用例失败”。
+
+**复现**：准备一组最小输入，只保留触发““JavaScript DOM 入门”的 JavaScript DOM 入门 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“JavaScript DOM 入门 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：为“JavaScript DOM 入门”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+
+**预防**：把““JavaScript DOM 入门”的 JavaScript DOM 入门 常规用例通过，但边界用例失败”写成一条自动化用例，并在“JavaScript DOM 入门”的验收清单里保留对应检查项。
+
+
+### 现场 2：“JavaScript DOM 入门”的 JavaScript 结果在两次运行之间不一致
+
+**症状**：在“JavaScript DOM 入门”的练习或生产场景里出现““JavaScript DOM 入门”的 JavaScript 结果在两次运行之间不一致”。
+
+**复现**：准备一组最小输入，只保留触发““JavaScript DOM 入门”的 JavaScript 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“JavaScript 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：固定“JavaScript DOM 入门”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+
+**预防**：把““JavaScript DOM 入门”的 JavaScript 结果在两次运行之间不一致”写成一条自动化用例，并在“JavaScript DOM 入门”的验收清单里保留对应检查项。
+
+
+### 现场 3：“JavaScript DOM 入门”的验证只在开发机通过
+
+**症状**：在“JavaScript DOM 入门”的练习或生产场景里出现““JavaScript DOM 入门”的验证只在开发机通过”。
+
+**复现**：准备一组最小输入，只保留触发““JavaScript DOM 入门”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“环境版本、配置和输入规模与目标环境不同，JavaScript DOM 入门 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：把“JavaScript DOM 入门”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
+
+**预防**：把““JavaScript DOM 入门”的验证只在开发机通过”写成一条自动化用例，并在“JavaScript DOM 入门”的验收清单里保留对应检查项。
+
+
+## 版本与时效
+
+这一节记录“JavaScript DOM 入门”涉及的版本基线与升级检查点，避免把某个版本的默认行为当成永久结论。
+
+- ECMAScript 2025/2026 持续加入新能力，Node 24 是当前 LTS 主线
+- 运行时要同时考虑浏览器基线、Node LTS 与打包工具的降级策略
+- 升级前用特性检测和构建目标矩阵验证，不要只在本机浏览器测试
+- 标准与兼容表：https://developer.mozilla.org/docs/Web/JavaScript
+
+### 升级检查清单
+
+- 先固定当前版本，跑通全部示例与测验，再升级工具链。
+- 只改一个版本变量，记录编译、测试、性能与产物体积的变化。
+- 重点回归默认值、弃用警告、序列化格式、并发语义和错误信息。
+- 升级完成后更新本课的“最后复核 / 下次复核”日期与版本说明。
+
+
 ## 考点精讲：把测验题还原成判断过程
 
 本课有 5 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
@@ -144,6 +234,14 @@ Promise 表示未来完成或失败的结果，`async/await` 让异步代码更�
 - **正确判断**：setTimeout / settimeout
 - **判断依据**：正确答案是「setTimeout」，这道题在问填空：JavaScriptDOM入门术语速查中，表示…才能解释“为什么日志顺序和…的术语是什么，判断时要把题干限定的输入、边界与目标逐项对齐。课程摘要指出查找元素，修改文本并响应用户点击，本课要判断的正是填空：JavaScriptDOM入门术语速查中，表示…才能解释“为什么日志顺序和…的术语是什么。
 - **迁移检查**：不看题干，用自己的话补全这句话，再与标准答案对照。
+
+### 补充自测（2 题）
+
+1. 围绕“JavaScript DOM 入门”中的 JavaScript DOM 入门、JavaScript、入门练习，下列哪两项是本课强调的实践判断？
+2. 下面这段 JavaScript 代码复现了“JavaScript DOM 入门”中 JavaScript DOM 入门、JavaScript、入门练习 相关的一个常见故障，哪一项最准确地解释了问题？
+
+这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
+
 
 ## 本课复习清单
 
@@ -272,16 +370,16 @@ console.log(document.querySelector("button").textContent);
 
 ### 从测验反推易错点
 
-**检查点 1：document.createElement("button") 的作用是？**
+**检查点 1：下面这段 JavaScript 代码复现了“JavaScript DOM 入门”中 JavaScript D…**
 
-- 参考判断：创建一个尚未挂载到页面的按钮元素对象
-- 解析：正确答案是「创建一个尚未挂载到页面的按钮元素对象」，这道题在问document.createElement("button")的作用是，判断时要把题干限定的输入、边界与目标逐项对齐。createElement 只负责在内存中创建元素，之后需要设置属性与文本，再用 append 等方法挂载到文档树才会显示。
+- 参考判断：== 会先做类型转换，"0" 被转成数字 0 后与 false 相等。
+- 解析：这段代码用于复现“JavaScript DOM 入门”的边界问题。== 会先做类型转换，在“JavaScript DOM 入门”的复现里字符串 "0" 被转成数字 0，与布尔 false 相等。这让 JavaScript DOM 入门 的判断结果和直觉相反。在“JavaScript DOM 入门”的复现里，最后一行 input + 1 触发字符串拼接得到 "01"，要得到 JavaScript 的严格结果，应使用 Number(input) === 0 或 === 比较。 把现象和原因写在一起，才能判断是 JavaScript DOM 入门 的输入约束还是 JavaScript 的取值方式出了问题——这道题对应的课程是“JavaScript DOM 入门”。修正后要重跑同一条输入，并补一条空值或极值用例，确保“JavaScript DOM 入门”的结论不是只对当前样例成立。
 - 自问：如果去掉题干里的一个限定词，结论还成立吗？
 
-**检查点 2：document.querySelector("button") 会返回什么？**
+**检查点 2：围绕“JavaScript DOM 入门”中的 JavaScript DOM 入门、JavaScript、入…**
 
-- 参考判断：文档中第一个匹配选择器的元素，找不到时为 null
-- 解析：正确答案是「文档中第一个匹配选择器的元素，找不到时为 null」，这道题在问document.querySelector("button")会返回什么，判断时要把题干限定的输入、边界与目标逐项对齐。querySelector 返回第一个匹配项，没有匹配则返回 null。
+- 参考判断：学习 JavaScript DOM 入门 时要同时说明输入、输出和失败路径，不能只看正常流程、验证 JavaScript 时要固定版本并覆盖边界输入，结论才可复现
+- 解析：本课把“JavaScript DOM 入门”拆成概念、示例与故障现场三部分，因此判断 JavaScript DOM 入门 时必须同时交代输入、输出和失败路径，这使“学习 JavaScript DOM 入门 时要同时说明输入、输出和失败路径，不能只看正常流程”成立；在“JavaScript DOM 入门”里，判断 JavaScript 时要固定版本与边界输入，所以“验证 JavaScript 时要固定版本并覆盖边界输入，结论才可复现”才可复现。相反，“只要 JavaScript DOM 入门 的常规示例通过，就可以跳过边界与异常路径”把一次正常示例当成全部情况，会漏掉“JavaScript DOM 入门”的边界缺陷；“把 JavaScript 的单次运行结果当成所有版本和规模都成立”把单次结果外推成普遍结论，在“JavaScript DOM 入门”里忽略了版本和规模变化。对照“JavaScript DOM 入门”的故障现场与自测清单，就能用证据区分这两种判断。
 - 自问：如果去掉题干里的一个限定词，结论还成立吗？
 
 **检查点 3：示例中 console.log(document.querySelector("button").textC…**

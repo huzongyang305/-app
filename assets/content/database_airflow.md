@@ -207,6 +207,115 @@ WHERE dt = '{{ ds }}';
 
 
 
+## 可运行练习
+
+下面 3 个任务围绕“Airflow 调度与数据质量”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
+
+### 任务 1：先跑通，再解释
+
+```python
+from datetime import datetime, timedelta
+
+from airflow import DAG
+from airflow.operators.python import PythonOperator
+from airflow.sensors.external_task import ExternalTaskSensor
+
+default_args = {
+    "owner": "data",
+    "retries": 3,
+    "retry_delay": timedelta(minutes=5),
+    "execution_timeout": timedelta(minutes=40),
+    "on_failure_callback": lambda context: print(f"任务失败：{context['task_instance_key_str']}"),
+}
+
+with DAG(
+    dag_id="daily_orders",
+    start_date=datetime(2025, 1, 1),
+    schedule="0 2 * * *",
+    catchup=False,                     # 只跑当天，避免历史回填风暴
+    max_active_runs=1,                 # 防止多次运行互相覆盖
+    default_args=default_args,
+    tags=["warehouse", "orders"],
+) as dag:
+    wait_upstream = ExternalTaskSensor(
+        task_id="wait_ods_ready",
+        external_dag_id="ods_ingest",
+        external_task_id="done",
+        mode="reschedule",             # 不占用 worker 槽位
+        timeout=60 * 60,
+    )
+
+    def build_dwd(ds, **context):
+        # 用 {{ ds }} 作为分区参数，可安全重跑同一分区
+        print(f"构建 DWD 分区 {ds}")
+
+    dwd = PythonOperator(
+        task_id="build_dwd",
+        python_callable=build_dwd,
+    )
+    wait_upstream >> dwd
+```
+
+**预期输出**：运行后会输出与“Airflow 调度与数据质量”相关的关键结果；请重点核对输出行数、最后一个数值和异常提示。
+
+**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
+
+### 任务 2：只改一个条件
+
+复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
+
+**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
+
+### 任务 3：迁移到自己的数据
+
+用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
+
+**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
+
+
+## 故障现场
+
+这一节把“Airflow 调度与数据质量”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+
+### 现场 1：“Airflow 调度与数据质量”的 Airflow 常规用例通过，但边界用例失败
+
+**症状**：在“Airflow 调度与数据质量”的练习或生产场景里出现““Airflow 调度与数据质量”的 Airflow 常规用例通过，但边界用例失败”。
+
+**复现**：准备一组最小输入，只保留触发““Airflow 调度与数据质量”的 Airflow 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“Airflow 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：为“Airflow 调度与数据质量”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+
+**预防**：把““Airflow 调度与数据质量”的 Airflow 常规用例通过，但边界用例失败”写成一条自动化用例，并在“Airflow 调度与数据质量”的验收清单里保留对应检查项。
+
+
+### 现场 2：“Airflow 调度与数据质量”的 DAG 结果在两次运行之间不一致
+
+**症状**：在“Airflow 调度与数据质量”的练习或生产场景里出现““Airflow 调度与数据质量”的 DAG 结果在两次运行之间不一致”。
+
+**复现**：准备一组最小输入，只保留触发““Airflow 调度与数据质量”的 DAG 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“DAG 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：固定“Airflow 调度与数据质量”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+
+**预防**：把““Airflow 调度与数据质量”的 DAG 结果在两次运行之间不一致”写成一条自动化用例，并在“Airflow 调度与数据质量”的验收清单里保留对应检查项。
+
+
+### 现场 3：同一条 SQL 在数据量变大后突然变慢
+
+**症状**：在“Airflow 调度与数据质量”的练习或生产场景里出现“同一条 SQL 在数据量变大后突然变慢”。
+
+**复现**：准备一组最小输入，只保留触发“同一条 SQL 在数据量变大后突然变慢”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“执行计划随统计信息或数据分布改变，Airflow 的索引没有被用上，回表次数反而增加”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：保存“Airflow 调度与数据质量”的执行计划与样本数据，比较扫描行数、回表次数和排序代价后再决定是否改索引
+
+**预防**：把“同一条 SQL 在数据量变大后突然变慢”写成一条自动化用例，并在“Airflow 调度与数据质量”的验收清单里保留对应检查项。
+
+
 ## 考点精讲：把测验题还原成判断过程
 
 本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
@@ -246,6 +355,14 @@ WHERE dt = '{{ ds }}';
 - **正确判断**：on_failure_callback
 - **判断依据**：正确答案是「on_failure_callback」，本课在「数据质量监控的六个检查」中说明：落地方式：把检查写成独立任务放在 DAG 关键节点之后，失败即阻断下游。本课还在「调度设计原则」中说明：一个 DAG 一件事：不要把几十个不相关任务塞进一个 DAG。
 - **迁移检查**：把答案换成另一种等价写法，是否仍然正确？说明依据。
+
+### 补充自测（2 题）
+
+1. 围绕“Airflow 调度与数据质量”中的 Airflow、DAG、幂等，下列哪两项是本课强调的实践判断？
+2. 下面这段 Python 代码复现了“Airflow 调度与数据质量”中 Airflow、DAG、幂等 相关的一个常见故障，哪一项最准确地解释了问题？
+
+这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
+
 
 ## 本课复习清单
 

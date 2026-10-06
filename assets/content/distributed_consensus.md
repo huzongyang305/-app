@@ -307,6 +307,126 @@ print(node.advance_commit({"n1": 2, "n2": 2, "n3": 1}))
 5. 把教训写入项目复盘或本课笔记，形成下一次的检查项。
 
 
+## 可运行练习
+
+下面 3 个任务围绕“共识与复制：Raft 实战要点”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
+
+### 任务 1：先跑通，再解释
+
+```python
+from dataclasses import dataclass, field
+
+@dataclass
+class LogEntry:
+    index: int
+    term: int
+    command: str
+
+@dataclass
+class RaftNode:
+    """极简 Raft 状态机：演示选举与多数派提交的判定逻辑。"""
+
+    node_id: str
+    peers: list
+    current_term: int = 0
+    voted_for: str | None = None
+    log: list = field(default_factory=list)
+    commit_index: int = 0
+
+    def quorum(self) -> int:
+        return len(self.peers) // 2 + 1
+
+    def last_log(self) -> LogEntry | None:
+        return self.log[-1] if self.log else None
+
+    def can_vote_for(self, candidate_id: str, candidate_last: LogEntry | None) -> bool:
+        """选举限制：候选人日志必须不落后，否则拒绝投票。"""
+        if self.voted_for not in (None, candidate_id):
+            return False
+        own = self.last_log()
+        if candidate_last is None:
+            return own is None
+        if own is None:
+            return True
+        return (candidate_last.term, candidate_last.index) >= (own.term, own.index)
+
+    def append(self, entries: list) -> None:
+        self.log.extend(entries)
+
+    def advance_commit(self, matched_indexes: dict) -> int:
+        """按多数派已匹配的最大下标推进 commit_index。"""
+        indexes = sorted(matched_indexes.values(), reverse=True)
+        candidate = indexes[self.quorum() - 1]
+        if candidate > self.commit_index:
+            self.commit_index = candidate
+        return self.commit_index
+
+node = RaftNode("n1", ["n1", "n2", "n3"])
+print(node.quorum(), node.can_vote_for("n2", LogEntry(1, 1, "set x=1")))
+node.append([LogEntry(1, 1, "set x=1"), LogEntry(2, 1, "set y=2")])
+print(node.advance_commit({"n1": 2, "n2": 2, "n3": 1}))
+```
+
+**预期输出**：运行后会输出与“共识与复制：Raft 实战要点”相关的关键结果；请重点核对输出行数、最后一个数值和异常提示。
+
+**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
+
+### 任务 2：只改一个条件
+
+复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
+
+**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
+
+### 任务 3：迁移到自己的数据
+
+用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
+
+**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
+
+
+## 故障现场
+
+这一节把“共识与复制：Raft 实战要点”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+
+### 现场 1：“共识与复制：Raft 实战要点”的 Raft 常规用例通过，但边界用例失败
+
+**症状**：在“共识与复制：Raft 实战要点”的练习或生产场景里出现““共识与复制：Raft 实战要点”的 Raft 常规用例通过，但边界用例失败”。
+
+**复现**：准备一组最小输入，只保留触发““共识与复制：Raft 实战要点”的 Raft 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“Raft 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：为“共识与复制：Raft 实战要点”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+
+**预防**：把““共识与复制：Raft 实战要点”的 Raft 常规用例通过，但边界用例失败”写成一条自动化用例，并在“共识与复制：Raft 实战要点”的验收清单里保留对应检查项。
+
+
+### 现场 2：“共识与复制：Raft 实战要点”的 共识 结果在两次运行之间不一致
+
+**症状**：在“共识与复制：Raft 实战要点”的练习或生产场景里出现““共识与复制：Raft 实战要点”的 共识 结果在两次运行之间不一致”。
+
+**复现**：准备一组最小输入，只保留触发““共识与复制：Raft 实战要点”的 共识 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“共识 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：固定“共识与复制：Raft 实战要点”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+
+**预防**：把““共识与复制：Raft 实战要点”的 共识 结果在两次运行之间不一致”写成一条自动化用例，并在“共识与复制：Raft 实战要点”的验收清单里保留对应检查项。
+
+
+### 现场 3：“共识与复制：Raft 实战要点”的验证只在开发机通过
+
+**症状**：在“共识与复制：Raft 实战要点”的练习或生产场景里出现““共识与复制：Raft 实战要点”的验证只在开发机通过”。
+
+**复现**：准备一组最小输入，只保留触发““共识与复制：Raft 实战要点”的验证只在开发机通过”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“环境版本、配置和输入规模与目标环境不同，Raft 缺少可重复的验证记录”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：把“共识与复制：Raft 实战要点”的运行环境、输入样本和预期输出写成清单，并在另一套环境复跑同一条命令
+
+**预防**：把““共识与复制：Raft 实战要点”的验证只在开发机通过”写成一条自动化用例，并在“共识与复制：Raft 实战要点”的验收清单里保留对应检查项。
+
+
 ## 考点精讲：把测验题还原成判断过程
 
 本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
@@ -351,6 +471,14 @@ print(node.advance_commit({"n1": 2, "n2": 2, "n3": 1}))
 
 - **正确判断**：要解决什么问题 → Raft 两个子问题 → 工程要点速查 → 常见错误对照表
 - **判断依据**：在「共识与复制：Raft 实战要点」中，正确顺序是：1. 要解决什么问题 → 2. Raft 两个子问题 → 3. 工程要点速查 → 4. 常见错误对照表。「共识与复制：Raft 实战要点」先建立概念，再解释运行机制，随后进入代码与工程实践，最后处理失败路径。在「共识与复制：Raft 实战要点」里，如果把后一步放到前面，通常会缺少前一步产生的定义、输入或验证结果。
+
+### 补充自测（2 题）
+
+1. 围绕“共识与复制：Raft 实战要点”中的 Raft、共识、选主，下列哪两项是本课强调的实践判断？
+2. 下面这段 Python 代码复现了“共识与复制：Raft 实战要点”中 Raft、共识、选主 相关的一个常见故障，哪一项最准确地解释了问题？
+
+这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
+
 
 ## 本课复习清单
 

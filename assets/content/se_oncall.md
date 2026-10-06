@@ -288,6 +288,130 @@ On-Call 流程不能替代系统可靠性设计。真正的目标是通过容量
 > 复习不是重读一遍，而是离开原文重新产出：复述、改写、验证、复盘。
 
 
+## 可运行练习
+
+下面 3 个任务围绕“On-Call 与告警治理”展开，代码可以直接粘贴到 App 的离线沙箱里运行；如果示例会读取标准输入，请按代码注释在沙箱的 stdin 区域填入同样格式的数据。
+
+### 任务 1：先跑通，再解释
+
+```python
+from dataclasses import dataclass, field
+from enum import Enum
+
+class Channel(Enum):
+    PHONE = "电话"
+    CHAT = "群消息"
+    TICKET = "工单"
+
+@dataclass
+class AlertRule:
+    name: str
+    severity: str                # P0 / P1 / P2 / P3
+    channel: Channel
+    duration_seconds: int        # 持续多久才触发，用于抑制抖动
+    runbook: str = ""
+    enabled: bool = True
+
+    def is_actionable(self) -> bool:
+        """可执行性：没有 Runbook 的告警在半夜只会制造恐慌。"""
+        return bool(self.runbook.strip())
+
+@dataclass
+class AlertAudit:
+    """告警审计：找出无效告警与噪声来源。"""
+
+    rules: list = field(default_factory=list)
+    triggered: dict = field(default_factory=dict)   # 名称 -> 触发次数
+    acted: dict = field(default_factory=dict)       # 名称 -> 被处理的次数
+
+    def noise_ratio(self) -> float:
+        total = sum(self.triggered.values())
+        handled = sum(self.acted.values())
+        if total == 0:
+            return 0.0
+        return round(1 - handled / total, 4)
+
+    def problems(self) -> list:
+        issues = []
+        for rule in self.rules:
+            if rule.enabled and not rule.is_actionable():
+                issues.append(f"{rule.name}：缺少 Runbook")
+            if rule.severity == "P2" and rule.channel is Channel.PHONE:
+                issues.append(f"{rule.name}：低优先级却走电话通道")
+            if self.triggered.get(rule.name, 0) >= 10 and self.acted.get(rule.name, 0) == 0:
+                issues.append(f"{rule.name}：长期无人处理，建议下线或改造")
+            if rule.enabled and rule.duration_seconds == 0:
+                issues.append(f"{rule.name}：未设置持续时长，容易抖动误报")
+        return issues
+
+audit = AlertAudit(
+    rules=[AlertRule("接口错误率", "P1", Channel.CHAT, 300, "runbook/api-error.md")],
+    triggered={"接口错误率": 12},
+    acted={"接口错误率": 3},
+)
+print(audit.noise_ratio(), audit.problems())
+```
+
+**预期输出**：运行后会输出与“On-Call 与告警治理”相关的关键结果；请重点核对输出行数、最后一个数值和异常提示。
+
+**验收标准**：代码能正常运行；逐行解释每个变量的值如何变化，并指出哪一行决定了最终结果。
+
+### 任务 2：只改一个条件
+
+复制上面的代码，只修改一个输入、边界或参数（例如空值、最大值、循环次数、过滤条件），先写出你的预测，再实际运行。
+
+**验收标准**：留下“原结果 → 改动 → 预测 → 实际结果 → 差异原因”五步记录；如果预测错误，要写出修正后的心智模型。
+
+### 任务 3：迁移到自己的数据
+
+用同一套思路处理一组你自己的数据或场景，保持输出格式与任务 1 一致。
+
+**验收标准**：代码不少于 10 行，至少包含 1 个边界检查；把代码和运行结果保存到笔记或片段库。
+
+
+## 故障现场
+
+这一节把“On-Call 与告警治理”最常见的失败方式还原成现场记录，练习时按“症状 → 复现 → 定位 → 修复 → 预防”的顺序排查。
+
+### 现场 1：“On-Call 与告警治理”的 On-Call 常规用例通过，但边界用例失败
+
+**症状**：在“On-Call 与告警治理”的练习或生产场景里出现““On-Call 与告警治理”的 On-Call 常规用例通过，但边界用例失败”。
+
+**复现**：准备一组最小输入，只保留触发““On-Call 与告警治理”的 On-Call 常规用例通过，但边界用例失败”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“On-Call 的前置条件与取值边界没有写进代码，默认值掩盖了空值和极值”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：为“On-Call 与告警治理”补一条空值或极值用例，把前置条件写成断言，并让失败信息直接指出是哪个输入越界
+
+**预防**：把““On-Call 与告警治理”的 On-Call 常规用例通过，但边界用例失败”写成一条自动化用例，并在“On-Call 与告警治理”的验收清单里保留对应检查项。
+
+
+### 现场 2：“On-Call 与告警治理”的 值班 结果在两次运行之间不一致
+
+**症状**：在“On-Call 与告警治理”的练习或生产场景里出现““On-Call 与告警治理”的 值班 结果在两次运行之间不一致”。
+
+**复现**：准备一组最小输入，只保留触发““On-Call 与告警治理”的 值班 结果在两次运行之间不一致”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“值班 依赖了当前版本、执行顺序或共享状态，单次运行无法暴露差异”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：固定“On-Call 与告警治理”使用的版本与随机种子，记录两次运行的完整输入和输出，再逐项消除非确定性来源
+
+**预防**：把““On-Call 与告警治理”的 值班 结果在两次运行之间不一致”写成一条自动化用例，并在“On-Call 与告警治理”的验收清单里保留对应检查项。
+
+
+### 现场 3：需求反复变更，代码越改越难验证
+
+**症状**：在“On-Call 与告警治理”的练习或生产场景里出现“需求反复变更，代码越改越难验证”。
+
+**复现**：准备一组最小输入，只保留触发“需求反复变更，代码越改越难验证”的必要条件，连续运行两次确认结果稳定。
+
+**定位**：围绕“On-Call 的接口边界没有写清楚，值班 缺少可自动执行的验收条件”检查调用链、输入数据和环境配置，先验证假设再改代码。
+
+**修复**：为“On-Call 与告警治理”补一份最小验收清单，把接口、数据和失败路径写成测试，再开始重构
+
+**预防**：把“需求反复变更，代码越改越难验证”写成一条自动化用例，并在“On-Call 与告警治理”的验收清单里保留对应检查项。
+
+
 ## 考点精讲：把测验题还原成判断过程
 
 本课有 6 个判断点。先自己作答，再看「判断依据」；如果结论正确但理由不完整，回到正文对应章节补足概念。
@@ -332,6 +456,14 @@ On-Call 流程不能替代系统可靠性设计。真正的目标是通过容量
 
 - **正确判断**：用户可感知的症状与 SLO
 - **判断依据**：正确答案是「用户可感知的症状与 SLO」。这段代码来自「On-Call 与告警治理」的示例，判断时先看输入与输出，再检查条件、循环和边界。正确答案是「用户可感知的症状与 SLO」，本课在「深入补充·On-Call 与告警治理」中说明：告警治理要持续降低噪声，否则值班人员会产生告警疲劳并忽略真正问题。面向症状才能减少噪声，让被叫醒的人一定…在「On-Call 与告警治理」中，如果只改一个条件，输出通常会随之改变，因此不能脱离代码前提作答。
+
+### 补充自测（2 题）
+
+1. 围绕“On-Call 与告警治理”中的 On-Call、值班、告警治理，下列哪两项是本课强调的实践判断？
+2. 按“On-Call 与告警治理”中 On-Call、值班、告警治理 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
+
+这些题按“先定位概念、再排除边界错误、最后核对答案”的顺序作答；每题解析都给出了判断依据。
+
 
 ## 本课复习清单
 
