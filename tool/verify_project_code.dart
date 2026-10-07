@@ -5,12 +5,14 @@
 //
 // 当前环境可验证 Python 与 JavaScript；其余语言需要对应 SDK，
 // 工具会明确列出“未验证”，避免把未执行的内容当成已验证。
+// 解释器与运行时按 toolchain_resolver.dart 的候选列表探测，
+// 缺少时自动降级为结构校验，不会让脚本崩溃。
 import 'dart:convert';
 import 'dart:io';
 
+import 'toolchain_resolver.dart';
+
 const String specDir = 'tool/project_specs';
-const String pythonExe =
-    r'C:\Users\m1899\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe';
 
 Future<void> main(List<String> args) async {
   final specs = <String, Map<String, dynamic>>{};
@@ -23,6 +25,12 @@ Future<void> main(List<String> args) async {
     }
   }
 
+  final python = resolveToolchain(pythonCandidates);
+  if (python == null) {
+    stdout.writeln(
+      '未找到 Python 解释器，Python 示例降级为结构校验（可设置 PYTHON 环境变量）。',
+    );
+  }
   final temp = Directory.systemTemp.createTempSync('code_learn_verify_');
   var syntaxPassed = 0;
   var structuralPassed = 0;
@@ -51,20 +59,23 @@ Future<void> main(List<String> args) async {
       await File(path).writeAsString(code);
 
       final result = switch (language) {
-        'python' => Process.runSync(pythonExe, [
+        'python' => runToolchain(python, [
           '-c',
           'import ast,sys; ast.parse(open(sys.argv[1], encoding="utf-8").read())',
           path,
         ]),
-        'javascript' => Process.runSync('node', ['--check', path]),
-        'typescript' => Process.runSync('node', [
+        'javascript' => runToolchain('node', ['--check', path]),
+        'typescript' => runToolchain('node', [
           '--experimental-strip-types',
           '--check',
           path,
         ]),
         _ => null,
       };
-      if (result == null || result.exitCode == 0) {
+      if (result == null) {
+        // 缺少对应运行时：按结构校验计通过，避免把环境缺失当成语法错误。
+        structuralPassed++;
+      } else if (result.exitCode == 0) {
         syntaxPassed++;
       } else {
         failures.add('$id（$language）：${result.stderr}');

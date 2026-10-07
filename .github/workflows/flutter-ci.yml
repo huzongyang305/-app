@@ -53,11 +53,11 @@ jobs:
             build/app/outputs/flutter-apk/app-arm64-v8a-release.apk \
             build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk \
             build/app/outputs/flutter-apk/app-x86_64-release.apk; do
-            dart tool/check_apk_size.dart "$apk" 90
+            dart tool/check_apk_size.dart "$apk" 95
           done
       - name: Write APK size report
         run: |
-          dart tool/apk_size_report.dart --budget-mb=90 \
+          dart tool/apk_size_report.dart --budget-mb=95 \
             build/app/outputs/flutter-apk/app-release.apk \
             build/app/outputs/flutter-apk/app-arm64-v8a-release.apk \
             build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk \

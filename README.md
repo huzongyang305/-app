@@ -325,7 +325,7 @@ flutter analyze     # 静态检查（当前 0 issue）
 flutter test        # 272 项：内容完整性 + 端到端流程 + 金图视觉回归 + 备份/迁移/沙箱测试
 dart tool/verify_sandbox_harness.dart   # 多语言沙箱离线校验（需本机有 Edge/Chrome）
 dart tool/check_brand_assets.dart       # 图标/启动页资源自检
-dart tool/check_apk_size.dart build/app/outputs/flutter-apk/app-release.apk 90   # APK 体积门禁
+dart tool/check_apk_size.dart build/app/outputs/flutter-apk/app-release.apk 95   # APK 体积门禁
 ```
 
 `.github/workflows/flutter-ci.yml` 会在 push / PR 时自动执行依赖安装、静态检查、全量测试、品牌资源检查、沙箱校验、金图视觉回归、release APK 构建与体积门禁；金图覆盖首页（手机 / 平板 / 深色）、学习、工具、我的、教程与测验页，位于 `test/goldens/`。

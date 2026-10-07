@@ -5,13 +5,14 @@
 //
 // 对 Python、JavaScript、TypeScript 做完整语法验证；对包含入口的
 // C/C++/Java 片段做编译验证；其余语言做结构校验。报告写入
-// tool/code_verification_report.md。
+// tool/code_verification_report.md。外部命令按 toolchain_resolver.dart
+// 的候选列表探测，缺少某个运行时只降级为结构校验，不会让脚本崩溃。
 import 'dart:io';
+
+import 'toolchain_resolver.dart';
 
 const String contentDir = 'assets/content';
 const String reportPath = 'tool/code_verification_report.md';
-const String pythonExe =
-    r'C:\Users\m1899\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe';
 
 class Block {
   const Block({
@@ -41,6 +42,26 @@ Future<void> main(List<String> args) async {
   final fragments = <String>[];
   final intentional = <String>[];
   final counts = <String, List<int>>{};
+
+  // 探测外部工具链：探测不到时对应语言降级为结构校验，并在报告里提示。
+  final python = resolveToolchain(pythonCandidates);
+  final node = resolveToolchain(const <String>['node']);
+  final gpp = resolveToolchain(const <String>['g++', 'clang++']);
+  final javac = resolveToolchain(const <String>['javac']);
+  if (python == null) {
+    warnings.add(
+      '未找到 Python 解释器，Python 代码块降级为结构校验（可设置 PYTHON 环境变量）',
+    );
+  }
+  if (node == null) {
+    warnings.add('未找到 Node.js，JavaScript/TypeScript 代码块降级为结构校验');
+  }
+  if (gpp == null) {
+    warnings.add('未找到 g++/clang++，C/C++ 代码块降级为结构校验');
+  }
+  if (javac == null) {
+    warnings.add('未找到 javac，Java 代码块降级为结构校验');
+  }
 
   // counts[语言] = [通过, 片段, 硬失败, 排错练习]
   void record(String language, bool ok) {
@@ -93,42 +114,45 @@ Future<void> main(List<String> args) async {
       if (language == 'python') {
         final path = '${temp.path}/${block.lessonId}_${block.line}.py';
         await File(path).writeAsString(block.code);
-        final result = Process.runSync(pythonExe, [
+        final result = runToolchain(python, [
           '-c',
           'import ast,sys; ast.parse(open(sys.argv[1], encoding="utf-8").read())',
           path,
         ]);
-        final ok = result.exitCode == 0;
+        final ok = result?.exitCode == 0;
         final accepted = ok || _balanced(block.code, language);
         if (!settle(block, language, accepted)) {
           failures.add(
-            '${block.lessonId}:${block.line} $language ${result.stderr}',
+            '${block.lessonId}:${block.line} $language '
+            '${result == null ? '结构不平衡' : result.stderr}',
           );
         }
       } else if (language == 'javascript') {
         final path = '${temp.path}/${block.lessonId}_${block.line}.mjs';
         await File(path).writeAsString(block.code);
-        final result = Process.runSync('node', ['--check', path]);
-        final ok = result.exitCode == 0;
+        final result = runToolchain(node, ['--check', path]);
+        final ok = result?.exitCode == 0;
         final accepted = ok || _balanced(block.code, language);
         if (!settle(block, language, accepted)) {
           failures.add(
-            '${block.lessonId}:${block.line} $language ${result.stderr}',
+            '${block.lessonId}:${block.line} $language '
+            '${result == null ? '结构不平衡' : result.stderr}',
           );
         }
       } else if (language == 'typescript' || language == 'ts') {
         final path = '${temp.path}/${block.lessonId}_${block.line}.ts';
         await File(path).writeAsString(block.code);
-        final result = Process.runSync('node', [
+        final result = runToolchain(node, [
           '--experimental-strip-types',
           '--check',
           path,
         ]);
-        final ok = result.exitCode == 0;
+        final ok = result?.exitCode == 0;
         final accepted = ok || _balanced(block.code, language);
         if (!settle(block, language, accepted)) {
           failures.add(
-            '${block.lessonId}:${block.line} $language ${result.stderr}',
+            '${block.lessonId}:${block.line} $language '
+            '${result == null ? '结构不平衡' : result.stderr}',
           );
         }
       } else if (language == 'cpp' || language == 'c') {
@@ -142,26 +166,28 @@ Future<void> main(List<String> args) async {
         final path =
             '${temp.path}/${block.lessonId}_${block.line}.${language == 'c' ? 'c' : 'cpp'}';
         await File(path).writeAsString(block.code);
-        var result = Process.runSync('g++', [
+        var result = runToolchain(gpp, [
           '-fsyntax-only',
           '-std=${language == 'c' ? 'c11' : 'c++20'}',
           path,
         ]);
-        if (result.exitCode != 0 &&
+        if (result != null &&
+            result.exitCode != 0 &&
             language == 'cpp' &&
             '${result.stderr}'.contains('unrecognized command line option')) {
           // 旧版 MinGW g++ 最高只认 c++2a，回退后仍按同一份源码校验。
-          result = Process.runSync('g++', [
+          result = runToolchain(gpp, [
             '-fsyntax-only',
             '-std=c++2a',
             path,
           ]);
         }
-        final ok = result.exitCode == 0;
+        final ok = result?.exitCode == 0;
         final accepted = ok || _balanced(block.code, language);
         if (!settle(block, language, accepted)) {
           failures.add(
-            '${block.lessonId}:${block.line} $language ${result.stderr}',
+            '${block.lessonId}:${block.line} $language '
+            '${result == null ? '结构不平衡' : result.stderr}',
           );
         }
       } else if (language == 'java') {
@@ -178,11 +204,12 @@ Future<void> main(List<String> args) async {
         final className = classMatch?.group(1) ?? 'Main';
         final path = '${temp.path}/$className.java';
         await File(path).writeAsString(block.code);
-        final result = Process.runSync('javac', ['-d', temp.path, path]);
-        final ok = result.exitCode == 0;
+        final result = runToolchain(javac, ['-d', temp.path, path]);
+        final ok = result?.exitCode == 0;
         if (!settle(block, language, ok)) {
           failures.add(
-            '${block.lessonId}:${block.line} $language ${result.stderr}',
+            '${block.lessonId}:${block.line} $language '
+            '${result == null ? '结构不平衡' : result.stderr}',
           );
         }
       } else {
@@ -205,6 +232,7 @@ Future<void> main(List<String> args) async {
         failure.contains('No such file') ||
         failure.contains('fatal error') ||
         failure.contains('not found') ||
+        failure.contains('bad option') ||
         failure.contains('cannot find')) {
       warnings.add(failure);
       final language = _failureLanguage(failure);
