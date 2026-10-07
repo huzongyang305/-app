@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:code_learn_app/models/lesson_category.dart';
 import 'package:code_learn_app/models/lesson.dart';
+import 'package:code_learn_app/models/sandbox_language.dart';
 import 'package:code_learn_app/data/learning_paths.dart';
 import 'package:code_learn_app/services/content_provider.dart';
 import 'package:code_learn_app/services/progress_provider.dart';
@@ -323,6 +324,49 @@ void main() {
         greaterThanOrEqualTo(2),
         reason: '$categoryId 只有 ${projects.length} 个项目课',
       );
+    }
+  });
+
+  test('语言分类课程都绑定沙箱实验，且 lab 指向真实运行时', () {
+    const sandboxByCategory = <String, String>{
+      'python': 'python',
+      'c': 'cpp',
+      'cpp': 'cpp',
+      'java': 'java',
+      'javascript': 'javascript',
+      'typescript': 'typescript',
+      'csharp': 'csharp',
+      'go': 'go',
+      'rust': 'rust',
+      'kotlin': 'kotlin',
+      'swift': 'swift',
+      'shell': 'bash',
+    };
+
+    for (final category in categories) {
+      final sandboxId = sandboxByCategory[category.id];
+      if (sandboxId == null) continue;
+      expect(SandboxLanguage.tryFromId(sandboxId), isNotNull);
+      for (final lesson in category.lessons) {
+        expect(
+          lesson.lab,
+          'sandbox:$sandboxId',
+          reason: '${lesson.id} 没有绑定 $sandboxId 沙箱',
+        );
+      }
+    }
+
+    // 全库任意 lab 绑定都必须能被沙箱识别，防止写错语言 id 后静默降级成 JS。
+    for (final category in categories) {
+      for (final lesson in category.lessons) {
+        final lab = lesson.lab;
+        if (lab == null || !lab.startsWith('sandbox:')) continue;
+        expect(
+          SandboxLanguage.tryFromId(lab.substring(8)),
+          isNotNull,
+          reason: '${lesson.id} 的 lab 无法识别：$lab',
+        );
+      }
     }
   });
 

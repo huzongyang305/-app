@@ -6177,7 +6177,8 @@
           "code_quiz": {
             "language": "cpp",
             "slot": "iostream"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "cpp_variables_io",
@@ -6272,7 +6273,8 @@
           "code_quiz": {
             "language": "cpp",
             "slot": "iostream"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "cpp_conditions",
@@ -6368,7 +6370,8 @@
           "code_quiz": {
             "language": "cpp",
             "slot": "iostream"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "cpp_loops",
@@ -6467,7 +6470,8 @@
           ],
           "related": [
             "cpp_functions_intro"
-          ]
+          ],
+          "lab": "sandbox:cpp"
         },
         {
           "id": "cpp_functions_intro",
@@ -6561,7 +6565,8 @@
           "code_quiz": {
             "language": "cpp",
             "slot": "iostream"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "cpp_basics",
@@ -6672,7 +6677,8 @@
           "code_quiz": {
             "language": "cpp",
             "slot": "iostream"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "cpp_types",
@@ -6780,7 +6786,8 @@
           "code_quiz": {
             "language": "cpp",
             "slot": "iostream"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "cpp_control_functions",
@@ -6891,7 +6898,8 @@
           "code_quiz": {
             "language": "cpp",
             "slot": "iostream"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "cpp_pointers",
@@ -7000,7 +7008,8 @@
           "code_quiz": {
             "language": "cpp",
             "slot": "iostream"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "cpp_memory",
@@ -7114,7 +7123,8 @@
           ],
           "related": [
             "cpp_oop"
-          ]
+          ],
+          "lab": "sandbox:cpp"
         },
         {
           "id": "cpp_oop",
@@ -7226,7 +7236,8 @@
           "code_quiz": {
             "language": "cpp",
             "slot": "class"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "cpp_templates",
@@ -7335,7 +7346,8 @@
           "code_quiz": {
             "language": "cpp",
             "slot": "iostream"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "cpp_stl",
@@ -7444,7 +7456,8 @@
           "code_quiz": {
             "language": "cpp",
             "slot": "vector"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "cpp_modern",
@@ -7553,7 +7566,8 @@
           "code_quiz": {
             "language": "cpp",
             "slot": "vector"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "cpp_tooling",
@@ -7658,7 +7672,8 @@
           ],
           "related": [
             "cpp_project"
-          ]
+          ],
+          "lab": "sandbox:cpp"
         },
         {
           "after": "cpp_tooling",
@@ -7769,7 +7784,8 @@
           "code_quiz": {
             "language": "cpp",
             "slot": "vector"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "cpp_project_http",
@@ -7881,7 +7897,8 @@
           ],
           "related": [
             "cpp_project_taskdb"
-          ]
+          ],
+          "lab": "sandbox:cpp"
         },
         {
           "id": "cpp_project_taskdb",
@@ -7993,7 +8010,8 @@
           "related": [
             "cpp_move_semantics",
             "csharp_project_inventory_cli"
-          ]
+          ],
+          "lab": "sandbox:cpp"
         },
         {
           "id": "cpp_move_semantics",
@@ -8108,7 +8126,8 @@
           "code_quiz": {
             "language": "cpp",
             "slot": "iostream"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "cpp_concepts_ranges",
@@ -8223,7 +8242,8 @@
           "code_quiz": {
             "language": "cpp",
             "slot": "iostream"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "cpp_concurrency_atomics",
@@ -8336,7 +8356,8 @@
           ],
           "related": [
             "cpp_first_program"
-          ]
+          ],
+          "lab": "sandbox:cpp"
         }
       ]
     },
@@ -8441,7 +8462,8 @@
           "code_quiz": {
             "language": "c",
             "slot": "include"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "c_variables_io",
@@ -8537,7 +8559,8 @@
           "code_quiz": {
             "language": "c",
             "slot": "include"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "c_conditions",
@@ -8633,7 +8656,8 @@
           "code_quiz": {
             "language": "c",
             "slot": "include"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "c_loops",
@@ -8729,7 +8753,8 @@
           "code_quiz": {
             "language": "c",
             "slot": "include"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "c_functions_intro",
@@ -8823,7 +8848,8 @@
           "code_quiz": {
             "language": "c",
             "slot": "include"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "c_basics",
@@ -8934,7 +8960,8 @@
           "code_quiz": {
             "language": "c",
             "slot": "include"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "c_types",
@@ -9043,7 +9070,8 @@
           "code_quiz": {
             "language": "c",
             "slot": "include"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "c_control_functions",
@@ -9155,7 +9183,8 @@
           "code_quiz": {
             "language": "c",
             "slot": "include"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "c_pointers",
@@ -9272,7 +9301,8 @@
           "code_quiz": {
             "language": "c",
             "slot": "include"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "c_arrays_strings",
@@ -9387,7 +9417,8 @@
           "code_quiz": {
             "language": "c",
             "slot": "include"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "c_structs",
@@ -9502,7 +9533,8 @@
           "code_quiz": {
             "language": "c",
             "slot": "include"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "c_preprocessor",
@@ -9607,7 +9639,8 @@
           ],
           "related": [
             "c_files"
-          ]
+          ],
+          "lab": "sandbox:cpp"
         },
         {
           "id": "c_files",
@@ -9712,7 +9745,8 @@
           ],
           "related": [
             "c_debugging"
-          ]
+          ],
+          "lab": "sandbox:cpp"
         },
         {
           "id": "c_debugging",
@@ -9817,7 +9851,8 @@
           ],
           "related": [
             "c_project"
-          ]
+          ],
+          "lab": "sandbox:cpp"
         },
         {
           "id": "c_project",
@@ -9915,7 +9950,8 @@
           "code_quiz": {
             "language": "c",
             "slot": "include"
-          }
+          },
+          "lab": "sandbox:cpp"
         },
         {
           "id": "c_project_tcp_server",
@@ -10015,7 +10051,8 @@
           ],
           "prerequisites": [
             "c_debugging"
-          ]
+          ],
+          "lab": "sandbox:cpp"
         }
       ]
     },
@@ -10120,7 +10157,8 @@
           "code_quiz": {
             "language": "java",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:java"
         },
         {
           "id": "java_variables_output",
@@ -10219,7 +10257,8 @@
           ],
           "related": [
             "java_conditions"
-          ]
+          ],
+          "lab": "sandbox:java"
         },
         {
           "id": "java_conditions",
@@ -10315,7 +10354,8 @@
           "code_quiz": {
             "language": "java",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:java"
         },
         {
           "id": "java_loops",
@@ -10411,7 +10451,8 @@
           "code_quiz": {
             "language": "java",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:java"
         },
         {
           "id": "java_methods_intro",
@@ -10505,7 +10546,8 @@
           "code_quiz": {
             "language": "java",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:java"
         },
         {
           "id": "java_basics",
@@ -10614,7 +10656,8 @@
           "code_quiz": {
             "language": "java",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:java"
         },
         {
           "id": "java_types",
@@ -10724,7 +10767,8 @@
           "code_quiz": {
             "language": "java",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:java"
         },
         {
           "id": "java_control_methods",
@@ -10835,7 +10879,8 @@
           "code_quiz": {
             "language": "java",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:java"
         },
         {
           "id": "java_oop",
@@ -10944,7 +10989,8 @@
           "code_quiz": {
             "language": "java",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:java"
         },
         {
           "id": "java_inheritance",
@@ -11057,7 +11103,8 @@
           "code_quiz": {
             "language": "java",
             "slot": "override"
-          }
+          },
+          "lab": "sandbox:java"
         },
         {
           "id": "java_collections",
@@ -11175,7 +11222,8 @@
           "code_quiz": {
             "language": "java",
             "slot": "collection"
-          }
+          },
+          "lab": "sandbox:java"
         },
         {
           "id": "java_exceptions",
@@ -11287,7 +11335,8 @@
           "code_quiz": {
             "language": "java",
             "slot": "trycatch"
-          }
+          },
+          "lab": "sandbox:java"
         },
         {
           "id": "java_lambda_stream",
@@ -11397,7 +11446,8 @@
           "code_quiz": {
             "language": "java",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:java"
         },
         {
           "id": "java_tooling",
@@ -11501,7 +11551,8 @@
           "prerequisites": [],
           "related": [
             "java_project"
-          ]
+          ],
+          "lab": "sandbox:java"
         },
         {
           "id": "java_concurrency",
@@ -11612,7 +11663,8 @@
           "code_quiz": {
             "language": "java",
             "slot": "thread"
-          }
+          },
+          "lab": "sandbox:java"
         },
         {
           "after": "java_tooling",
@@ -11719,7 +11771,8 @@
           ],
           "related": [
             "java_project_inventory"
-          ]
+          ],
+          "lab": "sandbox:java"
         },
         {
           "id": "java_project_inventory",
@@ -11831,7 +11884,8 @@
           ],
           "related": [
             "java_project_order_concurrency"
-          ]
+          ],
+          "lab": "sandbox:java"
         },
         {
           "id": "java_project_order_concurrency",
@@ -11942,7 +11996,8 @@
           ],
           "related": [
             "java_modern_features"
-          ]
+          ],
+          "lab": "sandbox:java"
         },
         {
           "id": "java_modern_features",
@@ -12056,7 +12111,8 @@
           "related": [
             "java_virtual_threads",
             "csharp_records_patterns"
-          ]
+          ],
+          "lab": "sandbox:java"
         },
         {
           "id": "java_virtual_threads",
@@ -12153,7 +12209,8 @@
           "code_quiz": {
             "language": "java",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:java"
         },
         {
           "id": "java_gc_tuning",
@@ -12258,7 +12315,8 @@
           "code_quiz": {
             "language": "java",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:java"
         }
       ]
     },
@@ -12363,7 +12421,8 @@
           "code_quiz": {
             "language": "kotlin",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:kotlin"
         },
         {
           "id": "kotlin_variables_null",
@@ -12459,7 +12518,8 @@
           "code_quiz": {
             "language": "kotlin",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:kotlin"
         },
         {
           "id": "kotlin_conditions",
@@ -12555,7 +12615,8 @@
           "code_quiz": {
             "language": "kotlin",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:kotlin"
         },
         {
           "id": "kotlin_loops",
@@ -12651,7 +12712,8 @@
           "code_quiz": {
             "language": "kotlin",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:kotlin"
         },
         {
           "id": "kotlin_functions_intro",
@@ -12745,7 +12807,8 @@
           "code_quiz": {
             "language": "kotlin",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:kotlin"
         },
         {
           "id": "kotlin_basics",
@@ -12861,7 +12924,8 @@
           "code_quiz": {
             "language": "kotlin",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:kotlin"
         },
         {
           "id": "kotlin_functions",
@@ -12978,7 +13042,8 @@
           "code_quiz": {
             "language": "kotlin",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:kotlin"
         },
         {
           "id": "kotlin_oop",
@@ -13094,7 +13159,8 @@
           "code_quiz": {
             "language": "kotlin",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:kotlin"
         },
         {
           "id": "kotlin_collections",
@@ -13207,7 +13273,8 @@
           ],
           "related": [
             "kotlin_coroutines"
-          ]
+          ],
+          "lab": "sandbox:kotlin"
         },
         {
           "id": "kotlin_coroutines",
@@ -13314,7 +13381,8 @@
           "related": [
             "kotlin_android",
             "cross_concurrency"
-          ]
+          ],
+          "lab": "sandbox:kotlin"
         },
         {
           "id": "kotlin_android",
@@ -13420,7 +13488,8 @@
           "related": [
             "kotlin_testing",
             "mobile_kotlin"
-          ]
+          ],
+          "lab": "sandbox:kotlin"
         },
         {
           "id": "kotlin_testing",
@@ -13525,7 +13594,8 @@
           "code_quiz": {
             "language": "kotlin",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:kotlin"
         },
         {
           "id": "kotlin_project",
@@ -13624,7 +13694,8 @@
           "code_quiz": {
             "language": "kotlin",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:kotlin"
         },
         {
           "id": "kotlin_project_cli_ledger",
@@ -13724,7 +13795,8 @@
           ],
           "prerequisites": [
             "kotlin_testing"
-          ]
+          ],
+          "lab": "sandbox:kotlin"
         }
       ]
     },
@@ -13827,7 +13899,8 @@
           "code_quiz": {
             "language": "swift",
             "slot": "func"
-          }
+          },
+          "lab": "sandbox:swift"
         },
         {
           "id": "swift_constants_variables",
@@ -13923,7 +13996,8 @@
           "code_quiz": {
             "language": "swift",
             "slot": "letvar"
-          }
+          },
+          "lab": "sandbox:swift"
         },
         {
           "id": "swift_conditions",
@@ -14019,7 +14093,8 @@
           "code_quiz": {
             "language": "swift",
             "slot": "letvar"
-          }
+          },
+          "lab": "sandbox:swift"
         },
         {
           "id": "swift_loops",
@@ -14115,7 +14190,8 @@
           "code_quiz": {
             "language": "swift",
             "slot": "letvar"
-          }
+          },
+          "lab": "sandbox:swift"
         },
         {
           "id": "swift_functions_intro",
@@ -14209,7 +14285,8 @@
           "code_quiz": {
             "language": "swift",
             "slot": "func"
-          }
+          },
+          "lab": "sandbox:swift"
         },
         {
           "id": "swift_basics",
@@ -14325,7 +14402,8 @@
           "code_quiz": {
             "language": "swift",
             "slot": "letvar"
-          }
+          },
+          "lab": "sandbox:swift"
         },
         {
           "id": "swift_functions",
@@ -14441,7 +14519,8 @@
           "code_quiz": {
             "language": "swift",
             "slot": "func"
-          }
+          },
+          "lab": "sandbox:swift"
         },
         {
           "id": "swift_oop",
@@ -14558,7 +14637,8 @@
           "code_quiz": {
             "language": "swift",
             "slot": "func"
-          }
+          },
+          "lab": "sandbox:swift"
         },
         {
           "id": "swift_collections",
@@ -14673,7 +14753,8 @@
             "swift_async",
             "go_generics_deep",
             "rust_traits_generics"
-          ]
+          ],
+          "lab": "sandbox:swift"
         },
         {
           "id": "swift_async",
@@ -14780,7 +14861,8 @@
           "related": [
             "swift_swiftui",
             "csharp_async"
-          ]
+          ],
+          "lab": "sandbox:swift"
         },
         {
           "id": "swift_swiftui",
@@ -14893,7 +14975,8 @@
           ],
           "related": [
             "swift_testing"
-          ]
+          ],
+          "lab": "sandbox:swift"
         },
         {
           "id": "swift_testing",
@@ -14998,7 +15081,8 @@
           "code_quiz": {
             "language": "swift",
             "slot": "func"
-          }
+          },
+          "lab": "sandbox:swift"
         },
         {
           "id": "swift_project",
@@ -15097,7 +15181,8 @@
           "code_quiz": {
             "language": "swift",
             "slot": "letvar"
-          }
+          },
+          "lab": "sandbox:swift"
         },
         {
           "id": "swift_project_cli_metrics",
@@ -15197,7 +15282,8 @@
           ],
           "prerequisites": [
             "swift_testing"
-          ]
+          ],
+          "lab": "sandbox:swift"
         }
       ]
     },
@@ -17594,7 +17680,8 @@
           "code_quiz": {
             "language": "csharp",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:csharp"
         },
         {
           "id": "csharp_variables_input",
@@ -17686,7 +17773,8 @@
           ],
           "related": [
             "csharp_conditions"
-          ]
+          ],
+          "lab": "sandbox:csharp"
         },
         {
           "id": "csharp_conditions",
@@ -17790,7 +17878,8 @@
           ],
           "related": [
             "csharp_loops"
-          ]
+          ],
+          "lab": "sandbox:csharp"
         },
         {
           "id": "csharp_loops",
@@ -17889,7 +17978,8 @@
           ],
           "related": [
             "csharp_methods_intro"
-          ]
+          ],
+          "lab": "sandbox:csharp"
         },
         {
           "id": "csharp_methods_intro",
@@ -17983,7 +18073,8 @@
           "code_quiz": {
             "language": "csharp",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:csharp"
         },
         {
           "id": "csharp_basics",
@@ -18092,7 +18183,8 @@
           "code_quiz": {
             "language": "csharp",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:csharp"
         },
         {
           "id": "csharp_types",
@@ -18201,7 +18293,8 @@
           "code_quiz": {
             "language": "csharp",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:csharp"
         },
         {
           "id": "csharp_control_methods",
@@ -18311,7 +18404,8 @@
           "code_quiz": {
             "language": "csharp",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:csharp"
         },
         {
           "id": "csharp_oop",
@@ -18421,7 +18515,8 @@
           "code_quiz": {
             "language": "csharp",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:csharp"
         },
         {
           "id": "csharp_inheritance",
@@ -18534,7 +18629,8 @@
           "code_quiz": {
             "language": "csharp",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:csharp"
         },
         {
           "id": "csharp_collections_linq",
@@ -18644,7 +18740,8 @@
           "code_quiz": {
             "language": "csharp",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:csharp"
         },
         {
           "id": "csharp_async",
@@ -18756,7 +18853,8 @@
           "code_quiz": {
             "language": "csharp",
             "slot": "async"
-          }
+          },
+          "lab": "sandbox:csharp"
         },
         {
           "id": "csharp_ecosystem",
@@ -18865,7 +18963,8 @@
           "code_quiz": {
             "language": "bash",
             "slot": "pipe"
-          }
+          },
+          "lab": "sandbox:csharp"
         },
         {
           "after": "csharp_ecosystem",
@@ -18976,7 +19075,8 @@
           "code_quiz": {
             "language": "bash",
             "slot": "pipe"
-          }
+          },
+          "lab": "sandbox:csharp"
         },
         {
           "id": "csharp_project_inventory_cli",
@@ -19085,7 +19185,8 @@
           "code_quiz": {
             "language": "csharp",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:csharp"
         },
         {
           "id": "csharp_project_blazor_admin",
@@ -19196,7 +19297,8 @@
           ],
           "related": [
             "csharp_records_patterns"
-          ]
+          ],
+          "lab": "sandbox:csharp"
         },
         {
           "id": "csharp_records_patterns",
@@ -19314,7 +19416,8 @@
           "code_quiz": {
             "language": "csharp",
             "slot": "record"
-          }
+          },
+          "lab": "sandbox:csharp"
         },
         {
           "id": "csharp_async_streams",
@@ -19430,7 +19533,8 @@
           "code_quiz": {
             "language": "csharp",
             "slot": "async"
-          }
+          },
+          "lab": "sandbox:csharp"
         },
         {
           "id": "csharp_gc_performance",
@@ -19547,7 +19651,8 @@
           "code_quiz": {
             "language": "csharp",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:csharp"
         }
       ]
     },
@@ -19670,7 +19775,8 @@
           "code_quiz": {
             "language": "go",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:go"
         },
         {
           "id": "go_variables_input",
@@ -19774,7 +19880,8 @@
           ],
           "related": [
             "go_conditions"
-          ]
+          ],
+          "lab": "sandbox:go"
         },
         {
           "id": "go_conditions",
@@ -19878,7 +19985,8 @@
           ],
           "related": [
             "go_loops"
-          ]
+          ],
+          "lab": "sandbox:go"
         },
         {
           "id": "go_loops",
@@ -19982,7 +20090,8 @@
           ],
           "related": [
             "go_functions_intro"
-          ]
+          ],
+          "lab": "sandbox:go"
         },
         {
           "id": "go_functions_intro",
@@ -20076,7 +20185,8 @@
           "code_quiz": {
             "language": "go",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:go"
         },
         {
           "id": "go_basics",
@@ -20184,7 +20294,8 @@
           "code_quiz": {
             "language": "go",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:go"
         },
         {
           "id": "go_concurrency",
@@ -20293,7 +20404,8 @@
           "code_quiz": {
             "language": "go",
             "slot": "shortvar"
-          }
+          },
+          "lab": "sandbox:go"
         },
         {
           "id": "go_interfaces_errors",
@@ -20401,7 +20513,8 @@
           "code_quiz": {
             "language": "go",
             "slot": "shortvar"
-          }
+          },
+          "lab": "sandbox:go"
         },
         {
           "id": "go_project",
@@ -20510,7 +20623,8 @@
           "code_quiz": {
             "language": "go",
             "slot": "shortvar"
-          }
+          },
+          "lab": "sandbox:go"
         },
         {
           "id": "go_performance",
@@ -20616,7 +20730,8 @@
           "code_quiz": {
             "language": "go",
             "slot": "shortvar"
-          }
+          },
+          "lab": "sandbox:go"
         },
         {
           "id": "go_microservice",
@@ -20724,7 +20839,8 @@
           "code_quiz": {
             "language": "go",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:go"
         },
         {
           "id": "go_pprof",
@@ -20834,7 +20950,8 @@
           "code_quiz": {
             "language": "bash",
             "slot": "pipe"
-          }
+          },
+          "lab": "sandbox:go"
         },
         {
           "id": "go_grpc",
@@ -20939,7 +21056,8 @@
           ],
           "related": [
             "go_concurrency_patterns"
-          ]
+          ],
+          "lab": "sandbox:go"
         },
         {
           "id": "go_testing",
@@ -21047,7 +21165,8 @@
           "code_quiz": {
             "language": "go",
             "slot": "shortvar"
-          }
+          },
+          "lab": "sandbox:go"
         },
         {
           "id": "go_data_access",
@@ -21157,7 +21276,8 @@
           "code_quiz": {
             "language": "go",
             "slot": "shortvar"
-          }
+          },
+          "lab": "sandbox:go"
         },
         {
           "id": "go_generics_stdlib",
@@ -21263,7 +21383,8 @@
           "code_quiz": {
             "language": "go",
             "slot": "shortvar"
-          }
+          },
+          "lab": "sandbox:go"
         },
         {
           "id": "go_concurrency_patterns",
@@ -21370,7 +21491,8 @@
           "code_quiz": {
             "language": "go",
             "slot": "shortvar"
-          }
+          },
+          "lab": "sandbox:go"
         },
         {
           "id": "go_project_rest_api",
@@ -21482,7 +21604,8 @@
           ],
           "related": [
             "go_project_worker_pool"
-          ]
+          ],
+          "lab": "sandbox:go"
         },
         {
           "id": "go_project_worker_pool",
@@ -21589,7 +21712,8 @@
           "code_quiz": {
             "language": "go",
             "slot": "shortvar"
-          }
+          },
+          "lab": "sandbox:go"
         },
         {
           "id": "go_generics_deep",
@@ -21711,7 +21835,8 @@
           "code_quiz": {
             "language": "go",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:go"
         },
         {
           "id": "go_profiling_deep",
@@ -21826,7 +21951,8 @@
           "code_quiz": {
             "language": "go",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:go"
         },
         {
           "id": "go_cloud_native_security",
@@ -21942,7 +22068,8 @@
           "code_quiz": {
             "language": "go",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:go"
         }
       ]
     },
@@ -22055,7 +22182,8 @@
           "prerequisites": [],
           "related": [
             "rust_variables_mutability"
-          ]
+          ],
+          "lab": "sandbox:rust"
         },
         {
           "id": "rust_variables_mutability",
@@ -22159,7 +22287,8 @@
           ],
           "related": [
             "rust_conditions"
-          ]
+          ],
+          "lab": "sandbox:rust"
         },
         {
           "id": "rust_conditions",
@@ -22255,7 +22384,8 @@
           "code_quiz": {
             "language": "rust",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:rust"
         },
         {
           "id": "rust_loops",
@@ -22351,7 +22481,8 @@
           "code_quiz": {
             "language": "rust",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:rust"
         },
         {
           "id": "rust_functions_intro",
@@ -22445,7 +22576,8 @@
           "code_quiz": {
             "language": "rust",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:rust"
         },
         {
           "id": "rust_basics",
@@ -22552,7 +22684,8 @@
           "code_quiz": {
             "language": "rust",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:rust"
         },
         {
           "id": "rust_ownership",
@@ -22660,7 +22793,8 @@
           "code_quiz": {
             "language": "rust",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:rust"
         },
         {
           "id": "rust_types_traits",
@@ -22767,7 +22901,8 @@
           "code_quiz": {
             "language": "rust",
             "slot": "result"
-          }
+          },
+          "lab": "sandbox:rust"
         },
         {
           "id": "rust_concurrency_cargo",
@@ -22874,7 +23009,8 @@
           "code_quiz": {
             "language": "rust",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:rust"
         },
         {
           "id": "rust_errors_iterators",
@@ -22981,7 +23117,8 @@
           "code_quiz": {
             "language": "rust",
             "slot": "result"
-          }
+          },
+          "lab": "sandbox:rust"
         },
         {
           "id": "rust_unsafe_ffi",
@@ -23088,7 +23225,8 @@
           "code_quiz": {
             "language": "rust",
             "slot": "mut"
-          }
+          },
+          "lab": "sandbox:rust"
         },
         {
           "id": "rust_cli_project",
@@ -23196,7 +23334,8 @@
           "code_quiz": {
             "language": "rust",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:rust"
         },
         {
           "id": "rust_async_tokio",
@@ -23303,7 +23442,8 @@
           "code_quiz": {
             "language": "rust",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:rust"
         },
         {
           "id": "rust_project_axum_api",
@@ -23415,7 +23555,8 @@
           ],
           "related": [
             "rust_project_downloader"
-          ]
+          ],
+          "lab": "sandbox:rust"
         },
         {
           "id": "rust_project_downloader",
@@ -23525,7 +23666,8 @@
           "code_quiz": {
             "language": "rust",
             "slot": "mut"
-          }
+          },
+          "lab": "sandbox:rust"
         },
         {
           "id": "rust_traits_generics",
@@ -23643,7 +23785,8 @@
           "code_quiz": {
             "language": "rust",
             "slot": "borrow"
-          }
+          },
+          "lab": "sandbox:rust"
         },
         {
           "id": "rust_smart_pointers",
@@ -23760,7 +23903,8 @@
           "code_quiz": {
             "language": "rust",
             "slot": "main"
-          }
+          },
+          "lab": "sandbox:rust"
         },
         {
           "id": "rust_macros_wasm",
@@ -23873,7 +24017,8 @@
           ],
           "related": [
             "rust_cargo_first"
-          ]
+          ],
+          "lab": "sandbox:rust"
         }
       ]
     },
@@ -26363,7 +26508,8 @@
           "prerequisites": [],
           "related": [
             "shell_variables_args"
-          ]
+          ],
+          "lab": "sandbox:bash"
         },
         {
           "id": "shell_variables_args",
@@ -26467,7 +26613,8 @@
           ],
           "related": [
             "shell_conditions"
-          ]
+          ],
+          "lab": "sandbox:bash"
         },
         {
           "id": "shell_conditions",
@@ -26563,7 +26710,8 @@
           "code_quiz": {
             "language": "bash",
             "slot": "redirect"
-          }
+          },
+          "lab": "sandbox:bash"
         },
         {
           "id": "shell_loops",
@@ -26659,7 +26807,8 @@
           "code_quiz": {
             "language": "bash",
             "slot": "for"
-          }
+          },
+          "lab": "sandbox:bash"
         },
         {
           "id": "shell_pipeline",
@@ -26765,7 +26914,8 @@
           "code_quiz": {
             "language": "bash",
             "slot": "pipe"
-          }
+          },
+          "lab": "sandbox:bash"
         },
         {
           "id": "shell_pipeline_intro",
@@ -26859,7 +27009,8 @@
           "code_quiz": {
             "language": "bash",
             "slot": "pipe"
-          }
+          },
+          "lab": "sandbox:bash"
         },
         {
           "id": "shell_bash",
@@ -26966,7 +27117,8 @@
           "code_quiz": {
             "language": "bash",
             "slot": "sete"
-          }
+          },
+          "lab": "sandbox:bash"
         },
         {
           "id": "shell_flow",
@@ -27073,7 +27225,8 @@
           "code_quiz": {
             "language": "bash",
             "slot": "pipe"
-          }
+          },
+          "lab": "sandbox:bash"
         },
         {
           "id": "shell_robust",
@@ -27180,7 +27333,8 @@
           "code_quiz": {
             "language": "bash",
             "slot": "pipe"
-          }
+          },
+          "lab": "sandbox:bash"
         },
         {
           "id": "shell_process_cron",
@@ -27287,7 +27441,8 @@
           "code_quiz": {
             "language": "bash",
             "slot": "pipe"
-          }
+          },
+          "lab": "sandbox:bash"
         },
         {
           "id": "shell_script_engineering",
@@ -27394,7 +27549,8 @@
           "code_quiz": {
             "language": "bash",
             "slot": "pipe"
-          }
+          },
+          "lab": "sandbox:bash"
         },
         {
           "id": "shell_container",
@@ -27502,7 +27658,8 @@
           "code_quiz": {
             "language": "bash",
             "slot": "pipe"
-          }
+          },
+          "lab": "sandbox:bash"
         },
         {
           "id": "shell_text_advanced",
@@ -27610,7 +27767,8 @@
           "code_quiz": {
             "language": "bash",
             "slot": "pipe"
-          }
+          },
+          "lab": "sandbox:bash"
         },
         {
           "id": "shell_ops_scripts",
@@ -27718,7 +27876,8 @@
           "code_quiz": {
             "language": "bash",
             "slot": "pipe"
-          }
+          },
+          "lab": "sandbox:bash"
         },
         {
           "id": "shell_ci_templates",
@@ -27828,7 +27987,8 @@
           "code_quiz": {
             "language": "bash",
             "slot": "pipe"
-          }
+          },
+          "lab": "sandbox:bash"
         },
         {
           "id": "shell_json_yaml",
@@ -27935,7 +28095,8 @@
           "code_quiz": {
             "language": "bash",
             "slot": "pipe"
-          }
+          },
+          "lab": "sandbox:bash"
         },
         {
           "id": "shell_security",
@@ -28044,7 +28205,8 @@
           "code_quiz": {
             "language": "bash",
             "slot": "pipe"
-          }
+          },
+          "lab": "sandbox:bash"
         },
         {
           "id": "shell_project_deploy",
@@ -28157,7 +28319,8 @@
           "related": [
             "shell_project_log_analysis",
             "project_deploy_ops"
-          ]
+          ],
+          "lab": "sandbox:bash"
         },
         {
           "id": "shell_project_log_analysis",
@@ -28275,7 +28438,8 @@
           "code_quiz": {
             "language": "bash",
             "slot": "redirect"
-          }
+          },
+          "lab": "sandbox:bash"
         },
         {
           "id": "shell_portability",
@@ -28392,7 +28556,8 @@
           "code_quiz": {
             "language": "bash",
             "slot": "sete"
-          }
+          },
+          "lab": "sandbox:bash"
         },
         {
           "id": "shell_security_hardening",
@@ -28507,7 +28672,8 @@
           "code_quiz": {
             "language": "bash",
             "slot": "redirect"
-          }
+          },
+          "lab": "sandbox:bash"
         },
         {
           "id": "shell_automation_advanced",
@@ -28620,7 +28786,8 @@
           ],
           "related": [
             "shell_first_script"
-          ]
+          ],
+          "lab": "sandbox:bash"
         }
       ]
     },
