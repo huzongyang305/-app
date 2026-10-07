@@ -200,7 +200,9 @@ class _StatsCard extends StatelessWidget {
         .length;
     final Color color = errors > 0
         ? theme.colorScheme.error
-        : (warnings > 0 ? theme.colorScheme.tertiary : theme.colorScheme.primary);
+        : (warnings > 0
+              ? theme.colorScheme.tertiary
+              : theme.colorScheme.primary);
     final title = errors > 0
         ? context.trArgs('packWorkbenchResultError', {'n': errors})
         : warnings > 0
@@ -312,15 +314,14 @@ class _IssueList extends StatelessWidget {
                 size: 18,
                 color: switch (issue.severity) {
                   ContentPackIssueSeverity.error => theme.colorScheme.error,
-                  ContentPackIssueSeverity.warning => theme.colorScheme.tertiary,
+                  ContentPackIssueSeverity.warning =>
+                    theme.colorScheme.tertiary,
                   ContentPackIssueSeverity.info =>
                     theme.colorScheme.onSurfaceVariant,
                 },
               ),
               title: Text(issue.message),
-              subtitle: issue.lessonId == null
-                  ? null
-                  : Text(issue.lessonId!),
+              subtitle: issue.lessonId == null ? null : Text(issue.lessonId!),
             ),
           if (issues.length > 60)
             ListTile(

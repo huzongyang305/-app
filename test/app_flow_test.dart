@@ -93,6 +93,13 @@ void main() {
     await tester.tap(find.text('查看结果'));
     await tester.pumpAndSettle();
 
+    // 新增交卷前检查：确认交卷后才进入结果页。
+    final finish = find.text('交卷查看结果');
+    if (finish.evaluate().isNotEmpty) {
+      await tester.tap(finish);
+      await tester.pumpAndSettle();
+    }
+
     // 结果页
     expect(find.text('测验完成'), findsOneWidget);
 

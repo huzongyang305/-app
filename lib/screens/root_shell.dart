@@ -92,7 +92,9 @@ class _RootShellState extends State<RootShell> with WidgetsBindingObserver {
           );
         case 'daily_question':
           Navigator.of(context).push(
-            MaterialPageRoute<void>(builder: (_) => const DailyQuestionScreen()),
+            MaterialPageRoute<void>(
+              builder: (_) => const DailyQuestionScreen(),
+            ),
           );
       }
     });
@@ -202,36 +204,15 @@ class _RootShellState extends State<RootShell> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    final pages = const [
-      HomeScreen(),
-      LearnScreen(),
-      ToolsScreen(),
-      ProfileScreen(),
-    ];
-
+    // 导航入口与顺序由设置决定，默认首页 / 学习 / 工具 / 我的。
+    final settings = context.watch<SettingsProvider>();
+    final tabs = settings.navTabs;
+    final index = _index.clamp(0, tabs.length - 1);
     final width = MediaQuery.sizeOf(context).width;
     final useRail = width >= AppBreakpoints.tablet;
+    final pages = <Widget>[for (final tab in tabs) _pageFor(tab)];
     final destinations = <NavigationDestination>[
-      NavigationDestination(
-        icon: const Icon(Icons.home_outlined),
-        selectedIcon: const Icon(Icons.home),
-        label: context.tr('navHome'),
-      ),
-      NavigationDestination(
-        icon: const Icon(Icons.menu_book_outlined),
-        selectedIcon: const Icon(Icons.menu_book),
-        label: context.tr('navLearn'),
-      ),
-      NavigationDestination(
-        icon: const Icon(Icons.build_outlined),
-        selectedIcon: const Icon(Icons.build),
-        label: context.tr('navTools'),
-      ),
-      NavigationDestination(
-        icon: const Icon(Icons.person_outline),
-        selectedIcon: const Icon(Icons.person),
-        label: context.tr('navProfile'),
-      ),
+      for (final tab in tabs) _destinationFor(context, tab),
     ];
 
     if (useRail) {
@@ -243,7 +224,7 @@ class _RootShellState extends State<RootShell> with WidgetsBindingObserver {
               label: context.tr('mainNavigation'),
               child: NavigationRail(
                 extended: width >= 1180,
-                selectedIndex: _index,
+                selectedIndex: index,
                 groupAlignment: -0.85,
                 onDestinationSelected: (value) =>
                     setState(() => _index = value),
@@ -259,7 +240,7 @@ class _RootShellState extends State<RootShell> with WidgetsBindingObserver {
             ),
             const VerticalDivider(width: 1),
             Expanded(
-              child: IndexedStack(index: _index, children: pages),
+              child: IndexedStack(index: index, children: pages),
             ),
           ],
         ),
@@ -268,16 +249,50 @@ class _RootShellState extends State<RootShell> with WidgetsBindingObserver {
 
     return Scaffold(
       // IndexedStack 保留各页面状态，切换标签不会丢失滚动位置。
-      body: IndexedStack(index: _index, children: pages),
+      body: IndexedStack(index: index, children: pages),
       bottomNavigationBar: Semantics(
         container: true,
         label: context.tr('mainNavigation'),
         child: NavigationBar(
-          selectedIndex: _index,
+          selectedIndex: index,
           onDestinationSelected: (value) => setState(() => _index = value),
           destinations: destinations,
         ),
       ),
     );
+  }
+
+  /// 导航入口 ID 到页面。
+  Widget _pageFor(String id) => switch (id) {
+    'learn' => const LearnScreen(),
+    'tools' => const ToolsScreen(),
+    'profile' => const ProfileScreen(),
+    _ => const HomeScreen(),
+  };
+
+  /// 导航入口 ID 到图标与文案。
+  NavigationDestination _destinationFor(BuildContext context, String id) {
+    return switch (id) {
+      'learn' => NavigationDestination(
+        icon: const Icon(Icons.menu_book_outlined),
+        selectedIcon: const Icon(Icons.menu_book),
+        label: context.tr('navLearn'),
+      ),
+      'tools' => NavigationDestination(
+        icon: const Icon(Icons.build_outlined),
+        selectedIcon: const Icon(Icons.build),
+        label: context.tr('navTools'),
+      ),
+      'profile' => NavigationDestination(
+        icon: const Icon(Icons.person_outline),
+        selectedIcon: const Icon(Icons.person),
+        label: context.tr('navProfile'),
+      ),
+      _ => NavigationDestination(
+        icon: const Icon(Icons.home_outlined),
+        selectedIcon: const Icon(Icons.home),
+        label: context.tr('navHome'),
+      ),
+    };
   }
 }

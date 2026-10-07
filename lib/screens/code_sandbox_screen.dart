@@ -6,8 +6,10 @@ import 'package:provider/provider.dart';
 
 import '../l10n/l10n_extension.dart';
 import '../models/code_snippet.dart';
+import '../models/sandbox_challenge.dart';
 import '../models/sandbox_language.dart';
 import '../services/code_sandbox_service.dart';
+import '../services/sandbox_challenge_service.dart';
 import '../services/share_service.dart';
 import '../services/snippet_service.dart';
 import '../services/settings_provider.dart';
@@ -48,6 +50,17 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
   SnippetService? _snippets;
   String _output = '';
   bool _running = false;
+
+  /// 当前选中的挑战；为空表示普通编辑模式。
+  SandboxChallenge? _challenge;
+
+  /// 最近一次挑战运行是否通过；为空表示还没运行过。
+  bool? _challengePassed;
+
+  /// 最近一次挑战运行的真实输出，用于失败时对照。
+  String _challengeActual = '';
+
+  bool _challengeHintVisible = false;
 
   /// 每次运行的令牌：用户中途停止或连续运行多次时，只接受最新一次的结果。
   int _runToken = 0;
@@ -117,6 +130,203 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
     });
   }
 
+  /// 打开挑战选择面板；没有挑战的语言给出明确提示。
+  Future<void> _pickChallenge() async {
+    final challenges = _language.challenges;
+    if (challenges.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(context.trRead('sandboxChallengeNone'))),
+      );
+      return;
+    }
+    final theme = Theme.of(context);
+    final settings = context.read<SettingsProvider>();
+    await showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      isScrollControlled: true,
+      builder: (sheetContext) => SafeArea(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.sizeOf(sheetContext).height * 0.72,
+          ),
+          child: ListView(
+            shrinkWrap: true,
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      context.tr('sandboxChallengePick'),
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    context.trReadArgs('sandboxChallengeProgress', {
+                      'passed': _passedChallengeCount(settings).toString(),
+                      'total': challenges.length.toString(),
+                    }),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              for (final challenge in challenges)
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Icon(
+                    settings.isSandboxChallengePassed(challenge.id)
+                        ? Icons.check_circle
+                        : Icons.radio_button_unchecked,
+                    color: settings.isSandboxChallengePassed(challenge.id)
+                        ? AppPalette.success
+                        : theme.colorScheme.onSurfaceVariant,
+                  ),
+                  title: Text(challenge.title.of(context.strings.localeCode)),
+                  subtitle: Text(
+                    challenge.prompt.of(context.strings.localeCode),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  trailing: challenge.id == _challenge?.id
+                      ? const Icon(Icons.chevron_right)
+                      : null,
+                  onTap: () {
+                    Navigator.of(sheetContext).pop();
+                    _startChallenge(challenge);
+                  },
+                ),
+              const Divider(height: 24),
+              TextButton.icon(
+                onPressed: settings.passedSandboxChallenges.isEmpty
+                    ? null
+                    : () async {
+                        await settings.resetSandboxChallengeProgress();
+                        if (!mounted || !sheetContext.mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              context.trRead('sandboxChallengeResetDone'),
+                            ),
+                          ),
+                        );
+                        Navigator.of(sheetContext).pop();
+                      },
+                icon: const Icon(Icons.restart_alt, size: 18),
+                label: Text(context.tr('sandboxChallengeReset')),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// 当前语言下已通过的挑战数量。
+  int _passedChallengeCount(SettingsProvider settings) {
+    return _language.challenges
+        .where((challenge) => settings.isSandboxChallengePassed(challenge.id))
+        .length;
+  }
+
+  /// 选中挑战：填入起始代码、输入数据并重置挑战状态。
+  void _startChallenge(SandboxChallenge challenge) {
+    setState(() {
+      _challenge = challenge;
+      _challengePassed = null;
+      _challengeActual = '';
+      _challengeHintVisible = false;
+      _code.text = challenge.starterCode;
+      _stdin.text = challenge.stdin;
+      _drafts[_language] = challenge.starterCode;
+      _stdinDrafts[_language] = challenge.stdin;
+      _output = '';
+    });
+  }
+
+  void _exitChallenge() {
+    setState(() {
+      _challenge = null;
+      _challengePassed = null;
+      _challengeActual = '';
+      _challengeHintVisible = false;
+    });
+  }
+
+  void _loadStarterCode() {
+    final challenge = _challenge;
+    if (challenge == null) return;
+    setState(() {
+      _code.text = challenge.starterCode;
+      _stdin.text = challenge.stdin;
+      _drafts[_language] = challenge.starterCode;
+      _stdinDrafts[_language] = challenge.stdin;
+      _challengePassed = null;
+      _challengeActual = '';
+      _output = '';
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(context.trRead('sandboxChallengeStarterLoaded'))),
+    );
+  }
+
+  /// 运行挑战：执行代码 → 规范化输出 → 与期望输出比对 → 记录通关。
+  Future<void> _runChallenge() async {
+    final challenge = _challenge;
+    if (challenge == null || _running) return;
+    if (_code.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(context.trRead('sandboxEmptyCode'))),
+      );
+      return;
+    }
+    FocusScope.of(context).unfocus();
+    final token = ++_runToken;
+    setState(() {
+      _running = true;
+      _output = '';
+      _challengePassed = null;
+      _challengeActual = '';
+    });
+    final output = await CodeSandboxService.runCode(
+      _language,
+      _code.text,
+      stdin: _language.supportsStdin ? _stdin.text : '',
+    );
+    if (!mounted || token != _runToken) return;
+    final passed = SandboxChallengeService.matches(
+      actual: output,
+      expected: challenge.expectedOutput,
+    );
+    setState(() {
+      _running = false;
+      _output = output;
+      _challengePassed = passed;
+      _challengeActual = output;
+    });
+    if (passed) {
+      final settings = context.read<SettingsProvider>();
+      await settings.markSandboxChallengePassed(challenge.id);
+    }
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          context.trRead(
+            passed
+                ? 'sandboxChallengePassedToast'
+                : 'sandboxChallengeFailedToast',
+          ),
+        ),
+      ),
+    );
+  }
+
   /// 停止运行：销毁 WebView，并让正在等待的旧结果失效。
   Future<void> _stop() async {
     if (!_running) return;
@@ -139,6 +349,10 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
       _code.text = _drafts[language] ?? language.sampleCode;
       _stdin.text = _stdinDrafts[language] ?? '';
       _output = '';
+      _challenge = null;
+      _challengePassed = null;
+      _challengeActual = '';
+      _challengeHintVisible = false;
     });
   }
 
@@ -149,6 +363,10 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
       _drafts[_language] = example.code;
       _stdinDrafts[_language] = example.stdin;
       _output = '';
+      _challenge = null;
+      _challengePassed = null;
+      _challengeActual = '';
+      _challengeHintVisible = false;
     });
   }
 
@@ -159,6 +377,10 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
       _code.text = _language.sampleCode;
       _stdin.text = '';
       _output = '';
+      _challenge = null;
+      _challengePassed = null;
+      _challengeActual = '';
+      _challengeHintVisible = false;
     });
   }
 
@@ -396,7 +618,193 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
       _drafts[language] = snippet.code;
       _stdinDrafts[language] = snippet.stdin;
       _output = '';
+      _challenge = null;
+      _challengePassed = null;
+      _challengeActual = '';
+      _challengeHintVisible = false;
     });
+  }
+
+  /// 挑战面板：任务要求、输入 / 期望输出、运行结果与操作按钮。
+  Widget _buildChallengeCard(ThemeData theme) {
+    final challenge = _challenge!;
+    final localeCode = context.strings.localeCode;
+    final passed = _challengePassed;
+    final actual = _challengeActual.isEmpty
+        ? ''
+        : SandboxChallengeService.normalize(_challengeActual);
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(AppSpacing.lg),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest,
+        borderRadius: AppRadii.card,
+        border: Border.all(color: theme.colorScheme.outlineVariant),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                Icons.emoji_events_outlined,
+                size: 20,
+                color: theme.colorScheme.primary,
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: Text(
+                  challenge.title.of(localeCode),
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              if (passed != null)
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.sm,
+                    vertical: 2,
+                  ),
+                  decoration: BoxDecoration(
+                    color: (passed ? AppPalette.success : AppPalette.danger)
+                        .withValues(alpha: 0.12),
+                    borderRadius: AppRadii.chip,
+                  ),
+                  child: Text(
+                    context.tr(
+                      passed
+                          ? 'sandboxChallengePassedTag'
+                          : 'sandboxChallengeFailedTag',
+                    ),
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: passed ? AppPalette.success : AppPalette.danger,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          Text(
+            challenge.prompt.of(localeCode),
+            style: theme.textTheme.bodyMedium,
+          ),
+          const SizedBox(height: AppSpacing.md),
+          _buildChallengeField(
+            theme,
+            context.tr('sandboxChallengeStdin'),
+            challenge.stdin.isEmpty
+                ? context.tr('sandboxChallengeNoStdin')
+                : challenge.stdin,
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          _buildChallengeField(
+            theme,
+            context.tr('sandboxChallengeExpected'),
+            challenge.expectedOutput,
+          ),
+          if (passed == false && actual.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.sm),
+            _buildChallengeField(
+              theme,
+              context.tr('sandboxChallengeActual'),
+              actual,
+              accent: AppPalette.danger,
+            ),
+          ],
+          if (challenge.hint != null) ...[
+            const SizedBox(height: AppSpacing.xs),
+            TextButton.icon(
+              onPressed: () => setState(
+                () => _challengeHintVisible = !_challengeHintVisible,
+              ),
+              icon: Icon(
+                _challengeHintVisible
+                    ? Icons.lightbulb
+                    : Icons.lightbulb_outline,
+                size: 18,
+              ),
+              label: Text(context.tr('sandboxChallengeHint')),
+              style: TextButton.styleFrom(visualDensity: VisualDensity.compact),
+            ),
+            if (_challengeHintVisible)
+              Text(
+                challenge.hint!.of(localeCode),
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+          ],
+          const SizedBox(height: AppSpacing.sm),
+          Wrap(
+            spacing: AppSpacing.sm,
+            runSpacing: AppSpacing.sm,
+            children: [
+              FilledButton.icon(
+                onPressed: _running ? null : _runChallenge,
+                icon: const Icon(Icons.fact_check_outlined, size: 18),
+                label: Text(context.tr('sandboxChallengeRun')),
+              ),
+              OutlinedButton.icon(
+                onPressed: _running ? null : _loadStarterCode,
+                icon: const Icon(Icons.restart_alt, size: 18),
+                label: Text(context.tr('sandboxChallengeLoadStarter')),
+              ),
+              TextButton.icon(
+                onPressed: _running ? null : _exitChallenge,
+                icon: const Icon(Icons.close, size: 18),
+                label: Text(context.tr('sandboxChallengeExit')),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// 挑战面板里的只读文本块（输入数据 / 期望输出 / 实际输出）。
+  Widget _buildChallengeField(
+    ThemeData theme,
+    String label,
+    String value, {
+    Color? accent,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: theme.textTheme.labelMedium?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: AppSpacing.sm,
+          ),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface,
+            borderRadius: AppRadii.control,
+            border: Border.all(
+              color: accent ?? theme.colorScheme.outlineVariant,
+            ),
+          ),
+          child: SelectableText(
+            value,
+            style: const TextStyle(
+              fontFamily: 'monospace',
+              fontSize: 12.5,
+              height: 1.4,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   Future<void> _saveSnippet() async {
@@ -506,6 +914,10 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
               },
             ),
           ),
+          if (_challenge != null) ...[
+            const SizedBox(height: 12),
+            _buildChallengeCard(theme),
+          ],
           const SizedBox(height: 12),
           Row(
             children: [
@@ -596,6 +1008,25 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
                 onPressed: _running ? null : _showExamples,
               ),
               ActionChip(
+                avatar: Icon(
+                  _challenge == null
+                      ? Icons.emoji_events_outlined
+                      : Icons.emoji_events,
+                  size: 18,
+                ),
+                label: Text(
+                  _language.challenges.isEmpty
+                      ? context.tr('sandboxChallenge')
+                      : '${context.tr('sandboxChallenge')} '
+                            '(${_passedChallengeCount(settings)}/'
+                            '${_language.challenges.length})',
+                ),
+                backgroundColor: _challenge == null
+                    ? null
+                    : theme.colorScheme.primaryContainer,
+                onPressed: _running ? null : _pickChallenge,
+              ),
+              ActionChip(
                 avatar: const Icon(Icons.bookmark_border, size: 18),
                 label: Text(
                   _snippets == null
@@ -656,6 +1087,8 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
                         label: Text(context.tr('sandboxStop')),
                       )
                     : FilledButton.icon(
+                        // 挑战模式下由挑战卡里的「运行测试用例」负责比对，
+                        // 主按钮始终是普通运行，避免同屏出现两个同名按钮。
                         onPressed: _run,
                         icon: const Icon(Icons.play_arrow),
                         label: Text(context.tr('sandboxRun')),

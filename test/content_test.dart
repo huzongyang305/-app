@@ -718,11 +718,7 @@ void main() {
         ..sort((a, b) => a.order.compareTo(b.order));
       // order 必须是 0..n-1 的连续编号，App 才能按推荐顺序学习。
       for (var i = 0; i < ordered.length; i++) {
-        expect(
-          ordered[i].order,
-          i,
-          reason: '${category.id} 的 order 必须是连续编号',
-        );
+        expect(ordered[i].order, i, reason: '${category.id} 的 order 必须是连续编号');
       }
       // 难度沿推荐顺序非递减，避免「学完高级再学入门」。
       for (var i = 1; i < ordered.length; i++) {
@@ -1210,23 +1206,25 @@ void main() {
             genericTermRows.add('$id:${lineIndex + 1}');
           }
         }
-        for (var headingIndex = 0;
-            headingIndex < sectionHeadings.length;
-            headingIndex++) {
+        for (
+          var headingIndex = 0;
+          headingIndex < sectionHeadings.length;
+          headingIndex++
+        ) {
           final heading = sectionHeadings[headingIndex];
           var end = markdownLines.length;
-          for (var next = headingIndex + 1;
-              next < sectionHeadings.length;
-              next++) {
+          for (
+            var next = headingIndex + 1;
+            next < sectionHeadings.length;
+            next++
+          ) {
             if (sectionHeadings[next].$2 <= heading.$2) {
               end = sectionHeadings[next].$1;
               break;
             }
           }
           var hasBody = false;
-          for (var lineIndex = heading.$1 + 1;
-              lineIndex < end;
-              lineIndex++) {
+          for (var lineIndex = heading.$1 + 1; lineIndex < end; lineIndex++) {
             final trimmed = markdownLines[lineIndex].trim();
             if (trimmed.isEmpty || trimmed.startsWith('#')) continue;
             hasBody = true;

@@ -24,9 +24,7 @@ class StudyHeatmap extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final today = DateTime(endDate.year, endDate.month, endDate.day);
-    final currentWeekStart = today.subtract(
-      Duration(days: today.weekday - 1),
-    );
+    final currentWeekStart = today.subtract(Duration(days: today.weekday - 1));
     final firstWeekStart = currentWeekStart.subtract(
       Duration(days: (weeks - 1) * 7),
     );

@@ -90,9 +90,9 @@ List<ExamQuestion> buildExamPaper(
 Map<String, int> _difficultyQuotas(List<Lesson> pool, int size) {
   const ladder = <String>['入门', '基础', '进阶', '高级'];
   const weights = <String, int>{'入门': 1, '基础': 2, '进阶': 2, '高级': 1};
-  final present = ladder.where(
-    (level) => pool.any((lesson) => lesson.difficulty == level),
-  ).toList();
+  final present = ladder
+      .where((level) => pool.any((lesson) => lesson.difficulty == level))
+      .toList();
   if (present.isEmpty || size <= 0) return const <String, int>{};
 
   final weightSum = present.fold<int>(0, (sum, level) => sum + weights[level]!);

@@ -80,15 +80,14 @@ class AutoBackupService {
       throw const BackupFileException('backup_too_large');
     }
     try {
-      final result = await _channel
-          .invokeMethod<Map<dynamic, dynamic>>(
-            'writeAutoBackup',
-            <String, Object>{
-              'payload': payload,
-              'suggestedName': suggestedName,
-              'keepCount': keepCount,
-            },
-          );
+      final result = await _channel.invokeMethod<Map<dynamic, dynamic>>(
+        'writeAutoBackup',
+        <String, Object>{
+          'payload': payload,
+          'suggestedName': suggestedName,
+          'keepCount': keepCount,
+        },
+      );
       if (result == null) return null;
       return AutoBackupWriteResult(
         name: result['name']?.toString() ?? suggestedName,

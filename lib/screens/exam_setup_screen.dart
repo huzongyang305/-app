@@ -108,10 +108,7 @@ class _ExamSetupScreenState extends State<ExamSetupScreen> {
             Card(
               clipBehavior: Clip.antiAlias,
               child: ListTile(
-                leading: Icon(
-                  Icons.restore,
-                  color: theme.colorScheme.primary,
-                ),
+                leading: Icon(Icons.restore, color: theme.colorScheme.primary),
                 title: Text(context.tr('examResume')),
                 subtitle: Text(context.tr('examResumeHint')),
                 trailing: const Icon(Icons.chevron_right),
@@ -185,13 +182,12 @@ class _ExamSetupScreenState extends State<ExamSetupScreen> {
                   spacing: 8,
                   runSpacing: 4,
                   children: [
-                    for (final entry
-                        in const <String, String>{
-                          '入门': 'difficultyBeginner',
-                          '基础': 'difficultyBasic',
-                          '进阶': 'difficultyIntermediate',
-                          '高级': 'difficultyAdvanced',
-                        }.entries)
+                    for (final entry in const <String, String>{
+                      '入门': 'difficultyBeginner',
+                      '基础': 'difficultyBasic',
+                      '进阶': 'difficultyIntermediate',
+                      '高级': 'difficultyAdvanced',
+                    }.entries)
                       FilterChip(
                         label: Text(context.tr(entry.value)),
                         selected: _difficulties.contains(entry.key),
@@ -300,9 +296,7 @@ class _ExamSetupScreenState extends State<ExamSetupScreen> {
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        Expanded(
-                          child: Text(context.tr('examCustomCount')),
-                        ),
+                        Expanded(child: Text(context.tr('examCustomCount'))),
                         Text(
                           '$selectedSize ${context.tr('questions')}',
                           style: theme.textTheme.labelMedium?.copyWith(
@@ -376,13 +370,12 @@ class _SectionTitle extends StatelessWidget {
 }
 
 /// 题型筛选标签：把数据层题型映射到界面文案。
-String _typeLabel(BuildContext context, String type) => context.tr(
-  switch (type) {
-    'multi' => 'questionTypeMulti',
-    'fill' => 'questionTypeFill',
-    'order' => 'questionTypeOrder',
-    'code' => 'questionTypeCode',
-    'debug' => 'questionTypeDebug',
-    _ => 'questionTypeSingle',
-  },
-);
+String _typeLabel(BuildContext context, String type) =>
+    context.tr(switch (type) {
+      'multi' => 'questionTypeMulti',
+      'fill' => 'questionTypeFill',
+      'order' => 'questionTypeOrder',
+      'code' => 'questionTypeCode',
+      'debug' => 'questionTypeDebug',
+      _ => 'questionTypeSingle',
+    });

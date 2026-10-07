@@ -126,9 +126,11 @@ class AdaptiveQuizService {
     final QuizLevel next;
     final String message;
     if (accuracy >= 0.9 && currentLevel != QuizLevel.challenge) {
-      next = QuizLevel.values[
-        math.min(QuizLevel.values.length - 1, currentLevel.index + 1)
-      ];
+      next =
+          QuizLevel.values[math.min(
+            QuizLevel.values.length - 1,
+            currentLevel.index + 1,
+          )];
       message = '本轮表现很好，下一轮将提高到「${next.label}」档，继续保持。';
     } else if (accuracy < 0.5 && currentLevel != QuizLevel.warmup) {
       next = QuizLevel.values[math.max(0, currentLevel.index - 1)];
@@ -137,7 +139,11 @@ class AdaptiveQuizService {
       next = currentLevel;
       message = '当前档位合适，下一轮继续保持「${currentLevel.label}」难度。';
     }
-    return AdaptiveFeedback(nextLevel: next, message: message, accuracy: accuracy);
+    return AdaptiveFeedback(
+      nextLevel: next,
+      message: message,
+      accuracy: accuracy,
+    );
   }
 
   /// 选项乱序后用新的下标重建题目对象，保证判分仍然正确。

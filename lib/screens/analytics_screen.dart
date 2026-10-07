@@ -6,8 +6,11 @@ import '../l10n/l10n_extension.dart';
 import '../models/lesson.dart';
 import '../services/content_provider.dart';
 import '../services/learning_analytics.dart';
+import '../services/learning_insight_service.dart';
+import '../models/study_center.dart';
 import '../services/progress_provider.dart';
 import '../services/share_service.dart';
+import '../theme/app_theme.dart';
 import '../widgets/activity_chart.dart';
 import '../widgets/empty_state.dart';
 import '../widgets/study_heatmap.dart';
@@ -35,6 +38,15 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     );
     final theme = Theme.of(context);
     final languageRows = _languageStats(content, progress);
+    final concepts = LearningInsightService.buildConceptMastery(
+      lessons: content.allLessons,
+      progress: progress,
+    );
+    final causes = LearningInsightService.errorCauseStats(progress);
+    final questions = LearningInsightService.buildQuestionStats(
+      lessons: content.allLessons,
+      progress: progress,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -165,8 +177,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
             Card(
               child: Column(
                 children: [
-                  for (final stat in languageRows)
-                    _LanguageTile(stat: stat),
+                  for (final stat in languageRows) _LanguageTile(stat: stat),
                 ],
               ),
             ),
@@ -219,6 +230,87 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                       ),
                       trailing: const Icon(Icons.chevron_right, size: 18),
                       onTap: () => _openLesson(weak.lesson),
+                    ),
+                ],
+              ),
+            ),
+          const SizedBox(height: 16),
+          // 概念级掌握度：按课程关键词聚合测验与错题数据
+          _SectionTitle(
+            title: context.tr('insightConceptTitle'),
+            subtitle: context.tr('insightConceptHint'),
+          ),
+          if (concepts.isEmpty)
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: EmptyState(
+                  icon: Icons.insights_outlined,
+                  message: context.tr('insightConceptEmpty'),
+                ),
+              ),
+            )
+          else
+            Card(
+              child: Column(
+                children: [
+                  for (final concept in concepts.take(10))
+                    _ConceptTile(concept: concept),
+                ],
+              ),
+            ),
+          const SizedBox(height: 16),
+          _SectionTitle(
+            title: context.tr('insightCauseTitle'),
+            subtitle: context.tr('insightCauseHint'),
+          ),
+          if (causes.isEmpty)
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: EmptyState(
+                  icon: Icons.rule_outlined,
+                  message: context.tr('insightCauseEmpty'),
+                ),
+              ),
+            )
+          else
+            Card(
+              child: Column(
+                children: [
+                  for (final cause in causes)
+                    ListTile(
+                      dense: true,
+                      leading: const Icon(Icons.label_outline, size: 18),
+                      title: Text(cause.cause),
+                      trailing: Text('${cause.count}'),
+                    ),
+                ],
+              ),
+            ),
+          const SizedBox(height: 16),
+          _SectionTitle(
+            title: context.tr('insightQuestionTitle'),
+            subtitle: context.tr('insightQuestionHint'),
+          ),
+          if (questions.isEmpty)
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: EmptyState(
+                  icon: Icons.quiz_outlined,
+                  message: context.tr('insightQuestionEmpty'),
+                ),
+              ),
+            )
+          else
+            Card(
+              child: Column(
+                children: [
+                  for (final stat in questions.take(12))
+                    _QuestionStatTile(
+                      stat: stat,
+                      lessonTitle: _lessonTitleOf(content, stat.lessonId),
                     ),
                 ],
               ),
@@ -286,13 +378,9 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
         '${snapshot.totalLearned}/${snapshot.totalLessons} '
         '(${(snapshot.progressRatio * 100).round()}%)',
       )
+      ..writeln('${context.trRead('analyticsStreak')}: ${snapshot.streakDays}')
       ..writeln(
-        '${context.trRead('analyticsStreak')}: ${snapshot.streakDays}',
-      )
-      ..writeln(
-        context.trReadArgs('analyticsReportPeriod', {
-          'n': snapshot.periodDays,
-        }),
+        context.trReadArgs('analyticsReportPeriod', {'n': snapshot.periodDays}),
       )
       ..writeln(
         '${context.trRead('analyticsStudyTotal')}: '
@@ -692,4 +780,132 @@ class _LanguageTile extends StatelessWidget {
       ),
     );
   }
+}
+
+/// 概念掌握度：进度条 + 作答次数，低分概念自动排在前面。
+class _ConceptTile extends StatelessWidget {
+  const _ConceptTile({required this.concept});
+
+  final ConceptMastery concept;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final color = concept.score >= 0.8
+        ? AppPalette.success
+        : concept.score >= 0.5
+        ? AppPalette.warning
+        : AppPalette.danger;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  concept.concept,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              Text(
+                '${concept.percent}%',
+                style: theme.textTheme.labelLarge?.copyWith(color: color),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: concept.score.clamp(0.0, 1.0),
+              minHeight: 6,
+              color: color,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            context.trArgs('insightQuestionMeta', {
+              'attempts': concept.attempts,
+              'percent': (concept.accuracy * 100).round(),
+            }),
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// 单题统计：展示题目、作答次数、正确率与难度标签。
+class _QuestionStatTile extends StatelessWidget {
+  const _QuestionStatTile({required this.stat, required this.lessonTitle});
+
+  final QuestionStat stat;
+  final String lessonTitle;
+
+  String _difficultyLabel(BuildContext context) =>
+      switch (stat.difficultyLabel) {
+        '偏简单' => context.tr('insightDifficultyEasy'),
+        '偏难' => context.tr('insightDifficultyHard'),
+        '有挑战' => context.tr('insightDifficultyChallenging'),
+        '适中' => context.tr('insightDifficultyMedium'),
+        _ => context.tr('insightDifficultyLow'),
+      };
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final accuracy = (stat.accuracy * 100).round();
+    final color = accuracy >= 80
+        ? AppPalette.success
+        : accuracy >= 50
+        ? AppPalette.warning
+        : AppPalette.danger;
+    return ListTile(
+      leading: Icon(Icons.quiz_outlined, color: color),
+      title: Text(stat.question, maxLines: 2, overflow: TextOverflow.ellipsis),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 4),
+          Text(
+            context.trArgs('insightQuestionLine', {
+              'lesson': lessonTitle,
+              'index': stat.questionIndex + 1,
+            }),
+            style: theme.textTheme.labelSmall,
+          ),
+          Text(
+            context.trArgs('insightQuestionMeta', {
+              'attempts': stat.attempts,
+              'percent': accuracy,
+            }),
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ],
+      ),
+      trailing: Chip(
+        visualDensity: VisualDensity.compact,
+        label: Text(_difficultyLabel(context)),
+      ),
+    );
+  }
+}
+
+/// 课程 ID 到标题的映射，用于单题统计里的课程名。
+String _lessonTitleOf(ContentProvider content, String lessonId) {
+  for (final lesson in content.allLessons) {
+    if (lesson.id == lessonId) return lesson.title.zh;
+  }
+  return lessonId;
 }

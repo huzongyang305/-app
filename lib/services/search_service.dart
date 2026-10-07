@@ -118,9 +118,7 @@ class LessonSearchIndex {
           '${document.title} ${document.summary} ${document.keywords} '
           '${document.categoryText} ${document.body}',
         )) {
-          postings.putIfAbsent(token, () => <String>{}).add(
-            document.lesson.id,
-          );
+          postings.putIfAbsent(token, () => <String>{}).add(document.lesson.id);
         }
       }
     }

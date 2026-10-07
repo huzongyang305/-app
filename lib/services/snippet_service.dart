@@ -25,9 +25,10 @@ class SnippetService {
     return List<CodeSnippet>.unmodifiable(list);
   }
 
-  List<CodeSnippet> forLanguage(String languageId) => List<CodeSnippet>.unmodifiable(
-    snippets.where((item) => item.languageId == languageId),
-  );
+  List<CodeSnippet> forLanguage(String languageId) =>
+      List<CodeSnippet>.unmodifiable(
+        snippets.where((item) => item.languageId == languageId),
+      );
 
   int get length => _snippets.length;
 

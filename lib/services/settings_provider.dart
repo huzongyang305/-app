@@ -33,16 +33,32 @@ class SettingsProvider extends ChangeNotifier {
         ? sandboxScale.toDouble().clamp(0.8, 1.8)
         : 1.0;
 
+    // 首页快捷入口与底部导航都允许用户自定义；旧版本没有这两个字段，
+    // 读取失败时回落到默认值，保证界面始终可用。
+    _homeShortcuts = _sanitize(
+      _storage.read('home_shortcuts', defaultValue: const <String>[]),
+      defaultHomeShortcuts,
+      minimum: 1,
+    );
+    _navTabs = _sanitize(
+      _storage.read('nav_tabs', defaultValue: const <String>[]),
+      defaultNavTabs,
+      minimum: 2,
+    );
+    _highContrast = _storage.read('high_contrast', defaultValue: false) == true;
+
+    _passedSandboxChallenges = _storage
+        .readStringSet('passed_sandbox_challenges')
+        .where((item) => item.isNotEmpty)
+        .toSet();
+
     _reviewReminderEnabled =
         _storage.read('review_reminder_enabled', defaultValue: false) == true;
     final goal = _storage.read('daily_goal_minutes', defaultValue: 20);
     _dailyGoalMinutes = (goal is int) ? goal.clamp(5, 240) : 20;
     final session = _storage.read('review_session_minutes', defaultValue: 30);
     _reviewSessionMinutes = (session is int) ? session.clamp(5, 120) : 30;
-    final celebrated = _storage.read(
-      'goal_celebrated_date',
-      defaultValue: '',
-    );
+    final celebrated = _storage.read('goal_celebrated_date', defaultValue: '');
     _goalCelebratedDate = celebrated is String ? celebrated : '';
     _autoBackupEnabled =
         _storage.read('auto_backup_enabled', defaultValue: false) == true;
@@ -54,13 +70,8 @@ class SettingsProvider extends ChangeNotifier {
         (backupInterval is int && (backupInterval == 1 || backupInterval == 7))
         ? backupInterval
         : 1;
-    final backupKeep = _storage.read(
-      'auto_backup_keep_count',
-      defaultValue: 5,
-    );
-    _autoBackupKeepCount = backupKeep is int
-        ? backupKeep.clamp(2, 20)
-        : 5;
+    final backupKeep = _storage.read('auto_backup_keep_count', defaultValue: 5);
+    _autoBackupKeepCount = backupKeep is int ? backupKeep.clamp(2, 20) : 5;
     final lastBackup = _storage.read('auto_backup_last_at', defaultValue: '');
     _autoBackupLastAt = lastBackup is String
         ? DateTime.tryParse(lastBackup)
@@ -85,6 +96,32 @@ class SettingsProvider extends ChangeNotifier {
 
   final StorageService _storage;
 
+  /// 首页快捷入口可选值。
+  static const List<String> homeShortcutIds = <String>[
+    'study_center',
+    'review',
+    'flashcards',
+    'tools',
+    'tutor',
+  ];
+
+  /// 默认展示的快捷入口。
+  static const List<String> defaultHomeShortcuts = <String>[
+    'study_center',
+    'review',
+    'flashcards',
+    'tools',
+  ];
+
+  /// 底部导航可选入口与默认顺序。
+  static const List<String> navTabIds = <String>[
+    'home',
+    'learn',
+    'tools',
+    'profile',
+  ];
+  static const List<String> defaultNavTabs = navTabIds;
+
   ThemeMode _themeMode = ThemeMode.system;
   String _localeCode = 'zh';
   double _readingFontScale = 1.0;
@@ -104,6 +141,10 @@ class SettingsProvider extends ChangeNotifier {
   int _reminderHour = 20;
   int _reminderMinute = 0;
   List<String> _searchHistory = <String>[];
+  List<String> _homeShortcuts = defaultHomeShortcuts;
+  List<String> _navTabs = defaultNavTabs;
+  bool _highContrast = false;
+  Set<String> _passedSandboxChallenges = <String>{};
 
   ThemeMode get themeMode => _themeMode;
   String get localeCode => _localeCode;
@@ -239,6 +280,15 @@ class SettingsProvider extends ChangeNotifier {
   int get reminderHour => _reminderHour;
   int get reminderMinute => _reminderMinute;
 
+  /// 首页快捷入口（按用户排序）。
+  List<String> get homeShortcuts => List<String>.unmodifiable(_homeShortcuts);
+
+  /// 底部导航入口（至少两个）。
+  List<String> get navTabs => List<String>.unmodifiable(_navTabs);
+
+  /// 高对比模式：加强正文与背景的对比度，便于弱视用户阅读。
+  bool get highContrast => _highContrast;
+
   /// 最近搜索词，最新的在最前面，最多保留 12 条。
   List<String> get searchHistory => List<String>.unmodifiable(_searchHistory);
 
@@ -327,6 +377,114 @@ class SettingsProvider extends ChangeNotifier {
     _localeCode = _localeCode == 'zh' ? 'en' : 'zh';
     notifyListeners();
     await _storage.write('locale_code', _localeCode);
+  }
+
+  /// 保存首页快捷入口顺序；至少保留一个入口。
+  Future<void> setHomeShortcuts(List<String> values) async {
+    final normalized = _normalize(values, homeShortcutIds, minimum: 1);
+    if (normalized.length == _homeShortcuts.length &&
+        normalized.join(',') == _homeShortcuts.join(',')) {
+      return;
+    }
+    _homeShortcuts = normalized;
+    notifyListeners();
+    await _storage.write('home_shortcuts', _homeShortcuts);
+  }
+
+  /// 首页快捷入口勾选 / 取消勾选。
+  Future<void> toggleHomeShortcut(String id) async {
+    final next = <String>[..._homeShortcuts];
+    if (!next.remove(id)) {
+      // 保持与可选值一致的固定顺序，避免顺序随机跳动。
+      next.add(id);
+      next.sort(
+        (a, b) =>
+            homeShortcutIds.indexOf(a).compareTo(homeShortcutIds.indexOf(b)),
+      );
+    }
+    if (next.isEmpty) return;
+    await setHomeShortcuts(next);
+  }
+
+  /// 保存底部导航入口；至少保留两个，避免出现空导航栏。
+  Future<void> setNavTabs(List<String> values) async {
+    final normalized = _normalize(values, navTabIds, minimum: 2);
+    if (normalized.length < 2) return;
+    if (normalized.join(',') == _navTabs.join(',')) return;
+    _navTabs = normalized;
+    notifyListeners();
+    await _storage.write('nav_tabs', _navTabs);
+  }
+
+  /// 勾选 / 取消某个导航入口，至少保留两个。
+  Future<void> toggleNavTab(String id) async {
+    final next = <String>[..._navTabs];
+    if (next.contains(id)) {
+      if (next.length <= 2) return;
+      next.remove(id);
+    } else {
+      next.add(id);
+      next.sort((a, b) => navTabIds.indexOf(a).compareTo(navTabIds.indexOf(b)));
+    }
+    await setNavTabs(next);
+  }
+
+  Future<void> setHighContrast(bool value) async {
+    if (_highContrast == value) return;
+    _highContrast = value;
+    notifyListeners();
+    await _storage.write('high_contrast', value);
+  }
+
+  /// 已通过的沙箱挑战 ID 集合（只读视图）。
+  Set<String> get passedSandboxChallenges =>
+      Set<String>.unmodifiable(_passedSandboxChallenges);
+
+  bool isSandboxChallengePassed(String challengeId) =>
+      _passedSandboxChallenges.contains(challengeId);
+
+  /// 记录某个沙箱挑战已通过；重复记录不会重复写盘。
+  Future<void> markSandboxChallengePassed(String challengeId) async {
+    if (!_passedSandboxChallenges.add(challengeId)) return;
+    notifyListeners();
+    await _storage.write(
+      'passed_sandbox_challenges',
+      _passedSandboxChallenges.toList(),
+    );
+  }
+
+  /// 清空沙箱挑战通关记录。
+  Future<void> resetSandboxChallengeProgress() async {
+    if (_passedSandboxChallenges.isEmpty) return;
+    _passedSandboxChallenges = <String>{};
+    notifyListeners();
+    await _storage.write('passed_sandbox_challenges', const <String>[]);
+  }
+
+  /// 过滤掉未知 ID 并按可选值顺序排列；不足 [minimum] 时回落到默认值。
+  static List<String> _normalize(
+    List<String> values,
+    List<String> allowed, {
+    required int minimum,
+  }) {
+    final seen = <String>{};
+    final result = <String>[];
+    for (final id in allowed) {
+      if (values.contains(id) && seen.add(id)) result.add(id);
+    }
+    if (result.length < minimum) return <String>[...allowed];
+    return result;
+  }
+
+  static List<String> _sanitize(
+    dynamic raw,
+    List<String> fallback, {
+    required int minimum,
+  }) {
+    if (raw is! List) return <String>[...fallback];
+    final values = raw.map((item) => item.toString()).toList();
+    final normalized = _normalize(values, fallback, minimum: minimum);
+    return normalized.isEmpty ? <String>[...fallback] : normalized;
   }
 
   ThemeMode _themeModeFromName(String name) {

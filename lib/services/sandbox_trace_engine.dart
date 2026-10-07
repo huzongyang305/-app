@@ -184,7 +184,8 @@ class SandboxTraceEngine {
     SandboxLanguage language,
     _CodeScanner scanner,
   ) {
-    if (language == SandboxLanguage.golang || language == SandboxLanguage.swift) {
+    if (language == SandboxLanguage.golang ||
+        language == SandboxLanguage.swift) {
       // Go 由编译器自动插入分号；Swift 语句结尾分号可选。
       return const <SandboxDiagnostic>[];
     }
@@ -197,7 +198,9 @@ class SandboxTraceEngine {
       if (!pattern.hasMatch(line)) continue;
       if (scanner.isInsideComment(index)) continue;
       final trimmed = line.trimRight();
-      if (trimmed.endsWith(';') || trimmed.endsWith('{') || trimmed.endsWith(',')) {
+      if (trimmed.endsWith(';') ||
+          trimmed.endsWith('{') ||
+          trimmed.endsWith(',')) {
         continue;
       }
       result.add(
@@ -214,7 +217,9 @@ class SandboxTraceEngine {
   static SandboxCodeProfile _profile(String skeleton) {
     int count(RegExp regex) => regex.allMatches(skeleton).length;
     return SandboxCodeProfile(
-      classes: count(RegExp(r'\b(class|struct|interface|enum|record|trait|impl)\b')),
+      classes: count(
+        RegExp(r'\b(class|struct|interface|enum|record|trait|impl)\b'),
+      ),
       functions: count(
         RegExp(
           r'\b(fn|func|fun|void|int|double|String|bool|boolean|var|let)\s+\w+\s*\(',
@@ -433,7 +438,9 @@ class SandboxTraceEngine {
         depth++;
       } else if (char == ')' || char == ']' || char == '}') {
         depth--;
-      } else if (char == operator && depth == 0 && _isBinaryOperator(text, index)) {
+      } else if (char == operator &&
+          depth == 0 &&
+          _isBinaryOperator(text, index)) {
         result.add(buffer.toString());
         buffer.clear();
         continue;
@@ -452,8 +459,9 @@ class SandboxTraceEngine {
   }
 
   static String? _evaluateArithmetic(String expression) {
-    final match = RegExp(r'^(-?\d+(?:\.\d+)?)\s*([+\-*/%])\s*(-?\d+(?:\.\d+)?)$')
-        .firstMatch(expression);
+    final match = RegExp(
+      r'^(-?\d+(?:\.\d+)?)\s*([+\-*/%])\s*(-?\d+(?:\.\d+)?)$',
+    ).firstMatch(expression);
     if (match == null) return null;
     final left = double.parse(match.group(1)!);
     final right = double.parse(match.group(3)!);
@@ -479,7 +487,8 @@ class SandboxTraceEngine {
       final target = variables[lengthMatch.group(1)!];
       if (target?.length != null) return target!.length.toString();
     }
-    final sumMatch = RegExp(r'^(\w+)\.reduce\(0,\s*\+\)$').firstMatch(expression);
+    final sumMatch = RegExp(r'^(\w+)\.reduce\(0,\s*\+\)$')
+        .firstMatch(expression);
     if (sumMatch != null) {
       final target = variables[sumMatch.group(1)!];
       if (target?.sum != null) return _formatNumber(target!.sum!);
@@ -489,9 +498,14 @@ class SandboxTraceEngine {
 
   static String? _parseStringLiteral(String expression) {
     for (final quote in const ['"""', "'''", '"', "'", '`']) {
-      if (!expression.startsWith(quote) || !expression.endsWith(quote)) continue;
+      if (!expression.startsWith(quote) || !expression.endsWith(quote)) {
+        continue;
+      }
       if (expression.length < quote.length * 2) continue;
-      var inner = expression.substring(quote.length, expression.length - quote.length);
+      var inner = expression.substring(
+        quote.length,
+        expression.length - quote.length,
+      );
       inner = inner.replaceAll(r'\n', '\n').replaceAll(r'\t', '\t');
       inner = inner.replaceAll(r'\"', '"').replaceAll(r"\'", "'");
       return inner;
@@ -520,8 +534,9 @@ class SandboxTraceEngine {
     final reassign = RegExp(r'(\w+)\s*(?:\+\+|--|\+=|-=|\*=|/=|=(?!=))');
     for (final match in reassign.allMatches(line)) {
       final name = match.group(1)!;
-      if (RegExp(r'(?:final|const|let|val|var|int|long|double|float|String|bool|boolean|auto)\s+$')
-          .hasMatch(line.substring(0, match.start))) {
+      if (RegExp(
+        r'(?:final|const|let|val|var|int|long|double|float|String|bool|boolean|auto)\s+$',
+      ).hasMatch(line.substring(0, match.start))) {
         continue;
       }
       variables.remove(name);
@@ -568,7 +583,9 @@ class SandboxTraceEngine {
     if (value == value.roundToDouble() && value.abs() < 1e15) {
       return value.toInt().toString();
     }
-    return value.toStringAsFixed(2).replaceFirst(RegExp(r'0+$'), '')
+    return value
+        .toStringAsFixed(2)
+        .replaceFirst(RegExp(r'0+$'), '')
         .replaceFirst(RegExp(r'\.$'), '');
   }
 
@@ -590,8 +607,9 @@ class SandboxTraceResult {
   final SandboxCodeProfile profile;
   final int lineCount;
 
-  bool get hasErrors => diagnostics
-      .any((item) => item.severity == SandboxDiagnosticSeverity.error);
+  bool get hasErrors => diagnostics.any(
+    (item) => item.severity == SandboxDiagnosticSeverity.error,
+  );
 
   int get errorCount => diagnostics
       .where((item) => item.severity == SandboxDiagnosticSeverity.error)

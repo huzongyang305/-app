@@ -86,8 +86,9 @@ class _QuizAnswerPanelState extends State<QuizAnswerPanel> {
           autocorrect: false,
           enableSuggestions: false,
           textInputAction: TextInputAction.done,
-          onChanged: (value) =>
-              widget.onChanged(widget.answer.copyWith(text: value)),
+          onChanged: (value) => widget.onChanged(
+            widget.answer.copyWith(text: value, responded: true),
+          ),
           onSubmitted: (_) => widget.onSubmit?.call(),
           decoration: InputDecoration(
             hintText: context.tr('quizFillPlaceholder'),
@@ -137,7 +138,9 @@ class _QuizAnswerPanelState extends State<QuizAnswerPanel> {
             final next = <int>[...order];
             final item = next.removeAt(oldIndex);
             next.insert(newIndex, item);
-            widget.onChanged(widget.answer.copyWith(orderedIndexes: next));
+            widget.onChanged(
+              widget.answer.copyWith(orderedIndexes: next, responded: true),
+            );
           },
           itemBuilder: (context, position) {
             final optionIndex = order[position];

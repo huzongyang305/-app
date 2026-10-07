@@ -77,7 +77,11 @@ void main() {
     // 逐题作答：选择题点第一个选项，填空题输入占位答案，排序题直接使用初始顺序。
     for (var i = 0; i < 10; i++) {
       if (find.byType(QuizOptionTile).evaluate().isNotEmpty) {
-        await tester.tap(find.byType(QuizOptionTile).first);
+        // 抽到长题干时选项可能位于屏幕外，先滚动到可见再点击。
+        final option = find.byType(QuizOptionTile).first;
+        await tester.ensureVisible(option);
+        await tester.pump();
+        await tester.tap(option);
       } else if (find.byType(TextField).evaluate().isNotEmpty) {
         await tester.enterText(find.byType(TextField), 'answer');
       }

@@ -54,10 +54,7 @@ class AppStrings {
       'zh': '每天计划学习 {n} 分钟',
       'en': 'Plan {n} minutes per day',
     },
-    'dailyGoalNotificationTitle': {
-      'zh': '今日目标达成',
-      'en': 'Daily goal reached',
-    },
+    'dailyGoalNotificationTitle': {'zh': '今日目标达成', 'en': 'Daily goal reached'},
     'dailyGoalNotificationBody': {
       'zh': '今天已经学习 {n} 分钟，继续保持！',
       'en': 'You studied {n} minutes today. Keep it up!',
@@ -231,10 +228,7 @@ class AppStrings {
       'zh': '该分类今天没有需要复习的内容',
       'en': 'Nothing to review in this category today',
     },
-    'reviewSessionHint': {
-      'zh': '每次复习 {n} 分钟',
-      'en': '{n} minutes per session',
-    },
+    'reviewSessionHint': {'zh': '每次复习 {n} 分钟', 'en': '{n} minutes per session'},
     'reviewSessionSetting': {'zh': '单次复习时长', 'en': 'Review session'},
     'reviewUpcoming': {'zh': '未来 7 天', 'en': 'Next 7 days'},
     'reviewTomorrow': {'zh': '明天', 'en': 'Tomorrow'},
@@ -794,10 +788,7 @@ class AppStrings {
     },
     'sandboxFullscreen': {'zh': '全屏编辑', 'en': 'Full screen'},
     'sandboxExamples': {'zh': '示例库', 'en': 'Examples'},
-    'sandboxExampleWithStdin': {
-      'zh': '含标准输入示例',
-      'en': 'Includes stdin sample',
-    },
+    'sandboxExampleWithStdin': {'zh': '含标准输入示例', 'en': 'Includes stdin sample'},
     'sandboxSnippets': {'zh': '我的片段', 'en': 'My snippets'},
     'sandboxSnippetsUnavailable': {
       'zh': '当前环境不支持本地片段库',
@@ -849,7 +840,8 @@ class AppStrings {
     },
     'sandboxHintMarkdown': {
       'zh': '离线渲染标题、列表、代码块、引用、链接与强调语法，直接返回生成的 HTML。',
-      'en': 'Offline Markdown rendering (headings, lists, code, quotes, links).',
+      'en':
+          'Offline Markdown rendering (headings, lists, code, quotes, links).',
     },
     'sandboxHintRegex': {
       'zh': '第一行写正则表达式，第二行可写 flags（如 g、i），其余行是待匹配文本。',
@@ -941,11 +933,23 @@ class AppStrings {
     'packWorkbenchTemplateCopied': {'zh': '模板已复制', 'en': 'Template copied'},
     'packWorkbenchReport': {'zh': '复制报告', 'en': 'Copy report'},
     'packWorkbenchReportCopied': {'zh': '报告已复制', 'en': 'Report copied'},
-    'packWorkbenchEmpty': {'zh': '请先粘贴内容包 JSON。', 'en': 'Paste a pack JSON first.'},
-    'packWorkbenchInvalid': {'zh': 'JSON 解析失败：{error}', 'en': 'Invalid JSON: {error}'},
-    'packWorkbenchResultOk': {'zh': '校验通过，可以导入', 'en': 'Valid, ready to import'},
+    'packWorkbenchEmpty': {
+      'zh': '请先粘贴内容包 JSON。',
+      'en': 'Paste a pack JSON first.',
+    },
+    'packWorkbenchInvalid': {
+      'zh': 'JSON 解析失败：{error}',
+      'en': 'Invalid JSON: {error}',
+    },
+    'packWorkbenchResultOk': {
+      'zh': '校验通过，可以导入',
+      'en': 'Valid, ready to import',
+    },
     'packWorkbenchResultError': {'zh': '发现 {n} 个错误', 'en': '{n} errors found'},
-    'packWorkbenchResultWarning': {'zh': '发现 {n} 个警告', 'en': '{n} warnings found'},
+    'packWorkbenchResultWarning': {
+      'zh': '发现 {n} 个警告',
+      'en': '{n} warnings found',
+    },
     'packWorkbenchLessons': {'zh': '课程清单', 'en': 'Lessons'},
     'packWorkbenchLessonCount': {'zh': '共 {n} 门', 'en': '{n} lessons'},
     'packWorkbenchIssues': {'zh': '校验问题', 'en': 'Validation issues'},
@@ -1092,10 +1096,7 @@ class AppStrings {
     'analyticsReportTitle': {'zh': '学习报告', 'en': 'Learning report'},
     'analyticsReportGenerated': {'zh': '生成时间', 'en': 'Generated'},
     'analyticsReportOverall': {'zh': '总体进度', 'en': 'Overall progress'},
-    'analyticsReportPeriod': {
-      'zh': '最近 {n} 天',
-      'en': 'Last {n} days',
-    },
+    'analyticsReportPeriod': {'zh': '最近 {n} 天', 'en': 'Last {n} days'},
     'analyticsReportWeak': {'zh': '薄弱知识点', 'en': 'Weak lessons'},
     'analyticsReportNext': {'zh': '建议下一步', 'en': 'Recommended next'},
     'analyticsMinutes': {'zh': '{n} 分钟', 'en': '{n} min'},
@@ -1493,6 +1494,311 @@ class AppStrings {
       'zh': '内容包结构版本不受支持：{version}',
       'en': 'Unsupported pack schema version: {version}',
     },
+    // ---- 今日学习中心 / 学习日历 / 挑战 ----
+    'studyCenterTitle': {'zh': '今日学习中心', 'en': 'Today\'s study center'},
+    'studyCenterSubtitle': {
+      'zh': '复习、新知识、错题与挑战合成一份今日清单',
+      'en': 'Reviews, new lessons, mistakes and challenges in one list',
+    },
+    'studyCenterTasks': {'zh': '今日任务', 'en': 'Today\'s tasks'},
+    'studyCenterTotalMinutes': {'zh': '共 {n} 分钟', 'en': '{n} min total'},
+    'studyCenterEmpty': {
+      'zh': '今天没有待办任务，可以自由学习或做点巩固练习。',
+      'en': 'Nothing is due today. Explore freely or do some practice.',
+    },
+    'studyTaskReview': {'zh': '复习', 'en': 'Review'},
+    'studyTaskNew': {'zh': '新知识', 'en': 'New lesson'},
+    'studyTaskWrong': {'zh': '错题', 'en': 'Mistakes'},
+    'studyTaskDaily': {'zh': '每日一题', 'en': 'Daily question'},
+    'studyTaskChallenge': {'zh': '挑战', 'en': 'Challenge'},
+    'studyTaskProject': {'zh': '项目实战', 'en': 'Project'},
+    'studyTaskStart': {'zh': '开始', 'en': 'Start'},
+    'studyCalendarTitle': {'zh': '学习日历', 'en': 'Study calendar'},
+    'studyCalendarHint': {'zh': '未来 {n} 天', 'en': 'Next {n} days'},
+    'studyEstimatedCompletion': {
+      'zh': '按当前目标，预计 {date} 学完全部课程',
+      'en': 'At the current goal you finish around {date}',
+    },
+    'studyEstimatedDone': {'zh': '全部课程已学完', 'en': 'All lessons completed'},
+    'studyNoPlan': {'zh': '无安排', 'en': 'Free'},
+    'studyMinutesShort': {'zh': '{n} 分钟', 'en': '{n} min'},
+    'studyChallenges': {'zh': '挑战任务', 'en': 'Challenges'},
+    'studyChallengeCompleted': {'zh': '已完成', 'en': 'Completed'},
+    'studyChallengeProgress': {
+      'zh': '{done}/{target}',
+      'en': '{done}/{target}',
+    },
+    'studyProjects': {'zh': '项目实战里程碑', 'en': 'Project milestones'},
+    'studyProjectsEmpty': {'zh': '暂无项目实战课程', 'en': 'No project lessons'},
+    'studyReportTitle': {'zh': '学习报告', 'en': 'Study report'},
+    'studyReportMarkdown': {
+      'zh': '复制 Markdown 报告',
+      'en': 'Copy Markdown report',
+    },
+    'studyReportCsv': {'zh': '复制 CSV 数据', 'en': 'Copy CSV data'},
+    'studyReportCopied': {'zh': '已复制到剪贴板', 'en': 'Copied to clipboard'},
+    'studyOpenLesson': {'zh': '打开课程', 'en': 'Open lesson'},
+
+    // ---- 测验答题卡 / 信心 / 部分得分 ----
+    'quizCardTitle': {'zh': '答题卡', 'en': 'Answer sheet'},
+    'quizCardAnswered': {'zh': '已答 {n} 题', 'en': '{n} answered'},
+    'quizCardFlagged': {'zh': '标记 {n} 题', 'en': '{n} flagged'},
+    'quizFlagOn': {'zh': '标记本题', 'en': 'Flag question'},
+    'quizFlagOff': {'zh': '取消标记', 'en': 'Remove flag'},
+    'quizPrevious': {'zh': '上一题', 'en': 'Previous'},
+    'quizNextQuestion': {'zh': '下一题', 'en': 'Next'},
+    'quizBackToQuestion': {'zh': '回到当前题', 'en': 'Back to current'},
+    'quizCheckTitle': {'zh': '交卷前检查', 'en': 'Before you finish'},
+    'quizCheckAllDone': {
+      'zh': '全部 {total} 题都已作答，可以交卷。',
+      'en': 'All {total} questions answered. Ready to finish.',
+    },
+    'quizCheckSummary': {
+      'zh': '共 {total} 题，已答 {answered} 题，未答 {unanswered} 题，标记 {flagged} 题。',
+      'en': '{total} questions, {answered} answered, {unanswered} unanswered, {flagged} flagged.',
+    },
+    'quizCheckFinish': {'zh': '交卷查看结果', 'en': 'Finish and see result'},
+    'quizCheckKeep': {'zh': '继续作答', 'en': 'Keep answering'},
+    'quizUnanswered': {'zh': '未作答', 'en': 'Unanswered'},
+    'quizConfidenceTitle': {'zh': '这道题你有多确定？', 'en': 'How confident are you?'},
+    'quizConfidenceGuessed': {'zh': '猜的', 'en': 'Guessed'},
+    'quizConfidenceUnsure': {'zh': '不确定', 'en': 'Unsure'},
+    'quizConfidenceConfident': {'zh': '很确定', 'en': 'Confident'},
+    'quizPartialScore': {
+      'zh': '部分得分 {percent}%',
+      'en': 'Partial credit {percent}%',
+    },
+    'quizFullScore': {'zh': '完全正确', 'en': 'Fully correct'},
+    'quizZeroScore': {'zh': '本题未得分', 'en': 'No credit'},
+    'quizErrorCauseTitle': {
+      'zh': '错因归类（可选）',
+      'en': 'What went wrong? (optional)',
+    },
+    'quizErrorCauseSaved': {'zh': '已记录错因', 'en': 'Cause saved'},
+
+    // ---- 复习控制 ----
+    'reviewControls': {'zh': '复习安排', 'en': 'Review controls'},
+    'reviewPausedBadge': {'zh': '复习已暂停', 'en': 'Reviews paused'},
+    'reviewPause': {'zh': '暂停复习', 'en': 'Pause reviews'},
+    'reviewPausedUntil': {'zh': '已暂停到 {date}', 'en': 'Paused until {date}'},
+    'reviewResume': {'zh': '恢复复习', 'en': 'Resume reviews'},
+    'reviewPausePick': {'zh': '暂停到哪天', 'en': 'Pause until'},
+    'reviewSnooze': {'zh': '稍后复习', 'en': 'Snooze'},
+    'reviewSnoozed': {'zh': '已推迟 {n} 天', 'en': 'Snoozed {n} days'},
+    'reviewWeekdays': {'zh': '允许复习的星期', 'en': 'Review weekdays'},
+    'reviewWeekdaysHint': {
+      'zh': '只在选中的星期生成复习任务',
+      'en': 'Only schedule reviews on the selected days',
+    },
+    'reviewWeekdayRequired': {'zh': '至少保留一天', 'en': 'Keep at least one day'},
+    'reviewSessionSummary': {'zh': '最近复习场次', 'en': 'Recent review sessions'},
+    'reviewSessionEmpty': {'zh': '还没有复习场次记录', 'en': 'No review sessions yet'},
+    'reviewSessionLine': {
+      'zh': '{lessons} 门课程 · {correct}/{total} 题 · {minutes} 分钟',
+      'en': '{lessons} lessons · {correct}/{total} · {minutes} min',
+    },
+    'weekdayMon': {'zh': '周一', 'en': 'Mon'},
+    'weekdayTue': {'zh': '周二', 'en': 'Tue'},
+    'weekdayWed': {'zh': '周三', 'en': 'Wed'},
+    'weekdayThu': {'zh': '周四', 'en': 'Thu'},
+    'weekdayFri': {'zh': '周五', 'en': 'Fri'},
+    'weekdaySat': {'zh': '周六', 'en': 'Sat'},
+    'weekdaySun': {'zh': '周日', 'en': 'Sun'},
+
+    // ---- 笔记锚点与闪卡 ----
+    'noteAnchors': {'zh': '章节锚点', 'en': 'Section anchors'},
+    'bookmarkAdd': {'zh': '加入阅读书签', 'en': 'Add bookmark'},
+    'bookmarkRemove': {'zh': '移除阅读书签', 'en': 'Remove bookmark'},
+    'bookmarkedLessons': {'zh': '阅读书签', 'en': 'Bookmarks'},
+    'noteAnchorAdd': {'zh': '记录当前章节', 'en': 'Save current section'},
+    'noteAnchorSaved': {'zh': '已记录章节锚点', 'en': 'Section anchor saved'},
+    'noteAnchorEmpty': {'zh': '还没有章节锚点', 'en': 'No anchors yet'},
+    'noteAnchorJump': {'zh': '定位到「{title}」', 'en': 'Go to "{title}"'},
+    'noteFlashcards': {'zh': '一键转闪卡', 'en': 'Turn into flashcards'},
+    'noteFlashcardOn': {'zh': '已加入闪卡', 'en': 'In flashcards'},
+    'noteFlashcardCreated': {
+      'zh': '已生成 {n} 张闪卡',
+      'en': '{n} flashcards created',
+    },
+    'noteFlashcardNeedsQuiz': {
+      'zh': '这门课程还没有题目，暂时无法生成闪卡',
+      'en': 'This lesson has no questions yet',
+    },
+
+    // ---- 备份预览 / 合并 / 回滚 ----
+    'backupPreviewTitle': {'zh': '备份内容预览', 'en': 'Backup preview'},
+    'backupPreviewExportedAt': {'zh': '导出时间：{time}', 'en': 'Exported: {time}'},
+    'backupPreviewLearned': {'zh': '已学课程', 'en': 'Learned lessons'},
+    'backupPreviewFavorites': {'zh': '收藏', 'en': 'Favorites'},
+    'backupPreviewQuiz': {'zh': '测验成绩', 'en': 'Quiz results'},
+    'backupPreviewNotes': {'zh': '笔记', 'en': 'Notes'},
+    'backupPreviewWrong': {'zh': '错题', 'en': 'Mistakes'},
+    'backupPreviewStudyDays': {'zh': '学习天数', 'en': 'Study days'},
+    'backupImportModeTitle': {'zh': '选择恢复方式', 'en': 'Choose how to restore'},
+    'backupImportReplace': {'zh': '替换本机数据', 'en': 'Replace local data'},
+    'backupImportReplaceHint': {
+      'zh': '用备份完全覆盖当前学习进度',
+      'en': 'Overwrite current progress with the backup',
+    },
+    'backupImportMerge': {'zh': '合并到本机数据', 'en': 'Merge into local data'},
+    'backupImportMergeHint': {
+      'zh': '保留两边记录，成绩与时长取较新或较大者',
+      'en': 'Keep both sides, taking newer or larger values',
+    },
+    'backupImported': {'zh': '已恢复备份（{mode}）', 'en': 'Backup restored ({mode})'},
+    'backupModeReplace': {'zh': '替换', 'en': 'replace'},
+    'backupModeMerge': {'zh': '合并', 'en': 'merge'},
+    'backupRollback': {'zh': '撤销上次恢复', 'en': 'Undo last restore'},
+    'backupRollbackDone': {'zh': '已回到恢复前的数据', 'en': 'Previous data restored'},
+    'backupRollbackNone': {'zh': '暂无可撤销的恢复', 'en': 'Nothing to undo'},
+    'backupRollbackConfirm': {
+      'zh': '撤销后本机数据回到上次恢复之前的状态，继续吗？',
+      'en': 'Local data will return to the state before the last restore. Continue?',
+    },
+
+    // ---- 学习洞察 ----
+    'insightConceptTitle': {'zh': '概念掌握度', 'en': 'Concept mastery'},
+    'insightConceptHint': {
+      'zh': '按课程关键词聚合测验成绩与错题',
+      'en': 'Groups quiz scores and mistakes by concept',
+    },
+    'insightCauseHint': {
+      'zh': '来自测验页选择的错因归类',
+      'en': 'Based on causes chosen after quizzes',
+    },
+    'insightQuestionHint': {
+      'zh': '按单题正确率与作答次数给出难度标签',
+      'en': 'Difficulty from per-question accuracy',
+    },
+    'insightConceptEmpty': {
+      'zh': '先完成几次测验，这里会按概念给出掌握度',
+      'en': 'Finish a few quizzes to see mastery by concept',
+    },
+    'insightCauseTitle': {'zh': '错因分布', 'en': 'Error causes'},
+    'insightCauseEmpty': {'zh': '还没有记录错因', 'en': 'No error causes yet'},
+    'insightQuestionTitle': {'zh': '单题难度校准', 'en': 'Question difficulty'},
+    'insightQuestionEmpty': {'zh': '还没有单题作答统计', 'en': 'No question stats yet'},
+    'insightQuestionLine': {
+      'zh': '{lesson} · 第 {index} 题',
+      'en': '{lesson} · Q{index}',
+    },
+    'insightQuestionMeta': {
+      'zh': '{attempts} 次作答 · 正确率 {percent}%',
+      'en': '{attempts} attempts · {percent}% correct',
+    },
+    'insightGuessedRatio': {
+      'zh': '靠猜作答 {percent}%',
+      'en': 'Guessed {percent}%',
+    },
+    'insightDifficultyLow': {'zh': '样本不足', 'en': 'Not enough data'},
+    'insightDifficultyEasy': {'zh': '偏简单', 'en': 'Easy'},
+    'insightDifficultyHard': {'zh': '偏难', 'en': 'Hard'},
+    'insightDifficultyChallenging': {'zh': '有挑战', 'en': 'Challenging'},
+    'insightDifficultyMedium': {'zh': '适中', 'en': 'Medium'},
+
+    // ---- 离线学习助手 ----
+    'tutorTitle': {'zh': '离线学习助手', 'en': 'Offline study tutor'},
+    'tutorHint': {
+      'zh': '基于本机课程回答问题，全程不联网',
+      'en': 'Answers from local lessons, no network needed',
+    },
+    'tutorPlaceholder': {
+      'zh': '例如：今天学什么 / 我的错题怎么办',
+      'en': 'e.g. what should I study today',
+    },
+    'tutorAsk': {'zh': '提问', 'en': 'Ask'},
+    'tutorSuggestToday': {'zh': '今天学什么？', 'en': 'What should I study today?'},
+    'tutorSuggestWrong': {'zh': '我的错题怎么办？', 'en': 'What about my mistakes?'},
+    'tutorSuggestReview': {'zh': '帮我安排复习', 'en': 'Plan my review'},
+    'tutorWelcome': {
+      'zh': '问我课程安排、错题巩固或复习计划，答案都来自本机内容。',
+      'en': 'Ask about study plans, mistakes or reviews. Answers come from local content.',
+    },
+    'tutorLessonHint': {'zh': '相关课程', 'en': 'Related lessons'},
+
+    // ---- 存储诊断 ----
+    'storageTitle': {'zh': '本地存储诊断', 'en': 'Local storage diagnostics'},
+    'storageHint': {'zh': '查看占用并清理可重建缓存', 'en': 'Check usage and clear caches'},
+    'storageKeys': {'zh': '键数量', 'en': 'Keys'},
+    'storageEstimatedSize': {'zh': '估算占用', 'en': 'Estimated size'},
+    'storageOrphans': {'zh': '孤立记录', 'en': 'Orphan records'},
+    'storageCaches': {'zh': '可重建缓存', 'en': 'Rebuildable caches'},
+    'storageCleanCaches': {'zh': '清理缓存', 'en': 'Clear caches'},
+    'storageCleanOrphans': {'zh': '清理孤立记录', 'en': 'Clean orphans'},
+    'storageCleaned': {'zh': '已清理 {n} 项', 'en': 'Cleaned {n} entries'},
+    'storageNothingToClean': {'zh': '没有需要清理的内容', 'en': 'Nothing to clean'},
+
+    // ---- 个性化与无障碍 ----
+    'profileNavigation': {'zh': '底部导航入口', 'en': 'Navigation tabs'},
+    'profileNavigationHint': {
+      'zh': '选择显示在导航栏的入口，至少保留两个',
+      'en': 'Choose tabs to show, keep at least two',
+    },
+    'profileShortcuts': {'zh': '首页快捷入口', 'en': 'Home shortcuts'},
+    'profileShortcutsHint': {
+      'zh': '选择首页展示的快捷卡片',
+      'en': 'Choose home shortcut cards',
+    },
+    'profileHighContrast': {'zh': '高对比模式', 'en': 'High contrast'},
+    'profileHighContrastHint': {
+      'zh': '加强文字与背景对比，便于弱视用户阅读',
+      'en': 'Stronger contrast for low vision',
+    },
+    'profileNavMinimum': {'zh': '至少保留两个入口', 'en': 'Keep at least two tabs'},
+    'shortcutStudyCenter': {'zh': '今日学习中心', 'en': 'Study center'},
+    'shortcutReview': {'zh': '复习计划', 'en': 'Review plan'},
+    'shortcutDailyQuestion': {'zh': '每日一题', 'en': 'Daily question'},
+    'shortcutFlashcards': {'zh': '闪卡', 'en': 'Flashcards'},
+    'shortcutTools': {'zh': '工具箱', 'en': 'Toolbox'},
+    'shortcutTutor': {'zh': '学习助手', 'en': 'Study tutor'},
+
+    // ---- 沙箱挑战模式 ----
+    'sandboxChallenge': {'zh': '挑战模式', 'en': 'Challenge mode'},
+    'sandboxChallengePick': {'zh': '选择挑战', 'en': 'Pick a challenge'},
+    'sandboxChallengeRun': {'zh': '运行测试用例', 'en': 'Run test cases'},
+    'sandboxChallengeResult': {
+      'zh': '通过 {passed}/{total} 个测试用例',
+      'en': '{passed}/{total} test cases passed',
+    },
+    'sandboxChallengeAllPassed': {
+      'zh': '全部测试用例通过',
+      'en': 'All test cases passed',
+    },
+    'sandboxChallengeNone': {
+      'zh': '当前语言暂无挑战用例',
+      'en': 'No challenges for this language',
+    },
+    'sandboxChallengeStdin': {'zh': '输入数据', 'en': 'Input data'},
+    'sandboxChallengeTask': {'zh': '任务要求', 'en': 'Task'},
+    'sandboxChallengeExpected': {'zh': '期望输出', 'en': 'Expected output'},
+    'sandboxChallengeActual': {'zh': '实际输出', 'en': 'Actual output'},
+    'sandboxChallengePassedTag': {'zh': '已通过', 'en': 'Passed'},
+    'sandboxChallengeFailedTag': {'zh': '未通过', 'en': 'Not passed'},
+    'sandboxChallengeExit': {'zh': '退出挑战', 'en': 'Exit challenge'},
+    'sandboxChallengeHint': {'zh': '提示', 'en': 'Hint'},
+    'sandboxChallengeProgress': {
+      'zh': '通关进度 {passed}/{total}',
+      'en': '{passed}/{total} challenges passed',
+    },
+    'sandboxChallengeReset': {'zh': '清空通关记录', 'en': 'Reset progress'},
+    'sandboxChallengeResetDone': {
+      'zh': '已清空挑战通关记录',
+      'en': 'Challenge progress cleared',
+    },
+    'sandboxChallengeLoadStarter': {'zh': '填入起始代码', 'en': 'Load starter code'},
+    'sandboxChallengeStarterLoaded': {
+      'zh': '已填入起始代码',
+      'en': 'Starter code loaded',
+    },
+    'sandboxChallengePassedToast': {
+      'zh': '挑战通过，代码输出与期望一致',
+      'en': 'Passed: output matches the expectation',
+    },
+    'sandboxChallengeFailedToast': {
+      'zh': '输出与期望不一致，请对照下方结果调整',
+      'en': 'Output does not match yet',
+    },
+    'sandboxChallengeNoStdin': {'zh': '无需输入', 'en': 'No input needed'},
   };
 
   String get(String key) {

@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../l10n/app_strings.dart';
 import '../l10n/l10n_extension.dart';
 import '../models/achievement.dart';
+import '../models/backup_preview.dart';
 import '../services/backup_crypto_service.dart';
 import '../services/backup_document_service.dart';
 import '../services/backup_file_service.dart';
@@ -15,6 +16,7 @@ import '../services/notification_service.dart';
 import '../services/offline_content_pack_service.dart';
 import '../services/progress_provider.dart';
 import '../services/settings_provider.dart';
+import '../theme/app_theme.dart';
 import '../widgets/empty_state.dart';
 import '../widgets/lesson_card.dart';
 import 'analytics_screen.dart';
@@ -23,6 +25,8 @@ import 'lesson_screen.dart';
 import 'quiz_screen.dart';
 import 'achievements_screen.dart';
 import 'notes_screen.dart';
+import 'storage_diagnostics_screen.dart';
+import 'tutor_screen.dart';
 
 /// 我的：学习统计、收藏、笔记与设置。
 class ProfileScreen extends StatelessWidget {
@@ -125,7 +129,6 @@ class ProfileScreen extends StatelessWidget {
     ProgressProvider progress, {
     bool preferLegacy = false,
   }) async {
-    final restored = context.trRead('profileRestored');
     final failedTemplate = context.trRead('profileRestoreFailed');
     final strings = AppStrings(context.read<SettingsProvider>().localeCode);
     final messenger = ScaffoldMessenger.of(context);
@@ -173,9 +176,24 @@ class ProfileScreen extends StatelessWidget {
         final decoded = jsonDecode(raw);
         data = (decoded as Map).cast<String, dynamic>();
       }
-      await progress.importData(data);
+      if (!context.mounted) return;
+      // 先展示备份内容预览，再由用户决定替换还是合并。
+      final mode = await _askImportMode(context, progress.previewImport(data));
+      if (mode == null) return;
+      await progress.importData(data, mode: mode);
       if (context.mounted) {
-        messenger.showSnackBar(SnackBar(content: Text(restored)));
+        final modeLabel = context.trRead(
+          mode == BackupImportMode.merge
+              ? 'backupModeMerge'
+              : 'backupModeReplace',
+        );
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(
+              context.trReadArgs('backupImported', {'mode': modeLabel}),
+            ),
+          ),
+        );
       }
     } catch (error) {
       if (context.mounted) {
@@ -191,6 +209,225 @@ class ProfileScreen extends StatelessWidget {
         );
       }
     }
+  }
+
+  /// 恢复方式选择：先展示备份里有什么，再让用户决定替换还是合并。
+  Future<BackupImportMode?> _askImportMode(
+    BuildContext context,
+    BackupPreview preview,
+  ) {
+    Widget row(String label, int value) => Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Row(
+        children: [
+          Expanded(child: Text(label)),
+          Text('$value'),
+        ],
+      ),
+    );
+
+    return showDialog<BackupImportMode>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(context.tr('backupPreviewTitle')),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                context.trArgs('backupPreviewExportedAt', {
+                  'time': _formatBackupTime(preview.exportedAt),
+                }),
+                style: Theme.of(dialogContext).textTheme.bodySmall,
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              row(context.tr('backupPreviewLearned'), preview.learned),
+              row(context.tr('backupPreviewFavorites'), preview.favorites),
+              row(context.tr('backupPreviewQuiz'), preview.quizResults),
+              row(context.tr('backupPreviewNotes'), preview.notes),
+              row(context.tr('backupPreviewWrong'), preview.wrongQuestions),
+              row(context.tr('backupPreviewStudyDays'), preview.studyDays),
+              const Divider(height: AppSpacing.xl),
+              Text(
+                context.tr('backupImportModeTitle'),
+                style: Theme.of(dialogContext).textTheme.titleSmall,
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.swap_horiz),
+                title: Text(context.tr('backupImportReplace')),
+                subtitle: Text(context.tr('backupImportReplaceHint')),
+                onTap: () =>
+                    Navigator.of(dialogContext).pop(BackupImportMode.replace),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.merge_type),
+                title: Text(context.tr('backupImportMerge')),
+                subtitle: Text(context.tr('backupImportMergeHint')),
+                onTap: () =>
+                    Navigator.of(dialogContext).pop(BackupImportMode.merge),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(context.tr('cancel')),
+          ),
+        ],
+      ),
+    );
+  }
+
+  static String _formatBackupTime(DateTime? time) {
+    if (time == null) return '-';
+    String two(int value) => value.toString().padLeft(2, '0');
+    return '${time.year}-${two(time.month)}-${two(time.day)} '
+        '${two(time.hour)}:${two(time.minute)}';
+  }
+
+  /// 首页快捷入口名称，用于设置项摘要与勾选列表。
+  String _shortcutLabel(BuildContext context, String id) => switch (id) {
+    'study_center' => context.tr('shortcutStudyCenter'),
+    'review' => context.tr('shortcutReview'),
+    'flashcards' => context.tr('shortcutFlashcards'),
+    'tools' => context.tr('shortcutTools'),
+    'tutor' => context.tr('shortcutTutor'),
+    _ => id,
+  };
+
+  String _navLabel(BuildContext context, String id) => switch (id) {
+    'home' => context.tr('navHome'),
+    'learn' => context.tr('navLearn'),
+    'tools' => context.tr('navTools'),
+    'profile' => context.tr('navProfile'),
+    _ => id,
+  };
+
+  /// 首页快捷入口个性化：勾选要在首页显示的卡片。
+  Future<void> _editShortcuts(BuildContext context, SettingsProvider settings) {
+    return showDialog<void>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(context.tr('profileShortcuts')),
+        content: SingleChildScrollView(
+          child: AnimatedBuilder(
+            animation: settings,
+            builder: (_, _) => Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  context.tr('profileShortcutsHint'),
+                  style: Theme.of(dialogContext).textTheme.bodySmall,
+                ),
+                for (final id in SettingsProvider.homeShortcutIds)
+                  CheckboxListTile(
+                    dense: true,
+                    contentPadding: EdgeInsets.zero,
+                    value: settings.homeShortcuts.contains(id),
+                    title: Text(_shortcutLabel(context, id)),
+                    onChanged: (_) => settings.toggleHomeShortcut(id),
+                  ),
+              ],
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(context.tr('close')),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// 底部导航个性化：至少保留两个入口。
+  Future<void> _editNavTabs(BuildContext context, SettingsProvider settings) {
+    return showDialog<void>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(context.tr('profileNavigation')),
+        content: SingleChildScrollView(
+          child: AnimatedBuilder(
+            animation: settings,
+            builder: (_, _) => Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  context.tr('profileNavigationHint'),
+                  style: Theme.of(dialogContext).textTheme.bodySmall,
+                ),
+                for (final id in SettingsProvider.navTabIds)
+                  CheckboxListTile(
+                    dense: true,
+                    contentPadding: EdgeInsets.zero,
+                    value: settings.navTabs.contains(id),
+                    title: Text(_navLabel(context, id)),
+                    onChanged: (value) {
+                      final selected = settings.navTabs.contains(id);
+                      if (value != true &&
+                          selected &&
+                          settings.navTabs.length <= 2) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(context.trRead('profileNavMinimum')),
+                          ),
+                        );
+                        return;
+                      }
+                      settings.toggleNavTab(id);
+                    },
+                  ),
+              ],
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(context.tr('close')),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// 撤销上一次恢复：回到导入之前的本地数据。
+  Future<void> _rollbackImport(
+    BuildContext context,
+    ProgressProvider progress,
+  ) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final confirmText = context.tr('backupRollbackConfirm');
+    final cancelText = context.tr('cancel');
+    final actionText = context.tr('backupRollback');
+    final doneText = context.trRead('backupRollbackDone');
+    final noneText = context.trRead('backupRollbackNone');
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        content: Text(confirmText),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(cancelText),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(actionText),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+    final ok = await progress.rollbackLastImport();
+    messenger.showSnackBar(SnackBar(content: Text(ok ? doneText : noneText)));
   }
 
   Future<String> _buildBackupPayload(
@@ -756,6 +993,36 @@ class ProfileScreen extends StatelessWidget {
                   onChanged: settings.setReduceMotion,
                 ),
                 const Divider(height: 1),
+                SwitchListTile(
+                  secondary: const Icon(Icons.contrast),
+                  title: Text(context.tr('profileHighContrast')),
+                  subtitle: Text(context.tr('profileHighContrastHint')),
+                  value: settings.highContrast,
+                  onChanged: settings.setHighContrast,
+                ),
+                const Divider(height: 1),
+                ListTile(
+                  leading: const Icon(Icons.dashboard_customize_outlined),
+                  title: Text(context.tr('profileShortcuts')),
+                  subtitle: Text(
+                    settings.homeShortcuts
+                        .map((id) => _shortcutLabel(context, id))
+                        .join(' · '),
+                  ),
+                  onTap: () => _editShortcuts(context, settings),
+                ),
+                const Divider(height: 1),
+                ListTile(
+                  leading: const Icon(Icons.view_agenda_outlined),
+                  title: Text(context.tr('profileNavigation')),
+                  subtitle: Text(
+                    settings.navTabs
+                        .map((id) => _navLabel(context, id))
+                        .join(' · '),
+                  ),
+                  onTap: () => _editNavTabs(context, settings),
+                ),
+                const Divider(height: 1),
                 ListTile(
                   leading: const Icon(Icons.flag_outlined),
                   title: Text(context.tr('dailyGoalSetting')),
@@ -769,9 +1036,12 @@ class ProfileScreen extends StatelessWidget {
                         ButtonSegment(value: 60, label: Text('60')),
                       ],
                       selected: {
-                        const [10, 20, 30, 60].contains(
-                          settings.dailyGoalMinutes,
-                        )
+                        const [
+                              10,
+                              20,
+                              30,
+                              60,
+                            ].contains(settings.dailyGoalMinutes)
                             ? settings.dailyGoalMinutes
                             : 20,
                       },
@@ -795,9 +1065,12 @@ class ProfileScreen extends StatelessWidget {
                         ButtonSegment(value: 60, label: Text('60')),
                       ],
                       selected: {
-                        const [15, 30, 45, 60].contains(
-                          settings.reviewSessionMinutes,
-                        )
+                        const [
+                              15,
+                              30,
+                              45,
+                              60,
+                            ].contains(settings.reviewSessionMinutes)
                             ? settings.reviewSessionMinutes
                             : 30,
                       },
@@ -866,6 +1139,40 @@ class ProfileScreen extends StatelessWidget {
                   subtitle: Text(context.tr('profileLegacyImportHint')),
                   onTap: () =>
                       _importData(context, progress, preferLegacy: true),
+                ),
+                const Divider(height: 1),
+                ListTile(
+                  leading: const Icon(Icons.undo),
+                  title: Text(context.tr('backupRollback')),
+                  subtitle: Text(
+                    progress.hasRollbackSnapshot
+                        ? context.tr('backupRollbackConfirm')
+                        : context.tr('backupRollbackNone'),
+                  ),
+                  enabled: progress.hasRollbackSnapshot,
+                  onTap: () => _rollbackImport(context, progress),
+                ),
+                const Divider(height: 1),
+                ListTile(
+                  leading: const Icon(Icons.support_agent_outlined),
+                  title: Text(context.tr('tutorTitle')),
+                  subtitle: Text(context.tr('tutorHint')),
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => const TutorScreen(),
+                    ),
+                  ),
+                ),
+                const Divider(height: 1),
+                ListTile(
+                  leading: const Icon(Icons.storage_outlined),
+                  title: Text(context.tr('storageTitle')),
+                  subtitle: Text(context.tr('storageHint')),
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => const StorageDiagnosticsScreen(),
+                    ),
+                  ),
                 ),
                 const Divider(height: 1),
                 ListTile(
@@ -1345,9 +1652,8 @@ class _AutoBackupSectionState extends State<_AutoBackupSection> {
   }
 
   void _toast(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override

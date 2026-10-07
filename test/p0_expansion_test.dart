@@ -56,15 +56,16 @@ void main() {
 
       final picks = <String>{
         for (var day = 1; day <= 14; day++)
-          DailyQuestionService.pick(lessons, DateTime(2026, 1, day))!
-              .lesson
-              .id,
+          DailyQuestionService.pick(lessons, DateTime(2026, 1, day))!.lesson.id,
       };
       expect(picks.length, greaterThan(1));
     });
 
     test('题库为空时返回 null', () {
-      expect(DailyQuestionService.pick(const <Lesson>[], DateTime(2026, 1, 5)), isNull);
+      expect(
+        DailyQuestionService.pick(const <Lesson>[], DateTime(2026, 1, 5)),
+        isNull,
+      );
     });
   });
 
@@ -87,10 +88,7 @@ void main() {
         seed: 7,
       );
       expect(pythonOnly.length, 2);
-      expect(
-        pythonOnly.every((card) => card.categoryId == 'python'),
-        isTrue,
-      );
+      expect(pythonOnly.every((card) => card.categoryId == 'python'), isTrue);
     });
 
     test('笔记生成卡片，并遵守数量上限', () {

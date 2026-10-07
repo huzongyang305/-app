@@ -31,10 +31,8 @@ class _LearningHubScreenState extends State<LearningHubScreen> {
     List<LessonCategory> categories,
     ProgressProvider progress,
   ) {
-    final graphSignature = '${categories.length}:${categories.fold<int>(
-      0,
-      (sum, category) => sum + category.lessons.length,
-    )}';
+    final graphSignature =
+        '${categories.length}:${categories.fold<int>(0, (sum, category) => sum + category.lessons.length)}';
     if (_graph == null || _graphSignature != graphSignature) {
       _graph = KnowledgeGraphService.build(categories);
       _graphSignature = graphSignature;
@@ -111,9 +109,8 @@ class _LearningHubScreenState extends State<LearningHubScreen> {
                 const SizedBox(height: 16),
                 Text(
                   context.tr('learningHubOrder'),
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: Theme.of(context).textTheme.titleSmall
+                      ?.copyWith(fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 8),
               ]),
@@ -382,7 +379,8 @@ class _NodeTile extends StatelessWidget {
                   ),
                   _DetailRow(
                     label: sheetContext.tr('learningHubAccuracy'),
-                    value: '${(mastery.accuracy * 100).round()}% '
+                    value:
+                        '${(mastery.accuracy * 100).round()}% '
                         '(${mastery.attempts} 次)',
                   ),
                   _DetailRow(
@@ -415,9 +413,7 @@ class _NodeTile extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    prerequisites
-                        .map((item) => item.lesson.title.zh)
-                        .join('、'),
+                    prerequisites.map((item) => item.lesson.title.zh).join('、'),
                     style: theme.textTheme.bodyMedium,
                   ),
                 ],

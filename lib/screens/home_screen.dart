@@ -23,7 +23,9 @@ import 'flashcard_screen.dart';
 import 'quiz_list_screen.dart';
 import 'review_plan_screen.dart';
 import 'search_screen.dart';
+import 'study_center_screen.dart';
 import 'tools_screen.dart';
+import 'tutor_screen.dart';
 
 /// 首页：总体进度、继续学习与分类导航。
 class HomeScreen extends StatelessWidget {
@@ -33,6 +35,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final content = context.watch<ContentProvider>();
     final progress = context.watch<ProgressProvider>();
+    final settings = context.watch<SettingsProvider>();
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -61,7 +64,7 @@ class HomeScreen extends StatelessWidget {
                 child: Text(context.tr('retry')),
               ),
             )
-          : _buildBody(context, content, progress, theme),
+          : _buildBody(context, content, progress, settings, theme),
     );
   }
 
@@ -69,6 +72,7 @@ class HomeScreen extends StatelessWidget {
     BuildContext context,
     ContentProvider content,
     ProgressProvider progress,
+    SettingsProvider settings,
     ThemeData theme,
   ) {
     final totalLessons = content.totalLessons;
@@ -216,47 +220,9 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ],
-        // 今日复习：没有到期内容时也保留入口，方便提前复习
-        const SizedBox(height: 16),
-        IndexCard(
-          accent: theme.colorScheme.primary,
-          padding: EdgeInsets.zero,
-          child: ListTile(
-            leading: Icon(Icons.refresh, color: theme.colorScheme.primary),
-            title: Text(
-              progress.dueReviewCount > 0
-                  ? '${context.tr('todayReview')} · ${progress.dueReviewCount}'
-                  : context.tr('reviewPlanTitle'),
-            ),
-            subtitle: Text(
-              progress.dueReviewCount > 0
-                  ? context.tr('todayReviewHint')
-                  : context.tr('reviewQueueEmptyHint'),
-            ),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute<void>(builder: (_) => const ReviewPlanScreen()),
-            ),
-          ),
-        ),
-        // 闪卡复习：题目与笔记自动成卡，自评后写入间隔复习
-        const SizedBox(height: 12),
-        IndexCard(
-          accent: theme.colorScheme.primary,
-          padding: EdgeInsets.zero,
-          child: ListTile(
-            leading: Icon(
-              Icons.style_outlined,
-              color: theme.colorScheme.primary,
-            ),
-            title: Text(context.tr('flashcardTitle')),
-            subtitle: Text(context.tr('flashcardEntryHint')),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute<void>(builder: (_) => const FlashcardScreen()),
-            ),
-          ),
-        ),
+        // 快捷入口：顺序与勾选状态来自「我的 → 首页快捷入口」
+        const SizedBox(height: AppSpacing.lg),
+        ..._shortcutCards(context, progress, settings, theme),
         if (nextLesson != null) ...[
           const SizedBox(height: 20),
           SectionBand(index: '01', title: context.tr('continueLearning')),
@@ -361,6 +327,123 @@ class HomeScreen extends StatelessWidget {
   }
 
   /// 找出第一个未学习的知识点，作为「继续学习」入口。
+  /// 首页快捷入口：按设置里的顺序渲染，未勾选的入口不会出现。
+  ///
+  /// 默认包含今日学习中心、复习计划、闪卡与工具箱；学习助手可在设置里开启。
+  List<Widget> _shortcutCards(
+    BuildContext context,
+    ProgressProvider progress,
+    SettingsProvider settings,
+    ThemeData theme,
+  ) {
+    final cards = <Widget>[];
+    for (final id in settings.homeShortcuts) {
+      final card = switch (id) {
+        'study_center' => _shortcutCard(
+          context,
+          theme: theme,
+          icon: Icons.today_outlined,
+          titleKey: 'studyCenterTitle',
+          subtitleKey: 'studyCenterSubtitle',
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute<void>(builder: (_) => const StudyCenterScreen()),
+          ),
+        ),
+        'review' => _shortcutCard(
+          context,
+          theme: theme,
+          icon: Icons.refresh,
+          titleKey: progress.dueReviewCount > 0
+              ? 'studyTaskReview'
+              : 'reviewPlanTitle',
+          subtitleKey: progress.dueReviewCount > 0
+              ? 'todayReviewHint'
+              : 'reviewQueueEmptyHint',
+          badge: progress.dueReviewCount > 0
+              ? '${progress.dueReviewCount}'
+              : null,
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute<void>(builder: (_) => const ReviewPlanScreen()),
+          ),
+        ),
+        'flashcards' => _shortcutCard(
+          context,
+          theme: theme,
+          icon: Icons.style_outlined,
+          titleKey: 'flashcardTitle',
+          subtitleKey: 'flashcardEntryHint',
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute<void>(builder: (_) => const FlashcardScreen()),
+          ),
+        ),
+        'tools' => _shortcutCard(
+          context,
+          theme: theme,
+          icon: Icons.build_outlined,
+          titleKey: 'homeToolsTitle',
+          subtitleKey: 'homeToolsSub',
+          onTap: () => Navigator.of(
+            context,
+          ).push(MaterialPageRoute<void>(builder: (_) => const ToolsScreen())),
+        ),
+        'tutor' => _shortcutCard(
+          context,
+          theme: theme,
+          icon: Icons.support_agent_outlined,
+          titleKey: 'tutorTitle',
+          subtitleKey: 'tutorHint',
+          onTap: () => Navigator.of(
+            context,
+          ).push(MaterialPageRoute<void>(builder: (_) => const TutorScreen())),
+        ),
+        _ => null,
+      };
+      if (card == null) continue;
+      cards.add(
+        Padding(
+          padding: const EdgeInsets.only(bottom: AppSpacing.md),
+          child: card,
+        ),
+      );
+    }
+    return cards;
+  }
+
+  Widget _shortcutCard(
+    BuildContext context, {
+    required ThemeData theme,
+    required IconData icon,
+    required String titleKey,
+    required String subtitleKey,
+    required VoidCallback onTap,
+    String? badge,
+  }) {
+    return IndexCard(
+      accent: theme.colorScheme.primary,
+      padding: EdgeInsets.zero,
+      child: ListTile(
+        leading: Icon(icon, color: theme.colorScheme.primary),
+        title: Text(context.tr(titleKey)),
+        subtitle: Text(context.tr(subtitleKey)),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (badge != null)
+              Padding(
+                padding: const EdgeInsets.only(right: AppSpacing.sm),
+                child: Chip(
+                  visualDensity: VisualDensity.compact,
+                  label: Text(badge),
+                ),
+              ),
+            const Icon(Icons.chevron_right),
+          ],
+        ),
+        onTap: onTap,
+      ),
+    );
+  }
+
   Lesson? _nextLesson(ContentProvider content, ProgressProvider progress) {
     for (final lesson in content.allLessons) {
       if (!progress.isLearned(lesson.id)) return lesson;

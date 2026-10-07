@@ -58,6 +58,8 @@ class FlashcardService {
       for (final note in notes) {
         final lesson = byId[note.lessonId];
         if (lesson == null) continue;
+        // 笔记可在笔记页一键开关是否参与闪卡。
+        if (!note.flashcardEnabled) continue;
         final content = note.content.trim();
         if (content.isEmpty) continue;
         cards.add(Flashcard.fromNote(lesson: lesson, content: content));
@@ -70,14 +72,12 @@ class FlashcardService {
   }
 
   /// 可出卡的课程数量，用于入口页展示与空态判断。
-  static int availableLessonCount(
-    List<Lesson> lessons, {
-    String? categoryId,
-  }) => lessons
-      .where(
-        (lesson) =>
-            (categoryId == null || lesson.categoryId == categoryId) &&
-            lesson.allQuiz.isNotEmpty,
-      )
-      .length;
+  static int availableLessonCount(List<Lesson> lessons, {String? categoryId}) =>
+      lessons
+          .where(
+            (lesson) =>
+                (categoryId == null || lesson.categoryId == categoryId) &&
+                lesson.allQuiz.isNotEmpty,
+          )
+          .length;
 }

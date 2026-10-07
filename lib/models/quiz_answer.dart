@@ -1,5 +1,23 @@
 import 'lesson.dart';
 
+/// 作答时的信心程度，用于校准掌握度与错因分析。
+enum AnswerConfidence {
+  guessed('guessed'),
+  unsure('unsure'),
+  confident('confident');
+
+  const AnswerConfidence(this.storageKey);
+
+  final String storageKey;
+
+  static AnswerConfidence fromStorage(String? value) {
+    for (final item in AnswerConfidence.values) {
+      if (item.storageKey == value) return item;
+    }
+    return AnswerConfidence.unsure;
+  }
+}
+
 /// 一次作答的中间状态。
 ///
 /// 用同一个对象承载单选、多选、填空和排序，页面层无需为不同题型维护多套
@@ -9,19 +27,34 @@ class QuizAnswer {
     this.selectedIndexes = const <int>{},
     this.text = '',
     this.orderedIndexes = const <int>[],
+    this.confidence = AnswerConfidence.unsure,
+    this.responded = false,
   });
 
   final Set<int> selectedIndexes;
   final String text;
   final List<int> orderedIndexes;
 
+  /// 自评信心：用于区分真正掌握和猜对。
+  final AnswerConfidence confidence;
+
+  /// 是否已经产生过有效作答。
+  ///
+  /// [responded] 表示用户是否真正操作过（拖动、输入、选择），用于答题卡与
+  /// 交卷检查；排序题的初始顺序本身就是一个可提交的答案，因此即使没有拖动，
+  /// 也允许直接提交当前顺序，避免用户被卡在「必须动一下才能继续」。
+  final bool responded;
+
   factory QuizAnswer.initial(QuizQuestion question) {
     return QuizAnswer(
-      orderedIndexes: List<int>.generate(question.options.length, (i) => i),
+      orderedIndexes: question.type == 'order'
+          ? List<int>.generate(question.options.length, (i) => i)
+          : const <int>[],
     );
   }
 
   bool get hasResponse =>
+      responded ||
       selectedIndexes.isNotEmpty ||
       text.trim().isNotEmpty ||
       orderedIndexes.isNotEmpty;
@@ -30,11 +63,15 @@ class QuizAnswer {
     Set<int>? selectedIndexes,
     String? text,
     List<int>? orderedIndexes,
+    AnswerConfidence? confidence,
+    bool? responded,
   }) {
     return QuizAnswer(
       selectedIndexes: selectedIndexes ?? this.selectedIndexes,
       text: text ?? this.text,
       orderedIndexes: orderedIndexes ?? this.orderedIndexes,
+      confidence: confidence ?? this.confidence,
+      responded: responded ?? this.responded,
     );
   }
 
@@ -43,6 +80,8 @@ class QuizAnswer {
     'selected': selectedIndexes.toList()..sort(),
     'text': text,
     'ordered': orderedIndexes,
+    'confidence': confidence.storageKey,
+    'responded': responded,
   };
 
   factory QuizAnswer.fromJson(Map<String, dynamic> json) {
@@ -58,16 +97,19 @@ class QuizAnswer {
       selectedIndexes: selected,
       text: json['text']?.toString() ?? '',
       orderedIndexes: ordered,
+      confidence: AnswerConfidence.fromStorage(json['confidence']?.toString()),
+      responded: json['responded'] == true,
     );
   }
 
   QuizAnswer toggleOption(int index) {
     final next = <int>{...selectedIndexes};
     if (!next.add(index)) next.remove(index);
-    return copyWith(selectedIndexes: next);
+    return copyWith(selectedIndexes: next, responded: true);
   }
 
-  QuizAnswer selectOnly(int index) => copyWith(selectedIndexes: <int>{index});
+  QuizAnswer selectOnly(int index) =>
+      copyWith(selectedIndexes: <int>{index}, responded: true);
 
   bool matches(QuizQuestion question) {
     switch (question.type) {
@@ -80,6 +122,33 @@ class QuizAnswer {
       default:
         return selectedIndexes.length == 1 &&
             question.correctIndexes.contains(selectedIndexes.first);
+    }
+  }
+
+  /// 部分得分：多选按正确选项覆盖率扣掉误选，排序按正确位置比例，
+  /// 单选 / 填空仍为 0 或 1。用于展示更细的测验反馈。
+  double scoreFor(QuizQuestion question) {
+    if (matches(question)) return 1;
+    switch (question.type) {
+      case 'multi':
+        final expected = question.correctIndexes.toSet();
+        if (expected.isEmpty) return 0;
+        final selected = selectedIndexes;
+        final hit = selected.where(expected.contains).length;
+        final wrong = selected.where((item) => !expected.contains(item)).length;
+        return ((hit - wrong) / expected.length).clamp(0.0, 1.0);
+      case 'order':
+        final expected = question.correctOrder;
+        if (expected.isEmpty || orderedIndexes.length != expected.length) {
+          return 0;
+        }
+        var hit = 0;
+        for (var i = 0; i < expected.length; i++) {
+          if (orderedIndexes[i] == expected[i]) hit++;
+        }
+        return hit / expected.length;
+      default:
+        return 0;
     }
   }
 

@@ -10,8 +10,8 @@ void main() {
       final result = SandboxTraceEngine.analyze(
         SandboxLanguage.java,
         'public static void main(String[] args) {\n'
-            '  System.out.println("hi");\n'
-            '}',
+        '  System.out.println("hi");\n'
+        '}',
       );
       expect(result.hasErrors, isTrue);
       expect(
@@ -21,16 +21,13 @@ void main() {
     });
 
     test('Java 教材示例可以通过结构检查', () {
-      final result = SandboxTraceEngine.analyze(
-        SandboxLanguage.java,
-        '''
+      final result = SandboxTraceEngine.analyze(SandboxLanguage.java, '''
 public class Main {
     public static void main(String[] args) {
         System.out.println("你好，Java");
     }
 }
-''',
-      );
+''');
       expect(result.hasErrors, isFalse, reason: result.diagnostics.join('\n'));
     });
 
@@ -86,7 +83,7 @@ public class Main {
       final result = SandboxTraceEngine.analyze(
         SandboxLanguage.java,
         'public class Main {\n  static void main(String[] a) {\n'
-            '    System.out.println("没有结束);\n  }\n}\n',
+        '    System.out.println("没有结束);\n  }\n}\n',
       );
       expect(result.hasErrors, isTrue);
     });
@@ -103,8 +100,8 @@ public class Main {
       final result = SandboxTraceEngine.analyze(
         SandboxLanguage.rust,
         "fn longest<'a>(a: &'a str, b: &'a str) -> &'a str {\n"
-            '    if a.len() > b.len() { a } else { b }\n'
-            '}\n\nfn main() {\n    println!("ok");\n}\n',
+        '    if a.len() > b.len() { a } else { b }\n'
+        '}\n\nfn main() {\n    println!("ok");\n}\n',
       );
       expect(result.hasErrors, isFalse, reason: result.diagnostics.join('\n'));
     });
@@ -112,40 +109,32 @@ public class Main {
 
   group('SandboxTraceEngine 输出追踪', () {
     test('追踪字符串字面量与数字', () {
-      final result = SandboxTraceEngine.analyze(
-        SandboxLanguage.java,
-        '''
+      final result = SandboxTraceEngine.analyze(SandboxLanguage.java, '''
 public class Main {
     public static void main(String[] args) {
         System.out.println("总分");
         System.out.println(42);
     }
 }
-''',
-      );
+''');
       expect(result.outputs.length, 2);
       expect(result.outputs[0].text, '总分');
       expect(result.outputs[1].text, '42');
     });
 
     test('追踪字符串拼接中的常量折叠', () {
-      final result = SandboxTraceEngine.analyze(
-        SandboxLanguage.csharp,
-        '''
+      final result = SandboxTraceEngine.analyze(SandboxLanguage.csharp, '''
 class Program {
     static void Main() {
         Console.WriteLine("结果 = " + 3);
     }
 }
-''',
-      );
+''');
       expect(result.outputs.single.text, '结果 = 3');
     });
 
     test('无法静态求值的表达式标注为运行期求值', () {
-      final result = SandboxTraceEngine.analyze(
-        SandboxLanguage.golang,
-        '''
+      final result = SandboxTraceEngine.analyze(SandboxLanguage.golang, '''
 package main
 
 import "fmt"
@@ -154,23 +143,19 @@ func main() {
 	total := 10
 	fmt.Println(total / 3)
 }
-''',
-      );
+''');
       expect(result.outputs.single.text, contains('运行期求值'));
       expect(result.outputs.single.text, contains('total / 3'));
     });
 
     test('变量重新赋值后不再使用旧值', () {
-      final result = SandboxTraceEngine.analyze(
-        SandboxLanguage.kotlin,
-        '''
+      final result = SandboxTraceEngine.analyze(SandboxLanguage.kotlin, '''
 fun main() {
     var name = "旧值"
     name = "新值"
     println(name)
 }
-''',
-      );
+''');
       expect(result.outputs.single.text, contains('运行期求值'));
     });
 
@@ -212,7 +197,8 @@ fun main() {
           expect(
             result.hasErrors,
             isFalse,
-            reason: '${language.id} / ${example.title.zh}: '
+            reason:
+                '${language.id} / ${example.title.zh}: '
                 '${result.diagnostics.join(', ')}',
           );
         }

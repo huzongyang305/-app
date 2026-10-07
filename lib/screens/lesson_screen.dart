@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../l10n/l10n_extension.dart';
 import '../models/lesson.dart';
+import '../models/note_anchor.dart';
 import '../services/content_provider.dart';
 import '../services/practice_question_factory.dart';
 import '../services/progress_provider.dart';
@@ -21,9 +22,12 @@ import 'system_lab_screen.dart';
 
 /// 教程详情页：Markdown 正文 + 代码块 + 收藏 / 笔记 / 测验入口。
 class LessonScreen extends StatefulWidget {
-  const LessonScreen({super.key, required this.lesson});
+  const LessonScreen({super.key, required this.lesson, this.initialAnchor});
 
   final Lesson lesson;
+
+  /// 从笔记锚点进入时，直接跳到对应章节位置。
+  final NoteAnchor? initialAnchor;
 
   @override
   State<LessonScreen> createState() => _LessonScreenState();
@@ -57,8 +61,20 @@ class _LessonScreenState extends State<LessonScreen> {
       if (!mounted) return;
       final progress = _progress;
       progress.markLearned(widget.lesson.id);
+      if (!_scrollController.hasClients) return;
+      final anchor = widget.initialAnchor;
+      if (anchor != null) {
+        // 锚点存的是归一化位置，换设备或内容包更新后依然可用。
+        _scrollController.jumpTo(
+          (anchor.progress * _scrollController.position.maxScrollExtent).clamp(
+            0,
+            _scrollController.position.maxScrollExtent,
+          ),
+        );
+        return;
+      }
       final offset = progress.readingOffset(widget.lesson.id);
-      if (offset > 0 && _scrollController.hasClients) {
+      if (offset > 0) {
         _scrollController.jumpTo(
           offset.clamp(0, _scrollController.position.maxScrollExtent),
         );
@@ -243,6 +259,7 @@ class _LessonScreenState extends State<LessonScreen> {
     final localeCode = context.strings.localeCode;
     final isFavorite = progress.isFavorite(widget.lesson.id);
     final isLearned = progress.isLearned(widget.lesson.id);
+    final isBookmarked = progress.isBookmarked(widget.lesson.id);
 
     return Scaffold(
       appBar: AppBar(
@@ -263,6 +280,16 @@ class _LessonScreenState extends State<LessonScreen> {
             tooltip: context.tr('copyLesson'),
             icon: const Icon(Icons.copy_all_outlined),
             onPressed: _copyFullText,
+          ),
+          IconButton(
+            tooltip: context.tr(
+              isBookmarked ? 'bookmarkRemove' : 'bookmarkAdd',
+            ),
+            icon: Icon(
+              isBookmarked ? Icons.bookmark : Icons.bookmark_border,
+              color: isBookmarked ? theme.colorScheme.primary : null,
+            ),
+            onPressed: () => progress.toggleBookmark(widget.lesson.id),
           ),
           IconButton(
             tooltip: context.tr('favorites'),
@@ -531,6 +558,32 @@ class _LessonScreenState extends State<LessonScreen> {
     );
   }
 
+  /// 当前阅读位置最接近的章节标题，用于生成笔记锚点。
+  ///
+  /// 教程里的标题来自 Markdown，按出现顺序等分正文高度做近似定位；
+  /// 这样不用依赖具体字符偏移，内容更新后锚点依然可用。
+  String _currentSectionTitle(String markdown) {
+    final pattern = RegExp(r'^#{1,4}\s+');
+    final headings = <String>[
+      for (final line in markdown.split('\n'))
+        if (pattern.hasMatch(line.trim()))
+          line.trim().replaceFirst(pattern, '').trim(),
+    ]..removeWhere((item) => item.isEmpty);
+    if (headings.isEmpty) {
+      return widget.lesson.title.of(context.strings.localeCode);
+    }
+    if (!_scrollController.hasClients) return headings.first;
+    final max = _scrollController.position.maxScrollExtent;
+    final ratio = max <= 0
+        ? 0.0
+        : (_scrollController.position.pixels / max).clamp(0.0, 1.0);
+    final index = (ratio * headings.length).floor().clamp(
+      0,
+      headings.length - 1,
+    );
+    return headings[index];
+  }
+
   /// 底部弹窗编辑笔记，保存到本地 Hive。
   Future<void> _openNoteEditor() async {
     final progress = context.read<ProgressProvider>();
@@ -540,80 +593,159 @@ class _LessonScreenState extends State<LessonScreen> {
     final tagController = TextEditingController(
       text: existing?.tags.join(', ') ?? '',
     );
+    // 章节锚点与闪卡开关在弹窗内编辑，确认保存时才写回本地。
+    final anchors = <NoteAnchor>[...?existing?.anchors];
+    var flashcardEnabled = existing?.flashcardEnabled ?? true;
+    final rawMarkdown = await _markdownFuture;
+    if (!mounted) {
+      controller.dispose();
+      tagController.dispose();
+      return;
+    }
 
     await showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      builder: (sheetContext) {
-        return Padding(
-          padding: EdgeInsets.only(
-            left: 16,
-            right: 16,
-            top: 16,
-            bottom: MediaQuery.of(sheetContext).viewInsets.bottom + 16,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                context.tr('noteTitle'),
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: controller,
-                minLines: 4,
-                maxLines: 8,
-                autofocus: true,
-                decoration: InputDecoration(hintText: context.tr('noteHint')),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: tagController,
-                decoration: InputDecoration(
-                  labelText: context.tr('noteTagsLabel'),
-                  hintText: context.tr('noteTagsHint'),
+      builder: (sheetContext) => StatefulBuilder(
+        builder: (sheetContext, setSheetState) {
+          return Padding(
+            padding: EdgeInsets.only(
+              left: 16,
+              right: 16,
+              top: 16,
+              bottom: MediaQuery.of(sheetContext).viewInsets.bottom + 16,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  context.tr('noteTitle'),
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
-              ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: () => Navigator.of(sheetContext).pop(),
-                    child: Text(context.tr('cancel')),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: controller,
+                  minLines: 4,
+                  maxLines: 8,
+                  autofocus: true,
+                  decoration: InputDecoration(hintText: context.tr('noteHint')),
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: tagController,
+                  decoration: InputDecoration(
+                    labelText: context.tr('noteTagsLabel'),
+                    hintText: context.tr('noteTagsHint'),
                   ),
-                  const SizedBox(width: 8),
-                  FilledButton(
-                    onPressed: () async {
-                      final navigator = Navigator.of(sheetContext);
-                      final messenger = ScaffoldMessenger.of(context);
-                      await progress.saveNote(
-                        widget.lesson.id,
-                        controller.text,
-                        tags: tagController.text
-                            .split(RegExp(r'[,，、]'))
-                            .toList(),
-                      );
-                      if (!sheetContext.mounted) return;
-                      navigator.pop();
-                      messenger.showSnackBar(
-                        SnackBar(
-                          content: Text(savedMessage),
-                          behavior: SnackBarBehavior.floating,
-                          duration: const Duration(seconds: 1),
+                ),
+                const SizedBox(height: 12),
+                SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
+                  secondary: const Icon(Icons.style_outlined),
+                  title: Text(context.tr('noteFlashcards')),
+                  value: flashcardEnabled,
+                  onChanged: (value) =>
+                      setSheetState(() => flashcardEnabled = value),
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        context.tr('noteAnchors'),
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                    ),
+                    TextButton.icon(
+                      onPressed: () {
+                        final title = _currentSectionTitle(rawMarkdown);
+                        final ratio =
+                            _scrollController.hasClients &&
+                                _scrollController.position.maxScrollExtent > 0
+                            ? (_scrollController.position.pixels /
+                                      _scrollController
+                                          .position
+                                          .maxScrollExtent)
+                                  .clamp(0.0, 1.0)
+                            : 0.0;
+                        setSheetState(() {
+                          anchors.add(
+                            NoteAnchor(
+                              title: title,
+                              progress: ratio,
+                              createdAt: DateTime.now(),
+                            ),
+                          );
+                        });
+                      },
+                      icon: const Icon(Icons.bookmark_add_outlined, size: 18),
+                      label: Text(context.tr('noteAnchorAdd')),
+                    ),
+                  ],
+                ),
+                if (anchors.isEmpty)
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      context.tr('noteAnchorEmpty'),
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  )
+                else
+                  Wrap(
+                    spacing: AppSpacing.sm,
+                    runSpacing: AppSpacing.xs,
+                    children: [
+                      for (final anchor in anchors)
+                        InputChip(
+                          label: Text(anchor.title),
+                          onDeleted: () =>
+                              setSheetState(() => anchors.remove(anchor)),
                         ),
-                      );
-                    },
-                    child: Text(context.tr('save')),
+                    ],
                   ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () => Navigator.of(sheetContext).pop(),
+                      child: Text(context.tr('cancel')),
+                    ),
+                    const SizedBox(width: 8),
+                    FilledButton(
+                      onPressed: () async {
+                        final navigator = Navigator.of(sheetContext);
+                        final messenger = ScaffoldMessenger.of(context);
+                        await progress.saveNote(
+                          widget.lesson.id,
+                          controller.text,
+                          tags: tagController.text
+                              .split(RegExp(r'[,，、]'))
+                              .toList(),
+                          anchors: anchors,
+                          flashcardEnabled: flashcardEnabled,
+                        );
+                        if (!sheetContext.mounted) return;
+                        navigator.pop();
+                        messenger.showSnackBar(
+                          SnackBar(
+                            content: Text(savedMessage),
+                            behavior: SnackBarBehavior.floating,
+                            duration: const Duration(seconds: 1),
+                          ),
+                        );
+                      },
+                      child: Text(context.tr('save')),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
     controller.dispose();
     tagController.dispose();

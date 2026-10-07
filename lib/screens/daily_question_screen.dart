@@ -300,10 +300,7 @@ class _ResultBanner extends StatelessWidget {
       accent: color,
       child: Row(
         children: [
-          Icon(
-            correct ? Icons.check_circle : Icons.cancel,
-            color: color,
-          ),
+          Icon(correct ? Icons.check_circle : Icons.cancel, color: color),
           const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(

@@ -1,4 +1,6 @@
+import '../data/sandbox_challenges.dart';
 import 'localized_text.dart';
+import 'sandbox_challenge.dart';
 
 /// 沙箱示例库中的一个示例。
 class SandboxExample {
@@ -799,7 +801,10 @@ class Program
 ''',
     examples: [
       SandboxExample(
-        title: LocalizedText(zh: '属性与字符串插值', en: 'Properties and interpolation'),
+        title: LocalizedText(
+          zh: '属性与字符串插值',
+          en: 'Properties and interpolation',
+        ),
         code: '''
 using System;
 
@@ -947,7 +952,10 @@ func main() {
 ''',
       ),
       SandboxExample(
-        title: LocalizedText(zh: 'goroutine 与 channel', en: 'Goroutine and channel'),
+        title: LocalizedText(
+          zh: 'goroutine 与 channel',
+          en: 'Goroutine and channel',
+        ),
         code: '''
 package main
 
@@ -1237,6 +1245,15 @@ show(Course(name: "Swift 入门"))
     if (raw.isEmpty) return null;
     final token = raw.split(RegExp(r'[\s,{]+')).first;
     return _fenceAliases[token];
+  }
+
+  /// 当前语言的挑战用例（没有挑战时返回空列表）。
+  ///
+  /// 数据定义在 lib/data/sandbox_challenges.dart，只有内置真实运行时的
+  /// 语言才有挑战；静态追踪模式的语言返回空列表，界面会给出明确提示。
+  List<SandboxChallenge> get challenges {
+    if (isTraceOnly) return const <SandboxChallenge>[];
+    return sandboxChallengesByLanguage[id] ?? const <SandboxChallenge>[];
   }
 
   /// 当前沙箱支持的语言名列表，用于「不支持」时的提示文案。

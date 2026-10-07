@@ -51,10 +51,9 @@ void main() {
       final expected = original.search('指针').map((hit) => hit.lesson.id);
 
       final restored = LessonSearchIndex();
-      final ok = restored.restoreFromCache(
-        const <LessonCategory>[_programming],
-        serialized,
-      );
+      final ok = restored.restoreFromCache(const <LessonCategory>[
+        _programming,
+      ], serialized);
       expect(ok, isTrue);
       expect(restored.isBuilt, isTrue);
       expect(restored.search('指针').map((hit) => hit.lesson.id), expected);
@@ -175,8 +174,14 @@ void main() {
           'minutes': 15,
           'markdown': '# 演示\n\n${'正文内容。' * 60}',
           'quiz': <Map<String, dynamic>>[
-            <String, dynamic>{'question': 'Q1', 'options': <String>['A']},
-            <String, dynamic>{'question': 'Q2', 'options': <String>['B']},
+            <String, dynamic>{
+              'question': 'Q1',
+              'options': <String>['A'],
+            },
+            <String, dynamic>{
+              'question': 'Q2',
+              'options': <String>['B'],
+            },
           ],
         },
       ],
@@ -233,8 +238,8 @@ void main() {
     });
 
     test('模板是合法 JSON 且能通过自身校验', () {
-      final decoded = jsonDecode(ContentPackWorkbench.template())
-          as Map<String, dynamic>;
+      final decoded =
+          jsonDecode(ContentPackWorkbench.template()) as Map<String, dynamic>;
       final analysis = ContentPackWorkbench.analyze(decoded);
       expect(analysis.packId, 'my-pack');
       expect(analysis.lessonCount, 1);

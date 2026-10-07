@@ -169,9 +169,7 @@ class MasteryService {
       snapshots[node.lesson.id] = snapshot;
       scores[node.lesson.id] = snapshot.score;
     }
-    return graph.order
-        .map((id) => snapshots[id]!)
-        .toList(growable: false);
+    return graph.order.map((id) => snapshots[id]!).toList(growable: false);
   }
 
   static double _retention({

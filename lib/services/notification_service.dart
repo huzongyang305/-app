@@ -17,8 +17,10 @@ class NotificationService {
 
   /// 每日提醒使用固定 ID，重复调度会覆盖上一条，不会堆积通知。
   static const int _dailyReviewId = 1001;
+
   /// 目标达成通知使用另一个固定 ID，与每日提醒互不覆盖。
   static const int _goalReachedId = 1002;
+
   /// 每日一题提醒固定 ID。
   static const int _dailyQuestionId = 1003;
   static const String _channelId = 'review_reminder';
@@ -28,8 +30,9 @@ class NotificationService {
   ///
   /// 由通知回调写入，RootShell 监听后完成页面跳转；静态字段保证
   /// 冷启动时也能读到点击通知带来的 payload。
-  static final ValueNotifier<String?> pendingPayload =
-      ValueNotifier<String?>(null);
+  static final ValueNotifier<String?> pendingPayload = ValueNotifier<String?>(
+    null,
+  );
   static String? _pendingPayload;
 
   static void _queuePayload(String? payload) {

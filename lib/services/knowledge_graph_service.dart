@@ -120,10 +120,11 @@ class KnowledgeGraph {
     for (final candidate in relatedOf(lessonId)) {
       add(candidate);
     }
-    final siblings = node.category.lessons
-        .where((lesson) => lesson.order > node.lesson.order)
-        .toList()
-      ..sort((a, b) => a.order.compareTo(b.order));
+    final siblings =
+        node.category.lessons
+            .where((lesson) => lesson.order > node.lesson.order)
+            .toList()
+          ..sort((a, b) => a.order.compareTo(b.order));
     for (final lesson in siblings) {
       add(nodes[lesson.id]);
     }
@@ -206,11 +207,12 @@ class KnowledgeGraphService {
       for (final entry in nodes.entries)
         entry.key: entry.value.prerequisiteIds.length,
     };
-    final queue = nodes.values
-        .where((node) => indegree[node.lesson.id] == 0)
-        .map((node) => node.lesson.id)
-        .toList()
-      ..sort(_byCurriculumOrder(nodes));
+    final queue =
+        nodes.values
+            .where((node) => indegree[node.lesson.id] == 0)
+            .map((node) => node.lesson.id)
+            .toList()
+          ..sort(_byCurriculumOrder(nodes));
 
     while (queue.isNotEmpty) {
       final id = queue.removeAt(0);

@@ -216,7 +216,9 @@ class ToolsScreen extends StatelessWidget {
               subtitle: Text(context.tr('flashcardEntryHint')),
               trailing: const Icon(Icons.chevron_right, size: 18),
               onTap: () => Navigator.of(context).push(
-                MaterialPageRoute<void>(builder: (_) => const FlashcardScreen()),
+                MaterialPageRoute<void>(
+                  builder: (_) => const FlashcardScreen(),
+                ),
               ),
             ),
           ),

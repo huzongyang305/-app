@@ -55,8 +55,8 @@ class CodeLearnApp extends StatelessWidget {
           return MaterialApp(
             title: AppStrings(settings.localeCode).get('appTitle'),
             debugShowCheckedModeBanner: false,
-            theme: AppTheme.light(),
-            darkTheme: AppTheme.dark(),
+            theme: AppTheme.light(highContrast: settings.highContrast),
+            darkTheme: AppTheme.dark(highContrast: settings.highContrast),
             themeMode: settings.themeMode,
             locale: settings.locale,
             builder: (context, child) {

@@ -1,9 +1,13 @@
 import 'package:flutter/foundation.dart';
 
+import '../models/backup_preview.dart';
 import '../models/lesson.dart';
 import '../models/note.dart';
+import '../models/note_anchor.dart';
+import '../models/quiz_answer.dart';
 import '../models/quiz_result.dart';
 import '../models/review_grade.dart';
+import '../models/study_center.dart';
 import 'backup_document_service.dart';
 import 'practice_question_factory.dart';
 import 'review_planner.dart';
@@ -22,6 +26,9 @@ class ProgressProvider extends ChangeNotifier {
     _restoreStudyDays();
     _restoreActivity();
     _restoreStudySeconds();
+    _restoreInsights();
+    _restoreReviewPreferences();
+    _restoreBookmarks();
     final dailyDate = _storage.read('daily_question_date', defaultValue: '');
     _dailyQuestionDate = dailyDate is String ? dailyDate : '';
     _dailyQuestionCorrect =
@@ -53,6 +60,32 @@ class ProgressProvider extends ChangeNotifier {
   final Set<String> _studyDays = <String>{};
   final Map<String, int> _dailyActivity = <String, int>{};
   final Map<String, int> _dailyStudySeconds = <String, int>{};
+
+  /// 单题作答统计：题号 -> attempts / correct / partialScore / confidence。
+  final Map<String, Map<String, dynamic>> _questionStats =
+      <String, Map<String, dynamic>>{};
+
+  /// 错因累计：概念不清、粗心、语法 / API 等。
+  final Map<String, int> _errorCauseCounts = <String, int>{};
+
+  /// 阅读书签与段落收藏。
+  final Set<String> _bookmarkedIds = <String>{};
+
+  /// 已完成挑战 ID。
+  final Set<String> _challengeDoneIds = <String>{};
+
+  /// 项目里程碑：`课程:里程碑` -> 是否完成。
+  final Map<String, bool> _projectMilestones = <String, bool>{};
+
+  /// 暂停复习的截止日期（当天及以前继续暂停）。
+  String _reviewPausedUntil = '';
+
+  /// 允许安排复习的星期（1=周一，7=周日）。
+  Set<int> _reviewWeekdays = <int>{1, 2, 3, 4, 5, 6, 7};
+
+  /// 最近复习记录，用于场次总结。
+  final List<Map<String, dynamic>> _reviewHistory = <Map<String, dynamic>>[];
+
   /// 每日一题的作答记录：当天日期键与是否答对。
   String _dailyQuestionDate = '';
   bool _dailyQuestionCorrect = false;
@@ -71,6 +104,75 @@ class ProgressProvider extends ChangeNotifier {
   Set<String> get favoriteIds => _favoriteIds;
   Map<String, Note> get notes => Map.unmodifiable(_notes);
   Map<String, QuizResult> get quizResults => Map.unmodifiable(_quizResults);
+  Set<String> get bookmarkedIds => Set<String>.unmodifiable(_bookmarkedIds);
+  Map<String, int> get errorCauseCounts =>
+      Map<String, int>.unmodifiable(_errorCauseCounts);
+
+  bool isBookmarked(String lessonId) => _bookmarkedIds.contains(lessonId);
+  bool isChallengeDone(String id) => _challengeDoneIds.contains(id) || false;
+  bool get hasRollbackSnapshot =>
+      _storage.read('backup_rollback_snapshot') is Map;
+
+  DateTime? get reviewPausedUntil => DateTime.tryParse(_reviewPausedUntil);
+
+  bool get reviewsPaused {
+    final paused = reviewPausedUntil;
+    if (paused == null) return false;
+    final today = DateTime(_now().year, _now().month, _now().day);
+    final until = DateTime(paused.year, paused.month, paused.day);
+    return !today.isAfter(until);
+  }
+
+  Set<int> get reviewWeekdays => Set<int>.unmodifiable(_reviewWeekdays);
+  List<Map<String, dynamic>> get reviewHistory =>
+      List<Map<String, dynamic>>.unmodifiable(_reviewHistory);
+
+  Map<String, dynamic>? questionStat(String key) {
+    final value = _questionStats[key];
+    return value == null ? null : Map<String, dynamic>.unmodifiable(value);
+  }
+
+  List<MapEntry<String, Map<String, dynamic>>> get questionStats =>
+      List.unmodifiable(
+        _questionStats.entries.map(
+          (entry) => MapEntry(
+            entry.key,
+            Map<String, dynamic>.unmodifiable(entry.value),
+          ),
+        ),
+      );
+
+  List<String> get answeredQuestionKeysToday {
+    final today = _dayKey(_now());
+    return _questionStats.entries
+        .where(
+          (entry) =>
+              entry.value['lastAt']?.toString().startsWith(today) == true,
+        )
+        .map((entry) => entry.key)
+        .toList(growable: false);
+  }
+
+  List<ProjectMilestone> milestonesForLesson(String lessonId) {
+    const templates = <String, String>{
+      'requirements': '明确需求与验收标准',
+      'mvp': '完成最小可运行版本',
+      'quality': '补齐错误处理与测试',
+      'review': '复盘并整理项目文档',
+    };
+    return templates.entries
+        .map(
+          (entry) => ProjectMilestone(
+            id: '$lessonId:${entry.key}',
+            lessonId: lessonId,
+            title: entry.value,
+            done:
+                _projectMilestones[entry.value] == true ||
+                _projectMilestones['$lessonId:${entry.key}'] == true,
+          ),
+        )
+        .toList(growable: false);
+  }
 
   bool isLearned(String lessonId) => _learnedIds.contains(lessonId);
   bool isFavorite(String lessonId) => _favoriteIds.contains(lessonId);
@@ -123,9 +225,8 @@ class ProgressProvider extends ChangeNotifier {
       _wrongEverKeys.where((key) => !_wrongCounts.containsKey(key)).length;
 
   /// 错题消灭率（0~1）；没有错题历史时为 0。
-  double get wrongResolvedRatio => everWrongQuestions == 0
-      ? 0
-      : resolvedWrongQuestions / everWrongQuestions;
+  double get wrongResolvedRatio =>
+      everWrongQuestions == 0 ? 0 : resolvedWrongQuestions / everWrongQuestions;
 
   /// 错题本原始键集合（`知识点ID#题号`），供「错题重练」组卷使用。
   List<String> get wrongQuestionKeys =>
@@ -137,6 +238,14 @@ class ProgressProvider extends ChangeNotifier {
 
   /// 今日待复习的知识点（已到期或逾期），按到期时间升序。
   List<String> get dueReviewLessonIds {
+    if (reviewsPaused || !_reviewWeekdays.contains(_now().weekday)) {
+      return const <String>[];
+    }
+    return rawDueReviewLessonIds;
+  }
+
+  /// 不考虑暂停和星期限制的到期课程，用于设置页展示真实积压数量。
+  List<String> get rawDueReviewLessonIds {
     final now = _now();
     final entries = _reviewDue.entries.where((entry) {
       final due = DateTime.tryParse(entry.value);
@@ -271,8 +380,7 @@ class ProgressProvider extends ChangeNotifier {
   }
 
   /// 今天是否已经作答每日一题。
-  bool get dailyQuestionAnsweredToday =>
-      _dailyQuestionDate == _dayKey(_now());
+  bool get dailyQuestionAnsweredToday => _dailyQuestionDate == _dayKey(_now());
 
   /// 今天每日一题的作答结果（未作答时为 false）。
   bool get dailyQuestionCorrect => _dailyQuestionCorrect;
@@ -482,12 +590,171 @@ class ProgressProvider extends ChangeNotifier {
     await _storage.write('wrong_ever_keys', _wrongEverKeys.toList());
   }
 
+  /// 作答后的细分标注：修正最近一次作答的信心与错因，不重复计次。
+  ///
+  /// 测验页在判分后让用户自评「猜的 / 不确定 / 很确定」，并可选错因；
+  /// 这里只更新最近一次记录，避免同一道题被统计成两次作答。
+  Future<void> annotateAnswerOutcome(
+    String lessonId,
+    int questionIndex, {
+    AnswerConfidence? confidence,
+    String? errorCause,
+  }) async {
+    final key = '$lessonId#$questionIndex';
+    final stat = _questionStats[key];
+    if (stat == null) return;
+    var changed = false;
+    if (confidence != null) {
+      stat['lastConfidence'] = confidence.storageKey;
+      changed = true;
+    }
+    final cause = errorCause?.trim() ?? '';
+    if (cause.isNotEmpty && stat['lastCause']?.toString() != cause) {
+      final previous = stat['lastCause']?.toString() ?? '';
+      if (previous.isNotEmpty) {
+        final left = (_errorCauseCounts[previous] ?? 0) - 1;
+        if (left > 0) {
+          _errorCauseCounts[previous] = left;
+        } else {
+          _errorCauseCounts.remove(previous);
+        }
+      }
+      stat['lastCause'] = cause;
+      _errorCauseCounts[cause] = (_errorCauseCounts[cause] ?? 0) + 1;
+      changed = true;
+    }
+    if (!changed) return;
+    notifyListeners();
+    await _storage.write('question_stats', _questionStats);
+    await _storage.write('error_cause_counts', _errorCauseCounts);
+  }
+
   Future<void> clearWrong(String lessonId, int questionIndex) async {
     final key = '$lessonId#$questionIndex';
     if (_wrongCounts.remove(key) != null) {
       notifyListeners();
       await _storage.write('wrong_counts', Map<String, int>.from(_wrongCounts));
     }
+  }
+
+  /// 记录一次完整作答：分数、信心和错因。
+  ///
+  /// `score` 支持多选 / 排序的部分得分；答对时会自动从错题本移除。
+  Future<void> recordAnswerOutcome(
+    String lessonId,
+    int questionIndex, {
+    required double score,
+    required AnswerConfidence confidence,
+    String? errorCause,
+  }) async {
+    final key = '$lessonId#$questionIndex';
+    final stat = _questionStats.putIfAbsent(key, () => <String, dynamic>{});
+    stat['attempts'] = ((stat['attempts'] as int?) ?? 0) + 1;
+    if (score >= 0.999) {
+      stat['correct'] = ((stat['correct'] as int?) ?? 0) + 1;
+    }
+    stat['partialScore'] =
+        ((stat['partialScore'] as num?)?.toDouble() ?? 0) + score;
+    stat['lastConfidence'] = confidence.storageKey;
+    stat['lastScore'] = score;
+    stat['lastAt'] = _now().toIso8601String();
+    if (errorCause != null && errorCause.trim().isNotEmpty) {
+      stat['lastCause'] = errorCause.trim();
+      _errorCauseCounts[errorCause.trim()] =
+          (_errorCauseCounts[errorCause.trim()] ?? 0) + 1;
+    }
+    if (score >= 0.999) {
+      _wrongCounts.remove(key);
+    } else {
+      _wrongCounts[key] = (_wrongCounts[key] ?? 0) + 1;
+      _wrongEverKeys.add(key);
+    }
+    notifyListeners();
+    await _storage.write('question_stats', _questionStats);
+    await _storage.write('error_cause_counts', _errorCauseCounts);
+    await _storage.write('wrong_counts', Map<String, int>.from(_wrongCounts));
+    await _storage.write('wrong_ever_keys', _wrongEverKeys.toList());
+  }
+
+  /// 阅读书签：与收藏知识点分开，用于标记“正在读 / 稍后继续”。
+  Future<void> toggleBookmark(String lessonId) async {
+    if (!_bookmarkedIds.remove(lessonId)) _bookmarkedIds.add(lessonId);
+    notifyListeners();
+    await _storage.write('bookmarked_ids', _bookmarkedIds.toList());
+  }
+
+  /// 完成每日 / 每周挑战。
+  Future<void> markChallengeDone(String id) async {
+    if (!_challengeDoneIds.add(id)) return;
+    notifyListeners();
+    await _storage.write('challenge_done_ids', _challengeDoneIds.toList());
+  }
+
+  /// 项目里程碑勾选。
+  Future<void> toggleProjectMilestone(String milestoneId, bool done) async {
+    _projectMilestones[milestoneId] = done;
+    notifyListeners();
+    await _storage.write('project_milestones', _projectMilestones);
+  }
+
+  /// 把某门课推迟 [days] 天复习。
+  Future<void> snoozeReview(String lessonId, int days) async {
+    final value = days.clamp(1, 30);
+    _reviewDue[lessonId] = _now().add(Duration(days: value)).toIso8601String();
+    notifyListeners();
+    await _persistReview();
+  }
+
+  /// 暂停全部复习到指定日期（含当天）。
+  Future<void> pauseReviewsUntil(DateTime date) async {
+    _reviewPausedUntil = DateTime(
+      date.year,
+      date.month,
+      date.day,
+    ).toIso8601String();
+    notifyListeners();
+    await _storage.write('review_paused_until', _reviewPausedUntil);
+  }
+
+  Future<void> resumeReviews() async {
+    _reviewPausedUntil = '';
+    notifyListeners();
+    await _storage.write('review_paused_until', '');
+  }
+
+  /// 设置允许复习的星期，至少保留一天。
+  Future<void> setReviewWeekdays(Set<int> values) async {
+    final normalized = values.where((item) => item >= 1 && item <= 7).toSet();
+    if (normalized.isEmpty) return;
+    _reviewWeekdays = normalized;
+    notifyListeners();
+    await _storage.write('review_weekdays', normalized.toList()..sort());
+  }
+
+  /// 记录一次复习场次，供完成总结展示。
+  Future<void> recordReviewSession({
+    required int lessonCount,
+    required int correct,
+    required int total,
+    required int minutes,
+  }) async {
+    _reviewHistory.insert(0, <String, dynamic>{
+      'at': _now().toIso8601String(),
+      'lessonCount': lessonCount,
+      'correct': correct,
+      'total': total,
+      'minutes': minutes,
+    });
+    if (_reviewHistory.length > 50) {
+      _reviewHistory.removeRange(50, _reviewHistory.length);
+    }
+    notifyListeners();
+    await _storage.write('review_history', _reviewHistory);
+  }
+
+  BackupPreview previewImport(Map<String, dynamic> data) {
+    final normalized = BackupDocumentService.normalizeForImport(data);
+    return BackupPreview.fromData(normalized);
   }
 
   /// 学习进度 = 已学知识点 / 全部知识点。
@@ -545,6 +812,8 @@ class ProgressProvider extends ChangeNotifier {
     String lessonId,
     String content, {
     List<String> tags = const <String>[],
+    List<NoteAnchor> anchors = const <NoteAnchor>[],
+    bool flashcardEnabled = true,
   }) async {
     final trimmed = content.trim();
     final normalizedTags = tags
@@ -563,6 +832,8 @@ class ProgressProvider extends ChangeNotifier {
         content: trimmed,
         updatedAt: _now(),
         tags: normalizedTags,
+        anchors: anchors,
+        flashcardEnabled: flashcardEnabled,
       );
       _notes[lessonId] = note;
       _noteIds.add(lessonId);
@@ -716,6 +987,69 @@ class ProgressProvider extends ChangeNotifier {
     }
   }
 
+  void _restoreInsights() {
+    final stats = _storage.read('question_stats');
+    if (stats is Map) {
+      stats.forEach((key, value) {
+        if (value is Map) {
+          _questionStats[key.toString()] = value.cast<String, dynamic>();
+        }
+      });
+    }
+    final causes = _storage.read('error_cause_counts');
+    if (causes is Map) {
+      causes.forEach((key, value) {
+        if (value is int && value > 0) {
+          _errorCauseCounts[key.toString()] = value;
+        }
+      });
+    }
+    final challenges = _storage.read(
+      'challenge_done_ids',
+      defaultValue: const <String>[],
+    );
+    _challengeDoneIds
+      ..clear()
+      ..addAll((challenges as List).map((item) => item.toString()));
+    final milestones = _storage.read('project_milestones');
+    if (milestones is Map) {
+      milestones.forEach((key, value) {
+        if (value is bool) _projectMilestones[key.toString()] = value;
+      });
+    }
+    final history = _storage.read(
+      'review_history',
+      defaultValue: const <dynamic>[],
+    );
+    for (final item in history as List) {
+      if (item is Map) _reviewHistory.add(item.cast<String, dynamic>());
+    }
+  }
+
+  void _restoreReviewPreferences() {
+    _reviewPausedUntil =
+        _storage.read('review_paused_until', defaultValue: '')?.toString() ??
+        '';
+    final weekdays = _storage.read(
+      'review_weekdays',
+      defaultValue: const <int>[],
+    );
+    if (weekdays is List && weekdays.isNotEmpty) {
+      _reviewWeekdays = weekdays
+          .map((item) => item is int ? item : int.tryParse(item.toString()))
+          .whereType<int>()
+          .where((item) => item >= 1 && item <= 7)
+          .toSet();
+      if (_reviewWeekdays.isEmpty) _reviewWeekdays = <int>{1, 2, 3, 4, 5, 6, 7};
+    }
+  }
+
+  void _restoreBookmarks() {
+    _bookmarkedIds
+      ..clear()
+      ..addAll(_storage.readStringSet('bookmarked_ids'));
+  }
+
   /// 教程滚动位置：按知识点记录，用于「继续上次位置阅读」。
   double readingOffset(String lessonId) {
     final value = _storage.read('reading_offset_$lessonId', defaultValue: 0.0);
@@ -760,11 +1094,247 @@ class ProgressProvider extends ChangeNotifier {
         'daily_question_date': _dailyQuestionDate,
         'daily_question_correct': _dailyQuestionCorrect,
         'notes': _notes.map((key, value) => MapEntry(key, value.toJson())),
+        'bookmarked_ids': _bookmarkedIds.toList(),
+        'question_stats': _questionStats,
+        'error_cause_counts': Map<String, int>.from(_errorCauseCounts),
+        'challenge_done_ids': _challengeDoneIds.toList(),
+        'project_milestones': Map<String, bool>.from(_projectMilestones),
+        'review_paused_until': _reviewPausedUntil,
+        'review_weekdays': _reviewWeekdays.toList()..sort(),
+        'review_history': _reviewHistory,
       });
 
-  /// 从导出的 JSON 恢复数据（覆盖当前内存与本地存储）。
-  Future<void> importData(Map<String, dynamic> data) async {
+  /// 从导出的 JSON 恢复数据，默认覆盖当前数据。
+  ///
+  /// 恢复前会把当前数据保存为回滚快照；[mode] 为 merge 时按课程、日期和
+  /// 题号合并，适合把两台离线设备的学习记录合在一起。
+  Future<void> importData(
+    Map<String, dynamic> data, {
+    BackupImportMode mode = BackupImportMode.replace,
+  }) async {
     data = BackupDocumentService.normalizeForImport(data);
+    await _storage.write('backup_rollback_snapshot', exportData());
+    final effective = mode == BackupImportMode.merge
+        ? _mergeImportData(data)
+        : data;
+    await _applyImportData(effective);
+  }
+
+  /// 撤销上一次恢复，回到导入前的本地快照。
+  Future<bool> rollbackLastImport() async {
+    final raw = _storage.read('backup_rollback_snapshot');
+    if (raw is! Map) return false;
+    await _applyImportData(raw.cast<String, dynamic>());
+    await _storage.delete('backup_rollback_snapshot');
+    return true;
+  }
+
+  Map<String, dynamic> _mergeImportData(Map<String, dynamic> incoming) {
+    final current = exportData();
+    final result = <String, dynamic>{...current};
+    result['learned_ids'] = <String>{
+      ...((current['learned_ids'] as List?) ?? const []).map((e) => '$e'),
+      ...((incoming['learned_ids'] as List?) ?? const []).map((e) => '$e'),
+    }.toList();
+    result['favorite_ids'] = <String>{
+      ...((current['favorite_ids'] as List?) ?? const []).map((e) => '$e'),
+      ...((incoming['favorite_ids'] as List?) ?? const []).map((e) => '$e'),
+    }.toList();
+    result['bookmarked_ids'] = <String>{
+      ...((current['bookmarked_ids'] as List?) ?? const []).map((e) => '$e'),
+      ...((incoming['bookmarked_ids'] as List?) ?? const []).map((e) => '$e'),
+    }.toList();
+    result['wrong_ever_keys'] = <String>{
+      ...((current['wrong_ever_keys'] as List?) ?? const []).map((e) => '$e'),
+      ...((incoming['wrong_ever_keys'] as List?) ?? const []).map((e) => '$e'),
+    }.toList();
+    result['challenge_done_ids'] = <String>{
+      ...((current['challenge_done_ids'] as List?) ?? const []).map(
+        (e) => '$e',
+      ),
+      ...((incoming['challenge_done_ids'] as List?) ?? const []).map(
+        (e) => '$e',
+      ),
+    }.toList();
+    result['quiz_results'] = _mergeQuizResults(current, incoming);
+    result['notes'] = _mergeNotes(current, incoming);
+    result['wrong_counts'] = _mergeIntMaps(
+      current['wrong_counts'],
+      incoming['wrong_counts'],
+    );
+    result['error_cause_counts'] = _mergeIntMaps(
+      current['error_cause_counts'],
+      incoming['error_cause_counts'],
+    );
+    result['daily_activity'] = _mergeIntMaps(
+      current['daily_activity'],
+      incoming['daily_activity'],
+    );
+    result['daily_study_seconds'] = _mergeMaxMaps(
+      current['daily_study_seconds'],
+      incoming['daily_study_seconds'],
+    );
+    result['study_days'] = <String>{
+      ...((current['study_days'] as List?) ?? const []).map((e) => '$e'),
+      ...((incoming['study_days'] as List?) ?? const []).map((e) => '$e'),
+    }.toList();
+    result['question_stats'] = _mergeQuestionStats(current, incoming);
+    result['project_milestones'] = <String, bool>{
+      ..._boolMap(current['project_milestones']),
+      ..._boolMap(incoming['project_milestones']),
+    };
+    result['review_due'] = _mergeReviewDue(current, incoming);
+    result['review_history'] = <dynamic>[
+      ...((current['review_history'] as List?) ?? const []),
+      ...((incoming['review_history'] as List?) ?? const []),
+    ];
+    return result;
+  }
+
+  Map<String, dynamic> _mergeQuizResults(
+    Map<String, dynamic> current,
+    Map<String, dynamic> incoming,
+  ) {
+    final result = <String, dynamic>{};
+    final currentMap = _mapOf(current['quiz_results']);
+    final incomingMap = _mapOf(incoming['quiz_results']);
+    for (final id in <String>{...currentMap.keys, ...incomingMap.keys}) {
+      final left = _mapOf(currentMap[id]);
+      final right = _mapOf(incomingMap[id]);
+      if (left.isEmpty) {
+        result[id] = right;
+        continue;
+      }
+      if (right.isEmpty) {
+        result[id] = left;
+        continue;
+      }
+      final leftCorrect = left['correct'] as int? ?? 0;
+      final rightCorrect = right['correct'] as int? ?? 0;
+      final selected = rightCorrect > leftCorrect ? right : left;
+      result[id] = <String, dynamic>{
+        ...selected,
+        'attempts':
+            (left['attempts'] as int? ?? 0) + (right['attempts'] as int? ?? 0),
+      };
+    }
+    return result;
+  }
+
+  Map<String, dynamic> _mergeNotes(
+    Map<String, dynamic> current,
+    Map<String, dynamic> incoming,
+  ) {
+    final result = <String, dynamic>{..._mapOf(current['notes'])};
+    final incomingMap = _mapOf(incoming['notes']);
+    for (final entry in incomingMap.entries) {
+      final existing = _mapOf(result[entry.key]);
+      final candidate = _mapOf(entry.value);
+      final existingTime = DateTime.tryParse(
+        existing['updatedAt']?.toString() ?? '',
+      );
+      final candidateTime = DateTime.tryParse(
+        candidate['updatedAt']?.toString() ?? '',
+      );
+      if (existing.isEmpty ||
+          candidateTime == null ||
+          (existingTime != null && candidateTime.isAfter(existingTime))) {
+        result[entry.key] = candidate;
+      }
+    }
+    return result;
+  }
+
+  Map<String, dynamic> _mergeQuestionStats(
+    Map<String, dynamic> current,
+    Map<String, dynamic> incoming,
+  ) {
+    final result = <String, dynamic>{};
+    final left = _mapOf(current['question_stats']);
+    final right = _mapOf(incoming['question_stats']);
+    for (final key in <String>{...left.keys, ...right.keys}) {
+      final a = _mapOf(left[key]);
+      final b = _mapOf(right[key]);
+      if (a.isEmpty) {
+        result[key] = b;
+        continue;
+      }
+      if (b.isEmpty) {
+        result[key] = a;
+        continue;
+      }
+      final aAt = a['lastAt']?.toString() ?? '';
+      final bAt = b['lastAt']?.toString() ?? '';
+      result[key] = <String, dynamic>{
+        ...a,
+        if (bAt.compareTo(aAt) > 0) ...b,
+        'attempts': (a['attempts'] as int? ?? 0) + (b['attempts'] as int? ?? 0),
+        'correct': (a['correct'] as int? ?? 0) + (b['correct'] as int? ?? 0),
+        'partialScore':
+            ((a['partialScore'] as num?)?.toDouble() ?? 0) +
+            ((b['partialScore'] as num?)?.toDouble() ?? 0),
+      };
+    }
+    return result;
+  }
+
+  Map<String, dynamic> _mergeReviewDue(
+    Map<String, dynamic> current,
+    Map<String, dynamic> incoming,
+  ) {
+    final result = <String, dynamic>{..._mapOf(current['review_due'])};
+    final right = _mapOf(incoming['review_due']);
+    for (final entry in right.entries) {
+      final leftValue = result[entry.key]?.toString();
+      final rightValue = entry.value.toString();
+      if (leftValue == null || rightValue.compareTo(leftValue) < 0) {
+        result[entry.key] = rightValue;
+      }
+    }
+    return result;
+  }
+
+  static Map<String, dynamic> _mapOf(dynamic value) =>
+      value is Map ? value.cast<String, dynamic>() : <String, dynamic>{};
+
+  static Map<String, int> _mergeIntMaps(dynamic left, dynamic right) {
+    final result = <String, int>{};
+    for (final map in <Map<String, dynamic>>[_mapOf(left), _mapOf(right)]) {
+      for (final entry in map.entries) {
+        final value = entry.value is int
+            ? entry.value as int
+            : int.tryParse(entry.value.toString()) ?? 0;
+        result[entry.key] = (result[entry.key] ?? 0) + value;
+      }
+    }
+    return result;
+  }
+
+  static Map<String, int> _mergeMaxMaps(dynamic left, dynamic right) {
+    final result = <String, int>{};
+    for (final map in <Map<String, dynamic>>[_mapOf(left), _mapOf(right)]) {
+      for (final entry in map.entries) {
+        final value = entry.value is int
+            ? entry.value as int
+            : int.tryParse(entry.value.toString()) ?? 0;
+        result[entry.key] = result[entry.key] == null
+            ? value
+            : (result[entry.key]! > value ? result[entry.key]! : value);
+      }
+    }
+    return result;
+  }
+
+  static Map<String, bool> _boolMap(dynamic value) {
+    final result = <String, bool>{};
+    final map = _mapOf(value);
+    for (final entry in map.entries) {
+      if (entry.value is bool) result[entry.key] = entry.value as bool;
+    }
+    return result;
+  }
+
+  Future<void> _applyImportData(Map<String, dynamic> data) async {
     await _storage.write(
       'learned_ids',
       List<String>.from((data['learned_ids'] as List?) ?? const []),
@@ -845,6 +1415,38 @@ class ProgressProvider extends ChangeNotifier {
       'review_repetitions',
       (data['review_repetitions'] as Map?) ?? const {},
     );
+    await _storage.write(
+      'bookmarked_ids',
+      (data['bookmarked_ids'] as List?) ?? const [],
+    );
+    await _storage.write(
+      'question_stats',
+      (data['question_stats'] as Map?) ?? const {},
+    );
+    await _storage.write(
+      'error_cause_counts',
+      (data['error_cause_counts'] as Map?) ?? const {},
+    );
+    await _storage.write(
+      'challenge_done_ids',
+      (data['challenge_done_ids'] as List?) ?? const [],
+    );
+    await _storage.write(
+      'project_milestones',
+      (data['project_milestones'] as Map?) ?? const {},
+    );
+    await _storage.write(
+      'review_paused_until',
+      data['review_paused_until']?.toString() ?? '',
+    );
+    await _storage.write(
+      'review_weekdays',
+      (data['review_weekdays'] as List?) ?? const <int>[1, 2, 3, 4, 5, 6, 7],
+    );
+    await _storage.write(
+      'review_history',
+      (data['review_history'] as List?) ?? const [],
+    );
     // 上次学习位置不在备份范围内，恢复时一并清掉，避免指向上一个设备的内容。
     await _storage.delete('last_lesson_id');
 
@@ -877,6 +1479,15 @@ class ProgressProvider extends ChangeNotifier {
     _notes.clear();
     _noteIds = noteIds.toSet();
     _restoreNotes();
+    _bookmarkedIds.clear();
+    _restoreBookmarks();
+    _questionStats.clear();
+    _errorCauseCounts.clear();
+    _challengeDoneIds.clear();
+    _projectMilestones.clear();
+    _reviewHistory.clear();
+    _restoreInsights();
+    _restoreReviewPreferences();
     notifyListeners();
   }
 }

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../l10n/l10n_extension.dart';
 import '../models/note.dart';
+import '../models/note_anchor.dart';
 import '../services/content_provider.dart';
 import '../services/note_export_service.dart';
 import '../services/progress_provider.dart';
@@ -139,6 +140,9 @@ class _NotesScreenState extends State<NotesScreen> {
                       onEdit: () => _edit(notes[index]),
                       onDelete: () => _delete(notes[index]),
                       onOpenLesson: () => _openLesson(content, notes[index]),
+                      onOpenAnchor: (anchor) =>
+                          _openLesson(content, notes[index], anchor: anchor),
+                      onToggleFlashcard: () => _toggleFlashcard(notes[index]),
                     ),
                   ),
           ),
@@ -152,11 +156,34 @@ class _NotesScreenState extends State<NotesScreen> {
     return lesson?.title.of(context.strings.localeCode) ?? note.lessonId;
   }
 
-  void _openLesson(ContentProvider content, Note note) {
+  void _openLesson(ContentProvider content, Note note, {NoteAnchor? anchor}) {
     final lesson = content.lessonById(note.lessonId);
     if (lesson == null) return;
     Navigator.of(context).push(
-      MaterialPageRoute<void>(builder: (_) => LessonScreen(lesson: lesson)),
+      MaterialPageRoute<void>(
+        builder: (_) => LessonScreen(lesson: lesson, initialAnchor: anchor),
+      ),
+    );
+  }
+
+  /// 一键转闪卡：切换该笔记是否进入闪卡队列。
+  Future<void> _toggleFlashcard(Note note) async {
+    final progress = context.read<ProgressProvider>();
+    final enabled = !note.flashcardEnabled;
+    await progress.saveNote(
+      note.lessonId,
+      note.content,
+      tags: note.tags,
+      anchors: note.anchors,
+      flashcardEnabled: enabled,
+    );
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          context.trRead(enabled ? 'noteFlashcardOn' : 'noteFlashcardOff'),
+        ),
+      ),
     );
   }
 
@@ -329,6 +356,8 @@ class _NoteCard extends StatelessWidget {
     required this.onEdit,
     required this.onDelete,
     required this.onOpenLesson,
+    required this.onOpenAnchor,
+    required this.onToggleFlashcard,
   });
 
   final Note note;
@@ -336,6 +365,8 @@ class _NoteCard extends StatelessWidget {
   final VoidCallback onEdit;
   final VoidCallback onDelete;
   final VoidCallback onOpenLesson;
+  final ValueChanged<NoteAnchor> onOpenAnchor;
+  final VoidCallback onToggleFlashcard;
 
   @override
   Widget build(BuildContext context) {
@@ -387,6 +418,35 @@ class _NoteCard extends StatelessWidget {
                 ],
               ),
             ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+            child: Wrap(
+              spacing: AppSpacing.sm,
+              runSpacing: AppSpacing.xs,
+              children: [
+                for (final anchor in note.anchors)
+                  ActionChip(
+                    avatar: const Icon(Icons.bookmark_outline, size: 16),
+                    label: Text(anchor.title),
+                    onPressed: () => onOpenAnchor(anchor),
+                  ),
+                ActionChip(
+                  avatar: Icon(
+                    note.flashcardEnabled ? Icons.style : Icons.style_outlined,
+                    size: 16,
+                  ),
+                  label: Text(
+                    context.tr(
+                      note.flashcardEnabled
+                          ? 'noteFlashcardOn'
+                          : 'noteFlashcards',
+                    ),
+                  ),
+                  onPressed: onToggleFlashcard,
+                ),
+              ],
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 14),
             child: MarkdownBody(

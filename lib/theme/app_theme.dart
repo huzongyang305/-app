@@ -110,12 +110,18 @@ class AppTheme {
   static const String serifFamily = sansFamily;
   static const String monoFamily = 'monospace';
 
-  static ThemeData light() => _build(Brightness.light);
-  static ThemeData dark() => _build(Brightness.dark);
+  static ThemeData light({bool highContrast = false}) =>
+      _build(Brightness.light, highContrast: highContrast);
+  static ThemeData dark({bool highContrast = false}) =>
+      _build(Brightness.dark, highContrast: highContrast);
 
-  static ThemeData _build(Brightness brightness) {
+  static ThemeData _build(Brightness brightness, {bool highContrast = false}) {
     final isDark = brightness == Brightness.dark;
-    final scheme = isDark ? _darkScheme() : _lightScheme();
+    final base = isDark ? _darkScheme() : _lightScheme();
+    // 高对比模式只调整次级文字与描边，保留原有品牌色与版面结构。
+    final scheme = highContrast
+        ? _highContrastScheme(base, isDark: isDark)
+        : base;
     final textTheme = _textTheme(scheme);
     final cardShape = RoundedRectangleBorder(
       borderRadius: AppRadii.card,
@@ -440,6 +446,22 @@ class AppTheme {
     inversePrimary: AppPalette.primary,
     surfaceTint: Colors.transparent,
   );
+
+  /// 高对比配色：把次级文字与描边推向更高对比度，其余色彩保持不变。
+  static ColorScheme _highContrastScheme(
+    ColorScheme base, {
+    required bool isDark,
+  }) {
+    return base.copyWith(
+      onSurfaceVariant: isDark
+          ? const Color(0xFFE8ECF4)
+          : const Color(0xFF2A3140),
+      outline: isDark ? const Color(0xFF9AA4B8) : const Color(0xFF5D6675),
+      outlineVariant: isDark
+          ? const Color(0xFF6B7488)
+          : const Color(0xFF9AA3B2),
+    );
+  }
 
   /// 清晰的无衬线层级：标题紧凑、正文宽松、标签克制。
   static TextTheme _textTheme(ColorScheme scheme) {
