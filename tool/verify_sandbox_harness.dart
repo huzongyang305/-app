@@ -479,14 +479,16 @@ Future<void> main(List<String> args) async {
               File('${sandboxDir.path}/$wasmPath').readAsBytesSync(),
             ),
     );
-    // WASM 语言的首屏编译更慢，需要延时资源兜底。
+    // WASM 语言的首屏编译更慢，需要延时资源兜底：file:// 与 http:// 两条
+    // 路径都要挂延时图片，否则 dump-dom 可能在编译完成前取走空输出
+    // （CI 的慢机上 bash 的 9 MB WASM 会稳定复现这一时序问题）。
     final fileHtml = _wasmRuntimes.containsKey(item.language)
         ? html.replaceFirst('<body>', '<body>\n$delayTag')
         : html;
     final file = File('${workDir.path}/${item.language}_$i.html')
       ..writeAsStringSync(fileHtml);
     fileUris.add(file.uri.toString());
-    pages['/${item.language}$i'] = html;
+    pages['/${item.language}$i'] = fileHtml;
     sizes[item.language] = html.length;
   }
 
