@@ -271,18 +271,19 @@ flutter build apk --release
 
 | 命令 | 产物 | 体积 |
 | --- | --- | ---: |
-| `--target-platform android-arm,android-arm64` | `app-release.apk`（ARM 双 ABI） | 86.10 MiB / 门禁 90 MiB |
-| `--split-per-abi` | `app-arm64-v8a-release.apk` | 66.61 MiB / 门禁 90 MiB |
-| | `app-armeabi-v7a-release.apk` | 64.61 MiB / 门禁 90 MiB |
-| | `app-x86_64-release.apk` | 68.15 MiB / 门禁 90 MiB |
-| `flutter build apk --release` | `app-release.apk`（3 ABI） | 108.89 MiB，超过 90 MiB 门禁，仅用于本机安装验证 |
+| `--target-platform android-arm,android-arm64` | `app-release.apk`（ARM 双 ABI，发布用） | 89.15 MiB / 门禁 95 MiB |
+| `--split-per-abi` | `app-arm64-v8a-release.apk` | 69.66 MiB / 门禁 95 MiB |
+| | `app-armeabi-v7a-release.apk` | 67.66 MiB / 门禁 95 MiB |
+| | `app-x86_64-release.apk` | 71.20 MiB / 门禁 95 MiB |
+| `flutter build apk --release` | 3 ABI 通用包 | 111.94 MiB，超过门禁，仅用于本机安装验证 |
 
-体积主要来自两部分：内置课程资产约 50.5 MiB（609 篇 Markdown 16.2 MiB + 1222 张配图 34.3 MiB）
-与沙箱运行时等资源约 15 MiB；ARM 双 ABI 原生库约 37 MiB。
+体积主要来自两部分：内置课程资产约 54.8 MiB（609 篇 Markdown 16.2 MiB、1222 张配图 34.3 MiB
+与内容清单等）和沙箱运行时等资源约 15.0 MiB；ARM 双 ABI 原生库约 37 MiB。
 体积最大的 184 张 WebP 配图已压到最长边 1000px、`quality 65 / effort 6`，
-单张平均约为原体积的 42%，内容资产因此缩减约 4.2 MiB，使 ARM 双 ABI 包回到 90 MiB 门禁内。
+单张平均约为原体积的 42%。P0 补图让 ARM 通用包从 86.10 MiB 涨到 89.15 MiB，
+门禁同步从 90 MiB 调到 95 MiB，给 CI 环境差异留出余量。
 CI 里有体积门禁，会对 ARM 通用包和三个 ABI 分包逐一执行
-`dart tool/check_apk_size.dart <apk> 90`。
+`dart tool/apk_size_report.dart --budget-mb=95 <apk...>`。
 
 发布签名（`android/key.properties` 存在时走发布证书）：
 
