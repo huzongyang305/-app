@@ -39,6 +39,14 @@ IconData iconFromName(String name) {
       return Icons.security;
     case 'phone_iphone':
       return Icons.phone_iphone;
+    case 'link':
+      return Icons.link;
+    case 'cloud':
+      return Icons.cloud;
+    case 'transform':
+      return Icons.transform;
+    case 'sports_esports':
+      return Icons.sports_esports;
     default:
       return Icons.school;
   }

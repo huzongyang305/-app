@@ -1,0 +1,215 @@
+{
+  "generated_at": "2026-10-07T16:52:31.268881",
+  "dry_run": false,
+  "scanned_lessons": 609,
+  "changed_lessons": 133,
+  "changes": {
+    "mobile_harmony": [
+      "stage_line"
+    ],
+    "html_tags_intro": [],
+    "css_design_tokens": [
+      "stage_line"
+    ],
+    "python_list_dict_basics": [],
+    "python_functions": [
+      "stage_line"
+    ],
+    "python_project_etl": [],
+    "cpp_types": [
+      "stage_line"
+    ],
+    "cpp_templates": [
+      "stage_line"
+    ],
+    "cpp_project_http": [],
+    "cpp_project_taskdb": [],
+    "c_variables_io": [],
+    "c_functions_intro": [],
+    "c_types": [],
+    "c_structs": [],
+    "c_project_tcp_server": [],
+    "kotlin_project_cli_ledger": [],
+    "swift_project_cli_metrics": [],
+    "js_dom_events": [
+      "stage_line"
+    ],
+    "js_memory_gc": [],
+    "js_node_backend": [],
+    "csharp_ecosystem": [
+      "stage_line"
+    ],
+    "go_project": [
+      "stage_line"
+    ],
+    "go_pprof": [
+      "stage_line"
+    ],
+    "rust_unsafe_ffi": [
+      "stage_line"
+    ],
+    "ts_function_types": [],
+    "ts_node_backend": [
+      "stage_line"
+    ],
+    "ts_project_cli": [],
+    "shell_conditions": [],
+    "shell_robust": [
+      "stage_line"
+    ],
+    "shell_container": [
+      "stage_line"
+    ],
+    "shell_ops_scripts": [
+      "stage_line"
+    ],
+    "shell_portability": [],
+    "shell_automation_advanced": [],
+    "computer_organization_intro": [],
+    "binary_intro": [],
+    "compiler_frontend": [
+      "stage_line"
+    ],
+    "fundamentals_embedded_iot": [],
+    "graphics_media": [],
+    "fundamentals_pipeline": [],
+    "fundamentals_simd": [],
+    "fundamentals_cache_coherence": [],
+    "fundamentals_architecture_case": [],
+    "compiler_project_minilang": [],
+    "compiler_diagnostics": [],
+    "algorithm_intro": [],
+    "linear_search_intro": [],
+    "binary_search": [
+      "stage_line"
+    ],
+    "two_pointers": [
+      "stage_line"
+    ],
+    "bit_manipulation": [
+      "stage_line"
+    ],
+    "sorting_advanced": [],
+    "cache_eviction": [],
+    "algo_mst": [],
+    "algo_topological": [],
+    "dynamic_programming": [],
+    "string_matching": [],
+    "algo_np_approximation": [],
+    "algo_computational_geometry": [],
+    "algo_persistent_parallel": [],
+    "network_layers_intro": [],
+    "network_attacks": [
+      "stage_line"
+    ],
+    "web_security": [
+      "stage_line"
+    ],
+    "network_nat_vpn": [],
+    "chain_wallet_keys": [],
+    "chain_audit_project": [],
+    "chain_oracle_bridge": [],
+    "sql_table_intro": [],
+    "sql_query_intro": [],
+    "redis": [],
+    "database_project": [],
+    "airflow_quality": [],
+    "db_postgresql_deep": [],
+    "db_graph": [],
+    "db_time_series": [],
+    "db_migration_governance": [],
+    "db_permissions_security": [],
+    "db_backup_recovery": [],
+    "de_flink_windowing": [],
+    "de_data_contract": [],
+    "scheduling": [
+      "stage_line"
+    ],
+    "process_thread_intro": [],
+    "os_synchronization": [
+      "stage_line"
+    ],
+    "os_io_scheduling": [],
+    "os_cgroups_namespaces": [],
+    "os_linux_troubleshooting": [],
+    "embedded_bus_protocols": [],
+    "embedded_project_env_monitor": [],
+    "embedded_debug_trace": [],
+    "cli_intro": [],
+    "debugging": [
+      "stage_line"
+    ],
+    "cloud_iac_terraform": [],
+    "cloud_k8s_operations": [],
+    "cloud_security_iam": [],
+    "cloud_multicluster_dr": [],
+    "ai_concept_intro": [],
+    "prompt_intro": [],
+    "ai_basics": [
+      "stage_line"
+    ],
+    "ai_agent_basics": [
+      "stage_line"
+    ],
+    "multimodal_rag": [],
+    "model_evaluation": [],
+    "ai_tool_calling": [],
+    "ai_computer_use": [],
+    "ai_coding_agent": [],
+    "ai_recommender": [],
+    "ai_realtime_voice": [],
+    "ai_guardrails": [],
+    "microservices": [],
+    "messaging_events": [],
+    "distributed_id": [
+      "stage_line"
+    ],
+    "dist_transaction": [],
+    "dist_event_sourcing": [],
+    "design_patterns": [],
+    "se_postmortem": [
+      "stage_line"
+    ],
+    "se_oncall": [
+      "stage_line"
+    ],
+    "math_set_function_intro": [],
+    "cross_errors_testing": [
+      "stage_line"
+    ],
+    "cross_build_release": [
+      "stage_line"
+    ],
+    "cross_db_access": [
+      "stage_line"
+    ],
+    "cross_i18n": [],
+    "visual_event_loop": [
+      "stage_line"
+    ],
+    "visual_concurrency_schedule": [
+      "stage_line"
+    ],
+    "visual_k8s_scheduling": [
+      "stage_line"
+    ],
+    "visual_rag_pipeline": [
+      "stage_line"
+    ],
+    "visual_consistent_hashing": [
+      "stage_line"
+    ],
+    "project_retro_improve": [
+      "stage_line"
+    ],
+    "project_network_capture_analysis": [],
+    "project_database_tuning": [],
+    "project_security_lab": [],
+    "project_algorithm_engineering": [],
+    "project_mobile_offline_app": [],
+    "project_debug_performance_triage": [],
+    "project_concurrency_runtime": [],
+    "project_devops_pipeline": [],
+    "project_data_etl": []
+  }
+}

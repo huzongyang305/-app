@@ -1,0 +1,217 @@
+{
+  "generated_at": "2026-10-07T16:34:23.985823",
+  "dry_run": false,
+  "count": 30,
+  "lessons": [
+    {
+      "id": "distributed_cache",
+      "category": "distributed",
+      "before_chars": 10111,
+      "added_chars": 2957,
+      "after_chars": 13071
+    },
+    {
+      "id": "dynamic_programming",
+      "category": "algorithms",
+      "before_chars": 10190,
+      "added_chars": 2548,
+      "after_chars": 12741
+    },
+    {
+      "id": "linking_loading",
+      "category": "fundamentals",
+      "before_chars": 10201,
+      "added_chars": 2230,
+      "after_chars": 12434
+    },
+    {
+      "id": "cross_time_timezone",
+      "category": "cross_language",
+      "before_chars": 10233,
+      "added_chars": 2386,
+      "after_chars": 12622
+    },
+    {
+      "id": "binary",
+      "category": "fundamentals",
+      "before_chars": 10247,
+      "added_chars": 2188,
+      "after_chars": 12438
+    },
+    {
+      "id": "git_basics",
+      "category": "toolchain",
+      "before_chars": 10272,
+      "added_chars": 2378,
+      "after_chars": 12653
+    },
+    {
+      "id": "cross_ci_config",
+      "category": "cross_language",
+      "before_chars": 10276,
+      "added_chars": 2323,
+      "after_chars": 12602
+    },
+    {
+      "id": "encoding",
+      "category": "fundamentals",
+      "before_chars": 10299,
+      "added_chars": 2464,
+      "after_chars": 12766
+    },
+    {
+      "id": "prefix_sum",
+      "category": "algorithms",
+      "before_chars": 10338,
+      "added_chars": 2735,
+      "after_chars": 13076
+    },
+    {
+      "id": "db_design",
+      "category": "database",
+      "before_chars": 10393,
+      "added_chars": 2438,
+      "after_chars": 12834
+    },
+    {
+      "id": "bit_manipulation",
+      "category": "algorithms",
+      "before_chars": 10400,
+      "added_chars": 2415,
+      "after_chars": 12818
+    },
+    {
+      "id": "assembly",
+      "category": "fundamentals",
+      "before_chars": 10423,
+      "added_chars": 2543,
+      "after_chars": 12969
+    },
+    {
+      "id": "trie",
+      "category": "algorithms",
+      "before_chars": 10437,
+      "added_chars": 2351,
+      "after_chars": 12791
+    },
+    {
+      "id": "cli",
+      "category": "toolchain",
+      "before_chars": 10439,
+      "added_chars": 2488,
+      "after_chars": 12930
+    },
+    {
+      "id": "bubble_sort",
+      "category": "algorithms",
+      "before_chars": 10484,
+      "added_chars": 2204,
+      "after_chars": 12691
+    },
+    {
+      "id": "graphics_media",
+      "category": "fundamentals",
+      "before_chars": 10495,
+      "added_chars": 2232,
+      "after_chars": 12730
+    },
+    {
+      "id": "olap_columnar",
+      "category": "database",
+      "before_chars": 10532,
+      "added_chars": 2848,
+      "after_chars": 13383
+    },
+    {
+      "id": "cross_package_manage",
+      "category": "cross_language",
+      "before_chars": 10553,
+      "added_chars": 2476,
+      "after_chars": 13032
+    },
+    {
+      "id": "ml_fundamentals",
+      "category": "ai",
+      "before_chars": 10555,
+      "added_chars": 2362,
+      "after_chars": 12920
+    },
+    {
+      "id": "graph",
+      "category": "algorithms",
+      "before_chars": 10558,
+      "added_chars": 2395,
+      "after_chars": 12956
+    },
+    {
+      "id": "web_pwa_offline",
+      "category": "html_css",
+      "before_chars": 10579,
+      "added_chars": 3011,
+      "after_chars": 13593
+    },
+    {
+      "id": "binary_answer",
+      "category": "algorithms",
+      "before_chars": 10583,
+      "added_chars": 2301,
+      "after_chars": 12887
+    },
+    {
+      "id": "cross_first_program",
+      "category": "cross_language",
+      "before_chars": 10594,
+      "added_chars": 2250,
+      "after_chars": 12847
+    },
+    {
+      "id": "data_lakehouse",
+      "category": "database",
+      "before_chars": 10599,
+      "added_chars": 2911,
+      "after_chars": 13513
+    },
+    {
+      "id": "ir_optimization",
+      "category": "fundamentals",
+      "before_chars": 10607,
+      "added_chars": 2584,
+      "after_chars": 13194
+    },
+    {
+      "id": "greedy",
+      "category": "algorithms",
+      "before_chars": 10614,
+      "added_chars": 2132,
+      "after_chars": 12749
+    },
+    {
+      "id": "ip_transport",
+      "category": "network",
+      "before_chars": 10618,
+      "added_chars": 2534,
+      "after_chars": 13155
+    },
+    {
+      "id": "cross_i18n",
+      "category": "cross_language",
+      "before_chars": 10621,
+      "added_chars": 2306,
+      "after_chars": 12930
+    },
+    {
+      "id": "dns",
+      "category": "network",
+      "before_chars": 10628,
+      "added_chars": 2220,
+      "after_chars": 12851
+    },
+    {
+      "id": "wireless_mobile",
+      "category": "network",
+      "before_chars": 10628,
+      "added_chars": 2333,
+      "after_chars": 12964
+    }
+  ]
+}

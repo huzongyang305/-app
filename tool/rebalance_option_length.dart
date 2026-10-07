@@ -234,7 +234,8 @@ void main(List<String> args) {
       continue;
     }
     final options = (question['options'] as List<dynamic>).cast<String>();
-    final newText = '${patch.oldText.replaceAll(RegExp(r'[。；]$'), '')}'
+    final newText =
+        '${patch.oldText.replaceAll(RegExp(r'[。；]$'), '')}'
         '${patch.appended}。';
     var changed = false;
     for (var index = 0; index < options.length; index++) {
@@ -268,10 +269,7 @@ void main(List<String> args) {
 }
 
 /// 把答案下标为 1 的单选题交换选项 1 与 3，直到四个位置更均衡。
-int _rebalanceIndexes(
-  List<Map<String, dynamic>> questions,
-  bool dryRun,
-) {
+int _rebalanceIndexes(List<Map<String, dynamic>> questions, bool dryRun) {
   final singles = questions
       .where((item) => (item['type'] ?? 'single') == 'single')
       .where((item) => (item['options'] as List).length >= 4)
@@ -292,9 +290,7 @@ int _rebalanceIndexes(
     final current = <int, int>{
       for (var index = 0; index < 4; index++) index: counts[index] ?? 0,
     };
-    final lowest = current.entries.reduce(
-      (a, b) => b.value < a.value ? b : a,
-    );
+    final lowest = current.entries.reduce((a, b) => b.value < a.value ? b : a);
     if (lowest.key == 1) continue;
     if ((current[1] ?? 0) - lowest.value < 2) continue;
     final options = item['options'] as List<dynamic>;

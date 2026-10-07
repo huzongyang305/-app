@@ -1,0 +1,280 @@
+{
+  "lessons": [
+    {
+      "id": "de_orchestration_lineage",
+      "category": "data_engineering",
+      "title": {"zh": "任务编排与数据血缘", "en": "Orchestration and Data Lineage"},
+      "summary": {"zh": "从 DAG 依赖、幂等与回填讲到血缘驱动的变更影响分析。", "en": "DAG dependencies, idempotent runs, backfills and lineage-driven impact analysis."},
+      "keywords": ["调度", "DAG", "幂等", "回填", "数据血缘"],
+      "difficulty": "进阶",
+      "minutes": 40,
+      "order": 4,
+      "image": {"title": "调度、重跑与血缘关系", "flow": ["定义任务与依赖边", "按数据分区触发执行", "失败重跑保持幂等", "记录输入输出血缘", "按血缘评估变更影响"]},
+      "goals": ["能写出带依赖、重试与超时设置的调度任务。", "能解释幂等与分区重跑为什么是回填的前提。", "能用血缘回答一次上游变更的影响范围。"],
+      "prerequisitesText": ["知道批处理任务的输入与输出概念。", "能编写一段读写数据表的脚本。", "了解时间分区与调度周期的关系。"],
+      "concepts": [
+        {"name": "DAG 与依赖调度", "plain": "把数据流程拆成有向无环图，调度器按依赖顺序执行任务。", "mechanism": "每个任务声明上游依赖与调度周期，调度器在依赖全部成功后触发下游，失败按策略重试并记录状态。", "example": "在本课示例里把抽取、清洗、汇总串成三条依赖，观察上游失败时下游保持等待。", "boundary": "任务之间通过时间隐式对齐而不是显式依赖，上游延迟时下游会读到不完整数据。", "engineering": "依赖写成显式边，任务声明数据分区参数，避免用「跑成功了」代替「数据齐了」。"},
+        {"name": "幂等与分区回填", "plain": "同一分区重跑多次应得到同样结果，否则补数会污染数据。", "mechanism": "任务以分区为单位写入，写入前覆盖或按主键合并该分区，天然可重入；回填时按历史分区逐个重跑。", "example": "在本课示例里对同一天分区连续执行两次，观察行数与聚合值保持一致。", "boundary": "追加写入且没有去重键的任务重跑会翻倍，指标随时间单调虚高。", "engineering": "所有写入任务声明覆盖键或合并键，并在提交前做行数与主键唯一性校验。"},
+        {"name": "血缘与变更影响", "plain": "血缘记录每张表与字段的来源与去向，是评估变更影响的地图。", "mechanism": "任务运行时上报输入输出表与字段映射，血缘服务据此构建图谱，字段级血缘还能回答某一列的来源。", "example": "在本课示例里修改一个上游字段类型，用血缘列出受影响的下游任务清单。", "boundary": "只在文档里维护血缘会迅速过期，与实际运行脱节的说明比没有更危险。", "engineering": "血缘由任务运行自动上报，并把每次变更的下游清单附在变更单里一起评审。"}
+      ],
+      "steps": ["拆解任务并标注依赖", "为每个任务定义分区与写入方式", "配置重试、超时与告警", "上报血缘并在变更时查询影响", "用一次回填验证幂等"],
+      "code": {"language": "python", "snippet": "from datetime import timedelta\nfrom airflow import DAG\nfrom airflow.operators.python import PythonOperator\n\nwith DAG(\n    dag_id=\"orders_daily\",\n    schedule=\"0 2 * * *\",\n    start_date=None,\n    catchup=True,\n    default_args={\"retries\": 2, \"retry_delay\": timedelta(minutes=5)},\n    tags=[\"orders\", \"daily\"],\n) as dag:\n    def extract(ds: str):\n        # 按分区抽取：同一个 ds 重跑会覆盖同一份输出\n        write_partition(f\"raw/orders/dt={ds}\", read_source(ds))\n\n    def transform(ds: str):\n        # 覆盖写目标分区，保证幂等\n        rows = dedup_by_order_id(read_partition(f\"raw/orders/dt={ds}\"))\n        write_partition(f\"dwd/orders/dt={ds}\", rows, mode=\"overwrite\")\n\n    def publish(ds: str):\n        rows = read_partition(f\"dwd/orders/dt={ds}\")\n        assert row_count(rows) > 0, \"空分区不允许发布\"\n        write_partition(f\"ads/orders_daily/dt={ds}\", aggregate(rows), mode=\"overwrite\")\n\n    t1 = PythonOperator(task_id=\"extract\", python_callable=extract, op_args=[\"{{ ds }}\"])\n    t2 = PythonOperator(task_id=\"transform\", python_callable=transform, op_args=[\"{{ ds }}\"])\n    t3 = PythonOperator(task_id=\"publish\", python_callable=publish, op_args=[\"{{ ds }}\"])\n    t1 >> t2 >> t3\n", "walkthrough": "每个任务都接收分区参数 ds，写入时覆盖同一分区，因此任何一天都可以单独重跑。publish 在写出前校验行数，避免把上游延迟导致的空分区当成正常结果发布出去。依赖用 >> 显式声明，调度器据此决定执行顺序。", "expected_output": "dag orders_daily：ds=2026-10-01 三次任务全部成功，重跑后行数仍为 184233"},
+      "faults": [
+        {"topic": "重跑后指标翻倍", "wrong": "任务用追加方式写入且没有去重键", "fix": "改为按分区覆盖写或按主键合并，重跑前校验行数与主键唯一性"},
+        {"topic": "下游读到半成品", "wrong": "任务之间靠时间隐式对齐，上游延迟下游照常启动", "fix": "依赖改成显式边并校验输入分区完整性，不完整就等待或失败"},
+        {"topic": "变更影响无法评估", "wrong": "血缘只在文档里手工维护，早已过期", "fix": "由任务运行自动上报血缘，变更单附上下游影响清单一起评审"}
+      ],
+      "glossary": [
+        {"term": "DAG", "definition": "有向无环图，描述任务与依赖关系。"},
+        {"term": "幂等", "definition": "同一任务重跑多次结果保持一致。"},
+        {"term": "回填", "definition": "对历史分区重新执行任务以补齐数据。"},
+        {"term": "血缘", "definition": "记录数据来源与流向的关系图谱。"},
+        {"term": "分区", "definition": "按时间或维度切分的数据集合，是重跑的最小单位。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "回填历史数据前最重要的前置条件是？", "options": ["任务对同一分区可重复执行且结果一致", "调度器版本足够新", "所有任务都改成串行", "关闭所有告警"], "answer": 0, "explanation": "回填本质是对历史分区重跑，任务必须幂等，否则每补一天就把数据重复一遍，后续修复成本极高。"},
+        {"type": "single", "question": "用时间对齐而不是显式依赖连接任务，最典型的后果是？", "options": ["上游延迟时下游读到不完整数据", "调度器无法重启", "任务无法重试", "血缘自动失效"], "answer": 0, "explanation": "时间对齐假设上游总能按时完成，一旦延迟，下游照常启动就会读到不完整的分区数据。"},
+        {"type": "multi", "question": "一套可运营的调度系统应该具备哪些能力？（多选）", "options": ["失败重试与超时控制", "分区级重跑", "血缘与影响分析", "任务失败后静默跳过"], "answer": 0, "answers": [0, 1, 2], "explanation": "重试、分区重跑与血缘是排障与变更的基础；静默跳过失败任务只会把问题推迟到更靠后的环节。"},
+        {"type": "order", "question": "请按一次上游字段变更的处理顺序排列。", "options": ["在变更单里描述字段变更", "查询血缘得到下游清单", "逐个下游验证兼容性", "灰度发布并观察指标", "更新文档与契约"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "先描述变更，再用血缘锁定影响面，逐项验证兼容后灰度发布，最后把确认过的结论写回契约与文档。"},
+        {"type": "debug", "question": "阅读这段任务代码，主要风险是什么？", "options": ["追加写且无去重，重跑将产生重复行", "分区参数没有被使用", "没有设置重试次数", "聚合函数选择不当"], "answer": 0, "code": "def transform(ds: str):\n    rows = extract(ds)\n    # 直接追加写入，没有覆盖也没有去重\n    write_partition(f\"dwd/orders/dt={ds}\", rows, mode=\"append\")\n", "language": "python", "explanation": "追加写使任务不具备幂等性，任何一次重跑都会把同一批数据再写一遍，应改为覆盖写或按主键合并。"}
+      ],
+      "practice": ["把示例 DAG 中的一个任务改成非幂等写法，重跑两次并对比行数。", "为一条链路补上血缘上报，回答「某字段来自哪些上游表」。", "设计一次三天的回填计划，写明并发度与失败处理策略。"],
+      "refs": [
+        {"name": "Apache Airflow 官方文档：DAG 与调度", "url": "https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dags.html"},
+        {"name": "OpenLineage 开放血缘标准", "url": "https://openlineage.io/docs/"}
+      ],
+      "english": "Orchestration turns a data pipeline into an explicit DAG. Each task declares dependencies and a partition, and writes its output idempotently so any partition can be replayed safely. Lineage is emitted by the tasks themselves, so when an upstream column changes you can list every downstream job that must be re-verified before the change ships.",
+      "reviewPoints": ["能写出一个带依赖、重试与分区参数的调度任务。", "能说明幂等与回填之间的关系。", "能用血缘回答一次字段变更的影响范围。"]
+    },
+    {
+      "id": "de_cdc_incremental",
+      "category": "data_engineering",
+      "title": {"zh": "CDC 与增量同步", "en": "Change Data Capture and Incremental Sync"},
+      "summary": {"zh": "从日志解析、快照加增量讲到顺序保证、幂等写入与位点管理。", "en": "Log parsing, snapshot plus incremental, ordering, idempotent writes and offset management."},
+      "keywords": ["CDC", "binlog", "增量同步", "幂等写入", "位点"],
+      "difficulty": "进阶",
+      "minutes": 40,
+      "order": 5,
+      "image": {"title": "从数据库日志到数据仓库", "flow": ["开启日志并授予读取权限", "做一致性快照", "持续解析变更事件", "按主键幂等写入目标表", "提交位点并监控延迟"]},
+      "goals": ["能说明快照与增量阶段如何衔接才不丢不重。", "能设计按主键幂等的写入路径。", "能解释位点提交位置与数据一致性的关系。"],
+      "prerequisitesText": ["知道数据库事务日志的基本作用。", "能编写带主键的插入与更新语句。", "了解消息队列的生产与消费模型。"],
+      "concepts": [
+        {"name": "日志解析与变更事件", "plain": "CDC 通过读取数据库日志得到每一行数据的增删改，而不是反复全表扫描。", "mechanism": "日志解析组件把一条事务日志翻译成带操作类型、主键、前后镜像与时间戳的事件，投递到消息通道供下游消费。", "example": "在本课示例里执行一条更新语句，观察事件里同时包含更新前后的字段值。", "boundary": "只取更新后的值会丢失对比能力，无法判断字段是否真的发生变化。", "engineering": "事件格式固定包含操作类型与前后镜像，解析端与消费端共用同一份格式定义。"},
+        {"name": "快照与增量的衔接", "plain": "历史数据用快照同步，后续变化用增量追上，两段必须无缝衔接。", "mechanism": "先记录日志位点再做全量快照，快照完成后从记录位点开始消费增量，这样快照期间产生的变化也能被补上。", "example": "在本课示例里边做快照边写入新数据，观察最终结果与源表行数一致。", "boundary": "快照结束后才记录位点会漏掉中间发生的变更，且漏掉的数据很难事后发现。", "engineering": "位点先落盘再启动快照，快照与增量衔接处用主键去重，并对比源表与目标表的校验和。"},
+        {"name": "顺序、幂等与位点", "plain": "同一个主键的事件要按顺序生效，消费者重启后不能重复计数。", "mechanism": "按主键哈希分区保证同键有序，目标端按主键做 upsert，位点与数据写入在同一事务提交，重启后从上次位点继续。", "example": "在本课示例里让消费者处理到一半被杀掉再重启，观察目标表行数与源表保持一致。", "boundary": "先提交位点再写数据会丢事件，先写数据再提交位点会重复，两种顺序都需要幂等兜底。", "engineering": "目标表以主键做唯一约束，写入与位点更新放同一事务，并监控消费延迟与重复率。"}
+      ],
+      "steps": ["开启日志并配置读取账号", "记录位点并执行一致性快照", "从位点开始消费增量事件", "按主键 upsert 并事务提交位点", "校验行数与校验和并监控延迟"],
+      "code": {"language": "python", "snippet": "def apply_event(conn, event, offset_store):\n    \"\"\"按主键幂等写入，数据与位点在同一事务提交。\"\"\"\n    with conn.transaction():\n        if event.op in (\"insert\", \"update\"):\n            conn.execute(\n                \"\"\"INSERT INTO dwd.orders (id, amount, status, updated_at)\n                   VALUES (%s, %s, %s, %s)\n                   ON CONFLICT (id) DO UPDATE\n                   SET amount = EXCLUDED.amount,\n                       status = EXCLUDED.status,\n                       updated_at = EXCLUDED.updated_at\"\"\",\n                (event.after[\"id\"], event.after[\"amount\"],\n                 event.after[\"status\"], event.ts_ms),\n            )\n        elif event.op == \"delete\":\n            conn.execute(\"DELETE FROM dwd.orders WHERE id = %s\", (event.before[\"id\"],))\n        # 位点和数据一起提交：要么都生效，要么都回滚\n        offset_store.save(conn, event.partition, event.offset)\n\n# 消费循环：失败重试也不会产生重复行\nfor event in consumer.poll():\n    apply_event(conn, event, offset_store)\n", "walkthrough": "事件按操作类型分流，插入与更新统一走按主键 upsert，删除按主键删除；位点保存与数据写入处于同一个事务，进程在任意时刻被杀都不会出现「数据写了位点没动」或「位点动了数据没写」的不一致。", "expected_output": "applied insert id=1001，applied update id=1001 amount=299，restart resume from offset 88421，row_count match: 152034"},
+      "faults": [
+        {"topic": "快照与增量之间丢数据", "wrong": "快照完成之后才记录位点再开始消费增量", "fix": "先记录位点再启动快照，快照结束后从记录的位点开始消费并去重"},
+        {"topic": "消费者重启后数据重复", "wrong": "写入成功后单独提交位点，写入与提交不在同一事务", "fix": "位点与数据在同一事务提交，目标表对主键加唯一约束并采用 upsert"},
+        {"topic": "同一行事件乱序", "wrong": "同一主键的事件分散到多个分区并行消费", "fix": "按主键哈希分区保证同键有序，必要时对同键事件串行处理"}
+      ],
+      "glossary": [
+        {"term": "CDC", "definition": "捕获数据库变更并按事件流同步给下游的技术。"},
+        {"term": "快照", "definition": "某一时刻源表的全量数据副本。"},
+        {"term": "位点", "definition": "消费进度标识，记录已经处理到哪条事件。"},
+        {"term": "upsert", "definition": "存在则更新、不存在则插入的写入方式。"},
+        {"term": "消费延迟", "definition": "最新事件产生到被下游处理完成的时间差。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "快照与增量衔接的正确顺序是？", "options": ["先记录位点，再做快照，再从位点开始消费", "先做快照，再记录位点，再消费", "只做快照不消费增量", "先消费增量，再补快照"], "answer": 0, "explanation": "只有先记录位点，快照期间产生的变化才会包含在随后的增量里，衔接处再用主键去重即可保证不丢不重。"},
+        {"type": "single", "question": "把位点提交与数据写入放在同一事务的目的是？", "options": ["避免丢事件或重复应用事件的不一致", "减少磁盘占用", "提升网络吞吐", "让日志更短"], "answer": 0, "explanation": "两者在同一事务里要么都成功要么都回滚，重启后从一致的起点继续，不会出现数据与进度错位。"},
+        {"type": "multi", "question": "以下哪些做法有助于保证同步结果的正确性？（多选）", "options": ["目标表主键唯一约束", "按主键哈希分区保证同键有序", "定期对比源表与目标表校验和", "只同步更新后的字段值"], "answer": 0, "answers": [0, 1, 2], "explanation": "唯一约束与有序分区保证写入正确，定期对账能发现隐性偏差；只保留更新后的值会丢失对比与排查依据。"},
+        {"type": "order", "question": "请按一次完整 CDC 同步的建设顺序排列。", "options": ["开启数据库日志并授权", "记录位点并做全量快照", "消费增量事件并写入目标表", "对账行数与校验和", "把延迟与重复率接入监控"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "先具备变更来源，再做快照与增量同步，随后用对账确认结果，最后把运行指标纳入长期监控。"},
+        {"type": "debug", "question": "阅读这段消费代码，会带来什么后果？", "options": ["先提交位点再写数据，进程崩溃会永久丢事件", "写入速度过慢", "事件会被重复写三次", "数据库连接会泄漏"], "answer": 0, "code": "for event in consumer.poll():\n    offset_store.save(event.partition, event.offset)   # 先提交位点\n    db.execute(\"UPSERT INTO dwd.orders VALUES (...)\", event.after)\n", "language": "python", "explanation": "位点先落盘，若写入前进程崩溃，重启后会跳过这条事件，缺失的数据不会自动补回；应把写入与位点放进同一事务。"}
+      ],
+      "practice": ["用示例代码同步一张表，人为杀掉消费者再重启，验证行数与源表一致。", "在快照进行中写入新数据，确认最终结果包含这批新数据。", "把同主键事件投递到不同分区，观察并解释出现的数据错乱。"],
+      "refs": [
+        {"name": "Debezium 官方文档：架构与快照", "url": "https://debezium.io/documentation/reference/stable/index.html"},
+        {"name": "PostgreSQL 逻辑复制与预写日志文档", "url": "https://www.postgresql.org/docs/current/logicaldecoding-explanation.html"}
+      ],
+      "english": "Change data capture reads the database log instead of scanning tables. Record the log position before taking a snapshot, finish the snapshot, then consume from that position so nothing in between is lost. Write into the target with an upsert keyed by primary key, and commit the offset in the same transaction as the data so a crash never duplicates or skips an event.",
+      "reviewPoints": ["能说清快照与增量的正确衔接顺序及原因。", "能解释位点与数据同事务提交的必要性。", "能列出对账用的两个指标：行数与校验和。"]
+    },
+    {
+      "id": "de_spark_tuning",
+      "category": "data_engineering",
+      "title": {"zh": "Spark 执行模型与调优", "en": "Spark Execution Model and Tuning"},
+      "summary": {"zh": "从宽窄依赖、shuffle 到分区调优、数据倾斜与自适应执行。", "en": "Narrow and wide dependencies, shuffle, partitioning, skew and adaptive execution."},
+      "keywords": ["Spark", "shuffle", "数据倾斜", "分区", "自适应执行"],
+      "difficulty": "进阶",
+      "minutes": 45,
+      "order": 6,
+      "image": {"title": "作业从逻辑计划到执行", "flow": ["读取分区数据", "按窄依赖链式转换", "宽依赖触发 shuffle", "按分区统计并识别倾斜", "调整并行度后重跑"]},
+      "goals": ["能判断一个算子是否会触发 shuffle 以及代价来自哪里。", "能定位数据倾斜并给出至少两种可验证的缓解手段。", "能读懂执行计划里与分区相关的关键信息。"],
+      "prerequisitesText": ["会写基本的 DataFrame 或 SQL 转换。", "知道分布式计算里分区与并行的含义。", "能读懂一次作业的运行日志与阶段划分。"],
+      "concepts": [
+        {"name": "宽窄依赖与 shuffle", "plain": "窄依赖可以就地流水处理，宽依赖需要跨节点重分布数据，代价高得多。", "mechanism": "map、filter 等窄依赖在分区内完成；join、groupBy 等宽依赖先写 shuffle 文件，下游再按新分区拉取，磁盘与网络开销集中在这里。", "example": "在本课示例里分别执行一个 filter 和一个 groupBy，对比执行计划里是否出现 exchange。", "boundary": "宽依赖不会因为数据量小就自动消失，小表也可能因为分区数过多产生大量调度开销。", "engineering": "尽量把过滤与列裁剪下推到 shuffle 之前，减少参与重分布的数据量。"},
+        {"name": "分区与并行度", "plain": "分区数决定并行任务数，太少跑不满、太多调度与文件数失控。", "mechanism": "每个分区对应一个任务，任务大小与分区数共同决定总时长；输出文件数通常等于分区数，直接影响下游读取效率。", "example": "在本课示例里把分区数从 8 调到 400，观察任务时长、文件数与元数据开销的变化。", "boundary": "盲目提高并行度会生成海量小文件，让下游读取与元数据服务承压。", "engineering": "按数据量与单任务目标时长估算分区数，写出后按需合并小文件。"},
+        {"name": "数据倾斜与自适应执行", "plain": "少数键占比过高会让个别任务拖住整个阶段，自适应执行能动态调整。", "mechanism": "自适应执行在 shuffle 后按分区大小合并小分区并拆分超大分区，必要时对热点键加盐打散再聚合。", "example": "在本课示例里构造一个占比极高的键，对比开启自适应执行前后的阶段时长。", "boundary": "加盐会改变输出键值，必须在二次聚合里还原，否则结果错误。", "engineering": "把倾斜键清单纳入数据质量监控，长期存在的热点应在建模阶段处理。"}
+      ],
+      "steps": ["读懂执行计划里的依赖与交换", "评估数据量与目标分区大小", "定位倾斜键并选择缓解手段", "开启自适应执行并观察阶段指标", "对比调整前后的时长与文件数"],
+      "code": {"language": "python", "snippet": "from pyspark.sql import SparkSession, functions as F\n\nspark = (\n    SparkSession.builder\n    .appName(\"orders_tuning\")\n    # 自适应执行：shuffle 后自动合并小分区、拆分倾斜分区\n    .config(\"spark.sql.adaptive.enabled\", \"true\")\n    .config(\"spark.sql.adaptive.coalescePartitions.enabled\", \"true\")\n    .config(\"spark.sql.adaptive.skewJoin.enabled\", \"true\")\n    .config(\"spark.sql.shuffle.partitions\", \"200\")\n    .getOrCreate()\n)\n\norders = spark.read.parquet(\"s3://dw/orders\").filter(F.col(\"dt\") == \"2026-10-01\")\nusers = spark.read.parquet(\"s3://dw/users\").select(\"user_id\", \"city\")\n\n# 小表广播，避免宽依赖 shuffle\nenriched = orders.join(F.broadcast(users), on=\"user_id\", how=\"left\")\n\n# 先聚合再关联，把参与 shuffle 的数据量降下来\nagg = enriched.groupBy(\"city\", \"dt\").agg(\n    F.countDistinct(\"order_id\").alias(\"orders\"),\n    F.sum(\"amount\").alias(\"gmv\"),\n)\nagg.write.mode(\"overwrite\").partitionBy(\"dt\").parquet(\"s3://dw/ads/city_daily\")\nprint(agg.explain(mode=\"formatted\"))\n", "walkthrough": "广播小表把一次宽依赖变成窄依赖，先聚合再输出能显著减少参与 shuffle 的数据量。自适应执行负责在运行期合并小分区、拆分倾斜分区，最终写入前按 dt 分区，控制输出文件数量。", "expected_output": "stage 3 (shuffle) 从 6.4 min 降到 1.9 min，输出文件 200 -> 12，倾斜键 null 占比 31% 已单独处理"},
+      "faults": [
+        {"topic": "作业长时间卡在最后几个任务", "wrong": "按默认并行度执行且未处理热点键", "fix": "先统计分区大小找出热点键，开启自适应倾斜处理或对热点键加盐后再聚合"},
+        {"topic": "输出产生大量小文件", "wrong": "分区数设置过大且没有写入前合并", "fix": "按数据量估算合理分区数，写出前合并小文件或按目标文件大小重分区"},
+        {"topic": "小表关联也出现长 shuffle", "wrong": "大表与小表按普通 join 关联", "fix": "确认小表可放入内存后使用广播关联，把宽依赖转成窄依赖"}
+      ],
+      "glossary": [
+        {"term": "窄依赖", "definition": "子分区只依赖一个父分区，可流水执行。"},
+        {"term": "宽依赖", "definition": "子分区依赖多个父分区，需要 shuffle。"},
+        {"term": "数据倾斜", "definition": "少数键的数据量远超其他键，导致任务时长不均。"},
+        {"term": "自适应执行", "definition": "运行期按实际数据量调整分区与关联策略。"},
+        {"term": "广播关联", "definition": "把小表分发到每个任务本地，避免跨节点重分布。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "执行计划里出现 exchange 通常意味着什么？", "options": ["触发了跨节点数据重分布", "只做了列裁剪", "数据被缓存到内存", "读取了元数据"], "answer": 0, "explanation": "exchange 表示 shuffle，数据需要按新分区跨节点重分布，是作业中最昂贵的环节之一。"},
+        {"type": "single", "question": "少数任务明显慢于其他任务，最先应该检查的是？", "options": ["是否存在数据倾斜的热点键", "驱动版本是否最新", "是否开启了日志", "集群节点数量"], "answer": 0, "explanation": "阶段里个别任务拖尾最常见的原因就是热点键导致分区大小悬殊，应先统计分区大小确认再优化。"},
+        {"type": "multi", "question": "降低 shuffle 成本的可行手段有哪些？（多选）", "options": ["过滤与列裁剪下推到 shuffle 之前", "小表使用广播关联", "先聚合再关联", "把所有表都改成全量关联"], "answer": 0, "answers": [0, 1, 2], "explanation": "减少参与重分布的数据量、避免不必要的宽依赖、提前聚合都是有效手段；全量关联只会放大成本。"},
+        {"type": "order", "question": "请按一次倾斜调优的实验顺序排列。", "options": ["复现并记录阶段时长", "统计分区大小定位热点键", "选择加盐或自适应策略", "重跑并对比关键指标", "把结论写入调优记录"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "先拿到可比基线，再定位热点，选择手段后重跑对比，最后把结论固化，避免同样的优化被反复讨论。"},
+        {"type": "debug", "question": "阅读这段代码，输出的关联结果有什么风险？", "options": ["加盐后没有二次聚合，同一键会产生多行", "广播表过大导致失败", "缺少分区过滤", "聚合函数不合法"], "answer": 0, "code": "# 对热点键加盐打散\nsalted = large.withColumn(\"salt\", (F.rand() * 8).cast(\"int\"))\njoined = salted.join(small.withColumn(\"salt\", F.lit(0)), on=\"key\")\njoined.write.mode(\"overwrite\").parquet(\"s3://dw/tmp/joined\")\n", "language": "python", "explanation": "加盐把同一键拆成多行，若不在后续步骤按原键再次聚合，输出里同一业务键会出现多行，统计结果随之偏大。"}
+      ],
+      "practice": ["对同一份数据先 filter 后 groupBy，分别在执行计划里找出交换节点并解释来源。", "构造一个占比超过三成的热点键，记录开启自适应执行前后的阶段时长。", "把输出分区数从 200 调到 20，对比文件数与下游读取耗时。"],
+      "refs": [
+        {"name": "Spark 官方文档：性能调优", "url": "https://spark.apache.org/docs/latest/sql-performance-tuning.html"},
+        {"name": "Spark 官方文档：自适应查询执行", "url": "https://spark.apache.org/docs/latest/sql-performance-tuning.html#adaptive-query-execution"}
+      ],
+      "english": "Spark jobs are shaped by dependencies: narrow ones stream inside a partition, while wide ones trigger a shuffle that moves data across the network. Partition count controls both parallelism and output file count. Skew makes a few tasks dominate a stage, so inspect partition sizes, then broadcast small tables, pre-aggregate, or salt hot keys and aggregate again.",
+      "reviewPoints": ["能判断一个算子会不会触发 shuffle。", "能说出定位倾斜的第一步与两种缓解手段。", "能解释分区数为什么同时影响时长与文件数。"]
+    },
+    {
+      "id": "de_flink_windowing",
+      "category": "data_engineering",
+      "title": {"zh": "Flink 流处理与窗口", "en": "Flink Streaming and Windowing"},
+      "summary": {"zh": "从事件时间、水位线讲到窗口类型、迟到数据与状态检查点。", "en": "Event time, watermarks, window types, late data and stateful checkpoints."},
+      "keywords": ["Flink", "事件时间", "水位线", "窗口", "检查点"],
+      "difficulty": "进阶",
+      "minutes": 45,
+      "order": 7,
+      "image": {"title": "流式聚合的时间语义", "flow": ["事件自带时间戳进入流", "水位线推进标记完整窗口", "窗口内增量聚合", "迟到数据按策略处理", "检查点保存算子状态"]},
+      "goals": ["能区分事件时间与处理时间并说明各自适用场景。", "能按业务语义选择滚动、滑动或会话窗口。", "能配置迟到数据与检查点，兼顾准确性与可用性。"],
+      "prerequisitesText": ["知道消息队列的分区与消费位点概念。", "会写分组聚合类算子。", "了解有状态计算的基本含义。"],
+      "concepts": [
+        {"name": "事件时间与水位线", "plain": "事件时间是数据实际发生的时间，水位线表示「早于该时刻的数据基本到齐」。", "mechanism": "算子从事件中提取时间戳并周期产生水位线，水位线推进到一个窗口结束时间时才触发该窗口计算，允许乱序但有限度。", "example": "在本课示例里让事件乱序到达，观察水位线推进后窗口才输出结果。", "boundary": "水位线设置得过于激进会过早触发窗口，迟到数据只能被丢弃或走旁路。", "engineering": "按数据源乱序程度设置最大延迟并监控迟到比例，把它作为流水线健康指标。"},
+        {"name": "窗口类型与语义", "plain": "窗口把无限流切成有限批次，不同切法适合不同业务问题。", "mechanism": "滚动窗口不重叠，滑动窗口按步长重叠，会话窗口按活跃间隔切分，计数窗口按条数触发。", "example": "在本课示例里同一份数据分别用滚动与滑动窗口聚合，对比输出条数与含义差异。", "boundary": "滑动窗口步长过小会让下游输出量成倍放大，形成写放大问题。", "engineering": "窗口长度与步长由业务口径决定并写入指标定义，变更时同步下游说明。"},
+        {"name": "状态与检查点", "plain": "有状态算子要记住中间结果，检查点保证故障后能恢复一致状态。", "mechanism": "框架周期性把算子状态与数据源位点一起快照，故障后从最近一次检查点恢复并重放，配合幂等写入实现端到端一致性。", "example": "在本课示例里杀掉任务再恢复，观察聚合结果与位点从检查点继续。", "boundary": "状态无限增长最终会拖垮任务，必须为状态设置存活时间或改用可清理的结构。", "engineering": "为每个状态设置存活时间并监控状态大小，检查点间隔在恢复时间与开销间权衡。"}
+      ],
+      "steps": ["确认事件时间字段与乱序程度", "选择窗口类型与长度", "设置水位线与迟到策略", "配置状态存活时间与检查点", "验证故障恢复后结果一致"],
+      "code": {"language": "java", "snippet": "StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();\n// 每 30 秒做一次检查点，故障后从最近一次恢复\nenv.enableCheckpointing(30_000);\n\nDataStream<Order> orders = env\n    .addSource(new FlinkKafkaConsumer<>(\"orders\", new OrderSchema(), props))\n    .assignTimestampsAndWatermarks(\n        WatermarkStrategy.<Order>forBoundedOutOfOrderness(Duration.ofSeconds(5))\n            .withTimestampAssigner((order, ts) -> order.eventTimeMs));\n\nSingleOutputStreamOperator<CityStat> stats = orders\n    .keyBy(Order::getCity)\n    .window(TumblingEventTimeWindows.of(Time.minutes(1)))\n    .allowedLateness(Time.seconds(30))       // 允许迟到 30 秒，窗口会重新计算\n    .sideOutputLateData(lateTag)            // 更晚的数据进旁路，单独统计\n    .aggregate(new OrderAggregate(), new CityStatWindow());\n\nstats.addSink(new IdempotentJdbcSink());     // 目标端按窗口主键幂等写入\n", "walkthrough": "水位线按最大乱序 5 秒推进，一分钟滚动窗口在完整后触发；迟到 30 秒内的数据会更新结果，更晚的走旁路输出避免静默丢弃，检查点保证故障后从一致状态恢复，幂等写入兜住重复计算。", "expected_output": "window [10:00,10:01) emitted 42 records，late side-output 3 records，checkpoint 17 ok in 1.2 s"},
+      "faults": [
+        {"topic": "窗口结果偏小", "wrong": "水位线最大延迟设置过小，乱序数据到得晚被丢弃", "fix": "按数据源实测乱序分布调大最大延迟，并把迟到数据走旁路统计而不是静默丢弃"},
+        {"topic": "任务运行数天后变慢", "wrong": "状态没有任何存活时间，键数量持续增长", "fix": "为状态配置存活时间或改用可清理的聚合结构，并监控状态大小"},
+        {"topic": "故障恢复后重复计数", "wrong": "只依赖框架恢复，目标端写入无幂等键", "fix": "按窗口与键构造唯一主键，在目标端做幂等写入以吸收重放"}
+      ],
+      "glossary": [
+        {"term": "事件时间", "definition": "事件自身携带的发生时刻，与处理时刻无关。"},
+        {"term": "水位线", "definition": "表示某时刻之前数据基本到齐的进度标记。"},
+        {"term": "滚动窗口", "definition": "长度固定且互不重叠的时间窗口。"},
+        {"term": "允许迟到", "definition": "窗口触发后仍接受一段时间内迟到数据的设置。"},
+        {"term": "检查点", "definition": "周期性保存状态与位点，用于故障恢复。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "事件时间与处理时间的关键区别是？", "options": ["事件时间来自数据本身，处理时间来自处理节点时钟", "事件时间精度更低", "处理时间只能用于批处理", "两者完全相同"], "answer": 0, "explanation": "事件时间反映业务发生顺序，能在乱序与延迟下保持结果正确；处理时间跟随节点时钟，简单但结果依赖到达顺序。"},
+        {"type": "single", "question": "允许迟到参数的作用是？", "options": ["窗口触发后仍接受一段时间内的迟到数据", "延后水位线产生", "提高并行度", "压缩状态体积"], "answer": 0, "explanation": "允许迟到让窗口在触发后仍能吸收少量迟到数据并更新结果，超过该时限的数据走旁路输出。"},
+        {"type": "multi", "question": "以下哪些做法有助于控制有状态任务的风险？（多选）", "options": ["为状态配置存活时间", "监控状态大小与检查点时长", "把更晚的迟到数据写入旁路统计", "把状态永久保留不做清理"], "answer": 0, "answers": [0, 1, 2], "explanation": "状态存活时间、监控与旁路统计共同保证任务长期稳定；状态无限保留最终会让恢复时间不可接受。"},
+        {"type": "order", "question": "请按一次事件在窗口里被处理的顺序排列。", "options": ["事件带时间戳进入算子", "水位线推进到窗口结束", "窗口触发并输出聚合结果", "迟到数据在允许范围内更新结果", "超期数据写入旁路输出"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "事件先入状态，水位线完整后触发计算，迟到数据在允许范围内更新，超出范围则进入旁路以便单独分析。"},
+        {"type": "debug", "question": "阅读这段窗口配置，最可能出现什么问题？", "options": ["步长远小于窗口长度，输出量被成倍放大", "水位线延迟过大", "检查点没有开启", "状态没有清理"], "answer": 0, "code": ".window(SlidingEventTimeWindows.of(Time.hours(1), Time.seconds(1)))\n.aggregate(new OrderAggregate())\n", "language": "java", "explanation": "一小时窗口每秒滑动一次，同一条事件会被计入 3600 个窗口，输出量与状态压力成倍增长，应按业务需要的更新频率选择步长。"}
+      ],
+      "practice": ["用同一份数据分别跑滚动与滑动窗口，记录输出条数与业务含义差异。", "把水位线最大延迟从 5 秒改成 1 秒，观察迟到数据数量变化。", "杀掉任务后从检查点恢复，对比恢复前后的聚合结果是否一致。"],
+      "refs": [
+        {"name": "Apache Flink 官方文档：窗口", "url": "https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/operators/windows/"},
+        {"name": "Apache Flink 官方文档：检查点与状态", "url": "https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/checkpointing/"}
+      ],
+      "english": "Streaming aggregations need a time semantics. Event time follows the data, and a watermark declares that earlier events have mostly arrived, which is when a window fires. Rolling, sliding and session windows answer different questions. State must be bounded with a time-to-live, and checkpoints let a job resume from a consistent snapshot, with idempotent sinks absorbing replays.",
+      "reviewPoints": ["能解释水位线如何触发窗口以及它带来什么取舍。", "能按业务问题选择滚动、滑动或会话窗口。", "能说出控制状态规模的两个手段。"]
+    },
+    {
+      "id": "de_data_contract",
+      "category": "data_engineering",
+      "title": {"zh": "数据契约与质量门禁", "en": "Data Contracts and Quality Gates"},
+      "summary": {"zh": "从字段契约、责任人讲到校验规则、发布门禁与破坏性变更流程。", "en": "Field contracts, ownership, validation rules, release gates and breaking-change process."},
+      "keywords": ["数据契约", "质量门禁", "Schema 演进", "责任人", "破坏性变更"],
+      "difficulty": "进阶",
+      "minutes": 35,
+      "order": 8,
+      "image": {"title": "从契约到上线门禁", "flow": ["生产者声明字段契约", "契约登记并版本化", "流水线采集前校验", "不通过则阻断下游发布", "破坏性变更走评审流程"]},
+      "goals": ["能写出含字段类型、范围与责任人的最小契约。", "能把校验规则接进流水线形成发布门禁。", "能区分兼容变更与破坏性变更并给出处理路径。"],
+      "prerequisitesText": ["知道表结构变更常见的几种形式。", "能编写基本的数据校验断言。", "了解持续集成流水线的基本阶段。"],
+      "concepts": [
+        {"name": "契约字段与责任人", "plain": "契约把「这张表承诺提供什么」写下来，并指定由谁负责。", "mechanism": "契约声明表名、字段类型、可空性、取值范围、更新频率与责任人，登记后作为生产与消费双方共同依据。", "example": "在本课示例里为一列金额字段声明非空与下限约束，观察违反约束的批次被拒绝。", "boundary": "契约没有责任人就是一纸空文，出问题时没人能立即给出修复与止损决定。", "engineering": "契约存放在代码仓库并与表结构同源，变更走合并请求评审。"},
+        {"name": "校验规则与发布门禁", "plain": "校验必须在数据进入下游之前执行，失败的批次不能继续流转。", "mechanism": "流水线在关键节点运行规则集，覆盖非空、唯一、范围、枚举与跨表一致性，任一硬性规则失败即阻断发布并告警。", "example": "在本课示例里注入一批空值数据，观察流水线在门禁处停止且不下发下游。", "boundary": "把所有规则都设为告警不阻断，等于默认允许坏数据流入，问题会在下游集中爆发。", "engineering": "规则分硬性与软性两级，硬性阻断发布，软性记录指标并在阈值超限时升级为阻断。"},
+        {"name": "兼容与破坏性变更", "plain": "加字段通常兼容，改类型、改名与删字段通常破坏下游。", "mechanism": "兼容变更可直接发布并通知消费者；破坏性变更需要新版本字段或新表并行运行，等消费者迁移完成后再下线旧结构。", "example": "在本课示例里把字段类型从整数改为字符串，观察门禁与契约校验如何拦下这次变更。", "boundary": "在原有字段上直接改语义，即使类型没变也会让下游统计结果悄悄错掉。", "engineering": "变更单标注兼容等级与迁移窗口，下线旧结构前确认消费方已经全部切换。"}
+      ],
+      "steps": ["盘点关键表与字段口径", "编写契约并指定责任人", "实现硬性与软性校验规则", "把门禁接入发布流水线", "破坏性变更走双版本并行迁移"],
+      "code": {"language": "python", "snippet": "# 契约片段：字段类型、约束与责任人\nCONTRACT = {\n    \"table\": \"dwd.orders\",\n    \"owner\": \"data-platform@example.com\",\n    \"fields\": {\n        \"order_id\": {\"type\": \"string\", \"nullable\": False, \"unique\": True},\n        \"amount\":   {\"type\": \"decimal\", \"nullable\": False, \"min\": 0, \"max\": 1_000_000},\n        \"status\":   {\"type\": \"enum\", \"values\": [\"created\", \"paid\", \"shipped\", \"closed\"]},\n        \"dt\":       {\"type\": \"date\", \"nullable\": False},\n    },\n    \"freshness_minutes\": 30,\n}\n\nHARD_RULES = [\"not_null\", \"type_match\", \"enum_membership\"]  # 不通过直接阻断\ndef validate(df, contract):\n    failures = []\n    for name, spec in contract[\"fields\"].items():\n        if not spec[\"nullable\"] and df.filter(df[name].isNull()).count() > 0:\n            failures.append((\"not_null\", name))\n        if spec.get(\"type\") == \"enum\":\n            bad = df.filter(~df[name].isin(spec[\"values\"])).count()\n            if bad:\n                failures.append((\"enum_membership\", name))\n    hard = [f for f in failures if f[0] in HARD_RULES]\n    if hard:\n        raise ValueError(f\"质量门禁未通过：{hard}\")   # 阻断发布\n    return failures\n", "walkthrough": "契约把字段类型、约束与责任人写在一起，validate 逐个字段执行规则并把失败分为硬性与软性；硬性失败直接抛出异常阻断流水线，避免坏数据流向下游。", "expected_output": "validate pass: 184233 rows，注入空值后 ValueError: 质量门禁未通过：[('not_null', 'amount')]"},
+      "faults": [
+        {"topic": "字段口径悄悄改变", "wrong": "在原有字段上直接改含义，类型保持不变", "fix": "破坏语义的变更必须新建字段或新表并行发布，旧结构保留迁移窗口后再下线"},
+        {"topic": "坏数据流到下游才被发现", "wrong": "校验规则只在报表层做提示不阻断", "fix": "把硬性规则前移到数据入口并阻断发布，软性规则用指标监控并设置升级阈值"},
+        {"topic": "契约无人维护", "wrong": "契约文档没有责任人，变更也没有评审", "fix": "契约与表结构同源存放并指定责任人，变更通过合并请求评审留痕"}
+      ],
+      "glossary": [
+        {"term": "数据契约", "definition": "生产者对字段结构、语义与质量的明确承诺。"},
+        {"term": "质量门禁", "definition": "数据或代码必须通过校验才能进入下一个环节的卡口。"},
+        {"term": "兼容变更", "definition": "不破坏既有消费者读取与语义的变更。"},
+        {"term": "破坏性变更", "definition": "会让下游读取失败或结果错误的变更。"},
+        {"term": "新鲜度", "definition": "数据从产生到可用的时间差。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "以下哪一项属于典型破坏性变更？", "options": ["把字段类型从整数改为字符串", "新增一个可空字段", "在文档里补充字段说明", "增加一条告警规则"], "answer": 0, "explanation": "类型变化会让下游解析失败或静默变成另一种结果，是典型破坏性变更，需要新版本并行迁移。"},
+        {"type": "single", "question": "硬性规则与软性规则的分工是？", "options": ["硬性阻断发布，软性记录指标并可升级为阻断", "两者都只告警", "硬性只用于日志，软性阻断发布", "两者完全等价"], "answer": 0, "explanation": "硬性规则守护不可协商的底线，软性规则给业务波动留空间，但阈值超限后应升级为阻断。"},
+        {"type": "multi", "question": "一份最小可用的数据契约应包含哪些内容？（多选）", "options": ["字段类型与可空性", "取值范围或枚举", "责任人与联系方式", "消费者内部的报表配色"], "answer": 0, "answers": [0, 1, 2], "explanation": "结构、约束与责任人是契约的核心；消费者内部实现细节不属于契约范围。"},
+        {"type": "order", "question": "请按一次破坏性变更的处理顺序排列。", "options": ["提交变更单并标注破坏等级", "新增并行字段或新表", "通知消费者并给出迁移窗口", "双写并对比新旧结果", "确认无消费后下线旧结构"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "先披露变更，再提供并行结构，通知迁移并双写对比验证，最后确认没有消费方后再安全下线。"},
+        {"type": "debug", "question": "阅读这段校验代码，问题是什么？", "options": ["关键约束只打印日志，坏数据仍会继续流入下游", "校验规则过多", "缺少责任人字段", "没有使用分布式计算"], "answer": 0, "code": "def validate(df, contract):\n    nulls = df.filter(df.amount.isNull()).count()\n    if nulls > 0:\n        print(f\"warning: {nulls} rows with null amount\")\n    return df   # 无论如何都返回原数据继续流转\n", "language": "python", "explanation": "非空约束被打成告警后数据照常流转，下游仍会读到脏数据；关键约束必须阻断发布，或至少在阈值超限时升级为阻断。"}
+      ],
+      "practice": ["为一张常用表写出最小契约，包含字段类型、约束与责任人。", "在流水线里加一条硬性校验，注入坏数据验证发布被阻断。", "设计一次字段类型变更的迁移方案，写明双写与下线条件。"],
+      "refs": [
+        {"name": "Apache Avro 官方文档：Schema 演进", "url": "https://avro.apache.org/docs/1.11.1/specification/"},
+        {"name": "Great Expectations 数据质量文档", "url": "https://docs.greatexpectations.io/docs/"}
+      ],
+      "english": "A data contract states what a table promises: field types, nullability, ranges, enums, freshness and the person accountable for it. Validation runs before data flows downstream, with hard rules blocking the release and soft rules raising metrics that escalate on breach. Compatible additions ship directly; type or meaning changes need a parallel structure and a migration window.",
+      "reviewPoints": ["能写出最小可用契约的三类内容。", "能说明硬性与软性规则的分工与升级条件。", "能给出破坏性变更的并行迁移路径。"]
+    },
+    {
+      "id": "de_lakehouse_governance",
+      "category": "data_engineering",
+      "title": {"zh": "湖仓治理与表维护", "en": "Lakehouse Governance and Table Maintenance"},
+      "summary": {"zh": "从表格式与事务日志讲到小文件合并、快照过期与权限生命周期。", "en": "Table formats, transaction logs, compaction, snapshot expiry, access control and retention."},
+      "keywords": ["湖仓", "表格式", "小文件合并", "快照过期", "权限"],
+      "difficulty": "进阶",
+      "minutes": 40,
+      "order": 9,
+      "image": {"title": "湖仓表从写入到维护", "flow": ["写入生成数据文件与元数据", "元数据提交形成新快照", "定期合并小文件", "过期旧快照释放存储", "按权限与生命周期管理访问"]},
+      "goals": ["能说明表格式如何用元数据提供事务与时间旅行能力。", "能制定小文件合并与快照过期的维护节奏。", "能按最小权限与生命周期要求治理表访问。"],
+      "prerequisitesText": ["知道对象存储的目录与文件组织方式。", "会写基本的建表与查询语句。", "了解分区裁剪与列式存储的基本原理。"],
+      "concepts": [
+        {"name": "表格式与事务日志", "plain": "湖仓表在对象存储之上加一层元数据，让写入具备原子性与一致性。", "mechanism": "每次提交生成新的元数据快照，指向本次有效的数据文件集合，读取方以快照为单位看到一致的数据版本。", "example": "在本课示例里并发执行两次写入，观察两边提交后读取方仍看到一致快照。", "boundary": "绕过表格式直接写目录会破坏元数据与实际文件的一致性，后续读取直接失败。", "engineering": "所有写入统一走表格式接口，禁止直接操作底层目录，元数据提交纳入变更审计。"},
+        {"name": "小文件与合并维护", "plain": "流式写入与小批次提交会积累大量小文件，拖慢扫描与元数据服务。", "mechanism": "定期重写小文件为更大的目标尺寸，并在写入侧调整提交间隔或分区粒度，减少后续扫描的文件数量。", "example": "在本课示例里合并一个分区的小文件，对比合并前后的查询耗时。", "boundary": "并发执行合并与写入会产生冲突，触发重试甚至提交失败。", "engineering": "把合并任务排进固定维护窗口，监控平均文件大小与文件数量作为治理指标。"},
+        {"name": "快照过期与权限生命周期", "plain": "旧快照保留着历史文件，既占存储也涉及合规，需要按策略过期。", "mechanism": "按保留窗口清理过期快照及其引用文件，同时按最小权限配置行列级访问控制，并按数据保留要求设置生命周删除。", "example": "在本课示例里为一张表设置七天快照保留，观察过期后存储量与时间旅行范围的变化。", "boundary": "快照清理过激会让依赖时间旅行的回滚与审计无法执行，保留窗口必须与业务约定对齐。", "engineering": "保留窗口与权限矩阵写入治理清单，定期核对实际配置与清单是否一致。"}
+      ],
+      "steps": ["统一通过表格式接口写入", "观察文件数量与平均大小", "按窗口执行小文件合并", "设置快照与历史文件保留策略", "核对权限与生命周期配置"],
+      "code": {"language": "sql", "snippet": "-- 查看表当前的文件与快照概况\nSELECT count(*) AS file_count, avg(file_size_in_bytes) / 1024 / 1024 AS avg_mb\nFROM table_files('lake.dwd_orders') WHERE partition.dt = '2026-10-01';\n\n-- 合并小文件：目标文件控制在 128 MB 左右\nCALL catalog.system.rewrite_data_files(\n    table => 'lake.dwd_orders',\n    options => map('target-file-size-bytes', '134217728', 'min-input-files', '5')\n);\n\n-- 过期旧快照，保留最近 7 天用于回滚与审计\nCALL catalog.system.expire_snapshots(\n    table => 'lake.dwd_orders',\n    older_than => TIMESTAMP '2026-09-24 00:00:00',\n    retain_last => 5\n);\n\n-- 只删除已过期快照不再引用的文件，避免误删正在使用的数据\nCALL catalog.system.remove_orphan_files(\n    table => 'lake.dwd_orders',\n    older_than => TIMESTAMP '2026-09-20 00:00:00'\n);\n", "walkthrough": "先查看分区文件数量与平均大小定位问题，再按目标尺寸重写小文件；快照过期只清理元数据引用，孤儿文件清理有独立的时间门槛，避免删除仍被引用的数据。三步配合形成可回滚的维护节奏。", "expected_output": "file_count 2140 -> 168，avg_mb 3.1 -> 127.6，query p95 46 s -> 9 s，snapshots 213 -> 6"},
+      "faults": [
+        {"topic": "查询越跑越慢", "wrong": "流式小批次持续写入且从不合并小文件", "fix": "按维护窗口重写小文件到目标尺寸，并在写入侧调整提交间隔与分区粒度"},
+        {"topic": "元数据与文件不一致", "wrong": "绕过表格式直接写对象存储目录", "fix": "所有写入走表格式提交接口，禁止直接操作底层文件"},
+        {"topic": "回滚能力突然失效", "wrong": "快照保留窗口设置过短，历史快照被提前清理", "fix": "保留窗口与业务回滚审计要求对齐，过期与孤儿文件清理分批谨慎执行"}
+      ],
+      "glossary": [
+        {"term": "表格式", "definition": "在对象存储之上提供事务、快照与演进的元数据层。"},
+        {"term": "快照", "definition": "某个提交点上的完整数据视图。"},
+        {"term": "小文件合并", "definition": "把大量小文件重写为更大的文件以提升扫描效率。"},
+        {"term": "孤儿文件", "definition": "不再被任何快照引用但仍占用存储的文件。"},
+        {"term": "生命周期策略", "definition": "按时间或条件自动迁移与删除数据的规则。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "湖仓表的原子性主要靠什么保证？", "options": ["元数据快照的原子提交", "文件写入顺序", "目录命名规则", "对象存储的副本数"], "answer": 0, "explanation": "每次提交生成一致的新快照，读取方以快照为单位获取数据，因此即使底层文件很多也能看到一致版本。"},
+        {"type": "single", "question": "快照保留窗口设置过短的主要风险是？", "options": ["回滚与审计依赖的历史版本不可用", "查询速度变慢", "写入冲突增加", "存储成本上升"], "answer": 0, "explanation": "过期快照对应的历史文件会被清理，时间旅行与回滚能力随之消失，保留窗口必须与业务要求对齐。"},
+        {"type": "multi", "question": "湖仓日常维护应包含哪些动作？（多选）", "options": ["小文件合并", "快照过期与孤儿文件清理", "权限与生命周期配置核对", "直接删除元数据目录"], "answer": 0, "answers": [0, 1, 2], "explanation": "合并、过期与权限核对构成治理闭环；直接删除元数据目录会破坏整张表，属于高危操作。"},
+        {"type": "order", "question": "请按一次表维护的顺序排列。", "options": ["统计文件数量与平均大小", "重写小文件到目标尺寸", "过期超出保留窗口的快照", "清理不再被引用的孤儿文件", "复查查询耗时与存储占用"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "先诊断再合并，随后处理快照与孤儿文件，最后用指标确认治理效果并归档结论。"},
+        {"type": "debug", "question": "阅读这段维护脚本，风险是什么？", "options": ["孤儿文件清理时间门槛过短，可能删除正在写入的文件", "目标文件尺寸偏小", "快照保留数量过多", "分区过滤条件缺失"], "answer": 0, "code": "-- 直接清理一小时前的孤儿文件\nCALL catalog.system.remove_orphan_files(\n    table => 'lake.dwd_orders',\n    older_than => CURRENT_TIMESTAMP - INTERVAL '1' HOUR\n);\n", "language": "sql", "explanation": "长任务写入的文件在规定提交完成前可能仍未被元数据引用，门槛过短会把它当成孤儿删除，导致正在进行的写入损坏。"}
+      ],
+      "practice": ["统计一张表分区内的文件数量与平均大小，写出合并前后的查询耗时对比。", "为示例表设置七天快照保留，验证时间旅行范围的变化。", "对照治理清单核对一张表的权限与生命周期配置，记录不一致项。"],
+      "refs": [
+        {"name": "Apache Iceberg 官方文档：维护与快照", "url": "https://iceberg.apache.org/docs/latest/maintenance/"},
+        {"name": "Delta Lake 官方文档：表维护", "url": "https://docs.delta.io/latest/best-practices.html"}
+      ],
+      "english": "A lakehouse table adds a metadata layer over object storage, so each commit publishes a consistent snapshot and readers always see one version. Streaming writers accumulate small files, so scheduled compaction rewrites them to a target size. Snapshot expiry and orphan-file cleanup reclaim storage, but their time thresholds must stay aligned with rollback and audit requirements.",
+      "reviewPoints": ["能解释表格式如何提供事务一致性。", "能说出小文件治理的两个观察指标。", "能说明快照过期与回滚能力之间的取舍。"]
+    }
+  ]
+}

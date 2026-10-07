@@ -34,11 +34,15 @@ void main(List<String> args) {
   final ordered = stats.entries.toList()
     ..sort((a, b) => b.value.compareTo(a.value));
   if (jsonOutput) {
-    stdout.writeln(jsonEncode(<String, dynamic>{
-      'lessons': lessonCount,
-      'counts': Map<String, int>.fromEntries(ordered),
-      'samples': samples.map((key, value) => MapEntry(key, value.take(8).toList())),
-    }));
+    stdout.writeln(
+      jsonEncode(<String, dynamic>{
+        'lessons': lessonCount,
+        'counts': Map<String, int>.fromEntries(ordered),
+        'samples': samples.map(
+          (key, value) => MapEntry(key, value.take(8).toList()),
+        ),
+      }),
+    );
     if (failOnIssue && ordered.isNotEmpty) exitCode = 1;
     return;
   }
@@ -114,7 +118,8 @@ List<_Issue> _scan(List<String> lines) {
     if (line.contains('本课围绕该主题展开')) {
       issues.add(_Issue('术语表套话', i + 1, line.trim()));
     }
-    final bold = RegExp(r'^\s*-\s+\*\*(.+?)\*\*\s*[：:]\s*(.*)$').firstMatch(line);
+    final bold = RegExp(r'^\s*-\s+\*\*(.+?)\*\*\s*[：:]\s*(.*)$')
+        .firstMatch(line);
     if (bold != null) {
       final head = _normalize(bold.group(1)!);
       final tail = _normalize(bold.group(2)!);

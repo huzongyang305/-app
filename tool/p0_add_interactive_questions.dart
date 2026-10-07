@@ -13,19 +13,100 @@ import 'dart:io';
 const String manifestPath = 'assets/content/manifest.json';
 
 const Set<String> _processSectionWords = <String>{
-  '流程', '步骤', '路径', '顺序', '排查', '操作', '调试', '迁移', '工作流',
+  '流程',
+  '步骤',
+  '路径',
+  '顺序',
+  '排查',
+  '操作',
+  '调试',
+  '迁移',
+  '工作流',
 };
 
 const Set<String> _codeStopWords = <String>{
-  'int', 'var', 'let', 'const', 'if', 'else', 'for', 'while', 'function',
-  'class', 'def', 'import', 'from', 'public', 'private', 'static', 'void',
-  'string', 'str', 'bool', 'true', 'false', 'null', 'none', 'self', 'this',
-  'new', 'async', 'await', 'return', 'print', 'echo', 'end', 'begin', 'do',
-  'switch', 'case', 'break', 'continue', 'try', 'catch', 'finally', 'throw',
-  'package', 'namespace', 'using', 'struct', 'enum', 'interface', 'type',
-  'x', 'y', 'z', 'a', 'b', 'c', 'i', 'j', 'k', 'n', 'm', 'id', 'key',
-  'value', 'data', 'item', 'items', 'list', 'map', 'set', 'get', 'put',
-  'the', 'and', 'or', 'not', 'is', 'as', 'in', 'of', 'to', 'with',
+  'int',
+  'var',
+  'let',
+  'const',
+  'if',
+  'else',
+  'for',
+  'while',
+  'function',
+  'class',
+  'def',
+  'import',
+  'from',
+  'public',
+  'private',
+  'static',
+  'void',
+  'string',
+  'str',
+  'bool',
+  'true',
+  'false',
+  'null',
+  'none',
+  'self',
+  'this',
+  'new',
+  'async',
+  'await',
+  'return',
+  'print',
+  'echo',
+  'end',
+  'begin',
+  'do',
+  'switch',
+  'case',
+  'break',
+  'continue',
+  'try',
+  'catch',
+  'finally',
+  'throw',
+  'package',
+  'namespace',
+  'using',
+  'struct',
+  'enum',
+  'interface',
+  'type',
+  'x',
+  'y',
+  'z',
+  'a',
+  'b',
+  'c',
+  'i',
+  'j',
+  'k',
+  'n',
+  'm',
+  'id',
+  'key',
+  'value',
+  'data',
+  'item',
+  'items',
+  'list',
+  'map',
+  'set',
+  'get',
+  'put',
+  'the',
+  'and',
+  'or',
+  'not',
+  'is',
+  'as',
+  'in',
+  'of',
+  'to',
+  'with',
 };
 
 class Section {
@@ -59,8 +140,7 @@ class LessonInfo {
 
 void main(List<String> args) {
   final dryRun = args.contains('--dry-run');
-  final sampleCount =
-      int.tryParse(_option(args, '--samples=') ?? '') ?? 8;
+  final sampleCount = int.tryParse(_option(args, '--samples=') ?? '') ?? 8;
   final manifestFile = File(manifestPath);
   final manifest =
       jsonDecode(manifestFile.readAsStringSync()) as Map<String, dynamic>;
@@ -325,7 +405,8 @@ Map<String, dynamic>? _buildCodeFill(LessonInfo lesson) {
       '${context.isEmpty ? '' : '本课还说明：$context。'}';
   return <String, dynamic>{
     'type': 'fill',
-    'question': '补全代码：「${lesson.title}」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。\n\n`$masked`',
+    'question':
+        '补全代码：「${lesson.title}」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。\n\n`$masked`',
     'options': <String>[],
     'answer': 0,
     'accepted_answers': <String>[
@@ -344,7 +425,9 @@ Map<String, dynamic>? _buildMultiQuestion(
   final correct = <String>[];
   for (final keyword in lesson.keywords) {
     if (keyword.length < 2 || keyword.length > 20) continue;
-    if (correct.any((e) => e.contains(keyword) || keyword.contains(e))) continue;
+    if (correct.any((e) => e.contains(keyword) || keyword.contains(e))) {
+      continue;
+    }
     if (lesson.markdown.contains(keyword)) correct.add(keyword);
     if (correct.length >= 2) break;
   }
@@ -511,14 +594,14 @@ String _padExplanation(String text, LessonInfo lesson) {
   final summary = lesson.summary.replaceAll(RegExp(r'[。；，,;:\s]+$'), '');
   final keywords = lesson.keywords.take(4).join('、');
   if (summary.isNotEmpty && !result.contains(summary)) {
-    result += '本课围绕$summary展开'
+    result +=
+        '本课围绕$summary展开'
         '${keywords.isEmpty ? '。' : '，关键词包括$keywords。'}';
   } else if (keywords.isNotEmpty) {
     result += '本课的关键词包括$keywords。';
   }
   if (result.length < 120) {
-    result +=
-        '在「${lesson.title}」中，判断时要回到定义，逐项核对题干限定的对象、输入和边界条件。';
+    result += '在「${lesson.title}」中，判断时要回到定义，逐项核对题干限定的对象、输入和边界条件。';
   }
   return result;
 }

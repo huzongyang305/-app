@@ -1,0 +1,234 @@
+{
+  "lessons": [
+    {
+      "id": "cloud_iac_terraform",
+      "category": "cloud",
+      "title": {"zh": "基础设施即代码", "en": "Infrastructure as Code"},
+      "summary": {"zh": "从声明式描述、状态管理讲到计划评审、模块复用与漂移检测。", "en": "Declarative resources, state, plan review, modules and drift detection."},
+      "keywords": ["Terraform", "基础设施即代码", "状态文件", "计划评审", "漂移"],
+      "difficulty": "进阶",
+      "minutes": 40,
+      "order": 4,
+      "image": {"title": "从代码到云上资源", "flow": ["编写声明式资源描述", "初始化并管理状态", "生成计划并人工评审", "应用变更创建资源", "定期检测配置漂移"]},
+      "goals": ["能写出可复用的声明式资源定义并解释变量与输出。", "能说明状态文件的作用与保护方式。", "能用计划评审与漂移检测控制变更风险。"],
+      "prerequisitesText": ["了解基本的云资源概念，如网络与计算实例。", "能用命令行执行工具并管理参数。", "知道代码版本控制的基本工作流。"],
+      "concepts": [
+        {"name": "声明式资源与依赖", "plain": "描述期望的最终状态，由工具推导创建顺序，而不是写一串执行命令。", "mechanism": "资源之间通过引用建立隐式依赖，工具据此构建依赖图并决定创建、更新或删除顺序。", "example": "在本课示例里让子网引用虚拟网络标识，观察计划里两个资源的先后顺序。", "boundary": "依赖靠人工保证顺序时，一次重新创建就可能因为顺序错误而失败。", "engineering": "凡是跨资源引用都写成显式引用，让依赖关系可以由工具推导并校验。"},
+        {"name": "状态与计划评审", "plain": "状态记录已知的资源现状，计划描述本次将要发生的变更。", "mechanism": "执行时先读取状态与远端实际配置，生成差异计划，评审通过后再应用；状态文件需集中存储并加锁防止并发写坏。", "example": "在本课示例里改一个实例规格，观察计划中显示的属性差异与替换或更新标记。", "boundary": "看到计划里出现「替换」就意味着资源会被销毁重建，数据未备份就会丢失。", "engineering": "计划在流水线中生成并归档，破坏性变更需要明确审批并附上备份与回滚方案。"},
+        {"name": "模块复用与漂移检测", "plain": "把常用结构封装成模块，让多个环境共用同一份定义。", "mechanism": "模块接收变量并输出结果，环境通过版本号引用模块；定期执行只读检测比对代码与实际资源，发现手工修改造成的漂移。", "example": "在本课示例里把网络配置抽成模块，被测试与生产两个环境同时引用。", "boundary": "模块直接写死环境差异会让所有环境被迫接受同一套参数，失去复用意义。", "engineering": "模块版本固定并写入变更记录，漂移检测纳入定时任务并把结果通知到负责人。"}
+      ],
+      "steps": ["拆分资源并建立引用关系", "用变量区分环境差异", "生成计划并逐项评审", "集中保存状态并启用锁定", "定时检测漂移并修正"],
+      "code": {"language": "hcl", "snippet": "variable \"env\" { type = string }\nvariable \"instance_type\" { type = string, default = \"small\" }\n\nresource \"cloud_network\" \"main\" {\n  name = \"app-${var.env}\"\n  cidr = \"10.20.0.0/16\"\n}\n\nresource \"cloud_subnet\" \"app\" {\n  name       = \"app-${var.env}\"\n  network_id = cloud_network.main.id      # 引用建立隐式依赖\n  cidr       = \"10.20.1.0/24\"\n}\n\nresource \"cloud_instance\" \"app\" {\n  name      = \"app-${var.env}-01\"\n  subnet_id = cloud_subnet.app.id\n  size      = var.instance_type            # 环境差异由变量注入\n  tags      = { env = var.env, managed_by = \"iac\" }\n}\n\noutput \"instance_id\" { value = cloud_instance.app.id }\n", "walkthrough": "网络、子网与实例通过 id 引用建立依赖，工具自动保证创建顺序；实例规格由变量注入，同一份定义可以给测试与生产使用不同参数，输出用于其它模块或流水线引用。", "expected_output": "Plan: 3 to add, 0 to change, 0 to destroy，Apply complete! Resources: 3 added. output instance_id = i-0a7f"},
+      "faults": [
+        {"topic": "并发执行导致状态损坏", "wrong": "状态文件放在本地且多人同时执行", "fix": "把状态集中存储并开启锁定，流水线串行执行变更"},
+        {"topic": "一次变更意外删除资源", "wrong": "直接执行应用，没有评审计划里的替换标记", "fix": "变更前生成计划并逐项评审，出现替换标记时先备份数据并确认影响范围"},
+        {"topic": "代码与实际资源不一致", "wrong": "有人直接控制台手工修改且无人发现", "fix": "定时执行只读检测比对代码与实际，发现漂移后要么修正代码要么回收手工改动"}
+      ],
+      "glossary": [
+        {"term": "声明式", "definition": "描述期望状态，由工具推导执行步骤的方式。"},
+        {"term": "状态文件", "definition": "记录工具已知资源属性与依赖的持久化数据。"},
+        {"term": "计划", "definition": "执行前生成的资源变更差异清单。"},
+        {"term": "模块", "definition": "可复用的资源配置集合，通过变量与输出对外交互。"},
+        {"term": "漂移", "definition": "实际资源与代码描述之间的差异。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "计划里出现替换标记意味着什么？", "options": ["资源会被销毁并重新创建", "只更新标签", "没有任何变化", "只是格式调整"], "answer": 0, "explanation": "替换会先销毁旧资源再创建新资源，对有状态服务可能造成数据丢失与中断，必须提前确认并准备备份。"},
+        {"type": "single", "question": "状态文件集中存储并加锁的主要目的是？", "options": ["防止多人并发执行导致状态损坏", "加快网络访问", "减少代码行数", "隐藏资源标识"], "answer": 0, "explanation": "状态是变更决策的依据，并发写入会产生冲突与丢失记录，集中存储加锁是多人协作的基本要求。"},
+        {"type": "multi", "question": "把手工改动纳入代码管理，可以采取哪些做法？（多选）", "options": ["定时执行漂移检测", "把手工调整回填为代码", "在评审中对比计划与实际差异", "允许任何人直接在生产控制台改配置"], "answer": 0, "answers": [0, 1, 2], "explanation": "检测、回填与评审让代码保持权威；直接手工修改会制造新的漂移，让代码不可信。"},
+        {"type": "order", "question": "请按一次基础设施变更的流程排列。", "options": ["修改代码并提交评审", "生成计划并逐项检查", "执行应用完成变更", "验证资源与输出是否符合预期", "归档计划与变更记录"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "先改代码再生成计划，评审通过后应用，随后验证结果并归档记录，形成可追溯的变更闭环。"},
+        {"type": "debug", "question": "阅读这段资源定义，潜在问题是什么？", "options": ["数据库资源没有保留策略，变更时可能直接销毁数据", "实例规格写死", "缺少输出定义", "标签数量过多"], "answer": 0, "code": "resource \"cloud_database\" \"main\" {\n  name    = \"app-prod\"\n  size    = \"medium\"\n  version = \"15\"\n}\n\nresource \"cloud_instance\" \"app\" {\n  depends_on = [cloud_database.main]\n}\n", "language": "hcl", "explanation": "数据库这类有状态资源在变更时默认可能被销毁重建，应配置保留策略与删除保护，并在评审中确认替换影响。"}
+      ],
+      "practice": ["把示例拆成网络与计算两个模块，被两个环境引用并验证输出。", "制造一次资源替换，记录计划中的关键行与你的处理决定。", "在控制台手工改一个标签，执行漂移检测并观察结果。"],
+      "refs": [
+        {"name": "Terraform 官方文档：语言与工作流", "url": "https://developer.hashicorp.com/terraform/docs"},
+        {"name": "OpenTofu 官方文档", "url": "https://opentofu.org/docs/"}
+      ],
+      "english": "Infrastructure as code describes the desired end state, and the tool derives the order from references between resources. State records what the tool believes exists, and a plan shows exactly what will change. Central state with locking prevents concurrent corruption, while scheduled drift detection reveals manual edits that must be either codified or reverted.",
+      "reviewPoints": ["能解释隐式依赖如何决定创建顺序。", "能说明状态与计划各自的职责。", "能给出处理资源漂移的两种正确做法。"]
+    },
+    {
+      "id": "cloud_k8s_operations",
+      "category": "cloud",
+      "title": {"zh": "Kubernetes 运维实战", "en": "Kubernetes Operations in Practice"},
+      "summary": {"zh": "从探针、滚动发布讲到资源配额、自动扩缩与常见故障排查。", "en": "Probes, rolling updates, resource quotas, autoscaling and troubleshooting."},
+      "keywords": ["Kubernetes", "探针", "滚动发布", "资源配额", "自动扩缩"],
+      "difficulty": "进阶",
+      "minutes": 45,
+      "order": 5,
+      "image": {"title": "一次灰度发布的控制点", "flow": ["提交新版本工作负载", "就绪探针通过后接入流量", "按比例滚动替换实例", "指标触发自动扩缩", "异常时回滚到上一版本"]},
+      "goals": ["能区分存活、就绪与启动探针并正确配置。", "能设计可回滚的滚动发布策略与资源约束。", "能按事件、日志与指标三条线排查常见故障。"],
+      "prerequisitesText": ["完成容器与编排一课，理解 Pod 与 Service。", "能用命令行查询集群资源状态。", "知道 CPU 与内存请求和上限的含义。"],
+      "concepts": [
+        {"name": "探针与流量接入", "plain": "存活探针决定是否重启容器，就绪探针决定是否接收流量。", "mechanism": "启动探针先判断应用是否完成初始化，就绪探针周期性检查依赖是否可用，未通过时从服务端点中摘除；存活探针失败则重启容器。", "example": "在本课示例里让依赖暂时不可用，观察就绪探针失败后实例被摘除但未被重启。", "boundary": "把存活探针写成依赖外部服务的检查，会让依赖抖动引发全部实例反复重启。", "engineering": "就绪检查覆盖依赖可用性，存活检查只反映进程自身健康，启动探针给足冷启动时间。"},
+        {"name": "滚动发布与资源约束", "plain": "发布时逐步替换实例，同时用资源请求与上限约束调度和占用。", "mechanism": "通过最大不可用与最大超量控制替换节奏，新实例通过就绪检查后才移除旧实例；请求值影响调度，上限值防止单实例吃掉节点资源。", "example": "在本课示例里调大最大超量比例，观察发布速度与资源占用的变化。", "boundary": "没有资源请求会让调度器误判可分配空间，节点过载后才暴露问题。", "engineering": "按实测流量设置请求与上限，并配置中断预算保证发布期间仍有足够副本。"},
+        {"name": "自动扩缩与故障排查", "plain": "按指标自动调整副本数，但排查问题仍要回到事件、日志与指标三处。", "mechanism": "水平扩缩按目标利用率或自定义指标调整副本数，垂直扩缩调整请求与上限；排查时先看事件里的调度与探针失败原因，再对照日志与指标。", "example": "在本课示例里制造一次镜像拉取失败，按事件到日志的顺序定位原因。", "boundary": "扩缩指标选错会造成震荡，例如以内存为目标却存在缓慢泄漏，副本数会持续上升。", "engineering": "给扩缩设置稳定窗口与上下限，把关键事件接入告警并在演练中验证回滚路径。"}
+      ],
+      "steps": ["配置启动、就绪与存活探针", "设置资源请求与上限", "规划滚动发布与中断预算", "接入水平扩缩与稳定窗口", "演练一次故障排查与回滚"],
+      "code": {"language": "yaml", "snippet": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  replicas: 4\n  strategy:\n    rollingUpdate:\n      maxUnavailable: 1      # 发布期间最多少一个可用实例\n      maxSurge: 1            # 最多多出一个实例\n  template:\n    spec:\n      containers:\n        - name: web\n          image: registry/app:1.7.3\n          resources:\n            requests: { cpu: \"200m\", memory: \"256Mi\" }   # 影响调度\n            limits:   { cpu: \"1\",    memory: \"512Mi\" }   # 防止单实例失控\n          startupProbe:                                    # 给冷启动留时间\n            httpGet: { path: /healthz, port: 8080 }\n            failureThreshold: 30\n            periodSeconds: 2\n          readinessProbe:                                  # 决定是否接入流量\n            httpGet: { path: /ready, port: 8080 }\n            periodSeconds: 5\n          livenessProbe:                                   # 只反映进程自身健康\n            httpGet: { path: /live, port: 8080 }\n            periodSeconds: 10\n            failureThreshold: 3\n", "walkthrough": "启动探针给冷启动最多六十秒，就绪探针每五秒判断是否可以接流量，存活探针只在进程自身异常时触发重启。资源请求影响调度、上限防止失控，滚动策略保证发布期间至少有三个实例可用。", "expected_output": "deploy web: 4/4 ready，rollout 1.7.2 -> 1.7.3 ok in 42 s，liveness failures 0，pod restarts 0"},
+      "faults": [
+        {"topic": "依赖抖动导致全量重启", "wrong": "存活探针里检查数据库等外部依赖", "fix": "存活探针只检查进程自身，依赖检查放进就绪探针，避免外部抖动引发重启雪崩"},
+        {"topic": "节点资源被单实例吃满", "wrong": "只设置请求不设置上限，或两者都不设置", "fix": "按实测流量设置请求与上限，并用命名空间配额约束总量"},
+        {"topic": "自动扩缩反复震荡", "wrong": "扩缩指标选用了缓慢泄漏且无稳定窗口", "fix": "选择能反映负载的指标并设置稳定窗口与副本上下限，必要时改用自定义指标"}
+      ],
+      "glossary": [
+        {"term": "就绪探针", "definition": "判断实例是否可以接收流量的检查。"},
+        {"term": "存活探针", "definition": "判断容器是否需要重启的检查。"},
+        {"term": "中断预算", "definition": "限制自愿中断期间可用副本下限的策略。"},
+        {"term": "资源请求", "definition": "调度时保证分配给容器的资源量。"},
+        {"term": "水平扩缩", "definition": "按指标自动增减副本数量的机制。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "就绪探针与存活探针的分工是？", "options": ["就绪决定是否接流量，存活决定是否重启", "就绪决定是否重启，存活决定是否接流量", "两者都只影响日志", "两者功能完全一致"], "answer": 0, "explanation": "就绪失败只是暂时摘除流量，存活失败才会重启容器；把依赖检查放进存活探针会放大外部抖动的影响。"},
+        {"type": "single", "question": "资源请求的主要作用是？", "options": ["影响调度器把容器放到哪个节点", "限制容器最大内存", "决定镜像拉取速度", "控制日志量"], "answer": 0, "explanation": "请求值参与调度计算，决定节点是否有足够资源接纳该容器；上限则限制容器实际可以使用的最大值。"},
+        {"type": "multi", "question": "排查实例无法启动时，优先查看哪些信息？（多选）", "options": ["资源事件中的调度与镜像拉取原因", "容器启动日志", "节点资源与污点情况", "开发者本地的编辑器主题"], "answer": 0, "answers": [0, 1, 2], "explanation": "事件说明调度与拉取是否成功，日志反映应用启动过程，节点资源决定是否有空间运行，三者构成基本排查路径。"},
+        {"type": "order", "question": "请按一次安全发布的顺序排列。", "options": ["构建并推送新版本镜像", "更新部署定义触发滚动", "新实例通过启动与就绪检查", "按策略替换旧实例并观察指标", "异常时回滚到上一版本"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "新实例必须通过检查后才接流量，替换过程持续观察指标，出现异常立即回滚，保证服务可用性。"},
+        {"type": "debug", "question": "阅读这段探针配置，问题是什么？", "options": ["存活探针检查外部依赖，依赖抖动会引发全量重启", "启动探针阈值过小", "缺少资源上限", "就绪探针周期过长"], "answer": 0, "code": "livenessProbe:\n  httpGet: { path: /healthz?check=db, port: 8080 }\n  periodSeconds: 5\n  failureThreshold: 1\nreadinessProbe:\n  httpGet: { path: /ready, port: 8080 }\n", "language": "yaml", "explanation": "存活探针里检查数据库并设置一次失败即重启，数据库短暂抖动就会让所有实例同时重启，进一步压垮依赖。"}
+      ],
+      "practice": ["给一个部署补全三类探针，制造依赖不可用验证只有就绪失败。", "调整滚动策略与中断预算，观察发布期间可用副本数变化。", "制造一次镜像拉取失败，按事件、日志、指标顺序写出排查结论。"],
+      "refs": [
+        {"name": "Kubernetes 官方文档：探针配置", "url": "https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/"},
+        {"name": "Kubernetes 官方文档：水平 Pod 自动扩缩", "url": "https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/"}
+      ],
+      "english": "Startup, readiness and liveness probes answer three different questions: has the process finished booting, may it receive traffic, and does it need a restart. Rolling updates replace instances gradually, constrained by surge and unavailability limits. Resource requests drive scheduling while limits cap a single container, and every incident is traced through events, logs and metrics.",
+      "reviewPoints": ["能说清三类探针各自回答什么问题。", "能解释资源请求与上限的区别。", "能按事件、日志、指标三步排查启动失败。"]
+    },
+    {
+      "id": "cloud_security_iam",
+      "category": "cloud",
+      "title": {"zh": "云安全与最小权限", "en": "Cloud Security and Least Privilege"},
+      "summary": {"zh": "从身份、策略与临时凭证讲到密钥管理、审计与权限收敛。", "en": "Identities, policies, temporary credentials, key management, audit and permission review."},
+      "keywords": ["IAM", "最小权限", "临时凭证", "密钥管理", "审计"],
+      "difficulty": "进阶",
+      "minutes": 40,
+      "order": 6,
+      "image": {"title": "一次请求的授权路径", "flow": ["工作负载获取临时凭证", "按角色加载权限策略", "请求进入资源策略评估", "允许或拒绝并记录审计", "定期复核并回收多余权限"]},
+      "goals": ["能区分身份策略与资源策略，并写出最小权限规则。", "能用临时凭证替代长期密钥并说明原因。", "能设计权限复核与审计的例行流程。"],
+      "prerequisitesText": ["了解云上用户、角色与资源的基本概念。", "知道对称与非对称密钥的用途差异。", "能读懂策略文档里的允许与拒绝语句。"],
+      "concepts": [
+        {"name": "身份、策略与最小权限", "plain": "每次访问都要回答两个问题：谁在请求，允许它对什么做什么。", "mechanism": "身份被授予策略，策略由动作、资源与条件组成；显式拒绝优先于允许，最终结果按优先级合并。", "example": "在本课示例里把策略范围从全部资源收窄到单一存储桶前缀，验证越界访问被拒绝。", "boundary": "用通配符授予全部动作会让一次凭证泄露影响整个账号，损失面远大于单个服务。", "engineering": "权限按服务与职责拆分，先在测试环境验证拒绝路径再上线，并记录每次扩权的原因。"},
+        {"name": "临时凭证与密钥管理", "plain": "长期密钥一旦泄露就长期有效，临时凭证把有效期压缩到小时级。", "mechanism": "工作负载通过可信身份换取带有效期的凭证，敏感数据用密钥管理服务加密，应用只持有密钥标识而非明文。", "example": "在本课示例里用工作负载身份换取临时凭证访问存储，再验证凭证过期后自动失效。", "boundary": "把长期密钥写进配置文件或代码仓库，泄露后需要在所有环境中同步轮换，代价高昂。", "engineering": "禁用长期密钥或设置轮换周期，密钥与凭证的使用记录接入审计并在异常时自动吊销。"},
+        {"name": "审计与权限复核", "plain": "没有审计就无法回答谁在什么时候改了什么，权限也需要定期回收。", "mechanism": "管理操作写入审计日志并集中存储，定期用实际访问记录比对应有权限，收敛长期未使用的高危权限。", "example": "在本课示例里查询近三十天的访问记录，找出从未被使用的管理员权限并回收。", "boundary": "只在上线时配一次权限，人员与职责变化后权限会持续膨胀，形成隐形风险。", "engineering": "按季度执行权限复核，把复核结论与回收动作记录在案，异常检测规则覆盖高危操作。"}
+      ],
+      "steps": ["盘点身份与依赖资源", "按职责拆分手写最小权限策略", "改用临时凭证并托管敏感密钥", "开启审计日志并集中存储", "按周期复核并回收多余权限"],
+      "code": {"language": "json", "snippet": "{\n  \"Version\": \"2026-10-01\",\n  \"Statement\": [\n    {\n      \"Sid\": \"ReadOnlyAppBucketPrefix\",\n      \"Effect\": \"Allow\",\n      \"Action\": [\"storage:GetObject\", \"storage:ListBucket\"],\n      \"Resource\": [\n        \"arn:cloud:storage:::app-bucket\",\n        \"arn:cloud:storage:::app-bucket/configs/*\"   // 只允许读取配置前缀\n      ],\n      \"Condition\": {\n        \"Bool\": { \"cloud:SecureTransport\": \"true\" },   // 必须使用加密传输\n        \"IpAddress\": { \"cloud:SourceIp\": \"10.20.0.0/16\" }  // 限定来源网段\n      }\n    },\n    {\n      \"Sid\": \"DenyDelete\",\n      \"Effect\": \"Deny\",\n      \"Action\": [\"storage:DeleteObject\", \"storage:DeleteBucket\"],\n      \"Resource\": \"arn:cloud:storage:::app-bucket/*\"   // 显式拒绝优先\n    }\n  ]\n}\n", "walkthrough": "策略把动作收窄到读取、资源收窄到指定前缀，并用条件限定传输方式与来源网段；额外加一条显式拒绝防止误删。显式拒绝优先于任何允许，是保护关键数据的最后一道闸门。", "expected_output": "GetObject app-bucket/configs/app.yaml -> allowed，DeleteObject app-bucket/configs/app.yaml -> denied (explicit deny)，GetObject other-bucket -> denied"},
+      "faults": [
+        {"topic": "一次凭证泄露影响整个账号", "wrong": "给服务授予带通配符的全部动作权限", "fix": "按服务职责拆分策略，动作与资源都收窄到实际需要，并加显式拒绝对关键操作兜底"},
+        {"topic": "密钥轮换成本高", "wrong": "把长期密钥写进配置文件并分发到多台机器", "fix": "改用受信任身份换取临时凭证，敏感数据交由密钥管理服务托管并定期轮换"},
+        {"topic": "离职后权限仍在", "wrong": "上线时配一次权限，之后从不复核", "fix": "按周期用实际访问记录复核权限，回收长期未使用的高危权限并留痕"}
+      ],
+      "glossary": [
+        {"term": "最小权限", "definition": "只授予完成任务所必需的最小动作与资源范围。"},
+        {"term": "显式拒绝", "definition": "优先级最高的拒绝语句，覆盖任何允许。"},
+        {"term": "临时凭证", "definition": "带有效期的访问凭证，过期自动失效。"},
+        {"term": "审计日志", "definition": "记录谁在何时对什么资源执行了操作。"},
+        {"term": "权限复核", "definition": "定期比对应有权限与实际使用并回收多余部分。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "策略中显式拒绝的作用是？", "options": ["优先级最高，覆盖任何允许语句", "与允许语句等价", "仅在调试时生效", "只影响日志记录"], "answer": 0, "explanation": "显式拒绝的优先级高于允许，常用于给关键操作加一道无法绕过的保护。"},
+        {"type": "single", "question": "用临时凭证替代长期密钥的主要收益是？", "options": ["泄露后影响时间被压缩到凭证有效期", "访问速度更快", "减少代码行数", "不需要审计"], "answer": 0, "explanation": "临时凭证到期自动失效，即使被窃取，攻击窗口也被限制在有效期内，且获取过程本身可审计。"},
+        {"type": "multi", "question": "权限复核通常包含哪些动作？（多选）", "options": ["导出实际访问记录", "比对授予权限与实际使用", "回收长期未使用的高危权限", "把所有权限统一放宽以简化管理"], "answer": 0, "answers": [0, 1, 2], "explanation": "复核的本质是用事实比对授权并回收多余部分；统一放宽权限会让风险面持续扩大。"},
+        {"type": "order", "question": "请按一次最小权限落地的顺序排列。", "options": ["盘点服务与资源依赖", "编写收窄后的策略", "在测试环境验证拒绝路径", "替换长期密钥为临时凭证", "按周期复核并回收权限"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "先盘点再收窄，验证拒绝路径确保业务不受影响，随后替换凭证方式，最后把复核变成常态化流程。"},
+        {"type": "debug", "question": "阅读这段策略，风险是什么？", "options": ["动作与资源都使用通配符，权限过大", "条件限制过严", "缺少显式拒绝", "资源名称拼写错误"], "answer": 0, "code": "{\n  \"Effect\": \"Allow\",\n  \"Action\": \"*\",\n  \"Resource\": \"*\"\n}\n", "language": "json", "explanation": "对所有资源允许所有动作，一旦该身份被利用，攻击者可以读取、修改甚至删除账号内的任意资源，应逐项收窄。"}
+      ],
+      "practice": ["把一个通配符策略收窄到具体动作与前缀，并验证越界访问被拒绝。", "用临时凭证访问一次资源，记录凭证有效期与过期后的行为。", "查询近三十天访问记录，找出未使用的高危权限并写出回收建议。"],
+      "refs": [
+        {"name": "AWS IAM 官方文档：策略与最佳实践", "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html"},
+        {"name": "Google Cloud IAM 官方文档", "url": "https://cloud.google.com/iam/docs/overview"}
+      ],
+      "english": "Every cloud request answers who is calling and what they may do. Policies narrow actions, resources and conditions, and an explicit deny always wins. Long-lived keys are replaced by temporary credentials issued to a trusted workload identity, while sensitive material stays in a key management service. Audit logs and periodic access reviews shrink permissions over time.",
+      "reviewPoints": ["能写出包含动作、资源与条件的最小权限策略。", "能说明临时凭证相比长期密钥的两点优势。", "能描述一次权限复核的输入与输出。"]
+    },
+    {
+      "id": "cloud_cost_finops",
+      "category": "cloud",
+      "title": {"zh": "云成本治理与容量规划", "en": "Cloud Cost Governance and Capacity Planning"},
+      "summary": {"zh": "从成本归因、单位成本讲到容量模型、弹性策略与预算告警。", "en": "Cost attribution, unit economics, capacity models, elasticity and budget alerts."},
+      "keywords": ["成本归因", "单位成本", "容量规划", "弹性", "预算告警"],
+      "difficulty": "基础",
+      "minutes": 35,
+      "order": 7,
+      "image": {"title": "成本从产生到优化闭环", "flow": ["按标签归因到业务", "计算单位请求成本", "建立容量与峰值模型", "调整弹性与资源规格", "用预算告警守住上限"]},
+      "goals": ["能用标签把成本归因到具体业务与团队。", "能计算单位成本并判断优化是否真的有效。", "能按峰值与增长建立容量与预算模型。"],
+      "prerequisitesText": ["了解云上主要计费项，如计算、存储与流量。", "能读懂基础的账单与用量报表。", "知道自动扩缩的基本机制。"],
+      "concepts": [
+        {"name": "成本归因与标签", "plain": "不知道钱花在哪里就无法优化，归因靠统一标签体系。", "mechanism": "资源创建时强制打上业务、环境与负责人标签，账单按标签汇总，未打标签的资源单独列出并追责。", "example": "在本课示例里按业务标签汇总一周账单，找出未打标签的资源占比。", "boundary": "标签随意填写会导致同一业务被拆成多个名字，汇总结果失真。", "engineering": "标签在创建模板里强制注入，缺标签的资源由定时任务扫描并通知负责人补齐。"},
+        {"name": "单位成本与优化判断", "plain": "总成本上升不一定代表变差，要看单位请求的成本是否下降。", "mechanism": "把总成本除以业务量得到单位成本，优化前后用同一口径对比，避免流量变化掩盖真实效率。", "example": "在本课示例里计算每个千次请求的成本，对比缓存优化前后的变化。", "boundary": "只盯着总账单削减，可能把预算削在支撑收入的环节上，短期省钱长期损失更大。", "engineering": "把单位成本纳入季度目标，与可用性、延迟指标一起看，避免单指标优化。"},
+        {"name": "容量模型与弹性策略", "plain": "容量要覆盖峰值并留余量，弹性负责削掉长期闲置的部分。", "mechanism": "按历史峰值与增长趋势估算基线容量，超出部分用自动扩缩承接，预留容量用于对延迟敏感的稳定负载。", "example": "在本课示例里对比按峰值常备与按弹性扩缩两种方案的月度成本。", "boundary": "为峰值常备全部资源会在大部分时间闲置，成本长期高企。", "engineering": "定期复核峰值与利用率，把长期低利用率的资源降配并设置预算告警阈值。"}
+      ],
+      "steps": ["建立标签规范并强制注入", "按标签汇总账单归因", "计算单位业务量成本", "建立峰值与增长容量模型", "配置预算告警并定期复核"],
+      "code": {"language": "python", "snippet": "# 按标签归因并计算单位成本，输出未打标签资源清单\nfrom collections import defaultdict\n\ndef attribute(rows):\n    by_team = defaultdict(float)\n    untagged = []\n    for row in rows:\n        tags = row.get(\"tags\", {})\n        if not tags.get(\"team\") or not tags.get(\"env\"):\n            untagged.append(row[\"resource_id\"])   # 缺标签单独列出\n            continue\n        by_team[(tags[\"team\"], tags[\"env\"])] += row[\"cost\"]\n    return by_team, untagged\n\ndef unit_cost(total_cost, requests):\n    # 每千次请求成本：优化前后使用同一口径\n    return total_cost / (requests / 1000.0)\n\nrows = load_billing(\"2026-09\")\nby_team, untagged = attribute(rows)\nfor key, cost in sorted(by_team.items(), key=lambda kv: -kv[1])[:5]:\n    print(f\"{key[0]}/{key[1]}: {cost:,.2f}\")\nprint(f\"untagged resources: {len(untagged)}\")\nprint(f\"cost per 1k requests: {unit_cost(sum(by_team.values()), 42_000_000):.4f}\")\n", "walkthrough": "attribute 按团队与环境标签汇总成本，同时把缺标签资源单独列出，避免归因失真；unit_cost 用统一口径计算每千次请求的成本，让优化效果可以跨周期比较。", "expected_output": "search/prod: 12,480.00，api/prod: 8,910.00，untagged resources: 37，cost per 1k requests: 0.51"},
+      "faults": [
+        {"topic": "账单无法归因", "wrong": "资源创建时不要求标签，事后靠猜", "fix": "在创建模板中强制注入业务与环境标签，定时扫描未打标签资源并要求补齐"},
+        {"topic": "削减成本后业务受损", "wrong": "只按总账单削减，削减了支撑核心链路的资源", "fix": "用单位成本与业务指标联合评估，优化前后对比可用性与延迟"},
+        {"topic": "为峰值常备导致长期闲置", "wrong": "按历史最高峰值配置全部常备容量", "fix": "基线按常态负载配置，峰值由弹性扩缩承接，对延迟敏感部分保留预留容量"}
+      ],
+      "glossary": [
+        {"term": "成本归因", "definition": "把账单金额分配到业务、团队或环境的过程。"},
+        {"term": "单位成本", "definition": "总成本除以业务量得到的单笔业务成本。"},
+        {"term": "容量模型", "definition": "按峰值与增长趋势估算所需资源的模型。"},
+        {"term": "弹性扩缩", "definition": "按负载自动增减资源以匹配需求。"},
+        {"term": "预算告警", "definition": "支出接近或超过阈值时触发的通知。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "判断一次优化是否真的有效，最可靠的口径是？", "options": ["单位业务量成本是否下降", "总账单是否下降", "资源数量是否减少", "实例规格是否变小"], "answer": 0, "explanation": "业务量变化会影响总成本，用单位业务量成本对比才能排除流量波动，反映真实效率。"},
+        {"type": "single", "question": "统一标签体系的首要作用是？", "options": ["把成本归属到业务与团队", "提升网络速度", "减少实例数量", "自动扩容"], "answer": 0, "explanation": "只有成本能归因到具体责任方，优化才有对象与推动者，否则只是账面上的一个总数。"},
+        {"type": "multi", "question": "降低云成本的合理手段有哪些？（多选）", "options": ["把长期低利用率资源降配", "用弹性承接峰值流量", "为稳定负载购买预留容量", "为峰值常备全部资源"], "answer": 0, "answers": [0, 1, 2], "explanation": "降配闲置资源、弹性承接峰值与预留稳定负载是常用的组合；为峰值常备全部资源会让大部分容量闲置。"},
+        {"type": "order", "question": "请按一次成本治理闭环排列。", "options": ["建立标签规范并强制注入", "按业务汇总账单", "计算单位成本并设定目标", "实施优化并复核指标", "配置预算告警守住上限"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "先能归因，再能衡量，随后设定目标并优化，最后用预算告警把风险控制在可接受范围内。"},
+        {"type": "debug", "question": "阅读这段汇总代码，会导致什么问题？", "options": ["未打标签的成本被直接丢弃，账单总额对不上", "分组数量过多", "排序方式不合理", "缺少异常处理"], "answer": 0, "code": "total = 0.0\nfor row in rows:\n    team = row[\"tags\"].get(\"team\")\n    if team:\n        total += row[\"cost\"]\nprint(\"total by team:\", total)   # 未打标签的部分没有统计\n", "language": "python", "explanation": "缺少团队标签的成本被静默排除，汇总结果小于真实账单，会让人误以为归因已经完成，应单独列出并推动补齐。"}
+      ],
+      "practice": ["按业务标签汇总一个月账单，列出未打标签资源的数量与金额。", "计算一次优化前后的单位请求成本，写出结论与前提。", "为一个业务设计弹性与预留容量组合，估算月度成本区间。"],
+      "refs": [
+        {"name": "FinOps 基金会官方文档", "url": "https://www.finops.org/introduction/what-is-finops/"},
+        {"name": "AWS 成本管理与标签最佳实践", "url": "https://docs.aws.amazon.com/whitepapers/latest/tagging-best-practices/tagging-best-practices.html"}
+      ],
+      "english": "Cost governance starts with attribution: resources carry team and environment tags, and untagged spend is surfaced instead of hidden. Unit cost, not the total bill, shows whether an optimisation worked. Capacity covers the peak while elasticity absorbs variability, and budget alerts keep the whole system inside an agreed ceiling.",
+      "reviewPoints": ["能说明标签体系为什么是成本治理的起点。", "能计算单位成本并解释它比总账单可靠的原因。", "能给出弹性与预留容量组合的基本原则。"]
+    },
+    {
+      "id": "cloud_multicluster_dr",
+      "category": "cloud",
+      "title": {"zh": "多集群与容灾演练", "en": "Multi-Cluster Deployment and Disaster Recovery"},
+      "summary": {"zh": "从多集群拓扑、流量切换讲到数据同步、演练指标与回切。", "en": "Cluster topologies, traffic failover, data replication, drill metrics and failback."},
+      "keywords": ["多集群", "容灾", "流量切换", "数据同步", "演练"],
+      "difficulty": "进阶",
+      "minutes": 45,
+      "order": 8,
+      "image": {"title": "一次容灾切换的完整链路", "flow": ["主集群正常承接流量", "故障触发健康判定", "流量按策略切到备用集群", "校验数据同步延迟", "确认稳定后演练回切"]},
+      "goals": ["能选择合适的多集群拓扑并说明代价。", "能设计包含数据同步与流量切换的容灾方案。", "能定义演练指标并按计划执行与回切。"],
+      "prerequisitesText": ["完成 Kubernetes 运维一课并熟悉部署对象。", "了解负载均衡与域名解析的基本机制。", "知道数据复制的基本一致性与延迟概念。"],
+      "concepts": [
+        {"name": "多集群拓扑与取舍", "plain": "多集群可以按地域、环境或租户划分，复杂度与收益需要权衡。", "mechanism": "同地域多集群侧重隔离与灰度，跨地域多集群侧重容灾与就近接入，代价是配置分发与数据同步复杂度上升。", "example": "在本课示例里对比同城双集群与异地双活两种拓扑的延迟与成本。", "boundary": "没有统一的配置分发机制，多集群会迅速演变成多套手工环境，漂移难以控制。", "engineering": "用同一份声明式配置分发到所有集群，差异通过参数注入，并把集群清单纳入版本管理。"},
+        {"name": "数据同步与一致边界", "plain": "流量可以秒级切换，但数据同步存在延迟，切换点必须考虑这一点。", "mechanism": "主库同步复制到备用集群，同步延迟决定可接受的数据损失窗口；对有状态服务明确哪些数据允许异步、哪些必须同步。", "example": "在本课示例里观察复制延迟指标，模拟超过阈值时阻止自动切换。", "boundary": "忽略复制延迟直接切换会让最近写入的数据丢失，用户看到回退或重复操作。", "engineering": "把复制延迟纳入切换判定条件，超过阈值时人工介入并公示数据损失范围。"},
+        {"name": "切换判定与演练回切", "plain": "容灾能力靠演练验证，切换与回切都要有明确判定与记录。", "mechanism": "按健康检查与人工确认组合触发切换，演练记录恢复时间与数据丢失量，确认主集群可用后按计划回切并复核数据。", "example": "在本课示例里执行一次完整演练，记录发现到恢复的总时长与各阶段耗时。", "boundary": "只演练切换不演练回切，会在真正恢复时卡在数据反向同步与配置差异上。", "engineering": "演练计划包含切换与回切两段，指标写入报告并作为季度目标持续改进。"}
+      ],
+      "steps": ["确定拓扑与容灾目标", "统一配置分发到各集群", "建立数据同步并监控延迟", "设计健康判定与切换流程", "执行切换与回切演练并归档"],
+      "code": {"language": "yaml", "snippet": "# 健康判定与切换决策：复制延迟超阈值时禁止自动切换\napiVersion: policy/v1\nkind: FailoverPolicy\nmetadata:\n  name: app-failover\nspec:\n  primaryCluster: cn-east-1\n  standbyCluster: cn-north-1\n  checks:\n    - type: http\n      endpoint: https://app.example.com/healthz\n      failureThreshold: 3          # 连续三次失败才判定不健康\n      periodSeconds: 10\n    - type: replicationLag\n      metric: mysql_seconds_behind_master\n      maxSeconds: 30               # 超过 30 秒禁止自动切换\n  action:\n    mode: manual-approval          # 默认人工确认，避免误切换\n    trafficShift: dns-weighted\n    weightSteps: [10, 50, 100]     # 分三步放量，每步观察 5 分钟\n    rollbackOnErrorRate: 0.02      # 错误率超过 2% 自动回滚\n", "walkthrough": "健康判定同时检查服务可用性与复制延迟，连续失败才触发；切换默认需要人工确认，流量按十、五十、一百三步放量并在每步观察，错误率超阈值自动回滚，避免一次切换把故障放大。", "expected_output": "failover drill: detect 42 s，approve 3 min，shift done 6 min，RTO 9m12s，RPO 4 s，error rate peak 0.6%"},
+      "faults": [
+        {"topic": "切换后数据丢失", "wrong": "不检查复制延迟直接切流量", "fix": "把复制延迟纳入切换判定，超过阈值时人工介入并明确数据损失范围"},
+        {"topic": "多集群配置逐渐分叉", "wrong": "每个集群手工维护各自的部署文件", "fix": "统一声明式配置分发并按参数注入差异，集群清单纳入版本管理与定期比对"},
+        {"topic": "演练只做切换不做回切", "wrong": "恢复后直接在主集群重新开始服务，没有回切步骤", "fix": "演练计划覆盖切换与回切两段，提前验证反向数据同步与配置差异"}
+      ],
+      "glossary": [
+        {"term": "RTO", "definition": "从故障发生到服务恢复的目标时长。"},
+        {"term": "RPO", "definition": "可接受的数据丢失时间窗口。"},
+        {"term": "复制延迟", "definition": "主备数据之间的时间差。"},
+        {"term": "流量切换", "definition": "把用户请求从主集群导向备用集群的过程。"},
+        {"term": "回切", "definition": "主集群恢复后把流量与数据切回的过程。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "复制延迟超出阈值时正确的处理是？", "options": ["暂停自动切换并人工评估数据损失", "立即无条件切换", "忽略延迟继续切换", "删除备用集群"], "answer": 0, "explanation": "延迟过大意味着切换会丢失较多数据，应先由人工确认影响范围再决定，避免把可用性故障升级为数据故障。"},
+        {"type": "single", "question": "演练必须包含回切的原因是？", "options": ["回切涉及反向同步与配置差异，不练就无法验证", "回切不会出错", "回切可以省略数据校验", "回切只影响日志"], "answer": 0, "explanation": "回切路径与切换路径不对称，反向同步、配置差异与容量校验都需要提前验证，否则真正恢复时会受阻。"},
+        {"type": "multi", "question": "多集群方案需要统一管理的内容有哪些？（多选）", "options": ["部署配置的分发", "集群清单与参数差异", "健康判定与切换策略", "每个集群单独的密码本"], "answer": 0, "answers": [0, 1, 2], "explanation": "配置、清单与切换策略统一管理才能避免分叉；凭据应由集中式密钥管理提供，而不是各自维护。"},
+        {"type": "order", "question": "请按一次容灾演练的顺序排列。", "options": ["触发故障并记录发现时间", "健康判定达到阈值", "人工确认后按比例切换流量", "校验数据一致性与延迟", "确认稳定后执行回切"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "先记录发现耗时，再按阈值判定并放量切换，随后校验数据，最后在主集群恢复后按计划回切。"},
+        {"type": "debug", "question": "阅读这段切换配置，风险是什么？", "options": ["一次失败即切换且一步放量到全量，容易误切换并放大故障", "健康检查周期过长", "缺少回滚阈值", "备用集群未命名"], "answer": 0, "code": "checks:\n  - type: http\n    failureThreshold: 1      # 单次失败即判定不健康\n    periodSeconds: 5\naction:\n  mode: auto\n  weightSteps: [100]         # 直接全量切换\n", "language": "yaml", "explanation": "单次失败就切换容易被瞬时抖动误导，一次性全量放量又会在备用集群有问题时直接放大故障，应改为多次判定加梯度放量与自动回滚。"}
+      ],
+      "practice": ["对比同城双集群与异地双活的延迟和成本，写出选择建议。", "完成一次切换与回切演练，记录发现、切换、恢复各阶段耗时。", "把复制延迟接入切换判定，模拟延迟超阈值验证自动切换被阻止。"],
+      "refs": [
+        {"name": "Kubernetes 官方文档：多集群与故障转移", "url": "https://kubernetes.io/docs/concepts/cluster-administration/"},
+        {"name": "Google SRE 手册：数据完整性与容灾", "url": "https://sre.google/sre-book/data-integrity/"}
+      ],
+      "english": "Multi-cluster designs trade isolation and locality against configuration and data complexity. Traffic can move in seconds, but data replication lags, so replication delay belongs in the failover decision. Drill both directions: shift traffic in weighted steps with an error-rate rollback, verify data consistency, and rehearse the failback before you need it.",
+      "reviewPoints": ["能说出多集群拓扑的两种划分与各自代价。", "能解释复制延迟为什么必须进入切换判定。", "能列出演练报告中的三个关键指标。"]
+    }
+  ]
+}

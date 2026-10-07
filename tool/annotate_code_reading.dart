@@ -88,9 +88,8 @@ void main(List<String> args) {
     stdout.writeln('（dry-run，未写入文件；加 --write 生效）');
     return;
   }
-  File(manifestPath).writeAsStringSync(
-    const JsonEncoder.withIndent('  ').convert(manifest),
-  );
+  File(manifestPath)
+      .writeAsStringSync(const JsonEncoder.withIndent('  ').convert(manifest));
   stdout.writeln('');
   stdout.writeln('已写入 $manifestPath');
 }

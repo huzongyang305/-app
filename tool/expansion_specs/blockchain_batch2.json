@@ -1,0 +1,199 @@
+{
+  "lessons": [
+    {
+      "id": "blockchain_bitcoin_consensus",
+      "category": "blockchain",
+      "title": {"zh": "比特币、UTXO 与工作量证明", "en": "Bitcoin, UTXO Model and Proof of Work"},
+      "summary": {"zh": "理解 UTXO 记账模型、交易脚本、挖矿难度调整与分叉确认规则。", "en": "Understand the UTXO model, transaction scripts, difficulty adjustment and fork resolution."},
+      "keywords": ["UTXO", "工作量证明", "难度调整", "分叉", "确认数"],
+      "difficulty": "进阶",
+      "minutes": 32,
+      "order": 2,
+      "prerequisites": ["blockchain_basics"],
+      "image": {"title": "UTXO 与工作量证明", "flow": ["选择未花费输出", "构造输入输出", "工作量证明", "最长链确认"]},
+      "goals": [
+        "能用 UTXO 模型算出一笔交易的输入、输出与找零。",
+        "能解释难度调整如何把出块间隔稳定在十分钟附近。",
+        "能说明确认数、分叉与双花风险之间的关系。"
+      ],
+      "prerequisitesText": [
+        "已理解哈希链与数字签名的作用，知道区块头记录前块哈希。",
+        "知道什么是交易手续费，以及矿工为什么愿意打包交易。",
+        "能读懂简单的 Python 函数与列表推导。"
+      ],
+      "concepts": [
+        {
+          "name": "UTXO：未花费交易输出",
+          "plain": "比特币不记录账户余额，而是记录一笔笔未花费的输出。花钱就是消耗已有输出、生成新输出，余额由钱包把所有可用输出加起来算出。",
+          "mechanism": "每笔交易的输入必须引用之前某笔交易的输出并解锁它，输出则写明金额和锁定条件。节点校验输入总和大于等于输出总和，差额就是手续费。",
+          "example": "钱包里有 0.4 和 0.7 两个 UTXO，要支付 0.9：选择两个输入，输出 0.9 给收款方、0.199 找零给自己、0.001 作为手续费。",
+          "boundary": "UTXO 不能部分花费，找零必须显式生成新输出；忘记找零会把差额全部当成手续费送给矿工。",
+          "engineering": "钱包要做币种选择与找零管理，避免产生大量小额 UTXO；UTXO 越多，单笔交易的体积和手续费越高。"
+        },
+        {
+          "name": "交易脚本与锁定条件",
+          "plain": "每个输出带一段锁定脚本，花费时必须提供满足条件的解锁数据。最常见的条件是「用某个公钥对应的私钥签名」。",
+          "mechanism": "验证时先执行解锁脚本，再执行锁定脚本，最终栈顶为真即通过。多签、时间锁、哈希锁等条件都是在脚本层组合出来的。",
+          "example": "对比单签输出与 2-of-3 多签输出：前者只需一个签名，后者要三个公钥中的任意两个签名才能花费。",
+          "boundary": "脚本表达能力有限且容易写错，复杂条件通常用更高层的协议实现；写错锁定脚本可能导致资产永久无法花费。",
+          "engineering": "托管和机构钱包优先使用经过审计的多签方案；上线前在测试网验证解锁路径和恢复流程。"
+        },
+        {
+          "name": "工作量证明与难度调整",
+          "plain": "矿工不断改变区块头里的随机数，寻找使区块哈希小于目标值的解。找到解需要大量尝试，验证却只需一次哈希。",
+          "mechanism": "全网每 2016 个区块按实际耗时调整目标值：出块太快就提高难度，太慢就降低难度，使平均间隔回到十分钟左右。",
+          "example": "把目标值前缀的 0 的个数增加一位，手工估算哈希尝试次数如何成倍上升，理解难度与算力的关系。",
+          "boundary": "工作量证明保证的是重写历史成本高，不是交易立刻最终确认；算力集中会让 51% 攻击的假设变弱。",
+          "engineering": "监控矿池算力分布与出块延迟；交易所对大额入账设置更高确认数，降低重组风险。"
+        },
+        {
+          "name": "分叉、重组与确认数",
+          "plain": "两个矿工同时出块会产生临时分叉，节点按累计工作量最大的链继续延伸，被放弃的分支称为孤块，其中的交易回到待打包状态。",
+          "mechanism": "每多一个区块，重组到该区块之前的代价就翻倍上升；因此确认数越多，交易被认为最终确定的可信度越高。",
+          "example": "小额支付 1 次确认即可接受，大额转账等待 6 次确认，观察历史上出现过的深度重组案例作为风险参考。",
+          "boundary": "确认数只是概率保证，不是数学上的绝对最终性；算力骤降或共识规则变更会改变实际风险。",
+          "engineering": "入账策略按金额分层设置确认数，并记录交易所在链的高度与区块哈希，便于重组后回溯。"
+        }
+      ],
+      "steps": ["列出可用 UTXO 与金额", "挑选输入并计算找零", "签名构造交易的输入", "等待打包并累计确认数"],
+      "code": {
+        "language": "python",
+        "snippet": "utxos = [('a:0', 0.4), ('b:1', 0.7), ('c:2', 0.25)]\nfee = 0.001\npayment = 0.9\n\nselected, total = [], 0.0\nfor outpoint, value in sorted(utxos, key=lambda item: -item[1]):\n    selected.append((outpoint, value))\n    total += value\n    if total >= payment + fee:\n        break\n\nchange = round(total - payment - fee, 8)\nprint('inputs:', selected)\nprint('total:', round(total, 8), 'change:', change)\nprint('utxo left:', [item for item in utxos if item not in selected])",
+        "walkthrough": "这段代码按面额从大到小挑选 UTXO，直到覆盖付款金额与手续费，并计算找零；运行后可以看到输入、找零和剩余 UTXO 的对应关系。",
+        "expected_output": "inputs 为 b:1 与 a:0 两个输出，合计 1.1；change 为 0.199；剩余 UTXO 是 c:2。"
+      },
+      "faults": [
+        {"topic": "忘记生成找零输出", "wrong": "输入 0.7 只输出 0.4，剩下的差额没有找零", "fix": "输入减去输出与实际手续费的差额必须显式作为找零输出发回自己的地址"},
+        {"topic": "把确认数当成绝对最终性", "wrong": "1 次确认就把大额交易标记为不可撤销", "fix": "按金额分层设置确认数，并保留区块哈希以便处理链重组"},
+        {"topic": "在上线环境手工管理私钥", "wrong": "用明文文件保存签名私钥，并与业务进程同机部署", "fix": "使用硬件签名设备或专业托管方案，签名与业务权限分离"}
+      ],
+      "glossary": [
+        {"term": "UTXO", "definition": "未花费交易输出，是比特币账本里可直接被后续交易引用的资金单元。"},
+        {"term": "找零输出", "definition": "把输入金额减去付款与手续费后的余额发回自己地址的输出。"},
+        {"term": "工作量证明", "definition": "通过寻找满足目标值的区块哈希来竞争记账权的共识机制。"},
+        {"term": "难度调整", "definition": "按周期根据实际出块速度自动调整目标值，维持稳定出块间隔。"},
+        {"term": "链重组", "definition": "节点切换到累计工作量更大的分支，导致部分已打包交易回到待确认状态。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "钱包显示余额 1.1，实际含义是什么？", "options": ["所有可用未花费交易输出的金额之和", "账户字段里保存的一个数字", "最近一笔交易的输出金额", "矿工为该地址预留的额度"], "answer": 0, "explanation": "UTXO 模型没有账户余额字段，余额是钱包把该地址可用的未花费输出相加得到的派生结果；因此花费时必须指定具体输出，而不是从某个数字里扣减。"},
+        {"type": "single", "question": "一笔交易的手续费如何计算？", "options": ["输入总额减去输出总额", "输出总额乘以固定费率", "区块奖励的一定比例", "由收款方在到账后扣除"], "answer": 0, "explanation": "手续费是输入与输出的差额，矿工把差额计入自己的收益；这解释了为什么忘记写找零输出会让差额全部变成手续费。"},
+        {"type": "multi", "question": "以下哪些因素会提高一笔交易被确认的可信度？（多选）", "options": ["累计确认数增加", "交易所在区块被更多后续区块覆盖", "交易进入节点内存池的时间变长", "全网算力保持分散"], "answers": [0, 1, 3], "answer": 0, "explanation": "后续区块越多，重写历史的成本越高；算力分散可降低 51% 攻击风险；而在内存池等待时间变长只说明手续费可能偏低，与最终确认可信度无关。"},
+        {"type": "order", "question": "请按一笔比特币交易的生命周期排列步骤。", "options": ["交易被打包进区块并获得确认", "钱包选择 UTXO 并构造输入输出", "交易广播到节点内存池等待打包", "用私钥对交易签名"], "correct_order": [1, 3, 2, 0], "answer": 0, "explanation": "正确顺序是选择 UTXO、签名、广播进内存池、最后被打包并累计确认；如果先广播未签名交易，节点会直接拒绝，无法进入后续环节。"},
+        {"type": "debug", "question": "阅读下面的 UTXO 选择代码，哪项判断正确？", "options": ["代码按面额从大到小选择输入，并显式计算找零", "代码会部分花费单个 UTXO，因为金额可以拆分", "代码忽略手续费，输出总额等于输入总额", "代码把找零写回原输入，形成递归引用"], "answer": 0, "code": "for outpoint, value in sorted(utxos, key=lambda item: -item[1]):\n    selected.append((outpoint, value))\n    total += value\n    if total >= payment + fee:\n        break\nchange = round(total - payment - fee, 8)", "language": "python", "explanation": "代码按金额降序挑选输出、累计到覆盖付款与手续费，再用差额算出找零；UTXO 不可拆分，剩余金额必须通过新输出返还，因此该判断正确。"}
+      ],
+      "practice": [
+        "给示例加上优先使用小额 UTXO 的策略，比较两种策略选出的输入数量。",
+        "手算一笔 3 输入 2 输出的交易手续费，并说明找零金额。",
+        "在测试网浏览器上找一笔真实交易，标出输入、输出、找零与手续费。"
+      ],
+      "refs": [
+        {"name": "Bitcoin Developer Guide: Transactions", "url": "https://developer.bitcoin.org/devguide/transactions.html"},
+        {"name": "Bitcoin Wiki: Transaction", "url": "https://en.bitcoin.it/wiki/Transaction"}
+      ],
+      "english": "Bitcoin tracks unspent transaction outputs instead of account balances. This lesson walks through input selection, change outputs, script-based locking conditions, proof-of-work difficulty adjustment, and how confirmations reduce reorganisation risk.",
+      "reviewPoints": [
+        "能用 UTXO 模型算出输入、输出、找零与手续费。",
+        "能解释难度调整为什么能稳住出块间隔。",
+        "能说明确认数背后的概率含义。"
+      ]
+    },
+    {
+      "id": "blockchain_ethereum_smart_contract",
+      "category": "blockchain",
+      "title": {"zh": "以太坊、EVM 与智能合约", "en": "Ethereum, EVM and Smart Contracts"},
+      "summary": {"zh": "掌握账户模型、EVM 执行与 Gas、Solidity 合约结构与事件索引。", "en": "Learn the account model, EVM execution and gas, Solidity structure and event indexing."},
+      "keywords": ["EVM", "Solidity", "Gas", "ABI", "事件"],
+      "difficulty": "进阶",
+      "minutes": 34,
+      "order": 3,
+      "prerequisites": ["blockchain_bitcoin_consensus"],
+      "image": {"title": "以太坊交易执行流程", "flow": ["签名交易", "EVM 执行", "Gas 结算", "事件与状态更新"]},
+      "goals": [
+        "能区分外部账户与合约账户，说明 nonce 与余额的作用。",
+        "能读懂一段最小 Solidity 合约并解释每个存储变量的可见性。",
+        "能估算一次调用的 Gas 成本，并说明失败回滚时 Gas 的去向。"
+      ],
+      "prerequisitesText": [
+        "已掌握哈希链、签名与共识的基本概念。",
+        "有至少一门静态类型语言的基础，能读懂函数与类型声明。",
+        "知道区块链上的写入需要付费，读操作通常免费。"
+      ],
+      "concepts": [
+        {
+          "name": "账户模型与状态树",
+          "plain": "以太坊用账户模型代替 UTXO：每个账户有余额、nonce 和合约账户的代码与存储。全局状态由所有账户组成，交易执行就是状态迁移。",
+          "mechanism": "外部账户由私钥控制，合约账户由代码控制。nonce 保证同一账户的交易不会被重复执行，也决定交易顺序。",
+          "example": "对比两种模型：UTXO 需要选择输出，以太坊只需指定 from、to、value 与 data，余额不足或 nonce 冲突都会直接拒绝。",
+          "boundary": "账户模型更容易表达复杂状态，但也带来重放与授权风险；一次授权可能长期有效，必须显式撤销。",
+          "engineering": "合约里记录关键状态时要同时记录版本与所有者；升级或迁移前先冻结写入，避免状态不一致。"
+        },
+        {
+          "name": "EVM 执行与 Gas 计量",
+          "plain": "EVM 是栈式虚拟机，每条指令都有 Gas 价格。Gas 既为计算付费，也限制单笔交易的执行步数，防止死循环拖垮全网。",
+          "mechanism": "交易先按 gas limit 预扣，执行结束后按实际消耗结算，剩余退还；如果中途失败，状态回滚但已消耗的 Gas 不退。",
+          "example": "写一个循环写入 storage 的函数，逐步增加循环次数，观察 Gas 消耗随存储写入线性上升。",
+          "boundary": "Gas 价格随网络拥堵波动，同样的调用成本可能差很多；把关键逻辑放在链上循环里会迅速变得不可用。",
+          "engineering": "把批量逻辑拆成可分批执行的任务，避免单笔交易超过区块 Gas 上限；用事件记录结果，把重计算放到链下。"
+        },
+        {
+          "name": "Solidity 合约结构与 ABI",
+          "plain": "合约由状态变量、函数、事件和修饰器组成；ABI 是外部调用合约的接口描述，前端与脚本都按 ABI 编码调用数据。",
+          "mechanism": "函数可见性决定谁能调用，状态可变性决定是否写入链上。ABI 把函数选择器与参数编码成 calldata，返回值再解码回调用方。",
+          "example": "部署一个带计数器的合约，先调用 increment 写入状态，再调用 count 读取，对比两次调用的成本与返回方式。",
+          "boundary": "可见性写错会让内部函数暴露给任何人；ABI 变化会让已部署的前端调用失败，需要版本管理。",
+          "engineering": "合约接口一旦上线就难以更改，发布前冻结 ABI 并生成类型化客户端；升级用代理模式时明确存储布局兼容规则。"
+        },
+        {
+          "name": "事件与链下索引",
+          "plain": "事件把执行结果写入交易日志，链下服务按主题过滤并建立索引，用来做查询、通知与对账。",
+          "mechanism": "事件参数分为可索引与不可索引两类，索引字段进入主题列表，便于按地址或编号过滤；日志不参与合约状态读取。",
+          "example": "为转账事件加上发送方与接收方索引字段，链下服务按接收方订阅，实时把到账记录写入数据库。",
+          "boundary": "日志不是状态，合约无法读取历史事件；链重组时链下索引也要回滚重放，否则数据会与链上不一致。",
+          "engineering": "索引服务要记录处理到的区块高度与哈希，支持重组回滚；关键对账要用链上状态复核事件结果。"
+        }
+      ],
+      "steps": ["编写并编译合约", "部署到测试网获得地址", "按 ABI 发起交易调用", "订阅事件并对账状态"],
+      "code": {
+        "language": "solidity",
+        "snippet": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.20;\n\ncontract Counter {\n    uint256 public count;\n    address public immutable owner;\n\n    event Incremented(address indexed by, uint256 newValue);\n\n    constructor() {\n        owner = msg.sender;\n    }\n\n    function increment() external {\n        count += 1;\n        emit Incremented(msg.sender, count);\n    }\n\n    function reset() external {\n        require(msg.sender == owner, \"not owner\");\n        count = 0;\n    }\n}",
+        "walkthrough": "合约用一个存储变量保存计数，increment 任何人都能调用并发出事件，reset 通过 owner 校验限制权限；事件里的调用者字段可索引，方便链下按地址过滤。",
+        "expected_output": "count() 返回当前数值；调用 increment 后事件 Incremented 的 newValue 递增；非 owner 调用 reset 会被 require 拒绝并回滚。"
+      },
+      "faults": [
+        {"topic": "权限校验缺失", "wrong": "把所有写函数都设为 public 且不校验调用者", "fix": "用 owner 或角色控制限制关键函数，并在链上校验而不是依赖前端隐藏入口"},
+        {"topic": "在链上做重循环", "wrong": "在一个函数里遍历可能无限增长的数组", "fix": "限制单次处理数量，或改用分批任务与链下计算，避免交易超出 Gas 上限"},
+        {"topic": "忽略事件重组回滚", "wrong": "链下索引只做插入，不记录区块高度与哈希", "fix": "索引服务保存处理进度，检测到重组时回滚并重放到最新高度"}
+      ],
+      "glossary": [
+        {"term": "EVM", "definition": "以太坊的栈式虚拟机，按 Gas 计量执行合约字节码。"},
+        {"term": "Gas", "definition": "衡量计算与存储开销的计量单位，也是防止滥用的付费机制。"},
+        {"term": "ABI", "definition": "描述合约函数与参数编码方式的接口定义，供链下调用使用。"},
+        {"term": "事件日志", "definition": "合约执行时写入的日志记录，供链下服务索引和通知。"},
+        {"term": "nonce", "definition": "账户已发送交易的数量计数，用于排序并防止重放。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "以太坊交易执行失败时，Gas 会怎样处理？", "options": ["状态回滚，但已消耗的 Gas 不退", "状态回滚，Gas 全额退还", "状态保留，Gas 全额退还", "状态与 Gas 都由矿工决定"], "answer": 0, "explanation": "执行失败会回滚状态变更，已消耗的计算资源仍需付费，因此 Gas 不退；这条规则让攻击者无法用失败交易免费占用网络资源。"},
+        {"type": "single", "question": "nonce 在账户模型里的主要作用是什么？", "options": ["标记交易顺序并防止重放", "记录账户余额的变化历史", "加密交易内容防止泄露", "计算合约存储的哈希根"], "answer": 0, "explanation": "每个账户的 nonce 随交易递增，节点据此排序并拒绝重复交易；它不负责加密，也不直接表示余额或存储状态。"},
+        {"type": "multi", "question": "以下哪些做法能降低合约的 Gas 成本？（多选）", "options": ["减少不必要的存储写入", "把重计算移到链下并用事件记录结果", "把循环上限写成无限大以复用逻辑", "用批量任务代替单笔大循环"], "answers": [0, 1, 3], "answer": 0, "explanation": "存储写入与循环最耗 Gas，减少写入、链下计算、分批处理都能显著降本；而放开循环上限会让交易更容易超出区块 Gas 上限直接失败。"},
+        {"type": "order", "question": "请按合约从开发到对账的顺序排列步骤。", "options": ["订阅事件并写入链下索引", "编写并编译 Solidity 合约", "部署到测试网获得合约地址", "按 ABI 发起交易调用"], "correct_order": [1, 2, 3, 0], "answer": 0, "explanation": "先写合约并编译，再部署拿地址，然后按 ABI 调用，最后订阅事件做链下索引；没有地址就无法调用，没有交易也不会产生可索引的事件。"},
+        {"type": "debug", "question": "阅读合约片段，哪项判断正确？", "options": ["只有 owner 能调用 reset，increment 任何人可调用", "increment 只有 owner 能调用", "reset 没有权限限制", "count 变量无法被链下读取"], "answer": 0, "code": "address public immutable owner;\nconstructor() { owner = msg.sender; }\nfunction increment() external { count += 1; }\nfunction reset() external { require(msg.sender == owner, \"not owner\"); count = 0; }", "language": "solidity", "explanation": "构造函数记录部署者，reset 用 require 校验调用者，increment 没有任何限制；public 状态变量会自动生成读取函数，链下可以查询 count 值。"}
+      ],
+      "practice": [
+        "给示例合约加一个 pause 开关，只有 owner 可以暂停 increment。",
+        "在测试网部署合约并用脚本完成一次调用，记录交易哈希与事件内容。",
+        "比较三次调用 increment 的 Gas 消耗，解释差异来源。"
+      ],
+      "refs": [
+        {"name": "Ethereum 开发者文档", "url": "https://ethereum.org/zh/developers/docs/"},
+        {"name": "Solidity 官方文档", "url": "https://docs.soliditylang.org/"},
+        {"name": "Ethereum EVM 说明", "url": "https://ethereum.org/zh/developers/docs/evm/"}
+      ],
+      "english": "Ethereum replaces UTXOs with accounts and executes smart contracts on the EVM. This lesson explains state transitions, gas metering, Solidity structure, ABI calls and event indexing, then shows how to reason about failure rollback.",
+      "reviewPoints": [
+        "能区分外部账户与合约账户，说明 nonce 与余额的作用。",
+        "能解释 Gas 在失败执行中的去留规则。",
+        "能设计一个带权限和事件的合约接口。"
+      ]
+    }
+  ]
+}

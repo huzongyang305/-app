@@ -1,0 +1,228 @@
+{
+  "generated_at": "2026-10-07T09:54:52.884053Z",
+  "dry_run": false,
+  "changed_lessons": 44,
+  "removed_sentences": 484,
+  "details": [
+    {
+      "lesson_id": "html_tags_intro",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "computer_organization_intro",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "binary_intro",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "fundamentals_embedded_iot",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "fundamentals_pipeline",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "fundamentals_simd",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "fundamentals_cache_coherence",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "fundamentals_architecture_case",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "algorithm_intro",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "linear_search_intro",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "algo_topological",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "algo_np_approximation",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "algo_computational_geometry",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "algo_persistent_parallel",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "network_layers_intro",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "network_attacks",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "network_nat_vpn",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "sql_table_intro",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "sql_query_intro",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "db_postgresql_deep",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "db_time_series",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "db_migration_governance",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "db_permissions_security",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "db_backup_recovery",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "scheduling",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "process_thread_intro",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "os_io_scheduling",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "os_cgroups_namespaces",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "os_linux_troubleshooting",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "cli_intro",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "debugging",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "messaging_events",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "distributed_id",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "design_patterns",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "se_postmortem",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "math_set_function_intro",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "project_network_capture_analysis",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "project_database_tuning",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "project_security_lab",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "project_algorithm_engineering",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "project_mobile_offline_app",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "project_concurrency_runtime",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "project_devops_pipeline",
+      "removed_sentences": 11,
+      "lines": 1
+    },
+    {
+      "lesson_id": "project_data_etl",
+      "removed_sentences": 11,
+      "lines": 1
+    }
+  ]
+}

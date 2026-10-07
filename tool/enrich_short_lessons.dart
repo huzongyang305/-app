@@ -47,13 +47,9 @@ void main(List<String> args) {
       if (!file.existsSync()) continue;
       final markdown = file
           .readAsStringSync()
-          .replaceFirst(
-            RegExp(r'## 工程化精练：决策、失败与验证[\s\S]*$'),
-            '',
-          )
+          .replaceFirst(RegExp(r'## 工程化精练：决策、失败与验证[\s\S]*$'), '')
           .trimRight();
-      final title =
-          ((lesson['title'] as Map?)?['zh'] ?? id).toString().trim();
+      final title = ((lesson['title'] as Map?)?['zh'] ?? id).toString().trim();
       final isIntro =
           title.contains('入门') || title.contains('基础') || title.contains('初识');
       final target = languageCategories.contains(categoryId) && isIntro
@@ -100,9 +96,11 @@ String _buildSection(
   final buffer = StringBuffer()
     ..writeln(sectionHeading)
     ..writeln()
-    ..writeln('这一章把「$title」从“看懂”推进到“能判断、能验证、能排错”。'
-        '所有判断都围绕$primary、$secondary与$tertiary展开，'
-        '并与前文的示例、测验和失败现场互相对照。')
+    ..writeln(
+      '这一章把「$title」从“看懂”推进到“能判断、能验证、能排错”。'
+      '所有判断都围绕$primary、$secondary与$tertiary展开，'
+      '并与前文的示例、测验和失败现场互相对照。',
+    )
     ..writeln();
 
   final budget = deficit + 700;
@@ -159,15 +157,19 @@ void _writeAlgorithm(
     ..writeln()
     ..writeln('| 步骤 | 要回答的问题 | 判断依据 | 记录什么 |')
     ..writeln('| --- | --- | --- | --- |')
-    ..writeln('| 1. 定目标 | 「$title」这一步要解决什么问题？ | 把$primary的目标写成一句可验证的结论 | 输入、约束、成功标准 |')
+    ..writeln(
+      '| 1. 定目标 | 「$title」这一步要解决什么问题？ | 把$primary的目标写成一句可验证的结论 | 输入、约束、成功标准 |',
+    )
     ..writeln('| 2. 找边界 | $secondary在什么条件下失效？ | 先列空值、极值、重复和失败路径 | 反例与触发条件 |')
     ..writeln('| 3. 跑基线 | 原始示例的真实输出是什么？ | 命令、版本和环境必须可复现 | 命令、输出、耗时 |')
     ..writeln('| 4. 只改一处 | 把$tertiary换成另一种取值会怎样？ | 预测写在运行之前 | 预测与实际的差异 |')
     ..writeln('| 5. 回写结论 | 结论能否被他人复现？ | 把判断写成清单或测试 | 结论、证据、遗留问题 |')
     ..writeln()
-    ..writeln('这张表的用法不是从上到下浏览，而是每次只填一行：先用「$title」'
-        '前文的示例验证第 3 行，再故意破坏一个条件验证第 2 行。'
-        '当你能在不看解析的情况下说出$primary的判断依据，才算真正掌握本课。')
+    ..writeln(
+      '这张表的用法不是从上到下浏览，而是每次只填一行：先用「$title」'
+      '前文的示例验证第 3 行，再故意破坏一个条件验证第 2 行。'
+      '当你能在不看解析的情况下说出$primary的判断依据，才算真正掌握本课。',
+    )
     ..writeln();
   // 按预算追加深度段落：每条都包含本课标题，避免跨课程重复。
   final fillers = <String>[
@@ -216,8 +218,10 @@ void _writeBudgeted(
     round++;
     if (written < budget) {
       buffer
-        ..writeln('> 第 ${round + 1} 轮复核「$title」：把上面的结论逐条改写为可验证的问题，'
-            '并记录仍不确定的部分。')
+        ..writeln(
+          '> 第 ${round + 1} 轮复核「$title」：把上面的结论逐条改写为可验证的问题，'
+          '并记录仍不确定的部分。',
+        )
         ..writeln();
       written += 60;
     }
@@ -281,10 +285,14 @@ void _writeFailureTable(
   }
   buffer
     ..writeln('| 结果在两次运行之间不一致 | 隐藏状态、并发或环境差异 | 固定版本与输入，记录随机因素 | 连续运行三次得到同一结论 |')
-    ..writeln('| 单次结果正确但规模一大就失效 | 只测了正常路径，没有覆盖边界 | 把数据量或并发度提高一个数量级 | 记录边界值、耗时与失败率 |')
+    ..writeln(
+      '| 单次结果正确但规模一大就失效 | 只测了正常路径，没有覆盖边界 | 把数据量或并发度提高一个数量级 | 记录边界值、耗时与失败率 |',
+    )
     ..writeln()
-    ..writeln('排错顺序固定为：先复现，再缩小输入，然后只改一个条件，最后把结论写成回归用例。'
-        '对「$title」来说，任何不能复现的“修好了”都不算完成。')
+    ..writeln(
+      '排错顺序固定为：先复现，再缩小输入，然后只改一个条件，最后把结论写成回归用例。'
+      '对「$title」来说，任何不能复现的“修好了”都不算完成。',
+    )
     ..writeln();
 }
 
@@ -307,9 +315,11 @@ void _writeChecklist(
     ..writeln('| 能排错 | 至少制造并修复一个失败 | 错误信息与修复步骤 |')
     ..writeln('| 能迁移 | 把${terms.join('、')}用到新场景 | 一个自选练习的结论 |')
     ..writeln()
-    ..writeln('完成标准：能不看解析说清「$title」全部自测题的依据，'
-        '并且至少有一条$primary相关的结论经过真实运行验证。'
-        '如果某一步只停留在“感觉懂了”，就把它写成下一轮针对「$title」的最小验证任务。');
+    ..writeln(
+      '完成标准：能不看解析说清「$title」全部自测题的依据，'
+      '并且至少有一条$primary相关的结论经过真实运行验证。'
+      '如果某一步只停留在“感觉懂了”，就把它写成下一轮针对「$title」的最小验证任务。',
+    );
 }
 
 void _writeExtraPractice(
@@ -326,8 +336,10 @@ void _writeExtraPractice(
     ..writeln()
     ..writeln('### 五、把结论写成可检查的证据')
     ..writeln()
-    ..writeln('学习「$title」时，最容易出现的情况是“听过、看懂了，但换一个输入就说不清”。'
-        '下面把$primary与$secondary放进一条可检查的证据链：每一句结论都要能回答“从哪里来、在什么条件下成立、失败时怎么发现”。')
+    ..writeln(
+      '学习「$title」时，最容易出现的情况是“听过、看懂了，但换一个输入就说不清”。'
+      '下面把$primary与$secondary放进一条可检查的证据链：每一句结论都要能回答“从哪里来、在什么条件下成立、失败时怎么发现”。',
+    )
     ..writeln()
     ..writeln('| 证据类型 | 本课要求 | 不合格的表现 |')
     ..writeln('| --- | --- | --- |')
@@ -337,14 +349,18 @@ void _writeExtraPractice(
     ..writeln('| 失败证据 | 故意制造错误并记录恢复步骤 | 只测正常路径，失败时靠猜 |')
     ..writeln('| 迁移证据 | 把$secondary用到自选场景 | 换一个例子就完全套不上 |')
     ..writeln()
-    ..writeln('举例：$sample。'
-        '把这个结论代回「$title」的正文，找出它对应的输入、处理步骤与输出；'
-        '再换掉其中一个条件，观察结论是否仍然成立。'
-        '能完成这一步，才说明这条知识已经从“记忆”变成“可用的判断”。')
+    ..writeln(
+      '举例：$sample。'
+      '把这个结论代回「$title」的正文，找出它对应的输入、处理步骤与输出；'
+      '再换掉其中一个条件，观察结论是否仍然成立。'
+      '能完成这一步，才说明这条知识已经从“记忆”变成“可用的判断”。',
+    )
     ..writeln()
-    ..writeln('最后留一个自检问题：如果只能保留三条笔记，你会写下哪三句？'
-        '把答案限定为「$title」中的可验证结论，并给每条结论配一个反例。'
-        '这三句加上对应反例，就是本课最值得带入后续课程的复习材料。');
+    ..writeln(
+      '最后留一个自检问题：如果只能保留三条笔记，你会写下哪三句？'
+      '把答案限定为「$title」中的可验证结论，并给每条结论配一个反例。'
+      '这三句加上对应反例，就是本课最值得带入后续课程的复习材料。',
+    );
 }
 
 String? _stringOption(List<String> args, String prefix) {

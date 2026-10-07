@@ -1,0 +1,198 @@
+{
+  "lessons": [
+    {
+      "id": "gamedev_game_loop",
+      "category": "gamedev",
+      "title": {"zh": "游戏循环与帧时间", "en": "Game Loop and Frame Timing"},
+      "summary": {"zh": "从帧预算、固定时间步与插值讲到卡顿定位与追帧上限。", "en": "Cover frame budgets, fixed timestep, interpolation and stutter analysis."},
+      "keywords": ["游戏循环", "固定时间步", "帧预算", "垂直同步", "插值"],
+      "difficulty": "基础",
+      "minutes": 30,
+      "order": 1,
+      "image": {"title": "一帧内的更新与渲染路径", "flow": ["采集输入", "固定步长更新物理", "插值后渲染", "呈现并等待垂直同步"]},
+      "goals": [
+        "能解释固定时间步与可变时间步各自的代价。",
+        "能算出目标帧率下的帧预算，并指出超支发生在哪一段。",
+        "能处理长时间停顿后的追帧问题，避免一次卡顿引发连锁卡顿。"
+      ],
+      "prerequisitesText": [
+        "知道帧率与显示器刷新率的关系。",
+        "能用任意语言写循环、函数与结构体。",
+        "了解向量与简单运动学概念即可，不需要高等数学。"
+      ],
+      "concepts": [
+        {
+          "name": "帧预算与刷新率",
+          "plain": "帧预算是一帧允许消耗的时间上限：60 FPS 约 16.7 毫秒，120 FPS 约 8.3 毫秒。",
+          "mechanism": "垂直同步把呈现时机对齐到显示刷新，游戏必须在下一帧开始前完成输入、更新与渲染，否则就会掉帧或撕裂。",
+          "example": "把一帧的输入、物理、逻辑与渲染耗时分别计时，画成堆叠柱状图找出最粗的一段。",
+          "boundary": "帧预算要用最坏情况衡量：一次垃圾回收或一次资源加载就可能吃掉整帧时间，平均值好看并不代表不卡顿。",
+          "engineering": "把帧时间与各阶段耗时打成采样日志，发布前用目标机型跑一遍长时压测。"
+        },
+        {
+          "name": "固定时间步与累积器",
+          "plain": "物理与逻辑用固定步长推进，渲染帧率可以浮动，二者通过时间累积器衔接。",
+          "mechanism": "每帧把真实耗时累加到 accumulator，只要它超过固定步长就执行一次更新并减去步长，从而让模拟结果与帧率无关。",
+          "example": "把步长设为 1/60 秒，人为把渲染帧率降到 30 FPS，观察物体运动轨迹是否仍然一致。",
+          "boundary": "步长过大时高速物体可能穿过障碍，步长过小则更新次数与开销飙升，需要按游戏类型取舍。",
+          "engineering": "固定步长写进配置并记录在存档里，避免版本变更后回放或录像结果不一致。"
+        },
+        {
+          "name": "插值与渲染解耦",
+          "plain": "渲染时用上一帧与当前帧状态做插值，能在固定步长下获得平滑画面。",
+          "mechanism": "累积器剩余比例 alpha 表示当前时刻落在两次更新之间的位置，渲染位置取前后两个状态的加权平均。",
+          "example": "把 alpha 从 0 调到 1，观察渲染位置从上一状态平滑过渡到当前状态。",
+          "boundary": "插值只影响显示，不能写回模拟状态，否则会把渲染误差累积进物理世界。",
+          "engineering": "渲染层只读快照，避免渲染代码直接修改模拟数据，这样回放与录像也能复用同一份状态。"
+        },
+        {
+          "name": "追帧上限与卡顿定位",
+          "plain": "长时间停顿时累积器会积压大量待更新步数，必须设置每帧追帧上限。",
+          "mechanism": "调试器暂停、资源加载或断点会让单帧耗时远超预算，若不限制追帧次数，程序会陷入越追越慢的死亡螺旋。",
+          "example": "人为暂停两秒后恢复，观察是否有追帧上限；没有上限时画面会连续卡顿数秒。",
+          "boundary": "直接丢弃累积时间会让物理时间与真实时间脱钩，因此要记录丢弃量并在设计上接受这一偏差。",
+          "engineering": "把追帧上限、丢弃时长与掉帧计数写入日志，线上就能区分偶发卡顿与持续超支。"
+        }
+      ],
+      "steps": ["给一帧各阶段加计时", "确定固定步长与追帧上限", "把渲染与更新解耦", "用插值平滑显示", "压测并复盘最慢的一帧"],
+      "code": {
+        "language": "python",
+        "snippet": "STEP = 1 / 60          # 固定步长：物理与逻辑按 60 Hz 推进\nMAX_STEPS = 5          # 每帧最多追 5 步，避免死亡螺旋\n\ndef frame(dt, state):\n    state.accumulator += dt\n    steps = 0\n    while state.accumulator >= STEP and steps < MAX_STEPS:\n        previous = state.snapshot()\n        state.step(STEP)               # 固定步长更新物理\n        state.accumulator -= STEP\n        steps += 1\n    if steps == MAX_STEPS:\n        state.dropped += state.accumulator   # 记录被丢弃的时间\n        state.accumulator = 0.0\n    alpha = state.accumulator / STEP         # 插值比例，只用于渲染\n    render(state.previous, state.current, alpha)",
+        "walkthrough": "代码先把真实耗时累加，再按固定步长执行若干次更新，超过追帧上限就丢弃剩余时间并记账；渲染阶段只用插值比例读状态，不修改模拟数据。",
+        "expected_output": "在 30 FPS 与 120 FPS 两种渲染帧率下，物体运动速度一致；人为暂停两秒后不会连续追帧数秒，而是记录一次丢弃。"
+      },
+      "faults": [
+        {"topic": "用渲染帧的时间直接推进物理", "wrong": "把每帧真实耗时直接当作固定步长传给物理", "fix": "物理用固定步长推进，真实耗时只累加进累积器"},
+        {"topic": "没有追帧上限", "wrong": "让累积器把积压的时间一次全部追完", "fix": "设置每帧追帧上限，超出部分记录并丢弃"},
+        {"topic": "在渲染阶段回写模拟状态", "wrong": "渲染时把插值结果写回物体位置", "fix": "渲染只读快照，状态修改只在固定步长更新里进行"}
+      ],
+      "glossary": [
+        {"term": "帧预算", "definition": "单帧允许消耗的时间上限，由目标帧率决定。"},
+        {"term": "固定时间步", "definition": "物理与逻辑使用恒定步长推进的模拟方式。"},
+        {"term": "累积器", "definition": "记录尚未被固定步长消费的真实时间余量。"},
+        {"term": "插值", "definition": "用前后两个状态与比例参数生成平滑显示结果。"},
+        {"term": "追帧", "definition": "在单帧内补执行多次更新以追上真实时间。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "60 FPS 下单帧时间预算大约是多少？", "options": ["16.7 毫秒", "8.3 毫秒", "33.3 毫秒", "60 毫秒"], "answer": 0, "explanation": "1 秒除以 60 约等于 16.7 毫秒，这就是输入、更新与渲染全部要挤进的时间窗；超过它就只能在下一帧补做，表现为掉帧或输入延迟。"},
+        {"type": "single", "question": "固定时间步方案里，累积器的作用是什么？", "options": ["记录尚未被固定步长消费的真实时间", "直接保存物体的最终位置", "统计渲染调用的次数", "保存玩家输入的历史记录"], "answer": 0, "explanation": "累积器把真实耗时攒起来，攒够一个步长就执行一次更新；它让物理推进次数与实际帧率解耦，从而保证不同帧率下运动结果一致。"},
+        {"type": "multi", "question": "以下哪些做法能降低卡顿风险？（多选）", "options": ["给一帧各阶段加计时","设置每帧追帧上限","让渲染阶段回写物理状态","压测最慢的一帧而不是只看平均值"], "answers": [0, 1, 3], "answer": 0, "explanation": "分阶段计时才能定位超支环节，追帧上限避免死亡螺旋，按最坏帧压测才能发现真实卡顿；渲染回写物理状态会把显示误差累积进模拟，属于错误做法。"},
+        {"type": "order", "question": "请按一帧内从采集输入到呈现的典型顺序排列。", "options": ["呈现并等待垂直同步","采集输入","按固定步长更新物理与逻辑","插值后渲染"], "correct_order": [1, 2, 3, 0], "answer": 0, "explanation": "顺序是先读输入、再按固定步长推进模拟、然后插值渲染、最后呈现并等待刷新；把渲染放在更新之前会让画面永远慢一步。"},
+        {"type": "code", "question": "阅读这段游戏循环，下面哪项判断是正确的？", "options": ["累积器超过步长时才执行更新，且每帧追帧次数有上限", "每帧固定只更新一次，与真实耗时无关","渲染阶段会修改物体位置","accumulator 永远为 0，因此不需要插值"], "answer": 0, "code": "state.accumulator += dt\nsteps = 0\nwhile state.accumulator >= STEP and steps < MAX_STEPS:\n    state.step(STEP)\n    state.accumulator -= STEP\n    steps += 1\nalpha = state.accumulator / STEP\nrender(state, alpha)", "language": "python", "explanation": "这段游戏循环用累积器判断是否该推进固定步长，并用 MAX_STEPS 限制单帧追帧次数，超出的时间被丢弃并记账；渲染只读状态与插值比例，不会回写物理数据。"}
+      ],
+      "practice": [
+        "给一个最小示例加上分阶段计时，找出最慢的一帧并把耗时画成柱状图。",
+        "把渲染帧率限制到 30 FPS，验证物体运动速度与 60 FPS 时是否一致。",
+        "人为暂停两秒后恢复，记录追帧次数与被丢弃的时间。"
+      ],
+      "refs": [
+        {"name": "Game Programming Patterns：Game Loop", "url": "https://gameprogrammingpatterns.com/game-loop.html"},
+        {"name": "Fix Your Timestep", "url": "https://gafferongames.com/post/fix_your_timestep/"},
+        {"name": "MDN：Anatomy of a video game", "url": "https://developer.mozilla.org/en-US/docs/Games/Anatomy"}
+      ],
+      "english": "A game loop decides how simulation time advances. Use a fixed timestep for physics and logic, accumulate real elapsed time, and cap how many catch-up steps a single frame may run. Render with interpolation only, never write interpolated values back into simulation state, and log phase timings so stutter can be traced to a concrete stage.",
+      "reviewPoints": [
+        "能算出目标帧率下的帧预算并说出各阶段占比。",
+        "能说明固定步长与插值各自解决什么问题。",
+        "能举出一个不设追帧上限导致连续卡顿的例子。"
+      ]
+    },
+    {
+      "id": "gamedev_2d_rendering",
+      "category": "gamedev",
+      "title": {"zh": "2D 渲染管线与坐标系", "en": "2D Rendering Pipeline and Coordinates"},
+      "summary": {"zh": "从世界坐标、精灵批处理与纹理图集讲到相机变换与绘制顺序。", "en": "Cover world coordinates, sprite batching, atlases, camera transforms and draw order."},
+      "keywords": ["坐标系", "精灵", "批处理", "纹理图集", "相机"],
+      "difficulty": "进阶",
+      "minutes": 35,
+      "order": 2,
+      "image": {"title": "从世界坐标到屏幕像素的变换链", "flow": ["世界坐标", "相机变换", "视口裁剪", "按层排序", "批处理提交绘制"]},
+      "goals": [
+        "能说清世界坐标、相机坐标与屏幕坐标之间的换算关系。",
+        "能解释批处理为什么要求相邻绘制共享纹理与状态。",
+        "能按层与深度确定绘制顺序，避免透明度排序错误。"
+      ],
+      "prerequisitesText": [
+        "了解二维向量与矩阵乘法。",
+        "知道屏幕像素坐标通常以左上角为原点。",
+        "能读懂一段绘制调用代码。"
+      ],
+      "concepts": [
+        {
+          "name": "世界坐标、相机坐标与屏幕坐标",
+          "plain": "世界坐标描述物体在游戏世界中的位置，相机坐标是相对相机的偏移，屏幕坐标才对应像素。",
+          "mechanism": "相机变换通常是平移加缩放，有时再加旋转；变换后落在视口外的物体被裁剪，剩余部分映射到屏幕像素。",
+          "example": "把相机位置向右移动 100 像素，观察世界坐标不变的物体在屏幕坐标上左移同样的距离。",
+          "boundary": "混用坐标系会让输入与碰撞对不上：鼠标点击给的是屏幕坐标，碰撞检测用的是世界坐标。",
+          "engineering": "在代码层区分坐标类型，坐标转换集中到相机对象里，避免各处手写偏移量。"
+        },
+        {
+          "name": "精灵与批处理",
+          "plain": "精灵是带位置、尺寸与纹理区域的矩形，批处理把多次绘制合并成更少的提交。",
+          "mechanism": "绘制调用之间的纹理切换与状态切换开销最大，把使用同一纹理的精灵连续提交就能显著减少调用次数。",
+          "example": "统计一帧的绘制调用次数，把同一图集的精灵排在一起后再统计一次，比较两者的差距。",
+          "boundary": "批处理不是免费的：需要在内存中组织顶点数据，静态场景收益明显，频繁变动的精灵可能得不偿失。",
+          "engineering": "给渲染层加上绘制调用计数器，把调用次数纳入帧预算，而不是只盯帧率。"
+        },
+        {
+          "name": "纹理图集与采样",
+          "plain": "纹理图集把多张图片打包进一张大图，减少切换并利于批处理。",
+          "mechanism": "每个精灵记录图集内的子矩形，采样时按子矩形取纹理坐标；图集边缘需要留出间距以避免相邻像素渗色。",
+          "example": "把两张小图并进同一图集，观察绘制调用次数是否下降与边缘是否出现渗色。",
+          "boundary": "图集过大会超出部分设备的纹理尺寸上限，过小又会让频繁使用的精灵分散在多张图里。",
+          "engineering": "按场景或层级分组打包图集，并在构建期检查尺寸上限与留白参数。"
+        },
+        {
+          "name": "相机与绘制顺序",
+          "plain": "绘制顺序决定遮挡与透明混合结果，通常按层、再按深度、最后按坐标排序。",
+          "mechanism": "不透明物体可以使用深度缓冲，半透明物体必须按从远到近绘制才能得到正确的混合结果。",
+          "example": "把两个半透明精灵的绘制顺序交换，观察重叠区域的颜色变化。",
+          "boundary": "同一帧内频繁改变排序键会让排序成本上升，动态层级还会引发每帧重排。",
+          "engineering": "把排序键设计成整数组合（层、深度、坐标），排序结果可预测且便于调试。"
+        }
+      ],
+      "steps": ["确定坐标系与原点约定", "把世界坐标转换为屏幕坐标", "按纹理与状态组织批处理", "按层与深度排序绘制", "统计绘制调用并优化"],
+      "code": {
+        "language": "javascript",
+        "snippet": "// 相机把世界坐标换算成屏幕坐标：先平移，再缩放\nfunction worldToScreen(point, camera) {\n  return {\n    x: (point.x - camera.x) * camera.zoom + camera.viewportWidth / 2,\n    y: (point.y - camera.y) * camera.zoom + camera.viewportHeight / 2,\n  };\n}\n\n// 同一图集的精灵连续提交，减少纹理切换\nfunction drawSprites(sprites, atlas, ctx, camera) {\n  ctx.drawImage(atlas.image, atlas.x, atlas.y, atlas.w, atlas.h, 0, 0, 0, 0);\n  const ordered = sprites.slice().sort((a, b) => a.layer - b.layer || a.depth - b.depth);\n  let drawCalls = 0;\n  for (const sprite of ordered) {\n    const p = worldToScreen(sprite.position, camera);\n    ctx.drawImage(atlas.image, sprite.frame.x, sprite.frame.y, sprite.frame.w, sprite.frame.h, p.x, p.y, sprite.size.w, sprite.size.h);\n    drawCalls++;\n  }\n  return drawCalls;\n}",
+        "walkthrough": "示例把坐标换算收敛到 worldToScreen，绘制顺序按层与深度排序后再提交，并返回绘制调用次数用于优化对比；真实项目里这一步通常由渲染器统一收集并提交。",
+        "expected_output": "相机平移后物体在屏幕上的位置相应移动；排序后半透明精灵的遮挡关系正确；绘制调用次数能被计数并用于对比优化前后。"
+      },
+      "faults": [
+        {"topic": "输入坐标与世界坐标混用", "wrong": "直接把鼠标屏幕坐标当作世界坐标参与碰撞", "fix": "先把屏幕坐标反变换到世界坐标再做碰撞与拾取"},
+        {"topic": "逐精灵切换纹理", "wrong": "每个精灵都从不同小图绘制，导致大量状态切换", "fix": "把常用精灵打进同一图集并按纹理排序提交"},
+        {"topic": "半透明物体排序错误", "wrong": "按加入顺序绘制半透明精灵", "fix": "半透明物体从远到近绘制，排序键包含层与深度"}
+      ],
+      "glossary": [
+        {"term": "世界坐标", "definition": "描述物体在游戏世界中位置的统一坐标系。"},
+        {"term": "屏幕坐标", "definition": "以像素为单位、原点通常在左上角的显示坐标系。"},
+        {"term": "精灵", "definition": "带位置与纹理区域的二维可绘制单元。"},
+        {"term": "纹理图集", "definition": "把多张小图打包成一张大图的资源组织方式。"},
+        {"term": "绘制调用", "definition": "向图形接口提交一次绘制的操作，次数越少开销越低。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "把鼠标点击位置用于地图碰撞前，必须先做什么？", "options": ["把屏幕坐标反变换成世界坐标","把世界坐标直接当成像素坐标","把相机缩放固定为 1","关闭垂直同步"], "answer": 0, "explanation": "鼠标事件给出的是屏幕像素坐标，而碰撞与地图数据位于世界坐标系，因此必须用相机的逆变换把点击位置换算回去，否则缩放或平移相机会让拾取位置整体偏移。"},
+        {"type": "single", "question": "批处理能提升 2D 渲染性能的主要原因是？", "options": ["减少了纹理与状态的切换次数","减少了精灵的数量","自动降低了纹理分辨率","免去了坐标变换"], "answer": 0, "explanation": "绘制调用之间的纹理与状态切换是主要开销，把使用同一图集的精灵连续提交可以显著降低调用次数；精灵数量、纹理分辨率与坐标变换并不会因此消失。"},
+        {"type": "multi", "question": "以下哪些做法有助于正确渲染半透明精灵？（多选）", "options": ["按层与深度生成稳定的排序键","半透明物体从远到近绘制","把半透明与不透明物体混在同一批里任意提交","用绘制调用计数器观察提交次数"], "answers": [0, 1, 3], "answer": 0, "explanation": "半透明混合依赖绘制顺序，因此需要稳定排序键并按从远到近提交；把半透明与不透明物体任意混排会得到随机的混合结果，而计数器能帮助确认优化是否真正发生。"},
+        {"type": "order", "question": "请按世界坐标到像素的变换顺序排列。", "options": ["映射到屏幕像素","相机平移与缩放","视口裁剪","按层与深度排序提交"], "correct_order": [1, 2, 3, 0], "answer": 0, "explanation": "坐标先经相机变换进入相机空间，再被视口裁剪，随后与其它可见元素一起排序提交，最后映射为屏幕像素；顺序颠倒会导致裁剪范围与排序结果都不正确。"},
+        {"type": "code", "question": "阅读这段绘制代码，下面哪项判断是正确的？", "options": ["坐标换算集中在 worldToScreen，绘制按层与深度排序后提交","每个精灵都会重新创建一张纹理","排序键只使用精灵的尺寸","绘制调用次数无法被统计"], "answer": 0, "code": "function worldToScreen(point, camera) {\n  return {\n    x: (point.x - camera.x) * camera.zoom + camera.viewportWidth / 2,\n    y: (point.y - camera.y) * camera.zoom + camera.viewportHeight / 2,\n  };\n}\nconst ordered = sprites.sort((a, b) => a.layer - b.layer || a.depth - b.depth);", "language": "javascript", "explanation": "这段 2D 渲染代码把坐标换算集中在 worldToScreen，绘制前按层与深度排序，绘制调用次数由调用方统计；把坐标换算散落到各处或按加入顺序提交，都是造成拾取偏移与遮挡错误的常见原因。"}
+      ],
+      "practice": [
+        "实现相机平移与缩放，验证世界坐标不变的物体在屏幕上的位置变化符合预期。",
+        "把若干精灵打进一张图集并统计优化前后的绘制调用次数。",
+        "构造两个半透明精灵重叠的场景，验证排序前后的差异。"
+      ],
+      "refs": [
+        {"name": "MDN：Canvas 2D 绘图教程", "url": "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial"},
+        {"name": "Godot 2D 变换文档", "url": "https://docs.godotengine.org/en/stable/tutorials/2d/2d_transforms.html"},
+        {"name": "Unity 精灵与图集文档", "url": "https://docs.unity3d.com/Manual/Sprites.html"}
+      ],
+      "english": "Keep world, camera and screen spaces strictly separate: input arrives in screen pixels and must be inverse-transformed before collision or picking. Organise sprites into atlases so consecutive draws share texture and state, sort transparent elements back to front with a stable key, and count draw calls per frame to verify that an optimisation actually reduced submissions.",
+      "reviewPoints": [
+        "能写出屏幕坐标到世界坐标的换算步骤。",
+        "能说明批处理收益来自哪里、代价是什么。",
+        "能判断一组半透明精灵的正确绘制顺序。"
+      ]
+    }
+  ]
+}

@@ -49,7 +49,8 @@ String _replacementFor(int index, String title, List<dynamic>? rawKeywords) {
 void main(List<String> args) {
   final apply = args.contains('--apply');
   final manifestFile = File(manifestPath);
-  final root = jsonDecode(manifestFile.readAsStringSync()) as Map<String, dynamic>;
+  final root =
+      jsonDecode(manifestFile.readAsStringSync()) as Map<String, dynamic>;
   var hits = 0;
   var markdownHits = 0;
   var touchedLessons = 0;
@@ -61,7 +62,8 @@ void main(List<String> args) {
           .toString()
           .trim();
       var lessonHits = 0;
-      for (final rawQuestion in (lesson['quiz'] as List<dynamic>? ?? const [])) {
+      for (final rawQuestion
+          in (lesson['quiz'] as List<dynamic>? ?? const [])) {
         final question = (rawQuestion as Map).cast<String, dynamic>();
         final explanation = (question['explanation'] ?? '').toString();
         if (explanation.isEmpty) continue;
@@ -102,7 +104,9 @@ void main(List<String> args) {
       for (var i = 0; i < patterns.length; i++) {
         final pattern = patterns[i];
         if (!markdown.contains(pattern)) continue;
-        final matches = RegExp(RegExp.escape(pattern)).allMatches(markdown).length;
+        final matches = RegExp(RegExp.escape(pattern))
+            .allMatches(markdown)
+            .length;
         markdown = markdown.replaceAll(
           pattern,
           _replacementFor(i, title, lesson['keywords'] as List<dynamic>?),

@@ -1,0 +1,198 @@
+{
+  "lessons": [
+    {
+      "id": "compiler_semantic_types",
+      "category": "compiler",
+      "title": {"zh": "语义分析与类型系统", "en": "Semantic Analysis and Type Systems"},
+      "summary": {"zh": "用符号表、作用域与类型规则解释「能编译」与「能运行」之间的检查层。", "en": "Explain symbol tables, scopes and typing rules that sit between parsing and execution."},
+      "keywords": ["符号表", "作用域", "类型检查", "类型推导", "语义错误"],
+      "difficulty": "进阶",
+      "minutes": 34,
+      "order": 3,
+      "prerequisites": ["compiler_lexer_parser"],
+      "image": {"title": "语义分析的关键结构", "flow": ["建立符号表", "解析名称绑定", "类型检查与推导", "生成带类型信息的树"]},
+      "goals": [
+        "能说明符号表在作用域嵌套下如何查找与遮蔽。",
+        "能写出基本表达式的类型规则并解释类型错误。",
+        "能区分静态检查与运行期错误的责任划分。"
+      ],
+      "prerequisitesText": [
+        "已理解语法树与递归下降解析。",
+        "熟悉至少一门静态类型语言的类型声明。",
+        "了解变量的声明、赋值与作用域概念。"
+      ],
+      "concepts": [
+        {
+          "name": "符号表与作用域链",
+          "plain": "符号表记录每个名字的含义，作用域决定同名符号谁生效；进入作用域压入一层，退出时弹出。",
+          "mechanism": "查找从最内层向外逐层搜索，内层声明遮蔽外层同名符号；函数参数与局部变量在同一层的处理顺序影响重定义判断。",
+          "example": "写一段包含全局变量与函数局部同名变量的程序，标出每一处引用的绑定目标。",
+          "boundary": "遮蔽会让读者误判引用对象，很多语言禁止或警告同层重复声明，但允许内层遮蔽。",
+          "engineering": "为每个符号记录声明位置与类型，报错时能指出冲突的两处位置。"
+        },
+        {
+          "name": "类型检查与类型推导",
+          "plain": "类型检查判断表达式是否符合类型规则，推导则在缺少显式标注时推断出类型。",
+          "mechanism": "自底向上为子表达式求类型，再按规则合并；数字与字符串相加这类不匹配在检查阶段直接报错。",
+          "example": "为 `let x = 1 + 2` 与 `let y = \"a\" + 1` 分别做推导，观察哪一处报错以及错误位置。",
+          "boundary": "推导越强实现的复杂度越高，泛型与子类型会让规则迅速膨胀，需要在表达力与可解释性之间取舍。",
+          "engineering": "错误信息要明确指出冲突的两侧类型与位置，必要时展示推导路径。"
+        },
+        {
+          "name": "静态检查与运行期契约",
+          "plain": "静态检查覆盖能在编译期确定的问题，其余留给运行期：数组越界、空引用与外部输入合法性通常属于后者。",
+          "mechanism": "类型系统把一部分错误提前，剩余错误靠断言、边界检查与异常处理覆盖；两者共同构成可靠性保障。",
+          "example": "对比一段类型正确但运行时会数组越界的代码，说明静态检查为什么无法覆盖它。",
+          "boundary": "过度依赖运行期检查会把错误推迟到用户侧，过度依赖静态检查会让表达变得僵硬。",
+          "engineering": "对外部输入做运行期校验，对内部接口用静态类型约束，边界处显式转换并记录失败原因。"
+        },
+        {
+          "name": "语义错误的诊断质量",
+          "plain": "未定义变量、重复声明、类型不匹配是三类高频语义错误，良好的诊断要指出位置、原因与修复方向。",
+          "mechanism": "分析器记录候选符号与作用域范围，报错时展示最近似名称或可选类型，帮助用户快速修正。",
+          "example": "故意把变量名拼错，观察编译器是否给出相似名称建议与声明位置。",
+          "boundary": "自动纠正有风险，猜测错误可能引入新的语义问题，通常只建议不自动修改。",
+          "engineering": "维护错误码与提示模板，重要错误附最小示例与文档链接，避免只报「类型错误」。"
+        }
+      ],
+      "steps": ["遍历语法树建立符号表", "解析名称绑定与作用域", "自底向上做类型检查", "输出带类型信息的语法树"],
+      "code": {
+        "language": "javascript",
+        "snippet": "// 极简作用域链：声明、查找与遮蔽\nclass Scope {\n  constructor(parent = null) {\n    this.parent = parent;\n    this.symbols = new Map();\n  }\n  declare(name, type, line) {\n    if (this.symbols.has(name)) {\n      throw new Error(`重复声明 ${name}，位置 第 ${line} 行`);\n    }\n    this.symbols.set(name, { type, line });\n  }\n  lookup(name) {\n    if (this.symbols.has(name)) return this.symbols.get(name);\n    if (this.parent) return this.parent.lookup(name);\n    throw new Error(`未定义的变量 ${name}`);\n  }\n}\n\nconst global = new Scope();\nglobal.declare('rate', 'number', 1);\nconst fn = new Scope(global);\nfn.declare('rate', 'number', 5);\nconsole.log('内层 rate 声明行:', fn.lookup('rate').line);\nconsole.log('外层 rate 声明行:', global.lookup('rate').line);",
+        "walkthrough": "Scope 通过 parent 形成作用域链，declare 检查同层重复声明，lookup 从内层向外查找；示例里内层 rate 遮蔽外层同名变量，两次查找得到不同声明行。",
+        "expected_output": "输出内层声明行 5 与外层声明行 1；若在同一层重复声明同名变量，会抛出重复声明错误并指出行号。"
+      },
+      "faults": [
+        {"topic": "符号表未按作用域分层", "wrong": "所有变量放进一个全局表，内层遮蔽外层时查找结果错误", "fix": "按作用域分层建表并沿父链查找，退出作用域时弹出该层"},
+        {"topic": "只报类型错误不报位置", "wrong": "错误信息只说类型不匹配，用户不知道是哪一行哪一处", "fix": "记录表达式的位置与两侧类型，报错时同时展示"},
+        {"topic": "把运行期错误当成编译期可查", "wrong": "认为类型正确就不会数组越界或空引用", "fix": "在边界处补充运行期校验与断言，明确哪些错误留给运行期"}
+      ],
+      "glossary": [
+        {"term": "符号表", "definition": "记录名字、类型与声明位置的数据结构，按作用域分层维护。"},
+        {"term": "作用域链", "definition": "从当前作用域向外的父级链条，用于解析名字绑定。"},
+        {"term": "类型检查", "definition": "验证表达式与声明是否符合类型规则的分析过程。"},
+        {"term": "类型推导", "definition": "在没有显式标注时根据上下文推断表达式类型。"},
+        {"term": "语义错误", "definition": "语法正确但含义不成立的问题，例如未定义变量与类型不匹配。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "内层作用域声明同名变量后，名字查找会发生什么？", "options": ["引用内层声明，外层被遮蔽", "直接报重复声明错误", "随机选择一层声明", "同时绑定两层声明"], "answer": 0, "explanation": "查找沿作用域链从内向外进行，内层声明优先命中，这就是遮蔽；是否允许同层重复声明与是否允许跨层遮蔽是两条不同的规则。"},
+        {"type": "single", "question": "下面哪一类错误通常无法靠静态类型检查发现？", "options": ["数组下标越界", "数字与字符串相加", "调用不存在的函数名", "参数个数不匹配"], "answer": 0, "explanation": "数组下标是否越界取决于运行期数据，除非类型系统引入长度信息；其余三类都能在编译期通过类型与符号检查发现。"},
+        {"type": "multi", "question": "一条高质量的语义错误信息应包含哪些内容？（多选）", "options": ["出错位置", "冲突的类型或候选名称", "修复方向或示例", "编译器的构建时间戳"], "answers": [0, 1, 2], "answer": 0, "explanation": "位置、冲突详情与修复方向直接帮助用户修改代码；构建时间戳与问题定位无关，只会增加噪声。"},
+        {"type": "order", "question": "请按语义分析的执行顺序排列步骤。", "options": ["输出带类型信息的语法树", "遍历语法树建立符号表", "自底向上做类型检查", "解析名称绑定与作用域"], "correct_order": [1, 3, 2, 0], "answer": 0, "explanation": "先建符号表，再解析绑定，然后做类型检查，最后输出带类型信息的树；绑定未完成就检查类型会出现未知名字的误报。"},
+        {"type": "debug", "question": "阅读作用域代码，哪项判断正确？", "options": ["lookup 会沿父链查找，因此内层遮蔽外层", "declare 允许同层重复声明并覆盖旧值", "lookup 只能查询当前层", "parent 为 null 时查找会返回 undefined 而不是报错"], "answer": 0, "code": "lookup(name) {\n  if (this.symbols.has(name)) return this.symbols.get(name);\n  if (this.parent) return this.parent.lookup(name);\n  throw new Error(`未定义的变量 ${name}`);\n}", "language": "javascript", "explanation": "lookup 先查当前层再沿父链向上，因此内层声明优先；declare 在发现同名符号时直接抛错，父链为空时会报未定义而不是返回空值。"}
+      ],
+      "practice": [
+        "为符号表加上「查找最近似名称」的提示功能，用于拼写错误。",
+        "为一段含遮蔽的程序画出作用域链，标注每处引用的绑定声明。",
+        "设计三条类型规则，写清前提、结论与报错信息。"
+      ],
+      "refs": [
+        {"name": "Crafting Interpreters：Resolving and Binding", "url": "https://craftinginterpreters.com/resolving-and-binding.html"},
+        {"name": "Type Systems（Luca Cardelli 综述）", "url": "https://www.cs.cmu.edu/~crary/819-f09/Cardelli97.pdf"}
+      ],
+      "english": "Semantic analysis binds names and checks types. This lesson builds a scope chain with shadowing, writes typing rules for expressions, separates static checks from runtime contracts, and shows how diagnostics point at both conflicting locations.",
+      "reviewPoints": [
+        "能解释作用域链与遮蔽的查找顺序。",
+        "能写出表达式类型规则并给出错误示例。",
+        "能区分静态检查与运行期校验的边界。"
+      ]
+    },
+    {
+      "id": "compiler_ir_optimization",
+      "category": "compiler",
+      "title": {"zh": "中间表示与优化", "en": "Intermediate Representations and Optimisation"},
+      "summary": {"zh": "从三地址码与控制流图出发，理解常量折叠、死代码消除与内联的边界。", "en": "From three-address code and control flow graphs to constant folding, DCE and inlining."},
+      "keywords": ["中间表示", "控制流图", "常量折叠", "死代码消除", "内联"],
+      "difficulty": "高级",
+      "minutes": 36,
+      "order": 4,
+      "prerequisites": ["compiler_semantic_types"],
+      "image": {"title": "中间表示与优化管线", "flow": ["生成三地址码", "构造控制流图", "迭代优化", "交给后端生成"]},
+      "goals": [
+        "能把一段表达式改写成三地址码并画出控制流图。",
+        "能说明常量折叠与死代码消除的前提条件。",
+        "能判断一次优化是否改变了程序语义。"
+      ],
+      "prerequisitesText": [
+        "已掌握语法树与类型检查的基本流程。",
+        "理解基本块与跳转的含义，能读简单的流程图。",
+        "知道浮点运算与整数运算在边界上的差异。"
+      ],
+      "concepts": [
+        {
+          "name": "三地址码与基本块",
+          "plain": "三地址码把每个运算限制为「一个结果、两个操作数」，便于分析；连续无跳转的指令构成基本块。",
+          "mechanism": "表达式被拆成临时变量序列，基本块以跳转或标号为边界，块之间形成控制流图。",
+          "example": "把 a = b * c + d 改写成三地址码，标出临时变量的定义与使用。",
+          "boundary": "临时变量过多会增加指令数，需要后续优化合并，但优化必须保持数据依赖不变。",
+          "engineering": "中间表示保留源码位置映射，便于优化后仍能给出原始行号的错误与调试信息。"
+        },
+        {
+          "name": "数据流分析与死代码消除",
+          "plain": "数据流分析判断某个定义会不会被后续使用；永远不会被使用的计算结果就是死代码。",
+          "mechanism": "活跃变量分析沿控制流反向传播使用信息，若某定义的结果此后不活跃即可删除。",
+          "example": "写一段给变量赋值但从未读取的代码，观察优化后指令被移除。",
+          "boundary": "带副作用的表达式不能因为结果未使用就删除，例如函数调用可能修改全局状态。",
+          "engineering": "把副作用信息显式标注在中间表示节点上，优化规则据此判断可删除性。"
+        },
+        {
+          "name": "常量折叠与传播",
+          "plain": "在编译期计算常量表达式，并把已知常量代入后续使用位置，减少运行期计算。",
+          "mechanism": "折叠要求运算语义与运行期一致，整数溢出、浮点舍入与除零行为都必须按语言规范处理。",
+          "example": "对 x = 2 * 3 + 1 做折叠与传播，观察生成指令数量的变化。",
+          "boundary": "若语言规定溢出行为依赖运行期平台，编译期折叠可能改变结果，必须按规范保守处理。",
+          "engineering": "优化规则附带前置条件与测试用例，涉及数值边界时宁可放弃优化。"
+        },
+        {
+          "name": "内联与优化顺序",
+          "plain": "内联把被调用函数的代码展开到调用点，为后续优化创造条件，但会增加代码体积与编译时间。",
+          "mechanism": "内联后常量参数可传播、分支可简化；优化是迭代过程，一次改写会触发新的优化机会。",
+          "example": "对一个只有一行返回的小函数做内联，比较内联前后的指令与执行时间。",
+          "boundary": "递归函数与体量大的函数内联会放大代码体积，需要阈值与收益评估。",
+          "engineering": "按固定顺序运行优化并设置收敛条件，保留开关便于定位优化引入的错误。"
+        }
+      ],
+      "steps": ["把语法树降级为三地址码", "按跳转切分基本块", "运行数据流分析与改写", "验证语义等价后交给后端"],
+      "code": {
+        "language": "python",
+        "snippet": "# 常量折叠 + 死代码消除的最小演示\nimport ast\n\ndef fold(node):\n    if isinstance(node, ast.BinOp) and isinstance(node.left, ast.Constant) and isinstance(node.right, ast.Constant):\n        value = eval(compile(ast.Expression(node), '<fold>', 'eval'))\n        return ast.Constant(value=value)\n    return node\n\ndef optimize(tree):\n    for index, stmt in enumerate(tree.body):\n        if isinstance(stmt, ast.Assign) and isinstance(stmt.value, ast.BinOp):\n            tree.body[index] = ast.Assign(targets=stmt.targets, value=fold(stmt.value))\n    return tree\n\nsource = 'x = 2 * 3 + 1'\ntree = ast.parse(source)\noptimize(tree)\nprint(ast.dump(tree.body[0], indent=2))\nprint('运行结果:', eval(compile(tree, '<opt>', 'exec'), {}) or {'x': 0}.get('x'))",
+        "walkthrough": "代码用 Python 自带的抽象语法树做最小优化：识别两侧都是常量的二元运算并折叠成常量，其余节点保持不变；打印结果可以看到表达式已被替换为常量节点。",
+        "expected_output": "打印的语法树中 value 变成 Constant(value=7)，说明 2 * 3 + 1 在编译期完成折叠。"
+      },
+      "faults": [
+        {"topic": "删除带副作用的计算", "wrong": "看到结果未被使用就删除函数调用，忽略了它修改全局状态", "fix": "在中间表示上标注副作用，只对确定无副作用的节点做死代码消除"},
+        {"topic": "忽略数值边界折叠常量", "wrong": "在编译期计算会溢出或除零的表达式，改变运行期行为", "fix": "折叠前检查语言规范与边界条件，不确定时保留到运行期计算"},
+        {"topic": "优化顺序不稳定", "wrong": "优化规则互相触发导致收敛困难，编译时间不可控", "fix": "固定优化顺序与迭代上限，保留优化开关用于二分定位"}
+      ],
+      "glossary": [
+        {"term": "中间表示", "definition": "介于源码与目标代码之间的程序形式，便于分析与改写。"},
+        {"term": "三地址码", "definition": "每条指令最多包含一个运算与两个操作数的中间指令形式。"},
+        {"term": "控制流图", "definition": "以基本块为节点、跳转为边的图结构，用于数据流分析。"},
+        {"term": "常量折叠", "definition": "在编译期计算常量表达式并替换结果的优化。"},
+        {"term": "死代码消除", "definition": "删除结果永不被使用且无副作用的计算。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "删除一段未被使用的计算结果前，必须先确认什么？", "options": ["该计算没有副作用", "该计算耗时足够短", "结果类型是整数", "变量名不与关键字冲突"], "answer": 0, "explanation": "死代码消除的前提是删除不改变可观察行为，因此必须确认计算没有副作用；耗时、类型与命名都与能否删除无关。"},
+        {"type": "single", "question": "常量折叠在什么情况下会改变程序行为？", "options": ["编译期计算与运行期语义不一致时", "表达式只包含整数时", "折叠后的结果被立即使用时", "中间表示使用临时变量时"], "answer": 0, "explanation": "折叠必须与语言规定的运行期语义一致，溢出、舍入与除零规则不同就会改变结果；其余选项都不会单独导致语义变化。"},
+        {"type": "multi", "question": "关于内联优化，下列说法正确的是？（多选）", "options": ["可以消除调用开销并启用后续优化", "可能增大代码体积", "递归函数内联需要收益评估", "内联一定提升运行速度"], "answers": [0, 1, 2], "answer": 0, "explanation": "内联为常量传播与分支简化创造条件，但会放大代码体积并影响指令缓存，递归内联更需评估；因此内联并不保证变快。"},
+        {"type": "order", "question": "请按优化管线的顺序排列步骤。", "options": ["运行数据流分析与改写", "把语法树降级为三地址码", "交给后端生成目标代码", "按跳转切分基本块"], "correct_order": [1, 3, 0, 2], "answer": 0, "explanation": "先生成中间指令，再切分基本块，然后做数据流优化，最后交给后端；基本块未切分就无法进行活跃变量等分析。"},
+        {"type": "debug", "question": "阅读优化片段，哪项判断正确？", "options": ["代码只在两侧都是常量时才折叠，其他节点保持不变", "代码会删除所有未被使用的函数调用", "折叠后的结果没有保存到语法树", "代码会忽略除零等边界情况并继续折叠"], "answer": 0, "code": "if isinstance(node, ast.BinOp) and isinstance(node.left, ast.Constant) and isinstance(node.right, ast.Constant):\n    value = eval(compile(ast.Expression(node), '<fold>', 'eval'))\n    return ast.Constant(value=value)", "language": "python", "explanation": "折叠条件要求两侧都是常量节点，其他情况原样返回；示例没有处理副作用与边界检查，这正是工程实现中需要额外补上的部分。"}
+      ],
+      "practice": [
+        "把 x = (a + 0) * 1 改写成三地址码，再手工做一次常量与恒等元素简化。",
+        "为一段代码画出控制流图，标出基本块与跳转边。",
+        "写三条优化规则的前置条件，并各配一个反例说明不能应用的情况。"
+      ],
+      "refs": [
+        {"name": "LLVM 中间表示参考", "url": "https://llvm.org/docs/LangRef.html"},
+        {"name": "GCC 优化选项说明", "url": "https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html"}
+      ],
+      "english": "Optimisation happens on an intermediate representation: three-address code grouped into basic blocks and connected as a control flow graph. This lesson shows constant folding, dead code elimination, inlining tradeoffs and the preconditions that keep rewriting semantics-preserving.",
+      "reviewPoints": [
+        "能把表达式改写成三地址码并切分基本块。",
+        "能说明死代码消除的副作用前提。",
+        "能列出内联的收益与代价。"
+      ]
+    }
+  ]
+}

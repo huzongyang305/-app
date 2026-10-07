@@ -1,0 +1,494 @@
+{
+  "generated_at": "2026-10-07T16:51:08.428535",
+  "dry_run": false,
+  "project_lessons": 81,
+  "updated": 81,
+  "lessons": [
+    {
+      "id": "flutter_release",
+      "before_chars": 15636,
+      "added_chars": 1755,
+      "after_chars": 17394
+    },
+    {
+      "id": "mobile_performance",
+      "before_chars": 12997,
+      "added_chars": 1503,
+      "after_chars": 14503
+    },
+    {
+      "id": "a11y_aria",
+      "before_chars": 13367,
+      "added_chars": 1643,
+      "after_chars": 15013
+    },
+    {
+      "id": "html_css_project",
+      "before_chars": 10980,
+      "added_chars": 1606,
+      "after_chars": 12589
+    },
+    {
+      "id": "web_performance",
+      "before_chars": 12633,
+      "added_chars": 1758,
+      "after_chars": 14394
+    },
+    {
+      "id": "web_components",
+      "before_chars": 12517,
+      "added_chars": 1706,
+      "after_chars": 14226
+    },
+    {
+      "id": "python_project",
+      "before_chars": 18343,
+      "added_chars": 1614,
+      "after_chars": 19960
+    },
+    {
+      "id": "python_project_api",
+      "before_chars": 13569,
+      "added_chars": 2109,
+      "after_chars": 15681
+    },
+    {
+      "id": "python_project_etl",
+      "before_chars": 13440,
+      "added_chars": 2154,
+      "after_chars": 15597
+    },
+    {
+      "id": "cpp_project",
+      "before_chars": 18520,
+      "added_chars": 1651,
+      "after_chars": 20174
+    },
+    {
+      "id": "cpp_project_http",
+      "before_chars": 13888,
+      "added_chars": 2141,
+      "after_chars": 16032
+    },
+    {
+      "id": "cpp_project_taskdb",
+      "before_chars": 12948,
+      "added_chars": 2120,
+      "after_chars": 15071
+    },
+    {
+      "id": "c_project",
+      "before_chars": 12922,
+      "added_chars": 1788,
+      "after_chars": 14713
+    },
+    {
+      "id": "c_project_tcp_server",
+      "before_chars": 12395,
+      "added_chars": 1928,
+      "after_chars": 14326
+    },
+    {
+      "id": "java_project",
+      "before_chars": 20409,
+      "added_chars": 1742,
+      "after_chars": 22154
+    },
+    {
+      "id": "java_project_inventory",
+      "before_chars": 13488,
+      "added_chars": 2091,
+      "after_chars": 15582
+    },
+    {
+      "id": "java_project_order_concurrency",
+      "before_chars": 13408,
+      "added_chars": 2104,
+      "after_chars": 15515
+    },
+    {
+      "id": "kotlin_project",
+      "before_chars": 12991,
+      "added_chars": 1880,
+      "after_chars": 14874
+    },
+    {
+      "id": "kotlin_project_cli_ledger",
+      "before_chars": 10844,
+      "added_chars": 1830,
+      "after_chars": 12677
+    },
+    {
+      "id": "swift_project",
+      "before_chars": 12687,
+      "added_chars": 1842,
+      "after_chars": 14532
+    },
+    {
+      "id": "swift_project_cli_metrics",
+      "before_chars": 11950,
+      "added_chars": 1705,
+      "after_chars": 13658
+    },
+    {
+      "id": "js_project",
+      "before_chars": 18284,
+      "added_chars": 1710,
+      "after_chars": 19997
+    },
+    {
+      "id": "js_project_node_api",
+      "before_chars": 13975,
+      "added_chars": 2488,
+      "after_chars": 16466
+    },
+    {
+      "id": "js_project_realtime_chat",
+      "before_chars": 13601,
+      "added_chars": 2179,
+      "after_chars": 15783
+    },
+    {
+      "id": "csharp_project",
+      "before_chars": 19490,
+      "added_chars": 1714,
+      "after_chars": 21207
+    },
+    {
+      "id": "csharp_project_inventory_cli",
+      "before_chars": 12950,
+      "added_chars": 2000,
+      "after_chars": 14953
+    },
+    {
+      "id": "csharp_project_blazor_admin",
+      "before_chars": 13468,
+      "added_chars": 2046,
+      "after_chars": 15517
+    },
+    {
+      "id": "go_project",
+      "before_chars": 15547,
+      "added_chars": 1580,
+      "after_chars": 17130
+    },
+    {
+      "id": "go_pprof",
+      "before_chars": 14090,
+      "added_chars": 1634,
+      "after_chars": 15727
+    },
+    {
+      "id": "go_generics_stdlib",
+      "before_chars": 14297,
+      "added_chars": 1628,
+      "after_chars": 15928
+    },
+    {
+      "id": "go_project_rest_api",
+      "before_chars": 13639,
+      "added_chars": 2034,
+      "after_chars": 15676
+    },
+    {
+      "id": "go_project_worker_pool",
+      "before_chars": 14087,
+      "added_chars": 2252,
+      "after_chars": 16342
+    },
+    {
+      "id": "go_profiling_deep",
+      "before_chars": 12918,
+      "added_chars": 1663,
+      "after_chars": 14584
+    },
+    {
+      "id": "rust_cli_project",
+      "before_chars": 17284,
+      "added_chars": 1650,
+      "after_chars": 18937
+    },
+    {
+      "id": "rust_project_axum_api",
+      "before_chars": 13664,
+      "added_chars": 2226,
+      "after_chars": 15893
+    },
+    {
+      "id": "rust_project_downloader",
+      "before_chars": 13704,
+      "added_chars": 2080,
+      "after_chars": 15787
+    },
+    {
+      "id": "ts_project",
+      "before_chars": 15110,
+      "added_chars": 1706,
+      "after_chars": 16819
+    },
+    {
+      "id": "ts_fullstack_project",
+      "before_chars": 15076,
+      "added_chars": 1736,
+      "after_chars": 16815
+    },
+    {
+      "id": "ts_project_cli",
+      "before_chars": 14537,
+      "added_chars": 2112,
+      "after_chars": 16652
+    },
+    {
+      "id": "ts_project_websocket_dashboard",
+      "before_chars": 13964,
+      "added_chars": 2098,
+      "after_chars": 16065
+    },
+    {
+      "id": "shell_ops_scripts",
+      "before_chars": 15120,
+      "added_chars": 1601,
+      "after_chars": 16724
+    },
+    {
+      "id": "shell_project_deploy",
+      "before_chars": 12581,
+      "added_chars": 2022,
+      "after_chars": 14606
+    },
+    {
+      "id": "shell_project_log_analysis",
+      "before_chars": 12885,
+      "added_chars": 2328,
+      "after_chars": 15216
+    },
+    {
+      "id": "fundamentals_project",
+      "before_chars": 11474,
+      "added_chars": 1851,
+      "after_chars": 13328
+    },
+    {
+      "id": "compiler_project_minilang",
+      "before_chars": 13042,
+      "added_chars": 1631,
+      "after_chars": 14676
+    },
+    {
+      "id": "algorithms_project",
+      "before_chars": 11455,
+      "added_chars": 1669,
+      "after_chars": 13127
+    },
+    {
+      "id": "network_project",
+      "before_chars": 14325,
+      "added_chars": 1963,
+      "after_chars": 16291
+    },
+    {
+      "id": "socket_programming",
+      "before_chars": 14270,
+      "added_chars": 1775,
+      "after_chars": 16048
+    },
+    {
+      "id": "security_owasp_top10",
+      "before_chars": 12411,
+      "added_chars": 1808,
+      "after_chars": 14222
+    },
+    {
+      "id": "security_sdl",
+      "before_chars": 12223,
+      "added_chars": 1814,
+      "after_chars": 14040
+    },
+    {
+      "id": "security_project",
+      "before_chars": 12781,
+      "added_chars": 1772,
+      "after_chars": 14556
+    },
+    {
+      "id": "chain_audit_project",
+      "before_chars": 12798,
+      "added_chars": 1636,
+      "after_chars": 14437
+    },
+    {
+      "id": "redis",
+      "before_chars": 13368,
+      "added_chars": 1591,
+      "after_chars": 14962
+    },
+    {
+      "id": "database_project",
+      "before_chars": 13133,
+      "added_chars": 1905,
+      "after_chars": 15041
+    },
+    {
+      "id": "os_project",
+      "before_chars": 12215,
+      "added_chars": 1707,
+      "after_chars": 13925
+    },
+    {
+      "id": "embedded_bus_protocols",
+      "before_chars": 13396,
+      "added_chars": 1812,
+      "after_chars": 15211
+    },
+    {
+      "id": "embedded_project_env_monitor",
+      "before_chars": 12426,
+      "added_chars": 1615,
+      "after_chars": 14044
+    },
+    {
+      "id": "toolchain_project",
+      "before_chars": 13180,
+      "added_chars": 1860,
+      "after_chars": 15043
+    },
+    {
+      "id": "cloud_k8s_operations",
+      "before_chars": 13225,
+      "added_chars": 1833,
+      "after_chars": 15061
+    },
+    {
+      "id": "ai_agent_evaluation",
+      "before_chars": 14963,
+      "added_chars": 1634,
+      "after_chars": 16600
+    },
+    {
+      "id": "ai_rag_agent_project",
+      "before_chars": 15002,
+      "added_chars": 2122,
+      "after_chars": 17127
+    },
+    {
+      "id": "distributed_short_url_project",
+      "before_chars": 12092,
+      "added_chars": 1662,
+      "after_chars": 13757
+    },
+    {
+      "id": "distributed_consensus",
+      "before_chars": 13864,
+      "added_chars": 1817,
+      "after_chars": 15684
+    },
+    {
+      "id": "project_requirements_design",
+      "before_chars": 11128,
+      "added_chars": 1815,
+      "after_chars": 12946
+    },
+    {
+      "id": "project_coding_workflow",
+      "before_chars": 11591,
+      "added_chars": 1806,
+      "after_chars": 13400
+    },
+    {
+      "id": "project_testing_quality",
+      "before_chars": 12014,
+      "added_chars": 1683,
+      "after_chars": 13700
+    },
+    {
+      "id": "project_deploy_ops",
+      "before_chars": 11438,
+      "added_chars": 1617,
+      "after_chars": 13058
+    },
+    {
+      "id": "project_retro_improve",
+      "before_chars": 12544,
+      "added_chars": 1796,
+      "after_chars": 14343
+    },
+    {
+      "id": "project_network_capture_analysis",
+      "before_chars": 14459,
+      "added_chars": 2720,
+      "after_chars": 17182
+    },
+    {
+      "id": "project_database_tuning",
+      "before_chars": 13446,
+      "added_chars": 2407,
+      "after_chars": 15856
+    },
+    {
+      "id": "project_security_lab",
+      "before_chars": 13042,
+      "added_chars": 2334,
+      "after_chars": 15379
+    },
+    {
+      "id": "project_algorithm_engineering",
+      "before_chars": 14007,
+      "added_chars": 2613,
+      "after_chars": 16623
+    },
+    {
+      "id": "project_mobile_offline_app",
+      "before_chars": 14215,
+      "added_chars": 2643,
+      "after_chars": 16861
+    },
+    {
+      "id": "project_python_cli_todo",
+      "before_chars": 11858,
+      "added_chars": 2054,
+      "after_chars": 13915
+    },
+    {
+      "id": "project_rest_api_sqlite",
+      "before_chars": 12009,
+      "added_chars": 2850,
+      "after_chars": 14862
+    },
+    {
+      "id": "project_rag_agent_service",
+      "before_chars": 11932,
+      "added_chars": 2365,
+      "after_chars": 14300
+    },
+    {
+      "id": "project_debug_performance_triage",
+      "before_chars": 11531,
+      "added_chars": 2447,
+      "after_chars": 13981
+    },
+    {
+      "id": "project_interview_coding_system_design",
+      "before_chars": 11779,
+      "added_chars": 2409,
+      "after_chars": 14191
+    },
+    {
+      "id": "project_concurrency_runtime",
+      "before_chars": 13585,
+      "added_chars": 2819,
+      "after_chars": 16407
+    },
+    {
+      "id": "project_devops_pipeline",
+      "before_chars": 14284,
+      "added_chars": 2735,
+      "after_chars": 17022
+    },
+    {
+      "id": "project_data_etl",
+      "before_chars": 14130,
+      "added_chars": 2708,
+      "after_chars": 16841
+    }
+  ]
+}

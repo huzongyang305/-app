@@ -1,0 +1,280 @@
+{
+  "lessons": [
+    {
+      "id": "ai_mlops",
+      "category": "ai",
+      "title": {"zh": "MLOps 与模型上线", "en": "MLOps and Model Deployment"},
+      "summary": {"zh": "从数据与模型版本、训练流水线讲到灰度上线、监控与回滚。", "en": "Data and model versioning, training pipelines, canary release, monitoring and rollback."},
+      "keywords": ["MLOps", "模型版本", "训练流水线", "灰度上线", "数据漂移"],
+      "difficulty": "进阶",
+      "minutes": 45,
+      "order": 40,
+      "image": {"title": "模型从训练到线上服务", "flow": ["固化数据与特征版本", "流水线训练并评估", "注册模型与元数据", "灰度放量并观察指标", "异常时回滚到上一版本"]},
+      "goals": ["能说明数据版本与模型版本为什么必须一起记录。", "能把训练与评估串成可重复执行的流水线。", "能设计灰度上线与漂移监控指标。"],
+      "prerequisitesText": ["完成机器学习核心概念与模型评测两课。", "了解容器与持续集成的基本流程。", "能编写训练脚本并保存模型产物。"],
+      "concepts": [
+        {"name": "数据与模型版本联动", "plain": "同一个模型只有配上对应的数据与特征版本才能复现。", "mechanism": "训练时记录数据快照标识、特征定义版本、超参数与代码提交号，模型注册表把它们作为元数据一起保存。", "example": "在本课示例里用两次不同的数据快照训练同一份代码，对比评估指标的差异。", "boundary": "只保存模型文件而丢失数据版本，出了问题时无法判断是数据变化还是代码变化。", "engineering": "模型注册表强制填写数据与特征版本，缺失元数据的产物不允许进入上线流程。"},
+        {"name": "训练流水线与评估门禁", "plain": "训练要能在干净环境重复执行，指标不达标不允许上线。", "mechanism": "流水线依次完成取数、特征生成、训练与离线评估，评估结果写入记录；门禁校验指标阈值与数据质量后决定是否注册新版本。", "example": "在本课示例里让一次训练指标低于基线，观察流水线在门禁处阻止注册。", "boundary": "离线指标达标不代表线上有效，分布不一致会让线上表现显著低于离线评估。", "engineering": "门禁同时检查整体指标与关键切片指标，任何切片显著退化都需要说明。"},
+        {"name": "灰度上线与漂移监控", "plain": "新模型先服务小部分流量，同时监控效果与数据分布。", "mechanism": "按比例分流并把请求与预测结果记录到日志，比较新旧模型的关键指标；输入特征的分布漂移触发告警并暂停放量。", "example": "在本课示例里让两个模型各服务一部分流量，观察分流比例与效果差异。", "boundary": "一次性全量上线且没有回滚路径，模型变差时会直接影响全部用户。", "engineering": "上线流程固定包含灰度比例、观察窗口与回滚命令，指标回退时能在分钟级完成切换。"}
+      ],
+      "steps": ["版本化数据、特征与代码", "把训练与评估写成流水线", "设置指标门禁并注册模型", "灰度放量并采集线上指标", "监控漂移并准备回滚"],
+      "code": {"language": "python", "snippet": "# 训练记录与门禁：把数据版本、指标与产物绑定在一起\nimport mlflow\n\ndef train_and_register(data_version: str, feature_version: str, commit: str):\n    with mlflow.start_run() as run:\n        mlflow.log_params({\"data_version\": data_version,\n                           \"feature_version\": feature_version,\n                           \"code_commit\": commit})\n        model, metrics = train()                       # 训练并返回评估指标\n        mlflow.log_metrics(metrics)\n\n        # 门禁：准确率与关键切片都必须不低于阈值\n        if metrics[\"auc\"] < 0.86:\n            raise SystemExit(f\"gate failed: auc={metrics['auc']:.3f} < 0.86\")\n        if metrics[\"auc_new_user\"] < 0.74:\n            raise SystemExit(\"gate failed: new-user slice regressed\")\n\n        mlflow.log_artifact(model.path)\n        mlflow.register_model(f\"runs:/{run.info.run_id}/model\", \"reco_ranker\")\n", "walkthrough": "实验记录把数据版本、特征版本与代码提交号写成参数，指标写入同一条记录；门禁同时检查整体与切片指标，任一项不达标就阻止注册。这样任何一次上线都能还原出当时的数据与代码组合。", "expected_output": "run 8f2a: auc=0.881 auc_new_user=0.762 -> registered v37，run 8f2b: gate failed: auc=0.842 < 0.86 (not registered)"},
+      "faults": [
+        {"topic": "线上效果与离线评估不符", "wrong": "离线与线上使用不同的特征计算实现", "fix": "训练与服务共用同一份特征定义代码，并对线上特征做一致性校验"},
+        {"topic": "出问题无法复现", "wrong": "只保存模型文件，数据与代码版本没有记录", "fix": "模型注册表强制记录数据快照、特征版本与代码提交号，缺失元数据不允许上线"},
+        {"topic": "模型变差无从回退", "wrong": "一次性全量上线且没有灰度与回滚方案", "fix": "按比例灰度并设定观察窗口，回退命令与阈值在上线前就准备好"}
+      ],
+      "glossary": [
+        {"term": "模型注册表", "definition": "集中管理模型版本与元数据的服务。"},
+        {"term": "特征一致性", "definition": "训练与服务使用同一套特征计算逻辑。"},
+        {"term": "灰度上线", "definition": "新版本先服务部分流量再逐步放量。"},
+        {"term": "数据漂移", "definition": "线上输入分布与训练分布发生偏移。"},
+        {"term": "回滚", "definition": "异常时切回上一个稳定版本。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "模型注册表必须记录数据与特征版本的原因是？", "options": ["出现问题时能复现当时的训练条件", "可以减小模型体积", "加快推理速度", "减少存储成本"], "answer": 0, "explanation": "只有数据、特征与代码版本一起记录，才能复现模型行为并判断指标变化来自哪一侧。"},
+        {"type": "single", "question": "离线指标达标但线上效果差，最常见的原因是？", "options": ["训练与服务特征计算不一致", "服务器显卡型号不同", "模型文件过大", "日志格式不统一"], "answer": 0, "explanation": "特征在训练与线上使用两套实现时，输入分布会系统性偏移，离线评估无法反映真实服务效果。"},
+        {"type": "multi", "question": "一次可回滚的上线应具备哪些要素？（多选）", "options": ["按比例灰度放量", "明确的观察窗口与阈值", "已验证的回滚命令", "上线前删除旧版本产物"], "answer": 0, "answers": [0, 1, 2], "explanation": "灰度、观察与回滚构成安全上线闭环；删除旧版本会让回滚无路可走。"},
+        {"type": "order", "question": "请按一次模型上线的顺序排列。", "options": ["固化数据与代码版本并训练", "评估通过门禁后注册模型", "部署新版本并按比例灰度", "观察线上指标与漂移情况", "逐步放量或按需回滚"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "先训练并注册，再灰度观察，指标稳定才逐步放量，异常时按预案回滚，保证用户影响可控。"},
+        {"type": "debug", "question": "阅读这段上线代码，风险是什么？", "options": ["训练与服务特征处理不一致，线上效果会明显偏移", "批量大小设置过小", "缺少异常捕获", "模型文件名不规范"], "answer": 0, "code": "# 训练侧\nX = (df[\"amount\"] - df[\"amount\"].mean()) / df[\"amount\"].std()\n\n# 服务侧：重新实现了一遍，但用的是全量历史统计\nx = (value - history_mean) / history_std   # 与训练侧口径不同\n", "language": "python", "explanation": "两侧的标准化口径不同，训练时用当批统计而服务用历史统计，特征分布不一致会让模型在线上产生系统性误差。"}
+      ],
+      "practice": ["为一次训练补齐数据版本、特征版本与代码提交号并注册模型。", "设置一条切片指标门禁，让不达标的训练被阻止注册。", "设计一次百分比灰度的上线方案，写明观察窗口与回滚阈值。"],
+      "refs": [
+        {"name": "MLflow 官方文档：模型注册表", "url": "https://mlflow.org/docs/latest/model-registry.html"},
+        {"name": "Google 机器学习运维实践指南", "url": "https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning"}
+      ],
+      "english": "MLOps binds data, features, code and metrics into one record so any model can be reproduced. Training runs as a pipeline with gates that check both overall and per-slice metrics before registration. New versions serve a small share of traffic first, and drift monitoring plus a pre-tested rollback keep a bad model from reaching everyone.",
+      "reviewPoints": ["能说出模型元数据必须包含的四项内容。", "能解释训练与服务特征不一致的后果。", "能描述灰度上线的观察与回滚条件。"]
+    },
+    {
+      "id": "ai_recommender",
+      "category": "ai",
+      "title": {"zh": "推荐系统基础与排序", "en": "Recommender Systems and Ranking"},
+      "summary": {"zh": "从召回、排序两阶段讲到特征、冷启动与离线在线指标。", "en": "Two-stage retrieval and ranking, features, cold start and offline versus online metrics."},
+      "keywords": ["推荐系统", "召回", "排序", "冷启动", "评价指标"],
+      "difficulty": "进阶",
+      "minutes": 45,
+      "order": 41,
+      "image": {"title": "推荐的召回与排序两阶段", "flow": ["用户行为与物品特征入库", "多路召回候选集", "特征拼接与打分排序", "规则与多样性调整", "曝光后回收反馈再训练"]},
+      "goals": ["能说明召回与排序两阶段各自的目标与约束。", "能设计冷启动与探索策略让新物品获得曝光。", "能区分离线指标与线上指标并解释二者不一致的原因。"],
+      "prerequisitesText": ["完成机器学习核心概念与模型评测课程。", "了解向量检索的基本原理。", "能读懂用户行为日志的基本结构。"],
+      "concepts": [
+        {"name": "召回与排序的分工", "plain": "召回从海量物品中快速筛出候选，排序对少量候选精确打分。", "mechanism": "多路召回并行执行，包括协同过滤、向量相似与热门策略，合并去重后交给排序模型，排序模型使用更丰富的特征做精排。", "example": "在本课示例里对比只有热门召回与多路召回时的候选覆盖率。", "boundary": "召回阶段漏掉的物品排序阶段无法补救，召回质量决定效果上限。", "engineering": "监控每路召回的贡献占比与覆盖率，长期贡献过低的策略应下线或重训。"},
+        {"name": "特征与冷启动", "plain": "老用户靠历史行为，新用户与新物品缺少数据需要专门策略。", "mechanism": "用户侧特征包括历史交互与画像，物品侧包括内容标签与统计量，新物品依靠内容特征与探索流量获取初始反馈。", "example": "在本课示例里给新物品分配探索流量，观察其获得曝光后的点击率变化。", "boundary": "完全依赖历史行为会让新物品永远没有机会，形成强者恒强的循环。", "engineering": "保留固定比例的探索流量并记录探索成本，用内容特征补齐新物品的初始打分。"},
+        {"name": "离线与线上指标", "plain": "离线指标高不代表线上效果好，两者衡量的是不同问题。", "mechanism": "离线常用排序质量与命中率，线上关注点击率、转化率与留存；离线数据来自既有策略产生的日志，存在选择偏差。", "example": "在本课示例里对比离线命中率提升与线上点击率变化，观察二者背离的情况。", "boundary": "只用离线指标决策会不断强化已有策略的偏差，新策略很难被验证。", "engineering": "上线前用小流量在线实验验证，离线指标作为筛选门槛而不是最终结论。"}
+      ],
+      "steps": ["整理用户行为与物品特征", "设计多路召回并合并去重", "训练排序模型并接入特征", "加入冷启动与探索流量", "在线实验验证并回收反馈"],
+      "code": {"language": "python", "snippet": "def recommend(user_id, top_k=20):\n    \"\"\"两阶段推荐：多路召回取候选，排序模型精排。\"\"\"\n    candidates = set()\n    candidates |= recall_by_user_vector(user_id, 200)   # 向量相似召回\n    candidates |= recall_by_category_affinity(user_id, 150)  # 类目偏好召回\n    candidates |= recall_trending(100)                  # 热门兜底，兼顾冷启动\n\n    features = build_features(user_id, candidates)      # 拼接用户、物品与交叉特征\n    scores = ranker.predict(features)                   # 排序模型打分\n\n    ranked = sorted(candidates, key=lambda item: -scores[item])\n    diversified = diversify(ranked, max_per_category=3)  # 控制同质化\n    return diversified[:top_k]\n\n# 新物品通过固定探索流量获得初始反馈\ndef exploration_slots(k=5):\n    return recall_new_items(k)   # 每次请求保留少量位置给新物品\n", "walkthrough": "推荐先用三路召回扩大候选来源并用热门兜底，排序模型在候选上打分，随后做多样性约束避免同类聚集；固定的探索位置让新物品获得初始曝光，反馈数据回灌后用于重训。", "expected_output": "user 42: candidates=447 (vector 200 / category 150 / trending 100, dedup 447)，returned 20 items in 3 categories，exploration slots 5"},
+      "faults": [
+        {"topic": "新物品长期没有曝光", "wrong": "只按历史点击率排序，没有探索流量", "fix": "保留固定比例探索位置，用内容特征给新物品初始打分并观察反馈"},
+        {"topic": "离线指标提升线上反而下降", "wrong": "只用既有策略日志做离线评估且直接全量上线", "fix": "改用小流量在线实验验证，离线指标只作为候选筛选门槛"},
+        {"topic": "推荐结果高度同质", "wrong": "排序只优化点击率，没有多样性约束", "fix": "在排序后加入类目或作者维度的打散约束，并监控结果分布"}
+      ],
+      "glossary": [
+        {"term": "召回", "definition": "从全量物品中快速筛出候选集合的阶段。"},
+        {"term": "排序", "definition": "对候选集合精确打分并排序的阶段。"},
+        {"term": "冷启动", "definition": "新用户或新物品缺少历史数据时的处理策略。"},
+        {"term": "探索流量", "definition": "为获取新反馈而分配的一部分流量。"},
+        {"term": "选择偏差", "definition": "日志只记录了旧策略曝光过的物品所带来的偏差。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "召回阶段漏掉相关物品会造成什么后果？", "options": ["排序阶段无法补救，效果上限被压低", "排序模型自动补全", "用户看不到任何推荐", "系统会重新召回"], "answer": 0, "explanation": "排序只在候选集合内工作，召回没找到的物品不会被展示，因此召回覆盖率决定整体效果上限。"},
+        {"type": "single", "question": "离线指标提升但线上下降，最可能的原因是？", "options": ["离线数据来自旧策略，存在选择偏差", "服务器性能不足", "用户数量太少", "特征维度太多"], "answer": 0, "explanation": "离线日志由既有策略产生，只覆盖它曝光过的物品，用这种数据评估新策略会系统性乐观。"},
+        {"type": "multi", "question": "改善新物品冷启动可以采取哪些做法？（多选）", "options": ["使用内容标签特征", "保留固定探索流量", "对新物品单独建立初始统计", "永久只推荐热门物品"], "answer": 0, "answers": [0, 1, 2], "explanation": "内容特征、探索流量与独立统计共同为新物品创造获取反馈的机会；只推热门会让新物品永远没有机会。"},
+        {"type": "order", "question": "请按一次推荐请求的处理顺序排列。", "options": ["多路召回生成候选", "合并去重控制规模", "拼接特征并打分排序", "应用多样性与规则调整", "返回结果并记录曝光反馈"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "召回先扩大候选，去重后交给排序，排序结果再经多样性与规则调整，最后返回并记录反馈用于后续训练。"},
+        {"type": "debug", "question": "阅读这段排序代码，问题是什么？", "options": ["只用点击率排序且无多样性约束，会导致结果高度同质", "召回路数太少", "特征维度不足", "没有使用缓存"], "answer": 0, "code": "scores = ranker.predict(features)   # 目标只有点击率\nranked = sorted(candidates, key=lambda item: -scores[item])\nreturn ranked[:20]                  # 直接返回，没有任何打散或约束\n", "language": "python", "explanation": "单一目标加无约束返回会让同类内容占满列表，短期点击可能上升，但用户疲劳与长期留存会下降。"}
+      ],
+      "practice": ["为一次推荐实现三路召回并统计各路贡献与去重后的候选数。", "给新物品分配探索流量，观察一段时间内曝光量与点击率变化。", "对比离线命中率与在线点击率，写出二者不一致的可能原因。"],
+      "refs": [
+        {"name": "Google 开发者文档：推荐系统", "url": "https://developers.google.com/machine-learning/recommendation"},
+        {"name": "Microsoft 推荐系统实践指南", "url": "https://learn.microsoft.com/en-us/training/modules/intro-to-recommender-systems/"}
+      ],
+      "english": "A recommender works in two stages: retrieval narrows millions of items into a few hundred candidates through multiple channels, and ranking scores those candidates with richer features. Retrieval coverage sets the ceiling. Cold start needs content features and reserved exploration traffic, and offline gains are validated by an online experiment before full rollout.",
+      "reviewPoints": ["能说明召回与排序各自的目标与约束。", "能解释冷启动为什么必须保留探索流量。", "能说出离线与线上指标背离的核心原因。"]
+    },
+    {
+      "id": "ai_time_series",
+      "category": "ai",
+      "title": {"zh": "时间序列预测", "en": "Time Series Forecasting"},
+      "summary": {"zh": "从趋势、季节与平稳性讲到特征构造、回测切分与误差评估。", "en": "Trend, seasonality, stationarity, feature engineering, backtesting and error metrics."},
+      "keywords": ["时间序列", "季节性", "平稳性", "回测", "误差指标"],
+      "difficulty": "进阶",
+      "minutes": 45,
+      "order": 42,
+      "image": {"title": "从原始序列到可评估预测", "flow": ["观察趋势与季节形态", "处理缺失与异常点", "构造滞后与日历特征", "按时间切分做回测", "用误差指标评估并滚动更新"]},
+      "goals": ["能把时间序列拆解为趋势、季节与残差三部分。", "能按时间顺序正确切分训练与验证集。", "能选择合适误差指标并解释其适用条件。"],
+      "prerequisitesText": ["完成机器学习核心概念一课。", "会使用表格数据处理工具计算滚动统计量。", "了解过拟合与验证集的基本概念。"],
+      "concepts": [
+        {"name": "趋势、季节与平稳性", "plain": "序列由长期趋势、周期波动与随机残差叠加而成。", "mechanism": "通过差分或分解得到平稳序列，平稳性意味着统计特性不随时间变化，是许多经典模型的假设前提。", "example": "在本课示例里对含季节性的序列做一阶差分，观察均值与方差的稳定性变化。", "boundary": "对非平稳序列直接建模会得到看似拟合但外推失效的结果。", "engineering": "建模前先画分解图并做平稳性检验，把处理方式记录在特征说明里。"},
+        {"name": "特征构造与回测切分", "plain": "时间序列不能随机切分，必须按时间先后划分，否则会用到未来信息。", "mechanism": "滞后特征只使用当前时刻之前的值，日历特征提供周期性信息，滚动窗口逐步向前推进完成回测。", "example": "在本课示例里用滚动窗口做三次回测，观察每次训练集与验证集的时间边界。", "boundary": "把未来数据泄露进特征会让离线指标虚高，上线后效果骤降。", "engineering": "特征生成函数统一约束可用时间范围，回测流程固定并纳入自动检查。"},
+        {"name": "误差指标的选择", "plain": "不同误差指标关注不同问题，选择要与业务损失一致。", "mechanism": "绝对误差反映平均偏差大小，百分比误差便于跨量级比较，但在真实值接近零时会放大；分位数损失适合关注极端情况的场景。", "example": "在本课示例里用两种指标评估同一预测，观察结论是否一致。", "boundary": "用百分比误差评估含零值的序列会得到无穷大或极端值，误导模型选择。", "engineering": "指标与业务口径一起评审，把选定的指标与阈值写进模型验收标准。"}
+      ],
+      "steps": ["观察并分解序列形态", "处理缺失值与异常点", "构造滞后与日历特征", "按时间滚动回测", "选定误差指标并滚动更新模型"],
+      "code": {"language": "python", "snippet": "import pandas as pd\n\n# 特征构造：只使用当前时刻之前的信息，避免未来数据泄露\ndef make_features(series: pd.Series) -> pd.DataFrame:\n    df = pd.DataFrame({\"y\": series})\n    df[\"lag_1\"] = series.shift(1)          # 昨天真实值\n    df[\"lag_7\"] = series.shift(7)          # 上周同期\n    df[\"roll_mean_7\"] = series.shift(1).rolling(7).mean()   # 先移位再滚动\n    df[\"roll_std_7\"] = series.shift(1).rolling(7).std()\n    df[\"dow\"] = series.index.dayofweek      # 星期几，捕捉周周期\n    df[\"is_weekend\"] = (df[\"dow\"] >= 5).astype(int)\n    return df.dropna()\n\n# 滚动回测：每次只用过去数据训练，再预测未来一段\ndef backtest(series, horizon=7, folds=3):\n    scores = []\n    for fold in range(folds):\n        split = len(series) - (fold + 1) * horizon\n        train, valid = series[:split], series[split:split + horizon]\n        model = fit(make_features(train))\n        pred = model.predict(make_features(valid.join(train.tail(horizon))))\n        mae = (pred - valid).abs().mean()\n        scores.append(mae)\n        print(f\"fold {fold}: train_end={train.index[-1].date()} mae={mae:.2f}\")\n    return scores\n", "walkthrough": "特征全部基于移位后的历史值，滚动统计先移位再计算以避免用到当期数据；回测按时间顺序切分，每折的训练集都严格早于验证集，得到的误差才有参考价值。", "expected_output": "fold 0: train_end=2026-09-17 mae=12.41，fold 1: train_end=2026-09-10 mae=11.87，fold 2: train_end=2026-09-03 mae=13.02"},
+      "faults": [
+        {"topic": "离线指标虚高", "wrong": "随机切分或使用包含当期值的滚动统计作为特征", "fix": "严格按时间切分并先移位再计算滚动统计，保证特征只使用历史信息"},
+        {"topic": "百分比误差失控", "wrong": "对真实值可能为零的序列使用百分比误差", "fix": "改用绝对误差或对称百分比误差，并在验收标准里写明分母处理方式"},
+        {"topic": "模型无法适应变化", "wrong": "训练一次后长期不更新，忽略分布变化", "fix": "按固定周期滚动重训并用回测监控误差趋势，超过阈值触发重训"}
+      ],
+      "glossary": [
+        {"term": "平稳性", "definition": "序列的统计特性不随时间变化。"},
+        {"term": "滞后特征", "definition": "使用过去时刻的值作为输入特征。"},
+        {"term": "回测", "definition": "按时间顺序滚动切分训练与验证集评估模型。"},
+        {"term": "数据泄露", "definition": "特征中包含了预测时点之后的信息。"},
+        {"term": "平均绝对误差", "definition": "预测值与真实值差值的绝对平均。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "时间序列建模时最常见的错误是？", "options": ["随机切分导致未来信息泄露到训练集", "特征数量太少", "没有使用深度学习", "数据点过多"], "answer": 0, "explanation": "时间序列有先后依赖，随机切分会让模型在训练时看到未来数据，离线指标虚高而线上失效。"},
+        {"type": "single", "question": "构造滚动均值特征时正确顺序是？", "options": ["先移位再滚动计算", "先滚动计算再移位", "两者结果完全相同", "可以直接使用包含当期的统计"], "answer": 0, "explanation": "先移位保证计算时不包含当期值，否则当期真实值会通过特征泄漏进模型，造成评估偏高。"},
+        {"type": "multi", "question": "选择误差指标时需要考虑哪些因素？（多选）", "options": ["业务损失对偏差的敏感方式", "序列是否存在接近零的真实值", "是否关注极端情况", "指标的英文缩写是否简短"], "answer": 0, "answers": [0, 1, 2], "explanation": "指标要与业务损失一致并适配数据特征；缩写长短与评估有效性无关。"},
+        {"type": "order", "question": "请按一次时间序列建模的顺序排列。", "options": ["分解并检查平稳性", "处理缺失与异常值", "构造滞后与日历特征", "按时间滚动回测", "选定指标并定期重训"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "先理解序列形态，再清洗与构造特征，通过回测验证效果，最后固化指标与重训周期完成闭环。"},
+        {"type": "debug", "question": "阅读这段特征代码，会造成什么问题？", "options": ["滚动均值包含当期真实值，特征泄露导致指标虚高", "滞后特征过多", "缺少日历特征", "数据类型转换错误"], "answer": 0, "code": "df[\"roll_mean_7\"] = series.rolling(7).mean()   # 未移位，包含当期值\n", "language": "python", "explanation": "滚动窗口包含当前时刻的真实值，模型可以直接从特征中读出答案，离线误差会异常小而上线后表现崩塌。"}
+      ],
+      "practice": ["对一段含周周期的序列做分解，标出趋势与季节成分。", "分别用随机切分与时间切分评估同一模型，对比误差差异。", "对含零值的序列分别用绝对误差与百分比误差评估，解释差异。"],
+      "refs": [
+        {"name": "Nixtla 时间序列实践指南", "url": "https://nixtlaverse.nixtla.io/statsforecast/docs/getting-started/getting_started_complete.html"},
+        {"name": "Facebook Prophet 官方文档", "url": "https://facebook.github.io/prophet/docs/quick_start.html"}
+      ],
+      "english": "A time series mixes trend, seasonality and noise, and many models assume the residuals are stationary. Features must only use values available before the prediction moment, so rolling statistics are shifted first, and validation splits move forward in time. Error metrics are chosen to match the business loss, since percentage errors explode near zero.",
+      "reviewPoints": ["能说出时间序列的三个组成部分。", "能解释先移位再滚动的原因。", "能说明随机切分为什么不可用于时间序列。"]
+    },
+    {
+      "id": "ai_reinforcement_learning",
+      "category": "ai",
+      "title": {"zh": "强化学习基础", "en": "Reinforcement Learning Fundamentals"},
+      "summary": {"zh": "从状态、动作与奖励讲到价值函数、探索与训练稳定性。", "en": "States, actions, rewards, value functions, exploration and training stability."},
+      "keywords": ["强化学习", "奖励", "价值函数", "探索与利用", "策略"],
+      "difficulty": "进阶",
+      "minutes": 45,
+      "order": 43,
+      "image": {"title": "智能体与环境的交互循环", "flow": ["观察当前状态", "按策略选择动作", "环境返回奖励与新状态", "更新价值或策略参数", "平衡探索与利用继续训练"]},
+      "goals": ["能把一个决策问题写成状态、动作与奖励的形式。", "能解释价值函数与策略之间的关系。", "能说明探索策略与奖励设计对训练结果的影响。"],
+      "prerequisitesText": ["了解基本的概率与期望概念。", "会使用数组与简单神经网络做函数拟合。", "能读懂训练循环与损失下降曲线。"],
+      "concepts": [
+        {"name": "状态、动作与奖励", "plain": "强化学习把决策问题定义为智能体与环境持续交互的过程。", "mechanism": "智能体在状态 s 选择动作 a，环境返回奖励 r 与下一个状态 s'，目标是最大化长期累计奖励。", "example": "在本课示例里把一个小车保持平衡的任务写成状态、动作与奖励三元组。", "boundary": "奖励设计不当会诱导智能体钻空子，例如原地反复触发小奖励而不完成目标。", "engineering": "奖励函数按业务目标拆成主奖励与约束惩罚，训练中检查轨迹行为是否符合预期。"},
+        {"name": "价值函数与策略", "plain": "价值函数评估状态或动作的长期收益，策略决定在每步怎么选动作。", "mechanism": "状态价值表示从该状态出发的期望回报，动作价值表示在状态下选择某动作的期望回报，策略可以基于价值函数间接导出，也可以直接参数化并优化。", "example": "在本课示例里观察同一状态下不同动作的价值差异并据此选动作。", "boundary": "只做一步贪心而不考虑长期回报会陷入局部最优，例如为了即时奖励放弃更高收益路径。", "engineering": "价值估计加入折扣因子并记录不同折扣下的行为差异，把选择依据写进实验记录。"},
+        {"name": "探索与训练稳定性", "plain": "始终选择当前最优动作会错过更好的选择，训练也容易震荡。", "mechanism": "按概率选择随机动作或使用带噪声的策略保持探索，同时用目标网络、经验回放等手段降低更新相关性。", "example": "在本课示例里对比纯贪心与带探索策略的累计奖励曲线。", "boundary": "探索过少会锁死在次优策略，探索过多则长期表现不稳定。", "engineering": "探索强度随训练进程衰减并记录奖励方差，出现持续震荡时检查学习率与目标更新频率。"}
+      ],
+      "steps": ["定义状态、动作与奖励", "选择价值或策略方法", "设计探索强度衰减策略", "训练并监控累计奖励", "验证行为符合业务约束"],
+      "code": {"language": "python", "snippet": "import random\n\nclass Agent:\n    def __init__(self, n_states, n_actions, alpha=0.1, gamma=0.95):\n        self.q = [[0.0] * n_actions for _ in range(n_states)]\n        self.alpha, self.gamma = alpha, gamma\n        self.epsilon = 1.0      # 初始高探索\n\n    def act(self, state):\n        if random.random() < self.epsilon:\n            return random.randrange(len(self.q[state]))   # 探索\n        return max(range(len(self.q[state])), key=lambda a: self.q[state][a])  # 利用\n\n    def update(self, s, a, r, s_next):\n        # 时序差分更新：用下一状态的最大动作价值估计长期回报\n        best_next = max(self.q[s_next])\n        target = r + self.gamma * best_next\n        self.q[s][a] += self.alpha * (target - self.q[s][a])\n\n        # 探索强度随训练衰减，后期更依赖已学到的价值\n        self.epsilon = max(0.05, self.epsilon * 0.999)\n\n# 训练循环：与环境的交互顺序固定，便于复现实验\nfor episode in range(2000):\n    s, done = env.reset(), False\n    while not done:\n        a = agent.act(s)\n        s_next, r, done = env.step(a)\n        agent.update(s, a, r, s_next)\n        s = s_next\n", "walkthrough": "智能体按概率在探索与利用之间切换，更新时用即时奖励加上折扣后的下一状态最优价值作为目标，向该目标小幅靠近；探索强度随训练衰减，后期表现趋于稳定。训练循环的结构固定，方便对比不同超参数。", "expected_output": "episode 200: avg reward -86.4 (epsilon 0.82)，episode 800: avg reward 12.7 (epsilon 0.45)，episode 2000: avg reward 196.2 (epsilon 0.13)"},
+      "faults": [
+        {"topic": "奖励持续上升但行为不符合目标", "wrong": "奖励函数存在漏洞，智能体反复触发小奖励", "fix": "重新设计奖励：明确主目标奖励与约束惩罚，训练中检查轨迹行为而非只看奖励曲线"},
+        {"topic": "训练长期不收敛", "wrong": "学习率过大且没有任何稳定性手段", "fix": "降低学习率并引入目标网络或经验回放，记录奖励方差定位震荡原因"},
+        {"topic": "性能突然崩塌", "wrong": "探索强度降到接近零后再也无法恢复", "fix": "为探索强度设置下限并在指标退化时临时提高，保留恢复空间"}
+      ],
+      "glossary": [
+        {"term": "智能体", "definition": "在环境中做决策并学习的实体。"},
+        {"term": "累计奖励", "definition": "折扣后从当前时刻起获得的奖励总和。"},
+        {"term": "价值函数", "definition": "衡量状态或动作长期收益的函数。"},
+        {"term": "探索与利用", "definition": "尝试新动作与使用已知最优动作之间的权衡。"},
+        {"term": "经验回放", "definition": "复用历史交互样本以降低更新相关性的方法。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "强化学习与监督学习最本质的差别是？", "options": ["没有直接给出正确答案，只能通过奖励反馈学习", "不需要数据", "模型规模更小", "不能使用神经网络"], "answer": 0, "explanation": "监督学习有标签指明正确输出，强化学习只有奖励信号，需要自己权衡长期收益并处理探索问题。"},
+        {"type": "single", "question": "奖励曲线很高但任务没有完成，最可能的原因是？", "options": ["奖励设计存在漏洞被智能体利用", "学习率过低", "状态数量太少", "折扣因子过小"], "answer": 0, "explanation": "奖励只是目标的代理，如果它可以被更简单的方式反复获取，智能体会优化这个捷径而不是完成真实任务。"},
+        {"type": "multi", "question": "提升训练稳定性可以采取哪些做法？（多选）", "options": ["使用目标网络稳定更新目标", "使用经验回放降低样本相关性", "适当降低学习率", "把探索强度立即降为零"], "answer": 0, "answers": [0, 1, 2], "explanation": "目标网络、经验回放与合理学习率都能减少震荡；探索降为零会锁死策略并失去改进机会。"},
+        {"type": "order", "question": "请按一次训练交互的顺序排列。", "options": ["观察当前状态", "按策略选择动作", "环境返回奖励与新状态", "计算目标并更新价值", "调整探索强度继续下一轮"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "观察、动作、反馈、更新、调整构成一次完整交互，循环往复直到策略收敛。"},
+        {"type": "debug", "question": "阅读这段更新代码，问题是什么？", "options": ["探索强度直接归零，策略失去改进机会", "折扣因子缺失", "学习率过大", "状态索引越界"], "answer": 0, "code": "agent.epsilon = 0.0   # 训练一开始就完全贪心\nfor episode in range(2000):\n    s, done = env.reset(), False\n    while not done:\n        a = agent.act(s)      # 永远选择当前最优\n        s, r, done = env.step(a)\n", "language": "python", "explanation": "探索强度一开始就为零，智能体会始终沿初始价值估计行动，无法发现更优路径，容易锁死在次优策略。"}
+      ],
+      "practice": ["把一个小游戏或模拟任务写成状态、动作与奖励三元组。", "对比探索强度固定与衰减两种设置下的累计奖励曲线。", "修改奖励函数让智能体钻空子，再修正奖励并说明改动原因。"],
+      "refs": [
+        {"name": "OpenAI Spinning Up：强化学习入门", "url": "https://spinningup.openai.com/en/latest/spinningup/rl_intro.html"},
+        {"name": "DeepMind 强化学习课程材料", "url": "https://www.deepmind.com/learning-resources"}
+      ],
+      "english": "Reinforcement learning frames a task as an agent interacting with an environment: observe a state, take an action, receive a reward and a new state, and maximise the discounted return. Value functions estimate long-term payoff, policies choose actions, and exploration keeps better options reachable. Reward design and stability tricks decide whether training actually converges.",
+      "reviewPoints": ["能把一个任务写成状态、动作与奖励。", "能解释价值函数与策略的关系。", "能说出两种提升训练稳定性的手段。"]
+    },
+    {
+      "id": "dist_transaction",
+      "category": "distributed",
+      "title": {"zh": "分布式事务与一致性", "en": "Distributed Transactions and Consistency"},
+      "summary": {"zh": "从本地事务边界讲到两阶段提交、补偿事务与幂等设计。", "en": "Local transaction boundaries, two-phase commit, compensating actions and idempotency."},
+      "keywords": ["分布式事务", "两阶段提交", "补偿", "幂等", "最终一致"],
+      "difficulty": "进阶",
+      "minutes": 45,
+      "order": 11,
+      "image": {"title": "跨服务的一致性保障路径", "flow": ["拆分本地事务并确定边界", "记录事务状态与业务数据", "调用参与方并记录结果", "失败则执行补偿操作", "对账确认最终一致"]},
+      "goals": ["能判断一个业务动作应该在本地事务内还是跨服务协调。", "能说明两阶段提交的代价与适用场景。", "能设计带幂等与补偿的最终一致方案。"],
+      "prerequisitesText": ["完成分布式系统原理与消息队列相关课程。", "了解数据库事务的原子性与隔离级别。", "能编写带唯一约束的数据库写入。"],
+      "concepts": [
+        {"name": "事务边界与协调方式", "plain": "跨服务的事务不能依赖单个数据库的原子性，需要额外的协调机制。", "mechanism": "把业务拆成若干本地事务，由协调者推进各参与方的提交或回滚，协调者记录全局状态以便故障恢复。", "example": "在本课示例里让一个参与方在第一阶段成功后失败，观察协调者发起回滚。", "boundary": "协调者本身故障且状态未持久化时，参与方会长期处于不确定状态。", "engineering": "协调者状态先落盘再下发指令，参与方保留超时与查询接口以便恢复时确认结果。"},
+        {"name": "补偿事务与最终一致", "plain": "无法回滚的已发生动作要用补偿操作抵消，系统最终达到一致。", "mechanism": "每个步骤定义正向操作与补偿操作，失败时按相反顺序执行补偿；补偿操作本身也必须幂等，允许重试。", "example": "在本课示例里让扣款成功而发货失败，观察退款补偿把资金恢复。", "boundary": "补偿不等于回滚，外部已产生的副作用可能无法完全抵消，需要在业务上设计可接受的止损方式。", "engineering": "补偿动作与正向动作同时评审，记录补偿执行原因与结果并对账。"},
+        {"name": "幂等与对账兜底", "plain": "重试是分布式系统的常态，任何写操作都必须能安全重复执行。", "mechanism": "用业务唯一号加唯一约束，重复请求直接返回上一次结果；定期对账比较双方记录，发现差异后触发补单或冲正。", "example": "在本课示例里重复提交同一笔请求，观察只有一条记录生效并返回相同结果。", "boundary": "依赖调用方保证不重复提交是不可靠的，网络超时后的重试无法避免。", "engineering": "所有跨服务写接口都要求幂等键，对账任务按日运行并把差异量作为核心指标。"}
+      ],
+      "steps": ["拆分本地事务确定边界", "选择协调或补偿方案", "为写操作设计幂等键", "实现补偿与恢复流程", "对账确认最终一致"],
+      "code": {"language": "python", "snippet": "def place_order(request_id, user_id, amount):\n    \"\"\"跨服务下单：本地事务记录状态，失败走补偿，重复请求返回原结果。\"\"\"\n    # 1. 幂等键唯一约束：同一 request_id 只处理一次\n    if not db.insert_if_absent(\"orders\", request_id, user_id, amount, status=\"pending\"):\n        return db.get_order(request_id)          # 重复请求直接返回已有结果\n\n    # 2. 扣款：带幂等键，超时重试不会重复扣\n    paid = payment.charge(idempotency_key=request_id, user=user_id, amount=amount)\n    if not paid.ok:\n        db.update_status(request_id, \"failed\")\n        return {\"status\": \"failed\", \"reason\": paid.reason}\n\n    # 3. 发货失败则执行补偿：退款并记录补偿原因\n    shipped = shipping.create(request_id, user_id)\n    if not shipped.ok:\n        payment.refund(idempotency_key=request_id)   # 补偿操作同样幂等\n        db.update_status(request_id, \"compensated\")\n        return {\"status\": \"compensated\", \"reason\": shipped.reason}\n\n    db.update_status(request_id, \"completed\")\n    return {\"status\": \"completed\"}\n", "walkthrough": "下单先写本地状态并用唯一约束保证幂等，扣款与发货都带幂等键；发货失败时执行退款补偿并把状态标记为已补偿。任何一步超时重试都不会产生重复扣款或重复发货。", "expected_output": "first call: completed，duplicate call: returns completed (no extra charge)，shipping failure: compensated + refund issued，daily recon: 0 diff"},
+      "faults": [
+        {"topic": "重试导致重复扣款", "wrong": "写接口没有幂等键，超时后直接重试", "fix": "为每次业务请求分配唯一键并加数据库唯一约束，重复请求返回上一次结果"},
+        {"topic": "协调者崩溃后状态不明", "wrong": "协调者只在内存中维护事务状态", "fix": "协调状态先持久化再下发指令，参与方提供查询接口供恢复时确认结果"},
+        {"topic": "补偿操作无法重试", "wrong": "退款逻辑不幂等，重试产生多次退款", "fix": "补偿操作同样使用幂等键，重复执行返回同一结果并记录每次尝试"}
+      ],
+      "glossary": [
+        {"term": "本地事务", "definition": "在单个数据库内保证原子性的操作集合。"},
+        {"term": "两阶段提交", "definition": "先准备后提交的分布式协调协议。"},
+        {"term": "补偿事务", "definition": "用反向操作抵消已生效动作的方案。"},
+        {"term": "幂等键", "definition": "标识一次业务请求的唯一值，用于去重。"},
+        {"term": "对账", "definition": "比对双方记录以发现并修正差异。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "为什么跨服务写操作必须支持幂等？", "options": ["网络超时后的重试无法避免，重复请求必须安全", "可以减少代码量", "提高数据库性能", "降低存储成本"], "answer": 0, "explanation": "超时无法区分「对方没收到」与「对方已处理但回包丢失」，重试是必要手段，只有幂等才能保证结果正确。"},
+        {"type": "single", "question": "两阶段提交的主要代价是？", "options": ["协调期间资源被锁定，协调者故障会影响可用性", "无法保证一致性", "不支持任何数据库", "只能用于单机"], "answer": 0, "explanation": "参与方在准备后要持有资源等待最终决定，期间延迟上升，协调者故障还会让参与方长时间处于不确定状态。"},
+        {"type": "multi", "question": "设计补偿事务时需要注意哪些点？（多选）", "options": ["补偿操作本身要幂等", "补偿顺序与正向操作相反", "记录补偿原因与结果", "假设补偿一定能完全恢复业务"], "answer": 0, "answers": [0, 1, 2], "explanation": "补偿需要可重试、顺序正确且可追溯；外部副作用可能无法完全抵消，必须准备业务层面的止损方案。"},
+        {"type": "order", "question": "请按一次带补偿的下单流程排列。", "options": ["写入本地状态并校验幂等键", "调用扣款并记录结果", "调用发货服务", "发货失败时执行退款补偿", "更新状态并纳入对账"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "先落状态保证幂等，再按顺序调用参与方，失败时执行补偿，最后更新状态并通过对账确认一致性。"},
+        {"type": "debug", "question": "阅读这段代码，风险是什么？", "options": ["退款补偿不幂等，重试会造成多次退款", "扣款没有超时", "状态字段过少", "订单号没有索引"], "answer": 0, "code": "def compensate(order_id, amount):\n    payment.refund(order_id, amount)   # 每次调用都发起退款，没有幂等保护\n    db.update_status(order_id, \"compensated\")\n", "language": "python", "explanation": "补偿逻辑被重试时可能重复退款，造成资金损失；补偿必须带幂等键或先检查状态，确保同一笔业务最多退款一次。"}
+      ],
+      "practice": ["为一个跨服务流程画出正向与补偿操作对照表。", "让发货失败触发退款补偿，验证重复执行补偿不会重复退款。", "设计一次对账任务，输出每日差异数量与处理方式。"],
+      "refs": [
+        {"name": "Microservices.io：Saga 模式", "url": "https://microservices.io/patterns/data/saga.html"},
+        {"name": "Martin Fowler：事务与一致性模式", "url": "https://martinfowler.com/articles/patterns-of-distributed-systems/"}
+      ],
+      "english": "A distributed transaction is a set of local transactions that a coordinator drives to commit or roll back. Two-phase commit locks resources while it decides, so many systems prefer compensation: define a reverse action for each step, make every write idempotent behind a business key, and reconcile daily to catch what retries could not fix.",
+      "reviewPoints": ["能判断一个业务动作是否需要跨服务协调。", "能说出两阶段提交的适用场景与代价。", "能设计带幂等键的补偿与对账流程。"]
+    },
+    {
+      "id": "dist_event_sourcing",
+      "category": "distributed",
+      "title": {"zh": "事件溯源与读写分离", "en": "Event Sourcing and CQRS"},
+      "summary": {"zh": "从事件追加、状态重建讲到读写模型分离、重放与版本演进。", "en": "Append-only events, state rebuild, separated read and write models, replay and schema evolution."},
+      "keywords": ["事件溯源", "CQRS", "事件重放", "投影", "版本演进"],
+      "difficulty": "进阶",
+      "minutes": 45,
+      "order": 12,
+      "image": {"title": "从事件流到查询视图", "flow": ["命令校验后追加事件", "事件流按聚合有序存储", "投影器订阅并更新读模型", "读模型服务查询请求", "需要时从事件重放重建视图"]},
+      "goals": ["能说明事件溯源与只保存当前状态的区别。", "能实现一个从事件流重建状态的聚合。", "能设计投影重建与事件版本演进方案。"],
+      "prerequisitesText": ["完成消息队列与事件驱动课程。", "了解数据库事务与乐观锁的基本用法。", "能编写按顺序消费消息的处理逻辑。"],
+      "concepts": [
+        {"name": "事件追加与状态重建", "plain": "只追加事件，不改写历史，当前状态由事件按序重放得到。", "mechanism": "聚合按版本号追加事件，读取时从头或从快照开始重放事件流，得到当前状态；并发写入用版本号做乐观锁校验。", "example": "在本课示例里重放一段订单事件流，观察状态与快照加增量的结果一致。", "boundary": "事件含义被修改会让历史事件的解释随之改变，历史数据的可信度被破坏。", "engineering": "事件定义为不可变的事实，语义变更通过新增事件类型实现，重放逻辑支持多版本共存。"},
+        {"name": "读写分离与投影", "plain": "写模型只负责校验与追加事件，读模型按查询需求单独构建。", "mechanism": "投影器订阅事件并更新面向查询的视图，读模型可以是表、搜索索引或缓存，允许为不同查询建多个投影。", "example": "在本课示例里为同一事件流构建两个不同结构的读模型。", "boundary": "投影落后于事件流时读取到旧数据，必须明确可接受的延迟并向用户体现。", "engineering": "投影记录处理位点并支持从任意位置重建，延迟作为监控指标对业务可见。"},
+        {"name": "重放与事件版本演进", "plain": "新增投影或修复缺陷时需要重放历史事件，事件结构也会随时间演进。", "mechanism": "重放按位点从头处理事件并可并行写入新视图；事件新增字段时保持向后兼容，重命名或拆分通过升级函数在读取时转换。", "example": "在本课示例里为一个新投影重放三个月的历史事件并核对结果。", "boundary": "重放未考虑副作用会在重放时重复发送通知或扣款，必须把外部副作用与内部计算分开。", "engineering": "重放前关闭外部副作用开关，重放完成后比对总量指标确认一致性。"}
+      ],
+      "steps": ["定义事件类型与不变式", "实现追加与版本校验", "构建投影并记录位点", "为新视图执行重放", "管理事件版本与副作用开关"],
+      "code": {"language": "python", "snippet": "class OrderAggregate:\n    \"\"\"从事件流重建状态：重放顺序与写入顺序一致。\"\"\"\n    def __init__(self):\n        self.version = 0\n        self.status = None\n        self.total = 0\n\n    def load(self, events):\n        for event in events:                 # 按版本升序重放\n            self.apply(event)\n            self.version = event[\"version\"]\n\n    def apply(self, event):\n        kind = event[\"type\"]\n        if kind == \"OrderCreated\":\n            self.status, self.total = \"created\", event[\"total\"]\n        elif kind == \"OrderPaid\":\n            self.status = \"paid\"\n        elif kind == \"OrderShipped\":\n            self.status = \"shipped\"\n        elif kind == \"OrderCancelled\":\n            self.status = \"cancelled\"\n        # 未知类型必须显式处理，避免静默丢失语义\n        elif not kind.startswith(\"OrderV1\"):\n            raise ValueError(f\"unsupported event: {kind}\")\n\n    def append(self, store, kind, payload):\n        # 乐观锁：版本号不一致说明有并发写入，需要重试\n        store.append(order_id, expected_version=self.version, type=kind, payload=payload)\n        self.version += 1\n        self.apply({\"type\": kind, \"version\": self.version, **payload})\n", "walkthrough": "聚合通过按序重放事件得到状态，version 同时作为并发控制依据；追加事件时携带期望版本号，冲突则重试。未知事件类型显式报错，避免新事件被静默忽略导致状态错误。", "expected_output": "replay 4 events -> status=shipped total=299，concurrent append with stale version -> conflict, retry ok，rebuild projection from version 0 in 12 s"},
+      "faults": [
+        {"topic": "重放时重复发送通知", "wrong": "投影里同时执行外部副作用且没有开关", "fix": "把外部副作用与内部计算分离，重放时关闭副作用开关，结束后单独补发"},
+        {"topic": "事件含义变更导致历史不可读", "wrong": "直接修改事件字段含义或沿用同名事件", "fix": "新增事件类型或字段并通过升级函数转换旧事件，保持历史事件不可变"},
+        {"topic": "并发写入丢事件", "wrong": "追加事件时不做版本校验", "fix": "用聚合版本号做乐观锁，冲突时重新加载事件并重试命令"}
+      ],
+      "glossary": [
+        {"term": "事件溯源", "definition": "只追加事件并由事件重放得到状态的方式。"},
+        {"term": "聚合", "definition": "一致性边界内的一组相关对象与事件。"},
+        {"term": "投影", "definition": "把事件流转换为面向查询视图的处理器。"},
+        {"term": "乐观锁", "definition": "用版本号检测并发冲突而不长期加锁。"},
+        {"term": "重放", "definition": "从头或从快照重新处理事件以重建状态。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "事件溯源中修改历史事件的含义会带来什么后果？", "options": ["历史数据的解释被改变，重放结果不再可信", "存储空间增加", "查询速度变慢", "事件数量减少"], "answer": 0, "explanation": "事件是已发生事实的记录，修改含义相当于改写历史，重放与审计都会得到与当时不一致的结论。"},
+        {"type": "single", "question": "并发追加事件时最常用的保护手段是？", "options": ["用聚合版本号做乐观锁校验", "加数据库全局排他锁", "禁止并发写入", "忽略冲突"], "answer": 0, "explanation": "版本号校验让冲突的写入失败并重试，避免两个命令基于同一旧状态各自追加事件造成状态分叉。"},
+        {"type": "multi", "question": "为新的读模型执行重放前应准备什么？（多选）", "options": ["关闭外部副作用开关", "记录起始位点", "准备重建后的比对指标", "删除原始事件流"], "answer": 0, "answers": [0, 1, 2], "explanation": "关闭副作用避免重复通知，位点决定重放范围，比对指标用于验证重建结果；原始事件流是唯一事实来源，不能删除。"},
+        {"type": "order", "question": "请按一次命令处理的顺序排列。", "options": ["加载聚合并校验业务规则", "追加事件并递增版本", "投影器订阅事件更新读模型", "查询服务返回读模型结果", "按需重放重建视图"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "写侧校验后追加事件，读侧投影异步更新，查询走读模型，需要时通过重放重建视图。"},
+        {"type": "debug", "question": "阅读这段投影代码，风险是什么？", "options": ["重放时重复调用发货接口，产生重复副作用", "字节码版本不匹配", "缺少位点记录", "事件类型判断错误"], "answer": 0, "code": "def project(event):\n    if event[\"type\"] == \"OrderPaid\":\n        shipping.create(event[\"order_id\"])   # 投影里直接调用外部服务\n        db.upsert_view(event[\"order_id\"], status=\"paid\")\n", "language": "python", "explanation": "投影被重放时会再次调用发货接口，造成重复发货；外部副作用应移出投影，由独立的命令或补偿流程负责。"}
+      ],
+      "practice": ["实现一个聚合，从事件流重建状态并与快照加增量结果对比。", "为同一事件流构建两个不同结构的读模型并记录位点。", "执行一次投影重建，验证关闭副作用开关后不会重复调用外部服务。"],
+      "refs": [
+        {"name": "Martin Fowler：事件溯源", "url": "https://martinfowler.com/eaaDev/EventSourcing.html"},
+        {"name": "Microsoft 文档：CQRS 模式", "url": "https://learn.microsoft.com/en-us/azure/architecture/patterns/cqrs"}
+      ],
+      "english": "Event sourcing stores facts as an append-only stream and rebuilds state by replaying them in order, with an aggregate version guarding concurrent writes. CQRS separates the write model from query-optimised projections that track their own position. Rebuilding a projection means replaying history with external side effects switched off, and event semantics stay immutable.",
+      "reviewPoints": ["能说明事件溯源与只存当前状态的区别。", "能解释聚合版本号在并发写入中的作用。", "能说出安全重放必须准备的三件事。"]
+    }
+  ]
+}

@@ -463,10 +463,8 @@ List<Section> planMissingSections({
     additions.add(
       Section(
         '本课复习清单',
-        [
-          for (final heading in topics.take(6))
-            '- [ ] 能独立完成「$heading」并说明验收标准。',
-        ].join('\n'),
+        [for (final heading in topics.take(6)) '- [ ] 能独立完成「$heading」并说明验收标准。']
+            .join('\n'),
       ),
     );
   }
@@ -556,11 +554,7 @@ String? _termTable(String markdown, List<String> keywords, String lessonId) {
     rows.add('| `$term` | $explanation |');
   }
   if (rows.length < 3) return null;
-  return <String>[
-    '| 术语 | 一句话说明 |',
-    '| --- | --- |',
-    ...rows,
-  ].join('\n');
+  return <String>['| 术语 | 一句话说明 |', '| --- | --- |', ...rows].join('\n');
 }
 
 /// 找出正文里最适合当术语说明的句子：优先定义式表述，
@@ -593,9 +587,8 @@ String? _firstSentenceWith(String markdown, String term) {
     if (stop > 16) text = text.substring(0, stop + 1);
     var score = 2;
     if (RegExp(r'[:：]').hasMatch(line)) score += 1;
-    if (RegExp(r'(是|指|表示|负责|用来|用于|会把|用来把)').hasMatch(
-      text.substring(0, text.length ~/ 2),
-    )) {
+    if (RegExp(r'(是|指|表示|负责|用来|用于|会把|用来把)')
+        .hasMatch(text.substring(0, text.length ~/ 2))) {
       score += 2;
     }
     if (text.length > 100) score -= 1;
@@ -683,8 +676,7 @@ int _dropCrossLessonRepeats(Map<String, List<Section>> additions) {
   return dropped;
 }
 
-int _fenceCount(String markdown) =>
-    RegExp('```').allMatches(markdown).length;
+int _fenceCount(String markdown) => RegExp('```').allMatches(markdown).length;
 
 String _trimBlankEdges(String text) {
   final lines = text.split('\n');

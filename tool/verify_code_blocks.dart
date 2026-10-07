@@ -151,7 +151,11 @@ Future<void> main(List<String> args) async {
             language == 'cpp' &&
             '${result.stderr}'.contains('unrecognized command line option')) {
           // 旧版 MinGW g++ 最高只认 c++2a，回退后仍按同一份源码校验。
-          result = Process.runSync('g++', ['-fsyntax-only', '-std=c++2a', path]);
+          result = Process.runSync('g++', [
+            '-fsyntax-only',
+            '-std=c++2a',
+            path,
+          ]);
         }
         final ok = result.exitCode == 0;
         final accepted = ok || _balanced(block.code, language);
@@ -334,9 +338,7 @@ String _failureLanguage(String failure) {
 bool _isDiagramBlock(String language) =>
     language == 'text' || language == 'markdown' || language == 'ascii';
 
-final RegExp _fragmentMarker = RegExp(
-  r'片段|省略|仅展示|只展示|不完整|伪代码|需要.*依赖|依赖.*未',
-);
+final RegExp _fragmentMarker = RegExp(r'片段|省略|仅展示|只展示|不完整|伪代码|需要.*依赖|依赖.*未');
 
 /// 片段标记必须写在注释行里，避免把正文里的「省略」误判为片段。
 bool _looksLikeFragment(String code) {
@@ -440,7 +442,8 @@ bool _balanced(String code, [String language = '']) {
     if (char == '"' || char == "'" || char == '`') {
       if (lang == 'rust' && char == "'" && _isRustLifetime(code, index)) {
         var cursor = index + 1;
-        while (cursor < code.length && _isIdentifierChar(code.codeUnitAt(cursor))) {
+        while (cursor < code.length &&
+            _isIdentifierChar(code.codeUnitAt(cursor))) {
           cursor++;
         }
         index = cursor - 1;

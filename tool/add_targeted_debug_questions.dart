@@ -45,8 +45,7 @@ const List<DebugTarget> targets = [
       '只要构建成功，制品名是否可追溯不影响发布',
     ],
     answer: 2,
-    code:
-        'docker build -t myapp:latest .\ndocker push myapp:latest\n# 生产环境直接部署 myapp:latest',
+    code: 'docker build -t myapp:latest .\ndocker push myapp:latest\n# 生产环境直接部署 myapp:latest',
     language: 'bash',
     explanation:
         '正确答案是「固定基础镜像版本，并用版本号加 commit SHA 标记制品，各环境复用同一份」。'
@@ -176,9 +175,7 @@ Future<void> main(List<String> args) async {
       flush: true,
     );
   }
-  stdout.writeln(
-    '${dryRun ? '[dry-run] ' : ''}新增题目：$added，已存在跳过：$skipped',
-  );
+  stdout.writeln('${dryRun ? '[dry-run] ' : ''}新增题目：$added，已存在跳过：$skipped');
 }
 
 String _normalize(String value) => value.replaceAll(RegExp(r'\s+'), '');
@@ -244,8 +241,7 @@ void _replaceFillExamPoint(String path, DebugTarget target) {
   var startLine = -1;
   var endLine = lines.length;
   for (var index = 0; index < lines.length; index++) {
-    if (lines[index].startsWith('### 考点 ') &&
-        lines[index].contains('补全代码')) {
+    if (lines[index].startsWith('### 考点 ') && lines[index].contains('补全代码')) {
       startLine = index;
       for (var next = index + 1; next < lines.length; next++) {
         if (lines[next].startsWith('### 考点 ') ||

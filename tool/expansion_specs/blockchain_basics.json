@@ -1,0 +1,101 @@
+{
+  "lessons": [
+    {
+      "id": "blockchain_basics",
+      "category": "blockchain",
+      "title": {"zh": "区块链基础与密码学原语", "en": "Blockchain Fundamentals and Cryptographic Primitives"},
+      "summary": {"zh": "从哈希、签名和哈希链出发，理解区块链为什么能防篡改、为什么需要共识。", "en": "Understand hash functions, signatures and hash chains behind tamper-resistant ledgers."},
+      "keywords": ["哈希", "数字签名", "Merkle 树", "账本", "共识"],
+      "difficulty": "基础",
+      "minutes": 30,
+      "order": 1,
+      "image": {"title": "区块链的密码学基础", "flow": ["生成密钥", "签名交易", "打包区块", "全网校验"]},
+      "goals": [
+        "能解释哈希函数的三条性质：确定性、雪崩效应和单向性。",
+        "能画出「交易 → 签名 → 区块 → 链」的数据流，并说明每一步校验什么。",
+        "能区分区块链防篡改来自哈希链与共识，而不是来自「加密」。"
+      ],
+      "prerequisitesText": [
+        "了解二进制与位运算的基本概念，知道十六进制字符串如何表示字节。",
+        "能运行一段最简 JavaScript 或 Python 程序并观察输出。",
+        "知道公钥密码学解决的是「证明身份」而不是「隐藏内容」。"
+      ],
+      "concepts": [
+        {
+          "name": "哈希函数与数据完整性",
+          "plain": "哈希函数把任意长度的输入压缩成固定长度的摘要，用来判断数据有没有被改动。区块链里每个区块、每笔交易都靠摘要互相引用。",
+          "mechanism": "SHA-256 对输入做分组扩散运算，输出 256 位摘要。输入改动一个比特，输出会大幅变化，这叫雪崩效应；同时哈希是单向的，无法从摘要反推原文。",
+          "example": "把「hello」和「hello!」分别做 SHA-256，比较两个摘要的差异程度；再把同一段数据算两次，确认结果完全一致。",
+          "boundary": "哈希只能证明数据未被改动，不能证明数据来源可信，也不能防止别人重新计算一份「合法」的假数据。",
+          "engineering": "落库时同时保存算法标识与摘要，算法要可升级；摘要比对要用常数时间比较，避免旁路泄漏。"
+        },
+        {
+          "name": "非对称加密与数字签名",
+          "plain": "私钥用于签名，公钥用于验签。签名让任何人可以在不拿到私钥的前提下确认「这笔交易确实由持有私钥的人发出」。",
+          "mechanism": "签名算法先对消息摘要运算，再用私钥生成签名的两个整数。验签时用公钥和消息摘要验证等式成立，等式不成立说明消息被改或签名伪造。",
+          "example": "生成一对密钥，对一段交易文本签名，然后分别用正确的公钥和被改动一个字符的公钥验签，观察结果差异。",
+          "boundary": "签名不提供保密性，链上数据默认公开；私钥一旦泄露，攻击者可以伪造任何以你名义发出的交易。",
+          "engineering": "私钥必须离线或放入硬件模块保存，签名随机数绝不能复用；同一私钥不要跨链跨协议混用。"
+        },
+        {
+          "name": "哈希链与 Merkle 树",
+          "plain": "区块头记录前一个区块的哈希，形成一条首尾相连的链；区块内的交易用 Merkle 树汇总成一个根哈希，便于按路径证明某笔交易存在。",
+          "mechanism": "Merkle 树把交易两两哈希向上合并，树根写入区块头。验证某笔交易时只需要同层的兄弟哈希，也就是 Merkle 路径，复杂度从全量 O(n) 降到 O(log n)。",
+          "example": "用四笔交易构造 Merkle 树，手算每条叶子到根的路径；然后改动其中一笔交易，观察根哈希和区块哈希如何同时变化。",
+          "boundary": "Merkle 证明只说明「这笔交易在树里」，不说明交易本身是否合法；合法性仍要靠交易规则和共识校验。",
+          "engineering": "轻客户端、跨链证明和空投快照都依赖 Merkle 证明；实现时要统一叶子哈希前缀，避免第二原像攻击。"
+        },
+        {
+          "name": "去中心化账本与共识的必要性",
+          "plain": "每个节点都保存一份账本副本，谁都可以校验，但没有中心机构决定顺序，于是必须用共识算法让所有节点对「哪条链是主链」达成一致。",
+          "mechanism": "共识把「打包区块」的权力和成本绑定在一起：工作量证明付出算力，权益证明锁定资产；作恶要让收益小于成本，诚实参与反而更划算。",
+          "example": "对比中心化数据库与区块链账本：同样是转账，前者由数据库管理员写入，后者由矿工或验证者竞争打包，再由全网节点复核。",
+          "boundary": "节点数量多不等于去中心化；如果出块权、升级权或 RPC 访问集中在少数实体手里，实际信任模型仍然是中心化的。",
+          "engineering": "评估一条链时要看验证者分布、客户端多样性、升级流程与 RPC 提供方；只统计节点数会误判风险。"
+        }
+      ],
+      "steps": ["生成密钥对并保存私钥", "构造交易并用私钥签名", "把交易广播给节点校验", "打包进区块并追加到链上"],
+      "code": {
+        "language": "javascript",
+        "snippet": "const crypto = require('crypto');\n\nconst hash = (data) => crypto.createHash('sha256').update(data).digest('hex');\n\n// 1. 构造两条交易并计算摘要\nconst tx1 = 'alice->bob:10';\nconst tx2 = 'bob->carol:4';\nconsole.log('tx1', hash(tx1));\nconsole.log('tx2', hash(tx2));\n\n// 2. 两两哈希得到 Merkle 根\nconst root = hash(hash(tx1) + hash(tx2));\nconsole.log('merkle root', root);\n\n// 3. 篡改交易，观察根哈希变化\nconst tampered = hash(tx1) + hash('bob->carol:40');\nconsole.log('tampered root', hash(tampered));\nconsole.log('root changed:', root !== hash(tampered));",
+        "walkthrough": "这段代码先算两笔交易的摘要，再合并成 Merkle 根；最后篡改第二笔金额，根哈希随之改变，直观说明为什么链上数据改一个字节就会暴露。",
+        "expected_output": "tx1 与 tx2 是两个 64 位十六进制摘要；merkle root 由两个摘要拼接后再哈希得到；篡改后 root changed: true。"
+      },
+      "faults": [
+        {"topic": "把哈希当成加密", "wrong": "认为「数据上链前做了哈希，所以内容被保密了」", "fix": "哈希只保证完整性；需要保密要在上链前加密，并想清楚密钥由谁保管"},
+        {"topic": "私钥在线保存", "wrong": "把私钥写在配置文件或聊天记录里，随节点一起部署", "fix": "私钥放硬件钱包或密钥管理服务，签名服务与业务服务分离"},
+        {"topic": "只校验单条记录", "wrong": "只比对当前交易摘要，不校验它与前序区块的连接", "fix": "从创世块或可信检查点开始重建链，逐块校验哈希链接与共识规则"}
+      ],
+      "glossary": [
+        {"term": "哈希函数", "definition": "把任意长度输入映射为固定长度摘要的单向函数，用于完整性校验。"},
+        {"term": "数字签名", "definition": "用私钥生成、用公钥验证的凭证，证明消息来源与未被篡改。"},
+        {"term": "Merkle 树", "definition": "把多条数据两两哈希向上归并的树结构，可用短证明验证单条数据存在。"},
+        {"term": "区块头", "definition": "记录前块哈希、Merkle 根、时间戳与共识字段的固定结构。"},
+        {"term": "共识算法", "definition": "在无中心机构时让节点对账本顺序达成一致的规则集合。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "关于哈希函数的雪崩效应，下列说法正确的是？", "options": ["输入改动一个比特，输出摘要会大幅变化", "输入改动一个比特，输出只有对应位变化", "输出长度随输入长度线性增长", "相同输入在不同机器上得到不同摘要"], "answer": 0, "explanation": "雪崩效应指输入微小变化会让输出近似完全改变，这是哈希能用于完整性校验的原因；如果输出只随对应位变化，攻击者就能逐步逼近原文。"},
+        {"type": "single", "question": "区块链的防篡改主要来自哪一组机制？", "options": ["哈希链加共识规则", "数据库触发器加审计日志", "对称加密加访问控制", "前端校验加签名证书"], "answer": 0, "explanation": "哈希链让改动历史必然改变后续所有区块哈希，共识规则决定哪条链被接受；两者结合才让篡改成本高于收益，单独加密或日志都无法防止重写历史。"},
+        {"type": "multi", "question": "以下哪些属于数字签名能提供的保证？（多选）", "options": ["消息来源可验证", "消息内容未被修改", "消息内容对外保密", "签名者无法否认签名行为"], "answers": [0, 1, 3], "answer": 0, "explanation": "签名用私钥生成、公钥验证，可确认来源与完整性，并具备不可否认性；但签名不隐藏内容，链上数据默认公开，需要保密必须另行加密。"},
+        {"type": "order", "question": "请按交易进入区块链的顺序排列下面的步骤。", "options": ["打包进区块并广播", "生成密钥对并保管私钥", "节点校验交易签名与余额", "构造交易并签名"], "correct_order": [1, 3, 2, 0], "answer": 0, "explanation": "完整顺序是：先有密钥对，再构造并签名交易，节点校验通过后才被打包进区块广播全网；顺序颠倒会出现未签名先广播或未校验先入块的错误流程。"},
+        {"type": "debug", "question": "读下面的代码片段，哪一项描述正确？", "options": ["篡改交易后 Merkle 根会改变，可据此发现改动", "这段代码实现了非对称加密，可以隐藏交易内容", "只要私钥不泄露，Merkle 根就永远不变", "哈希结果是定长的，所以任意两笔交易摘要必然相同"], "answer": 0, "code": "const root = hash(hash(tx1) + hash(tx2));\nconst tampered = hash(tx1) + hash('bob->carol:40');\nconsole.log(root !== hash(tampered));", "language": "javascript", "explanation": "代码只做哈希与拼接，没有加密，因此不提供保密性；Merkle 根随交易内容变化，这说明它能发现改动，但固定长度摘要并不代表不同输入会得到相同输出。"}
+      ],
+      "practice": [
+        "把示例里的两笔交易扩成四笔，画出 Merkle 树并写出每笔交易的证明路径。",
+        "用同一段文本连续哈希两次，再改动一个字符哈希一次，记录三次摘要的差异。",
+        "查找一个真实公链的区块浏览器，读出一个区块的哈希、前块哈希与交易数量。"
+      ],
+      "refs": [
+        {"name": "Bitcoin: A Peer-to-Peer Electronic Cash System", "url": "https://bitcoin.org/bitcoin.pdf"},
+        {"name": "NIST FIPS 180-4 安全哈希标准", "url": "https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf"},
+        {"name": "Merkle Tree（维基百科）", "url": "https://en.wikipedia.org/wiki/Merkle_tree"}
+      ],
+      "english": "This lesson introduces the primitives behind every blockchain: hash functions for integrity, digital signatures for authenticity, Merkle trees for compact proofs, and consensus for ordering transactions without a central authority. You will build a tiny hash chain, tamper with it, and observe how the root changes.",
+      "reviewPoints": [
+        "能说出哈希、签名、Merkle 树各自解决哪一类问题。",
+        "能解释为什么哈希上链不等于数据保密。",
+        "能说明共识算法要付出的成本与得到的保证。"
+      ]
+    }
+  ]
+}

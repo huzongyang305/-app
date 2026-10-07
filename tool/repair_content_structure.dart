@@ -85,8 +85,8 @@ List<String> _repairSelfRepeatingBullets(
       output.add(line);
       continue;
     }
-    final match =
-        RegExp(r'^(\s*-\s+\*\*(.+?)\*\*\s*[：:]\s*)(.+)$').firstMatch(line);
+    final match = RegExp(r'^(\s*-\s+\*\*(.+?)\*\*\s*[：:]\s*)(.+)$')
+        .firstMatch(line);
     if (match == null) {
       output.add(line);
       continue;
@@ -161,9 +161,10 @@ List<String> _repairOrderedLists(
     }
     final firstNumber = int.parse(numberedPattern.firstMatch(line)!.group(1)!);
     // 题干和解析里的编号是题目序号，不是 Markdown 列表，保持原样。
-    final inQuizSection = _quizHeadingPattern.hasMatch(_latestHeading(lines, i));
-    final renumber =
-        !inQuizSection && firstNumber > 1 && block.length >= 2;
+    final inQuizSection = _quizHeadingPattern.hasMatch(
+      _latestHeading(lines, i),
+    );
+    final renumber = !inQuizSection && firstNumber > 1 && block.length >= 2;
     var next = 1;
     if (renumber) {
       // 旧生成器删掉了列表首项，这里按课程语义补回“先澄清输入与目标”。
@@ -232,7 +233,8 @@ List<String> _repairTermTables(
       output.add(line);
       continue;
     }
-    final match = RegExp(r'^\|\s*`(.+?)`\s*\|\s*(.*?)\s*\|\s*$').firstMatch(line);
+    final match = RegExp(r'^\|\s*`(.+?)`\s*\|\s*(.*?)\s*\|\s*$')
+        .firstMatch(line);
     if (match == null) {
       output.add(line);
       continue;
@@ -242,20 +244,21 @@ List<String> _repairTermTables(
     final placeholder = RegExp(r'^\[(.+?)\]\[index\]$').firstMatch(term);
     if (placeholder != null) {
       stats.update('未解析模板占位符', (v) => v + 1, ifAbsent: () => 1);
-      final candidates = <String>[
-        title,
-        ...keywords,
-        ...placeholder.group(1)!.split(RegExp(r'[,，、]')),
-      ]
-          .map((item) => item.trim())
-          .where(
-            (item) =>
-                item.isNotEmpty &&
-                item != title &&
-                item.length <= 20 &&
-                !item.contains('index'),
-          )
-          .toList();
+      final candidates =
+          <String>[
+                title,
+                ...keywords,
+                ...placeholder.group(1)!.split(RegExp(r'[,，、]')),
+              ]
+              .map((item) => item.trim())
+              .where(
+                (item) =>
+                    item.isNotEmpty &&
+                    item != title &&
+                    item.length <= 20 &&
+                    !item.contains('index'),
+              )
+              .toList();
       final clean = _unique(candidates).take(maxRowsPerTermTable).toList();
       for (final keyword in clean) {
         if (rowsWritten >= maxRowsPerTermTable) break;
@@ -305,8 +308,7 @@ String _termGloss(
       )
       .take(2)
       .toList();
-  final relation =
-      related.isEmpty ? '' : '；它与${related.join('、')}共同决定这一节的判断边界';
+  final relation = related.isEmpty ? '' : '；它与${related.join('、')}共同决定这一节的判断边界';
   return '它在「$title」里是理解「$role」的关键术语，用来解释定义、适用条件与失败路径$relation。复习时回到正文示例核对输入、输出和验证方式。';
 }
 
@@ -328,9 +330,7 @@ String? _findDefinitionSentence(String markdown, String term) {
       className = line.replaceFirst(RegExp(r'^#+\s*'), '');
       continue;
     }
-    if (line.startsWith('|') ||
-        line.startsWith('>') ||
-        line.startsWith('![')) {
+    if (line.startsWith('|') || line.startsWith('>') || line.startsWith('![')) {
       continue;
     }
     if (className.contains('术语') ||
@@ -364,7 +364,9 @@ String? _findDefinitionSentence(String markdown, String term) {
     final first = _stripScaffoldPrefix(
       cleaned.split(RegExp(r'[。！？!?]')).first.trim(),
     );
-    if (first.length < minGlossLength || first.length > maxGlossLength) continue;
+    if (first.length < minGlossLength || first.length > maxGlossLength) {
+      continue;
+    }
     if (!_containsTerm(_normalizeTerm(first).toLowerCase(), needle)) continue;
     if (!_hasTermBoundary(normalizedLine, needle)) continue;
     best.add('$first。');

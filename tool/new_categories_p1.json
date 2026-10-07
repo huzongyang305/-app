@@ -1,0 +1,44 @@
+[
+  {
+    "id": "blockchain",
+    "title": {"zh": "区块链与 Web3", "en": "Blockchain & Web3"},
+    "icon": "link",
+    "color": "F7931A",
+    "after": "security"
+  },
+  {
+    "id": "cloud",
+    "title": {"zh": "云计算与云原生", "en": "Cloud & Cloud Native"},
+    "icon": "cloud",
+    "color": "0EA5E9",
+    "after": "toolchain"
+  },
+  {
+    "id": "data_engineering",
+    "title": {"zh": "数据工程", "en": "Data Engineering"},
+    "icon": "storage",
+    "color": "0891B2",
+    "after": "database"
+  },
+  {
+    "id": "compiler",
+    "title": {"zh": "编译原理与语言实现", "en": "Compilers & Language Implementation"},
+    "icon": "transform",
+    "color": "7C3AED",
+    "after": "fundamentals"
+  },
+  {
+    "id": "embedded",
+    "title": {"zh": "嵌入式与物联网", "en": "Embedded & IoT"},
+    "icon": "developer_board",
+    "color": "16A34A",
+    "after": "os"
+  },
+  {
+    "id": "gamedev",
+    "title": {"zh": "图形与游戏开发", "en": "Graphics & Game Development"},
+    "icon": "sports_esports",
+    "color": "DB2777",
+    "after": "flutter"
+  }
+]

@@ -13,13 +13,12 @@ const String defaultDate = '2026-10-06';
 
 void main(List<String> args) {
   final dryRun = args.contains('--dry-run');
-  final target =
-      args
-          .firstWhere(
-            (arg) => arg.startsWith('--date='),
-            orElse: () => '--date=$defaultDate',
-          )
-          .substring('--date='.length);
+  final target = args
+      .firstWhere(
+        (arg) => arg.startsWith('--date='),
+        orElse: () => '--date=$defaultDate',
+      )
+      .substring('--date='.length);
 
   final manifest =
       jsonDecode(File(manifestPath).readAsStringSync()) as Map<String, dynamic>;

@@ -515,9 +515,8 @@ void main(List<String> args) {
       final updated =
           '${markdown.substring(0, anchor)}\n$sectionHeading\n\n$supplement'
           '\n${markdown.substring(anchor + 1)}';
-      final blocks = RegExp(r'^```', multiLine: true)
-          .allMatches(supplement)
-          .length ~/ 2;
+      final blocks =
+          RegExp(r'^```', multiLine: true).allMatches(supplement).length ~/ 2;
       touched++;
       addedBlocks += blocks;
       if (apply) file.writeAsStringSync(updated);
@@ -537,11 +536,7 @@ String? _stringOption(List<String> args, String prefix) {
 
 /// 依次尝试多个锚点，兼容没有「复习与迁移」章节的早期课程。
 int _findAnchor(String markdown) {
-  const anchors = <String>[
-    '\n## 复习与迁移',
-    '\n## 考点精讲',
-    '\n## 内容元数据',
-  ];
+  const anchors = <String>['\n## 复习与迁移', '\n## 考点精讲', '\n## 内容元数据'];
   for (final anchor in anchors) {
     final index = markdown.indexOf(anchor);
     if (index >= 0) return index;

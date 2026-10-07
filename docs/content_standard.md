@@ -113,6 +113,36 @@ App 用 `manifest.json` 里每个课程的 `order` 字段渲染「推荐学习�
   再次出现即判为 `unreviewed_mistake_table`，必须重写后再保留。
 - 复核表由 `tool/review_mistake_tables.dart` 维护，同样幂等。
 
+### 故障现场（P0）
+
+- 每课保持 3 个 `### 现场 N：<本课具体问题>` 小标题，每个现场都要写全
+  `症状 / 根因 / 修复 / 验证` 四段，内容必须来自本课的「常见错误与排查」
+  表或课程关键词，不允许出现跨课复用的占位套话。
+- 深挖章节的「正文出处」列会按 `现场 N：标题` 回引现场：标题改写后引用
+  必须同步，长标题允许在引用处截断成「前缀…」，但不允许指错场景。
+- 两条卡口都在 `tool/audit_content_governance.dart`：`generic_fault_scenario`
+  拦跨课套话，`fault_reference_drift` 拦引用漂移。
+- 内容改动后跑 `dart tool/rebuild_fault_scenarios.dart` 重建现场；该工具按
+  本课错误表生成场景并同步深挖引用，第二次执行即为空操作。
+
+### P0 收口：错误表、配图与复核排期
+
+- 错误表作者工具 `tool/author_p0_mistake_tables.dart` 覆盖 215 门课，按课程数据
+  重写三列表；重写时**保留章节里的非表格内容**（对照图、补充段落），避免
+  再次出现「重写吃掉配图」。执行 `--dry-run` 为空操作即表示正文与数据一致。
+- 单图课程补第二张图分两步：`tool/generate_p0_extra_diagrams.py` 生成
+  `assets/content/images/p0x_<lessonId>.webp` 与批次文件
+  `tool/image_batches/p0_extra.json`，再由
+  `dart tool/insert_section_images.dart tool/image_batches/p0_extra.json`
+  插到「本课小结」之前。生成脚本自带文字宽度测量，超出容器宽度会在检查脚本里报出。
+- 复核日期按批次排期：`dart tool/schedule_review_batches.dart` 读取
+  `docs/content_review_batches.json`，按「本轮改动优先 + 风险」排序，把
+  `- 下次复核：YYYY-MM-DD` 分散到 12 个月，并写出
+  `docs/content_review_schedule.md`。**排期不等于复核**：人工复核状态仍以
+  `docs/content_review_records.json` 为准，没有记录就保持 pending。
+- 正文去重：`dart tool/dedupe_repeated_sentences.dart` 压缩「同一行内重复 ≥ 3 次」
+  的句子（历史生成缺陷），跨行重复的清单句不动。
+
 ### 待清理指标
 
 治理报告里的 `glossary_template_rows` 统计旧模板残留行（英文套话、
@@ -127,6 +157,11 @@ App 用 `manifest.json` 里每个课程的 `order` 字段渲染「推荐学习�
 | `dart tool/unify_sections.dart --dry-run` | 预览章节改名与补齐计划 |
 | `dart tool/rebuild_glossaries.dart --dry-run` | 预览术语表重建与表头统一 |
 | `dart tool/review_mistake_tables.dart --dry-run` | 预览错误表复核重写 |
+| `dart tool/rebuild_fault_scenarios.dart --dry-run` | 预览故障现场重建与深挖引用同步 |
+| `dart tool/author_p0_mistake_tables.dart --dry-run` | 预览错误表重写（覆盖 215 门课） |
+| `dart tool/dedupe_repeated_sentences.dart --dry-run` | 预览正文行内重复句压缩 |
+| `dart tool/schedule_review_batches.dart --dry-run` | 预览人工复核分批排期 |
+| `python tool/generate_p0_extra_diagrams.py` | 重新生成 67 张补全配图与插入批次 |
 | `dart tool/audit_content_governance.dart` | 治理卡口：模板化、引用复用、难度/顺序/时长不变量 |
 | `dart tool/audit_content_structure.dart` | 结构缺陷 |
 | `dart tool/audit_content_quality.dart` | 题库质量与题型分布 |

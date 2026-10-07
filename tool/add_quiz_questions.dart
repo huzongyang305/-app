@@ -205,7 +205,8 @@ const List<NewQuestion> questions = <NewQuestion>[
       '服务需要重启，抓包工具才会重新加载网卡列表和过滤规则',
     ],
     answerIndex: 0,
-    code: "tcpdump -i eth0 -nn 'tcp port 8080'\n"
+    code:
+        "tcpdump -i eth0 -nn 'tcp port 8080'\n"
         '# 容器通过 docker0 网桥访问宿主机，eth0 上看不到该服务流量',
     language: 'bash',
     explanation:
@@ -244,7 +245,8 @@ const List<NewQuestion> questions = <NewQuestion>[
       '并发下降说明业务量变小，与线程池配置和临界区范围都没有关系',
     ],
     answerIndex: 2,
-    code: 'synchronized (counter) {\n'
+    code:
+        'synchronized (counter) {\n'
         '    counter++;\n'
         '    // 临界区里还有数据库查询与日志写入\n'
         '}',
@@ -266,7 +268,8 @@ const List<NewQuestion> questions = <NewQuestion>[
       '固定镜像与依赖版本，写出最小复现，再判断是真实漏洞还是误报',
     ],
     answerIndex: 3,
-    code: '# 扫描器: CVE-2024-XXXX (critical)\n'
+    code:
+        '# 扫描器: CVE-2024-XXXX (critical)\n'
         '# 复现环境: 与扫描时的版本、配置均不一致',
     language: 'text',
     explanation:
@@ -286,7 +289,8 @@ const List<NewQuestion> questions = <NewQuestion>[
       '减少测试数据量，只要小数据全部正确就已经满足算法要求',
     ],
     answerIndex: 1,
-    code: '# 输入规模从 1e3 提升到 1e7 后，单次运行超过 30s\n'
+    code:
+        '# 输入规模从 1e3 提升到 1e7 后，单次运行超过 30s\n'
         'for i in range(n):\n'
         '    for j in range(n):\n'
         '        if data[i] == data[j]:\n'
@@ -309,7 +313,8 @@ const List<NewQuestion> questions = <NewQuestion>[
       '重新提交一次代码，只要这次通过就说明问题已经不存在了',
     ],
     answerIndex: 2,
-    code: '# 本地: go1.22 / Node 20 / 有缓存\n'
+    code:
+        '# 本地: go1.22 / Node 20 / 有缓存\n'
         '# CI:   go1.21 / Node 18 / 缓存命中旧依赖',
     language: 'text',
     explanation:
@@ -329,7 +334,8 @@ const List<NewQuestion> questions = <NewQuestion>[
       '请求成功但响应丢失，重试时服务端没有按唯一标识幂等去重',
     ],
     answerIndex: 3,
-    code: '// 本地队列重试\n'
+    code:
+        '// 本地队列重试\n'
         'await api.createOrder(payload);\n'
         'await queue.remove(item.id);\n'
         '// 服务端未校验 requestId',
@@ -351,14 +357,15 @@ const List<NewQuestion> questions = <NewQuestion>[
       '把任务改成手动执行，禁止调度器自动触发任何重跑操作',
     ],
     answerIndex: 0,
-    code: "INSERT INTO fact_orders\n"
+    code:
+        "INSERT INTO fact_orders\n"
         'SELECT * FROM staging_orders\n'
         "WHERE dt = '2026-10-05';",
     language: 'sql',
     explanation:
         '正确答案是「先写临时分区，按业务主键去重并校验行数，再原子替换目标分区」。'
         '数据工程 ETL 与质量治理实战 的故障现场说明，重复运行导致数据翻倍是因为任务直接追加而没有按批次去重；'
-      '正确做法是临时分区加业务主键去重、校验行数后原子替换，同时记录批次元数据以支持幂等回填。',
+        '正确做法是临时分区加业务主键去重、校验行数后原子替换，同时记录批次元数据以支持幂等回填。',
   ),
 ];
 
@@ -391,7 +398,8 @@ void main(List<String> args) {
       exitCode = 1;
       continue;
     }
-    final quiz = (lesson['quiz'] as List<dynamic>).cast<Map<dynamic, dynamic>>();
+    final quiz = (lesson['quiz'] as List<dynamic>)
+        .cast<Map<dynamic, dynamic>>();
     final normalized = _normalize(item.question);
     final exists = quiz.any(
       (entry) => _normalize((entry['question'] ?? '').toString()) == normalized,

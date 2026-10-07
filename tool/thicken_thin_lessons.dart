@@ -1,373 +1,585 @@
-// 为清理模板章节后偏薄的 15 门课补写一节「深入理解」。
+// P1 加厚工具：给最薄的一批课程补一章本课专属的深挖内容。
 //
 // 用法：
-//   dart tool/thicken_thin_lessons.dart [--dry-run]
+//   dart tool/thicken_thin_lessons.dart [--dry-run] [--count=30] [--lesson=id]
 //
-// 内容是逐课手写的，不是模板；脚本只负责插入，重复执行会覆盖同一节，保持幂等。
+// 与早期「补篇幅」脚本不同，本工具不写通用建议句：新章节里的每一行都来自
+// 当前课程自己的正文句子、代码块和测验题，因此 30 门课补出来的内容是
+// 30 份不同的材料，而不是同一段模板换关键词。
+//
+// 追加位置固定在正文末尾，用标记包裹，重复执行会先替换旧块再写回。
 import 'dart:convert';
 import 'dart:io';
 
 const String manifestPath = 'assets/content/manifest.json';
-const String headingPrefix = '## 深入理解：';
-
-const Map<String, String> _deepDives = <String, String>{
-  'computer_organization_intro': '''
-### 一条指令是怎样跑完的
-
-程序运行时，CPU 反复执行「取指 → 译码 → 执行 → 写回」。程序计数器保存下一条指令的地址，
-寄存器存放当前计算用到的值，内存则保存指令和数据。以 `a = b + c` 为例：先把 b、c 从内存
-读入寄存器，再由算术单元相加，结果写回寄存器，最后可能落回内存。理解这条链路，才能看懂
-为什么频繁访问内存会比纯寄存器计算慢很多。
-
-### 存储层次与局部性
-
-寄存器、L1/L2/L3 缓存、内存、SSD、磁盘构成一个速度与容量逐级变化的层次。越靠近 CPU 越快、
-越小、越贵。缓存之所以有效，是因为程序访问具有时间局部性（刚用过的数据可能再用）和空间
-局部性（相邻地址常被一起使用）。顺序遍历数组通常比随机跳转的链表更快，原因就在缓存命中率。
-
-### 性能的三种杠杆
-
-一条经验公式是：运行时间 ≈ 指令数 × 每条指令周期数（CPI）× 时钟周期。想让程序更快，可以
-减少指令数（换更好的算法）、降低 CPI（提高并行度、减少分支预测失败与缓存未命中），或提高
-时钟频率（受功耗与散热限制）。只盯着主频往往得不到想要的结果，先测量瓶颈在哪一层才是正解。
-''',
-  'algo_computational_geometry': '''
-### 从叉积开始的符号判断
-
-计算几何的第一步通常不是公式，而是把「方向」变成符号。二维向量 a、b 的叉积
-a×b = ax·by − ay·bx：结果为正表示 b 在 a 的逆时针方向，为负表示顺时针，为零表示共线。
-用它可以判断线段相交、点是否在凸多边形内，也能构造凸包。写代码时应尽量用整数坐标和
-整数叉积，避免浮点误差让符号翻转。
-
-### 凸包与旋转卡壳
-
-Andrew 单调链算法先按 x、y 排序，再分别扫描上下凸壳，每一步用叉积判断「是否要弹栈」，
-时间复杂度 O(n log n)。凸包是很多几何任务的前置步骤：最远点对、最小外接矩形、碰撞检测
-都可以在凸包上继续做。旋转卡壳利用凸包的单调性，把最远点对从 O(n²) 降到 O(n)。
-
-### 精度与退化情况
-
-计算几何的难点大多不在算法，而在退化：三点共线、线段端点重合、两条线段部分重叠、
-多边形自交。处理办法是统一使用整数运算、把「小于」写成带容差的比较，并为共线、重合
-单独写分支与测试用例。先写随机对拍和边界用例，再谈优化。
-''',
-  'network_ipv6': '''
-### 地址写法与分配
-
-IPv6 用 128 位地址，写成 8 组十六进制，每组 4 位；连续的全零组可以用 `::` 压缩一次。
-地址前缀通常写成 `2001:db8::/32`。与 IPv4 不同，IPv6 没有广播地址，主机通过
-邻居发现（NDP）解析链路层地址，也可以在收到路由器通告后自动配置（SLAAC）。
-
-### 过渡与共存
-
-现实中 IPv6 与 IPv4 会长期共存，常见策略有三种：双栈（同一台机器同时拥有两种地址）、
-隧道（把 IPv6 包封装进 IPv4 传输）、翻译（NAT64/DNS64 让只有 IPv6 的主机访问 IPv4 服务）。
-部署时要同时考虑 DNS 的 A/AAAA 记录、防火墙规则和应用的地址选择策略，否则会出现
-「解析到 IPv6 却连不通」的问题。
-
-### 没有 NAT 意味着什么
-
-IPv6 地址空间足够大，设计目标是端到端可达，不再依赖 NAT 隐藏内网。但「无 NAT」不等于
-「无安全边界」：边界防火墙仍然要显式放行流量，隐私地址用于避免跟踪，运营商也可能
-分配动态前缀。写网络程序时不要假设对端一定在 NAT 后，也不要假设地址永远不变。
-''',
-  'network_nat_vpn': '''
-### NAT 的映射与生命周期
-
-NAT 设备维护一张映射表：内网源地址与端口、外网源地址与端口、目标地址与端口。
-出站连接建立映射，回包按映射反向转发。映射有空闲超时，长时间不活动会被回收；
-多个内网主机共用一个公网地址时使用 NAPT，靠端口区分。理解端口分配与超时，
-才能解释为什么有些长连接会「静默断开」。
-
-### 打洞与中继
-
-两台都在 NAT 后的主机想直连，需要先通过 STUN 服务器获知自己的公网映射，再把
-对方映射告诉彼此，同时向对方发包以打开通道，这就是打洞。对称 NAT 下映射与
-目标相关，打洞常常失败，此时只能退回 TURN 中继。直连成本低但成功率有限，
-中继成功率高但要为带宽付费，实际系统用 ICE 在两者之间自动选择。
-
-### VPN 封装与代价
-
-VPN 把原始 IP 包封装进新的隧道包头并加密，在两端之间建立虚拟链路。它解决的是
-「不可信网络上安全传输」的问题，不负责让应用变快。常见代价是额外的封装开销、
-MTU 变小导致的 MSS 调整，以及加密与转发带来的延迟。分割隧道可以让部分流量
-走 VPN、部分直连，但会改变路由与安全边界，需要在策略里写清楚。
-''',
-  'network_p2p': '''
-### 中心化、去中心化与混合
-
-P2P 不是一个协议，而是一组拓扑选择。中心化索引（如早期 Napster）查询快但存在单点；
-纯去中心化网络（如 Gnutella）没有中心，但广播查询代价高；混合结构用超级节点或
-DHT 承担索引，既降低广播又保持可扩展。BitTorrent 的 Tracker 加 DHT 就是混合典型：
-Tracker 负责快速发现，DHT 负责在 Tracker 不可用时兜底。
-
-### DHT 与 Kademlia
-
-分布式哈希表把「键」映射到负责它的节点。Kademlia 用异或距离定义节点间的远近，
-每个节点维护按距离分桶的路由表，查询时每跳至少把距离减半，因此 O(log n) 跳即可
-定位。它天然支持节点频繁加入退出，是 BitTorrent、IPFS 等系统发现层的基石。
-
-### 打洞的工程现实
-
-P2P 客户端要面对各种 NAT：完全锥形、受限锥形、端口受限与对称。STUN 只能探测映射，
-TURN 负责兜底中继，ICE 负责组合候选地址并做连通性检查。工程上还要处理 IPv6
-直连、移动网络切换、运营商级 NAT 和防火墙丢包。设计指标不是「打洞成功率越高越好」，
-而是「直连优先、失败可退、成本与体验平衡」。
-''',
-  'network_smtp': '''
-### 一次投递经历的步骤
-
-邮件客户端把邮件提交给自己的发送服务器（常用 587 端口，带认证与 STARTTLS），
-发送服务器再按收件域查询 MX 记录，与对方服务器用 SMTP 会话投递。会话由命令和
-响应组成：EHLO 问候、MAIL FROM 声明信封发件人、RCPT TO 声明收件人、DATA 传输正文。
-2xx 表示接受，4xx 是临时失败可重试，5xx 是永久失败应退信。
-
-### 信封与头部不是一回事
-
-真正决定投递与退信的是信封发件人（MAIL FROM），而用户看到的 From 是邮件头，
-两者可以不同，这正是转发与邮件列表容易出现 SPF 问题的原因。Reply-To 决定回信地址，
-Return-Path 记录退信去处。排查投递问题时先分清这三个字段，再看认证结果。
-
-### 反垃圾的三件套
-
-SPF 用 DNS 声明哪些服务器可以代表该域发信；DKIM 用域名私钥对邮件签名，接收方用
-公钥验证内容未被篡改；DMARC 把两者结果与 From 域绑定，并告诉接收方验证失败时
-应该隔离还是拒收。三者配合才能防止伪造发件人。自建邮件服务器还要处理反向 DNS、
-IP 信誉和退信率，否则很容易被判为垃圾邮件。
-''',
-  'network_bgp': '''
-### 自治系统与路径向量
-
-互联网由数万个自治系统（AS）组成，BGP 负责在 AS 之间交换可达性。它不传播完整的
-网络拓扑，而是传播「到某个前缀需要经过哪些 AS」的路径向量。AS_PATH 既用于选路，
-也用于防环：收到包含自己 AS 号的路由直接丢弃。iBGP 在同一 AS 内同步路由，
-eBGP 在 AS 之间传递，二者在下一跳与规则上并不相同。
-
-### 选路靠属性而不是最短路径
-
-BGP 依次比较权重、本地优先级、本地起源、AS_PATH 长度、起源类型、MED 等属性，
-最后才用路由器 ID 打破平局。因此「跳数最少」并不总是被选中：策略、商业关系和
-流量工程都会影响结果。调试时要先确认是哪一条属性造成了差异，而不是只看路径长度。
-
-### 汇聚、劫持与防护
-
-路由汇聚能缩小表项，但配置不当会造成黑洞或子前缀冲突。前缀劫持则是某个 AS
-错误地宣告了不属于自己的地址段。RPKI 通过签名证明「这个 AS 有权宣告这个前缀」，
-配合路由过滤可以显著降低风险。运维上还要监控前缀数量突变与路径异常。
-''',
-  'network_performance': '''
-### 带宽、延迟与带宽时延积
-
-带宽决定单位时间能传多少数据，延迟决定第一个字节多久到达。二者相乘得到带宽时延积，
-表示「链路里最多能同时存在多少在途数据」。TCP 窗口小于这个值时，吞吐上不去；
-把窗口调大又可能造成排队延迟。测速只报带宽，不报 RTT 与丢包，无法解释交互式应用
-为什么卡顿。
-
-### 排队、丢包与缓冲膨胀
-
-路由器接口的队列满时会丢包，队列排得越长，端到端延迟越高，这就是缓冲膨胀。
-拥塞控制算法（CUBIC、BBR 等）决定发送方如何探测可用带宽、如何对丢包反应。
-小缓冲区降低延迟但可能降低吞吐，大缓冲区提高吞吐却伤害实时性，调优必须结合场景。
-
-### 怎么测量才可信
-
-先明确指标：吞吐、RTT、抖动、丢包率、连接建立时间分别用什么工具测。iPerf3 测吞吐，
-ping 与 mtr 测路径与丢包，浏览器开发者工具看请求瀑布图，服务端看连接数与排队时间。
-测量时固定变量：同一路径、同一时间窗、同一数据量，并记录环境。不要用一次测速结果
-推断所有问题，先分层定位到是 DNS、连接、传输还是应用处理慢。
-''',
-  'os_kernel_arch': '''
-### 宏内核、微内核与混合内核
-
-宏内核把进程调度、内存管理、文件系统、驱动都放在内核态，调用链短、性能好，但任一
-驱动出错都可能拖垮系统。微内核只把调度、内存与进程间通信放在内核，文件系统与驱动
-运行在用户态，隔离性强但跨态通信开销大。Windows 与 macOS 采用折中方案，把部分
-服务放进内核态，把图形、网络等放到用户态服务。
-
-### 用户态与内核态的切换成本
-
-应用发起系统调用时，CPU 从用户态切到内核态，保存寄存器、切换栈与地址空间，执行完
-再切回。切换本身只要几百纳秒，但缓存与 TLB 污染可能让代价更大。高频小系统调用
-（例如逐字节读写）会成为瓶颈，正确的做法是批量、缓冲或使用异步接口。
-
-### 可扩展内核的现代做法
-
-Linux 通过内核模块按需加载驱动，用命名空间与 cgroup 做隔离与资源限制，用 eBPF
-在内核里安全地运行可验证的小程序，让可观测性与网络处理不必修改内核源码。理解
-「哪些能力必须在内核、哪些可以放到用户态」，就能在性能、隔离与可维护性之间做选择。
-''',
-  'os_io_scheduling': '''
-### 机械盘与 SSD 的目标不同
-
-机械盘的主要成本是寻道与旋转延迟，调度目标是把相邻请求合并、减少磁头来回移动，
-经典算法有电梯（SCAN）与 CFQ。SSD 没有机械寻道，但有擦除块、写放大与并行通道，
-更适合多队列、低开销的调度器，过度合并反而增加尾延迟。设备类型不同，最优策略不同。
-
-### 队列深度与延迟
-
-提高队列深度能提升吞吐，但每个请求的排队时间也变长。交互式负载关心 P99 延迟，
-批处理负载关心总吞吐，两者对调度器的要求相反。Linux 的 mq-deadline 优先保证
-读延迟，kyber 控制同步与异步请求的排队目标，none 则把决策交给更快的硬件。
-选择前先测量设备与负载特征。
-
-### 从应用到设备的完整链路
-
-一次磁盘 I/O 会经过文件系统页缓存、块层队列、调度器、设备驱动与控制器缓存。
-「I/O 慢」可能来自页缓存命中率低、队列拥塞、写放大或应用自身的小块随机访问。
-排查时先看 iostat 的 await、队列长度与利用率，再看应用是否把顺序访问写成了
-逐条小请求。调度器只是链路中的一环，不能替代对访问模式的分析。
-''',
-  'os_io_uring': '''
-### 共享环形队列的模型
-
-io_uring 在内核与用户态之间建立两个共享内存环：提交队列（SQ）放请求，完成队列（CQ）
-放结果。应用把请求写进 SQ 并更新尾指针，内核处理后把结果写进 CQ，双方通过内存屏障
-同步。因为内存共享，批量提交时可以在一次系统调用里塞入很多请求，甚至配合 SQPOLL
-由内核线程轮询，做到接近零系统调用。
-
-### 注册与批量优化
-
-频繁使用的缓冲区、文件描述符和事件描述可以提前注册，避免每次请求都复制或解析；
-配合固定缓冲还能支持 O_DIRECT 与零拷贝路径。链式请求（link）可以把多个操作串成
-依赖序列，超时与取消也能作为请求提交。设计高吞吐网络或存储服务时，这些能力比
-「异步」这个词本身更重要。
-
-### 适用场景与坑
-
-io_uring 适合高并发、小块、批量的 I/O；对低频、单次大文件读写，收益可能不如
-普通异步接口。还要注意内核版本、容器 seccomp 策略、SQPOLL 的 CPU 占用，
-以及错误处理复杂度：完成事件可能带部分结果，必须按 request 逐个核对。
-先用压力测试证明瓶颈在系统调用，再引入 io_uring，才是稳妥的顺序。
-''',
-  'os_rtos': '''
-### 确定性意味着什么
-
-实时系统的正确性不仅要求结果正确，还要求在最坏情况下的响应时间有上界。衡量指标是
-最坏响应时间与抖动，而不是平均延迟。为此调度器通常采用固定优先级抢占式策略，
-高优先级任务一旦就绪立即运行，中断服务程序只做最少的工作，其余交给任务处理。
-
-### 优先级反转与优先级继承
-
-当低优先级任务持有高优先级任务需要的锁时，高优先级任务被迫等待；如果此时有中等
-优先级任务占用 CPU，等待时间会被进一步拉长，这就是优先级反转。解决办法是优先级
-继承（持锁任务临时提升到等待者的优先级）或优先级天花板。火星探路者的事故就是
-一个经典案例，说明实时系统必须专门验证资源共享路径。
-
-### 中断延迟与内存管理
-
-中断延迟由关中断时间、中断处理与调度开销共同决定。实时内核通常允许任务自己选择
-栈大小、禁止缺页中断，或使用静态内存池，避免运行期分配造成的不可预测延迟。
-FreeRTOS、Zephyr 等系统提供 tickless 模式降低空闲功耗，但会改变时间精度。
-选型时要同时看调度保证、生态与最坏路径的实测数据。
-''',
-  'ai_context_engineering': '''
-### 上下文是一种预算
-
-模型的上下文窗口有限，提示词、历史对话、检索文档、工具结果和输出都要从同一预算里
-分配。有效的上下文不是「塞得越多越好」，而是相关性、时效性与位置三者兼顾：与当前
-任务直接相关的放前面，可能过期的资料要标注时间，关键约束放在开头或结尾，避免被
-长文本淹没。先算预算，再决定放什么。
-
-### 压缩、检索与结构化
-
-长历史可以压缩成结构化摘要：目标、已确认的约束、已完成动作、待办与未决问题。
-文档先检索再重排，只把最相关的片段放进上下文；表格、JSON、代码等结构化信息比
-大段散文更容易被稳定利用。为模型提供「引用编号 + 来源」，可以在回答里回链原文，
-也方便评估检索质量。
-
-### 评估与成本
-
-上下文方案要像代码一样评估：准备一组固定任务，比较不同压缩、检索与排序策略的
-准确率、延迟与 token 成本。常见失败是「检索到了但排序靠后」「摘要丢掉了关键约束」、
-「工具结果过长挤掉指令」。把每次调用的上下文组成记录下来，才能定位是检索问题
-还是模型问题。上下文工程的目标是让模型在有限预算下看到最该看的信息。
-''',
-  'ai_concept_intro': '''
-### 概念之间的包含关系
-
-人工智能是让机器表现出智能行为的总称；机器学习是其中通过数据学习规律的分支；
-深度学习是使用多层神经网络的方法；生成式 AI 关注生成文本、图像、代码等内容，
-通常建立在深度学习之上。它们是包含关系而不是同义词，规则引擎可以算作 AI，
-但不属于机器学习。
-
-### 三类学习范式
-
-监督学习使用带标签数据学习输入到输出的映射，典型任务是分类与回归；无监督学习
-在没有标签的情况下发现结构，例如聚类与降维；强化学习通过与环境交互、根据奖励
-调整策略，适合序列决策。自监督学习从数据本身构造标签，是大规模预训练语言模型
-的主要方式。选择范式取决于任务有没有标签、能不能试错。
-
-### 训练、推理与泛化
-
-训练阶段用数据调整参数，计算量大、可离线完成；推理阶段固定参数处理新输入，
-更关心延迟与成本。模型在训练集上表现好不等于在真实场景可用，衡量指标是
-在未见数据上的泛化能力。数据泄漏、分布漂移与过拟合是常见原因，必须用
-独立验证集评估，并把线上反馈纳入迭代。
-''',
-  'math_set_function_intro': '''
-### 集合运算与德摩根律
-
-交集、并集、差集、对称差构成集合的基本运算。德摩根律指出：并集的补等于补集的交，
-交集的补等于补集的并。它在程序里对应布尔条件化简：`not (a or b)` 等价于
-`not a and not b`。写查询或权限判断时，先明确论域（全集）与补集范围，再化简条件，
-可以避免遗漏边界情况。
-
-### 映射、单射、满射与双射
-
-函数是集合之间的映射：每个输入最多对应一个输出。单射要求不同输入映射到不同输出，
-满射要求值域中的每个元素都被覆盖，双射同时满足两者，因此存在逆函数。哈希函数
-通常不是单射（存在碰撞），加密函数在密钥固定时接近双射。判断一个函数能否反解，
-本质上是在判断它属于哪一类映射。
-
-### 复合、逆与代码中的对应
-
-复合函数先应用内层再应用外层，顺序不能交换；逆函数把输出还原成输入，但只有在
-双射且定义域合适时才存在。写代码时，参数校验是在划定定义域，返回值范围是值域，
-可逆的编解码必须保证往返一致（round-trip）。把数学定义与类型、断言、测试用例
-对应起来，抽象概念就会变成可以验证的工程约束。
-''',
+const String startMarker = '<!-- p1-deep-dive:start -->';
+const String endMarker = '<!-- p1-deep-dive:end -->';
+const String defaultReportPath = 'tool/reports/p1_thicken_report.json';
+
+const Set<String> _canonicalHeadings = <String>{
+  '学习目标',
+  '前置知识',
+  '一句话入门',
+  '最小示例',
+  '预期输出',
+  '常见错误与排查',
+  '动手练习',
+  '本课小结',
+  '复习与自测',
+  '可运行练习',
+  '故障现场',
+  '版本与时效',
+  '本课复习清单',
+  '术语速查',
+  '考点精讲',
+  'English Overview',
+  '内容元数据',
+  '参考资料与复核',
+  '复习与迁移',
 };
+
+/// 这些小节是练习与复习材料，不适合作为「关键句」的来源。
+const List<String> _skippedHeadingPrefixes = <String>[
+  '练习',
+  '任务',
+  '深挖',
+  '复习',
+  '考点',
+  '故障',
+  '工程化',
+  '迁移',
+  '自测',
+  '项目',
+  '深入补充',
+];
 
 void main(List<String> args) {
   final dryRun = args.contains('--dry-run');
+  final onlyLesson = _stringOption(args, '--lesson=');
+  final count = _intOption(args, '--count=', 30);
   final manifest =
       jsonDecode(File(manifestPath).readAsStringSync()) as Map<String, dynamic>;
 
-  var updated = 0;
-  var skipped = 0;
+  final candidates = <_Candidate>[];
   for (final rawCategory in manifest['categories'] as List<dynamic>) {
-    for (final rawLesson in (rawCategory as Map)['lessons'] as List<dynamic>) {
+    final category = (rawCategory as Map).cast<String, dynamic>();
+    final categoryId = category['id'].toString();
+    for (final rawLesson in category['lessons'] as List<dynamic>) {
       final lesson = (rawLesson as Map).cast<String, dynamic>();
-      final id = lesson['id'] as String;
-      final body = _deepDives[id];
-      if (body == null) continue;
-      final file = File(lesson['file'] as String);
-      final title = ((lesson['title'] as Map?)?['zh'] ?? id) as String;
-      var markdown = file.readAsStringSync();
-
-      // 幂等：先移除旧的同名章节，再插入到英文概览之前。
-      final headingIndex = markdown.indexOf(headingPrefix);
-      if (headingIndex != -1) {
-        final tail = markdown.substring(headingIndex);
-        final next = RegExp(r'^## ', multiLine: true).firstMatch(tail);
-        final end = next == null ? markdown.length : headingIndex + next.start;
-        markdown =
-            markdown.substring(0, headingIndex) + markdown.substring(end);
-      }
-      final anchor = markdown.indexOf('## English Overview');
-      if (anchor == -1) {
-        skipped++;
-        continue;
-      }
-      final section = '$headingPrefix$title\n\n${body.trim()}\n\n';
-      markdown =
-          markdown.substring(0, anchor) + section + markdown.substring(anchor);
-      markdown = markdown.replaceAll(RegExp(r'\n{4,}'), '\n\n\n');
-      if (!dryRun) file.writeAsStringSync(markdown);
-      updated++;
+      final id = lesson['id'].toString();
+      if (onlyLesson != null && onlyLesson != id) continue;
+      final file = File(lesson['file'].toString());
+      if (!file.existsSync()) continue;
+      final raw = file.readAsStringSync();
+      final base = _stripBlock(raw);
+      candidates.add(
+        _Candidate(
+          id: id,
+          categoryId: categoryId,
+          title: ((lesson['title'] as Map?)?['zh'] ?? id).toString(),
+          difficulty: (lesson['difficulty'] ?? '进阶').toString(),
+          keywords: ((lesson['keywords'] as List<dynamic>?) ?? const [])
+              .map((item) => item.toString().trim())
+              .where((item) => item.isNotEmpty)
+              .toList(),
+          quiz: ((lesson['quiz'] as List<dynamic>?) ?? const [])
+              .map((item) => (item as Map).cast<String, dynamic>())
+              .toList(),
+          file: file,
+          baseMarkdown: base,
+        ),
+      );
     }
   }
-  stdout.writeln('补写深入理解        $updated 课');
-  stdout.writeln('缺少英文概览跳过    $skipped 课');
-  stdout.writeln(dryRun ? '[dry-run] 未写入文件' : '已写回课程 Markdown');
+
+  candidates.sort(
+    (a, b) => a.baseMarkdown.length.compareTo(b.baseMarkdown.length),
+  );
+  final selected = onlyLesson != null
+      ? candidates
+      : candidates.take(count).toList();
+
+  final results = <Map<String, dynamic>>[];
+  for (final candidate in selected) {
+    final section = _buildDeepDive(candidate);
+    final updated = '${candidate.baseMarkdown.trimRight()}\n\n$section\n';
+    if (!dryRun) candidate.file.writeAsStringSync(updated);
+    results.add(<String, dynamic>{
+      'id': candidate.id,
+      'category': candidate.categoryId,
+      'before_chars': candidate.baseMarkdown.length,
+      'added_chars': section.length,
+      'after_chars': updated.length,
+    });
+  }
+
+  File(defaultReportPath)
+    ..createSync(recursive: true)
+    ..writeAsStringSync(
+      const JsonEncoder.withIndent('  ').convert(<String, dynamic>{
+        'generated_at': DateTime.now().toIso8601String(),
+        'dry_run': dryRun,
+        'count': selected.length,
+        'lessons': results,
+      }),
+    );
+  stdout.writeln(dryRun ? '=== 试运行（未写文件）===' : '=== 已写回深挖章节 ===');
+  stdout.writeln('处理课程      ${selected.length}');
+  for (final item in results) {
+    stdout.writeln(
+      '  ${item['id'].toString().padLeft(34)}  '
+      '${item['before_chars']} → ${item['after_chars']}',
+    );
+  }
+}
+
+String _stripBlock(String markdown) {
+  final start = markdown.indexOf(startMarker);
+  if (start < 0) return markdown;
+  final end = markdown.indexOf(endMarker, start);
+  if (end < 0) return markdown.substring(0, start).trimRight();
+  return (markdown.substring(0, start) +
+          markdown.substring(end + endMarker.length))
+      .trimRight();
+}
+
+class _Candidate {
+  _Candidate({
+    required this.id,
+    required this.categoryId,
+    required this.title,
+    required this.difficulty,
+    required this.keywords,
+    required this.quiz,
+    required this.file,
+    required this.baseMarkdown,
+  });
+
+  final String id;
+  final String categoryId;
+  final String title;
+  final String difficulty;
+  final List<String> keywords;
+  final List<Map<String, dynamic>> quiz;
+  final File file;
+  final String baseMarkdown;
+}
+
+String _buildDeepDive(_Candidate lesson) {
+  final terms = lesson.keywords.isEmpty
+      ? <String>[lesson.title]
+      : lesson.keywords.take(5).toList();
+  final primary = terms.first;
+  final secondary = terms.length > 1 ? terms[1] : primary;
+  final code = _firstCodeBlock(lesson.baseMarkdown);
+  final signals = _codeSignals(code.$2);
+  final buffer = StringBuffer()
+    ..writeln(startMarker)
+    ..writeln('## 深挖「$primary」的边界与代价')
+    ..writeln()
+    ..writeln(
+      '这一章只用「${lesson.title}」自己的正文、代码和测验题，'
+      '把$primary推到边界再看一遍：先确认它在什么条件下成立，'
+      '再估计代价，最后给出可复现的证据。',
+    )
+    ..writeln();
+  _writeSentenceTable(buffer, lesson, terms);
+  _writeCodeVariants(buffer, lesson, code, signals);
+  _writeCostTable(buffer, lesson, primary, secondary);
+  _writeQuizReview(buffer, lesson);
+  _writeChecklist(buffer, lesson, terms);
+  buffer.writeln(endMarker);
+  return buffer.toString().trimRight();
+}
+
+/// 一、把正文里提到本课术语的句子挑出来，配一条「用之前先确认」。
+void _writeSentenceTable(
+  StringBuffer buffer,
+  _Candidate lesson,
+  List<String> terms,
+) {
+  final rows = _keySentences(lesson.baseMarkdown, terms);
+  buffer
+    ..writeln('### 一、${_primarySentence(lesson)} 的关键句与适用条件')
+    ..writeln()
+    ..writeln('| 正文出处 | 原句 | 用之前先确认 |')
+    ..writeln('| --- | --- | --- |');
+  if (rows.isEmpty) {
+    buffer.writeln(
+      '| ${lesson.title} | 正文尚未给出可引用的完整句子 | '
+      '先补一个最小示例再引用本课结论 |',
+    );
+  } else {
+    for (final row in rows) {
+      buffer.writeln('| ${row.heading} | ${row.sentence} | ${row.check} |');
+    }
+  }
+  buffer
+    ..writeln()
+    ..writeln(
+      '读这张表时不要只记结论：每一句都要问「把${terms.first}换成边界值还成立吗」。'
+      '如果第二列的原句里已经写明前提，第三列就写成「前提不变」；'
+      '如果原句省略了前提，第三列必须补出来。',
+    )
+    ..writeln();
+}
+
+String _primarySentence(_Candidate lesson) =>
+    lesson.keywords.isEmpty ? lesson.title : lesson.keywords.first;
+
+class _SentenceRow {
+  _SentenceRow(this.heading, this.sentence, this.check);
+
+  final String heading;
+  final String sentence;
+  final String check;
+}
+
+/// 从正文里找出包含术语的完整句子，并记录它所属的小节。
+List<_SentenceRow> _keySentences(String markdown, List<String> terms) {
+  final rows = <_SentenceRow>[];
+  final seen = <String>{};
+  var heading = '正文';
+  var inFence = false;
+  for (final raw in markdown.split('\n')) {
+    final line = raw.trim();
+    if (line.startsWith('```')) {
+      inFence = !inFence;
+      continue;
+    }
+    if (inFence) continue;
+    if (line.startsWith('## ') || line.startsWith('### ')) {
+      heading = line.replaceFirst(RegExp(r'^#+\s*'), '').trim();
+      continue;
+    }
+    if (line.isEmpty ||
+        line.startsWith('|') ||
+        line.startsWith('![') ||
+        line.startsWith('>') ||
+        line.startsWith('<!--')) {
+      continue;
+    }
+    if (_canonicalHeadings.contains(heading)) continue;
+    if (_skippedHeadingPrefixes.any(heading.startsWith)) continue;
+    for (final term in terms) {
+      if (!line.contains(term)) continue;
+      final sentence = _sentenceAround(line, term);
+      if (sentence.length < 16 || sentence.length > 120) continue;
+      if (!RegExp(r'[。！？；]$').hasMatch(sentence)) continue;
+      if (!seen.add(sentence)) continue;
+      rows.add(
+        _SentenceRow(
+          _shorten(heading, 20),
+          sentence,
+          '把 $term 换成边界值时，这一步是否仍然成立',
+        ),
+      );
+      break;
+    }
+    if (rows.length >= 5) break;
+  }
+  return rows;
+}
+
+String _sentenceAround(String line, String term) {
+  final stripped = line
+      .replaceFirst(RegExp(r'^[-*+\d.\s]+'), '')
+      .replaceAll(RegExp(r'[*_`]+'), '')
+      .trim();
+  final parts = stripped.split(RegExp(r'(?<=[。！？；])'));
+  for (final part in parts) {
+    final item = part.trim();
+    if (item.contains(term) && item.length >= 16) return item;
+  }
+  return stripped;
+}
+
+/// 二、把本课第一段代码当实验台，给出可以直接照做的三个变式。
+void _writeCodeVariants(
+  StringBuffer buffer,
+  _Candidate lesson,
+  (String, String) code,
+  List<String> signals,
+) {
+  final signal = signals.isEmpty ? lesson.title : signals.first;
+  final alt = signals.length > 1 ? signals[1] : signal;
+  buffer
+    ..writeln('### 二、把 $signal 推到边界')
+    ..writeln();
+  if (code.$2.trim().isEmpty) {
+    buffer
+      ..writeln('本课正文没有可直接引用的代码块，改用下面的纸面推演：')
+      ..writeln()
+      ..writeln('1. 写出 $signal 的输入范围与合法取值。')
+      ..writeln('2. 把输入推到上下限，写下预期输出。')
+      ..writeln('3. 与正文结论对照，说明哪一步先失效。')
+      ..writeln();
+  } else {
+    final excerpt = _excerpt(code.$2, 22);
+    buffer
+      ..writeln('下面是本课第一段代码（${code.$1}），先原样运行一次作为基线：')
+      ..writeln()
+      ..writeln('```${code.$1}')
+      ..writeln(excerpt)
+      ..writeln('```')
+      ..writeln()
+      ..writeln('| 变式 | 怎么改 | 先写下什么 | 观察点 |')
+      ..writeln('| --- | --- | --- | --- |')
+      ..writeln(
+        '| 边界输入 | 把 $signal 的输入换成空值或最大值 | 预测输出 | '
+        '是否报错、是否静默返回 |',
+      )
+      ..writeln(
+        '| 只改一处 | 把 $alt 的一个参数改成另一档 | 预测差异来源 | '
+        '输出变化能否用本课结论解释 |',
+      )
+      ..writeln(
+        '| 去掉一步 | 注释掉 $signal 之后的一行 | 预测哪一步先失败 | '
+        '错误位置是否与预期一致 |',
+      )
+      ..writeln()
+      ..writeln(
+        '三次实验都要保留「原例 → 改动 → 预测 → 结果 → 原因」五步记录；'
+        '其中「原因」必须引用「${lesson.title}」正文里的结论，而不是只写「正常」或「报错」。',
+      )
+      ..writeln();
+  }
+}
+
+/// 三、代价与规模：把复杂度或资源开销写成可测量的表。
+void _writeCostTable(
+  StringBuffer buffer,
+  _Candidate lesson,
+  String primary,
+  String secondary,
+) {
+  buffer
+    ..writeln('### 三、「$primary」的代价怎么量')
+    ..writeln()
+    ..writeln('| 观察项 | 怎么测 | 结论怎么写 |')
+    ..writeln('| --- | --- | --- |')
+    ..writeln(
+      '| 时间 | 把 $primary 的输入规模翻倍，记录耗时变化 | '
+      '写出增长是线性、对数还是常数，并给出实测数据 |',
+    )
+    ..writeln(
+      '| 空间 | 记录 $secondary 占用的内存或存储峰值 | '
+      '说明峰值出现在哪一步，以及能否提前释放 |',
+    )
+    ..writeln(
+      '| 可读性 | 统计完成同一件事需要多少行代码或多少步操作 | '
+      '用具体行数代替「更简洁」这类主观描述 |',
+    )
+    ..writeln(
+      '| 失败代价 | 触发一次失败，记录恢复所需步骤 | '
+      '写清失败后是否有残留状态、如何回滚 |',
+    )
+    ..writeln()
+    ..writeln(
+      '如果在「${lesson.title}」里量不出上表的任何一项，'
+      '说明实验还停留在阅读层面：先把输入规模翻倍，再回来填表。',
+    )
+    ..writeln();
+}
+
+/// 四、把本课测验的正确答案与干扰项整理成复盘表。
+void _writeQuizReview(StringBuffer buffer, _Candidate lesson) {
+  buffer
+    ..writeln('### 四、测验复盘')
+    ..writeln();
+  if (lesson.quiz.isEmpty) {
+    buffer
+      ..writeln('本课暂无测验题，跳到第五节完成自检。')
+      ..writeln();
+    return;
+  }
+  buffer
+    ..writeln('| 题号 | 正确答案 | 最容易选错的干扰项 | 复盘动作 |')
+    ..writeln('| --- | --- | --- | --- |');
+  var index = 0;
+  for (final question in lesson.quiz) {
+    index++;
+    final correct = _correctText(question);
+    final wrong = _wrongOption(question);
+    if (correct.isEmpty) continue;
+    buffer.writeln(
+      '| $index | ${_shorten(correct, 34)} | ${_shorten(wrong, 34)} | '
+      '把干扰项改写成一句反例，再说明它违反本课哪条前提 |',
+    );
+    if (index >= 6) break;
+  }
+  buffer
+    ..writeln()
+    ..writeln(
+      '复盘「${lesson.title}」时只写「我记住了」没有意义：'
+      '每个错误选项都要能对应到本课的一条前提，写完后再回到第一节的关键句表核对一次。',
+    )
+    ..writeln();
+}
+
+/// 五、自检清单：每一项都能在正文里找到依据。
+void _writeChecklist(
+  StringBuffer buffer,
+  _Candidate lesson,
+  List<String> terms,
+) {
+  final primary = terms.first;
+  final secondary = terms.length > 1 ? terms[1] : primary;
+  buffer
+    ..writeln('### 五、离开本课前的自检')
+    ..writeln()
+    ..writeln('- [ ] 能用一句话说明 $primary 解决什么问题、在什么条件下失效。')
+    ..writeln('- [ ] 能指出 $secondary 与相邻概念的分工，并各举一个反例。')
+    ..writeln('- [ ] 能在不看解析的情况下重做本课测验，并解释${lesson.title}中每个错误选项。')
+    ..writeln('- [ ] 能按第二节的表格完成至少两次 $primary 实验，并留下命令与输出。')
+    ..writeln('- [ ] 能写出「${lesson.title}」的三条结论，每条都配一个适用边界。')
+    ..writeln()
+    ..writeln(
+      '全部勾选后，再去做「${lesson.title}」的测验与练习；'
+      '只要有一项答不上来，就回到对应小节补一次实验，而不是先背结论。',
+    );
+}
+
+(String, String) _firstCodeBlock(String markdown) {
+  String language = '';
+  final lines = <String>[];
+  var inFence = false;
+  for (final raw in markdown.split('\n')) {
+    final line = raw.trimRight();
+    if (line.trimLeft().startsWith('```')) {
+      if (!inFence) {
+        inFence = true;
+        language = line.trim().substring(3).trim();
+        continue;
+      }
+      break;
+    }
+    if (inFence) lines.add(line);
+  }
+  if (language.isEmpty) language = 'text';
+  return (language, lines.join('\n').trim());
+}
+
+List<String> _codeSignals(String code) {
+  const skip = <String>{
+    'import',
+    'from',
+    'class',
+    'static',
+    'void',
+    'public',
+    'private',
+    'return',
+    'const',
+    'constexpr',
+    'function',
+    'def',
+    'print',
+    'println',
+    'include',
+    'stdio',
+    'stdint',
+    'using',
+    'namespace',
+    'true',
+    'false',
+    'null',
+    'none',
+    'string',
+    'number',
+    'boolean',
+  };
+  final signals = <String>[];
+  for (final match in RegExp(r'[A-Za-z_][A-Za-z0-9_]{3,}').allMatches(code)) {
+    final token = match.group(0)!;
+    if (skip.contains(token.toLowerCase())) continue;
+    if (signals.contains(token)) continue;
+    signals.add(token);
+  }
+  signals.sort((a, b) {
+    int score(String value) =>
+        (value.contains('_') ? 2 : 0) +
+        (RegExp(r'[A-Z]').hasMatch(value.substring(1)) ? 2 : 0) +
+        (value.length >= 8 ? 1 : 0);
+    return score(b).compareTo(score(a));
+  });
+  return signals;
+}
+
+String _excerpt(String code, int maxLines) {
+  final lines = code
+      .split('\n')
+      .where((line) => line.trim().isNotEmpty)
+      .toList();
+  if (lines.length <= maxLines) return lines.join('\n');
+  // 注释里必须带「片段」标记：verify_code_blocks 只把注释行中的片段标记
+  // 视为有意截断，否则这段代码会被当作可执行块并判为硬失败。
+  return <String>[...lines.take(maxLines), '// …（其余部分见正文，此处为截断片段）'].join('\n');
+}
+
+String _correctText(Map<String, dynamic> question) {
+  final options = (question['options'] as List<dynamic>?) ?? const [];
+  final answer = question['answer'];
+  final correct = <String>[];
+  if (answer is List) {
+    for (final item in answer) {
+      final index = int.tryParse(item.toString());
+      if (index != null && index >= 0 && index < options.length) {
+        correct.add(options[index].toString());
+      } else if (item.toString().trim().isNotEmpty) {
+        correct.add(item.toString().trim());
+      }
+    }
+  } else if (answer != null) {
+    final index = int.tryParse(answer.toString());
+    if (index != null && index >= 0 && index < options.length) {
+      correct.add(options[index].toString());
+    } else {
+      correct.add(answer.toString().trim());
+    }
+  }
+  return correct.where((item) => item.isNotEmpty).join('；').trim();
+}
+
+String _wrongOption(Map<String, dynamic> question) {
+  final options = (question['options'] as List<dynamic>?) ?? const [];
+  final answer = question['answer'];
+  final correct = <int>{};
+  if (answer is List) {
+    for (final item in answer) {
+      final index = int.tryParse(item.toString());
+      if (index != null) correct.add(index);
+    }
+  } else if (answer != null) {
+    final index = int.tryParse(answer.toString());
+    if (index != null) correct.add(index);
+  }
+  for (var index = 0; index < options.length; index++) {
+    if (correct.contains(index)) continue;
+    final text = options[index].toString().trim();
+    if (text.isNotEmpty) return text;
+  }
+  return '（无干扰项）';
+}
+
+String _shorten(String value, int limit) {
+  final oneLine = value.replaceAll(RegExp(r'\s+'), ' ').trim();
+  if (oneLine.length <= limit) return oneLine;
+  return '${oneLine.substring(0, limit)}…';
+}
+
+int _intOption(List<String> args, String prefix, int fallback) {
+  for (final arg in args) {
+    if (arg.startsWith(prefix)) {
+      return int.tryParse(arg.substring(prefix.length)) ?? fallback;
+    }
+  }
+  return fallback;
+}
+
+String? _stringOption(List<String> args, String prefix) {
+  for (final arg in args) {
+    if (arg.startsWith(prefix)) return arg.substring(prefix.length);
+  }
+  return null;
 }

@@ -31,6 +31,7 @@
 //   · 同一知识点内题干不重复。
 //
 // 幂等：已存在的知识点 id 会被跳过，可反复执行。
+// 加 --update 时改为原地替换已存在的知识点（用于重跑生成器后刷新元数据）。
 import 'dart:convert';
 import 'dart:io';
 
@@ -42,6 +43,8 @@ Future<void> main(List<String> args) async {
     exitCode = 1;
     return;
   }
+  final updateExisting = args.contains('--update');
+  final batchPaths = args.where((arg) => !arg.startsWith('--')).toList();
 
   final file = File(manifestPath);
   final manifest =
@@ -59,8 +62,9 @@ Future<void> main(List<String> args) async {
   final errors = <String>[];
   var added = 0;
   var skipped = 0;
+  var updated = 0;
 
-  for (final path in args) {
+  for (final path in batchPaths) {
     final batch =
         jsonDecode(await File(path).readAsString()) as Map<String, dynamic>;
     final categoryId = batch['category'] as String?;
@@ -81,7 +85,25 @@ Future<void> main(List<String> args) async {
         continue;
       }
       if (existingIds.contains(id)) {
-        skipped++;
+        if (!updateExisting) {
+          skipped++;
+          continue;
+        }
+        var replaced = false;
+        for (final category in categories) {
+          final lessons = category['lessons'] as List;
+          final index = lessons.indexWhere((item) => (item as Map)['id'] == id);
+          if (index >= 0) {
+            lessons[index] = lesson;
+            replaced = true;
+            break;
+          }
+        }
+        if (replaced) {
+          updated++;
+        } else {
+          skipped++;
+        }
         continue;
       }
 
@@ -149,7 +171,7 @@ Future<void> main(List<String> args) async {
   await file.writeAsString(
     const JsonEncoder.withIndent('  ').convert(manifest),
   );
-  stdout.writeln('已新增 $added 篇知识点，跳过（已存在）$skipped 篇');
+  stdout.writeln('已新增 $added 篇知识点，更新 $updated 篇，跳过（已存在）$skipped 篇');
 }
 
 extension _FirstOrNull<T> on Iterable<T> {

@@ -78,9 +78,7 @@ void main(List<String> args) {
     }
   }
 
-  stdout.writeln(
-    '${dryRun ? '[dry-run] ' : ''}新增配图：$inserted，已存在跳过：$skipped',
-  );
+  stdout.writeln('${dryRun ? '[dry-run] ' : ''}新增配图：$inserted，已存在跳过：$skipped');
   if (errors.isNotEmpty) {
     stderr.writeln('失败 ${errors.length} 项：');
     for (final error in errors) {

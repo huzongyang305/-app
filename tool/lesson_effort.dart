@@ -65,9 +65,7 @@ LessonEffort measureEffort(
 /// 预计用时（分钟）。
 int estimateMinutes(LessonEffort effort) {
   final reading =
-      effort.chars / 480 +
-      effort.codeBlocks * 1.0 +
-      effort.quizCount * 0.8;
+      effort.chars / 480 + effort.codeBlocks * 1.0 + effort.quizCount * 0.8;
   if (!effort.handsOn) {
     return _roundToFive(reading.clamp(15.0, 75.0));
   }

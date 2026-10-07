@@ -138,10 +138,7 @@ void _updateMarkdown(String path, String oldTag, String newTag) {
   }
   var content = file.readAsStringSync();
   content = content.replaceAll('- 学习阶段：$oldTag', '- 学习阶段：$newTag');
-  content = content.replaceAll(
-    '· 学习阶段：$oldTag ·',
-    '· 学习阶段：$newTag ·',
-  );
+  content = content.replaceAll('· 学习阶段：$oldTag ·', '· 学习阶段：$newTag ·');
   file.writeAsStringSync(content, flush: true);
 }
 
@@ -156,13 +153,12 @@ int _syncAllStages(Map<String, dynamic> manifest) {
       final file = File(lesson['file'] as String);
       if (!file.existsSync()) continue;
       final content = file.readAsStringSync();
-      final updated = content.replaceAllMapped(
-        RegExp(r'学习阶段：[^\s·]+'),
-        (match) {
-          if (match.group(0) == '学习阶段：$difficulty') return match.group(0)!;
-          return '学习阶段：$difficulty';
-        },
-      );
+      final updated = content.replaceAllMapped(RegExp(r'学习阶段：[^\s·]+'), (
+        match,
+      ) {
+        if (match.group(0) == '学习阶段：$difficulty') return match.group(0)!;
+        return '学习阶段：$difficulty';
+      });
       if (updated != content) {
         file.writeAsStringSync(updated, flush: true);
         synced++;

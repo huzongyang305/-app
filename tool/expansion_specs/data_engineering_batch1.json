@@ -1,0 +1,197 @@
+{
+  "lessons": [
+    {
+      "id": "de_data_modeling",
+      "category": "data_engineering",
+      "title": {"zh": "数据建模与数仓分层", "en": "Data Modeling and Warehouse Layering"},
+      "summary": {"zh": "用维度建模、事实表与分层设计组织数据，明确粒度、一致性与口径。", "en": "Organize data with dimensional modeling, fact tables and layered warehouses."},
+      "keywords": ["维度建模", "事实表", "数仓分层", "粒度", "数据口径"],
+      "difficulty": "基础",
+      "minutes": 30,
+      "order": 1,
+      "image": {"title": "数仓分层与数据流", "flow": ["接入原始数据", "清洗与规范化", "维度与事实建模", "对外指标口径"]},
+      "goals": [
+        "能用粒度、维度与度量描述一张事实表。",
+        "能说明 ODS、DWD、DWS 与 ADS 各层职责。",
+        "能为一个指标写清口径、时间范围与数据来源。"
+      ],
+      "prerequisitesText": [
+        "会写基础 SQL 查询与聚合语句。",
+        "知道主键、外键与表连接的含义。",
+        "了解业务里常见的实体与流程概念。"
+      ],
+      "concepts": [
+        {
+          "name": "粒度：事实表的唯一前提",
+          "plain": "粒度说明一行数据代表什么，例如「一个订单」还是「一个订单商品」。粒度不明确，所有指标都会随重复行数漂移。",
+          "mechanism": "事实表以粒度为单位记录度量，维度表提供属性；粒度越细可汇总的空间越大，但存储与查询成本也越高。",
+          "example": "把订单表按订单与按订单商品两种粒度各建一张事实表，比较统计订单数时的差异。",
+          "boundary": "同一张表混放不同粒度会产生重复计数，必须在建模阶段把粒度写进表注释与数据字典。",
+          "engineering": "在 DDL 注释里写清粒度与唯一键，配合数据质量校验断言行唯一性。"
+        },
+        {
+          "name": "维度建模与缓慢变化维度",
+          "plain": "维度描述业务的观察角度，例如用户、商品、门店与时间。缓慢变化维度处理属性随时间变化的情况。",
+          "mechanism": "类型 1 直接覆盖属性，类型 2 新增一行并记录生效区间，类型 3 增加历史列；选择取决于是否需要按历史属性回溯分析。",
+          "example": "把用户等级从普通升级为高级，分别用类型 1 与类型 2 处理，再查询升级前的订单归属哪一等级。",
+          "boundary": "类型 2 会让维度表增长并增加关联复杂度，但不保留历史就无法解释历史报表。",
+          "engineering": "维度表保留代理键与业务键，生效与失效时间要可靠；回溯分析前先确认业务是否接受历史重述。"
+        },
+        {
+          "name": "数仓分层与职责边界",
+          "plain": "ODS 贴近源系统，DWD 做清洗与明细统一，DWS 做主题汇总，ADS 面向具体应用输出结果。",
+          "mechanism": "分层让变更影响局部：源系统字段变化只在 ODS 与 DWD 处理，指标口径变化在 DWS 与 ADS 调整。",
+          "example": "追踪一个指标从源表到报表的血缘，标出每一层做了哪些清洗、补全与聚合动作。",
+          "boundary": "层数不是越多越好，小团队可以合并分层，但必须保证原始数据可追溯、指标口径唯一。",
+          "engineering": "每层建表规范统一命名与分区策略，关键表注册血缘与负责人，避免出现无主的中间表。"
+        },
+        {
+          "name": "指标口径与一致性",
+          "plain": "同一指标在不同报表里出现不同数值，通常不是计算错误，而是口径不一致：时间范围、去重方式或过滤条件不同。",
+          "mechanism": "把指标拆成「度量 + 统计口径 + 过滤条件 + 时间窗口」，集中定义并在各层复用，才能保证跨报表一致。",
+          "example": "对比两个报表的活跃用户数，找出一个按登录事件去重、另一个按设备去重的差异。",
+          "boundary": "口径统一不等于永远不变，业务调整时应记录版本与生效时间，避免历史数据被静默重算。",
+          "engineering": "建立指标字典，记录定义、负责人、来源表与变更历史；对外发布前用相同输入交叉验证。"
+        }
+      ],
+      "steps": ["确认业务过程与粒度", "设计维度与事实表", "按层清洗与汇总", "登记指标口径与血缘"],
+      "code": {
+        "language": "sql",
+        "snippet": "-- 订单商品粒度的事实表：一行代表一个订单中的一件商品\nCREATE TABLE dwd_order_item (\n    order_id      BIGINT      NOT NULL,\n    item_id       BIGINT      NOT NULL,\n    user_sk       BIGINT      NOT NULL,\n    order_ts      TIMESTAMP   NOT NULL,\n    quantity      INT         NOT NULL,\n    amount        DECIMAL(12, 2) NOT NULL,\n    PRIMARY KEY (order_id, item_id)\n) COMMENT '粒度：订单商品；唯一键 order_id + item_id';\n\n-- 指标口径：订单商品销售额 = SUM(amount)，按 order_ts 的自然日统计\nSELECT date(order_ts) AS stat_date, SUM(amount) AS gmv\nFROM dwd_order_item\nWHERE order_ts >= TIMESTAMP '2026-10-01 00:00:00'\nGROUP BY 1\nORDER BY 1;",
+        "walkthrough": "建表语句在注释里写清粒度与唯一键，主键约束保证不会重复计数；统计语句固定时间字段与聚合口径，输出的指标可以直接被下游复用。",
+        "expected_output": "查询按天返回 gmv，每个日期一行；同一订单商品只计一次，重复导入不会让金额翻倍。"
+      },
+      "faults": [
+        {"topic": "粒度混放导致重复计数", "wrong": "同一张表既存订单行又存订单商品行", "fix": "按粒度拆表，用唯一键约束与质量断言保证一行一个业务实体"},
+        {"topic": "直接覆盖历史属性", "wrong": "用户等级直接更新，历史报表按新等级回溯", "fix": "需要历史分析时采用类型 2 慢变维度，记录生效区间"},
+        {"topic": "指标口径散落在脚本里", "wrong": "每个报表各写一份过滤条件，数值互相对不上", "fix": "集中维护指标字典并在公共层实现，输出前做交叉校验"}
+      ],
+      "glossary": [
+        {"term": "粒度", "definition": "事实表一行所代表的业务实体层级，是所有指标计算的前提。"},
+        {"term": "事实表", "definition": "记录业务过程度量的表，通常包含外键与数值指标。"},
+        {"term": "维度表", "definition": "描述观察角度的属性表，例如用户、商品与时间维度。"},
+        {"term": "缓慢变化维度", "definition": "处理维度属性随时间变化的建模方法，常见有类型 1 与类型 2。"},
+        {"term": "血缘", "definition": "数据从来源到产物的流转关系，用于追踪口径与影响范围。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "统计订单数时出现翻倍，最可能的原因是什么？", "options": ["事实表混放了订单商品级别数据", "分区字段类型是字符串", "维度表使用了代理键", "查询没有使用索引"], "answer": 0, "explanation": "订单商品粒度下同一订单会出现多行，直接计数就会把订单数放大；这类问题要从粒度与唯一键入手，索引或字段类型不会造成成倍偏差。"},
+        {"type": "single", "question": "需要按历史属性回溯分析时，应采用哪种慢变维度处理？", "options": ["类型 2：新增行并记录生效区间", "类型 1：直接覆盖旧值", "不处理，保持原值", "把属性移到事实表"], "answer": 0, "explanation": "类型 2 保留每次变化的行与生效时间，才能把历史事实关联到当时的属性；直接覆盖会丢失历史，把属性放到事实表会破坏建模规范。"},
+        {"type": "multi", "question": "以下哪些内容属于指标口径的必要说明？（多选）", "options": ["统计的时间字段与窗口", "去重方式与主键选择", "过滤条件与排除规则", "报表页面的配色方案"], "answers": [0, 1, 2], "answer": 0, "explanation": "口径要能让人独立复算出同一结果，因此时间窗口、去重主键与过滤条件必须写清；配色属于展示问题，与研究结论无关。"},
+        {"type": "order", "question": "请按数据从源系统到报表的顺序排列分层。", "options": ["ADS 面向应用的结果层", "ODS 贴源层", "DWS 主题汇总层", "DWD 明细清洗层"], "correct_order": [1, 3, 2, 0], "answer": 0, "explanation": "数据依次经过贴源、明细清洗、主题汇总与应用结果四层；顺序整体前移或后移都会让下游读到未清洗或未汇总的数据。"},
+        {"type": "debug", "question": "阅读建表与查询片段，哪项判断正确？", "options": ["表的主键保证订单商品不会重复计数", "查询按订单粒度统计金额", "粒度注释只影响展示不影响口径", "按天统计需要再去重一次 order_id"], "answer": 0, "code": "PRIMARY KEY (order_id, item_id)\nCOMMENT '粒度：订单商品；唯一键 order_id + item_id';\nSELECT date(order_ts) AS stat_date, SUM(amount) AS gmv\nFROM dwd_order_item GROUP BY 1;", "language": "sql", "explanation": "主键由订单与商品共同组成，保证一行代表一个订单商品，因此按行汇总不会重复；粒度注释是口径的一部分，直接决定下游能否正确聚合。"}
+      ],
+      "practice": [
+        "为一个你熟悉的业务设计事实表，写清粒度、维度与度量三项要素。",
+        "把两个口径不一致的指标写进口径卡片，注明差异来源。",
+        "为一张明细表补上粒度注释与唯一键约束，并写一条校验语句。"
+      ],
+      "refs": [
+        {"name": "Kimball 维度建模技术说明", "url": "https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/"},
+        {"name": "dbt 数据建模最佳实践", "url": "https://docs.getdbt.com/best-practices"}
+      ],
+      "english": "Warehouse modeling starts with granularity: what one row means. This lesson covers dimensional modeling, slowly changing dimensions, the ODS to ADS layering, and how to write a metric definition that two teams can compute identically.",
+      "reviewPoints": [
+        "能用粒度、维度与度量描述事实表。",
+        "能说明四层数仓各自的职责。",
+        "能写出可复算的指标口径说明。"
+      ]
+    },
+    {
+      "id": "de_batch_processing",
+      "category": "data_engineering",
+      "title": {"zh": "批处理与 Spark 实践", "en": "Batch Processing with Spark"},
+      "summary": {"zh": "理解分区、Shuffle、宽窄依赖与数据倾斜，写出稳定可重跑的批处理任务。", "en": "Understand partitions, shuffles, narrow/wide dependencies and skew in batch jobs."},
+      "keywords": ["Spark", "分区", "Shuffle", "数据倾斜", "幂等重跑"],
+      "difficulty": "进阶",
+      "minutes": 34,
+      "order": 2,
+      "prerequisites": ["de_data_modeling"],
+      "image": {"title": "批处理作业的执行链路", "flow": ["读取分区数据", "转换与聚合", "Shuffle 与落盘", "校验与写入"]},
+      "goals": [
+        "能解释窄依赖与宽依赖对执行计划的影响。",
+        "能定位数据倾斜并给出两种以上的缓解方案。",
+        "能设计可重跑、可校验的批处理输出流程。"
+      ],
+      "prerequisitesText": [
+        "会写 SQL 聚合与窗口函数。",
+        "了解分布式计算把数据分片处理的基本思路。",
+        "知道文件分区与列式存储的常见约定。"
+      ],
+      "concepts": [
+        {
+          "name": "分区、任务与并行度",
+          "plain": "数据被切成多个分区并行处理，分区数量决定并行度，也决定小文件与调度开销。",
+          "mechanism": "读取阶段分区数与文件块数相关，聚合阶段由 Shuffle 决定分区数；分区太少会单点变慢，太多会产生大量调度与小文件。",
+          "example": "同一份数据分别用 4 个和 400 个分区聚合，比较执行时间与输出文件数量。",
+          "boundary": "增大分区数不是万能解，算子本身有开销；小文件过多还会拖慢下游读取。",
+          "engineering": "按数据量与核心数设置分区，写出前做合并控制文件大小，输出分区字段与下游过滤条件对齐。"
+        },
+        {
+          "name": "窄依赖、宽依赖与 Shuffle",
+          "plain": "窄依赖每个父分区只对应一个子分区，可以流水线执行；宽依赖要跨节点重分布数据，需要落盘与网络传输。",
+          "mechanism": "groupBy、join 与 distinct 通常触发 Shuffle，Shuffle 数据量决定作业瓶颈；过滤与映射尽量提前以减少参与重分布的数据。",
+          "example": "先在明细层过滤再聚合，与先聚合再过滤两种写法对比 Shuffle 读写量。",
+          "boundary": "缓存中间结果能加速多次复用，但会占用内存并可能触发落盘，滥用反而变慢。",
+          "engineering": "把过滤与列裁剪尽量前移，广播小表避免大表 Shuffle，关注执行计划里的 Exchange 节点。"
+        },
+        {
+          "name": "数据倾斜与热点键",
+          "plain": "少数键拥有远多于其他键的数据量，导致个别任务长时间运行，整体进度被拖住。",
+          "mechanism": "按 key 聚合时同一键必定落到同一分区；热点键会把单分区撑大，出现任务长尾与内存溢出。",
+          "example": "统计每个用户的订单时制造一个超大用户，观察任务耗时分布与失败情况。",
+          "boundary": "加盐打散能缓解倾斜，但会改变语义，需要在二次聚合时还原，还要注意数据量翻倍。",
+          "engineering": "先看任务耗时分布确认倾斜，再考虑过滤异常键、拆分热点单独处理、加盐或改用更均匀的分区键。"
+        },
+        {
+          "name": "可重跑与幂等写入",
+          "plain": "批处理任务会因为上游延迟或故障需要重跑，输出必须支持覆盖或按分区替换，否则会产生重复数据。",
+          "mechanism": "按日期分区写入时可用覆盖写入替换整个分区；使用动态分区或事务表时按分区提交，失败可回滚。",
+          "example": "把同一批数据连续跑两遍，检查目标表行数是否翻倍，并改成覆盖写入后再验证。",
+          "boundary": "覆盖写入会短暂删除旧数据，下游同时读取时可能看到空分区，需要版本表或原子替换。",
+          "engineering": "任务参数化日期与分区，输出前写临时位置再原子替换；跑完自动做行数与指标校验。"
+        }
+      ],
+      "steps": ["确定输入分区范围", "过滤与转换减少数据量", "处理 Shuffle 与倾斜", "按分区幂等写入并校验"],
+      "code": {
+        "language": "sql",
+        "snippet": "-- 先在明细层过滤与列裁剪，再做聚合，减少参与 Shuffle 的数据量\nWITH filtered AS (\n    SELECT order_id, user_id, amount, order_ts\n    FROM dwd_order_item\n    WHERE order_ts >= TIMESTAMP '2026-10-01 00:00:00'\n      AND order_ts <  TIMESTAMP '2026-10-02 00:00:00'\n)\nSELECT user_id,\n       COUNT(DISTINCT order_id) AS order_cnt,\n       SUM(amount)             AS gmv\nFROM filtered\nGROUP BY user_id\nHAVING SUM(amount) > 0;",
+        "walkthrough": "查询先用时间条件与列裁剪把数据缩小，再按用户聚合，避免把全量明细送进 Shuffle；HAVING 过滤异常用户，减少脏数据对结果的影响。",
+        "expected_output": "每个用户一行，order_cnt 为去重后的订单数，gmv 为金额合计；重跑同一分区结果一致，行数不会增加。"
+      },
+      "faults": [
+        {"topic": "全量数据直接聚合", "wrong": "不做过滤与列裁剪就把所有明细送入聚合", "fix": "把时间与状态过滤前移，只保留参与计算的列，再进入 Shuffle"},
+        {"topic": "热点键拖垮任务", "wrong": "按包含超大客户的键聚合，个别任务长时间不结束", "fix": "确认倾斜键后单独处理或加盐打散，二次聚合还原结果"},
+        {"topic": "重跑产生重复数据", "wrong": "任务用追加写入，失败后重跑导致行数翻倍", "fix": "按分区覆盖或使用事务写入，落库前做行数与主键唯一性校验"}
+      ],
+      "glossary": [
+        {"term": "分区", "definition": "数据被切分成可并行处理的最小单元集合。"},
+        {"term": "Shuffle", "definition": "跨节点重新分布数据的过程，通常由聚合与连接触发。"},
+        {"term": "窄依赖", "definition": "父分区只对应一个子分区的依赖关系，可流水线执行。"},
+        {"term": "数据倾斜", "definition": "少数键的数据量远大于其他键，导致个别任务成为长尾。"},
+        {"term": "幂等写入", "definition": "重复执行同一次写入不会产生重复或错误结果的写入方式。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "批处理任务卡在少数几个任务上，最可能的原因是什么？", "options": ["数据倾斜导致热点分区", "分区数量刚好等于核心数", "输出文件使用列式格式", "任务没有开启自动重试"], "answer": 0, "explanation": "任务耗时分布严重不均通常指向热点键，同一键落在同一分区会把它撑大；分区数、文件格式与重试策略不会造成持续的长尾任务。"},
+        {"type": "single", "question": "减少 Shuffle 数据量最直接的做法是什么？", "options": ["把过滤与列裁剪前移到聚合之前", "增大 driver 内存", "把所有中间结果写入磁盘", "把分区数设为 1"], "answer": 0, "explanation": "Shuffle 只搬运参与计算的数据，提前过滤与裁剪列能直接减少数据量；调整内存或减少分区只会改变失败方式，不会减少要搬的数据。"},
+        {"type": "multi", "question": "以下哪些做法能让批处理任务可安全重跑？（多选）", "options": ["按日期分区覆盖写入", "输出前写临时位置再原子替换", "任务用追加模式每次写入新数据", "跑完校验行数与主键唯一性"], "answers": [0, 1, 3], "answer": 0, "explanation": "按分区覆盖、临时目录加原子替换、终态校验都能保证重跑结果一致；追加写入在重跑时会累积重复数据，属于反模式。"},
+        {"type": "order", "question": "请按批处理作业的执行顺序排列步骤。", "options": ["Shuffle 聚合与排序", "读取目标日期分区数据", "校验并原子替换目标分区", "过滤与列裁剪"], "correct_order": [1, 3, 0, 2], "answer": 0, "explanation": "先读入目标分区，再过滤裁剪，然后进行需要跨节点重分布的聚合，最后校验并原子写入；把校验放在写入之后就无法阻止脏数据对外可见。"},
+        {"type": "debug", "question": "阅读查询片段，哪项判断正确？", "options": ["过滤条件在聚合之前生效，可减少参与 Shuffle 的数据", "COUNT(DISTINCT order_id) 会统计重复订单行", "时间条件写在聚合之后效果相同", "HAVING 过滤的是输入表而不是聚合结果"], "answer": 0, "code": "WITH filtered AS (SELECT order_id, user_id, amount FROM dwd_order_item\n  WHERE order_ts >= TIMESTAMP '2026-10-01 00:00:00'\n)\nSELECT user_id, COUNT(DISTINCT order_id) AS order_cnt, SUM(amount) AS gmv\nFROM filtered GROUP BY user_id;", "language": "sql", "explanation": "时间过滤位于 CTE 内，先于分组聚合执行，因此进入聚合的数据更少；COUNT(DISTINCT) 按订单去重，聚合后再过滤需要用 HAVING。"}
+      ],
+      "practice": [
+        "对比「先过滤再聚合」与「先聚合再过滤」两条查询的执行计划差异。",
+        "构造一个热点键，分别用单独处理与加盐两种方式解决并记录耗时。",
+        "给一个任务加上分区覆盖写入与行数校验，验证重复执行结果一致。"
+      ],
+      "refs": [
+        {"name": "Apache Spark 调优指南", "url": "https://spark.apache.org/docs/latest/tuning.html"},
+        {"name": "Apache Spark SQL 性能调优", "url": "https://spark.apache.org/docs/latest/sql-performance-tuning.html"}
+      ],
+      "english": "Batch jobs fail on data volume, distribution and re-runs. This lesson explains partitions, narrow versus wide dependencies, shuffle cost, skew handling, and how to write idempotent partitions with post-write validation.",
+      "reviewPoints": [
+        "能判断一条查询里哪些算子会触发 Shuffle。",
+        "能给出数据倾斜的两种以上缓解方案。",
+        "能设计可重跑的分区写入流程。"
+      ]
+    }
+  ]
+}

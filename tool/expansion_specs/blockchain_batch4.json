@@ -1,0 +1,234 @@
+{
+  "lessons": [
+    {
+      "id": "chain_wallet_keys",
+      "category": "blockchain",
+      "title": {"zh": "钱包、密钥与签名", "en": "Wallets, Keys and Signatures"},
+      "summary": {"zh": "从助记词、派生路径讲到离线签名、多签与密钥泄露应急。", "en": "Mnemonics, derivation paths, offline signing, multisig and key compromise response."},
+      "keywords": ["助记词", "派生路径", "离线签名", "多签", "密钥管理"],
+      "difficulty": "基础",
+      "minutes": 40,
+      "order": 5,
+      "image": {"title": "从助记词到一笔签名交易", "flow": ["助记词生成种子", "按派生路径生成密钥对", "构造交易并计算摘要", "离线私钥签名", "广播并核对链上结果"]},
+      "goals": ["能说明助记词、种子与派生路径之间的关系。", "能使用离线签名流程完成一笔交易。", "能设计多签与密钥泄露的应急流程。"],
+      "prerequisitesText": ["了解非对称加密与哈希的基本概念。", "知道地址由公钥推导得到。", "能读懂交易的基本字段。"],
+      "concepts": [
+        {"name": "助记词与派生路径", "plain": "一串助记词可以推导出无数密钥，靠派生路径区分账户与链。", "mechanism": "助记词按标准生成种子，再按分层派生路径逐级派生子密钥，路径不同得到完全不同的密钥与地址。", "example": "在本课示例里用同一组助记词按两条路径派生地址，观察两者完全不同。", "boundary": "助记词与派生路径需要同时备份，只记助记词而忘记路径会找不到资金。", "engineering": "备份内容包含助记词、派生路径与地址校验值，恢复后先核对首个地址是否一致再使用。"},
+        {"name": "离线签名与交易广播", "plain": "私钥不联网，联网设备只负责构造交易与广播。", "mechanism": "在线设备构造未签名交易并计算摘要，离线设备用私钥签名，在线设备把签名与交易组合后广播到网络。", "example": "在本课示例里用两台设备完成一次离线签名并核对广播后的交易哈希。", "boundary": "把私钥导入联网设备会失去离线签名的意义，热钱包的风险正在于此。", "engineering": "签名前核对交易的目标地址与金额，签名设备屏幕显示的内容必须与最终广播内容一致。"},
+        {"name": "多签与应急响应", "plain": "多签要求多个密钥共同授权，单个密钥泄露不致命。", "mechanism": "门限方案要求 m 个签名中的 n 个才能通过，密钥分散在不同设备与持有人手中，降低单点失守的影响。", "example": "在本课示例里用二取三多签构造交易，验证只有两个签名时才能通过。", "boundary": "把多个密钥存在同一台设备上，多签退化成单签，失去分散风险的意义。", "engineering": "密钥分片由不同角色保管并定期演练恢复流程，泄露时按预案转移资产并作废受影响地址。"}
+      ],
+      "steps": ["生成并离线备份助记词", "确定派生路径并核对首个地址", "在线构造未签名交易", "离线签名并回传", "广播后核对链上结果"],
+      "code": {"language": "javascript", "snippet": "// 离线签名流程：构造、签名、组合广播三步分离\nasync function signOffline(unsignedTx, offlineSigner) {\n  // 1. 在线侧：构造未签名交易并计算待签摘要\n  const digest = computeDigest(unsignedTx);\n  console.log(\"digest to sign:\", digest);\n\n  // 2. 离线侧：核对交易内容后用私钥签名，私钥不出离线设备\n  const shown = describeTransaction(unsignedTx);\n  if (shown.to !== expectedRecipient || shown.value !== expectedValue) {\n    throw new Error(\"transaction does not match the reviewed intent\");\n  }\n  const signature = offlineSigner.sign(digest);\n\n  // 3. 在线侧：附加签名后广播，并核对交易哈希\n  const signedTx = attachSignature(unsignedTx, signature);\n  const txHash = await broadcast(signedTx);\n  console.log(\"broadcasted:\", txHash);\n  return txHash;\n}\n", "walkthrough": "流程把构造、签名与广播拆开：在线侧只接触未签名交易与签名结果，离线侧在签名前再次显示并核对收款地址与金额，任何不一致都中止签名，避免签名设备被诱导签署不符预期的交易。", "expected_output": "digest to sign: 0x9f2c...，broadcasted: 0x41ab...，confirmations 12，recipient matches reviewed intent"},
+      "faults": [
+        {"topic": "恢复钱包后地址对不上", "wrong": "只备份助记词，没有记录派生路径", "fix": "备份时同时记录派生路径与首个地址校验值，恢复后先核对地址再转账"},
+        {"topic": "私钥泄露后资产被清空", "wrong": "把私钥导入联网热钱包或截图保存", "fix": "改用离线签名或多签，泄露后立即转移资产并停用受影响地址"},
+        {"topic": "签名内容与预期不符", "wrong": "签名设备不显示交易详情，直接签名", "fix": "在签名设备上完整显示收款地址与金额并人工核对，不一致就拒绝签名"}
+      ],
+      "glossary": [
+        {"term": "助记词", "definition": "便于抄写备份的单词序列，可推导出种子。"},
+        {"term": "派生路径", "definition": "从种子分层派生子密钥的路径规则。"},
+        {"term": "离线签名", "definition": "在未联网设备上用私钥签署交易。"},
+        {"term": "多签", "definition": "要求多个密钥共同授权才能完成的交易方案。"},
+        {"term": "门限方案", "definition": "规定 n 个参与者中至少 m 个同意才生效的机制。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "只备份助记词而不记录派生路径的风险是？", "options": ["恢复时可能找不到原有的地址与资金", "助记词会失效", "交易手续费变高", "无法广播交易"], "answer": 0, "explanation": "同一组助记词按不同路径派生出完全不同的地址，路径丢失会导致恢复出来的钱包看不到原来的资产。"},
+        {"type": "single", "question": "离线签名的关键前提是？", "options": ["私钥始终不进入联网环境", "联网设备性能足够高", "使用最新的浏览器", "交易金额足够小"], "answer": 0, "explanation": "离线签名的价值在于私钥永不触网，一旦导入联网设备，攻击面立刻与热钱包相同。"},
+        {"type": "multi", "question": "发现私钥可能泄露后应立即采取哪些动作？（多选）", "options": ["把资产转移到新地址", "停用受影响的地址", "检查并撤销相关授权", "继续使用原地址观察一段时间"], "answer": 0, "answers": [0, 1, 2], "explanation": "转移资产、停用地址与撤销授权是止损三件套；继续使用原地址只会给对方更多时间。"},
+        {"type": "order", "question": "请按一次离线签名的顺序排列。", "options": ["在线设备构造未签名交易", "计算待签摘要并传到离线设备", "离线设备核对内容后签名", "把签名回传到在线设备组合", "广播交易并核对链上结果"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "构造与签名分离，签名前后都要核对内容，最后组合广播并确认链上记录与预期一致。"},
+        {"type": "debug", "question": "阅读这段签名代码，风险是什么？", "options": ["没有核对交易内容就签名，可能签署被篡改的交易", "摘要算法过弱", "缺少手续费设置", "没有记录日志"], "answer": 0, "code": "const digest = computeDigest(unsignedTx);\nconst signature = offlineSigner.sign(digest);   // 直接签名，没有展示交易详情\nconst txHash = await broadcast(attachSignature(unsignedTx, signature));\n", "language": "javascript", "explanation": "签名设备没有显示与核对收款地址和金额，若待签交易被替换，签名依然会成功，资金会流向攻击者控制的地址。"}
+      ],
+      "practice": ["用同一组助记词按两条派生路径各生成一个地址，记录差异。", "完成一次离线签名并核对广播后的交易哈希与链上记录。", "设计一个二取三多签方案，写出密钥保管与恢复流程。"],
+      "refs": [
+        {"name": "BIP-39 助记词规范", "url": "https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki"},
+        {"name": "BIP-32 分层确定性钱包规范", "url": "https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki"}
+      ],
+      "english": "A mnemonic produces a seed, and a derivation path turns that seed into keys and addresses, so both must be backed up together. Offline signing keeps the private key on a device that never connects, and the signing screen must show the recipient and amount so the signature matches the reviewed intent. Multisig spreads trust across several holders.",
+      "reviewPoints": ["能解释助记词、种子、派生路径与地址的推导关系。", "能描述离线签名的三步分离。", "能说出密钥泄露后的三项止损动作。"]
+    },
+    {
+      "id": "chain_token_standards",
+      "category": "blockchain",
+      "title": {"zh": "代币标准与合约接口", "en": "Token Standards and Contract Interfaces"},
+      "summary": {"zh": "从同质化与非同质化代币讲到接口约定、授权机制与常见陷阱。", "en": "Fungible and non-fungible tokens, interface contracts, approvals and common pitfalls."},
+      "keywords": ["代币标准", "ERC-20", "ERC-721", "授权", "合约接口"],
+      "difficulty": "进阶",
+      "minutes": 40,
+      "order": 6,
+      "image": {"title": "代币合约与外部交互", "flow": ["部署实现接口的合约", "持有者调用转账或授权", "被授权方在额度内转账", "接收方合约回调校验", "事件记录供链下索引"]},
+      "goals": ["能说明同质化与非同质化代币在接口上的差异。", "能解释授权额度机制及其风险。", "能识别转账回调与转账税等常见陷阱。"],
+      "prerequisitesText": ["完成以太坊与智能合约一课，了解账户与交易。", "能读懂 Solidity 合约的基本结构。", "知道事件与链下索引的关系。"],
+      "concepts": [
+        {"name": "接口约定与标准价值", "plain": "标准规定必须实现哪些函数与事件，钱包与交易所才能通用接入。", "mechanism": "同质化代币约定转账、余额与授权接口，非同质化代币约定所有权、转移与授权接口，事件用于链下索引状态变化。", "example": "在本课示例里部署一个最小实现，验证标准接口调用与事件都能正确返回。", "boundary": "接口签名正确但语义不符仍会让集成方出错，例如转账不减少余额却返回成功。", "engineering": "用标准测试用例验证实现，覆盖返回值、事件与边界情况，再接入真实业务。"},
+        {"name": "授权额度与风险", "plain": "授权让第三方在额度内动用你的代币，额度失控就是风险。", "mechanism": "持有者调用授权设置额度，第三方调用转账接口在额度内划转并扣减授权；无限授权会长期保留，直到被撤销。", "example": "在本课示例里授权一笔额度并观察扣减过程，再撤销剩余额度。", "boundary": "无限授权遇到合约漏洞会导致资产被一次性转走，用户往往毫无察觉。", "engineering": "默认授权最小必要额度并设置有效期，前端明确展示额度与撤销入口。"},
+        {"name": "转账回调与常见陷阱", "plain": "合约账户接收转账可能触发回调，行为与普通账户不同。", "mechanism": "非同质化代币转账到合约地址时调用回调函数校验是否接受，未实现回调的合约会导致转账回退；同质化代币若含转账税或黑名单逻辑，接收到的数量会与发送数量不一致。", "example": "在本课示例里向不支持回调的合约转账，观察交易回退并查看原因。", "boundary": "集成方按到账数量等于发送数量做记账，在转账税代币上会持续账目不符。", "engineering": "集成前核对代币实际行为，按余额差记账而不是按参数记账，并为失败路径准备回退方案。"}
+      ],
+      "steps": ["确认要实现的代币标准与接口", "实现转账、授权与事件", "检查回调与接收方兼容性", "用标准测试验证边界行为", "集成前核对代币实际转账行为"],
+      "code": {"language": "solidity", "snippet": "// 最小同质化代币实现：转账、授权与事件\ncontract MiniToken {\n    mapping(address => uint256) public balanceOf;\n    mapping(address => mapping(address => uint256)) public allowance;\n\n    event Transfer(address indexed from, address indexed to, uint256 value);\n    event Approval(address indexed owner, address indexed spender, uint256 value);\n\n    function transfer(address to, uint256 value) external returns (bool) {\n        require(balanceOf[msg.sender] >= value, \"insufficient balance\");\n        balanceOf[msg.sender] -= value;\n        balanceOf[to] += value;\n        emit Transfer(msg.sender, to, value);   // 事件供链下索引\n        return true;\n    }\n\n    // 授权方在额度内代扣；额度用尽后必须重新授权\n    function transferFrom(address from, address to, uint256 value) external returns (bool) {\n        require(balanceOf[from] >= value, \"insufficient balance\");\n        require(allowance[from][msg.sender] >= value, \"allowance exceeded\");\n        allowance[from][msg.sender] -= value;\n        balanceOf[from] -= value;\n        balanceOf[to] += value;\n        emit Transfer(from, to, value);\n        return true;\n    }\n\n    function approve(address spender, uint256 value) external returns (bool) {\n        allowance[msg.sender][spender] = value;\n        emit Approval(msg.sender, spender, value);\n        return true;\n    }\n}\n", "walkthrough": "实现保留最小的转账、授权与查询接口，每次状态变化都发出事件供链下索引；transferFrom 先校验余额与授权额度再扣减，避免超额代扣。示例省略了总量与铸造逻辑，重点在标准接口的形状与事件约定。", "expected_output": "deploy ok，transfer 100 -> balances updated，approve 50 -> transferFrom 30 ok，remaining allowance 20，Transfer/Approval events indexed"},
+      "faults": [
+        {"topic": "授权额度长期失控", "wrong": "习惯性授权无限额度且从不撤销", "fix": "按实际需要授权最小额度并设置期限，定期检查并撤销不再使用的授权"},
+        {"topic": "转账到合约直接失败", "wrong": "向未实现接收回调的合约地址转账", "fix": "转账前确认接收方是否支持回调，或改用安全的转账辅助函数并处理回退原因"},
+        {"topic": "记账对不上", "wrong": "按转账参数记账，而代币实际含转账税", "fix": "按转账前后的余额差记账，集成前先核对代币的真实转账行为"}
+      ],
+      "glossary": [
+        {"term": "同质化代币", "definition": "每个单位等价可互换的代币类型。"},
+        {"term": "非同质化代币", "definition": "每个单位唯一且不可互换的代币类型。"},
+        {"term": "授权额度", "definition": "持有者允许第三方动用的最大数量。"},
+        {"term": "回调", "definition": "合约接收代币时被调用的校验函数。"},
+        {"term": "转账税", "definition": "转账时按比例扣除一部分代币的机制。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "标准接口对钱包与交易所最重要的价值是？", "options": ["可以按统一接口接入任意符合标准的代币", "提高链上吞吐量", "降低代币价格波动", "免去审计成本"], "answer": 0, "explanation": "接口统一后，集成方无需为每个代币写单独适配，只需按标准契约实现读写与事件解析。"},
+        {"type": "single", "question": "无限授权最大的风险是？", "options": ["合约被攻破时资产可被一次性转走", "手续费变高", "转账速度变慢", "余额显示错误"], "answer": 0, "explanation": "无限额度长期有效，一旦被授权合约存在漏洞或恶意逻辑，攻击者可以在无需再次授权的情况下转走全部余额。"},
+        {"type": "multi", "question": "集成新代币前应确认哪些行为？（多选）", "options": ["转账是否含手续费或扣减", "目标地址是否为合约且支持回调", "事件是否按标准发出", "代币名称是否好听"], "answer": 0, "answers": [0, 1, 2], "explanation": "转账行为、接收方兼容性与事件规范直接影响记账与索引正确性，名称与功能无关。"},
+        {"type": "order", "question": "请按一次授权代扣的顺序排列。", "options": ["持有者调用授权设置额度", "第三方在额度内发起代扣", "合约校验余额与额度", "扣减额度并更新余额", "发出转账事件供索引"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "先授权再代扣，合约校验通过后扣减额度与余额，最后发出事件，链下索引据此更新账本。"},
+        {"type": "debug", "question": "阅读这段代扣代码，缺陷是什么？", "options": ["没有扣减授权额度，被授权方可以反复代扣", "没有发出事件", "余额校验多余", "参数顺序颠倒"], "answer": 0, "code": "function transferFrom(address from, address to, uint256 value) external returns (bool) {\n    require(balanceOf[from] >= value, \"insufficient balance\");\n    balanceOf[from] -= value;\n    balanceOf[to] += value;\n    emit Transfer(from, to, value);\n    return true;   // 完全没有检查与扣减 allowance\n}\n", "language": "solidity", "explanation": "缺少额度检查与扣减，任何人都可以在他人授权一次之后反复划转其全部余额，这是典型的授权绕过缺陷。"}
+      ],
+      "practice": ["用标准接口实现一个最小代币，验证转账与授权事件都被正确发出。", "授权一笔额度后执行部分代扣，核对剩余额度并撤销授权。", "找出一个含转账税的代币，说明集成时记账方式应如何调整。"],
+      "refs": [
+        {"name": "EIP-20 同质化代币标准", "url": "https://eips.ethereum.org/EIPS/eip-20"},
+        {"name": "EIP-721 非同质化代币标准", "url": "https://eips.ethereum.org/EIPS/eip-721"}
+      ],
+      "english": "Token standards define the functions and events wallets and exchanges rely on. Fungible tokens expose transfer, balance and approval, while non-fungible tokens add ownership and transfer with a receiver callback. Approvals are the main risk surface: keep them minimal, review them regularly, and never assume the received amount equals the sent amount when a token charges a transfer fee.",
+      "reviewPoints": ["能说出标准接口中转账、授权与事件三者的作用。", "能解释无限授权为什么危险。", "能说明含转账税代币的正确记账方式。"]
+    },
+    {
+      "id": "chain_oracle_bridge",
+      "category": "blockchain",
+      "title": {"zh": "预言机与跨链桥", "en": "Oracles and Cross-Chain Bridges"},
+      "summary": {"zh": "从链下数据上链、价格喂价讲到跨链消息传递、验证模型与风险点。", "en": "Off-chain data feeds, price oracles, cross-chain messaging, verification models and risks."},
+      "keywords": ["预言机", "喂价", "跨链桥", "消息验证", "去中心化"],
+      "difficulty": "进阶",
+      "minutes": 45,
+      "order": 7,
+      "image": {"title": "跨链消息的生命周期", "flow": ["源链锁定或销毁资产", "验证者观察并签名证明", "目标链校验证明", "按证明铸造或释放资产", "监控延迟与异常回滚"]},
+      "goals": ["能说明预言机为什么必须解决数据来源与时效问题。", "能对比不同跨链验证模型的信任假设。", "能识别喂价延迟与桥接验证漏洞带来的风险。"],
+      "prerequisitesText": ["完成区块链基础与智能合约相关课程。", "知道签名验证与默克尔证明的基本原理。", "了解多签与共识的基本概念。"],
+      "concepts": [
+        {"name": "预言机与数据时效", "plain": "链上合约无法主动读取外部数据，必须由预言机把数据写进来。", "mechanism": "多个数据源聚合出价格并定期提交上链，合约读取最新值并检查更新时间戳，超时则暂停依赖该价格的业务。", "example": "在本课示例里读取一次喂价并检查时间戳，观察超时后业务被暂停。", "boundary": "只读价格不看时间戳会在极端行情下用过时数据成交，造成无风险套利。", "engineering": "关键业务设置心跳与偏差双阈值，超限即暂停并通知，恢复需人工确认。"},
+        {"name": "跨链消息与验证模型", "plain": "跨链桥的核心是让目标链相信源链确实发生了某件事。", "mechanism": "常见模型包括外部验证者多签、轻客户端验证与乐观验证，各自在信任假设、成本与延迟之间取舍。", "example": "在本课示例里对比多签与轻客户端两种模型的验证步骤与信任前提。", "boundary": "验证者集合过于集中会让桥的安全等价于这几个密钥，一旦失守可无限铸币。", "engineering": "限制单次铸币上限、加入延迟提现窗口与监控报警，给异常留出反应时间。"},
+        {"name": "桥接风险与限额设计", "plain": "桥是资产集中地，也是攻击者的首要目标。", "mechanism": "通过限额、延迟提现、多级审批与暂停开关限制单点故障的损失范围，链上监控对异常铸造与提取实时告警。", "example": "在本课示例里触发一次超额提取，观察限额与延迟窗口如何阻止资金立即流出。", "boundary": "没有暂停开关的桥在发现异常后只能眼睁睁看着资金被持续提取。", "engineering": "限额与暂停开关由多方共同控制，操作记录公开可审计，并定期演练应急流程。"}
+      ],
+      "steps": ["确定数据或消息来源与信任模型", "实现提交与验证逻辑", "设置时效、偏差与限额阈值", "加入延迟提现与暂停开关", "监控异常并演练应急响应"],
+      "code": {"language": "solidity", "snippet": "// 喂价消费方：只接受足够新鲜的价格，过期即暂停业务\ncontract PriceConsumer {\n    AggregatorV3Interface internal feed;\n    uint256 public constant MAX_STALENESS = 90;   // 价格最多允许 90 秒旧\n\n    function currentPrice() public view returns (int256) {\n        (, int256 answer, , uint256 updatedAt, ) = feed.latestRoundData();\n        require(answer > 0, \"invalid price\");\n        require(block.timestamp - updatedAt <= MAX_STALENESS, \"stale price\");  // 超时拒绝使用\n        return answer;\n    }\n\n    function executeTrade(uint256 amount) external {\n        int256 price = currentPrice();     // 过期直接回退，交易不会成交\n        _settle(amount, price);\n    }\n}\n\n// 桥接出口：限额加延迟，异常时有时间暂停\ncontract BridgeOutlet {\n    uint256 public constant DAILY_LIMIT = 1000 ether;\n    uint256 public constant DELAY = 30 minutes;\n    mapping(address => uint256) public pending;\n\n    function requestWithdraw(uint256 amount) external {\n        require(amount <= DAILY_LIMIT, \"exceeds daily limit\");\n        pending[msg.sender] = block.timestamp + DELAY;   // 延迟窗口内可被暂停\n        emit WithdrawRequested(msg.sender, amount, pending[msg.sender]);\n    }\n}\n", "walkthrough": "价格消费方每次读取都校验时间戳，过期立即回退，避免用过时价格成交；桥接出口限制单日额度并把提取放入延迟窗口，监控发现异常时有时间暂停。两段代码分别对应外部数据风险与跨链资金风险的基本防线。", "expected_output": "currentPrice -> 2841.55 (age 12 s)，stale case -> revert \"stale price\"，withdraw 1200 ether -> revert \"exceeds daily limit\""},
+      "faults": [
+        {"topic": "极端行情下被套利", "wrong": "合约直接读取喂价，不检查更新时间", "fix": "读取时校验时间戳与偏差阈值，超限暂停业务并要求人工确认后恢复"},
+        {"topic": "桥被攻破后资金持续流出", "wrong": "没有限额、延迟与暂停机制", "fix": "加入单笔与单日限额、延迟提现窗口和多方可控的暂停开关"},
+        {"topic": "验证者集中导致单点失守", "wrong": "桥的安全依赖少数几个集中管理的密钥", "fix": "扩大并分散验证者集合，或改用轻客户端验证，公开验证者变更记录"}
+      ],
+      "glossary": [
+        {"term": "预言机", "definition": "把链下数据提交到链上供合约使用的服务。"},
+        {"term": "喂价", "definition": "预言机周期性提交的价格数据。"},
+        {"term": "轻客户端验证", "definition": "在目标链验证源链共识与状态证明的方式。"},
+        {"term": "延迟提现", "definition": "提取请求需要等待一段时间才能执行。"},
+        {"term": "暂停开关", "definition": "发现异常时停止关键操作的应急机制。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "合约读取喂价时为什么必须检查时间戳？", "options": ["避免在极端行情下用过时价格成交", "降低手续费", "提高吞吐量", "让价格更好看"], "answer": 0, "explanation": "喂价可能因为网络或维护中断而停止更新，用过时价格成交会给套利者可乘之机，超时拒绝是基本防线。"},
+        {"type": "single", "question": "跨链桥安全性的根本取决于？", "options": ["验证模型的信任假设是否足够分散与可验证", "源链的出块速度", "代币的名称", "界面是否美观"], "answer": 0, "explanation": "桥的本质是让目标链相信源链发生的事，验证者集合的分散程度与验证方式决定了它的安全上限。"},
+        {"type": "multi", "question": "限制桥风险可以采取哪些措施？（多选）", "options": ["设置单笔与单日提取限额", "加入延迟提现窗口", "提供多方可控的暂停开关", "取消所有监控以提升性能"], "answer": 0, "answers": [0, 1, 2], "explanation": "限额控制单次损失，延迟与暂停争取反应时间；取消监控等于放弃发现异常的机会。"},
+        {"type": "order", "question": "请按一次跨链转移的顺序排列。", "options": ["源链锁定或销毁资产", "验证者观察并生成证明", "目标链校验证明", "按证明铸造或释放资产", "监控确认并对账"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "源链先锁定，验证者生成证明，目标链验证后释放资产，最后对账确认两侧总量一致。"},
+        {"type": "debug", "question": "阅读这段跨链出口代码，风险是什么？", "options": ["缺少验证与限额，任何人构造调用都能提取资产", "延迟时间过长", "事件没有索引参数", "余额检查重复"], "answer": 0, "code": "contract BridgeOutlet {\n    function release(address to, uint256 amount) external {\n        token.transfer(to, amount);   // 没有验证调用者与证明，也没有限额\n    }\n}\n", "language": "solidity", "explanation": "释放函数既不校验调用者身份也不验证跨链证明与限额，任何人调用都能把桥内资产转走，属于典型的验证缺失漏洞。"}
+      ],
+      "practice": ["读取一次喂价并检查时间戳，模拟超时后业务被拒绝。", "对比多签与轻客户端两种验证模型的信任假设与成本。", "为桥接出口设置限额与延迟，验证超额提取被拒绝。"],
+      "refs": [
+        {"name": "Chainlink 官方文档：数据喂价", "url": "https://docs.chain.link/data-feeds"},
+        {"name": "以太坊官方文档：跨链桥", "url": "https://ethereum.org/en/developers/docs/bridges/"}
+      ],
+      "english": "A contract cannot read the outside world, so an oracle pushes data on-chain and consumers must check freshness before acting. Bridges exist to convince the destination chain that something happened on the source chain; the verification model decides the trust assumption. Limits, withdrawal delays and a pause switch bound the damage when verification fails.",
+      "reviewPoints": ["能说明预言机数据消费时必须检查的两个条件。", "能对比至少两种跨链验证模型的信任假设。", "能说出限制桥接风险的三项具体机制。"]
+    },
+    {
+      "id": "chain_zk_privacy",
+      "category": "blockchain",
+      "title": {"zh": "零知识与链上隐私", "en": "Zero-Knowledge Proofs and On-Chain Privacy"},
+      "summary": {"zh": "从证明与验证的分离讲到电路约束、默克尔证明与隐私边界。", "en": "Prover and verifier separation, circuit constraints, Merkle proofs and privacy limits."},
+      "keywords": ["零知识证明", "电路", "默克尔证明", "隐私", "验证成本"],
+      "difficulty": "进阶",
+      "minutes": 45,
+      "order": 8,
+      "image": {"title": "一次零知识证明的流程", "flow": ["把断言写成电路约束", "证明者用私有输入生成证明", "公开输入与证明一起上链", "验证合约在链上校验", "结果公开但不泄露私有输入"]},
+      "goals": ["能说明零知识证明中证明者与验证者的分工。", "能理解电路约束与公开输入、私有输入的关系。", "能识别隐私方案中链上元数据造成的泄露。"],
+      "prerequisitesText": ["了解哈希与默克尔树的基本结构。", "能读懂智能合约的校验逻辑。", "知道交易在链上公开可查这一前提。"],
+      "concepts": [
+        {"name": "证明与验证的分离", "plain": "证明者用私有数据生成证明，验证者用公开信息验证，无需知道私有数据。", "mechanism": "同一段断言被编译成电路约束，证明者求解并输出证明，验证算法根据公开输入与证明返回真或假。", "example": "在本课示例里生成一个「我知道满足条件的数」的证明并在链上验证通过。", "boundary": "证明只能保证断言成立，无法阻止旁路信息泄露，例如证明生成时间与网络地址。", "engineering": "把断言与公开输入写入规范，明确哪些信息会随证明一起公开，避免意外暴露。"},
+        {"name": "电路约束与成本", "plain": "断言越复杂，电路约束越多，证明与验证成本越高。", "mechanism": "电路把计算表达为约束数量，证明时间随约束数增长，链上验证成本取决于验证算法的固定开销。", "example": "在本课示例里比较简单断言与含哈希运算断言的约束数量与证明耗时。", "boundary": "把昂贵运算直接写进电路会让证明时间失控，通常改用哈希承诺与默克尔证明缩小规模。", "engineering": "约束数量纳入设计评审，尽量把可离线验证的部分移出电路并复用公共输入。"},
+        {"name": "隐私边界与元数据", "plain": "链上数据公开，隐私方案要同时考虑计算隐私与元数据。", "mechanism": "默克尔证明让持有者在不公开全量数据的前提下证明成员资格，但交易时间、金额与地址关联仍可能被分析。", "example": "在本课示例里用默克尔证明完成一次成员资格验证，并分析交易图能推断出哪些信息。", "boundary": "只隐藏金额而不切断地址关联，长期行为分析仍能还原用户身份。", "engineering": "隐私设计同时覆盖计算层与网络层，评估关联分析风险并在文档中说明保护范围与局限。"}
+      ],
+      "steps": ["把断言写成电路约束", "区分公开输入与私有输入", "生成证明并在链上验证", "评估约束数量与成本", "分析链上元数据的泄露面"],
+      "code": {"language": "solidity", "snippet": "// 链上验证：只接收公开输入与证明，不接触私有数据\ncontract MembershipVerifier {\n    bytes32 public immutable merkleRoot;\n\n    function verifyMembership(\n        uint256[] calldata proof,       // 默克尔证明路径\n        bytes32 leaf,                   // 叶子：成员的哈希，不暴露原始数据\n        bytes calldata zkProof          // 零知识证明：证明我知道满足条件的数据\n    ) external view returns (bool) {\n        if (!verifyMerkle(proof, merkleRoot, leaf)) return false;   // 成员资格\n        return zkVerify(zkProof, leaf);                             // 断言成立且不泄露私有输入\n    }\n\n    function verifyMerkle(uint256[] calldata proof, bytes32 root, bytes32 leaf)\n        internal pure returns (bool)\n    {\n        bytes32 computed = leaf;\n        for (uint256 i = 0; i < proof.length; i++) {\n            computed = hashPair(computed, bytes32(proof[i]));        // 逐层向上计算\n        }\n        return computed == root;                                     // 与公开根比对\n    }\n}\n", "walkthrough": "验证函数只使用默克尔根、叶子哈希与证明，成员原始数据始终不公开；默克尔路径证明成员资格，零知识证明进一步证明满足条件而不泄露私有输入。链上只保存公开根，更新根即可批量变更成员集合。", "expected_output": "verifyMembership -> true (gas 48,201)，leaf 0x7c1a... never reveals member data，root updated 1,204 members"},
+      "faults": [
+        {"topic": "隐私方案仍被关联分析还原", "wrong": "只隐藏金额，地址与时间模式保持不变", "fix": "同时处理地址关联与时间模式，评估链上交易图的分析风险并明确保护范围"},
+        {"topic": "证明生成耗时不可接受", "wrong": "把全部计算直接搬进电路约束", "fix": "用哈希承诺与默克尔证明缩小电路规模，把可离线完成的部分移出电路"},
+        {"topic": "公开输入泄露敏感信息", "wrong": "把用户标识等敏感字段作为公开输入上链", "fix": "重新划分公开与私有输入，公开侧只保留验证必需的承诺或根"}
+      ],
+      "glossary": [
+        {"term": "零知识证明", "definition": "证明某断言成立而不泄露私有输入的技术。"},
+        {"term": "电路约束", "definition": "把断言表达为可验证计算的形式。"},
+        {"term": "公共输入", "definition": "证明与验证双方都可见的输入。"},
+        {"term": "默克尔证明", "definition": "用哈希路径证明某个叶子属于树的证据。"},
+        {"term": "关联分析", "definition": "通过地址与时间模式推断用户身份的分析方法。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "零知识证明中验证者需要知道什么？", "options": ["公开输入与证明本身", "全部私有输入", "证明者的身份密钥", "计算过程的中间值"], "answer": 0, "explanation": "验证只依赖公开输入与证明，私有输入不参与验证过程，这正是零知识性质的核心。"},
+        {"type": "single", "question": "把全部计算放进电路会带来什么后果？", "options": ["约束数量膨胀，证明时间与成本大幅上升", "证明自动变快", "隐私性下降为零", "无需验证"], "answer": 0, "explanation": "证明成本随约束数量增长，通常用哈希承诺与默克尔证明把大规模计算压缩到电路之外。"},
+        {"type": "multi", "question": "评估隐私方案时需要考虑哪些泄露面？（多选）", "options": ["金额与地址关联", "交易时间模式", "公开输入中包含的字段", "电路实现使用的编程语言"], "answer": 0, "answers": [0, 1, 2], "explanation": "金额、地址、时间与公开输入都可能在链上被分析，实现语言属于工程细节，不影响链上泄露。"},
+        {"type": "order", "question": "请按一次零知识验证的流程排列。", "options": ["把断言编译成电路约束", "证明者用私有输入生成证明", "公开输入与证明一起提交", "验证者按验证算法校验", "结果公开而私有输入保持隐藏"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "先有电路与断言，再生成与提交证明，验证通过后只公开结论，私有输入全程不暴露。"},
+        {"type": "debug", "question": "阅读这段验证代码，缺陷是什么？", "options": ["没有与公开根比对，任何叶子都会被判为有效", "哈希函数选择不当", "缺少事件记录", "证明长度没有限制"], "answer": 0, "code": "function verifyMerkle(uint256[] calldata proof, bytes32 root, bytes32 leaf)\n    internal pure returns (bool)\n{\n    bytes32 computed = leaf;\n    for (uint256 i = 0; i < proof.length; i++) {\n        computed = hashPair(computed, bytes32(proof[i]));\n    }\n    return true;   // 直接返回 true，没有与 root 比对\n}\n", "language": "solidity", "explanation": "计算结果没有与公开根比对，任何构造的叶子都会被接受，整个成员资格验证形同虚设。"}
+      ],
+      "practice": ["为一个成员资格断言设计公开输入与私有输入的划分。", "用默克尔证明完成一次链上验证，记录叶子与根的关系。", "分析一笔隐私交易能泄露哪些元数据，写出结论与改进建议。"],
+      "refs": [
+        {"name": "以太坊官方文档：零知识证明", "url": "https://ethereum.org/en/zero-knowledge-proofs/"},
+        {"name": "zkSync 官方文档：电路与证明", "url": "https://docs.zksync.io/zk-stack/concepts"}
+      ],
+      "english": "A zero-knowledge proof separates the prover, who holds private inputs, from the verifier, who checks public inputs against a proof. The assertion is compiled into circuit constraints, and cost grows with constraint count, so heavy computation moves outside the circuit behind a hash commitment. Hiding amounts alone is not privacy while address and timing patterns remain.",
+      "reviewPoints": ["能说明证明者与验证者各自掌握哪些输入。", "能解释约束数量为什么决定证明成本。", "能举出计算隐私之外的两类泄露面。"]
+    },
+    {
+      "id": "chain_audit_project",
+      "category": "blockchain",
+      "title": {"zh": "项目：智能合约审计实战", "en": "Project: Smart Contract Security Audit"},
+      "summary": {"zh": "从威胁建模、静态检查到手工复核、复现脚本与报告交付。", "en": "Threat modelling, static analysis, manual review, reproduction scripts and the audit report."},
+      "keywords": ["合约审计", "威胁建模", "漏洞复现", "修复验证", "审计报告"],
+      "difficulty": "高级",
+      "minutes": 70,
+      "order": 9,
+      "image": {"title": "一次审计的完整流程", "flow": ["阅读设计与权限模型", "威胁建模列出攻击面", "静态与动态检查", "手工复核关键路径", "复现漏洞并验证修复"]},
+      "goals": ["能按资产与权限画出攻击面清单。", "能为发现的漏洞写出可复现的验证脚本。", "能交付含严重级别与修复建议的审计报告。"],
+      "prerequisitesText": ["完成智能合约、代币标准与跨链相关课程。", "能编写并运行合约测试用例。", "会使用至少一种静态分析工具。"],
+      "concepts": [
+        {"name": "威胁建模与攻击面", "plain": "先列清资产、权限与外部调用，再决定把精力放在哪里。", "mechanism": "按资产流向与权限边界绘制数据流，标出可被外部调用的函数、可升级点与外部依赖，形成攻击面清单。", "example": "在本课示例里为一个质押合约列出全部外部入口与资产流向。", "boundary": "直接开始逐行读代码容易漏掉权限设计层面的问题，例如管理员可以无限铸币。", "engineering": "攻击面清单作为审计工作底稿，每条都要有对应结论：已检查、存在问题或需要更多信息。"},
+        {"name": "静态检查与手工复核", "plain": "工具负责找已知模式，手工复核负责逻辑与业务语义。", "mechanism": "静态工具扫描重入、整数处理与权限模式并给出告警，人工沿关键路径验证前置条件、状态更新顺序与外部调用的交互。", "example": "在本课示例里对一条工具告警做人工验证，判断是真问题还是误报。", "boundary": "把工具输出直接当结论会漏掉业务逻辑漏洞，也会把误报写进报告损害可信度。", "engineering": "每条告警都要有复核记录与结论，无法确认的标注为待确认而不是直接删除。"},
+        {"name": "漏洞复现与报告交付", "plain": "能被复现的问题才是确定的问题，修复也要被验证。", "mechanism": "为每个漏洞写最小复现脚本，记录前置条件、调用顺序与观测结果；修复后跑同一脚本确认无法再复现，并补充回归测试。", "example": "在本课示例里复现一次重入攻击，修复后再次运行脚本确认失败。", "boundary": "只给出文字描述没有复现脚本的问题，开发方可能无法判断成立条件，也无法验证修复。", "engineering": "报告包含严重级别、影响、复现步骤、修复建议与验证方式，并按同一模板交付。"}
+      ],
+      "steps": ["阅读设计文档并列出资产与权限", "绘制攻击面与信任边界", "运行静态工具并逐条复核", "编写复现脚本验证漏洞", "修复后回归验证并交付报告"],
+      "code": {"language": "solidity", "snippet": "// 存在缺陷的提现函数：先转账后更新状态，可被重入\ncontract Vault {\n    mapping(address => uint256) public balanceOf;\n\n    function withdraw(uint256 amount) external {\n        require(balanceOf[msg.sender] >= amount, \"insufficient\");\n        (bool ok, ) = msg.sender.call{value: amount}(\"\");   // 外部调用在前\n        require(ok, \"transfer failed\");\n        balanceOf[msg.sender] -= amount;                    // 状态更新在后\n    }\n}\n\n// 修复后：先更新状态再转账，并加互斥锁\ncontract VaultFixed {\n    mapping(address => uint256) public balanceOf;\n    bool private locked;\n\n    modifier noReentry() {\n        require(!locked, \"reentrant call\");\n        locked = true;\n        _;\n        locked = false;\n    }\n\n    function withdraw(uint256 amount) external noReentry {\n        require(balanceOf[msg.sender] >= amount, \"insufficient\");\n        balanceOf[msg.sender] -= amount;                    // 先更新状态\n        (bool ok, ) = msg.sender.call{value: amount}(\"\");\n        require(ok, \"transfer failed\");\n    }\n}\n", "walkthrough": "缺陷版本在外部调用之后才扣减余额，攻击合约可以在回调中再次调用提现，形成重入；修复版本先更新状态并加入互斥锁，双重保护。审计报告中应附最小复现脚本，演示攻击合约连续提现导致余额被超额取走。", "expected_output": "exploit: withdraw 1 ether -> reenter -> total drained 5 ether，after fix: second call reverted \"reentrant call\"，balance consistent"},
+      "faults": [
+        {"topic": "报告被开发方质疑", "wrong": "只写文字描述，没有复现脚本与前置条件", "fix": "为每个问题提供最小复现脚本，写清前置条件、调用顺序与观测结果"},
+        {"topic": "漏掉权限层面的问题", "wrong": "只逐行检查代码，不审查权限与升级设计", "fix": "先做威胁建模列出资产、权限与可升级点，再逐层验证设计假设"},
+        {"topic": "修复后问题复现", "wrong": "只改一处调用顺序，没有覆盖同类路径", "fix": "修复后运行原复现脚本并补充回归测试，覆盖同一模式的其它入口"}
+      ],
+      "glossary": [
+        {"term": "威胁建模", "definition": "系统列出资产、权限与攻击面的分析过程。"},
+        {"term": "重入", "definition": "外部调用未完成时再次进入同一函数的攻击方式。"},
+        {"term": "复现脚本", "definition": "能在本地重现漏洞的最小测试程序。"},
+        {"term": "严重级别", "definition": "按影响与可利用性对漏洞的分级。"},
+        {"term": "回归测试", "definition": "修复后用于确认问题不再出现的测试。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "审计开始阶段最重要的工作是？", "options": ["列出资产、权限与外部入口形成攻击面", "立即逐行阅读全部代码", "先写修复补丁", "先统计代码行数"], "answer": 0, "explanation": "先建立攻击面清单才能把有限时间投入到关键路径，也才能发现设计层面的权限与流程问题。"},
+        {"type": "single", "question": "重入漏洞的典型特征是？", "options": ["外部调用发生在状态更新之前", "使用了循环语句", "变量命名不规范", "缺少事件记录"], "answer": 0, "explanation": "外部调用前未完成状态更新，攻击者可以在回调中再次进入函数，用同一份余额重复提现。"},
+        {"type": "multi", "question": "一份可交付的审计报告应包含哪些内容？（多选）", "options": ["严重级别与影响范围", "复现步骤与观测结果", "修复建议与验证方式", "审计员的个人偏好评价"], "answer": 0, "answers": [0, 1, 2], "explanation": "级别、复现与修复建议构成可执行结论；个人偏好不属于技术结论，会削弱报告可信度。"},
+        {"type": "order", "question": "请按一次审计项目的顺序排列。", "options": ["阅读设计并建立攻击面清单", "运行静态工具并逐条复核", "沿关键路径手工验证", "编写脚本复现确认问题", "验证修复并交付报告"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "先建立假设与范围，再用工具与手工复核验证，确认问题后写入报告，最后验证修复效果完成交付。"},
+        {"type": "debug", "question": "阅读这段修复代码，还有什么问题？", "options": ["其它同样先调用后更新的路径没有一起修复", "锁的开销过大", "事件缺少索引", "函数可见性错误"], "answer": 0, "code": "function withdraw(uint256 amount) external noReentry {\n    require(balanceOf[msg.sender] >= amount, \"insufficient\");\n    balanceOf[msg.sender] -= amount;\n    (bool ok, ) = msg.sender.call{value: amount}(\"\");\n    require(ok, \"transfer failed\");\n}\n\nfunction batchWithdraw(uint256[] calldata amounts) external {\n    for (uint256 i = 0; i < amounts.length; i++) {\n        (bool ok, ) = msg.sender.call{value: amounts[i]}(\"\");   // 另一条未加锁的路径\n        require(ok, \"transfer failed\");\n    }\n}\n", "language": "solidity", "explanation": "互斥锁只加在 withdraw 上，batchWithdraw 仍可在回调中重入，同一缺陷模式存在其它入口时修复必须一并覆盖。"}
+      ],
+      "practice": ["为一个示例合约绘制攻击面清单，标出所有外部入口与资产流向。", "复现一次重入攻击并写最小脚本，修复后确认脚本失败。", "按统一模板写一份包含三个问题的审计报告，含级别、复现与建议。"],
+      "refs": [
+        {"name": "SWC 智能合约弱点分类", "url": "https://swcregistry.io/"},
+        {"name": "Solidity 官方文档：安全注意事项", "url": "https://docs.soliditylang.org/en/latest/security-considerations.html"}
+      ],
+      "english": "A smart contract audit starts with threat modelling: list the assets, the permissions and every externally reachable entry point. Static tools flag known patterns, but the logic still needs manual review along critical paths. Every finding needs a minimal reproduction script, and every fix needs the same script re-run plus a regression test.",
+      "reviewPoints": ["能产出攻击面清单并说明为什么先做这一步。", "能写出重入漏洞的最小复现脚本。", "能列出审计报告必须包含的四项内容。"]
+    }
+  ]
+}

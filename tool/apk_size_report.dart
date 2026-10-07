@@ -65,12 +65,10 @@ Future<void> main(List<String> args) async {
   };
 
   Directory(outputDir).createSync(recursive: true);
-  File('$outputDir/apk_size_report.json').writeAsStringSync(
-    const JsonEncoder.withIndent('  ').convert(report),
-  );
-  File('$outputDir/apk_size_report.md').writeAsStringSync(
-    _renderMarkdown(report),
-  );
+  File('$outputDir/apk_size_report.json')
+      .writeAsStringSync(const JsonEncoder.withIndent('  ').convert(report));
+  File('$outputDir/apk_size_report.md')
+      .writeAsStringSync(_renderMarkdown(report));
   stdout.writeln(_renderMarkdown(report));
   stdout.writeln('报告已写入 $outputDir/apk_size_report.json');
   if (failed) exitCode = 1;

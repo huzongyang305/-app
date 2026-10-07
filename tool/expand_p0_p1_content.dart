@@ -43,8 +43,7 @@ class LessonRef {
 
   String get id => json['id'] as String;
   String get file => json['file'] as String;
-  String get title =>
-      ((json['title'] as Map?)?['zh'] ?? id).toString().trim();
+  String get title => ((json['title'] as Map?)?['zh'] ?? id).toString().trim();
   String get summary =>
       ((json['summary'] as Map?)?['zh'] ?? '').toString().trim();
   List<String> get keywords =>
@@ -284,9 +283,7 @@ String _buildInterview(String markdown, LessonRef ref) {
     ..writeln('再对照参考回答检查是否遗漏了前提、边界或失败路径。\n');
   for (var index = 0; index < quiz.length && index < 5; index++) {
     final question = _oneLine((quiz[index]['question'] as String?) ?? '');
-    final explanation = _oneLine(
-      (quiz[index]['explanation'] as String?) ?? '',
-    );
+    final explanation = _oneLine((quiz[index]['explanation'] as String?) ?? '');
     if (question.isEmpty || explanation.isEmpty) continue;
     buffer
       ..writeln('### 追问 ${index + 1}：$question')

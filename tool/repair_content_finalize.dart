@@ -33,8 +33,7 @@ void main(List<String> args) {
       final file = File(lesson['file'].toString());
       if (!file.existsSync()) continue;
       final markdown = file.readAsStringSync();
-      final title =
-          ((lesson['title'] as Map?)?['zh'] ?? id).toString().trim();
+      final title = ((lesson['title'] as Map?)?['zh'] ?? id).toString().trim();
       final result = _repair(markdown, title, stats);
       if (result != markdown) {
         lessonsTouched++;
@@ -116,9 +115,7 @@ List<String> _renumberQuizLists(List<String> lines, Map<String, int> stats) {
     }
     if (!inFence && line.startsWith('#')) heading = line;
     final inQuizSection = RegExp(r'复习|自测|考点|测验|回顾').hasMatch(heading);
-    if (!inFence &&
-        inQuizSection &&
-        RegExp(r'^\d+\.\s').hasMatch(line)) {
+    if (!inFence && inQuizSection && RegExp(r'^\d+\.\s').hasMatch(line)) {
       final block = <int>[i];
       var j = i + 1;
       while (j < output.length) {
@@ -181,9 +178,9 @@ List<String> _fixListIndent(
       output.add(line);
       continue;
     }
-    final match =
-        inFence ? null : RegExp(r'^ {2,5}-\s+依据：').firstMatch(line);
-    if (match != null && line != '   - 依据：${line.replaceFirst(RegExp(r'^ {2,5}-\s+依据：'), '')}') {
+    final match = inFence ? null : RegExp(r'^ {2,5}-\s+依据：').firstMatch(line);
+    if (match != null &&
+        line != '   - 依据：${line.replaceFirst(RegExp(r'^ {2,5}-\s+依据：'), '')}') {
       stats.update('修正依据缩进', (v) => v + 1, ifAbsent: () => 1);
       output.add('   - 依据：${line.replaceFirst(RegExp(r'^ {2,5}-\s+依据：'), '')}');
       continue;

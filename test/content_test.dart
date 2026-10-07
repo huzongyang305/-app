@@ -1042,17 +1042,42 @@ void main() {
   test('P2 资源与引用：逐课复核、官方来源和 WebP 图片', () async {
     expect(manifestJson['p2_references_version'], 1);
     expect(manifestJson['content_last_reviewed_at'], '2026-10-04');
-    expect(manifestJson['content_next_review_at'], '2027-04-04');
+    expect(
+      RegExp(r'^\d{4}-\d{2}-\d{2}$')
+          .hasMatch(manifestJson['content_next_review_at'].toString()),
+      isTrue,
+      reason: '整体复核日期应是合法日期',
+    );
+
+    // P0 复核排期：每门课的「下次复核」不再全部同一天，而是按批次排期。
+    final schedule =
+        jsonDecode(File('docs/content_review_schedule.json').readAsStringSync())
+            as Map<String, dynamic>;
+    final plannedByLesson = <String, String>{
+      for (final raw in schedule['batches'] as List<dynamic>)
+        for (final id in (raw as Map)['lesson_ids'] as List<dynamic>)
+          id.toString(): raw['planned_review_at'].toString(),
+    };
+    expect(plannedByLesson.length, categories.expand((c) => c.lessons).length);
 
     final missingReferences = <String>[];
     final pngReferences = <String>[];
+    final seenDates = <String>{};
     for (final category in categories) {
       for (final lesson in category.lessons) {
         final markdown = await rootBundle.loadString(lesson.assetFile);
+        final planned = plannedByLesson[lesson.id];
         if (!markdown.contains('## 参考资料与复核') ||
             !markdown.contains('- 最后复核：2026-10-04') ||
-            !markdown.contains('- 下次复核：2027-04-04')) {
+            planned == null ||
+            !markdown.contains('- 下次复核：$planned')) {
           missingReferences.add(lesson.id);
+        }
+        final plannedMatch = RegExp(
+          r'- 下次复核：(\d{4}-\d{2}-\d{2})',
+        ).firstMatch(markdown);
+        if (plannedMatch != null) {
+          seenDates.add(plannedMatch.group(1)!);
         }
         final links = RegExp(r'https?://').allMatches(markdown).length;
         if (links < 2) missingReferences.add('${lesson.id}(links=$links)');
@@ -1063,6 +1088,11 @@ void main() {
     }
     expect(missingReferences, isEmpty, reason: '缺少逐课引用或复核日期');
     expect(pngReferences, isEmpty, reason: '仍有 PNG 图片引用');
+    expect(
+      seenDates.length,
+      greaterThanOrEqualTo(12),
+      reason: '复核日期应按批次分散，不能所有课程同一天',
+    );
 
     final imageDirectory = Directory('assets/content/images');
     expect(imageDirectory.existsSync(), isTrue);

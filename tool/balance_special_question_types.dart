@@ -12,11 +12,7 @@ const String manifestPath = 'assets/content/manifest.json';
 const int _minimumPerType = 3;
 
 class Course {
-  Course({
-    required this.categoryId,
-    required this.lesson,
-    required this.file,
-  });
+  Course({required this.categoryId, required this.lesson, required this.file});
 
   final String categoryId;
   final Map<String, dynamic> lesson;
@@ -62,7 +58,9 @@ Future<void> main(List<String> args) async {
   final categories = courses.map((course) => course.categoryId).toSet();
 
   for (final categoryId in categories) {
-    final group = courses.where((course) => course.categoryId == categoryId).toList();
+    final group = courses
+        .where((course) => course.categoryId == categoryId)
+        .toList();
     final counts = <String, int>{'multi': 0, 'order': 0, 'debug': 0};
     for (final course in group) {
       for (final question in course.quiz) {
@@ -110,7 +108,9 @@ Future<void> main(List<String> args) async {
   // 全部课程都已有 6 题时，用新题型替换一道重复度较高的填空题，
   // 总题量保持 3~6 题的约束不变。
   for (final categoryId in categories) {
-    final group = courses.where((course) => course.categoryId == categoryId).toList();
+    final group = courses
+        .where((course) => course.categoryId == categoryId)
+        .toList();
     final counts = addedByCategory[categoryId]!;
     for (final type in <String>['multi', 'order', 'debug']) {
       while (counts[type]! < _minimumPerType) {
@@ -155,13 +155,11 @@ Future<void> main(List<String> args) async {
   var changedLessons = 0;
   var insertedQuestions = 0;
   var replacedQuestions = 0;
-  final changedCourses = <Course>{
-    ...additions.keys,
-    ...replacements.keys,
-  };
+  final changedCourses = <Course>{...additions.keys, ...replacements.keys};
   for (final course in changedCourses) {
     final added = additions[course] ?? const <Map<String, dynamic>>[];
-    final replaced = replacements[course] ?? const <int, Map<String, dynamic>>{};
+    final replaced =
+        replacements[course] ?? const <int, Map<String, dynamic>>{};
     final quiz = course.quiz.toList();
     for (final entry in replaced.entries) {
       quiz[entry.key] = entry.value;
@@ -191,7 +189,9 @@ Future<void> main(List<String> args) async {
   stdout.writeln('新增题目              $insertedQuestions');
   stdout.writeln('替换填空题            $replacedQuestions');
   stdout.writeln('修改课程              $changedLessons');
-  for (final entry in addedByCategory.entries.toList()..sort((a, b) => a.key.compareTo(b.key))) {
+  for (final entry
+      in addedByCategory.entries.toList()
+        ..sort((a, b) => a.key.compareTo(b.key))) {
     stdout.writeln(
       '  ${entry.key.padRight(22)} multi=${entry.value['multi']} '
       'order=${entry.value['order']} debug=${entry.value['debug']}',
@@ -229,11 +229,12 @@ Map<String, dynamic>? _multiQuestion(Course course) {
         summary.length > 90 ? '${summary.substring(0, 90)}…' : summary,
       );
     } else {
-      final keywords = ((course.lesson['keywords'] as List<dynamic>?) ?? const [])
-          .map((item) => _clean(item.toString()))
-          .where((item) => item.isNotEmpty)
-          .take(3)
-          .join('、');
+      final keywords =
+          ((course.lesson['keywords'] as List<dynamic>?) ?? const [])
+              .map((item) => _clean(item.toString()))
+              .where((item) => item.isNotEmpty)
+              .take(3)
+              .join('、');
       correct.add('理解$keywords 的适用边界比死记结论更重要');
     }
   }
@@ -281,14 +282,20 @@ Map<String, dynamic>? _multiQuestion(Course course) {
 Map<String, dynamic>? _orderQuestion(Course course) {
   final markdown = File(course.file).readAsStringSync();
   final headings = <String>[];
-  for (final match in RegExp(r'^##\s+(.+)$', multiLine: true).allMatches(markdown)) {
+  for (final match in RegExp(
+    r'^##\s+(.+)$',
+    multiLine: true,
+  ).allMatches(markdown)) {
     final title = _clean(match.group(1)!);
     if (title.isEmpty || _skipHeading(title)) continue;
     if (!headings.contains(title)) headings.add(title);
     if (headings.length >= 4) break;
   }
   if (headings.length < 4) {
-    for (final match in RegExp(r'^###\s+(.+)$', multiLine: true).allMatches(markdown)) {
+    for (final match in RegExp(
+      r'^###\s+(.+)$',
+      multiLine: true,
+    ).allMatches(markdown)) {
       final title = _clean(match.group(1)!);
       if (title.isEmpty || _skipHeading(title)) continue;
       if (!headings.contains(title)) headings.add(title);
@@ -296,8 +303,10 @@ Map<String, dynamic>? _orderQuestion(Course course) {
     }
   }
   if (headings.length < 4) {
-    for (final keyword in ((course.lesson['keywords'] as List<dynamic>?) ?? const [])
-        .map((item) => _clean(item.toString()))) {
+    for (final keyword
+        in ((course.lesson['keywords'] as List<dynamic>?) ?? const []).map(
+          (item) => _clean(item.toString()),
+        )) {
       if (keyword.length < 2 || headings.contains(keyword)) continue;
       headings.add(keyword);
       if (headings.length >= 4) break;
@@ -334,12 +343,13 @@ Map<String, dynamic>? _orderQuestion(Course course) {
 
 Map<String, dynamic>? _debugQuestion(Course course) {
   final markdown = File(course.file).readAsStringSync();
-  final match = RegExp(
-    r'```([A-Za-z0-9_+-]*)\n([\s\S]*?)```',
-  ).firstMatch(markdown);
+  final match = RegExp(r'```([A-Za-z0-9_+-]*)\n([\s\S]*?)```')
+      .firstMatch(markdown);
   if (match == null) return null;
   final language = (match.group(1) ?? '').trim().toLowerCase();
-  if (language.isEmpty || language == 'text' || language == 'markdown') return null;
+  if (language.isEmpty || language == 'text' || language == 'markdown') {
+    return null;
+  }
   final code = match.group(2)!.trim();
   if (code.length < 40) return null;
   final singles = _singleQuestions(course);
@@ -388,7 +398,9 @@ Map<String, dynamic>? _debugQuestion(Course course) {
 }
 
 List<Map<String, dynamic>> _singleQuestions(Course course) => course.quiz
-    .where((question) => ((question['type'] as String?) ?? 'single') == 'single')
+    .where(
+      (question) => ((question['type'] as String?) ?? 'single') == 'single',
+    )
     .toList();
 
 List<String> _options(Map<String, dynamic> question) =>
@@ -416,9 +428,7 @@ String _appendFocusEntries(
     final question = questions[index];
     final prompt = _clean((question['question'] as String?) ?? '');
     final answer = _answerTextFor(question);
-    final explanation = _clean(
-      (question['explanation'] as String?) ?? '',
-    );
+    final explanation = _clean((question['explanation'] as String?) ?? '');
     buffer
       ..writeln('### 补充考点 ${index + 1}：$prompt')
       ..writeln()
@@ -462,7 +472,8 @@ String _padExplanation(String text, Course course) {
     result += '本课围绕$summary展开。';
   }
   if (result.length < 120) {
-    result += '在「${course.title}」中，判断时要回到本课定义，'
+    result +=
+        '在「${course.title}」中，判断时要回到本课定义，'
         '逐项核对对象、输入、边界和失败条件。';
   }
   return result;
@@ -479,8 +490,7 @@ String _clean(String text) => text
     .replaceAll(RegExp(r'\s+'), ' ')
     .trim();
 
-String _normalize(String text) =>
-    text.replaceAll(RegExp(r'\s+'), '').trim();
+String _normalize(String text) => text.replaceAll(RegExp(r'\s+'), '').trim();
 
 bool _skipHeading(String title) => const <String>{
   '学习目标',

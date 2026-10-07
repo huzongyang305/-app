@@ -1,0 +1,184 @@
+{
+  "generated_at": "2026-10-07T09:44:20.660108Z",
+  "dry_run": false,
+  "changed_lessons": 25,
+  "unchanged_lessons": 0,
+  "lessons_without_fault_section": 0,
+  "details": [
+    {
+      "lesson_id": "html_tags_intro",
+      "source_rows": 3,
+      "scenarios": 3,
+      "original_length": 13864,
+      "new_length": 13867
+    },
+    {
+      "lesson_id": "python_loops",
+      "source_rows": 3,
+      "scenarios": 3,
+      "original_length": 16325,
+      "new_length": 16321
+    },
+    {
+      "lesson_id": "python_typing_testing",
+      "source_rows": 3,
+      "scenarios": 3,
+      "original_length": 14061,
+      "new_length": 14092
+    },
+    {
+      "lesson_id": "python_packaging_performance",
+      "source_rows": 3,
+      "scenarios": 3,
+      "original_length": 12623,
+      "new_length": 12674
+    },
+    {
+      "lesson_id": "cpp_first_program",
+      "source_rows": 3,
+      "scenarios": 3,
+      "original_length": 14467,
+      "new_length": 14516
+    },
+    {
+      "lesson_id": "java_gc_tuning",
+      "source_rows": 3,
+      "scenarios": 3,
+      "original_length": 11771,
+      "new_length": 11818
+    },
+    {
+      "lesson_id": "kotlin_testing",
+      "source_rows": 3,
+      "scenarios": 3,
+      "original_length": 13071,
+      "new_length": 13108
+    },
+    {
+      "lesson_id": "swift_conditions",
+      "source_rows": 3,
+      "scenarios": 3,
+      "original_length": 14469,
+      "new_length": 14501
+    },
+    {
+      "lesson_id": "swift_loops",
+      "source_rows": 3,
+      "scenarios": 3,
+      "original_length": 16518,
+      "new_length": 16541
+    },
+    {
+      "lesson_id": "swift_functions",
+      "source_rows": 3,
+      "scenarios": 3,
+      "original_length": 13092,
+      "new_length": 13116
+    },
+    {
+      "lesson_id": "swift_testing",
+      "source_rows": 3,
+      "scenarios": 3,
+      "original_length": 13055,
+      "new_length": 13094
+    },
+    {
+      "lesson_id": "csharp_loops",
+      "source_rows": 3,
+      "scenarios": 3,
+      "original_length": 15578,
+      "new_length": 15609
+    },
+    {
+      "lesson_id": "go_conditions",
+      "source_rows": 3,
+      "scenarios": 3,
+      "original_length": 14374,
+      "new_length": 14404
+    },
+    {
+      "lesson_id": "rust_variables_mutability",
+      "source_rows": 3,
+      "scenarios": 3,
+      "original_length": 14638,
+      "new_length": 14647
+    },
+    {
+      "lesson_id": "rust_conditions",
+      "source_rows": 3,
+      "scenarios": 3,
+      "original_length": 12630,
+      "new_length": 12651
+    },
+    {
+      "lesson_id": "ts_first_types",
+      "source_rows": 3,
+      "scenarios": 3,
+      "original_length": 14951,
+      "new_length": 14901
+    },
+    {
+      "lesson_id": "shell_first_script",
+      "source_rows": 3,
+      "scenarios": 3,
+      "original_length": 14675,
+      "new_length": 14671
+    },
+    {
+      "lesson_id": "shell_security_hardening",
+      "source_rows": 3,
+      "scenarios": 3,
+      "original_length": 12249,
+      "new_length": 12282
+    },
+    {
+      "lesson_id": "fundamentals_cache_coherence",
+      "source_rows": 3,
+      "scenarios": 3,
+      "original_length": 12913,
+      "new_length": 12965
+    },
+    {
+      "lesson_id": "security_privacy",
+      "source_rows": 3,
+      "scenarios": 3,
+      "original_length": 12056,
+      "new_length": 12107
+    },
+    {
+      "lesson_id": "security_sdl",
+      "source_rows": 3,
+      "scenarios": 3,
+      "original_length": 13621,
+      "new_length": 13646
+    },
+    {
+      "lesson_id": "sql_table_intro",
+      "source_rows": 3,
+      "scenarios": 3,
+      "original_length": 13495,
+      "new_length": 13560
+    },
+    {
+      "lesson_id": "ai_guardrails",
+      "source_rows": 3,
+      "scenarios": 3,
+      "original_length": 12687,
+      "new_length": 12711
+    },
+    {
+      "lesson_id": "visual_call_stack",
+      "source_rows": 3,
+      "scenarios": 3,
+      "original_length": 12631,
+      "new_length": 12640
+    },
+    {
+      "lesson_id": "visual_http_timeline",
+      "source_rows": 3,
+      "scenarios": 3,
+      "original_length": 11334,
+      "new_length": 11392
+    }
+  ]
+}

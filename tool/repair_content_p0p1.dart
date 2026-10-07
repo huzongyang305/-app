@@ -146,8 +146,7 @@ void main(List<String> args) {
   if (apply) {
     for (final lesson in lessons) {
       final text = lesson.markdown.trimRight();
-      File(lesson.lessonMap['file'].toString())
-          .writeAsStringSync('$text\n');
+      File(lesson.lessonMap['file'].toString()).writeAsStringSync('$text\n');
     }
     manifestFile.writeAsStringSync(
       '${const JsonEncoder.withIndent('  ').convert(manifest)}\n',
@@ -297,18 +296,13 @@ void _stripQuestionIds(
 }
 
 /// 递归还原课程清单里的标题占位符（题干、解析、选项与示例代码）。
-void _replacePlaceholderDeep(
-  Object? value,
-  String title,
-  RepairStats stats,
-) {
+void _replacePlaceholderDeep(Object? value, String title, RepairStats stats) {
   if (value is Map) {
     for (final key in value.keys.toList()) {
       final child = value[key];
       if (child is String) {
         if (!child.contains(placeholderTitle)) continue;
-        stats.placeholdersCleared +=
-            placeholderTitle.allMatches(child).length;
+        stats.placeholdersCleared += placeholderTitle.allMatches(child).length;
         value[key] = child
             .replaceAll(placeholderTitle, title)
             .replaceAll(RegExp(r'\s{2,}'), ' ');
@@ -323,8 +317,7 @@ void _replacePlaceholderDeep(
       final child = value[index];
       if (child is String) {
         if (!child.contains(placeholderTitle)) continue;
-        stats.placeholdersCleared +=
-            placeholderTitle.allMatches(child).length;
+        stats.placeholdersCleared += placeholderTitle.allMatches(child).length;
         value[index] = child
             .replaceAll(placeholderTitle, title)
             .replaceAll(RegExp(r'\s{2,}'), ' ');
@@ -438,20 +431,13 @@ String _keywordPhrase(Lesson lesson) {
 String _codeStem(Lesson lesson, _Snippet snippet) {
   final label = _languageLabel(snippet.language);
   return switch (lesson.ordinal % 3) {
-    0 =>
-      '下面这段$label代码摘自「${lesson.titleZh}」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？',
-    1 =>
-      '阅读「${lesson.titleZh}」正文里的这段$label代码，下面哪一项判断是正确的？',
-    _ =>
-      '这段$label代码是「${lesson.titleZh}」的示例片段，下面哪一项描述与它一致？',
+    0 => '下面这段$label代码摘自「${lesson.titleZh}」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？',
+    1 => '阅读「${lesson.titleZh}」正文里的这段$label代码，下面哪一项判断是正确的？',
+    _ => '这段$label代码是「${lesson.titleZh}」的示例片段，下面哪一项描述与它一致？',
   };
 }
 
-String _codeExplanation(
-  Lesson lesson,
-  _Snippet snippet,
-  String correctLabel,
-) {
+String _codeExplanation(Lesson lesson, _Snippet snippet, String correctLabel) {
   final title = lesson.titleZh;
   return '在「$title」里，$correctLabel'
       '这段代码出自「$title」的正文示例，围绕${_keywordPhrase(lesson)}展开；'
@@ -486,10 +472,10 @@ class _Snippet {
 _Snippet? _pickSnippet(Lesson lesson) {
   final expected = lesson.expectedLanguage;
   final candidates = <(_Snippet, int)>[];
-  for (final match
-      in RegExp(r'```([^\n]*)\n(.*?)```', dotAll: true).allMatches(
-    lesson.markdown,
-  )) {
+  for (final match in RegExp(
+    r'```([^\n]*)\n(.*?)```',
+    dotAll: true,
+  ).allMatches(lesson.markdown)) {
     final language = match
         .group(1)!
         .trim()
@@ -501,8 +487,14 @@ _Snippet? _pickSnippet(Lesson lesson) {
     if (code.contains('__USER_CODE__') || code.contains('placeholder')) {
       continue;
     }
-    if (const <String>{'text', 'markdown', 'md', 'yaml', 'json', 'xml'}
-        .contains(language)) {
+    if (const <String>{
+      'text',
+      'markdown',
+      'md',
+      'yaml',
+      'json',
+      'xml',
+    }.contains(language)) {
       continue;
     }
     var score = 0;
@@ -527,18 +519,14 @@ class _Fact {
 
 /// 依据代码里实际出现的语法结构生成可判定的说法。
 List<_Fact> _codeFacts(String code) {
-  final hasLoop = RegExp(
-    r'\b(for|while|do)\b|\.each\b|foreach\b',
-  ).hasMatch(code);
-  final hasBranch = RegExp(
-    r'\b(if|else|switch|case)\b',
-  ).hasMatch(code);
+  final hasLoop = RegExp(r'\b(for|while|do)\b|\.each\b|foreach\b')
+      .hasMatch(code);
+  final hasBranch = RegExp(r'\b(if|else|switch|case)\b').hasMatch(code);
   final hasFunction = RegExp(
     r'\bdef\s+\w|\bfunction\s*\(|\bfunc\s+\w|\w+\s*\([^)]*\)\s*\{|=>',
   ).hasMatch(code);
-  final hasTry = RegExp(
-    r'\b(try|catch|except|rescue|finally)\b',
-  ).hasMatch(code);
+  final hasTry = RegExp(r'\b(try|catch|except|rescue|finally)\b')
+      .hasMatch(code);
   final hasInput = RegExp(
     r'\binput\s*\(|\bscanf\s*\(|\bgets\b|\bstdin\b|\bargv\b|\bScanner\b|\breadLine\b|\bgetline\s*\(',
   ).hasMatch(code);
@@ -688,9 +676,7 @@ String _cleanExplanation(
   text = _capTitleMentions(text, lesson.titleZh, 3);
   final missing = correctParts
       .where(
-        (part) =>
-            part.trim().isNotEmpty &&
-            !_containsAnswerStrict(text, part),
+        (part) => part.trim().isNotEmpty && !_containsAnswerStrict(text, part),
       )
       .toList();
   if (missing.isNotEmpty) {
@@ -750,7 +736,9 @@ String _cleanExplanation(
       anchor: anchor,
       excerpt: excerpt,
     );
-    deduped = _endsWithPeriod(deduped) ? '$deduped$sentence' : '$deduped。$sentence';
+    deduped = _endsWithPeriod(deduped)
+        ? '$deduped$sentence'
+        : '$deduped。$sentence';
     refill++;
   }
   if (deduped.length >= 120) text = deduped;
@@ -769,8 +757,7 @@ String _cleanExplanation(
   return normalized;
 }
 
-bool _endsWithPeriod(String text) =>
-    RegExp(r'[。！？!?]$').hasMatch(text.trim());
+bool _endsWithPeriod(String text) => RegExp(r'[。！？!?]$').hasMatch(text.trim());
 
 bool _hasUnbalancedQuotes(String text) {
   final open = RegExp('“').allMatches(text).length;
@@ -786,7 +773,6 @@ bool _isLegacyFragment(String sentence) {
   if (RegExp(r'再把[^。，；：]{1,14}。$').hasMatch(sentence)) return true;
   return false;
 }
-
 
 /// 标题作为独立词出现的次数：避免把「复合索引」里的「索引」也算成复读。
 int _countTitleMentions(String text, String title) {
@@ -866,32 +852,24 @@ String _lessonLinkSentence(
     return switch (variant % 6) {
       0 =>
         '在「${lesson.titleZh}」里判断这道题，要把$topic的条件、过程与失败路径逐项对齐，换成“$focus”这个场景，只有满足前提的结论才成立。',
-      1 =>
-        '回到「${lesson.titleZh}」的正文示例，用“$focus”走一遍$topic的完整流程，能复现的结论才可以保留。',
+      1 => '回到「${lesson.titleZh}」的正文示例，用“$focus”走一遍$topic的完整流程，能复现的结论才可以保留。',
       2 =>
         '「${lesson.titleZh}」要求先交代$topic的前提再下结论，所以“$answer”只在题干“$focus”给定的条件下成立。',
       3 =>
         '把“$answer”代回「${lesson.titleZh}」里“$focus”的例子核对，条件一旦改变，结论就要用$topic重新推导。',
-      4 =>
-        '这道题的关键在「${lesson.titleZh}」的$topic：先确认题干“$focus”问的是哪一步，再排除偷换前提的选项。',
+      4 => '这道题的关键在「${lesson.titleZh}」的$topic：先确认题干“$focus”问的是哪一步，再排除偷换前提的选项。',
       _ =>
         '“$focus”与「${lesson.titleZh}」的术语表相呼应，只有符合$topic约束的“$answer”才是正文支持的结论。',
     };
   }
   // 省略标题时偏移三种句式，避免和带标题版本生成同骨架的近重复句。
   return switch ((variant + 3) % 6) {
-    0 =>
-      '换成“$focus”这个场景后，$topic的结论未必仍然成立，必须先看清前提。',
-    1 =>
-      '回到正文示例，用“$focus”走一遍$topic的完整流程，能复现的结论才可以保留。',
-    2 =>
-      '先交代$topic的前提再下结论，所以“$answer”只在题干给定的条件下成立。',
-    3 =>
-      '“$answer”是否可用，取决于$topic在题干条件下的表现，不能直接套用相邻结论。',
-    4 =>
-      '先定位题干“$focus”问的是$topic里的哪一步，再排除偷换前提的选项。',
-    _ =>
-      '“$focus”与术语表相呼应，只有符合$topic约束的“$answer”才是正文支持的结论。',
+    0 => '换成“$focus”这个场景后，$topic的结论未必仍然成立，必须先看清前提。',
+    1 => '回到正文示例，用“$focus”走一遍$topic的完整流程，能复现的结论才可以保留。',
+    2 => '先交代$topic的前提再下结论，所以“$answer”只在题干给定的条件下成立。',
+    3 => '“$answer”是否可用，取决于$topic在题干条件下的表现，不能直接套用相邻结论。',
+    4 => '先定位题干“$focus”问的是$topic里的哪一步，再排除偷换前提的选项。',
+    _ => '“$focus”与术语表相呼应，只有符合$topic约束的“$answer”才是正文支持的结论。',
   };
 }
 
@@ -906,12 +884,9 @@ String _refillSentence(
   final focus = excerpt.isEmpty ? topic : excerpt;
   final answer = anchor.isEmpty ? topic : anchor;
   return switch (variant % 3) {
-    0 =>
-      '回到$topic本身再看一遍：只有“$answer”与题干“$focus”的前提一致，结论才成立。',
-    1 =>
-      '把$topic的输入、处理与输出串起来检查“$focus”，任何一步与正文不符的选项都要排除。',
-    _ =>
-      '“$answer”能不能成立，取决于$focus是否满足$topic的条件，不能把相邻结论直接套过来。',
+    0 => '回到$topic本身再看一遍：只有“$answer”与题干“$focus”的前提一致，结论才成立。',
+    1 => '把$topic的输入、处理与输出串起来检查“$focus”，任何一步与正文不符的选项都要排除。',
+    _ => '“$answer”能不能成立，取决于$focus是否满足$topic的条件，不能把相邻结论直接套过来。',
   };
 }
 
@@ -926,10 +901,7 @@ String _questionExcerpt(Map<String, dynamic> question) {
       .trim();
   if (raw.isEmpty) return '';
   // 去掉「补全代码」「填空」这类通用前缀，只留下有区分度的题干内容。
-  raw = raw.replaceFirst(
-    RegExp(r'^(补全代码|填空|选择|判断|阅读代码|关于)\s*'),
-    '',
-  ).trim();
+  raw = raw.replaceFirst(RegExp(r'^(补全代码|填空|选择|判断|阅读代码|关于)\s*'), '').trim();
   if (raw.length < 4) return '';
   // 取第一个足够长的片段，避免「实战 把数据结构用起来」这类前缀占满配额。
   final chunks = raw
@@ -1042,9 +1014,7 @@ String _skeleton(String text) {
 }
 
 String _normalizeForCompare(String text) {
-  return text
-      .replaceAll(RegExp(r'[「『“"\s。！？!?；;，,、]+'), '')
-      .trim();
+  return text.replaceAll(RegExp(r'[「『“"\s。！？!?；;，,、]+'), '').trim();
 }
 
 String _normalizePunctuation(String input) {
@@ -1121,10 +1091,7 @@ String _removeGeneratedReviewSections(String text, RepairStats stats) {
   stats.strayMarkersRemoved += markers.allMatches(result).length;
   result = result.replaceAll(markers, '');
   // 行内残留的「复核补充 N」标签与标题行一并清掉。
-  result = result.replaceAll(
-    RegExp(r'\*\*复核补充\s*\d*\*\*\s*[：:]\s*'),
-    '',
-  );
+  result = result.replaceAll(RegExp(r'\*\*复核补充\s*\d*\*\*\s*[：:]\s*'), '');
   result = result.replaceAll(
     RegExp(r'^[>\s]*#{1,6}\s*(?:复核补充|复习与迁移)\s*\d*\s*$', multiLine: true),
     '',
@@ -1213,19 +1180,20 @@ String _rebuildTermTables(Lesson lesson, String text, RepairStats stats) {
   if (bounds == null) return text;
   var body = text.substring(bounds.$1, bounds.$2);
   // 旧版导语在 174 门课里逐字相同，属于跨课复读，改成带课程主题的版本。
-  const genericIntro =
-      '把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。';
+  const genericIntro = '把本课反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。';
   if (body.contains(genericIntro)) {
     body = body.replaceAll(genericIntro, _termTableIntro(lesson));
     text = text.replaceRange(bounds.$1, bounds.$2, body);
   }
-  final corrupt = body.split('\n').any(
-    (line) =>
-        line.startsWith('|') &&
-        (line.contains('判断依据') ||
-            line.contains('正确答案是') ||
-            line.contains('…')),
-  );
+  final corrupt = body
+      .split('\n')
+      .any(
+        (line) =>
+            line.startsWith('|') &&
+            (line.contains('判断依据') ||
+                line.contains('正确答案是') ||
+                line.contains('…')),
+      );
   if (!corrupt) return text;
   final keywords = lesson.keywords.isEmpty
       ? <String>[lesson.titleZh]
@@ -1233,9 +1201,7 @@ String _rebuildTermTables(Lesson lesson, String text, RepairStats stats) {
   final buffer = StringBuffer()
     ..writeln('## 术语速查')
     ..writeln()
-    ..writeln(
-      _termTableIntro(lesson),
-    )
+    ..writeln(_termTableIntro(lesson))
     ..writeln()
     ..writeln('| 术语 | 本课语境 |')
     ..writeln('| --- | --- |');

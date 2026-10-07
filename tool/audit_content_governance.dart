@@ -53,6 +53,47 @@ const List<String> generatedMarkdownMarkers = <String>[
   '把题干里的一个条件换成边界值',
   '把现象和原因写在一起',
   '错误信息通常会指出出错行和期望符号',
+  '检查调用链、输入数据和环境配置',
+  '先验证假设再改代码',
+  '常规用例通过，但边界用例失败',
+  '结果在两次运行之间不一致',
+  '程序在开发机很快，换到目标机器后延迟飙升',
+  '功能测试全部通过，但越权请求仍然拿到了数据',
+  '需求反复变更，代码越改越难验证',
+  '本课由 P1 内容扩展生成',
+  '先保证正确与可复现',
+  '本课属于「',
+  '正确答案是「',
+  '不看解析，能说出的判断依据',
+];
+
+/// 故障现场曾被批量替换成跨课套话，现象与根因对不上领域语义。
+/// 以下句子一律视为 P0 回归，不能再以普通 warning 放过。
+const List<String> genericFaultTemplateMarkers = <String>[
+  '输出和正文给出的基线对不上',
+  '这一步跳过了本课要求的前提，结论自然对不上',
+  '先跑正常输入再跑一个边界输入',
+  '把关键前提变成隐性假设',
+];
+
+/// 故障现场小标题与深挖章节里的「现场 N：标题」引用必须指向同一个场景，
+/// 否则读者按引用回正文会找不到现场（P0 模板清理时踩过一次）。
+final RegExp faultScenarioHeadingPattern = RegExp(
+  r'^###\s+现场\s+(\d+)：(.+)$',
+  multiLine: true,
+);
+final RegExp faultScenarioReferencePattern = RegExp(
+  r'^\|\s*现场\s+(\d+)：([^|]+)\|',
+  multiLine: true,
+);
+
+/// 旧生成器写下的跨课通用易错点整行：出现即说明错误表还没替换成本课内容。
+/// 只匹配完整表格行，避免把「失败证据」里正常的「只测正常路径」表述误判。
+const List<String> genericMistakeRowMarkers = <String>[
+  '| 只记术语不做实验 | 遇到真实问题无法判断 | 用最小输入跑通并记录结果 |',
+  '| 只测正常路径 | 边界和故障上线才暴露 | 补空值、极值和依赖失败 |',
+  '| 没有基线就优化 | 无法证明改进有效 | 先测量再修改 |',
+  '| 忽略成本与安全 | 性能和风险失控 | 同时记录资源、权限与失败代价 |',
 ];
 
 /// P0/P1 语义卡口：这些缺陷是生成器留下的可见问题，一律按 error 处理。
@@ -159,10 +200,11 @@ void main(List<String> args) {
           categoryId: categoryId,
           title: (((lesson['title'] as Map?)?['zh'] ?? lesson['id']).toString())
               .trim(),
-          keywords: ((lesson['keywords'] as List<dynamic>?) ?? const <dynamic>[])
-              .map((item) => item.toString().trim())
-              .where((item) => item.isNotEmpty)
-              .toList(),
+          keywords:
+              ((lesson['keywords'] as List<dynamic>?) ?? const <dynamic>[])
+                  .map((item) => item.toString().trim())
+                  .where((item) => item.isNotEmpty)
+                  .toList(),
           markdown: file.existsSync() ? file.readAsStringSync() : '',
           quiz: ((lesson['quiz'] as List<dynamic>?) ?? const [])
               .map((raw) => (raw as Map).cast<String, dynamic>())
@@ -174,12 +216,14 @@ void main(List<String> args) {
               ? lesson['order'] as int
               : int.tryParse('${lesson['order']}') ?? 0,
           difficulty: (lesson['difficulty'] ?? '基础').toString(),
-          prerequisites: ((lesson['prerequisites'] as List<dynamic>?) ?? const [])
-              .map(
-                (item) => item is Map ? item['id'].toString() : item.toString(),
-              )
-              .where((id) => id.isNotEmpty)
-              .toList(),
+          prerequisites:
+              ((lesson['prerequisites'] as List<dynamic>?) ?? const [])
+                  .map(
+                    (item) =>
+                        item is Map ? item['id'].toString() : item.toString(),
+                  )
+                  .where((id) => id.isNotEmpty)
+                  .toList(),
           minutes: lesson['minutes'] is int
               ? lesson['minutes'] as int
               : int.tryParse('${lesson['minutes']}') ?? 0,
@@ -204,6 +248,9 @@ void main(List<String> args) {
   var glossaryHeaderMismatches = 0;
   var unreviewedMistakeTables = 0;
   var glossaryTemplateRows = 0;
+  var genericMistakeRows = 0;
+  var genericFaultScenarioTemplates = 0;
+  var faultReferenceDrifts = 0;
   var codeQuestionsWithoutDomainLink = 0;
   var explanationsWithMeta = 0;
   var languageMismatches = 0;
@@ -259,6 +306,45 @@ void main(List<String> args) {
           lessonId: lesson.id,
           kind: 'placeholder_title',
           message: '正文仍残留标题占位符「$placeholderTitle」',
+        ),
+      );
+    }
+    final genericRows = genericMistakeRowMarkers
+        .where(lesson.markdown.contains)
+        .toList();
+    if (genericRows.isNotEmpty) {
+      genericMistakeRows++;
+      issues.add(
+        GovernanceIssue(
+          level: 'error',
+          lessonId: lesson.id,
+          kind: 'generic_mistake_row',
+          message: '错误表或故障现场仍是跨课通用条目：${genericRows.join('、')}',
+        ),
+      );
+    }
+    final genericFaultTemplates = genericFaultTemplateMarkers
+        .where(lesson.markdown.contains)
+        .toList();
+    if (genericFaultTemplates.isNotEmpty) {
+      genericFaultScenarioTemplates++;
+      issues.add(
+        GovernanceIssue(
+          level: 'error',
+          lessonId: lesson.id,
+          kind: 'generic_fault_scenario',
+          message: '故障现场仍是跨课套话：${genericFaultTemplates.join('、')}',
+        ),
+      );
+    }
+    for (final message in _faultReferenceIssues(lesson.markdown)) {
+      faultReferenceDrifts++;
+      issues.add(
+        GovernanceIssue(
+          level: 'error',
+          lessonId: lesson.id,
+          kind: 'fault_reference_drift',
+          message: message,
         ),
       );
     }
@@ -523,18 +609,19 @@ void main(List<String> args) {
   // 学习路径不变量：难度不倒挂、先修在推荐顺序之前、order 连续、时长可复核。
   final pathIssues = _auditLearningPath(lessons);
   issues.addAll(pathIssues);
-  final difficultyInversions = _countKind(
-    pathIssues,
-    'difficulty_inversion',
-  );
+  final difficultyInversions = _countKind(pathIssues, 'difficulty_inversion');
   final prerequisiteViolations = _countKind(
     pathIssues,
     'prerequisite_violation',
   );
   final orderGaps = _countKind(pathIssues, 'order_gap');
   final minutesDrift = _countKind(pathIssues, 'minutes_drift');
-  final errorsAfterPath = issues.where((issue) => issue.level == 'error').toList();
-  final warningsAfterPath = issues.where((issue) => issue.level == 'warn').toList();
+  final errorsAfterPath = issues
+      .where((issue) => issue.level == 'error')
+      .toList();
+  final warningsAfterPath = issues
+      .where((issue) => issue.level == 'warn')
+      .toList();
 
   final report = <String, dynamic>{
     'generated_at': DateTime.now().toUtc().toIso8601String(),
@@ -560,6 +647,9 @@ void main(List<String> args) {
     'glossary_header_mismatches': glossaryHeaderMismatches,
     'unreviewed_mistake_tables': unreviewedMistakeTables,
     'glossary_template_rows': glossaryTemplateRows,
+    'generic_mistake_rows': genericMistakeRows,
+    'generic_fault_scenario_templates': genericFaultScenarioTemplates,
+    'fault_reference_drifts': faultReferenceDrifts,
     'code_questions_without_domain_link': codeQuestionsWithoutDomainLink,
     'explanations_with_meta_markers': explanationsWithMeta,
     'language_mismatches': languageMismatches,
@@ -609,6 +699,8 @@ void main(List<String> args) {
     stdout.writeln('术语表表头不符              $glossaryHeaderMismatches');
     stdout.writeln('错误表未复核                $unreviewedMistakeTables');
     stdout.writeln('术语表模板残留行(P3)        $glossaryTemplateRows');
+    stdout.writeln('故障现场跨课套话            $genericFaultScenarioTemplates');
+    stdout.writeln('故障现场引用漂移            $faultReferenceDrifts');
     stdout.writeln('代码题缺本课关联            $codeQuestionsWithoutDomainLink');
     stdout.writeln('解析机械模板句              $explanationsWithMeta');
     stdout.writeln('代码语言错配                $languageMismatches');
@@ -812,11 +904,13 @@ List<GovernanceIssue> _auditLessonStructure(GovernanceLesson lesson) {
       ),
     );
   }
-  final corruptRow = termSection.split('\n').any(
-    (line) =>
-        line.startsWith('|') &&
-        (line.contains('判断依据') || line.contains('正确答案是')),
-  );
+  final corruptRow = termSection
+      .split('\n')
+      .any(
+        (line) =>
+            line.startsWith('|') &&
+            (line.contains('判断依据') || line.contains('正确答案是')),
+      );
   if (corruptRow) {
     issues.add(
       GovernanceIssue(
@@ -940,7 +1034,8 @@ int _glossaryTemplateRows(String section) {
         glossaryTemplateMarkers.any(explanation.contains) ||
         (explanations[explanation] ?? 0) > 1 ||
         explanation.startsWith('|') ||
-        RegExp(r'\s[-=]\s|\.py\b|\.js\b|\(\)|//|\.\./').hasMatch(term);
+        (term != 'Node.js' &&
+            RegExp(r'\s[-=]\s|\.py\b|\.js\b|\(\)|//|\.\./').hasMatch(term));
     if (templated) count++;
   }
   return count;
@@ -1032,6 +1127,33 @@ String _short(String text, int maxLength) {
 int _countKind(List<GovernanceIssue> issues, String kind) =>
     issues.where((issue) => issue.kind == kind).length;
 
+/// 深挖章节按「现场 N：标题」引用故障现场，标题改写后引用必须跟着改。
+/// 引用可能被截断成「前缀…」，因此允许前缀匹配，但不允许指错场景。
+List<String> _faultReferenceIssues(String markdown) {
+  final headings = <int, String>{
+    for (final match in faultScenarioHeadingPattern.allMatches(markdown))
+      int.parse(match.group(1)!): match.group(2)!.trim(),
+  };
+  if (headings.isEmpty) return const <String>[];
+  final problems = <String>[];
+  for (final match in faultScenarioReferencePattern.allMatches(markdown)) {
+    final number = int.parse(match.group(1)!);
+    final referenced = match.group(2)!.trim();
+    final title = headings[number];
+    if (title == null) {
+      problems.add('深挖引用「现场 $number：$referenced」在故障现场里没有对应场景');
+      continue;
+    }
+    if (referenced == title) continue;
+    final truncated = referenced.endsWith('…')
+        ? referenced.substring(0, referenced.length - 1).trim()
+        : '';
+    if (truncated.isNotEmpty && title.startsWith(truncated)) continue;
+    problems.add('深挖引用「现场 $number：$referenced」与故障现场标题「$title」不一致');
+  }
+  return problems;
+}
+
 /// 学习路径不变量审计。
 ///
 /// 1. 分类内 order 必须是 0..n-1 的连续编号；
@@ -1045,7 +1167,9 @@ List<GovernanceIssue> _auditLearningPath(List<GovernanceLesson> lessons) {
   };
   final byCategory = <String, List<GovernanceLesson>>{};
   for (final lesson in lessons) {
-    byCategory.putIfAbsent(lesson.categoryId, () => <GovernanceLesson>[]).add(lesson);
+    byCategory
+        .putIfAbsent(lesson.categoryId, () => <GovernanceLesson>[])
+        .add(lesson);
   }
 
   for (final entry in byCategory.entries) {

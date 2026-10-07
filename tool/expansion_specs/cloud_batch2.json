@@ -1,0 +1,199 @@
+{
+  "lessons": [
+    {
+      "id": "cloud_serverless",
+      "category": "cloud",
+      "title": {"zh": "无服务器与事件驱动架构", "en": "Serverless and Event-Driven Architecture"},
+      "summary": {"zh": "理解函数计算的生命周期、冷启动、事件源与幂等设计。", "en": "Understand function lifecycle, cold starts, event sources and idempotent handlers."},
+      "keywords": ["Serverless", "冷启动", "事件源", "幂等", "背压"],
+      "difficulty": "进阶",
+      "minutes": 32,
+      "order": 3,
+      "prerequisites": ["cloud_containers_kubernetes"],
+      "image": {"title": "事件驱动的函数调用链", "flow": ["事件入队", "触发函数", "幂等处理", "重试与死信"]},
+      "goals": [
+        "能说明函数实例的创建、复用与回收过程。",
+        "能设计幂等的事件处理逻辑，避免重试造成重复写入。",
+        "能识别冷启动与下游瓶颈，给出限流与背压方案。"
+      ],
+      "prerequisitesText": [
+        "了解消息队列与发布订阅的基本模型。",
+        "知道 HTTP 请求与超时的处理方式。",
+        "能读写 JSON 并能编写一段处理函数。"
+      ],
+      "concepts": [
+        {
+          "name": "函数生命周期与冷启动",
+          "plain": "无服务器平台按事件创建函数实例，处理完请求后实例可能被复用也可能被回收；冷启动就是需要重新初始化运行环境的那一次调用。",
+          "mechanism": "平台保留热实例一段时间以复用连接与缓存，流量突增或长时间空闲后需要新建实例，初始化依赖越多冷启动越慢。",
+          "example": "记录函数在连续调用与间隔调用下的耗时分布，找出冷启动占比与主要耗时来源。",
+          "boundary": "预热实例能降低冷启动概率，但不能保证一定命中，也不能替代容量规划。",
+          "engineering": "把初始化工作移到模块加载阶段复用，控制依赖体积；对延迟敏感接口保留最小并发或预热策略。"
+        },
+        {
+          "name": "事件源、投递语义与重试",
+          "plain": "事件源把消息投递给函数，多数平台提供至少一次投递；这意味着同一条消息可能被处理多次，失败后还会重试。",
+          "mechanism": "重试通常带退避策略，多次失败后进入死信队列或触发告警；并发度由事件源与平台限制共同决定。",
+          "example": "故意让处理函数抛异常，观察重试次数、间隔与最终进入死信队列的记录。",
+          "boundary": "至少一次投递不是问题，缺少幂等才是问题；把重试当成异常情况会忽略重复数据的日常发生。",
+          "engineering": "为每条消息带唯一标识，处理前检查去重表或使用条件写入；死信队列要有告警与回放流程。"
+        },
+        {
+          "name": "幂等设计与状态边界",
+          "plain": "幂等指同一请求执行多次与执行一次效果相同。无服务器架构里函数实例随时被替换，状态必须外置到数据库或对象存储。",
+          "mechanism": "常见做法是用业务唯一键做条件插入、用版本号做乐观锁，或把请求标识写入幂等表，处理完成后标记结果。",
+          "example": "用业务单号做唯一键，重复投递同一事件时第二次写入被拒绝，函数返回相同结果。",
+          "boundary": "幂等表会随时间膨胀，需要设置保留期；跨多个下游的写入要保证在同一事务或补偿流程里完成。",
+          "engineering": "幂等键与业务主键对齐，保留期覆盖最大重试窗口；跨服务调用用状态机记录阶段，避免半完成状态。"
+        },
+        {
+          "name": "并发上限与背压",
+          "plain": "事件会持续涌入，但下游数据库连接数与第三方接口都有上限；函数并发过高会把压力直接传导到最弱的依赖。",
+          "mechanism": "平台按并发度拉起实例，队列积压说明消费能力不足；限流与保留并发用于保护关键下游。",
+          "example": "把函数并发上限调低，观察队列积压与下游错误率的变化，找到吞吐与稳定性的平衡点。",
+          "boundary": "无限并发不是目标，堆队列同样会造成消息过期；必须在延迟、成本与下游容量之间取舍。",
+          "engineering": "为每个下游设置独立并发上限，配置队列长度与消息年龄告警，超过阈值时先降级再扩容。"
+        }
+      ],
+      "steps": ["定义事件结构与唯一标识", "编写幂等处理函数", "配置重试与死信队列", "按下游容量设置并发上限"],
+      "code": {
+        "language": "javascript",
+        "snippet": "// 事件处理：用业务单号做幂等键，重复投递直接返回已有结果\nconst processed = new Map();\n\nasync function handleEvent(event, store) {\n  const key = event.orderId;\n  if (processed.has(key)) {\n    return { status: 'duplicate', result: processed.get(key) };\n  }\n  const existing = await store.findByKey(key);\n  if (existing) {\n    processed.set(key, existing);\n    return { status: 'duplicate', result: existing };\n  }\n  const result = await store.insertIfAbsent(key, { amount: event.amount });\n  processed.set(key, result);\n  return { status: 'created', result };\n}\n\nmodule.exports = { handleEvent };",
+        "walkthrough": "处理函数先用业务单号查询已有记录，再用条件写入保证并发下也只创建一次；重复事件返回既有结果，避免重复扣款或重复发货。",
+        "expected_output": "首次事件返回 created；同一单号再次投递返回 duplicate；并发投递时数据库唯一约束保证只有一条记录写入成功。"
+      },
+      "faults": [
+        {"topic": "把重试当成异常情况", "wrong": "处理函数没有幂等保护，认为重复消息不会发生", "fix": "用业务唯一键与条件写入实现幂等，并保留去重记录覆盖重试窗口"},
+        {"topic": "函数里保存本地状态", "wrong": "把用户会话或计数放在函数实例内存里跨请求复用", "fix": "状态外置到数据库、缓存或对象存储，实例内存只做可丢弃的缓存"},
+        {"topic": "并发全开打穿数据库", "wrong": "函数并发不设上限，直接连接生产数据库", "fix": "为函数设置并发上限并使用连接池代理，超过阈值先排队或降级"}
+      ],
+      "glossary": [
+        {"term": "冷启动", "definition": "函数实例需要重新初始化运行环境的那一次调用，耗时明显高于热调用。"},
+        {"term": "至少一次投递", "definition": "消息系统的投递保证，允许重复投递但不丢消息。"},
+        {"term": "幂等", "definition": "同一操作执行多次与执行一次产生相同结果的性质。"},
+        {"term": "死信队列", "definition": "存放多次处理失败消息的队列，用于人工排查与回放。"},
+        {"term": "背压", "definition": "当下游处理不过来时，向上游传递压力并限制流入的机制。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "函数冷启动耗时明显变长，最可能的原因是什么？", "options": ["初始化依赖过多或镜像体积过大", "事件源投递次数过多", "死信队列没有配置告警", "调用方没有设置超时"], "answer": 0, "explanation": "冷启动需要重新加载运行环境与依赖，依赖越多、体积越大越慢；投递次数与告警配置影响的是重复处理与可观测性，而不是首次初始化时间。"},
+        {"type": "single", "question": "事件重复投递时，正确的处理方式是什么？", "options": ["用业务唯一键做幂等写入，重复请求返回同一结果", "直接忽略异常并继续处理下一次", "把函数并发调到最大加速处理", "在函数内存里记录已处理事件"], "answer": 0, "explanation": "至少一次投递意味着重复是常态，幂等键与条件写入才能保证业务只生效一次；内存记录在实例回收后失效，也无法覆盖多实例并发。"},
+        {"type": "multi", "question": "以下哪些属于无服务器架构的常见边界？（多选）", "options": ["单次执行时长与内存上限", "函数实例本地状态不可靠", "下游连接数受数据库限制", "函数可以无限并发且不影响下游"], "answers": [0, 1, 2], "answer": 0, "explanation": "平台对执行时长、内存与并发都有约束，本地状态不可依赖，下游连接数是硬瓶颈；认为并发无限制会把压力直接打到最弱依赖上。"},
+        {"type": "order", "question": "请按一次事件从产生到归档的顺序排列步骤。", "options": ["失败消息进入死信队列等待排查", "事件源产生消息并投递", "处理函数按幂等键写入结果", "重试达到上限仍失败"], "correct_order": [1, 2, 3, 0], "answer": 0, "explanation": "事件先投递，函数按幂等键处理并写入；失败会按策略重试，达到上限后进入死信队列；把死信排在最后是为了保留可回放的失败记录。"},
+        {"type": "debug", "question": "阅读处理函数片段，哪项判断正确？", "options": ["先查已有记录再条件写入，可以挡住重复投递", "processed 缓存可以永久代替数据库去重", "函数不检查已有记录，重复投递会创建两条数据", "store.insertIfAbsent 不需要唯一键支持"], "answer": 0, "code": "const existing = await store.findByKey(key);\nif (existing) return { status: 'duplicate', result: existing };\nconst result = await store.insertIfAbsent(key, { amount: event.amount });", "language": "javascript", "explanation": "函数先查再写并在写入时要求唯一键，从而在并发下也只生效一次；内存缓存只用于减少查询，不能取代数据库层面的唯一约束。"}
+      ],
+      "practice": [
+        "给示例函数加上重试计数与死信投递逻辑，说明每条失败路径的归宿。",
+        "压测一个函数调用外部接口的场景，找出下游连接数上限并记录现象。",
+        "设计一个需要跨两个下游写入的事件流程，写出幂等与补偿步骤。"
+      ],
+      "refs": [
+        {"name": "AWS Lambda 冷启动与并发说明", "url": "https://docs.aws.amazon.com/lambda/latest/dg/lambda-concurrency.html"},
+        {"name": "Azure Functions 事件驱动模式", "url": "https://learn.microsoft.com/zh-cn/azure/azure-functions/functions-overview"}
+      ],
+      "english": "Serverless moves capacity management to the platform but keeps the hard problems: cold starts, at-least-once delivery, idempotency and downstream limits. This lesson designs an idempotent handler, wires retries to a dead-letter queue, and caps concurrency to protect the weakest dependency.",
+      "reviewPoints": [
+        "能说明冷启动的主要来源与缓解方式。",
+        "能写出基于唯一键的幂等处理流程。",
+        "能为事件驱动系统设置并发上限与死信队列。"
+      ]
+    },
+    {
+      "id": "cloud_observability_sre",
+      "category": "cloud",
+      "title": {"zh": "可观测性与 SRE 实践", "en": "Observability and SRE Practices"},
+      "summary": {"zh": "用指标、日志、链路与错误预算建立可运维的服务，并给出容量与故障处理流程。", "en": "Use metrics, logs, traces and error budgets to run services with clear capacity and incident flows."},
+      "keywords": ["指标", "日志", "链路追踪", "错误预算", "故障处理"],
+      "difficulty": "高级",
+      "minutes": 36,
+      "order": 4,
+      "prerequisites": ["cloud_containers_kubernetes"],
+      "image": {"title": "可观测性与故障处理闭环", "flow": ["采集指标与日志", "定义服务等级目标", "告警与分级响应", "复盘与改进"]},
+      "goals": [
+        "能区分指标、日志与链路追踪各自回答的问题。",
+        "能把服务等级目标转成可计算的错误预算与告警阈值。",
+        "能按故障处理流程完成定位、止损与复盘。"
+      ],
+      "prerequisitesText": [
+        "了解 HTTP 状态码与常见延迟指标的含义。",
+        "知道应用日志与访问日志的差别。",
+        "能读懂监控面板上的时间序列图。"
+      ],
+      "concepts": [
+        {
+          "name": "指标、日志与链路的三角",
+          "plain": "指标回答「整体是否正常」，日志回答「当时发生了什么」，链路回答「时间花在哪里」。三者互补，缺一类就会在排查时卡住。",
+          "mechanism": "指标是聚合数值，成本低适合告警；日志是离散事件，信息丰富但量大；链路把一次请求的跨服务调用串成时间线，便于定位瓶颈。",
+          "example": "给一个接口同时打上延迟指标、结构化日志与链路，然后模拟慢查询，观察三类数据各自暴露的信息。",
+          "boundary": "指标看不出具体请求，日志难以聚合趋势，链路采样会丢失部分请求；任何一类单独使用都会误判。",
+          "engineering": "统一追踪标识并贯穿日志与链路，指标用直方图记录尾延迟，日志级别与采样策略按环境区分。"
+        },
+        {
+          "name": "服务等级指标、目标与错误预算",
+          "plain": "先定义可测量的服务等级指标，再设定目标值，剩下的失败额度就是错误预算，用来平衡稳定性与发布速度。",
+          "mechanism": "错误预算等于允许的失败比例乘以统计窗口；预算消耗过快就收紧变更，预算充足则可以加快发布节奏。",
+          "example": "把可用性目标定为 99.9%，按 30 天窗口算出允许的不可用时长，再对照实际数据判断预算余量。",
+          "boundary": "目标定得越高成本越高，且用户感知的可用性往往取决于关键路径而不是所有接口；把目标定在非关键接口上会浪费投入。",
+          "engineering": "目标只覆盖用户关键路径，按窗口滚动计算并可视化；预算触发时自动收紧发布或冻结非必要变更。"
+        },
+        {
+          "name": "告警设计与分级响应",
+          "plain": "告警要指向需要人工行动的问题，而不是所有异常；分级决定谁在什么时间内响应，以及是否触发升级。",
+          "mechanism": "基于症状的告警比基于原因的告警更稳定，例如「错误率超过阈值」优于「某个节点 CPU 高」；分级与值班表绑定。",
+          "example": "把一条 CPU 阈值告警改成延迟与错误率告警，统计一周内有效告警比例的变化。",
+          "boundary": "告警过多会导致麻木，过少会漏掉问题；阈值需要随流量基线调整，避免大促期间误报。",
+          "engineering": "为每条告警写明影响、排查入口与止损动作；定期清理无人处理的告警并复盘漏报。"
+        },
+        {
+          "name": "故障处理与复盘",
+          "plain": "故障处理顺序是止损、定位、恢复、复盘；复盘关注系统改进而不是追责，产出可验证的改进项。",
+          "mechanism": "先降级或回滚把影响控制住，再用监控与变更记录定位根因；复盘记录时间线、影响范围与改进项，并跟踪到闭环。",
+          "example": "模拟一次发布引发的错误率上升：先回滚止损，再对比发布前后指标，最后写出三条改进项。",
+          "boundary": "只做复盘不落实改进项会让同类故障反复出现；过度追求根因唯一性会忽略多重因素的叠加。",
+          "engineering": "保留变更与故障时间线的关联视图，改进项指定负责人与截止时间，并在下一次演练中验证有效性。"
+        }
+      ],
+      "steps": ["定义关键路径与指标", "设置服务等级目标与告警", "演练故障并记录时间线", "复盘改进并跟踪闭环"],
+      "code": {
+        "language": "javascript",
+        "snippet": "// 错误预算计算：按窗口统计允许的失败额度\nfunction errorBudget({ slo, windowMinutes, totalRequests, failedRequests }) {\n  const allowedFailureRatio = 1 - slo;\n  const allowedFailures = Math.floor(totalRequests * allowedFailureRatio);\n  const consumed = failedRequests / (allowedFailures || 1);\n  return {\n    windowMinutes,\n    allowedFailures,\n    consumedRatio: Number(consumed.toFixed(3)),\n    state: consumed >= 1 ? 'freeze' : consumed >= 0.75 ? 'warn' : 'healthy',\n  };\n}\n\nconsole.log(errorBudget({ slo: 0.999, windowMinutes: 43200, totalRequests: 1000000, failedRequests: 700 }));\nconsole.log(errorBudget({ slo: 0.999, windowMinutes: 43200, totalRequests: 1000000, failedRequests: 1200 }));",
+        "walkthrough": "代码把可用性目标换成允许失败次数，再用实际失败数计算预算消耗比例，并给出健康、预警与冻结三档状态；第二组数据已经超支，应停止非必要变更。",
+        "expected_output": "第一组 allowedFailures 为 1000，consumedRatio 为 0.7，状态 warn；第二组 consumedRatio 为 1.2，状态 freeze。"
+      },
+      "faults": [
+        {"topic": "用原因型指标告警", "wrong": "对单节点 CPU 设置告警并在深夜打断值班", "fix": "改为面向用户症状的告警，例如错误率与尾延迟，原因型指标放到排查面板"},
+        {"topic": "日志缺少关联标识", "wrong": "服务各自打日志，没有统一请求标识，跨服务无法串联", "fix": "在入口生成追踪标识并透传到所有下游与日志字段"},
+        {"topic": "复盘没有闭环", "wrong": "故障复盘只写结论，不指定改进项负责人与时间", "fix": "每条改进项指定负责人、截止时间与验证方式，并在下一次演练中确认"}
+      ],
+      "glossary": [
+        {"term": "服务等级指标", "definition": "可测量的服务质量指标，例如可用性、延迟与正确率。"},
+        {"term": "服务等级目标", "definition": "对服务等级指标设定的目标值，是错误预算的计算基础。"},
+        {"term": "错误预算", "definition": "目标允许的失败额度，用于平衡稳定性与发布速度。"},
+        {"term": "尾延迟", "definition": "高分位延迟，例如 P95 与 P99，反映最慢那部分请求的体验。"},
+        {"term": "追踪标识", "definition": "贯穿一次请求所有服务的唯一标识，用于把日志与链路串起来。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "要判断一次请求慢在哪个服务，最直接的数据是什么？", "options": ["跨服务链路追踪的时间线", "聚合后的接口平均值", "每日构建日志", "数据库表空间使用率"], "answer": 0, "explanation": "链路追踪把一次请求经过各服务的耗时串成时间线，能直接指出耗时集中在哪一段；聚合指标只能说明整体变慢，无法定位到具体调用。"},
+        {"type": "single", "question": "错误预算消耗达到上限时，通常应该怎么做？", "options": ["冻结或收紧非必要变更，优先恢复稳定性", "立刻提高服务等级目标", "关闭所有告警避免干扰", "把流量全部转到新版本"], "answer": 0, "explanation": "错误预算是稳定性的约束条件，超支说明可靠性已经受损，应暂停风险变更并集中修复；提高目标或关闭告警只会掩盖问题。"},
+        {"type": "multi", "question": "一条合格的告警应该包含哪些信息？（多选）", "options": ["影响范围与用户症状", "排查入口与关键面板", "建议的止损动作", "无关的服务器序列号列表"], "answers": [0, 1, 2], "answer": 0, "explanation": "告警要能让值班同学快速判断影响并采取行动，因此需要影响范围、排查入口与止损建议；堆砌无关标识只会增加认知负担。"},
+        {"type": "order", "question": "请按故障处理的合理顺序排列步骤。", "options": ["复盘并跟踪改进项", "止损：回滚或降级", "定位根因与影响范围", "恢复服务并观察指标"], "correct_order": [1, 2, 3, 0], "answer": 0, "explanation": "先在影响扩大前止损，再定位根因，恢复后确认指标稳定，最后复盘跟踪改进；把复盘放在最前会延误止损，把恢复放在定位前可能反复复发。"},
+        {"type": "debug", "question": "阅读错误预算代码，哪项判断正确？", "options": ["失败比例超过允许额度时状态变为 freeze", "consumedRatio 越大说明服务越健康", "允许失败次数与总请求数无关", "slo 设为 1 时任何失败都会导致冻结"], "answer": 0, "code": "const allowedFailureRatio = 1 - slo;\nconst allowedFailures = Math.floor(totalRequests * allowedFailureRatio);\nconst consumed = failedRequests / (allowedFailures || 1);\nreturn { state: consumed >= 1 ? 'freeze' : 'healthy' };", "language": "javascript", "explanation": "代码用目标推算允许失败次数，再用实际失败数算消耗比例，超过 1 即进入冻结状态；slo 为 1 时允许失败次数为 0，代码用兜底值避免除零，实际业务不会把目标设到 100%。"}
+      ],
+      "practice": [
+        "为一个接口定义三项服务等级指标，并给出目标值与统计窗口。",
+        "用示例代码计算你的服务上周的错误预算消耗比例，判断落在哪一档。",
+        "写一份故障复盘模板，包含时间线、影响范围、根因与改进项负责人。"
+      ],
+      "refs": [
+        {"name": "Google SRE 手册：服务等级目标", "url": "https://sre.google/sre-book/service-level-objectives/"},
+        {"name": "Prometheus 指标与直方图文档", "url": "https://prometheus.io/docs/practices/histograms/"},
+        {"name": "OpenTelemetry 概念说明", "url": "https://opentelemetry.io/docs/concepts/"}
+      ],
+      "english": "Observability combines metrics, logs and traces; SRE turns them into objectives and error budgets. This lesson defines an SLO, computes an error budget, redesigns alerts around user symptoms, and walks through incident response with a blameless review.",
+      "reviewPoints": [
+        "能说明指标、日志与链路各自的适用问题。",
+        "能把服务等级目标换算成错误预算。",
+        "能写出止损优先的故障处理顺序。"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "lessons": [
+    {
+      "id": "c_project_tcp_server",
+      "category": "c",
+      "title": {"zh": "实战：C 语言 TCP 服务端", "en": "Hands-on C TCP Server"},
+      "summary": {"zh": "从套接字生命周期、消息边界与超时讲到并发模型、错误分类与资源回收。", "en": "Cover socket lifecycle, framing, timeouts, concurrency models and resource cleanup."},
+      "keywords": ["socket", "TCP", "文件描述符", "IO 多路复用", "资源回收"],
+      "difficulty": "高级",
+      "minutes": 60,
+      "order": 15,
+      "prerequisites": ["c_debugging"],
+      "image": {"title": "TCP 服务端的连接生命周期", "flow": ["创建监听套接字", "绑定并监听", "接受连接", "收发与超时处理", "关闭并回收描述符"]},
+      "goals": [
+        "能写出包含创建、绑定、监听、接受与关闭的完整套接字流程。",
+        "能设计消息边界，避免把两次发送当成一条完整消息。",
+        "能为连接设置超时并区分可重试错误与致命错误。"
+      ],
+      "prerequisitesText": [
+        "能使用指针、结构体与动态内存分配。",
+        "理解文件描述符是进程访问资源的整数句柄。",
+        "知道 TCP 是面向连接的字节流协议，不保留消息边界。"
+      ],
+      "concepts": [
+        {
+          "name": "套接字生命周期",
+          "plain": "服务端依次创建监听套接字、绑定地址、进入监听、接受连接，最后关闭描述符。",
+          "mechanism": "监听套接字只负责接收新连接，每次 accept 会返回一个新的已连接描述符，读写与关闭都针对这个新描述符。",
+          "example": "打印监听描述符与每个连接描述符的值，观察它们在多次连接中的复用情况。",
+          "boundary": "忘记关闭已连接描述符会耗尽进程可用的描述符上限，表现为 accept 开始持续失败。",
+          "engineering": "把描述符的获取与释放写在同一处，配合集中式的错误处理标签统一回收。"
+        },
+        {
+          "name": "消息边界与收发循环",
+          "plain": "TCP 是字节流，一次发送可能被拆成多次接收，也可能与下一次发送合并到达。",
+          "mechanism": "接收方通常先读固定长度的长度字段，再按长度读取剩余字节；写入时则要循环直到全部字节发出。",
+          "example": "连续发送两条小消息，用很小的接收缓冲区观察它们被合并成一次读取。",
+          "boundary": "假设一次 read 就是一条消息会让协议在高负载或大消息时随机出错。",
+          "engineering": "把编解码抽成独立函数，并给消息长度设置上限以防恶意超长字段。"
+        },
+        {
+          "name": "阻塞、超时与非阻塞",
+          "plain": "默认的阻塞模式下读写会一直等待，设置接收超时可以避免线程被慢连接长期占用。",
+          "mechanism": "通过套接字选项设置超时，超时后读写返回错误码并置位可重试标记，程序据此决定重试还是关闭连接。",
+          "example": "连接一个只建立连接却不发数据的客户端，观察服务端在超时后是否主动关闭。",
+          "boundary": "把超时当成致命错误会让正常的长连接被误杀，把致命错误当成超时重试则会造成忙等。",
+          "engineering": "把错误码分类成可重试、对端关闭与致命三类，并为每类定义明确动作。"
+        },
+        {
+          "name": "并发模型选择",
+          "plain": "常见做法是一连接一线程、一连接一进程，或单线程配合 IO 多路复用。",
+          "mechanism": "多路复用把多个描述符的读写事件集中到一次等待，单线程即可处理大量空闲连接，代价是业务逻辑不能阻塞事件循环。",
+          "example": "用多路复用实现回声服务，接入一千个空闲连接观察内存与 CPU 占用。",
+          "boundary": "在事件循环里执行耗时计算或阻塞磁盘读写，会让所有连接一起变慢。",
+          "engineering": "把耗时任务交给工作线程或进程，事件循环只负责收发事件与状态机推进。"
+        }
+      ],
+      "steps": ["定义协议与消息边界", "创建监听套接字并设置复用选项", "接受连接并维护连接状态", "实现带超时的收发循环", "压测后统一回收资源并复盘"],
+      "code": {
+        "language": "c",
+        "snippet": "#include <arpa/inet.h>\n#include <errno.h>\n#include <stdio.h>\n#include <string.h>\n#include <sys/socket.h>\n#include <unistd.h>\n\nstatic int read_full(int fd, char *buf, size_t need) {\n    size_t got = 0;\n    while (got < need) {\n        const ssize_t n = read(fd, buf + got, need - got);\n        if (n == 0) return 0;                       // 对端正常关闭\n        if (n < 0) {\n            if (errno == EINTR) continue;           // 被信号打断，可重试\n            return -1;                              // 其它错误交给调用方分类\n        }\n        got += (size_t)n;\n    }\n    return 1;\n}\n\nint main(void) {\n    const int listen_fd = socket(AF_INET, SOCK_STREAM, 0);\n    if (listen_fd < 0) { perror(\"socket\"); return 1; }\n    int reuse = 1;\n    setsockopt(listen_fd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse));\n\n    struct sockaddr_in addr;\n    memset(&addr, 0, sizeof(addr));\n    addr.sin_family = AF_INET;\n    addr.sin_addr.s_addr = htonl(INADDR_ANY);\n    addr.sin_port = htons(9000);\n\n    if (bind(listen_fd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {\n        perror(\"bind\");\n        close(listen_fd);\n        return 1;\n    }\n    if (listen(listen_fd, 128) < 0) { perror(\"listen\"); close(listen_fd); return 1; }\n\n    for (;;) {\n        const int conn_fd = accept(listen_fd, NULL, NULL);\n        if (conn_fd < 0) {\n            if (errno == EINTR) continue;\n            perror(\"accept\");\n            break;\n        }\n        char header[4];\n        const int ok = read_full(conn_fd, header, sizeof(header));\n        if (ok == 1) {\n            const unsigned len = ((unsigned char)header[0] << 24) |\n                                 ((unsigned char)header[1] << 16) |\n                                 ((unsigned char)header[2] << 8) |\n                                 (unsigned char)header[3];\n            if (len <= 4096) {\n                char body[4097] = {0};\n                if (read_full(conn_fd, body, len) == 1) write(conn_fd, body, len);\n            }\n        }\n        close(conn_fd);            // 每个连接描述符都必须显式关闭\n    }\n    close(listen_fd);\n    return 0;\n}",
+        "walkthrough": "示例把「读满指定字节」抽成 read_full，先读 4 字节长度再按长度读取消息体，并对被信号打断的读取做重试；主循环对每个连接显式关闭描述符，避免句柄泄漏。",
+        "expected_output": "用 nc 或自写客户端按长度前缀发送数据，服务端原样回显；发送超过长度上限的消息会被拒绝；停止客户端后服务端不报错，进程继续接受新连接。"
+      },
+      "faults": [
+        {"topic": "把一次 read 当成一条完整消息", "wrong": "读一次就认为拿到了客户端发送的全部内容", "fix": "先读固定长度的头部，再循环读满消息体"},
+        {"topic": "连接描述符泄漏", "wrong": "异常路径直接 return，跳过了 close", "fix": "用统一的清理出口回收所有已获取的描述符"},
+        {"topic": "在事件循环里执行耗时任务", "wrong": "在收发循环里解析大文件或做密集计算", "fix": "把耗时任务交给工作线程，事件循环只推进状态机"}
+      ],
+      "glossary": [
+        {"term": "监听套接字", "definition": "只用于接受新连接的套接字，不承载业务数据。"},
+        {"term": "文件描述符", "definition": "进程访问套接字、文件等资源的整数句柄。"},
+        {"term": "消息边界", "definition": "描述一条完整消息从哪开始到哪结束的约定。"},
+        {"term": "IO 多路复用", "definition": "在单线程中同时等待多个描述符事件的机制。"},
+        {"term": "可重试错误", "definition": "被信号打断等可以安全重做的错误类型。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "服务端每次 accept 之后拿到的描述符代表什么？", "options": ["一条已建立的连接，读写与关闭都针对它", "监听套接字的副本", "客户端进程的进程号", "一次广播地址"], "answer": 0, "explanation": "accept 返回的是新建立的连接描述符，监听套接字只负责接收新连接；后续读写和关闭都针对连接描述符，忘记关闭它会让进程的描述符逐渐耗尽。"},
+        {"type": "single", "question": "为什么不能假设一次 read 就是一条完整消息？", "options": ["TCP 是字节流，消息可能被拆分或合并", "TCP 会自动压缩消息", "TCP 只允许定长消息", "read 只能读取整数个字节"], "answer": 0, "explanation": "TCP 只保证字节顺序，不保留发送边界，因此一次读取可能只取到消息的一部分，也可能包含多条消息；协议必须自己定义长度或分隔符来还原边界。"},
+        {"type": "multi", "question": "以下哪些做法有助于避免资源泄漏？（多选）", "options": ["把清理逻辑集中到统一出口", "对每个连接显式 close", "异常路径直接 return 跳过清理", "设置监听套接字复用选项并记录描述符数量"], "answers": [0, 1, 3], "answer": 0, "explanation": "集中清理出口能保证异常路径也回收资源，逐个关闭连接是基本要求，记录描述符数量便于及早发现泄漏；异常路径直接返回会跳过清理，是句柄耗尽的常见原因。"},
+        {"type": "order", "question": "请按 TCP 服务端启动与处理一次连接的顺序排列。", "options": ["accept 得到连接描述符", "创建套接字并绑定地址", "进入监听状态", "收发数据并关闭连接描述符"], "correct_order": [1, 2, 0, 3], "answer": 0, "explanation": "顺序是先创建套接字并绑定地址，随后进入监听，accept 返回连接描述符后收发数据，最后关闭连接；把 accept 放在 bind 之前会直接失败。"},
+        {"type": "debug", "question": "阅读这段收发代码，下面哪项判断是正确的？", "options": ["EINTR 属于可重试错误，其它错误应交给调用方分类处理", "read 返回 0 说明发生致命错误", "读取长度字段时不需要处理短读", "消息长度可以不加限制，直接按对端给出的值分配"], "answer": 0, "code": "const ssize_t n = read(fd, buf + got, need - got);\nif (n == 0) return 0;                 // 对端正常关闭\nif (n < 0) {\n    if (errno == EINTR) continue;     // 被信号打断，可重试\n    return -1;                        // 其它错误交给调用方\n}", "language": "c", "explanation": "这段 C 代码把读取结果为 0 视为对端正常关闭，把 EINTR 视为可重试，其余错误交回调用方分类处理；若对端给出的长度不设上限就按它分配缓冲区，会带来内存耗尽风险。"}
+      ],
+      "practice": [
+        "用 nc 或自写客户端验证长度前缀协议，确认大消息与分片发送都能正确还原。",
+        "给服务端加上接收超时，验证慢连接会被主动关闭而正常连接不受影响。",
+        "统计进程打开的描述符数量，人为制造一次泄漏再修复，观察数值变化。"
+      ],
+      "refs": [
+        {"name": "Linux man-pages：socket", "url": "https://man7.org/linux/man-pages/man2/socket.2.html"},
+        {"name": "Linux man-pages：accept", "url": "https://man7.org/linux/man-pages/man2/accept.2.html"},
+        {"name": "Beej 网络编程指南", "url": "https://beej.us/guide/bgnet/"}
+      ],
+      "english": "A C TCP server walks through socket creation, bind, listen, accept, read/write and close. TCP preserves byte order but not message boundaries, so define framing explicitly and loop until a full message is read. Configure timeouts, classify errors into retryable, peer-closed and fatal, and make every path release its file descriptors.",
+      "reviewPoints": [
+        "能写出完整的套接字生命周期并说明每步失败时的清理动作。",
+        "能为字节流协议设计一套消息边界约定。",
+        "能区分可重试错误与致命错误并给出对应处理。"
+      ]
+    }
+  ]
+}

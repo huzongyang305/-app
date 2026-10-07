@@ -29,8 +29,8 @@ const List<String> legacyHeaders = <String>[
 ];
 
 /// 人工校准的入门课术语表（课程 id → 术语、一句话说明）。
-const Map<String, List<List<String>>> curatedGlossaries =
-    <String, List<List<String>>>{
+const Map<String, List<List<String>>>
+curatedGlossaries = <String, List<List<String>>>{
   // ---- Flutter ----
   'flutter_widget_intro': <List<String>>[
     <String>['Widget', 'Flutter 界面的基本单元，用不可变的配置描述界面的一部分。'],
@@ -661,7 +661,9 @@ void main(List<String> args) {
         (raw as Map).cast<String, dynamic>(),
   ];
   final ids = <String>{for (final lesson in lessons) lesson['id'].toString()};
-  final unknown = curatedGlossaries.keys.where((id) => !ids.contains(id)).toList();
+  final unknown = curatedGlossaries.keys
+      .where((id) => !ids.contains(id))
+      .toList();
   if (unknown.isNotEmpty) {
     stderr.writeln('词条表里有清单中不存在的课程：${unknown.join('、')}');
     exitCode = 4;

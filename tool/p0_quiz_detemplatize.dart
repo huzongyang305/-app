@@ -17,15 +17,87 @@ const String manifestPath = 'assets/content/manifest.json';
 /// 中文/英文高频虚词。抽取依据时跳过这些词，避免“本课/可以/需要”之类
 /// 的通用词把无关句子排到前面。
 const Set<String> _stopWords = <String>{
-  'the', 'and', 'for', 'with', 'that', 'this', 'from', 'into', 'when',
-  'then', 'than', 'have', 'has', 'are', 'was', 'were', 'will', 'would',
-  'can', 'could', 'should', 'must', 'not', 'you', 'your', 'its', 'it',
-  '的是', '一个', '可以', '我们', '这个', '这些', '那些', '如果', '进行',
-  '使用', '需要', '没有', '不是', '就是', '以及', '并且', '或者', '因为',
-  '所以', '例如', '下面', '通过', '对于', '其中', '已经', '可能', '应该',
-  '必须', '如何', '什么', '为什么', '本课', '本节', '课程', '内容', '知识',
-  '问题', '情况', '时候', '地方', '方式', '结果', '过程', '相关', '主要',
-  '正确', '错误', '选项', '答案', '题干', '说法', '描述', '理解', '掌握',
+  'the',
+  'and',
+  'for',
+  'with',
+  'that',
+  'this',
+  'from',
+  'into',
+  'when',
+  'then',
+  'than',
+  'have',
+  'has',
+  'are',
+  'was',
+  'were',
+  'will',
+  'would',
+  'can',
+  'could',
+  'should',
+  'must',
+  'not',
+  'you',
+  'your',
+  'its',
+  'it',
+  '的是',
+  '一个',
+  '可以',
+  '我们',
+  '这个',
+  '这些',
+  '那些',
+  '如果',
+  '进行',
+  '使用',
+  '需要',
+  '没有',
+  '不是',
+  '就是',
+  '以及',
+  '并且',
+  '或者',
+  '因为',
+  '所以',
+  '例如',
+  '下面',
+  '通过',
+  '对于',
+  '其中',
+  '已经',
+  '可能',
+  '应该',
+  '必须',
+  '如何',
+  '什么',
+  '为什么',
+  '本课',
+  '本节',
+  '课程',
+  '内容',
+  '知识',
+  '问题',
+  '情况',
+  '时候',
+  '地方',
+  '方式',
+  '结果',
+  '过程',
+  '相关',
+  '主要',
+  '正确',
+  '错误',
+  '选项',
+  '答案',
+  '题干',
+  '说法',
+  '描述',
+  '理解',
+  '掌握',
 };
 
 /// 旧版自动扩写留下的长句骨架。命中即删除，不再参与重建。
@@ -38,8 +110,12 @@ final List<RegExp> _genericSentencePatterns = <RegExp>[
   RegExp(r'下列说法正确的是？'),
   RegExp(r'核心学习目标是什么'),
   RegExp(r'的语境下并不成立'),
-  RegExp(r'^正确项[「“].*?(经得起边界检验|满足题干限定|与本课示例和结论一致|是该问题的规范说法|抓住了题干的核心条件|完整覆盖了题目要求|正面回答了题目所问|描述正确，能够解释|与题干要求一致|能够解释题干场景)'),
-  RegExp(r'^错误项[「“].*?(只看到了表面现象|忽略了题目中的限制条件|把因果关系颠倒了|在边界或失败路径上|与课程给出的定义相冲突|把不同概念混在一起|适用于其他场景|属于相邻主题的说法)'),
+  RegExp(
+    r'^正确项[「“].*?(经得起边界检验|满足题干限定|与本课示例和结论一致|是该问题的规范说法|抓住了题干的核心条件|完整覆盖了题目要求|正面回答了题目所问|描述正确，能够解释|与题干要求一致|能够解释题干场景)',
+  ),
+  RegExp(
+    r'^错误项[「“].*?(只看到了表面现象|忽略了题目中的限制条件|把因果关系颠倒了|在边界或失败路径上|与课程给出的定义相冲突|把不同概念混在一起|适用于其他场景|属于相邻主题的说法)',
+  ),
   RegExp(r'^学习《.*?》时应把该要点'),
   RegExp(r'^复习《.*?》的[「“].*?[」”]时，再用一个边界输入'),
   RegExp(r'^[「“].*?[」”](混淆了相近概念|只看到了表面现象|忽略了题目中的限制条件|适用于其他场景|把因果关系颠倒了)'),
@@ -81,33 +157,89 @@ final List<RegExp> _generatedCorePatterns = <RegExp>[
 ];
 
 const List<String> _highValueSections = <String>[
-  '核心知识', '关键流程', '原理', '机制', '常见误区', '常见错误',
-  '深入理解', '重点', '要点', '概念', '术语', '验证', '项目', '实战',
-  '故障', '排查', '边界', '对比', '为什么', '速览', '自测',
+  '核心知识',
+  '关键流程',
+  '原理',
+  '机制',
+  '常见误区',
+  '常见错误',
+  '深入理解',
+  '重点',
+  '要点',
+  '概念',
+  '术语',
+  '验证',
+  '项目',
+  '实战',
+  '故障',
+  '排查',
+  '边界',
+  '对比',
+  '为什么',
+  '速览',
+  '自测',
 ];
 
 const List<String> _lowValueSections = <String>[
-  'English', 'Bilingual', '学习目标', '前置知识', '参考资料', '内容元数据',
-  '动手练习', '练习', '复习清单', '自检', '作业',
+  'English',
+  'Bilingual',
+  '学习目标',
+  '前置知识',
+  '参考资料',
+  '内容元数据',
+  '动手练习',
+  '练习',
+  '复习清单',
+  '自检',
+  '作业',
 ];
 
 /// 这些章节本身由题库/工具二次生成，不能再用作解析依据，否则会形成循环引用。
 const List<String> _skipSections = <String>[
-  '考点精讲', '本课复习清单', '逐节复习与自检', '术语速查', '易错点回顾',
-  'English Overview', 'Full English Study Guide', 'Bilingual Section Outline',
-  '内容元数据', '参考资料与复核', '前置知识', '学习目标',
-  '动手练习', '本课自测清单', '自测清单', '代码实验',
+  '考点精讲',
+  '本课复习清单',
+  '逐节复习与自检',
+  '术语速查',
+  '易错点回顾',
+  'English Overview',
+  'Full English Study Guide',
+  'Bilingual Section Outline',
+  '内容元数据',
+  '参考资料与复核',
+  '前置知识',
+  '学习目标',
+  '动手练习',
+  '本课自测清单',
+  '自测清单',
+  '代码实验',
 ];
 
 /// 元话语：讲“本节要做什么/下面看什么”，不提供可引用的知识点。
 const List<String> _metaPrefixes = <String>[
-  '下面', '本节', '这一节', '本课将', '本课会', '本课把', '这里',
-  '接下来', '完成本课', '学完本课', '到此', '最后',
+  '下面',
+  '本节',
+  '这一节',
+  '本课将',
+  '本课会',
+  '本课把',
+  '这里',
+  '接下来',
+  '完成本课',
+  '学完本课',
+  '到此',
+  '最后',
 ];
 
 const List<String> _metaMarkers = <String>[
-  '最容易混淆的选项', '不引入新语法', '解决了什么问题', '不是孤立术语',
-  '核心问题：', '本课有 ', '先自己作答', '对照解析', '回到正文',
+  '最容易混淆的选项',
+  '不引入新语法',
+  '解决了什么问题',
+  '不是孤立术语',
+  '核心问题：',
+  '本课有 ',
+  '先自己作答',
+  '对照解析',
+  '回到正文',
 ];
 
 class SourceSentence {
@@ -205,9 +337,7 @@ void main(List<String> args) {
         if (rebuilt.grounded) grounded++;
         if (rebuilt.usedFallback) fallback++;
         if (rebuilt.usedFallback && fallbackSamples.length < 5) {
-          fallbackSamples.add(
-            'Q: ${question['question']}\nA: $rebuiltText\n',
-          );
+          fallbackSamples.add('Q: ${question['question']}\nA: $rebuiltText\n');
         }
         afterChars += rebuiltText.length;
         afterMin = math.min(afterMin, rebuiltText.length);
@@ -223,9 +353,7 @@ void main(List<String> args) {
           if (sentence.length >= 12) afterSentences.add(sentence);
         }
         if (samples.length < sampleCount) {
-          samples.add(
-            'Q: ${question['question']}\nA: $rebuiltText\n',
-          );
+          samples.add('Q: ${question['question']}\nA: $rebuiltText\n');
         }
       }
     }
@@ -250,19 +378,19 @@ void main(List<String> args) {
         .replaceAll(RegExp(r'\d+'), 'N')
         .replaceAll(RegExp(r'\s+'), '');
     if (skeleton.length < 20) continue;
-    normalizedSkeletons[skeleton] =
-        (normalizedSkeletons[skeleton] ?? 0) + 1;
+    normalizedSkeletons[skeleton] = (normalizedSkeletons[skeleton] ?? 0) + 1;
   }
-  final topSkeletons = normalizedSkeletons.entries
-      .where((entry) => entry.value >= 5)
-      .toList()
-    ..sort((a, b) => b.value.compareTo(a.value));
+  final topSkeletons =
+      normalizedSkeletons.entries.where((entry) => entry.value >= 5).toList()
+        ..sort((a, b) => b.value.compareTo(a.value));
 
   stdout.writeln('题目总数              $total');
   stdout.writeln('重写解析              $rewritten');
   stdout.writeln('有课程原文依据        $grounded');
   stdout.writeln('仅用摘要/兜底         $fallback');
-  stdout.writeln('解析平均字符          ${total == 0 ? 0 : (afterChars / total).toStringAsFixed(1)}（原 ${total == 0 ? 0 : (beforeChars / total).toStringAsFixed(1)}）');
+  stdout.writeln(
+    '解析平均字符          ${total == 0 ? 0 : (afterChars / total).toStringAsFixed(1)}（原 ${total == 0 ? 0 : (beforeChars / total).toStringAsFixed(1)}）',
+  );
   stdout.writeln('解析最短              $afterMin');
   stdout.writeln('解析 <120             $below120');
   stdout.writeln('包含正确项            $containsCorrect / $total');
@@ -336,8 +464,7 @@ LessonSource _loadLessonSource(Map<String, dynamic> lesson) {
       .map((e) => '$e')
       .toList();
   final file = lesson['file'] as String;
-  final markdown =
-      File(file).existsSync() ? File(file).readAsStringSync() : '';
+  final markdown = File(file).existsSync() ? File(file).readAsStringSync() : '';
   return LessonSource(
     id: id,
     title: title,
@@ -417,7 +544,9 @@ _RebuiltExplanation _rebuildExplanation(
     if (_generatedCorePatterns.any((r) => r.hasMatch(text))) continue;
     if ((globalOutputCounts[text] ?? 0) >= 2) continue;
     if (text == '其他选项：' || text == '其它选项：') continue;
-    if (core.any((existing) => existing.contains(text) || text.contains(existing))) {
+    if (core.any(
+      (existing) => existing.contains(text) || text.contains(existing),
+    )) {
       continue;
     }
     core.add(text);
@@ -431,23 +560,24 @@ _RebuiltExplanation _rebuildExplanation(
     ...source.keywords,
     source.title,
   ]);
-  final ranked = source.sentences
-      .map(
-        (sentence) => (
-          sentence,
-          _scoreSentence(sentence, queryTokens, correct) -
-              4.0 * (usage[sentence.text] ?? 0),
-        ),
-      )
-      .where((entry) => entry.$2 > 1.5)
-      .where((entry) => (globalSentenceCounts[entry.$1.text] ?? 0) < 3)
-      .where((entry) => (globalOutputCounts[entry.$1.text] ?? 0) < 2)
-      .toList()
-    ..sort((a, b) {
-      final byScore = b.$2.compareTo(a.$2);
-      if (byScore != 0) return byScore;
-      return a.$1.order.compareTo(b.$1.order);
-    });
+  final ranked =
+      source.sentences
+          .map(
+            (sentence) => (
+              sentence,
+              _scoreSentence(sentence, queryTokens, correct) -
+                  4.0 * (usage[sentence.text] ?? 0),
+            ),
+          )
+          .where((entry) => entry.$2 > 1.5)
+          .where((entry) => (globalSentenceCounts[entry.$1.text] ?? 0) < 3)
+          .where((entry) => (globalOutputCounts[entry.$1.text] ?? 0) < 2)
+          .toList()
+        ..sort((a, b) {
+          final byScore = b.$2.compareTo(a.$2);
+          if (byScore != 0) return byScore;
+          return a.$1.order.compareTo(b.$1.order);
+        });
 
   final picked = <SourceSentence>[];
   for (final entry in ranked) {
@@ -458,25 +588,24 @@ _RebuiltExplanation _rebuildExplanation(
     if (picked.length >= 3) break;
   }
   if (picked.isEmpty) {
-    final relaxed = source.sentences
-        .map(
-          (sentence) => (
-            sentence,
-            _scoreSentence(sentence, queryTokens, correct) -
-                4.0 * (usage[sentence.text] ?? 0),
-          ),
-        )
-        .where((entry) => entry.$2 > 0)
-        .where(
-          (entry) => (globalSentenceCounts[entry.$1.text] ?? 0) < 3,
-        )
-        .where((entry) => (globalOutputCounts[entry.$1.text] ?? 0) < 2)
-        .toList()
-      ..sort((a, b) {
-        final byScore = b.$2.compareTo(a.$2);
-        if (byScore != 0) return byScore;
-        return a.$1.order.compareTo(b.$1.order);
-      });
+    final relaxed =
+        source.sentences
+            .map(
+              (sentence) => (
+                sentence,
+                _scoreSentence(sentence, queryTokens, correct) -
+                    4.0 * (usage[sentence.text] ?? 0),
+              ),
+            )
+            .where((entry) => entry.$2 > 0)
+            .where((entry) => (globalSentenceCounts[entry.$1.text] ?? 0) < 3)
+            .where((entry) => (globalOutputCounts[entry.$1.text] ?? 0) < 2)
+            .toList()
+          ..sort((a, b) {
+            final byScore = b.$2.compareTo(a.$2);
+            if (byScore != 0) return byScore;
+            return a.$1.order.compareTo(b.$1.order);
+          });
     for (final entry in relaxed) {
       final sentence = entry.$1;
       if ((usage[sentence.text] ?? 0) >= 2) continue;
@@ -538,8 +667,7 @@ _RebuiltExplanation _rebuildExplanation(
     }
   }
   if (_length(parts) < 120 && source.summary.isNotEmpty) {
-    final summary =
-        source.summary.replaceAll(RegExp(r'[。；，、\n]+'), '，').trim();
+    final summary = source.summary.replaceAll(RegExp(r'[。；，、\n]+'), '，').trim();
     parts.add('课程摘要指出$summary，本课要判断的正是$fingerprint。');
   }
   var usedFallback = false;
@@ -557,9 +685,7 @@ _RebuiltExplanation _rebuildExplanation(
           .take(2)
           .map((option) => '「$option」')
           .join('、');
-      parts.add(
-        '把$wrong与正确项对照，可以看出它们在适用条件或结论范围上并不等价。',
-      );
+      parts.add('把$wrong与正确项对照，可以看出它们在适用条件或结论范围上并不等价。');
     }
   }
   var text = parts.join();
@@ -572,7 +698,8 @@ _RebuiltExplanation _rebuildExplanation(
   text = _replaceOptionReferences(text, options);
   if (text.length > 420) text = '${text.substring(0, 418)}…';
   if (text.length < 120) {
-    final filler = '回到 $fingerprint 本身，先抓住题干限定的对象与条件，'
+    final filler =
+        '回到 $fingerprint 本身，先抓住题干限定的对象与条件，'
         '再用课程给出的定义逐项核对，如果某个选项把前提去掉或换成相邻概念，'
         '就不能作为本题答案。';
     text = '$text$filler';
@@ -593,7 +720,8 @@ class _RebuiltExplanation {
   final bool usedFallback;
 }
 
-int _length(List<String> parts) => parts.fold<int>(0, (sum, s) => sum + s.length);
+int _length(List<String> parts) =>
+    parts.fold<int>(0, (sum, s) => sum + s.length);
 
 String _cleanSentence(String text) {
   var result = text
@@ -644,26 +772,25 @@ final RegExp _optionRefPattern = RegExp(
 String _replaceOptionReferences(String text, List<String> options) {
   const ordinals = <String>['一', '二', '三', '四', '五', '六'];
   var result = text;
-  result = result.replaceAllMapped(
-    RegExp(r'选项([一二三四五六](?:[、和及][一二三四五六])*)'),
-    (match) {
-      final parts = match
-          .group(1)!
-          .split(RegExp(r'[、和及]'))
-          .where((part) => part.isNotEmpty)
-          .toList();
-      final labels = <String>[];
-      for (final part in parts) {
-        final index = ordinals.indexOf(part);
-        if (index < 0 || index >= options.length) continue;
-        final option = options[index].trim();
-        if (option.isNotEmpty && !labels.contains('「$option」')) {
-          labels.add('「$option」');
-        }
+  result = result.replaceAllMapped(RegExp(r'选项([一二三四五六](?:[、和及][一二三四五六])*)'), (
+    match,
+  ) {
+    final parts = match
+        .group(1)!
+        .split(RegExp(r'[、和及]'))
+        .where((part) => part.isNotEmpty)
+        .toList();
+    final labels = <String>[];
+    for (final part in parts) {
+      final index = ordinals.indexOf(part);
+      if (index < 0 || index >= options.length) continue;
+      final option = options[index].trim();
+      if (option.isNotEmpty && !labels.contains('「$option」')) {
+        labels.add('「$option」');
       }
-      return labels.isEmpty ? '该选项' : labels.join('、');
-    },
-  );
+    }
+    return labels.isEmpty ? '该选项' : labels.join('、');
+  });
   for (var i = 0; i < ordinals.length && i < options.length; i++) {
     final option = options[i].trim();
     if (option.isEmpty) continue;
@@ -721,8 +848,9 @@ bool _isTooSimilar(String text, List<SourceSentence> picked) {
 Set<String> _queryTokens(List<String> texts) {
   final tokens = <String>{};
   for (final text in texts) {
-    for (final match
-        in RegExp(r'[A-Za-z][A-Za-z0-9_+#.\-]{1,30}').allMatches(text)) {
+    for (final match in RegExp(
+      r'[A-Za-z][A-Za-z0-9_+#.\-]{1,30}',
+    ).allMatches(text)) {
       final word = match.group(0)!.toLowerCase();
       if (!_stopWords.contains(word)) tokens.add(word);
     }

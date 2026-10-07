@@ -1,0 +1,102 @@
+{
+  "lessons": [
+    {
+      "id": "kotlin_project_cli_ledger",
+      "category": "kotlin",
+      "title": {"zh": "实战：Kotlin 命令行记账工具", "en": "Hands-on Kotlin CLI Ledger"},
+      "summary": {"zh": "从命令行解析、不可变模型与校验讲到原子写入、协程与打包分发。", "en": "Cover CLI parsing, immutable models, validation, atomic writes, coroutines and packaging."},
+      "keywords": ["Kotlin", "命令行", "协程", "序列化", "测试"],
+      "difficulty": "高级",
+      "minutes": 60,
+      "order": 13,
+      "prerequisites": ["kotlin_testing"],
+      "image": {"title": "一次命令的完整处理链路", "flow": ["解析参数并校验", "更新不可变模型", "写入临时文件", "原子替换数据文件", "输出结果与退出码"]},
+      "goals": [
+        "能把命令行输入解析成类型安全的参数对象并给出明确退出码。",
+        "能用不可变模型与密封结果类型表达成功与失败。",
+        "能用临时文件加原子替换保证数据文件在异常时不损坏。"
+      ],
+      "prerequisitesText": [
+        "熟悉 Kotlin 的可空类型、数据类与密封类。",
+        "了解 Kotlin 协程的基本用法。",
+        "知道文件读写与异常处理的基本方式。"
+      ],
+      "concepts": [
+        {
+          "name": "命令解析与退出码",
+          "plain": "命令行工具把参数解析成类型安全的对象，并用不同的退出码表达成功、输入错误与运行失败。",
+          "mechanism": "解析阶段负责把字符串转成数字、日期等类型并校验范围，失败时输出用法提示并返回约定退出码。",
+          "example": "分别传入合法参数、错误类型与缺失参数，观察退出码与提示信息是否一致。",
+          "boundary": "把解析与业务逻辑混在一起会让错误信息难以定位，也让单元测试必须构造完整命令行。",
+          "engineering": "解析结果用密封类型区分成功与用法错误，业务层只接收已校验的模型。"
+        },
+        {
+          "name": "不可变模型与校验",
+          "plain": "记账条目用不可变数据类表示，任何修改都产生新对象，校验集中在创建入口。",
+          "mechanism": "构造函数或工厂函数负责检查金额精度、日期顺序与分类合法性，非法输入直接返回失败而不是留下半成品对象。",
+          "example": "尝试创建金额为负、日期格式错误的条目，确认都在创建阶段被拒绝。",
+          "boundary": "把校验分散到各个使用点会漏掉路径，尤其是从文件反序列化时最容易绕过校验。",
+          "engineering": "反序列化后统一走同一套校验函数，避免出现只有内存对象合法、文件对象非法的差异。"
+        },
+        {
+          "name": "原子写入与数据安全",
+          "plain": "直接覆盖数据文件时，如果在写入中途崩溃就会得到半截文件。",
+          "mechanism": "先把新内容写进同目录的临时文件并刷新，再用重命名替换目标文件，重命名在多数文件系统上是原子操作。",
+          "example": "在写入过程中强制结束进程，检查数据文件是否仍是上一份完整内容。",
+          "boundary": "临时文件与目标文件不在同一分区时重命名会退化为复制，原子性不再成立。",
+          "engineering": "保留一份备份并记录格式版本号，升级时先读版本再决定迁移路径。"
+        },
+        {
+          "name": "协程、测试与分发",
+          "plain": "协程适合并发读取多个文件或执行网络请求，命令行工具则要保证主流程可测试、可打包。",
+          "mechanism": "用结构化并发把多个任务放进同一作用域，任一失败可取消其余任务；测试用可注入的协程调度器与临时目录保证可重复。",
+          "example": "并发读取多个月的账单文件并汇总，统计串行与并发的耗时差异。",
+          "boundary": "在全局作用域里启动协程会让异常被吞掉，测试也会因为后台任务未结束而不稳定。",
+          "engineering": "把调度器与文件路径作为依赖注入，发布时打包成可执行分发包并写明运行环境要求。"
+        }
+      ],
+      "steps": ["定义命令与参数结构", "实现解析与退出码约定", "建立不可变模型与校验", "实现原子写入与备份", "补测试并打包分发"],
+      "code": {
+        "language": "kotlin",
+        "snippet": "import java.nio.file.Files\nimport java.nio.file.Path\nimport java.nio.file.StandardCopyOption\n\nsealed interface ParseResult {\n    data class Ok(val amountCents: Long, val category: String) : ParseResult\n    data class Failure(val message: String) : ParseResult\n}\n\nfun parseAmount(raw: String?): ParseResult {\n    val text = raw?.trim().orEmpty()\n    if (text.isEmpty()) return ParseResult.Failure(\"缺少金额参数\")\n    val cents = text.toBigDecimalOrNull()?.movePointRight(2)?.toLong()\n        ?: return ParseResult.Failure(\"金额必须是数字\")\n    if (cents <= 0) return ParseResult.Failure(\"金额必须大于 0\")\n    return ParseResult.Ok(cents, \"default\")\n}\n\nfun writeAtomically(target: Path, content: String) {\n    val dir = target.toAbsolutePath().parent\n    val temp = Files.createTempFile(dir, \"ledger\", \".tmp\")\n    Files.writeString(temp, content)\n    Files.move(temp, target, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE)\n}\n\nfun main(args: Array<String>) {\n    when (val result = parseAmount(args.firstOrNull())) {\n        is ParseResult.Failure -> {\n            System.err.println(result.message)\n            kotlin.system.exitProcess(2)\n        }\n        is ParseResult.Ok -> println(\"记录成功：${result.amountCents} 分\")\n    }\n}",
+        "walkthrough": "示例用密封接口把解析成功与失败分开，金额统一转成分避免浮点误差；写入时先在同目录创建临时文件再原子移动，保证中途失败不会破坏已有账本。",
+        "expected_output": "传入 12.50 时输出「记录成功：1250 分」并返回 0；传入空值或负数时输出提示并返回退出码 2；写入过程中中断进程后，原数据文件仍保持完整。"
+      },
+      "faults": [
+        {"topic": "直接覆盖数据文件", "wrong": "用截断方式写入原文件，崩溃后只剩半截内容", "fix": "先写同目录临时文件，再用原子替换覆盖目标文件"},
+        {"topic": "金额使用浮点数", "wrong": "用 Double 累加金额导致分位误差", "fix": "统一以最小货币单位整数或高精度小数存储"},
+        {"topic": "全局作用域里启动协程", "wrong": "用非结构化并发启动后台任务，异常被吞掉", "fix": "在受控作用域内并发，失败时取消同组任务并向上报告"}
+      ],
+      "glossary": [
+        {"term": "密封接口", "definition": "限制实现集合的类型，便于用穷尽分支表达结果。"},
+        {"term": "退出码", "definition": "进程返回给调用方的整数状态，用于区分成功与不同失败类型。"},
+        {"term": "原子替换", "definition": "通过重命名让文件内容整体切换、避免中间状态的写入方式。"},
+        {"term": "结构化并发", "definition": "让子任务的生命周期受父作用域约束的并发模型。"},
+        {"term": "不可变数据", "definition": "创建后不再改变，修改会生成新实例的数据结构。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "命令行工具用不同退出码的意义是什么？", "options": ["让脚本能区分成功与不同失败类型", "提高程序的运行速度", "减少代码行数", "替代日志输出"], "answer": 0, "explanation": "退出码是命令行工具与调用脚本之间的契约：0 表示成功，非 0 分别表示用法错误、输入非法或运行失败，自动化流程据此决定重试、告警还是直接中止。"},
+        {"type": "single", "question": "金额为什么更适合以最小单位整数存储？", "options": ["避免浮点数累加带来的精度误差", "整数占用的磁盘空间更小", "整数可以自动排序", "浮点数无法参与加法运算"], "answer": 0, "explanation": "二进制浮点无法精确表示多数十进制小数，多次累加后会出现分位误差；以分或更高精度的小数类型存储可以让账目在任何一次汇总后都保持精确。"},
+        {"type": "multi", "question": "以下哪些做法能提高数据文件的安全性？（多选）", "options": ["写入同目录临时文件后原子替换", "保留一份备份并记录格式版本", "每次写入前先清空原文件", "反序列化后统一走同一套校验"], "answers": [0, 1, 3], "answer": 0, "explanation": "原子替换保证中途失败不影响原文件，备份与版本号让升级和回滚有依据，统一校验能防止文件里的非法数据绕过检查；先清空原文件再写入会让崩溃直接造成数据丢失。"},
+        {"type": "order", "question": "请按一次记账写入的合理顺序排列步骤。", "options": ["把临时文件原子替换为目标文件", "解析参数并校验", "把新内容写入临时文件", "重新加载文件确认结果可读"], "correct_order": [1, 2, 0, 3], "answer": 0, "explanation": "顺序是先解析校验、再写临时文件、然后原子替换、最后重新加载验证；省略最后的回读验证，格式错误可能要等到下一次启动才被发现。"},
+        {"type": "code", "question": "阅读这段 Kotlin 代码，下面哪项判断是正确的？", "options": ["解析失败返回密封类型，写入通过临时文件加原子替换完成", "金额以 Double 存储并直接累加", "解析失败时抛出异常并由全局处理器忽略", "写入直接覆盖目标文件以节省磁盘操作"], "answer": 0, "code": "sealed interface ParseResult {\n    data class Ok(val amountCents: Long, val category: String) : ParseResult\n    data class Failure(val message: String) : ParseResult\n}\n\nfun writeAtomically(target: Path, content: String) {\n    val temp = Files.createTempFile(target.toAbsolutePath().parent, \"ledger\", \".tmp\")\n    Files.writeString(temp, content)\n    Files.move(temp, target, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE)\n}", "language": "kotlin", "explanation": "这段 Kotlin 代码用密封类型表达解析结果，调用方必须显式处理失败分支；写入路径先落到同目录临时文件再原子替换，避免中途崩溃留下半截数据文件。"}
+      ],
+      "practice": [
+        "实现 add、list 与 summary 三个子命令，并约定各自的退出码。",
+        "人为在写入中途终止进程，验证原子替换后数据文件仍然完整可读。",
+        "并发读取多个账单文件做汇总，比较串行与并发的耗时与错误处理差异。"
+      ],
+      "refs": [
+        {"name": "Kotlin 官方文档：协程", "url": "https://kotlinlang.org/docs/coroutines-overview.html"},
+        {"name": "Kotlin 官方文档：命令行编译器", "url": "https://kotlinlang.org/docs/command-line.html"},
+        {"name": "Java 文档：Files 与原子移动", "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/nio/file/Files.html"}
+      ],
+      "english": "A Kotlin CLI tool parses arguments into typed values, reports failures through exit codes and sealed results, and keeps domain models immutable with validation at the creation boundary. Persist data by writing a temporary file and moving it into place atomically, keep money in minor units, and use structured concurrency so failures cancel sibling tasks instead of leaking background work.",
+      "reviewPoints": [
+        "能说明退出码约定与脚本自动化的关系。",
+        "能写出原子写入的完整步骤并解释每一步的必要性。",
+        "能指出校验应该集中在哪个位置。"
+      ]
+    }
+  ]
+}

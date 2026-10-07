@@ -109,7 +109,10 @@ void main(List<String> args) {
             difficultyRank(prerequisite['difficulty'].toString()) > rank) {
           dropped++;
           droppedEdges
-              .putIfAbsent(categoryOf[lesson['id'].toString()]!, () => <String>[])
+              .putIfAbsent(
+                categoryOf[lesson['id'].toString()]!,
+                () => <String>[],
+              )
               .add('${lesson['id']} ← $id');
           continue;
         }
@@ -129,9 +132,8 @@ void main(List<String> args) {
       final lessons = (category['lessons'] as List<dynamic>)
           .map((raw) => (raw as Map).cast<String, dynamic>())
           .toList();
-      final current = <Map<String, dynamic>>[...lessons]..sort(
-        (a, b) => _orderOf(a).compareTo(_orderOf(b)),
-      );
+      final current = <Map<String, dynamic>>[...lessons]
+        ..sort((a, b) => _orderOf(a).compareTo(_orderOf(b)));
       final indexOf = <String, int>{
         for (var i = 0; i < current.length; i++) current[i]['id'].toString(): i,
       };
@@ -222,10 +224,7 @@ void main(List<String> args) {
       // 让 542 篇课程的头部元数据格式保持一致。
       if (!updated.contains('预计用时')) {
         updated = updated.replaceFirstMapped(
-          RegExp(
-            r'^> 内容更新时间：(\d{4}-\d{2}-\d{2})[^\n]*$',
-            multiLine: true,
-          ),
+          RegExp(r'^> 内容更新时间：(\d{4}-\d{2}-\d{2})[^\n]*$', multiLine: true),
           (match) =>
               '> 内容更新时间：${match.group(1)} · '
               '学习阶段：$difficulty · 预计用时：$minutes 分钟',
@@ -288,10 +287,11 @@ Map<String, int> verifyManifest(
   var prerequisiteViolations = 0;
   var orderGaps = 0;
   for (final category in categories) {
-    final ordered = (category['lessons'] as List<dynamic>)
-        .map((raw) => (raw as Map).cast<String, dynamic>())
-        .toList()
-      ..sort((a, b) => _orderOf(a).compareTo(_orderOf(b)));
+    final ordered =
+        (category['lessons'] as List<dynamic>)
+            .map((raw) => (raw as Map).cast<String, dynamic>())
+            .toList()
+          ..sort((a, b) => _orderOf(a).compareTo(_orderOf(b)));
     final position = <String, int>{
       for (var i = 0; i < ordered.length; i++) ordered[i]['id'].toString(): i,
     };

@@ -16,7 +16,8 @@ void main() {
     final category = (rawCategory as Map).cast<String, dynamic>();
     for (final rawLesson in category['lessons'] as List<dynamic>) {
       final lesson = (rawLesson as Map).cast<String, dynamic>();
-      final title = ((lesson['title'] as Map?)?['zh'] ?? lesson['id']).toString();
+      final title = ((lesson['title'] as Map?)?['zh'] ?? lesson['id'])
+          .toString();
       final quiz = (lesson['quiz'] as List<dynamic>? ?? const [])
           .map((item) => (item as Map).cast<String, dynamic>())
           .toList();
@@ -70,9 +71,6 @@ String _repair(String text, String title) {
     '如果只改一个条件，输出通常会随之改变，因此不能脱离代码前提作答。',
     '在「$title」中，如果只改一个条件，输出通常会随之改变，因此不能脱离代码前提作答。',
   );
-  result = result.replaceAll(
-    '正确顺序是：',
-    '在「$title」中，正确顺序是：',
-  );
+  result = result.replaceAll('正确顺序是：', '在「$title」中，正确顺序是：');
   return result;
 }

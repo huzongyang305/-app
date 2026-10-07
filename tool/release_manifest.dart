@@ -58,12 +58,10 @@ Future<void> main(List<String> args) async {
     'artifact_count': artifacts.length,
     'artifacts': artifacts,
   };
-  File('$outputDir/release_manifest.json').writeAsStringSync(
-    const JsonEncoder.withIndent('  ').convert(manifest),
-  );
-  File('$outputDir/SHA256SUMS.txt').writeAsStringSync(
-    '${checksumLines.join('\n')}\n',
-  );
+  File('$outputDir/release_manifest.json')
+      .writeAsStringSync(const JsonEncoder.withIndent('  ').convert(manifest));
+  File('$outputDir/SHA256SUMS.txt')
+      .writeAsStringSync('${checksumLines.join('\n')}\n');
   stdout.writeln('发布清单（$version，共 ${artifacts.length} 个文件）：');
   for (final artifact in artifacts) {
     stdout.writeln(

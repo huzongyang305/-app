@@ -290,9 +290,7 @@ List<_Section> _parseSections(List<String> lines) {
     if (inFence) continue;
     final match = RegExp(r'^(#{1,6})\s+(.*)$').firstMatch(line);
     if (match == null) continue;
-    sections.add(
-      _Section(i, match.group(1)!.length, match.group(2)!.trim()),
-    );
+    sections.add(_Section(i, match.group(1)!.length, match.group(2)!.trim()));
   }
   var parentH2 = '';
   for (var i = 0; i < sections.length; i++) {
@@ -409,7 +407,8 @@ List<String> _collectSources(
         .trim();
     if (normalized.length < 24 || normalized.length > 120) continue;
     if (!seen.add(normalized)) continue;
-    final hit = (title.isNotEmpty && normalized.contains(title)) ||
+    final hit =
+        (title.isNotEmpty && normalized.contains(title)) ||
         keywords.any(
           (keyword) => keyword.length >= 2 && normalized.contains(keyword),
         );
