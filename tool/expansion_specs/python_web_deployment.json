@@ -1,0 +1,258 @@
+{
+  "lessons": [
+    {
+      "id": "python_web_deployment",
+      "category": "python",
+      "title": {
+        "zh": "Python Web 部署：WSGI、ASGI 与容器化",
+        "en": "Python Web Deployment with WSGI, ASGI and Containers"
+      },
+      "summary": {
+        "zh": "把应用从开发服务器搬进生产：理解 WSGI 与 ASGI、进程模型、反向代理、容器、健康检查和灰度发布。",
+        "en": "Move from a development server to production with WSGI and ASGI, process models, reverse proxies, containers, health checks and progressive delivery."
+      },
+      "keywords": [
+        "WSGI",
+        "ASGI",
+        "Uvicorn",
+        "容器化",
+        "健康检查"
+      ],
+      "difficulty": "高级",
+      "minutes": 75,
+      "order": 36,
+      "prerequisites": [
+        "python_project_api"
+      ],
+      "related": [
+        "python_http_clients",
+        "python_project_architecture"
+      ],
+      "image": {
+        "title": "生产请求的完整链路",
+        "flow": [
+          "客户端与 TLS",
+          "反向代理",
+          "应用服务器 worker",
+          "应用代码",
+          "数据库与缓存"
+        ]
+      },
+      "goals": [
+        "能解释 WSGI 与 ASGI 的调用约定和适用场景。",
+        "能按 CPU、内存和 I/O 特征设置 worker 与并发参数。",
+        "能写出非 root、可观测、可优雅停机的容器部署方案。"
+      ],
+      "prerequisitesText": [
+        "已经用 FastAPI 或 Flask 写过可运行接口。",
+        "知道 HTTP 请求、响应和状态码。",
+        "能在命令行启动服务并用 curl 或浏览器访问。"
+      ],
+      "concepts": [
+        {
+          "name": "WSGI 与 ASGI 协议",
+          "plain": "WSGI 用同步可调用对象表示应用，ASGI 用异步可等待接口表示应用；两者都把服务器与框架解耦，让同一应用可以运行在不同服务器上。",
+          "mechanism": "WSGI 接收 environ 与 start_response，逐个返回响应体字节块；ASGI 接收 scope、receive、send，通过事件消息支持 HTTP、WebSocket 和生命周期事件。",
+          "example": "手写一个最小 ASGI 应用，按协议发送响应开始和响应体两条消息。",
+          "boundary": "异步框架里执行阻塞代码会占住事件循环；同步框架在异步服务器中仍受 worker 数量限制，协议不会自动解决数据库连接和线程池问题。",
+          "engineering": "应用代码不依赖某个服务器的私有对象，中间件按协议编写，测试直接调用 ASGI 接口而不启动真实网络。"
+        },
+        {
+          "name": "应用服务器与 worker 模型",
+          "plain": "生产环境使用 Uvicorn、Hypercorn 或 Gunicorn 等服务器管理进程与连接；worker 数量决定并发能力，也决定内存占用。",
+          "mechanism": "每个 worker 独立加载应用并处理请求，主进程负责创建、监控和重启；异步 worker 在单进程内可以处理大量 I/O 并发，CPU 密集任务需要更多进程或独立任务队列。",
+          "example": "用四核机器上的两个异步 worker 启动服务，记录启动内存和并发请求下的 CPU 使用率。",
+          "boundary": "worker 不是越多越好，数据库连接数、文件描述符和内存会成倍增长；有状态会话不能依赖进程内存。",
+          "engineering": "并发参数从压测和资源上限反推，启动时预热连接，滚动重启时先摘流再退出。"
+        },
+        {
+          "name": "反向代理与边缘终止",
+          "plain": "反向代理负责 TLS 终止、静态文件、压缩、限流和请求路由，应用服务器只处理业务逻辑。",
+          "mechanism": "代理转发请求时添加 X-Forwarded-For、Host 等头，应用需要信任链和真实客户端解析；超时、上传大小和请求体限制要在边缘与应用两侧保持一致。",
+          "example": "配置代理转发到本地应用端口，并用带转发头的请求验证客户端地址解析。",
+          "boundary": "无条件信任客户端提供的转发头可以被伪造，必须只信任已知代理地址；代理超时短于应用超时会造成重复请求。",
+          "engineering": "边缘与应用共享超时预算，静态资源加缓存指纹，上传和 WebSocket 单独配置长连接。"
+        },
+        {
+          "name": "容器、非 root 与配置",
+          "plain": "容器把应用和依赖打包成可重复部署的镜像；生产镜像应使用非 root 用户、固定依赖、最小基础层和外部注入配置。",
+          "mechanism": "多阶段构建先在构建阶段安装编译工具和依赖，再把 wheel 复制到运行阶段；环境变量与密钥在运行时注入，健康检查暴露独立接口，停机信号触发应用停止接收新请求。",
+          "example": "查看一个多阶段 Dockerfile，确认最终镜像没有编译器、以非 root 运行且只包含运行依赖。",
+          "boundary": "镜像不应携带构建缓存和秘密；容器重启会丢失本地文件，状态必须放在数据库或对象存储。",
+          "engineering": "镜像标签使用版本或摘要，启动命令不含明文秘密，资源限制和健康检查写入部署清单。"
+        },
+        {
+          "name": "可观测性与渐进发布",
+          "plain": "生产系统需要日志、指标和追踪回答是否正常、哪里变慢以及影响哪些用户；发布策略决定新版本出问题时如何快速止损。",
+          "mechanism": "结构化日志带请求编号，指标记录延迟分位数、错误率、队列长度和资源使用，追踪贯穿代理到数据库；蓝绿发布切换流量，金丝雀先放小比例用户，指标异常自动回滚。",
+          "example": "为一次发布定义成功率、P95 延迟和错误率阈值，并说明指标超标时的回滚步骤。",
+          "boundary": "平均值会掩盖长尾延迟，日志过多会拖慢系统；发布窗口和回滚时间必须提前演练。",
+          "engineering": "每次发布有版本号、变更说明和回滚包，关键指标接入告警，数据库迁移保证新旧版本同时可用。"
+        }
+      ],
+      "steps": [
+        "按协议实现或接入应用",
+        "选择 worker 与并发模型",
+        "在边缘配置 TLS 与超时",
+        "用最小镜像和外部配置部署",
+        "通过健康检查与指标完成灰度发布"
+      ],
+      "code": {
+        "language": "python",
+        "snippet": "import asyncio\n\nasync def app(scope, receive, send):\n    assert scope[\"type\"] == \"http\"\n    body = b\"hello asgi\"\n    await send({\n        \"type\": \"http.response.start\",\n        \"status\": 200,\n        \"headers\": [(b\"content-type\", b\"text/plain; charset=utf-8\")],\n    })\n    await send({\"type\": \"http.response.body\", \"body\": body})\n\nasync def main():\n    messages = []\n\n    async def receive():\n        return {\"type\": \"http.request\", \"body\": b\"\", \"more_body\": False}\n\n    async def send(message):\n        messages.append(message)\n\n    await app({\"type\": \"http\", \"method\": \"GET\", \"path\": \"/\"}, receive, send)\n    print(\"状态:\", messages[0][\"status\"])\n    print(\"正文:\", messages[1][\"body\"].decode(\"utf-8\"))\n\nasyncio.run(main())",
+        "walkthrough": "应用实现最小 ASGI 协议：先发送响应开始消息和头部，再发送响应体消息；receive 和 send 由服务器提供，测试中用普通协程替代。真实部署时由 Uvicorn 等服务器调用这个应用，并在前面加反向代理和 TLS。",
+        "expected_output": "状态: 200\n正文: hello asgi"
+      },
+      "faults": [
+        {
+          "topic": "把开发服务器用于生产",
+          "wrong": "直接运行框架自带的 reload 开发服务器对外提供服务",
+          "fix": "使用经过生产验证的 ASGI 或 WSGI 服务器，关闭自动重载和调试模式"
+        },
+        {
+          "topic": "worker 数量盲目放大",
+          "wrong": "每个 CPU 核启动多个进程并复制数据库连接，资源和连接池迅速耗尽",
+          "fix": "根据压测、内存和数据库连接上限设置 worker，异步服务优先提升单 worker 并发"
+        },
+        {
+          "topic": "容器以 root 运行且包含构建工具",
+          "wrong": "最终镜像使用完整基础镜像、root 用户和未固定的依赖",
+          "fix": "多阶段构建，固定依赖版本，使用非 root 用户和最小运行镜像"
+        },
+        {
+          "topic": "没有健康检查和优雅停机",
+          "wrong": "滚动更新时新实例尚未就绪就接收流量，旧实例被强制终止",
+          "fix": "提供就绪与存活检查，停机时先摘流、停止接收请求并等待正在处理的请求结束"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "WSGI",
+          "definition": "Python 同步 Web 服务器与应用之间的标准调用接口。"
+        },
+        {
+          "term": "ASGI",
+          "definition": "支持异步、WebSocket 与生命周期事件的新一代服务器应用接口。"
+        },
+        {
+          "term": "worker",
+          "definition": "独立加载应用并处理请求的进程或执行单元。"
+        },
+        {
+          "term": "反向代理",
+          "definition": "位于客户端与应用之间，负责转发、TLS、缓存和限流的服务器。"
+        },
+        {
+          "term": "健康检查",
+          "definition": "平台定期探测服务是否存活或已准备好接收流量的接口。"
+        },
+        {
+          "term": "优雅停机",
+          "definition": "停止接收新请求并等待正在处理的请求完成后再退出进程。"
+        }
+      ],
+      "quiz": [
+        {
+          "type": "single",
+          "question": "ASGI 应用通过哪组参数与服务器交互？",
+          "options": [
+            "scope、receive、send",
+            "environ、start_response",
+            "request、response、socket",
+            "argv、stdin、stdout"
+          ],
+          "answer": 0,
+          "explanation": "ASGI 使用 scope 描述连接类型与元数据，receive 读取事件，send 发送事件，因此可以统一支持 HTTP、WebSocket 和生命周期事件；environ 与 start_response 是 WSGI 的同步接口。理解协议边界有助于写出与具体服务器解耦的应用和中间件。"
+        },
+        {
+          "type": "single",
+          "question": "异步服务中 worker 数量不能盲目增加，最主要的原因是什么？",
+          "options": [
+            "每个 worker 都会消耗内存和数据库连接等有限资源",
+            "worker 只能启动一个",
+            "异步服务器不支持多进程",
+            "增加 worker 会让代码语法失效"
+          ],
+          "answer": 0,
+          "explanation": "worker 越多，应用内存、连接池、文件描述符和数据库连接都会成倍增长，可能先压垮数据库而不是提升吞吐。异步 worker 单进程已经能处理大量 I/O 并发，应该通过压测和资源上限确定数量，并为 CPU 密集任务使用独立进程或任务队列。"
+        },
+        {
+          "type": "multi",
+          "question": "生产容器部署应满足哪些要求？（多选）",
+          "options": [
+            "最终镜像以非 root 用户运行",
+            "依赖版本固定且构建工具不进入运行镜像",
+            "配置和秘密在运行时注入",
+            "把数据库密码写进 Dockerfile 方便复用"
+          ],
+          "answers": [
+            0,
+            1,
+            2
+          ],
+          "answer": 0,
+          "explanation": "非 root、最小镜像和外部配置能减少攻击面并让同一镜像跨环境部署；秘密写入 Dockerfile 会永久留在镜像层和历史记录中。还要配合只读文件系统、资源限制、健康检查和优雅停机。"
+        },
+        {
+          "type": "code",
+          "question": "这个 ASGI 应用最先发送哪条消息？",
+          "options": [
+            "http.response.start",
+            "http.response.body",
+            "http.request",
+            "lifespan.startup"
+          ],
+          "answer": 0,
+          "code": "await send({\"type\": \"http.response.start\", \"status\": 200, \"headers\": []})\nawait send({\"type\": \"http.response.body\", \"body\": b\"ok\"})",
+          "language": "python",
+          "explanation": "响应必须先发送 http.response.start 声明状态码与头部，再发送一个或多个 http.response.body 消息；顺序颠倒会让服务器无法确定响应头。http.request 是服务器通过 receive 传给应用的请求事件，lifespan.startup 属于应用生命周期。这段代码展示的是 ASGI 协议的消息顺序，和 WSGI 的同步调用方式不同。"
+        },
+        {
+          "type": "debug",
+          "question": "滚动发布时旧实例收到停机信号后立即被杀死，可能出现什么问题？",
+          "options": [
+            "正在处理的请求被中断，客户端看到连接重置或重复提交",
+            "新实例无法启动",
+            "数据库自动回滚",
+            "日志级别被改变"
+          ],
+          "answer": 0,
+          "explanation": "强制终止会让正在处理的请求丢失响应，写操作可能已经部分完成，客户端重试还可能造成重复提交。正确流程是先摘除流量、停止接收新请求、等待处理完成并设置最长宽限期，再退出进程；数据库迁移也要保证新旧版本兼容。这道题对应 ASGI 服务的优雅停机：容器终止前必须等健康检查和在途请求处理完成。",
+          "code": "await send({'type': 'http.response.start', 'status': 200, 'headers': []})\nawait send({'type': 'http.response.body', 'body': b'ok'})",
+          "language": "python"
+        }
+      ],
+      "practice": [
+        "实现一个最小 WSGI 或 ASGI 应用，直接在测试中调用协议接口并验证响应消息。",
+        "为四核服务设计 worker 与连接池参数，写明依据并做一次小规模压力测试。",
+        "编写多阶段 Dockerfile，构建后在容器内确认当前用户不是 root 且没有编译器。",
+        "为一次发布定义成功率、P95 延迟与错误率阈值，写出灰度与回滚步骤。"
+      ],
+      "refs": [
+        {
+          "name": "ASGI 规范",
+          "url": "https://asgi.readthedocs.io/en/latest/"
+        },
+        {
+          "name": "Uvicorn 部署文档",
+          "url": "https://www.uvicorn.org/deployment/"
+        },
+        {
+          "name": "Gunicorn 设计文档",
+          "url": "https://docs.gunicorn.org/en/stable/design.html"
+        },
+        {
+          "name": "Docker Python 镜像指南",
+          "url": "https://docs.docker.com/language/python/"
+        }
+      ],
+      "english": "This lesson covers production Python web deployment: WSGI and ASGI contracts, worker sizing, reverse proxies and TLS, multi-stage containers with a non-root user, health checks, graceful shutdown, observability and progressive release with rollback.",
+      "reviewPoints": [
+        "能说明 WSGI 与 ASGI 的调用差异。",
+        "能根据资源上限确定 worker 和连接池。",
+        "能写出非 root、可健康检查、可优雅停机的部署方案。"
+      ],
+      "lab": "sandbox:python"
+    }
+  ]
+}

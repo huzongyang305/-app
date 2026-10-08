@@ -1,0 +1,258 @@
+{
+  "lessons": [
+    {
+      "id": "python_modern_features",
+      "category": "python",
+      "title": {
+        "zh": "现代 Python 特性与版本升级",
+        "en": "Modern Python Features and Upgrades"
+      },
+      "summary": {
+        "zh": "掌握 match 模式匹配、PEP 695 类型参数、新式 f-string 与现代标准库，并用版本矩阵安全升级代码。",
+        "en": "Use structural pattern matching, PEP 695 generics, modern f-strings and recent standard-library tools with a safe upgrade strategy."
+      },
+      "keywords": [
+        "match",
+        "PEP 695",
+        "类型参数",
+        "f-string",
+        "版本兼容"
+      ],
+      "difficulty": "进阶",
+      "minutes": 60,
+      "order": 33,
+      "prerequisites": [
+        "python_typing_testing"
+      ],
+      "related": [
+        "python_project_architecture",
+        "python_runtime_memory_performance"
+      ],
+      "image": {
+        "title": "从旧语法到现代写法",
+        "flow": [
+          "识别数据形状",
+          "用模式匹配解构",
+          "用 PEP 695 表达泛型",
+          "声明版本要求",
+          "多版本 CI 验证"
+        ]
+      },
+      "goals": [
+        "能用 match 清晰解构字典、序列和对象消息。",
+        "能读懂并写出 PEP 695 的类型参数与类型别名。",
+        "能通过版本声明、特性检测和 CI 矩阵安全引入新语法。"
+      ],
+      "prerequisitesText": [
+        "已经掌握函数、类、异常和类型注解基础。",
+        "用过 list、dict 和 dataclass 表示结构化数据。",
+        "能在 pyproject.toml 中查看项目配置。"
+      ],
+      "concepts": [
+        {
+          "name": "结构化模式匹配",
+          "plain": "match 语句按数据形状分支，case 可以匹配字面量、序列、映射、类实例，并把匹配到的部分绑定到变量。",
+          "mechanism": "匹配从上到下尝试，序列模式检查长度，映射模式检查键，类模式检查类型与属性，guard 进一步用条件过滤；下划线表示通配但不会绑定变量。",
+          "example": "用一个 describe 函数同时处理启动消息字典、重试列表和命令对象，最后用通配分支处理未知输入。",
+          "boundary": "match 不是所有 if/elif 的替代品，模式绑定变量只在对应分支生效；类模式依赖属性存在，鸭子类型对象要通过属性模式或显式检查。",
+          "engineering": "模式匹配适合协议消息、解析树和命令分派；分支要有兜底并记录未知形状，避免静默丢弃数据。"
+        },
+        {
+          "name": "PEP 695 类型参数新语法",
+          "plain": "PEP 695 让泛型函数、泛型类和类型别名可以在声明处直接写类型参数，不再需要先声明 TypeVar 和 Generic 基类。",
+          "mechanism": "函数写成 def first[T](items: list[T]) -> T，类写成 class Box[T]，类型别名写成 type Pair[T] = tuple[T, T]；类型参数拥有明确作用域，静态检查器能提供更好的错误提示。",
+          "example": "定义一个接受任意元素列表并返回首元素的泛型函数，再定义一个保存单个值的泛型容器类。",
+          "boundary": "新语法需要 Python 3.12 及以上解释器和支持它的类型检查器；运行时不检查类型，跨版本库仍需使用旧式写法或兼容分支。",
+          "engineering": "库的 requires-python 明确最低版本，类型检查器版本写入开发依赖，升级语法时同步更新 CI 矩阵。"
+        },
+        {
+          "name": "新式 f-string 与错误信息",
+          "plain": "Python 3.12 起 f-string 支持嵌套同类引号、多行表达式和更复杂的格式规格，同时解释器错误信息更贴近出错位置。",
+          "mechanism": "f-string 仍在编译阶段解析，但解析器改为更完整的表达式语法，因此可以复用同一类引号；调试等号可以同时显示表达式文本和值。",
+          "example": "在 3.12 及以上版本中写带嵌套引号和条件的 f-string，并输出表达式与结果。",
+          "boundary": "旧解释器无法解析新语法，发布库不能无条件下调；复杂 f-string 会降低可读性，逻辑较多时先计算再插入。",
+          "engineering": "使用 ruff 或格式化工具统一风格，日志字段优先结构化，超长 f-string 拆成中间变量。"
+        },
+        {
+          "name": "现代标准库补充",
+          "plain": "近年标准库加入 zoneinfo、tomllib、graphlib、itertools.batched 和 contextlib 增强，让时区、配置、拓扑排序和批处理少依赖第三方库。",
+          "mechanism": "zoneinfo 读取系统时区数据库并创建时区对象，tomllib 以只读方式解析 TOML，graphlib.TopologicalSorter 处理依赖顺序，itertools.batched 把迭代器切成固定大小批次。",
+          "example": "用 batched 把长序列切成三批，再用 TopologicalSorter 计算一个任务依赖图的执行顺序。",
+          "boundary": "tomllib 不能写回 TOML，需要生成配置时使用第三方库；时区数据库版本随系统或 tzdata 包更新，容器镜像要显式安装。",
+          "engineering": "优先使用标准库减少依赖面，跨版本项目通过兼容层封装差异，并在文档中标注最低版本。"
+        },
+        {
+          "name": "版本兼容与升级策略",
+          "plain": "语言升级不是一次性重写，而是先声明支持范围、再逐步替换语法和依赖，并用多版本 CI 证明兼容性。",
+          "mechanism": "requires-python 声明最低版本，classifiers 列出经过验证的版本，CI 矩阵在不同解释器上运行测试，特性检测用 sys.version_info 或能力探测而不是猜测。",
+          "example": "把项目最低版本提升到 3.12，开启新语法检查，并在 3.12 与 3.13 两个版本上运行测试。",
+          "boundary": "升级依赖可能同时要求新解释器，平台轮子可用性也要检查；运行版本与开发版本不同会让本地通过、部署失败。",
+          "engineering": "制定弃用时间表，先发布兼容版本再移除旧路径；升级提交附带基准、测试结果与回滚方案。"
+        }
+      ],
+      "steps": [
+        "确认目标解释器版本与支持范围",
+        "用数据形状替换复杂条件分支",
+        "按需引入类型参数和新语法",
+        "在配置中声明最低版本",
+        "用多版本 CI 与基准验证升级"
+      ],
+      "code": {
+        "language": "python",
+        "snippet": "from dataclasses import dataclass\n\n@dataclass\nclass Command:\n    name: str\n    args: list[str]\n\ndef describe(message):\n    match message:\n        case {\"type\": \"start\", \"id\": int() as request_id}:\n            return f\"启动请求 {request_id}\"\n        case [\"retry\", int(attempt)] if attempt > 0:\n            return f\"第 {attempt} 次重试\"\n        case Command(name=name, args=args) if args:\n            return f\"命令 {name}: {','.join(args)}\"\n        case _:\n            return \"未知消息\"\n\nprint(describe({\"type\": \"start\", \"id\": 7}))\nprint(describe([\"retry\", 3]))\nprint(describe(Command(\"build\", [\"--release\"])))\nprint(describe(42))",
+        "walkthrough": "describe 依次匹配启动字典、重试列表、命令对象和未知值；映射模式同时校验键与值的类型，序列模式校验长度与元素，类模式按属性解构，guard 进一步要求重试次数为正。每个分支返回明确文本，最后一个分支兜住所有未识别形状。",
+        "expected_output": "启动请求 7\n第 3 次重试\n命令 build: --release\n未知消息"
+      },
+      "faults": [
+        {
+          "topic": "把 match 当成唯一分支工具",
+          "wrong": "把简单的两个布尔条件也改写成多层 match，可读性反而下降",
+          "fix": "数据形状复杂时使用模式匹配，普通条件判断继续使用 if"
+        },
+        {
+          "topic": "类模式依赖位置参数",
+          "wrong": "用位置模式匹配对象，属性顺序变化后逻辑静默失效",
+          "fix": "优先使用关键字属性模式匹配，并在类中保持清晰的公开属性"
+        },
+        {
+          "topic": "使用新语法却未更新版本声明",
+          "wrong": "代码写了 PEP 695 类型参数，但 pyproject 仍声明支持 Python 3.10",
+          "fix": "同步提升 requires-python 并在 CI 矩阵中验证所有支持版本"
+        },
+        {
+          "topic": "盲信类型注解运行期检查",
+          "wrong": "以为标注类型后传入错误对象会立刻报错",
+          "fix": "使用静态检查器或运行时校验库，边界输入仍要显式验证"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "结构化模式匹配",
+          "definition": "根据数据的类型、形状和内容进行分支并绑定变量的语法。"
+        },
+        {
+          "term": "捕获模式",
+          "definition": "把匹配到的值绑定到新变量名的模式，可能意外覆盖已有名称。"
+        },
+        {
+          "term": "PEP 695",
+          "definition": "引入在声明处直接书写类型参数和类型别名的现代泛型语法。"
+        },
+        {
+          "term": "类型参数",
+          "definition": "在泛型函数或类中代表具体类型的占位符，使用时由实参类型替换。"
+        },
+        {
+          "term": "特性检测",
+          "definition": "在运行时检查解释器或库是否支持某项能力，而不是只比较版本号。"
+        },
+        {
+          "term": "requires-python",
+          "definition": "项目元数据中声明的最低 Python 版本约束。"
+        }
+      ],
+      "quiz": [
+        {
+          "type": "single",
+          "question": "match 语句中 case _ 的作用是什么？",
+          "options": [
+            "匹配任意值且不绑定变量，常作为兜底分支",
+            "只匹配下划线字符串",
+            "退出当前函数",
+            "忽略语法错误"
+          ],
+          "answer": 0,
+          "explanation": "下划线是通配模式，匹配任何值但不会创建变量，因此适合处理未知消息并记录日志；如果一定要绑定值，可以使用其他名称。兜底分支能避免协议扩展后消息被静默丢弃，同时也提醒开发者哪些形状还没有专门处理。"
+        },
+        {
+          "type": "single",
+          "question": "PEP 695 相比旧式泛型写法的主要改进是什么？",
+          "options": [
+            "可以直接在函数和类声明处写类型参数，作用域更清晰",
+            "让类型检查在运行时强制执行",
+            "自动生成序列化代码",
+            "完全取消对类型检查器的需求"
+          ],
+          "answer": 0,
+          "explanation": "PEP 695 让泛型函数、类和类型别名在声明处直接写参数，减少 TypeVar 和 Generic 的样板代码，并带来更清晰的类型参数作用域。它不会让 Python 在运行时强制检查类型，仍需要类型检查器和边界校验配合。"
+        },
+        {
+          "type": "multi",
+          "question": "安全引入现代语法需要做哪些事情？（多选）",
+          "options": [
+            "更新 requires-python 与元数据声明",
+            "在 CI 中运行支持版本矩阵",
+            "假设所有用户都使用最新解释器",
+            "为库用户提供弃用与迁移说明"
+          ],
+          "answers": [
+            0,
+            1,
+            3
+          ],
+          "answer": 0,
+          "explanation": "最低版本声明、多版本测试和迁移说明共同保证用户知道兼容边界并有机会调整；假定所有人使用最新版本会让旧环境安装后立即失败。对于需要跨版本支持的库，还可以使用兼容层或发布主要版本升级。"
+        },
+        {
+          "type": "code",
+          "question": "阅读模式匹配代码，describe(['retry', 0]) 返回什么？\n\nmatch message:\n    case ['retry', int(attempt)] if attempt > 0:\n        return f'第 {attempt} 次重试'\n    case _:\n        return '未知消息'",
+          "options": [
+            "未知消息",
+            "第 0 次重试",
+            "程序抛异常",
+            "retry"
+          ],
+          "answer": 0,
+          "code": "match message:\n    case ['retry', int(attempt)] if attempt > 0:\n        return f'第 {attempt} 次重试'\n    case _:\n        return '未知消息'",
+          "language": "python",
+          "explanation": "列表长度与元素类型都能匹配，但 guard 要求 attempt 大于零，0 不满足条件，因此该分支失败并落入通配分支，返回未知消息。guard 让模式匹配可以结合业务约束；失败时不会执行分支内的返回语句，也不会改变已匹配对象。"
+        },
+        {
+          "type": "debug",
+          "question": "这个项目声明最低 Python 3.10，但使用了哪种新语法会导致 3.10 无法解析？",
+          "options": [
+            "type 语句是 PEP 695 新语法，3.10 无法解析，需要提升最低版本或改用旧式别名",
+            "tuple 不能用作类型",
+            "注释不能放在 pyproject 后面",
+            "T 必须是具体类"
+          ],
+          "answer": 0,
+          "explanation": "type 语句由 Python 3.12 引入，3.10 的解释器在解析阶段就会失败，因此声明的最低版本与实际代码不一致。可以提升 requires-python 和 CI 矩阵，也可以为旧版本使用 TypeAlias 与 TypeVar 的兼容写法，并在文档中说明迁移路径。这道题对应版本兼容策略：PEP 695 类型参数需要 Python 3.12，最低版本声明必须同步更新。",
+          "code": "# pyproject: requires-python = '>=3.10'\ntype Pair[T] = tuple[T, T]",
+          "language": "python"
+        }
+      ],
+      "practice": [
+        "用 match 实现一个协议消息分流器，覆盖字典、列表、对象和未知形状，并为每个分支写测试。",
+        "把一段旧式 TypeVar 泛型代码改写为 PEP 695 语法，再在支持版本的检查器上验证类型。",
+        "用 itertools.batched 与 graphlib.TopologicalSorter 各完成一个小任务，记录它们替代了哪些手写逻辑。",
+        "为一个最低版本升级创建检查清单，包含依赖轮子、CI 矩阵、文档和回滚方案。"
+      ],
+      "refs": [
+        {
+          "name": "PEP 634：结构化模式匹配",
+          "url": "https://peps.python.org/pep-0634/"
+        },
+        {
+          "name": "PEP 695：类型参数语法",
+          "url": "https://peps.python.org/pep-0695/"
+        },
+        {
+          "name": "Python 3.12 新特性",
+          "url": "https://docs.python.org/3/whatsnew/3.12.html"
+        },
+        {
+          "name": "Python typing 文档",
+          "url": "https://docs.python.org/3/library/typing.html"
+        }
+      ],
+      "english": "This lesson introduces modern Python: structural pattern matching, PEP 695 generic syntax, nested and multi-line f-strings, zoneinfo, tomllib, graphlib and batched. It closes with a practical upgrade strategy based on requires-python, feature detection and a multi-version CI matrix.",
+      "reviewPoints": [
+        "能用 match 解构字典、序列和对象并保留兜底分支。",
+        "能写出 PEP 695 的泛型函数与类型别名。",
+        "能解释最低版本声明与多版本 CI 的必要性。"
+      ],
+      "lab": "sandbox:python"
+    }
+  ]
+}

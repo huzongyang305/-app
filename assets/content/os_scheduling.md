@@ -541,7 +541,7 @@ print(average_waiting(fcfs(jobs)), average_waiting(sjf_non_preemptive(jobs)))
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2027-06-17
+- 下次复核：2027-07-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
 - 来源性质：官方文档、标准或权威教材；正文为离线教学重组
 

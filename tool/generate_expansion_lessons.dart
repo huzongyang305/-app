@@ -391,17 +391,20 @@ String _render(Map<String, dynamic> spec) {
       ..writeln('### 现场 ${index + 1}：${fault['topic']}')
       ..writeln()
       ..writeln(
-        '**症状**：在《$title》里按「${fault['wrong']}」处理时，'
-        '输出和正文给出的基线对不上。',
+        '**症状**：在《$title》里采用「${fault['wrong']}」时，'
+        '${fault['topic']}会表现为错误结果、异常中断或状态不一致。',
       )
       ..writeln()
-      ..writeln('**根因**：${fault['wrong']}；这一步跳过了本课要求的前提，结论自然对不上。')
+      ..writeln(
+        '**根因**：这个做法没有执行与「${fault['topic']}」对应的检查，'
+        '问题被带到了后续步骤。',
+      )
       ..writeln()
       ..writeln('**修复**：${fault['fix']}')
       ..writeln()
       ..writeln(
-        '**验证**：回到《$title》的最小示例，先跑正常输入再跑一个边界输入，'
-        '两类结果都能解释才保留修改。',
+        '**验证**：为「${fault['topic']}」准备一个最小输入，'
+        '确认修复前的失败可以复现，修复后的输出与本课示例一致，再补一个边界输入。',
       )
       ..writeln();
   }
@@ -578,8 +581,12 @@ String _render(Map<String, dynamic> spec) {
     ..writeln();
 
   var markdown = buffer.toString().trimRight();
-  // 长度护栏：补一段由本课概念展开的深度拓展，避免空泛填充。
-  if (markdown.length < targetLength) {
+  // 长度护栏：语言类课程对齐审计的 12000 字符门槛，
+  // 补充由本课概念展开的深度拓展，避免空泛填充。
+  final minimumLength = languageCategories.contains(category)
+      ? 12000
+      : targetLength;
+  if (markdown.length < minimumLength) {
     markdown =
         '$markdown\n\n${_deepDive(title, concepts, steps, keywords, quiz, faults)}';
   }

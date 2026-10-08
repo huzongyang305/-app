@@ -1,0 +1,258 @@
+{
+  "lessons": [
+    {
+      "id": "python_runtime_memory_performance",
+      "category": "python",
+      "title": {
+        "zh": "Python 内存、性能与解释器原理",
+        "en": "Python Memory, Performance and Interpreter Internals"
+      },
+      "summary": {
+        "zh": "理解对象、引用计数、垃圾回收、字节码和剖析工具，用证据找到真正的瓶颈，再做可验证的优化。",
+        "en": "Understand objects, reference counting, garbage collection, bytecode and profiling tools before optimizing with evidence."
+      },
+      "keywords": [
+        "引用计数",
+        "垃圾回收",
+        "字节码",
+        "性能剖析",
+        "__slots__"
+      ],
+      "difficulty": "高级",
+      "minutes": 70,
+      "order": 32,
+      "prerequisites": [
+        "python_packaging_performance"
+      ],
+      "related": [
+        "python_concurrency_model",
+        "python_interop"
+      ],
+      "image": {
+        "title": "从一个对象到性能结论",
+        "flow": [
+          "创建对象与引用",
+          "引用计数变化",
+          "循环回收介入",
+          "字节码执行",
+          "剖析定位热点"
+        ]
+      },
+      "goals": [
+        "能解释引用计数、循环垃圾回收和弱引用的作用。",
+        "能用 tracemalloc、timeit 与 cProfile 定位内存和 CPU 热点。",
+        "能在算法、数据结构、解释器开销与原生扩展之间做出优化取舍。"
+      ],
+      "prerequisitesText": [
+        "会使用列表、字典、类和生成器。",
+        "知道时间复杂度与大 O 记号的基本含义。",
+        "能运行脚本并记录耗时。"
+      ],
+      "concepts": [
+        {
+          "name": "对象、引用计数与身份",
+          "plain": "CPython 给每个对象维护引用计数，指向对象的引用减少到零时立即释放；变量、容器元素和函数参数都会增加引用。",
+          "mechanism": "赋值增加引用，del、重新绑定和容器移除减少引用；sys.getrefcount 会临时增加一次计数，因此返回值比直觉多一。对象身份用 id 观察，is 比较身份，等于号比较值。",
+          "example": "创建对象后打印引用计数，把它放进列表再删除，观察计数变化与对象仍然存活。",
+          "boundary": "引用计数无法单独处理循环引用，需要垃圾回收器定期扫描；del 只是删除名字，不一定立即释放被其他对象引用的对象。",
+          "engineering": "资源释放优先使用上下文管理器，不依赖析构时机；长生命周期缓存要设置上限和失效策略。"
+        },
+        {
+          "name": "循环垃圾回收与弱引用",
+          "plain": "两个或多个对象互相引用会形成环，即使外部不再使用，引用计数也不会归零；分代垃圾回收器负责发现并回收这些环。",
+          "mechanism": "gc 模块按代扫描容器对象，找到不可达环后调用终结器并释放；weakref 持有不增加引用计数的引用，适合缓存和监听器。",
+          "example": "创建互相引用的对象，分别观察启用与禁用循环回收时的回收行为，再用弱引用观察对象是否存活。",
+          "boundary": "带有 __del__ 的对象在旧版本中可能延迟回收；频繁触发全量回收会造成停顿，实时系统要关注回收指标。",
+          "engineering": "缓存使用弱引用或显式淘汰，避免对象图过深；用 gc 统计和 tracemalloc 观察长期增长而不是猜测。"
+        },
+        {
+          "name": "内存布局与 slots",
+          "plain": "普通实例把属性放在字典中，灵活但每个实例都有额外内存开销；__slots__ 用固定槽位替代实例字典，降低内存并加快属性访问。",
+          "mechanism": "类声明 __slots__ 后实例不再拥有 __dict__，只能使用声明的属性；dataclass(slots=True) 可以自动生成对应结构，继承与多 slot 类需要按规则协作。",
+          "example": "定义一个使用 slots 的坐标类，确认实例没有 __dict__，再用 tracemalloc 比较大量实例的峰值内存。",
+          "boundary": "slots 会降低动态扩展能力，序列化和部分框架依赖 __dict__ 时可能不兼容；节省内存的收益随实例数量放大。",
+          "engineering": "只在对象数量大且属性固定的场景使用 slots，先在真实数据规模上测量收益，再决定是否引入约束。"
+        },
+        {
+          "name": "字节码与解释执行",
+          "plain": "Python 源码先编译成字节码，再由解释器循环执行；查看字节码可以理解名称查找、属性访问和函数调用的开销来自哪里。",
+          "mechanism": "dis 模块反汇编代码对象，显示 LOAD、STORE、CALL 等指令；局部变量通过数组索引访问，全局变量和属性需要字典查找，因此热点循环中局部化变量可能更快。",
+          "example": "反汇编一个简单赋值表达式并打印指令数量，观察名称加载与运算指令的顺序。",
+          "boundary": "单条字节码的成本随版本变化，微优化结论不能跨版本照搬；可读性明显下降而收益很小的改写不值得保留。",
+          "engineering": "先优化算法和 I/O，再考虑热点循环；性能改动必须有基准、注释和回退条件。"
+        },
+        {
+          "name": "剖析与性能优化闭环",
+          "plain": "性能优化从测量开始：timeit 测小段代码，cProfile 找函数级热点，tracemalloc 找内存分配，真实负载下的采样工具定位整机瓶颈。",
+          "mechanism": "cProfile 记录调用次数与累计耗时，采样剖析器按时间间隔抓取调用栈，火焰图把栈样本聚合成可视化；基准要固定输入、环境与重复次数，并比较分布而不是单次结果。",
+          "example": "对一个包含循环与字典操作的小函数运行 cProfile，找出耗时最多的函数并记录优化前的基线。",
+          "boundary": "剖析本身有开销，测试数据太小会放大噪声；优化后要防止把耗时转移到内存、I/O 或下游服务。",
+          "engineering": "建立可重复基准和性能预算，CI 只对关键路径做回归检测，优化提交附带测量数据和环境说明。"
+        }
+      ],
+      "steps": [
+        "先定义可观测的性能指标",
+        "用剖析工具找到主要瓶颈",
+        "区分算法、内存、I/O 与解释器开销",
+        "选择影响最大且风险可控的改动",
+        "用同一基准验证收益与回归"
+      ],
+      "code": {
+        "language": "python",
+        "snippet": "import dis\nimport sys\nimport tracemalloc\nfrom dataclasses import dataclass\n\n@dataclass(slots=True)\nclass Point:\n    x: int\n    y: int\n\npoint = Point(1, 2)\nprint(\"实例字典:\", hasattr(point, \"__dict__\"))\nprint(\"引用计数:\", sys.getrefcount(point) >= 2)\ninstructions = list(dis.get_instructions(\"total = a + b\"))\nprint(\"字节码指令数大于零:\", len(instructions) > 0)\n\ntracemalloc.start()\nitems = [Point(i, i) for i in range(1000)]\ncurrent, peak = tracemalloc.get_traced_memory()\ntracemalloc.stop()\nprint(\"对象数:\", len(items))\nprint(\"峰值字节大于零:\", peak > 0)",
+        "walkthrough": "slots 数据类创建的实例没有 __dict__，因此结构更紧凑；引用计数查询验证对象仍被变量引用；dis 展示赋值表达式的字节码；tracemalloc 记录创建一千个对象时的当前与峰值内存。示例的重点是先获得可观测数据，再讨论优化。",
+        "expected_output": "实例字典: False\n引用计数: True\n字节码指令数大于零: True\n对象数: 1000\n峰值字节大于零: True"
+      },
+      "faults": [
+        {
+          "topic": "没有基线就直接优化",
+          "wrong": "凭感觉重写热点代码，无法证明变快，也可能把瓶颈转移到别处",
+          "fix": "先记录时间、内存和调用次数基线，再针对剖析结果修改并复测"
+        },
+        {
+          "topic": "把 del 当成立即释放",
+          "wrong": "执行 del obj 后认为内存一定归还操作系统，忽略其他引用和内存池",
+          "fix": "理解 del 只删除名字，资源释放使用上下文管理器，内存归还由分配器决定"
+        },
+        {
+          "topic": "过度使用微优化",
+          "wrong": "为了减少一条字节码牺牲可读性，却忽略算法复杂度或网络等待",
+          "fix": "优先优化算法、批处理和 I/O，只在真实热点中做局部优化"
+        },
+        {
+          "topic": "依赖析构函数释放关键资源",
+          "wrong": "把文件、锁和连接的释放逻辑放在 __del__ 中，回收时机不可控",
+          "fix": "使用 with、try/finally 或显式 close，析构只作为最后兜底"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "引用计数",
+          "definition": "CPython 为每个对象维护的指向引用数量，降到零时立即释放对象。"
+        },
+        {
+          "term": "循环垃圾回收",
+          "definition": "发现并回收互相引用、引用计数不为零但已不可达对象图的机制。"
+        },
+        {
+          "term": "弱引用",
+          "definition": "不增加对象引用计数的引用，对象被回收后自动失效。"
+        },
+        {
+          "term": "__slots__",
+          "definition": "用固定属性槽位替代实例字典的类声明，可降低单个实例的内存开销。"
+        },
+        {
+          "term": "字节码",
+          "definition": "Python 源码编译后的中间指令，由虚拟机解释执行。"
+        },
+        {
+          "term": "火焰图",
+          "definition": "把采样得到的调用栈聚合展示的图形，宽度代表样本占比。"
+        }
+      ],
+      "quiz": [
+        {
+          "type": "single",
+          "question": "sys.getrefcount(obj) 的结果通常比预期多一，原因是什么？",
+          "options": [
+            "函数参数本身会临时增加一次引用",
+            "解释器会永久缓存对象",
+            "getrefcount 会复制对象",
+            "对象创建时引用计数从二开始"
+          ],
+          "answer": 0,
+          "explanation": "把对象传给 getrefcount 时，参数绑定会临时增加一次引用，所以返回值通常比外部可见的引用数多一。理解这一点可以避免误判对象是否泄漏；观察引用变化时应比较相对值，并用弱引用回调验证对象是否真正被回收。"
+        },
+        {
+          "type": "single",
+          "question": "使用 __slots__ 的主要收益是什么？",
+          "options": [
+            "大量实例时减少每个对象的内存占用并限制动态属性",
+            "让对象自动线程安全",
+            "让实例可以被序列化成 JSON",
+            "自动回收循环引用"
+          ],
+          "answer": 0,
+          "explanation": "slots 让实例用固定槽位存储属性，不再为每个对象创建字典，因此实例数量大时能显著节省内存，属性访问也可能更快。它同时限制了运行时新增属性，可能与依赖动态属性的框架或序列化方式冲突；是否使用要以真实对象的数量和内存分布为依据。"
+        },
+        {
+          "type": "multi",
+          "question": "性能优化前应该收集哪些证据？（多选）",
+          "options": [
+            "函数级耗时与调用次数",
+            "内存分配与峰值",
+            "真实输入规模下的端到端延迟",
+            "同行的直觉猜测"
+          ],
+          "answers": [
+            0,
+            1,
+            2
+          ],
+          "answer": 0,
+          "explanation": "CPU 剖析、内存跟踪和端到端延迟分别回答时间花在哪、内存是否增长、用户体验是否改善；只凭直觉优化容易改错位置。还要固定运行环境和输入规模，比较多次运行的分布，防止把噪声当成收益。"
+        },
+        {
+          "type": "code",
+          "question": "阅读代码，实例是否有 __dict__？\n\n@dataclass(slots=True)\nclass Point:\n    x: int\n    y: int\nprint(hasattr(Point(1, 2), '__dict__'))",
+          "options": [
+            "False",
+            "True",
+            "取决于 Python 版本",
+            "运行时抛异常"
+          ],
+          "answer": 0,
+          "code": "@dataclass(slots=True)\nclass Point:\n    x: int\n    y: int\nprint(hasattr(Point(1, 2), '__dict__'))",
+          "language": "python",
+          "explanation": "slots 数据类使用固定槽位保存 x 与 y，实例没有 __dict__，因此输出 False。这能减少大量小对象的内存开销，但也意味着不能在运行时随意添加属性；需要动态字段的对象不要盲目使用 slots。"
+        },
+        {
+          "type": "debug",
+          "question": "为什么这段循环优化可能不值得保留？",
+          "options": [
+            "收益通常很小，却明显降低了可读性，应先证明这是热点",
+            "局部变量在 Python 中无效",
+            "append 不能作为变量保存",
+            "len 只能用于字符串"
+          ],
+          "answer": 0,
+          "explanation": "把方法或函数缓存到局部变量确实可能减少少量查找开销，但效果取决于循环次数、版本和上下文，常常远小于算法与 I/O 的影响。没有剖析证据就采用这种写法，会让代码更难读、更难调试；只有在真实热点中验证收益后才值得保留。这道题对应性能剖析原则：没有火焰图和基准数据时，不要先做微优化。",
+          "code": "for item in items:\n    result.append(len(item))\n\nappend = result.append\nlength = len\nfor item in items:\n    append(length(item))",
+          "language": "python"
+        }
+      ],
+      "practice": [
+        "用 tracemalloc 比较普通数据类与 slots 数据类创建一万个对象时的峰值内存。",
+        "给一个重复计算函数建立 timeit 基线，再用 functools.cache 优化并记录命中率与耗时变化。",
+        "用 cProfile 分析一个混合了循环、字典和文件读写的脚本，列出耗时前三的函数。",
+        "构造循环引用与弱引用示例，验证垃圾回收后弱引用回调是否被触发。"
+      ],
+      "refs": [
+        {
+          "name": "Python dis 模块文档",
+          "url": "https://docs.python.org/3/library/dis.html"
+        },
+        {
+          "name": "Python gc 模块文档",
+          "url": "https://docs.python.org/3/library/gc.html"
+        },
+        {
+          "name": "Python tracemalloc 文档",
+          "url": "https://docs.python.org/3/library/tracemalloc.html"
+        },
+        {
+          "name": "Python 性能分析手册",
+          "url": "https://docs.python.org/3/library/profile.html"
+        }
+      ],
+      "english": "This lesson connects Python objects, reference counting, cyclic garbage collection, weak references and slots to practical memory profiling. It then explains bytecode, cProfile, sampling, flame graphs and a measure-optimize-verify loop for evidence-based performance work.",
+      "reviewPoints": [
+        "能解释引用计数为零与循环回收的区别。",
+        "能用 tracemalloc 或 cProfile 找到热点。",
+        "能判断微优化是否值得引入额外复杂度。"
+      ],
+      "lab": "sandbox:python"
+    }
+  ]
+}

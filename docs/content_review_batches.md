@@ -1,6 +1,6 @@
 # 人工复核批次台账
 
-- 生成时间：2026-10-08T05:18:06.003480Z
+- 生成时间：2026-10-08T09:21:48.432634Z
 - 批次大小：每批最多 24 门课
 - 记录入口：`docs/content_review_records.json` 的 `human_reviews`
 
@@ -844,8 +844,8 @@
 
 ## python-1 · Python
 
-- 课程数：21 · 已人工复核：0 · 状态：pending
-- 风险分布：高 0 · 中 0 · 低 21
+- 课程数：24 · 已人工复核：0 · 状态：pending
+- 风险分布：高 0 · 中 0 · 低 24
 - 复核重点：
   - 正文事实与术语是否准确，有无过时结论或含糊表述。
   - 代码块能否按正文步骤运行，输出与解析是否一致。
@@ -855,27 +855,61 @@
 
 | 课程 | 风险 | 字数 | 题目 | 配图 | 状态 |
 | --- | --- | --- | --- | --- | --- |
+| Python asyncio 异步编程：任务、超时与取消（python_asyncio） | low | 15545 | 5 | 1 | 待复核 |
 | Python 基础语法（python_basics） | low | 13953 | 6 | 2 | 待复核 |
+| Python CLI 与自动化实战（python_cli_automation） | low | 15594 | 5 | 1 | 待复核 |
 | 并发与异步（python_concurrency） | low | 11493 | 6 | 2 | 待复核 |
+| Python 并发模型、GIL 与线程进程选型（python_concurrency_model） | low | 14853 | 5 | 1 | 待复核 |
+| Python 容器进阶、拷贝与默认参数（python_containers_copy） | low | 14231 | 5 | 1 | 待复核 |
 | Python 上下文管理器与迭代器协议（python_context_iterators） | low | 9569 | 6 | 2 | 待复核 |
 | 控制流与推导式（python_control_flow） | low | 9119 | 6 | 2 | 待复核 |
+| Python 数据处理：NumPy、pandas 与 Polars（python_data_processing） | low | 14688 | 5 | 1 | 待复核 |
 | 列表、元组、字典与集合（python_data_structures） | low | 10014 | 6 | 2 | 待复核 |
+| Python 数据库与 SQLAlchemy 2.x（python_database_sqlalchemy） | low | 15584 | 5 | 1 | 待复核 |
 | Python 装饰器与生成器（python_decorators_generators） | low | 12720 | 6 | 2 | 待复核 |
 | 异常处理与文件操作（python_errors_files） | low | 11386 | 6 | 2 | 待复核 |
+| Python 异常、日志与文件 I/O 进阶（python_errors_logging_files） | low | 10701 | 5 | 1 | 待复核 |
 | Python 第一个脚本（python_first_script） | low | 9376 | 5 | 2 | 待复核 |
 | 函数（python_functions） | low | 10236 | 6 | 2 | 待复核 |
+| Python GUI 开发：Tkinter 与 PySide6（python_gui） | low | 13891 | 5 | 1 | 待复核 |
+| Python HTTP 客户端工程：超时、重试与认证（python_http_clients） | low | 14286 | 5 | 1 | 待复核 |
 | Python 条件判断（python_if_else） | low | 9097 | 5 | 2 | 待复核 |
 | Python 输入与输出（python_input_output） | low | 14881 | 5 | 2 | 待复核 |
+| Python 与 C、C++、Rust 互操作（python_interop） | low | 14214 | 5 | 1 | 待复核 |
+| Python 面试专题：原理、编码与工程判断（python_interview） | low | 12951 | 5 | 1 | 待复核 |
 | Python 列表与字典入门（python_list_dict_basics） | low | 13444 | 5 | 2 | 待复核 |
 | Python 循环入门（python_loops） | low | 13612 | 5 | 2 | 待复核 |
+
+## python-2 · Python
+
+- 课程数：17 · 已人工复核：0 · 状态：pending
+- 风险分布：高 0 · 中 0 · 低 17
+- 复核重点：
+  - 正文事实与术语是否准确，有无过时结论或含糊表述。
+  - 代码块能否按正文步骤运行，输出与解析是否一致。
+  - 测验题干、选项与解析是否自洽，答案下标是否正确。
+  - 参考资料链接可访问，且与课程主题匹配。
+  - 示例代码在本语言主流版本上可编译或可运行，无跨语言残留写法。
+
+| 课程 | 风险 | 字数 | 题目 | 配图 | 状态 |
+| --- | --- | --- | --- | --- | --- |
+| 现代 Python 特性与版本升级（python_modern_features） | low | 14793 | 5 | 1 | 待复核 |
 | 模块、包与虚拟环境（python_modules_stdlib） | low | 12108 | 6 | 2 | 待复核 |
 | 类与对象（python_oop） | low | 11190 | 6 | 2 | 待复核 |
+| Python 面向对象进阶：继承、组合与魔术方法（python_oop_advanced） | low | 15764 | 5 | 1 | 待复核 |
 | Python 打包、发布与性能（python_packaging_performance） | low | 11358 | 6 | 2 | 待复核 |
 | 实战：爬虫与数据分析（python_project） | low | 16542 | 6 | 2 | 待复核 |
 | 实战：FastAPI 订单服务（python_project_api） | low | 13866 | 6 | 2 | 待复核 |
+| Python 项目架构：分层、配置与依赖注入（python_project_architecture） | low | 14732 | 5 | 1 | 待复核 |
 | 实战：CSV 到 SQLite 的 ETL 流水线（python_project_etl） | low | 13293 | 6 | 2 | 待复核 |
+| Python pytest 测试实战（python_pytest） | low | 15374 | 5 | 1 | 待复核 |
+| Python 内存、性能与解释器原理（python_runtime_memory_performance） | low | 14422 | 5 | 1 | 待复核 |
+| Python 安全基础：密码、随机数与不可信输入（python_security） | low | 15224 | 5 | 1 | 待复核 |
+| Python 标准库实战工具箱（python_stdlib） | low | 11405 | 5 | 1 | 待复核 |
+| Python 字符串、Unicode 与格式化（python_strings_encoding） | low | 14742 | 5 | 1 | 待复核 |
 | 类型注解与测试（python_typing_testing） | low | 11272 | 6 | 2 | 待复核 |
 | 变量与数据类型（python_variables） | low | 9451 | 6 | 2 | 待复核 |
+| Python Web 部署：WSGI、ASGI 与容器化（python_web_deployment） | low | 14630 | 5 | 1 | 待复核 |
 
 ## rust-1 · Rust
 

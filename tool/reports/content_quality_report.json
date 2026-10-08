@@ -1,18 +1,18 @@
 {
-  "generated_at": "2026-10-08T13:17:00.941244",
-  "lesson_count": 609,
-  "total_chars": 8062898,
+  "generated_at": "2026-10-08T17:21:34.981301",
+  "lesson_count": 629,
+  "total_chars": 8382419,
   "min_chars": 10291,
-  "image_count": 1230,
-  "lessons_with_image": 609,
-  "lessons_with_lab_section": 609,
+  "image_count": 1250,
+  "lessons_with_image": 629,
+  "lessons_with_lab_section": 629,
   "question_type_histogram": {
-    "single": 1588,
-    "multi": 611,
+    "single": 1628,
+    "multi": 631,
     "fill": 361,
     "order": 279,
-    "code": 451,
-    "debug": 153
+    "code": 471,
+    "debug": 173
   },
   "lessons_without_code_question": 0,
   "error_count": 0,

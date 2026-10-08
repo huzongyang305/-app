@@ -1,0 +1,257 @@
+{
+  "lessons": [
+    {
+      "id": "python_interview",
+      "category": "python",
+      "title": {
+        "zh": "Python 面试专题：原理、编码与工程判断",
+        "en": "Python Interview Guide: Language, Coding and Engineering Judgment"
+      },
+      "summary": {
+        "zh": "把语言原理、编码题、并发性能、系统设计与项目复盘组织成结构化答题框架，展示推理过程而不只是背结论。",
+        "en": "Structure language, coding, concurrency, design and project answers around reasoning rather than memorized conclusions."
+      },
+      "keywords": [
+        "复杂度",
+        "边界条件",
+        "系统设计",
+        "STAR",
+        "故障复盘"
+      ],
+      "difficulty": "高级",
+      "minutes": 70,
+      "order": 40,
+      "prerequisites": [
+        "python_project_architecture"
+      ],
+      "related": [
+        "python_concurrency_model",
+        "python_runtime_memory_performance"
+      ],
+      "image": {
+        "title": "面试回答的四段结构",
+        "flow": [
+          "澄清目标与输入",
+          "给出方案与取舍",
+          "分析复杂度与边界",
+          "用测试和项目经验验证"
+        ]
+      },
+      "goals": [
+        "能用结论、机制、边界和例子四段式回答语言原理题。",
+        "能在编码题中先澄清需求、分析复杂度并写测试。",
+        "能用取舍和指标讲述系统设计与项目复盘经历。"
+      ],
+      "prerequisitesText": [
+        "已经掌握 Python 语法、数据结构、异常与模块。",
+        "理解并发、测试、数据库和网络的基础概念。",
+        "有至少一个可以完整讲述的项目经历。"
+      ],
+      "concepts": [
+        {
+          "name": "语言原理题的结构化回答",
+          "plain": "语言题不要只背一句结论，按结论、机制、边界和例子四步回答，让面试官看到你理解运行原理而不只是记住答案。",
+          "mechanism": "先说核心结论，再解释解释器或数据结构如何实现，接着说明适用条件和反例，最后用一个自己项目中的场景收尾；如果版本不同，主动说明差异。",
+          "example": "回答可变默认参数时，先给出共享结论，再解释定义时求值机制，补充 None 哨兵修复，并举出测试互相污染的例子。",
+          "boundary": "不要为了显得全面而堆砌无关概念，也不要对不确定的细节编造答案；可以明确说明验证方法和需要查证的点。",
+          "engineering": "回答尽量落到可观测结果和工程后果，例如内存增长、竞态、部署失败，而不是停留在术语定义。"
+        },
+        {
+          "name": "编码题与复杂度分析",
+          "plain": "编码题先澄清输入输出、数据规模和边界，再给出朴素方案、优化方案与复杂度，最后写测试验证。",
+          "mechanism": "用少量例子确认理解，明确空输入、重复元素和极端值；先写正确性优先的实现，再根据瓶颈使用哈希、排序、双指针、堆或缓存优化。",
+          "example": "统计词频 Top-K 时用 Counter 计数，再按次数降序、字典序升序排序并截取前 K 项，说明时间复杂度。",
+          "boundary": "复杂度过高、修改输入、未处理空值或重复项都是常见扣分点；口头说明代码假设能减少歧义。",
+          "engineering": "写出可运行代码后补边界测试，说明可读性、内存和性能之间的取舍，不追求炫技。"
+        },
+        {
+          "name": "并发、性能与故障题",
+          "plain": "并发题考察模型选择、正确性和失败处理，而不是只会背 GIL、线程和进程的定义。",
+          "mechanism": "先判断任务瓶颈是 I/O 还是 CPU，再选择异步、线程、进程或队列；说明共享状态、锁、背压、超时、重试和幂等策略，最后给出测量与压测方法。",
+          "example": "面对爬虫大量请求的场景，先限制并发数与域名速率，再处理超时、重试和去重，并说明失败任务如何恢复。",
+          "boundary": "不能承诺没有验证过的性能数字；并发提高吞吐也可能增加下游压力，必须说明容量与降级策略。",
+          "engineering": "回答中带入监控指标、日志和回滚方案，展示生产思维。"
+        },
+        {
+          "name": "系统设计题",
+          "plain": "系统设计没有唯一答案，面试官关注需求澄清、接口设计、数据模型、容量估算、可靠性和取舍过程。",
+          "mechanism": "先确认功能与非功能需求，画出客户端、服务、存储和外部依赖的边界；估算 QPS、数据量和增长率，再讨论分区、缓存、一致性、故障恢复与安全。",
+          "example": "设计一个学习进度同步服务，说明离线写入、冲突合并、幂等接口和隐私保护。",
+          "boundary": "不要一上来堆技术名词，也不要忽略成本和运维复杂度；每个选择都要能说出放弃了什么。",
+          "engineering": "给出可观测指标、灰度方式和演进路线，先做能承载当前规模的简单方案。"
+        },
+        {
+          "name": "项目复盘与行为面",
+          "plain": "项目题用背景、任务、行动、结果结构讲述，重点是你如何发现问题、做取舍、协作并量化结果。",
+          "mechanism": "用 STAR 组织故事，补充关键指标、失败尝试和复盘结论；回答冲突题时展示倾听、验证和对事不对人的处理方式。",
+          "example": "讲一次性能优化：说明基线、剖析结论、改动、指标提升和遗留风险，而不是只说用了什么工具。",
+          "boundary": "不要夸大个人贡献或编造数据，也要避免把团队成果全部归为自己；细节要经得起追问。",
+          "engineering": "准备两三个不同主题的项目故事，覆盖技术难点、协作冲突和失败学习，并熟悉其中的代码与数据。"
+        }
+      ],
+      "steps": [
+        "先复述问题并澄清输入输出",
+        "给出朴素方案与复杂度",
+        "说明优化依据与取舍",
+        "补充边界、测试和失败处理",
+        "用项目案例证明工程判断"
+      ],
+      "code": {
+        "language": "python",
+        "snippet": "from collections import Counter\n\ndef top_k(text: str, k: int) -> list[tuple[str, int]]:\n    if k <= 0:\n        return []\n    counts = Counter(text.lower().split())\n    return sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:k]\n\nsample = \"python sql python asyncio sql python\"\nprint(top_k(sample, 2))\nprint(top_k(sample, 0))",
+        "walkthrough": "函数先处理非正数 K 的边界，再用 Counter 统计词频；排序键先按次数降序，再按单词字典序升序，保证结果稳定；最后截取前 K 项。面试中应补充时间复杂度、空输入、大小写和 Unicode 词边界等假设。",
+        "expected_output": "[('python', 3), ('sql', 2)]\n[]"
+      },
+      "faults": [
+        {
+          "topic": "不澄清需求直接写代码",
+          "wrong": "听到题目就立刻编码，忽略了输入范围、空值和重复元素等关键假设",
+          "fix": "先用两个例子复述输入输出，确认规模与边界后再给方案"
+        },
+        {
+          "topic": "只给结论不说边界",
+          "wrong": "回答 GIL 让线程完全没用，忽略 I/O 等待会释放锁的事实",
+          "fix": "按结论、机制、边界和例子四步回答，说明适用条件"
+        },
+        {
+          "topic": "背诵答案却联系不上项目",
+          "wrong": "能背出事务定义，却说不清自己项目里为什么选这个隔离级别",
+          "fix": "准备真实项目案例，说明问题、选择、指标和复盘"
+        },
+        {
+          "topic": "编码后没有测试",
+          "wrong": "写完函数只跑一个正常样例，没有覆盖空输入和极端值",
+          "fix": "主动列出边界用例并口头验证，必要时写出测试代码"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "复杂度分析",
+          "definition": "用输入规模描述时间和空间增长趋势的方法，常以大 O 记号表示。"
+        },
+        {
+          "term": "边界条件",
+          "definition": "空输入、极值、重复项和非法值等最容易暴露实现缺陷的输入。"
+        },
+        {
+          "term": "STAR",
+          "definition": "按背景、任务、行动、结果组织行为面试回答的结构。"
+        },
+        {
+          "term": "系统设计",
+          "definition": "在功能、容量、可靠性、成本和演进之间做取舍并描述组件关系的过程。"
+        },
+        {
+          "term": "权衡",
+          "definition": "选择一种方案时明确获得的能力与放弃的代价。"
+        },
+        {
+          "term": "故障复盘",
+          "definition": "在事故后还原时间线、根因、影响和改进项的系统性总结。"
+        }
+      ],
+      "quiz": [
+        {
+          "type": "single",
+          "question": "回答 Python 语言原理题时，推荐的结构是什么？",
+          "options": [
+            "结论、机制、边界、例子",
+            "只背定义",
+            "从无关历史讲起",
+            "直接说不知道"
+          ],
+          "answer": 0,
+          "explanation": "先用一句话给结论，再解释底层机制，说明适用边界与反例，最后用项目例子落地，能同时展示记忆、理解和应用能力。只背定义无法应对追问，堆砌术语也会暴露对边界和工程后果理解不足。"
+        },
+        {
+          "type": "single",
+          "question": "拿到编码题后第一步应该做什么？",
+          "options": [
+            "澄清输入输出、规模和边界假设",
+            "立刻写完整代码",
+            "先优化到最优复杂度",
+            "询问面试官答案"
+          ],
+          "answer": 0,
+          "explanation": "先确认问题定义、数据规模、是否允许修改输入以及空值处理方式，可以避免整段方向错误；然后用小例子验证理解，给出朴素方案与优化方案，最后再编码并测试。直接写代码可能因为一个未澄清的约束全部返工。"
+        },
+        {
+          "type": "multi",
+          "question": "系统设计回答中应该包含哪些内容？（多选）",
+          "options": [
+            "功能与非功能需求",
+            "容量估算与瓶颈分析",
+            "故障恢复与可观测性",
+            "只列技术名词不谈取舍"
+          ],
+          "answers": [
+            0,
+            1,
+            2
+          ],
+          "answer": 0,
+          "explanation": "需求澄清、容量估算和可靠性设计构成系统设计主线，每个组件选择都要说明代价和放弃的能力。只列技术名词无法证明你理解约束，面试官更关注你如何从简单方案逐步演进到满足规模的方案。"
+        },
+        {
+          "type": "code",
+          "question": "阅读 top_k 代码，当 k 为 0 时返回什么？",
+          "options": [
+            "空列表 []",
+            "全部词频",
+            "None",
+            "抛出 IndexError"
+          ],
+          "answer": 0,
+          "code": "def top_k(text, k):\n    if k <= 0:\n        return []\n    ...",
+          "language": "python",
+          "explanation": "函数在最前面处理非正数 K 并返回空列表，避免切片出现意外语义；如果省略这个分支，Python 的切片 [:0] 同样返回空列表，但负数会返回除末尾之外的所有元素。显式边界处理能让行为清晰并方便测试。"
+        },
+        {
+          "type": "debug",
+          "question": "项目复盘中哪种讲法最有说服力？",
+          "options": [
+            "先给基线和问题，再讲方案、指标变化与遗留风险",
+            "只说用了很多先进技术",
+            "把团队成果全部说成个人完成",
+            "只讲成功不提失败和权衡"
+          ],
+          "answer": 0,
+          "explanation": "基线、问题、方案、指标和遗留风险构成完整因果链，能证明你真正参与并理解工程取舍；只堆技术名词或夸大贡献经不起追问。失败尝试和复盘同样有价值，能展示学习和协作能力。这道题对应面试中的故障复盘表达：用 STAR 讲清基线、方案、指标和遗留风险。",
+          "code": "def top_k(text, k):\n    if k <= 0:\n        return []\n    ...",
+          "language": "python"
+        }
+      ],
+      "practice": [
+        "选三个语言原理题，按结论、机制、边界、例子写出口述稿并控制在两分钟内。",
+        "完成一道中等难度编码题，补齐空输入、重复项和大规模用例的复杂度说明。",
+        "用容量估算设计一个学习进度同步服务，写出接口、存储、一致性和故障处理方案。",
+        "用 STAR 结构整理一个性能优化或故障复盘故事，并准备数据与代码细节。"
+      ],
+      "refs": [
+        {
+          "name": "Python 官方 FAQ",
+          "url": "https://docs.python.org/3/faq/"
+        },
+        {
+          "name": "Python 语言参考",
+          "url": "https://docs.python.org/3/reference/"
+        },
+        {
+          "name": "Tech Interview Handbook",
+          "url": "https://www.techinterviewhandbook.org/"
+        },
+        {
+          "name": "System Design Primer",
+          "url": "https://github.com/donnemartin/system-design-primer"
+        }
+      ],
+      "english": "This interview guide turns Python knowledge into structured answers: conclusion, mechanism, boundary and example for language questions; clarification, complexity and tests for coding; model selection and failure handling for concurrency; requirement, capacity and trade-off reasoning for system design; and STAR stories with measurable outcomes.",
+      "reviewPoints": [
+        "能用四段式回答语言原理题。",
+        "能在编码前澄清边界并分析复杂度。",
+        "能用指标与取舍讲述项目和系统设计。"
+      ],
+      "lab": "sandbox:python"
+    }
+  ]
+}

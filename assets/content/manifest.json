@@ -4843,6 +4843,108 @@
           }
         },
         {
+          "id": "python_strings_encoding",
+          "title": {
+            "zh": "Python 字符串、Unicode 与格式化",
+            "en": "Python Strings, Unicode and Formatting"
+          },
+          "summary": {
+            "zh": "把字符、字节、编码、格式化与正则串成一条完整链路，让文本处理代码在中文、emoji 和外部文件面前都不乱码。",
+            "en": "Connect characters, bytes, encodings, formatting and regular expressions into one text-processing pipeline."
+          },
+          "file": "assets/content/python_strings_encoding.md",
+          "minutes": 40,
+          "keywords": [
+            "Unicode",
+            "UTF-8",
+            "bytes",
+            "f-string",
+            "正则表达式"
+          ],
+          "difficulty": "基础",
+          "order": 10,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "Python 3 中 len('中文😀') 的结果是什么？",
+              "options": [
+                "3",
+                "5",
+                "6",
+                "取决于终端编码"
+              ],
+              "answer": 0,
+              "explanation": "结果是 3。Python 3 的 str 保存 Unicode 码点，中、文、😀 各算一个码点，len 返回码点数量而不是 UTF-8 字节数，也不受终端编码影响。该字符串用 UTF-8 编码后是 3 加 3 加 4 共 10 字节，所以把 len 当成字节数会在计算存储和网络包大小时产生偏差。"
+            },
+            {
+              "type": "single",
+              "question": "读取一个需要跨平台交换的文本文件，最稳妥的写法是？",
+              "options": [
+                "open(path)",
+                "open(path, 'w')",
+                "open(path, encoding='utf-8')",
+                "open(path, 'rb') 后直接当 str 使用"
+              ],
+              "answer": 2,
+              "explanation": "正确做法是显式传入 encoding='utf-8'。不指定编码时 Python 使用操作系统默认编码，同一个文件在中文 Windows 与 Linux 上可能得到不同结果；二进制模式返回 bytes，不能直接当 str 使用；写入模式还会截断原文件，因此与读取语义不同。 正确选项「open(path, encoding='utf-8')」对应《Python 字符串、Unicode 与格式化》的要点「encode 与 decode 的方向」：str 到 bytes 叫编码，bytes 到 str 叫解码；两端必须使用同一套字符集，否则会出现乱码或抛出 UnicodeDecodeError。判断「encode 与 decode 的方向」时先确认前提是否成立，再回到《Python 字符串、Unicode 与格式化》的示例核对一次；借鉴相邻主题的经验之前，先核对encode 与 decode 的方向的前提是否成立。"
+            },
+            {
+              "type": "multi",
+              "question": "以下哪些操作会在编码边界抛错或产生乱码？（多选）",
+              "options": [
+                "用 GBK 解码 UTF-8 字节",
+                "对 bytes 调用 str 独有的 format 方法",
+                "直接比较 bytes 与 str",
+                "先用 UTF-8 编码再用 UTF-8 解码"
+              ],
+              "answers": [
+                0,
+                1,
+                2
+              ],
+              "answer": 0,
+              "explanation": "用错误的字符集解码、对 bytes 调用 str 方法、把 bytes 与 str 直接比较都会失败或得到意外结果。显式用同一套 UTF-8 先编码再解码是正确往返，不会乱码。混淆类型时错误往往出现在边界层，因此要在读入和写出处集中处理编码。 正确选项「用 GBK 解码 UTF-8 字节；对 bytes 调用 str 独有的 format 方法；直接比较 bytes 与 str」对应《Python 字符串、Unicode 与格式化》的要点「字符串变换与不可变性」：str 一旦创建就不能原地修改，所有看起来在改字符串的方法都会返回新对象；切片、split、join、strip 和 casefold 是最常用的变换。判断「字符串变换与不可变性」时先确认前提是否成立，再回到《Python 字符串、Unicode 与格式化》的示例核对一次；记住字符串变换与不可变性的结论之外还要记住适用条件，换一个输入往往就不成立了。"
+            },
+            {
+              "type": "code",
+              "question": "阅读代码，输出与结论哪一项正确？\n\ntext = 'e' + chr(0x301)\nprint(len(text), text == 'é', unicodedata.normalize('NFC', text) == 'é')",
+              "options": [
+                "2 False True",
+                "2 True True",
+                "1 False True",
+                "2 False False"
+              ],
+              "answer": 0,
+              "code": "text = 'e' + chr(0x301)\nprint(len(text), text == 'é', unicodedata.normalize('NFC', text) == 'é')",
+              "language": "python",
+              "explanation": "结果是 2 False True。text 由字母 e 和组合重音两个码点组成，所以 len 为 2；直接与预组合形式的 é 比较不相等；NFC 规范化会把分解形式合并成预组合码点，因此规范化后比较为 True。要比较用户看到的字符，先统一规范化形式。这道题考察 Unicode 规范化：同一字符的不同码点序列必须先统一形式再比较。"
+            },
+            {
+              "type": "debug",
+              "question": "下面代码为什么没有拦住非法输入？\n\nre.match(r'[0-9]{4}-[0-9]{2}', '2026-10-08oops')",
+              "options": [
+                "match 只保证前缀匹配，尾部 oops 没有被校验，应改用 fullmatch",
+                "字符类写错导致数字无法匹配",
+                "re.match 会自动去掉字符串末尾字符",
+                "模式缺少分组所以匹配结果为空"
+              ],
+              "answer": 0,
+              "code": "re.match(r'[0-9]{4}-[0-9]{2}', '2026-10-08oops')",
+              "language": "python",
+              "explanation": "match 只要求模式从字符串开头匹配，不要求消耗整个字符串，所以 2026-10 这一段会成功，尾部的 oops 被忽略。需要整体校验时应使用 re.fullmatch，或在模式末尾补上锚点并覆盖完整内容；只看到匹配成功就放行是输入校验中的常见漏洞。 正确选项「match 只保证前缀匹配，尾部 oops 没有被校验，应改用 fullmatch」对应《Python 字符串、Unicode 与格式化》的要点「正则表达式与整体校验」：正则表达式用模式描述一类文本，适合提取和校验结构化字符串；Python 的 re 模块支持分组、命名组、查找和替换。判断「正则表达式与整体校验」时先确认前提是否成立，再回到《Python 字符串、Unicode 与格式化》的示例核对一次；把正则表达式与整体校验的做法换到别的约束下未必成立，先确认边界再决定答案。"
+            }
+          ],
+          "prerequisites": [
+            "python_variables",
+            "python_data_structures"
+          ],
+          "related": [
+            "python_errors_files",
+            "python_stdlib"
+          ],
+          "lab": "sandbox:python"
+        },
+        {
           "id": "python_oop",
           "title": {
             "zh": "类与对象",
@@ -4939,7 +5041,7 @@
           ],
           "difficulty": "进阶",
           "group": null,
-          "order": 10,
+          "order": 11,
           "prerequisites": [
             "python_data_structures"
           ],
@@ -5053,7 +5155,7 @@
           ],
           "difficulty": "进阶",
           "group": null,
-          "order": 11,
+          "order": 12,
           "prerequisites": [
             "python_oop"
           ],
@@ -5166,7 +5268,7 @@
           ],
           "difficulty": "进阶",
           "group": null,
-          "order": 12,
+          "order": 13,
           "prerequisites": [
             "python_errors_files"
           ],
@@ -5277,7 +5379,7 @@
           ],
           "difficulty": "进阶",
           "group": null,
-          "order": 13,
+          "order": 14,
           "prerequisites": [
             "python_modules_stdlib"
           ],
@@ -5289,6 +5391,813 @@
             "language": "python",
             "slot": "def"
           }
+        },
+        {
+          "id": "python_containers_copy",
+          "title": {
+            "zh": "Python 容器进阶、拷贝与默认参数",
+            "en": "Python Containers, Copies and Mutable Defaults"
+          },
+          "summary": {
+            "zh": "理解引用、浅拷贝、深拷贝、哈希契约和默认参数求值时机，定位那些由共享状态引起的隐蔽缺陷。",
+            "en": "Understand references, shallow and deep copies, hashing contracts and when default arguments are evaluated."
+          },
+          "file": "assets/content/python_containers_copy.md",
+          "minutes": 40,
+          "keywords": [
+            "浅拷贝",
+            "深拷贝",
+            "哈希",
+            "默认参数",
+            "稳定排序"
+          ],
+          "difficulty": "进阶",
+          "order": 15,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "对嵌套字典做浅拷贝后修改其中的列表，会发生什么？",
+              "options": [
+                "原字典里的列表也会变化，因为内层对象仍然共享",
+                "原字典完全不受影响",
+                "浅拷贝会抛出 TypeError",
+                "列表会被自动转换成元组"
+              ],
+              "answer": 0,
+              "explanation": "浅拷贝只创建新的外层字典，内层列表仍然是同一个对象的引用，所以通过副本修改列表会反映到原字典。若希望内外都独立，需要使用 copy.deepcopy，或者把嵌套数据设计成不可变结构。判断拷贝是否足够，关键看被修改的层级有没有被复制。 正确选项「原字典里的列表也会变化，因为内层对象仍然共享」对应《Python 容器进阶、拷贝与默认参数》的要点「赋值绑定的是引用」：Python 的变量名指向对象，赋值语句把名字绑定到对象，而不是把对象内容复制到新变量；两个名字可以指向同一个可变对象。判断「赋值绑定的是引用」时先确认前提是否成立，再回到《Python 容器进阶、拷贝与默认参数》的示例核对一次；把别的语言或框架的默认做法直接搬到赋值绑定的是引用上，往往会在本课的边界条件里失效。"
+            },
+            {
+              "type": "single",
+              "question": "def add(item, box=[]) 连续调用两次会出现什么结果？",
+              "options": [
+                "两次调用共享同一个列表，第二次结果包含第一次的元素",
+                "每次调用都会创建新列表，结果互相独立",
+                "第二次调用会清空列表",
+                "解释器会拒绝这种函数定义"
+              ],
+              "answer": 0,
+              "explanation": "默认参数在函数定义时只求值一次，box 会一直引用同一个列表，因此多次调用共享状态并不断累积元素。正确做法是把默认值设为 None，在函数体内判断并创建列表，这样每次调用都能获得独立容器，也避免测试之间互相污染。 正确选项「两次调用共享同一个列表，第二次结果包含第一次的元素」对应《Python 容器进阶、拷贝与默认参数》的要点「浅拷贝与深拷贝」：浅拷贝创建新的外层容器，但内部元素仍然指向原对象；深拷贝递归复制嵌套对象，得到完全独立的副本。判断「浅拷贝与深拷贝」时先确认前提是否成立，再回到《Python 容器进阶、拷贝与默认参数》的示例核对一次；借鉴相邻主题的经验之前，先核对浅拷贝与深拷贝的前提是否成立。"
+            },
+            {
+              "type": "multi",
+              "question": "以下哪些对象可以直接作为字典的键？（多选）",
+              "options": [
+                "由整数组成的元组 (1, 2)",
+                "冻结集合 frozenset({1, 2})",
+                "列表 [1, 2]",
+                "字典 {'a': 1}"
+              ],
+              "answers": [
+                0,
+                1
+              ],
+              "answer": 0,
+              "explanation": "整数元组和冻结集合都是不可变且可哈希的，可以作为字典键；普通列表和字典是可变对象，内容变化会破坏哈希定位，解释器会直接抛出 TypeError。若确实需要以复合结构分组，可以先转换成元组、字符串或冻结集合。 正确选项「由整数组成的元组 (1, 2)；冻结集合 frozenset({1, 2})」对应《Python 容器进阶、拷贝与默认参数》的要点「排序、分组与计数」：排序用 key 指定比较依据，Python 的排序稳定，多条件可以通过元组或负号实现；Counter、defaultdict 与 deque 覆盖常见统计和队列需求。判断「排序、分组与计数」时先确认前提是否成立，再回到《Python 容器进阶、拷贝与默认参数》的示例核对一次；记住排序、分组与计数的结论之外还要记住适用条件，换一个输入往往就不成立了。"
+            },
+            {
+              "type": "code",
+              "question": "阅读代码，输出是什么？\n\nrows = [[]] * 2\nrows[0].append(1)\nprint(rows)",
+              "options": [
+                "[[1], [1]]",
+                "[[1], []]",
+                "[[], []]",
+                "程序抛出异常"
+              ],
+              "answer": 0,
+              "code": "rows = [[]] * 2\nrows[0].append(1)\nprint(rows)",
+              "language": "python",
+              "explanation": "输出是 [[1], [1]]。乘法只复制了外层列表中的引用，两个位置指向同一个内层列表，修改第一个位置会影响第二个位置。要得到独立的两行，应写 [[ ] for _ in range(2)] 或使用列表推导式创建新列表，再用测试固定这个行为。这个现象本质上就是浅拷贝语义，嵌套列表需要深拷贝或重新构造才能独立。"
+            },
+            {
+              "type": "debug",
+              "question": "下面函数为什么会让调用方意外修改内部状态？\n\ndef get_items():\n    return self.items",
+              "options": [
+                "返回了内部列表本身，调用方可以原地修改，应返回副本或不可变视图",
+                "函数名不符合规范",
+                "self.items 只能是字符串",
+                "return 语句会复制列表"
+              ],
+              "answer": 0,
+              "code": "def get_items(self):\n    return self.items",
+              "language": "python",
+              "explanation": "返回内部列表本身会让调用方拿到同一个可变对象，随后 append 或 clear 都会悄悄改变对象状态，破坏封装并制造难以复现的 bug。可以返回 list(self.items) 这样的浅拷贝、返回 tuple 形式的只读视图，或者明确提供受控的增删方法并在文档中说明所有权。 正确选项「返回了内部列表本身，调用方可以原地修改，应返回副本或不可变视图」对应《Python 容器进阶、拷贝与默认参数》的要点「默认参数在定义时求值」：函数的默认参数只在函数定义时求值一次，之后所有调用共享同一个默认对象；用可变对象做默认值会累积状态。判断「默认参数在定义时求值」时先确认前提是否成立，再回到《Python 容器进阶、拷贝与默认参数》的示例核对一次；把默认参数在定义时求值的做法换到别的约束下未必成立，先确认边界再决定答案。"
+            }
+          ],
+          "prerequisites": [
+            "python_data_structures"
+          ],
+          "related": [
+            "python_oop",
+            "python_oop_advanced"
+          ],
+          "lab": "sandbox:python"
+        },
+        {
+          "id": "python_oop_advanced",
+          "title": {
+            "zh": "Python 面向对象进阶：继承、组合与魔术方法",
+            "en": "Advanced Python OOP: Inheritance, Composition and Dunder Methods"
+          },
+          "summary": {
+            "zh": "从会写类走向会设计对象：掌握 MRO、协作式继承、组合、数据类、属性和魔术方法，让模型既表达清楚又容易测试。",
+            "en": "Move from writing classes to designing objects with MRO, cooperative inheritance, composition, dataclasses, properties and dunder methods."
+          },
+          "file": "assets/content/python_oop_advanced.md",
+          "minutes": 40,
+          "keywords": [
+            "MRO",
+            "super",
+            "dataclass",
+            "property",
+            "魔术方法"
+          ],
+          "difficulty": "进阶",
+          "order": 16,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "D 继承 B 和 C，两者都继承 A 且每层调用 super，D().hello() 的输出是什么？",
+              "options": [
+                "B+C+A",
+                "B+A",
+                "C+A",
+                "A"
+              ],
+              "answer": 0,
+              "explanation": "MRO 是 D、B、C、A，调用 D 继承来的方法先进入 B，B 调用 super 进入 C，C 再调用 super 进入 A，因此逐层拼接得到 B+C+A。super 的语义是沿 MRO 找下一个实现，而不是直接回到直接父类，这也是协作式多继承能够逐层工作的原因。"
+            },
+            {
+              "type": "single",
+              "question": "dataclass 中需要一个每个实例独立的列表字段，正确写法是？",
+              "options": [
+                "items: list = field(default_factory=list)",
+                "items: list = []",
+                "items: list = None",
+                "items: list = field(shared=True)"
+              ],
+              "answer": 0,
+              "explanation": "正确写法是 field(default_factory=list)。列表是可变对象，直接写空列表会被所有实例共享，而且 dataclass 会阻止这种明显危险的默认值；默认工厂会在每次创建实例时调用一次，因此每个对象的列表互相独立，适合订单明细、标签等集合字段。 正确选项「items: list = field(default_factory=list)」对应《Python 面向对象进阶：继承、组合与魔术方法》的要点「组合优先与协议」：组合表达对象拥有另一个对象，协议表达对象能提供什么行为；它们比为了复用代码而建立继承关系更灵活。判断「组合优先与协议」时先确认前提是否成立，再回到《Python 面向对象进阶：继承、组合与魔术方法》的示例核对一次；借鉴相邻主题的经验之前，先核对组合优先与协议的前提是否成立。"
+            },
+            {
+              "type": "multi",
+              "question": "为什么组合和协议通常比深层继承更灵活？（多选）",
+              "options": [
+                "运行时可以替换具体实现",
+                "测试时可以注入假对象",
+                "避免把无关职责耦合进基类",
+                "组合会自动让对象变成不可变"
+              ],
+              "answers": [
+                0,
+                1,
+                2
+              ],
+              "answer": 0,
+              "explanation": "组合允许在构造时注入不同实现，测试中可以用假对象隔离外部依赖，也避免为了复用一小段代码把所有职责拉进同一个基类。组合本身不会自动带来不可变或线程安全，这些性质仍需要数据结构和接口设计来保证。 正确选项「运行时可以替换具体实现；测试时可以注入假对象；避免把无关职责耦合进基类」对应《Python 面向对象进阶：继承、组合与魔术方法》的要点「dataclass 与不可变数据」：dataclass 根据字段声明自动生成初始化、表示和相等方法，适合承载结构化数据；frozen 与 slots 可以进一步收紧可变性和内存布局。判断「dataclass 与不可变数据」时先确认前提是否成立，再回到《Python 面向对象进阶：继承、组合与魔术方法》的示例核对一次；记住dataclass 与不可变数据的结论之外还要记住适用条件，换一个输入往往就不成立了。"
+            },
+            {
+              "type": "code",
+              "question": "阅读类定义，哪个判断正确？\n\nclass Wallet:\n    def __init__(self, cents):\n        self._cents = cents\n    @property\n    def cents(self):\n        return self._cents",
+              "options": [
+                "cents 是只读属性，外部赋值会抛 AttributeError",
+                "cents 可以被任意赋值",
+                "property 会在每次读取时复制钱包",
+                "_cents 不能使用"
+              ],
+              "answer": 0,
+              "code": "class Wallet:\n    def __init__(self, cents):\n        self._cents = cents\n    @property\n    def cents(self):\n        return self._cents",
+              "language": "python",
+              "explanation": "只定义 getter 的 property 是只读的，外部执行 wallet.cents = 10 会抛出 AttributeError，从而保护内部金额不被随意改写。下划线只是约定，仍然可以直接访问 _cents，因此真正的边界要靠只读属性、不可变对象或受控方法共同保证。 正确选项「cents 是只读属性，外部赋值会抛 AttributeError」对应《Python 面向对象进阶：继承、组合与魔术方法》的要点「property 与属性校验」：property 让方法以属性语法访问，可以在赋值和读取时做校验、换算或延迟计算，同时保持调用方代码简洁。判断「property 与属性校验」时先确认前提是否成立，再回到《Python 面向对象进阶：继承、组合与魔术方法》的示例核对一次；干扰项常常是相邻主题里成立的结论，只有按property 与属性校验的输入与约束判断才能排除。"
+            },
+            {
+              "type": "debug",
+              "question": "为什么这个类放进 set 后报 unhashable？\n\nclass Point:\n    def __init__(self, x, y): self.x, self.y = x, y\n    def __eq__(self, other): return (self.x, self.y) == (other.x, other.y)",
+              "options": [
+                "实现 __eq__ 后默认的 __hash__ 会被置空，需要显式实现或使用冻结数据类",
+                "set 只能存字符串",
+                "缺少 __len__ 方法",
+                "x 和 y 必须是私有变量"
+              ],
+              "answer": 0,
+              "code": "class Point:\n    def __init__(self, x, y): self.x, self.y = x, y\n    def __eq__(self, other): return (self.x, self.y) == (other.x, other.y)",
+              "language": "python",
+              "explanation": "Python 认为可变相等语义与默认身份哈希不一致，因此在类中定义 __eq__ 后会把 __hash__ 设为 None，实例不再可哈希。若 Point 是值对象，应把字段变成只读并显式实现基于元组的 __hash__，或者使用 frozen dataclass，让相等与哈希由同一组字段生成。 正确选项「实现 __eq__ 后默认的 __hash__ 会被置空，需要显式实现或使用冻结数据类」对应《Python 面向对象进阶：继承、组合与魔术方法》的要点「魔术方法与语言协议」：魔术方法让自定义对象接入 Python 的通用协议，例如长度、迭代、比较、算术运算、上下文管理和格式化。判断「魔术方法与语言协议」时先确认前提是否成立，再回到《Python 面向对象进阶：继承、组合与魔术方法》的示例核对一次；把魔术方法与语言协议的做法换到别的约束下未必成立，先确认边界再决定答案。"
+            }
+          ],
+          "prerequisites": [
+            "python_oop"
+          ],
+          "related": [
+            "python_containers_copy",
+            "python_project_architecture"
+          ],
+          "lab": "sandbox:python"
+        },
+        {
+          "id": "python_stdlib",
+          "title": {
+            "zh": "Python 标准库实战工具箱",
+            "en": "A Practical Tour of the Python Standard Library"
+          },
+          "summary": {
+            "zh": "用 pathlib、datetime、json、collections、itertools、functools 和 logging 搭起不依赖第三方库的日常工具链。",
+            "en": "Build a dependency-free daily toolkit with pathlib, datetime, json, collections, itertools, functools and logging."
+          },
+          "file": "assets/content/python_stdlib.md",
+          "minutes": 60,
+          "keywords": [
+            "pathlib",
+            "datetime",
+            "json",
+            "collections",
+            "logging"
+          ],
+          "difficulty": "进阶",
+          "order": 17,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "创建跨平台路径最推荐的写法是？",
+              "options": [
+                "Path(base) / name",
+                "base + '/' + name",
+                "base + '\\\\' + name",
+                "os.path.join(base, name) 后再强制转字符串"
+              ],
+              "answer": 0,
+              "explanation": "Path(base) / name 使用路径对象的斜杠运算符拼接，自动适配不同操作系统，也能继续调用 glob、resolve、read_text 等方法。手工拼接字符串容易产生多余或缺失的分隔符，反斜杠还会引入转义问题；早期代码可以使用 os.path，但新代码优先使用 pathlib。"
+            },
+            {
+              "type": "single",
+              "question": "比较 datetime.now() 与带时区的 datetime 会发生什么？",
+              "options": [
+                "抛出 TypeError，因为 aware 与 naive 不能直接比较",
+                "自动按本地时区转换",
+                "只比较日期部分",
+                "返回 False 而不是报错"
+              ],
+              "answer": 0,
+              "explanation": "naive 时间没有时区信息，无法确定绝对时间点，与 aware 时间比较会抛 TypeError，而不是猜测时区。跨系统传递时间时统一保存 UTC aware 时间，展示时再通过 zoneinfo 转换成本地时间，才能避免夏令时和服务器时区变化带来的错误。 正确选项「抛出 TypeError，因为 aware 与 naive 不能直接比较」对应《Python 标准库实战工具箱》的要点「datetime 与时区」：datetime 表示日期时间，timedelta 表示时间差，timezone 与 zoneinfo 提供时区信息；带时区的时间叫 aware，不带时区的叫 naive。判断「datetime 与时区」时先确认前提是否成立，再回到《Python 标准库实战工具箱》的示例核对一次；借鉴相邻主题的经验之前，先核对datetime 与时区的前提是否成立。"
+            },
+            {
+              "type": "multi",
+              "question": "关于标准库容器与迭代器，哪些说法正确？（多选）",
+              "options": [
+                "Counter 可统计可哈希元素的出现次数",
+                "deque 设置 maxlen 后会自动丢弃旧元素",
+                "islice 可以只取生成器的前若干项",
+                "lru_cache 可以安全缓存带随机的有副作用函数"
+              ],
+              "answers": [
+                0,
+                1,
+                2
+              ],
+              "answer": 0,
+              "explanation": "Counter、deque 的固定窗口和 islice 的惰性截取都是标准库常见用法。lru_cache 只适合参数可哈希、结果只由参数决定且没有副作用的函数；缓存有随机值或写文件、发请求的函数会返回过期结果并造成难以排查的行为。 正确选项「Counter 可统计可哈希元素的出现次数；deque 设置 maxlen 后会自动丢弃旧元素；islice 可以只取生成器的前若干项」对应《Python 标准库实战工具箱》的要点「JSON、TOML 与 CSV 的边界」：JSON 适合程序间交换，TOML 适合人工维护配置，CSV 适合表格数据；三者对类型和转义的支持不同，不能互相假设。判断「JSON、TOML 与 CSV 的边界」时先确认前提是否成立，再回到《Python 标准库实战工具箱》的示例核对一次；记住JSON、TOML 与 CSV 的边界的结论之外还要记住适用条件，换一个输入往往就不成立了。"
+            },
+            {
+              "type": "code",
+              "question": "阅读代码，输出哪一项正确？\n\nwindow = deque([1, 2, 3, 4], maxlen=3)\nwindow.append(5)\nprint(list(window))",
+              "options": [
+                "[3, 4, 5]",
+                "[2, 3, 4]",
+                "[1, 2, 3]",
+                "[5, 1, 2]"
+              ],
+              "answer": 0,
+              "code": "window = deque([1, 2, 3, 4], maxlen=3)\nwindow.append(5)\nprint(list(window))",
+              "language": "python",
+              "explanation": "初始化时只保留最后三个元素 2、3、4，追加 5 后最左边的 2 被丢弃，因此结果是 [3, 4, 5]。maxlen 适合实现最近 N 条记录、滑动平均和固定容量队列；如果还需要按位置频繁随机访问，列表往往比 deque 更合适。 正确选项「[3, 4, 5]」对应《Python 标准库实战工具箱》的要点「collections、itertools 与 functools」：标准库提供针对常见数据处理场景的容器和函数工具，能在不增加依赖的情况下表达计数、窗口、惰性迭代和缓存。判断「collections、itertools 与 functools」时先确认前提是否成立，再回到《Python 标准库实战工具箱》的示例核对一次；干扰项常常是相邻主题里成立的结论，只有按collections、itertools 与 functools的输入与约束判断才能排除。"
+            },
+            {
+              "type": "debug",
+              "question": "这段日志代码在库模块中有什么问题？\n\nimport logging\nlogging.basicConfig(level=logging.INFO)\nlogger = logging.getLogger(__name__)",
+              "options": [
+                "库模块不应擅自调用 basicConfig，会覆盖宿主应用的日志配置",
+                "logger 名称使用 __name__ 是错误的",
+                "logging 只能输出到控制台",
+                "日志级别 INFO 会导致程序崩溃"
+              ],
+              "answer": 0,
+              "code": "import logging\nlogging.basicConfig(level=logging.INFO)\nlogger = logging.getLogger(__name__)",
+              "language": "python",
+              "explanation": "basicConfig 只在根记录器没有处理器时生效，但库模块提前调用会改变宿主应用的全局配置，导致格式、级别和输出目标与预期不同。库代码只应执行 getLogger(__name__) 并写日志，真正的 handler、formatter 和级别配置由应用入口集中完成。 正确选项「库模块不应擅自调用 basicConfig，会覆盖宿主应用的日志配置」对应《Python 标准库实战工具箱》的要点「logging 与诊断信息」：logging 按级别和来源记录事件，支持格式化、轮转和多目标输出，比随处 print 更容易在真实环境定位问题。判断「logging 与诊断信息」时先确认前提是否成立，再回到《Python 标准库实战工具箱》的示例核对一次；把logging 与诊断信息的做法换到别的约束下未必成立，先确认边界再决定答案。"
+            }
+          ],
+          "prerequisites": [
+            "python_modules_stdlib"
+          ],
+          "related": [
+            "python_errors_logging_files",
+            "python_cli_automation"
+          ],
+          "lab": "sandbox:python"
+        },
+        {
+          "id": "python_errors_logging_files",
+          "title": {
+            "zh": "Python 异常、日志与文件 I/O 进阶",
+            "en": "Advanced Exceptions, Logging and File I/O in Python"
+          },
+          "summary": {
+            "zh": "把异常设计成可诊断的领域信号，用日志保留上下文，并用临时文件与原子替换写出不会半途损坏的配置。",
+            "en": "Design exceptions as diagnosable domain signals, add context with logging, and write files atomically with temporary files."
+          },
+          "file": "assets/content/python_errors_logging_files.md",
+          "minutes": 30,
+          "keywords": [
+            "异常链",
+            "自定义异常",
+            "日志",
+            "原子写",
+            "ExceptionGroup"
+          ],
+          "difficulty": "进阶",
+          "order": 18,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "raise ConfigError('找不到配置') from exc 的作用是什么？",
+              "options": [
+                "把原始异常保存为 __cause__，异常链保留完整因果",
+                "隐藏所有异常信息",
+                "让程序忽略 ConfigError",
+                "自动重试失败的读取"
+              ],
+              "answer": 0,
+              "explanation": "from 会把原始异常写入新异常的 __cause__ 属性，回溯中会显示直接原因，调试和日志都能看到底层失败链。省略 from 时 Python 仍可能记录隐式上下文，但语义不如显式异常链清楚；直接吞掉原始异常会让定位问题变得非常困难。 正确选项「把原始异常保存为 __cause__，异常链保留完整因果」对应《Python 异常、日志与文件 I/O 进阶》的要点「完整异常处理结构」：try 负责尝试，except 只捕获能处理的异常，else 在没有异常时运行，finally 无论成功失败都会清理资源。判断「完整异常处理结构」时先确认前提是否成立，再回到《Python 异常、日志与文件 I/O 进阶》的示例核对一次；把别的语言或框架的默认做法直接搬到完整异常处理结构上，往往会在本课的边界条件里失效。"
+            },
+            {
+              "type": "single",
+              "question": "为什么写入重要配置时先写临时文件再 os.replace？",
+              "options": [
+                "读者只会看到完整的旧版本或新版本，不会读到半写内容",
+                "临时文件写入速度总是更快",
+                "可以省略编码参数",
+                "os.replace 会自动压缩文件"
+              ],
+              "answer": 0,
+              "explanation": "同名替换在同一文件系统内具有原子性，所以目标路径在任意时刻都指向完整文件，不会出现写到一半的 JSON。速度不是主要目的，编码仍然必须显式指定；如果崩溃发生在替换前，最多遗留一个临时文件，恢复逻辑可以安全清理。 正确选项「读者只会看到完整的旧版本或新版本，不会读到半写内容」对应《Python 异常、日志与文件 I/O 进阶》的要点「自定义异常体系」：自定义异常把底层错误翻译成业务语言，让调用方可以按类型处理，而不是解析错误字符串。判断「自定义异常体系」时先确认前提是否成立，再回到《Python 异常、日志与文件 I/O 进阶》的示例核对一次；借鉴相邻主题的经验之前，先核对自定义异常体系的前提是否成立。"
+            },
+            {
+              "type": "multi",
+              "question": "日志中应该避免出现哪些内容？（多选）",
+              "options": [
+                "用户密码与访问令牌",
+                "完整身份证号或银行卡号",
+                "可定位请求的随机请求编号",
+                "未脱敏的完整请求体"
+              ],
+              "answers": [
+                0,
+                1,
+                3
+              ],
+              "answer": 0,
+              "explanation": "密码、令牌、身份证号、银行卡号和未脱敏请求体都可能造成泄露，日志系统往往被更多人访问且长期保留。随机请求编号是安全且有用的关联字段，应当保留；对敏感值可以记录哈希、长度或掩码后的片段，同时限制日志访问权限。 正确选项「用户密码与访问令牌；完整身份证号或银行卡号；未脱敏的完整请求体」对应《Python 异常、日志与文件 I/O 进阶》的要点「文件写入与原子替换」：直接覆盖目标文件时，进程在写入中途崩溃会留下半份内容；先写临时文件再原子替换，可以让读者只看到旧版本或新版本。判断「文件写入与原子替换」时先确认前提是否成立，再回到《Python 异常、日志与文件 I/O 进阶》的示例核对一次；记住文件写入与原子替换的结论之外还要记住适用条件，换一个输入往往就不成立了。"
+            },
+            {
+              "type": "code",
+              "question": "阅读代码，输出中 __cause__ 的类型是什么？\n\ntry:\n    open('missing.json')\nexcept FileNotFoundError as exc:\n    try:\n        raise RuntimeError('加载失败') from exc\n    except RuntimeError as error:\n        print(type(error.__cause__).__name__)",
+              "options": [
+                "FileNotFoundError",
+                "RuntimeError",
+                "KeyError",
+                "NoneType"
+              ],
+              "answer": 0,
+              "code": "try:\n    open('missing.json')\nexcept FileNotFoundError as exc:\n    try:\n        raise RuntimeError('加载失败') from exc\n    except RuntimeError as error:\n        print(type(error.__cause__).__name__)",
+              "language": "python",
+              "explanation": "raise from 会把捕获到的 FileNotFoundError 绑定为 RuntimeError 的 __cause__，因此输出 FileNotFoundError。异常链既保留面向业务的新消息，也保留底层失败原因；记录日志时应使用 exc_info 或 exception 方法，把完整链写进诊断信息。"
+            },
+            {
+              "type": "debug",
+              "question": "下面异常处理有什么缺陷？\n\ntry:\n    value = int(text)\nexcept Exception:\n    pass",
+              "options": [
+                "捕获范围过宽且静默忽略，会掩盖输入错误和真正的程序缺陷",
+                "int 不能转换字符串",
+                "pass 会抛出语法错误",
+                "应该改成 except: pass 才正确"
+              ],
+              "answer": 0,
+              "code": "try:\n    value = int(text)\nexcept Exception:\n    pass",
+              "language": "python",
+              "explanation": "except Exception 会捕获大量并非预期的错误，pass 又让失败完全不可见，后续代码可能在 value 未定义或数据错误的状态下继续运行。应只捕获 ValueError 并给出可执行的错误信息，或者记录日志后重新抛出；裸 except 比 except Exception 更危险，因为连系统退出类异常都会被吞掉。 正确选项「捕获范围过宽且静默忽略，会掩盖输入错误和真正的程序缺陷」对应《Python 异常、日志与文件 I/O 进阶》的要点「ExceptionGroup 与 except*」：并发任务可能同时产生多个错误，ExceptionGroup 把它们打包成一个异常，except 星号语法可以按类型拆分处理。判断「ExceptionGroup 与 except*」时先确认前提是否成立，再回到《Python 异常、日志与文件 I/O 进阶》的示例核对一次；把ExceptionGroup 与 except*的做法换到别的约束下未必成立，先确认边界再决定答案。"
+            }
+          ],
+          "prerequisites": [
+            "python_errors_files"
+          ],
+          "related": [
+            "python_stdlib",
+            "python_project_architecture"
+          ],
+          "lab": "sandbox:python"
+        },
+        {
+          "id": "python_pytest",
+          "title": {
+            "zh": "Python pytest 测试实战",
+            "en": "Practical Testing with Python pytest"
+          },
+          "summary": {
+            "zh": "用 fixture、参数化、mock 与覆盖率把测试搭成可信的安全网，让重构和扩展不再依赖手工回归。",
+            "en": "Build a trustworthy safety net with fixtures, parametrization, mocks and coverage."
+          },
+          "file": "assets/content/python_pytest.md",
+          "minutes": 60,
+          "keywords": [
+            "pytest",
+            "fixture",
+            "参数化",
+            "mock",
+            "覆盖率"
+          ],
+          "difficulty": "进阶",
+          "order": 19,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "pytest 中验证函数抛出特定异常并检查消息，正确写法是？",
+              "options": [
+                "with pytest.raises(ValueError, match='除数'): divide(1, 0)",
+                "assert divide(1, 0) == ValueError",
+                "try: divide(1, 0) except: pass",
+                "@pytest.mark.error(ValueError)"
+              ],
+              "answer": 0,
+              "explanation": "pytest.raises 既是上下文管理器，也能在退出时确认异常类型，match 参数用正则表达式检查异常消息。直接比较返回值不会捕获异常，空的 except 会吞掉错误，自定义标记并不会执行异常断言；把异常类型和关键消息一起验证，测试失败时才能快速定位原因。 正确选项「with pytest.raises(ValueError, match='除数'): divide(1, 0)」对应《Python pytest 测试实战》的要点「测试结构与断言」：一个清晰的测试只验证一个行为，通常按准备、执行、断言三步组织；pytest 直接使用 assert，失败时会重写表达式并显示两侧的值。判断「测试结构与断言」时先确认前提是否成立，再回到《Python pytest 测试实战》的示例核对一次；把别的语言或框架的默认做法直接搬到测试结构与断言上，往往会在本课的边界条件里失效。"
+            },
+            {
+              "type": "single",
+              "question": "fixture 使用 yield 的主要目的是什么？",
+              "options": [
+                "在测试前准备资源，在测试后执行清理",
+                "让测试函数返回多个值",
+                "跳过失败的测试",
+                "把同步测试变成异步测试"
+              ],
+              "answer": 0,
+              "explanation": "yield 之前的代码在测试开始前运行，产出的对象注入测试，测试结束后继续执行 yield 之后的清理代码，因此特别适合文件、连接和临时环境。没有清理的共享资源会让后续测试受到污染，表现为单独运行通过、整套运行偶发失败。 正确选项「在测试前准备资源，在测试后执行清理」对应《Python pytest 测试实战》的要点「fixture 与状态隔离」：fixture 为测试提供准备数据、临时目录和外部资源，并通过依赖注入决定谁需要什么；每个测试默认拿到独立的新状态。判断「fixture 与状态隔离」时先确认前提是否成立，再回到《Python pytest 测试实战》的示例核对一次；借鉴相邻主题的经验之前，先核对fixture 与状态隔离的前提是否成立。"
+            },
+            {
+              "type": "multi",
+              "question": "关于 mock，哪些做法是合理的？（多选）",
+              "options": [
+                "替换网络客户端以返回固定响应",
+                "替换当前时间让过期逻辑可复现",
+                "替换被测函数本身并只断言调用次数",
+                "对真实数据库迁移使用集成测试而不是全量 mock"
+              ],
+              "answers": [
+                0,
+                1,
+                3
+              ],
+              "answer": 0,
+              "explanation": "网络、时间和随机数属于不稳定边界，适合用替身控制；数据库迁移的行为、约束和事务语义应该在真实数据库上做集成测试。把被测函数本身替换成 mock 后，测试只能证明调用发生，无法证明业务结果正确，是常见的假安全感。 正确选项「替换网络客户端以返回固定响应；替换当前时间让过期逻辑可复现；对真实数据库迁移使用集成测试而不是全量 mock」对应《Python pytest 测试实战》的要点「参数化与测试选择」：参数化把同一段测试逻辑应用到多组输入，pytest 会为每组数据生成独立用例，失败时能精确定位是哪一组。判断「参数化与测试选择」时先确认前提是否成立，再回到《Python pytest 测试实战》的示例核对一次；记住参数化与测试选择的结论之外还要记住适用条件，换一个输入往往就不成立了。"
+            },
+            {
+              "type": "code",
+              "question": "参数化装饰器会生成几个测试用例？\n\n@pytest.mark.parametrize('value', [1, 2, 3])\ndef test_double(value):\n    assert value * 2 >= 2",
+              "options": [
+                "3 个",
+                "1 个",
+                "2 个",
+                "0 个，因为缺少 fixture"
+              ],
+              "answer": 0,
+              "code": "@pytest.mark.parametrize('value', [1, 2, 3])\ndef test_double(value):\n    assert value * 2 >= 2",
+              "language": "python",
+              "explanation": "参数列表有三个值，pytest 会生成三个独立用例，任何一个失败都能看到具体参数。参数化能避免复制粘贴三个几乎相同的函数，也能让增加边界输入变成修改一行数据；不适合把完全不同的业务流程塞进同一张参数表。 正确选项「3 个」对应《Python pytest 测试实战》的要点「mock 与外部依赖隔离」：mock 用可控替身替代网络、时间、随机数和第三方服务，让测试稳定复现；它应该隔离边界，而不是替代被测逻辑本身。判断「mock 与外部依赖隔离」时先确认前提是否成立，再回到《Python pytest 测试实战》的示例核对一次；干扰项常常是相邻主题里成立的结论，只有按mock 与外部依赖隔离的输入与约束判断才能排除。"
+            },
+            {
+              "type": "debug",
+              "question": "为什么这个测试即使实现错了也可能通过？",
+              "options": [
+                "它只验证 mock 被调用，没有执行真实创建逻辑",
+                "缺少 assert 关键字",
+                "pytest 不能测试函数调用",
+                "应该使用 print 代替断言"
+              ],
+              "answer": 0,
+              "explanation": "这里的 service 是 mock，调用它只会记录参数并返回另一个 mock，真实用户创建、校验和持久化都没有发生，因此测试无法发现业务缺陷。正确做法是执行真实服务或只 mock 最外层依赖，再断言返回对象、数据库状态或可观察副作用。这道题属于 pytest 测试设计问题：mock 只能隔离外部依赖，不能让被测逻辑绕过真实断言。 正确选项「它只验证 mock 被调用，没有执行真实创建逻辑」对应《Python pytest 测试实战》的要点「覆盖率与测试分层」：覆盖率揭示哪些代码没有被执行，但不能证明行为正确；单元、集成和端到端测试承担不同风险，需要组合使用。判断「覆盖率与测试分层」时先确认前提是否成立，再回到《Python pytest 测试实战》的示例核对一次；把覆盖率与测试分层的做法换到别的约束下未必成立，先确认边界再决定答案。",
+              "code": "def test_create_user(mocker):\n    service = mocker.Mock()\n    service.create('Ada')\n    service.create.assert_called_once_with('Ada')",
+              "language": "python"
+            }
+          ],
+          "prerequisites": [
+            "python_typing_testing"
+          ],
+          "related": [
+            "python_project_architecture",
+            "python_database_sqlalchemy"
+          ],
+          "lab": "sandbox:python"
+        },
+        {
+          "id": "python_modern_features",
+          "title": {
+            "zh": "现代 Python 特性与版本升级",
+            "en": "Modern Python Features and Upgrades"
+          },
+          "summary": {
+            "zh": "掌握 match 模式匹配、PEP 695 类型参数、新式 f-string 与现代标准库，并用版本矩阵安全升级代码。",
+            "en": "Use structural pattern matching, PEP 695 generics, modern f-strings and recent standard-library tools with a safe upgrade strategy."
+          },
+          "file": "assets/content/python_modern_features.md",
+          "minutes": 40,
+          "keywords": [
+            "match",
+            "PEP 695",
+            "类型参数",
+            "f-string",
+            "版本兼容"
+          ],
+          "difficulty": "进阶",
+          "order": 20,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "match 语句中 case _ 的作用是什么？",
+              "options": [
+                "匹配任意值且不绑定变量，常作为兜底分支",
+                "只匹配下划线字符串",
+                "退出当前函数",
+                "忽略语法错误"
+              ],
+              "answer": 0,
+              "explanation": "下划线是通配模式，匹配任何值但不会创建变量，因此适合处理未知消息并记录日志；如果一定要绑定值，可以使用其他名称。兜底分支能避免协议扩展后消息被静默丢弃，同时也提醒开发者哪些形状还没有专门处理。 正确选项「匹配任意值且不绑定变量，常作为兜底分支」对应《现代 Python 特性与版本升级》的要点「结构化模式匹配」：match 语句按数据形状分支，case 可以匹配字面量、序列、映射、类实例，并把匹配到的部分绑定到变量。判断「结构化模式匹配」时先确认前提是否成立，再回到《现代 Python 特性与版本升级》的示例核对一次；把别的语言或框架的默认做法直接搬到结构化模式匹配上，往往会在本课的边界条件里失效。"
+            },
+            {
+              "type": "single",
+              "question": "PEP 695 相比旧式泛型写法的主要改进是什么？",
+              "options": [
+                "可以直接在函数和类声明处写类型参数，作用域更清晰",
+                "让类型检查在运行时强制执行",
+                "自动生成序列化代码",
+                "完全取消对类型检查器的需求"
+              ],
+              "answer": 0,
+              "explanation": "PEP 695 让泛型函数、类和类型别名在声明处直接写参数，减少 TypeVar 和 Generic 的样板代码，并带来更清晰的类型参数作用域。它不会让 Python 在运行时强制检查类型，仍需要类型检查器和边界校验配合。 正确选项「可以直接在函数和类声明处写类型参数，作用域更清晰」对应《现代 Python 特性与版本升级》的要点「PEP 695 类型参数新语法」：PEP 695 让泛型函数、泛型类和类型别名可以在声明处直接写类型参数，不再需要先声明 TypeVar 和 Generic 基类。判断「PEP 695 类型参数新语法」时先确认前提是否成立，再回到《现代 Python 特性与版本升级》的示例核对一次；借鉴相邻主题的经验之前，先核对PEP 695 类型参数新语法的前提是否成立。"
+            },
+            {
+              "type": "multi",
+              "question": "安全引入现代语法需要做哪些事情？（多选）",
+              "options": [
+                "更新 requires-python 与元数据声明",
+                "在 CI 中运行支持版本矩阵",
+                "假设所有用户都使用最新解释器",
+                "为库用户提供弃用与迁移说明"
+              ],
+              "answers": [
+                0,
+                1,
+                3
+              ],
+              "answer": 0,
+              "explanation": "最低版本声明、多版本测试和迁移说明共同保证用户知道兼容边界并有机会调整；假定所有人使用最新版本会让旧环境安装后立即失败。对于需要跨版本支持的库，还可以使用兼容层或发布主要版本升级。 正确选项「更新 requires-python 与元数据声明；在 CI 中运行支持版本矩阵；为库用户提供弃用与迁移说明」对应《现代 Python 特性与版本升级》的要点「新式 f-string 与错误信息」：Python 3.12 起 f-string 支持嵌套同类引号、多行表达式和更复杂的格式规格，同时解释器错误信息更贴近出错位置。判断「新式 f-string 与错误信息」时先确认前提是否成立，再回到《现代 Python 特性与版本升级》的示例核对一次；记住新式 f-string 与错误信息的结论之外还要记住适用条件，换一个输入往往就不成立了。"
+            },
+            {
+              "type": "code",
+              "question": "阅读模式匹配代码，describe(['retry', 0]) 返回什么？\n\nmatch message:\n    case ['retry', int(attempt)] if attempt > 0:\n        return f'第 {attempt} 次重试'\n    case _:\n        return '未知消息'",
+              "options": [
+                "未知消息",
+                "第 0 次重试",
+                "程序抛异常",
+                "retry"
+              ],
+              "answer": 0,
+              "code": "match message:\n    case ['retry', int(attempt)] if attempt > 0:\n        return f'第 {attempt} 次重试'\n    case _:\n        return '未知消息'",
+              "language": "python",
+              "explanation": "列表长度与元素类型都能匹配，但 guard 要求 attempt 大于零，0 不满足条件，因此该分支失败并落入通配分支，返回未知消息。guard 让模式匹配可以结合业务约束；失败时不会执行分支内的返回语句，也不会改变已匹配对象。 正确选项「未知消息」对应《现代 Python 特性与版本升级》的要点「现代标准库补充」：近年标准库加入 zoneinfo、tomllib、graphlib、itertools.batched 和 contextlib 增强，让时区、配置、拓扑排序和批处理少依赖第三方库。判断「现代标准库补充」时先确认前提是否成立，再回到《现代 Python 特性与版本升级》的示例核对一次；干扰项常常是相邻主题里成立的结论，只有按现代标准库补充的输入与约束判断才能排除。"
+            },
+            {
+              "type": "debug",
+              "question": "这个项目声明最低 Python 3.10，但使用了哪种新语法会导致 3.10 无法解析？",
+              "options": [
+                "type 语句是 PEP 695 新语法，3.10 无法解析，需要提升最低版本或改用旧式别名",
+                "tuple 不能用作类型",
+                "注释不能放在 pyproject 后面",
+                "T 必须是具体类"
+              ],
+              "answer": 0,
+              "explanation": "type 语句由 Python 3.12 引入，3.10 的解释器在解析阶段就会失败，因此声明的最低版本与实际代码不一致。可以提升 requires-python 和 CI 矩阵，也可以为旧版本使用 TypeAlias 与 TypeVar 的兼容写法，并在文档中说明迁移路径。这道题对应版本兼容策略：PEP 695 类型参数需要 Python 3.12，最低版本声明必须同步更新。 正确选项「type 语句是 PEP 695 新语法，3.10 无法解析，需要提升最低版本或改用旧式别名」对应《现代 Python 特性与版本升级》的要点「版本兼容与升级策略」：语言升级不是一次性重写，而是先声明支持范围、再逐步替换语法和依赖，并用多版本 CI 证明兼容性。判断「版本兼容与升级策略」时先确认前提是否成立，再回到《现代 Python 特性与版本升级》的示例核对一次；把版本兼容与升级策略的做法换到别的约束下未必成立，先确认边界再决定答案。",
+              "code": "# pyproject: requires-python = '>=3.10'\ntype Pair[T] = tuple[T, T]",
+              "language": "python"
+            }
+          ],
+          "prerequisites": [
+            "python_typing_testing"
+          ],
+          "related": [
+            "python_project_architecture",
+            "python_runtime_memory_performance"
+          ],
+          "lab": "sandbox:python"
+        },
+        {
+          "id": "python_cli_automation",
+          "title": {
+            "zh": "Python CLI 与自动化实战",
+            "en": "Practical Python CLIs and Automation"
+          },
+          "summary": {
+            "zh": "用 argparse、pathlib 与 subprocess 写出可组合、可干跑、可定时执行的命令行工具，并安全处理外部进程与文件批处理。",
+            "en": "Build composable, dry-runnable command-line tools with argparse, pathlib and safe subprocess automation."
+          },
+          "file": "assets/content/python_cli_automation.md",
+          "minutes": 60,
+          "keywords": [
+            "argparse",
+            "subprocess",
+            "自动化",
+            "幂等",
+            "CLI"
+          ],
+          "difficulty": "进阶",
+          "order": 21,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "安全执行外部命令的推荐写法是？",
+              "options": [
+                "subprocess.run(['prog', arg], check=True, timeout=10)",
+                "subprocess.run('prog ' + arg, shell=True)",
+                "os.system('prog ' + arg)",
+                "exec('prog ' + arg)"
+              ],
+              "answer": 0,
+              "explanation": "参数列表让操作系统直接执行目标程序，shell 不参与解释，输入中的分号、管道和空格不会变成额外命令；check=True 和 timeout 分别处理失败与卡死。shell=True、os.system 和 exec 拼接字符串都会放大命令注入风险。 正确选项「subprocess.run(['prog', arg], check=True, timeout=10)」对应《Python CLI 与自动化实战》的要点「argparse 与子命令设计」：argparse 把命令行字符串解析成类型化参数，自动生成帮助和错误提示；子命令让一个工具承载扫描、同步、清理等多个动作。判断「argparse 与子命令设计」时先确认前提是否成立，再回到《Python CLI 与自动化实战》的示例核对一次；把别的语言或框架的默认做法直接搬到argparse 与子命令设计上，往往会在本课的边界条件里失效。"
+            },
+            {
+              "type": "single",
+              "question": "自动化工具提供 dry-run 的主要价值是什么？",
+              "options": [
+                "在修改前输出将要执行的动作，让用户检查影响范围",
+                "让脚本运行得更快",
+                "自动修复所有错误",
+                "跳过参数解析"
+              ],
+              "answer": 0,
+              "explanation": "dry-run 先扫描并展示计划，不写入或删除数据，用户可以在高风险操作前确认路径、数量和差异。它不能证明实际执行一定成功，但能显著降低误删、误覆盖和参数错误造成的事故。 正确选项「在修改前输出将要执行的动作，让用户检查影响范围」对应《Python CLI 与自动化实战》的要点「文件批处理与幂等」：自动化脚本会重复运行，幂等意味着同一输入执行多次与执行一次结果一致；干跑模式让用户在真正修改前看到计划。判断「文件批处理与幂等」时先确认前提是否成立，再回到《Python CLI 与自动化实战》的示例核对一次；借鉴相邻主题的经验之前，先核对文件批处理与幂等的前提是否成立。"
+            },
+            {
+              "type": "multi",
+              "question": "让定时任务可以安全重复运行，需要哪些措施？（多选）",
+              "options": [
+                "使用带过期时间的锁防止并发执行",
+                "用唯一业务键判断任务是否已完成",
+                "记录失败状态并支持从中断点恢复",
+                "忽略上一次运行是否仍在继续"
+              ],
+              "answers": [
+                0,
+                1,
+                2
+              ],
+              "answer": 0,
+              "explanation": "锁、幂等键和状态记录共同保证重复触发不会造成双执行或重复写入，失败后可以从断点继续。忽略上一轮状态会让两个实例同时处理同一批数据，产生重复扣款、重复发送等严重后果。 正确选项「使用带过期时间的锁防止并发执行；用唯一业务键判断任务是否已完成；记录失败状态并支持从中断点恢复」对应《Python CLI 与自动化实战》的要点「subprocess 安全执行」：subprocess 启动外部程序，必须用参数列表表达命令，保持 shell=False；超时、返回码、标准输出和标准错误都要显式处理。判断「subprocess 安全执行」时先确认前提是否成立，再回到《Python CLI 与自动化实战》的示例核对一次；记住subprocess 安全执行的结论之外还要记住适用条件，换一个输入往往就不成立了。"
+            },
+            {
+              "type": "code",
+              "question": "阅读 argparse 代码，运行 filetool scan data --ext .csv 后 args.ext 的值是什么？\n\nscan.add_argument('path', type=Path)\nscan.add_argument('--ext', default='.md')",
+              "options": [
+                ".csv",
+                ".md",
+                "data",
+                "None"
+              ],
+              "answer": 0,
+              "code": "scan.add_argument('path', type=Path)\nscan.add_argument('--ext', default='.md')",
+              "language": "python",
+              "explanation": "命令行显式传入 --ext .csv 会覆盖默认值 .md，因此 args.ext 是 .csv；位置参数 path 会被转换成 Path 对象。参数解析完成后业务函数应按类型和范围继续校验，不能因为 argparse 转换成功就假设输入一定安全。"
+            },
+            {
+              "type": "debug",
+              "question": "这段批处理脚本为什么可能覆盖错误文件？",
+              "options": [
+                "没有检查目标文件是否已存在，也没有 dry-run 和根目录限制",
+                "rename 只能用于目录",
+                "glob 不能匹配 txt",
+                "with_suffix 会返回字符串"
+              ],
+              "answer": 0,
+              "explanation": "with_suffix 生成的目标可能已经存在，rename 会覆盖原文件；脚本还会遍历当前工作目录下的所有文本文件，范围过大且没有预演。应先解析绝对路径、限制在指定根目录内，输出重命名计划，检查冲突并保留回滚记录。这道题对应 CLI 自动化的幂等与 dry-run 设计：批量改动前先输出计划，再显式确认执行。 正确选项「没有检查目标文件是否已存在，也没有 dry-run 和根目录限制」对应《Python CLI 与自动化实战》的要点「打包为可安装命令」：通过 pyproject.toml 的入口点把模块暴露成命令行命令，用户安装后可以直接调用，而不必记住 python 文件路径。判断「打包为可安装命令」时先确认前提是否成立，再回到《Python CLI 与自动化实战》的示例核对一次；把打包为可安装命令的做法换到别的约束下未必成立，先确认边界再决定答案。",
+              "code": "for path in Path('.').glob('*.txt'):\n    path.rename(path.with_suffix('.md'))",
+              "language": "python"
+            }
+          ],
+          "prerequisites": [
+            "python_stdlib"
+          ],
+          "related": [
+            "python_errors_logging_files",
+            "python_project_architecture"
+          ],
+          "lab": "sandbox:python"
+        },
+        {
+          "id": "python_gui",
+          "title": {
+            "zh": "Python GUI 开发：Tkinter 与 PySide6",
+            "en": "Python GUI Development with Tkinter and PySide6"
+          },
+          "summary": {
+            "zh": "理解 GUI 事件循环、控件树、布局和线程边界，用 Tkinter 或 PySide6 做出不卡顿、可打包的桌面应用。",
+            "en": "Understand GUI event loops, widget trees, layouts and thread boundaries to build responsive desktop applications."
+          },
+          "file": "assets/content/python_gui.md",
+          "minutes": 35,
+          "keywords": [
+            "Tkinter",
+            "PySide6",
+            "事件循环",
+            "布局",
+            "后台线程"
+          ],
+          "difficulty": "进阶",
+          "order": 22,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "GUI 回调中执行点击按钮后的网络下载，最可能的后果是什么？",
+              "options": [
+                "事件循环被占用，窗口无响应且无法重绘",
+                "下载速度自动变快",
+                "网络请求会转到后台线程",
+                "控件会自动复制一份"
+              ],
+              "answer": 0,
+              "explanation": "事件循环在主线程中逐个执行回调，耗时操作会让它无法处理重绘、关闭和其他输入，用户看到假死窗口。应把下载放到后台线程或进程，通过队列或信号槽把进度和结果送回 UI 线程更新界面。 正确选项「事件循环被占用，窗口无响应且无法重绘」对应《Python GUI 开发：Tkinter 与 PySide6》的要点「事件循环与控件树」：GUI 程序启动后进入主事件循环，持续从队列取出鼠标、键盘和定时器事件并分发给对应控件；控件按父子关系组成树。判断「事件循环与控件树」时先确认前提是否成立，再回到《Python GUI 开发：Tkinter 与 PySide6》的示例核对一次；把别的语言或框架的默认做法直接搬到事件循环与控件树上，往往会在本课的边界条件里失效。"
+            },
+            {
+              "type": "single",
+              "question": "后台线程完成计算后，正确更新控件的方式是？",
+              "options": [
+                "把结果放入线程安全队列，由 UI 线程取出后更新",
+                "直接在后台线程调用控件方法",
+                "让控件自己轮询后台变量并修改主线程",
+                "重启事件循环"
+              ],
+              "answer": 0,
+              "explanation": "大多数 GUI 工具包要求控件只由创建它的 UI 线程访问，后台线程直接修改控件会导致随机崩溃或渲染错误。队列、信号槽和回调投递都能把结果安全送回主线程，同时要处理任务取消和窗口关闭。 正确选项「把结果放入线程安全队列，由 UI 线程取出后更新」对应《Python GUI 开发：Tkinter 与 PySide6》的要点「布局管理器与响应式尺寸」：布局管理器根据父子关系、权重和最小尺寸自动计算控件位置，避免手工写死每个像素坐标。判断「布局管理器与响应式尺寸」时先确认前提是否成立，再回到《Python GUI 开发：Tkinter 与 PySide6》的示例核对一次；借鉴相邻主题的经验之前，先核对布局管理器与响应式尺寸的前提是否成立。"
+            },
+            {
+              "type": "multi",
+              "question": "设计可缩放 GUI 布局时应该注意什么？（多选）",
+              "options": [
+                "使用布局权重分配额外空间",
+                "设置合理的最小尺寸",
+                "所有控件写死像素坐标",
+                "支持字体放大和键盘访问"
+              ],
+              "answers": [
+                0,
+                1,
+                3
+              ],
+              "answer": 0,
+              "explanation": "布局权重、最小尺寸和可访问性让界面在不同分辨率、DPI 和输入方式下都可用；写死坐标在屏幕尺寸或字体变化时会重叠或截断。还要检查长文本换行、滚动区域和窗口缩放到极小时的可用性。 正确选项「使用布局权重分配额外空间；设置合理的最小尺寸；支持字体放大和键盘访问」对应《Python GUI 开发：Tkinter 与 PySide6》的要点「状态、回调与单向数据流」：GUI 状态应集中管理，控件只显示状态并把用户动作转换成命令，避免多个控件互相直接修改造成不一致。判断「状态、回调与单向数据流」时先确认前提是否成立，再回到《Python GUI 开发：Tkinter 与 PySide6》的示例核对一次；记住状态、回调与单向数据流的结论之外还要记住适用条件，换一个输入往往就不成立了。"
+            },
+            {
+              "type": "code",
+              "question": "阅读事件队列代码，两次 drain 之间不清空队列会发生什么？",
+              "options": [
+                "每次 drain 会按先进先出顺序产出剩余事件，直到队列为空",
+                "drain 只返回最后一个事件",
+                "队列会自动排序",
+                "第二次 drain 会抛异常"
+              ],
+              "answer": 0,
+              "code": "def drain(self):\n    while self._items:\n        yield self._items.popleft()",
+              "language": "python",
+              "explanation": "drain 是生成器，循环从左侧弹出元素直到队列为空，因此每次调用都会按先进先出顺序处理当前剩余事件；再次调用时只处理新加入的事件。GUI 定时器可以周期性 drain，但要限制单次处理数量，避免大量事件占满主线程。 正确选项「每次 drain 会按先进先出顺序产出剩余事件，直到队列为空」对应《Python GUI 开发：Tkinter 与 PySide6》的要点「后台任务与线程边界」：耗时计算、网络请求和文件扫描必须放到后台线程或进程，结果通过线程安全队列回到 UI 线程更新控件。判断「后台任务与线程边界」时先确认前提是否成立，再回到《Python GUI 开发：Tkinter 与 PySide6》的示例核对一次；干扰项常常是相邻主题里成立的结论，只有按后台任务与线程边界的输入与约束判断才能排除。"
+            },
+            {
+              "type": "debug",
+              "question": "桌面应用打包后在开发机正常、目标机器启动即崩溃，优先检查什么？",
+              "options": [
+                "目标系统缺少运行库、资源路径或动态导入模块",
+                "Python 代码没有分号",
+                "窗口标题长度",
+                "键盘布局"
+              ],
+              "answer": 0,
+              "explanation": "打包结果依赖目标系统的图形库、运行库和资源路径，动态导入的插件也可能未被收集。应在干净的目标系统上运行冒烟测试，检查资源路径使用运行时目录、图标和提示信息，并把启动日志写入可访问位置。这道题对应 GUI 打包与资源路径：Tkinter 或 PySide6 应用要在目标系统验证图标、运行库和事件循环。 正确选项「目标系统缺少运行库、资源路径或动态导入模块」对应《Python GUI 开发：Tkinter 与 PySide6》的要点「打包、资源与平台差异」：桌面应用需要把 Python 解释器、依赖、图标和资源一起打包，并处理不同操作系统的路径、DPI 和签名要求。判断「打包、资源与平台差异」时先确认前提是否成立，再回到《Python GUI 开发：Tkinter 与 PySide6》的示例核对一次；把打包、资源与平台差异的做法换到别的约束下未必成立，先确认边界再决定答案。",
+              "code": "def drain(self):\n    while self._items:\n        yield self._items.popleft()",
+              "language": "python"
+            }
+          ],
+          "prerequisites": [
+            "python_oop_advanced"
+          ],
+          "related": [
+            "python_cli_automation",
+            "python_packaging_performance"
+          ],
+          "lab": "sandbox:python"
         },
         {
           "id": "python_concurrency",
@@ -5388,7 +6297,7 @@
           ],
           "difficulty": "高级",
           "group": null,
-          "order": 14,
+          "order": 23,
           "file_en": "assets/content_en/python_concurrency.md",
           "prerequisites": [
             "python_typing_testing"
@@ -5499,7 +6408,7 @@
           ],
           "difficulty": "高级",
           "group": null,
-          "order": 15,
+          "order": 24,
           "file_en": "assets/content_en/python_project.md",
           "prerequisites": [
             "python_concurrency"
@@ -5533,7 +6442,7 @@
             "pytest"
           ],
           "difficulty": "高级",
-          "order": 16,
+          "order": 25,
           "quiz": [
             {
               "question": "围绕“实战：FastAPI 订单服务”中的 FastAPI、Pydantic、REST，下列哪两项是本课强调的实践判断？",
@@ -5648,7 +6557,7 @@
             "幂等"
           ],
           "difficulty": "高级",
-          "order": 17,
+          "order": 26,
           "quiz": [
             {
               "question": "为什么要把脏记录写入拒绝文件？",
@@ -5762,7 +6671,7 @@
             "闭包"
           ],
           "difficulty": "高级",
-          "order": 18,
+          "order": 27,
           "quiz": [
             {
               "question": "关于「装饰器本质是接收函数并返回新函数的高阶函数，常用于日志、缓存、权限和重试。」，下列说法正确的是？",
@@ -5862,6 +6771,409 @@
           }
         },
         {
+          "id": "python_concurrency_model",
+          "title": {
+            "zh": "Python 并发模型、GIL 与线程进程选型",
+            "en": "Python Concurrency, the GIL, Threads and Processes"
+          },
+          "summary": {
+            "zh": "从 GIL 的真实约束出发，分清 I/O 并发与 CPU 并行，用锁、队列、线程池和进程池写出正确又可测的并发代码。",
+            "en": "Start from the real constraints of the GIL and choose threads, processes, locks and pools for correct concurrent programs."
+          },
+          "file": "assets/content/python_concurrency_model.md",
+          "minutes": 40,
+          "keywords": [
+            "GIL",
+            "线程",
+            "进程",
+            "竞态条件",
+            "线程池"
+          ],
+          "difficulty": "高级",
+          "order": 28,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "传统 CPython 中，纯 Python CPU 密集任务为什么难以靠多线程加速？",
+              "options": [
+                "GIL 让同一进程内同一时刻只有一个线程执行 Python 字节码",
+                "线程不能访问共享内存",
+                "Python 不支持创建线程",
+                "多线程只能在 Windows 使用"
+              ],
+              "answer": 0,
+              "explanation": "GIL 保护解释器内部状态，同一进程内的线程需要轮流持有它执行 Python 字节码，因此纯 Python 计算不会随线程数线性加速。I/O 等待和部分 C 扩展会释放 GIL，所以线程仍适合 I/O 密集任务；CPU 并行通常改用多进程、原生扩展或自由线程构建。 正确选项「GIL 让同一进程内同一时刻只有一个线程执行 Python 字节码」对应《Python 并发模型、GIL 与线程进程选型》的要点「并发、并行与 GIL」：并发是多个任务交替推进，并行是同一时刻真正同时执行；CPython 的传统 GIL 让同一进程内只有一个线程执行 Python 字节码。判断「并发、并行与 GIL」时先确认前提是否成立，再回到《Python 并发模型、GIL 与线程进程选型》的示例核对一次；把别的语言或框架的默认做法直接搬到并发、并行与 GIL上，往往会在本课的边界条件里失效。"
+            },
+            {
+              "type": "single",
+              "question": "四个线程各自执行 counter += 1 一万次，最终结果小于四万，最可能的原因是什么？",
+              "options": [
+                "读取、加一、写回不是原子操作，发生了竞态",
+                "整数不能相加",
+                "线程池最多只能执行一个任务",
+                "Python 会自动丢弃异常"
+              ],
+              "answer": 0,
+              "explanation": "counter += 1 包含读取当前值、计算新值、写回三个步骤，线程可能在中间被切换，两个线程读到同一个旧值后互相覆盖，导致更新丢失。用锁把这三个步骤保护成临界区可以修复，或者让每个线程返回局部计数，最后再汇总。 正确选项「读取、加一、写回不是原子操作，发生了竞态」对应《Python 并发模型、GIL 与线程进程选型》的要点「线程、竞态与锁」：线程共享进程内存，因此通信便宜，但多个线程同时读写同一个可变对象会产生竞态，结果依赖调度顺序。判断「线程、竞态与锁」时先确认前提是否成立，再回到《Python 并发模型、GIL 与线程进程选型》的示例核对一次；借鉴相邻主题的经验之前，先核对线程、竞态与锁的前提是否成立。"
+            },
+            {
+              "type": "multi",
+              "question": "哪些任务更适合使用进程池？（多选）",
+              "options": [
+                "大规模纯 Python 数值计算",
+                "需要隔离内存的批处理任务",
+                "需要频繁共享一个可变字典的短任务",
+                "只做网络等待的轻量请求"
+              ],
+              "answers": [
+                0,
+                1
+              ],
+              "answer": 0,
+              "explanation": "进程池绕过 GIL，适合 CPU 密集计算，也能通过独立内存获得隔离；但频繁共享可变字典需要跨进程同步，成本很高，I/O 等待任务用线程或异步更便宜。选择模型时要看瓶颈、共享状态和序列化成本，而不是默认进程越多越快。 正确选项「大规模纯 Python 数值计算；需要隔离内存的批处理任务」对应《Python 并发模型、GIL 与线程进程选型》的要点「多进程与序列化边界」：多进程拥有各自的内存空间，绕过 GIL 实现 CPU 并行，但参数和返回值需要序列化，跨进程共享状态成本更高。判断「多进程与序列化边界」时先确认前提是否成立，再回到《Python 并发模型、GIL 与线程进程选型》的示例核对一次；记住多进程与序列化边界的结论之外还要记住适用条件，换一个输入往往就不成立了。"
+            },
+            {
+              "type": "code",
+              "question": "阅读代码，四个线程并发提交后 counter 的值最可能是多少？\n\ncounter = 0\nfor _ in range(4):\n    with ThreadPoolExecutor() as pool:\n        pool.submit(lambda: counter += 1)",
+              "options": [
+                "代码存在语法错误，无法运行",
+                "一定等于 4",
+                "一定小于 4",
+                "取决于线程数量"
+              ],
+              "answer": 0,
+              "code": "counter = 0\nfor _ in range(4):\n    with ThreadPoolExecutor() as pool:\n        pool.submit(lambda: counter += 1)",
+              "language": "python",
+              "explanation": "lambda 中不能直接使用赋值语句，这段代码在语法解析阶段就会失败；即使改成函数，匿名函数与闭包捕获共享变量也需要加锁或使用局部结果汇总。示例提醒我们，并发缺陷之前往往先要过语言语法和可读性这一关。 正确选项「代码存在语法错误，无法运行」对应《Python 并发模型、GIL 与线程进程选型》的要点「concurrent.futures 与任务编排」：线程池和进程池提供统一的高层接口，用提交任务、等待结果、按完成顺序处理的方式编排并发工作。判断「concurrent.futures 与任务编排」时先确认前提是否成立，再回到《Python 并发模型、GIL 与线程进程选型》的示例核对一次；干扰项常常是相邻主题里成立的结论，只有按concurrent.futures 与任务编排的输入与约束判断才能排除。"
+            },
+            {
+              "type": "debug",
+              "question": "Windows 上进程池出现无限创建子进程，最可能缺少什么？",
+              "options": [
+                "if __name__ == '__main__' 主模块保护",
+                "ThreadPoolExecutor 的 max_workers 参数",
+                "logging.basicConfig 配置",
+                "global 关键字声明"
+              ],
+              "answer": 0,
+              "explanation": "Windows 使用 spawn 启动子进程，子进程会重新导入主模块；如果创建进程池的代码位于模块顶层，导入时又会创建新的子进程，形成递归。把入口放进 if __name__ == '__main__' 保护块，并确保任务函数定义在模块顶层且可序列化，就能避免运行期错误。这道题对应 Python 多进程启动模型：Windows 使用 spawn，进程池入口必须放进主模块保护块。 正确选项「if __name__ == '__main__' 主模块保护」对应《Python 并发模型、GIL 与线程进程选型》的要点「并发正确性与性能观测」：并发代码首先要正确，其次才是更快；正确性依赖不变量、原子性和明确的失败策略，性能必须用真实负载测量。判断「并发正确性与性能观测」时先确认前提是否成立，再回到《Python 并发模型、GIL 与线程进程选型》的示例核对一次；把并发正确性与性能观测的做法换到别的约束下未必成立，先确认边界再决定答案。",
+              "code": "from concurrent.futures import ProcessPoolExecutor\n\ndef run():\n    with ProcessPoolExecutor(max_workers=2) as pool:\n        pool.submit(cpu_task, 10000)\n\nrun()",
+              "language": "python"
+            }
+          ],
+          "prerequisites": [
+            "python_concurrency"
+          ],
+          "related": [
+            "python_asyncio",
+            "python_runtime_memory_performance"
+          ],
+          "lab": "sandbox:python"
+        },
+        {
+          "id": "python_asyncio",
+          "title": {
+            "zh": "Python asyncio 异步编程：任务、超时与取消",
+            "en": "Python asyncio: Tasks, Timeouts and Cancellation"
+          },
+          "summary": {
+            "zh": "理解事件循环如何调度协程，用 gather、TaskGroup、超时和取消组织高并发 I/O，并避免阻塞整个循环。",
+            "en": "Understand event-loop scheduling and coordinate high-concurrency I/O with gather, TaskGroup, timeouts and cancellation."
+          },
+          "file": "assets/content/python_asyncio.md",
+          "minutes": 40,
+          "keywords": [
+            "asyncio",
+            "协程",
+            "TaskGroup",
+            "取消",
+            "超时"
+          ],
+          "difficulty": "高级",
+          "order": 29,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "为什么在 async 函数中调用 time.sleep 会破坏并发？",
+              "options": [
+                "它会阻塞事件循环线程，其他任务无法被调度",
+                "它会自动取消所有任务",
+                "它会把协程变成线程",
+                "它只能休眠整数秒"
+              ],
+              "answer": 0,
+              "explanation": "事件循环在单线程中调度所有任务，time.sleep 会让这个线程真正停下来，期间其他协程无法运行，超时和取消也难以生效。应该使用 asyncio.sleep，或者把无法改写的阻塞函数放进 asyncio.to_thread 和线程池，让事件循环保持可调度。 正确选项「它会阻塞事件循环线程，其他任务无法被调度」对应《Python asyncio 异步编程：任务、超时与取消》的要点「协程与事件循环」：async def 定义协程函数，调用它只得到协程对象，必须 await 或交给事件循环才会执行；事件循环在任务等待 I/O 时切换到其他任务。判断「协程与事件循环」时先确认前提是否成立，再回到《Python asyncio 异步编程：任务、超时与取消》的示例核对一次；把别的语言或框架的默认做法直接搬到协程与事件循环上，往往会在本课的边界条件里失效。"
+            },
+            {
+              "type": "single",
+              "question": "asyncio.gather 返回结果时的顺序是？",
+              "options": [
+                "与传入的等待对象顺序一致，而不是完成顺序",
+                "永远按完成先后排列",
+                "随机顺序",
+                "只返回第一个完成的结果"
+              ],
+              "answer": 0,
+              "explanation": "gather 会并发等待所有对象，但返回列表与输入顺序一一对应，因此调用方可以按索引稳定取值；如果要按完成先后处理，应使用 as_completed。两种语义各有用途，混淆会导致结果与任务错配。 正确选项「与传入的等待对象顺序一致，而不是完成顺序」对应《Python asyncio 异步编程：任务、超时与取消》的要点「Task 与并发组合」：Task 是事件循环调度的协程包装，create_task 让协程立即开始运行；gather 收集一组结果，as_completed 按完成顺序处理。判断「Task 与并发组合」时先确认前提是否成立，再回到《Python asyncio 异步编程：任务、超时与取消》的示例核对一次；借鉴相邻主题的经验之前，先核对Task 与并发组合的前提是否成立。"
+            },
+            {
+              "type": "multi",
+              "question": "关于取消与超时，哪些说法正确？（多选）",
+              "options": [
+                "取消通过 CancelledError 在协程暂停点传播",
+                "清理资源应放在 finally 或 async with 中",
+                "捕获 CancelledError 后不应静默忽略",
+                "超时后原任务一定已经完成"
+              ],
+              "answer": 0,
+              "explanation": "取消是协作式的，异常在暂停点注入，资源清理必须放在可靠的退出路径中，且不能吞掉取消信号。超时只保证调用方不再等待，被取消的任务可能仍在执行清理，因此需要等待任务结束或确保清理逻辑幂等。 正确选项「取消通过 CancelledError 在协程暂停点传播；清理资源应放在 finally 或 async with 中；捕获 CancelledError 后不应静默忽略」对应《Python asyncio 异步编程：任务、超时与取消》的要点「超时、取消与清理」：超时会在规定时间内没有完成时取消任务并抛出 TimeoutError；取消通过 CancelledError 传播，清理逻辑必须正确执行。判断「超时、取消与清理」时先确认前提是否成立，再回到《Python asyncio 异步编程：任务、超时与取消》的示例核对一次；记住超时、取消与清理的结论之外还要记住适用条件，换一个输入往往就不成立了。",
+              "answers": [
+                0,
+                1,
+                2
+              ]
+            },
+            {
+              "type": "code",
+              "question": "阅读 TaskGroup 代码，正常完成后的输出是什么？\n\nasync with asyncio.TaskGroup() as group:\n    tasks = [group.create_task(fetch(i)) for i in range(2)]\nprint([task.result() for task in tasks])",
+              "options": [
+                "按任务顺序输出两个结果",
+                "只输出第一个结果",
+                "输出空列表",
+                "TaskGroup 不允许这样创建任务"
+              ],
+              "answer": 0,
+              "code": "async with asyncio.TaskGroup() as group:\n    tasks = [group.create_task(fetch(i)) for i in range(2)]\nprint([task.result() for task in tasks])",
+              "language": "python",
+              "explanation": "TaskGroup 退出时会等待块内创建的所有任务完成，任务对象保存在列表中，因此可以在块外按顺序读取 result。若任一任务失败，TaskGroup 会取消其余任务并在退出时抛出异常；多个失败会汇总成 ExceptionGroup，需要按类型处理。 正确选项「按任务顺序输出两个结果」对应《Python asyncio 异步编程：任务、超时与取消》的要点「TaskGroup 与结构化并发」：TaskGroup 把一组子任务绑定在同一个 async with 块内，退出时等待全部完成；任一子任务失败会取消其余任务并抛出异常组。判断「TaskGroup 与结构化并发」时先确认前提是否成立，再回到《Python asyncio 异步编程：任务、超时与取消》的示例核对一次；干扰项常常是相邻主题里成立的结论，只有按TaskGroup 与结构化并发的输入与约束判断才能排除。"
+            },
+            {
+              "type": "debug",
+              "question": "这个异步函数有什么问题？",
+              "options": [
+                "同步文件 I/O 会阻塞事件循环，应使用异步文件库或 to_thread，并正确关闭文件",
+                "json 不能在 async 函数中使用",
+                "open 不支持 encoding 参数",
+                "return 会取消任务"
+              ],
+              "answer": 0,
+              "explanation": "虽然函数声明为 async，但 open 和 json.load 都是同步调用，会在事件循环线程中阻塞其他任务；同时文件对象没有用 with 关闭。可以改用异步文件库，或在 asyncio.to_thread 中执行小的同步读取函数并保证资源释放。这道题对应 asyncio 的阻塞边界：同步文件操作会卡住事件循环，应移到线程或改用异步库。 正确选项「同步文件 I/O 会阻塞事件循环，应使用异步文件库或 to_thread，并正确关闭文件」对应《Python asyncio 异步编程：任务、超时与取消》的要点「异步 I/O 生态与桥接」：异步库把网络和文件操作暴露为可等待对象，真正的并发来自等待期间切换任务；同步依赖需要用线程桥接。判断「异步 I/O 生态与桥接」时先确认前提是否成立，再回到《Python asyncio 异步编程：任务、超时与取消》的示例核对一次；把异步 I/O 生态与桥接的做法换到别的约束下未必成立，先确认边界再决定答案。",
+              "code": "async def load(path):\n    return json.load(open(path, encoding='utf-8'))",
+              "language": "python"
+            }
+          ],
+          "prerequisites": [
+            "python_concurrency"
+          ],
+          "related": [
+            "python_concurrency_model",
+            "python_http_clients"
+          ],
+          "lab": "sandbox:python"
+        },
+        {
+          "id": "python_database_sqlalchemy",
+          "title": {
+            "zh": "Python 数据库与 SQLAlchemy 2.x",
+            "en": "Python Databases with SQLAlchemy 2.x"
+          },
+          "summary": {
+            "zh": "从参数化查询和事务边界出发，用 SQLAlchemy 2.x 的 Engine、Session 与 ORM 映射组织可靠的数据访问层。",
+            "en": "Build a reliable data-access layer with parameterized statements, transactions and SQLAlchemy 2.x sessions."
+          },
+          "file": "assets/content/python_database_sqlalchemy.md",
+          "minutes": 40,
+          "keywords": [
+            "SQLAlchemy",
+            "SQLite",
+            "事务",
+            "连接池",
+            "Alembic"
+          ],
+          "difficulty": "高级",
+          "order": 30,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "防止 SQL 注入最核心的做法是什么？",
+              "options": [
+                "使用绑定参数让数据库区分 SQL 模板与输入值",
+                "把单引号替换成两个单引号",
+                "只允许数字输入",
+                "把 SQL 全部转成小写"
+              ],
+              "answer": 0,
+              "explanation": "绑定参数把语句结构与数据分开传输，用户输入永远不会被数据库解释成 SQL 代码，因此能覆盖引号、注释和联合查询等多种注入形式。手工转义容易漏掉边界，只允许数字会限制业务，转小写与安全性无关；表名和列名等标识符则要从白名单映射。 正确选项「使用绑定参数让数据库区分 SQL 模板与输入值」对应《Python 数据库与 SQLAlchemy 2.x》的要点「DB-API 与参数化查询」：Python 数据库驱动遵循 DB-API，连接负责事务，游标负责执行语句；用户输入必须通过参数占位符传递，不能拼进 SQL 字符串。判断「DB-API 与参数化查询」时先确认前提是否成立，再回到《Python 数据库与 SQLAlchemy 2.x》的示例核对一次；把别的语言或框架的默认做法直接搬到DB-API 与参数化查询上，往往会在本课的边界条件里失效。"
+            },
+            {
+              "type": "single",
+              "question": "SQLAlchemy 中修改 ORM 对象后，数据什么时候真正写入数据库？",
+              "options": [
+                "调用 commit 提交事务时",
+                "访问对象属性的瞬间",
+                "创建 Session 时",
+                "导入模型类时"
+              ],
+              "answer": 0,
+              "explanation": "Session 跟踪对象的修改，flush 可以提前发送 SQL，但只有 commit 才会提交事务并使变更对其他连接可见；rollback 会丢弃本次工作单元的修改。生产代码应把提交放在明确的服务边界，并确保异常路径回滚。 正确选项「调用 commit 提交事务时」对应《Python 数据库与 SQLAlchemy 2.x》的要点「Engine、Session 与工作单元」：Engine 管理数据库方言和连接池，Session 表示一次工作单元，跟踪对象变化并在提交时把变更写入数据库。判断「Engine、Session 与工作单元」时先确认前提是否成立，再回到《Python 数据库与 SQLAlchemy 2.x》的示例核对一次；借鉴相邻主题的经验之前，先核对Engine、Session 与工作单元的前提是否成立。"
+            },
+            {
+              "type": "multi",
+              "question": "关于连接池与事务，哪些说法正确？（多选）",
+              "options": [
+                "池大小必须与数据库连接上限匹配",
+                "连接泄漏会让池最终耗尽",
+                "事务中适合执行耗时网络请求",
+                "Session 应在使用后及时关闭并归还连接"
+              ],
+              "answers": [
+                0,
+                1,
+                3
+              ],
+              "answer": 0,
+              "explanation": "连接池是有限资源，池大小超过数据库承载会导致连接被拒绝或相互竞争；未关闭的 Session 会泄漏连接，最终让所有请求排队超时。耗时的网络请求不应放在事务里，因为它会长期占用连接和锁，放大故障影响面。 正确选项「池大小必须与数据库连接上限匹配；连接泄漏会让池最终耗尽；Session 应在使用后及时关闭并归还连接」对应《Python 数据库与 SQLAlchemy 2.x》的要点「事务、隔离与并发写」：事务把多条语句组成原子工作单元，要么全部成功，要么全部回滚；并发事务可能互相阻塞或产生冲突。判断「事务、隔离与并发写」时先确认前提是否成立，再回到《Python 数据库与 SQLAlchemy 2.x》的示例核对一次；记住事务、隔离与并发写的结论之外还要记住适用条件，换一个输入往往就不成立了。"
+            },
+            {
+              "type": "code",
+              "question": "阅读代码，哪一项能避免 N+1 查询？\n\norders = session.scalars(select(Order)).all()\nfor order in orders:\n    print(order.customer.name)",
+              "options": [
+                "用 selectinload 或 join 一次性加载 customer 关联",
+                "把循环改成 while",
+                "增加 Session 数量",
+                "给 Order 表再加一个主键"
+              ],
+              "answer": 0,
+              "code": "orders = session.scalars(select(Order)).all()\nfor order in orders:\n    print(order.customer.name)",
+              "language": "python",
+              "explanation": "默认延迟加载会在每次访问 order.customer 时再发一条查询，订单越多查询次数越多。使用 selectinload 批量加载关联对象，或用 join 在一条语句中取回所需列，可以减少往返；修复后应通过 SQL 日志或查询计数验证次数确实下降。 正确选项「用 selectinload 或 join 一次性加载 customer 关联」对应《Python 数据库与 SQLAlchemy 2.x》的要点「连接池与资源治理」：连接池复用数据库连接，减少建立连接的开销；池大小、超时和连接有效性决定高并发下的稳定性。判断「连接池与资源治理」时先确认前提是否成立，再回到《Python 数据库与 SQLAlchemy 2.x》的示例核对一次；干扰项常常是相邻主题里成立的结论，只有按连接池与资源治理的输入与约束判断才能排除。"
+            },
+            {
+              "type": "debug",
+              "question": "这段数据访问代码的主要风险是什么？",
+              "options": [
+                "缺少余额校验与显式回滚，异常时可能部分修改或产生负余额",
+                "session.get 无法读取对象",
+                "commit 会自动删除账户",
+                "金额必须是字符串"
+              ],
+              "answer": 0,
+              "explanation": "代码没有检查余额是否足够，也没有把整段操作放进异常回滚边界；如果提交前发生异常，Session 可能保持不可用状态。应在同一事务中校验两个账户、锁定或使用版本号处理并发，并在异常时 rollback 后重新抛出领域异常。这道题对应 SQLAlchemy Session 与事务边界：余额校验、更新与提交必须在同一事务中完成。 正确选项「缺少余额校验与显式回滚，异常时可能部分修改或产生负余额」对应《Python 数据库与 SQLAlchemy 2.x》的要点「迁移与模型演进」：schema 会随业务变化，迁移工具把每次结构修改保存成有顺序的版本，让开发、测试和生产环境保持一致。判断「迁移与模型演进」时先确认前提是否成立，再回到《Python 数据库与 SQLAlchemy 2.x》的示例核对一次；把迁移与模型演进的做法换到别的约束下未必成立，先确认边界再决定答案。",
+              "code": "def transfer(session, from_id, to_id, amount):\n    a = session.get(Account, from_id)\n    b = session.get(Account, to_id)\n    a.balance -= amount\n    b.balance += amount\n    session.commit()",
+              "language": "python"
+            }
+          ],
+          "prerequisites": [
+            "python_errors_logging_files"
+          ],
+          "related": [
+            "python_project_etl",
+            "python_project_architecture"
+          ],
+          "lab": "sandbox:python"
+        },
+        {
+          "id": "python_http_clients",
+          "title": {
+            "zh": "Python HTTP 客户端工程：超时、重试与认证",
+            "en": "Engineering Python HTTP Clients: Timeouts, Retries and Auth"
+          },
+          "summary": {
+            "zh": "把请求、超时、重试、连接池、认证与分页当成一个完整客户端来设计，让外部接口失败时行为可预测。",
+            "en": "Design requests, timeouts, retries, pooling, authentication and pagination as one predictable HTTP client."
+          },
+          "file": "assets/content/python_http_clients.md",
+          "minutes": 40,
+          "keywords": [
+            "httpx",
+            "超时",
+            "重试",
+            "幂等性",
+            "限流"
+          ],
+          "difficulty": "高级",
+          "order": 31,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "为什么 HTTP 请求必须设置超时？",
+              "options": [
+                "防止连接或读取无限等待，避免线程和连接池被耗尽",
+                "让响应速度变快",
+                "超时能自动修复服务端故障",
+                "只有异步请求才需要超时"
+              ],
+              "answer": 0,
+              "explanation": "外部服务可能因为网络中断、过载或错误配置长时间不返回，没有超时的请求会占住线程、连接和内存，最终拖垮整条调用链。超时应该覆盖连接、读取、写入和等待连接池的各个阶段，并由总请求预算统一约束。 正确选项「防止连接或读取无限等待，避免线程和连接池被耗尽」对应《Python HTTP 客户端工程：超时、重试与认证》的要点「请求组成与状态码分类」：一次 HTTP 请求由方法、URL、请求头、查询参数和正文组成；响应状态码告诉客户端请求是否成功以及是否值得重试。判断「请求组成与状态码分类」时先确认前提是否成立，再回到《Python HTTP 客户端工程：超时、重试与认证》的示例核对一次；把别的语言或框架的默认做法直接搬到请求组成与状态码分类上，往往会在本课的边界条件里失效。"
+            },
+            {
+              "type": "single",
+              "question": "以下哪种请求最适合自动重试？",
+              "options": [
+                "幂等的 GET 查询在 503 后重试",
+                "没有幂等键的支付请求超时后重试",
+                "返回 404 的查询无限重试",
+                "认证失败的请求立即循环重试"
+              ],
+              "answer": 0,
+              "explanation": "幂等的 GET 在服务端临时过载时重试通常是安全的，配合指数退避和抖动即可。支付请求如果没有服务端幂等保证可能重复扣款；404 和 401 是确定性错误，重试不会改变结果，只会放大流量和延迟。 正确选项「幂等的 GET 查询在 503 后重试」对应《Python HTTP 客户端工程：超时、重试与认证》的要点「超时与重试策略」：超时限制一次请求最多等多久，重试在临时失败后再尝试；两者共同决定故障时客户端占用资源的时间上限。判断「超时与重试策略」时先确认前提是否成立，再回到《Python HTTP 客户端工程：超时、重试与认证》的示例核对一次；借鉴相邻主题的经验之前，先核对超时与重试策略的前提是否成立。"
+            },
+            {
+              "type": "multi",
+              "question": "关于客户端与认证，哪些做法正确？（多选）",
+              "options": [
+                "应用级复用客户端以利用连接池",
+                "把访问令牌放在 Authorization 头",
+                "日志中记录完整令牌方便排查",
+                "默认开启 TLS 证书校验"
+              ],
+              "answers": [
+                0,
+                1,
+                3
+              ],
+              "answer": 0,
+              "explanation": "复用客户端、把令牌放在认证头并保持 TLS 校验都是基本安全实践。完整令牌绝不应进入日志，因为日志通常被多人访问且长期保存；需要排查时可以记录令牌的哈希前缀、请求编号和过期时间等脱敏信息。 正确选项「应用级复用客户端以利用连接池；把访问令牌放在 Authorization 头；默认开启 TLS 证书校验」对应《Python HTTP 客户端工程：超时、重试与认证》的要点「会话、连接池与并发」：客户端对象持有连接池和默认配置，复用连接可以显著降低延迟；每次请求新建客户端会丢失连接复用优势。判断「会话、连接池与并发」时先确认前提是否成立，再回到《Python HTTP 客户端工程：超时、重试与认证》的示例核对一次；记住会话、连接池与并发的结论之外还要记住适用条件，换一个输入往往就不成立了。"
+            },
+            {
+              "type": "code",
+              "question": "阅读重试片段，最大等待时间是多少秒？\n\ndef delay(attempt):\n    return min(0.2 * (2 ** attempt), 5.0)\nprint(delay(5))",
+              "options": [
+                "5.0",
+                "6.4",
+                "3.2",
+                "0.2"
+              ],
+              "answer": 0,
+              "code": "def delay(attempt):\n    return min(0.2 * (2 ** attempt), 5.0)\nprint(delay(5))",
+              "language": "python",
+              "explanation": "计算 0.2 乘以 2 的 5 次方得到 6.4，再由 min 与上限 5.0 比较，因此结果是 5.0。指数退避必须设置上限，否则重试次数增加后等待时间会迅速膨胀；实际实现还要加入随机抖动，避免多个客户端同时恢复造成惊群。 正确选项「5.0」对应《Python HTTP 客户端工程：超时、重试与认证》的要点「认证、TLS 与秘密管理」：认证凭据放在请求头而不是 URL，TLS 校验默认开启；秘密通过环境变量或密钥服务注入，不能写进代码和日志。判断「认证、TLS 与秘密管理」时先确认前提是否成立，再回到《Python HTTP 客户端工程：超时、重试与认证》的示例核对一次；干扰项常常是相邻主题里成立的结论，只有按认证、TLS 与秘密管理的输入与约束判断才能排除。"
+            },
+            {
+              "type": "debug",
+              "question": "分页循环可能存在什么风险？",
+              "options": [
+                "没有最大页数和退出条件，服务端游标异常时可能无限请求",
+                "params 不能是字典",
+                "client.get 不支持循环调用",
+                "JSON 响应不能包含 next"
+              ],
+              "answer": 0,
+              "explanation": "循环依赖 next 字段结束，如果服务端重复返回同一个游标、字段缺失或网络重试导致状态错乱，客户端会无限请求并消耗配额。应设置最大页数、总条数或总时长上限，校验游标变化，并对分页结果去重和记录进度。这道题对应 HTTP 客户端的重试与分页保护：任何循环都要有上限，避免无限请求和限流惩罚。 正确选项「没有最大页数和退出条件，服务端游标异常时可能无限请求」对应《Python HTTP 客户端工程：超时、重试与认证》的要点「分页、限流与流式响应」：列表接口通常分页返回，客户端要按游标或页码持续请求；限流和流式响应要求客户端控制速率与内存。判断「分页、限流与流式响应」时先确认前提是否成立，再回到《Python HTTP 客户端工程：超时、重试与认证》的示例核对一次；把分页、限流与流式响应的做法换到别的约束下未必成立，先确认边界再决定答案。",
+              "code": "cursor = None\nwhile True:\n    page = client.get('/items', params={'cursor': cursor}).json()\n    cursor = page['next']",
+              "language": "python"
+            }
+          ],
+          "prerequisites": [
+            "python_modules_stdlib"
+          ],
+          "related": [
+            "python_asyncio",
+            "python_security"
+          ],
+          "lab": "sandbox:python"
+        },
+        {
           "id": "python_context_iterators",
           "title": {
             "zh": "Python 上下文管理器与迭代器协议",
@@ -5880,7 +7192,7 @@
             "资源"
           ],
           "difficulty": "高级",
-          "order": 19,
+          "order": 32,
           "quiz": [
             {
               "question": "关于「with 保证进入和退出成对执行，适合文件、锁、连接和事务。」，下列说法正确的是？",
@@ -5969,6 +7281,107 @@
           "lab": "sandbox:python"
         },
         {
+          "id": "python_security",
+          "title": {
+            "zh": "Python 安全基础：密码、随机数与不可信输入",
+            "en": "Python Security Foundations: Passwords, Randomness and Untrusted Input"
+          },
+          "summary": {
+            "zh": "掌握密码存储、安全随机数、注入防护、路径校验、秘密管理和依赖审计，把常见风险挡在输入边界和发布流程之外。",
+            "en": "Cover password storage, secure randomness, injection defense, path validation, secret management and dependency auditing."
+          },
+          "file": "assets/content/python_security.md",
+          "minutes": 40,
+          "keywords": [
+            "密码哈希",
+            "secrets",
+            "注入",
+            "路径穿越",
+            "依赖审计"
+          ],
+          "difficulty": "高级",
+          "order": 33,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "存储用户密码的正确方式是？",
+              "options": [
+                "为每个密码生成随机盐并使用 scrypt 等慢哈希",
+                "保存 MD5 摘要",
+                "使用对称加密后保存密文和密钥在同一数据库",
+                "保存明文但限制数据库访问"
+              ],
+              "answer": 0,
+              "explanation": "慢哈希加随机盐能让相同密码得到不同摘要，并显著提高离线暴力破解成本；MD5 和 SHA-1 计算太快，加密如果把密钥和密文放在一起泄露后等于明文，明文存储则一次泄露就全量暴露。密码验证还应使用恒定时间比较并支持参数升级。 正确选项「为每个密码生成随机盐并使用 scrypt 等慢哈希」对应《Python 安全基础：密码、随机数与不可信输入》的要点「密码只存慢哈希」：密码绝不能明文保存，也不能用 MD5、SHA-1 这类快速摘要直接存储；正确做法是使用带盐的慢哈希算法并支持参数升级。判断「密码只存慢哈希」时先确认前提是否成立，再回到《Python 安全基础：密码、随机数与不可信输入》的示例核对一次；把别的语言或框架的默认做法直接搬到密码只存慢哈希上，往往会在本课的边界条件里失效。"
+            },
+            {
+              "type": "single",
+              "question": "生成会话令牌应该使用哪个模块？",
+              "options": [
+                "secrets",
+                "random",
+                "hashlib",
+                "uuid.uuid1"
+              ],
+              "answer": 0,
+              "explanation": "secrets 从操作系统密码学安全随机源取值，适合会话令牌、密钥和重置链接；random 的梅森旋转算法可预测，uuid1 还包含时间与节点信息。令牌还要具备足够长度、明确有效期、服务端可撤销，并且只在创建时返回一次。 正确选项「secrets」对应《Python 安全基础：密码、随机数与不可信输入》的要点「安全随机与令牌」：random 模块适合模拟和抽样，不适合生成会话、重置密码或 API 令牌；安全场景必须使用 secrets。判断「安全随机与令牌」时先确认前提是否成立，再回到《Python 安全基础：密码、随机数与不可信输入》的示例核对一次；借鉴相邻主题的经验之前，先核对安全随机与令牌的前提是否成立。"
+            },
+            {
+              "type": "multi",
+              "question": "以下哪些做法能降低注入风险？（多选）",
+              "options": [
+                "数据库使用绑定参数",
+                "subprocess 使用参数列表并保持 shell=False",
+                "把用户输入拼进模板后关闭自动转义",
+                "对路径做规范化并检查允许根目录"
+              ],
+              "answer": 0,
+              "explanation": "绑定参数、参数列表和安全路径校验都把数据与结构分离；关闭模板自动转义会让用户输入被当成代码或标记执行，正是跨站脚本的常见来源。白名单、类型校验、长度限制和最小权限应同时使用。 正确选项「数据库使用绑定参数；subprocess 使用参数列表并保持 shell=False；对路径做规范化并检查允许根目录」对应《Python 安全基础：密码、随机数与不可信输入》的要点「注入与不可信输入」：SQL、操作系统命令、模板和路径都可能把输入当成代码或结构解释；防护方式是把数据与结构分离，或使用严格白名单。判断「注入与不可信输入」时先确认前提是否成立，再回到《Python 安全基础：密码、随机数与不可信输入》的示例核对一次；记住注入与不可信输入的结论之外还要记住适用条件，换一个输入往往就不成立了。",
+              "answers": [
+                0,
+                1,
+                3
+              ]
+            },
+            {
+              "type": "code",
+              "question": "阅读代码，正确密码与错误密码的输出分别是？\n\nsalt = secrets.token_bytes(16)\nstored = hashlib.scrypt(b'secret', salt=salt, n=2**14, r=8, p=1)\nprint(verify('secret', salt, stored), verify('wrong', salt, stored))",
+              "options": [
+                "True False",
+                "True True",
+                "False True",
+                "False False"
+              ],
+              "answer": 0,
+              "code": "salt = secrets.token_bytes(16)\nstored = hashlib.scrypt(b'secret', salt=salt, n=2**14, r=8, p=1)\nprint(verify('secret', salt, stored), verify('wrong', salt, stored))",
+              "language": "python",
+              "explanation": "相同密码和相同盐会得到相同派生值，因此正确密码验证为 True；错误密码得到不同派生值，结果为 False。验证函数应使用 hmac.compare_digest 等恒定时间比较，避免普通比较在极端情况下泄露信息，同时数据库需要保存盐、算法参数和摘要。 正确选项「True False」对应《Python 安全基础：密码、随机数与不可信输入》的要点「秘密管理与日志脱敏」：数据库密码、API 密钥和签名私钥属于秘密，不能硬编码、提交到仓库或写进日志；它们需要集中管理、最小权限和轮换。判断「秘密管理与日志脱敏」时先确认前提是否成立，再回到《Python 安全基础：密码、随机数与不可信输入》的示例核对一次；干扰项常常是相邻主题里成立的结论，只有按秘密管理与日志脱敏的输入与约束判断才能排除。"
+            },
+            {
+              "type": "debug",
+              "question": "下面依赖处理有什么风险？",
+              "options": [
+                "shell=True 拼接用户输入存在命令注入，文件路径也缺少根目录限制",
+                "subprocess 不能运行外部程序",
+                "open 不支持变量路径",
+                "convert 必须使用文本模式"
+              ],
+              "answer": 0,
+              "explanation": "shell=True 会把整段字符串交给 shell 解释，文件名中的分号、管道或反引号可以执行额外命令；同时直接打开用户路径可能通过上跳片段访问任意文件。应使用参数列表、shell=False，并在允许根目录内规范化路径、限制扩展名和文件大小。这道题对应安全输入的信任边界：命令注入与路径穿越都要在执行前阻断。 正确选项「shell=True 拼接用户输入存在命令注入，文件路径也缺少根目录限制」对应《Python 安全基础：密码、随机数与不可信输入》的要点「依赖与供应链安全」：项目依赖的第三方包也是攻击面；锁定版本、审计漏洞、限制安装来源和权限可以降低供应链风险。判断「依赖与供应链安全」时先确认前提是否成立，再回到《Python 安全基础：密码、随机数与不可信输入》的示例核对一次；把依赖与供应链安全的做法换到别的约束下未必成立，先确认边界再决定答案。",
+              "code": "subprocess.run('convert ' + user_filename, shell=True)\nwith open(user_filename) as handle:\n    data = handle.read()",
+              "language": "python"
+            }
+          ],
+          "prerequisites": [
+            "python_errors_logging_files"
+          ],
+          "related": [
+            "python_http_clients",
+            "python_project_architecture"
+          ],
+          "lab": "sandbox:python"
+        },
+        {
           "id": "python_packaging_performance",
           "title": {
             "zh": "Python 打包、发布与性能",
@@ -5987,7 +7400,7 @@
             "发布"
           ],
           "difficulty": "高级",
-          "order": 20,
+          "order": 34,
           "quiz": [
             {
               "question": "围绕“Python 打包、发布与性能”中的 打包、pyproject、性能剖析，下列哪两项是本课强调的实践判断？",
@@ -6071,6 +7484,613 @@
           ],
           "related": [
             "python_first_script"
+          ],
+          "lab": "sandbox:python"
+        },
+        {
+          "id": "python_runtime_memory_performance",
+          "title": {
+            "zh": "Python 内存、性能与解释器原理",
+            "en": "Python Memory, Performance and Interpreter Internals"
+          },
+          "summary": {
+            "zh": "理解对象、引用计数、垃圾回收、字节码和剖析工具，用证据找到真正的瓶颈，再做可验证的优化。",
+            "en": "Understand objects, reference counting, garbage collection, bytecode and profiling tools before optimizing with evidence."
+          },
+          "file": "assets/content/python_runtime_memory_performance.md",
+          "minutes": 40,
+          "keywords": [
+            "引用计数",
+            "垃圾回收",
+            "字节码",
+            "性能剖析",
+            "__slots__"
+          ],
+          "difficulty": "高级",
+          "order": 35,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "sys.getrefcount(obj) 的结果通常比预期多一，原因是什么？",
+              "options": [
+                "函数参数本身会临时增加一次引用",
+                "解释器会永久缓存对象",
+                "getrefcount 会复制对象",
+                "对象创建时引用计数从二开始"
+              ],
+              "answer": 0,
+              "explanation": "把对象传给 getrefcount 时，参数绑定会临时增加一次引用，所以返回值通常比外部可见的引用数多一。理解这一点可以避免误判对象是否泄漏；观察引用变化时应比较相对值，并用弱引用回调验证对象是否真正被回收。 正确选项「函数参数本身会临时增加一次引用」对应《Python 内存、性能与解释器原理》的要点「对象、引用计数与身份」：CPython 给每个对象维护引用计数，指向对象的引用减少到零时立即释放；变量、容器元素和函数参数都会增加引用。判断「对象、引用计数与身份」时先确认前提是否成立，再回到《Python 内存、性能与解释器原理》的示例核对一次；把别的语言或框架的默认做法直接搬到对象、引用计数与身份上，往往会在本课的边界条件里失效。"
+            },
+            {
+              "type": "single",
+              "question": "使用 __slots__ 的主要收益是什么？",
+              "options": [
+                "大量实例时减少每个对象的内存占用并限制动态属性",
+                "让对象自动线程安全",
+                "让实例可以被序列化成 JSON",
+                "自动回收循环引用"
+              ],
+              "answer": 0,
+              "explanation": "slots 让实例用固定槽位存储属性，不再为每个对象创建字典，因此实例数量大时能显著节省内存，属性访问也可能更快。它同时限制了运行时新增属性，可能与依赖动态属性的框架或序列化方式冲突；是否使用要以真实对象的数量和内存分布为依据。 正确选项「大量实例时减少每个对象的内存占用并限制动态属性」对应《Python 内存、性能与解释器原理》的要点「循环垃圾回收与弱引用」：两个或多个对象互相引用会形成环，即使外部不再使用，引用计数也不会归零；分代垃圾回收器负责发现并回收这些环。判断「循环垃圾回收与弱引用」时先确认前提是否成立，再回到《Python 内存、性能与解释器原理》的示例核对一次；借鉴相邻主题的经验之前，先核对循环垃圾回收与弱引用的前提是否成立。"
+            },
+            {
+              "type": "multi",
+              "question": "性能优化前应该收集哪些证据？（多选）",
+              "options": [
+                "函数级耗时与调用次数",
+                "内存分配与峰值",
+                "真实输入规模下的端到端延迟",
+                "同行的直觉猜测"
+              ],
+              "answers": [
+                0,
+                1,
+                2
+              ],
+              "answer": 0,
+              "explanation": "CPU 剖析、内存跟踪和端到端延迟分别回答时间花在哪、内存是否增长、用户体验是否改善；只凭直觉优化容易改错位置。还要固定运行环境和输入规模，比较多次运行的分布，防止把噪声当成收益。 正确选项「函数级耗时与调用次数；内存分配与峰值；真实输入规模下的端到端延迟」对应《Python 内存、性能与解释器原理》的要点「内存布局与 slots」：普通实例把属性放在字典中，灵活但每个实例都有额外内存开销；__slots__ 用固定槽位替代实例字典，降低内存并加快属性访问。判断「内存布局与 slots」时先确认前提是否成立，再回到《Python 内存、性能与解释器原理》的示例核对一次；记住内存布局与 slots的结论之外还要记住适用条件，换一个输入往往就不成立了。"
+            },
+            {
+              "type": "code",
+              "question": "阅读代码，实例是否有 __dict__？\n\n@dataclass(slots=True)\nclass Point:\n    x: int\n    y: int\nprint(hasattr(Point(1, 2), '__dict__'))",
+              "options": [
+                "False",
+                "True",
+                "取决于 Python 版本",
+                "运行时抛异常"
+              ],
+              "answer": 0,
+              "code": "@dataclass(slots=True)\nclass Point:\n    x: int\n    y: int\nprint(hasattr(Point(1, 2), '__dict__'))",
+              "language": "python",
+              "explanation": "slots 数据类使用固定槽位保存 x 与 y，实例没有 __dict__，因此输出 False。这能减少大量小对象的内存开销，但也意味着不能在运行时随意添加属性；需要动态字段的对象不要盲目使用 slots。 正确选项「False」对应《Python 内存、性能与解释器原理》的要点「字节码与解释执行」：Python 源码先编译成字节码，再由解释器循环执行；查看字节码可以理解名称查找、属性访问和函数调用的开销来自哪里。判断「字节码与解释执行」时先确认前提是否成立，再回到《Python 内存、性能与解释器原理》的示例核对一次；干扰项常常是相邻主题里成立的结论，只有按字节码与解释执行的输入与约束判断才能排除。"
+            },
+            {
+              "type": "debug",
+              "question": "为什么这段循环优化可能不值得保留？",
+              "options": [
+                "收益通常很小，却明显降低了可读性，应先证明这是热点",
+                "局部变量在 Python 中无效",
+                "append 不能作为变量保存",
+                "len 只能用于字符串"
+              ],
+              "answer": 0,
+              "explanation": "把方法或函数缓存到局部变量确实可能减少少量查找开销，但效果取决于循环次数、版本和上下文，常常远小于算法与 I/O 的影响。没有剖析证据就采用这种写法，会让代码更难读、更难调试；只有在真实热点中验证收益后才值得保留。这道题对应性能剖析原则：没有火焰图和基准数据时，不要先做微优化。 正确选项「收益通常很小，却明显降低了可读性，应先证明这是热点」对应《Python 内存、性能与解释器原理》的要点「剖析与性能优化闭环」：性能优化从测量开始：timeit 测小段代码，cProfile 找函数级热点，tracemalloc 找内存分配，真实负载下的采样工具定位整机瓶颈。判断「剖析与性能优化闭环」时先确认前提是否成立，再回到《Python 内存、性能与解释器原理》的示例核对一次；把剖析与性能优化闭环的做法换到别的约束下未必成立，先确认边界再决定答案。",
+              "code": "for item in items:\n    result.append(len(item))\n\nappend = result.append\nlength = len\nfor item in items:\n    append(length(item))",
+              "language": "python"
+            }
+          ],
+          "prerequisites": [
+            "python_packaging_performance"
+          ],
+          "related": [
+            "python_concurrency_model",
+            "python_interop"
+          ],
+          "lab": "sandbox:python"
+        },
+        {
+          "id": "python_data_processing",
+          "title": {
+            "zh": "Python 数据处理：NumPy、pandas 与 Polars",
+            "en": "Python Data Processing with NumPy, pandas and Polars"
+          },
+          "summary": {
+            "zh": "从数组与向量化开始，掌握表格清洗、分组聚合、惰性计算、Parquet 与可视化，让分析结果可复现、可扩展。",
+            "en": "Move from arrays and vectorization to table cleaning, grouping, lazy computation, Parquet and reproducible visualization."
+          },
+          "file": "assets/content/python_data_processing.md",
+          "minutes": 40,
+          "keywords": [
+            "NumPy",
+            "pandas",
+            "Polars",
+            "数据清洗",
+            "Parquet"
+          ],
+          "difficulty": "高级",
+          "order": 36,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "NumPy 向量化运算通常比 Python 逐元素循环快，主要原因是什么？",
+              "options": [
+                "运算在连续内存上批量执行，减少了逐元素的解释器开销",
+                "NumPy 会自动使用数据库",
+                "向量化会跳过边界检查",
+                "它把所有数据类型都变成字符串"
+              ],
+              "answer": 0,
+              "explanation": "ndarray 使用连续内存和固定 dtype，批量运算在编译层循环执行，避免了 Python 每轮循环的解释和对象创建开销。向量化仍遵守类型和形状规则，读取切片时要区分视图与副本，否则可能意外修改原数据。 正确选项「运算在连续内存上批量执行，减少了逐元素的解释器开销」对应《Python 数据处理：NumPy、pandas 与 Polars》的要点「数组、dtype 与广播」：NumPy 的 ndarray 把同类型元素放在连续内存中，用 shape 表示维度、dtype 表示元素类型；向量化运算比逐元素循环更快。判断「数组、dtype 与广播」时先确认前提是否成立，再回到《Python 数据处理：NumPy、pandas 与 Polars》的示例核对一次；把别的语言或框架的默认做法直接搬到数组、dtype 与广播上，往往会在本课的边界条件里失效。"
+            },
+            {
+              "type": "single",
+              "question": "避免 pandas 链式赋值问题最直接的写法是？",
+              "options": [
+                "使用 df.loc[条件, 列] = 值 一次完成定位与赋值",
+                "连续使用两个方括号再赋值",
+                "把 DataFrame 转成列表后修改",
+                "关闭所有警告"
+              ],
+              "answer": 0,
+              "explanation": "loc 在同一操作中明确指定行条件与列，能保证修改落在原对象上；连续方括号可能返回中间副本，赋值结果丢失且出现警告。复杂变换可以显式 copy 生成新表，但应写清楚所有权和后续使用范围。 正确选项「使用 df.loc[条件, 列] = 值 一次完成定位与赋值」对应《Python 数据处理：NumPy、pandas 与 Polars》的要点「pandas DataFrame 与索引」：DataFrame 是带标签的二维表，Series 是带索引的一列；对齐、分组、连接和缺失值处理构成日常分析的主干。判断「pandas DataFrame 与索引」时先确认前提是否成立，再回到《Python 数据处理：NumPy、pandas 与 Polars》的示例核对一次；借鉴相邻主题的经验之前，先核对pandas DataFrame 与索引的前提是否成立。"
+            },
+            {
+              "type": "multi",
+              "question": "数据质量检查通常包括哪些内容？（多选）",
+              "options": [
+                "缺失值比例与分布",
+                "重复记录与业务键唯一性",
+                "类型转换失败的行",
+                "只保留好看的数据行"
+              ],
+              "answers": [
+                0,
+                1,
+                2
+              ],
+              "answer": 0,
+              "explanation": "缺失、重复和类型错误是质量检查的基本项，异常值和跨字段一致性也常被纳入。删除不好看的数据不是质量策略，而是隐藏问题；清洗规则应版本化，记录每一类处理的输入数量、输出数量和假设。 正确选项「缺失值比例与分布；重复记录与业务键唯一性；类型转换失败的行」对应《Python 数据处理：NumPy、pandas 与 Polars》的要点「Polars 与惰性计算」：Polars 使用列式内存和表达式 API，LazyFrame 会先构建查询计划再统一优化执行，适合较大数据和并行扫描。判断「Polars 与惰性计算」时先确认前提是否成立，再回到《Python 数据处理：NumPy、pandas 与 Polars》的示例核对一次；记住Polars 与惰性计算的结论之外还要记住适用条件，换一个输入往往就不成立了。"
+            },
+            {
+              "type": "code",
+              "question": "阅读分组代码，输出第一行是哪个城市？\n\ndf.groupby('city', as_index=False)['score'].mean().sort_values('score', ascending=False)",
+              "options": [
+                "上海，因为平均分 92.0 最高",
+                "北京，因为出现次数最多",
+                "深圳，因为分数最低",
+                "顺序随机，无法判断"
+              ],
+              "answer": 0,
+              "code": "df.groupby('city', as_index=False)['score'].mean().sort_values('score', ascending=False)",
+              "language": "python",
+              "explanation": "分组平均后北京的分数是 88 与 95 的平均 91.5，上海是 92.0，深圳是 79.0；按分数降序排列时上海位于第一行。分组结果还可能与索引和缺失值有关，正式报告前应检查每组样本量，避免小样本平均值产生误导。 正确选项「上海，因为平均分 92.0 最高」对应《Python 数据处理：NumPy、pandas 与 Polars》的要点「数据清洗与质量检查」：真实数据存在缺失、重复、类型错误和异常值；清洗不是删除脏数据，而是用明确规则把原始数据转换成可解释的分析口径。判断「数据清洗与质量检查」时先确认前提是否成立，再回到《Python 数据处理：NumPy、pandas 与 Polars》的示例核对一次；干扰项常常是相邻主题里成立的结论，只有按数据清洗与质量检查的输入与约束判断才能排除。"
+            },
+            {
+              "type": "debug",
+              "question": "为什么把报告结果写入 Parquet 比继续追加写入同一个 CSV 更适合？",
+              "options": [
+                "Parquet 保存 schema 和列统计，压缩率高，分析时可按列读取",
+                "Parquet 可以被任意文本编辑器直接修改",
+                "Parquet 不需要定义字段类型",
+                "Parquet 只适合实时逐行写入"
+              ],
+              "answer": 0,
+              "explanation": "Parquet 是面向分析的列式格式，天然保留类型信息、压缩和分组统计，读取少量列时效率很高；它不是为频繁追加或逐行修改设计的。CSV 虽然可读性好，但缺少类型和 schema，追加多份文件后容易出现列顺序和编码不一致。这道题对应 pandas 与 Parquet 的分工：分析结果适合列式存储，但文件格式不是实时编辑工具。 正确选项「Parquet 保存 schema 和列统计，压缩率高，分析时可按列读取」对应《Python 数据处理：NumPy、pandas 与 Polars》的要点「可视化与列式存储」：图表用视觉编码帮助发现趋势和异常，Parquet 用列式压缩存储表格数据，二者是分析交付和长期保存的常用组合。判断「可视化与列式存储」时先确认前提是否成立，再回到《Python 数据处理：NumPy、pandas 与 Polars》的示例核对一次；把可视化与列式存储的做法换到别的约束下未必成立，先确认边界再决定答案。",
+              "code": "df.groupby('city', as_index=False)['score'].mean().sort_values('score', ascending=False)",
+              "language": "python"
+            }
+          ],
+          "prerequisites": [
+            "python_project"
+          ],
+          "related": [
+            "python_project_etl",
+            "python_database_sqlalchemy"
+          ],
+          "lab": "sandbox:python"
+        },
+        {
+          "id": "python_web_deployment",
+          "title": {
+            "zh": "Python Web 部署：WSGI、ASGI 与容器化",
+            "en": "Python Web Deployment with WSGI, ASGI and Containers"
+          },
+          "summary": {
+            "zh": "把应用从开发服务器搬进生产：理解 WSGI 与 ASGI、进程模型、反向代理、容器、健康检查和灰度发布。",
+            "en": "Move from a development server to production with WSGI and ASGI, process models, reverse proxies, containers, health checks and progressive delivery."
+          },
+          "file": "assets/content/python_web_deployment.md",
+          "minutes": 40,
+          "keywords": [
+            "WSGI",
+            "ASGI",
+            "Uvicorn",
+            "容器化",
+            "健康检查"
+          ],
+          "difficulty": "高级",
+          "order": 37,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "ASGI 应用通过哪组参数与服务器交互？",
+              "options": [
+                "scope、receive、send",
+                "environ、start_response",
+                "request、response、socket",
+                "argv、stdin、stdout"
+              ],
+              "answer": 0,
+              "explanation": "ASGI 使用 scope 描述连接类型与元数据，receive 读取事件，send 发送事件，因此可以统一支持 HTTP、WebSocket 和生命周期事件；environ 与 start_response 是 WSGI 的同步接口。理解协议边界有助于写出与具体服务器解耦的应用和中间件。 正确选项「scope、receive、send」对应《Python Web 部署：WSGI、ASGI 与容器化》的要点「WSGI 与 ASGI 协议」：WSGI 用同步可调用对象表示应用，ASGI 用异步可等待接口表示应用；两者都把服务器与框架解耦，让同一应用可以运行在不同服务器上。判断「WSGI 与 ASGI 协议」时先确认前提是否成立，再回到《Python Web 部署：WSGI、ASGI 与容器化》的示例核对一次；把别的语言或框架的默认做法直接搬到WSGI 与 ASGI 协议上，往往会在本课的边界条件里失效。"
+            },
+            {
+              "type": "single",
+              "question": "异步服务中 worker 数量不能盲目增加，最主要的原因是什么？",
+              "options": [
+                "每个 worker 都会消耗内存和数据库连接等有限资源",
+                "worker 只能启动一个",
+                "异步服务器不支持多进程",
+                "增加 worker 会让代码语法失效"
+              ],
+              "answer": 0,
+              "explanation": "worker 越多，应用内存、连接池、文件描述符和数据库连接都会成倍增长，可能先压垮数据库而不是提升吞吐。异步 worker 单进程已经能处理大量 I/O 并发，应该通过压测和资源上限确定数量，并为 CPU 密集任务使用独立进程或任务队列。 正确选项「每个 worker 都会消耗内存和数据库连接等有限资源」对应《Python Web 部署：WSGI、ASGI 与容器化》的要点「应用服务器与 worker 模型」：生产环境使用 Uvicorn、Hypercorn 或 Gunicorn 等服务器管理进程与连接；worker 数量决定并发能力，也决定内存占用。判断「应用服务器与 worker 模型」时先确认前提是否成立，再回到《Python Web 部署：WSGI、ASGI 与容器化》的示例核对一次；借鉴相邻主题的经验之前，先核对应用服务器与 worker 模型的前提是否成立。"
+            },
+            {
+              "type": "multi",
+              "question": "生产容器部署应满足哪些要求？（多选）",
+              "options": [
+                "最终镜像以非 root 用户运行",
+                "依赖版本固定且构建工具不进入运行镜像",
+                "配置和秘密在运行时注入",
+                "把数据库密码写进 Dockerfile 方便复用"
+              ],
+              "answers": [
+                0,
+                1,
+                2
+              ],
+              "answer": 0,
+              "explanation": "非 root、最小镜像和外部配置能减少攻击面并让同一镜像跨环境部署；秘密写入 Dockerfile 会永久留在镜像层和历史记录中。还要配合只读文件系统、资源限制、健康检查和优雅停机。 正确选项「最终镜像以非 root 用户运行；依赖版本固定且构建工具不进入运行镜像；配置和秘密在运行时注入」对应《Python Web 部署：WSGI、ASGI 与容器化》的要点「反向代理与边缘终止」：反向代理负责 TLS 终止、静态文件、压缩、限流和请求路由，应用服务器只处理业务逻辑。判断「反向代理与边缘终止」时先确认前提是否成立，再回到《Python Web 部署：WSGI、ASGI 与容器化》的示例核对一次；记住反向代理与边缘终止的结论之外还要记住适用条件，换一个输入往往就不成立了。"
+            },
+            {
+              "type": "code",
+              "question": "这个 ASGI 应用最先发送哪条消息？",
+              "options": [
+                "http.response.start",
+                "http.response.body",
+                "http.request",
+                "lifespan.startup"
+              ],
+              "answer": 0,
+              "code": "await send({\"type\": \"http.response.start\", \"status\": 200, \"headers\": []})\nawait send({\"type\": \"http.response.body\", \"body\": b\"ok\"})",
+              "language": "python",
+              "explanation": "响应必须先发送 http.response.start 声明状态码与头部，再发送一个或多个 http.response.body 消息；顺序颠倒会让服务器无法确定响应头。http.request 是服务器通过 receive 传给应用的请求事件，lifespan.startup 属于应用生命周期。这段代码展示的是 ASGI 协议的消息顺序，和 WSGI 的同步调用方式不同。"
+            },
+            {
+              "type": "debug",
+              "question": "滚动发布时旧实例收到停机信号后立即被杀死，可能出现什么问题？",
+              "options": [
+                "正在处理的请求被中断，客户端看到连接重置或重复提交",
+                "新实例无法启动",
+                "数据库自动回滚",
+                "日志级别被改变"
+              ],
+              "answer": 0,
+              "explanation": "强制终止会让正在处理的请求丢失响应，写操作可能已经部分完成，客户端重试还可能造成重复提交。正确流程是先摘除流量、停止接收新请求、等待处理完成并设置最长宽限期，再退出进程；数据库迁移也要保证新旧版本兼容。这道题对应 ASGI 服务的优雅停机：容器终止前必须等健康检查和在途请求处理完成。 正确选项「正在处理的请求被中断，客户端看到连接重置或重复提交」对应《Python Web 部署：WSGI、ASGI 与容器化》的要点「可观测性与渐进发布」：生产系统需要日志、指标和追踪回答是否正常、哪里变慢以及影响哪些用户；发布策略决定新版本出问题时如何快速止损。判断「可观测性与渐进发布」时先确认前提是否成立，再回到《Python Web 部署：WSGI、ASGI 与容器化》的示例核对一次；把可观测性与渐进发布的做法换到别的约束下未必成立，先确认边界再决定答案。",
+              "code": "await send({'type': 'http.response.start', 'status': 200, 'headers': []})\nawait send({'type': 'http.response.body', 'body': b'ok'})",
+              "language": "python"
+            }
+          ],
+          "prerequisites": [
+            "python_project_api"
+          ],
+          "related": [
+            "python_http_clients",
+            "python_project_architecture"
+          ],
+          "lab": "sandbox:python"
+        },
+        {
+          "id": "python_interop",
+          "title": {
+            "zh": "Python 与 C、C++、Rust 互操作",
+            "en": "Python Interop with C, C++ and Rust"
+          },
+          "summary": {
+            "zh": "理解 FFI、ABI、GIL 与内存所有权，用 ctypes、C 扩展、Cython 和 PyO3 把性能关键代码安全接入 Python。",
+            "en": "Understand FFI, ABI, the GIL and memory ownership when integrating C, C++ and Rust with Python."
+          },
+          "file": "assets/content/python_interop.md",
+          "minutes": 40,
+          "keywords": [
+            "ctypes",
+            "C 扩展",
+            "Cython",
+            "PyO3",
+            "ABI"
+          ],
+          "difficulty": "高级",
+          "order": 38,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "ctypes 调用 C 函数前设置 argtypes 和 restype 的主要目的是什么？",
+              "options": [
+                "明确参数与返回值类型，避免错误转换和内存破坏",
+                "自动释放 C 内存",
+                "提升 C 编译速度",
+                "把函数转换为 Python 类"
+              ],
+              "answer": 0,
+              "explanation": "ctypes 看不到头文件，必须根据声明的类型把 Python 对象转换成正确的二进制表示；错误声明可能把整数当指针或写入错误宽度，造成崩溃和安全问题。argtypes 与 restype 也是文档的一部分，应和 C 头文件逐项对照。 正确选项「明确参数与返回值类型，避免错误转换和内存破坏」对应《Python 与 C、C++、Rust 互操作》的要点「FFI、ABI 与类型映射」：外部函数接口让一种语言调用另一种语言的函数；ABI 规定调用约定、结构布局和名称修饰，类型映射必须逐项匹配。判断「FFI、ABI 与类型映射」时先确认前提是否成立，再回到《Python 与 C、C++、Rust 互操作》的示例核对一次；把别的语言或框架的默认做法直接搬到FFI、ABI 与类型映射上，往往会在本课的边界条件里失效。"
+            },
+            {
+              "type": "single",
+              "question": "C 扩展中释放 GIL 后，哪件事是不能做的？",
+              "options": [
+                "访问 Python 对象或调用 Python API",
+                "执行纯 C 计算",
+                "操作不依赖 Python 的原生数据结构",
+                "使用线程本地原生缓冲区"
+              ],
+              "answer": 0,
+              "explanation": "释放 GIL 表示当前线程不再持有解释器锁，此时访问 Python 对象会让引用计数和解释器状态失去保护，可能直接崩溃。纯计算、内存拷贝和原生库调用可以在释放期间执行，回到 Python 边界前必须重新获取 GIL。 正确选项「访问 Python 对象或调用 Python API」对应《Python 与 C、C++、Rust 互操作》的要点「ctypes 与动态库调用」：ctypes 不需要编译扩展就能调用 C 动态库，适合接入稳定 C ABI 或系统库；它不解析头文件，所有签名都要手工声明。判断「ctypes 与动态库调用」时先确认前提是否成立，再回到《Python 与 C、C++、Rust 互操作》的示例核对一次；借鉴相邻主题的经验之前，先核对ctypes 与动态库调用的前提是否成立。"
+            },
+            {
+              "type": "multi",
+              "question": "跨语言边界必须明确哪些责任？（多选）",
+              "options": [
+                "谁分配和释放内存",
+                "错误码或异常如何映射",
+                "数据编码与字节序",
+                "原生代码作者喜欢的编辑器"
+              ],
+              "answers": [
+                0,
+                1,
+                2
+              ],
+              "answer": 0,
+              "explanation": "内存所有权、错误映射和编码布局是跨语言调用正确性的三根支柱，缺少任一项都会产生泄漏、静默错误或乱码。编辑器偏好不影响运行结果；应在适配层写清契约并用测试覆盖边界值。 正确选项「谁分配和释放内存；错误码或异常如何映射；数据编码与字节序」对应《Python 与 C、C++、Rust 互操作》的要点「C 扩展、引用计数与 GIL」：C 扩展直接使用 CPython API，性能高但必须手动管理引用计数和 GIL；每个 Python 对象的所有权规则都与原生内存不同。判断「C 扩展、引用计数与 GIL」时先确认前提是否成立，再回到《Python 与 C、C++、Rust 互操作》的示例核对一次；记住C 扩展、引用计数与 GIL的结论之外还要记住适用条件，换一个输入往往就不成立了。"
+            },
+            {
+              "type": "code",
+              "question": "阅读结构体定义，ctypes.sizeof(Point) 最可能是多少？\n\nclass Point(ctypes.Structure):\n    _fields_ = [('x', ctypes.c_int), ('y', ctypes.c_int)]",
+              "options": [
+                "8",
+                "4",
+                "16",
+                "2"
+              ],
+              "answer": 0,
+              "code": "class Point(ctypes.Structure):\n    _fields_ = [('x', ctypes.c_int), ('y', ctypes.c_int)]",
+              "language": "python",
+              "explanation": "在常见平台上 c_int 占四个字节，两个相邻整数字段没有额外填充，因此结构体大小是八字节。跨平台代码不能假设所有 C 类型宽度相同，涉及协议或文件格式时应使用固定宽度整数并显式处理对齐。 正确选项「8」对应《Python 与 C、C++、Rust 互操作》的要点「Cython 与类型化加速」：Cython 把接近 Python 的源代码编译成 C 扩展，通过静态类型、cdef 和内存视图减少解释器开销。判断「Cython 与类型化加速」时先确认前提是否成立，再回到《Python 与 C、C++、Rust 互操作》的示例核对一次；干扰项常常是相邻主题里成立的结论，只有按Cython 与类型化加速的输入与约束判断才能排除。"
+            },
+            {
+              "type": "debug",
+              "question": "为什么把一个小循环改成 C 扩展后整体反而更慢？",
+              "options": [
+                "每次调用都要做参数转换和边界开销，而热点本身并不在循环上",
+                "C 语言无法计算循环",
+                "必须同时重写所有 Python 代码",
+                "扩展只能调用一次"
+              ],
+              "answer": 0,
+              "explanation": "跨语言调用有参数解析、类型转换、错误检查和对象创建成本，如果单次工作量很小或调用次数很多，边界成本可能超过计算收益。应先用剖析确认热点，再把批量操作整体放到原生层，减少往返次数并用基准验证。这道题对应 ctypes 与原生扩展的边界成本：跨语言调用和 ABI 转换必须先测量再优化。 正确选项「每次调用都要做参数转换和边界开销，而热点本身并不在循环上」对应《Python 与 C、C++、Rust 互操作》的要点「PyO3、maturin 与平台轮子」：PyO3 让 Rust 代码暴露为 Python 模块，maturin 负责构建和打包 wheel，兼顾内存安全与原生性能。判断「PyO3、maturin 与平台轮子」时先确认前提是否成立，再回到《Python 与 C、C++、Rust 互操作》的示例核对一次；把PyO3、maturin 与平台轮子的做法换到别的约束下未必成立，先确认边界再决定答案。",
+              "code": "class Point(ctypes.Structure):\n    _fields_ = [('x', ctypes.c_int), ('y', ctypes.c_int)]",
+              "language": "python"
+            }
+          ],
+          "prerequisites": [
+            "python_runtime_memory_performance"
+          ],
+          "related": [
+            "python_packaging_performance",
+            "python_project_architecture"
+          ],
+          "lab": "sandbox:python"
+        },
+        {
+          "id": "python_project_architecture",
+          "title": {
+            "zh": "Python 项目架构：分层、配置与依赖注入",
+            "en": "Python Project Architecture: Layers, Configuration and Dependency Injection"
+          },
+          "summary": {
+            "zh": "用清晰的分层、依赖方向、配置对象和组合根组织项目，让业务逻辑可测试、框架可替换、发布可回滚。",
+            "en": "Organize a Python project with clear layers, dependency direction, configuration objects and a composition root."
+          },
+          "file": "assets/content/python_project_architecture.md",
+          "minutes": 60,
+          "keywords": [
+            "分层架构",
+            "依赖注入",
+            "配置",
+            "质量门禁",
+            "发布"
+          ],
+          "difficulty": "高级",
+          "order": 39,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "分层架构中依赖应该指向哪个方向？",
+              "options": [
+                "从接口和基础设施指向领域核心",
+                "从领域核心指向数据库驱动",
+                "任意方向都可以",
+                "从领域层指向 HTTP 框架"
+              ],
+              "answer": 0,
+              "explanation": "接口层和基础设施层是最容易变化的细节，应依赖稳定的领域抽象；如果领域层反过来导入框架或数据库，业务规则会被运行环境绑死，测试和替换都变困难。依赖倒置通过协议让内层定义接口、外层提供实现。 正确选项「从接口和基础设施指向领域核心」对应《Python 项目架构：分层、配置与依赖注入》的要点「分层与依赖方向」：领域层保存业务规则，应用层编排用例，基础设施层实现数据库与外部接口，接口层负责 HTTP 或命令行；依赖只能从外向内。判断「分层与依赖方向」时先确认前提是否成立，再回到《Python 项目架构：分层、配置与依赖注入》的示例核对一次；把别的语言或框架的默认做法直接搬到分层与依赖方向上，往往会在本课的边界条件里失效。"
+            },
+            {
+              "type": "single",
+              "question": "组合根的主要职责是什么？",
+              "options": [
+                "在启动处集中创建并连接具体依赖",
+                "保存所有业务规则",
+                "替代单元测试",
+                "自动生成数据库表"
+              ],
+              "answer": 0,
+              "explanation": "组合根是应用装配点，负责读取配置、创建数据库连接、客户端和服务，再按构造函数注入；业务代码只依赖抽象。把所有装配放在一个明确位置，可以避免模块导入副作用和散落的全局单例。 正确选项「在启动处集中创建并连接具体依赖」对应《Python 项目架构：分层、配置与依赖注入》的要点「包结构与模块边界」：清晰的包结构让依赖可发现、可导入、可发布；src 布局避免测试误导入本地目录，公共 API 通过 __init__ 或明确模块暴露。判断「包结构与模块边界」时先确认前提是否成立，再回到《Python 项目架构：分层、配置与依赖注入》的示例核对一次；借鉴相邻主题的经验之前，先核对包结构与模块边界的前提是否成立。"
+            },
+            {
+              "type": "multi",
+              "question": "以下哪些做法有助于保持模块边界？（多选）",
+              "options": [
+                "用绝对导入并声明公共 API",
+                "用架构测试禁止跨层导入",
+                "让所有模块都可以导入所有模块",
+                "把共享协议放到更小的独立模块"
+              ],
+              "answers": [
+                0,
+                1,
+                3
+              ],
+              "answer": 0,
+              "explanation": "明确公共 API、自动检查依赖方向和下沉共享协议能减少循环依赖与隐式耦合；允许任意互导会让项目退化为一张大网，任何修改都可能影响全局。包结构应按领域能力组织，而不是简单按文件类型堆放。 正确选项「用绝对导入并声明公共 API；用架构测试禁止跨层导入；把共享协议放到更小的独立模块」对应《Python 项目架构：分层、配置与依赖注入》的要点「配置对象与依赖注入」：配置从环境、文件或密钥服务读取后转换成类型化配置对象；依赖在组合根创建并注入，而不是在业务代码中随处读取全局变量。判断「配置对象与依赖注入」时先确认前提是否成立，再回到《Python 项目架构：分层、配置与依赖注入》的示例核对一次；记住配置对象与依赖注入的结论之外还要记住适用条件，换一个输入往往就不成立了。"
+            },
+            {
+              "type": "code",
+              "question": "阅读代码，UserService 为什么更容易测试？",
+              "options": [
+                "它依赖 Clock 协议，可以注入固定时钟或假实现",
+                "它继承了测试框架",
+                "它把时间写死在代码里",
+                "它不需要任何依赖"
+              ],
+              "answer": 0,
+              "code": "class UserService:\n    def __init__(self, clock: Clock):\n        self.clock = clock",
+              "language": "python",
+              "explanation": "构造函数注入让测试可以传入固定时钟、内存仓库或假客户端，不需要启动真实数据库或等待系统时间；生产环境由组合根传入真实实现。依赖抽象还能表达对象的真实需求，避免服务偷偷使用全局状态。 正确选项「它依赖 Clock 协议，可以注入固定时钟或假实现」对应《Python 项目架构：分层、配置与依赖注入》的要点「领域异常、日志与追踪」：领域异常表达业务失败，日志记录技术上下文和因果链，追踪标识把一次请求在多个模块和服务中的事件串起来。判断「领域异常、日志与追踪」时先确认前提是否成立，再回到《Python 项目架构：分层、配置与依赖注入》的示例核对一次；干扰项常常是相邻主题里成立的结论，只有按领域异常、日志与追踪的输入与约束判断才能排除。"
+            },
+            {
+              "type": "debug",
+              "question": "为什么在模块顶层创建数据库连接会带来问题？",
+              "options": [
+                "导入模块就产生连接副作用，测试和 CLI 难以控制连接生命周期",
+                "数据库驱动不支持连接",
+                "Python 不能在模块顶层写代码",
+                "连接会自动更改业务规则"
+              ],
+              "answer": 0,
+              "explanation": "导入模块时立即连接数据库会让单元测试被迫依赖外部服务，配置缺失时导入即失败，CLI 命令也可能创建不必要的连接。应把连接创建延迟到组合根或应用生命周期中，并提供关闭钩子。这道题对应项目架构中的组合根原则：配置与连接应在启动时集中装配，而不是导入即产生副作用。 正确选项「导入模块就产生连接副作用，测试和 CLI 难以控制连接生命周期」对应《Python 项目架构：分层、配置与依赖注入》的要点「质量门禁与发布流程」：格式检查、静态类型、单元测试、内容或安全扫描和构建产物验证构成质量门禁；发布流程保证版本可重复、可回滚。判断「质量门禁与发布流程」时先确认前提是否成立，再回到《Python 项目架构：分层、配置与依赖注入》的示例核对一次；把质量门禁与发布流程的做法换到别的约束下未必成立，先确认边界再决定答案。",
+              "code": "class UserService:\n    def __init__(self, clock: Clock):\n        self.clock = clock",
+              "language": "python"
+            }
+          ],
+          "prerequisites": [
+            "python_pytest",
+            "python_errors_logging_files"
+          ],
+          "related": [
+            "python_web_deployment",
+            "python_http_clients"
+          ],
+          "lab": "sandbox:python"
+        },
+        {
+          "id": "python_interview",
+          "title": {
+            "zh": "Python 面试专题：原理、编码与工程判断",
+            "en": "Python Interview Guide: Language, Coding and Engineering Judgment"
+          },
+          "summary": {
+            "zh": "把语言原理、编码题、并发性能、系统设计与项目复盘组织成结构化答题框架，展示推理过程而不只是背结论。",
+            "en": "Structure language, coding, concurrency, design and project answers around reasoning rather than memorized conclusions."
+          },
+          "file": "assets/content/python_interview.md",
+          "minutes": 35,
+          "keywords": [
+            "复杂度",
+            "边界条件",
+            "系统设计",
+            "STAR",
+            "故障复盘"
+          ],
+          "difficulty": "高级",
+          "order": 40,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "回答 Python 语言原理题时，推荐的结构是什么？",
+              "options": [
+                "结论、机制、边界、例子",
+                "只背定义",
+                "从无关历史讲起",
+                "直接说不知道"
+              ],
+              "answer": 0,
+              "explanation": "先用一句话给结论，再解释底层机制，说明适用边界与反例，最后用项目例子落地，能同时展示记忆、理解和应用能力。只背定义无法应对追问，堆砌术语也会暴露对边界和工程后果理解不足。 正确选项「结论、机制、边界、例子」对应《Python 面试专题：原理、编码与工程判断》的要点「语言原理题的结构化回答」：语言题不要只背一句结论，按结论、机制、边界和例子四步回答，让面试官看到你理解运行原理而不只是记住答案。判断「语言原理题的结构化回答」时先确认前提是否成立，再回到《Python 面试专题：原理、编码与工程判断》的示例核对一次；把别的语言或框架的默认做法直接搬到语言原理题的结构化回答上，往往会在本课的边界条件里失效。"
+            },
+            {
+              "type": "single",
+              "question": "拿到编码题后第一步应该做什么？",
+              "options": [
+                "澄清输入输出、规模和边界假设",
+                "立刻写完整代码",
+                "先优化到最优复杂度",
+                "询问面试官答案"
+              ],
+              "answer": 0,
+              "explanation": "先确认问题定义、数据规模、是否允许修改输入以及空值处理方式，可以避免整段方向错误；然后用小例子验证理解，给出朴素方案与优化方案，最后再编码并测试。直接写代码可能因为一个未澄清的约束全部返工。 正确选项「澄清输入输出、规模和边界假设」对应《Python 面试专题：原理、编码与工程判断》的要点「编码题与复杂度分析」：编码题先澄清输入输出、数据规模和边界，再给出朴素方案、优化方案与复杂度，最后写测试验证。判断「编码题与复杂度分析」时先确认前提是否成立，再回到《Python 面试专题：原理、编码与工程判断》的示例核对一次；借鉴相邻主题的经验之前，先核对编码题与复杂度分析的前提是否成立。"
+            },
+            {
+              "type": "multi",
+              "question": "系统设计回答中应该包含哪些内容？（多选）",
+              "options": [
+                "功能与非功能需求",
+                "容量估算与瓶颈分析",
+                "故障恢复与可观测性",
+                "只列技术名词不谈取舍"
+              ],
+              "answers": [
+                0,
+                1,
+                2
+              ],
+              "answer": 0,
+              "explanation": "需求澄清、容量估算和可靠性设计构成系统设计主线，每个组件选择都要说明代价和放弃的能力。只列技术名词无法证明你理解约束，面试官更关注你如何从简单方案逐步演进到满足规模的方案。 正确选项「功能与非功能需求；容量估算与瓶颈分析；故障恢复与可观测性」对应《Python 面试专题：原理、编码与工程判断》的要点「并发、性能与故障题」：并发题考察模型选择、正确性和失败处理，而不是只会背 GIL、线程和进程的定义。判断「并发、性能与故障题」时先确认前提是否成立，再回到《Python 面试专题：原理、编码与工程判断》的示例核对一次；记住并发、性能与故障题的结论之外还要记住适用条件，换一个输入往往就不成立了。"
+            },
+            {
+              "type": "code",
+              "question": "阅读 top_k 代码，当 k 为 0 时返回什么？",
+              "options": [
+                "空列表 []",
+                "全部词频",
+                "None",
+                "抛出 IndexError"
+              ],
+              "answer": 0,
+              "code": "def top_k(text, k):\n    if k <= 0:\n        return []\n    ...",
+              "language": "python",
+              "explanation": "函数在最前面处理非正数 K 并返回空列表，避免切片出现意外语义；如果省略这个分支，Python 的切片 [:0] 同样返回空列表，但负数会返回除末尾之外的所有元素。显式边界处理能让行为清晰并方便测试。 正确选项「空列表 []」对应《Python 面试专题：原理、编码与工程判断》的要点「系统设计题」：系统设计没有唯一答案，面试官关注需求澄清、接口设计、数据模型、容量估算、可靠性和取舍过程。判断「系统设计题」时先确认前提是否成立，再回到《Python 面试专题：原理、编码与工程判断》的示例核对一次；干扰项常常是相邻主题里成立的结论，只有按系统设计题的输入与约束判断才能排除。"
+            },
+            {
+              "type": "debug",
+              "question": "项目复盘中哪种讲法最有说服力？",
+              "options": [
+                "先给基线和问题，再讲方案、指标变化与遗留风险",
+                "只说用了很多先进技术",
+                "把团队成果全部说成个人完成",
+                "只讲成功不提失败和权衡"
+              ],
+              "answer": 0,
+              "explanation": "基线、问题、方案、指标和遗留风险构成完整因果链，能证明你真正参与并理解工程取舍；只堆技术名词或夸大贡献经不起追问。失败尝试和复盘同样有价值，能展示学习和协作能力。这道题对应面试中的故障复盘表达：用 STAR 讲清基线、方案、指标和遗留风险。 正确选项「先给基线和问题，再讲方案、指标变化与遗留风险」对应《Python 面试专题：原理、编码与工程判断》的要点「项目复盘与行为面」：项目题用背景、任务、行动、结果结构讲述，重点是你如何发现问题、做取舍、协作并量化结果。判断「项目复盘与行为面」时先确认前提是否成立，再回到《Python 面试专题：原理、编码与工程判断》的示例核对一次；把项目复盘与行为面的做法换到别的约束下未必成立，先确认边界再决定答案。",
+              "code": "def top_k(text, k):\n    if k <= 0:\n        return []\n    ...",
+              "language": "python"
+            }
+          ],
+          "prerequisites": [
+            "python_project_architecture"
+          ],
+          "related": [
+            "python_concurrency_model",
+            "python_runtime_memory_performance"
           ],
           "lab": "sandbox:python"
         }

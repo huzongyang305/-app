@@ -299,7 +299,7 @@ A mnemonic produces a seed, and a derivation path turns that seed into keys and 
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2026-12-24
+- 下次复核：2027-01-17
 - 复核范围：版本兼容、API 行为与工程实践
 
 下面列出的资料用于核对本课结论，复习时可以对照阅读：

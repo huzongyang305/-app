@@ -298,7 +298,7 @@ Cloud fundamentals start with physical boundaries: regions, availability zones a
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2027-02-10
+- 下次复核：2027-03-24
 - 复核范围：版本兼容、API 行为与工程实践
 
 下面列出的资料用于核对本课结论，复习时可以对照阅读：

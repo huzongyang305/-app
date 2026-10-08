@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-10-08T05:18:05.975436Z",
+  "generated_at": "2026-10-08T09:21:48.407102Z",
   "content_version": "2.0",
   "batch_size": 24,
-  "batch_count": 38,
+  "batch_count": 39,
   "records_path": "docs/content_review_records.json",
   "batches": [
     {
@@ -5519,12 +5519,12 @@
       "batch_id": "python-1",
       "category_id": "python",
       "category_title": "Python",
-      "lesson_count": 21,
+      "lesson_count": 24,
       "reviewed": 0,
       "status": "pending",
       "risk_high": 0,
       "risk_medium": 0,
-      "risk_low": 21,
+      "risk_low": 24,
       "focus": [
         "正文事实与术语是否准确，有无过时结论或含糊表述。",
         "代码块能否按正文步骤运行，输出与解析是否一致。",
@@ -5533,6 +5533,17 @@
         "示例代码在本语言主流版本上可编译或可运行，无跨语言残留写法。"
       ],
       "lessons": [
+        {
+          "lesson_id": "python_asyncio",
+          "title": "Python asyncio 异步编程：任务、超时与取消",
+          "risk": "low",
+          "characters": 15545,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
         {
           "lesson_id": "python_basics",
           "title": "Python 基础语法",
@@ -5545,12 +5556,45 @@
           "review_method": ""
         },
         {
+          "lesson_id": "python_cli_automation",
+          "title": "Python CLI 与自动化实战",
+          "risk": "low",
+          "characters": 15594,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
           "lesson_id": "python_concurrency",
           "title": "并发与异步",
           "risk": "low",
           "characters": 11493,
           "questions": 6,
           "images": 2,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "python_concurrency_model",
+          "title": "Python 并发模型、GIL 与线程进程选型",
+          "risk": "low",
+          "characters": 14853,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "python_containers_copy",
+          "title": "Python 容器进阶、拷贝与默认参数",
+          "risk": "low",
+          "characters": 14231,
+          "questions": 5,
+          "images": 1,
           "machine_issues": [],
           "review_status": "pending",
           "review_method": ""
@@ -5578,12 +5622,34 @@
           "review_method": ""
         },
         {
+          "lesson_id": "python_data_processing",
+          "title": "Python 数据处理：NumPy、pandas 与 Polars",
+          "risk": "low",
+          "characters": 14688,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
           "lesson_id": "python_data_structures",
           "title": "列表、元组、字典与集合",
           "risk": "low",
           "characters": 10014,
           "questions": 6,
           "images": 2,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "python_database_sqlalchemy",
+          "title": "Python 数据库与 SQLAlchemy 2.x",
+          "risk": "low",
+          "characters": 15584,
+          "questions": 5,
+          "images": 1,
           "machine_issues": [],
           "review_status": "pending",
           "review_method": ""
@@ -5611,6 +5677,17 @@
           "review_method": ""
         },
         {
+          "lesson_id": "python_errors_logging_files",
+          "title": "Python 异常、日志与文件 I/O 进阶",
+          "risk": "low",
+          "characters": 10701,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
           "lesson_id": "python_first_script",
           "title": "Python 第一个脚本",
           "risk": "low",
@@ -5628,6 +5705,28 @@
           "characters": 10236,
           "questions": 6,
           "images": 2,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "python_gui",
+          "title": "Python GUI 开发：Tkinter 与 PySide6",
+          "risk": "low",
+          "characters": 13891,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "python_http_clients",
+          "title": "Python HTTP 客户端工程：超时、重试与认证",
+          "risk": "low",
+          "characters": 14286,
+          "questions": 5,
+          "images": 1,
           "machine_issues": [],
           "review_status": "pending",
           "review_method": ""
@@ -5655,6 +5754,28 @@
           "review_method": ""
         },
         {
+          "lesson_id": "python_interop",
+          "title": "Python 与 C、C++、Rust 互操作",
+          "risk": "low",
+          "characters": 14214,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "python_interview",
+          "title": "Python 面试专题：原理、编码与工程判断",
+          "risk": "low",
+          "characters": 12951,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
           "lesson_id": "python_list_dict_basics",
           "title": "Python 列表与字典入门",
           "risk": "low",
@@ -5672,6 +5793,37 @@
           "characters": 13612,
           "questions": 5,
           "images": 2,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        }
+      ]
+    },
+    {
+      "batch_id": "python-2",
+      "category_id": "python",
+      "category_title": "Python",
+      "lesson_count": 17,
+      "reviewed": 0,
+      "status": "pending",
+      "risk_high": 0,
+      "risk_medium": 0,
+      "risk_low": 17,
+      "focus": [
+        "正文事实与术语是否准确，有无过时结论或含糊表述。",
+        "代码块能否按正文步骤运行，输出与解析是否一致。",
+        "测验题干、选项与解析是否自洽，答案下标是否正确。",
+        "参考资料链接可访问，且与课程主题匹配。",
+        "示例代码在本语言主流版本上可编译或可运行，无跨语言残留写法。"
+      ],
+      "lessons": [
+        {
+          "lesson_id": "python_modern_features",
+          "title": "现代 Python 特性与版本升级",
+          "risk": "low",
+          "characters": 14793,
+          "questions": 5,
+          "images": 1,
           "machine_issues": [],
           "review_status": "pending",
           "review_method": ""
@@ -5694,6 +5846,17 @@
           "characters": 11190,
           "questions": 6,
           "images": 2,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "python_oop_advanced",
+          "title": "Python 面向对象进阶：继承、组合与魔术方法",
+          "risk": "low",
+          "characters": 15764,
+          "questions": 5,
+          "images": 1,
           "machine_issues": [],
           "review_status": "pending",
           "review_method": ""
@@ -5732,12 +5895,78 @@
           "review_method": ""
         },
         {
+          "lesson_id": "python_project_architecture",
+          "title": "Python 项目架构：分层、配置与依赖注入",
+          "risk": "low",
+          "characters": 14732,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
           "lesson_id": "python_project_etl",
           "title": "实战：CSV 到 SQLite 的 ETL 流水线",
           "risk": "low",
           "characters": 13293,
           "questions": 6,
           "images": 2,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "python_pytest",
+          "title": "Python pytest 测试实战",
+          "risk": "low",
+          "characters": 15374,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "python_runtime_memory_performance",
+          "title": "Python 内存、性能与解释器原理",
+          "risk": "low",
+          "characters": 14422,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "python_security",
+          "title": "Python 安全基础：密码、随机数与不可信输入",
+          "risk": "low",
+          "characters": 15224,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "python_stdlib",
+          "title": "Python 标准库实战工具箱",
+          "risk": "low",
+          "characters": 11405,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "python_strings_encoding",
+          "title": "Python 字符串、Unicode 与格式化",
+          "risk": "low",
+          "characters": 14742,
+          "questions": 5,
+          "images": 1,
           "machine_issues": [],
           "review_status": "pending",
           "review_method": ""
@@ -5760,6 +5989,17 @@
           "characters": 9451,
           "questions": 6,
           "images": 2,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "python_web_deployment",
+          "title": "Python Web 部署：WSGI、ASGI 与容器化",
+          "risk": "low",
+          "characters": 14630,
+          "questions": 5,
+          "images": 1,
           "machine_issues": [],
           "review_status": "pending",
           "review_method": ""
