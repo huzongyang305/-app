@@ -1,5 +1,9 @@
 // P1 结构统一：把同义段落标题收敛到规范名，并补齐缺失的规范段落。
 //
+// ⚠️ 历史工具：本工具面向旧的 14 章结构。全库已于 1.6.0 迁移为九段式教材结构
+//    （见 tool/apply_textbook_structure.dart 与 docs/content_standard.md 第 4 节），
+//    对全库运行会写出旧章节名并被治理审计判为 error，只在查阅历史映射时使用。
+//
 // 用法：
 //   dart tool/unify_sections.dart [--dry-run] [--only=rename|fill]
 //

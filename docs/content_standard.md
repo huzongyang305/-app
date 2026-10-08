@@ -155,11 +155,12 @@ App 用 `manifest.json` 里每个课程的 `order` 字段渲染「推荐学习�
 
 ## 6. 校验入口
 
+### 当前工具
+
 | 命令 | 作用 |
 | --- | --- |
+| `dart tool/apply_textbook_structure.dart --dry-run` | 预览九段式迁移与模板句归一化，幂等 |
 | `dart tool/rebalance_learning_path.dart --dry-run` | 预览先修、顺序、时长会怎么改 |
-| `dart tool/apply_textbook_structure.dart --dry-run` | 预览九段式迁移与模板句归一化 |
-| `dart tool/unify_sections.dart --dry-run` | 预览章节改名与补齐计划 |
 | `dart tool/rebuild_glossaries.dart --dry-run` | 预览术语表重建与表头统一 |
 | `dart tool/review_mistake_tables.dart --dry-run` | 预览错误表复核重写 |
 | `dart tool/rebuild_fault_scenarios.dart --dry-run` | 预览故障现场重建与深挖引用同步 |
@@ -171,3 +172,11 @@ App 用 `manifest.json` 里每个课程的 `order` 字段渲染「推荐学习�
 | `dart tool/audit_content_structure.dart` | 结构缺陷 |
 | `dart tool/audit_content_quality.dart` | 题库质量与题型分布 |
 | `flutter test test/content_test.dart` | 端上断言：order 连续、难度不倒挂、先修在前 |
+
+### 历史工具（会回到旧 14 章结构，九段式改造后不要再对全库运行）
+
+| 命令 | 作用 |
+| --- | --- |
+| `dart tool/unify_sections.dart --dry-run` | 旧的章节改名与补齐工具，仅用于查阅历史映射 |
+| `dart tool/rebuild_lesson_study_sections.dart` | 旧的学习支架生成器，会写出 14 章标题 |
+| `dart tool/thicken_*.dart`、`dart tool/diversify_*.dart` | 历史内容加厚工具，写入的是旧章节名 |
