@@ -51,7 +51,7 @@ void main() {
     expect(find.text('Python 第一个脚本'), findsOneWidget);
     await tester.tap(find.text('Python 第一个脚本'));
     await settleWithIo(tester);
-    expect(find.textContaining('一句话入门'), findsWidgets);
+    expect(find.textContaining('本节知识框架'), findsWidgets);
 
     // 复制全文：把标题、摘要与正文写入剪贴板，并给出反馈
     await tester.tap(find.byTooltip('复制全文'));

@@ -1,12 +1,39 @@
 # Lambda 与 Stream API
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：40 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：50 分钟
 
 ![Lambda 与 Stream 的流水线](images/diagram_java_stream.webp)
 
 ![Lambda 与 Stream API](images/remaining_java_lambda_stream.webp)
 
-## 学习目标
+## 本节知识框架
+
+**课程定位**：所属分类为「Java」，课程主题为「Lambda 与 Stream API」，学习阶段为「进阶」，建议用时 50 分钟。
+
+**本课要解决的主问题**：函数式接口、方法引用、Stream 惰性求值、Optional 与并行流。
+
+| 学习层次 | 要回答的问题 | 完成判据 |
+| --- | --- | --- |
+| 概念层 | 「Lambda 与 Stream API」有哪些必须区分的对象与术语？ | 能用自己的话定义核心术语，并各举一个正例和一个反例。 |
+| 机制层 | 这些对象按什么顺序发生作用，输入如何变成输出？ | 能画出或写出机制步骤，并说明每一步的失败条件。 |
+| 应用层 | 什么场景适合使用「Lambda 与 Stream API」，什么场景不适合？ | 能给出一个真实场景、一个最小示例和一个边界案例。 |
+| 性能层 | 时间、空间、吞吐或延迟受哪些量影响？ | 能说出复杂度或性能瓶颈的证据来源；没有证据时明确写“材料未提供”。 |
+| 复习层 | 怎样确认自己不是只记住了结论？ | 能独立完成本课自测，并把错误定位到概念、机制、示例或边界。 |
+
+### 阅读路线
+
+1. 先读「核心概念定义」，建立「lambda」等对象的精确定义。
+2. 再读「原理与运行机制」，把定义串成可重复的过程。
+3. 用「代码/协议/SQL 示例」验证过程，并只改一个条件观察结果变化。
+4. 最后检查性能、易错点、知识关系与自测题，形成可复习的证据链。
+
+**前置知识**：《异常处理与文件 IO》
+
+**学习位置**：本课位于《异常处理与文件 IO》之后；如果前一课的自测不能通过，应先回补再继续。
+
+**后续衔接**：下一课《构建、测试与生态》会继续使用本课术语，学完后建议立即完成一次自测。
+
+**教材衔接：学习目标**
 
 - 能用自己的话解释Lambda 与 Stream API解决了什么问题，而不是只背术语。
 - 能说清 「lambda」、「Stream」、「Optional」、「函数式接口」 之间的关系，并分别举出一个例子。
@@ -15,14 +42,93 @@
 
 > 一句话摘要：函数式接口、方法引用、Stream 惰性求值、Optional 与并行流。
 
-## 前置知识
+**教材衔接：前置知识**
 
 - 先完成上一课《异常处理与文件 IO》；如果已经掌握，可以直接用本课练习自测。
 - 本课阶段：进阶。建议先完成「异常处理与文件 IO」，或确认自己能独立跑通正文里的 FunctionalInterface 示例。
 - 开始前先复习：lambda、Stream、Optional。
 - 看不懂就直接缩小例子：只保留 lambda 相关的两行输入，跑通后再加回其余部分。
 
-## 函数式接口
+**教材衔接：本课小结**
+
+Lambda + Stream 让集合处理变成声明式：**先说做什么（filter/map），再收集结果（collect）**。代码更短，但要注意惰性求值与副作用。
+
+## 核心概念定义
+
+> 阅读约定：本课先给「Lambda 与 Stream API」相关术语的操作性定义与适用边界；正文里的口语化说法与定义冲突时，以定义和可复现示例为准。
+
+| 术语 | 操作性定义 | 本课中的边界 |
+| --- | --- | --- |
+| Optional | .findFirst()。 | 仅在「Lambda 与 Stream API」明确给出的输入、版本与资源条件下成立。 |
+| 函数式接口 | 只有一个抽象方法的接口就是函数式接口，可以用 lambda 实现。 | 仅在「Lambda 与 Stream API」明确给出的输入、版本与资源条件下成立。 |
+| 并行流 | 并行流使用公共 ForkJoinPool，适合纯计算且数据量大；有共享可变状态、IO 操作时不要用。 | 仅在「Lambda 与 Stream API」明确给出的输入、版本与资源条件下成立。 |
+| 方法引用 | 用双冒号语法把已有方法当作函数式接口的实现，比 lambda 更短也更易读。 | 仅在「Lambda 与 Stream API」明确给出的输入、版本与资源条件下成立。 |
+
+### 定义如何使用
+
+在「Lambda 与 Stream API」中判断一个说法是否成立，先确认它使用的是哪个对象的定义，再检查输入规模、运行环境与失败路径。定义不是口号，而是后续推导、代码示例和自测题共享的约束。
+
+## 原理与运行机制
+
+### 机制总览
+
+1. **建立输入**：把「Optional」按本课定义整理成可观察、可重复的输入条件。
+2. **执行转换**：围绕「函数式接口」执行本课的核心步骤；每一步都记录中间状态，避免只看最终输出。
+3. **产生输出**：得到「并行流」后，用正文示例或协议/SQL 结果核对输出是否符合预期。
+4. **改变一个条件**：只替换一个边界条件或环境参数，观察「Lambda 与 Stream API」的结论是否仍然成立。
+
+| 阶段 | 关注对象 | 失败时应检查 |
+| --- | --- | --- |
+| 输入 | Optional | 类型、范围、编码、版本或前置状态是否满足定义。 |
+| 处理 | 函数式接口 | 顺序、可见性、锁、路由、事务或调度规则是否被破坏。 |
+| 输出 | 并行流 | 结果是否可复现，错误是否被正确传播而不是被吞掉。 |
+
+本课的机制结论要用「Lambda 与 Stream API」自己的示例验证。「Lambda 与 Stream API」没有给出某个数量级、吞吐或内存数据时，本课把该判断标为“材料未提供”，不从相邻主题外推。
+
+**教材衔接：版本与时效**
+
+- 版本基线会影响 lambda 的可用 API，升级前先用编译与测试验证。
+- 虚拟线程与结构化并发对 lambda 的影响最大，升级前先确认线程模型。
+- 升级「Lambda 与 Stream API」涉及的依赖前，先用 FunctionalInterface 复现当前行为，再逐项核对版本说明与破坏性变更。
+
+### 升级检查清单
+
+- 先固定当前版本，跑通全部示例与测验，再升级工具链。
+- 一次只改一个版本条件，把 lambda 相关的差异单独记成一条结论。
+- 升级后重点回归 lambda 的默认值、警告信息与错误格式。
+- 升级后把 FunctionalInterface 的实测版本写进「内容元数据」，再更新复核日期。
+
+## 典型应用场景
+
+| 场景 | 典型输入或前提 | 期望产物 |
+| --- | --- | --- |
+| 学习验证 | 使用本课最小示例和 lambda、Stream | 能复现正文结论，并解释每一步。 |
+| 工程落地 | 把「Lambda 与 Stream API」放入真实模块或服务边界 | 输出可观测、失败可定位、参数可配置。 |
+| 故障排查 | 只改一个版本、规模、输入或依赖条件 | 能区分概念错误、实现错误和环境差异。 |
+
+判断「Lambda 与 Stream API」的场景是否成立，标准是能否写出输入、处理、输出和失败路径；材料中没有出现的数据在本课标注为“材料未提供”，不用推测替代证据。
+
+**课程内置实验入口**：`sandbox:java`，用于动手验证《Lambda 与 Stream API》的机制；实验结论不替代概念定义与复杂度分析。
+
+## 代码/协议/SQL 示例
+
+### 最小可验证示例
+
+下面保留《Lambda 与 Stream API》原文中的最小示例。先预测《Lambda 与 Stream API》示例的输出，再按正文步骤运行或推演；示例依赖外部环境时，同时记录版本与输入。
+
+```java
+@FunctionalInterface
+interface Calculator {
+    int apply(int a, int b);
+}
+
+Calculator add = (a, b) -> a + b;
+Calculator max = Integer::max;          // 方法引用
+
+System.out.println(add.apply(1, 2));
+```
+
+**教材衔接：函数式接口**
 
 只有一个抽象方法的接口就是函数式接口，可以用 lambda 实现。
 
@@ -47,7 +153,7 @@ JDK 内置四大接口：
 | `Function<T,R>` | `T -> R` | 转换 |
 | `Predicate<T>` | `T -> boolean` | 判断 |
 
-## Stream 常用操作
+**教材衔接：Stream 常用操作**
 
 ```java
 import java.util.*;
@@ -75,7 +181,7 @@ int totalLength = names.stream().mapToInt(String::length).sum();
 
 中间操作（`filter`/`map`/`sorted`）不会立刻执行，只有遇到终止操作（`collect`/`forEach`/`count`/`reduce`）才会遍历一次。
 
-## Optional
+**教材衔接：Optional**
 
 ```java
 Optional<String> maybe = names.stream()
@@ -88,7 +194,7 @@ maybe.ifPresent(System.out::println);
 // 不要用 optional.get()，先判断或使用 orElseThrow
 ```
 
-## 并行流与注意事项
+**教材衔接：并行流与注意事项**
 
 ```java
 long total = IntStream.rangeClosed(1, 1_000_000)
@@ -99,23 +205,7 @@ long total = IntStream.rangeClosed(1, 1_000_000)
 
 并行流使用公共 ForkJoinPool，适合纯计算且数据量大；有共享可变状态、IO 操作时不要用。
 
-## Stream 常见误用与性能提示
-
-| 误用 | 后果 | 正确做法 |
-| --- | --- | --- |
-| 在 forEach 里修改外部集合 | 并发修改异常或结果不确定 | 用 collect 生成新集合 |
-| 中途忘记终止操作 | 代码根本不执行（流是惰性的） | 以 collect/forEach/reduce 收尾 |
-| 在流里做重 IO 或远程调用 | 延迟叠加、线程池被打满 | 外提为批量操作或异步任务 |
-| 无脑用 parallelStream | 公共 ForkJoinPool 被占满，拖慢全局 | 仅纯计算且数据量大时用，或自定义池 |
-| 反复遍历同一个流 | 流只能消费一次，第二次抛异常 | 需要多次使用先 collect 成集合 |
-
-性能取舍：小数据量（几百条）用普通循环往往更快——流有对象创建与装箱开销；可读性收益明显时用流，热点路径则实测后决定。基本类型流用 `IntStream/LongStream` 避免装箱，`mapToInt` + `sum` 比 `map` + `reduce` 更高效。
-
-## 本课小结
-
-Lambda + Stream 让集合处理变成声明式：**先说做什么（filter/map），再收集结果（collect）**。代码更短，但要注意惰性求值与副作用。
-
-## Stream 操作速查
+**教材衔接：Stream 操作速查**
 
 | 类别 | 方法 | 作用 |
 | --- | --- | --- |
@@ -163,31 +253,7 @@ Map<String, Integer> amountByCategory = orders.stream()
                 Collectors.summingInt(Order::amount)));
 ```
 
-## 常见错误与排查
-
-| 容易写错的做法 | 实际现象 | 原因与正确做法 |
-| --- | --- | --- |
-| 流被重复消费 | `IllegalStateException: stream has already been operated upon or closed` | 流只能消费一次，需要复用就重新 `stream()` |
-| 忘记写终止操作 | 什么都不执行 | `filter`、`map` 都是惰性的，必须 `collect`、`forEach` 等触发 |
-| 在 `forEach` 里修改外部集合 | 代码难以推理，并行时出错 | 用 `collect` 生成结果，避免副作用 |
-| 用并行流处理 IO | 线程池被占满，性能更差 | 并行流适合纯 CPU 计算，IO 用专门的线程池 |
-| `toMap` 遇到重复键 | `IllegalStateException: Duplicate key` | 提供合并函数 `(a, b) -> a` |
-| `toMap` 的 value 为 null | `NullPointerException` | 先过滤或改用 `HashMap` 手动填充 |
-| `Optional.get()` 直接取值 | `NoSuchElementException` | 用 `orElse`、`orElseThrow`、`ifPresent` |
-| `map` 里返回 `null` | 后续出现空指针 | 用 `flatMap` + `Optional` 过滤空值 |
-| 在 `peek` 里做核心逻辑 | 可能被优化掉或跳过 | `peek` 只用于调试 |
-| 大量装箱操作 | 性能下降 | 用 `mapToInt`、`IntStream` 等原始类型流 |
-| 用 `sorted()` 排大集合 | 慢且占内存 | 数据量大时考虑数据库排序或 TopK 结构 |
-
-## 复习与自测
-
-- [ ] 能列出常用中间操作与终止操作，并知道流是惰性的。
-- [ ] 会用 `Collectors.groupingBy` 做分组统计。
-- [ ] `toMap` 时提供合并函数避免重复键异常。
-- [ ] 用 `Optional` 的 `orElse` / `orElseThrow` 替代 `get()`。
-- [ ] 并行流只用于纯 CPU 计算，且先做性能验证。
-
-## 零基础详解：Lambda 与 Stream 流水线
+**教材衔接：零基础详解：Lambda 与 Stream 流水线**
 
 ### 一句话说清它是什么
 
@@ -351,7 +417,162 @@ public class Report {
 - [ ] 能说出 `orElse` 与 `orElseGet` 的差别。
 - [ ] 会用 `groupingBy` 加 `summarizingInt` 生成分组统计。
 
-## 动手练习
+## 时间/空间复杂度或性能分析
+
+**复杂度证据**：「Lambda 与 Stream API」的现有材料没有给出渐近时间或空间复杂度的明确结论，本课只做定性检查，不补写未经验证的 $O$ 记号。
+
+| 维度 | 本课关注点 | 判断依据 |
+| --- | --- | --- |
+| 时间/延迟 | 「Lambda 与 Stream API」的主要步骤是否会随输入规模、并发度或网络往返增长。 | 以正文复杂度、基准数据或可重复测量为准。 |
+| 空间/内存 | 中间状态、缓存、副本、连接或索引是否随规模增长。 | 记录峰值内存与数据副本，不只看最终结果。 |
+| 吞吐/资源 | 版本、调度、锁、IO、序列化或协议开销是否成为瓶颈。 | 固定环境做对照实验，改变一个变量。 |
+
+评估「Lambda 与 Stream API」时要区分“正确性成立”和“性能达标”两件事；材料没有给出基准时，本课只保留量级来源与测量方法，不写不可验证的绝对数字。
+
+**教材衔接：Stream 常见误用与性能提示**
+
+| 误用 | 后果 | 正确做法 |
+| --- | --- | --- |
+| 在 forEach 里修改外部集合 | 并发修改异常或结果不确定 | 用 collect 生成新集合 |
+| 中途忘记终止操作 | 代码根本不执行（流是惰性的） | 以 collect/forEach/reduce 收尾 |
+| 在流里做重 IO 或远程调用 | 延迟叠加、线程池被打满 | 外提为批量操作或异步任务 |
+| 无脑用 parallelStream | 公共 ForkJoinPool 被占满，拖慢全局 | 仅纯计算且数据量大时用，或自定义池 |
+| 反复遍历同一个流 | 流只能消费一次，第二次抛异常 | 需要多次使用先 collect 成集合 |
+
+性能取舍：小数据量（几百条）用普通循环往往更快——流有对象创建与装箱开销；可读性收益明显时用流，热点路径则实测后决定。基本类型流用 `IntStream/LongStream` 避免装箱，`mapToInt` + `sum` 比 `map` + `reduce` 更高效。
+
+## 常见误区与易错点
+
+> 复核《Lambda 与 Stream API》的易错点时，优先保留原文的错误表、故障现场与排错路径；每条修正都要能用本课示例复验。
+
+| 易错点 | 常见表现 | 正确做法 |
+| --- | --- | --- |
+| 只背结论 | 能复述「Lambda 与 Stream API」的定义，却说不清输入、输出与边界。 | 回到机制步骤，用最小示例逐一验证。 |
+| 混淆相邻概念 | 把本课对象与相邻主题的对象当成同一类。 | 先比较定义、资源归属、生命周期和失败模式。 |
+| 忽略版本与环境 | 在开发机通过后直接外推到生产环境。 | 固定版本、输入和资源条件，再记录可复现结果。 |
+
+**教材衔接：常见错误与排查**
+
+| 容易写错的做法 | 实际现象 | 原因与正确做法 |
+| --- | --- | --- |
+| 流被重复消费 | `IllegalStateException: stream has already been operated upon or closed` | 流只能消费一次，需要复用就重新 `stream()` |
+| 忘记写终止操作 | 什么都不执行 | `filter`、`map` 都是惰性的，必须 `collect`、`forEach` 等触发 |
+| 在 `forEach` 里修改外部集合 | 代码难以推理，并行时出错 | 用 `collect` 生成结果，避免副作用 |
+| 用并行流处理 IO | 线程池被占满，性能更差 | 并行流适合纯 CPU 计算，IO 用专门的线程池 |
+| `toMap` 遇到重复键 | `IllegalStateException: Duplicate key` | 提供合并函数 `(a, b) -> a` |
+| `toMap` 的 value 为 null | `NullPointerException` | 先过滤或改用 `HashMap` 手动填充 |
+| `Optional.get()` 直接取值 | `NoSuchElementException` | 用 `orElse`、`orElseThrow`、`ifPresent` |
+| `map` 里返回 `null` | 后续出现空指针 | 用 `flatMap` + `Optional` 过滤空值 |
+| 在 `peek` 里做核心逻辑 | 可能被优化掉或跳过 | `peek` 只用于调试 |
+| 大量装箱操作 | 性能下降 | 用 `mapToInt`、`IntStream` 等原始类型流 |
+| 用 `sorted()` 排大集合 | 慢且占内存 | 数据量大时考虑数据库排序或 TopK 结构 |
+
+**教材衔接：故障现场**
+
+### 现场 1：流被重复消费
+
+**症状**：在《Lambda 与 Stream API》的复现场景中，IllegalStateException: stream has already been operated upon or closed。
+
+**根因**：当出现“流被重复消费”时，执行路径已经绕过了《Lambda 与 Stream API》的关键约束，最终以“IllegalStateException: stream has already been operated upon or closed”暴露出来；修复前必须先确认约束在哪里失效。
+
+**修复**：针对《Lambda 与 Stream API》的问题，流只能消费一次，需要复用就重新 stream()。
+
+**验证**：先在《Lambda 与 Stream API》中记录“流被重复消费”留下的失败证据，再执行“流只能消费一次，需要复用就重新 stream()”并重放；确认错误路径变为明确结果，且修复没有掩盖同类故障。
+
+### 现场 2：忘记写终止操作
+
+**症状**：在《Lambda 与 Stream API》的复现场景中，什么都不执行。
+
+**根因**：“什么都不执行”只是表层结果。向上追溯会落到“忘记写终止操作”这一步，因为它省略了《Lambda 与 Stream API》的约束，使实现行为和预期模型发生了偏离。
+
+**修复**：针对《Lambda 与 Stream API》的问题，filter、map 都是惰性的，必须 collect、forEach 等触发。
+
+**验证**：保留《Lambda 与 Stream API》里触发“什么都不执行”的输入、版本和日志，按“filter、map 都是惰性的，必须 collect、forEach 等触发”完成修改后原样重放；只有失败现象消失且相邻场景仍可解释，才保留改动。
+
+### 现场 3：在 forEach 里修改外部集合
+
+**症状**：在《Lambda 与 Stream API》的复现场景中，代码难以推理，并行时出错。
+
+**根因**：“代码难以推理，并行时出错”只是表层结果。向上追溯会落到“在 forEach 里修改外部集合”这一步，因为它省略了《Lambda 与 Stream API》的约束，使实现行为和预期模型发生了偏离。
+
+**修复**：针对《Lambda 与 Stream API》的问题，用 collect 生成结果，避免副作用。
+
+**验证**：先在《Lambda 与 Stream API》中记录“在 forEach 里修改外部集合”留下的失败证据，再执行“用 collect 生成结果，避免副作用”并重放；确认错误路径变为明确结果，且修复没有掩盖同类故障。
+
+## 与其他知识点的关系
+
+| 关系 | 课程 | 为什么 |
+| --- | --- | --- |
+| 先修 | 《异常处理与文件 IO》 | 本课会直接使用它的概念或操作前提。 |
+| 关联 | 《多线程与并发》 | 用于横向比较或把本课结论迁移到相邻主题。 |
+| 前置顺序 | 《异常处理与文件 IO》 | 同分类中安排在本课之前，建议先完成其自测。 |
+| 后续顺序 | 《构建、测试与生态》 | 同分类中安排在本课之后，会继续使用本课术语。 |
+
+把「Lambda 与 Stream API」放回知识体系时，不只要记住“前面学过什么”，还要说明两个主题在输入、机制、资源边界和失败模式上的差异。这样才能把单课知识迁移到项目、排障和后续课程。
+
+## 自测题与参考答案
+
+> 先独立作答《Lambda 与 Stream API》的自测题，再对照答案与解析；每处判断都要能在本课正文或示例中找到依据。
+
+### 自测 1
+
+Stream 的中间操作（filter/map）什么时候真正执行？
+
+A. JVM 空闲时
+B. 调用时立即执行
+C. 遇到终止操作时才执行
+D. 创建 Stream 时
+
+**参考答案**：遇到终止操作时才执行
+
+**解析**：在「Lambda 与 Stream API」里，遇到终止操作时才执行。中间操作是惰性的，只有 collect/forEach/count 等终止操作才会触发一次遍历。回到「Lambda 与 Stream API」的正文示例，用“Stream 的中间操作（filte”走一遍lambda、Stream、Optional的完整流程，能复现的结论才可以保留。
+
+### 自测 2
+
+下面这段 Java 代码摘自「Lambda 与 Stream API」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
+
+```java
+Optional<String> maybe = names.stream()
+        .filter(n -> n.startsWith("z"))
+        .findFirst();
+
+String value = maybe.orElse("默认值");
+maybe.ifPresent(System.out::println);
+
+// 不要用 optional.get()，先判断或使用 orElseThrow
+```
+
+A. 这段代码包含条件分支，不同输入会走不同的执行路径。
+B. 这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。
+C. 这段代码会产生可观察的输出，运行后能看到结果。
+D. 这段代码包含循环结构，同一段逻辑会被重复执行。
+
+**参考答案**：这段代码会产生可观察的输出，运行后能看到结果。
+
+**解析**：在「Lambda 与 Stream API」里，这段代码会产生可观察的输出，运行后能看到结果。这段代码出自「Lambda 与 Stream API」的正文示例，围绕lambda、Stream、Optional展开；把输入或边界换成空值、极值或失败情况后，结论要以「Lambda 与 Stream API」的实际运行结果为准。
+
+### 自测 3
+
+围绕“Lambda 与 Stream API”中的 lambda、Stream、Optional，下列哪两项是本课强调的实践判断？
+
+A. 只要 lambda 的常规示例通过，就可以跳过边界与异常路径
+B. 验证 Stream 时要固定版本并覆盖边界输入，结论才可复现
+C. 把 Stream 的单次运行结果当成所有版本和规模都成立
+D. 学习 lambda 时要同时说明输入、输出和失败路径，不能只看正常流程
+
+**参考答案**：验证 Stream 时要固定版本并覆盖边界输入，结论才可复现；学习 lambda 时要同时说明输入、输出和失败路径，不能只看正常流程
+
+**解析**：本课把Lambda 与 Stream API拆成概念、示例与故障现场三部分，因此判断 lambda 时必须同时交代输入、输出和失败路径，这使“学习 lambda 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在Lambda 与 Stream API里，判断 Stream 时要固定版本与边界输入，所以“验证 Stream 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
+
+**教材衔接：复习与自测**
+
+- [ ] 能列出常用中间操作与终止操作，并知道流是惰性的。
+- [ ] 会用 `Collectors.groupingBy` 做分组统计。
+- [ ] `toMap` 时提供合并函数避免重复键异常。
+- [ ] 用 `Optional` 的 `orElse` / `orElseThrow` 替代 `get()`。
+- [ ] 并行流只用于纯 CPU 计算，且先做性能验证。
+
+**教材衔接：动手练习**
 
 > 本课练习重点：围绕「lambda、Stream、Optional」完成复述、实验和交付，每个结果都要能被别人检查。
 
@@ -389,7 +610,7 @@ public class Report {
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-## 可运行练习
+**教材衔接：可运行练习**
 
 本节围绕Lambda 与 Stream API安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 
@@ -409,52 +630,7 @@ public class Report {
 
 **验收标准**：用自己的话复述 lambda，并配一个反例；只写定义不算通过。
 
-## 故障现场
-
-### 现场 1：流被重复消费
-
-**症状**：在《Lambda 与 Stream API》的复现场景中，IllegalStateException: stream has already been operated upon or closed。
-
-**根因**：当出现“流被重复消费”时，执行路径已经绕过了《Lambda 与 Stream API》的关键约束，最终以“IllegalStateException: stream has already been operated upon or closed”暴露出来；修复前必须先确认约束在哪里失效。
-
-**修复**：针对《Lambda 与 Stream API》的问题，流只能消费一次，需要复用就重新 stream()。
-
-**验证**：先在《Lambda 与 Stream API》中记录“流被重复消费”留下的失败证据，再执行“流只能消费一次，需要复用就重新 stream()”并重放；确认错误路径变为明确结果，且修复没有掩盖同类故障。
-
-### 现场 2：忘记写终止操作
-
-**症状**：在《Lambda 与 Stream API》的复现场景中，什么都不执行。
-
-**根因**：“什么都不执行”只是表层结果。向上追溯会落到“忘记写终止操作”这一步，因为它省略了《Lambda 与 Stream API》的约束，使实现行为和预期模型发生了偏离。
-
-**修复**：针对《Lambda 与 Stream API》的问题，filter、map 都是惰性的，必须 collect、forEach 等触发。
-
-**验证**：保留《Lambda 与 Stream API》里触发“什么都不执行”的输入、版本和日志，按“filter、map 都是惰性的，必须 collect、forEach 等触发”完成修改后原样重放；只有失败现象消失且相邻场景仍可解释，才保留改动。
-
-### 现场 3：在 forEach 里修改外部集合
-
-**症状**：在《Lambda 与 Stream API》的复现场景中，代码难以推理，并行时出错。
-
-**根因**：“代码难以推理，并行时出错”只是表层结果。向上追溯会落到“在 forEach 里修改外部集合”这一步，因为它省略了《Lambda 与 Stream API》的约束，使实现行为和预期模型发生了偏离。
-
-**修复**：针对《Lambda 与 Stream API》的问题，用 collect 生成结果，避免副作用。
-
-**验证**：先在《Lambda 与 Stream API》中记录“在 forEach 里修改外部集合”留下的失败证据，再执行“用 collect 生成结果，避免副作用”并重放；确认错误路径变为明确结果，且修复没有掩盖同类故障。
-
-## 版本与时效
-
-- 版本基线会影响 lambda 的可用 API，升级前先用编译与测试验证。
-- 虚拟线程与结构化并发对 lambda 的影响最大，升级前先确认线程模型。
-- 升级「Lambda 与 Stream API」涉及的依赖前，先用 FunctionalInterface 复现当前行为，再逐项核对版本说明与破坏性变更。
-
-### 升级检查清单
-
-- 先固定当前版本，跑通全部示例与测验，再升级工具链。
-- 一次只改一个版本条件，把 lambda 相关的差异单独记成一条结论。
-- 升级后重点回归 lambda 的默认值、警告信息与错误格式。
-- 升级后把 FunctionalInterface 的实测版本写进「内容元数据」，再更新复核日期。
-
-## 本课复习清单
+**教材衔接：本课复习清单**
 
 离开本课前，逐项确认：
 
@@ -471,6 +647,8 @@ public class Report {
 | 已经能独立解释的考点 |  |
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
+
+---
 
 ## 术语速查
 

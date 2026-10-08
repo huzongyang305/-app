@@ -1,71 +1,126 @@
 # Flutter Widget 入门
 
-> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：40 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：50 分钟
 
 ![Flutter Widget 到渲染的流程](images/diagram_mobile_flutter_widget.webp)
 
 ![Flutter Widget 入门](images/category_flutter_widget_intro.webp)
 
-## 学习目标
+## 本节知识框架
+
+**课程定位**：所属分类为「移动开发」，课程主题为「Flutter Widget 入门」，学习阶段为「入门」，建议用时 50 分钟。
+
+**本课要解决的主问题**：理解 Widget、build 和最小应用结构。
+
+| 学习层次 | 要回答的问题 | 完成判据 |
+| --- | --- | --- |
+| 概念层 | 「Flutter Widget 入门」有哪些必须区分的对象与术语？ | 能用自己的话定义核心术语，并各举一个正例和一个反例。 |
+| 机制层 | 这些对象按什么顺序发生作用，输入如何变成输出？ | 能画出或写出机制步骤，并说明每一步的失败条件。 |
+| 应用层 | 什么场景适合使用「Flutter Widget 入门」，什么场景不适合？ | 能给出一个真实场景、一个最小示例和一个边界案例。 |
+| 性能层 | 时间、空间、吞吐或延迟受哪些量影响？ | 能说出复杂度或性能瓶颈的证据来源；没有证据时明确写“材料未提供”。 |
+| 复习层 | 怎样确认自己不是只记住了结论？ | 能独立完成本课自测，并把错误定位到概念、机制、示例或边界。 |
+
+### 阅读路线
+
+1. 先读「核心概念定义」，建立「Flutter Widget 入门」等对象的精确定义。
+2. 再读「原理与运行机制」，把定义串成可重复的过程。
+3. 用「代码/协议/SQL 示例」验证过程，并只改一个条件观察结果变化。
+4. 最后检查性能、易错点、知识关系与自测题，形成可复习的证据链。
+
+**前置知识**：没有硬性先修课；仍建议先具备本分类的基础阅读与操作能力。
+
+**学习位置**：本课是当前分类的第一课，建议从本页开始建立术语表。
+
+**后续衔接**：下一课《Flutter 基础与 Widget 树》会继续使用本课术语，学完后建议立即完成一次自测。
+
+**教材衔接：学习目标**
 
 - 先认识Flutter Widget 入门需要的工具、输入和输出。
 - 按步骤运行最小示例，并记录结果与错误。
 - 用一个边界输入验证自己是否真正掌握。
 
-## 前置知识
+**教材衔接：前置知识**
 
 - 会进行基本的文件或命令行操作。
 - 不需要预先掌握「移动开发」的高级知识。
 
-## 一句话入门
-
-理解 Widget、build 和最小应用结构。
-
-## 最小示例
-
-```dart
-import 'package:flutter/material.dart';
-
-void main() {
-  runApp(
-    const MaterialApp(
-      home: Scaffold(
-        body: Center(child: Text('Hello Flutter')),
-      ),
-    ),
-  );
-}
-```
-
-## 预期输出
-
-```text
-屏幕中央显示一行文本 Hello Flutter
-```
-
-## 常见错误与排查
-
-> 说明：本表由《Flutter Widget 入门》的核心知识整理（2026-10-07），人工复核进度见 docs/content_review_batches.md。
-
-| 易错点 | 容易踩的做法 | 正确结论 |
-| --- | --- | --- |
-| 在 build 里发请求或改状态 | 每帧重复触发，出现闪烁甚至死循环 | 初始化放在 initState 或数据层，build 只描述界面 |
-| 把可变状态存在 Widget 字段里 | 重建后状态丢失或错乱 | 跨帧状态放 State 或状态管理容器 |
-| setState 只改一部分依赖 | 界面显示旧数据 | 在 setState 里一次性更新所有依赖字段 |
-
-## 动手练习
-
-1. 原样运行最小示例，保存命令和输出。
-2. 把数字 2 改成 10，预测并验证新结果。
-3. 制造一个错误输入，写出错误信息和修复方法。
-
-## 本课小结
+**教材衔接：本课小结**
 
 - 入门阶段先保证能运行、能观察、能解释，再追求复杂功能。
 - 每次只改一个变量，记录预测与实际结果。
 - 遇到错误先看第一条错误信息，再回到最小示例。
 
-## 代码实验：把示例跑成证据
+## 核心概念定义
+
+> 阅读约定：本课先给「Flutter Widget 入门」相关术语的操作性定义与适用边界；正文里的口语化说法与定义冲突时，以定义和可复现示例为准。
+
+| 术语 | 操作性定义 | 本课中的边界 |
+| --- | --- | --- |
+| Widget | Flutter 界面的基本单元，用不可变的配置描述界面的一部分。 | 仅在「Flutter Widget 入门」明确给出的输入、版本与资源条件下成立。 |
+| Widget 树 | Widget 按父子关系组成的树，框架沿树向下传约束、向上收尺寸。 | 仅在「Flutter Widget 入门」明确给出的输入、版本与资源条件下成立。 |
+| 约束（Constraints） | 父节点向下传递的尺寸范围，子节点只能在范围内决定自身大小。 | 仅在「Flutter Widget 入门」明确给出的输入、版本与资源条件下成立。 |
+| StatelessWidget | 没有内部状态的 Widget，相同输入总是渲染出相同结果。 | 仅在「Flutter Widget 入门」明确给出的输入、版本与资源条件下成立。 |
+| StatefulWidget | 带可变状态的 Widget，状态改变后用 setState 触发重建。 | 仅在「Flutter Widget 入门」明确给出的输入、版本与资源条件下成立。 |
+| Future | Dart 使用 Future 表示一次异步结果，Stream 表示连续事件序列 | 仅在「Flutter Widget 入门」明确给出的输入、版本与资源条件下成立。 |
+
+### 定义如何使用
+
+在「Flutter Widget 入门」中判断一个说法是否成立，先确认它使用的是哪个对象的定义，再检查输入规模、运行环境与失败路径。定义不是口号，而是后续推导、代码示例和自测题共享的约束。
+
+## 原理与运行机制
+
+### 机制总览
+
+1. **建立输入**：把「Widget」按本课定义整理成可观察、可重复的输入条件。
+2. **执行转换**：围绕「Widget 树」执行本课的核心步骤；每一步都记录中间状态，避免只看最终输出。
+3. **产生输出**：得到「约束（Constraints）」后，用正文示例或协议/SQL 结果核对输出是否符合预期。
+4. **改变一个条件**：只替换一个边界条件或环境参数，观察「Flutter Widget 入门」的结论是否仍然成立。
+
+| 阶段 | 关注对象 | 失败时应检查 |
+| --- | --- | --- |
+| 输入 | Widget | 类型、范围、编码、版本或前置状态是否满足定义。 |
+| 处理 | Widget 树 | 顺序、可见性、锁、路由、事务或调度规则是否被破坏。 |
+| 输出 | 约束（Constraints） | 结果是否可复现，错误是否被正确传播而不是被吞掉。 |
+
+本课的机制结论要用「Flutter Widget 入门」自己的示例验证。「Flutter Widget 入门」没有给出某个数量级、吞吐或内存数据时，本课把该判断标为“材料未提供”，不从相邻主题外推。
+
+**教材衔接：一句话入门**
+
+理解 Widget、build 和最小应用结构。
+
+**教材衔接：Dart 与 Flutter 基础机制速览**
+
+### Dart、Widget 与构建过程
+
+Flutter 使用 Dart 语言和自带渲染引擎，UI 由不可变 Widget 树描述。`build` 方法根据当前状态返回 Widget 配置，框架比较新旧树并更新必要的渲染对象。Widget 很轻量，频繁重建本身不是问题，真正昂贵的是布局、绘制、图片解码和同步计算。`const` 构造函数能在编译期复用对象，减少不必要的重建。
+
+### 布局与约束
+
+Flutter 布局遵循“约束向下、尺寸向上、父决定位置”。父节点给子节点最大和最小约束，子节点在约束内选择尺寸并向上汇报，父节点决定放置位置。`Row`、`Column`、`Stack`、`Expanded`、`Flexible` 和 `ListView` 各有布局规则；溢出通常不是“孩子太大”这么简单，而是约束链中某一层没有提供可分配空间。调试布局时先看约束，再看尺寸和位置。
+
+### 状态、生命周期与重建
+
+无状态 Widget 只依赖输入，状态变化由父级重建；有状态 Widget 通过 `State` 保存跨帧数据，`setState` 通知框架重新构建。`initState`、`didChangeDependencies`、`dispose` 分别用于初始化、响应依赖变化和释放资源。状态应尽量靠近使用它的组件，跨页面共享再用 Provider、Riverpod 等方案；全局状态过多会让重建范围和依赖关系难以推理。
+
+### 异步、Future 与 Stream
+
+Dart 使用 Future 表示一次异步结果，Stream 表示连续事件序列。`async/await` 让异步代码更易读，但 UI 线程仍然不能被长时间同步计算阻塞。网络、文件和数据库操作要处理超时、取消和错误；在 Widget 中使用异步结果前要检查 `mounted`，避免页面销毁后调用 setState。StreamBuilder 和 FutureBuilder 只负责展示状态，业务逻辑应放在可测试的服务层。
+
+### 空安全、性能与测试
+
+Dart 空安全区分可空和非空类型，`?`、`!`、`?.`、`??` 分别表达可空、断言、安全访问和默认值；`!` 应尽量少用，优先通过控制流让编译器理解非空。性能优化先用 DevTools 测量，再处理重建范围、图片缓存、列表懒加载和 isolate 计算。Widget 测试验证界面与交互，单元测试验证纯逻辑，集成测试覆盖关键流程。
+
+## 典型应用场景
+
+| 场景 | 典型输入或前提 | 期望产物 |
+| --- | --- | --- |
+| 学习验证 | 使用本课最小示例和 Flutter Widget 入门、移动开发 | 能复现正文结论，并解释每一步。 |
+| 工程落地 | 把「Flutter Widget 入门」放入真实模块或服务边界 | 输出可观测、失败可定位、参数可配置。 |
+| 故障排查 | 只改一个版本、规模、输入或依赖条件 | 能区分概念错误、实现错误和环境差异。 |
+
+判断「Flutter Widget 入门」的场景是否成立，标准是能否写出输入、处理、输出和失败路径；材料中没有出现的数据在本课标注为“材料未提供”，不用推测替代证据。
+
+**教材衔接：代码实验：把示例跑成证据**
 
 ### 实验一：建立基线
 
@@ -111,49 +166,81 @@ void main() {
 2. MaterialApp 的执行顺序里，哪一步会写数据或产生外部副作用？
 3. 输出如何验证，失败时第一条可观察证据是什么？
 
-## Dart 与 Flutter 基础机制速览
+## 代码/协议/SQL 示例
 
-### Dart、Widget 与构建过程
+### 最小可验证示例
 
-Flutter 使用 Dart 语言和自带渲染引擎，UI 由不可变 Widget 树描述。`build` 方法根据当前状态返回 Widget 配置，框架比较新旧树并更新必要的渲染对象。Widget 很轻量，频繁重建本身不是问题，真正昂贵的是布局、绘制、图片解码和同步计算。`const` 构造函数能在编译期复用对象，减少不必要的重建。
+下面保留《Flutter Widget 入门》原文中的最小示例。先预测《Flutter Widget 入门》示例的输出，再按正文步骤运行或推演；示例依赖外部环境时，同时记录版本与输入。
 
-### 布局与约束
+```dart
+import 'package:flutter/material.dart';
 
-Flutter 布局遵循“约束向下、尺寸向上、父决定位置”。父节点给子节点最大和最小约束，子节点在约束内选择尺寸并向上汇报，父节点决定放置位置。`Row`、`Column`、`Stack`、`Expanded`、`Flexible` 和 `ListView` 各有布局规则；溢出通常不是“孩子太大”这么简单，而是约束链中某一层没有提供可分配空间。调试布局时先看约束，再看尺寸和位置。
+void main() {
+  runApp(
+    const MaterialApp(
+      home: Scaffold(
+        body: Center(child: Text('Hello Flutter')),
+      ),
+    ),
+  );
+}
+```
 
-### 状态、生命周期与重建
+**教材衔接：最小示例**
 
-无状态 Widget 只依赖输入，状态变化由父级重建；有状态 Widget 通过 `State` 保存跨帧数据，`setState` 通知框架重新构建。`initState`、`didChangeDependencies`、`dispose` 分别用于初始化、响应依赖变化和释放资源。状态应尽量靠近使用它的组件，跨页面共享再用 Provider、Riverpod 等方案；全局状态过多会让重建范围和依赖关系难以推理。
+```dart
+import 'package:flutter/material.dart';
 
-### 异步、Future 与 Stream
+void main() {
+  runApp(
+    const MaterialApp(
+      home: Scaffold(
+        body: Center(child: Text('Hello Flutter')),
+      ),
+    ),
+  );
+}
+```
 
-Dart 使用 Future 表示一次异步结果，Stream 表示连续事件序列。`async/await` 让异步代码更易读，但 UI 线程仍然不能被长时间同步计算阻塞。网络、文件和数据库操作要处理超时、取消和错误；在 Widget 中使用异步结果前要检查 `mounted`，避免页面销毁后调用 setState。StreamBuilder 和 FutureBuilder 只负责展示状态，业务逻辑应放在可测试的服务层。
+**教材衔接：预期输出**
 
-### 空安全、性能与测试
+```text
+屏幕中央显示一行文本 Hello Flutter
+```
 
-Dart 空安全区分可空和非空类型，`?`、`!`、`?.`、`??` 分别表达可空、断言、安全访问和默认值；`!` 应尽量少用，优先通过控制流让编译器理解非空。性能优化先用 DevTools 测量，再处理重建范围、图片缓存、列表懒加载和 isolate 计算。Widget 测试验证界面与交互，单元测试验证纯逻辑，集成测试覆盖关键流程。
+## 时间/空间复杂度或性能分析
 
-## 可运行练习
+**复杂度证据**：「Flutter Widget 入门」的现有材料没有给出渐近时间或空间复杂度的明确结论，本课只做定性检查，不补写未经验证的 $O$ 记号。
 
-本节围绕Flutter Widget 入门安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
+| 维度 | 本课关注点 | 判断依据 |
+| --- | --- | --- |
+| 时间/延迟 | 「Flutter Widget 入门」的主要步骤是否会随输入规模、并发度或网络往返增长。 | 以正文复杂度、基准数据或可重复测量为准。 |
+| 空间/内存 | 中间状态、缓存、副本、连接或索引是否随规模增长。 | 记录峰值内存与数据副本，不只看最终结果。 |
+| 吞吐/资源 | 版本、调度、锁、IO、序列化或协议开销是否成为瓶颈。 | 固定环境做对照实验，改变一个变量。 |
 
-### 任务 1：用自己的话画出结构
+评估「Flutter Widget 入门」时要区分“正确性成立”和“性能达标”两件事；材料没有给出基准时，本课只保留量级来源与测量方法，不写不可验证的绝对数字。
 
-不看书，用一张图说清「Flutter Widget 入门」的结构，画完再对照骨架：
+## 常见误区与易错点
 
-- 主干：Flutter Widget 入门 的定义 → 最小示例 → 预期输出 → 常见错误
-- 连接线：在每条边上标出输入、输出与失败路径。
-- 自检：能否用一句话说明Flutter Widget 入门与移动开发的关系？
+> 复核《Flutter Widget 入门》的易错点时，优先保留原文的错误表、故障现场与排错路径；每条修正都要能用本课示例复验。
 
-### 任务 2：做一次对比实验
+| 易错点 | 常见表现 | 正确做法 |
+| --- | --- | --- |
+| 只背结论 | 能复述「Flutter Widget 入门」的定义，却说不清输入、输出与边界。 | 回到机制步骤，用最小示例逐一验证。 |
+| 混淆相邻概念 | 把本课对象与相邻主题的对象当成同一类。 | 先比较定义、资源归属、生命周期和失败模式。 |
+| 忽略版本与环境 | 在开发机通过后直接外推到生产环境。 | 固定版本、输入和资源条件，再记录可复现结果。 |
 
-**验收标准**：对照表两列都要有证据（命令、输出或数据），并注明Flutter Widget 入门与移动开发哪一个才是决定性变量。
+**教材衔接：常见错误与排查**
 
-### 任务 3：迁移到自己的场景
+> 说明：本表由《Flutter Widget 入门》的核心知识整理（2026-10-07），人工复核进度见 docs/content_review_batches.md。
 
-**验收标准**：结论要能追溯到「代码实验：把示例跑成证据」的具体段落，并说明它和 移动开发 的边界。
+| 易错点 | 容易踩的做法 | 正确结论 |
+| --- | --- | --- |
+| 在 build 里发请求或改状态 | 每帧重复触发，出现闪烁甚至死循环 | 初始化放在 initState 或数据层，build 只描述界面 |
+| 把可变状态存在 Widget 字段里 | 重建后状态丢失或错乱 | 跨帧状态放 State 或状态管理容器 |
+| setState 只改一部分依赖 | 界面显示旧数据 | 在 setState 里一次性更新所有依赖字段 |
 
-## 故障现场
+**教材衔接：故障现场**
 
 ### 现场 1：在 build 里发请求或改状态
 
@@ -185,181 +272,7 @@ Dart 空安全区分可空和非空类型，`?`、`!`、`?.`、`??` 分别表达
 
 **验证**：在《Flutter Widget 入门》中按“在 setState 里一次性更新所有依赖字段”调整后，从“setState 只改一部分依赖”的触发条件重放同一条路径，确认“界面显示旧数据”不再出现，并补一个相邻边界用例检查没有引入新问题。
 
-## 本课复习清单
-
-离开本课前，逐项确认：
-
-- [ ] 不看解析，能说出「Flutter 中 build() 方法的核心职责是什么？」的判断依据。
-- [ ] 不看解析，能说出「在最小 Flutter 应用里，main() 与 runApp() 的分工是？」的判断依据。
-- [ ] 不看解析，能说出「运行本课最小示例后，屏幕上会看到什么？」的判断依据。
-- [ ] 不看解析，能说出「填空：Flutter Widget 入门术语速查中，表示的判断依据。
-- [ ] 跑通「Flutter Widget 入门」的最小示例，并记录一次失败输入的处理方式。
-- [ ] 把本课最容易混淆的两个概念写成一句话对照。
-
-| 复盘项 | 记录 |
-| --- | --- |
-| 已经能独立解释的考点 |  |
-| 仍然说不清的概念 |  |
-| 下一步验证动作 |  |
-
-## 复习与自测
-
-下面按正文顺序回顾「Flutter Widget 入门」的每一节；说不清的地方回到 代码实验：把示例跑成证据 补课。
-
-### 一句话入门
-
-自检：这一节的关键输入与输出分别是什么？
-
-### 最小示例
-
-```dart
-import 'package:flutter/material.dart';
-
-void main() {
-  runApp(
-    const MaterialApp(
-      home: Scaffold(
-        body: Center(child: Text('Hello Flutter')),
-      ),
-    ),
-  );
-}
-```
-
-自检：这一节与相邻主题的边界在哪里？
-
-### 预期输出
-
-```text
-屏幕中央显示一行文本 Hello Flutter
-```
-
-### 常见错误
-
-自检：把这一节讲给没学过的人，最需要强调哪一点？
-
-### 动手练习
-
-自检：如果去掉这一节里的一个前提，结论会怎样变化？
-
-## 术语速查
-
-把「Flutter Widget 入门」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
-
-| 术语 | 一句话说明 |
-| --- | --- |
-| `Widget` | Flutter 界面的基本单元，用不可变的配置描述界面的一部分。 |
-| `Widget 树` | Widget 按父子关系组成的树，框架沿树向下传约束、向上收尺寸。 |
-| `约束（Constraints）` | 父节点向下传递的尺寸范围，子节点只能在范围内决定自身大小。 |
-| `StatelessWidget` | 没有内部状态的 Widget，相同输入总是渲染出相同结果。 |
-| `StatefulWidget` | 带可变状态的 Widget，状态改变后用 setState 触发重建。 |
-| `Future` | Dart 使用 Future 表示一次异步结果，Stream 表示连续事件序列 |
-
-## 考点精讲
-
-### 考点 1：概念判断·Flutter Widget 入门
-
-- **题目**：Flutter 中 build 方法的核心职责是什么？
-- **判断依据**：在「Flutter Widget 入门」里，根据当前状态描述这一帧要显示的 Widget 结构。build 是 Widget 与框架之间的约定：它读取当前不可变配置和 State，返回一棵描述界面的 Widget 树。在「Flutter Widget 入门」里判断这道题，要把Flutter Widget 入门、移动开发、入门练习的条件、过程与失败路径逐项对齐，换成“Flutter 中 build 方法”这个场景，只有满足前提的结论才成立。
-
-### 考点 2：代码补全·Flutter Widget 入门
-
-- **题目**：阅读「Flutter Widget 入门」正文里的这段代码，下面哪一项判断是正确的？
-- **判断依据**：在「Flutter Widget 入门」里，题干的正确项是这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行，在「Flutter Widget 入门」里封装边界决定Flutter Widget 入门从哪一步开始生效。这段代码出自「Flutter Widget 入门」的正文示例，围绕Flutter Widget 入门、移动开发、入门练习展开；把输入或边界换成空值、极值或失败情况后，结论要以「Flutter Widget 入门」的实际运行结果为准。
-
-### 考点 3：概念判断·Flutter Widget 入门
-
-- **题目**：StatelessWidget 与 StatefulWidget 最本质的差别是？
-- **判断依据**：在「Flutter Widget 入门」里，StatefulWidget 通过 State 保存可变状态并触发重建。两者都是不可变配置，区别在于 StatefulWidget 会创建一个可长期存在的 State 对象，调用 setState 后框架安排重建，从而把「状态变化」映射成「界面更新」。
-
-### 考点 4：概念判断·Flutter Widget 入门
-
-- **题目**：运行本课最小示例后，屏幕上会看到什么？
-- **判断依据**：在「Flutter Widget 入门」里，结论应落在「屏幕中央显示一行文本 Hello Flutter」。示例用 MaterialApp 提供应用骨架，Scaffold 提供页面容器，Center 让子节点在剩余空间里居中，Text 负责渲染字符串。在「Flutter Widget 入门」里，这道题要求区分概念与边界，「屏幕中央显示一行文本 Hello Flutter」只有在题干给出的前提下才成立，而「左上角显示一行文本 Hello Flutter」、「依次显示文本、按钮和输入框三个组件」缺少同一组条件。
-
-### 考点 5：填空·____
-
-- **题目**：填空：在「Flutter Widget 入门」的术语速查里，「Flutter 使用 Dart 语言和自带渲染引擎，UI 由不可变 Widget 树描述。`____` 方法根据当前状态返回 Widget 配置，框架比较新旧树并更新必要的渲染对象。Widget 很轻量，频繁重建本身不是问题，真正昂贵的是」描述的是哪个术语？
-- **判断依据**：在「Flutter Widget 入门」里，build。回到「Flutter Widget 入门」的正文示例，用“填空”走一遍Flutter Widget 入门、移动开发、入门练习的完整流程，能复现的结论才可以保留。回到正文示例，用“在Flutter”走一遍Flutter Widget 入门、移动开发、入门练习的完整流程，能复现的结论才可以保留。
-
-### 考点 6：多选辨析·Flutter Widget 入门
-
-- **题目**：关于「Flutter Widget 入门」，下列哪些说法是正确的？（多选）
-- **判断依据**：在「Flutter Widget 入门」里，题干的正确项是根据当前状态描述这一帧要显示的 Widget 结构。在「Flutter Widget 入门」里，main 是程序入口，runApp 把根 Widget 挂载到引擎。“Flutter”与「Flutter Widget 入门」的术语表相呼应，只有符合Flutter Widget 入门、移动开发、入门练习约束的“根据当前状态描述这一帧要显示的 Widg”才是正文支持的结论。
-
-## English Overview
-
-**Title:** Flutter Widget Basics
-
-**Summary:** Understand widgets, build and app structure.
-
-**Category:** Mobile Development
-**Level:** 入门
-**Key terms:** Flutter Widget 入门, 移动开发, 入门练习
-
-## 内容元数据
-
-- 内容版本：v2.0
-- 最后更新：2026-10-06
-- 学习阶段：入门
-- 适用环境：Flutter 3.x / Dart 3.x；本课聚焦 Flutter Widget 入门。
-- 内容来源：内置结构化课程与工程实践整理
-- 相关主题：Flutter Widget 入门、移动开发、入门练习
-- 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
-
-## 参考资料与复核
-
-- 最后复核：2026-10-04
-- 下次复核：2027-08-10
-- 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
-
-| 参考资料 | 本课用途 |
-| --- | --- |
-| [Flutter UI 文档](https://docs.flutter.dev/ui) | Widget、布局与渲染 |
-| [Android 发布指南](https://docs.flutter.dev/deployment/android) | 签名、构建与发布 |
-| [Dart 异步编程](https://dart.dev/libraries/async/async-await) | Future、Stream 与事件循环 |
-
-> 「Flutter Widget 入门」的链接用于离线阅读后的延伸核对；App 不会自动联网。
-
-## 复习与迁移
-
-复习目标：把「Flutter Widget 入门」的判断标准放回可复现的例子里。先自己作答，再对照依据；如果结论正确但理由不完整，回到正文补足前提。
-
-### 概念复述
-
-- 用一句话说明「Flutter Widget 入门」解决什么问题：理解 Widget、build 和最小应用结构。
-- 写出Flutter Widget 入门、移动开发、入门练习之间的关系，并各举一个例子。
-- 说出本课最容易混淆的两个概念，以及区分它们的判据。
-
-### 正文逐节复核
-
-- **实践任务**：本节围绕Flutter Widget 入门安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
-
-### 测验回顾
-
-1. Flutter 中 build 方法的核心职责是什么？
-   - 依据：在「Flutter Widget 入门」里，根据当前状态描述这一帧要显示的 Widget 结构。build 是 Widget 与框架之间的约定：它读取当前不可变配置和 State，返回一棵描述界面的 Widget 树。在「Flutter Widget 入门」里判断这道题，要把Flutter Widget 入门、移动开发、入门练习的条件、过程与失败路径逐项对齐，换成“Flutter 中 build 方法”这个场景，只有满足前提的结论才成立。
-2. 阅读「Flutter Widget 入门」正文里的这段代码，下面哪一项判断是正确的？
-   - 依据：在「Flutter Widget 入门」里，题干的正确项是这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行，在「Flutter Widget 入门」里封装边界决定Flutter Widget 入门从哪一步开始生效。这段代码出自「Flutter Widget 入门」的正文示例，围绕Flutter Widget 入门、移动开发、入门练习展开；把输入或边界换成空值、极值或失败情况后，结论要以「Flutter Widget 入门」的实际运行结果为准。
-3. StatelessWidget 与 StatefulWidget 最本质的差别是？
-   - 依据：在「Flutter Widget 入门」里，StatefulWidget 通过 State 保存可变状态并触发重建。两者都是不可变配置，区别在于 StatefulWidget 会创建一个可长期存在的 State 对象，调用 setState 后框架安排重建，从而把「状态变化」映射成「界面更新」。
-4. 运行本课最小示例后，屏幕上会看到什么？
-   - 依据：在「Flutter Widget 入门」里，结论应落在「屏幕中央显示一行文本 Hello Flutter」。示例用 MaterialApp 提供应用骨架，Scaffold 提供页面容器，Center 让子节点在剩余空间里居中，Text 负责渲染字符串。在「Flutter Widget 入门」里，这道题要求区分概念与边界，「屏幕中央显示一行文本 Hello Flutter」只有在题干给出的前提下才成立，而「左上角显示一行文本 Hello Flutter」、「依次显示文本、按钮和输入框三个组件」缺少同一组条件。
-5. 填空：在「Flutter Widget 入门」的术语速查里，「Flutter 使用 Dart 语言和自带渲染引擎，UI 由不可变 Widget 树描述。`____` 方法根据当前状态返回 Widget 配置，框架比较新旧树并更新必要的渲染对象。Widget 很轻量，频繁重建本身不是问题，真正昂贵的是」描述的是哪个术语？
-   - 依据：在「Flutter Widget 入门」里，build。回到「Flutter Widget 入门」的正文示例，用“填空”走一遍Flutter Widget 入门、移动开发、入门练习的完整流程，能复现的结论才可以保留。回到正文示例，用“在Flutter”走一遍Flutter Widget 入门、移动开发、入门练习的完整流程，能复现的结论才可以保留。
-6. 关于「Flutter Widget 入门」，下列哪些说法是正确的？（多选）
-   - 依据：在「Flutter Widget 入门」里，题干的正确项是根据当前状态描述这一帧要显示的 Widget 结构。在「Flutter Widget 入门」里，main 是程序入口，runApp 把根 Widget 挂载到引擎。“Flutter”与「Flutter Widget 入门」的术语表相呼应，只有符合Flutter Widget 入门、移动开发、入门练习约束的“根据当前状态描述这一帧要显示的 Widg”才是正文支持的结论。
-
-### 迁移练习
-
-把「Flutter Widget 入门」的结论迁移到相邻主题，每次迁移都写清预测与证据：
-
-1. 换输入：用Flutter Widget 入门处理一组你自己的数据，对比教材示例的结果差异。
-2. 换失败条件：制造一个移动开发相关的错误，说明如何从错误信息定位根因。
-3. 换规模：把数据量或并发度提高一个数量级，说明「Flutter Widget 入门」的结论是否仍成立。
-
-## 工程化精练：决策、失败与验证
+**教材衔接：工程化精练：决策、失败与验证**
 
 这一章把「Flutter Widget 入门」从“看懂”推进到“能判断、能验证、能排错”。所有判断都围绕Flutter Widget 入门、移动开发与入门练习展开，并与前文的示例、测验和失败现场互相对照。
 
@@ -483,3 +396,265 @@ void main() {
 
 最后留一个自检问题：如果只能保留三条笔记，你会写下哪三句？把答案限定为「Flutter Widget 入门」中的可验证结论，并给每条结论配一个反例。这三句加上对应反例，就是本课最值得带入后续课程的复习材料。
 
+## 与其他知识点的关系
+
+| 关系 | 课程 | 为什么 |
+| --- | --- | --- |
+| 关联 | 《Flutter 布局入门》 | 用于横向比较或把本课结论迁移到相邻主题。 |
+| 后续顺序 | 《Flutter 基础与 Widget 树》 | 同分类中安排在本课之后，会继续使用本课术语。 |
+
+把「Flutter Widget 入门」放回知识体系时，不只要记住“前面学过什么”，还要说明两个主题在输入、机制、资源边界和失败模式上的差异。这样才能把单课知识迁移到项目、排障和后续课程。
+
+**教材衔接：复习与迁移**
+
+复习目标：把「Flutter Widget 入门」的判断标准放回可复现的例子里。先自己作答，再对照依据；如果结论正确但理由不完整，回到正文补足前提。
+
+### 概念复述
+
+- 用一句话说明「Flutter Widget 入门」解决什么问题：理解 Widget、build 和最小应用结构。
+- 写出Flutter Widget 入门、移动开发、入门练习之间的关系，并各举一个例子。
+- 说出本课最容易混淆的两个概念，以及区分它们的判据。
+
+### 正文逐节复核
+
+- **实践任务**：本节围绕Flutter Widget 入门安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
+
+### 测验回顾
+
+1. Flutter 中 build 方法的核心职责是什么？
+   - 依据：在「Flutter Widget 入门」里，根据当前状态描述这一帧要显示的 Widget 结构。build 是 Widget 与框架之间的约定：它读取当前不可变配置和 State，返回一棵描述界面的 Widget 树。在「Flutter Widget 入门」里判断这道题，要把Flutter Widget 入门、移动开发、入门练习的条件、过程与失败路径逐项对齐，换成“Flutter 中 build 方法”这个场景，只有满足前提的结论才成立。
+2. 阅读「Flutter Widget 入门」正文里的这段代码，下面哪一项判断是正确的？
+   - 依据：在「Flutter Widget 入门」里，题干的正确项是这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行，在「Flutter Widget 入门」里封装边界决定Flutter Widget 入门从哪一步开始生效。这段代码出自「Flutter Widget 入门」的正文示例，围绕Flutter Widget 入门、移动开发、入门练习展开；把输入或边界换成空值、极值或失败情况后，结论要以「Flutter Widget 入门」的实际运行结果为准。
+3. StatelessWidget 与 StatefulWidget 最本质的差别是？
+   - 依据：在「Flutter Widget 入门」里，StatefulWidget 通过 State 保存可变状态并触发重建。两者都是不可变配置，区别在于 StatefulWidget 会创建一个可长期存在的 State 对象，调用 setState 后框架安排重建，从而把「状态变化」映射成「界面更新」。
+4. 运行本课最小示例后，屏幕上会看到什么？
+   - 依据：在「Flutter Widget 入门」里，结论应落在「屏幕中央显示一行文本 Hello Flutter」。示例用 MaterialApp 提供应用骨架，Scaffold 提供页面容器，Center 让子节点在剩余空间里居中，Text 负责渲染字符串。在「Flutter Widget 入门」里，这道题要求区分概念与边界，「屏幕中央显示一行文本 Hello Flutter」只有在题干给出的前提下才成立，而「左上角显示一行文本 Hello Flutter」、「依次显示文本、按钮和输入框三个组件」缺少同一组条件。
+5. 填空：在「Flutter Widget 入门」的术语速查里，「Flutter 使用 Dart 语言和自带渲染引擎，UI 由不可变 Widget 树描述。`____` 方法根据当前状态返回 Widget 配置，框架比较新旧树并更新必要的渲染对象。Widget 很轻量，频繁重建本身不是问题，真正昂贵的是」描述的是哪个术语？
+   - 依据：在「Flutter Widget 入门」里，build。回到「Flutter Widget 入门」的正文示例，用“填空”走一遍Flutter Widget 入门、移动开发、入门练习的完整流程，能复现的结论才可以保留。回到正文示例，用“在Flutter”走一遍Flutter Widget 入门、移动开发、入门练习的完整流程，能复现的结论才可以保留。
+6. 关于「Flutter Widget 入门」，下列哪些说法是正确的？（多选）
+   - 依据：在「Flutter Widget 入门」里，题干的正确项是根据当前状态描述这一帧要显示的 Widget 结构。在「Flutter Widget 入门」里，main 是程序入口，runApp 把根 Widget 挂载到引擎。“Flutter”与「Flutter Widget 入门」的术语表相呼应，只有符合Flutter Widget 入门、移动开发、入门练习约束的“根据当前状态描述这一帧要显示的 Widg”才是正文支持的结论。
+
+### 迁移练习
+
+把「Flutter Widget 入门」的结论迁移到相邻主题，每次迁移都写清预测与证据：
+
+1. 换输入：用Flutter Widget 入门处理一组你自己的数据，对比教材示例的结果差异。
+2. 换失败条件：制造一个移动开发相关的错误，说明如何从错误信息定位根因。
+3. 换规模：把数据量或并发度提高一个数量级，说明「Flutter Widget 入门」的结论是否仍成立。
+
+## 自测题与参考答案
+
+> 先独立作答《Flutter Widget 入门》的自测题，再对照答案与解析；每处判断都要能在本课正文或示例中找到依据。
+
+### 自测 1
+
+Flutter 中 build 方法的核心职责是什么？
+
+A. 根据当前状态描述这一帧要显示的 Widget 结构
+B. 直接调用底层图形接口把像素画到屏幕上
+C. 负责在后台线程里下载并缓存网络图片
+D. 把 Dart 代码编译成各平台的原生机器码
+
+**参考答案**：根据当前状态描述这一帧要显示的 Widget 结构
+
+**解析**：在「Flutter Widget 入门」里，根据当前状态描述这一帧要显示的 Widget 结构。build 是 Widget 与框架之间的约定：它读取当前不可变配置和 State，返回一棵描述界面的 Widget 树。在「Flutter Widget 入门」里判断这道题，要把Flutter Widget 入门、移动开发、入门练习的条件、过程与失败路径逐项对齐，换成“Flutter 中 build 方法”这个场景，只有满足前提的结论才成立。
+
+### 自测 2
+
+阅读「Flutter Widget 入门」正文里的这段代码，下面哪一项判断是正确的？
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(
+    const MaterialApp(
+      home: Scaffold(
+        body: Center(child: Text('Hello Flutter')),
+      ),
+    ),
+  );
+}
+```
+
+A. 这段代码只做静态声明，没有循环、分支或可观察输出。
+B. 这段代码包含循环结构，同一段逻辑会被重复执行。
+C. 这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。
+D. 这段代码会产生可观察的输出，运行后能看到结果。
+
+**参考答案**：这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行。
+
+**解析**：在「Flutter Widget 入门」里，题干的正确项是这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行，在「Flutter Widget 入门」里封装边界决定Flutter Widget 入门从哪一步开始生效。这段代码出自「Flutter Widget 入门」的正文示例，围绕Flutter Widget 入门、移动开发、入门练习展开；把输入或边界换成空值、极值或失败情况后，结论要以「Flutter Widget 入门」的实际运行结果为准。
+
+### 自测 3
+
+填空：在「Flutter Widget 入门」的术语速查里，「Flutter 使用 Dart 语言和自带渲染引擎，UI 由不可变 Widget 树描述。`____` 方法根据当前状态返回 Widget 配置，框架比较新旧树并更新必要的渲染对象。Widget 很轻量，频繁重建本身不是问题，真正昂贵的是」描述的是哪个术语？
+
+**参考答案**：build
+
+**解析**：在「Flutter Widget 入门」里，build。回到「Flutter Widget 入门」的正文示例，用“填空”走一遍Flutter Widget 入门、移动开发、入门练习的完整流程，能复现的结论才可以保留。回到正文示例，用“在Flutter”走一遍Flutter Widget 入门、移动开发、入门练习的完整流程，能复现的结论才可以保留。
+
+**教材衔接：动手练习**
+
+1. 原样运行最小示例，保存命令和输出。
+2. 把数字 2 改成 10，预测并验证新结果。
+3. 制造一个错误输入，写出错误信息和修复方法。
+
+**教材衔接：可运行练习**
+
+本节围绕Flutter Widget 入门安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
+
+### 任务 1：用自己的话画出结构
+
+不看书，用一张图说清「Flutter Widget 入门」的结构，画完再对照骨架：
+
+- 主干：Flutter Widget 入门 的定义 → 最小示例 → 预期输出 → 常见错误
+- 连接线：在每条边上标出输入、输出与失败路径。
+- 自检：能否用一句话说明Flutter Widget 入门与移动开发的关系？
+
+### 任务 2：做一次对比实验
+
+**验收标准**：对照表两列都要有证据（命令、输出或数据），并注明Flutter Widget 入门与移动开发哪一个才是决定性变量。
+
+### 任务 3：迁移到自己的场景
+
+**验收标准**：结论要能追溯到「代码实验：把示例跑成证据」的具体段落，并说明它和 移动开发 的边界。
+
+**教材衔接：本课复习清单**
+
+离开本课前，逐项确认：
+
+- [ ] 不看解析，能说出「Flutter 中 build() 方法的核心职责是什么？」的判断依据。
+- [ ] 不看解析，能说出「在最小 Flutter 应用里，main() 与 runApp() 的分工是？」的判断依据。
+- [ ] 不看解析，能说出「运行本课最小示例后，屏幕上会看到什么？」的判断依据。
+- [ ] 不看解析，能说出「填空：Flutter Widget 入门术语速查中，表示的判断依据。
+- [ ] 跑通「Flutter Widget 入门」的最小示例，并记录一次失败输入的处理方式。
+- [ ] 把本课最容易混淆的两个概念写成一句话对照。
+
+| 复盘项 | 记录 |
+| --- | --- |
+| 已经能独立解释的考点 |  |
+| 仍然说不清的概念 |  |
+| 下一步验证动作 |  |
+
+**教材衔接：复习与自测**
+
+下面按正文顺序回顾「Flutter Widget 入门」的每一节；说不清的地方回到 代码实验：把示例跑成证据 补课。
+
+### 一句话入门
+
+自检：这一节的关键输入与输出分别是什么？
+
+### 最小示例
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(
+    const MaterialApp(
+      home: Scaffold(
+        body: Center(child: Text('Hello Flutter')),
+      ),
+    ),
+  );
+}
+```
+
+自检：这一节与相邻主题的边界在哪里？
+
+### 预期输出
+
+```text
+屏幕中央显示一行文本 Hello Flutter
+```
+
+### 常见错误
+
+自检：把这一节讲给没学过的人，最需要强调哪一点？
+
+### 动手练习
+
+自检：如果去掉这一节里的一个前提，结论会怎样变化？
+
+---
+
+## 术语速查
+
+把「Flutter Widget 入门」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| `Widget` | Flutter 界面的基本单元，用不可变的配置描述界面的一部分。 |
+| `Widget 树` | Widget 按父子关系组成的树，框架沿树向下传约束、向上收尺寸。 |
+| `约束（Constraints）` | 父节点向下传递的尺寸范围，子节点只能在范围内决定自身大小。 |
+| `StatelessWidget` | 没有内部状态的 Widget，相同输入总是渲染出相同结果。 |
+| `StatefulWidget` | 带可变状态的 Widget，状态改变后用 setState 触发重建。 |
+| `Future` | Dart 使用 Future 表示一次异步结果，Stream 表示连续事件序列 |
+
+## 考点精讲
+
+### 考点 1：概念判断·Flutter Widget 入门
+
+- **题目**：Flutter 中 build 方法的核心职责是什么？
+- **判断依据**：在「Flutter Widget 入门」里，根据当前状态描述这一帧要显示的 Widget 结构。build 是 Widget 与框架之间的约定：它读取当前不可变配置和 State，返回一棵描述界面的 Widget 树。在「Flutter Widget 入门」里判断这道题，要把Flutter Widget 入门、移动开发、入门练习的条件、过程与失败路径逐项对齐，换成“Flutter 中 build 方法”这个场景，只有满足前提的结论才成立。
+
+### 考点 2：代码补全·Flutter Widget 入门
+
+- **题目**：阅读「Flutter Widget 入门」正文里的这段代码，下面哪一项判断是正确的？
+- **判断依据**：在「Flutter Widget 入门」里，题干的正确项是这段代码把主要逻辑封装在函数或方法里，需要被调用才会执行，在「Flutter Widget 入门」里封装边界决定Flutter Widget 入门从哪一步开始生效。这段代码出自「Flutter Widget 入门」的正文示例，围绕Flutter Widget 入门、移动开发、入门练习展开；把输入或边界换成空值、极值或失败情况后，结论要以「Flutter Widget 入门」的实际运行结果为准。
+
+### 考点 3：概念判断·Flutter Widget 入门
+
+- **题目**：StatelessWidget 与 StatefulWidget 最本质的差别是？
+- **判断依据**：在「Flutter Widget 入门」里，StatefulWidget 通过 State 保存可变状态并触发重建。两者都是不可变配置，区别在于 StatefulWidget 会创建一个可长期存在的 State 对象，调用 setState 后框架安排重建，从而把「状态变化」映射成「界面更新」。
+
+### 考点 4：概念判断·Flutter Widget 入门
+
+- **题目**：运行本课最小示例后，屏幕上会看到什么？
+- **判断依据**：在「Flutter Widget 入门」里，结论应落在「屏幕中央显示一行文本 Hello Flutter」。示例用 MaterialApp 提供应用骨架，Scaffold 提供页面容器，Center 让子节点在剩余空间里居中，Text 负责渲染字符串。在「Flutter Widget 入门」里，这道题要求区分概念与边界，「屏幕中央显示一行文本 Hello Flutter」只有在题干给出的前提下才成立，而「左上角显示一行文本 Hello Flutter」、「依次显示文本、按钮和输入框三个组件」缺少同一组条件。
+
+### 考点 5：填空·____
+
+- **题目**：填空：在「Flutter Widget 入门」的术语速查里，「Flutter 使用 Dart 语言和自带渲染引擎，UI 由不可变 Widget 树描述。`____` 方法根据当前状态返回 Widget 配置，框架比较新旧树并更新必要的渲染对象。Widget 很轻量，频繁重建本身不是问题，真正昂贵的是」描述的是哪个术语？
+- **判断依据**：在「Flutter Widget 入门」里，build。回到「Flutter Widget 入门」的正文示例，用“填空”走一遍Flutter Widget 入门、移动开发、入门练习的完整流程，能复现的结论才可以保留。回到正文示例，用“在Flutter”走一遍Flutter Widget 入门、移动开发、入门练习的完整流程，能复现的结论才可以保留。
+
+### 考点 6：多选辨析·Flutter Widget 入门
+
+- **题目**：关于「Flutter Widget 入门」，下列哪些说法是正确的？（多选）
+- **判断依据**：在「Flutter Widget 入门」里，题干的正确项是根据当前状态描述这一帧要显示的 Widget 结构。在「Flutter Widget 入门」里，main 是程序入口，runApp 把根 Widget 挂载到引擎。“Flutter”与「Flutter Widget 入门」的术语表相呼应，只有符合Flutter Widget 入门、移动开发、入门练习约束的“根据当前状态描述这一帧要显示的 Widg”才是正文支持的结论。
+
+## English Overview
+
+**Title:** Flutter Widget Basics
+
+**Summary:** Understand widgets, build and app structure.
+
+**Category:** Mobile Development
+**Level:** 入门
+**Key terms:** Flutter Widget 入门, 移动开发, 入门练习
+
+## 内容元数据
+
+- 内容版本：v2.0
+- 最后更新：2026-10-06
+- 学习阶段：入门
+- 适用环境：Flutter 3.x / Dart 3.x；本课聚焦 Flutter Widget 入门。
+- 内容来源：内置结构化课程与工程实践整理
+- 相关主题：Flutter Widget 入门、移动开发、入门练习
+- 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
+
+## 参考资料与复核
+
+- 最后复核：2026-10-04
+- 下次复核：2027-08-10
+- 复核范围：版本兼容、API 行为、安全建议与工程实践
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
+
+| 参考资料 | 本课用途 |
+| --- | --- |
+| [Flutter UI 文档](https://docs.flutter.dev/ui) | Widget、布局与渲染 |
+| [Android 发布指南](https://docs.flutter.dev/deployment/android) | 签名、构建与发布 |
+| [Dart 异步编程](https://dart.dev/libraries/async/async-await) | Future、Stream 与事件循环 |
+
+> 「Flutter Widget 入门」的链接用于离线阅读后的延伸核对；App 不会自动联网。

@@ -144,12 +144,17 @@ void main() {
     expect(checked, isNotEmpty, reason: '教程中应至少引用一张本地配图');
   });
 
-  test('每篇教程都有统一学习支架且正文不少于 3000 字符', () async {
+  test('每篇教程都有九段式教材结构且正文不少于 3000 字符', () async {
     const sections = <String>[
-      '## 学习目标',
-      '## 前置知识',
-      '## 动手练习',
-      '## 本课小结',
+      '## 本节知识框架',
+      '## 核心概念定义',
+      '## 原理与运行机制',
+      '## 典型应用场景',
+      '## 代码/协议/SQL 示例',
+      '## 时间/空间复杂度或性能分析',
+      '## 常见误区与易错点',
+      '## 与其他知识点的关系',
+      '## 自测题与参考答案',
       '内容更新时间：2026-10-06',
     ];
 
@@ -172,22 +177,22 @@ void main() {
     }
   });
 
-  test('P1/P2 结构统一：规范章节、术语表与复核标记全部达标', () async {
+  test('教材结构统一：九段式核心章节、附录、术语表与复核标记全部达标', () async {
     const canonicalSections = <String>[
-      '学习目标',
-      '前置知识',
-      '动手练习',
+      '本节知识框架',
+      '核心概念定义',
+      '原理与运行机制',
+      '典型应用场景',
+      '代码/协议/SQL 示例',
+      '时间/空间复杂度或性能分析',
+      '常见误区与易错点',
+      '与其他知识点的关系',
+      '自测题与参考答案',
       '考点精讲',
-      '故障现场',
-      '本课小结',
-      '参考资料与复核',
-      'English Overview',
-      '内容元数据',
-      '本课复习清单',
       '术语速查',
-      '可运行练习',
-      '常见错误与排查',
-      '复习与自测',
+      '参考资料与复核',
+      '内容元数据',
+      'English Overview',
     ];
     // 已被规范名取代的旧标题：再次出现说明退回了旧命名。
     const legacySections = <String>[
@@ -260,9 +265,9 @@ void main() {
         final checklistItems = RegExp(
           r'^- \[ \] ',
           multiLine: true,
-        ).allMatches(sectionBody(checked, '本课复习清单')).length;
+        ).allMatches(checked).length;
         if (checklistItems < 3) {
-          thin.add('${lesson.id}:本课复习清单($checklistItems)');
+          thin.add('${lesson.id}:复习清单($checklistItems)');
         }
         final glossary = sectionBody(checked, '术语速查');
         final termRows = glossary
@@ -611,7 +616,7 @@ void main() {
             lesson.title.zh.contains('项目')) {
           expect(
             markdown,
-            contains('## 验证命令与预期输出'),
+            contains('验证命令与预期输出'),
             reason: '${lesson.id} 缺少验证命令与预期输出',
           );
         }
@@ -723,7 +728,7 @@ void main() {
         if (isProject) {
           expect(
             markdown,
-            contains('## 项目专属规格'),
+            contains('项目专属规格'),
             reason: '${lesson.id} 缺少项目专属规格',
           );
         }
@@ -857,7 +862,7 @@ void main() {
             lesson.title.zh.contains('项目');
         if (isProject) {
           projectCount++;
-          if (markdown.contains('## 项目交付物')) projectDeliveries++;
+          if (markdown.contains('项目交付物')) projectDeliveries++;
         }
       }
     }
@@ -948,7 +953,7 @@ void main() {
             lesson.title.zh.contains('项目');
         if (isProject) {
           projects++;
-          if (markdown.contains('## 项目交付物')) projectDeliveries++;
+          if (markdown.contains('项目交付物')) projectDeliveries++;
         }
         expect(
           markdown,

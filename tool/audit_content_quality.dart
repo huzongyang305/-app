@@ -33,6 +33,15 @@ const Set<String> languageCategories = <String>{
 };
 
 const List<String> requiredSections = <String>[
+  '## 本节知识框架',
+  '## 核心概念定义',
+  '## 原理与运行机制',
+  '## 典型应用场景',
+  '## 代码/协议/SQL 示例',
+  '## 时间/空间复杂度或性能分析',
+  '## 常见误区与易错点',
+  '## 与其他知识点的关系',
+  '## 自测题与参考答案',
   '## 考点精讲',
   '## 参考资料与复核',
   '## English Overview',
@@ -154,7 +163,7 @@ void main(List<String> args) {
       }
     }
     if (lesson.imageCount > 0) lessonsWithImage++;
-    if (lesson.markdown.contains('## 动手练习')) {
+    if (lesson.markdown.contains('**课程内置实验入口**')) {
       lessonsWithLab++;
     }
     issues.addAll(_auditQuiz(lesson, typeHistogram));

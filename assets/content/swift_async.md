@@ -1,25 +1,89 @@
 # Swift 并发与 async/await
 
-> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：35 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：45 分钟
 
 ![Swift 并发模型](images/diagram_swift_async.webp)
 
 ![Swift 并发与 async/await](images/lesson_swift_async.webp)
 
-## 学习目标
+## 本节知识框架
+
+**课程定位**：所属分类为「Swift」，课程主题为「Swift 并发与 async/await」，学习阶段为「高级」，建议用时 45 分钟。
+
+**本课要解决的主问题**：理解 async/await、Task、Actor、取消和 Sendable。
+
+| 学习层次 | 要回答的问题 | 完成判据 |
+| --- | --- | --- |
+| 概念层 | 「Swift 并发与 async/await」有哪些必须区分的对象与术语？ | 能用自己的话定义核心术语，并各举一个正例和一个反例。 |
+| 机制层 | 这些对象按什么顺序发生作用，输入如何变成输出？ | 能画出或写出机制步骤，并说明每一步的失败条件。 |
+| 应用层 | 什么场景适合使用「Swift 并发与 async/await」，什么场景不适合？ | 能给出一个真实场景、一个最小示例和一个边界案例。 |
+| 性能层 | 时间、空间、吞吐或延迟受哪些量影响？ | 能说出复杂度或性能瓶颈的证据来源；没有证据时明确写“材料未提供”。 |
+| 复习层 | 怎样确认自己不是只记住了结论？ | 能独立完成本课自测，并把错误定位到概念、机制、示例或边界。 |
+
+### 阅读路线
+
+1. 先读「核心概念定义」，建立「async」等对象的精确定义。
+2. 再读「原理与运行机制」，把定义串成可重复的过程。
+3. 用「代码/协议/SQL 示例」验证过程，并只改一个条件观察结果变化。
+4. 最后检查性能、易错点、知识关系与自测题，形成可复习的证据链。
+
+**前置知识**：《Swift 集合与泛型》
+
+**学习位置**：本课位于《Swift 集合与泛型》之后；如果前一课的自测不能通过，应先回补再继续。
+
+**后续衔接**：下一课《SwiftUI 与状态管理》会继续使用本课术语，学完后建议立即完成一次自测。
+
+**教材衔接：学习目标**
 
 - 能用自己的话解释：async/await 把异步代码写成顺序结构，Task 提供取消和优先级。
 - 能用自己的话解释：Actor 隔离可变状态，跨隔离边界传递的数据要满足 Sendable。
 - 能用自己的话解释：取消是协作式的，长任务要在关键点检查取消并释放资源。
 - 能把本课知识放回「Swift」，并完成练习与测验。
 
-## 前置知识
+**教材衔接：前置知识**
 
 - 具备本分类的前置知识，能跑通「Swift 并发与 async/await」的示例并解释输出。
 - 本课关键词：async、Actor、Task、Sendable。
 - 遇到不熟悉的术语先记录问题，完成练习后再回读。
 
-## 核心知识
+**教材衔接：本课小结**
+
+- 本课围绕 async、Actor、Task、Sendable 展开，复习时重点核对它们的输入、输出和失败路径。
+- 把还不确定的 fetchValue 行为写成一条可执行验证，再进入下一课。
+
+## 核心概念定义
+
+> 阅读约定：本课先给「Swift 并发与 async/await」相关术语的操作性定义与适用边界；正文里的口语化说法与定义冲突时，以定义和可复现示例为准。
+
+| 术语 | 操作性定义 | 本课中的边界 |
+| --- | --- | --- |
+| async | 标记异步函数或异步块，使内部可以使用 await 而不阻塞调用线程。 | 仅在「Swift 并发与 async/await」明确给出的输入、版本与资源条件下成立。 |
+| Actor | 把状态封装在独立执行单元中，通过消息异步通信的并发模型。 | 仅在「Swift 并发与 async/await」明确给出的输入、版本与资源条件下成立。 |
+| Task | Swift 并发中的异步任务单元，可等待结果、取消或组合并发工作。 | 仅在「Swift 并发与 async/await」明确给出的输入、版本与资源条件下成立。 |
+| Sendable | Swift 中标记类型可安全跨并发域传递的协议。 | 仅在「Swift 并发与 async/await」明确给出的输入、版本与资源条件下成立。 |
+
+### 定义如何使用
+
+在「Swift 并发与 async/await」中判断一个说法是否成立，先确认它使用的是哪个对象的定义，再检查输入规模、运行环境与失败路径。定义不是口号，而是后续推导、代码示例和自测题共享的约束。
+
+## 原理与运行机制
+
+### 机制总览
+
+1. **建立输入**：把「async」按本课定义整理成可观察、可重复的输入条件。
+2. **执行转换**：围绕「Actor」执行本课的核心步骤；每一步都记录中间状态，避免只看最终输出。
+3. **产生输出**：得到「Task」后，用正文示例或协议/SQL 结果核对输出是否符合预期。
+4. **改变一个条件**：只替换一个边界条件或环境参数，观察「Swift 并发与 async/await」的结论是否仍然成立。
+
+| 阶段 | 关注对象 | 失败时应检查 |
+| --- | --- | --- |
+| 输入 | async | 类型、范围、编码、版本或前置状态是否满足定义。 |
+| 处理 | Actor | 顺序、可见性、锁、路由、事务或调度规则是否被破坏。 |
+| 输出 | Task | 结果是否可复现，错误是否被正确传播而不是被吞掉。 |
+
+本课的机制结论要用「Swift 并发与 async/await」自己的示例验证。「Swift 并发与 async/await」没有给出某个数量级、吞吐或内存数据时，本课把该判断标为“材料未提供”，不从相邻主题外推。
+
+**教材衔接：核心知识**
 
 ### 1. async/await 把异步代码写成顺序结构，Task 提供取消和优先级。
 
@@ -40,13 +104,13 @@
 - 正文依据：能用自己的话解释：Actor 隔离可变状态，跨隔离边界传递的数据要满足 Sendable。
 - 落地检查：把「3. 取消是协作式的，长任务要在关键点检查取消并释放资源。」改写成一条可执行的核对项，逐条验证输入、超时与失败路径。
 
-## 关键流程
+**教材衔接：关键流程**
 
 ```text
 输入 → 校验 → 核心处理 → 验证 → 记录指标 → 失败恢复
 ```
 
-## 实践路径
+**教材衔接：实践路径**
 
 1. 用一句话复述本课要解决的问题。
 2. 跑通正文中的最小示例并记录基线。
@@ -54,31 +118,83 @@
 4. 补一个失败路径，记录错误、恢复和指标。
 5. 把结论写成可复现的笔记或测试。
 
-## 常见错误与排查
+**教材衔接：版本与时效**
 
-> 说明：本表由《Swift 并发与 async/await》的核心知识整理（2026-10-07），人工复核进度见 docs/content_review_batches.md。
+- 迁移成本集中在并发边界，先把 Actor 的共享状态标出来。
+- 升级前确认 async 的兼容范围，把不可回退的改动单独拆成一次提交。
+- fetchValue 的写法在最近几个版本有变化，升级前先跑一遍测试。
+- 官方发布说明：https://www.swift.org/blog/
 
-| 易错点 | 容易踩的做法 | 正确结论 |
+### 升级检查清单
+
+- 先固定当前版本，跑通全部示例与测验，再升级工具链。
+- 一次只改一个版本条件，把 async 相关的差异单独记成一条结论。
+- 回归范围锁定 fetchValue 的默认行为，并确认弃用警告是否出现在构建输出里。
+- 升级完成后更新本课「最后复核 / 下次复核」日期，并记录 async 的版本变化。
+
+**教材衔接：验证步骤**
+
+1. 记录运行环境、命令和真实输出。
+2. 修改一个输入，先写预测再运行。
+3. 制造一次错误输入，记录错误信息与修复方式。
+4. 把结论写回本课笔记或测试用例。
+
+## 典型应用场景
+
+| 场景 | 典型输入或前提 | 期望产物 |
 | --- | --- | --- |
-| 在主线程做耗时任务 | 界面卡顿甚至无响应 | 把耗时工作放进并发任务，回到主线程再更新界面 |
-| 不检查任务取消 | 页面退出后任务仍在运行 | 在关键点检查取消并向下传播 |
-| 共享状态缺少隔离 | 编译告警或运行期异常 | 用隔离标注与安全共享方式保护状态 |
+| 学习验证 | 使用本课最小示例和 async、Actor | 能复现正文结论，并解释每一步。 |
+| 工程落地 | 把「Swift 并发与 async/await」放入真实模块或服务边界 | 输出可观测、失败可定位、参数可配置。 |
+| 故障排查 | 只改一个版本、规模、输入或依赖条件 | 能区分概念错误、实现错误和环境差异。 |
 
-## 动手练习
+判断「Swift 并发与 async/await」的场景是否成立，标准是能否写出输入、处理、输出和失败路径；材料中没有出现的数据在本课标注为“材料未提供”，不用推测替代证据。
 
-1. 合上教程，用 3～5 句话解释Swift 并发与 async/await。
-2. 从正文选一个例子，改变一个条件并预测结果。
-3. 设计一个失败场景，写出止损与恢复步骤。
+**课程内置实验入口**：`sandbox:swift`，用于动手验证《Swift 并发与 async/await》的机制；实验结论不替代概念定义与复杂度分析。
 
-**验收标准**：留下输入、命令、输出、差异和下一步问题。
+## 代码/协议/SQL 示例
 
-## 本课小结
+### 最小可验证示例
 
-- 本课围绕 async、Actor、Task、Sendable 展开，复习时重点核对它们的输入、输出和失败路径。
-- 把还不确定的 fetchValue 行为写成一条可执行验证，再进入下一课。
+下面保留《Swift 并发与 async/await》原文中的最小示例。先预测《Swift 并发与 async/await》示例的输出，再按正文步骤运行或推演；示例依赖外部环境时，同时记录版本与输入。
 
+```text
+输入 → 校验 → 核心处理 → 验证 → 记录指标 → 失败恢复
+```
 
-## 语言专项实践：Swift 并发与 async/await
+**教材衔接：最小可运行示例**
+
+下面示例用于验证 async 的最小输入、处理和输出。先原样运行，再只修改一个值：
+
+```swift
+func fetchValue() async -> Int { 42 }
+
+@main
+struct App {
+    static func main() async {
+        print("answer=\(await fetchValue())")
+    }
+}
+```
+
+**教材衔接：预期输出**
+
+```text
+answer=42
+```
+
+## 时间/空间复杂度或性能分析
+
+**复杂度证据**：「Swift 并发与 async/await」的现有材料没有给出渐近时间或空间复杂度的明确结论，本课只做定性检查，不补写未经验证的 $O$ 记号。
+
+| 维度 | 本课关注点 | 判断依据 |
+| --- | --- | --- |
+| 时间/延迟 | 「Swift 并发与 async/await」的主要步骤是否会随输入规模、并发度或网络往返增长。 | 以正文复杂度、基准数据或可重复测量为准。 |
+| 空间/内存 | 中间状态、缓存、副本、连接或索引是否随规模增长。 | 记录峰值内存与数据副本，不只看最终结果。 |
+| 吞吐/资源 | 版本、调度、锁、IO、序列化或协议开销是否成为瓶颈。 | 固定环境做对照实验，改变一个变量。 |
+
+评估「Swift 并发与 async/await」时要区分“正确性成立”和“性能达标”两件事；材料没有给出基准时，本课只保留量级来源与测量方法，不写不可验证的绝对数字。
+
+**教材衔接：语言专项实践：Swift 并发与 async/await**
 
 ### 一、工具链
 
@@ -107,27 +223,27 @@
 - [ ] 日志不泄露密钥和个人信息。
 - [ ] 有升级、回滚和故障恢复说明。
 
-## 可运行练习
+## 常见误区与易错点
 
-本节围绕Swift 并发与 async/await安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
+> 复核《Swift 并发与 async/await》的易错点时，优先保留原文的错误表、故障现场与排错路径；每条修正都要能用本课示例复验。
 
-### 任务 1：用自己的话画出结构
+| 易错点 | 常见表现 | 正确做法 |
+| --- | --- | --- |
+| 只背结论 | 能复述「Swift 并发与 async/await」的定义，却说不清输入、输出与边界。 | 回到机制步骤，用最小示例逐一验证。 |
+| 混淆相邻概念 | 把本课对象与相邻主题的对象当成同一类。 | 先比较定义、资源归属、生命周期和失败模式。 |
+| 忽略版本与环境 | 在开发机通过后直接外推到生产环境。 | 固定版本、输入和资源条件，再记录可复现结果。 |
 
-不看书，用一张图说清「Swift 并发与 async/await」的结构，画完再对照骨架：
+**教材衔接：常见错误与排查**
 
-- 主干：核心知识 → 交付物 → 验收标准 → 复盘
-- 连接线：在每条边上标出输入、输出与失败路径。
-- 自检：能否用一句话说明async与Actor的关系？
+> 说明：本表由《Swift 并发与 async/await》的核心知识整理（2026-10-07），人工复核进度见 docs/content_review_batches.md。
 
-### 任务 2：做一次对比实验
+| 易错点 | 容易踩的做法 | 正确结论 |
+| --- | --- | --- |
+| 在主线程做耗时任务 | 界面卡顿甚至无响应 | 把耗时工作放进并发任务，回到主线程再更新界面 |
+| 不检查任务取消 | 页面退出后任务仍在运行 | 在关键点检查取消并向下传播 |
+| 共享状态缺少隔离 | 编译告警或运行期异常 | 用隔离标注与安全共享方式保护状态 |
 
-**验收标准**：对照表两列都要有证据（命令、输出或数据），并注明async与Actor哪一个才是决定性变量。
-
-### 任务 3：迁移到自己的场景
-
-**验收标准**：至少给出一个命令或数据样例，让读者能独立复现 Actor 的结论。
-
-## 故障现场
+**教材衔接：故障现场**
 
 ### 现场 1：在主线程做耗时任务
 
@@ -159,223 +275,7 @@
 
 **验证**：先在《Swift 并发与 async/await》中记录“共享状态缺少隔离”留下的失败证据，再执行“用隔离标注与安全共享方式保护状态”并重放；确认错误路径变为明确结果，且修复没有掩盖同类故障。
 
-## 版本与时效
-
-- 迁移成本集中在并发边界，先把 Actor 的共享状态标出来。
-- 升级前确认 async 的兼容范围，把不可回退的改动单独拆成一次提交。
-- fetchValue 的写法在最近几个版本有变化，升级前先跑一遍测试。
-- 官方发布说明：https://www.swift.org/blog/
-
-### 升级检查清单
-
-- 先固定当前版本，跑通全部示例与测验，再升级工具链。
-- 一次只改一个版本条件，把 async 相关的差异单独记成一条结论。
-- 回归范围锁定 fetchValue 的默认行为，并确认弃用警告是否出现在构建输出里。
-- 升级完成后更新本课「最后复核 / 下次复核」日期，并记录 async 的版本变化。
-
-## 本课复习清单
-
-
-离开本课前，逐项确认：
-
-- [ ] 不看解析，能说出「关于「async/await 把异步代码写成顺序结构，Task 提供取消和优先级。」，下列说法正确的是？」的判断依据。
-- [ ] 不看解析，能说出「围绕“Swift 并发与 async/await”中的 async、Actor、Task，下列哪两项是本课强调的实践判断？」的判断依据。
-- [ ] 不看解析，能说出「关于「取消是协作式的，长任务要在关键点检查取消并释放资源。」，下列说法正确的是？」的判断依据。
-- [ ] 至少运行一次《Swift 并发与 async/await》的示例，记录输入、输出和一个边界情况。
-- [ ] 把本课最容易混淆的两个概念写成一句话对照。
-
-| 复盘项 | 记录 |
-| --- | --- |
-| 已经能独立解释的考点 |  |
-| 仍然说不清的概念 |  |
-| 下一步验证动作 |  |
-
-## 术语速查
-
-把「Swift 并发与 async/await」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
-
-| 术语 | 一句话说明 |
-| --- | --- |
-| `async` | 标记异步函数或异步块，使内部可以使用 await 而不阻塞调用线程。 |
-| `Actor` | 把状态封装在独立执行单元中，通过消息异步通信的并发模型。 |
-| `Task` | Swift 并发中的异步任务单元，可等待结果、取消或组合并发工作。 |
-| `Sendable` | Swift 中标记类型可安全跨并发域传递的协议。 |
-
-## 考点精讲
-
-### 考点 1：概念判断·async
-
-- **题目**：关于「async/await 把异步代码写成顺序结构，Task 提供取消和优先级。」，下列说法正确的是？
-- **判断依据**：在「Swift 并发与 async/await」里，async/await 把异步代码写成顺序结构，Task 提供取消和优先级。回到「Swift 并发与 async/await」的正文示例，用“关于async/await 把异步代”走一遍async、Actor、Task的完整流程，能复现的结论才可以保留。
-
-### 考点 2：多选辨析·async
-
-- **题目**：围绕“Swift 并发与 async/await”中的 async、Actor、Task，下列哪两项是本课强调的实践判断？
-- **判断依据**：本课把Swift 并发与 async/await拆成概念、示例与故障现场三部分，因此判断 async 时必须同时交代输入、输出和失败路径，这使“学习 async 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在Swift 并发与 async/await里，判断 Actor 时要固定版本与边界输入，所以“验证 Actor 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
-
-### 考点 3：概念判断·async
-
-- **题目**：关于「取消是协作式的，长任务要在关键点检查取消并释放资源。」，下列说法正确的是？
-- **判断依据**：在「Swift 并发与 async/await」里，取消是协作式的，长任务要在关键点检查取消并释放资源。在「Swift 并发与 async/await」里判断这道题，要把async、Actor、Task的条件、过程与失败路径逐项对齐，换成“关于取消是协作式的”这个场景，只有满足前提的结论才成立。
-
-### 考点 4：概念判断·async
-
-- **题目**：「Swift 并发与 async/await」的核心学习目标是什么？
-- **判断依据**：结论应落在理解 async/await。在「Swift 并发与 async/await」里，这道题要求区分概念与边界，理解 async/await，Task，Actor只有在题干给出的前提下才成立，而掌握 let/var、可选绑定、值类型和错误处理。在「Swift 并发与 async/await」里，理解参数标签、闭包捕获、逃逸闭包和协议扩展。
-
-### 考点 5：填空·async
-
-- **题目**：补全代码：「Swift 并发与 async/await」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `static func ____ async {`
-- **判断依据**：把“main”代回「Swift 并发与 async/await」里“Swift 并发与 async/await示例中”的例子核对，条件一旦改变，结论就要用async、Actor、Task重新推导。「Swift 并发与 async/await」要求先交代async、Actor、Task的前提再下结论，所以“main”只在题干“Swift”给定的条件下成立。
-
-### 考点 6：排错·async
-
-- **题目**：阅读「Swift 并发与 async/await」的代码片段，下面哪项判断是正确的？
-- **判断依据**：在「Swift 并发与 async/await」里，async/await 把异步代码写成顺序结构，Task 提供取消和优先级。回到「Swift 并发与 async/await」的正文示例，用“阅读Swift 并发与 async/”走一遍async、Actor、Task的完整流程，能复现的结论才可以保留。
-
-## English Overview
-
-**Title:** Swift Concurrency and async/await
-
-**Summary:** Learn async/await, Task, Actor, cancellation and Sendable.
-
-**Category:** Swift
-**Level:** 高级
-**Key terms:** async, Actor, Task, Sendable
-
-## 内容元数据
-
-- 内容版本：v2.0
-- 最后更新：2026-10-06
-- 学习阶段：高级
-- 适用环境：Swift 6 / Xcode 16+；本课聚焦 async。
-- 内容来源：内置结构化课程与工程实践整理
-- 相关主题：async、Actor、Task、Sendable
-- 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
-
-## 最小可运行示例
-
-下面示例用于验证 async 的最小输入、处理和输出。先原样运行，再只修改一个值：
-
-```swift
-func fetchValue() async -> Int { 42 }
-
-@main
-struct App {
-    static func main() async {
-        print("answer=\(await fetchValue())")
-    }
-}
-```
-
-## 预期输出
-
-```text
-answer=42
-```
-
-## 验证步骤
-
-1. 记录运行环境、命令和真实输出。
-2. 修改一个输入，先写预测再运行。
-3. 制造一次错误输入，记录错误信息与修复方式。
-4. 把结论写回本课笔记或测试用例。
-
-## Full English Study Guide
-
-### Overview
-
-**Swift Concurrency and async/await** focuses on Learn async/await, Task, Actor, cancellation and Sendable.
-
-### Learning Outcomes
-
-- Explain what **Swift Concurrency and async/await** solves and when it should be used.
-
-### Glossary
-
-- Topic: **Swift Concurrency and async/await**
-- Related terms: async, Actor, Task, Sendable
-
-## Bilingual Section Outline
-
-| 中文小节 | English section |
-| --- | --- |
-| 学习目标 | Learning Objectives |
-| 前置知识 | Pre-knowledge |
-| 核心知识 | Core knowledge |
-| 关键流程 | Key Processes |
-| 实践路径 | Practice Path |
-| 常见误区 | Common Misconceptions |
-| 动手练习 | Hands on exercise: |
-| 本课小结 | Lesson Summary |
-| 语言专项实践：Swift 并发与 async/await | Language-specific practices: Swift concurrency with async/await |
-| 最小可运行示例 | Minimal Runnable Examples |
-
-## 参考资料与复核
-
-- 最后复核：2026-10-04
-- 下次复核：2026-12-17
-- 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
-
-| 参考资料 | 本课用途 |
-| --- | --- |
-| [Swift 并发](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/) | async/await 与 actor |
-| [Apple 人机界面指南](https://developer.apple.com/design/human-interface-guidelines/) | iOS 设计规范与可访问性 |
-| [Swift 官方文档](https://www.swift.org/documentation/) | 工具链、包管理与语言演进 |
-
-> 「Swift 并发与 async/await」的链接用于离线阅读后的延伸核对；App 不会自动联网。
-
-## 复习与迁移
-
-复习目标：把「Swift 并发与 async/await」的判断标准放回可复现的例子里。先自己作答，再对照依据；如果结论正确但理由不完整，回到正文补足前提。
-
-### 概念复述
-
-- 用一句话说明「Swift 并发与 async/await」解决什么问题：理解 async/await、Task、Actor、取消和 Sendable。
-- 写出async、Actor、Task之间的关系，并各举一个例子。
-- 说出本课最容易混淆的两个概念，以及区分它们的判据。
-
-### 正文逐节复核
-
-- **语言专项实践：Swift 并发与 async/await**：围绕「async、Actor、Task、Sendable」说明变量生命周期、资源释放、并发模型和错误传播。
-- **实践任务**：本节围绕Swift 并发与 async/await安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
-
-### 测验回顾
-
-1. 关于「async/await 把异步代码写成顺序结构，Task 提供取消和优先级。」，下列说法正确的是？
-   - 依据：在「Swift 并发与 async/await」里，async/await 把异步代码写成顺序结构，Task 提供取消和优先级。回到「Swift 并发与 async/await」的正文示例，用“关于async/await 把异步代”走一遍async、Actor、Task的完整流程，能复现的结论才可以保留。
-2. 围绕“Swift 并发与 async/await”中的 async、Actor、Task，下列哪两项是本课强调的实践判断？
-   - 依据：本课把Swift 并发与 async/await拆成概念、示例与故障现场三部分，因此判断 async 时必须同时交代输入、输出和失败路径，这使“学习 async 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在Swift 并发与 async/await里，判断 Actor 时要固定版本与边界输入，所以“验证 Actor 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
-3. 关于「取消是协作式的，长任务要在关键点检查取消并释放资源。」，下列说法正确的是？
-   - 依据：在「Swift 并发与 async/await」里，取消是协作式的，长任务要在关键点检查取消并释放资源。在「Swift 并发与 async/await」里判断这道题，要把async、Actor、Task的条件、过程与失败路径逐项对齐，换成“关于取消是协作式的”这个场景，只有满足前提的结论才成立。
-4. 「Swift 并发与 async/await」的核心学习目标是什么？
-   - 依据：结论应落在理解 async/await。在「Swift 并发与 async/await」里，这道题要求区分概念与边界，理解 async/await，Task，Actor只有在题干给出的前提下才成立，而掌握 let/var、可选绑定、值类型和错误处理。在「Swift 并发与 async/await」里，理解参数标签、闭包捕获、逃逸闭包和协议扩展。
-5. 补全代码：「Swift 并发与 async/await」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
-
-`static func ____ async {`
-   - 依据：把“main”代回「Swift 并发与 async/await」里“Swift 并发与 async/await示例中”的例子核对，条件一旦改变，结论就要用async、Actor、Task重新推导。「Swift 并发与 async/await」要求先交代async、Actor、Task的前提再下结论，所以“main”只在题干“Swift”给定的条件下成立。
-1. 阅读「Swift 并发与 async/await」的代码片段，下面哪项判断是正确的？
-   - 依据：在「Swift 并发与 async/await」里，async/await 把异步代码写成顺序结构，Task 提供取消和优先级。回到「Swift 并发与 async/await」的正文示例，用“阅读Swift 并发与 async/”走一遍async、Actor、Task的完整流程，能复现的结论才可以保留。
-
-### 迁移练习
-
-把「Swift 并发与 async/await」的结论迁移到相邻主题，每次迁移都写清预测与证据：
-
-1. 换输入：用async处理一组你自己的数据，对比教材示例的结果差异。
-2. 换失败条件：制造一个Actor相关的错误，说明如何从错误信息定位根因。
-3. 换规模：把数据量或并发度提高一个数量级，说明「Swift 并发与 async/await」的结论是否仍成立。
-
-## 复习与自测
-
-- [ ] 能说清「核心知识」的结论，并说出它的适用边界。
-- [ ] 能用自己的话复述「2. Actor 隔离可变状态，跨隔离边界传递的数据要满足 Sendable。」，并各举一个正例和反例。
-- [ ] 能解释「3. 取消是协作式的，长任务要在关键点检查取消并释放资源。」里最容易混淆的两个概念。
-- [ ] 能不看正文写出「关键流程」的关键步骤。
-- [ ] 能用一句话说明「实践路径」解决什么问题。
-- [ ] 能把「语言专项实践：Swift 并发与 async/await」的判断标准套到一个新例子上。
-
-## 工程化精练：决策、失败与验证
+**教材衔接：工程化精练：决策、失败与验证**
 
 这一章把「Swift 并发与 async/await」从“看懂”推进到“能判断、能验证、能排错”。所有判断都围绕async、Actor与Task展开，并与前文的示例、测验和失败现场互相对照。
 
@@ -490,3 +390,258 @@ answer=42
 举例：async/await 把异步代码写成顺序结构，Task 提供取消和优先级。。把这个结论代回「Swift 并发与 async/await」的正文，找出它对应的输入、处理步骤与输出；再换掉其中一个条件，观察结论是否仍然成立。能完成这一步，才说明这条知识已经从“记忆”变成“可用的判断”。
 
 最后留一个自检问题：如果只能保留三条笔记，你会写下哪三句？把答案限定为「Swift 并发与 async/await」中的可验证结论，并给每条结论配一个反例。这三句加上对应反例，就是本课最值得带入后续课程的复习材料。
+
+## 与其他知识点的关系
+
+| 关系 | 课程 | 为什么 |
+| --- | --- | --- |
+| 先修 | 《Swift 集合与泛型》 | 本课会直接使用它的概念或操作前提。 |
+| 关联 | 《SwiftUI 与状态管理》 | 用于横向比较或把本课结论迁移到相邻主题。 |
+| 关联 | 《异步编程与异常处理》 | 用于横向比较或把本课结论迁移到相邻主题。 |
+| 前置顺序 | 《Swift 集合与泛型》 | 同分类中安排在本课之前，建议先完成其自测。 |
+| 后续顺序 | 《SwiftUI 与状态管理》 | 同分类中安排在本课之后，会继续使用本课术语。 |
+
+把「Swift 并发与 async/await」放回知识体系时，不只要记住“前面学过什么”，还要说明两个主题在输入、机制、资源边界和失败模式上的差异。这样才能把单课知识迁移到项目、排障和后续课程。
+
+**教材衔接：复习与迁移**
+
+复习目标：把「Swift 并发与 async/await」的判断标准放回可复现的例子里。先自己作答，再对照依据；如果结论正确但理由不完整，回到正文补足前提。
+
+### 概念复述
+
+- 用一句话说明「Swift 并发与 async/await」解决什么问题：理解 async/await、Task、Actor、取消和 Sendable。
+- 写出async、Actor、Task之间的关系，并各举一个例子。
+- 说出本课最容易混淆的两个概念，以及区分它们的判据。
+
+### 正文逐节复核
+
+- **语言专项实践：Swift 并发与 async/await**：围绕「async、Actor、Task、Sendable」说明变量生命周期、资源释放、并发模型和错误传播。
+- **实践任务**：本节围绕Swift 并发与 async/await安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
+
+### 测验回顾
+
+1. 关于「async/await 把异步代码写成顺序结构，Task 提供取消和优先级。」，下列说法正确的是？
+   - 依据：在「Swift 并发与 async/await」里，async/await 把异步代码写成顺序结构，Task 提供取消和优先级。回到「Swift 并发与 async/await」的正文示例，用“关于async/await 把异步代”走一遍async、Actor、Task的完整流程，能复现的结论才可以保留。
+2. 围绕“Swift 并发与 async/await”中的 async、Actor、Task，下列哪两项是本课强调的实践判断？
+   - 依据：本课把Swift 并发与 async/await拆成概念、示例与故障现场三部分，因此判断 async 时必须同时交代输入、输出和失败路径，这使“学习 async 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在Swift 并发与 async/await里，判断 Actor 时要固定版本与边界输入，所以“验证 Actor 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
+3. 关于「取消是协作式的，长任务要在关键点检查取消并释放资源。」，下列说法正确的是？
+   - 依据：在「Swift 并发与 async/await」里，取消是协作式的，长任务要在关键点检查取消并释放资源。在「Swift 并发与 async/await」里判断这道题，要把async、Actor、Task的条件、过程与失败路径逐项对齐，换成“关于取消是协作式的”这个场景，只有满足前提的结论才成立。
+4. 「Swift 并发与 async/await」的核心学习目标是什么？
+   - 依据：结论应落在理解 async/await。在「Swift 并发与 async/await」里，这道题要求区分概念与边界，理解 async/await，Task，Actor只有在题干给出的前提下才成立，而掌握 let/var、可选绑定、值类型和错误处理。在「Swift 并发与 async/await」里，理解参数标签、闭包捕获、逃逸闭包和协议扩展。
+5. 补全代码：「Swift 并发与 async/await」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+
+`static func ____ async {`
+   - 依据：把“main”代回「Swift 并发与 async/await」里“Swift 并发与 async/await示例中”的例子核对，条件一旦改变，结论就要用async、Actor、Task重新推导。「Swift 并发与 async/await」要求先交代async、Actor、Task的前提再下结论，所以“main”只在题干“Swift”给定的条件下成立。
+1. 阅读「Swift 并发与 async/await」的代码片段，下面哪项判断是正确的？
+   - 依据：在「Swift 并发与 async/await」里，async/await 把异步代码写成顺序结构，Task 提供取消和优先级。回到「Swift 并发与 async/await」的正文示例，用“阅读Swift 并发与 async/”走一遍async、Actor、Task的完整流程，能复现的结论才可以保留。
+
+### 迁移练习
+
+把「Swift 并发与 async/await」的结论迁移到相邻主题，每次迁移都写清预测与证据：
+
+1. 换输入：用async处理一组你自己的数据，对比教材示例的结果差异。
+2. 换失败条件：制造一个Actor相关的错误，说明如何从错误信息定位根因。
+3. 换规模：把数据量或并发度提高一个数量级，说明「Swift 并发与 async/await」的结论是否仍成立。
+
+## 自测题与参考答案
+
+> 先独立作答《Swift 并发与 async/await》的自测题，再对照答案与解析；每处判断都要能在本课正文或示例中找到依据。
+
+### 自测 1
+
+关于「async/await 把异步代码写成顺序结构，Task 提供取消和优先级。」，下列说法正确的是？
+
+A. async/await 把异步代码写成顺序结构，Task 提供取消和优先级。
+B. Optional 表示可能有值也可能为 nil，要用 if let、guard let 或模式匹配安全解包。
+C. 参数标签让调用点更可读，闭包捕获外部变量并延长其生命周期。
+D. 优先使用 struct 和协议组合表达可组合的值语义，需要共享身份时再用 class。
+
+**参考答案**：async/await 把异步代码写成顺序结构，Task 提供取消和优先级。
+
+**解析**：在「Swift 并发与 async/await」里，async/await 把异步代码写成顺序结构，Task 提供取消和优先级。回到「Swift 并发与 async/await」的正文示例，用“关于async/await 把异步代”走一遍async、Actor、Task的完整流程，能复现的结论才可以保留。
+
+### 自测 2
+
+围绕“Swift 并发与 async/await”中的 async、Actor、Task，下列哪两项是本课强调的实践判断？
+
+A. 验证 Actor 时要固定版本并覆盖边界输入，结论才可复现
+B. 把 Actor 的单次运行结果当成所有版本和规模都成立
+C. 学习 async 时要同时说明输入、输出和失败路径，不能只看正常流程
+D. 只要 async 的常规示例通过，就可以跳过边界与异常路径
+
+**参考答案**：验证 Actor 时要固定版本并覆盖边界输入，结论才可复现；学习 async 时要同时说明输入、输出和失败路径，不能只看正常流程
+
+**解析**：本课把Swift 并发与 async/await拆成概念、示例与故障现场三部分，因此判断 async 时必须同时交代输入、输出和失败路径，这使“学习 async 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在Swift 并发与 async/await里，判断 Actor 时要固定版本与边界输入，所以“验证 Actor 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
+
+### 自测 3
+
+补全代码：「Swift 并发与 async/await」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。
+
+`static func ____ async {`
+
+**参考答案**：main
+
+**解析**：把“main”代回「Swift 并发与 async/await」里“Swift 并发与 async/await示例中”的例子核对，条件一旦改变，结论就要用async、Actor、Task重新推导。「Swift 并发与 async/await」要求先交代async、Actor、Task的前提再下结论，所以“main”只在题干“Swift”给定的条件下成立。
+
+**教材衔接：动手练习**
+
+1. 合上教程，用 3～5 句话解释Swift 并发与 async/await。
+2. 从正文选一个例子，改变一个条件并预测结果。
+3. 设计一个失败场景，写出止损与恢复步骤。
+
+**验收标准**：留下输入、命令、输出、差异和下一步问题。
+
+**教材衔接：可运行练习**
+
+本节围绕Swift 并发与 async/await安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
+
+### 任务 1：用自己的话画出结构
+
+不看书，用一张图说清「Swift 并发与 async/await」的结构，画完再对照骨架：
+
+- 主干：核心知识 → 交付物 → 验收标准 → 复盘
+- 连接线：在每条边上标出输入、输出与失败路径。
+- 自检：能否用一句话说明async与Actor的关系？
+
+### 任务 2：做一次对比实验
+
+**验收标准**：对照表两列都要有证据（命令、输出或数据），并注明async与Actor哪一个才是决定性变量。
+
+### 任务 3：迁移到自己的场景
+
+**验收标准**：至少给出一个命令或数据样例，让读者能独立复现 Actor 的结论。
+
+**教材衔接：本课复习清单**
+
+离开本课前，逐项确认：
+
+- [ ] 不看解析，能说出「关于「async/await 把异步代码写成顺序结构，Task 提供取消和优先级。」，下列说法正确的是？」的判断依据。
+- [ ] 不看解析，能说出「围绕“Swift 并发与 async/await”中的 async、Actor、Task，下列哪两项是本课强调的实践判断？」的判断依据。
+- [ ] 不看解析，能说出「关于「取消是协作式的，长任务要在关键点检查取消并释放资源。」，下列说法正确的是？」的判断依据。
+- [ ] 至少运行一次《Swift 并发与 async/await》的示例，记录输入、输出和一个边界情况。
+- [ ] 把本课最容易混淆的两个概念写成一句话对照。
+
+| 复盘项 | 记录 |
+| --- | --- |
+| 已经能独立解释的考点 |  |
+| 仍然说不清的概念 |  |
+| 下一步验证动作 |  |
+
+**教材衔接：复习与自测**
+
+- [ ] 能说清「核心知识」的结论，并说出它的适用边界。
+- [ ] 能用自己的话复述「2. Actor 隔离可变状态，跨隔离边界传递的数据要满足 Sendable。」，并各举一个正例和反例。
+- [ ] 能解释「3. 取消是协作式的，长任务要在关键点检查取消并释放资源。」里最容易混淆的两个概念。
+- [ ] 能不看正文写出「关键流程」的关键步骤。
+- [ ] 能用一句话说明「实践路径」解决什么问题。
+- [ ] 能把「语言专项实践：Swift 并发与 async/await」的判断标准套到一个新例子上。
+
+---
+
+## 术语速查
+
+把「Swift 并发与 async/await」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| `async` | 标记异步函数或异步块，使内部可以使用 await 而不阻塞调用线程。 |
+| `Actor` | 把状态封装在独立执行单元中，通过消息异步通信的并发模型。 |
+| `Task` | Swift 并发中的异步任务单元，可等待结果、取消或组合并发工作。 |
+| `Sendable` | Swift 中标记类型可安全跨并发域传递的协议。 |
+
+## 考点精讲
+
+### 考点 1：概念判断·async
+
+- **题目**：关于「async/await 把异步代码写成顺序结构，Task 提供取消和优先级。」，下列说法正确的是？
+- **判断依据**：在「Swift 并发与 async/await」里，async/await 把异步代码写成顺序结构，Task 提供取消和优先级。回到「Swift 并发与 async/await」的正文示例，用“关于async/await 把异步代”走一遍async、Actor、Task的完整流程，能复现的结论才可以保留。
+
+### 考点 2：多选辨析·async
+
+- **题目**：围绕“Swift 并发与 async/await”中的 async、Actor、Task，下列哪两项是本课强调的实践判断？
+- **判断依据**：本课把Swift 并发与 async/await拆成概念、示例与故障现场三部分，因此判断 async 时必须同时交代输入、输出和失败路径，这使“学习 async 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在Swift 并发与 async/await里，判断 Actor 时要固定版本与边界输入，所以“验证 Actor 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
+
+### 考点 3：概念判断·async
+
+- **题目**：关于「取消是协作式的，长任务要在关键点检查取消并释放资源。」，下列说法正确的是？
+- **判断依据**：在「Swift 并发与 async/await」里，取消是协作式的，长任务要在关键点检查取消并释放资源。在「Swift 并发与 async/await」里判断这道题，要把async、Actor、Task的条件、过程与失败路径逐项对齐，换成“关于取消是协作式的”这个场景，只有满足前提的结论才成立。
+
+### 考点 4：概念判断·async
+
+- **题目**：「Swift 并发与 async/await」的核心学习目标是什么？
+- **判断依据**：结论应落在理解 async/await。在「Swift 并发与 async/await」里，这道题要求区分概念与边界，理解 async/await，Task，Actor只有在题干给出的前提下才成立，而掌握 let/var、可选绑定、值类型和错误处理。在「Swift 并发与 async/await」里，理解参数标签、闭包捕获、逃逸闭包和协议扩展。
+
+### 考点 5：填空·async
+
+- **题目**：补全代码：「Swift 并发与 async/await」示例中，下面这行代码缺少哪个关键字或函数名？请填入 ____。 `static func ____ async {`
+- **判断依据**：把“main”代回「Swift 并发与 async/await」里“Swift 并发与 async/await示例中”的例子核对，条件一旦改变，结论就要用async、Actor、Task重新推导。「Swift 并发与 async/await」要求先交代async、Actor、Task的前提再下结论，所以“main”只在题干“Swift”给定的条件下成立。
+
+### 考点 6：排错·async
+
+- **题目**：阅读「Swift 并发与 async/await」的代码片段，下面哪项判断是正确的？
+- **判断依据**：在「Swift 并发与 async/await」里，async/await 把异步代码写成顺序结构，Task 提供取消和优先级。回到「Swift 并发与 async/await」的正文示例，用“阅读Swift 并发与 async/”走一遍async、Actor、Task的完整流程，能复现的结论才可以保留。
+
+## English Overview
+
+**Title:** Swift Concurrency and async/await
+
+**Summary:** Learn async/await, Task, Actor, cancellation and Sendable.
+
+**Category:** Swift
+**Level:** 高级
+**Key terms:** async, Actor, Task, Sendable
+
+## 内容元数据
+
+- 内容版本：v2.0
+- 最后更新：2026-10-06
+- 学习阶段：高级
+- 适用环境：Swift 6 / Xcode 16+；本课聚焦 async。
+- 内容来源：内置结构化课程与工程实践整理
+- 相关主题：async、Actor、Task、Sendable
+- 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
+
+## Full English Study Guide
+
+### Overview
+
+**Swift Concurrency and async/await** focuses on Learn async/await, Task, Actor, cancellation and Sendable.
+
+### Learning Outcomes
+
+- Explain what **Swift Concurrency and async/await** solves and when it should be used.
+
+### Glossary
+
+- Topic: **Swift Concurrency and async/await**
+- Related terms: async, Actor, Task, Sendable
+
+## Bilingual Section Outline
+
+| 中文小节 | English section |
+| --- | --- |
+| 学习目标 | Learning Objectives |
+| 前置知识 | Pre-knowledge |
+| 核心知识 | Core knowledge |
+| 关键流程 | Key Processes |
+| 实践路径 | Practice Path |
+| 常见误区 | Common Misconceptions |
+| 动手练习 | Hands on exercise: |
+| 本课小结 | Lesson Summary |
+| 语言专项实践：Swift 并发与 async/await | Language-specific practices: Swift concurrency with async/await |
+| 最小可运行示例 | Minimal Runnable Examples |
+
+## 参考资料与复核
+
+- 最后复核：2026-10-04
+- 下次复核：2026-12-17
+- 复核范围：版本兼容、API 行为、安全建议与工程实践
+- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
+
+| 参考资料 | 本课用途 |
+| --- | --- |
+| [Swift 并发](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/) | async/await 与 actor |
+| [Apple 人机界面指南](https://developer.apple.com/design/human-interface-guidelines/) | iOS 设计规范与可访问性 |
+| [Swift 官方文档](https://www.swift.org/documentation/) | 工具链、包管理与语言演进 |
+
+> 「Swift 并发与 async/await」的链接用于离线阅读后的延伸核对；App 不会自动联网。

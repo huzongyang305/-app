@@ -4,9 +4,36 @@
 
 ![Kotlin 与 Android 开发](images/category_mobile_kotlin.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：35 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：50 分钟
 
-## 学习目标
+## 本节知识框架
+
+**课程定位**：所属分类为「移动开发」，课程主题为「Kotlin 与 Android 开发」，学习阶段为「基础」，建议用时 50 分钟。
+
+**本课要解决的主问题**：空安全、协程、分层架构与打包发布。
+
+| 学习层次 | 要回答的问题 | 完成判据 |
+| --- | --- | --- |
+| 概念层 | 「Kotlin 与 Android 开发」有哪些必须区分的对象与术语？ | 能用自己的话定义核心术语，并各举一个正例和一个反例。 |
+| 机制层 | 这些对象按什么顺序发生作用，输入如何变成输出？ | 能画出或写出机制步骤，并说明每一步的失败条件。 |
+| 应用层 | 什么场景适合使用「Kotlin 与 Android 开发」，什么场景不适合？ | 能给出一个真实场景、一个最小示例和一个边界案例。 |
+| 性能层 | 时间、空间、吞吐或延迟受哪些量影响？ | 能说出复杂度或性能瓶颈的证据来源；没有证据时明确写“材料未提供”。 |
+| 复习层 | 怎样确认自己不是只记住了结论？ | 能独立完成本课自测，并把错误定位到概念、机制、示例或边界。 |
+
+### 阅读路线
+
+1. 先读「核心概念定义」，建立「Kotlin」等对象的精确定义。
+2. 再读「原理与运行机制」，把定义串成可重复的过程。
+3. 用「代码/协议/SQL 示例」验证过程，并只改一个条件观察结果变化。
+4. 最后检查性能、易错点、知识关系与自测题，形成可复习的证据链。
+
+**前置知识**：《实战：Flutter 打包发布 Android》
+
+**学习位置**：本课位于《实战：Flutter 打包发布 Android》之后；如果前一课的自测不能通过，应先回补再继续。
+
+**后续衔接**：下一课《Swift 与 iOS 开发》会继续使用本课术语，学完后建议立即完成一次自测。
+
+**教材衔接：学习目标**
 
 - 能用自己的话解释Kotlin 与 Android 开发解决了什么问题，而不是只背术语。
 - 能说清 「Kotlin」、「Android」、「协程」、「ViewModel」 之间的关系，并分别举出一个例子。
@@ -15,14 +42,51 @@
 
 > 一句话摘要：空安全、协程、分层架构与打包发布。
 
-## 前置知识
+**教材衔接：前置知识**
 
 - 先完成上一课《实战：Flutter 打包发布 Android》；如果已经掌握，可以直接用本课练习自测。
 - 本课阶段：基础。建议先完成「实战：Flutter 打包发布 Android」，或确认自己能独立跑通正文里的 LessonRepository 示例。
 - 开始前先复习：Kotlin、Android、协程。
 - 如果 语言特性速览 这一步看不懂，先记录具体卡点，再用 LessonRepository 复现一遍。
 
-## 语言特性速览
+**教材衔接：本课小结**
+
+Android 开发的关键是**分层（UI/状态/数据）+ 空安全 + 协程**：把状态交给 ViewModel、把耗时操作交给协程、把数据来源收敛到 Repository。
+
+## 核心概念定义
+
+> 阅读约定：本课先给「Kotlin 与 Android 开发」相关术语的操作性定义与适用边界；正文里的口语化说法与定义冲突时，以定义和可复现示例为准。
+
+| 术语 | 操作性定义 | 本课中的边界 |
+| --- | --- | --- |
+| Kotlin | 运行于 JVM 等平台、强调空安全与简洁语法的现代编程语言。 | 仅在「Kotlin 与 Android 开发」明确给出的输入、版本与资源条件下成立。 |
+| Android | Android 开发的关键是分层（UI/状态/数据）+ 空安全 + 协程：把状态交给 ViewModel、把耗时操作交给协程、把数据来源收敛到 Repository。 | 仅在「Kotlin 与 Android 开发」明确给出的输入、版本与资源条件下成立。 |
+| AAB | Android App Bundle 发布格式，由应用商店按设备配置生成拆分后的 APK。 | 仅在「Kotlin 与 Android 开发」明确给出的输入、版本与资源条件下成立。 |
+| 构建变体 | debug、release 等不同配置的产物，用变体维度管理签名、混淆与接口地址。 | 仅在「Kotlin 与 Android 开发」明确给出的输入、版本与资源条件下成立。 |
+| 协程 | 协程把耗时工作挪出主线程 | 仅在「Kotlin 与 Android 开发」明确给出的输入、版本与资源条件下成立。 |
+
+### 定义如何使用
+
+在「Kotlin 与 Android 开发」中判断一个说法是否成立，先确认它使用的是哪个对象的定义，再检查输入规模、运行环境与失败路径。定义不是口号，而是后续推导、代码示例和自测题共享的约束。
+
+## 原理与运行机制
+
+### 机制总览
+
+1. **建立输入**：把「Kotlin」按本课定义整理成可观察、可重复的输入条件。
+2. **执行转换**：围绕「Android」执行本课的核心步骤；每一步都记录中间状态，避免只看最终输出。
+3. **产生输出**：得到「AAB」后，用正文示例或协议/SQL 结果核对输出是否符合预期。
+4. **改变一个条件**：只替换一个边界条件或环境参数，观察「Kotlin 与 Android 开发」的结论是否仍然成立。
+
+| 阶段 | 关注对象 | 失败时应检查 |
+| --- | --- | --- |
+| 输入 | Kotlin | 类型、范围、编码、版本或前置状态是否满足定义。 |
+| 处理 | Android | 顺序、可见性、锁、路由、事务或调度规则是否被破坏。 |
+| 输出 | AAB | 结果是否可复现，错误是否被正确传播而不是被吞掉。 |
+
+本课的机制结论要用「Kotlin 与 Android 开发」自己的示例验证。「Kotlin 与 Android 开发」没有给出某个数量级、吞吐或内存数据时，本课把该判断标为“材料未提供”，不从相邻主题外推。
+
+**教材衔接：语言特性速览**
 
 | 特性 | 说明 |
 | --- | --- |
@@ -33,7 +97,40 @@
 | 密封类 | `sealed class Result` 表达有限状态，配合 when 穷尽检查 |
 | 属性委托 | `by lazy`、`by viewModels()` 减少样板代码 |
 
-## Android 应用结构
+**教材衔接：生命周期与常见崩溃**
+
+1. 配置变更（旋转）会重建 Activity，状态放 ViewModel 而非成员变量。
+2. 持有 Activity/Context 的长时间引用会内存泄漏（用 applicationContext 或在 onDestroy 释放）。
+3. 后台启动 Service 受限，长任务改用 WorkManager 或前台服务。
+4. 主线程做 IO 会 ANR，所有磁盘与网络访问走协程。
+
+**教材衔接：打包发布**
+
+`./gradlew bundleRelease` 产出 AAB；签名用 `keystore.properties` 外置并在 .gitignore 排除；用 `minifyEnabled true` 加混淆规则减小体积；多渠道与不同环境通过 productFlavors 配置；上线前用 `lint` 检查权限与 API 使用问题。
+
+**教材衔接：Android 组件速查**
+
+| 组件 | 职责 | 注意 |
+| --- | --- | --- |
+| Activity | 承载界面 | 避免放业务逻辑 |
+| Fragment | 可复用界面块 | 生命周期复杂，注意视图销毁 |
+| ViewModel | 保存界面状态 | 不持有 View 引用 |
+| Repository | 数据来源统一入口 | 负责缓存策略 |
+| WorkManager | 可靠后台任务 | 适合可延迟任务 |
+| Foreground Service | 前台服务 | 需通知与权限说明 |
+| Room | 本地数据库 | 用 DAO 与 Flow 观察数据 |
+
+## 典型应用场景
+
+| 场景 | 典型输入或前提 | 期望产物 |
+| --- | --- | --- |
+| 学习验证 | 使用本课最小示例和 Kotlin、Android | 能复现正文结论，并解释每一步。 |
+| 工程落地 | 把「Kotlin 与 Android 开发」放入真实模块或服务边界 | 输出可观测、失败可定位、参数可配置。 |
+| 故障排查 | 只改一个版本、规模、输入或依赖条件 | 能区分概念错误、实现错误和环境差异。 |
+
+判断「Kotlin 与 Android 开发」的场景是否成立，标准是能否写出输入、处理、输出和失败路径；材料中没有出现的数据在本课标注为“材料未提供”，不用推测替代证据。
+
+**教材衔接：Android 应用结构**
 
 | 层 | 组件 | 职责 |
 | --- | --- | --- |
@@ -44,22 +141,40 @@
 
 要点：**不要在 Activity 里写业务逻辑**；网络与数据库操作必须离开主线程（协程的 Dispatchers.IO）；用 `viewLifecycleOwner` 收集 Flow 避免泄漏。
 
-## 生命周期与常见崩溃
+## 代码/协议/SQL 示例
 
-1. 配置变更（旋转）会重建 Activity，状态放 ViewModel 而非成员变量。
-2. 持有 Activity/Context 的长时间引用会内存泄漏（用 applicationContext 或在 onDestroy 释放）。
-3. 后台启动 Service 受限，长任务改用 WorkManager 或前台服务。
-4. 主线程做 IO 会 ANR，所有磁盘与网络访问走协程。
+### 最小可验证示例
 
-## 打包发布
+下面保留《Kotlin 与 Android 开发》原文中的最小示例。先预测《Kotlin 与 Android 开发》示例的输出，再按正文步骤运行或推演；示例依赖外部环境时，同时记录版本与输入。
 
-`./gradlew bundleRelease` 产出 AAB；签名用 `keystore.properties` 外置并在 .gitignore 排除；用 `minifyEnabled true` 加混淆规则减小体积；多渠道与不同环境通过 productFlavors 配置；上线前用 `lint` 检查权限与 API 使用问题。
+```kotlin
+// ViewModel：状态用 StateFlow 暴露，UI 只读订阅
+data class UiState(
+    val loading: Boolean = false,
+    val items: List<String> = emptyList(),
+    val error: String? = null,
+)
 
-## 本课小结
+class LessonViewModel(private val repo: LessonRepository) : ViewModel() {
+    private val _state = MutableStateFlow(UiState())
+    val state: StateFlow<UiState> = _state.asStateFlow()
 
-Android 开发的关键是**分层（UI/状态/数据）+ 空安全 + 协程**：把状态交给 ViewModel、把耗时操作交给协程、把数据来源收敛到 Repository。
+    fun load() {
+        viewModelScope.launch {
+            _state.update { it.copy(loading = true, error = null) }
+            runCatching { withContext(Dispatchers.IO) { repo.fetch() } }
+                .onSuccess { list -> _state.update { it.copy(loading = false, items = list) } }
+                .onFailure { e -> _state.update { it.copy(loading = false, error = e.message) } }
+        }
+    }
+}
 
-## Kotlin 语法速查
+// 可空链式处理：任一步为空即短路
+fun displayName(user: User?): String =
+    user?.profile?.nickname?.takeIf { it.isNotBlank() } ?: "匿名用户"
+```
+
+**教材衔接：Kotlin 语法速查**
 
 | 特性 | 写法 | 说明 |
 | --- | --- | --- |
@@ -74,7 +189,7 @@ Android 开发的关键是**分层（UI/状态/数据）+ 空安全 + 协程**�
 | 作用域函数 | `apply`、`let`、`run`、`also` | 简化初始化与空值处理 |
 | 协程 | `suspend fun load()` | 可挂起的异步函数 |
 
-## 协程速查
+**教材衔接：协程速查**
 
 | 作用域 | 生命周期 | 适用 |
 | --- | --- | --- |
@@ -119,42 +234,7 @@ fun displayName(user: User?): String =
     user?.profile?.nickname?.takeIf { it.isNotBlank() } ?: "匿名用户"
 ```
 
-## Android 组件速查
-
-| 组件 | 职责 | 注意 |
-| --- | --- | --- |
-| Activity | 承载界面 | 避免放业务逻辑 |
-| Fragment | 可复用界面块 | 生命周期复杂，注意视图销毁 |
-| ViewModel | 保存界面状态 | 不持有 View 引用 |
-| Repository | 数据来源统一入口 | 负责缓存策略 |
-| WorkManager | 可靠后台任务 | 适合可延迟任务 |
-| Foreground Service | 前台服务 | 需通知与权限说明 |
-| Room | 本地数据库 | 用 DAO 与 Flow 观察数据 |
-
-## 常见错误与排查
-
-| 容易踩的做法 | 实际现象 | 原因与正确做法 |
-| --- | --- | --- |
-| 滥用 `!!` | 线上崩溃 | 用 `?.`、`?:` 或 `requireNotNull` |
-| 在 `ViewModel` 里持有 Activity | 内存泄漏 | 只持有 Application 或数据层 |
-| 主线程做 IO | 界面卡顿甚至 ANR | 切到 `Dispatchers.IO` |
-| 用 `GlobalScope` | 任务泄漏、难以取消 | 用受生命周期约束的作用域 |
-| Fragment 中直接碰已销毁视图 | 崩溃 | 在 `onDestroyView` 后置空绑定 |
-| 手写大量 `findViewById` | 易错 | 用 ViewBinding |
-| 在协程外抛异常未捕获 | 崩溃 | 用 `runCatching` 或 `CoroutineExceptionHandler` |
-| 忘记处理配置变更 | 数据丢失 | 状态放 `ViewModel` 或用 `SavedStateHandle` |
-| 用字符串拼 SQL | 注入风险 | Room 或参数化查询 |
-| 权限未做兼容处理 | 新系统版本崩溃 | 按版本分支申请权限 |
-
-## 复习与自测
-
-- [ ] 空安全用 `?.`、`?:` 处理，`!!` 只出现在确定非空处。
-- [ ] 协程绑定合适作用域，禁止 `GlobalScope`。
-- [ ] 状态用 `StateFlow` 暴露，UI 只读订阅。
-- [ ] ViewModel 不持有 View 或 Activity 引用。
-- [ ] 后台任务与权限按系统版本做兼容处理。
-
-## 零基础详解：Kotlin 与 Android 开发
+**教材衔接：零基础详解：Kotlin 与 Android 开发**
 
 ### 一句话说清它是什么
 
@@ -349,7 +429,166 @@ sealed interface ListUiState {
 - [ ] 知道为什么状态要放在 ViewModel 里。
 - [ ] 能说出 Compose 里副作用的正确位置。
 
-## 动手练习
+## 时间/空间复杂度或性能分析
+
+**复杂度证据**：「Kotlin 与 Android 开发」的现有材料没有给出渐近时间或空间复杂度的明确结论，本课只做定性检查，不补写未经验证的 $O$ 记号。
+
+| 维度 | 本课关注点 | 判断依据 |
+| --- | --- | --- |
+| 时间/延迟 | 「Kotlin 与 Android 开发」的主要步骤是否会随输入规模、并发度或网络往返增长。 | 以正文复杂度、基准数据或可重复测量为准。 |
+| 空间/内存 | 中间状态、缓存、副本、连接或索引是否随规模增长。 | 记录峰值内存与数据副本，不只看最终结果。 |
+| 吞吐/资源 | 版本、调度、锁、IO、序列化或协议开销是否成为瓶颈。 | 固定环境做对照实验，改变一个变量。 |
+
+评估「Kotlin 与 Android 开发」时要区分“正确性成立”和“性能达标”两件事；材料没有给出基准时，本课只保留量级来源与测量方法，不写不可验证的绝对数字。
+
+## 常见误区与易错点
+
+> 复核《Kotlin 与 Android 开发》的易错点时，优先保留原文的错误表、故障现场与排错路径；每条修正都要能用本课示例复验。
+
+| 易错点 | 常见表现 | 正确做法 |
+| --- | --- | --- |
+| 只背结论 | 能复述「Kotlin 与 Android 开发」的定义，却说不清输入、输出与边界。 | 回到机制步骤，用最小示例逐一验证。 |
+| 混淆相邻概念 | 把本课对象与相邻主题的对象当成同一类。 | 先比较定义、资源归属、生命周期和失败模式。 |
+| 忽略版本与环境 | 在开发机通过后直接外推到生产环境。 | 固定版本、输入和资源条件，再记录可复现结果。 |
+
+**教材衔接：常见错误与排查**
+
+| 容易踩的做法 | 实际现象 | 原因与正确做法 |
+| --- | --- | --- |
+| 滥用 `!!` | 线上崩溃 | 用 `?.`、`?:` 或 `requireNotNull` |
+| 在 `ViewModel` 里持有 Activity | 内存泄漏 | 只持有 Application 或数据层 |
+| 主线程做 IO | 界面卡顿甚至 ANR | 切到 `Dispatchers.IO` |
+| 用 `GlobalScope` | 任务泄漏、难以取消 | 用受生命周期约束的作用域 |
+| Fragment 中直接碰已销毁视图 | 崩溃 | 在 `onDestroyView` 后置空绑定 |
+| 手写大量 `findViewById` | 易错 | 用 ViewBinding |
+| 在协程外抛异常未捕获 | 崩溃 | 用 `runCatching` 或 `CoroutineExceptionHandler` |
+| 忘记处理配置变更 | 数据丢失 | 状态放 `ViewModel` 或用 `SavedStateHandle` |
+| 用字符串拼 SQL | 注入风险 | Room 或参数化查询 |
+| 权限未做兼容处理 | 新系统版本崩溃 | 按版本分支申请权限 |
+
+**教材衔接：故障现场**
+
+### 现场 1：主线程做 IO
+
+**症状**：在《Kotlin 与 Android 开发》的复现场景中，界面卡顿甚至 ANR。
+
+**根因**：当出现“主线程做 IO”时，执行路径已经绕过了《Kotlin 与 Android 开发》的关键约束，最终以“界面卡顿甚至 ANR”暴露出来；修复前必须先确认约束在哪里失效。
+
+**修复**：针对《Kotlin 与 Android 开发》的问题，切到 Dispatchers.IO。
+
+**验证**：保留《Kotlin 与 Android 开发》里触发“界面卡顿甚至 ANR”的输入、版本和日志，按“切到 Dispatchers.IO”完成修改后原样重放；只有失败现象消失且相邻场景仍可解释，才保留改动。
+
+### 现场 2：用 GlobalScope
+
+**症状**：在《Kotlin 与 Android 开发》的复现场景中，任务泄漏、难以取消。
+
+**根因**：当出现“用 GlobalScope”时，执行路径已经绕过了《Kotlin 与 Android 开发》的关键约束，最终以“任务泄漏、难以取消”暴露出来；修复前必须先确认约束在哪里失效。
+
+**修复**：针对《Kotlin 与 Android 开发》的问题，用受生命周期约束的作用域。
+
+**验证**：在《Kotlin 与 Android 开发》中按“用受生命周期约束的作用域”调整后，从“用 GlobalScope”的触发条件重放同一条路径，确认“任务泄漏、难以取消”不再出现，并补一个相邻边界用例检查没有引入新问题。
+
+### 现场 3：权限未做兼容处理
+
+**症状**：在《Kotlin 与 Android 开发》的复现场景中，新系统版本崩溃。
+
+**根因**：触发点是把“权限未做兼容处理”当成安全做法。它没有满足《Kotlin 与 Android 开发》要求的前提，因此先表现为“新系统版本崩溃”；排查时先完整复现这一段，再核对输入、配置与依赖。
+
+**修复**：针对《Kotlin 与 Android 开发》的问题，按版本分支申请权限。
+
+**验证**：保留《Kotlin 与 Android 开发》里触发“新系统版本崩溃”的输入、版本和日志，按“按版本分支申请权限”完成修改后原样重放；只有失败现象消失且相邻场景仍可解释，才保留改动。
+
+## 与其他知识点的关系
+
+| 关系 | 课程 | 为什么 |
+| --- | --- | --- |
+| 先修 | 《实战：Flutter 打包发布 Android》 | 本课会直接使用它的概念或操作前提。 |
+| 关联 | 《Swift 与 iOS 开发》 | 用于横向比较或把本课结论迁移到相邻主题。 |
+| 关联 | 《Kotlin Android 架构》 | 用于横向比较或把本课结论迁移到相邻主题。 |
+| 前置顺序 | 《实战：Flutter 打包发布 Android》 | 同分类中安排在本课之前，建议先完成其自测。 |
+| 后续顺序 | 《Swift 与 iOS 开发》 | 同分类中安排在本课之后，会继续使用本课术语。 |
+
+把「Kotlin 与 Android 开发」放回知识体系时，不只要记住“前面学过什么”，还要说明两个主题在输入、机制、资源边界和失败模式上的差异。这样才能把单课知识迁移到项目、排障和后续课程。
+
+## 自测题与参考答案
+
+> 先独立作答《Kotlin 与 Android 开发》的自测题，再对照答案与解析；每处判断都要能在本课正文或示例中找到依据。
+
+### 自测 1
+
+围绕“Kotlin 与 Android 开发”中的 Kotlin、Android、协程，下列哪两项是本课强调的实践判断？
+
+A. 学习 Kotlin 时要同时说明输入、输出和失败路径，不能只看正常流程
+B. 只要 Kotlin 的常规示例通过，就可以跳过边界与异常路径
+C. 验证 Android 时要固定版本并覆盖边界输入，结论才可复现
+D. 把 Android 的单次运行结果当成所有版本和规模都成立
+
+**参考答案**：学习 Kotlin 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 Android 时要固定版本并覆盖边界输入，结论才可复现
+
+**解析**：本课把Kotlin 与 Android 开发拆成概念、示例与故障现场三部分，因此判断 Kotlin 时必须同时交代输入、输出和失败路径，这使“学习 Kotlin 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在Kotlin 与 Android 开发里，判断 Android 时要固定版本与边界输入，所以“验证 Android 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
+
+### 自测 2
+
+Android 中承载界面状态、配置变更后仍存活的组件是？
+
+A. Adapter
+B. Activity
+C. ViewModel
+D. Application
+
+**参考答案**：ViewModel
+
+**解析**：在「Kotlin 与 Android 开发」里，Activity 旋转会重建，状态应放在 ViewModel 中。在「Kotlin 与 Android 开发」里，其他选项：Application 是进程级入口，Adapter 负责列表项绑定，Activity 在配置变更时会重建。
+
+### 自测 3
+
+下面这段 Kotlin 代码摘自「Kotlin 与 Android 开发」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
+
+```kotlin
+class UserViewModel(
+    private val repository: UserRepository,
+) : ViewModel() {
+
+    private val _state = MutableStateFlow<UiState>(UiState.Loading)
+    val state: StateFlow<UiState> = _state.asStateFlow()
+
+    fun load(userId: Long) {
+        viewModelScope.launch {                 // 绑定 ViewModel 生命周期
+            _state.value = UiState.Loading
+            _state.value = try {
+                UiState.Success(repository.find(userId))
+            } catch (e: IOException) {
+                UiState.Failure("网络异常，请重试")
+            }
+        }
+    }
+}
+
+sealed interface UiState {
+    data object Loading : UiState
+    data class Success(val user: User) : UiState
+    data class Failure(val message: String) : UiState
+}
+```
+
+A. 这段代码包含循环结构，同一段逻辑会被重复执行。
+B. 这段代码包含异常处理分支，失败时会走专门的补救路径。
+C. 这段代码会产生可观察的输出，运行后能看到结果。
+D. 这段代码只做静态声明，没有循环、分支或可观察输出。
+
+**参考答案**：这段代码包含异常处理分支，失败时会走专门的补救路径。
+
+**解析**：在「Kotlin 与 Android 开发」里，这段代码包含异常处理分支，失败时会走专门的补救路径。这段代码出自「Kotlin 与 Android 开发」的正文示例，围绕Kotlin、Android、协程展开；把输入或边界换成空值、极值或失败情况后，结论要以「Kotlin 与 Android 开发」的实际运行结果为准。
+
+**教材衔接：复习与自测**
+
+- [ ] 空安全用 `?.`、`?:` 处理，`!!` 只出现在确定非空处。
+- [ ] 协程绑定合适作用域，禁止 `GlobalScope`。
+- [ ] 状态用 `StateFlow` 暴露，UI 只读订阅。
+- [ ] ViewModel 不持有 View 或 Activity 引用。
+- [ ] 后台任务与权限按系统版本做兼容处理。
+
+**教材衔接：动手练习**
 
 > 本课练习重点：围绕「Kotlin、Android、协程」完成复述、实验和交付，每个结果都要能被别人检查。
 
@@ -387,7 +626,7 @@ sealed interface ListUiState {
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-## 可运行练习
+**教材衔接：可运行练习**
 
 本节围绕Kotlin 与 Android 开发安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 
@@ -407,39 +646,7 @@ sealed interface ListUiState {
 
 **验收标准**：结论要能追溯到「语言特性速览」的具体段落，并说明它和 Android 的边界。
 
-## 故障现场
-
-### 现场 1：主线程做 IO
-
-**症状**：在《Kotlin 与 Android 开发》的复现场景中，界面卡顿甚至 ANR。
-
-**根因**：当出现“主线程做 IO”时，执行路径已经绕过了《Kotlin 与 Android 开发》的关键约束，最终以“界面卡顿甚至 ANR”暴露出来；修复前必须先确认约束在哪里失效。
-
-**修复**：针对《Kotlin 与 Android 开发》的问题，切到 Dispatchers.IO。
-
-**验证**：保留《Kotlin 与 Android 开发》里触发“界面卡顿甚至 ANR”的输入、版本和日志，按“切到 Dispatchers.IO”完成修改后原样重放；只有失败现象消失且相邻场景仍可解释，才保留改动。
-
-### 现场 2：用 GlobalScope
-
-**症状**：在《Kotlin 与 Android 开发》的复现场景中，任务泄漏、难以取消。
-
-**根因**：当出现“用 GlobalScope”时，执行路径已经绕过了《Kotlin 与 Android 开发》的关键约束，最终以“任务泄漏、难以取消”暴露出来；修复前必须先确认约束在哪里失效。
-
-**修复**：针对《Kotlin 与 Android 开发》的问题，用受生命周期约束的作用域。
-
-**验证**：在《Kotlin 与 Android 开发》中按“用受生命周期约束的作用域”调整后，从“用 GlobalScope”的触发条件重放同一条路径，确认“任务泄漏、难以取消”不再出现，并补一个相邻边界用例检查没有引入新问题。
-
-### 现场 3：权限未做兼容处理
-
-**症状**：在《Kotlin 与 Android 开发》的复现场景中，新系统版本崩溃。
-
-**根因**：触发点是把“权限未做兼容处理”当成安全做法。它没有满足《Kotlin 与 Android 开发》要求的前提，因此先表现为“新系统版本崩溃”；排查时先完整复现这一段，再核对输入、配置与依赖。
-
-**修复**：针对《Kotlin 与 Android 开发》的问题，按版本分支申请权限。
-
-**验证**：保留《Kotlin 与 Android 开发》里触发“新系统版本崩溃”的输入、版本和日志，按“按版本分支申请权限”完成修改后原样重放；只有失败现象消失且相邻场景仍可解释，才保留改动。
-
-## 本课复习清单
+**教材衔接：本课复习清单**
 
 离开本课前，逐项确认：
 
@@ -456,6 +663,8 @@ sealed interface ListUiState {
 | 已经能独立解释的考点 |  |
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
+
+---
 
 ## 术语速查
 
@@ -535,4 +744,3 @@ sealed interface ListUiState {
 | [Flutter 性能最佳实践](https://docs.flutter.dev/perf/best-practices) | 帧率、构建与内存优化 |
 
 > 「Kotlin 与 Android 开发」的链接用于离线阅读后的延伸核对；App 不会自动联网。
-

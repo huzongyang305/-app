@@ -5,6 +5,7 @@
 ## 功能
 
 - **34 个分类、629 篇教程、3543 道测验题**，全部内置在安装包里，断网也能用
+- **九段式教材结构（1.6.0）**：629 篇课程统一按「本节知识框架 → 核心概念定义 → 原理与运行机制 → 典型应用场景 → 代码/协议/SQL 示例 → 复杂度或性能分析 → 常见误区与易错点 → 与其他知识点的关系 → 自测题与参考答案」组织；术语速查、考点精讲、English Overview、内容元数据与参考资料保留为教材附录，旧章节内容以「教材衔接」小标题原样保留
 - **P0/P1 内容扩容**：新增编译原理与语言实现、嵌入式与物联网、图形与游戏开发、云计算与云原生、数据工程、区块链与 Web3 6 个分类，并为 12 种语言补齐项目课；P1 又为 6 个薄弱分类扩充 39 门课程，并补齐 MLOps、推荐系统、时间序列、强化学习、分布式事务与事件溯源 6 个重点领域；全部课程完成结构、术语、引用与题型治理，并建立人工复核台账（当前 629 门待逐课人工复核）
 - **Python 纵深扩充**：Python 课程从 21 门扩到 41 门、221 道题，新增字符串与编码、容器与拷贝、OOP 进阶、标准库、异常日志、pytest、并发与 asyncio、SQLAlchemy、HTTP 客户端、安全、内存性能、现代语法、数据处理、CLI 自动化、Web 部署、GUI、C/Rust 互操作、项目架构与面试 20 门进阶课
 - 首页分类导航 + 关键词搜索：倒排索引 + 中文二元组 + 拼音 / 首字母 + 同义词，支持未学 / 收藏 / 错题与分类筛选、搜索历史与命中高亮
@@ -37,7 +38,7 @@
 - **英文正文（P2）**：55 篇课程提供完整英文正文，其余课程提供英文概览与英文学习指南；语言开关会显示当前完整英文覆盖数量
 - **响应式与无障碍**：手机底部导航、平板 NavigationRail、教程分栏和横屏答题布局；关键卡片与选项带 TalkBack 语义，答题结果用图标 + 文字双重标注（不依赖红绿颜色），支持 2 倍系统字号，可开启“减少动画”
 - **逐课内容治理**：629 篇课程均带官方参考来源、最后复核和下次复核日期；全部课程图片统一为 WebP
-- **逐课考点精讲**：629 篇教程都有一节与当前题库同步的「考点精讲」，把每道测验题还原成判断过程，并保留课程内的复习清单
+- **逐课考点精讲**：629 篇教程都有一节与当前题库同步的「考点精讲」附录，把每道测验题还原成判断过程；复习清单并入「本节知识框架」，自测题直接抽取当前题库并给出答案与解析
 - **离线内容包（P1）**：可从系统文件选择器导入 JSON 内容包，覆盖、追加或 delta 增量更新课程并立即生效；支持 SHA-256 校验和、HMAC 签名验证、语义化版本比较与更新记录管理，全程不联网
 - **系统备份文件（P5A）**：导出走系统“另存为”，可一键分享到文件管理器/云盘，也能从文件选择器恢复；旧版本写在应用目录的 `code_learn_backup.json` 仍可在「我的」里单独导入
 - **备份导入预览（P1）**：导入前预览课程 / 笔记 / 进度差异，可选「替换」或「合并」，并支持撤销上一次恢复
@@ -89,7 +90,7 @@
 - P1 已将旧版模板题全部替换为从课程 Markdown 的“定义、练习、最小示例、常见错误”章节提炼的复习题，并为 36 门原无代码题课程补上代码或排错题。
 - 当前 3543 道题均有 120 字以上解析，题干不重复，元问题、重复 5 次以上的模板句与旧版自动扩写句均为 0。
 - 单选答案 A/B/C/D 占比为 26.8% / 24.4% / 24.4% / 24.4%；正确项与最长错误项差距达到 8 个字符的题目仅 17 道（1.0%），避免长度暗示答案。
-- 629 篇教程正文平均 13,327 字符、最短 10,291 字符，总计 8,382,419 字符；每课均有可运行练习或实践任务、故障现场和内容复核信息。
+- 629 篇教程正文平均 18,534 字符、最短 14,820 字符，总计 11,657,915 字符；每课都有可运行练习或实践任务、故障现场与内容复核信息，正文统一为九段式教材结构。
 - P0/P1 内容门禁可重复执行：`dart tool/audit_content_governance.dart`、`dart tool/audit_content_quality.dart`、`dart tool/audit_content_depth.dart`、`dart tool/analyze_quiz_quality.dart`、`dart tool/verify_code_blocks.dart`、`dart tool/content_review_ledger.dart`。
 
 ## 代码沙箱
@@ -268,21 +269,21 @@ flutter build apk --release
 > 导致 release 编译仍引用 debug 专用的 `integration_test` 插件而失败。
 > 先 `flutter pub get`，再执行不带 `--no-pub` 的构建命令即可。
 
-产物与实测体积（v1.5.0+16，本机 Flutter 3.13+ / AGP 9 环境）：
+产物与实测体积（v1.6.0+17，本机 Flutter 3.13+ / AGP 9 环境）：
 
 | 命令 | 产物 | 体积 |
 | --- | --- | ---: |
-| `--target-platform android-arm,android-arm64` | `app-release.apk`（ARM 双 ABI，发布用） | 89.15 MiB / 门禁 95 MiB |
-| `--split-per-abi` | `app-arm64-v8a-release.apk` | 69.66 MiB / 门禁 95 MiB |
-| | `app-armeabi-v7a-release.apk` | 67.66 MiB / 门禁 95 MiB |
-| | `app-x86_64-release.apk` | 71.20 MiB / 门禁 95 MiB |
-| `flutter build apk --release` | 3 ABI 通用包 | 111.94 MiB，超过门禁，仅用于本机安装验证 |
+| `--target-platform android-arm,android-arm64` | `app-release.apk`（ARM 双 ABI，发布用） | 92.41 MiB / 门禁 95 MiB |
+| `--split-per-abi` | `app-arm64-v8a-release.apk` | 72.92 MiB / 门禁 95 MiB |
+| | `app-armeabi-v7a-release.apk` | 70.92 MiB / 门禁 95 MiB |
+| | `app-x86_64-release.apk` | 74.46 MiB / 门禁 95 MiB |
+| `flutter build apk --release` | 3 ABI 通用包 | 115.20 MiB，超过门禁，仅用于本机安装验证 |
 
-体积主要来自两部分：内置课程资产约 56.8 MiB（629 篇 Markdown 17.0 MiB、1242 张配图 35.4 MiB
-与内容清单等）和沙箱运行时等资源约 15.0 MiB；ARM 双 ABI 原生库约 37 MiB。
+体积主要来自两部分：内置课程资产约 64.1 MiB（629 篇 Markdown 24.3 MiB、1242 张配图 35.4 MiB
+与内容清单 4.4 MiB 等）和沙箱运行时等资源约 15.0 MiB；ARM 双 ABI 原生库约 37 MiB。
 体积最大的 184 张 WebP 配图已压到最长边 1000px、`quality 65 / effort 6`，
-单张平均约为原体积的 42%。P0 补图让 ARM 通用包从 86.10 MiB 涨到 89.15 MiB，
-门禁同步从 90 MiB 调到 95 MiB，给 CI 环境差异留出余量。
+单张平均约为原体积的 42%。九段式教材迁移让正文增加约 3.3M 字符，ARM 双 ABI 包
+从 89.15 MiB 涨到 92.41 MiB，仍在 95 MiB 门禁内，给 CI 环境差异留出余量。
 CI 里有体积门禁，会对 ARM 通用包和三个 ABI 分包逐一执行
 `dart tool/apk_size_report.dart --budget-mb=95 <apk...>`。
 
@@ -310,7 +311,7 @@ APK 权限仅 `POST_NOTIFICATIONS` / `RECEIVE_BOOT_COMPLETED` / `VIBRATE`，
 
 `pubspec.yaml` 的 `version: 主.次.修订+构建号` 是唯一版本来源：
 
-- `versionName` = `主.次.修订`（当前 `1.5.0`），对用户可见；
+- `versionName` = `主.次.修订`（当前 `1.6.0`），对用户可见；
 - `versionCode` = `+` 后的构建号，每次分发新版本必须**严格递增**；
 - 使用 `--split-per-abi` 时 Flutter 会按 ABI 自动叠加偏移，无需手工维护。
 
@@ -323,7 +324,7 @@ APK 权限仅 `POST_NOTIFICATIONS` / `RECEIVE_BOOT_COMPLETED` / `VIBRATE`，
 
 ```bash
 flutter analyze     # 静态检查（当前 0 issue）
-flutter test        # 272 项：内容完整性 + 端到端流程 + 金图视觉回归 + 备份/迁移/沙箱测试
+flutter test        # 274 项：内容完整性 + 端到端流程 + 金图视觉回归 + 备份/迁移/沙箱测试
 dart tool/verify_sandbox_harness.dart   # 多语言沙箱离线校验（需本机有 Edge/Chrome）
 dart tool/check_brand_assets.dart       # 图标/启动页资源自检
 dart tool/check_apk_size.dart build/app/outputs/flutter-apk/app-release.apk 95   # APK 体积门禁
@@ -352,7 +353,9 @@ dart tool/check_apk_size.dart build/app/outputs/flutter-apk/app-release.apk 95  
    - `order`：`options` 是打乱后的步骤，`correct_order` 填正确下标顺序；
    - `code` 题还可填写 `language` 与 `expected_output`，并可从题目跳转离线沙箱运行。
 
-4. 运行 `flutter test`，内容自检会校验题量、答案字段与 Markdown 是否可加载；再运行 `dart tool/audit_content_governance.dart` 和 `dart tool/audit_content_quality.dart`，确认模板、引用、标题预算和语言匹配没有回退。
+4. 运行 `dart tool/apply_textbook_structure.dart`，把新课程正文迁移为九段式教材结构（幂等，可重复执行）；再用 `dart tool/rebalance_learning_path.dart` 按新正文校准 `minutes`。
+
+5. 运行 `flutter test`，内容自检会校验题量、答案字段与 Markdown 是否可加载；再运行 `dart tool/audit_content_governance.dart` 和 `dart tool/audit_content_quality.dart`，确认模板、引用、标题预算和语言匹配没有回退。
 
 ## 数据存储说明
 

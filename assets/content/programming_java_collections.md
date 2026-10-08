@@ -1,12 +1,39 @@
 # 集合框架与泛型
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：40 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：55 分钟
 
 ![HashMap 数组、链表与红黑树](images/diagram_java_collections.webp)
 
 ![集合框架与泛型](images/remaining_java_collections.webp)
 
-## 学习目标
+## 本节知识框架
+
+**课程定位**：所属分类为「Java」，课程主题为「集合框架与泛型」，学习阶段为「进阶」，建议用时 55 分钟。
+
+**本课要解决的主问题**：List/Set/Map 的选择、遍历方式、泛型与通配符。
+
+| 学习层次 | 要回答的问题 | 完成判据 |
+| --- | --- | --- |
+| 概念层 | 「集合框架与泛型」有哪些必须区分的对象与术语？ | 能用自己的话定义核心术语，并各举一个正例和一个反例。 |
+| 机制层 | 这些对象按什么顺序发生作用，输入如何变成输出？ | 能画出或写出机制步骤，并说明每一步的失败条件。 |
+| 应用层 | 什么场景适合使用「集合框架与泛型」，什么场景不适合？ | 能给出一个真实场景、一个最小示例和一个边界案例。 |
+| 性能层 | 时间、空间、吞吐或延迟受哪些量影响？ | 能说出复杂度或性能瓶颈的证据来源；没有证据时明确写“材料未提供”。 |
+| 复习层 | 怎样确认自己不是只记住了结论？ | 能独立完成本课自测，并把错误定位到概念、机制、示例或边界。 |
+
+### 阅读路线
+
+1. 先读「核心概念定义」，建立「List」等对象的精确定义。
+2. 再读「原理与运行机制」，把定义串成可重复的过程。
+3. 用「代码/协议/SQL 示例」验证过程，并只改一个条件观察结果变化。
+4. 最后检查性能、易错点、知识关系与自测题，形成可复习的证据链。
+
+**前置知识**：《继承、接口与多态》
+
+**学习位置**：本课位于《继承、接口与多态》之后；如果前一课的自测不能通过，应先回补再继续。
+
+**后续衔接**：下一课《异常处理与文件 IO》会继续使用本课术语，学完后建议立即完成一次自测。
+
+**教材衔接：学习目标**
 
 - 能用自己的话解释集合框架与泛型解决了什么问题，而不是只背术语。
 - 能说清 「List」、「Set」、「Map」、「HashMap」 之间的关系，并分别举出一个例子。
@@ -15,14 +42,95 @@
 
 > 一句话摘要：List/Set/Map 的选择、遍历方式、泛型与通配符。
 
-## 前置知识
+**教材衔接：前置知识**
 
 - 先完成上一课《继承、接口与多态》；如果已经掌握，可以直接用本课练习自测。
 - 本课阶段：进阶。建议先完成「继承、接口与多态」，或确认自己能独立跑通正文里的 LinkedHashSet 示例。
 - 开始前先复习：List、Set、Map。
 - 卡在 List 上时不要跳过：把输入、预期和实际输出写成三行，再回头读正文。
 
-## 集合体系
+**教材衔接：本课小结**
+
+日常组合：`ArrayList` + `HashMap` + `HashSet` 覆盖 90% 场景；需要排序用 `TreeMap`/`TreeSet`，需要线程安全用 `ConcurrentHashMap`。
+
+## 核心概念定义
+
+> 阅读约定：本课先给「集合框架与泛型」相关术语的操作性定义与适用边界；正文里的口语化说法与定义冲突时，以定义和可复现示例为准。
+
+| 术语 | 操作性定义 | 本课中的边界 |
+| --- | --- | --- |
+| List | names.add("tom")。 | 仅在「集合框架与泛型」明确给出的输入、版本与资源条件下成立。 |
+| Set | tags.add("java")。 | 仅在「集合框架与泛型」明确给出的输入、版本与资源条件下成立。 |
+| Map | 键值映射接口：HashMap 不保序、LinkedHashMap 保插入序、TreeMap 按键排序，按场景选择。 | 仅在「集合框架与泛型」明确给出的输入、版本与资源条件下成立。 |
+| HashMap | 日常组合：ArrayList + HashMap + HashSet 覆盖 90% 场景；需要排序用 TreeMap/TreeSet，需要线程安全用 ConcurrentHashMap。 | 仅在「集合框架与泛型」明确给出的输入、版本与资源条件下成立。 |
+| 类型擦除 | 泛型类型参数在运行时被擦除，使不同参数化类型共享同一份实现。 | 仅在「集合框架与泛型」明确给出的输入、版本与资源条件下成立。 |
+| 不可变集合 | 不可变集合能防止意外修改，适合当返回值或常量 | 仅在「集合框架与泛型」明确给出的输入、版本与资源条件下成立。 |
+
+### 定义如何使用
+
+在「集合框架与泛型」中判断一个说法是否成立，先确认它使用的是哪个对象的定义，再检查输入规模、运行环境与失败路径。定义不是口号，而是后续推导、代码示例和自测题共享的约束。
+
+## 原理与运行机制
+
+### 机制总览
+
+1. **建立输入**：把「List」按本课定义整理成可观察、可重复的输入条件。
+2. **执行转换**：围绕「Set」执行本课的核心步骤；每一步都记录中间状态，避免只看最终输出。
+3. **产生输出**：得到「Map」后，用正文示例或协议/SQL 结果核对输出是否符合预期。
+4. **改变一个条件**：只替换一个边界条件或环境参数，观察「集合框架与泛型」的结论是否仍然成立。
+
+| 阶段 | 关注对象 | 失败时应检查 |
+| --- | --- | --- |
+| 输入 | List | 类型、范围、编码、版本或前置状态是否满足定义。 |
+| 处理 | Set | 顺序、可见性、锁、路由、事务或调度规则是否被破坏。 |
+| 输出 | Map | 结果是否可复现，错误是否被正确传播而不是被吞掉。 |
+
+本课的机制结论要用「集合框架与泛型」自己的示例验证。「集合框架与泛型」没有给出某个数量级、吞吐或内存数据时，本课把该判断标为“材料未提供”，不从相邻主题外推。
+
+**教材衔接：集合选型速查**
+
+| 需求 | 首选实现 | 关键复杂度 | 备注 |
+| --- | --- | --- | --- |
+| 有序、按下标访问 | `ArrayList` | 访问 O(1)、中间插入 O(n) | 绝大多数场景的默认选择 |
+| 频繁头尾插入删除 | `ArrayDeque` / `LinkedList` | 两端 O(1) | 当队列或栈用优先 `ArrayDeque` |
+| 去重且不关心顺序 | `HashSet` | 平均 O(1) | 依赖 `hashCode` 与 `equals` |
+| 去重且要排序 | `TreeSet` | O(log n) | 元素需可比较或传 `Comparator` |
+| 键值映射 | `HashMap` | 平均 O(1) | 允许一个 null 键 |
+| 键有序 | `TreeMap` | O(log n) | 适合范围查询 `subMap`、`headMap` |
+| 保留插入顺序 | `LinkedHashMap` | 平均 O(1) | 做 LRU 缓存的常见基础 |
+| 线程安全 | `ConcurrentHashMap` | 平均 O(1) | 比 `Collections.synchronizedMap` 并发更高 |
+| 不可变集合 | `List.of` / `Map.of` | 只读 | 写入抛 `UnsupportedOperationException` |
+
+**教材衔接：版本与时效**
+
+- 版本基线会影响 List 的可用 API，升级前先用编译与测试验证。
+- 若 LinkedHashSet 依赖线程或 GC 行为，升级时要重点验证并发与停顿指标。
+- 升级前确认 List 的兼容范围，把不可回退的改动单独拆成一次提交。
+
+### 升级检查清单
+
+- 先固定当前版本，跑通全部示例与测验，再升级工具链。
+- 一次只改一个版本条件，把 List 相关的差异单独记成一条结论。
+- 先回归 List 与 Set 的默认行为和错误信息，再扩大测试范围。
+- 升级完成后更新本课「最后复核 / 下次复核」日期，并记录 List 的版本变化。
+
+## 典型应用场景
+
+| 场景 | 典型输入或前提 | 期望产物 |
+| --- | --- | --- |
+| 学习验证 | 使用本课最小示例和 List、Set | 能复现正文结论，并解释每一步。 |
+| 工程落地 | 把「集合框架与泛型」放入真实模块或服务边界 | 输出可观测、失败可定位、参数可配置。 |
+| 故障排查 | 只改一个版本、规模、输入或依赖条件 | 能区分概念错误、实现错误和环境差异。 |
+
+判断「集合框架与泛型」的场景是否成立，标准是能否写出输入、处理、输出和失败路径；材料中没有出现的数据在本课标注为“材料未提供”，不用推测替代证据。
+
+**课程内置实验入口**：`sandbox:java`，用于动手验证《集合框架与泛型》的机制；实验结论不替代概念定义与复杂度分析。
+
+## 代码/协议/SQL 示例
+
+### 最小可验证示例
+
+下面保留《集合框架与泛型》原文中的最小示例。先预测《集合框架与泛型》示例的输出，再按正文步骤运行或推演；示例依赖外部环境时，同时记录版本与输入。
 
 ```text
 Collection ─┬─ List（有序、可重复）→ ArrayList / LinkedList
@@ -31,7 +139,16 @@ Collection ─┬─ List（有序、可重复）→ ArrayList / LinkedList
 Map（键值对）→ HashMap / TreeMap / LinkedHashMap
 ```
 
-## List
+**教材衔接：集合体系**
+
+```text
+Collection ─┬─ List（有序、可重复）→ ArrayList / LinkedList
+            ├─ Set（不可重复）      → HashSet / TreeSet / LinkedHashSet
+            └─ Queue（队列）        → ArrayDeque / PriorityQueue
+Map（键值对）→ HashMap / TreeMap / LinkedHashMap
+```
+
+**教材衔接：List**
 
 ```java
 List<String> names = new ArrayList<>();
@@ -49,7 +166,7 @@ List<String> fixed = List.of("a", "b");   // 不可变列表
 
 `ArrayList` 随机访问快，`LinkedList` 中间插删快但实际使用较少（缓存不友好）。
 
-## Set
+**教材衔接：Set**
 
 ```java
 Set<String> tags = new HashSet<>();
@@ -61,7 +178,7 @@ Set<String> ordered = new LinkedHashSet<>();   // 保留插入顺序
 Set<Integer> sorted = new TreeSet<>();         // 自动排序
 ```
 
-## Map
+**教材衔接：Map**
 
 ```java
 Map<String, Integer> scores = new HashMap<>();
@@ -77,7 +194,7 @@ for (Map.Entry<String, Integer> entry : scores.entrySet()) {
 scores.forEach((subject, score) -> System.out.println(subject + score));
 ```
 
-## 泛型
+**教材衔接：泛型**
 
 ```java
 public class Box<T> {                  // 泛型类
@@ -98,86 +215,7 @@ List<? super Integer> sink = new ArrayList<Number>(); // 下界通配符：可�
 
 泛型在编译后会**类型擦除**，因此不能 `new T[]`，也不能对泛型做 `instanceof`。
 
-## 性能特征与并发容器
-
-| 容器 | 随机访问 | 插入删除 | 适用 |
-| --- | --- | --- | --- |
-| ArrayList | O(1) | 尾部均摊 O(1)，中间 O(n) | 默认选择，读多写少 |
-| LinkedList | O(n) | 已知位置 O(1) | 频繁在两端操作（多数场景仍不如 ArrayDeque） |
-| HashMap | 平均 O(1) | 平均 O(1) | 键值查找，需正确实现 equals/hashCode |
-| TreeMap | O(log n) | O(log n) | 需要有序遍历或范围查询 |
-| ArrayDeque | 两端 O(1) | 两端 O(1) | 栈与队列的首选 |
-
-**扩容机制**：ArrayList 默认容量 10，扩容为 1.5 倍；HashMap 默认 16、负载因子 0.75，扩容翻倍并 rehash。已知规模时预设容量（`new ArrayList<>(10000)`）可避免多次扩容拷贝。
-
-**并发容器**：`ConcurrentHashMap`（分段/CAS，读几乎无锁）、`CopyOnWriteArrayList`（写时复制，适合读多写极少）、`BlockingQueue`（生产者-消费者）。注意：`Collections.synchronizedMap` 只是给每个方法加锁，遍历时仍需手动同步；`ConcurrentHashMap` 不允许 null 键值。
-
-## 本课小结
-
-日常组合：`ArrayList` + `HashMap` + `HashSet` 覆盖 90% 场景；需要排序用 `TreeMap`/`TreeSet`，需要线程安全用 `ConcurrentHashMap`。
-
-## 集合选型速查
-
-| 需求 | 首选实现 | 关键复杂度 | 备注 |
-| --- | --- | --- | --- |
-| 有序、按下标访问 | `ArrayList` | 访问 O(1)、中间插入 O(n) | 绝大多数场景的默认选择 |
-| 频繁头尾插入删除 | `ArrayDeque` / `LinkedList` | 两端 O(1) | 当队列或栈用优先 `ArrayDeque` |
-| 去重且不关心顺序 | `HashSet` | 平均 O(1) | 依赖 `hashCode` 与 `equals` |
-| 去重且要排序 | `TreeSet` | O(log n) | 元素需可比较或传 `Comparator` |
-| 键值映射 | `HashMap` | 平均 O(1) | 允许一个 null 键 |
-| 键有序 | `TreeMap` | O(log n) | 适合范围查询 `subMap`、`headMap` |
-| 保留插入顺序 | `LinkedHashMap` | 平均 O(1) | 做 LRU 缓存的常见基础 |
-| 线程安全 | `ConcurrentHashMap` | 平均 O(1) | 比 `Collections.synchronizedMap` 并发更高 |
-| 不可变集合 | `List.of` / `Map.of` | 只读 | 写入抛 `UnsupportedOperationException` |
-
-## 常用方法对照
-
-| 操作 | List | Set | Map |
-| --- | --- | --- | --- |
-| 增 | `add` / `add(index, e)` | `add` | `put` / `putIfAbsent` / `computeIfAbsent` |
-| 删 | `remove(index)` / `remove(obj)` | `remove` | `remove(key)` |
-| 查 | `get(index)` | `contains` | `get` / `getOrDefault` |
-| 判空 | `isEmpty()` | `isEmpty()` | `isEmpty()` |
-| 遍历 | `for (E e : list)` | `for (E e : set)` | `for (var e : map.entrySet())` |
-| 大小 | `size()` | `size()` | `size()` |
-| 排序 | `Collections.sort` / `list.sort` | `TreeSet` | `TreeMap` |
-| 转换 | `List.copyOf` / `toArray` | `Set.copyOf` | `Map.copyOf` |
-
-```java
-// 统计词频：computeIfAbsent 比「先判断再 put」更简洁
-Map<String, Integer> counter = new HashMap<>();
-for (String word : words) {
-    counter.merge(word, 1, Integer::sum);
-}
-
-// 分组：一行完成「按部门归类员工」
-Map<String, List<Employee>> byDept = employees.stream()
-        .collect(Collectors.groupingBy(Employee::dept));
-```
-
-## 常见错误与排查
-
-| 容易写错的写法 | 实际现象 | 原因与正确做法 |
-| --- | --- | --- |
-| `list.remove(1)` 想删元素 1 | 删掉的是下标 1 | 参数是 `int` 时按下标删除；删对象要写 `list.remove(Integer.valueOf(1))` |
-| 遍历 List 时 `list.remove(e)` | `ConcurrentModificationException` | 用 `Iterator.remove()` 或 `removeIf(...)` |
-| `map.get(key)` 后直接 `+1` | `NullPointerException` | 用 `getOrDefault(key, 0)` 或 `merge` |
-| 只用 `equals` 不重写 `hashCode` | `HashSet` 里出现「重复」元素 | 两者必须成对重写，或用 `record` 自动生成 |
-| `Arrays.asList(...)` 后 `add` | `UnsupportedOperationException` | 它返回固定大小的视图，改成 `new ArrayList<>(Arrays.asList(...))` |
-| `List.of(...)` 里放 null | `NullPointerException` | 不可变工厂不允许 null，用 `Collections.singletonList` 或 `ArrayList` |
-| `HashMap` 在多线程下并发写 | 数据错乱甚至死循环 | 改用 `ConcurrentHashMap`，或用 `computeIfAbsent` 做原子初始化 |
-| 遍历 `keySet()` 再 `get` | 多一次查找 | 遍历 `entrySet()` 一次拿键值 |
-| 用可变对象作 `HashMap` 的键 | 改字段后查不到 | 键应使用不可变对象（`String`、`record`） |
-
-## 复习与自测
-
-- [ ] 能根据「是否去重、是否需要顺序、是否并发」选定集合类型。
-- [ ] 记得 `ArrayList` 随机访问快、`LinkedList` 两端操作快。
-- [ ] 遍历 Map 时使用 `entrySet()`。
-- [ ] 自定义对象放进 `HashSet` 或做 `HashMap` 键时，重写 `equals` + `hashCode`。
-- [ ] 多线程共享 Map 时优先用 `ConcurrentHashMap`。
-
-## 零基础详解：List、Set、Map 怎么选
+**教材衔接：零基础详解：List、Set、Map 怎么选**
 
 ### 一句话说清它是什么
 
@@ -307,7 +345,199 @@ public class WordCount {
 - [ ] 会用 `merge` 做计数、用 `getOrDefault` 取默认值。
 - [ ] 知道遍历集合时删除元素该用什么方法。
 
-## 动手练习
+## 时间/空间复杂度或性能分析
+
+**复杂度证据**：本课正文出现 `O(1)`、`O(n)`、`O(log n)` 等量级表达式；使用前要同时确认输入规模、最好/平均/最坏情况以及常数项来源。
+
+| 维度 | 本课关注点 | 判断依据 |
+| --- | --- | --- |
+| 时间/延迟 | 「集合框架与泛型」的主要步骤是否会随输入规模、并发度或网络往返增长。 | 以正文复杂度、基准数据或可重复测量为准。 |
+| 空间/内存 | 中间状态、缓存、副本、连接或索引是否随规模增长。 | 记录峰值内存与数据副本，不只看最终结果。 |
+| 吞吐/资源 | 版本、调度、锁、IO、序列化或协议开销是否成为瓶颈。 | 固定环境做对照实验，改变一个变量。 |
+
+评估「集合框架与泛型」时要区分“正确性成立”和“性能达标”两件事；材料没有给出基准时，本课只保留量级来源与测量方法，不写不可验证的绝对数字。
+
+**教材衔接：性能特征与并发容器**
+
+| 容器 | 随机访问 | 插入删除 | 适用 |
+| --- | --- | --- | --- |
+| ArrayList | O(1) | 尾部均摊 O(1)，中间 O(n) | 默认选择，读多写少 |
+| LinkedList | O(n) | 已知位置 O(1) | 频繁在两端操作（多数场景仍不如 ArrayDeque） |
+| HashMap | 平均 O(1) | 平均 O(1) | 键值查找，需正确实现 equals/hashCode |
+| TreeMap | O(log n) | O(log n) | 需要有序遍历或范围查询 |
+| ArrayDeque | 两端 O(1) | 两端 O(1) | 栈与队列的首选 |
+
+**扩容机制**：ArrayList 默认容量 10，扩容为 1.5 倍；HashMap 默认 16、负载因子 0.75，扩容翻倍并 rehash。已知规模时预设容量（`new ArrayList<>(10000)`）可避免多次扩容拷贝。
+
+**并发容器**：`ConcurrentHashMap`（分段/CAS，读几乎无锁）、`CopyOnWriteArrayList`（写时复制，适合读多写极少）、`BlockingQueue`（生产者-消费者）。注意：`Collections.synchronizedMap` 只是给每个方法加锁，遍历时仍需手动同步；`ConcurrentHashMap` 不允许 null 键值。
+
+## 常见误区与易错点
+
+> 复核《集合框架与泛型》的易错点时，优先保留原文的错误表、故障现场与排错路径；每条修正都要能用本课示例复验。
+
+| 易错点 | 常见表现 | 正确做法 |
+| --- | --- | --- |
+| 只背结论 | 能复述「集合框架与泛型」的定义，却说不清输入、输出与边界。 | 回到机制步骤，用最小示例逐一验证。 |
+| 混淆相邻概念 | 把本课对象与相邻主题的对象当成同一类。 | 先比较定义、资源归属、生命周期和失败模式。 |
+| 忽略版本与环境 | 在开发机通过后直接外推到生产环境。 | 固定版本、输入和资源条件，再记录可复现结果。 |
+
+**教材衔接：常见错误与排查**
+
+| 容易写错的写法 | 实际现象 | 原因与正确做法 |
+| --- | --- | --- |
+| `list.remove(1)` 想删元素 1 | 删掉的是下标 1 | 参数是 `int` 时按下标删除；删对象要写 `list.remove(Integer.valueOf(1))` |
+| 遍历 List 时 `list.remove(e)` | `ConcurrentModificationException` | 用 `Iterator.remove()` 或 `removeIf(...)` |
+| `map.get(key)` 后直接 `+1` | `NullPointerException` | 用 `getOrDefault(key, 0)` 或 `merge` |
+| 只用 `equals` 不重写 `hashCode` | `HashSet` 里出现「重复」元素 | 两者必须成对重写，或用 `record` 自动生成 |
+| `Arrays.asList(...)` 后 `add` | `UnsupportedOperationException` | 它返回固定大小的视图，改成 `new ArrayList<>(Arrays.asList(...))` |
+| `List.of(...)` 里放 null | `NullPointerException` | 不可变工厂不允许 null，用 `Collections.singletonList` 或 `ArrayList` |
+| `HashMap` 在多线程下并发写 | 数据错乱甚至死循环 | 改用 `ConcurrentHashMap`，或用 `computeIfAbsent` 做原子初始化 |
+| 遍历 `keySet()` 再 `get` | 多一次查找 | 遍历 `entrySet()` 一次拿键值 |
+| 用可变对象作 `HashMap` 的键 | 改字段后查不到 | 键应使用不可变对象（`String`、`record`） |
+
+**教材衔接：故障现场**
+
+### 现场 1：list.remove(1) 想删元素 1
+
+**症状**：在《集合框架与泛型》的复现场景中，删掉的是下标 1。
+
+**根因**：触发点是把“list.remove(1) 想删元素 1”当成安全做法。它没有满足《集合框架与泛型》要求的前提，因此先表现为“删掉的是下标 1”；排查时先完整复现这一段，再核对输入、配置与依赖。
+
+**修复**：针对《集合框架与泛型》的问题，参数是 int 时按下标删除；删对象要写 list.remove(Integer.valueOf(1))。
+
+**验证**：先在《集合框架与泛型》中记录“list.remove(1) 想删元素 1”留下的失败证据，再执行“参数是 int 时按下标删除；删对象要写 list.remove(Integer.valueOf(1))”并重放；确认错误路径变为明确结果，且修复没有掩盖同类故障。
+
+### 现场 2：遍历 List 时 list.remove(e)
+
+**症状**：在《集合框架与泛型》的复现场景中，ConcurrentModificationException。
+
+**根因**：触发点是把“遍历 List 时 list.remove(e)”当成安全做法。它没有满足《集合框架与泛型》要求的前提，因此先表现为“ConcurrentModificationException”；排查时先完整复现这一段，再核对输入、配置与依赖。
+
+**修复**：针对《集合框架与泛型》的问题，用 Iterator.remove() 或 removeIf(...)。
+
+**验证**：保留《集合框架与泛型》里触发“ConcurrentModificationException”的输入、版本和日志，按“用 Iterator.remove() 或 removeIf(...)”完成修改后原样重放；只有失败现象消失且相邻场景仍可解释，才保留改动。
+
+### 现场 3：map.get(key) 后直接 +1
+
+**症状**：在《集合框架与泛型》的复现场景中，NullPointerException。
+
+**根因**：触发点是把“map.get(key) 后直接 +1”当成安全做法。它没有满足《集合框架与泛型》要求的前提，因此先表现为“NullPointerException”；排查时先完整复现这一段，再核对输入、配置与依赖。
+
+**修复**：针对《集合框架与泛型》的问题，用 getOrDefault(key, 0) 或 merge。
+
+**验证**：在《集合框架与泛型》中按“用 getOrDefault(key, 0) 或 merge”调整后，从“map.get(key) 后直接 +1”的触发条件重放同一条路径，确认“NullPointerException”不再出现，并补一个相邻边界用例检查没有引入新问题。
+
+## 与其他知识点的关系
+
+| 关系 | 课程 | 为什么 |
+| --- | --- | --- |
+| 先修 | 《继承、接口与多态》 | 本课会直接使用它的概念或操作前提。 |
+| 关联 | 《异常处理与文件 IO》 | 用于横向比较或把本课结论迁移到相邻主题。 |
+| 前置顺序 | 《继承、接口与多态》 | 同分类中安排在本课之前，建议先完成其自测。 |
+| 后续顺序 | 《异常处理与文件 IO》 | 同分类中安排在本课之后，会继续使用本课术语。 |
+
+把「集合框架与泛型」放回知识体系时，不只要记住“前面学过什么”，还要说明两个主题在输入、机制、资源边界和失败模式上的差异。这样才能把单课知识迁移到项目、排障和后续课程。
+
+**教材衔接：常用方法对照**
+
+| 操作 | List | Set | Map |
+| --- | --- | --- | --- |
+| 增 | `add` / `add(index, e)` | `add` | `put` / `putIfAbsent` / `computeIfAbsent` |
+| 删 | `remove(index)` / `remove(obj)` | `remove` | `remove(key)` |
+| 查 | `get(index)` | `contains` | `get` / `getOrDefault` |
+| 判空 | `isEmpty()` | `isEmpty()` | `isEmpty()` |
+| 遍历 | `for (E e : list)` | `for (E e : set)` | `for (var e : map.entrySet())` |
+| 大小 | `size()` | `size()` | `size()` |
+| 排序 | `Collections.sort` / `list.sort` | `TreeSet` | `TreeMap` |
+| 转换 | `List.copyOf` / `toArray` | `Set.copyOf` | `Map.copyOf` |
+
+```java
+// 统计词频：computeIfAbsent 比「先判断再 put」更简洁
+Map<String, Integer> counter = new HashMap<>();
+for (String word : words) {
+    counter.merge(word, 1, Integer::sum);
+}
+
+// 分组：一行完成「按部门归类员工」
+Map<String, List<Employee>> byDept = employees.stream()
+        .collect(Collectors.groupingBy(Employee::dept));
+```
+
+## 自测题与参考答案
+
+> 先独立作答《集合框架与泛型》的自测题，再对照答案与解析；每处判断都要能在本课正文或示例中找到依据。
+
+### 自测 1
+
+不允许重复元素的集合是？
+
+A. Set
+B. Queue
+C. List
+D. 数组
+
+**参考答案**：Set
+
+**解析**：Set 保证元素唯一，HashSet 依赖 hashCode/equals，TreeSet 还会排序。其他选项：List 与数组允许重复，Queue 面向排队场景。这道题的关键在「集合框架与泛型」的List、Set、Map：先确认题干“不允许重复元素的集合是”问的是哪一步，再排除偷换前提的选项。
+
+### 自测 2
+
+阅读「集合框架与泛型」正文里的这段 Java 代码，下面哪一项判断是正确的？
+
+```java
+import java.util.*;
+
+List<String> names = new ArrayList<>(List.of("小明", "小红"));
+names.add("小刚");
+names.set(0, "小美");                    // 改
+names.remove("小刚");                     // 按值删
+boolean has = names.contains("小红");
+
+Set<String> tags = new HashSet<>();
+tags.add("java");
+tags.add("java");                        // 重复，不会生效
+System.out.println(tags.size());          // 1
+
+Map<String, Integer> counts = new HashMap<>();
+counts.put("a", 1);
+counts.merge("a", 1, Integer::sum);       // 计数神器：a -> 2
+counts.getOrDefault("b", 0);              // 取不到给默认值
+for (Map.Entry<String, Integer> e : counts.entrySet()) {
+    System.out.println(e.getKey() + "=" + e.getValue());
+}
+```
+
+A. 这段代码包含循环结构，同一段逻辑会被重复执行。
+B. 这段代码会读取外部输入，结果依赖传入的数据。
+C. 这段代码只做静态声明，没有循环、分支或可观察输出。
+D. 这段代码包含条件分支，不同输入会走不同的执行路径。
+
+**参考答案**：这段代码包含循环结构，同一段逻辑会被重复执行。
+
+**解析**：在「集合框架与泛型」里，题干的正确项是这段代码包含循环结构，同一段逻辑会被重复执行，在「集合框架与泛型」里循环次数与List的输入规模直接相关。把输入或边界换成空值、极值或失败情况后，结论要以「集合框架与泛型」的实际运行结果为准。「集合框架与泛型」要求先交代List、Set、Map的前提再下结论，所以“这段代码包含循环结构”只在题干“阅读集合框架与泛型正文里的这段 Java 代码”给定的条件下成立。
+
+### 自测 3
+
+下列哪些集合实现更适合高并发读写场景？请选择所有正确答案。
+
+A. ArrayList
+B. ConcurrentHashMap
+C. CopyOnWriteArrayList
+D. LinkedList
+
+**参考答案**：ConcurrentHashMap；CopyOnWriteArrayList
+
+**解析**：在「集合框架与泛型」里，CopyOnWriteArrayList。在「集合框架与泛型」里，ArrayList 和 LinkedList 不是线程安全实现，多线程同时修改时需要外部同步。「集合框架与泛型」要求先交代List、Set、Map的前提再下结论，所以“ConcurrentHashMap”只在题干“下列哪些集合实现更适合高并发读写场景”给定的条件下成立。
+
+**教材衔接：复习与自测**
+
+- [ ] 能根据「是否去重、是否需要顺序、是否并发」选定集合类型。
+- [ ] 记得 `ArrayList` 随机访问快、`LinkedList` 两端操作快。
+- [ ] 遍历 Map 时使用 `entrySet()`。
+- [ ] 自定义对象放进 `HashSet` 或做 `HashMap` 键时，重写 `equals` + `hashCode`。
+- [ ] 多线程共享 Map 时优先用 `ConcurrentHashMap`。
+
+**教材衔接：动手练习**
 
 > 本课练习重点：围绕「List、Set、Map」完成复述、实验和交付，每个结果都要能被别人检查。
 
@@ -345,7 +575,7 @@ public class WordCount {
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-## 可运行练习
+**教材衔接：可运行练习**
 
 本节围绕集合框架与泛型安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 
@@ -365,52 +595,7 @@ public class WordCount {
 
 **验收标准**：结论要能追溯到「集合体系」的具体段落，并说明它和 Set 的边界。
 
-## 故障现场
-
-### 现场 1：list.remove(1) 想删元素 1
-
-**症状**：在《集合框架与泛型》的复现场景中，删掉的是下标 1。
-
-**根因**：触发点是把“list.remove(1) 想删元素 1”当成安全做法。它没有满足《集合框架与泛型》要求的前提，因此先表现为“删掉的是下标 1”；排查时先完整复现这一段，再核对输入、配置与依赖。
-
-**修复**：针对《集合框架与泛型》的问题，参数是 int 时按下标删除；删对象要写 list.remove(Integer.valueOf(1))。
-
-**验证**：先在《集合框架与泛型》中记录“list.remove(1) 想删元素 1”留下的失败证据，再执行“参数是 int 时按下标删除；删对象要写 list.remove(Integer.valueOf(1))”并重放；确认错误路径变为明确结果，且修复没有掩盖同类故障。
-
-### 现场 2：遍历 List 时 list.remove(e)
-
-**症状**：在《集合框架与泛型》的复现场景中，ConcurrentModificationException。
-
-**根因**：触发点是把“遍历 List 时 list.remove(e)”当成安全做法。它没有满足《集合框架与泛型》要求的前提，因此先表现为“ConcurrentModificationException”；排查时先完整复现这一段，再核对输入、配置与依赖。
-
-**修复**：针对《集合框架与泛型》的问题，用 Iterator.remove() 或 removeIf(...)。
-
-**验证**：保留《集合框架与泛型》里触发“ConcurrentModificationException”的输入、版本和日志，按“用 Iterator.remove() 或 removeIf(...)”完成修改后原样重放；只有失败现象消失且相邻场景仍可解释，才保留改动。
-
-### 现场 3：map.get(key) 后直接 +1
-
-**症状**：在《集合框架与泛型》的复现场景中，NullPointerException。
-
-**根因**：触发点是把“map.get(key) 后直接 +1”当成安全做法。它没有满足《集合框架与泛型》要求的前提，因此先表现为“NullPointerException”；排查时先完整复现这一段，再核对输入、配置与依赖。
-
-**修复**：针对《集合框架与泛型》的问题，用 getOrDefault(key, 0) 或 merge。
-
-**验证**：在《集合框架与泛型》中按“用 getOrDefault(key, 0) 或 merge”调整后，从“map.get(key) 后直接 +1”的触发条件重放同一条路径，确认“NullPointerException”不再出现，并补一个相邻边界用例检查没有引入新问题。
-
-## 版本与时效
-
-- 版本基线会影响 List 的可用 API，升级前先用编译与测试验证。
-- 若 LinkedHashSet 依赖线程或 GC 行为，升级时要重点验证并发与停顿指标。
-- 升级前确认 List 的兼容范围，把不可回退的改动单独拆成一次提交。
-
-### 升级检查清单
-
-- 先固定当前版本，跑通全部示例与测验，再升级工具链。
-- 一次只改一个版本条件，把 List 相关的差异单独记成一条结论。
-- 先回归 List 与 Set 的默认行为和错误信息，再扩大测试范围。
-- 升级完成后更新本课「最后复核 / 下次复核」日期，并记录 List 的版本变化。
-
-## 本课复习清单
+**教材衔接：本课复习清单**
 
 离开本课前，逐项确认：
 
@@ -427,6 +612,8 @@ public class WordCount {
 | 已经能独立解释的考点 |  |
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
+
+---
 
 ## 术语速查
 
@@ -507,4 +694,3 @@ public class WordCount {
 | [JDBC 教程](https://docs.oracle.com/javase/tutorial/jdbc/) | 数据库连接与事务 |
 
 > 「集合框架与泛型」的链接用于离线阅读后的延伸核对；App 不会自动联网。
-

@@ -1,12 +1,39 @@
 # Go 并发：goroutine、channel 与 context
 
-> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：30 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：45 分钟
 
 ![Go goroutine channel context](images/diagram_go_concurrency.webp)
 
 ![Go 并发：goroutine、channel 与 context](images/remaining_go_concurrency.webp)
 
-## 学习目标
+## 本节知识框架
+
+**课程定位**：所属分类为「Go」，课程主题为「Go 并发：goroutine、channel 与 context」，学习阶段为「基础」，建议用时 45 分钟。
+
+**本课要解决的主问题**：channel 通信、worker pool、context 取消与竞态检测。
+
+| 学习层次 | 要回答的问题 | 完成判据 |
+| --- | --- | --- |
+| 概念层 | 「Go 并发：goroutine、channel 与 context」有哪些必须区分的对象与术语？ | 能用自己的话定义核心术语，并各举一个正例和一个反例。 |
+| 机制层 | 这些对象按什么顺序发生作用，输入如何变成输出？ | 能画出或写出机制步骤，并说明每一步的失败条件。 |
+| 应用层 | 什么场景适合使用「Go 并发：goroutine、channel 与 context」，什么场景不适合？ | 能给出一个真实场景、一个最小示例和一个边界案例。 |
+| 性能层 | 时间、空间、吞吐或延迟受哪些量影响？ | 能说出复杂度或性能瓶颈的证据来源；没有证据时明确写“材料未提供”。 |
+| 复习层 | 怎样确认自己不是只记住了结论？ | 能独立完成本课自测，并把错误定位到概念、机制、示例或边界。 |
+
+### 阅读路线
+
+1. 先读「核心概念定义」，建立「Go」等对象的精确定义。
+2. 再读「原理与运行机制」，把定义串成可重复的过程。
+3. 用「代码/协议/SQL 示例」验证过程，并只改一个条件观察结果变化。
+4. 最后检查性能、易错点、知识关系与自测题，形成可复习的证据链。
+
+**前置知识**：《Go 基础》
+
+**学习位置**：本课位于《Go 基础》之后；如果前一课的自测不能通过，应先回补再继续。
+
+**后续衔接**：下一课《Go 接口与错误处理》会继续使用本课术语，学完后建议立即完成一次自测。
+
+**教材衔接：学习目标**
 
 - 能用自己的话解释Go 并发：goroutine、channel 与 context解决了什么问题，而不是只背术语。
 - 能说清 「Go」、「goroutine」、「channel」、「context」 之间的关系，并分别举出一个例子。
@@ -15,14 +42,50 @@
 
 > 一句话摘要：channel 通信、worker pool、context 取消与竞态检测。
 
-## 前置知识
+**教材衔接：前置知识**
 
 - 先完成上一课《Go 基础》；如果已经掌握，可以直接用本课练习自测。
 - 本课阶段：基础。建议先完成「Go 基础」，或确认自己能独立跑通正文里的 WithTimeout 示例。
 - 开始前先复习：Go、goroutine、channel。
 - 看不懂就直接缩小例子：只保留 Go 相关的两行输入，跑通后再加回其余部分。
 
-## 三个核心原语
+**教材衔接：本课小结**
+
+Go 并发的要点：**用 channel 传递数据、用 context 控制生命周期、用 WaitGroup 等待完成、用 -race 验证正确性**。
+
+## 核心概念定义
+
+> 阅读约定：本课先给「Go 并发：goroutine、channel 与 context」相关术语的操作性定义与适用边界；正文里的口语化说法与定义冲突时，以定义和可复现示例为准。
+
+| 术语 | 操作性定义 | 本课中的边界 |
+| --- | --- | --- |
+| context.WithTimeout | 超时与取消**：context.WithTimeout 传递取消信号，所有阻塞操作都要监听 ctx.Done()。 | 仅在「Go 并发：goroutine、channel 与 context」明确给出的输入、版本与资源条件下成立。 |
+| sync.WaitGroup | 等待一组任务**：sync.WaitGroup 的 Add/Done/Wait。 | 仅在「Go 并发：goroutine、channel 与 context」明确给出的输入、版本与资源条件下成立。 |
+| Go | 由 Google 设计的静态编译语言，强调简单语法、并发和部署便利。 | 仅在「Go 并发：goroutine、channel 与 context」明确给出的输入、版本与资源条件下成立。 |
+| 数据竞争 | 多个 goroutine 无同步地读写同一变量，用 -race 检测，靠互斥锁或 channel 消除。 | 仅在「Go 并发：goroutine、channel 与 context」明确给出的输入、版本与资源条件下成立。 |
+
+### 定义如何使用
+
+在「Go 并发：goroutine、channel 与 context」中判断一个说法是否成立，先确认它使用的是哪个对象的定义，再检查输入规模、运行环境与失败路径。定义不是口号，而是后续推导、代码示例和自测题共享的约束。
+
+## 原理与运行机制
+
+### 机制总览
+
+1. **建立输入**：把「context.WithTimeout」按本课定义整理成可观察、可重复的输入条件。
+2. **执行转换**：围绕「sync.WaitGroup」执行本课的核心步骤；每一步都记录中间状态，避免只看最终输出。
+3. **产生输出**：得到「Go」后，用正文示例或协议/SQL 结果核对输出是否符合预期。
+4. **改变一个条件**：只替换一个边界条件或环境参数，观察「Go 并发：goroutine、channel 与 context」的结论是否仍然成立。
+
+| 阶段 | 关注对象 | 失败时应检查 |
+| --- | --- | --- |
+| 输入 | context.WithTimeout | 类型、范围、编码、版本或前置状态是否满足定义。 |
+| 处理 | sync.WaitGroup | 顺序、可见性、锁、路由、事务或调度规则是否被破坏。 |
+| 输出 | Go | 结果是否可复现，错误是否被正确传播而不是被吞掉。 |
+
+本课的机制结论要用「Go 并发：goroutine、channel 与 context」自己的示例验证。「Go 并发：goroutine、channel 与 context」没有给出某个数量级、吞吐或内存数据时，本课把该判断标为“材料未提供”，不从相邻主题外推。
+
+**教材衔接：三个核心原语**
 
 | 原语 | 作用 |
 | --- | --- |
@@ -32,42 +95,70 @@
 
 Go 的并发哲学：**不要通过共享内存来通信，而要通过通信来共享内存**。
 
-## 常见模式
+**教材衔接：常见模式**
 
 1. **Worker Pool**：固定 N 个 worker 从 channel 取任务，控制并发度。
 2. **扇出扇入**：多个 goroutine 并行处理后汇总到一个 channel。
 3. **超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`。
 4. **等待一组任务**：`sync.WaitGroup` 的 Add/Done/Wait。
 
-## 常见错误与排查
-
-- **goroutine 泄漏**：启动后无人回收。凡是阻塞在 channel 或网络上的 goroutine，都要有退出路径。
-- **向已关闭的 channel 发送** 会 panic；关闭方应是唯一的发送者。
-- **循环变量捕获**：Go 1.22 之前需显式复制变量。
-- **竞态**：用 `go test -race` 检测，用 mutex 或 channel 消除。
-| 容易写错的做法 | 实际现象 | 原因与正确做法 |
-| --- | --- | --- |
-| `wg.Add(1)` 写在 `go func()` 内部 | `Wait` 提前返回 | `Add` 必须在启动协程前调用 |
-| 向已关闭的 channel 发送 | panic | 只让发送方关闭，且关闭后不再发送 |
-| 读已关闭的 channel | 立刻返回零值 | 用 `v, ok := <-ch` 区分「零值」与「已关闭」 |
-| goroutine 内 panic 未捕获 | 整个进程崩溃 | 在 `recover` 中兜住并记录日志 |
-| 只发不收（或只收不发） | 死锁：`all goroutines are asleep` | 确保有对应接收方，或使用缓冲与超时 |
-| 在循环里用 `for _, v := range s { go func(){ use(v) }() }` | 旧版 Go 捕获同一变量导致数据错 | 把 `v` 作为参数传入闭包 |
-| 忘记 `defer cancel()` | context 泄漏 | 创建后立即 `defer cancel()` |
-| 用 `time.Sleep` 等待完成 | 不稳定、慢 | 用 `WaitGroup` 或 channel 同步 |
-| 共享 map 并发读写 | panic：`concurrent map writes` | 加锁或用 `sync.Map` |
-| 无限制启动 goroutine | 内存暴涨、调度开销大 | 用带缓冲的 channel 或 `errgroup.SetLimit` 限流 |
-| 直接 `fmt.Println` 调试并发 | 输出交织、无法定位 | 用结构化日志并带请求 ID |
-
-## 共享状态的两条路
+**教材衔接：共享状态的两条路**
 
 优先用 channel 传递所有权；确需共享时用 `sync.Mutex`/`RWMutex` 或 `sync/atomic`。读多写少用 `RWMutex`，计数器用 `atomic.Int64`。
 
-## 本课小结
+**教材衔接：版本与时效**
 
-Go 并发的要点：**用 channel 传递数据、用 context 控制生命周期、用 WaitGroup 等待完成、用 -race 验证正确性**。
+- 升级「Go 并发：goroutine、channel 与 context」涉及的依赖前，先用 WithTimeout 复现当前行为，再逐项核对版本说明与破坏性变更。
+- 模块校验、最小版本选择与供应链安全是生产升级的重点
+- 官方发布说明：https://go.dev/doc/devel/release
 
-## goroutine 与 channel 速查
+### 升级检查清单
+
+- 先固定当前版本，跑通全部示例与测验，再升级工具链。
+- 升级时只动一个依赖版本，用 WithTimeout 记录构建与运行结果。
+- 回归范围锁定 WithTimeout 的默认行为，并确认弃用警告是否出现在构建输出里。
+- 升级完成后记录 Go 的新旧版本差异，并据此调整下次复核时间。
+
+## 典型应用场景
+
+| 场景 | 典型输入或前提 | 期望产物 |
+| --- | --- | --- |
+| 学习验证 | 使用本课最小示例和 Go、goroutine | 能复现正文结论，并解释每一步。 |
+| 工程落地 | 把「Go 并发：goroutine、channel 与 context」放入真实模块或服务边界 | 输出可观测、失败可定位、参数可配置。 |
+| 故障排查 | 只改一个版本、规模、输入或依赖条件 | 能区分概念错误、实现错误和环境差异。 |
+
+判断「Go 并发：goroutine、channel 与 context」的场景是否成立，标准是能否写出输入、处理、输出和失败路径；材料中没有出现的数据在本课标注为“材料未提供”，不用推测替代证据。
+
+**课程内置实验入口**：`sandbox:go`，用于动手验证《Go 并发：goroutine、channel 与 context》的机制；实验结论不替代概念定义与复杂度分析。
+
+## 代码/协议/SQL 示例
+
+### 最小可验证示例
+
+下面保留《Go 并发：goroutine、channel 与 context》原文中的最小示例。先预测《Go 并发：goroutine、channel 与 context》示例的输出，再按正文步骤运行或推演；示例依赖外部环境时，同时记录版本与输入。
+
+```go
+func worker(ctx context.Context, jobs <-chan int, results chan<- int, wg *sync.WaitGroup) {
+	defer wg.Done()
+	for {
+		select {
+		case <-ctx.Done():
+			return                       // 收到取消信号立即退出
+		case job, ok := <-jobs:
+			if !ok {
+				return                   // channel 已关闭且取完
+			}
+			select {
+			case results <- job * 2:
+			case <-ctx.Done():
+				return
+			}
+		}
+	}
+}
+```
+
+**教材衔接：goroutine 与 channel 速查**
 
 | 目的 | 写法 | 说明 |
 | --- | --- | --- |
@@ -105,7 +196,19 @@ func worker(ctx context.Context, jobs <-chan int, results chan<- int, wg *sync.W
 }
 ```
 
-## 并发安全速查
+## 时间/空间复杂度或性能分析
+
+**复杂度证据**：「Go 并发：goroutine、channel 与 context」的现有材料没有给出渐近时间或空间复杂度的明确结论，本课只做定性检查，不补写未经验证的 $O$ 记号。
+
+| 维度 | 本课关注点 | 判断依据 |
+| --- | --- | --- |
+| 时间/延迟 | 「Go 并发：goroutine、channel 与 context」的主要步骤是否会随输入规模、并发度或网络往返增长。 | 以正文复杂度、基准数据或可重复测量为准。 |
+| 空间/内存 | 中间状态、缓存、副本、连接或索引是否随规模增长。 | 记录峰值内存与数据副本，不只看最终结果。 |
+| 吞吐/资源 | 版本、调度、锁、IO、序列化或协议开销是否成为瓶颈。 | 固定环境做对照实验，改变一个变量。 |
+
+评估「Go 并发：goroutine、channel 与 context」时要区分“正确性成立”和“性能达标”两件事；材料没有给出基准时，本课只保留量级来源与测量方法，不写不可验证的绝对数字。
+
+**教材衔接：并发安全速查**
 
 | 场景 | 推荐做法 |
 | --- | --- |
@@ -118,15 +221,7 @@ func worker(ctx context.Context, jobs <-chan int, results chan<- int, wg *sync.W
 | 共享状态较多 | 加锁，但优先考虑改用 channel 传递所有权 |
 | 检测数据竞争 | `go test -race` |
 
-## 复习与自测
-
-- [ ] 会用 `WaitGroup`、`channel`、`context` 控制协程生命周期。
-- [ ] 知道「谁发送谁关闭」的惯例，并用 `v, ok` 判断关闭。
-- [ ] 共享数据一律加锁或用原子操作。
-- [ ] 关键代码跑 `go test -race` 且无告警。
-- [ ] 所有并发任务都能被取消并设了超时。
-
-## 零基础详解：goroutine、channel 与「通过通信共享内存」
+**教材衔接：零基础详解：goroutine、channel 与「通过通信共享内存」**
 
 ### 一句话说清它是什么
 
@@ -241,7 +336,152 @@ case result := <-ch:
 - [ ] 知道 `WaitGroup.Add` 为什么必须写在 `go` 之前。
 - [ ] 能用 `select` 加 `context` 写出带超时的等待。
 
-## 动手练习
+## 常见误区与易错点
+
+> 复核《Go 并发：goroutine、channel 与 context》的易错点时，优先保留原文的错误表、故障现场与排错路径；每条修正都要能用本课示例复验。
+
+| 易错点 | 常见表现 | 正确做法 |
+| --- | --- | --- |
+| 只背结论 | 能复述「Go 并发：goroutine、channel 与 context」的定义，却说不清输入、输出与边界。 | 回到机制步骤，用最小示例逐一验证。 |
+| 混淆相邻概念 | 把本课对象与相邻主题的对象当成同一类。 | 先比较定义、资源归属、生命周期和失败模式。 |
+| 忽略版本与环境 | 在开发机通过后直接外推到生产环境。 | 固定版本、输入和资源条件，再记录可复现结果。 |
+
+**教材衔接：常见错误与排查**
+
+- **goroutine 泄漏**：启动后无人回收。凡是阻塞在 channel 或网络上的 goroutine，都要有退出路径。
+- **向已关闭的 channel 发送** 会 panic；关闭方应是唯一的发送者。
+- **循环变量捕获**：Go 1.22 之前需显式复制变量。
+- **竞态**：用 `go test -race` 检测，用 mutex 或 channel 消除。
+| 容易写错的做法 | 实际现象 | 原因与正确做法 |
+| --- | --- | --- |
+| `wg.Add(1)` 写在 `go func()` 内部 | `Wait` 提前返回 | `Add` 必须在启动协程前调用 |
+| 向已关闭的 channel 发送 | panic | 只让发送方关闭，且关闭后不再发送 |
+| 读已关闭的 channel | 立刻返回零值 | 用 `v, ok := <-ch` 区分「零值」与「已关闭」 |
+| goroutine 内 panic 未捕获 | 整个进程崩溃 | 在 `recover` 中兜住并记录日志 |
+| 只发不收（或只收不发） | 死锁：`all goroutines are asleep` | 确保有对应接收方，或使用缓冲与超时 |
+| 在循环里用 `for _, v := range s { go func(){ use(v) }() }` | 旧版 Go 捕获同一变量导致数据错 | 把 `v` 作为参数传入闭包 |
+| 忘记 `defer cancel()` | context 泄漏 | 创建后立即 `defer cancel()` |
+| 用 `time.Sleep` 等待完成 | 不稳定、慢 | 用 `WaitGroup` 或 channel 同步 |
+| 共享 map 并发读写 | panic：`concurrent map writes` | 加锁或用 `sync.Map` |
+| 无限制启动 goroutine | 内存暴涨、调度开销大 | 用带缓冲的 channel 或 `errgroup.SetLimit` 限流 |
+| 直接 `fmt.Println` 调试并发 | 输出交织、无法定位 | 用结构化日志并带请求 ID |
+
+**教材衔接：故障现场**
+
+### 现场 1：wg.Add(1) 写在 go func() 内部
+
+**症状**：在《Go 并发：goroutine、channel 与 context》的复现场景中，Wait 提前返回。
+
+**根因**：当出现“wg.Add(1) 写在 go func() 内部”时，执行路径已经绕过了《Go 并发：goroutine、channel 与 context》的关键约束，最终以“Wait 提前返回”暴露出来；修复前必须先确认约束在哪里失效。
+
+**修复**：针对《Go 并发：goroutine、channel 与 context》的问题，Add 必须在启动协程前调用。
+
+**验证**：先在《Go 并发：goroutine、channel 与 context》中记录“wg.Add(1) 写在 go func() 内部”留下的失败证据，再执行“Add 必须在启动协程前调用”并重放；确认错误路径变为明确结果，且修复没有掩盖同类故障。
+
+### 现场 2：读已关闭的 channel
+
+**症状**：在《Go 并发：goroutine、channel 与 context》的复现场景中，立刻返回零值。
+
+**根因**：触发点是把“读已关闭的 channel”当成安全做法。它没有满足《Go 并发：goroutine、channel 与 context》要求的前提，因此先表现为“立刻返回零值”；排查时先完整复现这一段，再核对输入、配置与依赖。
+
+**修复**：针对《Go 并发：goroutine、channel 与 context》的问题，用 v, ok := <-ch 区分「零值」与「已关闭」。
+
+**验证**：在《Go 并发：goroutine、channel 与 context》中按“用 v, ok := <-ch 区分「零值」与「已关闭」”调整后，从“读已关闭的 channel”的触发条件重放同一条路径，确认“立刻返回零值”不再出现，并补一个相邻边界用例检查没有引入新问题。
+
+### 现场 3：goroutine 内 panic 未捕获
+
+**症状**：在《Go 并发：goroutine、channel 与 context》的复现场景中，整个进程崩溃。
+
+**根因**：触发点是把“goroutine 内 panic 未捕获”当成安全做法。它没有满足《Go 并发：goroutine、channel 与 context》要求的前提，因此先表现为“整个进程崩溃”；排查时先完整复现这一段，再核对输入、配置与依赖。
+
+**修复**：针对《Go 并发：goroutine、channel 与 context》的问题，在 recover 中兜住并记录日志。
+
+**验证**：先在《Go 并发：goroutine、channel 与 context》中记录“goroutine 内 panic 未捕获”留下的失败证据，再执行“在 recover 中兜住并记录日志”并重放；确认错误路径变为明确结果，且修复没有掩盖同类故障。
+
+## 与其他知识点的关系
+
+| 关系 | 课程 | 为什么 |
+| --- | --- | --- |
+| 先修 | 《Go 基础》 | 本课会直接使用它的概念或操作前提。 |
+| 关联 | 《Go 接口与错误处理》 | 用于横向比较或把本课结论迁移到相邻主题。 |
+| 前置顺序 | 《Go 基础》 | 同分类中安排在本课之前，建议先完成其自测。 |
+| 后续顺序 | 《Go 接口与错误处理》 | 同分类中安排在本课之后，会继续使用本课术语。 |
+
+把「Go 并发：goroutine、channel 与 context」放回知识体系时，不只要记住“前面学过什么”，还要说明两个主题在输入、机制、资源边界和失败模式上的差异。这样才能把单课知识迁移到项目、排障和后续课程。
+
+## 自测题与参考答案
+
+> 先独立作答《Go 并发：goroutine、channel 与 context》的自测题，再对照答案与解析；每处判断都要能在本课正文或示例中找到依据。
+
+### 自测 1
+
+向已关闭的 channel 发送数据会？
+
+A. 自动重开
+B. 阻塞
+C. panic
+D. 返回错误
+
+**参考答案**：panic
+
+**解析**：只应由唯一的发送方负责关闭 channel。其他选项：向已关闭的 channel 发送不会返回错误、不会自动重开、也不会阻塞，而是直接 panic，因此关闭操作应由唯一发送方负责。这道题的关键在「Go 并发：goroutine、channel 与 context」的Go、goroutine、channel：先确认题干“向已关闭的 channel 发送数据”问的是哪一步，再排除偷换前提的选项。
+
+### 自测 2
+
+下面这段 Go 代码摘自「Go 并发：goroutine、channel 与 context」的正文示例。关于这段代码，下面哪一项说法与实际内容相符？
+
+```go
+func worker(ctx context.Context, jobs <-chan int, results chan<- int, wg *sync.WaitGroup) {
+	defer wg.Done()
+	for {
+		select {
+		case <-ctx.Done():
+			return                       // 收到取消信号立即退出
+		case job, ok := <-jobs:
+			if !ok {
+				return                   // channel 已关闭且取完
+			}
+			select {
+			case results <- job * 2:
+			case <-ctx.Done():
+				return
+			}
+		}
+	}
+}
+```
+
+A. 这段代码会读取外部输入，结果依赖传入的数据。
+B. 这段代码包含循环结构，同一段逻辑会被重复执行。
+C. 这段代码只做静态声明，没有循环、分支或可观察输出。
+D. 这段代码包含异常处理分支，失败时会走专门的补救路径。
+
+**参考答案**：这段代码包含循环结构，同一段逻辑会被重复执行。
+
+**解析**：在「Go 并发：goroutine、channel 与 context」里，这段代码包含循环结构，同一段逻辑会被重复执行。这段代码出自「Go 并发：goroutine、channel 与 context」的正文示例，围绕Go、goroutine、channel展开；把输入或边界换成空值、极值或失败情况后，结论要以「Go 并发：goroutine、channel 与 context」的实际运行结果为准。
+
+### 自测 3
+
+围绕“Go 并发：goroutine、channel 与 context”中的 Go、goroutine、channel，下列哪两项是本课强调的实践判断？
+
+A. 验证 goroutine 时要固定版本并覆盖边界输入，结论才可复现
+B. 把 goroutine 的单次运行结果当成所有版本和规模都成立
+C. 学习 Go 时要同时说明输入、输出和失败路径，不能只看正常流程
+D. 只要 Go 的常规示例通过，就可以跳过边界与异常路径
+
+**参考答案**：验证 goroutine 时要固定版本并覆盖边界输入，结论才可复现；学习 Go 时要同时说明输入、输出和失败路径，不能只看正常流程
+
+**解析**：在「Go 并发：goroutine、channel 与 context」里，学习 Go 时要同时说明输入、输出和失败路径，不能只看正常流程。在Go 并发：goroutine、channel 与 context里，判断 goroutine 时要固定版本与边界输入，所以“验证 goroutine 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
+
+**教材衔接：复习与自测**
+
+- [ ] 会用 `WaitGroup`、`channel`、`context` 控制协程生命周期。
+- [ ] 知道「谁发送谁关闭」的惯例，并用 `v, ok` 判断关闭。
+- [ ] 共享数据一律加锁或用原子操作。
+- [ ] 关键代码跑 `go test -race` 且无告警。
+- [ ] 所有并发任务都能被取消并设了超时。
+
+**教材衔接：动手练习**
 
 > 本课练习重点：围绕「Go、goroutine、channel」完成复述、实验和交付，每个结果都要能被别人检查。
 
@@ -279,7 +519,7 @@ case result := <-ch:
 
 > 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
 
-## 可运行练习
+**教材衔接：可运行练习**
 
 本节围绕Go 并发：goroutine、channel 与 context安排 3 个可交付任务，每个任务都要求留下可以复查的记录。
 
@@ -299,52 +539,7 @@ case result := <-ch:
 
 **验收标准**：结论要能追溯到「三个核心原语」的具体段落，并说明它和 goroutine 的边界。
 
-## 故障现场
-
-### 现场 1：wg.Add(1) 写在 go func() 内部
-
-**症状**：在《Go 并发：goroutine、channel 与 context》的复现场景中，Wait 提前返回。
-
-**根因**：当出现“wg.Add(1) 写在 go func() 内部”时，执行路径已经绕过了《Go 并发：goroutine、channel 与 context》的关键约束，最终以“Wait 提前返回”暴露出来；修复前必须先确认约束在哪里失效。
-
-**修复**：针对《Go 并发：goroutine、channel 与 context》的问题，Add 必须在启动协程前调用。
-
-**验证**：先在《Go 并发：goroutine、channel 与 context》中记录“wg.Add(1) 写在 go func() 内部”留下的失败证据，再执行“Add 必须在启动协程前调用”并重放；确认错误路径变为明确结果，且修复没有掩盖同类故障。
-
-### 现场 2：读已关闭的 channel
-
-**症状**：在《Go 并发：goroutine、channel 与 context》的复现场景中，立刻返回零值。
-
-**根因**：触发点是把“读已关闭的 channel”当成安全做法。它没有满足《Go 并发：goroutine、channel 与 context》要求的前提，因此先表现为“立刻返回零值”；排查时先完整复现这一段，再核对输入、配置与依赖。
-
-**修复**：针对《Go 并发：goroutine、channel 与 context》的问题，用 v, ok := <-ch 区分「零值」与「已关闭」。
-
-**验证**：在《Go 并发：goroutine、channel 与 context》中按“用 v, ok := <-ch 区分「零值」与「已关闭」”调整后，从“读已关闭的 channel”的触发条件重放同一条路径，确认“立刻返回零值”不再出现，并补一个相邻边界用例检查没有引入新问题。
-
-### 现场 3：goroutine 内 panic 未捕获
-
-**症状**：在《Go 并发：goroutine、channel 与 context》的复现场景中，整个进程崩溃。
-
-**根因**：触发点是把“goroutine 内 panic 未捕获”当成安全做法。它没有满足《Go 并发：goroutine、channel 与 context》要求的前提，因此先表现为“整个进程崩溃”；排查时先完整复现这一段，再核对输入、配置与依赖。
-
-**修复**：针对《Go 并发：goroutine、channel 与 context》的问题，在 recover 中兜住并记录日志。
-
-**验证**：先在《Go 并发：goroutine、channel 与 context》中记录“goroutine 内 panic 未捕获”留下的失败证据，再执行“在 recover 中兜住并记录日志”并重放；确认错误路径变为明确结果，且修复没有掩盖同类故障。
-
-## 版本与时效
-
-- 升级「Go 并发：goroutine、channel 与 context」涉及的依赖前，先用 WithTimeout 复现当前行为，再逐项核对版本说明与破坏性变更。
-- 模块校验、最小版本选择与供应链安全是生产升级的重点
-- 官方发布说明：https://go.dev/doc/devel/release
-
-### 升级检查清单
-
-- 先固定当前版本，跑通全部示例与测验，再升级工具链。
-- 升级时只动一个依赖版本，用 WithTimeout 记录构建与运行结果。
-- 回归范围锁定 WithTimeout 的默认行为，并确认弃用警告是否出现在构建输出里。
-- 升级完成后记录 Go 的新旧版本差异，并据此调整下次复核时间。
-
-## 本课复习清单
+**教材衔接：本课复习清单**
 
 离开本课前，逐项确认：
 
@@ -361,6 +556,8 @@ case result := <-ch:
 | 已经能独立解释的考点 |  |
 | 仍然说不清的概念 |  |
 | 下一步验证动作 |  |
+
+---
 
 ## 术语速查
 

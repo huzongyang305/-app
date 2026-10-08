@@ -11,6 +11,15 @@ import 'dart:io';
 const String manifestPath = 'assets/content/manifest.json';
 
 const List<String> _requiredSections = <String>[
+  '## 本节知识框架',
+  '## 核心概念定义',
+  '## 原理与运行机制',
+  '## 典型应用场景',
+  '## 代码/协议/SQL 示例',
+  '## 时间/空间复杂度或性能分析',
+  '## 常见误区与易错点',
+  '## 与其他知识点的关系',
+  '## 自测题与参考答案',
   '## 考点精讲',
   '## 参考资料与复核',
   '## English Overview',
