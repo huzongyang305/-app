@@ -1,6 +1,6 @@
 # TypeScript 第一个类型
 
-> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：40 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：45 分钟
 
 ![从 JavaScript 到 TypeScript 的第一步](images/diagram_ts_first_types.webp)
 
@@ -471,3 +471,73 @@ Ada born in 1815
 
 最后留一个自检问题：如果只能保留三条笔记，你会写下哪三句？把答案限定为「TypeScript 第一个类型」中的可验证结论，并给每条结论配一个反例。这三句加上对应反例，就是本课最值得带入后续课程的复习材料。
 
+<!-- language-intro-deep-dive:start -->
+
+## 零基础通俗讲：TypeScript 第一个类型标注
+
+### 一句话说清它是什么
+
+TypeScript 在 JavaScript 之上加了类型标注，写代码时就能发现类型错误；标注只存在于编译阶段，编译后生成的还是普通 JavaScript。
+
+### 用生活比喻理解
+
+类型标注像机场的安检申报单：填的时候麻烦一点，但能让问题在出门前就被拦下，而不是飞到目的地才发现行李不合规。
+
+### 完整可运行代码
+
+```typescript
+const name: string = "小明";
+const age: number = 18;
+const isBeginner: boolean = true;
+
+console.log(`${name} 今年 ${age} 岁`);
+console.log(`是否初学者：${isBeginner}`);
+```
+
+### 逐行拆开看
+
+- `const name: string = "小明";` 冒号后面的 string 是类型标注，告诉编译器这个变量只能装字符串。
+- `const age: number = 18;` TypeScript 不区分整数和小数，统一用 number。
+- `const isBeginner: boolean = true;` 布尔类型只有 true 和 false。
+- 模板字符串的用法和 JavaScript 完全一致，类型标注不会改变运行时行为。
+- TypeScript 文件后缀是 `.ts`，需要先用 tsc 编译成 `.js` 才能在浏览器或 Node 里运行。
+
+
+### 把程序跑一遍
+
+- 编译：`npx tsc hello.ts`，生成同名 `.js` 文件。
+- 如果写 `const age: number = "18";`，编译阶段立刻报错，提示不能把 string 赋给 number。
+- 运行生成的 JavaScript，控制台输出两行中文。
+- 打开编译产物会发现类型标注全部消失，这正是「类型只做检查、不参与运行」的含义。
+
+
+### 新手最容易踩的坑
+
+- 以为 TypeScript 代码能直接运行：浏览器不认 `.ts`，必须先编译或用 ts-node 之类的工具。
+- 到处写 any：any 会关掉该值的类型检查，等于把 TypeScript 当 JavaScript 用。
+- 用叹号强行断言非空：编译通过但运行时仍可能是 undefined，应该先做判断。
+- 类型标注写成 String 而不是 string：前者是包装对象类型，后者才是原始类型。
+- 忘记在 tsconfig 里打开 strict：很多类型错误默认不报，等于白装 TypeScript。
+
+
+### 动手练一练
+
+- 把 age 的标注改成 string 并赋数字，观察编译报错。
+- 增加一个变量保存身高，类型选 number。
+- 编译后打开生成的 js 文件，确认类型标注已经消失。
+
+
+### 本课速查卡
+
+把下面八行抄进自己的笔记，复习时只看这一页就能回忆整课：
+
+| 复习项 | 本课要点 |
+| --- | --- |
+| 核心结论 | TypeScript 在 JavaScript 之上加了类型标注，写代码时就能发现类型错误；标注只存在于编译阶段，编译后生成的还是普通 JavaScript。 |
+| 最少要写的代码 | `const name: string = "小明";` |
+| 正确做法 | 编译：`npx tsc hello.ts`，生成同名 `.js` 文件。 |
+| 最常见的错误 | 以为 TypeScript 代码能直接运行：浏览器不认 `.ts`，必须先编译或用 ts-node 之类的工具。 |
+| 出错先查什么 | 先读第一条报错信息，再回到最小示例只改一个地方 |
+| 怎么确认学会了 | 把 age 的标注改成 string 并赋数字，观察编译报错。 |
+| 和别的知识点的关系 | 本课打下的语法与思维方式会被后面每一课反复用到 |
+| 接下来做什么 | 合上教程，凭记忆把上面的最小代码重写一遍再运行 |

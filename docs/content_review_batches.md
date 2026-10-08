@@ -1,6 +1,6 @@
 # 人工复核批次台账
 
-- 生成时间：2026-10-08T04:44:10.584556Z
+- 生成时间：2026-10-08T05:18:06.003480Z
 - 批次大小：每批最多 24 门课
 - 记录入口：`docs/content_review_records.json` 的 `human_reviews`
 
@@ -175,20 +175,20 @@
 | --- | --- | --- | --- | --- | --- |
 | C 数组、字符串与缓冲区（c_arrays_strings） | low | 11624 | 6 | 2 | 待复核 |
 | C 基础语法与编译流程（c_basics） | low | 14659 | 6 | 2 | 待复核 |
-| C 条件判断（c_conditions） | low | 12395 | 5 | 2 | 待复核 |
+| C 条件判断（c_conditions） | low | 13864 | 5 | 2 | 待复核 |
 | C 控制流、函数与作用域（c_control_functions） | low | 11266 | 6 | 2 | 待复核 |
 | C 调试、Sanitizer 与性能（c_debugging） | low | 11507 | 6 | 2 | 待复核 |
 | C 文件、错误处理与资源管理（c_files） | low | 12100 | 6 | 2 | 待复核 |
-| C 第一个程序（c_first_program） | low | 12718 | 5 | 2 | 待复核 |
-| C 函数入门（c_functions_intro） | low | 13848 | 5 | 2 | 待复核 |
-| C 循环入门（c_loops） | low | 14303 | 5 | 2 | 待复核 |
+| C 第一个程序（c_first_program） | low | 14287 | 5 | 2 | 待复核 |
+| C 函数入门（c_functions_intro） | low | 13264 | 5 | 2 | 待复核 |
+| C 循环入门（c_loops） | low | 15737 | 5 | 2 | 待复核 |
 | C 指针与内存模型（c_pointers） | low | 12692 | 6 | 2 | 待复核 |
 | C 预处理、宏与头文件（c_preprocessor） | low | 11783 | 6 | 2 | 待复核 |
 | 实战：C 命令行任务管理器（c_project） | low | 12394 | 5 | 2 | 待复核 |
 | 实战：C 语言 TCP 服务端（c_project_tcp_server） | low | 12041 | 5 | 2 | 待复核 |
 | C 结构体、联合体与内存布局（c_structs） | low | 11323 | 6 | 2 | 待复核 |
 | C 类型、运算符与转换（c_types） | low | 11523 | 6 | 2 | 待复核 |
-| C 变量与输入输出（c_variables_io） | low | 12769 | 5 | 2 | 待复核 |
+| C 变量与输入输出（c_variables_io） | low | 14312 | 5 | 2 | 待复核 |
 
 ## cloud-1 · 云计算与云原生
 
@@ -251,11 +251,11 @@
 | 环境与编译流程（cpp_basics） | low | 10544 | 6 | 2 | 待复核 |
 | C++ Concepts 与 Ranges（cpp_concepts_ranges） | low | 11196 | 6 | 2 | 待复核 |
 | C++ 并发、原子操作与内存序（cpp_concurrency_atomics） | low | 11892 | 6 | 2 | 待复核 |
-| C++ 条件判断（cpp_conditions） | low | 12701 | 5 | 2 | 待复核 |
+| C++ 条件判断（cpp_conditions） | low | 14109 | 5 | 2 | 待复核 |
 | 控制流与函数（cpp_control_functions） | low | 10203 | 6 | 2 | 待复核 |
-| C++ 第一个程序（cpp_first_program） | low | 13009 | 5 | 2 | 待复核 |
-| C++ 函数入门（cpp_functions_intro） | low | 14657 | 5 | 2 | 待复核 |
-| C++ 循环入门（cpp_loops） | low | 14325 | 5 | 2 | 待复核 |
+| C++ 第一个程序（cpp_first_program） | low | 14473 | 5 | 2 | 待复核 |
+| C++ 函数入门（cpp_functions_intro） | low | 16121 | 5 | 2 | 待复核 |
+| C++ 循环入门（cpp_loops） | low | 15627 | 5 | 2 | 待复核 |
 | 内存管理与智能指针（cpp_memory） | low | 11216 | 6 | 2 | 待复核 |
 | 现代 C++ 特性（cpp_modern） | low | 12205 | 6 | 2 | 待复核 |
 | C++ 移动语义与右值引用（cpp_move_semantics） | low | 10980 | 6 | 2 | 待复核 |
@@ -268,7 +268,7 @@
 | 模板与泛型编程（cpp_templates） | low | 11706 | 6 | 2 | 待复核 |
 | 构建、调试与工程实践（cpp_tooling） | low | 11489 | 6 | 2 | 待复核 |
 | 变量、类型与运算符（cpp_types） | low | 9795 | 6 | 2 | 待复核 |
-| C++ 变量与输入输出（cpp_variables_io） | low | 10421 | 5 | 2 | 待复核 |
+| C++ 变量与输入输出（cpp_variables_io） | low | 9673 | 5 | 2 | 待复核 |
 
 ## cross_language-1 · 跨语言对照
 
@@ -318,21 +318,21 @@
 | C# 异步流与取消（csharp_async_streams） | low | 12327 | 6 | 2 | 待复核 |
 | C# 与 .NET 平台（csharp_basics） | low | 10591 | 6 | 2 | 待复核 |
 | 集合、委托与 LINQ（csharp_collections_linq） | low | 11903 | 6 | 2 | 待复核 |
-| C# 条件判断（csharp_conditions） | low | 12795 | 6 | 2 | 待复核 |
+| C# 条件判断（csharp_conditions） | low | 14119 | 6 | 2 | 待复核 |
 | 控制流与方法（csharp_control_methods） | low | 10747 | 6 | 2 | 待复核 |
-| C# 与 .NET 第一个程序（csharp_dotnet_first） | low | 13060 | 5 | 2 | 待复核 |
+| C# 与 .NET 第一个程序（csharp_dotnet_first） | low | 14388 | 5 | 2 | 待复核 |
 | 生态、测试与 Web 开发（csharp_ecosystem） | low | 13350 | 6 | 2 | 待复核 |
 | C# GC、Span 与性能优化（csharp_gc_performance） | low | 12778 | 6 | 2 | 待复核 |
 | 继承、接口与多态（csharp_inheritance） | low | 10732 | 6 | 2 | 待复核 |
-| C# 循环入门（csharp_loops） | low | 13919 | 5 | 2 | 待复核 |
-| C# 方法入门（csharp_methods_intro） | low | 14518 | 5 | 2 | 待复核 |
+| C# 循环入门（csharp_loops） | low | 15294 | 5 | 2 | 待复核 |
+| C# 方法入门（csharp_methods_intro） | low | 15869 | 5 | 2 | 待复核 |
 | 类、属性与对象（csharp_oop） | low | 10518 | 6 | 2 | 待复核 |
 | 实战：Web API + EF Core（csharp_project） | low | 17345 | 6 | 2 | 待复核 |
 | 实战：C# Blazor 管理后台（csharp_project_blazor_admin） | low | 13621 | 6 | 2 | 待复核 |
 | 实战：C# 库存管理 CLI（csharp_project_inventory_cli） | low | 13393 | 6 | 2 | 待复核 |
 | C# Record、模式匹配与不可变数据（csharp_records_patterns） | low | 9408 | 6 | 2 | 待复核 |
 | 变量、类型与字符串（csharp_types） | low | 10651 | 6 | 2 | 待复核 |
-| C# 变量与输入（csharp_variables_input） | low | 10369 | 5 | 2 | 待复核 |
+| C# 变量与输入（csharp_variables_input） | low | 9598 | 5 | 2 | 待复核 |
 
 ## data_engineering-1 · 数据工程
 
@@ -578,15 +578,15 @@
 | Go 云原生服务安全与可靠性（go_cloud_native_security） | low | 10926 | 6 | 2 | 待复核 |
 | Go 并发：goroutine、channel 与 context（go_concurrency） | low | 10744 | 6 | 2 | 待复核 |
 | Go 并发模式与 errgroup（go_concurrency_patterns） | low | 10394 | 6 | 2 | 待复核 |
-| Go 条件判断（go_conditions） | low | 12697 | 6 | 2 | 待复核 |
+| Go 条件判断（go_conditions） | low | 13910 | 6 | 2 | 待复核 |
 | Go 数据访问与连接池（go_data_access） | low | 11558 | 6 | 2 | 待复核 |
-| Go 第一个程序（go_first_program） | low | 12877 | 6 | 2 | 待复核 |
-| Go 函数入门（go_functions_intro） | low | 14058 | 5 | 2 | 待复核 |
+| Go 第一个程序（go_first_program） | low | 14067 | 6 | 2 | 待复核 |
+| Go 函数入门（go_functions_intro） | low | 13181 | 5 | 2 | 待复核 |
 | Go 泛型深入与约束设计（go_generics_deep） | low | 10823 | 6 | 2 | 待复核 |
 | Go 泛型与标准库实战（go_generics_stdlib） | low | 13627 | 6 | 2 | 待复核 |
 | gRPC 与 Protobuf 实践（go_grpc） | low | 11530 | 6 | 2 | 待复核 |
 | Go 接口与错误处理（go_interfaces_errors） | low | 9541 | 6 | 2 | 待复核 |
-| Go 循环入门（go_loops） | low | 14470 | 6 | 2 | 待复核 |
+| Go 循环入门（go_loops） | low | 15693 | 6 | 2 | 待复核 |
 | Go 微服务与可观测（go_microservice） | low | 10606 | 6 | 2 | 待复核 |
 | Go 性能优化与内存（go_performance） | low | 10256 | 6 | 2 | 待复核 |
 | Go 性能剖析与调优实战（go_pprof） | low | 13166 | 6 | 2 | 待复核 |
@@ -595,7 +595,7 @@
 | 实战：Go REST API 服务（go_project_rest_api） | low | 13465 | 6 | 2 | 待复核 |
 | 实战：Go 并发抓取与 Worker Pool（go_project_worker_pool） | low | 14498 | 6 | 2 | 待复核 |
 | Go 测试进阶：基准、模糊与集成（go_testing） | low | 10364 | 6 | 2 | 待复核 |
-| Go 变量与输入（go_variables_input） | low | 12776 | 6 | 2 | 待复核 |
+| Go 变量与输入（go_variables_input） | low | 14283 | 6 | 2 | 待复核 |
 
 ## html_css-1 · HTML 与 CSS
 
@@ -640,15 +640,15 @@
 | 环境与 JVM（java_basics） | low | 10973 | 6 | 2 | 待复核 |
 | 集合框架与泛型（java_collections） | low | 12480 | 6 | 2 | 待复核 |
 | 多线程与并发（java_concurrency） | low | 13389 | 6 | 2 | 待复核 |
-| Java 条件判断（java_conditions） | low | 13107 | 5 | 2 | 待复核 |
+| Java 条件判断（java_conditions） | low | 14527 | 5 | 2 | 待复核 |
 | 控制流与方法（java_control_methods） | low | 10242 | 6 | 2 | 待复核 |
 | 异常处理与文件 IO（java_exceptions） | low | 11284 | 6 | 2 | 待复核 |
-| Java 第一个类（java_first_class） | low | 12995 | 5 | 2 | 待复核 |
+| Java 第一个类（java_first_class） | low | 14537 | 5 | 2 | 待复核 |
 | JVM 垃圾回收与性能调优（java_gc_tuning） | low | 10496 | 5 | 2 | 待复核 |
 | 继承、接口与多态（java_inheritance） | low | 11041 | 6 | 2 | 待复核 |
 | Lambda 与 Stream API（java_lambda_stream） | low | 12833 | 6 | 2 | 待复核 |
-| Java 循环入门（java_loops） | low | 14666 | 5 | 2 | 待复核 |
-| Java 方法入门（java_methods_intro） | low | 14776 | 5 | 2 | 待复核 |
+| Java 循环入门（java_loops） | low | 16042 | 5 | 2 | 待复核 |
+| Java 方法入门（java_methods_intro） | low | 16247 | 5 | 2 | 待复核 |
 | 现代 Java：Record、Sealed 与模式匹配（java_modern_features） | low | 10136 | 6 | 2 | 待复核 |
 | 类与对象（java_oop） | low | 10202 | 6 | 2 | 待复核 |
 | 实战：Spring Boot REST API（java_project） | low | 18221 | 6 | 2 | 待复核 |
@@ -656,7 +656,7 @@
 | 实战：Java 并发订单处理服务（java_project_order_concurrency） | low | 13960 | 6 | 2 | 待复核 |
 | 构建、测试与生态（java_tooling） | low | 13607 | 6 | 2 | 待复核 |
 | 变量、类型与字符串（java_types） | low | 10664 | 6 | 2 | 待复核 |
-| Java 变量与输出（java_variables_output） | low | 10367 | 5 | 2 | 待复核 |
+| Java 变量与输出（java_variables_output） | low | 9722 | 5 | 2 | 待复核 |
 | Java 虚拟线程与结构化并发（java_virtual_threads） | low | 11258 | 5 | 2 | 待复核 |
 
 ## javascript-1 · JavaScript
@@ -675,14 +675,14 @@
 | 数组与常用方法（js_arrays） | low | 10960 | 6 | 2 | 待复核 |
 | 异步编程（js_async） | low | 13044 | 6 | 2 | 待复核 |
 | JavaScript 与运行环境（js_basics） | low | 10743 | 6 | 2 | 待复核 |
-| JavaScript 条件与循环（js_conditions_loops） | low | 10918 | 5 | 2 | 待复核 |
-| JavaScript 控制台入门（js_console_start） | low | 15422 | 5 | 2 | 待复核 |
+| JavaScript 条件与循环（js_conditions_loops） | low | 10081 | 5 | 2 | 待复核 |
+| JavaScript 控制台入门（js_console_start） | low | 16894 | 5 | 2 | 待复核 |
 | DOM 与事件（js_dom_events） | low | 12471 | 6 | 2 | 待复核 |
-| JavaScript DOM 入门（js_dom_intro） | low | 12234 | 5 | 2 | 待复核 |
+| JavaScript DOM 入门（js_dom_intro） | low | 11037 | 5 | 2 | 待复核 |
 | 错误处理与调试（js_errors_debugging） | low | 11394 | 6 | 2 | 待复核 |
 | JavaScript 执行上下文与闭包（js_execution_context） | low | 11833 | 6 | 2 | 待复核 |
 | 函数、作用域与 this（js_functions） | low | 9979 | 6 | 2 | 待复核 |
-| JavaScript 函数入门（js_functions_intro） | low | 14954 | 5 | 2 | 待复核 |
+| JavaScript 函数入门（js_functions_intro） | low | 13994 | 5 | 2 | 待复核 |
 | JavaScript 内存管理与垃圾回收（js_memory_gc） | low | 12722 | 6 | 2 | 待复核 |
 | 模块化与工程化（js_modules_tooling） | low | 11836 | 6 | 2 | 待复核 |
 | Node.js 后端工程（js_node_backend） | low | 11049 | 5 | 2 | 待复核 |
@@ -692,7 +692,7 @@
 | 实战：Node.js + Express REST API（js_project_node_api） | low | 14444 | 6 | 2 | 待复核 |
 | 实战：JavaScript 实时聊天室（js_project_realtime_chat） | low | 14055 | 6 | 2 | 待复核 |
 | 变量、类型与类型转换（js_types） | low | 10222 | 6 | 2 | 待复核 |
-| JavaScript 变量与类型入门（js_variables_types_intro） | low | 15176 | 5 | 2 | 待复核 |
+| JavaScript 变量与类型入门（js_variables_types_intro） | low | 14234 | 5 | 2 | 待复核 |
 
 ## kotlin-1 · Kotlin
 
@@ -710,17 +710,17 @@
 | Kotlin Android 架构（kotlin_android） | low | 12406 | 6 | 2 | 待复核 |
 | Kotlin 基础与空安全（kotlin_basics） | low | 14682 | 6 | 2 | 待复核 |
 | Kotlin 集合、序列与函数式操作（kotlin_collections） | low | 12185 | 6 | 2 | 待复核 |
-| Kotlin 条件判断（kotlin_conditions） | low | 13152 | 5 | 2 | 待复核 |
+| Kotlin 条件判断（kotlin_conditions） | low | 14427 | 5 | 2 | 待复核 |
 | Kotlin 协程与 Flow（kotlin_coroutines） | low | 12802 | 6 | 2 | 待复核 |
-| Kotlin 第一个程序（kotlin_first_program） | low | 13195 | 5 | 2 | 待复核 |
+| Kotlin 第一个程序（kotlin_first_program） | low | 14409 | 5 | 2 | 待复核 |
 | Kotlin 函数、Lambda 与扩展（kotlin_functions） | low | 12012 | 6 | 2 | 待复核 |
-| Kotlin 函数入门（kotlin_functions_intro） | low | 14935 | 5 | 2 | 待复核 |
-| Kotlin 循环入门（kotlin_loops） | low | 15036 | 5 | 2 | 待复核 |
+| Kotlin 函数入门（kotlin_functions_intro） | low | 16228 | 5 | 2 | 待复核 |
+| Kotlin 循环入门（kotlin_loops） | low | 16202 | 5 | 2 | 待复核 |
 | Kotlin 类、对象与属性（kotlin_oop） | low | 11198 | 6 | 2 | 待复核 |
 | 实战：Kotlin Android 客户端（kotlin_project） | low | 12604 | 5 | 2 | 待复核 |
 | 实战：Kotlin 命令行记账工具（kotlin_project_cli_ledger） | low | 11670 | 5 | 2 | 待复核 |
 | Kotlin 测试与协程测试（kotlin_testing） | low | 11659 | 5 | 2 | 待复核 |
-| Kotlin 变量与空值（kotlin_variables_null） | low | 13189 | 5 | 2 | 待复核 |
+| Kotlin 变量与空值（kotlin_variables_null） | low | 14593 | 5 | 2 | 待复核 |
 
 ## math-1 · 数学基础
 
@@ -839,7 +839,7 @@
 | 需求到设计：把想法拆成可交付任务（project_requirements_design） | low | 11290 | 6 | 2 | 待复核 |
 | 实战：REST API 与 SQLite 事务服务（project_rest_api_sqlite） | low | 12992 | 5 | 2 | 待复核 |
 | 复盘与改进：让团队一次比一次快（project_retro_improve） | low | 12631 | 5 | 2 | 待复核 |
-| 安全攻防与防御实战（project_security_lab） | low | 12968 | 5 | 2 | 待复核 |
+| 安全攻防与防御实战（project_security_lab） | low | 12986 | 5 | 2 | 待复核 |
 | 测试与质量门禁：把问题挡在上线前（project_testing_quality） | low | 11706 | 5 | 2 | 待复核 |
 
 ## python-1 · Python
@@ -862,12 +862,12 @@
 | 列表、元组、字典与集合（python_data_structures） | low | 10014 | 6 | 2 | 待复核 |
 | Python 装饰器与生成器（python_decorators_generators） | low | 12720 | 6 | 2 | 待复核 |
 | 异常处理与文件操作（python_errors_files） | low | 11386 | 6 | 2 | 待复核 |
-| Python 第一个脚本（python_first_script） | low | 10363 | 5 | 2 | 待复核 |
+| Python 第一个脚本（python_first_script） | low | 9376 | 5 | 2 | 待复核 |
 | 函数（python_functions） | low | 10236 | 6 | 2 | 待复核 |
-| Python 条件判断（python_if_else） | low | 10043 | 5 | 2 | 待复核 |
-| Python 输入与输出（python_input_output） | low | 13180 | 5 | 2 | 待复核 |
-| Python 列表与字典入门（python_list_dict_basics） | low | 14835 | 5 | 2 | 待复核 |
-| Python 循环入门（python_loops） | low | 14471 | 5 | 2 | 待复核 |
+| Python 条件判断（python_if_else） | low | 9097 | 5 | 2 | 待复核 |
+| Python 输入与输出（python_input_output） | low | 14881 | 5 | 2 | 待复核 |
+| Python 列表与字典入门（python_list_dict_basics） | low | 13444 | 5 | 2 | 待复核 |
+| Python 循环入门（python_loops） | low | 13612 | 5 | 2 | 待复核 |
 | 模块、包与虚拟环境（python_modules_stdlib） | low | 12108 | 6 | 2 | 待复核 |
 | 类与对象（python_oop） | low | 11190 | 6 | 2 | 待复核 |
 | Python 打包、发布与性能（python_packaging_performance） | low | 11358 | 6 | 2 | 待复核 |
@@ -892,13 +892,13 @@
 | --- | --- | --- | --- | --- | --- |
 | Rust 异步编程与 tokio（rust_async_tokio） | low | 11807 | 6 | 2 | 待复核 |
 | Rust 基础（rust_basics） | low | 10609 | 6 | 2 | 待复核 |
-| Rust Cargo 第一个程序（rust_cargo_first） | low | 13273 | 6 | 2 | 待复核 |
+| Rust Cargo 第一个程序（rust_cargo_first） | low | 14533 | 6 | 2 | 待复核 |
 | Rust 实战：命令行工具（rust_cli_project） | low | 15489 | 6 | 2 | 待复核 |
 | Rust 并发与 Cargo 工程（rust_concurrency_cargo） | low | 10574 | 6 | 2 | 待复核 |
-| Rust 条件判断（rust_conditions） | low | 10837 | 5 | 2 | 待复核 |
+| Rust 条件判断（rust_conditions） | low | 9816 | 5 | 2 | 待复核 |
 | Rust 错误处理、迭代器与异步（rust_errors_iterators） | low | 10905 | 6 | 2 | 待复核 |
-| Rust 函数入门（rust_functions_intro） | low | 14361 | 5 | 2 | 待复核 |
-| Rust 循环入门（rust_loops） | low | 14457 | 5 | 2 | 待复核 |
+| Rust 函数入门（rust_functions_intro） | low | 13306 | 5 | 2 | 待复核 |
+| Rust 循环入门（rust_loops） | low | 13349 | 5 | 2 | 待复核 |
 | Rust 宏、WASM 与跨平台（rust_macros_wasm） | low | 10969 | 6 | 2 | 待复核 |
 | Rust 所有权、借用与生命周期（rust_ownership） | low | 11427 | 6 | 2 | 待复核 |
 | 实战：Rust + Axum REST API（rust_project_axum_api） | low | 13867 | 6 | 2 | 待复核 |
@@ -907,7 +907,7 @@
 | Rust trait、泛型与关联类型（rust_traits_generics） | low | 11358 | 6 | 2 | 待复核 |
 | Rust 类型系统：Option、Result 与 trait（rust_types_traits） | low | 11370 | 6 | 2 | 待复核 |
 | Rust unsafe、FFI 与生态（rust_unsafe_ffi） | low | 10909 | 6 | 2 | 待复核 |
-| Rust 变量与可变性（rust_variables_mutability） | low | 12976 | 6 | 2 | 待复核 |
+| Rust 变量与可变性（rust_variables_mutability） | low | 14275 | 6 | 2 | 待复核 |
 
 ## security-1 · 安全与合规
 
@@ -954,15 +954,15 @@
 | Shell 高级自动化与可观测性（shell_automation_advanced） | low | 11537 | 6 | 2 | 待复核 |
 | Shell 与 Bash 脚本（shell_bash） | low | 10446 | 6 | 2 | 待复核 |
 | CI 脚本模板库（shell_ci_templates） | low | 10412 | 6 | 2 | 待复核 |
-| Shell 条件判断（shell_conditions） | low | 10401 | 5 | 2 | 待复核 |
+| Shell 条件判断（shell_conditions） | low | 9479 | 5 | 2 | 待复核 |
 | Shell 与 Docker/K8s 交互（shell_container） | low | 11441 | 6 | 2 | 待复核 |
-| Shell 第一个脚本（shell_first_script） | low | 13082 | 6 | 2 | 待复核 |
+| Shell 第一个脚本（shell_first_script） | low | 14333 | 6 | 2 | 待复核 |
 | Shell 流程控制与函数（shell_flow） | low | 10268 | 6 | 2 | 待复核 |
 | 结构化数据处理：jq 与 yq（shell_json_yaml） | low | 11179 | 6 | 2 | 待复核 |
-| Shell 循环入门（shell_loops） | low | 14781 | 5 | 2 | 待复核 |
+| Shell 循环入门（shell_loops） | low | 16027 | 5 | 2 | 待复核 |
 | 系统运维脚本实战（shell_ops_scripts） | low | 13943 | 6 | 2 | 待复核 |
 | Shell 文本处理流水线（shell_pipeline） | low | 9745 | 6 | 2 | 待复核 |
-| Shell 管道入门（shell_pipeline_intro） | low | 14734 | 5 | 2 | 待复核 |
+| Shell 管道入门（shell_pipeline_intro） | low | 13486 | 5 | 2 | 待复核 |
 | Shell 可移植性与 POSIX 兼容（shell_portability） | low | 11182 | 6 | 2 | 待复核 |
 | Shell 进程控制、定时任务与日志（shell_process_cron） | low | 10083 | 6 | 2 | 待复核 |
 | 实战：Shell 零停机部署脚本（shell_project_deploy） | low | 13087 | 6 | 2 | 待复核 |
@@ -972,7 +972,7 @@
 | Shell 脚本安全加固（shell_security） | low | 10681 | 6 | 2 | 待复核 |
 | Shell 脚本安全加固（进阶）（shell_security_hardening） | low | 10999 | 6 | 2 | 待复核 |
 | 文本处理进阶：awk、sed 与正则（shell_text_advanced） | low | 10011 | 6 | 2 | 待复核 |
-| Shell 变量与参数（shell_variables_args） | low | 13029 | 6 | 2 | 待复核 |
+| Shell 变量与参数（shell_variables_args） | low | 14427 | 6 | 2 | 待复核 |
 
 ## software_engineering-1 · 软件工程
 
@@ -1015,12 +1015,12 @@
 | Swift 并发与 async/await（swift_async） | low | 13034 | 6 | 2 | 待复核 |
 | Swift 基础与可选类型（swift_basics） | low | 14702 | 6 | 2 | 待复核 |
 | Swift 集合与泛型（swift_collections） | low | 11769 | 6 | 2 | 待复核 |
-| Swift 条件判断（swift_conditions） | low | 12910 | 5 | 2 | 待复核 |
-| Swift 常量与变量（swift_constants_variables） | low | 11358 | 5 | 2 | 待复核 |
-| Swift 第一个程序（swift_first_program） | low | 11050 | 5 | 2 | 待复核 |
+| Swift 条件判断（swift_conditions） | low | 14107 | 5 | 2 | 待复核 |
+| Swift 常量与变量（swift_constants_variables） | low | 10219 | 5 | 2 | 待复核 |
+| Swift 第一个程序（swift_first_program） | low | 9921 | 5 | 2 | 待复核 |
 | Swift 函数、闭包与协议（swift_functions） | low | 11617 | 6 | 2 | 待复核 |
-| Swift 函数入门（swift_functions_intro） | low | 14838 | 5 | 2 | 待复核 |
-| Swift 循环入门（swift_loops） | low | 14754 | 5 | 2 | 待复核 |
+| Swift 函数入门（swift_functions_intro） | low | 16139 | 5 | 2 | 待复核 |
+| Swift 循环入门（swift_loops） | low | 15832 | 5 | 2 | 待复核 |
 | Swift 结构体、类与 ARC（swift_oop） | low | 11302 | 6 | 2 | 待复核 |
 | 实战：SwiftUI iOS 客户端（swift_project） | low | 12223 | 5 | 2 | 待复核 |
 | 实战：Swift 命令行指标分析工具（swift_project_cli_metrics） | low | 11950 | 5 | 2 | 待复核 |
@@ -1067,15 +1067,15 @@
 
 | 课程 | 风险 | 字数 | 题目 | 配图 | 状态 |
 | --- | --- | --- | --- | --- | --- |
-| TypeScript 数组与对象（ts_arrays_objects） | low | 12400 | 5 | 2 | 待复核 |
-| TypeScript 基础类型（ts_basic_types） | low | 15080 | 5 | 2 | 待复核 |
+| TypeScript 数组与对象（ts_arrays_objects） | low | 11236 | 5 | 2 | 待复核 |
+| TypeScript 基础类型（ts_basic_types） | low | 14271 | 5 | 2 | 待复核 |
 | 类型检查与构建性能优化（ts_build_performance） | low | 9958 | 6 | 2 | 待复核 |
 | TypeScript 构建工具链与测试（ts_build_test） | low | 10938 | 6 | 2 | 待复核 |
 | TypeScript 进阶类型与框架实践（ts_decorators_pro） | low | 11970 | 6 | 2 | 待复核 |
-| TypeScript 第一个类型（ts_first_types） | low | 13395 | 6 | 2 | 待复核 |
+| TypeScript 第一个类型（ts_first_types） | low | 14925 | 6 | 2 | 待复核 |
 | TypeScript 实战：全栈类型安全（ts_fullstack_project） | low | 14717 | 6 | 2 | 待复核 |
-| TypeScript 函数类型（ts_function_types） | low | 13408 | 5 | 2 | 待复核 |
-| TypeScript 接口入门（ts_interface_intro） | low | 11809 | 5 | 2 | 待复核 |
+| TypeScript 函数类型（ts_function_types） | low | 15050 | 5 | 2 | 待复核 |
+| TypeScript 接口入门（ts_interface_intro） | low | 10710 | 5 | 2 | 待复核 |
 | Monorepo 工程实践（ts_monorepo） | low | 10056 | 6 | 2 | 待复核 |
 | TypeScript 类型收窄与泛型（ts_narrowing_generics） | low | 12313 | 6 | 2 | 待复核 |
 | TypeScript Node 后端开发（ts_node_backend） | low | 11171 | 6 | 2 | 待复核 |

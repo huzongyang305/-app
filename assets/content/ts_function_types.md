@@ -481,3 +481,81 @@ console.log(format(42));
 
 最后留一个自检问题：如果只能保留三条笔记，你会写下哪三句？把答案限定为「TypeScript 函数类型」中的可验证结论，并给每条结论配一个反例。这三句加上对应反例，就是本课最值得带入后续课程的复习材料。
 
+<!-- language-intro-deep-dive:start -->
+
+## 零基础通俗讲：TypeScript 函数类型
+
+### 一句话说清它是什么
+
+函数的参数和返回值都可以标注类型；给函数整体起类型别名后，就能把它当作参数传给别的函数，并保证签名一致。
+
+### 用生活比喻理解
+
+函数类型像插座标准：不管你插的是台灯还是充电器，插头形状必须匹配。类型别名就是那份插头标准，谁想接进来都得按这个形状做。
+
+### 完整可运行代码
+
+```typescript
+function add(a: number, b: number): number {
+  return a + b;
+}
+
+const multiply = (a: number, b: number): number => a * b;
+
+type Formatter = (value: number) => string;
+
+const toCurrency: Formatter = (value) => `¥${value.toFixed(2)}`;
+
+console.log(add(3, 4));
+console.log(multiply(3, 4));
+console.log(toCurrency(19.9));
+```
+
+### 逐行拆开看
+
+- `function add(a: number, b: number): number` 中冒号后面的 number 是返回值类型。
+- 参数类型不写时会被推断成 any，strict 模式下会直接报错。
+- `const multiply = (a: number, b: number): number => a * b;` 箭头函数同样能标注。
+- `type Formatter = (value: number) => string;` 描述一个函数形状：收 number、返回 string。
+- 赋给 Formatter 类型的函数必须满足这个形状，否则编译失败。
+- 参数名在类型别名里只是说明用途，实际实现可以换名字。
+
+
+### 把程序跑一遍
+
+- `add(3, 4)` 返回 7，类型检查确认两个实参都是 number。
+- `multiply(3, 4)` 返回 12。
+- `toCurrency(19.9)` 内部调用 toFixed 保留两位小数，返回字符串「¥19.90」。
+- 如果把 toCurrency 改成返回数字，赋值那一行立刻报类型不匹配。
+
+
+### 新手最容易踩的坑
+
+- 返回值类型写成 void 却实际返回了值：调用处拿不到结果，逻辑静默出错。
+- 可选参数写在必选参数前面：TypeScript 要求必选参数在前。
+- 回调函数的参数不写类型：在 strict 模式下会报隐式 any。
+- 以为参数类型会在运行时校验：类型只在编译期检查，外部传入的数据仍需自己验证。
+- 给函数类型加了多余参数：函数赋值时参数个数不匹配也会报错。
+
+
+### 动手练一练
+
+- 写一个 `type Comparator = (a: number, b: number) => boolean;` 并用它声明一个比较函数。
+- 给 add 增加一个可选的第三参数，默认值为 0。
+- 故意让 toCurrency 返回数字，观察是哪一行报错。
+
+
+### 本课速查卡
+
+把下面八行抄进自己的笔记，复习时只看这一页就能回忆整课：
+
+| 复习项 | 本课要点 |
+| --- | --- |
+| 核心结论 | 函数的参数和返回值都可以标注类型；给函数整体起类型别名后，就能把它当作参数传给别的函数，并保证签名一致。 |
+| 最少要写的代码 | `function add(a: number, b: number): number {` |
+| 正确做法 | `add(3, 4)` 返回 7，类型检查确认两个实参都是 number。 |
+| 最常见的错误 | 返回值类型写成 void 却实际返回了值：调用处拿不到结果，逻辑静默出错。 |
+| 出错先查什么 | 先读第一条报错信息，再回到最小示例只改一个地方 |
+| 怎么确认学会了 | 写一个 `type Comparator = (a: number, b: number) => boolean;` 并用它声明一个比较函数。 |
+| 和别的知识点的关系 | 本课打下的语法与思维方式会被后面每一课反复用到 |
+| 接下来做什么 | 合上教程，凭记忆把上面的最小代码重写一遍再运行 |
