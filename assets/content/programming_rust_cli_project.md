@@ -555,9 +555,9 @@ cross build --release --target x86_64-unknown-linux-musl
 | 术语 | 一句话说明 |
 | --- | --- |
 | `Rust` | Rust CLI 的标准配方：clap 解析 + anyhow/thiserror 错误 + serde 序列化 + assertcmd 测试 + 多平台发布；类型系统让这类工具几乎"发布即稳定"。 |
-| `发布` | clap 解析、错误处理、assertcmd 测试与发布。 |
-| `一句话说清它是什么` | Rust 非常适合写 CLI：编译成单个二进制、启动快、无运行时依赖。 |
-| `项目结构` | main.rs 入口：解析参数、调用、退出。 |
+| `Cargo` | Rust 的构建与包管理工具，用 Cargo.toml 声明依赖，提供 build、test、run 等子命令。 |
+| `命令解析` | clap 用派生宏把结构体变成参数定义，自动生成帮助信息与输入校验。 |
+| `错误传播` | 用问号运算符把底层错误向上抛出，配合 anyhow 与 thiserror 保留上下文。 |
 
 ## 考点精讲
 

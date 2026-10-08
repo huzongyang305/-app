@@ -338,9 +338,10 @@ print(sanitize_filename("../../etc/passwd"))
 | --- | --- |
 | `Web 安全` | 保护 Web 应用免受注入、跨站脚本、越权、会话劫持等攻击。 |
 | `XSS` | 跨站脚本攻击，把恶意脚本注入页面并在其他用户浏览器中执行。 |
-| `CSRF` | Summary: XSS, CSRF, injection, sessions and supply chain.。 |
+| `CSRF` | 跨站请求伪造：借用户已登录的凭据发起非预期请求；用 SameSite Cookie 与 CSRF Token 防御。 |
 | `SQL 注入` | 把未校验的用户输入拼进 SQL 语句，使攻击者改变查询语义并访问数据。 |
 | `CSP` | Web 安全的三条主线：输入不可信（转义与参数化）、权限最小化（服务端逐次鉴权）、纵深防御（CSP + 头 + 扫描 + 监控）。 |
+| `供应链` | 依赖包、构建工具与镜像带来的风险，靠锁定版本、校验来源与扫描漏洞控制 |
 
 ## 考点精讲
 
@@ -408,3 +409,4 @@ print(sanitize_filename("../../etc/passwd"))
 | [RFC 9112 HTTP/1.1](https://www.rfc-editor.org/rfc/rfc9112) | HTTP/1.1 报文与连接 |
 
 > 「Web 安全攻防」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+

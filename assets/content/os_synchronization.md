@@ -423,3 +423,4 @@ print(len(queue), queue.get(), queue.get())
 | [OSTEP](https://pages.cs.wisc.edu/~remzi/OSTEP/) | 操作系统导论教材 |
 
 > 「同步机制与经典问题」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+

@@ -454,7 +454,7 @@ Console.WriteLine($"及格 {all.Count(x => x.Score >= 60)} 人");
 | `List` | 选择原则：有序可重复用 List<T>，键值查找用 Dictionary<TKey,TValue>，去重用 HashSet<T>。 |
 | `Dictionary` | C# 中的键值映射集合，按键快速查找且键通常唯一。 |
 | `LINQ` | LINQ 是延迟执行：只写 Where 不会立刻计算，直到 foreach、ToList()、Count() 之类的操作才真正跑。 |
-| `一句话说清它是什么` | 集合负责存数据，LINQ 负责查数据。 |
+| `延迟执行` | LINQ 查询在枚举时才真正执行，多次枚举会重复查询，必要时先物化成集合。 |
 
 ## 考点精讲
 

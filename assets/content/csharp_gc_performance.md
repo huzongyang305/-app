@@ -200,10 +200,10 @@ Console.WriteLine(string.Join(",", values.ToArray()));
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| `GC` | Summary: Learn generational GC, allocations, Span, ArrayPool and benchmarking.。 |
+| `GC` | 垃圾回收器：自动回收不可达对象，按代回收；频繁分配与大对象会推高回收开销。 |
 | `BenchmarkDotNet` | 把「3. 用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化。 |
-| `任务 1：用自己的话画出结构` | 不看书，用一张图说清「C# GC、Span 与性能优化」的结构，画完再对照骨架。 |
-| `任务 2：做一次对比实验` | 写出换方案的触发条件——当Span的规模、精度或资源上限变化到什么程度时，「核心知识」里的结论不再成立。|
+| `分代回收` | .NET GC 按对象存活时间分成 0、1、2 代，优先回收短命对象，减少全堆扫描。 |
+| `大对象堆` | 大于 85 KB 的对象单独存放且默认不压缩，容易产生碎片并抬高回收成本。 |
 
 ## 深度拓展与实战
 

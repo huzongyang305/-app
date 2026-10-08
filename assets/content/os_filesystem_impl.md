@@ -361,7 +361,7 @@ print(write_amplification(100, 320))
 | `inode` | 运维要点：定期检查 dmesg 中的 IO 错误、关注 df -i 的 inode 使用率（小文件过多会先耗尽 inode 而非空间）、SSD 开启 TRIM（fstrim.timer）、监控磁盘延迟而不只是使用率。 |
 | `日志` | 文件系统 = inode 组织数据 + 目录组织名字 + 位图管理空间 + 日志/COW 保证一致性；RAID 提供性能与可用性，但备份仍然不可缺少。 |
 | `COW` | 一句话总结：日志用「先写意图再落盘」换一致性，COW 用「永不覆盖旧数据」换一致性；前者是主流通用方案，后者天然支持快照与校验（ZFS/Btrfs）。 |
-| `任务 1：先跑通，再解释` | from dataclasses import dataclass。 |
+| `RAID 5` | 带分布式校验的条带阵列，能扛一块盘故障，但重建窗口长、写惩罚明显。 |
 
 ## 考点精讲
 

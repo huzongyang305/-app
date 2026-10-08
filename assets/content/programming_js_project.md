@@ -568,7 +568,7 @@ export default defineConfig({
 | `prev.map` | 关键点：状态用不可变更新（`[...prev]`、`prev.map`），不要直接 `push`；列表必须有稳定 `key`；事件处理用箭头函数避免 `this` 问题。 |
 | `npm run build` | `npm run build` 产物是纯静态文件，可放 Nginx 或 CDN。 |
 | `实战` | 实战：Vite + React 待办应用解决了什么问题，而不是只背术语。 |
-| `一句话说清它是什么` | 一个能交付的前端项目要有：能跑起来的开发环境、清晰的分层、可打包的构建、可验证的测试。 |
+| `构建脚本` | package.json 的 scripts 字段把常用命令命名化，让 CI 与本地共用同一入口。 |
 
 ## 考点精讲
 

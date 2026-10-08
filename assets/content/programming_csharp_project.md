@@ -565,6 +565,7 @@ dotnet ef migrations script --idempotent -o migrate.sql   # 生产用脚本
 | `UseExceptionHandler` | 加 `UseExceptionHandler` 统一错误响应，日志用 ILogger。 |
 | `dotnet test` | CI 中执行 `dotnet format --verify-no-changes` 与 `dotnet test`。 |
 | `实战` | 实战：Web API + EF Core解决了什么问题，而不是只背术语。 |
+| `错误处理` | 识别、传播并恢复异常或失败路径，避免错误被吞掉或扩大影响 |
 
 ## 考点精讲
 
@@ -796,3 +797,4 @@ ADR 不需要长：每个决策三行就够——选了什么、放弃了什么�
 
 「实战：Web API + EF Core」评审结束后把这张表填完并归档；下一轮迭代直接读上一次的「未完成项」与「风险与回滚」，避免重复讨论同一个问题。
 <!-- p1-project-review:end -->
+

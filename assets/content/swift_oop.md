@@ -236,7 +236,7 @@ counter=2
 | --- | --- |
 | `struct` | Swift 中的值类型，赋值或传参时复制，适合封装独立的数据模型。 |
 | `class` | 定义对象属性与行为的类型模板，实例化后得到具体对象。 |
-| `ARC` | Summary: Compare value semantics, inheritance, protocol composition and ARC.。 |
+| `ARC` | 自动引用计数：编译期插入引用计数管理对象生命周期，循环引用需用 weak 或 unowned 打破。 |
 | `协议组合` | 二、运行时与内存模型：围绕「struct、class、ARC、协议组合」说明变量生命周期、资源释放、并发模型和错误传播。 |
 
 ## 零基础精讲：把Swift 结构体、类与 ARC真正讲透
@@ -403,7 +403,7 @@ counter=2
 ### 考点 2：概念判断·struct
 
 - **题目**：关于「ARC 自动管理引用计数，但强引用环需要 weak 或 unowned 打破。」，下列说法正确的是？
-- **判断依据**：在「Swift 结构体、类与 ARC」里，ARC 自动管理引用计数，但强引用环需要 weak 或 unowned 打破。「Swift 结构体、类与 ARC」要求先交代struct、class、ARC的前提再下结论，所以“ARC 自动管理引用计数”只在题干“ARC 自动管理引用计数”给定的条件下成立。
+- **判断依据**：在「Swift 结构体、类与 ARC」里，ARC 自动管理引用计数「Swift 结构体、类与 ARC」要求先交代struct、class、ARC的前提再下结论，所以“ARC 自动管理引用计数”只在题干“ARC 自动管理引用计数”给定的条件下成立。
 
 ### 考点 3：概念判断·struct
 

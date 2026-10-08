@@ -244,7 +244,7 @@ int=4 bytes, double=8 bytes
 | `类型` | 值允许的表示、取值范围和可执行操作集合。 |
 | `溢出` | 有符号整数溢出是未定义行为，不能依赖回绕结果。 |
 | `隐式转换` | 二、运行时与内存模型：围绕「类型、溢出、隐式转换、sizeof」说明变量生命周期、资源释放、并发模型和错误传播。 |
-| `sizeof` | Summary: Master integer widths, overflow, implicit conversion, floating point and sizeof.。 |
+| `sizeof` | 返回类型或对象占用的字节数，在编译期求值；数组与指针上的结果不同是常见陷阱。 |
 
 ## 深度拓展与实战
 

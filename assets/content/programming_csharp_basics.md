@@ -415,7 +415,7 @@ dotnet add package Newtonsoft.Json   # 添加 NuGet 包
 | `Nullable` | 开启 `Nullable` 后编译器会检查可能的空引用，新项目建议默认打开。 |
 | `dotnet` | C# 代码跑在 .NET 上：**编译成 IL、由 CLR 托管执行**。掌握 `dotnet` CLI 与 csproj 配置即可开始任何类型的项目。 |
 | `C#` | C# 是运行在 .NET 平台上的编译型语言：源码编译成中间语言（IL）。 |
-| `两个文件撑起一个项目` | // Program.cs。 |
+| `.csproj` | C# 项目文件：声明目标框架、依赖与编译项，dotnet build 依据它生成程序集。 |
 
 ## 考点精讲
 

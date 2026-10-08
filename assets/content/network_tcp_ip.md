@@ -348,7 +348,9 @@ print(socket.gethostbyname("localhost"))
 | `tcpdump` | 掌握这两张表，`tcpdump` 的输出就能从"看不懂的字符"变成结论。 |
 | `IP` | 一句话概括：IP 负责送到哪台机器，TCP/UDP 负责送到哪个程序，TCP 额外保证可靠。 |
 | `端口` | 端口用于区分同一台主机上的不同服务。 |
-| `任务 1：先跑通，再解释` | import socket。 |
+| `三次握手` | SYN、SYN+ACK、ACK 三步建立连接并交换初始序列号，连接卡住经常就卡在这一步。 |
+| `TCP` | 面向连接的可靠传输协议：握手建连、序号与重传保序，滑动窗口与拥塞控制决定吞吐 |
+| `拥塞控制` | TCP 根据网络反馈调整发送速率，避免丢包和排队崩溃 |
 
 ## 考点精讲
 
@@ -469,3 +471,4 @@ print(socket.gethostbyname("localhost"))
 | [RFC 9000 QUIC](https://www.rfc-editor.org/rfc/rfc9000) | QUIC 传输与连接迁移 |
 
 > 「TCP/IP 协议栈」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+

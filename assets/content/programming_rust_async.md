@@ -464,9 +464,10 @@ async fn main() {
 | 术语 | 一句话说明 |
 | --- | --- |
 | `Rust` | Rust 的 async fn 由编译器生成状态机，返回 Future；Future 是惰性的，必须被 await 或被 executor 驱动才会推进。 |
-| `异步` | // 异步：等待期间线程可以去处理别的任务。 |
+| `异步` | async/await 把等待交给执行器：任务在 await 处让出线程，适合高并发 IO，但不能阻塞线程。 |
 | `tokio` | 用 std 的 Mutex 跨 await 持有，会导致死锁或编译错误；应使用 tokio::sync::Mutex，且尽量缩短持锁范围。 |
 | `spawn_blocking` | 在异步任务里做阻塞操作（同步 IO、CPU 密集），会卡住整个执行线程，应用 spawnblocking 或限制线程数。 |
+| `Tokio` | Rust 的异步运行时：提供任务调度、定时器与异步 IO，配合 async/await 写高并发程序 |
 
 ## 考点精讲
 
@@ -534,3 +535,4 @@ async fn main() {
 | [The Rust Book](https://doc.rust-lang.org/book/) | 所有权、类型与工程实践 |
 
 > 「Rust 异步编程与 tokio」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+

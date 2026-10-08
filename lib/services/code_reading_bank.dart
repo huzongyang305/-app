@@ -60,6 +60,8 @@ const Map<String, String> codeLanguageLabels = <String, String>{
   'xml': 'XML',
   'http': 'HTTP',
   'dockerfile': 'Dockerfile',
+  'solidity': 'Solidity',
+  'hcl': 'HCL',
 };
 
 /// 语言 → 槽位列表。
@@ -952,6 +954,94 @@ codeReadingBank = <String, List<CodeReadingEntry>>{
       '默认 root 运行风险更高，最小权限原则要求容器以专用低权限用户启动。',
     ),
   ],
+  'solidity': <CodeReadingEntry>[
+    CodeReadingEntry(
+      'token',
+      r'transferFrom|allowance\s*\[',
+      'mapping(address => uint256) public balanceOf;\nmapping(address => mapping(address => uint256)) public allowance;\n\nfunction transfer(address to, uint256 value) external returns (bool) {\n    require(balanceOf[msg.sender] >= value, "insufficient balance");\n    balanceOf[msg.sender] -= value;\n    balanceOf[to] += value;\n    return true;\n}',
+      '在余额与授权额度内完成代币转账并返回是否成功',
+      '代币标准把余额和授权额度分开记录；额度不足时 require 直接回退整笔交易，不会出现半完成状态。',
+    ),
+    CodeReadingEntry(
+      'oracle',
+      r'latestRoundData|MAX_STALENESS|stale',
+      'uint256 public constant MAX_STALENESS = 90;\n\nfunction currentPrice() public view returns (int256) {\n    (, int256 answer, , uint256 updatedAt, ) = feed.latestRoundData();\n    require(answer > 0, "invalid price");\n    require(block.timestamp - updatedAt <= MAX_STALENESS, "stale price");\n    return answer;\n}',
+      '读取预言机价格并拒绝使用超过容忍窗口的过期数据',
+      '喂价同时返回更新时间戳，合约用当前时间减去它判断新鲜度，超时就回退，避免按陈旧价格成交。',
+    ),
+    CodeReadingEntry(
+      'zk_verify',
+      r'zkProof|merkleRoot|verifyMerkle',
+      'bytes32 public immutable merkleRoot;\n\nfunction verifyMembership(\n    uint256[] calldata proof,\n    bytes32 leaf,\n    bytes calldata zkProof\n) external view returns (bool) {\n    if (!verifyMerkle(proof, merkleRoot, leaf)) return false;\n    return zkVerify(zkProof, leaf);\n}',
+      '链上只校验默克尔路径和零知识证明，不接触成员私有数据',
+      '合约只保存公开的根哈希，调用方提交路径与证明即可自证资格，原始数据始终留在链下。',
+    ),
+    CodeReadingEntry(
+      'reentrancy',
+      r'noReentry|reentrant|locked',
+      'modifier noReentry() {\n    require(!locked, "reentrant call");\n    locked = true;\n    _;\n    locked = false;\n}\n\nfunction withdraw(uint256 amount) external noReentry {\n    require(balanceOf[msg.sender] >= amount, "insufficient");\n    balanceOf[msg.sender] -= amount;\n    (bool ok, ) = msg.sender.call{value: amount}("");\n    require(ok, "transfer failed");\n}',
+      '用状态锁拦住重入调用，并按先扣余额、后转账的顺序提现',
+      '互斥锁在函数执行期间置位，回调再次进入会被 require 拒绝；状态先更新让余额检查天然成立。',
+    ),
+    CodeReadingEntry(
+      'checks_effects',
+      r'balance\[msg\.sender\]\s*=\s*0',
+      'function withdraw() external {\n    uint256 amount = balance[msg.sender];\n    require(amount > 0, "empty");\n    balance[msg.sender] = 0;\n    (bool ok, ) = msg.sender.call{value: amount}("");\n    require(ok, "transfer failed");\n}',
+      '先做检查并把余额清零，最后才把资金转给调用方',
+      '这是检查-生效-交互顺序：余额在外部调用前清零，即使对方在回调里重入，第二次检查也拿不到余额。',
+    ),
+    CodeReadingEntry(
+      'access_control',
+      r'msg\.sender\s*==\s*owner|onlyOwner|immutable\s+owner',
+      'address public immutable owner;\n\nconstructor() {\n    owner = msg.sender;\n}\n\nfunction reset() external {\n    require(msg.sender == owner, "not owner");\n    count = 0;\n}',
+      '在构造函数记录部署者，再用 require 限制只有所有者能执行敏感操作',
+      'owner 在部署时确定为调用者，敏感函数比对外部账户身份，校验失败时整笔调用回退。',
+    ),
+    CodeReadingEntry(
+      'event_count',
+      r'event\s+\w+\s*\(|emit\s+\w+',
+      'uint256 public count;\nevent Incremented(address indexed by, uint256 newValue);\n\nfunction increment() external {\n    count += 1;\n    emit Incremented(msg.sender, count);\n}',
+      '更新链上状态并发出带索引参数的事件供链下检索',
+      '事件不占合约存储，indexed 字段让链下服务可以按地址过滤日志，适合做通知与索引。',
+    ),
+    CodeReadingEntry(
+      'contract_basic',
+      r'contract\s+\w+',
+      'contract Counter {\n    uint256 public count;\n\n    function increment() external {\n        count += 1;\n    }\n}',
+      '声明一个合约，并用外部可调用的函数修改链上存储',
+      'contract 是部署单元，public 状态变量会自动生成读取函数，external 函数供外部账户或其它合约调用。',
+    ),
+  ],
+  'hcl': <CodeReadingEntry>[
+    CodeReadingEntry(
+      'resource',
+      r'resource\s+"',
+      'resource "cloud_network" "main" {\n  name = "app-dev"\n  cidr = "10.20.0.0/16"\n}',
+      '声明一个待创建的资源及其期望属性',
+      'resource 后的两个字符串分别是资源类型和本地名称，块内属性用来描述该资源的目标状态。',
+    ),
+    CodeReadingEntry(
+      'variable',
+      r'variable\s+"',
+      'variable "env" { type = string }\nvariable "instance_type" { type = string, default = "small" }',
+      '声明输入变量，并可以为它指定类型和默认值',
+      '变量把环境差异从模板中抽走，未显式传值时使用 default，块内用 var.名字 引用。',
+    ),
+    CodeReadingEntry(
+      'dependency',
+      r'network_id\s*=|subnet_id\s*=',
+      'resource "cloud_subnet" "app" {\n  network_id = cloud_network.main.id\n}\n\nresource "cloud_instance" "app" {\n  subnet_id = cloud_subnet.app.id\n}',
+      '通过引用其它资源的属性建立隐式依赖，保证创建顺序',
+      '引用另一个资源的 id 会让工具自动推导依赖，无需手写顺序就能先建网络，再建子网与实例。',
+    ),
+    CodeReadingEntry(
+      'output',
+      r'output\s+"',
+      'output "instance_id" { value = cloud_instance.app.id }',
+      '把资源属性导出为输出，供其它模块或流水线引用',
+      'output 暴露选定属性，其它配置可以直接引用它，而不用重复查询资源。',
+    ),
+  ],
 };
 
 /// 与题目无关但一定错误的兜底干扰项，用于干扰项不足的语言。
@@ -971,6 +1061,9 @@ String canonicalCodeLanguage(String language) {
       return 'typescript';
     case 'shell':
       return 'bash';
+    case 'terraform':
+    case 'tf':
+      return 'hcl';
     default:
       return language.trim().toLowerCase();
   }

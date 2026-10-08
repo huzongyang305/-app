@@ -465,6 +465,7 @@ public class OrderStats {
 | `synchronized` | 并发三件事：可见性（volatile/synchronized）、原子性（锁/原子类）、有序性（happens-before）。 |
 | `AtomicInteger` | volatile 保证可见性与有序性，但不保证原子性，count++ 仍需加锁或改用 AtomicInteger。 |
 | `虚拟线程` | 虚拟线程、记录模式、结构化并发与分代 ZGC 是升级收益最大的部分。 |
+| `内存模型` | 编程语言或硬件对多线程读写可见性、原子性和重排序给出的规则集合 |
 
 ## 考点精讲
 
@@ -562,3 +563,4 @@ public class OrderStats {
 | [Java GC 调优](https://docs.oracle.com/en/java/javase/21/gctuning/) | 垃圾回收与性能调优 |
 
 > 「多线程与并发」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+

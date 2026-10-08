@@ -442,6 +442,7 @@ console.log(counter.value());  // 1
 | `new` | 优先级：`new` > `bind` > `call/apply` > 对象方法 > 默认绑定；箭头函数不参与，取定义时外层的 `this`。 |
 | `函数` | 接收输入、执行确定逻辑并返回结果的代码单元。 |
 | `闭包` | 函数与其定义时词法环境的组合，使函数离开原作用域后仍能访问捕获的变量。 |
+| `作用域` | 程序中名字可见和可访问的范围，由词法结构或运行时上下文决定 |
 
 ## 考点精讲
 
@@ -510,3 +511,4 @@ console.log(counter.value());  // 1
 | [Jest 文档](https://jestjs.io/docs/getting-started) | JavaScript 测试与断言 |
 
 > 「函数、作用域与 this」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+

@@ -522,7 +522,7 @@ echo "符号：build/symbols（请归档）"
 ### 考点 4：概念判断·Flutter
 
 - **题目**：flutter build appbundle 的产物格式是？
-- **判断依据**：在「实战：Flutter 打包发布 Android」里，结论应落在「.aab（Android App Bundle）」。appbundle 生成 .aab，由商店按设备配置拆分下发。在「实战：Flutter 打包发布 Android」里，这道题要求区分概念与边界，「.aab（Android App Bundle）」只有在题干给出的前提下才成立，而「.ipa（没有覆盖题干给出的条件）」、「.jar」缺少同一组条件。
+- **判断依据**：在「实战：Flutter 打包发布 Android」里，结论应落在「.aab」。appbundle 生成 .aab，由商店按设备配置拆分下发。在「实战：Flutter 打包发布 Android」里，这道题要求区分概念与边界，「.aab」只有在题干给出的前提下才成立，而「.ipa」、「.jar」缺少同一组条件。
 
 ### 考点 5：概念判断·Flutter
 

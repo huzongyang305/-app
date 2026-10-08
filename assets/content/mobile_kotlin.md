@@ -466,7 +466,8 @@ sealed interface ListUiState {
 | `Kotlin` | 运行于 JVM 等平台、强调空安全与简洁语法的现代编程语言。 |
 | `Android` | Android 开发的关键是分层（UI/状态/数据）+ 空安全 + 协程：把状态交给 ViewModel、把耗时操作交给协程、把数据来源收敛到 Repository。 |
 | `AAB` | Android App Bundle 发布格式，由应用商店按设备配置生成拆分后的 APK。 |
-| `一句话说清它是什么` | Kotlin 是 Android 的官方首选语言，核心优势是空安全、简洁、协程。 |
+| `构建变体` | debug、release 等不同配置的产物，用变体维度管理签名、混淆与接口地址。 |
+| `协程` | 协程把耗时工作挪出主线程 |
 
 ## 考点精讲
 
@@ -534,3 +535,4 @@ sealed interface ListUiState {
 | [Flutter 性能最佳实践](https://docs.flutter.dev/perf/best-practices) | 帧率、构建与内存优化 |
 
 > 「Kotlin 与 Android 开发」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+

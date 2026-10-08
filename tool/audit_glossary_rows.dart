@@ -23,6 +23,52 @@ final RegExp taskTermPattern = RegExp(
   r'^(任务|步骤|实验|阶段|第[一二三四五六七八九十\d]+步)\s*[一二三四五六七八九十\d]*\s*[:：]',
 );
 
+/// 小节标题被当成术语的形态：编号小节（一、二、三）、模式/模板小节、
+/// 「怎么/为什么/哪些」这类提问式标题，以及明显的长标题。
+final RegExp headingShapePattern = RegExp(
+  r'^(任务|步骤|实验|阶段|模式|模板|第[一二三四五六七八九十\d]+步|'
+  r'[一二三四五六七八九十]、|逐行拆解)',
+);
+
+final RegExp headingQuestionPattern = RegExp(
+  r'^(为什么|怎么|如何|哪些|什么|何时|多少|几个|几条)|'
+  r'(怎么写|怎么选|怎么用|怎么拆|该不该|要同时配|对照|对比|速查|清单|指南|'
+  r'自测|步骤|流程|写法|矩阵|层级|纪律)$',
+);
+
+/// 反复出现在多门课里的小节标题，即使很短也不是术语。
+const Set<String> junkHeadingTerms = <String>{
+  '回归与回滚',
+  '用生活比喻理解',
+  '目录结构',
+  '项目结构',
+  '服务端实现',
+  '最小可运行示例',
+  '页面文件结构',
+  '页面跳转与传参',
+  '泛型三件套',
+  '寄存器的分工',
+  '发布',
+};
+
+/// 与小节标题同名、但确实是术语的短词，不进标题类缺陷。
+const Set<String> headingTermWhitelist = <String>{
+  '可变参数',
+  '量词与否定',
+};
+
+/// 判断一个术语是不是「把本课小节标题抄进了术语列」。
+bool looksLikeHeadingTerm(String term, Set<String> headings) {
+  if (!headings.contains(term)) return false;
+  if (headingTermWhitelist.contains(term)) return false;
+  if (junkHeadingTerms.contains(term)) return true;
+  if (headingShapePattern.hasMatch(term)) return true;
+  if (term.contains('：') || term.contains(':')) return true;
+  if (headingQuestionPattern.hasMatch(term)) return true;
+  if (term.length >= 8) return true;
+  return false;
+}
+
 /// 说明列的模板句特征：出现任意一条即视为占位文本。
 const List<String> templateMarkers = <String>[
   '复述当前方案对',
@@ -55,6 +101,7 @@ class GlossaryRow {
     required this.line,
     required this.term,
     required this.description,
+    this.headings = const <String>{},
   });
 
   final String lessonId;
@@ -63,9 +110,13 @@ class GlossaryRow {
   final String term;
   final String description;
 
+  /// 本课所有 `###` 小节标题，用来识别「标题被当成术语」的脏行。
+  final Set<String> headings;
+
   /// 返回问题类型；null 表示这一行是合格的「术语 + 中文说明」。
   String? get finding {
     if (taskTermPattern.hasMatch(term)) return 'task_term';
+    if (looksLikeHeadingTerm(term, headings)) return 'heading_term';
     if (description.toLowerCase().startsWith('summary:')) {
       return 'english_summary';
     }
@@ -79,10 +130,20 @@ class GlossaryRow {
   }
 }
 
-Future<void> main(List<String> args) async {
-  final failOnFindings = args.contains('--fail-on-findings');
+/// 一次扫描的结果：行数据 + 扫描到的课程文件数。
+class GlossaryScanResult {
+  const GlossaryScanResult({required this.rows, required this.lessonCount});
+
+  final List<GlossaryRow> rows;
+  final int lessonCount;
+}
+
+/// 扫描 `dir` 下所有 Markdown 的「术语速查」表格行。
+///
+/// 修复工具与体检工具共用这一份解析，避免两边规则漂移。
+Future<GlossaryScanResult> scanGlossaryRows(String dir) async {
   final rows = <GlossaryRow>[];
-  final files = Directory(contentDir)
+  final files = Directory(dir)
       .listSync()
       .whereType<File>()
       .where((file) => file.path.toLowerCase().endsWith('.md'))
@@ -92,6 +153,10 @@ Future<void> main(List<String> args) async {
   for (final file in files) {
     final lines = await file.readAsLines();
     final lessonId = file.uri.pathSegments.last.replaceAll('.md', '');
+    final headings = <String>{
+      for (final line in lines)
+        if (line.startsWith('### ')) line.substring(4).trim(),
+    };
     var inGlossary = false;
     for (var index = 0; index < lines.length; index++) {
       final line = lines[index];
@@ -116,10 +181,18 @@ Future<void> main(List<String> args) async {
           line: index + 1,
           term: term,
           description: description,
+          headings: headings,
         ),
       );
     }
   }
+  return GlossaryScanResult(rows: rows, lessonCount: files.length);
+}
+
+Future<void> main(List<String> args) async {
+  final failOnFindings = args.contains('--fail-on-findings');
+  final scan = await scanGlossaryRows(contentDir);
+  final rows = scan.rows;
 
   final findings = <Map<String, Object>>[];
   final byKind = <String, int>{};
@@ -164,7 +237,7 @@ Future<void> main(List<String> args) async {
 
   final report = <String, Object>{
     'generated_at': DateTime.now().toIso8601String(),
-    'lesson_count': files.length,
+    'lesson_count': scan.lessonCount,
     'glossary_row_count': rows.length,
     'finding_count': findings.length,
     'findings_by_kind': byKind,
@@ -181,7 +254,7 @@ Future<void> main(List<String> args) async {
   for (final entry in byKind.entries) {
     stdout.writeln('  ${entry.key}: ${entry.value}');
   }
-  stdout.writeln('涉及课程：${affected.length} / ${files.length}');
+  stdout.writeln('涉及课程：${affected.length} / ${scan.lessonCount}');
   stdout.writeln('报告：$reportPath');
   stdout.writeln('待修清单：$backlogPath');
   if (failOnFindings && findings.isNotEmpty) exitCode = 1;
@@ -204,6 +277,7 @@ String _backlogMarkdown(Map<String, Object> report) {
   final kinds = report['findings_by_kind'] as Map<String, int>;
   const kindNotes = <String, String>{
     'task_term': '任务/步骤标题被当成术语：删掉该行，必要时补一条真术语。',
+    'heading_term': '本课小节标题被当成术语：删掉该行，必要时补一条真术语。',
     'code_desc': '说明是代码行：改写成中文一句话定义。',
     'english_summary': '说明是英文摘要（Summary: ...）：改写成中文一句话定义。',
     'template_desc': '说明是模板句：改写成该术语的中文一句话定义。',

@@ -307,8 +307,8 @@ const payload = verifyJwt(token, publicKey, {
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| `OAuth` | 用一句话说明「图解 OAuth 2.0 授权码流程与 PKCE」解决什么问题：四种角色、授权码加 PKCE 全流程、令牌纪律与八类常见错误。 |
-| `PKCE` | Summary: Roles, authorization code with PKCE, token rules and pitfalls.。 |
+| `OAuth` | 授权框架：资源所有者授权后客户端用令牌访问资源服务器，全程不接触用户密码。 |
+| `PKCE` | 授权码流程的扩展：客户端生成并校验 code_verifier，防止授权码被截获后换令牌。 |
 | `授权码` | OAuth 中由授权服务器发给客户端、再换取令牌的一次性凭证。 |
 | `令牌` | 服务签发的临时凭证，用于证明身份或携带有限权限。 |
 | `安全` | 授权流程通过 PKCE、state 校验、短时令牌和最小作用域降低令牌泄露风险。 |

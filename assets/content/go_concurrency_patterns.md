@@ -480,9 +480,9 @@ func DownloadAll(ctx context.Context, urls []string, limit int) ([]string, error
 | 术语 | 一句话说明 |
 | --- | --- |
 | `并发模式` | 并发模式是「被反复验证过的 goroutine + channel 组合拳」。 |
-| `模式一：worker 池（限制并发）` | func RunWorkers(ctx context.Context, jobs <-chan Job, size int) {。 |
-| `模式四：pipeline（流水线）` | out := make(chan int)。 |
-| `模式五：semaphore（限制并发数）` | func FetchAll(urls []string, limit int) {。 |
+| `worker 池` | 固定数量的 goroutine 从 channel 取任务，用有界并发保护下游与本地资源。 |
+| `fan-in 与 fan-out` | 把任务分发给多个 goroutine，再把结果汇聚回一个 channel 的经典并发结构。 |
+| `限流` | 用带缓冲 channel 或 rate.Limiter 控制单位时间放行的任务数，避免把下游打垮。 |
 
 ## 考点精讲
 

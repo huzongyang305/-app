@@ -476,8 +476,8 @@ finally:
 | --- | --- |
 | `ValueError` | 常见异常：`ValueError` 值不合法、`TypeError` 类型不匹配、`KeyError` 字典键不存在、`IndexError` 下标越界、`FileNotFoundError` 文件不存在。 |
 | `异常` | 程序执行中偏离正常控制流的错误事件，需要捕获、传播或转换。 |
-| `一句话说清它是什么` | 异常处理让程序出错时不崩溃，而是走另一条路；文件读写解决「数据要存下来」的问题。 |
-| `异常处理的完整结构` | raw = input("请输入除数：")。 |
+| `上下文管理器` | with 语句在进入与退出时自动获取和释放资源，文件与锁都靠它保证释放。 |
+| `异常链` | 用 raise ... from 保留原始异常，traceback 里才能看到真正的起因。 |
 
 ## 考点精讲
 
@@ -499,7 +499,7 @@ finally:
 ### 考点 4：概念判断·异常
 
 - **题目**：读取一个不存在的文件，会抛出哪个异常？
-- **判断依据**：在「异常处理与文件操作」里，FileNotFoundError 是 OSError 的子类，捕获时也可以按 OSError 处理。在「异常处理与文件操作」里，其他选项：IndexError 是下标越界、KeyError 是字典缺键、TypeError 是类型不匹配。在「异常处理与文件操作」里，这道题要求区分概念与边界，「FileNotFoundError」只有在题干给出的前提下才成立，而「IndexError」、「TypeError」缺少同一组条件。
+- **判断依据**：在「异常处理与文件操作」里，FileNotFoundError 是 OSError 的子类，捕获时也可以按 OSError 处理。在「异常处理与文件操作」里，其他选项：抛出 IndexError 对应下标越界，KeyError 是字典缺键，TypeError 是类型不匹配。在「异常处理与文件操作」里，这道题要求区分概念与边界，「FileNotFoundError」只有在题干给出的前提下才成立，而「抛出 IndexError」、「TypeError」缺少同一组条件。
 
 ### 考点 5：概念判断·异常
 

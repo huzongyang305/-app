@@ -328,8 +328,8 @@ jobs:
 | --- | --- |
 | `npm ci` | 要点：`npm ci` 与 lock 文件保证可复现；`needs` 建立阶段依赖；镜像用 `github.sha` 做不可变标签；密钥一律走 `secrets`。缓存依赖通常能让 CI 从数分钟压缩到一分钟内。 |
 | `CD` | CI/CD 把「人肉发布流程」变成可重复的自动化脚本。 |
-| `任务 1：用自己的话画出结构` | 不看书，用一张图说清「CI/CD 与 GitHub Actions」的结构，画完再对照骨架。 |
-| `任务 2：做一次对比实验` | 两个方案的差异必须落在「CI/CD 与 GitHub Actions」的实际约束上；写清当CI越过哪条边界时应该换方案。|
+| `缓存` | 把依赖与构建产物按 key 复用，key 要包含锁文件哈希，否则会用到过期依赖。 |
+| `密钥管理` | 密钥只在运行时注入且不回显，令牌按最小权限发放并定期轮换。 |
 
 ## 考点精讲
 
@@ -346,7 +346,7 @@ jobs:
 ### 考点 3：概念判断·CI
 
 - **题目**：job 中使用 needs 关键字的作用是？
-- **判断依据**：在「CI/CD 与 GitHub Actions」里，声明依赖的 job，等待其完成。needs 建立 job 之间的依赖顺序，例如测试通过后再构建部署。回到「CI/CD 与 GitHub Actions」的正文示例，用“job 中使用 needs 关键字的”走一遍CI、CD、GitHub Actions的完整流程，能复现的结论才可以保留。
+- **判断依据**：在「CI/CD 与 GitHub Actions」里，声明依赖的 job。needs 建立 job 之间的依赖顺序，例如测试通过后再构建部署。回到「CI/CD 与 GitHub Actions」的正文示例，用“job 中使用 needs 关键字的”走一遍CI、CD、GitHub Actions的完整流程，能复现的结论才可以保留。
 
 ### 考点 4：概念判断·CI
 

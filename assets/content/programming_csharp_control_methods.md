@@ -478,6 +478,7 @@ Console.WriteLine($"{count} 人，平均 {average}，等级 {level}");
 | `InvalidOperationException` | 遍历集合时不要修改集合结构，否则会抛 `InvalidOperationException`；需要增删就遍历副本。 |
 | `ref` | 参数修饰符：`ref` 传入并可能修改、`out` 用于输出、`in` 只读引用（大结构体避免拷贝）、`params` 可变参数。 |
 | `模式匹配` | 按值、类型或结构选择分支并提取其中字段。 |
+| `可选参数` | 可选参数要放在参数列表末尾；调用处用命名参数能显著提高可读性 |
 
 ## 考点精讲
 
@@ -546,3 +547,4 @@ Console.WriteLine($"{count} 人，平均 {average}，等级 {level}");
 | [C# 异步编程](https://learn.microsoft.com/dotnet/csharp/asynchronous-programming/) | async/await 与取消 |
 
 > 「控制流与方法」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+

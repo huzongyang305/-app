@@ -414,3 +414,4 @@ A distributed transaction is a set of local transactions that a coordinator driv
 ### 结论与下一步
 
 学完分布式事务与一致性，应该能独立完成三件事：先用最小示例确认分布式事务的行为，再用一个边界输入验证结论，最后把失败路径写成可重复的检查。下一步把本课术语加入复习清单，并在两周内用一次真实任务检验记忆是否牢固。
+

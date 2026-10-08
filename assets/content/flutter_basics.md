@@ -458,7 +458,7 @@ class ItemList extends StatelessWidget {
 | `flutter run` | 调试技巧：`flutter run` 时按 `p` 打开布局检查器看约束；用 `debugPrint` 代替 print（长日志不被截断）；`flutter analyze` 进 CI 防低级错误。 |
 | `Widget` | Widget 是不可变的配置描述，真正的渲染由 Element 与 RenderObject 完成，因此重建 Widget 很廉价，性能瓶颈通常在布局与绘制。 |
 | `约束` | 模板或类型系统对可用类型、值或操作施加的限制条件。 |
-| `一句话说清它是什么` | Flutter 里「一切皆 Widget」。理解布局只需记住三条。 |
+| `热重载` | 保存后把代码改动注入正在运行的应用并尽量保留状态，用来快速验证界面改动。 |
 
 ## 考点精讲
 

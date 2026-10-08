@@ -198,7 +198,7 @@ ok=True
 | 术语 | 一句话说明 |
 | --- | --- |
 | `打包` | 把源码、依赖和元数据整理成可分发或可部署的产物。 |
-| `pyproject` | Summary: Use pyproject, lock files and build tools, then profile performance.。 |
+| `pyproject` | Python 项目的标准配置文件：声明构建后端、依赖与工具配置，取代 setup.py 的中心地位。 |
 | `性能剖析` | 用采样或插桩收集函数、调用栈和资源占用数据，定位真正的热点。 |
 | `发布` | 把通过验证的版本交付给用户或部署到目标环境。 |
 
@@ -403,7 +403,7 @@ ok=True
 ### 考点 3：概念判断·打包
 
 - **题目**：关于「性能优化先用 cProfile，py-spy 和基准测试定位，再考虑算法」，下列说法正确的是？
-- **判断依据**：在「Python 打包、发布与性能」里，与「性能优化先用 cProfile，py-spy 和基准测试定位，再考虑算法」混在一起。「Python 打包、发布与性能」要求先交代打包、pyproject、性能剖析的前提再下结论，所以“性能优化先用 cProfile”只在题干“性能优化先用 cProfile”给定的条件下成立。
+- **判断依据**：在「Python 打包、发布与性能」里，与「性能优化先用 cProfile，py-spy 和基准测试定位」混在一起。「Python 打包、发布与性能」要求先交代打包、pyproject、性能剖析的前提再下结论，所以“性能优化先用 cProfile”只在题干“性能优化先用 cProfile”给定的条件下成立。
 
 ### 考点 4：概念判断·打包
 

@@ -448,7 +448,8 @@ static async Task Main()
 | `async` | `async` 方法返回 `Task` / `Task<T>`；`await` 在等待期间释放线程，因此特别适合 IO 密集场景。 |
 | `CancellationTokenSource` | 用 `CancellationTokenSource` 实现超时： |
 | `IDisposable` | 实现 `IDisposable` 的对象用 `using` 自动释放： |
-| `一句话说清它是什么` | async/await 让「等待 IO」的代码写起来像同步代码，但线程不会被卡住。 |
+| `配置等待` | 决定 await 恢复时是否需要回到原来的同步上下文，库代码里通常传 false 以避免死锁。 |
+| `取消` | 取消要一路传下去：只在外层判断 token.IsCancellationRequested 而不传给底层调用，是无效取消 |
 
 ## 考点精讲
 
@@ -547,3 +548,4 @@ static async Task Main()
 | [C# 指南](https://learn.microsoft.com/dotnet/csharp/) | 语言语法与类型系统 |
 
 > 「异步编程与异常处理」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+

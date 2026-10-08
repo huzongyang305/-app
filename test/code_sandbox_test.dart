@@ -3,7 +3,10 @@ import 'dart:convert';
 import 'package:code_learn_app/models/sandbox_language.dart';
 import 'package:code_learn_app/models/sandbox_output.dart';
 import 'package:code_learn_app/screens/code_sandbox_screen.dart';
+import 'package:code_learn_app/screens/lesson_screen.dart';
 import 'package:code_learn_app/services/code_sandbox_service.dart';
+import 'package:code_learn_app/services/content_provider.dart';
+import 'package:code_learn_app/services/progress_provider.dart';
 import 'package:code_learn_app/services/settings_provider.dart';
 import 'package:code_learn_app/services/snippet_service.dart';
 import 'package:code_learn_app/services/storage_service.dart';
@@ -350,5 +353,49 @@ void main() {
 
     expect(find.textContaining('暂不支持离线沙箱'), findsOneWidget);
     expect(find.textContaining('当前支持'), findsOneWidget);
+  });
+
+  testWidgets('教学模式语言的课程页会如实标注（不宣称真编译执行）', (tester) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    final storage = StorageService.inMemory();
+    // testWidgets 运行在 FakeAsync 里，真实文件 I/O 必须放进 runAsync。
+    final content = (await tester.runAsync(() async {
+      final provider = ContentProvider();
+      await provider.load();
+      return provider;
+    }))!;
+    final lesson = content.allLessons.firstWhere(
+      (item) => item.lab == 'sandbox:java',
+      orElse: () => throw StateError('没有绑定 java 沙箱的课程'),
+    );
+
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => SettingsProvider(storage)),
+          ChangeNotifierProvider(create: (_) => ProgressProvider(storage)),
+          ChangeNotifierProvider<ContentProvider>.value(value: content),
+        ],
+        child: MaterialApp(
+          theme: AppTheme.light(),
+          home: LessonScreen(lesson: lesson),
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 600));
+
+    expect(
+      find.textContaining('教学模式'),
+      findsWidgets,
+      reason: '教学模式语言必须在课程页标注，避免被当成真编译执行',
+    );
+    final labButton = tester.widget<IconButton>(
+      find.widgetWithIcon(IconButton, Icons.school_outlined),
+    );
+    expect(labButton.tooltip, contains('教学模式'));
   });
 }

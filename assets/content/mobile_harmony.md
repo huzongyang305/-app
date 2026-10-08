@@ -431,10 +431,10 @@ struct CounterPage {
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| `一句话说清它是什么` | 鸿蒙应用用 ArkTS（TypeScript 的超集）编写，界面用 ArkUI 声明式语法描述。 |
-| `一个页面的基本结构` | struct CounterPage {。 |
-| `五个常用状态装饰器` | struct Child {。 |
-| `页面跳转与传参` | router.pushUrl({。 |
+| `Stage 模型` | HarmonyOS 的应用模型：每个 UIAbility 是可独立启动的入口，页面在它的窗口里组织。 |
+| `状态装饰器` | 用 @State、@Prop、@Link 标注数据的流向，决定状态变化如何触发界面刷新。 |
+| `ArkTS` | HarmonyOS 的 TypeScript 系开发语言，在 TS 基础上加了声明式界面与静态约束。 |
+| `UIAbility` | 应用的能力单元，负责一个可启动的界面以及它的生命周期回调。 |
 
 ## 考点精讲
 

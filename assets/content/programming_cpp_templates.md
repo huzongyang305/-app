@@ -507,7 +507,7 @@ static_assert(!std::is_integral_v<double>);
 | `泛型` | 把类型作为参数复用同一套逻辑，同时让编译器保留类型检查。 |
 | `特化` | 为特定类型或模板参数提供更高效或更合适的实现。 |
 | `type_traits` | C++ 标准库头文件，用模板在编译期查询和变换类型属性。 |
-| `Concepts` | Summary: Function/class templates, specialization, traits and concepts.。 |
+| `Concepts` | C++20 的编译期约束：用命名要求限定模板参数，让报错指向真正不满足的条件。 |
 | `CRTP` | CRTP 让派生类作为模板参数传回基类，实现零开销的接口复用。 |
 
 ## 考点精讲

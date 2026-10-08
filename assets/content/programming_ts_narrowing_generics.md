@@ -441,6 +441,7 @@ console.log(handle({ status: "ok", data: { id: 2, tags: ["a"] } }));
 | `泛型` | TypeScript 的类型能力集中在两处：收窄（把宽类型变窄） 与 泛型（让类型随输入变化）；掌握这两点，就能用类型把业务约束表达清楚。 |
 | `可辨识联合` | 可辨识联合 + switch 是建模业务状态最实用的模式：订单状态、请求结果、表单校验结果都可以这样写，新增一种状态时编译器会提示所有需要处理的位置。 |
 | `infer` | TypeScript 在条件类型里声明待推断类型变量的关键字。 |
+| `条件类型` | TypeScript 根据类型关系在编译期选择结果类型的类型运算 |
 
 ## 考点精讲
 
@@ -538,3 +539,4 @@ console.log(handle({ status: "ok", data: { id: 2, tags: ["a"] } }));
 | [声明文件](https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html) | 类型声明与发布 |
 
 > 「TypeScript 类型收窄与泛型」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+

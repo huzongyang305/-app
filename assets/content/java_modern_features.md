@@ -207,9 +207,9 @@ point 2,3
 | 术语 | 一句话说明 |
 | --- | --- |
 | `Record` | 按“现代 Java：Record、Sealed 与模式匹配”中 Record、Sealed、模式匹配 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。 |
-| `Sealed` | Summary: Use records, sealed types and pattern matching for immutable data.。 |
+| `Sealed` | 密封类型：用 sealed 限定哪些类可以继承或实现，配合 switch 模式匹配可做穷尽性检查。 |
 | `不可变` | 对象创建后状态不再改变，更新时生成新对象，从而减少共享状态和并发错误。 |
-| `任务 1：用自己的话画出结构` | 不看书，用一张图说清「现代 Java：Record、Sealed 与模式匹配」的结构，画完再对照骨架。 |
+| `模式匹配` | 用 instanceof 或 switch 直接完成类型判断、变量绑定与结构解构，减少样板判断。 |
 
 ## 深度拓展与实战
 

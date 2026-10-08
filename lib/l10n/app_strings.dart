@@ -69,6 +69,10 @@ class AppStrings {
     'minutes': {'zh': '分钟', 'en': 'min'},
     'startQuiz': {'zh': '开始测验', 'en': 'Start quiz'},
     'openLab': {'zh': '打开互动实验', 'en': 'Open interactive lab'},
+    'openLabTrace': {
+      'zh': '打开教学模式实验（静态检查，不真正编译运行）',
+      'en': 'Open guided lab (static checks, no real compilation)',
+    },
     'prerequisites': {'zh': '前置知识', 'en': 'Prerequisites'},
     'relatedLessons': {'zh': '相关拓展', 'en': 'Related lessons'},
     'retakeQuiz': {'zh': '重新测验', 'en': 'Retake'},
@@ -613,6 +617,36 @@ class AppStrings {
     'pathAiProductSub': {
       'zh': '提示与上下文 → RAG/向量库 → Agent 工具调用 → 评测/护栏 → 服务化落地',
       'en': 'Prompting/context → RAG/vector DB → tool-calling agents → evals/guardrails → serving',
+    },
+    'pathGameDev': {'zh': '图形与游戏开发', 'en': 'Graphics & Game Development'},
+    'pathGameDevSub': {
+      'zh': 'C++ 与内存 → 向量与矩阵 → 游戏循环/渲染/物理 → 同步与性能 → 移动端优化实战',
+      'en': 'C++ and memory → vectors/matrices → loop/rendering/physics → sync and perf → mobile optimisation',
+    },
+    'pathCompiler': {'zh': '编译原理与语言实现', 'en': 'Compilers & Language Implementation'},
+    'pathCompilerSub': {
+      'zh': '语言与指针 → 前端词法/语法 → 语义与类型 → IR 与优化 → 代码生成与虚拟机',
+      'en': 'Language/pointers → lexing/parsing → semantics/typing → IR and optimisation → codegen and VM',
+    },
+    'pathBlockchain': {'zh': '区块链与 Web3', 'en': 'Blockchain & Web3'},
+    'pathBlockchainSub': {
+      'zh': '密码学原语 → 钱包与签名 → 共识与合约 → 代币/桥/零知识 → 合约审计实战',
+      'en': 'Crypto primitives → wallets/signatures → consensus/contracts → tokens/bridges/ZK → audit capstone',
+    },
+    'pathDataPlatform': {'zh': '数据工程平台', 'en': 'Data Platform Engineering'},
+    'pathDataPlatformSub': {
+      'zh': 'SQL 与建模 → 批流处理 → 编排与血缘 → CDC 与增量 → 湖仓治理与 ETL 实战',
+      'en': 'SQL/modeling → batch and stream → orchestration/lineage → CDC/incremental → lakehouse and ETL capstone',
+    },
+    'pathEmbedded': {'zh': '嵌入式与物联网', 'en': 'Embedded & IoT'},
+    'pathEmbeddedSub': {
+      'zh': 'C 与内存 → 单片机与总线 → 中断与定时器 → RTOS 任务 → 低功耗/安全与项目实战',
+      'en': 'C and memory → MCU/buses → interrupts/timers → RTOS tasks → low power, security and capstone',
+    },
+    'pathCloudNative': {'zh': '云计算与云原生', 'en': 'Cloud & Cloud Native'},
+    'pathCloudNativeSub': {
+      'zh': '云资源模型 → 容器与 K8s → IaC 与 CI/CD → 多集群与容灾 → 可观测性与 SRE',
+      'en': 'Cloud resource model → containers and K8s → IaC and CI/CD → multi-cluster/DR → observability and SRE',
     },
     'pathDuration': {
       'zh': '约 {hours} 小时 · {lessons} 课',

@@ -212,7 +212,7 @@ console.log(next());
 | --- | --- |
 | `执行上下文` | JavaScript 执行代码时保存变量环境、作用域链和 this 绑定的内部记录。 |
 | `闭包` | 按“JavaScript 执行上下文与闭包”中 执行上下文、闭包、this 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。 |
-| `this` | Summary: Learn call stack, lexical scope, closures, this and temporal dead zone.。 |
+| `this` | 函数调用时的接收者，取值由调用方式决定（方法调用、call/apply、箭头函数继承外层）。 |
 | `作用域` | 程序中名字可见和可访问的范围，由词法结构或运行时上下文决定。 |
 
 ## 深度拓展与实战

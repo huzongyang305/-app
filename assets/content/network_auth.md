@@ -329,8 +329,9 @@ print(new_pkce_pair()[1][:16])
 | `认证` | 验证用户或服务的身份是否真实。 |
 | `授权` | 在认证之后判断主体能访问哪些资源、执行哪些操作。 |
 | `JWT` | 落地要点：每次请求都在服务端鉴权（不能只靠前端隐藏按钮）；资源级校验必须带 owner 条件（防水平越权）；权限变更后要有生效机制（Session 方案可即时失效，JWT 需配合版本号）。 |
-| `OAuth2` | Summary: Session/JWT/OAuth2, claim validation and permission models.。 |
+| `OAuth2` | 授权框架：第三方应用用授权码换访问令牌，在用户不交出密码的前提下访问受保护资源。 |
 | `RBAC` | 基于角色的访问控制，把权限授予角色，再给用户分配角色。 |
+| `PKCE` | 授权码流程的扩展：客户端生成并校验 code_verifier，防止授权码被截获后换令牌 |
 
 ## 代码对照与验证
 
@@ -451,3 +452,4 @@ print(token.split(".")[2] == signature)
 | [RFC 9293 TCP](https://www.rfc-editor.org/rfc/rfc9293) | TCP 连接、重传与拥塞 |
 
 > 「认证与授权」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+

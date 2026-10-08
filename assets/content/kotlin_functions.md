@@ -238,7 +238,7 @@ fun main() {
 | `函数` | 接收输入、执行确定逻辑并返回结果的代码单元。 |
 | `Lambda` | 匿名函数表达式，可把一段行为作为参数传递。 |
 | `扩展函数` | 二、运行时与内存模型：围绕「函数、Lambda、扩展函数、inline」说明变量生命周期、资源释放、并发模型和错误传播。 |
-| `inline` | Summary: Learn default arguments, extension functions, higher-order functions and inline.。 |
+| `inline` | 内联函数：把函数体直接插到调用处，避免高阶函数的 lambda 分配，代价是字节码变大。 |
 
 ## 深度拓展与实战
 

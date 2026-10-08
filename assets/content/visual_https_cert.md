@@ -325,7 +325,7 @@ echo | openssl s_client -connect example.com:443 2>/dev/null \
 | --- | --- |
 | `HTTPS` | 在 HTTP 下使用 TLS 提供加密、身份认证和完整性保护。 |
 | `证书链` | 从站点证书经过中间证书到受信根证书的签名验证路径。 |
-| `TLS` | Summary: Certificate chain, TLS 1.3 handshake and verification commands.。 |
+| `TLS` | 传输层安全协议：握手协商密钥并用证书验证身份，之后的数据对称加密传输。 |
 | `SAN` | TLS 证书中列出可被该证书代表的域名或 IP，客户端据此校验主机名。 |
 | `续期` | 在证书或令牌到期前重新签发或更新，避免服务因过期而中断。 |
 

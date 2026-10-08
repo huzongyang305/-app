@@ -250,8 +250,8 @@ print(socket.gethostbyname("localhost"))
 | --- | --- |
 | `SMTP` | 用于发送和中继电子邮件的协议。 |
 | `DKIM` | 用域名密钥签名邮件头与正文，帮助接收方验证邮件未被篡改。 |
-| `SPF` | Summary: Learn SMTP, IMAP, SPF, DKIM, DMARC and delivery flow.。 |
-| `一次投递经历的步骤` | 邮件客户端把邮件提交给自己的发送服务器（常用 587 端口，带认证与 STARTTLS）。 |
+| `SPF` | 发信方在 DNS 里声明哪些 IP 有权代表该域名发信，收信方据此识别伪造发件人。 |
+| `DMARC` | 结合 SPF 与 DKIM 告诉收件方如何处理未通过校验的邮件，并提供报告地址。 |
 
 ## 深度拓展与实战
 

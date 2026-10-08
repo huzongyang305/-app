@@ -584,7 +584,7 @@ def fetch_quotes(page=1):
 ### 考点 5：概念判断·实战
 
 - **题目**：pandas 中把 DataFrame 保存成 CSV 的方法是？
-- **判断依据**：在「实战：爬虫与数据分析」里，df.to_csv('out.csv', index=False)。tocsv 是写出方法，index=False 可避免多出一列行号。“pandas”与「实战：爬虫与数据分析」的术语表相呼应，只有符合实战、爬虫、pandas约束的“df.tocsv('out.csv'”才是正文支持的结论。
+- **判断依据**：在「实战：爬虫与数据分析」里，df.to_csv('out.csv')。tocsv 是写出方法，index=False 可避免多出一列行号。“pandas”与「实战：爬虫与数据分析」的术语表相呼应，只有符合实战、爬虫、pandas约束的“df.tocsv('out.csv'”才是正文支持的结论。
 
 ### 考点 6：填空·实战
 

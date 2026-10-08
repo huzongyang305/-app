@@ -213,9 +213,9 @@ print(digest[:12])
 | 术语 | 一句话说明 |
 | --- | --- |
 | `容器安全` | 从镜像、运行时权限、网络、密钥和宿主机隔离多个层面保护容器工作负载。 |
-| `RBAC` | Summary: Cover image, runtime, RBAC, network policy and least privilege.。 |
+| `RBAC` | 基于角色的访问控制：把权限绑到角色再授予主体，Kubernetes 里按最小权限收敛 ServiceAccount。 |
 | `网络策略` | 按“容器与 Kubernetes 安全”中 容器安全、RBAC、网络策略 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。 |
-| `运行时` | 用一句话说明「容器与 Kubernetes 安全」解决什么问题：覆盖镜像、运行时、RBAC、网络策略和集群最小权限。 |
+| `运行时` | 容器运行时：负责拉镜像、创建命名空间与 cgroups 并启动进程，逃逸漏洞多出在这一层。 |
 
 ## 深度拓展与实战
 

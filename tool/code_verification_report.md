@@ -1,6 +1,6 @@
 # 代码块验证报告
 
-生成时间：2026-10-07T18:22:38.480042
+生成时间：2026-10-08T12:13:32.105315
 
 > 片段是课程里有意截取、无法独立编译的示例，不计入硬失败；
 > 排错练习是课程里有意保留错误的代码，同样不计入硬失败；
@@ -40,7 +40,7 @@
 | powershell | 2 | 0 | 0 | 0 |
 | properties | 5 | 0 | 0 | 0 |
 | protobuf | 4 | 0 | 0 | 0 |
-| python | 743 | 3 | 0 | 0 |
+| python | 728 | 3 | 0 | 0 |
 | rust | 81 | 1 | 0 | 0 |
 | solidity | 12 | 0 | 0 | 0 |
 | sql | 86 | 1 | 0 | 0 |
@@ -71,16 +71,32 @@
 - shell_ci_templates:352 bash 已标注片段
 - ts_type_challenges:122 typescript 已标注片段
 - web_pwa_offline:429 javascript 已标注片段
+- 未找到 Python 解释器，Python 代码块降级为结构校验（可设置 PYTHON 环境变量）
+- ai_engineering:144 python 结构不平衡
+- ai_engineering:281 python 结构不平衡
+- ai_multimodal:137 python 结构不平衡
+- algorithms_probabilistic_structures:102 python 结构不平衡
+- algorithms_probabilistic_structures:202 python 结构不平衡
+- algorithms_sorting_advanced:68 python 结构不平衡
+- algorithms_sorting_advanced:285 python 结构不平衡
 - cross_collections:152 bash 结构不平衡
 - cross_collections:262 bash 结构不平衡
 - fundamentals_assembly:247 bash 结构不平衡
+- fundamentals_storage_stack:85 python 结构不平衡
+- fundamentals_storage_stack:168 python 结构不平衡
+- fundamentals_storage_stack:291 python 结构不平衡
 - go_pprof:159 bash 结构不平衡
 - go_pprof:355 bash 结构不平衡
 - programming_cpp_tooling:306 bash 结构不平衡
 - programming_cpp_types:27 cpp 结构不平衡
 - programming_cpp_types:121 cpp 结构不平衡
 - programming_cpp_types:309 cpp 结构不平衡
+- programming_python_variables:47 python 结构不平衡
+- programming_python_variables:118 python 结构不平衡
+- programming_python_variables:290 python 结构不平衡
 - programming_shell_flow:191 bash 结构不平衡
+- se_test_design:126 python 结构不平衡
+- se_test_design:225 python 结构不平衡
 - shell_json_yaml:54 bash 结构不平衡
 - shell_json_yaml:219 bash 结构不平衡
 - shell_json_yaml:257 bash 结构不平衡

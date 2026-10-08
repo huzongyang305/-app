@@ -479,7 +479,7 @@ public class Report {
 | `Optional` | .findFirst()。 |
 | `函数式接口` | 只有一个抽象方法的接口就是函数式接口，可以用 lambda 实现。 |
 | `并行流` | 并行流使用公共 ForkJoinPool，适合纯计算且数据量大；有共享可变状态、IO 操作时不要用。 |
-| `一句话说清它是什么` | Lambda 是「把一小段行为当成参数传进去」，Stream 是「用一串链式操作处理集合」。 |
+| `方法引用` | 用双冒号语法把已有方法当作函数式接口的实现，比 lambda 更短也更易读。 |
 
 ## 考点精讲
 
@@ -501,7 +501,7 @@ public class Report {
 ### 考点 4：概念判断·lambda
 
 - **题目**：Stream 的 collect 与 forEach 的区别是？
-- **判断依据**：在「Lambda 与 Stream API」里，结论应落在「collect 是终止操作，把结果汇总成集合」。结论应落在collect 是终止操作。在流里修改外部状态是常见坏味道，能 collect 就优先 collect。在「Lambda 与 Stream API」里，这道题要求区分概念与边界，「collect 是终止操作，把结果汇总成集合」只有在题干给出的前提下才成立，而「collect 只能用于并行流」、「两者都返回 Stream」缺少同一组条件。
+- **判断依据**：在「Lambda 与 Stream API」里，结论应落在「collect 是终止操作」。结论应落在collect 是终止操作。在流里修改外部状态是常见坏味道，能 collect 就优先 collect。在「Lambda 与 Stream API」里，这道题要求区分概念与边界，「collect 是终止操作」只有在题干给出的前提下才成立，而「collect 只能用于并行流」、「两者都返回 Stream」缺少同一组条件。
 
 ### 考点 5：概念判断·lambda
 

@@ -348,7 +348,7 @@ ETag: "abc123"
 | `状态码` | 2xx 成功：200 OK、201 Created、204 No Content。 |
 | `Cookie` | Set-Cookie: session_id=abc123; HttpOnly; Secure。 |
 | `请求` | 浏览器后续请求会自动带上 Cookie: session_id=abc123。 |
-| `任务 1：用自己的话画出结构` | 不看书，用一张图说清「HTTP 基础」的结构，画完再对照骨架。 |
+| `幂等性` | 同一请求重复执行结果一致，GET、PUT、DELETE 应当幂等，重试前必须先判断这一点。 |
 
 ## 考点精讲
 

@@ -338,7 +338,7 @@ def answer_question(question: str, retriever, llm) -> dict:
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| `RAG` | Summary: Build a citation-based RAG agent with retrieval, tools, evaluation and guardrails.。 |
+| `RAG` | 检索增强生成：先把文档检索成上下文再交给模型作答，能引用外部知识并降低幻觉。 |
 | `向量检索` | 把文本、图像等编码成向量，并按相似度快速找出语义最接近的条目。 |
 | `引用` | 一句话摘要：构建可离线演示的知识库问答 Agent，覆盖切分、检索、引用、工具调用、评测与安全护栏。 |
 | `评测` | 构建可离线演示的知识库问答 Agent，覆盖切分、检索、引用、工具调用、评测与安全护栏。 |

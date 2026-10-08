@@ -244,6 +244,7 @@ console.log(document.querySelector("button").textContent);
 | `textContent 与 innerHTML` | 前者按纯文本读写，后者会解析 HTML，有注入风险。 |
 | `事件监听` | addEventListener 把处理函数绑定到事件，回调里用 event 取详情。 |
 | `事件冒泡` | 事件从触发元素向上传播，可用 stopPropagation 阻止。 |
+| `函数` | 函数是一等对象，可以作为参数、返回值和对象属性 |
 
 ## 零基础精讲：把JavaScript DOM 入门真正讲透
 
@@ -408,7 +409,7 @@ console.log(document.querySelector("button").textContent);
 ### 考点 4：概念判断·JavaScript DOM 入门
 
 - **题目**：要让按钮响应用户点击，应该使用哪个方法？
-- **判断依据**：在「JavaScript DOM 入门」里，结论应落在「addEventListener("click", 处理函数)」。addEventListener 把事件类型与处理函数绑定到元素上，点击发生时浏览器调用处理函数并传入事件对象。要让按钮响应用户点击，应该使用哪个方法。「JavaScript DOM 入门」要求先交代JavaScript DOM 入门、JavaScript、入门练习的前提再下结论，所以“addEventListener("cl”只在题干“要让按钮响应用户点击”给定的条件下成立。
+- **判断依据**：在「JavaScript DOM 入门」里，结论应落在「addEventListener」。addEventListener 把事件类型与处理函数绑定到元素上，点击发生时浏览器调用处理函数并传入事件对象。要让按钮响应用户点击，应该使用哪个方法。「JavaScript DOM 入门」要求先交代JavaScript DOM 入门、JavaScript、入门练习的前提再下结论，所以“addEventListener("cl”只在题干“要让按钮响应用户点击”给定的条件下成立。
 
 ### 考点 5：填空·____
 
@@ -485,3 +486,4 @@ console.log(document.querySelector("button").textContent);
 1. 换输入：用JavaScript DOM 入门处理一组你自己的数据，对比教材示例的结果差异。
 2. 换失败条件：制造一个JavaScript相关的错误，说明如何从错误信息定位根因。
 3. 换规模：把数据量或并发度提高一个数量级，说明「JavaScript DOM 入门」的结论是否仍成立。
+

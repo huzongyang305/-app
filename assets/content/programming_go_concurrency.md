@@ -369,7 +369,7 @@ case result := <-ch:
 | `context.WithTimeout` | 超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`。 |
 | `sync.WaitGroup` | 等待一组任务**：`sync.WaitGroup` 的 Add/Done/Wait。 |
 | `Go` | 由 Google 设计的静态编译语言，强调简单语法、并发和部署便利。 |
-| `一句话说清它是什么` | Go 的并发口号是「不要通过共享内存来通信，而要通过通信来共享内存」。 |
+| `数据竞争` | 多个 goroutine 无同步地读写同一变量，用 -race 检测，靠互斥锁或 channel 消除。 |
 
 ## 考点精讲
 
@@ -391,7 +391,7 @@ case result := <-ch:
 ### 考点 4：概念判断·Go
 
 - **题目**：向无缓冲 channel 发送数据会阻塞，直到？
-- **判断依据**：在「Go 并发：goroutine、channel 与 context」里，作答时，先用Go建立输入与输出的基线，再把有接收方准备好接收（收发同步完成）代入边界条件核对，结论才能复现。在「Go 并发：goroutine、channel 与 context」里，这道题要求区分概念与边界，「有接收方准备好接收（收发同步完成）」只有在题干给出的前提下才成立，而「永远不阻塞」、「缓冲区写满」缺少同一组条件。
+- **判断依据**：在「Go 并发：goroutine、channel 与 context」里，作答时，先用Go建立输入与输出的基线，再把有接收方准备好接收代入边界条件核对，结论才能复现。在「Go 并发：goroutine、channel 与 context」里，这道题要求区分概念与边界，「有接收方准备好接收」只有在题干给出的前提下才成立，而「永远不阻塞」、「缓冲区写满」缺少同一组条件。
 
 ### 考点 5：多选辨析·Go
 

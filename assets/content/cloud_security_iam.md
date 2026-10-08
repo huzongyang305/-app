@@ -242,6 +242,7 @@ GetObject app-bucket/configs/app.yaml -> allowed，DeleteObject app-bucket/confi
 | `临时凭证` | 带有效期的访问凭证，过期自动失效。 |
 | `审计日志` | 记录谁在何时对什么资源执行了操作。 |
 | `权限复核` | 定期比对应有权限与实际使用并回收多余部分。 |
+| `身份` | 身份被授予策略，策略由动作、资源与条件组成；显式拒绝优先于允许，最终结果按优先级合并 |
 
 ## 考点精讲
 
@@ -420,3 +421,4 @@ Every cloud request answers who is calling and what they may do. Policies narrow
 ### 结论与下一步
 
 学完云安全与最小权限，应该能独立完成三件事：先用最小示例确认IAM的行为，再用一个边界输入验证结论，最后把失败路径写成可重复的检查。下一步把本课术语加入复习清单，并在两周内用一次真实任务检验记忆是否牢固。
+

@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../l10n/l10n_extension.dart';
 import '../models/lesson.dart';
 import '../models/note_anchor.dart';
+import '../models/sandbox_language.dart';
 import '../services/content_provider.dart';
 import '../services/practice_question_factory.dart';
 import '../services/progress_provider.dart';
@@ -251,6 +252,13 @@ class _LessonScreenState extends State<LessonScreen> {
     return 0;
   }
 
+  /// 课程绑定的沙箱语言；非沙箱实验（互动/系统实验）返回 null。
+  SandboxLanguage? _labSandboxLanguage() {
+    final lab = widget.lesson.lab;
+    if (lab == null || !lab.startsWith('sandbox:')) return null;
+    return SandboxLanguage.tryFromId(lab.substring(8));
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -260,6 +268,8 @@ class _LessonScreenState extends State<LessonScreen> {
     final isFavorite = progress.isFavorite(widget.lesson.id);
     final isLearned = progress.isLearned(widget.lesson.id);
     final isBookmarked = progress.isBookmarked(widget.lesson.id);
+    final labLanguage = _labSandboxLanguage();
+    final labIsTraceOnly = labLanguage?.isTraceOnly ?? false;
 
     return Scaffold(
       appBar: AppBar(
@@ -267,8 +277,14 @@ class _LessonScreenState extends State<LessonScreen> {
         actions: [
           if (widget.lesson.lab != null)
             IconButton(
-              tooltip: context.tr('openLab'),
-              icon: const Icon(Icons.science_outlined),
+              tooltip: context.tr(
+                labIsTraceOnly ? 'openLabTrace' : 'openLab',
+              ),
+              icon: Icon(
+                labIsTraceOnly
+                    ? Icons.school_outlined
+                    : Icons.science_outlined,
+              ),
               onPressed: _openLab,
             ),
           IconButton(
@@ -306,46 +322,55 @@ class _LessonScreenState extends State<LessonScreen> {
           ),
         ],
       ),
-      body: FutureBuilder<String>(
-        future: _markdownFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return Center(child: Text('${snapshot.error}'));
-          }
+      // 教学模式提示条与正文加载无关，先于 Markdown 渲染出来，
+      // 这样用户在正文还在读盘时就能看到「静态检查、不真编译」的说明。
+      body: Column(
+        children: [
+          if (labIsTraceOnly) _SandboxTraceNotice(language: labLanguage!),
+          Expanded(
+            child: FutureBuilder<String>(
+              future: _markdownFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (snapshot.hasError) {
+                  return Center(child: Text('${snapshot.error}'));
+                }
 
-          final rawMarkdown = snapshot.data ?? '';
-          final showEnglishFallback =
-              localeCode == 'en' && !widget.lesson.hasEnglishBody;
-          final renderedMarkdown = showEnglishFallback
-              ? '> ${context.trArgs('lessonEnglishFallback', {'available': content.englishLessonCount, 'total': content.totalLessons})}\n\n$rawMarkdown'
-              : rawMarkdown;
-          final article = _buildMarkdown(context, renderedMarkdown, theme);
-          return LayoutBuilder(
-            builder: (context, constraints) {
-              if (constraints.maxWidth < AppBreakpoints.wideReading) {
-                return article;
-              }
-              return Row(
-                key: const ValueKey('lesson-wide-layout'),
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  SizedBox(
-                    width: 320,
-                    child: _LessonOverviewPane(
-                      lesson: widget.lesson,
-                      isLearned: isLearned,
-                    ),
-                  ),
-                  const VerticalDivider(width: 1),
-                  Expanded(child: article),
-                ],
-              );
-            },
-          );
-        },
+                final rawMarkdown = snapshot.data ?? '';
+                final showEnglishFallback =
+                    localeCode == 'en' && !widget.lesson.hasEnglishBody;
+                final renderedMarkdown = showEnglishFallback
+                    ? '> ${context.trArgs('lessonEnglishFallback', {'available': content.englishLessonCount, 'total': content.totalLessons})}\n\n$rawMarkdown'
+                    : rawMarkdown;
+                final article = _buildMarkdown(context, renderedMarkdown, theme);
+                return LayoutBuilder(
+                  builder: (context, constraints) {
+                    if (constraints.maxWidth < AppBreakpoints.wideReading) {
+                      return article;
+                    }
+                    return Row(
+                      key: const ValueKey('lesson-wide-layout'),
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SizedBox(
+                          width: 320,
+                          child: _LessonOverviewPane(
+                            lesson: widget.lesson,
+                            isLearned: isLearned,
+                          ),
+                        ),
+                        const VerticalDivider(width: 1),
+                        Expanded(child: article),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: SafeArea(
         child: Padding(
@@ -881,6 +906,60 @@ class _LessonLinkChips extends StatelessWidget {
             ),
           ),
       ],
+    );
+  }
+}
+
+/// 教学模式（静态检查 + 输出追踪）语言在课程页顶部的如实说明。
+///
+/// Java / C# / Dart / Go / Rust / Kotlin / Swift 没有内置完整运行时，
+/// 沙箱只能做结构校验与输出追踪，这里提前告知，避免被误认为真编译执行。
+class _SandboxTraceNotice extends StatelessWidget {
+  const _SandboxTraceNotice({required this.language});
+
+  final SandboxLanguage language;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.tertiaryContainer.withValues(alpha: 0.35),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(
+            Icons.school_outlined,
+            size: 18,
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${context.tr('sandboxTraceBadge')} · '
+                  '${context.tr(language.labelKey)}',
+                  style: theme.textTheme.labelLarge,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  context.tr('sandboxTraceBanner'),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

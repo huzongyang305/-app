@@ -434,9 +434,9 @@ fn main() {
 | 术语 | 一句话说明 |
 | --- | --- |
 | `Rust` | Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：Option 管空值、Result 管错误、trait 管行为、enum + match 管状态。 |
-| `一句话说清它是什么` | struct 把相关数据组合起来，enum 表达「几种可能之一」，trait 定义「共有的能力」。 |
-| `trait：能力约定与实际使用` | trait Summary {。 |
-| `任务 1：用自己的话画出结构` | 不看书，用一张图说清「Rust 类型系统：Option、Result 与 trait」的结构，画完再对照骨架。 |
+| `Option 与 Result` | 用类型表达「可能没有值」和「可能失败」，编译器强制调用方处理这两种情况。 |
+| `trait` | 描述类型必须实现的能力集合，既能当泛型约束，也能做动态分发。 |
+| `派生宏` | 用 derive 自动生成 Debug、Clone、PartialEq 等实现，减少样板代码。 |
 
 ## 考点精讲
 
@@ -458,12 +458,12 @@ fn main() {
 ### 考点 4：概念判断·Rust
 
 - **题目**：dyn Trait 与泛型 T: Trait 的核心区别是？
-- **判断依据**：在「Rust 类型系统：Option、Result 与 trait」里，结论应落在「dyn 是运行时动态分发（trait object，需指针），泛型是编译期单态化静态分发」。结论应落在dyn 是运行时动态分发（trait object。需要把不同类型放进同一个集合时用 Box<dyn Trait>，性能敏感处用泛型。
+- **判断依据**：在「Rust 类型系统：Option、Result 与 trait」里，结论应落在「dyn 运行时动态分发，泛型编译期单态化」。结论应落在dyn 是运行时动态分发（trait object。需要把不同类型放进同一个集合时用 Box<dyn Trait>，性能敏感处用泛型。
 
 ### 考点 5：概念判断·Rust
 
 - **题目**：Rust 的孤儿规则（orphan rule）限制是？
-- **判断依据**：在「Rust 类型系统：Option、Result 与 trait」里，只有 trait 或目标类型至少有一个定义在当前 crate 时才能实现该 trait。该规则避免不同 crate 对同一类型产生冲突的 trait 实现。「Rust 类型系统：Option、Result 与 trait」要求先交代Rust、Option、Result的前提再下结论，所以“只有 trait 或目标类型至少有一个定”只在题干“Rust 的孤儿规则（orphan rule）限制是”给定的条件下成立。
+- **判断依据**：在「Rust 类型系统：Option、Result 与 trait」里，trait 或类型至少要有一个定义在当前 crate。该规则避免不同 crate 对同一类型产生冲突的 trait 实现。「Rust 类型系统：Option、Result 与 trait」要求先交代Rust、Option、Result的前提再下结论，所以“只有 trait 或目标类型至少有一个定”只在题干“Rust 的孤儿规则（orphan rule）限制是”给定的条件下成立。
 
 ### 考点 6：填空·Rust
 

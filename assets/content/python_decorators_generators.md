@@ -210,7 +210,7 @@ call square
 | --- | --- |
 | `装饰器` | 在不修改原函数主体的情况下包装或增强其行为的语法结构。 |
 | `生成器` | 按需逐个产出值并暂停执行的函数或对象，节省内存并支持流式处理。 |
-| `yield` | Summary: Learn closures, decorators, yield, lazy sequences and generator performance.。 |
+| `yield` | 生成器关键字：函数执行到 yield 暂停并返回值，下次继续，适合流式处理大数据。 |
 | `闭包` | 函数与其定义时词法环境的组合，使函数离开原作用域后仍能访问捕获的变量。 |
 
 ## 深度拓展与实战

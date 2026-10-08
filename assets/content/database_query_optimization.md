@@ -291,7 +291,7 @@ EXPLAIN (ANALYZE, BUFFERS) SELECT * FROM orders WHERE user_id = 42;
 | `SCAN` | 关注点：是 `SCAN`（全表扫描）还是 `SEARCH ... USING INDEX`；预估行数与实际行数差异大不大；有没有额外的排序与临时表。 |
 | `ANALYZE` | 统计信息过期会导致优化器选错索引，定期 `ANALYZE`。 |
 | `执行计划` | 数据库优化器为查询选出的访问路径、连接顺序和算子组合。 |
-| `任务 1：先跑通，再解释` | EXPLAIN QUERY PLAN SELECT * FROM orders WHERE user_id = 42。 |
+| `覆盖索引` | 索引里已经包含查询需要的全部列，不必回表，能显著减少随机 I/O。 |
 
 ## 考点精讲
 

@@ -485,6 +485,7 @@ export function parseCreateOrder(body: unknown): CreateOrderInput {
 | `全栈` | 能够同时处理前端界面、后端接口、数据库和部署的工程能力。 |
 | `zod` | 开始前先复习：TypeScript、全栈、zod。 |
 | `monorepo` | 把请求/响应类型放到独立包（monorepo 里的 packages/shared），前后端都依赖它；类型变更时编译会同时暴露两端的不兼容，比联调时才发现便宜得多。 |
+| `CI` | 持续集成：每次提交自动跑构建与测试，把问题挡在合并之前 |
 
 ## 考点精讲
 
@@ -686,3 +687,4 @@ ADR 不需要长：每个决策三行就够——选了什么、放弃了什么�
 
 「TypeScript 实战：全栈类型安全」评审结束后把这张表填完并归档；下一轮迭代直接读上一次的「未完成项」与「风险与回滚」，避免重复讨论同一个问题。
 <!-- p1-project-review:end -->
+

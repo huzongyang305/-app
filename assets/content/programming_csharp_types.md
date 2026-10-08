@@ -431,7 +431,8 @@ Console.WriteLine($"格式化示例 {rounded.ToString("N2", CultureInfo.Invarian
 | `TryParse` | 优先使用 `TryParse`，避免用异常控制正常流程。 |
 | `StringBuilder` | 字符串不可变，循环拼接应使用 `StringBuilder`： |
 | `可空类型` | int? maybeCount = null。 |
-| `一句话说清它是什么` | C# 把类型分成两类：值类型（数据直接放在变量里）和引用类型（变量存地址，数据在堆上）。 |
+| `值类型与引用类型` | 结构体赋值复制整份数据，类赋值共享同一个对象，装箱会把值类型搬到堆上。 |
+| `可空` | 可空让编译器帮你防空 |
 
 ## 考点精讲
 
@@ -500,3 +501,4 @@ Console.WriteLine($"格式化示例 {rounded.ToString("N2", CultureInfo.Invarian
 | [.NET 文档](https://learn.microsoft.com/dotnet/) | 运行时、库与工具链 |
 
 > 「变量、类型与字符串」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+

@@ -422,7 +422,7 @@ kafka-topics.sh --alter --topic orders --partitions 12 --bootstrap-server localh
 | `Kafka` | 分布式追加日志与消息系统，用分区保存有序事件并支持多消费者扩展。 |
 | `分区` | 把一份数据或流量按键切成多个相互独立的子集。 |
 | `再平衡` | 再平衡（Rebalance）是这三者配合时的副作用：分区重新分配期间，消费会短暂停顿。 |
-| `ISR` | Summary: Partitions, rebalancing, ISR replicas and offset commits.。 |
+| `ISR` | 同步副本集合：与 leader 保持同步的副本列表；写入按确认策略等待 ISR，掉队的副本会被踢出。 |
 
 ## 考点精讲
 

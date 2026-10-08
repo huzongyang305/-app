@@ -370,7 +370,7 @@ HTML 解析 → DOM → CSSOM → 渲染树 → 布局 → 绘制 → 合成 →
 | `defer` | JS 若在解析中同步执行会阻塞渲染，因此脚本用 `defer`/`async`，关键 CSS 内联，非关键资源懒加载。 |
 | `transform` | 优化原则：批量修改 DOM（用 DocumentFragment 或一次性改 class）、避免在循环里读写布局属性（强制同步布局）、动画优先用 `transform` 与 `opacity`。 |
 | `渲染` | 浏览器渲染把 HTML/CSS 转成像素，动画性能取决于是否触发重排、重绘或合成。 |
-| `动画` | /* 入场动画：避免使用 top/left/margin */。 |
+| `动画` | 用 transition 或 @keyframes 描述属性随时间变化；只动 transform 与 opacity 才能留在合成层。 |
 
 ## 考点精讲
 
@@ -439,3 +439,4 @@ HTML 解析 → DOM → CSSOM → 渲染树 → 布局 → 绘制 → 合成 →
 | [MDN 无障碍](https://developer.mozilla.org/docs/Web/Accessibility) | 可访问性与语义 |
 
 > 「浏览器渲染与 CSS 动画」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+

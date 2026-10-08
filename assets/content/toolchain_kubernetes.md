@@ -368,9 +368,10 @@ spec:
 | 术语 | 一句话说明 |
 | --- | --- |
 | `requests` | `requests` 影响调度，`limits` 影响超限行为；**探针配错会导致容器反复重启**——readiness 失败只是摘流量，liveness 失败会重启容器。 |
-| `任务 1：用自己的话画出结构` | 不看书，用一张图说清「Kubernetes 基础」的结构，画完再对照骨架。 |
-| `任务 2：做一次对比实验` | 两个方案的差异必须落在「Kubernetes 基础」的实际约束上；写清当Kubernetes越过哪条边界时应该换方案。|
-| `任务 3：迁移到自己的场景` | 验收标准：至少有一个可复现的命令、代码片段或数据样例；结论能被别人独立检查。 |
+| `探针` | liveness、readiness、startup 三种健康检查，配置不当会误杀容器或过早导入流量。 |
+| `资源请求与限制` | requests 决定调度时的预留量，limits 决定运行时的上限，两者共同决定 Pod 的服务质量等级。 |
+| `调度` | kube-scheduler 按资源、污点与亲和性把 Pod 放到合适的节点上，Pending 多半卡在这一步。 |
+| `Pod` | Kubernetes 最小调度单元，包含一个或多个共享网络与存储的容器 |
 
 ## 考点精讲
 
@@ -397,7 +398,7 @@ spec:
 ### 考点 5：概念判断·Kubernetes
 
 - **题目**：Kubernetes 中 Service 的作用是？
-- **判断依据**：在「Kubernetes 基础」里，为一组 Pod 提供稳定的虚拟 IP 与负载均衡，屏蔽 Pod 重建带来的地址变化。ClusterIP、NodePort、LoadBalancer 与 Headless 是常见的几种 Service 形态。回到「Kubernetes 基础」的正文示例，用“Kubernetes 中 Servi”走一遍Kubernetes、Pod、Deployment的完整流程，能复现的结论才可以保留。
+- **判断依据**：在「Kubernetes 基础」里，为一组 Pod 提供稳定虚拟 IP 与负载均衡。ClusterIP、NodePort、LoadBalancer 与 Headless 是常见的几种 Service 形态。回到「Kubernetes 基础」的正文示例，用“Kubernetes 中 Servi”走一遍Kubernetes、Pod、Deployment的完整流程，能复现的结论才可以保留。
 
 ### 考点 6：填空·____: nginx
 
@@ -439,3 +440,4 @@ spec:
 | [Git 文档](https://git-scm.com/doc) | 版本控制与分支模型 |
 
 > 「Kubernetes 基础」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+

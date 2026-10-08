@@ -216,7 +216,7 @@ class Counter:
 | --- | --- |
 | `上下文管理器` | 用 with 语法在代码块前后自动执行获取与释放资源的协议。 |
 | `迭代器` | 按顺序逐个访问集合元素并维护当前位置的协议或对象。 |
-| `with` | Summary: Learn with, enter/exit, iterator protocol and resource safety.。 |
+| `with` | 上下文管理器：__enter__ 与 __exit__ 保证退出时释放资源，中途抛异常也会执行清理。 |
 | `资源` | Agent 可通过协议读取或操作的受控对象，访问范围必须经过授权。 |
 
 ## 深度拓展与实战

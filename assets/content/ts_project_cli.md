@@ -346,9 +346,9 @@ export function parseConfig(input: unknown) {
 | 术语 | 一句话说明 |
 | --- | --- |
 | `TypeScript` | 在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js。 |
-| `Zod` | Summary: Build a type-safe CLI with TypeScript, Zod and Vitest.。 |
+| `Zod` | TypeScript 运行时校验库：用 schema 描述数据形状，解析时校验并推断出静态类型。 |
 | `类型收窄` | 用 TypeScript、Zod 和 Vitest 实现配置校验 CLI，覆盖类型收窄、错误和发布。 |
-| `步骤 1：定义配置 schema 和命令类型` | 输入与产出：先写清本步依赖的配置、数据和最终产物，再开始编码。 |
+| `shebang` | 脚本首行的解释器声明，决定它被当成可执行文件时用哪个运行时来跑。 |
 
 ## 零基础精讲：把实战：TypeScript 类型安全 CLI真正讲透
 
@@ -526,7 +526,7 @@ export function parseConfig(input: unknown) {
 ### 考点 4：概念判断·TypeScript
 
 - **题目**：dry-run 的主要价值是什么？
-- **判断依据**：在「实战：TypeScript 类型安全 CLI」里，结论应落在「在不产生副作用的情况下验证行为」。dry-run 让用户先确认计划，再执行破坏性操作。在「实战：TypeScript 类型安全 CLI」里，这道题要求区分概念与边界，「在不产生副作用的情况下验证行为」只有在题干给出的前提下才成立，而「删除依赖（仅部分场景成立）」、「提升类型」缺少同一组条件。
+- **判断依据**：在「实战：TypeScript 类型安全 CLI」里，结论应落在「在不产生副作用的情况下验证行为」。dry-run 让用户先确认计划，再执行破坏性操作。在「实战：TypeScript 类型安全 CLI」里，这道题要求区分概念与边界，「在不产生副作用的情况下验证行为」只有在题干给出的前提下才成立，而「删除依赖」、「用来提升类型推断的准确性，需要额外的验证与维护」缺少同一组条件。
 
 ### 考点 5：代码补全·TypeScript
 

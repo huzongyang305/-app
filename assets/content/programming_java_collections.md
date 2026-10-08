@@ -436,9 +436,10 @@ public class WordCount {
 | --- | --- |
 | `List` | names.add("tom")。 |
 | `Set` | tags.add("java")。 |
-| `Map` | Summary: List, Set, Map, iteration, generics and wildcards.。 |
+| `Map` | 键值映射接口：HashMap 不保序、LinkedHashMap 保插入序、TreeMap 按键排序，按场景选择。 |
 | `HashMap` | 日常组合：ArrayList + HashMap + HashSet 覆盖 90% 场景；需要排序用 TreeMap/TreeSet，需要线程安全用 ConcurrentHashMap。 |
 | `类型擦除` | 泛型类型参数在运行时被擦除，使不同参数化类型共享同一份实现。 |
+| `不可变集合` | 不可变集合能防止意外修改，适合当返回值或常量 |
 
 ## 考点精讲
 
@@ -506,3 +507,4 @@ public class WordCount {
 | [JDBC 教程](https://docs.oracle.com/javase/tutorial/jdbc/) | 数据库连接与事务 |
 
 > 「集合框架与泛型」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+

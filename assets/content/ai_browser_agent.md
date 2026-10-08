@@ -230,7 +230,7 @@ print(score("agent"))
 | 术语 | 一句话说明 |
 | --- | --- |
 | `浏览器` | 解析 HTML/CSS、执行 JavaScript 并管理网络与页面的客户端环境。 |
-| `DOM` | Summary: Cover navigation, DOM understanding, forms, captchas and anti-automation limits.。 |
+| `DOM` | 浏览器把网页解析成的文档对象模型，Agent 靠它定位和操作页面元素。 |
 | `表单` | 按“浏览器 Agent”中 浏览器、DOM、表单 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。 |
 | `自动化` | 让重复步骤由脚本、流水线或 Agent 按固定规则执行。 |
 

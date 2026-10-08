@@ -328,7 +328,7 @@ jcmd <pid> GC.heap_info
 | `内存模型` | 编程语言或硬件对多线程读写可见性、原子性和重排序给出的规则集合。 |
 | `垃圾回收` | 运行时自动识别并回收不再可达的对象，避免手动释放并控制停顿。 |
 | `G1` | JVM 面向大堆的垃圾收集器，用分区和可预测停顿目标平衡吞吐与延迟。 |
-| `OOM` | Summary: Runtime memory areas, object lifecycle, collectors and OOM debugging.。 |
+| `OOM` | 内存溢出：堆或元空间耗尽时抛 OutOfMemoryError，需要区分泄漏、堆太小还是元数据过多。 |
 
 ## 考点精讲
 
@@ -438,3 +438,4 @@ jcmd <pid> GC.heap_info
 - [ ] 能用一句话说明「判断对象是否可回收」解决什么问题。
 - [ ] 能把「三种垃圾回收器对照」的判断标准套到一个新例子上。
 - [ ] 能说清「一次 Young GC 的流程」的结论，并说出它的适用边界。
+

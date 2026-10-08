@@ -336,6 +336,7 @@ CREATE INDEX idx_name_age ON students(name, age);
 | `复合索引` | 由多个列按顺序组成的索引，查询条件能否命中取决于最左前缀。 |
 | `最左前缀` | 复合索引按列顺序匹配，查询只有从最左列开始才能充分利用索引。 |
 | `EXPLAIN` | EXPLAIN 中 Extra 出现 Using index condition 即表示启用了索引下推；出现 Using index 表示覆盖索引；出现 Using filesort 或 Using temporary 则是需要优化的信号。 |
+| `覆盖索引` | 索引里已经包含查询需要的全部列，不必回表，能显著减少随机 I/O |
 
 ## 考点精讲
 
@@ -433,3 +434,4 @@ CREATE INDEX idx_name_age ON students(name, age);
 | [JDBC 事务](https://docs.oracle.com/javase/tutorial/jdbc/basics/transactions.html) | 连接事务与回滚 |
 
 > 「索引」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+

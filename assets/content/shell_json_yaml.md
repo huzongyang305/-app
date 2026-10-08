@@ -453,8 +453,9 @@ jq '.version = "2.0"' config.json > config.new && mv config.new config.json
 | --- | --- |
 | `sed` | JSON 里可以有转义、嵌套与多行字符串，`sed`、`awk` 一旦遇到嵌套结构就会误伤。**解析结构化数据必须用结构化工具**：jq 处理 JSON，yq 处理 YAML（yq 也能读写 JSON）。 |
 | `JSON` | 用对象、数组、字符串和数字等表示结构化数据的文本格式。 |
-| `一句话说清它是什么` | Shell 处理 JSON 和 YAML 的正确方式是用结构化工具：jq 管 JSON，yq 管 YAML。 |
-| `安全写回的三步法` | tmp=$(mktemp)。 |
+| `jq` | 在命令行里过滤、提取和重组 JSON 的工具，配合管道处理接口响应最方便。 |
+| `YAML 缩进` | YAML 用缩进表达层级，空格数量不一致或混用制表符是最常见的解析失败原因。 |
+| `Shell` | 接收命令并调用操作系统程序的命令行解释器与脚本环境 |
 
 ## 考点精讲
 
@@ -523,3 +524,4 @@ jq '.version = "2.0"' config.json > config.new && mv config.new config.json
 | [GNU Coreutils](https://www.gnu.org/software/coreutils/manual/) | 文件、文本与进程工具 |
 
 > 「结构化数据处理：jq 与 yq」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+

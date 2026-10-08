@@ -427,7 +427,7 @@ console.log(greet(u));
 ### 考点 5：概念判断·TypeScript
 
 - **题目**：as const 的作用是？
-- **判断依据**：在「TypeScript 类型系统」里，把值推断为最窄的只读字面量类型（readonly 元组/字面量）。它只影响类型推断，运行时仍可被修改（需要 Object.freeze 才真正冻结）。回到「TypeScript 类型系统」的正文示例，用“as const 的作用是”走一遍TypeScript、类型、泛型的完整流程，能复现的结论才可以保留。
+- **判断依据**：在「TypeScript 类型系统」里，把值推断为最窄的只读字面量类型。它只影响类型推断，运行时仍可被修改（需要 Object.freeze 才真正冻结）。回到「TypeScript 类型系统」的正文示例，用“as const 的作用是”走一遍TypeScript、类型、泛型的完整流程，能复现的结论才可以保留。
 
 ### 考点 6：填空·"____": true,
 

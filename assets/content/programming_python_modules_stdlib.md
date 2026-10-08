@@ -478,7 +478,7 @@ print(math.floor(3.7), sqrt(16), pi)
 | `from .text import slugify` | 包内推荐使用绝对导入；相对导入（`from .text import slugify`）只在包内部使用。 |
 | `模块` | 把相关代码、资源和接口封装成可独立复用与维护的单元。 |
 | `包` | 把一组相关类型、函数或模块组织在一起的命名空间单元。 |
-| `一句话说清它是什么` | 模块就是一个 .py 文件，包就是「带 __init__.py 或命名空间的目录」。 |
+| `相对导入` | 用点号表示包内层级，只在包被导入时可用，直接运行脚本会失败。 |
 
 ## 考点精讲
 
@@ -495,7 +495,7 @@ print(math.floor(3.7), sqrt(16), pi)
 ### 考点 3：概念判断·import
 
 - **题目**：统计词频最方便的标准库是？
-- **判断依据**：在「模块、包与虚拟环境」里，collections.Counter 专门用于计数，mostcommon(n) 可直接取出前 n 名。在「模块、包与虚拟环境」里，其他选项：pathlib 管路径、subprocess（仅部分场景成立） 调进程、math 做数学运算，只有 Counter 专门用于计数。
+- **判断依据**：在「模块、包与虚拟环境」里，collections.Counter 专门用于计数，mostcommon(n) 可直接取出前 n 名。在「模块、包与虚拟环境」里，其他选项：pathlib 管路径、subprocess 调进程、math 做数学运算，只有 Counter 专门用于计数。
 
 ### 考点 4：代码补全·import
 

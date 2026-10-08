@@ -207,7 +207,7 @@ Point { X = 2, Y = 3 } -> plane
 | `record` | C# 中主要用于表示不可变数据并自动生成值相等语义的类型。 |
 | `模式匹配` | 按值、类型或结构选择分支并提取其中字段。 |
 | `不可变` | 结合record、模式匹配、不可变、with，写出一个真实项目中的使用场景。 |
-| `with` | Summary: Use records, with, pattern matching and immutable collections.。 |
+| `with` | record 的复制表达式：基于已有实例生成新对象并只改指定属性，体现不可变数据写法。 |
 
 ## 深度拓展与实战
 

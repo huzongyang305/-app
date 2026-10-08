@@ -412,10 +412,11 @@ LazyColumn(
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| `状态提升` | // 状态提升：把状态交给调用方，组件变成纯展示。 |
-| `一句话说清它是什么` | Compose 用 Kotlin 函数描述界面：UI = f(状态)。 |
-| `最小可运行示例` | fun Greeting(name: String, modifier: Modifier = Modifier) {。 |
-| `状态：记住与提升` | fun Counter() {。 |
+| `状态提升` | 把状态从子组件提到共同父级，让数据单向流动，组件只负责渲染，便于复用与测试。 |
+| `可组合函数` | 用 @Composable 标注的界面函数，描述「给定状态界面长什么样」。 |
+| `重组` | 状态变化后 Compose 只重新执行受影响的可组合函数，而不是整棵界面树。 |
+| `单向数据流` | 状态向下传、事件向上抛，界面不直接改数据，便于测试与推理。 |
+| `修饰符` | 修饰符顺序有影响：padding 在 background 之前与之后，效果完全不同 |
 
 ## 考点精讲
 
@@ -484,3 +485,4 @@ LazyColumn(
 | [Android 发布指南](https://docs.flutter.dev/deployment/android) | 签名、构建与发布 |
 
 > 「Jetpack Compose 声明式 UI」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+

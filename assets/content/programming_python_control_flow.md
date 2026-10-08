@@ -434,7 +434,7 @@ print(grade)
 ### 考点 5：概念判断·if
 
 - **题目**：break 与 continue 的区别是？
-- **判断依据**：在「控制流与推导式」里，break 结束整个循环，continue 跳过本次进入下一次。循环里做筛选用 continue，命中条件要收工用 break。这道题的关键在「控制流与推导式」的if、for、while：先确认题干“break 与 continue 的”问的是哪一步，再排除偷换前提的选项。
+- **判断依据**：在「控制流与推导式」里，break 结束整个循环。循环里做筛选用 continue，命中条件要收工用 break。这道题的关键在「控制流与推导式」的if、for、while：先确认题干“break 与 continue 的”问的是哪一步，再排除偷换前提的选项。
 
 ### 考点 6：填空·if
 

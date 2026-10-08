@@ -497,7 +497,7 @@ task
 ### 考点 5：概念判断·Promise
 
 - **题目**：async 函数总是返回什么？
-- **判断依据**：在「异步编程」里，Promise（返回非 Promise 值也会被包装）。因此调用方需要 await 或 .then 处理，抛错会变成 rejected 的 Promise。“async”与「异步编程」的术语表相呼应，只有符合Promise、async、await约束的“Promise（返回非 Promise”才是正文支持的结论。
+- **判断依据**：在「异步编程」里，Promise。因此调用方需要 await 或 .then 处理，抛错会变成 rejected 的 Promise。“async”与「异步编程」的术语表相呼应，只有符合Promise、async、await约束的“Promise（返回非 Promise”才是正文支持的结论。
 
 ### 考点 6：填空·Promise
 

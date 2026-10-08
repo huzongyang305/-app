@@ -286,7 +286,7 @@ struct CounterView: View {
 ### 考点 2：概念判断·SwiftUI
 
 - **题目**：关于「@State 管局部值，@Observable/ObservableObject 管共享模型」，下列说法正确的是？
-- **判断依据**：在「SwiftUI 与状态管理」里，@State 管局部值，@Observable/ObservableObject 管共享模型。这道题的关键在「SwiftUI 与状态管理」的SwiftUI、状态、数据流：先确认题干“关于@State 管局部值”问的是哪一步，再排除偷换前提的选项。
+- **判断依据**：在「SwiftUI 与状态管理」里，@State 管局部值。这道题的关键在「SwiftUI 与状态管理」的SwiftUI、状态、数据流：先确认题干“关于@State 管局部值”问的是哪一步，再排除偷换前提的选项。区分要点：局部状态用 @State，共享模型才交给 @Observable 或 ObservableObject。
 
 ### 考点 3：概念判断·SwiftUI
 

@@ -435,8 +435,8 @@ export default defineConfig({
 | --- | --- |
 | `TypeScript` | 在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js。 |
 | `tsup` | 库项目常见组合：tsup 产出 dist/index.mjs 与 dist/index.cjs + tsc 生成 .d.ts，并在 package.json 用 exports 字段声明条件导出，避免"双包危害"（同一依赖被加载两份）。 |
-| `Vite` | Summary: tsc/tsup/Vite, dual output and vitest.。 |
-| `一句话说清它是什么` | 构建负责把源码变成能跑的产物（ESM、CJS、类型声明），测试负责证明它是对的。 |
+| `Vite` | 现代前端构建工具：开发时用原生 ESM 按需编译并热更新，打包时用 Rollup 产出静态资源。 |
+| `转译与类型检查分离` | esbuild、swc 只做语法转换，类型错误要靠 tsc --noEmit 单独把关。 |
 
 ## 考点精讲
 
@@ -458,7 +458,7 @@ export default defineConfig({
 ### 考点 4：概念判断·TypeScript
 
 - **题目**：tsc --noEmit 的用途是？
-- **判断依据**：在「TypeScript 构建工具链与测试」里，结论应落在「只做类型检查，不生成 JS 文件」。打包器通常不做类型检查，所以 CI 里要单独跑一次 tsc --noEmit 把类型问题拦住。在「TypeScript 构建工具链与测试」里，这道题要求区分概念与边界，「只做类型检查，不生成 JS 文件」只有在题干给出的前提下才成立，而「把 TS 编译成 JS」、「生成类型声明文件」缺少同一组条件。
+- **判断依据**：在「TypeScript 构建工具链与测试」里，结论应落在「只做类型检查，不生成 JS 文件」。打包器通常不做类型检查，所以 CI 里要单独跑一次 tsc --noEmit 把类型问题拦住。在「TypeScript 构建工具链与测试」里，这道题要求区分概念与边界，「只做类型检查，不生成 JS 文件」只有在题干给出的前提下才成立，而「把 TS 编译成 JS，但这会拖慢构建速度」、「生成类型声明文件」缺少同一组条件。
 
 ### 考点 5：多选辨析·TypeScript
 

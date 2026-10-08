@@ -236,6 +236,7 @@ attest ok: device 0x3f2a verified，tampered package rejected: signature mismatc
 | `挑战应答` | 服务端发随机数，设备用私钥签名以证明身份。 |
 | `双向认证` | 客户端与服务端互相验证对方证书的 TLS 模式。 |
 | `签名校验` | 用公钥验证数据确实由对应私钥签发且未被改动。 |
+| `安全启动` | 安全启动要求每一级代码在运行前先被上一级校验，信任根是不可修改的起点 |
 
 ## 考点精讲
 
@@ -414,3 +415,4 @@ Secure boot builds a chain of trust: an immutable root verifies the next stage, 
 ### 结论与下一步
 
 学完IoT 设备安全基础，应该能独立完成三件事：先用最小示例确认安全启动的行为，再用一个边界输入验证结论，最后把失败路径写成可重复的检查。下一步把本课术语加入复习清单，并在两周内用一次真实任务检验记忆是否牢固。
+

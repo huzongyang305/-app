@@ -1,0 +1,260 @@
+补写前不足 6 条的课程 591
+本次补写课程          195
+新增术语行            233（小标题来源 138，术语库复用 94）
+仍未达标              470
+  + assets/content/flutter_widget_intro.md｜Future｜Dart 使用 Future 表示一次异步结果，Stream 表示连续事件序列
+  + assets/content/flutter_layout_intro.md｜Future｜Dart 使用 Future 表示一次异步结果，Stream 表示连续事件序列
+  + assets/content/mobile_kotlin.md｜协程｜协程把耗时工作挪出主线程
+  + assets/content/mobile_swift.md｜Task｜Swift 并发中的异步任务单元，可等待结果、取消或组合并发工作
+  + assets/content/mobile_swift.md｜async｜标记异步函数或异步块，使内部可以使用 await 而不阻塞调用线程
+  + assets/content/mobile_compose.md｜修饰符｜修饰符顺序有影响：padding 在 background 之前与之后，效果完全不同
+  + assets/content/gamedev_game_loop.md｜刷新率｜画面每秒刷新的次数：垂直同步把呈现时机对齐到显示刷新，游戏必须在下一帧开始前完成输入、更新与渲染，否则就会掉帧或撕裂
+  + assets/content/gamedev_animation_fsm.md｜转移条件｜转移条件写得过于宽松会出现状态抖动，走路与待机在一帧内反复切换
+  + assets/content/gamedev_2d_rendering.md｜相机坐标｜世界坐标描述物体在游戏世界中的位置，相机坐标是相对相机的偏移，屏幕坐标才对应像素
+  + assets/content/gamedev_collision_physics.md｜冲量｜先分离后计算冲量是本末倒置：残留穿透会让物体在同一帧反复触发碰撞，产生抖动
+  + assets/content/gamedev_render_pipeline.md｜填充率｜GPU 每秒能写入的像素数量：不画看不见的东西最省性能，屏幕像素的填充成本也要计算在内
+  + assets/content/gamedev_performance_mobile.md｜目标帧率｜希望画面每秒更新的次数：按机型分档设定目标帧率与画质，最低档机型作为性能验收基线
+  + assets/content/python_first_script.md｜虚拟环境｜虚拟环境隔离项目依赖，requirements.txt、pyproject.toml 和锁文件记录依赖版本；不要依赖全局环境中的隐式包
+  + assets/content/python_input_output.md｜虚拟环境｜虚拟环境隔离项目依赖，requirements.txt、pyproject.toml 和锁文件记录依赖版本；不要依赖全局环境中的隐式包
+  + assets/content/python_input_output.md｜真值｜真值判断把空容器、0、空字符串和 None 视为假；需要区分 None 与空值时使用 is None
+  + assets/content/python_if_else.md｜Python｜一种解释型通用编程语言，用缩进划分代码块，标准库覆盖面广
+  + assets/content/python_loops.md｜虚拟环境｜虚拟环境隔离项目依赖，requirements.txt、pyproject.toml 和锁文件记录依赖版本；不要依赖全局环境中的隐式包
+  + assets/content/python_list_dict_basics.md｜虚拟环境｜虚拟环境隔离项目依赖，requirements.txt、pyproject.toml 和锁文件记录依赖版本；不要依赖全局环境中的隐式包
+  + assets/content/programming_python_basics.md｜Python｜一种解释型通用编程语言，用缩进划分代码块，标准库覆盖面广
+  + assets/content/python_project_api.md｜可观测性｜由日志、指标与链路追踪组成，能在不重启、不改代码的前提下问出新问题
+  + assets/content/python_project_etl.md｜可观测性｜由日志、指标与链路追踪组成，能在不重启、不改代码的前提下问出新问题
+  + assets/content/cpp_first_program.md｜头文件｜头文件通常放声明，源文件放定义；#include 在预处理阶段展开，头文件保护或 #pragma once 防止重复包含
+  + assets/content/cpp_first_program.md｜引用｜值语义会复制对象，引用是已有对象的别名且必须初始化，指针保存地址并可以为空
+  + assets/content/cpp_variables_io.md｜头文件｜头文件通常放声明，源文件放定义；#include 在预处理阶段展开，头文件保护或 #pragma once 防止重复包含
+  + assets/content/cpp_variables_io.md｜引用｜值语义会复制对象，引用是已有对象的别名且必须初始化，指针保存地址并可以为空
+  + assets/content/cpp_functions_intro.md｜头文件｜头文件通常放声明，源文件放定义；#include 在预处理阶段展开，头文件保护或 #pragma once 防止重复包含
+  + assets/content/programming_cpp_modern.md｜移动语义｜移动语义把资源「搬」过去
+  + assets/content/cpp_project_http.md｜可观测性｜由日志、指标与链路追踪组成，能在不重启、不改代码的前提下问出新问题
+  + assets/content/cpp_project_taskdb.md｜退出码｜进程结束时返回的整数，0 表示成功、非 0 表示失败，脚本与 CI 据此判断结果
+  + assets/content/c_first_program.md｜数组｜数组名在大多数表达式中退化为首元素指针，但 sizeof 和取地址时不是
+  + assets/content/c_first_program.md｜字符串｜字符串函数要保证目标缓冲区足够大，优先使用带长度限制的函数，防止溢出
+  + assets/content/c_variables_io.md｜数组｜数组名在大多数表达式中退化为首元素指针，但 sizeof 和取地址时不是
+  + assets/content/c_conditions.md｜数组｜数组名在大多数表达式中退化为首元素指针，但 sizeof 和取地址时不是
+  + assets/content/c_conditions.md｜字符串｜字符串函数要保证目标缓冲区足够大，优先使用带长度限制的函数，防止溢出
+  + assets/content/c_loops.md｜数组｜数组名在大多数表达式中退化为首元素指针，但 sizeof 和取地址时不是
+  + assets/content/c_functions_intro.md｜数组｜数组名在大多数表达式中退化为首元素指针，但 sizeof 和取地址时不是
+  + assets/content/c_files.md｜错误处理｜识别、传播并恢复异常或失败路径，避免错误被吞掉或扩大影响
+  + assets/content/c_project.md｜持久化｜把内存中的状态写入磁盘或数据库，使进程重启后仍可恢复
+  + assets/content/c_project.md｜错误处理｜识别、传播并恢复异常或失败路径，避免错误被吞掉或扩大影响
+  + assets/content/c_project_tcp_server.md｜TCP｜TCP 是字节流，没有消息边界
+  + assets/content/java_first_class.md｜字符串｜字符串不可变，拼接会产生新对象，循环中应使用 StringBuilder
+  + assets/content/java_variables_output.md｜JVM｜Java 源码编译成平台无关的字节码，JVM 负责加载、验证、解释和即时编译
+  + assets/content/java_conditions.md｜JVM｜Java 源码编译成平台无关的字节码，JVM 负责加载、验证、解释和即时编译
+  + assets/content/java_conditions.md｜字符串｜字符串不可变，拼接会产生新对象，循环中应使用 StringBuilder
+  + assets/content/java_loops.md｜JVM｜Java 源码编译成平台无关的字节码，JVM 负责加载、验证、解释和即时编译
+  + assets/content/java_methods_intro.md｜JVM｜Java 源码编译成平台无关的字节码，JVM 负责加载、验证、解释和即时编译
+  + assets/content/programming_java_collections.md｜不可变集合｜不可变集合能防止意外修改，适合当返回值或常量
+  + assets/content/programming_java_concurrency.md｜内存模型｜编程语言或硬件对多线程读写可见性、原子性和重排序给出的规则集合
+  + assets/content/java_project_inventory.md｜可观测性｜由日志、指标与链路追踪组成，能在不重启、不改代码的前提下问出新问题
+  + assets/content/java_project_inventory.md｜JUnit｜Java 常用的单元测试框架，用注解声明测试、断言和生命周期
+  + assets/content/java_project_order_concurrency.md｜线程池｜复用固定数量线程处理任务，避免频繁创建销毁，并需要定义队列和拒绝策略
+  + assets/content/kotlin_first_program.md｜函数｜Kotlin 函数是表达式，单表达式函数可以省略花括号和 return
+  + assets/content/kotlin_first_program.md｜集合｜集合操作 map、filter、groupBy、associate 返回新集合，序列 Sequence 适合大数据惰性处理
+  + assets/content/kotlin_variables_null.md｜函数｜Kotlin 函数是表达式，单表达式函数可以省略花括号和 return
+  + assets/content/kotlin_variables_null.md｜集合｜集合操作 map、filter、groupBy、associate 返回新集合，序列 Sequence 适合大数据惰性处理
+  + assets/content/kotlin_conditions.md｜函数｜Kotlin 函数是表达式，单表达式函数可以省略花括号和 return
+  + assets/content/kotlin_conditions.md｜集合｜集合操作 map、filter、groupBy、associate 返回新集合，序列 Sequence 适合大数据惰性处理
+  + assets/content/kotlin_loops.md｜函数｜Kotlin 函数是表达式，单表达式函数可以省略花括号和 return
+  + assets/content/kotlin_functions_intro.md｜函数｜Kotlin 函数是表达式，单表达式函数可以省略花括号和 return
+  + assets/content/kotlin_coroutines.md｜结构化并发｜让子任务的生命周期受父作用域约束的并发模型
+  + assets/content/kotlin_testing.md｜协程｜可挂起和恢复的轻量执行单元，由运行时或语言调度
+  + assets/content/kotlin_project_cli_ledger.md｜协程｜协程适合并发读取多个文件或执行网络请求，命令行工具则要保证主流程可测试、可打包
+  + assets/content/swift_first_program.md｜闭包｜闭包捕获外部变量，默认是引用捕获；需要修改捕获值或在并发环境中使用时，要明确捕获列表和所有权
+  + assets/content/swift_constants_variables.md｜闭包｜闭包捕获外部变量，默认是引用捕获；需要修改捕获值或在并发环境中使用时，要明确捕获列表和所有权
+  + assets/content/swift_conditions.md｜闭包｜闭包捕获外部变量，默认是引用捕获；需要修改捕获值或在并发环境中使用时，要明确捕获列表和所有权
+  + assets/content/swift_loops.md｜闭包｜闭包捕获外部变量，默认是引用捕获；需要修改捕获值或在并发环境中使用时，要明确捕获列表和所有权
+  + assets/content/swift_functions_intro.md｜闭包｜闭包捕获外部变量，默认是引用捕获；需要修改捕获值或在并发环境中使用时，要明确捕获列表和所有权
+  + assets/content/swift_functions_intro.md｜结构体｜结构体是值类型，类是引用类型；优先使用结构体表达数据，除非需要继承、身份或共享可变状态
+  + assets/content/swift_basics.md｜可选类型｜Optional 表示值可能为 nil，必须显式解包（if let、guard let）才能使用，从类型层面消除空指针
+  + assets/content/js_console_start.md｜函数｜函数是一等对象，可以作为参数、返回值和对象属性
+  + assets/content/js_console_start.md｜闭包｜闭包让函数记住定义时的词法作用域，常用于回调、模块私有状态和工厂函数
+  + assets/content/js_variables_types_intro.md｜函数｜函数是一等对象，可以作为参数、返回值和对象属性
+  + assets/content/js_variables_types_intro.md｜闭包｜闭包让函数记住定义时的词法作用域，常用于回调、模块私有状态和工厂函数
+  + assets/content/js_conditions_loops.md｜函数｜函数是一等对象，可以作为参数、返回值和对象属性
+  + assets/content/js_conditions_loops.md｜闭包｜闭包让函数记住定义时的词法作用域，常用于回调、模块私有状态和工厂函数
+  + assets/content/js_functions_intro.md｜函数｜函数是一等对象，可以作为参数、返回值和对象属性
+  + assets/content/js_dom_intro.md｜函数｜函数是一等对象，可以作为参数、返回值和对象属性
+  + assets/content/programming_js_types.md｜JavaScript｜JavaScript 是动态类型、基于原型的脚本语言，标准名为 ECMAScript。它既能跑在浏览器里操作页面
+  + assets/content/programming_js_functions.md｜作用域｜程序中名字可见和可访问的范围，由词法结构或运行时上下文决定
+  + assets/content/js_project_node_api.md｜可观测性｜由日志、指标与链路追踪组成，能在不重启、不改代码的前提下问出新问题
+  + assets/content/js_project_realtime_chat.md｜JavaScript｜JavaScript 是动态类型、基于原型的脚本语言，标准名为 ECMAScript。它既能跑在浏览器里操作页面
+  + assets/content/csharp_dotnet_first.md｜程序集｜程序集是部署和版本控制的基本单位，包含类型、方法和资源
+  + assets/content/csharp_variables_input.md｜程序集｜程序集是部署和版本控制的基本单位，包含类型、方法和资源
+  + assets/content/csharp_variables_input.md｜类型｜结构体、枚举和大多数基元类型是值类型，赋值时复制内容；类、数组、委托和字符串是引用类型，赋值时复制引用
+  + assets/content/csharp_methods_intro.md｜程序集｜程序集是部署和版本控制的基本单位，包含类型、方法和资源
+  + assets/content/programming_csharp_types.md｜可空｜可空让编译器帮你防空
+  + assets/content/programming_csharp_control_methods.md｜可选参数｜可选参数要放在参数列表末尾；调用处用命名参数能显著提高可读性
+  + assets/content/programming_csharp_inheritance.md｜扩展方法｜扩展方法必须写在静态类里，第一个参数带 this
+  + assets/content/programming_csharp_async.md｜取消｜取消要一路传下去：只在外层判断 token.IsCancellationRequested 而不传给底层调用，是无效取消
+  + assets/content/programming_csharp_project.md｜错误处理｜识别、传播并恢复异常或失败路径，避免错误被吞掉或扩大影响
+  + assets/content/csharp_project_inventory_cli.md｜SQLite｜单文件嵌入式关系数据库，无需独立服务进程，通过 C API 直接读写，适合本地存储
+  + assets/content/go_first_program.md｜零值｜零值让类型可以直接使用，但写入 nil map 会 panic，读取则返回零值
+  + assets/content/go_variables_input.md｜错误｜错误是普通值，调用方应显式检查，不要把错误丢掉或用 panic 代替可预期的失败
+  + assets/content/go_variables_input.md｜切片｜数组长度固定且属于类型的一部分，切片是动态长度视图，包含指针、长度和容量
+  + assets/content/go_conditions.md｜Go｜谷歌开源的静态编译语言：goroutine 与 channel 原生支持并发，编译产物是单个二进制文件
+  + assets/content/go_loops.md｜零值｜零值让类型可以直接使用，但写入 nil map 会 panic，读取则返回零值
+  + assets/content/go_loops.md｜错误｜错误是普通值，调用方应显式检查，不要把错误丢掉或用 panic 代替可预期的失败
+  + assets/content/go_functions_intro.md｜零值｜零值让类型可以直接使用，但写入 nil map 会 panic，读取则返回零值
+  + assets/content/programming_go_interfaces_errors.md｜错误处理｜函数把 error 作为最后一个返回值显式返回，调用方逐层判断而不是使用异常
+  + assets/content/programming_go_microservice.md｜可观测性｜由日志、指标与链路追踪组成，能在不重启、不改代码的前提下问出新问题
+  + assets/content/go_project_rest_api.md｜可观测性｜由日志、指标与链路追踪组成，能在不重启、不改代码的前提下问出新问题
+  + assets/content/go_project_worker_pool.md｜Go｜谷歌开源的静态编译语言：goroutine 与 channel 原生支持并发，编译产物是单个二进制文件
+  + assets/content/rust_cargo_first.md｜Cargo｜Cargo 负责创建项目、管理依赖、编译和测试
+  + assets/content/rust_cargo_first.md｜借用｜借用分为共享借用 &T 和可变借用 &mut T，同一时间要么多个共享借用，要么一个可变借用，不能同时存在
+  + assets/content/rust_variables_mutability.md｜Cargo｜Cargo 负责创建项目、管理依赖、编译和测试
+  + assets/content/rust_conditions.md｜Cargo｜Cargo 负责创建项目、管理依赖、编译和测试
+  + assets/content/rust_conditions.md｜借用｜借用分为共享借用 &T 和可变借用 &mut T，同一时间要么多个共享借用，要么一个可变借用，不能同时存在
+  + assets/content/rust_loops.md｜Cargo｜Cargo 负责创建项目、管理依赖、编译和测试
+  + assets/content/rust_functions_intro.md｜Cargo｜Cargo 负责创建项目、管理依赖、编译和测试
+  + assets/content/programming_rust_ownership.md｜Rust｜Rust 是系统级语言，用编译期检查替代垃圾回收，做到内存安全与零成本抽象
+  + assets/content/programming_rust_ownership.md｜生命周期｜引用保持有效的区间；在 Rust 中还用于把多个引用的有效期关系写进类型
+  + assets/content/programming_rust_errors_iterators_async.md｜迭代器｜iter()、into_iter() 配合 map、filter 完成声明式遍历
+  + assets/content/programming_rust_errors_iterators_async.md｜tokio｜Rust 的异步运行时，提供任务调度、异步 I/O、定时器和同步原语
+  + assets/content/programming_rust_async.md｜Tokio｜Rust 的异步运行时：提供任务调度、定时器与异步 IO，配合 async/await 写高并发程序
+  + assets/content/rust_project_axum_api.md｜可观测性｜由日志、指标与链路追踪组成，能在不重启、不改代码的前提下问出新问题
+  + assets/content/rust_project_downloader.md｜Rust｜Rust 是系统级语言，用编译期检查替代垃圾回收，做到内存安全与零成本抽象
+  + assets/content/rust_traits_generics.md｜Rust｜Rust 是系统级语言，用编译期检查替代垃圾回收，做到内存安全与零成本抽象
+  + assets/content/rust_smart_pointers.md｜Rust｜Rust 是系统级语言，用编译期检查替代垃圾回收，做到内存安全与零成本抽象
+  + assets/content/rust_smart_pointers.md｜所有权｜每个值只有一个所有者，离开作用域就释放；跨线程共享要用 Arc 与 Mutex
+  + assets/content/rust_macros_wasm.md｜Rust｜Rust 是系统级语言，用编译期检查替代垃圾回收，做到内存安全与零成本抽象
+  + assets/content/ts_first_types.md｜窄化｜窄化只在当前控制流内有效，异步回调或闭包中类型可能重新变宽，需要重新检查或保存稳定值
+  + assets/content/ts_basic_types.md｜窄化｜窄化只在当前控制流内有效，异步回调或闭包中类型可能重新变宽，需要重新检查或保存稳定值
+  + assets/content/ts_basic_types.md｜泛型｜泛型让函数和类型在保持类型关系的同时复用逻辑，约束 extends 限制可接受的类型
+  + assets/content/ts_interface_intro.md｜窄化｜窄化只在当前控制流内有效，异步回调或闭包中类型可能重新变宽，需要重新检查或保存稳定值
+  + assets/content/ts_interface_intro.md｜泛型｜泛型让函数和类型在保持类型关系的同时复用逻辑，约束 extends 限制可接受的类型
+  + assets/content/ts_function_types.md｜窄化｜窄化只在当前控制流内有效，异步回调或闭包中类型可能重新变宽，需要重新检查或保存稳定值
+  + assets/content/ts_function_types.md｜泛型｜泛型让函数和类型在保持类型关系的同时复用逻辑，约束 extends 限制可接受的类型
+  + assets/content/ts_arrays_objects.md｜窄化｜窄化只在当前控制流内有效，异步回调或闭包中类型可能重新变宽，需要重新检查或保存稳定值
+  + assets/content/ts_arrays_objects.md｜泛型｜泛型让函数和类型在保持类型关系的同时复用逻辑，约束 extends 限制可接受的类型
+  + assets/content/programming_ts_narrowing_generics.md｜条件类型｜TypeScript 根据类型关系在编译期选择结果类型的类型运算
+  + assets/content/programming_ts_fullstack_project.md｜CI｜持续集成：每次提交自动跑构建与测试，把问题挡在合并之前
+  + assets/content/ts_project_websocket_dashboard.md｜可观测性｜由日志、指标与链路追踪组成，能在不重启、不改代码的前提下问出新问题
+  + assets/content/ts_performance.md｜条件类型｜TypeScript 根据类型关系在编译期选择结果类型的类型运算
+  + assets/content/shell_first_script.md｜管道｜管道把 stdout 接到下一个命令的 stdin，默认不传递 stderr，也不会自动传递数组或结构化对象
+  + assets/content/shell_first_script.md｜Shell｜接收命令并调用操作系统程序的命令行解释器与脚本环境
+  + assets/content/shell_variables_args.md｜管道｜管道把 stdout 接到下一个命令的 stdin，默认不传递 stderr，也不会自动传递数组或结构化对象
+  + assets/content/shell_variables_args.md｜Shell｜接收命令并调用操作系统程序的命令行解释器与脚本环境
+  + assets/content/shell_conditions.md｜管道｜管道把 stdout 接到下一个命令的 stdin，默认不传递 stderr，也不会自动传递数组或结构化对象
+  + assets/content/shell_loops.md｜Shell｜接收命令并调用操作系统程序的命令行解释器与脚本环境
+  + assets/content/programming_shell_script_engineering.md｜退出码｜进程结束时返回的整数，0 表示成功、非 0 表示失败，脚本与 CI 据此判断结果
+  + assets/content/programming_shell_container.md｜Shell｜接收命令并调用操作系统程序的命令行解释器与脚本环境
+  + assets/content/shell_ci_templates.md｜缓存键｜决定缓存能否命中的字符串，通常包含依赖锁文件的哈希，写错就会复用到过期的依赖
+  + assets/content/shell_ci_templates.md｜Shell｜接收命令并调用操作系统程序的命令行解释器与脚本环境
+  + assets/content/shell_json_yaml.md｜Shell｜接收命令并调用操作系统程序的命令行解释器与脚本环境
+  + assets/content/shell_security.md｜Shell｜接收命令并调用操作系统程序的命令行解释器与脚本环境
+  + assets/content/shell_project_deploy.md｜Shell｜接收命令并调用操作系统程序的命令行解释器与脚本环境
+  + assets/content/shell_project_log_analysis.md｜Shell｜接收命令并调用操作系统程序的命令行解释器与脚本环境
+  + assets/content/shell_portability.md｜Shell｜接收命令并调用操作系统程序的命令行解释器与脚本环境
+  + assets/content/shell_security_hardening.md｜Shell｜接收命令并调用操作系统程序的命令行解释器与脚本环境
+  + assets/content/shell_automation_advanced.md｜Shell｜接收命令并调用操作系统程序的命令行解释器与脚本环境
+  + assets/content/shell_automation_advanced.md｜可观测性｜由日志、指标与链路追踪组成，能在不重启、不改代码的前提下问出新问题
+  + assets/content/computer_organization_intro.md｜局部性｜局部性（相邻地址常被一起使用）
+  + assets/content/fundamentals_compiler_frontend.md｜错误恢复｜解析出错后继续分析并尽量给出更多诊断的策略
+  + assets/content/fundamentals_codegen.md｜寄存器｜CPU 内部速度最快的小容量存储，用于保存指令操作数、地址和状态
+  + assets/content/fundamentals_interrupt.md｜上下文切换｜CPU 核心数有限，操作系统通过时间片轮转让多个线程「同时」运行。切换时需要保存和恢复寄存器、程序计数器等状态
+  + assets/content/fundamentals_cryptography.md｜密钥管理｜安全地生成、存储、轮换、授权和销毁密钥，避免密钥出现在代码或日志中
+  + assets/content/fundamentals_graphics_media.md｜过度绘制｜同一像素被多次着色，浪费填充带宽
+  + assets/content/fundamentals_cache_coherence.md｜共享内存｜多个进程或线程访问同一块内存区域，需要同步避免数据竞争
+  + assets/content/compiler_overview.md｜阶段划分｜真实编译器会合并或重复某些阶段，例如解析时同时做常量折叠；阶段划分是理解工具，不是必须逐段实现的硬约束
+  + assets/content/compiler_lexer_parser.md｜正规式｜正规式无法处理括号配对等嵌套结构，那属于语法分析的范围
+  + assets/content/compiler_semantic_types.md｜静态检查｜静态检查覆盖能在编译期确定的问题，其余留给运行期：数组越界、空引用与外部输入合法性通常属于后者
+  + assets/content/compiler_diagnostics.md｜错误恢复｜解析出错后继续分析并尽量给出更多诊断的策略
+  + assets/content/compiler_project_minilang.md｜作用域｜作用域规则写入语言规范，求值器与静态检查共用同一套定义，避免行为分叉
+  + assets/content/compiler_ir_optimization.md｜数据流分析｜数据流分析判断某个定义会不会被后续使用；永远不会被使用的计算结果就是死代码
+  + assets/content/compiler_codegen_vm.md｜栈式指令｜栈式指令简单但指令数量多，寄存器机器能减少访存次数，代价是分配算法更复杂
+  + assets/content/algo_mst.md｜最小生成树｜最小生成树选择连接所有顶点且总权重最小的无环边集
+  + assets/content/algo_computational_geometry.md｜旋转卡壳｜旋转卡壳利用凸包的单调性，把最远点对从 O(n²) 降到 O(n)
+  + assets/content/network_tcp_ip.md｜TCP｜面向连接的可靠传输协议：握手建连、序号与重传保序，滑动窗口与拥塞控制决定吞吐
+  + assets/content/network_tcp_ip.md｜拥塞控制｜TCP 根据网络反馈调整发送速率，避免丢包和排队崩溃
+  + assets/content/network_link_layer.md｜IP｜IP 负责寻址与转发：给每台主机一个地址，让路由器把数据包一跳一跳送到目的地。它不保证可靠、不保证顺序，这些交给传输层
+  + assets/content/network_attacks.md｜IP｜IP 负责寻址与转发：给每台主机一个地址，让路由器把数据包一跳一跳送到目的地。它不保证可靠、不保证顺序，这些交给传输层
+  + assets/content/network_web_security.md｜供应链｜依赖包、构建工具与镜像带来的风险，靠锁定版本、校验来源与扫描漏洞控制
+  + assets/content/network_auth.md｜PKCE｜授权码流程的扩展：客户端生成并校验 code_verifier，防止授权码被截获后换令牌
+  + assets/content/network_ip_transport.md｜TCP｜面向连接的可靠传输协议：握手建连、序号与重传保序，滑动窗口与拥塞控制决定吞吐
+  + assets/content/network_socket.md｜多路复用｜一条连接上并发交错传输多个请求，省掉重复建连与连接排队
+  + assets/content/network_ipv6.md｜NAT｜把内网地址转换成公网地址，让多台设备共享一个出口 IP
+  + assets/content/network_ipv6.md｜DNS｜把域名解析成 IP 的层次化系统，排查时要区分递归解析器、权威服务器与本地缓存
+  + assets/content/network_nat_vpn.md｜中继｜中继成功率高但要为带宽付费，实际系统用 ICE 在两者之间自动选择
+  + assets/content/network_nat_vpn.md｜代价｜常见代价是额外的封装开销、
+  + assets/content/network_p2p.md｜中心化｜中心化索引（如早期 Napster）查询快但存在单点
+  + assets/content/network_performance.md｜带宽｜带宽决定单位时间能传多少数据，延迟决定第一个字节多久到达
+  + assets/content/security_concept_intro.md｜威胁｜威胁是可能造成损害的事件或攻击者，漏洞是系统可被利用的弱点，风险是威胁利用漏洞造成损失的可能性和影响
+  + assets/content/security_concept_intro.md｜加密｜加密用密钥把明文变成密文，对称加密速度快，非对称加密便于密钥交换和签名
+  + assets/content/password_hash_intro.md｜威胁｜威胁是可能造成损害的事件或攻击者，漏洞是系统可被利用的弱点，风险是威胁利用漏洞造成损失的可能性和影响
+  + assets/content/blockchain_bitcoin_consensus.md｜确认数｜确认数只是概率保证，不是数学上的绝对最终性；算力骤降或共识规则变更会改变实际风险
+  + assets/content/blockchain_ethereum_smart_contract.md｜事件｜事件把执行结果写入交易日志，链下服务按主题过滤并建立索引，用来做查询、通知与对账
+  + assets/content/chain_oracle_bridge.md｜验证模型｜对问题的结构化表示：验证者集合过于集中会让桥的安全等价于这几个密钥，一旦失守可无限铸币
+  + assets/content/chain_zk_privacy.md｜证明｜证明者用私有数据生成证明，验证者用公开信息验证，无需知道私有数据
+  + assets/content/chain_audit_project.md｜攻击面｜攻击面清单作为审计工作底稿，每条都要有对应结论：已检查、存在问题或需要更多信息
+  + assets/content/blockchain_defi_security.md｜升级｜升级走多签加时间锁，关键参数变更提前公告；为应急暂停准备独立权限，并定期演练
+  + assets/content/database_index.md｜覆盖索引｜索引里已经包含查询需要的全部列，不必回表，能显著减少随机 I/O
+  + assets/content/database_redis.md｜持久化｜把内存中的状态写入磁盘或数据库，使进程重启后仍可恢复
+  + assets/content/database_sql_advanced.md｜执行计划｜数据库优化器为查询选出的访问路径、连接顺序和算子组合
+  + assets/content/database_realtime_warehouse.md｜Flink｜流批一体的分布式计算引擎，以事件时间、水位线和状态管理见长，常用于实时数据处理
+  + assets/content/de_stream_processing.md｜事件时间｜事件时间来自消息本身，处理时间是消费时刻；水位线表示「不会再出现更早数据」的判断，用于决定窗口何时触发
+  + assets/content/de_cdc_incremental.md｜日志解析｜日志解析组件把一条事务日志翻译成带操作类型、主键、前后镜像与时间戳的事件，投递到消息通道供下游消费
+  + assets/content/de_spark_tuning.md｜分区｜分区数决定并行任务数，太少跑不满、太多调度与文件数失控
+  + assets/content/de_flink_windowing.md｜窗口｜窗口长度与步长由业务口径决定并写入指标定义，变更时同步下游说明
+  + assets/content/de_data_contract.md｜兼容｜兼容变更可直接发布并通知消费者；破坏性变更需要新版本字段或新表并行运行，等消费者迁移完成后再下线旧结构
+  + assets/content/os_kernel_arch.md｜宏内核｜宏内核把进程调度、内存管理、文件系统、驱动都放在内核态，调用链短、性能好，但任一
+  + assets/content/os_io_scheduling.md｜机械盘｜机械盘的主要成本是寻道与旋转延迟，调度目标是把相邻请求合并、减少磁头来回移动
+  + assets/content/os_io_uring.md｜上下文切换｜CPU 核心数有限，操作系统通过时间片轮转让多个线程「同时」运行。切换时需要保存和恢复寄存器、程序计数器等状态
+  + assets/content/os_rtos.md｜中断延迟｜中断延迟由关中断时间、中断处理与调度开销共同决定
+  + assets/content/embedded_mcu_basics.md｜复位｜复位向量指向启动文件，启动文件按段复制初值、清零未初始化数据，再调用时钟与外设初始化
+  + assets/content/embedded_sensor_signal.md｜采样｜采样率决定能还原多快的信号，采得太慢会把高频折成假的低频
+  + assets/content/embedded_gpio_interrupt.md｜中断｜中断控制器按优先级决定同时到达时先响应谁，高优先级可以嵌套打断低优先级
+  + assets/content/embedded_rtos_tasks.md｜互斥量｜互斥量保护共享资源并支持所有权与优先级继承，二值信号量更适合任务与中断之间的通知
+  + assets/content/embedded_bootloader.md｜跳转｜跳转前必须关闭仍在工作的中断并重定向向量表，否则应用里发生的中断会落在 Bootloader 的旧表上
+  + assets/content/embedded_iot_security.md｜安全启动｜安全启动要求每一级代码在运行前先被上一级校验，信任根是不可修改的起点
+  + assets/content/embedded_project_env_monitor.md｜采集｜采集结果带时间戳写入环形缓存，写满后按策略覆盖最旧记录；上报成功收到确认后才推进读指针
+  + assets/content/toolchain_project.md｜CI｜持续集成：每次提交自动跑构建与测试，把问题挡在合并之前
+  + assets/content/toolchain_project.md｜缓存键｜决定缓存能否命中的字符串，通常包含依赖锁文件的哈希，写错就会复用到过期的依赖
+  + assets/content/toolchain_kubernetes.md｜Pod｜Kubernetes 最小调度单元，包含一个或多个共享网络与存储的容器
+  + assets/content/cloud_cost_finops.md｜标签｜标签在创建模板里强制注入，缺标签的资源由定时任务扫描并通知负责人补齐
+  + assets/content/cloud_containers_kubernetes.md｜镜像｜镜像是分层的只读模板，容器是镜像加一层可写层运行起来的进程
+  + assets/content/cloud_serverless.md｜事件源｜事件源把消息投递给函数，多数平台提供至少一次投递；这意味着同一条消息可能被处理多次，失败后还会重试
+  + assets/content/cloud_k8s_operations.md｜Kubernetes｜容器编排平台，负责调度、扩缩容、健康检查与滚动更新
+  + assets/content/cloud_security_iam.md｜身份｜身份被授予策略，策略由动作、资源与条件组成；显式拒绝优先于允许，最终结果按优先级合并
+  + assets/content/cloud_observability_sre.md｜指标｜指标是聚合数值，成本低适合告警；日志是离散事件，信息丰富但量大；链路把一次请求的跨服务调用串成时间线，便于定位瓶颈
+  + assets/content/ai_concept_intro.md｜训练｜训练阶段用数据调整参数，计算量大、可离线完成；推理阶段固定参数处理新输入
+  + assets/content/ai_prompt_engineering.md｜工具调用｜模型按结构化参数请求外部函数或服务，并把结果带回后续推理
+  + assets/content/ai_tool_calling.md｜结构化输出｜约束模型按 JSON、枚举或模式返回可直接解析的数据
+  + assets/content/ai_reinforcement_learning.md｜奖励｜奖励函数按业务目标拆成主奖励与约束惩罚，训练中检查轨迹行为是否符合预期
+  + assets/content/math_set_function_intro.md｜德摩根律｜德摩根律指出：并集的补等于补集的交
+  + assets/content/math_calculus_gradient.md｜学习率｜训练时每次按梯度更新参数的步长，过大会震荡，过小会收敛缓慢
+  + assets/content/cross_ci_config.md｜CI｜持续集成：每次提交自动跑构建与测试，把问题挡在合并之前
+  + assets/content/cross_security_ecosystem.md｜密钥管理｜密钥只在运行时注入且不回显，令牌按最小权限发放并定期轮换
+  + assets/content/cross_db_access.md｜根因｜根因是父查询一次、每个子项再查一次，数据量增大后数据库往返次数线性上升
+  + assets/content/visual_rag_pipeline.md｜上下文压缩｜上下文压缩把长片段变短
+  + assets/content/visual_rag_pipeline.md｜引用返回｜引用返回让答案可核对
+  + assets/content/visual_cdn_cache.md｜缓存键｜决定缓存能否命中的字符串，通常包含依赖锁文件的哈希，写错就会复用到过期的依赖
+  + assets/content/project_coding_workflow.md｜PR｜Pull Request，把一组分支改动提交评审、自动检查和合并的协作单元
+  + assets/content/project_debug_performance_triage.md｜可观测性｜由日志、指标与链路追踪组成，能在不重启、不改代码的前提下问出新问题
+未达标明细（前 20）：
+  - assets/content/flutter_basics.md（4 条）
+  - assets/content/flutter_state.md（4 条）
+  - assets/content/flutter_release.md（5 条）
+  - assets/content/mobile_kotlin.md（仅补到 5 条）
+  - assets/content/mobile_miniprogram.md（4 条）
+  - assets/content/mobile_react_native.md（4 条）
+  - assets/content/mobile_compose.md（仅补到 5 条）
+  - assets/content/mobile_harmony.md（4 条）
+  - assets/content/mobile_performance.md（4 条）
+  - assets/content/gamedev_asset_pipeline.md（5 条）
+  - assets/content/gamedev_multiplayer_sync.md（5 条）
+  - assets/content/gamedev_ecs_profiling.md（5 条）
+  - assets/content/html_tags_intro.md（5 条）
+  - assets/content/html_basics.md（4 条）
+  - assets/content/css_basics.md（5 条）
+  - assets/content/css_layout.md（4 条）
+  - assets/content/css_selectors_intro.md（4 条）
+  - assets/content/css_animation_render.md（4 条）
+  - assets/content/css_advanced.md（5 条）
+  - assets/content/css_design_tokens.md（4 条）
+
+已写回 195 个课程文件

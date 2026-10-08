@@ -215,7 +215,7 @@ await foreach (var value in Countdown(3))
 | 术语 | 一句话说明 |
 | --- | --- |
 | `IAsyncEnumerable` | C# 中按需异步产生多个值的流式接口，可配合 await foreach。 |
-| `CancellationToken` | 用一句话说明「C# 异步流与取消」解决什么问题：理解 IAsyncEnumerable、CancellationToken 和异步资源释放。 |
+| `CancellationToken` | 协作式取消令牌：传进异步方法后，调用方取消时任务在检查点退出，避免白干活。 |
 | `异步流` | 按时间依次产出多个值的数据序列，消费者可以逐项等待和处理。 |
 | `取消` | 在任务不再需要时停止协程、请求或后台工作并释放资源。 |
 

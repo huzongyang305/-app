@@ -413,9 +413,9 @@ import { api } from "@/lib/api";
 | 术语 | 一句话说明 |
 | --- | --- |
 | `TypeScript` | 在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js。 |
-| `一句话说清它是什么` | TypeScript 项目有三件事必须分清。 |
-| `三条命令各管一段` | tsc --noEmit # 类型检查：CI 必跑。 |
-| `路径别名要同时配两处` | // tsconfig 里配 paths 只解决「类型解析」。 |
+| `路径别名` | 用 @/ 之类短路径代替相对路径；需要同时配置 TypeScript 的 paths 与打包器或运行时的解析。 |
+| `严格模式` | tsconfig 里的 strict 打开空值、隐式 any 等检查，是团队类型一致性的底线。 |
+| `声明文件` | .d.ts 描述没有类型的 JavaScript 模块，让编译器知道它的形状。 |
 
 ## 考点精讲
 

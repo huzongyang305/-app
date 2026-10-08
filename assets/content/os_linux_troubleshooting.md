@@ -192,7 +192,7 @@ print("pid>0:", os.getpid() > 0)
 | --- | --- |
 | `Linux` | 开源类 Unix 操作系统内核与发行版生态，广泛用于服务器和嵌入式设备。 |
 | `性能` | 系统在给定负载下表现出的吞吐、延迟、资源占用和稳定性。 |
-| `perf` | Summary: Use top, vmstat, iostat, ss, perf and trace to locate bottlenecks.。 |
+| `perf` | Linux 性能分析工具：采样 CPU、追踪调度与缓存事件，用 perf top/report 定位热点函数。 |
 | `排查` | 沿着调用链、日志和指标逐层验证假设，直到找到根因。 |
 
 ## 深度拓展与实战

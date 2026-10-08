@@ -522,8 +522,10 @@ struct ItemListView: View {
 | --- | --- |
 | `Swift` | Apple 推出的静态类型编程语言，用于 iOS、macOS 等平台开发。 |
 | `SwiftUI` | Apple 的声明式 UI 框架，用状态驱动视图并跨 Apple 平台复用。 |
-| `一句话说清它是什么` | Swift 的核心特性是可选类型、值语义、协议；iOS 侧的工程要点是。 |
-| `可选类型：Swift 最核心的安全设计` | var nickname: String? = nil。 |
+| `可选类型` | Optional 表示值可能为 nil，必须显式解包（if let、guard let）才能使用，从类型层面消除空指针。 |
+| `ARC` | Swift 的自动引用计数，在编译期插入引用计数的增减，循环引用要用 weak 或 unowned 打破。 |
+| `Task` | Swift 并发中的异步任务单元，可等待结果、取消或组合并发工作 |
+| `async` | 标记异步函数或异步块，使内部可以使用 await 而不阻塞调用线程 |
 
 ## 考点精讲
 
@@ -592,3 +594,4 @@ struct ItemListView: View {
 | [Flutter 性能最佳实践](https://docs.flutter.dev/perf/best-practices) | 帧率、构建与内存优化 |
 
 > 「Swift 与 iOS 开发」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+

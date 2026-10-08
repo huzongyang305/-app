@@ -530,7 +530,7 @@ class _ItemPageState extends State<ItemPage> {
 ### 考点 4：概念判断·Flutter
 
 - **题目**：ChangeNotifier 子类中通知界面刷新的方法是？
-- **判断依据**：在「Flutter 状态管理与性能」里，ChangeNotifier 通过 notifyListeners 通知订阅者重建。在「Flutter 状态管理与性能」里，setState 属于 StatefulWidget 自身。在「Flutter 状态管理与性能」里，这道题要求区分概念与边界，「notifyListeners」只有在题干给出的前提下才成立，而「setState」、「refresh」缺少同一组条件。
+- **判断依据**：在「Flutter 状态管理与性能」里，ChangeNotifier 通过 notifyListeners 通知订阅者重建。在「Flutter 状态管理与性能」里，setState 属于 StatefulWidget 自身，与 ChangeNotifier 无关。在「Flutter 状态管理与性能」里，这道题要求区分概念与边界，「notifyListeners」只有在题干给出的前提下才成立，而「只属于 State 的 setState」、「refresh」缺少同一组条件。
 
 ### 考点 5：概念判断·Flutter
 

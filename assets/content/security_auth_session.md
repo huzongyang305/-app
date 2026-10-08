@@ -210,7 +210,7 @@ print(digest[:12])
 | --- | --- |
 | `认证` | 验证用户或服务的身份是否真实。 |
 | `会话` | 服务端或客户端为一段连续交互保存的状态与身份上下文。 |
-| `JWT` | Summary: Cover password storage, session fixation, JWT validation and token revocation.。 |
+| `JWT` | JSON Web Token：把声明签名后交给客户端保存；服务端要校验签名、过期时间与算法，且无法直接撤销。 |
 | `刷新令牌` | 用于在访问令牌过期后获取新令牌的长期凭证，需要安全存储和轮换。 |
 
 ## 深度拓展与实战

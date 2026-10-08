@@ -194,7 +194,7 @@ print(linear_search([3, 5, 8], 8))
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| `NP` | Summary: Learn reductions, P/NP, NP-completeness, approximation ratios and parameterized algorithms.。 |
+| `NP` | 非确定性多项式时间：解能在多项式时间内被验证的问题类，NP 完全问题是其中最难的一批。 |
 | `归约` | 把一个问题的解转换为另一个已知问题或统一成同一种计算形式。 |
 | `近似算法` | 按“NP 完全性与近似算法”中 NP、归约、近似算法 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。 |
 | `参数化` | 先写下判断，再对照：参数化、分支限界和约束规模分析能把指数部分限制在小参数上。 |

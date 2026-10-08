@@ -254,6 +254,7 @@ verify slot A: ok version=3，verify slot B: crc mismatch，boot from slot A
 | `A/B 分区` | 保留两个可运行槽位，升级写备用槽位，失败可回滚。 |
 | `待验证状态` | 新固件首次启动时标记为未确认，健康上报后才转正。 |
 | `掉电安全` | 任何时刻断电都不破坏可运行镜像与状态的设计。 |
+| `跳转` | 跳转前必须关闭仍在工作的中断并重定向向量表，否则应用里发生的中断会落在 Bootloader 的旧表上 |
 
 ## 考点精讲
 
@@ -442,3 +443,4 @@ A bootloader verifies a firmware image before handing control to the application
 ### 结论与下一步
 
 学完Bootloader 与固件升级，应该能独立完成三件事：先用最小示例确认Bootloader的行为，再用一个边界输入验证结论，最后把失败路径写成可重复的检查。下一步把本课术语加入复习清单，并在两周内用一次真实任务检验记忆是否牢固。
+

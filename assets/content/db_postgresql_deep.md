@@ -201,9 +201,9 @@ day        | events
 | 术语 | 一句话说明 |
 | --- | --- |
 | `PostgreSQL` | 开源关系数据库，以事务、扩展类型和丰富 SQL 能力著称。 |
-| `MVCC` | Summary: Cover MVCC, VACUUM, plans, indexes, extensions and logical replication.。 |
-| `执行计划` | 用一句话说明「PostgreSQL 深入实践」解决什么问题：覆盖 MVCC、VACUUM、执行计划、索引、扩展和逻辑复制。 |
-| `任务 1：先跑通，再解释` | WITH events(day, kind) AS (。 |
+| `MVCC` | 多版本并发控制：写新版本、读旧快照，让读写互不阻塞，代价是版本清理与表膨胀。 |
+| `执行计划` | 优化器给出的算子树与代价估算（EXPLAIN），用来判断扫描方式、连接顺序与索引是否生效。 |
+| `VACUUM` | 回收 MVCC 留下的死元组并更新统计信息，长期不跑会导致表膨胀与执行计划退化。 |
 
 ## 深度拓展与实战
 
@@ -528,3 +528,4 @@ day        | events
 1. 换输入：用PostgreSQL处理一组你自己的数据，对比教材示例的结果差异。
 2. 换失败条件：制造一个MVCC相关的错误，说明如何从错误信息定位根因。
 3. 换规模：把数据量或并发度提高一个数量级，说明「PostgreSQL 深入实践」的结论是否仍成立。
+

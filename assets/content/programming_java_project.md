@@ -652,7 +652,7 @@ ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]
 ### 考点 4：概念判断·实战
 
 - **题目**：@RestController 与 @Controller 的差别是？
-- **判断依据**：在「实战：Spring Boot REST API」里，结论应落在「@RestController 默认把返回值序列化为 JSON（相当于 @Controller + @ResponseBody）」。返回视图页面时用 @Controller，写 REST API 时用 @RestController 更省事。
+- **判断依据**：在「实战：Spring Boot REST API」里，结论应落在「@RestController 默认返回 JSON」。返回视图页面时用 @Controller，写 REST API 时用 @RestController 更省事。记忆要点：看返回值是要渲染视图，还是要直接写入响应体。
 
 ### 考点 5：概念判断·实战
 

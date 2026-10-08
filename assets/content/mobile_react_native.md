@@ -403,10 +403,10 @@ const renderItem = useCallback(({ item }: { item: Item }) => <Row item={item} />
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| `一句话说清它是什么` | React Native 用 JavaScript/TypeScript 写界面，再通过「桥」或 JSI 调用原生控件渲染。 |
-| `用 Hooks 写一个页面` | import { ActivityIndicator, FlatList, Pressable, Text, View } from "react-native"。 |
-| `四个最容易出 bug 的 Hooks 用法` | // 依赖数组写全的正确姿势。 |
-| `平台差异与原生能力` | const styles = StyleSheet.create({。 |
+| `Hooks` | React 函数组件里管理状态与副作用的 API（useState、useEffect 等），依赖数组写错是常见 bug 来源。 |
+| `原生模块` | 用平台原生代码封装能力并暴露给 JavaScript 调用，用来抹平权限、组件与 API 差异。 |
+| `桥接` | JavaScript 与原生之间传递调用与数据的通道，跨线程通信是性能开销的主要来源。 |
+| `平台差异` | iOS 与 Android 在组件、权限、手势上的不一致，需要用 Platform 判断或平台后缀文件分别处理。 |
 
 ## 考点精讲
 

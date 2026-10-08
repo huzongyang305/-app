@@ -200,7 +200,7 @@ a-b-c
 | --- | --- |
 | `条件类型` | TypeScript 根据类型关系在编译期选择结果类型的类型运算。 |
 | `映射类型` | TypeScript 根据已有类型批量生成属性变换后的新类型。 |
-| `infer` | Summary: Build type utilities with conditional, mapped, infer and template literal types.。 |
+| `infer` | 条件类型里的推断关键字：从待判断类型中提取局部类型变量，用来实现 ReturnType 一类工具类型。 |
 | `模板字面量` | TypeScript 在类型层面拼接字符串模式，可约束命名格式或提取子串。 |
 
 ## 深度拓展与实战

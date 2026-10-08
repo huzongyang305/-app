@@ -390,6 +390,7 @@ print([round(v, 4) for v in point], history[0], history[-1])
 | `梯度` | 梯度是所有偏导组成的向量，指向函数上升最快的方向，因此负梯度就是下降最快的方向。 |
 | `链式法则` | 复合函数求导用链式法则：dy/dx = dy/du · du/dx。 |
 | `反向传播` | 从损失出发按链式法则反向计算各层参数梯度的训练算法。 |
+| `学习率` | 训练时每次按梯度更新参数的步长，过大会震荡，过小会收敛缓慢 |
 
 ## 考点精讲
 
@@ -458,3 +459,4 @@ print([round(v, 4) for v in point], history[0], history[-1])
 | [MIT 线性代数](https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/) | 向量、矩阵与线性变换 |
 
 > 「微积分与梯度下降」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+

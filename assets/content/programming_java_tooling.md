@@ -578,7 +578,7 @@ mvn -q versions:display-dependency-updates   # 检查可升级依赖
 | `System.out.println` | 用 SLF4J 门面 + Logback/Log4j2 实现，避免直接使用 `System.out.println`；日志要带上下文，且不要输出密码、令牌等敏感信息。 |
 | `JUnit` | Java 常用的单元测试框架，用注解声明测试、断言和生命周期。 |
 | `JDBC` | JDBC 是基础，实际项目常用连接池（HikariCP）+ JPA/MyBatis。 |
-| `一句话说清它是什么` | Java 的工具链负责四件事：编译、依赖管理、构建打包、测试与质量检查。 |
+| `依赖坐标` | groupId 加 artifactId 加版本号唯一确定一个构件，冲突时按最近优先规则解析。 |
 
 ## 考点精讲
 

@@ -382,6 +382,7 @@ console.log(a == b, a === b);   // true false
 | `类型` | 值允许的表示、取值范围和可执行操作集合。 |
 | `类型转换` | Number('42'); // 42。 |
 | `null` | null == undefined // true 规定如此。 |
+| `JavaScript` | JavaScript 是动态类型、基于原型的脚本语言，标准名为 ECMAScript。它既能跑在浏览器里操作页面 |
 
 ## 考点精讲
 
@@ -450,3 +451,4 @@ console.log(a == b, a === b);   // true false
 | [MDN Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) | Promise 与异步链 |
 
 > 「变量、类型与类型转换」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+

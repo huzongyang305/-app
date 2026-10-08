@@ -212,10 +212,10 @@ int main() {
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| `Concepts` | Summary: Constrain templates with Concepts and compose lazy pipelines with Ranges.。 |
+| `Concepts` | C++20 的编译期约束：用命名要求限定模板参数，让报错指向真正不满足的条件。 |
 | `模板` | C++ 中把类型或值作为参数的代码蓝图，实例化后生成具体函数或类。 |
 | `约束` | 模板或类型系统对可用类型、值或操作施加的限制条件。 |
-| `任务 2：只改一个条件` | 把「C++ Concepts 与 Ranges」的最小示例复制一份，只改一个条件再跑一次。 |
+| `惰性求值` | Ranges 视图只在遍历到元素时才计算，省掉中间容器，但要留意底层数据的生命周期。 |
 
 ## 零基础精讲：把C++ Concepts 与 Ranges真正讲透
 
