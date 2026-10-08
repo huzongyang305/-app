@@ -320,7 +320,7 @@ tshark -r capture.pcap -Y 'http.request or dns or tcp.analysis_retransmission' -
 ### 考点 5：排错·网络抓包与协议分析
 
 - **题目**：抓包命令已经执行，但一个包都没有抓到。下面哪项判断最合理？
-- **判断依据**：正确答案是「抓包点选错网卡，容器流量走了独立网桥，应改抓 any 或 docker0」。网络抓包与协议分析实战 的故障现场指出，抓不到任何数据包时先怀疑抓包点：容器流量经 docker0 转发，宿主机 eth0 上看不到；用 tcpdump -D 列出可用网卡，改抓 any 或 docker0，并确认端口映射方向后再复现问题。
+- **判断依据**：抓包点选错网卡，容器流量走了独立网桥，应改抓 any 或 docker0。网络抓包与协议分析实战 的故障现场指出，抓不到任何数据包时先怀疑抓包点：容器流量经 docker0 转发，宿主机 eth0 上看不到；用 tcpdump -D 列出可用网卡，改抓 any 或 docker0，并确认端口映射方向后再复现问题。
 
 ## English Overview
 
