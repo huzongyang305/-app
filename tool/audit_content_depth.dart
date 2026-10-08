@@ -22,7 +22,6 @@ const List<String> _requiredSections = <String>[
   '## 自测题与参考答案',
   '## 考点精讲',
   '## 参考资料与复核',
-  '## English Overview',
   '## 内容元数据',
 ];
 
@@ -52,7 +51,6 @@ void main(List<String> args) {
         for (final section in _requiredSections)
           if (!markdown.contains(section)) section,
       ];
-      final hasEnglishGuide = markdown.contains('## Full English Study Guide');
       final isProject =
           (lesson['id'] as String).contains('project') ||
           ((lesson['title'] as Map?)?['zh'] as String? ?? '').contains('实战') ||
@@ -82,7 +80,6 @@ void main(List<String> args) {
                       .reduce((a, b) => a + b) /
                   quiz.length,
         'missingSections': missing,
-        'hasEnglishGuide': hasEnglishGuide,
         'isProject': isProject,
       });
     }
@@ -112,9 +109,6 @@ void main(List<String> args) {
     'lessonsWithoutImage': lessons
         .where((l) => (l['images'] as int) == 0)
         .length,
-    'lessonsWithoutEnglishGuide': lessons
-        .where((l) => l['hasEnglishGuide'] != true)
-        .length,
     'lessonsQuizBelow4': lessons
         .where((l) => (l['quizCount'] as int) < 4)
         .length,
@@ -140,7 +134,6 @@ void main(List<String> args) {
   stdout.writeln('< 10000 字符           ${report['lessonsBelow10000']}');
   stdout.writeln('缺标准章节            ${report['lessonsMissingSections']}');
   stdout.writeln('无配图                ${report['lessonsWithoutImage']}');
-  stdout.writeln('无英文精读            ${report['lessonsWithoutEnglishGuide']}');
   stdout.writeln('测验少于 4 题         ${report['lessonsQuizBelow4']}');
   stdout.writeln('无特殊题型            ${report['lessonsWithoutSpecialQuiz']}');
   stdout.writeln('');

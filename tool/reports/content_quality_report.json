@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-10-08T17:59:35.733422",
+  "generated_at": "2026-10-08T19:23:27.887545",
   "lesson_count": 629,
-  "total_chars": 11657915,
-  "min_chars": 14820,
+  "total_chars": 11746901,
+  "min_chars": 13044,
   "image_count": 1250,
   "lessons_with_image": 629,
-  "lessons_with_lab_section": 337,
+  "lessons_with_lab_section": 68,
   "question_type_histogram": {
     "single": 1628,
     "multi": 631,

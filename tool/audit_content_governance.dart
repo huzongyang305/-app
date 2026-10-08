@@ -130,7 +130,6 @@ const List<String> canonicalLessonSections = <String>[
   '术语速查',
   '参考资料与复核',
   '内容元数据',
-  'English Overview',
 ];
 
 /// 已被规范名取代的旧章节标题：再次出现说明生成器回退到旧命名。
@@ -175,11 +174,21 @@ final RegExp internalQuestionIdPattern = RegExp(
 
 void main(List<String> args) {
   final jsonOutput = args.contains('--json');
+  final preview = args.contains('--preview');
   final failOnIssue = !args.contains('--no-fail');
   final top = _intOption(args, '--top=', 30);
-  final reportPath = _stringOption(args, '--report=', defaultReportPath);
+  final reportPath = _stringOption(
+    args,
+    '--report=',
+    preview
+        ? 'build/reports/content_governance_preview_report.json'
+        : defaultReportPath,
+  );
+  final effectiveManifestPath = preview
+      ? 'build/content_preview/manifest.json'
+      : manifestPath;
 
-  final manifestFile = File(manifestPath);
+  final manifestFile = File(effectiveManifestPath);
   if (!manifestFile.existsSync()) {
     stderr.writeln('找不到内容清单：$manifestPath');
     exitCode = 2;
@@ -193,7 +202,9 @@ void main(List<String> args) {
     final categoryId = category['id'].toString();
     for (final rawLesson in category['lessons'] as List<dynamic>) {
       final lesson = (rawLesson as Map).cast<String, dynamic>();
-      final file = File(lesson['file'].toString());
+      final file = preview
+          ? File('build/content_preview/${lesson['id']}.md')
+          : File(lesson['file'].toString());
       lessons.add(
         GovernanceLesson(
           id: lesson['id'].toString(),
@@ -1113,11 +1124,38 @@ const List<String> _metadataPrefixes = <String>[
 ];
 
 List<String> _splitSentences(String text) {
-  return text
-      .split(RegExp(r'(?<=[。！？!?；;])'))
-      .map((sentence) => sentence.trim())
-      .where((sentence) => sentence.isNotEmpty)
-      .toList();
+  final sentences = <String>[];
+  final buffer = StringBuffer();
+  var inQuote = false;
+  var inCode = false;
+  for (var index = 0; index < text.length; index++) {
+    final char = text[index];
+    if (char == '`') {
+      inCode = !inCode;
+    } else if (!inCode) {
+      if (char == '「' || char == '『' || char == '“') {
+        inQuote = true;
+      } else if (char == '」' || char == '』' || char == '”') {
+        inQuote = false;
+      }
+    }
+    buffer.write(char);
+    final isBoundary = char == '。' ||
+        char == '！' ||
+        char == '？' ||
+        char == '!' ||
+        char == '?' ||
+        char == '；' ||
+        char == ';';
+    if (isBoundary && !inQuote && !inCode) {
+      final sentence = buffer.toString().trim();
+      if (sentence.isNotEmpty) sentences.add(sentence);
+      buffer.clear();
+    }
+  }
+  final tail = buffer.toString().trim();
+  if (tail.isNotEmpty) sentences.add(tail);
+  return sentences;
 }
 
 String _short(String text, int maxLength) {

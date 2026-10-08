@@ -14,6 +14,36 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../tool/markdown_fences.dart';
 
+/// 按句子切分解析文本，但不切开引号或代码跨度内部的标点。
+List<String> splitExplanationSentences(String text) {
+  final sentences = <String>[];
+  final buffer = StringBuffer();
+  var inQuote = false;
+  var inCode = false;
+  for (var index = 0; index < text.length; index++) {
+    final char = text[index];
+    if (char == '`') {
+      inCode = !inCode;
+    } else if (!inCode) {
+      if (char == '「' || char == '『' || char == '“') {
+        inQuote = true;
+      } else if (char == '」' || char == '』' || char == '”') {
+        inQuote = false;
+      }
+    }
+    buffer.write(char);
+    final isBoundary = char == '。' || char == '；' || char == '\n';
+    if (isBoundary && !inQuote && !inCode) {
+      final sentence = buffer.toString().trim();
+      if (sentence.isNotEmpty) sentences.add(sentence);
+      buffer.clear();
+    }
+  }
+  final tail = buffer.toString().trim();
+  if (tail.isNotEmpty) sentences.add(tail);
+  return sentences;
+}
+
 /// 内容自检：保证内置课程与测验数据完整、可加载。
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -192,7 +222,6 @@ void main() {
       '术语速查',
       '参考资料与复核',
       '内容元数据',
-      'English Overview',
     ];
     // 已被规范名取代的旧标题：再次出现说明退回了旧命名。
     const legacySections = <String>[
@@ -480,7 +509,7 @@ void main() {
 
     final sentenceCounts = <String, int>{};
     for (final question in questions) {
-      for (final sentence in question.explanation.split(RegExp(r'[。；\n]'))) {
+      for (final sentence in splitExplanationSentences(question.explanation)) {
         final trimmed = sentence.trim();
         if (trimmed.length < 12) continue;
         sentenceCounts[trimmed] = (sentenceCounts[trimmed] ?? 0) + 1;
@@ -706,7 +735,7 @@ void main() {
     );
   });
 
-  test('P2 体验：配图、英文概览、元数据与项目专属规格', () async {
+  test('P2 体验：配图、元数据与项目专属规格', () async {
     var imageLessons = 0;
     for (final category in categories) {
       for (final lesson in category.lessons) {
@@ -714,11 +743,6 @@ void main() {
         if (RegExp(r'!\[[^\]]*\]\(images/').hasMatch(markdown)) {
           imageLessons++;
         }
-        expect(
-          markdown,
-          contains('## English Overview'),
-          reason: '${lesson.id} 缺少英文概览',
-        );
         expect(markdown, contains('## 内容元数据'), reason: '${lesson.id} 缺少内容元数据');
         expect(markdown, contains('内容版本：v2.0'), reason: '${lesson.id} 缺少内容版本');
         final isProject =
@@ -828,10 +852,9 @@ void main() {
     }
   });
 
-  test('P3：入门梯度、代码示例、英文指南、项目交付与配图', () async {
+  test('P3：入门梯度、代码示例、项目交付与配图', () async {
     var beginnerOrBasic = 0;
     var withCode = 0;
-    var englishGuides = 0;
     var projectDeliveries = 0;
     var projectCount = 0;
     var imageLessons = 0;
@@ -849,9 +872,6 @@ void main() {
           multiLine: true,
         ).hasMatch(markdown)) {
           withCode++;
-        }
-        if (markdown.contains('## Full English Study Guide')) {
-          englishGuides++;
         }
         if (RegExp(r'!\[[^\]]*\]\(images/').hasMatch(markdown)) {
           imageLessons++;
@@ -873,7 +893,6 @@ void main() {
       reason: '入门与基础课程应达到 30%',
     );
     expect(withCode, total, reason: '仍有课程没有编程语言代码示例');
-    expect(englishGuides, greaterThanOrEqualTo(50));
     expect(projectDeliveries, projectCount);
     expect(imageLessons, greaterThanOrEqualTo(200));
   });
@@ -918,7 +937,7 @@ void main() {
     }
   });
 
-  test('P4：去模板化、全量配图、English Guide 与项目交付', () async {
+  test('P4：去模板化、全量配图与项目交付', () async {
     final questions = categories
         .expand((category) => category.lessons)
         .expand((lesson) => lesson.quiz)
@@ -935,18 +954,12 @@ void main() {
     );
 
     var images = 0;
-    var englishGuides = 0;
-    var bilingualOutlines = 0;
     var projectDeliveries = 0;
     var projects = 0;
     for (final category in categories) {
       for (final lesson in category.lessons) {
         final markdown = await rootBundle.loadString(lesson.assetFile);
         if (RegExp(r'!\[[^\]]*\]\(images/').hasMatch(markdown)) images++;
-        if (markdown.contains('## Full English Study Guide')) englishGuides++;
-        if (markdown.contains('## Bilingual Section Outline')) {
-          bilingualOutlines++;
-        }
         final isProject =
             lesson.id.contains('project') ||
             lesson.title.zh.contains('实战') ||
@@ -963,8 +976,6 @@ void main() {
       }
     }
     expect(images, categories.expand((c) => c.lessons).length);
-    expect(englishGuides, greaterThanOrEqualTo(50));
-    expect(bilingualOutlines, greaterThanOrEqualTo(50));
     expect(projectDeliveries, projects);
   });
 
@@ -991,13 +1002,6 @@ void main() {
       for (final lesson in category.lessons) {
         final markdown = await rootBundle.loadString(lesson.assetFile);
         expect(markdown, contains('## 考点精讲'), reason: '${lesson.id} 缺少考点精讲');
-        final focusIndex = markdown.indexOf('## 考点精讲');
-        final englishIndex = markdown.indexOf('## English Overview');
-        expect(
-          focusIndex,
-          lessThan(englishIndex),
-          reason: '${lesson.id} 的考点精讲应放在英文概览之前',
-        );
         expect(
           RegExp(r'《[^》]+》的[“"]').hasMatch(markdown),
           isFalse,

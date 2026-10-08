@@ -5,7 +5,7 @@
 ## 功能
 
 - **34 个分类、629 篇教程、3543 道测验题**，全部内置在安装包里，断网也能用
-- **九段式教材结构（1.6.0）**：629 篇课程统一按「本节知识框架 → 核心概念定义 → 原理与运行机制 → 典型应用场景 → 代码/协议/SQL 示例 → 复杂度或性能分析 → 常见误区与易错点 → 与其他知识点的关系 → 自测题与参考答案」组织；术语速查、考点精讲、English Overview、内容元数据与参考资料保留为教材附录，旧章节内容以「教材衔接」小标题原样保留
+- **九段式教材结构（1.7.0）**：629 篇课程统一按「本节知识框架 → 核心概念定义 → 原理与运行机制 → 典型应用场景 → 代码/协议/SQL 示例 → 复杂度或性能分析 → 常见误区与易错点 → 与其他知识点的关系 → 自测题与参考答案」组织；术语速查、考点精讲、内容元数据与参考资料保留为教材附录，旧章节内容以「教材衔接」小标题原样保留
 - **P0/P1 内容扩容**：新增编译原理与语言实现、嵌入式与物联网、图形与游戏开发、云计算与云原生、数据工程、区块链与 Web3 6 个分类，并为 12 种语言补齐项目课；P1 又为 6 个薄弱分类扩充 39 门课程，并补齐 MLOps、推荐系统、时间序列、强化学习、分布式事务与事件溯源 6 个重点领域；全部课程完成结构、术语、引用与题型治理，并建立人工复核台账（当前 629 门待逐课人工复核）
 - **Python 纵深扩充**：Python 课程从 21 门扩到 41 门、221 道题，新增字符串与编码、容器与拷贝、OOP 进阶、标准库、异常日志、pytest、并发与 asyncio、SQLAlchemy、HTTP 客户端、安全、内存性能、现代语法、数据处理、CLI 自动化、Web 部署、GUI、C/Rust 互操作、项目架构与面试 20 门进阶课
 - 首页分类导航 + 关键词搜索：倒排索引 + 中文二元组 + 拼音 / 首字母 + 同义词，支持未学 / 收藏 / 错题与分类筛选、搜索历史与命中高亮
@@ -35,7 +35,6 @@
 - **离线学习助手（P2）**：基于本机课程与题库回答「怎么学 / 学什么 / 查概念」类问题，给出相关课程入口与推荐追问，不联网、不调用云端模型
 - **代码沙箱挑战（P2）**：8 种语言内置 16 道挑战，运行后自动比对期望输出并记录通关进度，可清空重练
 - **交互式演示（P2）**：二分查找、冒泡 / 插入 / 选择排序、栈与队列的分步动画，以及 HTTP 请求链路、数据库事务隔离的时间线演示，自动尊重系统「减少动画」设置
-- **英文正文（P2）**：55 篇课程提供完整英文正文，其余课程提供英文概览与英文学习指南；语言开关会显示当前完整英文覆盖数量
 - **响应式与无障碍**：手机底部导航、平板 NavigationRail、教程分栏和横屏答题布局；关键卡片与选项带 TalkBack 语义，答题结果用图标 + 文字双重标注（不依赖红绿颜色），支持 2 倍系统字号，可开启“减少动画”
 - **逐课内容治理**：629 篇课程均带官方参考来源、最后复核和下次复核日期；全部课程图片统一为 WebP
 - **逐课考点精讲**：629 篇教程都有一节与当前题库同步的「考点精讲」附录，把每道测验题还原成判断过程；复习清单并入「本节知识框架」，自测题直接抽取当前题库并给出答案与解析
@@ -90,8 +89,9 @@
 - P1 已将旧版模板题全部替换为从课程 Markdown 的“定义、练习、最小示例、常见错误”章节提炼的复习题，并为 36 门原无代码题课程补上代码或排错题。
 - 当前 3543 道题均有 120 字以上解析，题干不重复，元问题、重复 5 次以上的模板句与旧版自动扩写句均为 0。
 - 单选答案 A/B/C/D 占比为 26.8% / 24.4% / 24.4% / 24.4%；正确项与最长错误项差距达到 8 个字符的题目仅 17 道（1.0%），避免长度暗示答案。
-- 629 篇教程正文平均 18,534 字符、最短 14,820 字符，总计 11,657,915 字符；每课都有可运行练习或实践任务、故障现场与内容复核信息，正文统一为九段式教材结构。
-- P0/P1 内容门禁可重复执行：`dart tool/audit_content_governance.dart`、`dart tool/audit_content_quality.dart`、`dart tool/audit_content_depth.dart`、`dart tool/analyze_quiz_quality.dart`、`dart tool/verify_code_blocks.dart`、`dart tool/content_review_ledger.dart`。
+- 629 篇教程正文平均 18,675 字符、最短 13,044 字符，总计 11,746,901 字符；每课都有可运行练习或实践任务、故障现场与内容复核信息，正文统一为九段式教材结构。
+- 「考点精讲」逐题对齐题库：3543 道题的题干全部出现在对应课程正文里，并给出正确项与本课专属判断依据。
+- P0/P1 内容门禁可重复执行：`dart tool/content_repair_check.dart`、`dart tool/audit_content_governance.dart`、`dart tool/audit_content_quality.dart`、`dart tool/audit_content_depth.dart`、`dart tool/analyze_quiz_quality.dart`、`dart tool/verify_code_blocks.dart`、`dart tool/content_review_ledger.dart`。
 
 ## 代码沙箱
 
@@ -269,21 +269,21 @@ flutter build apk --release
 > 导致 release 编译仍引用 debug 专用的 `integration_test` 插件而失败。
 > 先 `flutter pub get`，再执行不带 `--no-pub` 的构建命令即可。
 
-产物与实测体积（v1.6.0+17，本机 Flutter 3.13+ / AGP 9 环境）：
+产物与实测体积（v1.7.0+18，本机 Flutter 3.13+ / AGP 9 环境）：
 
 | 命令 | 产物 | 体积 |
 | --- | --- | ---: |
-| `--target-platform android-arm,android-arm64` | `app-release.apk`（ARM 双 ABI，发布用） | 92.41 MiB / 门禁 95 MiB |
-| `--split-per-abi` | `app-arm64-v8a-release.apk` | 72.92 MiB / 门禁 95 MiB |
-| | `app-armeabi-v7a-release.apk` | 70.92 MiB / 门禁 95 MiB |
-| | `app-x86_64-release.apk` | 74.46 MiB / 门禁 95 MiB |
-| `flutter build apk --release` | 3 ABI 通用包 | 115.20 MiB，超过门禁，仅用于本机安装验证 |
+| `--target-platform android-arm,android-arm64` | `app-release.apk`（ARM 双 ABI，发布用） | 91.54 MiB / 门禁 95 MiB |
+| `--split-per-abi` | `app-arm64-v8a-release.apk` | 72.05 MiB / 门禁 95 MiB |
+| | `app-armeabi-v7a-release.apk` | 70.05 MiB / 门禁 95 MiB |
+| | `app-x86_64-release.apk` | 73.59 MiB / 门禁 95 MiB |
+| `flutter build apk --release` | 3 ABI 通用包 | 114.32 MiB，超过门禁，仅用于本机安装验证 |
 
-体积主要来自两部分：内置课程资产约 64.1 MiB（629 篇 Markdown 24.3 MiB、1242 张配图 35.4 MiB
-与内容清单 4.4 MiB 等）和沙箱运行时等资源约 15.0 MiB；ARM 双 ABI 原生库约 37 MiB。
+体积主要来自两部分：内置课程资产约 65.6 MiB（629 篇 Markdown 25.2 MiB、1242 张配图 35.4 MiB
+与内容清单 5.0 MiB 等）和沙箱运行时等资源约 15.0 MiB；ARM 双 ABI 原生库约 37 MiB。
 体积最大的 184 张 WebP 配图已压到最长边 1000px、`quality 65 / effort 6`，
-单张平均约为原体积的 42%。九段式教材迁移让正文增加约 3.3M 字符，ARM 双 ABI 包
-从 89.15 MiB 涨到 92.41 MiB，仍在 95 MiB 门禁内，给 CI 环境差异留出余量。
+单张平均约为原体积的 42%。正文再增约 0.09M 字符后，ARM 双 ABI 包实测 91.54 MiB，
+仍在 95 MiB 门禁内，给 CI 环境差异留出余量。
 CI 里有体积门禁，会对 ARM 通用包和三个 ABI 分包逐一执行
 `dart tool/apk_size_report.dart --budget-mb=95 <apk...>`。
 
@@ -311,7 +311,7 @@ APK 权限仅 `POST_NOTIFICATIONS` / `RECEIVE_BOOT_COMPLETED` / `VIBRATE`，
 
 `pubspec.yaml` 的 `version: 主.次.修订+构建号` 是唯一版本来源：
 
-- `versionName` = `主.次.修订`（当前 `1.6.0`），对用户可见；
+- `versionName` = `主.次.修订`（当前 `1.7.0`），对用户可见；
 - `versionCode` = `+` 后的构建号，每次分发新版本必须**严格递增**；
 - 使用 `--split-per-abi` 时 Flutter 会按 ABI 自动叠加偏移，无需手工维护。
 

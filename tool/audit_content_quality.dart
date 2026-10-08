@@ -44,7 +44,6 @@ const List<String> requiredSections = <String>[
   '## 自测题与参考答案',
   '## 考点精讲',
   '## 参考资料与复核',
-  '## English Overview',
   '## 内容元数据',
 ];
 
@@ -59,6 +58,7 @@ const List<String> questionTypes = <String>[
 
 void main(List<String> args) {
   final emitJson = args.contains('--json');
+  final preview = args.contains('--preview');
   final failOnIssue = !args.contains('--no-fail');
   final top =
       int.tryParse(
@@ -71,8 +71,12 @@ void main(List<String> args) {
       ) ??
       40;
 
+  final effectiveManifestPath = preview
+      ? 'build/content_preview/manifest.json'
+      : manifestPath;
   final manifest =
-      jsonDecode(File(manifestPath).readAsStringSync()) as Map<String, dynamic>;
+      jsonDecode(File(effectiveManifestPath).readAsStringSync())
+          as Map<String, dynamic>;
   final lessons = <_LessonAudit>[];
   final allIds = <String, _LessonAudit>{};
   final titleIndex = <String, List<String>>{};
@@ -83,7 +87,9 @@ void main(List<String> args) {
     for (final rawLesson in category['lessons'] as List<dynamic>) {
       final lesson = (rawLesson as Map).cast<String, dynamic>();
       final id = lesson['id'].toString();
-      final file = lesson['file'].toString();
+      final file = preview
+          ? 'build/content_preview/$id.md'
+          : lesson['file'].toString();
       final markdown = File(file).existsSync()
           ? File(file).readAsStringSync()
           : '';
@@ -212,7 +218,10 @@ void main(List<String> args) {
     'template_sentences': templateNotes.map((issue) => issue.toJson()).toList(),
   };
 
-  final reportFile = File('tool/reports/content_quality_report.json');
+  final reportPath = preview
+      ? 'build/reports/content_quality_preview_report.json'
+      : 'tool/reports/content_quality_report.json';
+  final reportFile = File(reportPath);
   reportFile.parent.createSync(recursive: true);
   reportFile.writeAsStringSync(
     const JsonEncoder.withIndent('  ').convert(report),
@@ -249,7 +258,7 @@ void main(List<String> args) {
       }
     }
     stdout.writeln('');
-    stdout.writeln('报告已写入 tool/reports/content_quality_report.json');
+    stdout.writeln('报告已写入 $reportPath');
   }
 
   if (failOnIssue && (errors.isNotEmpty || warnings.isNotEmpty)) {

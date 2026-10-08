@@ -13,6 +13,36 @@ import 'dart:io';
 
 const String manifestPath = 'assets/content/manifest.json';
 
+/// 按句子切分解析文本，但不切开引号或代码跨度内部的标点。
+List<String> splitExplanationSentences(String text) {
+  final sentences = <String>[];
+  final buffer = StringBuffer();
+  var inQuote = false;
+  var inCode = false;
+  for (var index = 0; index < text.length; index++) {
+    final char = text[index];
+    if (char == '`') {
+      inCode = !inCode;
+    } else if (!inCode) {
+      if (char == '「' || char == '『' || char == '“') {
+        inQuote = true;
+      } else if (char == '」' || char == '』' || char == '”') {
+        inQuote = false;
+      }
+    }
+    buffer.write(char);
+    final isBoundary = char == '。' || char == '；' || char == '\n';
+    if (isBoundary && !inQuote && !inCode) {
+      final sentence = buffer.toString().trim();
+      if (sentence.isNotEmpty) sentences.add(sentence);
+      buffer.clear();
+    }
+  }
+  final tail = buffer.toString().trim();
+  if (tail.isNotEmpty) sentences.add(tail);
+  return sentences;
+}
+
 void main(List<String> args) {
   final emitJson = args.contains('--json');
   final dump = args.contains('--dump');
@@ -65,7 +95,7 @@ void main(List<String> args) {
   final sentenceCount = <String, int>{};
   for (final q in questions) {
     final text = ((q['explanation'] as String?) ?? '').trim();
-    for (final sentence in text.split(RegExp(r'[。；\n]'))) {
+    for (final sentence in splitExplanationSentences(text)) {
       final trimmed = sentence.trim();
       if (trimmed.length < 12) continue;
       sentenceCount[trimmed] = (sentenceCount[trimmed] ?? 0) + 1;
@@ -76,10 +106,9 @@ void main(List<String> args) {
         ..sort((a, b) => b.value.compareTo(a.value));
   final templatedQuestions = questions.where((q) {
     final text = ((q['explanation'] as String?) ?? '').trim();
-    return text
-        .split(RegExp(r'[。；\n]'))
-        .map((s) => s.trim())
-        .any((s) => (sentenceCount[s] ?? 0) >= 5);
+    return splitExplanationSentences(text).any(
+      (sentence) => (sentenceCount[sentence] ?? 0) >= 5,
+    );
   }).toList();
 
   // 3. 最长项命中。

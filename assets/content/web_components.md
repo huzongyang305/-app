@@ -8,182 +8,57 @@
 
 ## 本节知识框架
 
-**课程定位**：所属分类为「HTML 与 CSS」，课程主题为「Web Components 实战」，学习阶段为「高级」，建议用时 60 分钟。
+**课程定位**：所属分类 `html_css`（HTML 与 CSS），课程主题 `Web Components 实战`，学习阶段 高级，建议用时 60 分钟。
 
-**本课要解决的主问题**：自定义元素生命周期、Shadow DOM 隔离与事件穿透。
+本课主线：自定义元素生命周期、Shadow DOM 隔离与事件穿透。
 
-| 学习层次 | 要回答的问题 | 完成判据 |
-| --- | --- | --- |
-| 概念层 | 「Web Components 实战」有哪些必须区分的对象与术语？ | 能用自己的话定义核心术语，并各举一个正例和一个反例。 |
-| 机制层 | 这些对象按什么顺序发生作用，输入如何变成输出？ | 能画出或写出机制步骤，并说明每一步的失败条件。 |
-| 应用层 | 什么场景适合使用「Web Components 实战」，什么场景不适合？ | 能给出一个真实场景、一个最小示例和一个边界案例。 |
-| 性能层 | 时间、空间、吞吐或延迟受哪些量影响？ | 能说出复杂度或性能瓶颈的证据来源；没有证据时明确写“材料未提供”。 |
-| 复习层 | 怎样确认自己不是只记住了结论？ | 能独立完成本课自测，并把错误定位到概念、机制、示例或边界。 |
+**学完本课应当能够**
+- 说清 `Web Components` 与 `Custom Elements` 的含义与区别，并各举一个正例和一个反例。
+- 用本课示例验证 `Shadow DOM` 的行为，记录输入、输出与失败条件。
+- 遇到「在 `constructor` 里访问子节点或属性」这类问题时，能说出触发条件与修复顺序。
 
-### 阅读路线
+### 从概念到验证的学习链条
 
-1. 先读「核心概念定义」，建立「WebComponents」等对象的精确定义。
-2. 再读「原理与运行机制」，把定义串成可重复的过程。
-3. 用「代码/协议/SQL 示例」验证过程，并只改一个条件观察结果变化。
-4. 最后检查性能、易错点、知识关系与自测题，形成可复习的证据链。
+1. `Web Components`：先掌握 浏览器原生提供的可复用自定义元素标准集合，再用它解释 `Custom Elements` 为什么会出现。
+2. `Custom Elements`：先掌握 定义和注册自定义 HTML 标签及其生命周期的 API，再用它解释 `Shadow DOM` 为什么会出现。
+3. `Shadow DOM`：先掌握 给元素附加隔离的 DOM 与样式作用域，避免外部样式泄漏，再用它解释 `HTML Template` 为什么会出现。
+4. `HTML Template`：先掌握 用 template 标签保存可克隆但不立即渲染的 DOM 片段，再用它解释 本课示例的观察结果 为什么会出现。
 
-**前置知识**：《PWA 与离线能力》
+**先修与衔接**：本课是「HTML 与 CSS」分类的第 14 课。先修内容：《PWA 与离线能力》。《PWA 与离线能力》里的 `PWA`、`ServiceWorker` 是本课的前提。相关或后续课程：《HTML 标签入门》。
 
-**学习位置**：本课位于《PWA 与离线能力》之后；如果前一课的自测不能通过，应先回补再继续。
+### 完成判据
 
-**后续衔接**：本课之后可进入项目实战或综合复习，把本课结论用于一个完整任务。
+- **定义关**：不看正文也能说明 `Web Components` 是 浏览器原生提供的可复用自定义元素标准集合，并指出一个反例。
+- **机制关**：能按“输入 → 转换 → 输出 → 验证”复述 `Web Components 实战`，而不是只背结论。
+- **示例关**：能运行或推演 `Web Components 实战` 的 `javascript` 示例，并说明一个真实出现的标识符或字面量。
+- **证据关**：能指出 `Web Components 实战` 示例里的 调用了 `createElement()`，并说明它支持或反驳了本课的哪一条结论。
+- **排错关**：能复现 在 `constructor` 里访问子节点或属性，记录现象并按 放到 `connectedCallback` 修复。
+- **迁移关**：能把 `WebComponents`、`自定义元素`、`ShadowDOM`、`slot` 放进一个与 `Web Components 实战` 不同的项目场景，并保持输入与验证条件可追踪。
+- **复盘关**：学完 `Web Components 实战` 后，用一句话写下仍然不确定的结论，并列出下一次验证需要的输入、环境和成功判据。
 
-**教材衔接：学习目标**
+### 复习清单
 
-- 能用自己的话解释Web Components 实战解决了什么问题，而不是只背术语。
-- 能说清 「WebComponents」、「自定义元素」、「ShadowDOM」、「slot」 之间的关系，并分别举出一个例子。
-- 能把 WebComponents 放回「Web Components 实战」的知识体系，说明它和 自定义元素 的边界。
-- 能完成本课练习，并用验收标准检查自己的结果。
-
-> 一句话摘要：自定义元素生命周期、Shadow DOM 隔离与事件穿透。
-
-**教材衔接：前置知识**
-
-- 先完成上一课《PWA 与离线能力》；如果已经掌握，可以直接用本课练习自测。
-- 开始前先复习：WebComponents、自定义元素、ShadowDOM。
-- 卡在 WebComponents 上时不要跳过：把输入、预期和实际输出写成三行，再回头读正文。
-
-**教材衔接：本课小结**
-
-- 核心问题：Web Components 实战不是孤立术语，而是在「HTML 与 CSS」中解决一类具体问题。
-- 关键关系：先分清「WebComponents」与「自定义元素」的职责，再理解「ShadowDOM」的适用边界。
-- 判断标准：能举出 自定义元素 的一个反例并解释原因。
-- 下一步：先复述 自定义元素 的边界，再开始本课测验。
+- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
+- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
 
-> 阅读约定：本课先给「Web Components 实战」相关术语的操作性定义与适用边界；正文里的口语化说法与定义冲突时，以定义和可复现示例为准。
-
-| 术语 | 操作性定义 | 本课中的边界 |
+| 术语 | 操作性定义 | 常见边界与风险 |
 | --- | --- | --- |
-| Web Components | 浏览器原生提供的可复用自定义元素标准集合。 | 仅在「Web Components 实战」明确给出的输入、版本与资源条件下成立。 |
-| Custom Elements | 定义和注册自定义 HTML 标签及其生命周期的 API。 | 仅在「Web Components 实战」明确给出的输入、版本与资源条件下成立。 |
-| Shadow DOM | 给元素附加隔离的 DOM 与样式作用域，避免外部样式泄漏。 | 仅在「Web Components 实战」明确给出的输入、版本与资源条件下成立。 |
-| HTML Template | 用 template 标签保存可克隆但不立即渲染的 DOM 片段。 | 仅在「Web Components 实战」明确给出的输入、版本与资源条件下成立。 |
-
-### 定义如何使用
-
-在「Web Components 实战」中判断一个说法是否成立，先确认它使用的是哪个对象的定义，再检查输入规模、运行环境与失败路径。定义不是口号，而是后续推导、代码示例和自测题共享的约束。
-
-**教材衔接：自定义元素生命周期**
-
-| 回调 | 触发时机 | 典型用途 |
-| --- | --- | --- |
-| `constructor` | 元素创建时 | 初始化状态，禁止访问子节点 |
-| `connectedCallback` | 插入文档 | 渲染、绑定事件、发起请求 |
-| `disconnectedCallback` | 从文档移除 | 解绑事件、清理定时器 |
-| `attributeChangedCallback` | 监听属性变化 | 同步属性到渲染 |
-| `adoptedCallback` | 移动到新文档 | 少见 |
-
-属性监听需要静态声明：`static get observedAttributes()`。
-
-```javascript
-// lesson-card.js：带 Shadow DOM 与属性监听的卡片组件
-const template = document.createElement("template");
-template.innerHTML = `
-  <style>
-    :host {
-      display: block;
-      --card-radius: var(--radius-md, 8px);
-    }
-    :host([hidden]) { display: none; }
-    .card {
-      background: var(--color-surface, #fff);
-      border-radius: var(--card-radius);
-      padding: 16px;
-      transition: transform 160ms ease;
-    }
-    .card:hover { transform: translateY(-2px); }
-    .title { font-weight: 600; margin: 0 0 4px; }
-    .meta { color: #64748b; font-size: 0.875rem; margin: 0; }
-  </style>
-  <article class="card" part="card">
-    <h3 class="title"><slot name="title">未命名课程</slot></h3>
-    <p class="meta"><slot name="meta"></slot></p>
-  </article>
-`;
-
-class LessonCard extends HTMLElement {
-  static get observedAttributes() {
-    return ["minutes", "disabled"];
-  }
-
-  constructor() {
-    super();
-    this.attachShadow({ mode: "open" });        // open 便于调试，closed 更严格
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
-  }
-
-  connectedCallback() {
-    if (!this.hasAttribute("role")) this.setAttribute("role", "listitem");
-    this.addEventListener("click", this.#onClick);
-  }
-
-  disconnectedCallback() {
-    // 必须解绑，避免内存泄漏
-    this.removeEventListener("click", this.#onClick);
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue === newValue) return;
-    if (name === "minutes") {
-      this.shadowRoot.querySelector(".meta").textContent = `${newValue} 分钟`;
-    }
-    if (name === "disabled") {
-      this.setAttribute("aria-disabled", String(newValue !== null));
-    }
-  }
-
-  #onClick = () => {
-    if (this.hasAttribute("disabled")) return;
-    this.dispatchEvent(
-      new CustomEvent("lesson-open", {
-        bubbles: true,      // 允许父级监听
-        composed: true,     // 穿透 Shadow 边界
-        detail: { id: this.getAttribute("lesson-id") },
-      }),
-    );
-  };
-}
-
-customElements.define("lesson-card", LessonCard);
-```
-
-```html
-<!-- 使用方：外部样式只能通过 CSS 变量与 ::part 影响内部 -->
-<lesson-card lesson-id="py-1" minutes="12">
-  <span slot="title">Python 基础语法</span>
-  <span slot="meta">入门</span>
-</lesson-card>
-
-<script>
-  document.addEventListener("lesson-open", (event) => {
-    console.log("打开课程", event.detail.id);
-  });
-</script>
-```
+| Web Components | 浏览器原生提供的可复用自定义元素标准集合。 | 只在「浏览器原生提供的可复用自定义元素标准集合」这一前提下成立，换输入或换环境要重新验证。 |
+| Custom Elements | 定义和注册自定义 HTML 标签及其生命周期的 API。 | 不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。 |
+| Shadow DOM | 给元素附加隔离的 DOM 与样式作用域，避免外部样式泄漏。 | 隔离级别与并发事务会影响可见性，换级别或换存储引擎后要重新验证。 |
+| HTML Template | 用 template 标签保存可克隆但不立即渲染的 DOM 片段。 | 只在「用 template 标签保存可克隆但不立即渲染的 DOM 片段」这一前提下成立，换输入或换环境要重新验证。 |
+| constructor | 元素创建时 | 易错：报错或取不到值；正确做法是放到 `connectedCallback`。 |
+| connectedCallback | 插入文档 | 易错：报错或取不到值；正确做法是放到 `connectedCallback`。 |
+| disconnectedCallback | 从文档移除 | 易错：内存泄漏；正确做法是成对绑定与解绑。 |
+| attributeChangedCallback | 监听属性变化 | 只在「监听属性变化」这一前提下成立，换输入或换环境要重新验证。 |
+| adoptedCallback | 移动到新文档 | 只在「移动到新文档」这一前提下成立，换输入或换环境要重新验证。 |
 
 ## 原理与运行机制
 
 ### 机制总览
-
-1. **建立输入**：把「Web Components」按本课定义整理成可观察、可重复的输入条件。
-2. **执行转换**：围绕「Custom Elements」执行本课的核心步骤；每一步都记录中间状态，避免只看最终输出。
-3. **产生输出**：得到「Shadow DOM」后，用正文示例或协议/SQL 结果核对输出是否符合预期。
-4. **改变一个条件**：只替换一个边界条件或环境参数，观察「Web Components 实战」的结论是否仍然成立。
-
-| 阶段 | 关注对象 | 失败时应检查 |
-| --- | --- | --- |
-| 输入 | Web Components | 类型、范围、编码、版本或前置状态是否满足定义。 |
-| 处理 | Custom Elements | 顺序、可见性、锁、路由、事务或调度规则是否被破坏。 |
-| 输出 | Shadow DOM | 结果是否可复现，错误是否被正确传播而不是被吞掉。 |
-
-本课的机制结论要用「Web Components 实战」自己的示例验证。「Web Components 实战」没有给出某个数量级、吞吐或内存数据时，本课把该判断标为“材料未提供”，不从相邻主题外推。
 
 **教材衔接：四大组成速查**
 
@@ -208,45 +83,12 @@ customElements.define("lesson-card", LessonCard);
 
 **教材衔接：交付评审：评分表、决策记录与证据链**
 
-「Web Components 实战」的验收不能只看功能能不能跑通。下面把正文里的交付物、验证命令和关键设计点整理成一张评审表，按表逐项留下证据即可。
 
-### 一、「Web Components 实战」的交付物评分表
-
-| 交付物 | 权重 | 合格线 | 需要的证据 |
-| --- | ---: | --- | --- |
-| 核心链路 | 34% | 能在干净环境复现，且失败路径有明确处理 | 命令与输出、对应测试、一次失败与恢复记录 |
-| 测试与验收记录 | 33% | 能在干净环境复现，且失败路径有明确处理 | 命令与输出、对应测试、一次失败与恢复记录 |
-| 运行与回滚说明 | 33% | 能在干净环境复现，且失败路径有明确处理 | 命令与输出、对应测试、一次失败与恢复记录 |
-
-「Web Components 实战」的评分先看证据再打分：任意一项只要拿不出可复现的命令或测试，该项按 0 分计，不允许用「基本完成」代替。
-
-### 二、需要写下来的决策（ADR）
-
-| 决策点 | 本课给出的做法 | 备选方案 | 代价与回滚 |
-| --- | --- | --- | --- |
-| 架构与数据流 | 用户/输入 → 接口或命令 → 领域逻辑 → 存储/外部依赖 → 输出与监控 | 不做「架构与数据流」，沿用最朴素的实现（需要额外补一次对照实验） | 若「架构与数据流」出问题，回到上一版本并按本课验收场景重跑 |
-
-ADR 不需要长：每个决策三行就够——选了什么、放弃了什么、出问题怎么退。评审时只检查这三行是否和「Web Components 实战」的实际代码一致。
 
 ### 三、「Web Components 实战」的交付证据链
 
 本课未给出可执行命令，用下面的最小证据集代替：
 
-1. 一条从零开始的环境准备命令。
-2. 一条跑通核心链路的命令及其完整输出。
-3. 一条触发失败的命令，以及恢复后的验证结果。
-
-把「Web Components 实战」的上表整理成一个 evidence/ 目录：每条命令一个文件，文件名带日期，内容包含版本、命令与输出。评审时直接按目录核对，不再口头确认。
-
-### 四、「Web Components 实战」的验收指标
-
-| 指标 | 目标值 | 测量方式 | 不达标时的动作 |
-| --- | --- | --- | --- |
-| WebComponents 的核心路径耗时与失败率 | 用本课正文给出的阈值，没有就写实测基线 | 固定环境重复三次取中位数 | 回到对应小节定位，先修原因再重测 |
-| 资源占用峰值与回收情况 | 用本课正文给出的阈值，没有就写实测基线 | 固定环境重复三次取中位数 | 回到对应小节定位，先修原因再重测 |
-| 验收场景的通过率 | 用本课正文给出的阈值，没有就写实测基线 | 固定环境重复三次取中位数 | 回到对应小节定位，先修原因再重测 |
-
-指标必须能用一条命令或一次操作测出来；写不出测量方式的指标，在「Web Components 实战」的评审里一律视为未定义。
 
 ### 五、评审记录模板
 
@@ -259,18 +101,53 @@ ADR 不需要长：每个决策三行就够——选了什么、放弃了什么�
 | 风险与回滚 | 写清剩余风险、回滚步骤和验证方式 |
 | 结论 | 通过 / 有条件通过 / 不通过，三者选一 |
 
-「Web Components 实战」评审结束后把这张表填完并归档；下一轮迭代直接读上一次的「未完成项」与「风险与回滚」，避免重复讨论同一个问题。
-<!-- p1-project-review:end -->
+### 机制拆解：每一步的输入、动作与输出
+
+#### 1. `Web Components`
+- 输入：`WebComponents`；本步把 浏览器原生提供的可复用自定义元素标准集合 当作判断规则。
+- 动作：围绕 `Web Components` 保留中间状态，并记录它与 `Custom Elements` 的对应关系。
+- 输出：`Custom Elements`，它可以被下一段代码、测试或记录继续使用。
+- `Web Components` 的失败条件：只在「浏览器原生提供的可复用自定义元素标准集合」这一前提下成立，换输入或换环境要重新验证。
+
+#### 2. `Custom Elements`
+- 输入：`Web Components`；本步把 定义和注册自定义 HTML 标签及其生命周期的 API 当作判断规则。
+- 动作：围绕 `Custom Elements` 保留中间状态，并记录它与 `Shadow DOM` 的对应关系。
+- 输出：`Shadow DOM`，它可以被下一段代码、测试或记录继续使用。
+- `Custom Elements` 的失败条件：不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。
+
+#### 3. `Shadow DOM`
+- 输入：`Custom Elements`；本步把 给元素附加隔离的 DOM 与样式作用域，避免外部样式泄漏 当作判断规则。
+- 动作：围绕 `Shadow DOM` 保留中间状态，并记录它与 `HTML Template` 的对应关系。
+- 输出：`HTML Template`，它可以被下一段代码、测试或记录继续使用。
+- `Shadow DOM` 的失败条件：隔离级别与并发事务会影响可见性，换级别或换存储引擎后要重新验证。
+
+#### 4. `HTML Template`
+- 输入：`Shadow DOM`；本步把 用 template 标签保存可克隆但不立即渲染的 DOM 片段 当作判断规则。
+- 动作：围绕 `HTML Template` 保留中间状态，并记录它与 `createElement` 的对应关系。
+- 输出：`createElement`，它可以被下一段代码、测试或记录继续使用。
+- `HTML Template` 的失败条件：只在「用 template 标签保存可克隆但不立即渲染的 DOM 片段」这一前提下成立，换输入或换环境要重新验证。
+
+### 示例中的可观察事实
+
+1. 调用了 `createElement()`；它对应的课程主题是 `Web Components 实战`。
+2. 调用了 `var()`；它对应的课程主题是 `Web Components 实战`。
+3. 调用了 `host()`；它对应的课程主题是 `Web Components 实战`。
+4. 调用了 `translateY()`；它对应的课程主题是 `Web Components 实战`。
+5. 调用了 `observedAttributes()`；它对应的课程主题是 `Web Components 实战`。
+6. 调用了 `constructor()`；它对应的课程主题是 `Web Components 实战`。
+7. 调用了 `super()`；它对应的课程主题是 `Web Components 实战`。
+8. 调用了 `attachShadow()`；它对应的课程主题是 `Web Components 实战`。
+
+### 复现实验记录
+
+- 环境：`Web Components 实战` 使用 `javascript` 示例，固定 `WebComponents`、`自定义元素`、`ShadowDOM`、`slot` 作为第一组条件。
+- 首轮输入：先确认 调用了 `createElement()`，预测 `Web Components` 会怎样变化。
+- 基线观察：记录命令、输入、输出和错误原文，不用截图代替可复制的文本。
+- 单变量修改：只改变 `WebComponents`，观察 `HTML Template` 是否仍满足定义。
+- 失败注入：复现 在 `constructor` 里访问子节点或属性，确认现象是 报错或取不到值。
+- 记录结论：把“修改前、修改后、预期变化、实际变化”写成四列表，这样复盘 `Web Components 实战` 时才能区分概念错误与实现错误。
 
 ## 典型应用场景
-
-| 场景 | 典型输入或前提 | 期望产物 |
-| --- | --- | --- |
-| 学习验证 | 使用本课最小示例和 WebComponents、自定义元素 | 能复现正文结论，并解释每一步。 |
-| 工程落地 | 把「Web Components 实战」放入真实模块或服务边界 | 输出可观测、失败可定位、参数可配置。 |
-| 故障排查 | 只改一个版本、规模、输入或依赖条件 | 能区分概念错误、实现错误和环境差异。 |
-
-判断「Web Components 实战」的场景是否成立，标准是能否写出输入、处理、输出和失败路径；材料中没有出现的数据在本课标注为“材料未提供”，不用推测替代证据。
 
 **教材衔接：项目专属规格：Web Components 实战**
 
@@ -278,21 +155,7 @@ ADR 不需要长：每个决策三行就够——选了什么、放弃了什么�
 
 自定义元素生命周期、Shadow DOM 隔离与事件穿透。 项目目标是把「WebComponents、自定义元素、ShadowDOM、slot、设计系统」落实为可运行、可测试、可回滚的交付物。
 
-### 架构与数据流
 
-```text
-用户/输入 → 接口或命令 → 领域逻辑 → 存储/外部依赖 → 输出与监控
-                         ↘ 失败分类 → 重试/补偿 → 回滚
-```
-
-### 最小数据模型
-
-| 对象 | 关键字段 | 约束 |
-| --- | --- | --- |
-| 输入实体 | WebComponents、时间、来源 | 必填校验、长度限制、幂等键 |
-| 任务实体 | 状态、优先级、创建时间 | 状态迁移合法、不可重复执行 |
-| 结果实体 | 输出、错误码、耗时 | 可序列化、错误可解释 |
-| 审计记录 | 操作者、动作、结果、时间 | 不可篡改、可查询、脱敏 |
 
 ### 验收场景
 
@@ -313,14 +176,6 @@ docs/
 README.md
 ```
 
-### 测试矩阵
-
-| 层级 | 覆盖内容 | 最低数量 | 通过标准 |
-| --- | --- | ---: | --- |
-| 单元测试 | 领域规则、边界和错误分类 | 8 | 正常、边界、失败路径全部通过 |
-| 集成测试 | 数据库、网络、文件或平台边界 | 3 | 使用真实边界且可重复运行 |
-| 端到端测试 | 核心用户路径 | 1 | 从输入到输出完整跑通 |
-| 手动验收 | 文档中列出的 5 个场景 | 5 | 有命令、输出和结论记录 |
 
 ### 验收数据
 
@@ -337,21 +192,27 @@ README.md
 
 ### 复盘模板
 
-| 问题 | 记录 |
-| --- | --- |
-| 原目标是什么？ | 用一句话描述可验收目标 |
-| 实际发生了什么？ | 时间线、指标和关键日志 |
-| 哪个假设被推翻？ | 根因与促成因素 |
-| 如何回滚？ | 步骤、耗时和数据校验 |
-| 下一步做什么？ | 负责人、期限和验证方式 |
+- **在 `constructor` 里访问子节点或属性**：典型现象是报错或取不到值；正确做法是放到 `connectedCallback`。
+- **元素名不用连字符**：典型现象是注册失败；正确做法是必须形如 `my-component`。
+- **重复注册同名元素**：典型现象是抛错；正确做法是注册前判断或集中注册。
+- **`disconnectedCallback` 不解绑事件**：典型现象是内存泄漏；正确做法是成对绑定与解绑。
 
-> 项目验收围绕「WebComponents、自定义元素、ShadowDOM」：至少完成一次正常路径、一次边界输入、一次失败恢复和一次幂等检查。
+### 最小验证场景
+
+- 准备：保留 `javascript` 示例的原始输入，先记录 `Web Components 实战` 的基线输出和完整运行命令。
+- 观察：先核对 调用了 `createElement()`，再改变一个与 `Web Components` 相关的条件。
+- 判定：新结果与 `Web Components 实战` 的基线不同不等于错误；只有当差异破坏了 `Web Components` 的定义或错误表中的约束，才判定为失败。
+
+### 选择与边界
+
+- 使用 `Web Components` 时，先满足它的定义：浏览器原生提供的可复用自定义元素标准集合；只在「浏览器原生提供的可复用自定义元素标准集合」这一前提下成立，换输入或换环境要重新验证。
+- 使用 `Custom Elements` 时，先满足它的定义：定义和注册自定义 HTML 标签及其生命周期的 API；不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。
+- 使用 `Shadow DOM` 时，先满足它的定义：给元素附加隔离的 DOM 与样式作用域，避免外部样式泄漏；隔离级别与并发事务会影响可见性，换级别或换存储引擎后要重新验证。
+- 使用 `HTML Template` 时，先满足它的定义：用 template 标签保存可克隆但不立即渲染的 DOM 片段；只在「用 template 标签保存可克隆但不立即渲染的 DOM 片段」这一前提下成立，换输入或换环境要重新验证。
 
 ## 代码/协议/SQL 示例
 
 ### 最小可验证示例
-
-下面保留《Web Components 实战》原文中的最小示例。先预测《Web Components 实战》示例的输出，再按正文步骤运行或推演；示例依赖外部环境时，同时记录版本与输入。
 
 ```javascript
 // lesson-card.js：带 Shadow DOM 与属性监听的卡片组件
@@ -429,13 +290,6 @@ customElements.define("lesson-card", LessonCard);
 
 「Web Components 实战」不能只看「能编译」，还要能按固定命令复现结果。下表给出最低验证集：
 
-| 阶段 | 命令 | 预期输出 |
-| --- | --- | --- |
-| 安装依赖 | `python -m pip install -r requirements.txt` | 依赖安装完成，没有版本冲突 |
-| 语法检查 | `python -m compileall .` | 所有模块编译通过 |
-| 运行测试 | `python -m pytest -q` | 测试全部通过，失败用例数为 0 |
-| 启动示例 | `python main.py` | 服务启动并输出监听地址 |
-
 ### 验收证据
 
 - [ ] 保存依赖安装和启动命令的完整输出。
@@ -454,103 +308,45 @@ customElements.define("lesson-card", LessonCard);
 
 **教材衔接：原文最小示例**
 
-```javascript
-// lesson-card.js：带 Shadow DOM 与属性监听的卡片组件
-const template = document.createElement("template");
-template.innerHTML = `
-  <style>
-    :host {
-      display: block;
-      --card-radius: var(--radius-md, 8px);
-    }
-    :host([hidden]) { display: none; }
-    .card {
-      background: var(--color-surface, #fff);
-      border-radius: var(--card-radius);
-      padding: 16px;
-      transition: transform 160ms ease;
-    }
-    .card:hover { transform: translateY(-2px); }
-    .title { font-weight: 600; margin: 0 0 4px; }
-    .meta { color: #64748b; font-size: 0.875rem; margin: 0; }
-  </style>
-  <article class="card" part="card">
-    <h3 class="title"><slot name="title">未命名课程</slot></h3>
-    <p class="meta"><slot name="meta"></slot></p>
-  </article>
-`;
+**运行方式**：运行 `Web Components 实战` 的示例时，保存为 `.js` 后用 `node 文件名.js` 运行；涉及浏览器 API 的示例要放到页面里执行。
 
-class LessonCard extends HTMLElement {
-  static get observedAttributes() {
-    return ["minutes", "disabled"];
-  }
+### 示例精读：先找证据，再改一个条件
 
-  constructor() {
-    super();
-    this.attachShadow({ mode: "open" });        // open 便于调试，closed 更严格
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
-  }
-
-  connectedCallback() {
-    if (!this.hasAttribute("role")) this.setAttribute("role", "listitem");
-    this.addEventListener("click", this.#onClick);
-  }
-
-  disconnectedCallback() {
-    // 必须解绑，避免内存泄漏
-    this.removeEventListener("click", this.#onClick);
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue === newValue) return;
-    if (name === "minutes") {
-      this.shadowRoot.querySelector(".meta").textContent = `${newValue} 分钟`;
-    }
-    if (name === "disabled") {
-      this.setAttribute("aria-disabled", String(newValue !== null));
-    }
-  }
-
-  #onClick = () => {
-    if (this.hasAttribute("disabled")) return;
-    this.dispatchEvent(
-      new CustomEvent("lesson-open", {
-        bubbles: true,      // 允许父级监听
-        composed: true,     // 穿透 Shadow 边界
-        detail: { id: this.getAttribute("lesson-id") },
-      }),
-    );
-  };
-}
-
-customElements.define("lesson-card", LessonCard);
-```
+1. 调用了 `createElement()`；它出现在 `Web Components 实战` 的示例中，阅读时先确认它前后各发生了什么。
+2. 调用了 `var()`；它出现在 `Web Components 实战` 的示例中，阅读时先确认它前后各发生了什么。
+3. 调用了 `host()`；它出现在 `Web Components 实战` 的示例中，阅读时先确认它前后各发生了什么。
+4. 调用了 `translateY()`；它出现在 `Web Components 实战` 的示例中，阅读时先确认它前后各发生了什么。
+5. 调用了 `observedAttributes()`；它出现在 `Web Components 实战` 的示例中，阅读时先确认它前后各发生了什么。
+6. 调用了 `constructor()`；它出现在 `Web Components 实战` 的示例中，阅读时先确认它前后各发生了什么。
+7. 调用了 `super()`；它出现在 `Web Components 实战` 的示例中，阅读时先确认它前后各发生了什么。
+8. 调用了 `attachShadow()`；它出现在 `Web Components 实战` 的示例中，阅读时先确认它前后各发生了什么。
+- 在 `Web Components 实战` 中与 `Web Components` 对照：示例必须能支持 浏览器原生提供的可复用自定义元素标准集合，否则说明这一段还缺少实现或验证步骤。
+- 在 `Web Components 实战` 中与 `Custom Elements` 对照：示例必须能支持 定义和注册自定义 HTML 标签及其生命周期的 API，否则说明这一段还缺少实现或验证步骤。
+- 在 `Web Components 实战` 中与 `Shadow DOM` 对照：示例必须能支持 给元素附加隔离的 DOM 与样式作用域，避免外部样式泄漏，否则说明这一段还缺少实现或验证步骤。
+- 在 `Web Components 实战` 中与 `HTML Template` 对照：示例必须能支持 用 template 标签保存可克隆但不立即渲染的 DOM 片段，否则说明这一段还缺少实现或验证步骤。
 
 ## 时间/空间复杂度或性能分析
 
-**复杂度证据**：「Web Components 实战」的现有材料没有给出渐近时间或空间复杂度的明确结论，本课只做定性检查，不补写未经验证的 $O$ 记号。
+**性能关注点（Web Components 实战）**：浏览器渲染是关键路径：关注首屏时间、重排与重绘次数、资源体积。
 
-| 维度 | 本课关注点 | 判断依据 |
-| --- | --- | --- |
-| 时间/延迟 | 「Web Components 实战」的主要步骤是否会随输入规模、并发度或网络往返增长。 | 以正文复杂度、基准数据或可重复测量为准。 |
-| 空间/内存 | 中间状态、缓存、副本、连接或索引是否随规模增长。 | 记录峰值内存与数据副本，不只看最终结果。 |
-| 吞吐/资源 | 版本、调度、锁、IO、序列化或协议开销是否成为瓶颈。 | 固定环境做对照实验，改变一个变量。 |
+**测量方法**：以 `Web Components 实战` 的 `WebComponents` 场景为对象，固定输入跑一遍记录基线，再把规模或并发度提高一个数量级复测；两次结果的差值与波动范围才是结论依据。
 
-评估「Web Components 实战」时要区分“正确性成立”和“性能达标”两件事；材料没有给出基准时，本课只保留量级来源与测量方法，不写不可验证的绝对数字。
+### 需要控制的变量与记录项
+
+- `Web Components 实战` 的 `WebComponents`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
+- `Web Components 实战` 的 `自定义元素`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
+- `Web Components 实战` 的 `ShadowDOM`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
+- `Web Components 实战` 的 `slot`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
+- `Web Components 实战` 的 `设计系统`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
+- `Web Components 实战` 中 `Web Components` 的边界：只在「浏览器原生提供的可复用自定义元素标准集合」这一前提下成立，换输入或换环境要重新验证。达到边界时不要外推，必须重新测量。
+- `Web Components 实战` 中 `Custom Elements` 的边界：不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。达到边界时不要外推，必须重新测量。
+- `Web Components 实战` 中 `Shadow DOM` 的边界：隔离级别与并发事务会影响可见性，换级别或换存储引擎后要重新验证。达到边界时不要外推，必须重新测量。
+- `Web Components 实战` 中 `HTML Template` 的边界：只在「用 template 标签保存可克隆但不立即渲染的 DOM 片段」这一前提下成立，换输入或换环境要重新验证。达到边界时不要外推，必须重新测量。
+- `Web Components 实战` 的代码证据：先验证 调用了 `createElement()`，再记录该路径的输入规模与耗时；只看代码行数不能推出复杂度。
 
 ## 常见误区与易错点
 
-> 复核《Web Components 实战》的易错点时，优先保留原文的错误表、故障现场与排错路径；每条修正都要能用本课示例复验。
-
-| 易错点 | 常见表现 | 正确做法 |
-| --- | --- | --- |
-| 只背结论 | 能复述「Web Components 实战」的定义，却说不清输入、输出与边界。 | 回到机制步骤，用最小示例逐一验证。 |
-| 混淆相邻概念 | 把本课对象与相邻主题的对象当成同一类。 | 先比较定义、资源归属、生命周期和失败模式。 |
-| 忽略版本与环境 | 在开发机通过后直接外推到生产环境。 | 固定版本、输入和资源条件，再记录可复现结果。 |
-
-**教材衔接：常见错误与排查**
-
-| 容易踩的做法 | 实际现象 | 原因与正确做法 |
+| 容易写错的做法 | 实际现象 | 原因与正确做法 |
 | --- | --- | --- |
 | 在 `constructor` 里访问子节点或属性 | 报错或取不到值 | 放到 `connectedCallback` |
 | 元素名不用连字符 | 注册失败 | 必须形如 `my-component` |
@@ -560,38 +356,80 @@ customElements.define("lesson-card", LessonCard);
 | 事件不设 `composed: true` | 跨 Shadow 边界收不到 | 明确是否需要穿透 |
 | 在属性里传复杂对象 | 只能传字符串 | 用属性传 JSON 或直接设 JS 属性 |
 | 用 `innerHTML` 插用户输入 | XSS 风险 | 用 `textContent` 或转义 |
+| 在 constructor 里访问子节点或属性 | 报错或取不到值。 | 放到 connectedCallback。 |
+| 事件不设 composed: true | 跨 Shadow 边界收不到。 | 明确是否需要穿透。 |
 
-**教材衔接：故障现场**
+### 现场 1：在 `constructor` 里访问子节点或属性
 
-### 现场 1：在 constructor 里访问子节点或属性
+**症状**：报错或取不到值。
 
-**症状**：在《Web Components 实战》的复现场景中，报错或取不到值。
+**根因与修复**：放到 `connectedCallback`。
 
-**根因**：触发点是把“在 constructor 里访问子节点或属性”当成安全做法。它没有满足《Web Components 实战》要求的前提，因此先表现为“报错或取不到值”；排查时先完整复现这一段，再核对输入、配置与依赖。
+**自检**：在本课示例里复现「在 `constructor` 里访问子节点或属性」，改成放到 `connectedCallback`后重跑；如果症状消失且失败路径按预期变化，说明定位正确。
 
-**修复**：针对《Web Components 实战》的问题，放到 connectedCallback。
+### 现场 2：元素名不用连字符
 
-**验证**：保留《Web Components 实战》里触发“报错或取不到值”的输入、版本和日志，按“放到 connectedCallback”完成修改后原样重放；只有失败现象消失且相邻场景仍可解释，才保留改动。
+**症状**：注册失败。
 
-### 现场 2：事件不设 composed: true
+**根因与修复**：必须形如 `my-component`。
 
-**症状**：在《Web Components 实战》的复现场景中，跨 Shadow 边界收不到。
+**自检**：在本课示例里复现「元素名不用连字符」，改成必须形如 `my-component`后重跑；如果症状消失且失败路径按预期变化，说明定位正确。
 
-**根因**：“跨 Shadow 边界收不到”只是表层结果。向上追溯会落到“事件不设 composed: true”这一步，因为它省略了《Web Components 实战》的约束，使实现行为和预期模型发生了偏离。
+### 现场 3：重复注册同名元素
 
-**修复**：针对《Web Components 实战》的问题，明确是否需要穿透。
+**症状**：抛错。
 
-**验证**：保留《Web Components 实战》里触发“跨 Shadow 边界收不到”的输入、版本和日志，按“明确是否需要穿透”完成修改后原样重放；只有失败现象消失且相邻场景仍可解释，才保留改动。
+**根因与修复**：注册前判断或集中注册。
 
-### 现场 3：在属性里传复杂对象
+**自检**：在本课示例里复现「重复注册同名元素」，改成注册前判断或集中注册后重跑；如果症状消失且失败路径按预期变化，说明定位正确。
 
-**症状**：在《Web Components 实战》的复现场景中，只能传字符串。
+### 现场 4：`disconnectedCallback` 不解绑事件
 
-**根因**：当出现“在属性里传复杂对象”时，执行路径已经绕过了《Web Components 实战》的关键约束，最终以“只能传字符串”暴露出来；修复前必须先确认约束在哪里失效。
+**症状**：内存泄漏。
 
-**修复**：针对《Web Components 实战》的问题，用属性传 JSON 或直接设 JS 属性。
+**根因与修复**：成对绑定与解绑。
 
-**验证**：先在《Web Components 实战》中记录“在属性里传复杂对象”留下的失败证据，再执行“用属性传 JSON 或直接设 JS 属性”并重放；确认错误路径变为明确结果，且修复没有掩盖同类故障。
+**自检**：在本课示例里复现「`disconnectedCallback` 不解绑事件」，改成成对绑定与解绑后重跑；如果症状消失且失败路径按预期变化，说明定位正确。
+
+### 现场 5：直接给 Shadow 内部元素加外部类名
+
+**症状**：样式不生效。
+
+**根因与修复**：用 CSS 变量或 `::part`。
+
+**自检**：在本课示例里复现「直接给 Shadow 内部元素加外部类名」，改成用 CSS 变量或 `::part`后重跑；如果症状消失且失败路径按预期变化，说明定位正确。
+
+### 现场 6：事件不设 `composed: true`
+
+**症状**：跨 Shadow 边界收不到。
+
+**根因与修复**：明确是否需要穿透。
+
+**自检**：在本课示例里复现「事件不设 `composed: true`」，改成明确是否需要穿透后重跑；如果症状消失且失败路径按预期变化，说明定位正确。
+
+### 现场 7：在属性里传复杂对象
+
+**症状**：只能传字符串。
+
+**根因与修复**：用属性传 JSON 或直接设 JS 属性。
+
+**自检**：在本课示例里复现「在属性里传复杂对象」，改成用属性传 JSON 或直接设 JS 属性后重跑；如果症状消失且失败路径按预期变化，说明定位正确。
+
+### 现场 8：用 `innerHTML` 插用户输入
+
+**症状**：XSS 风险。
+
+**根因与修复**：用 `textContent` 或转义。
+
+**自检**：在本课示例里复现「用 `innerHTML` 插用户输入」，改成用 `textContent` 或转义后重跑；如果症状消失且失败路径按预期变化，说明定位正确。
+
+### 现场 9：在 constructor 里访问子节点或属性
+
+**症状**：报错或取不到值。
+
+**根因与修复**：放到 connectedCallback。
+
+**自检**：在本课示例里复现「在 constructor 里访问子节点或属性」，改成放到 connectedCallback后重跑；如果症状消失且失败路径按预期变化，说明定位正确。
 
 ## 与其他知识点的关系
 
@@ -600,8 +438,6 @@ customElements.define("lesson-card", LessonCard);
 | 先修 | 《PWA 与离线能力》 | 本课会直接使用它的概念或操作前提。 |
 | 关联 | 《HTML 标签入门》 | 用于横向比较或把本课结论迁移到相邻主题。 |
 | 前置顺序 | 《PWA 与离线能力》 | 同分类中安排在本课之前，建议先完成其自测。 |
-
-把「Web Components 实战」放回知识体系时，不只要记住“前面学过什么”，还要说明两个主题在输入、机制、资源边界和失败模式上的差异。这样才能把单课知识迁移到项目、排障和后续课程。
 
 **教材衔接：与框架的关系**
 
@@ -615,142 +451,93 @@ customElements.define("lesson-card", LessonCard);
 
 经验：**设计系统的底层组件适合做成 Web Components，业务页面继续用框架。**
 
+- **先修**：`PWA 与离线能力`。本课默认这些内容已经掌握。
+- **相关或后续**：`HTML 标签入门`。本课术语会在这些课程里继续使用。
+- **术语归属**：`Web Components`、`Custom Elements`、`Shadow DOM` 的定义以本课「核心概念定义」为准，换到其他课程时先确认定义是否被改写。
+- 同一分类的《设计令牌与样式架构》也涉及 `设计系统`；两课衔接时先确认这个术语的定义是否一致。
+
+### 先修与后续术语接口
+
+- `HTML 标签入门`：两者通过本分类的学习顺序衔接，阅读时重点比较各自的输入与失败条件。
+- `PWA 与离线能力`：两者通过本分类的学习顺序衔接，阅读时重点比较各自的输入与失败条件。
+
+### 容易混淆的相邻概念
+
+- `Web Components` 与 `Custom Elements`：前者强调 浏览器原生提供的可复用自定义元素标准集合；后者强调 定义和注册自定义 HTML 标签及其生命周期的 API。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
+- `Custom Elements` 与 `Shadow DOM`：前者强调 定义和注册自定义 HTML 标签及其生命周期的 API；后者强调 给元素附加隔离的 DOM 与样式作用域，避免外部样式泄漏。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
+- `Shadow DOM` 与 `HTML Template`：前者强调 给元素附加隔离的 DOM 与样式作用域，避免外部样式泄漏；后者强调 用 template 标签保存可克隆但不立即渲染的 DOM 片段。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
+
 ## 自测题与参考答案
 
-> 先独立作答《Web Components 实战》的自测题，再对照答案与解析；每处判断都要能在本课正文或示例中找到依据。
+> 先独立作答，再对照参考答案；答案都能在本课正文、术语表或错误表里找到依据。
 
-### 自测 1
+### 自测 1（概念复述）
 
-注册自定义元素时，标签名必须满足？
+不看正文，写出 `Web Components` 的操作性定义，并说明它与 `Custom Elements` 的区别。
 
-A. 以数字开头
-B. 全部大写
-C. 包含连字符
-D. 与类名完全相同
+**参考答案**：浏览器原生提供的可复用自定义元素标准集合。
 
-**参考答案**：包含连字符
+`Custom Elements` 的定位是：定义和注册自定义 HTML 标签及其生命周期的 API；两者的差别要从适用对象与失败模式上说明。
 
-**解析**：在「Web Components 实战」里，包含连字符。标准要求自定义元素名必须含连字符，以避免与未来 HTML 保留标签冲突。回到「Web Components 实战」的正文示例，用“注册自定义元素时”走一遍WebComponents、自定义元素、ShadowDOM的完整流程，能复现的结论才可以保留。
+### 自测 2（排错）
 
-### 自测 2
+本课错误表记录了「在 `constructor` 里访问子节点或属性」这类做法。请写出它会出现的现象、根因，以及修复顺序。
 
-围绕“Web Components 实战”中的 WebComponents、自定义元素、ShadowDOM，下列哪两项是本课强调的实践判断？
+**参考答案**：现象是报错或取不到值；正确做法是放到 `connectedCallback`。修复时先复现现象并保留证据，再改动一处假设重跑，确认现象消失。
 
-A. 把 自定义元素 的单次运行结果当成所有版本和规模都成立
-B. 学习 WebComponents 时要同时说明输入、输出和失败路径，不能只看正常流程
-C. 只要 WebComponents 的常规示例通过，就可以跳过边界与异常路径
-D. 验证 自定义元素 时要固定版本并覆盖边界输入，结论才可复现
+### 自测 3（动手验证）
 
-**参考答案**：学习 WebComponents 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 自定义元素 时要固定版本并覆盖边界输入，结论才可复现
+运行本课的 `javascript` 示例，把其中的 `"template"` 换成一个边界值后重新运行，记录输出与错误信息。
 
-**解析**：本课把Web Components 实战拆成概念、示例与故障现场三部分，因此判断 WebComponents 时必须同时交代输入、输出和失败路径，这使“学习 WebComponents 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在Web Components 实战里，判断 自定义元素 时要固定版本与边界输入，所以“验证 自定义元素 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
+**参考答案**：正常输入下 `javascript` 示例应当复现正文给出的结果；把 `"template"` 换成边界值后，如果结果改变或报错，先核对它是否满足 `Web Components 实战` 中`Web Components` 的适用范围，再检查错误表里是否有同类现象。
 
-### 自测 3
+### 自测 4（代码阅读）
 
-按“Web Components 实战”中 WebComponents、自定义元素、ShadowDOM 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
+阅读本课开头的 `javascript` 示例，说明它体现了`Web Components` 的哪一条性质，并指出改动哪个输入会让这条性质不再成立。
 
-A. 只改一个变量，记录边界与失败路径的变化
-B. 固定版本与证据，把“Web Components 实战”的结论写成可复现记录
-C. 先明确 WebComponents 的输入、输出与约束
-D. 写出最小示例并核对 自定义元素 的基线结果
+**参考答案**：`Web Components` 的定义是 浏览器原生提供的可复用自定义元素标准集合，示例正是在实现这条定义。改动与 `Web Components` 有关的一个输入后，如果结果不再符合 `Web Components 实战` 的正文描述，就说明该性质只在当前前提成立。
 
-**参考答案**：先明确 WebComponents 的输入、输出与约束 → 写出最小示例并核对 自定义元素 的基线结果 → 只改一个变量，记录边界与失败路径的变化 → 固定版本与证据，把“Web Components 实战”的结论写成可复现记录
+### 自测 5（迁移）
 
-**解析**：在「Web Components 实战」里，在本课的练习里，顺序应当是：先明确 WebComponents 的输入、输出与约束 → 写出最小示例并核对 自定义元素 的基线结果 → 只改一个变量，记录边界与失败路径的变化 → 固定版本与证据，把本课的结论写成可复现记录。这个顺序把 WebComponents 的输入、输出和约束放在最前面，在Web Components 实战里避免概念没对齐就开始调参。第二步用 自定义元素 建立可核对的基线，在Web Components 实战里第三步才允许改变一个变量并观察失败路径。
+把 `Web Components 实战` 的方法迁移到自己的项目：围绕 `Web Components` 写出一个与错误表同类的风险点，并说明触发条件和检验方式。
 
-**教材衔接：复习与自测**
+**参考答案**：例如「事件不设 composed: true」，它会导致跨 Shadow 边界收不到；检验方式是按明确是否需要穿透改一处再复现，确认现象消失且没有引入新的失败分支。
 
-- [ ] 能注册自定义元素并实现四个生命周期回调。
-- [ ] 用 Shadow DOM 隔离样式，并开放变量与 `::part` 供定制。
-- [ ] 事件按需设置 `bubbles` 与 `composed`。
-- [ ] 断开连接时清理事件与定时器。
-- [ ] 能判断何时用 Web Components、何时用框架组件。
+### 自测 6（对比）
 
-**教材衔接：动手练习**
+用一个表格对比 `Web Components` 与 `Custom Elements`：各写一行适用场景、一行失败表现。
 
-> 本课练习重点：围绕「WebComponents、自定义元素、ShadowDOM」完成复述、实验和交付，每个结果都要能被别人检查。
+**参考答案**：`Web Components` 的定义是浏览器原生提供的可复用自定义元素标准集合；`Custom Elements` 的定义是定义和注册自定义 HTML 标签及其生命周期的 API。两者的失败表现分别对应本课错误表里与本术语相关的行。
 
-先让 createElement 的内容结构正确，再处理视觉与响应式细节。
+### 自测 7（排错顺序）
 
-### 练习 1：建立心智模型（10 分钟）
+面对「在 `constructor` 里访问子节点或属性」引发的问题，请把“复现 报错或取不到值 → 保留证据 → 放到 `connectedCallback` → 回归验证”四步写成可执行的检查清单。
 
-合上教程，用 3～5 句话回答：
+**参考答案**：第一步按报错或取不到值复现；第二步记录输入、版本与完整报错；第三步按放到 `connectedCallback`只改一处；第四步重跑并确认失败路径也按预期变化。
 
-1. Web Components 实战解决了什么问题？
-2. 如果没有它，会出现什么具体后果？
-3. 它和「自定义元素」是什么关系？
+### 自测 8（边界判断）
 
-验收标准：回答里必须出现 WebComponents，并写出一个让结论失效的边界条件。
+针对 `HTML Template`，分别写出“可以使用”的条件和“结论不再成立”的条件。
 
-### 练习 2：做一次可控实验（20 分钟）
+**参考答案**：只在「用 template 标签保存可克隆但不立即渲染的 DOM 片段」这一前提下成立，换输入或换环境要重新验证。 同时要把 `HTML Template` 的定义 用 template 标签保存可克隆但不立即渲染的 DOM 片段 与实际输入逐项对照。
 
-从正文中选一个最小示例，完成以下操作：
+### 自测 9（机制重建）
 
-1. 先预测修改一个参数、输入或步骤后的结果。
-2. 再实际执行或逐步推演，记录真实结果。
-3. 如果结果与预测不同，写出差异原因。
+不看正文，按输入、转换、输出、验证四段重建 `Web Components` → `Custom Elements` → `Shadow DOM` → `HTML Template` 的作用链。
 
-**验收标准**：用 createElement 复现原例后，把自定义元素改成边界值，五步记录缺一不可，其中「原因」一栏要写明「Web Components 实战」里哪条规则被触发。
+**参考答案**：起点是 `Web Components` 的定义 浏览器原生提供的可复用自定义元素标准集合；中间每一步都保留可观察状态；终点由 `HTML Template` 检查，失败时回到错误表定位第一个偏离定义的步骤。
 
-### 练习 3：交付一个小结果（30 分钟）
+### 自测 10（综合排错）
 
-做一个只包含 WebComponents 的最小页面，并用设备模式检查窄屏表现。
+在 `Web Components 实战` 中，现象是 跨 Shadow 边界收不到。请围绕 事件不设 composed: true 写出最小复现、关键证据、修复动作和回归验证，并说明为什么不能只凭一次运行下结论。
 
-任务要求：
+**参考答案**：先复现 事件不设 composed: true，记录输入与完整错误；再按 明确是否需要穿透 只改一处。回归时同时跑正常路径和边界路径，只有两次结果都可解释，才把修复视为完成。
 
-- 结果必须能被别人检查，不能只写“我已经理解了”。
-- 至少覆盖「WebComponents」和「自定义元素」两个关键词。
-- 写出 1 个仍然不确定的问题，以及下一步如何验证。
+### 自测 11（一分钟复述）
 
-> 提示：时间有限时优先做练习 1 和练习 2；练习 3 可以拆成两次完成。
+用每分钟约 200 字的速度复述 `Web Components 实战`：先给主问题，再按顺序说出 `Web Components`、`Custom Elements`、`Shadow DOM`、`HTML Template`，最后给一个失败案例。
 
-**教材衔接：可运行练习**
-
-### 任务 1：先跑通，再解释
-
-```json
-{
-  "project": "web_components",
-  "scenario": "WebComponents的正常路径",
-  "input": {"case": "normal", "value": "createElement"},
-  "expected": {"ok": true, "checks": ["WebComponents可复现", "自定义元素有记录"]},
-  "failure_case": {"case": "自定义元素越界或缺失", "error": "validation_error"},
-  "idempotency_key": "web_components-001"
-}
-```
-
-### 任务 2：只改一个条件
-
-把「Web Components 实战」的最小示例复制一份，只改一个条件再跑一次：
-
-- 改动点：把 自定义元素 换成边界值，其他输入保持原样。
-- 预测：先写下「Web Components 实战」在改动后的输出或错误信息，再运行。
-- 记录：对照改动前后的结果，指出差异出在哪一步。
-- 验收：换回原条件能复现原结果，改动只影响WebComponents。
-
-### 任务 3：迁移到自己的数据
-
-把 createElement 换成你自己的输入，先保持步骤不变，再比较输出差异。
-
-**教材衔接：本课复习清单**
-
-离开本课前，逐项确认：
-
-- [ ] 不看解析，能说出「注册自定义元素时，标签名必须满足？」的判断依据。
-- [ ] 不看解析，能说出「为什么不应在 constructor 中访问子节点或属性？」的判断依据。
-- [ ] 不看解析，能说出「外部想定制 Shadow DOM 内部的样式，正确方式是？」的判断依据。
-- [ ] 不看解析，能说出「自定义事件要能穿透 Shadow 边界被外层接收，需要设置？」的判断依据。
-- [ ] 不看解析，能说出「组件被移除后必须做什么以避免内存泄漏？」的判断依据。
-- [ ] 用 WebComponents 构造一个正常输入和一个边界输入，分别记录输出与判断依据。
-- [ ] 把本课最容易混淆的两个概念写成一句话对照。
-
-| 复盘项 | 记录 |
-| --- | --- |
-| 已经能独立解释的考点 |  |
-| 仍然说不清的概念 |  |
-| 下一步验证动作 |  |
-
----
+**自评标准**：主问题必须对应 自定义元素生命周期、Shadow DOM 隔离与事件穿透；每个术语都要能接上一句定义或边界；失败案例必须写成可观察现象，不能用“可能有风险”代替证据。
 
 ## 术语速查
 
@@ -761,47 +548,88 @@ D. 写出最小示例并核对 自定义元素 的基线结果
 | `Shadow DOM` | 给元素附加隔离的 DOM 与样式作用域，避免外部样式泄漏。 |
 | `HTML Template` | 用 template 标签保存可克隆但不立即渲染的 DOM 片段。 |
 
+**术语关系**：`Web Components`（浏览器原生提供的可复用自定义元素标准集合） → `Custom Elements`（定义和注册自定义 HTML 标签及其生命周期的 API） → `Shadow DOM`（给元素附加隔离的 DOM 与样式作用域） → `HTML Template`（用 template 标签保存可克隆但不立即渲染的 DOM 片段）。
+
 ## 考点精讲
 
-### 考点 1：概念判断·WebComponents
+`Web Components 实战` 的题库有 6 道题，下面逐题给出题干、正确项与判断依据：先自己作答，再核对正确项，最后回到正文对应小节复核。
+
+### 考点 1：第 1 题
 
 - **题目**：注册自定义元素时，标签名必须满足？
-- **判断依据**：在「Web Components 实战」里，包含连字符。标准要求自定义元素名必须含连字符，以避免与未来 HTML 保留标签冲突。回到「Web Components 实战」的正文示例，用“注册自定义元素时”走一遍WebComponents、自定义元素、ShadowDOM的完整流程，能复现的结论才可以保留。
+- **正确项**：包含连字符
+- **判断依据**：这道题检验本课主问题：自定义元素生命周期、Shadow DOM 隔离与事件穿透。复习时先复述本课主问题，再举一个会让结论失效的输入。
 
-### 考点 2：概念判断·WebComponents
+### 考点 2：第 2 题
 
 - **题目**：为什么不应在 constructor 中访问子节点或属性？
-- **判断依据**：在「Web Components 实战」里，此时元素尚未插入文档。constructor 阶段元素还没进入文档，读取属性可能与升级顺序相关，正确位置是 connectedCallback。「Web Components 实战」要求先交代WebComponents、自定义元素、ShadowDOM的前提再下结论，所以“此时元素尚未插入文档”只在题干“为什么不应在 constructor 中访问子节点或属性”给定的条件下成立。
+- **正确项**：此时元素尚未插入文档
+- **判断依据**：这道题检验本课主问题：自定义元素生命周期、Shadow DOM 隔离与事件穿透。复习时先复述本课主问题，再举一个会让结论失效的输入。
 
-### 考点 3：多选辨析·WebComponents
+### 考点 3：第 3 题
 
 - **题目**：围绕“Web Components 实战”中的 WebComponents、自定义元素、ShadowDOM，下列哪两项是本课强调的实践判断？
-- **判断依据**：本课把Web Components 实战拆成概念、示例与故障现场三部分，因此判断 WebComponents 时必须同时交代输入、输出和失败路径，这使“学习 WebComponents 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在Web Components 实战里，判断 自定义元素 时要固定版本与边界输入，所以“验证 自定义元素 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
+- **正确项**：学习 WebComponents 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 自定义元素 时要固定版本并覆盖边界输入，结论才可复现
+- **判断依据**：这道题落在术语 `Web Components` 上：浏览器原生提供的可复用自定义元素标准集合。复习时把 `Web Components` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
 
-### 考点 4：顺序排列·WebComponents
+### 考点 4：第 4 题
 
 - **题目**：按“Web Components 实战”中 WebComponents、自定义元素、ShadowDOM 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
-- **判断依据**：在「Web Components 实战」里，在本课的练习里，顺序应当是：先明确 WebComponents 的输入、输出与约束 → 写出最小示例并核对 自定义元素 的基线结果 → 只改一个变量，记录边界与失败路径的变化 → 固定版本与证据，把本课的结论写成可复现记录。这个顺序把 WebComponents 的输入、输出和约束放在最前面，在Web Components 实战里避免概念没对齐就开始调参。第二步用 自定义元素 建立可核对的基线，在Web Components 实战里第三步才允许改变一个变量并观察失败路径。
+- **正确项**：先明确 WebComponents 的输入、输出与约束 → 写出最小示例并核对 自定义元素 的基线结果 → 只改一个变量，记录边界与失败路径的变化 → 固定版本与证据，把“Web Components 实战”的结论写成可复现记录
+- **判断依据**：这道题落在术语 `Web Components` 上：浏览器原生提供的可复用自定义元素标准集合。复习时把 `Web Components` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
 
-### 考点 5：概念判断·WebComponents
+### 考点 5：第 5 题
 
 - **题目**：组件被移除后必须做什么以避免内存泄漏？
-- **判断依据**：在「Web Components 实战」里，在 disconnectedCallback 中解绑事件并清理定时器。移除时解绑监听、清理定时器与订阅，才能让对象被回收。「Web Components 实战」要求先交代WebComponents、自定义元素、ShadowDOM的前提再下结论，所以“在 disconnectedCallba”只在题干“组件被移除后必须做什么以避免内存泄漏”给定的条件下成立。
+- **正确项**：在 disconnectedCallback 中解绑事件并清理定时器
+- **判断依据**：这道题检验本课主问题：自定义元素生命周期、Shadow DOM 隔离与事件穿透。复习时先复述本课主问题，再举一个会让结论失效的输入。
 
-### 考点 6：排错·WebComponents
+### 考点 6：第 6 题
 
-- **题目**：阅读「Web Components 实战」的代码片段，下面哪项判断是正确的？
-- **判断依据**：这道题的关键在「Web Components 实战」的WebComponents、自定义元素、ShadowDOM：先确认题干“阅读Web Components 实”问的是哪一步，再排除偷换前提的选项。把“包含连字符”代回「Web Components 实战」里“阅读Web Components 实战的代码片段”的例子核对，条件一旦改变，结论就要用WebComponents、自定义元素、ShadowDOM重新推导。
+- **题目**：`Web Components 实战` 的示例代码服务于“自定义元素生命周期、Shadow DOM 隔离与事件穿透。”。哪一条判断是正确的？
+- **正确项**：包含连字符
+- **判断依据**：这道题落在术语 `Web Components` 上：浏览器原生提供的可复用自定义元素标准集合。复习时把 `Web Components` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
 
-## English Overview
+### 考点 7：`Web Components`
 
-**Title:** Web Components
+- **要点**：浏览器原生提供的可复用自定义元素标准集合。
+- **Web Components 的边界**：只在「浏览器原生提供的可复用自定义元素标准集合」这一前提下成立，换输入或换环境要重新验证。
 
-**Summary:** Custom elements, Shadow DOM encapsulation and events.
+### 考点 8：`Custom Elements`
 
-**Category:** HTML & CSS
-**Level:** 高级
-**Key terms:** WebComponents, 自定义元素, ShadowDOM, slot, 设计系统
+- **要点**：定义和注册自定义 HTML 标签及其生命周期的 API。
+- **Custom Elements 的边界**：不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。
+
+### 考点 9：`Shadow DOM`
+
+- **要点**：给元素附加隔离的 DOM 与样式作用域，避免外部样式泄漏。
+- **Shadow DOM 的边界**：隔离级别与并发事务会影响可见性，换级别或换存储引擎后要重新验证。
+
+### 考点 10：`HTML Template`
+
+- **要点**：用 template 标签保存可克隆但不立即渲染的 DOM 片段。
+- **HTML Template 的边界**：只在「用 template 标签保存可克隆但不立即渲染的 DOM 片段」这一前提下成立，换输入或换环境要重新验证。
+
+### 考点 11：排错——在 `constructor` 里访问子节点或属性
+
+- **现象**：报错或取不到值。
+- **处理**：放到 `connectedCallback`。
+
+### 考点 12：排错——元素名不用连字符
+
+- **现象**：注册失败。
+- **处理**：必须形如 `my-component`。
+
+### 考点 13：综合辨析——`Web Components` 与 `HTML Template`
+
+- **辨析点**：`Web Components` 的定义是 浏览器原生提供的可复用自定义元素标准集合；`HTML Template` 的定义是 用 template 标签保存可克隆但不立即渲染的 DOM 片段。
+- **答题要求**：面对 `Web Components 实战` 的题目，先判断描述的是 `Web Components` 还是 `HTML Template`，再归到对应定义，最后写出一个会让该定义失效的边界输入。
+
+### 考点 14：排错评分点
+
+- **现象分**：能写出 报错或取不到值，而不是只写“程序有错”。
+- **证据分**：保留触发 在 `constructor` 里访问子节点或属性 的输入、版本和错误原文。
+- **修复分**：按 放到 `connectedCallback` 只改一处，并同时回归正常路径与边界路径。
 
 ## 内容元数据
 
@@ -819,7 +647,7 @@ D. 写出最小示例并核对 自定义元素 的基线结果
 - 最后复核：2026-10-04
 - 下次复核：2027-08-17
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档、标准或权威教材；正文为离线教学重组
+- 来源性质：官方文档、标准或权威教材；本课核对关键词：WebComponents、自定义元素、ShadowDOM、slot、设计系统。
 
 | 参考资料 | 本课用途 |
 | --- | --- |
@@ -827,6 +655,7 @@ D. 写出最小示例并核对 自定义元素 的基线结果
 | [W3C Web 标准](https://www.w3.org/TR/) | HTML、CSS 与 Web 标准 |
 | [MDN CSS](https://developer.mozilla.org/docs/Web/CSS) | CSS 布局、选择器与动画 |
 
+| [本课术语索引：Web Components 实战](#核心概念定义) | 按本课输入、术语边界和错误表现逐项核对 |
 > 「Web Components 实战」的链接用于离线阅读后的延伸核对；App 不会自动联网。
 
 <!-- p1-project-review:start -->
