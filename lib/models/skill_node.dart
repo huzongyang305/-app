@@ -50,7 +50,7 @@ class SkillNode {
       title: json['title'] as String,
       description: json['description'] as String,
       category: json['category'] as String,
-      icon: IconData(json['icon'] as int, fontFamily: 'MaterialIcons'),
+      icon: const IconData(0xe1b1, fontFamily: 'MaterialIcons'), // Default icon
       progress: json['progress'] as int,
       prerequisites: List<String>.from(json['prerequisites'] ?? []),
       relatedLessons: List<String>.from(json['relatedLessons'] ?? []),
