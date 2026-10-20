@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../models/virtual_mentor.dart';
-import '../services/mentor_service.dart';
 
 class MentorSelectionScreen extends StatefulWidget {
   const MentorSelectionScreen({Key? key}) : super(key: key);
@@ -10,7 +9,6 @@ class MentorSelectionScreen extends StatefulWidget {
 }
 
 class _MentorSelectionScreenState extends State<MentorSelectionScreen> {
-  final MentorService _mentorService = MentorService();
   List<VirtualMentor> _mentors = [];
   String? _selectedMentorId;
 
@@ -22,7 +20,7 @@ class _MentorSelectionScreenState extends State<MentorSelectionScreen> {
 
   Future<void> _loadMentors() async {
     setState(() {
-      _mentors = _mentorService.getAllMentors();
+      _mentors = MentorService.getAllMentors();
       // TODO: 从本地存储加载用户已选择的导师
       _selectedMentorId = _mentors.isNotEmpty ? _mentors[0].id : null;
     });

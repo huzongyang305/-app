@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/skill_node.dart';
 import '../services/skill_tree_service.dart';
-import '../widgets/skill_node_widget.dart';
 
 class SkillTreeScreen extends StatefulWidget {
   const SkillTreeScreen({Key? key}) : super(key: key);

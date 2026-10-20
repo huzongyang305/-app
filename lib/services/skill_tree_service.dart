@@ -146,7 +146,7 @@ class SkillTreeService {
         title: 'Docker',
         description: '容器化技术',
         category: 'devops',
-        icon: Icons.docker,
+        icon: Icons.cloud,
         progress: 0,
         prerequisites: ['git'],
         relatedLessons: ['docker_basics', 'docker_compose'],
