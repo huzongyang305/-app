@@ -10,6 +10,7 @@ import '../services/progress_provider.dart';
 import '../services/settings_provider.dart';
 import '../widgets/responsive_content.dart';
 import 'daily_question_screen.dart';
+import 'gamification_hub_screen.dart';
 import 'home_screen.dart';
 import 'learn_screen.dart';
 import 'profile_screen.dart';
@@ -267,6 +268,7 @@ class _RootShellState extends State<RootShell> with WidgetsBindingObserver {
     'learn' => const LearnScreen(),
     'tools' => const ToolsScreen(),
     'profile' => const ProfileScreen(),
+    'gamification' => const GamificationHubScreen(),
     _ => const HomeScreen(),
   };
 
@@ -287,6 +289,11 @@ class _RootShellState extends State<RootShell> with WidgetsBindingObserver {
         icon: const Icon(Icons.person_outline),
         selectedIcon: const Icon(Icons.person),
         label: context.tr('navProfile'),
+      ),
+      'gamification' => NavigationDestination(
+        icon: const Icon(Icons.games_outlined),
+        selectedIcon: const Icon(Icons.games),
+        label: '游戏化',
       ),
       _ => NavigationDestination(
         icon: const Icon(Icons.home_outlined),

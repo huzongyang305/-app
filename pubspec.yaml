@@ -33,6 +33,10 @@ dependencies:
   timezone: ^0.10.0
   flutter_timezone: 5.1.1
 
+  # 游戏化功能依赖
+  shared_preferences: ^2.2.0
+  http: ^1.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
