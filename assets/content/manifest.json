@@ -53793,6 +53793,99 @@
             "language": "javascript",
             "slot": "declare"
           }
+        },
+        {
+          "id": "devops_monitoring",
+          "title": {
+            "zh": "监控告警体系搭建",
+            "en": "Monitoring and Alerting Stack"
+          },
+          "summary": {
+            "zh": "用 Prometheus、Grafana 与 Alertmanager 搭建完整的监控告警体系，覆盖指标采集、可视化与告警路由。",
+            "en": "Build a complete monitoring and alerting stack with Prometheus, Grafana and Alertmanager covering metrics, visualization and alert routing."
+          },
+          "file": "assets/content/devops_monitoring.md",
+          "minutes": 60,
+          "keywords": [
+            "Prometheus",
+            "Grafana",
+            "Alertmanager",
+            "监控告警",
+            "可观测性"
+          ],
+          "difficulty": "中级",
+          "order": 9,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "在 Prometheus 中，哪种指标类型只能递增，适合用来统计请求总数？",
+              "options": [
+                "Counter",
+                "Gauge",
+                "Histogram",
+                "Summary"
+              ],
+              "answer": 0,
+              "explanation": "在 `监控告警体系搭建` 第 1 题中，正确答案是「Counter」。Counter 是只增不减的指标类型，适合统计请求总数、错误总数等累计量。Gauge 可增可减适合温度、内存等当前值；Histogram 和 Summary 用于分布统计。"
+            },
+            {
+              "type": "single",
+              "question": "Alertmanager 中，将同一类告警合并为一条通知的功能叫什么？",
+              "options": [
+                "分组（Grouping）",
+                "抑制（Inhibition）",
+                "静默（Silencing）",
+                "路由（Routing）"
+              ],
+              "answer": 0,
+              "explanation": "在 `监控告警体系搭建` 第 2 题中，正确答案是「分组（Grouping）」。分组将相关告警合并为一条通知，避免告警风暴。抑制是当高级告警触发时屏蔽低级告警；静默是临时屏蔽告警；路由是决定告警发给谁。"
+            },
+            {
+              "type": "single",
+              "question": "SLO 为 99.9% 可用性，30 天内允许的最大故障时间约为多少？",
+              "options": [
+                "43 分钟",
+                "4.3 分钟",
+                "430 分钟",
+                "43 秒"
+              ],
+              "answer": 0,
+              "explanation": "在 `监控告警体系搭建` 第 3 题中，正确答案是「43 分钟」。30 天 = 43200 分钟，错误预算 = 43200 × 0.1% = 43.2 分钟。"
+            },
+            {
+              "type": "single",
+              "question": "Prometheus 默认使用哪种模型采集指标数据？",
+              "options": [
+                "拉取模型（Pull）",
+                "推送模型（Push）",
+                "广播模型（Broadcast）",
+                "订阅模型（Subscribe）"
+              ],
+              "answer": 0,
+              "explanation": "在 `监控告警体系搭建` 第 4 题中，正确答案是「拉取模型（Pull）」。Prometheus 主动从目标抓取指标数据。短生命周期任务可通过 Pushgateway 间接推送。"
+            },
+            {
+              "type": "multi",
+              "question": "以下哪些属于可观测性三大支柱？（多选）",
+              "options": [
+                "指标（Metrics）",
+                "日志（Logs）",
+                "链路追踪（Traces）",
+                "告警（Alerts）"
+              ],
+              "answers": [
+                0,
+                1,
+                2
+              ],
+              "answer": 0,
+              "explanation": "在 `监控告警体系搭建` 第 5 题中，正确答案是「指标、日志、链路追踪」。可观测性三大支柱是 Metrics、Logs 和 Traces。告警是基于指标触发的通知机制，不属于三大支柱。"
+            }
+          ],
+          "prerequisites": [
+            "cloud_observability_sre",
+            "docker"
+          ]
         }
       ]
     },
@@ -67748,6 +67841,200 @@
             "bigdata_batch_stream",
             "visual_kafka_partition"
           ]
+        }
+      ]
+    },
+    {
+      "id": "devops",
+      "title": {
+        "zh": "DevOps 工程",
+        "en": "DevOps Engineering"
+      },
+      "icon": "engineering",
+      "color": "E6522C",
+      "lessons": [
+        {
+          "id": "devops_cicd_pipeline",
+          "title": {
+            "zh": "CI/CD 流水线设计与实现",
+            "en": "CI/CD Pipeline Design"
+          },
+          "summary": {
+            "zh": "掌握 Jenkins、GitLab CI、GitHub Actions 的流水线配置与优化。",
+            "en": "Master pipeline config with Jenkins, GitLab CI, GitHub Actions."
+          },
+          "file": "assets/content/devops_cicd_pipeline.md",
+          "minutes": 60,
+          "keywords": [
+            "CI/CD",
+            "Jenkins",
+            "GitLab CI",
+            "GitHub Actions",
+            "流水线"
+          ],
+          "difficulty": "进阶",
+          "order": 0,
+          "quiz": []
+        },
+        {
+          "id": "devops_gitops_argocd",
+          "title": {
+            "zh": "GitOps 与 ArgoCD 实战",
+            "en": "GitOps & ArgoCD"
+          },
+          "summary": {
+            "zh": "理解 GitOps 理念，使用 ArgoCD 实现声明式部署与自动同步。",
+            "en": "Understand GitOps and implement declarative deployment with ArgoCD."
+          },
+          "file": "assets/content/devops_gitops_argocd.md",
+          "minutes": 65,
+          "keywords": [
+            "GitOps",
+            "ArgoCD",
+            "声明式",
+            "Kubernetes",
+            "自动同步"
+          ],
+          "difficulty": "高级",
+          "order": 1,
+          "quiz": []
+        },
+        {
+          "id": "devops_github_actions",
+          "title": {
+            "zh": "GitHub Actions 自动化实战",
+            "en": "GitHub Actions Automation"
+          },
+          "summary": {
+            "zh": "掌握工作流配置、矩阵策略、自定义 Action 与 CI/CD 集成。",
+            "en": "Master workflow config, matrix strategy, custom actions and CI/CD."
+          },
+          "file": "assets/content/devops_github_actions.md",
+          "minutes": 55,
+          "keywords": [
+            "GitHub Actions",
+            "工作流",
+            "矩阵策略",
+            "Action"
+          ],
+          "difficulty": "进阶",
+          "order": 2,
+          "quiz": []
+        },
+        {
+          "id": "devops_docker_registry",
+          "title": {
+            "zh": "容器镜像构建与仓库管理",
+            "en": "Docker Image & Registry"
+          },
+          "summary": {
+            "zh": "学习 Dockerfile 最佳实践、镜像瘦身、安全扫描与私有仓库搭建。",
+            "en": "Learn Dockerfile best practices, image optimization, scanning and registry."
+          },
+          "file": "assets/content/devops_docker_registry.md",
+          "minutes": 50,
+          "keywords": [
+            "Docker",
+            "镜像",
+            "Harbor",
+            "安全扫描",
+            "仓库"
+          ],
+          "difficulty": "进阶",
+          "order": 3,
+          "quiz": []
+        },
+        {
+          "id": "devops_deployment_strategies",
+          "title": {
+            "zh": "蓝绿部署与金丝雀发布",
+            "en": "Deployment Strategies"
+          },
+          "summary": {
+            "zh": "掌握蓝绿部署、金丝雀发布、A/B 测试与自动化回滚策略。",
+            "en": "Master blue-green, canary, A/B testing and automated rollback."
+          },
+          "file": "assets/content/devops_deployment_strategies.md",
+          "minutes": 60,
+          "keywords": [
+            "蓝绿部署",
+            "金丝雀",
+            "Istio",
+            "流量分割",
+            "回滚"
+          ],
+          "difficulty": "高级",
+          "order": 4,
+          "quiz": []
+        },
+        {
+          "id": "devops_terraform",
+          "title": {
+            "zh": "基础设施即代码（Terraform）",
+            "en": "Infrastructure as Code"
+          },
+          "summary": {
+            "zh": "使用 Terraform 管理云资源，掌握 HCL、模块、状态管理与团队协作。",
+            "en": "Manage cloud resources with Terraform, HCL, modules and state."
+          },
+          "file": "assets/content/devops_terraform.md",
+          "minutes": 65,
+          "keywords": [
+            "Terraform",
+            "IaC",
+            "HCL",
+            "模块",
+            "状态管理"
+          ],
+          "difficulty": "进阶",
+          "order": 5,
+          "quiz": []
+        },
+        {
+          "id": "devops_monitoring",
+          "title": {
+            "zh": "监控告警体系搭建",
+            "en": "Monitoring & Alerting"
+          },
+          "summary": {
+            "zh": "使用 Prometheus、Grafana、Alertmanager 构建完整的监控告警体系。",
+            "en": "Build monitoring with Prometheus, Grafana and Alertmanager."
+          },
+          "file": "assets/content/devops_monitoring.md",
+          "minutes": 60,
+          "keywords": [
+            "Prometheus",
+            "Grafana",
+            "Alertmanager",
+            "监控",
+            "SLI/SLO"
+          ],
+          "difficulty": "高级",
+          "order": 6,
+          "quiz": []
+        },
+        {
+          "id": "devops_logging_tracing",
+          "title": {
+            "zh": "日志聚合与链路追踪",
+            "en": "Logging & Tracing"
+          },
+          "summary": {
+            "zh": "搭建 ELK Stack、Jaeger 和 OpenTelemetry 实现日志与链路追踪。",
+            "en": "Build ELK Stack, Jaeger and OpenTelemetry for logging and tracing."
+          },
+          "file": "assets/content/devops_logging_tracing.md",
+          "minutes": 55,
+          "keywords": [
+            "ELK",
+            "Jaeger",
+            "OpenTelemetry",
+            "日志",
+            "链路追踪"
+          ],
+          "difficulty": "高级",
+          "order": 7,
+          "quiz": []
         }
       ]
     }
