@@ -659,6 +659,13 @@ func (s *Server) ListUsers(ctx context.Context, req *userv1.ListUsersRequest) (*
 
 **自评标准**：主问题必须对应 四种调用方式、契约演进规则与拦截器工程实践；每个术语都要能接上一句定义或边界；失败案例必须写成可观察现象，不能用“可能有风险”代替证据。
 
+
+## 延伸阅读
+
+想更直观地理解本课概念？推荐参阅以下图解专题：
+
+- [图解一次网页请求的完整链路](visual_http_timeline.md)
+
 ## 术语速查
 
 | 术语 | 一句话说明 |

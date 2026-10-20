@@ -4,11 +4,11 @@
 
 ![前端性能优化实战](images/category_web_performance.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：60 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：advanced · 预计用时：60 分钟
 
 ## 本节知识框架
 
-**课程定位**：所属分类 `html_css`（HTML 与 CSS），课程主题 `前端性能优化实战`，学习阶段 高级，建议用时 65 分钟。
+**课程定位**：所属分类 `html_css`（HTML 与 CSS），课程主题 `前端性能优化实战`，学习阶段 advanced，建议用时 60 分钟。
 
 本课主线：LCP/INP/CLS 三指标、加载与运行时优化、排查流程。
 
@@ -19,20 +19,20 @@
 
 ### 从概念到验证的学习链条
 
-1. `PerformanceObserver`：先掌握 测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报），再用它解释 `defer` 为什么会出现。
-2. `defer`：先掌握 关键路径**：首屏 CSS 内联，非关键 JS 用 `defer`/`async`，路由级代码分割，再用它解释 `preconnect` 为什么会出现。
-3. `preconnect`：先掌握 网络**：静态资源走 CDN、开启 HTTP/2 或 HTTP/3、避免域名分片、预连接关键域名（`preconnect`），再用它解释 `immutable` 为什么会出现。
-4. `immutable`：先掌握 缓存**：带哈希的静态资源用 `immutable` 长缓存，HTML 用协商缓存，再用它解释 本课示例的观察结果 为什么会出现。
+1. `PerformanceObserver`：先掌握 **测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报），再用它解释 `defer` 为什么会出现。
+2. `defer`：先掌握 **关键路径**：首屏 CSS 内联，非关键 JS 用 `defer`/`async`，路由级代码分割，再用它解释 `preconnect` 为什么会出现。
+3. `preconnect`：先掌握 **网络**：静态资源走 CDN、开启 HTTP/2 或 HTTP/3、避免域名分片、预连接关键域名（`preconnect`），再用它解释 `immutable` 为什么会出现。
+4. `immutable`：先掌握 **缓存**：带哈希的静态资源用 `immutable` 长缓存，HTML 用协商缓存，再用它解释 本课示例的观察结果 为什么会出现。
 
 **先修与衔接**：本课是「HTML 与 CSS」分类的第 11 课。先修内容：《实战：响应式落地页》。《实战：响应式落地页》里的 `实战`、`响应式` 是本课的前提。相关或后续课程：《设计令牌与样式架构》。
 
 ### 完成判据
 
-- **定义关**：不看正文也能说明 `PerformanceObserver` 是 测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报），并指出一个反例。
-- **机制关**：能按“输入 → 转换 → 输出 → 验证”复述 `前端性能优化实战`，而不是只背结论。
+- **定义关**：不看正文也能说明 `PerformanceObserver` 是 **测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报），并指出一个反例。
+- **机制关**：能按"输入 → 转换 → 输出 → 验证"复述 `前端性能优化实战`，而不是只背结论。
 - **示例关**：能运行或推演 `前端性能优化实战` 的 `text` 示例，并说明一个真实出现的标识符或字面量。
-- **证据关**：能指出 `前端性能优化实战` 示例里的 出现字面量 `project`，并说明它支持或反驳了本课的哪一条结论。
-- **排错关**：能复现 只看实验室数据，记录现象并按 结合字段数据（P75） 修复。
+- **证据关**：能指出 `前端性能优化实战` 示例里的 **出现字面量 `project`**，并说明它支持或反驳了本课的哪一条结论。
+- **排错关**：能复现 **只看实验室数据**，记录现象并按 **结合字段数据（P75）** 修复。
 - **迁移关**：能把 `性能优化`、`LCP`、`INP`、`CLS` 放进一个与 `前端性能优化实战` 不同的项目场景，并保持输入与验证条件可追踪。
 - **复盘关**：学完 `前端性能优化实战` 后，用一句话写下仍然不确定的结论，并列出下一次验证需要的输入、环境和成功判据。
 
@@ -46,10 +46,10 @@
 
 | 术语 | 操作性定义 | 常见边界与风险 |
 | --- | --- | --- |
-| PerformanceObserver | 测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（PerformanceObserver 采集上报）。 | 只在「测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（PerformanceObserver 采集上报）」这一前提下成立，换输入或换环境要重新验证。 |
-| defer | 关键路径**：首屏 CSS 内联，非关键 JS 用 defer/async，路由级代码分割。 | 易错：阻塞渲染；正确做法是`defer` / `async` 或延迟加载。 |
-| preconnect | 网络**：静态资源走 CDN、开启 HTTP/2 或 HTTP/3、避免域名分片、预连接关键域名（preconnect）。 | 网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。 |
-| immutable | 缓存**：带哈希的静态资源用 immutable 长缓存，HTML 用协商缓存。 | 静态检查只在编译期成立，运行期输入仍需校验。 |
+| PerformanceObserver | **测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（PerformanceObserver 采集上报）。 | 只在「**测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（PerformanceObserver 采集上报）」这一前提下成立，换输入或换环境要重新验证。 |
+| defer | **关键路径**：首屏 CSS 内联，非关键 JS 用 defer/async，路由级代码分割。 | 易错：阻塞渲染；正确做法是`defer` / `async` 或延迟加载。 |
+| preconnect | **网络**：静态资源走 CDN、开启 HTTP/2 或 HTTP/3、避免域名分片、预连接关键域名（preconnect）。 | 网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。 |
+| immutable | **缓存**：带哈希的静态资源用 immutable 长缓存，HTML 用协商缓存。 | 静态检查只在编译期成立，运行期输入仍需校验。 |
 
 ## 原理与运行机制
 
@@ -130,25 +130,25 @@
 ### 机制拆解：每一步的输入、动作与输出
 
 #### 1. `PerformanceObserver`
-- 输入：`性能优化`；本步把 测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报） 当作判断规则。
+- 输入：`性能优化`；本步把 **测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报） 当作判断规则。
 - 动作：围绕 `PerformanceObserver` 保留中间状态，并记录它与 `defer` 的对应关系。
 - 输出：`defer`，它可以被下一段代码、测试或记录继续使用。
-- `PerformanceObserver` 的失败条件：只在「测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）」这一前提下成立，换输入或换环境要重新验证。
+- `PerformanceObserver` 的失败条件：只在「**测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）」这一前提下成立，换输入或换环境要重新验证。
 
 #### 2. `defer`
-- 输入：`PerformanceObserver`；本步把 关键路径**：首屏 CSS 内联，非关键 JS 用 `defer`/`async`，路由级代码分割 当作判断规则。
+- 输入：`PerformanceObserver`；本步把 **关键路径**：首屏 CSS 内联，非关键 JS 用 `defer`/`async`，路由级代码分割 当作判断规则。
 - 动作：围绕 `defer` 保留中间状态，并记录它与 `preconnect` 的对应关系。
 - 输出：`preconnect`，它可以被下一段代码、测试或记录继续使用。
 - `defer` 的失败条件：当第三方脚本同步加载时，会出现阻塞渲染。
 
 #### 3. `preconnect`
-- 输入：`defer`；本步把 网络**：静态资源走 CDN、开启 HTTP/2 或 HTTP/3、避免域名分片、预连接关键域名（`preconnect`） 当作判断规则。
+- 输入：`defer`；本步把 **网络**：静态资源走 CDN、开启 HTTP/2 或 HTTP/3、避免域名分片、预连接关键域名（`preconnect`） 当作判断规则。
 - 动作：围绕 `preconnect` 保留中间状态，并记录它与 `immutable` 的对应关系。
 - 输出：`immutable`，它可以被下一段代码、测试或记录继续使用。
 - `preconnect` 的失败条件：网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。
 
 #### 4. `immutable`
-- 输入：`preconnect`；本步把 缓存**：带哈希的静态资源用 `immutable` 长缓存，HTML 用协商缓存 当作判断规则。
+- 输入：`preconnect`；本步把 **缓存**：带哈希的静态资源用 `immutable` 长缓存，HTML 用协商缓存 当作判断规则。
 - 动作：围绕 `immutable` 保留中间状态，并记录它与 `project` 的对应关系。
 - 输出：`project`，它可以被下一段代码、测试或记录继续使用。
 - `immutable` 的失败条件：静态检查只在编译期成立，运行期输入仍需校验。
@@ -167,11 +167,11 @@
 ### 复现实验记录
 
 - 环境：`前端性能优化实战` 使用 `text` 示例，固定 `性能优化`、`LCP`、`INP`、`CLS` 作为第一组条件。
-- 首轮输入：先确认 出现字面量 `project`，预测 `PerformanceObserver` 会怎样变化。
+- 首轮输入：先确认 **出现字面量 `project`**，预测 `PerformanceObserver` 会怎样变化。
 - 基线观察：记录命令、输入、输出和错误原文，不用截图代替可复制的文本。
 - 单变量修改：只改变 `性能优化`，观察 `immutable` 是否仍满足定义。
-- 失败注入：复现 只看实验室数据，确认现象是 与真实用户体验脱节。
-- 记录结论：把“修改前、修改后、预期变化、实际变化”写成四列表，这样复盘 `前端性能优化实战` 时才能区分概念错误与实现错误。
+- 失败注入：复现 **只看实验室数据**，确认现象是 **与真实用户体验脱节**。
+- 记录结论：把"修改前、修改后、预期变化、实际变化"写成四列表，这样复盘 `前端性能优化实战` 时才能区分概念错误与实现错误。
 
 ## 典型应用场景
 
@@ -210,15 +210,15 @@ README.md
 ### 最小验证场景
 
 - 准备：保留 `text` 示例的原始输入，先记录 `前端性能优化实战` 的基线输出和完整运行命令。
-- 观察：先核对 出现字面量 `project`，再改变一个与 `PerformanceObserver` 相关的条件。
+- 观察：先核对 **出现字面量 `project`**，再改变一个与 `PerformanceObserver` 相关的条件。
 - 判定：新结果与 `前端性能优化实战` 的基线不同不等于错误；只有当差异破坏了 `PerformanceObserver` 的定义或错误表中的约束，才判定为失败。
 
 ### 选择与边界
 
-- 使用 `PerformanceObserver` 时，先满足它的定义：测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）；只在「测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）」这一前提下成立，换输入或换环境要重新验证。
-- 使用 `defer` 时，先满足它的定义：关键路径**：首屏 CSS 内联，非关键 JS 用 `defer`/`async`，路由级代码分割；易错：阻塞渲染；正确做法是`defer` / `async` 或延迟加载。
-- 使用 `preconnect` 时，先满足它的定义：网络**：静态资源走 CDN、开启 HTTP/2 或 HTTP/3、避免域名分片、预连接关键域名（`preconnect`）；网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。
-- 使用 `immutable` 时，先满足它的定义：缓存**：带哈希的静态资源用 `immutable` 长缓存，HTML 用协商缓存；静态检查只在编译期成立，运行期输入仍需校验。
+- 使用 `PerformanceObserver` 时，先满足它的定义：**测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）；只在「**测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）」这一前提下成立，换输入或换环境要重新验证。
+- 使用 `defer` 时，先满足它的定义：**关键路径**：首屏 CSS 内联，非关键 JS 用 `defer`/`async`，路由级代码分割；易错：阻塞渲染；正确做法是`defer` / `async` 或延迟加载。
+- 使用 `preconnect` 时，先满足它的定义：**网络**：静态资源走 CDN、开启 HTTP/2 或 HTTP/3、避免域名分片、预连接关键域名（`preconnect`）；网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。
+- 使用 `immutable` 时，先满足它的定义：**缓存**：带哈希的静态资源用 `immutable` 长缓存，HTML 用协商缓存；静态检查只在编译期成立，运行期输入仍需校验。
 
 ### 项目专属规格
 
@@ -285,10 +285,10 @@ README.md
 6. 出现字面量 `case`；它出现在 `前端性能优化实战` 的示例中，阅读时先确认它前后各发生了什么。
 7. 出现字面量 `normal`；它出现在 `前端性能优化实战` 的示例中，阅读时先确认它前后各发生了什么。
 8. 出现字面量 `value`；它出现在 `前端性能优化实战` 的示例中，阅读时先确认它前后各发生了什么。
-- 在 `前端性能优化实战` 中与 `PerformanceObserver` 对照：示例必须能支持 测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报），否则说明这一段还缺少实现或验证步骤。
-- 在 `前端性能优化实战` 中与 `defer` 对照：示例必须能支持 关键路径**：首屏 CSS 内联，非关键 JS 用 `defer`/`async`，路由级代码分割，否则说明这一段还缺少实现或验证步骤。
-- 在 `前端性能优化实战` 中与 `preconnect` 对照：示例必须能支持 网络**：静态资源走 CDN、开启 HTTP/2 或 HTTP/3、避免域名分片、预连接关键域名（`preconnect`），否则说明这一段还缺少实现或验证步骤。
-- 在 `前端性能优化实战` 中与 `immutable` 对照：示例必须能支持 缓存**：带哈希的静态资源用 `immutable` 长缓存，HTML 用协商缓存，否则说明这一段还缺少实现或验证步骤。
+- 在 `前端性能优化实战` 中与 `PerformanceObserver` 对照：示例必须能支持 **测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报），否则说明这一段还缺少实现或验证步骤。
+- 在 `前端性能优化实战` 中与 `defer` 对照：示例必须能支持 **关键路径**：首屏 CSS 内联，非关键 JS 用 `defer`/`async`，路由级代码分割，否则说明这一段还缺少实现或验证步骤。
+- 在 `前端性能优化实战` 中与 `preconnect` 对照：示例必须能支持 **网络**：静态资源走 CDN、开启 HTTP/2 或 HTTP/3、避免域名分片、预连接关键域名（`preconnect`），否则说明这一段还缺少实现或验证步骤。
+- 在 `前端性能优化实战` 中与 `immutable` 对照：示例必须能支持 **缓存**：带哈希的静态资源用 `immutable` 长缓存，HTML 用协商缓存，否则说明这一段还缺少实现或验证步骤。
 
 ## 时间/空间复杂度或性能分析
 
@@ -319,11 +319,11 @@ README.md
 - `前端性能优化实战` 的 `INP`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
 - `前端性能优化实战` 的 `CLS`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
 - `前端性能优化实战` 的 `Lighthouse`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `前端性能优化实战` 中 `PerformanceObserver` 的边界：只在「测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）」这一前提下成立，换输入或换环境要重新验证。达到边界时不要外推，必须重新测量。
+- `前端性能优化实战` 中 `PerformanceObserver` 的边界：只在「**测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）」这一前提下成立，换输入或换环境要重新验证。达到边界时不要外推，必须重新测量。
 - `前端性能优化实战` 中 `defer` 的边界：易错：阻塞渲染；正确做法是`defer` / `async` 或延迟加载。达到边界时不要外推，必须重新测量。
 - `前端性能优化实战` 中 `preconnect` 的边界：网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。达到边界时不要外推，必须重新测量。
 - `前端性能优化实战` 中 `immutable` 的边界：静态检查只在编译期成立，运行期输入仍需校验。达到边界时不要外推，必须重新测量。
-- `前端性能优化实战` 的代码证据：先验证 出现字面量 `project`，再记录该路径的输入规模与耗时；只看代码行数不能推出复杂度。
+- `前端性能优化实战` 的代码证据：先验证 **出现字面量 `project`**，再记录该路径的输入规模与耗时；只看代码行数不能推出复杂度。
 
 ## 常见误区与易错点
 
@@ -427,9 +427,9 @@ README.md
 
 ### 容易混淆的相邻概念
 
-- `PerformanceObserver` 与 `defer`：前者强调 测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）；后者强调 关键路径**：首屏 CSS 内联，非关键 JS 用 `defer`/`async`，路由级代码分割。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
-- `defer` 与 `preconnect`：前者强调 关键路径**：首屏 CSS 内联，非关键 JS 用 `defer`/`async`，路由级代码分割；后者强调 网络**：静态资源走 CDN、开启 HTTP/2 或 HTTP/3、避免域名分片、预连接关键域名（`preconnect`）。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
-- `preconnect` 与 `immutable`：前者强调 网络**：静态资源走 CDN、开启 HTTP/2 或 HTTP/3、避免域名分片、预连接关键域名（`preconnect`）；后者强调 缓存**：带哈希的静态资源用 `immutable` 长缓存，HTML 用协商缓存。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
+- `PerformanceObserver` 与 `defer`：前者强调 **测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）；后者强调 **关键路径**：首屏 CSS 内联，非关键 JS 用 `defer`/`async`，路由级代码分割。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
+- `defer` 与 `preconnect`：前者强调 **关键路径**：首屏 CSS 内联，非关键 JS 用 `defer`/`async`，路由级代码分割；后者强调 **网络**：静态资源走 CDN、开启 HTTP/2 或 HTTP/3、避免域名分片、预连接关键域名（`preconnect`）。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
+- `preconnect` 与 `immutable`：前者强调 **网络**：静态资源走 CDN、开启 HTTP/2 或 HTTP/3、避免域名分片、预连接关键域名（`preconnect`）；后者强调 **缓存**：带哈希的静态资源用 `immutable` 长缓存，HTML 用协商缓存。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
 
 ## 自测题与参考答案
 
@@ -439,9 +439,9 @@ README.md
 
 不看正文，写出 `PerformanceObserver` 的操作性定义，并说明它与 `defer` 的区别。
 
-**参考答案**：测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）。
+**参考答案**：**测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）。
 
-`defer` 的定位是：关键路径**：首屏 CSS 内联，非关键 JS 用 `defer`/`async`，路由级代码分割；两者的差别要从适用对象与失败模式上说明。
+`defer` 的定位是：**关键路径**：首屏 CSS 内联，非关键 JS 用 `defer`/`async`，路由级代码分割；两者的差别要从适用对象与失败模式上说明。
 
 ### 自测 2（排错）
 
@@ -459,7 +459,7 @@ README.md
 
 阅读本课开头的 `text` 示例，说明它体现了`PerformanceObserver` 的哪一条性质，并指出改动哪个输入会让这条性质不再成立。
 
-**参考答案**：`PerformanceObserver` 的定义是 测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报），示例正是在实现这条定义。改动与 `PerformanceObserver` 有关的一个输入后，如果结果不再符合 `前端性能优化实战` 的正文描述，就说明该性质只在当前前提成立。
+**参考答案**：`PerformanceObserver` 的定义是 **测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报），示例正是在实现这条定义。改动与 `PerformanceObserver` 有关的一个输入后，如果结果不再符合 `前端性能优化实战` 的正文描述，就说明该性质只在当前前提成立。
 
 ### 自测 5（迁移）
 
@@ -471,48 +471,48 @@ README.md
 
 用一个表格对比 `PerformanceObserver` 与 `defer`：各写一行适用场景、一行失败表现。
 
-**参考答案**：`PerformanceObserver` 的定义是测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）；`defer` 的定义是关键路径**：首屏 CSS 内联，非关键 JS 用 `defer`/`async`，路由级代码分割。两者的失败表现分别对应本课错误表里与本术语相关的行。
+**参考答案**：`PerformanceObserver` 的定义是**测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）；`defer` 的定义是**关键路径**：首屏 CSS 内联，非关键 JS 用 `defer`/`async`，路由级代码分割。两者的失败表现分别对应本课错误表里与本术语相关的行。
 
 ### 自测 7（排错顺序）
 
-面对「只看实验室数据」引发的问题，请把“复现 与真实用户体验脱节 → 保留证据 → 结合字段数据（P75） → 回归验证”四步写成可执行的检查清单。
+面对「只看实验室数据」引发的问题，请把"复现 与真实用户体验脱节 → 保留证据 → 结合字段数据（P75） → 回归验证"四步写成可执行的检查清单。
 
 **参考答案**：第一步按与真实用户体验脱节复现；第二步记录输入、版本与完整报错；第三步按结合字段数据（P75）只改一处；第四步重跑并确认失败路径也按预期变化。
 
 ### 自测 8（边界判断）
 
-针对 `immutable`，分别写出“可以使用”的条件和“结论不再成立”的条件。
+针对 `immutable`，分别写出"可以使用"的条件和"结论不再成立"的条件。
 
-**参考答案**：静态检查只在编译期成立，运行期输入仍需校验。 同时要把 `immutable` 的定义 缓存**：带哈希的静态资源用 `immutable` 长缓存，HTML 用协商缓存 与实际输入逐项对照。
+**参考答案**：静态检查只在编译期成立，运行期输入仍需校验。 同时要把 `immutable` 的定义 **缓存**：带哈希的静态资源用 `immutable` 长缓存，HTML 用协商缓存 与实际输入逐项对照。
 
 ### 自测 9（机制重建）
 
 不看正文，按输入、转换、输出、验证四段重建 `PerformanceObserver` → `defer` → `preconnect` → `immutable` 的作用链。
 
-**参考答案**：起点是 `PerformanceObserver` 的定义 测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）；中间每一步都保留可观察状态；终点由 `immutable` 检查，失败时回到错误表定位第一个偏离定义的步骤。
+**参考答案**：起点是 `PerformanceObserver` 的定义 **测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）；中间每一步都保留可观察状态；终点由 `immutable` 检查，失败时回到错误表定位第一个偏离定义的步骤。
 
 ### 自测 10（综合排错）
 
-在 `前端性能优化实战` 中，现象是 收益不明甚至回退。请围绕 优化不验证 写出最小复现、关键证据、修复动作和回归验证，并说明为什么不能只凭一次运行下结论。
+在 `前端性能优化实战` 中，现象是 **收益不明甚至回退**。请围绕 **优化不验证** 写出最小复现、关键证据、修复动作和回归验证，并说明为什么不能只凭一次运行下结论。
 
-**参考答案**：先复现 优化不验证，记录输入与完整错误；再按 前后对比同口径指标 只改一处。回归时同时跑正常路径和边界路径，只有两次结果都可解释，才把修复视为完成。
+**参考答案**：先复现 **优化不验证**，记录输入与完整错误；再按 **前后对比同口径指标** 只改一处。回归时同时跑正常路径和边界路径，只有两次结果都可解释，才把修复视为完成。
 
 ### 自测 11（一分钟复述）
 
 用每分钟约 200 字的速度复述 `前端性能优化实战`：先给主问题，再按顺序说出 `PerformanceObserver`、`defer`、`preconnect`、`immutable`，最后给一个失败案例。
 
-**自评标准**：主问题必须对应 LCP/INP/CLS 三指标、加载与运行时优化、排查流程；每个术语都要能接上一句定义或边界；失败案例必须写成可观察现象，不能用“可能有风险”代替证据。
+**自评标准**：主问题必须对应 LCP/INP/CLS 三指标、加载与运行时优化、排查流程；每个术语都要能接上一句定义或边界；失败案例必须写成可观察现象，不能用"可能有风险"代替证据。
 
 ## 术语速查
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| `PerformanceObserver` | 测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）。 |
-| `defer` | 关键路径**：首屏 CSS 内联，非关键 JS 用 `defer`/`async`，路由级代码分割。 |
-| `preconnect` | 网络**：静态资源走 CDN、开启 HTTP/2 或 HTTP/3、避免域名分片、预连接关键域名（`preconnect`）。 |
-| `immutable` | 缓存**：带哈希的静态资源用 `immutable` 长缓存，HTML 用协商缓存。 |
+| `PerformanceObserver` | **测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）。 |
+| `defer` | **关键路径**：首屏 CSS 内联，非关键 JS 用 `defer`/`async`，路由级代码分割。 |
+| `preconnect` | **网络**：静态资源走 CDN、开启 HTTP/2 或 HTTP/3、避免域名分片、预连接关键域名（`preconnect`）。 |
+| `immutable` | **缓存**：带哈希的静态资源用 `immutable` 长缓存，HTML 用协商缓存。 |
 
-**术语关系**：`PerformanceObserver`（测量方式：实验室用 Lighthouse/Performance 面板） → `defer`（关键路径**：首屏 CSS 内联） → `preconnect`（网络**：静态资源走 CDN、开启 HTTP/2 或 HTTP/3、避免域名分片、预连接关键域名（`preconnect`）） → `immutable`（缓存**：带哈希的静态资源用 `immutable` 长缓存）。
+**术语关系**：`PerformanceObserver`（**测量方式**：实验室用 Lighthouse/Performance 面板） → `defer`（**关键路径**：首屏 CSS 内联） → `preconnect`（**网络**：静态资源走 CDN、开启 HTTP/2 或 HTTP/3、避免域名分片、预连接关键域名（`preconnect`）） → `immutable`（**缓存**：带哈希的静态资源用 `immutable` 长缓存）。
 
 ## 考点精讲
 
@@ -528,7 +528,7 @@ README.md
 
 - **题目**：`前端性能优化实战` 的示例代码用于验证 `PerformanceObserver`，其背景是LCP/INP/CLS 三指标、加载与运行时优化、排查流程。代码的真实内容是下面哪一项？
 - **正确项**：出现字面量 `async`
-- **判断依据**：这道题落在术语 `PerformanceObserver` 上：测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）。复习时把 `PerformanceObserver` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：这道题落在术语 `PerformanceObserver` 上：**测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）。复习时把 `PerformanceObserver` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
 
 ### 考点 3：第 3 题
 
@@ -552,26 +552,26 @@ README.md
 
 - **题目**：把 `前端性能优化实战` 中与 `PerformanceObserver` 有关的步骤调整为正确顺序；该课主线是LCP/INP/CLS 三指标、加载与运行时优化、排查流程。
 - **正确项**：先用 Lighthouse 定位是加载问题还是运行时问题 → 打开 Performance 面板录制用户操作，找长任务（红色三角）与强制同步布局（紫色） → 用 Coverage 面板看未使用的 JS/CSS 占比 → 优化后用同一环境复测并记录前后数据，避免凭感觉判断
-- **判断依据**：这道题落在术语 `PerformanceObserver` 上：测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）。复习时把 `PerformanceObserver` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：这道题落在术语 `PerformanceObserver` 上：**测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）。复习时把 `PerformanceObserver` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
 
 ### 考点 7：`PerformanceObserver`
 
-- **要点**：测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）。
-- **PerformanceObserver 的边界**：只在「测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）」这一前提下成立，换输入或换环境要重新验证。
+- **要点**：**测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）。
+- **PerformanceObserver 的边界**：只在「**测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）」这一前提下成立，换输入或换环境要重新验证。
 
 ### 考点 8：`defer`
 
-- **要点**：关键路径**：首屏 CSS 内联，非关键 JS 用 `defer`/`async`，路由级代码分割。
+- **要点**：**关键路径**：首屏 CSS 内联，非关键 JS 用 `defer`/`async`，路由级代码分割。
 - **defer 的边界**：易错：阻塞渲染；正确做法是`defer` / `async` 或延迟加载。
 
 ### 考点 9：`preconnect`
 
-- **要点**：网络**：静态资源走 CDN、开启 HTTP/2 或 HTTP/3、避免域名分片、预连接关键域名（`preconnect`）。
+- **要点**：**网络**：静态资源走 CDN、开启 HTTP/2 或 HTTP/3、避免域名分片、预连接关键域名（`preconnect`）。
 - **preconnect 的边界**：网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。
 
 ### 考点 10：`immutable`
 
-- **要点**：缓存**：带哈希的静态资源用 `immutable` 长缓存，HTML 用协商缓存。
+- **要点**：**缓存**：带哈希的静态资源用 `immutable` 长缓存，HTML 用协商缓存。
 - **immutable 的边界**：静态检查只在编译期成立，运行期输入仍需校验。
 
 ### 考点 11：排错——只看实验室数据
@@ -586,20 +586,20 @@ README.md
 
 ### 考点 13：综合辨析——`PerformanceObserver` 与 `immutable`
 
-- **辨析点**：`PerformanceObserver` 的定义是 测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）；`immutable` 的定义是 缓存**：带哈希的静态资源用 `immutable` 长缓存，HTML 用协商缓存。
+- **辨析点**：`PerformanceObserver` 的定义是 **测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）；`immutable` 的定义是 **缓存**：带哈希的静态资源用 `immutable` 长缓存，HTML 用协商缓存。
 - **答题要求**：面对 `前端性能优化实战` 的题目，先判断描述的是 `PerformanceObserver` 还是 `immutable`，再归到对应定义，最后写出一个会让该定义失效的边界输入。
 
 ### 考点 14：排错评分点
 
-- **现象分**：能写出 与真实用户体验脱节，而不是只写“程序有错”。
-- **证据分**：保留触发 只看实验室数据 的输入、版本和错误原文。
-- **修复分**：按 结合字段数据（P75） 只改一处，并同时回归正常路径与边界路径。
+- **现象分**：能写出 **与真实用户体验脱节**，而不是只写"程序有错"。
+- **证据分**：保留触发 **只看实验室数据** 的输入、版本和错误原文。
+- **修复分**：按 **结合字段数据（P75）** 只改一处，并同时回归正常路径与边界路径。
 
 ## 内容元数据
 
 - 内容版本：v2.0
 - 最后更新：2026-10-06
-- 学习阶段：高级
+- 学习阶段：advanced
 - 适用环境：现代浏览器（Chrome/Firefox/Safari）
 ；本课聚焦 性能优化。
 - 内容来源：内置结构化课程与工程实践整理

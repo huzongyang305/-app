@@ -427,6 +427,13 @@ print(guard_production("prod", {"delete": 1}, allow_delete=False))
 
 **自评标准**：主问题必须对应 Provider/State/Module、工作流与最佳实践；每个术语都要能接上一句定义或边界；失败案例必须写成可观察现象，不能用“可能有风险”代替证据。
 
+
+## 延伸阅读
+
+想更直观地理解本课概念？推荐参阅以下图解专题：
+
+- [图解 Kubernetes 调度与探针](visual_k8s_scheduling.md)
+
 ## 术语速查
 
 | 术语 | 一句话说明 |

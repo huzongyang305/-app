@@ -1,171 +1,168 @@
 # Jetpack Compose 声明式 UI
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：50 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：intermediate · 预计用时：45 分钟
 
-![Jetpack Compose 重组与状态](images/diagram_mobile_compose.webp)
-
-![Jetpack Compose 声明式 UI](images/category_mobile_compose.webp)
+![Jetpack Compose 架构图](images/diagram_mobile_compose.webp)
 
 ## 本节知识框架
 
-**课程定位**：所属分类 `flutter`（移动开发），课程主题 `Jetpack Compose 声明式 UI`，学习阶段 进阶，建议用时 45 分钟。
+这节课我们来聊 Jetpack Compose 的核心玩法。简单来说，Compose 是 Android 上用来画界面的新方式——你不再写 XML 布局文件，而是用 Kotlin 函数直接描述界面长什么样。
 
-本课主线：重组机制、状态提升、副作用与重组范围优化。
+主线就三个关键词：重组机制、状态提升、副作用管理。搞懂这三件事，Compose 就算入门了。
 
-**学完本课应当能够**
-- 说清 `状态提升` 与 `可组合函数` 的含义与区别，并各举一个正例和一个反例。
-- 用本课示例验证 `重组` 的行为，记录输入、输出与失败条件。
-- 遇到「在 Composable 里发请求」这类问题时，能说出触发条件与修复顺序。
+**学完这节课你应该能做到：**
+- 用自己的话说清楚什么是 Composable、什么是状态提升，各举一个例子
+- 跑通课里的示例代码，改一个变量看看界面怎么变
+- 遇到"界面重复请求数据"这类问题，知道该去哪里修
 
-### 从概念到验证的学习链条
-
-1. `状态提升`：先掌握 把状态从子组件提到共同父级，让数据单向流动，组件只负责渲染，便于复用与测试，再用它解释 `可组合函数` 为什么会出现。
-2. `可组合函数`：先掌握 用 @Composable 标注的界面函数，描述「给定状态界面长什么样」，再用它解释 `重组` 为什么会出现。
-3. `重组`：先掌握 状态变化后 Compose 只重新执行受影响的可组合函数，而不是整棵界面树，再用它解释 `单向数据流` 为什么会出现。
-4. `单向数据流`：先掌握 状态向下传、事件向上抛，界面不直接改数据，便于测试与推理，再用它解释 `修饰符` 为什么会出现。
-5. `修饰符`：先掌握 修饰符顺序有影响：padding 在 background 之前与之后，效果完全不同，再用它解释 本课示例的观察结果 为什么会出现。
-
-**先修与衔接**：本课是「移动开发」分类的第 10 课。先修内容：《React Native 跨平台开发》。《React Native 跨平台开发》里的 `Hooks`、`原生模块` 是本课的前提。相关或后续课程：《鸿蒙 ArkTS 应用开发》。
-
-### 完成判据
-
-- **定义关**：不看正文也能说明 `状态提升` 是 把状态从子组件提到共同父级，让数据单向流动，组件只负责渲染，便于复用与测试，并指出一个反例。
-- **机制关**：能按“输入 → 转换 → 输出 → 验证”复述 `Jetpack Compose 声明式 UI`，而不是只背结论。
-- **示例关**：能运行或推演 `Jetpack Compose 声明式 UI` 的 `kotlin` 示例，并说明一个真实出现的标识符或字面量。
-- **证据关**：能指出 `Jetpack Compose 声明式 UI` 示例里的 调用了 `LessonScreen()`，并说明它支持或反驳了本课的哪一条结论。
-- **排错关**：能复现 在 Composable 里发请求，记录现象并按 用 `LaunchedEffect` 修复。
-- **迁移关**：能把 `Compose`、`声明式UI`、`重组`、`状态提升` 放进一个与 `Jetpack Compose 声明式 UI` 不同的项目场景，并保持输入与验证条件可追踪。
-- **复盘关**：学完 `Jetpack Compose 声明式 UI` 后，用一句话写下仍然不确定的结论，并列出下一次验证需要的输入、环境和成功判据。
+**先修要求：** 建议先学过《React Native 跨平台开发》，里面提到的 Hooks 和原生模块概念会在这节课里用到。后续可以衔接《鸿蒙 ArkTS 应用开发》。
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
-- [ ] 能完成一次自测，并把错题对照错误表定位原因。
+- [ ] 能不看正文说出 Composable、状态提升、重组、单向数据流、修饰符这五个术语的意思，并各举一个反例
+- [ ] 能运行或推演课里的 Kotlin 示例，记录输入、输出和出错时的现象
+- [ ] 能完成下面的自测题，把错题对照常见误区表定位原因
+- [ ] 能说出 LaunchedEffect 和 DisposableEffect 分别用在什么场景
 
 ## 核心概念定义
 
-| 术语 | 操作性定义 | 常见边界与风险 |
-| --- | --- | --- |
-| 状态提升 | 把状态从子组件提到共同父级，让数据单向流动，组件只负责渲染，便于复用与测试。 | 易错：无法共享与测试；正确做法是状态提升到 ViewModel。 |
-| 可组合函数 | 用 @Composable 标注的界面函数，描述「给定状态界面长什么样」。 | 缓存与状态残留会让结果过期，先明确失效策略再判断正确性。 |
-| 重组 | 状态变化后 Compose 只重新执行受影响的可组合函数，而不是整棵界面树。 | 易错：重组时重复请求；正确做法是用 `LaunchedEffect`。 |
-| 单向数据流 | 状态向下传、事件向上抛，界面不直接改数据，便于测试与推理。 | 缓存与状态残留会让结果过期，先明确失效策略再判断正确性。 |
-| 修饰符 | 修饰符顺序有影响：padding 在 background 之前与之后，效果完全不同 | 易错：样式与预期不符；正确做法是记住顺序有意义。 |
+先过一遍关键术语，后面讲原理和写代码时会反复出现。
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| Composable（可组合函数） | 用 @Composable 标注的函数，职责就是描述"给定状态，界面长什么样" |
+| 重组（Recomposition） | 状态变了之后，Compose 只重新执行受影响的那几个 Composable，而不是把整棵界面树重画一遍 |
+| 状态提升（State Hoisting） | 把状态从子组件挪到共同父级，让数据单向流动，子组件只负责展示，这样更好复用和测试 |
+| 单向数据流 | 状态往下传、事件往上抛，界面不直接修改数据源，方便推理和调试 |
+| 修饰符（Modifier） | 给组件加样式、尺寸、点击事件等，顺序不同效果完全不同 |
+| 副作用（Side Effect） | 在组合过程之外要做的事情，比如发网络请求、注册监听器，要用 LaunchedEffect 等 API 来管理 |
 
 ## 原理与运行机制
 
-### 机制总览
+### 一句话理解 Compose
 
-**教材衔接：核心理念**
+Compose 的核心思想就是：**UI = f(状态)**。状态变了，界面自动更新，你不需要手动去找控件改内容。
 
-Compose 用「函数描述 UI」取代 XML 布局：UI 是状态的函数，状态变了就重组（recompose）受影响的部分。理解重组的作用域与稳定性，是写好 Compose 的关键。
+打个比方：你画一幅画，画的内容取决于你手里的颜料（状态）。颜料换了，画自动跟着变，你不用把整幅画撕了重画——只需要改用了这种颜料的那几笔就行了。这就是重组。
 
-| 概念 | 含义 |
-| --- | --- |
-| 可组合函数 | 标注 `@Composable` 的函数，描述一段 UI |
-| 重组 | 状态变化时重新执行受影响的 composable |
-| 状态提升 | 把状态交给调用方，组件只负责展示 |
-| 副作用 | 在组合之外执行的动作（`LaunchedEffect`、`DisposableEffect`） |
-| 记忆 | `remember` 在重组间保留值 |
-| 稳定性 | 参数稳定则可跳过重组，性能更好 |
+### 重组是怎么工作的
 
-**失败路径（来自本课错误表）**
-- 在 Composable 里发请求 → 重组时重复请求 → 用 `LaunchedEffect`。
-- 用普通变量存状态 → 界面不更新 → 用 `mutableStateOf`。
-- 列表不给 key → 元素状态错位 → `key = { it.id }`。
-- 修饰符顺序随意 → 样式与预期不符 → 记住顺序有意义。
-### 机制拆解：每一步的输入、动作与输出
+1. 你用 `mutableStateOf` 创建了一个可观察的状态
+2. 某个 Composable 函数读到了这个状态
+3. 状态发生变化
+4. Compose 找到所有读到了这个状态的 Composable，只重新执行它们
+5. 界面局部更新，其他部分不动
 
-#### 1. `状态提升`
-- 输入：`Compose`；本步把 把状态从子组件提到共同父级，让数据单向流动，组件只负责渲染，便于复用与测试 当作判断规则。
-- 动作：围绕 `状态提升` 保留中间状态，并记录它与 `可组合函数` 的对应关系。
-- 输出：`可组合函数`，它可以被下一段代码、测试或记录继续使用。
-- `状态提升` 的失败条件：当状态放太深时，会出现无法共享与测试。
+关键点：重组是按"作用域"来的。如果一个 Composable 没读到变化的状态，它就不会被重新执行。这就是为什么我们说"缩小重组范围"是性能优化的核心。
 
-#### 2. `可组合函数`
-- 输入：`状态提升`；本步把 用 @Composable 标注的界面函数，描述「给定状态界面长什么样」 当作判断规则。
-- 动作：围绕 `可组合函数` 保留中间状态，并记录它与 `重组` 的对应关系。
-- 输出：`重组`，它可以被下一段代码、测试或记录继续使用。
-- `可组合函数` 的失败条件：缓存与状态残留会让结果过期，先明确失效策略再判断正确性。
+### 状态提升的流程
 
-#### 3. `重组`
-- 输入：`可组合函数`；本步把 状态变化后 Compose 只重新执行受影响的可组合函数，而不是整棵界面树 当作判断规则。
-- 动作：围绕 `重组` 保留中间状态，并记录它与 `单向数据流` 的对应关系。
-- 输出：`单向数据流`，它可以被下一段代码、测试或记录继续使用。
-- `重组` 的失败条件：当在 Composable 里发请求时，会出现重组时重复请求。
+假设你有一个输入框和一个按钮在同一个界面里：
 
-#### 4. `单向数据流`
-- 输入：`重组`；本步把 状态向下传、事件向上抛，界面不直接改数据，便于测试与推理 当作判断规则。
-- 动作：围绕 `单向数据流` 保留中间状态，并记录它与 `修饰符` 的对应关系。
-- 输出：`修饰符`，它可以被下一段代码、测试或记录继续使用。
-- `单向数据流` 的失败条件：缓存与状态残留会让结果过期，先明确失效策略再判断正确性。
+1. 输入框需要记住用户输入的文字 → 这是状态
+2. 按钮需要读到这段文字才能提交 → 状态不能只放在输入框内部
+3. 把状态提到它们共同的父组件里 → 这就是状态提升
+4. 输入框变成"无状态组件"：接收文字、接收回调、只管展示
+5. 父组件持有状态，决定怎么处理事件
 
-#### 5. `修饰符`
-- 输入：`单向数据流`；本步把 修饰符顺序有影响：padding 在 background 之前与之后，效果完全不同 当作判断规则。
-- 动作：围绕 `修饰符` 保留中间状态，并记录它与 `LessonScreen` 的对应关系。
-- 输出：`LessonScreen`，它可以被下一段代码、测试或记录继续使用。
-- `修饰符` 的失败条件：当修饰符顺序随意时，会出现样式与预期不符。
+好处很明显：输入框可以在别的地方复用，测试的时候也不需要关心状态从哪来。
 
-### 示例中的可观察事实
+### 副作用管理
 
-1. 调用了 `LessonScreen()`；它对应的课程主题是 `Jetpack Compose 声明式 UI`。
-2. 调用了 `collectAsStateWithLifecycle()`；它对应的课程主题是 `Jetpack Compose 声明式 UI`。
-3. 调用了 `LaunchedEffect()`；它对应的课程主题是 `Jetpack Compose 声明式 UI`。
-4. 调用了 `load()`；它对应的课程主题是 `Jetpack Compose 声明式 UI`。
-5. 调用了 `Column()`；它对应的课程主题是 `Jetpack Compose 声明式 UI`。
-6. 调用了 `fillMaxSize()`；它对应的课程主题是 `Jetpack Compose 声明式 UI`。
-7. 调用了 `padding()`；它对应的课程主题是 `Jetpack Compose 声明式 UI`。
-8. 调用了 `CircularProgressIndicator()`；它对应的课程主题是 `Jetpack Compose 声明式 UI`。
+Compose 的 Composable 函数理论上应该只做"描述界面"的事。如果你要发网络请求、注册监听器、写数据库，这些"动手"的事情要放在副作用 API 里：
 
-### 复现实验记录
-
-- 环境：`Jetpack Compose 声明式 UI` 使用 `kotlin` 示例，固定 `Compose`、`声明式UI`、`重组`、`状态提升` 作为第一组条件。
-- 首轮输入：先确认 调用了 `LessonScreen()`，预测 `状态提升` 会怎样变化。
-- 基线观察：记录命令、输入、输出和错误原文，不用截图代替可复制的文本。
-- 单变量修改：只改变 `Compose`，观察 `修饰符` 是否仍满足定义。
-- 失败注入：复现 在 Composable 里发请求，确认现象是 重组时重复请求。
-- 记录结论：把“修改前、修改后、预期变化、实际变化”写成四列表，这样复盘 `Jetpack Compose 声明式 UI` 时才能区分概念错误与实现错误。
+- `LaunchedEffect(key)`：进入组合或 key 变化时执行一次挂起逻辑
+- `DisposableEffect(key)`：需要成对注册和注销的逻辑，比如监听器
+- `remember`：在重组之间记住一个值，避免每次都重新计算
 
 ## 典型应用场景
 
-- **在 Composable 里发请求**：典型现象是重组时重复请求；正确做法是用 `LaunchedEffect`。
-- **用普通变量存状态**：典型现象是界面不更新；正确做法是用 `mutableStateOf`。
-- **列表不给 key**：典型现象是元素状态错位；正确做法是`key = { it.id }`。
-- **修饰符顺序随意**：典型现象是样式与预期不符；正确做法是记住顺序有意义。
+**场景一：页面加载数据**
+典型现象：把网络请求直接写在 Composable 函数体里，结果每次重组都重新请求。
+正确做法：用 `LaunchedEffect` 包一层，保证只执行一次。
 
-### 最小验证场景
+**场景二：输入框状态**
+典型现象：用普通 `var` 存输入内容，界面不更新。
+正确做法：用 `mutableStateOf` 创建可观察状态。
 
-- 准备：保留 `kotlin` 示例的原始输入，先记录 `Jetpack Compose 声明式 UI` 的基线输出和完整运行命令。
-- 观察：先核对 调用了 `LessonScreen()`，再改变一个与 `状态提升` 相关的条件。
-- 判定：新结果与 `Jetpack Compose 声明式 UI` 的基线不同不等于错误；只有当差异破坏了 `状态提升` 的定义或错误表中的约束，才判定为失败。
+**场景三：列表渲染**
+典型现象：列表没给 key，增删元素后输入框内容错位。
+正确做法：用 `items(list, key = { it.id })` 给每个元素一个稳定标识。
 
-### 选择与边界
-
-- 使用 `状态提升` 时，先满足它的定义：把状态从子组件提到共同父级，让数据单向流动，组件只负责渲染，便于复用与测试；易错：无法共享与测试；正确做法是状态提升到 ViewModel。
-- 使用 `可组合函数` 时，先满足它的定义：用 @Composable 标注的界面函数，描述「给定状态界面长什么样」；缓存与状态残留会让结果过期，先明确失效策略再判断正确性。
-- 使用 `重组` 时，先满足它的定义：状态变化后 Compose 只重新执行受影响的可组合函数，而不是整棵界面树；易错：重组时重复请求；正确做法是用 `LaunchedEffect`。
-- 使用 `单向数据流` 时，先满足它的定义：状态向下传、事件向上抛，界面不直接改数据，便于测试与推理；缓存与状态残留会让结果过期，先明确失效策略再判断正确性。
-- 使用 `修饰符` 时，先满足它的定义：修饰符顺序有影响：padding 在 background 之前与之后，效果完全不同；易错：样式与预期不符；正确做法是记住顺序有意义。
+**场景四：样式不符合预期**
+典型现象：Modifier 的顺序随便写，padding 和 background 的效果跟想象不一样。
+正确做法：记住 Modifier 的顺序就是执行顺序，先写的先生效。
 
 ## 代码/协议/SQL 示例
 
-### 最小可验证示例
+### 最小可运行示例
+
+先看一个最简单的 Composable，感受一下"用函数描述界面"：
+
+```kotlin
+@Composable
+fun Greeting(name: String, modifier: Modifier = Modifier) {
+    Text(
+        text = "你好，$name！",
+        modifier = modifier.padding(16.dp),
+        style = MaterialTheme.typography.titleMedium,
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun GreetingPreview() {
+    MyAppTheme { Greeting("小明") }
+}
+```
+
+`@Preview` 可以在 Android Studio 里直接看效果，不用启动模拟器，开发效率很高。
+
+### 状态提升示例
+
+```kotlin
+@Composable
+fun Counter() {
+    var count by rememberSaveable { mutableIntStateOf(0) }
+
+    Column(Modifier.padding(16.dp)) {
+        Text("计数：$count")
+        Button(onClick = { count++ }) { Text("加一") }
+    }
+}
+
+// 状态提升后：组件变成纯展示，状态由调用方管理
+@Composable
+fun CounterRow(count: Int, onIncrement: () -> Unit) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Text("计数：$count", Modifier.weight(1f))
+        Button(onClick = onIncrement) { Text("加一") }
+    }
+}
+```
+
+### 完整的页面示例
+
+下面这个例子展示了一个典型的列表页面，涵盖了状态订阅、副作用、列表渲染等核心用法：
 
 ```kotlin
 @Composable
 fun LessonScreen(viewModel: LessonViewModel, modifier: Modifier = Modifier) {
-    // 用 collectAsStateWithLifecycle 让订阅跟随生命周期，避免后台空跑
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        viewModel.load()          // 副作用写在 LaunchedEffect 里，而不是组合体中
+        viewModel.load()
     }
 
     Column(modifier = modifier.fillMaxSize().padding(16.dp)) {
         when {
-            state.loading -> CircularProgressIndicator(Modifier.align(Alignment.CenterHorizontally))
-            state.error != null -> ErrorBanner(state.error!!, onRetry = viewModel::load)
+            state.loading -> CircularProgressIndicator(
+                Modifier.align(Alignment.CenterHorizontally)
+            )
+            state.error != null -> ErrorBanner(
+                state.error!!,
+                onRetry = viewModel::load
+            )
             else -> LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 contentPadding = PaddingValues(bottom = 24.dp),
@@ -195,97 +192,16 @@ private fun LessonCard(title: String, onClick: () -> Unit) {
 }
 ```
 
-**教材衔接：常用 API 速查**
+注意看 `LaunchedEffect(Unit)` 这行——网络请求放在这里，而不是直接写在组合体中。这样重组的时候不会重复发请求。
 
-| 需求 | 写法 |
-| --- | --- |
-| 状态 | `var x by remember { mutableStateOf(0) }` |
-| 可观察列表 | `mutableStateListOf()` |
-| 副作用 | `LaunchedEffect(key) { }`、`DisposableEffect(key)` |
-| 列表 | `LazyColumn` / `LazyRow` / `LazyVerticalGrid` |
-| 布局 | `Column`、`Row`、`Box`、`ConstraintLayout` |
-| 修饰符 | `Modifier.padding().fillMaxWidth().clip()` |
-| 主题 | `MaterialTheme`、`ColorScheme`、`Typography` |
-| 派生状态 | `derivedStateOf { }` |
-
-**教材衔接：零基础详解：Jetpack Compose 声明式 UI**
-
-### 一句话说清它是什么
-
-Compose 用 Kotlin 函数描述界面：**UI = f(状态)**。
-状态变了，Compose 自动重组受影响的组件，你不需要手动找控件改内容。
-
-### 用生活比喻理解
-
-| 概念 | 比喻 | 说明 |
-| --- | --- | --- |
-| Composable | 会画画的函数 | 描述「界面长什么样」 |
-| 状态 | 输入参数 | 变了就重新画 |
-| 重组 | 重画 | 只重画用到该状态的部分 |
-| 副作用 | 画画之外的动手 | 发请求、订阅、埋点 |
-| 修饰符 | 装修清单 | 尺寸、间距、点击都在这里加 |
-
-### 最小可运行示例
-
-```kotlin
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "你好，$name！",
-        modifier = modifier.padding(16.dp),
-        style = MaterialTheme.typography.titleMedium,
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun GreetingPreview() {
-    MyAppTheme { Greeting("小明") }
-}
-```
-
-`@Preview` 可以在 Android Studio 里直接看效果，不用跑模拟器。
-
-### 状态：记住与提升
-
-```kotlin
-@Composable
-fun Counter() {
-    var count by rememberSaveable { mutableIntStateOf(0) }   // 旋转屏幕也能保留
-
-    Column(Modifier.padding(16.dp)) {
-        Text("计数：$count")
-        Button(onClick = { count++ }) { Text("加一") }
-    }
-}
-
-// 状态提升：把状态交给调用方，组件变成纯展示
-@Composable
-fun CounterRow(count: Int, onIncrement: () -> Unit) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Text("计数：$count", Modifier.weight(1f))
-        Button(onClick = onIncrement) { Text("加一") }
-    }
-}
-```
-
-| 写法 | 用途 |
-| --- | --- |
-| `remember` | 重组之间记住值 |
-| `rememberSaveable` | 进程重建也能恢复 |
-| `mutableStateOf` | 可观察状态 |
-| `derivedStateOf` | 从其他状态推导，减少重组 |
-
-**状态提升的好处**：组件可复用、可测试、状态来源单一。
-
-### 副作用：三个最常用的 API
+### 副作用三个最常用 API
 
 ```kotlin
 @Composable
 fun UserScreen(userId: Long, viewModel: UserViewModel = viewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    // 1. LaunchedEffect：进入或 key 变化时执行一次挂起逻辑
+    // 1. LaunchedEffect：进入组合或 key 变化时执行一次
     LaunchedEffect(userId) { viewModel.load(userId) }
 
     // 2. DisposableEffect：需要成对注册与注销
@@ -294,14 +210,12 @@ fun UserScreen(userId: Long, viewModel: UserViewModel = viewModel()) {
         onDispose { listener.unregister() }
     }
 
-    // 3. remember 缓存计算结果，避免每次重组都算
+    // 3. remember：缓存计算结果，避免每次重组都重算
     val label = remember(state) { buildLabel(state) }
 
     Text(label)
 }
 ```
-
-**规则**：Composable 函数体内应当只做「描述界面」的事，取数据与订阅要放进副作用 API。
 
 ### 布局与修饰符
 
@@ -324,409 +238,230 @@ Column(
 }
 ```
 
-| 修饰符 | 作用 |
+### 常用 API 速查表
+
+| 需求 | 写法 |
 | --- | --- |
-| `fillMaxWidth` / `fillMaxSize` | 撑满可用空间 |
-| `padding` / `size` | 内边距与尺寸 |
-| `weight` | 按比例分配剩余空间 |
-| `clickable` | 添加点击 |
-| `semantics` | 无障碍描述 |
-
-**修饰符顺序有影响**：`padding` 在 `background` 之前与之后，效果完全不同。
-
-### 列表：一定要给稳定 key
-
-```kotlin
-LazyColumn(
-    contentPadding = PaddingValues(16.dp),
-    verticalArrangement = Arrangement.spacedBy(12.dp),
-) {
-    items(items = state.items, key = { it.id }) { item ->
-        ItemCard(item)
-    }
-}
-```
-
-`key` 让 Compose 在数据变化时正确复用与移动元素，避免状态错位。
-
-### 新手最容易踩的八个坑
-
-| 坑 | 现象 | 正确做法 |
-| --- | --- | --- |
-| 在 Composable 里发请求 | 重组时重复请求 | 用 `LaunchedEffect` |
-| 用普通变量存状态 | 界面不更新 | 用 `mutableStateOf` |
-| 列表不给 key | 元素状态错位 | `key = { it.id }` |
-| 修饰符顺序随意 | 样式与预期不符 | 记住顺序有意义 |
-| 列表项里做重计算 | 滚动卡顿 | 用 `remember` 缓存 |
-| 忘记 `onDispose` | 监听器泄漏 | 用 `DisposableEffect` |
-| 状态放太深 | 无法共享与测试 | 状态提升到 ViewModel |
-| 过度使用 `derivedStateOf` | 逻辑绕 | 只在真正需要时用 |
-
-### 学完自测
-
-- [ ] 能说出 `remember` 与 `rememberSaveable` 的区别。
-- [ ] 知道为什么要做状态提升。
-- [ ] 能说出 `LaunchedEffect` 与 `DisposableEffect` 的适用场景。
-- [ ] 知道 LazyColumn 为什么必须给 key。
-- [ ] 能说出两类不能直接写在 Composable 里的操作。
-
-**运行方式**：运行 `Jetpack Compose 声明式 UI` 的示例时，用 `kotlinc` 编译或用 Gradle 任务运行；注意 JVM 目标版本。
-
-### 示例精读：先找证据，再改一个条件
-
-1. 调用了 `LessonScreen()`；它出现在 `Jetpack Compose 声明式 UI` 的示例中，阅读时先确认它前后各发生了什么。
-2. 调用了 `collectAsStateWithLifecycle()`；它出现在 `Jetpack Compose 声明式 UI` 的示例中，阅读时先确认它前后各发生了什么。
-3. 调用了 `LaunchedEffect()`；它出现在 `Jetpack Compose 声明式 UI` 的示例中，阅读时先确认它前后各发生了什么。
-4. 调用了 `load()`；它出现在 `Jetpack Compose 声明式 UI` 的示例中，阅读时先确认它前后各发生了什么。
-5. 调用了 `Column()`；它出现在 `Jetpack Compose 声明式 UI` 的示例中，阅读时先确认它前后各发生了什么。
-6. 调用了 `fillMaxSize()`；它出现在 `Jetpack Compose 声明式 UI` 的示例中，阅读时先确认它前后各发生了什么。
-7. 调用了 `padding()`；它出现在 `Jetpack Compose 声明式 UI` 的示例中，阅读时先确认它前后各发生了什么。
-8. 调用了 `CircularProgressIndicator()`；它出现在 `Jetpack Compose 声明式 UI` 的示例中，阅读时先确认它前后各发生了什么。
-- 在 `Jetpack Compose 声明式 UI` 中与 `状态提升` 对照：示例必须能支持 把状态从子组件提到共同父级，让数据单向流动，组件只负责渲染，便于复用与测试，否则说明这一段还缺少实现或验证步骤。
-- 在 `Jetpack Compose 声明式 UI` 中与 `可组合函数` 对照：示例必须能支持 用 @Composable 标注的界面函数，描述「给定状态界面长什么样」，否则说明这一段还缺少实现或验证步骤。
-- 在 `Jetpack Compose 声明式 UI` 中与 `重组` 对照：示例必须能支持 状态变化后 Compose 只重新执行受影响的可组合函数，而不是整棵界面树，否则说明这一段还缺少实现或验证步骤。
-- 在 `Jetpack Compose 声明式 UI` 中与 `单向数据流` 对照：示例必须能支持 状态向下传、事件向上抛，界面不直接改数据，便于测试与推理，否则说明这一段还缺少实现或验证步骤。
+| 创建可观察状态 | `var x by remember { mutableStateOf(0) }` |
+| 可观察列表 | `mutableStateListOf()` |
+| 一次性副作用 | `LaunchedEffect(key) { }` |
+| 成对注册注销 | `DisposableEffect(key) { onDispose { } }` |
+| 懒加载列表 | `LazyColumn` / `LazyRow` / `LazyVerticalGrid` |
+| 基础布局 | `Column`、`Row`、`Box`、`ConstraintLayout` |
+| 修饰符链 | `Modifier.padding().fillMaxWidth().clip()` |
+| 主题 | `MaterialTheme`、`ColorScheme`、`Typography` |
+| 派生状态 | `derivedStateOf { }` |
+| 跨旋转保留状态 | `rememberSaveable { }` |
 
 ## 时间/空间复杂度或性能分析
 
-**性能关注点（Jetpack Compose 声明式 UI）**：渲染与重建是主要开销：关注帧时间、重建次数与首屏耗时，热重载与 release 构建要分开记录。
+### Compose 的性能关注点
 
-**测量方法**：以 `Jetpack Compose 声明式 UI` 的 `Compose` 场景为对象，固定输入跑一遍记录基线，再把规模或并发度提高一个数量级复测；两次结果的差值与波动范围才是结论依据。
+Compose 的性能核心在于"重组范围控制"。主要开销来自两个方面：重组次数过多、首屏渲染太慢。
 
-### 需要控制的变量与记录项
+### 怎么测量
 
-- `Jetpack Compose 声明式 UI` 的 `Compose`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `Jetpack Compose 声明式 UI` 的 `声明式UI`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `Jetpack Compose 声明式 UI` 的 `重组`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `Jetpack Compose 声明式 UI` 的 `状态提升`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `Jetpack Compose 声明式 UI` 的 `LazyColumn`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `Jetpack Compose 声明式 UI` 中 `状态提升` 的边界：易错：无法共享与测试；正确做法是状态提升到 ViewModel。达到边界时不要外推，必须重新测量。
-- `Jetpack Compose 声明式 UI` 中 `可组合函数` 的边界：缓存与状态残留会让结果过期，先明确失效策略再判断正确性。达到边界时不要外推，必须重新测量。
-- `Jetpack Compose 声明式 UI` 中 `重组` 的边界：易错：重组时重复请求；正确做法是用 `LaunchedEffect`。达到边界时不要外推，必须重新测量。
-- `Jetpack Compose 声明式 UI` 中 `单向数据流` 的边界：缓存与状态残留会让结果过期，先明确失效策略再判断正确性。达到边界时不要外推，必须重新测量。
-- `Jetpack Compose 声明式 UI` 中 `修饰符` 的边界：易错：样式与预期不符；正确做法是记住顺序有意义。达到边界时不要外推，必须重新测量。
-- `Jetpack Compose 声明式 UI` 的代码证据：先验证 调用了 `LessonScreen()`，再记录该路径的输入规模与耗时；只看代码行数不能推出复杂度。
+1. 固定一个场景（比如列表页），记录基线帧时间
+2. 把数据量提高一个数量级（比如从 50 条变成 5000 条），再测一次
+3. 两次差值才是你真正需要关心的性能问题
+
+### 常见性能陷阱
+
+| 陷阱 | 为什么会慢 | 怎么修 |
+| --- | --- | --- |
+| 列表项里做重计算 | 每次重组都重新算一遍 | 用 `remember` 缓存结果 |
+| 传可变集合给子组件 | Compose 无法判断参数没变，只能每次都重组 | 用不可变集合或 `@Stable` 标注 |
+| 读取 LazyListState 滚动值 | 滚动时触发全量重组 | 用 `derivedStateOf` 包一层 |
+| 参数不稳定 | Compose 无法跳过不必要的重组 | 数据类用 `@Immutable` 或 `@Stable` |
+| 过度使用 derivedStateOf | 本身也有开销，不是免费的 | 只在真正频繁变化且计算量大时用 |
+
+### 记住一条原则
+
+先让代码跑起来、跑对，再去优化性能。过早优化是万恶之源——在 Compose 里尤其如此，因为重组机制本身已经帮你做了很多优化。
 
 ## 常见误区与易错点
 
-| 容易写错的做法 | 实际现象 | 原因与正确做法 |
+| 错误 | 现象 | 修法 |
 | --- | --- | --- |
-| 在 Composable 里发请求 | 重组时重复请求 | 用 `LaunchedEffect` |
-| 用普通变量存状态 | 界面不更新 | 用 `mutableStateOf` |
-| 列表不给 key | 元素状态错位 | `key = { it.id }` |
-| 修饰符顺序随意 | 样式与预期不符 | 记住顺序有意义 |
-| 列表项里做重计算 | 滚动卡顿 | 用 `remember` 缓存 |
-| 忘记 `onDispose` | 监听器泄漏 | 用 `DisposableEffect` |
-| 状态放太深 | 无法共享与测试 | 状态提升到 ViewModel |
-| 过度使用 `derivedStateOf` | 逻辑绕 | 只在真正需要时用 |
+| 在 Composable 函数体里直接发请求 | 每次重组都触发一次网络请求 | 放到 `LaunchedEffect` 里 |
+| 用普通 var 存状态 | 值变了但界面不更新 | 用 `mutableStateOf` 或 `StateFlow` |
+| 列表不写 key | 增删元素后输入框、选中状态错位 | `items(list, key = { it.id })` |
+| Modifier 顺序随便写 | padding 和 background 效果跟预期不符 | 记住 Modifier 顺序就是执行顺序 |
+| 在组合体里直接修改状态 | 无限重组，甚至崩溃 | 把状态修改移到 `LaunchedEffect` 或事件回调里 |
+| 忘记写 onDispose | 监听器、定时器泄漏 | 用 `DisposableEffect` 配对注销 |
+| 状态放太深 | 子组件之间无法共享，测试困难 | 状态提升到 ViewModel 或共同父组件 |
+| 把 remember 当全局缓存 | 组件被移除后状态丢失，或意外保留 | 明确生命周期，必要时用 `rememberSaveable` 或提升状态 |
 | 列表滚动卡顿 | 每次重组都创建新对象 | 用 `key`、`remember`、稳定数据类 |
-| 状态丢失 | 状态放在会被移除的组合中 | 状态提升或 `rememberSaveable` |
-| 无限重组 | 在组合体里改状态 | 副作用移到 `LaunchedEffect` |
-| 参数不稳定导致全量重组 | 传入可变集合或 lambda | 使用不可变集合、`@Stable` 标注 |
-| 频繁布局读取 | 在组合阶段读 `Modifier` 布局信息 | 用 `Modifier.layout` 或 `derivedStateOf` |
-| 在 composable 里直接发请求 | 每次重组都触发 | 放到 `LaunchedEffect` |
-| 用普通变量存状态 | 界面不更新 | 用 `mutableStateOf` 或 `StateFlow` |
-| 列表不写 `key` | 增删后状态错位 | `items(list, key = { it.id })` |
-| 在组合体里读取 `LazyListState` 的滚动值 | 滚动时全量重组 | 用 `derivedStateOf` 包一层 |
-| 传可变集合给子组件 | 无法跳过重组 | 用 `ImmutableList` 或不可变结构 |
-| 把 `remember` 当全局缓存 | 状态意外保留或丢失 | 明确生命周期，必要时提升状态 |
-| 忽略 `Modifier` 顺序 | 内边距与裁剪效果不符合预期 | 顺序即执行顺序，按需调整 |
-| 列表不写 key | 增删后状态错位。 | items(list, key = { it.id })。 |
-| 在组合体里读取 LazyListState 的滚动值 | 滚动时全量重组。 | 用 derivedStateOf 包一层。 |
-
-### 现场 1：在 Composable 里发请求
-
-**症状**：重组时重复请求。
-
-**根因与修复**：用 `LaunchedEffect`。
-
-**自检**：在本课示例里复现「在 Composable 里发请求」，改成用 `LaunchedEffect`后重跑；如果症状消失且失败路径按预期变化，说明定位正确。
-
-### 现场 2：用普通变量存状态
-
-**症状**：界面不更新。
-
-**根因与修复**：用 `mutableStateOf`。
-
-**自检**：在本课示例里复现「用普通变量存状态」，改成用 `mutableStateOf`后重跑；如果症状消失且失败路径按预期变化，说明定位正确。
-
-### 现场 3：列表不给 key
-
-**症状**：元素状态错位。
-
-**根因与修复**：`key = { it.id }`。
-
-**自检**：在本课示例里复现「列表不给 key」，改成`key = { it.id }`后重跑；如果症状消失且失败路径按预期变化，说明定位正确。
-
-### 现场 4：修饰符顺序随意
-
-**症状**：样式与预期不符。
-
-**根因与修复**：记住顺序有意义。
-
-**自检**：在本课示例里复现「修饰符顺序随意」，改成记住顺序有意义后重跑；如果症状消失且失败路径按预期变化，说明定位正确。
-
-### 现场 5：列表项里做重计算
-
-**症状**：滚动卡顿。
-
-**根因与修复**：用 `remember` 缓存。
-
-**自检**：在本课示例里复现「列表项里做重计算」，改成用 `remember` 缓存后重跑；如果症状消失且失败路径按预期变化，说明定位正确。
-
-### 现场 6：忘记 `onDispose`
-
-**症状**：监听器泄漏。
-
-**根因与修复**：用 `DisposableEffect`。
-
-**自检**：在本课示例里复现「忘记 `onDispose`」，改成用 `DisposableEffect`后重跑；如果症状消失且失败路径按预期变化，说明定位正确。
-
-### 现场 7：状态放太深
-
-**症状**：无法共享与测试。
-
-**根因与修复**：状态提升到 ViewModel。
-
-**自检**：在本课示例里复现「状态放太深」，改成状态提升到 ViewModel后重跑；如果症状消失且失败路径按预期变化，说明定位正确。
-
-### 现场 8：过度使用 `derivedStateOf`
-
-**症状**：逻辑绕。
-
-**根因与修复**：只在真正需要时用。
-
-**自检**：在本课示例里复现「过度使用 `derivedStateOf`」，改成只在真正需要时用后重跑；如果症状消失且失败路径按预期变化，说明定位正确。
-
-### 现场 9：列表滚动卡顿
-
-**症状**：每次重组都创建新对象。
-
-**根因与修复**：用 `key`、`remember`、稳定数据类。
-
-**自检**：在本课示例里复现「列表滚动卡顿」，改成用 `key`、`remember`、稳定数据类后重跑；如果症状消失且失败路径按预期变化，说明定位正确。
+| 在 Composable 里读布局信息 | 频繁触发重组 | 用 `Modifier.layout` 或 `derivedStateOf` |
 
 ## 与其他知识点的关系
 
-**教材衔接：与 View 体系对照**
+### 和传统 View 体系的对比
 
 | 维度 | View / XML | Compose |
 | --- | --- | --- |
-| 描述方式 | 命令式、可变树 | 声明式、状态驱动 |
-| 更新 | 手动查找并修改视图 | 状态变化自动重组 |
-| 可测试性 | 依赖 Espresso 查找视图 | 用测试规则直接断言节点 |
-| 动画 | 属性动画 | `animate*AsState`、`Transition` |
+| 描述方式 | 命令式，手动找控件改内容 | 声明式，状态驱动自动更新 |
+| 更新机制 | 手动调用 setText、setVisibility | 状态变化自动重组受影响的部分 |
+| 测试方式 | 依赖 Espresso 查找 View ID | 直接用规则断言节点，不需要 ID |
+| 动画 | 属性动画 ObjectAnimator | `animate*AsState`、`Transition` |
 | 复用 | `<include>`、自定义 View | 可组合函数天然复用 |
 
-- **先修**：`React Native 跨平台开发`。本课默认这些内容已经掌握。
-- **相关或后续**：`鸿蒙 ArkTS 应用开发`。本课术语会在这些课程里继续使用。
-- **术语归属**：`状态提升`、`可组合函数`、`重组` 的定义以本课「核心概念定义」为准，换到其他课程时先确认定义是否被改写。
+### 先修与后续
 
-### 先修与后续术语接口
+- **先修**：《React Native 跨平台开发》。里面讲的 Hooks 思维和原生模块交互是这节课的基础。
+- **后续**：《鸿蒙 ArkTS 应用开发》。ArkUI 的声明式写法和 Compose 思路非常像，学会一个另一个上手很快。
 
-- `React Native 跨平台开发`：两者通过本分类的学习顺序衔接，阅读时重点比较各自的输入与失败条件。
-- `鸿蒙 ArkTS 应用开发`：两者通过本分类的学习顺序衔接，阅读时重点比较各自的输入与失败条件。
+### 容易混淆的概念
 
-### 容易混淆的相邻概念
+**状态提升 vs Composable**：状态提升是一种"把状态往上挪"的设计模式；Composable 是用 @Composable 标注的函数，是构建界面的基本单元。前者是设计思路，后者是代码单元。
 
-- `状态提升` 与 `可组合函数`：前者强调 把状态从子组件提到共同父级，让数据单向流动，组件只负责渲染，便于复用与测试；后者强调 用 @Composable 标注的界面函数，描述「给定状态界面长什么样」。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
-- `可组合函数` 与 `重组`：前者强调 用 @Composable 标注的界面函数，描述「给定状态界面长什么样」；后者强调 状态变化后 Compose 只重新执行受影响的可组合函数，而不是整棵界面树。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
-- `重组` 与 `单向数据流`：前者强调 状态变化后 Compose 只重新执行受影响的可组合函数，而不是整棵界面树；后者强调 状态向下传、事件向上抛，界面不直接改数据，便于测试与推理。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
-- `单向数据流` 与 `修饰符`：前者强调 状态向下传、事件向上抛，界面不直接改数据，便于测试与推理；后者强调 修饰符顺序有影响：padding 在 background 之前与之后，效果完全不同。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
+**重组 vs 重建**：重组只是重新执行受影响的 Composable 函数，不会销毁和重建整个界面树。如果你发现整个页面都在闪烁重绘，那多半是代码写错了，不是重组本身的锅。
+
+**remember vs rememberSaveable**：`remember` 只在重组之间保留值，进程被杀就没了；`rememberSaveable` 连进程重建都能恢复（比如旋转屏幕、系统回收后恢复）。
 
 ## 自测题与参考答案
 
-> 先独立作答，再对照参考答案；答案都能在本课正文、术语表或错误表里找到依据。
+### 自测 1：概念复述
 
-### 自测 1（概念复述）
+不看正文，用自己的话说出"状态提升"是什么意思，它和 Composable 有什么区别。
 
-不看正文，写出 `状态提升` 的操作性定义，并说明它与 `可组合函数` 的区别。
+**参考答案**：状态提升是把状态从子组件挪到共同父级，让数据单向流动，子组件只负责展示。好处是组件更容易复用和测试。Composable 是用 @Composable 标注的函数，它是构建界面的基本单元。状态提升是一种设计模式，Composable 是代码结构。
 
-**参考答案**：把状态从子组件提到共同父级，让数据单向流动，组件只负责渲染，便于复用与测试。
+### 自测 2：排错
 
-`可组合函数` 的定位是：用 @Composable 标注的界面函数，描述「给定状态界面长什么样」；两者的差别要从适用对象与失败模式上说明。
+你的 Composable 里直接写了一个网络请求，发现每次界面刷新都会重新请求。请问这是为什么？怎么修？
 
-### 自测 2（排错）
+**参考答案**：因为 Composable 函数会在每次重组时被重新执行，直接写在里面的请求也会跟着重复执行。修复方法是用 `LaunchedEffect` 把请求包起来，这样只会在进入组合或 key 变化时执行一次。
 
-本课错误表记录了「在 Composable 里发请求」这类做法。请写出它会出现的现象、根因，以及修复顺序。
+### 自测 3：代码阅读
 
-**参考答案**：现象是重组时重复请求；正确做法是用 `LaunchedEffect`。修复时先复现现象并保留证据，再改动一处假设重跑，确认现象消失。
+看课上的 LessonScreen 示例，说说它哪里体现了状态提升。如果把 `viewModel.load()` 从 `LaunchedEffect` 里移出来直接写在组合体中，会发生什么？
 
-### 自测 3（动手验证）
+**参考答案**：状态体现在 `state` 由 ViewModel 持有，通过 `collectAsStateWithLifecycle()` 传给界面，界面只负责展示。如果把 `viewModel.load()` 移到组合体中，每次重组都会调用 load，导致重复请求。
 
-运行本课的 `kotlin` 示例，把其中的 `16` 换成一个边界值后重新运行，记录输出与错误信息。
+### 自测 4：动手验证
 
-**参考答案**：正常输入下 `kotlin` 示例应当复现正文给出的结果；把 `16` 换成边界值后，如果结果改变或报错，先核对它是否满足 `Jetpack Compose 声明式 UI` 中`状态提升` 的适用范围，再检查错误表里是否有同类现象。
+把示例代码里的 `padding(16.dp)` 改成 `padding(0.dp)`，再改成 `padding(64.dp)`，分别观察界面变化。然后把 Modifier 链的顺序换一下（比如 `padding` 和 `fillMaxSize` 对调），看看效果有什么不同。
 
-### 自测 4（代码阅读）
+**参考答案**：padding 值越大，内容和边缘的距离越大。Modifier 顺序不同效果完全不同——`fillMaxSize().padding(16.dp)` 是先撑满再内缩，`padding(16.dp).fillMaxSize()` 是先留白再撑满，最终布局不一样。
 
-阅读本课开头的 `kotlin` 示例，说明它体现了`状态提升` 的哪一条性质，并指出改动哪个输入会让这条性质不再成立。
+### 自测 5：迁移应用
 
-**参考答案**：`状态提升` 的定义是 把状态从子组件提到共同父级，让数据单向流动，组件只负责渲染，便于复用与测试，示例正是在实现这条定义。改动与 `状态提升` 有关的一个输入后，如果结果不再符合 `Jetpack Compose 声明式 UI` 的正文描述，就说明该性质只在当前前提成立。
+在你自己的项目里找一个有输入框和提交按钮的页面，用状态提升的思路重构一下。把输入框的状态提到父组件，让输入框变成无状态组件。
 
-### 自测 5（迁移）
+**参考答案**：重构后，父组件持有 `var text by remember { mutableStateOf("") }`，输入框接收 `value` 和 `onValueChange` 两个参数，按钮的 `onClick` 也在父组件里处理。输入框本身不持有任何状态，可以在别的页面直接复用。
 
-把 `Jetpack Compose 声明式 UI` 的方法迁移到自己的项目：围绕 `状态提升` 写出一个与错误表同类的风险点，并说明触发条件和检验方式。
+## 考点精讲
 
-**参考答案**：例如「在组合体里读取 LazyListState 的滚动值」，它会导致滚动时全量重组；检验方式是按用 derivedStateOf 包一层改一处再复现，确认现象消失且没有引入新的失败分支。
+### 考点 1
 
-### 自测 6（对比）
+按“Jetpack Compose 声明式 UI”中 Compose、声明式UI、重组 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
+A. 只改一个变量，记录边界与失败路径的变化
+B. 固定版本与证据，把\"Jetpack Compose 声明式 UI\"的结论写成可复现记录
+C. 先明确 Compose 的输入、输出与约束
+D. 写出最小示例并核对 声明式UI 的基线结果
 
-用一个表格对比 `状态提升` 与 `可组合函数`：各写一行适用场景、一行失败表现。
+**答案：CABD**（正确顺序：C \→ D \→ A \→ B）
 
-**参考答案**：`状态提升` 的定义是把状态从子组件提到共同父级，让数据单向流动，组件只负责渲染，便于复用与测试；`可组合函数` 的定义是用 @Composable 标注的界面函数，描述「给定状态界面长什么样」。两者的失败表现分别对应本课错误表里与本术语相关的行。
+先搞清楚输入输出和约束条件，然后写一个最小示例跑通基线，接着只改一个变量观察变化，最后把结论固定下来写成可复现的记录。这就是从准备到复盘的完整流程。
 
-### 自测 7（排错顺序）
+### 考点 2
 
-面对「在 Composable 里发请求」引发的问题，请把“复现 重组时重复请求 → 保留证据 → 用 `LaunchedEffect` → 回归验证”四步写成可执行的检查清单。
+围绕“Jetpack Compose 声明式 UI”中的 Compose、声明式UI、重组，下列哪两项是本课强调的实践判断？
+A. 把 声明式UI 的单次运行结果当成所有版本和规模都成立
+B. 学习 Compose 时要同时说明输入、输出和失败路径，不能只看正常流程
+C. 只要 Compose 的常规示例通过，就可以跳过边界与异常路径
+D. 验证 声明式UI 时要固定版本并覆盖边界输入，结论才可复现
 
-**参考答案**：第一步按重组时重复请求复现；第二步记录输入、版本与完整报错；第三步按用 `LaunchedEffect`只改一处；第四步重跑并确认失败路径也按预期变化。
+**答案：BD**
 
-### 自测 8（边界判断）
+A 和 C 都是偷懒的做法——只看正常流程、只跑一次就下结论，这在工程实践中是不可靠的。B 和 D 才是正确的态度：要同时关注正常路径和失败路径，要固定版本、覆盖边界输入，结论才能复现。
 
-针对 `修饰符`，分别写出“可以使用”的条件和“结论不再成立”的条件。
+### 考点 3
 
-**参考答案**：易错：样式与预期不符；正确做法是记住顺序有意义。 同时要把 `修饰符` 的定义 修饰符顺序有影响：padding 在 background 之前与之后，效果完全不同 与实际输入逐项对照。
+关于派生状态 derivedStateOf，说法正确的是？
+A. 它会把状态写入持久存储
+B. 它替代了所有 remember 用法
+C. 它能减少因状态频繁变化导致的重组
+D. 它只能用于列表滚动
 
-### 自测 9（机制重建）
+**答案：C**
 
-不看正文，按输入、转换、输出、验证四段重建 `状态提升` → `可组合函数` → `重组` → `单向数据流` 的作用链。
+`derivedStateOf` 的作用是从其他状态推导出一个新值，并且只有当推导结果真正变化时才触发重组。比如你有一个列表和一个过滤关键词，用 `derivedStateOf` 可以只在过滤结果变化时才更新列表 UI，避免每次输入一个字母都全量重组。它不会写入持久存储，也不能替代 `remember`。
 
-**参考答案**：起点是 `状态提升` 的定义 把状态从子组件提到共同父级，让数据单向流动，组件只负责渲染，便于复用与测试；中间每一步都保留可观察状态；终点由 `修饰符` 检查，失败时回到错误表定位第一个偏离定义的步骤。
+### 考点 4
 
-### 自测 10（综合排错）
+状态提升（state hoisting）的主要目的是？
+A. 让组件无状态、易于复用与测试
+B. 替代 ViewModel
+C. 提升渲染帧率
+D. 减少内存占用
 
-在 `Jetpack Compose 声明式 UI` 中，现象是 滚动时全量重组。请围绕 在组合体里读取 LazyListState 的滚动值 写出最小复现、关键证据、修复动作和回归验证，并说明为什么不能只凭一次运行下结论。
+**答案：A**
 
-**参考答案**：先复现 在组合体里读取 LazyListState 的滚动值，记录输入与完整错误；再按 用 derivedStateOf 包一层 只改一处。回归时同时跑正常路径和边界路径，只有两次结果都可解释，才把修复视为完成。
+状态提升的核心目的是让组件变成"纯展示"——不自己持有状态，所有数据都从外部传入。这样同一个组件可以在不同地方复用，测试的时候也不需要关心状态从哪来。它不是用来替代 ViewModel 的，ViewModel 仍然负责业务逻辑。
 
-### 自测 11（一分钟复述）
+### 考点 5
 
-用每分钟约 200 字的速度复述 `Jetpack Compose 声明式 UI`：先给主问题，再按顺序说出 `状态提升`、`可组合函数`、`重组`、`单向数据流`，最后给一个失败案例。
+下面哪种写法最容易造成无限重组？
+A. 在 LaunchedEffect 中加载数据
+B. 在 composable 函数体里直接修改状态
+C. 用 remember 保存输入框内容
+D. 用 key 渲染列表项
 
-**自评标准**：主问题必须对应 重组机制、状态提升、副作用与重组范围优化；每个术语都要能接上一句定义或边界；失败案例必须写成可观察现象，不能用“可能有风险”代替证据。
+**答案：B**
+
+如果在 Composable 函数体里直接修改状态（比如 `count++`），状态变化会触发重组，重组又会再次执行函数体，函数体又修改状态……形成死循环。正确做法是把状态修改放在事件回调（比如 `onClick`）或 `LaunchedEffect` 里。
+
+### 考点 6
+
+结合 `Jetpack Compose 声明式 UI` 中围绕 `状态提升` 的代码，哪一项说法与“重组机制、状态提升、副作用与重组范围优化。”一致？
+A. 直接写在函数体里
+B. 放在 Modifier 里
+C. 放在 LaunchedEffect 中
+D. 放在 remember 的初始化块里
+
+**答案：C**
+
+在 LessonScreen 的代码里，网络请求 `viewModel.load()` 被放在 `LaunchedEffect(Unit)` 中。这是因为副作用（比如发请求、注册监听器）不应该直接写在组合体里，否则每次重组都会重复执行。LaunchedEffect 保证只在进入组合或 key 变化时执行一次。
+
+
+## 延伸阅读
+
+想更直观地理解本课概念？推荐参阅以下图解专题：
+
+- [图解内存布局：栈、堆与引用](visual_memory_layout.md)
 
 ## 术语速查
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| `状态提升` | 把状态从子组件提到共同父级，让数据单向流动，组件只负责渲染，便于复用与测试。 |
-| `可组合函数` | 用 @Composable 标注的界面函数，描述「给定状态界面长什么样」。 |
-| `重组` | 状态变化后 Compose 只重新执行受影响的可组合函数，而不是整棵界面树。 |
-| `单向数据流` | 状态向下传、事件向上抛，界面不直接改数据，便于测试与推理。 |
-| `修饰符` | 修饰符顺序有影响：padding 在 background 之前与之后，效果完全不同。 |
-
-**术语关系**：`状态提升`（把状态从子组件提到共同父级） → `可组合函数`（用 @Composable 标注的界面函数） → `重组`（状态变化后 Compose 只重新执行受影响的可组合函数） → `单向数据流`（状态向下传、事件向上抛）。
-
-## 考点精讲
-
-`Jetpack Compose 声明式 UI` 的题库有 6 道题，下面逐题给出题干、正确项与判断依据：先自己作答，再核对正确项，最后回到正文对应小节复核。
-
-### 考点 1：第 1 题
-
-- **题目**：按“Jetpack Compose 声明式 UI”中 Compose、声明式UI、重组 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
-- **正确项**：先明确 Compose 的输入、输出与约束 → 写出最小示例并核对 声明式UI 的基线结果 → 只改一个变量，记录边界与失败路径的变化 → 固定版本与证据，把“Jetpack Compose 声明式 UI”的结论写成可复现记录
-- **判断依据**：这道题落在术语 `重组` 上：状态变化后 Compose 只重新执行受影响的可组合函数，而不是整棵界面树。复习时把 `重组` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
-
-### 考点 2：第 2 题
-
-- **题目**：围绕“Jetpack Compose 声明式 UI”中的 Compose、声明式UI、重组，下列哪两项是本课强调的实践判断？
-- **正确项**：学习 Compose 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 声明式UI 时要固定版本并覆盖边界输入，结论才可复现
-- **判断依据**：这道题落在术语 `重组` 上：状态变化后 Compose 只重新执行受影响的可组合函数，而不是整棵界面树。复习时把 `重组` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
-
-### 考点 3：第 3 题
-
-- **题目**：关于派生状态 derivedStateOf，说法正确的是？
-- **正确项**：它能减少因状态频繁变化导致的重组
-- **判断依据**：这道题落在术语 `重组` 上：状态变化后 Compose 只重新执行受影响的可组合函数，而不是整棵界面树。复习时把 `重组` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
-
-### 考点 4：第 4 题
-
-- **题目**：状态提升（state hoisting）的主要目的是？
-- **正确项**：让组件无状态、易于复用与测试
-- **判断依据**：这道题落在术语 `状态提升` 上：把状态从子组件提到共同父级，让数据单向流动，组件只负责渲染，便于复用与测试。复习时把 `状态提升` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
-
-### 考点 5：第 5 题
-
-- **题目**：下面哪种写法最容易造成无限重组？
-- **正确项**：在 composable 函数体里直接修改状态
-- **判断依据**：这道题落在术语 `重组` 上：状态变化后 Compose 只重新执行受影响的可组合函数，而不是整棵界面树。若写成 无限重组 就会在组合体里改状态，应按 副作用移到 `LaunchedEffect` 处理。
-
-### 考点 6：第 6 题
-
-- **题目**：结合 `Jetpack Compose 声明式 UI` 中围绕 `状态提升` 的代码，哪一项说法与“重组机制、状态提升、副作用与重组范围优化。”一致？
-- **正确项**：放在 LaunchedEffect 中
-- **判断依据**：这道题落在术语 `状态提升` 上：把状态从子组件提到共同父级，让数据单向流动，组件只负责渲染，便于复用与测试。复习时把 `状态提升` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
-
-### 考点 7：`状态提升`
-
-- **要点**：把状态从子组件提到共同父级，让数据单向流动，组件只负责渲染，便于复用与测试。
-- **状态提升 的边界**：易错：无法共享与测试；正确做法是状态提升到 ViewModel。
-
-### 考点 8：`可组合函数`
-
-- **要点**：用 @Composable 标注的界面函数，描述「给定状态界面长什么样」。
-- **可组合函数 的边界**：缓存与状态残留会让结果过期，先明确失效策略再判断正确性。
-
-### 考点 9：`重组`
-
-- **要点**：状态变化后 Compose 只重新执行受影响的可组合函数，而不是整棵界面树。
-- **重组 的边界**：易错：重组时重复请求；正确做法是用 `LaunchedEffect`。
-
-### 考点 10：`单向数据流`
-
-- **要点**：状态向下传、事件向上抛，界面不直接改数据，便于测试与推理。
-- **单向数据流 的边界**：缓存与状态残留会让结果过期，先明确失效策略再判断正确性。
-
-### 考点 11：`修饰符`
-
-- **要点**：修饰符顺序有影响：padding 在 background 之前与之后，效果完全不同
-- **修饰符 的边界**：易错：样式与预期不符；正确做法是记住顺序有意义。
-
-### 考点 12：排错——在 Composable 里发请求
-
-- **现象**：重组时重复请求。
-- **处理**：用 `LaunchedEffect`。
-
-### 考点 13：排错——用普通变量存状态
-
-- **现象**：界面不更新。
-- **处理**：用 `mutableStateOf`。
-
-### 考点 14：综合辨析——`状态提升` 与 `修饰符`
-
-- **辨析点**：`状态提升` 的定义是 把状态从子组件提到共同父级，让数据单向流动，组件只负责渲染，便于复用与测试；`修饰符` 的定义是 修饰符顺序有影响：padding 在 background 之前与之后，效果完全不同。
-- **答题要求**：面对 `Jetpack Compose 声明式 UI` 的题目，先判断描述的是 `状态提升` 还是 `修饰符`，再归到对应定义，最后写出一个会让该定义失效的边界输入。
-
-### 考点 15：排错评分点
-
-- **现象分**：能写出 重组时重复请求，而不是只写“程序有错”。
-- **证据分**：保留触发 在 Composable 里发请求 的输入、版本和错误原文。
-- **修复分**：按 用 `LaunchedEffect` 只改一处，并同时回归正常路径与边界路径。
+| Composable | 用 @Composable 标注的函数，描述"给定状态，界面长什么样" |
+| 重组 | 状态变化后 Compose 只重新执行受影响的可组合函数，而不是整棵界面树 |
+| 状态提升 | 把状态从子组件提到共同父级，让数据单向流动，组件只负责展示 |
+| 单向数据流 | 状态向下传、事件向上抛，界面不直接修改数据源 |
+| 修饰符 | 给组件加样式和行为的链式调用，顺序不同效果完全不同 |
+| 副作用 | 在组合过程之外执行的操作，用 LaunchedEffect、DisposableEffect 管理 |
+| remember | 在重组之间记住一个值，避免每次重新计算 |
+| derivedStateOf | 从其他状态推导新值，只在推导结果真正变化时触发重组 |
 
 ## 内容元数据
 
 - 内容版本：v2.0
 - 最后更新：2026-10-06
-- 学习阶段：进阶
-- 适用环境：Flutter 3.x / Dart 3.x
-；本课聚焦 Compose。
+- 学习阶段：intermediate
+- 适用环境：Android / Kotlin 1.9+ / Jetpack Compose 1.6+
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：Compose、声明式UI、重组、状态提升、LazyColumn
-- 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
 - 下次复核：2027-08-10
-- 复核范围：版本兼容、API 行为、安全建议与工程实践
-- 来源性质：官方文档、标准或权威教材；本课核对关键词：Compose、声明式UI、重组、状态提升、LazyColumn。
+- 复核范围：Compose 版本兼容、API 行为变更、性能最佳实践
 
-| 参考资料 | 本课用途 |
+| 参考资料 | 用途 |
 | --- | --- |
-| [Flutter UI 文档](https://docs.flutter.dev/ui) | Widget、布局与渲染 |
-| [Flutter 状态管理](https://docs.flutter.dev/data-and-backend/state-mgmt/intro) | 状态分层与重建范围 |
-| [Android 发布指南](https://docs.flutter.dev/deployment/android) | 签名、构建与发布 |
-
-| [本课术语索引：Jetpack Compose 声明式 UI](#核心概念定义) | 按本课输入、术语边界和错误表现逐项核对 |
-> 「Jetpack Compose 声明式 UI」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+| [Android 官方 Compose 教程](https://developer.android.com/courses/pathways/compose) | Composable、状态管理、副作用的系统学习 |
+| [Jetpack Compose API 参考](https://developer.android.com/reference/kotlin/androidx/compose/runtime/package-summary) | 查阅 remember、LaunchedEffect 等 API 签名 |
+| [Compose 性能优化指南](https://developer.android.com/jetpack/compose/performance) | 重组范围控制、稳定性标注、列表优化 |

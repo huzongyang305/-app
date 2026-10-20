@@ -97,6 +97,8 @@ Py_INCREF 增加引用，Py_DECREF 减少引用，函数返回新引用还是借
 
 工程视角：扩展边界尽量薄，把复杂逻辑放在 C 内部；使用调试构建、引用计数检查和压力测试验证。
 
+![Python FFI 互操作架构](images/python_ffi_interop.webp)
+
 ### 4. Cython 与类型化加速
 
 Cython 把接近 Python 的源代码编译成 C 扩展，通过静态类型、cdef 和内存视图减少解释器开销。
@@ -483,6 +485,13 @@ print("指针非空:", bool(ctypes.addressof(point)))
 用每分钟约 200 字的速度复述 `Python 与 C、C++、Rust 互操作`：先给主问题，再按顺序说出 `FFI`、`ABI`、`ctypes`、`GIL`，最后给一个失败案例。
 
 **自评标准**：主问题必须对应 理解 FFI、ABI、GIL 与内存所有权，用 ctypes、C 扩展、Cython 和 PyO3 把性能关键代码安全接入 Python；每个术语都要能接上一句定义或边界；失败案例必须写成可观察现象，不能用“可能有风险”代替证据。
+
+
+## 延伸阅读
+
+想更直观地理解本课概念？推荐参阅以下图解专题：
+
+- [图解内存布局：栈、堆与引用](visual_memory_layout.md)
 
 ## 术语速查
 
