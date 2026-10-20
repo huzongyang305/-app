@@ -14334,6 +14334,269 @@
             "slot": "main"
           },
           "lab": "sandbox:java"
+        },
+        {
+          "id": "java_servlet_jsp",
+          "title": {
+            "zh": "Servlet 与 JSP 基础",
+            "en": "Servlet & JSP Basics"
+          },
+          "summary": {
+            "zh": "理解 Servlet 生命周期、请求处理和 JSP 工作原理。",
+            "en": "Understand Servlet lifecycle, request handling and JSP."
+          },
+          "file": "assets/content/java_servlet_jsp.md",
+          "minutes": 50,
+          "keywords": [
+            "Servlet",
+            "JSP",
+            "Java Web",
+            "生命周期"
+          ],
+          "difficulty": "入门",
+          "order": 21,
+          "quiz": []
+        },
+        {
+          "id": "java_spring_core",
+          "title": {
+            "zh": "Spring Framework 核心",
+            "en": "Spring Framework Core"
+          },
+          "summary": {
+            "zh": "掌握 IoC、DI 和 AOP 的核心原理与应用。",
+            "en": "Master IoC, DI and AOP principles."
+          },
+          "file": "assets/content/java_spring_core.md",
+          "minutes": 60,
+          "keywords": [
+            "Spring",
+            "IoC",
+            "DI",
+            "AOP"
+          ],
+          "difficulty": "进阶",
+          "order": 22,
+          "quiz": []
+        },
+        {
+          "id": "java_spring_mvc",
+          "title": {
+            "zh": "Spring MVC 详解",
+            "en": "Spring MVC Deep Dive"
+          },
+          "summary": {
+            "zh": "理解 DispatcherServlet、Controller 和视图解析流程。",
+            "en": "Understand DispatcherServlet, Controller and view resolution."
+          },
+          "file": "assets/content/java_spring_mvc.md",
+          "minutes": 55,
+          "keywords": [
+            "Spring MVC",
+            "DispatcherServlet",
+            "Controller",
+            "REST"
+          ],
+          "difficulty": "进阶",
+          "order": 23,
+          "quiz": []
+        },
+        {
+          "id": "java_spring_boot_intro",
+          "title": {
+            "zh": "Spring Boot 入门",
+            "en": "Spring Boot Introduction"
+          },
+          "summary": {
+            "zh": "掌握自动配置、起步依赖和内嵌服务器原理。",
+            "en": "Master auto-configuration, starters and embedded server."
+          },
+          "file": "assets/content/java_spring_boot_intro.md",
+          "minutes": 45,
+          "keywords": [
+            "Spring Boot",
+            "自动配置",
+            "起步依赖"
+          ],
+          "difficulty": "入门",
+          "order": 24,
+          "quiz": []
+        },
+        {
+          "id": "java_spring_security",
+          "title": {
+            "zh": "Spring Security 认证授权",
+            "en": "Spring Security Authentication"
+          },
+          "summary": {
+            "zh": "理解过滤器链、认证流程和权限控制机制。",
+            "en": "Understand filter chain, authentication and authorization."
+          },
+          "file": "assets/content/java_spring_security.md",
+          "minutes": 60,
+          "keywords": [
+            "Spring Security",
+            "认证",
+            "授权",
+            "过滤器链"
+          ],
+          "difficulty": "进阶",
+          "order": 25,
+          "quiz": []
+        },
+        {
+          "id": "java_restful_api",
+          "title": {
+            "zh": "RESTful API 设计与实现",
+            "en": "RESTful API Design"
+          },
+          "summary": {
+            "zh": "掌握 REST 原则、HTTP 方法和资源建模最佳实践。",
+            "en": "Master REST principles, HTTP methods and resource modeling."
+          },
+          "file": "assets/content/java_restful_api.md",
+          "minutes": 50,
+          "keywords": [
+            "RESTful",
+            "API",
+            "HTTP",
+            "资源"
+          ],
+          "difficulty": "进阶",
+          "order": 26,
+          "quiz": []
+        },
+        {
+          "id": "java_data_access",
+          "title": {
+            "zh": "数据访问与持久化",
+            "en": "Data Access & Persistence"
+          },
+          "summary": {
+            "zh": "对比 JPA、MyBatis 和 Spring Data 的使用场景。",
+            "en": "Compare JPA, MyBatis and Spring Data use cases."
+          },
+          "file": "assets/content/java_data_access.md",
+          "minutes": 55,
+          "keywords": [
+            "JPA",
+            "MyBatis",
+            "Spring Data",
+            "ORM"
+          ],
+          "difficulty": "进阶",
+          "order": 27,
+          "quiz": []
+        },
+        {
+          "id": "java_microservices",
+          "title": {
+            "zh": "微服务架构设计",
+            "en": "Microservices Architecture"
+          },
+          "summary": {
+            "zh": "理解服务拆分、注册发现、配置中心和服务网关。",
+            "en": "Understand service splitting, discovery, config and gateway."
+          },
+          "file": "assets/content/java_microservices.md",
+          "minutes": 65,
+          "keywords": [
+            "微服务",
+            "Spring Cloud",
+            "服务发现",
+            "网关"
+          ],
+          "difficulty": "高级",
+          "order": 28,
+          "quiz": []
+        },
+        {
+          "id": "java_testing",
+          "title": {
+            "zh": "Java 测试与质量",
+            "en": "Java Testing & Quality"
+          },
+          "summary": {
+            "zh": "掌握单元测试、集成测试、Mock 和测试覆盖率。",
+            "en": "Master unit test, integration test, mock and coverage."
+          },
+          "file": "assets/content/java_testing.md",
+          "minutes": 50,
+          "keywords": [
+            "JUnit",
+            "Mockito",
+            "测试",
+            "覆盖率"
+          ],
+          "difficulty": "进阶",
+          "order": 29,
+          "quiz": []
+        },
+        {
+          "id": "java_performance_monitoring",
+          "title": {
+            "zh": "性能监控与调优",
+            "en": "Performance Monitoring"
+          },
+          "summary": {
+            "zh": "使用 Actuator、指标收集和链路追踪定位性能瓶颈。",
+            "en": "Use Actuator, metrics and tracing to find bottlenecks."
+          },
+          "file": "assets/content/java_performance_monitoring.md",
+          "minutes": 60,
+          "keywords": [
+            "性能",
+            "监控",
+            "Actuator",
+            "调优"
+          ],
+          "difficulty": "高级",
+          "order": 30,
+          "quiz": []
+        },
+        {
+          "id": "java_deployment",
+          "title": {
+            "zh": "部署与容器化",
+            "en": "Deployment & Containerization"
+          },
+          "summary": {
+            "zh": "掌握 Docker 容器化、Kubernetes 编排和部署策略。",
+            "en": "Master Docker, Kubernetes and deployment strategies."
+          },
+          "file": "assets/content/java_deployment.md",
+          "minutes": 55,
+          "keywords": [
+            "Docker",
+            "Kubernetes",
+            "容器化",
+            "部署"
+          ],
+          "difficulty": "高级",
+          "order": 31,
+          "quiz": []
+        },
+        {
+          "id": "java_project_ecommerce",
+          "title": {
+            "zh": "实战：完整电商系统",
+            "en": "Project: E-commerce System"
+          },
+          "summary": {
+            "zh": "整合所有技术构建完整的电商系统实战项目。",
+            "en": "Build a complete e-commerce system integrating all technologies."
+          },
+          "file": "assets/content/java_project_ecommerce.md",
+          "minutes": 90,
+          "keywords": [
+            "电商",
+            "实战",
+            "微服务",
+            "全栈"
+          ],
+          "difficulty": "高级",
+          "order": 32,
+          "quiz": []
         }
       ]
     },
