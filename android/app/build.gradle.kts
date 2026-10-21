@@ -60,10 +60,13 @@ android {
             } else {
                 signingConfigs.getByName("debug")
             }
-            // 资源瘦身主要靠 --split-per-abi；R8 混淆需要额外 proguard 规则，
-            // 涉及 flutter_local_notifications / timezone 反射调用，暂不开启。
-            isMinifyEnabled = false
-            isShrinkResources = false
+            // 启用 R8 代码混淆和资源压缩以减小 APK 体积
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 }
