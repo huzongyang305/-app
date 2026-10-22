@@ -4470,118 +4470,6 @@
           }
         },
         {
-          "id": "python_errors_files",
-          "title": {
-            "zh": "异常处理与文件操作",
-            "en": "Exceptions & Files"
-          },
-          "summary": {
-            "zh": "try/except/else/finally、自定义异常、with 读写文件与 pathlib。",
-            "en": "Exception handling, custom errors, file IO and pathlib."
-          },
-          "file": "assets/content/programming_python_errors_files.md",
-          "minutes": 60,
-          "keywords": [
-            "异常",
-            "try",
-            "except",
-            "with",
-            "文件",
-            "pathlib"
-          ],
-          "quiz": [
-            {
-              "question": "围绕“异常处理与文件操作”中的 异常、try、except，下列哪两项是本课强调的实践判断？",
-              "options": [
-                "学习 异常 时要同时说明输入、输出和失败路径，不能只看正常流程",
-                "只要 异常 的常规示例通过，就可以跳过边界与异常路径",
-                "验证 try 时要固定版本并覆盖边界输入，结论才可复现",
-                "把 try 的单次运行结果当成所有版本和规模都成立"
-              ],
-              "answers": [
-                0,
-                2
-              ],
-              "answer": 0,
-              "explanation": "在 `异常处理与文件操作` 第 1 题中，正确答案是「学习 异常 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 try 时要固定版本并覆盖边界输入，结论才可复现」。在「异常处理与文件操作」第 1 题中，该判断与术语 `异常` 对应：程序执行中偏离正常控制流的错误事件，需要捕获、传播或转换。在「异常处理与文件操作」第 1 题中，错误表现方面，用裸 `except:`会造成连 Ctrl+C 都吞掉，问题被掩盖，应按指明具体异常类型修复。",
-              "type": "multi"
-            },
-            {
-              "question": "这段 `python` 代码对应 `异常处理与文件操作` 的 `ValueError`。课程要解决的是try/except/else/finally、自定义异常、with 读写文件与 pathlib。关于代码内容，哪一项说法准确？",
-              "options": [
-                "出现字面量 `OrderPaid`",
-                "出现字面量 `写放大系数：SSD 寿命评估的关键指标。`",
-                "出现字面量 `api`",
-                "出现字面量 `无论如何都会执行，用于释放资源`"
-              ],
-              "answer": 3,
-              "explanation": "在 `异常处理与文件操作` 第 2 题中，正确答案是「出现字面量 `无论如何都会执行，用于释放资源`」。在「异常处理与文件操作」第 2 题中，该判断与术语 `ValueError` 对应：常见异常：`ValueError` 值不合法、`TypeError` 类型不匹配、`KeyError` 字典键不存在、`IndexError` 下标越界、`FileNotFoundError` 文件不存在。在「异常处理与文件操作」第 2 题中，错误表现方面，用裸 `except:`会造成连 Ctrl+C 都吞掉，问题被掩盖，应按指明具体异常类型修复。",
-              "type": "code",
-              "code": "import json\r\nfrom pathlib import Path\r\n\r\ndef load_config(path: str) -> dict:\r\n    file = Path(path)\r\n    if not file.exists():\r\n        raise FileNotFoundError(f\"配置文件不存在：{file}\")\r\n\r\n    try:\r\n        data = json.loads(file.read_text(encoding=\"utf-8\"))\r\n    except json.JSONDecodeError as exc:\r\n        raise ValueError(f\"配置不是合法 JSON：{exc}\") from exc\r\n\r\n    if not isinstance(data, dict):\r\n        raise ValueError(\"配置顶层必须是对象\")\r\n    return data\r\n\r\ntry:\r\n    print(load_config(\"config.json\"))\r\nexcept (FileNotFoundError, ValueError) as err:\r\n    print(\"加载失败：\", err)",
-              "language": "python"
-            },
-            {
-              "question": "下面哪种异常处理方式最不推荐？",
-              "options": [
-                "捕获具体的 ValueError，但这会引入新的复杂度，需要额外的验证与维护",
-                "记录日志后重新抛出",
-                "except Exception: pass 静默吞掉所有异常",
-                "使用 finally 释放资源"
-              ],
-              "answer": 2,
-              "explanation": "在 `异常处理与文件操作` 第 3 题中，正确答案是「except Exception: pass 静默吞掉所有异常」。在「异常处理与文件操作」第 3 题中，该判断与术语 `异常` 对应：程序执行中偏离正常控制流的错误事件，需要捕获、传播或转换。在「异常处理与文件操作」第 3 题中，错误表现方面，except Exception: pass会造成真实 bug 被吞掉，应按至少记录日志，只捕获预期异常修复。 在「异常处理与文件操作」第 3 题中，判断时先确认输入和适用范围，对照 `异常`、`try`、`except`、`with` 复现一次，最后把错误表现与正确做法逐项对照。"
-            },
-            {
-              "question": "读取一个不存在的文件，会抛出哪个异常？",
-              "options": [
-                "KeyError",
-                "FileNotFoundError",
-                "抛出 IndexError",
-                "TypeError"
-              ],
-              "answer": 1,
-              "explanation": "在 `异常处理与文件操作` 第 4 题中，正确答案是「FileNotFoundError」。在「异常处理与文件操作」第 4 题中，该判断与术语 `异常` 对应：程序执行中偏离正常控制流的错误事件，需要捕获、传播或转换。在「异常处理与文件操作」第 4 题中，错误表现方面，用裸 `except:`会造成连 Ctrl+C 都吞掉，问题被掩盖，应按指明具体异常类型修复。 在「异常处理与文件操作」第 4 题中，判断时先确认输入和适用范围，对照 `异常`、`try`、`except`、`with` 复现一次，最后把错误表现与正确做法逐项对照。"
-            },
-            {
-              "question": "自定义异常类通常继承自？",
-              "options": [
-                "Error",
-                "BaseException",
-                "Exception",
-                "object"
-              ],
-              "answer": 2,
-              "explanation": "在 `异常处理与文件操作` 第 5 题中，正确答案是「Exception」。在「异常处理与文件操作」第 5 题中，该判断与术语 `异常` 对应：程序执行中偏离正常控制流的错误事件，需要捕获、传播或转换。在「异常处理与文件操作」第 5 题中，错误表现方面，用裸 `except:`会造成连 Ctrl+C 都吞掉，问题被掩盖，应按指明具体异常类型修复。 在「异常处理与文件操作」第 5 题中，判断时先确认输入和适用范围，对照 `异常`、`try`、`except`、`with` 复现一次，最后把错误表现与正确做法逐项对照。"
-            },
-            {
-              "type": "fill",
-              "question": "填空：补齐下面这段术语说明中的空缺。课程 `try/except/else/finally、自定义异常、with 读写文件与 pathlib。`，这段说明是：`____`：用 raise ... from 保留原始异常，traceback 里才能看到真正的起因。空缺处应填哪个术语？",
-              "options": [],
-              "answer": 0,
-              "accepted_answers": [
-                "异常链"
-              ],
-              "explanation": "在 `异常处理与文件操作` 第 6 题中，正确答案是「异常链」。在「异常处理与文件操作」第 6 题中，该判断与术语 `异常` 对应：程序执行中偏离正常控制流的错误事件，需要捕获、传播或转换。在「异常处理与文件操作」第 6 题中，错误表现方面，用裸 `except:`会造成连 Ctrl+C 都吞掉，问题被掩盖，应按指明具体异常类型修复。 在「异常处理与文件操作」第 6 题中，判断时先确认输入和适用范围，对照 `异常`、`try`、`except`、`with` 复现一次，最后把错误表现与正确做法逐项对照。"
-            }
-          ],
-          "difficulty": "进阶",
-          "group": null,
-          "order": 11,
-          "prerequisites": [
-            "python_oop"
-          ],
-          "related": [
-            "python_modules_stdlib",
-            "java_exceptions",
-            "js_errors_debugging"
-          ],
-          "lab": "sandbox:python",
-          "code_quiz": {
-            "language": "python",
-            "slot": "try"
-          }
-        },
-        {
           "id": "python_modules_stdlib",
           "title": {
             "zh": "模块、包与虚拟环境",
@@ -4678,7 +4566,7 @@
           ],
           "difficulty": "进阶",
           "group": null,
-          "order": 12,
+          "order": 11,
           "prerequisites": [
             "python_errors_files"
           ],
@@ -4788,7 +4676,7 @@
           ],
           "difficulty": "进阶",
           "group": null,
-          "order": 13,
+          "order": 12,
           "prerequisites": [
             "python_modules_stdlib"
           ],
@@ -4821,7 +4709,7 @@
             "稳定排序"
           ],
           "difficulty": "进阶",
-          "order": 14,
+          "order": 13,
           "quiz": [
             {
               "type": "single",
@@ -4921,7 +4809,7 @@
             "魔术方法"
           ],
           "difficulty": "进阶",
-          "order": 15,
+          "order": 14,
           "quiz": [
             {
               "type": "single",
@@ -5022,7 +4910,7 @@
             "logging"
           ],
           "difficulty": "进阶",
-          "order": 16,
+          "order": 15,
           "quiz": [
             {
               "type": "single",
@@ -5123,7 +5011,7 @@
             "ExceptionGroup"
           ],
           "difficulty": "进阶",
-          "order": 17,
+          "order": 16,
           "quiz": [
             {
               "type": "single",
@@ -5224,7 +5112,7 @@
             "覆盖率"
           ],
           "difficulty": "进阶",
-          "order": 18,
+          "order": 17,
           "quiz": [
             {
               "type": "single",
@@ -5325,7 +5213,7 @@
             "版本兼容"
           ],
           "difficulty": "进阶",
-          "order": 19,
+          "order": 18,
           "quiz": [
             {
               "type": "single",
@@ -5426,7 +5314,7 @@
             "CLI"
           ],
           "difficulty": "进阶",
-          "order": 20,
+          "order": 19,
           "quiz": [
             {
               "type": "single",
@@ -5527,7 +5415,7 @@
             "后台线程"
           ],
           "difficulty": "进阶",
-          "order": 21,
+          "order": 20,
           "quiz": [
             {
               "type": "single",
@@ -5706,7 +5594,7 @@
           ],
           "difficulty": "高级",
           "group": null,
-          "order": 22,
+          "order": 21,
           "file_en": "assets/content_en/python_concurrency.md",
           "prerequisites": [
             "python_typing_testing"
@@ -5817,7 +5705,7 @@
           ],
           "difficulty": "高级",
           "group": null,
-          "order": 23,
+          "order": 22,
           "file_en": "assets/content_en/python_project.md",
           "prerequisites": [
             "python_concurrency"
@@ -5851,7 +5739,7 @@
             "pytest"
           ],
           "difficulty": "高级",
-          "order": 24,
+          "order": 23,
           "quiz": [
             {
               "question": "围绕“实战：FastAPI 订单服务”中的 FastAPI、Pydantic、REST，下列哪两项是本课强调的实践判断？",
@@ -5966,7 +5854,7 @@
             "幂等"
           ],
           "difficulty": "高级",
-          "order": 25,
+          "order": 24,
           "quiz": [
             {
               "question": "为什么要把脏记录写入拒绝文件？",
@@ -6080,7 +5968,7 @@
             "闭包"
           ],
           "difficulty": "高级",
-          "order": 26,
+          "order": 25,
           "quiz": [
             {
               "question": "在 `Python 装饰器与生成器` 里，与 `装饰器` 有关的说法中，哪一项最符合掌握闭包、装饰器、yield、惰性序列和生成器性能。？",
@@ -6199,7 +6087,7 @@
             "线程池"
           ],
           "difficulty": "高级",
-          "order": 27,
+          "order": 26,
           "quiz": [
             {
               "type": "single",
@@ -6299,7 +6187,7 @@
             "超时"
           ],
           "difficulty": "高级",
-          "order": 28,
+          "order": 27,
           "quiz": [
             {
               "type": "single",
@@ -6400,7 +6288,7 @@
             "Alembic"
           ],
           "difficulty": "高级",
-          "order": 29,
+          "order": 28,
           "quiz": [
             {
               "type": "single",
@@ -6501,7 +6389,7 @@
             "限流"
           ],
           "difficulty": "高级",
-          "order": 30,
+          "order": 29,
           "quiz": [
             {
               "type": "single",
@@ -6601,7 +6489,7 @@
             "资源"
           ],
           "difficulty": "高级",
-          "order": 31,
+          "order": 30,
           "quiz": [
             {
               "question": "在 `Python 上下文管理器与迭代器协议` 里，与 `上下文管理器` 有关的说法中，哪一项最符合理解 with、enter/exit、迭代器协议和资源安全。？",
@@ -6708,7 +6596,7 @@
             "依赖审计"
           ],
           "difficulty": "高级",
-          "order": 32,
+          "order": 31,
           "quiz": [
             {
               "type": "single",
@@ -6808,7 +6696,7 @@
             "发布"
           ],
           "difficulty": "高级",
-          "order": 33,
+          "order": 32,
           "quiz": [
             {
               "question": "围绕“Python 打包、发布与性能”中的 打包、pyproject、性能剖析，下列哪两项是本课强调的实践判断？",
@@ -6915,7 +6803,7 @@
             "__slots__"
           ],
           "difficulty": "高级",
-          "order": 34,
+          "order": 33,
           "quiz": [
             {
               "type": "single",
@@ -7016,7 +6904,7 @@
             "Parquet"
           ],
           "difficulty": "高级",
-          "order": 35,
+          "order": 34,
           "quiz": [
             {
               "type": "single",
@@ -7117,7 +7005,7 @@
             "健康检查"
           ],
           "difficulty": "高级",
-          "order": 36,
+          "order": 35,
           "quiz": [
             {
               "type": "single",
@@ -7218,7 +7106,7 @@
             "ABI"
           ],
           "difficulty": "高级",
-          "order": 37,
+          "order": 36,
           "quiz": [
             {
               "type": "single",
@@ -7319,7 +7207,7 @@
             "发布"
           ],
           "difficulty": "高级",
-          "order": 38,
+          "order": 37,
           "quiz": [
             {
               "type": "single",
@@ -7421,7 +7309,7 @@
             "故障复盘"
           ],
           "difficulty": "高级",
-          "order": 39,
+          "order": 38,
           "quiz": [
             {
               "type": "single",
@@ -53657,7 +53545,7 @@
             "监控告警",
             "可观测性"
           ],
-          "difficulty": "中级",
+          "difficulty": "高级",
           "order": 9,
           "quiz": [
             {

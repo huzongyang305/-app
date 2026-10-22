@@ -33,7 +33,6 @@ class SwipeableLessonCard extends StatefulWidget {
 
 class _SwipeableLessonCardState extends State<SwipeableLessonCard>
     with SingleTickerProviderStateMixin {
-  final _controller = TransformationController();
   double _dragOffset = 0;
   static const _swipeThreshold = 100.0;
 

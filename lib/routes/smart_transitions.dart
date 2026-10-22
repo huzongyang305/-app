@@ -78,8 +78,6 @@ class SmartPageRoute<T> extends MaterialPageRoute<T> {
     Animation<double> animation,
     Widget child,
   ) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    
     return SlideTransition(
       position: Tween<Offset>(
         begin: const Offset(1.0, 0.0),

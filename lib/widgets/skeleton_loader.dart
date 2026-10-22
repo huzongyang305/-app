@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../theme/app_theme.dart';
 
 /// 骨架屏加载组件：在内容加载时显示占位符，提升感知性能
 class SkeletonLoader extends StatefulWidget {

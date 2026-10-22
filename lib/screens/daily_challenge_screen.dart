@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../models/daily_challenge.dart';
 import '../services/challenge_service.dart';
 import '../widgets/challenge_card.dart';

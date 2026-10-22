@@ -95,7 +95,6 @@ class SocialService {
     final groups = await getGroups();
     final index = groups.indexWhere((g) => g.id == groupId);
     if (index != -1) {
-      final group = groups[index];
       // TODO: 添加成员逻辑
       await prefs.setStringList(
         _groupsKey,
