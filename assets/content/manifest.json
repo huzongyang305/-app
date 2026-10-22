@@ -68081,10 +68081,81 @@
           },
           "file": "assets/content/frontend_react_hooks.md",
           "minutes": 45,
-          "keywords": ["React", "Hooks", "useState", "useEffect", "组件化"],
+          "keywords": [
+            "React",
+            "Hooks",
+            "useState",
+            "useEffect",
+            "组件化"
+          ],
           "difficulty": "入门",
           "order": 0,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "code",
+              "question": "以下代码有什么问题？",
+              "options": [
+                "没有导入useState",
+                "在条件语句中调用了Hook",
+                "setMessage没有被使用",
+                "count初始值应该是null"
+              ],
+              "answer": 1,
+              "explanation": "React的Hooks规则明确规定，Hook必须在组件的顶层调用，不能在条件语句、循环或嵌套函数中调用。这是因为React依靠Hook的调用顺序来关联状态和组件实例。在上述代码中，`useState`被放在了if语句内部，这违反了Hook规则。当count<=5时，这个Hook根本不会被调用，导致Hook调用顺序混乱，React会抛出错误。正确的做法是将所有Hook放在组件函数的最顶部，无论条件如何都执行。",
+              "code": "function Counter() {\n  const [count, setCount] = useState(0);\n  \n  if (count > 5) {\n    const [message, setMessage] = useState('超过限制了');\n  }\n  \n  return <div>{count}</div>;\n}",
+              "language": "jsx"
+            },
+            {
+              "type": "single",
+              "question": "关于useEffect的依赖数组，以下说法正确的是？",
+              "options": [
+                "依赖数组为空时，effect永远不会执行",
+                "省略依赖数组时，effect只在组件挂载时执行",
+                "依赖数组应该包含effect中使用的所有外部变量",
+                "依赖数组中可以包含函数，不会产生任何问题"
+              ],
+              "answer": 2,
+              "explanation": "useEffect的依赖数组用于告诉React何时需要重新执行effect。选项A错误，空数组`[]`表示effect只在组件挂载和卸载时执行（类似componentDidMount和componentWillUnmount）。选项B错误，省略依赖数组会导致effect在每次渲染后都执行，这可能造成性能问题。选项D错误，如果依赖数组中包含每次渲染都重新创建的函数或对象，会导致effect频繁执行。选项C正确，根据React官方文档，依赖数组应该包含effect中使用的所有来自组件作用域的变量，这样才能确保effect使用的是最新值。"
+            },
+            {
+              "type": "code",
+              "question": "以下代码的输出是什么？ 首次渲染后点击按钮，控制台输出顺序是？",
+              "options": [
+                "渲染, count: 0 → 点击后, count: 0 → Effect执行, count: 1 → 渲染, count: 1",
+                "渲染, count: 0 → 点击后, count: 1 → Effect执行, count: 1 → 渲染, count: 1",
+                "渲染, count: 0 → 点击后, count: 0 → 渲染, count: 1 → Effect执行, count: 1",
+                "渲染, count: 0 → Effect执行, count: 0 → 点击后, count: 0 → 渲染, count: 1"
+              ],
+              "answer": 2,
+              "explanation": "这是一个考察React渲染流程和setState异步特性的经典问题。首次渲染时输出\"渲染, count: 0\"。点击按钮时，首先执行onClick中的同步代码，此时count还是0（因为setState是异步的），所以输出\"点击后, count: 0\"。然后React调度了一次重新渲染，在这次渲染中count变为1，输出\"渲染, count: 1\"。渲染完成后，React检查useEffect的依赖，发现count从0变成了1，于是执行effect，输出\"Effect执行, count: 1\"。因此正确顺序是C。",
+              "code": "function Example() {\n  const [count, setCount] = useState(0);\n  \n  useEffect(() => {\n    console.log('Effect执行, count:', count);\n  }, [count]);\n  \n  console.log('渲染, count:', count);\n  \n  return (\n    <button onClick={() => {\n      setCount(count + 1);\n      console.log('点击后, count:', count);\n    }}>\n      点击\n    </button>\n  );\n}",
+              "language": "jsx"
+            },
+            {
+              "type": "single",
+              "question": "关于自定义Hook，以下说法错误的是？",
+              "options": [
+                "自定义Hook必须以\"use\"开头命名",
+                "自定义Hook可以调用其他Hook",
+                "自定义Hook必须返回一个值",
+                "自定义Hook可以在多个组件间复用逻辑"
+              ],
+              "answer": 2,
+              "explanation": "自定义Hook是封装了Hook逻辑的普通JavaScript函数。选项A正确，React要求自定义Hook以\"use\"开头，这样lint工具才能检测是否违反了Hook规则。选项B正确，自定义Hook的本质就是组合多个Hook来实现特定功能。选项D正确，这正是自定义Hook的主要价值所在。选项C错误，自定义Hook不一定需要返回值。例如，一个只负责订阅事件的Hook可能不需要返回任何值。当然，大多数情况下我们会返回一些数据或函数供调用者使用，但这不是强制要求。"
+            },
+            {
+              "type": "single",
+              "question": "以下哪种情况最适合使用useRef？",
+              "options": [
+                "存储需要在重新渲染之间保持但不触发重新渲染的值",
+                "存储需要在界面上显示的动态数据",
+                "存储从API获取的用户列表",
+                "存储表单的验证错误信息"
+              ],
+              "answer": 0,
+              "explanation": "useRef的主要用途有两个：访问DOM元素和存储可变值。关键特性是：修改ref.current不会触发组件重新渲染。选项A描述的正是这个场景，比如存储定时器ID、之前的props值、或者某些计算中间结果。选项B、C、D都需要在值变化时更新界面，因此应该使用useState。如果用useRef存储这些数据，界面将不会响应用户操作或数据变化，导致bug。简单记忆：需要显示的变化用useState，不需要显示的持久化值用useRef。"
+            }
+          ]
         },
         {
           "id": "frontend_vue_composition",
@@ -68098,10 +68169,81 @@
           },
           "file": "assets/content/frontend_vue_composition.md",
           "minutes": 45,
-          "keywords": ["Vue 3", "Composition API", "ref", "reactive", "响应式"],
+          "keywords": [
+            "Vue 3",
+            "Composition API",
+            "ref",
+            "reactive",
+            "响应式"
+          ],
           "difficulty": "入门",
           "order": 1,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "code",
+              "question": "以下代码的输出是什么？",
+              "options": [
+                "0, 张三, 1, 26",
+                "0, 张三, 0, 25",
+                "0, 张三, 1, 25",
+                "报错，不能直接修改reactive对象"
+              ],
+              "answer": 0,
+              "explanation": "这是一个考察ref和reactive基本用法的题目。ref创建的值需要通过`.value`访问和修改，所以第一次输出`count.value`是0，修改后再次输出是1。reactive创建的对象可以直接访问和修改属性，所以`user.name`是\"张三\"，修改`user.age`后输出26。选项A正确反映了这个过程。需要注意的关键点是：ref在JavaScript中必须通过`.value`访问，而reactive对象的属性可以直接访问和修改。",
+              "code": "import { ref, reactive } from 'vue'\n\nconst count = ref(0)\nconst user = reactive({ name: '张三', age: 25 })\n\nconsole.log(count.value)\nconsole.log(user.name)\n\ncount.value++\nuser.age = 26\n\nconsole.log(count.value)\nconsole.log(user.age)",
+              "language": "javascript"
+            },
+            {
+              "type": "single",
+              "question": "关于computed和watch的区别，以下说法正确的是？",
+              "options": [
+                "computed可以执行异步操作，watch不行",
+                "computed必须有返回值，watch不需要",
+                "watch会在组件初始化时立即执行，computed不会",
+                "computed可以修改其他响应式数据，watch不行"
+              ],
+              "answer": 1,
+              "explanation": "computed和watch都是用来响应数据变化的，但用途不同。computed用于派生数据，它必须返回一个值，并且应该是纯函数（不产生副作用）。watch用于执行副作用，比如发送请求、操作DOM等，它不需要返回值。选项A错误，computed应该是同步的纯函数。选项C错误，默认情况下watch不会立即执行，需要设置`immediate: true`选项。选项D错误，虽然不建议，但技术上computed和watch都可以修改其他响应式数据，只是computed这样做会违反设计原则。"
+            },
+            {
+              "type": "code",
+              "question": "以下代码有什么问题？",
+              "options": [
+                "reactive不能用于对象",
+                "解构后的变量失去了响应性",
+                "不能修改常量",
+                "没有导入必要的函数"
+              ],
+              "answer": 1,
+              "explanation": "这是Vue 3中最常见的陷阱之一。当你从reactive对象中解构属性时，得到的是普通变量，不再具有响应性。这意味着修改这些变量不会触发视图更新，也不会被watch或computed追踪。正确的做法有两种：1）不解构，直接使用`state.name`和`state.age`；2）使用`toRefs`函数：`const { name, age } = toRefs(state)`，这样解构后的变量仍然是响应式的ref。选项C也有一定道理（const不能重新赋值），但核心问题是响应性丢失，所以B是最佳答案。",
+              "code": "import { reactive } from 'vue'\n\nconst state = reactive({\n  name: '张三',\n  age: 25\n})\n\n// 解构\nconst { name, age } = state\n\n// 尝试修改\nname = '李四'\nage = 30",
+              "language": "javascript"
+            },
+            {
+              "type": "single",
+              "question": "关于组合式函数（composables），以下说法错误的是？",
+              "options": [
+                "组合式函数必须以\"use\"开头命名",
+                "组合式函数只能在setup函数中调用",
+                "组合式函数可以调用其他组合式函数",
+                "组合式函数应该返回响应式数据或方法"
+              ],
+              "answer": 1,
+              "explanation": "组合式函数是Vue 3逻辑复用的核心机制。选项A正确，按照约定，组合式函数以\"use\"开头，这样开发者一眼就能识别。选项C正确，组合式函数可以互相调用，形成组合链。选项D正确，组合式函数通常返回响应式数据和方法供调用者使用。选项B错误，组合式函数不仅可以在setup中调用，也可以在其他组合式函数中调用，甚至在普通的JavaScript模块中调用（只要不依赖组件实例）。这正是组合式API的优势所在——逻辑可以脱离组件存在。"
+            },
+            {
+              "type": "single",
+              "question": "以下哪种场景最适合使用watchEffect而不是watch？",
+              "options": [
+                "需要在数据变化时发送API请求",
+                "需要根据多个独立数据源的变化执行操作",
+                "需要精确控制何时停止监听",
+                "需要手动指定监听的依赖项"
+              ],
+              "answer": 0,
+              "explanation": "watchEffect的优势在于自动追踪依赖，代码更简洁。选项A的场景中，如果URL是基于某个响应式数据计算的，watchEffect会自动追踪这个依赖，当数据变化时自动重新执行请求，非常合适。选项B更适合用watch，因为可以明确指定多个依赖。选项C和D都是watch的优势场景：watch可以通过返回值停止监听，也可以明确指定依赖项。watchEffect适合依赖关系清晰、不需要精细控制的场景；watch适合需要精确控制监听行为的场景。"
+            }
+          ]
         },
         {
           "id": "frontend_angular_basics",
@@ -68115,10 +68257,79 @@
           },
           "file": "assets/content/frontend_angular_basics.md",
           "minutes": 50,
-          "keywords": ["Angular", "依赖注入", "TypeScript", "RxJS", "服务"],
+          "keywords": [
+            "Angular",
+            "依赖注入",
+            "TypeScript",
+            "RxJS",
+            "服务"
+          ],
           "difficulty": "入门",
           "order": 2,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "关于Angular的依赖注入，以下说法正确的是？",
+              "options": [
+                "服务必须在@NgModule的providers中注册才能使用",
+                "@Injectable({ providedIn: 'root' })会使服务成为单例",
+                "构造函数中的参数顺序不影响依赖注入",
+                "每个组件都会创建一个新的服务实例"
+              ],
+              "answer": 1,
+              "explanation": "Angular的依赖注入系统非常灵活。选项A错误，从Angular 6开始，可以使用`@Injectable({ providedIn: 'root' })`在服务级别注册，无需在模块中声明。选项B正确，`providedIn: 'root'`会将服务注册到根注入器，整个应用共享一个实例，形成单例模式。选项C错误，虽然TypeScript的参数名可以提供线索，但Angular主要依靠参数的类型信息来注入依赖，顺序本身不重要，但类型必须匹配。选项D错误，默认情况下服务是单例的，只有在组件的providers中显式声明才会为该组件创建新实例。"
+            },
+            {
+              "type": "code",
+              "question": "以下代码有什么问题？",
+              "options": [
+                "模板中不能调用方法",
+                "每次变更检测都会调用getData，影响性能",
+                "返回数组会导致错误",
+                "没有导入必要的模块"
+              ],
+              "answer": 1,
+              "explanation": "在Angular模板中直接调用方法是一个常见的性能陷阱。Angular的变更检测机制会在每次检测到变化时重新评估模板表达式，这意味着`getData()`会被频繁调用，即使数据没有变化。控制台会看到大量的\"getData called\"输出。正确的做法是使用属性或pure pipe：要么直接将data暴露给模板`<div>{{ data }}</div>`，要么创建一个pure pipe来处理数据转换。pure pipe只有在输入参数变化时才会重新执行，可以避免这个问题。",
+              "code": "@Component({\n  selector: 'app-example',\n  template: `<div>{{ getData() }}</div>`\n})\nexport class ExampleComponent {\n  data = [1, 2, 3];\n  \n  getData(): number[] {\n    console.log('getData called');\n    return this.data;\n  }\n}",
+              "language": "typescript"
+            },
+            {
+              "type": "single",
+              "question": "关于Angular的生命周期钩子，以下执行顺序正确的是？",
+              "options": [
+                "ngOnInit → ngAfterViewInit → ngOnChanges → ngOnDestroy",
+                "ngOnChanges → ngOnInit → ngAfterViewInit → ngOnDestroy",
+                "ngOnInit → ngOnChanges → ngAfterViewInit → ngOnDestroy",
+                "ngAfterViewInit → ngOnInit → ngOnChanges → ngOnDestroy"
+              ],
+              "answer": 1,
+              "explanation": "Angular组件的生命周期钩子有严格的执行顺序：1）ngOnChanges - 当输入属性变化时调用（首次也会调用）；2）ngOnInit - 组件初始化完成后调用，通常在这里进行数据获取；3）ngAfterContentInit - 内容投影完成后；4）ngAfterContentChecked - 内容检查后；5）ngAfterViewInit - 视图初始化完成后；6）ngAfterViewChecked - 视图检查后；7）ngOnDestroy - 组件销毁前。所以正确顺序是ngOnChanges → ngOnInit → ngAfterViewInit → ngOnDestroy。记住这个顺序对于正确处理初始化和清理逻辑非常重要。"
+            },
+            {
+              "type": "single",
+              "question": "关于RxJS在Angular中的使用，以下说法错误的是？",
+              "options": [
+                "HttpClient返回的是Observable",
+                "使用async管道可以自动管理订阅",
+                "subscribe()返回的Subscription需要手动取消",
+                "Observable是同步执行的，不会造成性能问题"
+              ],
+              "answer": 3,
+              "explanation": "RxJS是Angular的重要组成部分。选项A正确，HttpClient的所有方法都返回Observable，这是Angular推荐的异步处理方式。选项B正确，async管道会在组件销毁时自动取消订阅，是最佳实践。选项C正确，如果手动调用subscribe()，需要在ngOnDestroy中取消订阅以防止内存泄漏。选项D错误，Observable既可以是同步的也可以是异步的，而且如果不正确使用（如在模板中频繁创建新的Observable），确实会造成性能问题。关键是要理解Observable的惰性求值特性和正确的订阅管理模式。"
+            },
+            {
+              "type": "single",
+              "question": "以下哪种情况会导致Angular的变更检测无法正常工作？",
+              "options": [
+                "在NgZone外部修改了响应式数据",
+                "使用了ChangeDetectionStrategy.Default",
+                "在ngOnInit中调用了HTTP请求",
+                "使用了async管道订阅Observable"
+              ],
+              "answer": 0,
+              "explanation": "Angular依赖Zone.js来拦截异步操作并触发变更检测。如果在NgZone外部执行代码（比如某些第三方库的回调），Angular不知道数据发生了变化，因此不会更新视图。解决方法是使用`NgZone.run()`将代码包裹起来，或者手动调用`ChangeDetectorRef.detectChanges()`。选项B是默认的变更检测策略，工作正常。选项C是标准做法，HttpClient集成在NgZone中，会自动触发变更检测。选项D也是推荐做法，async管道会自动处理变更检测。"
+            }
+          ]
         },
         {
           "id": "frontend_nextjs_ssr",
@@ -68132,10 +68343,79 @@
           },
           "file": "assets/content/frontend_nextjs_ssr.md",
           "minutes": 50,
-          "keywords": ["Next.js", "SSR", "SSG", "App Router", "服务端渲染"],
+          "keywords": [
+            "Next.js",
+            "SSR",
+            "SSG",
+            "App Router",
+            "服务端渲染"
+          ],
           "difficulty": "进阶",
           "order": 3,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "关于Next.js的渲染策略，以下说法正确的是？",
+              "options": [
+                "SSR适合内容频繁变化的页面，如新闻网站",
+                "SSG适合完全静态的内容，如公司官网首页",
+                "CSR适合高度交互的应用，如在线游戏",
+                "以上都正确"
+              ],
+              "answer": 3,
+              "explanation": "三种渲染策略各有适用场景。SSR（服务端渲染）每次请求都重新生成HTML，适合需要实时数据的场景，如新闻、股票行情。SSG（静态站点生成）在构建时生成HTML，适合内容不常变化的页面，如博客、文档。CSR（客户端渲染）依赖JavaScript动态渲染，适合交互密集的应用，如仪表盘、游戏。Next.js的强大之处在于可以在同一应用中混合使用这些策略，为每个页面选择最优方案。"
+            },
+            {
+              "type": "code",
+              "question": "以下代码有什么问题？",
+              "options": [
+                "getServerSideProps返回值格式错误",
+                "在服务端代码中访问了window对象",
+                "data没有正确传递给组件",
+                "缺少必要的导入语句"
+              ],
+              "answer": 1,
+              "explanation": "`getServerSideProps`在Node.js服务器上执行，而不是在浏览器中。因此它无法访问浏览器特有的API，如`window`、`document`、`localStorage`等。尝试访问这些API会导致运行时错误。如果需要根据屏幕尺寸做适配，应该在客户端组件中使用`useEffect`或CSS媒体查询。正确的做法是移除`window.innerWidth`这行代码，或在客户端处理响应式逻辑。",
+              "code": "export default function Page({ data }) {\n  return <div>{data.message}</div>;\n}\n\nexport async function getServerSideProps() {\n  const data = { message: 'Hello' };\n  \n  // 尝试访问浏览器API\n  const screenWidth = window.innerWidth;\n  \n  return {\n    props: { data }\n  };\n}",
+              "language": "jsx"
+            },
+            {
+              "type": "single",
+              "question": "关于App Router的布局系统，以下说法错误的是？",
+              "options": [
+                "layout.jsx会在路由切换时保持状态",
+                "每个路由段都可以有自己的layout",
+                "layout必须包含children参数",
+                "layout中可以随意使用useState和useEffect"
+              ],
+              "answer": 3,
+              "explanation": "App Router默认使用React Server Components，这意味着layout默认是在服务端渲染的。在服务端组件中不能使用useState、useEffect等客户端Hooks。如果需要在layout中使用这些Hooks，必须在文件顶部添加`'use client'`指令，将其转换为客户端组件。选项A、B、C都是正确的：layout确实会在导航时保持状态，支持嵌套布局，且必须接收并渲染children。"
+            },
+            {
+              "type": "single",
+              "question": "Next.js Image组件相比普通img标签的优势不包括？",
+              "options": [
+                "自动转换为WebP/AVIF格式",
+                "根据设备像素比提供合适分辨率",
+                "自动添加alt属性提升可访问性",
+                "懒加载非首屏图片"
+              ],
+              "answer": 2,
+              "explanation": "Next.js Image组件提供了多项性能优化：自动格式转换（选项A）、响应式图片（选项B）、懒加载（选项D）、防止布局偏移等。但它不会自动添加alt属性——开发者仍然需要手动提供有意义的alt文本以提升可访问性。这是故意的设计，因为AI无法准确判断图片内容，强制要求开发者思考图片的语义含义。其他三个选项都是Image组件的真实优势。"
+            },
+            {
+              "type": "single",
+              "question": "关于增量静态再生（ISR），以下描述正确的是？",
+              "options": [
+                "revalidate设置为0表示永不更新",
+                "重新生成期间旧页面仍然可用",
+                "每次访问都会触发重新生成",
+                "ISR只能用于getServerSideProps"
+              ],
+              "answer": 1,
+              "explanation": "ISR是Next.js的独特功能，结合了SSG的速度和SSR的数据新鲜度。当设置了`revalidate`后，页面在后台异步重新生成，在此期间用户看到的仍然是旧的缓存版本（选项B正确）。选项A错误，revalidate为0表示每次请求都重新验证。选项C错误，ISR是按时间间隔触发，不是每次访问。选项D错误，ISR用于getStaticProps，而非getServerSideProps。ISR特别适合博客、电商产品等更新频率中等的场景。"
+            }
+          ]
         },
         {
           "id": "frontend_svelte_reactive",
@@ -68149,10 +68429,81 @@
           },
           "file": "assets/content/frontend_svelte_reactive.md",
           "minutes": 40,
-          "keywords": ["Svelte", "响应式", "stores", "transitions", "无虚拟DOM"],
+          "keywords": [
+            "Svelte",
+            "响应式",
+            "stores",
+            "transitions",
+            "无虚拟DOM"
+          ],
           "difficulty": "入门",
           "order": 4,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "code",
+              "question": "关于Svelte的$:响应式声明，以下代码的输出是什么？ 首次点击按钮后，控制台输出几次日志？",
+              "options": [
+                "1次",
+                "2次",
+                "3次",
+                "4次"
+              ],
+              "answer": 1,
+              "explanation": "这是一个考察Svelte响应式执行顺序的问题。初始渲染时，count=0，doubled=0，console.log执行一次。点击按钮后，count变为1，这触发了两个响应式语句：首先doubled重新计算为2，然后console.log再次执行（因为count和doubled都变了）。所以总共输出2次日志。关键点在于：Svelte会按依赖关系顺序执行响应式语句，且每个语句只在其依赖变化时执行一次，不会重复执行。",
+              "code": "<script>\n  let count = 0;\n  let doubled = 0;\n  \n  $: doubled = count * 2;\n  $: console.log('Count:', count, 'Doubled:', doubled);\n  \n  function increment() {\n    count += 1;\n  }\n</script>\n\n<button on:click={increment}>增加</button>",
+              "language": "svelte"
+            },
+            {
+              "type": "single",
+              "question": "关于Svelte Store，以下说法错误的是？",
+              "options": [
+                "writable store可以被任何组件读写",
+                "readable store只能通过其内部的set/update方法更新",
+                "derived store的值可以直接修改",
+                "使用$符号可以在模板中自动订阅store"
+              ],
+              "answer": 2,
+              "explanation": "derived store是从其他store派生的值，它是只读的。你不能直接修改derived store的值，它的值完全由源store和派生函数决定。尝试直接赋值会导致错误。选项A正确，writable store提供了set和update方法供外部修改。选项B正确，readable store的更新逻辑封装在创建函数内部。选项D正确，`$storeName`语法是Svelte的自动订阅机制，会在组件销毁时自动取消订阅。"
+            },
+            {
+              "type": "single",
+              "question": "以下哪个场景最适合使用Svelte Action？",
+              "options": [
+                "根据用户输入过滤列表",
+                "集成第三方图表库到DOM元素",
+                "在多个组件间共享状态",
+                "计算购物车总价"
+              ],
+              "answer": 1,
+              "explanation": "Action的主要用途是封装对DOM元素的直接操作，特别适合集成第三方库（如Chart.js、Leaflet地图等）。选项A应该使用响应式声明或computed值。选项C应该使用store。选项D应该使用derived store或响应式声明。Action的典型特征是需要直接操作DOM元素，且在元素挂载/卸载时需要初始化和清理。"
+            },
+            {
+              "type": "code",
+              "question": "关于Svelte的Transition，以下代码有什么问题？",
+              "options": [
+                "缺少duration参数",
+                "transition不会触发，因为没有条件渲染",
+                "fade导入名称错误",
+                "需要使用in:fade而非transition:fade"
+              ],
+              "answer": 1,
+              "explanation": "Svelte的transition只在元素被添加到DOM或从DOM移除时触发。在这个例子中，div元素始终存在于DOM中，只是visible变量在变化，但这并不影响div的存在。要让transition生效，需要使用条件渲染：`{#if visible}<div transition:fade>...</div>{/if}`。这样当visible变为false时，div会从DOM移除，触发淡出动画；变为true时，div被添加，触发淡入动画。选项A不是问题，duration有默认值。选项C导入正确。选项D也不是必须的，transition同时处理进入和退出。",
+              "code": "<script>\n  import { fade } from 'svelte/transition';\n  let visible = true;\n</script>\n\n<div transition:fade>\n  这段文字会淡入淡出\n</div>\n\n<button on:click={() => visible = !visible}>\n  切换可见性\n</button>",
+              "language": "svelte"
+            },
+            {
+              "type": "single",
+              "question": "关于Svelte组件生命周期，以下执行顺序正确的是？",
+              "options": [
+                "onMount → beforeUpdate → afterUpdate → onDestroy",
+                "beforeUpdate → onMount → afterUpdate → onDestroy",
+                "onMount → afterUpdate → beforeUpdate → onDestroy",
+                "beforeUpdate → afterUpdate → onMount → onDestroy"
+              ],
+              "answer": 0,
+              "explanation": "Svelte组件的生命周期顺序是：首先组件创建并挂载到DOM，触发onMount；之后每次状态变化时，先执行beforeUpdate（DOM更新前），再执行afterUpdate（DOM更新后）；最后组件销毁时执行onDestroy。这个顺序确保了你能在正确的时机执行相应逻辑：onMount用于初始化（如获取数据），beforeUpdate用于准备（如保存滚动位置），afterUpdate用于后续操作（如聚焦输入框），onDestroy用于清理（如取消订阅、清除定时器）。"
+            }
+          ]
         },
         {
           "id": "frontend_framework_comparison",
@@ -68166,10 +68517,77 @@
           },
           "file": "assets/content/frontend_framework_comparison.md",
           "minutes": 40,
-          "keywords": ["框架对比", "性能基准", "选型指南", "生态系统", "最佳实践"],
+          "keywords": [
+            "框架对比",
+            "性能基准",
+            "选型指南",
+            "生态系统",
+            "最佳实践"
+          ],
           "difficulty": "进阶",
           "order": 5,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "关于框架性能基准测试，以下说法正确的是？",
+              "options": [
+                "基准测试数据可以直接决定框架选型",
+                "React在所有测试中都表现最差",
+                "实际应用中，框架间性能差异通常不明显",
+                "Svelte的内存占用总是最低的"
+              ],
+              "answer": 2,
+              "explanation": "虽然基准测试提供了有价值的参考数据，但在大多数实际应用中，各主流框架的性能差异对用户感知影响不大。性能瓶颈更多来自代码质量、网络条件、图片优化等因素，而非框架本身。选项A错误，选型应综合考虑多方面因素。选项B错误，React性能处于中等水平，并非最差。选项D错误，虽然Svelte通常内存占用较低，但不是\"总是\"最低，具体取决于应用场景。正确做法是：先确定功能需求，再在满足需求的框架中选择团队最熟悉的。"
+            },
+            {
+              "type": "single",
+              "question": "对于一个初创公司的MVP项目（最小可行产品），团队3人且都是前端新手，预算有限，需要在2个月内上线，应该选择哪个框架？",
+              "options": [
+                "Angular",
+                "React",
+                "Vue",
+                "Svelte"
+              ],
+              "answer": 2,
+              "explanation": "这个场景的关键约束是：团队新手、时间紧、预算少。Vue是最合适的选择，因为：1）学习曲线最平缓，新手能快速上手；2）官方提供了完整的路由和状态管理方案，减少选型决策时间；3）文档优秀（尤其是中文文档），降低学习成本；4）开发效率高，适合快速迭代。Angular学习曲线太陡，不适合新手和时间紧的场景。React虽然生态丰富，但配置复杂，需要额外学习路由、状态管理等概念。Svelte虽然简单，但生态相对较小，遇到问题可能找不到现成解决方案。"
+            },
+            {
+              "type": "single",
+              "question": "关于包体积优化，以下做法错误的是？",
+              "options": [
+                "使用动态import()实现路由级别的代码分割",
+                "将所有第三方库打包到一个vendor chunk中",
+                "启用tree shaking移除未使用的代码",
+                "使用compression插件进行gzip压缩"
+              ],
+              "answer": 1,
+              "explanation": "将所有第三方库打包到一个chunk会导致初始加载体积过大，即使某些库只在特定页面使用。正确的做法是按需加载，将不同页面的依赖分开打包。选项A正确，路由级代码分割是标准的优化手段。选项C正确，tree shaking可以显著减小包体积。选项D正确，gzip压缩通常能减少60-70%的传输体积。其他优化策略还包括：使用CDN托管常用库、懒加载非关键资源、使用现代图片格式等。"
+            },
+            {
+              "type": "single",
+              "question": "以下哪种情况最适合选择Angular？",
+              "options": [
+                "个人博客网站",
+                "初创公司的社交应用",
+                "银行的企业级内部管理系统",
+                "设计师的个人作品集"
+              ],
+              "answer": 2,
+              "explanation": "Angular的优势在于企业级应用：严格的架构规范、TypeScript原生支持、完整的解决方案、适合大型团队协作。银行内部管理系统通常需要：长期维护、多人协作、严格的类型检查、完善的权限管理——这些都是Angular的强项。选项A和D过于简单，用Angular是过度工程化。选项B的初创公司通常追求快速迭代，Angular的学习成本和开发速度不太适合。记住：没有最好的框架，只有最适合场景的框架。"
+            },
+            {
+              "type": "single",
+              "question": "关于框架生态系统，以下说法错误的是？",
+              "options": [
+                "React的第三方库数量最多",
+                "Vue的官方维护库质量很高",
+                "Angular的生态系统最不成熟",
+                "Svelte的生态正在快速增长"
+              ],
+              "answer": 2,
+              "explanation": "Angular拥有非常成熟的生态系统，特别是企业级应用领域。它有完善的CLI工具、丰富的UI组件库（Angular Material、PrimeNG）、稳定的状态管理方案（NgRx）。说它\"最不成熟\"是错误的。选项A正确，React确实拥有最庞大的第三方库生态。选项B正确，Vue的路由、状态管理等官方库质量优秀且文档完善。选项D正确，Svelte虽然生态规模较小，但增长速度很快，SvelteKit等项目正在填补空白。选择框架时，生态系统成熟度是重要考量因素，但不是唯一因素。"
+            }
+          ]
         },
         {
           "id": "frontend_state_management",
@@ -68183,10 +68601,77 @@
           },
           "file": "assets/content/frontend_state_management.md",
           "minutes": 55,
-          "keywords": ["Redux", "Pinia", "NgRx", "状态管理", "Context API"],
+          "keywords": [
+            "Redux",
+            "Pinia",
+            "NgRx",
+            "状态管理",
+            "Context API"
+          ],
           "difficulty": "进阶",
           "order": 6,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "关于Redux Toolkit的createSlice，以下说法正确的是？",
+              "options": [
+                "必须手动编写action types字符串",
+                "reducers中可以安全地直接修改state",
+                "不支持异步action",
+                "必须单独定义action creators"
+              ],
+              "answer": 1,
+              "explanation": "Redux Toolkit内置了Immer库，允许在reducers中直接\"修改\"state（如`state.value += 1`），Immer会在底层生成不可变更新。这是RTK相比传统Redux的最大改进之一。选项A错误，RTK自动生成action types。选项C错误，可以通过extraReducers配合createAsyncThunk处理异步。选项D错误，RTK自动生成action creators。"
+            },
+            {
+              "type": "single",
+              "question": "关于Pinia和Vuex的主要区别，以下说法错误的是？",
+              "options": [
+                "Pinia移除了mutations，直接在actions中修改state",
+                "Pinia对TypeScript的支持更好",
+                "Pinia必须使用Composition API",
+                "Pinia的包体积更小"
+              ],
+              "answer": 2,
+              "explanation": "Pinia既支持Composition API（defineStore返回函数），也支持Options API（defineStore传入对象）。它并不强制使用Composition API。选项A正确，这是Pinia相比Vuex的主要简化。选项B正确，Pinia的TS推断更准确。选项D正确，Pinia约1KB，比Vuex小。"
+            },
+            {
+              "type": "single",
+              "question": "在什么情况下应该使用Context API而非Redux/Pinia？",
+              "options": [
+                "购物车数据需要在多个页面间共享",
+                "用户登录状态需要持久化",
+                "主题切换（深色/浅色模式）",
+                "复杂的表单状态管理"
+              ],
+              "answer": 2,
+              "explanation": "主题切换是低频更新的全局配置，非常适合使用Context API。它不需要复杂的更新逻辑，变化频率低，不会造成性能问题。选项A和B涉及频繁更新和业务逻辑，应该使用专业状态管理。选项D的表单状态通常应该保持在局部组件或使用专门的表单库（如Formik、React Hook Form），而非全局状态。"
+            },
+            {
+              "type": "single",
+              "question": "关于NgRx的Effects，以下说法正确的是？",
+              "options": [
+                "Effects用于处理纯状态转换逻辑",
+                "Effects可以直接修改store",
+                "Effects用于处理副作用，如API调用",
+                "每个action都必须有对应的Effect"
+              ],
+              "answer": 2,
+              "explanation": "Effects是NgRx中专门处理副作用的机制，如HTTP请求、路由导航、日志记录等。它们监听actions，执行副作用，然后dispatch新的actions。选项A错误，纯状态转换应该在reducer中处理。选项B错误，只有reducer可以修改state。选项D错误，只有需要处理副作用的action才需要Effect，纯同步action不需要。"
+            },
+            {
+              "type": "single",
+              "question": "以下哪种做法违反了Redux的最佳实践？",
+              "options": [
+                "在component中dispatch action",
+                "在reducer中调用API获取数据",
+                "使用selector从store提取数据",
+                "将related状态组织在一个slice中"
+              ],
+              "answer": 1,
+              "explanation": "Reducer必须是纯函数——给定相同的输入，总是返回相同的输出，且不能有副作用。在reducer中调用API违反了这一原则，会导致不可预测的行为和测试困难。正确的做法是使用thunk（Redux）、action（Pinia）或effect（NgRx）来处理异步操作。选项A、C、D都是Redux推荐的最佳实践。"
+            }
+          ]
         },
         {
           "id": "frontend_performance_optimization",
@@ -68200,10 +68685,79 @@
           },
           "file": "assets/content/frontend_performance_optimization.md",
           "minutes": 50,
-          "keywords": ["性能优化", "代码分割", "懒加载", "Tree Shaking", "虚拟滚动"],
+          "keywords": [
+            "性能优化",
+            "代码分割",
+            "懒加载",
+            "Tree Shaking",
+            "虚拟滚动"
+          ],
           "difficulty": "进阶",
           "order": 7,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "关于React.memo的使用，以下说法正确的是？",
+              "options": [
+                "应该包裹所有组件以获得最佳性能",
+                "只在props是原始值时才有效",
+                "对于频繁变化的props，memo可能适得其反",
+                "memo可以优化组件内部的state变化"
+              ],
+              "answer": 2,
+              "explanation": "React.memo通过浅比较props来决定是否跳过渲染。如果props频繁变化，每次都要进行比较，而比较本身也有开销。在这种情况下，memo的开销可能超过它节省的渲染成本，反而降低性能。选项A错误，过度使用memo会增加复杂度且不一定带来收益。选项B错误，memo对对象类型的props也有效（通过浅比较）。选项D错误，memo只关注props变化，不关注内部state变化。"
+            },
+            {
+              "type": "single",
+              "question": "以下哪种情况最适合使用虚拟滚动？",
+              "options": [
+                "显示10个用户的头像列表",
+                "显示10000条日志记录的表格",
+                "显示5个导航菜单项",
+                "显示20个产品卡片（每页）"
+              ],
+              "answer": 1,
+              "explanation": "虚拟滚动的核心价值在于处理大量数据（通常1000+项），通过只渲染可视区域来减少DOM节点数量。10000条日志记录是典型的应用场景。选项A、C、D的数据量都很小，传统渲染即可，引入虚拟滚动会增加不必要的复杂度。判断标准：如果列表项超过屏幕显示数量的10倍，考虑使用虚拟滚动。"
+            },
+            {
+              "type": "code",
+              "question": "关于Tree Shaking，以下代码会导致什么问题？",
+              "options": [
+                "formatDate会被正确tree shake",
+                "整个utils.js都会被包含在bundle中",
+                "formatCurrency会被自动移除",
+                "initAnalytics的副作用代码可能被错误移除"
+              ],
+              "answer": 3,
+              "explanation": "Tree Shaking基于静态分析，无法准确判断哪些代码有副作用。`initAnalytics`函数虽然未被导入，但它包含副作用（修改window对象）。如果构建工具错误地认为它未被使用而移除，会导致运行时错误。正确的做法是在package.json中标记`sideEffects: [\"./src/utils.js\"]`，告诉构建工具这个文件有副作用，不要完全移除。选项A和C理论上正确，但实际行为取决于构建配置。选项B错误，现代构建工具可以进行细粒度的tree shaking。",
+              "code": "// utils.js\nexport function formatDate(date) { /* ... */ }\nexport function formatCurrency(amount) { /* ... */ }\nexport function initAnalytics() {\n  // 有副作用的代码\n  window.analytics = new Analytics();\n}\n\n// app.js\nimport { formatDate } from './utils';",
+              "language": "javascript"
+            },
+            {
+              "type": "single",
+              "question": "关于Lighthouse的CLS指标，以下做法错误的是？",
+              "options": [
+                "为所有图片设置明确的width和height属性",
+                "使用CSS aspect-ratio保持宽高比",
+                "在页面加载完成后动态插入广告",
+                "使用font-display: swap加载自定义字体"
+              ],
+              "answer": 2,
+              "explanation": "在页面加载完成后动态插入广告是导致CLS的主要原因之一——新内容会推动现有内容下移，造成布局偏移。正确的做法是预留广告位的空间（使用固定高度的容器）。选项A和B都是防止CLS的最佳实践。选项D的font-display: swap虽然可能导致短暂的字体闪烁（FOUT），但不会造成布局偏移，是可以接受的权衡。更好的选择是font-display: optional，在字体未加载时使用系统字体。"
+            },
+            {
+              "type": "single",
+              "question": "关于代码分割策略，以下说法错误的是？",
+              "options": [
+                "路由级分割是最常见的分割方式",
+                "应该将每个组件都单独分割成chunk",
+                "第三方库可以单独打包利用浏览器缓存",
+                "过小的chunk会增加HTTP请求数量"
+              ],
+              "answer": 1,
+              "explanation": "将每个组件都单独分割会导致大量小chunk，增加HTTP请求数量和协调开销，反而降低性能。正确的做法是按路由、按功能模块、按使用频率进行合理分割。选项A正确，路由级分割平衡了初始加载和后续导航的性能。选项C正确，vendor chunk可以利用长期缓存。选项D正确，需要在chunk大小和请求数量之间找到平衡点（通常建议chunk大小在20-50KB之间）。"
+            }
+          ]
         }
       ]
     },
@@ -68228,10 +68782,77 @@
           },
           "file": "assets/content/backend_nodejs_express.md",
           "minutes": 50,
-          "keywords": ["Node.js", "Express", "Koa", "中间件", "事件驱动"],
+          "keywords": [
+            "Node.js",
+            "Express",
+            "Koa",
+            "中间件",
+            "事件驱动"
+          ],
           "difficulty": "入门",
           "order": 0,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "Node.js的事件循环机制最适合处理哪种类型的任务？",
+              "options": [
+                "大规模矩阵运算和图像处理",
+                "大量并发I/O操作如HTTP请求和数据库查询",
+                "复杂的机器学习模型训练",
+                "视频编码和解码"
+              ],
+              "answer": 1,
+              "explanation": "Node.js采用单线程事件驱动架构，擅长处理大量并发但每个任务计算量较小的I/O操作。对于CPU密集型任务（如矩阵运算、图像/视频处理、机器学习），应该使用Worker Threads或将任务交给专门的服务。选项B描述的HTTP请求和数据库查询正是Node.js的优势场景。"
+            },
+            {
+              "type": "single",
+              "question": "在Express中，中间件的执行顺序由什么决定？",
+              "options": [
+                "中间件函数的名称字母顺序",
+                "中间件注册的先后顺序",
+                "中间件函数的复杂度",
+                "随机顺序"
+              ],
+              "answer": 1,
+              "explanation": "Express中间件严格按照`app.use()`或`router.use()`调用的顺序依次执行。先注册的先执行，这是中间件链的核心特性。如果需要调整执行顺序，必须改变注册顺序，不能依赖其他因素。"
+            },
+            {
+              "type": "single",
+              "question": "Koa的洋葱模型中，`await next()`之后的代码在什么时候执行？",
+              "options": [
+                "请求刚到达时",
+                "所有内层中间件处理完成后，响应返回时",
+                "永远不会执行",
+                "与`await next()`之前的代码同时执行"
+              ],
+              "answer": 1,
+              "explanation": "这是洋葱模型的关键特征。`await next()`之前的代码在请求阶段（从外向内）执行，`await next()`之后的代码在所有内层中间件处理完毕、响应开始返回时（从内向外）执行。这使得你可以在同一函数中处理请求和响应的逻辑，比如记录请求开始时间和结束时间来计算耗时。"
+            },
+            {
+              "type": "single",
+              "question": "以下哪个做法会导致Express应用出现内存泄漏？",
+              "options": [
+                "使用`express.json()`中间件",
+                "在全局作用域创建数组并不断push数据",
+                "使用路由参数验证",
+                "配置CORS中间件"
+              ],
+              "answer": 1,
+              "explanation": "在全局作用域（模块级别）创建的数组如果不断增长且从未清理，会导致内存持续增长最终耗尽。正确做法是使用有上限的数据结构（如LRU缓存）、定期清理过期数据，或将数据持久化到数据库。其他选项都是正常的中间件使用，不会导致内存泄漏。"
+            },
+            {
+              "type": "single",
+              "question": "在生产环境中，如何处理未捕获的异常和未处理的Promise拒绝？",
+              "options": [
+                "忽略它们，让进程自然退出",
+                "使用try-catch包裹所有代码",
+                "注册`process.on('uncaughtException')`和`process.on('unhandledRejection')`监听器",
+                "只在开发环境中处理"
+              ],
+              "answer": 2,
+              "explanation": "虽然应该尽量用try-catch和async/await正确处理错误，但总可能有遗漏。在生产环境中，必须注册全局监听器来捕获这些意外错误，记录日志，并优雅地重启进程（使用cluster模块或PM2等进程管理器）。直接忽略（A）会导致静默失败，只靠try-catch（B）无法覆盖所有情况，只在开发环境处理（D）会让生产环境更脆弱。"
+            }
+          ]
         },
         {
           "id": "backend_fastapi_async",
@@ -68245,10 +68866,77 @@
           },
           "file": "assets/content/backend_fastapi_async.md",
           "minutes": 50,
-          "keywords": ["FastAPI", "异步", "Pydantic", "依赖注入", "SQLAlchemy"],
+          "keywords": [
+            "FastAPI",
+            "异步",
+            "Pydantic",
+            "依赖注入",
+            "SQLAlchemy"
+          ],
           "difficulty": "进阶",
           "order": 1,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "FastAPI自动生成API文档依赖于什么机制？",
+              "options": [
+                "手动编写OpenAPI规范文件",
+                "Python类型提示和Pydantic模型",
+                "特殊的注释语法",
+                "配置文件中的路由定义"
+              ],
+              "answer": 1,
+              "explanation": "FastAPI通过分析函数的参数类型提示（如`user: UserCreate`）和返回类型（`response_model=UserResponse`），以及Pydantic模型的字段定义，自动生成符合OpenAPI规范的JSON schema，进而渲染出Swagger UI和ReDoc文档。这是FastAPI相比其他框架的最大优势之一——文档与代码始终保持同步。"
+            },
+            {
+              "type": "single",
+              "question": "在异步函数中，以下哪种做法是正确的？",
+              "options": [
+                "使用`time.sleep(5)`暂停5秒",
+                "使用`await asyncio.sleep(5)`暂停5秒",
+                "使用`threading.sleep(5)`暂停5秒",
+                "直接调用同步的HTTP请求库"
+              ],
+              "answer": 1,
+              "explanation": "在async函数中，必须使用异步版本的等待操作。`time.sleep()`和`threading.sleep()`是同步阻塞调用，会阻塞整个事件循环，导致其他请求无法处理。`await asyncio.sleep()`是非阻塞的，事件循环在这5秒内可以处理其他请求。同理，HTTP请求应使用`httpx.AsyncClient`而非`requests`。"
+            },
+            {
+              "type": "single",
+              "question": "FastAPI的依赖注入系统中，使用`yield`的依赖函数有什么特殊作用？",
+              "options": [
+                "提高性能",
+                "允许在依赖使用后执行清理代码",
+                "实现异步迭代",
+                "缓存依赖结果"
+              ],
+              "answer": 1,
+              "explanation": "当依赖函数使用`yield`时，`yield`之前的代码在请求处理前执行，`yield`之后的代码在请求处理后执行（无论成功还是失败）。这非常适合资源管理场景，如数据库会话：先创建会话（yield前），处理请求，最后关闭会话（yield后）。这确保了资源总是被正确释放，即使发生异常。"
+            },
+            {
+              "type": "single",
+              "question": "Pydantic v2中，如何让模型能够从SQLAlchemy ORM对象自动转换？",
+              "options": [
+                "设置`orm_mode = True`",
+                "设置`from_attributes = True`",
+                "手动编写转换函数",
+                "使用特殊的装饰器"
+              ],
+              "answer": 1,
+              "explanation": "在Pydantic v2中，`orm_mode`已被重命名为`from_attributes`。需要在模型配置中设置`model_config = ConfigDict(from_attributes=True)`或在内部类Config中设置`from_attributes = True`。这样Pydantic在序列化时会尝试从对象的属性（而非字典键）读取数据，从而兼容SQLAlchemy等ORM框架。选项A是Pydantic v1的写法。"
+            },
+            {
+              "type": "single",
+              "question": "以下哪个场景最适合使用FastAPI的异步特性？",
+              "options": [
+                "复杂的数学计算和数据处理",
+                "大量并发的数据库查询和外部API调用",
+                "图像识别和机器学习推理",
+                "视频编码和解码"
+              ],
+              "answer": 1,
+              "explanation": "异步编程的优势在于处理I/O密集型任务（数据库查询、HTTP请求、文件读写等），这些任务大部分时间在等待外部响应。对于CPU密集型任务（数学计算、图像处理、视频编码），异步并不能提升性能，反而可能因为上下文切换带来开销。这类任务应该使用多进程、Worker Thread或专门的服务。选项B描述的正是异步的最佳应用场景。"
+            }
+          ]
         },
         {
           "id": "backend_gin_echo",
@@ -68262,10 +68950,77 @@
           },
           "file": "assets/content/backend_gin_echo.md",
           "minutes": 50,
-          "keywords": ["Go", "Gin", "Echo", "Goroutine", "GORM"],
+          "keywords": [
+            "Go",
+            "Gin",
+            "Echo",
+            "Goroutine",
+            "GORM"
+          ],
           "difficulty": "进阶",
           "order": 2,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "Go语言的goroutine与传统线程的主要区别是什么？",
+              "options": [
+                "goroutine只能由操作系统调度",
+                "goroutine的栈空间更小，由Go运行时调度",
+                "goroutine不能并发执行",
+                "goroutine比线程消耗更多内存"
+              ],
+              "answer": 1,
+              "explanation": "goroutine的初始栈只有2KB（线程通常是1-8MB），并且由Go运行时而非操作系统调度。这使得创建和切换goroutine的成本极低，可以轻松创建数十万个goroutine。选项A错误，因为goroutine由Go运行时调度；选项C错误，goroutine正是为了并发而设计；选项D错误，goroutine比线程节省得多内存。"
+            },
+            {
+              "type": "single",
+              "question": "在Gin框架中，如何从请求体中解析JSON并同时进行验证？",
+              "options": [
+                "使用`c.Bind()`方法",
+                "使用`c.ShouldBindJSON()`方法",
+                "手动解析`c.Request.Body`",
+                "使用`c.Query()`方法"
+              ],
+              "answer": 1,
+              "explanation": "`c.ShouldBindJSON()`会解析JSON请求体并根据结构体标签进行验证，如果失败会返回错误但不会自动发送响应（需要手动处理）。`c.Bind()`也会解析和验证，但在失败时会自动发送400响应。`c.Query()`用于获取查询参数，不是请求体。手动解析虽然可行，但失去了自动验证的优势。"
+            },
+            {
+              "type": "single",
+              "question": "以下哪种情况会导致goroutine泄漏？",
+              "options": [
+                "使用`go func()`启动goroutine但没有退出条件",
+                "使用`defer`关闭资源",
+                "使用channel进行goroutine间通信",
+                "使用`sync.WaitGroup`等待goroutine完成"
+              ],
+              "answer": 0,
+              "explanation": "如果启动的goroutine没有退出条件（如无限循环且没有break），它将永远运行，占用内存和资源，这就是goroutine泄漏。正确的做法是确保所有goroutine都有明确的退出条件，可以使用context、channel关闭信号或超时机制。选项B、C、D都是良好的实践，不会导致泄漏。"
+            },
+            {
+              "type": "single",
+              "question": "Gin和Echo在错误处理方式上的主要区别是什么？",
+              "options": [
+                "Gin返回error，Echo返回JSON",
+                "Gin手动返回JSON，Echo返回error由全局处理器转换",
+                "两者都只能手动返回JSON",
+                "两者都只能返回error"
+              ],
+              "answer": 1,
+              "explanation": "这是两个框架设计理念的差异。Gin的handler直接操作`*gin.Context`，需要手动调用`c.JSON()`返回响应。Echo的handler返回`error`，框架的全局错误处理器会将error转换为HTTP响应。两种方式各有优劣：Gin更灵活，Echo更统一。实际项目中可以根据团队偏好选择。"
+            },
+            {
+              "type": "single",
+              "question": "在Go中，如何让结构体的某个字段不被JSON序列化？",
+              "options": [
+                "将字段名改为小写",
+                "使用`json:\"-\"`标签",
+                "删除该字段",
+                "使用`omitempty`标签"
+              ],
+              "answer": 1,
+              "explanation": "`json:\"-\"`标签明确告诉JSON编码器忽略该字段，常用于密码、内部ID等不应暴露的数据。选项A错误，小写字段本身不会被导出，但这不是推荐做法（应该保持字段大写并用tag控制）。选项C不合理，字段可能需要在其他地方使用。选项D的`omitempty`只是在字段为空时省略，不为空时仍会序列化。"
+            }
+          ]
         },
         {
           "id": "backend_restful_api",
@@ -68279,10 +69034,77 @@
           },
           "file": "assets/content/backend_restful_api.md",
           "minutes": 45,
-          "keywords": ["RESTful", "API设计", "HTTP", "版本化", "最佳实践"],
+          "keywords": [
+            "RESTful",
+            "API设计",
+            "HTTP",
+            "版本化",
+            "最佳实践"
+          ],
           "difficulty": "入门",
           "order": 3,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "以下哪个URL设计符合RESTful规范？",
+              "options": [
+                "`/api/getUserById?id=123`",
+                "`/api/users/123`",
+                "`/api/deleteUser/123`",
+                "`/api/users?action=get&id=123`"
+              ],
+              "answer": 1,
+              "explanation": "RESTful API的URL应该描述资源而非动作。`/api/users/123`清晰地表达了\"ID为123的用户资源\"，配合不同的HTTP方法（GET获取、PUT更新、DELETE删除）可以执行各种操作。选项A、C、D都在URL中包含了动作或查询逻辑，违反了REST的资源导向原则。"
+            },
+            {
+              "type": "single",
+              "question": "当客户端尝试创建一个已存在的资源（如重复的邮箱注册）时，应该返回哪个HTTP状态码？",
+              "options": [
+                "400 Bad Request",
+                "401 Unauthorized",
+                "409 Conflict",
+                "500 Internal Server Error"
+              ],
+              "answer": 2,
+              "explanation": "409 Conflict表示请求与服务器的当前状态冲突，适合用于资源唯一性约束违反的场景（如重复邮箱、重复用户名）。400用于格式错误或参数验证失败，401用于未认证，500用于服务器内部错误。虽然有些API也使用400或422，但409在语义上更准确。"
+            },
+            {
+              "type": "single",
+              "question": "关于PUT和PATCH的区别，以下说法正确的是？",
+              "options": [
+                "PUT用于创建资源，PATCH用于更新资源",
+                "PUT必须发送完整资源，PATCH可以只发送变化的字段",
+                "PUT是幂等的，PATCH不是幂等的",
+                "两者没有区别，可以互换使用"
+              ],
+              "answer": 1,
+              "explanation": "PUT要求客户端发送资源的完整表示，服务器用它替换整个资源。PATCH允许客户端只发送需要修改的字段，服务器将这些变更应用到现有资源上。两者都是更新操作，但粒度不同。PUT是幂等的（多次执行结果相同），PATCH通常也是幂等的（取决于具体实现）。选项A错误，创建资源用POST；选项C不完全准确；选项D明显错误。"
+            },
+            {
+              "type": "single",
+              "question": "在设计API分页时，以下哪种做法最不推荐？",
+              "options": [
+                "使用`page`和`limit`参数",
+                "使用`offset`和`limit`参数",
+                "使用游标（cursor-based）分页",
+                "不使用分页，一次性返回所有数据"
+              ],
+              "answer": 3,
+              "explanation": "对于可能包含大量数据的资源，必须实现分页。一次性返回所有数据会导致：响应体过大、内存消耗高、网络传输慢、用户体验差。选项A和B是传统的偏移量分页，简单易用但在大数据集上性能下降。选项C的游标分页性能更好，适合大规模数据，但实现稍复杂。无论如何，选项D是绝对不可接受的。"
+            },
+            {
+              "type": "single",
+              "question": "API版本控制的最佳实践是什么？",
+              "options": [
+                "永远不要改变API，保持向后兼容",
+                "直接在原有端点上修改，通知所有客户端",
+                "使用URL路径版本（如/api/v1/、/api/v2/）",
+                "只在请求头中指定版本，URL保持不变"
+              ],
+              "answer": 2,
+              "explanation": "URL路径版本是最常用的API版本控制策略，因为它直观、易于缓存、便于文档化、方便客户端选择版本。选项A不现实，业务需求必然导致API演进。选项B会破坏现有客户端，是严重的反模式。选项D的请求头版本也可行，但不如URL路径版本直观和易用。实际项目中，通常会结合多种策略，但URL路径版本是首选。"
+            }
+          ]
         },
         {
           "id": "backend_graphql_apollo",
@@ -68296,10 +69118,77 @@
           },
           "file": "assets/content/backend_graphql_apollo.md",
           "minutes": 50,
-          "keywords": ["GraphQL", "Apollo Server", "SDL", "DataLoader", "N+1问题"],
+          "keywords": [
+            "GraphQL",
+            "Apollo Server",
+            "SDL",
+            "DataLoader",
+            "N+1问题"
+          ],
           "difficulty": "进阶",
           "order": 4,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "以下关于GraphQL和REST的比较，哪一项是正确的？",
+              "options": [
+                "GraphQL必须为每个资源创建独立的端点，而REST可以一次性获取多个资源",
+                "GraphQL允许客户端精确指定需要的字段，避免过度获取数据",
+                "REST API天然支持实时数据推送，而GraphQL需要额外配置",
+                "GraphQL没有类型系统，完全依赖运行时验证"
+              ],
+              "answer": 1,
+              "explanation": "GraphQL的核心优势之一就是允许客户端在查询中精确指定所需的字段，服务器只会返回这些字段，避免了REST API常见的过度获取（over-fetching）问题。选项A正好说反了，REST需要为每个资源创建端点；选项C也反了，GraphQL内置Subscription支持实时数据；选项D错误，GraphQL有强类型Schema系统。"
+            },
+            {
+              "type": "single",
+              "question": "在GraphQL Schema中，感叹号（!）的作用是什么？",
+              "options": [
+                "表示该字段是主键",
+                "表示该字段可以为null",
+                "表示该字段是非空的（Non-Null）",
+                "表示该字段是只读的"
+              ],
+              "answer": 2,
+              "explanation": "在GraphQL SDL中，感叹号（!）表示该字段是非空类型（Non-Null）。例如 `username: String!` 意味着username字段不能为null，如果resolver返回null，GraphQL会抛出错误。这对于保证数据完整性非常有用。"
+            },
+            {
+              "type": "single",
+              "question": "关于Apollo Server中的Resolver函数，以下说法错误的是？",
+              "options": [
+                "Resolver函数的第一个参数通常是父对象的值（parent/root）",
+                "Resolver可以通过context参数访问共享数据如DataLoader",
+                "每个字段都必须显式定义Resolver函数",
+                "默认Resolver会自动返回父对象上同名的属性"
+              ],
+              "answer": 2,
+              "explanation": "GraphQL并不要求每个字段都定义Resolver。如果没有为某个字段提供自定义Resolver，GraphQL会使用默认Resolver，它会尝试从父对象中返回同名属性的值。只有当需要自定义逻辑（如数据库查询、数据转换）时才需要显式定义Resolver。"
+            },
+            {
+              "type": "single",
+              "question": "DataLoader主要解决了GraphQL中的什么问题？",
+              "options": [
+                "Schema验证失败",
+                "N+1查询导致的性能问题",
+                "客户端缓存失效",
+                "Mutation执行顺序混乱"
+              ],
+              "answer": 1,
+              "explanation": "DataLoader通过批处理（batching）和缓存（caching）机制，将多个相同类型的加载请求合并为一次数据库查询，有效解决了N+1查询问题。例如，当查询100个用户的文章时，DataLoader会将100次单独的查询合并为1次批量查询。"
+            },
+            {
+              "type": "single",
+              "question": "在GraphQL中，如何实现实时数据推送功能？",
+              "options": [
+                "使用轮询（Polling）定期调用Query",
+                "使用WebSocket建立长连接，配合Subscription类型",
+                "在Mutation中添加回调函数",
+                "使用HTTP Server-Sent Events"
+              ],
+              "answer": 1,
+              "explanation": "GraphQL的Subscription类型专门用于实时数据推送，底层通常基于WebSocket实现。客户端订阅某个事件后，当服务器端发生相应变化时，会通过WebSocket主动向客户端推送数据。虽然轮询也能实现类似效果，但效率低且不是GraphQL的原生方案。"
+            }
+          ]
         },
         {
           "id": "backend_database_integration",
@@ -68313,10 +69202,77 @@
           },
           "file": "assets/content/backend_database_integration.md",
           "minutes": 55,
-          "keywords": ["PostgreSQL", "MongoDB", "Redis", "ORM", "连接池"],
+          "keywords": [
+            "PostgreSQL",
+            "MongoDB",
+            "Redis",
+            "ORM",
+            "连接池"
+          ],
           "difficulty": "进阶",
           "order": 5,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "关于ORM（对象关系映射）的优势，以下哪项描述是错误的？",
+              "options": [
+                "ORM可以自动生成SQL语句，减少手写SQL的工作量",
+                "ORM完全消除了SQL注入的风险，无需任何额外防护",
+                "ORM提供了数据库无关的代码抽象，便于切换数据库",
+                "ORM的类型检查可以在编译时发现部分错误"
+              ],
+              "answer": 1,
+              "explanation": "虽然大多数ORM默认使用参数化查询来防止SQL注入，但如果开发者使用ORM提供的原始SQL执行功能（如Sequelize的`sequelize.query()`或Prisma的`$queryRaw`）并拼接用户输入，仍然可能存在SQL注入风险。ORM降低了风险但不能完全消除，开发者仍需保持警惕。其他选项都是ORM的正确优势。"
+            },
+            {
+              "type": "single",
+              "question": "在PostgreSQL中，以下哪种情况最适合使用GIN索引？",
+              "options": [
+                "对用户ID进行等值查询",
+                "对文章发布时间进行范围查询",
+                "对JSONB类型的用户偏好设置进行查询",
+                "对用户名进行模糊匹配"
+              ],
+              "answer": 2,
+              "explanation": "GIN（Generalized Inverted Index）索引特别适合处理包含多个值的复合数据类型，如数组、JSONB和全文搜索。对于JSONB字段，GIN索引可以高效地查询嵌套属性。选项A适合B-Tree索引，选项B也适合B-Tree，选项D可以使用GIN配合pg_trgm扩展，但不是最典型的应用场景。"
+            },
+            {
+              "type": "single",
+              "question": "关于Redis作为缓存的使用，以下哪种策略是正确的？",
+              "options": [
+                "永久存储所有数据，从不设置过期时间",
+                "只在缓存命中时才从数据库查询",
+                "更新数据后立即删除相关缓存，采用Cache-Aside模式",
+                "使用Redis存储所有业务逻辑数据，替代关系型数据库"
+              ],
+              "answer": 2,
+              "explanation": "Cache-Aside（旁路缓存）模式是最常用的缓存策略：读取时先查缓存，未命中则查数据库并回填缓存；更新时先更新数据库，再删除缓存。这样可以保证最终一致性。选项A会导致内存溢出，选项B忽略了缓存未命中的情况，选项D混淆了缓存和持久化存储的职责。"
+            },
+            {
+              "type": "single",
+              "question": "数据库事务的隔离级别中，Read Committed级别可以防止哪种现象？",
+              "options": [
+                "脏读（Dirty Read）",
+                "不可重复读（Non-repeatable Read）",
+                "幻读（Phantom Read）",
+                "以上都不能防止"
+              ],
+              "answer": 0,
+              "explanation": "Read Committed隔离级别可以防止脏读，即一个事务不会读取到另一个未提交事务的修改。但它不能防止不可重复读（同一事务内两次读取结果不同）和幻读（同一查询条件返回的行数变化）。要防止不可重复读需要Repeatable Read级别，要防止幻读需要Serializable级别（或在PostgreSQL中Repeatable Read也能防止幻读）。"
+            },
+            {
+              "type": "single",
+              "question": "关于数据库迁移（Migration），以下说法错误的是？",
+              "options": [
+                "迁移文件应该纳入版本控制系统（如Git）",
+                "迁移应该按顺序执行，不能跳过中间版本",
+                "生产环境的迁移可以随时回滚，没有任何风险",
+                "迁移脚本应该是幂等的或记录执行状态"
+              ],
+              "answer": 2,
+              "explanation": "生产环境的迁移回滚存在风险：可能丢失迁移后产生的新数据，或者回滚脚本本身有bug。因此，生产迁移前应充分测试，制定回滚计划，并在低峰期执行。选项A正确，迁移文件需要版本管理；选项B正确，迁移依赖顺序执行；选项D正确，幂等性或状态记录可以避免重复执行。"
+            }
+          ]
         },
         {
           "id": "backend_auth_jwt_oauth",
@@ -68330,10 +69286,77 @@
           },
           "file": "assets/content/backend_auth_jwt_oauth.md",
           "minutes": 50,
-          "keywords": ["JWT", "OAuth2", "认证", "授权", "RBAC"],
+          "keywords": [
+            "JWT",
+            "OAuth2",
+            "认证",
+            "授权",
+            "RBAC"
+          ],
           "difficulty": "进阶",
           "order": 6,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "关于JWT的结构，以下哪项描述是正确的？",
+              "options": [
+                "JWT由四部分组成：Header、Payload、Signature和Salt",
+                "JWT的Payload部分是加密的，只有持有密钥的人才能查看",
+                "JWT的Signature部分用于验证令牌完整性，防止篡改",
+                "JWT过期后会自动从客户端删除"
+              ],
+              "answer": 2,
+              "explanation": "JWT的Signature（签名）是通过对Header和Payload进行哈希运算生成的，用于验证令牌在传输过程中是否被篡改。如果任何部分被修改，签名验证将失败。选项A错误，JWT只有三部分；选项B错误，Payload只是Base64编码而非加密，任何人都可以解码查看；选项D错误，JWT本身没有自动删除机制，需要客户端自行管理。"
+            },
+            {
+              "type": "single",
+              "question": "OAuth2授权码模式（Authorization Code）最适合哪种应用场景？",
+              "options": [
+                "纯前端JavaScript单页应用（SPA）",
+                "移动端原生应用",
+                "具有后端服务器的Web应用",
+                "命令行工具"
+              ],
+              "answer": 2,
+              "explanation": "授权码模式要求客户端能够安全地存储client_secret，因此最适合具有后端服务器的Web应用（Confidential Client）。纯前端应用无法安全存储密钥，应使用授权码模式+PKCE。移动端应用也推荐使用PKCE增强版本。命令行工具通常使用客户端凭证模式或设备授权流程。"
+            },
+            {
+              "type": "single",
+              "question": "在RBAC模型中，以下哪种做法违反了最小权限原则？",
+              "options": [
+                "为新员工分配Viewer角色，仅能查看内容",
+                "给所有内容编辑者分配Admin角色，方便他们管理文章",
+                "创建专门的Moderator角色，仅包含审核评论的权限",
+                "定期审计用户权限，移除不再需要的权限"
+              ],
+              "answer": 1,
+              "explanation": "最小权限原则要求用户只拥有完成工作所需的最小权限集合。给编辑者分配Admin角色会赋予他们不必要的权限（如删除用户、修改系统配置），增加了安全风险。正确做法是创建Editor角色，仅包含文章相关权限。其他选项都符合最小权限原则。"
+            },
+            {
+              "type": "single",
+              "question": "关于Session-based和Token-based认证的比较，以下说法错误的是？",
+              "options": [
+                "Session-based认证需要在服务器端存储会话数据",
+                "Token-based认证天然支持跨域请求，无需额外配置",
+                "Session-based认证更容易实现主动登出功能",
+                "Token-based认证的JWT令牌可以随时被服务器撤销"
+              ],
+              "answer": 3,
+              "explanation": "JWT是无状态的，服务器签发后无法直接撤销。要实现撤销功能，需要额外的机制如令牌黑名单（将未过期的令牌加入黑名单并每次验证时检查），这会增加复杂度并部分抵消无状态的优势。相比之下，Session-based认证只需删除服务器端的会话数据即可立即生效。其他选项都是正确的对比。"
+            },
+            {
+              "type": "single",
+              "question": "以下哪种情况最适合使用OAuth2的客户端凭证模式（Client Credentials）？",
+              "options": [
+                "用户通过微信登录第三方网站",
+                "移动应用需要访问用户的个人相册",
+                "后端服务A调用后端服务B的内部API",
+                "桌面应用需要代表用户发送邮件"
+              ],
+              "answer": 2,
+              "explanation": "客户端凭证模式用于机器对机器（M2M）通信，没有最终用户参与。后端服务之间的API调用是典型场景，服务A使用自己的凭证（client_id和client_secret）获取访问令牌，然后调用服务B。选项A和D涉及用户授权，应使用授权码模式；选项B也需要用户授权，不适合客户端凭证模式。"
+            }
+          ]
         },
         {
           "id": "backend_microservices_patterns",
@@ -68347,10 +69370,77 @@
           },
           "file": "assets/content/backend_microservices_patterns.md",
           "minutes": 55,
-          "keywords": ["微服务", "API Gateway", "Saga", "分布式追踪", "CAP定理"],
+          "keywords": [
+            "微服务",
+            "API Gateway",
+            "Saga",
+            "分布式追踪",
+            "CAP定理"
+          ],
           "difficulty": "高级",
           "order": 7,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "关于单体架构和微服务架构的比较，以下哪项说法是正确的？",
+              "options": [
+                "微服务架构在所有情况下都优于单体架构",
+                "单体架构无法实现水平扩展",
+                "微服务架构增加了运维复杂度和分布式系统挑战",
+                "单体架构不支持多团队并行开发"
+              ],
+              "answer": 2,
+              "explanation": "微服务架构虽然提供了更好的可扩展性和团队独立性，但也引入了分布式系统的固有复杂性：服务发现、网络延迟、数据一致性、分布式追踪等。选项A错误，微服务并非银弹，小规模项目用单体更合适；选项B错误，单体也可以水平扩展（复制整个应用）；选项D错误，单体也可以通过模块化支持多团队协作，只是耦合度更高。"
+            },
+            {
+              "type": "single",
+              "question": "在领域驱动设计（DDD）中，限界上下文（Bounded Context）的主要作用是？",
+              "options": [
+                "定义数据库表结构",
+                "明确业务模型的边界和适用范围",
+                "指定服务间通信协议",
+                "确定部署拓扑"
+              ],
+              "answer": 1,
+              "explanation": "限界上下文是DDD的核心概念，它定义了某个业务模型的有效范围。在不同上下文中，同一术语可能有不同含义（如\"产品\"在销售上下文和库存上下文中属性不同）。明确边界有助于合理拆分微服务，避免模型污染。其他选项属于技术实现细节，不是限界上下文的直接作用。"
+            },
+            {
+              "type": "single",
+              "question": "关于REST和gRPC的选择，以下哪种场景最适合使用gRPC？",
+              "options": [
+                "面向公众的开放API，供第三方开发者集成",
+                "浏览器前端直接调用的API",
+                "内部微服务之间的高性能通信",
+                "需要人类可读的请求/响应格式进行调试"
+              ],
+              "answer": 2,
+              "explanation": "gRPC基于HTTP/2和Protocol Buffers，提供二进制序列化、强类型接口和高性能，非常适合内部服务间通信。选项A和B更适合REST，因为通用性和浏览器支持更好；选项D也是REST的优势，gRPC的二进制格式不易直接阅读。"
+            },
+            {
+              "type": "single",
+              "question": "Saga模式用于解决微服务架构中的什么问题？",
+              "options": [
+                "服务发现的问题",
+                "跨服务的分布式事务一致性",
+                "API版本兼容性",
+                "负载均衡策略"
+              ],
+              "answer": 1,
+              "explanation": "Saga模式通过将长事务拆分为一系列本地事务，并为每个步骤定义补偿操作，来解决跨多个服务（每个服务有自己的数据库）的分布式事务问题。它实现了最终一致性，而非传统ACID事务的强一致性。其他选项由不同的模式或机制解决。"
+            },
+            {
+              "type": "single",
+              "question": "关于API Gateway的功能，以下哪项不属于其典型职责？",
+              "options": [
+                "统一认证和授权",
+                "请求路由和负载均衡",
+                "业务逻辑处理和数据转换",
+                "限流熔断和监控"
+              ],
+              "answer": 2,
+              "explanation": "API Gateway应专注于横切关注点（认证、路由、限流、监控等），而不应包含业务逻辑。业务逻辑应在各个微服务内部实现，保持Gateway轻量和通用。如果Gateway包含业务逻辑，会成为智能管道反模式，导致耦合和单点故障。其他选项都是Gateway的标准功能。"
+            }
+          ]
         }
       ]
     },
@@ -68375,10 +69465,77 @@
           },
           "file": "assets/content/ml_tensorflow_pytorch_intro.md",
           "minutes": 50,
-          "keywords": ["TensorFlow", "PyTorch", "张量", "自动微分", "计算图"],
+          "keywords": [
+            "TensorFlow",
+            "PyTorch",
+            "张量",
+            "自动微分",
+            "计算图"
+          ],
           "difficulty": "入门",
           "order": 0,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "关于TensorFlow和PyTorch的计算图机制，以下哪项描述是正确的？",
+              "options": [
+                "TensorFlow 2.x默认使用静态计算图，PyTorch默认使用动态计算图",
+                "TensorFlow 2.x默认使用动态计算图（Eager Execution），PyTorch也使用动态计算图",
+                "两个框架都只支持静态计算图",
+                "两个框架都只支持动态计算图"
+              ],
+              "answer": 1,
+              "explanation": "TensorFlow 2.x引入了Eager Execution作为默认模式，这意味着操作会立即执行并返回结果，类似于PyTorch的动态图机制。这使得调试更加直观，代码更易理解。不过TensorFlow仍然可以通过`@tf.function`装饰器将函数转换为静态图以获得性能优化。PyTorch从一开始就采用动态计算图设计，每次前向传播都会重新构建计算图，提供了极大的灵活性。选项A描述的是TensorFlow 1.x的情况，选项C和D都不准确，因为现代框架都支持两种模式。"
+            },
+            {
+              "type": "single",
+              "question": "在PyTorch中，为什么在每次训练迭代开始前需要调用`optimizer.zero_grad()`？",
+              "options": [
+                "为了重置优化器的学习率",
+                "因为PyTorch默认会累积梯度，不清零会导致梯度累加",
+                "为了释放GPU内存",
+                "这是一个可选操作，不影响训练结果"
+              ],
+              "answer": 1,
+              "explanation": "PyTorch的自动微分机制默认会累积梯度，而不是覆盖之前的梯度值。这意味着如果你不在每次反向传播前清零梯度，新的梯度会与旧的梯度相加，导致梯度值越来越大，最终使模型无法正确收敛。这在一些特殊场景下是有用的（如小批量模拟大批量），但在标准训练中必须清零。TensorFlow的`GradientTape`每次使用时会自动创建新的tape，所以不存在这个问题。选项A错误，学习率由调度器控制；选项C不准确，清零梯度不会直接释放内存；选项D完全错误，这是必需操作。"
+            },
+            {
+              "type": "single",
+              "question": "以下关于张量操作的描述，哪一项是错误的？",
+              "options": [
+                "TensorFlow的`tf.constant`创建的张量默认是不可变的",
+                "PyTorch的`torch.tensor`创建的张量默认是可变的",
+                "`tensor.reshape()`和`tensor.view()`在所有情况下都可以互换使用",
+                "两个框架都支持广播（broadcasting）机制"
+              ],
+              "answer": 2,
+              "explanation": "`reshape()`和`view()`虽然功能相似，但并非总是可以互换。`view()`要求张量在内存中是连续的（contiguous），如果张量经过转置或其他改变内存布局的操作后，直接调用`view()`会报错，此时需要先调用`.contiguous()`。而`reshape()`更加灵活，它会在必要时自动复制数据以确保连续性。因此，当不确定张量的内存布局时，使用`reshape()`更安全。选项A和B正确描述了两个框架的默认行为；选项D正确，广播机制是现代深度学习框架的标准特性。"
+            },
+            {
+              "type": "single",
+              "question": "在使用TensorFlow Keras训练模型时，如果想实现\"当验证集损失连续5个epoch没有改善时就停止训练\"，应该使用哪个回调函数？",
+              "options": [
+                "`ModelCheckpoint`",
+                "`ReduceLROnPlateau`",
+                "`EarlyStopping`",
+                "`TensorBoard`"
+              ],
+              "answer": 2,
+              "explanation": "`EarlyStopping`回调函数专门用于实现早停机制。通过设置`monitor='val_loss'`和`patience=5`，它可以监控验证集损失，并在连续5个epoch没有改善时自动停止训练，还可以设置`restore_best_weights=True`来恢复最佳模型的权重。`ModelCheckpoint`用于保存模型文件，`ReduceLROnPlateau`用于动态调整学习率，`TensorBoard`用于可视化训练过程。这三个回调经常与`EarlyStopping`配合使用，但它们本身不具备早停功能。"
+            },
+            {
+              "type": "single",
+              "question": "关于模型部署，以下哪种说法最为准确？",
+              "options": [
+                "TensorFlow模型只能部署在Google Cloud上",
+                "PyTorch模型无法转换为其他格式进行部署",
+                "TensorFlow的SavedModel格式和PyTorch的TorchScript都支持跨语言部署",
+                "两个框架的模型都必须保持原始框架环境才能部署"
+              ],
+              "answer": 2,
+              "explanation": "现代深度学习框架都非常重视模型的部署能力。TensorFlow的SavedModel是一种语言无关的序列化格式，可以被Python、Java、C++等多种语言加载，并且可以转换为TensorFlow Lite用于移动端部署，或转换为TensorFlow.js用于浏览器部署。PyTorch的TorchScript可以将模型序列化为独立文件，无需Python环境即可在C++中加载运行，还可以通过ONNX格式与其他框架互操作。选项A和B明显错误，选项D也不准确，因为有多种方法可以将模型脱离原始框架部署。"
+            }
+          ]
         },
         {
           "id": "ml_computer_vision",
@@ -68392,10 +69549,77 @@
           },
           "file": "assets/content/ml_computer_vision.md",
           "minutes": 55,
-          "keywords": ["CNN", "图像分类", "目标检测", "YOLO", "迁移学习"],
+          "keywords": [
+            "CNN",
+            "图像分类",
+            "目标检测",
+            "YOLO",
+            "迁移学习"
+          ],
           "difficulty": "进阶",
           "order": 1,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "关于卷积神经网络中的卷积操作，以下哪项描述是错误的？",
+              "options": [
+                "卷积核的大小通常为奇数（如3x3、5x5），以便有明确的中心点",
+                "步长（stride）越大，输出特征图的尺寸越小",
+                "填充（padding）的目的是保持特征图尺寸不变或控制其缩小速度",
+                "卷积操作会显著增加参数量，因此深层网络必须使用很小的卷积核"
+              ],
+              "answer": 3,
+              "explanation": "卷积操作实际上大大减少了参数量 compared to 全连接层。例如，一个3x3卷积核无论输入图像多大，都只有9个权重参数（加上偏置共10个），而全连接层需要将每个输入像素与每个输出神经元相连，参数量随输入尺寸线性增长。这正是CNN能够处理高分辨率图像的关键优势。选项A正确，奇数尺寸的卷积核确实便于对称填充；选项B正确，步长增大意味着卷积核跳跃更大，输出尺寸减小；选项C正确，填充可以控制输出尺寸。"
+            },
+            {
+              "type": "single",
+              "question": "在迁移学习中，为什么通常采用\"先冻结预训练层训练分类头，再解冻部分层微调\"的两阶段策略？",
+              "options": [
+                "因为预训练层的权重已经是最佳的，不需要更新",
+                "因为新添加的分类头权重是随机初始化的，需要先让其收敛到合理范围，避免破坏预训练特征",
+                "因为GPU内存有限，无法同时训练所有层",
+                "这是一种历史遗留做法，现代框架已经不再需要"
+              ],
+              "answer": 1,
+              "explanation": "新添加的分类头（全连接层）的权重是随机初始化的，如果一开始就与预训练层一起训练，大的梯度更新可能会严重破坏预训练层已经学到的有用特征表示。通过先冻结预训练层，让分类头单独训练几个epoch，使其权重收敛到一个合理的范围，然后再以较小的学习率解冻部分预训练层进行微调，可以平衡\"利用已有知识\"和\"适应新任务\"之间的关系。选项A错误，预训练权重虽然好但不是针对当前任务最优的；选项C不是主要原因；选项D错误，这仍然是标准的最佳实践。"
+            },
+            {
+              "type": "single",
+              "question": "关于目标检测中的IoU（Intersection over Union，交并比），以下计算正确的是？",
+              "options": [
+                "IoU = 交集面积 / 预测框面积",
+                "IoU = 交集面积 / 真实框面积",
+                "IoU = 交集面积 / (预测框面积 + 真实框面积 - 交集面积)",
+                "IoU = (预测框面积 + 真实框面积) / 交集面积"
+              ],
+              "answer": 2,
+              "explanation": "IoU的定义是两个框的交集面积除以并集面积。并集面积等于两个框的面积之和减去交集面积（避免重复计算重叠部分）。所以公式是：IoU = Intersection / (Area1 + Area2 - Intersection)。IoU的取值范围是0到1，值越大表示两个框重合度越高。通常IoU>0.5被认为是成功的检测。选项A和B只考虑了一个框的面积，不正确；选项D分子分母颠倒了。"
+            },
+            {
+              "type": "single",
+              "question": "在图像分类任务中，以下哪种数据增强技术可能会改变图像的语义标签？",
+              "options": [
+                "水平翻转",
+                "随机旋转±15度",
+                "随机裁剪",
+                "将猫的图片垂直翻转180度"
+              ],
+              "answer": 3,
+              "explanation": "数据增强的前提是变换后的图像应该保持相同的语义标签。水平翻转对于大多数物体是合理的（左右对称的猫还是猫）；小幅旋转也不会改变物体类别；随机裁剪只要保留足够多的主体信息也是有效的。但是垂直翻转180度会将猫倒过来，这在现实世界中是不自然的，可能会改变图像的语义（例如，倒过来的车可能被误认为是其他物体）。因此，垂直翻转通常不用于自然图像分类，除非任务本身具有旋转不变性（如卫星图像中的建筑物）。"
+            },
+            {
+              "type": "single",
+              "question": "关于目标检测模型的评价指标mAP（mean Average Precision），以下说法正确的是？",
+              "options": [
+                "mAP只考虑检测框的位置准确性，不考虑类别判断",
+                "mAP是不同IoU阈值下AP的平均值，综合评估检测质量",
+                "mAP越高说明模型的推理速度越快",
+                "mAP的计算与置信度阈值无关"
+              ],
+              "answer": 1,
+              "explanation": "mAP（mean Average Precision）是目标检测中最常用的评价指标。它首先对每个类别计算AP（Average Precision），即在不同置信度阈值下的Precision-Recall曲线下面积，然后对所有类别的AP求平均。有些评测标准（如COCO）还会计算不同IoU阈值（0.5到0.95，步长0.05）下的mAP平均值，以更严格地评估检测框的定位精度。选项A错误，mAP同时考虑位置和类别；选项C错误，mAP与速度无关；选项D错误，AP的计算需要在不同置信度阈值下采样。"
+            }
+          ]
         },
         {
           "id": "ml_natural_language_processing",
@@ -68409,10 +69633,77 @@
           },
           "file": "assets/content/ml_natural_language_processing.md",
           "minutes": 55,
-          "keywords": ["NLP", "词嵌入", "Transformer", "BERT", "情感分析"],
+          "keywords": [
+            "NLP",
+            "词嵌入",
+            "Transformer",
+            "BERT",
+            "情感分析"
+          ],
           "difficulty": "进阶",
           "order": 2,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "关于词嵌入（Word Embedding），以下哪项描述是正确的？",
+              "options": [
+                "Word2Vec只能捕捉词语的语法特征，无法捕捉语义特征",
+                "词嵌入向量中的每个维度都有明确的语言学含义（如第1维表示性别）",
+                "词嵌入的核心优势是将离散符号映射到连续空间，使语义相似的词向量距离更近",
+                "One-hot编码比词嵌入更能有效表示词语之间的语义关系"
+              ],
+              "answer": 2,
+              "explanation": "词嵌入的核心思想是将高维稀疏的one-hot向量映射到低维稠密的连续向量空间，在这个空间中，语义相似的词（如\"猫\"和\"狗\"）的向量距离较近，可以通过余弦相似度或欧氏距离来衡量。这使得模型能够泛化到未见过的词语组合。选项A错误，Word2Vec既能捕捉语法也能捕捉语义；选项B错误，单个维度通常没有明确的可解释含义，语义分布在多个维度上；选项D错误，one-hot向量之间正交，无法体现语义相似性。"
+            },
+            {
+              "type": "single",
+              "question": "LSTM中的\"门控机制\"不包括以下哪一项？",
+              "options": [
+                "输入门（Input Gate）",
+                "遗忘门（Forget Gate）",
+                "输出门（Output Gate）",
+                "更新门（Update Gate）"
+              ],
+              "answer": 3,
+              "explanation": "标准LSTM包含三个门：遗忘门决定丢弃多少旧记忆，输入门决定保留多少新信息，输出门决定当前时刻输出什么内容。这三个门协同工作，使LSTM能够有效处理长期依赖问题。\"更新门\"是GRU（Gated Recurrent Unit）中的概念，GRU是LSTM的简化变体，它将遗忘门和输入门合并为一个更新门，减少了参数数量但保持了类似的性能。所以选项D不属于LSTM的门控机制。"
+            },
+            {
+              "type": "single",
+              "question": "在使用BERT进行文本分类时，为什么通常使用[CLS] token的输出作为整个句子的表示？",
+              "options": [
+                "因为[CLS] token位于序列末尾，包含了所有后续信息",
+                "因为[CLS] token在预训练时被专门设计用于聚合整个序列的信息",
+                "因为[CLS] token的维度比其他token更高",
+                "这是一种随意选择，使用任何token的输出效果都一样"
+              ],
+              "answer": 1,
+              "explanation": "在BERT的预训练任务中，[CLS]（classification）token被放置在序列开头，其最终隐藏状态被用作整个序列的聚合表示，特别是在下一句预测（NSP）任务中。虽然理论上可以使用所有token输出的平均值或最大值，但实践证明[CLS] token经过预训练已经学会了如何整合全局信息，因此在微调分类任务时直接使用它是最常见的做法。选项A错误，[CLS]在开头而非末尾；选项C错误，所有token的向量维度相同；选项D错误，不同选择确实会影响性能。"
+            },
+            {
+              "type": "single",
+              "question": "关于注意力机制（Attention），以下说法错误的是？",
+              "options": [
+                "自注意力（Self-Attention）允许序列中的每个位置同时关注所有其他位置",
+                "注意力权重之和必须等于1，因此通常使用softmax函数",
+                "Transformer完全依赖注意力机制，不再使用任何循环或卷积结构",
+                "注意力机制的计算复杂度与序列长度成线性关系O(n)"
+              ],
+              "answer": 3,
+              "explanation": "标准自注意力机制需要计算序列中每对token之间的关系，因此计算复杂度是O(n²)，其中n是序列长度。这是Transformer处理超长文本时的主要瓶颈，也是研究者们提出线性注意力、稀疏注意力等改进方法的原因。选项A正确，这正是自注意力的核心优势；选项B正确，softmax确保权重形成概率分布；选项C正确，Transformer的编码器堆栈只包含多头自注意力和前馈网络。"
+            },
+            {
+              "type": "single",
+              "question": "在NLP任务的数据预处理中，以下哪种操作可能会损害情感分析的效果？",
+              "options": [
+                "将所有文本转换为小写",
+                "去除标点符号",
+                "去除停用词（如\"not\"、\"very\"、\"really\"）",
+                "进行词干提取（stemming）"
+              ],
+              "answer": 2,
+              "explanation": "在情感分析中，某些停用词实际上携带重要的情感信息。例如，\"not\"是否定词，会反转后续形容词的情感极性（\"not good\" vs \"good\"）；\"very\"、\"really\"等程度副词会强化情感强度。如果去除这些词，会导致情感判断错误。相比之下，在主题分类或信息检索任务中，去除停用词通常是有益的，因为它们不包含太多区分性信息。选项A、B、D在某些情况下也可能有影响，但通常不如C严重。"
+            }
+          ]
         },
         {
           "id": "ml_recommendation_systems",
@@ -68426,10 +69717,77 @@
           },
           "file": "assets/content/ml_recommendation_systems.md",
           "minutes": 50,
-          "keywords": ["推荐系统", "协同过滤", "矩阵分解", "NeuMF", "冷启动"],
+          "keywords": [
+            "推荐系统",
+            "协同过滤",
+            "矩阵分解",
+            "NeuMF",
+            "冷启动"
+          ],
           "difficulty": "进阶",
           "order": 3,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "关于协同过滤，以下哪项描述是正确的？",
+              "options": [
+                "基于用户的协同过滤需要知道物品的具体属性（如类别、价格）",
+                "基于物品的协同过滤在物品数量远大于用户数量时计算效率更高",
+                "协同过滤可以很好地解决冷启动问题",
+                "协同过滤只能用于显式反馈（评分），不能用于隐式反馈（点击、浏览）"
+              ],
+              "answer": 1,
+              "explanation": "基于物品的协同过滤需要计算物品之间的相似度矩阵，其大小为物品数×物品数。当物品数量远小于用户数量时，这个矩阵相对较小，计算和存储更高效。相反，如果用户数量少而物品数量巨大，基于用户的方法会更高效。选项A错误，协同过滤的优势恰恰是不需要物品属性；选项C错误，冷启动是协同过滤的主要弱点；选项D错误，协同过滤可以适配隐式反馈，只需将二元交互（点击/未点击）视为特殊评分。"
+            },
+            {
+              "type": "single",
+              "question": "矩阵分解中，隐因子维度（latent dimension）的选择对模型性能有何影响？",
+              "options": [
+                "维度越高越好，可以捕捉更多细节",
+                "维度越低越好，计算更快且不易过拟合",
+                "需要根据数据规模和稀疏度权衡，通常通过交叉验证选择",
+                "隐因子维度对模型性能几乎没有影响"
+              ],
+              "answer": 2,
+              "explanation": "隐因子维度是一个需要仔细调优的超参数。维度太低无法充分表达用户和物品的复杂特征，导致欠拟合；维度太高则会记住训练数据中的噪声，导致过拟合。一般经验法则是：数据量大且稠密时使用较高维度（64-128），数据量小或稀疏时使用较低维度（8-32）。最佳值通常通过交叉验证在验证集上确定。选项A和B都过于绝对，选项D明显错误。"
+            },
+            {
+              "type": "single",
+              "question": "在推荐系统评估中，NDCG（Normalized Discounted Cumulative Gain）相比简单准确率的优势是什么？",
+              "options": [
+                "NDCG计算速度更快",
+                "NDCG考虑了推荐物品的排名位置，排在前列的正确推荐贡献更大",
+                "NDCG不需要真实标签即可计算",
+                "NDCG只适用于二分类问题"
+              ],
+              "answer": 1,
+              "explanation": "NDCG的核心思想是：正确推荐的价值取决于它在列表中的位置。排名第一的正确推荐比排名第十的更有价值，因为用户更可能看到和点击靠前的结果。NDCG通过对排名位置进行折损（discount）来体现这一点，公式中包含log(rank+1)作为分母。这使得NDCG成为评估排序质量的黄金标准。选项A错误，NDCG计算更复杂；选项C错误，NDCG需要真实相关性标签；选项D错误，NDCG可以处理多级相关性。"
+            },
+            {
+              "type": "single",
+              "question": "关于神经协同过滤（NeuMF），以下说法错误的是？",
+              "options": [
+                "NeuMF结合了矩阵分解的线性建模能力和MLP的非线性建模能力",
+                "MF分支和MLP分支共享相同的嵌入向量",
+                "NeuMF通常比传统矩阵分解表现更好，但训练时间更长",
+                "MF分支使用逐元素乘法（Hadamard product）融合用户和物品向量"
+              ],
+              "answer": 1,
+              "explanation": "在标准NeuMF架构中，MF分支和MLP分支使用独立的嵌入向量，而不是共享的。这是因为两个分支学习的是不同类型的特征表示：MF分支学习用于点积的低维向量，MLP分支学习用于拼接和深层网络的高维向量。实验表明，独立嵌入比共享嵌入效果更好。选项A正确，这是NeuMF的设计动机；选项C正确，神经网络需要更多训练时间；选项D正确，MF部分确实使用逐元素乘法。"
+            },
+            {
+              "type": "single",
+              "question": "解决推荐系统冷启动问题的最有效策略组合是？",
+              "options": [
+                "仅使用热门推荐直到收集足够数据",
+                "结合基于内容的推荐、用户兴趣问卷、探索与利用平衡策略",
+                "等待用户产生足够多的行为数据后再启用推荐",
+                "对所有新用户推荐完全随机的物品"
+              ],
+              "answer": 1,
+              "explanation": "冷启动问题没有单一的完美解决方案，通常需要组合多种策略：基于内容的推荐利用物品属性而非用户行为，可以在零行为数据下工作；用户兴趣问卷快速获取显式偏好；探索与利用平衡（如Bandit算法）在推荐过程中主动收集信息。随着数据积累，系统可以逐渐过渡到更精准的协同过滤或深度学习推荐。选项A过于被动，选项C会导致糟糕的用户体验，选项D完全没有利用任何可用信息。"
+            }
+          ]
         },
         {
           "id": "ml_time_series_prediction",
@@ -68443,10 +69801,77 @@
           },
           "file": "assets/content/ml_time_series_prediction.md",
           "minutes": 50,
-          "keywords": ["时间序列", "LSTM", "Transformer", "平稳性", "多步预测"],
+          "keywords": [
+            "时间序列",
+            "LSTM",
+            "Transformer",
+            "平稳性",
+            "多步预测"
+          ],
           "difficulty": "进阶",
           "order": 4,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "关于时间序列的平稳性，以下哪项描述是正确的？",
+              "options": [
+                "平稳序列的均值和方差必须为零",
+                "非平稳序列无法用于预测，必须先转换为平稳序列",
+                "ADF检验的p值小于0.05表示序列是非平稳的",
+                "差分操作可以增加序列的趋势性"
+              ],
+              "answer": 1,
+              "explanation": "大多数经典时间序列模型（如ARIMA）假设序列是平稳的，即统计特性不随时间变化。非平稳序列（如有明显趋势或季节性）需要先通过差分、去趋势或分解等方法转换为平稳序列，建模后再还原。选项A错误，平稳序列的均值和方差可以是任意常数，不必为零；选项C错误，p值小于0.05表示拒绝非平稳的原假设，即序列是平稳的；选项D错误，差分操作的目的是消除趋势使序列平稳。"
+            },
+            {
+              "type": "single",
+              "question": "LSTM相比普通RNN的主要优势是什么？",
+              "options": [
+                "LSTM的计算速度更快",
+                "LSTM的参数数量更少",
+                "LSTM通过门控机制能够有效捕捉长期依赖关系",
+                "LSTM只能处理固定长度的序列"
+              ],
+              "answer": 2,
+              "explanation": "普通RNN在处理长序列时会遇到梯度消失或梯度爆炸问题，导致无法学习远距离时间点之间的依赖关系。LSTM通过引入记忆细胞和三个门控机制（遗忘门、输入门、输出门），能够选择性地保留或丢弃信息，从而有效捕捉长期依赖。这是LSTM在时间序列预测、机器翻译等任务中表现优异的关键原因。选项A和B错误，LSTM实际上更复杂、参数更多、计算更慢；选项D错误，LSTM可以处理可变长度序列。"
+            },
+            {
+              "type": "single",
+              "question": "在时间序列预测中，MAPE（Mean Absolute Percentage Error）的主要缺点是什么？",
+              "options": [
+                "MAPE无法解释预测的方向性",
+                "当实际值接近零时，MAPE会变得非常大甚至无穷大",
+                "MAPE对异常值不敏感",
+                "MAPE的计算复杂度太高"
+              ],
+              "answer": 1,
+              "explanation": "MAPE的计算公式是平均绝对百分比误差：MAPE = mean(|(actual - predicted) / actual|) * 100%。当实际值接近零时，分母很小，导致MAPE值巨大甚至除以零错误。这使得MAPE不适合用于实际值可能为零或接近零的场景（如某些产品的日销量）。此外，MAPE对低估和高估的惩罚不对称。在这种情况下，可以考虑使用sMAPE（对称MAPE）或MASE（平均绝对缩放误差）等替代指标。选项A部分正确但不是主要缺点；选项C错误，MAPE对异常值敏感；选项D错误，MAPE计算很简单。"
+            },
+            {
+              "type": "single",
+              "question": "关于Transformer在时间序列预测中的应用，以下说法错误的是？",
+              "options": [
+                "Transformer可以同时关注序列中的所有时间点，不受距离限制",
+                "位置编码对于Transformer理解时间顺序至关重要",
+                "Transformer的计算复杂度与序列长度成线性关系O(n)",
+                "Transformer可以通过多头注意力捕捉不同类型的依赖模式"
+              ],
+              "answer": 2,
+              "explanation": "标准Transformer的自注意力机制需要计算序列中每对token之间的关系矩阵，因此计算复杂度是O(n²)，其中n是序列长度。这是Transformer处理超长序列时的主要瓶颈。研究者提出了多种优化方法，如稀疏注意力、线性注意力、局部注意力等，将复杂度降低到O(n log n)或O(n)。选项A正确，这正是Transformer的优势；选项B正确，没有位置编码Transformer无法区分不同位置的token；选项D正确，多头注意力允许模型从不同角度捕捉依赖关系。"
+            },
+            {
+              "type": "single",
+              "question": "在多变量时间序列预测中，以下哪种做法是错误的？",
+              "options": [
+                "对所有变量使用相同的归一化参数（均值和标准差）",
+                "将时间相关的特征（如小时、星期几）作为额外输入",
+                "使用滑动窗口同时包含所有变量的历史值",
+                "对不同量级的变量分别进行归一化"
+              ],
+              "answer": 0,
+              "explanation": "不同变量通常有不同的量纲和分布（如温度范围0-40，湿度范围0-100，风速范围0-50），使用相同的归一化参数会导致某些变量被过度缩放而另一些不足。正确的做法是对每个变量独立计算归一化参数，或使用能够处理多尺度的方法（如RobustScaler）。选项B正确，时间特征能帮助模型捕捉周期性；选项C正确，多变量滑动窗口是标准做法；选项D正确，分别归一化是推荐的做法。"
+            }
+          ]
         },
         {
           "id": "ml_model_deployment_mlops",
@@ -68460,10 +69885,77 @@
           },
           "file": "assets/content/ml_model_deployment_mlops.md",
           "minutes": 50,
-          "keywords": ["MLOps", "模型部署", "FastAPI", "Docker", "MLflow"],
+          "keywords": [
+            "MLOps",
+            "模型部署",
+            "FastAPI",
+            "Docker",
+            "MLflow"
+          ],
           "difficulty": "进阶",
           "order": 5,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "关于模型序列化格式的选择，以下哪项建议是最合理的？",
+              "options": [
+                "始终使用Pickle，因为它最简单",
+                "TensorFlow模型用SavedModel，PyTorch模型用TorchScript，需要跨框架时用ONNX",
+                "ONNX是所有场景的最佳选择，应该淘汰其他格式",
+                "只保存模型权重（state_dict），不保存网络结构"
+              ],
+              "answer": 1,
+              "explanation": "不同序列化格式各有优劣：SavedModel和TorchScript是各自框架的原生格式，保留完整功能且优化良好；ONNX提供跨框架互操作性，适合需要在不同框架间转换的场景；Pickle简单但不安全且兼容性差，仅适用于小型传统ML模型。选择时应考虑部署目标、性能要求、跨平台需求等因素。选项A忽视了安全性和兼容性问题；选项C过于绝对，ONNX并非在所有场景都最优；选项D不完整，某些情况下需要完整模型。"
+            },
+            {
+              "type": "single",
+              "question": "在MLOps流水线中，为什么需要模型注册中心（Model Registry）？",
+              "options": [
+                "仅仅是为了存储模型文件，节省磁盘空间",
+                "提供模型的版本管理、元数据记录、生命周期管理和审批流程",
+                "加速模型推理速度",
+                "自动优化模型性能"
+              ],
+              "answer": 1,
+              "explanation": "模型注册中心（如MLflow Model Registry）的核心价值在于管理模型的全生命周期：版本控制（追踪每次迭代）、元数据记录（训练参数、数据集、指标）、状态管理（Staging/Production/Archived）、审批流程（谁可以晋升模型到生产环境）。这使得团队协作更规范，问题追溯更容易，部署更可靠。选项A太片面；选项C和D不是注册中心的功能，那是模型优化和推理引擎的工作。"
+            },
+            {
+              "type": "single",
+              "question": "关于容器化部署，以下说法错误的是？",
+              "options": [
+                "Docker容器确保了\"在我机器上能运行\"的问题得到解决",
+                "容器镜像应该尽可能小以减少传输时间和启动延迟",
+                "应该在容器中运行多个服务以节省资源",
+                "使用多阶段构建可以减小最终镜像大小"
+              ],
+              "answer": 2,
+              "explanation": "容器设计的最佳实践是\"一个容器一个进程\"（Single Responsibility Principle）。在同一个容器中运行多个服务违反了这一原则，导致：日志混杂难以调试、资源隔离失效、扩缩容不灵活、故障隔离差。如果需要多个服务协作，应该使用Docker Compose或Kubernetes进行编排。选项A正确，这是容器化的核心价值；选项B正确，小镜像更快更安全；选项D正确，多阶段构建只保留运行时需要的文件。"
+            },
+            {
+              "type": "single",
+              "question": "模型监控中，数据漂移（Data Drift）和概念漂移（Concept Drift）的区别是什么？",
+              "options": [
+                "两者没有区别，是同一概念的不同名称",
+                "数据漂移指输入数据分布变化，概念漂移指输入-输出映射关系变化",
+                "数据漂移更容易检测，概念漂移无法检测",
+                "数据漂移只发生在分类任务，概念漂移只发生在回归任务"
+              ],
+              "answer": 1,
+              "explanation": "数据漂移是指输入特征X的统计分布随时间变化（如用户年龄分布从年轻变为年老），但X到Y的映射关系可能保持不变。概念漂移是指给定相同的X，输出Y的概率分布发生变化（如同样特征的贷款申请人，由于经济环境变化，违约概率改变了）。数据漂移可以通过统计检验（KS检验、PSI）检测；概念漂移更难检测，通常需要监控模型性能指标或标注少量新数据进行验证。选项A错误，两者是不同的；选项C部分正确但不是本质区别；选项D错误，两种漂移都可能发生在任何类型的任务中。"
+            },
+            {
+              "type": "single",
+              "question": "在A/B测试中，确定样本量的主要依据是什么？",
+              "options": [
+                "服务器的处理能力",
+                "预期的效应大小、显著性水平（alpha）和统计功效（power）",
+                "用户的总数",
+                "测试的持续时间"
+              ],
+              "answer": 1,
+              "explanation": "样本量计算是统计学问题，取决于三个关键参数：效应大小（Effect Size，你希望检测到的最小差异）、显著性水平α（通常0.05，控制假阳性率）、统计功效1-β（通常0.8，控制假阴性率）。这三个参数决定了需要多少样本才能以足够的置信度检测到预期大小的效应。样本量过小会导致统计功效不足，无法检测到真实存在的差异；样本量过大会浪费资源。选项A、C、D都是实际约束条件，但不是决定样本量的统计学依据。"
+            }
+          ]
         },
         {
           "id": "ml_data_preprocessing_feature_engineering",
@@ -68477,10 +69969,77 @@
           },
           "file": "assets/content/ml_data_preprocessing_feature_engineering.md",
           "minutes": 45,
-          "keywords": ["数据预处理", "特征工程", "缺失值", "标准化", "特征选择"],
+          "keywords": [
+            "数据预处理",
+            "特征工程",
+            "缺失值",
+            "标准化",
+            "特征选择"
+          ],
           "difficulty": "入门",
           "order": 6,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "关于缺失值处理，以下哪种情况最适合使用KNN插补而非简单均值填充？",
+              "options": [
+                "缺失比例超过50%的特征",
+                "缺失值完全随机分布（MCAR）且缺失比例很低",
+                "特征之间存在较强的相关性，可以利用邻居信息",
+                "数据集非常大，计算资源有限"
+              ],
+              "answer": 2,
+              "explanation": "KNN插补的核心思想是利用相似样本的值来填补缺失值，因此当特征之间存在较强相关性时效果最好。例如，收入和消费水平相关，可以用相似收入水平的其他样本来填补某人的消费缺失值。相比之下，均值填充忽略了这种相关性，只是用全局平均值替代。选项A错误，缺失比例太高时任何插补方法都不可靠，应考虑删除该特征；选项B中简单均值填充已经足够，KNN的计算成本不必要；选项D错误，KNN计算量大，不适合资源受限场景。"
+            },
+            {
+              "type": "single",
+              "question": "独热编码（One-Hot Encoding）的主要缺点是什么？",
+              "options": [
+                "无法处理数值型特征",
+                "当类别数量很多时会导致维度爆炸和稀疏矩阵",
+                "引入了虚假的顺序关系",
+                "计算复杂度太高，无法在大规模数据上使用"
+              ],
+              "answer": 1,
+              "explanation": "独热编码为每个类别创建一个二进制列，如果一个特征有1000个不同取值，就会产生1000个新列。这不仅大幅增加内存占用和计算成本，还会导致矩阵极度稀疏（大部分元素为0），影响某些算法的性能。此外，高维空间中的距离度量会失效（维度灾难）。选项A错误，独热编码专门用于类别特征；选项C错误，那是标签编码的问题；选项D部分正确但不是主要缺点，现代库可以高效处理稀疏矩阵。"
+            },
+            {
+              "type": "single",
+              "question": "在特征选择中，包裹法（Wrapper Methods）相比过滤法（Filter Methods）的优势是什么？",
+              "options": [
+                "计算速度更快",
+                "考虑了特征之间的交互作用，并直接与模型性能挂钩",
+                "不需要训练模型",
+                "适用于任意数量的特征而不受计算限制"
+              ],
+              "answer": 1,
+              "explanation": "包裹法通过实际训练模型并评估不同特征子集的性能来选择特征，因此能够捕捉特征之间的交互效应，并且选择标准直接对应最终的模型性能指标。例如，递归特征消除（RFE）反复训练模型并剔除最不重要的特征。相比之下，过滤法只基于统计指标（如相关性、互信息）独立评估每个特征，忽略了特征组合的效果。选项A错误，包裹法计算更慢；选项C错误，包裹法需要多次训练模型；选项D错误，包裹法的计算成本随特征数指数增长。"
+            },
+            {
+              "type": "single",
+              "question": "关于特征缩放，以下说法正确的是？",
+              "options": [
+                "树模型（如随机森林、XGBoost）对特征缩放非常敏感，必须先标准化",
+                "基于距离的算法（如KNN、SVM、K-Means）不受特征缩放影响",
+                "标准化（Standardization）将特征转换为均值为0、标准差为1的分布",
+                "归一化（Normalization）和标准化是完全相同的操作"
+              ],
+              "answer": 2,
+              "explanation": "标准化（也叫Z-score归一化）的公式是：z = (x - mean) / std，结果分布的均值为0、标准差为1。这适合大多数需要假设数据近似正态分布的算法。选项A错误，树模型基于特征值的相对大小进行分裂，不受绝对尺度影响，因此不需要缩放；选项B错误，基于距离的算法恰恰对缩放最敏感，未缩放的特征会主导距离计算；选项D错误，归一化通常指Min-Max缩放到[0,1]区间，与标准化不同。"
+            },
+            {
+              "type": "single",
+              "question": "在处理时间序列数据的特征工程时，以下哪种做法会导致严重的数据泄露？",
+              "options": [
+                "使用滚动窗口计算过去30天的平均值作为特征",
+                "用整个数据集的全局均值填补缺失值",
+                "提取日期的年、月、日、星期几作为特征",
+                "对滞后特征（lag features）使用过去的值"
+              ],
+              "answer": 1,
+              "explanation": "时间序列数据的关键约束是：预测时刻t的值时，只能使用t及之前的信息。用整个数据集（包括未来数据）的全局均值填补缺失值，相当于让模型\"偷看\"了未来，这是严重的数据泄露。正确做法是只用截止到当前时刻的历史数据计算统计量进行填充。选项A正确，滚动窗口只使用历史信息；选项C正确，日期特征是确定的，不涉及数据泄露；选项D正确，滞后特征明确使用过去的值。"
+            }
+          ]
         },
         {
           "id": "ml_model_evaluation_hyperparameter_tuning",
@@ -68494,10 +70053,77 @@
           },
           "file": "assets/content/ml_model_evaluation_hyperparameter_tuning.md",
           "minutes": 50,
-          "keywords": ["模型评估", "超参数调优", "交叉验证", "网格搜索", "贝叶斯优化"],
+          "keywords": [
+            "模型评估",
+            "超参数调优",
+            "交叉验证",
+            "网格搜索",
+            "贝叶斯优化"
+          ],
           "difficulty": "进阶",
           "order": 7,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "关于ROC曲线和PR曲线，以下说法正确的是？",
+              "options": [
+                "ROC曲线在不平衡数据集上更能反映模型性能",
+                "PR曲线更适合评估类别不平衡严重的分类任务",
+                "AUC-ROC和AUC-PR总是给出相同的模型排序",
+                "ROC曲线对阈值变化不敏感"
+              ],
+              "answer": 1,
+              "explanation": "当正负样本比例严重失衡时（如1:100），ROC曲线可能看起来很好（AUC接近1），因为FP率的分母是大量负样本，即使有很多假阳性，FP率仍然很低。而PR曲线的Precision直接受FP数量影响，能更敏感地反映模型在少数类上的表现。因此，在不平衡数据上应优先参考PR曲线。选项A错误，恰恰相反；选项C错误，两种AUC可能给出不同的模型排序；选项D错误，ROC曲线本身就是通过遍历所有阈值得到的。"
+            },
+            {
+              "type": "single",
+              "question": "在K折交叉验证中，为什么通常选择K=5或K=10，而不是K=2或K=N（样本数）？",
+              "options": [
+                "K=2计算太快但估计方差大，K=N（LOOCV）计算成本太高且估计方差可能更大",
+                "K=5和K=10是历史遗留的传统，没有特别理由",
+                "K必须等于5或10才能使用分层抽样",
+                "K越大越好，应该总是使用LOOCV"
+              ],
+              "answer": 0,
+              "explanation": "K的选择需要在偏差、方差和计算成本之间权衡。K=2（即简单的train/test split）只用了一半数据训练，估计偏差较大，且单次划分的方差大。K=N（LOOCV）虽然偏差最小（几乎用全部数据训练），但各fold的训练集高度重叠，导致估计方差可能反而更大，且计算成本是O(N)。K=5或10在实践中取得了良好的平衡：偏差较小、方差可接受、计算成本合理。选项B错误，这是经过理论和实证研究的选择；选项C错误，任何K都可以分层；选项D错误，LOOCV并非总是最优。"
+            },
+            {
+              "type": "single",
+              "question": "关于超参数调优，随机搜索相比网格搜索的主要优势是什么？",
+              "options": [
+                "随机搜索保证找到全局最优解",
+                "随机搜索在相同评估次数下更有可能探索到高影响超参数的更多不同值",
+                "随机搜索不需要指定超参数范围",
+                "随机搜索的计算复杂度更低"
+              ],
+              "answer": 1,
+              "explanation": "Bergstra和Bengio的经典论文证明，在超参数空间中，通常只有少数几个超参数对性能影响显著，大部分超参数影响很小。网格搜索在每个维度上均匀采样，导致在高影响维度上只能尝试有限的几个值。随机搜索则在每次采样中独立地从每个维度的分布中取值，因此在相同评估次数下，更有可能在高影响维度上探索到更多不同的值，从而更快找到好的配置。选项A错误，随机搜索不保证全局最优；选项C错误，仍需指定范围或分布；选项D错误，单次评估的成本相同。"
+            },
+            {
+              "type": "single",
+              "question": "在使用学习曲线诊断模型问题时，以下哪种情况说明模型存在高方差（过拟合）？",
+              "options": [
+                "训练误差和验证误差都很高，且两者接近",
+                "训练误差很低，但验证误差很高，两者差距大",
+                "训练误差和验证误差都很低，且两者接近",
+                "增加训练数据后，训练误差上升，验证误差下降"
+              ],
+              "answer": 1,
+              "explanation": "高方差（过拟合）的特征是模型在训练集上表现很好（训练误差低），但在验证集上表现差（验证误差高），两者之间存在显著差距。这说明模型记住了训练数据的噪声和细节，而非学习到泛化规律。解决方法包括：增加训练数据、简化模型、加强正则化、使用Dropout等。选项A描述的是高偏差（欠拟合）；选项C是理想情况；选项D是正常现象，不是问题诊断。"
+            },
+            {
+              "type": "single",
+              "question": "关于统计显著性检验在模型比较中的应用，以下说法错误的是？",
+              "options": [
+                "p值小于0.05意味着两个模型的性能差异在统计上显著",
+                "统计显著一定意味着实际业务价值显著",
+                "配对t检验假设差异服从正态分布",
+                "在大样本情况下，微小的性能差异也可能统计显著"
+              ],
+              "answer": 1,
+              "explanation": "统计显著性和实际显著性是两个不同的概念。统计显著性（p<0.05）只表明观察到的差异不太可能是随机波动造成的，但不代表差异的大小具有实际业务价值。例如，在百万级用户数据上，准确率从0.850提升到0.851可能统计显著，但业务收益微乎其微。因此，除了p值，还应报告效应量（Effect Size）和业务指标（如收入提升、成本降低）。选项A正确描述了p值的含义；选项C正确，t检验的正态性假设；选项D正确，大样本提高了检验功效。"
+            }
+          ]
         }
       ]
     },
@@ -68522,10 +70148,77 @@
           },
           "file": "assets/content/mobile_flutter_advanced.md",
           "minutes": 50,
-          "keywords": ["Flutter", "动画", "CustomPainter", "Platform Channel", "渲染"],
+          "keywords": [
+            "Flutter",
+            "动画",
+            "CustomPainter",
+            "Platform Channel",
+            "渲染"
+          ],
           "difficulty": "进阶",
           "order": 0,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "在Flutter中，AnimationController的vsync参数的作用是什么？",
+              "options": [
+                "控制动画播放速度",
+                "防止屏幕撕裂，确保动画帧与屏幕刷新同步",
+                "设置动画的持续时间",
+                "决定动画是否循环播放"
+              ],
+              "answer": 1,
+              "explanation": "vsync参数接收一个TickerProvider，它的作用是确保动画的每一帧都与屏幕的垂直同步信号对齐。这样可以防止屏幕撕裂（tearing）现象，即画面的一部分显示旧帧而另一部分显示新帧。同时，当Widget不可见时（比如被导航到其他页面），vsync会自动暂停动画以节省资源。SingleTickerProviderStateMixin和TickerProviderStateMixin都实现了TickerProvider接口，可以传给vsync参数。"
+            },
+            {
+              "type": "single",
+              "question": "关于CustomPainter的shouldRepaint方法，以下说法正确的是？",
+              "options": [
+                "返回true时会重新执行paint方法，返回false则跳过重绘",
+                "该方法可选，不实现也不会影响功能",
+                "应该总是返回true以确保画面最新",
+                "只在首次绘制时调用一次"
+              ],
+              "answer": 0,
+              "explanation": "shouldRepaint方法是CustomPainter性能优化的关键。当Flutter决定是否需要重绘CustomPainter时，会调用此方法并传入旧的delegate实例。如果返回true，则会调用paint方法进行重绘；如果返回false，则复用上一帧的画面。因此，我们应该精确比较那些影响绘制的属性（如颜色、进度值等），只有在真正变化时才返回true。如果总是返回true，会导致不必要的重绘，降低性能；如果不实现此方法，默认行为可能不够优化。"
+            },
+            {
+              "type": "single",
+              "question": "在Platform Channel通信中，MethodChannel.invokeMethod()返回的是什么类型？",
+              "options": [
+                "String",
+                "Map<String, dynamic>",
+                "Future<dynamic>",
+                "void"
+              ],
+              "answer": 2,
+              "explanation": "invokeMethod()是一个异步方法，返回Future<dynamic>。这是因为Dart调用原生代码需要跨越隔离边界，这是一个异步操作。实际返回值的类型取决于原生端的返回内容：可能是null、bool、int、double、String、List或Map。我们需要根据预期的返回类型进行适当的类型转换，例如`result['level'] as double?`。使用async/await语法可以更方便地处理这个Future。"
+            },
+            {
+              "type": "single",
+              "question": "以下哪种情况最适合使用CustomPainter而不是组合现有Widget？",
+              "options": [
+                "显示一张网络图片",
+                "绘制一个带有渐变色的复杂统计图表",
+                "创建一个带圆角的按钮",
+                "显示一段富文本"
+              ],
+              "answer": 1,
+              "explanation": "CustomPainter适用于需要精确控制每个像素绘制的场景，如自定义图表、特殊形状的图标、数据可视化等。选项A可以用Image.network解决；选项C可以用Container的decoration实现；选项D可以用RichText或flutter_html包。只有选项B涉及复杂的自定义绘制逻辑，用CustomPainter可以直接操作Canvas绘制坐标轴、柱状图、折线、标签等元素，比组合多个Widget更高效且灵活。"
+            },
+            {
+              "type": "single",
+              "question": "在iOS平台上使用Platform Channel时，为什么需要注意线程问题？",
+              "options": [
+                "iOS不允许后台线程访问网络",
+                "FlutterMethodCallHandler可能在后台线程执行，但UI更新必须在主线程",
+                "iOS的内存管理需要在特定线程进行",
+                "Swift语言本身不支持多线程"
+              ],
+              "answer": 1,
+              "explanation": "Flutter的Platform Channel机制中，Dart端的调用可能会在iOS的后台线程中被处理。然而，iOS的UIKit框架要求所有UI相关的操作必须在主线程执行。如果在后台线程尝试更新UI（比如修改UILabel的text），会导致未定义行为甚至崩溃。正确的做法是使用`DispatchQueue.main.async {}`将UI更新代码调度到主线程执行。Android方面，MethodChannel的回调通常也在主线程，但仍建议遵循最佳实践。"
+            }
+          ]
         },
         {
           "id": "mobile_swiftui_complete",
@@ -68539,10 +70232,77 @@
           },
           "file": "assets/content/mobile_swiftui_complete.md",
           "minutes": 50,
-          "keywords": ["SwiftUI", "iOS", "声明式UI", "状态管理", "Core Data"],
+          "keywords": [
+            "SwiftUI",
+            "iOS",
+            "声明式UI",
+            "状态管理",
+            "Core Data"
+          ],
           "difficulty": "入门",
           "order": 1,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "在SwiftUI中，以下哪个属性包装器最适合用于管理可变的状态数据？",
+              "options": [
+                "@Environment",
+                "@State",
+                "@Binding",
+                "@EnvironmentObject"
+              ],
+              "answer": 1,
+              "explanation": "@State是SwiftUI中用于管理视图内部可变状态的标准方式。它适用于值类型（如struct），当@State变量的值发生变化时，SwiftUI会自动重新渲染使用该状态的视图。@Environment用于读取系统环境值（如颜色方案），@Binding用于在父子视图间共享状态，@EnvironmentObject用于在整个视图层级中共享对象。对于视图自身拥有的可变数据，@State是最合适的选择。"
+            },
+            {
+              "type": "single",
+              "question": "关于SwiftUI的修饰符（Modifier），以下说法错误的是？",
+              "options": [
+                "修饰符会返回一个新的View实例",
+                "修饰符的应用顺序会影响最终效果",
+                "同一个修饰符可以多次应用于同一视图",
+                "修饰符会直接修改原视图的属性"
+              ],
+              "answer": 3,
+              "explanation": "SwiftUI遵循函数式编程理念，修饰符不会修改原视图，而是返回一个新的视图实例。这就是为什么SwiftUI被称为\"声明式\"而非\"命令式\"——你不是在修改现有对象，而是在描述新的视图结构。选项A、B、C都是正确的：修饰符确实返回新实例，顺序很重要（例如先padding后background与反过来效果不同），且可以链式调用多个修饰符甚至重复使用同一修饰符。"
+            },
+            {
+              "type": "single",
+              "question": "在SwiftUI List中使用ForEach时，为什么数据模型需要遵循Identifiable协议？",
+              "options": [
+                "为了能够对数据进行排序",
+                "为了让SwiftUI能够唯一标识和追踪每个列表项",
+                "为了提高数据加载速度",
+                "为了支持数据加密"
+              ],
+              "answer": 1,
+              "explanation": "SwiftUI需要一种方式来唯一标识列表中的每个元素，以便在数据变化时高效地更新UI。Identifiable协议要求提供一个唯一的id属性，SwiftUI使用这个id来追踪哪些项被添加、删除或移动，从而只重新渲染发生变化的部分，而不是重建整个列表。这类似于React中的key属性。如果不使用Identifiable，也可以使用ForEach(data, id: \\.someProperty)的形式显式指定标识符。"
+            },
+            {
+              "type": "single",
+              "question": "以下哪种情况应该使用@ObservedObject而不是@State？",
+              "options": [
+                "存储一个简单的布尔值开关状态",
+                "管理一个包含多个属性的复杂对象，且该对象需要在多个视图中共享",
+                "存储用户的文本输入",
+                "控制一个视图的显示/隐藏"
+              ],
+              "answer": 1,
+              "explanation": "@State适用于简单的值类型状态，存储在视图内部。而当需要管理复杂的引用类型对象（class），特别是该对象实现了ObservableObject协议并通过@Published属性发布变化时，应该使用@ObservedObject。这种方式适合ViewModel模式，其中ViewModel持有业务逻辑和数据，并在数据变化时通知所有观察它的视图。选项A、C、D都是简单的值类型状态，用@State即可。"
+            },
+            {
+              "type": "single",
+              "question": "SwiftUI中的withAnimation闭包的作用是什么？",
+              "options": [
+                "强制所有视图立即刷新",
+                "为闭包内改变的状态变化添加动画效果",
+                "暂停当前正在播放的动画",
+                "创建一个独立的动画线程"
+              ],
+              "answer": 1,
+              "explanation": "withAnimation是一个全局函数，它接收一个闭包作为参数。闭包内对@State或其他可观察状态的任何修改都会被自动添加动画效果。例如，`withAnimation { isExpanded = true }`会让isExpanded的变化以动画形式呈现，而不是瞬间跳变。你可以指定动画类型和时长，如`withAnimation(.easeInOut(duration: 0.5))`。这是一种简洁的方式来为状态变化添加视觉反馈，提升用户体验。"
+            }
+          ]
         },
         {
           "id": "mobile_jetpack_compose_advanced",
@@ -68556,10 +70316,77 @@
           },
           "file": "assets/content/mobile_jetpack_compose_advanced.md",
           "minutes": 50,
-          "keywords": ["Jetpack Compose", "Android", "布局系统", "副作用", "Material 3"],
+          "keywords": [
+            "Jetpack Compose",
+            "Android",
+            "布局系统",
+            "副作用",
+            "Material 3"
+          ],
           "difficulty": "进阶",
           "order": 2,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "在Jetpack Compose中，remember函数的主要作用是什么？",
+              "options": [
+                "将数据保存到磁盘",
+                "在重组过程中保持状态不丢失",
+                "记忆用户的操作历史",
+                "缓存网络请求结果"
+              ],
+              "answer": 1,
+              "explanation": "remember是Compose中用于在重组（Recomposition）过程中保持状态的关键API。每次Composable函数重组时，函数体都会重新执行，如果没有remember，局部变量会被重新初始化。remember会将值存储在Composition中，确保即使重组发生，状态也能保持不变。通常与mutableStateOf配合使用：`val count = remember { mutableStateOf(0) }`。对于需要持久化的数据，应使用rememberSaveable或ViewModel。"
+            },
+            {
+              "type": "single",
+              "question": "关于Jetpack Compose的重组（Recomposition）机制，以下说法正确的是？",
+              "options": [
+                "每次状态变化都会重新创建整个UI树",
+                "Compose会智能地只重组受影响的组件",
+                "重组等同于Activity的重建",
+                "重组会导致所有remember的状态丢失"
+              ],
+              "answer": 1,
+              "explanation": "Compose的重组是智能且高效的。当状态发生变化时，Compose会通过快照系统追踪哪些Composable读取了该状态，然后只重组那些直接或间接依赖该状态的组件，而不是重建整个UI树。这种细粒度的重组机制是Compose高性能的关键。选项A错误，因为不是全量重建；选项C错误，重组是Composable级别的，不涉及Activity生命周期；选项D错误，remember的状态在重组中会保留。"
+            },
+            {
+              "type": "single",
+              "question": "在LazyColumn中使用items时，为什么要提供key参数？",
+              "options": [
+                "为了让列表项可以排序",
+                "为了帮助Compose正确识别和复用列表项，提升性能",
+                "为了加密列表数据",
+                "为了支持离线缓存"
+              ],
+              "answer": 1,
+              "explanation": "在LazyColumn中，key参数用于唯一标识每个列表项。当列表数据发生变化（添加、删除、移动）时，Compose使用key来追踪哪些项发生了变化，从而正确地复用现有的Composable实例，而不是重新创建所有项。这类似于RecyclerView中的ViewHolder机制。如果没有提供key，Compose会使用项的索引作为默认key，这在列表项顺序变化时会导致状态混乱和性能问题。最佳实践是使用数据的唯一ID作为key。"
+            },
+            {
+              "type": "single",
+              "question": "以下哪种方式最适合在Compose中执行网络请求等异步操作？",
+              "options": [
+                "直接在Composable函数中调用网络API",
+                "在remember块中执行网络请求",
+                "在ViewModel中使用协程，然后通过State暴露结果",
+                "在Modifier中发起网络请求"
+              ],
+              "answer": 2,
+              "explanation": "Compose遵循单向数据流原则，UI层（Composable）应该尽量保持纯净，只负责展示和响应用户交互。网络请求、数据库操作等副作用应该在ViewModel中通过协程执行，然后将结果封装为State或StateFlow暴露给UI层。Composable通过collectAsStateWithLifecycle或collectAsState来观察这些数据变化。这样可以确保职责分离、易于测试，并且避免在重组过程中意外触发多次网络请求。"
+            },
+            {
+              "type": "single",
+              "question": "关于Compose的Modifier，以下说法错误的是？",
+              "options": [
+                "Modifier是不可变的，每次调用都返回新实例",
+                "Modifier的顺序会影响最终效果",
+                "可以使用then()方法链式组合多个Modifier",
+                "Modifier可以直接修改Composable的内部状态"
+              ],
+              "answer": 3,
+              "explanation": "Modifier是Compose中用于修饰组件外观和行为的不可变对象。每次调用Modifier的方法（如padding、background、clickable）都会返回一个新的Modifier实例，形成一条处理链。顺序确实很重要，例如`.padding(16.dp).background(Color.Red)`和`.background(Color.Red).padding(16.dp)`会产生不同的视觉效果。然而，Modifier不能直接修改Composable的内部状态，它只能影响组件的绘制、布局和输入处理。状态的修改需要通过状态管理API（如mutableStateOf）来完成。"
+            }
+          ]
         },
         {
           "id": "mobile_react_native_deep",
@@ -68573,10 +70400,77 @@
           },
           "file": "assets/content/mobile_react_native_deep.md",
           "minutes": 50,
-          "keywords": ["React Native", "原生模块", "桥接", "性能优化", "TurboModules"],
+          "keywords": [
+            "React Native",
+            "原生模块",
+            "桥接",
+            "性能优化",
+            "TurboModules"
+          ],
           "difficulty": "进阶",
           "order": 3,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "React Native中的Bridge机制主要负责什么？",
+              "options": [
+                "连接WiFi和移动网络",
+                "在JavaScript线程和原生线程之间传递消息",
+                "管理应用的数据库连接",
+                "处理用户的手势输入"
+              ],
+              "answer": 1,
+              "explanation": "Bridge是React Native架构的核心组件，它负责在JavaScript线程和原生主线程之间进行异步通信。当JS代码需要更新UI或调用原生功能时，会将序列化的消息通过Bridge发送到原生端；原生端执行后将结果再通过Bridge返回给JS。这种设计使得JS和原生代码可以独立运行，但也带来了通信开销。新架构中的JSI（JavaScript Interface）正在逐步替代Bridge，实现更高效的同步调用。"
+            },
+            {
+              "type": "single",
+              "question": "在React Native中使用FlatList时，为什么推荐使用React.memo包裹Item组件？",
+              "options": [
+                "为了美化Item的外观",
+                "为了避免不必要的重新渲染，提升性能",
+                "为了支持离线缓存",
+                "为了加密Item数据"
+              ],
+              "answer": 1,
+              "explanation": "FlatList会渲染大量列表项，如果父组件状态变化导致整个列表重新渲染，每个Item都会重新执行渲染函数。使用React.memo可以让Item组件只在props真正变化时才重新渲染，避免浪费。配合正确的keyExtractor和getItemLayout，可以显著提升长列表的滚动性能。此外，应避免在renderItem中传递内联函数或对象，因为这些每次都会创建新引用，导致memo失效。"
+            },
+            {
+              "type": "single",
+              "question": "关于React Native的原生模块开发，以下说法正确的是？",
+              "options": [
+                "iOS和Android可以使用完全相同的代码",
+                "原生模块只能在主线程执行",
+                "需要在iOS和Android分别实现原生代码，然后通过Bridge暴露给JS",
+                "原生模块不需要处理错误情况"
+              ],
+              "answer": 2,
+              "explanation": "React Native的原生模块需要分别在iOS（使用Objective-C或Swift）和Android（使用Java或Kotlin）上实现，因为两平台的API完全不同。实现后，通过特定的宏或注解将方法暴露给JavaScript层，JS就可以通过NativeModules调用这些方法。选项A错误，因为原生代码必须分别编写；选项B错误，原生模块可以在后台线程执行耗时操作；选项D错误，必须妥善处理错误并通过Promise reject或回调返回错误信息。"
+            },
+            {
+              "type": "single",
+              "question": "在React Native中，如何处理iOS和Android的平台差异？",
+              "options": [
+                "只开发iOS版本，忽略Android",
+                "使用Platform.OS判断并为不同平台编写适配代码",
+                "让后端处理所有平台差异",
+                "使用相同的代码，期望它能在两平台正常工作"
+              ],
+              "answer": 1,
+              "explanation": "React Native提供了Platform模块来检测当前运行的平台。使用`Platform.OS === 'ios'`或`Platform.OS === 'android'`可以针对不同平台执行不同的逻辑。对于样式差异，可以使用Platform.select()方法：`const styles = Platform.select({ ios: {...}, android: {...} })`。对于复杂的平台特定功能，可以分别创建`.ios.js`和`.android.js`文件，React Native会自动根据平台选择正确的文件。忽视平台差异会导致应用在某一平台上出现bug或崩溃。"
+            },
+            {
+              "type": "single",
+              "question": "React Native中Image组件的默认单位是什么？",
+              "options": [
+                "像素(px)",
+                "密度无关像素(dp)",
+                "点(pt)",
+                "毫米(mm)"
+              ],
+              "answer": 1,
+              "explanation": "React Native中的所有尺寸单位默认都是密度无关像素（density-independent pixels，简称dp或dip）。这意味着你设置的宽度100在不同密度的屏幕上会自动缩放，保持物理尺寸大致相同。这与Web开发中的px不同，Web的px是绝对像素。在React Native中，你不需要手动进行dp到px的转换，框架会自动处理。如果需要获取屏幕的实际像素尺寸，可以使用PixelRatio API。"
+            }
+          ]
         },
         {
           "id": "mobile_cross_platform_comparison",
@@ -68590,10 +70484,77 @@
           },
           "file": "assets/content/mobile_cross_platform_comparison.md",
           "minutes": 45,
-          "keywords": ["跨平台", "架构对比", "选型指南", "Flutter vs RN", "迁移"],
+          "keywords": [
+            "跨平台",
+            "架构对比",
+            "选型指南",
+            "Flutter vs RN",
+            "迁移"
+          ],
           "difficulty": "进阶",
           "order": 4,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "以下哪种场景最适合选择Flutter作为技术方案？",
+              "options": [
+                "需要深度集成iOS特有功能如ARKit的应用",
+                "团队已有丰富的React经验，需要快速开发MVP",
+                "需要同时在iOS、Android和Web上保持一致的UI和性能",
+                "只需要开发iOS应用，且对性能要求极高"
+              ],
+              "answer": 2,
+              "explanation": "Flutter的核心优势在于\"一套代码多端运行\"且能保证一致的UI渲染和接近原生的性能。它使用自己的Skia渲染引擎，不依赖系统原生组件，因此在不同平台上能保持高度一致的视觉效果。选项A更适合原生开发；选项B适合React Native；选项D应该直接用Swift/SwiftUI。Flutter最适合需要跨平台且对UI一致性要求高的项目。"
+            },
+            {
+              "type": "single",
+              "question": "关于React Native的性能特点，以下说法正确的是？",
+              "options": [
+                "性能与原生开发完全相同",
+                "由于Bridge机制，频繁通信会导致性能开销",
+                "所有操作都在JavaScript线程完成，无需与原生交互",
+                "动画性能永远优于Flutter"
+              ],
+              "answer": 1,
+              "explanation": "React Native通过Bridge在JS线程和原生线程之间传递消息，这个序列化/反序列化的过程会带来性能开销。特别是当需要频繁传递大量数据时（如滚动列表中的实时更新），可能导致掉帧。新架构中的JSI（JavaScript Interface）正在改善这个问题，允许JS直接调用C++函数。选项A错误，原生性能仍更优；选项C错误，UI渲染仍在原生端；选项D错误，Flutter的动画性能通常更好。"
+            },
+            {
+              "type": "single",
+              "question": "在进行技术选型时，为什么需要考虑\"招聘难度\"这一因素？",
+              "options": [
+                "因为越难招聘的技术工资越高",
+                "因为技术的人才储备影响项目的长期维护和扩展能力",
+                "因为容易招聘的技术一定更好",
+                "因为招聘难度与技术性能成正比"
+              ],
+              "answer": 1,
+              "explanation": "技术选型不仅是技术问题，更是团队和业务问题。如果选择了一个小众或新兴的技术框架，可能面临招聘困难、现有员工流失后难以补充、社区资源匮乏等问题。这会直接影响项目的长期可持续性。相反，选择成熟且人才储备充足的技术（如Java、JavaScript），虽然可能在某些方面不是最优，但能确保团队稳定性和知识传承。招聘难度应与项目规模、周期和团队规划综合考量。"
+            },
+            {
+              "type": "single",
+              "question": "以下哪种情况不适合使用跨平台框架？",
+              "options": [
+                "创业公司需要快速验证产品想法",
+                "企业内部管理系统，对性能要求不高",
+                "高性能游戏或AR/VR应用",
+                "电商APP，需要在多平台保持一致体验"
+              ],
+              "answer": 2,
+              "explanation": "高性能游戏、AR/VR应用、视频编辑软件等对图形渲染、实时计算有极高要求的应用，通常需要直接使用原生API甚至底层C/C++代码来充分发挥硬件性能。跨平台框架由于抽象层的存在，在这类场景下往往无法满足性能需求。选项A、B、D都是跨平台框架的典型适用场景：快速开发、成本敏感、多平台一致性。对于性能敏感型应用，原生开发仍是首选。"
+            },
+            {
+              "type": "single",
+              "question": "关于技术选型的\"长期维护\"维度，以下哪个因素最重要？",
+              "options": [
+                "框架当前的流行程度",
+                "框架背后的公司或社区是否持续投入",
+                "框架的学习资料数量",
+                "框架的首屏加载速度"
+              ],
+              "answer": 1,
+              "explanation": "长期维护的关键在于技术的可持续性。如果一个框架背后有强大的公司支持（如Google的Flutter、Meta的React Native）或活跃的开源社区，那么它更可能持续更新、修复bug、适配新系统版本。相比之下，流行程度可能会波动，学习资料可以逐步积累，首屏加载速度可以通过优化改善，但如果框架停止维护，整个项目将面临巨大风险。因此，评估框架的治理模式、更新频率、issue响应速度等指标至关重要。"
+            }
+          ]
         },
         {
           "id": "mobile_performance_optimization",
@@ -68607,10 +70568,77 @@
           },
           "file": "assets/content/mobile_performance_optimization.md",
           "minutes": 50,
-          "keywords": ["性能优化", "内存管理", "启动速度", "包体积", "渲染性能"],
+          "keywords": [
+            "性能优化",
+            "内存管理",
+            "启动速度",
+            "包体积",
+            "渲染性能"
+          ],
           "difficulty": "进阶",
           "order": 5,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "以下哪种情况最可能导致Android应用出现内存泄漏？",
+              "options": [
+                "使用了RecyclerView",
+                "在Activity中创建了匿名内部类的Handler且未移除消息",
+                "使用了ViewModel",
+                "调用了finish()方法"
+              ],
+              "answer": 1,
+              "explanation": "在Android中，Handler持有对其所在外部类（通常是Activity）的隐式引用。如果Handler中有延迟消息或循环消息，即使Activity已经调用finish()，由于Handler仍持有引用且消息队列中还有未处理的消息，GC无法回收该Activity，导致内存泄漏。正确做法是在onDestroy()中调用handler.removeCallbacksAndMessages(null)清除所有消息。选项A的RecyclerView本身不会泄漏；选项C的ViewModel生命周期与Activity绑定，会自动清理；选项D的finish()是正常销毁流程。"
+            },
+            {
+              "type": "single",
+              "question": "关于应用启动速度优化，以下策略最有效的是？",
+              "options": [
+                "在Application的onCreate中初始化所有第三方SDK",
+                "使用自定义闪屏页并延长显示时间",
+                "将非关键初始化移到后台线程或延迟到空闲时执行",
+                "增加启动页面的动画时长来掩盖加载时间"
+              ],
+              "answer": 2,
+              "explanation": "启动速度优化的核心原则是\"最小化主线程工作\"和\"并行化处理\"。将非关键的初始化（如统计SDK、推送服务）移到后台线程或使用IdleHandler在CPU空闲时执行，可以显著减少启动耗时。选项A会严重拖慢启动；选项B和D只是掩盖问题而非解决问题，甚至会增加用户等待时间。最佳实践是使用系统Launch Screen快速展示品牌标识，同时异步加载数据。"
+            },
+            {
+              "type": "single",
+              "question": "在Flutter中，如何有效减少应用包体积？",
+              "options": [
+                "增加图片分辨率以提升显示质量",
+                "启用代码混淆和资源压缩，移除未使用的代码和资源",
+                "引入更多的第三方库以丰富功能",
+                "将所有资源打包到主Bundle中"
+              ],
+              "answer": 1,
+              "explanation": "Flutter提供了多种包体积优化手段：1) 使用`flutter build apk --split-per-abi`为不同CPU架构生成独立APK；2) 启用ProGuard/R8进行代码混淆和压缩；3) 使用`--shrink`参数移除未使用的代码；4) 压缩图片资源，使用WebP格式；5) 按需加载模块，避免一次性加载所有功能。选项A会增加体积；选项C会引入更多依赖；选项D违背了按需加载原则。通常优化后可减少30%-50%的包体积。"
+            },
+            {
+              "type": "single",
+              "question": "关于移动端性能监控，以下哪个指标最能反映用户体验？",
+              "options": [
+                "CPU使用率",
+                "FPS（帧率）",
+                "内存占用",
+                "网络请求数量"
+              ],
+              "answer": 1,
+              "explanation": "FPS（Frames Per Second，每秒帧数）直接反映了界面的流畅度。人眼对60fps的动画感觉流畅，低于30fps会明显感知卡顿。虽然CPU、内存和网络都是重要指标，但用户最直接感受到的是界面是否流畅滚动、动画是否顺滑。理想的性能监控应该综合多个指标：FPS反映渲染性能，启动时间反映响应速度，内存反映稳定性，网络反映数据加载效率。其中FPS是最直观的用户体验指标。"
+            },
+            {
+              "type": "single",
+              "question": "在React Native中，为什么FlatList比map渲染数组更适合长列表？",
+              "options": [
+                "FlatList的API更简洁",
+                "FlatList支持虚拟渲染，只渲染可见区域的项",
+                "FlatList可以自动排序数据",
+                "FlatList内置了网络请求功能"
+              ],
+              "answer": 1,
+              "explanation": "FlatList实现了虚拟渲染（Virtualization）机制，它只会创建和渲染当前可见区域内的列表项，当用户滚动时，会复用已卸载的组件实例而不是创建新的。这对于包含数百上千项的列表至关重要，可以大幅降低内存占用和渲染时间。相比之下，使用`data.map(item => <Item />)`会一次性渲染所有项，导致严重的性能问题和内存压力。FlatList还提供了getItemLayout、initialNumToRender等优化参数，进一步精细控制渲染行为。"
+            }
+          ]
         },
         {
           "id": "mobile_offline_first_architecture",
@@ -68624,10 +70652,77 @@
           },
           "file": "assets/content/mobile_offline_first_architecture.md",
           "minutes": 50,
-          "keywords": ["离线优先", "数据同步", "本地存储", "冲突解决", "增量同步"],
+          "keywords": [
+            "离线优先",
+            "数据同步",
+            "本地存储",
+            "冲突解决",
+            "增量同步"
+          ],
           "difficulty": "进阶",
           "order": 6,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "离线优先架构的核心原则是什么？",
+              "options": [
+                "只在有网络时才允许用户使用应用",
+                "所有数据操作先在本地执行，再异步同步到服务器",
+                "禁用所有需要网络的功能",
+                "将所有数据永久保存在本地，不同步到服务器"
+              ],
+              "answer": 1,
+              "explanation": "离线优先（Offline-First）的核心理念是\"本地优先，异步同步\"。用户的每一次数据操作（创建、修改、删除）都首先写入本地数据库，保证即时响应和可用性。然后在后台尝试将变更同步到远程服务器。如果网络不可用，变更会在本地排队，待网络恢复后自动同步。这种模式确保了应用在任何网络条件下都能正常工作，提供了最佳的用户体验。选项A违背了离线优先的初衷；选项C功能受限；选项D无法实现多设备数据共享。"
+            },
+            {
+              "type": "single",
+              "question": "在处理数据同步冲突时，\"最后写入获胜\"（LWW）策略的主要缺点是什么？",
+              "options": [
+                "实现复杂度高",
+                "可能导致用户数据被意外覆盖而丢失",
+                "需要同步所有历史版本",
+                "只适用于数值类型数据"
+              ],
+              "answer": 1,
+              "explanation": "LWW（Last Write Wins）策略简单地保留时间戳最新的版本，丢弃其他版本。虽然实现简单，但它忽略了数据的语义和用户意图。例如，用户A在10:00修改了文档标题，用户B在10:01修改了同一文档的内容，LWW会保留B的完整版本，导致A的标题修改丢失。更好的策略包括：操作转换（OT）合并差异、CRDT（无冲突复制数据类型）自动合并、或让用户手动选择保留哪个版本。LWW适用于对数据一致性要求不高的场景，如日志记录、统计数据等。"
+            },
+            {
+              "type": "single",
+              "question": "为什么增量同步比全量同步更适合移动应用？",
+              "options": [
+                "增量同步的代码更简单",
+                "增量同步减少了数据传输量，节省流量和时间",
+                "增量同步不需要服务器支持",
+                "增量同步可以保证100%的数据一致性"
+              ],
+              "answer": 1,
+              "explanation": "增量同步只传输自上次同步以来发生变化的数据，而全量同步每次都传输完整数据集。对于包含大量数据的应用（如邮件、聊天记录、商品列表），增量同步可以显著减少网络流量、降低同步耗时、节省用户流量费用。实现增量同步通常需要服务器支持版本控制或变更日志（Change Log），客户端记录最后同步的版本号或时间戳。选项A错误，增量同步逻辑更复杂；选项C错误，需要服务器配合；选项D错误，两种方式的 consistency 取决于具体实现。"
+            },
+            {
+              "type": "single",
+              "question": "在离线优先应用中，如何处理敏感数据（如密码、token）的本地存储？",
+              "options": [
+                "明文存储在SharedPreferences或UserDefaults中",
+                "使用Base64编码后存储",
+                "使用加密存储，如Android的EncryptedSharedPreferences或iOS的Keychain",
+                "不存储任何敏感数据，每次都从服务器获取"
+              ],
+              "answer": 2,
+              "explanation": "敏感数据必须加密存储。Base64只是编码而非加密，可以轻松解码，不提供安全性。Android提供了EncryptedSharedPreferences（基于AES-256）和Jetpack Security库；iOS提供了Keychain Services，数据使用硬件级加密保护。对于更复杂的场景，可以使用SQLCipher加密整个SQLite数据库。选项A极其危险，root/jailbreak设备可轻松读取；选项D不现实，某些场景必须本地缓存token以维持登录状态。"
+            },
+            {
+              "type": "single",
+              "question": "关于后台同步任务的调度，以下哪种策略最合理？",
+              "options": [
+                "每秒钟执行一次同步以确保数据实时性",
+                "仅在用户手动触发时同步",
+                "结合网络状态、电池电量和用户行为智能调度，并使用指数退避重试",
+                "在应用启动时同步一次，之后不再同步"
+              ],
+              "answer": 2,
+              "explanation": "合理的后台同步策略应该平衡数据新鲜度、电池寿命和网络消耗。最佳实践包括：1) 检测网络类型（WiFi优先，移动网络谨慎）；2) 监控电池电量（低电量时减少同步）；3) 观察用户行为模式（活跃时段增加频率，空闲时段降低）；4) 使用指数退避算法处理失败重试（5分钟→10分钟→20分钟...）；5) 利用平台提供的后台任务框架（Android WorkManager、iOS BackgroundTasks）。选项A会快速耗尽电池；选项B用户体验差；选项D数据会过时。"
+            }
+          ]
         },
         {
           "id": "mobile_security_best_practices",
@@ -68641,10 +70736,77 @@
           },
           "file": "assets/content/mobile_security_best_practices.md",
           "minutes": 45,
-          "keywords": ["移动安全", "加密", "混淆", "反调试", "安全存储"],
+          "keywords": [
+            "移动安全",
+            "加密",
+            "混淆",
+            "反调试",
+            "安全存储"
+          ],
           "difficulty": "进阶",
           "order": 7,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "为什么不应该在代码中硬编码API密钥？",
+              "options": [
+                "因为会增加代码体积",
+                "因为反编译后可以轻易提取密钥，导致未授权访问",
+                "因为会影响应用性能",
+                "因为不同平台的API密钥格式不同"
+              ],
+              "answer": 1,
+              "explanation": "硬编码在代码中的API密钥可以通过反编译工具轻松提取。即使是经过混淆的代码，攻击者也可以通过动态分析（运行时抓包、Hook关键函数）获取密钥。一旦密钥泄露，攻击者可以冒充你的应用调用API，造成资源滥用、数据泄露或经济损失。正确的做法是：1) 将密钥存储在安全的后端服务器，由服务器代理API调用；2) 使用环境变量或配置文件在构建时注入；3) 使用远程配置服务动态下发；4) 对必须在前端的密钥实施额外的保护措施（如代码混淆、完整性校验）。"
+            },
+            {
+              "type": "single",
+              "question": "关于代码混淆，以下说法正确的是？",
+              "options": [
+                "混淆可以完全防止逆向工程",
+                "混淆会改变程序的运行逻辑",
+                "混淆通过重命名标识符、打乱控制流等方式增加阅读难度",
+                "混淆后的代码无法被恢复"
+              ],
+              "answer": 2,
+              "explanation": "代码混淆是一种安全防护手段，通过以下方式增加逆向工程难度：1) 重命名类名、方法名、变量名为无意义字符（a、b、c）；2) 移除注释和调试信息；3) 打乱控制流结构；4) 插入无用代码。但混淆不是银弹：它不能阻止专业的逆向工程师，只是增加了时间和成本。选项A错误，混淆可以被部分还原；选项B错误，混淆不改变程序逻辑；选项D错误，有专门的反混淆工具。混淆应该与其他安全措施（加密、反调试、完整性校验）结合使用，形成纵深防御。"
+            },
+            {
+              "type": "single",
+              "question": "HTTPS证书锁定（Certificate Pinning）的主要目的是什么？",
+              "options": [
+                "加速HTTPS连接速度",
+                "防止中间人攻击，确保只信任特定的服务器证书",
+                "减少证书验证的计算开销",
+                "自动更新过期的证书"
+              ],
+              "answer": 1,
+              "explanation": "证书锁定是将服务器的证书公钥或指纹硬编码在客户端中，在建立HTTPS连接时验证服务器证书是否与预置的匹配。这样可以防止中间人攻击（MITM）：即使攻击者伪造了一个看似合法的证书（例如通过安装恶意CA证书），由于指纹不匹配，连接会被拒绝。这对于金融、医疗等高安全要求的应用至关重要。但需要注意：证书锁定会增加运维复杂度，证书更新时需要同时更新客户端，因此要预留足够的过渡期。选项A、C、D都不是证书锁定的目的。"
+            },
+            {
+              "type": "single",
+              "question": "在移动应用中存储用户密码时，最佳实践是什么？",
+              "options": [
+                "明文存储以便快速验证",
+                "使用MD5哈希后存储",
+                "使用bcrypt或Argon2加盐哈希后存储",
+                "使用Base64编码后存储"
+              ],
+              "answer": 2,
+              "explanation": "密码存储必须使用专门设计的密码哈希算法，如bcrypt、scrypt或Argon2。这些算法具有以下特点：1) 加盐（Salt）防止彩虹表攻击；2) 计算速度慢（故意设计）增加暴力破解成本；3) 可配置的工作因子适应硬件发展。MD5和SHA1是通用哈希算法，计算速度太快，容易被暴力破解或彩虹表攻击，不适合密码存储。Base64只是编码而非加密，可以轻松解码。明文存储更是极其危险的做法。此外，现代应用更倾向于使用OAuth、生物识别等方式，避免直接处理用户密码。"
+            },
+            {
+              "type": "single",
+              "question": "关于移动应用的权限管理，\"最小权限原则\"指的是什么？",
+              "options": [
+                "申请所有可能用到的权限以防万一",
+                "只申请当前功能必需的最少权限",
+                "完全不申请任何权限以保证安全",
+                "只在Android上申请权限，iOS不需要"
+              ],
+              "answer": 1,
+              "explanation": "最小权限原则（Principle of Least Privilege）是安全设计的核心原则之一，指应用只请求完成其功能所必需的最少权限。这样做的好处包括：1) 降低安全风险——即使应用被攻击，攻击者能访问的资源也有限；2) 提升用户信任——用户更愿意授予合理的权限请求；3) 符合应用商店审核要求——过度申请权限可能导致上架被拒。实现方式：按需请求权限（使用时才申请）、提供权限用途说明、为敏感权限提供替代方案、优雅处理权限拒绝。选项A违背了最小权限原则；选项C不现实；选项D错误，iOS同样需要权限管理。"
+            }
+          ]
         }
       ]
     }
