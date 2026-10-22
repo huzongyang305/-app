@@ -1,0 +1,257 @@
+{
+  "lessons": [
+    {
+      "id": "python_asyncio",
+      "category": "python",
+      "title": {
+        "zh": "Python asyncio 异步编程：任务、超时与取消",
+        "en": "Python asyncio: Tasks, Timeouts and Cancellation"
+      },
+      "summary": {
+        "zh": "理解事件循环如何调度协程，用 gather、TaskGroup、超时和取消组织高并发 I/O，并避免阻塞整个循环。",
+        "en": "Understand event-loop scheduling and coordinate high-concurrency I/O with gather, TaskGroup, timeouts and cancellation."
+      },
+      "keywords": [
+        "asyncio",
+        "协程",
+        "TaskGroup",
+        "取消",
+        "超时"
+      ],
+      "difficulty": "高级",
+      "minutes": 65,
+      "order": 28,
+      "prerequisites": [
+        "python_concurrency"
+      ],
+      "related": [
+        "python_concurrency_model",
+        "python_http_clients"
+      ],
+      "image": {
+        "title": "事件循环的任务调度",
+        "flow": [
+          "协程遇到 await",
+          "事件循环切换任务",
+          "I/O 就绪后恢复",
+          "超时或取消传播"
+        ]
+      },
+      "goals": [
+        "能解释协程、Task 与事件循环之间的关系。",
+        "能用 gather 与 TaskGroup 并发执行并正确传播异常。",
+        "能实现可取消、带超时和重试边界的异步流程。"
+      ],
+      "prerequisitesText": [
+        "会定义和调用普通函数，理解生成器与迭代。",
+        "知道线程并发和 I/O 阻塞的基本概念。",
+        "能读懂 async 与 await 语法的简单示例。"
+      ],
+      "concepts": [
+        {
+          "name": "协程与事件循环",
+          "plain": "async def 定义协程函数，调用它只得到协程对象，必须 await 或交给事件循环才会执行；事件循环在任务等待 I/O 时切换到其他任务。",
+          "mechanism": "协程在 await 可等待对象处暂停，把控制权交回事件循环；就绪事件到达后再从暂停点恢复。事件循环是单线程的，所有任务共享它，因此阻塞调用会卡住全部并发。",
+          "example": "用 asyncio.gather 同时等待两个不同延迟的协程，观察总耗时接近较长的那一个而不是两者相加。",
+          "boundary": "CPU 密集计算不应直接放进协程，需要移到进程池或原生扩展；同步库的阻塞调用要用 run_in_executor 桥接。",
+          "engineering": "异步入口保持窄边界，业务逻辑尽量写成同步纯函数；每个异步任务都要有超时和取消策略。"
+        },
+        {
+          "name": "Task 与并发组合",
+          "plain": "Task 是事件循环调度的协程包装，create_task 让协程立即开始运行；gather 收集一组结果，as_completed 按完成顺序处理。",
+          "mechanism": "create_task 返回 Task 对象，可以取消、查询状态和附加回调；gather 默认遇到异常立即向外抛出，return_exceptions 可以把异常作为结果返回。",
+          "example": "创建三个不同延迟的任务，用 as_completed 按完成顺序打印名称，再用 gather 验证结果顺序与输入一致。",
+          "boundary": "只创建任务而不保存引用可能被垃圾回收；任务异常如果没有被取走会产生警告并可能被悄悄忽略。",
+          "engineering": "任务集合集中管理，退出前等待或取消；异常必须被记录或转换为领域错误，不能留在未处理的任务里。"
+        },
+        {
+          "name": "超时、取消与清理",
+          "plain": "超时会在规定时间内没有完成时取消任务并抛出 TimeoutError；取消通过 CancelledError 传播，清理逻辑必须正确执行。",
+          "mechanism": "asyncio.timeout 与 wait_for 都可以限制等待时间，取消请求注入到协程的暂停点；finally 和 async with 负责释放资源，shield 可以保护关键清理不被外层取消。",
+          "example": "在 0.03 秒超时内等待一个 0.5 秒的任务，捕获 TimeoutError 并确认被取消任务完成了资源清理。",
+          "boundary": "捕获 CancelledError 后如果不重新抛出，会破坏上层取消语义；重试必须最多执行有限次数并带退避。",
+          "engineering": "每个外部调用设置预算，超时错误与业务失败分开处理，重试只用于可恢复且幂等的操作。"
+        },
+        {
+          "name": "TaskGroup 与结构化并发",
+          "plain": "TaskGroup 把一组子任务绑定在同一个 async with 块内，退出时等待全部完成；任一子任务失败会取消其余任务并抛出异常组。",
+          "mechanism": "块内创建的任务属于同一个作用域，正常退出时统一等待，失败时统一取消；多个异常会汇总为 ExceptionGroup，可以按类型分别处理。",
+          "example": "在 TaskGroup 内并发执行三个任务，全部成功后收集结果，再让其中一个失败观察其余任务被取消。",
+          "boundary": "TaskGroup 不能跨越作用域保存任务，不能与未等待的裸任务混用；单个异常会在组退出时被解包，多异常才以组形式出现。",
+          "engineering": "并发边界使用 TaskGroup 表达生命周期，子任务记录任务标识，退出后不再持有循环引用。"
+        },
+        {
+          "name": "异步 I/O 生态与桥接",
+          "plain": "异步库把网络和文件操作暴露为可等待对象，真正的并发来自等待期间切换任务；同步依赖需要用线程桥接。",
+          "mechanism": "httpx、aiofiles 等库提供异步客户端，连接池在多个任务之间复用；asyncio.to_thread 把阻塞函数移到线程池，避免阻塞事件循环。",
+          "example": "用 asyncio.to_thread 包装一个阻塞的读取函数，在等待期间继续执行另一个异步任务。",
+          "boundary": "把同步函数直接放进 async def 仍然会阻塞；线程桥接有上限，过多线程任务会把瓶颈转移到线程池。",
+          "engineering": "统一使用异步客户端并限制并发数量，连接和会话在应用生命周期内复用，退出时关闭连接池。"
+        }
+      ],
+      "steps": [
+        "把阻塞边界识别出来",
+        "用 async 与 await 表达可等待操作",
+        "用任务或任务组组织并发",
+        "给外部调用设置超时与取消",
+        "验证异常传播和资源清理"
+      ],
+      "code": {
+        "language": "python",
+        "snippet": "import asyncio\n\nasync def fetch(name: str, delay: float) -> str:\n    await asyncio.sleep(delay)\n    return f\"{name}:ok\"\n\nasync def main() -> None:\n    results = await asyncio.gather(\n        fetch(\"fast\", 0.05),\n        fetch(\"slow\", 0.10),\n    )\n    print(\"结果:\", results)\n\n    try:\n        async with asyncio.timeout(0.03):\n            await fetch(\"timeout\", 0.5)\n    except TimeoutError:\n        print(\"超时:TimeoutError\")\n\n    async with asyncio.TaskGroup() as group:\n        tasks = [\n            group.create_task(fetch(f\"task{i}\", 0.01 * i))\n            for i in range(1, 4)\n        ]\n    print(\"任务组:\", [task.result() for task in tasks])\n\nasyncio.run(main())",
+        "walkthrough": "两个 fetch 协程被 gather 并发等待，结果保持输入顺序；超时块在 0.03 秒后取消慢任务并抛 TimeoutError；TaskGroup 在块退出时等待三个子任务，全部成功后统一收集结果。整个过程只有一个事件循环，等待期间会切换到其他任务。",
+        "expected_output": "结果: ['fast:ok', 'slow:ok']\n超时:TimeoutError\n任务组: ['task1:ok', 'task2:ok', 'task3:ok']"
+      },
+      "faults": [
+        {
+          "topic": "在事件循环里调用 time.sleep",
+          "wrong": "async 函数中使用 time.sleep，所有并发任务一起卡住",
+          "fix": "改用 asyncio.sleep，阻塞函数用 asyncio.to_thread 或线程池桥接"
+        },
+        {
+          "topic": "调用协程却不 await",
+          "wrong": "直接写 fetch() 或 create_task 后不保存引用，代码没有执行或任务被回收",
+          "fix": "显式 await，或把任务收集到列表并用 TaskGroup 管理生命周期"
+        },
+        {
+          "topic": "吞掉 CancelledError",
+          "wrong": "捕获 CancelledError 后继续执行且不重新抛出，上层超时失效",
+          "fix": "在 finally 中清理资源，然后重新抛出取消异常"
+        },
+        {
+          "topic": "无界创建任务",
+          "wrong": "对一万条数据同时 create_task，内存和连接瞬间打满",
+          "fix": "使用信号量或分批队列限制并发数量，形成背压"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "协程",
+          "definition": "async def 定义的可在 await 处暂停和恢复的函数调用形式。"
+        },
+        {
+          "term": "事件循环",
+          "definition": "调度协程、回调和 I/O 事件的核心循环。"
+        },
+        {
+          "term": "可等待对象",
+          "definition": "可以在 await 表达式后使用的对象，包括协程、Task 和 Future。"
+        },
+        {
+          "term": "Task",
+          "definition": "事件循环调度的协程包装，可查询状态、取消和获取结果。"
+        },
+        {
+          "term": "TaskGroup",
+          "definition": "绑定一组子任务生命周期的结构化并发上下文管理器。"
+        },
+        {
+          "term": "结构化并发",
+          "definition": "要求并发子任务在确定的父作用域内启动、等待和结束的组织方式。"
+        }
+      ],
+      "quiz": [
+        {
+          "type": "single",
+          "question": "为什么在 async 函数中调用 time.sleep 会破坏并发？",
+          "options": [
+            "它会阻塞事件循环线程，其他任务无法被调度",
+            "它会自动取消所有任务",
+            "它会把协程变成线程",
+            "它只能休眠整数秒"
+          ],
+          "answer": 0,
+          "explanation": "事件循环在单线程中调度所有任务，time.sleep 会让这个线程真正停下来，期间其他协程无法运行，超时和取消也难以生效。应该使用 asyncio.sleep，或者把无法改写的阻塞函数放进 asyncio.to_thread 和线程池，让事件循环保持可调度。"
+        },
+        {
+          "type": "single",
+          "question": "asyncio.gather 返回结果时的顺序是？",
+          "options": [
+            "与传入的等待对象顺序一致，而不是完成顺序",
+            "永远按完成先后排列",
+            "随机顺序",
+            "只返回第一个完成的结果"
+          ],
+          "answer": 0,
+          "explanation": "gather 会并发等待所有对象，但返回列表与输入顺序一一对应，因此调用方可以按索引稳定取值；如果要按完成先后处理，应使用 as_completed。两种语义各有用途，混淆会导致结果与任务错配。"
+        },
+        {
+          "type": "multi",
+          "question": "关于取消与超时，哪些说法正确？（多选）",
+          "options": [
+            "取消通过 CancelledError 在协程暂停点传播",
+            "清理资源应放在 finally 或 async with 中",
+            "捕获 CancelledError 后不应静默忽略",
+            "超时后原任务一定已经完成"
+          ],
+          "answer": 0,
+          "explanation": "取消是协作式的，异常在暂停点注入，资源清理必须放在可靠的退出路径中，且不能吞掉取消信号。超时只保证调用方不再等待，被取消的任务可能仍在执行清理，因此需要等待任务结束或确保清理逻辑幂等。",
+          "answers": [
+            0,
+            1,
+            2
+          ]
+        },
+        {
+          "type": "code",
+          "question": "阅读 TaskGroup 代码，正常完成后的输出是什么？\n\nasync with asyncio.TaskGroup() as group:\n    tasks = [group.create_task(fetch(i)) for i in range(2)]\nprint([task.result() for task in tasks])",
+          "options": [
+            "按任务顺序输出两个结果",
+            "只输出第一个结果",
+            "输出空列表",
+            "TaskGroup 不允许这样创建任务"
+          ],
+          "answer": 0,
+          "code": "async with asyncio.TaskGroup() as group:\n    tasks = [group.create_task(fetch(i)) for i in range(2)]\nprint([task.result() for task in tasks])",
+          "language": "python",
+          "explanation": "TaskGroup 退出时会等待块内创建的所有任务完成，任务对象保存在列表中，因此可以在块外按顺序读取 result。若任一任务失败，TaskGroup 会取消其余任务并在退出时抛出异常；多个失败会汇总成 ExceptionGroup，需要按类型处理。"
+        },
+        {
+          "type": "debug",
+          "question": "这个异步函数有什么问题？",
+          "options": [
+            "同步文件 I/O 会阻塞事件循环，应使用异步文件库或 to_thread，并正确关闭文件",
+            "json 不能在 async 函数中使用",
+            "open 不支持 encoding 参数",
+            "return 会取消任务"
+          ],
+          "answer": 0,
+          "explanation": "虽然函数声明为 async，但 open 和 json.load 都是同步调用，会在事件循环线程中阻塞其他任务；同时文件对象没有用 with 关闭。可以改用异步文件库，或在 asyncio.to_thread 中执行小的同步读取函数并保证资源释放。这道题对应 asyncio 的阻塞边界：同步文件操作会卡住事件循环，应移到线程或改用异步库。",
+          "code": "async def load(path):\n    return json.load(open(path, encoding='utf-8'))",
+          "language": "python"
+        }
+      ],
+      "practice": [
+        "并发请求三个不同延迟的模拟接口，分别用 gather 与 as_completed 处理结果并比较输出顺序。",
+        "给一组异步任务增加 0.1 秒超时，记录哪些任务完成、哪些被取消、清理逻辑是否执行。",
+        "用 TaskGroup 实现一个失败即取消其余任务的工作流，并打印异常组中的全部子异常。",
+        "用 asyncio.to_thread 包装一个阻塞函数，验证等待期间另一个异步任务仍能推进。"
+      ],
+      "refs": [
+        {
+          "name": "Python asyncio 文档",
+          "url": "https://docs.python.org/3/library/asyncio.html"
+        },
+        {
+          "name": "asyncio TaskGroup 文档",
+          "url": "https://docs.python.org/3/library/asyncio-task.html#task-groups"
+        },
+        {
+          "name": "PEP 492：async 与 await 语法",
+          "url": "https://peps.python.org/pep-0492/"
+        },
+        {
+          "name": "PEP 525：异步生成器",
+          "url": "https://peps.python.org/pep-0525/"
+        }
+      ],
+      "english": "This lesson explains coroutine scheduling on the asyncio event loop, task creation with gather and as_completed, timeout and cancellation semantics, structured concurrency with TaskGroup, and bridging blocking libraries with asyncio.to_thread.",
+      "reviewPoints": [
+        "能解释事件循环被阻塞时所有任务都停下的原因。",
+        "能区分 gather 的结果顺序与 as_completed 的完成顺序。",
+        "能实现可取消并带资源清理的异步任务。"
+      ],
+      "lab": "sandbox:python"
+    }
+  ]
+}

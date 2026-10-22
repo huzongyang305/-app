@@ -1,0 +1,340 @@
+{
+  "category": "shell",
+  "lessons": [
+    {
+      "id": "shell_text_advanced",
+      "title": { "zh": "文本处理进阶：awk、sed 与正则", "en": "Advanced Text Processing" },
+      "summary": {
+        "zh": "awk 按列统计、sed 流式编辑与正则选择原则。",
+        "en": "awk field processing, sed editing and regex choices."
+      },
+      "file": "assets/content/shell_text_advanced.md",
+      "minutes": 18,
+      "keywords": ["awk", "sed", "grep", "正则", "文本处理", "日志分析"],
+      "difficulty": "进阶",
+      "order": 7,
+      "quiz": [
+        {
+          "question": "要按列做分组统计与求和，最合适的工具是？",
+          "options": ["grep", "sed", "awk", "sort"],
+          "answer": 2,
+          "explanation": "awk 是面向字段的小语言，天然支持数组聚合与格式化输出，一次遍历即可完成统计。选项一只能筛行；选项二擅长替换而非计算；选项四只能排序与去重。"
+        },
+        {
+          "question": "处理逗号分隔文件时，awk 应该加什么参数？",
+          "options": ["-v", "-F,", "-n", "-E"],
+          "answer": 1,
+          "explanation": "-F 指定字段分隔符，不加就会按空白切分导致列错位。选项一用于传入变量；选项三、四分别是 sed 与 grep 的参数。"
+        },
+        {
+          "question": "awk 中 NR 与 FNR 的区别是？",
+          "options": [
+            "NR 是当前文件行号，FNR 是全局累计行号",
+            "NR 是全局累计行号，FNR 是当前文件的行号",
+            "两者完全等价",
+            "NR 表示字段数"
+          ],
+          "answer": 1,
+          "explanation": "NR 跨文件累计，FNR 在每个文件开头重置，处理多文件时用 FNR 判断文件首行。选项一恰好说反；选项三忽略了跨文件差异；选项四是 NF 的含义。"
+        },
+        {
+          "question": "sed 原地修改文件前，推荐的做法是？",
+          "options": [
+            "直接 sed -i 省事",
+            "先备份（如 -i.bak）或输出到临时文件验证后再替换",
+            "用 > 覆盖原文件",
+            "先删除原文件再重建"
+          ],
+          "answer": 1,
+          "explanation": "保留备份或先验证输出，改错时可以恢复。选项一一旦表达式写错就无法回滚；选项三、四都会破坏原数据且无法撤销。"
+        },
+        {
+          "question": "搜索包含大量正则元字符的固定字符串时，应该？",
+          "options": [
+            "用 grep -F",
+            "用 grep 并手动转义每个字符",
+            "用 sed 替换后再 grep",
+            "用 awk 的 ~ 匹配"
+          ],
+          "answer": 0,
+          "explanation": "-F 表示固定字符串搜索，不解析正则元字符，最直接也最安全。选项二容易漏转义；选项三多此一举；选项四仍然按正则解释。"
+        }
+      ]
+    },
+    {
+      "id": "shell_ops_scripts",
+      "title": { "zh": "系统运维脚本实战", "en": "Operations Scripts" },
+      "summary": {
+        "zh": "备份模板、巡检脚本、批量操作与并发控制。",
+        "en": "Backup, health check, batch operations and concurrency."
+      },
+      "file": "assets/content/shell_ops_scripts.md",
+      "minutes": 18,
+      "keywords": ["运维脚本", "备份", "巡检", "批量操作", "并发控制", "幂等"],
+      "difficulty": "进阶",
+      "order": 8,
+      "quiz": [
+        {
+          "question": "备份脚本中生成 sha256 校验值的意义是？",
+          "options": [
+            "减小文件体积",
+            "恢复前能验证文件完整未被损坏",
+            "加快恢复速度",
+            "压缩备份内容"
+          ],
+          "answer": 1,
+          "explanation": "备份的价值依赖可恢复性，校验值能在恢复前发现传输或存储损坏。选项一、三、四都与校验无关。"
+        },
+        {
+          "question": "清理过期备份时，正确做法是？",
+          "options": [
+            "用 rm -f /backup/*",
+            "按时间条件（如 find -mtime +N）删除最旧的备份",
+            "随机删除部分文件",
+            "把所有备份移到别处"
+          ],
+          "answer": 1,
+          "explanation": "保留策略要显式、可预测：按时间阈值删除最旧文件，并先用 -print 确认。选项一可能删掉最新备份；选项三不可预测；选项四没有释放空间。"
+        },
+        {
+          "question": "巡检脚本的输出为什么建议结构化（状态 指标=值）？",
+          "options": [
+            "为了好看",
+            "便于监控系统采集、解析与告警",
+            "能提升脚本速度",
+            "可以减少代码量"
+          ],
+          "answer": 1,
+          "explanation": "结构化输出能被监控直接消费，形成趋势与告警，而不是只靠人肉看日志。选项一、三、四都不是理由。"
+        },
+        {
+          "question": "批量在多台主机执行命令时，防止个别主机卡住全局应？",
+          "options": [
+            "加 timeout 与连接超时",
+            "循环里加 sleep",
+            "一次只跑一台并不设限制",
+            "把输出重定向到 /dev/null"
+          ],
+          "answer": 0,
+          "explanation": "timeout 与 ConnectTimeout 能把单点卡顿限制在可控时间，避免整批任务被拖死。选项二只会变慢；选项三不解决问题；选项四让失败不可见。"
+        },
+        {
+          "question": "运维脚本「幂等」的含义是？",
+          "options": [
+            "执行速度恒定",
+            "重复执行结果一致，不会产生重复副作用",
+            "只能执行一次",
+            "必须有回滚脚本"
+          ],
+          "answer": 1,
+          "explanation": "幂等让脚本可安全重跑，这对失败重试与自动化至关重要。选项一与幂等无关；选项三与事实相反；选项四是有益补充但不是定义。"
+        }
+      ]
+    },
+    {
+      "id": "shell_ci_templates",
+      "title": { "zh": "CI 脚本模板库", "en": "CI Script Templates" },
+      "summary": {
+        "zh": "流水线骨架、阶段复用、部署健康检查与自动回滚。",
+        "en": "Pipeline skeleton, staging, health checks and auto rollback."
+      },
+      "file": "assets/content/shell_ci_templates.md",
+      "minutes": 16,
+      "keywords": ["CI", "流水线", "缓存键", "部署", "健康检查", "自动回滚"],
+      "difficulty": "进阶",
+      "order": 9,
+      "quiz": [
+        {
+          "question": "CI 中依赖缓存的 key 应该包含什么？",
+          "options": [
+            "当前时间戳",
+            "锁文件的哈希",
+            "随机字符串",
+            "分支名即可"
+          ],
+          "answer": 1,
+          "explanation": "锁文件哈希变化说明依赖变了，缓存要失效；不变则复用，兼顾正确与速度。选项一、三让缓存永不命中；选项四在依赖更新时仍会复用旧缓存。"
+        },
+        {
+          "question": "部署后必须做健康检查的原因是？",
+          "options": [
+            "让日志更完整",
+            "确认新版本真正可用，否则立即回滚",
+            "提升部署速度",
+            "满足合规要求"
+          ],
+          "answer": 1,
+          "explanation": "部署成功不等于服务可用，健康检查才能发现启动失败或依赖异常并触发回滚。选项一、三、四都不是核心目的。"
+        },
+        {
+          "question": "为了让 CI 脚本能本地复现问题，应该？",
+          "options": [
+            "把逻辑写在流水线配置里，本地另写一份",
+            "同一个脚本在本地与流水线执行，靠环境变量区分行为",
+            "只保留在线运行",
+            "把脚本加密"
+          ],
+          "answer": 1,
+          "explanation": "同一脚本可本地运行才能快速定位问题，环境差异通过变量注入解决。选项一必然出现两套行为漂移；选项三、四让调试无法进行。"
+        },
+        {
+          "question": "制品（构建产物）应该如何命名与使用？",
+          "options": [
+            "统一叫 latest 并每次覆盖",
+            "用提交 SHA 或版本号命名且不覆盖",
+            "用时间戳随机命名",
+            "直接放在构建机器上不传递"
+          ],
+          "answer": 1,
+          "explanation": "不可变且可追溯的制品才能保证各环境部署同一份代码，出问题也能定位到具体提交。选项一无法追溯；选项三不利于对应版本；选项四无法跨阶段使用。"
+        },
+        {
+          "question": "自动回滚触发条件通常是什么？",
+          "options": [
+            "部署耗时超过预期",
+            "错误率或延迟等关键指标超过阈值",
+            "有新代码提交",
+            "人工点击按钮"
+          ],
+          "answer": 1,
+          "explanation": "以可观测指标为触发条件，才能在故障扩散前自动切换回上一版本。选项一与健康度无关；选项三、四是人工或流程事件，不适合作为自动触发条件。"
+        }
+      ]
+    },
+    {
+      "id": "shell_security",
+      "title": { "zh": "Shell 脚本安全加固", "en": "Shell Script Security" },
+      "summary": {
+        "zh": "命令注入防护、路径校验、安全删除与运行环境加固。",
+        "en": "Injection defense, path validation, safe deletion and hardening."
+      },
+      "file": "assets/content/shell_security.md",
+      "minutes": 18,
+      "keywords": ["脚本安全", "命令注入", "路径穿越", "mktemp", "最小权限", "供应链"],
+      "difficulty": "高级",
+      "order": 10,
+      "quiz": [
+        {
+          "question": "防止命令注入最根本的做法是？",
+          "options": [
+            "过滤分号与竖线",
+            "避免 eval 与字符串拼接，用参数数组传递",
+            "限制输入长度",
+            "只在夜间执行脚本"
+          ],
+          "answer": 1,
+          "explanation": "参数数组让 Shell 不再对内容做分词与元字符解析，从根上消除注入。选项一总有绕过方式；选项三只能减轻影响；选项四与安全无关。"
+        },
+        {
+          "question": "删除目录前的安全做法是？",
+          "options": [
+            "直接 rm -rf \"$dir\"",
+            "断言变量非空、解析后的路径在允许的根目录内，再删除",
+            "加 --force 参数",
+            "先 echo 再执行，不做校验"
+          ],
+          "answer": 1,
+          "explanation": "路径校验能防止变量为空或以 / 开头造成的灾难性删除。选项一正是事故高发写法；选项三不解决风险；选项四只是打印，没有防护。"
+        },
+        {
+          "question": "临时文件应该怎么创建？",
+          "options": [
+            "/tmp/myapp.tmp 固定名",
+            "mktemp 生成唯一名称",
+            "用进程号命名以节省空间",
+            "创建在 home 目录下"
+          ],
+          "answer": 1,
+          "explanation": "mktemp 原子创建唯一文件，避免竞态与符号链接攻击。选项一、三名字可预测，存在被抢注的风险；选项四不是安全问题的解决方案。"
+        },
+        {
+          "question": "从网络下载脚本后直接执行（curl 管道到 bash）的风险是？",
+          "options": [
+            "执行速度慢",
+            "无法验证来源与完整性，可能执行被篡改的内容",
+            "占用更多内存",
+            "不支持 HTTPS"
+          ],
+          "answer": 1,
+          "explanation": "供应链攻击会替换下载内容，正确做法是先下载、校验哈希或签名，再执行。选项一、三、四与风险无关。"
+        },
+        {
+          "question": "敏感操作时如何避免密钥进入 CI 日志？",
+          "options": [
+            "把日志级别调低",
+            "临时关闭 xtrace（set +x）并对输出脱敏",
+            "把密钥写在脚本里",
+            "使用更短的密钥"
+          ],
+          "answer": 1,
+          "explanation": "set -x 会把展开后的命令打印到日志，敏感段必须临时关闭跟踪并做遮蔽。选项一无法阻止 xtrace 输出；选项三正是要避免的做法；选项四与泄漏无关。"
+        }
+      ]
+    },
+    {
+      "id": "shell_json_yaml",
+      "title": { "zh": "结构化数据处理：jq 与 yq", "en": "jq & yq" },
+      "summary": {
+        "zh": "用 jq 提取过滤聚合、用 yq 读写 YAML 与格式互转。",
+        "en": "Extract, filter and aggregate with jq; read and write YAML with yq."
+      },
+      "file": "assets/content/shell_json_yaml.md",
+      "minutes": 16,
+      "keywords": ["jq", "yq", "JSON", "YAML", "结构化数据", "配置修改"],
+      "difficulty": "进阶",
+      "order": 11,
+      "quiz": [
+        {
+          "question": "处理 JSON 时为什么不要用 grep 或 sed？",
+          "options": [
+            "因为它们速度慢",
+            "它们不理解嵌套结构与转义，容易误匹配",
+            "因为它们不支持中文",
+            "因为 JSON 必须用 Python 解析"
+          ],
+          "answer": 1,
+          "explanation": "JSON 是树形结构且有转义规则，只有结构化解析器才能正确处理。选项一不是主因；选项三、四与事实不符。"
+        },
+        {
+          "question": "jq 输出带引号的字符串，想去掉引号应该加？",
+          "options": ["-c", "-r", "-e", "--arg"],
+          "answer": 1,
+          "explanation": "-r 输出原始字符串，适合直接交给后续命令处理。选项一是紧凑输出，仍带引号；选项三用于按条件返回退出码；选项四用于传入变量。"
+        },
+        {
+          "question": "在 jq 表达式里使用 Shell 变量，推荐做法是？",
+          "options": [
+            "直接拼接字符串",
+            "用 --arg 或 --argjson 传参",
+            "用 eval 展开",
+            "先写到临时文件再读"
+          ],
+          "answer": 1,
+          "explanation": "--arg 把变量作为字符串传入，避免引号与元字符破坏表达式，也更安全。选项一容易语法错误或被注入；选项三危险；选项四多此一举。"
+        },
+        {
+          "question": "用 yq/jq 原地修改配置文件前，推荐先做什么？",
+          "options": [
+            "直接 -i 写入",
+            "先输出到临时文件比对 diff，确认后再替换",
+            "备份到内存里",
+            "关闭文件权限"
+          ],
+          "answer": 1,
+          "explanation": "先看 diff 能避免误改生产配置，写临时文件再替换可防止中途失败损坏原文件。选项一会直接生效且不可逆；选项三、四与安全修改无关。"
+        },
+        {
+          "question": "要把 JSON 转成 YAML，正确的思路是？",
+          "options": [
+            "用文本替换把大括号改成缩进",
+            "用 yq 指定输入输出格式（-p=json -o=yaml）",
+            "用 sed 加缩进",
+            "把 JSON 压缩后改名"
+          ],
+          "answer": 1,
+          "explanation": "格式转换必须由结构化工具完成，才能正确处理嵌套、多行字符串与转义。选项一、三在复杂结构下必然出错；选项四不改变内容格式。"
+        }
+      ]
+    }
+  ]
+}

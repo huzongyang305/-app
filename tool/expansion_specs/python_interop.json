@@ -1,0 +1,258 @@
+{
+  "lessons": [
+    {
+      "id": "python_interop",
+      "category": "python",
+      "title": {
+        "zh": "Python 与 C、C++、Rust 互操作",
+        "en": "Python Interop with C, C++ and Rust"
+      },
+      "summary": {
+        "zh": "理解 FFI、ABI、GIL 与内存所有权，用 ctypes、C 扩展、Cython 和 PyO3 把性能关键代码安全接入 Python。",
+        "en": "Understand FFI, ABI, the GIL and memory ownership when integrating C, C++ and Rust with Python."
+      },
+      "keywords": [
+        "ctypes",
+        "C 扩展",
+        "Cython",
+        "PyO3",
+        "ABI"
+      ],
+      "difficulty": "高级",
+      "minutes": 75,
+      "order": 38,
+      "prerequisites": [
+        "python_runtime_memory_performance"
+      ],
+      "related": [
+        "python_packaging_performance",
+        "python_project_architecture"
+      ],
+      "image": {
+        "title": "跨语言边界的责任划分",
+        "flow": [
+          "Python 调用 FFI",
+          "类型与内存转换",
+          "原生代码执行",
+          "错误映射",
+          "释放资源并返回"
+        ]
+      },
+      "goals": [
+        "能说明 FFI、ABI 与内存所有权在跨语言调用中的作用。",
+        "能根据场景选择 ctypes、Cython、C 扩展或 PyO3。",
+        "能设计带错误映射、GIL 释放与平台轮子的互操作边界。"
+      ],
+      "prerequisitesText": [
+        "理解 Python 对象、引用计数和 GIL。",
+        "知道编译、动态库和头文件的基本概念。",
+        "能阅读简单 C 或 Rust 函数签名。"
+      ],
+      "concepts": [
+        {
+          "name": "FFI、ABI 与类型映射",
+          "plain": "外部函数接口让一种语言调用另一种语言的函数；ABI 规定调用约定、结构布局和名称修饰，类型映射必须逐项匹配。",
+          "mechanism": "ctypes 在运行时加载动态库并按声明转换参数，C 扩展和 Cython 在编译期绑定 CPython API，PyO3 通过 Rust 类型与 Python 对象转换完成桥接。",
+          "example": "用 ctypes 定义 C 结构体、创建字节缓冲区并读取字段，观察 Python 与原生内存布局的对照。",
+          "boundary": "整数宽度、字节序、对齐和字符串编码都可能不匹配；错误的类型声明会造成越界写入或难以复现的内存破坏。",
+          "engineering": "边界声明集中在一层适配模块，类型和错误码写进测试；跨平台时用明确的固定宽度类型和字节序转换。"
+        },
+        {
+          "name": "ctypes 与动态库调用",
+          "plain": "ctypes 不需要编译扩展就能调用 C 动态库，适合接入稳定 C ABI 或系统库；它不解析头文件，所有签名都要手工声明。",
+          "mechanism": "CDLL 加载库，argtypes 和 restype 指定参数与返回值，Structure 描述结构体，create_string_buffer 分配可写缓冲区，byref 传递引用。",
+          "example": "定义一个包含两个整数的结构体，打印大小、字段与地址，验证内存布局。",
+          "boundary": "ctypes 不负责释放 C 分配的内存，函数失败也可能只返回错误码；回调函数跨越边界时生命周期必须由 Python 保持。",
+          "engineering": "为第三方库写薄封装，统一检查返回码，明确谁分配谁释放，敏感操作限制输入长度。"
+        },
+        {
+          "name": "C 扩展、引用计数与 GIL",
+          "plain": "C 扩展直接使用 CPython API，性能高但必须手动管理引用计数和 GIL；每个 Python 对象的所有权规则都与原生内存不同。",
+          "mechanism": "Py_INCREF 增加引用，Py_DECREF 减少引用，函数返回新引用还是借用引用由 API 约定；长时间计算可以释放 GIL，但释放期间不能访问 Python 对象。",
+          "example": "说明一个 C 函数接收 Python 列表、读取元素并在返回新对象时增加引用的流程。",
+          "boundary": "引用计数错误会导致提前释放或内存泄漏；多线程下不释放 GIL 会让其他 Python 线程一直等待。",
+          "engineering": "扩展边界尽量薄，把复杂逻辑放在 C 内部；使用调试构建、引用计数检查和压力测试验证。"
+        },
+        {
+          "name": "Cython 与类型化加速",
+          "plain": "Cython 把接近 Python 的源代码编译成 C 扩展，通过静态类型、cdef 和内存视图减少解释器开销。",
+          "mechanism": "pyx 文件声明 C 类型和函数，生成 C 代码后编译为扩展模块；with nogil 可以在不访问 Python 对象的区域释放 GIL，提升多线程并行能力。",
+          "example": "把一段纯 Python 循环改写为带 C 类型和内存视图的 Cython 函数，比较运行时间与可读性。",
+          "boundary": "类型转换错误可能吞掉异常或改变语义，编译产物依赖平台和 Python 版本；收益取决于热点是否真的在 Python 层。",
+          "engineering": "只对剖析确认的热点使用 Cython，保留纯 Python 参考实现并做结果一致性测试。"
+        },
+        {
+          "name": "PyO3、maturin 与平台轮子",
+          "plain": "PyO3 让 Rust 代码暴露为 Python 模块，maturin 负责构建和打包 wheel，兼顾内存安全与原生性能。",
+          "mechanism": "Rust 函数通过宏暴露，Python 对象与 Rust 类型自动转换，错误映射为 Python 异常；发布时为不同平台和 Python 版本构建对应 wheel。",
+          "example": "设计一个 Rust 计算函数，接收整数列表并返回求和结果，由 PyO3 转换参数并映射错误。",
+          "boundary": "跨语言边界的数据复制可能抵消性能收益，Rust panic 必须转换为 Python 异常，ABI 与 Python 版本限制要在元数据中声明。",
+          "engineering": "用 CI 构建多平台 wheel，发布前在目标环境安装测试，原生库只暴露稳定的小接口。"
+        }
+      ],
+      "steps": [
+        "确认热点是否真的需要原生扩展",
+        "选择 FFI、Cython、C 扩展或 PyO3",
+        "把类型与内存所有权写清楚",
+        "在边界映射错误并管理 GIL",
+        "为多平台构建与验证产物"
+      ],
+      "code": {
+        "language": "python",
+        "snippet": "import ctypes\n\nclass Point(ctypes.Structure):\n    _fields_ = [(\"x\", ctypes.c_int), (\"y\", ctypes.c_int)]\n\npoint = Point(3, 4)\nbuffer = ctypes.create_string_buffer(b\"python\", 16)\nprint(\"结构体大小:\", ctypes.sizeof(Point))\nprint(\"字段:\", point.x, point.y)\nprint(\"缓冲区:\", buffer.value.decode(\"utf-8\"))\nprint(\"指针非空:\", bool(ctypes.addressof(point)))",
+        "walkthrough": "ctypes 结构体在 Python 中声明与 C 兼容的内存布局，创建实例后可以按字段访问；create_string_buffer 分配包含终止符的可写缓冲区；addressof 返回对象地址。真实调用动态库前还要设置 argtypes 与 restype，并明确内存释放责任。",
+        "expected_output": "结构体大小: 8\n字段: 3 4\n缓冲区: python\n指针非空: True"
+      },
+      "faults": [
+        {
+          "topic": "ctypes 参数类型声明错误",
+          "wrong": "把 Python 整数按默认类型传入，或结构体字段宽度与 C 端不一致",
+          "fix": "显式设置 argtypes、restype 和固定宽度字段，并用边界值测试验证"
+        },
+        {
+          "topic": "跨语言内存无人释放",
+          "wrong": "C 函数返回 malloc 分配的内存，Python 侧只读取不释放",
+          "fix": "明确所有权，提供对应的释放函数或让 Rust 使用所有权模型自动回收"
+        },
+        {
+          "topic": "长时间持有 GIL",
+          "wrong": "原生计算函数全程不释放 GIL，其他 Python 线程无法执行",
+          "fix": "确认不访问 Python 对象的阶段释放 GIL，并用线程并发测试验证"
+        },
+        {
+          "topic": "只发布本机平台轮子",
+          "wrong": "在开发机构建后把 wheel 发给所有平台，安装时报 ABI 不兼容",
+          "fix": "在 CI 构建目标平台 wheel，声明 Python 版本与 ABI 标签"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "FFI",
+          "definition": "不同编程语言之间调用函数和交换数据的接口机制。"
+        },
+        {
+          "term": "ABI",
+          "definition": "二进制层面的调用约定、数据类型布局与符号规则。"
+        },
+        {
+          "term": "ctypes",
+          "definition": "Python 标准库中通过 C ABI 调用动态库的模块。"
+        },
+        {
+          "term": "GIL",
+          "definition": "CPython 传统构建中保护解释器状态并限制同进程字节码并行的全局锁。"
+        },
+        {
+          "term": "Cython",
+          "definition": "把带静态类型的 Python 风格代码编译成 C 扩展的工具。"
+        },
+        {
+          "term": "PyO3",
+          "definition": "用于编写 Python 扩展模块和绑定 Rust 代码的 Rust 框架。"
+        }
+      ],
+      "quiz": [
+        {
+          "type": "single",
+          "question": "ctypes 调用 C 函数前设置 argtypes 和 restype 的主要目的是什么？",
+          "options": [
+            "明确参数与返回值类型，避免错误转换和内存破坏",
+            "自动释放 C 内存",
+            "提升 C 编译速度",
+            "把函数转换为 Python 类"
+          ],
+          "answer": 0,
+          "explanation": "ctypes 看不到头文件，必须根据声明的类型把 Python 对象转换成正确的二进制表示；错误声明可能把整数当指针或写入错误宽度，造成崩溃和安全问题。argtypes 与 restype 也是文档的一部分，应和 C 头文件逐项对照。"
+        },
+        {
+          "type": "single",
+          "question": "C 扩展中释放 GIL 后，哪件事是不能做的？",
+          "options": [
+            "访问 Python 对象或调用 Python API",
+            "执行纯 C 计算",
+            "操作不依赖 Python 的原生数据结构",
+            "使用线程本地原生缓冲区"
+          ],
+          "answer": 0,
+          "explanation": "释放 GIL 表示当前线程不再持有解释器锁，此时访问 Python 对象会让引用计数和解释器状态失去保护，可能直接崩溃。纯计算、内存拷贝和原生库调用可以在释放期间执行，回到 Python 边界前必须重新获取 GIL。"
+        },
+        {
+          "type": "multi",
+          "question": "跨语言边界必须明确哪些责任？（多选）",
+          "options": [
+            "谁分配和释放内存",
+            "错误码或异常如何映射",
+            "数据编码与字节序",
+            "原生代码作者喜欢的编辑器"
+          ],
+          "answers": [
+            0,
+            1,
+            2
+          ],
+          "answer": 0,
+          "explanation": "内存所有权、错误映射和编码布局是跨语言调用正确性的三根支柱，缺少任一项都会产生泄漏、静默错误或乱码。编辑器偏好不影响运行结果；应在适配层写清契约并用测试覆盖边界值。"
+        },
+        {
+          "type": "code",
+          "question": "阅读结构体定义，ctypes.sizeof(Point) 最可能是多少？\n\nclass Point(ctypes.Structure):\n    _fields_ = [('x', ctypes.c_int), ('y', ctypes.c_int)]",
+          "options": [
+            "8",
+            "4",
+            "16",
+            "2"
+          ],
+          "answer": 0,
+          "code": "class Point(ctypes.Structure):\n    _fields_ = [('x', ctypes.c_int), ('y', ctypes.c_int)]",
+          "language": "python",
+          "explanation": "在常见平台上 c_int 占四个字节，两个相邻整数字段没有额外填充，因此结构体大小是八字节。跨平台代码不能假设所有 C 类型宽度相同，涉及协议或文件格式时应使用固定宽度整数并显式处理对齐。"
+        },
+        {
+          "type": "debug",
+          "question": "为什么把一个小循环改成 C 扩展后整体反而更慢？",
+          "options": [
+            "每次调用都要做参数转换和边界开销，而热点本身并不在循环上",
+            "C 语言无法计算循环",
+            "必须同时重写所有 Python 代码",
+            "扩展只能调用一次"
+          ],
+          "answer": 0,
+          "explanation": "跨语言调用有参数解析、类型转换、错误检查和对象创建成本，如果单次工作量很小或调用次数很多，边界成本可能超过计算收益。应先用剖析确认热点，再把批量操作整体放到原生层，减少往返次数并用基准验证。这道题对应 ctypes 与原生扩展的边界成本：跨语言调用和 ABI 转换必须先测量再优化。",
+          "code": "class Point(ctypes.Structure):\n    _fields_ = [('x', ctypes.c_int), ('y', ctypes.c_int)]",
+          "language": "python"
+        }
+      ],
+      "practice": [
+        "用 ctypes 定义一个与 C 兼容的结构体，打印大小、字段偏移和地址并验证对齐。",
+        "把一个纯 Python 热点函数用 Cython 改写，保留参考实现并比较两者输出与耗时。",
+        "为一个原生函数设计错误映射表，说明返回值如何转换成 Python 异常。",
+        "描述一个需要发布多平台 wheel 的项目，列出构建矩阵与安装验证步骤。"
+      ],
+      "refs": [
+        {
+          "name": "Python ctypes 文档",
+          "url": "https://docs.python.org/3/library/ctypes.html"
+        },
+        {
+          "name": "Python C API 扩展教程",
+          "url": "https://docs.python.org/3/extending/extending.html"
+        },
+        {
+          "name": "Cython 官方文档",
+          "url": "https://cython.readthedocs.io/"
+        },
+        {
+          "name": "PyO3 用户指南",
+          "url": "https://pyo3.rs/"
+        }
+      ],
+      "english": "This lesson explains FFI and ABI boundaries, ctypes type mapping, C extension reference counting and GIL management, Cython typed acceleration, and PyO3 with maturin for Rust extensions and platform wheels.",
+      "reviewPoints": [
+        "能说明 argtypes 与 restype 缺失时的风险。",
+        "能解释释放 GIL 后为什么不能访问 Python 对象。",
+        "能按边界成本判断原生扩展是否值得。"
+      ],
+      "lab": "sandbox:python"
+    }
+  ]
+}

@@ -1,0 +1,163 @@
+{
+  "category": "javascript",
+  "lessons": [
+    {
+      "id": "js_project_node_api",
+      "title": {
+        "zh": "实战：Node.js + Express REST API",
+        "en": "Project: Node.js + Express REST API"
+      },
+      "summary": {
+        "zh": "用 Express、SQLite 和 Vitest 实现任务 API，覆盖校验、错误中间件和测试。",
+        "en": "Build a task API with Express, SQLite and Vitest."
+      },
+      "file": "assets/content/js_project_node_api.md",
+      "minutes": 120,
+      "keywords": [
+        "Node.js",
+        "Express",
+        "SQLite",
+        "REST",
+        "Vitest"
+      ],
+      "difficulty": "高级",
+      "order": 13,
+      "quiz": [
+        {
+          "question": "Express 中间件的主要作用是什么？",
+          "options": [
+            "按顺序处理请求和响应",
+            "替代数据库",
+            "压缩源码",
+            "生成 HTML"
+          ],
+          "answer": 0,
+          "explanation": "中间件形成处理链，可完成解析、校验、日志和错误处理。"
+        },
+        {
+          "question": "哪个库适合做请求结构校验？",
+          "options": [
+            "Zod",
+            "Lodash",
+            "Day.js",
+            "Nodemon"
+          ],
+          "answer": 0,
+          "explanation": "Zod 提供运行时校验和类型推断，适合 API 边界。"
+        },
+        {
+          "question": "创建资源成功最适合返回什么？",
+          "options": [
+            "201",
+            "204",
+            "301",
+            "500"
+          ],
+          "answer": 0,
+          "explanation": "201 表示资源已创建，并通常返回新资源标识。"
+        },
+        {
+          "question": "为什么测试要使用内存数据库？",
+          "options": [
+            "更快且互不污染",
+            "减少 JavaScript 行数",
+            "自动生成 UI",
+            "避免写测试"
+          ],
+          "answer": 0,
+          "explanation": "内存数据库让每个测试从干净状态开始，提高稳定性和速度。"
+        },
+        {
+          "question": "统一错误中间件解决什么问题？",
+          "options": [
+            "让错误响应格式一致",
+            "提升网络带宽",
+            "替代日志",
+            "压缩图片"
+          ],
+          "answer": 0,
+          "explanation": "统一结构能让客户端稳定解析错误并做重试或提示。"
+        }
+      ]
+    },
+    {
+      "id": "js_project_realtime_chat",
+      "title": {
+        "zh": "实战：JavaScript 实时聊天室",
+        "en": "Project: JavaScript Realtime Chat"
+      },
+      "summary": {
+        "zh": "用 WebSocket 实现房间聊天、心跳、重连和消息确认，处理断线与重复消息。",
+        "en": "Build a WebSocket chat with rooms, heartbeat and reconnect."
+      },
+      "file": "assets/content/js_project_realtime_chat.md",
+      "minutes": 120,
+      "keywords": [
+        "WebSocket",
+        "Node.js",
+        "实时通信",
+        "重连",
+        "消息确认"
+      ],
+      "difficulty": "高级",
+      "order": 14,
+      "quiz": [
+        {
+          "question": "WebSocket 相比 HTTP 轮询的核心优势是什么？",
+          "options": [
+            "全双工长连接",
+            "不需要协议",
+            "自动加密",
+            "无需服务器"
+          ],
+          "answer": 0,
+          "explanation": "WebSocket 建立后双方可主动推送消息，适合实时场景。"
+        },
+        {
+          "question": "消息 ID 的主要作用是什么？",
+          "options": [
+            "去重和确认",
+            "压缩文本",
+            "加密内容",
+            "控制颜色"
+          ],
+          "answer": 0,
+          "explanation": "稳定消息 ID 让客户端识别重复消息并做确认。"
+        },
+        {
+          "question": "应用层心跳解决什么问题？",
+          "options": [
+            "发现半开连接",
+            "增加带宽",
+            "替代消息",
+            "生成 HTML"
+          ],
+          "answer": 0,
+          "explanation": "TCP 不一定及时感知断线，应用层心跳能主动检测。"
+        },
+        {
+          "question": "重连为什么要加随机抖动？",
+          "options": [
+            "避免所有客户端同时重连",
+            "提升 CPU",
+            "减少消息 ID",
+            "关闭连接"
+          ],
+          "answer": 0,
+          "explanation": "抖动分散重连时间，避免惊群和二次雪崩。"
+        },
+        {
+          "question": "房间广播前最重要检查什么？",
+          "options": [
+            "客户端是否有权限且属于该房间",
+            "浏览器颜色",
+            "消息长度",
+            "服务器型号"
+          ],
+          "answer": 0,
+          "explanation": "权限和房间归属检查能防止消息串房与越权访问。"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "lessons": [
+    {
+      "id": "compiler_codegen_vm",
+      "category": "compiler",
+      "title": {"zh": "代码生成与栈式虚拟机", "en": "Code Generation and Stack Virtual Machines"},
+      "summary": {"zh": "把语法树编译成字节码，用栈机执行，并理解寄存器分配与垃圾回收的位置。", "en": "Compile a syntax tree to bytecode, execute it on a stack VM and place register allocation."},
+      "keywords": ["字节码", "栈机", "指令选择", "寄存器分配", "垃圾回收"],
+      "difficulty": "高级",
+      "minutes": 36,
+      "order": 5,
+      "prerequisites": ["compiler_ir_optimization"],
+      "image": {"title": "从中间表示到执行", "flow": ["指令选择", "寄存器或栈分配", "生成字节码或机器码", "解释执行与回收"]},
+      "goals": [
+        "能把简单表达式编译成栈机指令序列。",
+        "能解释寄存器分配与栈式执行的权衡。",
+        "能说明垃圾回收与编译器协作时需要的元信息。"
+      ],
+      "prerequisitesText": [
+        "已理解中间表示与控制流图。",
+        "知道栈的后进先出语义与局部变量存储方式。",
+        "了解程序运行时需要管理堆内存。"
+      ],
+      "concepts": [
+        {
+          "name": "栈式指令与求值顺序",
+          "plain": "栈式虚拟机用操作数栈传递中间结果：压入操作数、执行运算、把结果留在栈上。",
+          "mechanism": "每个运算码弹出固定数量操作数并压入结果，函数调用通过调用帧保存返回地址与局部变量。",
+          "example": "把 1 + 2 * 3 编译成 LOAD、LOAD、MUL、ADD 指令序列，手工模拟栈的变化。",
+          "boundary": "栈式指令简单但指令数量多，寄存器机器能减少访存次数，代价是分配算法更复杂。",
+          "engineering": "指令集保持正交便于后端扩展，配合反汇编输出用于调试与教学。"
+        },
+        {
+          "name": "指令选择与模式匹配",
+          "plain": "指令选择把中间表示映射到目标指令，可用的指令越复杂，需要匹配的模式越多。",
+          "mechanism": "常见实现是把中间表示节点与指令模板做树覆盖，选择代价最低的组合。",
+          "example": "把 a = b + 1 分别映射到两条指令与一条带立即数指令，比较指令数量。",
+          "boundary": "选择代价模型不准确会生成次优代码，需要真实基准来校准。",
+          "engineering": "保留可读的中间表示与目标指令对照表，便于定位后端问题。"
+        },
+        {
+          "name": "寄存器分配与活跃区间",
+          "plain": "寄存器数量有限，分配器根据变量的活跃区间决定哪些变量留在寄存器、哪些溢出到内存。",
+          "mechanism": "活跃区间重叠的变量不能共用寄存器，冲突会形成干扰图，着色算法据此分配并在必要时溢出。",
+          "example": "给一段三变量表达式标出活跃区间，说明哪两个变量不能共用同一个寄存器。",
+          "boundary": "溢出会引入额外访存，过度优化分配会拉长编译时间，需要按优化级别取舍。",
+          "engineering": "分配结果可解释、可回退；关键路径上的函数保留优化记录以便对比。"
+        },
+        {
+          "name": "运行期支持与垃圾回收",
+          "plain": "垃圾回收需要知道哪些位置存放指针、哪些是普通数值，这些信息由编译器生成并交给运行期。",
+          "mechanism": "编译器输出栈映射与对象布局元数据，回收器据此扫描根集合，安全点决定何时可以暂停并回收。",
+          "example": "查看一段字节码的栈映射信息，说明回收器如何识别栈上的对象引用。",
+          "boundary": "错误的栈映射会让回收器漏扫或误扫，导致对象提前回收或内存泄漏。",
+          "engineering": "在调用点与循环回边插入安全点，元数据随代码版本管理，并用压力测试验证回收正确性。"
+        }
+      ],
+      "steps": ["遍历中间表示选择指令", "分配寄存器或使用操作数栈", "生成字节码或机器码", "附带调试与回收元数据"],
+      "code": {
+        "language": "javascript",
+        "snippet": "// 栈式虚拟机：把后缀表达式编译成字节码并执行\nconst OPS = {\n  '+': (a, b) => a + b,\n  '*': (a, b) => a * b,\n};\n\nfunction compile(postfix) {\n  const code = [];\n  for (const token of postfix.split(/\\s+/)) {\n    if (/^\\d+$/.test(token)) code.push({ op: 'LOAD', value: Number(token) });\n    else if (OPS[token]) code.push({ op: token });\n    else throw new Error(`未知记号 ${token}`);\n  }\n  code.push({ op: 'RET' });\n  return code;\n}\n\nfunction run(code) {\n  const stack = [];\n  for (const instr of code) {\n    if (instr.op === 'LOAD') stack.push(instr.value);\n    else if (instr.op === 'RET') return stack.pop();\n    else {\n      const b = stack.pop();\n      const a = stack.pop();\n      stack.push(OPS[instr.op](a, b));\n    }\n  }\n  throw new Error('缺少 RET 指令');\n}\n\n// 1 + 2 * 3 的后缀形式是 1 2 3 * +\nconst code = compile('1 2 3 * +');\nconsole.log(code);\nconsole.log('结果:', run(code));",
+        "walkthrough": "编译函数把后缀表达式映射为 LOAD 与运算符指令，末尾补上 RET；执行器用操作数栈模拟栈机语义，遇到运算符弹出两个操作数并把结果压回。",
+        "expected_output": "指令序列为 LOAD 1、LOAD 2、LOAD 3、*、+、RET；执行结果为 7，说明乘法先于加法求值。"
+      },
+      "faults": [
+        {"topic": "操作数顺序写反", "wrong": "先弹出 a 再弹出 b，把减法与除法的结果算反", "fix": "固定栈弹出顺序并写成明确约定，配合单测覆盖非交换运算"},
+        {"topic": "缺少回收元数据", "wrong": "编译器不输出栈映射，回收器无法区分指针与数值", "fix": "在每个安全点输出栈映射与对象布局，随代码一起发布"},
+        {"topic": "过度分配寄存器", "wrong": "为追求寄存器使用率引入大量溢出，反而增加访存", "fix": "用基准测试校准分配策略，按优化级别提供可回退方案"}
+      ],
+      "glossary": [
+        {"term": "字节码", "definition": "面向虚拟机的中间指令序列，由栈机或寄存器机解释执行。"},
+        {"term": "操作数栈", "definition": "栈式虚拟机用于传递中间结果的后进先出结构。"},
+        {"term": "指令选择", "definition": "把中间表示映射为目标指令并选择代价最低组合的过程。"},
+        {"term": "寄存器分配", "definition": "根据变量活跃区间把有限寄存器分配给变量的过程。"},
+        {"term": "安全点", "definition": "代码中允许垃圾回收暂停并扫描根集合的位置。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "栈式虚拟机执行加法指令前，操作数从哪里取得？", "options": ["从操作数栈顶弹出", "从寄存器文件读取", "从全局变量表读取", "从字节码常量池读取两次"], "answer": 0, "explanation": "栈机通过操作数栈传递中间结果，加法弹出两个栈顶元素并把和压回；寄存器机才从寄存器读取，常量池用于加载字面量。"},
+        {"type": "single", "question": "两个变量不能共用同一个寄存器的条件是什么？", "options": ["活跃区间存在重叠", "变量类型相同", "变量在同一个函数内", "变量名长度相同"], "answer": 0, "explanation": "只要两个变量在同一时刻都还要被使用，它们的活跃区间就重叠，必须使用不同寄存器；类型、位置与命名都不影响分配冲突。"},
+        {"type": "multi", "question": "垃圾回收正确工作需要编译器提供哪些信息？（多选）", "options": ["栈上指针位置映射", "对象布局与字段类型", "安全点位置", "编译器的编译耗时"], "answers": [0, 1, 2], "answer": 0, "explanation": "回收器扫描根集合与对象图时需要栈映射、对象布局与安全点信息；编译耗时属于构建统计，与回收正确性无关。"},
+        {"type": "order", "question": "请按从中间表示到执行的顺序排列步骤。", "options": ["生成目标指令或字节码", "指令选择", "解释或执行并管理内存", "寄存器分配或栈布局"], "correct_order": [1, 3, 0, 2], "answer": 0, "explanation": "先做指令选择，再分配寄存器或规划栈布局，然后生成代码，最后执行并管理内存；顺序颠倒会出现没有分配就生成代码的错误流程。"},
+        {"type": "debug", "question": "阅读虚拟机代码，哪项判断正确？", "options": ["执行器先弹出右操作数再弹出左操作数，顺序不能颠倒", "LOAD 指令会把值压入寄存器", "缺少 RET 指令时程序会返回栈底元素", "运算符指令只弹出一个操作数"], "answer": 0, "code": "const b = stack.pop();\nconst a = stack.pop();\nstack.push(OPS[instr.op](a, b));", "language": "javascript", "explanation": "栈是后进先出，因此先弹出的是右操作数，再弹出左操作数，减法与除法依赖这个顺序；缺少 RET 会抛出异常而不是返回任意值。"}
+      ],
+      "practice": [
+        "为栈机加上减法、除法和比较指令，并覆盖非交换运算的测试。",
+        "手写 1 + 2 * 3 的字节码，用表格逐条记录栈内容的变化。",
+        "给一段伪代码标注安全点位置，说明回收器在安全点能看到哪些引用。"
+      ],
+      "refs": [
+        {"name": "Crafting Interpreters：字节码虚拟机", "url": "https://craftinginterpreters.com/a-virtual-machine.html"},
+        {"name": "LLVM 代码生成文档", "url": "https://llvm.org/docs/CodeGenerator.html"}
+      ],
+      "english": "Code generation turns an intermediate representation into executable instructions. This lesson compiles postfix expressions to bytecode, executes them on a stack machine, explains register allocation and spilling, and shows why garbage collection depends on compiler-generated maps.",
+      "reviewPoints": [
+        "能把简单表达式编译成栈机指令。",
+        "能解释活跃区间与寄存器冲突的关系。",
+        "能说明栈映射为什么是回收正确性的前提。"
+      ]
+    }
+  ]
+}

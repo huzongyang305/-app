@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<pre id="sandbox-output" hidden></pre>
+<script>/*__WASM_BASE64__*/</script>
+<script>/*__COMMON__*/</script>
+<script>/*__RUNTIME_1__*/</script>
+<script>
+(function () {
+  // Bash 教学沙箱：bashkit 把 bash 解释器编译成 WebAssembly，
+  // 单线程运行，不需要 SharedArrayBuffer，也不联网。
+  // 运行时二进制按 base64 注入（由原生层从 assets 读取），页面不访问文件系统。
+  function base64ToBytes(base64) {
+    var binary = atob(base64);
+    var bytes = new Uint8Array(binary.length);
+    for (var i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return bytes;
+  }
+
+  function pushBlock(text, prefix) {
+    var lines = String(text).replace(/\n$/, '').split('\n');
+    if (lines.length === 1 && lines[0] === '') return;
+    lines.forEach(function (line) {
+      __sandboxPush(prefix + line);
+    });
+  }
+
+  __sandboxBegin();
+  (async function () {
+    try {
+      if (!window.Bashkit || typeof window.Bashkit.initBashkit !== 'function') {
+        __sandboxPush('Error: Bash 运行时加载失败');
+        return;
+      }
+      if (typeof window.__SANDBOX_WASM_BASE64__ !== 'string') {
+        __sandboxPush('Error: Bash 运行时未正确打包，请重新安装 App。');
+        return;
+      }
+      await Bashkit.initBashkit(base64ToBytes(window.__SANDBOX_WASM_BASE64__));
+      var bash = new Bashkit.Bash({ profile: 'standard', timeoutMs: 8000 });
+      var result = await bash.execute(String(__USER_CODE__));
+      pushBlock(result.stdout, '');
+      if (result.stderr) {
+        __sandboxPush('--- stderr ---');
+        pushBlock(result.stderr, '');
+      }
+      if (result.exitCode !== 0) {
+        __sandboxPush('进程退出码：' + result.exitCode);
+      }
+      if (result.stdoutTruncated || result.stderrTruncated) {
+        __sandboxPush('（输出过长，已由运行时截断）');
+      }
+    } catch (error) {
+      var text = String(error && error.message ? error.message : error);
+      if (/timed out|timeout|deadline/i.test(text)) {
+        __sandboxPush('Error: 运行超时：请检查是否有死循环或长时间等待的命令。');
+      } else {
+        __sandboxPush('Error: ' + text);
+      }
+    } finally {
+      __sandboxFinish();
+    }
+  })();
+})();
+</script>
+</body>
+</html>

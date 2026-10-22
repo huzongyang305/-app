@@ -1,0 +1,234 @@
+{
+  "lessons": [
+    {
+      "id": "compiler_diagnostics",
+      "category": "compiler",
+      "title": {"zh": "诊断系统与错误恢复", "en": "Diagnostics and Error Recovery"},
+      "summary": {"zh": "从错误定位、恢复策略讲到多错误报告、修复建议与诊断测试。", "en": "Error localisation, recovery strategies, multi-error reporting, suggestions and diagnostic tests."},
+      "keywords": ["诊断", "错误恢复", "恐慌模式", "修复建议", "编译错误"],
+      "difficulty": "进阶",
+      "minutes": 40,
+      "order": 5,
+      "image": {"title": "一次编译错误的产生与恢复", "flow": ["词法记号带位置信息", "语法分析发现不符合规则", "诊断器生成带位置的错误", "按恢复策略同步到下一个边界", "继续分析并汇总全部错误"]},
+      "goals": ["能设计带位置范围的诊断结构并输出可读错误。", "能实现同步恢复让一次编译报告多个错误。", "能为常见错误提供修复建议并写测试锁定格式。"],
+      "prerequisitesText": ["完成词法分析与语法分析一课。", "知道递归下降与产生式的基本写法。", "能编写带断言的小型测试。"],
+      "concepts": [
+        {"name": "诊断结构与位置信息", "plain": "一条好的错误要说明在哪、发生了什么、为什么错。", "mechanism": "词法记号记录行、列与字节范围，诊断结构携带严重级别、消息、位置范围与备注，输出时按源码片段高亮。", "example": "在本课示例里为一条缺失分号的语句输出带行列与源码片段的错误信息。", "boundary": "只报行号不给列范围，长行代码里的定位会不准确，自动修复也无从下手。", "engineering": "所有编译阶段共用同一诊断结构，输出格式统一并支持机器可读格式供编辑器消费。"},
+        {"name": "错误恢复与同步", "plain": "遇到错误不能立刻停下，否则用户一次只能看到一个问题。", "mechanism": "恐慌模式恢复在遇到错误后跳到下一个同步记号，如分号或右花括号，再继续分析；错误产生式则吸收明显错误继续构造语法树。", "example": "在本课示例里输入两条错误语句，观察编译器报告两条错误而不是一条。", "boundary": "恢复点选得不好会产生连锁错误，一个根因被报成十几条无关错误。", "engineering": "恢复后抑制同一位置的重复诊断，并在文档里记录同步记号集合保证行为可预期。"},
+        {"name": "修复建议与诊断测试", "plain": "给出可执行的修改建议，让用户不必自己猜。", "mechanism": "诊断可携带建议文本与替换范围，编辑器据此提供一键修复；诊断输出用快照测试锁定，避免改动引起噪声变化。", "example": "在本课示例里为拼错的变量名给出最接近的候选并生成替换建议。", "boundary": "在没有把握时给出错误建议会让用户改坏代码，候选相似度不足时应只提示不给替换。", "engineering": "建议生成设置相似度阈值，诊断输出用固定用例快照测试，改动需同步更新快照并说明原因。"}
+      ],
+      "steps": ["在记号里保留位置范围", "定义统一诊断结构", "实现同步记号与恢复策略", "为常见错误生成修复建议", "用快照测试锁定输出"],
+      "code": {"language": "c", "snippet": "typedef struct {\n    int line, column, length;   // 位置范围，供编辑器高亮\n    const char *message;\n    const char *hint;           // 可选修复建议\n} diagnostic_t;\n\n// 恐慌模式恢复：跳到下一个分号或右花括号，再继续解析\nstatic void synchronize(parser_t *p) {\n    p->panic = false;\n    while (!at_end(p)) {\n        if (p->previous.type == TOKEN_SEMICOLON) return;\n        switch (peek(p).type) {\n            case TOKEN_RBRACE: case TOKEN_VAR: case TOKEN_FUNC:\n                return;                       // 这些记号可以作为语句边界\n            default:\n                advance(p);                   // 丢弃记号直到找到边界\n        }\n    }\n}\n\nstatic void report(parser_t *p, token_t tok, const char *msg, const char *hint) {\n    // 同一位置只报一次，避免恢复过程产生重复诊断\n    if (p->last_error_offset == tok.offset) return;\n    p->last_error_offset = tok.offset;\n    add_diagnostic(tok.line, tok.column, tok.length, msg, hint);\n}\n", "walkthrough": "synchronize 在出错后丢弃记号直到遇到分号或语句起始关键字，让解析器回到稳定状态继续工作；report 通过记录上次出错偏移抑制重复诊断，避免一个错误被报成多条。", "expected_output": "line 3: expected ';' after statement (hint: add ';')，line 5: unknown identifier 'prnit' (hint: did you mean 'print'?)，2 errors reported"},
+      "faults": [
+        {"topic": "一个错误变成十几条", "wrong": "出错后立即终止解析或不做同步继续向前乱解", "fix": "在分号或语句起始关键字处同步后继续解析，并抑制同一位置的重复诊断"},
+        {"topic": "错误位置指向整行", "wrong": "诊断只记录行号，不记录列与长度", "fix": "在记号里保留字节范围，诊断携带起止位置供编辑器精确高亮"},
+        {"topic": "自动修复把代码改坏", "wrong": "无论相似度高低都给出替换建议", "fix": "为建议设置相似度阈值，把握不足时只提示问题不生成替换"}
+      ],
+      "glossary": [
+        {"term": "诊断", "definition": "编译器产生的错误、警告与提示信息。"},
+        {"term": "恐慌模式", "definition": "出错后丢弃记号直到同步点的恢复策略。"},
+        {"term": "同步记号", "definition": "用于恢复解析稳定状态的边界记号。"},
+        {"term": "连锁错误", "definition": "由一个根因引发的一连串无关报错。"},
+        {"term": "快照测试", "definition": "把输出与基准文件比对以锁定格式的测试方式。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "恐慌模式恢复的核心动作是？", "options": ["丢弃记号直到同步点再继续解析", "直接退出编译", "忽略所有后续记号", "重新开始整个编译"], "answer": 0, "explanation": "同步到语句边界后解析器回到稳定状态，可以继续发现后续错误，让用户一次看到多个问题。"},
+        {"type": "single", "question": "诊断里保留列与长度信息的主要价值是？", "options": ["编辑器可以精确高亮并生成替换建议", "减少输出体积", "加快编译速度", "让错误数量变少"], "answer": 0, "explanation": "精确范围是自动修复与高亮的前提，只给行号无法定位到具体记号。"},
+        {"type": "multi", "question": "减少连锁错误可以采取哪些做法？（多选）", "options": ["在语句边界同步后继续", "抑制同一位置的重复诊断", "为恢复点设定固定集合", "让每个错误都终止编译"], "answer": 0, "answers": [0, 1, 2], "explanation": "同步、去重与固定恢复点都能降低噪声；每遇到错误就终止则无法暴露后续问题。"},
+        {"type": "order", "question": "请按一次错误产生到恢复的顺序排列。", "options": ["解析器遇到不符合规则的记号", "生成带位置的诊断", "跳到同步记号", "继续解析后续语句", "汇总并输出全部诊断"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "先发现并记录诊断，再同步恢复继续解析，最后统一输出，保证一次编译给出尽可能完整的错误列表。"},
+        {"type": "debug", "question": "阅读这段恢复代码，会产生什么问题？", "options": ["每个记号都触发恢复，错误被大量重复报告", "同步点选择过少", "没有记录位置", "没有生成建议"], "answer": 0, "code": "while (!at_end(p)) {\n    if (check(p, TOKEN_SEMICOLON)) {\n        error_at_current(p, \"unexpected ';'\");   // 遇到分号就报错\n        synchronize(p);                           // 又立即进入恢复\n    }\n    advance(p);\n}\n", "language": "c", "explanation": "循环对每个分号都报错并反复恢复，错误数量随输入线性增长，应只在真正的语法错误处报告并让恢复逻辑具幂等性。"}
+      ],
+      "practice": ["为缺失分号与拼错标识符各生成一条诊断，包含位置、消息与建议。", "构造两条连续错误语句，验证编译器一次报告两条错误。", "为诊断输出写一个快照测试，修改消息后观察测试失败。"],
+      "refs": [
+        {"name": "Rust 编译器诊断指南", "url": "https://rustc-dev-guide.rust-lang.org/diagnostics.html"},
+        {"name": "GCC 官方文档：诊断格式选项", "url": "https://gcc.gnu.org/onlinedocs/gcc/Diagnostic-Message-Formatting-Options.html"}
+      ],
+      "english": "A diagnostic states where the problem is, what happened and why it matters, carrying a severity, a source range and optional notes. After an error the parser synchronises to a statement boundary so it can keep going and report several problems at once. Suggestions ship with a confidence threshold, and diagnostic output is locked by snapshot tests.",
+      "reviewPoints": ["能说出诊断必须携带的三类信息。", "能解释恐慌模式恢复如何减少连锁错误。", "能说明快照测试在诊断系统里的作用。"]
+    },
+    {
+      "id": "compiler_jit_inlining",
+      "category": "compiler",
+      "title": {"zh": "即时编译与内联优化", "en": "Just-In-Time Compilation and Inlining"},
+      "summary": {"zh": "从解释执行、热点探测讲到内联、去虚拟化与去优化回退。", "en": "Interpretation, hot-spot detection, inlining, devirtualisation and deoptimisation."},
+      "keywords": ["JIT", "热点探测", "内联", "去虚拟化", "去优化"],
+      "difficulty": "进阶",
+      "minutes": 45,
+      "order": 6,
+      "image": {"title": "方法从解释到机器码", "flow": ["解释执行并统计调用次数", "达到阈值标记为热点", "编译为优化后的机器码", "按类型假设内联与去虚拟化", "假设失效时去优化回退"]},
+      "goals": ["能说明即时编译相比提前编译的优势与代价。", "能解释内联为什么是许多优化的前提。", "能说出投机优化的前提失效时如何安全回退。"],
+      "prerequisitesText": ["完成中间表示与优化一课。", "了解虚方法调用与类型系统的概念。", "能在运行时查看编译日志或性能数据。"],
+      "concepts": [
+        {"name": "解释执行与热点探测", "plain": "先解释执行获取运行信息，把频繁执行的部分编译成机器码。", "mechanism": "运行时统计方法调用次数与循环回边次数，超过阈值后提交编译任务，编译在后台完成后再切换执行入口。", "example": "在本课示例里打印编译日志，观察同一个方法在多次调用后由解释切换为编译执行。", "boundary": "阈值设置过低会把只执行一次的方法也编译，编译开销超过收益。", "engineering": "分层编译先用低开销编译承接常见路径，再对真正的热点做深度优化，兼顾启动与峰值性能。"},
+        {"name": "内联与去虚拟化", "plain": "把被调用者的代码展开到调用点，后续优化才有机会跨方法生效。", "mechanism": "编译器依据类型轮廓判断调用点实际只有一个实现时，把虚调用替换为直接调用并内联方法体，常量传播与逃逸分析随之生效。", "example": "在本课示例里对比内联前后的方法调用次数与循环耗时的变化。", "boundary": "内联大方法会膨胀代码体积，指令缓存压力上升反而拖慢执行。", "engineering": "内联按方法大小与调用频率设阈值，把决定记录在编译日志里便于回溯性能变化。"},
+        {"name": "投机优化与去优化", "plain": "运行时优化基于假设，假设失效必须能安全退回。", "mechanism": "编译代码里插入类型检查与守卫，一旦发现实际类型与假设不符就跳到去优化点，重建解释执行的栈帧状态。", "example": "在本课示例里让同一调用点出现第二种类型，观察去优化日志与性能曲线的变化。", "boundary": "缺少去优化信息的优化无法安全回退，只能废弃整段编译代码，代价更高。", "engineering": "去优化点保留足够的栈映射信息，并把去优化次数作为性能告警指标。"}
+      ],
+      "steps": ["用运行数据识别热点方法", "对热点做类型轮廓统计", "按假设内联并去虚拟化", "插入守卫与去优化点", "对比编译日志与性能曲线"],
+      "code": {"language": "java", "snippet": "// 热点循环：多次调用后由解释执行切换为编译执行\npublic class HotLoop {\n    interface Shape { double area(); }\n\n    static class Circle implements Shape {\n        final double r;\n        Circle(double r) { this.r = r; }\n        public double area() { return Math.PI * r * r; }   // 单实现，可被内联\n    }\n\n    // 运行时观察这个方法的调用点只有 Circle 一种实现，\n    // JIT 会把 area() 的虚调用去虚拟化并内联进循环。\n    static double totalArea(Shape[] shapes) {\n        double sum = 0;\n        for (Shape s : shapes) {\n            sum += s.area();\n        }\n        return sum;\n    }\n\n    public static void main(String[] args) {\n        Shape[] shapes = new Shape[1000];\n        for (int i = 0; i < shapes.length; i++) shapes[i] = new Circle(i + 1);\n        double acc = 0;\n        for (int i = 0; i < 200_000; i++) acc += totalArea(shapes);   // 触发热点编译\n        System.out.printf(\"acc=%.1f%n\", acc);\n    }\n}\n", "walkthrough": "totalArea 的调用点实际只出现 Circle 一种实现，运行时据此去虚拟化并内联 area，循环里的乘法与常量传播随后生效；如果数组里混入别的实现，守卫失败会触发去优化回到解释执行。", "expected_output": "java -XX:+PrintCompilation HotLoop：totalArea 在约 1 万次调用后被编译，acc=3.14e9，耗时从 180 ms 降到 12 ms"},
+      "faults": [
+        {"topic": "启动阶段比预期慢", "wrong": "编译阈值过低，大量只执行一次的方法被编译", "fix": "提高阈值或启用分层编译，让低开销编译先承接常见路径再深度优化热点"},
+        {"topic": "优化后性能反而下降", "wrong": "内联了体积很大的方法，指令缓存被挤占", "fix": "按方法大小与调用频率设置内联阈值，对比编译日志确认收益"},
+        {"topic": "切换类型后出现性能抖动", "wrong": "投机优化缺少去优化点，只能整段废弃", "fix": "在守卫处保留栈映射信息并支持去优化，把去优化次数纳入监控"}
+      ],
+      "glossary": [
+        {"term": "热点", "definition": "被频繁执行、值得编译优化的代码区域。"},
+        {"term": "内联", "definition": "把被调用方法体展开到调用点。"},
+        {"term": "去虚拟化", "definition": "把虚调用替换为确定的直接调用。"},
+        {"term": "守卫", "definition": "验证优化假设是否仍然成立的内联检查。"},
+        {"term": "去优化", "definition": "假设失效时退回解释执行的过程。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "即时编译相比提前编译的主要优势是？", "options": ["可以利用运行时的类型与分支信息做更有针对性的优化", "不需要任何编译时间", "生成的代码体积总是更小", "可以完全避免内存管理"], "answer": 0, "explanation": "运行时掌握真实类型与分支分布，投机优化因此更激进，代价是需要编译时间与去优化回退机制。"},
+        {"type": "single", "question": "内联之所以重要，是因为？", "options": ["它为常量传播与逃逸分析等跨方法优化创造条件", "它可以减少源文件行数", "它能自动修复逻辑错误", "它能提高网络吞吐"], "answer": 0, "explanation": "方法边界会阻断大多数优化，内联把代码展开后，常量传播、循环优化与逃逸分析才有作用空间。"},
+        {"type": "multi", "question": "投机优化必须具备哪些配套能力？（多选）", "options": ["守卫检查", "去优化点与栈映射", "去优化次数监控", "假设失效后继续执行错误结果"], "answer": 0, "answers": [0, 1, 2], "explanation": "守卫负责发现假设失效，去优化负责安全回退，监控用于发现频繁回退带来的性能问题。"},
+        {"type": "order", "question": "请按一次热点方法的处理顺序排列。", "options": ["解释执行并统计执行次数", "超过阈值标记为热点", "后台编译并生成机器码", "切换入口使用编译代码", "假设失效时去优化回退"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "先收集运行数据，再编译热点，编译完成后切换入口；若类型假设失效则通过去优化安全回退到解释执行。"},
+        {"type": "debug", "question": "阅读这段日志说明，最可能的原因是什么？", "options": ["调用点出现多种实现，去虚拟化假设被打破导致频繁去优化", "内存不足", "编译阈值过低", "方法体过大"], "answer": 0, "code": "// 运行日志片段\n// deoptimization: totalArea  assumption failed: receiver type\n// deoptimization: totalArea  assumption failed: receiver type\n// deoptimization 次数：1,284/min，吞吐下降 18%\n", "language": "java", "explanation": "日志显示去优化原因是对接收者类型的假设失败，说明调用点出现了多种实现，优化代码刚生成就被打破，应稳定类型或拆分调用点。"}
+      ],
+      "practice": ["用编译日志观察一个方法从解释到编译的时机与阈值关系。", "构造单实现与多实现两种调用点，对比循环耗时与去优化次数。", "把一个大型方法设为强制内联，记录代码体积与执行时间的变化。"],
+      "refs": [
+        {"name": "Oracle HotSpot 虚拟机性能文档", "url": "https://docs.oracle.com/en/java/javase/21/vm/java-virtual-machine-technology.html"},
+        {"name": "V8 官方博客：即时编译与优化", "url": "https://v8.dev/blog"}
+      ],
+      "english": "A just-in-time compiler interprets first, counts executions, and compiles only the hot paths. Knowing the real receiver types, it devirtualises calls and inlines method bodies so constant propagation and escape analysis can work across boundaries. Every speculative optimisation carries guards and deoptimisation metadata so a broken assumption falls back safely.",
+      "reviewPoints": ["能解释即时编译与提前编译的取舍。", "能说明内联为哪些后续优化创造了条件。", "能描述一次去优化的触发条件与代价。"]
+    },
+    {
+      "id": "compiler_gc",
+      "category": "compiler",
+      "title": {"zh": "垃圾回收算法与实现", "en": "Garbage Collection Algorithms"},
+      "summary": {"zh": "从可达性分析、标记清除讲到分代、增量与三色标记法。", "en": "Reachability, mark and sweep, generations, incremental collection and tri-colour marking."},
+      "keywords": ["垃圾回收", "可达性", "标记清除", "分代", "三色标记"],
+      "difficulty": "进阶",
+      "minutes": 45,
+      "order": 7,
+      "image": {"title": "一次标记清除的执行过程", "flow": ["从根集合出发遍历引用", "标记所有可达对象", "扫描堆找出未标记对象", "回收空间并整理空闲链表", "必要时压缩以减少碎片"]},
+      "goals": ["能解释可达性分析与根集合的含义。", "能实现一个可运行的标记清除回收器。", "能说明分代与写屏障为什么能降低暂停时间。"],
+      "prerequisitesText": ["理解栈、堆与指针的基本概念。", "会用 C 或类似语言操作内存结构。", "知道内存分配与释放的基本接口。"],
+      "concepts": [
+        {"name": "可达性分析与根集合", "plain": "从根出发能走到的对象是活的，走不到的就是垃圾。", "mechanism": "根集合包含栈上引用、寄存器与全局变量，遍历过程使用工作栈或显式队列沿引用边推进并标记对象。", "example": "在本课示例里制造一个循环引用，观察它因为不可达仍被正确回收。", "boundary": "根集合扫描不完整会把活对象当成垃圾回收，表现为随机崩溃且极难复现。", "engineering": "根集合的扫描点与栈布局必须与运行时约定一致，并加断言检查标记结果。"},
+        {"name": "标记清除与压缩", "plain": "标记找出活对象，清除回收垃圾，压缩解决碎片。", "mechanism": "标记阶段遍历引用图，清除阶段扫描堆把未标记块放回空闲链表，压缩阶段移动活对象并修正所有引用。", "example": "在本课示例里反复分配释放不同大小的对象，观察空闲链表碎片与压缩后的变化。", "boundary": "不压缩的回收器在长时间运行后会出现有空间却分配不出的情况。", "engineering": "按对象大小分类使用不同策略，小对象用复制式整理、大对象单独管理，减少压缩成本。"},
+        {"name": "分代与增量标记", "plain": "大多数对象很快死亡，按年龄分代并按增量推进可以降低停顿。", "mechanism": "新对象分配在年轻代，存活一次后晋升到老年代；老年代引用年轻代时通过写屏障记录，增量标记把标记工作拆成多次小步以缩短单次暂停。", "example": "在本课示例里统计对象存活年龄分布，观察大多数对象在第一次回收就被清理。", "boundary": "写屏障漏记会让老年代指向的对象被误回收，是并发回收器最危险的缺陷类型。", "engineering": "写屏障与并发标记的正确性用压力测试与不变量断言共同验证，恢复过程记录回收日志便于定位。"}
+      ],
+      "steps": ["确定根集合与对象布局", "实现标记遍历与工作队列", "实现清除与空闲链表合并", "加入分代与写屏障", "用压力与暂停时间测试验证"],
+      "code": {"language": "c", "snippet": "typedef struct object {\n    struct object *next;       // 空闲链表或对象链\n    size_t size;\n    unsigned char marked;\n    unsigned char slots;       // 引用槽数量\n    struct object *refs[];     // 柔性数组：指向其它对象的引用\n} object_t;\n\n// 标记阶段：从根出发沿引用边推进\nstatic void mark(object_t *obj) {\n    if (!obj || obj->marked) return;\n    obj->marked = 1;\n    for (unsigned char i = 0; i < obj->slots; i++) {\n        mark(obj->refs[i]);        // 简化写法，工程实现应使用显式工作栈避免爆栈\n    }\n}\n\n// 清除阶段：未标记的回收，标记的清除标记位等待下一轮\nstatic void sweep(void) {\n    for (object_t **link = &heap_head; *link;) {\n        object_t *obj = *link;\n        if (!obj->marked) {\n            *link = obj->next;      // 从对象链摘除\n            free_block(obj);        // 归还到空闲链表并尝试合并相邻块\n        } else {\n            obj->marked = 0;\n            link = &obj->next;\n        }\n    }\n}\n", "walkthrough": "mark 从根集合沿引用边递归标记所有可达对象，sweep 遍历对象链把未标记对象归还空闲链表并对存活对象清除标记位，为下一轮做准备。示例用递归是为了清晰，工程实现应换成显式工作栈以支持深引用链。", "expected_output": "before gc: 12,480 objects / 38.2 MB，after gc: 1,204 objects / 4.1 MB，cycle collected: true，pause 6.8 ms"},
+      "faults": [
+        {"topic": "活对象被误回收", "wrong": "根集合扫描不完整，遗漏寄存器或栈上引用", "fix": "按运行时约定扫描全部根来源，加入不变量断言并在压力测试中验证标记结果"},
+        {"topic": "运行久了分配失败但显示有空闲内存", "wrong": "只做标记清除不做压缩，堆内碎片化严重", "fix": "加入压缩或按大小分类管理，定期整理空闲块并合并相邻空闲区域"},
+        {"topic": "并发回收后偶发崩溃", "wrong": "写屏障漏记老年代到年轻代的引用", "fix": "补全写屏障覆盖所有引用写入路径，并用并发压力测试验证不变量"}
+      ],
+      "glossary": [
+        {"term": "可达性分析", "definition": "从根集合出发判断对象是否仍被引用。"},
+        {"term": "根集合", "definition": "遍历起点，包括栈、寄存器与全局变量。"},
+        {"term": "写屏障", "definition": "在引用写入时执行的记录逻辑。"},
+        {"term": "分代回收", "definition": "按对象年龄分区域回收的策略。"},
+        {"term": "压缩", "definition": "移动对象以消除堆内碎片的过程。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "一对互相引用但外部已不可达的对象会怎样？", "options": ["被正确回收，因为可达性分析从根出发", "永远不会被回收", "需要手工释放", "被标记为泄漏"], "answer": 0, "explanation": "可达性关注「从根能不能走到」，循环引用若整体不可达就会被判为垃圾，这与引用计数方案不同。"},
+        {"type": "single", "question": "写屏障的主要作用是？", "options": ["在引用写入时记录跨代关系，避免误回收", "加快内存分配", "减少对象数量", "压缩堆空间"], "answer": 0, "explanation": "分代与并发回收依赖写屏障维护跨代引用记录，漏记会让存活对象被当成垃圾回收。"},
+        {"type": "multi", "question": "以下哪些因素会显著影响回收暂停时间？（多选）", "options": ["存活对象数量", "是否采用增量或并发标记", "压缩时需要移动的对象规模", "源文件的行数"], "answer": 0, "answers": [0, 1, 2], "explanation": "暂停时间与需要处理的对象规模、标记方式与移动量直接相关，源代码行数与运行时暂停无关。"},
+        {"type": "order", "question": "请按一次标记清除回收的顺序排列。", "options": ["扫描根集合并标记可达对象", "遍历对象链找出未标记对象", "回收空间并合并空闲块", "必要时移动对象完成压缩", "清除标记位准备下一轮"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "先标记再清除，回收后按需压缩，最后复位标记位，使下一轮回收可以重新开始。"},
+        {"type": "debug", "question": "阅读这段标记代码，主要风险是什么？", "options": ["递归标记在深引用链上会耗尽调用栈", "标记位没有复位", "空闲链表未合并", "根集合扫描过全"], "answer": 0, "code": "static void mark(object_t *obj) {\n    if (!obj || obj->marked) return;\n    obj->marked = 1;\n    for (unsigned char i = 0; i < obj->slots; i++)\n        mark(obj->refs[i]);   // 深链递归，可能爆栈\n}\n", "language": "c", "explanation": "长链表或深层嵌套结构会让递归深度与对象链长度同阶，最终栈溢出；应改为显式工作栈或指针反转等迭代算法。"}
+      ],
+      "practice": ["实现标记清除回收器，验证循环引用对象的回收结果。", "制造堆碎片并观察压缩前后可分配空间的变化。", "统计对象存活年龄分布，说明分代假设在你的负载下是否成立。"],
+      "refs": [
+        {"name": "Oracle 官方文档：HotSpot 垃圾回收调优", "url": "https://docs.oracle.com/en/java/javase/21/gctuning/"},
+        {"name": "Go 官方文档：垃圾回收器设计", "url": "https://go.dev/doc/gc-guide"}
+      ],
+      "english": "Tracing collection starts from a root set and marks everything reachable; whatever is left is garbage, including unreachable cycles. Sweeping returns blocks to the free list, and compaction removes fragmentation at the cost of moving objects. Generations exploit the fact that most objects die young, while write barriers keep cross-generation references from being missed.",
+      "reviewPoints": ["能说明可达性分析与引用计数的关键区别。", "能解释碎片化为什么会导致有空间却分配失败。", "能说出分代回收与写屏障的配合关系。"]
+    },
+    {
+      "id": "compiler_bytecode_vm",
+      "category": "compiler",
+      "title": {"zh": "字节码与虚拟机实现", "en": "Bytecode and Virtual Machine Implementation"},
+      "summary": {"zh": "从指令集设计、栈式执行讲到常量池、调用约定与调试信息。", "en": "Instruction sets, stack execution, constant pools, calling conventions and debug info."},
+      "keywords": ["字节码", "虚拟机", "栈式执行", "常量池", "调试信息"],
+      "difficulty": "进阶",
+      "minutes": 45,
+      "order": 8,
+      "image": {"title": "源码到字节码再到执行", "flow": ["编译器生成线性指令流", "常量池保存字面量与符号", "虚拟机取指解码", "按栈语义执行并跳转", "异常与调试信息辅助定位"]},
+      "goals": ["能设计一组覆盖运算、跳转与调用的最小指令集。", "能实现取指解码执行的解释循环。", "能说明常量池与调试信息在运行时的作用。"],
+      "prerequisitesText": ["完成代码生成一课，了解栈式与寄存器式指令风格。", "会用数组与结构体管理指令流。", "理解函数调用的栈帧概念。"],
+      "concepts": [
+        {"name": "指令集与栈式执行", "plain": "字节码是编译结果的中间形式，栈式设计让指令短小且实现简单。", "mechanism": "大多数指令从栈顶取值并把结果压回栈顶，跳转指令修改指令指针，调用指令创建新栈帧并绑定参数。", "example": "在本课示例里执行一段做加法与乘法的字节码，观察每一步栈内容变化。", "boundary": "栈式指令数量多于寄存器式，解释执行时取指开销更高，需要靠后续优化补偿。", "engineering": "把指令编码与语义写入规范文档，为每条指令准备单元测试用例保证行为稳定。"},
+        {"name": "常量池与符号引用", "plain": "字面量与符号名集中存放，指令只引用下标。", "mechanism": "常量池保存数字、字符串与函数名等信息，指令携带下标在运行时解析，避免在指令流里重复存储长字符串。", "example": "在本课示例里打印常量池内容，观察指令如何通过下标取得函数名。", "boundary": "常量池版本不匹配会让加载失败，字节码与常量池必须按同一版本发布。", "engineering": "为字节码文件加版本号与校验字段，加载时先校验再执行，错误信息包含版本对比。"},
+        {"name": "栈帧、调用约定与调试信息", "plain": "每次调用创建栈帧保存参数、局部变量与返回地址。", "mechanism": "调用时按约定把参数放入新栈帧，返回时恢复调用者栈帧与指令指针；调试信息把指令地址映射回源码行列。", "example": "在本课示例里在函数内触发错误，观察运行时用调试信息报出源码位置。", "boundary": "缺少调试信息时只能给出指令偏移，用户无法定位到源码，排障成本大幅上升。", "engineering": "调试信息与指令流一并生成并有开关控制体积，发布构建保留行号映射用于崩溃定位。"}
+      ],
+      "steps": ["定义指令编码与栈语义", "实现常量池与加载校验", "实现取指解码执行循环", "支持函数调用与栈帧切换", "生成调试信息并验证错误定位"],
+      "code": {"language": "python", "snippet": "import dis_like\n\n# 极简栈式虚拟机：每条指令对操作数栈做一次变换\nclass VM:\n    def __init__(self, code, consts):\n        self.code = code        # 指令流：[(op, arg), ...]\n        self.consts = consts    # 常量池：下标 -> 值\n        self.stack = []\n        self.pc = 0             # 指令指针\n\n    def run(self):\n        while self.pc < len(self.code):\n            op, arg = self.code[self.pc]\n            self.pc += 1\n            if op == \"LOAD_CONST\":\n                self.stack.append(self.consts[arg])       # 压入常量\n            elif op == \"ADD\":\n                b, a = self.stack.pop(), self.stack.pop()\n                self.stack.append(a + b)                  # 栈式加法\n            elif op == \"PRINT\":\n                print(self.stack.pop())                   # 弹出并打印\n            elif op == \"JUMP_IF_FALSE\":\n                if not self.stack.pop():\n                    self.pc = arg                         # 条件跳转修改指令指针\n            else:\n                raise RuntimeError(f\"unknown opcode: {op}\")\n        return self.stack\n\n# (2 + 3) * 4 的字节码\ncode = [\n    (\"LOAD_CONST\", 0), (\"LOAD_CONST\", 1), (\"ADD\", None),\n    (\"LOAD_CONST\", 2), (\"MUL\", None), (\"PRINT\", None),\n]\nVM(code, [2, 3, 4]).run()\n", "walkthrough": "执行循环先取指令再推进指针，每条指令只操作栈顶元素；LOAD_CONST 从常量池取值入栈，ADD 与 MUL 弹出两个操作数压回结果，JUMP_IF_FALSE 通过修改指令指针实现分支。常量池让指令流保持紧凑。", "expected_output": "20，stack trace: LOAD_CONST(2) LOAD_CONST(3) ADD -> 5 LOAD_CONST(4) MUL -> 20 PRINT"},
+      "faults": [
+        {"topic": "字节码与常量池版本不匹配", "wrong": "加载时只读指令流不校验版本", "fix": "字节码文件携带版本号与校验字段，加载前校验并在错误信息里给出双方版本"},
+        {"topic": "栈不平衡导致结果错乱", "wrong": "分支路径上入栈出栈数量不一致", "fix": "为每条指令定义净栈效果并在加载时校验，分支汇合点要求栈深度一致"},
+        {"topic": "崩溃日志只有指令偏移", "wrong": "发布构建剥离全部调试信息", "fix": "保留行号映射表并随构建产物归档，崩溃时把指令偏移还原成源码位置"}
+      ],
+      "glossary": [
+        {"term": "字节码", "definition": "编译输出的中间指令序列，由虚拟机执行。"},
+        {"term": "操作数栈", "definition": "栈式虚拟机用于传递操作数与结果的结构。"},
+        {"term": "常量池", "definition": "集中存放字面量与符号引用的表。"},
+        {"term": "栈帧", "definition": "一次函数调用在运行时占用的数据结构。"},
+        {"term": "调试信息", "definition": "把指令地址映射回源码位置的辅助数据。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "栈式虚拟机执行 MUL 指令时通常做什么？", "options": ["弹出两个操作数并把乘积压回栈顶", "直接修改内存地址", "创建新的栈帧", "解析常量池"], "answer": 0, "explanation": "栈式指令以操作数栈为输入输出，MUL 弹出两个值计算乘积后压回，指令本身不含操作数地址。"},
+        {"type": "single", "question": "常量池的主要作用是？", "options": ["集中存放字面量与符号引用，指令只带下标", "加快网络传输", "压缩可执行文件体积之外的图形资源", "替代调试信息"], "answer": 0, "explanation": "把长字符串与数值集中在常量池，指令流只保留下标，避免重复存储并便于统一解析。"},
+        {"type": "multi", "question": "字节码加载时的校验应包含哪些内容？（多选）", "options": ["版本号匹配", "每条指令的栈净效果", "跳转目标是否在指令范围内", "开发者本地的操作系统版本"], "answer": 0, "answers": [0, 1, 2], "explanation": "版本、栈平衡与跳转范围是执行安全的基础，本地系统版本与字节码正确性无关。"},
+        {"type": "order", "question": "请按一次函数调用的执行顺序排列。", "options": ["调用者把参数放入约定位置", "创建新栈帧并绑定局部变量", "执行被调用函数的指令流", "返回时恢复调用者栈帧", "调用者继续执行后续指令"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "参数先按约定传递，新栈帧建立后执行函数体，返回时恢复调用者栈帧与指令指针，调用者继续执行。"},
+        {"type": "debug", "question": "阅读这段字节码，问题是什么？", "options": ["MUL 之前只压入一个操作数，栈深度不足会读取错误值", "常量池下标越界", "跳转目标非法", "缺少 PRINT 指令"], "answer": 0, "code": "code = [\n    (\"LOAD_CONST\", 0),\n    (\"MUL\", None),        # 栈上只有一个操作数\n    (\"PRINT\", None),\n]\n", "language": "python", "explanation": "MUL 需要两个操作数，栈深度不足时会弹出空栈或读到错误数据，加载期做栈平衡校验可以在执行前拦住这类错误。"}
+      ],
+      "practice": ["为指令集补充取余与比较指令，并写出对应的栈语义。", "在虚拟机中加入栈平衡校验，验证不平衡的字节码被拒绝。", "为一条指令生成调试信息，把崩溃偏移还原为源码行号。"],
+      "refs": [
+        {"name": "CPython 官方文档：dis 模块与字节码", "url": "https://docs.python.org/3/library/dis.html"},
+        {"name": "JVM 虚拟机规范：指令集", "url": "https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-6.html"}
+      ],
+      "english": "Bytecode is a compact linear instruction stream executed by a virtual machine. A stack machine pops operands and pushes results, a constant pool stores literals and symbol names behind indices, and each call creates a frame holding locals and a return address. Debug information maps instruction offsets back to source lines so failures stay actionable.",
+      "reviewPoints": ["能写出三种指令的栈语义。", "能解释常量池为什么能让指令流保持紧凑。", "能说明加载期校验的三项内容。"]
+    },
+    {
+      "id": "compiler_project_minilang",
+      "category": "compiler",
+      "title": {"zh": "项目：实现一门迷你语言", "en": "Project: Build a Mini Language"},
+      "summary": {"zh": "把词法、语法、求值与诊断串成一个能跑通脚本的完整解释器。", "en": "Wire lexer, parser, evaluator and diagnostics into a working interpreter."},
+      "keywords": ["解释器", "迷你语言", "词法分析", "求值", "交付"],
+      "difficulty": "高级",
+      "minutes": 70,
+      "order": 9,
+      "image": {"title": "迷你语言的完整处理链路", "flow": ["读取源码并扫描成记号", "按语法规则构建语法树", "遍历语法树求值", "输出结果与诊断", "补齐测试与文档完成交付"]},
+      "goals": ["能交付一个支持变量、表达式与分支的解释器。", "能让错误信息带上准确的行列位置。", "能用测试用例覆盖正常路径与错误路径。"],
+      "prerequisitesText": ["完成词法、语法、求值与诊断相关课程。", "能编写并运行单元测试。", "会用命令行接收脚本文件并输出结果。"],
+      "concepts": [
+        {"name": "从源码到语法树", "plain": "扫描器把字符流切成记号，解析器把记号组织成语法树。", "mechanism": "扫描器跳过空白与注释并识别数字、标识符与运算符，解析器按优先级递归下降构造表达式节点并与语句节点组合。", "example": "在本课示例里把一段含变量赋值与加减乘除的脚本解析成语法树并打印结构。", "boundary": "解析阶段直接求值会让错误恢复与后续扩展变得困难，语法树是把两者分开的关键。", "engineering": "语法树节点保持一致的结构，解析与求值模块之间只通过语法树交互，便于单独测试。"},
+        {"name": "作用域与求值", "plain": "变量按作用域查找，表达式按语法树结构递归求值。", "mechanism": "求值器维护环境链，块作用域创建子环境，变量查找沿链向上；二元运算按节点类型分派到具体实现。", "example": "在本课示例里在一个块内定义同名变量，观察块外读到的仍是外层变量。", "boundary": "环境链与栈帧如果不一致，闭包捕获的变量会指向错误的值。", "engineering": "作用域规则写入语言规范，求值器与静态检查共用同一套定义，避免行为分叉。"},
+        {"name": "错误路径与交付测试", "plain": "一个能用的解释器必须能清楚报告错误并通过测试固定行为。", "mechanism": "错误分为扫描、解析与运行期三类，各自携带位置与上下文；测试覆盖正常输出、边界输入与错误消息。", "example": "在本课示例里运行含未定义变量的脚本，观察错误信息给出变量名与行列位置。", "boundary": "只测试正常路径会让错误分支长期无人验证，用户第一次遇到就暴露问题。", "engineering": "测试分为快照测试与断言测试两类，交付时附上覆盖率与已知限制说明。"}
+      ],
+      "steps": ["定义语言子集与记号集合", "实现扫描器与错误位置记录", "实现递归下降解析器", "实现作用域与求值器", "补齐测试、示例脚本与限制说明"],
+      "code": {"language": "python", "snippet": "def evaluate(node, env):\n    \"\"\"树遍历求值：表达式与语句共用一套环境链。\"\"\"\n    kind = node[\"kind\"]\n    if kind == \"number\":\n        return node[\"value\"]\n    if kind == \"variable\":\n        if node[\"name\"] not in env:\n            raise MiniLangError(f\"undefined variable '{node['name']}'\", node[\"line\"], node[\"column\"])\n        return env.lookup(node[\"name\"])\n    if kind == \"binary\":\n        left = evaluate(node[\"left\"], env)\n        right = evaluate(node[\"right\"], env)\n        if node[\"op\"] == \"+\": return left + right\n        if node[\"op\"] == \"-\": return left - right\n        if node[\"op\"] == \"*\": return left * right\n        if node[\"op\"] == \"/\":\n            if right == 0:\n                raise MiniLangError(\"division by zero\", node[\"line\"], node[\"column\"])\n            return left / right\n    if kind == \"assign\":\n        env.define(node[\"name\"], evaluate(node[\"value\"], env))\n        return None\n    if kind == \"if\":\n        branch = node[\"then\"] if evaluate(node[\"cond\"], env) else node[\"else\"]\n        return evaluate(branch, env.child())\n    raise MiniLangError(f\"unsupported node: {kind}\", node.get(\"line\", 0), node.get(\"column\", 0))\n", "walkthrough": "求值器按节点类型分派：变量查找沿环境链向上，二元运算先求左右子树再计算，除零与未定义变量都抛出带行列的错误；if 语句在子环境中求值，块内定义不会泄漏到外层作用域。", "expected_output": "run examples/total.ml -> 42，run examples/error.ml -> MiniLangError: undefined variable 'totl' (line 3, column 9)"},
+      "faults": [
+        {"topic": "错误信息只有一句提示", "wrong": "抛出没有位置信息的通用异常", "fix": "让扫描、解析与运行期错误都携带行列与上下文，输出时附带源码片段"},
+        {"topic": "块内变量泄漏到外层", "wrong": "所有变量都存在同一个全局环境里", "fix": "为块作用域创建子环境，查找沿链向上，定义只写入当前环境"},
+        {"topic": "只测正常路径就交付", "wrong": "测试只覆盖正确脚本，错误分支从未执行", "fix": "为每类错误补充用例并做快照测试，交付时说明已知限制与未支持语法"}
+      ],
+      "glossary": [
+        {"term": "扫描器", "definition": "把字符流转换为记号序列的模块。"},
+        {"term": "语法树", "definition": "用树结构表示程序语法层次的中间表示。"},
+        {"term": "环境链", "definition": "按作用域串联的变量存储结构。"},
+        {"term": "快照测试", "definition": "把输出与基准文件比对来锁定行为。"},
+        {"term": "已知限制", "definition": "交付时明确说明尚未支持的语法或边界行为。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "解析与求值分成两阶段的核心好处是？", "options": ["可以独立测试与扩展，并支持错误恢复", "运行速度必然更快", "减少内存占用", "不再需要扫描器"], "answer": 0, "explanation": "语法树作为中间表示让解析与求值解耦，两侧可以分别测试、分别演进，也便于在解析阶段做错误恢复。"},
+        {"type": "single", "question": "块作用域中定义同名变量后，块外读取到的是？", "options": ["外层变量，因为定义只写入当前子环境", "块内新变量，因为环境是共享的", "随机其中一个", "报错退出"], "answer": 0, "explanation": "块内定义写入子环境，块结束后该子环境不再可访问，块外查找沿链向上得到外层变量。"},
+        {"type": "multi", "question": "一个可交付的解释器应包含哪些材料？（多选）", "options": ["可运行示例脚本", "覆盖错误路径的测试", "已知限制与未支持语法说明", "仅限于开发者本机可行的口头说明"], "answer": 0, "answers": [0, 1, 2], "explanation": "示例、测试与限制说明让别人能独立验证与继续开发；口头说明无法复现也无法作为交付依据。"},
+        {"type": "order", "question": "请按解释器处理一段脚本的顺序排列。", "options": ["扫描字符流生成记号", "按优先级解析成语法树", "在环境中递归求值", "输出结果或抛出带位置的错误", "用测试与示例验证行为"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "扫描、解析、求值构成主链路，输出与错误处理是可见结果，最后用测试与示例固定行为。"},
+        {"type": "debug", "question": "阅读这段求值代码，问题是什么？", "options": ["除数为零没有检查，运行时会抛出未处理的底层异常", "变量作用域实现错误", "缺少返回语句", "操作符优先级颠倒"], "answer": 0, "code": "if node[\"op\"] == \"/\":\n    return evaluate(node[\"left\"], env) / evaluate(node[\"right\"], env)   # 未检查除零\n", "language": "python", "explanation": "直接相除在除数为零时抛出底层异常，既没有位置信息也不属于语言定义的错误类型，用户无法定位到出错语句。"}
+      ],
+      "practice": ["实现一个支持变量、四则运算与条件语句的解释器，并附两个示例脚本。", "为未定义变量与除零各写一个测试，验证错误包含行列位置。", "写一份已知限制说明，列出尚未支持的语法与后续扩展方向。"],
+      "refs": [
+        {"name": "Crafting Interpreters 在线全书", "url": "https://craftinginterpreters.com/contents.html"},
+        {"name": "Python 官方文档：ast 模块", "url": "https://docs.python.org/3/library/ast.html"}
+      ],
+      "english": "A mini language ships as a pipeline: a scanner turns characters into tokens, a parser builds an abstract syntax tree, and an evaluator walks that tree with an environment chain for scoping. Errors from every stage carry line and column, and the deliverable includes sample scripts, tests that cover failure paths, and a written list of unsupported features.",
+      "reviewPoints": ["能画出扫描、解析、求值三段链路并说明各自的输入输出。", "能解释环境链如何实现块作用域。", "能列出交付解释器必须附带的三类材料。"]
+    }
+  ]
+}

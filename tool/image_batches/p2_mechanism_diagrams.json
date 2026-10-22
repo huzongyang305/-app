@@ -1,0 +1,50 @@
+{
+  "dns": {
+    "image": "images/dns_resolution.webp",
+    "alt": "DNS 从浏览器缓存到权威服务器的查询链"
+  },
+  "tcp_ip": {
+    "image": "images/tcp_handshake.webp",
+    "alt": "TCP 三次握手与连接状态迁移"
+  },
+  "virtual_memory": {
+    "image": "images/virtual_memory_paging.webp",
+    "alt": "虚拟内存分页与地址翻译"
+  },
+  "memory_cache": {
+    "image": "images/cache_hierarchy.webp",
+    "alt": "寄存器到磁盘的存储层次"
+  },
+  "process_thread": {
+    "image": "images/process_thread.webp",
+    "alt": "进程资源与线程私有执行状态"
+  },
+  "deadlock": {
+    "image": "images/deadlock.webp",
+    "alt": "死锁的四个必要条件"
+  },
+  "time_complexity": {
+    "image": "images/big_o.webp",
+    "alt": "常见时间复杂度的增长趋势"
+  },
+  "hash_table": {
+    "image": "images/hash_table.webp",
+    "alt": "哈希函数、桶与冲突处理"
+  },
+  "transaction": {
+    "image": "images/acid_transaction.webp",
+    "alt": "数据库事务的 ACID 与提交边界"
+  },
+  "distributed_fundamentals": {
+    "image": "images/cap_theorem.webp",
+    "alt": "CAP 定理与网络分区取舍"
+  },
+  "ai_deep_learning_llm": {
+    "image": "images/transformer_attention.webp",
+    "alt": "Transformer 的 Q/K/V 注意力计算"
+  },
+  "ai_agent_basics": {
+    "image": "images/agent_loop.webp",
+    "alt": "AI Agent 的观察、计划、行动、反思循环"
+  }
+}

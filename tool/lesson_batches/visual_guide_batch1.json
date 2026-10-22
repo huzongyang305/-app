@@ -1,0 +1,300 @@
+{
+  "category": "visual_guide",
+  "lessons": [
+    {
+      "id": "visual_memory_layout",
+      "title": { "zh": "图解内存布局：栈、堆与引用", "en": "Memory Layout Illustrated" },
+      "summary": {
+        "zh": "用示意图讲清栈、堆、静态区，以及赋值时到底复制了什么。",
+        "en": "Stack, heap and references explained with diagrams."
+      },
+      "file": "assets/content/visual_memory_layout.md",
+      "minutes": 18,
+      "keywords": ["内存布局", "栈", "堆", "引用", "深浅拷贝"],
+      "difficulty": "入门",
+      "order": 0,
+      "quiz": [
+        {
+          "question": "局部变量与函数参数通常存放在哪里？",
+          "options": [
+            "堆",
+            "栈",
+            "常量区",
+            "磁盘"
+          ],
+          "answer": 1,
+          "explanation": "局部变量与参数随函数调用压栈，返回时自动释放。选项一堆放的是 new 或 malloc 出来的长生命周期对象；选项三存放字符串字面量等常量；选项四与运行时内存无关。"
+        },
+        {
+          "question": "执行 `b = a`（a 是数组或对象）之后修改 b，为什么 a 也会变？",
+          "options": [
+            "因为编译器优化了结果",
+            "因为赋复制的是引用，两者指向同一个堆对象",
+            "因为两者名字相似",
+            "因为发生了深拷贝"
+          ],
+          "answer": 1,
+          "explanation": "对象赋值复制的是引用地址，两个变量指向同一块堆内存。选项一与语法无关；选项三属于无根据的说法；选项四与事实相反，深拷贝后互不影响。"
+        },
+        {
+          "question": "Go 中对切片做 `t := s[1:3]` 后修改 t，会影响 s，原因是？",
+          "options": [
+            "切片是值类型，赋值时整体复制",
+            "切片本身只包含指针、长度与容量，两者共享同一个底层数组",
+            "Go 的切片是引用传递的语法糖",
+            "因为 s 和 t 是同一个变量"
+          ],
+          "answer": 1,
+          "explanation": "切片是「指针 + 长度 + 容量」的小结构，赋值只复制这个结构，底层数组仍然共享。选项一与事实相反；选项三说法不准确，切片本身是值类型；选项四显然错误。"
+        },
+        {
+          "question": "在 C++ 中，函数参数写成 `const std::vector<int>&` 的主要好处是？",
+          "options": [
+            "会自动深拷贝，保证安全",
+            "不产生拷贝且不允许修改，兼顾性能与安全",
+            "可以修改实参",
+            "会把它放到堆上"
+          ],
+          "answer": 1,
+          "explanation": "引用避免整体拷贝，const 又限制函数内部修改。选项一错误：引用恰恰不拷贝；选项三与 const 相反；选项四与参数传递方式无关。"
+        }
+      ]
+    },
+    {
+      "id": "visual_call_stack",
+      "title": { "zh": "图解调用栈与递归", "en": "Call Stack and Recursion Illustrated" },
+      "summary": {
+        "zh": "栈帧的压入与弹出、递归展开过程、栈溢出的成因。",
+        "en": "Stack frames, recursion expansion and stack overflow."
+      },
+      "file": "assets/content/visual_call_stack.md",
+      "minutes": 16,
+      "keywords": ["调用栈", "栈帧", "递归", "栈溢出", "记忆化"],
+      "difficulty": "入门",
+      "order": 1,
+      "quiz": [
+        {
+          "question": "函数返回时，栈会发生什么？",
+          "options": [
+            "栈帧被弹出，局部变量随之释放",
+            "栈帧保留到程序结束",
+            "栈会整体清空",
+            "栈帧被移动到堆上"
+          ],
+          "answer": 0,
+          "explanation": "函数返回即弹出自己的栈帧，局部变量随之失效。选项一错误：只有静态与全局变量才长期存在；选项三错误：外层函数的栈帧仍然保留；选项四与栈的语义相反。"
+        },
+        {
+          "question": "递归函数导致栈溢出的直接原因是？",
+          "options": [
+            "返回值太大",
+            "递归没有正确终止，栈帧持续累积直到超过栈空间上限",
+            "局部变量太少",
+            "编译器的 bug"
+          ],
+          "answer": 1,
+          "explanation": "每次调用压一帧，缺少出口就会一直压到超出上限。选项一与返回值大小无关；选项三与事实相反，变量多只会更早溢出；选项四不符合事实。"
+        },
+        {
+          "question": "把递归改为迭代，最主要解决的是？",
+          "options": [
+            "代码长度问题",
+            "栈深度不再随问题规模增长，避免栈溢出",
+            "让结果更精确",
+            "让程序支持多线程"
+          ],
+          "answer": 1,
+          "explanation": "迭代只用常量级的栈空间，因此不会因规模增大而溢出。选项一不是核心动机；选项三与计算方式无关；选项四与递归或迭代无关。"
+        },
+        {
+          "question": "给递归加「记忆化」主要解决什么问题？",
+          "options": [
+            "减少重复子问题的计算",
+            "降低栈深度",
+            "避免空指针",
+            "让函数支持异步"
+          ],
+          "answer": 0,
+          "explanation": "记忆化把已算过的结果缓存起来，避免指数级的重复计算。选项二错误：缓存不改变递归深度；选项三与空指针无关；选项四与异步无关。"
+        }
+      ]
+    },
+    {
+      "id": "visual_event_loop",
+      "title": { "zh": "图解事件循环：同步、微任务与宏任务", "en": "Event Loop Illustrated" },
+      "summary": {
+        "zh": "用时间线讲清执行顺序、渲染时机与长任务卡顿的原因。",
+        "en": "Execution order, rendering timing and long-task blocking."
+      },
+      "file": "assets/content/visual_event_loop.md",
+      "minutes": 18,
+      "keywords": ["事件循环", "微任务", "宏任务", "Promise", "渲染"],
+      "difficulty": "进阶",
+      "order": 2,
+      "quiz": [
+        {
+          "question": "JavaScript 中同步代码、微任务与宏任务的执行顺序是？",
+          "options": [
+            "宏任务 → 微任务 → 同步",
+            "同步 → 清空微任务 → 取一个宏任务 → 再清微任务",
+            "三者随机执行",
+            "微任务与宏任务同时执行"
+          ],
+          "answer": 1,
+          "explanation": "这是事件循环的标准顺序，微任务必须在每个宏任务之后被完全清空。选项一顺序颠倒；选项三忽略了确定性；选项四与单线程模型矛盾。"
+        },
+        {
+          "question": "`setTimeout(fn, 0)` 不会立即执行，原因是？",
+          "options": [
+            "浏览器不支持参数 0",
+            "它属于宏任务，必须等同步代码与其他微任务先执行完",
+            "它是微任务，优先级反而更低",
+            "需要等用户交互触发"
+          ],
+          "answer": 1,
+          "explanation": "0 只表示最快排入下一轮宏任务，前面的同步与微任务必须先完成。选项一错误：0 是合法参数；选项三错误：定时器属于宏任务；选项四与触发条件无关。"
+        },
+        {
+          "question": "`await` 之后的代码相当于在什么时机执行？",
+          "options": [
+            "立即同步执行",
+            "作为微任务，在当前同步代码之后执行",
+            "在下一个宏任务之后",
+            "在页面渲染完成后"
+          ],
+          "answer": 1,
+          "explanation": "await 会挂起函数，恢复的代码进入微任务队列。选项一与挂起语义矛盾；选项三的时机过晚；选项四与渲染无关。"
+        },
+        {
+          "question": "页面出现明显卡顿，最可能的原因是？",
+          "options": [
+            "微任务太多但每个都很短",
+            "主线程被长时间占用的长任务阻塞，无法及时渲染",
+            "使用了 Promise",
+            "事件监听器太多"
+          ],
+          "answer": 1,
+          "explanation": "渲染与交互都排在主线程上，长任务会挤掉渲染帧。选项一若真的短则影响有限；选项三本身不会卡顿；选项四只是潜在开销，不是最直接原因。"
+        }
+      ]
+    },
+    {
+      "id": "visual_concurrency_schedule",
+      "title": { "zh": "图解并发调度：线程、协程与 Goroutine", "en": "Concurrency Scheduling Illustrated" },
+      "summary": {
+        "zh": "三种调度模型的切换代价、M:N 模型与通道同步时序。",
+        "en": "Switching costs, the M:N model and channel timing."
+      },
+      "file": "assets/content/visual_concurrency_schedule.md",
+      "minutes": 20,
+      "keywords": ["并发", "调度", "协程", "Goroutine", "通道"],
+      "difficulty": "进阶",
+      "order": 3,
+      "quiz": [
+        {
+          "question": "线程切换比协程切换昂贵的根本原因是？",
+          "options": [
+            "线程的代码更长",
+            "线程切换需要进入内核、保存更多状态并可能影响缓存与 TLB",
+            "协程运行在 GPU 上",
+            "线程不能共享内存"
+          ],
+          "answer": 1,
+          "explanation": "线程由操作系统调度，切换涉及内核态与缓存失效；协程切换在用户态完成。选项一与代码长度无关；选项三错误：协程仍由 CPU 执行；选项四错误：线程之间是可以共享内存的。"
+        },
+        {
+          "question": "向无缓冲通道发送数据时会怎样？",
+          "options": [
+            "立即成功返回",
+            "阻塞直到有接收方完成同步",
+            "直接丢弃数据",
+            "自动创建缓冲区"
+          ],
+          "answer": 1,
+          "explanation": "无缓冲通道是同步握手，发送与接收必须同时就绪。选项一不成立；选项三会导致数据丢失；选项四不会自动发生。"
+        },
+        {
+          "question": "关于并发与并行，正确的说法是？",
+          "options": [
+            "两者完全相同",
+            "并发是交替推进，并行是真正同时执行，单核可以实现并发但无法并行",
+            "并行必须多进程，多线程只能并发",
+            "并发一定比串行快"
+          ],
+          "answer": 1,
+          "explanation": "并发强调的是结构上同时推进，并行要求物理上的同时执行。选项一混淆概念；选项三错误：多线程在多核上可以真并行；选项四忽略了切换与协调开销。"
+        },
+        {
+          "question": "线程数开得过多，最可能的后果是？",
+          "options": [
+            "吞吐量线性提升",
+            "切换与内存开销吃掉收益，吞吐不再提升甚至下降",
+            "程序变成协程",
+            "不再需要加锁"
+          ],
+          "answer": 1,
+          "explanation": "过多线程带来频繁上下文切换与更高内存占用。选项一忽略了边际收益递减；选项三与事实无关；选项四错误：线程再多也需要同步共享数据。"
+        }
+      ]
+    },
+    {
+      "id": "visual_http_timeline",
+      "title": { "zh": "图解一次网页请求的完整链路", "en": "HTTP Request Timeline Illustrated" },
+      "summary": {
+        "zh": "DNS、TCP、TLS、HTTP 与渲染五段时序，以及每段的优化手段。",
+        "en": "DNS, TCP, TLS, HTTP and rendering stages with optimizations."
+      },
+      "file": "assets/content/visual_http_timeline.md",
+      "minutes": 20,
+      "keywords": ["HTTP", "DNS", "TLS", "渲染", "性能指标"],
+      "difficulty": "进阶",
+      "order": 4,
+      "quiz": [
+        {
+          "question": "`curl -w` 输出中 `time_appconnect` 表示的是？",
+          "options": [
+            "DNS 解析耗时",
+            "TLS 握手完成的耗时",
+            "首字节时间",
+            "总耗时"
+          ],
+          "answer": 1,
+          "explanation": "time_appconnect 是应用层连接（含 TLS 握手）完成的时刻。选项一对应 time_namelookup；选项三对应 time_starttransfer；选项四对应 time_total。"
+        },
+        {
+          "question": "TTFB 偏高，最可能与哪一段有关？",
+          "options": [
+            "浏览器绘制",
+            "DNS 解析、连接建立与服务端处理时间",
+            "CSS 解析",
+            "图像压缩"
+          ],
+          "answer": 1,
+          "explanation": "TTFB 覆盖从请求发出到收到第一个字节的全过程，包含解析、连接与服务端处理。选项一与选项二属于收到响应之后的渲染阶段；选项四属于传输优化，不直接决定 TTFB。"
+        },
+        {
+          "question": "做动画时优先修改哪两个属性，代价最低？",
+          "options": [
+            "width 与 height",
+            "transform 与 opacity",
+            "margin 与 padding",
+            "top 与 left"
+          ],
+          "answer": 1,
+          "explanation": "transform 与 opacity 通常只需合成，跳过布局与绘制。选项一、三、四都会触发几何变化，进而引起重排，代价最高。"
+        },
+        {
+          "question": "为避免累积布局偏移（CLS），图片应该？",
+          "options": [
+            "懒加载即可",
+            "提前预留宽高或使用 aspect-ratio",
+            "统一用背景图",
+            "压缩到很小"
+          ],
+          "answer": 1,
+          "explanation": "预留尺寸能让浏览器提前占位，避免加载后内容跳动。选项一、三都不解决尺寸未知的问题；选项四只影响加载速度，不改变偏移。"
+        }
+      ]
+    }
+  ]
+}

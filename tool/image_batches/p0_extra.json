@@ -1,0 +1,337 @@
+{
+  "gamedev_animation_fsm": {
+    "image": "images/p0x_gamedev_animation_fsm.webp",
+    "alt": "动画状态机要素与常见坑对照图",
+    "anchor": "本课小结"
+  },
+  "gamedev_2d_rendering": {
+    "image": "images/p0x_gamedev_2d_rendering.webp",
+    "alt": "2D 坐标系转换与渲染顺序对照图",
+    "anchor": "本课小结"
+  },
+  "gamedev_collision_physics": {
+    "image": "images/p0x_gamedev_collision_physics.webp",
+    "alt": "碰撞检测粗筛精测两阶段与常见错误对照图",
+    "anchor": "本课小结"
+  },
+  "gamedev_multiplayer_sync": {
+    "image": "images/p0x_gamedev_multiplayer_sync.webp",
+    "alt": "服务器权威同步与客户端问题对照图",
+    "anchor": "本课小结"
+  },
+  "gamedev_performance_mobile": {
+    "image": "images/p0x_gamedev_performance_mobile.webp",
+    "alt": "移动端帧预算划分与发热降频对照图",
+    "anchor": "本课小结"
+  },
+  "gamedev_ecs_profiling": {
+    "image": "images/p0x_gamedev_ecs_profiling.webp",
+    "alt": "ECS 三要素与性能收益对照图",
+    "anchor": "本课小结"
+  },
+  "kotlin_project_cli_ledger": {
+    "image": "images/p0x_kotlin_project_cli_ledger.webp",
+    "alt": "Kotlin 命令行工具参数解析与退出码对照图",
+    "anchor": "本课小结"
+  },
+  "swift_project_cli_metrics": {
+    "image": "images/p0x_swift_project_cli_metrics.webp",
+    "alt": "Swift 命令行工具包结构与流程对照图",
+    "anchor": "本课小结"
+  },
+  "compiler_lexer_parser": {
+    "image": "images/p0x_compiler_lexer_parser.webp",
+    "alt": "词法分析与语法分析职责对照图",
+    "anchor": "本课小结"
+  },
+  "compiler_semantic_types": {
+    "image": "images/p0x_compiler_semantic_types.webp",
+    "alt": "符号表作用域与类型检查对照图",
+    "anchor": "本课小结"
+  },
+  "compiler_gc": {
+    "image": "images/p0x_compiler_gc.webp",
+    "alt": "垃圾回收判活方式与回收策略对照图",
+    "anchor": "本课小结"
+  },
+  "compiler_bytecode_vm": {
+    "image": "images/p0x_compiler_bytecode_vm.webp",
+    "alt": "栈式与寄存器式虚拟机对照图",
+    "anchor": "本课小结"
+  },
+  "compiler_ir_optimization": {
+    "image": "images/p0x_compiler_ir_optimization.webp",
+    "alt": "中间表示结构与常见优化对照图",
+    "anchor": "本课小结"
+  },
+  "blockchain_basics": {
+    "image": "images/p0x_blockchain_basics.webp",
+    "alt": "密码学原语与区块链用途对照图",
+    "anchor": "本课小结"
+  },
+  "blockchain_bitcoin_consensus": {
+    "image": "images/p0x_blockchain_bitcoin_consensus.webp",
+    "alt": "UTXO 模型与工作量证明对照图",
+    "anchor": "本课小结"
+  },
+  "blockchain_ethereum_smart_contract": {
+    "image": "images/p0x_blockchain_ethereum_smart_contract.webp",
+    "alt": "以太坊账户模型与 EVM Gas 对照图",
+    "anchor": "本课小结"
+  },
+  "chain_token_standards": {
+    "image": "images/p0x_chain_token_standards.webp",
+    "alt": "ERC-20 与 ERC-721 接口职责对照图",
+    "anchor": "本课小结"
+  },
+  "chain_oracle_bridge": {
+    "image": "images/p0x_chain_oracle_bridge.webp",
+    "alt": "预言机与跨链桥机制对照图",
+    "anchor": "本课小结"
+  },
+  "chain_zk_privacy": {
+    "image": "images/p0x_chain_zk_privacy.webp",
+    "alt": "零知识证明角色与典型电路对照图",
+    "anchor": "本课小结"
+  },
+  "blockchain_defi_security": {
+    "image": "images/p0x_blockchain_defi_security.webp",
+    "alt": "DeFi 常见漏洞与防线对照图",
+    "anchor": "本课小结"
+  },
+  "blockchain_scaling_layer2": {
+    "image": "images/p0x_blockchain_scaling_layer2.webp",
+    "alt": "扩容路线与权衡对照图",
+    "anchor": "本课小结"
+  },
+  "de_data_modeling": {
+    "image": "images/p0x_de_data_modeling.webp",
+    "alt": "数仓分层与建模要点对照图",
+    "anchor": "本课小结"
+  },
+  "de_stream_processing": {
+    "image": "images/p0x_de_stream_processing.webp",
+    "alt": "Kafka 事实与常见坑对照图",
+    "anchor": "本课小结"
+  },
+  "de_spark_tuning": {
+    "image": "images/p0x_de_spark_tuning.webp",
+    "alt": "宽窄依赖与调优手段对照图",
+    "anchor": "本课小结"
+  },
+  "de_flink_windowing": {
+    "image": "images/p0x_de_flink_windowing.webp",
+    "alt": "时间语义与窗口类型对照图",
+    "anchor": "本课小结"
+  },
+  "de_lakehouse_governance": {
+    "image": "images/p0x_de_lakehouse_governance.webp",
+    "alt": "湖仓表能力与维护动作对照图",
+    "anchor": "本课小结"
+  },
+  "embedded_mcu_basics": {
+    "image": "images/p0x_embedded_mcu_basics.webp",
+    "alt": "单片机启动流程与资源地图对照图",
+    "anchor": "本课小结"
+  },
+  "embedded_bus_protocols": {
+    "image": "images/p0x_embedded_bus_protocols.webp",
+    "alt": "UART、SPI、I2C 特性与排查要点对照图",
+    "anchor": "本课小结"
+  },
+  "embedded_gpio_interrupt": {
+    "image": "images/p0x_embedded_gpio_interrupt.webp",
+    "alt": "GPIO、中断、定时器要素与常见问题对照图",
+    "anchor": "本课小结"
+  },
+  "embedded_rtos_tasks": {
+    "image": "images/p0x_embedded_rtos_tasks.webp",
+    "alt": "RTOS 任务调度与同步机制对照图",
+    "anchor": "本课小结"
+  },
+  "embedded_low_power": {
+    "image": "images/p0x_embedded_low_power.webp",
+    "alt": "续航计算与低功耗手段对照图",
+    "anchor": "本课小结"
+  },
+  "embedded_debug_trace": {
+    "image": "images/p0x_embedded_debug_trace.webp",
+    "alt": "调试通道与排障手段对照图",
+    "anchor": "本课小结"
+  },
+  "embedded_iot_security": {
+    "image": "images/p0x_embedded_iot_security.webp",
+    "alt": "安全启动信任链与常见风险对照图",
+    "anchor": "本课小结"
+  },
+  "cloud_fundamentals": {
+    "image": "images/p0x_cloud_fundamentals.webp",
+    "alt": "云资源层级与设计要点对照图",
+    "anchor": "本课小结"
+  },
+  "cloud_cost_finops": {
+    "image": "images/p0x_cloud_cost_finops.webp",
+    "alt": "成本归因与容量规划对照图",
+    "anchor": "本课小结"
+  },
+  "cloud_containers_kubernetes": {
+    "image": "images/p0x_cloud_containers_kubernetes.webp",
+    "alt": "容器与 Kubernetes 对象对照图",
+    "anchor": "本课小结"
+  },
+  "cloud_serverless": {
+    "image": "images/p0x_cloud_serverless.webp",
+    "alt": "无服务器调用生命周期与注意事项对照图",
+    "anchor": "本课小结"
+  },
+  "cloud_iac_terraform": {
+    "image": "images/p0x_cloud_iac_terraform.webp",
+    "alt": "基础设施即代码流程与状态管理对照图",
+    "anchor": "本课小结"
+  },
+  "cloud_k8s_operations": {
+    "image": "images/p0x_cloud_k8s_operations.webp",
+    "alt": "Kubernetes 三类探针与发布排障对照图",
+    "anchor": "本课小结"
+  },
+  "cloud_security_iam": {
+    "image": "images/p0x_cloud_security_iam.webp",
+    "alt": "IAM 授权三要素与最小权限实践对照图",
+    "anchor": "本课小结"
+  },
+  "cloud_multicluster_dr": {
+    "image": "images/p0x_cloud_multicluster_dr.webp",
+    "alt": "容灾演练流程与验证关卡对照图",
+    "anchor": "本课小结"
+  },
+  "cloud_observability_sre": {
+    "image": "images/p0x_cloud_observability_sre.webp",
+    "alt": "可观测性三类信号与 SLO 实践对照图",
+    "anchor": "本课小结"
+  },
+  "ai_time_series": {
+    "image": "images/p0x_ai_time_series.webp",
+    "alt": "时间序列分解与建模要点对照图",
+    "anchor": "本课小结"
+  },
+  "ai_reinforcement_learning": {
+    "image": "images/p0x_ai_reinforcement_learning.webp",
+    "alt": "强化学习要素与训练要点对照图",
+    "anchor": "本课小结"
+  },
+  "dist_transaction": {
+    "image": "images/p0x_dist_transaction.webp",
+    "alt": "分布式事务方案与设计要点对照图",
+    "anchor": "本课小结"
+  },
+  "dist_event_sourcing": {
+    "image": "images/p0x_dist_event_sourcing.webp",
+    "alt": "事件溯源与 CQRS 对照图",
+    "anchor": "本课小结"
+  },
+  "gamedev_game_loop": {
+    "image": "images/p0x_gamedev_game_loop.webp",
+    "alt": "游戏循环四阶段与验证关卡图",
+    "anchor": "本课小结"
+  },
+  "gamedev_render_pipeline": {
+    "image": "images/p0x_gamedev_render_pipeline.webp",
+    "alt": "渲染管线四阶段与批次合并验证图",
+    "anchor": "本课小结"
+  },
+  "gamedev_asset_pipeline": {
+    "image": "images/p0x_gamedev_asset_pipeline.webp",
+    "alt": "资产管线与热更新流程验证图",
+    "anchor": "本课小结"
+  },
+  "c_project_tcp_server": {
+    "image": "images/p0x_c_project_tcp_server.webp",
+    "alt": "C 语言 TCP 服务端四阶段与检查点图",
+    "anchor": "本课小结"
+  },
+  "compiler_overview": {
+    "image": "images/p0x_compiler_overview.webp",
+    "alt": "编译器前端到后端五阶段流程图",
+    "anchor": "本课小结"
+  },
+  "compiler_diagnostics": {
+    "image": "images/p0x_compiler_diagnostics.webp",
+    "alt": "诊断系统与错误恢复流程验证图",
+    "anchor": "本课小结"
+  },
+  "compiler_jit_inlining": {
+    "image": "images/p0x_compiler_jit_inlining.webp",
+    "alt": "即时编译热点探测到内联去优化流程图",
+    "anchor": "本课小结"
+  },
+  "compiler_project_minilang": {
+    "image": "images/p0x_compiler_project_minilang.webp",
+    "alt": "迷你语言解释器四阶段实现图",
+    "anchor": "本课小结"
+  },
+  "compiler_codegen_vm": {
+    "image": "images/p0x_compiler_codegen_vm.webp",
+    "alt": "代码生成到栈式虚拟机执行流程图",
+    "anchor": "本课小结"
+  },
+  "chain_wallet_keys": {
+    "image": "images/p0x_chain_wallet_keys.webp",
+    "alt": "助记词到离线签名的密钥派生流程图",
+    "anchor": "本课小结"
+  },
+  "chain_audit_project": {
+    "image": "images/p0x_chain_audit_project.webp",
+    "alt": "智能合约审计四步骤与验证关卡图",
+    "anchor": "本课小结"
+  },
+  "de_batch_processing": {
+    "image": "images/p0x_de_batch_processing.webp",
+    "alt": "批处理分区与 Shuffle 流程图",
+    "anchor": "本课小结"
+  },
+  "de_orchestration_lineage": {
+    "image": "images/p0x_de_orchestration_lineage.webp",
+    "alt": "任务编排与血缘记录流程图",
+    "anchor": "本课小结"
+  },
+  "de_cdc_incremental": {
+    "image": "images/p0x_de_cdc_incremental.webp",
+    "alt": "CDC 从日志到目标表的同步流程图",
+    "anchor": "本课小结"
+  },
+  "de_data_contract": {
+    "image": "images/p0x_de_data_contract.webp",
+    "alt": "数据契约与质量门禁流程图",
+    "anchor": "本课小结"
+  },
+  "de_data_quality": {
+    "image": "images/p0x_de_data_quality.webp",
+    "alt": "数据质量分层校验与告警流程图",
+    "anchor": "本课小结"
+  },
+  "embedded_sensor_signal": {
+    "image": "images/p0x_embedded_sensor_signal.webp",
+    "alt": "传感器采集到标定的信号链路图",
+    "anchor": "本课小结"
+  },
+  "embedded_bootloader": {
+    "image": "images/p0x_embedded_bootloader.webp",
+    "alt": "Bootloader 校验启动与升级回滚流程图",
+    "anchor": "本课小结"
+  },
+  "embedded_project_env_monitor": {
+    "image": "images/p0x_embedded_project_env_monitor.webp",
+    "alt": "环境监测节点采集与断网重传流程图",
+    "anchor": "本课小结"
+  },
+  "ai_mlops": {
+    "image": "images/p0x_ai_mlops.webp",
+    "alt": "MLOps 从数据版本到上线监控流程图",
+    "anchor": "本课小结"
+  },
+  "ai_recommender": {
+    "image": "images/p0x_ai_recommender.webp",
+    "alt": "推荐系统召回排序漏斗流程图",
+    "anchor": "本课小结"
+  }
+}

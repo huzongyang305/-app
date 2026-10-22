@@ -1,0 +1,102 @@
+{
+  "lessons": [
+    {
+      "id": "swift_project_cli_metrics",
+      "category": "swift",
+      "title": {"zh": "实战：Swift 命令行指标分析工具", "en": "Hands-on Swift CLI Metrics Tool"},
+      "summary": {"zh": "从 Swift Package 结构、流式读取与 async/await 讲到测试、打包与性能验证。", "en": "Cover Swift Package layout, streaming reads, async/await, testing and packaging."},
+      "keywords": ["Swift", "Swift Package Manager", "async/await", "并发", "测试"],
+      "difficulty": "高级",
+      "minutes": 60,
+      "order": 13,
+      "prerequisites": ["swift_testing"],
+      "image": {"title": "指标分析工具的数据流", "flow": ["解析命令行参数", "流式读取文件", "按分组聚合统计", "输出表格与退出码"]},
+      "goals": [
+        "能建立一个包含可执行目标与测试目标的 Swift Package。",
+        "能用流式读取处理大于内存的日志文件。",
+        "能用任务组并发分析多个文件并保证错误被正确传播。"
+      ],
+      "prerequisitesText": [
+        "熟悉 Swift 的可选类型、结构体与协议。",
+        "了解 async/await 与任务的基本用法。",
+        "知道命令行参数与退出码的作用。"
+      ],
+      "concepts": [
+        {
+          "name": "Swift Package 结构",
+          "plain": "一个包由可执行目标与库目标组成，测试目标通过依赖声明访问库中的逻辑。",
+          "mechanism": "Package.swift 声明目标、依赖与平台版本，构建工具据此生成可执行文件并运行测试。",
+          "example": "把解析与聚合逻辑放进库目标，可执行目标只负责参数处理与输出，测试目标直接引用库。",
+          "boundary": "把所有代码塞进可执行目标会让测试无法导入这些类型，只能通过进程调用间接验证。",
+          "engineering": "按「库放逻辑、可执行放编排」划分目标，测试只依赖库目标。"
+        },
+        {
+          "name": "流式读取与内存控制",
+          "plain": "日志文件可能远大于内存，必须按行或按块读取而不是一次性载入。",
+          "mechanism": "按块读取并按换行切分，保留未完成的尾部片段与下一块拼接，保证跨块的行也能被正确解析。",
+          "example": "用一块很小的缓冲区读取大文件，验证行数与一次性读取的结果一致。",
+          "boundary": "忽略跨块拼接会丢掉被切断的行，统计结果会出现难以复现的偏差。",
+          "engineering": "把读取抽象成返回行的序列，让上层聚合逻辑与文件大小无关。"
+        },
+        {
+          "name": "async/await 与结构化并发",
+          "plain": "多个文件可以并发分析，但任务的创建要与作用域绑定，失败时能取消同组任务。",
+          "mechanism": "任务组在作用域结束前等待所有子任务，任一子任务抛出错误时可取消其余任务并把错误向上传播。",
+          "example": "并发分析若干文件，其中一个文件缺失，观察整体是否快速失败并释放资源。",
+          "boundary": "在任务组里捕获并吞掉错误会让调用方误以为全部成功，统计结果因此不完整。",
+          "engineering": "统一在任务组外处理错误，并限制并发度以避免同时打开过多文件。"
+        },
+        {
+          "name": "输出、退出码与测试",
+          "plain": "工具的输出要稳定可解析，测试则覆盖解析、聚合与错误路径。",
+          "mechanism": "聚合结果按固定列宽或分隔符输出，退出码区分成功、用法错误与数据错误，测试用固定样本文件断言结果与退出码。",
+          "example": "为同一份样本文件写测试，断言表格内容与退出码均为预期值。",
+          "boundary": "只在开发机上手工运行无法发现平台差异，尤其是并发任务数量与文件编码相关的行为。",
+          "engineering": "把样本数据放进测试资源，用固定输入断言输出格式，保证脚本调用方长期可用。"
+        }
+      ],
+      "steps": ["搭建包结构与目标划分", "解析参数并校验输入", "实现流式读取与聚合", "用任务组并发处理多文件", "补测试并打包验证"],
+      "code": {
+        "language": "swift",
+        "snippet": "import Foundation\n\nenum MetricsError: Error {\n    case missingInput\n    case unreadable(String)\n}\n\n/// 流式读取：按块读取并保留未完成的尾部，避免一次性载入整个文件\nfunc lines(of path: String, chunkSize: Int = 8192) throws -> [String] {\n    guard let handle = FileHandle(forReadingAtPath: path) else {\n        throw MetricsError.unreadable(path)\n    }\n    defer { try? handle.close() }\n\n    var result: [String] = []\n    var pending = Data()\n    while let chunk = try handle.read(upToCount: chunkSize), !chunk.isEmpty {\n        pending.append(chunk)\n        while let index = pending.firstIndex(of: 0x0A) {\n            let lineData = pending[pending.startIndex..<index]\n            result.append(String(decoding: lineData, as: UTF8.self))\n            pending = pending[pending.index(after: index)...]\n        }\n    }\n    if !pending.isEmpty {\n        result.append(String(decoding: pending, as: UTF8.self))\n    }\n    return result\n}\n\n/// 任务组并发分析多个文件，错误向上传播，任一失败即取消其余任务\nfunc analyze(paths: [String]) async throws -> [String: Int] {\n    try await withThrowingTaskGroup(of: [String: Int].self) { group in\n        for path in paths {\n            group.addTask {\n                var counter: [String: Int] = [:]\n                for line in try lines(of: path) {\n                    let level = line.split(separator: \" \").first.map(String.init) ?? \"unknown\"\n                    counter[level, default: 0] += 1\n                }\n                return counter\n            }\n        }\n        var total: [String: Int] = [:]\n        for try await partial in group {\n            for (level, count) in partial {\n                total[level, default: 0] += count\n            }\n        }\n        return total\n    }\n}",
+        "walkthrough": "示例用数据块读取并保留未完成的尾部，保证跨块的行也能被正确切分；任务组把每个文件的分析放进子任务，错误向上传播并取消同组任务，最后在主任务里合并统计结果。",
+        "expected_output": "对同一份样本日志，流式读取得到的行数与一次性读取一致；并发分析多个文件时结果与串行一致；任一文件缺失时整体抛出错误并以非 0 退出码结束。"
+      },
+      "faults": [
+        {"topic": "一次性把日志读进内存", "wrong": "用一次性读取的方式载入几百兆的文件", "fix": "按块流式读取并按行切分，只保留必要状态"},
+        {"topic": "忽略跨块被切断的行", "wrong": "每读一块就立即切分并丢弃未完成的尾部", "fix": "保留尾部数据与下一块拼接后再切分"},
+        {"topic": "任务组里吞掉错误", "wrong": "在子任务里捕获错误并返回空结果", "fix": "让错误向上传播，由调用方统一处理并返回非 0 退出码"}
+      ],
+      "glossary": [
+        {"term": "Swift Package Manager", "definition": "Swift 官方的依赖与构建工具，用 Package.swift 描述目标。"},
+        {"term": "目标", "definition": "包中的构建单元，分为可执行、库与测试等类型。"},
+        {"term": "流式读取", "definition": "按块或按行逐步读取数据，避免一次性载入内存。"},
+        {"term": "任务组", "definition": "受作用域约束、可并发执行并传播错误的子任务集合。"},
+        {"term": "退出码", "definition": "进程返回给调用方的整数状态，用于区分成功与不同失败类型。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "为什么要把业务逻辑放进库目标而不是可执行目标？", "options": ["测试目标可以直接导入这些类型进行单元测试", "可执行目标不能包含函数", "库目标运行速度更快", "库目标不需要声明依赖"], "answer": 0, "explanation": "可执行目标的代码无法被测试目标直接导入，把解析与聚合逻辑放进库目标后，测试可以构造输入并断言输出，而不必通过启动子进程间接验证。"},
+        {"type": "single", "question": "按块读取时保留未完成尾部的原因是什么？", "options": ["一行可能被切在块边界上，需要与下一块拼接", "尾部数据可以提升读取速度", "保留尾部可以减少磁盘占用", "Swift 要求缓冲区必须对齐"], "answer": 0, "explanation": "按固定大小读取时，一行很可能被切在两个块之间，如果直接丢弃尾部就会漏掉这一行；保留尾部与下一块拼接后才能得到完整的行。"},
+        {"type": "multi", "question": "以下哪些做法符合结构化并发的要求？（多选）", "options": ["子任务错误向上传播", "限制同时打开的文件数量", "在子任务里吞掉错误并返回空结果", "作用域结束前等待所有子任务"], "answers": [0, 1, 3], "answer": 0, "explanation": "结构化并发要求作用域结束时所有子任务都已收尾，错误应向上传播，同时要限制并发度避免资源耗尽；吞掉错误会让调用方误判结果完整。"},
+        {"type": "order", "question": "请按命令行工具处理一次分析的顺序排列。", "options": ["输出表格并返回退出码", "解析并校验输入参数", "并发分析各文件并合并统计", "搭建包与目标结构"], "correct_order": [3, 1, 2, 0], "answer": 0, "explanation": "开发顺序是先搭好包与目标结构，再实现参数解析与校验，随后并发分析并合并统计，最后输出结果与退出码；把输出放在最前会让错误路径缺少明确状态。"},
+        {"type": "debug", "question": "阅读这段并发分析代码，下面哪项判断是正确的？", "options": ["任务组的子任务把错误向上传播，作用域结束前会等待全部任务", "子任务返回空字典表示分析成功", "任务组不会等待子任务结束", "并发分析不需要限制打开的文件数量"], "answer": 0, "code": "try await withThrowingTaskGroup(of: [String: Int].self) { group in\n    for path in paths {\n        group.addTask { try analyzeOne(path) }\n    }\n    var total: [String: Int] = [:]\n    for try await partial in group {\n        for (level, count) in partial { total[level, default: 0] += count }\n    }\n    return total\n}", "language": "swift", "explanation": "这段 Swift 代码用可抛出错误的 Swift 并发任务组并发分析文件，子任务的错误会向上传播，作用域结束前会等待全部任务收尾；实际项目还应限制并发度，避免同时打开过多文件。"}
+      ],
+      "practice": [
+        "建立一个包含可执行目标与测试目标的 Swift Package，并让测试直接引用库目标。",
+        "用 8 KB 缓冲区读取一份大日志，验证行数与一次性读取完全一致。",
+        "并发分析多个文件并在其中一个缺失时验证错误传播与退出码。"
+      ],
+      "refs": [
+        {"name": "Swift 官方文档：并发", "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/"},
+        {"name": "Swift Package Manager 文档", "url": "https://www.swift.org/documentation/package-manager/"},
+        {"name": "Apple 文档：FileHandle", "url": "https://developer.apple.com/documentation/foundation/filehandle"}
+      ],
+      "english": "A Swift CLI tool separates a library target with parsing and aggregation logic from a thin executable target, so tests can import the logic directly. Read large files in chunks while keeping the unfinished tail, run per-file analysis inside a throwing task group so errors propagate and siblings cancel, and keep output and exit codes stable for scripted callers.",
+      "reviewPoints": [
+        "能说明库目标与可执行目标的划分理由。",
+        "能写出流式读取中处理跨块行的步骤。",
+        "能解释任务组如何传播错误并等待子任务。"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1258 @@
+{
+  "lessons": [
+    {
+      "id": "python_strings_encoding",
+      "category": "python",
+      "title": {
+        "zh": "Python 字符串、Unicode 与格式化",
+        "en": "Python Strings, Unicode and Formatting"
+      },
+      "summary": {
+        "zh": "把字符、字节、编码、格式化与正则串成一条完整链路，让文本处理代码在中文、emoji 和外部文件面前都不乱码。",
+        "en": "Connect characters, bytes, encodings, formatting and regular expressions into one text-processing pipeline."
+      },
+      "keywords": [
+        "Unicode",
+        "UTF-8",
+        "bytes",
+        "f-string",
+        "正则表达式"
+      ],
+      "difficulty": "基础",
+      "minutes": 45,
+      "order": 21,
+      "prerequisites": [
+        "python_variables",
+        "python_data_structures"
+      ],
+      "related": [
+        "python_errors_files",
+        "python_stdlib"
+      ],
+      "image": {
+        "title": "从码点到屏幕",
+        "flow": [
+          "Unicode 码点",
+          "编码为 UTF-8 字节",
+          "终端解码显示",
+          "规范化后比较"
+        ]
+      },
+      "goals": [
+        "能区分 str、bytes 与编码后的字节序列，并解释乱码产生的每一步。",
+        "能用 f-string 的格式规格输出对齐、精度和千分位稳定的文本。",
+        "能用命名组正则提取结构化日志，并让非法输入明确失败。"
+      ],
+      "prerequisitesText": [
+        "已经会创建字符串、调用 len 和使用 print。",
+        "知道列表、字典等容器的基本操作。",
+        "能运行一个 Python 脚本并查看异常回溯。"
+      ],
+      "concepts": [
+        {
+          "name": "str 是 Unicode 码点序列",
+          "plain": "Python 3 的字符串由 Unicode 码点组成，一个汉字、一个 emoji 都先被看成独立码点；len 统计的是码点数量，不是屏幕上占的列数。",
+          "mechanism": "解释器把源码按声明编码解码成 str，str 内部保存码点；打印时再由终端编码转换成字节。组合字符和零宽连接符会让一个视觉字符由多个码点构成，len 与显示宽度因此可能不一致。",
+          "example": "用字母 e 加上组合重音 chr(0x301) 组成 é，比较 len 的结果与过滤组合字符后得到的可见宽度。",
+          "boundary": "码点相等不代表字形等价；é 的预组合形式与分解形式需要先做 NFC 规范化，比较和查找才会稳定。",
+          "engineering": "需要按用户感知统计字数时，先做 unicodedata.normalize('NFC', text)，必要时再使用字素簇库。"
+        },
+        {
+          "name": "encode 与 decode 的方向",
+          "plain": "str 到 bytes 叫编码，bytes 到 str 叫解码；两端必须使用同一套字符集，否则会出现乱码或抛出 UnicodeDecodeError。",
+          "mechanism": "UTF-8 用 1 到 4 个字节表示一个码点，ASCII 保持单字节，中文通常占 3 字节；解码时按首字节判断后续需要读几个字节，遇到非法序列就按 errors 策略处理。",
+          "example": "把包含重音、emoji 与中文的文本编码成 UTF-8，打印字节长度，再用 decode('utf-8') 还原成原字符串。",
+          "boundary": "errors='ignore' 或 'replace' 能让程序继续运行，但会静默丢字符，只适合展示层兜底，不适合数据校验。",
+          "engineering": "外部文件、网络响应和数据库文本都要显式声明编码；边界处保留 bytes，进入业务层后统一转成 str。"
+        },
+        {
+          "name": "字符串变换与不可变性",
+          "plain": "str 一旦创建就不能原地修改，所有看起来在改字符串的方法都会返回新对象；切片、split、join、strip 和 casefold 是最常用的变换。",
+          "mechanism": "字符串是不可变对象，可以安全地作为字典键或跨线程共享；反复用加号拼接会产生许多中间对象，把片段收集到列表再 join 更稳定。",
+          "example": "把一行逗号分隔的记录 split 成列表，清洗空白后重新 join，观察每一步返回的是新字符串还是列表。",
+          "boundary": "str.strip 去掉的是首尾空白而不是中间空格；大小写比较要用 casefold，lower 对某些语言并不准确。",
+          "engineering": "入口统一做 normalize 与 strip，内部只依赖规范形式，避免同一份文本在不同分支里反复清洗。"
+        },
+        {
+          "name": "f-string 与格式规格",
+          "plain": "f-string 在运行时把表达式求值后嵌入文本，格式规格控制宽度、精度、对齐和进制，是日志与报表最常用的输出方式。",
+          "mechanism": "花括号里的表达式先求值，再交给 format 协议；大于号加宽度表示右对齐，点二表示保留两位小数，逗号表示千分位，等号可以同时打印表达式和结果。",
+          "example": "用格式规格输出右对齐的小数，再把大整数格式化成带千分位分隔的文本，观察宽度与精度分别由哪一段控制。",
+          "boundary": "f-string 会在求值阶段执行表达式，不能把不可信输入直接当成格式模板；自定义对象要实现 __format__ 才能响应规格。",
+          "engineering": "给人看的日志可以固定宽度便于扫描，给机器消费的日志应输出 JSON，避免用空格拼接后难以解析。"
+        },
+        {
+          "name": "正则表达式与整体校验",
+          "plain": "正则表达式用模式描述一类文本，适合提取和校验结构化字符串；Python 的 re 模块支持分组、命名组、查找和替换。",
+          "mechanism": "re.match 只从开头匹配，re.fullmatch 要求整个字符串匹配，re.search 扫描任意位置；量词默认贪婪，加问号变成非贪婪，命名组可以通过 groupdict 取字段。",
+          "example": "用命名组从一行日志中提取日期、用户编号和消息，再用 fullmatch 保证整行格式完全符合预期。",
+          "boundary": "复杂嵌套量词可能触发灾难性回溯，处理不可信长文本前要限制长度或改用解析器；模式里的反斜杠应放在原始字符串里减少转义层数。",
+          "engineering": "常用模式提前 re.compile，错误分支要区分未匹配与格式错误；对安全敏感的校验不要只靠正则。"
+        }
+      ],
+      "steps": [
+        "确认输入是 str 还是 bytes",
+        "在边界完成编码转换与规范化",
+        "用字符串方法清洗、拆分与重组",
+        "用格式规格输出稳定可读的结果",
+        "用正则提取或校验并覆盖失败分支"
+      ],
+      "code": {
+        "language": "python",
+        "snippet": "import re\nimport unicodedata\n\ntext = \"Café 😀 中文\"\nprint(\"码点数量:\", len(text))\nprint(\"UTF-8 字节:\", len(text.encode(\"utf-8\")))\nprint(\"规范化后比较:\", unicodedata.normalize(\"NFC\", \"e\" + chr(0x301)) == \"é\")\n\nlog = \"2026-10-08 12:30:45 ERROR user=42 msg=timeout\"\npattern = re.compile(\n    r\"^([0-9]{4}-[0-9]{2}-[0-9]{2}) [^ ]+ ERROR user=([0-9]+) msg=([A-Za-z]+)$\"\n)\nmatch = pattern.fullmatch(log)\nprint(\"解析结果:\", match.groups() if match else \"未匹配\")\nprint(f\"{3.14159:>8.2f} | {1234567:,}\")",
+        "walkthrough": "脚本先打印同一段文本的码点数量与 UTF-8 字节数，看到中文和 emoji 在两套度量下的差异；随后把分解形式的 é 规范化为 NFC 再比较，最后用命名组正则解析日志并用格式规格输出对齐文本。运行前先预测两个长度，再和真实输出对照。",
+        "expected_output": "码点数量: 9\nUTF-8 字节: 17\n规范化后比较: True\n解析结果: ('2026-10-08', '42', 'timeout')\n    3.14 | 1,234,567"
+      },
+      "faults": [
+        {
+          "topic": "读写文本不指定编码",
+          "wrong": "open(path) 依赖系统默认编码，在中文 Windows 上写入后用 Linux 读取就可能乱码",
+          "fix": "读写文本统一写 encoding='utf-8'，需要兼容 BOM 时再用 utf-8-sig"
+        },
+        {
+          "topic": "混淆 str 与 bytes",
+          "wrong": "把网络返回的 bytes 直接和字符串比较，或对 bytes 调用只存在于 str 的方法",
+          "fix": "先用正确编码 decode 成 str，或者在字节层统一比较 b'...'"
+        },
+        {
+          "topic": "把 len 当成显示宽度",
+          "wrong": "用 len(text) 对齐终端表格，遇到 emoji 和组合字符就错位",
+          "fix": "先做 NFC 规范化，再按字素簇或显示宽度库计算，必要时固定列宽"
+        },
+        {
+          "topic": "正则只匹配前缀",
+          "wrong": "用 re.match 校验整行格式，尾部多余的字符也被当成合法输入",
+          "fix": "需要整体校验时用 re.fullmatch，或给模式加锚点并覆盖完整字符串"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "Unicode 码点",
+          "definition": "Unicode 标准给每个字符分配的数字编号，Python 的 str 以码点序列保存文本。"
+        },
+        {
+          "term": "UTF-8",
+          "definition": "一种变长 Unicode 编码，ASCII 占一字节，中文通常占三字节，emoji 通常占四字节。"
+        },
+        {
+          "term": "编码与解码",
+          "definition": "编码把 str 转成 bytes，解码把 bytes 还原成 str，两者必须约定同一字符集。"
+        },
+        {
+          "term": "f-string",
+          "definition": "以 f 前缀开头的字符串字面量，可以在花括号中插入表达式和格式规格。"
+        },
+        {
+          "term": "原始字符串",
+          "definition": "以 r 前缀声明的字符串，反斜杠不被当成转义序列，适合书写正则模式。"
+        },
+        {
+          "term": "字素簇",
+          "definition": "用户感知为一个字符的最小文本单位，可能由多个 Unicode 码点组合而成。"
+        }
+      ],
+      "quiz": [
+        {
+          "type": "single",
+          "question": "Python 3 中 len('中文😀') 的结果是什么？",
+          "options": [
+            "3",
+            "5",
+            "6",
+            "取决于终端编码"
+          ],
+          "answer": 0,
+          "explanation": "结果是 3。Python 3 的 str 保存 Unicode 码点，中、文、😀 各算一个码点，len 返回码点数量而不是 UTF-8 字节数，也不受终端编码影响。该字符串用 UTF-8 编码后是 3 加 3 加 4 共 10 字节，所以把 len 当成字节数会在计算存储和网络包大小时产生偏差。"
+        },
+        {
+          "type": "single",
+          "question": "读取一个需要跨平台交换的文本文件，最稳妥的写法是？",
+          "options": [
+            "open(path)",
+            "open(path, 'w')",
+            "open(path, encoding='utf-8')",
+            "open(path, 'rb') 后直接当 str 使用"
+          ],
+          "answer": 2,
+          "explanation": "正确做法是显式传入 encoding='utf-8'。不指定编码时 Python 使用操作系统默认编码，同一个文件在中文 Windows 与 Linux 上可能得到不同结果；二进制模式返回 bytes，不能直接当 str 使用；写入模式还会截断原文件，因此与读取语义不同。"
+        },
+        {
+          "type": "multi",
+          "question": "以下哪些操作会在编码边界抛错或产生乱码？（多选）",
+          "options": [
+            "用 GBK 解码 UTF-8 字节",
+            "对 bytes 调用 str 独有的 format 方法",
+            "直接比较 bytes 与 str",
+            "先用 UTF-8 编码再用 UTF-8 解码"
+          ],
+          "answers": [
+            0,
+            1,
+            2
+          ],
+          "answer": 0,
+          "explanation": "用错误的字符集解码、对 bytes 调用 str 方法、把 bytes 与 str 直接比较都会失败或得到意外结果。显式用同一套 UTF-8 先编码再解码是正确往返，不会乱码。混淆类型时错误往往出现在边界层，因此要在读入和写出处集中处理编码。"
+        },
+        {
+          "type": "code",
+          "question": "阅读代码，输出与结论哪一项正确？\n\ntext = 'e' + chr(0x301)\nprint(len(text), text == 'é', unicodedata.normalize('NFC', text) == 'é')",
+          "options": [
+            "2 False True",
+            "2 True True",
+            "1 False True",
+            "2 False False"
+          ],
+          "answer": 0,
+          "code": "text = 'e' + chr(0x301)\nprint(len(text), text == 'é', unicodedata.normalize('NFC', text) == 'é')",
+          "language": "python",
+          "explanation": "结果是 2 False True。text 由字母 e 和组合重音两个码点组成，所以 len 为 2；直接与预组合形式的 é 比较不相等；NFC 规范化会把分解形式合并成预组合码点，因此规范化后比较为 True。要比较用户看到的字符，先统一规范化形式。这道题考察 Unicode 规范化：同一字符的不同码点序列必须先统一形式再比较。"
+        },
+        {
+          "type": "debug",
+          "question": "下面代码为什么没有拦住非法输入？\n\nre.match(r'[0-9]{4}-[0-9]{2}', '2026-10-08oops')",
+          "options": [
+            "match 只保证前缀匹配，尾部 oops 没有被校验，应改用 fullmatch",
+            "字符类写错导致数字无法匹配",
+            "re.match 会自动去掉字符串末尾字符",
+            "模式缺少分组所以匹配结果为空"
+          ],
+          "answer": 0,
+          "code": "re.match(r'[0-9]{4}-[0-9]{2}', '2026-10-08oops')",
+          "language": "python",
+          "explanation": "match 只要求模式从字符串开头匹配，不要求消耗整个字符串，所以 2026-10 这一段会成功，尾部的 oops 被忽略。需要整体校验时应使用 re.fullmatch，或在模式末尾补上锚点并覆盖完整内容；只看到匹配成功就放行是输入校验中的常见漏洞。"
+        }
+      ],
+      "practice": [
+        "读取任意一篇 Markdown 教程，分别统计码点数量、UTF-8 字节数量和行数，解释三个数字为什么不同。",
+        "写一个日志解析函数，用命名组提取日期、级别与请求编号，并给合法行和非法行各写一条断言。",
+        "用 f-string 输出一张包含百分数和千分位整数的对齐表格，再加入一个 emoji，记录错位现象与修复方案。",
+        "为编码处理补四个测试：空字符串、组合字符、emoji 和非法 UTF-8 字节。"
+      ],
+      "refs": [
+        {
+          "name": "Python 官方 Unicode HOWTO",
+          "url": "https://docs.python.org/3/howto/unicode.html"
+        },
+        {
+          "name": "Python re 模块文档",
+          "url": "https://docs.python.org/3/library/re.html"
+        },
+        {
+          "name": "字符串格式规格迷你语言",
+          "url": "https://docs.python.org/3/library/string.html#format-specification-mini-language"
+        }
+      ],
+      "english": "Python 3 strings store Unicode code points, while bytes store encoded octets. This lesson explains encoding and decoding, NFC normalization, immutable string operations, f-string formatting, and full-string validation with regular expressions. It ends with a runnable log parser and practical rules for handling Chinese text, emoji and files across platforms.",
+      "reviewPoints": [
+        "能解释 len(str) 与 UTF-8 字节数的区别。",
+        "能在文件读写和网络边界显式处理编码。",
+        "能用 fullmatch 与命名组完成整行校验。"
+      ],
+      "lab": "sandbox:python"
+    },
+    {
+      "id": "python_containers_copy",
+      "category": "python",
+      "title": {
+        "zh": "Python 容器进阶、拷贝与默认参数",
+        "en": "Python Containers, Copies and Mutable Defaults"
+      },
+      "summary": {
+        "zh": "理解引用、浅拷贝、深拷贝、哈希契约和默认参数求值时机，定位那些由共享状态引起的隐蔽缺陷。",
+        "en": "Understand references, shallow and deep copies, hashing contracts and when default arguments are evaluated."
+      },
+      "keywords": [
+        "浅拷贝",
+        "深拷贝",
+        "哈希",
+        "默认参数",
+        "稳定排序"
+      ],
+      "difficulty": "进阶",
+      "minutes": 50,
+      "order": 22,
+      "prerequisites": [
+        "python_data_structures"
+      ],
+      "related": [
+        "python_oop",
+        "python_oop_advanced"
+      ],
+      "image": {
+        "title": "引用与拷贝的分叉",
+        "flow": [
+          "对象与引用",
+          "浅拷贝复制第一层",
+          "深拷贝递归复制",
+          "共享状态引发缺陷"
+        ]
+      },
+      "goals": [
+        "能画出变量、对象和嵌套容器的引用关系图。",
+        "能按嵌套深度选择浅拷贝或深拷贝，并说明共享代价。",
+        "能识别可变默认参数、乘法构造嵌套列表等共享陷阱。"
+      ],
+      "prerequisitesText": [
+        "会用列表、字典、集合和元组完成基本增删改查。",
+        "知道函数参数如何传递，能写返回多个值的函数。",
+        "能在解释器里用 print 与 type 观察对象。"
+      ],
+      "concepts": [
+        {
+          "name": "赋值绑定的是引用",
+          "plain": "Python 的变量名指向对象，赋值语句把名字绑定到对象，而不是把对象内容复制到新变量；两个名字可以指向同一个可变对象。",
+          "mechanism": "对象有唯一身份，id 可以观察身份，is 比较身份，等于号比较值；对列表执行 b = a 后，通过 b 做的原地修改会立刻出现在 a 上，因为它们本来就是同一个列表。",
+          "example": "让两个名字指向同一个列表，修改其中一个后再打印两者的内容与 id，观察共享关系。",
+          "boundary": "不可变对象也会被共享，但因为不能原地修改，看起来更安全；元组内部的列表仍然可变，浅层不可变不代表深层不可变。",
+          "engineering": "函数返回容器前明确所有权，调用方需要独立数据时在边界复制，不要靠约定猜测谁会修改。"
+        },
+        {
+          "name": "浅拷贝与深拷贝",
+          "plain": "浅拷贝创建新的外层容器，但内部元素仍然指向原对象；深拷贝递归复制嵌套对象，得到完全独立的副本。",
+          "mechanism": "copy.copy 只复制第一层引用，copy.deepcopy 用 memo 记录已经复制过的对象，既能保持共享关系又能处理循环引用；深度越大，深拷贝的时间和内存成本越高。",
+          "example": "对包含列表的字典分别做浅拷贝与深拷贝，修改浅拷贝里的嵌套列表，再观察原字典和深拷贝是否变化。",
+          "boundary": "深拷贝不是永远正确：文件句柄、锁和数据库连接通常不应被复制；不可变对象也没必要复制。",
+          "engineering": "状态需要在多处独立演化时用不可变数据或显式复制函数；复制策略写进接口文档并用测试固定下来。"
+        },
+        {
+          "name": "排序、分组与计数",
+          "plain": "排序用 key 指定比较依据，Python 的排序稳定，多条件可以通过元组或负号实现；Counter、defaultdict 与 deque 覆盖常见统计和队列需求。",
+          "mechanism": "sorted 先为每个元素计算 key，再按 key 排序，原始相对顺序在 key 相等时保持不变；Counter 用字典统计可哈希元素，deque 在两端追加和弹出的时间复杂度为常数。",
+          "example": "先按分数从高到低、再按姓名排序一组记录，并用 Counter 找出出现次数最多的两个元素。",
+          "boundary": "排序对象必须能比较，混合类型会抛 TypeError；在大量数据上使用 lambda 时要注意计算次数和内存占用。",
+          "engineering": "统计口径和排序键集中定义，避免不同模块各自写一遍导致报表口径不一致。"
+        },
+        {
+          "name": "哈希与字典键契约",
+          "plain": "字典和集合用哈希定位元素，键必须可哈希；同时实现相等与哈希的对象，必须保证相等对象具有相同哈希值。",
+          "mechanism": "哈希值把键映射到桶，冲突时再按相等比较；可变对象的内容改变后哈希会变化，因此列表和字典不能作为键，元组只有内部元素都不可哈希时才可用。",
+          "example": "把数字、字符串和由不可变元素组成的元组放进集合，再尝试放列表并观察 TypeError。",
+          "boundary": "自定义对象默认按身份哈希，即使内容相同也可能被当成两个键；重写相等方法后必须同步重写哈希方法。",
+          "engineering": "用作键的对象尽量不可变；需要以复合条件分组时先转换成元组或规范字符串。"
+        },
+        {
+          "name": "默认参数在定义时求值",
+          "plain": "函数的默认参数只在函数定义时求值一次，之后所有调用共享同一个默认对象；用可变对象做默认值会累积状态。",
+          "mechanism": "函数对象保存默认值的引用，调用时如果没有传入该参数就复用这个引用；改成 None 哨兵后，每次调用都在函数体内创建新列表，状态自然隔离。",
+          "example": "写一个带列表默认参数的函数连续调用两次，观察结果累积，再把默认值改成 None 验证行为恢复独立。",
+          "boundary": "不可变默认值没有共享修改问题，但仍然只求值一次；依赖运行时配置的默认值应放到函数体内计算。",
+          "engineering": "默认参数只放不可变值，可变容器用 None 哨兵；代码评审时把可变默认值当成确定性缺陷处理。"
+        }
+      ],
+      "steps": [
+        "画出变量与对象的引用关系",
+        "判断修改发生在哪一层",
+        "按需要选择浅拷贝或深拷贝",
+        "用不可变结构或 None 哨兵隔离状态",
+        "用测试覆盖共享与独立两种路径"
+      ],
+      "code": {
+        "language": "python",
+        "snippet": "import copy\nfrom collections import Counter\n\nrow = {\"name\": \"Ada\", \"scores\": [90, 85]}\nshallow = copy.copy(row)\ndeep = copy.deepcopy(row)\nshallow[\"scores\"].append(100)\nprint(\"浅拷贝共享:\", row[\"scores\"])\nprint(\"深拷贝独立:\", deep[\"scores\"])\n\nrecords = [\n    {\"name\": \"Lin\", \"score\": 88},\n    {\"name\": \"Ada\", \"score\": 95},\n    {\"name\": \"Bo\", \"score\": 88},\n]\nordered = sorted(records, key=lambda item: (-item[\"score\"], item[\"name\"]))\nprint(\"排序:\", [(item[\"name\"], item[\"score\"]) for item in ordered])\nprint(\"计数:\", Counter([1, 1, 2, 3, 3, 3]).most_common(2))\n\ndef add_tag(tag, tags=None):\n    if tags is None:\n        tags = []\n    tags.append(tag)\n    return tags\n\nprint(\"独立默认值:\", add_tag(\"python\"), add_tag(\"sql\"))",
+        "walkthrough": "脚本先用浅拷贝和深拷贝处理同一个嵌套字典，验证浅拷贝里的列表与原字典共享；随后用排序键同时表达分数降序和姓名升序，用 Counter 统计频次；最后用 None 哨兵替代可变默认参数，保证每次调用都得到独立列表。",
+        "expected_output": "浅拷贝共享: [90, 85, 100]\n深拷贝独立: [90, 85]\n排序: [('Ada', 95), ('Bo', 88), ('Lin', 88)]\n计数: [(3, 3), (1, 2)]\n独立默认值: ['python'] ['sql']"
+      },
+      "faults": [
+        {
+          "topic": "用乘法构造嵌套容器",
+          "wrong": "写 [[0] * 3] * 2 以为得到两行互相独立的表格",
+          "fix": "改成 [[0] * 3 for _ in range(2)]，让每次迭代创建新列表"
+        },
+        {
+          "topic": "可变默认参数累积状态",
+          "wrong": "def push(item, box=[]): box.append(item) 连续调用后历史数据一直保留",
+          "fix": "默认值写 None，在函数体内判断并创建新容器"
+        },
+        {
+          "topic": "浅拷贝被当成完全独立的副本",
+          "wrong": "复制字典后修改其中的嵌套列表，原对象也跟着变化",
+          "fix": "按嵌套深度选择 deepcopy，或把嵌套结构改成不可变对象"
+        },
+        {
+          "topic": "用可变对象当字典键",
+          "wrong": "把列表或字典放进 set 或作为 dict 的键，运行时抛 TypeError",
+          "fix": "转换为元组、字符串或冻结集合后再作为键"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "引用",
+          "definition": "变量名指向某个对象的绑定关系，赋值复制的是引用而不是对象内容。"
+        },
+        {
+          "term": "浅拷贝",
+          "definition": "只复制外层容器，内部元素仍与原对象共享的拷贝方式。"
+        },
+        {
+          "term": "深拷贝",
+          "definition": "递归复制嵌套对象并保持内部关系独立的拷贝方式。"
+        },
+        {
+          "term": "可哈希",
+          "definition": "对象在其生命周期内哈希值稳定且可实现相等比较，因而能作为字典键或集合元素。"
+        },
+        {
+          "term": "稳定排序",
+          "definition": "排序键相等的元素保持原来相对顺序的性质。"
+        },
+        {
+          "term": "None 哨兵",
+          "definition": "用 None 表示未提供参数，并在函数体内创建真正的默认值，避免共享可变对象。"
+        }
+      ],
+      "quiz": [
+        {
+          "type": "single",
+          "question": "对嵌套字典做浅拷贝后修改其中的列表，会发生什么？",
+          "options": [
+            "原字典里的列表也会变化，因为内层对象仍然共享",
+            "原字典完全不受影响",
+            "浅拷贝会抛出 TypeError",
+            "列表会被自动转换成元组"
+          ],
+          "answer": 0,
+          "explanation": "浅拷贝只创建新的外层字典，内层列表仍然是同一个对象的引用，所以通过副本修改列表会反映到原字典。若希望内外都独立，需要使用 copy.deepcopy，或者把嵌套数据设计成不可变结构。判断拷贝是否足够，关键看被修改的层级有没有被复制。"
+        },
+        {
+          "type": "single",
+          "question": "def add(item, box=[]) 连续调用两次会出现什么结果？",
+          "options": [
+            "两次调用共享同一个列表，第二次结果包含第一次的元素",
+            "每次调用都会创建新列表，结果互相独立",
+            "第二次调用会清空列表",
+            "解释器会拒绝这种函数定义"
+          ],
+          "answer": 0,
+          "explanation": "默认参数在函数定义时只求值一次，box 会一直引用同一个列表，因此多次调用共享状态并不断累积元素。正确做法是把默认值设为 None，在函数体内判断并创建列表，这样每次调用都能获得独立容器，也避免测试之间互相污染。"
+        },
+        {
+          "type": "multi",
+          "question": "以下哪些对象可以直接作为字典的键？（多选）",
+          "options": [
+            "由整数组成的元组 (1, 2)",
+            "冻结集合 frozenset({1, 2})",
+            "列表 [1, 2]",
+            "字典 {'a': 1}"
+          ],
+          "answers": [
+            0,
+            1
+          ],
+          "answer": 0,
+          "explanation": "整数元组和冻结集合都是不可变且可哈希的，可以作为字典键；普通列表和字典是可变对象，内容变化会破坏哈希定位，解释器会直接抛出 TypeError。若确实需要以复合结构分组，可以先转换成元组、字符串或冻结集合。"
+        },
+        {
+          "type": "code",
+          "question": "阅读代码，输出是什么？\n\nrows = [[]] * 2\nrows[0].append(1)\nprint(rows)",
+          "options": [
+            "[[1], [1]]",
+            "[[1], []]",
+            "[[], []]",
+            "程序抛出异常"
+          ],
+          "answer": 0,
+          "code": "rows = [[]] * 2\nrows[0].append(1)\nprint(rows)",
+          "language": "python",
+          "explanation": "输出是 [[1], [1]]。乘法只复制了外层列表中的引用，两个位置指向同一个内层列表，修改第一个位置会影响第二个位置。要得到独立的两行，应写 [[ ] for _ in range(2)] 或使用列表推导式创建新列表，再用测试固定这个行为。这个现象本质上就是浅拷贝语义，嵌套列表需要深拷贝或重新构造才能独立。"
+        },
+        {
+          "type": "debug",
+          "question": "下面函数为什么会让调用方意外修改内部状态？\n\ndef get_items():\n    return self.items",
+          "options": [
+            "返回了内部列表本身，调用方可以原地修改，应返回副本或不可变视图",
+            "函数名不符合规范",
+            "self.items 只能是字符串",
+            "return 语句会复制列表"
+          ],
+          "answer": 0,
+          "code": "def get_items(self):\n    return self.items",
+          "language": "python",
+          "explanation": "返回内部列表本身会让调用方拿到同一个可变对象，随后 append 或 clear 都会悄悄改变对象状态，破坏封装并制造难以复现的 bug。可以返回 list(self.items) 这样的浅拷贝、返回 tuple 形式的只读视图，或者明确提供受控的增删方法并在文档中说明所有权。"
+        }
+      ],
+      "practice": [
+        "构造一个三层嵌套容器，分别做赋值、浅拷贝和深拷贝，修改每一层后记录哪些对象发生变化。",
+        "把一段使用可变默认参数的函数改成 None 哨兵写法，并补一条连续调用两次的回归测试。",
+        "用 sorted 与 Counter 完成一份成绩单：按分数降序、姓名升序，再统计各分数段人数。",
+        "为自定义对象实现 __eq__ 与 __hash__，验证内容相同的对象在字典中只占一个键。"
+      ],
+      "refs": [
+        {
+          "name": "Python copy 模块文档",
+          "url": "https://docs.python.org/3/library/copy.html"
+        },
+        {
+          "name": "Python 数据模型：对象、值与类型",
+          "url": "https://docs.python.org/3/reference/datamodel.html"
+        },
+        {
+          "name": "Python Sorting HOWTO",
+          "url": "https://docs.python.org/3/howto/sorting.html"
+        }
+      ],
+      "english": "Python names bind to objects, so assignment does not copy data. This lesson contrasts shallow and deep copies, explains hashing and equality contracts, shows stable sorting with composite keys, and fixes shared-state bugs caused by mutable default arguments and nested list multiplication.",
+      "reviewPoints": [
+        "能画出浅拷贝后仍然共享的内层对象。",
+        "能用 None 哨兵消除可变默认参数的状态累积。",
+        "能解释列表不能作为字典键的原因。"
+      ],
+      "lab": "sandbox:python"
+    },
+    {
+      "id": "python_oop_advanced",
+      "category": "python",
+      "title": {
+        "zh": "Python 面向对象进阶：继承、组合与魔术方法",
+        "en": "Advanced Python OOP: Inheritance, Composition and Dunder Methods"
+      },
+      "summary": {
+        "zh": "从会写类走向会设计对象：掌握 MRO、协作式继承、组合、数据类、属性和魔术方法，让模型既表达清楚又容易测试。",
+        "en": "Move from writing classes to designing objects with MRO, cooperative inheritance, composition, dataclasses, properties and dunder methods."
+      },
+      "keywords": [
+        "MRO",
+        "super",
+        "dataclass",
+        "property",
+        "魔术方法"
+      ],
+      "difficulty": "进阶",
+      "minutes": 55,
+      "order": 23,
+      "prerequisites": [
+        "python_oop"
+      ],
+      "related": [
+        "python_containers_copy",
+        "python_project_architecture"
+      ],
+      "image": {
+        "title": "对象设计的三种关系",
+        "flow": [
+          "继承表达是一个",
+          "组合表达有一个",
+          "协议表达能做什么",
+          "魔术方法接入语言运行时"
+        ]
+      },
+      "goals": [
+        "能读懂多继承的 MRO 顺序并预测 super 的调用链。",
+        "能在继承、组合与协议之间做出有理由的选择。",
+        "能用 dataclass、property 和魔术方法写出可验证的领域对象。"
+      ],
+      "prerequisitesText": [
+        "已经会定义类、实例化对象和写实例方法。",
+        "理解 self、实例属性与类属性的区别。",
+        "能用列表和字典保存对象集合。"
+      ],
+      "concepts": [
+        {
+          "name": "方法解析顺序与 super",
+          "plain": "多继承时 Python 用 C3 线性化计算 MRO，决定先找哪个类的方法；super 沿 MRO 找下一个类，而不是简单地找直接父类。",
+          "mechanism": "类创建时生成 __mro__ 元组，方法查找按顺序进行；协作式继承要求每一层都调用 super，并把不认识的关键字参数继续向后传递，否则链会断掉。",
+          "example": "定义 B 和 C 都继承 A，让 D 同时继承 B 和 C，每层方法拼接自己的标记，观察调用链按 MRO 展开。",
+          "boundary": "MRO 不能解决职责混乱；菱形继承中如果某一层不调用 super，后面的实现就被跳过。",
+          "engineering": "优先使用单继承加协议，多继承只用于混入小而正交的能力，并用测试固定协作链行为。"
+        },
+        {
+          "name": "组合优先与协议",
+          "plain": "组合表达对象拥有另一个对象，协议表达对象能提供什么行为；它们比为了复用代码而建立继承关系更灵活。",
+          "mechanism": "把可变行为注入构造函数后，运行时可以替换实现，测试时可以传入假对象；typing.Protocol 用结构化类型描述接口，静态检查不需要真实继承。",
+          "example": "定义一个价格规则协议，把折扣对象注入订单，再在测试中换成不打折的规则验证总价。",
+          "boundary": "协议只描述形状，不会自动检查实现是否正确；运行时仍要处理方法缺失、返回值类型错误等边界。",
+          "engineering": "依赖抽象而不是具体类，构造和装配放在组合根，领域对象只依赖协议并保持可测试。"
+        },
+        {
+          "name": "dataclass 与不可变数据",
+          "plain": "dataclass 根据字段声明自动生成初始化、表示和相等方法，适合承载结构化数据；frozen 与 slots 可以进一步收紧可变性和内存布局。",
+          "mechanism": "可变默认值必须用 field(default_factory=list) 创建，__post_init__ 可以在初始化后做校验或派生字段；frozen 会阻止字段重新赋值，slots 会移除实例字典。",
+          "example": "定义一个冻结的折扣数据类，再用默认工厂创建订单明细列表，验证两个实例的列表互不共享。",
+          "boundary": "frozen 只阻止字段重新绑定，字段内部的列表仍然可变；需要深层不可变时要选择元组或专门的不可变容器。",
+          "engineering": "值对象尽量小而不可变，实体用标识区分身份；数据类和业务行为可以分离，避免把所有逻辑塞进一个大类。"
+        },
+        {
+          "name": "property 与属性校验",
+          "plain": "property 让方法以属性语法访问，可以在赋值和读取时做校验、换算或延迟计算，同时保持调用方代码简洁。",
+          "mechanism": "property 是描述符，读操作调用 getter，写操作调用 setter，删除调用 deleter；把内部值放在带下划线的属性里可以避免无限递归。",
+          "example": "给订单数量写一个属性，赋值时拒绝负数，读取时返回整数，再尝试写入非法值观察异常。",
+          "boundary": "属性不应隐藏昂贵的远程调用；setter 里做太多副作用会让赋值难以预测。",
+          "engineering": "校验失败要抛出明确异常并保留原始输入；派生属性的缓存需要失效策略和并发保护。"
+        },
+        {
+          "name": "魔术方法与语言协议",
+          "plain": "魔术方法让自定义对象接入 Python 的通用协议，例如长度、迭代、比较、算术运算、上下文管理和格式化。",
+          "mechanism": "len(obj) 调用 __len__，for 循环调用 __iter__，with 调用 __enter__ 和 __exit__，print 优先调用 __str__，调试显示调用 __repr__，运算符对应 __add__、__eq__ 等方法。",
+          "example": "给订单实现长度、表示和报价方法，让对象可以直接参与 len 与调试输出，而不必暴露内部列表。",
+          "boundary": "实现 __eq__ 后默认不再可哈希，需要时显式实现 __hash__；魔术方法应遵守 Python 的返回约定，否则其他库会工作异常。",
+          "engineering": "只实现真正需要的协议，并向语言内置语义对齐；__repr__ 要足以帮助定位问题且避免泄露敏感数据。"
+        }
+      ],
+      "steps": [
+        "先写清楚对象承担的职责",
+        "优先用组合与协议装配行为",
+        "用 dataclass 表达值对象",
+        "用 property 守住不变量",
+        "按需实现魔术方法并补测试"
+      ],
+      "code": {
+        "language": "python",
+        "snippet": "from dataclasses import dataclass\nfrom typing import Protocol\n\nclass PriceRule(Protocol):\n    def final_price(self, amount: float) -> float: ...\n\n@dataclass(frozen=True)\nclass Discount:\n    percent: float\n\n    def final_price(self, amount: float) -> float:\n        return round(amount * (1 - self.percent / 100), 2)\n\nclass Order:\n    def __init__(self, rule: PriceRule, items=None):\n        self.rule = rule\n        self._items = list(items or [])\n\n    @property\n    def total(self) -> float:\n        return sum(self._items)\n\n    def quote(self) -> float:\n        return self.rule.final_price(self.total)\n\n    def __len__(self):\n        return len(self._items)\n\n    def __repr__(self):\n        return f\"Order(items={self._items!r})\"\n\nclass A:\n    def hello(self):\n        return \"A\"\n\nclass B(A):\n    def hello(self):\n        return \"B+\" + super().hello()\n\nclass C(A):\n    def hello(self):\n        return \"C+\" + super().hello()\n\nclass D(B, C):\n    pass\n\nprint(\"MRO 调用链:\", D().hello())\norder = Order(Discount(10), [100, 50])\nprint(\"报价:\", order.quote())\nprint(\"对象表示:\", repr(order))",
+        "walkthrough": "订单只依赖价格规则协议，折扣对象负责计算折后价；Order 用 property 暴露总价，用 len 和 repr 接入语言协议。下半部分构造菱形继承，B 与 C 都通过 super 调用下一层，最终输出展示了 D 到 B 到 C 到 A 的协作式调用链。",
+        "expected_output": "MRO 调用链: B+C+A\n报价: 135.0\n对象表示: Order(items=[100, 50])"
+      },
+      "faults": [
+        {
+          "topic": "用继承复用代码",
+          "wrong": "为了复用几个工具函数，让业务类继承一个庞大的基类，耦合不断扩散",
+          "fix": "把行为拆成独立组件，通过组合或协议注入，只保留真正的是一种关系"
+        },
+        {
+          "topic": "重写相等却不处理哈希",
+          "wrong": "只实现 __eq__，随后对象放进集合或作为字典键时报 unhashable",
+          "fix": "按相等语义同步实现 __hash__，或把对象声明为不可变值对象"
+        },
+        {
+          "topic": "数据类使用可变默认值",
+          "wrong": "在 dataclass 字段上直接写 tags: list = []，定义阶段就报错或产生共享",
+          "fix": "使用 field(default_factory=list)，让每个实例创建独立容器"
+        },
+        {
+          "topic": "super 调用链被中断",
+          "wrong": "某一层重写方法后完全不调用 super，后面的混入逻辑被跳过",
+          "fix": "协作式继承中每一层都调用 super 并正确传递参数，用测试覆盖完整链"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "MRO",
+          "definition": "类的方法解析顺序元组，决定属性与方法按什么顺序查找。"
+        },
+        {
+          "term": "super",
+          "definition": "沿当前实例的 MRO 查找下一个实现的代理对象，用于协作式继承。"
+        },
+        {
+          "term": "Protocol",
+          "definition": "typing 提供的结构化接口描述，只关心对象是否具备某些方法。"
+        },
+        {
+          "term": "dataclass",
+          "definition": "根据字段声明自动生成常用方法的装饰器，适合表达结构化数据。"
+        },
+        {
+          "term": "property",
+          "definition": "把方法包装成属性访问的描述符，可分别定义读取、赋值和删除行为。"
+        },
+        {
+          "term": "魔术方法",
+          "definition": "以双下划线包围的方法，由 Python 语法或内置函数自动调用以接入通用协议。"
+        }
+      ],
+      "quiz": [
+        {
+          "type": "single",
+          "question": "D 继承 B 和 C，两者都继承 A 且每层调用 super，D().hello() 的输出是什么？",
+          "options": [
+            "B+C+A",
+            "B+A",
+            "C+A",
+            "A"
+          ],
+          "answer": 0,
+          "explanation": "MRO 是 D、B、C、A，调用 D 继承来的方法先进入 B，B 调用 super 进入 C，C 再调用 super 进入 A，因此逐层拼接得到 B+C+A。super 的语义是沿 MRO 找下一个实现，而不是直接回到直接父类，这也是协作式多继承能够逐层工作的原因。"
+        },
+        {
+          "type": "single",
+          "question": "dataclass 中需要一个每个实例独立的列表字段，正确写法是？",
+          "options": [
+            "items: list = field(default_factory=list)",
+            "items: list = []",
+            "items: list = None",
+            "items: list = field(shared=True)"
+          ],
+          "answer": 0,
+          "explanation": "正确写法是 field(default_factory=list)。列表是可变对象，直接写空列表会被所有实例共享，而且 dataclass 会阻止这种明显危险的默认值；默认工厂会在每次创建实例时调用一次，因此每个对象的列表互相独立，适合订单明细、标签等集合字段。"
+        },
+        {
+          "type": "multi",
+          "question": "为什么组合和协议通常比深层继承更灵活？（多选）",
+          "options": [
+            "运行时可以替换具体实现",
+            "测试时可以注入假对象",
+            "避免把无关职责耦合进基类",
+            "组合会自动让对象变成不可变"
+          ],
+          "answers": [
+            0,
+            1,
+            2
+          ],
+          "answer": 0,
+          "explanation": "组合允许在构造时注入不同实现，测试中可以用假对象隔离外部依赖，也避免为了复用一小段代码把所有职责拉进同一个基类。组合本身不会自动带来不可变或线程安全，这些性质仍需要数据结构和接口设计来保证。"
+        },
+        {
+          "type": "code",
+          "question": "阅读类定义，哪个判断正确？\n\nclass Wallet:\n    def __init__(self, cents):\n        self._cents = cents\n    @property\n    def cents(self):\n        return self._cents",
+          "options": [
+            "cents 是只读属性，外部赋值会抛 AttributeError",
+            "cents 可以被任意赋值",
+            "property 会在每次读取时复制钱包",
+            "_cents 不能使用"
+          ],
+          "answer": 0,
+          "code": "class Wallet:\n    def __init__(self, cents):\n        self._cents = cents\n    @property\n    def cents(self):\n        return self._cents",
+          "language": "python",
+          "explanation": "只定义 getter 的 property 是只读的，外部执行 wallet.cents = 10 会抛出 AttributeError，从而保护内部金额不被随意改写。下划线只是约定，仍然可以直接访问 _cents，因此真正的边界要靠只读属性、不可变对象或受控方法共同保证。"
+        },
+        {
+          "type": "debug",
+          "question": "为什么这个类放进 set 后报 unhashable？\n\nclass Point:\n    def __init__(self, x, y): self.x, self.y = x, y\n    def __eq__(self, other): return (self.x, self.y) == (other.x, other.y)",
+          "options": [
+            "实现 __eq__ 后默认的 __hash__ 会被置空，需要显式实现或使用冻结数据类",
+            "set 只能存字符串",
+            "缺少 __len__ 方法",
+            "x 和 y 必须是私有变量"
+          ],
+          "answer": 0,
+          "code": "class Point:\n    def __init__(self, x, y): self.x, self.y = x, y\n    def __eq__(self, other): return (self.x, self.y) == (other.x, other.y)",
+          "language": "python",
+          "explanation": "Python 认为可变相等语义与默认身份哈希不一致，因此在类中定义 __eq__ 后会把 __hash__ 设为 None，实例不再可哈希。若 Point 是值对象，应把字段变成只读并显式实现基于元组的 __hash__，或者使用 frozen dataclass，让相等与哈希由同一组字段生成。"
+        }
+      ],
+      "practice": [
+        "设计一个 Shape 协议与两个实现，用组合方式计算一组图形的总面积，不建立继承层次。",
+        "写一个带 property 校验的银行账户类，覆盖正常存取、负数金额与余额不足三种情况。",
+        "定义三个参与协作式继承的混入类，打印 __mro__ 并验证每个实现的执行顺序。",
+        "把一段字段很多的普通类改写成 frozen dataclass，并补上相等、哈希和默认工厂测试。"
+      ],
+      "refs": [
+        {
+          "name": "Python 数据模型与魔术方法",
+          "url": "https://docs.python.org/3/reference/datamodel.html"
+        },
+        {
+          "name": "Python dataclasses 文档",
+          "url": "https://docs.python.org/3/library/dataclasses.html"
+        },
+        {
+          "name": "Python 类与 MRO 教程",
+          "url": "https://docs.python.org/3/tutorial/classes.html"
+        }
+      ],
+      "english": "This lesson explains method resolution order and cooperative super calls, compares inheritance with composition and protocols, and shows how dataclasses, properties and dunder methods create expressive domain objects. It also covers mutable field defaults, equality and hashing contracts, and testing object collaboration.",
+      "reviewPoints": [
+        "能根据 __mro__ 预测 super 调用链。",
+        "能用协议和组合替代为了复用而建立的继承。",
+        "能解释实现 __eq__ 后对象变成 unhashable 的原因。"
+      ],
+      "lab": "sandbox:python"
+    },
+    {
+      "id": "python_stdlib",
+      "category": "python",
+      "title": {
+        "zh": "Python 标准库实战工具箱",
+        "en": "A Practical Tour of the Python Standard Library"
+      },
+      "summary": {
+        "zh": "用 pathlib、datetime、json、collections、itertools、functools 和 logging 搭起不依赖第三方库的日常工具链。",
+        "en": "Build a dependency-free daily toolkit with pathlib, datetime, json, collections, itertools, functools and logging."
+      },
+      "keywords": [
+        "pathlib",
+        "datetime",
+        "json",
+        "collections",
+        "logging"
+      ],
+      "difficulty": "进阶",
+      "minutes": 55,
+      "order": 24,
+      "prerequisites": [
+        "python_modules_stdlib"
+      ],
+      "related": [
+        "python_errors_logging_files",
+        "python_cli_automation"
+      ],
+      "image": {
+        "title": "标准库的七件常用工具",
+        "flow": [
+          "路径与文件",
+          "时间与时区",
+          "结构化序列化",
+          "容器与迭代器",
+          "日志与诊断"
+        ]
+      },
+      "goals": [
+        "能用 pathlib 写出跨平台的文件与目录操作。",
+        "能正确区分时间点、时区和时长，并安全序列化。",
+        "能为数据处理选择标准库中的容器、迭代器与日志工具。"
+      ],
+      "prerequisitesText": [
+        "会导入模块并使用 from ... import 语法。",
+        "理解列表、字典和生成器的基本用法。",
+        "能用 try/except 处理文件不存在等常见异常。"
+      ],
+      "concepts": [
+        {
+          "name": "pathlib 路径与文件系统",
+          "plain": "Path 把路径表示成对象，提供拼接、解析、读取和遍历能力，比手工拼接字符串更安全也更清晰。",
+          "mechanism": "斜杠运算符连接路径片段，resolve 计算绝对路径，glob 按模式匹配，read_text 与 write_text 封装文本读写；不同操作系统会自动使用正确的路径分隔符。",
+          "example": "在临时目录创建一份 JSON 报告，再用路径对象的 name、suffix 和 read_text 读取它。",
+          "boundary": "用户提供的相对路径可能包含上跳片段，用于访问受限目录前必须做规范化与根目录检查。",
+          "engineering": "路径只在程序边界转换成字符串，内部始终使用 Path；目录创建、编码指定和异常处理写在同一个模块里。"
+        },
+        {
+          "name": "datetime 与时区",
+          "plain": "datetime 表示日期时间，timedelta 表示时间差，timezone 与 zoneinfo 提供时区信息；带时区的时间叫 aware，不带时区的叫 naive。",
+          "mechanism": "时间戳是从某个纪元起经过的秒数，绝对时间点应带时区；aware 与 naive 直接比较会抛 TypeError，跨时区展示时先统一到 UTC 再按目标时区转换。",
+          "example": "创建一个东八区时间并输出 ISO 8601 文本，再用 timedelta 计算三天后的同一时刻。",
+          "boundary": "夏令时切换会让本地时间出现重复或缺失，定时任务应保存 UTC 时间点并携带原始时区标识。",
+          "engineering": "数据库统一存 UTC，日志使用带偏移量的 ISO 格式，展示层才转换成本地时间并标注时区。"
+        },
+        {
+          "name": "JSON、TOML 与 CSV 的边界",
+          "plain": "JSON 适合程序间交换，TOML 适合人工维护配置，CSV 适合表格数据；三者对类型和转义的支持不同，不能互相假设。",
+          "mechanism": "json.dumps 默认把非 ASCII 转义并把日期当成不支持对象，loads 只接受合法 JSON；tomllib 只负责读取，CSV 的字段始终是字符串，需要显式转换类型。",
+          "example": "把字典写成 UTF-8 JSON 文件再读回，给 datetime 提供 default 转换函数，避免序列化失败。",
+          "boundary": "JSON 没有日期、集合和二进制类型；CSV 没有类型信息；永远不要用 pickle 解析来自不可信来源的数据。",
+          "engineering": "为配置文件写版本号和默认值，序列化层集中处理类型转换，并对读写做往返测试。"
+        },
+        {
+          "name": "collections、itertools 与 functools",
+          "plain": "标准库提供针对常见数据处理场景的容器和函数工具，能在不增加依赖的情况下表达计数、窗口、惰性迭代和缓存。",
+          "mechanism": "Counter 统计频率，deque 支持固定长度窗口，defaultdict 自动提供默认容器；itertools 通过生成器惰性组合序列；functools.lru_cache 按参数缓存纯函数结果。",
+          "example": "用 deque 维护最近三条记录，用 Counter 统计词频，再用 islice 只取生成器的前两项。",
+          "boundary": "lru_cache 要求参数可哈希且函数不能有副作用，缓存会占用内存；deque 的随机访问比列表慢，选型要看访问模式。",
+          "engineering": "把常用容器封装进领域函数，缓存大小显式设置，数据规模变化时用真实基准决定是否换实现。"
+        },
+        {
+          "name": "logging 与诊断信息",
+          "plain": "logging 按级别和来源记录事件，支持格式化、轮转和多目标输出，比随处 print 更容易在真实环境定位问题。",
+          "mechanism": "logger 形成层级树，事件沿层级传播到 handler；formatter 决定文本布局，级别过滤在记录端和处理端都可能发生；exc_info 会把异常回溯一起写入日志。",
+          "example": "配置一个带时间、级别和模块名的日志格式，记录正常事件与一次捕获到的异常，观察回溯是否被保留。",
+          "boundary": "日志不能包含密码、令牌和完整个人信息；在库代码里调用 basicConfig 会污染宿主应用的配置。",
+          "engineering": "应用入口统一配置日志，库模块只获取 logger；结构化字段使用 extra 或 JSON 格式，关键事件保留请求标识便于串联。"
+        }
+      ],
+      "steps": [
+        "用 Path 描述输入与输出位置",
+        "统一时间基准和序列化格式",
+        "选择合适的标准库容器或迭代器",
+        "在应用入口配置日志",
+        "为读写和边界输入补测试"
+      ],
+      "code": {
+        "language": "python",
+        "snippet": "import json\nfrom collections import Counter, deque\nfrom datetime import datetime, timedelta, timezone\nfrom itertools import islice\nfrom pathlib import Path\n\nbase = Path(\"demo_data\")\nbase.mkdir(exist_ok=True)\nreport = base / \"report.json\"\npayload = {\"created\": \"2026-10-08\", \"items\": [1, 2, 3]}\nreport.write_text(json.dumps(payload, ensure_ascii=False), encoding=\"utf-8\")\nprint(\"路径:\", report.name, report.suffix)\nprint(\"内容:\", json.loads(report.read_text(encoding=\"utf-8\")))\n\ntz = timezone(timedelta(hours=8))\nnow = datetime(2026, 10, 8, 12, 0, tzinfo=tz)\nprint(\"时区:\", now.isoformat())\nprint(\"三天后:\", (now + timedelta(days=3)).date().isoformat())\n\nprint(\"计数:\", Counter(\"abracadabra\").most_common(2))\nwindow = deque([1, 2, 3, 4], maxlen=3)\nwindow.append(5)\nprint(\"滑动窗口:\", list(window))\nprint(\"前两项:\", list(islice(range(10), 2)))",
+        "walkthrough": "脚本用 Path 创建目录并完成 JSON 往返，演示 UTF-8 与 ensure_ascii 的作用；接着把东八区时间格式化为 ISO 文本并计算三天后的日期；最后用 Counter、deque 和 islice 处理频次、滑动窗口与惰性序列，覆盖四类最常见的数据处理需求。",
+        "expected_output": "路径: report.json .json\n内容: {'created': '2026-10-08', 'items': [1, 2, 3]}\n时区: 2026-10-08T12:00:00+08:00\n三天后: 2026-10-11\n计数: [('a', 5), ('b', 2)]\n滑动窗口: [3, 4, 5]\n前两项: [0, 1]"
+      },
+      "faults": [
+        {
+          "topic": "用字符串拼接路径",
+          "wrong": "写 base + '/' + name 处理文件路径，换到 Windows 后分隔符和转义都出问题",
+          "fix": "改用 Path(base) / name，让路径库处理平台差异"
+        },
+        {
+          "topic": "混用带时区与不带时区时间",
+          "wrong": "把 datetime.now() 与带时区时间直接比较，运行时抛 TypeError",
+          "fix": "明确统一到 UTC aware 时间，展示时再转换到目标时区"
+        },
+        {
+          "topic": "JSON 直接序列化日期对象",
+          "wrong": "json.dumps({'created': datetime.now()}) 直接抛 TypeError",
+          "fix": "在写入前转成 ISO 字符串，或给 default 参数提供统一转换函数"
+        },
+        {
+          "topic": "库模块擅自配置全局日志",
+          "wrong": "在可复用模块里调用 logging.basicConfig，宿主应用的格式和级别被覆盖",
+          "fix": "库只获取 logger 并写日志，配置留给应用入口"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "Path",
+          "definition": "pathlib 提供的路径对象，可跨平台完成拼接、解析与文件读写。"
+        },
+        {
+          "term": "aware datetime",
+          "definition": "携带时区信息且能定位到绝对时间点的 datetime 对象。"
+        },
+        {
+          "term": "序列化",
+          "definition": "把内存对象转换成可存储或传输格式，并在需要时反向还原的过程。"
+        },
+        {
+          "term": "deque",
+          "definition": "支持两端常数时间追加和弹出的双端队列，可设置最大长度形成滑动窗口。"
+        },
+        {
+          "term": "lru_cache",
+          "definition": "按最近最少使用策略缓存函数结果的装饰器，适合参数可哈希的纯函数。"
+        },
+        {
+          "term": "logger 层级",
+          "definition": "按点分名称组织的日志记录器树，事件会向父记录器传播。"
+        }
+      ],
+      "quiz": [
+        {
+          "type": "single",
+          "question": "创建跨平台路径最推荐的写法是？",
+          "options": [
+            "Path(base) / name",
+            "base + '/' + name",
+            "base + '\\\\' + name",
+            "os.path.join(base, name) 后再强制转字符串"
+          ],
+          "answer": 0,
+          "explanation": "Path(base) / name 使用路径对象的斜杠运算符拼接，自动适配不同操作系统，也能继续调用 glob、resolve、read_text 等方法。手工拼接字符串容易产生多余或缺失的分隔符，反斜杠还会引入转义问题；早期代码可以使用 os.path，但新代码优先使用 pathlib。"
+        },
+        {
+          "type": "single",
+          "question": "比较 datetime.now() 与带时区的 datetime 会发生什么？",
+          "options": [
+            "抛出 TypeError，因为 aware 与 naive 不能直接比较",
+            "自动按本地时区转换",
+            "只比较日期部分",
+            "返回 False 而不是报错"
+          ],
+          "answer": 0,
+          "explanation": "naive 时间没有时区信息，无法确定绝对时间点，与 aware 时间比较会抛 TypeError，而不是猜测时区。跨系统传递时间时统一保存 UTC aware 时间，展示时再通过 zoneinfo 转换成本地时间，才能避免夏令时和服务器时区变化带来的错误。"
+        },
+        {
+          "type": "multi",
+          "question": "关于标准库容器与迭代器，哪些说法正确？（多选）",
+          "options": [
+            "Counter 可统计可哈希元素的出现次数",
+            "deque 设置 maxlen 后会自动丢弃旧元素",
+            "islice 可以只取生成器的前若干项",
+            "lru_cache 可以安全缓存带随机的有副作用函数"
+          ],
+          "answers": [
+            0,
+            1,
+            2
+          ],
+          "answer": 0,
+          "explanation": "Counter、deque 的固定窗口和 islice 的惰性截取都是标准库常见用法。lru_cache 只适合参数可哈希、结果只由参数决定且没有副作用的函数；缓存有随机值或写文件、发请求的函数会返回过期结果并造成难以排查的行为。"
+        },
+        {
+          "type": "code",
+          "question": "阅读代码，输出哪一项正确？\n\nwindow = deque([1, 2, 3, 4], maxlen=3)\nwindow.append(5)\nprint(list(window))",
+          "options": [
+            "[3, 4, 5]",
+            "[2, 3, 4]",
+            "[1, 2, 3]",
+            "[5, 1, 2]"
+          ],
+          "answer": 0,
+          "code": "window = deque([1, 2, 3, 4], maxlen=3)\nwindow.append(5)\nprint(list(window))",
+          "language": "python",
+          "explanation": "初始化时只保留最后三个元素 2、3、4，追加 5 后最左边的 2 被丢弃，因此结果是 [3, 4, 5]。maxlen 适合实现最近 N 条记录、滑动平均和固定容量队列；如果还需要按位置频繁随机访问，列表往往比 deque 更合适。"
+        },
+        {
+          "type": "debug",
+          "question": "这段日志代码在库模块中有什么问题？\n\nimport logging\nlogging.basicConfig(level=logging.INFO)\nlogger = logging.getLogger(__name__)",
+          "options": [
+            "库模块不应擅自调用 basicConfig，会覆盖宿主应用的日志配置",
+            "logger 名称使用 __name__ 是错误的",
+            "logging 只能输出到控制台",
+            "日志级别 INFO 会导致程序崩溃"
+          ],
+          "answer": 0,
+          "code": "import logging\nlogging.basicConfig(level=logging.INFO)\nlogger = logging.getLogger(__name__)",
+          "language": "python",
+          "explanation": "basicConfig 只在根记录器没有处理器时生效，但库模块提前调用会改变宿主应用的全局配置，导致格式、级别和输出目标与预期不同。库代码只应执行 getLogger(__name__) 并写日志，真正的 handler、formatter 和级别配置由应用入口集中完成。"
+        }
+      ],
+      "practice": [
+        "写一个目录巡检脚本，用 pathlib 统计指定目录下各类扩展名的文件数量和总大小。",
+        "把一组带时区的会议时间转换成 UTC 与本地时间，并输出 ISO 8601 字符串。",
+        "对一份 JSON 配置做读写往返，加入版本字段和一份默认配置，给缺字段场景写测试。",
+        "用 Counter 与 itertools.groupby 完成一份访问日志统计，说明两者分别适合什么数据形态。"
+      ],
+      "refs": [
+        {
+          "name": "Python pathlib 文档",
+          "url": "https://docs.python.org/3/library/pathlib.html"
+        },
+        {
+          "name": "Python datetime 文档",
+          "url": "https://docs.python.org/3/library/datetime.html"
+        },
+        {
+          "name": "Python logging 使用手册",
+          "url": "https://docs.python.org/3/howto/logging.html"
+        },
+        {
+          "name": "Python collections 文档",
+          "url": "https://docs.python.org/3/library/collections.html"
+        }
+      ],
+      "english": "This lesson tours the practical core of the Python standard library: pathlib for cross-platform paths, datetime and zoneinfo for time zones, json and tomllib for structured data, collections and itertools for everyday algorithms, and logging for diagnostics. Each tool is demonstrated with a runnable example and clear boundary rules.",
+      "reviewPoints": [
+        "能用 Path 完成目录创建、读写与枚举。",
+        "能解释 aware 与 naive 时间不可直接比较的原因。",
+        "能为统计、窗口和惰性迭代选择合适的标准库工具。"
+      ],
+      "lab": "sandbox:python"
+    },
+    {
+      "id": "python_errors_logging_files",
+      "category": "python",
+      "title": {
+        "zh": "Python 异常、日志与文件 I/O 进阶",
+        "en": "Advanced Exceptions, Logging and File I/O in Python"
+      },
+      "summary": {
+        "zh": "把异常设计成可诊断的领域信号，用日志保留上下文，并用临时文件与原子替换写出不会半途损坏的配置。",
+        "en": "Design exceptions as diagnosable domain signals, add context with logging, and write files atomically with temporary files."
+      },
+      "keywords": [
+        "异常链",
+        "自定义异常",
+        "日志",
+        "原子写",
+        "ExceptionGroup"
+      ],
+      "difficulty": "进阶",
+      "minutes": 55,
+      "order": 25,
+      "prerequisites": [
+        "python_errors_files"
+      ],
+      "related": [
+        "python_stdlib",
+        "python_project_architecture"
+      ],
+      "image": {
+        "title": "失败路径的四层防线",
+        "flow": [
+          "捕获具体异常",
+          "转换为领域异常",
+          "记录诊断上下文",
+          "原子提交或安全回滚"
+        ]
+      },
+      "goals": [
+        "能设计带上下文的领域异常，并保留原始异常链。",
+        "能写出可诊断、可轮转且不泄露敏感信息的日志。",
+        "能用临时文件与原子替换保证配置写入的完整性。"
+      ],
+      "prerequisitesText": [
+        "会使用 try/except 捕获常见异常。",
+        "能用 open 或 Path 读取和写入文本文件。",
+        "知道日志级别和基本格式化输出。"
+      ],
+      "concepts": [
+        {
+          "name": "完整异常处理结构",
+          "plain": "try 负责尝试，except 只捕获能处理的异常，else 在没有异常时运行，finally 无论成功失败都会清理资源。",
+          "mechanism": "异常沿调用栈向上传播，除非遇到匹配的处理器；捕获后可以用裸 raise 重新抛出，也可以 raise 新异常 from 原异常建立因果链。EAFP 鼓励先尝试再处理异常，LBYL 则先检查条件再行动。",
+          "example": "读取配置时把文件不存在与 JSON 格式错误分别转换为领域异常，再用 from 保留原始回溯。",
+          "boundary": "捕获范围过宽会把编程错误也吞掉；except 块里的 return 会覆盖异常语义，finally 里的 return 甚至会吞掉未处理异常。",
+          "engineering": "只在能恢复或能补充上下文的地方捕获异常，边界层统一转换成对外错误，内部保留完整异常链。"
+        },
+        {
+          "name": "自定义异常体系",
+          "plain": "自定义异常把底层错误翻译成业务语言，让调用方可以按类型处理，而不是解析错误字符串。",
+          "mechanism": "领域模块定义统一根异常，再按失败原因派生子类；异常对象可以携带字段、错误码和原始输入，抛出时用 from 关联底层异常，既方便程序判断也方便人阅读。",
+          "example": "定义 ConfigError，把 FileNotFoundError 与 JSONDecodeError 都转换成该异常，同时在消息中保留路径。",
+          "boundary": "不要为每个小分支都建异常类，也不要滥用异常做正常流程控制；异常要能回答发生了什么、在哪里、如何恢复三个问题。",
+          "engineering": "异常层级作为模块公开接口的一部分，版本升级时保持兼容；上层只捕获真正理解的类型，其他异常继续向外传播。"
+        },
+        {
+          "name": "文件写入与原子替换",
+          "plain": "直接覆盖目标文件时，进程在写入中途崩溃会留下半份内容；先写临时文件再原子替换，可以让读者只看到旧版本或新版本。",
+          "mechanism": "tempfile.mkstemp 在同一目录创建唯一临时文件，写入后 flush 并 fsync 落盘，再用 os.replace 原子替换目标；失败路径负责删除临时文件。",
+          "example": "实现 write_atomic 函数写入 JSON 配置，并在异常时清理临时文件，验证目标文件始终是合法 JSON。",
+          "boundary": "原子替换只能保证单机单文件语义，跨多个文件或分布式系统仍需事务或版本标记；fsync 会带来性能成本，要按数据重要性选择。",
+          "engineering": "配置、索引和状态文件使用原子写，临时文件与目标放在同一文件系统；为崩溃恢复写测试，而不只测试正常路径。"
+        },
+        {
+          "name": "日志上下文与异常记录",
+          "plain": "日志记录事件发生时的环境和因果关系；结构化字段、请求标识和异常回溯比一句错误消息更有诊断价值。",
+          "mechanism": "logger.exception 在异常处理块中同时记录消息和回溯，extra 可以附加请求编号与用户标识，handler 决定输出位置，formatter 决定字段布局。",
+          "example": "在捕获异常后用 logger.exception 记录一次失败，并在结构化字段里带上配置路径，避免只打印一句失败的字符串。",
+          "boundary": "日志不能记录密码、令牌和完整个人信息；高频路径大量记录调试日志会带来磁盘与性能开销。",
+          "engineering": "日志级别按环境配置，关键事件带稳定字段名，错误日志附带可检索的请求标识与版本号。"
+        },
+        {
+          "name": "ExceptionGroup 与 except*",
+          "plain": "并发任务可能同时产生多个错误，ExceptionGroup 把它们打包成一个异常，except 星号语法可以按类型拆分处理。",
+          "mechanism": "ExceptionGroup 保存子异常列表和统一消息，except* 会匹配组内每个分支并重新组合未处理的异常；普通 except 只能整体捕获，无法分别处理不同子类型。",
+          "example": "用 ExceptionGroup 同时承载超时与格式错误，再用 except* 分别记录两类问题，观察剩余异常如何继续抛出。",
+          "boundary": "异常组适合天然并行的任务集合，不应为了炫技把互不相关的错误强行打包；异常组不能与普通 except 混用于同一 try 块。",
+          "engineering": "每个子任务在异常中带上任务标识，处理端按类别汇总并保证未处理异常不会被悄悄丢失。"
+        }
+      ],
+      "steps": [
+        "区分可恢复错误与编程错误",
+        "在边界把底层异常转换为领域异常",
+        "记录结构化上下文与异常回溯",
+        "用临时文件和原子替换提交结果",
+        "为失败路径与部分成功补测试"
+      ],
+      "code": {
+        "language": "python",
+        "snippet": "import json\nimport os\nimport tempfile\nfrom pathlib import Path\n\nclass ConfigError(Exception):\n    \"\"\"配置读取失败的领域异常。\"\"\"\n\ndef load_config(path: Path):\n    try:\n        text = path.read_text(encoding=\"utf-8\")\n        return json.loads(text)\n    except FileNotFoundError as exc:\n        raise ConfigError(f\"找不到配置文件: {path}\") from exc\n    except json.JSONDecodeError as exc:\n        raise ConfigError(f\"配置不是合法 JSON: {path}\") from exc\n\ndef write_atomic(path: Path, payload: dict) -> None:\n    path.parent.mkdir(parents=True, exist_ok=True)\n    fd, temp_name = tempfile.mkstemp(dir=path.parent, prefix=path.name, suffix=\".tmp\")\n    try:\n        with os.fdopen(fd, \"w\", encoding=\"utf-8\") as handle:\n            json.dump(payload, handle, ensure_ascii=False)\n            handle.flush()\n            os.fsync(handle.fileno())\n        os.replace(temp_name, path)\n    except BaseException:\n        Path(temp_name).unlink(missing_ok=True)\n        raise\n\ntarget = Path(\"demo_config.json\")\nwrite_atomic(target, {\"name\": \"学习助手\", \"version\": 2})\nprint(\"写入成功:\", load_config(target))\ntry:\n    load_config(Path(\"missing.json\"))\nexcept ConfigError as exc:\n    print(\"领域异常:\", type(exc).__name__, \"原因:\", type(exc.__cause__).__name__)",
+        "walkthrough": "配置读取函数只捕获两类可解释的底层异常，并把它们转换成 ConfigError，同时用 from 保留 FileNotFoundError 或 JSONDecodeError 作为原因。原子写函数在同一目录创建临时文件，写完并落盘后调用 os.replace，异常时删除临时文件，因此目标路径永远不会出现半份 JSON。",
+        "expected_output": "写入成功: {'name': '学习助手', 'version': 2}\n领域异常: ConfigError 原因: FileNotFoundError"
+      },
+      "faults": [
+        {
+          "topic": "捕获后静默跳过",
+          "wrong": "写 except Exception: pass，把真正的程序错误和外部故障一起吞掉",
+          "fix": "只捕获预期异常并记录上下文，其他异常继续向外传播"
+        },
+        {
+          "topic": "重新抛异常时丢失原因",
+          "wrong": "捕获底层异常后直接 raise ConfigError('失败')，原始回溯和原因全部消失",
+          "fix": "使用 raise ConfigError('...') from exc 建立异常链"
+        },
+        {
+          "topic": "直接覆盖重要文件",
+          "wrong": "打开目标文件反复写入，中途崩溃后留下不完整内容",
+          "fix": "写临时文件并 fsync，成功后用 os.replace 原子替换，失败时清理临时文件"
+        },
+        {
+          "topic": "日志泄露敏感信息",
+          "wrong": "把令牌、密码和完整身份证号写进日志，或在调试级别记录请求体全文",
+          "fix": "脱敏后再记录，使用稳定字段与摘要，敏感值只保留不可逆标识"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "异常链",
+          "definition": "通过 raise from 或隐式上下文把新异常与原始异常关联起来的因果结构。"
+        },
+        {
+          "term": "上下文管理器",
+          "definition": "实现 __enter__ 与 __exit__ 的对象，可保证代码块结束后自动释放资源。"
+        },
+        {
+          "term": "原子替换",
+          "definition": "通过重命名操作把完整的新文件一次性替换到目标路径，让读者看不到中间状态。"
+        },
+        {
+          "term": "fsync",
+          "definition": "要求操作系统把文件缓冲区写入持久存储的系统调用。"
+        },
+        {
+          "term": "领域异常",
+          "definition": "用业务语言描述失败原因的异常类型，通常由底层技术异常转换而来。"
+        },
+        {
+          "term": "ExceptionGroup",
+          "definition": "把多个子异常打包在一起的异常类型，适合表示并发任务的部分失败。"
+        }
+      ],
+      "quiz": [
+        {
+          "type": "single",
+          "question": "raise ConfigError('找不到配置') from exc 的作用是什么？",
+          "options": [
+            "把原始异常保存为 __cause__，异常链保留完整因果",
+            "隐藏所有异常信息",
+            "让程序忽略 ConfigError",
+            "自动重试失败的读取"
+          ],
+          "answer": 0,
+          "explanation": "from 会把原始异常写入新异常的 __cause__ 属性，回溯中会显示直接原因，调试和日志都能看到底层失败链。省略 from 时 Python 仍可能记录隐式上下文，但语义不如显式异常链清楚；直接吞掉原始异常会让定位问题变得非常困难。"
+        },
+        {
+          "type": "single",
+          "question": "为什么写入重要配置时先写临时文件再 os.replace？",
+          "options": [
+            "读者只会看到完整的旧版本或新版本，不会读到半写内容",
+            "临时文件写入速度总是更快",
+            "可以省略编码参数",
+            "os.replace 会自动压缩文件"
+          ],
+          "answer": 0,
+          "explanation": "同名替换在同一文件系统内具有原子性，所以目标路径在任意时刻都指向完整文件，不会出现写到一半的 JSON。速度不是主要目的，编码仍然必须显式指定；如果崩溃发生在替换前，最多遗留一个临时文件，恢复逻辑可以安全清理。"
+        },
+        {
+          "type": "multi",
+          "question": "日志中应该避免出现哪些内容？（多选）",
+          "options": [
+            "用户密码与访问令牌",
+            "完整身份证号或银行卡号",
+            "可定位请求的随机请求编号",
+            "未脱敏的完整请求体"
+          ],
+          "answers": [
+            0,
+            1,
+            3
+          ],
+          "answer": 0,
+          "explanation": "密码、令牌、身份证号、银行卡号和未脱敏请求体都可能造成泄露，日志系统往往被更多人访问且长期保留。随机请求编号是安全且有用的关联字段，应当保留；对敏感值可以记录哈希、长度或掩码后的片段，同时限制日志访问权限。"
+        },
+        {
+          "type": "code",
+          "question": "阅读代码，输出中 __cause__ 的类型是什么？\n\ntry:\n    open('missing.json')\nexcept FileNotFoundError as exc:\n    try:\n        raise RuntimeError('加载失败') from exc\n    except RuntimeError as error:\n        print(type(error.__cause__).__name__)",
+          "options": [
+            "FileNotFoundError",
+            "RuntimeError",
+            "KeyError",
+            "NoneType"
+          ],
+          "answer": 0,
+          "code": "try:\n    open('missing.json')\nexcept FileNotFoundError as exc:\n    try:\n        raise RuntimeError('加载失败') from exc\n    except RuntimeError as error:\n        print(type(error.__cause__).__name__)",
+          "language": "python",
+          "explanation": "raise from 会把捕获到的 FileNotFoundError 绑定为 RuntimeError 的 __cause__，因此输出 FileNotFoundError。异常链既保留面向业务的新消息，也保留底层失败原因；记录日志时应使用 exc_info 或 exception 方法，把完整链写进诊断信息。"
+        },
+        {
+          "type": "debug",
+          "question": "下面异常处理有什么缺陷？\n\ntry:\n    value = int(text)\nexcept Exception:\n    pass",
+          "options": [
+            "捕获范围过宽且静默忽略，会掩盖输入错误和真正的程序缺陷",
+            "int 不能转换字符串",
+            "pass 会抛出语法错误",
+            "应该改成 except: pass 才正确"
+          ],
+          "answer": 0,
+          "code": "try:\n    value = int(text)\nexcept Exception:\n    pass",
+          "language": "python",
+          "explanation": "except Exception 会捕获大量并非预期的错误，pass 又让失败完全不可见，后续代码可能在 value 未定义或数据错误的状态下继续运行。应只捕获 ValueError 并给出可执行的错误信息，或者记录日志后重新抛出；裸 except 比 except Exception 更危险，因为连系统退出类异常都会被吞掉。"
+        }
+      ],
+      "practice": [
+        "为一个配置加载模块设计异常层级，覆盖文件不存在、权限不足、格式错误和字段缺失四类失败。",
+        "实现带原子替换的 JSON 写入函数，再模拟写入中途异常，验证目标文件仍然是上一版完整内容。",
+        "配置一个日志 handler，输出时间、级别、模块和请求编号，并对密码字段做脱敏。",
+        "用 ExceptionGroup 模拟三个并发任务的部分失败，分别统计成功、超时和格式错误数量。"
+      ],
+      "refs": [
+        {
+          "name": "Python 错误与异常教程",
+          "url": "https://docs.python.org/3/tutorial/errors.html"
+        },
+        {
+          "name": "Python logging 使用手册",
+          "url": "https://docs.python.org/3/howto/logging.html"
+        },
+        {
+          "name": "PEP 654：Exception Groups",
+          "url": "https://peps.python.org/pep-0654/"
+        },
+        {
+          "name": "Python os.replace 文档",
+          "url": "https://docs.python.org/3/library/os.html#os.replace"
+        }
+      ],
+      "english": "This lesson builds a reliable failure path in Python: precise try, except, else and finally structure, domain exceptions with raise from, structured logging with context and tracebacks, atomic file replacement with temporary files and fsync, and ExceptionGroup for concurrent partial failures.",
+      "reviewPoints": [
+        "能用 raise from 保留完整异常链。",
+        "能解释原子替换为什么不会暴露半写文件。",
+        "能区分可恢复异常与应继续传播的程序错误。"
+      ],
+      "lab": "sandbox:python"
+    }
+  ]
+}

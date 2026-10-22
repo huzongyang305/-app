@@ -1,0 +1,4916 @@
+[
+  {
+    "cat": "flutter",
+    "id": "flutter_widget_intro",
+    "title": "Flutter Widget 入门",
+    "file": "assets/content/flutter_widget_intro.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-10"
+  },
+  {
+    "cat": "flutter",
+    "id": "flutter_basics",
+    "title": "Flutter 基础与 Widget 树",
+    "file": "assets/content/flutter_basics.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-10"
+  },
+  {
+    "cat": "flutter",
+    "id": "flutter_state",
+    "title": "Flutter 状态管理与性能",
+    "file": "assets/content/flutter_state.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-10"
+  },
+  {
+    "cat": "flutter",
+    "id": "flutter_layout_intro",
+    "title": "Flutter 布局入门",
+    "file": "assets/content/flutter_layout_intro.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-10"
+  },
+  {
+    "cat": "flutter",
+    "id": "flutter_release",
+    "title": "实战：Flutter 打包发布 Android",
+    "file": "assets/content/flutter_release.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-08-10"
+  },
+  {
+    "cat": "flutter",
+    "id": "mobile_kotlin",
+    "title": "Kotlin 与 Android 开发",
+    "file": "assets/content/mobile_kotlin.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-10"
+  },
+  {
+    "cat": "flutter",
+    "id": "mobile_swift",
+    "title": "Swift 与 iOS 开发",
+    "file": "assets/content/mobile_swift.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-10"
+  },
+  {
+    "cat": "flutter",
+    "id": "mobile_miniprogram",
+    "title": "小程序开发要点",
+    "file": "assets/content/mobile_miniprogram.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-10"
+  },
+  {
+    "cat": "flutter",
+    "id": "mobile_react_native",
+    "title": "React Native 跨平台开发",
+    "file": "assets/content/mobile_react_native.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-10"
+  },
+  {
+    "cat": "flutter",
+    "id": "mobile_compose",
+    "title": "Jetpack Compose 声明式 UI",
+    "file": "assets/content/mobile_compose.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-10"
+  },
+  {
+    "cat": "flutter",
+    "id": "mobile_harmony",
+    "title": "鸿蒙 ArkTS 应用开发",
+    "file": "assets/content/mobile_harmony.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-10"
+  },
+  {
+    "cat": "flutter",
+    "id": "mobile_performance",
+    "title": "移动端性能优化实战",
+    "file": "assets/content/mobile_performance.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-08-10"
+  },
+  {
+    "cat": "gamedev",
+    "id": "gamedev_game_loop",
+    "title": "游戏循环与帧时间",
+    "file": "assets/content/gamedev_game_loop.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-04-24"
+  },
+  {
+    "cat": "gamedev",
+    "id": "gamedev_animation_fsm",
+    "title": "动画状态机与混合",
+    "file": "assets/content/gamedev_animation_fsm.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-04-24"
+  },
+  {
+    "cat": "gamedev",
+    "id": "gamedev_2d_rendering",
+    "title": "2D 渲染管线与坐标系",
+    "file": "assets/content/gamedev_2d_rendering.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-04-24"
+  },
+  {
+    "cat": "gamedev",
+    "id": "gamedev_collision_physics",
+    "title": "碰撞检测与物理基础",
+    "file": "assets/content/gamedev_collision_physics.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-04-24"
+  },
+  {
+    "cat": "gamedev",
+    "id": "gamedev_render_pipeline",
+    "title": "渲染管线与批次合并",
+    "file": "assets/content/gamedev_render_pipeline.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-04-24"
+  },
+  {
+    "cat": "gamedev",
+    "id": "gamedev_asset_pipeline",
+    "title": "资产管线与热更新",
+    "file": "assets/content/gamedev_asset_pipeline.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-04-24"
+  },
+  {
+    "cat": "gamedev",
+    "id": "gamedev_multiplayer_sync",
+    "title": "多人同步与延迟处理",
+    "file": "assets/content/gamedev_multiplayer_sync.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-04-24"
+  },
+  {
+    "cat": "gamedev",
+    "id": "gamedev_performance_mobile",
+    "title": "移动端性能与功耗优化",
+    "file": "assets/content/gamedev_performance_mobile.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-04-24"
+  },
+  {
+    "cat": "gamedev",
+    "id": "gamedev_ecs_profiling",
+    "title": "实体组件系统与性能剖析",
+    "file": "assets/content/gamedev_ecs_profiling.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-04-24"
+  },
+  {
+    "cat": "html_css",
+    "id": "html_tags_intro",
+    "title": "HTML 标签入门",
+    "file": "assets/content/html_tags_intro.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-17"
+  },
+  {
+    "cat": "html_css",
+    "id": "html_basics",
+    "title": "HTML 基础与语义化",
+    "file": "assets/content/html_basics.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-17"
+  },
+  {
+    "cat": "html_css",
+    "id": "css_basics",
+    "title": "CSS 基础：选择器与盒模型",
+    "file": "assets/content/css_basics.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-17"
+  },
+  {
+    "cat": "html_css",
+    "id": "css_layout",
+    "title": "CSS 布局：Flex、Grid 与响应式",
+    "file": "assets/content/css_layout.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-17"
+  },
+  {
+    "cat": "html_css",
+    "id": "css_selectors_intro",
+    "title": "CSS 选择器入门",
+    "file": "assets/content/css_selectors_intro.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-17"
+  },
+  {
+    "cat": "html_css",
+    "id": "css_render_animation",
+    "title": "浏览器渲染与 CSS 动画",
+    "file": "assets/content/css_animation_render.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-17"
+  },
+  {
+    "cat": "html_css",
+    "id": "css_advanced",
+    "title": "CSS 进阶：变量、伪类与现代特性",
+    "file": "assets/content/css_advanced.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-17"
+  },
+  {
+    "cat": "html_css",
+    "id": "css_design_tokens",
+    "title": "设计令牌与样式架构",
+    "file": "assets/content/css_design_tokens.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-17"
+  },
+  {
+    "cat": "html_css",
+    "id": "a11y_aria",
+    "title": "可访问性与 ARIA 实战",
+    "file": "assets/content/a11y_aria.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-08-17"
+  },
+  {
+    "cat": "html_css",
+    "id": "html_css_project",
+    "title": "实战：响应式落地页",
+    "file": "assets/content/html_css_project.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-08-17"
+  },
+  {
+    "cat": "html_css",
+    "id": "web_performance",
+    "title": "前端性能优化实战",
+    "file": "assets/content/html_web_performance.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-08-17"
+  },
+  {
+    "cat": "html_css",
+    "id": "browser_rendering",
+    "title": "浏览器渲染与事件循环深入",
+    "file": "assets/content/browser_rendering.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-17"
+  },
+  {
+    "cat": "html_css",
+    "id": "web_pwa_offline",
+    "title": "PWA 与离线能力",
+    "file": "assets/content/web_pwa_offline.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-17"
+  },
+  {
+    "cat": "html_css",
+    "id": "web_components",
+    "title": "Web Components 实战",
+    "file": "assets/content/web_components.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-08-17"
+  },
+  {
+    "cat": "c",
+    "id": "c_first_program",
+    "title": "C 第一个程序",
+    "file": "assets/content/c_first_program.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-11-17"
+  },
+  {
+    "cat": "c",
+    "id": "c_variables_io",
+    "title": "C 变量与输入输出",
+    "file": "assets/content/c_variables_io.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-11-17"
+  },
+  {
+    "cat": "c",
+    "id": "c_conditions",
+    "title": "C 条件判断",
+    "file": "assets/content/c_conditions.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-11-17"
+  },
+  {
+    "cat": "c",
+    "id": "c_loops",
+    "title": "C 循环入门",
+    "file": "assets/content/c_loops.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-11-17"
+  },
+  {
+    "cat": "c",
+    "id": "c_functions_intro",
+    "title": "C 函数入门",
+    "file": "assets/content/c_functions_intro.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-11-17"
+  },
+  {
+    "cat": "c",
+    "id": "c_basics",
+    "title": "C 基础语法与编译流程",
+    "file": "assets/content/c_basics.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-11-17"
+  },
+  {
+    "cat": "c",
+    "id": "c_types",
+    "title": "C 类型、运算符与转换",
+    "file": "assets/content/c_types.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-11-17"
+  },
+  {
+    "cat": "c",
+    "id": "c_control_functions",
+    "title": "C 控制流、函数与作用域",
+    "file": "assets/content/c_control_functions.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-11-17"
+  },
+  {
+    "cat": "c",
+    "id": "c_pointers",
+    "title": "C 指针与内存模型",
+    "file": "assets/content/c_pointers.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-11-17"
+  },
+  {
+    "cat": "c",
+    "id": "c_arrays_strings",
+    "title": "C 数组、字符串与缓冲区",
+    "file": "assets/content/c_arrays_strings.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-11-17"
+  },
+  {
+    "cat": "c",
+    "id": "c_structs",
+    "title": "C 结构体、联合体与内存布局",
+    "file": "assets/content/c_structs.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-11-17"
+  },
+  {
+    "cat": "c",
+    "id": "c_preprocessor",
+    "title": "C 预处理、宏与头文件",
+    "file": "assets/content/c_preprocessor.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-11-17"
+  },
+  {
+    "cat": "c",
+    "id": "c_files",
+    "title": "C 文件、错误处理与资源管理",
+    "file": "assets/content/c_files.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-11-17"
+  },
+  {
+    "cat": "c",
+    "id": "c_debugging",
+    "title": "C 调试、Sanitizer 与性能",
+    "file": "assets/content/c_debugging.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-11-17"
+  },
+  {
+    "cat": "c",
+    "id": "c_project",
+    "title": "实战：C 命令行任务管理器",
+    "file": "assets/content/c_project.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2026-11-17"
+  },
+  {
+    "cat": "c",
+    "id": "c_project_tcp_server",
+    "title": "实战：C 语言 TCP 服务端",
+    "file": "assets/content/c_project_tcp_server.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2026-11-17"
+  },
+  {
+    "cat": "kotlin",
+    "id": "kotlin_first_program",
+    "title": "Kotlin 第一个程序",
+    "file": "assets/content/kotlin_first_program.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-11-10"
+  },
+  {
+    "cat": "kotlin",
+    "id": "kotlin_variables_null",
+    "title": "Kotlin 变量与空值",
+    "file": "assets/content/kotlin_variables_null.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-11-10"
+  },
+  {
+    "cat": "kotlin",
+    "id": "kotlin_conditions",
+    "title": "Kotlin 条件判断",
+    "file": "assets/content/kotlin_conditions.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-11-10"
+  },
+  {
+    "cat": "kotlin",
+    "id": "kotlin_loops",
+    "title": "Kotlin 循环入门",
+    "file": "assets/content/kotlin_loops.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-11-10"
+  },
+  {
+    "cat": "kotlin",
+    "id": "kotlin_functions_intro",
+    "title": "Kotlin 函数入门",
+    "file": "assets/content/kotlin_functions_intro.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-11-10"
+  },
+  {
+    "cat": "kotlin",
+    "id": "kotlin_basics",
+    "title": "Kotlin 基础与空安全",
+    "file": "assets/content/kotlin_basics.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-11-10"
+  },
+  {
+    "cat": "kotlin",
+    "id": "kotlin_functions",
+    "title": "Kotlin 函数、Lambda 与扩展",
+    "file": "assets/content/kotlin_functions.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-11-10"
+  },
+  {
+    "cat": "kotlin",
+    "id": "kotlin_oop",
+    "title": "Kotlin 类、对象与属性",
+    "file": "assets/content/kotlin_oop.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-11-10"
+  },
+  {
+    "cat": "kotlin",
+    "id": "kotlin_collections",
+    "title": "Kotlin 集合、序列与函数式操作",
+    "file": "assets/content/kotlin_collections.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-11-10"
+  },
+  {
+    "cat": "kotlin",
+    "id": "kotlin_coroutines",
+    "title": "Kotlin 协程与 Flow",
+    "file": "assets/content/kotlin_coroutines.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-11-10"
+  },
+  {
+    "cat": "kotlin",
+    "id": "kotlin_android",
+    "title": "Kotlin Android 架构",
+    "file": "assets/content/kotlin_android.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-11-10"
+  },
+  {
+    "cat": "kotlin",
+    "id": "kotlin_testing",
+    "title": "Kotlin 测试与协程测试",
+    "file": "assets/content/kotlin_testing.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-11-10"
+  },
+  {
+    "cat": "kotlin",
+    "id": "kotlin_project",
+    "title": "实战：Kotlin Android 客户端",
+    "file": "assets/content/kotlin_project.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2026-11-10"
+  },
+  {
+    "cat": "kotlin",
+    "id": "kotlin_project_cli_ledger",
+    "title": "实战：Kotlin 命令行记账工具",
+    "file": "assets/content/kotlin_project_cli_ledger.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2026-11-10"
+  },
+  {
+    "cat": "swift",
+    "id": "swift_first_program",
+    "title": "Swift 第一个程序",
+    "file": "assets/content/swift_first_program.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-12-17"
+  },
+  {
+    "cat": "swift",
+    "id": "swift_constants_variables",
+    "title": "Swift 常量与变量",
+    "file": "assets/content/swift_constants_variables.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-12-17"
+  },
+  {
+    "cat": "swift",
+    "id": "swift_conditions",
+    "title": "Swift 条件判断",
+    "file": "assets/content/swift_conditions.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-12-17"
+  },
+  {
+    "cat": "swift",
+    "id": "swift_loops",
+    "title": "Swift 循环入门",
+    "file": "assets/content/swift_loops.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-12-17"
+  },
+  {
+    "cat": "swift",
+    "id": "swift_functions_intro",
+    "title": "Swift 函数入门",
+    "file": "assets/content/swift_functions_intro.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-12-17"
+  },
+  {
+    "cat": "swift",
+    "id": "swift_basics",
+    "title": "Swift 基础与可选类型",
+    "file": "assets/content/swift_basics.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-12-17"
+  },
+  {
+    "cat": "swift",
+    "id": "swift_functions",
+    "title": "Swift 函数、闭包与协议",
+    "file": "assets/content/swift_functions.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-12-17"
+  },
+  {
+    "cat": "swift",
+    "id": "swift_oop",
+    "title": "Swift 结构体、类与 ARC",
+    "file": "assets/content/swift_oop.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-12-17"
+  },
+  {
+    "cat": "swift",
+    "id": "swift_collections",
+    "title": "Swift 集合与泛型",
+    "file": "assets/content/swift_collections.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-12-17"
+  },
+  {
+    "cat": "swift",
+    "id": "swift_async",
+    "title": "Swift 并发与 async/await",
+    "file": "assets/content/swift_async.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-12-17"
+  },
+  {
+    "cat": "swift",
+    "id": "swift_swiftui",
+    "title": "SwiftUI 与状态管理",
+    "file": "assets/content/swift_swiftui.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-12-17"
+  },
+  {
+    "cat": "swift",
+    "id": "swift_testing",
+    "title": "Swift 测试与性能",
+    "file": "assets/content/swift_testing.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-12-17"
+  },
+  {
+    "cat": "swift",
+    "id": "swift_project",
+    "title": "实战：SwiftUI iOS 客户端",
+    "file": "assets/content/swift_project.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2026-12-17"
+  },
+  {
+    "cat": "swift",
+    "id": "swift_project_cli_metrics",
+    "title": "实战：Swift 命令行指标分析工具",
+    "file": "assets/content/swift_project_cli_metrics.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2026-12-17"
+  },
+  {
+    "cat": "javascript",
+    "id": "js_console_start",
+    "title": "JavaScript 控制台入门",
+    "file": "assets/content/js_console_start.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-05-17"
+  },
+  {
+    "cat": "javascript",
+    "id": "js_variables_types_intro",
+    "title": "JavaScript 变量与类型入门",
+    "file": "assets/content/js_variables_types_intro.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-05-17"
+  },
+  {
+    "cat": "javascript",
+    "id": "js_conditions_loops",
+    "title": "JavaScript 条件与循环",
+    "file": "assets/content/js_conditions_loops.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-05-17"
+  },
+  {
+    "cat": "javascript",
+    "id": "js_functions_intro",
+    "title": "JavaScript 函数入门",
+    "file": "assets/content/js_functions_intro.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-05-17"
+  },
+  {
+    "cat": "javascript",
+    "id": "js_dom_intro",
+    "title": "JavaScript DOM 入门",
+    "file": "assets/content/js_dom_intro.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-05-17"
+  },
+  {
+    "cat": "javascript",
+    "id": "js_basics",
+    "title": "JavaScript 与运行环境",
+    "file": "assets/content/programming_js_basics.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-17"
+  },
+  {
+    "cat": "javascript",
+    "id": "js_types",
+    "title": "变量、类型与类型转换",
+    "file": "assets/content/programming_js_types.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-17"
+  },
+  {
+    "cat": "javascript",
+    "id": "js_operators_control",
+    "title": "运算符与控制流",
+    "file": "assets/content/programming_js_operators_control.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-17"
+  },
+  {
+    "cat": "javascript",
+    "id": "js_functions",
+    "title": "函数、作用域与 this",
+    "file": "assets/content/programming_js_functions.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-17"
+  },
+  {
+    "cat": "javascript",
+    "id": "js_objects",
+    "title": "对象、原型与类",
+    "file": "assets/content/programming_js_objects.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-17"
+  },
+  {
+    "cat": "javascript",
+    "id": "js_arrays",
+    "title": "数组与常用方法",
+    "file": "assets/content/programming_js_arrays.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-17"
+  },
+  {
+    "cat": "javascript",
+    "id": "js_async",
+    "title": "异步编程",
+    "file": "assets/content/programming_js_async.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-17"
+  },
+  {
+    "cat": "javascript",
+    "id": "js_dom_events",
+    "title": "DOM 与事件",
+    "file": "assets/content/programming_js_dom_events.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-17"
+  },
+  {
+    "cat": "javascript",
+    "id": "js_errors_debugging",
+    "title": "错误处理与调试",
+    "file": "assets/content/programming_js_errors_debugging.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-17"
+  },
+  {
+    "cat": "javascript",
+    "id": "js_modules_tooling",
+    "title": "模块化与工程化",
+    "file": "assets/content/programming_js_modules_tooling.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-17"
+  },
+  {
+    "cat": "javascript",
+    "id": "js_project",
+    "title": "实战：Vite + React 待办应用",
+    "file": "assets/content/programming_js_project.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-05-17"
+  },
+  {
+    "cat": "javascript",
+    "id": "js_project_node_api",
+    "title": "实战：Node.js + Express REST API",
+    "file": "assets/content/js_project_node_api.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-05-17"
+  },
+  {
+    "cat": "javascript",
+    "id": "js_project_realtime_chat",
+    "title": "实战：JavaScript 实时聊天室",
+    "file": "assets/content/js_project_realtime_chat.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-05-17"
+  },
+  {
+    "cat": "javascript",
+    "id": "js_execution_context",
+    "title": "JavaScript 执行上下文与闭包",
+    "file": "assets/content/js_execution_context.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-17"
+  },
+  {
+    "cat": "javascript",
+    "id": "js_memory_gc",
+    "title": "JavaScript 内存管理与垃圾回收",
+    "file": "assets/content/js_memory_gc.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-17"
+  },
+  {
+    "cat": "javascript",
+    "id": "js_node_backend",
+    "title": "Node.js 后端工程",
+    "file": "assets/content/js_node_backend.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-05-17"
+  },
+  {
+    "cat": "csharp",
+    "id": "csharp_dotnet_first",
+    "title": "C# 与 .NET 第一个程序",
+    "file": "assets/content/csharp_dotnet_first.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-03-10"
+  },
+  {
+    "cat": "csharp",
+    "id": "csharp_variables_input",
+    "title": "C# 变量与输入",
+    "file": "assets/content/csharp_variables_input.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-03-10"
+  },
+  {
+    "cat": "csharp",
+    "id": "csharp_conditions",
+    "title": "C# 条件判断",
+    "file": "assets/content/csharp_conditions.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-10"
+  },
+  {
+    "cat": "csharp",
+    "id": "csharp_loops",
+    "title": "C# 循环入门",
+    "file": "assets/content/csharp_loops.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-03-10"
+  },
+  {
+    "cat": "csharp",
+    "id": "csharp_methods_intro",
+    "title": "C# 方法入门",
+    "file": "assets/content/csharp_methods_intro.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-03-10"
+  },
+  {
+    "cat": "csharp",
+    "id": "csharp_basics",
+    "title": "C# 与 .NET 平台",
+    "file": "assets/content/programming_csharp_basics.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-10"
+  },
+  {
+    "cat": "csharp",
+    "id": "csharp_types",
+    "title": "变量、类型与字符串",
+    "file": "assets/content/programming_csharp_types.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-10"
+  },
+  {
+    "cat": "csharp",
+    "id": "csharp_control_methods",
+    "title": "控制流与方法",
+    "file": "assets/content/programming_csharp_control_methods.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-10"
+  },
+  {
+    "cat": "csharp",
+    "id": "csharp_oop",
+    "title": "类、属性与对象",
+    "file": "assets/content/programming_csharp_oop.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-10"
+  },
+  {
+    "cat": "csharp",
+    "id": "csharp_inheritance",
+    "title": "继承、接口与多态",
+    "file": "assets/content/programming_csharp_inheritance.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-10"
+  },
+  {
+    "cat": "csharp",
+    "id": "csharp_collections_linq",
+    "title": "集合、委托与 LINQ",
+    "file": "assets/content/programming_csharp_collections_linq.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-10"
+  },
+  {
+    "cat": "csharp",
+    "id": "csharp_async",
+    "title": "异步编程与异常处理",
+    "file": "assets/content/programming_csharp_async.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-10"
+  },
+  {
+    "cat": "csharp",
+    "id": "csharp_ecosystem",
+    "title": "生态、测试与 Web 开发",
+    "file": "assets/content/programming_csharp_ecosystem.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-10"
+  },
+  {
+    "cat": "csharp",
+    "id": "csharp_project",
+    "title": "实战：Web API + EF Core",
+    "file": "assets/content/programming_csharp_project.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-03-10"
+  },
+  {
+    "cat": "csharp",
+    "id": "csharp_project_inventory_cli",
+    "title": "实战：C# 库存管理 CLI",
+    "file": "assets/content/csharp_project_inventory_cli.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-03-10"
+  },
+  {
+    "cat": "csharp",
+    "id": "csharp_project_blazor_admin",
+    "title": "实战：C# Blazor 管理后台",
+    "file": "assets/content/csharp_project_blazor_admin.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-03-10"
+  },
+  {
+    "cat": "csharp",
+    "id": "csharp_records_patterns",
+    "title": "C# Record、模式匹配与不可变数据",
+    "file": "assets/content/csharp_records_patterns.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-10"
+  },
+  {
+    "cat": "csharp",
+    "id": "csharp_async_streams",
+    "title": "C# 异步流与取消",
+    "file": "assets/content/csharp_async_streams.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-10"
+  },
+  {
+    "cat": "csharp",
+    "id": "csharp_gc_performance",
+    "title": "C# GC、Span 与性能优化",
+    "file": "assets/content/csharp_gc_performance.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-10"
+  },
+  {
+    "cat": "go",
+    "id": "go_first_program",
+    "title": "Go 第一个程序",
+    "file": "assets/content/go_first_program.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-10"
+  },
+  {
+    "cat": "go",
+    "id": "go_variables_input",
+    "title": "Go 变量与输入",
+    "file": "assets/content/go_variables_input.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-10"
+  },
+  {
+    "cat": "go",
+    "id": "go_conditions",
+    "title": "Go 条件判断",
+    "file": "assets/content/go_conditions.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-10"
+  },
+  {
+    "cat": "go",
+    "id": "go_loops",
+    "title": "Go 循环入门",
+    "file": "assets/content/go_loops.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-10"
+  },
+  {
+    "cat": "go",
+    "id": "go_functions_intro",
+    "title": "Go 函数入门",
+    "file": "assets/content/go_functions_intro.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-04-10"
+  },
+  {
+    "cat": "go",
+    "id": "go_basics",
+    "title": "Go 基础",
+    "file": "assets/content/programming_go_basics.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-10"
+  },
+  {
+    "cat": "go",
+    "id": "go_concurrency",
+    "title": "Go 并发：goroutine、channel 与 context",
+    "file": "assets/content/programming_go_concurrency.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-10"
+  },
+  {
+    "cat": "go",
+    "id": "go_interfaces_errors",
+    "title": "Go 接口与错误处理",
+    "file": "assets/content/programming_go_interfaces_errors.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-10"
+  },
+  {
+    "cat": "go",
+    "id": "go_project",
+    "title": "Go 工程实践",
+    "file": "assets/content/programming_go_project.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-04-10"
+  },
+  {
+    "cat": "go",
+    "id": "go_performance",
+    "title": "Go 性能优化与内存",
+    "file": "assets/content/programming_go_performance.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-10"
+  },
+  {
+    "cat": "go",
+    "id": "go_microservice",
+    "title": "Go 微服务与可观测",
+    "file": "assets/content/programming_go_microservice.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-10"
+  },
+  {
+    "cat": "go",
+    "id": "go_pprof",
+    "title": "Go 性能剖析与调优实战",
+    "file": "assets/content/go_pprof.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-04-10"
+  },
+  {
+    "cat": "go",
+    "id": "go_grpc",
+    "title": "gRPC 与 Protobuf 实践",
+    "file": "assets/content/go_grpc.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-10"
+  },
+  {
+    "cat": "go",
+    "id": "go_testing",
+    "title": "Go 测试进阶：基准、模糊与集成",
+    "file": "assets/content/go_testing.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-10"
+  },
+  {
+    "cat": "go",
+    "id": "go_data_access",
+    "title": "Go 数据访问与连接池",
+    "file": "assets/content/go_data_access.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-10"
+  },
+  {
+    "cat": "go",
+    "id": "go_generics_stdlib",
+    "title": "Go 泛型与标准库实战",
+    "file": "assets/content/programming_go_generics_stdlib.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-04-10"
+  },
+  {
+    "cat": "go",
+    "id": "go_concurrency_patterns",
+    "title": "Go 并发模式与 errgroup",
+    "file": "assets/content/go_concurrency_patterns.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-10"
+  },
+  {
+    "cat": "go",
+    "id": "go_project_rest_api",
+    "title": "实战：Go REST API 服务",
+    "file": "assets/content/go_project_rest_api.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-04-10"
+  },
+  {
+    "cat": "go",
+    "id": "go_project_worker_pool",
+    "title": "实战：Go 并发抓取与 Worker Pool",
+    "file": "assets/content/go_project_worker_pool.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-04-10"
+  },
+  {
+    "cat": "go",
+    "id": "go_generics_deep",
+    "title": "Go 泛型深入与约束设计",
+    "file": "assets/content/go_generics_deep.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-10"
+  },
+  {
+    "cat": "go",
+    "id": "go_profiling_deep",
+    "title": "Go 性能剖析与调优（进阶）",
+    "file": "assets/content/go_profiling_deep.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-10"
+  },
+  {
+    "cat": "go",
+    "id": "go_cloud_native_security",
+    "title": "Go 云原生服务安全与可靠性",
+    "file": "assets/content/go_cloud_native_security.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-10"
+  },
+  {
+    "cat": "rust",
+    "id": "rust_cargo_first",
+    "title": "Rust Cargo 第一个程序",
+    "file": "assets/content/rust_cargo_first.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-10"
+  },
+  {
+    "cat": "rust",
+    "id": "rust_variables_mutability",
+    "title": "Rust 变量与可变性",
+    "file": "assets/content/rust_variables_mutability.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-10"
+  },
+  {
+    "cat": "rust",
+    "id": "rust_conditions",
+    "title": "Rust 条件判断",
+    "file": "assets/content/rust_conditions.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-06-10"
+  },
+  {
+    "cat": "rust",
+    "id": "rust_loops",
+    "title": "Rust 循环入门",
+    "file": "assets/content/rust_loops.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-06-10"
+  },
+  {
+    "cat": "rust",
+    "id": "rust_functions_intro",
+    "title": "Rust 函数入门",
+    "file": "assets/content/rust_functions_intro.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-06-10"
+  },
+  {
+    "cat": "rust",
+    "id": "rust_basics",
+    "title": "Rust 基础",
+    "file": "assets/content/programming_rust_basics.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-10"
+  },
+  {
+    "cat": "rust",
+    "id": "rust_ownership",
+    "title": "Rust 所有权、借用与生命周期",
+    "file": "assets/content/programming_rust_ownership.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-10"
+  },
+  {
+    "cat": "rust",
+    "id": "rust_types_traits",
+    "title": "Rust 类型系统：Option、Result 与 trait",
+    "file": "assets/content/programming_rust_types_traits.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-10"
+  },
+  {
+    "cat": "rust",
+    "id": "rust_concurrency_cargo",
+    "title": "Rust 并发与 Cargo 工程",
+    "file": "assets/content/programming_rust_concurrency_cargo.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-10"
+  },
+  {
+    "cat": "rust",
+    "id": "rust_errors_iterators",
+    "title": "Rust 错误处理、迭代器与异步",
+    "file": "assets/content/programming_rust_errors_iterators_async.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-10"
+  },
+  {
+    "cat": "rust",
+    "id": "rust_unsafe_ffi",
+    "title": "Rust unsafe、FFI 与生态",
+    "file": "assets/content/programming_rust_unsafe_ffi.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-10"
+  },
+  {
+    "cat": "rust",
+    "id": "rust_cli_project",
+    "title": "Rust 实战：命令行工具",
+    "file": "assets/content/programming_rust_cli_project.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-06-10"
+  },
+  {
+    "cat": "rust",
+    "id": "rust_async_tokio",
+    "title": "Rust 异步编程与 tokio",
+    "file": "assets/content/programming_rust_async.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-10"
+  },
+  {
+    "cat": "rust",
+    "id": "rust_project_axum_api",
+    "title": "实战：Rust + Axum REST API",
+    "file": "assets/content/rust_project_axum_api.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-06-10"
+  },
+  {
+    "cat": "rust",
+    "id": "rust_project_downloader",
+    "title": "实战：Rust 并发下载器",
+    "file": "assets/content/rust_project_downloader.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-06-10"
+  },
+  {
+    "cat": "rust",
+    "id": "rust_traits_generics",
+    "title": "Rust trait、泛型与关联类型",
+    "file": "assets/content/rust_traits_generics.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-10"
+  },
+  {
+    "cat": "rust",
+    "id": "rust_smart_pointers",
+    "title": "Rust 智能指针与内部可变性",
+    "file": "assets/content/rust_smart_pointers.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-10"
+  },
+  {
+    "cat": "rust",
+    "id": "rust_macros_wasm",
+    "title": "Rust 宏、WASM 与跨平台",
+    "file": "assets/content/rust_macros_wasm.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-10"
+  },
+  {
+    "cat": "typescript",
+    "id": "ts_first_types",
+    "title": "TypeScript 第一个类型",
+    "file": "assets/content/ts_first_types.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "typescript",
+    "id": "ts_basic_types",
+    "title": "TypeScript 基础类型",
+    "file": "assets/content/ts_basic_types.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "typescript",
+    "id": "ts_interface_intro",
+    "title": "TypeScript 接口入门",
+    "file": "assets/content/ts_interface_intro.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "typescript",
+    "id": "ts_function_types",
+    "title": "TypeScript 函数类型",
+    "file": "assets/content/ts_function_types.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "typescript",
+    "id": "ts_utility_types",
+    "title": "TypeScript 工具类型与声明文件",
+    "file": "assets/content/programming_ts_utility_types.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "typescript",
+    "id": "ts_arrays_objects",
+    "title": "TypeScript 数组与对象",
+    "file": "assets/content/ts_arrays_objects.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "typescript",
+    "id": "typescript",
+    "title": "TypeScript 类型系统",
+    "file": "assets/content/programming_typescript.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "typescript",
+    "id": "ts_project",
+    "title": "TypeScript 工程配置与实践",
+    "file": "assets/content/programming_ts_project.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "typescript",
+    "id": "ts_build_test",
+    "title": "TypeScript 构建工具链与测试",
+    "file": "assets/content/programming_ts_build_test.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "typescript",
+    "id": "ts_narrowing_generics",
+    "title": "TypeScript 类型收窄与泛型",
+    "file": "assets/content/programming_ts_narrowing_generics.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "typescript",
+    "id": "ts_decorators_pro",
+    "title": "TypeScript 进阶类型与框架实践",
+    "file": "assets/content/programming_ts_decorators_types_pro.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "typescript",
+    "id": "ts_node_backend",
+    "title": "TypeScript Node 后端开发",
+    "file": "assets/content/ts_node_backend.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "typescript",
+    "id": "ts_monorepo",
+    "title": "Monorepo 工程实践",
+    "file": "assets/content/ts_monorepo.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "typescript",
+    "id": "ts_testing",
+    "title": "TypeScript 测试策略",
+    "file": "assets/content/ts_testing.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "typescript",
+    "id": "ts_fullstack_project",
+    "title": "TypeScript 实战：全栈类型安全",
+    "file": "assets/content/programming_ts_fullstack_project.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "typescript",
+    "id": "ts_type_challenges",
+    "title": "TypeScript 类型体操进阶",
+    "file": "assets/content/ts_type_challenges.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "typescript",
+    "id": "ts_build_performance",
+    "title": "类型检查与构建性能优化",
+    "file": "assets/content/ts_build_performance.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "typescript",
+    "id": "ts_project_cli",
+    "title": "实战：TypeScript 类型安全 CLI",
+    "file": "assets/content/ts_project_cli.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "typescript",
+    "id": "ts_project_websocket_dashboard",
+    "title": "实战：TypeScript 实时监控面板",
+    "file": "assets/content/ts_project_websocket_dashboard.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "typescript",
+    "id": "ts_type_level",
+    "title": "TypeScript 类型级编程",
+    "file": "assets/content/ts_type_level.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "typescript",
+    "id": "ts_runtime_validation",
+    "title": "TypeScript 运行时校验与边界",
+    "file": "assets/content/ts_runtime_validation.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "typescript",
+    "id": "ts_performance",
+    "title": "TypeScript 编译与运行性能",
+    "file": "assets/content/ts_performance.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "shell",
+    "id": "shell_first_script",
+    "title": "Shell 第一个脚本",
+    "file": "assets/content/shell_first_script.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-02-10"
+  },
+  {
+    "cat": "shell",
+    "id": "shell_variables_args",
+    "title": "Shell 变量与参数",
+    "file": "assets/content/shell_variables_args.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-02-10"
+  },
+  {
+    "cat": "shell",
+    "id": "shell_conditions",
+    "title": "Shell 条件判断",
+    "file": "assets/content/shell_conditions.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-02-10"
+  },
+  {
+    "cat": "shell",
+    "id": "shell_loops",
+    "title": "Shell 循环入门",
+    "file": "assets/content/shell_loops.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-02-10"
+  },
+  {
+    "cat": "shell",
+    "id": "shell_pipeline",
+    "title": "Shell 文本处理流水线",
+    "file": "assets/content/programming_shell_pipeline.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-02-10"
+  },
+  {
+    "cat": "shell",
+    "id": "shell_pipeline_intro",
+    "title": "Shell 管道入门",
+    "file": "assets/content/shell_pipeline_intro.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-02-10"
+  },
+  {
+    "cat": "shell",
+    "id": "shell_bash",
+    "title": "Shell 与 Bash 脚本",
+    "file": "assets/content/programming_shell_bash.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-02-10"
+  },
+  {
+    "cat": "shell",
+    "id": "shell_flow",
+    "title": "Shell 流程控制与函数",
+    "file": "assets/content/programming_shell_flow.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-02-10"
+  },
+  {
+    "cat": "shell",
+    "id": "shell_robust",
+    "title": "健壮与可移植的 Shell 脚本",
+    "file": "assets/content/programming_shell_robust.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-02-10"
+  },
+  {
+    "cat": "shell",
+    "id": "shell_process_cron",
+    "title": "Shell 进程控制、定时任务与日志",
+    "file": "assets/content/programming_shell_process_cron.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-02-10"
+  },
+  {
+    "cat": "shell",
+    "id": "shell_script_engineering",
+    "title": "Shell 脚本工程化",
+    "file": "assets/content/programming_shell_script_engineering.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-02-10"
+  },
+  {
+    "cat": "shell",
+    "id": "shell_container",
+    "title": "Shell 与 Docker/K8s 交互",
+    "file": "assets/content/programming_shell_container.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-02-10"
+  },
+  {
+    "cat": "shell",
+    "id": "shell_text_advanced",
+    "title": "文本处理进阶：awk、sed 与正则",
+    "file": "assets/content/shell_text_advanced.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-02-10"
+  },
+  {
+    "cat": "shell",
+    "id": "shell_ops_scripts",
+    "title": "系统运维脚本实战",
+    "file": "assets/content/shell_ops_scripts.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-02-10"
+  },
+  {
+    "cat": "shell",
+    "id": "shell_ci_templates",
+    "title": "CI 脚本模板库",
+    "file": "assets/content/shell_ci_templates.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-02-10"
+  },
+  {
+    "cat": "shell",
+    "id": "shell_json_yaml",
+    "title": "结构化数据处理：jq 与 yq",
+    "file": "assets/content/shell_json_yaml.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-02-10"
+  },
+  {
+    "cat": "shell",
+    "id": "shell_security",
+    "title": "Shell 脚本安全加固",
+    "file": "assets/content/shell_security.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-02-10"
+  },
+  {
+    "cat": "shell",
+    "id": "shell_project_deploy",
+    "title": "实战：Shell 零停机部署脚本",
+    "file": "assets/content/shell_project_deploy.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-02-10"
+  },
+  {
+    "cat": "shell",
+    "id": "shell_project_log_analysis",
+    "title": "实战：Shell 日志分析与告警",
+    "file": "assets/content/shell_project_log_analysis.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-02-10"
+  },
+  {
+    "cat": "shell",
+    "id": "shell_portability",
+    "title": "Shell 可移植性与 POSIX 兼容",
+    "file": "assets/content/shell_portability.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-02-10"
+  },
+  {
+    "cat": "shell",
+    "id": "shell_security_hardening",
+    "title": "Shell 脚本安全加固（进阶）",
+    "file": "assets/content/shell_security_hardening.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-02-10"
+  },
+  {
+    "cat": "shell",
+    "id": "shell_automation_advanced",
+    "title": "Shell 高级自动化与可观测性",
+    "file": "assets/content/shell_automation_advanced.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-02-10"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "computer_organization_intro",
+    "title": "计算机组成入门",
+    "file": "assets/content/computer_organization_intro.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "binary_intro",
+    "title": "二进制入门",
+    "file": "assets/content/binary_intro.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "binary",
+    "title": "二进制与进制转换",
+    "file": "assets/content/fundamentals_binary.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "cpu",
+    "title": "CPU 工作原理",
+    "file": "assets/content/fundamentals_cpu.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "encoding",
+    "title": "字符编码与 Unicode",
+    "file": "assets/content/fundamentals_encoding.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "digital_logic",
+    "title": "数字逻辑与布尔代数",
+    "file": "assets/content/fundamentals_digital_logic.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "semantics_analysis",
+    "title": "语义分析与符号表",
+    "file": "assets/content/fundamentals_semantics.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-10-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "memory_cache",
+    "title": "内存与缓存",
+    "file": "assets/content/fundamentals_memory_cache.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-10-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "compiler",
+    "title": "编译与程序运行原理",
+    "file": "assets/content/fundamentals_compiler.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "assembly",
+    "title": "指令集与汇编入门",
+    "file": "assets/content/fundamentals_assembly.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "discrete_math",
+    "title": "离散数学与逻辑",
+    "file": "assets/content/fundamentals_discrete_math.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "probability",
+    "title": "概率统计基础",
+    "file": "assets/content/fundamentals_probability.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-10-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "compiler_frontend",
+    "title": "编译前端：词法与语法分析",
+    "file": "assets/content/fundamentals_compiler_frontend.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "ir_optimization",
+    "title": "中间代码与优化",
+    "file": "assets/content/fundamentals_ir_optimization.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-10-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "codegen_registers",
+    "title": "代码生成与寄存器分配",
+    "file": "assets/content/fundamentals_codegen.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "linking_loading",
+    "title": "链接与加载",
+    "file": "assets/content/fundamentals_linking.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-10-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "bus_io",
+    "title": "总线与 I/O 设备",
+    "file": "assets/content/fundamentals_bus_io.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "interrupt_exception",
+    "title": "中断、异常与 DMA",
+    "file": "assets/content/fundamentals_interrupt.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "float_and_check",
+    "title": "浮点数与校验码",
+    "file": "assets/content/fundamentals_float_check.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "performance_metrics",
+    "title": "性能度量与并行体系结构",
+    "file": "assets/content/fundamentals_performance.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-10-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "fundamentals_project",
+    "title": "实战：追踪程序的全生命周期",
+    "file": "assets/content/fundamentals_project.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "fundamentals_embedded_iot",
+    "title": "嵌入式与 IoT 基础",
+    "file": "assets/content/fundamentals_embedded_iot.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "computation_theory",
+    "title": "计算理论入门",
+    "file": "assets/content/fundamentals_computation_theory.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "cryptography",
+    "title": "密码学原语",
+    "file": "assets/content/fundamentals_cryptography.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "graphics_media",
+    "title": "计算机图形学与多媒体",
+    "file": "assets/content/fundamentals_graphics_media.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "fundamentals_pipeline",
+    "title": "CPU 流水线与指令级并行",
+    "file": "assets/content/fundamentals_pipeline.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "fundamentals_simd",
+    "title": "SIMD 与向量化计算",
+    "file": "assets/content/fundamentals_simd.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "fundamentals_cache_coherence",
+    "title": "缓存一致性、内存模型与 NUMA",
+    "file": "assets/content/fundamentals_cache_coherence.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "fundamentals_storage_stack",
+    "title": "SSD、存储栈与持久化",
+    "file": "assets/content/fundamentals_storage_stack.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "fundamentals",
+    "id": "fundamentals_architecture_case",
+    "title": "计算机体系结构综合案例",
+    "file": "assets/content/fundamentals_architecture_case.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-03-17"
+  },
+  {
+    "cat": "compiler",
+    "id": "compiler_overview",
+    "title": "编译流程与解释执行概览",
+    "file": "assets/content/compiler_overview.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-24"
+  },
+  {
+    "cat": "compiler",
+    "id": "compiler_lexer_parser",
+    "title": "词法分析与语法分析",
+    "file": "assets/content/compiler_lexer_parser.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-24"
+  },
+  {
+    "cat": "compiler",
+    "id": "compiler_semantic_types",
+    "title": "语义分析与类型系统",
+    "file": "assets/content/compiler_semantic_types.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-24"
+  },
+  {
+    "cat": "compiler",
+    "id": "compiler_diagnostics",
+    "title": "诊断系统与错误恢复",
+    "file": "assets/content/compiler_diagnostics.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-24"
+  },
+  {
+    "cat": "compiler",
+    "id": "compiler_jit_inlining",
+    "title": "即时编译与内联优化",
+    "file": "assets/content/compiler_jit_inlining.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-24"
+  },
+  {
+    "cat": "compiler",
+    "id": "compiler_gc",
+    "title": "垃圾回收算法与实现",
+    "file": "assets/content/compiler_gc.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-24"
+  },
+  {
+    "cat": "compiler",
+    "id": "compiler_bytecode_vm",
+    "title": "字节码与虚拟机实现",
+    "file": "assets/content/compiler_bytecode_vm.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-24"
+  },
+  {
+    "cat": "compiler",
+    "id": "compiler_project_minilang",
+    "title": "项目：实现一门迷你语言",
+    "file": "assets/content/compiler_project_minilang.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2027-01-24"
+  },
+  {
+    "cat": "compiler",
+    "id": "compiler_ir_optimization",
+    "title": "中间表示与优化",
+    "file": "assets/content/compiler_ir_optimization.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-24"
+  },
+  {
+    "cat": "compiler",
+    "id": "compiler_codegen_vm",
+    "title": "代码生成与栈式虚拟机",
+    "file": "assets/content/compiler_codegen_vm.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-24"
+  },
+  {
+    "cat": "algorithms",
+    "id": "algorithm_intro",
+    "title": "算法入门",
+    "file": "assets/content/algorithm_intro.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-05-24"
+  },
+  {
+    "cat": "algorithms",
+    "id": "linear_search_intro",
+    "title": "线性查找入门",
+    "file": "assets/content/linear_search_intro.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-24"
+  },
+  {
+    "cat": "algorithms",
+    "id": "binary_search",
+    "title": "二分查找",
+    "file": "assets/content/algorithms_binary_search.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-24"
+  },
+  {
+    "cat": "algorithms",
+    "id": "bubble_sort",
+    "title": "冒泡排序",
+    "file": "assets/content/algorithms_bubble_sort.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-24"
+  },
+  {
+    "cat": "algorithms",
+    "id": "time_complexity",
+    "title": "时间复杂度",
+    "file": "assets/content/algorithms_time_complexity.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-09-10"
+  },
+  {
+    "cat": "algorithms",
+    "id": "hash_table",
+    "title": "哈希表",
+    "file": "assets/content/algorithms_hash_table.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-24"
+  },
+  {
+    "cat": "algorithms",
+    "id": "stack_queue",
+    "title": "栈与队列",
+    "file": "assets/content/algorithms_stack_queue.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-09-10"
+  },
+  {
+    "cat": "algorithms",
+    "id": "linked_list",
+    "title": "链表",
+    "file": "assets/content/algorithms_linked_list.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-24"
+  },
+  {
+    "cat": "algorithms",
+    "id": "tree_bst",
+    "title": "树与二叉搜索树",
+    "file": "assets/content/algorithms_tree_bst.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-09-10"
+  },
+  {
+    "cat": "algorithms",
+    "id": "sorting",
+    "title": "排序算法家族",
+    "file": "assets/content/algorithms_sorting.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-09-10"
+  },
+  {
+    "cat": "algorithms",
+    "id": "two_pointers",
+    "title": "双指针与滑动窗口",
+    "file": "assets/content/algorithms_two_pointers.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-09-10"
+  },
+  {
+    "cat": "algorithms",
+    "id": "backtracking",
+    "title": "回溯算法",
+    "file": "assets/content/algorithms_backtracking.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-24"
+  },
+  {
+    "cat": "algorithms",
+    "id": "greedy",
+    "title": "贪心算法",
+    "file": "assets/content/algorithms_greedy.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-24"
+  },
+  {
+    "cat": "algorithms",
+    "id": "bit_manipulation",
+    "title": "位运算技巧",
+    "file": "assets/content/algorithms_bit_manipulation.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-24"
+  },
+  {
+    "cat": "algorithms",
+    "id": "prefix_sum",
+    "title": "前缀和与差分",
+    "file": "assets/content/algorithms_prefix_sum.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-24"
+  },
+  {
+    "cat": "algorithms",
+    "id": "union_find",
+    "title": "并查集",
+    "file": "assets/content/algorithms_union_find.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-09-10"
+  },
+  {
+    "cat": "algorithms",
+    "id": "trie",
+    "title": "字典树（Trie）",
+    "file": "assets/content/algorithms_trie.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-09-10"
+  },
+  {
+    "cat": "algorithms",
+    "id": "monotonic_stack",
+    "title": "单调栈与单调队列",
+    "file": "assets/content/algorithms_monotonic_stack.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-24"
+  },
+  {
+    "cat": "algorithms",
+    "id": "binary_answer",
+    "title": "二分答案",
+    "file": "assets/content/algorithms_binary_answer.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-24"
+  },
+  {
+    "cat": "algorithms",
+    "id": "balanced_tree",
+    "title": "平衡树实现",
+    "file": "assets/content/algorithms_balanced_tree.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-24"
+  },
+  {
+    "cat": "algorithms",
+    "id": "sorting_advanced",
+    "title": "基数排序、桶排序与外部排序",
+    "file": "assets/content/algorithms_sorting_advanced.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-09-10"
+  },
+  {
+    "cat": "algorithms",
+    "id": "cache_eviction",
+    "title": "缓存淘汰算法",
+    "file": "assets/content/algorithms_cache_eviction.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-24"
+  },
+  {
+    "cat": "algorithms",
+    "id": "algorithms_project",
+    "title": "实战：把数据结构用起来",
+    "file": "assets/content/algorithms_project.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-05-24"
+  },
+  {
+    "cat": "algorithms",
+    "id": "algo_shortest_paths",
+    "title": "最短路算法专题",
+    "file": "assets/content/algo_shortest_paths.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-24"
+  },
+  {
+    "cat": "algorithms",
+    "id": "algo_mst",
+    "title": "最小生成树与图剪枝",
+    "file": "assets/content/algo_mst.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-24"
+  },
+  {
+    "cat": "algorithms",
+    "id": "algo_topological",
+    "title": "拓扑排序与 DAG 应用",
+    "file": "assets/content/algo_topological.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-05-24"
+  },
+  {
+    "cat": "algorithms",
+    "id": "graph",
+    "title": "图与图算法",
+    "file": "assets/content/algorithms_graph.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-24"
+  },
+  {
+    "cat": "algorithms",
+    "id": "dynamic_programming",
+    "title": "动态规划入门",
+    "file": "assets/content/algorithms_dynamic_programming.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-24"
+  },
+  {
+    "cat": "algorithms",
+    "id": "segment_tree",
+    "title": "树状数组与线段树",
+    "file": "assets/content/algorithms_segment_tree.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-09-10"
+  },
+  {
+    "cat": "algorithms",
+    "id": "string_matching",
+    "title": "字符串匹配",
+    "file": "assets/content/algorithms_string_matching.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-09-10"
+  },
+  {
+    "cat": "algorithms",
+    "id": "probabilistic_structures",
+    "title": "概率数据结构",
+    "file": "assets/content/algorithms_probabilistic_structures.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-09-10"
+  },
+  {
+    "cat": "algorithms",
+    "id": "network_flow",
+    "title": "网络流与二分图匹配",
+    "file": "assets/content/algorithms_network_flow.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-05-24"
+  },
+  {
+    "cat": "algorithms",
+    "id": "algo_np_approximation",
+    "title": "NP 完全性与近似算法",
+    "file": "assets/content/algo_np_approximation.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-05-24"
+  },
+  {
+    "cat": "algorithms",
+    "id": "algo_computational_geometry",
+    "title": "计算几何基础",
+    "file": "assets/content/algo_computational_geometry.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-05-24"
+  },
+  {
+    "cat": "algorithms",
+    "id": "algo_persistent_parallel",
+    "title": "持久化数据结构与并行算法",
+    "file": "assets/content/algo_persistent_parallel.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-05-24"
+  },
+  {
+    "cat": "network",
+    "id": "network_layers_intro",
+    "title": "网络分层入门",
+    "file": "assets/content/network_layers_intro.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-06-24"
+  },
+  {
+    "cat": "network",
+    "id": "pentest_basics",
+    "title": "渗透测试基础",
+    "file": "assets/content/network_pentest.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-24"
+  },
+  {
+    "cat": "network",
+    "id": "ip_port_intro",
+    "title": "IP 与端口入门",
+    "file": "assets/content/ip_port_intro.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-24"
+  },
+  {
+    "cat": "network",
+    "id": "http_basics",
+    "title": "HTTP 基础",
+    "file": "assets/content/network_http_basics.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-24"
+  },
+  {
+    "cat": "network",
+    "id": "tcp_ip",
+    "title": "TCP/IP 协议栈",
+    "file": "assets/content/network_tcp_ip.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-24"
+  },
+  {
+    "cat": "network",
+    "id": "dns",
+    "title": "DNS 域名解析",
+    "file": "assets/content/network_dns.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-24"
+  },
+  {
+    "cat": "network",
+    "id": "link_layer",
+    "title": "链路层：以太网、ARP 与交换机",
+    "file": "assets/content/network_link_layer.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-24"
+  },
+  {
+    "cat": "network",
+    "id": "tls",
+    "title": "HTTPS 与 TLS",
+    "file": "assets/content/network_tls.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-24"
+  },
+  {
+    "cat": "network",
+    "id": "cdn_proxy",
+    "title": "CDN、代理与缓存",
+    "file": "assets/content/network_cdn_proxy.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-24"
+  },
+  {
+    "cat": "network",
+    "id": "websocket",
+    "title": "WebSocket 与实时通信",
+    "file": "assets/content/network_websocket.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-24"
+  },
+  {
+    "cat": "network",
+    "id": "wireless_mobile",
+    "title": "无线与移动网络",
+    "file": "assets/content/network_wireless.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-24"
+  },
+  {
+    "cat": "network",
+    "id": "network_attacks",
+    "title": "网络攻击与防护",
+    "file": "assets/content/network_attacks.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-24"
+  },
+  {
+    "cat": "network",
+    "id": "web_security",
+    "title": "Web 安全攻防",
+    "file": "assets/content/network_web_security.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-24"
+  },
+  {
+    "cat": "network",
+    "id": "network_project",
+    "title": "实战：抓包分析一次真实请求",
+    "file": "assets/content/network_project.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-06-24"
+  },
+  {
+    "cat": "network",
+    "id": "auth_oauth",
+    "title": "认证与授权",
+    "file": "assets/content/network_auth.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-24"
+  },
+  {
+    "cat": "network",
+    "id": "network_smtp",
+    "title": "SMTP、邮件协议与反垃圾",
+    "file": "assets/content/network_smtp.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-06-24"
+  },
+  {
+    "cat": "network",
+    "id": "http2_http3",
+    "title": "HTTP/2 与 HTTP/3",
+    "file": "assets/content/network_http2_http3.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-24"
+  },
+  {
+    "cat": "network",
+    "id": "ip_transport",
+    "title": "IP、子网与传输层深入",
+    "file": "assets/content/network_ip_transport.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-24"
+  },
+  {
+    "cat": "network",
+    "id": "socket_programming",
+    "title": "Socket 编程实战",
+    "file": "assets/content/network_socket.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-06-24"
+  },
+  {
+    "cat": "network",
+    "id": "network_ipv6",
+    "title": "IPv6 原理与迁移",
+    "file": "assets/content/network_ipv6.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-24"
+  },
+  {
+    "cat": "network",
+    "id": "network_nat_vpn",
+    "title": "NAT、隧道与 VPN",
+    "file": "assets/content/network_nat_vpn.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-06-24"
+  },
+  {
+    "cat": "network",
+    "id": "network_p2p",
+    "title": "P2P 网络与 NAT 穿透",
+    "file": "assets/content/network_p2p.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-06-24"
+  },
+  {
+    "cat": "network",
+    "id": "network_bgp",
+    "title": "BGP 与互联网路由",
+    "file": "assets/content/network_bgp.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-06-24"
+  },
+  {
+    "cat": "network",
+    "id": "network_performance",
+    "title": "网络性能调优",
+    "file": "assets/content/network_performance.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-06-24"
+  },
+  {
+    "cat": "security",
+    "id": "security_concept_intro",
+    "title": "安全概念入门",
+    "file": "assets/content/security_concept_intro.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-11-24"
+  },
+  {
+    "cat": "security",
+    "id": "password_hash_intro",
+    "title": "密码与哈希入门",
+    "file": "assets/content/password_hash_intro.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-11-24"
+  },
+  {
+    "cat": "security",
+    "id": "security_threat_model",
+    "title": "威胁建模与 STRIDE",
+    "file": "assets/content/security_threat_model.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-11-24"
+  },
+  {
+    "cat": "security",
+    "id": "security_owasp_top10",
+    "title": "OWASP Top 10 实战",
+    "file": "assets/content/security_owasp_top10.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2026-11-24"
+  },
+  {
+    "cat": "security",
+    "id": "security_secure_coding",
+    "title": "安全编码与输入校验",
+    "file": "assets/content/security_secure_coding.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-11-24"
+  },
+  {
+    "cat": "security",
+    "id": "security_auth_session",
+    "title": "认证、会话与令牌安全",
+    "file": "assets/content/security_auth_session.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-11-24"
+  },
+  {
+    "cat": "security",
+    "id": "security_secrets",
+    "title": "密钥与配置安全",
+    "file": "assets/content/security_secrets.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-11-24"
+  },
+  {
+    "cat": "security",
+    "id": "security_privacy",
+    "title": "隐私合规与数据分级",
+    "file": "assets/content/security_privacy.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-11-24"
+  },
+  {
+    "cat": "security",
+    "id": "security_sdl",
+    "title": "安全开发生命周期实战",
+    "file": "assets/content/security_sdl.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2026-11-24"
+  },
+  {
+    "cat": "security",
+    "id": "security_project",
+    "title": "实战：安全审计与漏洞修复",
+    "file": "assets/content/security_project.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2026-11-24"
+  },
+  {
+    "cat": "security",
+    "id": "security_supply_chain",
+    "title": "软件供应链安全",
+    "file": "assets/content/security_supply_chain.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-11-24"
+  },
+  {
+    "cat": "security",
+    "id": "security_container_k8s",
+    "title": "容器与 Kubernetes 安全",
+    "file": "assets/content/security_container_k8s.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-11-24"
+  },
+  {
+    "cat": "security",
+    "id": "security_cloud",
+    "title": "云安全与 IAM",
+    "file": "assets/content/security_cloud.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-11-24"
+  },
+  {
+    "cat": "security",
+    "id": "security_fuzzing",
+    "title": "模糊测试与漏洞验证",
+    "file": "assets/content/security_fuzzing.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-11-24"
+  },
+  {
+    "cat": "security",
+    "id": "security_incident",
+    "title": "安全事件响应",
+    "file": "assets/content/security_incident.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-11-24"
+  },
+  {
+    "cat": "blockchain",
+    "id": "blockchain_basics",
+    "title": "区块链基础与密码学原语",
+    "file": "assets/content/blockchain_basics.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-17"
+  },
+  {
+    "cat": "blockchain",
+    "id": "chain_wallet_keys",
+    "title": "钱包、密钥与签名",
+    "file": "assets/content/chain_wallet_keys.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-17"
+  },
+  {
+    "cat": "blockchain",
+    "id": "blockchain_bitcoin_consensus",
+    "title": "比特币、UTXO 与工作量证明",
+    "file": "assets/content/blockchain_bitcoin_consensus.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-17"
+  },
+  {
+    "cat": "blockchain",
+    "id": "blockchain_ethereum_smart_contract",
+    "title": "以太坊、EVM 与智能合约",
+    "file": "assets/content/blockchain_ethereum_smart_contract.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-17"
+  },
+  {
+    "cat": "blockchain",
+    "id": "chain_token_standards",
+    "title": "代币标准与合约接口",
+    "file": "assets/content/chain_token_standards.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-17"
+  },
+  {
+    "cat": "blockchain",
+    "id": "chain_oracle_bridge",
+    "title": "预言机与跨链桥",
+    "file": "assets/content/chain_oracle_bridge.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-17"
+  },
+  {
+    "cat": "blockchain",
+    "id": "chain_zk_privacy",
+    "title": "零知识与链上隐私",
+    "file": "assets/content/chain_zk_privacy.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-17"
+  },
+  {
+    "cat": "blockchain",
+    "id": "chain_audit_project",
+    "title": "项目：智能合约审计实战",
+    "file": "assets/content/chain_audit_project.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2027-01-17"
+  },
+  {
+    "cat": "blockchain",
+    "id": "blockchain_defi_security",
+    "title": "DeFi 风险与智能合约审计",
+    "file": "assets/content/blockchain_defi_security.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-17"
+  },
+  {
+    "cat": "blockchain",
+    "id": "blockchain_scaling_layer2",
+    "title": "扩容、Rollup 与跨链桥",
+    "file": "assets/content/blockchain_scaling_layer2.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-17"
+  },
+  {
+    "cat": "database",
+    "id": "sql_table_intro",
+    "title": "表与 SQL 入门",
+    "file": "assets/content/sql_table_intro.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-09-17"
+  },
+  {
+    "cat": "database",
+    "id": "sql_query_intro",
+    "title": "SQL 查询入门",
+    "file": "assets/content/sql_query_intro.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-06-17"
+  },
+  {
+    "cat": "database",
+    "id": "sql_basics",
+    "title": "SQL 基础",
+    "file": "assets/content/database_sql_basics.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-17"
+  },
+  {
+    "cat": "database",
+    "id": "index",
+    "title": "索引",
+    "file": "assets/content/database_index.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-17"
+  },
+  {
+    "cat": "database",
+    "id": "transaction",
+    "title": "事务",
+    "file": "assets/content/database_transaction.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-09-17"
+  },
+  {
+    "cat": "database",
+    "id": "db_design",
+    "title": "数据库设计与范式",
+    "file": "assets/content/database_design.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-17"
+  },
+  {
+    "cat": "database",
+    "id": "db_query_optimization",
+    "title": "查询优化与执行计划",
+    "file": "assets/content/database_query_optimization.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-17"
+  },
+  {
+    "cat": "database",
+    "id": "nosql",
+    "title": "NoSQL 数据库",
+    "file": "assets/content/database_nosql.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-17"
+  },
+  {
+    "cat": "database",
+    "id": "redis",
+    "title": "Redis 实战",
+    "file": "assets/content/database_redis.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-06-17"
+  },
+  {
+    "cat": "database",
+    "id": "sql_advanced",
+    "title": "SQL 高级查询",
+    "file": "assets/content/database_sql_advanced.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-17"
+  },
+  {
+    "cat": "database",
+    "id": "storage_engine",
+    "title": "存储引擎与 B+ 树实现",
+    "file": "assets/content/database_storage_engine.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-09-17"
+  },
+  {
+    "cat": "database",
+    "id": "distributed_transaction",
+    "title": "分布式事务与共识",
+    "file": "assets/content/database_distributed.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-17"
+  },
+  {
+    "cat": "database",
+    "id": "olap_columnar",
+    "title": "OLAP 与列式存储",
+    "file": "assets/content/database_olap.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-17"
+  },
+  {
+    "cat": "database",
+    "id": "search_index",
+    "title": "倒排索引与搜索",
+    "file": "assets/content/database_search_index.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-17"
+  },
+  {
+    "cat": "database",
+    "id": "database_project",
+    "title": "实战：设计并优化一个订单库",
+    "file": "assets/content/database_project.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-06-17"
+  },
+  {
+    "cat": "database",
+    "id": "bigdata_batch_stream",
+    "title": "大数据与批流处理",
+    "file": "assets/content/database_bigdata.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-17"
+  },
+  {
+    "cat": "database",
+    "id": "airflow_quality",
+    "title": "Airflow 调度与数据质量",
+    "file": "assets/content/database_airflow.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-17"
+  },
+  {
+    "cat": "database",
+    "id": "db_postgresql_deep",
+    "title": "PostgreSQL 深入实践",
+    "file": "assets/content/db_postgresql_deep.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-17"
+  },
+  {
+    "cat": "database",
+    "id": "mysql_lock_mvcc",
+    "title": "MySQL 锁与 MVCC",
+    "file": "assets/content/database_mysql_lock_mvcc.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-17"
+  },
+  {
+    "cat": "database",
+    "id": "db_ops",
+    "title": "数据库运维：备份、迁移与分库分表",
+    "file": "assets/content/database_ops.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-17"
+  },
+  {
+    "cat": "database",
+    "id": "data_lakehouse",
+    "title": "数据湖与湖仓一体",
+    "file": "assets/content/database_lakehouse.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-17"
+  },
+  {
+    "cat": "database",
+    "id": "realtime_warehouse",
+    "title": "实时数仓：从 Kafka 到 Flink",
+    "file": "assets/content/database_realtime_warehouse.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-17"
+  },
+  {
+    "cat": "database",
+    "id": "db_graph",
+    "title": "图数据库与关系查询",
+    "file": "assets/content/db_graph.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-17"
+  },
+  {
+    "cat": "database",
+    "id": "db_time_series",
+    "title": "时序数据库与监控数据",
+    "file": "assets/content/db_time_series.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-17"
+  },
+  {
+    "cat": "database",
+    "id": "db_migration_governance",
+    "title": "数据库迁移与 Schema 治理",
+    "file": "assets/content/db_migration_governance.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-06-17"
+  },
+  {
+    "cat": "database",
+    "id": "db_permissions_security",
+    "title": "数据库权限与安全",
+    "file": "assets/content/db_permissions_security.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-06-17"
+  },
+  {
+    "cat": "database",
+    "id": "db_backup_recovery",
+    "title": "数据库备份与恢复演练",
+    "file": "assets/content/db_backup_recovery.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-06-17"
+  },
+  {
+    "cat": "data_engineering",
+    "id": "de_data_modeling",
+    "title": "数据建模与数仓分层",
+    "file": "assets/content/de_data_modeling.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-10"
+  },
+  {
+    "cat": "data_engineering",
+    "id": "de_batch_processing",
+    "title": "批处理与 Spark 实践",
+    "file": "assets/content/de_batch_processing.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-10"
+  },
+  {
+    "cat": "data_engineering",
+    "id": "de_stream_processing",
+    "title": "流处理与 Kafka 实践",
+    "file": "assets/content/de_stream_processing.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-10"
+  },
+  {
+    "cat": "data_engineering",
+    "id": "de_orchestration_lineage",
+    "title": "任务编排与数据血缘",
+    "file": "assets/content/de_orchestration_lineage.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-10"
+  },
+  {
+    "cat": "data_engineering",
+    "id": "de_cdc_incremental",
+    "title": "CDC 与增量同步",
+    "file": "assets/content/de_cdc_incremental.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-10"
+  },
+  {
+    "cat": "data_engineering",
+    "id": "de_spark_tuning",
+    "title": "Spark 执行模型与调优",
+    "file": "assets/content/de_spark_tuning.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-10"
+  },
+  {
+    "cat": "data_engineering",
+    "id": "de_flink_windowing",
+    "title": "Flink 流处理与窗口",
+    "file": "assets/content/de_flink_windowing.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-10"
+  },
+  {
+    "cat": "data_engineering",
+    "id": "de_data_contract",
+    "title": "数据契约与质量门禁",
+    "file": "assets/content/de_data_contract.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-10"
+  },
+  {
+    "cat": "data_engineering",
+    "id": "de_lakehouse_governance",
+    "title": "湖仓治理与表维护",
+    "file": "assets/content/de_lakehouse_governance.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-10"
+  },
+  {
+    "cat": "data_engineering",
+    "id": "de_data_quality",
+    "title": "数据质量与数据治理",
+    "file": "assets/content/de_data_quality.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-01-10"
+  },
+  {
+    "cat": "os",
+    "id": "process_thread",
+    "title": "进程与线程",
+    "file": "assets/content/os_process_thread.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "os",
+    "id": "scheduling",
+    "title": "进程调度",
+    "file": "assets/content/os_scheduling.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "os",
+    "id": "process_thread_intro",
+    "title": "进程与线程入门",
+    "file": "assets/content/process_thread_intro.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "os",
+    "id": "deadlock",
+    "title": "死锁",
+    "file": "assets/content/os_deadlock.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "os",
+    "id": "virtual_memory",
+    "title": "虚拟内存与分页",
+    "file": "assets/content/os_virtual_memory.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "os",
+    "id": "file_system",
+    "title": "文件系统基础",
+    "file": "assets/content/os_file_system.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "os",
+    "id": "ipc_io",
+    "title": "进程间通信与 IO 模型",
+    "file": "assets/content/os_ipc_io.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "os",
+    "id": "os_synchronization",
+    "title": "同步机制与经典问题",
+    "file": "assets/content/os_synchronization.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "os",
+    "id": "os_filesystem_impl",
+    "title": "文件系统实现与 RAID",
+    "file": "assets/content/os_filesystem_impl.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "os",
+    "id": "os_boot_security",
+    "title": "系统启动与权限安全",
+    "file": "assets/content/os_boot_security.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "os",
+    "id": "os_project",
+    "title": "实战：实现一个多线程任务队列",
+    "file": "assets/content/os_project.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "os",
+    "id": "os_kernel_arch",
+    "title": "操作系统内核架构",
+    "file": "assets/content/os_kernel_arch.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "os",
+    "id": "os_io_scheduling",
+    "title": "I/O 调度与块设备",
+    "file": "assets/content/os_io_scheduling.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "os",
+    "id": "os_cgroups_namespaces",
+    "title": "cgroups、namespaces 与容器",
+    "file": "assets/content/os_cgroups_namespaces.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "os",
+    "id": "os_io_uring",
+    "title": "io_uring 与异步 I/O",
+    "file": "assets/content/os_io_uring.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "os",
+    "id": "os_rtos",
+    "title": "实时操作系统与确定性",
+    "file": "assets/content/os_rtos.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "os",
+    "id": "os_linux_troubleshooting",
+    "title": "Linux 性能与故障排查",
+    "file": "assets/content/os_linux_troubleshooting.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "embedded",
+    "id": "embedded_mcu_basics",
+    "title": "单片机与嵌入式系统基础",
+    "file": "assets/content/embedded_mcu_basics.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-02-17"
+  },
+  {
+    "cat": "embedded",
+    "id": "embedded_bus_protocols",
+    "title": "UART、SPI 与 I2C 通信实战",
+    "file": "assets/content/embedded_bus_protocols.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2027-02-17"
+  },
+  {
+    "cat": "embedded",
+    "id": "embedded_sensor_signal",
+    "title": "传感器采集与信号调理",
+    "file": "assets/content/embedded_sensor_signal.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-02-17"
+  },
+  {
+    "cat": "embedded",
+    "id": "embedded_gpio_interrupt",
+    "title": "外设编程：GPIO、中断与定时器",
+    "file": "assets/content/embedded_gpio_interrupt.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-02-17"
+  },
+  {
+    "cat": "embedded",
+    "id": "embedded_rtos_tasks",
+    "title": "RTOS 任务、调度与同步",
+    "file": "assets/content/embedded_rtos_tasks.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-02-17"
+  },
+  {
+    "cat": "embedded",
+    "id": "embedded_bootloader",
+    "title": "Bootloader 与固件升级",
+    "file": "assets/content/embedded_bootloader.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-02-17"
+  },
+  {
+    "cat": "embedded",
+    "id": "embedded_low_power",
+    "title": "低功耗与电池续航设计",
+    "file": "assets/content/embedded_low_power.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-02-17"
+  },
+  {
+    "cat": "embedded",
+    "id": "embedded_debug_trace",
+    "title": "嵌入式调试与追踪",
+    "file": "assets/content/embedded_debug_trace.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-02-17"
+  },
+  {
+    "cat": "embedded",
+    "id": "embedded_iot_security",
+    "title": "IoT 设备安全基础",
+    "file": "assets/content/embedded_iot_security.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-02-17"
+  },
+  {
+    "cat": "embedded",
+    "id": "embedded_project_env_monitor",
+    "title": "项目：环境监测节点",
+    "file": "assets/content/embedded_project_env_monitor.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2027-02-17"
+  },
+  {
+    "cat": "toolchain",
+    "id": "git_intro",
+    "title": "Git 入门",
+    "file": "assets/content/git_intro.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-24"
+  },
+  {
+    "cat": "toolchain",
+    "id": "cli_intro",
+    "title": "命令行入门",
+    "file": "assets/content/cli_intro.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-24"
+  },
+  {
+    "cat": "toolchain",
+    "id": "git_basics",
+    "title": "Git 版本控制",
+    "file": "assets/content/toolchain_git_basics.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-24"
+  },
+  {
+    "cat": "toolchain",
+    "id": "cli",
+    "title": "命令行基础",
+    "file": "assets/content/toolchain_cli.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-24"
+  },
+  {
+    "cat": "toolchain",
+    "id": "debugging",
+    "title": "调试与日志",
+    "file": "assets/content/toolchain_debugging.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-24"
+  },
+  {
+    "cat": "toolchain",
+    "id": "docker",
+    "title": "Docker 容器基础",
+    "file": "assets/content/toolchain_docker.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-24"
+  },
+  {
+    "cat": "toolchain",
+    "id": "ci_cd",
+    "title": "CI/CD 与 GitHub Actions",
+    "file": "assets/content/toolchain_ci.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-24"
+  },
+  {
+    "cat": "toolchain",
+    "id": "observability",
+    "title": "可观测性：日志、指标与链路",
+    "file": "assets/content/toolchain_observability.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-24"
+  },
+  {
+    "cat": "toolchain",
+    "id": "gateway",
+    "title": "API 网关与负载均衡",
+    "file": "assets/content/toolchain_gateway.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-24"
+  },
+  {
+    "cat": "toolchain",
+    "id": "toolchain_project",
+    "title": "实战：搭一条完整 CI/CD 流水线",
+    "file": "assets/content/toolchain_project.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-08-24"
+  },
+  {
+    "cat": "toolchain",
+    "id": "kubernetes",
+    "title": "Kubernetes 基础",
+    "file": "assets/content/toolchain_kubernetes.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-24"
+  },
+  {
+    "cat": "toolchain",
+    "id": "terraform",
+    "title": "Terraform 与基础设施即代码",
+    "file": "assets/content/toolchain_terraform.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-24"
+  },
+  {
+    "cat": "toolchain",
+    "id": "linux_performance",
+    "title": "Linux 性能分析",
+    "file": "assets/content/toolchain_linux_performance.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-24"
+  },
+  {
+    "cat": "toolchain",
+    "id": "gitops_argocd",
+    "title": "GitOps 与 ArgoCD",
+    "file": "assets/content/toolchain_gitops.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-08-24"
+  },
+  {
+    "cat": "cloud",
+    "id": "cloud_fundamentals",
+    "title": "云计算基础与资源模型",
+    "file": "assets/content/cloud_fundamentals.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-03-24"
+  },
+  {
+    "cat": "cloud",
+    "id": "cloud_cost_finops",
+    "title": "云成本治理与容量规划",
+    "file": "assets/content/cloud_cost_finops.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-03-24"
+  },
+  {
+    "cat": "cloud",
+    "id": "cloud_containers_kubernetes",
+    "title": "容器与 Kubernetes 编排",
+    "file": "assets/content/cloud_containers_kubernetes.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-03-24"
+  },
+  {
+    "cat": "cloud",
+    "id": "cloud_serverless",
+    "title": "无服务器与事件驱动架构",
+    "file": "assets/content/cloud_serverless.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-03-24"
+  },
+  {
+    "cat": "cloud",
+    "id": "cloud_iac_terraform",
+    "title": "基础设施即代码",
+    "file": "assets/content/cloud_iac_terraform.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-03-24"
+  },
+  {
+    "cat": "cloud",
+    "id": "cloud_k8s_operations",
+    "title": "Kubernetes 运维实战",
+    "file": "assets/content/cloud_k8s_operations.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2027-03-24"
+  },
+  {
+    "cat": "cloud",
+    "id": "cloud_security_iam",
+    "title": "云安全与最小权限",
+    "file": "assets/content/cloud_security_iam.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-03-24"
+  },
+  {
+    "cat": "cloud",
+    "id": "cloud_multicluster_dr",
+    "title": "多集群与容灾演练",
+    "file": "assets/content/cloud_multicluster_dr.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-03-24"
+  },
+  {
+    "cat": "cloud",
+    "id": "cloud_observability_sre",
+    "title": "可观测性与 SRE 实践",
+    "file": "assets/content/cloud_observability_sre.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-03-24"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_concept_intro",
+    "title": "AI 概念入门",
+    "file": "assets/content/ai_concept_intro.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-12-24"
+  },
+  {
+    "cat": "ai",
+    "id": "prompt_intro",
+    "title": "提示词入门",
+    "file": "assets/content/prompt_intro.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-17"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_basics",
+    "title": "AI、机器学习与生成式 AI",
+    "file": "assets/content/ai_basics.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-12-24"
+  },
+  {
+    "cat": "ai",
+    "id": "ml_fundamentals",
+    "title": "机器学习核心概念",
+    "file": "assets/content/ai_ml_fundamentals.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-17"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_agent_basics",
+    "title": "AI Agent 基础",
+    "file": "assets/content/ai_agent_basics.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-12-24"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_deep_learning_llm",
+    "title": "深度学习与大语言模型",
+    "file": "assets/content/ai_deep_learning_llm.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-12-24"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_prompt_engineering",
+    "title": "提示工程",
+    "file": "assets/content/ai_prompt_engineering.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-17"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_embeddings_rag",
+    "title": "嵌入、向量检索与 RAG",
+    "file": "assets/content/ai_embeddings_rag.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-12-24"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_multimodal",
+    "title": "多模态 AI：图像、语音与视频",
+    "file": "assets/content/ai_multimodal.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-17"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_coding_assistant",
+    "title": "AI 编程助手与代码生成",
+    "file": "assets/content/ai_coding_assistant.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-12-24"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_agent_evaluation",
+    "title": "Agent 评测实战",
+    "file": "assets/content/ai_agent_evaluation.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2026-12-24"
+  },
+  {
+    "cat": "ai",
+    "id": "multimodal_rag",
+    "title": "多模态 RAG",
+    "file": "assets/content/ai_multimodal_rag.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-17"
+  },
+  {
+    "cat": "ai",
+    "id": "model_evaluation",
+    "title": "模型评测与选型",
+    "file": "assets/content/ai_model_evaluation.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-17"
+  },
+  {
+    "cat": "ai",
+    "id": "agent_memory",
+    "title": "Agent 记忆系统",
+    "file": "assets/content/ai_agent_memory.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-12-24"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_data_engineering",
+    "title": "数据工程与标注",
+    "file": "assets/content/ai_data_engineering.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-12-24"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_rag_agent_project",
+    "title": "实战：文档问答助手（RAG + Agent）",
+    "file": "assets/content/ai_rag_agent_project.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-04-17"
+  },
+  {
+    "cat": "ai",
+    "id": "vector_db",
+    "title": "向量数据库选型与调优",
+    "file": "assets/content/ai_vector_db.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-17"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_mcp",
+    "title": "MCP 模型上下文协议",
+    "file": "assets/content/ai_mcp.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-12-24"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_a2a",
+    "title": "A2A Agent 协作协议",
+    "file": "assets/content/ai_a2a.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-12-24"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_context_engineering",
+    "title": "上下文工程",
+    "file": "assets/content/ai_context_engineering.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-12-24"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_tool_calling",
+    "title": "工具调用与结构化输出",
+    "file": "assets/content/ai_tool_calling.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-04-17"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_computer_use",
+    "title": "Computer Use 与桌面自动化",
+    "file": "assets/content/ai_computer_use.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-12-24"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_browser_agent",
+    "title": "浏览器 Agent",
+    "file": "assets/content/ai_browser_agent.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-12-24"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_coding_agent",
+    "title": "代码 Agent 与软件工程自动化",
+    "file": "assets/content/ai_coding_agent.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-12-24"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_graphrag",
+    "title": "GraphRAG 与知识图谱检索",
+    "file": "assets/content/ai_graphrag.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-12-24"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_vlm",
+    "title": "视觉语言模型 VLM",
+    "file": "assets/content/ai_vlm.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-04-17"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_diffusion",
+    "title": "扩散模型与图像生成",
+    "file": "assets/content/ai_diffusion.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-12-24"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_realtime_api",
+    "title": "Realtime API 与语音交互",
+    "file": "assets/content/ai_realtime_api.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-04-17"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_governance",
+    "title": "AI 治理、合规与风险",
+    "file": "assets/content/ai_governance.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-12-24"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_mlops",
+    "title": "MLOps 与模型上线",
+    "file": "assets/content/ai_mlops.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-12-24"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_recommender",
+    "title": "推荐系统基础与排序",
+    "file": "assets/content/ai_recommender.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-04-17"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_time_series",
+    "title": "时间序列预测",
+    "file": "assets/content/ai_time_series.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-04-17"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_reinforcement_learning",
+    "title": "强化学习基础",
+    "file": "assets/content/ai_reinforcement_learning.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-04-17"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_multi_agent",
+    "title": "多智能体与编排",
+    "file": "assets/content/ai_multi_agent.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-17"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_engineering",
+    "title": "AI 应用工程化",
+    "file": "assets/content/ai_engineering.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-12-24"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_fine_tuning_deployment",
+    "title": "模型微调与本地部署",
+    "file": "assets/content/ai_fine_tuning_deployment.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-12-24"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_realtime_voice",
+    "title": "实时语音对话",
+    "file": "assets/content/ai_realtime_voice.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-17"
+  },
+  {
+    "cat": "ai",
+    "id": "agent_cost_performance",
+    "title": "Agent 成本与性能优化",
+    "file": "assets/content/ai_agent_cost_performance.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2026-12-24"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_training",
+    "title": "模型训练与分布式",
+    "file": "assets/content/ai_training.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-04-17"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_agent_security",
+    "title": "Agent 安全、权限与沙箱",
+    "file": "assets/content/ai_agent_security.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-12-24"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_guardrails",
+    "title": "安全护栏与内容审核",
+    "file": "assets/content/ai_guardrails.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2026-12-24"
+  },
+  {
+    "cat": "ai",
+    "id": "ai_model_serving",
+    "title": "大模型推理服务与 GPU 优化",
+    "file": "assets/content/ai_model_serving.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-04-17"
+  },
+  {
+    "cat": "distributed",
+    "id": "distributed_fundamentals",
+    "title": "分布式系统原理",
+    "file": "assets/content/distributed_fundamentals.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "distributed",
+    "id": "microservices",
+    "title": "微服务拆分与治理",
+    "file": "assets/content/distributed_microservices.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "distributed",
+    "id": "messaging_events",
+    "title": "消息队列与事件驱动",
+    "file": "assets/content/distributed_messaging.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "distributed",
+    "id": "high_availability",
+    "title": "高可用与容量规划",
+    "file": "assets/content/distributed_high_availability.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "distributed",
+    "id": "distributed_id",
+    "title": "分布式 ID 与发号器",
+    "file": "assets/content/distributed_id.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "distributed",
+    "id": "distributed_rate_limit",
+    "title": "限流与熔断算法专题",
+    "file": "assets/content/distributed_rate_limit.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "distributed",
+    "id": "distributed_cache",
+    "title": "分布式缓存架构",
+    "file": "assets/content/distributed_cache.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "distributed",
+    "id": "dist_transaction",
+    "title": "分布式事务与一致性",
+    "file": "assets/content/dist_transaction.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "distributed",
+    "id": "dist_event_sourcing",
+    "title": "事件溯源与读写分离",
+    "file": "assets/content/dist_event_sourcing.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "distributed",
+    "id": "distributed_short_url_project",
+    "title": "实战：设计一个短链服务",
+    "file": "assets/content/distributed_short_url_project.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "distributed",
+    "id": "distributed_consensus",
+    "title": "共识与复制：Raft 实战要点",
+    "file": "assets/content/distributed_consensus.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "distributed",
+    "id": "distributed_multisite",
+    "title": "单元化与多活架构",
+    "file": "assets/content/distributed_multisite.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-24"
+  },
+  {
+    "cat": "software_engineering",
+    "id": "design_patterns",
+    "title": "设计模式与 SOLID",
+    "file": "assets/content/se_design_patterns.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-10-24"
+  },
+  {
+    "cat": "software_engineering",
+    "id": "testing_strategy",
+    "title": "测试策略",
+    "file": "assets/content/se_testing.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-10-24"
+  },
+  {
+    "cat": "software_engineering",
+    "id": "requirements_modeling",
+    "title": "需求分析与建模",
+    "file": "assets/content/se_requirements_uml.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-10-24"
+  },
+  {
+    "cat": "software_engineering",
+    "id": "se_test_design",
+    "title": "测试用例设计方法",
+    "file": "assets/content/se_test_design.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-10-24"
+  },
+  {
+    "cat": "software_engineering",
+    "id": "se_tdd_refactor",
+    "title": "TDD 与重构",
+    "file": "assets/content/se_tdd_refactor.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-10-24"
+  },
+  {
+    "cat": "software_engineering",
+    "id": "se_quality_metrics",
+    "title": "质量度量与工程门禁",
+    "file": "assets/content/se_quality_metrics.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-10-24"
+  },
+  {
+    "cat": "software_engineering",
+    "id": "se_code_review",
+    "title": "代码评审方法与实践",
+    "file": "assets/content/se_code_review.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-10-24"
+  },
+  {
+    "cat": "software_engineering",
+    "id": "se_tech_writing",
+    "title": "技术写作与文档工程",
+    "file": "assets/content/se_tech_writing.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-10-24"
+  },
+  {
+    "cat": "software_engineering",
+    "id": "sdl_security",
+    "title": "安全开发生命周期（SDL）",
+    "file": "assets/content/se_sdl.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-10-24"
+  },
+  {
+    "cat": "software_engineering",
+    "id": "se_postmortem",
+    "title": "故障复盘与事故管理",
+    "file": "assets/content/se_postmortem.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-10-24"
+  },
+  {
+    "cat": "software_engineering",
+    "id": "se_oncall",
+    "title": "On-Call 与告警治理",
+    "file": "assets/content/se_oncall.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-10-24"
+  },
+  {
+    "cat": "software_engineering",
+    "id": "se_tech_debt",
+    "title": "技术债务管理",
+    "file": "assets/content/se_tech_debt.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-10-24"
+  },
+  {
+    "cat": "math",
+    "id": "math_vectors_matrices",
+    "title": "线性代数：向量与矩阵",
+    "file": "assets/content/math_vectors_matrices.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-09-24"
+  },
+  {
+    "cat": "math",
+    "id": "math_eigen_svd",
+    "title": "特征值、SVD 与降维",
+    "file": "assets/content/math_eigen_svd.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-09-24"
+  },
+  {
+    "cat": "math",
+    "id": "math_set_function_intro",
+    "title": "集合与函数入门",
+    "file": "assets/content/math_set_function_intro.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-09-24"
+  },
+  {
+    "cat": "math",
+    "id": "math_calculus_gradient",
+    "title": "微积分与梯度下降",
+    "file": "assets/content/math_calculus_gradient.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-09-24"
+  },
+  {
+    "cat": "math",
+    "id": "math_probability_stats",
+    "title": "概率统计与假设检验",
+    "file": "assets/content/math_probability_stats.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-09-24"
+  },
+  {
+    "cat": "math",
+    "id": "math_information_theory",
+    "title": "信息论：熵与交叉熵",
+    "file": "assets/content/math_information_theory.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-09-24"
+  },
+  {
+    "cat": "math",
+    "id": "math_graph_combinatorics",
+    "title": "图论与组合数学",
+    "file": "assets/content/math_graph_combinatorics.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-09-24"
+  },
+  {
+    "cat": "math",
+    "id": "math_convex_optimization",
+    "title": "凸优化与约束优化",
+    "file": "assets/content/math_convex_optimization.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-09-24"
+  },
+  {
+    "cat": "math",
+    "id": "math_numerical_linear_algebra",
+    "title": "数值线性代数",
+    "file": "assets/content/math_numerical_linear_algebra.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-09-24"
+  },
+  {
+    "cat": "cross_language",
+    "id": "cross_first_program",
+    "title": "九种语言的第一个程序",
+    "file": "assets/content/cross_first_program.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-17"
+  },
+  {
+    "cat": "cross_language",
+    "id": "cross_types_variables",
+    "title": "类型与变量：九种语言横向对照",
+    "file": "assets/content/cross_types_variables.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-17"
+  },
+  {
+    "cat": "cross_language",
+    "id": "cross_collections",
+    "title": "集合类型：九种语言横向对照",
+    "file": "assets/content/cross_collections.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-17"
+  },
+  {
+    "cat": "cross_language",
+    "id": "cross_package_manage",
+    "title": "包管理与依赖：九种生态横向对照",
+    "file": "assets/content/cross_package_manage.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-17"
+  },
+  {
+    "cat": "cross_language",
+    "id": "cross_cli_args",
+    "title": "命令行参数解析：九种语言横向对照",
+    "file": "assets/content/cross_cli_args.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-17"
+  },
+  {
+    "cat": "cross_language",
+    "id": "cross_string_regex",
+    "title": "字符串与正则：九种语言横向对照",
+    "file": "assets/content/cross_string_regex.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-17"
+  },
+  {
+    "cat": "cross_language",
+    "id": "cross_concurrency",
+    "title": "并发写法：九种语言横向对照",
+    "file": "assets/content/cross_concurrency.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-17"
+  },
+  {
+    "cat": "cross_language",
+    "id": "cross_errors_testing",
+    "title": "错误处理与测试：九种语言横向对照",
+    "file": "assets/content/cross_errors_testing.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-17"
+  },
+  {
+    "cat": "cross_language",
+    "id": "cross_build_release",
+    "title": "构建与发布产物：九种生态横向对照",
+    "file": "assets/content/cross_build_release.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-17"
+  },
+  {
+    "cat": "cross_language",
+    "id": "cross_logging_observability",
+    "title": "日志与可观测性：九种生态横向对照",
+    "file": "assets/content/cross_logging_observability.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-17"
+  },
+  {
+    "cat": "cross_language",
+    "id": "cross_time_timezone",
+    "title": "时间与时区：九种语言横向对照",
+    "file": "assets/content/cross_time_timezone.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-17"
+  },
+  {
+    "cat": "cross_language",
+    "id": "cross_serialization",
+    "title": "序列化格式：JSON、YAML、Protobuf 横向对照",
+    "file": "assets/content/cross_serialization.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-17"
+  },
+  {
+    "cat": "cross_language",
+    "id": "cross_performance_profiling",
+    "title": "性能剖析与基准测试：九种生态横向对照",
+    "file": "assets/content/cross_performance_profiling.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-17"
+  },
+  {
+    "cat": "cross_language",
+    "id": "cross_ci_config",
+    "title": "CI 流水线配置：九种生态横向对照",
+    "file": "assets/content/cross_ci_config.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-17"
+  },
+  {
+    "cat": "cross_language",
+    "id": "cross_security_ecosystem",
+    "title": "依赖安全与密钥管理：九种生态横向对照",
+    "file": "assets/content/cross_security_ecosystem.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-17"
+  },
+  {
+    "cat": "cross_language",
+    "id": "cross_db_access",
+    "title": "数据库访问与 ORM：九种生态横向对照",
+    "file": "assets/content/cross_db_access.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-17"
+  },
+  {
+    "cat": "cross_language",
+    "id": "cross_api_contract",
+    "title": "接口文档与契约测试：跨生态对照",
+    "file": "assets/content/cross_api_contract.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-17"
+  },
+  {
+    "cat": "cross_language",
+    "id": "cross_i18n",
+    "title": "国际化与本地化：跨生态对照",
+    "file": "assets/content/cross_i18n.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-17"
+  },
+  {
+    "cat": "visual_guide",
+    "id": "visual_memory_layout",
+    "title": "图解内存布局：栈、堆与引用",
+    "file": "assets/content/visual_memory_layout.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-10"
+  },
+  {
+    "cat": "visual_guide",
+    "id": "visual_call_stack",
+    "title": "图解调用栈与递归",
+    "file": "assets/content/visual_call_stack.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-10"
+  },
+  {
+    "cat": "visual_guide",
+    "id": "visual_git_states",
+    "title": "图解 Git 三区与提交流转",
+    "file": "assets/content/visual_git_states.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-10"
+  },
+  {
+    "cat": "visual_guide",
+    "id": "visual_event_loop",
+    "title": "图解事件循环：同步、微任务与宏任务",
+    "file": "assets/content/visual_event_loop.md",
+    "quiz": 6,
+    "project": false,
+    "review": "2027-07-10"
+  },
+  {
+    "cat": "visual_guide",
+    "id": "visual_concurrency_schedule",
+    "title": "图解并发调度：线程、协程与 Goroutine",
+    "file": "assets/content/visual_concurrency_schedule.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-10"
+  },
+  {
+    "cat": "visual_guide",
+    "id": "visual_http_timeline",
+    "title": "图解一次网页请求的完整链路",
+    "file": "assets/content/visual_http_timeline.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-10"
+  },
+  {
+    "cat": "visual_guide",
+    "id": "visual_btree_index",
+    "title": "图解 B+ 树与数据库索引",
+    "file": "assets/content/visual_btree_index.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-10"
+  },
+  {
+    "cat": "visual_guide",
+    "id": "visual_tcp_handshake",
+    "title": "图解 TCP 握手、挥手与拥塞控制",
+    "file": "assets/content/visual_tcp_handshake.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-10"
+  },
+  {
+    "cat": "visual_guide",
+    "id": "visual_jvm_memory",
+    "title": "图解 JVM 内存模型与垃圾回收",
+    "file": "assets/content/visual_jvm_memory.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-10"
+  },
+  {
+    "cat": "visual_guide",
+    "id": "visual_https_cert",
+    "title": "图解 HTTPS 证书链与 TLS 握手",
+    "file": "assets/content/visual_https_cert.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-10"
+  },
+  {
+    "cat": "visual_guide",
+    "id": "visual_k8s_scheduling",
+    "title": "图解 Kubernetes 调度与探针",
+    "file": "assets/content/visual_k8s_scheduling.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-10"
+  },
+  {
+    "cat": "visual_guide",
+    "id": "visual_rag_pipeline",
+    "title": "图解 RAG 检索增强生成流程",
+    "file": "assets/content/visual_rag_pipeline.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-10"
+  },
+  {
+    "cat": "visual_guide",
+    "id": "visual_db_isolation",
+    "title": "图解数据库事务隔离级别",
+    "file": "assets/content/visual_db_isolation.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-10"
+  },
+  {
+    "cat": "visual_guide",
+    "id": "visual_mq_delivery",
+    "title": "图解消息队列投递语义",
+    "file": "assets/content/visual_mq_delivery.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-10"
+  },
+  {
+    "cat": "visual_guide",
+    "id": "visual_llm_inference",
+    "title": "图解大模型推理与显存占用",
+    "file": "assets/content/visual_llm_inference.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-10"
+  },
+  {
+    "cat": "visual_guide",
+    "id": "visual_oauth_flow",
+    "title": "图解 OAuth 2.0 授权码流程与 PKCE",
+    "file": "assets/content/visual_oauth_flow.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-10"
+  },
+  {
+    "cat": "visual_guide",
+    "id": "visual_cdn_cache",
+    "title": "图解 CDN 缓存与回源",
+    "file": "assets/content/visual_cdn_cache.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-10"
+  },
+  {
+    "cat": "visual_guide",
+    "id": "visual_rate_limit_circuit",
+    "title": "图解限流、熔断与降级",
+    "file": "assets/content/visual_rate_limit_circuit.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-10"
+  },
+  {
+    "cat": "visual_guide",
+    "id": "visual_kafka_partition",
+    "title": "图解 Kafka 分区、副本与再平衡",
+    "file": "assets/content/visual_kafka_partition.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-10"
+  },
+  {
+    "cat": "visual_guide",
+    "id": "visual_consistent_hashing",
+    "title": "图解一致性哈希与数据分片",
+    "file": "assets/content/visual_consistent_hashing.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-10"
+  },
+  {
+    "cat": "visual_guide",
+    "id": "visual_vector_index",
+    "title": "图解向量检索与 HNSW 索引",
+    "file": "assets/content/visual_vector_index.md",
+    "quiz": 5,
+    "project": false,
+    "review": "2027-07-10"
+  },
+  {
+    "cat": "project_practice",
+    "id": "project_requirements_design",
+    "title": "需求到设计：把想法拆成可交付任务",
+    "file": "assets/content/project_requirements_design.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-10-10"
+  },
+  {
+    "cat": "project_practice",
+    "id": "project_coding_workflow",
+    "title": "编码工作流：小步提交与可评审的改动",
+    "file": "assets/content/project_coding_workflow.md",
+    "quiz": 6,
+    "project": true,
+    "review": "2027-10-10"
+  },
+  {
+    "cat": "project_practice",
+    "id": "project_testing_quality",
+    "title": "测试与质量门禁：把问题挡在上线前",
+    "file": "assets/content/project_testing_quality.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2027-10-10"
+  },
+  {
+    "cat": "project_practice",
+    "id": "project_deploy_ops",
+    "title": "部署与运维：稳定发布与快速回滚",
+    "file": "assets/content/project_deploy_ops.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2027-10-10"
+  },
+  {
+    "cat": "project_practice",
+    "id": "project_retro_improve",
+    "title": "复盘与改进：让团队一次比一次快",
+    "file": "assets/content/project_retro_improve.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2027-10-10"
+  },
+  {
+    "cat": "project_practice",
+    "id": "project_network_capture_analysis",
+    "title": "网络抓包与协议分析实战",
+    "file": "assets/content/project_network_capture_analysis.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2027-10-10"
+  },
+  {
+    "cat": "project_practice",
+    "id": "project_database_tuning",
+    "title": "数据库性能调优实战",
+    "file": "assets/content/project_database_tuning.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2027-10-10"
+  },
+  {
+    "cat": "project_practice",
+    "id": "project_security_lab",
+    "title": "安全攻防与防御实战",
+    "file": "assets/content/project_security_lab.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2027-10-10"
+  },
+  {
+    "cat": "project_practice",
+    "id": "project_algorithm_engineering",
+    "title": "算法工程化与性能验证实战",
+    "file": "assets/content/project_algorithm_engineering.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2027-10-10"
+  },
+  {
+    "cat": "project_practice",
+    "id": "project_mobile_offline_app",
+    "title": "移动端离线优先 App 实战",
+    "file": "assets/content/project_mobile_offline_app.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2027-10-10"
+  },
+  {
+    "cat": "project_practice",
+    "id": "project_python_cli_todo",
+    "title": "实战：Python CLI 待办工具",
+    "file": "assets/content/project_python_cli_todo.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2027-10-10"
+  },
+  {
+    "cat": "project_practice",
+    "id": "project_rest_api_sqlite",
+    "title": "实战：REST API 与 SQLite 事务服务",
+    "file": "assets/content/project_rest_api_sqlite.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2027-10-10"
+  },
+  {
+    "cat": "project_practice",
+    "id": "project_rag_agent_service",
+    "title": "实战：本地 RAG 客服 Agent",
+    "file": "assets/content/project_rag_agent_service.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2027-10-10"
+  },
+  {
+    "cat": "project_practice",
+    "id": "project_debug_performance_triage",
+    "title": "实战：慢接口调试与性能定位",
+    "file": "assets/content/project_debug_performance_triage.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2027-10-10"
+  },
+  {
+    "cat": "project_practice",
+    "id": "project_interview_coding_system_design",
+    "title": "面试冲刺：算法编码与系统设计高频题",
+    "file": "assets/content/project_interview_coding_system_design.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2027-10-10"
+  },
+  {
+    "cat": "project_practice",
+    "id": "project_concurrency_runtime",
+    "title": "操作系统与并发实战",
+    "file": "assets/content/project_concurrency_runtime.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2027-10-10"
+  },
+  {
+    "cat": "project_practice",
+    "id": "project_devops_pipeline",
+    "title": "DevOps CI/CD 流水线实战",
+    "file": "assets/content/project_devops_pipeline.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2027-10-10"
+  },
+  {
+    "cat": "project_practice",
+    "id": "project_data_etl",
+    "title": "数据工程 ETL 与质量治理实战",
+    "file": "assets/content/project_data_etl.md",
+    "quiz": 5,
+    "project": true,
+    "review": "2027-10-10"
+  }
+]

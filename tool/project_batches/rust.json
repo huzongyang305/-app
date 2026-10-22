@@ -1,0 +1,163 @@
+{
+  "category": "rust",
+  "lessons": [
+    {
+      "id": "rust_project_axum_api",
+      "title": {
+        "zh": "实战：Rust + Axum REST API",
+        "en": "Project: Rust + Axum REST API"
+      },
+      "summary": {
+        "zh": "用 Axum、SQLx 和 Tokio 实现任务 API，覆盖异步、错误处理和集成测试。",
+        "en": "Build a task API with Axum, SQLx and Tokio."
+      },
+      "file": "assets/content/rust_project_axum_api.md",
+      "minutes": 130,
+      "keywords": [
+        "Rust",
+        "Axum",
+        "SQLx",
+        "Tokio",
+        "异步"
+      ],
+      "difficulty": "高级",
+      "order": 10,
+      "quiz": [
+        {
+          "question": "Rust 异步 handler 中为什么不能随意调用阻塞 IO？",
+          "options": [
+            "会占住运行时线程",
+            "编译器禁止所有 IO",
+            "会改变类型",
+            "会增加内存"
+          ],
+          "answer": 0,
+          "explanation": "阻塞会阻止同一线程上的其他异步任务推进。"
+        },
+        {
+          "question": "SQLx 参数绑定主要防止什么？",
+          "options": [
+            "SQL 注入和转义错误",
+            "内存泄漏",
+            "编译错误",
+            "日志丢失"
+          ],
+          "answer": 0,
+          "explanation": "参数绑定把数据与 SQL 结构分离。"
+        },
+        {
+          "question": "Rust 中处理可恢复错误最适合返回什么？",
+          "options": [
+            "Result",
+            "panic!",
+            "process::exit",
+            "unwrap"
+          ],
+          "answer": 0,
+          "explanation": "Result 让调用方显式处理成功和失败。"
+        },
+        {
+          "question": "连接池的主要作用是什么？",
+          "options": [
+            "复用数据库连接并限制并发",
+            "替代数据库",
+            "压缩 JSON",
+            "生成 UI"
+          ],
+          "answer": 0,
+          "explanation": "连接池减少握手开销，并控制资源上限。"
+        },
+        {
+          "question": "优雅关闭需要做什么？",
+          "options": [
+            "停止接收请求并等待在途任务",
+            "立即中止进程",
+            "删除数据库",
+            "关闭日志"
+          ],
+          "answer": 0,
+          "explanation": "给在途请求完成时间，再释放连接和资源。"
+        }
+      ]
+    },
+    {
+      "id": "rust_project_downloader",
+      "title": {
+        "zh": "实战：Rust 并发下载器",
+        "en": "Project: Rust Concurrent Downloader"
+      },
+      "summary": {
+        "zh": "用 Tokio、Semaphore 和 reqwest 实现限流、断点重试和进度统计的下载器。",
+        "en": "Build a concurrent downloader with Tokio, Semaphore and retries."
+      },
+      "file": "assets/content/rust_project_downloader.md",
+      "minutes": 110,
+      "keywords": [
+        "Tokio",
+        "Semaphore",
+        "reqwest",
+        "并发",
+        "重试"
+      ],
+      "difficulty": "高级",
+      "order": 11,
+      "quiz": [
+        {
+          "question": "Semaphore 的主要作用是什么？",
+          "options": [
+            "限制同时运行的任务数量",
+            "加密文件",
+            "压缩图片",
+            "替代 HTTP"
+          ],
+          "answer": 0,
+          "explanation": "信号量通过许可控制并发上限。"
+        },
+        {
+          "question": "下载写入为什么先写临时文件？",
+          "options": [
+            "失败时避免留下损坏的最终文件",
+            "提高颜色",
+            "减少网络",
+            "替代校验"
+          ],
+          "answer": 0,
+          "explanation": "临时文件完整写入后再原子重命名，保证最终文件可用。"
+        },
+        {
+          "question": "哪些错误通常适合重试？",
+          "options": [
+            "临时网络超时和 5xx",
+            "404",
+            "磁盘无权限",
+            "参数格式错误"
+          ],
+          "answer": 0,
+          "explanation": "瞬时错误可重试，永久错误重试只会浪费时间。"
+        },
+        {
+          "question": "tokio::select 的作用是什么？",
+          "options": [
+            "同时等待多个 future 并响应第一个完成",
+            "解析 HTML",
+            "生成 SQL",
+            "压缩日志"
+          ],
+          "answer": 0,
+          "explanation": "select 常用于超时、取消和多路事件竞争。"
+        },
+        {
+          "question": "并发下载最需要监控什么？",
+          "options": [
+            "并发数、成功率、重试次数和吞吐",
+            "字体大小",
+            "代码行数",
+            "窗口颜色"
+          ],
+          "answer": 0,
+          "explanation": "这些指标能反映限流是否有效以及下游是否过载。"
+        }
+      ]
+    }
+  ]
+}

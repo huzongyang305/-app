@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 进程启动时使用：显示品牌启动页，Flutter 首帧后由 NormalTheme 接管 -->
+    <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowBackground">@drawable/launch_background</item>
+    </style>
+    <!-- Flutter 引擎启动后的窗口主题：底色与 App 浅色表面一致，避免闪白 -->
+    <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowBackground">@color/normal_background_light</item>
+    </style>
+</resources>

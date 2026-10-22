@@ -1,0 +1,327 @@
+{
+  "lessons": [
+    {
+      "id": "embedded_bootloader",
+      "category": "embedded",
+      "title": {"zh": "Bootloader 与固件升级", "en": "Bootloader and Firmware Update"},
+      "summary": {"zh": "从启动链、向量表重映射讲到镜像校验、A/B 分区与断电回滚。", "en": "Boot chain, vector table remap, image verification, A/B slots and power-fail rollback."},
+      "keywords": ["Bootloader", "固件升级", "A/B 分区", "镜像校验", "回滚"],
+      "difficulty": "进阶",
+      "minutes": 40,
+      "order": 3,
+      "image": {"title": "启动与升级链路", "flow": ["上电复位取初始栈指针", "Bootloader 校验镜像头", "选有效分区并重映射向量表", "跳转到应用入口", "升级失败则回滚旧分区"]},
+      "goals": ["能画出从上电复位到应用入口的启动顺序。", "能说明镜像校验为什么必须覆盖内容而不只是长度。", "能设计带断电保护的 A/B 升级状态机。"],
+      "prerequisitesText": ["了解 Cortex-M 的中断向量表与复位流程。", "能用 C 操作结构体与指针做内存映射访问。", "知道 Flash 的擦写粒度与寿命限制。"],
+      "concepts": [
+        {"name": "启动链与跳转", "plain": "Bootloader 是上电后先运行的一小段固件，它准备好环境再把控制权交给应用程序。", "mechanism": "复位后 CPU 从向量表取初始栈指针与复位向量，Bootloader 完成时钟与 Flash 初始化、校验应用镜像、重定位向量表，最后用函数指针跳到应用入口。", "example": "在本课示例里打印当前分区与镜像版本，再从 Bootloader 跳到应用，观察串口输出的变化。", "boundary": "跳转前必须关闭仍在工作的中断并重定向向量表，否则应用里发生的中断会落在 Bootloader 的旧表上。", "engineering": "把跳转前的收尾动作写成固定顺序的一个函数，并在跳转点打印一条可追踪日志。"},
+        {"name": "镜像格式与校验", "plain": "升级镜像除代码外还要带头部信息，Bootloader 靠这些信息判断能不能升级、怎么升级。", "mechanism": "头部记录魔数、版本、长度、目标分区与 CRC 或签名，Bootloader 逐段读取并校验，全部通过后才擦除目标分区写入。", "example": "在本课示例里故意篡改镜像中的一个字节，观察校验失败并拒绝写入的完整过程。", "boundary": "只校验长度不校验内容会放进损坏镜像，设备可能启动失败，也可能反复重启。", "engineering": "把校验覆盖范围写进格式文档，签名与哈希算法版本一并记录，避免升级工具与设备实现不一致。"},
+        {"name": "A/B 分区与回滚", "plain": "设备保留两个可运行分区，升级写备用分区，启动成功后才把新分区标记为有效。", "mechanism": "升级流程先写入备用槽位并标记为待验证，重启后新固件上报健康状态，确认成功才切换启动标记，失败则回到旧槽位。", "example": "在示例里模拟升级后自检失败，观察启动标记保持旧版本、设备仍然可用。", "boundary": "没有待验证状态就直接切换启动标记，新固件启动失败后设备会停在不完整镜像上。", "engineering": "把升级状态与尝试次数写进独立存储区，每次尝试记录原因码，便于现场排查。"},
+        {"name": "断电保护与升级原子性", "plain": "升级中随时可能断电，状态机要保证任何时刻断电都不会让设备变砖。", "mechanism": "把升级拆成可重入阶段，每阶段完成后落盘状态，重启后按状态继续或回退，写目标分区前不破坏当前可运行镜像。", "example": "在写镜像中途断电再上电，观察设备回到旧版本并重新发起升级。", "boundary": "把擦除当前分区作为第一步，会让一次断电直接失去可运行镜像。", "engineering": "状态写入与擦除都做掉电安全设计，关键状态存两份并带校验，读取时取有效的一份。"}
+      ],
+      "steps": ["确认复位与向量表布局", "设计镜像头部与校验字段", "实现校验、写入与状态机", "加入待验证与回滚标记", "用断电注入测试验证"],
+      "code": {"language": "c", "snippet": "typedef struct {\n    uint32_t magic;    // 魔数，用来快速识别合法镜像\n    uint32_t version;  // 版本号，便于回滚与诊断\n    uint32_t length;   // 负载长度，校验范围由它决定\n    uint32_t crc;      // 负载校验值\n} image_header_t;\n\nstatic bool verify_image(uint32_t slot_addr, image_header_t *out) {\n    const image_header_t *header = (const image_header_t *)slot_addr;\n    if (header->magic != IMAGE_MAGIC || header->length == 0) return false;\n    const uint8_t *payload = (const uint8_t *)(slot_addr + sizeof(image_header_t));\n    if (crc32(payload, header->length) != header->crc) return false;  // 内容不一致就拒绝写入\n    *out = *header;\n    return true;\n}\n\nstatic void jump_to_app(uint32_t app_addr) {\n    __disable_irq();                                  // 跳转前先关中断\n    SCB->VTOR = app_addr;                             // 向量表指向应用\n    uint32_t stack = *(volatile uint32_t *)app_addr;\n    uint32_t entry = *(volatile uint32_t *)(app_addr + 4);\n    __set_MSP(stack);\n    ((void (*)(void))entry)();                        // 跳到应用复位入口\n}\n", "walkthrough": "verify_image 先检查魔数与长度，再对负载算 CRC，任何一步失败都返回 false，调用方据此保持旧分区不变。jump_to_app 先关中断再重定向向量表，然后装载应用栈指针并跳转，避免应用中断落到 Bootloader 的旧向量表。", "expected_output": "verify slot A: ok version=3，verify slot B: crc mismatch，boot from slot A"},
+      "faults": [
+        {"topic": "升级中断电变砖", "wrong": "先把当前运行分区擦掉，再写入新镜像", "fix": "改为 A/B 或双槽位：升级只写备用槽位，启动确认后再切换启动标记"},
+        {"topic": "跳转后中断跑飞", "wrong": "直接跳到应用入口，既不关中断也不重定向向量表", "fix": "跳转前关闭中断、把 VTOR 指向应用向量表，再装载栈指针跳转"},
+        {"topic": "损坏镜像被写入", "wrong": "只检查镜像长度是否符合预期", "fix": "对镜像内容做 CRC 或签名校验，通过后才擦除并写入目标分区"}
+      ],
+      "glossary": [
+        {"term": "Bootloader", "definition": "上电后先执行的一小段固件，负责初始化、校验并跳转到应用。"},
+        {"term": "向量表重映射", "definition": "把异常入口表从默认地址改到应用自己的表上。"},
+        {"term": "A/B 分区", "definition": "保留两个可运行槽位，升级写备用槽位，失败可回滚。"},
+        {"term": "待验证状态", "definition": "新固件首次启动时标记为未确认，健康上报后才转正。"},
+        {"term": "掉电安全", "definition": "任何时刻断电都不破坏可运行镜像与状态的设计。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "Bootloader 在跳转到应用前为什么必须重定向向量表？", "options": ["让应用自己的中断入口生效", "提高 Flash 读取速度", "节省一页 Flash 空间", "方便调试器识别芯片型号"], "answer": 0, "explanation": "向量表决定异常与中断入口地址，不重定向的话应用运行期间发生的中断会进入 Bootloader 的旧入口，典型现象是跳转后一开中断就跑飞。"},
+        {"type": "single", "question": "镜像校验只比对长度会留下什么风险？", "options": ["损坏内容被当作合法镜像写入", "校验速度变得不可接受", "镜像版本号无法读取", "升级工具无法生成文件"], "answer": 0, "explanation": "长度相同而内容损坏的镜像可以轻松通过长度检查，只有对内容做 CRC 或签名校验才能拦住这类错误。"},
+        {"type": "multi", "question": "以下哪些做法能提升固件升级的可靠性？（多选）", "options": ["升级只写备用槽位", "写入前校验完整镜像", "新固件首次启动标记为待验证", "升级过程中一直擦除当前运行分区"], "answer": 0, "answers": [0, 1, 2], "explanation": "写备用槽位、先校验再写、待验证确认是可靠升级的三块基石；擦除当前运行分区会让断电直接失去可启动镜像。"},
+        {"type": "order", "question": "请按一次成功升级的典型顺序排列。", "options": ["接收并暂存新镜像", "校验镜像头与内容", "写入备用槽位", "重启并上报健康状态", "切换启动标记并保留回滚点"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "先把镜像收全并校验，再写备用槽位；重启由新固件自证健康后才切换启动标记，旧版本始终保留作为回滚点。"},
+        {"type": "debug", "question": "阅读这段升级状态机代码，下面哪项判断是正确的？", "options": ["状态先落盘再执行动作，重启后可以按状态继续", "状态只在内存中维护，重启后从头升级", "校验失败也会切换启动标记", "写入顺序是先擦除当前分区"], "answer": 0, "code": "// 每完成一步先写状态，再执行下一步动作\nslot_state_t state = load_state();\nif (state == STATE_DOWNLOADED && !verify_image(backup_slot, &hdr)) {\n    save_state(STATE_IDLE);        // 校验失败回到空闲，主分区不受影响\n    return;\n}\nsave_state(STATE_WRITTEN);\nif (state == STATE_VERIFYING && health_report() == HEALTH_OK) {\n    save_state(STATE_CONFIRMED);   // 健康上报通过才转正\n}\n", "language": "c", "explanation": "这段代码把状态先落盘再推进动作，任何一步断电后重启都能按状态继续或回退，且校验失败不会触碰启动标记。"}
+      ],
+      "practice": ["画出从上电到应用入口的启动时序图，标出每一步失败时的回退目标。", "运行本课最小示例，篡改镜像一个字节，记录校验失败后的完整输出。", "把示例的 CRC 校验换成签名校验，说明多出来的密钥分发问题如何解决。"],
+      "refs": [
+        {"name": "MCUboot 官方文档", "url": "https://docs.mcuboot.com/"},
+        {"name": "Zephyr 设备管理（DFU）文档", "url": "https://docs.zephyrproject.org/latest/services/device_mgmt/index.html"}
+      ],
+      "english": "A bootloader verifies a firmware image before handing control to the application. It checks a header with magic, version, length and checksum, remaps the vector table, and jumps with a function pointer. Reliable field updates use two slots: the new image goes to the spare slot, boots as unverified, and is confirmed only after a health report. Any power loss must leave one runnable image.",
+      "reviewPoints": ["能说出跳转前必须完成的三件事：关中断、设 VTOR、装载栈指针。", "能解释 A/B 分区为什么能抵御升级断电。", "能写出镜像头的四个必备字段及各自作用。"]
+    },
+    {
+      "id": "embedded_bus_protocols",
+      "category": "embedded",
+      "title": {"zh": "UART、SPI 与 I2C 通信实战", "en": "UART, SPI and I2C in Practice"},
+      "summary": {"zh": "从拓扑、时序与线数权衡讲到模式配置、仲裁冲突与总线抓包排查。", "en": "Topology, timing and wiring tradeoffs, plus mode setup, arbitration and bus-level debugging."},
+      "keywords": ["UART", "SPI", "I2C", "时序", "总线抓包"],
+      "difficulty": "基础",
+      "minutes": 35,
+      "order": 4,
+      "image": {"title": "三种总线的连接与波形", "flow": ["按距离与速率选总线", "核对电平与上拉电阻", "配置模式与时钟极性", "用逻辑分析仪抓波形", "按帧结构解析数据"]},
+      "goals": ["能按距离、速率与引脚数在 UART、SPI、I2C 之间做出选择。", "能解释波特率误差、CPOL/CPHA 与开漏上拉对通信的影响。", "能用逻辑分析仪定位一次真实的通信失败。"],
+      "prerequisitesText": ["知道数字电平、上拉电阻与推挽输出的大致含义。", "能看懂寄存器时序图里的时钟沿与采样点。", "会用示波器或逻辑分析仪抓一段波形。"],
+      "concepts": [
+        {"name": "三种总线的取舍", "plain": "UART 点对点最简单，SPI 快且引脚多，I2C 省线但速率低、共享一条总线。", "mechanism": "UART 用起始位与波特率对齐双方，SPI 用时钟与片选同步移位，I2C 用两根线与地址区分从机，靠开漏加外部上拉实现线与。", "example": "在本课示例里用同一块板子分别接串口模块、Flash 与传感器，记录三种连线与实测速率。", "boundary": "I2C 速率受上拉电阻与总线电容限制，线拉长或上拉过大时波形上升沿变缓，通信随机失败。", "engineering": "选型时把速率、线数、距离与从机数量列成表，把最终选择与理由写进硬件说明。"},
+        {"name": "时序与采样点", "plain": "通信能否成功取决于双方对时钟沿、采样点和速率的理解是否一致。", "mechanism": "SPI 用 CPOL 与 CPHA 定义空闲电平与采样沿，I2C 在时钟高电平期间数据必须稳定，UART 在起始位下降沿后按约定节拍逐位采样。", "example": "在本课示例里把 SPI 模式从 0 改到 3，观察从机读回的数据变成全 0 或全 1。", "boundary": "UART 波特率误差超过约百分之二到三就可能错位，内部 RC 时钟在温度变化时会进一步放大误差。", "engineering": "把每条总线的模式、速率与时钟源写进配置表，抓包时先核对配置再怀疑硬件。"},
+        {"name": "共享总线的仲裁与冲突", "plain": "多个设备共用总线时，必须解决谁先说话与说错了怎么办的问题。", "mechanism": "I2C 通过线与检测实现仲裁与时钟同步，SPI 靠独立片选避免冲突，UART 多机场景需要协议层加地址或令牌。", "example": "在本课示例里让两个主机同时发起 I2C 传输，观察仲裁失败一方自动退出并重试。", "boundary": "SPI 忘记拉低片选或片选接错，会让两个从机同时驱动数据线，读出不可预测的数据。", "engineering": "给每个从机分配固定片选与地址表，把总线占用与错误计数做成日志指标。"}
+      ],
+      "steps": ["按需求选择总线类型", "核对电平、上拉与片选接线", "配置模式、速率与时钟源", "抓波形核对帧结构", "把失败案例归档进排查表"],
+      "code": {"language": "c", "snippet": "#define SENSOR_ADDR 0x48\n\n// I2C 读寄存器：先写寄存器号，再重启传输读回数据\nstatic bool sensor_read_reg(uint8_t reg, uint8_t *value) {\n    if (HAL_I2C_Master_Transmit(&hi2c1, SENSOR_ADDR << 1, &reg, 1, 20) != HAL_OK) {\n        log_error(\"i2c write addr failed\");\n        return false;\n    }\n    if (HAL_I2C_Master_Receive(&hi2c1, (SENSOR_ADDR << 1) | 1, value, 1, 20) != HAL_OK) {\n        log_error(\"i2c read addr failed\");\n        return false;\n    }\n    return true;\n}\n\n// SPI 读 ID：片选拉低期间收发，结束必须拉高\nstatic uint8_t flash_read_id(void) {\n    uint8_t cmd = 0x9F, id = 0;\n    HAL_GPIO_WritePin(FLASH_CS_GPIO_Port, FLASH_CS_Pin, GPIO_PIN_RESET);\n    HAL_SPI_TransmitReceive(&hspi1, &cmd, &id, 1, 50);\n    HAL_GPIO_WritePin(FLASH_CS_GPIO_Port, FLASH_CS_Pin, GPIO_PIN_SET);\n    return id;\n}\n", "walkthrough": "sensor_read_reg 用「写寄存器地址再读数据」的两段式访问，每段都设置了超时，失败时记录是写还是读阶段出错。flash_read_id 在片选有效期间收发一个字节，结束后立即释放片选，避免与其它从机冲突。", "expected_output": "i2c write addr failed（拔掉上拉时），flash id = 0xEF"},
+      "faults": [
+        {"topic": "I2C 随机通信失败", "wrong": "总线上没有上拉电阻，或上拉阻值过大", "fix": "按速率与总线电容选 2.2k 到 10k 的上拉，抓波形确认上升时间满足时序要求"},
+        {"topic": "SPI 读出全 0 或全 1", "wrong": "主机与从机的 CPOL、CPHA 组合不一致", "fix": "对照从机手册设置 SPI 模式与位序，用逻辑分析仪核对采样沿上的数据"},
+        {"topic": "串口出现帧错误", "wrong": "双方波特率误差累计超过容限", "fix": "核对双方波特率与时钟源，优先使用晶振或带校准的时钟，必要时降低速率"}
+      ],
+      "glossary": [
+        {"term": "波特率", "definition": "串口每秒传输的符号数，双方必须在容差内一致。"},
+        {"term": "CPOL/CPHA", "definition": "SPI 时钟空闲电平与采样沿的四种组合。"},
+        {"term": "开漏输出", "definition": "引脚只能拉低不能拉高，需要外部上拉形成高电平。"},
+        {"term": "线与", "definition": "多设备共享一根线，任一设备拉低整线即为低。"},
+        {"term": "片选", "definition": "SPI 用来指定当前通信从机的专用信号。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "在长排线、多从机、速率要求不高的场景里更合适的总线是？", "options": ["I2C", "SPI", "UART", "并行总线"], "answer": 0, "explanation": "I2C 只用两根线就能挂多个从机，代价是速率与总线电容受限，适合速度不高、设备较多的场合。"},
+        {"type": "single", "question": "SPI 通信中片选信号的作用是？", "options": ["指定当前与主机通信的从机", "提供数据采样时钟", "指示传输结束", "给从机供电"], "answer": 0, "explanation": "SPI 没有地址概念，靠每个从机独立的片选信号决定谁响应时钟，片选接错或忘记拉高就会与其它从机冲突。"},
+        {"type": "multi", "question": "以下哪些现象提示需要检查 I2C 上拉电阻？（多选）", "options": ["波形上升沿明显变缓", "通信在固定地址处随机失败", "空载时总线高电平正常但接上设备就异常", "SPI 从机返回全 0"], "answer": 0, "answers": [0, 1, 2], "explanation": "上升沿变缓、负载增加后失败都是总线电容与上拉不匹配的典型症状；SPI 返回全 0 与 I2C 上拉无关。"},
+        {"type": "order", "question": "请按一次 I2C 寄存器读取的顺序排列。", "options": ["发起起始条件并发送从机地址加写位", "发送寄存器地址并等待应答", "重启传输并发送地址加读位", "接收数据并回送非应答", "产生停止条件释放总线"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "两段式访问先以写方向定位寄存器，再用重启条件切到读方向收数据，最后以非应答加停止条件结束，顺序错了会读到错误寄存器。"},
+        {"type": "debug", "question": "阅读这段总线初始化代码，主要问题是什么？", "options": ["SPI 从机片选与 I2C 复用同一引脚，容易互相干扰", "I2C 速率配置过高一定是错的", "SPI 模式 0 在任何从机上都不适用", "中断优先级没有配置"], "answer": 0, "code": "// 初始化：I2C1 与 SPI1 复用同一组引脚\nMX_I2C1_Init();\nMX_SPI1_Init();\nHAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);  // 同时当作 SPI 片选\n", "language": "c", "explanation": "同一引脚既参与 I2C 又充当 SPI 片选，两条总线同时工作时会互相把线拉低，表现为随机通信失败；应先从引脚分配上把它们分开。"}
+      ],
+      "practice": ["用逻辑分析仪抓一段 UART 波形，按起始位与波特率手工解出一个字节。", "把 SPI 模式从 0 改到 3，记录从机返回值变化并解释原因。", "给 I2C 总线换上不同阻值的上拉，记录通信成功率与波形上升时间。"],
+      "refs": [
+        {"name": "NXP I2C 总线规范与用户手册", "url": "https://www.nxp.com/docs/en/user-guide/UM10204.pdf"},
+        {"name": "TI 串行通信协议对比应用笔记", "url": "https://www.ti.com/lit/an/sbaa565/sbaa565.pdf"}
+      ],
+      "english": "UART, SPI and I2C trade wiring, speed and complexity differently. UART aligns two peers with a start bit and a baud rate. SPI shifts bits against a clock and selects a slave with a chip-select line. I2C shares two open-drain wires with pull-up resistors, so bus capacitance and rise time limit speed. Most field failures trace back to a wrong mode, a missing pull-up or a mis-wired chip select.",
+      "reviewPoints": ["能根据距离、速率与从机数量说出三种总线的取舍。", "能解释波特率误差与 CPOL/CPHA 不匹配分别导致什么现象。", "能列出一次总线抓包要看的三件事：电平、时序、帧结构。"]
+    },
+    {
+      "id": "embedded_low_power",
+      "category": "embedded",
+      "title": {"zh": "低功耗与电池续航设计", "en": "Low Power Design and Battery Life"},
+      "summary": {"zh": "从功耗预算与占空比讲到睡眠模式、时钟门控与定时唤醒的取舍。", "en": "Power budget, duty cycle, sleep modes, clock gating and wake-up sources."},
+      "keywords": ["低功耗", "睡眠模式", "占空比", "时钟门控", "唤醒源"],
+      "difficulty": "进阶",
+      "minutes": 35,
+      "order": 5,
+      "image": {"title": "功耗预算与唤醒节奏", "flow": ["列出各模块电流消耗", "按占空比算平均电流", "进入低功耗模式", "由 RTC 或中断唤醒", "采集完成后立即回到睡眠"]},
+      "goals": ["能把模块电流与占空比折算成平均电流和续航天数。", "能按唤醒频率与响应要求选择睡眠模式。", "能识别漏电流与常开外设这两类典型浪费。"],
+      "prerequisitesText": ["知道常见外设与 MCU 的电流量级。", "能读懂数据手册里的功耗表与唤醒时间。", "会使用万用表或功耗分析仪测电流。"],
+      "concepts": [
+        {"name": "功耗预算与占空比", "plain": "续航由平均电流决定，平均电流由每次工作的电流与时间占比决定。", "mechanism": "把运行、接收、发送与睡眠四个状态的电流乘以各自时长占比后相加，得到平均电流，再用电池容量除以平均电流估算续航。", "example": "在本课示例里改采样周期从一秒到一分钟，观察平均电流与续航天数的变化。", "boundary": "只测睡眠电流不看唤醒时间，会低估唤醒瞬间的功耗，短周期场景误差尤其大。", "engineering": "把每个状态的电流与时长写进表格，用实测值替换手册典型值，续航估算才可信。"},
+        {"name": "睡眠模式与外设时钟", "plain": "睡眠深度越深功耗越低，但可用的唤醒源与恢复时间越受限。", "mechanism": "进入睡眠前关闭不用的外设时钟与分频器，把引脚设为确定的低功耗状态，按需要选择停止模式或待机模式并配置唤醒通道。", "example": "在本课示例里分别在运行、停止与待机模式下测电流，记录唤醒所需时间。", "boundary": "悬空引脚与外部上拉在睡眠时会持续漏电流，走线残留与电平不确定的引脚常常是漏电主因。", "engineering": "把睡眠前的收尾动作写成统一函数，保证时钟、引脚与调试接口状态一致，避免漏配。"},
+        {"name": "唤醒源与周期采样", "plain": "用定时器或外部中断唤醒，比让 CPU 轮询更省电也更稳定。", "mechanism": "RTC 按周期产生唤醒事件，中断服务程序只做必要的抓取与入队，主循环处理完成后立刻回到睡眠，形成事件驱动的节奏。", "example": "在本课示例里用 RTC 每十秒唤醒采集一次温度，其余时间保持停止模式。", "boundary": "唤醒过于频繁会让平均电流被唤醒开销主导，收益被吞掉。", "engineering": "把唤醒周期做成可配置参数，并在固件里统计每日唤醒次数用于核对功耗模型。"}
+      ],
+      "steps": ["列出模块电流与工作时长", "折算平均电流并定目标", "选择睡眠模式与唤醒源", "处理引脚与时钟的低功耗状态", "实测电流并校准模型"],
+      "code": {"language": "c", "snippet": "static void enter_stop_mode_until_rtc(void) {\n    // 1. 关闭不用外设的时钟，减少静态功耗\n    __HAL_RCC_ADC1_CLK_DISABLE();\n    __HAL_RCC_USART2_CLK_DISABLE();\n\n    // 2. 把所有 GPIO 设为模拟输入，消除悬空漏电\n    low_power_gpio_config();\n\n    // 3. 清除并开启 RTC 唤醒中断，再进入停止模式\n    HAL_RTCEx_DeactivateWakeUpTimer(&hrtc);\n    HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, WAKEUP_TICKS, RTC_WAKEUPCLOCK_RTCCLK_DIV16);\n    HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON, PWR_STOPENTRY_WFI);\n\n    // 4. 唤醒后恢复时钟，重新初始化外设\n    SystemClock_Config();\n    MX_ADC1_Init();\n}\n", "walkthrough": "函数按「关时钟、清引脚、配唤醒源、进睡眠」四步执行，唤醒后立刻恢复系统时钟并重新初始化外设，避免外设仍处在停止模式下的错误状态。每一步都对应一类可测量的电流来源。", "expected_output": "run 12.4 mA，stop 0.9 mA，wake every 10 s，estimated 38 days"},
+      "faults": [
+        {"topic": "睡眠电流远高于手册值", "wrong": "引脚保持悬空输入，调试接口与外部上拉继续耗电", "fix": "睡眠前把未用引脚设为模拟输入或输出低电平，关闭调试引脚并断开不用的上拉"},
+        {"topic": "唤醒一次没有采集到数据", "wrong": "唤醒后没有重新初始化外设就直接读取", "fix": "唤醒后按固定顺序恢复时钟并重新初始化 ADC、串口等外设，再开始采集"},
+        {"topic": "续航估算与实测差很多", "wrong": "用典型值估算且忽略每次唤醒的开销", "fix": "用实测电流替换手册值，把唤醒一次的耗时与电流计入平均电流模型"}
+      ],
+      "glossary": [
+        {"term": "占空比", "definition": "设备处于工作状态的时间占总时间的比例。"},
+        {"term": "停止模式", "definition": "关闭主时钟保留部分电源域的低功耗状态，可被中断唤醒。"},
+        {"term": "待机模式", "definition": "更深睡眠状态，唤醒后通常从头开始执行程序。"},
+        {"term": "时钟门控", "definition": "关闭不使用外设的时钟以消除其动态功耗。"},
+        {"term": "漏电流", "definition": "器件在非活动状态下仍持续消耗的电流。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "把采样周期从 1 秒拉长到 60 秒，平均电流通常会怎样变化？", "options": ["明显下降，因为睡眠时间占比更高", "基本不变，因为单次采集电流没变", "上升，因为唤醒开销增加", "无法判断，与占空比无关"], "answer": 0, "explanation": "平均电流由工作与睡眠的时间占比加权得到，唤醒间隔拉长后睡眠占比提高，平均电流随之下降。"},
+        {"type": "single", "question": "睡眠前把未用引脚设为悬空输入，最可能的后果是？", "options": ["引脚电平不定带来额外漏电", "引脚自动进入高阻省电状态", "MCU 无法进入停止模式", "唤醒时间变短"], "answer": 0, "explanation": "悬空输入的电平不定，输入缓冲会因中间电平产生额外电流，低功耗设计中应把未用引脚固定为确定状态。"},
+        {"type": "multi", "question": "降低平均电流可以采取哪些做法？（多选）", "options": ["拉长采样与上报周期", "睡眠前关闭不用的外设时钟", "用中断唤醒代替主循环轮询", "把调试接口一直保持连接"], "answer": 0, "answers": [0, 1, 2], "explanation": "拉长周期、关闭时钟、事件驱动唤醒都能降低平均电流；调试接口与外部上拉常在睡眠期间持续耗电，应一并处理。"},
+        {"type": "order", "question": "请按一次低功耗采集循环的顺序排列。", "options": ["RTC 定时到达唤醒 CPU", "恢复时钟并初始化外设", "采集并处理一次数据", "关闭外设与引脚并准备睡眠", "再次进入停止模式"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "唤醒后先恢复时钟与外设，再采集处理，结束前完成收尾动作回到睡眠，形成稳定的低功耗循环。"},
+        {"type": "debug", "question": "阅读这段低功耗切换代码，主要缺陷是什么？", "options": ["进入睡眠前没有重配引脚，悬空引脚会持续漏电", "RTC 唤醒周期设置过长", "停止模式无法被中断唤醒", "没有开启看门狗"], "answer": 0, "code": "// 采集完成后直接进入睡眠\nHAL_ADC_Stop(&hadc1);\nHAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON, PWR_STOPENTRY_WFI);\nSystemClock_Config();\n", "language": "c", "explanation": "代码只停了 ADC 就直接进入停止模式，未用引脚与外设时钟仍保持原状，实测电流会明显高于模型；应先执行统一的低功耗收尾函数。"}
+      ],
+      "practice": ["测量本课示例在运行与停止两种状态下的电流，算出平均电流并估算续航。", "把唤醒周期从 10 秒改为 60 秒，对比实测平均电流与估算值。", "找出板子上一个持续耗电的器件，说明它的电流来自哪里、如何验证。"],
+      "refs": [
+        {"name": "STM32 低功耗模式应用笔记", "url": "https://www.st.com/resource/en/application_note/an3194-using-the-hardware-rtc-and-low-power-modes-of-the-stm32f0xx-microcontrollers-stmicroelectronics.pdf"},
+        {"name": "ARM Cortex-M 低功耗设计指南", "url": "https://developer.arm.com/documentation/100166/latest/"}
+      ],
+      "english": "Battery life is decided by average current, and average current is a weighted sum of each state's current and time share. Deeper sleep saves more but limits wake-up sources and lengthens recovery. Before sleeping, gate unused clocks, fix floating pins and configure the wake-up source. Wake only to work, then return to sleep immediately.",
+      "reviewPoints": ["能用电流与占空比算出平均电流并估算续航。", "能说出睡眠前必须完成的三类收尾动作。", "能解释为什么悬空引脚会带来额外功耗。"]
+    },
+    {
+      "id": "embedded_debug_trace",
+      "category": "embedded",
+      "title": {"zh": "嵌入式调试与追踪", "en": "Embedded Debugging and Tracing"},
+      "summary": {"zh": "从 SWD 连接与断点讲到非侵入式追踪、故障现场保存和栈回溯。", "en": "SWD wiring, breakpoints, non-intrusive tracing, fault capture and stack unwinding."},
+      "keywords": ["SWD", "JTAG", "硬件断点", "SWO 追踪", "HardFault"],
+      "difficulty": "进阶",
+      "minutes": 40,
+      "order": 6,
+      "image": {"title": "从复现到定位的调试链路", "flow": ["连接 SWD 并确认芯片识别", "设置断点或追踪点", "复现问题并采集现场", "读取寄存器与栈内容", "定位代码行并写回归测试"]},
+      "goals": ["能正确连接 SWD 并在调试器里识别目标芯片。", "能在不打断实时性的前提下使用追踪获取执行流。", "能从 HardFault 现场恢复出出错位置。"],
+      "prerequisitesText": ["知道复位、时钟与烧录接口的基本原理。", "能读懂寄存器与内存地址的对应关系。", "用过至少一种集成开发环境下的调试器。"],
+      "concepts": [
+        {"name": "调试接口与连接", "plain": "SWD 用两根信号线就能完成烧录与调试，比 JTAG 更省引脚。", "mechanism": "调试器通过 SWDIO 与 SWCLK 访问芯片的调试访问口，读取内核寄存器与内存，断点由硬件比较器或软件指令实现。", "example": "在本课示例里用调试器读取栈指针与 PC，确认芯片停在预期的位置。", "boundary": "低功耗模式下调试逻辑被关闭会断开连接，调低功耗问题前要明确调试口是否保持供电。", "engineering": "把调试接口保留在测试点上并标注引脚顺序，量产固件提供一次性解锁或关闭调试的配置。"},
+        {"name": "非侵入式追踪", "plain": "追踪输出执行流而不暂停 CPU，适合排查时序敏感的问题。", "mechanism": "内核把程序计数采样或事件数据从 SWO、ETM 等通道送出，调试器收集后还原调用序列与时间关系。", "example": "在本课示例里用追踪记录中断服务程序的进入次数，观察中断密度与任务响应时间的对应关系。", "boundary": "追踪带宽有限，全量输出会造成丢包，只应打开关心的通道与事件。", "engineering": "把追踪配置写成脚本，让每次复现使用同一组通道与触发条件，便于对比。"},
+        {"name": "故障现场保存与栈回溯", "plain": "异常发生时先保留现场，再离线分析，比在设备上反复试错高效。", "mechanism": "异常入口把关键寄存器压入指定内存区并写入异常原因寄存器，重启后由上位机解析栈内容与调用返回地址。", "example": "在本课示例里手动触发一次除零异常，读出压栈寄存器并还原到出错函数。", "boundary": "栈被破坏后回溯会得到错误地址，此时应以异常原因寄存器与最近一次正常日志为准。", "engineering": "给故障区加魔数与版本号，固件升级后仍能解析旧故障记录。"}
+      ],
+      "steps": ["连接调试器并确认芯片识别", "建立稳定的复现步骤", "选择断点或追踪手段采集现场", "解析寄存器、栈与日志定位根因", "修复后补一个可回归的测试"],
+      "code": {"language": "c", "snippet": "// 精简的故障现场结构：把异常瞬间的寄存器保存到不掉电的内存区\ntypedef struct {\n    uint32_t r0, r1, r2, r3, r12, lr, pc, psr;\n    uint32_t cfsr;   // 可配置故障状态寄存器\n    uint32_t hfsr;   // 硬件故障状态寄存器\n    uint32_t magic;  // 魔数，供上位机判断记录是否有效\n} fault_record_t;\n\n__attribute__((section(\".noinit\"))) static fault_record_t g_fault;\n\nvoid HardFault_Handler(void) {\n    __asm volatile (\n        \"tst lr, #4      \\n\"   // 判断异常使用的是 MSP 还是 PSP\n        \"ite eq         \\n\"\n        \"mrseq r0, msp  \\n\"\n        \"mrsne r0, psp  \\n\"\n        \"b capture_fault\\n\");\n}\n\nvoid capture_fault(uint32_t *stack) {\n    g_fault.r0 = stack[0]; g_fault.pc = stack[6];  // 压栈顺序固定，pc 在第 7 个位置\n    g_fault.cfsr = SCB->CFSR;\n    g_fault.magic = 0xFA017E5A;\n    NVIC_SystemReset();                            // 保存后立即复位，避免带故障运行\n}\n", "walkthrough": "异常入口通过 LR 的值判断使用哪个栈指针，把栈地址交给 capture_fault；后者按固定压栈顺序取出寄存器与出错 PC，连同故障原因寄存器写入不掉电区，然后复位。上位机读取魔数有效的记录即可还原出错位置。", "expected_output": "fault record magic ok，pc=0x08001a2c，cfsr=0x00020000（除零），复位后日志显示 fault captured"},
+      "faults": [
+        {"topic": "调试器连不上目标", "wrong": "只接了 SWDIO 与 SWCLK，没有共地与参考电压", "fix": "确认共地、参考电压与复位线连接，降低调试时钟后重试并对目标做复位连接"},
+        {"topic": "加了日志后故障消失", "wrong": "用串口打印调试时序敏感问题", "fix": "改用缓冲日志或 SWO 追踪等非阻塞方式采集，避免打印改变时序"},
+        {"topic": "栈回溯得到错误函数", "wrong": "栈已经被越界写坏仍按返回地址回溯", "fix": "先看故障原因寄存器与最后一次有效日志，再对照内存保护单元配置缩小范围"}
+      ],
+      "glossary": [
+        {"term": "SWD", "definition": "ARM 的两线调试接口，用 SWDIO 与 SWCLK 访问内核。"},
+        {"term": "硬件断点", "definition": "由内核比较器实现的断点，不修改程序内容。"},
+        {"term": "SWO", "definition": "单线追踪输出通道，可输出事件与采样数据。"},
+        {"term": "CFSR", "definition": "可配置故障状态寄存器，记录异常的具体原因位。"},
+        {"term": "栈回溯", "definition": "按栈中返回地址还原函数调用链的过程。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "排查时序敏感的偶发问题时，优先选择的调试手段是？", "options": ["非侵入式追踪", "在每个函数入口打印串口日志", "把断点设在主循环里", "降低系统时钟"], "answer": 0, "explanation": "打印与断点都会改变时序，非侵入式追踪在不暂停内核的前提下采集执行流，更适合偶发时序问题。"},
+        {"type": "single", "question": "异常处理里先把 LR 与栈指针保存下来的目的是？", "options": ["确定使用哪个栈并还原出错现场", "提高中断响应速度", "减少内存占用", "让调试器自动复位"], "answer": 0, "explanation": "异常可能使用主栈或进程栈，只有先判断栈指针来源，才能正确取出压栈的寄存器与出错地址。"},
+        {"type": "multi", "question": "以下哪些信息有助于定位一次硬件异常？（多选）", "options": ["故障状态寄存器的原因位", "压栈保存的出错 PC", "异常发生前的最后一段日志", "设备外壳颜色"], "answer": 0, "answers": [0, 1, 2], "explanation": "原因位说明异常类型，出错 PC 指向指令位置，之前的日志提供上下文，三者结合能快速缩小范围。"},
+        {"type": "order", "question": "请按一次完整调试流程的顺序排列。", "options": ["稳定复现问题", "采集现场数据", "解析寄存器与调用链", "修改代码修复根因", "补回归测试并验证"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "先能稳定复现，才有可对比的现场；定位到根因后再修改，最后用回归测试确认问题不再出现。"},
+        {"type": "debug", "question": "阅读这段故障采集代码，能得出什么结论？", "options": ["出错位置在 pc 指向的指令，原因是除零", "设备内存不足", "堆栈使用率超过阈值", "中断优先级配置错误"], "answer": 0, "code": "g_fault.pc = stack[6];\ng_fault.cfsr = SCB->CFSR;   // 读取到 0x00020000\n// 解析脚本输出：fault at 0x08001a2c, usage fault: divide by zero\n", "language": "c", "explanation": "CFSR 的对应位说明发生了除零类型的使用故障，pc 指向当时执行的指令，据此可以直接定位到具体运算语句。"}
+      ],
+      "practice": ["连接调试器读取当前栈指针与程序计数器，写下两个寄存器的含义。", "手动触发一次除零异常，用故障记录还原出错地址。", "用 SWO 统计一段时间内的中断次数，与逻辑分析仪结果对照。"],
+      "refs": [
+        {"name": "ARM CoreSight 调试与追踪文档", "url": "https://developer.arm.com/documentation/102520/latest/"},
+        {"name": "FreeRTOS 官方文档：调试与追踪", "url": "https://www.freertos.org/Documentation/02-Kernel/03-Supported-devices/04-Demos/01-Demo-Applications-Overview"}
+      ],
+      "english": "SWD needs only two signal wires to program and debug a Cortex-M device. Breakpoints stop the core, while SWO and ETM trace it without pausing. For field failures, save the stacked registers and the fault status register into a no-init memory region, reset, and analyse offline. Always confirm a stable reproduction before changing code.",
+      "reviewPoints": ["能说出 SWD 连接必须确认的四件事。", "能区分断点、打印与追踪对时序的影响。", "能从故障状态寄存器与压栈 PC 还原出错位置。"]
+    },
+    {
+      "id": "embedded_iot_security",
+      "category": "embedded",
+      "title": {"zh": "IoT 设备安全基础", "en": "IoT Device Security Basics"},
+      "summary": {"zh": "从安全启动与信任根讲到设备身份、密钥存储与传输加固。", "en": "Secure boot, root of trust, device identity, key storage and transport hardening."},
+      "keywords": ["安全启动", "信任根", "设备身份", "密钥存储", "TLS"],
+      "difficulty": "进阶",
+      "minutes": 40,
+      "order": 7,
+      "image": {"title": "设备从启动到入云的信任链", "flow": ["上电校验引导区签名", "逐级校验固件与应用", "读取安全存储中的设备私钥", "与云端完成双向认证", "会话密钥保护业务数据"]},
+      "goals": ["能说明信任根如何逐级校验到应用固件。", "能为设备身份与密钥选择合理的存储方案。", "能识别固件升级链路里最容易失守的环节。"],
+      "prerequisitesText": ["了解对称加密、非对称加密与哈希的基本用途。", "知道 Flash 读保护与安全存储区的作用。", "理解 TLS 握手中证书与密钥的分工。"],
+      "concepts": [
+        {"name": "安全启动与信任根", "plain": "安全启动要求每一级代码在运行前先被上一级校验，信任根是不可修改的起点。", "mechanism": "只读引导区保存公钥或哈希，逐级校验下一级镜像的签名，校验失败时拒绝运行并进入安全状态。", "example": "在本课示例里修改应用镜像的一个字节，观察签名校验失败后设备停在引导区并上报事件。", "boundary": "签名校验放在可被改写的位置就等于没有校验，攻击者只需替换校验逻辑本身。", "engineering": "把公钥或哈希固化在受保护的只读区，并把启动校验结果上报云端作为设备健康依据。"},
+        {"name": "设备身份与密钥存储", "plain": "每台设备需要唯一且不可伪造的身份，私钥一旦泄露，身份就失效。", "mechanism": "出厂时在安全存储区写入设备私钥与证书，运行时通过受控接口使用私钥签名，私钥本身不出安全边界。", "example": "在本课示例里用安全存储中的私钥完成一次挑战应答，观察私钥明文始终不出现在内存日志里。", "boundary": "把私钥明文直接写进固件或普通 Flash，读出固件即可复制整批设备身份。", "engineering": "生产环节一机一密，密钥注入与报废都有记录，固件里只保留引用标识。"},
+        {"name": "传输加固与升级签名", "plain": "数据要防窃听也要防篡改，升级包同样需要签名保护。", "mechanism": "传输层用双向证书认证与协商出的会话密钥加密数据，升级包除校验和外还要带签名，设备验证签名后才允许写入。", "example": "在本课示例里用自签证书完成一次双向认证连接，再故意替换升级包内容观察被拒绝。", "boundary": "只校验升级包的哈希而不验签，攻击者可以连哈希一起替换。", "engineering": "固定证书校验与最小权限策略写进设备配置，升级链路与业务链路使用不同密钥。"}
+      ],
+      "steps": ["确定信任根与校验范围", "设计设备身份注入流程", "配置双向认证与密钥使用策略", "给升级包加签名与版本限制", "做一次攻击面检查并归档结论"],
+      "code": {"language": "c", "snippet": "// 设备侧：用安全存储中的私钥完成挑战应答，私钥不离开安全边界\nstatic bool device_attest(const uint8_t *challenge, size_t len, uint8_t *signature) {\n    sec_key_handle_t key;\n    if (sec_store_open(KEY_ID_DEVICE, &key) != SEC_OK) {\n        return false;                       // 打不开安全存储就不继续认证\n    }\n    sec_digest_t digest;\n    sec_hash_sha256(challenge, len, &digest);\n    // 用句柄签名，函数内部完成运算，调用方拿不到私钥明文\n    bool ok = sec_store_sign(key, &digest, signature) == SEC_OK;\n    sec_store_close(key);\n    return ok;\n}\n\n// 云端侧：用设备证书里的公钥验证应答，防止伪造设备\nbool verify_attest(const uint8_t *challenge, size_t len,\n                   const uint8_t *signature, const sec_pubkey_t *pubkey) {\n    sec_digest_t digest;\n    sec_hash_sha256(challenge, len, &digest);\n    return sec_verify(pubkey, &digest, signature) == SEC_OK;\n}\n", "walkthrough": "设备侧只通过句柄使用私钥，签名运算在安全存储内部完成；云端用设备证书的公钥验证应答。整条链路里私钥明文从未出现在普通内存或日志中，即使固件被读出也无法复制身份。", "expected_output": "attest ok: device 0x3f2a verified，tampered package rejected: signature mismatch"},
+      "faults": [
+        {"topic": "固件被读出复制身份", "wrong": "把设备私钥明文写进固件常量或普通 Flash", "fix": "改为在安全存储中一机一密注入，固件只保留句柄或标识"},
+        {"topic": "升级包被替换", "wrong": "只校验大小与哈希，哈希随包一起提供", "fix": "对升级包做数字签名校验，签名验证通过后才允许写入分区"},
+        {"topic": "安全启动形同虚设", "wrong": "把校验逻辑放在可改写的应用分区里", "fix": "把信任根固化在受保护的只读区，逐级校验下一级镜像"}
+      ],
+      "glossary": [
+        {"term": "信任根", "definition": "不可修改的起点，后续每一级都由它校验。"},
+        {"term": "安全存储", "definition": "受保护区域，私钥在其中生成或使用而不外泄。"},
+        {"term": "挑战应答", "definition": "服务端发随机数，设备用私钥签名以证明身份。"},
+        {"term": "双向认证", "definition": "客户端与服务端互相验证对方证书的 TLS 模式。"},
+        {"term": "签名校验", "definition": "用公钥验证数据确实由对应私钥签发且未被改动。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "安全启动中信任根最基本的要求是？", "options": ["不可被设备自身的软件修改", "体积尽可能小", "启动速度最快", "使用最新版本的算法"], "answer": 0, "explanation": "信任根是整条校验链的起点，如果它可被改写，后续所有校验都失去意义，因此必须固化在受保护的只读区域。"},
+        {"type": "single", "question": "设备私钥明文写进固件的主要风险是？", "options": ["读出固件即可复制设备身份", "固件体积变大", "启动变慢", "证书无法续期"], "answer": 0, "explanation": "固件通常可以从外部读取，私钥明文一旦随之暴露，攻击者能伪装成合法设备，且影响的是整批设备。"},
+        {"type": "multi", "question": "以下哪些属于设备侧应承担的加固动作？（多选）", "options": ["校验升级包签名", "把私钥放入安全存储", "使用双向证书认证", "在日志中打印完整私钥便于排障"], "answer": 0, "answers": [0, 1, 2], "explanation": "验签、安全存储与双向认证是设备侧加固的核心手段；把私钥写入日志等于主动泄露。"},
+        {"type": "order", "question": "请按设备入云的信任建立顺序排列。", "options": ["安全启动校验各级固件", "从安全存储取出设备身份", "与云端完成双向认证", "用会话密钥保护业务数据", "上报设备健康与校验结果"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "先自证固件可信，再用设备身份与云端互认，随后保护业务数据并把启动校验结果上报，形成完整信任链。"},
+        {"type": "debug", "question": "阅读这段升级校验代码，问题出在哪里？", "options": ["只比对哈希，攻击者可同时替换包与哈希", "签名算法选择过新", "没有校验版本号", "缺少压缩步骤"], "answer": 0, "code": "// 从升级包里读取声明的哈希，再和本地计算的哈希比对\nuint8_t declared[32];\nread_package_hash(pkg, declared);\nuint8_t actual[32];\nsha256(pkg_payload, pkg_len, actual);\nif (memcmp(declared, actual, 32) == 0) {\n    flash_write(pkg_payload, pkg_len);   // 校验通过就写入\n}\n", "language": "c", "explanation": "声明的哈希与被校验的数据来自同一个包，攻击者替换内容时同步替换哈希即可通过；必须用设备固化的公钥验证包的签名，才能确认来源。"}
+      ],
+      "practice": ["用自签证书完成一次双向认证，记录握手失败时设备端能看到的错误。", "给升级包加签名校验，再篡改一个字节验证被拒绝。", "列出你的设备上私钥可能出现的三个位置，逐个说明风险与改法。"],
+      "refs": [
+        {"name": "OWASP IoT 安全测试指南", "url": "https://owasp.org/www-project-internet-of-things/"},
+        {"name": "NIST 物联网设备安全指南", "url": "https://csrc.nist.gov/pubs/sp/800/213a/final"}
+      ],
+      "english": "Secure boot builds a chain of trust: an immutable root verifies the next stage, which verifies the one after it. Each device needs a unique identity whose private key stays inside protected storage and never leaves as plaintext. Transport uses mutual authentication, and firmware packages must be signature-verified, not just hashed, before they are written.",
+      "reviewPoints": ["能画出信任根到应用固件的逐级校验链。", "能说明私钥为什么必须以句柄方式使用。", "能解释只校验哈希为什么挡不住替换升级包。"]
+    },
+    {
+      "id": "embedded_sensor_signal",
+      "category": "embedded",
+      "title": {"zh": "传感器采集与信号调理", "en": "Sensor Acquisition and Signal Conditioning"},
+      "summary": {"zh": "从采样定理与量化误差讲到滤波、校准和漂移补偿。", "en": "Sampling theorem, quantization error, filtering, calibration and drift compensation."},
+      "keywords": ["ADC", "采样率", "量化误差", "数字滤波", "校准"],
+      "difficulty": "基础",
+      "minutes": 35,
+      "order": 8,
+      "image": {"title": "从物理量到可用数值", "flow": ["传感器输出模拟信号", "放大与偏置匹配量程", "ADC 按采样率转换", "数字滤波平滑噪声", "按校准结果换算物理量"]},
+      "goals": ["能按信号带宽选择采样率与滤波策略。", "能估算量化误差并判断它是否影响结论。", "能用两点校准把原始码值换算成物理量。"],
+      "prerequisitesText": ["了解电压、分压与运放的基本作用。", "知道 ADC 的分辨率与参考电压含义。", "能编写简单的整数滤波代码。"],
+      "concepts": [
+        {"name": "采样与混叠", "plain": "采样率决定能还原多快的信号，采得太慢会把高频折成假的低频。", "mechanism": "按采样定理采样率应大于信号最高频率的两倍，实际工程留出数倍余量，并在 ADC 前加抗混叠低通滤波。", "example": "在本课示例里用两种采样率采同一个方波，观察低采样率下出现缓慢波动的假信号。", "boundary": "只提高数字滤波强度而不加模拟前级滤波，混叠产生的假信号无法被恢复。", "engineering": "把信号带宽、采样率与滤波截止频率写进参数表，采样率变化时同步复核三者关系。"},
+        {"name": "量化与噪声", "plain": "ADC 把连续电压切成离散码值，切分越细分辨能力越高，但仍存在固有误差。", "mechanism": "量化误差由位数与参考电压决定，噪声会叠加在信号上，通过多次平均可降低随机噪声但无法消除偏置误差。", "example": "在本课示例里对同一电压连续采样并求平均，观察平均值波动随采样次数下降。", "boundary": "平均会掩盖真实变化，对快速变化的量做长平均等于把有用信号一起滤掉。", "engineering": "把有效位数与噪声水平写进驱动说明，滤波窗口按信号变化率而不是凭感觉选定。"},
+        {"name": "校准与漂移补偿", "plain": "传感器输出与真实物理量之间有偏差，需要校准才能转换出可信数值。", "mechanism": "用两个已知参考点求增益与偏置，运行中再用温度或时间项修正漂移，校准系数存在非易失存储中。", "example": "在本课示例里用冰水与沸水两点校准温度通道，记录校准前后的偏差曲线。", "boundary": "只用单点校准无法确定增益误差，量程两端会同时偏。", "engineering": "把校准日期与系数版本写入设备记录，长期部署时安排周期性复校。"}
+      ],
+      "steps": ["确认信号带宽与量程", "设计前级放大与偏置", "选择采样率与分辨率", "实现滤波与校准换算", "用参考源验证整体误差"],
+      "code": {"language": "c", "snippet": "#define ADC_FULL_SCALE 4095.0f   // 12 位 ADC 满量程码值\n\n// 两点校准：用两个已知参考得到增益与偏置\nstatic void calibrate(float code_low, float value_low,\n                      float code_high, float value_high,\n                      float *gain, float *offset) {\n    *gain = (value_high - value_low) / (code_high - code_low);\n    *offset = value_low - (*gain) * code_low;\n}\n\n// 滑动平均：抑制随机噪声，窗口长度按信号变化率确定\nstatic uint16_t moving_average(uint16_t sample) {\n    static uint16_t window[MOVING_WINDOW] = {0};\n    static uint8_t index = 0;\n    static uint32_t sum = 0;\n    sum -= window[index];\n    window[index] = sample;\n    sum += sample;\n    index = (index + 1) % MOVING_WINDOW;\n    return (uint16_t)(sum / MOVING_WINDOW);\n}\n", "walkthrough": "calibrate 用两个参考点解出增益与偏置，之后每个原始码值都能换算成物理量。moving_average 用固定窗口平滑随机噪声，窗口越小跟随越快，越大越平稳，取值要与信号变化率匹配。", "expected_output": "raw 2048 -> 24.6 C，after 16-sample average ripple 0.3 -> 0.06 C"},
+      "faults": [
+        {"topic": "采样数据出现慢速假波动", "wrong": "采样率低于被测信号带宽，且没有前级滤波", "fix": "提高采样率到信号带宽的数倍，并在 ADC 前加抗混叠低通滤波"},
+        {"topic": "测量端点总是偏", "wrong": "只做单点校准，忽略增益误差", "fix": "改用两点校准分别求增益与偏置，并在量程两端各验证一次"},
+        {"topic": "滤波后响应明显滞后", "wrong": "窗口取得过长，快速变化被平均掉", "fix": "按信号变化率缩短窗口，或改用对突变更敏感的滤波结构"}
+      ],
+      "glossary": [
+        {"term": "采样率", "definition": "每秒对模拟信号取样的次数。"},
+        {"term": "混叠", "definition": "采样不足时高频信号被折成低频假信号的现象。"},
+        {"term": "量化误差", "definition": "连续电压被离散码值表示时产生的固有误差。"},
+        {"term": "两点校准", "definition": "用两个参考点同时求出增益与偏置的校准方法。"},
+        {"term": "漂移", "definition": "随时间或温度变化而缓慢偏离标定值的现象。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "被测信号最高频率为 100 Hz，按采样定理最低采样率应为？", "options": ["200 Hz", "50 Hz", "100 Hz", "10 Hz"], "answer": 0, "explanation": "采样率必须高于信号最高频率的两倍才能避免混叠，工程上还会留出数倍余量并配合抗混叠滤波。"},
+        {"type": "single", "question": "对快速变化的信号使用过长的滑动平均窗口会怎样？", "options": ["真实变化被一起平滑掉，响应滞后", "噪声完全消失且无代价", "量化误差降为零", "采样率自动提高"], "answer": 0, "explanation": "平均抑制随机噪声的同时也抑制真实变化，窗口长度必须按信号变化率取舍。"},
+        {"type": "multi", "question": "提高测量可信度可以采取哪些做法？（多选）", "options": ["用两个参考点做校准", "记录校准日期与系数版本", "定期复校并核对漂移", "把单次采样结果直接当结论"], "answer": 0, "answers": [0, 1, 2], "explanation": "两点校准确定增益与偏置，记录与复校保证长期可信；单次采样不评估噪声与漂移，不足以支撑结论。"},
+        {"type": "order", "question": "请按一次可靠采集的信号链顺序排列。", "options": ["传感器输出模拟量", "放大与偏置匹配量程", "ADC 转换并采样", "数字滤波抑制噪声", "校准换算并输出物理量"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "模拟前级决定信号能不能被正确转换，采样与滤波决定数值质量，最后一步才把码值换算为物理量。"},
+        {"type": "debug", "question": "阅读这段采集代码，主要问题是什么？", "options": ["采样周期与滤波窗口都远小于信号变化速度，慢信号被噪声主导", "ADC 分辨率设置过高", "校准系数计算错误", "没有使用浮点运算"], "answer": 0, "code": "// 每 1 ms 采集一次，窗口 2 个样本，直接作为温度输出\nuint16_t raw = adc_read(TEMP_CH);\nfloat value = gain * raw + offset;\nprintf(\"temp=%.2f\\n\", value);\n", "language": "c", "explanation": "温度是慢变量，1 毫秒采一次又不做滤波会输出大量噪声；应按信号带宽设置采样周期，并用合适长度的滤波或抽取来平滑。"}
+      ],
+      "practice": ["用两种采样率采集同一信号，画出或记录两次结果的差异并解释混叠。", "用两点校准温度通道，记录校准前后在量程两端的偏差。", "把滤波窗口从 4 改到 32，记录噪声幅度与响应延迟的变化。"],
+      "refs": [
+        {"name": "TI 精密 ADC 应用手册", "url": "https://www.ti.com/lit/an/sbaa407/sbaa407.pdf"},
+        {"name": "Microchip 传感器调理技术文档", "url": "https://ww1.microchip.com/downloads/en/Appnotes/00713a.pdf"}
+      ],
+      "english": "A sensor chain goes from physical quantity to a trustworthy number: amplify and bias the signal, sample above twice the signal bandwidth, filter the noise, then convert codes into engineering units with a two-point calibration. Sample rate, filter window and calibration all trade responsiveness against stability, so each must be chosen for the measured signal.",
+      "reviewPoints": ["能按信号带宽说出采样率与滤波截止频率的选法。", "能估算量化误差并判断它是否影响结论。", "能用两个参考点写出校准公式并说明各项含义。"]
+    },
+    {
+      "id": "embedded_project_env_monitor",
+      "category": "embedded",
+      "title": {"zh": "项目：环境监测节点", "en": "Project: Environmental Monitoring Node"},
+      "summary": {"zh": "把采集、缓存、上报与远程配置串成一个可交付的低功耗监测节点。", "en": "Build a deliverable low-power node that samples, buffers, uploads and takes remote configuration."},
+      "keywords": ["环境监测", "低功耗采集", "断网重传", "远程配置", "交付"],
+      "difficulty": "高级",
+      "minutes": 60,
+      "order": 9,
+      "image": {"title": "监测节点的数据与运维闭环", "flow": ["周期唤醒采集温湿度", "本地环形缓存写入", "联网批量上报并确认", "断网时保留待传数据", "远程下发采样配置"]},
+      "goals": ["能交付一个可在断网与断电条件下自恢复的采集节点。", "能设计上报确认与重传机制，保证数据不丢不乱。", "能把功耗、存储与上报周期的参数做成可配置项。"],
+      "prerequisitesText": ["完成传感器采集与低功耗两课的最小示例。", "能使用一种无线或有线方式建立网络连接。", "会看串口日志并按时间顺序复盘设备行为。"],
+      "concepts": [
+        {"name": "采集与本地缓存", "plain": "节点要在断网时继续采集，数据先落本地，再按机会上报。", "mechanism": "采集结果带时间戳写入环形缓存，写满后按策略覆盖最旧记录；上报成功收到确认后才推进读指针。", "example": "在本课示例里拔掉网络一段时间，观察缓存条数增长，恢复后按顺序补齐上报。", "boundary": "缓存写满后静默覆盖未上报数据会造成不可恢复的丢失，必须在覆盖前给出告警指标。", "engineering": "给每条记录加序号与校验，重启后从最后一条有效记录继续，缓存水位作为健康指标上报。"},
+        {"name": "上报确认与重传", "plain": "网络请求可能丢失，只有收到服务端确认才能认为数据已经送达。", "mechanism": "批量上报带批次号，服务端按批次号去重并返回确认，设备收到确认后推进读指针，超时则退避重传。", "example": "在本课示例里模拟一次确认丢失，观察设备重传同一批次而服务端只入库一次。", "boundary": "没有幂等键的重传会在服务端产生重复记录，把统计结果整体拉高。", "engineering": "设备与服务端约定批次号与去重窗口，把重传次数与时延纳入监控。"},
+        {"name": "远程配置与固件维护", "plain": "采样周期、上报阈值等参数应可远程调整，避免为改一个数值而重新部署。", "mechanism": "设备在联网时拉取配置版本，校验合法范围后写入并立即生效，同时上报当前生效版本供运维核对。", "example": "在本课示例里下发一组新采样参数，观察设备上报的配置版本变化与生效时间。", "boundary": "不校验范围的远程配置可能让设备进入不可用状态，例如把采样周期设为 0。", "engineering": "配置项带版本号与合法区间，保留上一份可用配置用于回滚，变更记录写入运维日志。"}
+      ],
+      "steps": ["定义数据字段与上报协议", "实现采集与环形缓存", "实现批量上报与确认重传", "加入远程配置与版本上报", "完成断网断电与长稳测试"],
+      "code": {"language": "c", "snippet": "// 环形缓存：写指针推进，未确认的数据不覆盖\nstatic bool buffer_push(const env_record_t *record) {\n    uint32_t next = (g_write + 1) % CACHE_CAPACITY;\n    if (next == g_confirmed) {\n        g_cache_overflow++;               // 覆盖前先计数并告警\n        return false;\n    }\n    g_cache[g_write] = *record;\n    g_write = next;\n    return true;\n}\n\n// 批量上报：服务端按 batch_id 幂等去重，收到确认才推进读指针\nstatic void upload_pending(void) {\n    while (g_confirmed != g_write) {\n        uint32_t count = collect_batch(g_batch, CACHE_CAPACITY, g_confirmed);\n        if (!http_post_batch(g_batch, count, g_batch_id, 3000)) {\n            backoff_and_retry();           // 失败退避，下个周期继续\n            return;\n        }\n        g_confirmed = (g_confirmed + count) % CACHE_CAPACITY;\n        persist_checkpoint(g_confirmed);   // 落盘，断电后不重复也不丢\n    }\n}\n", "walkthrough": "buffer_push 在缓存将满时拒绝写入并计数，避免静默覆盖未上报数据；upload_pending 按批次上报，服务端按批次号去重，收到确认后才推进读指针并落盘检查点，断电重启仍能续传。", "expected_output": "offline 12 samples buffered，batch 7 upload ok (dedup=1)，confirmed index persisted"},
+      "faults": [
+        {"topic": "恢复联网后数据重复", "wrong": "重传时不带批次号，服务端也无去重逻辑", "fix": "设备为每批数据生成唯一批次号，服务端按批次号幂等入库"},
+        {"topic": "断网期间数据丢失", "wrong": "缓存满后直接覆盖最早的数据且无告警", "fix": "覆盖前计数并上报缓存水位，必要时扩容或降低采样频率"},
+        {"topic": "远程改参后设备失联", "wrong": "配置不做范围校验直接生效", "fix": "对每个配置项校验合法区间并保留上一份可用配置，异常时自动回滚"}
+      ],
+      "glossary": [
+        {"term": "环形缓存", "definition": "固定容量、按下标循环复用的本地存储结构。"},
+        {"term": "批次号", "definition": "一次批量上报的唯一标识，用于服务端去重。"},
+        {"term": "幂等", "definition": "同一请求重复执行多次与执行一次的结果相同。"},
+        {"term": "检查点", "definition": "落盘记录的进度位置，重启后从这里继续。"},
+        {"term": "配置回滚", "definition": "新配置导致异常时恢复上一份可用配置。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "设备上报后为什么要等服务端确认才推进读指针？", "options": ["确认到达才代表数据真正入库", "可以减少固件体积", "能提高通信速率", "避免使用时间戳"], "answer": 0, "explanation": "网络发送成功不等于服务端入库成功，只有收到确认才推进读指针，才能在断网或丢包后补传缺失数据。"},
+        {"type": "single", "question": "远程下发采样周期前必须做的一件事是？", "options": ["校验取值范围是否合法", "先重启设备", "清空本地缓存", "关闭日志输出"], "answer": 0, "explanation": "不校验范围的配置可能让设备进入不可用状态，例如把周期设为 0 或超大值，因此必须限定合法区间并支持回滚。"},
+        {"type": "multi", "question": "交付一个监测节点时需要准备哪些证据？（多选）", "options": ["断网与恢复的完整日志", "缓存水位与重传次数统计", "功耗与续航实测记录", "仅一句运行正常的口头结论"], "answer": 0, "answers": [0, 1, 2], "explanation": "日志、指标与实测数据是可复现的交付证据；口头结论无法让他人验证，也无法在出问题时对比。"},
+        {"type": "order", "question": "请按一次采集上报闭环排列。", "options": ["定时唤醒并采集", "带时间戳写入缓存", "联网批量上报", "服务端去重并返回确认", "推进读指针并落盘检查点"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "采集先落本地保证不丢，上报由服务端幂等处理，收到确认后才推进进度，任何一步断电都能按检查点续传。"},
+        {"type": "debug", "question": "阅读这段恢复逻辑，问题是什么？", "options": ["重启后读指针没有按检查点恢复，会重复上报已确认数据", "缓存容量过小", "时间戳精度不足", "缺少看门狗"], "answer": 0, "code": "// 上电初始化\nstatic void on_boot(void) {\n    g_write = 0;\n    g_confirmed = 0;   // 直接清零，没有读取上次落盘的检查点\n    load_config();\n}\n", "language": "c", "explanation": "重启后把读指针清零会让所有历史数据重新上报，服务端虽有去重但流量与功耗都被浪费；应从非易失存储恢复检查点后再继续。"}
+      ],
+      "practice": ["配齐采集、缓存、上报、配置四项功能，并给出一次断网十分钟的补传日志。", "模拟确认丢失，证明服务端按批次号去重后总数正确。", "记录节点在典型采样周期下的实测平均电流与预计更换电池周期。"],
+      "refs": [
+        {"name": "Eclipse Mosquitto 文档（MQTT 参考实现）", "url": "https://mosquitto.org/documentation/"},
+        {"name": "The Things Network 设备接入指南", "url": "https://www.thethingsnetwork.org/docs/devices/"}
+      ],
+      "english": "An environmental node samples on a timer, stores records locally, and uploads batches when the network is available. Every batch carries an identifier so the server can deduplicate retries, and the device advances its checkpoint only after receiving an acknowledgement. Configuration is versioned, range-checked and rollback-capable, and the delivery evidence is a set of logs, metrics and measurements.",
+      "reviewPoints": ["能画出采集到上报的完整闭环并指出每步的失败处理。", "能解释批次号与检查点各自解决什么问题。", "能列出交付节点需要的三类证据材料。"]
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<pre id="sandbox-output" hidden></pre>
+<script>/*__COMMON__*/</script>
+<script>
+(function () {
+  __sandboxBegin();
+  try {
+    var source = String(__USER_CODE__).replace(/\r\n?/g, '\n');
+    var lines = source.split('\n');
+    if (!source.trim()) {
+      __sandboxPush('第一行写正则表达式，第二行可写 flags（gimsu），其余行是待匹配文本。');
+      __sandboxFinish();
+      return;
+    }
+    var pattern = lines.shift();
+    var flags = '';
+    var second = lines.length ? lines.shift() : '';
+    if (/^[dgimsuvy]*$/.test(second.trim())) {
+      flags = second.trim();
+    } else {
+      lines.unshift(second);
+    }
+    var text = lines.join('\n');
+    var effective = flags.indexOf('g') >= 0 ? flags : flags + 'g';
+    var re;
+    try {
+      re = new RegExp(pattern, effective);
+    } catch (error) {
+      __sandboxPush('正则语法错误：' + (error && error.message ? error.message : String(error)));
+      __sandboxPush('表达式：/' + pattern + '/' + flags);
+      __sandboxFinish();
+      return;
+    }
+
+    var matches = [];
+    var match;
+    var guard = 0;
+    while ((match = re.exec(text)) !== null) {
+      matches.push(match);
+      if (++guard >= 500) break;
+      if (match.index === re.lastIndex) re.lastIndex++;
+    }
+
+    __sandboxPush('表达式：/' + pattern + '/' + flags);
+    __sandboxPush('匹配数量：' + matches.length + (guard >= 500 ? '（已截断到 500）' : ''));
+    __sandboxPush('');
+    for (var i = 0; i < matches.length && i < 50; i++) {
+      var item = matches[i];
+      var line = '#' + (i + 1) + '  位置 ' + item.index + '  内容 ' + JSON.stringify(item[0]);
+      if (item.length > 1) {
+        var groups = [];
+        for (var g = 1; g < item.length; g++) {
+          groups.push('$' + g + '=' + (item[g] === undefined ? '(未匹配)' : JSON.stringify(item[g])));
+        }
+        line += '  分组 ' + groups.join(' ');
+      }
+      __sandboxPush(line);
+    }
+    if (matches.length > 50) {
+      __sandboxPush('…… 其余 ' + (matches.length - 50) + ' 条已省略');
+    }
+  } catch (error) {
+    __sandboxPush('Error: ' + (error && error.stack ? error.stack : String(error)));
+  }
+  __sandboxFinish();
+})();
+</script>
+</body>
+</html>

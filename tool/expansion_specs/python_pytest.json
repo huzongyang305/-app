@@ -1,0 +1,258 @@
+{
+  "lessons": [
+    {
+      "id": "python_pytest",
+      "category": "python",
+      "title": {
+        "zh": "Python pytest 测试实战",
+        "en": "Practical Testing with Python pytest"
+      },
+      "summary": {
+        "zh": "用 fixture、参数化、mock 与覆盖率把测试搭成可信的安全网，让重构和扩展不再依赖手工回归。",
+        "en": "Build a trustworthy safety net with fixtures, parametrization, mocks and coverage."
+      },
+      "keywords": [
+        "pytest",
+        "fixture",
+        "参数化",
+        "mock",
+        "覆盖率"
+      ],
+      "difficulty": "进阶",
+      "minutes": 55,
+      "order": 26,
+      "prerequisites": [
+        "python_typing_testing"
+      ],
+      "related": [
+        "python_project_architecture",
+        "python_database_sqlalchemy"
+      ],
+      "image": {
+        "title": "测试金字塔与数据流",
+        "flow": [
+          "准备输入",
+          "执行行为",
+          "断言结果",
+          "隔离外部依赖",
+          "统计覆盖缺口"
+        ]
+      },
+      "goals": [
+        "能按准备、执行、断言结构写出可读的测试用例。",
+        "能用 fixture 与参数化消除重复并隔离状态。",
+        "能判断哪些依赖需要 mock，哪些应该用真实集成测试验证。"
+      ],
+      "prerequisitesText": [
+        "已经会用 assert 和 unittest 风格写基本测试。",
+        "理解函数参数、异常和模块导入。",
+        "能运行 pytest 或 python -m pytest 并查看失败输出。"
+      ],
+      "concepts": [
+        {
+          "name": "测试结构与断言",
+          "plain": "一个清晰的测试只验证一个行为，通常按准备、执行、断言三步组织；pytest 直接使用 assert，失败时会重写表达式并显示两侧的值。",
+          "mechanism": "pytest 收集 test_ 开头的文件和函数，为每个用例创建独立上下文；pytest.raises 捕获指定异常并支持匹配消息，pytest.approx 处理浮点数误差。",
+          "example": "给除法函数写三个参数化正常用例，再用 pytest.raises 验证除零异常的消息包含除数提示。",
+          "boundary": "一个测试塞进多个独立断言会让失败原因不明确；断言真实行为而不是实现细节，否则重构时测试会大面积误报。",
+          "engineering": "测试名称描述行为与条件，失败信息包含输入和期望值；公共准备逻辑抽成 fixture，而不是复制粘贴一大段代码。"
+        },
+        {
+          "name": "fixture 与状态隔离",
+          "plain": "fixture 为测试提供准备数据、临时目录和外部资源，并通过依赖注入决定谁需要什么；每个测试默认拿到独立的新状态。",
+          "mechanism": "fixture 可以嵌套依赖，作用域控制创建频率，yield 之前的代码负责准备、之后的代码负责清理；tmp_path、monkeypatch 和 capsys 是内置 fixture 的常见例子。",
+          "example": "写一个返回列表的 fixture，在测试中修改它，再确认下一个测试拿到的仍是干净数据。",
+          "boundary": "会话级 fixture 共享数据库连接能提速，但测试之间可能互相污染；共享范围越大，隔离责任就越重。",
+          "engineering": "外部资源通过 fixture 统一创建和销毁，测试结束后必须清理文件、连接和临时环境变量。"
+        },
+        {
+          "name": "参数化与测试选择",
+          "plain": "参数化把同一段测试逻辑应用到多组输入，pytest 会为每组数据生成独立用例，失败时能精确定位是哪一组。",
+          "mechanism": "parametrize 装饰器接收参数名和值列表，ids 可以给每组数据起可读名称；mark 用来标记慢速、集成或跳过条件，命令行按表达式选择用例。",
+          "example": "为除法函数提供整数、小数和负数三组参数，观察一次运行产生三个独立测试结果。",
+          "boundary": "参数组合爆炸会拖慢测试；参数化适合行为相同而数据不同的场景，不适合把不同业务分支硬塞进一张表。",
+          "engineering": "边界值、空值与异常输入要进入参数集合；慢速集成测试单独标记，默认流水线只运行快速单元测试。"
+        },
+        {
+          "name": "mock 与外部依赖隔离",
+          "plain": "mock 用可控替身替代网络、时间、随机数和第三方服务，让测试稳定复现；它应该隔离边界，而不是替代被测逻辑本身。",
+          "mechanism": "unittest.mock.patch 临时替换指定位置的属性，autospec 根据真实签名生成替身；MagicMock 记录调用参数并允许设置返回值与副作用。",
+          "example": "把返回当前时间的函数替换成固定时间，验证令牌过期判断在边界值上的行为。",
+          "boundary": "过度 mock 会把测试变成对调用顺序的断言，失去真实行为验证；协议、序列化和数据库查询最好用集成测试覆盖。",
+          "engineering": "只在进程边界使用替身，真实逻辑尽量直接执行；mock 的目标路径必须是被测模块看到的名字，而不是定义处的名字。"
+        },
+        {
+          "name": "覆盖率与测试分层",
+          "plain": "覆盖率揭示哪些代码没有被执行，但不能证明行为正确；单元、集成和端到端测试承担不同风险，需要组合使用。",
+          "mechanism": "coverage.py 收集语句和分支执行情况，报告缺失行；测试金字塔建议大量快速单元测试、适量集成测试和少量端到端测试。",
+          "example": "先运行 pytest 与覆盖率报告，找出未执行的分支，再为异常路径补一个针对性用例。",
+          "boundary": "追求百分之百覆盖率可能写出没有断言的测试；随机波动导致的 flaky 测试应被修复或移除，而不是反复重跑。",
+          "engineering": "覆盖率设置合理下限并关注新增代码，CI 中固定随机种子和时区，报告失败日志与最小复现输入。"
+        }
+      ],
+      "steps": [
+        "明确被测行为与边界",
+        "准备最小输入与依赖替身",
+        "执行一次操作",
+        "断言可观察结果",
+        "补齐异常路径并检查覆盖缺口"
+      ],
+      "code": {
+        "language": "python",
+        "snippet": "# calculator.py\ndef divide(a: float, b: float) -> float:\n    if b == 0:\n        raise ValueError(\"除数不能为 0\")\n    return a / b\n\n# test_calculator.py\nimport pytest\nfrom calculator import divide\n\n@pytest.mark.parametrize(\n    (\"a\", \"b\", \"expected\"),\n    [(10, 2, 5), (1, 4, 0.25), (-9, 3, -3)],\n)\ndef test_divide(a, b, expected):\n    assert divide(a, b) == pytest.approx(expected)\n\ndef test_divide_by_zero():\n    with pytest.raises(ValueError, match=\"除数\"):\n        divide(1, 0)\n\n@pytest.fixture\ndef records():\n    data = [3, 1, 2]\n    yield data\n    data.clear()\n\ndef test_sorted(records):\n    assert sorted(records) == [1, 2, 3]",
+        "walkthrough": "三个正常用例被参数化成一个测试函数，失败时会显示具体参数组合；除零用例用 pytest.raises 同时验证异常类型与消息；records fixture 负责准备和清理共享数据，让测试结束后不留下状态。运行 pytest -q 应看到四个通过用例。",
+        "expected_output": "....                                                                     [100%]\n4 passed in 0.02s"
+      },
+      "faults": [
+        {
+          "topic": "一个测试验证多个行为",
+          "wrong": "在一个函数里连续断言解析、计算、写文件和发送通知，失败时不知道哪一步坏了",
+          "fix": "按行为拆分测试，让每个失败都指向一个清晰原因"
+        },
+        {
+          "topic": "测试依赖执行顺序",
+          "wrong": "第二个测试依赖第一个测试留下的全局变量或数据库记录",
+          "fix": "用 fixture 在每个测试前后创建和清理状态，测试可以单独运行"
+        },
+        {
+          "topic": "mock 掉被测对象本身",
+          "wrong": "把待测函数替换成 mock 后断言它被调用，测试没有验证任何真实逻辑",
+          "fix": "只替换进程边界或外部依赖，让被测函数真实执行"
+        },
+        {
+          "topic": "只追求覆盖率数字",
+          "wrong": "为未覆盖的行补上无断言的调用，覆盖率上升但没有验证行为",
+          "fix": "优先覆盖风险高的分支，并让每个测试都有有意义的断言"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "fixture",
+          "definition": "pytest 提供的测试资源工厂，可为用例准备数据、依赖与环境并在结束后清理。"
+        },
+        {
+          "term": "参数化",
+          "definition": "用一组参数生成多个独立测试实例的机制，便于系统覆盖边界输入。"
+        },
+        {
+          "term": "mock",
+          "definition": "替代外部依赖的可控测试替身，可预设返回值并记录调用。"
+        },
+        {
+          "term": "覆盖率",
+          "definition": "测试执行到的代码比例，用于发现未覆盖路径但不能证明行为正确。"
+        },
+        {
+          "term": "flaky 测试",
+          "definition": "同一代码和输入下时通过时失败的测试，通常由共享状态、时间或并发引起。"
+        },
+        {
+          "term": "测试金字塔",
+          "definition": "大量快速单元测试、适量集成测试和少量端到端测试的分层策略。"
+        }
+      ],
+      "quiz": [
+        {
+          "type": "single",
+          "question": "pytest 中验证函数抛出特定异常并检查消息，正确写法是？",
+          "options": [
+            "with pytest.raises(ValueError, match='除数'): divide(1, 0)",
+            "assert divide(1, 0) == ValueError",
+            "try: divide(1, 0) except: pass",
+            "@pytest.mark.error(ValueError)"
+          ],
+          "answer": 0,
+          "explanation": "pytest.raises 既是上下文管理器，也能在退出时确认异常类型，match 参数用正则表达式检查异常消息。直接比较返回值不会捕获异常，空的 except 会吞掉错误，自定义标记并不会执行异常断言；把异常类型和关键消息一起验证，测试失败时才能快速定位原因。"
+        },
+        {
+          "type": "single",
+          "question": "fixture 使用 yield 的主要目的是什么？",
+          "options": [
+            "在测试前准备资源，在测试后执行清理",
+            "让测试函数返回多个值",
+            "跳过失败的测试",
+            "把同步测试变成异步测试"
+          ],
+          "answer": 0,
+          "explanation": "yield 之前的代码在测试开始前运行，产出的对象注入测试，测试结束后继续执行 yield 之后的清理代码，因此特别适合文件、连接和临时环境。没有清理的共享资源会让后续测试受到污染，表现为单独运行通过、整套运行偶发失败。"
+        },
+        {
+          "type": "multi",
+          "question": "关于 mock，哪些做法是合理的？（多选）",
+          "options": [
+            "替换网络客户端以返回固定响应",
+            "替换当前时间让过期逻辑可复现",
+            "替换被测函数本身并只断言调用次数",
+            "对真实数据库迁移使用集成测试而不是全量 mock"
+          ],
+          "answers": [
+            0,
+            1,
+            3
+          ],
+          "answer": 0,
+          "explanation": "网络、时间和随机数属于不稳定边界，适合用替身控制；数据库迁移的行为、约束和事务语义应该在真实数据库上做集成测试。把被测函数本身替换成 mock 后，测试只能证明调用发生，无法证明业务结果正确，是常见的假安全感。"
+        },
+        {
+          "type": "code",
+          "question": "参数化装饰器会生成几个测试用例？\n\n@pytest.mark.parametrize('value', [1, 2, 3])\ndef test_double(value):\n    assert value * 2 >= 2",
+          "options": [
+            "3 个",
+            "1 个",
+            "2 个",
+            "0 个，因为缺少 fixture"
+          ],
+          "answer": 0,
+          "code": "@pytest.mark.parametrize('value', [1, 2, 3])\ndef test_double(value):\n    assert value * 2 >= 2",
+          "language": "python",
+          "explanation": "参数列表有三个值，pytest 会生成三个独立用例，任何一个失败都能看到具体参数。参数化能避免复制粘贴三个几乎相同的函数，也能让增加边界输入变成修改一行数据；不适合把完全不同的业务流程塞进同一张参数表。"
+        },
+        {
+          "type": "debug",
+          "question": "为什么这个测试即使实现错了也可能通过？",
+          "options": [
+            "它只验证 mock 被调用，没有执行真实创建逻辑",
+            "缺少 assert 关键字",
+            "pytest 不能测试函数调用",
+            "应该使用 print 代替断言"
+          ],
+          "answer": 0,
+          "explanation": "这里的 service 是 mock，调用它只会记录参数并返回另一个 mock，真实用户创建、校验和持久化都没有发生，因此测试无法发现业务缺陷。正确做法是执行真实服务或只 mock 最外层依赖，再断言返回对象、数据库状态或可观察副作用。这道题属于 pytest 测试设计问题：mock 只能隔离外部依赖，不能让被测逻辑绕过真实断言。",
+          "code": "def test_create_user(mocker):\n    service = mocker.Mock()\n    service.create('Ada')\n    service.create.assert_called_once_with('Ada')",
+          "language": "python"
+        }
+      ],
+      "practice": [
+        "为字符串解析函数写参数化测试，覆盖空串、正常输入和包含分隔符的边界输入。",
+        "用 tmp_path fixture 测试一个读写 JSON 文件的函数，确认测试结束后临时目录自动清理。",
+        "用 monkeypatch 替换环境变量，验证配置读取在不同环境下的默认值与错误信息。",
+        "生成一次覆盖率报告，找出一个未覆盖分支并补上能真实失败的最小用例。"
+      ],
+      "refs": [
+        {
+          "name": "pytest 官方文档",
+          "url": "https://docs.pytest.org/en/stable/"
+        },
+        {
+          "name": "pytest fixture 指南",
+          "url": "https://docs.pytest.org/en/stable/how-to/fixtures.html"
+        },
+        {
+          "name": "unittest.mock 文档",
+          "url": "https://docs.python.org/3/library/unittest.mock.html"
+        },
+        {
+          "name": "coverage.py 文档",
+          "url": "https://coverage.readthedocs.io/"
+        }
+      ],
+      "english": "This lesson turns Python testing into a dependable safety net. It covers arrange-act-assert structure, pytest assertions and raises, fixtures with yield cleanup, parametrized cases, mock boundaries, and layered coverage with unit, integration and end-to-end tests.",
+      "reviewPoints": [
+        "能写出一件事一断言的可读测试。",
+        "能用 fixture 的 yield 保证资源清理。",
+        "能判断哪些依赖应该 mock，哪些需要真实集成测试。"
+      ],
+      "lab": "sandbox:python"
+    }
+  ]
+}

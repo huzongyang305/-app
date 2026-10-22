@@ -1,0 +1,163 @@
+{
+  "category": "typescript",
+  "lessons": [
+    {
+      "id": "ts_project_cli",
+      "title": {
+        "zh": "实战：TypeScript 类型安全 CLI",
+        "en": "Project: Type-Safe TypeScript CLI"
+      },
+      "summary": {
+        "zh": "用 TypeScript、Zod 和 Vitest 实现配置校验 CLI，覆盖类型收窄、错误和发布。",
+        "en": "Build a type-safe CLI with TypeScript, Zod and Vitest."
+      },
+      "file": "assets/content/ts_project_cli.md",
+      "minutes": 110,
+      "keywords": [
+        "TypeScript",
+        "Zod",
+        "CLI",
+        "Vitest",
+        "类型收窄"
+      ],
+      "difficulty": "高级",
+      "order": 14,
+      "quiz": [
+        {
+          "question": "为什么外部输入应先用 unknown 再用校验器？",
+          "options": [
+            "unknown 强制先校验再使用",
+            "unknown 更快",
+            "any 不能编译",
+            "unknown 自动加密"
+          ],
+          "answer": 0,
+          "explanation": "unknown 让类型收窄成为显式步骤，避免未经验证的访问。"
+        },
+        {
+          "question": "判别联合最适合表达什么？",
+          "options": [
+            "有限命令或结果类型",
+            "无限数值",
+            "文件路径",
+            "网络协议"
+          ],
+          "answer": 0,
+          "explanation": "公共判别字段能让 switch 穷尽检查所有分支。"
+        },
+        {
+          "question": "CLI 配置错误应该怎么反馈？",
+          "options": [
+            "字段路径加修复建议",
+            "只显示 stack trace",
+            "静默忽略",
+            "重启终端"
+          ],
+          "answer": 0,
+          "explanation": "明确的错误位置和建议能显著降低用户排查成本。"
+        },
+        {
+          "question": "tsup 在项目中的作用是什么？",
+          "options": [
+            "打包和生成可执行入口",
+            "替代测试",
+            "管理数据库",
+            "渲染页面"
+          ],
+          "answer": 0,
+          "explanation": "tsup 能把 TypeScript 打包为 Node 可执行产物。"
+        },
+        {
+          "question": "dry-run 的主要价值是什么？",
+          "options": [
+            "在不产生副作用的情况下验证行为",
+            "提升类型",
+            "压缩文件",
+            "删除依赖"
+          ],
+          "answer": 0,
+          "explanation": "dry-run 让用户先确认计划，再执行破坏性操作。"
+        }
+      ]
+    },
+    {
+      "id": "ts_project_websocket_dashboard",
+      "title": {
+        "zh": "实战：TypeScript 实时监控面板",
+        "en": "Project: TypeScript Realtime Dashboard"
+      },
+      "summary": {
+        "zh": "用 TypeScript、WebSocket 和 React 实现实时指标面板，覆盖消息协议、重连和图表更新。",
+        "en": "Build a realtime metrics dashboard with TypeScript and WebSocket."
+      },
+      "file": "assets/content/ts_project_websocket_dashboard.md",
+      "minutes": 130,
+      "keywords": [
+        "TypeScript",
+        "WebSocket",
+        "React",
+        "实时",
+        "消息协议"
+      ],
+      "difficulty": "高级",
+      "order": 15,
+      "quiz": [
+        {
+          "question": "判别联合依赖什么字段来收窄类型？",
+          "options": [
+            "公共的字面量判别字段",
+            "任意数字",
+            "文件路径",
+            "颜色"
+          ],
+          "answer": 0,
+          "explanation": "type 等字面量字段能让 TypeScript 区分各分支。"
+        },
+        {
+          "question": "WebSocket 消息为什么必须运行时校验？",
+          "options": [
+            "网络数据不可信且类型会丢失",
+            "浏览器不支持 JSON",
+            "TypeScript 太慢",
+            "为了减少代码"
+          ],
+          "answer": 0,
+          "explanation": "类型只在编译期存在，运行时数据可能不符合声明。"
+        },
+        {
+          "question": "重连后最容易出现的 bug 是什么？",
+          "options": [
+            "重复追加历史数据",
+            "颜色改变",
+            "字体变大",
+            "端口减少"
+          ],
+          "answer": 0,
+          "explanation": "需要按时间戳或消息 ID 去重，并重建窗口。"
+        },
+        {
+          "question": "图表只保留最近 N 个点的目的是什么？",
+          "options": [
+            "控制内存和渲染成本",
+            "减少网络协议",
+            "替代校验",
+            "提升权限"
+          ],
+          "answer": 0,
+          "explanation": "无限增长的数据会拖慢渲染并占用内存。"
+        },
+        {
+          "question": "空数据状态为什么必须显式处理？",
+          "options": [
+            "避免 NaN 和错误图表",
+            "增加颜色",
+            "减少测试",
+            "关闭 WebSocket"
+          ],
+          "answer": 0,
+          "explanation": "空数组、null 和时间戳缺失都需要明确的展示逻辑。"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,246 @@
+{
+  "rust_basics": {
+    "image": "images/diagram_rust_basics.webp",
+    "alt": "Rust 的四个核心支柱"
+  },
+  "rust_cargo_first": {
+    "image": "images/diagram_rust_cargo.webp",
+    "alt": "Cargo 项目的创建与构建流程"
+  },
+  "rust_variables_mutability": {
+    "image": "images/diagram_rust_mutability.webp",
+    "alt": "不可变默认与可变声明"
+  },
+  "rust_conditions": {
+    "image": "images/diagram_rust_conditions.webp",
+    "alt": "Rust 条件分支与模式匹配"
+  },
+  "rust_loops": {
+    "image": "images/diagram_rust_loops.webp",
+    "alt": "Rust 三种循环结构"
+  },
+  "rust_functions_intro": {
+    "image": "images/diagram_rust_functions.webp",
+    "alt": "Rust 函数的参数、返回值与表达式"
+  },
+  "rust_ownership": {
+    "image": "images/diagram_rust_ownership.webp",
+    "alt": "所有权、借用与生命周期的关系"
+  },
+  "rust_types_traits": {
+    "image": "images/diagram_rust_types_traits.webp",
+    "alt": "Option、Result、trait 与模式匹配"
+  },
+  "rust_traits_generics": {
+    "image": "images/diagram_rust_traits_generics.webp",
+    "alt": "静态分发与动态分发对比"
+  },
+  "rust_errors_iterators": {
+    "image": "images/diagram_rust_errors_iterators.webp",
+    "alt": "错误处理、迭代器与异步的配合"
+  },
+  "rust_concurrency_cargo": {
+    "image": "images/diagram_rust_concurrency.webp",
+    "alt": "Rust 并发与工程工具"
+  },
+  "rust_macros_wasm": {
+    "image": "images/diagram_rust_macros_wasm.webp",
+    "alt": "宏、WASM 与跨平台的边界"
+  },
+  "rust_unsafe_ffi": {
+    "image": "images/diagram_rust_unsafe_ffi.webp",
+    "alt": "unsafe 的能力与 FFI 互操作"
+  },
+  "rust_cli_project": {
+    "image": "images/diagram_rust_cli_project.webp",
+    "alt": "Rust 命令行工具的实现流程"
+  },
+  "rust_project_axum_api": {
+    "image": "images/diagram_rust_axum_api.webp",
+    "alt": "Axum REST API 的请求链路"
+  },
+  "rust_project_downloader": {
+    "image": "images/diagram_rust_downloader.webp",
+    "alt": "并发下载器的任务流程"
+  },
+  "network_layers_intro": {
+    "image": "images/diagram_net_layers.webp",
+    "alt": "网络四层模型与协议对应"
+  },
+  "ip_port_intro": {
+    "image": "images/diagram_net_ip_port.webp",
+    "alt": "IP 地址、端口与连接的关系"
+  },
+  "tcp_ip": {
+    "image": "images/diagram_net_tcp_ip.webp",
+    "alt": "TCP 三次握手与四次挥手"
+  },
+  "dns": {
+    "image": "images/diagram_net_dns.webp",
+    "alt": "DNS 递归解析流程"
+  },
+  "cdn_proxy": {
+    "image": "images/diagram_net_cdn.webp",
+    "alt": "CDN 边缘缓存与回源流程"
+  },
+  "websocket": {
+    "image": "images/diagram_net_websocket.webp",
+    "alt": "WebSocket 握手与双向通信"
+  },
+  "http2_http3": {
+    "image": "images/diagram_net_http2_http3.webp",
+    "alt": "HTTP/2 与 HTTP/3 的机制对比"
+  },
+  "wireless_mobile": {
+    "image": "images/diagram_net_wireless.webp",
+    "alt": "Wi-Fi 与蜂窝网络的特征对比"
+  },
+  "network_attacks": {
+    "image": "images/diagram_net_attacks.webp",
+    "alt": "网络攻击与纵深防御层次"
+  },
+  "web_security": {
+    "image": "images/diagram_net_web_security.webp",
+    "alt": "常见 Web 漏洞与防护手段"
+  },
+  "network_project": {
+    "image": "images/diagram_net_packet_project.webp",
+    "alt": "一次请求的抓包分析流程"
+  },
+  "auth_oauth": {
+    "image": "images/diagram_net_oauth.webp",
+    "alt": "OAuth2 授权码流程"
+  },
+  "pentest_basics": {
+    "image": "images/diagram_net_pentest.webp",
+    "alt": "渗透测试的授权与执行流程"
+  },
+  "network_ipv6": {
+    "image": "images/diagram_net_ipv6.webp",
+    "alt": "IPv6 的特性与迁移策略"
+  },
+  "network_p2p": {
+    "image": "images/diagram_net_p2p.webp",
+    "alt": "P2P 打洞与中继流程"
+  },
+  "network_smtp": {
+    "image": "images/diagram_net_smtp.webp",
+    "alt": "邮件投递链路与认证机制"
+  },
+  "security_concept_intro": {
+    "image": "images/diagram_sec_concepts.webp",
+    "alt": "资产、威胁、漏洞与风险的关系"
+  },
+  "password_hash_intro": {
+    "image": "images/diagram_sec_password_hash.webp",
+    "alt": "加密、哈希与密码哈希的区别"
+  },
+  "security_threat_model": {
+    "image": "images/diagram_sec_threat_model.webp",
+    "alt": "STRIDE 威胁建模流程"
+  },
+  "security_owasp_top10": {
+    "image": "images/diagram_sec_owasp.webp",
+    "alt": "OWASP Top 10 常见风险与修复"
+  },
+  "security_secure_coding": {
+    "image": "images/diagram_sec_secure_coding.webp",
+    "alt": "安全编码的五个实践层次"
+  },
+  "security_auth_session": {
+    "image": "images/diagram_sec_auth_session.webp",
+    "alt": "会话与令牌安全的关键点"
+  },
+  "security_secrets": {
+    "image": "images/diagram_sec_secrets.webp",
+    "alt": "密钥与配置的安全管理层次"
+  },
+  "security_supply_chain": {
+    "image": "images/diagram_sec_supply_chain.webp",
+    "alt": "软件供应链安全的四个环节"
+  },
+  "security_container_k8s": {
+    "image": "images/diagram_sec_k8s.webp",
+    "alt": "容器与 Kubernetes 安全层次"
+  },
+  "security_cloud": {
+    "image": "images/diagram_sec_cloud.webp",
+    "alt": "云安全与 IAM 的关键控制点"
+  },
+  "security_privacy": {
+    "image": "images/diagram_sec_privacy.webp",
+    "alt": "隐私合规与数据分级流程"
+  },
+  "security_fuzzing": {
+    "image": "images/diagram_sec_fuzzing.webp",
+    "alt": "模糊测试的输入生成与验证流程"
+  },
+  "security_incident": {
+    "image": "images/diagram_sec_incident.webp",
+    "alt": "安全事件响应的闭环流程"
+  },
+  "security_sdl": {
+    "image": "images/diagram_sec_sdl.webp",
+    "alt": "安全开发生命周期的流程"
+  },
+  "security_project": {
+    "image": "images/diagram_sec_audit_project.webp",
+    "alt": "安全审计与漏洞修复流程"
+  },
+  "html_tags_intro": {
+    "image": "images/diagram_web_html_tags.webp",
+    "alt": "常用 HTML 标签与页面结构"
+  },
+  "html_basics": {
+    "image": "images/diagram_web_html_semantic.webp",
+    "alt": "语义化页面结构"
+  },
+  "css_selectors_intro": {
+    "image": "images/diagram_web_css_selectors.webp",
+    "alt": "CSS 选择器类型与特异性"
+  },
+  "css_basics": {
+    "image": "images/diagram_web_css_basics.webp",
+    "alt": "CSS 盒模型、单位与层叠"
+  },
+  "css_layout": {
+    "image": "images/diagram_web_css_layout.webp",
+    "alt": "Flex 与 Grid 的布局对比"
+  },
+  "css_render_animation": {
+    "image": "images/diagram_web_css_render.webp",
+    "alt": "浏览器关键渲染路径"
+  },
+  "css_advanced": {
+    "image": "images/diagram_web_css_advanced.webp",
+    "alt": "CSS 变量、伪类与现代特性"
+  },
+  "html_css_project": {
+    "image": "images/diagram_web_landing_project.webp",
+    "alt": "响应式落地页的实现流程"
+  },
+  "web_performance": {
+    "image": "images/diagram_web_performance.webp",
+    "alt": "核心 Web 指标与优化方向"
+  },
+  "css_design_tokens": {
+    "image": "images/diagram_web_design_tokens.webp",
+    "alt": "设计令牌的三层结构"
+  },
+  "a11y_aria": {
+    "image": "images/diagram_web_a11y.webp",
+    "alt": "可访问性的原生优先与焦点管理"
+  },
+  "browser_rendering": {
+    "image": "images/diagram_web_event_loop.webp",
+    "alt": "事件循环与任务队列"
+  },
+  "web_pwa_offline": {
+    "image": "images/diagram_web_pwa.webp",
+    "alt": "Service Worker 缓存策略"
+  },
+  "web_components": {
+    "image": "images/diagram_web_components.webp",
+    "alt": "Web Components 的核心能力"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "visual_memory_layout": {
+    "image": "images/memory_layout.png",
+    "alt": "栈、堆与静态区示意图"
+  },
+  "visual_call_stack": {
+    "image": "images/call_stack.png",
+    "alt": "函数调用栈帧示意图"
+  },
+  "visual_event_loop": {
+    "image": "images/event_loop.png",
+    "alt": "事件循环执行顺序示意图"
+  },
+  "visual_concurrency_schedule": {
+    "image": "images/concurrency_schedule.png",
+    "alt": "并发任务调度示意图"
+  },
+  "visual_http_timeline": {
+    "image": "images/http_timeline.png",
+    "alt": "一次网页请求的五段链路"
+  },
+  "visual_https_cert": {
+    "image": "images/https_cert.png",
+    "alt": "HTTPS 证书链验签示意图"
+  },
+  "visual_kafka_partition": {
+    "image": "images/kafka_partition.png",
+    "alt": "Kafka 分区、副本与消费组示意图"
+  },
+  "visual_consistent_hashing": {
+    "image": "images/consistent_hashing.png",
+    "alt": "一致性哈希环示意图"
+  },
+  "visual_btree_index": {
+    "image": "images/btree_index.png",
+    "alt": "B+ 树索引结构示意图"
+  },
+  "visual_rate_limit_circuit": {
+    "image": "images/rate_limit_circuit.png",
+    "alt": "限流与熔断状态示意图"
+  },
+  "visual_jvm_memory": {
+    "image": "images/jvm_memory.png",
+    "alt": "JVM 运行时内存区域示意图"
+  },
+  "visual_llm_inference": {
+    "image": "images/llm_inference.png",
+    "alt": "大模型推理两阶段示意图"
+  },
+  "visual_rag_pipeline": {
+    "image": "images/rag_pipeline.png",
+    "alt": "RAG 离线索引与在线检索示意图"
+  }
+}

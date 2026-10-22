@@ -1,0 +1,147 @@
+{
+  "visual_memory_layout": {
+    "image": "images/p2_memory_layout_compare.webp",
+    "alt": "值语义与引用语义对照图",
+    "anchor": "本课小结"
+  },
+  "visual_call_stack": {
+    "image": "images/p2_call_stack_compare.webp",
+    "alt": "调用栈入栈与出栈对照图",
+    "anchor": "本课小结"
+  },
+  "visual_event_loop": {
+    "image": "images/p2_event_loop_compare.webp",
+    "alt": "事件循环顺序与常见误区对照图",
+    "anchor": "本课小结"
+  },
+  "visual_concurrency_schedule": {
+    "image": "images/p2_concurrency_schedule_compare.webp",
+    "alt": "调度目标与切换代价对照图",
+    "anchor": "本课小结"
+  },
+  "visual_http_timeline": {
+    "image": "images/p2_http_timeline_compare.webp",
+    "alt": "请求耗时阶段拆解对照图",
+    "anchor": "本课小结"
+  },
+  "visual_git_states": {
+    "image": "images/p2_git_states_compare.webp",
+    "alt": "Git 三区流转与提交对象对照图",
+    "anchor": "本课小结"
+  },
+  "visual_btree_index": {
+    "image": "images/p2_btree_index_compare.webp",
+    "alt": "B+ 树结构特征与代价对照图",
+    "anchor": "本课小结"
+  },
+  "visual_tcp_handshake": {
+    "image": "images/p2_tcp_handshake_compare.webp",
+    "alt": "握手与挥手状态迁移对照图",
+    "anchor": "本课小结"
+  },
+  "visual_jvm_memory": {
+    "image": "images/p2_jvm_memory_compare.webp",
+    "alt": "JVM 共享与私有内存区域对照图",
+    "anchor": "本课小结"
+  },
+  "visual_https_cert": {
+    "image": "images/p2_https_cert_compare.webp",
+    "alt": "证书链握手流程与校验要点对照图",
+    "anchor": "本课小结"
+  },
+  "visual_k8s_scheduling": {
+    "image": "images/p2_k8s_scheduling_compare.webp",
+    "alt": "Pod 调度过程与三类探针对照图",
+    "anchor": "本课小结"
+  },
+  "visual_rag_pipeline": {
+    "image": "images/p2_rag_pipeline_compare.webp",
+    "alt": "RAG 离线索引与在线检索对照图",
+    "anchor": "本课小结"
+  },
+  "visual_db_isolation": {
+    "image": "images/p2_db_isolation_compare.webp",
+    "alt": "并发异常与隔离级别对照图",
+    "anchor": "本课小结"
+  },
+  "visual_mq_delivery": {
+    "image": "images/p2_mq_delivery_compare.webp",
+    "alt": "投递语义与消费端要求对照图",
+    "anchor": "本课小结"
+  },
+  "visual_llm_inference": {
+    "image": "images/p2_llm_inference_compare.webp",
+    "alt": "Prefill 与 Decode 两阶段对照图",
+    "anchor": "本课小结"
+  },
+  "visual_oauth_flow": {
+    "image": "images/p2_oauth_flow_compare.webp",
+    "alt": "授权码流程与 PKCE 对照图",
+    "anchor": "本课小结"
+  },
+  "visual_cdn_cache": {
+    "image": "images/p2_cdn_cache_compare.webp",
+    "alt": "CDN 请求路径与缓存策略对照图",
+    "anchor": "本课小结"
+  },
+  "visual_rate_limit_circuit": {
+    "image": "images/p2_rate_limit_circuit_compare.webp",
+    "alt": "限流算法与熔断状态对照图",
+    "anchor": "本课小结"
+  },
+  "visual_kafka_partition": {
+    "image": "images/p2_kafka_partition_compare.webp",
+    "alt": "分区与副本职责对照图",
+    "anchor": "本课小结"
+  },
+  "visual_consistent_hashing": {
+    "image": "images/p2_consistent_hashing_compare.webp",
+    "alt": "一致性哈希机制与常见问题对照图",
+    "anchor": "本课小结"
+  },
+  "visual_vector_index": {
+    "image": "images/p2_vector_index_compare.webp",
+    "alt": "精确检索与近似检索对照图",
+    "anchor": "本课小结"
+  },
+  "project_network_capture_analysis": {
+    "image": "images/p2_project_network_flow.webp",
+    "alt": "抓包排障流程与验证关卡图",
+    "anchor": "故障现场"
+  },
+  "project_database_tuning": {
+    "image": "images/p2_project_database_flow.webp",
+    "alt": "数据库性能调优流程与验证关卡图",
+    "anchor": "故障现场"
+  },
+  "project_concurrency_runtime": {
+    "image": "images/p2_project_concurrency_flow.webp",
+    "alt": "并发问题定位流程与验证关卡图",
+    "anchor": "故障现场"
+  },
+  "project_security_lab": {
+    "image": "images/p2_project_security_flow.webp",
+    "alt": "安全验证与修复流程与验证关卡图",
+    "anchor": "故障现场"
+  },
+  "project_algorithm_engineering": {
+    "image": "images/p2_project_algorithm_flow.webp",
+    "alt": "算法工程化流程与验证关卡图",
+    "anchor": "故障现场"
+  },
+  "project_devops_pipeline": {
+    "image": "images/p2_project_devops_flow.webp",
+    "alt": "CI/CD 流水线流程与验证关卡图",
+    "anchor": "故障现场"
+  },
+  "project_mobile_offline_app": {
+    "image": "images/p2_project_mobile_flow.webp",
+    "alt": "离线优先同步流程与验证关卡图",
+    "anchor": "故障现场"
+  },
+  "project_data_etl": {
+    "image": "images/p2_project_etl_flow.webp",
+    "alt": "ETL 幂等与质量门禁流程图",
+    "anchor": "故障现场"
+  }
+}

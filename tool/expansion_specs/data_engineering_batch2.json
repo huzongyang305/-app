@@ -1,0 +1,198 @@
+{
+  "lessons": [
+    {
+      "id": "de_stream_processing",
+      "category": "data_engineering",
+      "title": {"zh": "流处理与 Kafka 实践", "en": "Stream Processing with Kafka"},
+      "summary": {"zh": "掌握分区与顺序、消费位点、恰好一次语义与窗口计算的关键取舍。", "en": "Cover partitions and ordering, offsets, exactly-once semantics and windowing."},
+      "keywords": ["Kafka", "分区", "消费位点", "窗口", "水位线"],
+      "difficulty": "进阶",
+      "minutes": 34,
+      "order": 3,
+      "prerequisites": ["de_batch_processing"],
+      "image": {"title": "流处理的数据链路", "flow": ["生产者写入分区", "消费者按位点处理", "窗口与状态计算", "提交位点并落库"]},
+      "goals": [
+        "能说明分区数与顺序性的关系，并给出分区键选择方法。",
+        "能区分至少一次与恰好一次处理，写出可落地的幂等方案。",
+        "能用事件时间、水位线与窗口解释迟到数据的处理。"
+      ],
+      "prerequisitesText": [
+        "了解消息队列的生产者与消费者模型。",
+        "知道批处理里分组聚合的基本原理。",
+        "能读懂 JSON 消息结构。"
+      ],
+      "concepts": [
+        {
+          "name": "分区、顺序与并行度",
+          "plain": "Kafka 只保证同一分区内有序，分区之间没有全局顺序。分区数决定并行上限，分区键决定消息落在哪个分区。",
+          "mechanism": "相同键通过哈希落到同一分区，因此同一实体的操作能保持顺序；分区数增加后同一键的映射可能变化，需要新的分区策略。",
+          "example": "用订单号作分区键写入两批消息，确认同一订单的事件进入同一分区并按顺序被消费。",
+          "boundary": "把分区数调大能提升吞吐，但会降低单分区顺序覆盖范围；消费端不能再假设全局有序。",
+          "engineering": "分区键选择业务实体 ID，分区数按峰值吞吐预留；扩容时评估键分布与消费者再平衡影响。"
+        },
+        {
+          "name": "消费位点与再平衡",
+          "plain": "消费者用位点记录处理进度，消费组通过再平衡把分区重新分配给存活成员。",
+          "mechanism": "位点提交时机决定重复或丢失的范围：先处理再提交可能重复，先提交再处理可能丢失。再平衡期间分区归属变化，未提交的进度会重放。",
+          "example": "在消费逻辑里先处理再提交位点，模拟消费者中途退出，观察重启后重复处理多少消息。",
+          "boundary": "延长会话超时能减少误判，但会让真正的故障成员更晚被替换，影响整体吞吐。",
+          "engineering": "处理与提交分离，用幂等写入吸收重复；控制单批处理时间，避免超出会话超时触发再平衡。"
+        },
+        {
+          "name": "事件时间、水位线与窗口",
+          "plain": "事件时间来自消息本身，处理时间是消费时刻；水位线表示「不会再出现更早数据」的判断，用于决定窗口何时触发。",
+          "mechanism": "窗口按事件时间划分，水位线推进触发计算并允许一定迟到；超过允许迟到范围的数据进入旁路输出。",
+          "example": "模拟一条迟到三分钟的事件，比较允许迟到前后窗口结果的变化与旁路记录。",
+          "boundary": "水位线是启发式判断，等待越久延迟越高；对延迟敏感的场景要接受结果可能被修正。",
+          "engineering": "按业务可接受的延迟设置允许迟到范围，把迟到数据单独收集并定期对账。"
+        },
+        {
+          "name": "恰好一次语义与端到端一致性",
+          "plain": "恰好一次需要「消费位点」与「业务写入」在同一事务或同一原子操作里完成，仅靠消息系统本身不足以覆盖外部数据库。",
+          "mechanism": "常见实现是事务写入或两阶段提交，另一种更简单可靠的做法是至少一次投递加幂等写入，把重复变成无害操作。",
+          "example": "用幂等表把重复消息吸收，验证重复投递后目标表行数与金额都不变。",
+          "boundary": "跨系统事务会带来性能与耦合成本，很多场景选择幂等而非强事务，需要在成本与复杂度之间取舍。",
+          "engineering": "优先设计幂等写入，其次才考虑事务；监控重复率与位点滞后，作为容量扩容的依据。"
+        }
+      ],
+      "steps": ["选择分区键与分区数", "按批消费并处理消息", "用窗口计算并按水位线触发", "提交位点并幂等落库"],
+      "code": {
+        "language": "javascript",
+        "snippet": "// 幂等消费：同一条消息重复处理时只生效一次\nasync function consume(message, store) {\n  const key = message.orderId;\n  const result = await store.insertIfAbsent(key, {\n    amount: message.amount,\n    eventTime: message.eventTime,\n  });\n  if (!result.inserted) {\n    return { status: 'duplicate', key };\n  }\n  await store.markWindow(key, message.eventTime);\n  return { status: 'applied', key };\n}\n\n// 位点提交应发生在处理成功之后，且使用同一批次边界\nasync function runBatch(messages, store, commit) {\n  for (const message of messages) {\n    await consume(message, store);\n  }\n  await commit(messages[messages.length - 1].offset + 1);\n}",
+        "walkthrough": "消费函数用业务键做条件写入，重复消息返回 duplicate 而不是再记一笔；批次处理完成后才提交位点，保证崩溃后重放的只是尚未确认的消息。",
+        "expected_output": "重复投递同一订单时目标表只保留一条记录；消费者崩溃重启后从上次已提交位点继续，重复部分由幂等逻辑吸收。"
+      },
+      "faults": [
+        {"topic": "把分区数当成全局有序", "wrong": "消费端按分区并行处理，却假设消息按全局时间有序", "fix": "明确顺序范围只到分区级，需要全局有序时用单分区或按业务键聚合后再排序"},
+        {"topic": "处理前提交位点", "wrong": "先提交位点再执行业务逻辑，失败后消息被跳过", "fix": "处理成功后再提交位点，并用幂等写入吸收重复处理"},
+        {"topic": "忽略迟到数据", "wrong": "窗口只按处理时间计算，迟到数据被静默丢弃", "fix": "按事件时间划分窗口并设置允许迟到范围，迟到数据单独收集对账"}
+      ],
+      "glossary": [
+        {"term": "分区", "definition": "消息的并行单元，同一分区内保证顺序。"},
+        {"term": "消费位点", "definition": "消费者记录的处理进度位置，用于故障恢复。"},
+        {"term": "再平衡", "definition": "消费组成员变化时重新分配分区的过程。"},
+        {"term": "水位线", "definition": "流处理系统对「不会再有更早数据」的判断，用于触发窗口计算。"},
+        {"term": "幂等写入", "definition": "重复执行同一条写入不会产生额外效果的写入方式。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "希望同一订单的事件严格有序，应如何设置分区键？", "options": ["用订单号作为分区键", "随机选择分区以均衡负载", "用消息产生时间作为分区键", "把所有消息写入不同主题"], "answer": 0, "explanation": "相同分区键会落到同一分区，分区内有序即可保证同一订单的事件顺序；随机或按时间分区都会把同一订单的消息拆散到不同分区。"},
+        {"type": "single", "question": "消费者崩溃后出现重复处理，最直接的原因是什么？", "options": ["位点提交发生在处理成功之后", "分区数少于消费者数量", "消息体使用 JSON 格式", "消费者开启批量拉取"], "answer": 0, "explanation": "先处理再提交会在崩溃时重放未提交的批次，这属于至少一次语义的正常表现；处理方式是用幂等写入吸收重复，而不是避免提交策略。"},
+        {"type": "multi", "question": "关于水位线与窗口，下列说法正确的是？（多选）", "options": ["水位线推进后窗口可以触发计算", "允许迟到范围决定等待多久", "超过允许迟到的事件应单独处理", "水位线一旦推进数据就绝对不能修正"], "answers": [0, 1, 2], "answer": 0, "explanation": "水位线是触发窗口的启发式标记，允许迟到范围决定等待时长，超期数据需要旁路处理；而流处理结果仍可能被后续修正，不存在绝对不可修正的说法。"},
+        {"type": "order", "question": "请按一条消息在流处理中的生命周期排列步骤。", "options": ["提交位点", "生产者写入分区", "消费并幂等落库", "窗口按事件时间计算"], "correct_order": [1, 2, 3, 0], "answer": 0, "explanation": "消息先由生产者写入分区，消费者处理后做窗口计算与幂等落库，最后提交位点；位点必须先于处理提交才能避免丢消息的说法恰好相反。"},
+        {"type": "debug", "question": "阅读消费代码，哪项判断正确？", "options": ["条件写入保证重复消息只生效一次，位点在批次结束后提交", "代码先提交位点再处理消息", "重复消息会额外写入一条记录", "窗口计算在提交位点之后才可能发生"], "answer": 0, "code": "const result = await store.insertIfAbsent(key, { amount: message.amount });\nif (!result.inserted) return { status: 'duplicate', key };\nawait store.markWindow(key, message.eventTime);\n// 批次处理完成后\nawait commit(messages[messages.length - 1].offset + 1);", "language": "javascript", "explanation": "代码用条件写入实现幂等，重复消息直接返回 duplicate；位点在整批处理完成后统一提交，崩溃重放时由幂等逻辑吸收重复。"}
+      ],
+      "practice": [
+        "为你的业务选择分区键，说明为什么它能覆盖主要顺序需求。",
+        "模拟消费者崩溃并统计重复消息数量，再用幂等写入消除影响。",
+        "设置允许迟到范围并投递一条超期数据，记录旁路输出与对账方式。"
+      ],
+      "refs": [
+        {"name": "Apache Kafka 官方文档：设计与语义", "url": "https://kafka.apache.org/documentation/"},
+        {"name": "Kafka 消费者组与再平衡协议", "url": "https://kafka.apache.org/39/design/design/"}
+      ],
+      "english": "Streaming systems trade ordering for throughput. This lesson explains partition keys, offset commits, rebalancing, event-time windows with watermarks, and why idempotent writes are usually a better answer than distributed transactions.",
+      "reviewPoints": [
+        "能说明分区数与顺序范围的关系。",
+        "能写出至少一次加幂等的消费流程。",
+        "能解释水位线与允许迟到范围的取舍。"
+      ]
+    },
+    {
+      "id": "de_data_quality",
+      "category": "data_engineering",
+      "title": {"zh": "数据质量与数据治理", "en": "Data Quality and Governance"},
+      "summary": {"zh": "用分层校验、契约、血缘与负责人制度把数据质量问题挡在下游之前。", "en": "Prevent bad data with layered validation, contracts, lineage and ownership."},
+      "keywords": ["数据质量", "数据契约", "血缘", "负责人", "对账"],
+      "difficulty": "高级",
+      "minutes": 32,
+      "order": 4,
+      "prerequisites": ["de_stream_processing"],
+      "image": {"title": "数据质量治理闭环", "flow": ["定义质量规则", "接入与转换校验", "监控与告警", "对账与修复"]},
+      "goals": [
+        "能按完整性、唯一性、及时性与一致性设计校验规则。",
+        "能说明数据契约对上下游协作的价值。",
+        "能设计一次数据问题的定位与修复流程。"
+      ],
+      "prerequisitesText": [
+        "了解数仓分层与指标口径的基本概念。",
+        "会写 SQL 校验查询。",
+        "知道调度系统如何编排任务依赖。"
+      ],
+      "concepts": [
+        {
+          "name": "质量维度与校验分层",
+          "plain": "数据质量按完整性、唯一性、有效性、及时性与一致性五个维度衡量；校验要分布在接入、转换与输出各层，越早发现成本越低。",
+          "mechanism": "接入层校验格式与枚举，转换层校验主键与引用完整，输出层校验指标波动与对账；每层失败都阻断下游并告警。",
+          "example": "为一张订单表写五条校验：非空、主键唯一、金额非负、状态枚举合法、日行数波动不超过阈值。",
+          "boundary": "校验过多会拖慢任务并产生噪声告警，过少会让脏数据流入报表，规则要按影响面分级。",
+          "engineering": "规则与任务同仓管理，按严重级别区分阻断与告警；对关键表保留失败样本便于回溯。"
+        },
+        {
+          "name": "数据契约与接口稳定性",
+          "plain": "数据契约是上下游对字段、类型、取值范围与变更流程的书面约定，把「隐式假设」变成可校验的接口。",
+          "mechanism": "生产方发布结构变更前先提交兼容版本，消费方按契约校验；破坏性变更需要版本号与过渡期。",
+          "example": "把一个字段从可选改成必填，用契约校验提前发现下游任务失败，而不是等到报表出错。",
+          "boundary": "契约定得越严格，变更成本越高；要在稳定性与迭代速度之间找到可持续的级别。",
+          "engineering": "契约纳入版本控制与 CI 校验，变更走评审；关键字段保留默认值与兼容期。"
+        },
+        {
+          "name": "血缘、负责人与元数据",
+          "plain": "血缘记录表与表之间的依赖，负责人记录谁对数据负责；两者结合才能在出问题时快速找到影响范围与处理人。",
+          "mechanism": "任务运行时自动采集输入输出关系生成血缘，元数据登记负责人、更新频率与质量等级。",
+          "example": "从一张异常的源表出发，用血缘列出受影响的指标与报表，估算需要回溯的时间范围。",
+          "boundary": "血缘不完整会误导排查，手工维护的文档很快过期，必须与调度和查询日志联动。",
+          "engineering": "关键表强制登记负责人与质量等级，血缘随任务发布自动更新，定期检查无主表。"
+        },
+        {
+          "name": "监控、对账与修复流程",
+          "plain": "质量问题的处理流程是发现、定位、止血、修复与复盘；对账是独立于计算逻辑的第二套验证。",
+          "mechanism": "监控关注行数、金额、分布等指标的异常波动，对账用独立来源或独立实现交叉验证结果。",
+          "example": "日终对账发现金额差额，先冻结下游报表，再用明细抽样定位到重复导入的数据。",
+          "boundary": "对账依赖第二数据源，成本较高，通常只覆盖关键指标；把所有指标都对账会拖慢交付。",
+          "engineering": "关键指标配置自动对账与差额告警，修复脚本可重放；复盘记录根因与防止复发的规则。"
+        }
+      ],
+      "steps": ["定义质量规则与等级", "接入与转换阶段校验", "监控指标与自动对账", "定位、修复并补规则"],
+      "code": {
+        "language": "sql",
+        "snippet": "-- 关键订单表的四条质量校验：任何一条返回非零即阻断下游\n-- 1. 主键唯一\nSELECT COUNT(*) AS duplicate_keys FROM (\n    SELECT order_id, item_id FROM dwd_order_item\n    GROUP BY order_id, item_id HAVING COUNT(*) > 1\n) t;\n\n-- 2. 金额非负\nSELECT COUNT(*) AS negative_amount FROM dwd_order_item WHERE amount < 0;\n\n-- 3. 状态枚举合法\nSELECT COUNT(*) AS invalid_status FROM dwd_order_item\nWHERE status NOT IN ('created', 'paid', 'shipped', 'closed');\n\n-- 4. 日行数波动（与过去七天均值对比）\nWITH daily AS (\n    SELECT date(order_ts) AS stat_date, COUNT(*) AS rows_cnt\n    FROM dwd_order_item GROUP BY 1\n)\nSELECT stat_date, rows_cnt FROM daily\nWHERE rows_cnt < 0.5 * (SELECT AVG(rows_cnt) FROM daily);",
+        "walkthrough": "四条校验分别覆盖唯一性、有效性、枚举范围与波动异常；把校验放在任务产出之后、对外发布之前，任一非零结果都应阻断下游并触发告警。",
+        "expected_output": "正常数据下四条查询都返回 0 行或计数为 0；一旦出现重复主键或负金额，对应校验返回非零，任务应停止并保留现场。"
+      },
+      "faults": [
+        {"topic": "只在输出层做校验", "wrong": "等报表任务跑完才发现源数据格式错误", "fix": "在接入与转换阶段就校验格式与主键，输出层只做波动与对账校验"},
+        {"topic": "血缘缺失导致误判影响面", "wrong": "源表异常后凭记忆列出下游，遗漏关键报表", "fix": "用调度与查询日志自动生成血缘，异常时按血缘评估影响范围"},
+        {"topic": "修复不留记录", "wrong": "手工改数后不记录原因与范围，下次同样问题重复发生", "fix": "修复脚本版本化并记录影响行数、原因与补充的质量规则"}
+      ],
+      "glossary": [
+        {"term": "数据质量维度", "definition": "衡量数据优劣的维度集合，如完整性、唯一性、有效性与一致性。"},
+        {"term": "数据契约", "definition": "上下游对数据结构、取值范围与变更流程的书面约定。"},
+        {"term": "血缘", "definition": "表与任务之间的输入输出依赖关系，用于评估影响范围。"},
+        {"term": "对账", "definition": "用独立来源或独立实现交叉验证数据结果的过程。"},
+        {"term": "无主表", "definition": "没有明确负责人与质量等级登记的数据资产。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "发现源数据格式错误时，最理想的校验位置在哪里？", "options": ["接入阶段，进入数仓之前", "报表发布之后", "用户反馈之后", "仅仅在年报审计时"], "answer": 0, "explanation": "越靠前发现，修复成本越低，影响面也越小；等到报表或审计阶段才发现，需要回溯的范围与沟通成本都会成倍增加。"},
+        {"type": "single", "question": "血缘信息最主要的用途是什么？", "options": ["评估异常数据影响的下游范围", "替代数据备份", "自动修复计算逻辑错误", "提高查询执行速度"], "answer": 0, "explanation": "血缘回答的是「这张表影响谁」，用于划定排查与回溯范围；它不会自动修复逻辑错误，也不负责备份或提速。"},
+        {"type": "multi", "question": "以下哪些属于数据质量校验的常见维度？（多选）", "options": ["唯一性", "有效性", "及时性", "服务器品牌"], "answers": [0, 1, 2], "answer": 0, "explanation": "唯一性、有效性与及时性都是数据质量的衡量维度；服务器品牌属于基础设施信息，与数据本身的正确性无关。"},
+        {"type": "order", "question": "请按数据质量问题处理的顺序排列步骤。", "options": ["复盘并补充质量规则", "发现异常并冻结下游", "按血缘定位影响范围", "修复数据并重跑任务"], "correct_order": [1, 2, 3, 0], "answer": 0, "explanation": "先冻结下游避免脏数据继续扩散，再定位范围，修复重跑后补充规则防止复发；跳过冻结会让错误结果继续进入报表。"},
+        {"type": "debug", "question": "阅读质量校验语句，哪项判断正确？", "options": ["重复主键校验返回非零时应阻断下游任务", "金额非负校验只有在报表出错后才有意义", "状态枚举校验无法发现非法值", "行数波动校验使用过去七天均值作为基线"], "answer": 0, "code": "SELECT COUNT(*) AS duplicate_keys FROM (\n  SELECT order_id, item_id FROM dwd_order_item\n  GROUP BY order_id, item_id HAVING COUNT(*) > 1\n) t;", "language": "sql", "explanation": "子查询按业务主键分组并筛出重复组，返回非零说明存在重复数据，应阻断下游并保留现场；这类校验必须在数据对外发布前执行。"}
+      ],
+      "practice": [
+        "为一张关键表写五条质量校验，标注哪些是阻断级、哪些是告警级。",
+        "画出一张表的血缘图，标出异常时受影响的两个指标与负责人。",
+        "写一份数据问题修复记录模板，包含影响范围、原因、处理与新增规则。"
+      ],
+      "refs": [
+        {"name": "DAMA 数据管理知识体系概述", "url": "https://www.dama.org/cpages/body-of-knowledge"},
+        {"name": "Great Expectations 数据质量文档", "url": "https://docs.greatexpectations.io/docs/"}
+      ],
+      "english": "Data quality is engineered, not hoped for. This lesson defines quality dimensions, writes layered validation, introduces data contracts and lineage, and closes the loop with reconciliation, repair records and new rules that prevent recurrence.",
+      "reviewPoints": [
+        "能列出数据质量的五个维度并各举一例。",
+        "能说明数据契约对上下游变更的价值。",
+        "能按发现、冻结、定位、修复、复盘组织处理流程。"
+      ]
+    }
+  ]
+}

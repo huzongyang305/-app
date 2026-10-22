@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "<string>", line 33, in <module>
+    print(f'  Answer: {",".join(chr(65+x) for x in q["answerIndexes"])}')
+                                                   ~^^^^^^^^^^^^^^^^^
+KeyError: 'answerIndexes'
+=== java_control_methods ===
+TITLE_ZH: 控制流与方法
+FILE: assets/content/programming_java_control_methods.md
+DIFFICULTY: 基础
+MINUTES: 50
+Q1: 围绕“控制流与方法”中的 if、switch、for，下列哪两项是本课强调的实践判断？
+  A. 只要 if 的常规示例通过，就可以跳过边界与异常路径
+  B. 验证 switch 时要固定版本并覆盖边界输入，结论才可复现
+  C. 把 switch 的单次运行结果当成所有版本和规模都成立
+  D. 学习 if 时要同时说明输入、输出和失败路径，不能只看正常流程

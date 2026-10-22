@@ -1,0 +1,1459 @@
+
+=== python_first_script ===
+Title: Python 第一个脚本
+File: assets/content/python_first_script.md
+Q1: 围绕“Python 第一个脚本”中的 Python 第一个脚本、Python、入门练习，下列哪两项是本课强调的实践判断？
+  把 Python 的单次运行结果当成所有版本和规模都成立
+  学习 Python 第一个脚本 时要同时说明输入、输出和失败路径，不能只看正常流程
+  只要 Python 第一个脚本 的常规示例通过，就可以跳过边界与异常路径
+  验证 Python 时要固定版本并覆盖边界输入，结论才可复现
+  Answer: 1
+Q2: 把代码保存为 hello.py 后，在命令行运行它的正确方式是？
+  执行 python hello.py，由解释器读取并运行脚本
+  执行 python，再在交互环境里等待脚本自动加载
+  直接双击 hello.py，无需安装 Python 解释器
+  执行 hello.py，操作系统会自动识别脚本内容
+  Answer: 0
+Q3: `Python 第一个脚本` 的示例代码用于验证 `Python`，其背景是从安装、运行到输出第一行结果。代码的真实内容是下面哪一项？
+  出现字面量 `{{orders}}`
+  出现字面量 `hello from Python`
+  出现字面量 `点击了`
+  出现字面量 `负数抛错`
+  Answer: 1
+Q4: 填空：补齐下面这段术语说明中的空缺。课程 `从安装、运行到输出第一行结果。`，这段说明是：`____`：把内容输出到标准输出，是观察程序状态最直接的工具。空缺处应填哪个术语？
+  Answer: 0
+Q5: 填空：补齐下面这段术语说明中的空缺。课程 `从安装、运行到输出第一行结果。`，这段说明是：`____`：一种解释型通用编程语言，用缩进划分代码块，标准库覆盖面广。空缺处应填哪个术语？
+  Answer: 0
+---
+
+=== python_input_output ===
+Title: Python 输入与输出
+File: assets/content/python_input_output.md
+Q1: input 函数的返回值默认是什么类型？
+  整数 int，输入小数时会自动截断取整
+  字节串 bytes，需要先解码才能打印
+  根据输入内容自动推断为 int 或 float
+  字符串 str，需要手动转换成数字才能参与算术
+  Answer: 3
+Q2: 在 name = input("名字：").strip or "world" 中，strip 的作用是？
+  去掉输入首尾的空白字符，避免误判为空输入
+  把输入中的英文单词拆成独立的列表项
+  把输入内容全部转换为小写字母
+  把输入里的数字自动转换成整数类型
+  Answer: 0
+Q3: 围绕“Python 输入与输出”中的 Python 输入与输出、Python、入门练习，下列哪两项是本课强调的实践判断？
+  把 Python 的单次运行结果当成所有版本和规模都成立
+  学习 Python 输入与输出 时要同时说明输入、输出和失败路径，不能只看正常流程
+  只要 Python 输入与输出 的常规示例通过，就可以跳过边界与异常路径
+  验证 Python 时要固定版本并覆盖边界输入，结论才可复现
+  Answer: 1
+Q4: 下面这段 `python` 代码来自 `Python 输入与输出`。课程主线是读取用户输入、转换类型并格式化输出。代码与 `input` 有关。哪一项是代码里真实出现的内容？
+  出现字面量 `utf-8`
+  出现字面量 `./dist/index.cjs`
+  出现字面量 `$BUILD_DIR`
+  出现字面量 `hello, {name}`
+  Answer: 3
+Q5: 填空：补齐下面这段术语说明中的空缺。课程 `读取用户输入、转换类型并格式化输出。`，这段说明是：`____`：从标准输入读入一行文本，返回值始终是字符串。空缺处应填哪个术语？
+  Answer: 0
+---
+
+=== python_if_else ===
+Title: Python 条件判断
+File: assets/content/python_if_else.md
+Q1: 按“Python 条件判断”中 Python 条件判断、Python、入门练习 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
+  写出最小示例并核对 Python 的基线结果
+  只改一个变量，记录边界与失败路径的变化
+  固定版本与证据，把“Python 条件判断”的结论写成可复现记录
+  先明确 Python 条件判断 的输入、输出与约束
+  Answer: 0
+Q2: 围绕“Python 条件判断”中的 Python 条件判断、Python、入门练习，下列哪两项是本课强调的实践判断？
+  验证 Python 时要固定版本并覆盖边界输入，结论才可复现
+  把 Python 的单次运行结果当成所有版本和规模都成立
+  学习 Python 条件判断 时要同时说明输入、输出和失败路径，不能只看正常流程
+  只要 Python 条件判断 的常规示例通过，就可以跳过边界与异常路径
+  Answer: 0
+Q3: 需要依次判断多个互斥条件时，应该使用哪个关键字？
+  switch，Python 用它对分支做模式匹配
+  elif，它会按顺序检查前一个条件不成立后的新条件
+  case，它只能配合 if 使用
+  else if，两个单词之间必须保留空格
+  Answer: 1
+Q4: 下面代码想判断 a 是否大于 b，但会报语法错误。缺少了什么？
+  if 条件末尾的冒号
+  print 函数名
+  缩进层级
+  比较运算符
+  Answer: 0
+Q5: 填空：补齐下面这段术语说明中的空缺。课程 `用 if、elif、else 表达分支和边界。`，这段说明是：`____`：空列表、0、None 等在条件里等价于假，其余多数对象为真。空缺处应填哪个术语？
+  Answer: 0
+---
+
+=== python_loops ===
+Title: Python 循环入门
+File: assets/content/python_loops.md
+Q1: 围绕“Python 循环入门”中的 Python 循环入门、Python、入门练习，下列哪两项是本课强调的实践判断？
+  验证 Python 时要固定版本并覆盖边界输入，结论才可复现
+  把 Python 的单次运行结果当成所有版本和规模都成立
+  学习 Python 循环入门 时要同时说明输入、输出和失败路径，不能只看正常流程
+  只要 Python 循环入门 的常规示例通过，就可以跳过边界与异常路径
+  Answer: 0
+Q2: while 循环可能变成死循环，最直接的原因是？
+  循环体里出现了 print 语句
+  循环变量的名字太长导致解释器无法识别
+  循环次数超过 100 次时解释器强制继续
+  循环条件始终为真，循环体没有让它趋向结束
+  Answer: 3
+Q3: 按“Python 循环入门”中 Python 循环入门、Python、入门练习 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
+  写出最小示例并核对 Python 的基线结果
+  只改一个变量，记录边界与失败路径的变化
+  固定版本与证据，把“Python 循环入门”的结论写成可复现记录
+  先明确 Python 循环入门 的输入、输出与约束
+  Answer: 0
+Q4: 运行下面的 Python 循环代码，控制台输出是什么？
+  0 换行 1 换行 2
+  1 2 3
+  3
+  没有输出
+  Answer: 0
+Q5: 填空：补齐下面这段术语说明中的空缺。课程 `用 for 和 while 重复执行任务并避免死循环。`，这段说明是：生成整数序列，常用 `____`(n) 或 `____`(start, stop, step) 控制次数。空缺处应填哪个术语？
+  Answer: 0
+---
+
+=== python_list_dict_basics ===
+Title: Python 列表与字典入门
+File: assets/content/python_list_dict_basics.md
+Q1: 围绕“Python 列表与字典入门”中的 Python 列表与字典入门、Python、入门练习，下列哪两项是本课强调的实践判断？
+  验证 Python 时要固定版本并覆盖边界输入，结论才可复现
+  把 Python 的单次运行结果当成所有版本和规模都成立
+  学习 Python 列表与字典入门 时要同时说明输入、输出和失败路径，不能只看正常流程
+  只要 Python 列表与字典入门 的常规示例通过，就可以跳过边界与异常路径
+  Answer: 0
+Q2: 按“Python 列表与字典入门”中 Python 列表与字典入门、Python、入门练习 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
+  固定版本与证据，把“Python 列表与字典入门”的结论写成可复现记录
+  先明确 Python 列表与字典入门 的输入、输出与约束
+  写出最小示例并核对 Python 的基线结果
+  只改一个变量，记录边界与失败路径的变化
+  Answer: 0
+Q3: 读取字典中可能不存在的键时，较稳妥的写法是？
+  先删除该键，再重新插入一次
+  把字典转换成列表再按下标读取
+  用 dict.get(key, default) 提供默认值
+  直接用方括号访问，让程序在缺键时崩溃，实际效果取决于具体实现
+  Answer: 2
+Q4: 运行下面的 Python 列表求和代码，控制台输出是什么？
+  6
+  [1, 2, 3]
+  3
+  报错
+  Answer: 0
+Q5: 填空：补齐下面这段术语说明中的空缺。课程 `用列表保存顺序数据，用字典按键查找。`，这段说明是：`____`：用 list[a:b] 取出一段子序列，区间左闭右开。空缺处应填哪个术语？
+  Answer: 0
+---
+
+=== python_basics ===
+Title: Python 基础语法
+File: assets/content/programming_python_basics.md
+Q1: 代码语言为 `python`，选自 `Python 基础语法` 的 `TypeError` 部分。课程问题为从第一个程序开始，掌握缩进、注释与输入输出。哪一项描述与代码一致？
+  出现字面量 `排入待办：按容量逐步处理`
+  出现字面量 `auc_new_user`
+  出现字面量 `Hello, World!`
+  出现字面量 `不再死锁`
+  Answer: 2
+Q2: 按“Python 基础语法”中 python、缩进、print 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
+  固定版本与证据，把“Python 基础语法”的结论写成可复现记录
+  先明确 python 的输入、输出与约束
+  写出最小示例并核对 缩进 的基线结果
+  只改一个变量，记录边界与失败路径的变化
+  Answer: 0
+Q3: 下面哪个是 Python 的单行注释写法？
+  # 注释
+  /* 注释 */
+  // 注释
+  -- 注释
+  Answer: 0
+Q4: 同一次缩进中混用 Tab 和空格，Python 会报什么错？
+  不会报错
+  IndentationError
+  抛出 SyntaxError
+  TypeError
+  Answer: 1
+Q5: 下列哪些是 Python 的内置不可变类型？请选择所有正确答案。
+  int
+  list
+  tuple
+  dict
+  Answer: 0
+Q6: 关于 `TypeError`，下列哪些说法与 `Python 基础语法` 的正文一致？判断时以从第一个程序开始，掌握缩进、注释与输入输出。为主线。（多选）
+  根据输入自动推断
+  int、str、tuple
+  浮点数 float
+  字符串 str
+  Answer: 1
+---
+
+=== python_variables ===
+Title: 变量与数据类型
+File: assets/content/programming_python_variables.md
+Q1: `变量与数据类型` 的示例代码用于验证 `变量`，其背景是理解动态类型、类型转换以及可变与不可变对象。代码的真实内容是下面哪一项？
+  出现字面量 `123`
+  出现字面量 `lint`
+  出现字面量 `scenario`
+  出现字面量 `x-axis`
+  Answer: 0
+Q2: 围绕“变量与数据类型”中的 变量、类型、int，下列哪两项是本课强调的实践判断？
+  验证 类型 时要固定版本并覆盖边界输入，结论才可复现
+  把 类型 的单次运行结果当成所有版本和规模都成立
+  学习 变量 时要同时说明输入、输出和失败路径，不能只看正常流程
+  只要 变量 的常规示例通过，就可以跳过边界与异常路径
+  Answer: 0
+Q3: 执行 int("abc") 会发生什么？
+  抛出 ValueError
+  返回字符串 abc
+  返回 None
+  返回 0
+  Answer: 0
+Q4: Python 中 is 与 == 的区别是？
+  两者完全等价
+  is 比较值，== 比较地址
+  is 只能用于数字
+  == 比较值是否相等
+  Answer: 3
+Q5: a = [1, 2]; b = a; b.append(3) 之后 a 是？
+  报错
+  [1, 2]
+  [1, 2, 3]
+  [3]
+  Answer: 2
+Q6: 填空：补齐下面这段术语说明中的空缺。课程 `理解动态类型、类型转换以及可变与不可变对象。`，这段说明是：`____`：LEGB 规则决定名字从局部、闭包、全局到内置的查找顺序，global 与 nonlocal 用来写外层变量。空缺处应填哪个术语？
+  Answer: 0
+---
+
+=== python_functions ===
+Title: 函数
+File: assets/content/programming_python_functions.md
+Q1: 阅读 `函数` 的 `def` 示例。它服务于函数的定义、参数、返回值与作用域，一次讲清楚。代码中实际包含下列哪一项？
+  出现字面量 `你好，{name}！`
+  出现字面量 `agent`
+  出现字面量 `app`
+  出现字面量 `hello from Java`
+  Answer: 0
+Q2: 围绕“函数”中的 函数、def、return，下列哪两项是本课强调的实践判断？
+  验证 def 时要固定版本并覆盖边界输入，结论才可复现
+  把 def 的单次运行结果当成所有版本和规模都成立
+  学习 函数 时要同时说明输入、输出和失败路径，不能只看正常流程
+  只要 函数 的常规示例通过，就可以跳过边界与异常路径
+  Answer: 0
+Q3: 函数内部给外部同名变量赋值，会发生什么？
+  直接修改外部变量，需要额外的验证与维护
+  创建局部变量，外部变量不变
+  外部变量被删除
+  抛出异常
+  Answer: 1
+Q4: *args 与 **kwargs 的区别是？
+  两者都必须写在参数最前面
+  *args 是字典，**kwargs 是元组
+  *args 收集位置参数成元组
+  只能用于类方法
+  Answer: 2
+Q5: lambda 最典型的使用场景是？
+  实现复杂业务逻辑，但这会带来额外的维护成本，实际效果取决于具体实现
+  替代类定义
+  写多行流程控制
+  作为 sorted(key=...)、map 等只需要一次的小函数
+  Answer: 3
+Q6: 填空：补齐下面这段术语说明中的空缺。课程 `函数的定义、参数、返回值与作用域，一次讲清楚。`，这段说明是：`____`：接收输入、执行确定逻辑并返回结果的代码单元。空缺处应填哪个术语？
+  Answer: 0
+---
+
+=== python_control_flow ===
+Title: 控制流与推导式
+File: assets/content/programming_python_control_flow.md
+Q1: 围绕“控制流与推导式”中的 if、for、while，下列哪两项是本课强调的实践判断？
+  只要 if 的常规示例通过，就可以跳过边界与异常路径
+  验证 for 时要固定版本并覆盖边界输入，结论才可复现
+  把 for 的单次运行结果当成所有版本和规模都成立
+  学习 if 时要同时说明输入、输出和失败路径，不能只看正常流程
+  Answer: 1
+Q2: 阅读 `控制流与推导式` 的 `None` 示例。它服务于条件、循环、for-else，以及列表 / 字典 / 集合推导式。代码中实际包含下列哪一项？
+  出现字面量 `校验签名、有效期与签发者，任一不符即拒绝。`
+  出现字面量 `JWT`
+  出现字面量 `idempotency_key`
+  出现字面量 `列表为空`
+  Answer: 3
+Q3: 遍历列表时删除元素导致漏掉元素，正确的做法是？
+  遍历列表副本
+  先排序再删除
+  把列表转成字典
+  改用 while True
+  Answer: 0
+Q4: range(1, 10, 2) 生成的序列是？
+  1, 3, 5, 7
+  1, 3, 5, 7, 9
+  1, 2, 3, …, 10
+  2, 4, 6, 8, 10
+  Answer: 1
+Q5: break 与 continue 的区别是？
+  两者都结束循环
+  break 跳过本次，continue 结束循环
+  continue 只能用于 while
+  break 结束整个循环
+  Answer: 3
+Q6: 填空：补齐下面这段术语说明中的空缺。课程 `条件、循环、for-else，以及列表 / 字典 / 集合推导式。`，这段说明是：`____`用一行完成「生成新序列」的工作，通常比 for 循环更快也更易读。空缺处应填哪个术语？
+  Answer: 0
+---
+
+=== python_data_structures ===
+Title: 列表、元组、字典与集合
+File: assets/content/programming_python_data_structures.md
+Q1: 这段 `python` 代码对应 `列表、元组、字典与集合` 的 `切片`。课程要解决的是四种内置容器的选择、常用操作与推导式配合。关于代码内容，哪一项说法准确？
+  调用了 `except()`
+  调用了 `min_max()`
+  调用了 `Lesson()`
+  调用了 `media()`
+  Answer: 1
+Q2: 读取字典中可能不存在的键，且不想抛异常，应该用？
+  user.keys['email']
+  user['email']
+  user.get
+  user.pop('email')
+  Answer: 2
+Q3: 围绕“列表、元组、字典与集合”中的 list、tuple、dict，下列哪两项是本课强调的实践判断？
+  学习 list 时要同时说明输入、输出和失败路径，不能只看正常流程
+  只要 list 的常规示例通过，就可以跳过边界与异常路径
+  验证 tuple 时要固定版本并覆盖边界输入，结论才可复现
+  把 tuple 的单次运行结果当成所有版本和规模都成立
+  Answer: 0
+Q4: a = [0, 1, 2, 3, 4] 时 a[1:4] 的结果是？
+  [1, 2, 3]
+  [1, 2, 3, 4]
+  [0, 1, 2, 3]
+  [2, 3, 4]
+  Answer: 0
+Q5: 作为字典键的对象必须满足？
+  必须是整数
+  可哈希
+  可以是任意对象
+  必须是字符串
+  Answer: 1
+Q6: 填空：补齐下面这段术语说明中的空缺。课程 `四种内置容器的选择、常用操作与推导式配合。`，这段说明是：`____`会产生新列表：nums[:] 是浅拷贝，nums2 = nums 只是多了一个名字。空缺处应填哪个术语？
+  Answer: 0
+---
+
+=== python_strings_encoding ===
+Title: Python 字符串、Unicode 与格式化
+File: assets/content/python_strings_encoding.md
+Q1: Python 3 中 len('中文😀') 的结果是什么？
+  3
+  5
+  6
+  取决于终端编码
+  Answer: 0
+Q2: 读取一个需要跨平台交换的文本文件，最稳妥的写法是？
+  open(path)
+  open(path, 'w')
+  open(path, encoding='utf-8')
+  open(path, 'rb') 后直接当 str 使用
+  Answer: 2
+Q3: 以下哪些操作会在编码边界抛错或产生乱码？（多选）
+  用 GBK 解码 UTF-8 字节
+  对 bytes 调用 str 独有的 format 方法
+  直接比较 bytes 与 str
+  先用 UTF-8 编码再用 UTF-8 解码
+  Answer: 0
+Q4: 阅读代码，输出与结论哪一项正确？  text = 'e' + chr(0x301) print(len(text), text == 'é', unicodedata.normalize('NFC', text) == 'é')
+  2 False True
+  2 True True
+  1 False True
+  2 False False
+  Answer: 0
+Q5: 下面代码为什么没有拦住非法输入？  re.match(r'[0-9]{4}-[0-9]{2}', '2026-10-08oops')
+  match 只保证前缀匹配，尾部 oops 没有被校验，应改用 fullmatch
+  字符类写错导致数字无法匹配
+  re.match 会自动去掉字符串末尾字符
+  模式缺少分组所以匹配结果为空
+  Answer: 0
+---
+
+=== python_oop ===
+Title: 类与对象
+File: assets/content/programming_python_oop.md
+Q1: 围绕“类与对象”中的 class、对象、self，下列哪两项是本课强调的实践判断？
+  把 对象 的单次运行结果当成所有版本和规模都成立
+  学习 class 时要同时说明输入、输出和失败路径，不能只看正常流程
+  只要 class 的常规示例通过，就可以跳过边界与异常路径
+  验证 对象 时要固定版本并覆盖边界输入，结论才可复现
+  Answer: 1
+Q2: 子类构造方法中调用父类构造方法的写法是？
+  super.__init__
+  this.__init__
+  base
+  parent.__init__
+  Answer: 0
+Q3: @property 装饰器的作用是？
+  声明静态方法
+  限制类的继承
+  自动生成构造函数
+  让方法可以像属性一样访问
+  Answer: 3
+Q4: 下面这段 `python` 代码来自 `类与对象`。课程主线是构造方法、封装、继承多态、dataclass 与魔术方法。代码与 `__init__` 有关。哪一项是代码里真实出现的内容？
+  出现字面量 `Dog({self.name})`
+  出现字面量 `: true, `
+  出现字面量 `reply.mp3`
+  出现字面量 `local`
+  Answer: 0
+Q5: @classmethod 与 @staticmethod 的区别是？
+  staticmethod 能访问实例属性，也会自动接收 self，所以在任何场景下都可以互换，需要额外的验证与维护
+  classmethod 只能用于继承
+  classmethod 第一个参数是 cls 可访问类本身，staticmethod 不接收自动参数
+  两者完全等价
+  Answer: 2
+Q6: 填空：补齐下面这段术语说明中的空缺。课程 `构造方法、封装、继承多态、dataclass 与魔术方法。`，这段说明是：类是一张模板，`____`是按模板造出来的实例。空缺处应填哪个术语？
+  Answer: 0
+---
+
+=== python_errors_files ===
+Title: 异常处理与文件操作
+File: assets/content/programming_python_errors_files.md
+Q1: 围绕“异常处理与文件操作”中的 异常、try、except，下列哪两项是本课强调的实践判断？
+  学习 异常 时要同时说明输入、输出和失败路径，不能只看正常流程
+  只要 异常 的常规示例通过，就可以跳过边界与异常路径
+  验证 try 时要固定版本并覆盖边界输入，结论才可复现
+  把 try 的单次运行结果当成所有版本和规模都成立
+  Answer: 0
+Q2: 这段 `python` 代码对应 `异常处理与文件操作` 的 `ValueError`。课程要解决的是try/except/else/finally、自定义异常、with 读写文件与 pathlib。关于代码内容，哪一项说法准确？
+  出现字面量 `OrderPaid`
+  出现字面量 `写放大系数：SSD 寿命评估的关键指标。`
+  出现字面量 `api`
+  出现字面量 `无论如何都会执行，用于释放资源`
+  Answer: 3
+Q3: 下面哪种异常处理方式最不推荐？
+  捕获具体的 ValueError，但这会引入新的复杂度，需要额外的验证与维护
+  记录日志后重新抛出
+  except Exception: pass 静默吞掉所有异常
+  使用 finally 释放资源
+  Answer: 2
+Q4: 读取一个不存在的文件，会抛出哪个异常？
+  KeyError
+  FileNotFoundError
+  抛出 IndexError
+  TypeError
+  Answer: 1
+Q5: 自定义异常类通常继承自？
+  Error
+  BaseException
+  Exception
+  object
+  Answer: 2
+Q6: 填空：补齐下面这段术语说明中的空缺。课程 `try/except/else/finally、自定义异常、with 读写文件与 pathlib。`，这段说明是：`____`：用 raise ... from 保留原始异常，traceback 里才能看到真正的起因。空缺处应填哪个术语？
+  Answer: 0
+---
+
+=== python_modules_stdlib ===
+Title: 模块、包与虚拟环境
+File: assets/content/programming_python_modules_stdlib.md
+Q1: 围绕“模块、包与虚拟环境”中的 import、模块、包，下列哪两项是本课强调的实践判断？
+  把 模块 的单次运行结果当成所有版本和规模都成立
+  学习 import 时要同时说明输入、输出和失败路径，不能只看正常流程
+  只要 import 的常规示例通过，就可以跳过边界与异常路径
+  验证 模块 时要固定版本并覆盖边界输入，结论才可复现
+  Answer: 1
+Q2: 为每个项目创建虚拟环境的主要目的是？
+  压缩代码体积
+  自动生成文档
+  加快 Python 运行速度
+  隔离项目依赖，避免版本冲突
+  Answer: 3
+Q3: 统计词频最方便的标准库是？
+  collections.Counter
+  pathlib
+  改用 subprocess 处理词频，但它只覆盖了部分情况
+  math
+  Answer: 0
+Q4: 下面这段 `python` 代码来自 `模块、包与虚拟环境`。课程主线是导入机制、包组织、虚拟环境与常用标准库速查。代码与 `from .text import slugify` 有关。哪一项是代码里真实出现的内容？
+  调用了 `floor()`
+  调用了 `fillMaxSize()`
+  调用了 `send()`
+  调用了 `round()`
+  Answer: 0
+Q5: pathlib.Path 相比手写字符串拼接路径的优势是？
+  会自动创建目录
+  跨平台分隔符自动处理
+  速度更快
+  能替代 os.environ
+  Answer: 1
+Q6: 填空：补齐下面这段术语说明中的空缺。课程 `导入机制、包组织、虚拟环境与常用标准库速查。`，这段说明是：`____`：把一组相关类型、函数或模块组织在一起的命名空间单元。空缺处应填哪个术语？
+  Answer: 0
+---
+
+=== python_typing_testing ===
+Title: 类型注解与测试
+File: assets/content/programming_python_typing_testing.md
+Q1: Python 的类型注解在运行时的作用是？
+  强制检查类型并在不符时抛异常
+  自动完成类型转换
+  提升运行速度
+  不影响运行，只供工具和阅读使用
+  Answer: 3
+Q2: 围绕“类型注解与测试”中的 类型注解、mypy、pytest，下列哪两项是本课强调的实践判断？
+  只要 类型注解 的常规示例通过，就可以跳过边界与异常路径
+  验证 mypy 时要固定版本并覆盖边界输入，结论才可复现
+  把 mypy 的单次运行结果当成所有版本和规模都成立
+  学习 类型注解 时要同时说明输入、输出和失败路径，不能只看正常流程
+  Answer: 1
+Q3: str | None 这种写法表示？
+  字符串的长度
+  取字符串的第一位
+  字符串或空值
+  把字符串转成 None
+  Answer: 2
+Q4: 下面这段 `python` 代码来自 `类型注解与测试`。课程主线是类型注解、mypy / ruff，以及用 pytest 写可维护的测试。代码与 `typing` 有关。哪一项是代码里真实出现的内容？
+  调用了 `read()`
+  调用了 `float()`
+  调用了 `main()`
+  调用了 `range()`
+  Answer: 0
+Q5: pytest 中 fixture 的主要用途是？
+  提供可复用的测试前置准备与清理逻辑
+  断言异常
+  生成测试报告，但这会掩盖真实的缺陷
+  跳过全部用例
+  Answer: 0
+Q6: 填空：补齐下面这段术语说明中的空缺。课程 `类型注解、mypy / ruff，以及用 pytest 写可维护的测试。`，这段说明是：标准库的 ``____`` 也能用，语法更啰嗦但无需第三方依赖；`doctest` 则可以直接运行文档字符串里的示例。空缺处应填哪个术语？
+  Answer: 0
+---
+
+=== python_containers_copy ===
+Title: Python 容器进阶、拷贝与默认参数
+File: assets/content/python_containers_copy.md
+Q1: 对嵌套字典做浅拷贝后修改其中的列表，会发生什么？
+  原字典里的列表也会变化，因为内层对象仍然共享
+  原字典完全不受影响
+  浅拷贝会抛出 TypeError
+  列表会被自动转换成元组
+  Answer: 0
+Q2: def add(item, box=[]) 连续调用两次会出现什么结果？
+  两次调用共享同一个列表，第二次结果包含第一次的元素
+  每次调用都会创建新列表，结果互相独立
+  第二次调用会清空列表
+  解释器会拒绝这种函数定义
+  Answer: 0
+Q3: 以下哪些对象可以直接作为字典的键？（多选）
+  由整数组成的元组 (1, 2)
+  冻结集合 frozenset({1, 2})
+  列表 [1, 2]
+  字典 {'a': 1}
+  Answer: 0
+Q4: 阅读代码，输出是什么？  rows = [[]] * 2 rows[0].append(1) print(rows)
+  [[1], [1]]
+  [[1], []]
+  [[], []]
+  程序抛出异常
+  Answer: 0
+Q5: 下面函数为什么会让调用方意外修改内部状态？  def get_items():     return self.items
+  返回了内部列表本身，调用方可以原地修改，应返回副本或不可变视图
+  函数名不符合规范
+  self.items 只能是字符串
+  return 语句会复制列表
+  Answer: 0
+---
+
+=== python_oop_advanced ===
+Title: Python 面向对象进阶：继承、组合与魔术方法
+File: assets/content/python_oop_advanced.md
+Q1: D 继承 B 和 C，两者都继承 A 且每层调用 super，D().hello() 的输出是什么？
+  B+C+A
+  B+A
+  C+A
+  A
+  Answer: 0
+Q2: dataclass 中需要一个每个实例独立的列表字段，正确写法是？
+  items: list = field(default_factory=list)
+  items: list = []
+  items: list = None
+  items: list = field(shared=True)
+  Answer: 0
+Q3: 为什么组合和协议通常比深层继承更灵活？（多选）
+  运行时可以替换具体实现
+  测试时可以注入假对象
+  避免把无关职责耦合进基类
+  组合会自动让对象变成不可变
+  Answer: 0
+Q4: 阅读类定义，哪个判断正确？  class Wallet:     def __init__(self, cents):         self._cents = cents     @property     def cents(self):         return self._cents
+  cents 是只读属性，外部赋值会抛 AttributeError
+  cents 可以被任意赋值
+  property 会在每次读取时复制钱包
+  _cents 不能使用
+  Answer: 0
+Q5: 为什么这个类放进 set 后报 unhashable？  class Point:     def __init__(self, x, y): self.x, self.y = x, y     def __eq__(self, other): return (self.x, self.y) == (other.x, other.y)
+  实现 __eq__ 后默认的 __hash__ 会被置空，需要显式实现或使用冻结数据类
+  set 只能存字符串
+  缺少 __len__ 方法
+  x 和 y 必须是私有变量
+  Answer: 0
+---
+
+=== python_stdlib ===
+Title: Python 标准库实战工具箱
+File: assets/content/python_stdlib.md
+Q1: 创建跨平台路径最推荐的写法是？
+  Path(base) / name
+  base + '/' + name
+  base + '\\' + name
+  os.path.join(base, name) 后再强制转字符串
+  Answer: 0
+Q2: 比较 datetime.now() 与带时区的 datetime 会发生什么？
+  抛出 TypeError，因为 aware 与 naive 不能直接比较
+  自动按本地时区转换
+  只比较日期部分
+  返回 False 而不是报错
+  Answer: 0
+Q3: 关于标准库容器与迭代器，哪些说法正确？（多选）
+  Counter 可统计可哈希元素的出现次数
+  deque 设置 maxlen 后会自动丢弃旧元素
+  islice 可以只取生成器的前若干项
+  lru_cache 可以安全缓存带随机的有副作用函数
+  Answer: 0
+Q4: 阅读代码，输出哪一项正确？  window = deque([1, 2, 3, 4], maxlen=3) window.append(5) print(list(window))
+  [3, 4, 5]
+  [2, 3, 4]
+  [1, 2, 3]
+  [5, 1, 2]
+  Answer: 0
+Q5: 这段日志代码在库模块中有什么问题？  import logging logging.basicConfig(level=logging.INFO) logger = logging.getLogger(__name__)
+  库模块不应擅自调用 basicConfig，会覆盖宿主应用的日志配置
+  logger 名称使用 __name__ 是错误的
+  logging 只能输出到控制台
+  日志级别 INFO 会导致程序崩溃
+  Answer: 0
+---
+
+=== python_errors_logging_files ===
+Title: Python 异常、日志与文件 I/O 进阶
+File: assets/content/python_errors_logging_files.md
+Q1: raise ConfigError('找不到配置') from exc 的作用是什么？
+  把原始异常保存为 __cause__，异常链保留完整因果
+  隐藏所有异常信息
+  让程序忽略 ConfigError
+  自动重试失败的读取
+  Answer: 0
+Q2: 为什么写入重要配置时先写临时文件再 os.replace？
+  读者只会看到完整的旧版本或新版本，不会读到半写内容
+  临时文件写入速度总是更快
+  可以省略编码参数
+  os.replace 会自动压缩文件
+  Answer: 0
+Q3: 日志中应该避免出现哪些内容？（多选）
+  用户密码与访问令牌
+  完整身份证号或银行卡号
+  可定位请求的随机请求编号
+  未脱敏的完整请求体
+  Answer: 0
+Q4: 阅读代码，输出中 __cause__ 的类型是什么？  try:     open('missing.json') except FileNotFoundError as exc:     try:         raise RuntimeError('加载失败') from exc     except RuntimeError as error:         print(type(error.__cause__).__name__)
+  FileNotFoundError
+  RuntimeError
+  KeyError
+  NoneType
+  Answer: 0
+Q5: 下面异常处理有什么缺陷？  try:     value = int(text) except Exception:     pass
+  捕获范围过宽且静默忽略，会掩盖输入错误和真正的程序缺陷
+  int 不能转换字符串
+  pass 会抛出语法错误
+  应该改成 except: pass 才正确
+  Answer: 0
+---
+
+=== python_pytest ===
+Title: Python pytest 测试实战
+File: assets/content/python_pytest.md
+Q1: pytest 中验证函数抛出特定异常并检查消息，正确写法是？
+  with pytest.raises(ValueError, match='除数'): divide(1, 0)
+  assert divide(1, 0) == ValueError
+  try: divide(1, 0) except: pass
+  @pytest.mark.error(ValueError)
+  Answer: 0
+Q2: fixture 使用 yield 的主要目的是什么？
+  在测试前准备资源，在测试后执行清理
+  让测试函数返回多个值
+  跳过失败的测试
+  把同步测试变成异步测试
+  Answer: 0
+Q3: 关于 mock，哪些做法是合理的？（多选）
+  替换网络客户端以返回固定响应
+  替换当前时间让过期逻辑可复现
+  替换被测函数本身并只断言调用次数
+  对真实数据库迁移使用集成测试而不是全量 mock
+  Answer: 0
+Q4: 参数化装饰器会生成几个测试用例？  @pytest.mark.parametrize('value', [1, 2, 3]) def test_double(value):     assert value * 2 >= 2
+  3 个
+  1 个
+  2 个
+  0 个，因为缺少 fixture
+  Answer: 0
+Q5: 为什么这个测试即使实现错了也可能通过？
+  它只验证 mock 被调用，没有执行真实创建逻辑
+  缺少 assert 关键字
+  pytest 不能测试函数调用
+  应该使用 print 代替断言
+  Answer: 0
+---
+
+=== python_modern_features ===
+Title: 现代 Python 特性与版本升级
+File: assets/content/python_modern_features.md
+Q1: match 语句中 case _ 的作用是什么？
+  匹配任意值且不绑定变量，常作为兜底分支
+  只匹配下划线字符串
+  退出当前函数
+  忽略语法错误
+  Answer: 0
+Q2: PEP 695 相比旧式泛型写法的主要改进是什么？
+  可以直接在函数和类声明处写类型参数，作用域更清晰
+  让类型检查在运行时强制执行
+  自动生成序列化代码
+  完全取消对类型检查器的需求
+  Answer: 0
+Q3: 安全引入现代语法需要做哪些事情？（多选）
+  更新 requires-python 与元数据声明
+  在 CI 中运行支持版本矩阵
+  假设所有用户都使用最新解释器
+  为库用户提供弃用与迁移说明
+  Answer: 0
+Q4: 阅读模式匹配代码，describe(['retry', 0]) 返回什么？  match message:     case ['retry', int(attempt)] if attempt > 0:         return f'第 {attempt} 次重试'     case _:         return '未知消息'
+  未知消息
+  第 0 次重试
+  程序抛异常
+  retry
+  Answer: 0
+Q5: 这个项目声明最低 Python 3.10，但使用了哪种新语法会导致 3.10 无法解析？
+  type 语句是 PEP 695 新语法，3.10 无法解析，需要提升最低版本或改用旧式别名
+  tuple 不能用作类型
+  注释不能放在 pyproject 后面
+  T 必须是具体类
+  Answer: 0
+---
+
+=== python_cli_automation ===
+Title: Python CLI 与自动化实战
+File: assets/content/python_cli_automation.md
+Q1: 安全执行外部命令的推荐写法是？
+  subprocess.run(['prog', arg], check=True, timeout=10)
+  subprocess.run('prog ' + arg, shell=True)
+  os.system('prog ' + arg)
+  exec('prog ' + arg)
+  Answer: 0
+Q2: 自动化工具提供 dry-run 的主要价值是什么？
+  在修改前输出将要执行的动作，让用户检查影响范围
+  让脚本运行得更快
+  自动修复所有错误
+  跳过参数解析
+  Answer: 0
+Q3: 让定时任务可以安全重复运行，需要哪些措施？（多选）
+  使用带过期时间的锁防止并发执行
+  用唯一业务键判断任务是否已完成
+  记录失败状态并支持从中断点恢复
+  忽略上一次运行是否仍在继续
+  Answer: 0
+Q4: 阅读 argparse 代码，运行 filetool scan data --ext .csv 后 args.ext 的值是什么？  scan.add_argument('path', type=Path) scan.add_argument('--ext', default='.md')
+  .csv
+  .md
+  data
+  None
+  Answer: 0
+Q5: 这段批处理脚本为什么可能覆盖错误文件？
+  没有检查目标文件是否已存在，也没有 dry-run 和根目录限制
+  rename 只能用于目录
+  glob 不能匹配 txt
+  with_suffix 会返回字符串
+  Answer: 0
+---
+
+=== python_gui ===
+Title: Python GUI 开发：Tkinter 与 PySide6
+File: assets/content/python_gui.md
+Q1: GUI 回调中执行点击按钮后的网络下载，最可能的后果是什么？
+  事件循环被占用，窗口无响应且无法重绘
+  下载速度自动变快
+  网络请求会转到后台线程
+  控件会自动复制一份
+  Answer: 0
+Q2: 后台线程完成计算后，正确更新控件的方式是？
+  把结果放入线程安全队列，由 UI 线程取出后更新
+  直接在后台线程调用控件方法
+  让控件自己轮询后台变量并修改主线程
+  重启事件循环
+  Answer: 0
+Q3: 设计可缩放 GUI 布局时应该注意什么？（多选）
+  使用布局权重分配额外空间
+  设置合理的最小尺寸
+  所有控件写死像素坐标
+  支持字体放大和键盘访问
+  Answer: 0
+Q4: 阅读事件队列代码，两次 drain 之间不清空队列会发生什么？
+  每次 drain 会按先进先出顺序产出剩余事件，直到队列为空
+  drain 只返回最后一个事件
+  队列会自动排序
+  第二次 drain 会抛异常
+  Answer: 0
+Q5: 桌面应用打包后在开发机正常、目标机器启动即崩溃，优先检查什么？
+  目标系统缺少运行库、资源路径或动态导入模块
+  Python 代码没有分号
+  窗口标题长度
+  键盘布局
+  Answer: 0
+---
+
+=== python_concurrency ===
+Title: 并发与异步
+File: assets/content/programming_python_concurrency.md
+Q1: 围绕“并发与异步”中的 并发、并行、GIL，下列哪两项是本课强调的实践判断？
+  验证 并行 时要固定版本并覆盖边界输入，结论才可复现
+  把 并行 的单次运行结果当成所有版本和规模都成立
+  学习 并发 时要同时说明输入、输出和失败路径，不能只看正常流程
+  只要 并发 的常规示例通过，就可以跳过边界与异常路径
+  Answer: 0
+Q2: 代码语言为 `python`，选自 `并发与异步` 的 `ProcessPoolExecutor` 部分。课程问题为GIL、多线程、多进程与 asyncio 的适用场景和写法。哪一项描述与代码一致？
+  调用了 `sleep()`
+  调用了 `base()`
+  调用了 `Person()`
+  调用了 `ensure_dir()`
+  Answer: 0
+Q3: 多线程共享计数变量时出现结果偏小，解决办法是？
+  增加线程数量
+  用 Lock 保护读-改-写过程
+  改用 asyncio
+  把变量改成字符串，但这会引入新的复杂度
+  Answer: 1
+Q4: GIL 带来的实际影响是？
+  多线程无法并行执行 Python 字节码，CPU 密集任务难以提速
+  多线程完全不可用
+  所有 IO 操作都会阻塞，但这会引入新的复杂度，需要额外的验证与维护
+  进程之间无法通信
+  Answer: 0
+Q5: asyncio.gather 的作用是？
+  把协程转换成线程
+  创建新的进程池
+  阻塞主线程直到所有任务结束
+  并发调度并等待多个协程
+  Answer: 3
+Q6: 填空：补齐下面这段术语说明中的空缺。课程 `GIL、多线程、多进程与 asyncio 的适用场景和写法。`，这段说明是：线程池同理，把 ``____`` 换成 `ThreadPoolExecutor` 即可，适合 IO 密集场景。空缺处应填哪个术语？
+  Answer: 0
+---
+
+=== python_project ===
+Title: 实战：爬虫与数据分析
+File: assets/content/programming_python_project.md
+Q1: 这段 `python` 代码对应 `实战：爬虫与数据分析` 的 `timeout`。课程要解决的是requests 抓取、pandas 清洗统计与 matplotlib 可视化。关于代码内容，哪一项说法准确？
+  出现字面量 `你好，{name}！`
+  出现字面量 `loganalyzer.cli:main`
+  出现字面量 `2025-09-01 00:00:00`
+  出现字面量 `mitigate`
+  Answer: 1
+Q2: pandas 中按作者分组求均值应使用？
+  df.head
+  df.sort_values 先按作者排序，再求均值，但它只覆盖了部分情况
+  df.groupby('author')['x'].mean
+  df.to_csv
+  Answer: 2
+Q3: 围绕“实战：爬虫与数据分析”中的 实战、爬虫、pandas，下列哪两项是本课强调的实践判断？
+  学习 实战 时要同时说明输入、输出和失败路径，不能只看正常流程
+  只要 实战 的常规示例通过，就可以跳过边界与异常路径
+  验证 爬虫 时要固定版本并覆盖边界输入，结论才可复现
+  把 爬虫 的单次运行结果当成所有版本和规模都成立
+  Answer: 0
+Q4: 给 requests 请求设置 timeout 的意义是？
+  绕过反爬限制
+  避免网络异常时请求无限期挂起
+  提高服务器响应速度，但这会放大延迟
+  自动重试失败请求
+  Answer: 1
+Q5: pandas 中把 DataFrame 保存成 CSV 的方法是？
+  df.export('out.csv')
+  df.write_csv('out.csv')
+  df.to_csv('out.csv')
+  df.save('out.csv')
+  Answer: 2
+Q6: 填空：补齐下面这段术语说明中的空缺。课程 `requests 抓取、pandas 清洗统计与 matplotlib 可视化。`，这段说明是：要点：``____`` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性。空缺处应填哪个术语？
+  Answer: 0
+---
+
+=== python_project_api ===
+Title: 实战：FastAPI 订单服务
+File: assets/content/python_project_api.md
+Q1: 围绕“实战：FastAPI 订单服务”中的 FastAPI、Pydantic、REST，下列哪两项是本课强调的实践判断？
+  把 Pydantic 的单次运行结果当成所有版本和规模都成立
+  学习 FastAPI 时要同时说明输入、输出和失败路径，不能只看正常流程
+  只要 FastAPI 的常规示例通过，就可以跳过边界与异常路径
+  验证 Pydantic 时要固定版本并覆盖边界输入，结论才可复现
+  Answer: 1
+Q2: 幂等键的主要作用是什么？
+  替代身份认证
+  压缩响应体
+  提高数据库索引速度
+  避免重复请求产生重复订单
+  Answer: 3
+Q3: Pydantic 模型最适合承担什么职责？
+  请求结构校验和类型转换
+  页面渲染
+  日志采集
+  负责数据库迁移，但这会加重锁竞争
+  Answer: 0
+Q4: 取消已支付订单应该返回什么？
+  302 跳转首页
+  409 Conflict 并说明状态不允许
+  200 并静默成功
+  500 并记录未知错误，但它只覆盖了部分情况
+  Answer: 1
+Q5: 下面 FastAPI 代码中，请求 quantity 为 0 时会怎样？
+  服务崩溃返回 500
+  自动改成数量 1
+  创建订单成功
+  Pydantic 校验失败并返回 422
+  Answer: 3
+Q6: 下面几项都与 `FastAPI` 有关，请按 `实战：FastAPI 订单服务` 的正文顺序排列；该课主线是用 FastAPI、Pydantic 和 SQLite 实现订单 API，覆盖校验、事务、错误处理和测试。
+  项目背景
+  技术栈
+  架构与数据流
+  功能范围
+  Answer: 0
+---
+
+=== python_project_etl ===
+Title: 实战：CSV 到 SQLite 的 ETL 流水线
+File: assets/content/python_project_etl.md
+Q1: 为什么要把脏记录写入拒绝文件？
+  提高数据库性能
+  避免测试
+  减少磁盘占用
+  便于定位和重新处理
+  Answer: 3
+Q2: 围绕“实战：CSV 到 SQLite 的 ETL 流水线”中的 ETL、CSV、SQLite，下列哪两项是本课强调的实践判断？
+  验证 CSV 时要固定版本并覆盖边界输入，结论才可复现
+  把 CSV 的单次运行结果当成所有版本和规模都成立
+  学习 ETL 时要同时说明输入、输出和失败路径，不能只看正常流程
+  只要 ETL 的常规示例通过，就可以跳过边界与异常路径
+  Answer: 0
+Q3: 金额字段在入库前最适合转换为什么？
+  浮点数
+  字符串
+  整数分
+  布尔值
+  Answer: 2
+Q4: 质量报告至少应包含什么？
+  总记录，成功，跳过
+  只有成功条数
+  只有运行时间
+  数据库版本
+  Answer: 0
+Q5: 同一份 CSV 重复执行这段写入代码，数据库中会发生什么？
+  因为 INSERT OR REPLACE，相同主键会被覆盖不会重复
+  数据库被清空
+  只写入最后一行
+  每次都新增重复订单
+  Answer: 0
+Q6: 下面几项都与 `ETL` 有关，请按 `实战：CSV 到 SQLite 的 ETL 流水线` 的正文顺序排列；该课主线是实现可重复执行的抽取、清洗、校验和入库流水线，并输出数据质量报告。
+  项目背景
+  技术栈
+  架构与数据流
+  功能范围
+  Answer: 0
+---
+
+=== python_decorators_generators ===
+Title: Python 装饰器与生成器
+File: assets/content/python_decorators_generators.md
+Q1: 在 `Python 装饰器与生成器` 里，与 `装饰器` 有关的说法中，哪一项最符合掌握闭包、装饰器、yield、惰性序列和生成器性能。？
+  只要小数据能跑通，大规模和异常情况也一定正确。
+  装饰器本质是接收函数并返回新函数的高阶函数，常用于日志、缓存、权限和重试。
+  with 保证进入和退出成对执行，适合文件、锁、连接和事务。
+  pyproject.toml 统一声明构建、依赖和工具配置，锁文件保证可复现。
+  Answer: 1
+Q2: 在 `Python 装饰器与生成器` 里，与 `装饰器` 有关的说法中，哪一项最符合掌握闭包、装饰器、yield、惰性序列和生成器性能。？（Python 装饰器与生成器·Python 第 2 题）
+  生成器用 yield 逐个产出值，适合大文件和流式处理，避免一次性占用内存。
+  迭代器实现 __iter__ 和 __next__，耗尽后要持续抛出 StopIteration。
+  发布要管理版本、许可证、README、变更日志和制品签名。
+  只要小数据能跑通，大规模和异常情况也一定正确。
+  Answer: 0
+Q3: 代码语言为 `python`，选自 `Python 装饰器与生成器` 的 `装饰器` 部分。课程问题为掌握闭包、装饰器、yield、惰性序列和生成器性能。哪一项描述与代码一致？
+  调用了 `greet()`
+  调用了 `perror()`
+  调用了 `worker()`
+  调用了 `trace()`
+  Answer: 3
+Q4: `Python 装饰器与生成器` 的主线是：掌握闭包、装饰器、yield、惰性序列和生成器性能。下面哪一项与这条主线一致？
+  理解 with、enter/exit、迭代器协议和资源安全。
+  用 pyproject、锁文件和构建工具发布包，并做性能剖析。
+  只要小数据能跑通，大规模和异常情况也一定正确。
+  掌握闭包、装饰器、yield、惰性序列和生成器性能。
+  Answer: 3
+Q5: 课程 `掌握闭包、装饰器、yield、惰性序列和生成器性能。`。在 `Python 装饰器与生成器` 里，`装饰器`、`生成器` 与下面哪些选项属于同一层概念？（多选）
+  装饰器
+  链表
+  生成器
+  链路层
+  Answer: 0
+Q6: 下面几项都与 `装饰器` 有关，请按 `Python 装饰器与生成器` 的正文顺序排列；该课主线是掌握闭包、装饰器、yield、惰性序列和生成器性能。
+  核心知识
+  关键流程
+  实践路径
+  常见误区
+  Answer: 0
+---
+
+=== python_concurrency_model ===
+Title: Python 并发模型、GIL 与线程进程选型
+File: assets/content/python_concurrency_model.md
+Q1: 传统 CPython 中，纯 Python CPU 密集任务为什么难以靠多线程加速？
+  GIL 让同一进程内同一时刻只有一个线程执行 Python 字节码
+  线程不能访问共享内存
+  Python 不支持创建线程
+  多线程只能在 Windows 使用
+  Answer: 0
+Q2: 四个线程各自执行 counter += 1 一万次，最终结果小于四万，最可能的原因是什么？
+  读取、加一、写回不是原子操作，发生了竞态
+  整数不能相加
+  线程池最多只能执行一个任务
+  Python 会自动丢弃异常
+  Answer: 0
+Q3: 哪些任务更适合使用进程池？（多选）
+  大规模纯 Python 数值计算
+  需要隔离内存的批处理任务
+  需要频繁共享一个可变字典的短任务
+  只做网络等待的轻量请求
+  Answer: 0
+Q4: 阅读代码，四个线程并发提交后 counter 的值最可能是多少？  counter = 0 for _ in range(4):     with ThreadPoolExecutor() as pool:         pool.submit(lambda: counter += 1)
+  代码存在语法错误，无法运行
+  一定等于 4
+  一定小于 4
+  取决于线程数量
+  Answer: 0
+Q5: Windows 上进程池出现无限创建子进程，最可能缺少什么？
+  if __name__ == '__main__' 主模块保护
+  ThreadPoolExecutor 的 max_workers 参数
+  logging.basicConfig 配置
+  global 关键字声明
+  Answer: 0
+---
+
+=== python_asyncio ===
+Title: Python asyncio 异步编程：任务、超时与取消
+File: assets/content/python_asyncio.md
+Q1: 为什么在 async 函数中调用 time.sleep 会破坏并发？
+  它会阻塞事件循环线程，其他任务无法被调度
+  它会自动取消所有任务
+  它会把协程变成线程
+  它只能休眠整数秒
+  Answer: 0
+Q2: asyncio.gather 返回结果时的顺序是？
+  与传入的等待对象顺序一致，而不是完成顺序
+  永远按完成先后排列
+  随机顺序
+  只返回第一个完成的结果
+  Answer: 0
+Q3: 关于取消与超时，哪些说法正确？（多选）
+  取消通过 CancelledError 在协程暂停点传播
+  清理资源应放在 finally 或 async with 中
+  捕获 CancelledError 后不应静默忽略
+  超时后原任务一定已经完成
+  Answer: 0
+Q4: 阅读 TaskGroup 代码，正常完成后的输出是什么？  async with asyncio.TaskGroup() as group:     tasks = [group.create_task(fetch(i)) for i in range(2)] print([task.result() for task in tasks])
+  按任务顺序输出两个结果
+  只输出第一个结果
+  输出空列表
+  TaskGroup 不允许这样创建任务
+  Answer: 0
+Q5: 这个异步函数有什么问题？
+  同步文件 I/O 会阻塞事件循环，应使用异步文件库或 to_thread，并正确关闭文件
+  json 不能在 async 函数中使用
+  open 不支持 encoding 参数
+  return 会取消任务
+  Answer: 0
+---
+
+=== python_database_sqlalchemy ===
+Title: Python 数据库与 SQLAlchemy 2.x
+File: assets/content/python_database_sqlalchemy.md
+Q1: 防止 SQL 注入最核心的做法是什么？
+  使用绑定参数让数据库区分 SQL 模板与输入值
+  把单引号替换成两个单引号
+  只允许数字输入
+  把 SQL 全部转成小写
+  Answer: 0
+Q2: SQLAlchemy 中修改 ORM 对象后，数据什么时候真正写入数据库？
+  调用 commit 提交事务时
+  访问对象属性的瞬间
+  创建 Session 时
+  导入模型类时
+  Answer: 0
+Q3: 关于连接池与事务，哪些说法正确？（多选）
+  池大小必须与数据库连接上限匹配
+  连接泄漏会让池最终耗尽
+  事务中适合执行耗时网络请求
+  Session 应在使用后及时关闭并归还连接
+  Answer: 0
+Q4: 阅读代码，哪一项能避免 N+1 查询？  orders = session.scalars(select(Order)).all() for order in orders:     print(order.customer.name)
+  用 selectinload 或 join 一次性加载 customer 关联
+  把循环改成 while
+  增加 Session 数量
+  给 Order 表再加一个主键
+  Answer: 0
+Q5: 这段数据访问代码的主要风险是什么？
+  缺少余额校验与显式回滚，异常时可能部分修改或产生负余额
+  session.get 无法读取对象
+  commit 会自动删除账户
+  金额必须是字符串
+  Answer: 0
+---
+
+=== python_http_clients ===
+Title: Python HTTP 客户端工程：超时、重试与认证
+File: assets/content/python_http_clients.md
+Q1: 为什么 HTTP 请求必须设置超时？
+  防止连接或读取无限等待，避免线程和连接池被耗尽
+  让响应速度变快
+  超时能自动修复服务端故障
+  只有异步请求才需要超时
+  Answer: 0
+Q2: 以下哪种请求最适合自动重试？
+  幂等的 GET 查询在 503 后重试
+  没有幂等键的支付请求超时后重试
+  返回 404 的查询无限重试
+  认证失败的请求立即循环重试
+  Answer: 0
+Q3: 关于客户端与认证，哪些做法正确？（多选）
+  应用级复用客户端以利用连接池
+  把访问令牌放在 Authorization 头
+  日志中记录完整令牌方便排查
+  默认开启 TLS 证书校验
+  Answer: 0
+Q4: 阅读重试片段，最大等待时间是多少秒？  def delay(attempt):     return min(0.2 * (2 ** attempt), 5.0) print(delay(5))
+  5.0
+  6.4
+  3.2
+  0.2
+  Answer: 0
+Q5: 分页循环可能存在什么风险？
+  没有最大页数和退出条件，服务端游标异常时可能无限请求
+  params 不能是字典
+  client.get 不支持循环调用
+  JSON 响应不能包含 next
+  Answer: 0
+---
+
+=== python_context_iterators ===
+Title: Python 上下文管理器与迭代器协议
+File: assets/content/python_context_iterators.md
+Q1: 在 `Python 上下文管理器与迭代器协议` 里，与 `上下文管理器` 有关的说法中，哪一项最符合理解 with、enter/exit、迭代器协议和资源安全。？
+  pyproject.toml 统一声明构建、依赖和工具配置，锁文件保证可复现。
+  只要小数据能跑通，大规模和异常情况也一定正确。
+  with 保证进入和退出成对执行，适合文件、锁、连接和事务。
+  装饰器本质是接收函数并返回新函数的高阶函数，常用于日志、缓存、权限和重试。
+  Answer: 2
+Q2: 围绕“Python 上下文管理器与迭代器协议”中的 上下文管理器、迭代器、with，下列哪两项是本课强调的实践判断？
+  学习 上下文管理器 时要同时说明输入、输出和失败路径，不能只看正常流程
+  只要 上下文管理器 的常规示例通过，就可以跳过边界与异常路径
+  验证 迭代器 时要固定版本并覆盖边界输入，结论才可复现
+  把 迭代器 的单次运行结果当成所有版本和规模都成立
+  Answer: 0
+Q3: 在 `Python 上下文管理器与迭代器协议` 里，与 `上下文管理器` 有关的说法中，哪一项最符合理解 with、enter/exit、迭代器协议和资源安全。？（Python 上下文管理器与迭代器协议·Python 第 3 题）
+  只要小数据能跑通，大规模和异常情况也一定正确。
+  上下文管理器要正确处理异常、嵌套和异步资源。
+  装饰器要保留原函数元数据，生成器要处理关闭、异常和资源释放。
+  性能优化先用 cProfile、py-spy 和基准测试定位，再考虑算法、缓存或原生扩展。
+  Answer: 1
+Q4: `Python 上下文管理器与迭代器协议` 的主线是：理解 with、enter/exit、迭代器协议和资源安全。下面哪一项与这条主线一致？
+  用 pyproject、锁文件和构建工具发布包，并做性能剖析。
+  只要小数据能跑通，大规模和异常情况也一定正确。
+  理解 with、enter/exit、迭代器协议和资源安全。
+  掌握闭包、装饰器、yield、惰性序列和生成器性能。
+  Answer: 2
+Q5: 填空：补齐下面这段术语说明中的空缺。课程 `理解 with、enter/exit、迭代器协议和资源安全。`，这段说明是：`____`：按顺序逐个访问集合元素并维护当前位置的协议或对象。空缺处应填哪个术语？
+  Answer: 0
+Q6: `Python 上下文管理器与迭代器协议` 的示例代码服务于“理解 with、enter/exit、迭代器协议和资源安全。”。哪一条判断是正确的？
+  只要小数据能跑通，大规模和异常情况也一定正确。
+  pyproject.toml 统一声明构建、依赖和工具配置，锁文件保证可复现。
+  with 保证进入和退出成对执行，适合文件、锁、连接和事务。
+  装饰器本质是接收函数并返回新函数的高阶函数，常用于日志、缓存、权限和重试。
+  Answer: 2
+---
+
+=== python_security ===
+Title: Python 安全基础：密码、随机数与不可信输入
+File: assets/content/python_security.md
+Q1: 存储用户密码的正确方式是？
+  为每个密码生成随机盐并使用 scrypt 等慢哈希
+  保存 MD5 摘要
+  使用对称加密后保存密文和密钥在同一数据库
+  保存明文但限制数据库访问
+  Answer: 0
+Q2: 生成会话令牌应该使用哪个模块？
+  secrets
+  random
+  hashlib
+  uuid.uuid1
+  Answer: 0
+Q3: 以下哪些做法能降低注入风险？（多选）
+  数据库使用绑定参数
+  subprocess 使用参数列表并保持 shell=False
+  把用户输入拼进模板后关闭自动转义
+  对路径做规范化并检查允许根目录
+  Answer: 0
+Q4: 阅读代码，正确密码与错误密码的输出分别是？  salt = secrets.token_bytes(16) stored = hashlib.scrypt(b'secret', salt=salt, n=2**14, r=8, p=1) print(verify('secret', salt, stored), verify('wrong', salt, stored))
+  True False
+  True True
+  False True
+  False False
+  Answer: 0
+Q5: 下面依赖处理有什么风险？
+  shell=True 拼接用户输入存在命令注入，文件路径也缺少根目录限制
+  subprocess 不能运行外部程序
+  open 不支持变量路径
+  convert 必须使用文本模式
+  Answer: 0
+---
+
+=== python_packaging_performance ===
+Title: Python 打包、发布与性能
+File: assets/content/python_packaging_performance.md
+Q1: 围绕“Python 打包、发布与性能”中的 打包、pyproject、性能剖析，下列哪两项是本课强调的实践判断？
+  把 pyproject 的单次运行结果当成所有版本和规模都成立
+  学习 打包 时要同时说明输入、输出和失败路径，不能只看正常流程
+  只要 打包 的常规示例通过，就可以跳过边界与异常路径
+  验证 pyproject 时要固定版本并覆盖边界输入，结论才可复现
+  Answer: 1
+Q2: 在 `Python 打包、发布与性能` 里，与 `打包` 有关的说法中，哪一项最符合用 pyproject、锁文件和构建工具发布包，并做性能剖析。？
+  生成器用 yield 逐个产出值，适合大文件和流式处理，避免一次性占用内存。
+  迭代器实现 __iter__ 和 __next__，耗尽后要持续抛出 StopIteration。
+  只要小数据能跑通，大规模和异常情况也一定正确。
+  发布要管理版本、许可证、README、变更日志和制品签名。
+  Answer: 3
+Q3: 在 `Python 打包、发布与性能` 里，与 `打包` 有关的说法中，哪一项最符合用 pyproject、锁文件和构建工具发布包，并做性能剖析。？（Python 打包、发布与性能·Python 第 3 题）
+  性能优化先用 cProfile，py-spy 和基准测试定位
+  装饰器要保留原函数元数据，生成器要处理关闭、异常和资源释放。
+  上下文管理器要正确处理异常、嵌套和异步资源。
+  只要小数据能跑通，大规模和异常情况也一定正确。
+  Answer: 0
+Q4: `Python 打包、发布与性能` 的主线是：用 pyproject、锁文件和构建工具发布包，并做性能剖析。下面哪一项与这条主线一致？
+  只要小数据能跑通，大规模和异常情况也一定正确。
+  用 pyproject、锁文件和构建工具发布包，并做性能剖析。
+  掌握闭包、装饰器、yield、惰性序列和生成器性能。
+  理解 with、enter/exit、迭代器协议和资源安全。
+  Answer: 1
+Q5: 填空：补齐下面这段术语说明中的空缺。课程 `用 pyproject、锁文件和构建工具发布包，并做性能剖析。`，这段说明是：`____`：用采样或插桩收集函数、调用栈和资源占用数据，定位真正的热点。空缺处应填哪个术语？
+  Answer: 0
+Q6: 结合 `Python 打包、发布与性能` 中围绕 `打包` 的代码，哪一项说法与“用 pyproject、锁文件和构建工具发布包，并做性能剖析。”一致？
+  只要小数据能跑通，大规模和异常情况也一定正确。
+  pyproject.toml 统一声明构建、依赖和工具配置，锁文件保证可复现。
+  with 保证进入和退出成对执行，适合文件、锁、连接和事务。
+  装饰器本质是接收函数并返回新函数的高阶函数，常用于日志、缓存、权限和重试。
+  Answer: 1
+---
+
+=== python_runtime_memory_performance ===
+Title: Python 内存、性能与解释器原理
+File: assets/content/python_runtime_memory_performance.md
+Q1: sys.getrefcount(obj) 的结果通常比预期多一，原因是什么？
+  函数参数本身会临时增加一次引用
+  解释器会永久缓存对象
+  getrefcount 会复制对象
+  对象创建时引用计数从二开始
+  Answer: 0
+Q2: 使用 __slots__ 的主要收益是什么？
+  大量实例时减少每个对象的内存占用并限制动态属性
+  让对象自动线程安全
+  让实例可以被序列化成 JSON
+  自动回收循环引用
+  Answer: 0
+Q3: 性能优化前应该收集哪些证据？（多选）
+  函数级耗时与调用次数
+  内存分配与峰值
+  真实输入规模下的端到端延迟
+  同行的直觉猜测
+  Answer: 0
+Q4: 阅读代码，实例是否有 __dict__？  @dataclass(slots=True) class Point:     x: int     y: int print(hasattr(Point(1, 2), '__dict__'))
+  False
+  True
+  取决于 Python 版本
+  运行时抛异常
+  Answer: 0
+Q5: 为什么这段循环优化可能不值得保留？
+  收益通常很小，却明显降低了可读性，应先证明这是热点
+  局部变量在 Python 中无效
+  append 不能作为变量保存
+  len 只能用于字符串
+  Answer: 0
+---
+
+=== python_data_processing ===
+Title: Python 数据处理：NumPy、pandas 与 Polars
+File: assets/content/python_data_processing.md
+Q1: NumPy 向量化运算通常比 Python 逐元素循环快，主要原因是什么？
+  运算在连续内存上批量执行，减少了逐元素的解释器开销
+  NumPy 会自动使用数据库
+  向量化会跳过边界检查
+  它把所有数据类型都变成字符串
+  Answer: 0
+Q2: 避免 pandas 链式赋值问题最直接的写法是？
+  使用 df.loc[条件, 列] = 值 一次完成定位与赋值
+  连续使用两个方括号再赋值
+  把 DataFrame 转成列表后修改
+  关闭所有警告
+  Answer: 0
+Q3: 数据质量检查通常包括哪些内容？（多选）
+  缺失值比例与分布
+  重复记录与业务键唯一性
+  类型转换失败的行
+  只保留好看的数据行
+  Answer: 0
+Q4: 阅读分组代码，输出第一行是哪个城市？  df.groupby('city', as_index=False)['score'].mean().sort_values('score', ascending=False)
+  上海，因为平均分 92.0 最高
+  北京，因为出现次数最多
+  深圳，因为分数最低
+  顺序随机，无法判断
+  Answer: 0
+Q5: 为什么把报告结果写入 Parquet 比继续追加写入同一个 CSV 更适合？
+  Parquet 保存 schema 和列统计，压缩率高，分析时可按列读取
+  Parquet 可以被任意文本编辑器直接修改
+  Parquet 不需要定义字段类型
+  Parquet 只适合实时逐行写入
+  Answer: 0
+---
+
+=== python_web_deployment ===
+Title: Python Web 部署：WSGI、ASGI 与容器化
+File: assets/content/python_web_deployment.md
+Q1: ASGI 应用通过哪组参数与服务器交互？
+  scope、receive、send
+  environ、start_response
+  request、response、socket
+  argv、stdin、stdout
+  Answer: 0
+Q2: 异步服务中 worker 数量不能盲目增加，最主要的原因是什么？
+  每个 worker 都会消耗内存和数据库连接等有限资源
+  worker 只能启动一个
+  异步服务器不支持多进程
+  增加 worker 会让代码语法失效
+  Answer: 0
+Q3: 生产容器部署应满足哪些要求？（多选）
+  最终镜像以非 root 用户运行
+  依赖版本固定且构建工具不进入运行镜像
+  配置和秘密在运行时注入
+  把数据库密码写进 Dockerfile 方便复用
+  Answer: 0
+Q4: 这个 ASGI 应用最先发送哪条消息？
+  http.response.start
+  http.response.body
+  http.request
+  lifespan.startup
+  Answer: 0
+Q5: 滚动发布时旧实例收到停机信号后立即被杀死，可能出现什么问题？
+  正在处理的请求被中断，客户端看到连接重置或重复提交
+  新实例无法启动
+  数据库自动回滚
+  日志级别被改变
+  Answer: 0
+---
+
+=== python_interop ===
+Title: Python 与 C、C++、Rust 互操作
+File: assets/content/python_interop.md
+Q1: ctypes 调用 C 函数前设置 argtypes 和 restype 的主要目的是什么？
+  明确参数与返回值类型，避免错误转换和内存破坏
+  自动释放 C 内存
+  提升 C 编译速度
+  把函数转换为 Python 类
+  Answer: 0
+Q2: C 扩展中释放 GIL 后，哪件事是不能做的？
+  访问 Python 对象或调用 Python API
+  执行纯 C 计算
+  操作不依赖 Python 的原生数据结构
+  使用线程本地原生缓冲区
+  Answer: 0
+Q3: 跨语言边界必须明确哪些责任？（多选）
+  谁分配和释放内存
+  错误码或异常如何映射
+  数据编码与字节序
+  原生代码作者喜欢的编辑器
+  Answer: 0
+Q4: 阅读结构体定义，ctypes.sizeof(Point) 最可能是多少？  class Point(ctypes.Structure):     _fields_ = [('x', ctypes.c_int), ('y', ctypes.c_int)]
+  8
+  4
+  16
+  2
+  Answer: 0
+Q5: 为什么把一个小循环改成 C 扩展后整体反而更慢？
+  每次调用都要做参数转换和边界开销，而热点本身并不在循环上
+  C 语言无法计算循环
+  必须同时重写所有 Python 代码
+  扩展只能调用一次
+  Answer: 0
+---
+
+=== python_project_architecture ===
+Title: Python 项目架构：分层、配置与依赖注入
+File: assets/content/python_project_architecture.md
+Q1: 分层架构中依赖应该指向哪个方向？
+  从接口和基础设施指向领域核心
+  从领域核心指向数据库驱动
+  任意方向都可以
+  从领域层指向 HTTP 框架
+  Answer: 0
+Q2: 组合根的主要职责是什么？
+  在启动处集中创建并连接具体依赖
+  保存所有业务规则
+  替代单元测试
+  自动生成数据库表
+  Answer: 0
+Q3: 以下哪些做法有助于保持模块边界？（多选）
+  用绝对导入并声明公共 API
+  用架构测试禁止跨层导入
+  让所有模块都可以导入所有模块
+  把共享协议放到更小的独立模块
+  Answer: 0
+Q4: 阅读代码，UserService 为什么更容易测试？
+  它依赖 Clock 协议，可以注入固定时钟或假实现
+  它继承了测试框架
+  它把时间写死在代码里
+  它不需要任何依赖
+  Answer: 0
+Q5: 为什么在模块顶层创建数据库连接会带来问题？
+  导入模块就产生连接副作用，测试和 CLI 难以控制连接生命周期
+  数据库驱动不支持连接
+  Python 不能在模块顶层写代码
+  连接会自动更改业务规则
+  Answer: 0
+---
+
+=== python_interview ===
+Title: Python 面试专题：原理、编码与工程判断
+File: assets/content/python_interview.md
+Q1: 回答 Python 语言原理题时，推荐的结构是什么？
+  结论、机制、边界、例子
+  只背定义
+  从无关历史讲起
+  直接说不知道
+  Answer: 0
+Q2: 拿到编码题后第一步应该做什么？
+  澄清输入输出、规模和边界假设
+  立刻写完整代码
+  先优化到最优复杂度
+  询问面试官答案
+  Answer: 0
+Q3: 系统设计回答中应该包含哪些内容？（多选）
+  功能与非功能需求
+  容量估算与瓶颈分析
+  故障恢复与可观测性
+  只列技术名词不谈取舍
+  Answer: 0
+Q4: 阅读 top_k 代码，当 k 为 0 时返回什么？
+  空列表 []
+  全部词频
+  None
+  抛出 IndexError
+  Answer: 0
+Q5: 项目复盘中哪种讲法最有说服力？
+  先给基线和问题，再讲方案、指标变化与遗留风险
+  只说用了很多先进技术
+  把团队成果全部说成个人完成
+  只讲成功不提失败和权衡
+  Answer: 0
+---

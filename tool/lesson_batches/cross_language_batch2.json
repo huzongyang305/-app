@@ -1,0 +1,241 @@
+{
+  "category": "cross_language",
+  "lessons": [
+    {
+      "id": "cross_package_manage",
+      "title": { "zh": "包管理与依赖：九种生态横向对照", "en": "Package Management Across Ecosystems" },
+      "summary": {
+        "zh": "清单文件、锁文件与版本语义，以及依赖冲突的排查方法。",
+        "en": "Manifests, lockfiles, version semantics and conflict debugging."
+      },
+      "file": "assets/content/cross_package_manage.md",
+      "minutes": 20,
+      "keywords": ["包管理", "依赖", "锁文件", "版本号", "SemVer"],
+      "difficulty": "入门",
+      "order": 5,
+      "quiz": [
+        {
+          "question": "清单文件与锁文件的分工是？",
+          "options": [
+            "两者作用相同，提交一个即可",
+            "清单文件描述依赖意图与版本范围，锁文件记录实际装到的精确版本",
+            "锁文件只用于加密",
+            "清单文件由工具自动生成，不需要提交"
+          ],
+          "answer": 1,
+          "explanation": "清单表达「我要什么」，锁文件保证「大家装到的是同一份」。选项一忽略了可复现性；选项三与加密无关；选项四与事实相反，清单文件必须提交。"
+        },
+        {
+          "question": "版本号 1.4.2 中，哪一位变化表示包含不兼容的破坏性变更？",
+          "options": [
+            "第一位（主版本号）",
+            "第二位（次版本号）",
+            "第三位（补丁号）",
+            "任意一位"
+          ],
+          "answer": 0,
+          "explanation": "按语义化版本约定，主版本号变化代表不兼容变更，次版本是兼容新增，补丁号是兼容修复。选项二与选项三都是向后兼容的变化；选项四忽略了约定。"
+        },
+        {
+          "question": "在 CI 里安装 Node 依赖，应该用哪个命令？",
+          "options": [
+            "npm install",
+            "npm ci",
+            "npm update",
+            "逐个安装依赖包"
+          ],
+          "answer": 1,
+          "explanation": "npm ci 严格按锁文件安装，不会改写版本。选项一与选项三可能更新依赖，导致测试过的版本与发布的不一致；选项四既慢又容易漏。"
+        },
+        {
+          "question": "排查「编译通过但运行时报找不到方法」的依赖问题，第一步应该做什么？",
+          "options": [
+            "直接删除锁文件重装",
+            "用依赖树命令查看实际生效的版本与来源",
+            "升级到最新版本",
+            "换成另一个包管理器"
+          ],
+          "answer": 1,
+          "explanation": "先看清哪两个版本冲突，再决定处理方式。选项一与选项三会掩盖问题、引入新风险；选项四成本极高且不解决根因。"
+        }
+      ]
+    },
+    {
+      "id": "cross_build_release",
+      "title": { "zh": "构建与发布产物：九种生态横向对照", "en": "Build and Release Artifacts" },
+      "summary": {
+        "zh": "各生态的产物形态、构建流水线、可复现构建与体积优化。",
+        "en": "Artifact types, pipelines, reproducible builds and size tuning."
+      },
+      "file": "assets/content/cross_build_release.md",
+      "minutes": 20,
+      "keywords": ["构建", "制品", "可复现", "发布", "体积优化"],
+      "difficulty": "进阶",
+      "order": 6,
+      "quiz": [
+        {
+          "question": "「构建一次，多处部署」的根本目的是？",
+          "options": [
+            "节省构建机器资源",
+            "保证各环境使用同一份不可变制品，测试过的就是发布的",
+            "减少代码量",
+            "加快本地编译"
+          ],
+          "answer": 1,
+          "explanation": "同一制品才能消除「重新构建引入差异」的风险。选项一、四只是附带收益；选项三与构建次数无关。"
+        },
+        {
+          "question": "制品命名 app-latest.tar.gz 的主要问题是什么？",
+          "options": [
+            "文件名太长",
+            "无法追溯对应哪次提交，也无法精确回滚",
+            "不兼容 Linux",
+            "占用空间更大"
+          ],
+          "answer": 1,
+          "explanation": "最新标签会不断被覆盖，出问题时说不清部署的是哪一版。选项一、三、四都不是关键问题。"
+        },
+        {
+          "question": "可复现构建的三个条件是？",
+          "options": [
+            "快速、便宜、自动",
+            "依赖可复现、环境可复现、产物可追溯",
+            "多云、多语言、多平台",
+            "有人工审核、有测试、有文档"
+          ],
+          "answer": 1,
+          "explanation": "固定的依赖、固定的环境与带提交标识的产物，三者共同保证可复现。其余选项描述的是工程实践或无关特性。"
+        },
+        {
+          "question": "关于 Debug 与 Release 构建，正确的做法是？",
+          "options": [
+            "只测 Release，因为发布用的是它",
+            "只测 Debug，因为调试信息全",
+            "两种配置都要测，避免只在其中一种暴露的问题",
+            "两者行为完全一致，测一个即可"
+          ],
+          "answer": 2,
+          "explanation": "优化等级与断言开关不同会带来行为差异，因此两种都要覆盖。选项一与选项二都会漏测；选项四与事实不符。"
+        }
+      ]
+    },
+    {
+      "id": "cross_logging_observability",
+      "title": { "zh": "日志与可观测性：九种生态横向对照", "en": "Logging and Observability" },
+      "summary": {
+        "zh": "结构化日志、级别选择、可观测性三支柱与日志安全底线。",
+        "en": "Structured logging, levels, the three pillars and safety rules."
+      },
+      "file": "assets/content/cross_logging_observability.md",
+      "minutes": 20,
+      "keywords": ["日志", "可观测性", "结构化", "trace id", "脱敏"],
+      "difficulty": "进阶",
+      "order": 7,
+      "quiz": [
+        {
+          "question": "结构化日志相比普通文本日志的核心优势是？",
+          "options": [
+            "打印速度更快",
+            "字段固定可检索、可聚合，便于机器分析",
+            "占用空间更小",
+            "不会泄露信息"
+          ],
+          "answer": 1,
+          "explanation": "结构化日志的价值在于可查询与可统计。选项一不一定成立；选项三通常体积更大；选项四与结构无关，脱敏是另一件事。"
+        },
+        {
+          "question": "哪一类事件最适合用 warn 级别？",
+          "options": [
+            "用户登录成功",
+            "出现异常但已自动重试成功",
+            "数据库连接池耗尽导致请求失败",
+            "调试用的循环变量值"
+          ],
+          "answer": 1,
+          "explanation": "可恢复的异常属于 warn，需要关注但不必立即告警。选项一属于 info；选项三属于 error 并应触发告警；选项四属于 debug。"
+        },
+        {
+          "question": "在容器环境里，日志应该输出到哪里？",
+          "options": [
+            "容器内的本地文件并自行轮转",
+            "标准输出（stdout），由平台统一收集",
+            "数据库表里",
+            "只写内存，定期导出"
+          ],
+          "answer": 1,
+          "explanation": "输出到标准输出是云原生的标准做法，平台负责收集与轮转。选项一会随容器销毁而丢失且难以集中；选项二与选项四都不适合日志这类高频数据。"
+        },
+        {
+          "question": "关于日志安全，下面哪条是必须遵守的？",
+          "options": [
+            "为了排查方便，记录完整令牌",
+            "密钥与个人敏感信息一律不入日志，必要处做脱敏",
+            "只在生产环境脱敏",
+            "日志只给管理员看，不用脱敏"
+          ],
+          "answer": 1,
+          "explanation": "日志会被多方访问与长期留存，必须默认脱敏。选项一会造成泄露；选项三忽略测试环境同样会外泄；选项四低估了日志的流转范围。"
+        }
+      ]
+    },
+    {
+      "id": "cross_cli_args",
+      "title": { "zh": "命令行参数解析：九种语言横向对照", "en": "CLI Argument Parsing" },
+      "summary": {
+        "zh": "各语言参数解析方案、四个共同概念与退出码约定。",
+        "en": "Parsing options in nine languages plus exit-code conventions."
+      },
+      "file": "assets/content/cross_cli_args.md",
+      "minutes": 18,
+      "keywords": ["命令行", "参数解析", "getopts", "clap", "退出码"],
+      "difficulty": "入门",
+      "order": 8,
+      "quiz": [
+        {
+          "question": "一个称职的命令行工具，至少应具备哪四项能力？",
+          "options": [
+            "彩色输出、动画、进度条、声音提示",
+            "长短选项、带值选项、自动帮助、清晰报错",
+            "多语言、主题、插件、云同步",
+            "加密、压缩、分片、断点续传"
+          ],
+          "answer": 1,
+          "explanation": "这四项是命令行工具的基本体验。其余选项属于特定场景的附加功能，不是通用最低要求。"
+        },
+        {
+          "question": "参数写错（例如缺少必填参数）时，退出码应该返回？",
+          "options": [
+            "0",
+            "1",
+            "2",
+            "130"
+          ],
+          "answer": 2,
+          "explanation": "按 Unix 惯例，用法错误返回 2，运行期错误返回 1。选项 0 表示成功；选项 1 用于运行期失败；选项 130 表示被 Ctrl+C 中断。"
+        },
+        {
+          "question": "为什么不建议把密码通过命令行参数传入？",
+          "options": [
+            "参数长度有限制",
+            "进程列表里可能被其他用户看到",
+            "命令行不支持特殊字符",
+            "会降低程序性能"
+          ],
+          "answer": 1,
+          "explanation": "命令行参数会出现在进程列表与历史记录中，容易被旁观者获取。选项一、三都不是主要原因；选项四与安全无关。"
+        },
+        {
+          "question": "手写 argv 解析最常见的后果是？",
+          "options": [
+            "程序无法编译",
+            "组合选项、选项顺序、缺值等情况处理不全，行为难以预期",
+            "内存占用变大",
+            "失去类型检查"
+          ],
+          "answer": 1,
+          "explanation": "边界情况太多，成熟的解析库已经替你处理。选项一不成立；选项三与选项四都不是手写解析的直接后果。"
+        }
+      ]
+    }
+  ]
+}

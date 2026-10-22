@@ -1,0 +1,218 @@
+{
+  "category": "rust",
+  "lessons": [
+    {
+      "id": "rust_traits_generics",
+      "title": {
+        "zh": "Rust trait、泛型与关联类型",
+        "en": "Rust Traits, Generics and Associated Types"
+      },
+      "summary": {
+        "zh": "理解 trait 约束、静态分发、动态分发和关联类型。",
+        "en": "Learn trait bounds, static dispatch, dynamic dispatch and associated types."
+      },
+      "file": "assets/content/rust_traits_generics.md",
+      "minutes": 25,
+      "keywords": [
+        "trait",
+        "泛型",
+        "dyn",
+        "关联类型"
+      ],
+      "difficulty": "高级",
+      "order": 10,
+      "quiz": [
+        {
+          "question": "关于「泛型加 trait bound 在编…」，下列说法正确的是？",
+          "options": [
+            "泛型加 trait bound 在编译期单态化，性能好但会增加代码体积。",
+            "Box 提供堆分配和递归类型，Rc/Arc 提供共享所有权，后者可跨线程。",
+            "声明宏做模式匹配式代码生成，过程宏在编译期处理 TokenStream。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Rust trait、泛型与关联类型》时应把该要点与「trait」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「dyn Trait 使用动态分发 适…」，下列说法正确的是？",
+          "options": [
+            "dyn Trait 使用动态分发，适合异构集合但有权重和间接调用成本。",
+            "RefCell/Mutex 在运行时或锁内提供内部可变性，违规会 panic 或阻塞。",
+            "WASM 需要显式设计数据边界、内存和错误映射，不能直接共享所有类型。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Rust trait、泛型与关联类型》时应把该要点与「trait」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「关联类型让 trait 只有一个实现…」，下列说法正确的是？",
+          "options": [
+            "关联类型让 trait 只有一个实现类型，泛型参数则允许同一类型多种实现。",
+            "Rc/Arc 与 RefCell/Mutex 组合可能产生循环引用，需要 Weak 打破。",
+            "跨平台编译要处理目标三元组、系统库、ABI 和链接方式。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Rust trait、泛型与关联类型》时应把该要点与「trait」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「Rust trait、泛型与关联类型」的核心学习目标是什么？",
+          "options": [
+            "理解 trait 约束、静态分发、动态分发和关联类型。",
+            "掌握 Box、Rc、Arc、RefCell、Mutex 和循环引用。",
+            "理解声明宏、过程宏、WASM 边界和跨平台编译。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "rust_smart_pointers",
+      "title": {
+        "zh": "Rust 智能指针与内部可变性",
+        "en": "Rust Smart Pointers and Interior Mutability"
+      },
+      "summary": {
+        "zh": "掌握 Box、Rc、Arc、RefCell、Mutex 和循环引用。",
+        "en": "Learn Box, Rc, Arc, RefCell, Mutex and reference cycles."
+      },
+      "file": "assets/content/rust_smart_pointers.md",
+      "minutes": 25,
+      "keywords": [
+        "Box",
+        "Rc",
+        "Arc",
+        "RefCell"
+      ],
+      "difficulty": "高级",
+      "order": 11,
+      "quiz": [
+        {
+          "question": "关于「Box 提供堆分配和递归类型 Rc/…」，下列说法正确的是？",
+          "options": [
+            "Box 提供堆分配和递归类型，Rc/Arc 提供共享所有权，后者可跨线程。",
+            "泛型加 trait bound 在编译期单态化，性能好但会增加代码体积。",
+            "声明宏做模式匹配式代码生成，过程宏在编译期处理 TokenStream。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Rust 智能指针与内部可变性》时应把该要点与「Box」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「RefCell/Mutex 在运行时…」，下列说法正确的是？",
+          "options": [
+            "RefCell/Mutex 在运行时或锁内提供内部可变性，违规会 panic 或阻塞。",
+            "dyn Trait 使用动态分发，适合异构集合但有权重和间接调用成本。",
+            "WASM 需要显式设计数据边界、内存和错误映射，不能直接共享所有类型。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Rust 智能指针与内部可变性》时应把该要点与「Box」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「Rc/Arc 与 RefCell/M…」，下列说法正确的是？",
+          "options": [
+            "Rc/Arc 与 RefCell/Mutex 组合可能产生循环引用，需要 Weak 打破。",
+            "关联类型让 trait 只有一个实现类型，泛型参数则允许同一类型多种实现。",
+            "跨平台编译要处理目标三元组、系统库、ABI 和链接方式。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Rust 智能指针与内部可变性》时应把该要点与「Box」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「Rust 智能指针与内部可变性」的核心学习目标是什么？",
+          "options": [
+            "掌握 Box、Rc、Arc、RefCell、Mutex 和循环引用。",
+            "理解 trait 约束、静态分发、动态分发和关联类型。",
+            "理解声明宏、过程宏、WASM 边界和跨平台编译。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "rust_macros_wasm",
+      "title": {
+        "zh": "Rust 宏、WASM 与跨平台",
+        "en": "Rust Macros, WASM and Cross-Platform"
+      },
+      "summary": {
+        "zh": "理解声明宏、过程宏、WASM 边界和跨平台编译。",
+        "en": "Learn declarative macros, procedural macros, WASM boundaries and cross compilation."
+      },
+      "file": "assets/content/rust_macros_wasm.md",
+      "minutes": 25,
+      "keywords": [
+        "宏",
+        "WASM",
+        "跨平台",
+        "FFI"
+      ],
+      "difficulty": "高级",
+      "order": 12,
+      "quiz": [
+        {
+          "question": "关于「声明宏做模式匹配式代码生成 过程宏在…」，下列说法正确的是？",
+          "options": [
+            "声明宏做模式匹配式代码生成，过程宏在编译期处理 TokenStream。",
+            "泛型加 trait bound 在编译期单态化，性能好但会增加代码体积。",
+            "Box 提供堆分配和递归类型，Rc/Arc 提供共享所有权，后者可跨线程。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Rust 宏、WASM 与跨平台》时应把该要点与「宏」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「WASM 需要显式设计数据边界、内存…」，下列说法正确的是？",
+          "options": [
+            "WASM 需要显式设计数据边界、内存和错误映射，不能直接共享所有类型。",
+            "dyn Trait 使用动态分发，适合异构集合但有权重和间接调用成本。",
+            "RefCell/Mutex 在运行时或锁内提供内部可变性，违规会 panic 或阻塞。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Rust 宏、WASM 与跨平台》时应把该要点与「宏」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「跨平台编译要处理目标三元组、系统库、…」，下列说法正确的是？",
+          "options": [
+            "跨平台编译要处理目标三元组、系统库、ABI 和链接方式。",
+            "关联类型让 trait 只有一个实现类型，泛型参数则允许同一类型多种实现。",
+            "Rc/Arc 与 RefCell/Mutex 组合可能产生循环引用，需要 Weak 打破。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《Rust 宏、WASM 与跨平台》时应把该要点与「宏」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「Rust 宏、WASM 与跨平台」的核心学习目标是什么？",
+          "options": [
+            "理解声明宏、过程宏、WASM 边界和跨平台编译。",
+            "理解 trait 约束、静态分发、动态分发和关联类型。",
+            "掌握 Box、Rc、Arc、RefCell、Mutex 和循环引用。",
+            "只要小数据能跑通，大规模和异常情况也一定正确。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    }
+  ]
+}

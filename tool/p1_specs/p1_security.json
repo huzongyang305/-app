@@ -1,0 +1,98 @@
+{
+  "security_threat_model": {
+    "category": "security",
+    "title": {"zh": "威胁建模与 STRIDE", "en": "Threat Modeling and STRIDE"},
+    "summary": {"zh": "用资产、边界、攻击面和 STRIDE 分类在编码前识别安全风险。", "en": "Identify security risks before coding with assets, boundaries and STRIDE."},
+    "keywords": ["威胁建模", "STRIDE", "攻击面", "数据流图"],
+    "difficulty": "进阶", "minutes": 22,
+    "points": ["威胁建模从资产、信任边界和数据流出发，先画清系统再讨论攻击。", "STRIDE 分别覆盖伪装、篡改、抵赖、信息泄露、拒绝服务和提权。", "每个威胁都要落到缓解措施、验证方式和剩余风险，而不是只列清单。"]
+  },
+  "security_owasp_top10": {
+    "category": "security",
+    "title": {"zh": "OWASP Top 10 实战", "en": "OWASP Top 10 in Practice"},
+    "summary": {"zh": "理解访问控制、注入、加密失败、配置错误等常见 Web 风险的成因与修复。", "en": "Understand and fix common web risks such as access control, injection and misconfiguration."},
+    "keywords": ["OWASP", "注入", "访问控制", "配置安全"],
+    "difficulty": "进阶", "minutes": 24,
+    "points": ["访问控制必须在服务端逐请求校验，不能依赖前端隐藏按钮。", "注入问题来自把不可信数据当成代码或查询结构，参数化和白名单是根本修复。", "加密失败常源于明文存储、弱算法、密钥硬编码和证书校验被关闭。"]
+  },
+  "security_secure_coding": {
+    "category": "security",
+    "title": {"zh": "安全编码与输入校验", "en": "Secure Coding and Input Validation"},
+    "summary": {"zh": "把输入校验、输出编码、最小权限和错误处理落实到代码边界。", "en": "Apply validation, output encoding, least privilege and safe error handling."},
+    "keywords": ["输入校验", "输出编码", "最小权限", "错误处理"],
+    "difficulty": "进阶", "minutes": 22,
+    "points": ["所有外部输入都不可信，必须校验类型、长度、范围和业务约束。", "输出编码要按 HTML、SQL、Shell、URL 等不同上下文分别处理。", "错误信息不能泄露堆栈、SQL、路径和密钥，日志也要脱敏。"]
+  },
+  "security_auth_session": {
+    "category": "security",
+    "title": {"zh": "认证、会话与令牌安全", "en": "Authentication, Sessions and Tokens"},
+    "summary": {"zh": "覆盖密码存储、会话固定、JWT 校验、刷新令牌和注销语义。", "en": "Cover password storage, session fixation, JWT validation and token revocation."},
+    "keywords": ["认证", "会话", "JWT", "刷新令牌"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["密码必须使用自适应哈希加盐存储，认证失败信息不能区分账号是否存在。", "JWT 必须校验签名算法、issuer、audience、过期时间和令牌用途。", "注销与权限变更要能失效会话，短访问令牌配合可撤销刷新令牌更安全。"]
+  },
+  "security_secrets": {
+    "category": "security",
+    "title": {"zh": "密钥与配置安全", "en": "Secrets and Configuration Security"},
+    "summary": {"zh": "管理 API Key、数据库密码、证书和加密密钥的存储、轮换与审计。", "en": "Manage storage, rotation and auditing of API keys, passwords and certificates."},
+    "keywords": ["密钥管理", "轮换", "配置", "审计"],
+    "difficulty": "进阶", "minutes": 20,
+    "points": ["密钥不能写进源码、镜像和日志，应通过密钥管理服务或环境变量注入。", "密钥要有所有者、权限、有效期和轮换计划，并记录使用审计。", "泄露后的第一步是轮换和验证影响范围，而不是只删除仓库里的字符串。"]
+  },
+  "security_supply_chain": {
+    "category": "security",
+    "title": {"zh": "软件供应链安全", "en": "Software Supply Chain Security"},
+    "summary": {"zh": "从依赖、构建、制品签名到 SBOM 建立可追溯的供应链防线。", "en": "Build traceable supply-chain defenses from dependencies to signed artifacts."},
+    "keywords": ["供应链", "SBOM", "依赖漏洞", "制品签名"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["依赖要锁定版本、扫描漏洞、检查许可证和维护状态。", "构建环境要可复现，制品要签名并保留来源信息。", "SBOM 能在漏洞爆发时快速定位受影响系统，但必须持续更新才有价值。"]
+  },
+  "security_container_k8s": {
+    "category": "security",
+    "title": {"zh": "容器与 Kubernetes 安全", "en": "Container and Kubernetes Security"},
+    "summary": {"zh": "覆盖镜像、运行时、RBAC、网络策略和集群最小权限。", "en": "Cover image, runtime, RBAC, network policy and least privilege."},
+    "keywords": ["容器安全", "RBAC", "网络策略", "运行时"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["镜像要使用可信基础层、非 root 用户和最小化内容。", "Kubernetes RBAC 要按命名空间和动词最小授权，避免 cluster-admin 泛用。", "网络策略、Secret 加密和运行时检测共同限制横向移动。"]
+  },
+  "security_cloud": {
+    "category": "security",
+    "title": {"zh": "云安全与 IAM", "en": "Cloud Security and IAM"},
+    "summary": {"zh": "理解云账号、身份、权限边界、日志审计和临时凭证。", "en": "Understand cloud accounts, identities, permission boundaries and temporary credentials."},
+    "keywords": ["云安全", "IAM", "临时凭证", "审计"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["云权限要按身份和资源最小授权，永久 Access Key 应尽量替换为临时凭证。", "账号隔离、权限边界和组织策略能限制单点泄露的爆炸半径。", "云审计日志要集中保存、设置告警并防止被攻击者删除。"]
+  },
+  "security_privacy": {
+    "category": "security",
+    "title": {"zh": "隐私合规与数据分级", "en": "Privacy, Compliance and Data Classification"},
+    "summary": {"zh": "从数据分级、最小收集、保留期限和用户权利落地隐私要求。", "en": "Implement privacy through classification, minimization, retention and user rights."},
+    "keywords": ["隐私", "合规", "数据分级", "保留期限"],
+    "difficulty": "进阶", "minutes": 22,
+    "points": ["先给数据分级，明确哪些是个人信息、敏感信息和核心业务数据。", "最小收集、明确用途、最少权限和到期删除是隐私设计的基本动作。", "导出、删除、更正和审计能力要在系统设计阶段实现，而不是事后补脚本。"]
+  },
+  "security_fuzzing": {
+    "category": "security",
+    "title": {"zh": "模糊测试与漏洞验证", "en": "Fuzzing and Vulnerability Validation"},
+    "summary": {"zh": "用生成式、变异式和差分模糊测试发现崩溃与边界问题。", "en": "Find crashes and boundary bugs with generative, mutation and differential fuzzing."},
+    "keywords": ["模糊测试", "边界", "崩溃", "覆盖率"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["模糊测试通过大量异常输入寻找崩溃、越界和超时，适合解析器和协议实现。", "种子语料、变异策略和覆盖率反馈决定发现效率。", "发现崩溃后要最小化输入、定位根因并补回归用例。"]
+  },
+  "security_incident": {
+    "category": "security",
+    "title": {"zh": "安全事件响应", "en": "Security Incident Response"},
+    "summary": {"zh": "覆盖发现、隔离、取证、恢复、通知和复盘的完整流程。", "en": "Cover detection, containment, forensics, recovery, notification and review."},
+    "keywords": ["事件响应", "隔离", "取证", "恢复"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["事件响应先控制影响范围，再保留证据和定位入口。", "隔离、轮换凭证和阻断攻击路径要与业务恢复并行推进。", "复盘要更新检测规则、权限和演练流程，减少再次发生的概率。"]
+  },
+  "security_sdl": {
+    "category": "security",
+    "title": {"zh": "安全开发生命周期实战", "en": "Secure Development Lifecycle in Practice"},
+    "summary": {"zh": "把安全需求、设计评审、代码扫描、依赖扫描和上线门禁串成流程。", "en": "Connect security requirements, reviews, scanning and release gates."},
+    "keywords": ["SDL", "安全需求", "代码扫描", "上线门禁"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["安全需求要像功能需求一样有验收标准和负责人。", "设计评审、静态扫描、依赖扫描和渗透测试覆盖不同阶段的风险。", "门禁要能阻止高风险问题进入生产，同时给开发者明确的修复路径。"]
+  }
+}

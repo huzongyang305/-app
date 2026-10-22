@@ -1,0 +1,182 @@
+{
+  "category": "cross_language",
+  "lessons": [
+    {
+      "id": "cross_string_regex",
+      "title": { "zh": "字符串与正则：九种语言横向对照", "en": "Strings and Regex Across Languages" },
+      "summary": {
+        "zh": "字符串可变性、四个基础操作、正则引擎差异与原始字符串写法。",
+        "en": "Mutability, basic operations, regex engines and raw strings."
+      },
+      "file": "assets/content/cross_string_regex.md",
+      "minutes": 18,
+      "keywords": ["字符串", "正则", "拼接", "编码", "原始字符串"],
+      "difficulty": "入门",
+      "order": 9,
+      "quiz": [
+        {
+          "question": "在 Java、Python、Go 这类字符串不可变的语言里，循环拼接字符串的推荐做法是？",
+          "options": [
+            "直接用 += 拼接",
+            "收集到容器后用 Builder 或 join 一次生成",
+            "每次拼接前先反转字符串",
+            "改用数字表示"
+          ],
+          "answer": 1,
+          "explanation": "不可变字符串每次拼接都会产生新对象，累积后开销巨大。选项一正是问题所在；选项三与选项四都不是有效手段。"
+        },
+        {
+          "question": "Go 与 Rust 的正则实现（RE2 风格）不支持下面哪项？",
+          "options": [
+            "字符类 [0-9]",
+            "量词 + 与 *",
+            "环视与反向引用",
+            "分组"
+          ],
+          "answer": 2,
+          "explanation": "RE2 为了保证线性时间匹配，不支持环视与反向引用。选项一、二、四都是它支持的基础能力。"
+        },
+        {
+          "question": "在 Python 里写正则时，为什么要加 r 前缀？",
+          "options": [
+            "让正则更快",
+            "使用原始字符串，避免反斜杠被提前转义",
+            "启用多行匹配",
+            "让正则区分大小写"
+          ],
+          "answer": 1,
+          "explanation": "原始字符串让反斜杠按字面传递，减少一层转义。选项一、三、四都与 r 前缀无关，多行匹配要用 re.M。"
+        },
+        {
+          "question": "Python 中 len(\"中文\") 与 len(\"中文\".encode()) 的结果分别是？",
+          "options": [
+            "6 与 6",
+            "2 与 6",
+            "6 与 2",
+            "2 与 2"
+          ],
+          "answer": 1,
+          "explanation": "前者是字符数，后者是 UTF-8 字节数（每个汉字 3 字节）。其余选项混淆了两者。"
+        }
+      ]
+    },
+    {
+      "id": "cross_time_timezone",
+      "title": { "zh": "时间与时区：九种语言横向对照", "en": "Time and Time Zones" },
+      "summary": {
+        "zh": "时刻与本地时间、三条铁律、数据库字段选择与常见时区错误。",
+        "en": "Instants, wall-clock time, storage rules and timezone pitfalls."
+      },
+      "file": "assets/content/cross_time_timezone.md",
+      "minutes": 20,
+      "keywords": ["时间", "时区", "UTC", "ISO 8601", "夏令时"],
+      "difficulty": "进阶",
+      "order": 10,
+      "quiz": [
+        {
+          "question": "时间处理的三条铁律是？",
+          "options": [
+            "存本地时间、传时间戳、展示用 UTC",
+            "存 UTC、传输 ISO 8601、展示时再转本地时区",
+            "全部用字符串、不用库、手动换算",
+            "存秒级时间戳、传毫秒、展示用服务器时区"
+          ],
+          "answer": 1,
+          "explanation": "这是跨语言的通用约定，能避免绝大多数时区问题。选项一与选项四会把本地时间当成绝对时刻；选项三既不可靠也不可维护。"
+        },
+        {
+          "question": "「时刻」与「本地日期时间」的关键区别是？",
+          "options": [
+            "精度不同",
+            "时刻是时间轴上的点（与时区无关），本地日期时间只是墙上时钟读数",
+            "前者只能用于日志",
+            "后者一定带时区"
+          ],
+          "answer": 1,
+          "explanation": "换算关系是「时刻 = 本地日期时间 + 时区规则」。选项一、三、四都与概念定义不符。"
+        },
+        {
+          "question": "跨夏令时地区计算「明天同一时间」，正确做法是？",
+          "options": [
+            "加 24 小时",
+            "按日历单位加一天",
+            "加 23 小时",
+            "先转成字符串再拼接"
+          ],
+          "answer": 1,
+          "explanation": "夏令时切换当天可能只有 23 小时或 25 小时，必须用日历语义。选项一与选项三都可能偏移一小时；选项四不解决语义问题。"
+        },
+        {
+          "question": "数据库里存时间，更推荐的做法是？",
+          "options": [
+            "存本地时间字符串",
+            "统一存 UTC（带时区类型或整数时间戳）",
+            "按用户时区分别建表",
+            "存星期几即可"
+          ],
+          "answer": 1,
+          "explanation": "统一存 UTC 才能在任意时区正确还原与比较。选项一会导致跨时区错乱；选项三让复杂度爆炸；选项四丢失关键信息。"
+        }
+      ]
+    },
+    {
+      "id": "cross_serialization",
+      "title": { "zh": "序列化格式：JSON、YAML、Protobuf 横向对照", "en": "Serialization Formats" },
+      "summary": {
+        "zh": "四种格式对比、各语言写法、大整数与兼容性规则。",
+        "en": "Format comparison, language snippets and compatibility rules."
+      },
+      "file": "assets/content/cross_serialization.md",
+      "minutes": 18,
+      "keywords": ["序列化", "JSON", "YAML", "Protobuf", "兼容性"],
+      "difficulty": "进阶",
+      "order": 11,
+      "quiz": [
+        {
+          "question": "服务间高频通信更推荐哪种格式，为什么？",
+          "options": [
+            "YAML，因为可读性最好",
+            "Protobuf，因为体积小、解析快且有 schema 强类型",
+            "CSV，因为简单",
+            "HTML，因为通用"
+          ],
+          "answer": 1,
+          "explanation": "Protobuf 在体积、速度与类型安全上都有优势，适合服务间通信。选项一的可读性优势在机器通信中价值有限；选项三与选项四不适合结构化数据交换。"
+        },
+        {
+          "question": "在 JavaScript 中处理超大整数 ID，正确做法是？",
+          "options": [
+            "直接用 JSON 数字",
+            "以字符串形式传输，避免超出安全整数范围后丢精度",
+            "用浮点数表示",
+            "截断高位"
+          ],
+          "answer": 1,
+          "explanation": "超过 2 的 53 次方后 JSON 数字会丢精度，字符串可完整保留。选项一会导致 ID 变化；选项三同样丢精度；选项四直接破坏数据。"
+        },
+        {
+          "question": "YAML 中裸写 no 会有什么问题？",
+          "options": [
+            "语法报错",
+            "被解析成布尔 false 而不是字符串",
+            "自动变成 null",
+            "转换为数字 0"
+          ],
+          "answer": 1,
+          "explanation": "YAML 有隐式类型推断，no、yes、on、off 会被当成布尔值。选项一不会报错反而更危险；选项三与选项四与事实不符。解法是加引号。"
+        },
+        {
+          "question": "Protobuf 中删除字段的正确做法是？",
+          "options": [
+            "直接把字段删掉，编号留给新字段复用",
+            "删除字段并用 reserved 保留编号，避免被复用",
+            "把字段类型改成 string",
+            "把字段编号改成 0"
+          ],
+          "answer": 1,
+          "explanation": "字段编号是兼容性的生命线，必须保留不复用。选项一会在新旧版本间造成数据错乱；选项二与选项四都可能破坏兼容性。"
+        }
+      ]
+    }
+  ]
+}

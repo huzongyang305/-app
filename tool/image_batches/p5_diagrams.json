@@ -1,0 +1,302 @@
+{
+  "typescript": {
+    "image": "images/diagram_ts_type_system.webp",
+    "alt": "TypeScript 类型系统的五个层次"
+  },
+  "ts_first_types": {
+    "image": "images/diagram_ts_first_types.webp",
+    "alt": "从 JavaScript 到 TypeScript 的第一步"
+  },
+  "ts_basic_types": {
+    "image": "images/diagram_ts_basic_types.webp",
+    "alt": "TypeScript 基础类型一览"
+  },
+  "ts_interface_intro": {
+    "image": "images/diagram_ts_interface.webp",
+    "alt": "interface 描述对象契约的常见成员"
+  },
+  "ts_function_types": {
+    "image": "images/diagram_ts_function_types.webp",
+    "alt": "函数类型的参数、返回值与回调"
+  },
+  "ts_arrays_objects": {
+    "image": "images/diagram_ts_arrays_objects.webp",
+    "alt": "数组、元组与对象类型的建模方式"
+  },
+  "ts_narrowing_generics": {
+    "image": "images/diagram_ts_narrowing.webp",
+    "alt": "五种类型收窄手段"
+  },
+  "ts_utility_types": {
+    "image": "images/diagram_ts_utility_types.webp",
+    "alt": "常用工具类型与声明文件"
+  },
+  "ts_project": {
+    "image": "images/diagram_ts_project.webp",
+    "alt": "TypeScript 工程配置的四个环节"
+  },
+  "ts_decorators_pro": {
+    "image": "images/diagram_ts_decorators.webp",
+    "alt": "装饰器与进阶类型的适用场景"
+  },
+  "ts_build_test": {
+    "image": "images/diagram_ts_build_test.webp",
+    "alt": "构建工具与测试工具的分工"
+  },
+  "ts_fullstack_project": {
+    "image": "images/diagram_ts_fullstack.webp",
+    "alt": "全栈类型安全的数据流"
+  },
+  "ts_type_challenges": {
+    "image": "images/diagram_ts_type_challenges.webp",
+    "alt": "类型体操的四类核心工具"
+  },
+  "ts_node_backend": {
+    "image": "images/diagram_ts_node_backend.webp",
+    "alt": "TypeScript Node 后端的分层结构"
+  },
+  "ts_monorepo": {
+    "image": "images/diagram_ts_monorepo.webp",
+    "alt": "Monorepo 的包结构与依赖方向"
+  },
+  "ts_testing": {
+    "image": "images/diagram_ts_testing.webp",
+    "alt": "Vitest、Testing Library 与 MSW 的组合"
+  },
+  "ts_build_performance": {
+    "image": "images/diagram_ts_build_perf.webp",
+    "alt": "类型检查与构建性能优化步骤"
+  },
+  "ts_project_cli": {
+    "image": "images/diagram_ts_cli_project.webp",
+    "alt": "类型安全 CLI 的实现流程"
+  },
+  "ts_project_websocket_dashboard": {
+    "image": "images/diagram_ts_ws_dashboard.webp",
+    "alt": "实时监控面板的消息链路"
+  },
+  "ts_runtime_validation": {
+    "image": "images/diagram_ts_runtime_validation.webp",
+    "alt": "运行时校验把未知数据收敛为类型"
+  },
+  "ts_performance": {
+    "image": "images/diagram_ts_performance.webp",
+    "alt": "编译性能与运行性能的优化要点"
+  },
+  "go_basics": {
+    "image": "images/diagram_go_basics.webp",
+    "alt": "Go 语言的核心特征"
+  },
+  "go_first_program": {
+    "image": "images/diagram_go_first_program.webp",
+    "alt": "Go 最小程序的结构"
+  },
+  "go_variables_input": {
+    "image": "images/diagram_go_variables.webp",
+    "alt": "Go 变量声明与输入处理"
+  },
+  "go_conditions": {
+    "image": "images/diagram_go_conditions.webp",
+    "alt": "Go 条件分支的常见写法"
+  },
+  "go_loops": {
+    "image": "images/diagram_go_loops.webp",
+    "alt": "Go for 循环的四种形态"
+  },
+  "go_functions_intro": {
+    "image": "images/diagram_go_functions.webp",
+    "alt": "Go 函数的多返回值与错误处理"
+  },
+  "go_interfaces_errors": {
+    "image": "images/diagram_go_interfaces_errors.webp",
+    "alt": "隐式接口与错误链"
+  },
+  "go_generics_stdlib": {
+    "image": "images/diagram_go_generics_stdlib.webp",
+    "alt": "Go 泛型与标准库要点"
+  },
+  "go_project": {
+    "image": "images/diagram_go_project.webp",
+    "alt": "Go 工程实践的四个环节"
+  },
+  "go_testing": {
+    "image": "images/diagram_go_testing.webp",
+    "alt": "Go 测试的三种主要形态"
+  },
+  "go_data_access": {
+    "image": "images/diagram_go_data_access.webp",
+    "alt": "database/sql 的事务与连接池"
+  },
+  "go_microservice": {
+    "image": "images/diagram_go_microservice.webp",
+    "alt": "Go 微服务的可观测与生命周期"
+  },
+  "go_grpc": {
+    "image": "images/diagram_go_grpc.webp",
+    "alt": "gRPC 的四种调用方式"
+  },
+  "go_pprof": {
+    "image": "images/diagram_go_pprof.webp",
+    "alt": "pprof 六种剖析类型"
+  },
+  "go_profiling_deep": {
+    "image": "images/diagram_go_profiling_deep.webp",
+    "alt": "Go 性能剖析的完整流程"
+  },
+  "go_generics_deep": {
+    "image": "images/diagram_go_generics_deep.webp",
+    "alt": "Go 泛型约束与性能"
+  },
+  "go_cloud_native_security": {
+    "image": "images/diagram_go_cloud_security.webp",
+    "alt": "云原生服务的安全与可靠性层次"
+  },
+  "go_project_rest_api": {
+    "image": "images/diagram_go_rest_api.webp",
+    "alt": "Go REST API 的请求链路"
+  },
+  "go_project_worker_pool": {
+    "image": "images/diagram_go_worker_pool.webp",
+    "alt": "Go Worker Pool 的任务流转"
+  },
+  "cpp_basics": {
+    "image": "images/diagram_cpp_build.webp",
+    "alt": "C++ 从源码到可执行文件的四个阶段"
+  },
+  "cpp_first_program": {
+    "image": "images/diagram_cpp_first_program.webp",
+    "alt": "C++ 最小程序的编译与运行"
+  },
+  "cpp_variables_io": {
+    "image": "images/diagram_cpp_variables.webp",
+    "alt": "C++ 变量、类型与输入输出"
+  },
+  "cpp_types": {
+    "image": "images/diagram_cpp_types.webp",
+    "alt": "值类型、转换与常量正确性"
+  },
+  "cpp_conditions": {
+    "image": "images/diagram_cpp_conditions.webp",
+    "alt": "C++ 条件分支的常见写法"
+  },
+  "cpp_loops": {
+    "image": "images/diagram_cpp_loops.webp",
+    "alt": "C++ 循环的四种形态"
+  },
+  "cpp_functions_intro": {
+    "image": "images/diagram_cpp_functions_intro.webp",
+    "alt": "值传递与引用传递的差异"
+  },
+  "cpp_control_functions": {
+    "image": "images/diagram_cpp_control_functions.webp",
+    "alt": "控制流与函数特性的组合"
+  },
+  "cpp_pointers": {
+    "image": "images/diagram_cpp_pointers.webp",
+    "alt": "指针与引用的语义对比"
+  },
+  "cpp_oop": {
+    "image": "images/diagram_cpp_oop.webp",
+    "alt": "C++ 面向对象的五个层次"
+  },
+  "cpp_templates": {
+    "image": "images/diagram_cpp_templates.webp",
+    "alt": "C++ 模板编程的五个层次"
+  },
+  "cpp_concepts_ranges": {
+    "image": "images/diagram_cpp_concepts_ranges.webp",
+    "alt": "Concepts 与 Ranges 的职责对比"
+  },
+  "cpp_stl": {
+    "image": "images/diagram_cpp_stl.webp",
+    "alt": "STL 容器、迭代器与算法的选择"
+  },
+  "cpp_modern": {
+    "image": "images/diagram_cpp_modern.webp",
+    "alt": "现代 C++ 的关键特性"
+  },
+  "cpp_tooling": {
+    "image": "images/diagram_cpp_tooling.webp",
+    "alt": "C++ 工程工具链的五个环节"
+  },
+  "cpp_project": {
+    "image": "images/diagram_cpp_project.webp",
+    "alt": "CMake 多文件项目的组织方式"
+  },
+  "cpp_project_http": {
+    "image": "images/diagram_cpp_http_project.webp",
+    "alt": "C++ HTTP JSON 服务的请求链路"
+  },
+  "cpp_project_taskdb": {
+    "image": "images/diagram_cpp_taskdb_project.webp",
+    "alt": "任务数据库 CLI 的实现流程"
+  },
+  "csharp_basics": {
+    "image": "images/diagram_cs_platform.webp",
+    "alt": "C# 从源码到 CLR 运行的分层"
+  },
+  "csharp_dotnet_first": {
+    "image": "images/diagram_cs_first.webp",
+    "alt": "创建并运行第一个 C# 项目"
+  },
+  "csharp_variables_input": {
+    "image": "images/diagram_cs_variables.webp",
+    "alt": "C# 变量、类型与输入转换"
+  },
+  "csharp_types": {
+    "image": "images/diagram_cs_types.webp",
+    "alt": "值类型与引用类型的差异"
+  },
+  "csharp_conditions": {
+    "image": "images/diagram_cs_conditions.webp",
+    "alt": "C# 条件分支与模式匹配"
+  },
+  "csharp_loops": {
+    "image": "images/diagram_cs_loops.webp",
+    "alt": "C# 三种循环结构"
+  },
+  "csharp_methods_intro": {
+    "image": "images/diagram_cs_methods.webp",
+    "alt": "C# 方法的参数与返回值"
+  },
+  "csharp_control_methods": {
+    "image": "images/diagram_cs_control_methods.webp",
+    "alt": "控制流与参数修饰符、迭代器"
+  },
+  "csharp_oop": {
+    "image": "images/diagram_cs_oop.webp",
+    "alt": "C# 类型系统的对象建模方式"
+  },
+  "csharp_inheritance": {
+    "image": "images/diagram_cs_inheritance.webp",
+    "alt": "继承、接口与多态关系"
+  },
+  "csharp_records_patterns": {
+    "image": "images/diagram_cs_records_patterns.webp",
+    "alt": "record 与模式匹配的配合"
+  },
+  "csharp_collections_linq": {
+    "image": "images/diagram_cs_collections_linq.webp",
+    "alt": "集合类型与 LINQ 的选型"
+  },
+  "csharp_async": {
+    "image": "images/diagram_cs_async.webp",
+    "alt": "async/await 的调用链与取消"
+  },
+  "csharp_ecosystem": {
+    "image": "images/diagram_cs_ecosystem.webp",
+    "alt": ".NET 生态的关键组成"
+  },
+  "csharp_project": {
+    "image": "images/diagram_cs_webapi_project.webp",
+    "alt": "Web API 与 EF Core 的请求链路"
+  },
+  "csharp_project_inventory_cli": {
+    "image": "images/diagram_cs_inventory_cli.webp",
+    "alt": "库存管理 CLI 的实现流程"
+  },
+  "csharp_project_blazor_admin": {
+    "image": "images/diagram_cs_blazor_admin.webp",
+    "alt": "Blazor 管理后台的数据流"
+  }
+}

@@ -1,0 +1,241 @@
+{
+  "category": "visual_guide",
+  "lessons": [
+    {
+      "id": "visual_git_states",
+      "title": { "zh": "图解 Git 三区与提交流转", "en": "Git Areas Illustrated" },
+      "summary": {
+        "zh": "工作区、暂存区、本地仓库的流转，以及三类 reset 与撤销场景。",
+        "en": "Working tree, staging and repository plus reset variants."
+      },
+      "file": "assets/content/visual_git_states.md",
+      "minutes": 18,
+      "keywords": ["Git", "暂存区", "reset", "revert", "冲突"],
+      "difficulty": "入门",
+      "order": 5,
+      "quiz": [
+        {
+          "question": "git add 的作用是？",
+          "options": [
+            "把改动从工作区放进暂存区",
+            "直接生成一次提交",
+            "把提交推送到远程",
+            "回滚工作区改动"
+          ],
+          "answer": 0,
+          "explanation": "add 只负责把改动加入下次提交的快照清单。选项二是 commit 的作用；选项三是 push；选项四是 restore 的作用。"
+        },
+        {
+          "question": "执行 `git reset --soft HEAD~1` 后，被撤销提交的改动在哪？",
+          "options": [
+            "被彻底丢弃",
+            "保留在暂存区",
+            "保留在工作区但未暂存",
+            "已经推到远程"
+          ],
+          "answer": 1,
+          "explanation": "soft 只移动 HEAD，改动留在暂存区。选项一对应 --hard；选项二对应 --mixed（默认）；选项四与 reset 无关。"
+        },
+        {
+          "question": "为什么在共享分支上应该用 revert 而不是 reset？",
+          "options": [
+            "revert 速度更快",
+            "reset 会改写历史，导致其他人拉取后历史错乱",
+            "revert 不需要提交",
+            "reset 只能用于本地仓库"
+          ],
+          "answer": 1,
+          "explanation": "共享分支的历史改写会破坏他人的本地分支。选项一与目的无关；选项三错误：revert 本身就会生成一个提交；选项四说法不准确，push 后同样会影响远程。"
+        },
+        {
+          "question": "解决合并冲突的正确顺序是？",
+          "options": [
+            "直接删掉冲突标记 → 提交",
+            "看清两边意图 → 改成正确结果 → 删除标记 → 测试 → git add 后继续",
+            "选择任意一边 → 提交",
+            "重新克隆仓库"
+          ],
+          "answer": 1,
+          "explanation": "冲突的本质是语义决策，必须人工判断并验证。选项一、三容易丢掉一方的改动；选项四只是回避问题。"
+        }
+      ]
+    },
+    {
+      "id": "visual_btree_index",
+      "title": { "zh": "图解 B+ 树与数据库索引", "en": "B+ Tree Index Illustrated" },
+      "summary": {
+        "zh": "B+ 树结构、聚簇与二级索引、最左前缀与索引失效场景。",
+        "en": "B+ tree structure, clustered indexes and index misuse."
+      },
+      "file": "assets/content/visual_btree_index.md",
+      "minutes": 20,
+      "keywords": ["索引", "B+ 树", "最左前缀", "覆盖索引", "执行计划"],
+      "difficulty": "进阶",
+      "order": 6,
+      "quiz": [
+        {
+          "question": "B+ 树相比二叉树的决定性优势是？",
+          "options": [
+            "节点更小",
+            "单个节点扇出大，树高更低，磁盘 IO 次数更少",
+            "不需要排序",
+            "占用空间更少"
+          ],
+          "answer": 1,
+          "explanation": "一个节点可指向几百个子节点，因此三层就能索引千万级数据。选项一与事实相反；选项三错误：B+ 树本身就是有序结构；选项四不是主要优势。"
+        },
+        {
+          "question": "联合索引 (a, b, c) 中，哪些查询能用上索引？",
+          "options": [
+            "只要包含其中任意一列即可",
+            "必须从最左列 a 开始连续匹配",
+            "只有同时用到 a、b、c 三列才行",
+            "与列顺序无关"
+          ],
+          "answer": 1,
+          "explanation": "最左前缀原则要求从 a 开始连续匹配，a、a+b、a+b+c 都可以。选项一与选项四忽略了顺序；选项三过于严格，只用到 a 也能走索引。"
+        },
+        {
+          "question": "下面哪种写法最容易让索引失效？",
+          "options": [
+            "WHERE created_at >= '2026-01-01'",
+            "WHERE YEAR(created_at) = 2026",
+            "WHERE user_id = '42'",
+            "WHERE name LIKE '明%'"
+          ],
+          "answer": 1,
+          "explanation": "在索引列上使用函数会让数据库无法直接定位。选项一、三、四分别使用了范围、正确类型与前缀匹配，都可以利用索引。"
+        },
+        {
+          "question": "「覆盖索引」指的是？",
+          "options": [
+            "索引覆盖整张表",
+            "查询需要的字段全部包含在索引里，无需回表",
+            "索引覆盖所有列",
+            "索引覆盖所有查询"
+          ],
+          "answer": 1,
+          "explanation": "覆盖索引避免回表取整行，是常见的查询优化手段。选项一与选项三都描述成包含所有列，成本极高；选项四不可能实现。"
+        }
+      ]
+    },
+    {
+      "id": "visual_tcp_handshake",
+      "title": { "zh": "图解 TCP 握手、挥手与拥塞控制", "en": "TCP Handshake Illustrated" },
+      "summary": {
+        "zh": "三次握手、四次挥手、滑动窗口与拥塞控制的图解与排查思路。",
+        "en": "Handshake, teardown, sliding window and congestion control."
+      },
+      "file": "assets/content/visual_tcp_handshake.md",
+      "minutes": 20,
+      "keywords": ["TCP", "三次握手", "TIME_WAIT", "滑动窗口", "拥塞控制"],
+      "difficulty": "进阶",
+      "order": 7,
+      "quiz": [
+        {
+          "question": "TCP 为什么需要三次握手而不是两次？",
+          "options": [
+            "为了传输更多数据",
+            "防止旧的连接请求突然到达，让服务端白白分配资源",
+            "为了让序号加一",
+            "为了加密"
+          ],
+          "answer": 1,
+          "explanation": "第三次确认让服务端确认客户端真的收到了自己的 SYN。选项一与选项三都不是原因；选项四与加密无关，加密由 TLS 负责。"
+        },
+        {
+          "question": "服务器上出现大量 CLOSE_WAIT 状态，最可能的原因是？",
+          "options": [
+            "网络带宽不足",
+            "程序收到 FIN 后没有关闭连接，属于代码问题",
+            "客户端太多",
+            "使用了 TLS"
+          ],
+          "answer": 1,
+          "explanation": "CLOSE_WAIT 是「对方已关闭、本端尚未 close」的状态，堆积说明应用没有释放连接。选项一、三、四都不是根本原因。"
+        },
+        {
+          "question": "接收方缓冲区满时，TCP 会怎样？",
+          "options": [
+            "丢弃连接",
+            "通过零窗口通知发送方暂停，发送方定期探测",
+            "自动扩容缓冲区",
+            "改用 UDP"
+          ],
+          "answer": 1,
+          "explanation": "零窗口机制让发送方暂停并定期探测窗口是否恢复。选项一会中断连接；选项三不是 TCP 的自动行为；选项四与 TCP 无关。"
+        },
+        {
+          "question": "排查「大文件传输吞吐低」时，更应关注？",
+          "options": [
+            "DNS 解析时间",
+            "重传率与拥塞窗口（cwnd）",
+            "TLS 证书链长度",
+            "HTML 解析速度"
+          ],
+          "answer": 1,
+          "explanation": "大文件吞吐受拥塞控制与丢包影响最直接。选项一、三、四主要影响连接建立或渲染阶段，与持续吞吐关系较小。"
+        }
+      ]
+    },
+    {
+      "id": "visual_jvm_memory",
+      "title": { "zh": "图解 JVM 内存模型与垃圾回收", "en": "JVM Memory and GC Illustrated" },
+      "summary": {
+        "zh": "运行时内存分区、对象生命周期、三种收集器与常见 OOM 排查。",
+        "en": "Runtime memory areas, object lifecycle, collectors and OOM debugging."
+      },
+      "file": "assets/content/visual_jvm_memory.md",
+      "minutes": 20,
+      "keywords": ["JVM", "内存模型", "垃圾回收", "G1", "OOM"],
+      "difficulty": "进阶",
+      "order": 8,
+      "quiz": [
+        {
+          "question": "JVM 中哪一区域是线程私有的？",
+          "options": [
+            "堆",
+            "虚拟机栈",
+            "方法区",
+            "元空间"
+          ],
+          "answer": 1,
+          "explanation": "虚拟机栈、本地方法栈与程序计数器都是线程私有的。选项一、三、四都是线程共享区域。"
+        },
+        {
+          "question": "JVM 判断对象是否可回收，采用的方法是？",
+          "options": [
+            "引用计数法",
+            "从 GC Roots 出发的可达性分析",
+            "按对象大小排序",
+            "按创建时间"
+          ],
+          "answer": 1,
+          "explanation": "可达性分析能正确处理循环引用。选项一虽简单但无法处理互相引用；选项三与选项四与回收判定无关。"
+        },
+        {
+          "question": "一个新创建的对象通常会先分配到哪里？",
+          "options": [
+            "老年代",
+            "Eden 区",
+            "元空间",
+            "方法区"
+          ],
+          "answer": 1,
+          "explanation": "多数对象先在 Eden 分配，经 Survivor 区多次存活后才晋升老年代。选项一用于长期存活对象；选项三与选项四存放类元信息，不分配普通对象。"
+        },
+        {
+          "question": "服务出现长时间 GC 暂停，更合适的处理方向是？",
+          "options": [
+            "调用 System.gc() 手动回收",
+            "查看 GC 日志定位原因，必要时改用低暂停收集器并设置暂停目标",
+            "把堆调到最大",
+            "关闭 GC 日志"
+          ],
+          "answer": 1,
+          "explanation": "先用日志定位（大对象、晋升失败或收集器不合适），再针对性调整。选项一会加剧暂停；选项三可能让单次暂停更长；选项四等于丢掉排查依据。"
+        }
+      ]
+    }
+  ]
+}

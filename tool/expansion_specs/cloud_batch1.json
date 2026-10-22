@@ -1,0 +1,198 @@
+{
+  "lessons": [
+    {
+      "id": "cloud_fundamentals",
+      "category": "cloud",
+      "title": {"zh": "云计算基础与资源模型", "en": "Cloud Computing Fundamentals and Resource Models"},
+      "summary": {"zh": "建立区域、可用区、网络与责任共担模型，理解 IaaS、PaaS、SaaS 的边界。", "en": "Learn regions, availability zones, networking and the shared responsibility model."},
+      "keywords": ["区域", "可用区", "VPC", "IaaS", "责任共担"],
+      "difficulty": "基础",
+      "minutes": 28,
+      "order": 1,
+      "image": {"title": "云资源的分层模型", "flow": ["选择区域与可用区", "划分网络与子网", "部署计算与存储", "按责任共担验收"]},
+      "goals": [
+        "能说明区域、可用区与边缘节点在延迟和容灾上的差别。",
+        "能画出 VPC、子网、路由表与安全组的关系。",
+        "能按责任共担模型区分云厂商与使用者的安全责任。"
+      ],
+      "prerequisitesText": [
+        "了解 IP 地址、子网与端口的基本概念。",
+        "知道虚拟机与操作系统的关系。",
+        "能使用命令行工具连接远程主机。"
+      ],
+      "concepts": [
+        {
+          "name": "区域、可用区与容灾边界",
+          "plain": "区域是地理上独立的数据中心集群，可用区是区域内电力与网络相对独立的机房。跨可用区部署能扛住单机房故障，跨区域部署才能扛住区域性灾害。",
+          "mechanism": "同一区域内的可用区之间网络延迟通常在一到两毫秒，跨区域延迟受物理距离限制。数据复制方式决定了故障时能恢复多少数据。",
+          "example": "把一套应用部署在同一区域的三个可用区，再把同一套服务跨两个区域部署，比较延迟、成本与可承受的故障范围。",
+          "boundary": "跨可用区不是免费的高可用：跨区流量要计费，强一致复制会拉高写延迟，必须在一致性与可用性之间取舍。",
+          "engineering": "先定义恢复点目标与恢复时间目标，再决定单区域多可用区还是多区域；定期做真实的故障演练。"
+        },
+        {
+          "name": "虚拟网络与访问控制",
+          "plain": "云上网络由 VPC、子网、路由表、网关与安全组共同组成。网络负责连通，安全组与网络访问控制列表负责放行哪些流量。",
+          "mechanism": "子网划分决定地址范围，路由表决定流量去哪，安全组是有状态的实例级防火墙，网络访问控制列表是子网级的无状态规则。",
+          "example": "把数据库放在私有子网，只允许应用子网的安全组访问；再从公网尝试直连，确认被拒绝。",
+          "boundary": "安全组默认拒绝入站并不等于绝对安全，过度宽松的出站规则同样会造成数据外泄。",
+          "engineering": "网络分层设计：公网入口只暴露负载均衡，应用与数据层一律私有化，出口流量走统一网关便于审计。"
+        },
+        {
+          "name": "IaaS、PaaS 与 SaaS 的责任边界",
+          "plain": "三类服务把运维责任切在不同位置：虚拟机上几乎全部自管，托管平台接管运行时与扩缩容，软件服务只留下配置与数据责任。",
+          "mechanism": "责任越向上转移，使用者控制力越弱但运维负担越轻。选择时要看哪些能力是业务差异化所在，哪些只是必要成本。",
+          "example": "把同一套服务分别部署到虚拟机、容器平台与托管数据库，列出各自需要维护的补丁、备份与扩缩容工作。",
+          "boundary": "托管服务不会自动保证安全与合规，配置错误、密钥管理与数据分级仍然完全由使用者负责。",
+          "engineering": "把差异化能力自建、通用能力托管；对托管服务同样执行配置基线与变更审计。"
+        },
+        {
+          "name": "弹性、配额与成本边界",
+          "plain": "云资源可以按需扩缩，但扩容受配额、启动时间与依赖服务限制；弹性不等于无限，也不等于免费。",
+          "mechanism": "自动扩缩容根据指标增减实例，冷启动需要镜像拉取与初始化时间；配额限制单账号资源上限，突发流量会先撞上限而不是先扩容。",
+          "example": "给一个自动扩缩组设置最小与最大实例数，压测观察扩容延迟与请求失败的分布。",
+          "boundary": "只按 CPU 扩容会漏掉排队型瓶颈，比如连接池与数据库上限；过度扩容会放大下游压力。",
+          "engineering": "扩容指标来自端到端延迟与队列长度，配合限流与降级；上线前确认配额并预留冷启动缓冲。"
+        }
+      ],
+      "steps": ["根据延迟与合规选择区域", "划分 VPC 与子网", "部署计算、存储与数据库", "按责任共担逐项验收"],
+      "code": {
+        "language": "yaml",
+        "snippet": "region: cn-north-1\navailability_zones: [cn-north-1a, cn-north-1b]\n\nvpc:\n  cidr: 10.0.0.0/16\n  subnets:\n    public:  [10.0.1.0/24]\n    private: [10.0.11.0/24, 10.0.12.0/24]\n\nsecurity_group_app:\n  inbound:  [8080 from lb-sg]\n  outbound: [5432 to db-sg, 443 to egress-proxy]\n\nnotes: 数据库只放在 private 子网，公网入口只暴露负载均衡",
+        "walkthrough": "这份清单把区域、可用区、网段与安全组写成了可核对的配置：公网子网只放负载均衡，应用与数据子网不可从公网直连，出口流量统一走代理便于审计。",
+        "expected_output": "按清单创建后：负载均衡可访问，应用实例无法从公网直连，数据库只接受应用安全组访问，跨可用区实例数量满足容灾要求。"
+      },
+      "faults": [
+        {"topic": "只在一个可用区部署", "wrong": "把应用与数据库都放在同一可用区，认为云厂商会自动容灾", "fix": "至少跨两个可用区部署关键组件，并演练单可用区失效时的切换流程"},
+        {"topic": "数据库暴露在公网子网", "wrong": "为了调试方便把数据库放进公有子网并开放 0.0.0.0/0", "fix": "数据库放私有子网，仅允许应用安全组访问，运维通过跳板机或隧道"},
+        {"topic": "把配额当成无限", "wrong": "大促前不做配额检查与压测，直接上线", "fix": "提前核对实例、IP 与连接数配额，用压测验证扩容速度并设置告警"}
+      ],
+      "glossary": [
+        {"term": "区域", "definition": "地理上独立的数据中心集群，是资源部署与合规的边界。"},
+        {"term": "可用区", "definition": "区域内电力与网络相对独立的机房，用于构建高可用架构。"},
+        {"term": "VPC", "definition": "云上逻辑隔离的虚拟网络，包含子网、路由与网关。"},
+        {"term": "安全组", "definition": "绑定在实例或网卡上的有状态防火墙规则集合。"},
+        {"term": "责任共担", "definition": "云厂商负责云平台安全，使用者负责自身配置、数据与访问控制。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "要扛住单个机房故障，至少要满足哪个条件？", "options": ["跨两个可用区部署关键组件", "在同一可用区增加实例数量", "把数据库换成托管服务", "给所有实例加自动快照"], "answer": 0, "explanation": "可用区之间电力与网络相对独立，跨可用区部署才能在单机房失效时继续提供服务；在同一可用区加实例、换托管服务或做快照都无法规避机房级故障。"},
+        {"type": "single", "question": "数据库放在私有子网后，如何允许应用访问？", "options": ["只放行应用安全组的来源规则", "开放数据库端口的公网入站规则", "关闭数据库的认证校验", "把数据库账号写入前端代码"], "answer": 0, "explanation": "私有子网没有公网入口，访问控制靠安全组引用关系实现；开放公网、关闭认证或把账号写进前端都会让数据库直接暴露在风险中。"},
+        {"type": "multi", "question": "以下哪些工作在使用托管数据库后仍由使用者负责？（多选）", "options": ["数据分级与访问授权", "备份保留策略与恢复演练", "底层磁盘更换与机房供电", "账号密钥的轮换"], "answers": [0, 1, 3], "answer": 0, "explanation": "托管服务接管底层硬件与部分运维，但数据分级、备份策略与密钥轮换仍在使用者责任范围内；磁盘更换与供电属于云厂商职责。"},
+        {"type": "order", "question": "请按云上部署一套新服务的合理顺序排列步骤。", "options": ["配置监控与告警并做故障演练", "选择区域与可用区", "部署计算与数据库资源", "划分 VPC 与子网"], "correct_order": [1, 3, 2, 0], "answer": 0, "explanation": "顺序是先定区域、再划网络、然后部署资源、最后补监控与演练；跳过网络规划会让后续资源返工，缺少监控则无法验证可用性目标是否达成。"},
+        {"type": "debug", "question": "阅读下面的配置清单，哪项判断正确？", "options": ["数据库位于私有子网，只接受应用安全组访问", "负载均衡位于私有子网，无法接收公网流量", "安全组允许任意来源访问数据库端口", "出口流量不经过代理，无法审计"], "answer": 0, "code": "subnets:\n  public:  [10.0.1.0/24]\n  private: [10.0.11.0/24, 10.0.12.0/24]\nsecurity_group_app:\n  inbound:  [8080 from lb-sg]\n  outbound: [5432 to db-sg, 443 to egress-proxy]", "language": "text", "explanation": "清单把负载均衡放在公有子网、数据库放在私有子网，应用入站只接受负载均衡安全组；出口经代理转发，因此数据库不会暴露在公网。"}
+      ],
+      "practice": [
+        "画一张包含区域、两个可用区、公网与私网子网的架构图，标注数据流向。",
+        "列出你所在团队使用的托管服务，按责任共担模型写出仍由团队负责的项。",
+        "为一个服务定义恢复点目标与恢复时间目标，并据此选择部署拓扑。"
+      ],
+      "refs": [
+        {"name": "AWS Well-Architected 可靠性支柱", "url": "https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/welcome.html"},
+        {"name": "Azure 区域与可用区说明", "url": "https://learn.microsoft.com/zh-cn/azure/reliability/availability-zones-overview"}
+      ],
+      "english": "Cloud fundamentals start with physical boundaries: regions, availability zones and virtual networks. This lesson maps the shared responsibility model, shows how to isolate public and private subnets, and links elasticity to quotas, cold starts and cost.",
+      "reviewPoints": [
+        "能说明区域与可用区在容灾中的不同作用。",
+        "能画出 VPC、子网、安全组与路由的关系。",
+        "能列出托管服务下仍由使用者承担的职责。"
+      ]
+    },
+    {
+      "id": "cloud_containers_kubernetes",
+      "category": "cloud",
+      "title": {"zh": "容器与 Kubernetes 编排", "en": "Containers and Kubernetes Orchestration"},
+      "summary": {"zh": "从镜像与容器运行时讲到 Deployment、Service、探针与资源限制。", "en": "From images and runtimes to Deployments, Services, probes and resource limits."},
+      "keywords": ["容器", "Kubernetes", "Deployment", "探针", "资源限制"],
+      "difficulty": "进阶",
+      "minutes": 34,
+      "order": 2,
+      "prerequisites": ["cloud_fundamentals"],
+      "image": {"title": "Kubernetes 部署链路", "flow": ["构建镜像", "声明工作负载", "调度与探针", "滚动发布与回滚"]},
+      "goals": [
+        "能解释镜像分层、容器运行时与不可变基础设施的关系。",
+        "能写出带资源限制、探针与滚动更新策略的 Deployment。",
+        "能定位 CrashLoopBackOff、Pending 与探针失败三类常见故障。"
+      ],
+      "prerequisitesText": [
+        "会写 Dockerfile 并能构建、运行本地镜像。",
+        "了解 Linux 进程、端口与文件系统的基础知识。",
+        "知道负载均衡与反向代理的作用。"
+      ],
+      "concepts": [
+        {
+          "name": "镜像、容器与不可变交付",
+          "plain": "镜像是分层的只读模板，容器是镜像加一层可写层运行起来的进程。把配置与代码一起固化成镜像，才能保证各环境行为一致。",
+          "mechanism": "构建时每层内容用摘要标识，推送与拉取按层复用；运行时通过命名空间与 cgroups 隔离进程视图与资源。",
+          "example": "为一个服务写多阶段 Dockerfile，比较单阶段与多阶段构建的镜像体积，并确认运行时用户不是 root。",
+          "boundary": "镜像不可变指的是标签背后的内容不随环境改变，但 latest 这类标签会被覆盖，必须用摘要或版本号固定。",
+          "engineering": "镜像用摘要部署，基础镜像定期重建；配置通过环境变量或配置中心注入，密钥走专用挂载。"
+        },
+        {
+          "name": "工作负载与调度约束",
+          "plain": "Deployment 声明期望副本数与更新策略，调度器把 Pod 分配到满足资源与亲和性的节点上。",
+          "mechanism": "请求值决定调度与预留，限制值决定运行时可用的上限；超过内存限制会被终止，超过 CPU 限制会被限流。",
+          "example": "给服务设置 CPU 请求与内存限制，压测时观察是否被限流或被终止，并据此调整数值。",
+          "boundary": "只写限制不写请求会让调度器误判容量，导致节点超卖与互相挤占；请求值过大则会让 Pod 长期处于 Pending。",
+          "engineering": "请求按稳态用量设置，限制按峰值留出余量；配合水平自动扩缩与节点池容量规划。"
+        },
+        {
+          "name": "Service、Ingress 与流量入口",
+          "plain": "Service 为一组 Pod 提供稳定虚拟地址，Ingress 或网关把外部流量按域名与路径分发到不同 Service。",
+          "mechanism": "Service 通过标签选择器找到后端 Pod，kube-proxy 或等价组件维护转发规则；就绪探针未通过的 Pod 不会进入后端列表。",
+          "example": "把服务暴露为 ClusterIP，再通过 Ingress 暴露一个路径；删除一个 Pod，观察流量是否只进入就绪实例。",
+          "boundary": "Service 只解决东西向流量，跨集群与多区域流量需要网关与流量治理；错误的选择器会让请求打到空后端。",
+          "engineering": "入口统一走网关并开启超时、重试与限流；对外域名与证书集中管理，避免每个服务各配一套。"
+        },
+        {
+          "name": "探针、发布与回滚",
+          "plain": "存活探针决定是否重启容器，就绪探针决定是否接流量，启动探针保护慢启动服务不被误杀。",
+          "mechanism": "滚动更新按最大不可用与最大超出比例逐步替换 Pod，任何一个环节失败都会停在中间状态，需要人工或自动回滚。",
+          "example": "故意把就绪探针路径改成 404，观察发布如何卡住、旧副本是否继续承载流量。",
+          "boundary": "探针超时设置过短会导致频繁重启，过长会让故障实例继续接流量；探针本身不应依赖不稳定的外部服务。",
+          "engineering": "发布用金丝雀或分阶段推进，保留一键回滚；探针路径做轻量健康检查，业务依赖单独用指标观测。"
+        }
+      ],
+      "steps": ["构建并签名镜像", "声明工作负载与资源限制", "配置探针与流量入口", "灰度发布并验证回滚"],
+      "code": {
+        "language": "yaml",
+        "snippet": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: api\nspec:\n  replicas: 3\n  strategy:\n    rollingUpdate:\n      maxUnavailable: 0\n      maxSurge: 1\n  selector:\n    matchLabels: {app: api}\n  template:\n    metadata:\n      labels: {app: api}\n    spec:\n      containers:\n        - name: api\n          image: registry.example.com/api@sha256:abc123\n          resources:\n            requests: {cpu: 200m, memory: 256Mi}\n            limits: {cpu: 1, memory: 512Mi}\n          readinessProbe:\n            httpGet: {path: /healthz, port: 8080}\n            initialDelaySeconds: 5\n          livenessProbe:\n            httpGet: {path: /livez, port: 8080}\n            periodSeconds: 10",
+        "walkthrough": "这份 Deployment 用摘要固定镜像，声明副本与滚动策略，并区分请求与限制；就绪探针控制接流量，存活探针控制重启，两者路径分开避免混淆。",
+        "expected_output": "滚动更新时始终有可用副本，未就绪的新 Pod 不接收流量；内存超过 512Mi 的容器被终止并重启，事件里能看到 OOMKilled。"
+      },
+      "faults": [
+        {"topic": "只写资源限制不写请求", "wrong": "容器没有 requests，调度器按零请求装箱", "fix": "为每个容器声明 CPU 与内存请求，再按峰值设置限制"},
+        {"topic": "探针路径依赖外部服务", "wrong": "健康检查里调用第三方接口，外部抖动导致全量重启", "fix": "探针只检查进程自身与核心依赖，外部依赖用指标监控而非重启策略"},
+        {"topic": "用 latest 标签发布", "wrong": "每次部署都用 latest，无法确认线上运行的是哪一版", "fix": "镜像用摘要或版本号固定，发布记录与镜像摘要一一对应"}
+      ],
+      "glossary": [
+        {"term": "镜像分层", "definition": "镜像由只读层叠加而成，层内容用摘要标识并可在节点间复用。"},
+        {"term": "Pod", "definition": "Kubernetes 最小调度单元，包含一个或多个共享网络与存储的容器。"},
+        {"term": "就绪探针", "definition": "判断实例是否可以接收流量的检查，未通过的实例不进入后端列表。"},
+        {"term": "请求与限制", "definition": "请求用于调度预留，限制是运行时可用资源上限。"},
+        {"term": "滚动更新", "definition": "按策略逐步替换副本的发布方式，可在失败时停止或回滚。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "Pod 长期处于 Pending 状态，最可能的原因是什么？", "options": ["没有节点满足资源请求或调度约束", "镜像层数过多导致拉取缓慢", "就绪探针路径返回 404", "容器内存超过限制被终止"], "answer": 0, "explanation": "Pending 表示调度阶段没有找到合适节点，常见原因是请求值过大、亲和性约束过严或节点资源不足；探针失败与内存终止都发生在调度之后的运行阶段。"},
+        {"type": "single", "question": "内存超过限制时，容器会发生什么？", "options": ["被终止并重启，事件记录 OOMKilled", "被限流但继续运行", "自动扩容节点内存", "转为只读模式继续服务"], "answer": 0, "explanation": "内存是不可压缩资源，超过限制只会被终结而不是限流；CPU 超限才会被限流，扩容节点也不会改变单个容器的限制。"},
+        {"type": "multi", "question": "以下哪些做法能降低发布风险？（多选）", "options": ["镜像用摘要固定版本", "先小流量灰度并观察指标", "把 maxUnavailable 设为 100% 加快发布", "保留一键回滚与旧版本镜像"], "answers": [0, 1, 3], "answer": 0, "explanation": "固定版本、灰度观察与可回滚是发布安全的三根支柱；把最大不可用设成 100% 会在发布期间清空所有副本，属于放大风险的做法。"},
+        {"type": "order", "question": "请按容器化服务的交付顺序排列步骤。", "options": ["灰度发布并观测指标", "构建镜像并推送仓库", "声明 Deployment 与探针", "配置 Service 与外部入口"], "correct_order": [1, 2, 3, 0], "answer": 0, "explanation": "先有镜像才能声明工作负载，再配置服务入口，最后才是灰度发布；没有镜像与探针就发布，等于把不可验证的版本直接暴露给用户。"},
+        {"type": "debug", "question": "阅读 Deployment 片段，哪项判断正确？", "options": ["更新期间至少保留现有可用副本，新 Pod 就绪后才接流量", "maxSurge 为 1 表示允许一次替换全部副本", "请求值等于限制值，节点不可能超卖", "就绪与存活探针使用同一路径，风险更低"], "answer": 0, "code": "strategy:\n  rollingUpdate:\n    maxUnavailable: 0\n    maxSurge: 1\nreadinessProbe:\n  httpGet: {path: /healthz, port: 8080}", "language": "yaml", "explanation": "maxUnavailable 为 0 保证更新过程中可用副本不减少，maxSurge 允许临时多出一个新 Pod；就绪探针决定新 Pod 何时进入后端，从而避免流量打到未就绪实例。"}
+      ],
+      "practice": [
+        "为示例 Deployment 加上启动探针，模拟一个需要 30 秒初始化的服务。",
+        "故意把就绪探针改成错误路径，观察事件与流量表现后再改回。",
+        "对比使用 latest 与使用镜像摘要两次发布的差异，记录排查时间。"
+      ],
+      "refs": [
+        {"name": "Kubernetes 官方文档：Deployment", "url": "https://kubernetes.io/zh-cn/docs/concepts/workloads/controllers/deployment/"},
+        {"name": "Kubernetes 官方文档：探针配置", "url": "https://kubernetes.io/zh-cn/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/"},
+        {"name": "Kubernetes 官方文档：资源管理", "url": "https://kubernetes.io/zh-cn/docs/concepts/configuration/manage-resources-containers/"}
+      ],
+      "english": "Containers package an application with its runtime, and Kubernetes schedules those packages. This lesson covers image immutability, requests and limits, readiness and liveness probes, service routing, and how to roll out safely with a rollback path.",
+      "reviewPoints": [
+        "能解释镜像摘要为什么比 latest 可靠。",
+        "能区分请求、限制、就绪探针与存活探针的作用。",
+        "能写出可回滚的发布流程。"
+      ]
+    }
+  ]
+}

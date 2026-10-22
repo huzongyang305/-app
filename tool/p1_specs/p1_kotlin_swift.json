@@ -1,0 +1,130 @@
+{
+  "kotlin_basics": {
+    "category": "kotlin",
+    "title": {"zh": "Kotlin 基础与空安全", "en": "Kotlin Basics and Null Safety"},
+    "summary": {"zh": "掌握 val/var、类型推断、可空类型和安全调用。", "en": "Learn val/var, type inference, nullable types and safe calls."},
+    "keywords": ["Kotlin", "空安全", "val", "类型推断"],
+    "difficulty": "基础", "minutes": 20,
+    "points": ["val 声明只读引用，var 可重新赋值，集合内容是否可变由具体类型决定。", "可空类型在编译期强制处理，?.、?: 和 let 是常用安全操作。", "类型推断减少样板代码，但公开 API 仍应显式写出关键类型。"]
+  },
+  "kotlin_functions": {
+    "category": "kotlin",
+    "title": {"zh": "Kotlin 函数、Lambda 与扩展", "en": "Kotlin Functions, Lambdas and Extensions"},
+    "summary": {"zh": "理解默认参数、扩展函数、高阶函数和内联。", "en": "Learn default arguments, extension functions, higher-order functions and inline."},
+    "keywords": ["函数", "Lambda", "扩展函数", "inline"],
+    "difficulty": "进阶", "minutes": 22,
+    "points": ["默认参数和命名参数能减少重载，扩展函数让外部类型获得新能力但不修改原类。", "高阶函数接收或返回函数，inline 能减少 Lambda 对象和调用开销。", "扩展函数是静态解析的，不能在运行时多态覆盖。"]
+  },
+  "kotlin_oop": {
+    "category": "kotlin",
+    "title": {"zh": "Kotlin 类、对象与属性", "en": "Kotlin Classes, Objects and Properties"},
+    "summary": {"zh": "覆盖主构造器、数据类、密封类、伴生对象和委托。", "en": "Cover primary constructors, data classes, sealed classes, companions and delegation."},
+    "keywords": ["类", "数据类", "密封类", "委托"],
+    "difficulty": "进阶", "minutes": 23,
+    "points": ["数据类自动生成 equals、hashCode、toString 和 copy，适合承载值语义。", "密封类限制子类型集合，配合 when 可以做穷尽分支检查。", "委托把实现交给其他对象，by lazy 和接口委托是常见用法。"]
+  },
+  "kotlin_collections": {
+    "category": "kotlin",
+    "title": {"zh": "Kotlin 集合、序列与函数式操作", "en": "Kotlin Collections, Sequences and Functional Operations"},
+    "summary": {"zh": "理解 List/Set/Map、操作链、序列惰性求值和性能差异。", "en": "Learn collections, chains, lazy sequences and performance differences."},
+    "keywords": ["集合", "Sequence", "map", "惰性求值"],
+    "difficulty": "进阶", "minutes": 22,
+    "points": ["集合操作链默认立即求值，每一步可能创建中间集合。", "Sequence 采用惰性求值，适合长链和大数据，但小数据可能更慢。", "Mutable 与只读接口表达不同契约，不能把只读接口误认为深度不可变。"]
+  },
+  "kotlin_coroutines": {
+    "category": "kotlin",
+    "title": {"zh": "Kotlin 协程与 Flow", "en": "Kotlin Coroutines and Flow"},
+    "summary": {"zh": "理解挂起函数、作用域、取消、结构化并发和 Flow。", "en": "Learn suspend functions, scopes, cancellation, structured concurrency and Flow."},
+    "keywords": ["协程", "suspend", "Flow", "取消"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["协程用挂起代替阻塞，结构化并发保证父作用域能等待和取消子任务。", "取消是协作式的，阻塞调用和未检查循环可能忽略取消。", "Flow 适合冷数据流，StateFlow 和 SharedFlow 分别面向状态与事件广播。"]
+  },
+  "kotlin_android": {
+    "category": "kotlin",
+    "title": {"zh": "Kotlin Android 架构", "en": "Kotlin Android Architecture"},
+    "summary": {"zh": "用 ViewModel、Repository、生命周期和依赖注入组织 Android 应用。", "en": "Organize Android apps with ViewModel, Repository, lifecycle and DI."},
+    "keywords": ["Android", "ViewModel", "Repository", "生命周期"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["UI 层只负责渲染和事件，业务状态放在 ViewModel，数据访问放在 Repository。", "配置变更和进程重建要求状态可保存、可恢复。", "依赖注入、协程作用域和生命周期必须匹配，避免泄漏和重复请求。"]
+  },
+  "kotlin_testing": {
+    "category": "kotlin",
+    "title": {"zh": "Kotlin 测试与协程测试", "en": "Kotlin Testing and Coroutine Tests"},
+    "summary": {"zh": "覆盖单元测试、协程测试、假对象和测试调度器。", "en": "Cover unit tests, coroutine tests, fakes and test dispatchers."},
+    "keywords": ["JUnit", "协程测试", "Fake", "调度器"],
+    "difficulty": "高级", "minutes": 23,
+    "points": ["协程测试要使用 TestDispatcher 控制虚拟时间，避免真实等待和偶发失败。", "优先使用 Fake 和明确接口隔离外部依赖，减少脆弱的 mock 链路。", "测试要覆盖取消、超时和异常传播，而不只是正常返回。"]
+  },
+  "kotlin_project": {
+    "category": "kotlin",
+    "title": {"zh": "实战：Kotlin Android 客户端", "en": "Project: Kotlin Android Client"},
+    "summary": {"zh": "实现列表、详情、网络、缓存、加载状态和错误恢复。", "en": "Build list, detail, network, cache, loading and error recovery."},
+    "keywords": ["Android 项目", "网络", "缓存", "状态"],
+    "difficulty": "高级", "minutes": 130,
+    "points": ["把界面状态建模为加载、成功、空、失败四种，避免多个布尔值互相冲突。", "网络层要有超时、重试、缓存和错误映射，UI 只消费领域结果。", "项目验收要覆盖旋转、断网、重复请求和进程恢复。"]
+  },
+  "swift_basics": {
+    "category": "swift",
+    "title": {"zh": "Swift 基础与可选类型", "en": "Swift Basics and Optionals"},
+    "summary": {"zh": "掌握 let/var、可选绑定、值类型和错误处理。", "en": "Learn let/var, optional binding, value types and error handling."},
+    "keywords": ["Swift", "Optional", "值类型", "错误处理"],
+    "difficulty": "基础", "minutes": 20,
+    "points": ["Optional 表示可能有值也可能为 nil，要用 if let、guard let 或模式匹配安全解包。", "struct 是值类型，class 是引用类型，赋值和传参语义不同。", "throws、Result 和 do-catch 让可恢复错误在类型系统中显式表达。"]
+  },
+  "swift_functions": {
+    "category": "swift",
+    "title": {"zh": "Swift 函数、闭包与协议", "en": "Swift Functions, Closures and Protocols"},
+    "summary": {"zh": "理解参数标签、闭包捕获、逃逸闭包和协议扩展。", "en": "Learn argument labels, captures, escaping closures and protocol extensions."},
+    "keywords": ["函数", "闭包", "逃逸闭包", "协议"],
+    "difficulty": "进阶", "minutes": 22,
+    "points": ["参数标签让调用点更可读，闭包捕获外部变量并延长其生命周期。", "逃逸闭包可能在函数返回后执行，捕获 self 时要注意循环引用。", "协议定义能力，协议扩展提供默认实现，但默认实现不会自动获得动态派发。"]
+  },
+  "swift_oop": {
+    "category": "swift",
+    "title": {"zh": "Swift 结构体、类与 ARC", "en": "Swift Structs, Classes and ARC"},
+    "summary": {"zh": "比较值语义、继承、协议组合和自动引用计数。", "en": "Compare value semantics, inheritance, protocol composition and ARC."},
+    "keywords": ["struct", "class", "ARC", "协议组合"],
+    "difficulty": "进阶", "minutes": 23,
+    "points": ["优先使用 struct 和协议组合表达可组合的值语义，需要共享身份时再用 class。", "ARC 自动管理引用计数，但强引用环需要 weak 或 unowned 打破。", "值类型复制时可能采用写时复制，语义不可变不代表每次赋值都深拷贝。"]
+  },
+  "swift_collections": {
+    "category": "swift",
+    "title": {"zh": "Swift 集合与泛型", "en": "Swift Collections and Generics"},
+    "summary": {"zh": "掌握 Array/Dictionary/Set、泛型约束和协议关联类型。", "en": "Learn Array/Dictionary/Set, generic constraints and associated types."},
+    "keywords": ["集合", "泛型", "约束", "关联类型"],
+    "difficulty": "进阶", "minutes": 22,
+    "points": ["Array 有序可重复，Set 去重无序，Dictionary 按键索引且键必须可哈希。", "泛型让算法与具体类型解耦，where 子句表达类型约束。", "协议关联类型让协议更灵活，但也会影响存在类型和类型擦除。"]
+  },
+  "swift_async": {
+    "category": "swift",
+    "title": {"zh": "Swift 并发与 async/await", "en": "Swift Concurrency and async/await"},
+    "summary": {"zh": "理解 async/await、Task、Actor、取消和 Sendable。", "en": "Learn async/await, Task, Actor, cancellation and Sendable."},
+    "keywords": ["async", "Actor", "Task", "Sendable"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["async/await 把异步代码写成顺序结构，Task 提供取消和优先级。", "Actor 隔离可变状态，跨隔离边界传递的数据要满足 Sendable。", "取消是协作式的，长任务要在关键点检查取消并释放资源。"]
+  },
+  "swift_swiftui": {
+    "category": "swift",
+    "title": {"zh": "SwiftUI 与状态管理", "en": "SwiftUI and State Management"},
+    "summary": {"zh": "覆盖声明式视图、状态包装器、数据流和性能。", "en": "Cover declarative views, property wrappers, data flow and performance."},
+    "keywords": ["SwiftUI", "状态", "数据流", "视图"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["SwiftUI 视图是状态的函数，状态变化驱动视图重新计算。", "@State 管局部值，@Observable/ObservableObject 管共享模型，环境对象跨层级传递。", "避免在 body 中做重计算和副作用，用稳定标识减少无效重建。"]
+  },
+  "swift_testing": {
+    "category": "swift",
+    "title": {"zh": "Swift 测试与性能", "en": "Swift Testing and Performance"},
+    "summary": {"zh": "用 XCTest、异步测试、依赖注入和 Instruments 验证质量。", "en": "Use XCTest, async tests, dependency injection and Instruments."},
+    "keywords": ["XCTest", "异步测试", "Instruments", "依赖注入"],
+    "difficulty": "高级", "minutes": 23,
+    "points": ["测试通过协议和依赖注入隔离网络、时间和文件系统。", "异步测试要等待确定性条件，不能用固定 sleep。", "性能问题用 Instruments 观察 CPU、内存、线程和主线程阻塞。"]
+  },
+  "swift_project": {
+    "category": "swift",
+    "title": {"zh": "实战：SwiftUI iOS 客户端", "en": "Project: SwiftUI iOS Client"},
+    "summary": {"zh": "实现列表、详情、网络、缓存、状态恢复和错误提示。", "en": "Build list, detail, network, cache, state restoration and error UI."},
+    "keywords": ["iOS 项目", "SwiftUI", "网络", "缓存"],
+    "difficulty": "高级", "minutes": 130,
+    "points": ["把页面状态建模为明确枚举，避免加载、错误和空数据状态互相矛盾。", "网络层提供超时、重试、缓存和取消，视图层只处理呈现。", "验收要覆盖弱网、后台恢复、动态字体和深色模式。"]
+  }
+}

@@ -1,0 +1,1514 @@
+{
+  "generated_at": "2026-10-07T09:59:08.480597Z",
+  "dry_run": true,
+  "lessons": 215,
+  "rewritten": 0,
+  "missing_note": [],
+  "coverage": [
+    {
+      "lesson_id": "ai_a2a",
+      "file": "assets/content/ai_a2a.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ai_agent_security",
+      "file": "assets/content/ai_agent_security.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ai_browser_agent",
+      "file": "assets/content/ai_browser_agent.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ai_coding_agent",
+      "file": "assets/content/ai_coding_agent.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ai_computer_use",
+      "file": "assets/content/ai_computer_use.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ai_concept_intro",
+      "file": "assets/content/ai_concept_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ai_context_engineering",
+      "file": "assets/content/ai_context_engineering.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ai_diffusion",
+      "file": "assets/content/ai_diffusion.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ai_governance",
+      "file": "assets/content/ai_governance.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ai_graphrag",
+      "file": "assets/content/ai_graphrag.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ai_guardrails",
+      "file": "assets/content/ai_guardrails.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ai_mcp",
+      "file": "assets/content/ai_mcp.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ai_model_serving",
+      "file": "assets/content/ai_model_serving.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ai_realtime_api",
+      "file": "assets/content/ai_realtime_api.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ai_tool_calling",
+      "file": "assets/content/ai_tool_calling.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ai_vlm",
+      "file": "assets/content/ai_vlm.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "prompt_intro",
+      "file": "assets/content/prompt_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "algo_computational_geometry",
+      "file": "assets/content/algo_computational_geometry.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "algo_mst",
+      "file": "assets/content/algo_mst.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "algo_np_approximation",
+      "file": "assets/content/algo_np_approximation.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "algo_persistent_parallel",
+      "file": "assets/content/algo_persistent_parallel.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "algo_shortest_paths",
+      "file": "assets/content/algo_shortest_paths.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "algo_topological",
+      "file": "assets/content/algo_topological.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "algorithm_intro",
+      "file": "assets/content/algorithm_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "linear_search_intro",
+      "file": "assets/content/linear_search_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "union_find",
+      "file": "assets/content/algorithms_union_find.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "chain_token_standards",
+      "file": "assets/content/chain_token_standards.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "c_arrays_strings",
+      "file": "assets/content/c_arrays_strings.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "c_basics",
+      "file": "assets/content/c_basics.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "c_conditions",
+      "file": "assets/content/c_conditions.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "c_control_functions",
+      "file": "assets/content/c_control_functions.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "c_debugging",
+      "file": "assets/content/c_debugging.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "c_files",
+      "file": "assets/content/c_files.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "c_first_program",
+      "file": "assets/content/c_first_program.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "c_functions_intro",
+      "file": "assets/content/c_functions_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "c_loops",
+      "file": "assets/content/c_loops.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "c_pointers",
+      "file": "assets/content/c_pointers.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "c_preprocessor",
+      "file": "assets/content/c_preprocessor.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "c_project",
+      "file": "assets/content/c_project.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "c_structs",
+      "file": "assets/content/c_structs.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "c_types",
+      "file": "assets/content/c_types.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "c_variables_io",
+      "file": "assets/content/c_variables_io.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "cpp_concepts_ranges",
+      "file": "assets/content/cpp_concepts_ranges.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "cpp_concurrency_atomics",
+      "file": "assets/content/cpp_concurrency_atomics.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "cpp_conditions",
+      "file": "assets/content/cpp_conditions.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "cpp_first_program",
+      "file": "assets/content/cpp_first_program.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "cpp_functions_intro",
+      "file": "assets/content/cpp_functions_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "cpp_loops",
+      "file": "assets/content/cpp_loops.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "cpp_move_semantics",
+      "file": "assets/content/cpp_move_semantics.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "cross_performance_profiling",
+      "file": "assets/content/cross_performance_profiling.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "cross_serialization",
+      "file": "assets/content/cross_serialization.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "cross_types_variables",
+      "file": "assets/content/cross_types_variables.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "csharp_async_streams",
+      "file": "assets/content/csharp_async_streams.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "csharp_conditions",
+      "file": "assets/content/csharp_conditions.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "csharp_dotnet_first",
+      "file": "assets/content/csharp_dotnet_first.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "csharp_gc_performance",
+      "file": "assets/content/csharp_gc_performance.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "csharp_loops",
+      "file": "assets/content/csharp_loops.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "csharp_methods_intro",
+      "file": "assets/content/csharp_methods_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "csharp_project_inventory_cli",
+      "file": "assets/content/csharp_project_inventory_cli.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "csharp_records_patterns",
+      "file": "assets/content/csharp_records_patterns.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "csharp_variables_input",
+      "file": "assets/content/csharp_variables_input.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "db_backup_recovery",
+      "file": "assets/content/db_backup_recovery.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "db_graph",
+      "file": "assets/content/db_graph.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "db_migration_governance",
+      "file": "assets/content/db_migration_governance.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "db_permissions_security",
+      "file": "assets/content/db_permissions_security.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "db_postgresql_deep",
+      "file": "assets/content/db_postgresql_deep.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "db_time_series",
+      "file": "assets/content/db_time_series.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "sql_query_intro",
+      "file": "assets/content/sql_query_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "sql_table_intro",
+      "file": "assets/content/sql_table_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "flutter_layout_intro",
+      "file": "assets/content/flutter_layout_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "flutter_widget_intro",
+      "file": "assets/content/flutter_widget_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "binary_intro",
+      "file": "assets/content/binary_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "computer_organization_intro",
+      "file": "assets/content/computer_organization_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "discrete_math",
+      "file": "assets/content/fundamentals_discrete_math.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "fundamentals_architecture_case",
+      "file": "assets/content/fundamentals_architecture_case.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "fundamentals_cache_coherence",
+      "file": "assets/content/fundamentals_cache_coherence.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "fundamentals_embedded_iot",
+      "file": "assets/content/fundamentals_embedded_iot.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "fundamentals_pipeline",
+      "file": "assets/content/fundamentals_pipeline.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "fundamentals_simd",
+      "file": "assets/content/fundamentals_simd.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "fundamentals_storage_stack",
+      "file": "assets/content/fundamentals_storage_stack.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "gamedev_performance_mobile",
+      "file": "assets/content/gamedev_performance_mobile.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "go_cloud_native_security",
+      "file": "assets/content/go_cloud_native_security.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "go_conditions",
+      "file": "assets/content/go_conditions.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "go_first_program",
+      "file": "assets/content/go_first_program.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "go_functions_intro",
+      "file": "assets/content/go_functions_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "go_generics_deep",
+      "file": "assets/content/go_generics_deep.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "go_loops",
+      "file": "assets/content/go_loops.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "go_profiling_deep",
+      "file": "assets/content/go_profiling_deep.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "go_project_worker_pool",
+      "file": "assets/content/go_project_worker_pool.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "go_variables_input",
+      "file": "assets/content/go_variables_input.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "html_tags_intro",
+      "file": "assets/content/html_tags_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "css_selectors_intro",
+      "file": "assets/content/css_selectors_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "java_conditions",
+      "file": "assets/content/java_conditions.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "java_first_class",
+      "file": "assets/content/java_first_class.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "java_gc_tuning",
+      "file": "assets/content/java_gc_tuning.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "java_loops",
+      "file": "assets/content/java_loops.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "java_methods_intro",
+      "file": "assets/content/java_methods_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "java_modern_features",
+      "file": "assets/content/java_modern_features.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "java_project_inventory",
+      "file": "assets/content/java_project_inventory.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "java_project_order_concurrency",
+      "file": "assets/content/java_project_order_concurrency.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "java_variables_output",
+      "file": "assets/content/java_variables_output.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "java_virtual_threads",
+      "file": "assets/content/java_virtual_threads.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "js_conditions_loops",
+      "file": "assets/content/js_conditions_loops.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "js_console_start",
+      "file": "assets/content/js_console_start.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "js_dom_intro",
+      "file": "assets/content/js_dom_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "js_execution_context",
+      "file": "assets/content/js_execution_context.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "js_functions_intro",
+      "file": "assets/content/js_functions_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "js_memory_gc",
+      "file": "assets/content/js_memory_gc.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "js_node_backend",
+      "file": "assets/content/js_node_backend.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "js_variables_types_intro",
+      "file": "assets/content/js_variables_types_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "kotlin_android",
+      "file": "assets/content/kotlin_android.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "kotlin_basics",
+      "file": "assets/content/kotlin_basics.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "kotlin_collections",
+      "file": "assets/content/kotlin_collections.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "kotlin_conditions",
+      "file": "assets/content/kotlin_conditions.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "kotlin_coroutines",
+      "file": "assets/content/kotlin_coroutines.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "kotlin_first_program",
+      "file": "assets/content/kotlin_first_program.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "kotlin_functions",
+      "file": "assets/content/kotlin_functions.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "kotlin_functions_intro",
+      "file": "assets/content/kotlin_functions_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "kotlin_loops",
+      "file": "assets/content/kotlin_loops.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "kotlin_oop",
+      "file": "assets/content/kotlin_oop.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "kotlin_project",
+      "file": "assets/content/kotlin_project.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "kotlin_testing",
+      "file": "assets/content/kotlin_testing.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "kotlin_variables_null",
+      "file": "assets/content/kotlin_variables_null.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "math_set_function_intro",
+      "file": "assets/content/math_set_function_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "network_bgp",
+      "file": "assets/content/network_bgp.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "network_ipv6",
+      "file": "assets/content/network_ipv6.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "network_layers_intro",
+      "file": "assets/content/network_layers_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "network_nat_vpn",
+      "file": "assets/content/network_nat_vpn.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "network_p2p",
+      "file": "assets/content/network_p2p.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "network_performance",
+      "file": "assets/content/network_performance.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "network_smtp",
+      "file": "assets/content/network_smtp.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "os_cgroups_namespaces",
+      "file": "assets/content/os_cgroups_namespaces.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "os_io_scheduling",
+      "file": "assets/content/os_io_scheduling.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "os_io_uring",
+      "file": "assets/content/os_io_uring.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "os_kernel_arch",
+      "file": "assets/content/os_kernel_arch.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "os_linux_troubleshooting",
+      "file": "assets/content/os_linux_troubleshooting.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "os_rtos",
+      "file": "assets/content/os_rtos.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "process_thread_intro",
+      "file": "assets/content/process_thread_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "project_deploy_ops",
+      "file": "assets/content/project_deploy_ops.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "python_context_iterators",
+      "file": "assets/content/python_context_iterators.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "python_decorators_generators",
+      "file": "assets/content/python_decorators_generators.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "python_first_script",
+      "file": "assets/content/python_first_script.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "python_if_else",
+      "file": "assets/content/python_if_else.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "python_input_output",
+      "file": "assets/content/python_input_output.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "python_list_dict_basics",
+      "file": "assets/content/python_list_dict_basics.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "python_loops",
+      "file": "assets/content/python_loops.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "python_packaging_performance",
+      "file": "assets/content/python_packaging_performance.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "python_typing_testing",
+      "file": "assets/content/programming_python_typing_testing.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "rust_cargo_first",
+      "file": "assets/content/rust_cargo_first.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "rust_conditions",
+      "file": "assets/content/rust_conditions.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "rust_functions_intro",
+      "file": "assets/content/rust_functions_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "rust_loops",
+      "file": "assets/content/rust_loops.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "rust_macros_wasm",
+      "file": "assets/content/rust_macros_wasm.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "rust_smart_pointers",
+      "file": "assets/content/rust_smart_pointers.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "rust_traits_generics",
+      "file": "assets/content/rust_traits_generics.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "rust_variables_mutability",
+      "file": "assets/content/rust_variables_mutability.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "security_auth_session",
+      "file": "assets/content/security_auth_session.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "security_cloud",
+      "file": "assets/content/security_cloud.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "security_concept_intro",
+      "file": "assets/content/security_concept_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "security_container_k8s",
+      "file": "assets/content/security_container_k8s.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "security_fuzzing",
+      "file": "assets/content/security_fuzzing.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "security_incident",
+      "file": "assets/content/security_incident.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "security_owasp_top10",
+      "file": "assets/content/security_owasp_top10.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "security_privacy",
+      "file": "assets/content/security_privacy.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "security_project",
+      "file": "assets/content/security_project.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "security_sdl",
+      "file": "assets/content/security_sdl.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "security_secrets",
+      "file": "assets/content/security_secrets.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "security_secure_coding",
+      "file": "assets/content/security_secure_coding.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "security_supply_chain",
+      "file": "assets/content/security_supply_chain.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "security_threat_model",
+      "file": "assets/content/security_threat_model.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "shell_automation_advanced",
+      "file": "assets/content/shell_automation_advanced.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "shell_conditions",
+      "file": "assets/content/shell_conditions.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "shell_first_script",
+      "file": "assets/content/shell_first_script.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "shell_loops",
+      "file": "assets/content/shell_loops.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "shell_pipeline_intro",
+      "file": "assets/content/shell_pipeline_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "shell_portability",
+      "file": "assets/content/shell_portability.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "shell_project_deploy",
+      "file": "assets/content/shell_project_deploy.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "shell_project_log_analysis",
+      "file": "assets/content/shell_project_log_analysis.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "shell_security_hardening",
+      "file": "assets/content/shell_security_hardening.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "shell_variables_args",
+      "file": "assets/content/shell_variables_args.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "swift_async",
+      "file": "assets/content/swift_async.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "swift_basics",
+      "file": "assets/content/swift_basics.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "swift_collections",
+      "file": "assets/content/swift_collections.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "swift_conditions",
+      "file": "assets/content/swift_conditions.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "swift_constants_variables",
+      "file": "assets/content/swift_constants_variables.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "swift_first_program",
+      "file": "assets/content/swift_first_program.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "swift_functions",
+      "file": "assets/content/swift_functions.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "swift_functions_intro",
+      "file": "assets/content/swift_functions_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "swift_loops",
+      "file": "assets/content/swift_loops.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "swift_oop",
+      "file": "assets/content/swift_oop.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "swift_project",
+      "file": "assets/content/swift_project.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "swift_swiftui",
+      "file": "assets/content/swift_swiftui.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "swift_testing",
+      "file": "assets/content/swift_testing.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "cli_intro",
+      "file": "assets/content/cli_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "git_intro",
+      "file": "assets/content/git_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ts_arrays_objects",
+      "file": "assets/content/ts_arrays_objects.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ts_basic_types",
+      "file": "assets/content/ts_basic_types.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ts_first_types",
+      "file": "assets/content/ts_first_types.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ts_function_types",
+      "file": "assets/content/ts_function_types.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ts_interface_intro",
+      "file": "assets/content/ts_interface_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ts_performance",
+      "file": "assets/content/ts_performance.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ts_project_websocket_dashboard",
+      "file": "assets/content/ts_project_websocket_dashboard.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ts_runtime_validation",
+      "file": "assets/content/ts_runtime_validation.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ts_testing",
+      "file": "assets/content/ts_testing.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ts_type_level",
+      "file": "assets/content/ts_type_level.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "visual_btree_index",
+      "file": "assets/content/visual_btree_index.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "visual_call_stack",
+      "file": "assets/content/visual_call_stack.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "visual_db_isolation",
+      "file": "assets/content/visual_db_isolation.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "visual_http_timeline",
+      "file": "assets/content/visual_http_timeline.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "visual_oauth_flow",
+      "file": "assets/content/visual_oauth_flow.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "visual_rate_limit_circuit",
+      "file": "assets/content/visual_rate_limit_circuit.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "visual_tcp_handshake",
+      "file": "assets/content/visual_tcp_handshake.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "cpp_variables_io",
+      "file": "assets/content/cpp_variables_io.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "ip_port_intro",
+      "file": "assets/content/ip_port_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    },
+    {
+      "lesson_id": "password_hash_intro",
+      "file": "assets/content/password_hash_intro.md",
+      "rows": 3,
+      "has_note": true,
+      "would_rewrite": false
+    }
+  ]
+}

@@ -1,0 +1,182 @@
+{
+  "category": "visual_guide",
+  "lessons": [
+    {
+      "id": "visual_https_cert",
+      "title": { "zh": "图解 HTTPS 证书链与 TLS 握手", "en": "HTTPS Certificate Chain Illustrated" },
+      "summary": {
+        "zh": "证书链结构、TLS 1.3 握手、命令验证与五类常见证书错误。",
+        "en": "Certificate chain, TLS 1.3 handshake and verification commands."
+      },
+      "file": "assets/content/visual_https_cert.md",
+      "minutes": 18,
+      "keywords": ["HTTPS", "证书链", "TLS", "SAN", "续期"],
+      "difficulty": "进阶",
+      "order": 9,
+      "quiz": [
+        {
+          "question": "HTTPS 证书的信任起点是？",
+          "options": [
+            "服务器证书",
+            "系统或浏览器内置的根证书",
+            "中间证书",
+            "私钥"
+          ],
+          "answer": 1,
+          "explanation": "验证时从叶子证书逐级向上验签，直到命中内置的受信任根证书。选项一与选项三是链上的环节，但不是信任起点；选项四绝不能公开。"
+        },
+        {
+          "question": "客户端报 unable to get local issuer certificate，最可能的原因是？",
+          "options": [
+            "证书已过期",
+            "服务器没有下发中间证书，链不完整",
+            "域名不匹配",
+            "私钥丢失"
+          ],
+          "answer": 1,
+          "explanation": "缺少中间证书会导致客户端无法构建到根的完整链路。选项一对应 certificate has expired；选项三对应 hostname mismatch；选项四通常表现为握手失败且原因不同。"
+        },
+        {
+          "question": "关于 TLS 1.3 的 0-RTT，正确的说法是？",
+          "options": [
+            "没有安全风险，可放心使用",
+            "存在重放风险，只适合幂等请求",
+            "只能用于 HTTP/1.1",
+            "比 1-RTT 慢"
+          ],
+          "answer": 1,
+          "explanation": "0-RTT 数据可被重放，因此不适合非幂等操作。选项一忽略风险；选项三与协议栈无关；选项四与事实相反。"
+        },
+        {
+          "question": "部署 HTTPS 时，下列哪项做法是正确的？",
+          "options": [
+            "只部署叶子证书",
+            "部署叶子加中间证书，并配置自动续期与到期告警",
+            "把根证书也一并下发",
+            "关闭证书校验以提升性能"
+          ],
+          "answer": 1,
+          "explanation": "完整链加自动续期是标准做法。选项一导致链不完整；选项三多余且增大体积；选项四会引入中间人攻击风险。"
+        }
+      ]
+    },
+    {
+      "id": "visual_k8s_scheduling",
+      "title": { "zh": "图解 Kubernetes 调度与探针", "en": "Kubernetes Scheduling Illustrated" },
+      "summary": {
+        "zh": "Pod 一生、调度两步决策、三种探针分工与优雅下线。",
+        "en": "Pod lifecycle, scheduling, probes and graceful shutdown."
+      },
+      "file": "assets/content/visual_k8s_scheduling.md",
+      "minutes": 20,
+      "keywords": ["Kubernetes", "调度", "探针", "滚动更新", "优雅下线"],
+      "difficulty": "进阶",
+      "order": 10,
+      "quiz": [
+        {
+          "question": "调度器为 Pod 选择节点时，依据的是哪个资源字段？",
+          "options": [
+            "limits",
+            "requests",
+            "maxReplicas",
+            "restartPolicy"
+          ],
+          "answer": 1,
+          "explanation": "调度按 requests 预留资源，limits 只限制运行时的上限。选项一容易被误当作调度依据；选项三与选项四分别属于扩缩容与重启策略。"
+        },
+        {
+          "question": "依赖服务（如数据库）不可用时，应该影响哪个探针？",
+          "options": [
+            "livenessProbe",
+            "readinessProbe",
+            "两者都要",
+            "都不影响"
+          ],
+          "answer": 1,
+          "explanation": "readiness 失败只会摘除流量，避免把故障放大。选项一会引发全员重启风暴；选项三与选项四都不合适。"
+        },
+        {
+          "question": "startupProbe 的主要作用是？",
+          "options": [
+            "替代 readinessProbe",
+            "保护启动慢的服务，避免被 livenessProbe 提前判定失败并重启",
+            "检查磁盘空间",
+            "控制副本数量"
+          ],
+          "answer": 1,
+          "explanation": "startupProbe 通过之前，liveness 不会介入，从而保护慢启动服务。选项一错误：三者职责不同；选项三与选项四与探针无关。"
+        },
+        {
+          "question": "为了让滚动更新期间不中断服务，合理的策略配置是？",
+          "options": [
+            "maxSurge=0，maxUnavailable=1",
+            "maxSurge=1，maxUnavailable=0",
+            "maxSurge=10，maxUnavailable=10",
+            "直接删除全部 Pod 再重建"
+          ],
+          "answer": 1,
+          "explanation": "先多起一个新副本并等它就绪，再摘除旧副本，可保证可用副本不减少。选项一与选项三都会造成容量下降；选项四会直接中断服务。"
+        }
+      ]
+    },
+    {
+      "id": "visual_rag_pipeline",
+      "title": { "zh": "图解 RAG 检索增强生成流程", "en": "RAG Pipeline Illustrated" },
+      "summary": {
+        "zh": "离线索引与在线问答全链路、分块策略、混合检索与评测指标。",
+        "en": "Indexing and query pipelines, chunking, hybrid retrieval and metrics."
+      },
+      "file": "assets/content/visual_rag_pipeline.md",
+      "minutes": 22,
+      "keywords": ["RAG", "分块", "向量检索", "Rerank", "评测"],
+      "difficulty": "进阶",
+      "order": 11,
+      "quiz": [
+        {
+          "question": "分块过大或过小分别会带来什么问题？",
+          "options": [
+            "没有影响",
+            "过大引入噪音降低精度，过小导致语义不完整",
+            "过大只影响速度，过小只影响存储",
+            "两者都只会影响成本"
+          ],
+          "answer": 1,
+          "explanation": "分块尺寸直接决定检索质量，需要在噪音与语义完整之间取平衡。选项一忽略了影响；选项三与选项四都低估了语义层面的后果。"
+        },
+        {
+          "question": "混合检索指的是？",
+          "options": [
+            "同时用多个大模型生成",
+            "向量检索与关键词检索相结合，兼顾语义与精确匹配",
+            "把多个向量库混在一起",
+            "同时用多种编程语言"
+          ],
+          "answer": 1,
+          "explanation": "向量擅长语义泛化，关键词擅长编号与专有名词，混合后覆盖更全。选项一、三、四都不是混合检索的含义。"
+        },
+        {
+          "question": "引入 Rerank 的主要目的是？",
+          "options": [
+            "减少文档数量",
+            "对召回结果精排，提升进入提示的片段相关性",
+            "替代向量检索",
+            "降低存储成本"
+          ],
+          "answer": 1,
+          "explanation": "Rerank 用更精细的模型给「问题-片段」打分，把最相关的少数片段送进提示。选项三错误：它建立在召回之上；选项一与选项四不是主要目的。"
+        },
+        {
+          "question": "回答出现编造内容时，最先应该检查什么？",
+          "options": [
+            "立刻换更大的模型",
+            "先看进入提示的片段是否正确，以及提示是否要求「无资料就拒答」",
+            "直接关闭 RAG",
+            "增加向量维度"
+          ],
+          "answer": 1,
+          "explanation": "多数幻觉来自片段不相关或提示缺少约束，先验证输入再谈换模型。选项一与选项四成本高且可能无效；选项三放弃了 RAG 的价值。"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,198 @@
+{
+  "python_basics": {
+    "image": "images/diagram_py_basics.webp",
+    "alt": "Python 基础语法的四个要点"
+  },
+  "python_functions": {
+    "image": "images/diagram_py_functions.webp",
+    "alt": "Python 函数的定义、参数与返回值"
+  },
+  "python_control_flow": {
+    "image": "images/diagram_py_control.webp",
+    "alt": "Python 分支、循环与推导式"
+  },
+  "python_data_structures": {
+    "image": "images/diagram_py_containers.webp",
+    "alt": "列表、元组、字典、集合的特性对照"
+  },
+  "python_oop": {
+    "image": "images/diagram_py_oop.webp",
+    "alt": "Python 类、继承与多态"
+  },
+  "python_errors_files": {
+    "image": "images/diagram_py_errors.webp",
+    "alt": "异常处理与文件操作"
+  },
+  "python_modules_stdlib": {
+    "image": "images/diagram_py_modules.webp",
+    "alt": "模块、包、虚拟环境与依赖"
+  },
+  "python_typing_testing": {
+    "image": "images/diagram_py_typing.webp",
+    "alt": "类型注解与 pytest 测试流程"
+  },
+  "python_project": {
+    "image": "images/diagram_py_scraper.webp",
+    "alt": "爬虫与数据分析流程"
+  },
+  "python_project_api": {
+    "image": "images/diagram_fastapi.webp",
+    "alt": "FastAPI 订单服务的请求处理链路"
+  },
+  "python_project_etl": {
+    "image": "images/diagram_py_etl.webp",
+    "alt": "CSV 到 SQLite 的 ETL 流程"
+  },
+  "python_packaging_performance": {
+    "image": "images/diagram_py_packaging.webp",
+    "alt": "Python 打包、发布与性能优化"
+  },
+  "python_first_script": {
+    "image": "images/diagram_py_first.webp",
+    "alt": "第一个 Python 脚本的四个步骤"
+  },
+  "python_input_output": {
+    "image": "images/diagram_py_io.webp",
+    "alt": "输入、转换与格式化输出"
+  },
+  "python_if_else": {
+    "image": "images/diagram_py_if.webp",
+    "alt": "条件判断的分支结构"
+  },
+  "python_loops": {
+    "image": "images/diagram_py_loops.webp",
+    "alt": "for 与 while 循环"
+  },
+  "python_list_dict_basics": {
+    "image": "images/diagram_py_list_dict.webp",
+    "alt": "列表与字典的对照"
+  },
+  "java_types": {
+    "image": "images/diagram_java_types.webp",
+    "alt": "基本类型、包装类与字符串"
+  },
+  "java_control_methods": {
+    "image": "images/diagram_java_control.webp",
+    "alt": "Java 分支、循环与方法"
+  },
+  "java_inheritance": {
+    "image": "images/diagram_java_inheritance.webp",
+    "alt": "类、抽象类、接口与多态"
+  },
+  "java_exceptions": {
+    "image": "images/diagram_java_exceptions.webp",
+    "alt": "Java 异常体系与资源管理"
+  },
+  "java_lambda_stream": {
+    "image": "images/diagram_java_stream.webp",
+    "alt": "Lambda 与 Stream 的流水线"
+  },
+  "java_tooling": {
+    "image": "images/diagram_java_tooling.webp",
+    "alt": "Java 构建、测试、日志与数据库工具"
+  },
+  "java_project": {
+    "image": "images/diagram_spring_layers.webp",
+    "alt": "Spring Boot 应用的分层结构"
+  },
+  "java_project_inventory": {
+    "image": "images/diagram_java_inventory.webp",
+    "alt": "库存服务的一次请求时序"
+  },
+  "java_project_order_concurrency": {
+    "image": "images/diagram_java_order.webp",
+    "alt": "并发订单处理的流水线"
+  },
+  "java_modern_features": {
+    "image": "images/diagram_java_modern.webp",
+    "alt": "Record、Sealed 与模式匹配"
+  },
+  "java_first_class": {
+    "image": "images/diagram_java_first.webp",
+    "alt": "第一个 Java 类的编写与运行"
+  },
+  "java_variables_output": {
+    "image": "images/diagram_java_vars.webp",
+    "alt": "变量声明与输出"
+  },
+  "java_conditions": {
+    "image": "images/diagram_java_if.webp",
+    "alt": "Java 条件分支"
+  },
+  "java_loops": {
+    "image": "images/diagram_java_loops.webp",
+    "alt": "Java 三种循环与流程控制"
+  },
+  "java_methods_intro": {
+    "image": "images/diagram_java_methods.webp",
+    "alt": "方法定义、参数与返回值"
+  },
+  "js_basics": {
+    "image": "images/diagram_js_env.webp",
+    "alt": "浏览器与 Node.js 两种运行环境"
+  },
+  "js_types": {
+    "image": "images/diagram_js_declare.webp",
+    "alt": "var、let、const 三种声明方式"
+  },
+  "js_operators_control": {
+    "image": "images/diagram_js_control.webp",
+    "alt": "运算符与条件循环"
+  },
+  "js_functions": {
+    "image": "images/diagram_js_functions_scope.webp",
+    "alt": "函数定义方式、闭包与 this"
+  },
+  "js_arrays": {
+    "image": "images/diagram_js_array_methods.webp",
+    "alt": "数组的增删改查与函数式方法"
+  },
+  "js_dom_events": {
+    "image": "images/diagram_js_dom.webp",
+    "alt": "DOM 选择、事件监听与委托"
+  },
+  "js_errors_debugging": {
+    "image": "images/diagram_js_errors.webp",
+    "alt": "错误处理与调试手段"
+  },
+  "js_modules_tooling": {
+    "image": "images/diagram_js_modules.webp",
+    "alt": "ES Module 与 CommonJS 对照"
+  },
+  "js_project": {
+    "image": "images/diagram_vite_react.webp",
+    "alt": "Vite 与 React 应用的结构"
+  },
+  "js_project_node_api": {
+    "image": "images/diagram_express_api.webp",
+    "alt": "Express 请求处理链路"
+  },
+  "js_project_realtime_chat": {
+    "image": "images/diagram_chat_ws.webp",
+    "alt": "实时聊天室的消息时序"
+  },
+  "js_node_backend": {
+    "image": "images/diagram_node_backend.webp",
+    "alt": "Node.js 后端的分层与事件循环"
+  },
+  "js_console_start": {
+    "image": "images/diagram_js_console.webp",
+    "alt": "控制台入门四步"
+  },
+  "js_variables_types_intro": {
+    "image": "images/diagram_js_var_intro.webp",
+    "alt": "变量、类型与模板字符串"
+  },
+  "js_conditions_loops": {
+    "image": "images/diagram_js_cond_loops.webp",
+    "alt": "条件与循环入门"
+  },
+  "js_functions_intro": {
+    "image": "images/diagram_js_func_intro.webp",
+    "alt": "函数入门四步"
+  },
+  "js_dom_intro": {
+    "image": "images/diagram_js_dom_intro.webp",
+    "alt": "DOM 操作入门四步"
+  }
+}

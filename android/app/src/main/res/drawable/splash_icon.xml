@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 12+ 启动画面图标：给标记留出安全边距，避免被圆形遮罩裁掉 -->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/splash_mark"
+    android:inset="8%" />

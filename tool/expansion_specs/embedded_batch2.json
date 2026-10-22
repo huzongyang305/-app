@@ -1,0 +1,101 @@
+{
+  "lessons": [
+    {
+      "id": "embedded_rtos_tasks",
+      "category": "embedded",
+      "title": {"zh": "RTOS 任务、调度与同步", "en": "RTOS Tasks, Scheduling and Synchronization"},
+      "summary": {"zh": "从任务状态、优先级抢占与栈分配讲到互斥量、队列与优先级反转的处理。", "en": "Cover task states, preemption, stacks, mutexes, queues and priority inversion."},
+      "keywords": ["RTOS", "任务调度", "优先级反转", "互斥量", "队列"],
+      "difficulty": "进阶",
+      "minutes": 35,
+      "order": 3,
+      "image": {"title": "任务状态与调度路径", "flow": ["创建任务并分配栈", "进入就绪队列", "调度器选最高优先级", "等待事件而阻塞", "事件到达后重新就绪"]},
+      "goals": [
+        "能画出任务在就绪、运行与阻塞之间的状态迁移。",
+        "能说明优先级反转的成因与优先级继承的作用。",
+        "能按「中断只投递、任务做处理」的原则设计通信。"
+      ],
+      "prerequisitesText": [
+        "知道中断与轮询的区别。",
+        "能用 C 语言写函数与结构体，并理解指针。",
+        "了解 MCU 的时钟、寄存器与内存布局基础。"
+      ],
+      "concepts": [
+        {
+          "name": "任务、栈与优先级",
+          "plain": "任务是独立的执行流，各自持有栈与优先级，调度器只挑优先级最高的就绪任务运行。",
+          "mechanism": "创建任务时分配任务控制块与栈空间，就绪任务按优先级排队，系统节拍或事件发生时调度器切换上下文。",
+          "example": "在同一工程里创建两个不同优先级的任务各自翻转引脚，用逻辑分析仪观察执行占比。",
+          "boundary": "每个任务的栈都按静态估算分配，估算过小会破坏相邻内存，现象往往是随机跑飞而不是明确报错。",
+          "engineering": "开启栈使用量检测或填充标记，给每个任务留出余量并把实测峰值写进工程文档。"
+        },
+        {
+          "name": "抢占、阻塞与时间片",
+          "plain": "高优先级任务就绪时立即抢占低优先级任务，任务等待事件时主动阻塞，把 CPU 让出去。",
+          "mechanism": "调度器在节拍中断与系统调用返回点重新评估就绪队列，同优先级任务可按时间片轮转，阻塞任务不参与调度直到事件或超时。",
+          "example": "让高优先级任务等待队列消息，观察它阻塞期间低优先级任务获得执行机会。",
+          "boundary": "忙等不会让出 CPU，会让低优先级任务长期得不到执行，也会挤占实时性预算。",
+          "engineering": "用阻塞式接口替代轮询，为等待设置超时并在超时分支输出诊断信息。"
+        },
+        {
+          "name": "互斥量、信号量与优先级继承",
+          "plain": "互斥量保护共享资源并支持所有权与优先级继承，二值信号量更适合任务与中断之间的通知。",
+          "mechanism": "互斥量记录持有者，当高优先级任务等待低优先级任务持有的锁时，系统临时提升持有者优先级，减少中等优先级任务插队的时间。",
+          "example": "让低优先级任务持锁后被中优先级任务抢占，对比启用与关闭优先级继承时高优先级任务的等待时间。",
+          "boundary": "在中断服务程序里调用会阻塞的互斥量接口属于非法操作，会触发断言或不可预期行为。",
+          "engineering": "统一约定中断只发通知、任务负责处理，并给共享资源的加锁顺序编号以避免死锁。"
+        },
+        {
+          "name": "队列与事件驱动",
+          "plain": "队列在任务之间、以及中断到任务之间传递数据，让生产者与消费者解耦。",
+          "mechanism": "发送方把数据拷贝进环形缓冲区，接收方在队列为空时阻塞等待，数据到达后由内核唤醒等待任务。",
+          "example": "用中断向队列投递按键事件，任务在队列上阻塞等待并打印事件与时间戳。",
+          "boundary": "队列深度不足会丢数据或让发送方阻塞，在中断里等待队列空间会破坏实时性。",
+          "engineering": "按最坏突发速率估算队列深度，中断侧使用非阻塞发送并统计丢弃次数。"
+        }
+      ],
+      "steps": ["确定任务划分与优先级", "分配并验证任务栈", "选择同步与通信原语", "设定超时与错误处理", "用跟踪工具核对实时性"],
+      "code": {
+        "language": "c",
+        "snippet": "#include \"FreeRTOS.h\"\n#include \"task.h\"\n#include \"queue.h\"\n#include \"semphr.h\"\n\nstatic QueueHandle_t event_queue;\nstatic SemaphoreHandle_t bus_mutex;\n\n// 低优先级任务持锁访问寄存器，临界区尽量短\nstatic void sensor_task(void *arg) {\n    for (;;) {\n        xSemaphoreTake(bus_mutex, portMAX_DELAY);\n        read_sensor_register();\n        xSemaphoreGive(bus_mutex);\n        vTaskDelay(pdMS_TO_TICKS(20));\n    }\n}\n\n// 中断只投递事件，真正的处理交给任务\nvoid button_isr(void) {\n    BaseType_t higher_woken = pdFALSE;\n    uint32_t event = 1u;\n    xQueueSendFromISR(event_queue, &event, &higher_woken);\n    portYIELD_FROM_ISR(higher_woken);\n}\n\nstatic void handler_task(void *arg) {\n    uint32_t event;\n    for (;;) {\n        if (xQueueReceive(event_queue, &event, pdMS_TO_TICKS(100)) == pdPASS) {\n            handle_event(event);\n        } else {\n            log_timeout();          // 超时也要有明确处理\n        }\n    }\n}",
+        "walkthrough": "示例遵循「中断只投递、任务做处理」的分工：ISR 使用带 FromISR 后缀的非阻塞接口发送事件并按需触发上下文切换，持锁任务把临界区压缩到寄存器读写，等待队列时设置超时以便暴露异常。",
+        "expected_output": "按键触发后处理任务按事件顺序输出日志；把临界区拉长或在中断里调用阻塞接口，就会出现断言失败或明显的实时性抖动。"
+      },
+      "faults": [
+        {"topic": "在中断服务程序里调用阻塞接口", "wrong": "在 ISR 里直接等待队列消息或获取互斥量", "fix": "改用带 FromISR 后缀的非阻塞接口，把耗时处理交给任务"},
+        {"topic": "任务栈按经验值随手填写", "wrong": "给所有任务统一分配很小的栈空间", "fix": "按实测峰值加余量分配，并开启栈使用量检查"},
+        {"topic": "共享资源没有固定加锁顺序", "wrong": "不同任务以相反顺序获取同一组锁", "fix": "为锁编号并统一按序获取，必要时用超时打破等待"}
+      ],
+      "glossary": [
+        {"term": "RTOS", "definition": "提供任务调度、同步与时间管理的实时操作系统内核。"},
+        {"term": "优先级反转", "definition": "高优先级任务因等待低优先级任务持有的锁而被中等优先级任务插队的现象。"},
+        {"term": "优先级继承", "definition": "在锁被等待时临时提升持有者优先级的补救机制。"},
+        {"term": "任务栈", "definition": "每个任务独立占用的内存区域，保存局部变量与调用现场。"},
+        {"term": "上下文切换", "definition": "保存当前任务现场并恢复下一个任务现场的调度动作。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "高优先级任务因等待低优先级任务持有的锁而被中等优先级任务插队，这一现象称为？", "options": ["优先级反转", "优先级抖动", "死锁", "中断嵌套"], "answer": 0, "explanation": "优先级反转的根源是锁的持有者优先级过低，于是中等优先级任务反而先获得 CPU；启用优先级继承可以让持有者临时提速，把等待时间压缩到可接受的范围内。"},
+        {"type": "single", "question": "在中断服务程序里与任务通信，推荐使用哪类接口？", "options": ["带 FromISR 后缀的非阻塞接口", "阻塞式互斥量接口", "带无限等待的队列接收", "递归加锁的互斥量"], "answer": 0, "explanation": "中断上下文不允许阻塞，必须使用专为 ISR 提供的非阻塞接口，并在需要时请求上下文切换；在中断里等待锁或无限等待队列消息都会破坏实时性甚至触发断言。"},
+        {"type": "multi", "question": "以下哪些做法有助于控制实时性风险？（多选）", "options": ["用阻塞式调用代替忙等轮询", "给等待加上超时并记录超时次数", "在中断里执行全部业务逻辑", "开启任务栈使用量检查"], "answers": [0, 1, 3], "answer": 0, "explanation": "阻塞式调用会让出 CPU，超时与计数便于发现异常，栈检查能提前暴露溢出风险；把全部业务逻辑放进中断会拉长中断处理时间，是实时性问题的常见来源。"},
+        {"type": "order", "question": "请按任务从创建到被事件唤醒的典型顺序排列。", "options": ["创建任务并分配栈", "进入就绪队列等待调度", "被调度器选中运行", "等待事件而阻塞", "事件到达后重新就绪"], "correct_order": [0, 1, 2, 3, 4], "answer": 0, "explanation": "任务先被创建并分配栈，随后进入就绪队列，被调度器选中后运行，遇到等待事件转入阻塞，事件到达再回到就绪队列等待下次调度。"},
+        {"type": "debug", "question": "阅读这段中断与任务的协作代码，下面哪项判断是正确的？", "options": ["中断用 FromISR 接口投递事件，任务在队列上等待并设置超时", "中断直接调用阻塞接口读取队列", "互斥量在中断服务程序里被获取", "任务等待队列时不需要超时处理"], "answer": 0, "code": "void button_isr(void) {\n    BaseType_t higher_woken = pdFALSE;\n    uint32_t event = 1u;\n    xQueueSendFromISR(event_queue, &event, &higher_woken);\n    portYIELD_FROM_ISR(higher_woken);\n}\n\nif (xQueueReceive(event_queue, &event, pdMS_TO_TICKS(100)) == pdPASS) {\n    handle_event(event);\n} else {\n    log_timeout();\n}", "language": "c", "explanation": "这段 RTOS 代码把中断侧限制为非阻塞投递，任务侧用带超时的等待接收事件，超时分支还会记录日志；在中断里调用阻塞接口或省略超时，都会让实时性问题难以定位。"}
+      ],
+      "practice": [
+        "创建两个不同优先级的任务，用逻辑分析仪测量它们的执行时间占比。",
+        "构造一次优先级反转场景，分别记录启用与关闭优先级继承时的等待时间。",
+        "把按键处理从轮询改为中断投递加任务处理，对比响应延迟与 CPU 占用。"
+      ],
+      "refs": [
+        {"name": "FreeRTOS 官方文档", "url": "https://www.freertos.org/Documentation/RTOS_book.html"},
+        {"name": "Zephyr 内核服务文档", "url": "https://docs.zephyrproject.org/latest/kernel/services/index.html"},
+        {"name": "ARM Cortex-M 处理器文档", "url": "https://developer.arm.com/documentation/100166/latest/"}
+      ],
+      "english": "An RTOS schedules independent tasks that each own a stack and a priority. Preemption lets high-priority work run immediately, blocking yields the CPU while waiting, and mutexes add ownership plus priority inheritance to bound inversion. Keep interrupt service routines non-blocking: post events with the FromISR APIs and let tasks do the work.",
+      "reviewPoints": [
+        "能画出任务状态迁移图并说明每次迁移的触发条件。",
+        "能解释优先级反转与优先级继承的关系。",
+        "能说出共享资源加锁顺序的统一约定。"
+      ]
+    }
+  ]
+}

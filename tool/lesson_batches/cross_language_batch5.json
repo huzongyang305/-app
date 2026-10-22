@@ -1,0 +1,182 @@
+{
+  "category": "cross_language",
+  "lessons": [
+    {
+      "id": "cross_db_access",
+      "title": { "zh": "数据库访问与 ORM：九种生态横向对照", "en": "Database Access and ORMs" },
+      "summary": {
+        "zh": "驱动、查询构建器与 ORM 的取舍，参数化查询、连接池与 N+1。",
+        "en": "Drivers, query builders, ORMs, pooling and the N+1 problem."
+      },
+      "file": "assets/content/cross_db_access.md",
+      "minutes": 20,
+      "keywords": ["数据库", "ORM", "连接池", "参数化查询", "N+1"],
+      "difficulty": "进阶",
+      "order": 15,
+      "quiz": [
+        {
+          "question": "使用 ORM 时最容易被忽略的性能问题是？",
+          "options": [
+            "N+1 查询：列表查一次，关联再逐条查",
+            "模型字段太少",
+            "代码行数太多",
+            "缺少注释"
+          ],
+          "answer": 0,
+          "explanation": "N+1 会让查询次数随数据量线性增长。选项一、三、四都与查询性能无关。发现方式是打开 SQL 日志或看 APM 的查询次数。"
+        },
+        {
+          "question": "防止 SQL 注入最根本的做法是？",
+          "options": [
+            "过滤单引号",
+            "使用参数化查询，把 SQL 结构与数据分离",
+            "限制请求频率",
+            "隐藏数据库错误信息"
+          ],
+          "answer": 1,
+          "explanation": "参数化查询从机制上消除注入可能。选项一容易被绕过；选项三与选项四只是缓解手段，不解决根因。"
+        },
+        {
+          "question": "连接池参数配置不当会带来什么？",
+          "options": [
+            "池太小导致请求排队，池太大压垮数据库",
+            "只影响内存占用",
+            "只影响日志体积",
+            "没有任何影响"
+          ],
+          "answer": 0,
+          "explanation": "连接池过小会造成排队与超时，过大则会把压力直接传给数据库。选项一、二、三都低估了它的影响。"
+        },
+        {
+          "question": "`UPDATE ... WHERE id = ? AND version = ?` 这种写法属于？",
+          "options": [
+            "悲观锁",
+            "乐观锁，冲突时影响行数为 0，需要重试",
+            "分布式锁",
+            "自旋锁"
+          ],
+          "answer": 1,
+          "explanation": "用版本号做条件更新是典型的乐观锁用法。选项一需要先加锁再更新；选项三需要外部存储；选项四与数据库并发控制无关。"
+        }
+      ]
+    },
+    {
+      "id": "cross_api_contract",
+      "title": { "zh": "接口文档与契约测试：跨生态对照", "en": "API Contracts and Testing" },
+      "summary": {
+        "zh": "OpenAPI/gRPC/tRPC 契约、两种契约测试方向与兼容性规则。",
+        "en": "OpenAPI, gRPC and tRPC contracts plus compatibility rules."
+      },
+      "file": "assets/content/cross_api_contract.md",
+      "minutes": 18,
+      "keywords": ["OpenAPI", "契约测试", "兼容性", "代码生成", "Pact"],
+      "difficulty": "进阶",
+      "order": 16,
+      "quiz": [
+        {
+          "question": "在接口契约中，哪种变更通常是向后兼容的？",
+          "options": [
+            "新增必填请求字段",
+            "新增可选响应字段",
+            "删除响应字段",
+            "修改字段类型"
+          ],
+          "answer": 1,
+          "explanation": "新增可选字段老客户端可以忽略，是安全的。选项一会让老客户端请求失败；选项三与选项四都会破坏消费方解析。"
+        },
+        {
+          "question": "契约测试的两种方向是？",
+          "options": [
+            "单元测试与集成测试",
+            "消费方驱动（Pact）与提供方驱动（OpenAPI/Protobuf）",
+            "黑盒与白盒",
+            "性能与安全"
+          ],
+          "answer": 1,
+          "explanation": "契约测试按由谁定义契约划分：消费方驱动或提供方驱动。其余选项属于测试的其他分类维度。"
+        },
+        {
+          "question": "在 CI 中执行 `git diff --exit-code ./src/api-types.ts` 的作用是？",
+          "options": [
+            "检查代码格式",
+            "强制契约变更必须同步重新生成类型，否则失败",
+            "比对代码覆盖率",
+            "检查依赖漏洞"
+          ],
+          "answer": 1,
+          "explanation": "这一步保证生成的客户端类型与契约文件一致，避免两端漂移。其余选项分别是其他检查工具的职责。"
+        },
+        {
+          "question": "安全重命名字段的演进顺序是？",
+          "options": [
+            "直接改名并通知消费方",
+            "先同时返回新旧字段并标记弃用，观察调用量归零后再删除",
+            "先删旧字段再加新字段",
+            "只改文档不改实现"
+          ],
+          "answer": 1,
+          "explanation": "双写加弃用期是标准的兼容演进路径。选项一与选项三会直接破坏消费方；选项四会让文档与实现不一致。"
+        }
+      ]
+    },
+    {
+      "id": "cross_i18n",
+      "title": { "zh": "国际化与本地化：跨生态对照", "en": "Internationalization and Localization" },
+      "summary": {
+        "zh": "五类需本地化的内容、九种方案、拼接句子与格式化的经典坑。",
+        "en": "What to localize, tooling per ecosystem and common traps."
+      },
+      "file": "assets/content/cross_i18n.md",
+      "minutes": 18,
+      "keywords": ["国际化", "本地化", "i18n", "复数", "RTL"],
+      "difficulty": "入门",
+      "order": 17,
+      "quiz": [
+        {
+          "question": "为什么不能用字符串拼接构造多语言文案？",
+          "options": [
+            "拼接速度慢",
+            "不同语言的语序、量词与复数规则不同，拼接会错乱",
+            "拼接会占用更多内存",
+            "拼接无法处理中文"
+          ],
+          "answer": 1,
+          "explanation": "整句作为资源并替换占位符，才能适配各语言语序。选项一、三不是主要原因；选项四与事实相反。"
+        },
+        {
+          "question": "下面哪一类内容不需要本地化？",
+          "options": [
+            "日期时间格式",
+            "货币符号与小数位",
+            "协议里的字段名（如 user_id）",
+            "复数形式"
+          ],
+          "answer": 2,
+          "explanation": "协议字段名属于机器标识，必须保持稳定，不应随语言变化。选项一、二、四都是典型的本地化内容。"
+        },
+        {
+          "question": "支持从右到左（RTL）布局时，更推荐使用？",
+          "options": [
+            "padding-left 与 margin-right",
+            "padding-inline-start 与 margin-inline-end 等逻辑属性",
+            "绝对定位硬编码",
+            "只用图标表示方向"
+          ],
+          "answer": 1,
+          "explanation": "逻辑属性会随书写方向自动翻转。选项一在 RTL 下会左右颠倒；选项三与选项四都不可维护。"
+        },
+        {
+          "question": "CI 中校验各语言资源文件的主要目的是？",
+          "options": [
+            "减小文件体积",
+            "确保键集合一致，避免运行时显示键名或缺失翻译",
+            "提高加载速度",
+            "自动翻译"
+          ],
+          "answer": 1,
+          "explanation": "键集合不一致会导致界面直接显示键名或回退到默认语言。选项一、三、四都不是该检查的目的。"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,477 @@
+{
+  "js_basics": [
+    {
+      "question": "let、const 与 var 的作用域区别是？",
+      "options": [
+        "let/const 是块级作用域，var 是函数作用域且存在变量提升",
+        "三者都是函数作用域",
+        "var 是块级作用域",
+        "const 声明的变量会被提升到全局"
+      ],
+      "answer": 0,
+      "explanation": "块级作用域让循环变量、if 块内的变量不再泄漏，是现代 JS 的默认选择。"
+    },
+    {
+      "question": "\"use strict\" 严格模式的主要作用是？",
+      "options": [
+        "把未声明就赋值等静默错误改为直接抛错",
+        "提升脚本运行速度数倍",
+        "禁用所有全局变量",
+        "自动压缩代码"
+      ],
+      "answer": 0,
+      "explanation": "ES Module 与 class 内部默认就是严格模式，因此现代代码很少手写它。"
+    }
+  ],
+  "js_types": [
+    {
+      "question": "typeof null 的结果是？",
+      "options": ["'object'", "'null'", "'undefined'", "'number'"],
+      "answer": 0,
+      "explanation": "这是 JS 早期的历史遗留问题，判断 null 应该用 value === null。"
+    },
+    {
+      "question": "0.1 + 0.2 === 0.3 的结果是？",
+      "options": [
+        "false，因为 IEEE 754 双精度无法精确表示这些小数",
+        "true",
+        "抛错",
+        "1"
+      ],
+      "answer": 0,
+      "explanation": "比较小数应使用误差范围（如 Math.abs(a - b) < Number.EPSILON），金额计算应改用整数分。"
+    }
+  ],
+  "js_operators_control": [
+    {
+      "question": "obj?.a?.b 这种可选链的作用是？",
+      "options": [
+        "中途遇到 null/undefined 时短路返回 undefined，而不是抛错",
+        "自动创建缺失的对象",
+        "把 undefined 转成 0",
+        "捕获所有异常"
+      ],
+      "answer": 0,
+      "explanation": "可选链适合处理可能缺失的接口字段，但过度使用会掩盖数据结构问题。"
+    },
+    {
+      "question": "for...in 遍历的是？",
+      "options": [
+        "对象的可枚举属性名（包含原型链上的），数组用它会拿到字符串下标",
+        "数组的元素值",
+        "Map 的键值对",
+        "只有 Symbol 属性"
+      ],
+      "answer": 0,
+      "explanation": "遍历对象自身属性更推荐 Object.keys / Object.entries，遍历值用 for...of。"
+    }
+  ],
+  "js_functions": [
+    {
+      "question": "函数声明与函数表达式在提升上的差别是？",
+      "options": [
+        "函数声明整体提升，可在定义前调用；函数表达式在赋值前不可用",
+        "两者都能在定义前调用",
+        "函数表达式会被提升为 undefined 并可调用",
+        "函数声明不会被提升"
+      ],
+      "answer": 0,
+      "explanation": "函数表达式赋给 const 时存在暂时性死区，提前调用会抛 ReferenceError。"
+    },
+    {
+      "question": "剩余参数 ...args 相比 arguments 的优势是？",
+      "options": [
+        "它是真正的数组，只收集剩余参数，箭头函数里也能用",
+        "它能访问所有历史参数",
+        "它会自动去重",
+        "它是对象而不是数组"
+      ],
+      "answer": 0,
+      "explanation": "arguments 是类数组对象、在箭头函数中不可用，现代代码应优先使用剩余参数。"
+    }
+  ],
+  "js_objects": [
+    {
+      "question": "Object.freeze(obj) 与 const obj 的区别是？",
+      "options": [
+        "const 只限制变量不能重新赋值，freeze 才禁止修改对象属性（且是浅冻结）",
+        "两者完全等价",
+        "freeze 能冻结嵌套的所有层级",
+        "const 会阻止修改属性"
+      ],
+      "answer": 0,
+      "explanation": "需要深冻结要递归处理每个属性，常见于配置对象与常量表。"
+    },
+    {
+      "question": "const { a = 1 } = { a: undefined } 之后 a 的值是？",
+      "options": [
+        "1，只有 undefined 才触发默认值",
+        "undefined",
+        "null",
+        "报错"
+      ],
+      "answer": 0,
+      "explanation": "解构默认值只在对应值为 undefined 时生效，传 null 不会用默认值。"
+    }
+  ],
+  "js_arrays": [
+    {
+      "question": "find 与 filter 的区别是？",
+      "options": [
+        "find 返回第一个匹配的元素（或 undefined），filter 返回所有匹配组成的新数组",
+        "find 返回数组，filter 返回单个元素",
+        "两者都修改原数组",
+        "find 会排序后再查找"
+      ],
+      "answer": 0,
+      "explanation": "只要一个结果就用 find 提前短路，需要全部结果才用 filter。"
+    },
+    {
+      "question": "arr.flatMap(fn) 相当于？",
+      "options": [
+        "先 map 再 flat(1)，把每个元素映射成的数组展平一层",
+        "先排序再映射",
+        "只做去重",
+        "把数组反转"
+      ],
+      "answer": 0,
+      "explanation": "flatMap 常用来「一对多」展开，例如把订单列表展开成商品项列表。"
+    }
+  ],
+  "js_async": [
+    {
+      "question": "Promise.allSettled 与 Promise.all 的关键区别是？",
+      "options": [
+        "allSettled 等全部完成并返回每个任务的成功/失败状态，不会因单个失败而短路",
+        "allSettled 更快",
+        "Promise.all 会忽略失败",
+        "两者返回结构相同"
+      ],
+      "answer": 0,
+      "explanation": "批量任务中允许部分失败时用 allSettled，必须全部成功才继续时用 all。"
+    },
+    {
+      "question": "async 函数总是返回什么？",
+      "options": [
+        "Promise（返回非 Promise 值也会被包装）",
+        "undefined",
+        "回调函数",
+        "同步值"
+      ],
+      "answer": 0,
+      "explanation": "因此调用方需要 await 或 .then 处理，抛错会变成 rejected 的 Promise。"
+    }
+  ],
+  "js_dom_events": [
+    {
+      "question": "addEventListener 的第三个参数 capture: true 表示？",
+      "options": [
+        "在捕获阶段触发监听（从外到内），否则在冒泡阶段触发",
+        "只触发一次",
+        "阻止默认行为",
+        "提升监听优先级到最高"
+      ],
+      "answer": 0,
+      "explanation": "事件先捕获到目标再冒泡回来，理解这个顺序才能处理好委托与阻止传播。"
+    },
+    {
+      "question": "DOMContentLoaded 与 load 的区别是？",
+      "options": [
+        "DOMContentLoaded 在 HTML 解析完成时触发，load 要等图片等全部资源加载完",
+        "两者同时触发",
+        "load 在解析完 HTML 时触发",
+        "DOMContentLoaded 只在 IE 可用"
+      ],
+      "answer": 0,
+      "explanation": "脚本尽早绑定事件应使用 DOMContentLoaded，统计完整加载耗时才用 load。"
+    }
+  ],
+  "js_errors_debugging": [
+    {
+      "question": "让自定义错误继承 Error 的好处是？",
+      "options": [
+        "保留堆栈信息，并且可以用 instanceof 精确区分错误类型",
+        "运行速度更快",
+        "自动重试",
+        "让错误不再抛出"
+      ],
+      "answer": 0,
+      "explanation": "自定义错误便于在 catch 中按业务类型分支处理，而不是靠判断 message 字符串。"
+    },
+    {
+      "question": "source map（.map 文件）的作用是？",
+      "options": [
+        "把压缩/编译后的代码行号映射回源码，方便定位线上报错",
+        "提升代码执行速度",
+        "加密源码",
+        "让浏览器缓存失效"
+      ],
+      "answer": 0,
+      "explanation": "生产构建可上传 source map 到错误监控平台而不公开，兼顾安全与可定位性。"
+    }
+  ],
+  "js_modules_tooling": [
+    {
+      "question": "ESM 与 CommonJS 的主要区别是？",
+      "options": [
+        "ESM 是静态的 import/export，可在编译期分析并 tree shaking；CommonJS 是运行时 require",
+        "CommonJS 只能在浏览器使用",
+        "ESM 不能导出函数",
+        "两者的加载时机相同"
+      ],
+      "answer": 0,
+      "explanation": "静态结构让打包器能安全地删除未使用的导出，这是现代构建体积优化的基础。"
+    },
+    {
+      "question": "devDependencies 与 dependencies 的区别是？",
+      "options": [
+        "只在开发、构建、测试时需要的包放 devDependencies，运行时需要的放 dependencies",
+        "devDependencies 不会被安装",
+        "两者完全等价",
+        "dependencies 只能放类型声明"
+      ],
+      "answer": 0,
+      "explanation": "把测试框架、打包器放 devDependencies，能避免污染生产依赖树。"
+    }
+  ],
+  "js_project": [
+    {
+      "question": "React 中 useEffect 的依赖数组传空数组表示？",
+      "options": [
+        "只在组件挂载后执行一次，清理函数在卸载时执行",
+        "每次渲染都执行",
+        "永远不执行",
+        "只在状态变化时执行"
+      ],
+      "answer": 0,
+      "explanation": "依赖数组应写全所有用到的响应式值，遗漏会导致闭包读到过期数据。"
+    },
+    {
+      "question": "Vite 相比传统打包器在开发时的优势是？",
+      "options": [
+        "基于浏览器原生 ESM 按需编译，冷启动与热更新更快",
+        "不需要任何配置",
+        "能替代 Node.js",
+        "自动生成后端接口"
+      ],
+      "answer": 0,
+      "explanation": "开发阶段不整体打包，生产构建仍使用 Rollup 做优化打包。"
+    }
+  ],
+  "csharp_basics": [
+    {
+      "question": "C# 中 using 指令与 using 语句的区别是？",
+      "options": [
+        "using 指令引入命名空间，using 语句确保 IDisposable 资源在作用域结束时释放",
+        "两者完全一样",
+        "using 语句只能用于文件 IO",
+        "using 指令会自动释放资源"
+      ],
+      "answer": 0,
+      "explanation": "using 语句会编译成 try/finally 调用 Dispose，是 C# 资源管理的标准写法。"
+    },
+    {
+      "question": ".NET SDK 与运行时的区别是？",
+      "options": [
+        "SDK 包含编译器与 CLI 工具可以开发，运行时只能执行已编译程序",
+        "运行时包含编译器",
+        "两者都必须安装才能运行程序",
+        "SDK 不能运行程序"
+      ],
+      "answer": 0,
+      "explanation": "服务器部署可以只装 ASP.NET Core 运行时，开发机则装 SDK。"
+    }
+  ],
+  "csharp_types": [
+    {
+      "question": "C# 中 var 声明的变量类型是？",
+      "options": [
+        "编译期由初始化表达式推断的静态类型，一旦确定不能改",
+        "运行时可变的动态类型",
+        "等同于 object",
+        "等同于 dynamic"
+      ],
+      "answer": 0,
+      "explanation": "var 只是省写类型，仍受强类型约束；动态类型要用 dynamic。"
+    },
+    {
+      "question": "开启可空引用类型后，string? 表示？",
+      "options": [
+        "明确声明该引用可能为 null，编译器会做流分析并给出警告",
+        "运行时强制检查",
+        "等同于 string",
+        "表示不可变字符串"
+      ],
+      "answer": 0,
+      "explanation": "可空注解能在编译期暴露潜在的空引用风险，是减少 NullReferenceException 的有效手段。"
+    }
+  ],
+  "csharp_control_methods": [
+    {
+      "question": "ref、out、in 三个参数修饰符的区别是？",
+      "options": [
+        "ref 传入前必须初始化且可读写；out 不需初始化但方法内必须赋值；in 是只读引用",
+        "三者完全等价",
+        "out 可以不赋值就返回",
+        "in 允许方法修改实参"
+      ],
+      "answer": 0,
+      "explanation": "out 适合返回多个结果，in 适合传递较大的只读结构体避免拷贝。"
+    },
+    {
+      "question": "模式匹配 if (obj is int n) 的作用是？",
+      "options": [
+        "判断类型并在为真时把值赋给变量 n",
+        "把 obj 转换成 long",
+        "比较两个整数是否相等",
+        "声明一个可空类型"
+      ],
+      "answer": 0,
+      "explanation": "类型判断与取值合并成一步，配合 switch 表达式可以写出简洁的分支逻辑。"
+    }
+  ],
+  "csharp_oop": [
+    {
+      "question": "属性（property）相比 public 字段的优势是？",
+      "options": [
+        "可在 get/set 中加校验与计算逻辑，并且能被接口约束、支持数据绑定",
+        "占用内存更少",
+        "可以突破访问修饰符限制",
+        "运行速度更快"
+      ],
+      "answer": 0,
+      "explanation": "自动属性 { get; set; } 是语法糖，需要时再展开成带逻辑的完整属性。"
+    },
+    {
+      "question": "sealed 关键字的作用是？",
+      "options": [
+        "修饰类时禁止被继承，修饰重写成员时禁止再被重写",
+        "让类变成静态类",
+        "让成员线程安全",
+        "禁止实例化"
+      ],
+      "answer": 0,
+      "explanation": "sealed 可避免继承带来的行为不确定性，string 就是 sealed 类。"
+    }
+  ],
+  "csharp_inheritance": [
+    {
+      "question": "抽象方法与虚方法的区别是？",
+      "options": [
+        "抽象方法没有实现，非抽象子类必须重写；虚方法提供默认实现，子类可选重写",
+        "抽象方法可以实例化调用",
+        "虚方法必须在子类重写",
+        "两者只是命名不同"
+      ],
+      "answer": 0,
+      "explanation": "抽象方法只能存在于抽象类中，用于强制子类给出实现。"
+    },
+    {
+      "question": "类型转换时 is 与 as 的使用差别是？",
+      "options": [
+        "is 返回布尔值（可配合模式变量），as 失败时返回 null 而不抛异常",
+        "两者都会抛异常",
+        "as 只能用于值类型",
+        "is 会修改原对象类型"
+      ],
+      "answer": 0,
+      "explanation": "as 只能用于引用类型或可空类型，不能用于 int 这类值类型。"
+    }
+  ],
+  "csharp_collections_linq": [
+    {
+      "question": "IEnumerable<T> 与 List<T> 的区别是？",
+      "options": [
+        "IEnumerable 只承诺可以遍历（可能延迟计算、只读），List 是具体可变集合",
+        "IEnumerable 支持下标访问",
+        "List 不能被遍历",
+        "两者完全等价"
+      ],
+      "answer": 0,
+      "explanation": "方法签名用 IEnumerable 表达「只要可枚举」更灵活，需要增删时才用 List。"
+    },
+    {
+      "question": "LINQ 中先 Where 再 Select 的顺序为什么更好？",
+      "options": [
+        "先过滤掉不需要的元素，后续映射与传输的数据量更小",
+        "两者顺序无所谓",
+        "先 Select 能减少内存",
+        "Where 会缓存全部结果"
+      ],
+      "answer": 0,
+      "explanation": "对数据库查询尤其明显：顺序正确可以把过滤条件下推到 SQL，减少扫描行数。"
+    }
+  ],
+  "csharp_async": [
+    {
+      "question": "CancellationToken 的作用是？",
+      "options": [
+        "以协作方式请求取消异步操作（如请求超时、用户离开页面）",
+        "强制杀死线程",
+        "自动重试失败请求",
+        "提升并发数"
+      ],
+      "answer": 0,
+      "explanation": "取消是协作式的，方法内部要定期检查 token 或把它传给下游 API 才会生效。"
+    },
+    {
+      "question": "Task.WhenAll 相比逐个 await 的优势是？",
+      "options": [
+        "多个任务同时进行，整体耗时接近最慢的那个任务",
+        "可以忽略异常",
+        "会自动限制并发数",
+        "返回值是单个结果"
+      ],
+      "answer": 0,
+      "explanation": "多个异常会被包装在 AggregateException 中，需要逐个检查各任务的异常。"
+    }
+  ],
+  "csharp_ecosystem": [
+    {
+      "question": "ASP.NET Core 中间件的执行方式是？",
+      "options": [
+        "按注册顺序组成管道依次调用，可以短路请求或调用 next 继续",
+        "随机顺序执行",
+        "只执行最后一个",
+        "只能注册一个"
+      ],
+      "answer": 0,
+      "explanation": "顺序很关键：异常处理、认证、授权、静态文件、路由都有惯用的注册次序。"
+    },
+    {
+      "question": "IConfiguration 读取配置的特点（如 appsettings.json）是？",
+      "options": [
+        "可组合多个配置源，环境变量通常能覆盖 JSON 中的同名项",
+        "只能读取环境变量",
+        "修改 JSON 后必须重新编译",
+        "不能读取嵌套结构"
+      ],
+      "answer": 0,
+      "explanation": "用「键:子键」的格式读取嵌套值，部署时用环境变量覆盖敏感配置更安全。"
+    }
+  ],
+  "csharp_project": [
+    {
+      "question": "在分层架构中，Repository 与 Service 的职责划分通常是？",
+      "options": [
+        "Repository 封装数据访问细节，Service 承担业务规则与事务编排",
+        "两者职责相同",
+        "Service 直接拼 SQL",
+        "Repository 负责返回 HTTP 状态码"
+      ],
+      "answer": 0,
+      "explanation": "把数据访问与业务规则分开，测试时可以替换 Repository 而不依赖真实数据库。"
+    },
+    {
+      "question": "创建资源成功后返回 201 Created 并结合 CreatedAtAction 的好处是？",
+      "options": [
+        "既符合 REST 语义，又在响应头中给出新资源的访问地址",
+        "可以省略响应体",
+        "表示请求被拒绝",
+        "提升接口性能"
+      ],
+      "answer": 0,
+      "explanation": "201 表示创建成功，Location 头让客户端知道下一步该请求哪个地址。"
+    }
+  ]
+}

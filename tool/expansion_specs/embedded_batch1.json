@@ -1,0 +1,197 @@
+{
+  "lessons": [
+    {
+      "id": "embedded_mcu_basics",
+      "category": "embedded",
+      "title": {"zh": "单片机与嵌入式系统基础", "en": "Microcontrollers and Embedded Fundamentals"},
+      "summary": {"zh": "从 MCU 组成、时钟与复位讲到启动流程、内存布局与交叉编译调试。", "en": "Cover MCU architecture, clocks, reset, startup flow, memory layout and cross debugging."},
+      "keywords": ["MCU", "时钟", "启动流程", "内存布局", "交叉编译"],
+      "difficulty": "基础",
+      "minutes": 30,
+      "order": 1,
+      "image": {"title": "MCU 的组成与启动链路", "flow": ["上电复位", "启动代码初始化", "时钟与外设配置", "进入主循环"]},
+      "goals": [
+        "能画出 MCU 内部主要模块并说明各自作用。",
+        "能解释复位后从哪条指令开始执行、时钟如何配置。",
+        "能区分 Flash、RAM 与外设寄存器的用途。"
+      ],
+      "prerequisitesText": [
+        "了解二进制、寄存器与内存地址的概念。",
+        "能用 C 语言写函数与位运算。",
+        "知道编译是把源码转换成目标平台指令的过程。"
+      ],
+      "concepts": [
+        {
+          "name": "MCU 组成与地址空间",
+          "plain": "单片机把处理器核、Flash、RAM、外设与时钟电路集成在一颗芯片上，它们共享统一地址空间。",
+          "mechanism": "程序从 Flash 取指执行，变量放在 RAM，外设通过映射到特定地址的寄存器控制；读写这些寄存器等于配置硬件。",
+          "example": "查阅数据手册，找出 Flash、RAM 与某个外设寄存器的地址范围，标注哪些区域可写。",
+          "boundary": "外设寄存器读写有副作用，重复写入可能触发状态变化，不能像普通变量那样随意访问。",
+          "engineering": "用 volatile 修饰寄存器访问，封装硬件操作并提供统一初始化函数，避免散落的魔数。"
+        },
+        {
+          "name": "时钟、复位与启动流程",
+          "plain": "上电后芯片从固定地址取第一条指令，启动代码设置栈指针、初始化时钟与内存，然后跳转到主函数。",
+          "mechanism": "复位向量指向启动文件，启动文件按段复制初值、清零未初始化数据，再调用时钟与外设初始化。",
+          "example": "在启动文件与主函数入口各打断点，观察执行顺序与时钟配置前后的寄存器值。",
+          "boundary": "时钟配置错误会导致外设无响应或通信速率错乱，且现象常表现为「代码没错但设备不动」。",
+          "engineering": "把时钟树配置写成显式表格并核对频率，初始化失败时用状态灯或日志输出定位。"
+        },
+        {
+          "name": "内存布局与段",
+          "plain": "程序分为代码段、只读数据、已初始化数据、未初始化数据与栈堆区域，各自位于不同内存区域。",
+          "mechanism": "已初始化数据的初值存在 Flash，启动时复制到 RAM；未初始化数据在启动时清零；栈与堆在运行时生长。",
+          "example": "在链接脚本里给变量指定段，观察 map 文件中的地址与大小变化。",
+          "boundary": "栈溢出会破坏相邻内存并产生难以复现的异常，堆碎片则会让长期运行设备慢慢失效。",
+          "engineering": "开启栈使用量检查或填充标记，限制动态分配，必要时把关键缓冲区放到静态区。"
+        },
+        {
+          "name": "交叉编译与在线调试",
+          "plain": "开发机架构与目标芯片不同，需要交叉编译工具链生成目标指令，再通过调试器下载与单步执行。",
+          "mechanism": "工具链包含编译器、链接器与调试服务器；调试接口提供读写内存、断点与寄存器查看能力。",
+          "example": "用工具链编译一个点灯程序，通过调试器下载并单步执行到点亮语句。",
+          "boundary": "优化会改变指令与变量的可见性，调试时通常先关优化，定位问题后再恢复正式构建。",
+          "engineering": "固定工具链版本与编译参数，构建产物附带 map 文件，方便比对内存占用变化。"
+        }
+      ],
+      "steps": ["核对芯片与数据手册", "配置时钟与内存", "初始化外设并编写主循环", "下载调试并记录内存占用"],
+      "code": {
+        "language": "c",
+        "snippet": "#include <stdint.h>\n#include <stdbool.h>\n\n// 以常见 Cortex-M 风格为例：寄存器地址来自数据手册\n#define RCC_BASE      0x40021000u\n#define GPIOA_BASE    0x48000000u\n#define RCC_AHB2ENR   (*(volatile uint32_t *)(RCC_BASE + 0x4Cu))\n#define GPIOA_MODER   (*(volatile uint32_t *)(GPIOA_BASE + 0x00u))\n#define GPIOA_ODR     (*(volatile uint32_t *)(GPIOA_BASE + 0x14u))\n\nstatic void delay(volatile uint32_t cycles) {\n    while (cycles--) {\n        __asm__ volatile(\"nop\");\n    }\n}\n\nint main(void) {\n    RCC_AHB2ENR |= (1u << 0);          // 打开 GPIOA 时钟\n    GPIOA_MODER &= ~(3u << (5 * 2));   // PA5 设为输出\n    GPIOA_MODER |=  (1u << (5 * 2));\n\n    while (true) {\n        GPIOA_ODR ^= (1u << 5);        // 翻转 PA5\n        delay(400000);\n    }\n}",
+        "walkthrough": "代码先把外设寄存器定义为 volatile 指针，再依次开启时钟、配置引脚模式并在主循环里翻转电平；顺序体现了「先时钟后外设」的硬件要求。",
+        "expected_output": "下载运行后 PA5 引脚按延时周期交替输出高低电平；若忘记开启时钟，引脚电平不会变化。"
+      },
+      "faults": [
+        {"topic": "外设操作前忘记开时钟", "wrong": "直接配置 GPIO 寄存器，引脚毫无反应", "fix": "按「先开时钟、再配外设、最后使能输出」的顺序初始化，并在文档中固定下来"},
+        {"topic": "栈溢出无感知", "wrong": "递归或大数组占满栈，运行一段时间后出现随机异常", "fix": "开启栈使用检查并限制递归，大缓冲区改为静态分配或限制大小"},
+        {"topic": "调试时开着最高优化", "wrong": "变量被优化掉，单步跳转与源码对不上", "fix": "调试构建关闭优化并保留调试信息，正式构建再启用优化"}
+      ],
+      "glossary": [
+        {"term": "MCU", "definition": "集成处理器核、存储器与外设的单片微控制器。"},
+        {"term": "复位向量", "definition": "上电后处理器取第一条指令的固定地址入口。"},
+        {"term": "内存映射寄存器", "definition": "映射到地址空间的外设控制寄存器，读写即操作硬件。"},
+        {"term": "链接脚本", "definition": "描述各段如何放入目标内存区域的配置文件。"},
+        {"term": "交叉编译", "definition": "在一种平台上生成另一种平台可执行代码的编译方式。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "配置 GPIO 前必须先做哪一步？", "options": ["打开该外设的时钟", "把引脚接地", "关闭调试接口", "清空全部 RAM"], "answer": 0, "explanation": "外设时钟未开启时寄存器写入不会生效，引脚自然没有反应；这是新手最常见的「代码看起来没错但设备不动」的原因。"},
+        {"type": "single", "question": "已初始化全局变量的初值在上电时存放在哪里？", "options": ["先存在 Flash，启动时复制到 RAM", "只存在 RAM，由编译器生成", "存在外设寄存器中", "不存在，运行时随机初始化"], "answer": 0, "explanation": "掉电后 RAM 内容不可保留，因此初值必须存在 Flash 中，由启动代码复制到 RAM；未初始化数据则在启动阶段被清零。"},
+        {"type": "multi", "question": "以下哪些是嵌入式项目常见的工程做法？（多选）", "options": ["用 volatile 修饰寄存器访问", "固定工具链版本并保留 map 文件", "把大缓冲区全部放到栈上", "限制动态内存分配"], "answers": [0, 1, 3], "answer": 0, "explanation": "寄存器访问需要 volatile，工具链与 map 文件保证可复现，限制动态分配可避免碎片；把大缓冲区放在栈上容易溢出，属于危险做法。"},
+        {"type": "order", "question": "请按芯片上电后的执行顺序排列步骤。", "options": ["跳转到主函数执行应用逻辑", "上电复位并取复位向量", "初始化时钟与外设", "启动代码复制数据段并清零 BSS"], "correct_order": [1, 3, 2, 0], "answer": 0, "explanation": "复位后先执行启动代码准备内存，再配置时钟与外设，最后进入主函数；顺序颠倒会出现变量初值未就绪或外设无时钟的情况。"},
+        {"type": "debug", "question": "阅读点灯代码，哪项判断正确？", "options": ["必须先打开 GPIOA 时钟，否则翻转电平无效", "GPIOA_MODER 的写入与时钟无关", "使用 volatile 会让代码更容易被优化掉", "延时空循环在开启优化后仍保持完全相同的时长"], "answer": 0, "code": "RCC_AHB2ENR |= (1u << 0);          // 打开 GPIOA 时钟\nGPIOA_MODER &= ~(3u << (5 * 2));   // PA5 设为输出\nwhile (true) { GPIOA_ODR ^= (1u << 5); }", "language": "c", "explanation": "外设寄存器只有在时钟开启后才能写入生效，因此第一步必须使能时钟；volatile 防止编译器优化掉访问，空循环延时则会被优化改变。"}
+      ],
+      "practice": [
+        "查阅你所使用芯片的数据手册，写出时钟使能与引脚配置的寄存器操作顺序。",
+        "为一个工程生成 map 文件，记录 Flash 与 RAM 占用，再换一种优化级别对比。",
+        "把点灯程序改成呼吸灯，说明你用什么方式调整占空比。"
+      ],
+      "refs": [
+        {"name": "ARM Cortex-M 处理器文档", "url": "https://developer.arm.com/documentation/100166/latest/"},
+        {"name": "FreeRTOS 官方文档", "url": "https://www.freertos.org/Documentation/RTOS_book.html"}
+      ],
+      "english": "Embedded development starts with the silicon: cores, flash, RAM, mapped peripherals, clocks and reset vectors. This lesson traces the startup flow, configures a GPIO with volatile register access, and shows how to read a linker map to keep stack and heap bounded.",
+      "reviewPoints": [
+        "能说出 MCU 主要模块与地址空间划分。",
+        "能按顺序完成时钟与外设初始化。",
+        "能解释 volatile 与内存段的作用。"
+      ]
+    },
+    {
+      "id": "embedded_gpio_interrupt",
+      "category": "embedded",
+      "title": {"zh": "外设编程：GPIO、中断与定时器", "en": "Peripherals: GPIO, Interrupts and Timers"},
+      "summary": {"zh": "掌握输入去抖、中断服务程序编写规范与定时器产生精确周期的办法。", "en": "Handle debouncing, interrupt service routines and timer-driven periodic work."},
+      "keywords": ["GPIO", "中断", "定时器", "去抖", "中断优先级"],
+      "difficulty": "进阶",
+      "minutes": 32,
+      "order": 2,
+      "prerequisites": ["embedded_mcu_basics"],
+      "image": {"title": "中断与定时器的工作时序", "flow": ["外设事件触发", "保存现场进入 ISR", "处理并清除标志", "返回主循环"]},
+      "goals": [
+        "能区分轮询与中断两种输入处理方式。",
+        "能写出简短、无阻塞的中断服务程序。",
+        "能用定时器实现稳定的周期性任务与测量。"
+      ],
+      "prerequisitesText": [
+        "已理解寄存器访问与时钟初始化。",
+        "知道函数调用与栈的关系。",
+        "了解按键抖动与电平变化的物理现象。"
+      ],
+      "concepts": [
+        {
+          "name": "GPIO 输入输出与去抖",
+          "plain": "GPIO 可配置为输入或输出，输入常用于按键与传感器信号；机械按键在按下瞬间会产生毫秒级抖动。",
+          "mechanism": "上拉或下拉电阻确定空闲电平，去抖通过延时重采样或软件计数确认稳定状态。",
+          "example": "以 1 毫秒周期采样按键电平，连续 20 次相同才认定为一次有效动作。",
+          "boundary": "纯延时去抖会阻塞主循环，长按与连击需要状态机而不是一次判断。",
+          "engineering": "把按键处理写成状态机并在固定周期调用，硬件上配电容滤波降低软件负担。"
+        },
+        {
+          "name": "中断机制与优先级",
+          "plain": "外设事件触发中断，处理器保存现场后跳转到中断服务程序，处理完成再返回被打断的位置。",
+          "mechanism": "中断控制器按优先级决定同时到达时先响应谁，高优先级可以嵌套打断低优先级。",
+          "example": "为按键与串口各配置一个中断，用不同优先级观察同时触发时的处理顺序。",
+          "boundary": "在中断里长时间阻塞会推迟其他中断，导致数据丢失；优先级反转会让关键任务被间接拖慢。",
+          "engineering": "中断只做采集与置标志，复杂处理放到主循环；共享变量加 volatile 或用临界区保护。"
+        },
+        {
+          "name": "中断服务程序编写规范",
+          "plain": "中断服务程序要短、可重入、且必须清除中断标志，否则会反复触发甚至死循环。",
+          "mechanism": "ISR 读取外设状态、处理最小必要逻辑、清除标志并返回；耗时操作通过队列或标志交给主循环。",
+          "example": "在串口接收中断里只把字节放入环形缓冲区，主循环再解析协议。",
+          "boundary": "在 ISR 里调用非可重入函数（例如动态分配或阻塞式打印）会导致难以复现的崩溃。",
+          "engineering": "为每个 ISR 明确输入输出与最大执行时间，环形缓冲区大小按峰值速率估算。"
+        },
+        {
+          "name": "定时器与周期性任务",
+          "plain": "定时器按计数频率产生溢出或比较事件，用于精确延时、周期采样与脉宽调制。",
+          "mechanism": "预分频把时钟降到计数频率，自动重载值决定周期；比较通道输出可生成方波与占空比。",
+          "example": "用定时器每 1 毫秒触发一次采样，累计 1000 次得到一秒的软件计时。",
+          "boundary": "软件延时精度受中断与优化影响，长周期计时要注意计数溢出与时钟漂移。",
+          "engineering": "统一使用一个系统滴答作为时间基准，所有周期任务按滴答调度，避免多个定时器互相干扰。"
+        }
+      ],
+      "steps": ["配置引脚与上下拉", "设置中断触发条件与优先级", "在 ISR 中采集并清标志", "用定时器驱动周期任务"],
+      "code": {
+        "language": "c",
+        "snippet": "#include <stdint.h>\n#include <stdbool.h>\n\n#define GPIOA_IDR (*(volatile uint32_t *)0x48000004u)\n#define TICK_MS   1000u\n\nstatic volatile uint32_t g_ms_tick = 0;\nstatic volatile bool g_button_pressed = false;\n\n// 1 毫秒定时器中断：只做计数，不执行耗时逻辑\nvoid SysTick_Handler(void) {\n    g_ms_tick++;\n}\n\n// 按键中断：置标志并清除外设标志，交由主循环处理\nvoid EXTI0_IRQHandler(void) {\n    g_button_pressed = true;\n    // 实际项目中在此清除对应的中断挂起标志\n}\n\nbool button_take(void) {\n    if (!g_button_pressed) return false;\n    g_button_pressed = false;\n    return true;\n}\n\nint main(void) {\n    uint32_t last = g_ms_tick;\n    while (true) {\n        if (button_take()) {\n            // 处理按键业务，这里可以安全地做耗时操作\n        }\n        if (g_ms_tick - last >= 500) {  // 每 500 毫秒采样一次输入\n            last = g_ms_tick;\n            (void)GPIOA_IDR;\n        }\n    }\n}",
+        "walkthrough": "定时器中断只累加毫秒计数，按键中断只置标志；主循环读取标志处理业务，并用无符号差值计算经过时间，避免计数溢出带来的比较错误。",
+        "expected_output": "每 500 毫秒执行一次采样；按键触发后主循环读取标志并处理一次，重复按下不会丢失（若需要连击可改为计数）。"
+      },
+      "faults": [
+        {"topic": "中断里执行耗时逻辑", "wrong": "在 ISR 里直接打印日志或做协议解析", "fix": "ISR 只采集与置标志，耗时处理移到主循环或任务中"},
+        {"topic": "忘记清除中断标志", "wrong": "退出中断后同一条件反复触发，主循环几乎无法执行", "fix": "在 ISR 内按数据手册要求清除挂起标志，并验证不重复触发"},
+        {"topic": "共享变量缺少保护", "wrong": "主循环与中断同时读写计数器，出现丢失更新", "fix": "共享变量加 volatile，必要时用临界区或原子操作保护读改写序列"}
+      ],
+      "glossary": [
+        {"term": "GPIO", "definition": "通用输入输出引脚，可配置方向与电平特性。"},
+        {"term": "中断服务程序", "definition": "外设事件触发后执行的短小处理函数。"},
+        {"term": "中断优先级", "definition": "决定多个中断同时到达时响应顺序的等级设置。"},
+        {"term": "去抖", "definition": "消除机械触点抖动、只保留一次有效动作的处理。"},
+        {"term": "自动重载值", "definition": "定时器计数达到后重新装载的数值，决定周期长度。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "按键一次按下却被识别成多次，最可能的原因是什么？", "options": ["触点抖动没有做去抖处理", "中断优先级设置过低", "定时器预分频过大", "GPIO 没有使能时钟"], "answer": 0, "explanation": "机械触点在闭合瞬间会产生毫秒级抖动，不做去抖就会被读成多次动作；时钟未使能表现为完全无响应，与连击现象不同。"},
+        {"type": "single", "question": "中断服务程序里最不应该出现的做法是什么？", "options": ["执行阻塞式等待或耗时打印", "读取外设状态寄存器", "置位一个 volatile 标志", "清除中断挂起标志"], "answer": 0, "explanation": "ISR 会推迟其他中断与主循环执行，阻塞等待与耗时打印必须移出；读取状态、置标志与清标志都是 ISR 的典型工作。"},
+        {"type": "multi", "question": "使用定时器实现周期任务时需要注意哪些问题？（多选）", "options": ["计数溢出与无符号差值比较", "预分频与自动重载值决定的实际周期", "系统时钟变化导致周期漂移", "把耗时业务逻辑直接放进定时器中断"], "answers": [0, 1, 2], "answer": 0, "explanation": "周期任务要正确处理溢出、按实际时钟计算周期并关注漂移；把耗时逻辑放进中断会阻塞系统，属于反模式。"},
+        {"type": "order", "question": "请按一次按键中断的处理顺序排列步骤。", "options": ["主循环读取标志并处理业务", "按键触发中断", "清除中断挂起标志", "ISR 置位按键标志"], "correct_order": [1, 3, 2, 0], "answer": 0, "explanation": "先由硬件触发中断，ISR 置标志并清挂起标志，最后主循环取走标志处理业务；标志不清会反复进入中断，业务写入 ISR 则会拉长中断时间。"},
+        {"type": "debug", "question": "阅读中断与主循环代码，哪项判断正确？", "options": ["用无符号差值比较时间可以正确处理计数溢出", "g_ms_tick 不需要 volatile 修饰", "按键标志必须在 ISR 中清零并立即处理业务", "定时器中断应当直接解析协议数据"], "answer": 0, "code": "if (g_ms_tick - last >= 500) {\n    last = g_ms_tick;\n}", "language": "c", "explanation": "无符号减法在溢出回绕后仍能得到正确的时间差，这是嵌入式计时常见写法；g_ms_tick 被中断与主循环共享，必须加 volatile 防止优化。"}
+      ],
+      "practice": [
+        "为按键实现一个支持短按与长按的状态机，并说明消抖参数如何选择。",
+        "用定时器实现 1 赫兹闪烁与 50% 占空比输出，测量实际频率。",
+        "写一个环形缓冲区，把串口接收中断与主循环解析连接起来。"
+      ],
+      "refs": [
+        {"name": "STM32 参考手册（中断与定时器章节）", "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32-32-bit-arm-cortex-mcus.html"},
+        {"name": "FreeRTOS 中断与临界区说明", "url": "https://www.freertos.org/Documentation/02-Kernel/02-Kernel-basics/03-Tasks"}
+      ],
+      "english": "Peripherals turn electrical events into software signals. This lesson covers GPIO input with debouncing, interrupt priorities, short ISR rules, and timer-driven periodic work, including the unsigned-difference trick for tick counters that wrap around.",
+      "reviewPoints": [
+        "能说明轮询与中断的适用场景。",
+        "能写出短小、无阻塞的中断服务程序。",
+        "能用定时器实现稳定的周期任务。"
+      ]
+    }
+  ]
+}

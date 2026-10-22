@@ -1,0 +1,74 @@
+{
+  "python_decorators_generators": {
+    "category": "python",
+    "title": {"zh": "Python 装饰器与生成器", "en": "Python Decorators and Generators"},
+    "summary": {"zh": "掌握闭包、装饰器、yield、惰性序列和生成器性能。", "en": "Learn closures, decorators, yield, lazy sequences and generator performance."},
+    "keywords": ["装饰器", "生成器", "yield", "闭包"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["装饰器本质是接收函数并返回新函数的高阶函数，常用于日志、缓存、权限和重试。", "生成器用 yield 逐个产出值，适合大文件和流式处理，避免一次性占用内存。", "装饰器要保留原函数元数据，生成器要处理关闭、异常和资源释放。"]
+  },
+  "python_context_iterators": {
+    "category": "python",
+    "title": {"zh": "Python 上下文管理器与迭代器协议", "en": "Python Context Managers and Iterators"},
+    "summary": {"zh": "理解 with、enter/exit、迭代器协议和资源安全。", "en": "Learn with, enter/exit, iterator protocol and resource safety."},
+    "keywords": ["上下文管理器", "迭代器", "with", "资源"],
+    "difficulty": "高级", "minutes": 22,
+    "points": ["with 保证进入和退出成对执行，适合文件、锁、连接和事务。", "迭代器实现 __iter__ 和 __next__，耗尽后要持续抛出 StopIteration。", "上下文管理器要正确处理异常、嵌套和异步资源。"]
+  },
+  "python_packaging_performance": {
+    "category": "python",
+    "title": {"zh": "Python 打包、发布与性能", "en": "Python Packaging, Publishing and Performance"},
+    "summary": {"zh": "用 pyproject、锁文件和构建工具发布包，并做性能剖析。", "en": "Use pyproject, lock files and build tools, then profile performance."},
+    "keywords": ["打包", "pyproject", "性能剖析", "发布"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["pyproject.toml 统一声明构建、依赖和工具配置，锁文件保证可复现。", "发布要管理版本、许可证、README、变更日志和制品签名。", "性能优化先用 cProfile、py-spy 和基准测试定位，再考虑算法、缓存或原生扩展。"]
+  },
+  "cpp_move_semantics": {
+    "category": "cpp",
+    "title": {"zh": "C++ 移动语义与右值引用", "en": "C++ Move Semantics and Rvalue References"},
+    "summary": {"zh": "理解左值右值、移动构造、完美转发和返回值优化。", "en": "Learn value categories, move constructors, forwarding and RVO."},
+    "keywords": ["移动语义", "右值引用", "完美转发", "RVO"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["移动语义把资源所有权从临时对象转移出去，避免不必要的深拷贝。", "std::move 只是类型转换，是否真正移动取决于类型是否实现移动操作。", "完美转发用万能引用和 forward 保持参数值类别，但要避免悬垂引用。"]
+  },
+  "cpp_concepts_ranges": {
+    "category": "cpp",
+    "title": {"zh": "C++ Concepts 与 Ranges", "en": "C++ Concepts and Ranges"},
+    "summary": {"zh": "用 Concepts 约束模板，用 Ranges 组合惰性数据管道。", "en": "Constrain templates with Concepts and compose lazy pipelines with Ranges."},
+    "keywords": ["Concepts", "Ranges", "模板", "约束"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["Concepts 把模板约束写进接口，让错误信息更清晰并参与重载选择。", "Ranges 用 view 组合过滤、变换和截断，通常是惰性求值。", "惰性 view 要注意底层容器生命周期和重复遍历成本。"]
+  },
+  "cpp_concurrency_atomics": {
+    "category": "cpp",
+    "title": {"zh": "C++ 并发、原子操作与内存序", "en": "C++ Concurrency, Atomics and Memory Order"},
+    "summary": {"zh": "理解线程、互斥量、条件变量、原子类型和内存序。", "en": "Learn threads, mutexes, condition variables, atomics and memory order."},
+    "keywords": ["线程", "atomic", "内存序", "条件变量"],
+    "difficulty": "高级", "minutes": 26,
+    "points": ["共享数据的读写必须建立同步关系，互斥量是最常用的手段。", "原子类型保证操作不可分割，但内存序决定可见性和重排边界。", "条件变量要配合谓词和锁使用，避免虚假唤醒和丢失通知。"]
+  },
+  "java_modern_features": {
+    "category": "java",
+    "title": {"zh": "现代 Java：Record、Sealed 与模式匹配", "en": "Modern Java: Records, Sealed Types and Pattern Matching"},
+    "summary": {"zh": "用 Record、密封类和模式匹配表达不可变数据与封闭类型层次。", "en": "Use records, sealed types and pattern matching for immutable data."},
+    "keywords": ["Record", "Sealed", "模式匹配", "不可变"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["Record 用简洁语法生成不可变数据载体、equals、hashCode 和访问器。", "Sealed 限制可继承类型集合，让编译器检查 switch 分支是否穷尽。", "模式匹配把类型判断、绑定和结构解构合并，减少样板代码。"]
+  },
+  "java_virtual_threads": {
+    "category": "java",
+    "title": {"zh": "Java 虚拟线程与结构化并发", "en": "Java Virtual Threads and Structured Concurrency"},
+    "summary": {"zh": "理解虚拟线程适用场景、阻塞 IO、线程池取舍和结构化并发。", "en": "Learn virtual threads for blocking IO, pool tradeoffs and structured concurrency."},
+    "keywords": ["虚拟线程", "结构化并发", "阻塞IO", "线程池"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["虚拟线程适合大量阻塞式 IO 任务，不应再为每个请求绑定昂贵平台线程。", "CPU 密集任务仍受核心数限制，虚拟线程不会自动加速计算。", "结构化并发让子任务生命周期受父作用域约束，便于取消和错误传播。"]
+  },
+  "java_gc_tuning": {
+    "category": "java",
+    "title": {"zh": "JVM 垃圾回收与性能调优", "en": "JVM GC and Performance Tuning"},
+    "summary": {"zh": "理解堆分区、GC 算法、停顿、分配速率和调优指标。", "en": "Learn heap regions, GC algorithms, pauses, allocation rate and tuning."},
+    "keywords": ["GC", "堆", "停顿", "调优"],
+    "difficulty": "高级", "minutes": 26,
+    "points": ["GC 调优先看分配速率、存活对象、停顿目标和内存使用，而不是先改参数。", "不同收集器在吞吐、延迟和内存之间取舍，选型要匹配服务目标。", "内存泄漏通常来自长生命周期引用、缓存无上限和监听器未注销。"]
+  }
+}

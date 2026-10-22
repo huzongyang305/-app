@@ -1,0 +1,74 @@
+{
+  "js_execution_context": {
+    "category": "javascript",
+    "title": {"zh": "JavaScript 执行上下文与闭包", "en": "JavaScript Execution Context and Closures"},
+    "summary": {"zh": "理解调用栈、词法作用域、闭包、this 和暂时性死区。", "en": "Learn call stack, lexical scope, closures, this and temporal dead zone."},
+    "keywords": ["执行上下文", "闭包", "this", "作用域"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["函数执行时创建词法环境和变量环境，闭包保留对外层变量的引用。", "this 由调用方式决定，箭头函数捕获外层 this。", "let/const 存在暂时性死区，声明前访问会抛 ReferenceError。"]
+  },
+  "js_memory_gc": {
+    "category": "javascript",
+    "title": {"zh": "JavaScript 内存管理与垃圾回收", "en": "JavaScript Memory and Garbage Collection"},
+    "summary": {"zh": "理解可达性、引用泄漏、堆快照和前端长任务。", "en": "Learn reachability, leaks, heap snapshots and long tasks."},
+    "keywords": ["内存", "GC", "堆快照", "泄漏"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["垃圾回收从根对象出发标记可达对象，不再可达的对象才会被回收。", "全局变量、未注销监听器、闭包和缓存会长期持有对象造成泄漏。", "用堆快照对比、分配时间线和 Performance 面板定位内存与长任务。"]
+  },
+  "js_node_backend": {
+    "category": "javascript",
+    "title": {"zh": "Node.js 后端工程", "en": "Node.js Backend Engineering"},
+    "summary": {"zh": "覆盖异步 IO、事件循环、进程模型、错误处理和部署。", "en": "Cover async IO, event loop, process model, errors and deployment."},
+    "keywords": ["Node.js", "事件循环", "后端", "进程"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["Node.js 用事件循环处理异步 IO，CPU 密集任务会阻塞所有请求。", "cluster/worker_threads 分别适合多进程扩展和 CPU 并行，但共享状态要重新设计。", "后端要处理超时、取消、连接池、优雅关闭和结构化日志。"]
+  },
+  "csharp_records_patterns": {
+    "category": "csharp",
+    "title": {"zh": "C# Record、模式匹配与不可变数据", "en": "C# Records, Pattern Matching and Immutable Data"},
+    "summary": {"zh": "用 record、with、模式匹配和不可变集合表达领域数据。", "en": "Use records, with, pattern matching and immutable collections."},
+    "keywords": ["record", "模式匹配", "不可变", "with"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["record 提供值相等和简洁语法，with 可创建修改部分属性的副本。", "模式匹配支持类型、属性、位置和关系模式，让分支表达更清晰。", "不可变数据减少共享修改，但要注意集合深层不可变与复制成本。"]
+  },
+  "csharp_async_streams": {
+    "category": "csharp",
+    "title": {"zh": "C# 异步流与取消", "en": "C# Async Streams and Cancellation"},
+    "summary": {"zh": "理解 IAsyncEnumerable、CancellationToken 和异步资源释放。", "en": "Learn IAsyncEnumerable, CancellationToken and async disposal."},
+    "keywords": ["IAsyncEnumerable", "CancellationToken", "异步流", "取消"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果。", "CancellationToken 要贯穿调用链，并在阻塞点检查取消。", "await foreach 和 await using 保证异步迭代与资源释放正确。"]
+  },
+  "csharp_gc_performance": {
+    "category": "csharp",
+    "title": {"zh": "C# GC、Span 与性能优化", "en": "C# GC, Span and Performance"},
+    "summary": {"zh": "理解代际 GC、分配热点、Span、ArrayPool 和基准测试。", "en": "Learn generational GC, allocations, Span, ArrayPool and benchmarking."},
+    "keywords": ["GC", "Span", "ArrayPool", "BenchmarkDotNet"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["减少短生命周期大对象分配能显著降低 GC 压力和停顿。", "Span 和 Memory 提供无复制切片能力，但有生命周期和栈限制。", "用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化。"]
+  },
+  "rust_traits_generics": {
+    "category": "rust",
+    "title": {"zh": "Rust trait、泛型与关联类型", "en": "Rust Traits, Generics and Associated Types"},
+    "summary": {"zh": "理解 trait 约束、静态分发、动态分发和关联类型。", "en": "Learn trait bounds, static dispatch, dynamic dispatch and associated types."},
+    "keywords": ["trait", "泛型", "dyn", "关联类型"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["泛型加 trait bound 在编译期单态化，性能好但会增加代码体积。", "dyn Trait 使用动态分发，适合异构集合但有权重和间接调用成本。", "关联类型让 trait 只有一个实现类型，泛型参数则允许同一类型多种实现。"]
+  },
+  "rust_smart_pointers": {
+    "category": "rust",
+    "title": {"zh": "Rust 智能指针与内部可变性", "en": "Rust Smart Pointers and Interior Mutability"},
+    "summary": {"zh": "掌握 Box、Rc、Arc、RefCell、Mutex 和循环引用。", "en": "Learn Box, Rc, Arc, RefCell, Mutex and reference cycles."},
+    "keywords": ["Box", "Rc", "Arc", "RefCell"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["Box 提供堆分配和递归类型，Rc/Arc 提供共享所有权，后者可跨线程。", "RefCell/Mutex 在运行时或锁内提供内部可变性，违规会 panic 或阻塞。", "Rc/Arc 与 RefCell/Mutex 组合可能产生循环引用，需要 Weak 打破。"]
+  },
+  "rust_macros_wasm": {
+    "category": "rust",
+    "title": {"zh": "Rust 宏、WASM 与跨平台", "en": "Rust Macros, WASM and Cross-Platform"},
+    "summary": {"zh": "理解声明宏、过程宏、WASM 边界和跨平台编译。", "en": "Learn declarative macros, procedural macros, WASM boundaries and cross compilation."},
+    "keywords": ["宏", "WASM", "跨平台", "FFI"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["声明宏做模式匹配式代码生成，过程宏在编译期处理 TokenStream。", "WASM 需要显式设计数据边界、内存和错误映射，不能直接共享所有类型。", "跨平台编译要处理目标三元组、系统库、ABI 和链接方式。"]
+  }
+}

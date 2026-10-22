@@ -1,0 +1,360 @@
+{
+  "category": "kotlin",
+  "lessons": [
+    {
+      "id": "kotlin_first_program",
+      "title": {
+        "zh": "Kotlin 第一个程序",
+        "en": "First Kotlin Program"
+      },
+      "summary": {
+        "zh": "编写并运行最小 Kotlin 程序。",
+        "en": "Write and run a minimal Kotlin program."
+      },
+      "file": "assets/content/kotlin_first_program.md",
+      "minutes": 15,
+      "keywords": [
+        "Kotlin 第一个程序",
+        "Kotlin",
+        "入门练习"
+      ],
+      "difficulty": "入门",
+      "order": -5,
+      "quiz": [
+        {
+          "question": "运行「Kotlin 第一个程序」的最小示例，预期输出是什么？",
+          "options": [
+            "result=5",
+            "result=23",
+            "编译失败",
+            "没有任何输出"
+          ],
+          "answer": 0,
+          "explanation": "示例计算 2 + 3，并输出 result=5。加法结果不是 23，程序也不应该编译失败或无输出；先运行最小示例并观察 stdout 是入门阶段最重要的验证动作。",
+          "type": "code",
+          "code": "fun main() { println(\"result=${2 + 3}\") }"
+        },
+        {
+          "question": "「Kotlin 第一个程序」最容易出现的错误是？",
+          "options": [
+            "直接访问可空变量，编译期要求先做空值处理。",
+            "只要代码能运行，就不需要观察输出。",
+            "出错后应该直接重写整个程序。",
+            "边界输入不会影响入门程序。"
+          ],
+          "answer": 0,
+          "explanation": "直接访问可空变量，编译期要求先做空值处理。 其他选项把错误处理理解成跳过验证或推倒重写；正确做法是先阅读第一条错误信息，回到最小示例，只改变一个变量并复现问题。",
+          "type": "debug"
+        },
+        {
+          "question": "学习「Kotlin 第一个程序」时，正确的操作顺序是？",
+          "options": [
+            "运行最小示例 → 修改一个值 → 预测结果 → 验证输出",
+            "修改所有代码 → 删除测试 → 直接部署 → 再阅读错误",
+            "先优化性能 → 再写需求 → 最后运行",
+            "复制答案 → 不运行 → 认为已经掌握"
+          ],
+          "answer": 0,
+          "explanation": "入门学习应先运行最小示例，再修改一个值，写下预测并运行验证。一次修改多个变量会让失败原因无法定位，直接优化或部署也缺少正确性基线。",
+          "type": "order"
+        },
+        {
+          "question": "「Kotlin 第一个程序」的练习闭环应该怎么填空？",
+          "options": [
+            "最小示例 → 预测 → 运行 → 对比",
+            "直接上线 → 再观察",
+            "复制代码 → 不运行",
+            "优化性能 → 再写代码"
+          ],
+          "answer": 0,
+          "explanation": "最小示例、预测、运行、对比构成最小学习闭环。跳过运行或不记录结果都无法验证理解，先优化性能则容易在错误基线上做无效工作。",
+          "type": "fill"
+        }
+      ]
+    },
+    {
+      "id": "kotlin_variables_null",
+      "title": {
+        "zh": "Kotlin 变量与空值",
+        "en": "Kotlin Variables and Nullability"
+      },
+      "summary": {
+        "zh": "理解 val/var 和可空类型。",
+        "en": "Learn val, var and nullable types."
+      },
+      "file": "assets/content/kotlin_variables_null.md",
+      "minutes": 15,
+      "keywords": [
+        "Kotlin 变量与空值",
+        "Kotlin",
+        "入门练习"
+      ],
+      "difficulty": "入门",
+      "order": -4,
+      "quiz": [
+        {
+          "question": "运行「Kotlin 变量与空值」的最小示例，预期输出是什么？",
+          "options": [
+            "result=5",
+            "result=23",
+            "编译失败",
+            "没有任何输出"
+          ],
+          "answer": 0,
+          "explanation": "示例计算 2 + 3，并输出 result=5。加法结果不是 23，程序也不应该编译失败或无输出；先运行最小示例并观察 stdout 是入门阶段最重要的验证动作。",
+          "type": "code",
+          "code": "fun main() { println(\"result=${2 + 3}\") }"
+        },
+        {
+          "question": "「Kotlin 变量与空值」最容易出现的错误是？",
+          "options": [
+            "直接访问可空变量，编译期要求先做空值处理。",
+            "只要代码能运行，就不需要观察输出。",
+            "出错后应该直接重写整个程序。",
+            "边界输入不会影响入门程序。"
+          ],
+          "answer": 0,
+          "explanation": "直接访问可空变量，编译期要求先做空值处理。 其他选项把错误处理理解成跳过验证或推倒重写；正确做法是先阅读第一条错误信息，回到最小示例，只改变一个变量并复现问题。",
+          "type": "debug"
+        },
+        {
+          "question": "学习「Kotlin 变量与空值」时，正确的操作顺序是？",
+          "options": [
+            "运行最小示例 → 修改一个值 → 预测结果 → 验证输出",
+            "修改所有代码 → 删除测试 → 直接部署 → 再阅读错误",
+            "先优化性能 → 再写需求 → 最后运行",
+            "复制答案 → 不运行 → 认为已经掌握"
+          ],
+          "answer": 0,
+          "explanation": "入门学习应先运行最小示例，再修改一个值，写下预测并运行验证。一次修改多个变量会让失败原因无法定位，直接优化或部署也缺少正确性基线。",
+          "type": "order"
+        },
+        {
+          "question": "「Kotlin 变量与空值」的练习闭环应该怎么填空？",
+          "options": [
+            "最小示例 → 预测 → 运行 → 对比",
+            "直接上线 → 再观察",
+            "复制代码 → 不运行",
+            "优化性能 → 再写代码"
+          ],
+          "answer": 0,
+          "explanation": "最小示例、预测、运行、对比构成最小学习闭环。跳过运行或不记录结果都无法验证理解，先优化性能则容易在错误基线上做无效工作。",
+          "type": "fill"
+        }
+      ]
+    },
+    {
+      "id": "kotlin_conditions",
+      "title": {
+        "zh": "Kotlin 条件判断",
+        "en": "Kotlin Conditionals"
+      },
+      "summary": {
+        "zh": "用 if 和 when 表达分支。",
+        "en": "Express branches with if and when."
+      },
+      "file": "assets/content/kotlin_conditions.md",
+      "minutes": 15,
+      "keywords": [
+        "Kotlin 条件判断",
+        "Kotlin",
+        "入门练习"
+      ],
+      "difficulty": "入门",
+      "order": -3,
+      "quiz": [
+        {
+          "question": "运行「Kotlin 条件判断」的最小示例，预期输出是什么？",
+          "options": [
+            "result=5",
+            "result=23",
+            "编译失败",
+            "没有任何输出"
+          ],
+          "answer": 0,
+          "explanation": "示例计算 2 + 3，并输出 result=5。加法结果不是 23，程序也不应该编译失败或无输出；先运行最小示例并观察 stdout 是入门阶段最重要的验证动作。",
+          "type": "code",
+          "code": "fun main() { println(\"result=${2 + 3}\") }"
+        },
+        {
+          "question": "「Kotlin 条件判断」最容易出现的错误是？",
+          "options": [
+            "直接访问可空变量，编译期要求先做空值处理。",
+            "只要代码能运行，就不需要观察输出。",
+            "出错后应该直接重写整个程序。",
+            "边界输入不会影响入门程序。"
+          ],
+          "answer": 0,
+          "explanation": "直接访问可空变量，编译期要求先做空值处理。 其他选项把错误处理理解成跳过验证或推倒重写；正确做法是先阅读第一条错误信息，回到最小示例，只改变一个变量并复现问题。",
+          "type": "debug"
+        },
+        {
+          "question": "学习「Kotlin 条件判断」时，正确的操作顺序是？",
+          "options": [
+            "运行最小示例 → 修改一个值 → 预测结果 → 验证输出",
+            "修改所有代码 → 删除测试 → 直接部署 → 再阅读错误",
+            "先优化性能 → 再写需求 → 最后运行",
+            "复制答案 → 不运行 → 认为已经掌握"
+          ],
+          "answer": 0,
+          "explanation": "入门学习应先运行最小示例，再修改一个值，写下预测并运行验证。一次修改多个变量会让失败原因无法定位，直接优化或部署也缺少正确性基线。",
+          "type": "order"
+        },
+        {
+          "question": "「Kotlin 条件判断」的练习闭环应该怎么填空？",
+          "options": [
+            "最小示例 → 预测 → 运行 → 对比",
+            "直接上线 → 再观察",
+            "复制代码 → 不运行",
+            "优化性能 → 再写代码"
+          ],
+          "answer": 0,
+          "explanation": "最小示例、预测、运行、对比构成最小学习闭环。跳过运行或不记录结果都无法验证理解，先优化性能则容易在错误基线上做无效工作。",
+          "type": "fill"
+        }
+      ]
+    },
+    {
+      "id": "kotlin_loops",
+      "title": {
+        "zh": "Kotlin 循环入门",
+        "en": "Kotlin Loops"
+      },
+      "summary": {
+        "zh": "用 for、while 和范围遍历数据。",
+        "en": "Iterate with for, while and ranges."
+      },
+      "file": "assets/content/kotlin_loops.md",
+      "minutes": 15,
+      "keywords": [
+        "Kotlin 循环入门",
+        "Kotlin",
+        "入门练习"
+      ],
+      "difficulty": "入门",
+      "order": -2,
+      "quiz": [
+        {
+          "question": "运行「Kotlin 循环入门」的最小示例，预期输出是什么？",
+          "options": [
+            "result=5",
+            "result=23",
+            "编译失败",
+            "没有任何输出"
+          ],
+          "answer": 0,
+          "explanation": "示例计算 2 + 3，并输出 result=5。加法结果不是 23，程序也不应该编译失败或无输出；先运行最小示例并观察 stdout 是入门阶段最重要的验证动作。",
+          "type": "code",
+          "code": "fun main() { println(\"result=${2 + 3}\") }"
+        },
+        {
+          "question": "「Kotlin 循环入门」最容易出现的错误是？",
+          "options": [
+            "直接访问可空变量，编译期要求先做空值处理。",
+            "只要代码能运行，就不需要观察输出。",
+            "出错后应该直接重写整个程序。",
+            "边界输入不会影响入门程序。"
+          ],
+          "answer": 0,
+          "explanation": "直接访问可空变量，编译期要求先做空值处理。 其他选项把错误处理理解成跳过验证或推倒重写；正确做法是先阅读第一条错误信息，回到最小示例，只改变一个变量并复现问题。",
+          "type": "debug"
+        },
+        {
+          "question": "学习「Kotlin 循环入门」时，正确的操作顺序是？",
+          "options": [
+            "运行最小示例 → 修改一个值 → 预测结果 → 验证输出",
+            "修改所有代码 → 删除测试 → 直接部署 → 再阅读错误",
+            "先优化性能 → 再写需求 → 最后运行",
+            "复制答案 → 不运行 → 认为已经掌握"
+          ],
+          "answer": 0,
+          "explanation": "入门学习应先运行最小示例，再修改一个值，写下预测并运行验证。一次修改多个变量会让失败原因无法定位，直接优化或部署也缺少正确性基线。",
+          "type": "order"
+        },
+        {
+          "question": "「Kotlin 循环入门」的练习闭环应该怎么填空？",
+          "options": [
+            "最小示例 → 预测 → 运行 → 对比",
+            "直接上线 → 再观察",
+            "复制代码 → 不运行",
+            "优化性能 → 再写代码"
+          ],
+          "answer": 0,
+          "explanation": "最小示例、预测、运行、对比构成最小学习闭环。跳过运行或不记录结果都无法验证理解，先优化性能则容易在错误基线上做无效工作。",
+          "type": "fill"
+        }
+      ]
+    },
+    {
+      "id": "kotlin_functions_intro",
+      "title": {
+        "zh": "Kotlin 函数入门",
+        "en": "Kotlin Functions"
+      },
+      "summary": {
+        "zh": "定义函数、默认参数和表达式函数。",
+        "en": "Define functions with defaults and expressions."
+      },
+      "file": "assets/content/kotlin_functions_intro.md",
+      "minutes": 15,
+      "keywords": [
+        "Kotlin 函数入门",
+        "Kotlin",
+        "入门练习"
+      ],
+      "difficulty": "入门",
+      "order": -1,
+      "quiz": [
+        {
+          "question": "运行「Kotlin 函数入门」的最小示例，预期输出是什么？",
+          "options": [
+            "result=5",
+            "result=23",
+            "编译失败",
+            "没有任何输出"
+          ],
+          "answer": 0,
+          "explanation": "示例计算 2 + 3，并输出 result=5。加法结果不是 23，程序也不应该编译失败或无输出；先运行最小示例并观察 stdout 是入门阶段最重要的验证动作。",
+          "type": "code",
+          "code": "fun main() { println(\"result=${2 + 3}\") }"
+        },
+        {
+          "question": "「Kotlin 函数入门」最容易出现的错误是？",
+          "options": [
+            "直接访问可空变量，编译期要求先做空值处理。",
+            "只要代码能运行，就不需要观察输出。",
+            "出错后应该直接重写整个程序。",
+            "边界输入不会影响入门程序。"
+          ],
+          "answer": 0,
+          "explanation": "直接访问可空变量，编译期要求先做空值处理。 其他选项把错误处理理解成跳过验证或推倒重写；正确做法是先阅读第一条错误信息，回到最小示例，只改变一个变量并复现问题。",
+          "type": "debug"
+        },
+        {
+          "question": "学习「Kotlin 函数入门」时，正确的操作顺序是？",
+          "options": [
+            "运行最小示例 → 修改一个值 → 预测结果 → 验证输出",
+            "修改所有代码 → 删除测试 → 直接部署 → 再阅读错误",
+            "先优化性能 → 再写需求 → 最后运行",
+            "复制答案 → 不运行 → 认为已经掌握"
+          ],
+          "answer": 0,
+          "explanation": "入门学习应先运行最小示例，再修改一个值，写下预测并运行验证。一次修改多个变量会让失败原因无法定位，直接优化或部署也缺少正确性基线。",
+          "type": "order"
+        },
+        {
+          "question": "「Kotlin 函数入门」的练习闭环应该怎么填空？",
+          "options": [
+            "最小示例 → 预测 → 运行 → 对比",
+            "直接上线 → 再观察",
+            "复制代码 → 不运行",
+            "优化性能 → 再写代码"
+          ],
+          "answer": 0,
+          "explanation": "最小示例、预测、运行、对比构成最小学习闭环。跳过运行或不记录结果都无法验证理解，先优化性能则容易在错误基线上做无效工作。",
+          "type": "fill"
+        }
+      ]
+    }
+  ]
+}

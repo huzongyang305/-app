@@ -1,0 +1,314 @@
+{
+  "binary": {
+    "image": "images/diagram_fund_binary.webp",
+    "alt": "位、字节与进制转换"
+  },
+  "assembly": {
+    "image": "images/diagram_fund_assembly.webp",
+    "alt": "从源码到机器指令与寄存器"
+  },
+  "discrete_math": {
+    "image": "images/diagram_fund_discrete.webp",
+    "alt": "离散数学的四个核心模块"
+  },
+  "probability": {
+    "image": "images/diagram_fund_probability.webp",
+    "alt": "从样本空间到贝叶斯与分布"
+  },
+  "computation_theory": {
+    "image": "images/diagram_fund_theory.webp",
+    "alt": "自动机、文法与可计算性层次"
+  },
+  "compiler_frontend": {
+    "image": "images/diagram_fund_frontend.webp",
+    "alt": "词法分析与语法分析流程"
+  },
+  "semantics_analysis": {
+    "image": "images/diagram_fund_semantics.webp",
+    "alt": "符号表、类型检查与控制流分析"
+  },
+  "ir_optimization": {
+    "image": "images/diagram_fund_ir.webp",
+    "alt": "中间表示与经典优化"
+  },
+  "codegen_registers": {
+    "image": "images/diagram_fund_codegen.webp",
+    "alt": "后端代码生成与寄存器分配"
+  },
+  "performance_metrics": {
+    "image": "images/diagram_fund_perf.webp",
+    "alt": "性能度量与 Amdahl 定律"
+  },
+  "cryptography": {
+    "image": "images/diagram_fund_crypto.webp",
+    "alt": "对称加密、非对称加密与哈希"
+  },
+  "graphics_media": {
+    "image": "images/diagram_fund_graphics.webp",
+    "alt": "图形渲染管线"
+  },
+  "fundamentals_project": {
+    "image": "images/diagram_fund_lifecycle.webp",
+    "alt": "程序从源码到运行的全生命周期"
+  },
+  "fundamentals_pipeline": {
+    "image": "images/diagram_fund_pipeline.webp",
+    "alt": "CPU 流水线的五个阶段"
+  },
+  "fundamentals_simd": {
+    "image": "images/diagram_fund_simd.webp",
+    "alt": "标量与 SIMD 向量化对比"
+  },
+  "fundamentals_embedded_iot": {
+    "image": "images/diagram_fund_iot.webp",
+    "alt": "嵌入式与 IoT 的层次结构"
+  },
+  "fundamentals_architecture_case": {
+    "image": "images/diagram_fund_arch_case.webp",
+    "alt": "体系结构设计的权衡过程"
+  },
+  "computer_organization_intro": {
+    "image": "images/diagram_fund_org_intro.webp",
+    "alt": "计算机组成的基本结构"
+  },
+  "binary_intro": {
+    "image": "images/diagram_fund_binary_intro.webp",
+    "alt": "二进制入门四步"
+  },
+  "binary_search": {
+    "image": "images/diagram_algo_binary_search.webp",
+    "alt": "二分查找的缩小过程"
+  },
+  "bubble_sort": {
+    "image": "images/diagram_algo_bubble.webp",
+    "alt": "冒泡排序的相邻比较与交换"
+  },
+  "stack_queue": {
+    "image": "images/diagram_algo_stack_queue.webp",
+    "alt": "栈与队列的进出顺序对比"
+  },
+  "sorting": {
+    "image": "images/diagram_algo_sorting_family.webp",
+    "alt": "常见排序算法的复杂度与稳定性"
+  },
+  "two_pointers": {
+    "image": "images/diagram_algo_two_pointers.webp",
+    "alt": "相向双指针与滑动窗口"
+  },
+  "greedy": {
+    "image": "images/diagram_algo_greedy.webp",
+    "alt": "贪心算法的选择与验证"
+  },
+  "bit_manipulation": {
+    "image": "images/diagram_algo_bits.webp",
+    "alt": "位运算的常用技巧"
+  },
+  "prefix_sum": {
+    "image": "images/diagram_algo_prefix.webp",
+    "alt": "前缀和与差分"
+  },
+  "binary_answer": {
+    "image": "images/diagram_algo_binary_answer.webp",
+    "alt": "二分答案的判定与收缩"
+  },
+  "probabilistic_structures": {
+    "image": "images/diagram_algo_probabilistic.webp",
+    "alt": "布隆过滤器、HyperLogLog 与跳表"
+  },
+  "balanced_tree": {
+    "image": "images/diagram_algo_balanced_tree.webp",
+    "alt": "AVL、红黑树与 B+ 树的对比"
+  },
+  "sorting_advanced": {
+    "image": "images/diagram_algo_radix.webp",
+    "alt": "非比较排序与外部排序"
+  },
+  "cache_eviction": {
+    "image": "images/diagram_algo_cache_eviction.webp",
+    "alt": "LRU、LFU 与 FIFO 淘汰策略"
+  },
+  "algorithms_project": {
+    "image": "images/diagram_algo_project.webp",
+    "alt": "三个数据结构实战小项目"
+  },
+  "algo_np_approximation": {
+    "image": "images/diagram_algo_np.webp",
+    "alt": "P、NP、NP 完全与近似算法"
+  },
+  "algo_computational_geometry": {
+    "image": "images/diagram_algo_geometry.webp",
+    "alt": "计算几何的核心工具"
+  },
+  "algo_persistent_parallel": {
+    "image": "images/diagram_algo_persistent.webp",
+    "alt": "持久化数据结构与并行算法"
+  },
+  "algorithm_intro": {
+    "image": "images/diagram_algo_intro.webp",
+    "alt": "算法的输入、步骤、输出与复杂度"
+  },
+  "linear_search_intro": {
+    "image": "images/diagram_algo_linear_search.webp",
+    "alt": "线性查找的逐项比较"
+  },
+  "db_design": {
+    "image": "images/diagram_db_design.webp",
+    "alt": "从需求到三大范式的数据库设计流程"
+  },
+  "nosql": {
+    "image": "images/diagram_db_nosql_family.webp",
+    "alt": "四类 NoSQL 数据模型对比"
+  },
+  "db_ops": {
+    "image": "images/diagram_db_ops_flow.webp",
+    "alt": "数据库运维的备份、迁移与扩展流程"
+  },
+  "sql_advanced": {
+    "image": "images/diagram_db_sql_advanced.webp",
+    "alt": "窗口函数与 CTE 的能力对比"
+  },
+  "storage_engine": {
+    "image": "images/diagram_db_storage_engine.webp",
+    "alt": "InnoDB 从 SQL 到磁盘的分层结构"
+  },
+  "database_project": {
+    "image": "images/diagram_db_project_flow.webp",
+    "alt": "订单库实战的五个步骤"
+  },
+  "bigdata_batch_stream": {
+    "image": "images/diagram_db_batch_stream.webp",
+    "alt": "批处理与流处理的差异"
+  },
+  "data_lakehouse": {
+    "image": "images/diagram_db_lakehouse_layers.webp",
+    "alt": "湖仓一体的分层架构"
+  },
+  "airflow_quality": {
+    "image": "images/diagram_db_airflow_quality.webp",
+    "alt": "Airflow 调度与数据质量检查闭环"
+  },
+  "realtime_warehouse": {
+    "image": "images/diagram_db_realtime_warehouse.webp",
+    "alt": "从 Kafka 到 Flink 再到实时数仓的链路"
+  },
+  "db_postgresql_deep": {
+    "image": "images/diagram_db_postgresql.webp",
+    "alt": "PostgreSQL 的核心机制与实践要点"
+  },
+  "db_graph": {
+    "image": "images/diagram_db_graph.webp",
+    "alt": "图数据库的模型、查询与算法"
+  },
+  "db_time_series": {
+    "image": "images/diagram_db_time_series.webp",
+    "alt": "时序数据的写入特征与治理策略"
+  },
+  "db_migration_governance": {
+    "image": "images/diagram_db_migration.webp",
+    "alt": "在线 Schema 变更的六个阶段"
+  },
+  "db_permissions_security": {
+    "image": "images/diagram_db_permissions.webp",
+    "alt": "数据库安全的五层防线"
+  },
+  "db_backup_recovery": {
+    "image": "images/diagram_db_backup_recovery.webp",
+    "alt": "从备份策略到时间点恢复的流程"
+  },
+  "sql_table_intro": {
+    "image": "images/diagram_db_table_intro.webp",
+    "alt": "表结构与主键约束示意"
+  },
+  "sql_query_intro": {
+    "image": "images/diagram_db_query_intro.webp",
+    "alt": "SELECT 查询的执行顺序"
+  },
+  "ai_concept_intro": {
+    "image": "images/diagram_ai_concept.webp",
+    "alt": "AI、机器学习与生成式 AI 的包含关系"
+  },
+  "ai_basics": {
+    "image": "images/diagram_ai_basics.webp",
+    "alt": "三类机器学习范式对比"
+  },
+  "prompt_intro": {
+    "image": "images/diagram_ai_prompt_intro.webp",
+    "alt": "提示词的四个基本要素"
+  },
+  "ai_prompt_engineering": {
+    "image": "images/diagram_ai_prompt_engineering.webp",
+    "alt": "提示工程从设计到评测的闭环"
+  },
+  "ai_embeddings_rag": {
+    "image": "images/diagram_ai_embeddings_rag.webp",
+    "alt": "RAG 从文档入库到生成答案的流程"
+  },
+  "vector_db": {
+    "image": "images/diagram_ai_vector_db.webp",
+    "alt": "向量数据库选型与索引调优维度"
+  },
+  "ai_context_engineering": {
+    "image": "images/diagram_ai_context_engineering.webp",
+    "alt": "上下文工程的选择、压缩与更新"
+  },
+  "ai_engineering": {
+    "image": "images/diagram_ai_engineering.webp",
+    "alt": "AI 应用工程化的四个支柱"
+  },
+  "model_evaluation": {
+    "image": "images/diagram_ai_model_eval.webp",
+    "alt": "模型评测的公开基准与私有评测集"
+  },
+  "ai_data_engineering": {
+    "image": "images/diagram_ai_data_engineering.webp",
+    "alt": "从数据清洗到数据血缘的流程"
+  },
+  "ai_rag_agent_project": {
+    "image": "images/diagram_ai_rag_project.webp",
+    "alt": "文档问答助手的端到端架构"
+  },
+  "ai_multi_agent": {
+    "image": "images/diagram_ai_multi_agent.webp",
+    "alt": "多智能体的三种协作模式"
+  },
+  "ai_coding_assistant": {
+    "image": "images/diagram_ai_coding_assistant.webp",
+    "alt": "AI 编程助手的使用流程与评审要点"
+  },
+  "ai_agent_evaluation": {
+    "image": "images/diagram_ai_agent_eval.webp",
+    "alt": "Agent 评测的维度与方法"
+  },
+  "multimodal_rag": {
+    "image": "images/diagram_ai_multimodal_rag.webp",
+    "alt": "多模态 RAG 的解析与检索流程"
+  },
+  "agent_cost_performance": {
+    "image": "images/diagram_ai_cost_performance.webp",
+    "alt": "Agent 成本与性能优化的主要手段"
+  },
+  "ai_computer_use": {
+    "image": "images/diagram_ai_computer_use.webp",
+    "alt": "Computer Use 的观察与操作循环"
+  },
+  "ai_browser_agent": {
+    "image": "images/diagram_ai_browser_agent.webp",
+    "alt": "浏览器 Agent 的工作流程与约束"
+  },
+  "ai_coding_agent": {
+    "image": "images/diagram_ai_coding_agent.webp",
+    "alt": "代码 Agent 从读代码到提交改动的流程"
+  },
+  "ai_guardrails": {
+    "image": "images/diagram_ai_guardrails.webp",
+    "alt": "输入、工具调用与输出三层安全护栏"
+  },
+  "ai_realtime_api": {
+    "image": "images/diagram_ai_realtime_api.webp",
+    "alt": "实时语音交互的流式链路"
+  },
+  "ai_governance": {
+    "image": "images/diagram_ai_governance.webp",
+    "alt": "AI 治理的闭环流程"
+  }
+}

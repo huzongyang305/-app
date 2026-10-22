@@ -1,0 +1,258 @@
+{
+  "lessons": [
+    {
+      "id": "python_http_clients",
+      "category": "python",
+      "title": {
+        "zh": "Python HTTP 客户端工程：超时、重试与认证",
+        "en": "Engineering Python HTTP Clients: Timeouts, Retries and Auth"
+      },
+      "summary": {
+        "zh": "把请求、超时、重试、连接池、认证与分页当成一个完整客户端来设计，让外部接口失败时行为可预测。",
+        "en": "Design requests, timeouts, retries, pooling, authentication and pagination as one predictable HTTP client."
+      },
+      "keywords": [
+        "httpx",
+        "超时",
+        "重试",
+        "幂等性",
+        "限流"
+      ],
+      "difficulty": "高级",
+      "minutes": 65,
+      "order": 30,
+      "prerequisites": [
+        "python_modules_stdlib"
+      ],
+      "related": [
+        "python_asyncio",
+        "python_security"
+      ],
+      "image": {
+        "title": "一次可靠请求的路径",
+        "flow": [
+          "构造请求与超时",
+          "连接池发送",
+          "按状态码分类",
+          "退避重试",
+          "解析响应或报错"
+        ]
+      },
+      "goals": [
+        "能区分连接、读取、写入和池等待超时并设置合理预算。",
+        "能只对可安全重试的请求进行指数退避并加入抖动。",
+        "能复用客户端、处理认证与分页，并避免常见安全事故。"
+      ],
+      "prerequisitesText": [
+        "知道 HTTP 方法、状态码和请求头的基本含义。",
+        "会用 JSON 解析响应并处理异常。",
+        "理解连接复用和并发的基本概念。"
+      ],
+      "concepts": [
+        {
+          "name": "请求组成与状态码分类",
+          "plain": "一次 HTTP 请求由方法、URL、请求头、查询参数和正文组成；响应状态码告诉客户端请求是否成功以及是否值得重试。",
+          "mechanism": "2xx 表示成功，3xx 表示重定向，4xx 通常是客户端错误，5xx 表示服务端错误；429 表示被限流，具体语义还要结合响应体和接口文档。",
+          "example": "用 MockTransport 返回 503 和 200，打印每次请求的状态码与响应体，观察分支逻辑。",
+          "boundary": "不能只看状态码判断业务结果，很多接口在 200 中返回错误码；也不能把 404 当成可重试错误无限请求。",
+          "engineering": "状态码分类集中在客户端层，业务层只处理解析后的结果或领域异常；每个错误附带请求编号和时间戳。"
+        },
+        {
+          "name": "超时与重试策略",
+          "plain": "超时限制一次请求最多等多久，重试在临时失败后再尝试；两者共同决定故障时客户端占用资源的时间上限。",
+          "mechanism": "连接超时针对建立连接，读取超时针对等待响应数据，写入超时针对发送正文，池超时针对等待空闲连接；指数退避让等待时间逐次增长，抖动避免大量客户端同时重试。",
+          "example": "对返回 503 的模拟接口只在 429 与 5xx 时重试，最多三次，并打印每次退避时间。",
+          "boundary": "只应重试幂等或带幂等键的操作；重试次数过多会放大故障，银行扣款、下单等操作必须有服务端幂等保证。",
+          "engineering": "超时预算从用户请求总时长反推，重试次数与退避上限写进配置，记录每次尝试和最终结果。"
+        },
+        {
+          "name": "会话、连接池与并发",
+          "plain": "客户端对象持有连接池和默认配置，复用连接可以显著降低延迟；每次请求新建客户端会丢失连接复用优势。",
+          "mechanism": "连接池按主机复用 TCP 连接，池大小限制并发请求；会话还能统一管理请求头、认证、Cookie 和重定向策略。",
+          "example": "在 with 语句中创建一个客户端并连续发送多次请求，确认退出时连接被关闭。",
+          "boundary": "同一个客户端可以被多个线程共享，但配置不可在请求期间随意修改；异步客户端要放在异步上下文中使用。",
+          "engineering": "应用生命周期内复用一个客户端，按依赖注入传入业务服务；关闭钩子负责释放连接池。"
+        },
+        {
+          "name": "认证、TLS 与秘密管理",
+          "plain": "认证凭据放在请求头而不是 URL，TLS 校验默认开启；秘密通过环境变量或密钥服务注入，不能写进代码和日志。",
+          "mechanism": "Bearer 令牌放入 Authorization 头，Basic 认证把用户名密码编码后放入头部；OAuth2 需要获取、刷新和过期处理，TLS 证书验证防止中间人攻击。",
+          "example": "创建带默认 Authorization 头的客户端，并让日志只记录令牌前缀和哈希，不输出完整值。",
+          "boundary": "关闭证书校验会让 HTTPS 失去防篡改能力；把令牌放在查询参数会进入代理和访问日志。",
+          "engineering": "凭据轮换有明确流程，测试使用假令牌，生产日志脱敏；重定向到其他域时避免自动携带敏感头部。"
+        },
+        {
+          "name": "分页、限流与流式响应",
+          "plain": "列表接口通常分页返回，客户端要按游标或页码持续请求；限流和流式响应要求客户端控制速率与内存。",
+          "mechanism": "游标分页使用下一页标记，页码分页依赖页大小和总数；429 响应通常带 Retry-After，客户端应尊重等待时间；流式响应按块读取，避免把大文件全部放进内存。",
+          "example": "读取分页响应直到下一页为空，并在收到 429 时根据 Retry-After 暂停。",
+          "boundary": "分页期间数据可能变化，结果不一定是一致快照；无限循环的分页接口要有最大页数和总大小保护。",
+          "engineering": "分页器封装成生成器，下载设置大小上限和校验和，限流状态纳入监控。"
+        }
+      ],
+      "steps": [
+        "明确请求语义与幂等性",
+        "设置连接、读取和总超时",
+        "复用客户端与连接池",
+        "按状态码决定是否退避重试",
+        "解析响应并处理分页与限流"
+      ],
+      "code": {
+        "language": "python",
+        "snippet": "import httpx\n\ncalls = {\"count\": 0}\n\ndef handler(request: httpx.Request) -> httpx.Response:\n    calls[\"count\"] += 1\n    if calls[\"count\"] < 3:\n        return httpx.Response(503, text=\"busy\", request=request)\n    return httpx.Response(200, json={\"ok\": True}, request=request)\n\ntransport = httpx.MockTransport(handler)\nwith httpx.Client(transport=transport, base_url=\"https://api.test\") as client:\n    for attempt in range(3):\n        response = client.get(\"/health\", timeout=2.0)\n        print(\"尝试\", attempt + 1, \"状态\", response.status_code)\n        if response.status_code == 200:\n            print(\"结果:\", response.json())\n            break\n    else:\n        print(\"三次后仍失败\")\n\nprint(\"请求次数:\", calls[\"count\"])",
+        "walkthrough": "MockTransport 模拟前两次返回 503、第三次返回 200 的接口；客户端在 with 中复用连接配置，每次请求都带超时，按状态码决定继续或结束。真实工程中应把固定三次循环换成带指数退避和抖动的重试策略，并记录每次尝试。",
+        "expected_output": "尝试 1 状态 503\n尝试 2 状态 503\n尝试 3 状态 200\n结果: {'ok': True}\n请求次数: 3"
+      },
+      "faults": [
+        {
+          "topic": "请求不设置超时",
+          "wrong": "调用外部接口不传 timeout，连接或读取一直等待，线程和连接池被占满",
+          "fix": "为连接、读取、写入和池等待设置明确预算，并设置总超时"
+        },
+        {
+          "topic": "对非幂等操作盲目重试",
+          "wrong": "下单请求超时后自动重复提交，用户被扣款两次",
+          "fix": "只重试安全方法，写操作要求服务端支持幂等键并保证幂等"
+        },
+        {
+          "topic": "每次请求新建客户端",
+          "wrong": "在循环里创建新 Client 或 Session，连接无法复用且资源反复建立",
+          "fix": "应用级复用一个客户端，通过依赖注入传入业务层，退出时关闭"
+        },
+        {
+          "topic": "把令牌放在 URL 中",
+          "wrong": "用查询参数传递访问令牌，令牌进入代理、浏览器历史和访问日志",
+          "fix": "使用 Authorization 请求头，日志只保留脱敏后的凭据标识"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "连接超时",
+          "definition": "客户端等待与目标建立连接的最长时间。"
+        },
+        {
+          "term": "读取超时",
+          "definition": "连接建立后等待响应数据的单次最长时间。"
+        },
+        {
+          "term": "幂等性",
+          "definition": "同一请求执行多次产生与执行一次相同结果的语义。"
+        },
+        {
+          "term": "连接池",
+          "definition": "复用已建立连接并限制并发数量的资源池。"
+        },
+        {
+          "term": "指数退避",
+          "definition": "每次重试按指数增长等待时间，并常加入随机抖动避免同时重试。"
+        },
+        {
+          "term": "限流",
+          "definition": "服务端按时间窗口限制请求速率或并发量，客户端需要识别并配合等待。"
+        }
+      ],
+      "quiz": [
+        {
+          "type": "single",
+          "question": "为什么 HTTP 请求必须设置超时？",
+          "options": [
+            "防止连接或读取无限等待，避免线程和连接池被耗尽",
+            "让响应速度变快",
+            "超时能自动修复服务端故障",
+            "只有异步请求才需要超时"
+          ],
+          "answer": 0,
+          "explanation": "外部服务可能因为网络中断、过载或错误配置长时间不返回，没有超时的请求会占住线程、连接和内存，最终拖垮整条调用链。超时应该覆盖连接、读取、写入和等待连接池的各个阶段，并由总请求预算统一约束。"
+        },
+        {
+          "type": "single",
+          "question": "以下哪种请求最适合自动重试？",
+          "options": [
+            "幂等的 GET 查询在 503 后重试",
+            "没有幂等键的支付请求超时后重试",
+            "返回 404 的查询无限重试",
+            "认证失败的请求立即循环重试"
+          ],
+          "answer": 0,
+          "explanation": "幂等的 GET 在服务端临时过载时重试通常是安全的，配合指数退避和抖动即可。支付请求如果没有服务端幂等保证可能重复扣款；404 和 401 是确定性错误，重试不会改变结果，只会放大流量和延迟。"
+        },
+        {
+          "type": "multi",
+          "question": "关于客户端与认证，哪些做法正确？（多选）",
+          "options": [
+            "应用级复用客户端以利用连接池",
+            "把访问令牌放在 Authorization 头",
+            "日志中记录完整令牌方便排查",
+            "默认开启 TLS 证书校验"
+          ],
+          "answers": [
+            0,
+            1,
+            3
+          ],
+          "answer": 0,
+          "explanation": "复用客户端、把令牌放在认证头并保持 TLS 校验都是基本安全实践。完整令牌绝不应进入日志，因为日志通常被多人访问且长期保存；需要排查时可以记录令牌的哈希前缀、请求编号和过期时间等脱敏信息。"
+        },
+        {
+          "type": "code",
+          "question": "阅读重试片段，最大等待时间是多少秒？\n\ndef delay(attempt):\n    return min(0.2 * (2 ** attempt), 5.0)\nprint(delay(5))",
+          "options": [
+            "5.0",
+            "6.4",
+            "3.2",
+            "0.2"
+          ],
+          "answer": 0,
+          "code": "def delay(attempt):\n    return min(0.2 * (2 ** attempt), 5.0)\nprint(delay(5))",
+          "language": "python",
+          "explanation": "计算 0.2 乘以 2 的 5 次方得到 6.4，再由 min 与上限 5.0 比较，因此结果是 5.0。指数退避必须设置上限，否则重试次数增加后等待时间会迅速膨胀；实际实现还要加入随机抖动，避免多个客户端同时恢复造成惊群。"
+        },
+        {
+          "type": "debug",
+          "question": "分页循环可能存在什么风险？",
+          "options": [
+            "没有最大页数和退出条件，服务端游标异常时可能无限请求",
+            "params 不能是字典",
+            "client.get 不支持循环调用",
+            "JSON 响应不能包含 next"
+          ],
+          "answer": 0,
+          "explanation": "循环依赖 next 字段结束，如果服务端重复返回同一个游标、字段缺失或网络重试导致状态错乱，客户端会无限请求并消耗配额。应设置最大页数、总条数或总时长上限，校验游标变化，并对分页结果去重和记录进度。这道题对应 HTTP 客户端的重试与分页保护：任何循环都要有上限，避免无限请求和限流惩罚。",
+          "code": "cursor = None\nwhile True:\n    page = client.get('/items', params={'cursor': cursor}).json()\n    cursor = page['next']",
+          "language": "python"
+        }
+      ],
+      "practice": [
+        "用 MockTransport 模拟 429、503 和 200，实现带退避上限的有限重试并记录每次等待时间。",
+        "写一个分页生成器，处理游标分页、最大页数和重复游标保护。",
+        "为客户端设计连接池与超时配置，说明每个参数的取值依据。",
+        "给一个需要认证的接口实现令牌刷新流程，确保日志中不出现完整令牌。"
+      ],
+      "refs": [
+        {
+          "name": "HTTPX 官方文档",
+          "url": "https://www.python-httpx.org/"
+        },
+        {
+          "name": "Requests 官方文档",
+          "url": "https://requests.readthedocs.io/"
+        },
+        {
+          "name": "RFC 9110：HTTP 语义",
+          "url": "https://www.rfc-editor.org/rfc/rfc9110.html"
+        },
+        {
+          "name": "MDN Retry-After 响应头",
+          "url": "https://developer.mozilla.org/docs/Web/HTTP/Headers/Retry-After"
+        }
+      ],
+      "english": "This lesson builds production-ready Python HTTP clients with explicit timeouts, idempotent retry policies, exponential backoff with jitter, reusable connection pools, safe authentication and pagination. It also covers rate limiting, streaming responses and secret handling.",
+      "reviewPoints": [
+        "能区分连接超时、读取超时与池等待超时。",
+        "能判断哪些请求可以安全重试。",
+        "能在不泄露秘密的前提下记录请求诊断信息。"
+      ],
+      "lab": "sandbox:python"
+    }
+  ]
+}

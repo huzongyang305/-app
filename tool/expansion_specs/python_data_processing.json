@@ -1,0 +1,258 @@
+{
+  "lessons": [
+    {
+      "id": "python_data_processing",
+      "category": "python",
+      "title": {
+        "zh": "Python 数据处理：NumPy、pandas 与 Polars",
+        "en": "Python Data Processing with NumPy, pandas and Polars"
+      },
+      "summary": {
+        "zh": "从数组与向量化开始，掌握表格清洗、分组聚合、惰性计算、Parquet 与可视化，让分析结果可复现、可扩展。",
+        "en": "Move from arrays and vectorization to table cleaning, grouping, lazy computation, Parquet and reproducible visualization."
+      },
+      "keywords": [
+        "NumPy",
+        "pandas",
+        "Polars",
+        "数据清洗",
+        "Parquet"
+      ],
+      "difficulty": "高级",
+      "minutes": 75,
+      "order": 34,
+      "prerequisites": [
+        "python_project"
+      ],
+      "related": [
+        "python_project_etl",
+        "python_database_sqlalchemy"
+      ],
+      "image": {
+        "title": "从原始表到分析结论",
+        "flow": [
+          "读取数据",
+          "检查类型与缺失",
+          "清洗与转换",
+          "分组聚合",
+          "可视化与导出"
+        ]
+      },
+      "goals": [
+        "能解释数组维度、dtype、广播与视图副本的区别。",
+        "能用 pandas 或 Polars 完成清洗、连接、分组和排序。",
+        "能选择合适的数据格式与可视化方式，并保证分析可复现。"
+      ],
+      "prerequisitesText": [
+        "已经会用列表、字典和生成器处理数据。",
+        "知道 CSV、缺失值和基础统计量的含义。",
+        "能读取文件并写出结构化数据。"
+      ],
+      "concepts": [
+        {
+          "name": "数组、dtype 与广播",
+          "plain": "NumPy 的 ndarray 把同类型元素放在连续内存中，用 shape 表示维度、dtype 表示元素类型；向量化运算比逐元素循环更快。",
+          "mechanism": "广播让形状兼容的数组自动扩展参与运算，标量可以作用到所有元素；切片通常返回视图，修改视图会影响原数组，花式索引和 copy 会返回副本。",
+          "example": "创建一维数组并加一个标量，再比较切片视图与原数组修改后的关系。",
+          "boundary": "dtype 选择会影响精度与内存，整数相除和溢出需要留意；广播形状不兼容会直接报错。",
+          "engineering": "把数据布局和 dtype 写进处理契约，避免在循环中反复复制大数组，内存不足时按批次或内存映射处理。"
+        },
+        {
+          "name": "pandas DataFrame 与索引",
+          "plain": "DataFrame 是带标签的二维表，Series 是带索引的一列；对齐、分组、连接和缺失值处理构成日常分析的主干。",
+          "mechanism": "按标签索引会对齐行号，运算时缺失标签产生缺失值；groupby 按键分组后执行聚合，merge 按键连接表，loc 与 iloc 分别按标签和位置选择。",
+          "example": "按城市分组计算平均分并降序排序，再检查缺失值数量与唯一城市数量。",
+          "boundary": "链式赋值可能修改副本而不是原表，索引重置和类型转换会改变后续行为；大表要注意 dtype 和中间副本的内存。",
+          "engineering": "每一步转换保持明确输入输出，中间结果可检查；分析脚本保存数据版本、参数和随机种子。"
+        },
+        {
+          "name": "Polars 与惰性计算",
+          "plain": "Polars 使用列式内存和表达式 API，LazyFrame 会先构建查询计划再统一优化执行，适合较大数据和并行扫描。",
+          "mechanism": "表达式描述列变换，优化器可以下推谓词、裁剪列并并行执行；collect 才真正计算，扫描 Parquet 时可以只读取需要的列。",
+          "example": "用 LazyFrame 过滤分数大于八十分的行并计算平均分，比较惰性计划与立即执行的差异。",
+          "boundary": "惰性计算不会提前暴露所有数据错误，调试时要主动 collect 或查看计划；不同引擎的 API 语义不能直接照搬。",
+          "engineering": "数据管道优先列式格式和惰性查询，按需选择 pandas 生态兼容层，避免在两种引擎间反复转换。"
+        },
+        {
+          "name": "数据清洗与质量检查",
+          "plain": "真实数据存在缺失、重复、类型错误和异常值；清洗不是删除脏数据，而是用明确规则把原始数据转换成可解释的分析口径。",
+          "mechanism": "缺失可以用删除、均值填充或业务默认值处理，重复按业务键去重，类型转换失败要定位原始值，异常值用分位数或规则标记而不是静默截断。",
+          "example": "对一份含空值和重复行的数据做统计，逐项记录删除或填充的数量并保留清洗日志。",
+          "boundary": "填充缺失值会引入假设，必须写入报告；盲目去重可能删掉同一用户的多条真实记录。",
+          "engineering": "清洗规则版本化，输出数据质量报告，关键指标设置阈值并在异常时停止下游。"
+        },
+        {
+          "name": "可视化与列式存储",
+          "plain": "图表用视觉编码帮助发现趋势和异常，Parquet 用列式压缩存储表格数据，二者是分析交付和长期保存的常用组合。",
+          "mechanism": "Matplotlib 适合精确控制图形，Seaborn 在统计图上提供默认样式；Parquet 保存 schema、压缩和列统计，读取时只需扫描相关列。",
+          "example": "把清洗后的分组结果写入 Parquet，再用柱状图展示各城市平均分。",
+          "boundary": "图表坐标轴截断和颜色选择会误导读者，必须标明单位、样本量和时间范围；Parquet 不适合频繁逐行修改。",
+          "engineering": "图表脚本与数据管道分离，导出高分辨率图片和原始数据；Parquet 文件按日期分区并记录 schema 版本。"
+        }
+      ],
+      "steps": [
+        "读取数据并检查形状与类型",
+        "处理缺失、重复与异常",
+        "选择向量化或表格 API 转换",
+        "分组聚合并验证结果",
+        "导出列式数据和可视化报告"
+      ],
+      "code": {
+        "language": "python",
+        "snippet": "import pandas as pd\n\ndf = pd.DataFrame({\n    \"city\": [\"北京\", \"上海\", \"北京\", \"深圳\"],\n    \"score\": [88, 92, 95, 79],\n})\n\nsummary = (\n    df.groupby(\"city\", as_index=False)[\"score\"]\n    .mean()\n    .rename(columns={\"score\": \"avg_score\"})\n    .sort_values(\"avg_score\", ascending=False)\n)\nprint(summary.to_string(index=False))\nprint(\"缺失值:\", int(df.isna().sum().sum()))\nprint(\"唯一城市:\", df[\"city\"].nunique())",
+        "walkthrough": "DataFrame 先按城市分组，对分数列求平均，再重命名结果列并按平均分降序排列；to_string 控制输出格式，缺失值统计和唯一城市数量帮助确认数据质量。真实分析中应把读取、清洗、聚合和导出拆成独立步骤，并保存中间结果用于复核。",
+        "expected_output": "city  avg_score\n上海       92.0\n北京       91.5\n深圳       79.0\n缺失值: 0\n唯一城市: 3"
+      },
+      "faults": [
+        {
+          "topic": "用 Python 循环逐行处理大表",
+          "wrong": "对百万行 DataFrame 使用 iterrows 逐行计算，速度极慢且容易丢失 dtype",
+          "fix": "使用向量化列运算、groupby 或表达式 API，必要时按批次处理"
+        },
+        {
+          "topic": "链式赋值修改副本",
+          "wrong": "写 df[df.score > 80]['level'] = 'high'，原表没有变化并产生警告",
+          "fix": "使用 loc 一次性定位行列，或先 copy 并在明确的新对象上操作"
+        },
+        {
+          "topic": "静默填充缺失值",
+          "wrong": "把所有空值直接填零，比例指标和趋势被系统性扭曲",
+          "fix": "按列定义缺失策略，记录填充数量并在报告中说明假设"
+        },
+        {
+          "topic": "分析结果不可复现",
+          "wrong": "抽样不设随机种子，数据版本和清洗规则没有记录",
+          "fix": "固定随机种子，保存数据快照、代码版本和处理参数"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "ndarray",
+          "definition": "NumPy 的同类型多维数组，支持向量化运算和高效内存布局。"
+        },
+        {
+          "term": "广播",
+          "definition": "不同形状数组按兼容规则自动扩展并逐元素运算的机制。"
+        },
+        {
+          "term": "DataFrame",
+          "definition": "pandas 提供的带标签二维数据结构，由多个共享索引的列组成。"
+        },
+        {
+          "term": "缺失值",
+          "definition": "数据中无法获知或未记录的值，需要按业务规则选择删除、填充或标记。"
+        },
+        {
+          "term": "groupby",
+          "definition": "按键把行分组后对各组执行聚合、变换或筛选的操作。"
+        },
+        {
+          "term": "Parquet",
+          "definition": "带 schema 和压缩的列式文件格式，适合分析型存储与按列扫描。"
+        }
+      ],
+      "quiz": [
+        {
+          "type": "single",
+          "question": "NumPy 向量化运算通常比 Python 逐元素循环快，主要原因是什么？",
+          "options": [
+            "运算在连续内存上批量执行，减少了逐元素的解释器开销",
+            "NumPy 会自动使用数据库",
+            "向量化会跳过边界检查",
+            "它把所有数据类型都变成字符串"
+          ],
+          "answer": 0,
+          "explanation": "ndarray 使用连续内存和固定 dtype，批量运算在编译层循环执行，避免了 Python 每轮循环的解释和对象创建开销。向量化仍遵守类型和形状规则，读取切片时要区分视图与副本，否则可能意外修改原数据。"
+        },
+        {
+          "type": "single",
+          "question": "避免 pandas 链式赋值问题最直接的写法是？",
+          "options": [
+            "使用 df.loc[条件, 列] = 值 一次完成定位与赋值",
+            "连续使用两个方括号再赋值",
+            "把 DataFrame 转成列表后修改",
+            "关闭所有警告"
+          ],
+          "answer": 0,
+          "explanation": "loc 在同一操作中明确指定行条件与列，能保证修改落在原对象上；连续方括号可能返回中间副本，赋值结果丢失且出现警告。复杂变换可以显式 copy 生成新表，但应写清楚所有权和后续使用范围。"
+        },
+        {
+          "type": "multi",
+          "question": "数据质量检查通常包括哪些内容？（多选）",
+          "options": [
+            "缺失值比例与分布",
+            "重复记录与业务键唯一性",
+            "类型转换失败的行",
+            "只保留好看的数据行"
+          ],
+          "answers": [
+            0,
+            1,
+            2
+          ],
+          "answer": 0,
+          "explanation": "缺失、重复和类型错误是质量检查的基本项，异常值和跨字段一致性也常被纳入。删除不好看的数据不是质量策略，而是隐藏问题；清洗规则应版本化，记录每一类处理的输入数量、输出数量和假设。"
+        },
+        {
+          "type": "code",
+          "question": "阅读分组代码，输出第一行是哪个城市？\n\ndf.groupby('city', as_index=False)['score'].mean().sort_values('score', ascending=False)",
+          "options": [
+            "上海，因为平均分 92.0 最高",
+            "北京，因为出现次数最多",
+            "深圳，因为分数最低",
+            "顺序随机，无法判断"
+          ],
+          "answer": 0,
+          "code": "df.groupby('city', as_index=False)['score'].mean().sort_values('score', ascending=False)",
+          "language": "python",
+          "explanation": "分组平均后北京的分数是 88 与 95 的平均 91.5，上海是 92.0，深圳是 79.0；按分数降序排列时上海位于第一行。分组结果还可能与索引和缺失值有关，正式报告前应检查每组样本量，避免小样本平均值产生误导。"
+        },
+        {
+          "type": "debug",
+          "question": "为什么把报告结果写入 Parquet 比继续追加写入同一个 CSV 更适合？",
+          "options": [
+            "Parquet 保存 schema 和列统计，压缩率高，分析时可按列读取",
+            "Parquet 可以被任意文本编辑器直接修改",
+            "Parquet 不需要定义字段类型",
+            "Parquet 只适合实时逐行写入"
+          ],
+          "answer": 0,
+          "explanation": "Parquet 是面向分析的列式格式，天然保留类型信息、压缩和分组统计，读取少量列时效率很高；它不是为频繁追加或逐行修改设计的。CSV 虽然可读性好，但缺少类型和 schema，追加多份文件后容易出现列顺序和编码不一致。这道题对应 pandas 与 Parquet 的分工：分析结果适合列式存储，但文件格式不是实时编辑工具。",
+          "code": "df.groupby('city', as_index=False)['score'].mean().sort_values('score', ascending=False)",
+          "language": "python"
+        }
+      ],
+      "practice": [
+        "用 NumPy 创建二维数组并完成按行归一化，验证广播与切片视图的行为。",
+        "清洗一份含缺失值和重复行的 CSV，输出清洗前后行数、缺失数量和规则说明。",
+        "用 pandas 与 Polars 分别完成同一个分组聚合，记录代码量与运行时间差异。",
+        "把分析结果导出为 Parquet，再用 Matplotlib 生成带单位和样本量标注的柱状图。"
+      ],
+      "refs": [
+        {
+          "name": "NumPy 官方文档",
+          "url": "https://numpy.org/doc/stable/"
+        },
+        {
+          "name": "pandas 用户指南",
+          "url": "https://pandas.pydata.org/docs/user_guide/"
+        },
+        {
+          "name": "Polars 用户指南",
+          "url": "https://docs.pola.rs/"
+        },
+        {
+          "name": "Matplotlib 文档",
+          "url": "https://matplotlib.org/stable/"
+        }
+      ],
+      "english": "This lesson covers the Python data stack: NumPy arrays, dtypes, broadcasting and views, pandas indexing and grouping, Polars lazy expressions, reproducible cleaning, Parquet storage and clear visualization. It emphasizes data quality, memory behavior and reproducibility.",
+      "reviewPoints": [
+        "能解释广播、视图和副本的区别。",
+        "能完成分组聚合并检查数据质量。",
+        "能根据分析场景选择表格库和存储格式。"
+      ],
+      "lab": "sandbox:python"
+    }
+  ]
+}

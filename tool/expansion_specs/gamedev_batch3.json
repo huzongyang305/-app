@@ -1,0 +1,234 @@
+{
+  "lessons": [
+    {
+      "id": "gamedev_render_pipeline",
+      "category": "gamedev",
+      "title": {"zh": "渲染管线与批次合并", "en": "Render Pipeline and Batching"},
+      "summary": {"zh": "从绘制调用、材质状态讲到批次合并、图集与剔除策略。", "en": "Draw calls, material state, batching, atlases and culling."},
+      "keywords": ["渲染管线", "Draw Call", "批次合并", "图集", "剔除"],
+      "difficulty": "进阶",
+      "minutes": 40,
+      "order": 4,
+      "image": {"title": "一帧的渲染顺序", "flow": ["遍历场景收集可见对象", "视锥与遮挡剔除", "按材质与图集排序", "合并批次提交绘制调用", "后处理与呈现"]},
+      "goals": ["能说明一帧从场景遍历到画面呈现的主要阶段。", "能通过排序与图集把绘制调用数量降下来。", "能判断瓶颈在 CPU 提交还是 GPU 填充。"],
+      "prerequisitesText": ["知道顶点、三角形与纹理的基本概念。", "用过任一引擎的性能分析工具。", "了解坐标系与相机视锥的大致含义。"],
+      "concepts": [
+        {"name": "绘制调用与状态切换", "plain": "每个绘制调用都要 CPU 准备并提交，状态切换会打断 GPU 的连续工作。", "mechanism": "渲染器把可见对象按材质、着色器与纹理排序，相同状态的合并成一次提交，减少切换与调用次数。", "example": "在本课示例里对比未排序与排序后的一帧绘制调用数量。", "boundary": "过度合并会破坏绘制顺序，透明物体排序错误会出现穿插与闪烁。", "engineering": "把不透明与透明对象分开处理，透明按深度排序，不透明优先合并批次。"},
+        {"name": "图集与实例化", "plain": "把多张小图打进一张图集或用实例化绘制重复模型，都能显著减少调用。", "mechanism": "图集让小图共享同一纹理，实例化把同一网格的多个变换一次性提交给 GPU，两者都减少了状态切换与调用开销。", "example": "在本课示例里把散落的精灵打进图集，观察调用数从上百降到个位数。", "boundary": "图集过大或分辨率过高会占用大量显存并降低缓存命中，反而拖慢采样。", "engineering": "按使用场景分组打图集，设置尺寸上限并把图集清单纳入资产构建产物。"},
+        {"name": "剔除与填充率", "plain": "不画看不见的东西最省性能，屏幕像素的填充成本也要计算在内。", "mechanism": "视锥剔除、遮挡剔除与距离分级减少提交对象；降低过度绘制、控制半透明面积可减少像素填充压力。", "example": "在本课示例里统计同一场景在不同视角下的可见对象数与填充率指标。", "boundary": "剔除判定过于保守会漏画，边界物体突然出现是常见的体验问题。", "engineering": "给剔除保留适度包围盒余量，分级细节切换加入滞后区间避免来回抖动。"}
+      ],
+      "steps": ["统计一帧的绘制调用与状态切换", "按材质与纹理排序", "合并图集与使用实例化", "打开视锥与遮挡剔除", "用分析工具确认瓶颈转移"],
+      "code": {"language": "csharp", "snippet": "// 每帧收集可见渲染项，按材质与纹理排序后再提交\nvoid RenderFrame(Scene scene, Camera camera) {\n    var visible = new List<RenderItem>();\n    foreach (var item in scene.Items) {\n        if (!camera.Frustum.Contains(item.Bounds)) continue;   // 视锥剔除\n        if (item.Distance > item.MaxDistance) continue;        // 距离分级\n        visible.Add(item);\n    }\n\n    // 排序键：先材质、再纹理，透明物体单独放最后\n    visible.Sort((a, b) => {\n        int cmp = a.MaterialId.CompareTo(b.MaterialId);\n        if (cmp != 0) return cmp;\n        return a.TextureId.CompareTo(b.TextureId);\n    });\n\n    int batches = 0;\n    MaterialId current = MaterialId.None;\n    foreach (var item in visible) {\n        if (item.IsTransparent) continue;              // 透明单独一遍\n        if (item.MaterialId != current) {\n            BindMaterial(item.MaterialId);             // 只在必要时切换状态\n            current = item.MaterialId;\n            batches++;\n        }\n        Submit(item.Mesh, item.Transform);\n    }\n    Debug.Hud($\"visible={visible.Count} batches={batches}\");\n}\n", "walkthrough": "先用视锥与距离筛掉不可见对象，再按材质与纹理排序；提交时只在材质变化时切换状态，从而把大量零散调用压成少数批次。透明物体单独处理，避免破坏排序导致穿插。", "expected_output": "visible=412 batches=27（优化前 batches=386），frame time 14.2 ms -> 7.8 ms"},
+      "faults": [
+        {"topic": "场景一复杂就掉帧", "wrong": "逐个对象提交绘制，材质与纹理频繁切换", "fix": "按材质与纹理排序合并批次，重复模型改用实例化绘制"},
+        {"topic": "半透明物体闪烁", "wrong": "透明与不透明对象混在一起排序", "fix": "不透明先画并按状态合并，透明单独一遍按深度从远到近绘制"},
+        {"topic": "物体在画面边缘突然消失", "wrong": "剔除包围盒过紧，旋转后没有更新", "fix": "包围盒留出余量并在变换后重算，分级切换加入滞后区间"}
+      ],
+      "glossary": [
+        {"term": "绘制调用", "definition": "CPU 向图形接口提交一次绘制的指令。"},
+        {"term": "批次", "definition": "状态相同、可以合并提交的一组绘制。"},
+        {"term": "图集", "definition": "把多张小纹理合并到一张大纹理以减少切换。"},
+        {"term": "实例化", "definition": "一次提交绘制同一网格的多个实例。"},
+        {"term": "过度绘制", "definition": "同一像素被多次着色，浪费填充带宽。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "减少绘制调用最直接的两个手段是？", "options": ["合并图集与使用实例化", "提高分辨率与开启抗锯齿", "增加模型面数", "关闭垂直同步"], "answer": 0, "explanation": "图集让多个精灵共享纹理，实例化让同一网格一次提交多个实例，两者都直接减少调用与状态切换。"},
+        {"type": "single", "question": "透明物体为什么要单独排序绘制？", "options": ["需要按深度从远到近混合，顺序错了会出现穿插", "透明材质不能使用纹理", "透明物体不参与剔除", "透明物体必须在 CPU 上绘制"], "answer": 0, "explanation": "透明混合结果依赖绘制顺序，必须按深度从远到近，混在不透明批次里会产生错误的穿插与闪烁。"},
+        {"type": "multi", "question": "以下哪些因素可能让 GPU 成为瓶颈？（多选）", "options": ["大面积半透明特效叠加", "分辨率翻倍导致填充率上升", "同屏粒子数量巨大", "绘制调用数量极少且模型简单"], "answer": 0, "answers": [0, 1, 2], "explanation": "填充率与像素着色量决定 GPU 压力；调用少且几何简单的场景通常不会让 GPU 饱和。"},
+        {"type": "order", "question": "请按一帧渲染的主要顺序排列。", "options": ["收集场景对象", "剔除不可见对象", "按材质与纹理排序", "提交批次绘制", "后处理并呈现画面"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "先收集再剔除能减少后续排序与提交的规模，排序后合并批次提交，最后做后处理与呈现。"},
+        {"type": "debug", "question": "阅读这段渲染代码，主要性能问题是什么？", "options": ["每个对象单独绑定材质并提交，批次无法合并", "顶点数量过多", "相机视锥设置太小", "纹理分辨率不足"], "answer": 0, "code": "foreach (var item in scene.Items) {\n    BindMaterial(item.Material);      // 每件物品都重新绑定\n    SetTexture(item.Texture);         // 每次都切换纹理\n    Submit(item.Mesh, item.Transform);\n}\n", "language": "csharp", "explanation": "循环内逐对象绑定材质与纹理，状态切换次数与对象数量同阶，应改为先排序再合并批次，并只在实际变化时切换状态。"}
+      ],
+      "practice": ["统计一个场景的绘制调用数，通过排序与图集把批次压到原来的三分之一。", "对比透明物体在两种绘制顺序下的画面差异并解释原因。", "用分析工具判定一次掉帧是 CPU 提交瓶颈还是 GPU 填充瓶颈。"],
+      "refs": [
+        {"name": "Unity 官方文档：批处理与性能", "url": "https://docs.unity3d.com/Manual/optimizing-draw-calls.html"},
+        {"name": "Godot 官方文档：渲染优化", "url": "https://docs.godotengine.org/en/stable/tutorials/performance/general_optimization.html"}
+      ],
+      "english": "A frame walks the scene, culls what cannot be seen, sorts the rest by material and texture, merges draw calls, then shades pixels and presents. Batching and instancing cut CPU submission cost, while overdraw and large transparent areas push cost onto the GPU. Sorting is only safe for opaque objects; transparency needs its own back-to-front pass.",
+      "reviewPoints": ["能说出减少绘制调用的三种具体手段。", "能解释透明物体为什么必须单独排序。", "能判断一次掉帧的瓶颈在 CPU 还是 GPU。"]
+    },
+    {
+      "id": "gamedev_animation_fsm",
+      "category": "gamedev",
+      "title": {"zh": "动画状态机与混合", "en": "Animation State Machines and Blending"},
+      "summary": {"zh": "从状态与转移条件讲到过渡混合、根运动与事件回调。", "en": "States, transitions, blending, root motion and animation events."},
+      "keywords": ["动画状态机", "转移条件", "混合树", "根运动", "动画事件"],
+      "difficulty": "基础",
+      "minutes": 35,
+      "order": 5,
+      "image": {"title": "角色动作的状态迁移", "flow": ["输入与物理状态更新", "评估转移条件", "进入目标状态并混合", "播放动画与根运动", "到点触发事件回调"]},
+      "goals": ["能画出角色动作状态图并写清每条转移条件。", "能解释过渡时间与混合空间对观感的影响。", "能正确使用动画事件与根运动避免穿模与卡顿。"],
+      "prerequisitesText": ["能在引擎里导入并播放一段动画。", "会写简单的布尔与数值条件判断。", "了解角色控制器的基本输入处理。"],
+      "concepts": [
+        {"name": "状态与转移条件", "plain": "角色同一时刻只处于一个动作状态，状态之间按条件切换。", "mechanism": "每个状态维护进入、更新与退出逻辑，转移由参数条件触发，触发后按过渡时间混合到目标状态。", "example": "在本课示例里让角色在待机、跑步与跳跃之间切换，观察条件不满足时状态保持不变。", "boundary": "转移条件写得过于宽松会出现状态抖动，走路与待机在一帧内反复切换。", "engineering": "给关键转移加最小停留时间或阈值区间，并用调试面板把当前状态显示在屏幕上。"},
+        {"name": "混合与过渡", "plain": "两个动作之间用时间或参数混合，动作衔接才自然。", "mechanism": "过渡按权重在起始与目标姿态之间插值，混合空间按速度等参数在多个动作间连续加权。", "example": "在本课示例里把跑步过渡时间从零调到零点三秒，对比起停的观感差异。", "boundary": "过渡时间过长会让动作发飘，过短则出现明显跳变，取值要与动作节奏匹配。", "engineering": "把过渡时长与混合参数做成可配置资源，方便美术与策划在不改代码的前提下调整。"},
+        {"name": "根运动与动画事件", "plain": "根运动让位移来自动画本身，动画事件在指定时刻触发逻辑。", "mechanism": "动画播放时把根骨骼位移应用到角色变换上，动画事件在关键帧回调中触发脚步声、攻击判定或特效。", "example": "在本课示例里用根运动驱动一次位移，再在落脚帧触发音效，观察两者同步效果。", "boundary": "根运动与代码位移同时生效会让角色速度翻倍或抖动，必须二选一或做权重协调。", "engineering": "事件回调只做轻量动作，重逻辑交给状态机处理，避免在动画线程里执行耗时操作。"}
+      ],
+      "steps": ["列出动作与合法转移", "为每条转移写清条件与优先级", "设置过渡时间与混合参数", "接入根运动或代码位移", "在关键帧挂事件并验证时机"],
+      "code": {"language": "csharp", "snippet": "// 简化状态机：条件集中判定，转移只做一件事\nenum State { Idle, Run, Jump, Land }\n\nState Evaluate(State current, InputState input, float speed, bool grounded) {\n    switch (current) {\n        case State.Idle:\n            // 速度超过阈值才进入跑步，避免边界抖动\n            if (speed > 0.1f) return State.Run;\n            if (!grounded && input.JumpPressed) return State.Jump;\n            return State.Idle;\n        case State.Run:\n            if (speed <= 0.05f) return State.Idle;\n            return State.Run;\n        case State.Jump:\n            // 只有落地且垂直速度已归零才切回，防止连跳时状态反复\n            if (grounded && speed < 0.1f) return State.Land;\n            return State.Jump;\n        case State.Land:\n            return speed > 0.1f ? State.Run : State.Idle;\n        default:\n            return State.Idle;\n    }\n}\n\n// 过渡时间按动作类型区分，跳跃用更短的过渡保持响应\nfloat TransitionTime(State from, State to) =>\n    (to == State.Jump || from == State.Jump) ? 0.08f : 0.2f;\n", "walkthrough": "Evaluate 把判定集中在函数里，每个分支只返回目标状态，便于单独测试；阈值使用滞回区间避免抖动；TransitionTime 按动作类型给出不同过渡时长，跳跃更短以保持操作响应。", "expected_output": "state Idle -> Run (0.20 s blend)，Run -> Jump (0.08 s blend)，event footstep fired at frame 12"},
+      "faults": [
+        {"topic": "角色在走路与待机之间抖动", "wrong": "两个状态的切换阈值写在同一个数值上", "fix": "给转移设置滞回区间或最小停留时间，避免在边界反复切换"},
+        {"topic": "角色位移速度异常", "wrong": "根运动与代码位移同时作用于角色", "fix": "位移来源二选一，或在过渡期按权重协调，避免重复叠加"},
+        {"topic": "攻击判定时机不对", "wrong": "依赖计时器估算动作关键帧", "fix": "在动画关键帧挂事件回调，由动画时钟驱动判定与特效"}
+      ],
+      "glossary": [
+        {"term": "状态机", "definition": "用状态与转移描述角色行为的模型。"},
+        {"term": "过渡", "definition": "两个动画之间按权重与时间进行的混合过程。"},
+        {"term": "混合空间", "definition": "按参数在多个动画之间连续加权的结构。"},
+        {"term": "根运动", "definition": "由动画根骨骼驱动角色位移的方式。"},
+        {"term": "动画事件", "definition": "在动画特定时刻触发的回调。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "角色在跑步与待机之间高频抖动，最可能的原因是？", "options": ["两个状态的切换阈值相同且没有滞回", "动画资源分辨率过高", "骨骼数量过多", "过渡时间过短"], "answer": 0, "explanation": "当速度在阈值附近波动时，两个方向的条件同时成立就会来回切换，加入滞回区间或最短停留时间即可稳定。"},
+        {"type": "single", "question": "根运动与代码位移同时启用会导致？", "options": ["位移被重复叠加，出现速度异常与抖动", "动画无法播放", "模型丢失骨骼", "过渡时间自动归零"], "answer": 0, "explanation": "两者都在修改角色位置，叠加后位移量约为预期两倍，或者相互抵消产生抖动，应只保留一种来源。"},
+        {"type": "multi", "question": "以下哪些做法能改善动作衔接观感？（多选）", "options": ["按动作类型设置不同过渡时长", "在速度参数上使用混合空间", "为关键转移加最小停留时间", "把所有过渡时间统一设为零"], "answer": 0, "answers": [0, 1, 2], "explanation": "过渡时长差异化、参数化混合与转移稳定性都在改善衔接；过渡设为零会直接跳变。"},
+        {"type": "order", "question": "请按一次动作切换的顺序排列。", "options": ["输入与物理状态更新", "评估转移条件", "按权重开始过渡", "进入目标状态播放动画", "在关键帧触发事件回调"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "先更新输入与物理，再评估条件并过渡，进入目标状态后播放动画，最后在关键帧触发事件完成逻辑联动。"},
+        {"type": "debug", "question": "阅读这段转移判定，会造成什么问题？", "options": ["没有滞回，速度在阈值附近时状态会来回抖动", "跳跃条件永远不会触发", "过渡时间过长", "事件回调缺失"], "answer": 0, "code": "if (speed > 0.1f) state = State.Run;\nif (speed <= 0.1f) state = State.Idle;   // 同一帧两个条件都可能命中\n", "language": "csharp", "explanation": "两条判定共用同一个阈值，速度微小波动就会在两个状态之间反复切换，应设置不同阈值形成滞回区间。"}
+      ],
+      "practice": ["画出包含待机、跑步、跳跃、落地四个状态的状态图，标出每条转移条件。", "把一次过渡时长从 0.08 秒改到 0.35 秒，记录观感与操作响应的差异。", "在落脚帧挂一个事件触发音效，验证与脚步的同步效果。"],
+      "refs": [
+        {"name": "Unity 官方手册：动画状态机", "url": "https://docs.unity3d.com/Manual/AnimationStateMachines.html"},
+        {"name": "Godot 官方文档：动画树", "url": "https://docs.godotengine.org/en/stable/tutorials/animation/animation_tree.html"}
+      ],
+      "english": "A character animation state machine keeps one active state and moves between states when transition conditions hold. Blending smooths the seam, and transition durations differ by action: jumps stay snappy while idles soften. Root motion and scripted movement must not fight each other, and gameplay cues belong on animation events at the exact keyframe.",
+      "reviewPoints": ["能画出四状态角色动作图并写出转移条件。", "能解释滞回区间如何消除状态抖动。", "能说明根运动与代码位移为什么不能同时启用。"]
+    },
+    {
+      "id": "gamedev_asset_pipeline",
+      "category": "gamedev",
+      "title": {"zh": "资产管线与热更新", "en": "Asset Pipeline and Hot Updates"},
+      "summary": {"zh": "从导入规则、打包分组讲到版本清单、增量下载与回滚。", "en": "Import rules, bundle grouping, version manifests, incremental download and rollback."},
+      "keywords": ["资产管线", "打包分组", "热更新", "版本清单", "增量下载"],
+      "difficulty": "进阶",
+      "minutes": 40,
+      "order": 6,
+      "image": {"title": "资产从制作到玩家设备", "flow": ["美术产出源文件", "导入规则统一压缩与格式", "按依赖分组打包", "生成版本清单与哈希", "客户端按清单增量下载"]},
+      "goals": ["能制定统一的导入规则保证不同机器结果一致。", "能按依赖与更新频率合理划分资源包。", "能设计带校验与回滚的热更新流程。"],
+      "prerequisitesText": ["了解纹理、模型与音频的常见压缩格式。", "知道哈希与版本号的基本作用。", "用过一次构建打包流程。"],
+      "concepts": [
+        {"name": "导入规则与一致性", "plain": "同一份源文件在不同机器上要产出同样的结果，靠的是自动化导入规则。", "mechanism": "导入设置以配置文件形式随工程管理，按目录或命名约定自动套用压缩格式、分辨率与图集参数。", "example": "在本课示例里用同一份纹理在两条机器上导入，对比输出的尺寸、格式与哈希是否一致。", "boundary": "依赖个人手工设置会在换机或新增成员后失效，构建结果时好时坏且难以复现。", "engineering": "规则文件纳入版本管理并让构建在干净环境执行，把输出哈希写进构建报告。"},
+        {"name": "打包分组与依赖", "plain": "资源分组决定玩家为了一个新内容要下载多少数据。", "mechanism": "按功能与更新频率划分资源包，被多个包共享的资源抽到公共包，避免重复打包与版本漂移。", "example": "在本课示例里把共享贴图抽到公共包，对比更新一个关卡时的下载体积变化。", "boundary": "分组过细会让资源在多个包中重复，下载总量与内存占用都被放大。", "engineering": "把分组规则与体积目标写进构建脚本，超过阈值直接让流水线失败。"},
+        {"name": "版本清单与回滚", "plain": "客户端按服务端清单决定下载什么，出问题时能退回上一个可用版本。", "mechanism": "服务端发布带版本号与文件哈希的清单，客户端比对本地版本后按差量下载，校验通过后原子切换，异常时保留旧版本目录。", "example": "在本课示例里发布一个有问题的包并执行回滚，观察客户端恢复到上一版本继续运行。", "boundary": "没有哈希校验的下载会被中间环节损坏影响，玩家侧表现为资源错乱或崩溃。", "engineering": "清单与资源同时提供多个版本，客户端保留上一份可用目录并记录切换原因。"}
+      ],
+      "steps": ["制定并落地导入规则", "按依赖与更新频率分组", "生成带哈希的版本清单", "实现差量下载与校验", "验证回滚与断点续传"],
+      "code": {"language": "csharp", "snippet": "// 资源更新：比对清单、差量下载、校验后原子切换\nasync Task<bool> UpdateAssets(Manifest remote, Manifest local) {\n    var plan = remote.Diff(local);                 // 只下载哈希不同的文件\n    long total = plan.Sum(f => f.Size);\n    Debug.Log($\"need {plan.Count} files, {total / 1024 / 1024} MB\");\n\n    foreach (var file in plan) {\n        var data = await Download(file.Url, resumeFrom: LocalSize(file));  // 支持断点续传\n        if (Hash(data) != file.Hash) {\n            Rollback(\"hash mismatch: \" + file.Path);   // 校验失败立即回滚\n            return false;\n        }\n        WriteToStaging(file.Path, data);              // 先写临时目录\n    }\n\n    CommitStaging();   // 全部校验通过后一次性切换，避免半更新状态\n    return true;\n}\n", "walkthrough": "先按清单差量计算出需要下载的文件，逐个下载并校验哈希，全部写入临时目录后一次性提交切换；任何一步失败都回滚到旧版本，玩家不会处在半新半旧的状态。", "expected_output": "need 42 files, 18 MB，resume at 62%，hash ok 42/42，commit staging -> assets-1.7.3"},
+      "faults": [
+        {"topic": "换一台机器打包结果就变", "wrong": "导入设置靠个人手工配置，没有随工程管理", "fix": "把导入规则写成配置文件并纳入版本管理，在干净环境执行构建并记录输出哈希"},
+        {"topic": "更新一个小关卡下载量很大", "wrong": "资源分组过粗，所有内容打在一个包里", "fix": "按功能与更新频率细分资源包，共享资源抽到公共包避免重复"},
+        {"topic": "更新失败后游戏打不开", "wrong": "资源直接覆盖旧目录且没有校验与回滚", "fix": "先写临时目录，校验通过后原子切换，失败时保留上一份可用目录"}
+      ],
+      "glossary": [
+        {"term": "导入规则", "definition": "把源文件转换为运行时资产的自动化配置。"},
+        {"term": "资源包", "definition": "按依赖与更新频率打包的一组资产。"},
+        {"term": "版本清单", "definition": "记录文件路径、哈希与版本的索引文件。"},
+        {"term": "差量下载", "definition": "只下载与本地版本不同的文件。"},
+        {"term": "原子切换", "definition": "全部准备完成后一次性生效，避免中间状态。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "把共享资源抽到公共包的主要收益是？", "options": ["避免重复打包，减少下载与内存占用", "提高贴图分辨率", "减少美术制作投入", "让构建变慢"], "answer": 0, "explanation": "共享资源若分散在多个功能包里会被重复打包，抽到公共包后只需下载与加载一份。"},
+        {"type": "single", "question": "下载校验失败后正确的处理是？", "options": ["回滚到上一份可用资源并记录原因", "忽略校验继续使用", "删除本地全部资源强制重下", "把版本号调高绕过校验"], "answer": 0, "explanation": "校验失败说明资源不完整或已被破坏，回滚并记录原因才能保证玩家可继续运行且问题可追踪。"},
+        {"type": "multi", "question": "以下哪些内容应纳入构建流水线？（多选）", "options": ["导入规则的自动化执行", "资源包体积阈值检查", "版本清单与哈希生成", "手工在个人机器上替换文件"], "answer": 0, "answers": [0, 1, 2], "explanation": "规则执行、体积阈值与清单生成是发布质量的保证；手工替换无法复现，也不会留下审计记录。"},
+        {"type": "order", "question": "请按一次热更新的顺序排列。", "options": ["客户端拉取远端清单", "比对本地版本生成差量计划", "下载并逐个校验哈希", "写入临时目录", "提交切换或失败回滚"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "先取清单再算差量，下载校验后写临时目录，最后统一提交或回滚，保证任何时刻都有一个可运行版本。"},
+        {"type": "debug", "question": "阅读这段更新代码，风险是什么？", "options": ["直接覆盖正式目录，中途失败会让资源处于半更新状态", "下载速度过慢", "清单缺少版本号", "文件数量统计错误"], "answer": 0, "code": "foreach (var file in remote.Files) {\n    var data = await Download(file.Url);\n    File.WriteAllBytes(LocalPath(file.Path), data);   // 直接写入正式目录\n}\n", "language": "csharp", "explanation": "边下边覆盖正式目录，一旦中途失败或断电，本地资源就是新旧混杂，缺少校验与回滚会导致游戏无法启动。"}
+      ],
+      "practice": ["为项目写一份导入规则文件，在干净环境构建并核对输出哈希一致。", "对比拆分资源包前后的单关卡更新体积。", "模拟一次校验失败，验证客户端回滚并记录原因。"],
+      "refs": [
+        {"name": "Unity 官方手册：资源包与 Addressables", "url": "https://docs.unity3d.com/Manual/AssetBundlesIntro.html"},
+        {"name": "Android 官方文档：Play Asset Delivery", "url": "https://developer.android.com/guide/playcore/asset-delivery"}
+      ],
+      "english": "An asset pipeline turns source files into runtime assets with rules, not with personal settings. Bundles are grouped by feature and update frequency, with shared assets in a common bundle. The server publishes a manifest with versions and hashes; the client downloads only differences, verifies each file, writes to staging and switches atomically, keeping the previous version for rollback.",
+      "reviewPoints": ["能说明导入规则为什么要随工程版本管理。", "能按依赖与更新频率给出分组方案。", "能描述热更新的四步：差量、校验、暂存、切换。"]
+    },
+    {
+      "id": "gamedev_multiplayer_sync",
+      "category": "gamedev",
+      "title": {"zh": "多人同步与延迟处理", "en": "Multiplayer Synchronization and Latency"},
+      "summary": {"zh": "从权威服务器、状态同步讲到插值、预测与回滚补偿。", "en": "Authoritative servers, state replication, interpolation, prediction and rollback."},
+      "keywords": ["权威服务器", "状态同步", "客户端预测", "插值", "回滚"],
+      "difficulty": "进阶",
+      "minutes": 45,
+      "order": 7,
+      "image": {"title": "一次输入到全房间生效", "flow": ["客户端采集输入并编号", "发送到权威服务器", "服务器按顺序模拟", "广播结果快照", "客户端插值与预测校正"]},
+      "goals": ["能说明权威服务器模型为什么能防作弊并保持一致性。", "能用插值让远端角色移动平滑。", "能实现输入编号与状态校正的预测回滚闭环。"],
+      "prerequisitesText": ["了解网络往返时延与丢包的基本概念。", "能编写简单的客户端与服务器通信逻辑。", "知道帧更新与固定时间步长的区别。"],
+      "concepts": [
+        {"name": "权威服务器与状态同步", "plain": "由服务器决定世界的最终状态，客户端只发送操作意图。", "mechanism": "客户端上传输入，服务器按固定步长模拟并通过快照或差量广播状态，客户端据此渲染。", "example": "在本课示例里让两个客户端同时移动，观察服务器如何裁决冲突并广播一致结果。", "boundary": "把关键判定放在客户端，作弊者可以直接修改本地状态，其他人看到的却是伪造结果。", "engineering": "伤害、掉落等关键判定只在服务器执行，客户端仅做表现层预测。"},
+        {"name": "插值与延迟缓冲", "plain": "远端对象收到的状态是过去的，需要缓冲与插值让运动连续。", "mechanism": "客户端保留一小段快照缓冲区，渲染时在相邻两个快照之间插值，用缓冲长度吸收抖动与丢包。", "example": "在本课示例里调节缓冲长度，对比网络抖动下角色移动的平滑度与延迟。", "boundary": "缓冲区过短会出现抖动与瞬移，过长会让操作反馈明显滞后。", "engineering": "把缓冲长度与丢包率挂钩并做成可观测指标，异常升高时提示网络质量。"},
+        {"name": "客户端预测与校正", "plain": "本地操作立即生效，服务器确认后再校正，避免等待往返时延。", "mechanism": "输入带序号并保存历史，服务器返回已处理的序号，客户端用服务器状态重放未确认输入完成校正。", "example": "在本课示例里人为加入延迟，观察射门动作先本地播放再被服务器校正的过程。", "boundary": "预测与服务器规则不一致时会出现明显回弹，规则差异必须收敛到同一套逻辑。", "engineering": "客户端与服务器共用同一份移动逻辑代码，并把校正幅度作为质量指标监控。"}
+      ],
+      "steps": ["确定权威边界与同步频率", "实现输入编号与发送", "实现快照缓冲与插值", "加入本地预测与重放校正", "用延迟与丢包模拟验证表现"],
+      "code": {"language": "csharp", "snippet": "// 客户端预测与校正：保存未确认输入，收到服务器状态后重放\nstruct InputFrame { public int Seq; public float MoveX; public float Jump; }\n\nvoid OnServerState(PlayerState server, int lastAckedSeq) {\n    // 1. 用服务器权威状态作为起点\n    var state = server;\n\n    // 2. 丢弃已被服务器处理的输入\n    pending.RemoveAll(i => i.Seq <= lastAckedSeq);\n\n    // 3. 重放尚未确认的输入，得到当前应显示的位置\n    foreach (var input in pending) {\n        state = Simulate(state, input, FixedDelta);\n    }\n\n    // 4. 误差小就平滑收敛，误差大直接对齐，避免长期漂移\n    float error = Vector3.Distance(local.Position, state.Position);\n    if (error < 0.1f) local.SmoothTo(state, 0.15f);\n    else { local.SnapTo(state); Debug.Log($\"correct {error:F2} m, replay {pending.Count} inputs\"); }\n}\n", "walkthrough": "校正时以服务器状态为基准，重放客户端尚未被确认的输入，既保留了本地操作的即时感，又保证长时间运行不会与服务器漂移。误差小用平滑收敛避免抖动，误差大直接对齐防止累积。", "expected_output": "correct 1.86 m, replay 4 inputs，rtt 120 ms，buffer 100 ms，no rubber-banding after settle"},
+      "faults": [
+        {"topic": "远端角色移动一顿一顿", "wrong": "收到快照直接设置位置，没有插值缓冲", "fix": "保留快照缓冲并在相邻快照之间插值，用缓冲吸收抖动与丢包"},
+        {"topic": "本地操作延迟明显", "wrong": "等待服务器确认后才播放动作", "fix": "本地立即预测执行并把输入入队，收到服务器状态后重放未确认输入校正"},
+        {"topic": "客户端与服务器状态长期漂移", "wrong": "客户端与服务器使用两套不同的移动规则", "fix": "共用同一份固定步长逻辑代码，服务器为权威并对差异做校正与监控"}
+      ],
+      "glossary": [
+        {"term": "权威服务器", "definition": "由服务器决定最终状态的架构模型。"},
+        {"term": "快照", "definition": "某一时刻的世界状态数据。"},
+        {"term": "插值", "definition": "在两个快照之间生成中间状态使运动平滑。"},
+        {"term": "客户端预测", "definition": "本地先执行操作，之后再与服务器校正。"},
+        {"term": "重放", "definition": "用未确认输入在权威状态上重新模拟的过程。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "关键判定放在服务器执行的核心原因是？", "options": ["防止客户端篡改结果，并保证所有玩家看到一致状态", "减少显卡负担", "降低内存占用", "让下载更快"], "answer": 0, "explanation": "客户端环境不可信，只有服务器裁决才能保证一致性并抵御作弊，客户端负责表现与预测。"},
+        {"type": "single", "question": "快照缓冲过短会带来什么现象？", "options": ["远端对象抖动甚至瞬移", "操作延迟明显增加", "服务器负载升高", "丢包率上升"], "answer": 0, "explanation": "缓冲用于吸收抖动与丢包，过短时可用快照不足，插值无法平滑，就会出现抖动与瞬移。"},
+        {"type": "multi", "question": "实现预测校正闭环需要哪些要素？（多选）", "options": ["输入编号", "未确认输入的历史记录", "服务器返回已处理序号", "客户端独立维护另一套物理规则"], "answer": 0, "answers": [0, 1, 2], "explanation": "编号、历史与服务器确认序号共同支撑重放；规则分叉会让预测与权威结果始终对不上。"},
+        {"type": "order", "question": "请按一次带预测的操作顺序排列。", "options": ["客户端采集输入并编号", "本地立即预测执行", "发送输入到服务器", "服务器模拟并广播状态", "客户端重放未确认输入完成校正"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "本地先给即时反馈，服务器模拟后返回权威状态，客户端重放未确认输入把预测收敛到权威结果。"},
+        {"type": "debug", "question": "阅读这段校正代码，会带来什么问题？", "options": ["校正时丢弃了所有未确认输入，玩家会被拉回过去的位置", "平滑系数过小", "缓冲区长度不足", "服务器状态被直接修改"], "answer": 0, "code": "void OnServerState(PlayerState server) {\n    pending.Clear();               // 清空全部未确认输入\n    local.transform.position = server.Position;   // 直接使用服务器位置\n}\n", "language": "csharp", "explanation": "清空未确认输入后没有重放，本地位置直接退回服务器快照时刻，玩家会看到明显回退甚至来回拉扯。"}
+      ],
+      "practice": ["用延迟与丢包模拟参数跑一局，记录不同缓冲长度下的平滑度与延迟。", "人为让客户端与服务器规则不一致，观察并解释回弹现象。", "为一次操作加入输入编号与重放校正，验证误差随时间收敛。"],
+      "refs": [
+        {"name": "Valve 开发者社区：Source 多人网络", "url": "https://developer.valvesoftware.com/wiki/Source_Multiplayer_Networking"},
+        {"name": "Gabriel Gambetta：快节奏多人游戏网络", "url": "https://www.gabrielgambetta.com/client-server-game-architecture.html"}
+      ],
+      "english": "Multiplayer games keep the server authoritative and let clients send intent only. Remote players are interpolated from a snapshot buffer, which trades responsiveness for smoothness. The local player predicts immediately, stores unacknowledged inputs, and replays them on top of the authoritative state so prediction converges without rubber-banding.",
+      "reviewPoints": ["能说明权威服务器模型解决了哪两个问题。", "能解释快照缓冲长度与延迟之间的取舍。", "能写出预测校正的三步：取权威态、丢已确认、重放未确认。"]
+    },
+    {
+      "id": "gamedev_performance_mobile",
+      "category": "gamedev",
+      "title": {"zh": "移动端性能与功耗优化", "en": "Mobile Performance and Power Optimization"},
+      "summary": {"zh": "从帧预算、发热降频讲到内存占用、加载时间与电量控制。", "en": "Frame budget, thermal throttling, memory, load time and battery usage."},
+      "keywords": ["帧预算", "发热降频", "内存", "加载时间", "功耗"],
+      "difficulty": "进阶",
+      "minutes": 40,
+      "order": 8,
+      "image": {"title": "移动设备的性能约束", "flow": ["确定目标帧率与帧预算", "分析 CPU 与 GPU 耗时", "控制内存与纹理占用", "观察发热后的降频曲线", "把指标纳入持续集成"]},
+      "goals": ["能按目标帧率算出每帧的时间预算并判断超支环节。", "能识别发热降频导致的性能曲线拐点。", "能把内存、加载与电量指标纳入发布检查。"],
+      "prerequisitesText": ["完成渲染管线一课并会读性能分析数据。", "知道设备内存与显存的基本限制。", "能在真机上运行并采集性能数据。"],
+      "concepts": [
+        {"name": "帧预算与目标帧率", "plain": "每秒六十帧意味着每帧只有约十六点七毫秒，CPU 与 GPU 必须都在预算内完成。", "mechanism": "把一帧内的逻辑、渲染提交、物理与音频耗时分别测量，找出超支项；同一帧内 CPU 与 GPU 可以并行，但最慢的一项决定上限。", "example": "在本课示例里把目标帧率从三十提到六十，观察哪些环节最先超出预算。", "boundary": "只在模拟器上测性能会低估真实设备差异，模拟器显卡与真机完全不同。", "engineering": "按机型分档设定目标帧率与画质，最低档机型作为性能验收基线。"},
+        {"name": "发热与降频", "plain": "手机长时间高负载会发热，系统为保护硬件主动降低频率。", "mechanism": "温度上升后 CPU 与 GPU 频率被限制，性能曲线在几分钟后出现明显下降，帧率随之波动。", "example": "在本课示例里连续运行十分钟并记录帧率曲线，找出降频发生的时间点。", "boundary": "只看开局三十秒的帧率会得到过于乐观的结论，长时间稳定性才是真实体验。", "engineering": "做长稳测试并把降频后的帧率作为验收指标，必要时提供画质档位让玩家自行取舍。"},
+        {"name": "内存与加载时间", "plain": "移动设备内存紧张，超限会被系统直接终止进程。", "mechanism": "纹理、网格与音频占用峰值内存，加载时若一次性读入全部资源会出现长时间卡顿甚至闪退。", "example": "在本课示例里统计进入关卡时的内存峰值与加载耗时，对比按需加载方案的差异。", "boundary": "只优化平均内存不关注峰值，仍会在切换场景时被系统杀掉进程。", "engineering": "按场景划分资源加载与释放边界，给出目标机型的峰值内存上限并纳入自动检查。"}
+      ],
+      "steps": ["确定目标帧率与机型分档", "分别测量 CPU 与 GPU 耗时", "定位内存峰值与加载瓶颈", "做十分钟长稳测试观察降频", "把指标写入发布检查清单"],
+      "code": {"language": "csharp", "snippet": "// 帧预算计时器：把一帧拆成逻辑、渲染与其余部分分别统计\nstruct FrameProfile {\n    public float LogicMs;\n    public float RenderMs;\n    public float OtherMs;\n    public float TotalMs => LogicMs + RenderMs + OtherMs;\n}\n\nvoid Update() {\n    var sw = Stopwatch.StartNew();\n    UpdateGameplay();\n    profile.LogicMs = (float)sw.Elapsed.TotalMilliseconds;\n\n    sw.Restart();\n    RenderScene();\n    profile.RenderMs = (float)sw.Elapsed.TotalMilliseconds;\n\n    // 帧预算按目标帧率计算：60 帧约 16.7 ms，30 帧约 33.3 ms\n    float budget = TargetFps == 60 ? 16.7f : 33.3f;\n    if (profile.TotalMs > budget) {\n        WarnThrottled(profile, budget);   // 记录超支帧与主要原因\n    }\n}\n\n// 纹理按目标机型分档，低端机使用半分辨率\nint TextureSize(Tier tier) => tier == Tier.Low ? 1024 : 2048;\n", "walkthrough": "把一帧拆成逻辑、渲染与其它三段分别计时，与目标帧率对应的预算比较，超支时记录原因与发生频率；纹理尺寸按机型分档，保证低端机内存与带宽可控。", "expected_output": "logic 3.1 ms，render 9.8 ms，total 14.2 ms (budget 16.7)，10 min soak: fps 60 -> 48 after 4.5 min（thermal）"},
+      "faults": [
+        {"topic": "开局流畅几分钟后卡顿", "wrong": "只在冷机状态测帧率，没有做长稳测试", "fix": "连续运行十分钟以上记录帧率曲线，把降频后的稳定帧率作为验收指标"},
+        {"topic": "真机闪退", "wrong": "一次性加载全部资源导致内存峰值超限", "fix": "按场景划分加载与释放边界，监控峰值内存并设置机型分档的资源规格"},
+        {"topic": "优化后仍掉帧", "wrong": "只优化 GPU 而实际瓶颈在 CPU 逻辑", "fix": "分别测量逻辑、渲染与物理耗时，按最慢环节定位瓶颈再优化"}
+      ],
+      "glossary": [
+        {"term": "帧预算", "definition": "每帧允许消耗的最长时间，由目标帧率决定。"},
+        {"term": "降频", "definition": "设备过热后主动降低频率以保护硬件。"},
+        {"term": "长稳测试", "definition": "长时间连续运行观察性能稳定性的测试。"},
+        {"term": "内存峰值", "definition": "运行过程中占用内存的最大值。"},
+        {"term": "机型分档", "definition": "按硬件能力分级配置画质与资源规格。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "目标六十帧时每帧的时间预算约为？", "options": ["16.7 毫秒", "33.3 毫秒", "60 毫秒", "6 毫秒"], "answer": 0, "explanation": "一秒钟一千毫秒除以六十帧，得到每帧约 16.7 毫秒，逻辑与渲染合计超出该值就会掉帧。"},
+        {"type": "single", "question": "判断性能瓶颈的第一步是？", "options": ["分别测量 CPU 与 GPU 各环节耗时", "直接降低分辨率", "关闭所有特效", "换一台更高配的手机"], "answer": 0, "explanation": "先测量才知道瓶颈在哪里，盲目降低画质可能优化了不相关的环节，白付代价。"},
+        {"type": "multi", "question": "移动端发布前应纳入检查的指标有哪些？（多选）", "options": ["帧率与帧时间分布", "峰值内存占用", "加载耗时", "开发机上的理论性能"], "answer": 0, "answers": [0, 1, 2], "explanation": "帧率、内存与加载时间直接决定体验与稳定性；理论性能不能代表真机表现，必须用目标机型实测。"},
+        {"type": "order", "question": "请按一次移动端性能优化的顺序排列。", "options": ["确定目标帧率与机型分档", "在真机上采集性能数据", "定位超支环节与内存峰值", "实施针对性优化", "长稳复测并归档指标"], "answer": 0, "correct_order": [0, 1, 2, 3, 4], "explanation": "先定目标与档位，再采集基线数据定位问题，之后优化并长稳复测，最后把指标固化到发布检查里。"},
+        {"type": "debug", "question": "阅读这段加载代码，最可能导致什么问题？", "options": ["一次性加载全部资源，进入关卡时内存峰值过高", "纹理尺寸过小", "帧率被限制在三十", "加载顺序按名称排序"], "answer": 0, "code": "void EnterLevel(string name) {\n    // 一次性把整包资源读进内存\n    var bundle = Resources.LoadAll<Object>(\"levels/\" + name);\n    StartLevel(bundle);\n}\n", "language": "csharp", "explanation": "把整关资源一次性读入会让内存峰值大幅升高，低端机在切换场景时容易被系统终止，应按需加载并释放。装包结构也影响可维护性。"}
+      ],
+      "practice": ["在目标机型上记录十分钟帧率曲线，标出降频发生的时间与幅度。", "把纹理分档从高到低各跑一次，记录内存峰值与画质差异。", "把加载方式改为按需加载，对比切换场景时的峰值内存与耗时。"],
+      "refs": [
+        {"name": "Android 官方文档：性能与功耗", "url": "https://developer.android.com/topic/performance"},
+        {"name": "Unity 官方手册：移动端优化", "url": "https://docs.unity3d.com/Manual/MobileOptimizationPracticalGuide.html"}
+      ],
+      "english": "At sixty frames per second the whole frame must fit in about 16.7 milliseconds, and the slowest of CPU or GPU decides the limit. Phones throttle when they get hot, so a cold thirty-second test is misleading: run a ten-minute soak and accept the throttled frame rate. Control texture tiers and peak memory, and gate releases on measured indices.",
+      "reviewPoints": ["能按目标帧率算出帧预算并定位超支环节。", "能解释冷机测试与长稳测试的差别。", "能列出发布前必须检查的三类指标。"]
+    }
+  ]
+}

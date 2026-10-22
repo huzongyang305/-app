@@ -1,0 +1,147 @@
+{
+  "category": "flutter",
+  "lessons": [
+    {
+      "id": "flutter_widget_intro",
+      "title": {
+        "zh": "Flutter Widget 入门",
+        "en": "Flutter Widget Basics"
+      },
+      "summary": {
+        "zh": "理解 Widget、build 和最小应用结构。",
+        "en": "Understand widgets, build and app structure."
+      },
+      "file": "assets/content/flutter_widget_intro.md",
+      "minutes": 15,
+      "keywords": [
+        "Flutter Widget 入门",
+        "移动开发",
+        "入门练习"
+      ],
+      "difficulty": "入门",
+      "order": -2,
+      "quiz": [
+        {
+          "question": "运行「Flutter Widget 入门」的最小示例，预期输出是什么？",
+          "options": [
+            "result=5",
+            "result=23",
+            "编译失败",
+            "没有任何输出"
+          ],
+          "answer": 0,
+          "explanation": "示例计算 2 + 3，并输出 result=5。加法结果不是 23，程序也不应该编译失败或无输出；先运行最小示例并观察 stdout 是入门阶段最重要的验证动作。",
+          "type": "code",
+          "code": "void main() => print(2 + 3);"
+        },
+        {
+          "question": "「Flutter Widget 入门」最容易出现的错误是？",
+          "options": [
+            "没有检查输入和环境。",
+            "只要代码能运行，就不需要观察输出。",
+            "出错后应该直接重写整个程序。",
+            "边界输入不会影响入门程序。"
+          ],
+          "answer": 0,
+          "explanation": "没有检查输入和环境。 其他选项把错误处理理解成跳过验证或推倒重写；正确做法是先阅读第一条错误信息，回到最小示例，只改变一个变量并复现问题。",
+          "type": "debug"
+        },
+        {
+          "question": "学习「Flutter Widget 入门」时，正确的操作顺序是？",
+          "options": [
+            "运行最小示例 → 修改一个值 → 预测结果 → 验证输出",
+            "修改所有代码 → 删除测试 → 直接部署 → 再阅读错误",
+            "先优化性能 → 再写需求 → 最后运行",
+            "复制答案 → 不运行 → 认为已经掌握"
+          ],
+          "answer": 0,
+          "explanation": "入门学习应先运行最小示例，再修改一个值，写下预测并运行验证。一次修改多个变量会让失败原因无法定位，直接优化或部署也缺少正确性基线。",
+          "type": "order"
+        },
+        {
+          "question": "「Flutter Widget 入门」的练习闭环应该怎么填空？",
+          "options": [
+            "最小示例 → 预测 → 运行 → 对比",
+            "直接上线 → 再观察",
+            "复制代码 → 不运行",
+            "优化性能 → 再写代码"
+          ],
+          "answer": 0,
+          "explanation": "最小示例、预测、运行、对比构成最小学习闭环。跳过运行或不记录结果都无法验证理解，先优化性能则容易在错误基线上做无效工作。",
+          "type": "fill"
+        }
+      ]
+    },
+    {
+      "id": "flutter_layout_intro",
+      "title": {
+        "zh": "Flutter 布局入门",
+        "en": "Flutter Layout Basics"
+      },
+      "summary": {
+        "zh": "用 Row、Column 和 Expanded 完成基础布局。",
+        "en": "Build layouts with Row, Column and Expanded."
+      },
+      "file": "assets/content/flutter_layout_intro.md",
+      "minutes": 15,
+      "keywords": [
+        "Flutter 布局入门",
+        "移动开发",
+        "入门练习"
+      ],
+      "difficulty": "入门",
+      "order": -1,
+      "quiz": [
+        {
+          "question": "运行「Flutter 布局入门」的最小示例，预期输出是什么？",
+          "options": [
+            "result=5",
+            "result=23",
+            "编译失败",
+            "没有任何输出"
+          ],
+          "answer": 0,
+          "explanation": "示例计算 2 + 3，并输出 result=5。加法结果不是 23，程序也不应该编译失败或无输出；先运行最小示例并观察 stdout 是入门阶段最重要的验证动作。",
+          "type": "code",
+          "code": "void main() => print(2 + 3);"
+        },
+        {
+          "question": "「Flutter 布局入门」最容易出现的错误是？",
+          "options": [
+            "没有检查输入和环境。",
+            "只要代码能运行，就不需要观察输出。",
+            "出错后应该直接重写整个程序。",
+            "边界输入不会影响入门程序。"
+          ],
+          "answer": 0,
+          "explanation": "没有检查输入和环境。 其他选项把错误处理理解成跳过验证或推倒重写；正确做法是先阅读第一条错误信息，回到最小示例，只改变一个变量并复现问题。",
+          "type": "debug"
+        },
+        {
+          "question": "学习「Flutter 布局入门」时，正确的操作顺序是？",
+          "options": [
+            "运行最小示例 → 修改一个值 → 预测结果 → 验证输出",
+            "修改所有代码 → 删除测试 → 直接部署 → 再阅读错误",
+            "先优化性能 → 再写需求 → 最后运行",
+            "复制答案 → 不运行 → 认为已经掌握"
+          ],
+          "answer": 0,
+          "explanation": "入门学习应先运行最小示例，再修改一个值，写下预测并运行验证。一次修改多个变量会让失败原因无法定位，直接优化或部署也缺少正确性基线。",
+          "type": "order"
+        },
+        {
+          "question": "「Flutter 布局入门」的练习闭环应该怎么填空？",
+          "options": [
+            "最小示例 → 预测 → 运行 → 对比",
+            "直接上线 → 再观察",
+            "复制代码 → 不运行",
+            "优化性能 → 再写代码"
+          ],
+          "answer": 0,
+          "explanation": "最小示例、预测、运行、对比构成最小学习闭环。跳过运行或不记录结果都无法验证理解，先优化性能则容易在错误基线上做无效工作。",
+          "type": "fill"
+        }
+      ]
+    }
+  ]
+}

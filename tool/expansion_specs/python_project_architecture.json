@@ -1,0 +1,259 @@
+{
+  "lessons": [
+    {
+      "id": "python_project_architecture",
+      "category": "python",
+      "title": {
+        "zh": "Python 项目架构：分层、配置与依赖注入",
+        "en": "Python Project Architecture: Layers, Configuration and Dependency Injection"
+      },
+      "summary": {
+        "zh": "用清晰的分层、依赖方向、配置对象和组合根组织项目，让业务逻辑可测试、框架可替换、发布可回滚。",
+        "en": "Organize a Python project with clear layers, dependency direction, configuration objects and a composition root."
+      },
+      "keywords": [
+        "分层架构",
+        "依赖注入",
+        "配置",
+        "质量门禁",
+        "发布"
+      ],
+      "difficulty": "高级",
+      "minutes": 70,
+      "order": 39,
+      "prerequisites": [
+        "python_pytest",
+        "python_errors_logging_files"
+      ],
+      "related": [
+        "python_web_deployment",
+        "python_http_clients"
+      ],
+      "image": {
+        "title": "依赖指向核心",
+        "flow": [
+          "接口层",
+          "应用用例",
+          "领域核心",
+          "基础设施适配",
+          "组合根装配"
+        ]
+      },
+      "goals": [
+        "能划分领域、应用、基础设施和接口层并说明依赖方向。",
+        "能用配置对象和依赖注入消除全局状态，提升可测试性。",
+        "能建立包结构、质量门禁和发布流程，控制架构腐化。"
+      ],
+      "prerequisitesText": [
+        "能写多模块 Python 项目并组织导入。",
+        "会用 pytest 写单元测试和 fixture。",
+        "理解异常、日志和配置读取基础。"
+      ],
+      "concepts": [
+        {
+          "name": "分层与依赖方向",
+          "plain": "领域层保存业务规则，应用层编排用例，基础设施层实现数据库与外部接口，接口层负责 HTTP 或命令行；依赖只能从外向内。",
+          "mechanism": "内层定义协议与数据对象，外层提供实现并在启动时注入；领域代码不导入框架、数据库驱动或具体日志实现，因此可以脱离服务器运行测试。",
+          "example": "定义价格规则协议，让订单用例只依赖协议，由基础设施提供折扣实现。",
+          "boundary": "分层不是按文件夹硬切，过度分层会让简单功能穿过五层；判断标准是业务规则能否独立测试和替换外部依赖。",
+          "engineering": "每层只暴露必要接口，跨层调用通过用例服务；架构测试可以检查禁止的导入关系。"
+        },
+        {
+          "name": "包结构与模块边界",
+          "plain": "清晰的包结构让依赖可发现、可导入、可发布；src 布局避免测试误导入本地目录，公共 API 通过 __init__ 或明确模块暴露。",
+          "mechanism": "包按领域能力组织而不是按技术类型堆文件，模块内部使用绝对导入，__all__ 声明公开名称，循环依赖通过协议或拆分模块消除。",
+          "example": "把项目划分为 domain、application、infrastructure 和 interfaces 四个包，并画出允许的导入方向。",
+          "boundary": "过深的包层级会增加导航成本，过宽的模块会重新形成隐式耦合；公共 API 一旦发布就不能随意移动。",
+          "engineering": "用 ruff 或自定义检查限制禁止导入，包名与领域术语一致，变更公共接口需要版本说明。"
+        },
+        {
+          "name": "配置对象与依赖注入",
+          "plain": "配置从环境、文件或密钥服务读取后转换成类型化配置对象；依赖在组合根创建并注入，而不是在业务代码中随处读取全局变量。",
+          "mechanism": "配置对象在启动时校验必填项并给出清晰错误，依赖注入把数据库、时钟、客户端等实现作为参数传入；测试用内存实现或固定时钟替换外部资源。",
+          "example": "定义一个 Clock 协议和固定时钟实现，把它注入用户服务并验证输出稳定可测。",
+          "boundary": "依赖注入不等于引入复杂容器，简单函数参数和构造函数注入通常已经足够；配置校验失败要阻止应用启动。",
+          "engineering": "组合根集中装配对象，生命周期明确的资源在应用关闭时释放，测试配置使用独立文件或覆盖值。"
+        },
+        {
+          "name": "领域异常、日志与追踪",
+          "plain": "领域异常表达业务失败，日志记录技术上下文和因果链，追踪标识把一次请求在多个模块和服务中的事件串起来。",
+          "mechanism": "基础设施把底层异常转换为领域异常，应用层决定是否重试或返回错误，接口层映射为 HTTP 状态码；结构化日志携带请求编号、用户标识和版本号。",
+          "example": "让配置加载失败抛出 ConfigError 并记录路径和底层原因，接口层再把领域异常映射成用户可读错误。",
+          "boundary": "日志不能代替异常处理，也不能包含秘密；错误码一旦作为公共契约就不能随意改变含义。",
+          "engineering": "错误目录集中维护，日志字段命名统一，关键链路用追踪标识关联并在告警中引用。"
+        },
+        {
+          "name": "质量门禁与发布流程",
+          "plain": "格式检查、静态类型、单元测试、内容或安全扫描和构建产物验证构成质量门禁；发布流程保证版本可重复、可回滚。",
+          "mechanism": "pyproject 统一工具配置，CI 在干净环境按顺序执行检查、测试和构建，产物带版本号与校验和，发布说明记录变更与迁移步骤。",
+          "example": "设计一个从提交到发布的流水线，列出每个阶段失败时的处理方式。",
+          "boundary": "门禁太多会拖慢反馈，太少会把缺陷放到生产；需要按风险和反馈时间分级，快速检查先跑、慢速集成测试后跑。",
+          "engineering": "关键分支要求门禁通过，发布使用不可变产物，回滚只需切换版本而不重新构建。"
+        }
+      ],
+      "steps": [
+        "识别领域规则与外部边界",
+        "定义分层和允许的依赖方向",
+        "把配置转换成类型化对象",
+        "在组合根装配依赖",
+        "用质量门禁和可回滚版本发布"
+      ],
+      "code": {
+        "language": "python",
+        "snippet": "from dataclasses import dataclass\nfrom typing import Protocol\n\nclass Clock(Protocol):\n    def now(self) -> str: ...\n\nclass UserService:\n    def __init__(self, clock: Clock):\n        self.clock = clock\n\n    def greet(self, name: str) -> str:\n        return f\"你好 {name}，现在是 {self.clock.now()}\"\n\n@dataclass\nclass FixedClock:\n    value: str\n\n    def now(self) -> str:\n        return self.value\n\nservice = UserService(FixedClock(\"2026-10-08 09:00\"))\nprint(service.greet(\"Ada\"))\nprint(\"依赖可替换:\", isinstance(service.clock, FixedClock))",
+        "walkthrough": "UserService 只依赖 Clock 协议，不关心时间来自系统、数据库还是测试替身；组合根创建固定时钟并注入服务，输出因此完全可复现。真实项目会把配置、数据库和外部客户端按同样方式装配，并让领域层不导入框架。",
+        "expected_output": "你好 Ada，现在是 2026-10-08 09:00\n依赖可替换: True"
+      },
+      "faults": [
+        {
+          "topic": "业务逻辑依赖框架对象",
+          "wrong": "领域函数直接接收 HTTP Request、数据库 Session 或框架日志器，无法脱离运行环境测试",
+          "fix": "在接口层转换输入，领域层只接收普通数据与协议"
+        },
+        {
+          "topic": "全局单例散落各处",
+          "wrong": "在模块导入时创建数据库连接和配置，测试很难替换且启动副作用不可控",
+          "fix": "在组合根创建对象并通过参数注入，模块导入保持无副作用"
+        },
+        {
+          "topic": "模块循环导入",
+          "wrong": "模型导入服务、服务又导入模型，运行时报 partially initialized module",
+          "fix": "把共享协议或数据对象下沉到更小的模块，明确依赖方向"
+        },
+        {
+          "topic": "配置读取逻辑散落",
+          "wrong": "每个模块自行读取环境变量和默认值，缺失配置到运行中途才暴露",
+          "fix": "启动时集中加载并校验配置对象，必填项缺失立即失败"
+        }
+      ],
+      "glossary": [
+        {
+          "term": "分层架构",
+          "definition": "按职责划分领域、应用、基础设施和接口并约束依赖方向的架构方式。"
+        },
+        {
+          "term": "依赖倒置",
+          "definition": "高层策略定义抽象，低层实现依赖抽象而不是高层直接依赖具体实现。"
+        },
+        {
+          "term": "组合根",
+          "definition": "在应用启动处集中创建并连接所有具体依赖的位置。"
+        },
+        {
+          "term": "配置对象",
+          "definition": "把环境、文件和密钥转换为经过校验的强类型对象。"
+        },
+        {
+          "term": "质量门禁",
+          "definition": "在合并或发布前必须通过的自动化检查集合。"
+        },
+        {
+          "term": "不可变产物",
+          "definition": "构建后不再修改、通过版本或摘要唯一标识的发布包。"
+        }
+      ],
+      "quiz": [
+        {
+          "type": "single",
+          "question": "分层架构中依赖应该指向哪个方向？",
+          "options": [
+            "从接口和基础设施指向领域核心",
+            "从领域核心指向数据库驱动",
+            "任意方向都可以",
+            "从领域层指向 HTTP 框架"
+          ],
+          "answer": 0,
+          "explanation": "接口层和基础设施层是最容易变化的细节，应依赖稳定的领域抽象；如果领域层反过来导入框架或数据库，业务规则会被运行环境绑死，测试和替换都变困难。依赖倒置通过协议让内层定义接口、外层提供实现。"
+        },
+        {
+          "type": "single",
+          "question": "组合根的主要职责是什么？",
+          "options": [
+            "在启动处集中创建并连接具体依赖",
+            "保存所有业务规则",
+            "替代单元测试",
+            "自动生成数据库表"
+          ],
+          "answer": 0,
+          "explanation": "组合根是应用装配点，负责读取配置、创建数据库连接、客户端和服务，再按构造函数注入；业务代码只依赖抽象。把所有装配放在一个明确位置，可以避免模块导入副作用和散落的全局单例。"
+        },
+        {
+          "type": "multi",
+          "question": "以下哪些做法有助于保持模块边界？（多选）",
+          "options": [
+            "用绝对导入并声明公共 API",
+            "用架构测试禁止跨层导入",
+            "让所有模块都可以导入所有模块",
+            "把共享协议放到更小的独立模块"
+          ],
+          "answers": [
+            0,
+            1,
+            3
+          ],
+          "answer": 0,
+          "explanation": "明确公共 API、自动检查依赖方向和下沉共享协议能减少循环依赖与隐式耦合；允许任意互导会让项目退化为一张大网，任何修改都可能影响全局。包结构应按领域能力组织，而不是简单按文件类型堆放。"
+        },
+        {
+          "type": "code",
+          "question": "阅读代码，UserService 为什么更容易测试？",
+          "options": [
+            "它依赖 Clock 协议，可以注入固定时钟或假实现",
+            "它继承了测试框架",
+            "它把时间写死在代码里",
+            "它不需要任何依赖"
+          ],
+          "answer": 0,
+          "code": "class UserService:\n    def __init__(self, clock: Clock):\n        self.clock = clock",
+          "language": "python",
+          "explanation": "构造函数注入让测试可以传入固定时钟、内存仓库或假客户端，不需要启动真实数据库或等待系统时间；生产环境由组合根传入真实实现。依赖抽象还能表达对象的真实需求，避免服务偷偷使用全局状态。"
+        },
+        {
+          "type": "debug",
+          "question": "为什么在模块顶层创建数据库连接会带来问题？",
+          "options": [
+            "导入模块就产生连接副作用，测试和 CLI 难以控制连接生命周期",
+            "数据库驱动不支持连接",
+            "Python 不能在模块顶层写代码",
+            "连接会自动更改业务规则"
+          ],
+          "answer": 0,
+          "explanation": "导入模块时立即连接数据库会让单元测试被迫依赖外部服务，配置缺失时导入即失败，CLI 命令也可能创建不必要的连接。应把连接创建延迟到组合根或应用生命周期中，并提供关闭钩子。这道题对应项目架构中的组合根原则：配置与连接应在启动时集中装配，而不是导入即产生副作用。",
+          "code": "class UserService:\n    def __init__(self, clock: Clock):\n        self.clock = clock",
+          "language": "python"
+        }
+      ],
+      "practice": [
+        "为一个订单功能画出四层依赖图，标出每层允许和禁止的导入。",
+        "把一段全局配置读取改造成启动时校验的配置对象，并补缺失配置测试。",
+        "用协议与构造函数注入替换一个外部时间依赖，让测试输出完全可复现。",
+        "设计一条 CI 质量门禁流水线，按反馈速度排序并说明失败处理策略。"
+      ],
+      "refs": [
+        {
+          "name": "Python 打包：项目布局",
+          "url": "https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/"
+        },
+        {
+          "name": "pyproject.toml 规范",
+          "url": "https://packaging.python.org/en/latest/specifications/pyproject-toml/"
+        },
+        {
+          "name": "Ruff 文档",
+          "url": "https://docs.astral.sh/ruff/"
+        },
+        {
+          "name": "mypy 文档",
+          "url": "https://mypy.readthedocs.io/"
+        }
+      ],
+      "english": "This lesson organizes Python projects around dependency direction: domain, application, infrastructure and interface layers, src layout and module boundaries, typed configuration and dependency injection, domain errors with traceable logs, and quality gates with immutable releases.",
+      "reviewPoints": [
+        "能画出依赖指向领域核心的分层图。",
+        "能用协议与注入消除全局状态。",
+        "能说明配置为什么要在启动时校验。"
+      ],
+      "lab": "sandbox:python"
+    }
+  ]
+}

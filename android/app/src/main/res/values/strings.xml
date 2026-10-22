@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 桌面图标名称（默认中文，英文见 values-en） -->
+    <string name="app_name">计算机与编程学习</string>
+</resources>

@@ -1,0 +1,431 @@
+{
+  "category": "network",
+  "lessons": [
+    {
+      "id": "network_ipv6",
+      "title": {
+        "zh": "IPv6 原理与迁移",
+        "en": "IPv6 Principles and Migration"
+      },
+      "summary": {
+        "zh": "覆盖地址格式、邻居发现、自动配置、双栈和迁移策略。",
+        "en": "Cover addressing, neighbor discovery, autoconfiguration, dual stack and migration."
+      },
+      "file": "assets/content/network_ipv6.md",
+      "minutes": 24,
+      "keywords": [
+        "IPv6",
+        "NDP",
+        "双栈",
+        "迁移"
+      ],
+      "difficulty": "高级",
+      "order": 16,
+      "quiz": [
+        {
+          "question": "关于「IPv6 地址 128 位 取消广播…」，下列说法正确的是？",
+          "options": [
+            "IPv6 地址 128 位，取消广播并用邻居发现和多播完成地址解析。",
+            "NAT 改写地址和端口，缓解 IPv4 短缺但破坏端到端可达性。",
+            "P2P 节点直接交换数据，DHT 提供分布式节点和内容发现。",
+            "邮件从提交、队列、MX 解析到投递分多个阶段，每阶段都可能延迟或拒收。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《IPv6 原理与迁移》时应把该要点与「IPv6」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「SLAAC、DHCPv6 和隐私扩展…」，下列说法正确的是？",
+          "options": [
+            "SLAAC、DHCPv6 和隐私扩展影响地址分配与追踪。",
+            "隧道把一种协议封装进另一种协议，VPN 在隧道上叠加认证和加密。",
+            "NAT 穿透依赖 STUN、信令和端口预测，失败时回退到 TURN 中继。",
+            "SPF、DKIM 和 DMARC 分别验证发送源、签名和策略。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《IPv6 原理与迁移》时应把该要点与「IPv6」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「迁移通常采用双栈 逐步处理 DNS、…」，下列说法正确的是？",
+          "options": [
+            "迁移通常采用双栈，逐步处理 DNS、防火墙、应用和监控兼容性。",
+            "MTU、分片、NAT 穿透和密钥交换是常见故障点。",
+            "开放网络要处理节点作弊、内容污染、隐私和流量成本。",
+            "退信、灰名单、附件、编码和垃圾邮件策略影响可达率。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《IPv6 原理与迁移》时应把该要点与「IPv6」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「IPv6 原理与迁移」的核心学习目标是什么？",
+          "options": [
+            "覆盖地址格式、邻居发现、自动配置、双栈和迁移策略。",
+            "理解地址转换、端口映射、隧道封装、IPsec 和 WireGuard。",
+            "覆盖 DHT、打洞、中继、连接建立和节点信任。",
+            "理解 SMTP、IMAP、SPF、DKIM、DMARC 和投递链路。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "network_nat_vpn",
+      "title": {
+        "zh": "NAT、隧道与 VPN",
+        "en": "NAT, Tunnels and VPN"
+      },
+      "summary": {
+        "zh": "理解地址转换、端口映射、隧道封装、IPsec 和 WireGuard。",
+        "en": "Learn address translation, port mapping, tunneling, IPsec and WireGuard."
+      },
+      "file": "assets/content/network_nat_vpn.md",
+      "minutes": 24,
+      "keywords": [
+        "NAT",
+        "VPN",
+        "隧道",
+        "IPsec"
+      ],
+      "difficulty": "高级",
+      "order": 17,
+      "quiz": [
+        {
+          "question": "关于「NAT 改写地址和端口 缓解 IPv…」，下列说法正确的是？",
+          "options": [
+            "NAT 改写地址和端口，缓解 IPv4 短缺但破坏端到端可达性。",
+            "IPv6 地址 128 位，取消广播并用邻居发现和多播完成地址解析。",
+            "P2P 节点直接交换数据，DHT 提供分布式节点和内容发现。",
+            "邮件从提交、队列、MX 解析到投递分多个阶段，每阶段都可能延迟或拒收。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《NAT、隧道与 VPN》时应把该要点与「NAT」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「隧道把一种协议封装进另一种协议 VP…」，下列说法正确的是？",
+          "options": [
+            "隧道把一种协议封装进另一种协议，VPN 在隧道上叠加认证和加密。",
+            "SLAAC、DHCPv6 和隐私扩展影响地址分配与追踪。",
+            "NAT 穿透依赖 STUN、信令和端口预测，失败时回退到 TURN 中继。",
+            "SPF、DKIM 和 DMARC 分别验证发送源、签名和策略。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《NAT、隧道与 VPN》时应把该要点与「NAT」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「MTU、分片、NAT 穿透和密钥交换…」，下列说法正确的是？",
+          "options": [
+            "MTU、分片、NAT 穿透和密钥交换是常见故障点。",
+            "迁移通常采用双栈，逐步处理 DNS、防火墙、应用和监控兼容性。",
+            "开放网络要处理节点作弊、内容污染、隐私和流量成本。",
+            "退信、灰名单、附件、编码和垃圾邮件策略影响可达率。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《NAT、隧道与 VPN》时应把该要点与「NAT」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「NAT、隧道与 VPN」的核心学习目标是什么？",
+          "options": [
+            "理解地址转换、端口映射、隧道封装、IPsec 和 WireGuard。",
+            "覆盖地址格式、邻居发现、自动配置、双栈和迁移策略。",
+            "覆盖 DHT、打洞、中继、连接建立和节点信任。",
+            "理解 SMTP、IMAP、SPF、DKIM、DMARC 和投递链路。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "network_p2p",
+      "title": {
+        "zh": "P2P 网络与 NAT 穿透",
+        "en": "P2P Networks and NAT Traversal"
+      },
+      "summary": {
+        "zh": "覆盖 DHT、打洞、中继、连接建立和节点信任。",
+        "en": "Cover DHTs, hole punching, relays, connection setup and trust."
+      },
+      "file": "assets/content/network_p2p.md",
+      "minutes": 24,
+      "keywords": [
+        "P2P",
+        "DHT",
+        "NAT 穿透",
+        "中继"
+      ],
+      "difficulty": "高级",
+      "order": 18,
+      "quiz": [
+        {
+          "question": "关于「P2P 节点直接交换数据 DHT 提…」，下列说法正确的是？",
+          "options": [
+            "P2P 节点直接交换数据，DHT 提供分布式节点和内容发现。",
+            "IPv6 地址 128 位，取消广播并用邻居发现和多播完成地址解析。",
+            "NAT 改写地址和端口，缓解 IPv4 短缺但破坏端到端可达性。",
+            "邮件从提交、队列、MX 解析到投递分多个阶段，每阶段都可能延迟或拒收。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《P2P 网络与 NAT 穿透》时应把该要点与「P2P」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「NAT 穿透依赖 STUN、信令和端…」，下列说法正确的是？",
+          "options": [
+            "NAT 穿透依赖 STUN、信令和端口预测，失败时回退到 TURN 中继。",
+            "SLAAC、DHCPv6 和隐私扩展影响地址分配与追踪。",
+            "隧道把一种协议封装进另一种协议，VPN 在隧道上叠加认证和加密。",
+            "SPF、DKIM 和 DMARC 分别验证发送源、签名和策略。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《P2P 网络与 NAT 穿透》时应把该要点与「P2P」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「开放网络要处理节点作弊、内容污染、隐…」，下列说法正确的是？",
+          "options": [
+            "开放网络要处理节点作弊、内容污染、隐私和流量成本。",
+            "迁移通常采用双栈，逐步处理 DNS、防火墙、应用和监控兼容性。",
+            "MTU、分片、NAT 穿透和密钥交换是常见故障点。",
+            "退信、灰名单、附件、编码和垃圾邮件策略影响可达率。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《P2P 网络与 NAT 穿透》时应把该要点与「P2P」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「P2P 网络与 NAT 穿透」的核心学习目标是什么？",
+          "options": [
+            "覆盖 DHT、打洞、中继、连接建立和节点信任。",
+            "覆盖地址格式、邻居发现、自动配置、双栈和迁移策略。",
+            "理解地址转换、端口映射、隧道封装、IPsec 和 WireGuard。",
+            "理解 SMTP、IMAP、SPF、DKIM、DMARC 和投递链路。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "network_smtp",
+      "title": {
+        "zh": "SMTP、邮件协议与反垃圾",
+        "en": "SMTP, Email Protocols and Anti-Spam"
+      },
+      "summary": {
+        "zh": "理解 SMTP、IMAP、SPF、DKIM、DMARC 和投递链路。",
+        "en": "Learn SMTP, IMAP, SPF, DKIM, DMARC and delivery flow."
+      },
+      "file": "assets/content/network_smtp.md",
+      "minutes": 24,
+      "keywords": [
+        "SMTP",
+        "DKIM",
+        "SPF",
+        "DMARC"
+      ],
+      "difficulty": "高级",
+      "order": 19,
+      "quiz": [
+        {
+          "question": "关于「邮件从提交、队列、MX 解析到投递分…」，下列说法正确的是？",
+          "options": [
+            "邮件从提交、队列、MX 解析到投递分多个阶段，每阶段都可能延迟或拒收。",
+            "IPv6 地址 128 位，取消广播并用邻居发现和多播完成地址解析。",
+            "NAT 改写地址和端口，缓解 IPv4 短缺但破坏端到端可达性。",
+            "P2P 节点直接交换数据，DHT 提供分布式节点和内容发现。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《SMTP、邮件协议与反垃圾》时应把该要点与「SMTP」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「SPF、DKIM 和 DMARC 分…」，下列说法正确的是？",
+          "options": [
+            "SPF、DKIM 和 DMARC 分别验证发送源、签名和策略。",
+            "SLAAC、DHCPv6 和隐私扩展影响地址分配与追踪。",
+            "隧道把一种协议封装进另一种协议，VPN 在隧道上叠加认证和加密。",
+            "NAT 穿透依赖 STUN、信令和端口预测，失败时回退到 TURN 中继。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《SMTP、邮件协议与反垃圾》时应把该要点与「SMTP」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「退信、灰名单、附件、编码和垃圾邮件策…」，下列说法正确的是？",
+          "options": [
+            "退信、灰名单、附件、编码和垃圾邮件策略影响可达率。",
+            "迁移通常采用双栈，逐步处理 DNS、防火墙、应用和监控兼容性。",
+            "MTU、分片、NAT 穿透和密钥交换是常见故障点。",
+            "开放网络要处理节点作弊、内容污染、隐私和流量成本。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《SMTP、邮件协议与反垃圾》时应把该要点与「SMTP」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「SMTP、邮件协议与反垃圾」的核心学习目标是什么？",
+          "options": [
+            "理解 SMTP、IMAP、SPF、DKIM、DMARC 和投递链路。",
+            "覆盖地址格式、邻居发现、自动配置、双栈和迁移策略。",
+            "理解地址转换、端口映射、隧道封装、IPsec 和 WireGuard。",
+            "覆盖 DHT、打洞、中继、连接建立和节点信任。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "network_bgp",
+      "title": {
+        "zh": "BGP 与互联网路由",
+        "en": "BGP and Internet Routing"
+      },
+      "summary": {
+        "zh": "理解自治系统、路由选择、前缀宣告、劫持和收敛。",
+        "en": "Learn autonomous systems, route selection, prefix announcements, hijacking and convergence."
+      },
+      "file": "assets/content/network_bgp.md",
+      "minutes": 25,
+      "keywords": [
+        "BGP",
+        "自治系统",
+        "路由劫持",
+        "收敛"
+      ],
+      "difficulty": "高级",
+      "order": 20,
+      "quiz": [
+        {
+          "question": "关于「BGP 在自治系统之间交换可达性 选…」，下列说法正确的是？",
+          "options": [
+            "BGP 在自治系统之间交换可达性，选择策略基于本地优先级、AS 路径等属性。",
+            "IPv6 地址 128 位，取消广播并用邻居发现和多播完成地址解析。",
+            "NAT 改写地址和端口，缓解 IPv4 短缺但破坏端到端可达性。",
+            "P2P 节点直接交换数据，DHT 提供分布式节点和内容发现。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《BGP 与互联网路由》时应把该要点与「BGP」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「前缀过滤、RPKI 和最大前缀限制能…」，下列说法正确的是？",
+          "options": [
+            "前缀过滤、RPKI 和最大前缀限制能降低误宣告和劫持风险。",
+            "SLAAC、DHCPv6 和隐私扩展影响地址分配与追踪。",
+            "隧道把一种协议封装进另一种协议，VPN 在隧道上叠加认证和加密。",
+            "NAT 穿透依赖 STUN、信令和端口预测，失败时回退到 TURN 中继。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《BGP 与互联网路由》时应把该要点与「BGP」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「路由收敛和黑洞会影响全球可达性 需要…」，下列说法正确的是？",
+          "options": [
+            "路由收敛和黑洞会影响全球可达性，需要监控和多路径设计。",
+            "迁移通常采用双栈，逐步处理 DNS、防火墙、应用和监控兼容性。",
+            "MTU、分片、NAT 穿透和密钥交换是常见故障点。",
+            "开放网络要处理节点作弊、内容污染、隐私和流量成本。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《BGP 与互联网路由》时应把该要点与「BGP」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「BGP 与互联网路由」的核心学习目标是什么？",
+          "options": [
+            "理解自治系统、路由选择、前缀宣告、劫持和收敛。",
+            "覆盖地址格式、邻居发现、自动配置、双栈和迁移策略。",
+            "理解地址转换、端口映射、隧道封装、IPsec 和 WireGuard。",
+            "覆盖 DHT、打洞、中继、连接建立和节点信任。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    },
+    {
+      "id": "network_performance",
+      "title": {
+        "zh": "网络性能调优",
+        "en": "Network Performance Tuning"
+      },
+      "summary": {
+        "zh": "覆盖带宽时延积、窗口、队列、拥塞控制、TCP 调优和观测。",
+        "en": "Cover BDP, windows, queues, congestion control, TCP tuning and observability."
+      },
+      "file": "assets/content/network_performance.md",
+      "minutes": 25,
+      "keywords": [
+        "带宽时延积",
+        "拥塞控制",
+        "TCP",
+        "调优"
+      ],
+      "difficulty": "高级",
+      "order": 21,
+      "quiz": [
+        {
+          "question": "关于「带宽时延积决定在途数据量 窗口过小会…」，下列说法正确的是？",
+          "options": [
+            "带宽时延积决定在途数据量，窗口过小会限制长肥管道吞吐。",
+            "IPv6 地址 128 位，取消广播并用邻居发现和多播完成地址解析。",
+            "NAT 改写地址和端口，缓解 IPv4 短缺但破坏端到端可达性。",
+            "P2P 节点直接交换数据，DHT 提供分布式节点和内容发现。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《网络性能调优》时应把该要点与「带宽时延积」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「缓冲区过大造成缓冲膨胀 过小则丢包和…」，下列说法正确的是？",
+          "options": [
+            "缓冲区过大造成缓冲膨胀，过小则丢包和利用率下降。",
+            "SLAAC、DHCPv6 和隐私扩展影响地址分配与追踪。",
+            "隧道把一种协议封装进另一种协议，VPN 在隧道上叠加认证和加密。",
+            "NAT 穿透依赖 STUN、信令和端口预测，失败时回退到 TURN 中继。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《网络性能调优》时应把该要点与「带宽时延积」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "关于「调优要测量 RTT、重传、丢包、窗口…」，下列说法正确的是？",
+          "options": [
+            "调优要测量 RTT、重传、丢包、窗口和队列，而不是只改内核参数。",
+            "迁移通常采用双栈，逐步处理 DNS、防火墙、应用和监控兼容性。",
+            "MTU、分片、NAT 穿透和密钥交换是常见故障点。",
+            "开放网络要处理节点作弊、内容污染、隐私和流量成本。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项直接描述了本课要点。其他选项来自相邻主题，混淆了概念边界或适用条件；判断时要回到定义、输入和失败场景。学习《网络性能调优》时应把该要点与「带宽时延积」一起理解。",
+          "type": "single"
+        },
+        {
+          "question": "「网络性能调优」的核心学习目标是什么？",
+          "options": [
+            "覆盖带宽时延积、窗口、队列、拥塞控制、TCP 调优和观测。",
+            "覆盖地址格式、邻居发现、自动配置、双栈和迁移策略。",
+            "理解地址转换、端口映射、隧道封装、IPsec 和 WireGuard。",
+            "覆盖 DHT、打洞、中继、连接建立和节点信任。"
+          ],
+          "answer": 0,
+          "explanation": "正确选项概括了本课目标。其他选项描述的是其他主题的目标或手段，不能回答本题；学习时应先明确目标，再用练习验证是否真正掌握。",
+          "type": "single"
+        }
+      ]
+    }
+  ]
+}

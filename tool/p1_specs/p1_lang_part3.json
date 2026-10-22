@@ -1,0 +1,74 @@
+{
+  "ts_type_level": {
+    "category": "typescript",
+    "title": {"zh": "TypeScript 类型级编程", "en": "TypeScript Type-Level Programming"},
+    "summary": {"zh": "用条件类型、映射类型、infer 和模板字面量构建类型工具。", "en": "Build type utilities with conditional, mapped, infer and template literal types."},
+    "keywords": ["条件类型", "映射类型", "infer", "模板字面量"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["条件类型根据类型关系选择分支，infer 可从结构中提取类型参数。", "映射类型批量变换对象属性，配合 keyof 和 as 做键重映射。", "类型编程要控制复杂度和编译时间，错误提示可读性同样重要。"]
+  },
+  "ts_runtime_validation": {
+    "category": "typescript",
+    "title": {"zh": "TypeScript 运行时校验与边界", "en": "TypeScript Runtime Validation and Boundaries"},
+    "summary": {"zh": "用 schema、类型守卫和解析器连接编译期类型与运行时数据。", "en": "Connect compile-time types to runtime data with schemas and guards."},
+    "keywords": ["运行时校验", "Zod", "类型守卫", "边界"],
+    "difficulty": "高级", "minutes": 23,
+    "points": ["TypeScript 类型编译后消失，网络、配置和存储数据必须运行时校验。", "schema 校验后再收窄类型，避免 any 和类型断言掩盖错误。", "校验错误要带字段路径、原因和修复建议，方便调用方处理。"]
+  },
+  "ts_performance": {
+    "category": "typescript",
+    "title": {"zh": "TypeScript 编译与运行性能", "en": "TypeScript Compile and Runtime Performance"},
+    "summary": {"zh": "覆盖增量编译、项目引用、类型检查成本、打包和运行时优化。", "en": "Cover incremental builds, project references, type cost, bundling and runtime performance."},
+    "keywords": ["增量编译", "项目引用", "打包", "性能"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["大型项目用 project references 和增量构建拆开类型检查范围。", "复杂条件类型和全量导入会增加编译时间，需要定位最贵文件。", "运行时性能要区分类型、打包、网络和渲染问题，不能只看构建耗时。"]
+  },
+  "go_generics_deep": {
+    "category": "go",
+    "title": {"zh": "Go 泛型深入与约束设计", "en": "Advanced Go Generics and Constraints"},
+    "summary": {"zh": "理解类型参数、约束、类型集合和泛型性能。", "en": "Learn type parameters, constraints, type sets and generic performance."},
+    "keywords": ["泛型", "约束", "类型参数", "性能"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["类型参数让算法与容器复用，约束定义可接受的类型集合。", "接口约束可表达方法集合和底层类型，但过度泛化会降低可读性。", "泛型实现在编译期实例化，性能通常接近手写代码，但仍需基准测试。"]
+  },
+  "go_profiling_deep": {
+    "category": "go",
+    "title": {"zh": "Go 性能剖析与调优实战", "en": "Go Profiling and Tuning in Practice"},
+    "summary": {"zh": "用 pprof、trace、基准和逃逸分析定位 CPU、内存、锁和调度问题。", "en": "Use pprof, trace, benchmarks and escape analysis to find bottlenecks."},
+    "keywords": ["pprof", "trace", "基准测试", "逃逸分析"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["CPU profile 找热点，heap profile 找分配，block/mutex profile 找锁等待。", "trace 能观察调度、GC 和 goroutine 阻塞，适合解释延迟抖动。", "先建立稳定基准，再改变一个变量并用数据证明优化有效。"]
+  },
+  "go_cloud_native_security": {
+    "category": "go",
+    "title": {"zh": "Go 云原生服务安全与可靠性", "en": "Go Cloud-Native Security and Reliability"},
+    "summary": {"zh": "覆盖 mTLS、令牌、超时、限流、优雅关闭和安全配置。", "en": "Cover mTLS, tokens, timeouts, rate limits, graceful shutdown and secure config."},
+    "keywords": ["云原生", "mTLS", "限流", "优雅关闭"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["服务间认证要校验证书或令牌，不能只依赖内网隔离。", "超时、限流、熔断和重试策略要一起设计，避免故障放大。", "配置、密钥和依赖版本要可审计，镜像要最小化并以非 root 运行。"]
+  },
+  "shell_portability": {
+    "category": "shell",
+    "title": {"zh": "Shell 可移植性与 POSIX 兼容", "en": "Shell Portability and POSIX Compatibility"},
+    "summary": {"zh": "区分 Bash 扩展与 POSIX 行为，处理路径、参数和工具差异。", "en": "Separate Bash extensions from POSIX behavior and handle tool differences."},
+    "keywords": ["POSIX", "可移植性", "路径", "参数"],
+    "difficulty": "高级", "minutes": 23,
+    "points": ["不同 Shell 和操作系统对数组、echo、read、路径和参数展开的行为不同。", "可移植脚本要明确 shebang、引用变量、处理空格路径并避免 GNU 专属选项。", "用 shellcheck 和多种环境测试，避免只在开发机可用。"]
+  },
+  "shell_security_hardening": {
+    "category": "shell",
+    "title": {"zh": "Shell 脚本安全加固", "en": "Shell Script Security Hardening"},
+    "summary": {"zh": "覆盖命令注入、权限、临时文件、密钥和危险命令保护。", "en": "Cover command injection, permissions, temp files, secrets and dangerous commands."},
+    "keywords": ["命令注入", "权限", "临时文件", "密钥"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["所有外部输入都要引用和校验，避免 eval、未引用变量和命令替换注入。", "临时文件用 mktemp 并设置权限，结束时清理，避免符号链接攻击。", "危险操作要有 dry-run、确认、锁和回滚，密钥不能出现在命令行历史。"]
+  },
+  "shell_automation_advanced": {
+    "category": "shell",
+    "title": {"zh": "Shell 高级自动化与可观测性", "en": "Advanced Shell Automation and Observability"},
+    "summary": {"zh": "构建带重试、并发、日志、指标和幂等的自动化脚本。", "en": "Build idempotent automation with retries, concurrency, logs and metrics."},
+    "keywords": ["自动化", "幂等", "并发", "日志"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["自动化脚本要可重复执行，使用锁、状态检查和幂等操作。", "并发要限制数量并汇总退出码，失败时停止或隔离问题任务。", "结构化日志、运行指标和通知让脚本可观测、可追踪。"]
+  }
+}

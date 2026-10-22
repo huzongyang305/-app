@@ -1,0 +1,198 @@
+{
+  "lessons": [
+    {
+      "id": "gamedev_collision_physics",
+      "category": "gamedev",
+      "title": {"zh": "碰撞检测与物理基础", "en": "Collision Detection and Physics Basics"},
+      "summary": {"zh": "从 AABB、圆形碰撞与空间划分讲到隧穿、冲量与反弹实现。", "en": "Cover AABB and circle tests, broad phase, tunnelling, impulses and bouncing."},
+      "keywords": ["AABB", "圆形碰撞", "空间划分", "隧穿", "冲量"],
+      "difficulty": "进阶",
+      "minutes": 35,
+      "order": 3,
+      "image": {"title": "碰撞检测的两级流程", "flow": ["粗略筛选候选对", "精确求交", "计算法线与穿透深度", "分离与冲量修正"]},
+      "goals": [
+        "能写出 AABB 与圆的相交判定并说明各自的适用场景。",
+        "能用空间划分把候选碰撞对从平方级降到接近线性。",
+        "能解释高速物体为什么会隧穿，以及连续检测如何补救。"
+      ],
+      "prerequisitesText": [
+        "了解向量加减、点积与模长的含义。",
+        "知道游戏循环中固定时间步的作用。",
+        "能读懂条件判断与循环代码。"
+      ],
+      "concepts": [
+        {
+          "name": "AABB 与圆形碰撞",
+          "plain": "轴对齐包围盒用两个对角顶点表示范围，圆用圆心与半径表示范围，两者的相交判定都只需常数次比较。",
+          "mechanism": "AABB 相交要求两个盒子在 x 与 y 轴上的投影都重叠；圆与圆的相交只需比较圆心距离与半径之和。",
+          "example": "给定两个盒子和一个圆，先用投影判断重叠，再计算最近点与圆心距离。",
+          "boundary": "包围盒是近似表示：旋转的矩形用 AABB 包住会有明显空隙，精细判定需要再补一次形状级检测。",
+          "engineering": "先用便宜的包围体筛选，再对少量候选做精细判定，避免把所有物体都送进复杂算法。"
+        },
+        {
+          "name": "宽相位与空间划分",
+          "plain": "宽相位负责快速排除明显不相交的对象对，只把可能相交的候选交给精确判定。",
+          "mechanism": "均匀网格、四叉树或排序扫描线把空间切开，每个对象只需与相邻格子里的对象比较，复杂度从平方级下降到接近线性。",
+          "example": "用网格划分场景，统计每秒需要精确判定的候选对数量，与全量两两比较的结果对照。",
+          "boundary": "格子过大或过小都会退化：过大会让每个格子塞满对象，过小则对象跨格导致重复比较。",
+          "engineering": "把格子尺寸与场景中物体的平均尺寸挂钩，并在剖析数据里观察候选对数量随规模的变化。"
+        },
+        {
+          "name": "隧穿与连续碰撞",
+          "plain": "物体在单步内移动距离超过自身厚度时，离散检测会直接跳过碰撞，这种现象叫隧穿。",
+          "mechanism": "离散检测只在采样时刻判断重叠；连续检测把运动看作一条线段，求出线段与目标形状首次相交的时间参数。",
+          "example": "让一颗高速子弹穿过薄墙，对比离散检测与扫掠线段检测的结果。",
+          "boundary": "连续检测开销高于离散检测，对全部物体启用会拖慢帧时间，通常只对高速或关键物体开启。",
+          "engineering": "按速度阈值筛选需要连续检测的物体，并对单步位移设置上限。"
+        },
+        {
+          "name": "分离、冲量与反弹",
+          "plain": "检测出穿透后要先按最小穿透方向分离，再根据动量计算冲量来改变速度。",
+          "mechanism": "碰撞法线决定分离方向，恢复系数决定反弹强度；质量参与冲量分配，质量大的物体速度变化更小。",
+          "example": "让两个质量不同的圆相撞，记录碰撞前后的速度，验证动量守恒与恢复系数的作用。",
+          "boundary": "先分离后计算冲量是本末倒置：残留穿透会让物体在同一帧反复触发碰撞，产生抖动。",
+          "engineering": "把位置修正与速度修正分成两步，并给位置修正设置上限以避免瞬移。"
+        }
+      ],
+      "steps": ["为物体选择包围体", "用宽相位筛出候选对", "精确求交并计算法线", "按最小穿透分离", "用冲量更新速度并验证"],
+      "code": {
+        "language": "python",
+        "snippet": "def aabb_hit(a, b):\n    return (a.x < b.x + b.w and a.x + a.w > b.x and\n            a.y < b.y + b.h and a.y + a.h > b.y)\n\ndef circles_hit(p, r1, q, r2):\n    dx, dy = q.x - p.x, q.y - p.y\n    return dx * dx + dy * dy <= (r1 + r2) ** 2\n\ndef resolve_overlap(a, b):\n    overlap_x = min(a.x + a.w, b.x + b.w) - max(a.x, b.x)\n    overlap_y = min(a.y + a.h, b.y + b.h) - max(a.y, b.y)\n    # 沿穿透更浅的方向分离，避免一次推开过多\n    if overlap_x < overlap_y:\n        shift = overlap_x / 2\n        a.x -= shift\n        b.x += shift\n    else:\n        shift = overlap_y / 2\n        a.y -= shift\n        b.y += shift",
+        "walkthrough": "示例先用投影判断盒子重叠、用距离平方判断圆相交，避免开方；确认穿透后按较浅的轴各推开一半，使两个物体共同承担位置修正。",
+        "expected_output": "两个盒子重叠时返回命中并沿较浅方向分离；把速度提高到超过物体厚度的量级后，离散检测会漏判，需要改用扫掠检测。"
+      },
+      "faults": [
+        {"topic": "只用离散检测处理高速物体", "wrong": "让子弹按帧采样位置后判断重叠", "fix": "对高速物体改用线段扫掠或按速度限制单步位移"},
+        {"topic": "先算冲量再分离", "wrong": "在同一帧内反复触发碰撞并不断改变速度", "fix": "先按最小穿透方向分离，再计算一次冲量"},
+        {"topic": "对全部物体做两两检测", "wrong": "对象数量增长后帧时间平方级上升", "fix": "引入空间划分做宽相位，只对候选对做精确判定"}
+      ],
+      "glossary": [
+        {"term": "AABB", "definition": "与坐标轴对齐的矩形包围盒，用两个对角点表示范围。"},
+        {"term": "宽相位", "definition": "快速排除明显不相交对象对的筛选阶段。"},
+        {"term": "隧穿", "definition": "高速物体在单步内越过目标而未被检测到的现象。"},
+        {"term": "法线", "definition": "指向分离方向、用于修正位置与速度的单位向量。"},
+        {"term": "恢复系数", "definition": "衡量碰撞后相对速度保留比例的参数，1 表示完全弹性。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "两个轴对齐包围盒相交的判定本质是什么？", "options": ["两个盒子在 x 与 y 轴上的投影都重叠","两个盒子的中心点重合","两个盒子的面积相等","两个盒子的顶点数量相同"], "answer": 0, "explanation": "AABB 的相交判定就是区间重叠判定：只要在任一轴上投影不重叠，两个盒子就不可能相交；判定只需常数次比较，因此常被用作最便宜的筛选条件。"},
+        {"type": "single", "question": "宽相位的主要目的是什么？", "options": ["快速排除明显不相交的对象对","精确计算碰撞点的法线","计算物体质量与动量","生成物理材质的纹理"], "answer": 0, "explanation": "宽相位用网格、四叉树或排序扫描线把两两比较的数量压下来，只把可能相交的候选交给精确判定；法线与动量属于后续阶段的工作。"},
+        {"type": "multi", "question": "以下哪些做法可以缓解高速物体的隧穿？（多选）", "options": ["对高速物体使用线段扫掠检测","限制单个时间步内的最大位移","对全部物体强制开启连续检测","把速度阈值作为是否启用连续检测的依据"], "answers": [0, 1, 3], "answer": 0, "explanation": "扫掠检测与限制单步位移都能避免跳过碰撞，按速度阈值筛选则在效果与开销之间取平衡；对全部物体强制开启连续检测会显著抬高帧时间，通常不是合理默认值。"},
+        {"type": "order", "question": "请按一次碰撞处理的合理顺序排列步骤。", "options": ["按最小穿透方向分离","宽相位筛出候选对","精确求交得到法线与穿透深度","按冲量更新速度"], "correct_order": [1, 2, 0, 3], "answer": 0, "explanation": "先用宽相位缩范围，再精确求交得到法线与穿透深度，然后分离位置，最后才计算冲量更新速度；顺序颠倒会让物体在同一帧反复碰撞并出现抖动。"},
+        {"type": "code", "question": "阅读这段碰撞处理代码，下面哪项判断是正确的？", "options": ["沿穿透更浅的轴各分离一半，避免单次推开过多", "两个盒子总是沿 x 轴分离", "分离之后不再需要计算冲量", "overlap_x 与 overlap_y 相等时函数会报错"], "answer": 0, "code": "overlap_x = min(a.x + a.w, b.x + b.w) - max(a.x, b.x)\noverlap_y = min(a.y + a.h, b.y + b.h) - max(a.y, b.y)\nif overlap_x < overlap_y:\n    shift = overlap_x / 2\n    a.x -= shift\n    b.x += shift", "language": "python", "explanation": "这段碰撞检测代码比较两个轴上的穿透深度，选择更浅的一侧按各一半分离，能避免把物体沿错误方向推开过多；分离只修正位置，速度仍需要后续用冲量按动量关系更新。"}
+      ],
+      "practice": [
+        "实现 AABB 与圆形的相交判定，并用随机用例与暴力采样结果对照。",
+        "加入均匀网格宽相位，统计候选对数量随物体规模的变化。",
+        "让一个高速小物体穿过薄墙，先复现隧穿再改用线段扫掠修复。"
+      ],
+      "refs": [
+        {"name": "Real-Time Collision Detection 书籍主页", "url": "https://realtimecollisiondetection.net/"},
+        {"name": "Godot 物理与碰撞文档", "url": "https://docs.godotengine.org/en/stable/tutorials/physics/physics_introduction.html"},
+        {"name": "Box2D 文档与源码", "url": "https://box2d.org/documentation/"}
+      ],
+      "english": "Separate collision detection into a cheap broad phase and an accurate narrow phase. Axis-aligned boxes and circles give constant-time tests, spatial partitions cut candidate pairs, and swept tests rescue fast objects from tunnelling. Always resolve penetration before applying impulses, and keep position and velocity corrections as distinct steps.",
+      "reviewPoints": [
+        "能手写 AABB 与圆的相交判定。",
+        "能说明宽相位在什么规模下开始有收益。",
+        "能解释为什么必须先分离再计算冲量。"
+      ]
+    },
+    {
+      "id": "gamedev_ecs_profiling",
+      "category": "gamedev",
+      "title": {"zh": "实体组件系统与性能剖析", "en": "Entity Component Systems and Profiling"},
+      "summary": {"zh": "从组件数据布局、缓存友好遍历讲到对象池与剖析驱动的优化。", "en": "Cover component layouts, cache-friendly iteration, pooling and profiling-driven optimisation."},
+      "keywords": ["ECS", "数据局部性", "对象池", "剖析器", "帧预算"],
+      "difficulty": "高级",
+      "minutes": 40,
+      "order": 4,
+      "image": {"title": "从实体到系统批处理的执行路径", "flow": ["实体持组件索引", "系统按组件集合查询", "连续内存批量遍历", "剖析数据回写帧预算"]},
+      "goals": [
+        "能解释 ECS 为什么按组件而不是按对象组织数据。",
+        "能指出一次遍历中影响缓存命中的关键因素。",
+        "能用剖析数据而不是直觉来决定优化顺序。"
+      ],
+      "prerequisitesText": [
+        "了解结构体、数组与索引的基本概念。",
+        "知道缓存的层级与命中率会影响性能。",
+        "能读懂一段批量遍历代码。"
+      ],
+      "concepts": [
+        {
+          "name": "实体、组件与系统",
+          "plain": "实体只是一个标识，组件只存数据，系统只处理某几类组件构成的集合。",
+          "mechanism": "系统按组件集合查询实体，遍历时把同类数据连续取出，行为与数据分离让组合方式变得灵活。",
+          "example": "为移动系统只查询位置与速度组件，统计被处理的实体数量与遍历耗时。",
+          "boundary": "组件划分过细会让一次系统遍历需要拼接多份数组，反而增加随机访问与索引成本。",
+          "engineering": "把高频同时访问的组件放进同一组存储，并按实际查询模式决定粒度。"
+        },
+        {
+          "name": "数据局部性与批量遍历",
+          "plain": "连续内存上的顺序访问能充分利用缓存行，随机跳转则频繁触发缓存未命中。",
+          "mechanism": "处理器按缓存行预取数据，遍历紧凑数组时预取有效；指针追逐或对象分散在堆上时，预取往往落空。",
+          "example": "对比遍历紧凑数组与遍历指针数组的耗时，按元素数量归一化后再比较。",
+          "boundary": "数组过大同样会超出缓存容量，分块遍历能让工作集重新落进缓存。",
+          "engineering": "把组件存成并列数组或紧凑结构，尽量让热数据相邻。"
+        },
+        {
+          "name": "对象池与分配控制",
+          "plain": "频繁创建与销毁对象会带来分配开销与内存碎片，对象池把生命周期管理改成复用。",
+          "mechanism": "池预先申请一批对象并维护空闲列表，取出与归还都只是索引操作，避免运行期反复申请内存。",
+          "example": "把子弹改成从池中取出与归还，记录运行一分钟内的分配次数变化。",
+          "boundary": "池的容量上限决定了并发上限，归还时忘记重置状态会让复用对象带着上一轮的数据。",
+          "engineering": "归还时统一重置状态并统计池的峰值使用量，作为容量调整依据。"
+        },
+        {
+          "name": "剖析驱动的优化",
+          "plain": "先用剖析器确认瓶颈位置，再决定优化对象，避免凭直觉改错地方。",
+          "mechanism": "采样剖析给出各函数与系统的耗时占比，帧时间直方图能揭示尾延迟问题，两者结合才能区分平均与最坏情况。",
+          "example": "在一次长时压测中采集帧时间直方图，找出 P99 对应的帧并定位当时的系统耗时。",
+          "boundary": "在调试构建上测出的耗时不能代表发布版本，断言与日志会显著改变结果。",
+          "engineering": "把帧时间指标与系统耗时纳入持续集成，出现回归时能定位到具体提交。"
+        }
+      ],
+      "steps": ["确定组件划分与查询模式", "把热数据组织成紧凑存储", "用对象池控制分配", "采集帧时间与系统耗时", "按剖析结果逐项优化并回归"],
+      "code": {
+        "language": "cpp",
+        "snippet": "struct Position { float x, y; };\nstruct Velocity { float dx, dy; };\n\n// 并列数组：位置与速度各自连续存放，遍历时顺序访问内存\nstd::vector<Position> positions;\nstd::vector<Velocity> velocities;\n\nvoid move_system(float dt) {\n    const size_t count = std::min(positions.size(), velocities.size());\n    for (size_t i = 0; i < count; ++i) {\n        positions[i].x += velocities[i].dx * dt;\n        positions[i].y += velocities[i].dy * dt;\n    }\n}\n\n// 对象池：取出与归还只操作索引，避免运行期反复分配\nBullet& acquire() {\n    const size_t index = free_list.back();\n    free_list.pop_back();\n    return bullets[index];\n}",
+        "walkthrough": "示例把位置与速度存成并列数组，遍历时顺序访问连续内存；对象池用空闲索引列表复用对象，把分配与释放从运行期移出。真实项目里还要注意归还时重置状态。",
+        "expected_output": "同一批实体的移动系统耗时随数量近似线性增长；改用对象池后运行期分配次数明显下降，帧时间直方图的尾部更平坦。"
+      },
+      "faults": [
+        {"topic": "凭直觉优化热点", "wrong": "直接重写看起来最慢的系统而不先采样", "fix": "先用剖析器定位耗时占比最高的系统，再动代码"},
+        {"topic": "组件散落在堆上", "wrong": "用指针数组组织组件，遍历时不断追逐指针", "fix": "把热组件放进连续存储或分块数组，改善缓存命中"},
+        {"topic": "对象池归还时不重置状态", "wrong": "复用对象带着上一轮的速度与标记", "fix": "归还时统一重置字段并统计池峰值使用量"}
+      ],
+      "glossary": [
+        {"term": "实体", "definition": "只作为标识存在的游戏对象编号，本身不携带数据。"},
+        {"term": "组件", "definition": "只保存数据的结构，按类型成组存放。"},
+        {"term": "系统", "definition": "对满足特定组件组合的实体批量执行逻辑的处理单元。"},
+        {"term": "对象池", "definition": "预先申请并复用对象的容器，用于减少运行期分配。"},
+        {"term": "缓存行", "definition": "处理器与内存之间传输数据的最小单位，影响顺序访问效率。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "ECS 中组件的设计原则是什么？", "options": ["只存数据，不写行为","同时保存数据与业务逻辑","每个组件都继承同一个基类","组件必须包含渲染代码"], "answer": 0, "explanation": "ECS 把数据与行为分开：组件只描述状态，系统负责处理逻辑，实体只作为标识；这样同一类数据可以连续存放，系统遍历时能获得更好的缓存局部性。"},
+        {"type": "single", "question": "并列数组比指针数组更适合批量遍历的原因是什么？", "options": ["顺序访问连续内存，缓存命中率更高","占用的总内存一定更少","不需要索引就能访问元素","可以自动并行执行"], "answer": 0, "explanation": "处理器会按缓存行预取相邻数据，顺序遍历紧凑数组时预取有效；指针数组需要在堆上追逐地址，预取经常落空，于是同样的运算量会花更多时间等待内存。"},
+        {"type": "multi", "question": "以下哪些做法属于剖析驱动的优化？（多选）", "options": ["用采样数据确认耗时占比最高的系统","采集帧时间直方图观察 P99","按代码行数判断哪里最慢","在发布构建上验证优化前后的差异"], "answers": [0, 1, 3], "answer": 0, "explanation": "剖析驱动意味着先测量再修改：采样数据指出热点，直方图揭示尾延迟，最终还要在发布构建上复核效果；按代码行数猜测瓶颈通常会把优化用错地方。"},
+        {"type": "order", "question": "请按一次剖析驱动的优化流程排列步骤。", "options": ["在发布构建上复核优化效果","采集成帧时间与系统耗时","定位耗时占比最高的系统","只改一个变量后重新测量"], "correct_order": [1, 2, 3, 0], "answer": 0, "explanation": "流程是先采集数据、定位热点、单变量修改并重新测量，最后在发布构建上复核；省略测量或一次改动多个变量，都无法判断收益来自哪里。"},
+        {"type": "code", "question": "阅读这段 ECS 遍历代码，下面哪项判断是正确的？", "options": ["位置与速度存成并列数组，遍历按索引顺序访问连续内存","每次循环都会重新分配数组","对象池在运行期反复申请内存","遍历顺序由哈希表决定，因此无法预测"], "answer": 0, "code": "std::vector<Position> positions;\nstd::vector<Velocity> velocities;\n\nvoid move_system(float dt) {\n    const size_t count = std::min(positions.size(), velocities.size());\n    for (size_t i = 0; i < count; ++i) {\n        positions[i].x += velocities[i].dx * dt;\n        positions[i].y += velocities[i].dy * dt;\n    }\n}", "language": "cpp", "explanation": "这段 ECS 代码把两种组件分开连续存放，遍历时按索引顺序访问内存，符合数据局部性原则；对象池的取出与归还只操作索引，因此不会在运行期反复分配，性能收益要靠剖析数据验证。"}
+      ],
+      "practice": [
+        "把一份基于指针的对象列表改造成并列数组，对比同一规模的遍历耗时。",
+        "给对象池加上峰值使用量统计，并用它调整初始容量。",
+        "采集一次长时压测的帧时间直方图，指出 P99 对应帧的耗时来源。"
+      ],
+      "refs": [
+        {"name": "ECS FAQ", "url": "https://github.com/SanderMertens/ecs-faq"},
+        {"name": "Unity ECS 文档", "url": "https://docs.unity3d.com/Packages/com.unity.entities@1.0/manual/index.html"},
+        {"name": "Game Programming Patterns：Component", "url": "https://gameprogrammingpatterns.com/component.html"}
+      ],
+      "english": "An ECS keeps entities as identifiers, components as plain data and systems as batch processing over component sets. Layout decides speed: contiguous arrays prefetch well, pointer chasing does not. Pool objects to remove runtime allocation, and always choose the next optimisation from profiler data rather than intuition, verifying the result on a release build.",
+      "reviewPoints": [
+        "能说明 ECS 中数据与行为分离带来的好处。",
+        "能解释缓存局部性对遍历性能的影响。",
+        "能按剖析数据排出下一轮优化顺序。"
+      ]
+    }
+  ]
+}

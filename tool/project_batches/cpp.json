@@ -1,0 +1,163 @@
+{
+  "category": "cpp",
+  "lessons": [
+    {
+      "id": "cpp_project_http",
+      "title": {
+        "zh": "实战：C++ HTTP JSON 服务",
+        "en": "Project: C++ HTTP JSON Service"
+      },
+      "summary": {
+        "zh": "用 CMake 构建一个提供 JSON API 的 C++ 服务，覆盖路由、校验、错误和测试。",
+        "en": "Build a small C++ JSON HTTP service with CMake."
+      },
+      "file": "assets/content/cpp_project_http.md",
+      "minutes": 120,
+      "keywords": [
+        "CMake",
+        "cpp-httplib",
+        "JSON",
+        "RAII",
+        "单元测试"
+      ],
+      "difficulty": "高级",
+      "order": 13,
+      "quiz": [
+        {
+          "question": "CMake 中把业务逻辑拆成独立库的主要收益是什么？",
+          "options": [
+            "减少源文件数量",
+            "方便复用和单独测试",
+            "自动提升运行速度",
+            "避免链接"
+          ],
+          "answer": 1,
+          "explanation": "独立库可以被服务和测试目标共同链接，边界更清晰。"
+        },
+        {
+          "question": "RAII 在本项目中的典型作用是什么？",
+          "options": [
+            "自动管理资源和生命周期",
+            "替代 HTTP 协议",
+            "提高 JSON 体积",
+            "关闭异常"
+          ],
+          "answer": 0,
+          "explanation": "RAII 让锁、文件、连接和内存随对象生命周期自动释放。"
+        },
+        {
+          "question": "非法 JSON 请求最适合返回哪个状态码？",
+          "options": [
+            "200",
+            "400",
+            "404",
+            "500"
+          ],
+          "answer": 1,
+          "explanation": "客户端请求格式错误属于 400，不应作为服务器内部错误。"
+        },
+        {
+          "question": "为什么要在测试中开启 Sanitizer？",
+          "options": [
+            "减少编译时间",
+            "发现越界、泄漏和数据竞争",
+            "生成文档",
+            "替代单元测试"
+          ],
+          "answer": 1,
+          "explanation": "Sanitizer 能把隐蔽的内存和并发问题显式暴露出来。"
+        },
+        {
+          "question": "共享任务容器最安全的默认策略是什么？",
+          "options": [
+            "用锁保护读写并缩小临界区",
+            "完全不加锁",
+            "只读时不加锁",
+            "每次重启进程"
+          ],
+          "answer": 0,
+          "explanation": "并发读写共享容器必须有同步机制，并尽量缩小锁粒度。"
+        }
+      ]
+    },
+    {
+      "id": "cpp_project_taskdb",
+      "title": {
+        "zh": "实战：C++ 任务数据库 CLI",
+        "en": "Project: C++ Task Database CLI"
+      },
+      "summary": {
+        "zh": "用 C++20 和 SQLite 实现任务增删改查 CLI，覆盖持久化、参数解析和测试。",
+        "en": "Build a persistent task CLI with C++20 and SQLite."
+      },
+      "file": "assets/content/cpp_project_taskdb.md",
+      "minutes": 110,
+      "keywords": [
+        "C++20",
+        "SQLite",
+        "CLI",
+        "持久化",
+        "CRUD"
+      ],
+      "difficulty": "高级",
+      "order": 14,
+      "quiz": [
+        {
+          "question": "为什么 CLI 工具要返回明确退出码？",
+          "options": [
+            "方便脚本和 CI 判断成功失败",
+            "减少磁盘占用",
+            "提升 SQL 速度",
+            "替代日志"
+          ],
+          "answer": 0,
+          "explanation": "退出码是命令行工具与自动化流程之间的契约。"
+        },
+        {
+          "question": "SQLite 参数绑定能防止什么？",
+          "options": [
+            "磁盘碎片",
+            "SQL 注入和转义错误",
+            "网络延迟",
+            "内存泄漏"
+          ],
+          "answer": 1,
+          "explanation": "参数绑定把数据和 SQL 结构分离，避免注入与手工转义。"
+        },
+        {
+          "question": "哪个做法最适合管理 sqlite3 句柄？",
+          "options": [
+            "全局裸指针",
+            "RAII 包装并在析构关闭",
+            "每次泄漏",
+            "只依赖进程退出"
+          ],
+          "answer": 1,
+          "explanation": "RAII 确保异常和提前返回时也能释放资源。"
+        },
+        {
+          "question": "测试数据库应该放在哪里？",
+          "options": [
+            "生产数据库文件",
+            "临时目录中的独立文件",
+            "源代码目录",
+            "用户主目录"
+          ],
+          "answer": 1,
+          "explanation": "临时独立文件避免污染真实数据并保证测试可重复。"
+        },
+        {
+          "question": "done 命令找不到任务时应该怎么做？",
+          "options": [
+            "静默返回 0",
+            "返回非零并给出提示",
+            "删除整个表",
+            "重启程序"
+          ],
+          "answer": 1,
+          "explanation": "找不到目标属于可预期失败，应让脚本能感知并处理。"
+        }
+      ]
+    }
+  ]
+}

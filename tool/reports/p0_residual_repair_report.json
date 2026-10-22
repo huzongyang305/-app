@@ -1,0 +1,1140 @@
+{
+  "generated_at": "2026-10-07T07:15:01.100325Z",
+  "dry_run": false,
+  "scanned": 542,
+  "leak_lines_removed": 0,
+  "mistake_tables_rebuilt": 113,
+  "fault_sections_rebuilt": 111,
+  "checklists_rebuilt": 0,
+  "lessons_changed": 113,
+  "details": [
+    {
+      "lesson_id": "python_typing_testing",
+      "category_id": "python",
+      "changes": [
+        "重建错误表 5 行"
+      ],
+      "original_length": 14091,
+      "new_length": 14097
+    },
+    {
+      "lesson_id": "python_decorators_generators",
+      "category_id": "python",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 14450,
+      "new_length": 14631
+    },
+    {
+      "lesson_id": "python_context_iterators",
+      "category_id": "python",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 10972,
+      "new_length": 11199
+    },
+    {
+      "lesson_id": "python_packaging_performance",
+      "category_id": "python",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12831,
+      "new_length": 13038
+    },
+    {
+      "lesson_id": "cpp_move_semantics",
+      "category_id": "cpp",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12289,
+      "new_length": 12473
+    },
+    {
+      "lesson_id": "cpp_concepts_ranges",
+      "category_id": "cpp",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12581,
+      "new_length": 12838
+    },
+    {
+      "lesson_id": "cpp_concurrency_atomics",
+      "category_id": "cpp",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 13205,
+      "new_length": 13388
+    },
+    {
+      "lesson_id": "c_basics",
+      "category_id": "c",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 16675,
+      "new_length": 16829
+    },
+    {
+      "lesson_id": "c_types",
+      "category_id": "c",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 13160,
+      "new_length": 13316
+    },
+    {
+      "lesson_id": "c_control_functions",
+      "category_id": "c",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12837,
+      "new_length": 13003
+    },
+    {
+      "lesson_id": "c_pointers",
+      "category_id": "c",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 14553,
+      "new_length": 14675
+    },
+    {
+      "lesson_id": "c_arrays_strings",
+      "category_id": "c",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 13231,
+      "new_length": 13389
+    },
+    {
+      "lesson_id": "c_structs",
+      "category_id": "c",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12843,
+      "new_length": 13055
+    },
+    {
+      "lesson_id": "c_preprocessor",
+      "category_id": "c",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 13369,
+      "new_length": 13534
+    },
+    {
+      "lesson_id": "c_files",
+      "category_id": "c",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 13757,
+      "new_length": 13953
+    },
+    {
+      "lesson_id": "c_debugging",
+      "category_id": "c",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 13138,
+      "new_length": 13350
+    },
+    {
+      "lesson_id": "c_project",
+      "category_id": "c",
+      "changes": [
+        "重建错误表 4 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12511,
+      "new_length": 12696
+    },
+    {
+      "lesson_id": "java_modern_features",
+      "category_id": "java",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 11480,
+      "new_length": 11746
+    },
+    {
+      "lesson_id": "java_virtual_threads",
+      "category_id": "java",
+      "changes": [
+        "重建错误表 4 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12178,
+      "new_length": 12364
+    },
+    {
+      "lesson_id": "java_gc_tuning",
+      "category_id": "java",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 11681,
+      "new_length": 11845
+    },
+    {
+      "lesson_id": "kotlin_basics",
+      "category_id": "kotlin",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 16554,
+      "new_length": 16754
+    },
+    {
+      "lesson_id": "kotlin_functions",
+      "category_id": "kotlin",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 13549,
+      "new_length": 13754
+    },
+    {
+      "lesson_id": "kotlin_oop",
+      "category_id": "kotlin",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12772,
+      "new_length": 12977
+    },
+    {
+      "lesson_id": "kotlin_collections",
+      "category_id": "kotlin",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 13609,
+      "new_length": 13811
+    },
+    {
+      "lesson_id": "kotlin_coroutines",
+      "category_id": "kotlin",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 14576,
+      "new_length": 14777
+    },
+    {
+      "lesson_id": "kotlin_android",
+      "category_id": "kotlin",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 14155,
+      "new_length": 14335
+    },
+    {
+      "lesson_id": "kotlin_testing",
+      "category_id": "kotlin",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 13258,
+      "new_length": 13411
+    },
+    {
+      "lesson_id": "kotlin_project",
+      "category_id": "kotlin",
+      "changes": [
+        "重建错误表 4 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12291,
+      "new_length": 12556
+    },
+    {
+      "lesson_id": "swift_basics",
+      "category_id": "swift",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 16568,
+      "new_length": 16716
+    },
+    {
+      "lesson_id": "swift_functions",
+      "category_id": "swift",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 13274,
+      "new_length": 13478
+    },
+    {
+      "lesson_id": "swift_oop",
+      "category_id": "swift",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 13083,
+      "new_length": 13264
+    },
+    {
+      "lesson_id": "swift_collections",
+      "category_id": "swift",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 13401,
+      "new_length": 13576
+    },
+    {
+      "lesson_id": "swift_async",
+      "category_id": "swift",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 15052,
+      "new_length": 15278
+    },
+    {
+      "lesson_id": "swift_swiftui",
+      "category_id": "swift",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 11032,
+      "new_length": 11221
+    },
+    {
+      "lesson_id": "swift_testing",
+      "category_id": "swift",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 13177,
+      "new_length": 13344
+    },
+    {
+      "lesson_id": "swift_project",
+      "category_id": "swift",
+      "changes": [
+        "重建错误表 4 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12131,
+      "new_length": 12357
+    },
+    {
+      "lesson_id": "js_execution_context",
+      "category_id": "javascript",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 13270,
+      "new_length": 13512
+    },
+    {
+      "lesson_id": "js_memory_gc",
+      "category_id": "javascript",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 14429,
+      "new_length": 14676
+    },
+    {
+      "lesson_id": "js_node_backend",
+      "category_id": "javascript",
+      "changes": [
+        "重建错误表 4 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12235,
+      "new_length": 12414
+    },
+    {
+      "lesson_id": "csharp_records_patterns",
+      "category_id": "csharp",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 10542,
+      "new_length": 10761
+    },
+    {
+      "lesson_id": "csharp_async_streams",
+      "category_id": "csharp",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 13126,
+      "new_length": 13264
+    },
+    {
+      "lesson_id": "csharp_gc_performance",
+      "category_id": "csharp",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 14524,
+      "new_length": 14708
+    },
+    {
+      "lesson_id": "go_generics_deep",
+      "category_id": "go",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12125,
+      "new_length": 12291
+    },
+    {
+      "lesson_id": "go_profiling_deep",
+      "category_id": "go",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12248,
+      "new_length": 12444
+    },
+    {
+      "lesson_id": "go_cloud_native_security",
+      "category_id": "go",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12158,
+      "new_length": 12336
+    },
+    {
+      "lesson_id": "rust_traits_generics",
+      "category_id": "rust",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12757,
+      "new_length": 13016
+    },
+    {
+      "lesson_id": "rust_smart_pointers",
+      "category_id": "rust",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12231,
+      "new_length": 12447
+    },
+    {
+      "lesson_id": "rust_macros_wasm",
+      "category_id": "rust",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12271,
+      "new_length": 12488
+    },
+    {
+      "lesson_id": "ts_testing",
+      "category_id": "typescript",
+      "changes": [
+        "重建错误表 5 行"
+      ],
+      "original_length": 13225,
+      "new_length": 13239
+    },
+    {
+      "lesson_id": "ts_type_level",
+      "category_id": "typescript",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12924,
+      "new_length": 13109
+    },
+    {
+      "lesson_id": "ts_runtime_validation",
+      "category_id": "typescript",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 13647,
+      "new_length": 13851
+    },
+    {
+      "lesson_id": "ts_performance",
+      "category_id": "typescript",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 10688,
+      "new_length": 10902
+    },
+    {
+      "lesson_id": "shell_portability",
+      "category_id": "shell",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12702,
+      "new_length": 12927
+    },
+    {
+      "lesson_id": "shell_security_hardening",
+      "category_id": "shell",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12331,
+      "new_length": 12550
+    },
+    {
+      "lesson_id": "shell_automation_advanced",
+      "category_id": "shell",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12940,
+      "new_length": 13146
+    },
+    {
+      "lesson_id": "fundamentals_embedded_iot",
+      "category_id": "fundamentals",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12051,
+      "new_length": 12207
+    },
+    {
+      "lesson_id": "fundamentals_pipeline",
+      "category_id": "fundamentals",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 11967,
+      "new_length": 12153
+    },
+    {
+      "lesson_id": "fundamentals_simd",
+      "category_id": "fundamentals",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 11671,
+      "new_length": 11823
+    },
+    {
+      "lesson_id": "fundamentals_cache_coherence",
+      "category_id": "fundamentals",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12180,
+      "new_length": 12381
+    },
+    {
+      "lesson_id": "fundamentals_storage_stack",
+      "category_id": "fundamentals",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 14338,
+      "new_length": 14494
+    },
+    {
+      "lesson_id": "fundamentals_architecture_case",
+      "category_id": "fundamentals",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 11984,
+      "new_length": 12142
+    },
+    {
+      "lesson_id": "algo_shortest_paths",
+      "category_id": "algorithms",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 14010,
+      "new_length": 14123
+    },
+    {
+      "lesson_id": "algo_mst",
+      "category_id": "algorithms",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 14134,
+      "new_length": 14237
+    },
+    {
+      "lesson_id": "algo_topological",
+      "category_id": "algorithms",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 11949,
+      "new_length": 12105
+    },
+    {
+      "lesson_id": "algo_np_approximation",
+      "category_id": "algorithms",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 11481,
+      "new_length": 11605
+    },
+    {
+      "lesson_id": "algo_computational_geometry",
+      "category_id": "algorithms",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12144,
+      "new_length": 12218
+    },
+    {
+      "lesson_id": "algo_persistent_parallel",
+      "category_id": "algorithms",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 11611,
+      "new_length": 11787
+    },
+    {
+      "lesson_id": "network_smtp",
+      "category_id": "network",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 11259,
+      "new_length": 11433
+    },
+    {
+      "lesson_id": "network_ipv6",
+      "category_id": "network",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 11511,
+      "new_length": 11652
+    },
+    {
+      "lesson_id": "network_nat_vpn",
+      "category_id": "network",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 13330,
+      "new_length": 13498
+    },
+    {
+      "lesson_id": "network_p2p",
+      "category_id": "network",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 11324,
+      "new_length": 11500
+    },
+    {
+      "lesson_id": "network_bgp",
+      "category_id": "network",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 11258,
+      "new_length": 11407
+    },
+    {
+      "lesson_id": "network_performance",
+      "category_id": "network",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 10563,
+      "new_length": 10694
+    },
+    {
+      "lesson_id": "security_threat_model",
+      "category_id": "security",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 14515,
+      "new_length": 14677
+    },
+    {
+      "lesson_id": "security_owasp_top10",
+      "category_id": "security",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12004,
+      "new_length": 12206
+    },
+    {
+      "lesson_id": "security_secure_coding",
+      "category_id": "security",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12632,
+      "new_length": 12791
+    },
+    {
+      "lesson_id": "security_auth_session",
+      "category_id": "security",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12943,
+      "new_length": 13095
+    },
+    {
+      "lesson_id": "security_secrets",
+      "category_id": "security",
+      "changes": [
+        "重建错误表 4 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 11976,
+      "new_length": 12096
+    },
+    {
+      "lesson_id": "security_privacy",
+      "category_id": "security",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12223,
+      "new_length": 12370
+    },
+    {
+      "lesson_id": "security_sdl",
+      "category_id": "security",
+      "changes": [
+        "重建错误表 4 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 11733,
+      "new_length": 11883
+    },
+    {
+      "lesson_id": "security_project",
+      "category_id": "security",
+      "changes": [
+        "重建错误表 4 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12207,
+      "new_length": 12374
+    },
+    {
+      "lesson_id": "security_supply_chain",
+      "category_id": "security",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 14241,
+      "new_length": 14373
+    },
+    {
+      "lesson_id": "security_container_k8s",
+      "category_id": "security",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12978,
+      "new_length": 13180
+    },
+    {
+      "lesson_id": "security_cloud",
+      "category_id": "security",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12085,
+      "new_length": 12222
+    },
+    {
+      "lesson_id": "security_fuzzing",
+      "category_id": "security",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12083,
+      "new_length": 12241
+    },
+    {
+      "lesson_id": "security_incident",
+      "category_id": "security",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12054,
+      "new_length": 12181
+    },
+    {
+      "lesson_id": "db_postgresql_deep",
+      "category_id": "database",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12711,
+      "new_length": 12901
+    },
+    {
+      "lesson_id": "db_graph",
+      "category_id": "database",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 14025,
+      "new_length": 14161
+    },
+    {
+      "lesson_id": "db_time_series",
+      "category_id": "database",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 13052,
+      "new_length": 13181
+    },
+    {
+      "lesson_id": "db_migration_governance",
+      "category_id": "database",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12012,
+      "new_length": 12231
+    },
+    {
+      "lesson_id": "db_permissions_security",
+      "category_id": "database",
+      "changes": [
+        "重建错误表 4 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 11840,
+      "new_length": 11982
+    },
+    {
+      "lesson_id": "db_backup_recovery",
+      "category_id": "database",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12043,
+      "new_length": 12190
+    },
+    {
+      "lesson_id": "os_kernel_arch",
+      "category_id": "os",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 13827,
+      "new_length": 13914
+    },
+    {
+      "lesson_id": "os_io_scheduling",
+      "category_id": "os",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12139,
+      "new_length": 12249
+    },
+    {
+      "lesson_id": "os_cgroups_namespaces",
+      "category_id": "os",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 11916,
+      "new_length": 12175
+    },
+    {
+      "lesson_id": "os_io_uring",
+      "category_id": "os",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 10550,
+      "new_length": 10721
+    },
+    {
+      "lesson_id": "os_rtos",
+      "category_id": "os",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 13854,
+      "new_length": 13967
+    },
+    {
+      "lesson_id": "os_linux_troubleshooting",
+      "category_id": "os",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 11906,
+      "new_length": 12097
+    },
+    {
+      "lesson_id": "ai_mcp",
+      "category_id": "ai",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 14788,
+      "new_length": 14966
+    },
+    {
+      "lesson_id": "ai_a2a",
+      "category_id": "ai",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 13095,
+      "new_length": 13316
+    },
+    {
+      "lesson_id": "ai_context_engineering",
+      "category_id": "ai",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 10921,
+      "new_length": 11031
+    },
+    {
+      "lesson_id": "ai_tool_calling",
+      "category_id": "ai",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12979,
+      "new_length": 13134
+    },
+    {
+      "lesson_id": "ai_computer_use",
+      "category_id": "ai",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12990,
+      "new_length": 13248
+    },
+    {
+      "lesson_id": "ai_browser_agent",
+      "category_id": "ai",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12514,
+      "new_length": 12659
+    },
+    {
+      "lesson_id": "ai_coding_agent",
+      "category_id": "ai",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12649,
+      "new_length": 12895
+    },
+    {
+      "lesson_id": "ai_graphrag",
+      "category_id": "ai",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 13065,
+      "new_length": 13280
+    },
+    {
+      "lesson_id": "ai_vlm",
+      "category_id": "ai",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12795,
+      "new_length": 12978
+    },
+    {
+      "lesson_id": "ai_diffusion",
+      "category_id": "ai",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12481,
+      "new_length": 12647
+    },
+    {
+      "lesson_id": "ai_realtime_api",
+      "category_id": "ai",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 13306,
+      "new_length": 13554
+    },
+    {
+      "lesson_id": "ai_governance",
+      "category_id": "ai",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12497,
+      "new_length": 12681
+    },
+    {
+      "lesson_id": "ai_agent_security",
+      "category_id": "ai",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12665,
+      "new_length": 12846
+    },
+    {
+      "lesson_id": "ai_guardrails",
+      "category_id": "ai",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12606,
+      "new_length": 12750
+    },
+    {
+      "lesson_id": "ai_model_serving",
+      "category_id": "ai",
+      "changes": [
+        "重建错误表 5 行",
+        "重建故障现场 3 个"
+      ],
+      "original_length": 12753,
+      "new_length": 12961
+    }
+  ]
+}

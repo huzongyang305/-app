@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "updated_at": "",
+  "instructions": [
+    "在 human_reviews 下按课程 ID 登记人工复核结论；没有记录的课程一律保持待复核。",
+    "reviewer 写真实复核人；method 固定为 human；reviewed_at 用 YYYY-MM-DD。",
+    "scope 列出本次实际核对的范围，例如 术语、题目、代码、参考资料。",
+    "notes 记录发现的问题与处理方式，便于下一轮复核追溯。"
+  ],
+  "human_reviews": {}
+}

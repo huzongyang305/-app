@@ -1,0 +1,182 @@
+{
+  "category": "visual_guide",
+  "lessons": [
+    {
+      "id": "visual_db_isolation",
+      "title": { "zh": "图解数据库事务隔离级别", "en": "Transaction Isolation Illustrated" },
+      "summary": {
+        "zh": "脏读、不可重复读、幻读三现象，四种隔离级别与死锁成因。",
+        "en": "Dirty reads, non-repeatable reads, phantoms and isolation levels."
+      },
+      "file": "assets/content/visual_db_isolation.md",
+      "minutes": 20,
+      "keywords": ["事务", "隔离级别", "幻读", "MVCC", "死锁"],
+      "difficulty": "进阶",
+      "order": 12,
+      "quiz": [
+        {
+          "question": "「不可重复读」指的是？",
+          "options": [
+            "读到了未提交的数据",
+            "同一事务内两次读同一行结果不同，因为别的事务提交了修改",
+            "同一事务内两次范围查询行数不同",
+            "事务无法提交"
+          ],
+          "answer": 1,
+          "explanation": "不可重复读针对同一行的内容变化。选项一是脏读；选项三是幻读；选项四与隔离级别无关。"
+        },
+        {
+          "question": "MySQL InnoDB 与 PostgreSQL 的默认隔离级别分别是？",
+          "options": [
+            "都是读已提交",
+            "都是可重复读",
+            "InnoDB 是可重复读，PostgreSQL 是读已提交",
+            "InnoDB 是串行化，PostgreSQL 是读未提交"
+          ],
+          "answer": 2,
+          "explanation": "InnoDB 默认可重复读并通过间隙锁基本避免幻读，PostgreSQL 默认读已提交。其余选项与事实不符。"
+        },
+        {
+          "question": "MVCC 的核心好处是？",
+          "options": [
+            "彻底消除死锁",
+            "读操作不加锁，依靠快照提高并发度",
+            "减少磁盘占用",
+            "提升网络吞吐"
+          ],
+          "answer": 1,
+          "explanation": "多版本并发控制让读不阻塞写、写不阻塞读。选项一错误：写写冲突仍可能死锁；选项三与选项四与 MVCC 无关。"
+        },
+        {
+          "question": "在并发场景下防止「重复插入」，最可靠的做法是？",
+          "options": [
+            "先查询再插入",
+            "使用唯一约束，让数据库拒绝重复",
+            "把隔离级别调到最高",
+            "增加事务超时时间"
+          ],
+          "answer": 1,
+          "explanation": "唯一约束由数据库保证原子性，是根本手段。选项一在并发下有竞态窗口；选项三会牺牲吞吐且未必解决；选项四与问题无关。"
+        }
+      ]
+    },
+    {
+      "id": "visual_mq_delivery",
+      "title": { "zh": "图解消息队列投递语义", "en": "Message Delivery Semantics" },
+      "summary": {
+        "zh": "三种投递语义、重复的成因、消费端幂等与顺序保障。",
+        "en": "Delivery guarantees, duplication causes, idempotency and ordering."
+      },
+      "file": "assets/content/visual_mq_delivery.md",
+      "minutes": 20,
+      "keywords": ["消息队列", "幂等", "投递语义", "死信队列", "堆积"],
+      "difficulty": "进阶",
+      "order": 13,
+      "quiz": [
+        {
+          "question": "工程上最实用的投递语义组合是？",
+          "options": [
+            "最多一次投递，不做处理",
+            "至少一次投递，消费端保证幂等",
+            "严格要求恰好一次，不加任何补偿",
+            "不做确认，发送即忘"
+          ],
+          "answer": 1,
+          "explanation": "至少一次保证不丢，幂等保证重复无害，两者组合等于业务上的恰好一次。选项一会丢消息；选项三在分布式下代价极高；选项四是选项一的变体。"
+        },
+        {
+          "question": "消息重复最常见的直接原因是？",
+          "options": [
+            "队列容量太小",
+            "消费成功但 ACK 丢失，导致消息被重新投递",
+            "消息体太大",
+            "消费者数量太少"
+          ],
+          "answer": 1,
+          "explanation": "ACK 丢失会让队列认为处理失败而重投。选项一、三、四都可能导致吞吐问题，但不是重复的根因。"
+        },
+        {
+          "question": "要保证「同一用户的动作有序」，应该怎么做？",
+          "options": [
+            "让所有消息进入同一个队列",
+            "用用户 ID 作为分区键，保证同一用户落到同一分区",
+            "增加消费者数量",
+            "开启全局锁"
+          ],
+          "answer": 1,
+          "explanation": "分区内有序即可满足单业务键有序，同时保留并发度。选项一牺牲全部并行度；选项三与顺序无关；选项四会严重影响性能。"
+        },
+        {
+          "question": "配置死信队列（DLQ）的主要目的是？",
+          "options": [
+            "提高消息吞吐",
+            "避免坏消息无限重试阻塞队列，便于后续人工处理",
+            "降低存储成本",
+            "加密消息内容"
+          ],
+          "answer": 1,
+          "explanation": "DLQ 把反复失败的消息隔离出来，让正常消息继续流动。选项一、三、四都不是它的目的。"
+        }
+      ]
+    },
+    {
+      "id": "visual_llm_inference",
+      "title": { "zh": "图解大模型推理与显存占用", "en": "LLM Inference and Memory" },
+      "summary": {
+        "zh": "预填充与解码两阶段、显存三巨头、四种优化与容量规划。",
+        "en": "Prefill and decode, memory breakdown, optimizations and capacity."
+      },
+      "file": "assets/content/visual_llm_inference.md",
+      "minutes": 20,
+      "keywords": ["大模型", "推理", "显存", "KV 缓存", "量化"],
+      "difficulty": "进阶",
+      "order": 14,
+      "quiz": [
+        {
+          "question": "大模型推理的预填充与解码阶段，主要差别是？",
+          "options": [
+            "预填充串行、解码并行",
+            "预填充并行处理整个提示（吃算力），解码逐 token 生成（吃显存带宽）",
+            "两者完全相同",
+            "解码不需要显存"
+          ],
+          "answer": 1,
+          "explanation": "预填充能充分利用并行算力，解码受显存带宽限制更明显。选项一与事实相反；选项三忽略差异；选项四错误：解码依赖 KV 缓存。"
+        },
+        {
+          "question": "显存占用中，随对话上下文增长而变化的是？",
+          "options": [
+            "模型权重",
+            "KV 缓存",
+            "框架安装包",
+            "操作系统内核"
+          ],
+          "answer": 1,
+          "explanation": "KV 缓存随序列长度与并发线性增长，是长上下文最容易被忽略的开销。选项一是固定值；选项三与选项四与 GPU 显存无关。"
+        },
+        {
+          "question": "把上下文从 1K 增加到 4K，注意力计算量大致如何变化？",
+          "options": [
+            "不变",
+            "约 4 倍",
+            "约 16 倍",
+            "约 64 倍"
+          ],
+          "answer": 2,
+          "explanation": "注意力计算量与序列长度的平方成正比，4 倍长度约等于 16 倍计算量。选项一、二、四都不符合平方关系。"
+        },
+        {
+          "question": "上线前确定最大并发数，最可靠的方式是？",
+          "options": [
+            "按参数量公式估算即可",
+            "压测找到显存与延迟的真实水位",
+            "参考别人的配置",
+            "先上线再观察"
+          ],
+          "answer": 1,
+          "explanation": "不同框架与注意力实现的差异很大，必须实测。选项一容易低估 KV 缓存与开销；选项三忽略场景差异；选项四风险过高。"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1323 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "code_learn_app",
+    "languages": ["Dart", "Python", "JavaScript"],
+    "frameworks": ["Flutter"],
+    "description": "Offline learning app with 629 tutorials covering programming languages, CS fundamentals, AI, and software engineering",
+    "analyzedAt": "2026-10-19T00:00:00Z",
+    "gitCommitHash": ""
+  },
+  "nodes": [
+    {
+      "id": "domain-lang",
+      "type": "domain",
+      "name": "编程语言基础",
+      "description": "12种编程语言的核心语法、类型系统与编程范式，共265课",
+      "level": 1,
+      "metadata": { "totalLessons": 265, "categories": 12 }
+    },
+    {
+      "id": "domain-cs",
+      "type": "domain",
+      "name": "计算机科学基础",
+      "description": "计算理论、算法、系统底层原理与数学基础，共125课",
+      "level": 1,
+      "metadata": { "totalLessons": 125, "categories": 6 }
+    },
+    {
+      "id": "domain-eng",
+      "type": "domain",
+      "name": "软件工程与实践",
+      "description": "开发方法论、工具链、跨语言协作与可视化设计，共85课",
+      "level": 1,
+      "metadata": { "totalLessons": 85, "categories": 5 }
+    },
+    {
+      "id": "domain-ai-data",
+      "type": "domain",
+      "name": "AI与数据工程",
+      "description": "人工智能、数据库、数据工程及数学基础，共88课",
+      "level": 1,
+      "metadata": { "totalLessons": 88, "categories": 4 }
+    },
+    {
+      "id": "domain-web-mobile",
+      "type": "domain",
+      "name": "Web与移动开发",
+      "description": "前端界面、跨平台框架与云原生开发，共35课",
+      "level": 1,
+      "metadata": { "totalLessons": 35, "categories": 3 }
+    },
+    {
+      "id": "domain-specialized",
+      "type": "domain",
+      "name": "专业领域拓展",
+      "description": "安全、分布式、区块链、嵌入式、游戏开发等垂直领域，共66课",
+      "level": 1,
+      "metadata": { "totalLessons": 66, "categories": 6 }
+    },
+
+    {
+      "id": "flow-c-family",
+      "type": "flow",
+      "name": "C系系统语言",
+      "description": "C/C++/Rust — 面向底层系统、内存安全与高性能计算",
+      "domainId": "domain-lang",
+      "level": 2,
+      "metadata": { "lessons": 54, "categories": ["c", "cpp", "rust"] }
+    },
+    {
+      "id": "flow-jvm-lang",
+      "type": "flow",
+      "name": "JVM企业级语言",
+      "description": "Java/Kotlin — 面向对象、JVM生态与后端开发",
+      "domainId": "domain-lang",
+      "level": 2,
+      "metadata": { "lessons": 35, "categories": ["java", "kotlin"] }
+    },
+    {
+      "id": "flow-web-script",
+      "type": "flow",
+      "name": "Web与脚本语言",
+      "description": "Python/JavaScript/TypeScript/Go — 动态类型、Web开发与自动化",
+      "domainId": "domain-lang",
+      "level": 2,
+      "metadata": { "lessons": 106, "categories": ["python", "javascript", "typescript", "go"] }
+    },
+    {
+      "id": "flow-apple-ecosystem",
+      "type": "flow",
+      "name": "Apple生态语言",
+      "description": "Swift/C# — 类型安全的现代语言与跨平台应用开发",
+      "domainId": "domain-lang",
+      "level": 2,
+      "metadata": { "lessons": 33, "categories": ["swift", "csharp"] }
+    },
+    {
+      "id": "flow-shell",
+      "type": "flow",
+      "name": "Shell与自动化",
+      "description": "Shell脚本 — 命令行自动化与系统管理",
+      "domainId": "domain-lang",
+      "level": 2,
+      "metadata": { "lessons": 22, "categories": ["shell"] }
+    },
+
+    {
+      "id": "flow-theory",
+      "type": "flow",
+      "name": "计算理论与基础",
+      "description": "计算机科学导论、离散数学与计算理论",
+      "domainId": "domain-cs",
+      "level": 2,
+      "metadata": { "lessons": 39, "categories": ["fundamentals", "math"] }
+    },
+    {
+      "id": "flow-algo",
+      "type": "flow",
+      "name": "算法与数据结构",
+      "description": "经典算法、数据结构与问题求解策略",
+      "domainId": "domain-cs",
+      "level": 2,
+      "metadata": { "lessons": 35, "categories": ["algorithms"] }
+    },
+    {
+      "id": "flow-systems",
+      "type": "flow",
+      "name": "系统底层原理",
+      "description": "操作系统、计算机网络 — 理解计算机如何运行",
+      "domainId": "domain-cs",
+      "level": 2,
+      "metadata": { "lessons": 41, "categories": ["os", "network"] }
+    },
+    {
+      "id": "flow-compiler",
+      "type": "flow",
+      "name": "编译原理",
+      "description": "词法分析、语法分析、代码生成与优化",
+      "domainId": "domain-cs",
+      "level": 2,
+      "metadata": { "lessons": 10, "categories": ["compiler"] }
+    },
+
+    {
+      "id": "flow-dev-practice",
+      "type": "flow",
+      "name": "开发方法论",
+      "description": "软件工程原则、设计模式与质量保障",
+      "domainId": "domain-eng",
+      "level": 2,
+      "metadata": { "lessons": 30, "categories": ["software_engineering", "project_practice"] }
+    },
+    {
+      "id": "flow-toolchain",
+      "type": "flow",
+      "name": "工具链与DevOps",
+      "description": "构建系统、版本控制、CI/CD与自动化部署",
+      "domainId": "domain-eng",
+      "level": 2,
+      "metadata": { "lessons": 14, "categories": ["toolchain"] }
+    },
+    {
+      "id": "flow-cross-visual",
+      "type": "flow",
+      "name": "跨语言与可视化",
+      "description": "跨语言对比、可视化设计与通用编程模式",
+      "domainId": "domain-eng",
+      "level": 2,
+      "metadata": { "lessons": 39, "categories": ["cross_language", "visual_guide"] }
+    },
+
+    {
+      "id": "flow-ai-core",
+      "type": "flow",
+      "name": "AI核心知识",
+      "description": "机器学习、深度学习、NLP与AI工程实践",
+      "domainId": "domain-ai-data",
+      "level": 2,
+      "metadata": { "lessons": 42, "categories": ["ai"] }
+    },
+    {
+      "id": "flow-data-storage",
+      "type": "flow",
+      "name": "数据存储与管理",
+      "description": "关系型数据库、NoSQL、SQL与数据建模",
+      "domainId": "domain-ai-data",
+      "level": 2,
+      "metadata": { "lessons": 27, "categories": ["database"] }
+    },
+    {
+      "id": "flow-data-pipeline",
+      "type": "flow",
+      "name": "数据工程管道",
+      "description": "ETL、数据管道、大数据处理与数据平台",
+      "domainId": "domain-ai-data",
+      "level": 2,
+      "metadata": { "lessons": 10, "categories": ["data_engineering"] }
+    },
+
+    {
+      "id": "flow-web-frontend",
+      "type": "flow",
+      "name": "Web前端基础",
+      "description": "HTML/CSS页面构建、响应式布局与样式系统",
+      "domainId": "domain-web-mobile",
+      "level": 2,
+      "metadata": { "lessons": 14, "categories": ["html_css"] }
+    },
+    {
+      "id": "flow-cross-platform",
+      "type": "flow",
+      "name": "跨平台开发",
+      "description": "Flutter框架、移动UI与跨平台应用架构",
+      "domainId": "domain-web-mobile",
+      "level": 2,
+      "metadata": { "lessons": 12, "categories": ["flutter"] }
+    },
+    {
+      "id": "flow-cloud-native",
+      "type": "flow",
+      "name": "云原生开发",
+      "description": "云服务、容器化部署与云原生架构",
+      "domainId": "domain-web-mobile",
+      "level": 2,
+      "metadata": { "lessons": 9, "categories": ["cloud"] }
+    },
+
+    {
+      "id": "flow-security",
+      "type": "flow",
+      "name": "安全工程",
+      "description": "密码学、网络安全、漏洞分析与安全工程实践",
+      "domainId": "domain-specialized",
+      "level": 2,
+      "metadata": { "lessons": 15, "categories": ["security"] }
+    },
+    {
+      "id": "flow-distributed",
+      "type": "flow",
+      "name": "分布式系统",
+      "description": "分布式理论、一致性协议与微服务架构",
+      "domainId": "domain-specialized",
+      "level": 2,
+      "metadata": { "lessons": 12, "categories": ["distributed"] }
+    },
+    {
+      "id": "flow-blockchain",
+      "type": "flow",
+      "name": "区块链与Web3",
+      "description": "区块链原理、智能合约与去中心化应用",
+      "domainId": "domain-specialized",
+      "level": 2,
+      "metadata": { "lessons": 10, "categories": ["blockchain"] }
+    },
+    {
+      "id": "flow-embedded-iot",
+      "type": "flow",
+      "name": "嵌入式与物联网",
+      "description": "嵌入式系统、硬件接口与IoT协议",
+      "domainId": "domain-specialized",
+      "level": 2,
+      "metadata": { "lessons": 10, "categories": ["embedded"] }
+    },
+    {
+      "id": "flow-gamedev",
+      "type": "flow",
+      "name": "游戏开发",
+      "description": "游戏引擎、图形渲染与游戏逻辑设计",
+      "domainId": "domain-specialized",
+      "level": 2,
+      "metadata": { "lessons": 9, "categories": ["gamedev"] }
+    },
+
+    {
+      "id": "step-c-syntax",
+      "type": "step",
+      "name": "C语言基础",
+      "description": "指针、内存管理、数据结构底层实现",
+      "flowId": "flow-c-family",
+      "level": 3,
+      "metadata": { "category": "c", "lessons": 16, "difficulty": ["入门", "基础"] }
+    },
+    {
+      "id": "step-cpp-paradigm",
+      "type": "step",
+      "name": "C++面向对象与泛型",
+      "description": "OOP、模板、STL、RAII与现代C++特性",
+      "flowId": "flow-c-family",
+      "level": 3,
+      "metadata": { "category": "cpp", "lessons": 21, "difficulty": ["基础", "中级", "高级"] }
+    },
+    {
+      "id": "step-rust-safety",
+      "type": "step",
+      "name": "Rust内存安全",
+      "description": "所有权系统、借用检查、生命周期与并发安全",
+      "flowId": "flow-c-family",
+      "level": 3,
+      "metadata": { "category": "rust", "lessons": 18, "difficulty": ["中级", "高级"] }
+    },
+    {
+      "id": "step-cpp-advanced",
+      "type": "step",
+      "name": "C++高级特性",
+      "description": "移动语义、元编程、并发与性能优化",
+      "flowId": "flow-c-family",
+      "level": 3,
+      "metadata": { "category": "cpp", "lessons": 17, "difficulty": ["高级"] }
+    },
+
+    {
+      "id": "step-java-oop",
+      "type": "step",
+      "name": "Java核心与面向对象",
+      "description": "类与对象、集合框架、异常处理与JVM原理",
+      "flowId": "flow-jvm-lang",
+      "level": 3,
+      "metadata": { "category": "java", "lessons": 21, "difficulty": ["入门", "基础", "中级"] }
+    },
+    {
+      "id": "step-kotlin-modern",
+      "type": "step",
+      "name": "Kotlin现代编程",
+      "description": "空安全、协程、扩展函数与函数式编程",
+      "flowId": "flow-jvm-lang",
+      "level": 3,
+      "metadata": { "category": "kotlin", "lessons": 14, "difficulty": ["基础", "中级"] }
+    },
+
+    {
+      "id": "step-python-basic",
+      "type": "step",
+      "name": "Python入门与进阶",
+      "description": "语法基础、数据结构、OOP与Pythonic编程",
+      "flowId": "flow-web-script",
+      "level": 3,
+      "metadata": { "category": "python", "lessons": 41, "difficulty": ["入门", "基础", "中级"] }
+    },
+    {
+      "id": "step-js-ts",
+      "type": "step",
+      "name": "JavaScript/TypeScript",
+      "description": "ES6+语法、异步编程、类型系统与前端开发基础",
+      "flowId": "flow-web-script",
+      "level": 3,
+      "metadata": { "category": "javascript,typescript", "lessons": 43, "difficulty": ["入门", "基础", "中级"] }
+    },
+    {
+      "id": "step-go-concurrent",
+      "type": "step",
+      "name": "Go并发编程",
+      "description": "goroutine、channel、接口与云原生开发模式",
+      "flowId": "flow-web-script",
+      "level": 3,
+      "metadata": { "category": "go", "lessons": 22, "difficulty": ["基础", "中级", "高级"] }
+    },
+
+    {
+      "id": "step-swift-modern",
+      "type": "step",
+      "name": "Swift现代语法",
+      "description": "协议导向、值类型、可选链与SwiftUI基础",
+      "flowId": "flow-apple-ecosystem",
+      "level": 3,
+      "metadata": { "category": "swift", "lessons": 14, "difficulty": ["基础", "中级"] }
+    },
+    {
+      "id": "step-csharp-dotnet",
+      "type": "step",
+      "name": "C#/.NET生态",
+      "description": "LINQ、异步模式、.NET框架与企业级开发",
+      "flowId": "flow-apple-ecosystem",
+      "level": 3,
+      "metadata": { "category": "csharp", "lessons": 19, "difficulty": ["基础", "中级", "高级"] }
+    },
+
+    {
+      "id": "step-shell-scripting",
+      "type": "step",
+      "name": "Shell脚本编程",
+      "description": "Bash语法、管道、文本处理与系统管理自动化",
+      "flowId": "flow-shell",
+      "level": 3,
+      "metadata": { "category": "shell", "lessons": 22, "difficulty": ["入门", "基础"] }
+    },
+
+    {
+      "id": "step-cs-intro",
+      "type": "step",
+      "name": "计算机科学导论",
+      "description": "计算思维、信息表示、逻辑与系统概览",
+      "flowId": "flow-theory",
+      "level": 3,
+      "metadata": { "category": "fundamentals", "lessons": 30, "difficulty": ["入门", "基础"] }
+    },
+    {
+      "id": "step-math-foundation",
+      "type": "step",
+      "name": "编程数学基础",
+      "description": "线性代数、概率统计、离散数学与算法数学",
+      "flowId": "flow-theory",
+      "level": 3,
+      "metadata": { "category": "math", "lessons": 9, "difficulty": ["中级", "高级"] }
+    },
+
+    {
+      "id": "step-algo-basic",
+      "type": "step",
+      "name": "基础算法与数据结构",
+      "description": "排序、搜索、栈、队列、链表、树与图",
+      "flowId": "flow-algo",
+      "level": 3,
+      "metadata": { "category": "algorithms", "lessons": 18, "difficulty": ["基础", "中级"] }
+    },
+    {
+      "id": "step-algo-advanced",
+      "type": "step",
+      "name": "高级算法策略",
+      "description": "动态规划、贪心、分治、回溯与复杂度分析",
+      "flowId": "flow-algo",
+      "level": 3,
+      "metadata": { "category": "algorithms", "lessons": 17, "difficulty": ["中级", "高级"] }
+    },
+
+    {
+      "id": "step-os",
+      "type": "step",
+      "name": "操作系统原理",
+      "description": "进程管理、内存管理、文件系统并发与同步",
+      "flowId": "flow-systems",
+      "level": 3,
+      "metadata": { "category": "os", "lessons": 17, "difficulty": ["中级", "高级"] }
+    },
+    {
+      "id": "step-network",
+      "type": "step",
+      "name": "计算机网络",
+      "description": "TCP/IP协议栈、HTTP、DNS、Socket编程与网络安全",
+      "flowId": "flow-systems",
+      "level": 3,
+      "metadata": { "category": "network", "lessons": 24, "difficulty": ["基础", "中级"] }
+    },
+
+    {
+      "id": "step-compiler",
+      "type": "step",
+      "name": "编译原理与技术",
+      "description": "词法分析、语法解析、语义分析、代码生成与优化",
+      "flowId": "flow-compiler",
+      "level": 3,
+      "metadata": { "category": "compiler", "lessons": 10, "difficulty": ["高级"] }
+    },
+
+    {
+      "id": "step-se-principles",
+      "type": "step",
+      "name": "软件工程原则",
+      "description": "设计模式、SOLID原则、重构与代码质量",
+      "flowId": "flow-dev-practice",
+      "level": 3,
+      "metadata": { "category": "software_engineering", "lessons": 12, "difficulty": ["基础", "中级"] }
+    },
+    {
+      "id": "step-project-practice",
+      "type": "step",
+      "name": "项目实战",
+      "description": "完整项目开发流程、需求分析、测试与交付",
+      "flowId": "flow-dev-practice",
+      "level": 3,
+      "metadata": { "category": "project_practice", "lessons": 18, "difficulty": ["中级", "高级"] }
+    },
+
+    {
+      "id": "step-toolchain-ci",
+      "type": "step",
+      "name": "工具链与CI/CD",
+      "description": "Git、构建工具、自动化测试与持续集成部署",
+      "flowId": "flow-toolchain",
+      "level": 3,
+      "metadata": { "category": "toolchain", "lessons": 14, "difficulty": ["基础", "中级"] }
+    },
+
+    {
+      "id": "step-cross-lang",
+      "type": "step",
+      "name": "跨语言对比",
+      "description": "多语言特性对比、范式迁移与通用设计模式",
+      "flowId": "flow-cross-visual",
+      "level": 3,
+      "metadata": { "category": "cross_language", "lessons": 18, "difficulty": ["中级"] }
+    },
+    {
+      "id": "step-visual-guide",
+      "type": "step",
+      "name": "可视化编程指南",
+      "description": "图解编程概念、可视化学习与直觉理解",
+      "flowId": "flow-cross-visual",
+      "level": 3,
+      "metadata": { "category": "visual_guide", "lessons": 21, "difficulty": ["入门", "基础"] }
+    },
+
+    {
+      "id": "step-ml-dl",
+      "type": "step",
+      "name": "机器学习与深度学习",
+      "description": "监督/无监督学习、神经网络、CNN、RNN与训练技巧",
+      "flowId": "flow-ai-core",
+      "level": 3,
+      "metadata": { "category": "ai", "lessons": 22, "difficulty": ["中级", "高级"] }
+    },
+    {
+      "id": "step-nlp-llm",
+      "type": "step",
+      "name": "NLP与大语言模型",
+      "description": "Transformer、预训练模型、Prompt工程与LLM应用",
+      "flowId": "flow-ai-core",
+      "level": 3,
+      "metadata": { "category": "ai", "lessons": 12, "difficulty": ["高级"] }
+    },
+    {
+      "id": "step-ai-engineering",
+      "type": "step",
+      "name": "AI工程实践",
+      "description": "模型部署、MLOps、数据标注与AI产品设计",
+      "flowId": "flow-ai-core",
+      "level": 3,
+      "metadata": { "category": "ai", "lessons": 8, "difficulty": ["中级", "高级"] }
+    },
+
+    {
+      "id": "step-sql-modeling",
+      "type": "step",
+      "name": "SQL与数据建模",
+      "description": "关系代数、SQL查询、范式设计与索引优化",
+      "flowId": "flow-data-storage",
+      "level": 3,
+      "metadata": { "category": "database", "lessons": 27, "difficulty": ["基础", "中级"] }
+    },
+
+    {
+      "id": "step-data-pipeline",
+      "type": "step",
+      "name": "数据管道与ETL",
+      "description": "数据采集、转换、加载与大规模数据处理",
+      "flowId": "flow-data-pipeline",
+      "level": 3,
+      "metadata": { "category": "data_engineering", "lessons": 10, "difficulty": ["中级", "高级"] }
+    },
+
+    {
+      "id": "step-html-css",
+      "type": "step",
+      "name": "HTML/CSS基础",
+      "description": "语义化标签、CSS布局、Flexbox/Grid与响应式设计",
+      "flowId": "flow-web-frontend",
+      "level": 3,
+      "metadata": { "category": "html_css", "lessons": 14, "difficulty": ["入门", "基础"] }
+    },
+
+    {
+      "id": "step-flutter-ui",
+      "type": "step",
+      "name": "Flutter框架与UI",
+      "description": "Widget体系、状态管理、布局系统与平台适配",
+      "flowId": "flow-cross-platform",
+      "level": 3,
+      "metadata": { "category": "flutter", "lessons": 12, "difficulty": ["基础", "中级"] }
+    },
+
+    {
+      "id": "step-cloud-deploy",
+      "type": "step",
+      "name": "云服务与部署",
+      "description": "云服务商使用、容器化、微服务与云原生架构",
+      "flowId": "flow-cloud-native",
+      "level": 3,
+      "metadata": { "category": "cloud", "lessons": 9, "difficulty": ["中级", "高级"] }
+    },
+
+    {
+      "id": "step-security-fundamentals",
+      "type": "step",
+      "name": "安全基础与密码学",
+      "description": "加密算法、认证授权、安全协议与常见攻击防护",
+      "flowId": "flow-security",
+      "level": 3,
+      "metadata": { "category": "security", "lessons": 15, "difficulty": ["中级", "高级"] }
+    },
+
+    {
+      "id": "step-distributed-theory",
+      "type": "step",
+      "name": "分布式理论与协议",
+      "description": "CAP定理、一致性协议、分布式存储与微服务模式",
+      "flowId": "flow-distributed",
+      "level": 3,
+      "metadata": { "category": "distributed", "lessons": 12, "difficulty": ["高级"] }
+    },
+
+    {
+      "id": "step-blockchain-smart",
+      "type": "step",
+      "name": "区块链与智能合约",
+      "description": "共识机制、链结构、智能合约开发与DApp设计",
+      "flowId": "flow-blockchain",
+      "level": 3,
+      "metadata": { "category": "blockchain", "lessons": 10, "difficulty": ["中级", "高级"] }
+    },
+
+    {
+      "id": "step-embedded-hw",
+      "type": "step",
+      "name": "嵌入式系统与硬件",
+      "description": "微控制器、传感器接口、实时系统与IoT通信协议",
+      "flowId": "flow-embedded-iot",
+      "level": 3,
+      "metadata": { "category": "embedded", "lessons": 10, "difficulty": ["中级", "高级"] }
+    },
+
+    {
+      "id": "step-game-engine",
+      "type": "step",
+      "name": "游戏引擎与图形",
+      "description": "游戏循环、渲染管线、物理引擎与游戏逻辑模式",
+      "flowId": "flow-gamedev",
+      "level": 3,
+      "metadata": { "category": "gamedev", "lessons": 9, "difficulty": ["中级", "高级"] }
+    }
+  ],
+
+  "edges": [
+    {
+      "id": "e-domain-lang-c-family",
+      "type": "contains_flow",
+      "source": "domain-lang",
+      "target": "flow-c-family",
+      "label": "包含"
+    },
+    {
+      "id": "e-domain-lang-jvm",
+      "type": "contains_flow",
+      "source": "domain-lang",
+      "target": "flow-jvm-lang",
+      "label": "包含"
+    },
+    {
+      "id": "e-domain-lang-web-script",
+      "type": "contains_flow",
+      "source": "domain-lang",
+      "target": "flow-web-script",
+      "label": "包含"
+    },
+    {
+      "id": "e-domain-lang-apple",
+      "type": "contains_flow",
+      "source": "domain-lang",
+      "target": "flow-apple-ecosystem",
+      "label": "包含"
+    },
+    {
+      "id": "e-domain-lang-shell",
+      "type": "contains_flow",
+      "source": "domain-lang",
+      "target": "flow-shell",
+      "label": "包含"
+    },
+
+    {
+      "id": "e-domain-cs-theory",
+      "type": "contains_flow",
+      "source": "domain-cs",
+      "target": "flow-theory",
+      "label": "包含"
+    },
+    {
+      "id": "e-domain-cs-algo",
+      "type": "contains_flow",
+      "source": "domain-cs",
+      "target": "flow-algo",
+      "label": "包含"
+    },
+    {
+      "id": "e-domain-cs-systems",
+      "type": "contains_flow",
+      "source": "domain-cs",
+      "target": "flow-systems",
+      "label": "包含"
+    },
+    {
+      "id": "e-domain-cs-compiler",
+      "type": "contains_flow",
+      "source": "domain-cs",
+      "target": "flow-compiler",
+      "label": "包含"
+    },
+
+    {
+      "id": "e-domain-eng-dev",
+      "type": "contains_flow",
+      "source": "domain-eng",
+      "target": "flow-dev-practice",
+      "label": "包含"
+    },
+    {
+      "id": "e-domain-eng-tool",
+      "type": "contains_flow",
+      "source": "domain-eng",
+      "target": "flow-toolchain",
+      "label": "包含"
+    },
+    {
+      "id": "e-domain-eng-cross",
+      "type": "contains_flow",
+      "source": "domain-eng",
+      "target": "flow-cross-visual",
+      "label": "包含"
+    },
+
+    {
+      "id": "e-domain-ai-core",
+      "type": "contains_flow",
+      "source": "domain-ai-data",
+      "target": "flow-ai-core",
+      "label": "包含"
+    },
+    {
+      "id": "e-domain-ai-storage",
+      "type": "contains_flow",
+      "source": "domain-ai-data",
+      "target": "flow-data-storage",
+      "label": "包含"
+    },
+    {
+      "id": "e-domain-ai-pipeline",
+      "type": "contains_flow",
+      "source": "domain-ai-data",
+      "target": "flow-data-pipeline",
+      "label": "包含"
+    },
+
+    {
+      "id": "e-domain-web-frontend",
+      "type": "contains_flow",
+      "source": "domain-web-mobile",
+      "target": "flow-web-frontend",
+      "label": "包含"
+    },
+    {
+      "id": "e-domain-web-crossplat",
+      "type": "contains_flow",
+      "source": "domain-web-mobile",
+      "target": "flow-cross-platform",
+      "label": "包含"
+    },
+    {
+      "id": "e-domain-web-cloud",
+      "type": "contains_flow",
+      "source": "domain-web-mobile",
+      "target": "flow-cloud-native",
+      "label": "包含"
+    },
+
+    {
+      "id": "e-domain-spec-security",
+      "type": "contains_flow",
+      "source": "domain-specialized",
+      "target": "flow-security",
+      "label": "包含"
+    },
+    {
+      "id": "e-domain-spec-distributed",
+      "type": "contains_flow",
+      "source": "domain-specialized",
+      "target": "flow-distributed",
+      "label": "包含"
+    },
+    {
+      "id": "e-domain-spec-blockchain",
+      "type": "contains_flow",
+      "source": "domain-specialized",
+      "target": "flow-blockchain",
+      "label": "包含"
+    },
+    {
+      "id": "e-domain-spec-embedded",
+      "type": "contains_flow",
+      "source": "domain-specialized",
+      "target": "flow-embedded-iot",
+      "label": "包含"
+    },
+    {
+      "id": "e-domain-spec-gamedev",
+      "type": "contains_flow",
+      "source": "domain-specialized",
+      "target": "flow-gamedev",
+      "label": "包含"
+    },
+
+    {
+      "id": "e-flow-c-syntax",
+      "type": "flow_step",
+      "source": "flow-c-family",
+      "target": "step-c-syntax",
+      "label": "第一步",
+      "order": 1
+    },
+    {
+      "id": "e-flow-cpp-paradigm",
+      "type": "flow_step",
+      "source": "flow-c-family",
+      "target": "step-cpp-paradigm",
+      "label": "进阶",
+      "order": 2
+    },
+    {
+      "id": "e-flow-rust-safety",
+      "type": "flow_step",
+      "source": "flow-c-family",
+      "target": "step-rust-safety",
+      "label": "深入",
+      "order": 3
+    },
+    {
+      "id": "e-flow-cpp-advanced",
+      "type": "flow_step",
+      "source": "flow-c-family",
+      "target": "step-cpp-advanced",
+      "label": "高级",
+      "order": 4
+    },
+
+    {
+      "id": "e-flow-java-oop",
+      "type": "flow_step",
+      "source": "flow-jvm-lang",
+      "target": "step-java-oop",
+      "label": "第一步",
+      "order": 1
+    },
+    {
+      "id": "e-flow-kotlin-modern",
+      "type": "flow_step",
+      "source": "flow-jvm-lang",
+      "target": "step-kotlin-modern",
+      "label": "进阶",
+      "order": 2
+    },
+
+    {
+      "id": "e-flow-python-basic",
+      "type": "flow_step",
+      "source": "flow-web-script",
+      "target": "step-python-basic",
+      "label": "第一步",
+      "order": 1
+    },
+    {
+      "id": "e-flow-js-ts",
+      "type": "flow_step",
+      "source": "flow-web-script",
+      "target": "step-js-ts",
+      "label": "并行",
+      "order": 2
+    },
+    {
+      "id": "e-flow-go-concurrent",
+      "type": "flow_step",
+      "source": "flow-web-script",
+      "target": "step-go-concurrent",
+      "label": "进阶",
+      "order": 3
+    },
+
+    {
+      "id": "e-flow-swift",
+      "type": "flow_step",
+      "source": "flow-apple-ecosystem",
+      "target": "step-swift-modern",
+      "label": "第一步",
+      "order": 1
+    },
+    {
+      "id": "e-flow-csharp",
+      "type": "flow_step",
+      "source": "flow-apple-ecosystem",
+      "target": "step-csharp-dotnet",
+      "label": "并行",
+      "order": 2
+    },
+
+    {
+      "id": "e-flow-shell",
+      "type": "flow_step",
+      "source": "flow-shell",
+      "target": "step-shell-scripting",
+      "label": "唯一",
+      "order": 1
+    },
+
+    {
+      "id": "e-flow-cs-intro",
+      "type": "flow_step",
+      "source": "flow-theory",
+      "target": "step-cs-intro",
+      "label": "第一步",
+      "order": 1
+    },
+    {
+      "id": "e-flow-math",
+      "type": "flow_step",
+      "source": "flow-theory",
+      "target": "step-math-foundation",
+      "label": "进阶",
+      "order": 2
+    },
+
+    {
+      "id": "e-flow-algo-basic",
+      "type": "flow_step",
+      "source": "flow-algo",
+      "target": "step-algo-basic",
+      "label": "第一步",
+      "order": 1
+    },
+    {
+      "id": "e-flow-algo-adv",
+      "type": "flow_step",
+      "source": "flow-algo",
+      "target": "step-algo-advanced",
+      "label": "进阶",
+      "order": 2
+    },
+
+    {
+      "id": "e-flow-os",
+      "type": "flow_step",
+      "source": "flow-systems",
+      "target": "step-os",
+      "label": "并行",
+      "order": 1
+    },
+    {
+      "id": "e-flow-network",
+      "type": "flow_step",
+      "source": "flow-systems",
+      "target": "step-network",
+      "label": "并行",
+      "order": 2
+    },
+
+    {
+      "id": "e-flow-compiler",
+      "type": "flow_step",
+      "source": "flow-compiler",
+      "target": "step-compiler",
+      "label": "唯一",
+      "order": 1
+    },
+
+    {
+      "id": "e-flow-se",
+      "type": "flow_step",
+      "source": "flow-dev-practice",
+      "target": "step-se-principles",
+      "label": "第一步",
+      "order": 1
+    },
+    {
+      "id": "e-flow-project",
+      "type": "flow_step",
+      "source": "flow-dev-practice",
+      "target": "step-project-practice",
+      "label": "进阶",
+      "order": 2
+    },
+
+    {
+      "id": "e-flow-toolchain",
+      "type": "flow_step",
+      "source": "flow-toolchain",
+      "target": "step-toolchain-ci",
+      "label": "唯一",
+      "order": 1
+    },
+
+    {
+      "id": "e-flow-cross",
+      "type": "flow_step",
+      "source": "flow-cross-visual",
+      "target": "step-cross-lang",
+      "label": "并行",
+      "order": 1
+    },
+    {
+      "id": "e-flow-visual",
+      "type": "flow_step",
+      "source": "flow-cross-visual",
+      "target": "step-visual-guide",
+      "label": "并行",
+      "order": 2
+    },
+
+    {
+      "id": "e-flow-ml",
+      "type": "flow_step",
+      "source": "flow-ai-core",
+      "target": "step-ml-dl",
+      "label": "第一步",
+      "order": 1
+    },
+    {
+      "id": "e-flow-nlp",
+      "type": "flow_step",
+      "source": "flow-ai-core",
+      "target": "step-nlp-llm",
+      "label": "进阶",
+      "order": 2
+    },
+    {
+      "id": "e-flow-ai-eng",
+      "type": "flow_step",
+      "source": "flow-ai-core",
+      "target": "step-ai-engineering",
+      "label": "实践",
+      "order": 3
+    },
+
+    {
+      "id": "e-flow-sql",
+      "type": "flow_step",
+      "source": "flow-data-storage",
+      "target": "step-sql-modeling",
+      "label": "唯一",
+      "order": 1
+    },
+
+    {
+      "id": "e-flow-pipeline",
+      "type": "flow_step",
+      "source": "flow-data-pipeline",
+      "target": "step-data-pipeline",
+      "label": "唯一",
+      "order": 1
+    },
+
+    {
+      "id": "e-flow-html",
+      "type": "flow_step",
+      "source": "flow-web-frontend",
+      "target": "step-html-css",
+      "label": "唯一",
+      "order": 1
+    },
+
+    {
+      "id": "e-flow-flutter",
+      "type": "flow_step",
+      "source": "flow-cross-platform",
+      "target": "step-flutter-ui",
+      "label": "唯一",
+      "order": 1
+    },
+
+    {
+      "id": "e-flow-cloud",
+      "type": "flow_step",
+      "source": "flow-cloud-native",
+      "target": "step-cloud-deploy",
+      "label": "唯一",
+      "order": 1
+    },
+
+    {
+      "id": "e-flow-security",
+      "type": "flow_step",
+      "source": "flow-security",
+      "target": "step-security-fundamentals",
+      "label": "唯一",
+      "order": 1
+    },
+
+    {
+      "id": "e-flow-distributed",
+      "type": "flow_step",
+      "source": "flow-distributed",
+      "target": "step-distributed-theory",
+      "label": "唯一",
+      "order": 1
+    },
+
+    {
+      "id": "e-flow-blockchain",
+      "type": "flow_step",
+      "source": "flow-blockchain",
+      "target": "step-blockchain-smart",
+      "label": "唯一",
+      "order": 1
+    },
+
+    {
+      "id": "e-flow-embedded",
+      "type": "flow_step",
+      "source": "flow-embedded-iot",
+      "target": "step-embedded-hw",
+      "label": "唯一",
+      "order": 1
+    },
+
+    {
+      "id": "e-flow-gamedev",
+      "type": "flow_step",
+      "source": "flow-gamedev",
+      "target": "step-game-engine",
+      "label": "唯一",
+      "order": 1
+    },
+
+    {
+      "id": "cd-cs-lang",
+      "type": "cross_domain",
+      "source": "domain-cs",
+      "target": "domain-lang",
+      "label": "CS基础支撑语言学习",
+      "description": "计算机科学导论为所有编程语言提供理论基础"
+    },
+    {
+      "id": "cd-lang-ai",
+      "type": "cross_domain",
+      "source": "domain-lang",
+      "target": "domain-ai-data",
+      "label": "Python是AI的入口语言",
+      "description": "AI核心知识依赖Python编程能力（42课AI需Python前置）"
+    },
+    {
+      "id": "cd-cs-ai",
+      "type": "cross_domain",
+      "source": "domain-cs",
+      "target": "domain-ai-data",
+      "label": "数学与算法是AI的基石",
+      "description": "线性代数、概率统计、算法复杂度分析是ML/DL的前置知识"
+    },
+    {
+      "id": "cd-ai-data-storage",
+      "type": "cross_domain",
+      "source": "domain-ai-data",
+      "target": "domain-ai-data",
+      "label": "AI依赖数据管理能力",
+      "description": "机器学习需要SQL数据查询与数据建模知识"
+    },
+    {
+      "id": "cd-lang-web",
+      "type": "cross_domain",
+      "source": "domain-lang",
+      "target": "domain-web-mobile",
+      "label": "JS/TS是Web开发的语言基础",
+      "description": "JavaScript/TypeScript能力是HTML/CSS交互和Flutter开发的前提"
+    },
+    {
+      "id": "cd-web-mobile",
+      "type": "cross_domain",
+      "source": "domain-web-mobile",
+      "target": "domain-web-mobile",
+      "label": "Web基础支撑跨平台开发",
+      "description": "HTML/CSS的UI概念是Flutter Widget体系的认知前置"
+    },
+    {
+      "id": "cd-cs-systems-specialized",
+      "type": "cross_domain",
+      "source": "domain-cs",
+      "target": "domain-specialized",
+      "label": "系统知识支撑专业领域",
+      "description": "操作系统与网络知识是安全工程、嵌入式、分布式系统的前置"
+    },
+    {
+      "id": "cd-eng-specialized",
+      "type": "cross_domain",
+      "source": "domain-eng",
+      "target": "domain-specialized",
+      "label": "工程实践贯穿专业领域",
+      "description": "软件工程原则与工具链是安全、分布式、云原生等领域的实践基础"
+    },
+    {
+      "id": "cd-lang-eng",
+      "type": "cross_domain",
+      "source": "domain-lang",
+      "target": "domain-eng",
+      "label": "语言熟练度是工程实践的前提",
+      "description": "至少掌握一门语言后才能有效实践项目开发与工具链"
+    },
+    {
+      "id": "cd-cs-compiler",
+      "type": "cross_domain",
+      "source": "domain-cs",
+      "target": "domain-cs",
+      "label": "编译原理依赖CS基础与C++",
+      "description": "编译原理需要算法基础和C/C++实现能力"
+    },
+    {
+      "id": "cd-data-distributed",
+      "type": "cross_domain",
+      "source": "domain-ai-data",
+      "target": "domain-specialized",
+      "label": "数据工程延伸向分布式",
+      "description": "大数据处理需要分布式系统理论与一致性协议"
+    },
+    {
+      "id": "cd-security-network",
+      "type": "cross_domain",
+      "source": "domain-specialized",
+      "target": "domain-cs",
+      "label": "安全依赖网络知识",
+      "description": "网络安全需要TCP/IP、HTTP协议与Socket编程基础"
+    },
+    {
+      "id": "cd-cloud-distributed",
+      "type": "cross_domain",
+      "source": "domain-web-mobile",
+      "target": "domain-specialized",
+      "label": "云原生依赖分布式理论",
+      "description": "容器化与微服务架构需要分布式系统理论基础"
+    },
+    {
+      "id": "cd-gamedev-cs",
+      "type": "cross_domain",
+      "source": "domain-specialized",
+      "target": "domain-cs",
+      "label": "游戏开发依赖算法与数学",
+      "description": "图形渲染、物理模拟需要算法、线性代数与C++性能编程"
+    },
+    {
+      "id": "cd-blockchain-security",
+      "type": "cross_domain",
+      "source": "domain-specialized",
+      "target": "domain-specialized",
+      "label": "区块链依赖密码学",
+      "description": "智能合约与共识机制需要密码学与安全知识"
+    },
+    {
+      "id": "cd-embedded-c",
+      "type": "cross_domain",
+      "source": "domain-specialized",
+      "target": "domain-lang",
+      "label": "嵌入式依赖C语言",
+      "description": "嵌入式开发需要C语言指针、内存管理等底层编程能力"
+    }
+  ],
+
+  "layers": [
+    {
+      "id": "layer-1",
+      "name": "基础层 — 语言与理论",
+      "description": "入门者从此开始：掌握一门编程语言 + 计算机科学导论",
+      "nodeIds": ["domain-lang", "domain-cs", "step-c-syntax", "step-python-basic", "step-java-oop", "step-cs-intro", "step-visual-guide", "step-html-css", "step-shell-scripting"],
+      "order": 1
+    },
+    {
+      "id": "layer-2",
+      "name": "核心层 — 系统与工程",
+      "description": "理解计算机如何运行，学习工程化开发方法",
+      "nodeIds": ["flow-systems", "flow-algo", "flow-dev-practice", "flow-toolchain", "step-os", "step-network", "step-algo-basic", "step-se-principles", "step-toolchain-ci"],
+      "order": 2
+    },
+    {
+      "id": "layer-3",
+      "name": "应用层 — 领域深入",
+      "description": "选择专业方向深入：AI、Web、移动端、后端等",
+      "nodeIds": ["domain-ai-data", "domain-web-mobile", "flow-ai-core", "flow-data-storage", "flow-cross-platform", "flow-web-frontend", "step-ml-dl", "step-sql-modeling", "step-flutter-ui"],
+      "order": 3
+    },
+    {
+      "id": "layer-4",
+      "name": "专精层 — 垂直领域",
+      "description": "高级学习者：安全、分布式、区块链、嵌入式等专精领域",
+      "nodeIds": ["domain-specialized", "flow-security", "flow-distributed", "flow-blockchain", "flow-embedded-iot", "flow-gamedev", "step-compiler", "step-nlp-llm", "step-rust-safety"],
+      "order": 4
+    }
+  ],
+
+  "tour": [
+    {
+      "id": "tour-beginner",
+      "name": "初学者路径",
+      "description": "零基础入门推荐：Python → CS导论 → HTML/CSS → Shell",
+      "nodeSequence": ["step-python-basic", "step-cs-intro", "step-visual-guide", "step-html-css", "step-shell-scripting"],
+      "estimatedLessons": 105
+    },
+    {
+      "id": "tour-backend",
+      "name": "后端工程师路径",
+      "description": "Java/Go后端：语言基础 → 数据库 → 网络 → 分布式 → 云原生",
+      "nodeSequence": ["step-java-oop", "step-go-concurrent", "step-sql-modeling", "step-network", "step-distributed-theory", "step-cloud-deploy"],
+      "estimatedLessons": 110
+    },
+    {
+      "id": "tour-ai",
+      "name": "AI工程师路径",
+      "description": "AI方向：Python → 数学 → 算法 → ML/DL → NLP/LLM → AI工程",
+      "nodeSequence": ["step-python-basic", "step-math-foundation", "step-algo-basic", "step-ml-dl", "step-nlp-llm", "step-ai-engineering"],
+      "estimatedLessons": 132
+    },
+    {
+      "id": "tour-systems",
+      "name": "系统工程师路径",
+      "description": "底层系统：C → C++ → OS → 编译原理 → Rust",
+      "nodeSequence": ["step-c-syntax", "step-cpp-paradigm", "step-os", "step-compiler", "step-rust-safety"],
+      "estimatedLessons": 82
+    },
+    {
+      "id": "tour-fullstack",
+      "name": "全栈开发者路径",
+      "description": "前后端通吃：JS/TS → HTML/CSS → Flutter → 数据库 → 云部署",
+      "nodeSequence": ["step-js-ts", "step-html-css", "step-flutter-ui", "step-sql-modeling", "step-cloud-deploy", "step-toolchain-ci"],
+      "estimatedLessons": 108
+    },
+    {
+      "id": "tour-interview",
+      "name": "面试突击路径",
+      "description": "算法面试：CS基础 → 基础算法 → 高级算法 → 项目实战",
+      "nodeSequence": ["step-cs-intro", "step-algo-basic", "step-algo-advanced", "step-project-practice"],
+      "estimatedLessons": 83
+    }
+  ]
+}

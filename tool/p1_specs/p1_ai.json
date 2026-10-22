@@ -1,0 +1,122 @@
+{
+  "ai_mcp": {
+    "category": "ai",
+    "title": {"zh": "MCP 模型上下文协议", "en": "Model Context Protocol"},
+    "summary": {"zh": "理解 MCP 的 Host、Client、Server、工具与资源模型及权限边界。", "en": "Understand MCP hosts, clients, servers, tools, resources and permissions."},
+    "keywords": ["MCP", "工具协议", "资源", "权限"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["MCP 用统一协议把模型应用与外部工具、资源和提示连接起来。", "Host 负责权限与用户交互，Client 连接 Server，Server 暴露受控能力。", "工具描述、输入 schema、超时和权限确认共同决定 Agent 能否安全调用。"]
+  },
+  "ai_a2a": {
+    "category": "ai",
+    "title": {"zh": "A2A Agent 协作协议", "en": "A2A Agent Collaboration Protocol"},
+    "summary": {"zh": "理解 Agent 之间发现、任务委派、状态同步和结果汇总的协议设计。", "en": "Learn discovery, delegation, state sync and result aggregation between agents."},
+    "keywords": ["A2A", "多智能体", "任务委派", "协议"],
+    "difficulty": "高级", "minutes": 22,
+    "points": ["A2A 关注独立 Agent 之间的任务协商、能力发现和结果交换。", "任务要有明确输入、输出、超时、取消和错误语义，避免无限委派。", "多 Agent 不是越多越好，只有单 Agent 遇到上下文或工具瓶颈时才拆分。"]
+  },
+  "ai_context_engineering": {
+    "category": "ai",
+    "title": {"zh": "上下文工程", "en": "Context Engineering"},
+    "summary": {"zh": "系统性选择、压缩、排序和更新进入模型上下文的信息。", "en": "Select, compress, order and refresh information in model context."},
+    "keywords": ["上下文工程", "摘要", "检索", "窗口"],
+    "difficulty": "高级", "minutes": 22,
+    "points": ["上下文不是越多越好，关键是相关性、时效性和位置。", "长历史要压缩为结构化摘要并保留可追溯引用。", "上下文管理要覆盖检索、工具结果、记忆、权限和成本。"]
+  },
+  "ai_tool_calling": {
+    "category": "ai",
+    "title": {"zh": "工具调用与结构化输出", "en": "Tool Calling and Structured Outputs"},
+    "summary": {"zh": "设计工具 schema、参数校验、幂等调用和可解析的结构化结果。", "en": "Design tool schemas, validation, idempotency and structured results."},
+    "keywords": ["Function Calling", "JSON Schema", "幂等", "校验"],
+    "difficulty": "进阶", "minutes": 22,
+    "points": ["工具参数要用严格 schema 描述，模型输出必须经过服务端校验。", "写操作要设计幂等键、超时和重试，不能让模型直接获得无限权限。", "结构化输出要能被程序解析，并在失败时返回可理解的错误。"]
+  },
+  "ai_computer_use": {
+    "category": "ai",
+    "title": {"zh": "Computer Use 与桌面自动化", "en": "Computer Use and Desktop Automation"},
+    "summary": {"zh": "让 Agent 观察屏幕、操作鼠标键盘并完成任务，同时控制风险。", "en": "Let agents observe screens and operate desktops with controlled risk."},
+    "keywords": ["Computer Use", "截图", "操作", "沙箱"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["Computer Use 依赖截图、OCR、坐标定位和动作反馈形成闭环。", "必须隔离桌面环境、限制网络和文件权限，并对高风险动作二次确认。", "任务失败后要能恢复屏幕状态、回滚副作用并保留操作日志。"]
+  },
+  "ai_browser_agent": {
+    "category": "ai",
+    "title": {"zh": "浏览器 Agent", "en": "Browser Agents"},
+    "summary": {"zh": "理解网页导航、DOM 理解、表单填写、验证码与反自动化约束。", "en": "Cover navigation, DOM understanding, forms, captchas and anti-automation limits."},
+    "keywords": ["浏览器", "DOM", "表单", "自动化"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["浏览器 Agent 要同时理解页面结构、可交互元素和任务状态。", "登录、支付、提交等敏感动作需要权限边界和人工确认。", "反自动化、验证码和页面变化要设计降级路径，不能假设网页永远稳定。"]
+  },
+  "ai_coding_agent": {
+    "category": "ai",
+    "title": {"zh": "代码 Agent 与软件工程自动化", "en": "Coding Agents and Software Automation"},
+    "summary": {"zh": "让 Agent 读代码、改代码、跑测试并提交可评审的改动。", "en": "Let agents read, edit, test and submit reviewable code changes."},
+    "keywords": ["代码 Agent", "测试", "补丁", "评审"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["代码 Agent 必须有读取范围、编辑权限、测试命令和回滚策略。", "补丁要小步、可评审，并用编译与测试结果证明正确性。", "禁止把密钥、生产数据和不可逆操作暴露给自治 Agent。"]
+  },
+  "ai_agent_security": {
+    "category": "ai",
+    "title": {"zh": "Agent 安全、权限与沙箱", "en": "Agent Security, Permissions and Sandboxing"},
+    "summary": {"zh": "覆盖提示注入、工具越权、数据泄露和沙箱隔离。", "en": "Cover prompt injection, tool escalation, data leakage and sandboxing."},
+    "keywords": ["Agent 安全", "提示注入", "沙箱", "最小权限"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["提示注入会把不可信内容变成指令，必须区分数据与指令来源。", "工具权限按最小授权、动作风险和用户确认分级。", "沙箱、网络白名单、审计日志和速率限制共同限制 Agent 的影响范围。"]
+  },
+  "ai_guardrails": {
+    "category": "ai",
+    "title": {"zh": "安全护栏与内容审核", "en": "Guardrails and Content Moderation"},
+    "summary": {"zh": "在输入、工具调用和输出三处设置可解释的安全规则。", "en": "Place explainable safety rules at input, tool and output boundaries."},
+    "keywords": ["Guardrail", "内容审核", "策略", "兜底"],
+    "difficulty": "高级", "minutes": 22,
+    "points": ["护栏要覆盖输入检查、工具执行前检查、输出检查和事后审计。", "规则要区分硬阻断、降级、人工复核和仅告警四种处理级别。", "护栏不能只靠提示词，应尽量落在确定性代码和策略服务中。"]
+  },
+  "ai_graphrag": {
+    "category": "ai",
+    "title": {"zh": "GraphRAG 与知识图谱检索", "en": "GraphRAG and Knowledge Graph Retrieval"},
+    "summary": {"zh": "把实体、关系和社区摘要加入检索增强生成。", "en": "Add entities, relations and community summaries to retrieval-augmented generation."},
+    "keywords": ["GraphRAG", "知识图谱", "实体", "社区摘要"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["GraphRAG 通过实体关系图补充向量检索难以覆盖的多跳问题。", "实体抽取、关系消歧、社区发现和摘要质量决定最终效果。", "图检索成本更高，应先确认问题确实需要多跳和全局推理。"]
+  },
+  "ai_vlm": {
+    "category": "ai",
+    "title": {"zh": "视觉语言模型 VLM", "en": "Vision-Language Models"},
+    "summary": {"zh": "理解图像编码、跨模态对齐、视觉问答和多模态评测。", "en": "Learn image encoding, cross-modal alignment, VQA and multimodal evaluation."},
+    "keywords": ["VLM", "视觉编码", "跨模态", "多模态评测"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["VLM 把图像特征与文本 token 对齐，再让语言模型完成推理和生成。", "分辨率、图像切块、OCR 和视觉 token 数量影响质量与成本。", "评测要覆盖识别、计数、空间关系、OCR 和幻觉，不能只看样例效果。"]
+  },
+  "ai_diffusion": {
+    "category": "ai",
+    "title": {"zh": "扩散模型与图像生成", "en": "Diffusion Models and Image Generation"},
+    "summary": {"zh": "理解加噪去噪、条件控制、采样器和生成质量评估。", "en": "Understand noise-denoising, conditioning, samplers and generation quality."},
+    "keywords": ["扩散模型", "图像生成", "采样器", "条件控制"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["扩散模型学习逐步去噪，生成过程可以通过采样步数和引导强度控制。", "提示词、ControlNet、LoRA 和参考图提供不同层次的条件控制。", "生成质量要同时评估语义一致性、细节、版权、安全和成本。"]
+  },
+  "ai_realtime_api": {
+    "category": "ai",
+    "title": {"zh": "Realtime API 与语音交互", "en": "Realtime API and Voice Interaction"},
+    "summary": {"zh": "覆盖低延迟语音输入、流式输出、打断和端到端评测。", "en": "Cover low-latency voice input, streaming output, interruption and evaluation."},
+    "keywords": ["Realtime", "语音", "流式", "延迟"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["实时语音链路的延迟由采集、编码、网络、推理和播放共同决定。", "打断、回声消除、抖动缓冲和会话状态是体验的关键。", "评测要覆盖识别准确率、首字延迟、打断成功率和误触发。"]
+  },
+  "ai_model_serving": {
+    "category": "ai",
+    "title": {"zh": "大模型推理服务与 GPU 优化", "en": "LLM Serving and GPU Optimization"},
+    "summary": {"zh": "覆盖批处理、KV 缓存、量化、并行和容量规划。", "en": "Cover batching, KV cache, quantization, parallelism and capacity planning."},
+    "keywords": ["推理服务", "KV Cache", "批处理", "量化"],
+    "difficulty": "高级", "minutes": 26,
+    "points": ["推理服务要平衡首 token 延迟、每 token 延迟、吞吐和显存。", "连续批处理、PagedAttention 和前缀缓存能显著提升 GPU 利用率。", "量化、并行和张量切分要结合模型、硬件和质量评测选择。"]
+  },
+  "ai_governance": {
+    "category": "ai",
+    "title": {"zh": "AI 治理、合规与风险", "en": "AI Governance, Compliance and Risk"},
+    "summary": {"zh": "从模型卡片、数据来源、评测、审计到人类监督建立治理闭环。", "en": "Build governance with model cards, provenance, evaluation, audit and human oversight."},
+    "keywords": ["AI 治理", "合规", "审计", "人类监督"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["治理要记录数据来源、模型版本、评测结果、风险和适用范围。", "高风险场景需要人类监督、可解释记录、申诉和回滚机制。", "合规不是上线前一次检查，而是贯穿数据、训练、部署和运营的持续流程。"]
+  }
+}

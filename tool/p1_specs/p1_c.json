@@ -1,0 +1,82 @@
+{
+  "c_basics": {
+    "category": "c",
+    "title": {"zh": "C 基础语法与编译流程", "en": "C Basics and Compilation"},
+    "summary": {"zh": "从源文件、预处理、编译、汇编到链接理解 C 程序的构建过程。", "en": "Understand preprocessing, compiling, assembling and linking C programs."},
+    "keywords": ["C", "编译", "链接", "main"],
+    "difficulty": "基础", "minutes": 20,
+    "points": ["C 程序从 main 开始执行，源文件经过预处理、编译、汇编和链接成为可执行文件。", "声明告诉编译器名字和类型，定义真正分配存储或生成代码。", "编译警告不是噪声，-Wall -Wextra 能提前发现类型、未使用变量和越界风险。"]
+  },
+  "c_types": {
+    "category": "c",
+    "title": {"zh": "C 类型、运算符与转换", "en": "C Types, Operators and Conversions"},
+    "summary": {"zh": "掌握整数宽度、溢出、隐式转换、浮点精度和 sizeof。", "en": "Master integer widths, overflow, implicit conversion, floating point and sizeof."},
+    "keywords": ["类型", "溢出", "隐式转换", "sizeof"],
+    "difficulty": "基础", "minutes": 22,
+    "points": ["整数类型有固定最小宽度但平台实现可能不同，跨平台代码要用固定宽度类型。", "有符号整数溢出是未定义行为，不能依赖回绕结果。", "隐式转换会改变符号和宽度，比较和算术前要明确期望类型。"]
+  },
+  "c_control_functions": {
+    "category": "c",
+    "title": {"zh": "C 控制流、函数与作用域", "en": "C Control Flow, Functions and Scope"},
+    "summary": {"zh": "理解分支、循环、函数调用、栈帧和变量生命周期。", "en": "Learn branches, loops, function calls, stack frames and lifetimes."},
+    "keywords": ["控制流", "函数", "作用域", "栈帧"],
+    "difficulty": "基础", "minutes": 22,
+    "points": ["函数参数默认按值传递，修改形参不会改变调用方变量。", "局部变量生命周期随函数返回结束，不能返回指向局部栈内存的指针。", "作用域和链接属性共同决定名字在哪些文件和代码块可见。"]
+  },
+  "c_pointers": {
+    "category": "c",
+    "title": {"zh": "C 指针与内存模型", "en": "C Pointers and Memory Model"},
+    "summary": {"zh": "理解地址、解引用、指针运算、空指针和悬垂指针。", "en": "Understand addresses, dereference, pointer arithmetic, null and dangling pointers."},
+    "keywords": ["指针", "地址", "解引用", "悬垂指针"],
+    "difficulty": "进阶", "minutes": 24,
+    "points": ["指针保存地址，类型决定解引用时读取多少字节以及指针运算步长。", "空指针、野指针和悬垂指针是三类不同问题，使用前必须明确指向有效对象。", "数组名在多数表达式中退化为首元素指针，但数组和指针并不等价。"]
+  },
+  "c_arrays_strings": {
+    "category": "c",
+    "title": {"zh": "C 数组、字符串与缓冲区", "en": "C Arrays, Strings and Buffers"},
+    "summary": {"zh": "掌握数组边界、C 字符串终止符、缓冲区溢出和安全函数选择。", "en": "Learn array bounds, null terminators, buffer overflow and safe APIs."},
+    "keywords": ["数组", "字符串", "缓冲区", "越界"],
+    "difficulty": "进阶", "minutes": 24,
+    "points": ["C 数组不携带长度，函数接收数组时通常还要传入容量。", "字符串以空字符结尾，任何读写都必须为终止符预留空间。", "strcpy、sprintf 等函数容易越界，应优先使用带长度限制并检查返回值的方式。"]
+  },
+  "c_structs": {
+    "category": "c",
+    "title": {"zh": "C 结构体、联合体与内存布局", "en": "C Structs, Unions and Memory Layout"},
+    "summary": {"zh": "理解结构体对齐、填充、联合体复用和位域的可移植性问题。", "en": "Understand alignment, padding, unions and portability of bit fields."},
+    "keywords": ["结构体", "对齐", "联合体", "填充"],
+    "difficulty": "进阶", "minutes": 24,
+    "points": ["结构体成员会按对齐要求插入填充字节，sizeof 不等于成员大小简单相加。", "联合体多个成员共享同一块内存，读取非当前写入成员的行为要谨慎。", "跨平台二进制协议不能直接依赖默认结构体布局和字节序。"]
+  },
+  "c_preprocessor": {
+    "category": "c",
+    "title": {"zh": "C 预处理、宏与头文件", "en": "C Preprocessor, Macros and Headers"},
+    "summary": {"zh": "理解包含、条件编译、宏展开、头文件守卫和宏的陷阱。", "en": "Learn includes, conditional compilation, macros, guards and pitfalls."},
+    "keywords": ["预处理器", "宏", "头文件", "守卫"],
+    "difficulty": "进阶", "minutes": 22,
+    "points": ["预处理器在编译前做文本级替换，不遵守类型和作用域规则。", "宏参数要加括号，避免运算符优先级和多次求值问题，能内联函数时优先用函数。", "头文件要有守卫并只放声明，避免重复包含和多重定义。"]
+  },
+  "c_files": {
+    "category": "c",
+    "title": {"zh": "C 文件、错误处理与资源管理", "en": "C Files, Error Handling and Resource Management"},
+    "summary": {"zh": "覆盖文件读写、errno、返回值检查和资源释放。", "en": "Cover file IO, errno, return-value checks and resource cleanup."},
+    "keywords": ["文件", "errno", "资源释放", "错误处理"],
+    "difficulty": "进阶", "minutes": 23,
+    "points": ["文件操作每一步都要检查返回值，并区分打开失败、读写失败和关闭失败。", "错误发生后要保证已分配的内存、文件描述符和锁都能释放。", "二进制与文本模式、换行转换和缓冲区刷新在跨平台时容易产生差异。"]
+  },
+  "c_debugging": {
+    "category": "c",
+    "title": {"zh": "C 调试、Sanitizer 与性能", "en": "C Debugging, Sanitizers and Performance"},
+    "summary": {"zh": "用 GDB、ASan、UBSan 和性能工具定位内存错误与热点。", "en": "Use GDB, ASan, UBSan and profilers to find memory bugs and hotspots."},
+    "keywords": ["GDB", "ASan", "UBSan", "性能"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["AddressSanitizer 发现越界、释放后使用和内存泄漏，UndefinedBehaviorSanitizer 发现未定义行为。", "调试时先保留崩溃现场和最小复现，再逐步缩小变量与代码范围。", "性能优化要先测量 CPU、缓存和内存分配，不能凭直觉改代码。"]
+  },
+  "c_project": {
+    "category": "c",
+    "title": {"zh": "实战：C 命令行任务管理器", "en": "Project: C Command-Line Task Manager"},
+    "summary": {"zh": "用 C 实现任务增删改查、文件持久化、Makefile 和测试。", "en": "Build a task manager with CRUD, file persistence, Makefile and tests."},
+    "keywords": ["C 项目", "Makefile", "文件持久化", "CRUD"],
+    "difficulty": "高级", "minutes": 120,
+    "points": ["把任务模型、存储、命令解析和错误处理分层，避免所有逻辑堆在 main 中。", "持久化要处理文件不存在、格式损坏、写入中断和并发访问。", "项目要用 -Wall -Wextra、Sanitizer 和自动化测试验证，而不是只手动运行一次。"]
+  }
+}

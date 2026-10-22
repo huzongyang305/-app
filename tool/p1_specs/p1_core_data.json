@@ -1,0 +1,98 @@
+{
+  "algo_shortest_paths": {
+    "category": "algorithms",
+    "title": {"zh": "最短路算法专题", "en": "Shortest Path Algorithms"},
+    "summary": {"zh": "系统比较 BFS、Dijkstra、Bellman-Ford、Floyd 和启发式搜索。", "en": "Compare BFS, Dijkstra, Bellman-Ford, Floyd and heuristic search."},
+    "keywords": ["Dijkstra", "Bellman-Ford", "最短路", "A*"],
+    "difficulty": "高级", "minutes": 26,
+    "points": ["无权图最短路用 BFS，非负权图用 Dijkstra，含负权边用 Bellman-Ford。", "Floyd 适合小规模全源最短路，A* 用启发函数加速有目标的搜索。", "选择算法要同时看负权、稠密度、目标数量和可接受近似。"]
+  },
+  "algo_mst": {
+    "category": "algorithms",
+    "title": {"zh": "最小生成树与图剪枝", "en": "Minimum Spanning Trees and Graph Pruning"},
+    "summary": {"zh": "掌握 Kruskal、Prim、并查集和割边性质。", "en": "Learn Kruskal, Prim, union-find and cut properties."},
+    "keywords": ["MST", "Kruskal", "Prim", "并查集"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["最小生成树选择连接所有顶点且总权重最小的无环边集。", "Kruskal 按边排序并用并查集判环，Prim 从已选点扩展最小边。", "割性质和安全边理论解释为什么贪心选择不会破坏最优性。"]
+  },
+  "algo_topological": {
+    "category": "algorithms",
+    "title": {"zh": "拓扑排序与 DAG 应用", "en": "Topological Sort and DAG Applications"},
+    "summary": {"zh": "用入度或 DFS 处理依赖、编译顺序、任务调度和关键路径。", "en": "Use indegree or DFS for dependencies, build order, scheduling and critical paths."},
+    "keywords": ["拓扑排序", "DAG", "依赖", "关键路径"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["拓扑排序只适用于无环有向图，结果可能有多个合法顺序。", "入度队列法适合并行找出可执行任务，DFS 法便于检测环。", "关键路径计算最长依赖链，决定项目最短完成时间。"]
+  },
+  "algo_np_approximation": {
+    "category": "algorithms",
+    "title": {"zh": "NP 完全性与近似算法", "en": "NP-Completeness and Approximation"},
+    "summary": {"zh": "理解归约、P/NP、NP 完全、近似比和参数化算法。", "en": "Learn reductions, P/NP, NP-completeness, approximation ratios and parameterized algorithms."},
+    "keywords": ["NP", "归约", "近似算法", "参数化"],
+    "difficulty": "高级", "minutes": 26,
+    "points": ["NP 完全问题目前没有已知多项式精确算法，归约用于证明问题难度。", "近似算法给出可证明的质量边界，启发式算法只追求实践效果。", "参数化、分支限界和约束规模分析能把指数部分限制在小参数上。"]
+  },
+  "algo_computational_geometry": {
+    "category": "algorithms",
+    "title": {"zh": "计算几何基础", "en": "Computational Geometry"},
+    "summary": {"zh": "覆盖凸包、扫描线、相交检测、最近点和数值稳定性。", "en": "Cover convex hulls, sweep line, intersections, nearest points and numerical stability."},
+    "keywords": ["凸包", "扫描线", "几何", "数值稳定"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["计算几何用叉积判断方向、面积和共线，用扫描线降低二维问题复杂度。", "凸包、最近点对和线段相交是常见基础问题。", "浮点误差和共线边界会导致错误，必要时使用整数或精确谓词。"]
+  },
+  "algo_persistent_parallel": {
+    "category": "algorithms",
+    "title": {"zh": "持久化数据结构与并行算法", "en": "Persistent Data Structures and Parallel Algorithms"},
+    "summary": {"zh": "理解版本化数据结构、路径复制、并行前缀和与分治。", "en": "Learn versioned structures, path copying, parallel prefix and divide-and-conquer."},
+    "keywords": ["持久化", "版本", "并行算法", "前缀和"],
+    "difficulty": "高级", "minutes": 26,
+    "points": ["持久化数据结构保留历史版本，路径复制在更新时共享未变化节点。", "并行前缀和、归并和分治能把工作拆到多核。", "并行算法要控制同步、负载均衡和通信成本，理论加速不等于实际加速。"]
+  },
+  "db_postgresql_deep": {
+    "category": "database",
+    "title": {"zh": "PostgreSQL 深入实践", "en": "PostgreSQL Deep Dive"},
+    "summary": {"zh": "覆盖 MVCC、VACUUM、执行计划、索引、扩展和逻辑复制。", "en": "Cover MVCC, VACUUM, plans, indexes, extensions and logical replication."},
+    "keywords": ["PostgreSQL", "MVCC", "VACUUM", "执行计划"],
+    "difficulty": "高级", "minutes": 26,
+    "points": ["PostgreSQL 用 MVCC 提供并发读，死元组需要 VACUUM 回收。", "执行计划、统计信息和索引选择共同决定查询性能。", "扩展、分区、逻辑复制和连接池是生产部署的重要组成。"]
+  },
+  "db_graph": {
+    "category": "database",
+    "title": {"zh": "图数据库与关系查询", "en": "Graph Databases and Relationship Queries"},
+    "summary": {"zh": "理解属性图、Cypher、多跳查询、图算法和适用边界。", "en": "Learn property graphs, Cypher, multi-hop queries, graph algorithms and boundaries."},
+    "keywords": ["图数据库", "Cypher", "多跳", "关系"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["图数据库把关系作为一等公民，适合多跳关系、路径和推荐场景。", "Cypher 用模式匹配描述点边关系，查询计划要避免笛卡尔积。", "图数据库不替代事务型主库，通常与关系库和分析系统组合使用。"]
+  },
+  "db_time_series": {
+    "category": "database",
+    "title": {"zh": "时序数据库与监控数据", "en": "Time-Series Databases and Monitoring Data"},
+    "summary": {"zh": "覆盖时间戳、标签、降采样、保留策略和乱序写入。", "en": "Cover timestamps, tags, downsampling, retention and out-of-order writes."},
+    "keywords": ["时序数据库", "标签", "降采样", "保留策略"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["时序数据以时间戳和标签为主，写入量大且通常按时间范围查询。", "降采样、压缩和保留策略控制长期存储成本。", "乱序、时钟偏差和基数爆炸是常见工程问题。"]
+  },
+  "db_migration_governance": {
+    "category": "database",
+    "title": {"zh": "数据库迁移与 Schema 治理", "en": "Database Migration and Schema Governance"},
+    "summary": {"zh": "设计可回滚、低锁、可校验的在线 Schema 变更流程。", "en": "Design reversible, low-lock and verifiable online schema changes."},
+    "keywords": ["迁移", "Schema", "回滚", "锁"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["迁移要经过评审、版本化、预演、备份和回滚演练。", "大表变更采用新增字段、双写、回填、切读、清理的分阶段方案。", "迁移完成后要校验行数、约束和数据一致性，再删除旧结构。"]
+  },
+  "db_permissions_security": {
+    "category": "database",
+    "title": {"zh": "数据库权限与安全", "en": "Database Permissions and Security"},
+    "summary": {"zh": "覆盖账号隔离、最小权限、行级安全、审计和敏感数据保护。", "en": "Cover account isolation, least privilege, row-level security, auditing and data protection."},
+    "keywords": ["数据库权限", "最小权限", "审计", "加密"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["应用账号只授予必要库表权限，禁止使用超级用户连接业务。", "敏感字段加密、脱敏和访问审计要覆盖备份与导出。", "连接来源、TLS、密码轮换和审计日志构成数据库边界。"]
+  },
+  "db_backup_recovery": {
+    "category": "database",
+    "title": {"zh": "数据库备份与恢复演练", "en": "Database Backup and Recovery Drills"},
+    "summary": {"zh": "理解全量、增量、WAL、时间点恢复和恢复时间目标。", "en": "Learn full/incremental backups, WAL, PITR and recovery objectives."},
+    "keywords": ["备份", "恢复", "PITR", "RTO"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["备份必须包含数据、日志、配置和密钥，并定期验证可恢复性。", "时间点恢复依赖全量备份加连续 WAL，恢复目标由 RPO 和 RTO 决定。", "真实演练要测量恢复时间、数据差距和业务验证步骤。"]
+  }
+}

@@ -1,0 +1,199 @@
+{
+  "lessons": [
+    {
+      "id": "blockchain_defi_security",
+      "category": "blockchain",
+      "title": {"zh": "DeFi 风险与智能合约审计", "en": "DeFi Risks and Smart Contract Auditing"},
+      "summary": {"zh": "从重入、预言机操纵、权限与升级四类风险出发，建立合约审计与上线检查流程。", "en": "Cover reentrancy, oracle manipulation, access control and upgrade risks with an audit checklist."},
+      "keywords": ["重入攻击", "预言机", "权限控制", "审计", "闪电贷"],
+      "difficulty": "高级",
+      "minutes": 36,
+      "order": 4,
+      "prerequisites": ["blockchain_ethereum_smart_contract"],
+      "image": {"title": "智能合约风险与审计流程", "flow": ["建模威胁", "静态与动态检查", "修复与回归", "上线监控"]},
+      "goals": [
+        "能复现重入攻击的最小场景，并用检查-生效-交互的顺序修复。",
+        "能说明价格预言机被操纵的条件与防护手段。",
+        "能列出合约上线前的审计清单与应急响应步骤。"
+      ],
+      "prerequisitesText": [
+        "已能读懂 Solidity 合约的函数、状态变量与事件。",
+        "知道 DeFi 的常见业务：借贷、兑换、质押与清算。",
+        "理解交易的原子性：一次交易里所有调用要么全部生效，要么全部回滚。"
+      ],
+      "concepts": [
+        {
+          "name": "重入攻击与状态更新顺序",
+          "plain": "合约在更新自身状态之前调用外部地址，外部合约可以借这次调用重新进入原函数，反复取走资金。",
+          "mechanism": "外部调用会把控制权交给对方，对方在回调里再次调用提现函数；此时余额还没扣减，检查仍然通过。修复方式是把状态更新放在外部调用之前，或加互斥锁。",
+          "example": "写一个先转账后扣余额的提现函数，用攻击合约在回调里再次提现，观察余额被重复取走。",
+          "boundary": "只加互斥锁能挡住重入，但不能挡住跨合约的读取型攻击；跨函数共享状态时要统一锁粒度。",
+          "engineering": "遵循检查-生效-交互顺序，必要时再加互斥锁并限制回调行为，把关键路径写成不变量测试。"
+        },
+        {
+          "name": "预言机操纵与价格来源",
+          "plain": "如果合约直接读取一个流动性很浅的池子价格，攻击者可以用闪电贷瞬间拉偏价格，再触发借贷或清算获利。",
+          "mechanism": "攻击在单笔交易内完成：借入巨额资金、在目标池子交易抬高或压低价格、按被操纵价格与协议交互、最后归还贷款。",
+          "example": "用时间加权平均价格替换即时价格，比较两种方式在短时间内被大额交易影响的程度。",
+          "boundary": "时间加权平均价能提高操纵成本，但极端行情下会滞后；多源预言机也可能同时被同一事件影响。",
+          "engineering": "使用多源、带偏差与心跳校验的价格源，并给清算与借贷加上限速与暂停开关。"
+        },
+        {
+          "name": "权限、升级与治理风险",
+          "plain": "管理员权限、代理升级与治理投票是必要的运维手段，但也是攻击面：私钥泄露或治理被操纵都可能直接改变协议规则。",
+          "mechanism": "常见做法是代理合约保存实现地址，管理员可切换逻辑；若升级函数没有时间锁或多签，单点即可替换全部逻辑。",
+          "example": "对比单签管理员与多签加时间锁的升级流程，列出攻击者要成功篡改需要跨越的步骤。",
+          "boundary": "完全不可升级又会让漏洞无法修复，因此要在可修复性与信任最小化之间做出明确取舍。",
+          "engineering": "升级走多签加时间锁，关键参数变更提前公告；为应急暂停准备独立权限，并定期演练。"
+        },
+        {
+          "name": "审计流程与工具链",
+          "plain": "审计不是跑一次扫描器，而是威胁建模、静态分析、动态测试、人工复核与上线监控的完整流程。",
+          "mechanism": "静态分析找常见模式，模糊测试与不变量测试验证极端输入，人工复核专注经济激励与组合风险，上线后用监控与熔断兜底。",
+          "example": "为一个借贷合约编写不变量测试：任何操作序列结束后，协议资产总量必须不小于用户负债总量。",
+          "boundary": "审计通过不代表没有漏洞，只代表在给定假设与范围内未发现问题；跨协议组合风险通常超出单个项目审计范围。",
+          "engineering": "保留审计范围、版本与遗留问题清单；上线后持续跑不变量测试与链上监控，发现异常先暂停再定位。"
+        }
+      ],
+      "steps": ["写清资产与信任假设", "静态扫描与人工复核", "模糊测试与不变量验证", "灰度上线并持续监控"],
+      "code": {
+        "language": "solidity",
+        "snippet": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.20;\n\ncontract Vault {\n    mapping(address => uint256) public balance;\n\n    function deposit() external payable {\n        balance[msg.sender] += msg.value;\n    }\n\n    function withdraw() external {\n        uint256 amount = balance[msg.sender];\n        require(amount > 0, \"empty\");\n        balance[msg.sender] = 0;\n        (bool ok, ) = msg.sender.call{value: amount}(\"\");\n        require(ok, \"transfer failed\");\n    }\n}",
+        "walkthrough": "这段提现实现先把余额清零再转账，属于检查-生效-交互顺序；即使调用方在回调里再次调用 withdraw，第二次执行时余额已经是 0，会被 require 拒绝。",
+        "expected_output": "正常提现后 balance 归零且转账成功；攻击合约在回调中重入 withdraw 时会因 empty 断言失败而回滚，资金不会被重复取走。"
+      },
+      "faults": [
+        {"topic": "先转账后扣余额", "wrong": "在外部调用之后才更新用户余额", "fix": "把状态更新提前到外部调用之前，必要时再加互斥锁"},
+        {"topic": "直接读取现货价格", "wrong": "用单个浅池子的即时价格作为清算依据", "fix": "改用多源时间加权价格，并加上偏差阈值与暂停开关"},
+        {"topic": "管理员权限单点化", "wrong": "用一个热钱包私钥控制升级与资金提取", "fix": "升级与提现走多签加时间锁，权限分离并定期演练应急流程"}
+      ],
+      "glossary": [
+        {"term": "重入攻击", "definition": "在外部调用回调中重新进入原函数，利用未更新的状态重复获利。"},
+        {"term": "闪电贷", "definition": "在同一笔交易内借出并归还的无抵押贷款，常被用于放大攻击资金。"},
+        {"term": "预言机", "definition": "为链上合约提供外部数据的服务，价格来源与更新方式是主要风险点。"},
+        {"term": "时间锁", "definition": "让关键操作延迟生效的机制，为社区审查与应急响应留出时间。"},
+        {"term": "不变量测试", "definition": "断言任何操作序列后都必须成立的性质，用于捕捉状态被破坏的情况。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "避免重入攻击最关键的做法是什么？", "options": ["先更新状态再调用外部地址", "把函数改成 public 便于审计", "提高 Gas 价格让攻击失败", "把余额存在事件日志里"], "answer": 0, "explanation": "重入能得手的前提是状态尚未更新，攻击者趁机重复执行；把状态更新放在外部调用之前，第二次进入时检查就会失败，这是最核心的修复方式。"},
+        {"type": "single", "question": "闪电贷为什么能放大预言机操纵？", "options": ["它可以在单笔交易内获得巨额资金拉偏价格", "它能让交易免手续费", "它会自动修改合约的存储变量", "它能让区块时间停止流动"], "answer": 0, "explanation": "闪电贷把巨额资金压缩在同一笔交易内使用，攻击者用它把浅池子价格推到极端再与协议交互；手续费与存储变量都不受影响，真正的问题是价格来源过于脆弱。"},
+        {"type": "multi", "question": "以下哪些属于合约上线的必要检查？（多选）", "options": ["关键权限是否多签与时间锁", "价格源是否有偏差与暂停机制", "管理员私钥是否保存在前端代码里", "是否有不变量测试与监控告警"], "answers": [0, 1, 3], "answer": 0, "explanation": "权限、价格源韧性、不变量测试与监控都是上线前必须确认的项；而把管理员私钥放进前端代码等于公开权限，是必须消除的做法。"},
+        {"type": "order", "question": "请按审计流程排列下面的步骤。", "options": ["动态测试与不变量验证", "明确资产与信任假设", "上线监控与应急演练", "静态扫描与人工复核"], "correct_order": [1, 3, 0, 2], "answer": 0, "explanation": "先明确资产与假设，再做静态与人工复核，随后用动态测试验证，最后才是上线监控与演练；顺序颠倒会出现假设未定就开始扫工具或未验证就上线的断点。"},
+        {"type": "debug", "question": "阅读提现函数，哪项判断正确？", "options": ["状态先清零再转账，可以挡住大多数重入提现", "函数没有任何重入风险，因为使用了 call", "把 require 放在转账之后会加剧重入风险", "余额存在 mapping 里因此不可能被重入利用"], "answer": 0, "code": "uint256 amount = balance[msg.sender];\nrequire(amount > 0, \"empty\");\nbalance[msg.sender] = 0;\n(bool ok, ) = msg.sender.call{value: amount}(\"\");\nrequire(ok, \"transfer failed\");", "language": "solidity", "explanation": "先清零再转账让重入时的余额检查直接失败，是标准的检查-生效-交互写法；call 本身不是问题，真正的风险来自状态更新与外部调用的先后顺序。"}
+      ],
+      "practice": [
+        "在一个测试合约里故意把状态更新放到转账之后，重新构造重入并观察余额变化。",
+        "为一个借贷合约写三条不变量，说明每条不变量在什么条件下会被破坏。",
+        "整理一份上线前检查清单，至少覆盖权限、价格源、暂停机制与监控四项。"
+      ],
+      "refs": [
+        {"name": "ConsenSys 智能合约安全最佳实践", "url": "https://consensys.github.io/smart-contract-best-practices/"},
+        {"name": "SWC 智能合约弱点分类", "url": "https://swcregistry.io/"}
+      ],
+      "english": "Most DeFi losses come from a small set of patterns: reentrancy, oracle manipulation, over-powerful admin keys and upgrade mistakes. This lesson reproduces a reentrancy, explains price-source hardening, and builds an audit checklist that continues after deployment.",
+      "reviewPoints": [
+        "能写出检查-生效-交互的安全提现流程。",
+        "能说明预言机操纵的前提与缓解手段。",
+        "能列出升级与权限控制的上线检查项。"
+      ]
+    },
+    {
+      "id": "blockchain_scaling_layer2",
+      "category": "blockchain",
+      "title": {"zh": "扩容、Rollup 与跨链桥", "en": "Scaling, Rollups and Bridges"},
+      "summary": {"zh": "理解链上扩容与二层方案的分工，掌握 Rollup 成本模型与跨链桥风险。", "en": "Understand L1/L2 tradeoffs, rollup cost models and bridge risk."},
+      "keywords": ["Rollup", "数据可用性", "跨链桥", "扩容", "手续费"],
+      "difficulty": "高级",
+      "minutes": 34,
+      "order": 5,
+      "prerequisites": ["blockchain_ethereum_smart_contract"],
+      "image": {"title": "二层扩容与跨链桥", "flow": ["L2 执行交易", "压缩并提交数据", "L1 验证与挑战", "用户取回资产"]},
+      "goals": [
+        "能区分链上扩容、Rollup 与侧链在信任假设上的差别。",
+        "能用数据与计算成本解释 Rollup 手续费为什么更低。",
+        "能列出跨链桥的主要风险与验证方式。"
+      ],
+      "prerequisitesText": [
+        "已理解以太坊交易执行、Gas 与事件机制。",
+        "知道区块空间有限，交易需要竞价打包。",
+        "了解哈希证明与状态根的基本概念。"
+      ],
+      "concepts": [
+        {
+          "name": "扩容的取舍：执行、数据与安全",
+          "plain": "提高吞吐有三条路：提高主链容量、把执行搬到二层、或用侧链单独维护共识。三条路在安全性与成本上的取舍完全不同。",
+          "mechanism": "主链扩容受节点硬件约束，二层把执行移出主链但保留主链的数据与争议解决能力，侧链则自己维护验证者集合，安全性取决于那组验证者。",
+          "example": "对比同一笔转账在主链、Rollup 和侧链上的手续费、确认时间与信任假设，列出三者的差异表。",
+          "boundary": "二层降低手续费的前提是批量提交，交易量不足时单笔成本可能反而更高。",
+          "engineering": "选型时先写清安全假设与退出路径，再比较费用；不要把侧链当成与主链同等安全的方案。"
+        },
+        {
+          "name": "Optimistic Rollup 与零知识 Rollup",
+          "plain": "Optimistic Rollup 先假定提交的状态正确，用挑战期允许任何人举证；零知识 Rollup 为每批交易生成有效性证明，主链验证通过才接受状态。",
+          "mechanism": "前者依赖欺诈证明与挑战窗口，提现要等待挑战期结束；后者依赖证明系统，提现更快但证明生成成本更高。",
+          "example": "对比两类方案的提现时间、证明成本与信任假设，说明各自更适合的场景。",
+          "boundary": "零知识证明保证计算正确，但数据不可用时用户仍无法自行重建状态，因此数据可用性同样关键。",
+          "engineering": "接入二层时优先使用官方桥，记录挑战期与提现流程；大额资金分批次跨链并保留凭证。"
+        },
+        {
+          "name": "数据可用性与成本模型",
+          "plain": "Rollup 把交易数据压缩后提交到主链，主链数据的字节成本决定二层手续费下限。",
+          "mechanism": "手续费大致等于压缩后字节数乘以数据单价，再加上二层执行成本；批量越大，单笔分摊的数据成本越低。",
+          "example": "给定数据单价与批量大小，估算把一笔转账打包进批次的成本，并比较批量翻倍后的变化。",
+          "boundary": "只优化计算成本而忽略数据成本会误判收益；数据单价随主链拥堵波动，估算要用区间而不是单点。",
+          "engineering": "监控数据单价与批次大小，按成本波动调整提交策略；对用户费用做上限保护，避免极端行情下亏损。"
+        },
+        {
+          "name": "跨链桥的信任与风险",
+          "plain": "跨链桥要在两条链之间转移资产，必须有人或合约负责锁定与释放，这段逻辑是攻击最集中的位置。",
+          "mechanism": "常见模式是锁定-铸造与销毁-释放，验证方式包括多签、轻客户端验证与外部验证者；验证集合越大、越去中心，信任假设越弱。",
+          "example": "列出一次跨链转账的完整步骤，标注每一步的信任假设与失败后的资金位置。",
+          "boundary": "桥的资产总量往往超过其验证成本，攻击收益极高；跨链消息重放与验证缺失是历史损失的主要原因。",
+          "engineering": "限制单笔与单日跨链额度，验证消息唯一性，桥接资产与原生资产分开记账，并准备暂停开关。"
+        }
+      ],
+      "steps": ["在二层构造并签名交易", "批量压缩后提交主链", "主链验证或等待挑战期", "按退出流程取回资产"],
+      "code": {
+        "language": "javascript",
+        "snippet": "// 估算把一笔交易放进 Rollup 批次的数据成本\nfunction batchCost({ bytesPerTx, dataPricePerByte, l2ExecutionCost }) {\n  const dataCost = bytesPerTx * dataPricePerByte;\n  return { dataCost, total: dataCost + l2ExecutionCost };\n}\n\nconst single = batchCost({ bytesPerTx: 120, dataPricePerByte: 0.00002, l2ExecutionCost: 0.0004 });\nconst amortized = batchCost({ bytesPerTx: 12, dataPricePerByte: 0.00002, l2ExecutionCost: 0.0004 });\nconsole.log('single tx', single);\nconsole.log('amortized', amortized);\nconsole.log('saving', (single.total - amortized.total).toFixed(6));",
+        "walkthrough": "代码把数据成本与二层执行成本分开计算：第一组代表未压缩的单笔交易，第二组代表压缩后分摊到批次的字节数，差值就是 Rollup 摊薄数据成本带来的节省。",
+        "expected_output": "single 的 dataCost 为 0.0024，total 为 0.0028；amortized 的 dataCost 为 0.00024，total 为 0.00064；saving 约为 0.00216。"
+      },
+      "faults": [
+        {"topic": "把侧链当作二层", "wrong": "认为侧链与主链享有同样的安全保障，大额资产直接长期停留", "fix": "先写清验证者集合与退出路径，把侧链资产按更高风险额度管理"},
+        {"topic": "忽略提现挑战期", "wrong": "按主链确认时间规划二层提现，导致资金周转计划落空", "fix": "把挑战期写进资金计划，大额提现提前安排或使用可信的流动性通道"},
+        {"topic": "只估算计算成本", "wrong": "压缩数据单元价格变化后，手续费模型完全失效", "fix": "同时跟踪数据单价与批量大小，按区间估算并给用户费用设置上限"}
+      ],
+      "glossary": [
+        {"term": "Rollup", "definition": "把执行移到二层、把数据提交主链的扩容方案，分乐观与零知识两类。"},
+        {"term": "数据可用性", "definition": "交易数据可被任何人获取并重建状态的性质，是二层安全的前提。"},
+        {"term": "欺诈证明", "definition": "允许参与者在挑战期内证明某个状态转换错误的机制。"},
+        {"term": "跨链桥", "definition": "在两条链之间转移资产或消息的中介系统，通常是攻击重点目标。"},
+        {"term": "挑战期", "definition": "乐观方案中允许提交欺诈证明的等待窗口，提现需要等其结束。"}
+      ],
+      "quiz": [
+        {"type": "single", "question": "Rollup 手续费更低的主要原因是什么？", "options": ["大量交易压缩后共享同一份主链数据成本", "二层不需要任何验证者", "二层交易完全不写入链上数据", "主链会为二层交易提供补贴"], "answer": 0, "explanation": "Rollup 把执行搬到二层，只把压缩数据提交主链；批量越大，单笔分摊的数据成本越低，这才是费用下降的来源，而二层仍然需要验证与数据可用性。"},
+        {"type": "single", "question": "乐观 Rollup 与零知识 Rollup 在提现上的典型差别是？", "options": ["乐观方案要等挑战期结束，零知识方案验证证明后即可提现", "乐观方案提现立即到账，零知识方案必须等待一周", "两者提现时间完全一样", "零知识方案不需要主链验证"], "answer": 0, "explanation": "乐观方案假定状态正确，必须先度过挑战期才能确保没有欺诈证明；零知识方案在上链时已验证有效性证明，因此提现流程更快。"},
+        {"type": "multi", "question": "以下哪些会显著增加跨链桥风险？（多选）", "options": ["验证者集合过小且可被收买", "跨链消息缺少唯一性校验", "单笔与单日额度没有上限", "桥接资产与原生资产分开记账"], "answers": [0, 1, 2], "answer": 0, "explanation": "验证者过小、消息可重放、缺少额度限制都会放大损失；而桥接资产与原生资产分开记账是降低风险的常见做法，不属于风险来源。"},
+        {"type": "order", "question": "请按用户把资产从二层取回主链的顺序排列步骤。", "options": ["主链合约释放资产", "在二层发起提现交易", "等待挑战期或生成有效性证明", "二层状态被主链确认"], "correct_order": [1, 2, 3, 0], "answer": 0, "explanation": "先在二层发起提现，再经过挑战期或证明验证，主链确认状态后才释放资产；顺序颠倒会出现未确认状态就放款的漏洞。"},
+        {"type": "debug", "question": "阅读成本估算代码，哪项判断正确？", "options": ["数据成本按字节数乘以单价计算，可与二层执行成本相加", "代码把数据成本当成固定值，与字节数无关", "压缩后字节数越多，总成本越低", "二层执行成本可以忽略不计"], "answer": 0, "code": "function batchCost({ bytesPerTx, dataPricePerByte, l2ExecutionCost }) {\n  const dataCost = bytesPerTx * dataPricePerByte;\n  return { dataCost, total: dataCost + l2ExecutionCost };\n}", "language": "javascript", "explanation": "代码明确把数据成本与执行成本分开计算再相加，因此字节数越大数据成本越高；压缩的目标是减少提交字节数，从而降低这一部分成本。"}
+      ],
+      "practice": [
+        "按你所在地区常用的二层网络查一次真实提现记录，记录挑战期与实际到账时间。",
+        "给成本模型加一个批量大小参数，画出批量翻倍时单笔成本的变化趋势。",
+        "为一个跨链桥设计三条风控规则，并说明每条规则拦截的攻击场景。"
+      ],
+      "refs": [
+        {"name": "Ethereum 扩容方案总览", "url": "https://ethereum.org/zh/developers/docs/scaling/"},
+        {"name": "Optimistic Rollup 说明", "url": "https://ethereum.org/zh/developers/docs/scaling/optimistic-rollups/"},
+        {"name": "EIP-4844 数据块提案", "url": "https://eips.ethereum.org/EIPS/eip-4844"}
+      ],
+      "english": "Scaling a blockchain means choosing where execution and data live. This lesson compares L1 scaling, optimistic rollups, zero-knowledge rollups and sidechains, builds a simple fee model from data and execution cost, and reviews the trust assumptions behind bridges.",
+      "reviewPoints": [
+        "能说明 Rollup 与侧链在信任假设上的差别。",
+        "能用数据成本解释二层手续费优势。",
+        "能列出跨链桥的主要风险与验证方式。"
+      ]
+    }
+  ]
+}

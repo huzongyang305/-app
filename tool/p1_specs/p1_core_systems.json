@@ -1,0 +1,146 @@
+{
+  "fundamentals_pipeline": {
+    "category": "fundamentals",
+    "title": {"zh": "CPU 流水线与指令级并行", "en": "CPU Pipelines and Instruction-Level Parallelism"},
+    "summary": {"zh": "理解取指译码执行、流水线冒险、分支预测和乱序执行。", "en": "Learn fetch-decode-execute, hazards, branch prediction and out-of-order execution."},
+    "keywords": ["流水线", "分支预测", "乱序执行", "冒险"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["流水线把指令执行拆成多级并重叠推进，提高单位时间吞吐。", "数据、控制和结构冒险会造成停顿，转发和分支预测用于减少损失。", "乱序执行在保持程序语义的前提下重排指令，受依赖和重排序缓冲限制。"]
+  },
+  "fundamentals_simd": {
+    "category": "fundamentals",
+    "title": {"zh": "SIMD 与向量化计算", "en": "SIMD and Vectorized Computing"},
+    "summary": {"zh": "理解数据并行、向量寄存器、自动向量化、掩码和内存带宽。", "en": "Learn data parallelism, vector registers, auto-vectorization, masks and bandwidth."},
+    "keywords": ["SIMD", "向量化", "数据并行", "内存带宽"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["SIMD 用一条指令处理多个数据，适合规则、独立、无分支的计算。", "数据对齐、连续访问和循环依赖会影响自动向量化效果。", "向量化后瓶颈常转向内存带宽，必须同时测量计算和访存。"]
+  },
+  "fundamentals_cache_coherence": {
+    "category": "fundamentals",
+    "title": {"zh": "缓存一致性、内存模型与 NUMA", "en": "Cache Coherence, Memory Models and NUMA"},
+    "summary": {"zh": "理解 MESI、内存序、伪共享、NUMA 亲和性与跨核延迟。", "en": "Learn MESI, memory ordering, false sharing, NUMA affinity and cross-core latency."},
+    "keywords": ["缓存一致性", "内存序", "NUMA", "伪共享"],
+    "difficulty": "高级", "minutes": 26,
+    "points": ["多核通过一致性协议维护缓存行状态，写共享会造成失效和流量。", "内存模型规定重排和可见性，原子操作和屏障建立同步关系。", "NUMA 下跨节点访存更慢，线程和内存亲和性会影响性能。"]
+  },
+  "fundamentals_storage_stack": {
+    "category": "fundamentals",
+    "title": {"zh": "SSD、存储栈与持久化", "en": "SSD, Storage Stack and Persistence"},
+    "summary": {"zh": "从闪存页、FTL、写放大、文件系统到 fsync 理解持久化。", "en": "Understand flash pages, FTL, write amplification, file systems and fsync."},
+    "keywords": ["SSD", "写放大", "ftl", "fsync"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["SSD 以页读写、以块擦除，FTL 负责地址映射、磨损均衡和垃圾回收。", "随机写、未对齐写和过量 fsync 会放大写放大并降低寿命。", "持久化要理解页缓存、写屏障和 fsync 语义，不能把 write 当落盘。"]
+  },
+  "fundamentals_embedded_iot": {
+    "category": "fundamentals",
+    "title": {"zh": "嵌入式与 IoT 基础", "en": "Embedded and IoT Fundamentals"},
+    "summary": {"zh": "覆盖 MCU、外设、中断、低功耗、实时约束和设备安全。", "en": "Cover MCUs, peripherals, interrupts, low power, real-time constraints and device security."},
+    "keywords": ["嵌入式", "MCU", "低功耗", "IoT"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["嵌入式系统资源受限，内存、功耗、启动时间和实时性都是硬约束。", "外设通过寄存器和中断交互，驱动要处理并发、错误和恢复。", "IoT 设备要安全启动、加密通信、可更新并防止密钥泄露。"]
+  },
+  "fundamentals_architecture_case": {
+    "category": "fundamentals",
+    "title": {"zh": "计算机体系结构综合案例", "en": "Computer Architecture Case Study"},
+    "summary": {"zh": "把指令、流水线、缓存、内存和 IO 串成一个性能分析案例。", "en": "Connect instructions, pipelines, caches, memory and IO in one performance study."},
+    "keywords": ["体系结构", "性能分析", "瓶颈", "权衡"],
+    "difficulty": "高级", "minutes": 26,
+    "points": ["分析性能要同时看指令数、每周期指令数、频率和内存层次。", "瓶颈可能在计算、缓存、分支、IO 或并行扩展，不能只看 CPU 利用率。", "优化要结合工作负载和成本，避免局部指标改善但端到端变慢。"]
+  },
+  "os_kernel_arch": {
+    "category": "os",
+    "title": {"zh": "操作系统内核架构", "en": "Operating System Kernel Architecture"},
+    "summary": {"zh": "比较宏内核、微内核、混合内核和用户态驱动。", "en": "Compare monolithic, micro, hybrid kernels and user-space drivers."},
+    "keywords": ["内核", "宏内核", "微内核", "系统调用"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["宏内核把核心服务放在内核态，性能高但故障隔离弱。", "微内核把服务移到用户态，隔离好但消息传递和切换成本高。", "系统调用是用户态进入内核态的受控接口，参数和权限必须严格校验。"]
+  },
+  "os_io_scheduling": {
+    "category": "os",
+    "title": {"zh": "I/O 调度与块设备", "en": "IO Scheduling and Block Devices"},
+    "summary": {"zh": "理解请求队列、合并、排序、延迟、公平性和 SSD 调度差异。", "en": "Learn request queues, merging, ordering, latency, fairness and SSD scheduling."},
+    "keywords": ["IO 调度", "块设备", "队列", "公平性"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["IO 调度器在吞吐、延迟和公平之间取舍，机械盘和 SSD 的最优策略不同。", "请求合并和排序减少寻道或随机访问，但可能增加个别请求延迟。", "队列深度、并发和调度策略要与设备能力匹配。"]
+  },
+  "os_cgroups_namespaces": {
+    "category": "os",
+    "title": {"zh": "cgroups、namespaces 与容器", "en": "cgroups, Namespaces and Containers"},
+    "summary": {"zh": "理解容器隔离、资源限制、文件系统层和进程视图。", "en": "Understand container isolation, resource limits, layered file systems and process views."},
+    "keywords": ["容器", "namespace", "cgroups", "隔离"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["namespaces 隔离进程、网络、挂载、用户等视图，cgroups 限制 CPU、内存和 IO。", "容器共享宿主内核，因此内核漏洞和权限配置会影响隔离边界。", "镜像分层、联合文件系统和写时复制决定启动速度与磁盘占用。"]
+  },
+  "os_io_uring": {
+    "category": "os",
+    "title": {"zh": "io_uring 与异步 I/O", "en": "io_uring and Asynchronous IO"},
+    "summary": {"zh": "理解提交队列、完成队列、批处理、零拷贝和异步编程模型。", "en": "Learn submission/completion queues, batching, zero copy and async models."},
+    "keywords": ["io_uring", "异步 IO", "队列", "零拷贝"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["io_uring 用共享环形队列提交和完成 IO，减少系统调用和上下文切换。", "批处理、注册缓冲区和固定文件能进一步降低开销。", "异步编程要管理生命周期、取消、错误和背压，不能只追求吞吐。"]
+  },
+  "os_rtos": {
+    "category": "os",
+    "title": {"zh": "实时操作系统与确定性", "en": "RTOS and Determinism"},
+    "summary": {"zh": "理解硬实时、软实时、优先级反转、调度延迟和最坏执行时间。", "en": "Learn hard/soft real-time, priority inversion, latency and worst-case execution time."},
+    "keywords": ["RTOS", "实时性", "优先级反转", "确定性"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["实时系统关注最坏响应时间是否满足截止期，而不只是平均吞吐。", "优先级反转和不可预测的中断延迟会破坏确定性。", "设计要控制临界区、内存分配和阻塞调用，并验证最坏情况。"]
+  },
+  "os_linux_troubleshooting": {
+    "category": "os",
+    "title": {"zh": "Linux 性能与故障排查", "en": "Linux Performance and Troubleshooting"},
+    "summary": {"zh": "用 top、vmstat、iostat、ss、perf 和 trace 定位系统瓶颈。", "en": "Use top, vmstat, iostat, ss, perf and trace to locate bottlenecks."},
+    "keywords": ["Linux", "性能", "perf", "排查"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["排查顺序通常是负载、CPU、内存、磁盘、网络和应用，先看资源再看代码。", "perf、eBPF 和 trace 能观察内核路径、调度、锁和 IO 延迟。", "保留时间线和指标，区分瞬时抖动、持续瓶颈和容量不足。"]
+  },
+  "network_ipv6": {
+    "category": "network",
+    "title": {"zh": "IPv6 原理与迁移", "en": "IPv6 Principles and Migration"},
+    "summary": {"zh": "覆盖地址格式、邻居发现、自动配置、双栈和迁移策略。", "en": "Cover addressing, neighbor discovery, autoconfiguration, dual stack and migration."},
+    "keywords": ["IPv6", "NDP", "双栈", "迁移"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["IPv6 地址 128 位，取消广播并用邻居发现和多播完成地址解析。", "SLAAC、DHCPv6 和隐私扩展影响地址分配与追踪。", "迁移通常采用双栈，逐步处理 DNS、防火墙、应用和监控兼容性。"]
+  },
+  "network_nat_vpn": {
+    "category": "network",
+    "title": {"zh": "NAT、隧道与 VPN", "en": "NAT, Tunnels and VPN"},
+    "summary": {"zh": "理解地址转换、端口映射、隧道封装、IPsec 和 WireGuard。", "en": "Learn address translation, port mapping, tunneling, IPsec and WireGuard."},
+    "keywords": ["NAT", "VPN", "隧道", "IPsec"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["NAT 改写地址和端口，缓解 IPv4 短缺但破坏端到端可达性。", "隧道把一种协议封装进另一种协议，VPN 在隧道上叠加认证和加密。", "MTU、分片、NAT 穿透和密钥交换是常见故障点。"]
+  },
+  "network_p2p": {
+    "category": "network",
+    "title": {"zh": "P2P 网络与 NAT 穿透", "en": "P2P Networks and NAT Traversal"},
+    "summary": {"zh": "覆盖 DHT、打洞、中继、连接建立和节点信任。", "en": "Cover DHTs, hole punching, relays, connection setup and trust."},
+    "keywords": ["P2P", "DHT", "NAT 穿透", "中继"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["P2P 节点直接交换数据，DHT 提供分布式节点和内容发现。", "NAT 穿透依赖 STUN、信令和端口预测，失败时回退到 TURN 中继。", "开放网络要处理节点作弊、内容污染、隐私和流量成本。"]
+  },
+  "network_smtp": {
+    "category": "network",
+    "title": {"zh": "SMTP、邮件协议与反垃圾", "en": "SMTP, Email Protocols and Anti-Spam"},
+    "summary": {"zh": "理解 SMTP、IMAP、SPF、DKIM、DMARC 和投递链路。", "en": "Learn SMTP, IMAP, SPF, DKIM, DMARC and delivery flow."},
+    "keywords": ["SMTP", "DKIM", "SPF", "DMARC"],
+    "difficulty": "高级", "minutes": 24,
+    "points": ["邮件从提交、队列、MX 解析到投递分多个阶段，每阶段都可能延迟或拒收。", "SPF、DKIM 和 DMARC 分别验证发送源、签名和策略。", "退信、灰名单、附件、编码和垃圾邮件策略影响可达率。"]
+  },
+  "network_bgp": {
+    "category": "network",
+    "title": {"zh": "BGP 与互联网路由", "en": "BGP and Internet Routing"},
+    "summary": {"zh": "理解自治系统、路由选择、前缀宣告、劫持和收敛。", "en": "Learn autonomous systems, route selection, prefix announcements, hijacking and convergence."},
+    "keywords": ["BGP", "自治系统", "路由劫持", "收敛"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["BGP 在自治系统之间交换可达性，选择策略基于本地优先级、AS 路径等属性。", "前缀过滤、RPKI 和最大前缀限制能降低误宣告和劫持风险。", "路由收敛和黑洞会影响全球可达性，需要监控和多路径设计。"]
+  },
+  "network_performance": {
+    "category": "network",
+    "title": {"zh": "网络性能调优", "en": "Network Performance Tuning"},
+    "summary": {"zh": "覆盖带宽时延积、窗口、队列、拥塞控制、TCP 调优和观测。", "en": "Cover BDP, windows, queues, congestion control, TCP tuning and observability."},
+    "keywords": ["带宽时延积", "拥塞控制", "TCP", "调优"],
+    "difficulty": "高级", "minutes": 25,
+    "points": ["带宽时延积决定在途数据量，窗口过小会限制长肥管道吞吐。", "缓冲区过大造成缓冲膨胀，过小则丢包和利用率下降。", "调优要测量 RTT、重传、丢包、窗口和队列，而不是只改内核参数。"]
+  }
+}
