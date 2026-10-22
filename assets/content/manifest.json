@@ -68500,6 +68500,153 @@
           "quiz": []
         }
       ]
+    },
+    {
+      "id": "mobile_advanced",
+      "title": {
+        "zh": "移动开发进阶",
+        "en": "Advanced Mobile Development"
+      },
+      "icon": "phone_android",
+      "color": "3F51B5",
+      "lessons": [
+        {
+          "id": "mobile_flutter_advanced",
+          "title": {
+            "zh": "Flutter高级主题（动画、自定义渲染、平台通道）",
+            "en": "Flutter Advanced Topics"
+          },
+          "summary": {
+            "zh": "掌握Implicit/Explicit动画、CustomPainter和Platform Channel通信。",
+            "en": "Master Implicit/Explicit animations, CustomPainter, and Platform Channels."
+          },
+          "file": "assets/content/mobile_flutter_advanced.md",
+          "minutes": 50,
+          "keywords": ["Flutter", "动画", "CustomPainter", "Platform Channel", "渲染"],
+          "difficulty": "进阶",
+          "order": 0,
+          "quiz": []
+        },
+        {
+          "id": "mobile_swiftui_complete",
+          "title": {
+            "zh": "iOS SwiftUI完整教程",
+            "en": "iOS SwiftUI Complete Tutorial"
+          },
+          "summary": {
+            "zh": "学习SwiftUI声明式UI、状态管理、组合视图和Core Data集成。",
+            "en": "Learn SwiftUI declarative UI, state management, view composition, and Core Data."
+          },
+          "file": "assets/content/mobile_swiftui_complete.md",
+          "minutes": 50,
+          "keywords": ["SwiftUI", "iOS", "声明式UI", "状态管理", "Core Data"],
+          "difficulty": "入门",
+          "order": 1,
+          "quiz": []
+        },
+        {
+          "id": "mobile_jetpack_compose_advanced",
+          "title": {
+            "zh": "Android Jetpack Compose进阶",
+            "en": "Android Jetpack Compose Advanced"
+          },
+          "summary": {
+            "zh": "掌握Compose布局系统、副作用处理和Material Design 3组件。",
+            "en": "Master Compose layout system, side effects, and Material Design 3 components."
+          },
+          "file": "assets/content/mobile_jetpack_compose_advanced.md",
+          "minutes": 50,
+          "keywords": ["Jetpack Compose", "Android", "布局系统", "副作用", "Material 3"],
+          "difficulty": "进阶",
+          "order": 2,
+          "quiz": []
+        },
+        {
+          "id": "mobile_react_native_deep",
+          "title": {
+            "zh": "React Native深度实践与原生模块",
+            "en": "React Native Deep Dive & Native Modules"
+          },
+          "summary": {
+            "zh": "学习RN桥接机制、原生模块开发和性能优化策略。",
+            "en": "Learn RN bridge mechanism, native module development, and performance optimization."
+          },
+          "file": "assets/content/mobile_react_native_deep.md",
+          "minutes": 50,
+          "keywords": ["React Native", "原生模块", "桥接", "性能优化", "TurboModules"],
+          "difficulty": "进阶",
+          "order": 3,
+          "quiz": []
+        },
+        {
+          "id": "mobile_cross_platform_comparison",
+          "title": {
+            "zh": "跨平台架构对比与选型",
+            "en": "Cross-Platform Architecture Comparison"
+          },
+          "summary": {
+            "zh": "对比Flutter/RN/原生开发，提供选型决策树和迁移指南。",
+            "en": "Compare Flutter/RN/native development with selection guide and migration path."
+          },
+          "file": "assets/content/mobile_cross_platform_comparison.md",
+          "minutes": 45,
+          "keywords": ["跨平台", "架构对比", "选型指南", "Flutter vs RN", "迁移"],
+          "difficulty": "进阶",
+          "order": 4,
+          "quiz": []
+        },
+        {
+          "id": "mobile_performance_optimization",
+          "title": {
+            "zh": "移动端性能优化",
+            "en": "Mobile Performance Optimization"
+          },
+          "summary": {
+            "zh": "掌握内存管理、启动速度优化、包体积缩减和渲染性能调优。",
+            "en": "Master memory management, startup speed, app size reduction, and rendering optimization."
+          },
+          "file": "assets/content/mobile_performance_optimization.md",
+          "minutes": 50,
+          "keywords": ["性能优化", "内存管理", "启动速度", "包体积", "渲染性能"],
+          "difficulty": "进阶",
+          "order": 5,
+          "quiz": []
+        },
+        {
+          "id": "mobile_offline_first_architecture",
+          "title": {
+            "zh": "离线优先架构与数据同步",
+            "en": "Offline-First Architecture & Data Sync"
+          },
+          "summary": {
+            "zh": "学习本地存储策略、冲突解决算法和增量同步机制。",
+            "en": "Learn local storage strategies, conflict resolution algorithms, and incremental sync."
+          },
+          "file": "assets/content/mobile_offline_first_architecture.md",
+          "minutes": 50,
+          "keywords": ["离线优先", "数据同步", "本地存储", "冲突解决", "增量同步"],
+          "difficulty": "进阶",
+          "order": 6,
+          "quiz": []
+        },
+        {
+          "id": "mobile_security_best_practices",
+          "title": {
+            "zh": "移动安全最佳实践",
+            "en": "Mobile Security Best Practices"
+          },
+          "summary": {
+            "zh": "掌握数据加密、代码混淆、反调试和安全存储方案。",
+            "en": "Master data encryption, code obfuscation, anti-debugging, and secure storage."
+          },
+          "file": "assets/content/mobile_security_best_practices.md",
+          "minutes": 45,
+          "keywords": ["移动安全", "加密", "混淆", "反调试", "安全存储"],
+          "difficulty": "进阶",
+          "order": 7,
+          "quiz": []
+        }
+      ]
     }
   ],
   "quiz_shuffle_version": 1,
