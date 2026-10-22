@@ -45,9 +45,9 @@ class AppPalette {
   /// 内容分类色彩系统：为不同课程类型添加主题色，提升视觉区分度。
   static const Map<String, Color> categoryColors = {
     'programming_basics': Color(0xFF6366F1),   // 靛蓝 - 编程基础
-    'discrete_math': Color(0xFF8B5CF6),        // 紫色 - 离散数学
+    'discrete_mathematics': Color(0xFF8B5CF6), // 紫色 - 离散数学（独立category）
     'data_structures': Color(0xFFEC4899),      // 粉红 - 数据结构与算法
-    'javaweb': Color(0xFFF59E0B),              // 琥珀 - JavaWeb开发
+    'javaweb': Color(0xFFF59E0B),              // 琥珀 - Java Web开发（独立category）
     'operating_systems': Color(0xFF10B981),    // 翠绿 - 操作系统
     'computer_networks': Color(0xFF3B82F6),    // 蓝色 - 计算机网络
     'database': Color(0xFFEF4444),             // 红色 - 数据库

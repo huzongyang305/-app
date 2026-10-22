@@ -13792,119 +13792,6 @@
           "lab": "sandbox:java"
         },
         {
-          "id": "java_project_inventory",
-          "title": {
-            "zh": "实战：Java 库存管理 REST 服务",
-            "en": "Project: Java Inventory REST Service"
-          },
-          "summary": {
-            "zh": "用 Spring Boot、JPA 和 JUnit 实现库存服务，覆盖校验、事务和并发扣减。",
-            "en": "Build an inventory REST service with Spring Boot and JPA."
-          },
-          "file": "assets/content/java_project_inventory.md",
-          "minutes": 60,
-          "keywords": [
-            "Spring Boot",
-            "JPA",
-            "事务",
-            "JUnit",
-            "库存"
-          ],
-          "difficulty": "高级",
-          "order": 16,
-          "quiz": [
-            {
-              "question": "Spring 中哪个注解声明事务边界？",
-              "options": [
-                "@Bean",
-                "@JsonProperty",
-                "@Transactional",
-                "@Controller"
-              ],
-              "answer": 2,
-              "explanation": "在 `实战：Java 库存管理 REST 服务` 第 1 题中，正确答案是「@Transactional」。在「实战：Java 库存管理 REST 服务」第 1 题中，该判断与术语 `事务` 对应：一组要么全部成功要么全部回滚的数据库操作。在「实战：Java 库存管理 REST 服务」第 1 题中，错误表现方面，业务逻辑堆在控制器里会造成难测试，接口改动牵一发动全身，应按拆出服务与仓储层，控制器只处理参数与响应修复。 在「实战：Java 库存管理 REST 服务」第 1 题中，判断时先确认输入和适用范围，对照 `Spring Boot`、`JPA`、`事务`、`JUnit` 复现一次，最后把错误表现与正确做法逐项对照。"
-            },
-            {
-              "question": "为什么接口要使用 DTO？",
-              "options": [
-                "自动生成索引，但这会加重锁竞争",
-                "替代测试",
-                "减少数据库表",
-                "隔离外部契约和内部实体"
-              ],
-              "answer": 3,
-              "explanation": "在 `实战：Java 库存管理 REST 服务` 第 2 题中，正确答案是「隔离外部契约和内部实体」。在「实战：Java 库存管理 REST 服务」第 2 题中，该判断与术语 `Spring Boot` 对应：基于 Spring 的快速开发框架：约定优于配置、内嵌容器，起步依赖即可跑起 Web 服务。在「实战：Java 库存管理 REST 服务」第 2 题中，错误表现方面，业务逻辑堆在控制器里会造成难测试，接口改动牵一发动全身，应按拆出服务与仓储层，控制器只处理参数与响应修复。"
-            },
-            {
-              "question": "围绕“实战：Java 库存管理 REST 服务”中的 Spring Boot、JPA、事务，下列哪两项是本课强调的实践判断？",
-              "options": [
-                "把 JPA 的单次运行结果当成所有版本和规模都成立",
-                "学习 Spring Boot 时要同时说明输入、输出和失败路径，不能只看正常流程",
-                "只要 Spring Boot 的常规示例通过，就可以跳过边界与异常路径",
-                "验证 JPA 时要固定版本并覆盖边界输入，结论才可复现"
-              ],
-              "answers": [
-                1,
-                3
-              ],
-              "answer": 1,
-              "explanation": "在 `实战：Java 库存管理 REST 服务` 第 3 题中，正确答案是「学习 Spring Boot 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 JPA 时要固定版本并覆盖边界输入，结论才可复现」。在「实战：Java 库存管理 REST 服务」第 3 题中，该判断与术语 `Spring Boot` 对应：基于 Spring 的快速开发框架：约定优于配置、内嵌容器，起步依赖即可跑起 Web 服务。在「实战：Java 库存管理 REST 服务」第 3 题中，错误表现方面，业务逻辑堆在控制器里会造成难测试，接口改动牵一发动全身，应按拆出服务与仓储层，控制器只处理参数与响应修复。",
-              "type": "multi"
-            },
-            {
-              "question": "集成测试相比单元测试多覆盖了什么？",
-              "options": [
-                "数据库映射、事务和约束",
-                "语法",
-                "只覆盖 UI 颜色，但这会让用例变得脆弱",
-                "网络协议"
-              ],
-              "answer": 0,
-              "explanation": "在 `实战：Java 库存管理 REST 服务` 第 4 题中，正确答案是「数据库映射、事务和约束」。在「实战：Java 库存管理 REST 服务」第 4 题中，该判断与术语 `事务` 对应：一组要么全部成功要么全部回滚的数据库操作。在「实战：Java 库存管理 REST 服务」第 4 题中，错误表现方面，业务逻辑堆在控制器里会造成难测试，接口改动牵一发动全身，应按拆出服务与仓储层，控制器只处理参数与响应修复。 在「实战：Java 库存管理 REST 服务」第 4 题中，判断时先确认输入和适用范围，对照 `Spring Boot`、`JPA`、`事务`、`JUnit` 复现一次，最后把错误表现与正确做法逐项对照。"
-            },
-            {
-              "question": "当库存不足时，下面这段扣减方法会怎样？",
-              "options": [
-                "只记录日志不回滚",
-                "返回 true 并扣成负数",
-                "条件更新影响 0 行，抛出异常并回滚事务",
-                "自动补充库存"
-              ],
-              "answer": 2,
-              "explanation": "在 `实战：Java 库存管理 REST 服务` 第 5 题中，正确答案是「条件更新影响 0 行，抛出异常并回滚事务」。在「实战：Java 库存管理 REST 服务」第 5 题中，该判断与术语 `事务` 对应：一组要么全部成功要么全部回滚的数据库操作。在「实战：Java 库存管理 REST 服务」第 5 题中，错误表现方面，业务逻辑堆在控制器里会造成难测试，接口改动牵一发动全身，应按拆出服务与仓储层，控制器只处理参数与响应修复。 在「实战：Java 库存管理 REST 服务」第 5 题中，判断时先确认输入和适用范围，对照 `Spring Boot`、`JPA`、`事务`、`JUnit` 复现一次，最后把错误表现与正确做法逐项对照。",
-              "type": "code",
-              "code": "int updated = stockRepository.deductIfEnough(skuId, quantity);\nif (updated == 0) throw new IllegalStateException(\"insufficient stock\");",
-              "language": "java",
-              "expected_output": "条件更新影响 0 行，抛出异常并回滚事务"
-            },
-            {
-              "type": "order",
-              "question": "下面几项都与 `Spring Boot` 有关，请按 `实战：Java 库存管理 REST 服务` 的正文顺序排列；该课主线是用 Spring Boot、JPA 和 JUnit 实现库存服务，覆盖校验、事务和并发扣减。",
-              "options": [
-                "项目背景",
-                "技术栈",
-                "架构与数据流",
-                "功能范围"
-              ],
-              "answer": 0,
-              "correct_order": [
-                0,
-                1,
-                2,
-                3
-              ],
-              "explanation": "在 `实战：Java 库存管理 REST 服务` 第 6 题中，正确答案是「项目背景 → 技术栈 → 架构与数据流 → 功能范围」。在「实战：Java 库存管理 REST 服务」第 6 题中，该判断与术语 `Spring Boot` 对应：基于 Spring 的快速开发框架：约定优于配置、内嵌容器，起步依赖即可跑起 Web 服务。在「实战：Java 库存管理 REST 服务」第 6 题中，错误表现方面，业务逻辑堆在控制器里会造成难测试，接口改动牵一发动全身，应按拆出服务与仓储层，控制器只处理参数与响应修复。"
-            }
-          ],
-          "prerequisites": [
-            "java_project"
-          ],
-          "related": [
-            "java_project_order_concurrency"
-          ],
-          "lab": "sandbox:java"
-        },
-        {
           "id": "java_project_order_concurrency",
           "title": {
             "zh": "实战：Java 并发订单处理服务",
@@ -14336,137 +14223,6 @@
           "lab": "sandbox:java"
         },
         {
-          "id": "java_servlet_jsp",
-          "title": {
-            "zh": "Servlet 与 JSP 基础",
-            "en": "Servlet & JSP Basics"
-          },
-          "summary": {
-            "zh": "理解 Servlet 生命周期、请求处理和 JSP 工作原理。",
-            "en": "Understand Servlet lifecycle, request handling and JSP."
-          },
-          "file": "assets/content/java_servlet_jsp.md",
-          "minutes": 50,
-          "keywords": [
-            "Servlet",
-            "JSP",
-            "Java Web",
-            "生命周期"
-          ],
-          "difficulty": "入门",
-          "order": 21,
-          "quiz": []
-        },
-        {
-          "id": "java_spring_core",
-          "title": {
-            "zh": "Spring Framework 核心",
-            "en": "Spring Framework Core"
-          },
-          "summary": {
-            "zh": "掌握 IoC、DI 和 AOP 的核心原理与应用。",
-            "en": "Master IoC, DI and AOP principles."
-          },
-          "file": "assets/content/java_spring_core.md",
-          "minutes": 60,
-          "keywords": [
-            "Spring",
-            "IoC",
-            "DI",
-            "AOP"
-          ],
-          "difficulty": "进阶",
-          "order": 22,
-          "quiz": []
-        },
-        {
-          "id": "java_spring_mvc",
-          "title": {
-            "zh": "Spring MVC 详解",
-            "en": "Spring MVC Deep Dive"
-          },
-          "summary": {
-            "zh": "理解 DispatcherServlet、Controller 和视图解析流程。",
-            "en": "Understand DispatcherServlet, Controller and view resolution."
-          },
-          "file": "assets/content/java_spring_mvc.md",
-          "minutes": 55,
-          "keywords": [
-            "Spring MVC",
-            "DispatcherServlet",
-            "Controller",
-            "REST"
-          ],
-          "difficulty": "进阶",
-          "order": 23,
-          "quiz": []
-        },
-        {
-          "id": "java_spring_boot_intro",
-          "title": {
-            "zh": "Spring Boot 入门",
-            "en": "Spring Boot Introduction"
-          },
-          "summary": {
-            "zh": "掌握自动配置、起步依赖和内嵌服务器原理。",
-            "en": "Master auto-configuration, starters and embedded server."
-          },
-          "file": "assets/content/java_spring_boot_intro.md",
-          "minutes": 45,
-          "keywords": [
-            "Spring Boot",
-            "自动配置",
-            "起步依赖"
-          ],
-          "difficulty": "入门",
-          "order": 24,
-          "quiz": []
-        },
-        {
-          "id": "java_spring_security",
-          "title": {
-            "zh": "Spring Security 认证授权",
-            "en": "Spring Security Authentication"
-          },
-          "summary": {
-            "zh": "理解过滤器链、认证流程和权限控制机制。",
-            "en": "Understand filter chain, authentication and authorization."
-          },
-          "file": "assets/content/java_spring_security.md",
-          "minutes": 60,
-          "keywords": [
-            "Spring Security",
-            "认证",
-            "授权",
-            "过滤器链"
-          ],
-          "difficulty": "进阶",
-          "order": 25,
-          "quiz": []
-        },
-        {
-          "id": "java_restful_api",
-          "title": {
-            "zh": "RESTful API 设计与实现",
-            "en": "RESTful API Design"
-          },
-          "summary": {
-            "zh": "掌握 REST 原则、HTTP 方法和资源建模最佳实践。",
-            "en": "Master REST principles, HTTP methods and resource modeling."
-          },
-          "file": "assets/content/java_restful_api.md",
-          "minutes": 50,
-          "keywords": [
-            "RESTful",
-            "API",
-            "HTTP",
-            "资源"
-          ],
-          "difficulty": "进阶",
-          "order": 26,
-          "quiz": []
-        },
-        {
           "id": "java_data_access",
           "title": {
             "zh": "数据访问与持久化",
@@ -14596,6 +14352,261 @@
           ],
           "difficulty": "高级",
           "order": 32,
+          "quiz": []
+        }
+      ]
+    },
+    {
+      "id": "javaweb",
+      "title": {
+        "zh": "Java Web开发",
+        "en": "Java Web Development"
+      },
+      "icon": "language",
+      "color": "E76F00",
+      "lessons": [
+        {
+          "id": "java_project_inventory",
+          "title": {
+            "zh": "实战：Java 库存管理 REST 服务",
+            "en": "Project: Java Inventory REST Service"
+          },
+          "summary": {
+            "zh": "用 Spring Boot、JPA 和 JUnit 实现库存服务，覆盖校验、事务和并发扣减。",
+            "en": "Build an inventory REST service with Spring Boot and JPA."
+          },
+          "file": "assets/content/java_project_inventory.md",
+          "minutes": 60,
+          "keywords": [
+            "Spring Boot",
+            "JPA",
+            "事务",
+            "JUnit",
+            "库存"
+          ],
+          "difficulty": "高级",
+          "order": 16,
+          "quiz": [
+            {
+              "question": "Spring 中哪个注解声明事务边界？",
+              "options": [
+                "@Bean",
+                "@JsonProperty",
+                "@Transactional",
+                "@Controller"
+              ],
+              "answer": 2,
+              "explanation": "在 `实战：Java 库存管理 REST 服务` 第 1 题中，正确答案是「@Transactional」。在「实战：Java 库存管理 REST 服务」第 1 题中，该判断与术语 `事务` 对应：一组要么全部成功要么全部回滚的数据库操作。在「实战：Java 库存管理 REST 服务」第 1 题中，错误表现方面，业务逻辑堆在控制器里会造成难测试，接口改动牵一发动全身，应按拆出服务与仓储层，控制器只处理参数与响应修复。 在「实战：Java 库存管理 REST 服务」第 1 题中，判断时先确认输入和适用范围，对照 `Spring Boot`、`JPA`、`事务`、`JUnit` 复现一次，最后把错误表现与正确做法逐项对照。"
+            },
+            {
+              "question": "为什么接口要使用 DTO？",
+              "options": [
+                "自动生成索引，但这会加重锁竞争",
+                "替代测试",
+                "减少数据库表",
+                "隔离外部契约和内部实体"
+              ],
+              "answer": 3,
+              "explanation": "在 `实战：Java 库存管理 REST 服务` 第 2 题中，正确答案是「隔离外部契约和内部实体」。在「实战：Java 库存管理 REST 服务」第 2 题中，该判断与术语 `Spring Boot` 对应：基于 Spring 的快速开发框架：约定优于配置、内嵌容器，起步依赖即可跑起 Web 服务。在「实战：Java 库存管理 REST 服务」第 2 题中，错误表现方面，业务逻辑堆在控制器里会造成难测试，接口改动牵一发动全身，应按拆出服务与仓储层，控制器只处理参数与响应修复。"
+            },
+            {
+              "question": "围绕“实战：Java 库存管理 REST 服务”中的 Spring Boot、JPA、事务，下列哪两项是本课强调的实践判断？",
+              "options": [
+                "把 JPA 的单次运行结果当成所有版本和规模都成立",
+                "学习 Spring Boot 时要同时说明输入、输出和失败路径，不能只看正常流程",
+                "只要 Spring Boot 的常规示例通过，就可以跳过边界与异常路径",
+                "验证 JPA 时要固定版本并覆盖边界输入，结论才可复现"
+              ],
+              "answers": [
+                1,
+                3
+              ],
+              "answer": 1,
+              "explanation": "在 `实战：Java 库存管理 REST 服务` 第 3 题中，正确答案是「学习 Spring Boot 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 JPA 时要固定版本并覆盖边界输入，结论才可复现」。在「实战：Java 库存管理 REST 服务」第 3 题中，该判断与术语 `Spring Boot` 对应：基于 Spring 的快速开发框架：约定优于配置、内嵌容器，起步依赖即可跑起 Web 服务。在「实战：Java 库存管理 REST 服务」第 3 题中，错误表现方面，业务逻辑堆在控制器里会造成难测试，接口改动牵一发动全身，应按拆出服务与仓储层，控制器只处理参数与响应修复。",
+              "type": "multi"
+            },
+            {
+              "question": "集成测试相比单元测试多覆盖了什么？",
+              "options": [
+                "数据库映射、事务和约束",
+                "语法",
+                "只覆盖 UI 颜色，但这会让用例变得脆弱",
+                "网络协议"
+              ],
+              "answer": 0,
+              "explanation": "在 `实战：Java 库存管理 REST 服务` 第 4 题中，正确答案是「数据库映射、事务和约束」。在「实战：Java 库存管理 REST 服务」第 4 题中，该判断与术语 `事务` 对应：一组要么全部成功要么全部回滚的数据库操作。在「实战：Java 库存管理 REST 服务」第 4 题中，错误表现方面，业务逻辑堆在控制器里会造成难测试，接口改动牵一发动全身，应按拆出服务与仓储层，控制器只处理参数与响应修复。 在「实战：Java 库存管理 REST 服务」第 4 题中，判断时先确认输入和适用范围，对照 `Spring Boot`、`JPA`、`事务`、`JUnit` 复现一次，最后把错误表现与正确做法逐项对照。"
+            },
+            {
+              "question": "当库存不足时，下面这段扣减方法会怎样？",
+              "options": [
+                "只记录日志不回滚",
+                "返回 true 并扣成负数",
+                "条件更新影响 0 行，抛出异常并回滚事务",
+                "自动补充库存"
+              ],
+              "answer": 2,
+              "explanation": "在 `实战：Java 库存管理 REST 服务` 第 5 题中，正确答案是「条件更新影响 0 行，抛出异常并回滚事务」。在「实战：Java 库存管理 REST 服务」第 5 题中，该判断与术语 `事务` 对应：一组要么全部成功要么全部回滚的数据库操作。在「实战：Java 库存管理 REST 服务」第 5 题中，错误表现方面，业务逻辑堆在控制器里会造成难测试，接口改动牵一发动全身，应按拆出服务与仓储层，控制器只处理参数与响应修复。 在「实战：Java 库存管理 REST 服务」第 5 题中，判断时先确认输入和适用范围，对照 `Spring Boot`、`JPA`、`事务`、`JUnit` 复现一次，最后把错误表现与正确做法逐项对照。",
+              "type": "code",
+              "code": "int updated = stockRepository.deductIfEnough(skuId, quantity);\nif (updated == 0) throw new IllegalStateException(\"insufficient stock\");",
+              "language": "java",
+              "expected_output": "条件更新影响 0 行，抛出异常并回滚事务"
+            },
+            {
+              "type": "order",
+              "question": "下面几项都与 `Spring Boot` 有关，请按 `实战：Java 库存管理 REST 服务` 的正文顺序排列；该课主线是用 Spring Boot、JPA 和 JUnit 实现库存服务，覆盖校验、事务和并发扣减。",
+              "options": [
+                "项目背景",
+                "技术栈",
+                "架构与数据流",
+                "功能范围"
+              ],
+              "answer": 0,
+              "correct_order": [
+                0,
+                1,
+                2,
+                3
+              ],
+              "explanation": "在 `实战：Java 库存管理 REST 服务` 第 6 题中，正确答案是「项目背景 → 技术栈 → 架构与数据流 → 功能范围」。在「实战：Java 库存管理 REST 服务」第 6 题中，该判断与术语 `Spring Boot` 对应：基于 Spring 的快速开发框架：约定优于配置、内嵌容器，起步依赖即可跑起 Web 服务。在「实战：Java 库存管理 REST 服务」第 6 题中，错误表现方面，业务逻辑堆在控制器里会造成难测试，接口改动牵一发动全身，应按拆出服务与仓储层，控制器只处理参数与响应修复。"
+            }
+          ],
+          "prerequisites": [
+            "java_project"
+          ],
+          "related": [
+            "java_project_order_concurrency"
+          ],
+          "lab": "sandbox:java"
+        },
+        {
+          "id": "java_servlet_jsp",
+          "title": {
+            "zh": "Servlet 与 JSP 基础",
+            "en": "Servlet & JSP Basics"
+          },
+          "summary": {
+            "zh": "理解 Servlet 生命周期、请求处理和 JSP 工作原理。",
+            "en": "Understand Servlet lifecycle, request handling and JSP."
+          },
+          "file": "assets/content/java_servlet_jsp.md",
+          "minutes": 50,
+          "keywords": [
+            "Servlet",
+            "JSP",
+            "Java Web",
+            "生命周期"
+          ],
+          "difficulty": "入门",
+          "order": 21,
+          "quiz": []
+        },
+        {
+          "id": "java_spring_core",
+          "title": {
+            "zh": "Spring Framework 核心",
+            "en": "Spring Framework Core"
+          },
+          "summary": {
+            "zh": "掌握 IoC、DI 和 AOP 的核心原理与应用。",
+            "en": "Master IoC, DI and AOP principles."
+          },
+          "file": "assets/content/java_spring_core.md",
+          "minutes": 60,
+          "keywords": [
+            "Spring",
+            "IoC",
+            "DI",
+            "AOP"
+          ],
+          "difficulty": "进阶",
+          "order": 22,
+          "quiz": []
+        },
+        {
+          "id": "java_spring_mvc",
+          "title": {
+            "zh": "Spring MVC 详解",
+            "en": "Spring MVC Deep Dive"
+          },
+          "summary": {
+            "zh": "理解 DispatcherServlet、Controller 和视图解析流程。",
+            "en": "Understand DispatcherServlet, Controller and view resolution."
+          },
+          "file": "assets/content/java_spring_mvc.md",
+          "minutes": 55,
+          "keywords": [
+            "Spring MVC",
+            "DispatcherServlet",
+            "Controller",
+            "REST"
+          ],
+          "difficulty": "进阶",
+          "order": 23,
+          "quiz": []
+        },
+        {
+          "id": "java_spring_boot_intro",
+          "title": {
+            "zh": "Spring Boot 入门",
+            "en": "Spring Boot Introduction"
+          },
+          "summary": {
+            "zh": "掌握自动配置、起步依赖和内嵌服务器原理。",
+            "en": "Master auto-configuration, starters and embedded server."
+          },
+          "file": "assets/content/java_spring_boot_intro.md",
+          "minutes": 45,
+          "keywords": [
+            "Spring Boot",
+            "自动配置",
+            "起步依赖"
+          ],
+          "difficulty": "入门",
+          "order": 24,
+          "quiz": []
+        },
+        {
+          "id": "java_spring_security",
+          "title": {
+            "zh": "Spring Security 认证授权",
+            "en": "Spring Security Authentication"
+          },
+          "summary": {
+            "zh": "理解过滤器链、认证流程和权限控制机制。",
+            "en": "Understand filter chain, authentication and authorization."
+          },
+          "file": "assets/content/java_spring_security.md",
+          "minutes": 60,
+          "keywords": [
+            "Spring Security",
+            "认证",
+            "授权",
+            "过滤器链"
+          ],
+          "difficulty": "进阶",
+          "order": 25,
+          "quiz": []
+        },
+        {
+          "id": "java_restful_api",
+          "title": {
+            "zh": "RESTful API 设计与实现",
+            "en": "RESTful API Design"
+          },
+          "summary": {
+            "zh": "掌握 REST 原则、HTTP 方法和资源建模最佳实践。",
+            "en": "Master REST principles, HTTP methods and resource modeling."
+          },
+          "file": "assets/content/java_restful_api.md",
+          "minutes": 50,
+          "keywords": [
+            "RESTful",
+            "API",
+            "HTTP",
+            "资源"
+          ],
+          "difficulty": "进阶",
+          "order": 26,
           "quiz": []
         }
       ]
@@ -32128,121 +32139,6 @@
           ]
         },
         {
-          "id": "discrete_math",
-          "title": {
-            "zh": "离散数学与逻辑",
-            "en": "Discrete Mathematics"
-          },
-          "summary": {
-            "zh": "逻辑推理、集合关系、组合计数与图论。",
-            "en": "Logic, sets, counting and graph theory."
-          },
-          "file": "assets/content/fundamentals_discrete_math.md",
-          "minutes": 45,
-          "keywords": [
-            "离散数学",
-            "命题逻辑",
-            "组合",
-            "图论",
-            "证明"
-          ],
-          "quiz": [
-            {
-              "question": "按“离散数学与逻辑”中 离散数学、命题逻辑、组合 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。",
-              "options": [
-                "写出最小示例并核对 命题逻辑 的基线结果",
-                "只改一个变量，记录边界与失败路径的变化",
-                "固定版本与证据，把“离散数学与逻辑”的结论写成可复现记录",
-                "先明确 离散数学 的输入、输出与约束"
-              ],
-              "correct_order": [
-                3,
-                0,
-                1,
-                2
-              ],
-              "answer": 0,
-              "explanation": "在 `离散数学与逻辑` 第 1 题中，正确答案是「先明确 离散数学 的输入、输出与约束 → 写出最小示例并核对 命题逻辑 的基线结果 → 只改一个变量，记录边界与失败路径的变化 → 固定版本与证据，把“离散数学与逻辑”的结论写成可复现记录」。在「离散数学与逻辑」第 1 题中，该判断与术语 `离散数学` 对应：离散数学是计算机的\"语法书\"：逻辑负责推理，集合与关系负责建模，组合负责计数，图论负责结构。在「离散数学与逻辑」第 1 题中，错误表现方面，命题符号化出错会造成后续推理全部无效，应按先把自然语言拆成原子命题，再形式化修复。",
-              "type": "order"
-            },
-            {
-              "question": "鸽巢原理在计算机中的典型应用是？",
-              "options": [
-                "证明必然存在重复或冲突",
-                "用来计算复杂度，但这会引入新的复杂度",
-                "网络路由",
-                "排序算法"
-              ],
-              "answer": 0,
-              "explanation": "在 `离散数学与逻辑` 第 2 题中，正确答案是「证明必然存在重复或冲突」。在「离散数学与逻辑」第 2 题中，该判断与术语 `离散数学` 对应：离散数学是计算机的\"语法书\"：逻辑负责推理，集合与关系负责建模，组合负责计数，图论负责结构。在「离散数学与逻辑」第 2 题中，错误表现方面，命题符号化出错会造成后续推理全部无效，应按先把自然语言拆成原子命题，再形式化修复。 在「离散数学与逻辑」第 2 题中，判断时先确认输入和适用范围，对照 `离散数学`、`命题逻辑`、`组合`、`图论` 复现一次，最后把错误表现与正确做法逐项对照。"
-            },
-            {
-              "question": "阅读 `离散数学与逻辑` 的 `离散数学` 示例。它服务于逻辑推理、集合关系、组合计数与图论。代码中实际包含下列哪一项？",
-              "options": [
-                "出现字面量 `prod-vpc`",
-                "出现字面量 `utf-8`",
-                "出现字面量 `validation_error`",
-                "出现字面量 `容斥原理：计算多个集合的并集大小。`"
-              ],
-              "answer": 3,
-              "explanation": "在 `离散数学与逻辑` 第 3 题中，正确答案是「出现字面量 `容斥原理：计算多个集合的并集大小。`」。在「离散数学与逻辑」第 3 题中，该判断与术语 `离散数学` 对应：离散数学是计算机的\"语法书\"：逻辑负责推理，集合与关系负责建模，组合负责计数，图论负责结构。在「离散数学与逻辑」第 3 题中，错误表现方面，命题符号化出错会造成后续推理全部无效，应按先把自然语言拆成原子命题，再形式化修复。 在「离散数学与逻辑」第 3 题中，判断时先确认输入和适用范围，对照 `离散数学`、`命题逻辑`、`组合`、`图论` 复现一次，最后把错误表现与正确做法逐项对照。",
-              "type": "code",
-              "code": "from itertools import combinations\r\n\r\ndef pigeonhole_check(items, boxes):\r\n    \"\"\"鸽巢原理：物品数超过盒子数时必有盒子至少装两个。\"\"\"\r\n    return len(items) > boxes\r\n\r\ndef inclusion_exclusion(sets):\r\n    \"\"\"容斥原理：计算多个集合的并集大小。\"\"\"\r\n    total = 0\r\n    n = len(sets)\r\n    for k in range(1, n + 1):\r\n        sign = 1 if k % 2 == 1 else -1\r\n        for combo in combinations(range(n), k):\r\n            intersection = set.intersection(*(sets[i] for i in combo))\r\n            total += sign * len(intersection)\r\n    return total\r\n\r\ndef binomial(n: int, k: int) -> int:\r\n    \"\"\"组合数 C(n,k)，用递推避免阶乘溢出。\"\"\"\r\n    if k < 0 or k > n:\r\n        return 0\r\n    k = min(k, n - k)\r\n    result = 1\r\n    for i in range(k):\r\n        result = result * (n - i) // (i + 1)\r\n    return result\r\n\r\nassert inclusion_exclusion([{1, 2, 3}, {3, 4}, {4, 5}]) == 5\r\nassert binomial(5, 2) == 10",
-              "language": "python"
-            },
-            {
-              "question": "欧拉路与哈密顿路的区别是？",
-              "options": [
-                "两者完全相同",
-                "欧拉路经过每条边恰好一次",
-                "哈密顿路只适用于有向图",
-                "欧拉路必须回到起点"
-              ],
-              "answer": 1,
-              "explanation": "在 `离散数学与逻辑` 第 4 题中，正确答案是「欧拉路经过每条边恰好一次」。在「离散数学与逻辑」第 4 题中，该判断与术语 `离散数学` 对应：离散数学是计算机的\"语法书\"：逻辑负责推理，集合与关系负责建模，组合负责计数，图论负责结构。在「离散数学与逻辑」第 4 题中，错误表现方面，命题符号化出错会造成后续推理全部无效，应按先把自然语言拆成原子命题，再形式化修复。 在「离散数学与逻辑」第 4 题中，判断时先确认输入和适用范围，对照 `离散数学`、`命题逻辑`、`组合`、`图论` 复现一次，最后把错误表现与正确做法逐项对照。"
-            },
-            {
-              "question": "递推式 T(n) = 2T(n/2) + n 的解是？",
-              "options": [
-                "O(n log n)",
-                "O(n)",
-                "O(log n)",
-                "O(n²)"
-              ],
-              "answer": 0,
-              "explanation": "在 `离散数学与逻辑` 第 5 题中，正确答案是「O(n log n)」。在「离散数学与逻辑」第 5 题中，该判断与术语 `离散数学` 对应：离散数学是计算机的\"语法书\"：逻辑负责推理，集合与关系负责建模，组合负责计数，图论负责结构。在「离散数学与逻辑」第 5 题中，错误表现方面，命题符号化出错会造成后续推理全部无效，应按先把自然语言拆成原子命题，再形式化修复。 在「离散数学与逻辑」第 5 题中，判断时先确认输入和适用范围，对照 `离散数学`、`命题逻辑`、`组合`、`图论` 复现一次，最后把错误表现与正确做法逐项对照。"
-            },
-            {
-              "type": "multi",
-              "question": "课程 `逻辑推理、集合关系、组合计数与图论。`。在 `离散数学与逻辑` 里，`离散数学`、`组合` 与下面哪些选项属于同一层概念？（多选）",
-              "options": [
-                "离散数学",
-                "前缀",
-                "命题逻辑",
-                "前缀函数"
-              ],
-              "answer": 0,
-              "answers": [
-                0,
-                2
-              ],
-              "explanation": "在 `离散数学与逻辑` 第 6 题中，正确答案是「离散数学；命题逻辑」。在「离散数学与逻辑」第 6 题中，该判断与术语 `离散数学` 对应：离散数学是计算机的\"语法书\"：逻辑负责推理，集合与关系负责建模，组合负责计数，图论负责结构。在「离散数学与逻辑」第 6 题中，错误表现方面，命题符号化出错会造成后续推理全部无效，应按先把自然语言拆成原子命题，再形式化修复。 在「离散数学与逻辑」第 6 题中，判断时先确认输入和适用范围，对照 `离散数学`、`命题逻辑`、`组合`、`图论` 复现一次，最后把错误表现与正确做法逐项对照。"
-            }
-          ],
-          "difficulty": "进阶",
-          "order": 10,
-          "prerequisites": [
-            "assembly"
-          ],
-          "related": [
-            "probability"
-          ],
-          "code_quiz": {
-            "language": "python",
-            "slot": "def"
-          }
-        },
-        {
           "id": "probability",
           "title": {
             "zh": "概率统计基础",
@@ -34354,6 +34250,132 @@
           "related": [
             "computer_organization_intro"
           ]
+        }
+      ]
+    },
+    {
+      "id": "discrete_mathematics",
+      "title": {
+        "zh": "离散数学",
+        "en": "Discrete Mathematics"
+      },
+      "icon": "school",
+      "color": "8B5CF6",
+      "lessons": [
+        {
+          "id": "discrete_math",
+          "title": {
+            "zh": "离散数学与逻辑",
+            "en": "Discrete Mathematics"
+          },
+          "summary": {
+            "zh": "逻辑推理、集合关系、组合计数与图论。",
+            "en": "Logic, sets, counting and graph theory."
+          },
+          "file": "assets/content/fundamentals_discrete_math.md",
+          "minutes": 45,
+          "keywords": [
+            "离散数学",
+            "命题逻辑",
+            "组合",
+            "图论",
+            "证明"
+          ],
+          "quiz": [
+            {
+              "question": "按“离散数学与逻辑”中 离散数学、命题逻辑、组合 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。",
+              "options": [
+                "写出最小示例并核对 命题逻辑 的基线结果",
+                "只改一个变量，记录边界与失败路径的变化",
+                "固定版本与证据，把“离散数学与逻辑”的结论写成可复现记录",
+                "先明确 离散数学 的输入、输出与约束"
+              ],
+              "correct_order": [
+                3,
+                0,
+                1,
+                2
+              ],
+              "answer": 0,
+              "explanation": "在 `离散数学与逻辑` 第 1 题中，正确答案是「先明确 离散数学 的输入、输出与约束 → 写出最小示例并核对 命题逻辑 的基线结果 → 只改一个变量，记录边界与失败路径的变化 → 固定版本与证据，把“离散数学与逻辑”的结论写成可复现记录」。在「离散数学与逻辑」第 1 题中，该判断与术语 `离散数学` 对应：离散数学是计算机的\"语法书\"：逻辑负责推理，集合与关系负责建模，组合负责计数，图论负责结构。在「离散数学与逻辑」第 1 题中，错误表现方面，命题符号化出错会造成后续推理全部无效，应按先把自然语言拆成原子命题，再形式化修复。",
+              "type": "order"
+            },
+            {
+              "question": "鸽巢原理在计算机中的典型应用是？",
+              "options": [
+                "证明必然存在重复或冲突",
+                "用来计算复杂度，但这会引入新的复杂度",
+                "网络路由",
+                "排序算法"
+              ],
+              "answer": 0,
+              "explanation": "在 `离散数学与逻辑` 第 2 题中，正确答案是「证明必然存在重复或冲突」。在「离散数学与逻辑」第 2 题中，该判断与术语 `离散数学` 对应：离散数学是计算机的\"语法书\"：逻辑负责推理，集合与关系负责建模，组合负责计数，图论负责结构。在「离散数学与逻辑」第 2 题中，错误表现方面，命题符号化出错会造成后续推理全部无效，应按先把自然语言拆成原子命题，再形式化修复。 在「离散数学与逻辑」第 2 题中，判断时先确认输入和适用范围，对照 `离散数学`、`命题逻辑`、`组合`、`图论` 复现一次，最后把错误表现与正确做法逐项对照。"
+            },
+            {
+              "question": "阅读 `离散数学与逻辑` 的 `离散数学` 示例。它服务于逻辑推理、集合关系、组合计数与图论。代码中实际包含下列哪一项？",
+              "options": [
+                "出现字面量 `prod-vpc`",
+                "出现字面量 `utf-8`",
+                "出现字面量 `validation_error`",
+                "出现字面量 `容斥原理：计算多个集合的并集大小。`"
+              ],
+              "answer": 3,
+              "explanation": "在 `离散数学与逻辑` 第 3 题中，正确答案是「出现字面量 `容斥原理：计算多个集合的并集大小。`」。在「离散数学与逻辑」第 3 题中，该判断与术语 `离散数学` 对应：离散数学是计算机的\"语法书\"：逻辑负责推理，集合与关系负责建模，组合负责计数，图论负责结构。在「离散数学与逻辑」第 3 题中，错误表现方面，命题符号化出错会造成后续推理全部无效，应按先把自然语言拆成原子命题，再形式化修复。 在「离散数学与逻辑」第 3 题中，判断时先确认输入和适用范围，对照 `离散数学`、`命题逻辑`、`组合`、`图论` 复现一次，最后把错误表现与正确做法逐项对照。",
+              "type": "code",
+              "code": "from itertools import combinations\r\n\r\ndef pigeonhole_check(items, boxes):\r\n    \"\"\"鸽巢原理：物品数超过盒子数时必有盒子至少装两个。\"\"\"\r\n    return len(items) > boxes\r\n\r\ndef inclusion_exclusion(sets):\r\n    \"\"\"容斥原理：计算多个集合的并集大小。\"\"\"\r\n    total = 0\r\n    n = len(sets)\r\n    for k in range(1, n + 1):\r\n        sign = 1 if k % 2 == 1 else -1\r\n        for combo in combinations(range(n), k):\r\n            intersection = set.intersection(*(sets[i] for i in combo))\r\n            total += sign * len(intersection)\r\n    return total\r\n\r\ndef binomial(n: int, k: int) -> int:\r\n    \"\"\"组合数 C(n,k)，用递推避免阶乘溢出。\"\"\"\r\n    if k < 0 or k > n:\r\n        return 0\r\n    k = min(k, n - k)\r\n    result = 1\r\n    for i in range(k):\r\n        result = result * (n - i) // (i + 1)\r\n    return result\r\n\r\nassert inclusion_exclusion([{1, 2, 3}, {3, 4}, {4, 5}]) == 5\r\nassert binomial(5, 2) == 10",
+              "language": "python"
+            },
+            {
+              "question": "欧拉路与哈密顿路的区别是？",
+              "options": [
+                "两者完全相同",
+                "欧拉路经过每条边恰好一次",
+                "哈密顿路只适用于有向图",
+                "欧拉路必须回到起点"
+              ],
+              "answer": 1,
+              "explanation": "在 `离散数学与逻辑` 第 4 题中，正确答案是「欧拉路经过每条边恰好一次」。在「离散数学与逻辑」第 4 题中，该判断与术语 `离散数学` 对应：离散数学是计算机的\"语法书\"：逻辑负责推理，集合与关系负责建模，组合负责计数，图论负责结构。在「离散数学与逻辑」第 4 题中，错误表现方面，命题符号化出错会造成后续推理全部无效，应按先把自然语言拆成原子命题，再形式化修复。 在「离散数学与逻辑」第 4 题中，判断时先确认输入和适用范围，对照 `离散数学`、`命题逻辑`、`组合`、`图论` 复现一次，最后把错误表现与正确做法逐项对照。"
+            },
+            {
+              "question": "递推式 T(n) = 2T(n/2) + n 的解是？",
+              "options": [
+                "O(n log n)",
+                "O(n)",
+                "O(log n)",
+                "O(n²)"
+              ],
+              "answer": 0,
+              "explanation": "在 `离散数学与逻辑` 第 5 题中，正确答案是「O(n log n)」。在「离散数学与逻辑」第 5 题中，该判断与术语 `离散数学` 对应：离散数学是计算机的\"语法书\"：逻辑负责推理，集合与关系负责建模，组合负责计数，图论负责结构。在「离散数学与逻辑」第 5 题中，错误表现方面，命题符号化出错会造成后续推理全部无效，应按先把自然语言拆成原子命题，再形式化修复。 在「离散数学与逻辑」第 5 题中，判断时先确认输入和适用范围，对照 `离散数学`、`命题逻辑`、`组合`、`图论` 复现一次，最后把错误表现与正确做法逐项对照。"
+            },
+            {
+              "type": "multi",
+              "question": "课程 `逻辑推理、集合关系、组合计数与图论。`。在 `离散数学与逻辑` 里，`离散数学`、`组合` 与下面哪些选项属于同一层概念？（多选）",
+              "options": [
+                "离散数学",
+                "前缀",
+                "命题逻辑",
+                "前缀函数"
+              ],
+              "answer": 0,
+              "answers": [
+                0,
+                2
+              ],
+              "explanation": "在 `离散数学与逻辑` 第 6 题中，正确答案是「离散数学；命题逻辑」。在「离散数学与逻辑」第 6 题中，该判断与术语 `离散数学` 对应：离散数学是计算机的\"语法书\"：逻辑负责推理，集合与关系负责建模，组合负责计数，图论负责结构。在「离散数学与逻辑」第 6 题中，错误表现方面，命题符号化出错会造成后续推理全部无效，应按先把自然语言拆成原子命题，再形式化修复。 在「离散数学与逻辑」第 6 题中，判断时先确认输入和适用范围，对照 `离散数学`、`命题逻辑`、`组合`、`图论` 复现一次，最后把错误表现与正确做法逐项对照。"
+            }
+          ],
+          "difficulty": "进阶",
+          "order": 10,
+          "prerequisites": [
+            "assembly"
+          ],
+          "related": [
+            "probability"
+          ],
+          "code_quiz": {
+            "language": "python",
+            "slot": "def"
+          }
         }
       ]
     },
