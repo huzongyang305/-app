@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'screens/root_shell.dart';
 import 'l10n/app_strings.dart';
+import 'services/achievement_unlock_service.dart';
 import 'services/content_provider.dart';
 import 'services/notification_service.dart';
 import 'services/progress_provider.dart';
@@ -92,6 +93,11 @@ class CodeLearnApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => SettingsProvider(storage)),
         ChangeNotifierProvider(
           create: (_) => ProgressProvider(storage, now: clock),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => AchievementUnlockService(
+            context.read<ProgressProvider>(),
+          ),
         ),
         if (contentProvider != null)
           ChangeNotifierProvider<ContentProvider>.value(value: contentProvider!)

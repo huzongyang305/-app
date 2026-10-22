@@ -2,19 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../l10n/l10n_extension.dart';
+import '../models/achievement.dart';
 import '../models/lesson.dart';
+import '../services/achievement_unlock_service.dart';
 import '../services/content_provider.dart';
 import '../services/daily_question_service.dart';
 import '../services/progress_provider.dart';
 import '../services/recommendation_service.dart';
 import '../services/settings_provider.dart';
 import '../theme/app_theme.dart';
-import '../widgets/category_card.dart';
 import '../widgets/activity_chart.dart';
+import '../widgets/achievement_celebration.dart';
+import '../widgets/category_card.dart';
 import '../widgets/check_in_card.dart';
 import '../widgets/empty_state.dart';
 import '../widgets/index_card.dart';
 import '../widgets/lesson_card.dart';
+import '../widgets/skeleton_loader.dart';
 import 'category_screen.dart';
 import 'daily_question_screen.dart';
 import 'lesson_screen.dart';
@@ -28,8 +32,29 @@ import 'tools_screen.dart';
 import 'tutor_screen.dart';
 
 /// 首页：总体进度、继续学习与分类导航。
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  Achievement? _celebratingAchievement;
+
+  @override
+  void initState() {
+    super.initState();
+    // 监听成就解锁事件
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final unlockService = context.read<AchievementUnlockService>();
+      unlockService.onUnlocked((event) {
+        setState(() {
+          _celebratingAchievement = event.achievement;
+        });
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,20 +76,49 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: content.isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : content.errorMessage != null
-          ? EmptyState(
-              icon: Icons.error_outline,
-              message: context.trArgs('contentLoadFailed', {
-                'error': content.errorMessage!,
-              }),
-              action: FilledButton(
-                onPressed: content.load,
-                child: Text(context.tr('retry')),
+      body: Stack(
+        children: [
+          content.isLoading
+              ? ListView(
+                  padding: const EdgeInsets.fromLTRB(AppSpacing.page, AppSpacing.sm, AppSpacing.page, AppSpacing.xxl),
+                  children: const [
+                    ProgressCardSkeleton(),
+                    SizedBox(height: 16),
+                    ListSkeleton(itemCount: 3),
+                  ],
+                )
+              : content.errorMessage != null
+              ? EmptyState(
+                  icon: Icons.error_outline,
+                  message: context.trArgs('contentLoadFailed', {
+                    'error': content.errorMessage!,
+                  }),
+                  action: FilledButton(
+                    onPressed: content.load,
+                    child: Text(context.tr('retry')),
+                  ),
+                )
+              : _buildBody(context, content, progress, settings, theme),
+          
+          // 成就庆祝动画overlay
+          if (_celebratingAchievement != null)
+            Positioned.fill(
+              child: IgnorePointer(
+                ignoring: false,
+                child: AchievementCelebration(
+                  achievement: _celebratingAchievement!,
+                  onComplete: () {
+                    if (mounted) {
+                      setState(() {
+                        _celebratingAchievement = null;
+                      });
+                    }
+                  },
+                ),
               ),
-            )
-          : _buildBody(context, content, progress, settings, theme),
+            ),
+        ],
+      ),
     );
   }
 
