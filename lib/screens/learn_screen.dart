@@ -11,9 +11,18 @@ import '../widgets/lesson_group_header.dart';
 import 'lesson_screen.dart';
 import 'quiz_list_screen.dart';
 
+enum _DifficultyFilter { all, beginner, intermediate, advanced }
+
 /// 学习页：整体进度 + 按分类展开的全部知识点。
-class LearnScreen extends StatelessWidget {
+class LearnScreen extends StatefulWidget {
   const LearnScreen({super.key});
+
+  @override
+  State<LearnScreen> createState() => _LearnScreenState();
+}
+
+class _LearnScreenState extends State<LearnScreen> {
+  _DifficultyFilter _difficultyFilter = _DifficultyFilter.all;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +59,24 @@ class LearnScreen extends StatelessWidget {
             child: LinearProgressIndicator(value: ratio, minHeight: 7),
           ),
           const SizedBox(height: 16),
+          // 难度筛选
+          SizedBox(
+            height: 40,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                for (final filter in _DifficultyFilter.values) ...[
+                  FilterChip(
+                    selected: _difficultyFilter == filter,
+                    label: Text(_difficultyLabel(context, filter)),
+                    onSelected: (_) => setState(() => _difficultyFilter = filter),
+                  ),
+                  const SizedBox(width: 8),
+                ],
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
           // 测验与模拟考试入口集中在学习页（底部导航不再单列测验）
           Card(
             margin: const EdgeInsets.only(bottom: 12),
@@ -67,7 +94,7 @@ class LearnScreen extends StatelessWidget {
               ),
             ),
           ),
-          for (final category in content.categories)
+          for (final category in _filteredCategories(content.categories))
             Card(
               margin: const EdgeInsets.only(bottom: 12),
               child: ExpansionTile(
@@ -83,9 +110,30 @@ class LearnScreen extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                subtitle: Text(
-                  '${category.lessons.where((l) => progress.isLearned(l.id)).length}'
-                  '/${category.lessons.length} ${context.tr('lessons')}',
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 4),
+                    Text(
+                      '${category.lessons.where((l) => progress.isLearned(l.id)).length}'
+                      '/${category.lessons.length} ${context.tr('lessons')}',
+                    ),
+                    const SizedBox(height: 6),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(3),
+                      child: LinearProgressIndicator(
+                        value: category.lessons.isEmpty
+                            ? 0
+                            : category.lessons.where((l) => progress.isLearned(l.id)).length /
+                                category.lessons.length,
+                        minHeight: 4,
+                        backgroundColor: theme.colorScheme.surfaceContainerHighest,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          theme.colorScheme.primary,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 childrenPadding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
                 children: _groupedLessons(context, category, progress),
@@ -94,6 +142,46 @@ class LearnScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _difficultyLabel(BuildContext context, _DifficultyFilter filter) {
+    switch (filter) {
+      case _DifficultyFilter.all:
+        return '全部难度';
+      case _DifficultyFilter.beginner:
+        return context.difficultyLabel('入门');
+      case _DifficultyFilter.intermediate:
+        return context.difficultyLabel('进阶');
+      case _DifficultyFilter.advanced:
+        return context.difficultyLabel('高级');
+    }
+  }
+
+  List<LessonCategory> _filteredCategories(List<LessonCategory> categories) {
+    if (_difficultyFilter == _DifficultyFilter.all) {
+      return categories;
+    }
+
+    final difficulty = switch (_difficultyFilter) {
+      _DifficultyFilter.beginner => '入门',
+      _DifficultyFilter.intermediate => '进阶',
+      _DifficultyFilter.advanced => '高级',
+      _DifficultyFilter.all => '',
+    };
+
+    return categories.map((category) {
+      final filteredLessons = category.lessons
+          .where((lesson) => lesson.difficulty == difficulty)
+          .toList();
+      if (filteredLessons.isEmpty) return null;
+      return LessonCategory(
+        id: category.id,
+        title: category.title,
+        iconName: category.iconName,
+        colorValue: category.colorValue,
+        lessons: filteredLessons,
+      );
+    }).whereType<LessonCategory>().toList();
   }
 
   /// 按 group 字段生成带分组标题的知识点列表。

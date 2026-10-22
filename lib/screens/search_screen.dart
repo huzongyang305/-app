@@ -15,6 +15,13 @@ import 'lesson_screen.dart';
 
 enum _SearchFilter { all, unlearned, favorites, wrong }
 
+class _Suggestion {
+  const _Suggestion({required this.title, required this.subtitle, required this.lessonId});
+  final String title;
+  final String subtitle;
+  final String lessonId;
+}
+
 /// 搜索页：倒排索引检索 + 拼音/首字母 + 学习状态与分类筛选。
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -109,6 +116,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Timer? _debounce;
 
   List<SearchHit> _hits = const [];
+  List<_Suggestion> _suggestions = const [];
   bool _hasSearched = false;
   bool _isSearching = false;
   String? _categoryId;
@@ -128,13 +136,44 @@ class _SearchScreenState extends State<SearchScreen> {
     setState(() {
       if (query.isEmpty) {
         _hits = const [];
+        _suggestions = const [];
         _hasSearched = false;
         _isSearching = false;
+      } else {
+        _updateSuggestions(query);
       }
     });
     if (query.isEmpty) return;
 
     _debounce = Timer(const Duration(milliseconds: 260), () => _search(query));
+  }
+
+  /// 生成实时建议：匹配课程标题，最多显示5条
+  void _updateSuggestions(String query) {
+    if (query.length < 2) {
+      _suggestions = const [];
+      return;
+    }
+    final content = context.read<ContentProvider>();
+    final lowerQuery = query.toLowerCase();
+    final suggestions = <_Suggestion>[];
+    
+    for (final lesson in content.allLessons) {
+      final title = lesson.title.of(context.strings.localeCode);
+      if (title.toLowerCase().contains(lowerQuery)) {
+        final category = content.categories.firstWhere(
+          (c) => c.lessons.any((l) => l.id == lesson.id),
+          orElse: () => content.categories.first,
+        );
+        suggestions.add(_Suggestion(
+          title: title,
+          subtitle: category.title.of(context.strings.localeCode),
+          lessonId: lesson.id,
+        ));
+        if (suggestions.length >= 5) break;
+      }
+    }
+    _suggestions = suggestions;
   }
 
   Future<void> _search(String query) async {
@@ -244,6 +283,17 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             ),
           ),
+          if (_suggestions.isNotEmpty && !_hasSearched)
+            _SuggestionsList(
+              suggestions: _suggestions,
+              onSelected: (lessonId) {
+                final content = context.read<ContentProvider>();
+                final lesson = content.allLessons.firstWhere((l) => l.id == lessonId);
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(builder: (_) => LessonScreen(lesson: lesson)),
+                );
+              },
+            ),
           _FilterBar(
             filter: _filter,
             categoryId: _categoryId,
@@ -477,6 +527,62 @@ class _HighlightedText extends StatelessWidget {
       TextSpan(style: style, children: spans),
       maxLines: maxLines,
       overflow: maxLines == null ? TextOverflow.clip : TextOverflow.ellipsis,
+    );
+  }
+}
+
+class _SuggestionsList extends StatelessWidget {
+  const _SuggestionsList({required this.suggestions, required this.onSelected});
+
+  final List<_Suggestion> suggestions;
+  final ValueChanged<String> onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      constraints: const BoxConstraints(maxHeight: 240),
+      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.page),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: theme.colorScheme.outlineVariant),
+      ),
+      child: ListView.separated(
+        shrinkWrap: true,
+        itemCount: suggestions.length,
+        separatorBuilder: (_, __) => Divider(
+          height: 1,
+          color: theme.colorScheme.outlineVariant,
+        ),
+        itemBuilder: (context, index) {
+          final suggestion = suggestions[index];
+          return ListTile(
+            dense: true,
+            leading: Icon(
+              Icons.article_outlined,
+              size: 20,
+              color: theme.colorScheme.primary,
+            ),
+            title: Text(
+              suggestion.title,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            subtitle: Text(
+              suggestion.subtitle,
+              style: theme.textTheme.bodySmall,
+            ),
+            trailing: Icon(
+              Icons.north_east,
+              size: 16,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+            onTap: () => onSelected(suggestion.lessonId),
+          );
+        },
+      ),
     );
   }
 }
