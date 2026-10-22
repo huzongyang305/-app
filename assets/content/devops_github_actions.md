@@ -1206,6 +1206,85 @@ CMD ["node", "dist/main.js"]
 
 ---
 
+---
+
+## 考点精讲
+
+### 问题1
+
+在 GitHub Actions 中，以下哪个事件触发方式支持配置自定义输入参数（如选择部署环境）？
+
+A. "push"
+B. "pull_request"
+C. "workflow_dispatch"
+D. "schedule"
+
+**正确答案：C**
+
+**详细解释：** "workflow_dispatch" 是手动触发工作流的事件，它支持通过 "inputs" 配置自定义输入参数，用户可以在 GitHub UI 中手动填写。例如可以定义一个"环境选择"下拉框，让用户选择部署到 staging 还是 production。"push" 和 "pull_request" 是自动触发事件，不支持自定义输入。"schedule" 是定时触发，也不支持输入参数。
+
+---
+
+### 问题2
+
+GitHub Actions 中 "strategy.matrix" 的作用是什么？如果配置了 "node-version: [16, 18, 20]" 和 "os: [ubuntu-latest, windows-latest]"，会生成多少个 job 实例？
+
+A. 按顺序依次运行每个版本；6 个
+B. 在所有指定组合上并行运行测试；6 个
+C. 随机选择一个组合运行；1 个
+D. 只运行最新的版本组合；2 个
+
+**正确答案：B**
+
+**详细解释：** "strategy.matrix" 用于定义多维度并行测试策略。GitHub Actions 会自动生成所有维度组合的 job 实例并行运行。"node-version" 有 3 个值，"os" 有 2 个值，总共 3 x 2 = 6 个组合，即 6 个 job 实例并行执行。"fail-fast: false" 可以确保某个组合失败不影响其他组合继续运行。
+
+---
+
+### 问题3
+
+在 GitHub Actions 的缓存配置中，以下哪个缓存键（key）设计最合理？
+
+A. "my-cache-v1"（固定字符串）
+B. "${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}"（基于操作系统和锁文件哈希）
+C. "${{ github.sha }}"（基于提交哈希）
+D. "cache-${{ github.actor }}"（基于提交者用户名）
+
+**正确答案：B**
+
+**详细解释：** 缓存键的设计原则是：当依赖内容变化时缓存应该失效。选项 B 使用操作系统和 "package-lock.json" 的哈希值作为键，当依赖文件发生变化时哈希值改变，缓存自动失效并重新构建。"restore-keys" 还提供了回退匹配机制。A 是固定字符串，永远不会失效但也永远不会更新。C 每次提交都不同，缓存命中率极低。D 与依赖内容无关。
+
+---
+
+### 问题4
+
+GitHub Actions 中自定义 Composite Action 的主要优势是什么？
+
+A. 可以让外部用户直接修改你的 workflow 文件
+B. 可以将多个步骤打包成一个可复用的单元，在多个 workflow 中共享
+C. 可以绕过 GitHub 的权限检查
+D. 可以自动修复失败的 job
+
+**正确答案：B**
+
+**详细解释：** Composite Action 允许你将一组重复出现的步骤封装成一个独立的、可复用的 Action。例如将"安装 Node.js + 缓存依赖 + 安装依赖"封装为 "setup-project" Action，然后在多个 workflow 中通过 "uses: ./.github/actions/setup-project" 调用。这提高了配置的可维护性和一致性，避免了在多个 workflow 中重复相同的步骤组合。
+
+---
+
+### 问题5
+
+在 GitHub Actions 中，关于环境变量和密钥（Secrets）的使用，以下哪个做法是正确的？
+
+A. 将数据库密码直接写在 workflow 文件的 "env" 字段中
+B. 使用 "${{ secrets.XXX }}" 引用密钥，密钥在日志中会自动被替换为 "***"
+C. 在 workflow 的 "run" 命令中用 "echo" 打印密钥值以便调试
+D. 将密钥存储在 Git 仓库的配置文件中
+
+**正确答案：B**
+
+**详细解释：** GitHub Secrets 是专门用于存储敏感信息的加密机制。通过 "${{ secrets.XXX }}" 引用，密钥值在日志中会自动被替换为 "***"，防止泄露。A 是密钥硬编码，极不安全。C 会将密钥明文输出到日志中，违反安全原则。D 将密钥提交到 Git 仓库会导致永久泄露风险。正确做法是在仓库的 Settings > Secrets 中配置，并在 workflow 中通过 "secrets" 上下文引用。
+
+---
+
 > **课程版本**：v2.0
 > **最后更新**：2026 年 10 月
 > **适用平台**：GitHub Actions（免费公共仓库，每月 2000 分钟免费额度用于私有仓库）

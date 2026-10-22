@@ -522,17 +522,78 @@ CSRF 攻击利用的是浏览器自动携带 Cookie 的特性。JWT 通常存储
 
 ## 考点精讲
 
-### 考点 1：第 1 题
+### 问题1
 
-- **题目**：Spring Security 中，用于存储当前请求安全上下文（包含已认证用户信息）的核心组件是？
-- **正确项**：SecurityContext
-- **判断依据**：这道题落在术语「SecurityContext」上：Spring Security 的安全上下文机制。复习时把 SecurityContext 的作用、存储方式（ThreadLocal）和获取方法一起说清楚，再回到「核心概念定义」核对原文。
+在 Spring Security 中，认证（Authentication）和授权（Authorization）的区别是什么？
 
-### 考点 2：第 2 题
+A. 认证和授权是同一个概念，没有区别
+B. 认证验证"你是谁"，授权验证"你能做什么"
+C. 认证验证"你能做什么"，授权验证"你是谁"
+D. 认证只用于 Web 应用，授权只用于移动端应用
 
-- **题目**：以下哪种密码加密算法是 Spring Security 推荐的，且具有防暴力破解的慢速设计特性？
-- **正确项**：BCrypt
-- **判断依据**：这道题落在术语「密码加密（BCrypt）」上：安全存储密码的核心算法。复习时把 BCrypt 的原理（加盐哈希）、为什么故意设计为慢速、以及与其他哈希算法（MD5、SHA）的区别说清楚，再回到「核心概念定义」核对原文。
+**正确答案：B**
+
+**详细解释：** 认证（Authentication）是验证用户身份的过程，如通过用户名密码登录确认"你是谁"；授权（Authorization）是在认证通过后，根据用户身份决定其能访问哪些资源，即"你能做什么"。认证在前，授权在后，认证是授权的前提。类比：进小区时保安查门禁卡是认证，进楼栋时电梯卡限制楼层是授权。
+
+---
+
+### 问题2
+
+JWT（JSON Web Token）由三部分组成，以下哪个选项正确描述了这三部分？
+
+A. 用户名、密码、角色
+B. 头部（Header）、载荷（Payload）、签名（Signature）
+C. 令牌 ID、过期时间、服务器地址
+D. 公钥、私钥、对称密钥
+
+**正确答案：B**
+
+**详细解释：** JWT 由三部分组成，用点号分隔："Header"（头部，包含算法信息如 HS256）、"Payload"（载荷，包含用户数据如用户名和角色）、"Signature"（签名，用于防篡改验证）。JWT 的特点是无状态——服务端不需要存储会话信息，令牌本身包含了所有必要的用户信息，只需验证签名即可确认身份。
+
+---
+
+### 问题3
+
+Spring Security 推荐使用 BCrypt 算法存储密码，以下关于 BCrypt 的说法哪个是正确的？
+
+A. BCrypt 是一种对称加密算法，可以用密钥还原明文
+B. BCrypt 是一种单向哈希算法，故意设计为慢速执行以防范暴力破解
+C. BCrypt 加密速度极快，适合高并发的登录场景
+D. BCrypt 每次加密相同密码产生的哈希值相同，便于比对
+
+**正确答案：B**
+
+**详细解释：** BCrypt 是一种单向哈希加密算法（加盐哈希），专门用于安全存储密码。"单向"意味着无法从哈希值还原明文密码。BCrypt 故意设计为慢速算法（单次约 100ms），这使得暴力破解变得极其耗时。每次加密相同密码会产生不同的哈希值（因为随机盐值），但验证时 BCrypt 可以从哈希中提取盐值进行比对。
+
+---
+
+### 问题4
+
+在使用 JWT 认证的 Spring Security 配置中，为什么通常需要禁用 CSRF 保护？
+
+A. 因为 JWT 令牌太长了，无法放入 CSRF Token 中
+B. 因为 JWT 通常存储在 localStorage 中通过请求头手动携带，不会被浏览器自动发送，不存在 CSRF 风险
+C. 因为 Spring Security 不支持 JWT 和 CSRF 同时使用
+D. 因为禁用 CSRF 可以提高 JWT 的加密强度
+
+**正确答案：B**
+
+**详细解释：** CSRF（跨站请求伪造）攻击利用的是浏览器自动携带 Cookie 的特性。JWT 通常存储在 localStorage 中，通过 "Authorization: Bearer xxx" 请求头手动携带，不会被浏览器自动发送到跨站请求中，因此不存在 CSRF 风险。而且 JWT 方案通常使用无状态会话（"SessionCreationPolicy.STATELESS"），不使用 Session Cookie，禁用 CSRF 可以避免不必要的校验开销。
+
+---
+
+### 问题5
+
+"@PreAuthorize" 和 "@Secured" 都用于方法级权限控制，它们的主要区别是什么？
+
+A. "@PreAuthorize" 只能用于 Controller 层，"@Secured" 可以用于任何层
+B. "@PreAuthorize" 支持 SpEL 表达式编写复杂条件，"@Secured" 只能指定角色列表
+C. "@Secured" 是 Spring 独有的注解，"@PreAuthorize" 是 JSR-250 标准注解
+D. 两者功能完全相同，只是命名风格不同
+
+**正确答案：B**
+
+**详细解释：** "@PreAuthorize" 是 Spring Security 推荐的方法级权限注解，支持 SpEL 表达式，可以编写复杂的条件逻辑（如 "#id == authentication.principal.id or hasRole('ADMIN')"）。"@Secured" 是 JSR-250 标准注解，功能较简单，只能指定允许访问的角色列表（如 "@Secured(\"ROLE_ADMIN\")"）。使用 "@PreAuthorize" 需要确保配置类添加了 "@EnableMethodSecurity"。
 
 ---
 

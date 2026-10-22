@@ -525,17 +525,78 @@ DispatcherServlet 是 Spring MVC 的前端控制器，所有请求的统一入�
 
 ## 考点精讲
 
-### 考点 1：第 1 题
+### 问题1
 
-- **题目**：Spring MVC 中，负责将请求 URL 映射到对应 Controller 方法的组件是？
-- **正确项**：HandlerMapping
-- **判断依据**：这道题落在术语「DispatcherServlet」的请求处理流程上。DispatcherServlet 本身不直接做 URL 匹配，而是委托给 HandlerMapping。复习时把 DispatcherServlet 的六步流程和每个组件的职责一起说清楚，再回到「原理与运行机制」核对原文。
+在 Spring MVC 的请求处理流程中，负责根据请求 URL 查找对应 Controller 方法的组件是？
 
-### 考点 2：第 2 题
+A. \u201CViewResolver\u201D（视图解析器）
+B. \u201CHandlerAdapter\u201D（处理器适配器）
+C. \u201CHandlerMapping\u201D（处理器映射器）
+D. \u201CDispatcherServlet\u201D 直接查找
 
-- **题目**：以下哪个注解用于从 URL 路径中提取变量值？
-- **正确项**：`@PathVariable`
-- **判断依据**：这道题落在术语「@PathVariable」的参数绑定方式上。复习时把 `@PathVariable`、`@RequestParam`、`@RequestBody` 三者的区别和各自的使用场景一起说清楚，再回到「核心概念定义」核对原文。
+**正确答案：C**
+
+**详细解释：** \u201CHandlerMapping\u201D 负责根据请求 URL 查找对应的 Controller 方法，返回一个 \u201CHandlerExecutionChain\u201D。\u201CDispatcherServlet\u201D 是前端控制器，负责统一接收所有请求并协调各组件工作，但它本身不直接做 URL 匹配。\u201CHandlerAdapter\u201D 负责调用找到的 Controller 方法并完成参数绑定。\u201CViewResolver\u201D 负责根据逻辑视图名找到具体的 View 实现。
+
+---
+
+### 问题2
+
+\u201C@RequestParam\u201D 和 \u201C@PathVariable\u201D 注解的区别是什么？
+
+A. \u201C@RequestParam\u201D 从 URL 路径中提取值，\u201C@PathVariable\u201D 从查询参数中获取值
+B. \u201C@RequestParam\u201D 从查询参数或表单数据中获取值，\u201C@PathVariable\u201D 从 URL 路径中提取变量值
+C. 两者功能完全相同，只是名称不同
+D. \u201C@RequestParam\u201D 只能用于 GET 请求，\u201C@PathVariable\u201D 只能用于 POST 请求
+
+**正确答案：B**
+
+**详细解释：** \u201C@RequestParam\u201D 用于绑定 URL 查询参数（如 \u201C?keyword=spring&page=1\u201D）或表单数据到方法参数；\u201C@PathVariable\u201D 用于从 URL 路径中提取变量值（如 \u201C/users/{id}\u201D 中的 \u201Cid\u201D）。简单记忆：\u201C@RequestParam\u201D 取问号后面的值，\u201C@PathVariable\u201D 取路径中的值。两者都可以用于各种 HTTP 方法。
+
+---
+
+### 问题3
+
+以下关于 \u201C@Controller\u201D 和 \u201C@RestController\u201D 的说法，哪个是正确的？
+
+A. \u201C@RestController\u201D 只能返回 JSON 格式的数据
+B. \u201C@Controller\u201D 返回的字符串会被直接写入 HTTP 响应体
+C. \u201C@RestController\u201D 等同于 \u201C@Controller\u201D 加上 \u201C@ResponseBody\u201D
+D. 两者没有任何区别，可以随意互换使用
+
+**正确答案：C**
+
+**详细解释：** \u201C@RestController\u201D = \u201C@Controller\u201D + \u201C@ResponseBody\u201D。使用 \u201C@Controller\u201D 时，方法返回的字符串默认被当作逻辑视图名称（由 \u201CViewResolver\u201D 解析为具体页面）；使用 \u201C@RestController\u201D 时，方法返回值会被自动序列化为 JSON/XML 直接写入 HTTP 响应体。REST API 应使用 \u201C@RestController\u201D，页面渲染应使用 \u201C@Controller\u201D。
+
+---
+
+### 问题4
+
+在 Spring MVC 中，表单提交成功后为什么推荐使用 \u201Credirect:\u201D 重定向而不是直接返回视图名称？
+
+A. 重定向可以提高服务器处理速度
+B. 重定向可以让浏览器发送新的 GET 请求，防止用户刷新页面时重复提交表单
+C. 视图名称不支持包含中文字符，必须用重定向
+D. 重定向可以让页面加载更多的 JavaScript 资源
+
+**正确答案：B**
+
+**详细解释：** 这称为 PRG（Post/Redirect/Get）模式。如果 POST 成功后直接返回视图名称，用户刷新页面时浏览器会重新发送 POST 请求，导致重复提交（如重复创建订单、重复扣款）。使用 \u201Credirect:\u201D 重定向后，浏览器发送新的 GET 请求到目标 URL，刷新页面只会重新加载结果页，不会重复提交表单。
+
+---
+
+### 问题5
+
+在 Spring MVC 中，\u201C@RequestBody\u201D 注解适用于以下哪种场景？
+
+A. 从 URL 查询参数中获取字符串值
+B. 从 URL 路径中提取变量值
+C. 将 HTTP 请求体中的 JSON 数据自动反序列化为 Java 对象
+D. 将方法返回值序列化为 XML 格式
+
+**正确答案：C**
+
+**详细解释：** \u201C@RequestBody\u201D 用于将 HTTP 请求体中的 JSON（或 XML）数据自动反序列化为 Java 对象，通常配合 \u201C@PostMapping\u201D 或 \u201C@PutMapping\u201D 使用。它只能接收 \u201Capplication/json\u201D 类型的数据，不能用于表单数据（表单应使用 \u201C@ModelAttribute\u201D）。\u201C@RequestParam\u201D 用于查询参数，\u201C@PathVariable\u201D 用于路径变量，\u201C@ResponseBody\u201D 用于返回值序列化。
 
 ---
 

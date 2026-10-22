@@ -13537,7 +13537,68 @@
           ],
           "difficulty": "进阶",
           "order": 27,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "在 JDBC 中，推荐使用 `PreparedStatement` 而非 `Statement` 的主要原因是什么？",
+              "options": [
+                "`PreparedStatement` 可以自动管理数据库连接池",
+                "`PreparedStatement` 能防止 SQL 注入并支持预编译缓存，提高安全性和性能",
+                "`PreparedStatement` 支持自动事务回滚",
+                "`PreparedStatement` 可以同时执行多条不同结构的 SQL 语句"
+              ],
+              "answer": 1,
+              "explanation": "`PreparedStatement` 使用 `?` 占位符进行参数绑定，数据库驱动会将参数当作值而非 SQL 片段处理，从而有效防止 SQL 注入攻击。同时，数据库可以预编译 SQL 模板并缓存执行计划，当重复执行相同结构的 SQL 时，无需重新编译，性能显著优于每次都要完整拼接 SQL 字符串的 `Statement`。"
+            },
+            {
+              "type": "single",
+              "question": "JPA 的 N+1 查询问题的根本原因和推荐解决方案是什么？",
+              "options": [
+                "数据库连接数不足导致查询变慢；解决方案是增大连接池大小",
+                "查询 N 条主记录后，JPA 为每条记录单独查询关联数据，共产生 1+N 次查询；解决方案是使用 JOIN FETCH 或 @EntityGraph 合并加载",
+                "SQL 语句未使用索引导致全表扫描；解决方案是为关联字段添加索引",
+                "JPA 的缓存机制失效导致重复查询；解决方案是改用 MyBatis 框架"
+              ],
+              "answer": 1,
+              "explanation": "N+1 问题的根本原因是 JPA 在加载主记录（如订单列表）后，访问每条记录的关联属性（如商品信息）时会单独发送一条 SQL 查询，导致总共执行 1 + N 次查询。解决方案包括：在 JPQL 中使用 `JOIN FETCH` 一次性加载关联实体，或使用 `@EntityGraph` 注解指定加载图，也可以用 `@BatchSize` 进行批量加载。核心思路是将 N 次单独查询合并为 1~2 次查询。"
+            },
+            {
+              "type": "single",
+              "question": "MyBatis 中 `#{}` 和 `${}` 的核心区别是什么？",
+              "options": [
+                "`#{}` 用于整数类型参数，`${}` 用于字符串类型参数",
+                "`#{}` 是字符串直接替换，`${}` 是预编译参数占位符",
+                "`${}` 是字符串直接替换，存在 SQL 注入风险；`#{}` 使用预编译占位符，安全且高效",
+                "两者功能完全相同，只是书写风格不同"
+              ],
+              "answer": 2,
+              "explanation": "`${}` 是字符串直接替换机制，MyBatis 会将参数值直接拼接到 SQL 语句中，如果参数来自用户输入，攻击者可以构造恶意字符串实现 SQL 注入。`#{}` 是预编译参数占位符，MyBatis 会将其替换为 `?` 并通过 `PreparedStatement` 的 `setXxx()` 方法安全设值，参数不会被当作 SQL 代码执行。因此，参数传递应一律使用 `#{}`，仅在需要动态传入表名或列名等无法使用预编译的特殊场景下才考虑 `${}`，且必须确保输入来源可信。"
+            },
+            {
+              "type": "single",
+              "question": "关于 HikariCP 连接池配置，`maximum-pool-size` 参数的作用是什么？",
+              "options": [
+                "设置数据库允许的最大并发用户数",
+                "设置连接池维持的最大连接数量，超出后新请求将等待直到有连接可用或超时",
+                "设置应用程序的最大线程数",
+                "设置数据库服务器的最大内存使用量"
+              ],
+              "answer": 1,
+              "explanation": "`maximum-pool-size` 定义了 HikariCP 连接池可以同时维持的最大数据库连接数。当应用程序请求连接且池中所有连接都被占用时，新请求会进入等待队列，直到有连接被归还或超过 `connection-timeout` 设定的超时时间。该值不宜设置过大，应根据数据库的最大连接数限制合理配置，通常推荐 10~50 个连接，过大的连接池反而会因为数据库端的连接争抢导致性能下降。"
+            },
+            {
+              "type": "single",
+              "question": "Spring 的 `@Transactional` 注解背后使用了什么机制来实现事务管理？",
+              "options": [
+                "直接在方法体内插入 try-catch 代码块",
+                "使用 AOP 代理，在方法执行前开启事务，正常结束则提交，抛出异常则回滚",
+                "修改数据库的自动提交配置为手动模式",
+                "通过 JDBC 的 Savepoint 机制实现部分回滚"
+              ],
+              "answer": 1,
+              "explanation": "`@Transactional` 的背后是 Spring AOP（面向切面编程）代理机制。当 Spring 检测到该方法被调用时，代理会先在方法执行前开启一个数据库事务，然后执行目标方法的业务逻辑。如果方法正常返回，代理自动提交事务；如果方法抛出运行时异常（默认情况下），代理自动回滚事务。开发者无需手动编写 `conn.commit()` 或 `conn.rollback()` 等事务管理代码，实现了声明式事务管理，极大简化了事务边界的控制。"
+            }
+          ]
         },
         {
           "id": "java_microservices",
@@ -13559,7 +13620,68 @@
           ],
           "difficulty": "高级",
           "order": 28,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "在微服务架构中，当一个服务需要调用另一个服务时，它是怎样知道对方地址的？",
+              "options": [
+                "直接硬编码目标服务的 IP 地址和端口号",
+                "通过服务注册中心（如 Nacos、Eureka）查询目标服务的地址列表，再由负载均衡器选择一个实例发起调用",
+                "通过 API 网关转发所有请求，不需要知道目标服务地址",
+                "通过配置文件静态指定所有服务的地址"
+              ],
+              "answer": 1,
+              "explanation": "微服务架构中，每个服务启动时会把自己的服务名、IP 和端口注册到服务注册中心（如 Nacos 或 Eureka），并定期发送心跳保持注册信息有效。当服务消费者需要调用另一个服务时，它通过服务名向注册中心查询该服务的可用地址列表，然后由负载均衡器（如 Ribbon 或 LoadBalancer）从列表中选择一个实例发起 HTTP 调用。注册中心还会通过心跳机制检测服务是否存活，自动剔除掉线的服务实例。"
+            },
+            {
+              "type": "single",
+              "question": "熔断器（Circuit Breaker）的三种状态分别是什么？在什么情况下会从 CLOSED 变为 OPEN？",
+              "options": [
+                "RUNNING、STOPPED、PAUSED；当 CPU 使用率超过阈值时从 RUNNING 变为 STOPPED",
+                "CLOSED、OPEN、HALF-OPEN；当下游服务的失败率超过设定阈值时从 CLOSED 变为 OPEN",
+                "ACTIVE、INACTIVE、STANDBY；当网络延迟超过阈值时从 ACTIVE 变为 INACTIVE",
+                "ENABLED、DISABLED、DEGRADED；当请求量超过限流阈值时从 ENABLED 变为 DEGRADED"
+              ],
+              "answer": 1,
+              "explanation": "熔断器有三种状态：CLOSED（关闭）——正常状态，请求正常通过，熔断器在背后统计失败次数；OPEN（打开）——当下游服务的失败率超过设定阈值（如 50%），熔断器跳闸，后续请求直接走降级逻辑，不再调用下游服务，防止故障蔓延；HALF-OPEN（半开）——等待一段超时时间后，熔断器放少量请求去试探下游是否恢复，如果成功则恢复到 CLOSED，如果仍然失败则回到 OPEN。这种机制类似于电路中的保险丝，能有效防止微服务架构中的级联故障和系统雪崩。"
+            },
+            {
+              "type": "single",
+              "question": "API 网关在微服务架构中承担的核心职责是什么？",
+              "options": [
+                "只负责将请求转发到后端服务，不做任何其他处理",
+                "作为所有外部请求的统一入口，负责路由转发、身份鉴权、限流和跨域处理",
+                "替代注册中心进行服务发现和地址管理",
+                "负责微服务之间的数据库共享和分布式事务管理"
+              ],
+              "answer": 1,
+              "explanation": "API 网关（如 Spring Cloud Gateway）是微服务系统的\\u201c大门\\u201d，所有来自外部的请求都先经过网关。它承担四大核心职责：路由转发——根据 URL 路径将请求分发到对应的后端服务；身份鉴权——在网关层统一校验 Token，无需每个服务单独实现鉴权逻辑；限流——控制每秒请求数，防止突发流量打垮后端服务；跨域处理——统一配置 CORS 策略。客户端不需要知道后端有多少个服务以及各自的地址，只需访问网关地址即可。"
+            },
+            {
+              "type": "single",
+              "question": "在微服务架构中，Feign 的主要作用是什么？",
+              "options": [
+                "提供服务注册与发现功能",
+                "作为声明式 HTTP 客户端，让微服务之间的远程调用像调用本地方法一样简单",
+                "管理微服务的配置文件和密钥",
+                "实现分布式链路追踪和日志收集"
+              ],
+              "answer": 1,
+              "explanation": "Feign 是 Spring Cloud 提供的声明式 HTTP 客户端。开发者只需定义一个接口并用 `@FeignClient` 注解指定目标服务名，然后在接口方法上用 `@GetMapping` 等注解声明要调用的远程 API 路径，Feign 就会自动生成实现类，将远程 HTTP 调用封装为本地方法调用。配合服务注册中心，Feign 能自动从注册中心获取目标服务的地址列表，并结合负载均衡器选择一个实例发起请求，极大简化了微服务之间的通信代码。"
+            },
+            {
+              "type": "single",
+              "question": "微服务架构中，为什么不能忽略熔断器和降级机制的配置？",
+              "options": [
+                "不配置熔断器会导致数据库连接池自动扩容",
+                "忽略熔断和降级会导致一个服务故障时请求不断重试，故障蔓延至整个系统，引发雪崩效应",
+                "不配置熔断器会影响 API 网关的路由转发效率",
+                "缺少熔断器会导致服务注册中心无法正常工作"
+              ],
+              "answer": 1,
+              "explanation": "在微服务架构中，服务之间存在复杂的调用依赖关系。如果某个下游服务出现故障或响应过慢，而上游服务没有配置熔断器和降级机制，上游会不断重试或等待，导致自身线程池被耗尽，进而无法处理其他正常请求。这种故障会沿着调用链逐级传播，最终导致整个系统不可用，即\\u201c雪崩效应\\u201d。因此，所有远程调用都应配置熔断器和降级逻辑，在故障发生时快速失败并返回兜底响应，保护系统整体稳定性。"
+            }
+          ]
         },
         {
           "id": "java_testing",
@@ -13581,7 +13703,68 @@
           ],
           "difficulty": "进阶",
           "order": 29,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "在 JUnit 5 中，`@BeforeEach` 和 `@AfterEach` 注解标记的方法分别在什么时候执行？如果一个测试类有 3 个 `@Test` 方法，`@BeforeEach` 标记的方法会被执行几次？",
+              "options": [
+                "在整个测试类开始前执行一次，共 1 次",
+                "在每个 `@Test` 方法执行前各执行一次，共 3 次",
+                "在所有 `@Test` 方法执行完毕后统一执行，共 1 次",
+                "仅在第一个 `@Test` 方法执行前执行一次，共 1 次"
+              ],
+              "answer": 1,
+              "explanation": "`@BeforeEach` 标记的方法会在每个 `@Test` 方法执行之前运行一次，`@AfterEach` 标记的方法会在每个 `@Test` 方法执行之后运行一次。如果测试类有 3 个 `@Test` 方法，`@BeforeEach` 会被执行 3 次——每个测试方法各触发一次。这种设计确保了每个测试都在干净的环境中运行，测试之间互不干扰。与之对比，`@BeforeAll` 和 `@AfterAll` 标记的方法在整个测试类的开始和结束时各执行一次。"
+            },
+            {
+              "type": "single",
+              "question": "`@WebMvcTest(OrderController.class)` 和 `@SpringBootTest` 在测试范围和性能上有什么核心区别？",
+              "options": [
+                "`@WebMvcTest` 加载完整的应用上下文，`@SpringBootTest` 只加载 Web 层",
+                "`@WebMvcTest` 只加载 Web 层（Controller），启动速度快；`@SpringBootTest` 加载完整应用上下文，用于集成测试",
+                "两者功能完全相同，只是注解名称不同",
+                "`@WebMvcTest` 只能测试 GET 请求，`@SpringBootTest` 可以测试所有 HTTP 方法"
+              ],
+              "answer": 1,
+              "explanation": "`@WebMvcTest` 只加载 Web 层相关的 Bean（Controller、过滤器、拦截器等），不会启动完整的 Spring 容器，Service 和 Repository 需要用 `@MockBean` 提供模拟实现，启动速度快，适合专门测试 Controller 的请求路由、参数绑定和响应格式。`@SpringBootTest` 会加载完整的应用上下文，包括所有 Service、Repository、数据库连接等，启动速度较慢，适合测试多个模块之间的协作（集成测试）。简单来说：测 Controller 用 `@WebMvcTest`，测完整流程用 `@SpringBootTest`。"
+            },
+            {
+              "type": "single",
+              "question": "使用 Mockito 时，`@Mock` 和 `@InjectMocks` 注解分别起什么作用？",
+              "options": [
+                "`@Mock` 创建真实数据库连接，`@InjectMocks` 创建 HTTP 请求",
+                "`@Mock` 创建模拟对象以替代真实依赖，`@InjectMocks` 创建被测对象并自动将 Mock 对象注入到其依赖中",
+                "`@Mock` 用于断言测试结果，`@InjectMocks` 用于初始化测试数据",
+                "`@Mock` 和 `@InjectMocks` 功能相同，可以互换使用"
+              ],
+              "answer": 1,
+              "explanation": "`@Mock` 创建一个模拟对象（Mock 对象），你可以用 `when(...).thenReturn(...)` 自定义它的方法返回值和行为，它不会执行真实的业务逻辑。`@InjectMocks` 创建一个被测对象的实例，并自动把 `@Mock` 标记的模拟对象注入到它的依赖中。例如，测试 `OrderService` 时，用 `@Mock` 创建一个假的 `OrderRepository`，用 `@InjectMocks` 创建 `OrderService` 实例，这样 `OrderService` 内部调用的 `OrderRepository.save()` 实际会调用 Mock 对象的预设行为，不会真正访问数据库，实现了单元测试的隔离原则。"
+            },
+            {
+              "type": "single",
+              "question": "在测试金字塔中，单元测试、集成测试和端到端测试的数量比例和速度特点分别是什么？",
+              "options": [
+                "端到端测试数量最多、速度最快；单元测试数量最少、速度最慢",
+                "三种测试数量和速度完全相同",
+                "单元测试数量最多、速度最快（毫秒级）；集成测试居中；端到端测试数量最少、速度最慢（分钟级）",
+                "集成测试数量最多、速度最快；单元测试数量最少、速度最慢"
+              ],
+              "answer": 2,
+              "explanation": "测试金字塔由 Mike Cohn 提出，核心思想是底层测试多而快，顶层测试少而慢。单元测试位于金字塔底层，数量占比约 70%，执行速度为毫秒级，验证单个方法或类的逻辑正确性；集成测试位于中间层，数量占比约 20%，执行速度为秒级，验证多个模块组合后的协作行为；端到端测试位于顶层，数量占比约 10%，执行速度为分钟级，模拟真实用户操作验证完整流程。这种分层结构使得开发者能在日常开发中快速获得反馈，同时通过少量的高层测试保证系统整体正确性。"
+            },
+            {
+              "type": "single",
+              "question": "在 MockMvc 测试中，为什么需要使用 `@MockBean` 注解替换 Service 层的依赖？",
+              "options": [
+                "为了让测试能够连接真实的数据库进行验证",
+                "为了隔离 Controller 层测试，避免调用真实的 Service 逻辑和外部依赖，使测试更快更稳定",
+                "因为 MockMvc 不支持直接调用 Service 方法",
+                "为了增加测试的代码覆盖率"
+              ],
+              "answer": 1,
+              "explanation": "`@WebMvcTest` 只加载 Web 层（Controller）相关的 Bean，不会自动创建 Service 层的实例。使用 `@MockBean` 可以为 Service 层提供一个模拟实现，这样测试只关注 Controller 层的请求路由、参数绑定和响应格式，而不会涉及真实的业务逻辑或数据库操作。这种隔离使测试运行更快、结果更稳定，不会因为数据库连接失败或 Service 层 Bug 导致 Controller 测试失败。同时，可以通过 `when(...).thenReturn(...)` 精确控制 Service 的返回值，测试 Controller 在各种情况下的行为。"
+            }
+          ]
         },
         {
           "id": "java_performance_monitoring",
@@ -13603,7 +13786,68 @@
           ],
           "difficulty": "高级",
           "order": 30,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "Spring Boot Actuator 默认暴露哪些端点？为什么生产环境不能暴露所有端点？",
+              "options": [
+                "默认暴露所有端点，无需额外配置",
+                "默认只暴露 health 和 info；因为 env 会泄露密码和密钥，heapdump 会导出堆内存中的敏感数据，存在安全风险",
+                "默认不暴露任何端点，需要手动开启",
+                "默认只暴露 metrics 和 loggers；因为其他端点会影响应用性能"
+              ],
+              "answer": 1,
+              "explanation": "Spring Boot Actuator 默认只暴露 `health` 和 `info` 两个端点。生产环境不能暴露所有端点（如通过 `include: \"*\"`），因为 `env` 端点会暴露环境变量中的密码、密钥等敏感信息，`heapdump` 端点会导出整个 JVM 堆内存（其中可能包含用户数据和密钥），`threaddump` 会暴露线程信息。正确做法是通过 `management.endpoints.web.exposure.include` 只暴露必要的端点（如 health、metrics、info），其余敏感端点通过 Spring Security 进行认证控制。"
+            },
+            {
+              "type": "single",
+              "question": "在性能监控中，为什么只看平均响应时间不够？应该关注什么指标？",
+              "options": [
+                "平均响应时间已经足够反映系统性能，无需其他指标",
+                "平均值会掩盖极端情况，应关注 P99 或 P999 延迟，它反映\\u201c最差的 1%用户\\u201d的真实体感",
+                "应该只关注最快请求的响应时间",
+                "应该关注总请求数而非响应时间"
+              ],
+              "answer": 1,
+              "explanation": "平均响应时间会掩盖长尾问题。例如 100 个请求中 99 个耗时 10ms，1 个耗时 10 秒，平均值仅约 110ms，看起来很好，但那 1 个用户的体验极差。P99 延迟表示 99% 的请求在这个时间内完成，能真实反映\\u201c最差的那 1%用户\\u201d的体感。类似地，P999 延迟反映千分之一的极端情况。生产环境中应同时关注 P50（中位数）、P99 和 P999 延迟，才能全面了解系统的响应质量。"
+            },
+            {
+              "type": "single",
+              "question": "在指标采集架构中，Micrometer、Prometheus 和 Grafana 分别承担什么角色？",
+              "options": [
+                "Micrometer 存储数据，Prometheus 展示图表，Grafana 采集指标",
+                "Micrometer 是采集层（埋点收集数据），Prometheus 是存储层（时序数据库，通过 pull 模式拉取数据），Grafana 是展示层（可视化仪表盘）",
+                "Micrometer 是展示层，Prometheus 是采集层，Grafana 是存储层",
+                "三者功能相同，可以任意替换使用"
+              ],
+              "answer": 1,
+              "explanation": "指标采集分三层协作：Micrometer 是采集层，相当于\\u201c传感器\\u201d，它在 Spring Boot 应用中埋点，自动收集 JVM 内存、GC 次数、HTTP 请求延迟等数据并暴露为端点；Prometheus 是存储层，相当于\\u201c数据中心\\u201d，它定时通过 pull 模式从应用端点拉取指标数据，存储到时序数据库中；Grafana 是展示层，相当于\\u201c大屏仪表盘\\u201d，它从 Prometheus 读取数据，绘制可视化图表并配置报警规则。三者各司其职，构成完整的可观测性数据采集与展示链路。"
+            },
+            {
+              "type": "single",
+              "question": "分布式追踪中，Trace ID 和 Span ID 分别代表什么？它们如何配合工作？",
+              "options": [
+                "Trace ID 标识单个服务的处理时间，Span ID 标识数据库查询时间",
+                "Trace ID 是一个请求的全局唯一标识，贯穿整个调用链；Span ID 是每个服务处理步骤的标识，一个 Trace 包含多个 Span",
+                "Trace ID 和 Span ID 是同一个概念的不同名称",
+                "Trace ID 用于标识数据库连接，Span ID 用于标识 HTTP 连接"
+              ],
+              "answer": 1,
+              "explanation": "在分布式追踪中，Trace ID 是一个用户请求的全局唯一标识符，从请求进入系统到最终响应，贯穿整个调用链路。Span ID 代表一个\\u201c工作单元\\u201d，每个服务处理请求时都会产生一个 Span，记录该步骤的耗时和状态。一个 Trace 包含多个 Span，通过共同的 Trace ID 串联起来，就像快递单号（Trace ID）标识一个包裹的全程物流，每个中转站的扫描记录（Span ID）标识一段运输。通过 Trace ID 可以查看一个请求经过的所有服务以及每一步的耗时，快速定位性能瓶颈。"
+            },
+            {
+              "type": "single",
+              "question": "生产环境中，为什么不能将日志级别设为 DEBUG？",
+              "options": [
+                "DEBUG 级别的日志会导致应用无法正常运行",
+                "DEBUG 级别会产生大量日志输出，导致磁盘空间被撑爆，IO 性能下降；生产环境应使用 INFO 或 WARN 级别",
+                "DEBUG 级别会泄露数据库密码",
+                "DEBUG 级别只适用于单元测试环境"
+              ],
+              "answer": 1,
+              "explanation": "DEBUG 级别的日志会记录非常详细的信息，包括 SQL 语句详情、方法入参、变量值等。在生产环境的高并发场景下，这些日志量极其庞大，会迅速占满磁盘空间，同时大量的日志写入操作会严重影响磁盘 IO 性能，进而拖慢应用本身的响应速度。正确做法是：生产环境将日志级别设为 INFO 或 WARN，只记录关键业务事件和潜在问题；当需要排查特定问题时，可以通过 Actuator 的 `/actuator/loggers` 端点动态临时调整某个包的日志级别为 DEBUG，排查完毕后恢复。"
+            }
+          ]
         },
         {
           "id": "java_deployment",
@@ -13625,7 +13869,68 @@
           ],
           "difficulty": "高级",
           "order": 31,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "Docker 镜像的分层机制有什么好处？为什么多阶段构建能减小镜像体积？",
+              "options": [
+                "分层机制没有任何好处，多阶段构建只是为了让 Dockerfile 更复杂",
+                "分层可以复用和缓存加速构建；多阶段构建的最终镜像只包含运行阶段文件，构建阶段的编译器、源码等全部被丢弃",
+                "分层会增加镜像体积，多阶段构建会增大镜像体积",
+                "分层机制仅用于版本管理，与镜像体积无关"
+              ],
+              "answer": 1,
+              "explanation": "Docker 镜像分层的好处有两点：（1）层可以复用——多个镜像共享同一基础层（如 JDK 基础镜像），节省磁盘空间和网络传输；（2）层有缓存——Dockerfile 中未变更的层不需要重新构建，加速镜像构建过程。多阶段构建（`FROM ... AS builder`）能显著减小镜像体积，是因为最终镜像只包含运行阶段（第二阶段）的文件。例如 Spring Boot 应用，构建阶段需要 JDK + Gradle（约 500MB），而运行阶段只需要 JRE + jar 包（约 100MB），构建阶段的编译器、源码和中间产物全部被丢弃，不会出现在最终镜像中。"
+            },
+            {
+              "type": "single",
+              "question": "Kubernetes 中 Deployment 的 `maxSurge` 和 `maxUnavailable` 分别是什么意思？如果 `replicas=3`、`maxSurge=1`、`maxUnavailable=0`，滚动更新时最多会有几个 Pod 同时运行？",
+              "options": [
+                "最多 3 个 Pod；maxSurge 和 maxUnavailable 不影响 Pod 总数",
+                "最多 4 个 Pod；maxSurge 控制更新时允许超出期望副本数的上限，maxUnavailable 控制允许不可用的下限",
+                "最多 5 个 Pod；maxSurge 和 maxUnavailable 各自独立计算",
+                "最多 2 个 Pod；更新时必须先删除旧 Pod 再创建新 Pod"
+              ],
+              "answer": 1,
+              "explanation": "`maxSurge` 是更新过程中允许多出的 Pod 数量上限（超过期望副本数），`maxUnavailable` 是允许不可用的 Pod 数量上限（低于期望副本数）。当 `replicas=3`、`maxSurge=1`、`maxUnavailable=0` 时，滚动更新过程中最多同时运行 4 个 Pod（3 + 1 = 4），且必须始终保持至少 3 个 Pod 处于可用状态。更新流程为：先创建 1 个新 Pod → 新 Pod 就绪后删除 1 个旧 Pod → 循环直到全部更新完成。这种配置实现了零停机更新。"
+            },
+            {
+              "type": "single",
+              "question": "在 Dockerfile 中，使用多阶段构建（multi-stage build）的主要目的是什么？",
+              "options": [
+                "让 Dockerfile 支持多个操作系统",
+                "将构建环境和运行环境分离，最终镜像只包含运行所需的最小文件集，显著减小镜像体积",
+                "让多个开发者可以同时构建同一个项目",
+                "让容器可以同时运行多个应用"
+              ],
+              "answer": 1,
+              "explanation": "多阶段构建的核心目的是分离构建环境和运行环境。第一阶段（builder）使用完整的 JDK + 构建工具（如 Gradle）进行编译打包，产生 jar 包等构建产物；第二阶段使用轻量的 JRE + Alpine 基础镜像，仅通过 `COPY --from=builder` 复制运行所需的 jar 包。最终镜像不包含编译器、源码、构建工具和中间产物，体积可从 500MB+ 压缩到 100MB 以内。镜像越小，拉取越快，部署越迅速，同时减少了攻击面，提升了安全性。"
+            },
+            {
+              "type": "single",
+              "question": "Kubernetes 中 ConfigMap 和 Secret 的区别是什么？为什么说 Secret 的 Base64 编码不算真正的加密？",
+              "options": [
+                "ConfigMap 和 Secret 完全相同，没有区别",
+                "ConfigMap 存储非机密配置数据（明文），Secret 存储敏感数据；Base64 只是编码方式而非加密，任何人可以瞬间解码还原原文",
+                "ConfigMap 用于存储密码，Secret 用于存储日志级别",
+                "Secret 使用 AES-256 加密，安全性极高"
+              ],
+              "answer": 1,
+              "explanation": "ConfigMap 用于存储非机密的配置数据（如数据库 URL、日志级别），以明文形式存储和展示。Secret 用于存储敏感数据（如密码、Token、证书），数据经过 Base64 编码。但 Base64 只是一种编码方式（类似\\u201c翻译\\u201d），不是加密（类似\\u201c上锁\\u201d）——任何人都可以瞬间解码还原原文，没有任何安全性。生产环境管理敏感配置应：启用 etcd 静态加密（Encryption at Rest），使用外部密钥管理系统（如 HashiCorp Vault），通过 RBAC 限制 Secret 的访问权限，或使用 Sealed Secrets 等工具在 Git 中安全存储加密后的 Secret。"
+            },
+            {
+              "type": "single",
+              "question": "在 Kubernetes 中，Service 资源的核心作用是什么？",
+              "options": [
+                "直接运行应用程序的代码",
+                "为一组 Pod 提供稳定的网络入口（IP + 端口），即使 Pod 重启 IP 变化，Service 地址保持不变",
+                "管理 Docker 镜像的构建和推送",
+                "存储应用的配置文件和环境变量"
+              ],
+              "answer": 1,
+              "explanation": "Kubernetes 中的 Pod 是临时的——Pod 可能因为更新、故障或节点缩容而被销毁和重建，每次重建后 IP 地址都会变化。Service 为一组具有相同标签的 Pod 提供一个稳定的网络入口（固定的 ClusterIP 和端口），通过 selector 匹配后端 Pod。即使后端 Pod 的 IP 发生变化，Service 的地址始终不变，其他服务或客户端只需访问 Service 地址即可。Service 还支持负载均衡，将请求自动分发到后端的多个 Pod 实例上，类似于一个店铺的统一电话号码——不管哪个店员接电话，顾客只需要拨这一个号。"
+            }
+          ]
         },
         {
           "id": "java_project_ecommerce",
@@ -13647,7 +13952,68 @@
           ],
           "difficulty": "高级",
           "order": 32,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "在电商系统中，为什么必须先锁定库存再创建订单？",
+              "options": [
+                "为了让订单号按顺序递增",
+                "防止并发场景下的超卖——多个请求同时读取到相同库存量并都判断够用，导致实际卖出数量超过库存",
+                "为了加快数据库写入速度",
+                "为了减少订单表的数据量"
+              ],
+              "answer": 1,
+              "explanation": "在高并发场景下，如果先创建订单再扣减库存，多个并发请求可能同时读取到相同的库存数量（如 100 件），各自判断库存够用，然后各自创建订单并扣减库存，最终可能导致实际卖出数量超过库存（如卖出 105 件），这就是\\u201c超卖\\u201d问题。正确做法是先通过条件更新 SQL（`WHERE quantity - locked_quantity >= :qty`）锁定库存，该条件保证了只有一个并发请求能成功锁定，其他请求因条件不满足而返回库存不足，从根本上杜绝了超卖。"
+            },
+            {
+              "type": "single",
+              "question": "电商系统中，支付回调为什么要做幂等校验？",
+              "options": [
+                "为了提高支付接口的响应速度",
+                "防止网络不可靠导致支付网关重复发送同一笔支付回调，造成重复扣款",
+                "为了减少数据库的写入次数",
+                "为了兼容不同第三方支付平台的接口格式"
+              ],
+              "answer": 1,
+              "explanation": "在网络环境中，支付网关可能因为超时、网络抖动等原因重复发送同一笔支付的回调通知。如果支付处理接口不做幂等校验，同一笔支付会被处理多次，导致用户被重复扣款——这是电商系统最严重的 Bug 之一。幂等校验的做法是：用唯一的支付单号（paymentNo）查询是否已有处理成功的记录，如果已存在则直接返回成功，不再重复处理。这保证了无论回调被发送多少次，支付逻辑只执行一次。"
+            },
+            {
+              "type": "single",
+              "question": "在电商系统中，商品详情查询为什么要使用 Redis 缓存？",
+              "options": [
+                "因为 Redis 可以替代数据库，不再需要 MySQL",
+                "商品详情是读多写少的高频查询，缓存可以显著减少数据库压力并降低响应时间",
+                "因为 Redis 的存储空间比 MySQL 更大",
+                "因为缓存不需要设置过期时间"
+              ],
+              "answer": 1,
+              "explanation": "电商系统是典型的读多写少场景——浏览商品、查看详情是高频读操作，而商品信息变更（改价、更新描述）频率相对较低。将商品查询结果缓存在 Redis 中，后续相同商品的查询直接从内存返回，无需每次都查数据库，可以显著降低数据库负载和响应延迟。但缓存必须设置合理的 TTL（过期时间），并在商品信息变更时主动失效缓存，防止用户看到旧数据。缓存命中率应保持在 90% 以上。"
+            },
+            {
+              "type": "single",
+              "question": "在电商系统的实施步骤中，按照课程讲授顺序，以下哪个是正确的实施顺序？",
+              "options": [
+                "控制器层 → 服务层 → 数据库设计 → 实体建模 → 缓存优化",
+                "数据库设计 → 实体建模 → 服务层 → 控制器层 → 模块集成 → 缓存优化",
+                "缓存优化 → 模块集成 → 控制器层 → 服务层 → 数据库设计",
+                "服务层 → 数据库设计 → 控制器层 → 实体建模 → 缓存优化"
+              ],
+              "answer": 1,
+              "explanation": "课程讲授的实施步骤严格按照以下顺序进行：首先进行数据库设计，画出用户、商品、订单、支付、库存五张核心表及其关联关系；然后用 JPA 注解进行实体建模，把数据库表映射为 Java 实体类；接着实现服务层，每个模块一个 Service 封装核心业务逻辑和事务管理；再实现控制器层，暴露 REST API；之后通过同步调用和异步消息做模块集成；最后对高频查询加 Redis 缓存优化。这个顺序遵循了从底层数据到上层应用的构建逻辑。"
+            },
+            {
+              "type": "single",
+              "question": "在电商系统的库存管理中，`锁定库存` 和 `扣减库存` 的区别是什么？",
+              "options": [
+                "锁定和扣减是同一个操作，没有区别",
+                "锁定是预留库存（可释放），扣减是实际消耗库存（不可逆）",
+                "锁定在支付成功后执行，扣减在下单时执行",
+                "锁定会永久减少库存数量，扣减只是临时标记"
+              ],
+              "answer": 1,
+              "explanation": "锁定库存和扣减库存是两个不同阶段的操作。锁定库存发生在用户下单时，通过增加 `locked_quantity` 预留商品数量，此时库存总量并未减少，可用库存（`quantity - locked_quantity`）变少。如果用户取消订单或支付超时，可以释放锁定（减少 `locked_quantity`），库存恢复可用。扣减库存发生在支付成功后，真正减少库存总量（`quantity`），同时减少等量的 `locked_quantity`，这个操作是不可逆的——商品已经卖出，库存永久减少。这种\\u201c先锁定后扣减\\u201d的机制既保证了并发安全，又支持订单取消时的库存回滚。"
+            }
+          ]
         }
       ]
     },
@@ -13680,7 +14046,68 @@
           ],
           "difficulty": "入门",
           "order": 0,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "在 Servlet 的生命周期中，以下哪个方法在整个 Servlet 实例的生命周期内只被执行一次？",
+              "options": [
+                "\\u201Cservice()\\u201D 方法",
+                "\\u201CdoGet()\\u201D 方法",
+                "\\u201Cinit()\\u201D 方法",
+                "\\u201CdoPost()\\u201D 方法"
+              ],
+              "answer": 2,
+              "explanation": "\\u201Cinit()\\u201D 方法在 Servlet 第一次被请求时由容器调用，用于执行一次性初始化操作（如加载配置、建立数据库连接），整个生命周期中只执行一次。而 \\u201Cservice()\\u201D 方法每个请求都会调用，\\u201CdoGet()\\u201D 和 \\u201CdoPost()\\u201D 则由 \\u201Cservice()\\u201D 根据请求方法分派调用，每次请求都会执行。"
+            },
+            {
+              "type": "single",
+              "question": "关于 JSP 的本质，以下哪个说法是正确的？",
+              "options": [
+                "JSP 是一种独立于 Servlet 的模板引擎",
+                "JSP 第一次被访问时会被编译成 Servlet 类",
+                "JSP 只能处理静态 HTML 内容，不能嵌入 Java 代码",
+                "JSP 需要手动在 \\u201Cweb.xml\\u201D 中注册才能使用"
+              ],
+              "answer": 1,
+              "explanation": "JSP（Java Server Pages）本质上是 Servlet 的简化写法。当 JSP 文件第一次被访问时，Servlet 容器会将其编译成一个继承 \\u201CHttpServlet\\u201D 的 Java 类，之后的执行过程与 Servlet 完全一致。JSP 中可以嵌入 Java 代码（使用 \\u201C<%= %>\\u201D 等标签），且不需要在 \\u201Cweb.xml\\u201D 中手动注册。"
+            },
+            {
+              "type": "single",
+              "question": "在 Servlet 中处理 HTTP 请求时，以下哪种做法会导致多个用户的数据互相覆盖？",
+              "options": [
+                "使用局部变量存储请求数据",
+                "使用 \\u201Creq.setAttribute()\\u201D 存储请求数据",
+                "使用实例变量（成员变量）存储用户数据",
+                "使用 \\u201Creq.getParameter()\\u201D 获取表单参数"
+              ],
+              "answer": 2,
+              "explanation": "Servlet 是单例的，整个应用只有一个实例，容器为每个请求创建独立线程来调用同一个实例的 \\u201Cservice()\\u201D 方法。如果使用实例变量存储用户数据，多个线程会同时读写同一个变量，导致数据互相覆盖。正确做法是使用局部变量或请求属性（\\u201Creq.setAttribute()\\u201D）来存储请求相关的数据。"
+            },
+            {
+              "type": "single",
+              "question": "以下关于 Servlet 中转发（forward）和重定向（sendRedirect）的说法，哪个是正确的？",
+              "options": [
+                "转发会改变浏览器地址栏中的 URL",
+                "重定向是在服务器内部将请求传递给另一个资源",
+                "转发使用 \\u201Creq.getRequestDispatcher().forward(req, resp)\\u201D 实现，浏览器地址栏不变",
+                "重定向只能跳转到同一应用内的页面"
+              ],
+              "answer": 2,
+              "explanation": "转发（forward）是服务器内部行为，请求不会回到浏览器，因此地址栏 URL 不变，使用 \\u201Creq.getRequestDispatcher(\\u201D路径\\u201D).forward(req, resp)\\u201D 实现。重定向（sendRedirect）会让浏览器重新发送请求到新地址，地址栏会改变，且可以跳转到外部网站。转发效率高（只有一次请求），重定向效率较低（两次请求）。"
+            },
+            {
+              "type": "single",
+              "question": "当客户端发送一个 POST 请求到某个 Servlet，但该 Servlet 只重写了 \\u201CdoGet()\\u201D 方法而没有重写 \\u201CdoPost()\\u201D 方法时，会发生什么？",
+              "options": [
+                "POST 请求会被自动转发到 \\u201CdoGet()\\u201D 方法处理",
+                "服务器返回 404 Not Found 错误",
+                "服务器返回 405 Method Not Allowed 错误",
+                "POST 请求会被容器丢弃，客户端收不到任何响应"
+              ],
+              "answer": 2,
+              "explanation": "\\u201CHttpServlet\\u201D 的 \\u201Cservice()\\u201D 方法会根据请求类型分派到对应的 \\u201CdoGet()\\u201D、\\u201CdoPost()\\u201D 等方法。如果只重写了 \\u201CdoGet()\\u201D 而没有重写 \\u201CdoPost()\\u201D，当 POST 请求到达时，父类 \\u201CHttpServlet\\u201D 的默认 \\u201CdoPost()\\u201D 实现会返回 405 Method Not Allowed 状态码，表示该 Servlet 不支持 POST 方法。因此必须根据需求重写对应的处理方法。"
+            }
+          ]
         },
         {
           "id": "java_spring_boot_intro",
@@ -13701,7 +14128,68 @@
           ],
           "difficulty": "入门",
           "order": 1,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "\\u201C@SpringBootApplication\\u201D 是一个组合注解，它等同于以下哪三个注解的合体？",
+              "options": [
+                "\\u201C@Configuration\\u201D + \\u201C@EnableScheduling\\u201D + \\u201C@ComponentScan\\u201D",
+                "\\u201C@Configuration\\u201D + \\u201C@EnableAutoConfiguration\\u201D + \\u201C@ComponentScan\\u201D",
+                "\\u201C@Bean\\u201D + \\u201C@EnableAutoConfiguration\\u201D + \\u201C@ComponentScan\\u201D",
+                "\\u201C@Configuration\\u201D + \\u201C@EnableAutoConfiguration\\u201D + \\u201C@Import\\u201D"
+              ],
+              "answer": 1,
+              "explanation": "\\u201C@SpringBootApplication\\u201D 组合了三个核心注解：\\u201C@SpringBootConfiguration\\u201D（等同于 \\u201C@Configuration\\u201D，标记当前类为配置类）、\\u201C@EnableAutoConfiguration\\u201D（开启自动配置，根据 classpath 依赖自动注册 Bean）、\\u201C@ComponentScan\\u201D（组件扫描，自动扫描当前包及子包下的注解类）。只需在主类上写这一个注解，就能同时完成三项配置工作。"
+            },
+            {
+              "type": "single",
+              "question": "Spring Boot 自动配置中，\\u201C@ConditionalOnMissingBean\\u201D 注解的含义是什么？",
+              "options": [
+                "当 classpath 中存在某个类时才创建 Bean",
+                "当配置文件中某个属性满足条件时才生效",
+                "当 Spring 容器中不存在指定类型的 Bean 时才创建默认 Bean",
+                "当 Spring 容器中已经存在指定类型的 Bean 时才创建新 Bean"
+              ],
+              "answer": 2,
+              "explanation": "\\u201C@ConditionalOnMissingBean\\u201D 表示\\u201C当容器中没有某个 Bean 时才创建\\u201D。这是 Spring Boot 自动配置覆盖机制的核心：如果用户已经自定义了某个 Bean（如自定义 \\u201CDataSource\\u201D），自动配置就不会再创建默认的同类 Bean，避免冲突。这体现了\\u201C约定优于配置\\u201D的理念——默认行为开箱即用，用户随时可以覆盖。"
+            },
+            {
+              "type": "single",
+              "question": "关于 Spring Boot Starter 机制，以下哪个说法是正确的？",
+              "options": [
+                "Starter 是一种运行时容器，用于托管 Spring Bean",
+                "\\u201Cspring-boot-starter-web\\u201D 只包含 Spring MVC 一个依赖",
+                "Starter 本质上是一组预定义的依赖集合，引入一个 Starter 就自动获得某类功能所需的全部库",
+                "每个 Spring Boot 项目必须且只能引入一个 Starter"
+              ],
+              "answer": 2,
+              "explanation": "Starter 本质上是一个 Maven/Gradle 的 POM 文件，里面声明了一组相关依赖。例如 \\u201Cspring-boot-starter-web\\u201D 会自动引入 Spring MVC、Tomcat、Jackson、Hibernate Validator 等 Web 开发所需的全部库。Starter 可以嵌套组合，项目可以引入多个 Starter，开发者只需按需选择即可。"
+            },
+            {
+              "type": "single",
+              "question": "Spring Boot 的核心理念\\u201C约定优于配置\\u201D（Convention over Configuration）的含义是什么？",
+              "options": [
+                "所有配置都必须按照固定格式编写，不允许自定义",
+                "框架提供合理的默认行为，开发者只需在需要偏离默认时才显式配置",
+                "开发者必须先完成所有配置，框架才能启动",
+                "框架会自动生成代码，开发者不需要写任何配置文件"
+              ],
+              "answer": 1,
+              "explanation": "\\u201C约定优于配置\\u201D是指框架提供合理的默认值和默认行为，开发者在默认行为满足需求时无需做任何配置。例如 Spring Boot 默认启动端口是 8080，只有需要修改端口时才在 \\u201Capplication.properties\\u201D 中配置 \\u201Cserver.port\\u201D。这大大减少了配置量，但并非不允许自定义——需要偏离默认时随时可以显式配置。"
+            },
+            {
+              "type": "single",
+              "question": "在 Spring Boot 自动配置的条件注解中，\\u201C@ConditionalOnClass\\u201D 的作用是什么？",
+              "options": [
+                "当 Spring 容器中存在某个 Bean 时才生效",
+                "当配置文件中某个属性值满足条件时才生效",
+                "当 classpath 中存在指定的类时才激活对应的自动配置",
+                "当应用运行在特定的操作系统上时才生效"
+              ],
+              "answer": 2,
+              "explanation": "\\u201C@ConditionalOnClass\\u201D 检查 classpath 中是否存在某个类。只有当指定的类存在时，对应的自动配置类才会生效。例如，只有引入了 \\u201Cspring-web\\u201D 依赖（classpath 中有 \\u201CDispatcherServlet\\u201D 类），Web 相关的自动配置才会被激活。这就是为什么引入 \\u201Cspring-boot-starter-web\\u201D 后 Tomcat 会自动启动——因为 classpath 中有 Web 相关的类，条件满足。"
+            }
+          ]
         },
         {
           "id": "java_spring_mvc",
@@ -13723,7 +14211,68 @@
           ],
           "difficulty": "进阶",
           "order": 2,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "在 Spring MVC 的请求处理流程中，负责根据请求 URL 查找对应 Controller 方法的组件是？",
+              "options": [
+                "\\u201CViewResolver\\u201D（视图解析器）",
+                "\\u201CHandlerAdapter\\u201D（处理器适配器）",
+                "\\u201CHandlerMapping\\u201D（处理器映射器）",
+                "\\u201CDispatcherServlet\\u201D 直接查找"
+              ],
+              "answer": 2,
+              "explanation": "\\u201CHandlerMapping\\u201D 负责根据请求 URL 查找对应的 Controller 方法，返回一个 \\u201CHandlerExecutionChain\\u201D。\\u201CDispatcherServlet\\u201D 是前端控制器，负责统一接收所有请求并协调各组件工作，但它本身不直接做 URL 匹配。\\u201CHandlerAdapter\\u201D 负责调用找到的 Controller 方法并完成参数绑定。\\u201CViewResolver\\u201D 负责根据逻辑视图名找到具体的 View 实现。"
+            },
+            {
+              "type": "single",
+              "question": "\\u201C@RequestParam\\u201D 和 \\u201C@PathVariable\\u201D 注解的区别是什么？",
+              "options": [
+                "\\u201C@RequestParam\\u201D 从 URL 路径中提取值，\\u201C@PathVariable\\u201D 从查询参数中获取值",
+                "\\u201C@RequestParam\\u201D 从查询参数或表单数据中获取值，\\u201C@PathVariable\\u201D 从 URL 路径中提取变量值",
+                "两者功能完全相同，只是名称不同",
+                "\\u201C@RequestParam\\u201D 只能用于 GET 请求，\\u201C@PathVariable\\u201D 只能用于 POST 请求"
+              ],
+              "answer": 1,
+              "explanation": "\\u201C@RequestParam\\u201D 用于绑定 URL 查询参数（如 \\u201C?keyword=spring&page=1\\u201D）或表单数据到方法参数；\\u201C@PathVariable\\u201D 用于从 URL 路径中提取变量值（如 \\u201C/users/{id}\\u201D 中的 \\u201Cid\\u201D）。简单记忆：\\u201C@RequestParam\\u201D 取问号后面的值，\\u201C@PathVariable\\u201D 取路径中的值。两者都可以用于各种 HTTP 方法。"
+            },
+            {
+              "type": "single",
+              "question": "以下关于 \\u201C@Controller\\u201D 和 \\u201C@RestController\\u201D 的说法，哪个是正确的？",
+              "options": [
+                "\\u201C@RestController\\u201D 只能返回 JSON 格式的数据",
+                "\\u201C@Controller\\u201D 返回的字符串会被直接写入 HTTP 响应体",
+                "\\u201C@RestController\\u201D 等同于 \\u201C@Controller\\u201D 加上 \\u201C@ResponseBody\\u201D",
+                "两者没有任何区别，可以随意互换使用"
+              ],
+              "answer": 2,
+              "explanation": "\\u201C@RestController\\u201D = \\u201C@Controller\\u201D + \\u201C@ResponseBody\\u201D。使用 \\u201C@Controller\\u201D 时，方法返回的字符串默认被当作逻辑视图名称（由 \\u201CViewResolver\\u201D 解析为具体页面）；使用 \\u201C@RestController\\u201D 时，方法返回值会被自动序列化为 JSON/XML 直接写入 HTTP 响应体。REST API 应使用 \\u201C@RestController\\u201D，页面渲染应使用 \\u201C@Controller\\u201D。"
+            },
+            {
+              "type": "single",
+              "question": "在 Spring MVC 中，表单提交成功后为什么推荐使用 \\u201Credirect:\\u201D 重定向而不是直接返回视图名称？",
+              "options": [
+                "重定向可以提高服务器处理速度",
+                "重定向可以让浏览器发送新的 GET 请求，防止用户刷新页面时重复提交表单",
+                "视图名称不支持包含中文字符，必须用重定向",
+                "重定向可以让页面加载更多的 JavaScript 资源"
+              ],
+              "answer": 1,
+              "explanation": "这称为 PRG（Post/Redirect/Get）模式。如果 POST 成功后直接返回视图名称，用户刷新页面时浏览器会重新发送 POST 请求，导致重复提交（如重复创建订单、重复扣款）。使用 \\u201Credirect:\\u201D 重定向后，浏览器发送新的 GET 请求到目标 URL，刷新页面只会重新加载结果页，不会重复提交表单。"
+            },
+            {
+              "type": "single",
+              "question": "在 Spring MVC 中，\\u201C@RequestBody\\u201D 注解适用于以下哪种场景？",
+              "options": [
+                "从 URL 查询参数中获取字符串值",
+                "从 URL 路径中提取变量值",
+                "将 HTTP 请求体中的 JSON 数据自动反序列化为 Java 对象",
+                "将方法返回值序列化为 XML 格式"
+              ],
+              "answer": 2,
+              "explanation": "\\u201C@RequestBody\\u201D 用于将 HTTP 请求体中的 JSON（或 XML）数据自动反序列化为 Java 对象，通常配合 \\u201C@PostMapping\\u201D 或 \\u201C@PutMapping\\u201D 使用。它只能接收 \\u201Capplication/json\\u201D 类型的数据，不能用于表单数据（表单应使用 \\u201C@ModelAttribute\\u201D）。\\u201C@RequestParam\\u201D 用于查询参数，\\u201C@PathVariable\\u201D 用于路径变量，\\u201C@ResponseBody\\u201D 用于返回值序列化。"
+            }
+          ]
         },
         {
           "id": "java_spring_security",
@@ -13745,7 +14294,68 @@
           ],
           "difficulty": "进阶",
           "order": 3,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "在 Spring Security 中，认证（Authentication）和授权（Authorization）的区别是什么？",
+              "options": [
+                "认证和授权是同一个概念，没有区别",
+                "认证验证\"你是谁\"，授权验证\"你能做什么\"",
+                "认证验证\"你能做什么\"，授权验证\"你是谁\"",
+                "认证只用于 Web 应用，授权只用于移动端应用"
+              ],
+              "answer": 1,
+              "explanation": "认证（Authentication）是验证用户身份的过程，如通过用户名密码登录确认\"你是谁\"；授权（Authorization）是在认证通过后，根据用户身份决定其能访问哪些资源，即\"你能做什么\"。认证在前，授权在后，认证是授权的前提。类比：进小区时保安查门禁卡是认证，进楼栋时电梯卡限制楼层是授权。"
+            },
+            {
+              "type": "single",
+              "question": "JWT（JSON Web Token）由三部分组成，以下哪个选项正确描述了这三部分？",
+              "options": [
+                "用户名、密码、角色",
+                "头部（Header）、载荷（Payload）、签名（Signature）",
+                "令牌 ID、过期时间、服务器地址",
+                "公钥、私钥、对称密钥"
+              ],
+              "answer": 1,
+              "explanation": "JWT 由三部分组成，用点号分隔：\"Header\"（头部，包含算法信息如 HS256）、\"Payload\"（载荷，包含用户数据如用户名和角色）、\"Signature\"（签名，用于防篡改验证）。JWT 的特点是无状态——服务端不需要存储会话信息，令牌本身包含了所有必要的用户信息，只需验证签名即可确认身份。"
+            },
+            {
+              "type": "single",
+              "question": "Spring Security 推荐使用 BCrypt 算法存储密码，以下关于 BCrypt 的说法哪个是正确的？",
+              "options": [
+                "BCrypt 是一种对称加密算法，可以用密钥还原明文",
+                "BCrypt 是一种单向哈希算法，故意设计为慢速执行以防范暴力破解",
+                "BCrypt 加密速度极快，适合高并发的登录场景",
+                "BCrypt 每次加密相同密码产生的哈希值相同，便于比对"
+              ],
+              "answer": 1,
+              "explanation": "BCrypt 是一种单向哈希加密算法（加盐哈希），专门用于安全存储密码。\"单向\"意味着无法从哈希值还原明文密码。BCrypt 故意设计为慢速算法（单次约 100ms），这使得暴力破解变得极其耗时。每次加密相同密码会产生不同的哈希值（因为随机盐值），但验证时 BCrypt 可以从哈希中提取盐值进行比对。"
+            },
+            {
+              "type": "single",
+              "question": "在使用 JWT 认证的 Spring Security 配置中，为什么通常需要禁用 CSRF 保护？",
+              "options": [
+                "因为 JWT 令牌太长了，无法放入 CSRF Token 中",
+                "因为 JWT 通常存储在 localStorage 中通过请求头手动携带，不会被浏览器自动发送，不存在 CSRF 风险",
+                "因为 Spring Security 不支持 JWT 和 CSRF 同时使用",
+                "因为禁用 CSRF 可以提高 JWT 的加密强度"
+              ],
+              "answer": 1,
+              "explanation": "CSRF（跨站请求伪造）攻击利用的是浏览器自动携带 Cookie 的特性。JWT 通常存储在 localStorage 中，通过 \"Authorization: Bearer xxx\" 请求头手动携带，不会被浏览器自动发送到跨站请求中，因此不存在 CSRF 风险。而且 JWT 方案通常使用无状态会话（\"SessionCreationPolicy.STATELESS\"），不使用 Session Cookie，禁用 CSRF 可以避免不必要的校验开销。"
+            },
+            {
+              "type": "single",
+              "question": "\"@PreAuthorize\" 和 \"@Secured\" 都用于方法级权限控制，它们的主要区别是什么？",
+              "options": [
+                "\"@PreAuthorize\" 只能用于 Controller 层，\"@Secured\" 可以用于任何层",
+                "\"@PreAuthorize\" 支持 SpEL 表达式编写复杂条件，\"@Secured\" 只能指定角色列表",
+                "\"@Secured\" 是 Spring 独有的注解，\"@PreAuthorize\" 是 JSR-250 标准注解",
+                "两者功能完全相同，只是命名风格不同"
+              ],
+              "answer": 1,
+              "explanation": "\"@PreAuthorize\" 是 Spring Security 推荐的方法级权限注解，支持 SpEL 表达式，可以编写复杂的条件逻辑（如 \"#id == authentication.principal.id or hasRole('ADMIN')\"）。\"@Secured\" 是 JSR-250 标准注解，功能较简单，只能指定允许访问的角色列表（如 \"@Secured(\\\"ROLE_ADMIN\\\")\"）。使用 \"@PreAuthorize\" 需要确保配置类添加了 \"@EnableMethodSecurity\"。"
+            }
+          ]
         },
         {
           "id": "java_restful_api",
@@ -13767,7 +14377,68 @@
           ],
           "difficulty": "进阶",
           "order": 4,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "在 RESTful API 中，以下哪组 HTTP 方法都具有幂等性？",
+              "options": [
+                "GET、POST、PUT",
+                "POST、PUT、DELETE",
+                "GET、PUT、DELETE",
+                "GET、POST、DELETE"
+              ],
+              "answer": 2,
+              "explanation": "幂等性是指同一个操作执行一次和执行多次效果完全一样。GET（获取资源，多次获取结果相同）、PUT（全量更新，多次更新同一数据效果相同）、DELETE（删除资源，多次删除同一资源效果相同）都是幂等的。POST 不是幂等的——每次 POST 请求通常会创建一条新记录，执行多次会产生多个资源。"
+            },
+            {
+              "type": "single",
+              "question": "在 RESTful API 中，创建资源成功后应该返回哪个 HTTP 状态码？",
+              "options": [
+                "200 OK",
+                "201 Created",
+                "204 No Content",
+                "301 Moved Permanently"
+              ],
+              "answer": 1,
+              "explanation": "REST 规范对状态码有明确要求：创建资源成功返回 \\u201C201 Created\\u201D（不是 200），表示新资源已被创建；删除资源成功返回 \\u201C204 No Content\\u201D，表示操作成功但没有内容需要返回；资源不存在返回 \\u201C404 Not Found\\u201D；参数校验失败返回 \\u201C400 Bad Request\\u201D。\\u201C200 OK\\u201D 用于一般的成功请求（如 GET 和 PUT 成功）。"
+            },
+            {
+              "type": "single",
+              "question": "关于 RESTful API 中使用 DTO（数据传输对象）而非直接返回数据库实体的原因，以下哪个说法是不正确的？",
+              "options": [
+                "DTO 可以过滤敏感字段（如密码），提高安全性",
+                "DTO 使 API 数据结构可以与数据库结构独立变化，实现解耦",
+                "DTO 可以让数据库查询速度更快",
+                "DTO 可以选择性地只暴露前端需要的字段"
+              ],
+              "answer": 2,
+              "explanation": "使用 DTO 的主要目的是安全性（过滤敏感字段）、灵活性（API 结构可与数据库不同）和解耦（数据库变化不影响前端）。但 DTO 并不会提升数据库查询速度——查询性能取决于索引、SQL 语句和数据库引擎。DTO 是在数据从数据库查出之后、返回给客户端之前的一层数据转换，它可能还会带来少量的序列化/反序列化开销。"
+            },
+            {
+              "type": "single",
+              "question": "HATEOAS（Hypermedia As The Engine Of Application State）的核心思想是什么？",
+              "options": [
+                "API 响应中应该包含大量详细的错误堆栈信息",
+                "API 的响应中应该包含\\u201C下一步可以做什么\\u201D的链接，客户端通过链接动态发现可用操作",
+                "所有 API 都必须使用 XML 格式返回数据",
+                "客户端必须预先硬编码所有可用的 API 地址"
+              ],
+              "answer": 1,
+              "explanation": "HATEOAS 是 REST 的最高成熟度级别，核心思想是 API 响应中应包含可操作的超媒体链接（如 \\u201Cself\\u201D、\\u201Cdelete\\u201D、\\u201Creviews\\u201D 等），客户端不需要硬编码知道下一步该调用什么接口，而是从响应中的链接动态发现可用操作。这就像餐厅菜单上每道菜旁边都写着\\u201C可以加辣\\u201D\\u201C可以配米饭\\u201D——看菜单就知道能做什么。"
+            },
+            {
+              "type": "single",
+              "question": "在 Spring Boot 中实现 RESTful API 时，\\u201CResponseEntity\\u201D 相比直接返回对象有什么优势？",
+              "options": [
+                "\\u201CResponseEntity\\u201D 可以自动将对象保存到数据库",
+                "\\u201CResponseEntity\\u201D 可以完整控制 HTTP 响应，包括状态码、响应头和响应体",
+                "\\u201CResponseEntity\\u201D 只能返回 200 状态码",
+                "\\u201CResponseEntity\\u201D 会自动压缩响应体以减少网络传输"
+              ],
+              "answer": 1,
+              "explanation": "\\u201CResponseEntity<T>\\u201D 是 Spring 提供的类，可以完整控制 HTTP 响应的三个要素：状态码（如 \\u201C201 Created\\u201D、\\u201C404 Not Found\\u201D）、响应头（如 \\u201CLocation\\u201D、\\u201CContent-Type\\u201D）和响应体（返回的数据对象）。直接返回对象只能控制响应体，状态码默认为 200。\\u201CResponseEntity\\u201D 就像完整的快递包裹：里面装着商品（响应体），外面贴着快递单（状态码），还有备注标签（响应头）。"
+            }
+          ]
         },
         {
           "id": "java_project_inventory",
@@ -13902,7 +14573,68 @@
           ],
           "difficulty": "进阶",
           "order": 6,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "Spring IoC 容器中，Bean 的默认作用域（Scope）是什么？",
+              "options": [
+                "\\u201Cprototype\\u201D（每次获取都创建新实例）",
+                "\\u201Csingleton\\u201D（容器中只有一个实例）",
+                "\\u201Crequest\\u201D（每个 HTTP 请求一个实例）",
+                "\\u201Csession\\u201D（每个 HTTP 会话一个实例）"
+              ],
+              "answer": 1,
+              "explanation": "Spring 中 Bean 的默认作用域是 \\u201Csingleton\\u201D，即整个 IoC 容器中只有一个该类型的 Bean 实例，所有注入该 Bean 的地方都共享同一个实例。这适用于无状态的 Service、DAO 等组件。\\u201Cprototype\\u201D 每次获取都会创建新实例，适用于有状态对象（如购物车）。\\u201Crequest\\u201D 和 \\u201Csession\\u201D 是 Web 环境下的作用域，分别对应每个 HTTP 请求和每个 HTTP 会话一个实例。"
+            },
+            {
+              "type": "single",
+              "question": "在 Spring 的依赖注入方式中，官方推荐使用的是以下哪种？",
+              "options": [
+                "字段注入（直接在字段上加 \\u201C@Autowired\\u201D）",
+                "Setter 注入（在 setter 方法上加 \\u201C@Autowired\\u201D）",
+                "构造器注入（在构造器上加 \\u201C@Autowired\\u201D）",
+                "静态方法注入（在静态方法上加 \\u201C@Autowired\\u201D）"
+              ],
+              "answer": 2,
+              "explanation": "Spring 官方推荐使用构造器注入，原因有三：（1）依赖不可变——可以标记为 \\u201Cfinal\\u201D，保证对象创建后依赖不会被修改；（2）状态完整——对象创建时所有必需依赖都已注入，不会出现空指针；（3）易于测试——可以在单元测试中直接通过构造器传入 mock 对象。字段注入虽然写法简洁，但无法标记 \\u201Cfinal\\u201D，且难以测试。静态方法不支持 \\u201C@Autowired\\u201D 注入。"
+            },
+            {
+              "type": "single",
+              "question": "在 AOP（面向切面编程）的核心概念中，用于定义\\u201C哪些连接点需要被拦截\\u201D的表达式称为？",
+              "options": [
+                "通知（Advice）",
+                "切面（Aspect）",
+                "切点（Pointcut）",
+                "连接点（Joinpoint）"
+              ],
+              "answer": 2,
+              "explanation": "切点（Pointcut）是定义哪些连接点需要被拦截的表达式，如 \\u201Cexecution(* com.example.service.*.*(..))\\u201D 表示拦截 service 包下所有类的所有方法。连接点（Joinpoint）是程序执行过程中的某个点（如方法调用），是客观存在的。通知（Advice）是切面在连接点执行的动作（如\\u201C方法执行前记录日志\\u201D）。切面（Aspect）是横切关注点的模块化，一个切面可以包含多个切点和通知。"
+            },
+            {
+              "type": "single",
+              "question": "Spring Bean 的完整生命周期中，以下哪个顺序是正确的？",
+              "options": [
+                "初始化 → 实例化 → 属性赋值 → 使用 → 销毁",
+                "实例化 → 属性赋值 → 初始化 → 使用 → 销毁",
+                "属性赋值 → 实例化 → 初始化 → 使用 → 销毁",
+                "实例化 → 初始化 → 属性赋值 → 使用 → 销毁"
+              ],
+              "answer": 1,
+              "explanation": "Spring Bean 的生命周期按以下顺序进行：（1）\\u201C实例化\\u201D——容器通过反射创建 Bean 实例；（2）\\u201C属性赋值\\u201D——通过 \\u201C@Autowired\\u201D 等方式注入依赖；（3）\\u201C初始化\\u201D——调用 \\u201C@PostConstruct\\u201D 标注的方法完成自定义初始化；（4）\\u201C使用\\u201D——Bean 可以被其他组件调用；（5）\\u201C销毁\\u201D——容器关闭时调用 \\u201C@PreDestroy\\u201D 标注的方法释放资源。必须先创建实例，才能注入属性，然后才能执行初始化逻辑。"
+            },
+            {
+              "type": "single",
+              "question": "关于 Spring 的 IoC（控制反转），以下哪个说法最准确地描述了其核心思想？",
+              "options": [
+                "IoC 是指把 Java 程序的执行流程从操作系统转移到 JVM 中运行",
+                "IoC 是指把对象的创建和管理权从代码转移到 Spring 容器，由容器负责注入依赖",
+                "IoC 是指把所有 Java 类都变成接口，由容器自动生成实现类",
+                "IoC 是指把数据库连接池的管理权从应用转移到操作系统"
+              ],
+              "answer": 1,
+              "explanation": "IoC（Inversion of Control，控制反转）的核心思想是把对象的创建和管理权从程序代码转移到 Spring 容器中。传统方式下，程序员在代码中用 \\u201Cnew\\u201D 关键字创建依赖对象；使用 IoC 后，容器负责创建对象并自动注入依赖（DI，Dependency Injection）。这就像餐厅的厨师从\\u201C自己去菜市场买菜\\u201D变成\\u201C采购经理把菜送过来\\u201D——控制权从厨师（代码）反转到了采购经理（容器）。"
+            }
+          ]
         }
       ]
     },
@@ -53550,68 +54282,63 @@
           "quiz": [
             {
               "type": "single",
-              "question": "在 Prometheus 中，哪种指标类型只能递增，适合用来统计请求总数？",
+              "question": "Prometheus 采用的数据收集模型是什么？与另一种模型相比有什么优势？",
               "options": [
-                "Counter",
+                "Push 模型——由应用主动推送指标到 Prometheus，适合所有场景",
+                "Pull 模型——Prometheus 主动从目标抓取（scrape）指标数据，便于发现异常目标和统一管理",
+                "点对点模型——每个监控目标之间互相交换数据",
+                "广播模型——所有指标同时发送到所有监控节点"
+              ],
+              "answer": 1,
+              "explanation": "Prometheus 使用 Pull（拉取）模型，由 Prometheus Server 定期主动从目标（如 Node Exporter、应用 /metrics 端点）抓取指标数据。这种模式的优势在于：Prometheus 可以知道哪些目标是可达的（通过 \"up\" 指标），便于发现故障目标；抓取频率由 Prometheus 统一管理；配置集中，不需要每个应用都配置 Prometheus 地址。对于短生命周期的任务（如 CronJob），则使用 Pushgateway 来弥补 Pull 模型的不足。"
+            },
+            {
+              "type": "single",
+              "question": "在 Prometheus 的四种指标类型中，哪种类型的指标只能递增（或重置），最适合用来统计\"总共发生了多少次\"？",
+              "options": [
                 "Gauge",
+                "Counter",
                 "Histogram",
                 "Summary"
               ],
-              "answer": 0,
-              "explanation": "在 `监控告警体系搭建` 第 1 题中，正确答案是「Counter」。Counter 是只增不减的指标类型，适合统计请求总数、错误总数等累计量。Gauge 可增可减适合温度、内存等当前值；Histogram 和 Summary 用于分布统计。"
+              "answer": 1,
+              "explanation": "Counter（计数器）是最简单的指标类型，只能递增或在进程重启时重置。它适合统计\"总共发生了多少次\"的场景，如 HTTP 请求总数、错误总数、消息处理总数等。查询时通常配合 \"rate()\" 函数计算每秒增长率。Gauge 可以任意增减，适合表示\"当前值\"（如内存使用量）。Histogram 和 Summary 用于统计值的分布情况（如延迟分位数）。"
             },
             {
               "type": "single",
-              "question": "Alertmanager 中，将同一类告警合并为一条通知的功能叫什么？",
+              "question": "Alertmanager 中\"抑制（Inhibition）\"规则的作用是什么？",
               "options": [
-                "分组（Grouping）",
-                "抑制（Inhibition）",
-                "静默（Silencing）",
-                "路由（Routing）"
+                "永久删除某个告警规则",
+                "当某个严重告警触发时，抑制同一服务或集群的相关低级告警，避免告警风暴",
+                "加速告警的发送速度",
+                "自动修复触发告警的问题"
               ],
-              "answer": 0,
-              "explanation": "在 `监控告警体系搭建` 第 2 题中，正确答案是「分组（Grouping）」。分组将相关告警合并为一条通知，避免告警风暴。抑制是当高级告警触发时屏蔽低级告警；静默是临时屏蔽告警；路由是决定告警发给谁。"
+              "answer": 1,
+              "explanation": "抑制规则的作用是避免\"告警风暴\"——当一个严重问题触发大量相关告警时，只发送最重要的告警。例如，当整个集群宕机（critical 级别）时，该集群中所有服务的 warning 级别告警都应该被抑制，因为根因是集群故障，发送数百个服务告警没有意义。抑制规则通过 \"source_match\"（源告警）和 \"target_match\"（被抑制告警）配合 \"equal\" 标签来定义。"
             },
             {
               "type": "single",
-              "question": "SLO 为 99.9% 可用性，30 天内允许的最大故障时间约为多少？",
+              "question": "关于 SLI、SLO、SLA 三个概念，以下哪个描述是正确的？",
               "options": [
-                "43 分钟",
-                "4.3 分钟",
-                "430 分钟",
-                "43 秒"
+                "SLI 是内部目标，SLO 是对客户的外部承诺，SLA 是实际测量值",
+                "SLI 是实际测量的服务指标值，SLO 是内部设定的目标值，SLA 是对客户的外部承诺，通常 SLA 比 SLO 更宽松",
+                "三者含义完全相同，只是叫法不同",
+                "SLA 是最严格的技术指标，SLO 次之，SLI 最宽松"
               ],
-              "answer": 0,
-              "explanation": "在 `监控告警体系搭建` 第 3 题中，正确答案是「43 分钟」。30 天 = 43200 分钟，错误预算 = 43200 × 0.1% = 43.2 分钟。"
+              "answer": 1,
+              "explanation": "SLI（Service Level Indicator）是实际测量的服务指标值，如\"过去 30 天可用性为 99.95%\"。SLO（Service Level Objective）是内部设定的目标值，如\"目标可用性 99.9%\"。SLA（Service Level Agreement）是对客户的外部承诺，如\"承诺可用性 99.5%，否则赔偿\"。通常 SLA 比 SLO 更宽松，留出缓冲空间，确保即使未达到内部目标也不会违反对客户的承诺。"
             },
             {
               "type": "single",
-              "question": "Prometheus 默认使用哪种模型采集指标数据？",
+              "question": "在 PromQL 中，\"histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))\" 这个查询的作用是什么？",
               "options": [
-                "拉取模型（Pull）",
-                "推送模型（Push）",
-                "广播模型（Broadcast）",
-                "订阅模型（Subscribe）"
+                "计算过去 5 分钟的平均请求延迟",
+                "计算过去 5 分钟的 P99 请求延迟（即 99% 的请求延迟低于此值）",
+                "统计过去 5 分钟的总请求数",
+                "计算过去 5 分钟的每秒请求速率"
               ],
-              "answer": 0,
-              "explanation": "在 `监控告警体系搭建` 第 4 题中，正确答案是「拉取模型（Pull）」。Prometheus 主动从目标抓取指标数据。短生命周期任务可通过 Pushgateway 间接推送。"
-            },
-            {
-              "type": "multi",
-              "question": "以下哪些属于可观测性三大支柱？（多选）",
-              "options": [
-                "指标（Metrics）",
-                "日志（Logs）",
-                "链路追踪（Traces）",
-                "告警（Alerts）"
-              ],
-              "answers": [
-                0,
-                1,
-                2
-              ],
-              "answer": 0,
-              "explanation": "在 `监控告警体系搭建` 第 5 题中，正确答案是「指标、日志、链路追踪」。可观测性三大支柱是 Metrics、Logs 和 Traces。告警是基于指标触发的通知机制，不属于三大支柱。"
+              "answer": 1,
+              "explanation": "\"histogram_quantile\" 函数用于从 Histogram 类型的指标中计算分位数。参数 \"0.99\" 表示计算第 99 百分位（P99），即 99% 的请求延迟低于此值。\"rate(...[5m])\" 计算过去 5 分钟的增长率。P99 延迟是衡量服务性能的重要指标，它反映了\"最差体验\"用户的需求——如果 P99 延迟是 500ms，意味着 99% 的用户请求延迟在 500ms 以内，只有 1% 的请求超过这个值。"
             }
           ],
           "prerequisites": [
@@ -67606,7 +68333,68 @@
           ],
           "difficulty": "进阶",
           "order": 0,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "以下关于 CI/CD 的描述，哪个是正确的？",
+              "options": [
+                "持续集成（CI）是指每天固定时间统一合并代码",
+                "持续部署（Continuous Deployment）意味着每次通过测试的代码变更都会自动部署到生产环境",
+                "持续交付（Continuous Delivery）要求每次变更都必须手动部署到生产环境",
+                "CI/CD 只适用于大型团队"
+              ],
+              "answer": 1,
+              "explanation": "持续部署的核心特征是每次通过测试的变更自动部署到生产环境，无需人工审批。A 错误，CI 强调频繁、小批量集成（每天多次），而非固定时间。C 错误，持续交付是\"随时可以一键部署\"，但部署动作本身可以是手动的。D 错误，任何规模的团队都可以从 CI/CD 中受益。"
+            },
+            {
+              "type": "single",
+              "question": "在 Jenkins 声明式流水线中，\"post\" 块的 \"always\"、\"success\"、\"failure\" 三个条件的执行顺序是怎样的？",
+              "options": [
+                "只执行其中一个，根据流水线结果决定",
+                "先执行 \"success\" 或 \"failure\"，再执行 \"always\"",
+                "先执行 \"always\"，再根据结果执行 \"success\" 或 \"failure\"",
+                "三个条件同时并行执行"
+              ],
+              "answer": 2,
+              "explanation": "Jenkins 的 \"post\" 块执行顺序是：无论成功失败都先执行 \"always\"（适合归档产物、清理环境），然后根据流水线最终结果执行 \"success\"（发送成功通知）或 \"failure\"（发送告警通知）。\"always\" 是必定执行的，而 \"success\" 和 \"failure\" 是互斥的。"
+            },
+            {
+              "type": "single",
+              "question": "在 GitLab CI 中，\"cache\" 和 \"artifacts\" 的核心区别是什么？",
+              "options": [
+                "\"cache\" 用于传递构建产物到后续阶段，\"artifacts\" 用于加速后续构建",
+                "\"cache\" 用于加速后续构建（如 \"node_modules\"），\"artifacts\" 用于传递构建产物到后续阶段或供下载",
+                "两者功能完全相同，只是语法不同",
+                "\"cache\" 只能缓存 Docker 镜像，\"artifacts\" 可以缓存任何文件"
+              ],
+              "answer": 1,
+              "explanation": "\"cache\" 的主要目的是加速后续构建，例如缓存 \"node_modules\" 目录，避免每次都重新安装依赖，它可过期且会被覆盖。\"artifacts\" 的主要目的是在 Pipeline 的阶段之间传递构建产物（如编译输出、测试报告），也可在 Pipeline UI 中供用户下载，它与 Pipeline 绑定并可设置保留时间。"
+            },
+            {
+              "type": "single",
+              "question": "在 GitHub Actions 中，\"needs\" 关键字的作用是什么？如果一个 job 不设置 \"needs\"，会发生什么？",
+              "options": [
+                "\"needs\" 用于定义 job 之间的依赖关系；不设置则所有 job 并行执行",
+                "\"needs\" 用于定义 step 之间的执行顺序；不设置则所有 step 并行执行",
+                "\"needs\" 用于指定运行环境；不设置则使用默认环境",
+                "\"needs\" 用于声明所需密钥；不设置则无法访问密钥"
+              ],
+              "answer": 0,
+              "explanation": "\"needs\" 用于定义 job 之间的依赖关系。设置了 \"needs: [job-a, job-b]\" 的 job 会等待 job-a 和 job-b 都完成后才执行。如果不设置 \"needs\"，所有 job 默认并行执行，没有先后顺序。\"needs\" 还可以传递 artifacts，后续 job 可以下载前置 job 上传的 artifacts。"
+            },
+            {
+              "type": "single",
+              "question": "以下哪种做法违反了 DevSecOps 中\"安全左移\"的原则？",
+              "options": [
+                "在代码提交时通过 pre-commit hook 检测密钥泄露",
+                "在构建阶段运行 SAST 静态安全扫描",
+                "在部署到生产环境后才进行安全审计",
+                "在依赖安装时通过 \"npm audit\" 检查依赖漏洞"
+              ],
+              "answer": 2,
+              "explanation": "\"安全左移\"的核心理念是在开发流程中尽早发现安全问题。A、B、D 都是在流水线的前中期阶段进行安全检查，符合安全左移原则。C 将安全审计推迟到部署之后，此时发现问题的修复成本最高、风险最大，违背了安全左移的原则。正确的做法是在部署前就完成所有安全检查。"
+            }
+          ]
         },
         {
           "id": "devops_gitops_argocd",
@@ -67629,7 +68417,68 @@
           ],
           "difficulty": "高级",
           "order": 1,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "GitOps 的核心理念中，\"Git 是唯一真相源（Single Source of Truth）\"意味着什么？",
+              "options": [
+                "Git 仓库只能存储 Kubernetes 配置文件，不能存储其他文件",
+                "所有基础设施和应用的期望状态都通过 Git 仓库管理，集群通过自动拉取 Git 中的配置来同步状态",
+                "开发者可以直接修改集群中的资源，只要同步更新 Git 即可",
+                "Git 仓库需要定期备份到外部存储"
+              ],
+              "answer": 1,
+              "explanation": "GitOps 的核心理念是将 Git 仓库作为系统期望状态的唯一来源。所有变更（包括应用配置、基础设施定义）都必须通过 Git 提交来发起，ArgoCD 等工具持续对比 Git 中的期望状态与集群中的实际状态，并自动修复差异。A 错误，Git 可以存储任何声明式配置。C 错误，GitOps 禁止直接手动修改集群。D 不是 GitOps 的核心含义。"
+            },
+            {
+              "type": "single",
+              "question": "在 ArgoCD 中，\"Application\" CRD 的 \"syncPolicy.automated\" 配置中，\"prune: true\" 和 \"selfHeal: true\" 分别表示什么？",
+              "options": [
+                "\"prune\" 自动创建新资源；\"selfHeal\" 自动修复网络问题",
+                "\"prune\" 自动删除 Git 中已移除的资源；\"selfHeal\" 自动修复集群中被手动修改的资源为 Git 中的状态",
+                "\"prune\" 自动更新镜像版本；\"selfHeal\" 自动重启失败的 Pod",
+                "\"prune\" 清理过期的部署历史；\"selfHeal\" 自动扩展副本数"
+              ],
+              "answer": 1,
+              "explanation": "\"prune: true\" 表示当 Git 仓库中删除了某个资源的定义时，ArgoCD 会自动在集群中也删除对应的资源。\"selfHeal: true\" 表示当有人手动修改了集群中的资源（例如通过 \"kubectl edit\"），ArgoCD 会自动将其恢复为 Git 中定义的状态。这两个配置确保了集群状态始终与 Git 保持一致，体现了 GitOps\"禁止手动修改\"的原则。"
+            },
+            {
+              "type": "single",
+              "question": "ArgoCD 的同步窗口（Sync Windows）功能主要用于什么场景？",
+              "options": [
+                "加速 Git 仓库的拉取速度",
+                "限制自动同步的时间窗口，常用于保护生产环境（例如只允许工作日 10:00-14:00 自动同步，禁止周五下午同步）",
+                "自动合并多个 Pull Request",
+                "压缩同步过程中的日志输出"
+              ],
+              "answer": 1,
+              "explanation": "同步窗口是 ArgoCD 中用于控制\"什么时候可以自动同步\"的功能。通过配置 \"allow\" 和 \"deny\" 类型的窗口，可以限制自动同步的时间段。典型用法是保护生产环境：只在工作日白天允许自动同步，禁止在周五下午或周末同步（防止出问题无人处理）。这为生产部署提供了额外的安全保护。"
+            },
+            {
+              "type": "single",
+              "question": "关于 Helm 和 Kustomize 在 ArgoCD 中的使用，以下哪个说法是正确的？",
+              "options": [
+                "Helm 使用模板语法生成 Kubernetes 资源，Kustomize 通过\"基础 + 覆盖层\"方式组合配置，不使用模板",
+                "Helm 和 Kustomize 功能完全相同，只是语法不同",
+                "Kustomize 必须依赖外部 Chart 仓库才能工作",
+                "Helm 不支持多环境配置，Kustomize 支持"
+              ],
+              "answer": 0,
+              "explanation": "Helm 是 Kubernetes 的包管理器，使用 Go 模板语法（如 \"{{ .Values.replicaCount }}\"）来生成资源清单，通过 \"values.yaml\" 文件传入变量。Kustomize 是 Kubernetes 内置的配置管理工具，不使用模板语法，而是通过 \"base\"（基础配置）加 \"overlays\"（覆盖层）的方式组合配置，通过 \"patches\" 修改特定字段。两者都可以在 ArgoCD 中使用，且各有适用场景。"
+            },
+            {
+              "type": "single",
+              "question": "在 GitOps 密钥管理方案中，Sealed Secrets 的主要优势是什么？",
+              "options": [
+                "密钥存储在外部 Vault 中，集群通过网络拉取",
+                "加密后的密钥可以安全地存储在 Git 仓库中，只有集群内的 Sealed Secrets Controller 能解密",
+                "密钥以 Base64 编码存储在 Git 中，任何人都可以解码",
+                "密钥通过环境变量手动注入到每个 Pod 中"
+              ],
+              "answer": 1,
+              "explanation": "Sealed Secrets 使用非对称加密对 Kubernetes Secret 进行加密。加密后的\"密封密钥\"（SealedSecret 资源）可以安全地提交到 Git 仓库，因为只有集群内运行的 Sealed Secrets Controller 持有解密密钥。A 描述的是 External Secrets 方案。C 错误，Base64 不是加密，不安全。D 不是 Sealed Secrets 的工作方式。"
+            }
+          ]
         },
         {
           "id": "devops_github_actions",
@@ -67651,7 +68500,68 @@
           ],
           "difficulty": "进阶",
           "order": 2,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "在 GitHub Actions 中，以下哪个事件触发方式支持配置自定义输入参数（如选择部署环境）？",
+              "options": [
+                "\"push\"",
+                "\"pull_request\"",
+                "\"workflow_dispatch\"",
+                "\"schedule\""
+              ],
+              "answer": 2,
+              "explanation": "\"workflow_dispatch\" 是手动触发工作流的事件，它支持通过 \"inputs\" 配置自定义输入参数，用户可以在 GitHub UI 中手动填写。例如可以定义一个\"环境选择\"下拉框，让用户选择部署到 staging 还是 production。\"push\" 和 \"pull_request\" 是自动触发事件，不支持自定义输入。\"schedule\" 是定时触发，也不支持输入参数。"
+            },
+            {
+              "type": "single",
+              "question": "GitHub Actions 中 \"strategy.matrix\" 的作用是什么？如果配置了 \"node-version: [16, 18, 20]\" 和 \"os: [ubuntu-latest, windows-latest]\"，会生成多少个 job 实例？",
+              "options": [
+                "按顺序依次运行每个版本；6 个",
+                "在所有指定组合上并行运行测试；6 个",
+                "随机选择一个组合运行；1 个",
+                "只运行最新的版本组合；2 个"
+              ],
+              "answer": 1,
+              "explanation": "\"strategy.matrix\" 用于定义多维度并行测试策略。GitHub Actions 会自动生成所有维度组合的 job 实例并行运行。\"node-version\" 有 3 个值，\"os\" 有 2 个值，总共 3 x 2 = 6 个组合，即 6 个 job 实例并行执行。\"fail-fast: false\" 可以确保某个组合失败不影响其他组合继续运行。"
+            },
+            {
+              "type": "single",
+              "question": "在 GitHub Actions 的缓存配置中，以下哪个缓存键（key）设计最合理？",
+              "options": [
+                "\"my-cache-v1\"（固定字符串）",
+                "\"${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}\"（基于操作系统和锁文件哈希）",
+                "\"${{ github.sha }}\"（基于提交哈希）",
+                "\"cache-${{ github.actor }}\"（基于提交者用户名）"
+              ],
+              "answer": 1,
+              "explanation": "缓存键的设计原则是：当依赖内容变化时缓存应该失效。选项 B 使用操作系统和 \"package-lock.json\" 的哈希值作为键，当依赖文件发生变化时哈希值改变，缓存自动失效并重新构建。\"restore-keys\" 还提供了回退匹配机制。A 是固定字符串，永远不会失效但也永远不会更新。C 每次提交都不同，缓存命中率极低。D 与依赖内容无关。"
+            },
+            {
+              "type": "single",
+              "question": "GitHub Actions 中自定义 Composite Action 的主要优势是什么？",
+              "options": [
+                "可以让外部用户直接修改你的 workflow 文件",
+                "可以将多个步骤打包成一个可复用的单元，在多个 workflow 中共享",
+                "可以绕过 GitHub 的权限检查",
+                "可以自动修复失败的 job"
+              ],
+              "answer": 1,
+              "explanation": "Composite Action 允许你将一组重复出现的步骤封装成一个独立的、可复用的 Action。例如将\"安装 Node.js + 缓存依赖 + 安装依赖\"封装为 \"setup-project\" Action，然后在多个 workflow 中通过 \"uses: ./.github/actions/setup-project\" 调用。这提高了配置的可维护性和一致性，避免了在多个 workflow 中重复相同的步骤组合。"
+            },
+            {
+              "type": "single",
+              "question": "在 GitHub Actions 中，关于环境变量和密钥（Secrets）的使用，以下哪个做法是正确的？",
+              "options": [
+                "将数据库密码直接写在 workflow 文件的 \"env\" 字段中",
+                "使用 \"${{ secrets.XXX }}\" 引用密钥，密钥在日志中会自动被替换为 \"***\"",
+                "在 workflow 的 \"run\" 命令中用 \"echo\" 打印密钥值以便调试",
+                "将密钥存储在 Git 仓库的配置文件中"
+              ],
+              "answer": 1,
+              "explanation": "GitHub Secrets 是专门用于存储敏感信息的加密机制。通过 \"${{ secrets.XXX }}\" 引用，密钥值在日志中会自动被替换为 \"***\"，防止泄露。A 是密钥硬编码，极不安全。C 会将密钥明文输出到日志中，违反安全原则。D 将密钥提交到 Git 仓库会导致永久泄露风险。正确做法是在仓库的 Settings > Secrets 中配置，并在 workflow 中通过 \"secrets\" 上下文引用。"
+            }
+          ]
         },
         {
           "id": "devops_docker_registry",
@@ -67674,7 +68584,68 @@
           ],
           "difficulty": "进阶",
           "order": 3,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "Docker 多阶段构建（Multi-stage Build）的主要目的是什么？",
+              "options": [
+                "让 Dockerfile 的代码更简洁易读",
+                "在构建阶段使用包含编译工具的完整镜像，在最终运行阶段只拷贝编译产物，从而大幅减小镜像体积并提高安全性",
+                "让镜像可以在多个平台上同时构建",
+                "加快 Docker 镜像的推送速度"
+              ],
+              "answer": 1,
+              "explanation": "多阶段构建使用多个 \"FROM\" 指令，前面的阶段（如 \"builder\"）负责编译和构建，包含完整的编译工具链。最终阶段只通过 \"COPY --from=builder\" 拷贝必要的运行产物（如二进制文件），不包含编译工具。这样可以将镜像从 1GB+ 缩小到 10-50MB，同时减少攻击面（不暴露编译工具），提高安全性。"
+            },
+            {
+              "type": "single",
+              "question": "关于 Docker 镜像标签策略，以下哪个做法是生产环境的最佳实践？",
+              "options": [
+                "始终使用 \"latest\" 标签，方便部署最新版本",
+                "使用语义化版本号（如 \"1.2.3\"）或 Git SHA 作为标签，避免使用 \"latest\"",
+                "使用日期作为唯一标签（如 \"2024-01-15\"）",
+                "不需要标签，Docker 会自动分配唯一 ID"
+              ],
+              "answer": 1,
+              "explanation": "生产环境应使用明确的版本号标签（如语义化版本 \"1.2.3\"）或 Git 提交哈希（如 \"abc1234\"），这样可以精确追溯每个镜像对应的代码版本，确保部署的可重复性和可回滚性。\"latest\" 标签含义模糊，不同时间拉取可能得到不同版本，容易导致不可预期的问题。日期标签虽然可追溯但无法体现版本兼容性信息。"
+            },
+            {
+              "type": "single",
+              "question": "\".dockerignore\" 文件的作用是什么？",
+              "options": [
+                "定义 Docker 容器运行时可以访问的文件",
+                "告诉 Docker 在构建镜像时排除哪些文件不打包进镜像，类似于 \".gitignore\"",
+                "列出 Docker 镜像的安全漏洞",
+                "配置 Docker 容器的网络访问规则"
+              ],
+              "answer": 1,
+              "explanation": "\".dockerignore\" 文件的作用类似于 \".gitignore\"，它告诉 Docker 在构建镜像时忽略指定的文件和目录。常见的排除项包括 \"node_modules\"、\".git\"、\".env\"、\"coverage\" 等。使用 \".dockerignore\" 可以减小构建上下文（context）的体积，加速镜像构建，同时避免将不必要的文件（如敏感配置、开发工具）打包进镜像。"
+            },
+            {
+              "type": "single",
+              "question": "以下哪个工具专门用于容器镜像的安全漏洞扫描？",
+              "options": [
+                "Prometheus",
+                "Grafana",
+                "Trivy",
+                "Alertmanager"
+              ],
+              "answer": 2,
+              "explanation": "Trivy 是目前最流行的开源容器安全扫描工具，由 Aqua Security 开发。它可以扫描容器镜像中的操作系统包和应用依赖（如 npm、pip）的已知漏洞（CVE），并输出详细的漏洞报告，包括严重等级和修复版本。Prometheus 是监控系统，Grafana 是可视化工具，Alertmanager 是告警管理组件，它们都不用于镜像安全扫描。"
+            },
+            {
+              "type": "single",
+              "question": "Docker Hub 免费账户的拉取限制是什么？这对 CI/CD 流水线有什么影响？",
+              "options": [
+                "无限制，但推送次数有限",
+                "每 6 小时 100 次拉取限制，频繁拉取镜像的 CI/CD 流水线可能触发限流",
+                "每天只能拉取 10 次",
+                "只有中国地区的用户有限制"
+              ],
+              "answer": 1,
+              "explanation": "自 2020 年 11 月起，Docker Hub 对匿名用户和免费账户实施每 6 小时 100 次拉取的频率限制。对于频繁构建的 CI/CD 流水线来说，这个限制很容易被触发，导致构建失败。应对方案包括：使用私有镜像仓库（如 Harbor、AWS ECR）、升级到 Docker Pro 账户、或在 CI 中配置镜像缓存代理。"
+            }
+          ]
         },
         {
           "id": "devops_deployment_strategies",
@@ -67697,7 +68668,68 @@
           ],
           "difficulty": "高级",
           "order": 4,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "蓝绿部署（Blue-Green Deployment）的核心特点是什么？",
+              "options": [
+                "逐步替换旧版本的 Pod，每次只更新一小部分",
+                "维护两套完全相同的生产环境，通过切换 Service selector 实现零停机部署和秒级回滚",
+                "先将少量流量导入新版本，观察指标正常后再逐步扩大流量",
+                "在代码层面通过特性开关控制新旧功能的启用"
+              ],
+              "answer": 1,
+              "explanation": "蓝绿部署的核心是维护两套并行的生产环境——蓝色（当前版本）和绿色（新版本）。部署时先在绿色环境部署新版本并验证，然后通过修改 Kubernetes Service 的 selector 标签将流量从蓝色切换到绿色。切换几乎是瞬间完成的，如果出现问题可以立即切回蓝色实现秒级回滚。A 描述的是滚动更新，C 描述的是金丝雀发布。"
+            },
+            {
+              "type": "single",
+              "question": "与滚动更新相比，金丝雀发布（Canary Release）的最大优势是什么？",
+              "options": [
+                "部署速度更快",
+                "风险更低，可以先让少量用户流量进入新版本，观察指标正常后再逐步扩大流量",
+                "不需要额外的服务器资源",
+                "配置更简单，不需要服务网格"
+              ],
+              "answer": 1,
+              "explanation": "金丝雀发布的核心优势是渐进式、低风险的发布方式。它先将少量流量（如 5%-10%）路由到新版本，密切监控错误率、延迟等技术指标。如果一切正常再逐步增加流量比例（10% -> 25% -> 50% -> 100%）。如果发现问题，只需将流量切回稳定版即可。A 错误，金丝雀发布通常比滚动更新更慢。C 错误，需要额外资源运行金丝雀实例。D 错误，精确的流量分割通常需要 Istio 等服务网格。"
+            },
+            {
+              "type": "single",
+              "question": "在 Istio 服务网格中，哪个资源负责定义流量分割规则，精确控制不同版本之间的流量分配比例？",
+              "options": [
+                "Gateway",
+                "DestinationRule",
+                "VirtualService",
+                "ServiceEntry"
+              ],
+              "answer": 2,
+              "explanation": "VirtualService 是 Istio 中最关键的流量管理资源，它定义了流量如何路由到不同的子集（subset）。通过配置 \"route\" 中各 destination 的 \"weight\" 值，可以精确控制流量分配比例，例如 90% 到 stable、10% 到 canary。Gateway 定义入口网关的端口和主机配置。DestinationRule 定义子集（subset）的标签和连接策略，但不负责流量分割比例。"
+            },
+            {
+              "type": "single",
+              "question": "自动化回滚策略中，以下哪个指标最适合作为回滚触发条件？",
+              "options": [
+                "请求量增加 10%",
+                "HTTP 5xx 错误率超过设定阈值（如 > 1%）",
+                "新增用户注册数增加",
+                "CPU 使用率从 40% 上升到 50%"
+              ],
+              "answer": 1,
+              "explanation": "HTTP 5xx 错误率是衡量服务健康状态的核心指标。当新版本的 5xx 错误率超过设定阈值（如 1%），说明新版本存在严重问题，应立即触发回滚以保护用户体验。A 和 C 是正面的业务指标变化，不应触发回滚。D 的 CPU 使用率从 40% 到 50% 属于正常波动范围，不构成回滚条件。常见的回滚触发条件还包括：健康检查失败、P99 延迟超过基线 2 倍、资源使用率超过 85% 等。"
+            },
+            {
+              "type": "single",
+              "question": "数据库迁移中的 Expand-Contract 模式的核心思想是什么？",
+              "options": [
+                "直接删除旧字段，创建新字段，然后停机迁移数据",
+                "先添加新字段同时保留旧字段（Expand），双写过渡并回填历史数据，最后确认无误后删除旧字段（Contract）",
+                "在新旧版本之间随机选择使用哪个字段",
+                "只在测试环境执行迁移，生产环境不做变更"
+              ],
+              "answer": 1,
+              "explanation": "Expand-Contract 模式解决的是蓝绿部署和金丝雀发布中新旧版本同时访问同一数据库时的兼容性问题。核心思想分三步：第一步 Expand——添加新字段但保留旧字段，确保新旧版本都能正常运行。第二步 Migrate——应用程序同时写入新旧字段（双写），并回填历史数据。第三步 Contract——确认所有读写都已切换到新字段后，安全地删除旧字段。这种方式确保了零停机、向后兼容的数据库迁移。"
+            }
+          ]
         },
         {
           "id": "devops_terraform",
@@ -67720,7 +68752,68 @@
           ],
           "difficulty": "进阶",
           "order": 5,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "在 Terraform 中，Provider 的作用是什么？",
+              "options": [
+                "提供代码编辑器功能",
+                "作为 Terraform 和云厂商之间的\"翻译官\"，将 HCL 配置转换为云厂商的 API 调用",
+                "提供 Web 界面管理基础设施",
+                "自动测试应用程序代码"
+              ],
+              "answer": 1,
+              "explanation": "Provider 是 Terraform 和具体云厂商（如 AWS、Azure、阿里云）之间的桥梁。你用 HCL 语法描述想要的基础设施，Provider 负责将这些描述翻译成对应云厂商的 API 调用来实际创建资源。Terraform 支持数百种 Provider，使用同一套 HCL 语法就能管理不同云平台的基础设施。\"hashicorp/aws\" 是 AWS 的 Provider，\"hashicorp/google\" 是 GCP 的 Provider。"
+            },
+            {
+              "type": "single",
+              "question": "Terraform 的状态文件（terraform.tfstate）的主要作用是什么？",
+              "options": [
+                "存储 Terraform 的安装配置",
+                "记录当前基础设施的实际状态，Terraform 通过对比代码描述和状态文件来决定需要做什么改动",
+                "存储云厂商的 API 密钥",
+                "记录 Terraform 命令的执行历史"
+              ],
+              "answer": 1,
+              "explanation": "状态文件是 Terraform 的\"记忆\"，它记录了当前基础设施的真实状态（如资源 ID、属性值等）。每次执行 \"terraform apply\" 时，Terraform 会对比\"代码中描述的期望状态\"和\"状态文件中记录的实际状态\"，计算出差异（diff），然后只执行必要的变更。这就是为什么生产环境必须使用远程状态（如 S3 后端）并启用状态锁定（如 DynamoDB），以防止多人并发操作导致状态冲突。"
+            },
+            {
+              "type": "single",
+              "question": "在 Terraform 中，\"terraform.tfvars\" 文件的用途是什么？",
+              "options": [
+                "定义 Terraform 的版本要求",
+                "为变量提供具体的值，执行 \"terraform apply\" 时自动加载",
+                "存储 Terraform 的状态信息",
+                "定义 Provider 的认证信息"
+              ],
+              "answer": 1,
+              "explanation": "\"terraform.tfvars\" 文件用于为 \"variable\" 块中声明的变量提供具体的值。当执行 \"terraform apply\" 时，Terraform 会自动加载当前目录下的 \"terraform.tfvars\" 文件。你也可以使用 \"-var-file\" 参数指定不同的变量文件，例如 \"terraform apply -var-file=\\\"prod.tfvars\\\"\" 来为生产环境应用不同的配置值。这是一种将配置与代码分离的最佳实践。"
+            },
+            {
+              "type": "single",
+              "question": "Terraform 工作区（Workspace）的本质是什么？",
+              "options": [
+                "一个代码编辑器",
+                "同一份 Terraform 代码可以在不同的工作区中运行，每个工作区有独立的状态文件，用于管理不同环境",
+                "一个团队协作工具",
+                "一种代码格式化工具"
+              ],
+              "answer": 1,
+              "explanation": "Terraform 工作区就像\"平行宇宙\"——同一份代码可以在不同工作区中运行，每个工作区拥有自己独立的状态文件。典型用法是创建 \"dev\"、\"staging\"、\"prod\" 三个工作区，用同一套代码管理三个环境。通过 \"terraform.workspace\" 可以在代码中引用当前工作区名称，实现环境差异化配置（如不同工作区使用不同规格的实例类型）。"
+            },
+            {
+              "type": "single",
+              "question": "在 Terraform 模块设计中，\"module\" 块中的 \"source\" 参数的作用是什么？",
+              "options": [
+                "指定模块的代码来源路径（本地目录或远程注册表）",
+                "指定模块的输出变量",
+                "指定模块的输入变量",
+                "指定模块的运行环境"
+              ],
+              "answer": 0,
+              "explanation": "\"source\" 参数指定模块的代码来源，Terraform 从这里加载模块的定义。支持多种来源方式：本地路径（\"source = \\\"./modules/vpc\\\"\"）、Terraform Registry（\"source = \\\"terraform-aws-modules/vpc/aws\\\"\"）、Git 仓库等。使用模块可以将一组相关资源打包成可复用的组件，就像\"预制件\"一样在不同项目中重复使用，提高代码的组织性和可维护性。"
+            }
+          ]
         },
         {
           "id": "devops_monitoring",
@@ -67743,7 +68836,68 @@
           ],
           "difficulty": "高级",
           "order": 6,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "Prometheus 采用的数据收集模型是什么？与另一种模型相比有什么优势？",
+              "options": [
+                "Push 模型——由应用主动推送指标到 Prometheus，适合所有场景",
+                "Pull 模型——Prometheus 主动从目标抓取（scrape）指标数据，便于发现异常目标和统一管理",
+                "点对点模型——每个监控目标之间互相交换数据",
+                "广播模型——所有指标同时发送到所有监控节点"
+              ],
+              "answer": 1,
+              "explanation": "Prometheus 使用 Pull（拉取）模型，由 Prometheus Server 定期主动从目标（如 Node Exporter、应用 /metrics 端点）抓取指标数据。这种模式的优势在于：Prometheus 可以知道哪些目标是可达的（通过 \"up\" 指标），便于发现故障目标；抓取频率由 Prometheus 统一管理；配置集中，不需要每个应用都配置 Prometheus 地址。对于短生命周期的任务（如 CronJob），则使用 Pushgateway 来弥补 Pull 模型的不足。"
+            },
+            {
+              "type": "single",
+              "question": "在 Prometheus 的四种指标类型中，哪种类型的指标只能递增（或重置），最适合用来统计\"总共发生了多少次\"？",
+              "options": [
+                "Gauge",
+                "Counter",
+                "Histogram",
+                "Summary"
+              ],
+              "answer": 1,
+              "explanation": "Counter（计数器）是最简单的指标类型，只能递增或在进程重启时重置。它适合统计\"总共发生了多少次\"的场景，如 HTTP 请求总数、错误总数、消息处理总数等。查询时通常配合 \"rate()\" 函数计算每秒增长率。Gauge 可以任意增减，适合表示\"当前值\"（如内存使用量）。Histogram 和 Summary 用于统计值的分布情况（如延迟分位数）。"
+            },
+            {
+              "type": "single",
+              "question": "Alertmanager 中\"抑制（Inhibition）\"规则的作用是什么？",
+              "options": [
+                "永久删除某个告警规则",
+                "当某个严重告警触发时，抑制同一服务或集群的相关低级告警，避免告警风暴",
+                "加速告警的发送速度",
+                "自动修复触发告警的问题"
+              ],
+              "answer": 1,
+              "explanation": "抑制规则的作用是避免\"告警风暴\"——当一个严重问题触发大量相关告警时，只发送最重要的告警。例如，当整个集群宕机（critical 级别）时，该集群中所有服务的 warning 级别告警都应该被抑制，因为根因是集群故障，发送数百个服务告警没有意义。抑制规则通过 \"source_match\"（源告警）和 \"target_match\"（被抑制告警）配合 \"equal\" 标签来定义。"
+            },
+            {
+              "type": "single",
+              "question": "关于 SLI、SLO、SLA 三个概念，以下哪个描述是正确的？",
+              "options": [
+                "SLI 是内部目标，SLO 是对客户的外部承诺，SLA 是实际测量值",
+                "SLI 是实际测量的服务指标值，SLO 是内部设定的目标值，SLA 是对客户的外部承诺，通常 SLA 比 SLO 更宽松",
+                "三者含义完全相同，只是叫法不同",
+                "SLA 是最严格的技术指标，SLO 次之，SLI 最宽松"
+              ],
+              "answer": 1,
+              "explanation": "SLI（Service Level Indicator）是实际测量的服务指标值，如\"过去 30 天可用性为 99.95%\"。SLO（Service Level Objective）是内部设定的目标值，如\"目标可用性 99.9%\"。SLA（Service Level Agreement）是对客户的外部承诺，如\"承诺可用性 99.5%，否则赔偿\"。通常 SLA 比 SLO 更宽松，留出缓冲空间，确保即使未达到内部目标也不会违反对客户的承诺。"
+            },
+            {
+              "type": "single",
+              "question": "在 PromQL 中，\"histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))\" 这个查询的作用是什么？",
+              "options": [
+                "计算过去 5 分钟的平均请求延迟",
+                "计算过去 5 分钟的 P99 请求延迟（即 99% 的请求延迟低于此值）",
+                "统计过去 5 分钟的总请求数",
+                "计算过去 5 分钟的每秒请求速率"
+              ],
+              "answer": 1,
+              "explanation": "\"histogram_quantile\" 函数用于从 Histogram 类型的指标中计算分位数。参数 \"0.99\" 表示计算第 99 百分位（P99），即 99% 的请求延迟低于此值。\"rate(...[5m])\" 计算过去 5 分钟的增长率。P99 延迟是衡量服务性能的重要指标，它反映了\"最差体验\"用户的需求——如果 P99 延迟是 500ms，意味着 99% 的用户请求延迟在 500ms 以内，只有 1% 的请求超过这个值。"
+            }
+          ]
         },
         {
           "id": "devops_logging_tracing",
@@ -67766,7 +68920,68 @@
           ],
           "difficulty": "高级",
           "order": 7,
-          "quiz": []
+          "quiz": [
+            {
+              "type": "single",
+              "question": "在链路追踪（Distributed Tracing）中，\"Trace\" 代表什么？",
+              "options": [
+                "单个服务内部的函数调用",
+                "一个请求从入口到结束的完整调用链路，包含经过的所有服务和耗时",
+                "数据库查询的执行计划",
+                "网络数据包的路由路径"
+              ],
+              "answer": 1,
+              "explanation": "Trace 代表一个用户请求在分布式系统中的完整调用路径。例如一个\"创建订单\"的请求可能经过 API Gateway -> 订单服务 -> 库存服务 -> 支付服务，这整个调用链就是一个 Trace。每个 Trace 有唯一的 Trace ID，由多个 Span 组成，每个 Span 代表单个服务的处理过程和耗时。通过 Trace 可以直观看到请求在哪个环节耗时最长，快速定位性能瓶颈。"
+            },
+            {
+              "type": "single",
+              "question": "OpenTelemetry（OTel）项目解决了什么问题？",
+              "options": [
+                "提供统一的日志存储方案",
+                "统一了链路追踪、指标收集和日志记录的标准，提供\"一次集成、多平台导出\"的能力，类似可观测性领域的 USB 接口",
+                "替代了所有现有的监控工具",
+                "只负责前端性能监控"
+              ],
+              "answer": 1,
+              "explanation": "在 OpenTelemetry 出现之前，Jaeger、Zipkin、SkyWalking 等各有自己的 SDK，如果要切换追踪系统就需要修改代码重新集成。OpenTelemetry 作为 CNCF 项目，提供了统一的标准 API 和 SDK，开发者只需集成一次 OTel，就可以将追踪数据导出到 Jaeger、Zipkin 等多个后端。它统一了三大可观测性支柱（链路追踪、指标、日志）的采集标准，被称为\"可观测性领域的 USB 接口\"。"
+            },
+            {
+              "type": "single",
+              "question": "在生产环境中，推荐的日志级别设置是什么？为什么？",
+              "options": [
+                "DEBUG——记录尽可能多的信息，方便排查问题",
+                "INFO——记录正常业务流程的关键信息，避免 DEBUG 日志的噪音淹没有用信息",
+                "TRACE——最详细的调试级别，适合生产环境",
+                "不设置日志级别，所有日志都输出"
+              ],
+              "answer": 1,
+              "explanation": "生产环境推荐使用 INFO 级别。DEBUG 和 TRACE 级别的日志量非常大，会产生大量噪音，不仅增加存储成本，还会让真正重要的 ERROR 和 WARN 信息被淹没，难以快速定位问题。DEBUG 级别适合开发和测试环境使用。正确的做法是：生产环境用 INFO 记录关键业务事件，配合结构化日志（JSON 格式）和 \"traceId\" 字段，实现高效的日志查询和链路追踪关联。"
+            },
+            {
+              "type": "single",
+              "question": "在 ELK Stack 中，Elasticsearch、Logstash、Kibana 各自承担什么角色？",
+              "options": [
+                "Elasticsearch 负责日志采集，Logstash 负责可视化，Kibana 负责存储",
+                "Elasticsearch 负责分布式存储和检索日志，Logstash 负责接收、解析和转换日志数据，Kibana 负责日志的查询和可视化展示",
+                "三者功能完全相同，互为备份",
+                "Elasticsearch 负责告警，Logstash 负责日志采集，Kibana 负责日志存储"
+              ],
+              "answer": 1,
+              "explanation": "ELK Stack 的完整数据流是：应用程序 -> Filebeat（轻量采集器）-> Logstash（解析/过滤/转换）-> Elasticsearch（分布式存储和全文检索）-> Kibana（Web 可视化仪表盘）。Elasticsearch 是核心存储引擎，提供强大的全文搜索和聚合分析能力。Logstash 是数据处理管道，支持 Grok 模式解析、条件过滤、数据脱敏等。Kibana 提供查询界面和仪表盘，让运维人员可以直观地搜索和分析日志。"
+            },
+            {
+              "type": "single",
+              "question": "Fluent Bit 相比 Fluentd 的主要优势是什么？",
+              "options": [
+                "功能更丰富，支持更多的输出插件",
+                "更轻量级，内存占用更低，适合边缘场景和容器环境中的日志采集",
+                "完全兼容 Logstash 的所有 Grok 模式",
+                "只能与 Elasticsearch 配合使用"
+              ],
+              "answer": 1,
+              "explanation": "Fluent Bit 是 Fluentd 的轻量版本，用 C 语言编写，内存占用极低（通常几 MB），非常适合在资源受限的环境中运行，如 Kubernetes 节点上的日志采集（DaemonSet 部署）。Fluentd 用 Ruby 编写，功能更丰富但资源消耗更大，适合作为集中式日志处理服务器。典型架构是：Fluent Bit 部署在每个节点上采集日志，转发给 Fluentd 进行集中处理和路由。"
+            }
+          ]
         }
       ]
     },

@@ -482,15 +482,78 @@ ConfigMap 存储非机密的配置数据（如 URL、日志级别），以明文
 
 ## 考点精讲
 
-### 考点 1：第 1 题
+### 问题1
 
-- **题目**：Docker 镜像的分层机制有什么好处？为什么多阶段构建能减小镜像体积？
-- **判断依据**：这道题落在术语「镜像（Image）」和「Dockerfile」上：镜像的分层存储与构建优化。复习时把「层复用」「缓存加速」「多阶段丢弃构建产物」三个关键点说清楚，再回到「核心概念定义」和「代码示例 1」核对 Dockerfile 中的 `FROM ... AS builder` 写法。
+Docker 镜像的分层机制有什么好处？为什么多阶段构建能减小镜像体积？
 
-### 考点 2：第 2 题
+A. 分层机制没有任何好处，多阶段构建只是为了让 Dockerfile 更复杂
+B. 分层可以复用和缓存加速构建；多阶段构建的最终镜像只包含运行阶段文件，构建阶段的编译器、源码等全部被丢弃
+C. 分层会增加镜像体积，多阶段构建会增大镜像体积
+D. 分层机制仅用于版本管理，与镜像体积无关
 
-- **题目**：Kubernetes 中 Deployment 的 `maxSurge` 和 `maxUnavailable` 分别是什么意思？滚动更新时如何计算最大 Pod 数？
-- **判断依据**：这道题落在术语「Deployment」上：声明式管理 Pod 的滚动更新策略。复习时把「maxSurge 控制上限」「maxUnavailable 控制下限」以及具体计算公式说清楚，再回到「代码示例 3」中 `strategy.rollingUpdate` 配置核对。
+**正确答案：B**
+
+**详细解释：** Docker 镜像分层的好处有两点：（1）层可以复用——多个镜像共享同一基础层（如 JDK 基础镜像），节省磁盘空间和网络传输；（2）层有缓存——Dockerfile 中未变更的层不需要重新构建，加速镜像构建过程。多阶段构建（`FROM ... AS builder`）能显著减小镜像体积，是因为最终镜像只包含运行阶段（第二阶段）的文件。例如 Spring Boot 应用，构建阶段需要 JDK + Gradle（约 500MB），而运行阶段只需要 JRE + jar 包（约 100MB），构建阶段的编译器、源码和中间产物全部被丢弃，不会出现在最终镜像中。
+
+---
+
+### 问题2
+
+Kubernetes 中 Deployment 的 `maxSurge` 和 `maxUnavailable` 分别是什么意思？如果 `replicas=3`、`maxSurge=1`、`maxUnavailable=0`，滚动更新时最多会有几个 Pod 同时运行？
+
+A. 最多 3 个 Pod；maxSurge 和 maxUnavailable 不影响 Pod 总数
+B. 最多 4 个 Pod；maxSurge 控制更新时允许超出期望副本数的上限，maxUnavailable 控制允许不可用的下限
+C. 最多 5 个 Pod；maxSurge 和 maxUnavailable 各自独立计算
+D. 最多 2 个 Pod；更新时必须先删除旧 Pod 再创建新 Pod
+
+**正确答案：B**
+
+**详细解释：** `maxSurge` 是更新过程中允许多出的 Pod 数量上限（超过期望副本数），`maxUnavailable` 是允许不可用的 Pod 数量上限（低于期望副本数）。当 `replicas=3`、`maxSurge=1`、`maxUnavailable=0` 时，滚动更新过程中最多同时运行 4 个 Pod（3 + 1 = 4），且必须始终保持至少 3 个 Pod 处于可用状态。更新流程为：先创建 1 个新 Pod → 新 Pod 就绪后删除 1 个旧 Pod → 循环直到全部更新完成。这种配置实现了零停机更新。
+
+---
+
+### 问题3
+
+在 Dockerfile 中，使用多阶段构建（multi-stage build）的主要目的是什么？
+
+A. 让 Dockerfile 支持多个操作系统
+B. 将构建环境和运行环境分离，最终镜像只包含运行所需的最小文件集，显著减小镜像体积
+C. 让多个开发者可以同时构建同一个项目
+D. 让容器可以同时运行多个应用
+
+**正确答案：B**
+
+**详细解释：** 多阶段构建的核心目的是分离构建环境和运行环境。第一阶段（builder）使用完整的 JDK + 构建工具（如 Gradle）进行编译打包，产生 jar 包等构建产物；第二阶段使用轻量的 JRE + Alpine 基础镜像，仅通过 `COPY --from=builder` 复制运行所需的 jar 包。最终镜像不包含编译器、源码、构建工具和中间产物，体积可从 500MB+ 压缩到 100MB 以内。镜像越小，拉取越快，部署越迅速，同时减少了攻击面，提升了安全性。
+
+---
+
+### 问题4
+
+Kubernetes 中 ConfigMap 和 Secret 的区别是什么？为什么说 Secret 的 Base64 编码不算真正的加密？
+
+A. ConfigMap 和 Secret 完全相同，没有区别
+B. ConfigMap 存储非机密配置数据（明文），Secret 存储敏感数据；Base64 只是编码方式而非加密，任何人可以瞬间解码还原原文
+C. ConfigMap 用于存储密码，Secret 用于存储日志级别
+D. Secret 使用 AES-256 加密，安全性极高
+
+**正确答案：B**
+
+**详细解释：** ConfigMap 用于存储非机密的配置数据（如数据库 URL、日志级别），以明文形式存储和展示。Secret 用于存储敏感数据（如密码、Token、证书），数据经过 Base64 编码。但 Base64 只是一种编码方式（类似\u201c翻译\u201d），不是加密（类似\u201c上锁\u201d）——任何人都可以瞬间解码还原原文，没有任何安全性。生产环境管理敏感配置应：启用 etcd 静态加密（Encryption at Rest），使用外部密钥管理系统（如 HashiCorp Vault），通过 RBAC 限制 Secret 的访问权限，或使用 Sealed Secrets 等工具在 Git 中安全存储加密后的 Secret。
+
+---
+
+### 问题5
+
+在 Kubernetes 中，Service 资源的核心作用是什么？
+
+A. 直接运行应用程序的代码
+B. 为一组 Pod 提供稳定的网络入口（IP + 端口），即使 Pod 重启 IP 变化，Service 地址保持不变
+C. 管理 Docker 镜像的构建和推送
+D. 存储应用的配置文件和环境变量
+
+**正确答案：B**
+
+**详细解释：** Kubernetes 中的 Pod 是临时的——Pod 可能因为更新、故障或节点缩容而被销毁和重建，每次重建后 IP 地址都会变化。Service 为一组具有相同标签的 Pod 提供一个稳定的网络入口（固定的 ClusterIP 和端口），通过 selector 匹配后端 Pod。即使后端 Pod 的 IP 发生变化，Service 的地址始终不变，其他服务或客户端只需访问 Service 地址即可。Service 还支持负载均衡，将请求自动分发到后端的多个 Pod 实例上，类似于一个店铺的统一电话号码——不管哪个店员接电话，顾客只需要拨这一个号。
 
 ---
 

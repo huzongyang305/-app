@@ -1587,6 +1587,85 @@ data:
 
 ---
 
+---
+
+## 考点精讲
+
+### 问题1
+
+GitOps 的核心理念中，"Git 是唯一真相源（Single Source of Truth）"意味着什么？
+
+A. Git 仓库只能存储 Kubernetes 配置文件，不能存储其他文件
+B. 所有基础设施和应用的期望状态都通过 Git 仓库管理，集群通过自动拉取 Git 中的配置来同步状态
+C. 开发者可以直接修改集群中的资源，只要同步更新 Git 即可
+D. Git 仓库需要定期备份到外部存储
+
+**正确答案：B**
+
+**详细解释：** GitOps 的核心理念是将 Git 仓库作为系统期望状态的唯一来源。所有变更（包括应用配置、基础设施定义）都必须通过 Git 提交来发起，ArgoCD 等工具持续对比 Git 中的期望状态与集群中的实际状态，并自动修复差异。A 错误，Git 可以存储任何声明式配置。C 错误，GitOps 禁止直接手动修改集群。D 不是 GitOps 的核心含义。
+
+---
+
+### 问题2
+
+在 ArgoCD 中，"Application" CRD 的 "syncPolicy.automated" 配置中，"prune: true" 和 "selfHeal: true" 分别表示什么？
+
+A. "prune" 自动创建新资源；"selfHeal" 自动修复网络问题
+B. "prune" 自动删除 Git 中已移除的资源；"selfHeal" 自动修复集群中被手动修改的资源为 Git 中的状态
+C. "prune" 自动更新镜像版本；"selfHeal" 自动重启失败的 Pod
+D. "prune" 清理过期的部署历史；"selfHeal" 自动扩展副本数
+
+**正确答案：B**
+
+**详细解释：** "prune: true" 表示当 Git 仓库中删除了某个资源的定义时，ArgoCD 会自动在集群中也删除对应的资源。"selfHeal: true" 表示当有人手动修改了集群中的资源（例如通过 "kubectl edit"），ArgoCD 会自动将其恢复为 Git 中定义的状态。这两个配置确保了集群状态始终与 Git 保持一致，体现了 GitOps"禁止手动修改"的原则。
+
+---
+
+### 问题3
+
+ArgoCD 的同步窗口（Sync Windows）功能主要用于什么场景？
+
+A. 加速 Git 仓库的拉取速度
+B. 限制自动同步的时间窗口，常用于保护生产环境（例如只允许工作日 10:00-14:00 自动同步，禁止周五下午同步）
+C. 自动合并多个 Pull Request
+D. 压缩同步过程中的日志输出
+
+**正确答案：B**
+
+**详细解释：** 同步窗口是 ArgoCD 中用于控制"什么时候可以自动同步"的功能。通过配置 "allow" 和 "deny" 类型的窗口，可以限制自动同步的时间段。典型用法是保护生产环境：只在工作日白天允许自动同步，禁止在周五下午或周末同步（防止出问题无人处理）。这为生产部署提供了额外的安全保护。
+
+---
+
+### 问题4
+
+关于 Helm 和 Kustomize 在 ArgoCD 中的使用，以下哪个说法是正确的？
+
+A. Helm 使用模板语法生成 Kubernetes 资源，Kustomize 通过"基础 + 覆盖层"方式组合配置，不使用模板
+B. Helm 和 Kustomize 功能完全相同，只是语法不同
+C. Kustomize 必须依赖外部 Chart 仓库才能工作
+D. Helm 不支持多环境配置，Kustomize 支持
+
+**正确答案：A**
+
+**详细解释：** Helm 是 Kubernetes 的包管理器，使用 Go 模板语法（如 "{{ .Values.replicaCount }}"）来生成资源清单，通过 "values.yaml" 文件传入变量。Kustomize 是 Kubernetes 内置的配置管理工具，不使用模板语法，而是通过 "base"（基础配置）加 "overlays"（覆盖层）的方式组合配置，通过 "patches" 修改特定字段。两者都可以在 ArgoCD 中使用，且各有适用场景。
+
+---
+
+### 问题5
+
+在 GitOps 密钥管理方案中，Sealed Secrets 的主要优势是什么？
+
+A. 密钥存储在外部 Vault 中，集群通过网络拉取
+B. 加密后的密钥可以安全地存储在 Git 仓库中，只有集群内的 Sealed Secrets Controller 能解密
+C. 密钥以 Base64 编码存储在 Git 中，任何人都可以解码
+D. 密钥通过环境变量手动注入到每个 Pod 中
+
+**正确答案：B**
+
+**详细解释：** Sealed Secrets 使用非对称加密对 Kubernetes Secret 进行加密。加密后的"密封密钥"（SealedSecret 资源）可以安全地提交到 Git 仓库，因为只有集群内运行的 Sealed Secrets Controller 持有解密密钥。A 描述的是 External Secrets 方案。C 错误，Base64 不是加密，不安全。D 不是 Sealed Secrets 的工作方式。
+
+---
+
 > **课程版本**：v2.0
 > **最后更新**：2026 年 10 月
 > **适用 ArgoCD 版本**：v2.9+

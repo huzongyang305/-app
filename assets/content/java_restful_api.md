@@ -587,17 +587,78 @@ Servlet/JSP → Spring 核心 → RESTful API → Spring Boot → 微服务
 
 ## 考点精讲
 
-### 考点 1：第 1 题
+### 问题1
 
-- **题目**：在 RESTful API 中，DELETE 操作为什么被认为是幂等的？
-- **正确项**：DELETE 操作执行一次和执行多次效果相同
-- **判断依据**：这道题落在术语「幂等性」上：同一个操作执行一次和执行多次，效果完全一样。复习时把「幂等性」的定义、哪些 HTTP 方法是幂等的（GET/PUT/DELETE）和哪些不是（POST）一起说清楚，再回到「核心概念定义」核对原文。
+在 RESTful API 中，以下哪组 HTTP 方法都具有幂等性？
 
-### 考点 2：第 2 题
+A. GET、POST、PUT
+B. POST、PUT、DELETE
+C. GET、PUT、DELETE
+D. GET、POST、DELETE
 
-- **题目**：`@RestController` 和 `@Controller` 有什么区别？
-- **正确项**：@RestController = @Controller + @ResponseBody
-- **判断依据**：这道题落在术语「@RestController」上：Spring 中标记 REST 控制器的注解。复习时把「@RestController」的定义、与 @Controller 的区别、以及 @ResponseBody 的作用一起说清楚，再回到「核心概念定义」核对原文。
+**正确答案：C**
+
+**详细解释：** 幂等性是指同一个操作执行一次和执行多次效果完全一样。GET（获取资源，多次获取结果相同）、PUT（全量更新，多次更新同一数据效果相同）、DELETE（删除资源，多次删除同一资源效果相同）都是幂等的。POST 不是幂等的——每次 POST 请求通常会创建一条新记录，执行多次会产生多个资源。
+
+---
+
+### 问题2
+
+在 RESTful API 中，创建资源成功后应该返回哪个 HTTP 状态码？
+
+A. 200 OK
+B. 201 Created
+C. 204 No Content
+D. 301 Moved Permanently
+
+**正确答案：B**
+
+**详细解释：** REST 规范对状态码有明确要求：创建资源成功返回 \u201C201 Created\u201D（不是 200），表示新资源已被创建；删除资源成功返回 \u201C204 No Content\u201D，表示操作成功但没有内容需要返回；资源不存在返回 \u201C404 Not Found\u201D；参数校验失败返回 \u201C400 Bad Request\u201D。\u201C200 OK\u201D 用于一般的成功请求（如 GET 和 PUT 成功）。
+
+---
+
+### 问题3
+
+关于 RESTful API 中使用 DTO（数据传输对象）而非直接返回数据库实体的原因，以下哪个说法是不正确的？
+
+A. DTO 可以过滤敏感字段（如密码），提高安全性
+B. DTO 使 API 数据结构可以与数据库结构独立变化，实现解耦
+C. DTO 可以让数据库查询速度更快
+D. DTO 可以选择性地只暴露前端需要的字段
+
+**正确答案：C**
+
+**详细解释：** 使用 DTO 的主要目的是安全性（过滤敏感字段）、灵活性（API 结构可与数据库不同）和解耦（数据库变化不影响前端）。但 DTO 并不会提升数据库查询速度——查询性能取决于索引、SQL 语句和数据库引擎。DTO 是在数据从数据库查出之后、返回给客户端之前的一层数据转换，它可能还会带来少量的序列化/反序列化开销。
+
+---
+
+### 问题4
+
+HATEOAS（Hypermedia As The Engine Of Application State）的核心思想是什么？
+
+A. API 响应中应该包含大量详细的错误堆栈信息
+B. API 的响应中应该包含\u201C下一步可以做什么\u201D的链接，客户端通过链接动态发现可用操作
+C. 所有 API 都必须使用 XML 格式返回数据
+D. 客户端必须预先硬编码所有可用的 API 地址
+
+**正确答案：B**
+
+**详细解释：** HATEOAS 是 REST 的最高成熟度级别，核心思想是 API 响应中应包含可操作的超媒体链接（如 \u201Cself\u201D、\u201Cdelete\u201D、\u201Creviews\u201D 等），客户端不需要硬编码知道下一步该调用什么接口，而是从响应中的链接动态发现可用操作。这就像餐厅菜单上每道菜旁边都写着\u201C可以加辣\u201D\u201C可以配米饭\u201D——看菜单就知道能做什么。
+
+---
+
+### 问题5
+
+在 Spring Boot 中实现 RESTful API 时，\u201CResponseEntity\u201D 相比直接返回对象有什么优势？
+
+A. \u201CResponseEntity\u201D 可以自动将对象保存到数据库
+B. \u201CResponseEntity\u201D 可以完整控制 HTTP 响应，包括状态码、响应头和响应体
+C. \u201CResponseEntity\u201D 只能返回 200 状态码
+D. \u201CResponseEntity\u201D 会自动压缩响应体以减少网络传输
+
+**正确答案：B**
+
+**详细解释：** \u201CResponseEntity<T>\u201D 是 Spring 提供的类，可以完整控制 HTTP 响应的三个要素：状态码（如 \u201C201 Created\u201D、\u201C404 Not Found\u201D）、响应头（如 \u201CLocation\u201D、\u201CContent-Type\u201D）和响应体（返回的数据对象）。直接返回对象只能控制响应体，状态码默认为 200。\u201CResponseEntity\u201D 就像完整的快递包裹：里面装着商品（响应体），外面贴着快递单（状态码），还有备注标签（响应头）。
 
 ---
 

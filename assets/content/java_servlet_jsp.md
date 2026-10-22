@@ -382,17 +382,78 @@ JSP 本质上是 Servlet。JSP 文件第一次被访问时会被编译成 Servle
 
 ## 考点精讲
 
-### 考点 1：第 1 题
+### 问题1
 
-- **题目**：Servlet 生命周期中，哪个方法只执行一次？
-- **正确项**：init() 方法
-- **判断依据**：这道题落在术语「生命周期」上：Servlet 从创建到销毁的过程。复习时把「生命周期」的定义、三个阶段和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+在 Servlet 的生命周期中，以下哪个方法在整个 Servlet 实例的生命周期内只被执行一次？
 
-### 考点 2：第 2 题
+A. \u201Cservice()\u201D 方法
+B. \u201CdoGet()\u201D 方法
+C. \u201Cinit()\u201D 方法
+D. \u201CdoPost()\u201D 方法
 
-- **题目**：JSP 本质上是？
-- **正确项**：Servlet 的简化写法
-- **判断依据**：这道题落在术语「JSP」上：一种让开发者更多写 HTML、少写 Java 的技术。复习时把「JSP」的定义、编译过程和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+**正确答案：C**
+
+**详细解释：** \u201Cinit()\u201D 方法在 Servlet 第一次被请求时由容器调用，用于执行一次性初始化操作（如加载配置、建立数据库连接），整个生命周期中只执行一次。而 \u201Cservice()\u201D 方法每个请求都会调用，\u201CdoGet()\u201D 和 \u201CdoPost()\u201D 则由 \u201Cservice()\u201D 根据请求方法分派调用，每次请求都会执行。
+
+---
+
+### 问题2
+
+关于 JSP 的本质，以下哪个说法是正确的？
+
+A. JSP 是一种独立于 Servlet 的模板引擎
+B. JSP 第一次被访问时会被编译成 Servlet 类
+C. JSP 只能处理静态 HTML 内容，不能嵌入 Java 代码
+D. JSP 需要手动在 \u201Cweb.xml\u201D 中注册才能使用
+
+**正确答案：B**
+
+**详细解释：** JSP（Java Server Pages）本质上是 Servlet 的简化写法。当 JSP 文件第一次被访问时，Servlet 容器会将其编译成一个继承 \u201CHttpServlet\u201D 的 Java 类，之后的执行过程与 Servlet 完全一致。JSP 中可以嵌入 Java 代码（使用 \u201C<%= %>\u201D 等标签），且不需要在 \u201Cweb.xml\u201D 中手动注册。
+
+---
+
+### 问题3
+
+在 Servlet 中处理 HTTP 请求时，以下哪种做法会导致多个用户的数据互相覆盖？
+
+A. 使用局部变量存储请求数据
+B. 使用 \u201Creq.setAttribute()\u201D 存储请求数据
+C. 使用实例变量（成员变量）存储用户数据
+D. 使用 \u201Creq.getParameter()\u201D 获取表单参数
+
+**正确答案：C**
+
+**详细解释：** Servlet 是单例的，整个应用只有一个实例，容器为每个请求创建独立线程来调用同一个实例的 \u201Cservice()\u201D 方法。如果使用实例变量存储用户数据，多个线程会同时读写同一个变量，导致数据互相覆盖。正确做法是使用局部变量或请求属性（\u201Creq.setAttribute()\u201D）来存储请求相关的数据。
+
+---
+
+### 问题4
+
+以下关于 Servlet 中转发（forward）和重定向（sendRedirect）的说法，哪个是正确的？
+
+A. 转发会改变浏览器地址栏中的 URL
+B. 重定向是在服务器内部将请求传递给另一个资源
+C. 转发使用 \u201Creq.getRequestDispatcher().forward(req, resp)\u201D 实现，浏览器地址栏不变
+D. 重定向只能跳转到同一应用内的页面
+
+**正确答案：C**
+
+**详细解释：** 转发（forward）是服务器内部行为，请求不会回到浏览器，因此地址栏 URL 不变，使用 \u201Creq.getRequestDispatcher(\u201D路径\u201D).forward(req, resp)\u201D 实现。重定向（sendRedirect）会让浏览器重新发送请求到新地址，地址栏会改变，且可以跳转到外部网站。转发效率高（只有一次请求），重定向效率较低（两次请求）。
+
+---
+
+### 问题5
+
+当客户端发送一个 POST 请求到某个 Servlet，但该 Servlet 只重写了 \u201CdoGet()\u201D 方法而没有重写 \u201CdoPost()\u201D 方法时，会发生什么？
+
+A. POST 请求会被自动转发到 \u201CdoGet()\u201D 方法处理
+B. 服务器返回 404 Not Found 错误
+C. 服务器返回 405 Method Not Allowed 错误
+D. POST 请求会被容器丢弃，客户端收不到任何响应
+
+**正确答案：C**
+
+**详细解释：** \u201CHttpServlet\u201D 的 \u201Cservice()\u201D 方法会根据请求类型分派到对应的 \u201CdoGet()\u201D、\u201CdoPost()\u201D 等方法。如果只重写了 \u201CdoGet()\u201D 而没有重写 \u201CdoPost()\u201D，当 POST 请求到达时，父类 \u201CHttpServlet\u201D 的默认 \u201CdoPost()\u201D 实现会返回 405 Method Not Allowed 状态码，表示该 Servlet 不支持 POST 方法。因此必须根据需求重写对应的处理方法。
 
 ---
 

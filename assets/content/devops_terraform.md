@@ -1171,4 +1171,83 @@ kubectl get namespaces
 
 ---
 
+---
+
+## 考点精讲
+
+### 问题1
+
+在 Terraform 中，Provider 的作用是什么？
+
+A. 提供代码编辑器功能
+B. 作为 Terraform 和云厂商之间的"翻译官"，将 HCL 配置转换为云厂商的 API 调用
+C. 提供 Web 界面管理基础设施
+D. 自动测试应用程序代码
+
+**正确答案：B**
+
+**详细解释：** Provider 是 Terraform 和具体云厂商（如 AWS、Azure、阿里云）之间的桥梁。你用 HCL 语法描述想要的基础设施，Provider 负责将这些描述翻译成对应云厂商的 API 调用来实际创建资源。Terraform 支持数百种 Provider，使用同一套 HCL 语法就能管理不同云平台的基础设施。"hashicorp/aws" 是 AWS 的 Provider，"hashicorp/google" 是 GCP 的 Provider。
+
+---
+
+### 问题2
+
+Terraform 的状态文件（terraform.tfstate）的主要作用是什么？
+
+A. 存储 Terraform 的安装配置
+B. 记录当前基础设施的实际状态，Terraform 通过对比代码描述和状态文件来决定需要做什么改动
+C. 存储云厂商的 API 密钥
+D. 记录 Terraform 命令的执行历史
+
+**正确答案：B**
+
+**详细解释：** 状态文件是 Terraform 的"记忆"，它记录了当前基础设施的真实状态（如资源 ID、属性值等）。每次执行 "terraform apply" 时，Terraform 会对比"代码中描述的期望状态"和"状态文件中记录的实际状态"，计算出差异（diff），然后只执行必要的变更。这就是为什么生产环境必须使用远程状态（如 S3 后端）并启用状态锁定（如 DynamoDB），以防止多人并发操作导致状态冲突。
+
+---
+
+### 问题3
+
+在 Terraform 中，"terraform.tfvars" 文件的用途是什么？
+
+A. 定义 Terraform 的版本要求
+B. 为变量提供具体的值，执行 "terraform apply" 时自动加载
+C. 存储 Terraform 的状态信息
+D. 定义 Provider 的认证信息
+
+**正确答案：B**
+
+**详细解释：** "terraform.tfvars" 文件用于为 "variable" 块中声明的变量提供具体的值。当执行 "terraform apply" 时，Terraform 会自动加载当前目录下的 "terraform.tfvars" 文件。你也可以使用 "-var-file" 参数指定不同的变量文件，例如 "terraform apply -var-file=\"prod.tfvars\"" 来为生产环境应用不同的配置值。这是一种将配置与代码分离的最佳实践。
+
+---
+
+### 问题4
+
+Terraform 工作区（Workspace）的本质是什么？
+
+A. 一个代码编辑器
+B. 同一份 Terraform 代码可以在不同的工作区中运行，每个工作区有独立的状态文件，用于管理不同环境
+C. 一个团队协作工具
+D. 一种代码格式化工具
+
+**正确答案：B**
+
+**详细解释：** Terraform 工作区就像"平行宇宙"——同一份代码可以在不同工作区中运行，每个工作区拥有自己独立的状态文件。典型用法是创建 "dev"、"staging"、"prod" 三个工作区，用同一套代码管理三个环境。通过 "terraform.workspace" 可以在代码中引用当前工作区名称，实现环境差异化配置（如不同工作区使用不同规格的实例类型）。
+
+---
+
+### 问题5
+
+在 Terraform 模块设计中，"module" 块中的 "source" 参数的作用是什么？
+
+A. 指定模块的代码来源路径（本地目录或远程注册表）
+B. 指定模块的输出变量
+C. 指定模块的输入变量
+D. 指定模块的运行环境
+
+**正确答案：A**
+
+**详细解释：** "source" 参数指定模块的代码来源，Terraform 从这里加载模块的定义。支持多种来源方式：本地路径（"source = \"./modules/vpc\""）、Terraform Registry（"source = \"terraform-aws-modules/vpc/aws\""）、Git 仓库等。使用模块可以将一组相关资源打包成可复用的组件，就像"预制件"一样在不同项目中重复使用，提高代码的组织性和可维护性。
+
+---
+
 > 恭喜你完成了 Terraform 实战课程！现在你已经掌握了基础设施即代码的核心技能，可以开始在实际项目中应用 Terraform 了。记住，实践是最好的老师——多动手，多尝试，你会越来越熟练！

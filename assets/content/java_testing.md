@@ -474,23 +474,78 @@ class OrderControllerTest {
 
 ## 考点精讲
 
-### 考点 1：第 1 题
+### 问题1
 
-- **题目**：在 JUnit 5 中，`@BeforeEach` 和 `@AfterEach` 注解标记的方法分别在什么时候执行？如果一个测试类有 3 个 `@Test` 方法，`@BeforeEach` 标记的方法会被执行几次？
-- **正确项**：每个 @Test 方法前/后各执行一次，共 3 次
-- **判断依据**：这道题落在术语「JUnit 5」上：测试框架的生命周期管理。复习时把 `@BeforeEach`、`@AfterEach`、`@BeforeAll`、`@AfterAll` 四种注解的执行时机对比说清楚，再回到「核心概念定义」核对原文。
+在 JUnit 5 中，`@BeforeEach` 和 `@AfterEach` 注解标记的方法分别在什么时候执行？如果一个测试类有 3 个 `@Test` 方法，`@BeforeEach` 标记的方法会被执行几次？
 
-### 考点 2：第 2 题
+A. 在整个测试类开始前执行一次，共 1 次
+B. 在每个 `@Test` 方法执行前各执行一次，共 3 次
+C. 在所有 `@Test` 方法执行完毕后统一执行，共 1 次
+D. 仅在第一个 `@Test` 方法执行前执行一次，共 1 次
 
-- **题目**：`@WebMvcTest(OrderController.class)` 和 `@SpringBootTest` 在测试范围和性能上有什么区别？分别在什么场景下使用？
-- **正确项**：@WebMvcTest 只加载 Web 层，速度快；@SpringBootTest 加载完整上下文，用于集成测试
-- **判断依据**：这道题落在术语「MockMvc」和「@SpringBootTest」上：Spring 测试策略的核心选择。复习时把两种注解加载的 Bean 范围、启动速度、适用场景对比说清楚，再回到「核心概念定义」核对原文。
+**正确答案：B**
 
-### 考点 3：第 3 题
+**详细解释：** `@BeforeEach` 标记的方法会在每个 `@Test` 方法执行之前运行一次，`@AfterEach` 标记的方法会在每个 `@Test` 方法执行之后运行一次。如果测试类有 3 个 `@Test` 方法，`@BeforeEach` 会被执行 3 次——每个测试方法各触发一次。这种设计确保了每个测试都在干净的环境中运行，测试之间互不干扰。与之对比，`@BeforeAll` 和 `@AfterAll` 标记的方法在整个测试类的开始和结束时各执行一次。
 
-- **题目**：使用 Mockito 时，`@Mock` 和 `@InjectMocks` 注解分别起什么作用？请结合一个例子说明。
-- **正确项**：@Mock 创建模拟对象，@InjectMocks 创建被测对象并自动注入 Mock
-- **判断依据**：这道题落在术语「Mockito」上：Mock 框架的核心注解。复习时把 `@Mock`、`@InjectMocks`、`@Spy` 三种注解的作用和区别说清楚，再回到「核心概念定义」核对原文。
+---
+
+### 问题2
+
+`@WebMvcTest(OrderController.class)` 和 `@SpringBootTest` 在测试范围和性能上有什么核心区别？
+
+A. `@WebMvcTest` 加载完整的应用上下文，`@SpringBootTest` 只加载 Web 层
+B. `@WebMvcTest` 只加载 Web 层（Controller），启动速度快；`@SpringBootTest` 加载完整应用上下文，用于集成测试
+C. 两者功能完全相同，只是注解名称不同
+D. `@WebMvcTest` 只能测试 GET 请求，`@SpringBootTest` 可以测试所有 HTTP 方法
+
+**正确答案：B**
+
+**详细解释：** `@WebMvcTest` 只加载 Web 层相关的 Bean（Controller、过滤器、拦截器等），不会启动完整的 Spring 容器，Service 和 Repository 需要用 `@MockBean` 提供模拟实现，启动速度快，适合专门测试 Controller 的请求路由、参数绑定和响应格式。`@SpringBootTest` 会加载完整的应用上下文，包括所有 Service、Repository、数据库连接等，启动速度较慢，适合测试多个模块之间的协作（集成测试）。简单来说：测 Controller 用 `@WebMvcTest`，测完整流程用 `@SpringBootTest`。
+
+---
+
+### 问题3
+
+使用 Mockito 时，`@Mock` 和 `@InjectMocks` 注解分别起什么作用？
+
+A. `@Mock` 创建真实数据库连接，`@InjectMocks` 创建 HTTP 请求
+B. `@Mock` 创建模拟对象以替代真实依赖，`@InjectMocks` 创建被测对象并自动将 Mock 对象注入到其依赖中
+C. `@Mock` 用于断言测试结果，`@InjectMocks` 用于初始化测试数据
+D. `@Mock` 和 `@InjectMocks` 功能相同，可以互换使用
+
+**正确答案：B**
+
+**详细解释：** `@Mock` 创建一个模拟对象（Mock 对象），你可以用 `when(...).thenReturn(...)` 自定义它的方法返回值和行为，它不会执行真实的业务逻辑。`@InjectMocks` 创建一个被测对象的实例，并自动把 `@Mock` 标记的模拟对象注入到它的依赖中。例如，测试 `OrderService` 时，用 `@Mock` 创建一个假的 `OrderRepository`，用 `@InjectMocks` 创建 `OrderService` 实例，这样 `OrderService` 内部调用的 `OrderRepository.save()` 实际会调用 Mock 对象的预设行为，不会真正访问数据库，实现了单元测试的隔离原则。
+
+---
+
+### 问题4
+
+在测试金字塔中，单元测试、集成测试和端到端测试的数量比例和速度特点分别是什么？
+
+A. 端到端测试数量最多、速度最快；单元测试数量最少、速度最慢
+B. 三种测试数量和速度完全相同
+C. 单元测试数量最多、速度最快（毫秒级）；集成测试居中；端到端测试数量最少、速度最慢（分钟级）
+D. 集成测试数量最多、速度最快；单元测试数量最少、速度最慢
+
+**正确答案：C**
+
+**详细解释：** 测试金字塔由 Mike Cohn 提出，核心思想是底层测试多而快，顶层测试少而慢。单元测试位于金字塔底层，数量占比约 70%，执行速度为毫秒级，验证单个方法或类的逻辑正确性；集成测试位于中间层，数量占比约 20%，执行速度为秒级，验证多个模块组合后的协作行为；端到端测试位于顶层，数量占比约 10%，执行速度为分钟级，模拟真实用户操作验证完整流程。这种分层结构使得开发者能在日常开发中快速获得反馈，同时通过少量的高层测试保证系统整体正确性。
+
+---
+
+### 问题5
+
+在 MockMvc 测试中，为什么需要使用 `@MockBean` 注解替换 Service 层的依赖？
+
+A. 为了让测试能够连接真实的数据库进行验证
+B. 为了隔离 Controller 层测试，避免调用真实的 Service 逻辑和外部依赖，使测试更快更稳定
+C. 因为 MockMvc 不支持直接调用 Service 方法
+D. 为了增加测试的代码覆盖率
+
+**正确答案：B**
+
+**详细解释：** `@WebMvcTest` 只加载 Web 层（Controller）相关的 Bean，不会自动创建 Service 层的实例。使用 `@MockBean` 可以为 Service 层提供一个模拟实现，这样测试只关注 Controller 层的请求路由、参数绑定和响应格式，而不会涉及真实的业务逻辑或数据库操作。这种隔离使测试运行更快、结果更稳定，不会因为数据库连接失败或 Service 层 Bug 导致 Controller 测试失败。同时，可以通过 `when(...).thenReturn(...)` 精确控制 Service 的返回值，测试 Controller 在各种情况下的行为。
 
 ---
 
