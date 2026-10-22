@@ -68206,6 +68206,153 @@
           "quiz": []
         }
       ]
+    },
+    {
+      "id": "backend_development",
+      "title": {
+        "zh": "后端开发",
+        "en": "Backend Development"
+      },
+      "icon": "dns",
+      "color": "339933",
+      "lessons": [
+        {
+          "id": "backend_nodejs_express",
+          "title": {
+            "zh": "Node.js与Express/Koa框架实战",
+            "en": "Node.js with Express/Koa Frameworks"
+          },
+          "summary": {
+            "zh": "掌握Node.js事件驱动架构、非阻塞I/O和Express中间件链。",
+            "en": "Master Node.js event-driven architecture, non-blocking I/O, and Express middleware."
+          },
+          "file": "assets/content/backend_nodejs_express.md",
+          "minutes": 50,
+          "keywords": ["Node.js", "Express", "Koa", "中间件", "事件驱动"],
+          "difficulty": "入门",
+          "order": 0,
+          "quiz": []
+        },
+        {
+          "id": "backend_fastapi_async",
+          "title": {
+            "zh": "Python FastAPI异步Web开发",
+            "en": "Python FastAPI Async Web Development"
+          },
+          "summary": {
+            "zh": "理解async/await机制，掌握Pydantic数据验证和依赖注入系统。",
+            "en": "Understand async/await, Pydantic validation, and dependency injection."
+          },
+          "file": "assets/content/backend_fastapi_async.md",
+          "minutes": 50,
+          "keywords": ["FastAPI", "异步", "Pydantic", "依赖注入", "SQLAlchemy"],
+          "difficulty": "进阶",
+          "order": 1,
+          "quiz": []
+        },
+        {
+          "id": "backend_gin_echo",
+          "title": {
+            "zh": "Go语言Gin/Echo框架实战",
+            "en": "Go Gin/Echo Framework Practice"
+          },
+          "summary": {
+            "zh": "学习Go类型系统、Goroutine并发模型和Gin/Echo框架中间件。",
+            "en": "Learn Go type system, Goroutine concurrency, and Gin/Echo middleware."
+          },
+          "file": "assets/content/backend_gin_echo.md",
+          "minutes": 50,
+          "keywords": ["Go", "Gin", "Echo", "Goroutine", "GORM"],
+          "difficulty": "进阶",
+          "order": 2,
+          "quiz": []
+        },
+        {
+          "id": "backend_restful_api",
+          "title": {
+            "zh": "RESTful API设计最佳实践",
+            "en": "RESTful API Design Best Practices"
+          },
+          "summary": {
+            "zh": "掌握资源建模、HTTP方法语义、状态码使用和API版本化策略。",
+            "en": "Master resource modeling, HTTP methods, status codes, and API versioning."
+          },
+          "file": "assets/content/backend_restful_api.md",
+          "minutes": 45,
+          "keywords": ["RESTful", "API设计", "HTTP", "版本化", "最佳实践"],
+          "difficulty": "入门",
+          "order": 3,
+          "quiz": []
+        },
+        {
+          "id": "backend_graphql_apollo",
+          "title": {
+            "zh": "GraphQL入门与Apollo Server",
+            "en": "GraphQL & Apollo Server"
+          },
+          "summary": {
+            "zh": "对比GraphQL与REST，掌握Schema定义、查询/变更/订阅和DataLoader优化。",
+            "en": "Compare GraphQL vs REST, master SDL, queries/mutations/subscriptions, DataLoader."
+          },
+          "file": "assets/content/backend_graphql_apollo.md",
+          "minutes": 50,
+          "keywords": ["GraphQL", "Apollo Server", "SDL", "DataLoader", "N+1问题"],
+          "difficulty": "进阶",
+          "order": 4,
+          "quiz": []
+        },
+        {
+          "id": "backend_database_integration",
+          "title": {
+            "zh": "数据库集成（SQL/NoSQL）",
+            "en": "Database Integration (SQL/NoSQL)"
+          },
+          "summary": {
+            "zh": "学习PostgreSQL/MySQL ORM模式、MongoDB文档模型和Redis缓存策略。",
+            "en": "Learn PostgreSQL/MySQL ORM, MongoDB document model, and Redis caching."
+          },
+          "file": "assets/content/backend_database_integration.md",
+          "minutes": 55,
+          "keywords": ["PostgreSQL", "MongoDB", "Redis", "ORM", "连接池"],
+          "difficulty": "进阶",
+          "order": 5,
+          "quiz": []
+        },
+        {
+          "id": "backend_auth_jwt_oauth",
+          "title": {
+            "zh": "认证授权（JWT/OAuth2）",
+            "en": "Authentication & Authorization (JWT/OAuth2)"
+          },
+          "summary": {
+            "zh": "理解JWT结构签名、OAuth2授权流程、RBAC权限控制和会话管理。",
+            "en": "Understand JWT signing, OAuth2 flows, RBAC, and session management."
+          },
+          "file": "assets/content/backend_auth_jwt_oauth.md",
+          "minutes": 50,
+          "keywords": ["JWT", "OAuth2", "认证", "授权", "RBAC"],
+          "difficulty": "进阶",
+          "order": 6,
+          "quiz": []
+        },
+        {
+          "id": "backend_microservices_patterns",
+          "title": {
+            "zh": "微服务架构模式",
+            "en": "Microservices Architecture Patterns"
+          },
+          "summary": {
+            "zh": "掌握服务分解、API Gateway、分布式追踪、Saga模式和最终一致性。",
+            "en": "Master service decomposition, API Gateway, distributed tracing, Saga pattern."
+          },
+          "file": "assets/content/backend_microservices_patterns.md",
+          "minutes": 55,
+          "keywords": ["微服务", "API Gateway", "Saga", "分布式追踪", "CAP定理"],
+          "difficulty": "高级",
+          "order": 7,
+          "quiz": []
+        }
+      ]
     }
   ],
   "quiz_shuffle_version": 1,
