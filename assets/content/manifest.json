@@ -68353,6 +68353,153 @@
           "quiz": []
         }
       ]
+    },
+    {
+      "id": "ml_practice",
+      "title": {
+        "zh": "机器学习实战",
+        "en": "Machine Learning Practice"
+      },
+      "icon": "psychology",
+      "color": "FF6F00",
+      "lessons": [
+        {
+          "id": "ml_tensorflow_pytorch_intro",
+          "title": {
+            "zh": "TensorFlow与PyTorch框架对比入门",
+            "en": "TensorFlow vs PyTorch Introduction"
+          },
+          "summary": {
+            "zh": "对比两大主流框架，掌握张量操作、计算图和自动微分机制。",
+            "en": "Compare major frameworks, master tensor operations, computation graphs, and autograd."
+          },
+          "file": "assets/content/ml_tensorflow_pytorch_intro.md",
+          "minutes": 50,
+          "keywords": ["TensorFlow", "PyTorch", "张量", "自动微分", "计算图"],
+          "difficulty": "入门",
+          "order": 0,
+          "quiz": []
+        },
+        {
+          "id": "ml_computer_vision",
+          "title": {
+            "zh": "计算机视觉：图像分类与目标检测",
+            "en": "Computer Vision: Image Classification & Detection"
+          },
+          "summary": {
+            "zh": "学习CNN卷积神经网络、迁移学习和YOLO目标检测算法。",
+            "en": "Learn CNN, transfer learning, and YOLO object detection algorithm."
+          },
+          "file": "assets/content/ml_computer_vision.md",
+          "minutes": 55,
+          "keywords": ["CNN", "图像分类", "目标检测", "YOLO", "迁移学习"],
+          "difficulty": "进阶",
+          "order": 1,
+          "quiz": []
+        },
+        {
+          "id": "ml_natural_language_processing",
+          "title": {
+            "zh": "自然语言处理：文本分类与情感分析",
+            "en": "NLP: Text Classification & Sentiment Analysis"
+          },
+          "summary": {
+            "zh": "掌握词嵌入、RNN/LSTM、Transformer和BERT预训练模型。",
+            "en": "Master word embeddings, RNN/LSTM, Transformer, and BERT models."
+          },
+          "file": "assets/content/ml_natural_language_processing.md",
+          "minutes": 55,
+          "keywords": ["NLP", "词嵌入", "Transformer", "BERT", "情感分析"],
+          "difficulty": "进阶",
+          "order": 2,
+          "quiz": []
+        },
+        {
+          "id": "ml_recommendation_systems",
+          "title": {
+            "zh": "推荐系统实现",
+            "en": "Recommendation Systems Implementation"
+          },
+          "summary": {
+            "zh": "实现协同过滤、矩阵分解和深度学习推荐模型NeuMF。",
+            "en": "Implement collaborative filtering, matrix factorization, and NeuMF."
+          },
+          "file": "assets/content/ml_recommendation_systems.md",
+          "minutes": 50,
+          "keywords": ["推荐系统", "协同过滤", "矩阵分解", "NeuMF", "冷启动"],
+          "difficulty": "进阶",
+          "order": 3,
+          "quiz": []
+        },
+        {
+          "id": "ml_time_series_prediction",
+          "title": {
+            "zh": "时间序列预测（LSTM/Transformer）",
+            "en": "Time Series Prediction (LSTM/Transformer)"
+          },
+          "summary": {
+            "zh": "学习平稳性检验、滑动窗口、LSTM和Transformer多步预测。",
+            "en": "Learn stationarity test, sliding window, LSTM and Transformer forecasting."
+          },
+          "file": "assets/content/ml_time_series_prediction.md",
+          "minutes": 50,
+          "keywords": ["时间序列", "LSTM", "Transformer", "平稳性", "多步预测"],
+          "difficulty": "进阶",
+          "order": 4,
+          "quiz": []
+        },
+        {
+          "id": "ml_model_deployment_mlops",
+          "title": {
+            "zh": "模型部署与MLOps流程",
+            "en": "Model Deployment & MLOps Pipeline"
+          },
+          "summary": {
+            "zh": "掌握模型序列化、FastAPI服务化、Docker容器化和MLflow追踪。",
+            "en": "Master model serialization, FastAPI serving, Docker, and MLflow tracking."
+          },
+          "file": "assets/content/ml_model_deployment_mlops.md",
+          "minutes": 50,
+          "keywords": ["MLOps", "模型部署", "FastAPI", "Docker", "MLflow"],
+          "difficulty": "进阶",
+          "order": 5,
+          "quiz": []
+        },
+        {
+          "id": "ml_data_preprocessing_feature_engineering",
+          "title": {
+            "zh": "数据预处理与特征工程",
+            "en": "Data Preprocessing & Feature Engineering"
+          },
+          "summary": {
+            "zh": "学习缺失值处理、特征编码、标准化和特征选择方法。",
+            "en": "Learn missing value handling, feature encoding, normalization, and selection."
+          },
+          "file": "assets/content/ml_data_preprocessing_feature_engineering.md",
+          "minutes": 45,
+          "keywords": ["数据预处理", "特征工程", "缺失值", "标准化", "特征选择"],
+          "difficulty": "入门",
+          "order": 6,
+          "quiz": []
+        },
+        {
+          "id": "ml_model_evaluation_hyperparameter_tuning",
+          "title": {
+            "zh": "模型评估与超参数调优",
+            "en": "Model Evaluation & Hyperparameter Tuning"
+          },
+          "summary": {
+            "zh": "掌握评估指标、交叉验证、网格搜索和贝叶斯优化方法。",
+            "en": "Master evaluation metrics, cross-validation, grid search, and Bayesian optimization."
+          },
+          "file": "assets/content/ml_model_evaluation_hyperparameter_tuning.md",
+          "minutes": 50,
+          "keywords": ["模型评估", "超参数调优", "交叉验证", "网格搜索", "贝叶斯优化"],
+          "difficulty": "进阶",
+          "order": 7,
+          "quiz": []
+        }
+      ]
     }
   ],
   "quiz_shuffle_version": 1,
