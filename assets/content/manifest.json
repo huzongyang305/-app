@@ -68059,6 +68059,153 @@
           "quiz": []
         }
       ]
+    },
+    {
+      "id": "frontend_frameworks",
+      "title": {
+        "zh": "前端框架专题",
+        "en": "Frontend Frameworks"
+      },
+      "icon": "web",
+      "color": "61DAFB",
+      "lessons": [
+        {
+          "id": "frontend_react_hooks",
+          "title": {
+            "zh": "React核心概念与Hooks",
+            "en": "React Core Concepts & Hooks"
+          },
+          "summary": {
+            "zh": "掌握React组件化思想、虚拟DOM原理和常用Hooks（useState/useEffect/useContext）。",
+            "en": "Master React component thinking, virtual DOM, and common Hooks."
+          },
+          "file": "assets/content/frontend_react_hooks.md",
+          "minutes": 45,
+          "keywords": ["React", "Hooks", "useState", "useEffect", "组件化"],
+          "difficulty": "入门",
+          "order": 0,
+          "quiz": []
+        },
+        {
+          "id": "frontend_vue_composition",
+          "title": {
+            "zh": "Vue 3组合式API",
+            "en": "Vue 3 Composition API"
+          },
+          "summary": {
+            "zh": "理解Composition API设计理念，掌握ref/reactive/computed/watch等响应式API。",
+            "en": "Understand Composition API design and master reactive APIs."
+          },
+          "file": "assets/content/frontend_vue_composition.md",
+          "minutes": 45,
+          "keywords": ["Vue 3", "Composition API", "ref", "reactive", "响应式"],
+          "difficulty": "入门",
+          "order": 1,
+          "quiz": []
+        },
+        {
+          "id": "frontend_angular_basics",
+          "title": {
+            "zh": "Angular基础与依赖注入",
+            "en": "Angular Basics & Dependency Injection"
+          },
+          "summary": {
+            "zh": "学习Angular架构、TypeScript集成、依赖注入系统和RxJS响应式编程。",
+            "en": "Learn Angular architecture, TypeScript integration, DI system, and RxJS."
+          },
+          "file": "assets/content/frontend_angular_basics.md",
+          "minutes": 50,
+          "keywords": ["Angular", "依赖注入", "TypeScript", "RxJS", "服务"],
+          "difficulty": "入门",
+          "order": 2,
+          "quiz": []
+        },
+        {
+          "id": "frontend_nextjs_ssr",
+          "title": {
+            "zh": "Next.js服务端渲染",
+            "en": "Next.js Server-Side Rendering"
+          },
+          "summary": {
+            "zh": "对比SSR/CSR/SSG渲染策略，掌握Next.js App Router和API Routes开发。",
+            "en": "Compare SSR/CSR/SSG strategies and master Next.js App Router."
+          },
+          "file": "assets/content/frontend_nextjs_ssr.md",
+          "minutes": 50,
+          "keywords": ["Next.js", "SSR", "SSG", "App Router", "服务端渲染"],
+          "difficulty": "进阶",
+          "order": 3,
+          "quiz": []
+        },
+        {
+          "id": "frontend_svelte_reactive",
+          "title": {
+            "zh": "Svelte响应式编程",
+            "en": "Svelte Reactive Programming"
+          },
+          "summary": {
+            "zh": "探索Svelte编译时响应式系统，掌握stores、transitions和actions。",
+            "en": "Explore Svelte compile-time reactivity, stores, transitions, and actions."
+          },
+          "file": "assets/content/frontend_svelte_reactive.md",
+          "minutes": 40,
+          "keywords": ["Svelte", "响应式", "stores", "transitions", "无虚拟DOM"],
+          "difficulty": "入门",
+          "order": 4,
+          "quiz": []
+        },
+        {
+          "id": "frontend_framework_comparison",
+          "title": {
+            "zh": "框架对比与选型指南",
+            "en": "Framework Comparison & Selection Guide"
+          },
+          "summary": {
+            "zh": "从性能、包体积、学习曲线等维度对比主流框架，提供选型决策树。",
+            "en": "Compare frameworks on performance, bundle size, learning curve, and provide selection guide."
+          },
+          "file": "assets/content/frontend_framework_comparison.md",
+          "minutes": 40,
+          "keywords": ["框架对比", "性能基准", "选型指南", "生态系统", "最佳实践"],
+          "difficulty": "进阶",
+          "order": 5,
+          "quiz": []
+        },
+        {
+          "id": "frontend_state_management",
+          "title": {
+            "zh": "状态管理深入",
+            "en": "State Management Deep Dive"
+          },
+          "summary": {
+            "zh": "深入学习Redux Toolkit、Pinia、NgRx，理解何时需要全局状态管理。",
+            "en": "Deep dive into Redux Toolkit, Pinia, NgRx, and when to use global state."
+          },
+          "file": "assets/content/frontend_state_management.md",
+          "minutes": 55,
+          "keywords": ["Redux", "Pinia", "NgRx", "状态管理", "Context API"],
+          "difficulty": "进阶",
+          "order": 6,
+          "quiz": []
+        },
+        {
+          "id": "frontend_performance_optimization",
+          "title": {
+            "zh": "性能优化最佳实践",
+            "en": "Performance Optimization Best Practices"
+          },
+          "summary": {
+            "zh": "掌握代码分割、懒加载、记忆化、Tree Shaking和虚拟滚动等优化技术。",
+            "en": "Master code splitting, lazy loading, memoization, Tree Shaking, and virtual scrolling."
+          },
+          "file": "assets/content/frontend_performance_optimization.md",
+          "minutes": 50,
+          "keywords": ["性能优化", "代码分割", "懒加载", "Tree Shaking", "虚拟滚动"],
+          "difficulty": "进阶",
+          "order": 7,
+          "quiz": []
+        }
+      ]
     }
   ],
   "quiz_shuffle_version": 1,
