@@ -16,10 +16,8 @@
 - [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
 - [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
 
-
 ### 课程导言
 SwiftUI是苹果推出的革命性UI框架，它用声明式的方式彻底改变了iOS开发。就像从手动挡汽车升级到自动驾驶，你只需要告诉系统"我想要什么界面"，而不是"如何一步步绘制界面"。本章将从零开始带你掌握SwiftUI的核心概念、布局系统、状态管理、动画效果以及与UIKit的互操作，让你能够构建现代化的iOS应用。
-
 
 ### 学习目标
 学完本章后，你将能够：
@@ -31,7 +29,6 @@ SwiftUI是苹果推出的革命性UI框架，它用声明式的方式彻底改�
 5. 实现列表、导航和数据驱动的用户界面
 6. 在SwiftUI项目中集成UIKit组件和处理平台特性
 
-
 ## 核心概念定义
 
 | 术语 | 一句话说明 |
@@ -42,11 +39,9 @@ SwiftUI是苹果推出的革命性UI框架，它用声明式的方式彻底改�
 | 状态管理 | 学习SwiftUI声明式UI、状态管理、组合视图和Core Data集成。相关：正文给出可操作定义与适用边界。 |
 | Core Data | 学习SwiftUI声明式UI、状态管理、组合视图和Core Data集成。相关：正文给出可操作定义与适用边界。 |
 
-
 ## 原理与运行机制
 
 《iOS SwiftUI完整教程》正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
-
 
 ### 生活类比拆解
 #### 声明式UI：像点菜而不是做菜
@@ -61,12 +56,10 @@ SwiftUI的核心理念是"UI是状态的函数"。想象一个温度计：水银
 
 SwiftUI的修饰符（Modifier）就像手机修图APP里的滤镜叠加。你可以先加一个黑白滤镜，再加一个模糊效果，最后调整亮度。每个修饰符都会返回一个新的视图，形成一条处理链。重要的是顺序很关键：先裁剪再旋转，和先旋转再裁剪，结果完全不同。同样，`.padding().background(Color.red)`和`.background(Color.red).padding()`会产生不同的视觉效果。
 
-
 ## 典型应用场景
 
 - 结合「iOS SwiftUI完整教程」的常见落地场景与选型边界，详见正文各章节的对比讨论。
 - 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
-
 
 ## 代码/协议/SQL 示例
 
@@ -90,7 +83,6 @@ struct HelloWorld_Previews: PreviewProvider {
     }
 }
 ```
-
 
 ### 渐进式代码示例
 #### 最小示例：基础Hello World
@@ -468,12 +460,10 @@ struct AnimationDemoView_Previews: PreviewProvider {
 }
 ```
 
-
 ## 时间/空间复杂度或性能分析
 
 - 在《iOS SwiftUI完整教程》里处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
 - 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
-
 
 ## 常见误区与易错点
 
@@ -482,7 +472,6 @@ struct AnimationDemoView_Previews: PreviewProvider {
 | 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
 | 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
 | 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
-
 
 ### 常见陷阱与解决方案
 | 陷阱 | 表现 | 原因 | 解决方案 |
@@ -498,16 +487,13 @@ struct AnimationDemoView_Previews: PreviewProvider {
 | 动画未指定value参数 | iOS 17+警告或动画不生效 | 新版SwiftUI要求明确动画触发值 | 使用.animation(_, value:)语法明确指定依赖的状态 |
 | EnvironmentObject未注入 | 运行时崩溃"Missing EnvironmentObject" | 祖先视图未提供.environmentObject() | 在NavigationView或根视图添加.environmentObject(viewModel) |
 
-
 ## 与其他知识点的关系
 
 本课与分类「ios_development」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
 
-
 ## 自测题与参考答案
 
 以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
-
 
 ## 考点精讲
 
@@ -576,7 +562,6 @@ D. 为闭包内改变的状态变化添加动画效果 ✅
 
 **解析：** withAnimation是一个全局函数，它接收一个闭包作为参数。闭包内对@State或其他可观察状态的任何修改都会被自动添加动画效果。例如，`withAnimation { isExpanded = true }`会让isExpanded的变化以动画形式呈现，而不是瞬间跳变。你可以指定动画类型和时长，如`withAnimation(.easeInOut(duration: 0.5))`。这是一种简洁的方式来为状态变化添加视觉反馈，提升用户体验。
 
-
 ## 术语速查
 
 | 术语 | 一句话说明 |
@@ -587,17 +572,12 @@ D. 为闭包内改变的状态变化添加动画效果 ✅
 | 状态管理 | 用@State等属性包装器划定数据归属，值一变视图自动重绘。 |
 | Core Data | 以托管对象上下文读写本地实体数据，兼具变更回滚能力。 |
 
-
 ## 参考资料与复核
 
-- [本课资料锚点 mobile_swiftui_complete](https://zh.wikipedia.org/w/index.php?search=mobile_swiftui_complete)
-
 - 官方/权威资料：[Apple HIG](https://developer.apple.com/design/human-interface-guidelines/)
-- 主题延伸：[关于「iOS」的检索页](https://zh.wikipedia.org/w/index.php?search=iOS)
-- 本课索引词：[锚点 mobile_swiftui_complete](https://developer.apple.com/design/human-interface-guidelines/#SwiftUI)
+- 主题延伸：[The Swift Programming Language 官方教材](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/)
 - 最后复核：2026-10-04
 - 下次复核：2026-12-29
-
 
 ## 内容元数据
 
@@ -608,5 +588,3 @@ D. 为闭包内改变的状态变化添加动画效果 ✅
 - 所属分类：ios_development
 - 学习阶段：基础
 - 建议用时：50 分钟
-
-

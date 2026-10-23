@@ -479,8 +479,6 @@ print([m.memory_id for m in retrieve(memories, (0.85, 0.15, 0.0), "u1")])
 
 ## 参考资料与复核
 
-- [本课资料锚点 agent_memory](https://zh.wikipedia.org/w/index.php?search=agent_memory)
-
 - 最后复核：2026-10-04
 - 下次复核：2026-12-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

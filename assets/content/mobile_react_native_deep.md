@@ -16,10 +16,8 @@
 - [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
 - [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
 
-
 ### 课程导言
 React Native让你用JavaScript和React构建真正的原生移动应用。就像用通用遥控器控制不同品牌的电视，你写一套代码，就能在iOS和Android上运行。本章将深入探讨React Native的核心架构、桥接机制、性能优化策略、自定义原生模块开发，以及与原生平台的深度集成技巧，帮助你从"会用React Native"进阶到"精通React Native"。
-
 
 ### 学习目标
 学完本章后，你将能够：
@@ -31,7 +29,6 @@ React Native让你用JavaScript和React构建真正的原生移动应用。就�
 5. 掌握调试工具和性能分析方法
 6. 处理平台差异并实现原生功能集成
 
-
 ## 核心概念定义
 
 | 术语 | 一句话说明 |
@@ -42,11 +39,9 @@ React Native让你用JavaScript和React构建真正的原生移动应用。就�
 | 性能优化 | 学习RN桥接机制、原生模块开发和性能优化策略。相关：正文给出可操作定义与适用边界。 |
 | TurboModules | 学习RN桥接机制、原生模块开发和性能优化策略。相关：正文给出可操作定义与适用边界。 |
 
-
 ## 原理与运行机制
 
 《React Native深度实践与原生模块》正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
-
 
 ### 生活类比拆解
 #### 桥接机制：像翻译官连接两个世界
@@ -61,12 +56,10 @@ React的虚拟DOM就像建筑师的设计蓝图。当你修改UI时，不是直�
 
 React Native提供了丰富的内置组件，但有时候你需要访问相机、蓝牙、传感器等原生功能，或者实现特殊的UI效果。这时就需要编写原生模块，就像给汽车加装定制的音响系统或导航设备。你在原生平台（iOS用Objective-C/Swift，Android用Java/Kotlin）实现具体功能，然后通过桥接暴露给JavaScript调用。这样既保留了JS开发的效率，又能充分利用原生平台的能力。
 
-
 ## 典型应用场景
 
 - 结合「React Native深度实践与原生模块」的常见落地场景与选型边界，详见正文各章节的对比讨论。
 - 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
-
 
 ## 代码/协议/SQL 示例
 
@@ -100,7 +93,6 @@ const styles = StyleSheet.create({
 
 export default HelloWorld;
 ```
-
 
 ### 渐进式代码示例
 #### 最小示例：基础组件展示
@@ -728,12 +720,10 @@ override fun getPackages(): List<ReactPackage> {
 }
 ```
 
-
 ## 时间/空间复杂度或性能分析
 
 - 在《React Native深度实践与原生模块》里处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
 - 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
-
 
 ## 常见误区与易错点
 
@@ -742,7 +732,6 @@ override fun getPackages(): List<ReactPackage> {
 | 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
 | 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
 | 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
-
 
 ### 常见陷阱与解决方案
 | 陷阱 | 表现 | 原因 | 解决方案 |
@@ -758,16 +747,13 @@ override fun getPackages(): List<ReactPackage> {
 | Bundle体积过大 | 首屏加载慢 | 未启用ProGuard或未拆分Bundle | 启用代码压缩和混淆，使用Hermes引擎，按需加载模块 |
 | 依赖版本冲突 | 构建失败或运行时错误 | 不同库依赖的React Native版本不一致 | 使用npx react-native doctor检查，统一依赖版本，清除node_modules重装 |
 
-
 ## 与其他知识点的关系
 
 本课与分类「cross_platform」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
 
-
 ## 自测题与参考答案
 
 以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
-
 
 ## 考点精讲
 
@@ -836,7 +822,6 @@ D. 密度无关像素(dp) ✅
 
 **解析：** React Native中的所有尺寸单位默认都是密度无关像素（density-independent pixels，简称dp或dip）。这意味着你设置的宽度100在不同密度的屏幕上会自动缩放，保持物理尺寸大致相同。这与Web开发中的px不同，Web的px是绝对像素。在React Native中，你不需要手动进行dp到px的转换，框架会自动处理。如果需要获取屏幕的实际像素尺寸，可以使用PixelRatio API。
 
-
 ## 术语速查
 
 | 术语 | 一句话说明 |
@@ -847,17 +832,12 @@ D. 密度无关像素(dp) ✅
 | 性能优化 | 减少跨桥通信、做好列表复用与图片缓存，让交互稳定维持高帧率。 |
 | TurboModules | 取代旧桥的模块架构，懒加载实例并借JSI直接调用免去序列化。 |
 
-
 ## 参考资料与复核
 
-- [本课资料锚点 mobile_react_native_deep](https://zh.wikipedia.org/w/index.php?search=mobile_react_native_deep)
-
 - 官方/权威资料：[W3C 移动 Web](https://www.w3.org/2001/tag/doc/appr-best-web/)
-- 主题延伸：[关于「原生模块」的检索页](https://zh.wikipedia.org/w/index.php?search=%E5%8E%9F%E7%94%9F%E6%A8%A1%E5%9D%97)
-- 本课索引词：[锚点 mobile_react_native_deep](https://www.w3.org/2001/tag/doc/appr-best-web/#React%20Native)
+- 主题延伸：[React Native 原生模块指南](https://reactnative.dev/docs/legacy/native-modules-android)
 - 最后复核：2026-10-04
 - 下次复核：2027-01-13
-
 
 ## 内容元数据
 
@@ -868,4 +848,3 @@ D. 密度无关像素(dp) ✅
 - 所属分类：cross_platform
 - 学习阶段：进阶
 - 建议用时：50 分钟
-

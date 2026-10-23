@@ -482,8 +482,6 @@ print("峰值字节大于零:", peak > 0)
 
 ## 参考资料与复核
 
-- [本课资料锚点 python_runtime_memory_performance](https://zh.wikipedia.org/w/index.php?search=python_runtime_memory_performance)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：引用计数、垃圾回收、字节码、性能剖析、__slots__。
 - 最后复核：2026-10-04
 - 下次复核：2026-12-10

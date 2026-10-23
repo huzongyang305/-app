@@ -340,8 +340,6 @@ D. 按 flex 比例瓜分主轴上的剩余空间
 
 ## 参考资料与复核
 
-- [本课资料锚点 flutter_layout_intro](https://zh.wikipedia.org/w/index.php?search=flutter_layout_intro)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-08-10
 - 复核范围：版本兼容、API 行为、布局约束机制与工程实践

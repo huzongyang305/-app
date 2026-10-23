@@ -340,8 +340,6 @@ g++ -std=c++17    # 使用 C++17 标准
 
 ## 参考资料与复核
 
-- [本课资料锚点 cpp_basics](https://zh.wikipedia.org/w/index.php?search=cpp_basics)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-05-10
 - 复核范围：编译流程语义、头文件保护机制、命名空间规则

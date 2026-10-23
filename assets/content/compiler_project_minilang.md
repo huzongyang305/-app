@@ -530,8 +530,6 @@ def evaluate(node, env):
 
 ## 参考资料与复核
 
-- [本课资料锚点 compiler_project_minilang](https://zh.wikipedia.org/w/index.php?search=compiler_project_minilang)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：解释器、迷你语言、词法分析、求值、交付。
 - 最后复核：2026-10-04
 - 下次复核：2027-01-24

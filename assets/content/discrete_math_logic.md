@@ -502,8 +502,6 @@ D. p∧r
 ## 参考资料与复核
 - 下次复核：2027-01-08
 
-- [本课资料锚点 discrete_math_logic](https://zh.wikipedia.org/w/index.php?search=discrete_math_logic)
-
 - 《离散数学及其应用》（Kenneth H. Rosen）第1-2章
 - MIT OpenCourseWare: Mathematics for Computer Science, Chapter 3
 - 《逻辑的引擎》（Martin Davis）
@@ -512,7 +510,7 @@ D. p∧r
 - 最后复核：2026-10-04
 
 - 官方/权威资料：[MIT 6.042 公开课](https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/)
-- 主题延伸：[关于「逻辑」的检索页](https://zh.wikipedia.org/w/index.php?search=%E9%80%BB%E8%BE%91)
+- 主题延伸：[斯坦福哲学百科：经典逻辑](https://plato.stanford.edu/entries/logic-classical/)
 
 ## 内容元数据
 
@@ -583,4 +581,3 @@ tags:
 
 - 在《命题逻辑与谓词逻辑》里处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
 - 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
-

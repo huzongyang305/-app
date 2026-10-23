@@ -1,6 +1,6 @@
 # C# GC、Span 与性能优化
 
-> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：30 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：25 分钟
 
 ![C# 分代垃圾回收与 LOH](images/diagram_csharp_gc.webp)
 
@@ -342,8 +342,6 @@ Console.WriteLine(string.Join(",", values.ToArray()));
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
 ## 参考资料与复核
-
-- [本课资料锚点 csharp_gc_performance](https://zh.wikipedia.org/w/index.php?search=csharp_gc_performance)
 
 - 最后复核：2026-10-04
 - 下次复核：2027-03-10

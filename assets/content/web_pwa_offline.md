@@ -4,7 +4,7 @@
 
 ![PWA 与离线能力](images/category_web_pwa_offline.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：35 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：30 分钟
 
 ## 本节知识框架
 
@@ -462,8 +462,6 @@ self.addEventListener("fetch", (event) => {
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
 ## 参考资料与复核
-
-- [本课资料锚点 web_pwa_offline](https://zh.wikipedia.org/w/index.php?search=web_pwa_offline)
 
 - 最后复核：2026-10-04
 - 下次复核：2027-08-17

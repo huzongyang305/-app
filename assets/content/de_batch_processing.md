@@ -424,8 +424,6 @@ HAVING SUM(amount) > 0;
 
 ## 参考资料与复核
 
-- [本课资料锚点 de_batch_processing](https://zh.wikipedia.org/w/index.php?search=de_batch_processing)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：Spark、分区、Shuffle、数据倾斜、幂等重跑。
 - 最后复核：2026-10-04
 - 下次复核：2027-01-10

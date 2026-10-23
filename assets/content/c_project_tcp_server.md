@@ -536,8 +536,6 @@ int main(void) {
 
 ## 参考资料与复核
 
-- [本课资料锚点 c_project_tcp_server](https://zh.wikipedia.org/w/index.php?search=c_project_tcp_server)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：socket、TCP、文件描述符、IO 多路复用、资源回收。
 - 最后复核：2026-10-04
 - 下次复核：2026-11-17

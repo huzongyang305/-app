@@ -623,8 +623,6 @@ D. 将方法返回值序列化为 XML 格式
 ## 参考资料与复核
 - 下次复核：2026-11-29
 
-- [本课资料锚点 java_spring_mvc](https://zh.wikipedia.org/w/index.php?search=java_spring_mvc)
-
 | 资料 | 说明 |
 | --- | --- |
 | [Spring MVC 官方文档](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html) | Spring Web MVC 完整参考 |
@@ -646,5 +644,3 @@ D. 将方法返回值序列化为 XML 格式
 - 先修课程：Java 基础、Servlet 与 JSP 基础、Spring Framework 核心
 - 后续课程：Spring Boot 入门、Spring Security 安全框架
 - 内容版本：v2.0
-
-

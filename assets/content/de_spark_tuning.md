@@ -424,8 +424,6 @@ print(agg.explain(mode="formatted"))
 
 ## 参考资料与复核
 
-- [本课资料锚点 de_spark_tuning](https://zh.wikipedia.org/w/index.php?search=de_spark_tuning)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：Spark、shuffle、数据倾斜、分区、自适应执行。
 - 最后复核：2026-10-04
 - 下次复核：2027-01-10

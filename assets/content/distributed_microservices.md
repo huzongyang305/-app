@@ -522,8 +522,6 @@ print(CallChain(["gateway", "order", "user", "inventory", "payment"]).risk())
 
 ## 参考资料与复核
 
-- [本课资料锚点 microservices](https://zh.wikipedia.org/w/index.php?search=microservices)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-07-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

@@ -540,8 +540,6 @@ D. 上传产物，填写商店 listing、隐私政策与数据安全表单
 
 ## 参考资料与复核
 
-- [本课资料锚点 android_flutter_release](https://zh.wikipedia.org/w/index.php?search=android_flutter_release)
-
 | 参考资料 | 本课用途 |
 | --- | --- |
 | [为应用签名 - Android Developers](https://developer.android.com/studio/publish/app-signing) | keystore 生成、签名方案与 Play App Signing |

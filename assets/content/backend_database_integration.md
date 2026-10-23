@@ -1609,11 +1609,8 @@ D. 迁移脚本应该是幂等的或记录执行状态
 
 ## 参考资料与复核
 
-- [本课资料锚点 backend_database_integration](https://zh.wikipedia.org/w/index.php?search=backend_database_integration)
-
 - 官方/权威资料：[HTTP 规范](https://datatracker.ietf.org/doc/html/rfc9110)
-- 主题延伸：[关于「MongoDB」的检索页](https://zh.wikipedia.org/w/index.php?search=MongoDB)
-- 本课索引词：[锚点 backend_database_integration](https://datatracker.ietf.org/doc/html/rfc9110#PostgreSQL)
+- 主题延伸：[MongoDB 官方手册](https://www.mongodb.com/docs/)
 - 最后复核：2026-10-04
 - 下次复核：2026-10-30
 
@@ -1626,4 +1623,3 @@ D. 迁移脚本应该是幂等的或记录执行状态
 - 所属分类：backend_development
 - 学习阶段：进阶
 - 建议用时：55 分钟
-

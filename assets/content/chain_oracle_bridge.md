@@ -426,8 +426,6 @@ contract BridgeOutlet {
 
 ## 参考资料与复核
 
-- [本课资料锚点 chain_oracle_bridge](https://zh.wikipedia.org/w/index.php?search=chain_oracle_bridge)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：预言机、喂价、跨链桥、消息验证、去中心化。
 - 最后复核：2026-10-04
 - 下次复核：2027-01-17

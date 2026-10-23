@@ -416,8 +416,6 @@ output "instance_id" { value = cloud_instance.app.id }
 
 ## 参考资料与复核
 
-- [本课资料锚点 cloud_iac_terraform](https://zh.wikipedia.org/w/index.php?search=cloud_iac_terraform)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：Terraform、基础设施即代码、状态文件、计划评审、漂移。
 - 最后复核：2026-10-04
 - 下次复核：2027-03-24

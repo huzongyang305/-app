@@ -511,8 +511,6 @@ fun main(args: Array<String>) {
 
 ## 参考资料与复核
 
-- [本课资料锚点 kotlin_project_cli_ledger](https://zh.wikipedia.org/w/index.php?search=kotlin_project_cli_ledger)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：Kotlin、命令行、协程、序列化、测试。
 - 最后复核：2026-10-04
 - 下次复核：2026-11-10

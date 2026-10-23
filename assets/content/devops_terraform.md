@@ -20,7 +20,6 @@
 - [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
 - [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
 
-
 ### 第 1 讲·课程介绍与 IaC 理念
 #### 什么是基础设施即代码？
 
@@ -43,7 +42,6 @@
 如果把 IaC 工具比作乐高积木，Terraform 就是那套"万能积木套装"——它不绑定某一家云厂商，支持 AWS、Azure、GCP、阿里云等数百种 Provider。你用同一套语法，就能搭建不同云平台上的基础设施。
 
 ---
-
 
 ### 第 13 讲·课程总结与复习清单
 #### 核心概念回顾
@@ -92,7 +90,6 @@
 
 ---
 
-
 ## 核心概念定义
 
 | 术语 | 一句话说明 |
@@ -103,11 +100,9 @@
 | 模块 | 使用 Terraform 管理云资源，掌握 HCL、模块、状态管理与团队协作。相关：正文给出可操作定义与适用边界。 |
 | 状态管理 | 使用 Terraform 管理云资源，掌握 HCL、模块、状态管理与团队协作。相关：正文给出可操作定义与适用边界。 |
 
-
 ## 原理与运行机制
 
 《基础设施即代码（Terraform）》正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
-
 
 ### 第 3 讲·HCL 语法基础
 #### HCL 是什么？
@@ -160,7 +155,6 @@ size = var.is_production ? "large" : "small"
 ```
 
 ---
-
 
 ### 第 4 讲·Provider 与 Resource 核心概念
 #### Provider：云厂商的"翻译官"
@@ -254,7 +248,6 @@ terraform destroy
 
 ---
 
-
 ### 第 5 讲·变量与输出（Variable & Output）
 #### 输入变量：让配置更灵活
 
@@ -331,7 +324,6 @@ output "s3_bucket_arn" {
 
 ---
 
-
 ### 第 6 讲·数据源（Data Source）
 #### 什么是数据源？
 
@@ -373,7 +365,6 @@ output "ami_id" {
 ```
 
 ---
-
 
 ### 第 7 讲·状态管理（State Management）
 #### 什么是状态文件？
@@ -438,7 +429,6 @@ terraform import aws_instance.app_server i-1234567890abcdef0
 ```
 
 ---
-
 
 ### 第 8 讲·模块设计（Module Design）
 #### 什么是模块？
@@ -581,7 +571,6 @@ module "vpc" {
 
 ---
 
-
 ### 第 9 讲·工作区与环境管理（dev/staging/prod）
 #### 什么是工作区？
 
@@ -656,7 +645,6 @@ terraform apply -var-file="prod.tfvars"
 
 ---
 
-
 ### 第 10 讲·Terraform Cloud 与团队协作
 #### Terraform Cloud 是什么？
 
@@ -703,7 +691,6 @@ terraform {
 Terraform Cloud 支持与 GitHub、GitLab、Bitbucket 集成，当代码推送到主分支时自动触发 `terraform plan`，审批后执行 `terraform apply`。
 
 ---
-
 
 ### 第 11 讲·与 CI/CD 集成（自动化 plan/apply）
 #### GitHub Actions 示例
@@ -803,12 +790,10 @@ apply:
 
 ---
 
-
 ## 典型应用场景
 
 - 结合「基础设施即代码（Terraform）」的常见落地场景与选型边界，详见正文各章节的对比讨论。
 - 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
-
 
 ### 第 12 讲·实战——使用 Terraform 部署 AWS EKS 集群
 #### 项目结构
@@ -1164,7 +1149,6 @@ kubectl get namespaces
 
 ---
 
-
 ## 代码/协议/SQL 示例
 
 《基础设施即代码（Terraform）》正文首个示例可作为最小验证起点（原样保留在上方章节）：先跑通，再改一个输入观察输出变化。
@@ -1172,7 +1156,6 @@ kubectl get namespaces
 ```powershell
 choco install terraform -y
 ```
-
 
 ### 第 2 讲·Terraform 安装与环境配置
 #### 安装 Terraform
@@ -1218,12 +1201,10 @@ aws configure
 
 ---
 
-
 ## 时间/空间复杂度或性能分析
 
 - 在《基础设施即代码（Terraform）》里处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
 - 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
-
 
 ## 常见误区与易错点
 
@@ -1233,16 +1214,13 @@ aws configure
 | 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
 | 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
 
-
 ## 与其他知识点的关系
 
 本课与分类「devops」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
 
-
 ## 自测题与参考答案
 
 以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
-
 
 ## 考点精讲
 
@@ -1323,7 +1301,6 @@ D. 指定模块的运行环境
 
 > 恭喜你完成了 Terraform 实战课程！现在你已经掌握了基础设施即代码的核心技能，可以开始在实际项目中应用 Terraform 了。记住，实践是最好的老师——多动手，多尝试，你会越来越熟练！
 
-
 ## 术语速查
 
 | 术语 | 一句话说明 |
@@ -1334,17 +1311,12 @@ D. 指定模块的运行环境
 | 模块 | 将一组相关资源打包成可复用组件，通过变量传入参数、由输出返回结果。 |
 | 状态管理 | 维护记录真实资源的 tfstate 文件，配合远程后端与锁支撑多人协作。 |
 
-
 ## 参考资料与复核
 
-- [本课资料锚点 devops_terraform](https://zh.wikipedia.org/w/index.php?search=devops_terraform)
-
 - 官方/权威资料：[OpenSSF 最佳实践](https://bestpractices.coreinfrastructure.org/)
-- 主题延伸：[关于「IaC」的检索页](https://zh.wikipedia.org/w/index.php?search=IaC)
-- 本课索引词：[锚点 devops_terraform](https://bestpractices.coreinfrastructure.org/#Terraform)
+- 主题延伸：[Terraform 官方文档](https://developer.hashicorp.com/terraform/docs)
 - 最后复核：2026-10-04
 - 下次复核：2027-02-12
-
 
 ## 内容元数据
 
@@ -1355,5 +1327,3 @@ D. 指定模块的运行环境
 - 所属分类：devops
 - 学习阶段：高级
 - 建议用时：65 分钟
-
-

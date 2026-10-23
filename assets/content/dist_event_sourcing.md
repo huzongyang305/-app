@@ -425,8 +425,6 @@ class OrderAggregate:
 
 ## 参考资料与复核
 
-- [本课资料锚点 dist_event_sourcing](https://zh.wikipedia.org/w/index.php?search=dist_event_sourcing)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：事件溯源、CQRS、事件重放、投影、版本演进。
 - 最后复核：2026-10-04
 - 下次复核：2027-07-24

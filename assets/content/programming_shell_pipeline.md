@@ -555,8 +555,6 @@ awk '{print $1}' "$LOG" | sort | uniq -c | sort -rn | head -n 5
 
 ## 参考资料与复核
 
-- [本课资料锚点 shell_pipeline](https://zh.wikipedia.org/w/index.php?search=shell_pipeline)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-02-10
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

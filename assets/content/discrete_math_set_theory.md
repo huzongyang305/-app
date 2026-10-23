@@ -201,6 +201,9 @@ for s in ps:
 | 重复元素 | {1,1,2} ≠ {1,2} | 集合元素唯一 |
 | 无序性误解 | {1,2} ≠ {2,1} | {1,2} = {2,1} |
 | 补集未指定全集 | Ā无意义 | 必须明确全集U |
+| 把 {∅} 当成 ∅ | 误认为两者都是空集 | {∅} 含有一个元素（空集本身），基数为 1；∅ 不含任何元素，基数为 0 |
+
+判归属关系时先问一句：左边是一个集合，还是集合里的一个元素？∈ 连接元素与集合，⊆ 连接集合与集合，把 {∅} 写进 ∅ 里就等于声称空集含有元素，幂集的元素个数也会跟着算错（n 个元素的集合有 2ⁿ 个幂集元素，∅ 的幂集是 {∅}，恰好 2⁰ = 1 个）。
 
 ## 与其他知识点的关系
 
@@ -311,8 +314,6 @@ D. A⊂B
 ## 参考资料与复核
 - 下次复核：2026-12-19
 
-- [本课资料锚点 discrete_math_set_theory](https://zh.wikipedia.org/w/index.php?search=discrete_math_set_theory)
-
 - 《离散数学及其应用》（Kenneth H. Rosen）第2章
 - MIT OpenCourseWare: Mathematics for Computer Science
 - 复核日期：2026-04-15
@@ -320,7 +321,7 @@ D. A⊂B
 - 最后复核：2026-10-04
 
 - 官方/权威资料：[MIT 6.042 公开课](https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/)
-- 主题延伸：[关于「集合论」的检索页](https://zh.wikipedia.org/w/index.php?search=%E9%9B%86%E5%90%88%E8%AE%BA)
+- 主题延伸：[斯坦福哲学百科：集合论](https://plato.stanford.edu/entries/set-theory/)
 
 ## 内容元数据
 
@@ -358,5 +359,3 @@ tags:
 
 - 在《集合论基础》里处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
 - 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
-
-

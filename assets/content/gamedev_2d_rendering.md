@@ -335,8 +335,6 @@ print(f"反变换回世界坐标: {back_to_world}")
 
 ## 参考资料与复核
 
-- [本课资料锚点 gamedev_2d_rendering](https://zh.wikipedia.org/w/index.php?search=gamedev_2d_rendering)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：坐标系、精灵、批处理、纹理图集、相机。
 - 最后复核：2026-10-04
 - 下次复核：2027-04-24

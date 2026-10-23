@@ -432,8 +432,6 @@ static void report(parser_t *p, token_t tok, const char *msg, const char *hint) 
 
 ## 参考资料与复核
 
-- [本课资料锚点 compiler_diagnostics](https://zh.wikipedia.org/w/index.php?search=compiler_diagnostics)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：诊断、错误恢复、恐慌模式、修复建议、编译错误。
 - 最后复核：2026-10-04
 - 下次复核：2027-01-24

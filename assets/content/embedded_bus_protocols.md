@@ -506,8 +506,6 @@ static uint8_t flash_read_id(void) {
 
 ## 参考资料与复核
 
-- [本课资料锚点 embedded_bus_protocols](https://zh.wikipedia.org/w/index.php?search=embedded_bus_protocols)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：UART、SPI、I2C、时序、总线抓包。
 - 最后复核：2026-10-04
 - 下次复核：2027-02-17

@@ -558,8 +558,6 @@ print("缓存:", square(5), square(5))  # 第二次直接命中缓存
 
 ## 参考资料与复核
 
-- [本课资料锚点 python_stdlib](https://zh.wikipedia.org/w/index.php?search=python_stdlib)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：pathlib、datetime、json、collections、logging。
 - 最后复核：2026-10-04
 - 下次复核：2026-12-10

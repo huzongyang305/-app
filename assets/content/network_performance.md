@@ -369,8 +369,6 @@ ping 与 mtr 测路径与丢包，浏览器开发者工具看请求瀑布图，�
 
 ## 参考资料与复核
 
-- [本课资料锚点 network_performance](https://zh.wikipedia.org/w/index.php?search=network_performance)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-06-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

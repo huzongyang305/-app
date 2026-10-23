@@ -492,8 +492,6 @@ print(working_set_pages(pages, 4))
 
 ## 参考资料与复核
 
-- [本课资料锚点 virtual_memory](https://zh.wikipedia.org/w/index.php?search=virtual_memory)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-07-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

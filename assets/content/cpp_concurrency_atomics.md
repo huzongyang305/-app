@@ -422,8 +422,6 @@ C++ 第一个程序（回顾基础、综合运用）
 
 ## 参考资料与复核
 
-- [本课资料锚点 cpp_concurrency_atomics](https://zh.wikipedia.org/w/index.php?search=cpp_concurrency_atomics)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-05-10
 - 复核范围：线程行为、原子操作语义、内存序规则与条件变量使用模式

@@ -526,8 +526,6 @@ print(window.report())
 
 ## 参考资料与复核
 
-- [本课资料锚点 observability](https://zh.wikipedia.org/w/index.php?search=observability)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-08-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

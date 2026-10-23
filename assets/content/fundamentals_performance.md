@@ -1,6 +1,6 @@
 # 性能度量与并行体系结构
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：35 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：30 分钟
 
 ![性能度量与 Amdahl 定律](images/diagram_fund_perf.webp)
 
@@ -486,8 +486,6 @@ print(little_law(throughput=200, latency_seconds=0.05))   # 约 10 个并发
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
 ## 参考资料与复核
-
-- [本课资料锚点 performance_metrics](https://zh.wikipedia.org/w/index.php?search=performance_metrics)
 
 - 最后复核：2026-10-04
 - 下次复核：2027-10-17

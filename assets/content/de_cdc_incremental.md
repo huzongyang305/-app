@@ -420,8 +420,6 @@ for event in consumer.poll():
 
 ## 参考资料与复核
 
-- [本课资料锚点 de_cdc_incremental](https://zh.wikipedia.org/w/index.php?search=de_cdc_incremental)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：CDC、binlog、增量同步、幂等写入、位点。
 - 最后复核：2026-10-04
 - 下次复核：2027-01-10

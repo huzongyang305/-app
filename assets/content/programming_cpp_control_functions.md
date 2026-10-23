@@ -468,8 +468,6 @@ void trim(std::string& s) {
 
 ## 参考资料与复核
 
-- [本课资料锚点 cpp_control_functions](https://zh.wikipedia.org/w/index.php?search=cpp_control_functions)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-05-10
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

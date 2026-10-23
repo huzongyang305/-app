@@ -578,8 +578,6 @@ TCP 提供可靠字节流，不保留消息边界，也不保证应用层语义�
 
 ## 参考资料与复核
 
-- [本课资料锚点 visual_tcp_handshake](https://zh.wikipedia.org/w/index.php?search=visual_tcp_handshake)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-07-10
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

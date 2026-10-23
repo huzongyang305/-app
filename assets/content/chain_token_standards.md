@@ -424,8 +424,6 @@ contract MiniToken {
 
 ## 参考资料与复核
 
-- [本课资料锚点 chain_token_standards](https://zh.wikipedia.org/w/index.php?search=chain_token_standards)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：代币标准、ERC-20、ERC-721、授权、合约接口。
 - 最后复核：2026-10-04
 - 下次复核：2027-01-17

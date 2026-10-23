@@ -304,8 +304,6 @@ int main() {
 
 ## 参考资料与复核
 
-- [本课资料锚点 cpp_conditions](https://zh.wikipedia.org/w/index.php?search=cpp_conditions)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-05-10
 - 复核范围：条件语句语义、浮点比较、作用域规则

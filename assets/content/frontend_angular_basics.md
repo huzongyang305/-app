@@ -16,10 +16,8 @@
 - [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
 - [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
 
-
 ### 课程导言
 Angular是一个功能完整的企业级前端框架，由Google维护。它以TypeScript为基础，提供了从路由、表单处理到HTTP客户端的一站式解决方案。本章将带你深入理解Angular的核心概念，特别是其标志性的依赖注入系统——这是Angular架构的基石。你将学习组件、模块、服务、指令等基本概念，掌握如何通过依赖注入实现松耦合和可测试性，并了解Angular的变更检测机制。通过实际案例和渐进式示例，你会发现Angular虽然学习曲线较陡，但其严谨的架构设计非常适合大型应用开发。
-
 
 ### 学习目标
 完成本章后，你将能够：
@@ -31,7 +29,6 @@ Angular是一个功能完整的企业级前端框架，由Google维护。它以T
 - 使用HttpClient进行网络请求
 - 识别并避免常见的Angular开发陷阱
 
-
 ## 核心概念定义
 
 | 术语 | 一句话说明 |
@@ -42,11 +39,9 @@ Angular是一个功能完整的企业级前端框架，由Google维护。它以T
 | RxJS | 学习Angular架构、TypeScript集成、依赖注入系统和RxJS响应式编相关：正文给出可操作定义与适用边界。 |
 | 服务 | 学习Angular架构、TypeScript集成、依赖注入系统和RxJS响应式编相关：正文给出可操作定义与适用边界。 |
 
-
 ## 原理与运行机制
 
 《Angular基础与依赖注入》正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
-
 
 ### 核心概念解析
 #### Angular是什么？
@@ -92,12 +87,10 @@ Angular的变更检测机制就像一个勤奋的保安，定期检查每个组�
 
 Angular使用Zone.js来拦截异步操作（如setTimeout、Promise、事件监听），在这些操作完成后自动触发变更检测。这意味着你不需要手动调用更新方法，Angular会自动处理。
 
-
 ## 典型应用场景
 
 - 结合「Angular基础与依赖注入」的常见落地场景与选型边界，详见正文各章节的对比讨论。
 - 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
-
 
 ## 代码/协议/SQL 示例
 
@@ -121,7 +114,6 @@ export class AppComponent {
   title = 'my-angular-app';
 }
 ```
-
 
 ### 渐进式代码示例
 #### 最小示例：Hello World组件
@@ -1012,12 +1004,10 @@ export class UserListComponent implements OnInit {
 - 父子组件通信
 - 错误处理和加载状态
 
-
 ## 时间/空间复杂度或性能分析
 
 - 在《Angular基础与依赖注入》里处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
 - 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
-
 
 ## 常见误区与易错点
 
@@ -1026,7 +1016,6 @@ export class UserListComponent implements OnInit {
 | 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
 | 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
 | 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
-
 
 ### 常见陷阱对照表
 | 陷阱 | 表现 | 解决方案 |
@@ -1039,16 +1028,13 @@ export class UserListComponent implements OnInit {
 | 模板中调用函数造成性能问题 | 每次变更检测都执行函数 | 使用pure pipe或将计算结果缓存 |
 | 模块懒加载配置错误 | 路由跳转时模块加载失败 | 确保RouterModule.forChild正确配置 |
 
-
 ## 与其他知识点的关系
 
 本课与分类「frontend_frameworks」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
 
-
 ## 自测题与参考答案
 
 以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
-
 
 ## 考点精讲
 
@@ -1117,7 +1103,6 @@ D. 使用了async管道订阅Observable
 
 **解析：** Angular依赖Zone.js来拦截异步操作并触发变更检测。如果在NgZone外部执行代码（比如某些第三方库的回调），Angular不知道数据发生了变化，因此不会更新视图。解决方法是使用`NgZone.run()`将代码包裹起来，或者手动调用`ChangeDetectorRef.detectChanges()`。选项B是默认的变更检测策略，工作正常。选项C是标准做法，HttpClient集成在NgZone中，会自动触发变更检测。选项D也是推荐做法，async管道会自动处理变更检测。
 
-
 ## 术语速查
 
 | 术语 | 一句话说明 |
@@ -1128,17 +1113,12 @@ D. 使用了async管道订阅Observable
 | RxJS | 用 Observable 表示异步数据流，并靠操作符做组合、过滤与转换。 |
 | 服务 | 带 Injectable 标记的普通类，集中封装数据与业务逻辑供组件复用。 |
 
-
 ## 参考资料与复核
 
-- [本课资料锚点 frontend_angular_basics](https://zh.wikipedia.org/w/index.php?search=frontend_angular_basics)
-
 - 官方/权威资料：[web.dev 性能指南](https://web.dev/)
-- 主题延伸：[关于「依赖注入」的检索页](https://zh.wikipedia.org/w/index.php?search=%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5)
-- 本课索引词：[锚点 frontend_angular_basics](https://web.dev/#Angular)
+- 主题延伸：[Angular 依赖注入指南](https://angular.cn/guide/di)
 - 最后复核：2026-10-04
 - 下次复核：2027-03-09
-
 
 ## 内容元数据
 
@@ -1149,5 +1129,3 @@ D. 使用了async管道订阅Observable
 - 所属分类：frontend_frameworks
 - 学习阶段：入门
 - 建议用时：50 分钟
-
-

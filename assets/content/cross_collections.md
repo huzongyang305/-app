@@ -526,8 +526,6 @@ for w in "a b a c a".split_whitespace() {
 
 ## 参考资料与复核
 
-- [本课资料锚点 cross_collections](https://zh.wikipedia.org/w/index.php?search=cross_collections)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-07-17
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

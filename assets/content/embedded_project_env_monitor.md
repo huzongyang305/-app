@@ -521,8 +521,6 @@ static void upload_pending(void) {
 
 ## 参考资料与复核
 
-- [本课资料锚点 embedded_project_env_monitor](https://zh.wikipedia.org/w/index.php?search=embedded_project_env_monitor)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：环境监测、低功耗采集、断网重传、远程配置、交付。
 - 最后复核：2026-10-04
 - 下次复核：2027-02-17

@@ -469,8 +469,6 @@ Python 数据库与 SQLAlchemy 2.x（本课）
 
 ## 参考资料与复核
 
-- [本课资料锚点 python_database_sqlalchemy](https://zh.wikipedia.org/w/index.php?search=python_database_sqlalchemy)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：SQLAlchemy、SQLite、事务、连接池、Alembic。
 - 最后复核：2026-10-04
 - 下次复核：2026-11-10

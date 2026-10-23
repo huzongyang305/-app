@@ -469,8 +469,6 @@ print(memory_gb(1_000_000, 768))
 
 ## 参考资料与复核
 
-- [本课资料锚点 vector_db](https://zh.wikipedia.org/w/index.php?search=vector_db)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-04-17
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

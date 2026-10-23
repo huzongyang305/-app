@@ -500,8 +500,6 @@ async fn main() {
 
 ## 参考资料与复核
 
-- [本课资料锚点 rust_project_axum_api](https://zh.wikipedia.org/w/index.php?search=rust_project_axum_api)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-06-10
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

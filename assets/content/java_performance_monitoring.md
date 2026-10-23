@@ -538,8 +538,6 @@ D. DEBUG 级别只适用于单元测试环境
 
 ## 参考资料与复核
 
-- [本课资料锚点 java_performance_monitoring](https://zh.wikipedia.org/w/index.php?search=java_performance_monitoring)
-
 - 最后复核：2026-10-20
 - 下次复核：2027-02-20
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
@@ -555,5 +553,3 @@ D. DEBUG 级别只适用于单元测试环境
 | [Logback 官方文档](https://logback.qos.ch/manual/) | 日志框架配置与使用 |
 - 最后复核：2026-10-04
 - 下次复核：2026-11-04
-
-

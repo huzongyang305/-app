@@ -609,8 +609,6 @@ def worker():
 
 ## 参考资料与复核
 
-- [本课资料锚点 python_concurrency_model](https://zh.wikipedia.org/w/index.php?search=python_concurrency_model)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：GIL、线程、进程、竞态条件、线程池。
 - 最后复核：2026-10-04
 - 下次复核：2026-11-10

@@ -337,8 +337,6 @@ rpx 是小程序专门为屏幕适配设计的单位，750rpx 始终等于屏幕
 
 ## 参考资料与复核
 
-- [本课资料锚点 mobile_miniprogram](https://zh.wikipedia.org/w/index.php?search=mobile_miniprogram)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-08-10
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

@@ -438,8 +438,6 @@ while x > 0:
 
 ## 参考资料与复核
 
-- [本课资料锚点 python_loops](https://zh.wikipedia.org/w/index.php?search=python_loops)
-
 - 最后复核：2026-10-04
 - 下次复核：2026-11-10
 - 来源性质：官方文档、权威教材

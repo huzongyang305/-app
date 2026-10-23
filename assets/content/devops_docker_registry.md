@@ -1118,11 +1118,8 @@ docker history node:18-alpine
 
 ## 参考资料与复核
 
-- [本课资料锚点 devops_docker_registry](https://zh.wikipedia.org/w/index.php?search=devops_docker_registry)
-
 - 官方/权威资料：[OpenSSF 最佳实践](https://bestpractices.coreinfrastructure.org/)
-- 主题延伸：[关于「镜像」的检索页](https://zh.wikipedia.org/w/index.php?search=%E9%95%9C%E5%83%8F)
-- 本课索引词：[锚点 devops_docker_registry](https://bestpractices.coreinfrastructure.org/#Docker)
+- 主题延伸：[Docker Registry 官方文档](https://docs.docker.com/registry/)
 - 最后复核：2026-10-04
 - 下次复核：2027-02-02
 
@@ -1135,4 +1132,3 @@ docker history node:18-alpine
 - 所属分类：devops
 - 学习阶段：高级
 - 建议用时：50 分钟
-

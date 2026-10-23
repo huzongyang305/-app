@@ -412,8 +412,6 @@ spec:
 
 ## 参考资料与复核
 
-- [本课资料锚点 cloud_multicluster_dr](https://zh.wikipedia.org/w/index.php?search=cloud_multicluster_dr)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：多集群、容灾、流量切换、数据同步、演练。
 - 最后复核：2026-10-04
 - 下次复核：2027-03-24

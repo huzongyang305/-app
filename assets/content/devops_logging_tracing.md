@@ -942,11 +942,8 @@ D. 更轻量级，内存占用更低，适合边缘场景和容器环境中的�
 
 ## 参考资料与复核
 
-- [本课资料锚点 devops_logging_tracing](https://zh.wikipedia.org/w/index.php?search=devops_logging_tracing)
-
 - 官方/权威资料：[OpenSSF 最佳实践](https://bestpractices.coreinfrastructure.org/)
-- 主题延伸：[关于「Jaeger」的检索页](https://zh.wikipedia.org/w/index.php?search=Jaeger)
-- 本课索引词：[锚点 devops_logging_tracing](https://bestpractices.coreinfrastructure.org/#ELK)
+- 主题延伸：[Jaeger 官方文档](https://www.jaegertracing.io/docs/2.0/)
 - 最后复核：2026-10-04
 - 下次复核：2027-02-22
 
@@ -959,4 +956,3 @@ D. 更轻量级，内存占用更低，适合边缘场景和容器环境中的�
 - 所属分类：devops
 - 学习阶段：高级
 - 建议用时：55 分钟
-

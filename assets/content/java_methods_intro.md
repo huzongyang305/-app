@@ -319,8 +319,6 @@ Java 不支持嵌套方法定义。所有方法都必须写在类里面、其他
 
 ## 参考资料与复核
 
-- [本课资料锚点 java_methods_intro](https://zh.wikipedia.org/w/index.php?search=java_methods_intro)
-
 - 最后复核：2026-10-04
 - [Oracle Java Tutorials - Methods](https://docs.oracle.com/javase/tutorial/java/javaOO/methods.html)
 - 下次复核：2027-02-24

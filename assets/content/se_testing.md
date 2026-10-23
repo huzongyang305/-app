@@ -496,8 +496,6 @@ Stub 提供固定返回值、Mock 校验调用行为、Fake 是轻量可用实�
 
 ## 参考资料与复核
 
-- [本课资料锚点 testing_strategy](https://zh.wikipedia.org/w/index.php?search=testing_strategy)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-10-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

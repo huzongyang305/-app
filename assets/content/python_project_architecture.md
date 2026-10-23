@@ -556,8 +556,6 @@ print("依赖可替换:", isinstance(service.clock, FixedClock))
 
 ## 参考资料与复核
 
-- [本课资料锚点 python_project_architecture](https://zh.wikipedia.org/w/index.php?search=python_project_architecture)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：分层架构、依赖注入、配置、质量门禁、发布。
 - 最后复核：2026-10-04
 - 下次复核：2026-12-10

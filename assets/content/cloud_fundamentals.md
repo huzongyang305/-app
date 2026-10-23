@@ -417,8 +417,6 @@ notes: 数据库只放在 private 子网，公网入口只暴露负载均衡
 
 ## 参考资料与复核
 
-- [本课资料锚点 cloud_fundamentals](https://zh.wikipedia.org/w/index.php?search=cloud_fundamentals)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：区域、可用区、VPC、IaaS、责任共担。
 - 最后复核：2026-10-04
 - 下次复核：2027-03-24

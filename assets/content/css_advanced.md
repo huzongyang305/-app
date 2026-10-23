@@ -460,8 +460,6 @@ BEM（block__element--modifier）语法显式，适合多人协作；原子化 C
 
 ## 参考资料与复核
 
-- [本课资料锚点 css_advanced](https://zh.wikipedia.org/w/index.php?search=css_advanced)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-08-17
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

@@ -403,8 +403,6 @@ static void enter_stop_mode_until_rtc(void) {
 
 ## 参考资料与复核
 
-- [本课资料锚点 embedded_low_power](https://zh.wikipedia.org/w/index.php?search=embedded_low_power)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：低功耗、睡眠模式、占空比、时钟门控、唤醒源。
 - 最后复核：2026-10-04
 - 下次复核：2027-02-17

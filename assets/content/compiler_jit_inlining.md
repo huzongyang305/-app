@@ -425,8 +425,6 @@ public class HotLoop {
 
 ## 参考资料与复核
 
-- [本课资料锚点 compiler_jit_inlining](https://zh.wikipedia.org/w/index.php?search=compiler_jit_inlining)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：JIT、热点探测、内联、去虚拟化、去优化。
 - 最后复核：2026-10-04
 - 下次复核：2027-01-24

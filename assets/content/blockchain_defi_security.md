@@ -434,8 +434,6 @@ contract Vault {
 
 ## 参考资料与复核
 
-- [本课资料锚点 blockchain_defi_security](https://zh.wikipedia.org/w/index.php?search=blockchain_defi_security)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：重入攻击、预言机、权限控制、审计、闪电贷。
 - 最后复核：2026-10-04
 - 下次复核：2027-01-17

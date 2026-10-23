@@ -272,8 +272,6 @@ ECS 不是孤立的知识点，它和很多主题都有联系：
 
 ## 参考资料与复核
 
-- [本课资料锚点 gamedev_ecs_profiling](https://zh.wikipedia.org/w/index.php?search=gamedev_ecs_profiling)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-04-24
 - 复核范围：ECS 框架版本兼容性、剖析器 API 行为与工程实践

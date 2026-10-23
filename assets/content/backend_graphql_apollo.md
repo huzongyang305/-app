@@ -1175,11 +1175,8 @@ D. 使用HTTP Server-Sent Events
 
 ## 参考资料与复核
 
-- [本课资料锚点 backend_graphql_apollo](https://zh.wikipedia.org/w/index.php?search=backend_graphql_apollo)
-
 - 官方/权威资料：[HTTP 规范](https://datatracker.ietf.org/doc/html/rfc9110)
-- 主题延伸：[关于「Apollo Server」的检索页](https://zh.wikipedia.org/w/index.php?search=Apollo%20Server)
-- 本课索引词：[锚点 backend_graphql_apollo](https://datatracker.ietf.org/doc/html/rfc9110#GraphQL)
+- 主题延伸：[Apollo Server 官方文档](https://www.apollographql.com/docs/apollo-server/)
 - 最后复核：2026-10-04
 - 下次复核：2026-11-09
 
@@ -1192,4 +1189,3 @@ D. 使用HTTP Server-Sent Events
 - 所属分类：backend_development
 - 学习阶段：进阶
 - 建议用时：50 分钟
-

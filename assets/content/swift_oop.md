@@ -467,8 +467,6 @@ counter=2
 
 ## 参考资料与复核
 
-- [本课资料锚点 swift_oop](https://zh.wikipedia.org/w/index.php?search=swift_oop)
-
 - 最后复核：2026-10-04
 - 下次复核：2026-12-17
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

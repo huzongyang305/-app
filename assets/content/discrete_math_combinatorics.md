@@ -2,7 +2,7 @@
 
 ![组合数学](images/diagram_digital_logic.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：40 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：35 分钟
 
 ## 本节知识框架
 
@@ -493,8 +493,6 @@ D. 7/10
 ## 参考资料与复核
 - 下次复核：2027-01-03
 
-- [本课资料锚点 discrete_math_combinatorics](https://zh.wikipedia.org/w/index.php?search=discrete_math_combinatorics)
-
 - 《离散数学及其应用》（Kenneth H. Rosen）第6章
 - 《组合数学》（Richard A. Brualdi）
 - MIT OpenCourseWare: Mathematics for Computer Science, Chapter 7
@@ -503,7 +501,7 @@ D. 7/10
 - 最后复核：2026-10-04
 
 - 官方/权威资料：[MIT 6.042 公开课](https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/)
-- 主题延伸：[关于「组合数学」的检索页](https://zh.wikipedia.org/w/index.php?search=%E7%BB%84%E5%90%88%E6%95%B0%E5%AD%A6)
+- 主题延伸：[Discrete Mathematics（OpenMathBooks）第 3 版](https://discrete.openmathbooks.org/dmoi3.html)
 
 ## 内容元数据
 
@@ -559,5 +557,3 @@ tags:
 
 - 在《组合数学》里处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
 - 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
-
-

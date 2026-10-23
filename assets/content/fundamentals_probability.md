@@ -515,8 +515,6 @@ A/B 测试显示新方案转化率提升 2%，但样本量很小且只运行了�
 
 ## 参考资料与复核
 
-- [本课资料锚点 probability](https://zh.wikipedia.org/w/index.php?search=probability)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-10-17
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

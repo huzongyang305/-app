@@ -535,8 +535,6 @@ On-Call 流程不能替代系统可靠性设计。真正的目标是通过容量
 
 ## 参考资料与复核
 
-- [本课资料锚点 se_oncall](https://zh.wikipedia.org/w/index.php?search=se_oncall)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-10-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

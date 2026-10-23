@@ -424,8 +424,6 @@ print(report.detector_lag(), report.quality_check())
 
 ## 参考资料与复核
 
-- [本课资料锚点 se_postmortem](https://zh.wikipedia.org/w/index.php?search=se_postmortem)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-10-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

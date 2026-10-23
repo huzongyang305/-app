@@ -526,8 +526,6 @@ spec:
 
 ## 参考资料与复核
 
-- [本课资料锚点 cloud_k8s_operations](https://zh.wikipedia.org/w/index.php?search=cloud_k8s_operations)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：Kubernetes、探针、滚动发布、资源配额、自动扩缩。
 - 最后复核：2026-10-04
 - 下次复核：2027-03-24

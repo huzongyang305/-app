@@ -405,8 +405,6 @@ def exploration_slots(k=5):
 
 ## 参考资料与复核
 
-- [本课资料锚点 ai_recommender](https://zh.wikipedia.org/w/index.php?search=ai_recommender)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：推荐系统、召回、排序、冷启动、评价指标。
 - 最后复核：2026-10-04
 - 下次复核：2027-04-17

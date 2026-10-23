@@ -689,8 +689,6 @@ Go 的交付物要能用固定命令复现；下表是本项目的最低验证�
 
 ## 参考资料与复核
 
-- [本课资料锚点 go_generics_stdlib](https://zh.wikipedia.org/w/index.php?search=go_generics_stdlib)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-04-10
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

@@ -479,8 +479,6 @@ print(equivalent_cost(3000, 800, 0.01, 0.03))
 
 ## 参考资料与复核
 
-- [本课资料锚点 model_evaluation](https://zh.wikipedia.org/w/index.php?search=model_evaluation)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-04-17
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

@@ -481,8 +481,6 @@ A: 部分用户对动态效果敏感，使用 `prefers-reduced-motion` 可以为
 
 ## 参考资料与复核
 
-- [本课资料锚点 css_render_animation](https://zh.wikipedia.org/w/index.php?search=css_render_animation)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-08-17
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

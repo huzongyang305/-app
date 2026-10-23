@@ -523,8 +523,6 @@ contract VaultFixed {
 
 ## 参考资料与复核
 
-- [本课资料锚点 chain_audit_project](https://zh.wikipedia.org/w/index.php?search=chain_audit_project)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：合约审计、威胁建模、漏洞复现、修复验证、审计报告。
 - 最后复核：2026-10-04
 - 下次复核：2027-01-17

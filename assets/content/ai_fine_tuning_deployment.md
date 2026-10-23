@@ -4,7 +4,7 @@
 
 ![模型微调与本地部署](images/remaining_ai_fine_tuning_deployment.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：40 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：35 分钟
 
 ## 本节知识框架
 
@@ -544,8 +544,6 @@ print(vram_estimate_gb(7, 2), vram_estimate_gb(7, 0.5))     # FP16 与 INT4
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
 ## 参考资料与复核
-
-- [本课资料锚点 ai_fine_tuning_deployment](https://zh.wikipedia.org/w/index.php?search=ai_fine_tuning_deployment)
 
 - 最后复核：2026-10-04
 - 下次复核：2026-12-24

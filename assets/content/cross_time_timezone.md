@@ -502,8 +502,6 @@ date -d "2026-03-05T06:02:11Z" +%s          # 解析为时间戳
 
 ## 参考资料与复核
 
-- [本课资料锚点 cross_time_timezone](https://zh.wikipedia.org/w/index.php?search=cross_time_timezone)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-07-17
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

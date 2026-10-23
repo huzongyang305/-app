@@ -437,8 +437,6 @@ console.log(`总分 ${total}`);
 
 ## 参考资料与复核
 
-- [本课资料锚点 js_conditions_loops](https://zh.wikipedia.org/w/index.php?search=js_conditions_loops)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-05-17
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

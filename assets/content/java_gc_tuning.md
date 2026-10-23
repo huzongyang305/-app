@@ -346,8 +346,6 @@ GC 调优不像算法题用大 O 衡量，更关注"在给定硬件下，停顿�
 
 ## 参考资料与复核
 
-- [本课资料锚点 java_gc_tuning](https://zh.wikipedia.org/w/index.php?search=java_gc_tuning)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-02-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

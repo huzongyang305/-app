@@ -294,8 +294,6 @@ void OnServerState(PlayerState server) {
 
 ## 参考资料与复核
 
-- [本课资料锚点 gamedev_multiplayer_sync](https://zh.wikipedia.org/w/index.php?search=gamedev_multiplayer_sync)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-04-24
 - 来源性质：官方文档、权威教材与工程实践整理

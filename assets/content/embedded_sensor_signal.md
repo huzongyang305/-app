@@ -414,8 +414,6 @@ static uint16_t moving_average(uint16_t sample) {
 
 ## 参考资料与复核
 
-- [本课资料锚点 embedded_sensor_signal](https://zh.wikipedia.org/w/index.php?search=embedded_sensor_signal)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：ADC、采样率、量化误差、数字滤波、校准。
 - 最后复核：2026-10-04
 - 下次复核：2027-02-17

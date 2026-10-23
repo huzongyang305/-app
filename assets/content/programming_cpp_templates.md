@@ -371,8 +371,6 @@ Concepts 解决了什么问题？
 
 ## 参考资料与复核
 
-- [本课资料锚点 cpp_templates](https://zh.wikipedia.org/w/index.php?search=cpp_templates)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-05-10
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

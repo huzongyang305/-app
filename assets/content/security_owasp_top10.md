@@ -429,8 +429,6 @@ print(digest[:12])
 
 ## 参考资料与复核
 
-- [本课资料锚点 security_owasp_top10](https://zh.wikipedia.org/w/index.php?search=security_owasp_top10)
-
 - 最后复核：2026-10-04
 - 下次复核：2026-11-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

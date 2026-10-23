@@ -16,10 +16,8 @@
 - [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
 - [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
 
-
 ### 课程导言
 Jetpack Compose是Google推出的现代Android UI工具包，它用声明式的方式彻底改变了Android界面开发。就像从手绘地图升级到GPS导航，你不再需要手动管理View的生命周期、findViewById和复杂的Adapter，而是专注于描述"界面应该是什么样子"。本章将深入探讨Compose的核心概念、状态管理、布局系统、动画效果、与现有View系统的互操作，以及高级性能优化技巧。
-
 
 ### 学习目标
 学完本章后，你将能够：
@@ -31,7 +29,6 @@ Jetpack Compose是Google推出的现代Android UI工具包，它用声明式的�
 5. 实现Material Design 3风格的现代化界面
 6. 在Compose中集成传统View组件并处理性能优化
 
-
 ## 核心概念定义
 
 | 术语 | 一句话说明 |
@@ -42,11 +39,9 @@ Jetpack Compose是Google推出的现代Android UI工具包，它用声明式的�
 | 副作用 | 掌握Compose布局系统、副作用处理和Material Design 3组件。相关：正文给出可操作定义与适用边界。 |
 | Material 3 | 掌握Compose布局系统、副作用处理和Material Design 3组件。相关：正文给出可操作定义与适用边界。 |
 
-
 ## 原理与运行机制
 
 《Android Jetpack Compose进阶》正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
-
 
 ### 生活类比拆解
 #### 重组机制：像翻新的房间布置
@@ -61,12 +56,10 @@ State Hoisting（状态提升）就像把家里所有电器的遥控器都集中
 
 Compose的Modifier就像给礼物包装的多层包装纸。你可以先包一层红色包装纸（background），再加一个蝴蝶结（padding），最后贴上标签（clickable）。每一层Modifier都会改变组件的外观或行为，并且顺序很重要：先加padding再设背景，和先设背景再加padding，视觉效果完全不同。Modifier是不可变的，每次调用都返回一个新的Modifier实例，形成一条处理链。
 
-
 ## 典型应用场景
 
 - 结合「Android Jetpack Compose进阶」的常见落地场景与选型边界，详见正文各章节的对比讨论。
 - 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
-
 
 ## 代码/协议/SQL 示例
 
@@ -89,7 +82,6 @@ fun Greeting(name: String) {
     )
 }
 ```
-
 
 ### 渐进式代码示例
 #### 最小示例：基础Text显示
@@ -606,12 +598,10 @@ fun DashboardScreen() {
 }
 ```
 
-
 ## 时间/空间复杂度或性能分析
 
 - 在《Android Jetpack Compose进阶》里处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
 - 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
-
 
 ## 常见误区与易错点
 
@@ -620,7 +610,6 @@ fun DashboardScreen() {
 | 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
 | 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
 | 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
-
 
 ### 常见陷阱与解决方案
 | 陷阱 | 表现 | 原因 | 解决方案 |
@@ -636,16 +625,13 @@ fun DashboardScreen() {
 | Recomposition范围过大 | 不必要的性能开销 | 状态变化触发了过多组件重组 | 使用derivedStateOf优化计算，或将大Composable拆分为小组件 |
 | 混淆StateFlow和mutableStateOf | 状态更新不触发UI刷新 | StateFlow需要在collectAsStateWithLifecycle中收集 | UI层使用mutableStateOf，数据层使用StateFlow，通过collectAsState桥接 |
 
-
 ## 与其他知识点的关系
 
 本课与分类「android_development」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
 
-
 ## 自测题与参考答案
 
 以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
-
 
 ## 考点精讲
 
@@ -714,7 +700,6 @@ D. Modifier可以直接修改Composable的内部状态 ✅
 
 **解析：** Modifier是Compose中用于修饰组件外观和行为的不可变对象。每次调用Modifier的方法（如padding、background、clickable）都会返回一个新的Modifier实例，形成一条处理链。顺序确实很重要，例如`.padding(16.dp).background(Color.Red)`和`.background(Color.Red).padding(16.dp)`会产生不同的视觉效果。然而，Modifier不能直接修改Composable的内部状态，它只能影响组件的绘制、布局和输入处理。状态的修改需要通过状态管理API（如mutableStateOf）来完成。
 
-
 ## 术语速查
 
 | 术语 | 一句话说明 |
@@ -725,17 +710,12 @@ D. Modifier可以直接修改Composable的内部状态 ✅
 | 副作用 | 借LaunchedEffect把请求与订阅挪出组合阶段，避免重组时重复触发。 |
 | Material 3 | 第三代设计规范在Compose里的实现，提供动态取色与成套组件。 |
 
-
 ## 参考资料与复核
 
-- [本课资料锚点 mobile_jetpack_compose_advanced](https://zh.wikipedia.org/w/index.php?search=mobile_jetpack_compose_advanced)
-
 - 官方/权威资料：[Android 开发者站](https://developer.android.com/develop)
-- 主题延伸：[关于「Android」的检索页](https://zh.wikipedia.org/w/index.php?search=Android)
-- 本课索引词：[锚点 mobile_jetpack_compose_advanced](https://developer.android.com/develop#Jetpack%20Compose)
+- 主题延伸：[Jetpack Compose 官方文档](https://developer.android.google.cn/develop/ui/compose/documentation)
 - 最后复核：2026-10-04
 - 下次复核：2027-01-08
-
 
 ## 内容元数据
 
@@ -746,5 +726,3 @@ D. Modifier可以直接修改Composable的内部状态 ✅
 - 所属分类：android_development
 - 学习阶段：进阶
 - 建议用时：50 分钟
-
-

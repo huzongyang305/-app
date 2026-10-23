@@ -619,8 +619,6 @@ D. "@PreAuthorize" 支持 SpEL 表达式编写复杂条件，"@Secured" 只能�
 ## 参考资料与复核
 - 下次复核：2026-12-04
 
-- [本课资料锚点 java_spring_security](https://zh.wikipedia.org/w/index.php?search=java_spring_security)
-
 | 资料 | 说明 |
 | --- | --- |
 | [Spring Security 官方文档](https://docs.spring.io/spring-security/reference/) | Spring Security 完整参考手册，涵盖认证、授权、OAuth2 等所有模块 |
@@ -644,5 +642,3 @@ D. "@PreAuthorize" 支持 SpEL 表达式编写复杂条件，"@Secured" 只能�
 - 先修课程：Spring Framework 核心、Servlet 与 JSP 基础、HTTP 协议基础
 - 后续课程：Spring Boot 入门、微服务架构
 - 内容版本：v2.0
-
-

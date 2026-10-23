@@ -421,8 +421,6 @@ C++ 移动语义与右值引用（语言特性、性能优化）
 
 ## 参考资料与复核
 
-- [本课资料锚点 cpp_project_taskdb](https://zh.wikipedia.org/w/index.php?search=cpp_project_taskdb)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-05-10
 - 复核范围：SQLite API 行为、参数化查询安全、CLI 参数解析与测试策略

@@ -1300,11 +1300,8 @@ D. 限流熔断和监控
 
 ## 参考资料与复核
 
-- [本课资料锚点 backend_microservices_patterns](https://zh.wikipedia.org/w/index.php?search=backend_microservices_patterns)
-
 - 官方/权威资料：[HTTP 规范](https://datatracker.ietf.org/doc/html/rfc9110)
-- 主题延伸：[关于「API Gateway」的检索页](https://zh.wikipedia.org/w/index.php?search=API%20Gateway)
-- 本课索引词：[锚点 backend_microservices_patterns](https://datatracker.ietf.org/doc/html/rfc9110#%E5%BE%AE%E6%9C%8D%E5%8A%A1)
+- 主题延伸：[microservices.io：API Gateway 模式](https://microservices.io/patterns/apigateway.html)
 - 最后复核：2026-10-04
 - 下次复核：2026-11-14
 
@@ -1317,4 +1314,3 @@ D. 限流熔断和监控
 - 所属分类：backend_development
 - 学习阶段：高级
 - 建议用时：55 分钟
-

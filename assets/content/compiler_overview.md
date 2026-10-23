@@ -473,8 +473,6 @@ print('结果:', parse(tokens('1 + 2 * (3 + 4)')))
 
 ## 参考资料与复核
 
-- [本课资料锚点 compiler_overview](https://zh.wikipedia.org/w/index.php?search=compiler_overview)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：编译流程、解释器、字节码、前端后端、错误报告。
 - 最后复核：2026-10-04
 - 下次复核：2027-01-24

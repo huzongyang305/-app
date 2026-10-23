@@ -31,12 +31,10 @@
 
 ---
 
-
 ### 复习清单
 - [ ] 能不看正文复述本课核心术语，并指出一个边界或反例
 - [ ] 能默写本课最重要的代码示例，并解释每一行的作用
 - [ ] 能说出本课内容和前后两课的联系
-
 
 ## 核心概念定义
 
@@ -103,7 +101,6 @@ except ZeroDivisionError:
 ```
 
 ---
-
 
 ## 原理与运行机制
 
@@ -208,7 +205,6 @@ finally:
 
 ---
 
-
 ## 典型应用场景
 
 ### match-case 适合用在哪里？
@@ -247,7 +243,6 @@ flat = [n for row in matrix for n in row]
 - **类型转换**：字符串可能无法转成数字
 
 ---
-
 
 ## 代码/协议/SQL 示例
 
@@ -357,11 +352,9 @@ list(range(5, 0, -1))   # [5, 4, 3, 2, 1]
 
 ---
 
-
 ## 时间/空间复杂度或性能分析
 
 （本节内容详见正文各章节的对应说明。）
-
 
 ### 补充性能分析
 | 操作 | 时间复杂度 | 说明 |
@@ -376,16 +369,13 @@ list(range(5, 0, -1))   # [5, 4, 3, 2, 1]
 
 ---
 
-
 ## 常见误区与易错点
 
 （本节内容详见正文各章节的对应说明。）
 
-
 ## 与其他知识点的关系
 
 （本节内容详见正文各章节的对应说明。）
-
 
 ### 补充关联
 ```text
@@ -403,11 +393,9 @@ for / while       ──→  推导式          ──→  生成器表达式
 
 ---
 
-
 ## 自测题与参考答案
 
 （本节内容详见正文各章节的对应说明。）
-
 
 ## 考点精讲
 
@@ -451,7 +439,6 @@ for / while       ──→  推导式          ──→  生成器表达式
 
 ---
 
-
 ## 术语速查
 
 | 术语 | 一句话说明 |
@@ -473,10 +460,7 @@ for / while       ──→  推导式          ──→  生成器表达式
 
 ---
 
-
 ## 参考资料与复核
-
-- [本课资料锚点 python_control_flow](https://zh.wikipedia.org/w/index.php?search=python_control_flow)
 
 - 最后复核：2026-10-04
 - 下次复核：2026-11-10
@@ -487,7 +471,6 @@ for / while       ──→  推导式          ──→  生成器表达式
 | [控制流](https://docs.python.org/3/tutorial/controlflow.html) | if、for、while 详解 |
 | [推导式](https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions) | 列表、字典、集合推导式 |
 | [迭代器与生成器](https://docs.python.org/3/tutorial/classes.html#iterators) | 惰性求值与 yield |
-
 
 ## 内容元数据
 
@@ -502,4 +485,3 @@ for / while       ──→  推导式          ──→  生成器表达式
 - 关键词：match-case、三元表达式、推导式、异常处理、try-except、break、continue、for-else
 
 ---
-

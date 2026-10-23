@@ -580,8 +580,6 @@ QPS、数据增长、索引大小、连接数、磁盘和备份恢复时间。
 
 ## 参考资料与复核
 
-- [本课资料锚点 database_project](https://zh.wikipedia.org/w/index.php?search=database_project)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-06-17
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

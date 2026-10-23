@@ -552,8 +552,6 @@ A 正确——`.notice` 是类选择器，命中所有 class 包含 notice 的�
 
 ## 参考资料与复核
 
-- [本课资料锚点 css_selectors_intro](https://zh.wikipedia.org/w/index.php?search=css_selectors_intro)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-08-17
 - 复核范围：CSS 选择器语法、优先级规则、盒模型行为、浏览器兼容性

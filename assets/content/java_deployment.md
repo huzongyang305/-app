@@ -587,8 +587,6 @@ D. 存储应用的配置文件和环境变量
 ## 参考资料与复核
 - 下次复核：2026-11-09
 
-- [本课资料锚点 java_deployment](https://zh.wikipedia.org/w/index.php?search=java_deployment)
-
 | 资料 | 说明 |
 | --- | --- |
 | [Docker 官方文档](https://docs.docker.com/) | Docker 引擎、CLI、Compose 的权威参考 |
@@ -611,5 +609,3 @@ D. 存储应用的配置文件和环境变量
 - 先修课程：Spring Boot 入门、Linux 基础、计算机网络
 - 后续课程：CI/CD 流水线、云原生架构
 - 内容版本：v2.0
-
-

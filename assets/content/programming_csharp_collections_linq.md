@@ -635,8 +635,6 @@ Console.WriteLine($"及格 {all.Count(x => x.Score >= 60)} 人");
 
 ## 参考资料与复核
 
-- [本课资料锚点 csharp_collections_linq](https://zh.wikipedia.org/w/index.php?search=csharp_collections_linq)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-03-10
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

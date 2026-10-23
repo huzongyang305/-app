@@ -527,8 +527,6 @@ print("列表推导式:", rows)  # [[1, 0, 0], [0, 0, 0]]
 
 ## 参考资料与复核
 
-- [本课资料锚点 python_containers_copy](https://zh.wikipedia.org/w/index.php?search=python_containers_copy)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：浅拷贝、深拷贝、哈希、默认参数、稳定排序。
 - 最后复核：2026-10-04
 - 下次复核：2026-11-10

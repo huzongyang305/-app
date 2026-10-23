@@ -430,8 +430,6 @@ ORDER BY 1;
 
 ## 参考资料与复核
 
-- [本课资料锚点 de_data_modeling](https://zh.wikipedia.org/w/index.php?search=de_data_modeling)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：维度建模、事实表、数仓分层、粒度、数据口径。
 - 最后复核：2026-10-04
 - 下次复核：2027-01-10

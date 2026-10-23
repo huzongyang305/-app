@@ -454,8 +454,6 @@ D. 只影响启动速度
 
 ## 参考资料与复核
 
-- [本课资料锚点 mobile_harmony](https://zh.wikipedia.org/w/index.php?search=mobile_harmony)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-08-10
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

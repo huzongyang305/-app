@@ -466,8 +466,6 @@ print("指针非空:", bool(ctypes.addressof(point)))
 
 ## 参考资料与复核
 
-- [本课资料锚点 python_interop](https://zh.wikipedia.org/w/index.php?search=python_interop)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：ctypes、C 扩展、Cython、PyO3、ABI。
 - 最后复核：2026-10-04
 - 下次复核：2026-11-10

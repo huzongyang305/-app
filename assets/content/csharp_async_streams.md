@@ -453,8 +453,6 @@ await foreach (var value in Countdown(3))
 
 ## 参考资料与复核
 
-- [本课资料锚点 csharp_async_streams](https://zh.wikipedia.org/w/index.php?search=csharp_async_streams)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-03-10
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

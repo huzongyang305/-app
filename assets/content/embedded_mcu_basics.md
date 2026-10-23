@@ -443,8 +443,6 @@ int main(void) {
 
 ## 参考资料与复核
 
-- [本课资料锚点 embedded_mcu_basics](https://zh.wikipedia.org/w/index.php?search=embedded_mcu_basics)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：MCU、时钟、启动流程、内存布局、交叉编译。
 - 最后复核：2026-10-04
 - 下次复核：2027-02-17

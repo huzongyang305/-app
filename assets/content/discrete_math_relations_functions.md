@@ -429,8 +429,6 @@ D. f⁻¹只在f是满射时存在
 ## 参考资料与复核
 - 下次复核：2026-12-24
 
-- [本课资料锚点 discrete_math_relations_functions](https://zh.wikipedia.org/w/index.php?search=discrete_math_relations_functions)
-
 - 《离散数学及其应用》（Kenneth H. Rosen）第7-9章
 - MIT OpenCourseWare: Mathematics for Computer Science, Chapter 5
 - 《计算机科学中的数学基础》第4章 关系与函数
@@ -439,7 +437,7 @@ D. f⁻¹只在f是满射时存在
 - 最后复核：2026-10-04
 
 - 官方/权威资料：[MIT 6.042 公开课](https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/)
-- 主题延伸：[关于「关系」的检索页](https://zh.wikipedia.org/w/index.php?search=%E5%85%B3%E7%B3%BB)
+- 主题延伸：[斯坦福哲学百科：关系（Relations）](https://plato.stanford.edu/entries/relations/)
 
 ## 内容元数据
 
@@ -492,5 +490,3 @@ tags:
 
 - 在《关系与函数》里处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
 - 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
-
-

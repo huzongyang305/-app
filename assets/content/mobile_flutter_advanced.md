@@ -16,10 +16,8 @@
 - [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
 - [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
 
-
 ### 课程导言
 本章带你深入Flutter的核心高级特性。就像学习驾驶普通汽车后，现在要掌握赛车技巧一样，我们将探索如何让应用动起来（动画）、如何画出独一无二的界面（自定义渲染），以及如何与原生系统对话（平台通道）。这些技能将把你从"能用Flutter"提升到"精通Flutter"的层次。
-
 
 ### 学习目标
 学完本章后，你将能够：
@@ -31,7 +29,6 @@
 5. 构建高性能的自定义Widget并处理手势交互
 6. 集成原生平台特性如相机、传感器和本地存储
 
-
 ## 核心概念定义
 
 | 术语 | 一句话说明 |
@@ -42,11 +39,9 @@
 | Platform Channel | 掌握Implicit/Explicit动画、CustomPainter和Plat相关：正文给出可操作定义与适用边界。 |
 | 渲染 | 掌握Implicit/Explicit动画、CustomPainter和Plat相关：正文给出可操作定义与适用边界。 |
 
-
 ## 原理与运行机制
 
 《Flutter高级主题（动画、自定义渲染、平台通道）》正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
-
 
 ### 生活类比拆解
 #### 动画：像翻书动画一样逐帧变化
@@ -61,12 +56,10 @@
 
 Flutter的Dart代码运行在自己的引擎里，就像住在一个独立的小岛上。但有时候你需要访问手机的相机、GPS或者文件系统，这些能力都在"大陆"的原生系统里。Platform Channel就是你的渡船和翻译官：MethodChannel用来调用方法（"请帮我拍张照片"），EventChannel用来接收持续的事件流（"不断告诉我当前位置"），BasicMessageChannel用来传递简单消息。
 
-
 ## 典型应用场景
 
 - 结合「Flutter高级主题（动画、自定义渲染、平台通道）」的常见落地场景与选型边界，详见正文各章节的对比讨论。
 - 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
-
 
 ## 代码/协议/SQL 示例
 
@@ -119,7 +112,6 @@ class _FadeDemoState extends State<FadeDemo> with SingleTickerProviderStateMixin
   }
 }
 ```
-
 
 ### 渐进式代码示例
 #### 最小示例：基础淡入淡出动画
@@ -490,12 +482,10 @@ import Flutter
 }
 ```
 
-
 ## 时间/空间复杂度或性能分析
 
 - 在《Flutter高级主题（动画、自定义渲染、平台通道）》里处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
 - 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
-
 
 ## 常见误区与易错点
 
@@ -504,7 +494,6 @@ import Flutter
 | 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
 | 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
 | 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
-
 
 ### 常见陷阱与解决方案
 | 陷阱 | 表现 | 原因 | 解决方案 |
@@ -520,16 +509,13 @@ import Flutter
 | CustomPainter尺寸不确定 | 图形变形 | 未指定CustomPaint的size | 给CustomPaint设置明确的size参数或使用LayoutBuilder获取可用空间 |
 | 平台权限未处理 | 功能静默失败 | Android/iOS需要运行时权限 | 在调用原生功能前检查并请求相应权限 |
 
-
 ## 与其他知识点的关系
 
 本课与分类「flutter」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
 
-
 ## 自测题与参考答案
 
 以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
-
 
 ## 考点精讲
 
@@ -598,7 +584,6 @@ D. Swift语言本身不支持多线程
 
 **解析：** Flutter的Platform Channel机制中，Dart端的调用可能会在iOS的后台线程中被处理。然而，iOS的UIKit框架要求所有UI相关的操作必须在主线程执行。如果在后台线程尝试更新UI（比如修改UILabel的text），会导致未定义行为甚至崩溃。正确的做法是使用`DispatchQueue.main.async {}`将UI更新代码调度到主线程执行。Android方面，MethodChannel的回调通常也在主线程，但仍建议遵循最佳实践。
 
-
 ## 术语速查
 
 | 术语 | 一句话说明 |
@@ -609,17 +594,12 @@ D. Swift语言本身不支持多线程
 | Platform Channel | Dart与原生侧的通信桥，分方法调用、事件流和消息三类通道 |
 | 渲染 | 把Widget树依次转换为Layer再交GPU合成的过程，决定帧率与卡顿 |
 
-
 ## 参考资料与复核
 
-- [本课资料锚点 mobile_flutter_advanced](https://zh.wikipedia.org/w/index.php?search=mobile_flutter_advanced)
-
 - 官方/权威资料：[Flutter 官方文档](https://docs.flutter.dev/)
-- 主题延伸：[关于「动画」的检索页](https://zh.wikipedia.org/w/index.php?search=%E5%8A%A8%E7%94%BB)
-- 本课索引词：[锚点 mobile_flutter_advanced](https://docs.flutter.dev/#Flutter)
+- 主题延伸：[Flutter 动画概览](https://flutter.cn/docs/ui/animations)
 - 最后复核：2026-10-04
 - 下次复核：2026-10-10
-
 
 ## 内容元数据
 
@@ -630,4 +610,3 @@ D. Swift语言本身不支持多线程
 - 所属分类：flutter
 - 学习阶段：进阶
 - 建议用时：50 分钟
-

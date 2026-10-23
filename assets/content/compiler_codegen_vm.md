@@ -456,8 +456,6 @@ console.log('结果:', run(code));
 
 ## 参考资料与复核
 
-- [本课资料锚点 compiler_codegen_vm](https://zh.wikipedia.org/w/index.php?search=compiler_codegen_vm)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：字节码、栈机、指令选择、寄存器分配、垃圾回收。
 - 最后复核：2026-10-04
 - 下次复核：2027-01-24

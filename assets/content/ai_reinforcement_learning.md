@@ -425,8 +425,6 @@ for episode in range(2000):
 
 ## 参考资料与复核
 
-- [本课资料锚点 ai_reinforcement_learning](https://zh.wikipedia.org/w/index.php?search=ai_reinforcement_learning)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：强化学习、奖励、价值函数、探索与利用、策略。
 - 最后复核：2026-10-04
 - 下次复核：2027-04-17

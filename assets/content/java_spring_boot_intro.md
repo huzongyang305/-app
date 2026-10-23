@@ -553,8 +553,6 @@ D. 当应用运行在特定的操作系统上时才生效
 ## 参考资料与复核
 - 下次复核：2026-11-24
 
-- [本课资料锚点 java_spring_boot_intro](https://zh.wikipedia.org/w/index.php?search=java_spring_boot_intro)
-
 | 资料 | 说明 |
 | --- | --- |
 | [Spring Boot 官方文档](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) | 最权威的参考，涵盖自动配置、Starter、Actuator 等全部内容 |
@@ -579,5 +577,3 @@ D. 当应用运行在特定的操作系统上时才生效
 - 先修课程：Java 基础、Spring Framework 核心
 - 后续课程：Spring MVC 与 Web 开发、Spring Boot 数据访问、Spring Cloud 微服务
 - 内容版本：v2.0
-
-

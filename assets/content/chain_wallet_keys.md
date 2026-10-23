@@ -416,8 +416,6 @@ async function signOffline(unsignedTx, offlineSigner) {
 
 ## 参考资料与复核
 
-- [本课资料锚点 chain_wallet_keys](https://zh.wikipedia.org/w/index.php?search=chain_wallet_keys)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：助记词、派生路径、离线签名、多签、密钥管理。
 - 最后复核：2026-10-04
 - 下次复核：2027-01-17

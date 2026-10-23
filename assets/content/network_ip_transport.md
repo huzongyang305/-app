@@ -489,8 +489,6 @@ print(same_subnet("192.168.10.5", "192.168.10.200", "192.168.10.0/24"))
 
 ## 参考资料与复核
 
-- [本课资料锚点 ip_transport](https://zh.wikipedia.org/w/index.php?search=ip_transport)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-06-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

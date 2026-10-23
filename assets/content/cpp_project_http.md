@@ -415,8 +415,6 @@ svr.Get("/tasks/:id", [](const auto& req, auto& res) {
 
 ## 参考资料与复核
 
-- [本课资料锚点 cpp_project_http](https://zh.wikipedia.org/w/index.php?search=cpp_project_http)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-05-10
 - 复核范围：HTTP 服务行为、JSON 处理、并发安全与测试覆盖

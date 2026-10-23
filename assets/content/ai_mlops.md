@@ -414,8 +414,6 @@ def train_and_register(data_version: str, feature_version: str, commit: str):
 
 ## 参考资料与复核
 
-- [本课资料锚点 ai_mlops](https://zh.wikipedia.org/w/index.php?search=ai_mlops)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：MLOps、模型版本、训练流水线、灰度上线、数据漂移。
 - 最后复核：2026-10-04
 - 下次复核：2026-12-24

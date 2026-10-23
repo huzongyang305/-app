@@ -536,8 +536,6 @@ AST 只说明出现了名字，符号表说明这个名字解析到哪一个声�
 
 ## 参考资料与复核
 
-- [本课资料锚点 semantics_analysis](https://zh.wikipedia.org/w/index.php?search=semantics_analysis)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-10-17
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

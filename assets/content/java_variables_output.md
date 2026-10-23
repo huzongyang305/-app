@@ -1,6 +1,6 @@
 # Java 变量与输出
 
-> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：35 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：30 分钟
 
 ![变量声明与输出](images/diagram_java_vars.webp)
 
@@ -332,8 +332,6 @@ System.out.println(c == d);  // false（超出缓存范围）
 | `JVM` | Java 源码编译成平台无关的字节码，JVM 负责加载、验证、解释和即时编译。 |
 
 ## 参考资料与复核
-
-- [本课资料锚点 java_variables_output](https://zh.wikipedia.org/w/index.php?search=java_variables_output)
 
 - 最后复核：2026-10-04
 - [Oracle Java Tutorials - Variables](https://docs.oracle.com/javase/tutorial/java/data/variables.html)

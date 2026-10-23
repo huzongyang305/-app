@@ -650,8 +650,6 @@ def handle_response(response):
 
 ## 参考资料与复核
 
-- [本课资料锚点 python_modern_features](https://zh.wikipedia.org/w/index.php?search=python_modern_features)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：match、PEP 695、类型参数、f-string、版本兼容。
 - 最后复核：2026-10-04
 - 下次复核：2026-12-10

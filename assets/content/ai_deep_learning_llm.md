@@ -513,8 +513,6 @@ print(attention_shapes(seq_len=1024, d_model=4096, heads=32))
 
 ## 参考资料与复核
 
-- [本课资料锚点 ai_deep_learning_llm](https://zh.wikipedia.org/w/index.php?search=ai_deep_learning_llm)
-
 - 最后复核：2026-10-04
 - 下次复核：2026-12-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

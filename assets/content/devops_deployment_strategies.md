@@ -1408,11 +1408,8 @@ spec:
 
 ## 参考资料与复核
 
-- [本课资料锚点 devops_deployment_strategies](https://zh.wikipedia.org/w/index.php?search=devops_deployment_strategies)
-
 - 官方/权威资料：[OpenSSF 最佳实践](https://bestpractices.coreinfrastructure.org/)
-- 主题延伸：[关于「金丝雀」的检索页](https://zh.wikipedia.org/w/index.php?search=%E9%87%91%E4%B8%9D%E9%9B%80)
-- 本课索引词：[锚点 devops_deployment_strategies](https://bestpractices.coreinfrastructure.org/#%E8%93%9D%E7%BB%BF%E9%83%A8%E7%BD%B2)
+- 主题延伸：[Martin Fowler：金丝雀发布](https://martinfowler.com/bliki/CanaryRelease.html)
 - 最后复核：2026-10-04
 - 下次复核：2027-02-07
 

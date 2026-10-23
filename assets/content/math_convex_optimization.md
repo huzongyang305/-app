@@ -514,8 +514,6 @@ L2（岭回归）                L1（Lasso）
 
 ## 参考资料与复核
 
-- [本课资料锚点 math_convex_optimization](https://zh.wikipedia.org/w/index.php?search=math_convex_optimization)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-09-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

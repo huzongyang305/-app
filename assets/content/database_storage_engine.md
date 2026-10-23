@@ -549,8 +549,6 @@ SQL 请求 → 执行器 → 索引/表访问 → 缓冲池 → 数据页读写 
 
 ## 参考资料与复核
 
-- [本课资料锚点 storage_engine](https://zh.wikipedia.org/w/index.php?search=storage_engine)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-09-17
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

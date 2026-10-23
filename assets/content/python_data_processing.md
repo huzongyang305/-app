@@ -469,8 +469,6 @@ print("唯一城市:", df["city"].nunique())
 
 ## 参考资料与复核
 
-- [本课资料锚点 python_data_processing](https://zh.wikipedia.org/w/index.php?search=python_data_processing)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：NumPy、pandas、Polars、数据清洗、Parquet。
 - 最后复核：2026-10-04
 - 下次复核：2026-11-10

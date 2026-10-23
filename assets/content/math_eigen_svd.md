@@ -490,8 +490,6 @@ PCA 就是「先中心化，再做 SVD（或协方差矩阵的特征分解）」
 
 ## 参考资料与复核
 
-- [本课资料锚点 math_eigen_svd](https://zh.wikipedia.org/w/index.php?search=math_eigen_svd)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-09-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

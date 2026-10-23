@@ -379,8 +379,6 @@ int total = count + 1;
 
 ## 参考资料与复核
 
-- [本课资料锚点 java_types](https://zh.wikipedia.org/w/index.php?search=java_types)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-02-24
 - [Java 官方教程：基本数据类型](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html)

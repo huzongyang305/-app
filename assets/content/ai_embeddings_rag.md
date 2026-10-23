@@ -548,8 +548,6 @@ print(round(cosine_similarity([1, 2, 3], [2, 4, 6]), 4))
 
 ## 参考资料与复核
 
-- [本课资料锚点 ai_embeddings_rag](https://zh.wikipedia.org/w/index.php?search=ai_embeddings_rag)
-
 - 最后复核：2026-10-04
 - 下次复核：2026-12-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

@@ -472,8 +472,6 @@ print(f"它们的和是：{a + b}")
 
 ## 参考资料与复核
 
-- [本课资料锚点 python_basics](https://zh.wikipedia.org/w/index.php?search=python_basics)
-
 - 最后复核：2026-10-04
 - 下次复核：2026-11-10
 - 复核范围：语法、缩进、注释、输入输出

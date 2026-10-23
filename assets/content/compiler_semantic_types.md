@@ -443,8 +443,6 @@ console.log('外层 rate 声明行:', global.lookup('rate').line);
 
 ## 参考资料与复核
 
-- [本课资料锚点 compiler_semantic_types](https://zh.wikipedia.org/w/index.php?search=compiler_semantic_types)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：符号表、作用域、类型检查、类型推导、语义错误。
 - 最后复核：2026-10-04
 - 下次复核：2027-01-24

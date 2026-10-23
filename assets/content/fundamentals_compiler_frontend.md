@@ -544,8 +544,6 @@ AST 去掉标点和无关细节，只保留语义结构。
 
 ## 参考资料与复核
 
-- [本课资料锚点 compiler_frontend](https://zh.wikipedia.org/w/index.php?search=compiler_frontend)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-03-17
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

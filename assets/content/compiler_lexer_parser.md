@@ -436,8 +436,6 @@ console.log(tokenize('total = price * (1 + rate)'));
 
 ## 参考资料与复核
 
-- [本课资料锚点 compiler_lexer_parser](https://zh.wikipedia.org/w/index.php?search=compiler_lexer_parser)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：词法分析、递归下降、文法、语法树、错误恢复。
 - 最后复核：2026-10-04
 - 下次复核：2027-01-24

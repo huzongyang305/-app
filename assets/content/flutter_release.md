@@ -436,8 +436,6 @@ D. 混淆与符号
 
 ## 参考资料与复核
 
-- [本课资料锚点 flutter_release](https://zh.wikipedia.org/w/index.php?search=flutter_release)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-08-10
 - 复核范围：Flutter SDK 版本兼容、Gradle 配置语法、签名安全建议与工程实践

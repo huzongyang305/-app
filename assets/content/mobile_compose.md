@@ -455,8 +455,6 @@ D. 放在 remember 的初始化块里
 
 ## 参考资料与复核
 
-- [本课资料锚点 mobile_compose](https://zh.wikipedia.org/w/index.php?search=mobile_compose)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-08-10
 - 复核范围：Compose 版本兼容、API 行为变更、性能最佳实践

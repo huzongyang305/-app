@@ -427,8 +427,6 @@ contract MembershipVerifier {
 
 ## 参考资料与复核
 
-- [本课资料锚点 chain_zk_privacy](https://zh.wikipedia.org/w/index.php?search=chain_zk_privacy)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：零知识证明、电路、默克尔证明、隐私、验证成本。
 - 最后复核：2026-10-04
 - 下次复核：2027-01-17

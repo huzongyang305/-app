@@ -347,8 +347,6 @@ print(f"hello, {name}")
 
 ## 参考资料与复核
 
-- [本课资料锚点 python_input_output](https://zh.wikipedia.org/w/index.php?search=python_input_output)
-
 - 最后复核：2026-10-04
 - 下次复核：2026-11-10
 

@@ -503,8 +503,6 @@ P 是否等于 NP 至今未解，但**工程上不依赖这个悬而未决的问
 
 ## 参考资料与复核
 
-- [本课资料锚点 computation_theory](https://zh.wikipedia.org/w/index.php?search=computation_theory)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-03-17
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

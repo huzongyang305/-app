@@ -473,8 +473,6 @@ def fetch_all_pages(client, max_pages=100):
 
 ## 参考资料与复核
 
-- [本课资料锚点 python_http_clients](https://zh.wikipedia.org/w/index.php?search=python_http_clients)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：httpx、超时、重试、幂等性、限流。
 - 最后复核：2026-10-04
 - 下次复核：2026-11-10

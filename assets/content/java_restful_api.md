@@ -687,8 +687,6 @@ D. \u201CResponseEntity\u201D 会自动压缩响应体以减少网络传输
 ## 参考资料与复核
 - 下次复核：2026-12-09
 
-- [本课资料锚点 java_restful_api](https://zh.wikipedia.org/w/index.php?search=java_restful_api)
-
 | 参考资料 | 说明 |
 | --- | --- |
 | [Spring Boot 官方文档](https://docs.spring.io/spring-boot/docs/current/reference/html/) | Spring Boot 完整参考手册 |
@@ -712,5 +710,3 @@ D. \u201CResponseEntity\u201D 会自动压缩响应体以减少网络传输
 - 先修课程：Java 基础、Servlet 与 JSP 基础、Spring Framework 核心
 - 后续课程：Spring Boot 入门、数据访问：JPA 与 MyBatis
 - 内容版本：v2.0
-
-

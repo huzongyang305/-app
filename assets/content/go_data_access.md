@@ -666,8 +666,6 @@ func ListByIDs(ctx context.Context, db *sql.DB, ids []int) ([]User, error) {
 
 ## 参考资料与复核
 
-- [本课资料锚点 go_data_access](https://zh.wikipedia.org/w/index.php?search=go_data_access)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-04-10
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

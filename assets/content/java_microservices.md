@@ -570,8 +570,6 @@ D. 缺少熔断器会导致服务注册中心无法正常工作
 ## 参考资料与复核
 - 下次复核：2026-10-25
 
-- [本课资料锚点 java_microservices](https://zh.wikipedia.org/w/index.php?search=java_microservices)
-
 | 资料 | 说明 |
 | --- | --- |
 | [Spring Cloud 官方文档](https://spring.io/projects/spring-cloud) | Spring Cloud 项目总览与版本说明 |
@@ -596,5 +594,3 @@ D. 缺少熔断器会导致服务注册中心无法正常工作
 - 先修课程：Java 基础、Servlet 与 JSP 基础、Spring Framework 核心
 - 后续课程：Docker 与容器化、Kubernetes 编排、消息队列
 - 内容版本：v2.0
-
-

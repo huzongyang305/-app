@@ -666,8 +666,6 @@ D. 使用 AOP 代理，在方法执行前开启事务，正常结束则提交，
 
 ## 参考资料与复核
 
-- [本课资料锚点 java_data_access](https://zh.wikipedia.org/w/index.php?search=java_data_access)
-
 | 参考资料 | 本课用途 |
 | --- | --- |
 | [JDBC 官方教程](https://docs.oracle.com/javase/tutorial/jdbc/) | 数据库连接与事务基础 |
@@ -695,5 +693,3 @@ D. 使用 AOP 代理，在方法执行前开启事务，正常结束则提交，
 - 适用环境：Java 17+ / Spring Boot 3.x / Maven 或 Gradle；本课聚焦 JDBC、JPA 与 MyBatis 三种数据访问方案。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：JDBC、JPA、MyBatis、连接池、事务管理、ORM
-
-

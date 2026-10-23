@@ -659,8 +659,6 @@ D. 把更多规则统一提到 critical 级别并全部接入页面通道，以�
 
 ## 参考资料与复核
 
-- [本课资料锚点 devops_monitoring_alert](https://zh.wikipedia.org/w/index.php?search=devops_monitoring_alert)
-
 | 参考资料 | 本课用途 |
 | --- | --- |
 | [Alerting - Prometheus Documentation](https://prometheus.io/docs/alerting/latest/alertmanager/) | 分组、路由树、continue 与抑制规则的字段语义 |

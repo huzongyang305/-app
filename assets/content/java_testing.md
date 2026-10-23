@@ -575,8 +575,6 @@ D. 为了增加测试的代码覆盖率
 ## 参考资料与复核
 - 下次复核：2026-10-30
 
-- [本课资料锚点 java_testing](https://zh.wikipedia.org/w/index.php?search=java_testing)
-
 | 资料名称 | 说明 |
 | --- | --- |
 | [JUnit 5 用户指南](https://junit.org/junit5/docs/current/user-guide/) | JUnit 5 官方文档，注解与断言 API 详解 |
@@ -601,5 +599,3 @@ D. 为了增加测试的代码覆盖率
 - 先修课程：Spring Framework 核心、Servlet 与 JSP 基础、Java 基础
 - 后续课程：Spring Boot 自动配置、CI/CD 与 DevOps、测试驱动开发实践
 - 内容版本：v2.0
-
-

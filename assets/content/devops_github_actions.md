@@ -1404,11 +1404,8 @@ jobs:                           # Jobs：这个流程包含哪些任务
 
 ## 参考资料与复核
 
-- [本课资料锚点 devops_github_actions](https://zh.wikipedia.org/w/index.php?search=devops_github_actions)
-
 - 官方/权威资料：[OpenSSF 最佳实践](https://bestpractices.coreinfrastructure.org/)
-- 主题延伸：[关于「工作流」的检索页](https://zh.wikipedia.org/w/index.php?search=%E5%B7%A5%E4%BD%9C%E6%B5%81)
-- 本课索引词：[锚点 devops_github_actions](https://bestpractices.coreinfrastructure.org/#GitHub%20Actions)
+- 主题延伸：[GitHub Actions 官方文档](https://docs.github.com/en/actions)
 - 最后复核：2026-10-04
 - 下次复核：2027-01-28
 
@@ -1421,4 +1418,3 @@ jobs:                           # Jobs：这个流程包含哪些任务
 - 所属分类：devops
 - 学习阶段：高级
 - 建议用时：55 分钟
-

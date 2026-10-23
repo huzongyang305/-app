@@ -336,8 +336,6 @@ print(cache)
 
 ## 参考资料与复核
 
-- [本课资料锚点 fundamentals_cache_coherence](https://zh.wikipedia.org/w/index.php?search=fundamentals_cache_coherence)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-03-17
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

@@ -386,8 +386,6 @@ print(round(task.total(), 5), task.cache_hit_rate(), task.optimization_hint())
 
 ## 参考资料与复核
 
-- [本课资料锚点 agent_cost_performance](https://zh.wikipedia.org/w/index.php?search=agent_cost_performance)
-
 - 最后复核：2026-10-04
 - 下次复核：2026-12-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

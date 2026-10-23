@@ -437,8 +437,6 @@ console.log('root changed:', root !== hash(tampered));
 
 ## 参考资料与复核
 
-- [本课资料锚点 blockchain_basics](https://zh.wikipedia.org/w/index.php?search=blockchain_basics)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：哈希、数字签名、Merkle 树、账本、共识。
 - 最后复核：2026-10-04
 - 下次复核：2027-01-17

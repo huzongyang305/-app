@@ -535,8 +535,6 @@ D. IoC 是指把对象的创建和管理权从代码转移到 Spring 容器，�
 ## 参考资料与复核
 - 下次复核：2026-12-14
 
-- [本课资料锚点 java_spring_core](https://zh.wikipedia.org/w/index.php?search=java_spring_core)
-
 - [Spring Framework 官方文档](https://docs.spring.io/spring-framework/docs/current/reference/html/)
 - [Spring IoC 容器](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans)
 - 复核日期：2026-10-20
@@ -569,5 +567,3 @@ IoC 是什么 → 依赖注入 → Bean 生命周期 → AOP 原理 → 实战�
 
 - 在《Spring Framework 核心》里处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
 - 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
-
-

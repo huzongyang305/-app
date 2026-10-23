@@ -375,8 +375,6 @@ D. 负责在后台线程里下载并缓存网络图片
 
 ## 参考资料与复核
 
-- [本课资料锚点 flutter_widget_intro](https://zh.wikipedia.org/w/index.php?search=flutter_widget_intro)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-08-10
 - 复核范围：Widget 机制、布局规则、状态管理、性能优化

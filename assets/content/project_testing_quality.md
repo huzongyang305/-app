@@ -651,8 +651,6 @@ pytest --shard-id=1 --num-shards=4      # 四台机器各跑四分之一
 
 ## 参考资料与复核
 
-- [本课资料锚点 project_testing_quality](https://zh.wikipedia.org/w/index.php?search=project_testing_quality)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-10-10
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

@@ -422,8 +422,6 @@ stats.addSink(new IdempotentJdbcSink());     // 目标端按窗口主键幂等�
 
 ## 参考资料与复核
 
-- [本课资料锚点 de_flink_windowing](https://zh.wikipedia.org/w/index.php?search=de_flink_windowing)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：Flink、事件时间、水位线、窗口、检查点。
 - 最后复核：2026-10-04
 - 下次复核：2027-01-10

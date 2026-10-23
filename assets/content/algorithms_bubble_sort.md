@@ -504,8 +504,6 @@ print(bubble_sort([5, 3, 8, 1]))  # [1, 3, 5, 8]
 
 ## 参考资料与复核
 
-- [本课资料锚点 bubble_sort](https://zh.wikipedia.org/w/index.php?search=bubble_sort)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-05-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

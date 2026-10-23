@@ -492,8 +492,6 @@ with open(user_filename) as handle:
 
 ## 参考资料与复核
 
-- [本课资料锚点 python_security](https://zh.wikipedia.org/w/index.php?search=python_security)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：密码哈希、secrets、注入、路径穿越、依赖审计。
 - 最后复核：2026-10-04
 - 下次复核：2026-12-10

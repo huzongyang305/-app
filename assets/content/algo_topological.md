@@ -468,8 +468,6 @@ print(linear_search([3, 5, 8], 8))
 
 ## 参考资料与复核
 
-- [本课资料锚点 algo_topological](https://zh.wikipedia.org/w/index.php?search=algo_topological)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-05-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

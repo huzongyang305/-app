@@ -1,6 +1,6 @@
 # Swift 条件判断
 
-> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：35 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：30 分钟
 
 ![Swift 条件、switch 与可选绑定](images/diagram_swift_conditions.webp)
 
@@ -456,8 +456,6 @@ print("结果：\(level)")
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
 ## 参考资料与复核
-
-- [本课资料锚点 swift_conditions](https://zh.wikipedia.org/w/index.php?search=swift_conditions)
 
 - 最后复核：2026-10-04
 - 下次复核：2026-12-17

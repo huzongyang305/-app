@@ -531,8 +531,6 @@ print(f"第一次: {len(first_drain)}, 第二次: {len(second_drain)}")
 
 ## 参考资料与复核
 
-- [本课资料锚点 python_gui](https://zh.wikipedia.org/w/index.php?search=python_gui)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：Tkinter、PySide6、事件循环、布局、后台线程。
 - 最后复核：2026-10-04
 - 下次复核：2026-11-10

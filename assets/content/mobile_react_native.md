@@ -287,8 +287,6 @@ Ans: AC
 
 ## 参考资料与复核
 
-- [本课资料锚点 mobile_react_native](https://zh.wikipedia.org/w/index.php?search=mobile_react_native)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-08-10
 - 复核范围：版本兼容、API 行为、新架构迁移进度与性能建议

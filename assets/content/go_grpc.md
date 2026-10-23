@@ -659,8 +659,6 @@ func (s *Server) ListUsers(ctx context.Context, req *userv1.ListUsersRequest) (*
 
 ## 参考资料与复核
 
-- [本课资料锚点 go_grpc](https://zh.wikipedia.org/w/index.php?search=go_grpc)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-04-10
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

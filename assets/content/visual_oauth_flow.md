@@ -424,8 +424,6 @@ async function getToken(): Promise<string> {
 
 ## 参考资料与复核
 
-- [本课资料锚点 visual_oauth_flow](https://zh.wikipedia.org/w/index.php?search=visual_oauth_flow)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-07-10
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

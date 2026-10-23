@@ -413,8 +413,6 @@ CALL catalog.system.remove_orphan_files(
 
 ## 参考资料与复核
 
-- [本课资料锚点 de_lakehouse_governance](https://zh.wikipedia.org/w/index.php?search=de_lakehouse_governance)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：湖仓、表格式、小文件合并、快照过期、权限。
 - 最后复核：2026-10-04
 - 下次复核：2027-01-10

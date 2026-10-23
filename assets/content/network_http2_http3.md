@@ -441,8 +441,6 @@ curl -v -o /dev/null -s https://example.com 2>&1 | grep -E 'ALPN|HTTP/'
 
 ## 参考资料与复核
 
-- [本课资料锚点 http2_http3](https://zh.wikipedia.org/w/index.php?search=http2_http3)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-06-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

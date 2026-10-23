@@ -553,8 +553,6 @@ print(greedy_color(graph, k=2))       # 3 个活跃变量但只有 2 个寄存�
 
 ## 参考资料与复核
 
-- [本课资料锚点 codegen_registers](https://zh.wikipedia.org/w/index.php?search=codegen_registers)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-03-17
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

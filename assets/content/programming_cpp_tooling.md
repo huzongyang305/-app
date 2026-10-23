@@ -414,8 +414,6 @@ vcpkg 的依赖树会随时间变化。如果你的 `vcpkg.json` 没有锁定版
 
 ## 参考资料与复核
 
-- [本课资料锚点 cpp_tooling](https://zh.wikipedia.org/w/index.php?search=cpp_tooling)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-05-10
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

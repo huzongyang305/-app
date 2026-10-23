@@ -495,8 +495,6 @@ printf 'banana\napple\nbanana\n' | sort | uniq -c
 
 ## 参考资料与复核
 
-- [本课资料锚点 cli_intro](https://zh.wikipedia.org/w/index.php?search=cli_intro)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-08-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

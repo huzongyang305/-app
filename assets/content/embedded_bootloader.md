@@ -1,6 +1,6 @@
 # Bootloader 与固件升级
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：35 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：30 分钟
 
 分类：embedded。关键词：Bootloader、固件升级、A/B 分区、镜像校验、回滚。从启动链、向量表重映射讲到镜像校验、A/B 分区与断电回滚。
 
@@ -430,8 +430,6 @@ static void jump_to_app(uint32_t app_addr) {
 | 内容更新时间 | 2026-10-06 |
 
 ## 参考资料与复核
-
-- [本课资料锚点 embedded_bootloader](https://zh.wikipedia.org/w/index.php?search=embedded_bootloader)
 
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：Bootloader、固件升级、A/B 分区、镜像校验、回滚。
 - 最后复核：2026-10-04

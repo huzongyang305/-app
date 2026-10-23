@@ -1,6 +1,6 @@
 # 继承、接口与多态
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：25 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：20 分钟
 
 ![类、抽象类、接口与多态](images/diagram_java_inheritance.webp)
 
@@ -247,8 +247,6 @@ public class Duck extends Animal implements Flyable, Swimmable {
 | record | 不可变数据快捷类 |
 
 ## 参考资料与复核
-
-- [本课资料锚点 java_inheritance](https://zh.wikipedia.org/w/index.php?search=java_inheritance)
 
 - 最后复核：2026-10-04
 - 下次复核：2027-02-24

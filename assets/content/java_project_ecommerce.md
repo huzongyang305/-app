@@ -1026,8 +1026,6 @@ D. 锁定会永久减少库存数量，扣减只是临时标记
 
 ## 参考资料与复核
 
-- [本课资料锚点 java_project_ecommerce](https://zh.wikipedia.org/w/index.php?search=java_project_ecommerce)
-
 - 最后复核：2026-10-20
 - 下次复核：2027-04-20
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
@@ -1043,5 +1041,3 @@ D. 锁定会永久减少库存数量，扣减只是临时标记
 | [Java 并发教程](https://docs.oracle.com/javase/tutorial/essential/concurrency/) | 并发库存扣减与乐观锁 |
 - 最后复核：2026-10-04
 - 下次复核：2026-11-14
-
-

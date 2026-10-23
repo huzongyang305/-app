@@ -493,8 +493,6 @@ except ConfigError as exc:
 
 ## 参考资料与复核
 
-- [本课资料锚点 python_errors_logging_files](https://zh.wikipedia.org/w/index.php?search=python_errors_logging_files)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：异常链、自定义异常、日志、原子写、ExceptionGroup。
 - 最后复核：2026-10-04
 - 下次复核：2026-11-10

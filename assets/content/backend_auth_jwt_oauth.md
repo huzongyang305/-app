@@ -1177,11 +1177,8 @@ D. 桌面应用需要代表用户发送邮件
 
 ## 参考资料与复核
 
-- [本课资料锚点 backend_auth_jwt_oauth](https://zh.wikipedia.org/w/index.php?search=backend_auth_jwt_oauth)
-
 - 官方/权威资料：[HTTP 规范](https://datatracker.ietf.org/doc/html/rfc9110)
-- 主题延伸：[关于「OAuth2」的检索页](https://zh.wikipedia.org/w/index.php?search=OAuth2)
-- 本课索引词：[锚点 backend_auth_jwt_oauth](https://datatracker.ietf.org/doc/html/rfc9110#JWT)
+- 主题延伸：[OAuth 2.0 授权框架（RFC 6749）](https://datatracker.ietf.org/doc/html/rfc6749)
 - 最后复核：2026-10-04
 - 下次复核：2026-11-04
 
@@ -1194,4 +1191,3 @@ D. 桌面应用需要代表用户发送邮件
 - 所属分类：backend_development
 - 学习阶段：进阶
 - 建议用时：50 分钟
-

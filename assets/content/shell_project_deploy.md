@@ -541,8 +541,6 @@ curl --fail --retry 10 --retry-delay 1 http://127.0.0.1:8080/health
 
 ## 参考资料与复核
 
-- [本课资料锚点 shell_project_deploy](https://zh.wikipedia.org/w/index.php?search=shell_project_deploy)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-02-10
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

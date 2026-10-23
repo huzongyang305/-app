@@ -1,6 +1,6 @@
 # 多模态 RAG
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：30 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：25 分钟
 
 ![多模态 RAG 的解析与检索流程](images/diagram_ai_multimodal_rag.webp)
 
@@ -413,8 +413,6 @@ print(citation_coverage("营收为 1.2 亿元 [1]，三季度环比增长 15% [2
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
 ## 参考资料与复核
-
-- [本课资料锚点 multimodal_rag](https://zh.wikipedia.org/w/index.php?search=multimodal_rag)
 
 - 最后复核：2026-10-04
 - 下次复核：2027-04-17

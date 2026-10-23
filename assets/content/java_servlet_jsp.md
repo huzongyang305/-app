@@ -479,8 +479,6 @@ D. POST 请求会被容器丢弃，客户端收不到任何响应
 ## 参考资料与复核
 - 下次复核：2026-11-19
 
-- [本课资料锚点 java_servlet_jsp](https://zh.wikipedia.org/w/index.php?search=java_servlet_jsp)
-
 - [Oracle Servlet 规范](https://javaee.github.io/servlet-spec/)
 - [Apache Tomcat 官方文档](https://tomcat.apache.org/tomcat-9.0-doc/)
 - 复核日期：2026-10-20
@@ -513,5 +511,3 @@ HTTP 协议基础 → Servlet 是什么 → 生命周期 → 请求与响应 →
 
 - 在《Servlet 与 JSP 基础》里处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
 - 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
-
-

@@ -364,8 +364,6 @@ C++ Concepts 与 Ranges（模板约束、惰性管道）
 
 ## 参考资料与复核
 
-- [本课资料锚点 cpp_move_semantics](https://zh.wikipedia.org/w/index.php?search=cpp_move_semantics)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-05-10
 - 复核范围：移动语义行为、完美转发规则、RVO 标准变化与性能特征

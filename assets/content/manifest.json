@@ -3079,7 +3079,7 @@
             "en": "Service worker caching strategies, offline queue and updates."
           },
           "file": "assets/content/web_pwa_offline.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "PWA",
             "ServiceWorker",
@@ -11484,7 +11484,7 @@
             "en": "Understand types, variables and standard output."
           },
           "file": "assets/content/java_variables_output.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "Java 变量与输出",
             "Java",
@@ -12314,7 +12314,7 @@
             "en": "Inheritance, interfaces, polymorphism and records."
           },
           "file": "assets/content/programming_java_inheritance.md",
-          "minutes": 25,
+          "minutes": 20,
           "keywords": [
             "继承",
             "接口",
@@ -16331,7 +16331,7 @@
             "en": "Use if, switch and optional binding."
           },
           "file": "assets/content/swift_conditions.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "Swift 条件判断",
             "Swift",
@@ -21861,7 +21861,7 @@
             "en": "Learn generational GC, allocations, Span, ArrayPool and benchmarking."
           },
           "file": "assets/content/csharp_gc_performance.md",
-          "minutes": 30,
+          "minutes": 25,
           "keywords": [
             "GC",
             "Span",
@@ -33061,7 +33061,7 @@
             "en": "Latency, throughput, CPI, Amdahl and parallelism."
           },
           "file": "assets/content/fundamentals_performance.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "性能",
             "Amdahl",
@@ -34551,7 +34551,7 @@
             "en": "Master counting principles, permutations, combinations, pigeonhole and inclusion-exclusion."
           },
           "file": "assets/content/discrete_math_combinatorics.md",
-          "minutes": 40,
+          "minutes": 35,
           "keywords": [
             "组合数学",
             "排列",
@@ -39970,7 +39970,7 @@
             "en": "Request/response, methods, status codes and cookies."
           },
           "file": "assets/content/network_http_basics.md",
-          "minutes": 40,
+          "minutes": 35,
           "keywords": [
             "HTTP",
             "状态码",
@@ -40423,7 +40423,7 @@
             "en": "Handshake, certificate chains and security guarantees."
           },
           "file": "assets/content/network_tls.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "HTTPS",
             "TLS",
@@ -48581,7 +48581,7 @@
             "en": "Field contracts, ownership, validation rules, release gates and breaking-change process."
           },
           "file": "assets/content/de_data_contract.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "数据契约",
             "质量门禁",
@@ -51164,7 +51164,7 @@
             "en": "Cover task states, preemption, stacks, mutexes, queues and priority inversion."
           },
           "file": "assets/content/embedded_rtos_tasks.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "RTOS",
             "任务调度",
@@ -51267,7 +51267,7 @@
             "en": "Boot chain, vector table remap, image verification, A/B slots and power-fail rollback."
           },
           "file": "assets/content/embedded_bootloader.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "Bootloader",
             "固件升级",
@@ -53111,7 +53111,7 @@
             "en": "CPU, memory, IO, network and flame graphs."
           },
           "file": "assets/content/toolchain_linux_performance.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "性能分析",
             "top",
@@ -55535,7 +55535,7 @@
             "en": "Layout parsing, cross-modal retrieval and citations."
           },
           "file": "assets/content/ai_multimodal_rag.md",
-          "minutes": 30,
+          "minutes": 25,
           "keywords": [
             "多模态 RAG",
             "OCR",
@@ -58055,7 +58055,7 @@
             "en": "LoRA, data quality and local serving."
           },
           "file": "assets/content/ai_fine_tuning_deployment.md",
-          "minutes": 40,
+          "minutes": 35,
           "keywords": [
             "微调",
             "LoRA",
@@ -66014,7 +66014,7 @@
             "en": "Limiting algorithms, breaker states, fallbacks and timelines."
           },
           "file": "assets/content/visual_rate_limit_circuit.md",
-          "minutes": 40,
+          "minutes": 35,
           "keywords": [
             "限流",
             "熔断",
@@ -69458,7 +69458,7 @@
             "en": "Compare SSR/CSR/SSG strategies and master Next.js App Router."
           },
           "file": "assets/content/frontend_nextjs_ssr.md",
-          "minutes": 55,
+          "minutes": 50,
           "keywords": [
             "Next.js",
             "SSR",
@@ -69544,7 +69544,7 @@
             "en": "Master code splitting, lazy loading, memoization, Tree Shaking, and virtual scrolling."
           },
           "file": "assets/content/frontend_performance_optimization.md",
-          "minutes": 65,
+          "minutes": 60,
           "keywords": [
             "性能优化",
             "代码分割",
@@ -69893,7 +69893,7 @@
             "en": "Understand async/await, Pydantic validation, and dependency injection."
           },
           "file": "assets/content/backend_fastapi_async.md",
-          "minutes": 60,
+          "minutes": 55,
           "keywords": [
             "FastAPI",
             "异步",
@@ -70996,7 +70996,7 @@
             "en": "Master model serialization, FastAPI serving, Docker, and MLflow tracking."
           },
           "file": "assets/content/ml_model_deployment_mlops.md",
-          "minutes": 65,
+          "minutes": 60,
           "keywords": [
             "MLOps",
             "模型部署",

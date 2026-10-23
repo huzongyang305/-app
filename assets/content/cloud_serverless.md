@@ -430,8 +430,6 @@ module.exports = { handleEvent };
 
 ## 参考资料与复核
 
-- [本课资料锚点 cloud_serverless](https://zh.wikipedia.org/w/index.php?search=cloud_serverless)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：Serverless、冷启动、事件源、幂等、背压。
 - 最后复核：2026-10-04
 - 下次复核：2027-03-24

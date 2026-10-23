@@ -560,8 +560,6 @@ SELECT COUNT(*) FROM lake.orders VERSION AS OF '2025-09-01-snapshot';
 
 ## 参考资料与复核
 
-- [本课资料锚点 data_lakehouse](https://zh.wikipedia.org/w/index.php?search=data_lakehouse)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-06-17
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

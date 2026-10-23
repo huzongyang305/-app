@@ -417,8 +417,6 @@ print(f"cost per 1k requests: {unit_cost(sum(by_team.values()), 42_000_000):.4f}
 
 ## 参考资料与复核
 
-- [本课资料锚点 cloud_cost_finops](https://zh.wikipedia.org/w/index.php?search=cloud_cost_finops)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：成本归因、单位成本、容量规划、弹性、预算告警。
 - 最后复核：2026-10-04
 - 下次复核：2027-03-24

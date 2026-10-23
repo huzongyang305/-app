@@ -352,8 +352,6 @@ int main() {
 
 ## 参考资料与复核
 
-- [本课资料锚点 cpp_types](https://zh.wikipedia.org/w/index.php?search=cpp_types)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-05-10
 - 复核范围：类型系统语义、转换规则、未定义行为定义

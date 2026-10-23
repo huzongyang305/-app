@@ -493,8 +493,6 @@ print(find_max([3, -1, 7, 2]))
 
 ## 参考资料与复核
 
-- [本课资料锚点 algorithm_intro](https://zh.wikipedia.org/w/index.php?search=algorithm_intro)
-
 - 最后复核：2026-10-04
 - 下次复核：2027-05-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

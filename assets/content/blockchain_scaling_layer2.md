@@ -425,8 +425,6 @@ console.log('saving', (single.total - amortized.total).toFixed(6));
 
 ## 参考资料与复核
 
-- [本课资料锚点 blockchain_scaling_layer2](https://zh.wikipedia.org/w/index.php?search=blockchain_scaling_layer2)
-
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：Rollup、数据可用性、跨链桥、扩容、手续费。
 - 最后复核：2026-10-04
 - 下次复核：2027-01-17
