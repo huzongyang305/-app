@@ -1,6 +1,6 @@
 # 实战：Flutter 打包发布 Android
 
-> 内容更新时间：2026-10-06 · 学习阶段：advanced · 预计用时：60 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：65 分钟
 
 ![Flutter 发布流程图](images/diagram_mobile_flutter_release.webp)
 
@@ -428,7 +428,7 @@ D. 混淆与符号
 
 - 内容版本：v2.0
 - 最后更新：2026-10-06
-- 学习阶段：advanced
+- 学习阶段：基础
 - 适用环境：Flutter 3.x / Dart 3.x / Android Gradle Plugin 8.x
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：Flutter、发布、签名、混淆、体积优化

@@ -1,6 +1,6 @@
 # Python 并发模型、GIL 与线程进程选型
 
-> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：55 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：50 分钟
 
 分类：python。关键词：GIL、线程、进程、竞态条件、线程池。用厨房和餐厅的比喻，带你从零搞懂 Python 里"同时做多件事"到底是怎么回事，以及什么时候该用线程、什么时候该用进程。
 
@@ -543,17 +543,17 @@ def worker():
 ## 术语速查
 
 | 术语 | 一句话说明 |
-| --- | --- | --- |
-| GIL | Python 解释器的全局锁，同一时刻只允许一个线程执行字节码 | Global Interpreter Lock |
-| 竞态条件 | 结果取决于线程执行顺序的 bug | Race Condition |
-| 临界区 | 同一时刻只能有一个线程进入的代码段 | Critical Section |
-| 互斥锁 | 保证同一时刻只有一个线程访问资源的锁 | Mutex / Lock |
-| Future | 代表异步操作未来结果的对象 | Future |
-| 线程池 | 预先创建一组线程，复用它们执行任务 | Thread Pool |
-| 进程池 | 预先创建一组进程，绕过 GIL 实现并行 | Process Pool |
-| 背压 | 消费者忙不过来时限制生产者的速度 | Backpressure |
-| 序列化 | 把对象转换成可传输/存储的格式 | Serialization / Pickle |
-| 自由线程构建 | 移除 GIL 的实验性 CPython 版本 | Free-threaded CPython |
+| --- | --- |
+| GIL | Python 解释器的全局锁，同一时刻只允许一个线程执行字节码（Global Interpreter Lock） |
+| 竞态条件 | 结果取决于线程执行顺序的 bug（Race Condition） |
+| 临界区 | 同一时刻只能有一个线程进入的代码段（Critical Section） |
+| 互斥锁 | 保证同一时刻只有一个线程访问资源的锁（Mutex / Lock） |
+| Future | 代表异步操作未来结果的对象（Future） |
+| 线程池 | 预先创建一组线程，复用它们执行任务（Thread Pool） |
+| 进程池 | 预先创建一组进程，绕过 GIL 实现并行（Process Pool） |
+| 背压 | 消费者忙不过来时限制生产者的速度（Backpressure） |
+| 序列化 | 把对象转换成可传输/存储的格式（Serialization / Pickle） |
+| 自由线程构建 | 移除 GIL 的实验性 CPython 版本（Free-threaded CPython） |
 
 ## 考点精讲
 

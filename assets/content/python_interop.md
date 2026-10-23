@@ -1,6 +1,6 @@
 # Python 与 C、C++、Rust 互操作
 
-> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：55 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：40 分钟
 
 分类：python。关键词：ctypes、C 扩展、Cython、PyO3、ABI。理解 FFI、ABI、GIL 与内存所有权，用 ctypes、C 扩展、Cython 和 PyO3 把性能关键代码安全接入 Python。
 

@@ -1,6 +1,8 @@
 # Go语言Gin/Echo框架实战
 
-![Go语言Gin/Echo框架实战示意：diagram io scheduling](images/diagram_io_scheduling.webp)
+![Go语言Gin/Echo框架实战](images/diagram_io_scheduling.webp)
+
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：125 分钟
 
 ## Go Language Gin/Echo Framework Practice
 

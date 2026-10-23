@@ -1,10 +1,12 @@
 # GitHub Actions 自动化实战
 
-![GitHub Actions 自动化实战示意：python memory allocation](images/python_memory_allocation.webp)
+![GitHub Actions 自动化实战](images/python_memory_allocation.webp)
 
 > **版本**：v2.0
 > **难度**：初学者友好
 > **前置知识**：了解 Git 基本操作，有 GitHub 账号即可
+
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：180 分钟
 
 ---
 

@@ -1,6 +1,8 @@
 # Vue 3组合式API
 
-![Vue 3组合式API示意：category cross ci config](images/category_cross_ci_config.webp)
+![Vue 3组合式API](images/category_cross_ci_config.webp)
+
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：50 分钟
 
 ## 章节摘要
 

@@ -1,6 +1,8 @@
 # 离线优先架构与数据同步
 
-![离线优先架构与数据同步示意：lesson security supply chain](images/lesson_security_supply_chain.webp)
+![离线优先架构与数据同步](images/lesson_security_supply_chain.webp)
+
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：55 分钟
 
 ## Chapter Overview
 

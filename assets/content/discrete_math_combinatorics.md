@@ -1,8 +1,8 @@
 # 组合数学
 
-![组合数学示意：diagram digital logic](images/diagram_digital_logic.webp)
+![组合数学](images/diagram_digital_logic.webp)
 
-> 学习阶段：进阶 · 预计用时：50分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：40 分钟
 
 ## 本节知识框架
 

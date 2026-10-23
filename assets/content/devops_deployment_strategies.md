@@ -1,8 +1,10 @@
 # 蓝绿部署与金丝雀发布
 
-![蓝绿部署与金丝雀发布示意：diagram network bgp](images/diagram_network_bgp.webp)
+![蓝绿部署与金丝雀发布](images/devops_deployment_strategies.webp)
 
 > **版本**: v2.0 | **难度**: 初学者友好 | **先修知识**: Kubernetes 基础、Docker 容器  
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：75 分钟
+
 > **关键词**: 蓝绿部署、金丝雀发布、Istio、服务网格、零停机部署、自动化回滚
 
 ---

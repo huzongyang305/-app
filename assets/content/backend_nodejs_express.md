@@ -1,6 +1,8 @@
 # Node.js与Express/Koa框架实战
 
-![Node.js与Express/Koa框架实战示意：remaining csharp project blazor admin](images/remaining_csharp_project_blazor_admin.webp)
+![Node.js与Express/Koa框架实战](images/remaining_csharp_project_blazor_admin.webp)
+
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：105 分钟
 
 ## Node.js & Express/Koa Framework Practice
 

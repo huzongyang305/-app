@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-10-08T11:23:35.258614Z",
-  "lesson_count": 629,
-  "question_count": 3543,
-  "error_count": 0,
-  "warning_count": 0,
+  "generated_at": "2026-10-23T13:36:57.723177Z",
+  "lesson_count": 686,
+  "question_count": 3829,
+  "error_count": 1,
+  "warning_count": 260,
   "difficulty_inversions": 0,
   "prerequisite_violations": 0,
   "order_gaps": 0,
@@ -18,18 +18,1628 @@
   "thin_glossaries": 0,
   "glossary_header_mismatches": 0,
   "unreviewed_mistake_tables": 0,
-  "glossary_template_rows": 0,
+  "glossary_template_rows": 209,
   "generic_mistake_rows": 0,
   "generic_fault_scenario_templates": 0,
   "fault_reference_drifts": 0,
-  "code_questions_without_domain_link": 0,
+  "code_questions_without_domain_link": 1,
   "explanations_with_meta_markers": 0,
   "language_mismatches": 0,
   "repeated_explanation_sentence_classes": 0,
-  "repeated_markdown_paragraph_classes": 0,
+  "repeated_markdown_paragraph_classes": 3,
   "duplicate_reference_sets": 0,
-  "issues": [],
+  "issues": [
+    {
+      "level": "warn",
+      "lesson_id": "mobile_flutter_advanced",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_flutter_advanced",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_flutter_advanced",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_flutter_advanced",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_performance_optimization",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_performance_optimization",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_performance_optimization",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_performance_optimization",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_performance_optimization",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_data_access",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_data_access",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_data_access",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_data_access",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_data_access",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_microservices",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_microservices",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_microservices",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_microservices",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_microservices",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_testing",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_testing",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_testing",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_testing",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_testing",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_performance_monitoring",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_performance_monitoring",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_performance_monitoring",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_performance_monitoring",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_performance_monitoring",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_deployment",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_deployment",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_deployment",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_deployment",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_deployment",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_project_ecommerce",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_project_ecommerce",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_project_ecommerce",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_project_ecommerce",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_project_ecommerce",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_servlet_jsp",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_servlet_jsp",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_servlet_jsp",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_servlet_jsp",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_spring_boot_intro",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_spring_boot_intro",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_spring_boot_intro",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_spring_boot_intro",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_spring_boot_intro",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_spring_mvc",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_spring_mvc",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_spring_mvc",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_spring_mvc",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_spring_mvc",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_spring_security",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_spring_security",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_spring_security",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_spring_security",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_spring_security",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_restful_api",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_restful_api",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_restful_api",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_restful_api",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_spring_core",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_spring_core",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_spring_core",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_spring_core",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "discrete_math_set_theory",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "discrete_math_relations_functions",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "discrete_math_relations_functions",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "discrete_math_relations_functions",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "discrete_math_graph_theory",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_monitoring",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_monitoring",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_monitoring",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_monitoring",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_cicd_pipeline",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_cicd_pipeline",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_cicd_pipeline",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_cicd_pipeline",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_cicd_pipeline",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_gitops_argocd",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_gitops_argocd",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_gitops_argocd",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_gitops_argocd",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_gitops_argocd",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_github_actions",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_github_actions",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_github_actions",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_github_actions",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_docker_registry",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_docker_registry",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_docker_registry",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_docker_registry",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_deployment_strategies",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_deployment_strategies",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_deployment_strategies",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_deployment_strategies",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_terraform",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_terraform",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_terraform",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_terraform",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_terraform",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_monitoring_alert",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_monitoring_alert",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_monitoring_alert",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_monitoring_alert",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_monitoring_alert",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_monitoring_alert",
+      "kind": "explanation_missing_answer",
+      "message": "第 6 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_logging_tracing",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_logging_tracing",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_logging_tracing",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_logging_tracing",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "devops_logging_tracing",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_react_hooks",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_react_hooks",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_react_hooks",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_react_hooks",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_react_hooks",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_vue_composition",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_vue_composition",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_vue_composition",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_vue_composition",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_vue_composition",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_angular_basics",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_angular_basics",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_angular_basics",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_angular_basics",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_svelte_reactive",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_svelte_reactive",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_svelte_reactive",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_svelte_reactive",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_state_management",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_state_management",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_state_management",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_state_management",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_state_management",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_nextjs_ssr",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "error",
+      "lesson_id": "frontend_nextjs_ssr",
+      "kind": "code_question_domain_link",
+      "message": "第 2 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_nextjs_ssr",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_nextjs_ssr",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_nextjs_ssr",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_nextjs_ssr",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_performance_optimization",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_performance_optimization",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_performance_optimization",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_performance_optimization",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_framework_comparison",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_framework_comparison",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_framework_comparison",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "frontend_framework_comparison",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_restful_api",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_restful_api",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_restful_api",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_nodejs_express",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_nodejs_express",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_nodejs_express",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_nodejs_express",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_nodejs_express",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_fastapi_async",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_fastapi_async",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_fastapi_async",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_fastapi_async",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_gin_echo",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_gin_echo",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_gin_echo",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_gin_echo",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_gin_echo",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_database_integration",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_database_integration",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_database_integration",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_database_integration",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_database_integration",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_auth_jwt_oauth",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_auth_jwt_oauth",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_auth_jwt_oauth",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_auth_jwt_oauth",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_graphql_apollo",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_graphql_apollo",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_graphql_apollo",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_graphql_apollo",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_graphql_apollo",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_microservices_patterns",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_microservices_patterns",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_microservices_patterns",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_microservices_patterns",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "backend_microservices_patterns",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_tensorflow_pytorch_intro",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_tensorflow_pytorch_intro",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_tensorflow_pytorch_intro",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_tensorflow_pytorch_intro",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_data_preprocessing_feature_engineering",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_data_preprocessing_feature_engineering",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_data_preprocessing_feature_engineering",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_data_preprocessing_feature_engineering",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_data_preprocessing_feature_engineering",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_computer_vision",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_computer_vision",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_computer_vision",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_computer_vision",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_computer_vision",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_natural_language_processing",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_natural_language_processing",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_natural_language_processing",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_natural_language_processing",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_natural_language_processing",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_recommendation_systems",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_recommendation_systems",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_recommendation_systems",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_recommendation_systems",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_recommendation_systems",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_time_series_prediction",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_time_series_prediction",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_time_series_prediction",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_time_series_prediction",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_time_series_prediction",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_model_evaluation_hyperparameter_tuning",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_model_evaluation_hyperparameter_tuning",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_model_evaluation_hyperparameter_tuning",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_model_evaluation_hyperparameter_tuning",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_model_evaluation_hyperparameter_tuning",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_model_deployment_mlops",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_model_deployment_mlops",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_model_deployment_mlops",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_model_deployment_mlops",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ml_model_deployment_mlops",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_swiftui_complete",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_swiftui_complete",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_swiftui_complete",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_swiftui_complete",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "android_flutter_release",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "android_flutter_release",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "android_flutter_release",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "android_flutter_release",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "android_flutter_release",
+      "kind": "explanation_missing_answer",
+      "message": "第 6 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_jetpack_compose_advanced",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_jetpack_compose_advanced",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_jetpack_compose_advanced",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_jetpack_compose_advanced",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_jetpack_compose_advanced",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_react_native_deep",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_react_native_deep",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_react_native_deep",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_react_native_deep",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_react_native_deep",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_cross_platform_comparison",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_cross_platform_comparison",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_cross_platform_comparison",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_cross_platform_comparison",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_cross_platform_comparison",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_offline_first",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_offline_first",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_offline_first",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_offline_first",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_offline_first",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_security",
+      "kind": "explanation_missing_answer",
+      "message": "第 1 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_security",
+      "kind": "explanation_missing_answer",
+      "message": "第 2 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_security",
+      "kind": "explanation_missing_answer",
+      "message": "第 3 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_security",
+      "kind": "explanation_missing_answer",
+      "message": "第 4 题解析未包含 1/1 个正确答案片段"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_flutter_advanced",
+      "kind": "repeated_markdown_paragraph",
+      "message": "正文段落出现在 47 门课：用本课方案处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "mobile_flutter_advanced",
+      "kind": "repeated_markdown_paragraph",
+      "message": "正文段落出现在 40 门课：正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "java_servlet_jsp",
+      "kind": "repeated_markdown_paragraph",
+      "message": "正文段落出现在 28 门课：正文首个示例可作为最小验证起点（原样保留在上方章节）：先跑通，再改一个输入观察输出变化。"
+    }
+  ],
   "top_repeated_explanation_sentences": [],
-  "top_repeated_markdown_paragraphs": [],
+  "top_repeated_markdown_paragraphs": [
+    {
+      "count": 47,
+      "paragraph": "用本课方案处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。",
+      "lessons": [
+        "mobile_flutter_advanced",
+        "mobile_performance_optimization",
+        "java_servlet_jsp",
+        "java_spring_core",
+        "discrete_math_set_theory",
+        "discrete_math_relations_functions",
+        "discrete_math_graph_theory",
+        "discrete_math_combinatorics"
+      ]
+    },
+    {
+      "count": 40,
+      "paragraph": "正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。",
+      "lessons": [
+        "mobile_flutter_advanced",
+        "mobile_performance_optimization",
+        "devops_monitoring",
+        "devops_cicd_pipeline",
+        "devops_gitops_argocd",
+        "devops_github_actions",
+        "devops_docker_registry",
+        "devops_deployment_strategies"
+      ]
+    },
+    {
+      "count": 28,
+      "paragraph": "正文首个示例可作为最小验证起点（原样保留在上方章节）：先跑通，再改一个输入观察输出变化。",
+      "lessons": [
+        "java_servlet_jsp",
+        "java_spring_core",
+        "discrete_math_set_theory",
+        "discrete_math_relations_functions",
+        "discrete_math_graph_theory",
+        "discrete_math_combinatorics",
+        "devops_monitoring",
+        "devops_gitops_argocd"
+      ]
+    }
+  ],
   "duplicate_reference_set_details": []
 }

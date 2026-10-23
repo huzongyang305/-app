@@ -1,6 +1,6 @@
 # Kotlin 条件判断
 
-> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：40 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：30 分钟
 
 ![Kotlin if 与 when 表达式](images/diagram_kt_conditions.webp)
 

@@ -4,7 +4,7 @@
 
 ![Rust 类型系统：Option、Result 与 trait](images/remaining_rust_types_traits.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：50 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：40 分钟
 
 ## 本节知识框架
 

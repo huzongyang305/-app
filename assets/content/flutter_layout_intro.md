@@ -1,6 +1,6 @@
 # Flutter 布局入门
 
-> 内容更新时间：2026-10-06 · 学习阶段：intermediate · 预计用时：45 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：25 分钟
 
 ![Flutter 布局三原则示意图](images/diagram_mobile_flutter_layout.webp)
 
@@ -333,7 +333,7 @@ D. 按 flex 比例瓜分主轴上的剩余空间
 
 - 内容版本：v2.0
 - 最后更新：2026-10-06
-- 学习阶段：intermediate
+- 学习阶段：基础
 - 适用环境：Flutter 3.x / Dart 3.x
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：Flutter 布局入门、移动开发、入门练习

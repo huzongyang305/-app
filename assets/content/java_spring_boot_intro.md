@@ -1,6 +1,6 @@
 # Spring Boot 入门
 
-> 内容更新时间：2026-10-20 · 学习阶段：入门 · 预计用时：45 分钟
+> 内容更新时间：2026-10-20 · 学习阶段：入门 · 预计用时：50 分钟
 
 ![Spring Boot 自动配置](images/spring_boot_autoconfig.webp)
 
@@ -575,7 +575,7 @@ D. 当应用运行在特定的操作系统上时才生效
 - 课程 ID：java_spring_boot_intro
 - 分类：Java Web 开发
 - 难度：入门
-- 预计用时：45 分钟
+- 预计用时：50 分钟
 - 先修课程：Java 基础、Spring Framework 核心
 - 后续课程：Spring MVC 与 Web 开发、Spring Boot 数据访问、Spring Cloud 微服务
 - 内容版本：v2.0

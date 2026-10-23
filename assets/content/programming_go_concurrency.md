@@ -1,8 +1,8 @@
 # Go 并发：goroutine、channel 与 context
 
-> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：40 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：30 分钟
 
-![Go goroutine channel context](images/diagram_go_concurrency.webp)
+![Go 并发：goroutine、channel 与 context示意图](images/diagram_go_concurrency.webp)
 
 ![Go 并发：goroutine、channel 与 context](images/remaining_go_concurrency.webp)
 

@@ -1,6 +1,8 @@
 # 推荐系统实现
 
-![推荐系统实现示意：devops terraform workflow](images/devops_terraform_workflow.webp)
+![推荐系统实现](images/devops_terraform_workflow.webp)
+
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：60 分钟
 
 ## 本章摘要
 

@@ -1,22 +1,443 @@
 {
-  "generated_at": "2026-10-08T19:23:27.887545",
-  "lesson_count": 629,
-  "total_chars": 11746901,
-  "min_chars": 13044,
-  "image_count": 1250,
-  "lessons_with_image": 629,
-  "lessons_with_lab_section": 68,
+  "generated_at": "2026-10-23T21:06:16.800478",
+  "lesson_count": 686,
+  "total_chars": 9614764,
+  "min_chars": 6112,
+  "image_count": 1313,
+  "lessons_with_image": 686,
+  "lessons_with_lab_section": 67,
   "question_type_histogram": {
-    "single": 1628,
+    "single": 1908,
     "multi": 631,
-    "fill": 361,
+    "fill": 360,
     "order": 279,
-    "code": 471,
+    "code": 478,
     "debug": 173
   },
-  "lessons_without_code_question": 0,
-  "error_count": 0,
+  "lessons_without_code_question": 52,
+  "error_count": 84,
   "warning_count": 0,
-  "issues": [],
+  "issues": [
+    {
+      "level": "error",
+      "lesson_id": "flutter_layout_intro",
+      "message": "正文 8313 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "mobile_performance",
+      "message": "正文 9031 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "gamedev_game_loop",
+      "message": "正文 8119 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "gamedev_animation_fsm",
+      "message": "正文 8975 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "gamedev_render_pipeline",
+      "message": "正文 8818 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "gamedev_multiplayer_sync",
+      "message": "正文 8595 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "gamedev_performance_mobile",
+      "message": "正文 9669 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "gamedev_ecs_profiling",
+      "message": "正文 7362 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "html_tags_intro",
+      "message": "正文 6424 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "html_basics",
+      "message": "正文 9716 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "python_first_script",
+      "message": "正文 6553 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "python_input_output",
+      "message": "正文 6909 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "python_if_else",
+      "message": "正文 9535 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "python_loops",
+      "message": "正文 8884 字符，低于目标 12000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "python_basics",
+      "message": "正文 10548 字符，低于目标 12000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "python_variables",
+      "message": "正文 9683 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "python_packaging_performance",
+      "message": "正文 9464 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cpp_first_program",
+      "message": "正文 7591 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cpp_variables_io",
+      "message": "正文 6957 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cpp_conditions",
+      "message": "正文 6992 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cpp_loops",
+      "message": "正文 6416 字符，低于目标 12000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cpp_functions_intro",
+      "message": "正文 7105 字符，低于目标 12000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cpp_basics",
+      "message": "正文 7599 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cpp_types",
+      "message": "正文 8342 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cpp_oop",
+      "message": "正文 9442 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cpp_templates",
+      "message": "正文 8859 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cpp_stl",
+      "message": "正文 9367 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cpp_modern",
+      "message": "正文 9745 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cpp_move_semantics",
+      "message": "正文 9249 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "c_functions_intro",
+      "message": "正文 11813 字符，低于目标 12000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "c_basics",
+      "message": "正文 10286 字符，低于目标 12000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "c_pointers",
+      "message": "正文 9487 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "java_first_class",
+      "message": "正文 7841 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "java_variables_output",
+      "message": "正文 8727 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "java_conditions",
+      "message": "正文 9369 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "java_loops",
+      "message": "正文 7425 字符，低于目标 12000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "java_methods_intro",
+      "message": "正文 7255 字符，低于目标 12000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "java_basics",
+      "message": "正文 8155 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "java_control_methods",
+      "message": "正文 9535 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "java_oop",
+      "message": "正文 7563 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "java_inheritance",
+      "message": "正文 6654 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "java_collections",
+      "message": "正文 6328 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "java_exceptions",
+      "message": "正文 6730 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "java_lambda_stream",
+      "message": "正文 7231 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "java_tooling",
+      "message": "正文 8052 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "java_project_order_concurrency",
+      "message": "正文 8292 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "java_virtual_threads",
+      "message": "正文 9590 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "java_project_inventory",
+      "message": "正文 8945 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "kotlin_functions_intro",
+      "message": "正文 11994 字符，低于目标 12000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "kotlin_basics",
+      "message": "正文 9481 字符，低于目标 12000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "swift_functions_intro",
+      "message": "正文 11899 字符，低于目标 12000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "swift_basics",
+      "message": "正文 10354 字符，低于目标 12000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "swift_async",
+      "message": "正文 9732 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "swift_testing",
+      "message": "正文 9899 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "js_variables_types_intro",
+      "message": "正文 11194 字符，低于目标 12000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "js_functions_intro",
+      "message": "正文 11784 字符，低于目标 12000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "js_memory_gc",
+      "message": "正文 9270 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "csharp_loops",
+      "message": "正文 11139 字符，低于目标 12000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "csharp_methods_intro",
+      "message": "正文 11441 字符，低于目标 12000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "go_functions_intro",
+      "message": "正文 11285 字符，低于目标 12000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "rust_loops",
+      "message": "正文 11706 字符，低于目标 12000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "rust_functions_intro",
+      "message": "正文 11419 字符，低于目标 12000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ts_basic_types",
+      "message": "正文 11681 字符，低于目标 12000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ts_type_level",
+      "message": "正文 9603 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "shell_loops",
+      "message": "正文 11651 字符，低于目标 12000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "shell_pipeline_intro",
+      "message": "正文 11191 字符，低于目标 12000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "fundamentals_storage_stack",
+      "message": "正文 9425 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "discrete_math_set_theory",
+      "message": "正文 6112 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "discrete_math_graph_theory",
+      "message": "正文 9505 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "algo_shortest_paths",
+      "message": "正文 9892 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "algo_mst",
+      "message": "正文 9595 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "algo_persistent_parallel",
+      "message": "正文 9700 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "network_performance",
+      "message": "正文 9860 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "security_threat_model",
+      "message": "正文 9615 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "security_supply_chain",
+      "message": "正文 8962 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "db_graph",
+      "message": "正文 9795 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "os_linux_troubleshooting",
+      "message": "正文 9223 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "git_intro",
+      "message": "正文 9685 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ai_mcp",
+      "message": "正文 9898 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ai_vlm",
+      "message": "正文 9532 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ai_diffusion",
+      "message": "正文 9362 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "mobile_swift",
+      "message": "正文 9486 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "mobile_miniprogram",
+      "message": "正文 8734 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "mobile_react_native",
+      "message": "正文 9196 字符，低于目标 10000"
+    }
+  ],
   "template_sentences": []
 }

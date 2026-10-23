@@ -1,11 +1,13 @@
 # CI/CD 流水线设计与实现
 
-![CI/CD 流水线设计与实现示意：lesson security cloud](images/lesson_security_cloud.webp)
+![CI/CD 流水线设计与实现](images/devops_cicd_pipeline.webp)
 
 > **版本**: v2.0  
 > **难度**: 初学者友好  
 > **前置知识**: Git 基础、Linux 命令行基础  
 > **预计学习时间**: 3-4 小时
+
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：75 分钟
 
 ---
 

@@ -1,6 +1,6 @@
 # CSS 选择器入门
 
-> 内容更新时间：2026-10-06 · 学习阶段：beginner · 预计用时：40 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：45 分钟
 
 ![CSS 选择器示意图](images/category_css_selectors_intro.webp)
 
@@ -545,7 +545,7 @@ A 正确——`.notice` 是类选择器，命中所有 class 包含 notice 的�
 
 - 内容版本：v2.0
 - 最后更新：2026-10-06
-- 学习阶段：beginner
+- 学习阶段：基础
 - 适用环境：现代浏览器（Chrome/Firefox/Safari/Edge）
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：CSS 选择器入门、HTML 与 CSS、入门练习

@@ -1,6 +1,6 @@
 # HTML 标签入门
 
-> 内容更新时间：2026-10-06 · 学习阶段：beginner · 预计用时：40 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：20 分钟
 
 ![HTML 标签结构示意图](images/category_html_tags_intro.webp)
 

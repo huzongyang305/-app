@@ -1,6 +1,6 @@
-﻿# Flutter 状态管理与性能
+# Flutter 状态管理与性能
 
-> 内容更新时间：2026-10-06 · 学习阶段：intermediate · 预计用时：45 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：30 分钟
 
 ![状态分层与重建范围](images/diagram_mobile_flutter_state.webp)
 
@@ -420,7 +420,7 @@ AnimationController、TextEditingController、StreamSubscription 创建后不释
 
 - 内容版本：v2.0
 - 最后更新：2026-10-06
-- 学习阶段：intermediate
+- 学习阶段：入门
 - 适用环境：Flutter 3.x / Dart 3.x；本课聚焦 Flutter。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：Flutter、状态管理、Provider、性能、生命周期

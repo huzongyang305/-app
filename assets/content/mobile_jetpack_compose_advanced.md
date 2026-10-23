@@ -1,6 +1,8 @@
 # Android Jetpack Compose进阶
 
-![Android Jetpack Compose进阶示意：lesson ai realtime api](images/lesson_ai_realtime_api.webp)
+![Android Jetpack Compose进阶示意图](images/lesson_ai_realtime_api.webp)
+
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：45 分钟
 
 ## Chapter Overview
 

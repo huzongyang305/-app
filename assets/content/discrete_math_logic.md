@@ -1,8 +1,8 @@
 # 命题逻辑与谓词逻辑
 
-![命题逻辑与谓词逻辑示意：lesson c arrays strings](images/lesson_c_arrays_strings.webp)
+![命题逻辑与谓词逻辑](images/lesson_c_arrays_strings.webp)
 
-> 学习阶段：进阶 · 预计用时：55分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：35 分钟
 
 ## 本节知识框架
 

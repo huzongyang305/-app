@@ -1,6 +1,8 @@
 # 性能优化最佳实践
 
-![性能优化最佳实践示意：remaining airflow quality](images/remaining_airflow_quality.webp)
+![性能优化最佳实践](images/remaining_airflow_quality.webp)
+
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：65 分钟
 
 ## 章节摘要
 

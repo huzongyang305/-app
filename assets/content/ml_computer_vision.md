@@ -1,6 +1,8 @@
 # 计算机视觉：图像分类与目标检测
 
-![计算机视觉：图像分类与目标检测示意：lesson ai tool calling](images/lesson_ai_tool_calling.webp)
+![计算机视觉：图像分类与目标检测](images/lesson_ai_tool_calling.webp)
+
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：55 分钟
 
 ## 本章摘要
 

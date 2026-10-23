@@ -1,8 +1,8 @@
 # 图论基础
 
-![图论基础示意：diagram container vm](images/diagram_container_vm.webp)
+![图论基础](images/diagram_container_vm.webp)
 
-> 学习阶段：进阶 · 预计用时：55分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：30 分钟
 
 ## 本节知识框架
 

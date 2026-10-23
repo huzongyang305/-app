@@ -1,8 +1,8 @@
 # Spring Framework 核心
 
-> 内容更新时间：2026-10-20 · 学习阶段：进阶 · 预计用时：60 分钟
+> 内容更新时间：2026-10-20 · 学习阶段：高级 · 预计用时：45 分钟
 
-> 学习阶段：进阶 · 预计用时：60 分钟 · 配图：Spring IoC 容器
+> 学习阶段：高级 · 预计用时：45 分钟 · 配图：Spring IoC 容器
 
 ![Spring IoC 容器](images/spring_ioc_container.webp)
 
@@ -553,7 +553,7 @@ D. IoC 是指把对象的创建和管理权从代码转移到 Spring 容器，�
 - 课程 ID：java_spring_core
 - 分类：Java Web 开发
 - 难度：进阶
-- 预计用时：60 分钟
+- 预计用时：45 分钟
 - 先修课程：Java 基础、Servlet 与 JSP 基础
 - 后续课程：Spring MVC 与 Web 开发、Spring Boot 入门
 

@@ -1,8 +1,8 @@
 # 关系与函数
 
-![关系与函数示意：python data processing flow](images/python_data_processing_flow.webp)
+![关系与函数](images/python_data_processing_flow.webp)
 
-> 学习阶段：进阶 · 预计用时：50分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：35 分钟
 
 ## 本节知识框架
 

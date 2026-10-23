@@ -1,6 +1,8 @@
 # React Native深度实践与原生模块
 
-![React Native深度实践与原生模块示意：remaining shell process cron](images/remaining_shell_process_cron.webp)
+![React Native深度实践与原生模块](images/remaining_shell_process_cron.webp)
+
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：55 分钟
 
 ## Chapter Overview
 

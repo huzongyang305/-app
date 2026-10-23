@@ -1,6 +1,8 @@
 # RESTful API设计最佳实践
 
-![RESTful API设计最佳实践示意：lesson cpp move semantics](images/lesson_cpp_move_semantics.webp)
+![RESTful API设计最佳实践](images/lesson_cpp_move_semantics.webp)
+
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：55 分钟
 
 ## RESTful API Design Best Practices
 

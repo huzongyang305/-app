@@ -1,6 +1,8 @@
 # 时间序列预测（LSTM/Transformer）
 
-![时间序列预测（LSTM/Transformer）示意：category mobile react native](images/category_mobile_react_native.webp)
+![时间序列预测（LSTM/Transformer）](images/category_mobile_react_native.webp)
+
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：70 分钟
 
 ## 本章摘要
 

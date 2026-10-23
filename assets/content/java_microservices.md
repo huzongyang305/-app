@@ -1,6 +1,6 @@
 # 微服务架构设计
 
-> 内容更新时间：2026-10-20 · 学习阶段：高级 · 预计用时：65 分钟
+> 内容更新时间：2026-10-20 · 学习阶段：高级 · 预计用时：50 分钟
 
 ![微服务架构](images/diagram_microservices.webp)
 
@@ -592,7 +592,7 @@ D. 缺少熔断器会导致服务注册中心无法正常工作
 - 课程 ID：java_microservices
 - 分类：Java Web 开发
 - 难度：高级
-- 预计用时：65 分钟
+- 预计用时：50 分钟
 - 先修课程：Java 基础、Servlet 与 JSP 基础、Spring Framework 核心
 - 后续课程：Docker 与容器化、Kubernetes 编排、消息队列
 - 内容版本：v2.0

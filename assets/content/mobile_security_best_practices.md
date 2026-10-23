@@ -1,6 +1,8 @@
 # 移动安全最佳实践
 
-![移动安全最佳实践示意：diagram go grpc](images/diagram_go_grpc.webp)
+![移动安全最佳实践](images/diagram_go_grpc.webp)
+
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：50 分钟
 
 ## Chapter Overview
 

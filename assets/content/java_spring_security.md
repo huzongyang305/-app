@@ -1,6 +1,6 @@
 # Spring Security 认证授权
 
-> 内容更新时间：2026-10-20 · 学习阶段：进阶 · 预计用时：55 分钟
+> 内容更新时间：2026-10-20 · 学习阶段：进阶 · 预计用时：50 分钟
 
 ![Spring Security 过滤器链](images/spring_security_filterchain.webp)
 
@@ -640,7 +640,7 @@ D. "@PreAuthorize" 支持 SpEL 表达式编写复杂条件，"@Secured" 只能�
 - 课程 ID：java_spring_security
 - 分类：Java Web 开发
 - 难度：进阶
-- 预计用时：55 分钟
+- 预计用时：50 分钟
 - 先修课程：Spring Framework 核心、Servlet 与 JSP 基础、HTTP 协议基础
 - 后续课程：Spring Boot 入门、微服务架构
 - 内容版本：v2.0

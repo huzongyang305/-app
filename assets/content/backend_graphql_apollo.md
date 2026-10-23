@@ -1,6 +1,8 @@
 # GraphQL入门与Apollo Server
 
-![GraphQL入门与Apollo Server示意：remaining cpp pointers](images/remaining_cpp_pointers.webp)
+![GraphQL入门与Apollo Server](images/remaining_cpp_pointers.webp)
+
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：75 分钟
 
 ## 本章摘要
 

@@ -1,6 +1,6 @@
 # 鸿蒙 ArkTS 应用开发
 
-> 内容更新时间：2026-10-06 · 学习阶段：intermediate · 预计用时：45 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：30 分钟
 
 ![鸿蒙 ArkTS 与 Stage 模型](images/diagram_mobile_harmony.webp)
 
@@ -447,7 +447,7 @@ D. 只影响启动速度
 
 - 内容版本：v2.0
 - 最后更新：2026-10-06
-- 学习阶段：intermediate
+- 学习阶段：进阶
 - 适用环境：HarmonyOS / DevEco Studio
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：鸿蒙、HarmonyOS、ArkTS、ArkUI、UIAbility

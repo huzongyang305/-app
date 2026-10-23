@@ -4,6 +4,8 @@
 
 ![Terraform 工作流程](images/devops_terraform_workflow.webp)
 
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：75 分钟
+
 ---
 
 ## 第 1 章：课程介绍与 IaC 理念

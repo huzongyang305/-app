@@ -1,6 +1,8 @@
 # 模型评估与超参数调优
 
-![模型评估与超参数调优示意：diagram rust conditions](images/diagram_rust_conditions.webp)
+![模型评估与超参数调优](images/diagram_rust_conditions.webp)
+
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：70 分钟
 
 ## 本章摘要
 

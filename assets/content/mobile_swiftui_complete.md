@@ -1,6 +1,8 @@
 # iOS SwiftUI完整教程
 
-![iOS SwiftUI完整教程示意：remaining python first script](images/remaining_python_first_script.webp)
+![iOS SwiftUI完整教程](images/remaining_python_first_script.webp)
+
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：35 分钟
 
 ## Chapter Overview
 

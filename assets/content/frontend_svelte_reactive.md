@@ -1,6 +1,8 @@
 # Svelte响应式编程
 
-![Svelte响应式编程示意：tcp handshake](images/tcp_handshake.webp)
+![Svelte响应式编程](images/tcp_handshake.webp)
+
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：60 分钟
 
 ## 章节摘要
 

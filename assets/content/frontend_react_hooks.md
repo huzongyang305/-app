@@ -1,6 +1,8 @@
 # React核心概念与Hooks
 
-![React核心概念与Hooks示意：lesson ts type level](images/lesson_ts_type_level.webp)
+![React核心概念与Hooks](images/lesson_ts_type_level.webp)
+
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：40 分钟
 
 ## 章节摘要
 

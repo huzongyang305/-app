@@ -1,6 +1,6 @@
 # CSS 布局：Flex、Grid 与响应式
 
-> 内容更新时间：2026-10-06 · 学习阶段：beginner · 预计用时：45 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：40 分钟
 
 ![Flex 与 Grid 的布局对比](images/diagram_web_css_layout.webp)
 

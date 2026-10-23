@@ -4,7 +4,7 @@
 
 ![现代 Java：Record、Sealed 与模式匹配](images/lesson_java_modern_features.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：40 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：30 分钟
 
 ## 本节知识框架
 

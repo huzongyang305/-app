@@ -1,6 +1,8 @@
 # Flutter高级主题（动画、自定义渲染、平台通道）
 
-![Flutter高级主题（动画、自定义渲染、平台通道）示意：remaining kotlin loops](images/remaining_kotlin_loops.webp)
+![Flutter高级主题（动画、自定义渲染、平台通道）](images/remaining_kotlin_loops.webp)
+
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：40 分钟
 
 ## Chapter Overview
 

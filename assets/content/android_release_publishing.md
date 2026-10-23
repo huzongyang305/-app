@@ -1,6 +1,6 @@
 # Android 发布工程：签名、包体与上架轨道
 
-> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：90 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：55 分钟
 
 ![Android 应用从签名到上架的发布流水线](images/lesson_android_flutter_release.webp)
 
@@ -533,7 +533,7 @@ D. 上传产物，填写商店 listing、隐私政策与数据安全表单
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：基础
-- 预计用时：90 分钟
+- 预计用时：55 分钟
 - 适用环境：Android Gradle Plugin 8.x / JDK 17 / compileSdk 35 / bundletool 与 cmdline-tools
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：keystore、签名方案、App Bundle、R8 混淆、发布轨道

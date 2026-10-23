@@ -1,8 +1,10 @@
 # GitOps 与 ArgoCD 实战
 
-![GitOps 与 ArgoCD 实战示意：memory layout](images/memory_layout.webp)
+![GitOps 与 ArgoCD 实战](images/memory_layout.webp)
 
 > **版本**：v2.0 | **难度**：初学者友好 | **前置知识**：Kubernetes 基础、Git 基本操作
+
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：180 分钟
 
 ---
 

@@ -1,8 +1,8 @@
 # Servlet 与 JSP 基础
 
-> 内容更新时间：2026-10-20 · 学习阶段：入门 · 预计用时：50 分钟
+> 内容更新时间：2026-10-20 · 学习阶段：入门 · 预计用时：40 分钟
 
-> 学习阶段：入门 · 预计用时：50 分钟 · 配图：Servlet 生命周期
+> 学习阶段：入门 · 预计用时：40 分钟 · 配图：Servlet 生命周期
 
 ![Servlet 生命周期](images/java_servlet_lifecycle.webp)
 
@@ -497,7 +497,7 @@ D. POST 请求会被容器丢弃，客户端收不到任何响应
 - 课程 ID：java_servlet_jsp
 - 分类：Java Web 开发
 - 难度：入门
-- 预计用时：50 分钟
+- 预计用时：40 分钟
 - 先修课程：Java 基础、HTTP 基础
 - 后续课程：Spring MVC 与 Web 开发
 

@@ -1,6 +1,8 @@
 # 跨平台架构对比与选型
 
-![跨平台架构对比与选型示意：p0x ai mlops](images/p0x_ai_mlops.webp)
+![跨平台架构对比与选型](images/p0x_ai_mlops.webp)
+
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：40 分钟
 
 ## Chapter Overview
 

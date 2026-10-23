@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 
 void main() {
   const caption = 'Flutter Widget、Element 与 RenderObject 三棵树';
-  const asset = 'assets/content/images/diagram_flutter_trees.webp';
+  const asset = 'assets/content/images/flutter_three_trees.webp';
   late ContentProvider content;
 
   setUpAll(() async {

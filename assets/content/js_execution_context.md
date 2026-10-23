@@ -1,6 +1,6 @@
 # JavaScript 执行上下文与闭包
 
-> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：40 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：30 分钟
 
 ![JavaScript 执行上下文与作用域链](images/diagram_js_execution_context.webp)
 

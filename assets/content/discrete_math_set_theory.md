@@ -1,8 +1,8 @@
 # 集合论基础
 
-![集合论基础示意：spring ioc container](images/spring_ioc_container.webp)
+![集合论基础](images/spring_ioc_container.webp)
 
-> 学习阶段：进阶 · 预计用时：45分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：25 分钟
 
 ## 本节知识框架
 

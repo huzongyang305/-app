@@ -1,6 +1,6 @@
 # Jetpack Compose 声明式 UI
 
-> 内容更新时间：2026-10-06 · 学习阶段：intermediate · 预计用时：45 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：30 分钟
 
 ![Jetpack Compose 架构图](images/diagram_mobile_compose.webp)
 
@@ -448,7 +448,7 @@ D. 放在 remember 的初始化块里
 
 - 内容版本：v2.0
 - 最后更新：2026-10-06
-- 学习阶段：intermediate
+- 学习阶段：进阶
 - 适用环境：Android / Kotlin 1.9+ / Jetpack Compose 1.6+
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：Compose、声明式UI、重组、状态提升、LazyColumn

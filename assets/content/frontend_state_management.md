@@ -1,6 +1,8 @@
 # 状态管理深入
 
-![状态管理深入示意：category mobile compose](images/category_mobile_compose.webp)
+![状态管理深入](images/category_mobile_compose.webp)
+
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：75 分钟
 
 ## 章节摘要
 

@@ -1,6 +1,6 @@
 # Java 测试与质量
 
-> 内容更新时间：2026-10-20 · 学习阶段：进阶 · 预计用时：50 分钟
+> 内容更新时间：2026-10-20 · 学习阶段：高级 · 预计用时：45 分钟
 
 ![测试金字塔](images/diagram_test_pyramid.webp)
 
@@ -597,7 +597,7 @@ D. 为了增加测试的代码覆盖率
 - 课程 ID：java_testing
 - 分类：Java Web 开发
 - 难度：进阶
-- 预计用时：50 分钟
+- 预计用时：45 分钟
 - 先修课程：Spring Framework 核心、Servlet 与 JSP 基础、Java 基础
 - 后续课程：Spring Boot 自动配置、CI/CD 与 DevOps、测试驱动开发实践
 - 内容版本：v2.0

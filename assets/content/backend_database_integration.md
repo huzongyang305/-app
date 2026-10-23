@@ -1,6 +1,8 @@
 # 数据库集成（SQL/NoSQL）
 
-![数据库集成（SQL/NoSQL）示意：diagram go project](images/diagram_go_project.webp)
+![数据库集成（SQL/NoSQL）](images/diagram_go_project.webp)
+
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：75 分钟
 
 ## 本章摘要
 

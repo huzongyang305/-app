@@ -1,6 +1,8 @@
 # TensorFlow与PyTorch框架对比入门
 
-![TensorFlow与PyTorch框架对比入门示意：diagram java order](images/diagram_java_order.webp)
+![TensorFlow与PyTorch框架对比入门](images/diagram_java_order.webp)
+
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：40 分钟
 
 ## 本章摘要
 

@@ -1,6 +1,6 @@
 # C++ Concepts 与 Ranges
 
-> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：40 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：35 分钟
 
 ![Concepts 与 Ranges 的职责对比](images/diagram_cpp_concepts_ranges.webp)
 
@@ -388,7 +388,7 @@ C++ 并发、原子操作与内存序（线程安全、原子操作）
 | `requires` | 关键字，定义表达式要求或组合多个 concept。 |
 | `view` | Ranges 中的惰性数据适配器，不持有数据，只保存引用和状态。 |
 | `std::ranges::to` | C++23 特性，把 range 物化为指定容器类型。 |
-| `管道操作符` | `|` 运算符，把 Ranges 的 view 串联成数据管道。 |
+| `管道操作符` | `（` 运算符，把 Ranges 的 view 串联成数据管道。） |
 
 ## 内容元数据
 

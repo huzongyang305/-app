@@ -1,8 +1,10 @@
 # 日志聚合与链路追踪
 
-![日志聚合与链路追踪示意：remaining db design](images/remaining_db_design.webp)
+![日志聚合与链路追踪](images/devops_logging_tracing.webp)
 
 > **版本**：v2.0  
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：65 分钟
+
 > **适用人群**：初学者 / 运维工程师 / 后端开发者  
 > **前置知识**：了解基本的 Linux 命令、Docker 容器、微服务概念
 
