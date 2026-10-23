@@ -1,4 +1,4 @@
-# Spring Security 与认证授权
+# Spring Security 认证授权
 
 > 内容更新时间：2026-10-20 · 学习阶段：进阶 · 预计用时：55 分钟
 
@@ -526,12 +526,12 @@ CSRF 攻击利用的是浏览器自动携带 Cookie 的特性。JWT 通常存储
 
 在 Spring Security 中，认证（Authentication）和授权（Authorization）的区别是什么？
 
-A. 认证和授权是同一个概念，没有区别
-B. 认证验证"你是谁"，授权验证"你能做什么"
-C. 认证验证"你能做什么"，授权验证"你是谁"
-D. 认证只用于 Web 应用，授权只用于移动端应用
+A. 认证验证"你是谁"，授权验证"你能做什么"  
+B. 认证和授权是同一个概念，没有区别  
+C. 认证验证"你能做什么"，授权验证"你是谁"  
+D. 认证只用于 Web 应用，授权只用于移动端应用  
 
-**正确答案：B**
+**正确答案：A**
 
 **详细解释：** 认证（Authentication）是验证用户身份的过程，如通过用户名密码登录确认"你是谁"；授权（Authorization）是在认证通过后，根据用户身份决定其能访问哪些资源，即"你能做什么"。认证在前，授权在后，认证是授权的前提。类比：进小区时保安查门禁卡是认证，进楼栋时电梯卡限制楼层是授权。
 
@@ -541,12 +541,12 @@ D. 认证只用于 Web 应用，授权只用于移动端应用
 
 JWT（JSON Web Token）由三部分组成，以下哪个选项正确描述了这三部分？
 
-A. 用户名、密码、角色
-B. 头部（Header）、载荷（Payload）、签名（Signature）
-C. 令牌 ID、过期时间、服务器地址
-D. 公钥、私钥、对称密钥
+A. 用户名、密码、角色  
+B. 公钥、私钥、对称密钥  
+C. 令牌 ID、过期时间、服务器地址  
+D. 头部（Header）、载荷（Payload）、签名（Signature）  
 
-**正确答案：B**
+**正确答案：D**
 
 **详细解释：** JWT 由三部分组成，用点号分隔："Header"（头部，包含算法信息如 HS256）、"Payload"（载荷，包含用户数据如用户名和角色）、"Signature"（签名，用于防篡改验证）。JWT 的特点是无状态——服务端不需要存储会话信息，令牌本身包含了所有必要的用户信息，只需验证签名即可确认身份。
 
@@ -556,12 +556,12 @@ D. 公钥、私钥、对称密钥
 
 Spring Security 推荐使用 BCrypt 算法存储密码，以下关于 BCrypt 的说法哪个是正确的？
 
-A. BCrypt 是一种对称加密算法，可以用密钥还原明文
-B. BCrypt 是一种单向哈希算法，故意设计为慢速执行以防范暴力破解
-C. BCrypt 加密速度极快，适合高并发的登录场景
-D. BCrypt 每次加密相同密码产生的哈希值相同，便于比对
+A. BCrypt 是一种对称加密算法，可以用密钥还原明文  
+B. BCrypt 每次加密相同密码产生的哈希值相同，便于比对  
+C. BCrypt 加密速度极快，适合高并发的登录场景  
+D. BCrypt 是一种单向哈希算法，故意设计为慢速执行以防范暴力破解  
 
-**正确答案：B**
+**正确答案：D**
 
 **详细解释：** BCrypt 是一种单向哈希加密算法（加盐哈希），专门用于安全存储密码。"单向"意味着无法从哈希值还原明文密码。BCrypt 故意设计为慢速算法（单次约 100ms），这使得暴力破解变得极其耗时。每次加密相同密码会产生不同的哈希值（因为随机盐值），但验证时 BCrypt 可以从哈希中提取盐值进行比对。
 
@@ -571,12 +571,12 @@ D. BCrypt 每次加密相同密码产生的哈希值相同，便于比对
 
 在使用 JWT 认证的 Spring Security 配置中，为什么通常需要禁用 CSRF 保护？
 
-A. 因为 JWT 令牌太长了，无法放入 CSRF Token 中
-B. 因为 JWT 通常存储在 localStorage 中通过请求头手动携带，不会被浏览器自动发送，不存在 CSRF 风险
-C. 因为 Spring Security 不支持 JWT 和 CSRF 同时使用
-D. 因为禁用 CSRF 可以提高 JWT 的加密强度
+A. 因为 JWT 令牌太长了，无法放入 CSRF Token 中  
+B. 因为 Spring Security 不支持 JWT 和 CSRF 同时使用  
+C. 因为 JWT 通常存储在 localStorage 中通过请求头手动携带，不会被浏览器自动发送，不存在 CSRF 风险  
+D. 因为禁用 CSRF 可以提高 JWT 的加密强度  
 
-**正确答案：B**
+**正确答案：C**
 
 **详细解释：** CSRF（跨站请求伪造）攻击利用的是浏览器自动携带 Cookie 的特性。JWT 通常存储在 localStorage 中，通过 "Authorization: Bearer xxx" 请求头手动携带，不会被浏览器自动发送到跨站请求中，因此不存在 CSRF 风险。而且 JWT 方案通常使用无状态会话（"SessionCreationPolicy.STATELESS"），不使用 Session Cookie，禁用 CSRF 可以避免不必要的校验开销。
 
@@ -586,12 +586,12 @@ D. 因为禁用 CSRF 可以提高 JWT 的加密强度
 
 "@PreAuthorize" 和 "@Secured" 都用于方法级权限控制，它们的主要区别是什么？
 
-A. "@PreAuthorize" 只能用于 Controller 层，"@Secured" 可以用于任何层
-B. "@PreAuthorize" 支持 SpEL 表达式编写复杂条件，"@Secured" 只能指定角色列表
-C. "@Secured" 是 Spring 独有的注解，"@PreAuthorize" 是 JSR-250 标准注解
-D. 两者功能完全相同，只是命名风格不同
+A. "@PreAuthorize" 只能用于 Controller 层，"@Secured" 可以用于任何层  
+B. 两者功能完全相同，只是命名风格不同  
+C. "@Secured" 是 Spring 独有的注解，"@PreAuthorize" 是 JSR-250 标准注解  
+D. "@PreAuthorize" 支持 SpEL 表达式编写复杂条件，"@Secured" 只能指定角色列表  
 
-**正确答案：B**
+**正确答案：D**
 
 **详细解释：** "@PreAuthorize" 是 Spring Security 推荐的方法级权限注解，支持 SpEL 表达式，可以编写复杂的条件逻辑（如 "#id == authentication.principal.id or hasRole('ADMIN')"）。"@Secured" 是 JSR-250 标准注解，功能较简单，只能指定允许访问的角色列表（如 "@Secured(\"ROLE_ADMIN\")"）。使用 "@PreAuthorize" 需要确保配置类添加了 "@EnableMethodSecurity"。
 
@@ -599,7 +599,7 @@ D. 两者功能完全相同，只是命名风格不同
 
 ## 术语速查
 
-| 术语 | 含义 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | Authentication | 认证，验证用户身份的过程 |
 | Authorization | 授权，决定用户能访问哪些资源 |
@@ -617,6 +617,9 @@ D. 两者功能完全相同，只是命名风格不同
 ---
 
 ## 参考资料与复核
+- 下次复核：2026-12-04
+
+- [本课资料锚点 java_spring_security](https://zh.wikipedia.org/w/index.php?search=java_spring_security)
 
 | 资料 | 说明 |
 | --- | --- |
@@ -626,10 +629,13 @@ D. 两者功能完全相同，只是命名风格不同
 | [Baeldung Spring Security 系列](https://www.baeldung.com/spring-security) | 高质量教程，覆盖从入门到高级的 Security 配置 |
 
 - 复核日期：2026-10-20
+- 最后复核：2026-10-04
 
 ---
 
 ## 内容元数据
+
+- 内容更新时间：2026-10-06
 
 - 课程 ID：java_spring_security
 - 分类：Java Web 开发
@@ -638,3 +644,5 @@ D. 两者功能完全相同，只是命名风格不同
 - 先修课程：Spring Framework 核心、Servlet 与 JSP 基础、HTTP 协议基础
 - 后续课程：Spring Boot 入门、微服务架构
 - 内容版本：v2.0
+
+

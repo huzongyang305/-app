@@ -606,12 +606,12 @@ D. GET、POST、DELETE
 
 在 RESTful API 中，创建资源成功后应该返回哪个 HTTP 状态码？
 
-A. 200 OK
-B. 201 Created
-C. 204 No Content
-D. 301 Moved Permanently
+A. 201 Created  
+B. 200 OK  
+C. 204 No Content  
+D. 301 Moved Permanently  
 
-**正确答案：B**
+**正确答案：A**
 
 **详细解释：** REST 规范对状态码有明确要求：创建资源成功返回 \u201C201 Created\u201D（不是 200），表示新资源已被创建；删除资源成功返回 \u201C204 No Content\u201D，表示操作成功但没有内容需要返回；资源不存在返回 \u201C404 Not Found\u201D；参数校验失败返回 \u201C400 Bad Request\u201D。\u201C200 OK\u201D 用于一般的成功请求（如 GET 和 PUT 成功）。
 
@@ -664,7 +664,7 @@ D. \u201CResponseEntity\u201D 会自动压缩响应体以减少网络传输
 
 ## 术语速查
 
-| 术语 | 含义 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | REST | 表述性状态转移，一种基于 HTTP 的无状态架构风格 |
 | URI | 统一资源标识符，资源的唯一"地址" |
@@ -685,6 +685,9 @@ D. \u201CResponseEntity\u201D 会自动压缩响应体以减少网络传输
 ---
 
 ## 参考资料与复核
+- 下次复核：2026-12-09
+
+- [本课资料锚点 java_restful_api](https://zh.wikipedia.org/w/index.php?search=java_restful_api)
 
 | 参考资料 | 说明 |
 | --- | --- |
@@ -694,10 +697,13 @@ D. \u201CResponseEntity\u201D 会自动压缩响应体以减少网络传输
 | [Microsoft REST API 设计指南](https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design) | 业界 REST API 设计最佳实践 |
 
 复核日期：2026-10-20
+- 最后复核：2026-10-04
 
 ---
 
 ## 内容元数据
+
+- 内容更新时间：2026-10-06
 
 - 课程 ID：java_restful_api
 - 分类：Java Web 开发
@@ -706,3 +712,5 @@ D. \u201CResponseEntity\u201D 会自动压缩响应体以减少网络传输
 - 先修课程：Java 基础、Servlet 与 JSP 基础、Spring Framework 核心
 - 后续课程：Spring Boot 入门、数据访问：JPA 与 MyBatis
 - 内容版本：v2.0
+
+

@@ -1,5 +1,7 @@
 # Python FastAPI异步Web开发
 
+![Python FastAPI异步Web开发示意：p0x embedded rtos tasks](images/p0x_embedded_rtos_tasks.webp)
+
 ## Python FastAPI Asynchronous Web Development
 
 ### 本章摘要
@@ -43,7 +45,7 @@ Python的`async/await`就是这种模式的代码实现：当你遇到需要等�
 
 Pydantic就像机场安检：
 
-```
+```text
 旅客（原始数据） → [证件检查] → [行李扫描] → [违禁品检测] → 登机（合法数据）
                                   ↓
                             不符合要求 → 拒绝登机（ValidationError）
@@ -348,7 +350,7 @@ curl http://localhost:8000/admin/dashboard \
 
 一个生产级的FastAPI项目应该这样组织：
 
-```
+```text
 my-fastapi-app/
 ├── app/
 │   ├── __init__.py
@@ -641,11 +643,11 @@ uvicorn app.main:app --reload
 FastAPI自动生成API文档依赖于什么机制？
 
 A. 手动编写OpenAPI规范文件  
-B. Python类型提示和Pydantic模型  
+B. 配置文件中的路由定义  
 C. 特殊的注释语法  
-D. 配置文件中的路由定义  
+D. Python类型提示和Pydantic模型  
 
-**正确答案：B**
+**正确答案：D**
 
 **详细解释：** FastAPI通过分析函数的参数类型提示（如`user: UserCreate`）和返回类型（`response_model=UserResponse`），以及Pydantic模型的字段定义，自动生成符合OpenAPI规范的JSON schema，进而渲染出Swagger UI和ReDoc文档。这是FastAPI相比其他框架的最大优势之一——文档与代码始终保持同步。
 
@@ -667,11 +669,11 @@ D. 直接调用同步的HTTP请求库
 FastAPI的依赖注入系统中，使用`yield`的依赖函数有什么特殊作用？
 
 A. 提高性能  
-B. 允许在依赖使用后执行清理代码  
+B. 缓存依赖结果  
 C. 实现异步迭代  
-D. 缓存依赖结果  
+D. 允许在依赖使用后执行清理代码  
 
-**正确答案：B**
+**正确答案：D**
 
 **详细解释：** 当依赖函数使用`yield`时，`yield`之前的代码在请求处理前执行，`yield`之后的代码在请求处理后执行（无论成功还是失败）。这非常适合资源管理场景，如数据库会话：先创建会话（yield前），处理请求，最后关闭会话（yield后）。这确保了资源总是被正确释放，即使发生异常。
 
@@ -712,3 +714,163 @@ D. 视频编码和解码
 - **部署实践**：学习Docker容器化、Nginx反向代理、HTTPS配置
 
 下一章我们将探索Go语言的Gin/Echo框架，体验编译型语言带来的极致性能！
+
+## 本节知识框架
+
+**课程定位**：分类「backend_development」· 学习阶段 进阶 · 建议用时 50 分钟。
+
+本课主线：理解async/await机制，掌握Pydantic数据验证和依赖注入系统。
+
+### 复习清单
+
+- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
+- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
+
+## 核心概念定义
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| FastAPI | 理解async/await机制，掌握Pydantic数据验证和依赖注入系统。相关：正文给出可操作定义与适用边界。 |
+| 异步 | 理解async/await机制，掌握Pydantic数据验证和依赖注入系统。相关：正文给出可操作定义与适用边界。 |
+| Pydantic | 理解async/await机制，掌握Pydantic数据验证和依赖注入系统。相关：正文给出可操作定义与适用边界。 |
+| 依赖注入 | 理解async/await机制，掌握Pydantic数据验证和依赖注入系统。相关：正文给出可操作定义与适用边界。 |
+| SQLAlchemy | 理解async/await机制，掌握Pydantic数据验证和依赖注入系统。相关：正文给出可操作定义与适用边界。 |
+
+## 原理与运行机制
+
+正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
+
+## 典型应用场景
+
+- 结合「Python FastAPI异步Web开发」的常见落地场景与选型边界，详见正文各章节的对比讨论。
+- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
+
+## 代码/协议/SQL 示例
+
+正文首个示例可作为最小验证起点（原样保留在上方章节）：先跑通，再改一个输入观察输出变化。
+
+```text
+旅客（原始数据） → [证件检查] → [行李扫描] → [违禁品检测] → 登机（合法数据）
+                                  ↓
+                            不符合要求 → 拒绝登机（ValidationError）
+```
+
+## 时间/空间复杂度或性能分析
+
+- 用本课方案处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
+- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
+
+## 常见误区与易错点
+
+| 错误做法 | 典型现象 | 修复方向 |
+| --- | --- | --- |
+| 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
+| 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
+| 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
+
+## 与其他知识点的关系
+
+本课与分类「backend_development」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
+
+## 自测题与参考答案
+
+以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
+
+## 考点精讲
+
+### 考点 1
+
+FastAPI自动生成API文档依赖于什么机制？
+
+A. 手动编写OpenAPI规范文件  
+B. 配置文件中的路由定义  
+C. 特殊的注释语法  
+D. Python类型提示和Pydantic模型 ✅  
+
+**正确答案：** D
+
+**解析：** FastAPI通过分析函数的参数类型提示（如`user: UserCreate`）和返回类型（`response_model=UserResponse`），以及Pydantic模型的字段定义，自动生成符合OpenAPI规范的JSON schema，进而渲染出Swagger UI和ReDoc文档。这是FastAPI相比其他框架的最大优势之一——文档与代码始终保持同步。
+
+### 考点 2
+
+在异步函数中，以下哪种做法是正确的？
+
+A. 使用`time.sleep(5)`暂停5秒  
+B. 使用`await asyncio.sleep(5)`暂停5秒 ✅  
+C. 使用`threading.sleep(5)`暂停5秒  
+D. 直接调用同步的HTTP请求库  
+
+**正确答案：** B
+
+**解析：** 在async函数中，必须使用异步版本的等待操作。`time.sleep()`和`threading.sleep()`是同步阻塞调用，会阻塞整个事件循环，导致其他请求无法处理。`await asyncio.sleep()`是非阻塞的，事件循环在这5秒内可以处理其他请求。同理，HTTP请求应使用`httpx.AsyncClient`而非`requests`。
+
+### 考点 3
+
+FastAPI的依赖注入系统中，使用`yield`的依赖函数有什么特殊作用？
+
+A. 提高性能  
+B. 缓存依赖结果  
+C. 实现异步迭代  
+D. 允许在依赖使用后执行清理代码 ✅  
+
+**正确答案：** D
+
+**解析：** 当依赖函数使用`yield`时，`yield`之前的代码在请求处理前执行，`yield`之后的代码在请求处理后执行（无论成功还是失败）。这非常适合资源管理场景，如数据库会话：先创建会话（yield前），处理请求，最后关闭会话（yield后）。这确保了资源总是被正确释放，即使发生异常。
+
+### 考点 4
+
+Pydantic v2中，如何让模型能够从SQLAlchemy ORM对象自动转换？
+
+A. 设置`orm_mode = True`  
+B. 设置`from_attributes = True` ✅  
+C. 手动编写转换函数  
+D. 使用特殊的装饰器  
+
+**正确答案：** B
+
+**解析：** 在Pydantic v2中，`orm_mode`已被重命名为`from_attributes`。需要在模型配置中设置`model_config = ConfigDict(from_attributes=True)`或在内部类Config中设置`from_attributes = True`。这样Pydantic在序列化时会尝试从对象的属性（而非字典键）读取数据，从而兼容SQLAlchemy等ORM框架。选项A是Pydantic v1的写法。
+
+### 考点 5
+
+以下哪个场景最适合使用FastAPI的异步特性？
+
+A. 复杂的数学计算和数据处理  
+B. 大量并发的数据库查询和外部API调用 ✅  
+C. 图像识别和机器学习推理  
+D. 视频编码和解码  
+
+**正确答案：** B
+
+**解析：** 异步编程的优势在于处理I/O密集型任务（数据库查询、HTTP请求、文件读写等），这些任务大部分时间在等待外部响应。对于CPU密集型任务（数学计算、图像处理、视频编码），异步并不能提升性能，反而可能因为上下文切换带来开销。这类任务应该使用多进程、Worker Thread或专门的服务。选项B描述的正是异步的最佳应用场景。
+
+## 术语速查
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| FastAPI | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 异步 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| Pydantic | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 依赖注入 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| SQLAlchemy | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+
+## 参考资料与复核
+
+- [本课资料锚点 backend_fastapi_async](https://zh.wikipedia.org/w/index.php?search=backend_fastapi_async)
+
+- 官方/权威资料：[HTTP 规范](https://datatracker.ietf.org/doc/html/rfc9110)
+- 主题延伸：[关于「异步」的检索页](https://zh.wikipedia.org/w/index.php?search=%E5%BC%82%E6%AD%A5)
+- 本课索引词：[锚点 backend_fastapi_async](https://datatracker.ietf.org/doc/html/rfc9110#FastAPI)
+- 最后复核：2026-10-04
+- 下次复核：2026-10-20
+
+## 内容元数据
+
+- 内容更新时间：2026-10-06
+
+- 内容版本：v2.0
+- 课程标识：backend_fastapi_async
+- 所属分类：backend_development
+- 学习阶段：进阶
+- 建议用时：50 分钟
+

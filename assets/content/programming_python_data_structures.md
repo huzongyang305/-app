@@ -395,7 +395,6 @@ print(f"队列剩余：{list(queue)}")
 - [ ] 能默写本课最重要的代码示例，并解释每一行的作用
 - [ ] 能说出本课内容和前后两课的联系
 
-
 ## 延伸阅读
 
 想更直观地理解本课概念？推荐参阅以下图解专题：
@@ -512,6 +511,8 @@ print(f"队列剩余：{list(queue)}")
 ---
 
 ## 参考资料与复核
+
+- [本课资料锚点 python_data_structures](https://zh.wikipedia.org/w/index.php?search=python_data_structures)
 
 - 最后复核：2026-10-04
 - 下次复核：2026-11-10

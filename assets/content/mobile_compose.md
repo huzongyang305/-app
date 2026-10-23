@@ -425,7 +425,6 @@ D. 放在 remember 的初始化块里
 
 在 LessonScreen 的代码里，网络请求 `viewModel.load()` 被放在 `LaunchedEffect(Unit)` 中。这是因为副作用（比如发请求、注册监听器）不应该直接写在组合体里，否则每次重组都会重复执行。LaunchedEffect 保证只在进入组合或 key 变化时执行一次。
 
-
 ## 延伸阅读
 
 想更直观地理解本课概念？推荐参阅以下图解专题：
@@ -455,6 +454,8 @@ D. 放在 remember 的初始化块里
 - 相关主题：Compose、声明式UI、重组、状态提升、LazyColumn
 
 ## 参考资料与复核
+
+- [本课资料锚点 mobile_compose](https://zh.wikipedia.org/w/index.php?search=mobile_compose)
 
 - 最后复核：2026-10-04
 - 下次复核：2027-08-10

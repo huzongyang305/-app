@@ -1,4 +1,4 @@
-# 测试：单元测试、集成测试与 MockMvc
+# Java 测试与质量
 
 > 内容更新时间：2026-10-20 · 学习阶段：进阶 · 预计用时：50 分钟
 
@@ -478,12 +478,12 @@ class OrderControllerTest {
 
 在 JUnit 5 中，`@BeforeEach` 和 `@AfterEach` 注解标记的方法分别在什么时候执行？如果一个测试类有 3 个 `@Test` 方法，`@BeforeEach` 标记的方法会被执行几次？
 
-A. 在整个测试类开始前执行一次，共 1 次
-B. 在每个 `@Test` 方法执行前各执行一次，共 3 次
-C. 在所有 `@Test` 方法执行完毕后统一执行，共 1 次
-D. 仅在第一个 `@Test` 方法执行前执行一次，共 1 次
+A. 在每个 `@Test` 方法执行前各执行一次，共 3 次  
+B. 在整个测试类开始前执行一次，共 1 次  
+C. 在所有 `@Test` 方法执行完毕后统一执行，共 1 次  
+D. 仅在第一个 `@Test` 方法执行前执行一次，共 1 次  
 
-**正确答案：B**
+**正确答案：A**
 
 **详细解释：** `@BeforeEach` 标记的方法会在每个 `@Test` 方法执行之前运行一次，`@AfterEach` 标记的方法会在每个 `@Test` 方法执行之后运行一次。如果测试类有 3 个 `@Test` 方法，`@BeforeEach` 会被执行 3 次——每个测试方法各触发一次。这种设计确保了每个测试都在干净的环境中运行，测试之间互不干扰。与之对比，`@BeforeAll` 和 `@AfterAll` 标记的方法在整个测试类的开始和结束时各执行一次。
 
@@ -493,12 +493,12 @@ D. 仅在第一个 `@Test` 方法执行前执行一次，共 1 次
 
 `@WebMvcTest(OrderController.class)` 和 `@SpringBootTest` 在测试范围和性能上有什么核心区别？
 
-A. `@WebMvcTest` 加载完整的应用上下文，`@SpringBootTest` 只加载 Web 层
-B. `@WebMvcTest` 只加载 Web 层（Controller），启动速度快；`@SpringBootTest` 加载完整应用上下文，用于集成测试
-C. 两者功能完全相同，只是注解名称不同
-D. `@WebMvcTest` 只能测试 GET 请求，`@SpringBootTest` 可以测试所有 HTTP 方法
+A. `@WebMvcTest` 加载完整的应用上下文，`@SpringBootTest` 只加载 Web 层  
+B. `@WebMvcTest` 只能测试 GET 请求，`@SpringBootTest` 可以测试所有 HTTP 方法  
+C. 两者功能完全相同，只是注解名称不同  
+D. `@WebMvcTest` 只加载 Web 层（Controller），启动速度快；`@SpringBootTest` 加载完整应用上下文，用于集成测试  
 
-**正确答案：B**
+**正确答案：D**
 
 **详细解释：** `@WebMvcTest` 只加载 Web 层相关的 Bean（Controller、过滤器、拦截器等），不会启动完整的 Spring 容器，Service 和 Repository 需要用 `@MockBean` 提供模拟实现，启动速度快，适合专门测试 Controller 的请求路由、参数绑定和响应格式。`@SpringBootTest` 会加载完整的应用上下文，包括所有 Service、Repository、数据库连接等，启动速度较慢，适合测试多个模块之间的协作（集成测试）。简单来说：测 Controller 用 `@WebMvcTest`，测完整流程用 `@SpringBootTest`。
 
@@ -508,12 +508,12 @@ D. `@WebMvcTest` 只能测试 GET 请求，`@SpringBootTest` 可以测试所有 
 
 使用 Mockito 时，`@Mock` 和 `@InjectMocks` 注解分别起什么作用？
 
-A. `@Mock` 创建真实数据库连接，`@InjectMocks` 创建 HTTP 请求
-B. `@Mock` 创建模拟对象以替代真实依赖，`@InjectMocks` 创建被测对象并自动将 Mock 对象注入到其依赖中
-C. `@Mock` 用于断言测试结果，`@InjectMocks` 用于初始化测试数据
-D. `@Mock` 和 `@InjectMocks` 功能相同，可以互换使用
+A. `@Mock` 创建真实数据库连接，`@InjectMocks` 创建 HTTP 请求  
+B. `@Mock` 和 `@InjectMocks` 功能相同，可以互换使用  
+C. `@Mock` 用于断言测试结果，`@InjectMocks` 用于初始化测试数据  
+D. `@Mock` 创建模拟对象以替代真实依赖，`@InjectMocks` 创建被测对象并自动将 Mock 对象注入到其依赖中  
 
-**正确答案：B**
+**正确答案：D**
 
 **详细解释：** `@Mock` 创建一个模拟对象（Mock 对象），你可以用 `when(...).thenReturn(...)` 自定义它的方法返回值和行为，它不会执行真实的业务逻辑。`@InjectMocks` 创建一个被测对象的实例，并自动把 `@Mock` 标记的模拟对象注入到它的依赖中。例如，测试 `OrderService` 时，用 `@Mock` 创建一个假的 `OrderRepository`，用 `@InjectMocks` 创建 `OrderService` 实例，这样 `OrderService` 内部调用的 `OrderRepository.save()` 实际会调用 Mock 对象的预设行为，不会真正访问数据库，实现了单元测试的隔离原则。
 
@@ -538,12 +538,12 @@ D. 集成测试数量最多、速度最快；单元测试数量最少、速度�
 
 在 MockMvc 测试中，为什么需要使用 `@MockBean` 注解替换 Service 层的依赖？
 
-A. 为了让测试能够连接真实的数据库进行验证
-B. 为了隔离 Controller 层测试，避免调用真实的 Service 逻辑和外部依赖，使测试更快更稳定
-C. 因为 MockMvc 不支持直接调用 Service 方法
-D. 为了增加测试的代码覆盖率
+A. 为了隔离 Controller 层测试，避免调用真实的 Service 逻辑和外部依赖，使测试更快更稳定  
+B. 为了让测试能够连接真实的数据库进行验证  
+C. 因为 MockMvc 不支持直接调用 Service 方法  
+D. 为了增加测试的代码覆盖率  
 
-**正确答案：B**
+**正确答案：A**
 
 **详细解释：** `@WebMvcTest` 只加载 Web 层（Controller）相关的 Bean，不会自动创建 Service 层的实例。使用 `@MockBean` 可以为 Service 层提供一个模拟实现，这样测试只关注 Controller 层的请求路由、参数绑定和响应格式，而不会涉及真实的业务逻辑或数据库操作。这种隔离使测试运行更快、结果更稳定，不会因为数据库连接失败或 Service 层 Bug 导致 Controller 测试失败。同时，可以通过 `when(...).thenReturn(...)` 精确控制 Service 的返回值，测试 Controller 在各种情况下的行为。
 
@@ -551,7 +551,7 @@ D. 为了增加测试的代码覆盖率
 
 ## 术语速查
 
-| 术语 | 含义 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | 单元测试 | 隔离测试单个方法或类的正确性 |
 | 集成测试 | 测试多个模块组合后的协作行为 |
@@ -573,6 +573,9 @@ D. 为了增加测试的代码覆盖率
 ---
 
 ## 参考资料与复核
+- 下次复核：2026-10-30
+
+- [本课资料锚点 java_testing](https://zh.wikipedia.org/w/index.php?search=java_testing)
 
 | 资料名称 | 说明 |
 | --- | --- |
@@ -583,10 +586,13 @@ D. 为了增加测试的代码覆盖率
 | [JaCoCo 覆盖率工具](https://www.jacoco.org/jacoco/trunk/doc/) | Java 代码覆盖率测量工具官方文档 |
 
 复核日期：2026-10-20
+- 最后复核：2026-10-04
 
 ---
 
 ## 内容元数据
+
+- 内容更新时间：2026-10-06
 
 - 课程 ID：java_testing
 - 分类：Java Web 开发
@@ -595,3 +601,5 @@ D. 为了增加测试的代码覆盖率
 - 先修课程：Spring Framework 核心、Servlet 与 JSP 基础、Java 基础
 - 后续课程：Spring Boot 自动配置、CI/CD 与 DevOps、测试驱动开发实践
 - 内容版本：v2.0
+
+

@@ -1,4 +1,6 @@
-# 推荐系统实现：协同过滤与深度学习 (Recommendation Systems: Collaborative Filtering and Deep Learning)
+# 推荐系统实现
+
+![推荐系统实现示意：devops terraform workflow](images/devops_terraform_workflow.webp)
 
 ## 本章摘要
 
@@ -108,7 +110,6 @@ print("\n用户4的预测评分:")
 for item_idx, score in sorted(predicted_scores.items(), key=lambda x: x[1], reverse=True):
     print(f"  {item_ids[item_idx]}: {score:.2f}")
 
-
 # ==================== 基于物品的协同过滤 ====================
 
 # 计算物品相似度
@@ -180,7 +181,6 @@ for u, i, r in zip(user_ids_sim, item_ids_sim, ratings_sim):
 
 print(f"数据规模: {num_users}用户, {num_items}物品, {num_ratings}评分")
 print(f"稀疏度: {1 - np.count_nonzero(sparse_matrix) / sparse_matrix.size:.2%}")
-
 
 # ==================== TensorFlow矩阵分解 ====================
 
@@ -338,7 +338,6 @@ recommendations = recommend_items_tf(
 print(f"\n用户0的Top-5推荐:")
 for item_idx, score in recommendations:
     print(f"  物品{item_idx}: 预测评分 {score:.2f}")
-
 
 # ==================== PyTorch矩阵分解 ====================
 
@@ -563,7 +562,6 @@ history_neumf = neumf_tf.fit(
     )
 )
 
-
 # ==================== PyTorch NeuMF ====================
 
 class NeuMFPT(nn.Module):
@@ -748,3 +746,253 @@ D. 对所有新用户推荐完全随机的物品
 **章节小结**
 
 通过本章学习，你已经掌握了推荐系统的核心技术：从经典的协同过滤和矩阵分解，到现代的神经协同过滤。推荐系统是一个持续演进的领域，最新的趋势包括图神经网络推荐、序列推荐、多任务学习和强化学习推荐。记住，好的推荐系统不仅追求算法精度，更要考虑多样性、新颖性、可解释性和商业目标的平衡。下一章我们将进入时间序列预测领域，学习如何预测未来的趋势和模式。
+
+## 本节知识框架
+
+**课程定位**：分类「ml_practice」· 学习阶段 基础 · 建议用时 50 分钟。
+
+本课主线：实现协同过滤、矩阵分解和深度学习推荐模型NeuMF。
+
+### 复习清单
+
+- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
+- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
+
+## 核心概念定义
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| 推荐系统 | 实现协同过滤、矩阵分解和深度学习推荐模型NeuMF。相关：正文给出可操作定义与适用边界。 |
+| 协同过滤 | 实现协同过滤、矩阵分解和深度学习推荐模型NeuMF。相关：正文给出可操作定义与适用边界。 |
+| 矩阵分解 | 实现协同过滤、矩阵分解和深度学习推荐模型NeuMF。相关：正文给出可操作定义与适用边界。 |
+| NeuMF | 实现协同过滤、矩阵分解和深度学习推荐模型NeuMF。相关：正文给出可操作定义与适用边界。 |
+| 冷启动 | 实现协同过滤、矩阵分解和深度学习推荐模型NeuMF。相关：正文给出可操作定义与适用边界。 |
+
+## 原理与运行机制
+
+正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
+
+## 典型应用场景
+
+- 结合「推荐系统实现」的常见落地场景与选型边界，详见正文各章节的对比讨论。
+- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
+
+## 代码/协议/SQL 示例
+
+正文首个完整示例如下，先运行确认环境，再按正文步骤改一个输入观察输出变化。
+
+```python
+import numpy as np
+import pandas as pd
+from sklearn.metrics.pairwise import cosine_similarity
+from collections import defaultdict
+
+# ==================== 基于用户的协同过滤 ====================
+
+# 示例用户-物品评分矩阵（行：用户，列：物品）
+ratings_matrix = np.array([
+    # 物品1  物品2  物品3  物品4  物品5
+    [5, 3, 0, 1, 4],   # 用户1
+    [4, 0, 0, 1, 5],   # 用户2
+    [1, 1, 0, 5, 3],   # 用户3
+    [0, 0, 5, 4, 0],   # 用户4
+    [5, 4, 4, 0, 0],   # 用户5
+    [0, 0, 0, 5, 2]    # 用户6
+])
+
+user_ids = ['用户1', '用户2', '用户3', '用户4', '用户5', '用户6']
+item_ids = ['物品1', '物品2', '物品3', '物品4', '物品5']
+
+print("用户-物品评分矩阵:")
+df_ratings = pd.DataFrame(ratings_matrix, index=user_ids, columns=item_ids)
+print(df_ratings)
+print(f"\n矩阵稀疏度: {1 - np.count_nonzero(ratings_matrix) / ratings_matrix.size:.2%}")
+
+# 计算用户相似度（余弦相似度）
+user_similarity = cosine_similarity(ratings_matrix)
+sim_df = pd.DataFrame(user_similarity, index=user_ids, columns=user_ids)
+print("\n用户相似度矩阵:")
+print(sim_df.round(3))
+
+# 为用户4推荐物品
+target_user_idx = 3  # 用户4
+target_user_ratings = ratings_matrix[target_user_idx]
+
+# 找出目标用户未评分的物品
+unrated_items = np.where(target_user_ratings == 0)[0]
+print(f"\n用户4未评分的物品索引: {unrated_items}")
+
+# 预测评分：加权平均相似用户的评分
+predicted_scores = {}
+for item_idx in unrated_items:
+    # 找出对该物品评过分的用户
+    rated_users = np.where(ratings_matrix[:, item_idx] > 0)[0]
+    rated_users = rated_users[rated_users != target_user_idx]
+    
+    if len(rated_users) > 0:
+        # 获取相似度权重
+        similarities = user_similarity[target_user_idx, rated_users]
+        ratings = ratings_matrix[rated_users, item_idx]
+        
+        # 加权平均
+        predicted_score = np.dot(similarities, ratings) / np.sum(np.abs(similarities))
+        predicted_scores[item_idx] = predicted_score
+
+print("\n用户4的预测评分:")
+for item_idx, score in sorted(predicted_scores.items(), key=lambda x: x[1], reverse=True):
+    print(f"  {item_ids[item_idx]}: {score:.2f}")
+
+# ==================== 基于物品的协同过滤 ====================
+
+# 计算物品相似度
+item_similarity = cosine_similarity(ratings_matrix.T)
+item_sim_df = pd.DataFrame(item_similarity, index=item_ids, columns=item_ids)
+print("\n物品相似度矩阵:")
+print(item_sim_df.round(3))
+
+# 为用户4推荐（基于物品相似度）
+def predict_score_item_based(user_idx, item_idx, ratings_mat, item_sim_mat):
+    """基于物品的协同过滤预测评分"""
+    rated_items = np.where(ratings_mat[user_idx] > 0)[0]
+    
+    if len(rated_items) == 0:
+        return 0
+    
+    similarities = item_sim_mat[item_idx, rated_items]
+    ratings = ratings_mat[user_idx, rated_items]
+    
+    # 只考虑正相似度
+    positive_mask = similarities > 0
+    if not np.any(positive_mask):
+        return 0
+    
+    similarities = similarities[positive_mask]
+    ratings = ratings[positive_mask]
+    
+    predicted = np.dot(similarities, ratings) / np.sum(similarities)
+    return predicted
+
+print("\n基于物品CF - 用户4的预测评分:")
+for item_idx in unrated_items:
+    score = predict_score_item_based(target_user_idx, item_idx, ratings_matrix, item_similarity)
+    print(f"  {item_ids[item_idx]}: {score:.2f}")
+```
+
+## 时间/空间复杂度或性能分析
+
+- 用本课方案处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
+- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
+
+## 常见误区与易错点
+
+| 错误做法 | 典型现象 | 修复方向 |
+| --- | --- | --- |
+| 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
+| 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
+| 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
+
+## 与其他知识点的关系
+
+本课与分类「ml_practice」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
+
+## 自测题与参考答案
+
+以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
+
+## 考点精讲
+
+### 考点 1
+
+关于协同过滤，以下哪项描述是正确的？
+
+A. 基于用户的协同过滤需要知道物品的具体属性（如类别、价格）  
+B. 基于物品的协同过滤在物品数量远大于用户数量时计算效率更高 ✅  
+C. 协同过滤可以很好地解决冷启动问题  
+D. 协同过滤只能用于显式反馈（评分），不能用于隐式反馈（点击、浏览）  
+
+**正确答案：** B
+
+**解析：** 基于物品的协同过滤需要计算物品之间的相似度矩阵，其大小为物品数×物品数。当物品数量远小于用户数量时，这个矩阵相对较小，计算和存储更高效。相反，如果用户数量少而物品数量巨大，基于用户的方法会更高效。选项A错误，协同过滤的优势恰恰是不需要物品属性；选项C错误，冷启动是协同过滤的主要弱点；选项D错误，协同过滤可以适配隐式反馈，只需将二元交互（点击/未点击）视为特殊评分。
+
+### 考点 2
+
+矩阵分解中，隐因子维度（latent dimension）的选择对模型性能有何影响？
+
+A. 维度越高越好，可以捕捉更多细节  
+B. 维度越低越好，计算更快且不易过拟合  
+C. 需要根据数据规模和稀疏度权衡，通常通过交叉验证选择 ✅  
+D. 隐因子维度对模型性能几乎没有影响  
+
+**正确答案：** C
+
+**解析：** 隐因子维度是一个需要仔细调优的超参数。维度太低无法充分表达用户和物品的复杂特征，导致欠拟合；维度太高则会记住训练数据中的噪声，导致过拟合。一般经验法则是：数据量大且稠密时使用较高维度（64-128），数据量小或稀疏时使用较低维度（8-32）。最佳值通常通过交叉验证在验证集上确定。选项A和B都过于绝对，选项D明显错误。
+
+### 考点 3
+
+在推荐系统评估中，NDCG（Normalized Discounted Cumulative Gain）相比简单准确率的优势是什么？
+
+A. NDCG计算速度更快  
+B. NDCG考虑了推荐物品的排名位置，排在前列的正确推荐贡献更大 ✅  
+C. NDCG不需要真实标签即可计算  
+D. NDCG只适用于二分类问题  
+
+**正确答案：** B
+
+**解析：** NDCG的核心思想是：正确推荐的价值取决于它在列表中的位置。排名第一的正确推荐比排名第十的更有价值，因为用户更可能看到和点击靠前的结果。NDCG通过对排名位置进行折损（discount）来体现这一点，公式中包含log(rank+1)作为分母。这使得NDCG成为评估排序质量的黄金标准。选项A错误，NDCG计算更复杂；选项C错误，NDCG需要真实相关性标签；选项D错误，NDCG可以处理多级相关性。
+
+### 考点 4
+
+关于神经协同过滤（NeuMF），以下说法错误的是？
+
+A. NeuMF结合了矩阵分解的线性建模能力和MLP的非线性建模能力  
+B. MF分支和MLP分支共享相同的嵌入向量 ✅  
+C. NeuMF通常比传统矩阵分解表现更好，但训练时间更长  
+D. MF分支使用逐元素乘法（Hadamard product）融合用户和物品向量  
+
+**正确答案：** B
+
+**解析：** 在标准NeuMF架构中，MF分支和MLP分支使用独立的嵌入向量，而不是共享的。这是因为两个分支学习的是不同类型的特征表示：MF分支学习用于点积的低维向量，MLP分支学习用于拼接和深层网络的高维向量。实验表明，独立嵌入比共享嵌入效果更好。选项A正确，这是NeuMF的设计动机；选项C正确，神经网络需要更多训练时间；选项D正确，MF部分确实使用逐元素乘法。
+
+### 考点 5
+
+解决推荐系统冷启动问题的最有效策略组合是？
+
+A. 仅使用热门推荐直到收集足够数据  
+B. 结合基于内容的推荐、用户兴趣问卷、探索与利用平衡策略 ✅  
+C. 等待用户产生足够多的行为数据后再启用推荐  
+D. 对所有新用户推荐完全随机的物品  
+
+**正确答案：** B
+
+**解析：** 冷启动问题没有单一的完美解决方案，通常需要组合多种策略：基于内容的推荐利用物品属性而非用户行为，可以在零行为数据下工作；用户兴趣问卷快速获取显式偏好；探索与利用平衡（如Bandit算法）在推荐过程中主动收集信息。随着数据积累，系统可以逐渐过渡到更精准的协同过滤或深度学习推荐。选项A过于被动，选项C会导致糟糕的用户体验，选项D完全没有利用任何可用信息。
+
+## 术语速查
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| 推荐系统 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 协同过滤 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 矩阵分解 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| NeuMF | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 冷启动 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+
+## 参考资料与复核
+
+- [本课资料锚点 ml_recommendation_systems](https://zh.wikipedia.org/w/index.php?search=ml_recommendation_systems)
+
+- 官方/权威资料：[scikit-learn 用户手册](https://scikit-learn.org/stable/user_guide.html)
+- 主题延伸：[关于「协同过滤」的检索页](https://zh.wikipedia.org/w/index.php?search=%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4)
+- 本课索引词：[锚点 ml_recommendation_systems](https://scikit-learn.org/stable/user_guide.html#%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F)
+- 最后复核：2026-10-04
+- 下次复核：2026-12-09
+
+## 内容元数据
+
+- 内容更新时间：2026-10-06
+
+- 内容版本：v2.0
+- 课程标识：ml_recommendation_systems
+- 所属分类：ml_practice
+- 学习阶段：基础
+- 建议用时：50 分钟

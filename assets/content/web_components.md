@@ -17,25 +17,6 @@
 - 用本课示例验证 `Shadow DOM` 的行为，记录输入、输出与失败条件。
 - 遇到「在 `constructor` 里访问子节点或属性」这类问题时，能说出触发条件与修复顺序。
 
-### 从概念到验证的学习链条
-
-1. `Web Components`：先掌握 浏览器原生提供的可复用自定义元素标准集合，再用它解释 `Custom Elements` 为什么会出现。
-2. `Custom Elements`：先掌握 定义和注册自定义 HTML 标签及其生命周期的 API，再用它解释 `Shadow DOM` 为什么会出现。
-3. `Shadow DOM`：先掌握 给元素附加隔离的 DOM 与样式作用域，避免外部样式泄漏，再用它解释 `HTML Template` 为什么会出现。
-4. `HTML Template`：先掌握 用 template 标签保存可克隆但不立即渲染的 DOM 片段，再用它解释 本课示例的观察结果 为什么会出现。
-
-**先修与衔接**：本课是「HTML 与 CSS」分类的第 14 课。先修内容：《PWA 与离线能力》。《PWA 与离线能力》里的 `PWA`、`ServiceWorker` 是本课的前提。相关或后续课程：《HTML 标签入门》。
-
-### 完成判据
-
-- **定义关**：不看正文也能说明 `Web Components` 是 浏览器原生提供的可复用自定义元素标准集合，并指出一个反例。
-- **机制关**：能按“输入 → 转换 → 输出 → 验证”复述 `Web Components 实战`，而不是只背结论。
-- **示例关**：能运行或推演 `Web Components 实战` 的 `javascript` 示例，并说明一个真实出现的标识符或字面量。
-- **证据关**：能指出 `Web Components 实战` 示例里的 调用了 `createElement()`，并说明它支持或反驳了本课的哪一条结论。
-- **排错关**：能复现 在 `constructor` 里访问子节点或属性，记录现象并按 放到 `connectedCallback` 修复。
-- **迁移关**：能把 `WebComponents`、`自定义元素`、`ShadowDOM`、`slot` 放进一个与 `Web Components 实战` 不同的项目场景，并保持输入与验证条件可追踪。
-- **复盘关**：学完 `Web Components 实战` 后，用一句话写下仍然不确定的结论，并列出下一次验证需要的输入、环境和成功判据。
-
 ### 复习清单
 
 - [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
@@ -83,12 +64,9 @@
 
 **教材衔接：交付评审：评分表、决策记录与证据链**
 
-
-
 ### 三、「Web Components 实战」的交付证据链
 
 本课未给出可执行命令，用下面的最小证据集代替：
-
 
 ### 五、评审记录模板
 
@@ -101,52 +79,6 @@
 | 风险与回滚 | 写清剩余风险、回滚步骤和验证方式 |
 | 结论 | 通过 / 有条件通过 / 不通过，三者选一 |
 
-### 机制拆解：每一步的输入、动作与输出
-
-#### 1. `Web Components`
-- 输入：`WebComponents`；本步把 浏览器原生提供的可复用自定义元素标准集合 当作判断规则。
-- 动作：围绕 `Web Components` 保留中间状态，并记录它与 `Custom Elements` 的对应关系。
-- 输出：`Custom Elements`，它可以被下一段代码、测试或记录继续使用。
-- `Web Components` 的失败条件：只在「浏览器原生提供的可复用自定义元素标准集合」这一前提下成立，换输入或换环境要重新验证。
-
-#### 2. `Custom Elements`
-- 输入：`Web Components`；本步把 定义和注册自定义 HTML 标签及其生命周期的 API 当作判断规则。
-- 动作：围绕 `Custom Elements` 保留中间状态，并记录它与 `Shadow DOM` 的对应关系。
-- 输出：`Shadow DOM`，它可以被下一段代码、测试或记录继续使用。
-- `Custom Elements` 的失败条件：不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。
-
-#### 3. `Shadow DOM`
-- 输入：`Custom Elements`；本步把 给元素附加隔离的 DOM 与样式作用域，避免外部样式泄漏 当作判断规则。
-- 动作：围绕 `Shadow DOM` 保留中间状态，并记录它与 `HTML Template` 的对应关系。
-- 输出：`HTML Template`，它可以被下一段代码、测试或记录继续使用。
-- `Shadow DOM` 的失败条件：隔离级别与并发事务会影响可见性，换级别或换存储引擎后要重新验证。
-
-#### 4. `HTML Template`
-- 输入：`Shadow DOM`；本步把 用 template 标签保存可克隆但不立即渲染的 DOM 片段 当作判断规则。
-- 动作：围绕 `HTML Template` 保留中间状态，并记录它与 `createElement` 的对应关系。
-- 输出：`createElement`，它可以被下一段代码、测试或记录继续使用。
-- `HTML Template` 的失败条件：只在「用 template 标签保存可克隆但不立即渲染的 DOM 片段」这一前提下成立，换输入或换环境要重新验证。
-
-### 示例中的可观察事实
-
-1. 调用了 `createElement()`；它对应的课程主题是 `Web Components 实战`。
-2. 调用了 `var()`；它对应的课程主题是 `Web Components 实战`。
-3. 调用了 `host()`；它对应的课程主题是 `Web Components 实战`。
-4. 调用了 `translateY()`；它对应的课程主题是 `Web Components 实战`。
-5. 调用了 `observedAttributes()`；它对应的课程主题是 `Web Components 实战`。
-6. 调用了 `constructor()`；它对应的课程主题是 `Web Components 实战`。
-7. 调用了 `super()`；它对应的课程主题是 `Web Components 实战`。
-8. 调用了 `attachShadow()`；它对应的课程主题是 `Web Components 实战`。
-
-### 复现实验记录
-
-- 环境：`Web Components 实战` 使用 `javascript` 示例，固定 `WebComponents`、`自定义元素`、`ShadowDOM`、`slot` 作为第一组条件。
-- 首轮输入：先确认 调用了 `createElement()`，预测 `Web Components` 会怎样变化。
-- 基线观察：记录命令、输入、输出和错误原文，不用截图代替可复制的文本。
-- 单变量修改：只改变 `WebComponents`，观察 `HTML Template` 是否仍满足定义。
-- 失败注入：复现 在 `constructor` 里访问子节点或属性，确认现象是 报错或取不到值。
-- 记录结论：把“修改前、修改后、预期变化、实际变化”写成四列表，这样复盘 `Web Components 实战` 时才能区分概念错误与实现错误。
-
 ## 典型应用场景
 
 **教材衔接：项目专属规格：Web Components 实战**
@@ -154,8 +86,6 @@
 ### 核心场景
 
 自定义元素生命周期、Shadow DOM 隔离与事件穿透。 项目目标是把「WebComponents、自定义元素、ShadowDOM、slot、设计系统」落实为可运行、可测试、可回滚的交付物。
-
-
 
 ### 验收场景
 
@@ -175,7 +105,6 @@ tests/
 docs/
 README.md
 ```
-
 
 ### 验收数据
 
@@ -310,39 +239,11 @@ customElements.define("lesson-card", LessonCard);
 
 **运行方式**：运行 `Web Components 实战` 的示例时，保存为 `.js` 后用 `node 文件名.js` 运行；涉及浏览器 API 的示例要放到页面里执行。
 
-### 示例精读：先找证据，再改一个条件
-
-1. 调用了 `createElement()`；它出现在 `Web Components 实战` 的示例中，阅读时先确认它前后各发生了什么。
-2. 调用了 `var()`；它出现在 `Web Components 实战` 的示例中，阅读时先确认它前后各发生了什么。
-3. 调用了 `host()`；它出现在 `Web Components 实战` 的示例中，阅读时先确认它前后各发生了什么。
-4. 调用了 `translateY()`；它出现在 `Web Components 实战` 的示例中，阅读时先确认它前后各发生了什么。
-5. 调用了 `observedAttributes()`；它出现在 `Web Components 实战` 的示例中，阅读时先确认它前后各发生了什么。
-6. 调用了 `constructor()`；它出现在 `Web Components 实战` 的示例中，阅读时先确认它前后各发生了什么。
-7. 调用了 `super()`；它出现在 `Web Components 实战` 的示例中，阅读时先确认它前后各发生了什么。
-8. 调用了 `attachShadow()`；它出现在 `Web Components 实战` 的示例中，阅读时先确认它前后各发生了什么。
-- 在 `Web Components 实战` 中与 `Web Components` 对照：示例必须能支持 浏览器原生提供的可复用自定义元素标准集合，否则说明这一段还缺少实现或验证步骤。
-- 在 `Web Components 实战` 中与 `Custom Elements` 对照：示例必须能支持 定义和注册自定义 HTML 标签及其生命周期的 API，否则说明这一段还缺少实现或验证步骤。
-- 在 `Web Components 实战` 中与 `Shadow DOM` 对照：示例必须能支持 给元素附加隔离的 DOM 与样式作用域，避免外部样式泄漏，否则说明这一段还缺少实现或验证步骤。
-- 在 `Web Components 实战` 中与 `HTML Template` 对照：示例必须能支持 用 template 标签保存可克隆但不立即渲染的 DOM 片段，否则说明这一段还缺少实现或验证步骤。
-
 ## 时间/空间复杂度或性能分析
 
 **性能关注点（Web Components 实战）**：浏览器渲染是关键路径：关注首屏时间、重排与重绘次数、资源体积。
 
 **测量方法**：以 `Web Components 实战` 的 `WebComponents` 场景为对象，固定输入跑一遍记录基线，再把规模或并发度提高一个数量级复测；两次结果的差值与波动范围才是结论依据。
-
-### 需要控制的变量与记录项
-
-- `Web Components 实战` 的 `WebComponents`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `Web Components 实战` 的 `自定义元素`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `Web Components 实战` 的 `ShadowDOM`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `Web Components 实战` 的 `slot`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `Web Components 实战` 的 `设计系统`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `Web Components 实战` 中 `Web Components` 的边界：只在「浏览器原生提供的可复用自定义元素标准集合」这一前提下成立，换输入或换环境要重新验证。达到边界时不要外推，必须重新测量。
-- `Web Components 实战` 中 `Custom Elements` 的边界：不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。达到边界时不要外推，必须重新测量。
-- `Web Components 实战` 中 `Shadow DOM` 的边界：隔离级别与并发事务会影响可见性，换级别或换存储引擎后要重新验证。达到边界时不要外推，必须重新测量。
-- `Web Components 实战` 中 `HTML Template` 的边界：只在「用 template 标签保存可克隆但不立即渲染的 DOM 片段」这一前提下成立，换输入或换环境要重新验证。达到边界时不要外推，必须重新测量。
-- `Web Components 实战` 的代码证据：先验证 调用了 `createElement()`，再记录该路径的输入规模与耗时；只看代码行数不能推出复杂度。
 
 ## 常见误区与易错点
 
@@ -455,17 +356,6 @@ customElements.define("lesson-card", LessonCard);
 - **相关或后续**：`HTML 标签入门`。本课术语会在这些课程里继续使用。
 - **术语归属**：`Web Components`、`Custom Elements`、`Shadow DOM` 的定义以本课「核心概念定义」为准，换到其他课程时先确认定义是否被改写。
 - 同一分类的《设计令牌与样式架构》也涉及 `设计系统`；两课衔接时先确认这个术语的定义是否一致。
-
-### 先修与后续术语接口
-
-- `HTML 标签入门`：两者通过本分类的学习顺序衔接，阅读时重点比较各自的输入与失败条件。
-- `PWA 与离线能力`：两者通过本分类的学习顺序衔接，阅读时重点比较各自的输入与失败条件。
-
-### 容易混淆的相邻概念
-
-- `Web Components` 与 `Custom Elements`：前者强调 浏览器原生提供的可复用自定义元素标准集合；后者强调 定义和注册自定义 HTML 标签及其生命周期的 API。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
-- `Custom Elements` 与 `Shadow DOM`：前者强调 定义和注册自定义 HTML 标签及其生命周期的 API；后者强调 给元素附加隔离的 DOM 与样式作用域，避免外部样式泄漏。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
-- `Shadow DOM` 与 `HTML Template`：前者强调 给元素附加隔离的 DOM 与样式作用域，避免外部样式泄漏；后者强调 用 template 标签保存可克隆但不立即渲染的 DOM 片段。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
 
 ## 自测题与参考答案
 
@@ -643,6 +533,8 @@ customElements.define("lesson-card", LessonCard);
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
 ## 参考资料与复核
+
+- [本课资料锚点 web_components](https://zh.wikipedia.org/w/index.php?search=web_components)
 
 - 最后复核：2026-10-04
 - 下次复核：2027-08-17

@@ -17,25 +17,6 @@
 - 用本课示例验证 `Go` 的行为，记录输入、输出与失败条件。
 - 遇到「传递数据、串起流水线」这类问题时，能说出触发条件与修复顺序。
 
-### 从概念到验证的学习链条
-
-1. `context.WithTimeout`：先掌握 超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`，再用它解释 `sync.WaitGroup` 为什么会出现。
-2. `sync.WaitGroup`：先掌握 等待一组任务**：`sync.WaitGroup` 的 Add/Done/Wait，再用它解释 `Go` 为什么会出现。
-3. `Go`：先掌握 由 Google 设计的静态编译语言，强调简单语法、并发和部署便利，再用它解释 `数据竞争` 为什么会出现。
-4. `数据竞争`：先掌握 多个 goroutine 无同步地读写同一变量，用 -race 检测，靠互斥锁或 channel 消除，再用它解释 本课示例的观察结果 为什么会出现。
-
-**先修与衔接**：本课是「Go」分类的第 7 课。先修内容：《Go 基础》。《Go 基础》里的 `Go`、`并发` 是本课的前提。相关或后续课程：《Go 接口与错误处理》。
-
-### 完成判据
-
-- **定义关**：不看正文也能说明 `context.WithTimeout` 是 超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`，并指出一个反例。
-- **机制关**：能按“输入 → 转换 → 输出 → 验证”复述 `Go 并发：goroutine、channel 与 context`，而不是只背结论。
-- **示例关**：能运行或推演 `Go 并发：goroutine、channel 与 context` 的 `go` 示例，并说明一个真实出现的标识符或字面量。
-- **证据关**：能指出 `Go 并发：goroutine、channel 与 context` 示例里的 调用了 `worker()`，并说明它支持或反驳了本课的哪一条结论。
-- **排错关**：能复现 传递数据、串起流水线，记录现象并按 数据流向清晰 修复。
-- **迁移关**：能把 `Go`、`goroutine`、`channel`、`context` 放进一个与 `Go 并发：goroutine、channel 与 context` 不同的项目场景，并保持输入与验证条件可追踪。
-- **复盘关**：学完 `Go 并发：goroutine、channel 与 context` 后，用一句话写下仍然不确定的结论，并列出下一次验证需要的输入、环境和成功判据。
-
 ### 复习清单
 
 - [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
@@ -81,59 +62,6 @@ Go 的并发哲学：**不要通过共享内存来通信，而要通过通信来
 - 升级「Go 并发：goroutine、channel 与 context」涉及的依赖前，先用 WithTimeout 复现当前行为，再逐项核对版本说明与破坏性变更。
 - 模块校验、最小版本选择与供应链安全是生产升级的重点
 - 官方发布说明：https://go.dev/doc/devel/release
-
-### 升级检查清单
-
-- 先固定当前版本，跑通全部示例与测验，再升级工具链。
-- 升级时只动一个依赖版本，用 WithTimeout 记录构建与运行结果。
-- 回归范围锁定 WithTimeout 的默认行为，并确认弃用警告是否出现在构建输出里。
-- 升级完成后记录 Go 的新旧版本差异，并据此调整下次复核时间。
-
-### 机制拆解：每一步的输入、动作与输出
-
-#### 1. `context.WithTimeout`
-- 输入：`Go`；本步把 超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()` 当作判断规则。
-- 动作：围绕 `context.WithTimeout` 保留中间状态，并记录它与 `sync.WaitGroup` 的对应关系。
-- 输出：`sync.WaitGroup`，它可以被下一段代码、测试或记录继续使用。
-- `context.WithTimeout` 的失败条件：网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。
-
-#### 2. `sync.WaitGroup`
-- 输入：`context.WithTimeout`；本步把 等待一组任务**：`sync.WaitGroup` 的 Add/Done/Wait 当作判断规则。
-- 动作：围绕 `sync.WaitGroup` 保留中间状态，并记录它与 `Go` 的对应关系。
-- 输出：`Go`，它可以被下一段代码、测试或记录继续使用。
-- `sync.WaitGroup` 的失败条件：当等一组任务结束时，会出现`sync.WaitGroup`。
-
-#### 3. `Go`
-- 输入：`sync.WaitGroup`；本步把 由 Google 设计的静态编译语言，强调简单语法、并发和部署便利 当作判断规则。
-- 动作：围绕 `Go` 保留中间状态，并记录它与 `数据竞争` 的对应关系。
-- 输出：`数据竞争`，它可以被下一段代码、测试或记录继续使用。
-- `Go` 的失败条件：当循环变量被捕获时，会出现所有 goroutine 用同一个值。
-
-#### 4. `数据竞争`
-- 输入：`Go`；本步把 多个 goroutine 无同步地读写同一变量，用 -race 检测，靠互斥锁或 channel 消除 当作判断规则。
-- 动作：围绕 `数据竞争` 保留中间状态，并记录它与 `worker` 的对应关系。
-- 输出：`worker`，它可以被下一段代码、测试或记录继续使用。
-- `数据竞争` 的失败条件：共享状态与调度顺序会改变结论，单线程或串行测试通过不等于并发下成立。
-
-### 示例中的可观察事实
-
-1. 调用了 `worker()`；它对应的课程主题是 `Go 并发：goroutine、channel 与 context`。
-2. 调用了 `Done()`；它对应的课程主题是 `Go 并发：goroutine、channel 与 context`。
-3. 调用了 `main()`；它对应的课程主题是 `Go 并发：goroutine、channel 与 context`。
-4. 调用了 `make()`；它对应的课程主题是 `Go 并发：goroutine、channel 与 context`。
-5. 调用了 `Add()`；它对应的课程主题是 `Go 并发：goroutine、channel 与 context`。
-6. 调用了 `close()`；它对应的课程主题是 `Go 并发：goroutine、channel 与 context`。
-7. 调用了 `Wait()`；它对应的课程主题是 `Go 并发：goroutine、channel 与 context`。
-8. 调用了 `Println()`；它对应的课程主题是 `Go 并发：goroutine、channel 与 context`。
-
-### 复现实验记录
-
-- 环境：`Go 并发：goroutine、channel 与 context` 使用 `go` 示例，固定 `Go`、`goroutine`、`channel`、`context` 作为第一组条件。
-- 首轮输入：先确认 调用了 `worker()`，预测 `context.WithTimeout` 会怎样变化。
-- 基线观察：记录命令、输入、输出和错误原文，不用截图代替可复制的文本。
-- 单变量修改：只改变 `Go`，观察 `数据竞争` 是否仍满足定义。
-- 失败注入：复现 传递数据、串起流水线，确认现象是 channel。
-- 记录结论：把“修改前、修改后、预期变化、实际变化”写成四列表，这样复盘 `Go 并发：goroutine、channel 与 context` 时才能区分概念错误与实现错误。
 
 ## 典型应用场景
 
@@ -199,21 +127,6 @@ func worker(ctx context.Context, jobs <-chan int, results chan<- int, wg *sync.W
 
 **运行方式**：运行 `Go 并发：goroutine、channel 与 context` 的示例时，用 `go run 文件名.go` 运行；模块依赖由 `go mod` 管理。
 
-### 示例精读：先找证据，再改一个条件
-
-1. 调用了 `worker()`；它出现在 `Go 并发：goroutine、channel 与 context` 的示例中，阅读时先确认它前后各发生了什么。
-2. 调用了 `Done()`；它出现在 `Go 并发：goroutine、channel 与 context` 的示例中，阅读时先确认它前后各发生了什么。
-3. 调用了 `main()`；它出现在 `Go 并发：goroutine、channel 与 context` 的示例中，阅读时先确认它前后各发生了什么。
-4. 调用了 `make()`；它出现在 `Go 并发：goroutine、channel 与 context` 的示例中，阅读时先确认它前后各发生了什么。
-5. 调用了 `Add()`；它出现在 `Go 并发：goroutine、channel 与 context` 的示例中，阅读时先确认它前后各发生了什么。
-6. 调用了 `close()`；它出现在 `Go 并发：goroutine、channel 与 context` 的示例中，阅读时先确认它前后各发生了什么。
-7. 调用了 `Wait()`；它出现在 `Go 并发：goroutine、channel 与 context` 的示例中，阅读时先确认它前后各发生了什么。
-8. 调用了 `Println()`；它出现在 `Go 并发：goroutine、channel 与 context` 的示例中，阅读时先确认它前后各发生了什么。
-- 在 `Go 并发：goroutine、channel 与 context` 中与 `context.WithTimeout` 对照：示例必须能支持 超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`，否则说明这一段还缺少实现或验证步骤。
-- 在 `Go 并发：goroutine、channel 与 context` 中与 `sync.WaitGroup` 对照：示例必须能支持 等待一组任务**：`sync.WaitGroup` 的 Add/Done/Wait，否则说明这一段还缺少实现或验证步骤。
-- 在 `Go 并发：goroutine、channel 与 context` 中与 `Go` 对照：示例必须能支持 由 Google 设计的静态编译语言，强调简单语法、并发和部署便利，否则说明这一段还缺少实现或验证步骤。
-- 在 `Go 并发：goroutine、channel 与 context` 中与 `数据竞争` 对照：示例必须能支持 多个 goroutine 无同步地读写同一变量，用 -race 检测，靠互斥锁或 channel 消除，否则说明这一段还缺少实现或验证步骤。
-
 ## 时间/空间复杂度或性能分析
 
 **教材衔接：零基础详解：goroutine、channel 与「通过通信共享内存」**
@@ -239,19 +152,6 @@ Go 的并发口号是「**不要通过共享内存来通信，而要通过通信
 - [ ] 能用 `select` 加 `context` 写出带超时的等待。
 
 **测量方法**：以 `Go 并发：goroutine、channel 与 context` 的 `Go` 场景为对象，固定输入跑一遍记录基线，再把规模或并发度提高一个数量级复测；两次结果的差值与波动范围才是结论依据。
-
-### 需要控制的变量与记录项
-
-- `Go 并发：goroutine、channel 与 context` 的 `Go`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `Go 并发：goroutine、channel 与 context` 的 `goroutine`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `Go 并发：goroutine、channel 与 context` 的 `channel`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `Go 并发：goroutine、channel 与 context` 的 `context`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `Go 并发：goroutine、channel 与 context` 的 `race`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `Go 并发：goroutine、channel 与 context` 中 `context.WithTimeout` 的边界：网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。达到边界时不要外推，必须重新测量。
-- `Go 并发：goroutine、channel 与 context` 中 `sync.WaitGroup` 的边界：易错：`sync.WaitGroup`；正确做法是计数归零即完成。达到边界时不要外推，必须重新测量。
-- `Go 并发：goroutine、channel 与 context` 中 `Go` 的边界：易错：所有 goroutine 用同一个值；正确做法是Go 1.22 已修复，旧版本要 `v := v`。达到边界时不要外推，必须重新测量。
-- `Go 并发：goroutine、channel 与 context` 中 `数据竞争` 的边界：共享状态与调度顺序会改变结论，单线程或串行测试通过不等于并发下成立。达到边界时不要外推，必须重新测量。
-- `Go 并发：goroutine、channel 与 context` 的代码证据：先验证 调用了 `worker()`，再记录该路径的输入规模与耗时；只看代码行数不能推出复杂度。
 
 ## 常见误区与易错点
 
@@ -354,17 +254,6 @@ Go 的并发口号是「**不要通过共享内存来通信，而要通过通信
 - 同一分类的《Go 第一个程序》也涉及 `Go`；两课衔接时先确认这个术语的定义是否一致。
 - 同一分类的《Go 变量与输入》也涉及 `Go`；两课衔接时先确认这个术语的定义是否一致。
 
-### 先修与后续术语接口
-
-- `Go 基础`：共享术语 `Go`，共同关键词 `Go`、`goroutine`、`channel`。
-- `Go 接口与错误处理`：共享术语 `Go`，共同关键词 `Go`。
-
-### 容易混淆的相邻概念
-
-- `context.WithTimeout` 与 `sync.WaitGroup`：前者强调 超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`；后者强调 等待一组任务**：`sync.WaitGroup` 的 Add/Done/Wait。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
-- `sync.WaitGroup` 与 `Go`：前者强调 等待一组任务**：`sync.WaitGroup` 的 Add/Done/Wait；后者强调 由 Google 设计的静态编译语言，强调简单语法、并发和部署便利。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
-- `Go` 与 `数据竞争`：前者强调 由 Google 设计的静态编译语言，强调简单语法、并发和部署便利；后者强调 多个 goroutine 无同步地读写同一变量，用 -race 检测，靠互斥锁或 channel 消除。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
-
 ## 自测题与参考答案
 
 > 先独立作答，再对照参考答案；答案都能在本课正文、术语表或错误表里找到依据。
@@ -436,7 +325,6 @@ Go 的并发口号是「**不要通过共享内存来通信，而要通过通信
 用每分钟约 200 字的速度复述 `Go 并发：goroutine、channel 与 context`：先给主问题，再按顺序说出 `context.WithTimeout`、`sync.WaitGroup`、`Go`、`数据竞争`，最后给一个失败案例。
 
 **自评标准**：主问题必须对应 channel 通信、worker pool、context 取消与竞态检测；每个术语都要能接上一句定义或边界；失败案例必须写成可观察现象，不能用“可能有风险”代替证据。
-
 
 ## 延伸阅读
 
@@ -548,6 +436,8 @@ Go 的并发口号是「**不要通过共享内存来通信，而要通过通信
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
 ## 参考资料与复核
+
+- [本课资料锚点 go_concurrency](https://zh.wikipedia.org/w/index.php?search=go_concurrency)
 
 - 最后复核：2026-10-04
 - 下次复核：2027-04-10

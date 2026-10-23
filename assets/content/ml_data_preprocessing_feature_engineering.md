@@ -1,4 +1,6 @@
-# 数据预处理与特征工程 (Data Preprocessing and Feature Engineering)
+# 数据预处理与特征工程
+
+![数据预处理与特征工程示意：diagram os deadlock](images/diagram_os_deadlock.webp)
 
 ## 本章摘要
 
@@ -91,7 +93,6 @@ print(f"\n数据形状: {df.shape}")
 print(f"缺失值数量:\n{df.isnull().sum()}")
 print(f"重复行数量: {df.duplicated().sum()}")
 
-
 # ==================== 数据质量检查 ====================
 
 def data_quality_report(df):
@@ -123,7 +124,6 @@ def data_quality_report(df):
     return report
 
 quality_report = data_quality_report(df)
-
 
 # ==================== 处理缺失值 ====================
 
@@ -162,7 +162,6 @@ for ax, method, data_filled in zip(
 plt.tight_layout()
 plt.savefig('missing_value_imputation.png', dpi=150, bbox_inches='tight')
 plt.show()
-
 
 # ==================== 处理异常值 ====================
 
@@ -295,7 +294,6 @@ print(df_raw.head())
 print(f"\n数据形状: {df_raw.shape}")
 print(f"\n数据类型:\n{df_raw.dtypes}")
 
-
 # ==================== 探索性数据分析（EDA） ====================
 
 # 数值特征分布
@@ -334,7 +332,6 @@ for ax, col in zip(axes, ['education', 'employment', 'marital_status']):
 plt.tight_layout()
 plt.savefig('categorical_analysis.png', dpi=150, bbox_inches='tight')
 plt.show()
-
 
 # ==================== 特征编码 ====================
 
@@ -384,7 +381,6 @@ df_encoded.drop('noise_2', axis=1, inplace=True, errors='ignore')
 
 print(f"\n编码后数据集形状: {df_encoded.shape}")
 print(f"编码后列名: {list(df_encoded.columns)}")
-
 
 # ==================== 特征变换 ====================
 
@@ -441,7 +437,6 @@ for ax, method, data in zip(
 plt.tight_layout()
 plt.savefig('feature_transformations.png', dpi=150, bbox_inches='tight')
 plt.show()
-
 
 # ==================== 特征选择 ====================
 
@@ -506,7 +501,6 @@ ax.set_xlabel('Importance')
 plt.tight_layout()
 plt.savefig('feature_importance.png', dpi=150, bbox_inches='tight')
 plt.show()
-
 
 # ==================== 构建特征工程Pipeline ====================
 
@@ -660,7 +654,6 @@ scores_poly = cross_val_score(gb_poly, X_poly_expanded, y_poly, cv=5, scoring='a
 print(f"\n原始特征准确率: {scores_original.mean():.4f} (+/- {scores_original.std():.4f})")
 print(f"多项式特征准确率: {scores_poly.mean():.4f} (+/- {scores_poly.std():.4f})")
 
-
 # ==================== 使用Featuretools自动特征工程 ====================
 
 print("\n--- Featuretools自动特征工程 ---")
@@ -725,7 +718,6 @@ feature_matrix = feature_matrix.replace([np.inf, -np.inf], np.nan)
 feature_matrix = feature_matrix.fillna(0)
 
 print(f"\n清理后的特征矩阵形状: {feature_matrix.shape}")
-
 
 # ==================== 特征重要性分析与筛选 ====================
 
@@ -868,3 +860,321 @@ D. 对滞后特征（lag features）使用过去的值
 **章节小结**
 
 通过本章学习，你已经掌握了数据预处理和特征工程的核心技术：从数据清洗处理质量问题，到多种编码策略转换类别特征，到特征变换改善分布特性，再到特征选择筛选最优子集。记住，特征工程既是科学也是艺术：科学在于有系统的方法和评估指标，艺术在于结合领域知识创造有洞察力的特征。在实际项目中，好的特征往往比复杂的模型更能提升性能。下一章我们将进入模型评估与超参数调优，学习如何科学地衡量和改进模型表现。
+
+## 本节知识框架
+
+**课程定位**：分类「ml_practice」· 学习阶段 入门 · 建议用时 45 分钟。
+
+本课主线：学习缺失值处理、特征编码、标准化和特征选择方法。
+
+### 复习清单
+
+- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
+- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
+
+## 核心概念定义
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| 数据预处理 | 学习缺失值处理、特征编码、标准化和特征选择方法。相关：正文给出可操作定义与适用边界。 |
+| 特征工程 | 学习缺失值处理、特征编码、标准化和特征选择方法。相关：正文给出可操作定义与适用边界。 |
+| 缺失值 | 学习缺失值处理、特征编码、标准化和特征选择方法。相关：正文给出可操作定义与适用边界。 |
+| 标准化 | 学习缺失值处理、特征编码、标准化和特征选择方法。相关：正文给出可操作定义与适用边界。 |
+| 特征选择 | 学习缺失值处理、特征编码、标准化和特征选择方法。相关：正文给出可操作定义与适用边界。 |
+
+## 原理与运行机制
+
+正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
+
+## 典型应用场景
+
+- 结合「数据预处理与特征工程」的常见落地场景与选型边界，详见正文各章节的对比讨论。
+- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
+
+## 代码/协议/SQL 示例
+
+正文首个完整示例如下，先运行确认环境，再按正文步骤改一个输入观察输出变化。
+
+```python
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.impute import SimpleImputer, KNNImputer
+from scipy import stats
+
+# ==================== 创建示例数据集 ====================
+
+np.random.seed(42)
+n_samples = 200
+
+data = {
+    'age': np.random.randint(18, 70, n_samples),
+    'income': np.random.uniform(20000, 150000, n_samples),
+    'score': np.random.uniform(0, 100, n_samples),
+    'category': np.random.choice(['A', 'B', 'C', 'D'], n_samples),
+    'target': np.random.randint(0, 2, n_samples)
+}
+
+df = pd.DataFrame(data)
+
+# 引入数据质量问题
+# 1. 缺失值
+missing_indices = np.random.choice(n_samples, 20, replace=False)
+df.loc[missing_indices[:10], 'age'] = np.nan
+df.loc[missing_indices[10:15], 'income'] = np.nan
+df.loc[missing_indices[15:20], 'score'] = np.nan
+
+# 2. 异常值
+df.loc[5, 'age'] = 200  # 显然错误的年龄
+df.loc[10, 'income'] = -5000  # 负收入
+df.loc[15, 'score'] = 150  # 超过100的分数
+
+# 3. 重复行
+df = pd.concat([df, df.iloc[[0, 1, 2]]], ignore_index=True)
+
+print("原始数据统计:")
+print(df.describe())
+print(f"\n数据形状: {df.shape}")
+print(f"缺失值数量:\n{df.isnull().sum()}")
+print(f"重复行数量: {df.duplicated().sum()}")
+
+# ==================== 数据质量检查 ====================
+
+def data_quality_report(df):
+    """生成数据质量报告"""
+    report = {
+        'shape': df.shape,
+        'missing_count': df.isnull().sum(),
+        'missing_percentage': (df.isnull().sum() / len(df) * 100).round(2),
+        'duplicate_count': df.duplicated().sum(),
+        'unique_values': {col: df[col].nunique() for col in df.columns},
+        'data_types': df.dtypes.to_dict()
+    }
+    
+    print("=" * 60)
+    print("数据质量报告")
+    print("=" * 60)
+    print(f"数据形状: {report['shape']}")
+    print(f"\n缺失值统计:")
+    for col in df.columns:
+        if report['missing_count'][col] > 0:
+            print(f"  {col}: {report['missing_count'][col]} "
+                  f"({report['missing_percentage'][col]}%)")
+    print(f"\n重复行: {report['duplicate_count']}")
+    print(f"\n唯一值数量:")
+    for col, count in report['unique_values'].items():
+        print(f"  {col}: {count}")
+    print("=" * 60)
+    
+    return report
+
+quality_report = data_quality_report(df)
+
+# ==================== 处理缺失值 ====================
+
+print("\n--- 处理缺失值 ---")
+
+# 方法1：删除含缺失值的行
+df_dropped = df.dropna()
+print(f"删除缺失值后: {df_dropped.shape[0]}行 (原{df.shape[0]}行)")
+
+# 方法2：均值/中位数填充
+df_filled_mean = df.copy()
+imputer_mean = SimpleImputer(strategy='mean')
+numeric_cols = ['age', 'income', 'score']
+df_filled_mean[numeric_cols] = imputer_mean.fit_transform(df[numeric_cols])
+print(f"均值填充后缺失值: {df_filled_mean.isnull().sum().sum()}")
+
+# 方法3：KNN插补
+df_knn = df.copy()
+imputer_knn = KNNImputer(n_neighbors=5)
+df_knn[numeric_cols] = imputer_knn.fit_transform(df[numeric_cols])
+print(f"KNN插补后缺失值: {df_knn.isnull().sum().sum()}")
+
+# 比较不同填充方法的效果
+fig, axes = plt.subplots(1, 3, figsize=(15, 4))
+
+for ax, method, data_filled in zip(
+    axes, 
+    ['原始(含缺失)', '均值填充', 'KNN插补'],
+    [df, df_filled_mean, df_knn]
+):
+    ax.hist(data_filled['age'].dropna(), bins=20, alpha=0.7, edgecolor='black')
+    ax.set_title(method)
+    ax.set_xlabel('Age')
+    ax.set_ylabel('Frequency')
+
+plt.tight_layout()
+plt.savefig('missing_value_imputation.png', dpi=150, bbox_inches='tight')
+plt.show()
+
+# ==================== 处理异常值 ====================
+
+print("\n--- 处理异常值 ---")
+
+# 方法1：Z-score方法
+z_scores = np.abs(stats.zscore(df['age'].dropna()))
+outliers_zscore = df[np.abs(stats.zscore(df['age'].dropna())) > 3]
+print(f"Z-score检测到的年龄异常值数量: {len(outliers_zscore)}")
+
+# 方法2：IQR方法
+Q1 = df['income'].quantile(0.25)
+Q3 = df['income'].quantile(0.75)
+IQR = Q3 - Q1
+lower_bound = Q1 - 1.5 * IQR
+upper_bound = Q3 + 1.5 * IQR
+outliers_iqr = df[(df['income'] < lower_bound) | (df['income'] > upper_bound)]
+print(f"IQR检测到的收入异常值数量: {len(outliers_iqr)}")
+print(f"收入合理范围: [{lower_bound:.2f}, {upper_bound:.2f}]")
+
+# 方法3：业务规则
+business_rule_outliers = df[
+    (df['age'] < 0) | (df['age'] > 120) |  # 年龄不合理
+    (df['income'] < 0) |                     # 收入为负
+    (df['score'] < 0) | (df['score'] > 100)  # 分数超出范围
+]
+print(f"业务规则检测到的异常值数量: {len(business_rule_outliers)}")
+
+# 可视化异常值
+fig, axes = plt.subplots(1, 3, figsize=(15, 4))
+
+# Boxplot显示异常值
+for ax, col, title in zip(axes, ['age', 'income', 'score'], 
+                           ['Age', 'Income', 'Score']):
+    ax.boxplot(df[col].dropna())
+    ax.set_title(title)
+    ax.set_ylabel('Value')
+
+plt.tight_layout()
+plt.savefig('outlier_detection.png', dpi=150, bbox_inches='tight')
+plt.show()
+
+# 修正异常值（用边界值截断）
+df_cleaned = df.copy()
+df_cleaned['age'] = df_cleaned['age'].clip(lower=0, upper=120)
+df_cleaned['income'] = df_cleaned['income'].clip(lower=0)
+df_cleaned['score'] = df_cleaned['score'].clip(lower=0, upper=100)
+
+print(f"\n修正后数据形状: {df_cleaned.shape}")
+print(f"修正后缺失值: {df_cleaned.isnull().sum().sum()}")
+```
+
+## 时间/空间复杂度或性能分析
+
+- 用本课方案处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
+- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
+
+## 常见误区与易错点
+
+| 错误做法 | 典型现象 | 修复方向 |
+| --- | --- | --- |
+| 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
+| 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
+| 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
+
+## 与其他知识点的关系
+
+本课与分类「ml_practice」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
+
+## 自测题与参考答案
+
+以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
+
+## 考点精讲
+
+### 考点 1
+
+关于缺失值处理，以下哪种情况最适合使用KNN插补而非简单均值填充？
+
+A. 缺失比例超过50%的特征  
+B. 缺失值完全随机分布（MCAR）且缺失比例很低  
+C. 特征之间存在较强的相关性，可以利用邻居信息 ✅  
+D. 数据集非常大，计算资源有限  
+
+**正确答案：** C
+
+**解析：** KNN插补的核心思想是利用相似样本的值来填补缺失值，因此当特征之间存在较强相关性时效果最好。例如，收入和消费水平相关，可以用相似收入水平的其他样本来填补某人的消费缺失值。相比之下，均值填充忽略了这种相关性，只是用全局平均值替代。选项A错误，缺失比例太高时任何插补方法都不可靠，应考虑删除该特征；选项B中简单均值填充已经足够，KNN的计算成本不必要；选项D错误，KNN计算量大，不适合资源受限场景。
+
+### 考点 2
+
+独热编码（One-Hot Encoding）的主要缺点是什么？
+
+A. 无法处理数值型特征  
+B. 当类别数量很多时会导致维度爆炸和稀疏矩阵 ✅  
+C. 引入了虚假的顺序关系  
+D. 计算复杂度太高，无法在大规模数据上使用  
+
+**正确答案：** B
+
+**解析：** 独热编码为每个类别创建一个二进制列，如果一个特征有1000个不同取值，就会产生1000个新列。这不仅大幅增加内存占用和计算成本，还会导致矩阵极度稀疏（大部分元素为0），影响某些算法的性能。此外，高维空间中的距离度量会失效（维度灾难）。选项A错误，独热编码专门用于类别特征；选项C错误，那是标签编码的问题；选项D部分正确但不是主要缺点，现代库可以高效处理稀疏矩阵。
+
+### 考点 3
+
+在特征选择中，包裹法（Wrapper Methods）相比过滤法（Filter Methods）的优势是什么？
+
+A. 计算速度更快  
+B. 考虑了特征之间的交互作用，并直接与模型性能挂钩 ✅  
+C. 不需要训练模型  
+D. 适用于任意数量的特征而不受计算限制  
+
+**正确答案：** B
+
+**解析：** 包裹法通过实际训练模型并评估不同特征子集的性能来选择特征，因此能够捕捉特征之间的交互效应，并且选择标准直接对应最终的模型性能指标。例如，递归特征消除（RFE）反复训练模型并剔除最不重要的特征。相比之下，过滤法只基于统计指标（如相关性、互信息）独立评估每个特征，忽略了特征组合的效果。选项A错误，包裹法计算更慢；选项C错误，包裹法需要多次训练模型；选项D错误，包裹法的计算成本随特征数指数增长。
+
+### 考点 4
+
+关于特征缩放，以下说法正确的是？
+
+A. 树模型（如随机森林、XGBoost）对特征缩放非常敏感，必须先标准化  
+B. 基于距离的算法（如KNN、SVM、K-Means）不受特征缩放影响  
+C. 标准化（Standardization）将特征转换为均值为0、标准差为1的分布 ✅  
+D. 归一化（Normalization）和标准化是完全相同的操作  
+
+**正确答案：** C
+
+**解析：** 标准化（也叫Z-score归一化）的公式是：z = (x - mean) / std，结果分布的均值为0、标准差为1。这适合大多数需要假设数据近似正态分布的算法。选项A错误，树模型基于特征值的相对大小进行分裂，不受绝对尺度影响，因此不需要缩放；选项B错误，基于距离的算法恰恰对缩放最敏感，未缩放的特征会主导距离计算；选项D错误，归一化通常指Min-Max缩放到[0,1]区间，与标准化不同。
+
+### 考点 5
+
+在处理时间序列数据的特征工程时，以下哪种做法会导致严重的数据泄露？
+
+A. 使用滚动窗口计算过去30天的平均值作为特征  
+B. 用整个数据集的全局均值填补缺失值 ✅  
+C. 提取日期的年、月、日、星期几作为特征  
+D. 对滞后特征（lag features）使用过去的值  
+
+**正确答案：** B
+
+**解析：** 时间序列数据的关键约束是：预测时刻t的值时，只能使用t及之前的信息。用整个数据集（包括未来数据）的全局均值填补缺失值，相当于让模型"偷看"了未来，这是严重的数据泄露。正确做法是只用截止到当前时刻的历史数据计算统计量进行填充。选项A正确，滚动窗口只使用历史信息；选项C正确，日期特征是确定的，不涉及数据泄露；选项D正确，滞后特征明确使用过去的值。
+
+## 术语速查
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| 数据预处理 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 特征工程 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 缺失值 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 标准化 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 特征选择 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+
+## 参考资料与复核
+
+- [本课资料锚点 ml_data_preprocessing_feature_engineering](https://zh.wikipedia.org/w/index.php?search=ml_data_preprocessing_feature_engineering)
+
+- 官方/权威资料：[scikit-learn 用户手册](https://scikit-learn.org/stable/user_guide.html)
+- 主题延伸：[关于「特征工程」的检索页](https://zh.wikipedia.org/w/index.php?search=%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B)
+- 本课索引词：[锚点 ml_data_preprocessing_feature_engineering](https://scikit-learn.org/stable/user_guide.html#%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86)
+- 最后复核：2026-10-04
+- 下次复核：2026-11-24
+
+## 内容元数据
+
+- 内容更新时间：2026-10-06
+
+- 内容版本：v2.0
+- 课程标识：ml_data_preprocessing_feature_engineering
+- 所属分类：ml_practice
+- 学习阶段：入门
+- 建议用时：45 分钟

@@ -1,4 +1,6 @@
-# 自然语言处理：文本分类与情感分析 (Natural Language Processing: Text Classification and Sentiment Analysis)
+# 自然语言处理：文本分类与情感分析
+
+![自然语言处理：文本分类与情感分析示意：diagram ts project](images/diagram_ts_project.webp)
 
 ## 本章摘要
 
@@ -105,7 +107,6 @@ for i, word in enumerate(words):
 plt.title('Word Embeddings Visualization (t-SNE)')
 plt.savefig('word_embeddings.png', dpi=150, bbox_inches='tight')
 plt.show()
-
 
 # ==================== TensorFlow/Keras中的Embedding层 ====================
 
@@ -247,7 +248,6 @@ sample_review = "This movie was absolutely wonderful! Great acting and amazing s
 sentiment, confidence, score = predict_sentiment_tf(tf_lstm_model, sample_review)
 print(f"\n评论: '{sample_review}'")
 print(f"情感: {sentiment}, 置信度: {confidence:.2%}, 得分: {score:.4f}")
-
 
 # ==================== PyTorch LSTM情感分析 ====================
 
@@ -496,7 +496,6 @@ bert_tf_model.summary()
 #     validation_split=0.2
 # )
 
-
 # ==================== PyTorch BERT文本分类 ====================
 
 class BertClassifierPT(torch.nn.Module):
@@ -575,7 +574,6 @@ with torch.no_grad():
     
     print(f"\n预测结果: {'正面' if predicted_class == 1 else '负面'}")
     print(f"概率分布: 负面={probabilities[0][0]:.4f}, 正面={probabilities[0][1]:.4f}")
-
 
 # ==================== 使用Hugging Face Pipeline简化流程 ====================
 
@@ -689,3 +687,256 @@ D. 进行词干提取（stemming）
 **章节小结**
 
 通过本章学习，你已经掌握了自然语言处理的核心技术：从词嵌入到RNN/LSTM，再到Transformer和预训练语言模型。NLP领域发展迅速，预训练模型已经成为解决大多数任务的默认选择。记住，好的NLP系统不仅需要强大的模型，更需要高质量的标注数据和恰当的预处理流程。下一章我们将进入推荐系统领域，学习如何让机器理解用户偏好并做出个性化推荐。
+
+## 本节知识框架
+
+**课程定位**：分类「ml_practice」· 学习阶段 基础 · 建议用时 55 分钟。
+
+本课主线：掌握词嵌入、RNN/LSTM、Transformer和BERT预训练模型。
+
+### 复习清单
+
+- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
+- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
+
+## 核心概念定义
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| NLP | 掌握词嵌入、RNN/LSTM、Transformer和BERT预训练模型。相关：正文给出可操作定义与适用边界。 |
+| 词嵌入 | 掌握词嵌入、RNN/LSTM、Transformer和BERT预训练模型。相关：正文给出可操作定义与适用边界。 |
+| Transformer | 掌握词嵌入、RNN/LSTM、Transformer和BERT预训练模型。相关：正文给出可操作定义与适用边界。 |
+| BERT | 掌握词嵌入、RNN/LSTM、Transformer和BERT预训练模型。相关：正文给出可操作定义与适用边界。 |
+| 情感分析 | 掌握词嵌入、RNN/LSTM、Transformer和BERT预训练模型。相关：正文给出可操作定义与适用边界。 |
+
+## 原理与运行机制
+
+正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
+
+## 典型应用场景
+
+- 结合「自然语言处理：文本分类与情感分析」的常见落地场景与选型边界，详见正文各章节的对比讨论。
+- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
+
+## 代码/协议/SQL 示例
+
+正文首个完整示例如下，先运行确认环境，再按正文步骤改一个输入观察输出变化。
+
+```python
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras.preprocessing import text_to_word_sequence, one_hot
+import torch
+from gensim.models import Word2Vec
+import matplotlib.pyplot as plt
+from sklearn.manifold import TSNE
+
+# ==================== 简单词嵌入演示 ====================
+
+# 示例语料库
+sentences = [
+    "king man woman queen".split(),
+    "paris france london england".split(),
+    "cat kitten dog puppy".split(),
+    "apple fruit carrot vegetable".split(),
+    "happy joyful sad sorrowful".split()
+]
+
+# 使用Gensim训练Word2Vec模型
+w2v_model = Word2Vec(sentences, vector_size=50, window=3, min_count=1, workers=4)
+
+# 查看词向量
+print("国王的词向量前10维:", w2v_model.wv['king'][:10])
+print("\n词汇表:", list(w2v_model.wv.key_to_index.keys()))
+
+# 计算词语相似度
+print("\n--- 词语相似度 ---")
+print(f"king与queen的相似度: {w2v_model.wv.similarity('king', 'queen'):.4f}")
+print(f"king与apple的相似度: {w2v_model.wv.similarity('king', 'apple'):.4f}")
+print(f"cat与dog的相似度: {w2v_model.wv.similarity('cat', 'dog'):.4f}")
+
+# 词向量类比：king - man + woman ≈ queen
+try:
+    result = w2v_model.wv.most_similar(
+        positive=['king', 'woman'], 
+        negative=['man'], 
+        topn=1
+    )
+    print(f"\nking - man + woman ≈ {result[0][0]} (相似度: {result[0][1]:.4f})")
+except KeyError as e:
+    print(f"\n类比计算失败（词汇量太小）: {e}")
+
+# 可视化词向量（降维到2D）
+words = list(w2v_model.wv.key_to_index.keys())
+vectors = np.array([w2v_model.wv[word] for word in words])
+
+tsne = TSNE(n_components=2, random_state=42, perplexity=min(5, len(words)-1))
+vectors_2d = tsne.fit_transform(vectors)
+
+plt.figure(figsize=(10, 8))
+for i, word in enumerate(words):
+    plt.scatter(vectors_2d[i, 0], vectors_2d[i, 1])
+    plt.annotate(word, xy=(vectors_2d[i, 0], vectors_2d[i, 1]))
+plt.title('Word Embeddings Visualization (t-SNE)')
+plt.savefig('word_embeddings.png', dpi=150, bbox_inches='tight')
+plt.show()
+
+# ==================== TensorFlow/Keras中的Embedding层 ====================
+
+# 准备数据
+texts = ["I love this movie", "Terrible film waste of time", "Great acting and story"]
+labels = [1, 0, 1]  # 1=positive, 0=negative
+
+# 构建词汇表
+vocab_size = 1000
+max_length = 20
+
+# 文本向量化
+vectorize_layer = tf.keras.layers.TextVectorization(
+    max_tokens=vocab_size,
+    output_mode='int',
+    output_sequence_length=max_length
+)
+vectorize_layer.adapt(texts)
+
+# 查看词汇映射
+vocab = vectorize_layer.get_vocabulary()
+print("\n词汇表前20个词:", vocab[:20])
+
+# 将文本转换为索引序列
+sequences = vectorize_layer(texts)
+print("\n文本对应的索引序列:")
+for i, seq in enumerate(sequences):
+    print(f"  '{texts[i]}' -> {seq.numpy()}")
+
+# 创建Embedding层
+embedding_dim = 16
+embedding_layer = tf.keras.layers.Embedding(
+    input_dim=vocab_size,
+    output_dim=embedding_dim,
+    input_length=max_length
+)
+
+# 获取嵌入向量
+embedded = embedding_layer(sequences)
+print(f"\n嵌入向量形状: {embedded.shape}")  # (batch_size, max_length, embedding_dim)
+```
+
+## 时间/空间复杂度或性能分析
+
+- 用本课方案处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
+- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
+
+## 常见误区与易错点
+
+| 错误做法 | 典型现象 | 修复方向 |
+| --- | --- | --- |
+| 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
+| 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
+| 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
+
+## 与其他知识点的关系
+
+本课与分类「ml_practice」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
+
+## 自测题与参考答案
+
+以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
+
+## 考点精讲
+
+### 考点 1
+
+关于词嵌入（Word Embedding），以下哪项描述是正确的？
+
+A. Word2Vec只能捕捉词语的语法特征，无法捕捉语义特征  
+B. 词嵌入向量中的每个维度都有明确的语言学含义（如第1维表示性别）  
+C. 词嵌入的核心优势是将离散符号映射到连续空间，使语义相似的词向量距离更近 ✅  
+D. One-hot编码比词嵌入更能有效表示词语之间的语义关系  
+
+**正确答案：** C
+
+**解析：** 词嵌入的核心思想是将高维稀疏的one-hot向量映射到低维稠密的连续向量空间，在这个空间中，语义相似的词（如"猫"和"狗"）的向量距离较近，可以通过余弦相似度或欧氏距离来衡量。这使得模型能够泛化到未见过的词语组合。选项A错误，Word2Vec既能捕捉语法也能捕捉语义；选项B错误，单个维度通常没有明确的可解释含义，语义分布在多个维度上；选项D错误，one-hot向量之间正交，无法体现语义相似性。
+
+### 考点 2
+
+LSTM中的"门控机制"不包括以下哪一项？
+
+A. 输入门（Input Gate）  
+B. 遗忘门（Forget Gate）  
+C. 输出门（Output Gate）  
+D. 更新门（Update Gate） ✅  
+
+**正确答案：** D
+
+**解析：** 标准LSTM包含三个门：遗忘门决定丢弃多少旧记忆，输入门决定保留多少新信息，输出门决定当前时刻输出什么内容。这三个门协同工作，使LSTM能够有效处理长期依赖问题。"更新门"是GRU（Gated Recurrent Unit）中的概念，GRU是LSTM的简化变体，它将遗忘门和输入门合并为一个更新门，减少了参数数量但保持了类似的性能。所以选项D不属于LSTM的门控机制。
+
+### 考点 3
+
+在使用BERT进行文本分类时，为什么通常使用[CLS] token的输出作为整个句子的表示？
+
+A. 因为[CLS] token位于序列末尾，包含了所有后续信息  
+B. 因为[CLS] token在预训练时被专门设计用于聚合整个序列的信息 ✅  
+C. 因为[CLS] token的维度比其他token更高  
+D. 这是一种随意选择，使用任何token的输出效果都一样  
+
+**正确答案：** B
+
+**解析：** 在BERT的预训练任务中，[CLS]（classification）token被放置在序列开头，其最终隐藏状态被用作整个序列的聚合表示，特别是在下一句预测（NSP）任务中。虽然理论上可以使用所有token输出的平均值或最大值，但实践证明[CLS] token经过预训练已经学会了如何整合全局信息，因此在微调分类任务时直接使用它是最常见的做法。选项A错误，[CLS]在开头而非末尾；选项C错误，所有token的向量维度相同；选项D错误，不同选择确实会影响性能。
+
+### 考点 4
+
+关于注意力机制（Attention），以下说法错误的是？
+
+A. 自注意力（Self-Attention）允许序列中的每个位置同时关注所有其他位置  
+B. 注意力权重之和必须等于1，因此通常使用softmax函数  
+C. Transformer完全依赖注意力机制，不再使用任何循环或卷积结构  
+D. 注意力机制的计算复杂度与序列长度成线性关系O(n) ✅  
+
+**正确答案：** D
+
+**解析：** 标准自注意力机制需要计算序列中每对token之间的关系，因此计算复杂度是O(n²)，其中n是序列长度。这是Transformer处理超长文本时的主要瓶颈，也是研究者们提出线性注意力、稀疏注意力等改进方法的原因。选项A正确，这正是自注意力的核心优势；选项B正确，softmax确保权重形成概率分布；选项C正确，Transformer的编码器堆栈只包含多头自注意力和前馈网络。
+
+### 考点 5
+
+在NLP任务的数据预处理中，以下哪种操作可能会损害情感分析的效果？
+
+A. 将所有文本转换为小写  
+B. 去除标点符号  
+C. 去除停用词（如"not"、"very"、"really"） ✅  
+D. 进行词干提取（stemming）  
+
+**正确答案：** C
+
+**解析：** 在情感分析中，某些停用词实际上携带重要的情感信息。例如，"not"是否定词，会反转后续形容词的情感极性（"not good" vs "good"）；"very"、"really"等程度副词会强化情感强度。如果去除这些词，会导致情感判断错误。相比之下，在主题分类或信息检索任务中，去除停用词通常是有益的，因为它们不包含太多区分性信息。选项A、B、D在某些情况下也可能有影响，但通常不如C严重。
+
+## 术语速查
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| NLP | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 词嵌入 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| Transformer | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| BERT | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 情感分析 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+
+## 参考资料与复核
+
+- [本课资料锚点 ml_natural_language_processing](https://zh.wikipedia.org/w/index.php?search=ml_natural_language_processing)
+
+- 官方/权威资料：[scikit-learn 用户手册](https://scikit-learn.org/stable/user_guide.html)
+- 主题延伸：[关于「词嵌入」的检索页](https://zh.wikipedia.org/w/index.php?search=%E8%AF%8D%E5%B5%8C%E5%85%A5)
+- 本课索引词：[锚点 ml_natural_language_processing](https://scikit-learn.org/stable/user_guide.html#NLP)
+- 最后复核：2026-10-04
+- 下次复核：2026-12-04
+
+## 内容元数据
+
+- 内容更新时间：2026-10-06
+
+- 内容版本：v2.0
+- 课程标识：ml_natural_language_processing
+- 所属分类：ml_practice
+- 学习阶段：基础
+- 建议用时：55 分钟

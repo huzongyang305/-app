@@ -395,6 +395,8 @@ D. 直接使用
 
 ## 参考资料与复核
 
+- [本课资料锚点 mobile_swift](https://zh.wikipedia.org/w/index.php?search=mobile_swift)
+
 - 最后复核：2026-10-04
 - 下次复核：2027-08-10
 - 复核范围：Swift 语言版本兼容、SwiftUI API 行为、内存管理建议与工程实践

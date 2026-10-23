@@ -257,11 +257,11 @@ Expanded 的 flex 参数默认值是什么？如果三个子节点的 flex 分�
 ### 考点 1
 
 题目：Row 与 Column 分别沿哪个方向排列子节点？
-A. 两者都沿水平方向，只是默认间距不同
-B. Row 沿水平主轴，Column 沿垂直主轴排列
-C. 两者都沿垂直方向，只是交叉轴对齐不同
-D. Row 沿垂直主轴，Column 沿水平主轴排列
-正确答案：B
+A. 两者都沿水平方向，只是默认间距不同  
+B. Row 沿垂直主轴，Column 沿水平主轴排列  
+C. 两者都沿垂直方向，只是交叉轴对齐不同  
+D. Row 沿水平主轴，Column 沿垂直主轴排列  
+正确答案：D
 
 判断依据：Row 的主轴是水平方向，Column 的主轴是垂直方向。这是两者最根本的区别。
 
@@ -339,6 +339,8 @@ D. 按 flex 比例瓜分主轴上的剩余空间
 - 相关主题：Flutter 布局入门、移动开发、入门练习
 
 ## 参考资料与复核
+
+- [本课资料锚点 flutter_layout_intro](https://zh.wikipedia.org/w/index.php?search=flutter_layout_intro)
 
 - 最后复核：2026-10-04
 - 下次复核：2027-08-10

@@ -1,4 +1,6 @@
-# Next.js服务端渲染 / Next.js Server-Side Rendering
+# Next.js服务端渲染
+
+![Next.js服务端渲染示意：lesson network ipv6](images/lesson_network_ipv6.webp)
 
 ## 章节摘要
 
@@ -842,7 +844,7 @@ D. 以上都正确
 
 ### 问题2
 
-以下代码有什么问题？
+Next.js 的 getServerSideProps 里读取 window.innerWidth，运行时会发生什么？
 
 ```jsx
 export default function Page({ data }) {
@@ -914,3 +916,169 @@ D. ISR只能用于getServerSideProps
 **正确答案：B**
 
 **详细解释：** ISR是Next.js的独特功能，结合了SSG的速度和SSR的数据新鲜度。当设置了`revalidate`后，页面在后台异步重新生成，在此期间用户看到的仍然是旧的缓存版本（选项B正确）。选项A错误，revalidate为0表示每次请求都重新验证。选项C错误，ISR是按时间间隔触发，不是每次访问。选项D错误，ISR用于getStaticProps，而非getServerSideProps。ISR特别适合博客、电商产品等更新频率中等的场景。
+
+## 本节知识框架
+
+**课程定位**：分类「frontend_frameworks」· 学习阶段 基础 · 建议用时 50 分钟。
+
+本课主线：对比SSR/CSR/SSG渲染策略，掌握Next.js App Router和API Routes开发。
+
+### 复习清单
+
+- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
+- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
+
+## 核心概念定义
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| Next.js | 对比SSR/CSR/SSG渲染策略，掌握Next.js App Router和A相关：正文给出可操作定义与适用边界。 |
+| SSR | 对比SSR/CSR/SSG渲染策略，掌握Next.js App Router和A相关：正文给出可操作定义与适用边界。 |
+| SSG | 对比SSR/CSR/SSG渲染策略，掌握Next.js App Router和A相关：正文给出可操作定义与适用边界。 |
+| App Router | 对比SSR/CSR/SSG渲染策略，掌握Next.js App Router和A相关：正文给出可操作定义与适用边界。 |
+| 服务端渲染 | 对比SSR/CSR/SSG渲染策略，掌握Next.js App Router和A相关：正文给出可操作定义与适用边界。 |
+
+## 原理与运行机制
+
+正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
+
+## 典型应用场景
+
+- 结合「Next.js服务端渲染」的常见落地场景与选型边界，详见正文各章节的对比讨论。
+- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
+
+## 代码/协议/SQL 示例
+
+正文首个示例可作为最小验证起点（原样保留在上方章节）：先跑通，再改一个输入观察输出变化。
+
+```jsx
+// app/page.jsx
+export default function Home() {
+  return (
+    <main>
+      <h1>Welcome to Next.js!</h1>
+      <p>This is my first Next.js page.</p>
+    </main>
+  );
+}
+```
+
+## 时间/空间复杂度或性能分析
+
+- 用本课方案处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
+- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
+
+## 常见误区与易错点
+
+| 错误做法 | 典型现象 | 修复方向 |
+| --- | --- | --- |
+| 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
+| 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
+| 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
+
+## 与其他知识点的关系
+
+本课与分类「frontend_frameworks」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
+
+## 自测题与参考答案
+
+以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
+
+## 考点精讲
+
+### 考点 1
+
+关于Next.js的渲染策略，以下说法正确的是？
+
+A. SSR适合内容频繁变化的页面，如新闻网站  
+B. SSG适合完全静态的内容，如公司官网首页  
+C. CSR适合高度交互的应用，如在线游戏  
+D. 以上都正确 ✅  
+
+**正确答案：** D
+
+**解析：** 三种渲染策略各有适用场景。SSR（服务端渲染）每次请求都重新生成HTML，适合需要实时数据的场景，如新闻、股票行情。SSG（静态站点生成）在构建时生成HTML，适合内容不常变化的页面，如博客、文档。CSR（客户端渲染）依赖JavaScript动态渲染，适合交互密集的应用，如仪表盘、游戏。Next.js的强大之处在于可以在同一应用中混合使用这些策略，为每个页面选择最优方案。
+
+### 考点 2
+
+Next.js 的 getServerSideProps 里读取 window.innerWidth，运行时会发生什么？
+
+A. getServerSideProps返回值格式错误  
+B. 在服务端代码中访问了window对象 ✅  
+C. data没有正确传递给组件  
+D. 缺少必要的导入语句  
+
+**正确答案：** B
+
+**解析：** `getServerSideProps`在Node.js服务器上执行，而不是在浏览器中。因此它无法访问浏览器特有的API，如`window`、`document`、`localStorage`等。尝试访问这些API会导致运行时错误。如果需要根据屏幕尺寸做适配，应该在客户端组件中使用`useEffect`或CSS媒体查询。正确的做法是移除`window.innerWidth`这行代码，或在客户端处理响应式逻辑。
+
+### 考点 3
+
+关于App Router的布局系统，以下说法错误的是？
+
+A. layout.jsx会在路由切换时保持状态  
+B. 每个路由段都可以有自己的layout  
+C. layout必须包含children参数  
+D. layout中可以随意使用useState和useEffect ✅  
+
+**正确答案：** D
+
+**解析：** App Router默认使用React Server Components，这意味着layout默认是在服务端渲染的。在服务端组件中不能使用useState、useEffect等客户端Hooks。如果需要在layout中使用这些Hooks，必须在文件顶部添加`'use client'`指令，将其转换为客户端组件。选项A、B、C都是正确的：layout确实会在导航时保持状态，支持嵌套布局，且必须接收并渲染children。
+
+### 考点 4
+
+Next.js Image组件相比普通img标签的优势不包括？
+
+A. 自动转换为WebP/AVIF格式  
+B. 根据设备像素比提供合适分辨率  
+C. 自动添加alt属性提升可访问性 ✅  
+D. 懒加载非首屏图片  
+
+**正确答案：** C
+
+**解析：** Next.js Image组件提供了多项性能优化：自动格式转换（选项A）、响应式图片（选项B）、懒加载（选项D）、防止布局偏移等。但它不会自动添加alt属性——开发者仍然需要手动提供有意义的alt文本以提升可访问性。这是故意的设计，因为AI无法准确判断图片内容，强制要求开发者思考图片的语义含义。其他三个选项都是Image组件的真实优势。
+
+### 考点 5
+
+关于增量静态再生（ISR），以下描述正确的是？
+
+A. revalidate设置为0表示永不更新  
+B. 重新生成期间旧页面仍然可用 ✅  
+C. 每次访问都会触发重新生成  
+D. ISR只能用于getServerSideProps  
+
+**正确答案：** B
+
+**解析：** ISR是Next.js的独特功能，结合了SSG的速度和SSR的数据新鲜度。当设置了`revalidate`后，页面在后台异步重新生成，在此期间用户看到的仍然是旧的缓存版本（选项B正确）。选项A错误，revalidate为0表示每次请求都重新验证。选项C错误，ISR是按时间间隔触发，不是每次访问。选项D错误，ISR用于getStaticProps，而非getServerSideProps。ISR特别适合博客、电商产品等更新频率中等的场景。
+
+## 术语速查
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| Next.js | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| SSR | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| SSG | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| App Router | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 服务端渲染 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+
+## 参考资料与复核
+
+- [本课资料锚点 frontend_nextjs_ssr](https://zh.wikipedia.org/w/index.php?search=frontend_nextjs_ssr)
+
+- 官方/权威资料：[web.dev 性能指南](https://web.dev/)
+- 主题延伸：[关于「SSR」的检索页](https://zh.wikipedia.org/w/index.php?search=SSR)
+- 本课索引词：[锚点 frontend_nextjs_ssr](https://web.dev/#Next.js)
+- 最后复核：2026-10-04
+- 下次复核：2027-03-24
+
+## 内容元数据
+
+- 内容更新时间：2026-10-06
+
+- 内容版本：v2.0
+- 课程标识：frontend_nextjs_ssr
+- 所属分类：frontend_frameworks
+- 学习阶段：基础
+- 建议用时：50 分钟
+

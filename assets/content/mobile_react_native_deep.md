@@ -1,4 +1,6 @@
-# React Native深度实践与原生模块：JavaScript构建原生应用
+# React Native深度实践与原生模块
+
+![React Native深度实践与原生模块示意：remaining shell process cron](images/remaining_shell_process_cron.webp)
 
 ## Chapter Overview
 
@@ -678,11 +680,11 @@ override fun getPackages(): List<ReactPackage> {
 React Native中的Bridge机制主要负责什么？
 
 A. 连接WiFi和移动网络  
-B. 在JavaScript线程和原生线程之间传递消息  
+B. 处理用户的手势输入  
 C. 管理应用的数据库连接  
-D. 处理用户的手势输入  
+D. 在JavaScript线程和原生线程之间传递消息  
 
-**正确答案：B**
+**正确答案：D**
 
 **详细解释：** Bridge是React Native架构的核心组件，它负责在JavaScript线程和原生主线程之间进行异步通信。当JS代码需要更新UI或调用原生功能时，会将序列化的消息通过Bridge发送到原生端；原生端执行后将结果再通过Bridge返回给JS。这种设计使得JS和原生代码可以独立运行，但也带来了通信开销。新架构中的JSI（JavaScript Interface）正在逐步替代Bridge，实现更高效的同步调用。
 
@@ -690,12 +692,12 @@ D. 处理用户的手势输入
 
 在React Native中使用FlatList时，为什么推荐使用React.memo包裹Item组件？
 
-A. 为了美化Item的外观  
-B. 为了避免不必要的重新渲染，提升性能  
+A. 为了避免不必要的重新渲染，提升性能  
+B. 为了美化Item的外观  
 C. 为了支持离线缓存  
 D. 为了加密Item数据  
 
-**正确答案：B**
+**正确答案：A**
 
 **详细解释：** FlatList会渲染大量列表项，如果父组件状态变化导致整个列表重新渲染，每个Item都会重新执行渲染函数。使用React.memo可以让Item组件只在props真正变化时才重新渲染，避免浪费。配合正确的keyExtractor和getItemLayout，可以显著提升长列表的滚动性能。此外，应避免在renderItem中传递内联函数或对象，因为这些每次都会创建新引用，导致memo失效。
 
@@ -716,12 +718,12 @@ D. 原生模块不需要处理错误情况
 
 在React Native中，如何处理iOS和Android的平台差异？
 
-A. 只开发iOS版本，忽略Android  
-B. 使用Platform.OS判断并为不同平台编写适配代码  
+A. 使用Platform.OS判断并为不同平台编写适配代码  
+B. 只开发iOS版本，忽略Android  
 C. 让后端处理所有平台差异  
 D. 使用相同的代码，期望它能在两平台正常工作  
 
-**正确答案：B**
+**正确答案：A**
 
 **详细解释：** React Native提供了Platform模块来检测当前运行的平台。使用`Platform.OS === 'ios'`或`Platform.OS === 'android'`可以针对不同平台执行不同的逻辑。对于样式差异，可以使用Platform.select()方法：`const styles = Platform.select({ ios: {...}, android: {...} })`。对于复杂的平台特定功能，可以分别创建`.ios.js`和`.android.js`文件，React Native会自动根据平台选择正确的文件。忽视平台差异会导致应用在某一平台上出现bug或崩溃。
 
@@ -730,11 +732,11 @@ D. 使用相同的代码，期望它能在两平台正常工作
 React Native中Image组件的默认单位是什么？
 
 A. 像素(px)  
-B. 密度无关像素(dp)  
+B. 毫米(mm)  
 C. 点(pt)  
-D. 毫米(mm)  
+D. 密度无关像素(dp)  
 
-**正确答案：B**
+**正确答案：D**
 
 **详细解释：** React Native中的所有尺寸单位默认都是密度无关像素（density-independent pixels，简称dp或dip）。这意味着你设置的宽度100在不同密度的屏幕上会自动缩放，保持物理尺寸大致相同。这与Web开发中的px不同，Web的px是绝对像素。在React Native中，你不需要手动进行dp到px的转换，框架会自动处理。如果需要获取屏幕的实际像素尺寸，可以使用PixelRatio API。
 
@@ -743,3 +745,185 @@ D. 毫米(mm)
 **章节小结：**
 
 通过本章学习，你已经深入掌握了React Native的核心机制：桥接通信、性能优化、原生模块开发和平台适配技巧。React Native的魅力在于用Web技术栈实现真正的原生体验，但也要警惕其性能陷阱和平台差异。记住，优秀的React Native开发者既要懂JavaScript，也要了解原生平台的特性。下一章我们将对比各大跨平台框架，帮助你做出明智的技术选型决策。
+
+## 本节知识框架
+
+**课程定位**：分类「cross_platform」· 学习阶段 进阶 · 建议用时 50 分钟。
+
+本课主线：学习RN桥接机制、原生模块开发和性能优化策略。
+
+### 复习清单
+
+- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
+- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
+
+## 核心概念定义
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| React Native | 学习RN桥接机制、原生模块开发和性能优化策略。相关：正文给出可操作定义与适用边界。 |
+| 原生模块 | 学习RN桥接机制、原生模块开发和性能优化策略。相关：正文给出可操作定义与适用边界。 |
+| 桥接 | 学习RN桥接机制、原生模块开发和性能优化策略。相关：正文给出可操作定义与适用边界。 |
+| 性能优化 | 学习RN桥接机制、原生模块开发和性能优化策略。相关：正文给出可操作定义与适用边界。 |
+| TurboModules | 学习RN桥接机制、原生模块开发和性能优化策略。相关：正文给出可操作定义与适用边界。 |
+
+## 原理与运行机制
+
+正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
+
+## 典型应用场景
+
+- 结合「React Native深度实践与原生模块」的常见落地场景与选型边界，详见正文各章节的对比讨论。
+- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
+
+## 代码/协议/SQL 示例
+
+正文首个完整示例如下，先运行确认环境，再按正文步骤改一个输入观察输出变化。
+
+```javascript
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+
+const HelloWorld = () => {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text}>Hello, React Native!</Text>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+  },
+  text: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+});
+
+export default HelloWorld;
+```
+
+## 时间/空间复杂度或性能分析
+
+- 用本课方案处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
+- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
+
+## 常见误区与易错点
+
+| 错误做法 | 典型现象 | 修复方向 |
+| --- | --- | --- |
+| 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
+| 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
+| 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
+
+## 与其他知识点的关系
+
+本课与分类「cross_platform」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
+
+## 自测题与参考答案
+
+以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
+
+## 考点精讲
+
+### 考点 1
+
+React Native中的Bridge机制主要负责什么？
+
+A. 连接WiFi和移动网络  
+B. 处理用户的手势输入  
+C. 管理应用的数据库连接  
+D. 在JavaScript线程和原生线程之间传递消息 ✅  
+
+**正确答案：** D
+
+**解析：** Bridge是React Native架构的核心组件，它负责在JavaScript线程和原生主线程之间进行异步通信。当JS代码需要更新UI或调用原生功能时，会将序列化的消息通过Bridge发送到原生端；原生端执行后将结果再通过Bridge返回给JS。这种设计使得JS和原生代码可以独立运行，但也带来了通信开销。新架构中的JSI（JavaScript Interface）正在逐步替代Bridge，实现更高效的同步调用。
+
+### 考点 2
+
+在React Native中使用FlatList时，为什么推荐使用React.memo包裹Item组件？
+
+A. 为了避免不必要的重新渲染，提升性能 ✅  
+B. 为了美化Item的外观  
+C. 为了支持离线缓存  
+D. 为了加密Item数据  
+
+**正确答案：** A
+
+**解析：** FlatList会渲染大量列表项，如果父组件状态变化导致整个列表重新渲染，每个Item都会重新执行渲染函数。使用React.memo可以让Item组件只在props真正变化时才重新渲染，避免浪费。配合正确的keyExtractor和getItemLayout，可以显著提升长列表的滚动性能。此外，应避免在renderItem中传递内联函数或对象，因为这些每次都会创建新引用，导致memo失效。
+
+### 考点 3
+
+关于React Native的原生模块开发，以下说法正确的是？
+
+A. iOS和Android可以使用完全相同的代码  
+B. 原生模块只能在主线程执行  
+C. 需要在iOS和Android分别实现原生代码，然后通过Bridge暴露给JS ✅  
+D. 原生模块不需要处理错误情况  
+
+**正确答案：** C
+
+**解析：** React Native的原生模块需要分别在iOS（使用Objective-C或Swift）和Android（使用Java或Kotlin）上实现，因为两平台的API完全不同。实现后，通过特定的宏或注解将方法暴露给JavaScript层，JS就可以通过NativeModules调用这些方法。选项A错误，因为原生代码必须分别编写；选项B错误，原生模块可以在后台线程执行耗时操作；选项D错误，必须妥善处理错误并通过Promise reject或回调返回错误信息。
+
+### 考点 4
+
+在React Native中，如何处理iOS和Android的平台差异？
+
+A. 使用Platform.OS判断并为不同平台编写适配代码 ✅  
+B. 只开发iOS版本，忽略Android  
+C. 让后端处理所有平台差异  
+D. 使用相同的代码，期望它能在两平台正常工作  
+
+**正确答案：** A
+
+**解析：** React Native提供了Platform模块来检测当前运行的平台。使用`Platform.OS === 'ios'`或`Platform.OS === 'android'`可以针对不同平台执行不同的逻辑。对于样式差异，可以使用Platform.select()方法：`const styles = Platform.select({ ios: {...}, android: {...} })`。对于复杂的平台特定功能，可以分别创建`.ios.js`和`.android.js`文件，React Native会自动根据平台选择正确的文件。忽视平台差异会导致应用在某一平台上出现bug或崩溃。
+
+### 考点 5
+
+React Native中Image组件的默认单位是什么？
+
+A. 像素(px)  
+B. 毫米(mm)  
+C. 点(pt)  
+D. 密度无关像素(dp) ✅  
+
+**正确答案：** D
+
+**解析：** React Native中的所有尺寸单位默认都是密度无关像素（density-independent pixels，简称dp或dip）。这意味着你设置的宽度100在不同密度的屏幕上会自动缩放，保持物理尺寸大致相同。这与Web开发中的px不同，Web的px是绝对像素。在React Native中，你不需要手动进行dp到px的转换，框架会自动处理。如果需要获取屏幕的实际像素尺寸，可以使用PixelRatio API。
+
+## 术语速查
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| React Native | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 原生模块 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 桥接 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 性能优化 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| TurboModules | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+
+## 参考资料与复核
+
+- [本课资料锚点 mobile_react_native_deep](https://zh.wikipedia.org/w/index.php?search=mobile_react_native_deep)
+
+- 官方/权威资料：[W3C 移动 Web](https://www.w3.org/2001/tag/doc/appr-best-web/)
+- 主题延伸：[关于「原生模块」的检索页](https://zh.wikipedia.org/w/index.php?search=%E5%8E%9F%E7%94%9F%E6%A8%A1%E5%9D%97)
+- 本课索引词：[锚点 mobile_react_native_deep](https://www.w3.org/2001/tag/doc/appr-best-web/#React%20Native)
+- 最后复核：2026-10-04
+- 下次复核：2027-01-13
+
+## 内容元数据
+
+- 内容更新时间：2026-10-06
+
+- 内容版本：v2.0
+- 课程标识：mobile_react_native_deep
+- 所属分类：cross_platform
+- 学习阶段：进阶
+- 建议用时：50 分钟

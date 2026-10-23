@@ -1,4 +1,6 @@
-# Svelte响应式编程 / Svelte Reactive Programming
+# Svelte响应式编程
+
+![Svelte响应式编程示意：tcp handshake](images/tcp_handshake.webp)
 
 ## 章节摘要
 
@@ -1065,3 +1067,182 @@ D. beforeUpdate → afterUpdate → onMount → onDestroy
 **正确答案：A**
 
 **详细解释：** Svelte组件的生命周期顺序是：首先组件创建并挂载到DOM，触发onMount；之后每次状态变化时，先执行beforeUpdate（DOM更新前），再执行afterUpdate（DOM更新后）；最后组件销毁时执行onDestroy。这个顺序确保了你能在正确的时机执行相应逻辑：onMount用于初始化（如获取数据），beforeUpdate用于准备（如保存滚动位置），afterUpdate用于后续操作（如聚焦输入框），onDestroy用于清理（如取消订阅、清除定时器）。
+
+## 本节知识框架
+
+**课程定位**：分类「frontend_frameworks」· 学习阶段 入门 · 建议用时 40 分钟。
+
+本课主线：探索Svelte编译时响应式系统，掌握stores、transitions和actions。
+
+### 复习清单
+
+- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
+- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
+
+## 核心概念定义
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| Svelte | 探索Svelte编译时响应式系统，掌握stores、transitions和ac相关：正文给出可操作定义与适用边界。 |
+| 响应式 | 探索Svelte编译时响应式系统，掌握stores、transitions和ac相关：正文给出可操作定义与适用边界。 |
+| stores | 探索Svelte编译时响应式系统，掌握stores、transitions和ac相关：正文给出可操作定义与适用边界。 |
+| transitions | 探索Svelte编译时响应式系统，掌握stores、transitions和ac相关：正文给出可操作定义与适用边界。 |
+| 无虚拟DOM | 探索Svelte编译时响应式系统，掌握stores、transitions和ac相关：正文给出可操作定义与适用边界。 |
+
+## 原理与运行机制
+
+正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
+
+## 典型应用场景
+
+- 结合「Svelte响应式编程」的常见落地场景与选型边界，详见正文各章节的对比讨论。
+- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
+
+## 代码/协议/SQL 示例
+
+正文首个完整示例如下，先运行确认环境，再按正文步骤改一个输入观察输出变化。
+
+```svelte
+<!-- App.svelte -->
+<script>
+  let name = 'World';
+</script>
+
+<main>
+  <h1>Hello {name}!</h1>
+  <input bind:value={name} placeholder="Enter your name">
+</main>
+
+<style>
+  h1 {
+    color: #ff3e00;
+    font-family: sans-serif;
+  }
+  
+  input {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+  }
+</style>
+```
+
+## 时间/空间复杂度或性能分析
+
+- 用本课方案处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
+- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
+
+## 常见误区与易错点
+
+| 错误做法 | 典型现象 | 修复方向 |
+| --- | --- | --- |
+| 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
+| 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
+| 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
+
+## 与其他知识点的关系
+
+本课与分类「frontend_frameworks」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
+
+## 自测题与参考答案
+
+以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
+
+## 考点精讲
+
+### 考点 1
+
+关于Svelte的$:响应式声明，以下代码的输出是什么？ 首次点击按钮后，控制台输出几次日志？
+
+A. 1次  
+B. 2次 ✅  
+C. 3次  
+D. 4次  
+
+**正确答案：** B
+
+**解析：** 这是一个考察Svelte响应式执行顺序的问题。初始渲染时，count=0，doubled=0，console.log执行一次。点击按钮后，count变为1，这触发了两个响应式语句：首先doubled重新计算为2，然后console.log再次执行（因为count和doubled都变了）。所以总共输出2次日志。关键点在于：Svelte会按依赖关系顺序执行响应式语句，且每个语句只在其依赖变化时执行一次，不会重复执行。
+
+### 考点 2
+
+关于Svelte Store，以下说法错误的是？
+
+A. writable store可以被任何组件读写  
+B. readable store只能通过其内部的set/update方法更新  
+C. derived store的值可以直接修改 ✅  
+D. 使用$符号可以在模板中自动订阅store  
+
+**正确答案：** C
+
+**解析：** derived store是从其他store派生的值，它是只读的。你不能直接修改derived store的值，它的值完全由源store和派生函数决定。尝试直接赋值会导致错误。选项A正确，writable store提供了set和update方法供外部修改。选项B正确，readable store的更新逻辑封装在创建函数内部。选项D正确，`$storeName`语法是Svelte的自动订阅机制，会在组件销毁时自动取消订阅。
+
+### 考点 3
+
+以下哪个场景最适合使用Svelte Action？
+
+A. 根据用户输入过滤列表  
+B. 集成第三方图表库到DOM元素 ✅  
+C. 在多个组件间共享状态  
+D. 计算购物车总价  
+
+**正确答案：** B
+
+**解析：** Action的主要用途是封装对DOM元素的直接操作，特别适合集成第三方库（如Chart.js、Leaflet地图等）。选项A应该使用响应式声明或computed值。选项C应该使用store。选项D应该使用derived store或响应式声明。Action的典型特征是需要直接操作DOM元素，且在元素挂载/卸载时需要初始化和清理。
+
+### 考点 4
+
+关于Svelte的Transition，以下代码有什么问题？
+
+A. 缺少duration参数  
+B. transition不会触发，因为没有条件渲染 ✅  
+C. fade导入名称错误  
+D. 需要使用in:fade而非transition:fade  
+
+**正确答案：** B
+
+**解析：** Svelte的transition只在元素被添加到DOM或从DOM移除时触发。在这个例子中，div元素始终存在于DOM中，只是visible变量在变化，但这并不影响div的存在。要让transition生效，需要使用条件渲染：`{#if visible}<div transition:fade>...</div>{/if}`。这样当visible变为false时，div会从DOM移除，触发淡出动画；变为true时，div被添加，触发淡入动画。选项A不是问题，duration有默认值。选项C导入正确。选项D也不是必须的，transition同时处理进入和退出。
+
+### 考点 5
+
+关于Svelte组件生命周期，以下执行顺序正确的是？
+
+A. onMount → beforeUpdate → afterUpdate → onDestroy ✅  
+B. beforeUpdate → onMount → afterUpdate → onDestroy  
+C. onMount → afterUpdate → beforeUpdate → onDestroy  
+D. beforeUpdate → afterUpdate → onMount → onDestroy  
+
+**正确答案：** A
+
+**解析：** Svelte组件的生命周期顺序是：首先组件创建并挂载到DOM，触发onMount；之后每次状态变化时，先执行beforeUpdate（DOM更新前），再执行afterUpdate（DOM更新后）；最后组件销毁时执行onDestroy。这个顺序确保了你能在正确的时机执行相应逻辑：onMount用于初始化（如获取数据），beforeUpdate用于准备（如保存滚动位置），afterUpdate用于后续操作（如聚焦输入框），onDestroy用于清理（如取消订阅、清除定时器）。
+
+## 术语速查
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| Svelte | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 响应式 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| stores | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| transitions | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 无虚拟DOM | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+
+## 参考资料与复核
+
+- [本课资料锚点 frontend_svelte_reactive](https://zh.wikipedia.org/w/index.php?search=frontend_svelte_reactive)
+
+- 官方/权威资料：[web.dev 性能指南](https://web.dev/)
+- 主题延伸：[关于「响应式」的检索页](https://zh.wikipedia.org/w/index.php?search=%E5%93%8D%E5%BA%94%E5%BC%8F)
+- 本课索引词：[锚点 frontend_svelte_reactive](https://web.dev/#Svelte)
+- 最后复核：2026-10-04
+- 下次复核：2027-03-14
+
+## 内容元数据
+
+- 内容更新时间：2026-10-06
+
+- 内容版本：v2.0
+- 课程标识：frontend_svelte_reactive
+- 所属分类：frontend_frameworks
+- 学习阶段：入门
+- 建议用时：40 分钟

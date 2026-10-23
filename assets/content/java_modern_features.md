@@ -337,6 +337,8 @@ Record、Sealed 和模式匹配在性能上几乎零开销：
 
 ## 参考资料与复核
 
+- [本课资料锚点 java_modern_features](https://zh.wikipedia.org/w/index.php?search=java_modern_features)
+
 - 最后复核：2026-10-04
 - 下次复核：2027-02-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

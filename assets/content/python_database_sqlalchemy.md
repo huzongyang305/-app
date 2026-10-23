@@ -346,12 +346,6 @@ Python 数据库与 SQLAlchemy 2.x（本课）
     └──→ 实战：FastAPI 订单服务（后续，共用 SQLite）
 ```
 
-### 容易混淆的相邻概念
-
-- **Engine vs Session**：Engine 是全局的调度中心（创建一次），Session 是临时的业务窗口（每次创建）。Engine 管连接，Session 管业务。
-- **Session vs 事务**：Session 是"工作单元"的概念（跟踪对象变化），事务是"原子性"的概念（要么全成功要么全回滚）。Session 包含事务。
-- **参数化查询 vs 连接池**：参数化查询解决安全问题（防注入），连接池解决性能问题（复用连接）。两者互不相关但经常同时出现。
-
 ## 自测题与参考答案
 
 > 先独立作答，再对照参考答案；答案都能在本课正文、术语表或错误表里找到依据。
@@ -402,7 +396,6 @@ Python 数据库与 SQLAlchemy 2.x（本课）
 - [ ] 能不看正文复述本课核心术语，并指出一个边界或反例
 - [ ] 能默写本课最重要的代码示例，并解释每一行的作用
 - [ ] 能说出本课内容和前后两课的联系
-
 
 ## 延伸阅读
 
@@ -475,6 +468,8 @@ Python 数据库与 SQLAlchemy 2.x（本课）
 | 内容更新时间 | 2026-10-06 |
 
 ## 参考资料与复核
+
+- [本课资料锚点 python_database_sqlalchemy](https://zh.wikipedia.org/w/index.php?search=python_database_sqlalchemy)
 
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：SQLAlchemy、SQLite、事务、连接池、Alembic。
 - 最后复核：2026-10-04

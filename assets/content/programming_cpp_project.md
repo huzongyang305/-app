@@ -437,7 +437,6 @@ double mean(const std::vector<double>& values) {
 
 **讲解**：断言（assert）是测试的基础设施。`assert(std::abs(mean({1,2,3}) - 2.0) < 1e-9)` 就是在说「我认为结果应该接近 2.0，如果不是就报错」。
 
-
 ## 延伸阅读
 
 想更直观地理解本课概念？推荐参阅以下图解专题：
@@ -465,6 +464,8 @@ double mean(const std::vector<double>& values) {
 - 相关主题：实战、CMake、CTest、sanitizer、工程结构
 
 ## 参考资料与复核
+
+- [本课资料锚点 cpp_project](https://zh.wikipedia.org/w/index.php?search=cpp_project)
 
 - 最后复核：2026-10-04
 - 下次复核：2027-05-10

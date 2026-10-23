@@ -1,4 +1,6 @@
-# 第五章：GraphQL入门与Apollo Server (Introduction to GraphQL and Apollo Server)
+# GraphQL入门与Apollo Server
+
+![GraphQL入门与Apollo Server示意：remaining cpp pointers](images/remaining_cpp_pointers.webp)
 
 ## 本章摘要
 
@@ -547,7 +549,7 @@ server.listen({ port: 4000 }).then(({ url }) => {
 ### 完整的Blog API示例
 
 **项目结构**：
-```
+```text
 graphql-blog-api/
 ├── src/
 │   ├── schema.js        # Schema定义
@@ -998,11 +1000,11 @@ D. 默认Resolver会自动返回父对象上同名的属性
 DataLoader主要解决了GraphQL中的什么问题？
 
 A. Schema验证失败  
-B. N+1查询导致的性能问题  
+B. Mutation执行顺序混乱  
 C. 客户端缓存失效  
-D. Mutation执行顺序混乱  
+D. N+1查询导致的性能问题  
 
-**正确答案：B**
+**正确答案：D**
 
 **详细解释：** DataLoader通过批处理（batching）和缓存（caching）机制，将多个相同类型的加载请求合并为一次数据库查询，有效解决了N+1查询问题。例如，当查询100个用户的文章时，DataLoader会将100次单独的查询合并为1次批量查询。
 
@@ -1010,11 +1012,182 @@ D. Mutation执行顺序混乱
 
 在GraphQL中，如何实现实时数据推送功能？
 
-A. 使用轮询（Polling）定期调用Query  
-B. 使用WebSocket建立长连接，配合Subscription类型  
+A. 使用WebSocket建立长连接，配合Subscription类型  
+B. 使用轮询（Polling）定期调用Query  
 C. 在Mutation中添加回调函数  
 D. 使用HTTP Server-Sent Events  
 
-**正确答案：B**
+**正确答案：A**
 
 **详细解释：** GraphQL的Subscription类型专门用于实时数据推送，底层通常基于WebSocket实现。客户端订阅某个事件后，当服务器端发生相应变化时，会通过WebSocket主动向客户端推送数据。虽然轮询也能实现类似效果，但效率低且不是GraphQL的原生方案。
+
+## 本节知识框架
+
+**课程定位**：分类「backend_development」· 学习阶段 进阶 · 建议用时 50 分钟。
+
+本课主线：对比GraphQL与REST，掌握Schema定义、查询/变更/订阅和DataLoader优化。
+
+### 复习清单
+
+- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
+- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
+
+## 核心概念定义
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| GraphQL | 对比GraphQL与REST，掌握Schema定义、查询/变更/订阅和DataL相关：正文给出可操作定义与适用边界。 |
+| Apollo Server | 对比GraphQL与REST，掌握Schema定义、查询/变更/订阅和DataL相关：正文给出可操作定义与适用边界。 |
+| SDL | 对比GraphQL与REST，掌握Schema定义、查询/变更/订阅和DataL相关：正文给出可操作定义与适用边界。 |
+| DataLoader | 对比GraphQL与REST，掌握Schema定义、查询/变更/订阅和DataL相关：正文给出可操作定义与适用边界。 |
+| N+1问题 | 对比GraphQL与REST，掌握Schema定义、查询/变更/订阅和DataL相关：正文给出可操作定义与适用边界。 |
+
+## 原理与运行机制
+
+正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
+
+## 典型应用场景
+
+- 结合「GraphQL入门与Apollo Server」的常见落地场景与选型边界，详见正文各章节的对比讨论。
+- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
+
+## 代码/协议/SQL 示例
+
+正文首个示例可作为最小验证起点（原样保留在上方章节）：先跑通，再改一个输入观察输出变化。
+
+```javascript
+// REST API: /api/users/123
+{
+  "id": 123,
+  "name": "张三",
+  "email": "zhangsan@example.com",
+  "phone": "13800138000",
+  "address": "北京市朝阳区xxx",
+  "age": 28,
+  "birthday": "1995-06-15",
+  "registrationDate": "2020-01-10",
+  "lastLoginTime": "2024-01-15T08:30:00Z",
+  "avatar": "https://cdn.example.com/avatar123.jpg",
+  // ... 还有20个字段，但前端只需要 name 和 email
+}
+```
+
+## 时间/空间复杂度或性能分析
+
+- 用本课方案处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
+- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
+
+## 常见误区与易错点
+
+| 错误做法 | 典型现象 | 修复方向 |
+| --- | --- | --- |
+| 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
+| 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
+| 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
+
+## 与其他知识点的关系
+
+本课与分类「backend_development」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
+
+## 自测题与参考答案
+
+以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
+
+## 考点精讲
+
+### 考点 1
+
+以下关于GraphQL和REST的比较，哪一项是正确的？
+
+A. GraphQL必须为每个资源创建独立的端点，而REST可以一次性获取多个资源  
+B. GraphQL允许客户端精确指定需要的字段，避免过度获取数据 ✅  
+C. REST API天然支持实时数据推送，而GraphQL需要额外配置  
+D. GraphQL没有类型系统，完全依赖运行时验证  
+
+**正确答案：** B
+
+**解析：** GraphQL的核心优势之一就是允许客户端在查询中精确指定所需的字段，服务器只会返回这些字段，避免了REST API常见的过度获取（over-fetching）问题。选项A正好说反了，REST需要为每个资源创建端点；选项C也反了，GraphQL内置Subscription支持实时数据；选项D错误，GraphQL有强类型Schema系统。
+
+### 考点 2
+
+在GraphQL Schema中，感叹号（!）的作用是什么？
+
+A. 表示该字段是主键  
+B. 表示该字段可以为null  
+C. 表示该字段是非空的（Non-Null） ✅  
+D. 表示该字段是只读的  
+
+**正确答案：** C
+
+**解析：** 在GraphQL SDL中，感叹号（!）表示该字段是非空类型（Non-Null）。例如 `username: String!` 意味着username字段不能为null，如果resolver返回null，GraphQL会抛出错误。这对于保证数据完整性非常有用。
+
+### 考点 3
+
+关于Apollo Server中的Resolver函数，以下说法错误的是？
+
+A. Resolver函数的第一个参数通常是父对象的值（parent/root）  
+B. Resolver可以通过context参数访问共享数据如DataLoader  
+C. 每个字段都必须显式定义Resolver函数 ✅  
+D. 默认Resolver会自动返回父对象上同名的属性  
+
+**正确答案：** C
+
+**解析：** GraphQL并不要求每个字段都定义Resolver。如果没有为某个字段提供自定义Resolver，GraphQL会使用默认Resolver，它会尝试从父对象中返回同名属性的值。只有当需要自定义逻辑（如数据库查询、数据转换）时才需要显式定义Resolver。
+
+### 考点 4
+
+DataLoader主要解决了GraphQL中的什么问题？
+
+A. Schema验证失败  
+B. Mutation执行顺序混乱  
+C. 客户端缓存失效  
+D. N+1查询导致的性能问题 ✅  
+
+**正确答案：** D
+
+**解析：** DataLoader通过批处理（batching）和缓存（caching）机制，将多个相同类型的加载请求合并为一次数据库查询，有效解决了N+1查询问题。例如，当查询100个用户的文章时，DataLoader会将100次单独的查询合并为1次批量查询。
+
+### 考点 5
+
+在GraphQL中，如何实现实时数据推送功能？
+
+A. 使用WebSocket建立长连接，配合Subscription类型 ✅  
+B. 使用轮询（Polling）定期调用Query  
+C. 在Mutation中添加回调函数  
+D. 使用HTTP Server-Sent Events  
+
+**正确答案：** A
+
+**解析：** GraphQL的Subscription类型专门用于实时数据推送，底层通常基于WebSocket实现。客户端订阅某个事件后，当服务器端发生相应变化时，会通过WebSocket主动向客户端推送数据。虽然轮询也能实现类似效果，但效率低且不是GraphQL的原生方案。
+
+## 术语速查
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| GraphQL | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| Apollo Server | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| SDL | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| DataLoader | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| N+1问题 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+
+## 参考资料与复核
+
+- [本课资料锚点 backend_graphql_apollo](https://zh.wikipedia.org/w/index.php?search=backend_graphql_apollo)
+
+- 官方/权威资料：[HTTP 规范](https://datatracker.ietf.org/doc/html/rfc9110)
+- 主题延伸：[关于「Apollo Server」的检索页](https://zh.wikipedia.org/w/index.php?search=Apollo%20Server)
+- 本课索引词：[锚点 backend_graphql_apollo](https://datatracker.ietf.org/doc/html/rfc9110#GraphQL)
+- 最后复核：2026-10-04
+- 下次复核：2026-11-09
+
+## 内容元数据
+
+- 内容更新时间：2026-10-06
+
+- 内容版本：v2.0
+- 课程标识：backend_graphql_apollo
+- 所属分类：backend_development
+- 学习阶段：进阶
+- 建议用时：50 分钟
+

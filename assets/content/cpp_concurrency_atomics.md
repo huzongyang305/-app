@@ -395,7 +395,6 @@ C++ 第一个程序（回顾基础、综合运用）
 
 **讲解**：代码中的 `std::lock_guard<std::mutex> lock(mtx)` 就是在建立同步关系——确保同一时刻只有一个线程能修改 `counter`。这是并发编程最基本、最重要的原则。
 
-
 ## 延伸阅读
 
 想更直观地理解本课概念？推荐参阅以下图解专题：
@@ -422,6 +421,8 @@ C++ 第一个程序（回顾基础、综合运用）
 - 相关主题：线程、atomic、内存序、条件变量
 
 ## 参考资料与复核
+
+- [本课资料锚点 cpp_concurrency_atomics](https://zh.wikipedia.org/w/index.php?search=cpp_concurrency_atomics)
 
 - 最后复核：2026-10-04
 - 下次复核：2027-05-10

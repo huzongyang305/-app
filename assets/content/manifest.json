@@ -61,11 +61,11 @@
               "question": "StatelessWidget 与 StatefulWidget 最本质的差别是？",
               "options": [
                 "StatefulWidget 不能在 const 构造中使用",
-                "StatefulWidget 通过 State 保存可变状态并触发重建",
+                "StatelessWidget 的 build 只会执行一次",
                 "StatelessWidget 无法接收构造参数和子 Widget",
-                "StatelessWidget 的 build 只会执行一次"
+                "StatefulWidget 通过 State 保存可变状态并触发重建"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "在 `Flutter Widget 入门` 第 3 题中，正确答案是「StatefulWidget 通过 State 保存可变状态并触发重建」。在「Flutter Widget 入门」第 3 题中，该判断与术语 `Widget` 对应：Flutter 界面的基本单元，用不可变的配置描述界面的一部分。在「Flutter Widget 入门」第 3 题中，错误表现方面，在 build 里发请求或改状态会造成每帧重复触发，出现闪烁甚至死循环，应按初始化放在 initState 或数据层，build 只描述界面修复。"
             },
             {
@@ -369,11 +369,11 @@
               "question": "Row 与 Column 分别沿哪个方向排列子节点？",
               "options": [
                 "两者都沿水平方向，只是默认间距不同",
-                "Row 沿水平主轴，Column 沿垂直主轴排列",
+                "Row 沿垂直主轴，Column 沿水平主轴排列",
                 "两者都沿垂直方向，只是交叉轴对齐不同",
-                "Row 沿垂直主轴，Column 沿水平主轴排列"
+                "Row 沿水平主轴，Column 沿垂直主轴排列"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "在 `Flutter 布局入门` 第 1 题中，正确答案是「Row 沿水平主轴，Column 沿垂直主轴排列」。在「Flutter 布局入门」第 1 题中，该判断与术语 `Row` 对应：把子节点沿水平方向排列的弹性布局组件。在「Flutter 布局入门」第 1 题中，错误表现方面，无约束嵌套可滚动组件会造成运行时抛出无界高度异常，应按给滚动区域明确约束，或用 Expanded 与固定高度限定修复。 在「Flutter 布局入门」第 1 题中，判断时先确认输入和适用范围，对照 `Flutter 布局入门`、`移动开发`、`入门练习` 复现一次，最后把错误表现与正确做法逐项对照。"
             },
             {
@@ -516,11 +516,11 @@
               "question": "flutter build appbundle 的产物格式是？",
               "options": [
                 ".jar",
-                ".aab",
+                ".ipa",
                 ".apk",
-                ".ipa"
+                ".aab"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "在 `实战：Flutter 打包发布 Android` 第 4 题中，正确答案是「.aab」。在「实战：Flutter 打包发布 Android」第 4 题中，该判断与术语 `Flutter` 对应：用 flutter build apk --analyze-size 查看各模块占比，优先处理体积最大的资源，App Bundle（--appbundle）让商店按设备下发，是发布到 Google Play 的首选形式。在「实战：Flutter 打包发布 Android」第 4 题中，错误表现方面，keystore 丢失会造成无法更新应用，应按多处离线备份修复。"
             },
             {
@@ -594,11 +594,11 @@
               "question": "在Flutter中，AnimationController的vsync参数的作用是什么？",
               "options": [
                 "控制动画播放速度",
-                "防止屏幕撕裂，确保动画帧与屏幕刷新同步",
+                "决定动画是否循环播放",
                 "设置动画的持续时间",
-                "决定动画是否循环播放"
+                "防止屏幕撕裂，确保动画帧与屏幕刷新同步"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "vsync参数接收一个TickerProvider，它的作用是确保动画的每一帧都与屏幕的垂直同步信号对齐。这样可以防止屏幕撕裂（tearing）现象，即画面的一部分显示旧帧而另一部分显示新帧。同时，当Widget不可见时（比如被导航到其他页面），vsync会自动暂停动画以节省资源。SingleTickerProviderStateMixin和TickerProviderStateMixin都实现了TickerProvider接口，可以传给vsync参数。"
             },
             {
@@ -641,12 +641,12 @@
               "type": "single",
               "question": "在iOS平台上使用Platform Channel时，为什么需要注意线程问题？",
               "options": [
-                "iOS不允许后台线程访问网络",
                 "FlutterMethodCallHandler可能在后台线程执行，但UI更新必须在主线程",
+                "iOS不允许后台线程访问网络",
                 "iOS的内存管理需要在特定线程进行",
                 "Swift语言本身不支持多线程"
               ],
-              "answer": 1,
+              "answer": 0,
               "explanation": "Flutter的Platform Channel机制中，Dart端的调用可能会在iOS的后台线程中被处理。然而，iOS的UIKit框架要求所有UI相关的操作必须在主线程执行。如果在后台线程尝试更新UI（比如修改UILabel的text），会导致未定义行为甚至崩溃。正确的做法是使用`DispatchQueue.main.async {}`将UI更新代码调度到主线程执行。Android方面，MethodChannel的回调通常也在主线程，但仍建议遵循最佳实践。"
             }
           ]
@@ -821,23 +821,23 @@
               "question": "关于移动端性能监控，以下哪个指标最能反映用户体验？",
               "options": [
                 "CPU使用率",
-                "FPS（帧率）",
+                "网络请求数量",
                 "内存占用",
-                "网络请求数量"
+                "FPS（帧率）"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "FPS（Frames Per Second，每秒帧数）直接反映了界面的流畅度。人眼对60fps的动画感觉流畅，低于30fps会明显感知卡顿。虽然CPU、内存和网络都是重要指标，但用户最直接感受到的是界面是否流畅滚动、动画是否顺滑。理想的性能监控应该综合多个指标：FPS反映渲染性能，启动时间反映响应速度，内存反映稳定性，网络反映数据加载效率。其中FPS是最直观的用户体验指标。"
             },
             {
               "type": "single",
               "question": "在React Native中，为什么FlatList比map渲染数组更适合长列表？",
               "options": [
-                "FlatList的API更简洁",
                 "FlatList支持虚拟渲染，只渲染可见区域的项",
+                "FlatList的API更简洁",
                 "FlatList可以自动排序数据",
                 "FlatList内置了网络请求功能"
               ],
-              "answer": 1,
+              "answer": 0,
               "explanation": "FlatList实现了虚拟渲染（Virtualization）机制，它只会创建和渲染当前可见区域内的列表项，当用户滚动时，会复用已卸载的组件实例而不是创建新的。这对于包含数百上千项的列表至关重要，可以大幅降低内存占用和渲染时间。相比之下，使用`data.map(item => <Item />)`会一次性渲染所有项，导致严重的性能问题和内存压力。FlatList还提供了getItemLayout、initialNumToRender等优化参数，进一步精细控制渲染行为。"
             }
           ]
@@ -4567,9 +4567,7 @@
           "difficulty": "进阶",
           "group": null,
           "order": 11,
-          "prerequisites": [
-            "python_errors_files"
-          ],
+          "prerequisites": [],
           "related": [
             "python_typing_testing"
           ],
@@ -5083,9 +5081,7 @@
               "explanation": "在 `Python 异常、日志与文件 I/O 进阶` 第 5 题中，正确答案是「捕获范围过宽且静默忽略，会掩盖输入错误和真正的程序缺陷」。在「Python 异常、日志与文件 I/O 进阶」第 5 题中，该判断与术语 `异常链` 对应：通过 raise from 或隐式上下文把新异常与原始异常关联起来的因果结构。在「Python 异常、日志与文件 I/O 进阶」第 5 题中，错误表现方面，捕获后静默跳过会造成在《Python 异常、日志与文件 I/O 进阶》里采用「写 except Exception: pass，把真正的程序错误和外部故障一起吞掉」时，捕获后静默跳过会表现为错误结果、异常中断或状态不一致，应按只捕获预期异常并记录上下文，其他异常继续向外传播修复。"
             }
           ],
-          "prerequisites": [
-            "python_errors_files"
-          ],
+          "prerequisites": [],
           "related": [
             "python_stdlib",
             "python_project_architecture"
@@ -13106,7 +13102,7 @@
             "超时"
           ],
           "difficulty": "高级",
-          "order": 17,
+          "order": 16,
           "quiz": [
             {
               "question": "无界队列的主要风险是什么？",
@@ -13217,7 +13213,7 @@
             "不可变"
           ],
           "difficulty": "高级",
-          "order": 18,
+          "order": 17,
           "quiz": [
             {
               "question": "按“现代 Java：Record、Sealed 与模式匹配”中 Record、Sealed、模式匹配 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。",
@@ -13332,7 +13328,7 @@
             "线程池"
           ],
           "difficulty": "高级",
-          "order": 19,
+          "order": 18,
           "quiz": [
             {
               "question": "围绕“Java 虚拟线程与结构化并发”中的 虚拟线程、结构化并发、阻塞IO，下列哪两项是本课强调的实践判断？",
@@ -13430,7 +13426,7 @@
             "调优"
           ],
           "difficulty": "高级",
-          "order": 20,
+          "order": 19,
           "quiz": [
             {
               "question": "按“JVM 垃圾回收与性能调优”中 GC、堆、停顿 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。",
@@ -13536,18 +13532,18 @@
             "ORM"
           ],
           "difficulty": "高级",
-          "order": 27,
+          "order": 20,
           "quiz": [
             {
               "type": "single",
               "question": "在 JDBC 中，推荐使用 `PreparedStatement` 而非 `Statement` 的主要原因是什么？",
               "options": [
-                "`PreparedStatement` 可以自动管理数据库连接池",
                 "`PreparedStatement` 能防止 SQL 注入并支持预编译缓存，提高安全性和性能",
+                "`PreparedStatement` 可以自动管理数据库连接池",
                 "`PreparedStatement` 支持自动事务回滚",
                 "`PreparedStatement` 可以同时执行多条不同结构的 SQL 语句"
               ],
-              "answer": 1,
+              "answer": 0,
               "explanation": "`PreparedStatement` 使用 `?` 占位符进行参数绑定，数据库驱动会将参数当作值而非 SQL 片段处理，从而有效防止 SQL 注入攻击。同时，数据库可以预编译 SQL 模板并缓存执行计划，当重复执行相同结构的 SQL 时，无需重新编译，性能显著优于每次都要完整拼接 SQL 字符串的 `Statement`。"
             },
             {
@@ -13555,11 +13551,11 @@
               "question": "JPA 的 N+1 查询问题的根本原因和推荐解决方案是什么？",
               "options": [
                 "数据库连接数不足导致查询变慢；解决方案是增大连接池大小",
-                "查询 N 条主记录后，JPA 为每条记录单独查询关联数据，共产生 1+N 次查询；解决方案是使用 JOIN FETCH 或 @EntityGraph 合并加载",
+                "JPA 的缓存机制失效导致重复查询；解决方案是改用 MyBatis 框架",
                 "SQL 语句未使用索引导致全表扫描；解决方案是为关联字段添加索引",
-                "JPA 的缓存机制失效导致重复查询；解决方案是改用 MyBatis 框架"
+                "查询 N 条主记录后，JPA 为每条记录单独查询关联数据，共产生 1+N 次查询；解决方案是使用 JOIN FETCH 或 @EntityGraph 合并加载"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "N+1 问题的根本原因是 JPA 在加载主记录（如订单列表）后，访问每条记录的关联属性（如商品信息）时会单独发送一条 SQL 查询，导致总共执行 1 + N 次查询。解决方案包括：在 JPQL 中使用 `JOIN FETCH` 一次性加载关联实体，或使用 `@EntityGraph` 注解指定加载图，也可以用 `@BatchSize` 进行批量加载。核心思路是将 N 次单独查询合并为 1~2 次查询。"
             },
             {
@@ -13579,11 +13575,11 @@
               "question": "关于 HikariCP 连接池配置，`maximum-pool-size` 参数的作用是什么？",
               "options": [
                 "设置数据库允许的最大并发用户数",
-                "设置连接池维持的最大连接数量，超出后新请求将等待直到有连接可用或超时",
+                "设置数据库服务器的最大内存使用量",
                 "设置应用程序的最大线程数",
-                "设置数据库服务器的最大内存使用量"
+                "设置连接池维持的最大连接数量，超出后新请求将等待直到有连接可用或超时"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "`maximum-pool-size` 定义了 HikariCP 连接池可以同时维持的最大数据库连接数。当应用程序请求连接且池中所有连接都被占用时，新请求会进入等待队列，直到有连接被归还或超过 `connection-timeout` 设定的超时时间。该值不宜设置过大，应根据数据库的最大连接数限制合理配置，通常推荐 10~50 个连接，过大的连接池反而会因为数据库端的连接争抢导致性能下降。"
             },
             {
@@ -13591,14 +13587,15 @@
               "question": "Spring 的 `@Transactional` 注解背后使用了什么机制来实现事务管理？",
               "options": [
                 "直接在方法体内插入 try-catch 代码块",
-                "使用 AOP 代理，在方法执行前开启事务，正常结束则提交，抛出异常则回滚",
+                "通过 JDBC 的 Savepoint 机制实现部分回滚",
                 "修改数据库的自动提交配置为手动模式",
-                "通过 JDBC 的 Savepoint 机制实现部分回滚"
+                "使用 AOP 代理，在方法执行前开启事务，正常结束则提交，抛出异常则回滚"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "`@Transactional` 的背后是 Spring AOP（面向切面编程）代理机制。当 Spring 检测到该方法被调用时，代理会先在方法执行前开启一个数据库事务，然后执行目标方法的业务逻辑。如果方法正常返回，代理自动提交事务；如果方法抛出运行时异常（默认情况下），代理自动回滚事务。开发者无需手动编写 `conn.commit()` 或 `conn.rollback()` 等事务管理代码，实现了声明式事务管理，极大简化了事务边界的控制。"
             }
-          ]
+          ],
+          "lab": "sandbox:java"
         },
         {
           "id": "java_microservices",
@@ -13619,7 +13616,7 @@
             "网关"
           ],
           "difficulty": "高级",
-          "order": 28,
+          "order": 21,
           "quiz": [
             {
               "type": "single",
@@ -13650,11 +13647,11 @@
               "question": "API 网关在微服务架构中承担的核心职责是什么？",
               "options": [
                 "只负责将请求转发到后端服务，不做任何其他处理",
-                "作为所有外部请求的统一入口，负责路由转发、身份鉴权、限流和跨域处理",
+                "负责微服务之间的数据库共享和分布式事务管理",
                 "替代注册中心进行服务发现和地址管理",
-                "负责微服务之间的数据库共享和分布式事务管理"
+                "作为所有外部请求的统一入口，负责路由转发、身份鉴权、限流和跨域处理"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "API 网关（如 Spring Cloud Gateway）是微服务系统的\\u201c大门\\u201d，所有来自外部的请求都先经过网关。它承担四大核心职责：路由转发——根据 URL 路径将请求分发到对应的后端服务；身份鉴权——在网关层统一校验 Token，无需每个服务单独实现鉴权逻辑；限流——控制每秒请求数，防止突发流量打垮后端服务；跨域处理——统一配置 CORS 策略。客户端不需要知道后端有多少个服务以及各自的地址，只需访问网关地址即可。"
             },
             {
@@ -13681,7 +13678,8 @@
               "answer": 1,
               "explanation": "在微服务架构中，服务之间存在复杂的调用依赖关系。如果某个下游服务出现故障或响应过慢，而上游服务没有配置熔断器和降级机制，上游会不断重试或等待，导致自身线程池被耗尽，进而无法处理其他正常请求。这种故障会沿着调用链逐级传播，最终导致整个系统不可用，即\\u201c雪崩效应\\u201d。因此，所有远程调用都应配置熔断器和降级逻辑，在故障发生时快速失败并返回兜底响应，保护系统整体稳定性。"
             }
-          ]
+          ],
+          "lab": "sandbox:java"
         },
         {
           "id": "java_testing",
@@ -13702,18 +13700,18 @@
             "覆盖率"
           ],
           "difficulty": "高级",
-          "order": 29,
+          "order": 22,
           "quiz": [
             {
               "type": "single",
               "question": "在 JUnit 5 中，`@BeforeEach` 和 `@AfterEach` 注解标记的方法分别在什么时候执行？如果一个测试类有 3 个 `@Test` 方法，`@BeforeEach` 标记的方法会被执行几次？",
               "options": [
-                "在整个测试类开始前执行一次，共 1 次",
                 "在每个 `@Test` 方法执行前各执行一次，共 3 次",
+                "在整个测试类开始前执行一次，共 1 次",
                 "在所有 `@Test` 方法执行完毕后统一执行，共 1 次",
                 "仅在第一个 `@Test` 方法执行前执行一次，共 1 次"
               ],
-              "answer": 1,
+              "answer": 0,
               "explanation": "`@BeforeEach` 标记的方法会在每个 `@Test` 方法执行之前运行一次，`@AfterEach` 标记的方法会在每个 `@Test` 方法执行之后运行一次。如果测试类有 3 个 `@Test` 方法，`@BeforeEach` 会被执行 3 次——每个测试方法各触发一次。这种设计确保了每个测试都在干净的环境中运行，测试之间互不干扰。与之对比，`@BeforeAll` 和 `@AfterAll` 标记的方法在整个测试类的开始和结束时各执行一次。"
             },
             {
@@ -13721,11 +13719,11 @@
               "question": "`@WebMvcTest(OrderController.class)` 和 `@SpringBootTest` 在测试范围和性能上有什么核心区别？",
               "options": [
                 "`@WebMvcTest` 加载完整的应用上下文，`@SpringBootTest` 只加载 Web 层",
-                "`@WebMvcTest` 只加载 Web 层（Controller），启动速度快；`@SpringBootTest` 加载完整应用上下文，用于集成测试",
+                "`@WebMvcTest` 只能测试 GET 请求，`@SpringBootTest` 可以测试所有 HTTP 方法",
                 "两者功能完全相同，只是注解名称不同",
-                "`@WebMvcTest` 只能测试 GET 请求，`@SpringBootTest` 可以测试所有 HTTP 方法"
+                "`@WebMvcTest` 只加载 Web 层（Controller），启动速度快；`@SpringBootTest` 加载完整应用上下文，用于集成测试"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "`@WebMvcTest` 只加载 Web 层相关的 Bean（Controller、过滤器、拦截器等），不会启动完整的 Spring 容器，Service 和 Repository 需要用 `@MockBean` 提供模拟实现，启动速度快，适合专门测试 Controller 的请求路由、参数绑定和响应格式。`@SpringBootTest` 会加载完整的应用上下文，包括所有 Service、Repository、数据库连接等，启动速度较慢，适合测试多个模块之间的协作（集成测试）。简单来说：测 Controller 用 `@WebMvcTest`，测完整流程用 `@SpringBootTest`。"
             },
             {
@@ -13733,11 +13731,11 @@
               "question": "使用 Mockito 时，`@Mock` 和 `@InjectMocks` 注解分别起什么作用？",
               "options": [
                 "`@Mock` 创建真实数据库连接，`@InjectMocks` 创建 HTTP 请求",
-                "`@Mock` 创建模拟对象以替代真实依赖，`@InjectMocks` 创建被测对象并自动将 Mock 对象注入到其依赖中",
+                "`@Mock` 和 `@InjectMocks` 功能相同，可以互换使用",
                 "`@Mock` 用于断言测试结果，`@InjectMocks` 用于初始化测试数据",
-                "`@Mock` 和 `@InjectMocks` 功能相同，可以互换使用"
+                "`@Mock` 创建模拟对象以替代真实依赖，`@InjectMocks` 创建被测对象并自动将 Mock 对象注入到其依赖中"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "`@Mock` 创建一个模拟对象（Mock 对象），你可以用 `when(...).thenReturn(...)` 自定义它的方法返回值和行为，它不会执行真实的业务逻辑。`@InjectMocks` 创建一个被测对象的实例，并自动把 `@Mock` 标记的模拟对象注入到它的依赖中。例如，测试 `OrderService` 时，用 `@Mock` 创建一个假的 `OrderRepository`，用 `@InjectMocks` 创建 `OrderService` 实例，这样 `OrderService` 内部调用的 `OrderRepository.save()` 实际会调用 Mock 对象的预设行为，不会真正访问数据库，实现了单元测试的隔离原则。"
             },
             {
@@ -13756,15 +13754,16 @@
               "type": "single",
               "question": "在 MockMvc 测试中，为什么需要使用 `@MockBean` 注解替换 Service 层的依赖？",
               "options": [
-                "为了让测试能够连接真实的数据库进行验证",
                 "为了隔离 Controller 层测试，避免调用真实的 Service 逻辑和外部依赖，使测试更快更稳定",
+                "为了让测试能够连接真实的数据库进行验证",
                 "因为 MockMvc 不支持直接调用 Service 方法",
                 "为了增加测试的代码覆盖率"
               ],
-              "answer": 1,
+              "answer": 0,
               "explanation": "`@WebMvcTest` 只加载 Web 层（Controller）相关的 Bean，不会自动创建 Service 层的实例。使用 `@MockBean` 可以为 Service 层提供一个模拟实现，这样测试只关注 Controller 层的请求路由、参数绑定和响应格式，而不会涉及真实的业务逻辑或数据库操作。这种隔离使测试运行更快、结果更稳定，不会因为数据库连接失败或 Service 层 Bug 导致 Controller 测试失败。同时，可以通过 `when(...).thenReturn(...)` 精确控制 Service 的返回值，测试 Controller 在各种情况下的行为。"
             }
-          ]
+          ],
+          "lab": "sandbox:java"
         },
         {
           "id": "java_performance_monitoring",
@@ -13785,18 +13784,18 @@
             "调优"
           ],
           "difficulty": "高级",
-          "order": 30,
+          "order": 23,
           "quiz": [
             {
               "type": "single",
               "question": "Spring Boot Actuator 默认暴露哪些端点？为什么生产环境不能暴露所有端点？",
               "options": [
                 "默认暴露所有端点，无需额外配置",
-                "默认只暴露 health 和 info；因为 env 会泄露密码和密钥，heapdump 会导出堆内存中的敏感数据，存在安全风险",
+                "默认只暴露 metrics 和 loggers；因为其他端点会影响应用性能",
                 "默认不暴露任何端点，需要手动开启",
-                "默认只暴露 metrics 和 loggers；因为其他端点会影响应用性能"
+                "默认只暴露 health 和 info；因为 env 会泄露密码和密钥，heapdump 会导出堆内存中的敏感数据，存在安全风险"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "Spring Boot Actuator 默认只暴露 `health` 和 `info` 两个端点。生产环境不能暴露所有端点（如通过 `include: \"*\"`），因为 `env` 端点会暴露环境变量中的密码、密钥等敏感信息，`heapdump` 端点会导出整个 JVM 堆内存（其中可能包含用户数据和密钥），`threaddump` 会暴露线程信息。正确做法是通过 `management.endpoints.web.exposure.include` 只暴露必要的端点（如 health、metrics、info），其余敏感端点通过 Spring Security 进行认证控制。"
             },
             {
@@ -13828,11 +13827,11 @@
               "question": "分布式追踪中，Trace ID 和 Span ID 分别代表什么？它们如何配合工作？",
               "options": [
                 "Trace ID 标识单个服务的处理时间，Span ID 标识数据库查询时间",
-                "Trace ID 是一个请求的全局唯一标识，贯穿整个调用链；Span ID 是每个服务处理步骤的标识，一个 Trace 包含多个 Span",
+                "Trace ID 用于标识数据库连接，Span ID 用于标识 HTTP 连接",
                 "Trace ID 和 Span ID 是同一个概念的不同名称",
-                "Trace ID 用于标识数据库连接，Span ID 用于标识 HTTP 连接"
+                "Trace ID 是一个请求的全局唯一标识，贯穿整个调用链；Span ID 是每个服务处理步骤的标识，一个 Trace 包含多个 Span"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "在分布式追踪中，Trace ID 是一个用户请求的全局唯一标识符，从请求进入系统到最终响应，贯穿整个调用链路。Span ID 代表一个\\u201c工作单元\\u201d，每个服务处理请求时都会产生一个 Span，记录该步骤的耗时和状态。一个 Trace 包含多个 Span，通过共同的 Trace ID 串联起来，就像快递单号（Trace ID）标识一个包裹的全程物流，每个中转站的扫描记录（Span ID）标识一段运输。通过 Trace ID 可以查看一个请求经过的所有服务以及每一步的耗时，快速定位性能瓶颈。"
             },
             {
@@ -13847,7 +13846,8 @@
               "answer": 1,
               "explanation": "DEBUG 级别的日志会记录非常详细的信息，包括 SQL 语句详情、方法入参、变量值等。在生产环境的高并发场景下，这些日志量极其庞大，会迅速占满磁盘空间，同时大量的日志写入操作会严重影响磁盘 IO 性能，进而拖慢应用本身的响应速度。正确做法是：生产环境将日志级别设为 INFO 或 WARN，只记录关键业务事件和潜在问题；当需要排查特定问题时，可以通过 Actuator 的 `/actuator/loggers` 端点动态临时调整某个包的日志级别为 DEBUG，排查完毕后恢复。"
             }
-          ]
+          ],
+          "lab": "sandbox:java"
         },
         {
           "id": "java_deployment",
@@ -13868,18 +13868,18 @@
             "部署"
           ],
           "difficulty": "高级",
-          "order": 31,
+          "order": 24,
           "quiz": [
             {
               "type": "single",
               "question": "Docker 镜像的分层机制有什么好处？为什么多阶段构建能减小镜像体积？",
               "options": [
                 "分层机制没有任何好处，多阶段构建只是为了让 Dockerfile 更复杂",
-                "分层可以复用和缓存加速构建；多阶段构建的最终镜像只包含运行阶段文件，构建阶段的编译器、源码等全部被丢弃",
+                "分层机制仅用于版本管理，与镜像体积无关",
                 "分层会增加镜像体积，多阶段构建会增大镜像体积",
-                "分层机制仅用于版本管理，与镜像体积无关"
+                "分层可以复用和缓存加速构建；多阶段构建的最终镜像只包含运行阶段文件，构建阶段的编译器、源码等全部被丢弃"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "Docker 镜像分层的好处有两点：（1）层可以复用——多个镜像共享同一基础层（如 JDK 基础镜像），节省磁盘空间和网络传输；（2）层有缓存——Dockerfile 中未变更的层不需要重新构建，加速镜像构建过程。多阶段构建（`FROM ... AS builder`）能显著减小镜像体积，是因为最终镜像只包含运行阶段（第二阶段）的文件。例如 Spring Boot 应用，构建阶段需要 JDK + Gradle（约 500MB），而运行阶段只需要 JRE + jar 包（约 100MB），构建阶段的编译器、源码和中间产物全部被丢弃，不会出现在最终镜像中。"
             },
             {
@@ -13887,11 +13887,11 @@
               "question": "Kubernetes 中 Deployment 的 `maxSurge` 和 `maxUnavailable` 分别是什么意思？如果 `replicas=3`、`maxSurge=1`、`maxUnavailable=0`，滚动更新时最多会有几个 Pod 同时运行？",
               "options": [
                 "最多 3 个 Pod；maxSurge 和 maxUnavailable 不影响 Pod 总数",
-                "最多 4 个 Pod；maxSurge 控制更新时允许超出期望副本数的上限，maxUnavailable 控制允许不可用的下限",
+                "最多 2 个 Pod；更新时必须先删除旧 Pod 再创建新 Pod",
                 "最多 5 个 Pod；maxSurge 和 maxUnavailable 各自独立计算",
-                "最多 2 个 Pod；更新时必须先删除旧 Pod 再创建新 Pod"
+                "最多 4 个 Pod；maxSurge 控制更新时允许超出期望副本数的上限，maxUnavailable 控制允许不可用的下限"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "`maxSurge` 是更新过程中允许多出的 Pod 数量上限（超过期望副本数），`maxUnavailable` 是允许不可用的 Pod 数量上限（低于期望副本数）。当 `replicas=3`、`maxSurge=1`、`maxUnavailable=0` 时，滚动更新过程中最多同时运行 4 个 Pod（3 + 1 = 4），且必须始终保持至少 3 个 Pod 处于可用状态。更新流程为：先创建 1 个新 Pod → 新 Pod 就绪后删除 1 个旧 Pod → 循环直到全部更新完成。这种配置实现了零停机更新。"
             },
             {
@@ -13899,11 +13899,11 @@
               "question": "在 Dockerfile 中，使用多阶段构建（multi-stage build）的主要目的是什么？",
               "options": [
                 "让 Dockerfile 支持多个操作系统",
-                "将构建环境和运行环境分离，最终镜像只包含运行所需的最小文件集，显著减小镜像体积",
+                "让容器可以同时运行多个应用",
                 "让多个开发者可以同时构建同一个项目",
-                "让容器可以同时运行多个应用"
+                "将构建环境和运行环境分离，最终镜像只包含运行所需的最小文件集，显著减小镜像体积"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "多阶段构建的核心目的是分离构建环境和运行环境。第一阶段（builder）使用完整的 JDK + 构建工具（如 Gradle）进行编译打包，产生 jar 包等构建产物；第二阶段使用轻量的 JRE + Alpine 基础镜像，仅通过 `COPY --from=builder` 复制运行所需的 jar 包。最终镜像不包含编译器、源码、构建工具和中间产物，体积可从 500MB+ 压缩到 100MB 以内。镜像越小，拉取越快，部署越迅速，同时减少了攻击面，提升了安全性。"
             },
             {
@@ -13911,26 +13911,27 @@
               "question": "Kubernetes 中 ConfigMap 和 Secret 的区别是什么？为什么说 Secret 的 Base64 编码不算真正的加密？",
               "options": [
                 "ConfigMap 和 Secret 完全相同，没有区别",
-                "ConfigMap 存储非机密配置数据（明文），Secret 存储敏感数据；Base64 只是编码方式而非加密，任何人可以瞬间解码还原原文",
+                "Secret 使用 AES-256 加密，安全性极高",
                 "ConfigMap 用于存储密码，Secret 用于存储日志级别",
-                "Secret 使用 AES-256 加密，安全性极高"
+                "ConfigMap 存储非机密配置数据（明文），Secret 存储敏感数据；Base64 只是编码方式而非加密，任何人可以瞬间解码还原原文"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "ConfigMap 用于存储非机密的配置数据（如数据库 URL、日志级别），以明文形式存储和展示。Secret 用于存储敏感数据（如密码、Token、证书），数据经过 Base64 编码。但 Base64 只是一种编码方式（类似\\u201c翻译\\u201d），不是加密（类似\\u201c上锁\\u201d）——任何人都可以瞬间解码还原原文，没有任何安全性。生产环境管理敏感配置应：启用 etcd 静态加密（Encryption at Rest），使用外部密钥管理系统（如 HashiCorp Vault），通过 RBAC 限制 Secret 的访问权限，或使用 Sealed Secrets 等工具在 Git 中安全存储加密后的 Secret。"
             },
             {
               "type": "single",
               "question": "在 Kubernetes 中，Service 资源的核心作用是什么？",
               "options": [
-                "直接运行应用程序的代码",
                 "为一组 Pod 提供稳定的网络入口（IP + 端口），即使 Pod 重启 IP 变化，Service 地址保持不变",
+                "直接运行应用程序的代码",
                 "管理 Docker 镜像的构建和推送",
                 "存储应用的配置文件和环境变量"
               ],
-              "answer": 1,
+              "answer": 0,
               "explanation": "Kubernetes 中的 Pod 是临时的——Pod 可能因为更新、故障或节点缩容而被销毁和重建，每次重建后 IP 地址都会变化。Service 为一组具有相同标签的 Pod 提供一个稳定的网络入口（固定的 ClusterIP 和端口），通过 selector 匹配后端 Pod。即使后端 Pod 的 IP 发生变化，Service 的地址始终不变，其他服务或客户端只需访问 Service 地址即可。Service 还支持负载均衡，将请求自动分发到后端的多个 Pod 实例上，类似于一个店铺的统一电话号码——不管哪个店员接电话，顾客只需要拨这一个号。"
             }
-          ]
+          ],
+          "lab": "sandbox:java"
         },
         {
           "id": "java_project_ecommerce",
@@ -13951,7 +13952,7 @@
             "全栈"
           ],
           "difficulty": "高级",
-          "order": 32,
+          "order": 25,
           "quiz": [
             {
               "type": "single",
@@ -14013,7 +14014,8 @@
               "answer": 1,
               "explanation": "锁定库存和扣减库存是两个不同阶段的操作。锁定库存发生在用户下单时，通过增加 `locked_quantity` 预留商品数量，此时库存总量并未减少，可用库存（`quantity - locked_quantity`）变少。如果用户取消订单或支付超时，可以释放锁定（减少 `locked_quantity`），库存恢复可用。扣减库存发生在支付成功后，真正减少库存总量（`quantity`），同时减少等量的 `locked_quantity`，这个操作是不可逆的——商品已经卖出，库存永久减少。这种\\u201c先锁定后扣减\\u201d的机制既保证了并发安全，又支持订单取消时的库存回滚。"
             }
-          ]
+          ],
+          "lab": "sandbox:java"
         }
       ]
     },
@@ -14064,11 +14066,11 @@
               "question": "关于 JSP 的本质，以下哪个说法是正确的？",
               "options": [
                 "JSP 是一种独立于 Servlet 的模板引擎",
-                "JSP 第一次被访问时会被编译成 Servlet 类",
+                "JSP 需要手动在 \\u201Cweb.xml\\u201D 中注册才能使用",
                 "JSP 只能处理静态 HTML 内容，不能嵌入 Java 代码",
-                "JSP 需要手动在 \\u201Cweb.xml\\u201D 中注册才能使用"
+                "JSP 第一次被访问时会被编译成 Servlet 类"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "JSP（Java Server Pages）本质上是 Servlet 的简化写法。当 JSP 文件第一次被访问时，Servlet 容器会将其编译成一个继承 \\u201CHttpServlet\\u201D 的 Java 类，之后的执行过程与 Servlet 完全一致。JSP 中可以嵌入 Java 代码（使用 \\u201C<%= %>\\u201D 等标签），且不需要在 \\u201Cweb.xml\\u201D 中手动注册。"
             },
             {
@@ -14134,11 +14136,11 @@
               "question": "\\u201C@SpringBootApplication\\u201D 是一个组合注解，它等同于以下哪三个注解的合体？",
               "options": [
                 "\\u201C@Configuration\\u201D + \\u201C@EnableScheduling\\u201D + \\u201C@ComponentScan\\u201D",
-                "\\u201C@Configuration\\u201D + \\u201C@EnableAutoConfiguration\\u201D + \\u201C@ComponentScan\\u201D",
+                "\\u201C@Configuration\\u201D + \\u201C@EnableAutoConfiguration\\u201D + \\u201C@Import\\u201D",
                 "\\u201C@Bean\\u201D + \\u201C@EnableAutoConfiguration\\u201D + \\u201C@ComponentScan\\u201D",
-                "\\u201C@Configuration\\u201D + \\u201C@EnableAutoConfiguration\\u201D + \\u201C@Import\\u201D"
+                "\\u201C@Configuration\\u201D + \\u201C@EnableAutoConfiguration\\u201D + \\u201C@ComponentScan\\u201D"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "\\u201C@SpringBootApplication\\u201D 组合了三个核心注解：\\u201C@SpringBootConfiguration\\u201D（等同于 \\u201C@Configuration\\u201D，标记当前类为配置类）、\\u201C@EnableAutoConfiguration\\u201D（开启自动配置，根据 classpath 依赖自动注册 Bean）、\\u201C@ComponentScan\\u201D（组件扫描，自动扫描当前包及子包下的注解类）。只需在主类上写这一个注解，就能同时完成三项配置工作。"
             },
             {
@@ -14170,11 +14172,11 @@
               "question": "Spring Boot 的核心理念\\u201C约定优于配置\\u201D（Convention over Configuration）的含义是什么？",
               "options": [
                 "所有配置都必须按照固定格式编写，不允许自定义",
-                "框架提供合理的默认行为，开发者只需在需要偏离默认时才显式配置",
+                "框架会自动生成代码，开发者不需要写任何配置文件",
                 "开发者必须先完成所有配置，框架才能启动",
-                "框架会自动生成代码，开发者不需要写任何配置文件"
+                "框架提供合理的默认行为，开发者只需在需要偏离默认时才显式配置"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "\\u201C约定优于配置\\u201D是指框架提供合理的默认值和默认行为，开发者在默认行为满足需求时无需做任何配置。例如 Spring Boot 默认启动端口是 8080，只有需要修改端口时才在 \\u201Capplication.properties\\u201D 中配置 \\u201Cserver.port\\u201D。这大大减少了配置量，但并非不允许自定义——需要偏离默认时随时可以显式配置。"
             },
             {
@@ -14229,11 +14231,11 @@
               "question": "\\u201C@RequestParam\\u201D 和 \\u201C@PathVariable\\u201D 注解的区别是什么？",
               "options": [
                 "\\u201C@RequestParam\\u201D 从 URL 路径中提取值，\\u201C@PathVariable\\u201D 从查询参数中获取值",
-                "\\u201C@RequestParam\\u201D 从查询参数或表单数据中获取值，\\u201C@PathVariable\\u201D 从 URL 路径中提取变量值",
+                "\\u201C@RequestParam\\u201D 只能用于 GET 请求，\\u201C@PathVariable\\u201D 只能用于 POST 请求",
                 "两者功能完全相同，只是名称不同",
-                "\\u201C@RequestParam\\u201D 只能用于 GET 请求，\\u201C@PathVariable\\u201D 只能用于 POST 请求"
+                "\\u201C@RequestParam\\u201D 从查询参数或表单数据中获取值，\\u201C@PathVariable\\u201D 从 URL 路径中提取变量值"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "\\u201C@RequestParam\\u201D 用于绑定 URL 查询参数（如 \\u201C?keyword=spring&page=1\\u201D）或表单数据到方法参数；\\u201C@PathVariable\\u201D 用于从 URL 路径中提取变量值（如 \\u201C/users/{id}\\u201D 中的 \\u201Cid\\u201D）。简单记忆：\\u201C@RequestParam\\u201D 取问号后面的值，\\u201C@PathVariable\\u201D 取路径中的值。两者都可以用于各种 HTTP 方法。"
             },
             {
@@ -14252,12 +14254,12 @@
               "type": "single",
               "question": "在 Spring MVC 中，表单提交成功后为什么推荐使用 \\u201Credirect:\\u201D 重定向而不是直接返回视图名称？",
               "options": [
-                "重定向可以提高服务器处理速度",
                 "重定向可以让浏览器发送新的 GET 请求，防止用户刷新页面时重复提交表单",
+                "重定向可以提高服务器处理速度",
                 "视图名称不支持包含中文字符，必须用重定向",
                 "重定向可以让页面加载更多的 JavaScript 资源"
               ],
-              "answer": 1,
+              "answer": 0,
               "explanation": "这称为 PRG（Post/Redirect/Get）模式。如果 POST 成功后直接返回视图名称，用户刷新页面时浏览器会重新发送 POST 请求，导致重复提交（如重复创建订单、重复扣款）。使用 \\u201Credirect:\\u201D 重定向后，浏览器发送新的 GET 请求到目标 URL，刷新页面只会重新加载结果页，不会重复提交表单。"
             },
             {
@@ -14299,12 +14301,12 @@
               "type": "single",
               "question": "在 Spring Security 中，认证（Authentication）和授权（Authorization）的区别是什么？",
               "options": [
-                "认证和授权是同一个概念，没有区别",
                 "认证验证\"你是谁\"，授权验证\"你能做什么\"",
+                "认证和授权是同一个概念，没有区别",
                 "认证验证\"你能做什么\"，授权验证\"你是谁\"",
                 "认证只用于 Web 应用，授权只用于移动端应用"
               ],
-              "answer": 1,
+              "answer": 0,
               "explanation": "认证（Authentication）是验证用户身份的过程，如通过用户名密码登录确认\"你是谁\"；授权（Authorization）是在认证通过后，根据用户身份决定其能访问哪些资源，即\"你能做什么\"。认证在前，授权在后，认证是授权的前提。类比：进小区时保安查门禁卡是认证，进楼栋时电梯卡限制楼层是授权。"
             },
             {
@@ -14312,11 +14314,11 @@
               "question": "JWT（JSON Web Token）由三部分组成，以下哪个选项正确描述了这三部分？",
               "options": [
                 "用户名、密码、角色",
-                "头部（Header）、载荷（Payload）、签名（Signature）",
+                "公钥、私钥、对称密钥",
                 "令牌 ID、过期时间、服务器地址",
-                "公钥、私钥、对称密钥"
+                "头部（Header）、载荷（Payload）、签名（Signature）"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "JWT 由三部分组成，用点号分隔：\"Header\"（头部，包含算法信息如 HS256）、\"Payload\"（载荷，包含用户数据如用户名和角色）、\"Signature\"（签名，用于防篡改验证）。JWT 的特点是无状态——服务端不需要存储会话信息，令牌本身包含了所有必要的用户信息，只需验证签名即可确认身份。"
             },
             {
@@ -14324,11 +14326,11 @@
               "question": "Spring Security 推荐使用 BCrypt 算法存储密码，以下关于 BCrypt 的说法哪个是正确的？",
               "options": [
                 "BCrypt 是一种对称加密算法，可以用密钥还原明文",
-                "BCrypt 是一种单向哈希算法，故意设计为慢速执行以防范暴力破解",
+                "BCrypt 每次加密相同密码产生的哈希值相同，便于比对",
                 "BCrypt 加密速度极快，适合高并发的登录场景",
-                "BCrypt 每次加密相同密码产生的哈希值相同，便于比对"
+                "BCrypt 是一种单向哈希算法，故意设计为慢速执行以防范暴力破解"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "BCrypt 是一种单向哈希加密算法（加盐哈希），专门用于安全存储密码。\"单向\"意味着无法从哈希值还原明文密码。BCrypt 故意设计为慢速算法（单次约 100ms），这使得暴力破解变得极其耗时。每次加密相同密码会产生不同的哈希值（因为随机盐值），但验证时 BCrypt 可以从哈希中提取盐值进行比对。"
             },
             {
@@ -14336,11 +14338,11 @@
               "question": "在使用 JWT 认证的 Spring Security 配置中，为什么通常需要禁用 CSRF 保护？",
               "options": [
                 "因为 JWT 令牌太长了，无法放入 CSRF Token 中",
-                "因为 JWT 通常存储在 localStorage 中通过请求头手动携带，不会被浏览器自动发送，不存在 CSRF 风险",
                 "因为 Spring Security 不支持 JWT 和 CSRF 同时使用",
+                "因为 JWT 通常存储在 localStorage 中通过请求头手动携带，不会被浏览器自动发送，不存在 CSRF 风险",
                 "因为禁用 CSRF 可以提高 JWT 的加密强度"
               ],
-              "answer": 1,
+              "answer": 2,
               "explanation": "CSRF（跨站请求伪造）攻击利用的是浏览器自动携带 Cookie 的特性。JWT 通常存储在 localStorage 中，通过 \"Authorization: Bearer xxx\" 请求头手动携带，不会被浏览器自动发送到跨站请求中，因此不存在 CSRF 风险。而且 JWT 方案通常使用无状态会话（\"SessionCreationPolicy.STATELESS\"），不使用 Session Cookie，禁用 CSRF 可以避免不必要的校验开销。"
             },
             {
@@ -14348,11 +14350,11 @@
               "question": "\"@PreAuthorize\" 和 \"@Secured\" 都用于方法级权限控制，它们的主要区别是什么？",
               "options": [
                 "\"@PreAuthorize\" 只能用于 Controller 层，\"@Secured\" 可以用于任何层",
-                "\"@PreAuthorize\" 支持 SpEL 表达式编写复杂条件，\"@Secured\" 只能指定角色列表",
+                "两者功能完全相同，只是命名风格不同",
                 "\"@Secured\" 是 Spring 独有的注解，\"@PreAuthorize\" 是 JSR-250 标准注解",
-                "两者功能完全相同，只是命名风格不同"
+                "\"@PreAuthorize\" 支持 SpEL 表达式编写复杂条件，\"@Secured\" 只能指定角色列表"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "\"@PreAuthorize\" 是 Spring Security 推荐的方法级权限注解，支持 SpEL 表达式，可以编写复杂的条件逻辑（如 \"#id == authentication.principal.id or hasRole('ADMIN')\"）。\"@Secured\" 是 JSR-250 标准注解，功能较简单，只能指定允许访问的角色列表（如 \"@Secured(\\\"ROLE_ADMIN\\\")\"）。使用 \"@PreAuthorize\" 需要确保配置类添加了 \"@EnableMethodSecurity\"。"
             }
           ]
@@ -14394,12 +14396,12 @@
               "type": "single",
               "question": "在 RESTful API 中，创建资源成功后应该返回哪个 HTTP 状态码？",
               "options": [
-                "200 OK",
                 "201 Created",
+                "200 OK",
                 "204 No Content",
                 "301 Moved Permanently"
               ],
-              "answer": 1,
+              "answer": 0,
               "explanation": "REST 规范对状态码有明确要求：创建资源成功返回 \\u201C201 Created\\u201D（不是 200），表示新资源已被创建；删除资源成功返回 \\u201C204 No Content\\u201D，表示操作成功但没有内容需要返回；资源不存在返回 \\u201C404 Not Found\\u201D；参数校验失败返回 \\u201C400 Bad Request\\u201D。\\u201C200 OK\\u201D 用于一般的成功请求（如 GET 和 PUT 成功）。"
             },
             {
@@ -14579,11 +14581,11 @@
               "question": "Spring IoC 容器中，Bean 的默认作用域（Scope）是什么？",
               "options": [
                 "\\u201Cprototype\\u201D（每次获取都创建新实例）",
-                "\\u201Csingleton\\u201D（容器中只有一个实例）",
+                "\\u201Csession\\u201D（每个 HTTP 会话一个实例）",
                 "\\u201Crequest\\u201D（每个 HTTP 请求一个实例）",
-                "\\u201Csession\\u201D（每个 HTTP 会话一个实例）"
+                "\\u201Csingleton\\u201D（容器中只有一个实例）"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "Spring 中 Bean 的默认作用域是 \\u201Csingleton\\u201D，即整个 IoC 容器中只有一个该类型的 Bean 实例，所有注入该 Bean 的地方都共享同一个实例。这适用于无状态的 Service、DAO 等组件。\\u201Cprototype\\u201D 每次获取都会创建新实例，适用于有状态对象（如购物车）。\\u201Crequest\\u201D 和 \\u201Csession\\u201D 是 Web 环境下的作用域，分别对应每个 HTTP 请求和每个 HTTP 会话一个实例。"
             },
             {
@@ -14615,11 +14617,11 @@
               "question": "Spring Bean 的完整生命周期中，以下哪个顺序是正确的？",
               "options": [
                 "初始化 → 实例化 → 属性赋值 → 使用 → 销毁",
-                "实例化 → 属性赋值 → 初始化 → 使用 → 销毁",
+                "实例化 → 初始化 → 属性赋值 → 使用 → 销毁",
                 "属性赋值 → 实例化 → 初始化 → 使用 → 销毁",
-                "实例化 → 初始化 → 属性赋值 → 使用 → 销毁"
+                "实例化 → 属性赋值 → 初始化 → 使用 → 销毁"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "Spring Bean 的生命周期按以下顺序进行：（1）\\u201C实例化\\u201D——容器通过反射创建 Bean 实例；（2）\\u201C属性赋值\\u201D——通过 \\u201C@Autowired\\u201D 等方式注入依赖；（3）\\u201C初始化\\u201D——调用 \\u201C@PostConstruct\\u201D 标注的方法完成自定义初始化；（4）\\u201C使用\\u201D——Bean 可以被其他组件调用；（5）\\u201C销毁\\u201D——容器关闭时调用 \\u201C@PreDestroy\\u201D 标注的方法释放资源。必须先创建实例，才能注入属性，然后才能执行初始化逻辑。"
             },
             {
@@ -14627,11 +14629,11 @@
               "question": "关于 Spring 的 IoC（控制反转），以下哪个说法最准确地描述了其核心思想？",
               "options": [
                 "IoC 是指把 Java 程序的执行流程从操作系统转移到 JVM 中运行",
-                "IoC 是指把对象的创建和管理权从代码转移到 Spring 容器，由容器负责注入依赖",
+                "IoC 是指把数据库连接池的管理权从应用转移到操作系统",
                 "IoC 是指把所有 Java 类都变成接口，由容器自动生成实现类",
-                "IoC 是指把数据库连接池的管理权从应用转移到操作系统"
+                "IoC 是指把对象的创建和管理权从代码转移到 Spring 容器，由容器负责注入依赖"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "IoC（Inversion of Control，控制反转）的核心思想是把对象的创建和管理权从程序代码转移到 Spring 容器中。传统方式下，程序员在代码中用 \\u201Cnew\\u201D 关键字创建依赖对象；使用 IoC 后，容器负责创建对象并自动注入依赖（DI，Dependency Injection）。这就像餐厅的厨师从\\u201C自己去菜市场买菜\\u201D变成\\u201C采购经理把菜送过来\\u201D——控制权从厨师（代码）反转到了采购经理（容器）。"
             }
           ]
@@ -32260,7 +32262,7 @@
             }
           ],
           "difficulty": "进阶",
-          "order": 11,
+          "order": 10,
           "prerequisites": [
             "discrete_math"
           ],
@@ -32367,7 +32369,7 @@
               "explanation": "在 `编译前端：词法与语法分析` 第 6 题中，正确答案是「词法分析」。在「编译前端：词法与语法分析」第 6 题中，该判断与术语 `词法分析` 对应：任务：把字符流切成 Token（标识符、关键字、字面量、运算符、分隔符），并过滤空白与注释。在「编译前端：词法与语法分析」第 6 题中，错误表现方面，把语法错误和语义错误混在一起会造成报错阶段和修复建议都不准确，应按让词法/语法只判断结构，语义阶段检查名字与类型修复。 在「编译前端：词法与语法分析」第 6 题中，判断时先确认输入和适用范围，对照 `编译原理`、`词法分析`、`语法分析`、`AST` 复现一次，最后把错误表现与正确做法逐项对照。"
             }
           ],
-          "order": 12,
+          "order": 11,
           "difficulty": "进阶",
           "prerequisites": [],
           "related": [
@@ -32480,7 +32482,7 @@
               "explanation": "在 `中间代码与优化` 第 6 题中，正确答案是「IR；SSA」。在「中间代码与优化」第 6 题中，该判断与术语 `IR` 对应：IR 是介于源码与机器码之间的抽象形式，让优化只写一遍就能服务所有前端与后端，常见形态。在「中间代码与优化」第 6 题中，错误表现方面，忽略副作用就做消除会造成程序行为改变，应按只有无副作用且结果未被使用的代码才能删修复。 在「中间代码与优化」第 6 题中，判断时先确认输入和适用范围，对照 `IR`、`SSA`、`常量折叠`、`死代码` 复现一次，最后把错误表现与正确做法逐项对照。"
             }
           ],
-          "order": 13,
+          "order": 12,
           "difficulty": "进阶",
           "prerequisites": [
             "semantics_analysis"
@@ -32595,7 +32597,7 @@
               "explanation": "在 `代码生成与寄存器分配` 第 6 题中，正确答案是「代码生成；寄存器分配」。在「代码生成与寄存器分配」第 6 题中，该判断与术语 `代码生成` 对应：由模型、编译器或模板把更高层描述转换成可执行代码。在「代码生成与寄存器分配」第 6 题中，错误表现方面，忽略调用约定会造成函数调用后寄存器值被破坏，应按按 ABI 保存被调用者寄存器修复。 在「代码生成与寄存器分配」第 6 题中，判断时先确认输入和适用范围，对照 `代码生成`、`寄存器分配`、`图着色`、`栈帧` 复现一次，最后把错误表现与正确做法逐项对照。"
             }
           ],
-          "order": 14,
+          "order": 13,
           "difficulty": "进阶",
           "prerequisites": [
             "ir_optimization"
@@ -32699,7 +32701,7 @@
               "explanation": "在 `链接与加载` 第 6 题中，正确答案是「动态链接」。在「链接与加载」第 6 题中，该判断与术语 `链接` 对应：静态链接把库代码复制进产物，部署简单但体积大。在「链接与加载」第 6 题中，错误表现方面，链接库顺序写反会造成出现 undefined reference，应按被依赖库放在依赖者后面并检查循环依赖修复。 在「链接与加载」第 6 题中，判断时先确认输入和适用范围，对照 `链接`、`重定位`、`动态链接`、`PLT` 复现一次，最后把错误表现与正确做法逐项对照。"
             }
           ],
-          "order": 15,
+          "order": 14,
           "difficulty": "进阶",
           "prerequisites": [
             "codegen_registers"
@@ -32814,7 +32816,7 @@
               "explanation": "在 `总线与 I/O 设备` 第 6 题中，正确答案是「总线；PCIe」。在「总线与 I/O 设备」第 6 题中，该判断与术语 `总线` 对应：总线是 CPU、内存和外设之间传输地址、数据与控制信号的公共通道。在「总线与 I/O 设备」第 6 题中，错误表现方面，认为中断一定比轮询快会造成高频小包场景被中断风暴拖垮，应按根据事件频率和批处理能力选择机制修复。 在「总线与 I/O 设备」第 6 题中，判断时先确认输入和适用范围，对照 `总线`、`PCIe`、`DMA`、`IOPS` 复现一次，最后把错误表现与正确做法逐项对照。"
             }
           ],
-          "order": 16,
+          "order": 15,
           "difficulty": "进阶",
           "prerequisites": [
             "linking_loading"
@@ -32927,7 +32929,7 @@
               "explanation": "在 `中断、异常与 DMA` 第 6 题中，正确答案是「中断；异常」。在「中断、异常与 DMA」第 6 题中，该判断与术语 `中断` 对应：中断是「事件驱动」的硬件基础：设备异步通知、CPU 快速响应、重活交给下半部或 DMA。在「中断、异常与 DMA」第 6 题中，错误表现方面，在中断上下文执行耗时操作会造成系统响应变慢甚至丢事件，应按只做最短必要工作并延后处理修复。 在「中断、异常与 DMA」第 6 题中，判断时先确认输入和适用范围，对照 `中断`、`异常`、`ISR`、`下半部` 复现一次，最后把错误表现与正确做法逐项对照。"
             }
           ],
-          "order": 17,
+          "order": 16,
           "difficulty": "进阶",
           "prerequisites": [
             "bus_io"
@@ -33035,7 +33037,7 @@
               "explanation": "在 `浮点数与校验码` 第 6 题中，正确答案是「IEEE754」。在「浮点数与校验码」第 6 题中，该判断与术语 `IEEE754` 对应：浮点数的二进制表示标准，规定符号、指数、尾数和特殊值的编码规则。在「浮点数与校验码」第 6 题中，错误表现方面，用 `==` 比较浮点结果会造成明明相等却判为不等，应按用 `math.isclose` 或容差修复。 在「浮点数与校验码」第 6 题中，判断时先确认输入和适用范围，对照 `IEEE754`、`浮点数`、`精度`、`CRC` 复现一次，最后把错误表现与正确做法逐项对照。"
             }
           ],
-          "order": 18,
+          "order": 17,
           "difficulty": "进阶",
           "prerequisites": [
             "interrupt_exception"
@@ -33143,7 +33145,7 @@
               "explanation": "在 `性能度量与并行体系结构` 第 6 题中，正确答案是「Amdahl」。在「性能度量与并行体系结构」第 6 题中，该判断与术语 `Amdahl` 对应：为一个 CPU 密集任务建立单线程基线，再用多线程和 SIMD 两种方式优化，记录 P50/P99、吞吐、CPU 利用率和扩展比，并用 Amdahl 定律解释差距。在「性能度量与并行体系结构」第 6 题中，错误表现方面，只看平均值会造成忽略长尾和超时，应按同时报告分位数和错误率修复。 在「性能度量与并行体系结构」第 6 题中，判断时先确认输入和适用范围，对照 `性能`、`Amdahl`、`CPI`、`基准测试` 复现一次，最后把错误表现与正确做法逐项对照。"
             }
           ],
-          "order": 19,
+          "order": 18,
           "difficulty": "进阶",
           "prerequisites": [
             "float_and_check"
@@ -33247,7 +33249,7 @@
               "explanation": "在 `实战：追踪程序的全生命周期` 第 6 题中，正确答案是「实战」。在「实战：追踪程序的全生命周期」第 6 题中，该判断与术语 `实战` 对应：实战：追踪程序的全生命周期解决了什么问题，而不是只背术语。在「实战：追踪程序的全生命周期」第 6 题中，错误表现方面，只看应用日志会造成错过系统层面原因，应按结合 dmesg（OOM、IO 错误）修复。 在「实战：追踪程序的全生命周期」第 6 题中，判断时先确认输入和适用范围，对照 `实战`、`编译`、`链接`、`/proc` 复现一次，最后把错误表现与正确做法逐项对照。"
             }
           ],
-          "order": 20,
+          "order": 19,
           "difficulty": "进阶",
           "prerequisites": [],
           "related": [
@@ -33279,7 +33281,7 @@
             "IoT"
           ],
           "difficulty": "进阶",
-          "order": 21,
+          "order": 20,
           "quiz": [
             {
               "question": "按“嵌入式与 IoT 基础”中 嵌入式、MCU、低功耗 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。",
@@ -33474,7 +33476,7 @@
             }
           ],
           "difficulty": "高级",
-          "order": 22,
+          "order": 21,
           "prerequisites": [
             "probability"
           ],
@@ -33581,7 +33583,7 @@
               "explanation": "在 `密码学原语` 第 6 题中，正确答案是「密钥管理」。在「密码学原语」第 6 题中，该判断与术语 `密钥管理` 对应：安全地生成、存储、轮换、授权和销毁密钥，避免密钥出现在代码或日志中。在「密码学原语」第 6 题中，错误表现方面，用 MD5 做口令哈希会造成可被彩虹表与碰撞攻击，应按用 Argon2id + 随机盐修复。 在「密码学原语」第 6 题中，判断时先确认输入和适用范围，对照 `密码学`、`AES`、`RSA`、`SHA-256` 复现一次，最后把错误表现与正确做法逐项对照。"
             }
           ],
-          "order": 23,
+          "order": 22,
           "difficulty": "高级",
           "prerequisites": [
             "performance_metrics"
@@ -33696,7 +33698,7 @@
               "explanation": "在 `计算机图形学与多媒体` 第 6 题中，正确答案是「图形学；渲染管线」。在「计算机图形学与多媒体」第 6 题中，该判断与术语 `图形学` 对应：计算机图形学把几何、材质和光照转换为像素，多媒体处理图像、音频和视频。在「计算机图形学与多媒体」第 6 题中，错误表现方面，只追求分辨率不看带宽会造成帧率下降，应按分析填充率、纹理带宽和着色器成本修复。 在「计算机图形学与多媒体」第 6 题中，判断时先确认输入和适用范围，对照 `图形学`、`渲染管线`、`GPU`、`音频` 复现一次，最后把错误表现与正确做法逐项对照。"
             }
           ],
-          "order": 24,
+          "order": 23,
           "difficulty": "高级",
           "prerequisites": [
             "cryptography"
@@ -33728,7 +33730,7 @@
             "冒险"
           ],
           "difficulty": "高级",
-          "order": 25,
+          "order": 24,
           "quiz": [
             {
               "question": "`CPU 流水线与指令级并行` 的示例代码用于验证 `流水线`，其背景是理解取指译码执行、流水线冒险、分支预测和乱序执行。代码的真实内容是下面哪一项？",
@@ -33845,7 +33847,7 @@
             "内存带宽"
           ],
           "difficulty": "高级",
-          "order": 26,
+          "order": 25,
           "quiz": [
             {
               "question": "在 `SIMD 与向量化计算` 里，与 `SIMD` 有关的说法中，哪一项最符合理解数据并行、向量寄存器、自动向量化、掩码和内存带宽。？",
@@ -33962,7 +33964,7 @@
             "伪共享"
           ],
           "difficulty": "高级",
-          "order": 27,
+          "order": 26,
           "quiz": [
             {
               "question": "在 `缓存一致性、内存模型与 NUMA` 里，与 `缓存一致性` 有关的说法中，哪一项最符合理解 MESI、内存序、伪共享、NUMA 亲和性与跨核延迟。？",
@@ -34079,7 +34081,7 @@
             "fsync"
           ],
           "difficulty": "高级",
-          "order": 28,
+          "order": 27,
           "quiz": [
             {
               "question": "在 `SSD、存储栈与持久化` 里，与 `SSD` 有关的说法中，哪一项最符合从闪存页、FTL、写放大、文件系统到 fsync 理解持久化。？",
@@ -34184,7 +34186,7 @@
             "权衡"
           ],
           "difficulty": "高级",
-          "order": 29,
+          "order": 28,
           "quiz": [
             {
               "question": "在 `计算机体系结构综合案例` 里，与 `体系结构` 有关的说法中，哪一项最符合把指令、流水线、缓存、内存和 IO 串成一个性能分析案例。？",
@@ -34320,7 +34322,7 @@
                 "∅"
               ],
               "answer": 2,
-              "explanation": "集合的元素具有互异性，不允许重复。{1, 1, 2, 3}应写为{1, 2, 3}。选项A是列举法，B是描述法，D是空集，都是合法的集合表示。"
+              "explanation": "集合三要素是确定性、互异性、无序性：{1, 1, 2, 3} 中元素 1 出现两次，违反互异性，规范写法是 {1, 2, 3}。其余选项均合法：{1, 2, 3} 是列举法，{x | x > 0} 是描述法（要求给出论域时更严谨），∅ 是不含任何元素的空集，本身就是集合。判断表示是否合法时，先检查元素是否可确定、是否重复，再看括号与分隔符是否成对。"
             },
             {
               "type": "single",
@@ -34331,8 +34333,8 @@
                 "{1,3,4,5,6,8}",
                 "{1,3,5,4,6,7,8}"
               ],
-              "answer": 2,
-              "explanation": "先求A∩B={2}，再求补集U-{2}={1,3,4,5,6,7,8}。注意选项C缺少7，应该是{1,3,4,5,6,8}，这里题目有误，正确答案应为{1,3,4,5,6,7,8}。"
+              "answer": 0,
+              "explanation": "分两步：先求交集 A∩B，A={1,2,3,5} 与 B={2,4,6} 的公共元素只有 2，得 {2}；再求它在全集 U 中的补集，即 U 去掉元素 2，得到 {1,3,4,5,6,7,8}，对应选项 A。选项 B 是交集本身而不是补集；选项 C 漏掉了 7；选项 D 元素齐全但顺序书写混乱，集合与顺序无关，判分时仍以是否含全部 7 个元素为准。"
             },
             {
               "type": "single",
@@ -34344,7 +34346,7 @@
                 "(A∩B)的补集 = A的补集∪B的补集"
               ],
               "answer": 2,
-              "explanation": "德摩根律：(A∪B)' = A'∩B'，(A∩B)' = A'∪B'。选项C错误地将并集的补集写成补集的并集，应该是补集的交集。"
+              "explanation": "德摩根律要求补集运算把并集换成交集：(A∪B)′ = A′∩B′，选项 C 写成 A′∪B′ 是错误的。反例：U={1,2}，A={1}，B={2}，则 A∪B=U，补集为 ∅；而 A′∪B′={2}∪{1}=U，两边不等。选项 D 是另一条德摩根律，成立；A、B 是分配律，同样成立。做这类题时优先构造两三个元素的小反例最快。"
             },
             {
               "type": "single",
@@ -34356,7 +34358,7 @@
                 "9"
               ],
               "answer": 2,
-              "explanation": "幂集的元素个数 = 2^|A| = 2^3 = 8。包括：∅, {a}, {b}, {c}, {a,b}, {a,c}, {b,c}, {a,b,c}。"
+              "explanation": "有限集合的幂集把「每个元素选或不选」当作独立的二进制决定，|A|=n 时共有 2ⁿ 个子集，所以 3 个元素对应 2³=8。逐一列出可验证：∅、{a}、{b}、{c}、{a,b}、{a,c}、{b,c}、{a,b,c}，恰好 8 个。选项 3 只数了单元素子集，6 漏掉了空集或全集，9 则把元素个数误当成 3² 之外的组合数。"
             },
             {
               "type": "single",
@@ -34368,7 +34370,7 @@
                 "A⊂B"
               ],
               "answer": 2,
-              "explanation": "A⊆B说明A的元素都在B中，B⊆A说明B的元素都在A中，因此A和B包含完全相同的元素，即A=B。这是集合相等的定义。"
+              "explanation": "A⊆B 表示 A 的每个元素都属于 B，B⊆A 表示 B 的每个元素都属于 A，两个方向合起来即 A 与 B 元素完全相同，这就是集合相等的定义，故 A=B。此时 A∪B=A=B 也成立，但题目要求由条件必然推出的最准确结论，选 A=B；A∩B=∅ 只在两者皆空时成立；A⊂B（真子集）与 B⊆A 矛盾，因为真子集要求 B 中存在 A 没有的元素。"
             }
           ]
         },
@@ -34410,12 +34412,12 @@
               "question": "函数f: {1,2,3,4} → {a,b,c}，f(1)=a, f(2)=b, f(3)=c, f(4)=a。以下哪个描述正确？",
               "options": [
                 "f是单射",
-                "f是满射",
+                "f既不是单射也不是满射",
                 "f是双射",
-                "f既不是单射也不是满射"
+                "f是满射"
               ],
-              "answer": 1,
-              "explanation": "单射要求不同输入对应不同输出：f(1)=f(4)=a，所以f不是单射。满射要求值域=到达域：值域={a,b,c}=到达域，所以f是满射。双射要求同时是单射和满射，f不是单射所以不是双射。因此只有B正确。"
+              "answer": 3,
+              "explanation": "单射要求不同自变量映射到不同函数值：f(1)=f(4)=a，两个输入撞同一输出，故不是单射。满射要求值域等于到达域：实际取到的值 {a,b,c} 恰等于到达域 {a,b,c}，故是满射。双射必须同时满足单射与满射，条件缺一即不成立。因此只有「f 是满射」正确。判断时分别核对两条定义，不要把「值域覆盖」和「一一对应」混为一谈。"
             },
             {
               "type": "single",
@@ -34481,12 +34483,12 @@
               "question": "一个无向图有8个顶点，各顶点度数分别为1,1,2,2,3,3,4,4。该图的边数是多少？",
               "options": [
                 "8",
-                "10",
+                "20",
                 "12",
-                "20"
+                "10"
               ],
-              "answer": 1,
-              "explanation": "根据握手定理（Handshaking Lemma），无向图中所有顶点的度数之和等于边数的两倍。度数之和 = 1+1+2+2+3+3+4+4 = 20。因此边数 E = 20/2 = 10。"
+              "answer": 3,
+              "explanation": "握手定理：无向图所有顶点度数之和等于边数的两倍，因为每条边为两个端点各贡献 1 度。求和 1+1+2+2+3+3+4+4=20，边数 = 20÷2 = 10。选项 8 是把顶点数当边数，12 是加法进位错误，20 是忘记除以 2。快速自检：度数总和必须是偶数，若为奇数说明题目数据有误，此题 20 为偶数，符合定理前提。"
             },
             {
               "type": "single",
@@ -34498,7 +34500,7 @@
                 "图中存在哈密顿回路"
               ],
               "answer": 2,
-              "explanation": "欧拉回路存在的充要条件：(1)图连通（题目已给）；(2)所有顶点的度数都是偶数。选项A全奇数度数不可能存在欧拉回路。选项B恰好两个奇数度顶点是欧拉通路（非回路）的条件。选项D哈密顿回路的存在与欧拉回路无直接关系。"
+              "explanation": "欧拉回路要求从某点出发不重复地走过每条边并回到起点，充要条件是图连通且所有顶点度数为偶数（每次进入一个顶点都要配套地离开）。恰好两个奇数度顶点是欧拉通路（不必回到起点）的条件；全奇数时连通路都不存在；哈密顿回路是经过每个顶点一次的回路，与欧拉回路条件互相独立，存在哈密顿回路不能保证存在欧拉回路。"
             },
             {
               "type": "single",
@@ -34522,7 +34524,7 @@
                 "无环"
               ],
               "answer": 2,
-              "explanation": "树的定义性质包括：连通且无环（B和D成立），等价地有n-1条边（A成立）。但树不一定是完全二叉树——完全二叉树要求除最后一层外每层都满，且最后一层节点靠左排列。一般的树可以是任意形状，比如一条链状的树就不是完全二叉树。"
+              "explanation": "树的等价定义包含：连通、无环、恰好 n−1 条边、任意两点间路径唯一，所以 A、B、D 对任意树都成立。完全二叉树是对二叉树的额外形状约束（除最后一层外每层排满、最后一层靠左），一条链状树连通无环但不是完全二叉树，故 C 不一定成立。做这类「不一定成立」题的做法是：先背定义性质，再构造一个极端形状（链、星）当反例。"
             },
             {
               "type": "single",
@@ -34534,7 +34536,7 @@
                 "4"
               ],
               "answer": 3,
-              "explanation": "完全图K4中任意两个顶点之间都有边相连，因此任意两个顶点必须着不同颜色。K4有4个顶点，所以至少需要4种颜色。一般地，完全图Kn的色数χ(Kn) = n。K4的每个顶点与其他3个顶点都相邻，4个顶点两两相邻，必须用4种不同颜色。"
+              "explanation": "完全图 K4 中任意两顶点都有边相连，四个顶点两两互斥，必须各用一种颜色，色数为 4。一般地 χ(Kn)=n。选项 1、2、3 都会让某两个相邻顶点同色，违反正常着色规则；二分图才可能 2 色，平面图才有四色定理，别把 K4 与平面图的界混淆——K5 已不可平面嵌入。"
             }
           ]
         },
@@ -34576,11 +34578,11 @@
               "question": "10个人围成一圈，从中选出3个人，使得这3个人中任意两人都不相邻，有多少种选法？",
               "options": [
                 "20",
-                "50",
+                "120",
                 "60",
-                "120"
+                "50"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "这是圆排列中的不相邻选取问题。从n个围成一圈的物体中选k个不相邻的，公式为(n/(n-k))×C(n-k,k)。代入n=10,k=3：(10/7)×C(7,3)=(10/7)×35=50。验证：总选法C(10,3)=120，减去至少两人相邻的情况。用补集法或直接公式计算得到50种。"
             },
             {
@@ -34605,7 +34607,7 @@
                 "144"
               ],
               "answer": 1,
-              "explanation": "逐项计算：F(0)=0, F(1)=1, F(2)=1, F(3)=2, F(4)=3, F(5)=5, F(6)=8, F(7)=13, F(8)=21, F(9)=34, F(10)=55。所以F(10)=55，选B。"
+              "explanation": "按递推逐项累加：F(2)=1、F(3)=2、F(4)=3、F(5)=5、F(6)=8、F(7)=13、F(8)=21、F(9)=34、F(10)=55。选项 34 是 F(9)，常由下标错位（把 F(1) 当成第 0 项）导致；选项 89 是 F(11)，多推了一步；144 是 F(12)。用递推计算时先把下标与值的对照表写下，是最省错的检查方式。"
             },
             {
               "type": "single",
@@ -54285,23 +54287,23 @@
               "question": "Prometheus 采用的数据收集模型是什么？与另一种模型相比有什么优势？",
               "options": [
                 "Push 模型——由应用主动推送指标到 Prometheus，适合所有场景",
-                "Pull 模型——Prometheus 主动从目标抓取（scrape）指标数据，便于发现异常目标和统一管理",
+                "广播模型——所有指标同时发送到所有监控节点",
                 "点对点模型——每个监控目标之间互相交换数据",
-                "广播模型——所有指标同时发送到所有监控节点"
+                "Pull 模型——Prometheus 主动从目标抓取（scrape）指标数据，便于发现异常目标和统一管理"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "Prometheus 使用 Pull（拉取）模型，由 Prometheus Server 定期主动从目标（如 Node Exporter、应用 /metrics 端点）抓取指标数据。这种模式的优势在于：Prometheus 可以知道哪些目标是可达的（通过 \"up\" 指标），便于发现故障目标；抓取频率由 Prometheus 统一管理；配置集中，不需要每个应用都配置 Prometheus 地址。对于短生命周期的任务（如 CronJob），则使用 Pushgateway 来弥补 Pull 模型的不足。"
             },
             {
               "type": "single",
               "question": "在 Prometheus 的四种指标类型中，哪种类型的指标只能递增（或重置），最适合用来统计\"总共发生了多少次\"？",
               "options": [
-                "Gauge",
                 "Counter",
+                "Gauge",
                 "Histogram",
                 "Summary"
               ],
-              "answer": 1,
+              "answer": 0,
               "explanation": "Counter（计数器）是最简单的指标类型，只能递增或在进程重启时重置。它适合统计\"总共发生了多少次\"的场景，如 HTTP 请求总数、错误总数、消息处理总数等。查询时通常配合 \"rate()\" 函数计算每秒增长率。Gauge 可以任意增减，适合表示\"当前值\"（如内存使用量）。Histogram 和 Summary 用于统计值的分布情况（如延迟分位数）。"
             },
             {
@@ -54309,11 +54311,11 @@
               "question": "Alertmanager 中\"抑制（Inhibition）\"规则的作用是什么？",
               "options": [
                 "永久删除某个告警规则",
-                "当某个严重告警触发时，抑制同一服务或集群的相关低级告警，避免告警风暴",
+                "自动修复触发告警的问题",
                 "加速告警的发送速度",
-                "自动修复触发告警的问题"
+                "当某个严重告警触发时，抑制同一服务或集群的相关低级告警，避免告警风暴"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "抑制规则的作用是避免\"告警风暴\"——当一个严重问题触发大量相关告警时，只发送最重要的告警。例如，当整个集群宕机（critical 级别）时，该集群中所有服务的 warning 级别告警都应该被抑制，因为根因是集群故障，发送数百个服务告警没有意义。抑制规则通过 \"source_match\"（源告警）和 \"target_match\"（被抑制告警）配合 \"equal\" 标签来定义。"
             },
             {
@@ -54321,23 +54323,23 @@
               "question": "关于 SLI、SLO、SLA 三个概念，以下哪个描述是正确的？",
               "options": [
                 "SLI 是内部目标，SLO 是对客户的外部承诺，SLA 是实际测量值",
-                "SLI 是实际测量的服务指标值，SLO 是内部设定的目标值，SLA 是对客户的外部承诺，通常 SLA 比 SLO 更宽松",
+                "SLA 是最严格的技术指标，SLO 次之，SLI 最宽松",
                 "三者含义完全相同，只是叫法不同",
-                "SLA 是最严格的技术指标，SLO 次之，SLI 最宽松"
+                "SLI 是实际测量的服务指标值，SLO 是内部设定的目标值，SLA 是对客户的外部承诺，通常 SLA 比 SLO 更宽松"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "SLI（Service Level Indicator）是实际测量的服务指标值，如\"过去 30 天可用性为 99.95%\"。SLO（Service Level Objective）是内部设定的目标值，如\"目标可用性 99.9%\"。SLA（Service Level Agreement）是对客户的外部承诺，如\"承诺可用性 99.5%，否则赔偿\"。通常 SLA 比 SLO 更宽松，留出缓冲空间，确保即使未达到内部目标也不会违反对客户的承诺。"
             },
             {
               "type": "single",
               "question": "在 PromQL 中，\"histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))\" 这个查询的作用是什么？",
               "options": [
-                "计算过去 5 分钟的平均请求延迟",
                 "计算过去 5 分钟的 P99 请求延迟（即 99% 的请求延迟低于此值）",
+                "计算过去 5 分钟的平均请求延迟",
                 "统计过去 5 分钟的总请求数",
                 "计算过去 5 分钟的每秒请求速率"
               ],
-              "answer": 1,
+              "answer": 0,
               "explanation": "\"histogram_quantile\" 函数用于从 Histogram 类型的指标中计算分位数。参数 \"0.99\" 表示计算第 99 百分位（P99），即 99% 的请求延迟低于此值。\"rate(...[5m])\" 计算过去 5 分钟的增长率。P99 延迟是衡量服务性能的重要指标，它反映了\"最差体验\"用户的需求——如果 P99 延迟是 500ms，意味着 99% 的用户请求延迟在 500ms 以内，只有 1% 的请求超过这个值。"
             }
           ],
@@ -68362,12 +68364,12 @@
               "type": "single",
               "question": "在 GitLab CI 中，\"cache\" 和 \"artifacts\" 的核心区别是什么？",
               "options": [
-                "\"cache\" 用于传递构建产物到后续阶段，\"artifacts\" 用于加速后续构建",
                 "\"cache\" 用于加速后续构建（如 \"node_modules\"），\"artifacts\" 用于传递构建产物到后续阶段或供下载",
+                "\"cache\" 用于传递构建产物到后续阶段，\"artifacts\" 用于加速后续构建",
                 "两者功能完全相同，只是语法不同",
                 "\"cache\" 只能缓存 Docker 镜像，\"artifacts\" 可以缓存任何文件"
               ],
-              "answer": 1,
+              "answer": 0,
               "explanation": "\"cache\" 的主要目的是加速后续构建，例如缓存 \"node_modules\" 目录，避免每次都重新安装依赖，它可过期且会被覆盖。\"artifacts\" 的主要目的是在 Pipeline 的阶段之间传递构建产物（如编译输出、测试报告），也可在 Pipeline UI 中供用户下载，它与 Pipeline 绑定并可设置保留时间。"
             },
             {
@@ -68423,11 +68425,11 @@
               "question": "GitOps 的核心理念中，\"Git 是唯一真相源（Single Source of Truth）\"意味着什么？",
               "options": [
                 "Git 仓库只能存储 Kubernetes 配置文件，不能存储其他文件",
-                "所有基础设施和应用的期望状态都通过 Git 仓库管理，集群通过自动拉取 Git 中的配置来同步状态",
+                "Git 仓库需要定期备份到外部存储",
                 "开发者可以直接修改集群中的资源，只要同步更新 Git 即可",
-                "Git 仓库需要定期备份到外部存储"
+                "所有基础设施和应用的期望状态都通过 Git 仓库管理，集群通过自动拉取 Git 中的配置来同步状态"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "GitOps 的核心理念是将 Git 仓库作为系统期望状态的唯一来源。所有变更（包括应用配置、基础设施定义）都必须通过 Git 提交来发起，ArgoCD 等工具持续对比 Git 中的期望状态与集群中的实际状态，并自动修复差异。A 错误，Git 可以存储任何声明式配置。C 错误，GitOps 禁止直接手动修改集群。D 不是 GitOps 的核心含义。"
             },
             {
@@ -68435,11 +68437,11 @@
               "question": "在 ArgoCD 中，\"Application\" CRD 的 \"syncPolicy.automated\" 配置中，\"prune: true\" 和 \"selfHeal: true\" 分别表示什么？",
               "options": [
                 "\"prune\" 自动创建新资源；\"selfHeal\" 自动修复网络问题",
-                "\"prune\" 自动删除 Git 中已移除的资源；\"selfHeal\" 自动修复集群中被手动修改的资源为 Git 中的状态",
+                "\"prune\" 清理过期的部署历史；\"selfHeal\" 自动扩展副本数",
                 "\"prune\" 自动更新镜像版本；\"selfHeal\" 自动重启失败的 Pod",
-                "\"prune\" 清理过期的部署历史；\"selfHeal\" 自动扩展副本数"
+                "\"prune\" 自动删除 Git 中已移除的资源；\"selfHeal\" 自动修复集群中被手动修改的资源为 Git 中的状态"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "\"prune: true\" 表示当 Git 仓库中删除了某个资源的定义时，ArgoCD 会自动在集群中也删除对应的资源。\"selfHeal: true\" 表示当有人手动修改了集群中的资源（例如通过 \"kubectl edit\"），ArgoCD 会自动将其恢复为 Git 中定义的状态。这两个配置确保了集群状态始终与 Git 保持一致，体现了 GitOps\"禁止手动修改\"的原则。"
             },
             {
@@ -68447,11 +68449,11 @@
               "question": "ArgoCD 的同步窗口（Sync Windows）功能主要用于什么场景？",
               "options": [
                 "加速 Git 仓库的拉取速度",
-                "限制自动同步的时间窗口，常用于保护生产环境（例如只允许工作日 10:00-14:00 自动同步，禁止周五下午同步）",
+                "压缩同步过程中的日志输出",
                 "自动合并多个 Pull Request",
-                "压缩同步过程中的日志输出"
+                "限制自动同步的时间窗口，常用于保护生产环境（例如只允许工作日 10:00-14:00 自动同步，禁止周五下午同步）"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "同步窗口是 ArgoCD 中用于控制\"什么时候可以自动同步\"的功能。通过配置 \"allow\" 和 \"deny\" 类型的窗口，可以限制自动同步的时间段。典型用法是保护生产环境：只在工作日白天允许自动同步，禁止在周五下午或周末同步（防止出问题无人处理）。这为生产部署提供了额外的安全保护。"
             },
             {
@@ -68470,12 +68472,12 @@
               "type": "single",
               "question": "在 GitOps 密钥管理方案中，Sealed Secrets 的主要优势是什么？",
               "options": [
-                "密钥存储在外部 Vault 中，集群通过网络拉取",
                 "加密后的密钥可以安全地存储在 Git 仓库中，只有集群内的 Sealed Secrets Controller 能解密",
+                "密钥存储在外部 Vault 中，集群通过网络拉取",
                 "密钥以 Base64 编码存储在 Git 中，任何人都可以解码",
                 "密钥通过环境变量手动注入到每个 Pod 中"
               ],
-              "answer": 1,
+              "answer": 0,
               "explanation": "Sealed Secrets 使用非对称加密对 Kubernetes Secret 进行加密。加密后的\"密封密钥\"（SealedSecret 资源）可以安全地提交到 Git 仓库，因为只有集群内运行的 Sealed Secrets Controller 持有解密密钥。A 描述的是 External Secrets 方案。C 错误，Base64 不是加密，不安全。D 不是 Sealed Secrets 的工作方式。"
             }
           ]
@@ -68518,11 +68520,11 @@
               "question": "GitHub Actions 中 \"strategy.matrix\" 的作用是什么？如果配置了 \"node-version: [16, 18, 20]\" 和 \"os: [ubuntu-latest, windows-latest]\"，会生成多少个 job 实例？",
               "options": [
                 "按顺序依次运行每个版本；6 个",
-                "在所有指定组合上并行运行测试；6 个",
+                "只运行最新的版本组合；2 个",
                 "随机选择一个组合运行；1 个",
-                "只运行最新的版本组合；2 个"
+                "在所有指定组合上并行运行测试；6 个"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "\"strategy.matrix\" 用于定义多维度并行测试策略。GitHub Actions 会自动生成所有维度组合的 job 实例并行运行。\"node-version\" 有 3 个值，\"os\" 有 2 个值，总共 3 x 2 = 6 个组合，即 6 个 job 实例并行执行。\"fail-fast: false\" 可以确保某个组合失败不影响其他组合继续运行。"
             },
             {
@@ -68542,23 +68544,23 @@
               "question": "GitHub Actions 中自定义 Composite Action 的主要优势是什么？",
               "options": [
                 "可以让外部用户直接修改你的 workflow 文件",
-                "可以将多个步骤打包成一个可复用的单元，在多个 workflow 中共享",
+                "可以自动修复失败的 job",
                 "可以绕过 GitHub 的权限检查",
-                "可以自动修复失败的 job"
+                "可以将多个步骤打包成一个可复用的单元，在多个 workflow 中共享"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "Composite Action 允许你将一组重复出现的步骤封装成一个独立的、可复用的 Action。例如将\"安装 Node.js + 缓存依赖 + 安装依赖\"封装为 \"setup-project\" Action，然后在多个 workflow 中通过 \"uses: ./.github/actions/setup-project\" 调用。这提高了配置的可维护性和一致性，避免了在多个 workflow 中重复相同的步骤组合。"
             },
             {
               "type": "single",
               "question": "在 GitHub Actions 中，关于环境变量和密钥（Secrets）的使用，以下哪个做法是正确的？",
               "options": [
-                "将数据库密码直接写在 workflow 文件的 \"env\" 字段中",
                 "使用 \"${{ secrets.XXX }}\" 引用密钥，密钥在日志中会自动被替换为 \"***\"",
+                "将数据库密码直接写在 workflow 文件的 \"env\" 字段中",
                 "在 workflow 的 \"run\" 命令中用 \"echo\" 打印密钥值以便调试",
                 "将密钥存储在 Git 仓库的配置文件中"
               ],
-              "answer": 1,
+              "answer": 0,
               "explanation": "GitHub Secrets 是专门用于存储敏感信息的加密机制。通过 \"${{ secrets.XXX }}\" 引用，密钥值在日志中会自动被替换为 \"***\"，防止泄露。A 是密钥硬编码，极不安全。C 会将密钥明文输出到日志中，违反安全原则。D 将密钥提交到 Git 仓库会导致永久泄露风险。正确做法是在仓库的 Settings > Secrets 中配置，并在 workflow 中通过 \"secrets\" 上下文引用。"
             }
           ]
@@ -68582,7 +68584,7 @@
             "安全扫描",
             "仓库"
           ],
-          "difficulty": "进阶",
+          "difficulty": "高级",
           "order": 3,
           "quiz": [
             {
@@ -68590,11 +68592,11 @@
               "question": "Docker 多阶段构建（Multi-stage Build）的主要目的是什么？",
               "options": [
                 "让 Dockerfile 的代码更简洁易读",
-                "在构建阶段使用包含编译工具的完整镜像，在最终运行阶段只拷贝编译产物，从而大幅减小镜像体积并提高安全性",
+                "加快 Docker 镜像的推送速度",
                 "让镜像可以在多个平台上同时构建",
-                "加快 Docker 镜像的推送速度"
+                "在构建阶段使用包含编译工具的完整镜像，在最终运行阶段只拷贝编译产物，从而大幅减小镜像体积并提高安全性"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "多阶段构建使用多个 \"FROM\" 指令，前面的阶段（如 \"builder\"）负责编译和构建，包含完整的编译工具链。最终阶段只通过 \"COPY --from=builder\" 拷贝必要的运行产物（如二进制文件），不包含编译工具。这样可以将镜像从 1GB+ 缩小到 10-50MB，同时减少攻击面（不暴露编译工具），提高安全性。"
             },
             {
@@ -68602,11 +68604,11 @@
               "question": "关于 Docker 镜像标签策略，以下哪个做法是生产环境的最佳实践？",
               "options": [
                 "始终使用 \"latest\" 标签，方便部署最新版本",
-                "使用语义化版本号（如 \"1.2.3\"）或 Git SHA 作为标签，避免使用 \"latest\"",
+                "不需要标签，Docker 会自动分配唯一 ID",
                 "使用日期作为唯一标签（如 \"2024-01-15\"）",
-                "不需要标签，Docker 会自动分配唯一 ID"
+                "使用语义化版本号（如 \"1.2.3\"）或 Git SHA 作为标签，避免使用 \"latest\""
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "生产环境应使用明确的版本号标签（如语义化版本 \"1.2.3\"）或 Git 提交哈希（如 \"abc1234\"），这样可以精确追溯每个镜像对应的代码版本，确保部署的可重复性和可回滚性。\"latest\" 标签含义模糊，不同时间拉取可能得到不同版本，容易导致不可预期的问题。日期标签虽然可追溯但无法体现版本兼容性信息。"
             },
             {
@@ -68614,11 +68616,11 @@
               "question": "\".dockerignore\" 文件的作用是什么？",
               "options": [
                 "定义 Docker 容器运行时可以访问的文件",
-                "告诉 Docker 在构建镜像时排除哪些文件不打包进镜像，类似于 \".gitignore\"",
+                "配置 Docker 容器的网络访问规则",
                 "列出 Docker 镜像的安全漏洞",
-                "配置 Docker 容器的网络访问规则"
+                "告诉 Docker 在构建镜像时排除哪些文件不打包进镜像，类似于 \".gitignore\""
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "\".dockerignore\" 文件的作用类似于 \".gitignore\"，它告诉 Docker 在构建镜像时忽略指定的文件和目录。常见的排除项包括 \"node_modules\"、\".git\"、\".env\"、\"coverage\" 等。使用 \".dockerignore\" 可以减小构建上下文（context）的体积，加速镜像构建，同时避免将不必要的文件（如敏感配置、开发工具）打包进镜像。"
             },
             {
@@ -68638,11 +68640,11 @@
               "question": "Docker Hub 免费账户的拉取限制是什么？这对 CI/CD 流水线有什么影响？",
               "options": [
                 "无限制，但推送次数有限",
-                "每 6 小时 100 次拉取限制，频繁拉取镜像的 CI/CD 流水线可能触发限流",
+                "只有中国地区的用户有限制",
                 "每天只能拉取 10 次",
-                "只有中国地区的用户有限制"
+                "每 6 小时 100 次拉取限制，频繁拉取镜像的 CI/CD 流水线可能触发限流"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "自 2020 年 11 月起，Docker Hub 对匿名用户和免费账户实施每 6 小时 100 次拉取的频率限制。对于频繁构建的 CI/CD 流水线来说，这个限制很容易被触发，导致构建失败。应对方案包括：使用私有镜像仓库（如 Harbor、AWS ECR）、升级到 Docker Pro 账户、或在 CI 中配置镜像缓存代理。"
             }
           ]
@@ -68686,11 +68688,11 @@
               "question": "与滚动更新相比，金丝雀发布（Canary Release）的最大优势是什么？",
               "options": [
                 "部署速度更快",
-                "风险更低，可以先让少量用户流量进入新版本，观察指标正常后再逐步扩大流量",
+                "配置更简单，不需要服务网格",
                 "不需要额外的服务器资源",
-                "配置更简单，不需要服务网格"
+                "风险更低，可以先让少量用户流量进入新版本，观察指标正常后再逐步扩大流量"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "金丝雀发布的核心优势是渐进式、低风险的发布方式。它先将少量流量（如 5%-10%）路由到新版本，密切监控错误率、延迟等技术指标。如果一切正常再逐步增加流量比例（10% -> 25% -> 50% -> 100%）。如果发现问题，只需将流量切回稳定版即可。A 错误，金丝雀发布通常比滚动更新更慢。C 错误，需要额外资源运行金丝雀实例。D 错误，精确的流量分割通常需要 Istio 等服务网格。"
             },
             {
@@ -68757,12 +68759,12 @@
               "type": "single",
               "question": "在 Terraform 中，Provider 的作用是什么？",
               "options": [
-                "提供代码编辑器功能",
                 "作为 Terraform 和云厂商之间的\"翻译官\"，将 HCL 配置转换为云厂商的 API 调用",
+                "提供代码编辑器功能",
                 "提供 Web 界面管理基础设施",
                 "自动测试应用程序代码"
               ],
-              "answer": 1,
+              "answer": 0,
               "explanation": "Provider 是 Terraform 和具体云厂商（如 AWS、Azure、阿里云）之间的桥梁。你用 HCL 语法描述想要的基础设施，Provider 负责将这些描述翻译成对应云厂商的 API 调用来实际创建资源。Terraform 支持数百种 Provider，使用同一套 HCL 语法就能管理不同云平台的基础设施。\"hashicorp/aws\" 是 AWS 的 Provider，\"hashicorp/google\" 是 GCP 的 Provider。"
             },
             {
@@ -68781,12 +68783,12 @@
               "type": "single",
               "question": "在 Terraform 中，\"terraform.tfvars\" 文件的用途是什么？",
               "options": [
-                "定义 Terraform 的版本要求",
                 "为变量提供具体的值，执行 \"terraform apply\" 时自动加载",
+                "定义 Terraform 的版本要求",
                 "存储 Terraform 的状态信息",
                 "定义 Provider 的认证信息"
               ],
-              "answer": 1,
+              "answer": 0,
               "explanation": "\"terraform.tfvars\" 文件用于为 \"variable\" 块中声明的变量提供具体的值。当执行 \"terraform apply\" 时，Terraform 会自动加载当前目录下的 \"terraform.tfvars\" 文件。你也可以使用 \"-var-file\" 参数指定不同的变量文件，例如 \"terraform apply -var-file=\\\"prod.tfvars\\\"\" 来为生产环境应用不同的配置值。这是一种将配置与代码分离的最佳实践。"
             },
             {
@@ -68794,11 +68796,11 @@
               "question": "Terraform 工作区（Workspace）的本质是什么？",
               "options": [
                 "一个代码编辑器",
-                "同一份 Terraform 代码可以在不同的工作区中运行，每个工作区有独立的状态文件，用于管理不同环境",
+                "一种代码格式化工具",
                 "一个团队协作工具",
-                "一种代码格式化工具"
+                "同一份 Terraform 代码可以在不同的工作区中运行，每个工作区有独立的状态文件，用于管理不同环境"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "Terraform 工作区就像\"平行宇宙\"——同一份代码可以在不同工作区中运行，每个工作区拥有自己独立的状态文件。典型用法是创建 \"dev\"、\"staging\"、\"prod\" 三个工作区，用同一套代码管理三个环境。通过 \"terraform.workspace\" 可以在代码中引用当前工作区名称，实现环境差异化配置（如不同工作区使用不同规格的实例类型）。"
             },
             {
@@ -68818,84 +68820,101 @@
         {
           "id": "devops_monitoring_alert",
           "title": {
-            "zh": "监控告警体系搭建",
-            "en": "Monitoring & Alerting"
+            "zh": "告警工程：分组路由、错误预算与燃速阈值",
+            "en": "Alert Engineering: Routing, Budgets and Burn Rates"
           },
           "summary": {
-            "zh": "使用 Prometheus、Grafana、Alertmanager 构建完整的监控告警体系。",
-            "en": "Build monitoring with Prometheus, Grafana and Alertmanager."
+            "zh": "Alertmanager 分组路由、抑制与静默边界、SLO 错误预算燃速告警与告警疲劳治理。",
+            "en": "Alertmanager grouping and routing, inhibition versus silence, SLO error-budget burn rates, fatigue metrics and postmortem loops."
           },
-          "file": "assets/content/devops_monitoring.md",
+          "file": "assets/content/devops_alerting_slo.md",
           "minutes": 60,
           "keywords": [
-            "Prometheus",
-            "Grafana",
-            "Alertmanager",
-            "监控",
-            "SLI/SLO"
+            "分组路由",
+            "抑制与静默",
+            "错误预算",
+            "多窗口燃速",
+            "告警疲劳"
           ],
           "difficulty": "高级",
           "order": 6,
           "quiz": [
             {
-              "type": "single",
-              "question": "Prometheus 采用的数据收集模型是什么？与另一种模型相比有什么优势？",
+              "question": "Alertmanager 里一个已经通知过的告警分组又新增了一条同类告警，但通知没有立刻发出；另外同一批仍在触发的告警每隔几小时被重复提醒。这两种行为分别由哪两个参数控制？",
               "options": [
-                "Push 模型——由应用主动推送指标到 Prometheus，适合所有场景",
-                "Pull 模型——Prometheus 主动从目标抓取（scrape）指标数据，便于发现异常目标和统一管理",
-                "点对点模型——每个监控目标之间互相交换数据",
-                "广播模型——所有指标同时发送到所有监控节点"
+                "前者由 group_interval 控制，它管的正是已经通知过的分组里新增告警的补发节奏",
+                "前者由 group_wait 控制，它决定的是任意两条通知之间全局共享的最小发送间隔",
+                "两者都由 group_wait 控制，区别只在于这段等待时长的具体配置数值各不相同",
+                "两者都由 repeat_interval 控制，分组相关参数只影响首次通知的发送时间点"
               ],
-              "answer": 1,
-              "explanation": "Prometheus 使用 Pull（拉取）模型，由 Prometheus Server 定期主动从目标（如 Node Exporter、应用 /metrics 端点）抓取指标数据。这种模式的优势在于：Prometheus 可以知道哪些目标是可达的（通过 \"up\" 指标），便于发现故障目标；抓取频率由 Prometheus 统一管理；配置集中，不需要每个应用都配置 Prometheus 地址。对于短生命周期的任务（如 CronJob），则使用 Pushgateway 来弥补 Pull 模型的不足。"
+              "answer": 0,
+              "explanation": "三个时间参数各管一段，串起来才是一组告警的完整通知时间线。group_wait 只作用于新分组首次通知之前的攒批窗口；组内新增告警的补发看 group_interval；仍在 firing 的重复提醒看 repeat_interval，它既不会改变分组内容也不会更换接收人。把 group_wait 理解成全局最小间隔、或指望 repeat_interval 兼顾新增告警，都会让通知要么刷屏、要么迟迟不发；恢复通知同样跟着分组节奏下发，不受 repeat_interval 支配。",
+              "type": "single"
             },
             {
-              "type": "single",
-              "question": "在 Prometheus 的四种指标类型中，哪种类型的指标只能递增（或重置），最适合用来统计\"总共发生了多少次\"？",
+              "question": "路由树里某个子路由把 continue 设为 true，Alertmanager 会怎样处理命中它的告警？",
               "options": [
-                "Gauge",
-                "Counter",
-                "Histogram",
-                "Summary"
+                "命中后立即结束整棵树的匹配，只向该路由配置的接收器发送一次通知",
+                "把这条告警退回 Prometheus 重新打标签，然后从头再走一遍路由匹配",
+                "忽略该路由配置的接收器，仅在日志里记录一次匹配结果而不发送通知",
+                "向这份接收器发出通知后继续匹配同层其余路由，告警可能同时到多个接收器"
               ],
-              "answer": 1,
-              "explanation": "Counter（计数器）是最简单的指标类型，只能递增或在进程重启时重置。它适合统计\"总共发生了多少次\"的场景，如 HTTP 请求总数、错误总数、消息处理总数等。查询时通常配合 \"rate()\" 函数计算每秒增长率。Gauge 可以任意增减，适合表示\"当前值\"（如内存使用量）。Histogram 和 Summary 用于统计值的分布情况（如延迟分位数）。"
+              "answer": 3,
+              "explanation": "路由默认自顶向下取第一个命中的分支，continue 是这条规则的开关：置为 true 时当前分支照常发送，同层后续分支与更深层仍会被继续尝试，因此一条安全类告警可以同时叫醒值班并抄送安全组。它不会把告警退回上游修改标签，也不会吞掉本分支的接收器；反过来，需要抄送却忘记设 true，就会出现旁路团队长期收不到通知的隐性漏报，这类问题往往要等到事故复盘才被发现。",
+              "type": "single"
             },
             {
-              "type": "single",
-              "question": "Alertmanager 中\"抑制（Inhibition）\"规则的作用是什么？",
+              "question": "抑制（inhibition）与静默（silence）在告警治理里的分工边界是什么？",
               "options": [
-                "永久删除某个告警规则",
-                "当某个严重告警触发时，抑制同一服务或集群的相关低级告警，避免告警风暴",
-                "加速告警的发送速度",
-                "自动修复触发告警的问题"
+                "抑制由配置预先声明，源告警存在时自动压掉同标签的下级告警；静默是人工设立的限时豁免窗，到期自动失效",
+                "抑制的作用范围只能限定在单个进程内的告警，静默则必须按整个集群的标签设立，二者不可交叉",
+                "静默会让 Prometheus 停止求值对应的告警规则，因此团队常常用它来降低告警引擎的计算负载",
+                "计划内的变更窗口一律写抑制规则，根因已经确认的连锁告警一律开静默窗口，两者用法正好互换"
               ],
-              "answer": 1,
-              "explanation": "抑制规则的作用是避免\"告警风暴\"——当一个严重问题触发大量相关告警时，只发送最重要的告警。例如，当整个集群宕机（critical 级别）时，该集群中所有服务的 warning 级别告警都应该被抑制，因为根因是集群故障，发送数百个服务告警没有意义。抑制规则通过 \"source_match\"（源告警）和 \"target_match\"（被抑制告警）配合 \"equal\" 标签来定义。"
+              "answer": 0,
+              "explanation": "抑制处理的是可复现、能用标签结构描述的连锁噪声，例如整集群宕机时压掉几百条服务级 warning，它随配置文件评审维护、可以长期存在；静默处理一次性的计划事件，靠到期时间、署名与事由约束，过期就应当消失。两者都只影响通知，不改变 Prometheus 侧的 firing 状态，也不能相互替换：抑制要求 equal 标签在源与目标两边都存在才会生效，静默把标签写宽了会顺手静音整个集群。真想降低求值负载只能改规则与记录规则本身。",
+              "type": "single"
             },
             {
-              "type": "single",
-              "question": "关于 SLI、SLO、SLA 三个概念，以下哪个描述是正确的？",
+              "question": "某服务把可用性 SLO 定为 30 天内 99.9%，错误预算因此是 0.1%。关于这份预算与告警阈值、发布节奏的关系，下列哪项正确？",
               "options": [
-                "SLI 是内部目标，SLO 是对客户的外部承诺，SLA 是实际测量值",
-                "SLI 是实际测量的服务指标值，SLO 是内部设定的目标值，SLA 是对客户的外部承诺，通常 SLA 比 SLO 更宽松",
-                "三者含义完全相同，只是叫法不同",
-                "SLA 是最严格的技术指标，SLO 次之，SLI 最宽松"
+                "错误预算只能事后统计并写进周报，它与阈值怎么设定以及发布节奏快慢都没有关系",
+                "预算余量充足时可以先做高风险变更，消耗过快时冻结非必要变更并把人力转回可靠性",
+                "只要预算还有剩余，SLO 就会被自动放宽，此时触发的高级别告警可以不必再响应",
+                "阈值必须写成 30 天可用性低于 99.9% 才报警，因为这是唯一一种可计算的表达式"
               ],
               "answer": 1,
-              "explanation": "SLI（Service Level Indicator）是实际测量的服务指标值，如\"过去 30 天可用性为 99.95%\"。SLO（Service Level Objective）是内部设定的目标值，如\"目标可用性 99.9%\"。SLA（Service Level Agreement）是对客户的外部承诺，如\"承诺可用性 99.5%，否则赔偿\"。通常 SLA 比 SLO 更宽松，留出缓冲空间，确保即使未达到内部目标也不会违反对客户的承诺。"
+              "explanation": "预算的意义在于把「这周能不能上高风险改动」变成可审计的算术，而不是一个装饰性的统计数字。0.1% 换算成停机大约四十多分钟，燃速类阈值正是在这个尺度上分配它。把预算当成免责额度是常见误解：已经影响用户的故障仍要按分级去响应，剩余多少并不改变单条告警的严重性；而把阈值直接写成周期末尾的可用性判定，要等到三十天快走完才叫人，起不到止损作用，正确做法是用短窗口的燃速去投影这条长周期承诺。",
+              "type": "single"
             },
             {
-              "type": "single",
-              "question": "在 PromQL 中，\"histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))\" 这个查询的作用是什么？",
+              "question": "基于错误预算的燃速告警通常要求短窗口与长窗口两个条件同时满足才触发，这样设计的目的是什么？",
               "options": [
-                "计算过去 5 分钟的平均请求延迟",
-                "计算过去 5 分钟的 P99 请求延迟（即 99% 的请求延迟低于此值）",
-                "统计过去 5 分钟的总请求数",
-                "计算过去 5 分钟的每秒请求速率"
+                "短窗口负责尽快发现劣化，长窗口负责确认劣化确实在持续，两者同时成立才说明预算真在被消耗",
+                "短窗口决定要不要把样本写入数据库，长窗口决定通知发往哪一个接收器与发送渠道",
+                "两个窗口必须取完全相同的长度，否则 PromQL 里的 rate 函数没法计算燃速倍数",
+                "长窗口只是给 Grafana 画趋势图用的，真正触发告警的一直都是短窗口的那一项条件"
               ],
-              "answer": 1,
-              "explanation": "\"histogram_quantile\" 函数用于从 Histogram 类型的指标中计算分位数。参数 \"0.99\" 表示计算第 99 百分位（P99），即 99% 的请求延迟低于此值。\"rate(...[5m])\" 计算过去 5 分钟的增长率。P99 延迟是衡量服务性能的重要指标，它反映了\"最差体验\"用户的需求——如果 P99 延迟是 500ms，意味着 99% 的用户请求延迟在 500ms 以内，只有 1% 的请求超过这个值。"
+              "answer": 0,
+              "explanation": "这是一对职责不同的约束。短窗口把发现延迟压到分钟级，但容易被毛刺和瞬时尖峰打穿；长窗口滤掉抖动、确认劣化在持续，可单独使用时等到条件成立预算已经烧掉大半。两个条件用 and 连接，等于同时要求现在很糟并且已经糟了一阵。窗口长度与 for 都按同一套乘算公式调节，但每加一段等待都会吃掉响应预算；此外低流量时段还要补一个最小请求数条件，否则少量失败就能把错误率推到几十个百分点。",
+              "type": "single"
+            },
+            {
+              "question": "团队想度量并治理值班同学的告警疲劳，下列哪些做法属于有价值的长期手段？",
+              "options": [
+                "统计每人每周被页面唤醒的次数，以及自动恢复、无人处理即关闭的告警占比",
+                "跟踪平均确认时长与告警到正式事故的转化率，用来判断阈值是不是设得过松",
+                "给每条规则登记负责人，定期评审并按没有可执行动作就降级或删除来修剪规则",
+                "把更多规则统一提到 critical 级别并全部接入页面通道，以保证重要告警不漏掉"
+              ],
+              "answers": [
+                0,
+                1,
+                2
+              ],
+              "answer": 0,
+              "explanation": "疲劳要当作容量问题来量化。人均页面次数与自动关闭比例直接反映噪声水平，平均确认时长与告警到事故转化率分别刻画值班响应质量和阈值松紧，再配合 Top offender 排行就能定位到少数真正该改造的规则。给每条规则设负责人，并把没有可执行动作就降级变成定期评审的固定动作，才能让通知量结构性下降。把所有规则提级恰恰相反：当所有告警都紧急时，值班会开始整体忽略通知，真正的问题反而被埋没在噪声里。",
+              "type": "multi"
             }
           ]
         },
@@ -68962,11 +68981,11 @@
               "question": "在 ELK Stack 中，Elasticsearch、Logstash、Kibana 各自承担什么角色？",
               "options": [
                 "Elasticsearch 负责日志采集，Logstash 负责可视化，Kibana 负责存储",
-                "Elasticsearch 负责分布式存储和检索日志，Logstash 负责接收、解析和转换日志数据，Kibana 负责日志的查询和可视化展示",
+                "Elasticsearch 负责告警，Logstash 负责日志采集，Kibana 负责日志存储",
                 "三者功能完全相同，互为备份",
-                "Elasticsearch 负责告警，Logstash 负责日志采集，Kibana 负责日志存储"
+                "Elasticsearch 负责分布式存储和检索日志，Logstash 负责接收、解析和转换日志数据，Kibana 负责日志的查询和可视化展示"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "ELK Stack 的完整数据流是：应用程序 -> Filebeat（轻量采集器）-> Logstash（解析/过滤/转换）-> Elasticsearch（分布式存储和全文检索）-> Kibana（Web 可视化仪表盘）。Elasticsearch 是核心存储引擎，提供强大的全文搜索和聚合分析能力。Logstash 是数据处理管道，支持 Grok 模式解析、条件过滤、数据脱敏等。Kibana 提供查询界面和仪表盘，让运维人员可以直观地搜索和分析日志。"
             },
             {
@@ -68974,11 +68993,11 @@
               "question": "Fluent Bit 相比 Fluentd 的主要优势是什么？",
               "options": [
                 "功能更丰富，支持更多的输出插件",
-                "更轻量级，内存占用更低，适合边缘场景和容器环境中的日志采集",
+                "只能与 Elasticsearch 配合使用",
                 "完全兼容 Logstash 的所有 Grok 模式",
-                "只能与 Elasticsearch 配合使用"
+                "更轻量级，内存占用更低，适合边缘场景和容器环境中的日志采集"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "Fluent Bit 是 Fluentd 的轻量版本，用 C 语言编写，内存占用极低（通常几 MB），非常适合在资源受限的环境中运行，如 Kubernetes 节点上的日志采集（DaemonSet 部署）。Fluentd 用 Ruby 编写，功能更丰富但资源消耗更大，适合作为集中式日志处理服务器。典型架构是：Fluent Bit 部署在每个节点上采集日志，转发给 Fluentd 进行集中处理和路由。"
             }
           ]
@@ -69018,7 +69037,7 @@
           "quiz": [
             {
               "type": "code",
-              "question": "以下代码有什么问题？",
+              "question": "阅读下面的 React 组件代码，它违反了哪条 Hooks 规则？",
               "options": [
                 "没有导入useState",
                 "在条件语句中调用了Hook",
@@ -69132,7 +69151,7 @@
             },
             {
               "type": "code",
-              "question": "以下代码有什么问题？",
+              "question": "在 Vue 3 组合式 API 中，下面这段解构 reactive 对象的代码有什么问题？",
               "options": [
                 "reactive不能用于对象",
                 "解构后的变量失去了响应性",
@@ -69206,7 +69225,7 @@
             },
             {
               "type": "code",
-              "question": "以下代码有什么问题？",
+              "question": "这段 Angular 组件在模板里直接调用 getData()，会带来什么问题？",
               "options": [
                 "模板中不能调用方法",
                 "每次变更检测都会调用getData，影响性能",
@@ -69223,11 +69242,11 @@
               "question": "关于Angular的生命周期钩子，以下执行顺序正确的是？",
               "options": [
                 "ngOnInit → ngAfterViewInit → ngOnChanges → ngOnDestroy",
-                "ngOnChanges → ngOnInit → ngAfterViewInit → ngOnDestroy",
+                "ngAfterViewInit → ngOnInit → ngOnChanges → ngOnDestroy",
                 "ngOnInit → ngOnChanges → ngAfterViewInit → ngOnDestroy",
-                "ngAfterViewInit → ngOnInit → ngOnChanges → ngOnDestroy"
+                "ngOnChanges → ngOnInit → ngAfterViewInit → ngOnDestroy"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "Angular组件的生命周期钩子有严格的执行顺序：1）ngOnChanges - 当输入属性变化时调用（首次也会调用）；2）ngOnInit - 组件初始化完成后调用，通常在这里进行数据获取；3）ngAfterContentInit - 内容投影完成后；4）ngAfterContentChecked - 内容检查后；5）ngAfterViewInit - 视图初始化完成后；6）ngAfterViewChecked - 视图检查后；7）ngOnDestroy - 组件销毁前。所以正确顺序是ngOnChanges → ngOnInit → ngAfterViewInit → ngOnDestroy。记住这个顺序对于正确处理初始化和清理逻辑非常重要。"
             },
             {
@@ -69363,7 +69382,7 @@
             "状态管理",
             "Context API"
           ],
-          "difficulty": "进阶",
+          "difficulty": "基础",
           "order": 4,
           "quiz": [
             {
@@ -69447,7 +69466,7 @@
             "App Router",
             "服务端渲染"
           ],
-          "difficulty": "进阶",
+          "difficulty": "基础",
           "order": 5,
           "quiz": [
             {
@@ -69464,7 +69483,7 @@
             },
             {
               "type": "code",
-              "question": "以下代码有什么问题？",
+              "question": "Next.js 的 getServerSideProps 里读取 window.innerWidth，运行时会发生什么？",
               "options": [
                 "getServerSideProps返回值格式错误",
                 "在服务端代码中访问了window对象",
@@ -69818,23 +69837,23 @@
               "question": "在Express中，中间件的执行顺序由什么决定？",
               "options": [
                 "中间件函数的名称字母顺序",
-                "中间件注册的先后顺序",
+                "随机顺序",
                 "中间件函数的复杂度",
-                "随机顺序"
+                "中间件注册的先后顺序"
               ],
-              "answer": 1,
-              "explanation": "Express中间件严格按照`app.use()`或`router.use()`调用的顺序依次执行。先注册的先执行，这是中间件链的核心特性。如果需要调整执行顺序，必须改变注册顺序，不能依赖其他因素。"
+              "answer": 3,
+              "explanation": "Express 维护一条按注册顺序排列的中间件栈，请求进来后依次调用，只有调用 next()（或结束响应）才会进入下一个；名称字母顺序、函数复杂度都不参与调度，随机更无从谈起。因此鉴权中间件必须注册在受保护路由之前，错误处理中间件（四参数签名）要放在最后。调试顺序问题用 morgan 或自加 console 打点，比猜测更可靠。"
             },
             {
               "type": "single",
               "question": "Koa的洋葱模型中，`await next()`之后的代码在什么时候执行？",
               "options": [
                 "请求刚到达时",
-                "所有内层中间件处理完成后，响应返回时",
+                "与`await next()`之前的代码同时执行",
                 "永远不会执行",
-                "与`await next()`之前的代码同时执行"
+                "所有内层中间件处理完成后，响应返回时"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "这是洋葱模型的关键特征。`await next()`之前的代码在请求阶段（从外向内）执行，`await next()`之后的代码在所有内层中间件处理完毕、响应开始返回时（从内向外）执行。这使得你可以在同一函数中处理请求和响应的逻辑，比如记录请求开始时间和结束时间来计算耗时。"
             },
             {
@@ -69842,12 +69861,12 @@
               "question": "以下哪个做法会导致Express应用出现内存泄漏？",
               "options": [
                 "使用`express.json()`中间件",
-                "在全局作用域创建数组并不断push数据",
+                "配置CORS中间件",
                 "使用路由参数验证",
-                "配置CORS中间件"
+                "在全局作用域创建数组并不断push数据"
               ],
-              "answer": 1,
-              "explanation": "在全局作用域（模块级别）创建的数组如果不断增长且从未清理，会导致内存持续增长最终耗尽。正确做法是使用有上限的数据结构（如LRU缓存）、定期清理过期数据，或将数据持久化到数据库。其他选项都是正常的中间件使用，不会导致内存泄漏。"
+              "answer": 3,
+              "explanation": "模块级数组随请求不断 push 且没有清理逻辑，堆内存只增不减，进程最终 OOM，这是典型泄漏。express.json()、路由参数校验、CORS 配置都是标准中间件用法，本身不累积状态。防泄漏的常规手段：给缓存设上限（LRU 或 TTL）、用 WeakRef/WeakMap 持有临时对象、把会话数据外置到 Redis，并用 process.memoryUsage 与堆快照定期观测增长趋势。"
             },
             {
               "type": "single",
@@ -69890,11 +69909,11 @@
               "question": "FastAPI自动生成API文档依赖于什么机制？",
               "options": [
                 "手动编写OpenAPI规范文件",
-                "Python类型提示和Pydantic模型",
+                "配置文件中的路由定义",
                 "特殊的注释语法",
-                "配置文件中的路由定义"
+                "Python类型提示和Pydantic模型"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "FastAPI通过分析函数的参数类型提示（如`user: UserCreate`）和返回类型（`response_model=UserResponse`），以及Pydantic模型的字段定义，自动生成符合OpenAPI规范的JSON schema，进而渲染出Swagger UI和ReDoc文档。这是FastAPI相比其他框架的最大优势之一——文档与代码始终保持同步。"
             },
             {
@@ -69914,11 +69933,11 @@
               "question": "FastAPI的依赖注入系统中，使用`yield`的依赖函数有什么特殊作用？",
               "options": [
                 "提高性能",
-                "允许在依赖使用后执行清理代码",
+                "缓存依赖结果",
                 "实现异步迭代",
-                "缓存依赖结果"
+                "允许在依赖使用后执行清理代码"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "当依赖函数使用`yield`时，`yield`之前的代码在请求处理前执行，`yield`之后的代码在请求处理后执行（无论成功还是失败）。这非常适合资源管理场景，如数据库会话：先创建会话（yield前），处理请求，最后关闭会话（yield后）。这确保了资源总是被正确释放，即使发生异常。"
             },
             {
@@ -69986,11 +70005,11 @@
               "question": "在Gin框架中，如何从请求体中解析JSON并同时进行验证？",
               "options": [
                 "使用`c.Bind()`方法",
-                "使用`c.ShouldBindJSON()`方法",
+                "使用`c.Query()`方法",
                 "手动解析`c.Request.Body`",
-                "使用`c.Query()`方法"
+                "使用`c.ShouldBindJSON()`方法"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "`c.ShouldBindJSON()`会解析JSON请求体并根据结构体标签进行验证，如果失败会返回错误但不会自动发送响应（需要手动处理）。`c.Bind()`也会解析和验证，但在失败时会自动发送400响应。`c.Query()`用于获取查询参数，不是请求体。手动解析虽然可行，但失去了自动验证的优势。"
             },
             {
@@ -70010,11 +70029,11 @@
               "question": "Gin和Echo在错误处理方式上的主要区别是什么？",
               "options": [
                 "Gin返回error，Echo返回JSON",
-                "Gin手动返回JSON，Echo返回error由全局处理器转换",
+                "两者都只能返回error",
                 "两者都只能手动返回JSON",
-                "两者都只能返回error"
+                "Gin手动返回JSON，Echo返回error由全局处理器转换"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "这是两个框架设计理念的差异。Gin的handler直接操作`*gin.Context`，需要手动调用`c.JSON()`返回响应。Echo的handler返回`error`，框架的全局错误处理器会将error转换为HTTP响应。两种方式各有优劣：Gin更灵活，Echo更统一。实际项目中可以根据团队偏好选择。"
             },
             {
@@ -70058,11 +70077,11 @@
               "question": "关于ORM（对象关系映射）的优势，以下哪项描述是错误的？",
               "options": [
                 "ORM可以自动生成SQL语句，减少手写SQL的工作量",
-                "ORM完全消除了SQL注入的风险，无需任何额外防护",
+                "ORM的类型检查可以在编译时发现部分错误",
                 "ORM提供了数据库无关的代码抽象，便于切换数据库",
-                "ORM的类型检查可以在编译时发现部分错误"
+                "ORM完全消除了SQL注入的风险，无需任何额外防护"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "虽然大多数ORM默认使用参数化查询来防止SQL注入，但如果开发者使用ORM提供的原始SQL执行功能（如Sequelize的`sequelize.query()`或Prisma的`$queryRaw`）并拼接用户输入，仍然可能存在SQL注入风险。ORM降低了风险但不能完全消除，开发者仍需保持警惕。其他选项都是ORM的正确优势。"
             },
             {
@@ -70165,13 +70184,13 @@
               "type": "single",
               "question": "在RBAC模型中，以下哪种做法违反了最小权限原则？",
               "options": [
-                "为新员工分配Viewer角色，仅能查看内容",
                 "给所有内容编辑者分配Admin角色，方便他们管理文章",
+                "为新员工分配Viewer角色，仅能查看内容",
                 "创建专门的Moderator角色，仅包含审核评论的权限",
                 "定期审计用户权限，移除不再需要的权限"
               ],
-              "answer": 1,
-              "explanation": "最小权限原则要求用户只拥有完成工作所需的最小权限集合。给编辑者分配Admin角色会赋予他们不必要的权限（如删除用户、修改系统配置），增加了安全风险。正确做法是创建Editor角色，仅包含文章相关权限。其他选项都符合最小权限原则。"
+              "answer": 0,
+              "explanation": "编辑者日常只需创建、修改、发布文章，分配 Admin 附带删用户、改系统配置等权限，属于典型的权限超发，一次令牌泄露即造成全局破坏，违反最小权限。正确做法是建 Editor 角色只授予内容相关权限。Viewer 只读、专门的 Moderator 仅含审核权、定期回收不再需要的权限，都是最小权限原则的正面实践。RBAC 的价值就在角色与权限矩阵可审计。"
             },
             {
               "type": "single",
@@ -70262,23 +70281,23 @@
               "question": "DataLoader主要解决了GraphQL中的什么问题？",
               "options": [
                 "Schema验证失败",
-                "N+1查询导致的性能问题",
+                "Mutation执行顺序混乱",
                 "客户端缓存失效",
-                "Mutation执行顺序混乱"
+                "N+1查询导致的性能问题"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "DataLoader通过批处理（batching）和缓存（caching）机制，将多个相同类型的加载请求合并为一次数据库查询，有效解决了N+1查询问题。例如，当查询100个用户的文章时，DataLoader会将100次单独的查询合并为1次批量查询。"
             },
             {
               "type": "single",
               "question": "在GraphQL中，如何实现实时数据推送功能？",
               "options": [
-                "使用轮询（Polling）定期调用Query",
                 "使用WebSocket建立长连接，配合Subscription类型",
+                "使用轮询（Polling）定期调用Query",
                 "在Mutation中添加回调函数",
                 "使用HTTP Server-Sent Events"
               ],
-              "answer": 1,
+              "answer": 0,
               "explanation": "GraphQL的Subscription类型专门用于实时数据推送，底层通常基于WebSocket实现。客户端订阅某个事件后，当服务器端发生相应变化时，会通过WebSocket主动向客户端推送数据。虽然轮询也能实现类似效果，但效率低且不是GraphQL的原生方案。"
             }
           ]
@@ -70339,19 +70358,19 @@
                 "需要人类可读的请求/响应格式进行调试"
               ],
               "answer": 2,
-              "explanation": "gRPC基于HTTP/2和Protocol Buffers，提供二进制序列化、强类型接口和高性能，非常适合内部服务间通信。选项A和B更适合REST，因为通用性和浏览器支持更好；选项D也是REST的优势，gRPC的二进制格式不易直接阅读。"
+              "explanation": "gRPC 用 HTTP/2 多路复用 + Protocol Buffers 二进制序列化，配合 .proto 强类型契约和代码生成，适合内部服务之间吞吐高、延迟敏感的双向通信。它不适合面向第三方开放（文档与生态仍以 REST 为主）、浏览器直连（需 grpc-web 转译）、以及要求人类可读报文的调试场景。选型看三点：调用方是谁、是否需要流式、契约管理成本。"
             },
             {
               "type": "single",
               "question": "Saga模式用于解决微服务架构中的什么问题？",
               "options": [
                 "服务发现的问题",
-                "跨服务的分布式事务一致性",
+                "负载均衡策略",
                 "API版本兼容性",
-                "负载均衡策略"
+                "跨服务的分布式事务一致性"
               ],
-              "answer": 1,
-              "explanation": "Saga模式通过将长事务拆分为一系列本地事务，并为每个步骤定义补偿操作，来解决跨多个服务（每个服务有自己的数据库）的分布式事务问题。它实现了最终一致性，而非传统ACID事务的强一致性。其他选项由不同的模式或机制解决。"
+              "answer": 3,
+              "explanation": "Saga 把跨服务的长事务拆成一串各有本地 ACID 保证的小事务，每步配一个补偿动作，失败时按逆序补偿，达成最终一致性，解决「每个服务各管一个数据库、无法用两阶段提交」的问题。服务发现注册中心负责，API 版本兼容用契约管理与网关路由，负载均衡在传输层/网格层。Saga 代价是隔离性弱，需处理脏读与补偿失败。"
             },
             {
               "type": "single",
@@ -70565,7 +70584,7 @@
             "YOLO",
             "迁移学习"
           ],
-          "difficulty": "进阶",
+          "difficulty": "基础",
           "order": 2,
           "quiz": [
             {
@@ -70649,7 +70668,7 @@
             "BERT",
             "情感分析"
           ],
-          "difficulty": "进阶",
+          "difficulty": "基础",
           "order": 3,
           "quiz": [
             {
@@ -70733,7 +70752,7 @@
             "NeuMF",
             "冷启动"
           ],
-          "difficulty": "进阶",
+          "difficulty": "基础",
           "order": 4,
           "quiz": [
             {
@@ -71198,12 +71217,12 @@
               "type": "single",
               "question": "在SwiftUI中，以下哪个属性包装器最适合用于管理可变的状态数据？",
               "options": [
-                "@Environment",
                 "@State",
+                "@Environment",
                 "@Binding",
                 "@EnvironmentObject"
               ],
-              "answer": 1,
+              "answer": 0,
               "explanation": "@State是SwiftUI中用于管理视图内部可变状态的标准方式。它适用于值类型（如struct），当@State变量的值发生变化时，SwiftUI会自动重新渲染使用该状态的视图。@Environment用于读取系统环境值（如颜色方案），@Binding用于在父子视图间共享状态，@EnvironmentObject用于在整个视图层级中共享对象。对于视图自身拥有的可变数据，@State是最合适的选择。"
             },
             {
@@ -71222,12 +71241,12 @@
               "type": "single",
               "question": "在SwiftUI List中使用ForEach时，为什么数据模型需要遵循Identifiable协议？",
               "options": [
-                "为了能够对数据进行排序",
                 "为了让SwiftUI能够唯一标识和追踪每个列表项",
+                "为了能够对数据进行排序",
                 "为了提高数据加载速度",
                 "为了支持数据加密"
               ],
-              "answer": 1,
+              "answer": 0,
               "explanation": "SwiftUI需要一种方式来唯一标识列表中的每个元素，以便在数据变化时高效地更新UI。Identifiable协议要求提供一个唯一的id属性，SwiftUI使用这个id来追踪哪些项被添加、删除或移动，从而只重新渲染发生变化的部分，而不是重建整个列表。这类似于React中的key属性。如果不使用Identifiable，也可以使用ForEach(data, id: \\.someProperty)的形式显式指定标识符。"
             },
             {
@@ -71247,11 +71266,11 @@
               "question": "SwiftUI中的withAnimation闭包的作用是什么？",
               "options": [
                 "强制所有视图立即刷新",
-                "为闭包内改变的状态变化添加动画效果",
+                "创建一个独立的动画线程",
                 "暂停当前正在播放的动画",
-                "创建一个独立的动画线程"
+                "为闭包内改变的状态变化添加动画效果"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "withAnimation是一个全局函数，它接收一个闭包作为参数。闭包内对@State或其他可观察状态的任何修改都会被自动添加动画效果。例如，`withAnimation { isExpanded = true }`会让isExpanded的变化以动画形式呈现，而不是瞬间跳变。你可以指定动画类型和时长，如`withAnimation(.easeInOut(duration: 0.5))`。这是一种简洁的方式来为状态变化添加视觉反馈，提升用户体验。"
             }
           ]
@@ -71270,103 +71289,104 @@
         {
           "id": "android_flutter_release",
           "title": {
-            "zh": "实战：Flutter 打包发布 Android",
-            "en": "Flutter Release"
+            "zh": "Android 发布工程：签名、包体与上架轨道",
+            "en": "Android Release Engineering"
           },
           "summary": {
-            "zh": "正式签名、按 ABI 拆分、混淆与符号保留、发布清单。",
-            "en": "Signing, ABI splits, obfuscation and release checklist."
+            "zh": "keystore 与签名方案、SDK 版本语义、AAB 分发、R8 混淆与发布轨道。",
+            "en": "Keystores, signing schemes, SDK level semantics, AAB delivery, R8 mapping and release tracks."
           },
-          "file": "assets/content/flutter_release.md",
+          "file": "assets/content/android_release_publishing.md",
           "minutes": 90,
           "keywords": [
-            "Flutter",
-            "发布",
-            "签名",
-            "混淆",
-            "体积优化"
+            "keystore",
+            "签名方案",
+            "App Bundle",
+            "R8 混淆",
+            "发布轨道"
           ],
           "quiz": [
             {
-              "question": "围绕“实战：Flutter 打包发布 Android”中的 Flutter、发布、签名，下列哪两项是本课强调的实践判断？",
+              "question": "APK 签名方案 v1（JAR 签名）与 v2/v3（APK Signature Scheme）最关键的差别是什么？",
               "options": [
-                "验证 发布 时要固定版本并覆盖边界输入，结论才可复现",
-                "把 发布 的单次运行结果当成所有版本和规模都成立",
-                "学习 Flutter 时要同时说明输入、输出和失败路径，不能只看正常流程",
-                "只要 Flutter 的常规示例通过，就可以跳过边界与异常路径"
+                "v1 只能使用 RSA 算法生成密钥对，v2 与 v3 只能使用椭圆曲线算法",
+                "v1 只校验压缩包内的文件条目，v2/v3 对整个 APK 字节做完整性签名",
+                "v1 需要把签名私钥交给商店代管，v2 与 v3 必须由发布者自行生成保管",
+                "v1 只出现在调试构建里，正式构建必须改用 v2 或 v3 才能通过校验"
+              ],
+              "answer": 1,
+              "explanation": "v1 沿用 JAR 签名，签名信息写在 META-INF 里，只覆盖压缩包内的文件内容，因此改动 ZIP 对齐填充、中央目录这些没被它看守的字节不会破坏 v1 校验；v2 把签名块放在中央目录之前，对整包字节做摘要；v3 覆盖范围与 v2 相同，但使用更强的密钥算法并支持签名证书轮换。Android 7.0（API 24）开始校验 v2，更高版本还要求 v3，所以当 minSdk 低于 24 时通常三种方案同时启用，而不是只留其中一种。",
+              "type": "single"
+            },
+            {
+              "question": "某模块声明 compileSdk 35、minSdk 24、targetSdk 35，关于这三个配置的实际含义，下列哪项正确？",
+              "options": [
+                "minSdk 决定编译期可见的 API 级别，targetSdk 决定用户设备能否安装，compileSdk 只影响资源裁剪",
+                "compileSdk 会改变应用运行时真正加载的系统类库版本，minSdk 只是给人看的说明文字",
+                "targetSdk 声明可安装的最低系统版本，compileSdk 声明商店审核所用的模拟器版本",
+                "minSdk 是可安装下限，targetSdk 是行为适配声明，compileSdk 只决定编译期可见 API"
+              ],
+              "answer": 3,
+              "explanation": "三个数字各管一段。compileSdk 只影响编译期用哪份平台类库解析 API，产物运行时仍然使用设备自带的系统类库，所以单独提升它不会改变行为；minSdk 决定安装包能被哪些系统版本安装，低于它的设备在商店里看不到这个应用；targetSdk 是向系统声明已经把行为适配到该级别，系统据此决定是否启用新的后台、权限与通知限制。真正需要回归测试的是 targetSdk 的变化，写错的也最隐蔽，因为它不报错、只是行为突然不同。",
+              "type": "single"
+            },
+            {
+              "question": "关于 APK 与 AAB（Android App Bundle）这两种发布产物，下列说法正确的是？",
+              "options": [
+                "AAB 可以直接用 adb install 安装到真机做上架前验收",
+                "APK 只适合商店上架，AAB 只适合企业内网的侧载分发",
+                "AAB 要先由商店或 bundletool 转换成设备专用 APK 才能安装",
+                "两者内容完全一致，区别只是文件后缀名和签名算法不同"
+              ],
+              "answer": 2,
+              "explanation": "AAB 是发布中间格式，设备上没有包管理器能直接安装它。Google Play 收到 AAB 后，按设备指纹（CPU 架构、屏幕密度、语言）拆出专用 APK 再下发；本地验证要用 bundletool 生成 .apks 后安装。APK 才是可直接安装的成品，侧载、内网 MDM 分发只能用 APK，所以「APK 只适合商店、AAB 只适合侧载」正好说反。两者的差异是产物形态与下发方式，不是后缀名或签名算法。",
+              "type": "single"
+            },
+            {
+              "question": "应用开启 R8 混淆与资源裁剪之后，下列哪两项做法能降低线上事故风险？",
+              "options": [
+                "为所有第三方依赖统一加上 -dontwarn，让构建不再报缺类警告",
+                "给反射、序列化和 JNI 用到的类补 -keep 规则，并重新做一轮回归",
+                "只验证未混淆的调试包，因为正式包只是名字变了而行为不会变",
+                "把每个发布版本的 mapping.txt 按版本号归档，供崩溃堆栈还原使用"
               ],
               "answers": [
-                0,
-                2
+                1,
+                3
               ],
-              "answer": 0,
-              "explanation": "在 `实战：Flutter 打包发布 Android` 第 1 题中，正确答案是「验证 发布 时要固定版本并覆盖边界输入，结论才可复现；学习 Flutter 时要同时说明输入、输出和失败路径，不能只看正常流程」。在「实战：Flutter 打包发布 Android」第 1 题中，该判断与术语 `Flutter` 对应：用 flutter build apk --analyze-size 查看各模块占比，优先处理体积最大的资源，App Bundle（--appbundle）让商店按设备下发，是发布到 Google Play 的首选形式。在「实战：Flutter 打包发布 Android」第 1 题中，错误表现方面，keystore 丢失会造成无法更新应用，应按多处离线备份修复。",
+              "answer": 1,
+              "explanation": "R8 在缩减阶段会删除可达性分析认为用不到的类，而反射、JSON 序列化、JNI 与注解处理的引用关系要到运行时才确定，因此这些目标必须用 -keep 显式声明，验证也只能跑混淆后的 release 包。mapping.txt 是原名与混淆名的对照表，每次构建都不同，丢了就永远无法还原上报的 a.b.c 堆栈，所以每个版本都要归档。统一加 -dontwarn 只是把警告压掉，警告常常指向真实缺失的类，问题会被推迟到运行时；调试包没有开启缩减，通过与否不能代表正式包的行为。",
               "type": "multi"
             },
             {
-              "question": "阅读 `实战：Flutter 打包发布 Android` 的 `Flutter` 示例。它服务于正式签名、按 ABI 拆分、混淆与符号保留、发布清单。代码中实际包含下列哪一项？",
-              "options": [
-                "出现字面量 `解析失败`",
-                "出现字面量 `KEYSTORE_PATH`",
-                "出现字面量 `system`",
-                "出现字面量 `error`"
-              ],
-              "answer": 1,
-              "explanation": "在 `实战：Flutter 打包发布 Android` 第 2 题中，正确答案是「出现字面量 `KEYSTORE_PATH`」。在「实战：Flutter 打包发布 Android」第 2 题中，该判断与术语 `Flutter` 对应：用 flutter build apk --analyze-size 查看各模块占比，优先处理体积最大的资源，App Bundle（--appbundle）让商店按设备下发，是发布到 Google Play 的首选形式。在「实战：Flutter 打包发布 Android」第 2 题中，错误表现方面，keystore 丢失会造成无法更新应用，应按多处离线备份修复。",
-              "type": "code",
-              "code": "# 按 CPU 架构拆分 APK，单包体积显著下降\r\nflutter build apk --release --split-per-abi\r\n\r\n# 或发布 AAB，由商店按设备下发\r\nflutter build appbundle --release\r\n\r\n# 查看各部分的体积构成\r\nflutter build apk --analyze-size",
-              "language": "bash"
-            },
-            {
-              "question": "减小 APK 体积的常用做法是？",
-              "options": [
-                "使用 --split-per-abi 或 App Bundle",
-                "内嵌高清图",
-                "打包全部 ABI，但这会拖慢构建速度，同时这会带来额外的维护成本",
-                "引入更多字体"
-              ],
+              "type": "fill",
+              "question": "填空：Android 发布时商店用来判断能否覆盖安装的那个整数版本号叫____，它在 Google Play Console 上传时必须严格递增。",
+              "options": [],
               "answer": 0,
-              "explanation": "在 `实战：Flutter 打包发布 Android` 第 3 题中，正确答案是「使用 --split-per-abi 或 App Bundle」。在「实战：Flutter 打包发布 Android」第 3 题中，该判断与术语 `Flutter` 对应：用 flutter build apk --analyze-size 查看各模块占比，优先处理体积最大的资源，App Bundle（--appbundle）让商店按设备下发，是发布到 Google Play 的首选形式。在「实战：Flutter 打包发布 Android」第 3 题中，错误表现方面，keystore 丢失会造成无法更新应用，应按多处离线备份修复。"
-            },
-            {
-              "question": "flutter build appbundle 的产物格式是？",
-              "options": [
-                ".jar",
-                ".aab",
-                ".apk",
-                ".ipa"
+              "accepted_answers": [
+                "versionCode",
+                "VersionCode",
+                "version code"
               ],
-              "answer": 1,
-              "explanation": "在 `实战：Flutter 打包发布 Android` 第 4 题中，正确答案是「.aab」。在「实战：Flutter 打包发布 Android」第 4 题中，该判断与术语 `Flutter` 对应：用 flutter build apk --analyze-size 查看各模块占比，优先处理体积最大的资源，App Bundle（--appbundle）让商店按设备下发，是发布到 Google Play 的首选形式。在「实战：Flutter 打包发布 Android」第 4 题中，错误表现方面，keystore 丢失会造成无法更新应用，应按多处离线备份修复。"
-            },
-            {
-              "question": "Android 的 minSdk / targetSdk 在哪个文件中配置？",
-              "options": [
-                "lib/main.dart 顶部常量",
-                "pubspec.yaml 的 flutter 段",
-                "AndroidManifest.xml 的 application 标签，用于声明权限与组件",
-                "android/app/build.gradle(.kts) 的 defaultConfig"
-              ],
-              "answer": 3,
-              "explanation": "在 `实战：Flutter 打包发布 Android` 第 5 题中，正确答案是「android/app/build.gradle(.kts) 的 defaultConfig」。在「实战：Flutter 打包发布 Android」第 5 题中，该判断与术语 `Flutter` 对应：用 flutter build apk --analyze-size 查看各模块占比，优先处理体积最大的资源，App Bundle（--appbundle）让商店按设备下发，是发布到 Google Play 的首选形式。在「实战：Flutter 打包发布 Android」第 5 题中，错误表现方面，keystore 丢失会造成无法更新应用，应按多处离线备份修复。"
+              "explanation": "Android 有两个版本号。versionName 是给用户在商店页面看到的字符串，例如 1.4.0，命名自由，系统不拿它做比较；versionCode 是内部整数，商店与安装器只用它判断新旧，只要不大于线上版本就会上传失败或提示无法覆盖。Flutter 工程里它出现在 pubspec.yaml 的 version: 1.4.0+140 中加号之后的位置，也可以在 Gradle 里直接指定；多渠道并行发版时要提前分配号段，避免两条流水线撞上同一个数字。"
             },
             {
               "type": "order",
-              "question": "下面几项都与 `Flutter` 有关，请按 `实战：Flutter 打包发布 Android` 的正文顺序排列；该课主线是正式签名、按 ABI 拆分、混淆与符号保留、发布清单。",
+              "question": "下面是 Android 应用从准备签名到商店放量的四个环节，请按实际执行顺序排列。",
               "options": [
-                "从调试到发布",
-                "签名配置",
-                "体积优化",
-                "混淆与符号"
+                "在 Play Console 创建内部测试轨道并小范围放量",
+                "生成并备份 keystore，配置 signingConfigs 与三个 SDK 版本",
+                "构建 AAB，开启 R8 并核对 mapping 与产物体积",
+                "上传产物，填写商店 listing、隐私政策与数据安全表单"
               ],
               "answer": 0,
               "correct_order": [
-                0,
                 1,
                 2,
-                3
+                3,
+                0
               ],
-              "explanation": "在 `实战：Flutter 打包发布 Android` 第 6 题中，正确答案是「从调试到发布 → 签名配置 → 体积优化 → 混淆与符号」。在「实战：Flutter 打包发布 Android」第 6 题中，该判断与术语 `Flutter` 对应：用 flutter build apk --analyze-size 查看各模块占比，优先处理体积最大的资源，App Bundle（--appbundle）让商店按设备下发，是发布到 Google Play 的首选形式。在「实战：Flutter 打包发布 Android」第 6 题中，错误表现方面，keystore 丢失会造成无法更新应用，应按多处离线备份修复。"
+              "explanation": "顺序不能颠倒，因为签名身份一旦确定就不可更换：先解决 keystore 与 minSdk/targetSdk 这些边界，才谈得上产出可上传的包；随后在本地构建并开启 R8，核对 mapping.txt、体积基线，跑一遍混淆后的回归；边界与产物都稳定后再上传商店，补齐 listing、隐私政策与数据安全评分，这一步决定审核能否通过；最后才在内部轨道逐级放量，观察崩溃率与安装成功率，达标后向生产推进。反过来先放量再回头补密钥，会让同一个应用标识被错误的签名覆盖掉，属于不可逆事故。"
             }
           ],
           "order": 0,
@@ -71636,12 +71656,12 @@
               "type": "single",
               "question": "在Jetpack Compose中，remember函数的主要作用是什么？",
               "options": [
-                "将数据保存到磁盘",
                 "在重组过程中保持状态不丢失",
+                "将数据保存到磁盘",
                 "记忆用户的操作历史",
                 "缓存网络请求结果"
               ],
-              "answer": 1,
+              "answer": 0,
               "explanation": "remember是Compose中用于在重组（Recomposition）过程中保持状态的关键API。每次Composable函数重组时，函数体都会重新执行，如果没有remember，局部变量会被重新初始化。remember会将值存储在Composition中，确保即使重组发生，状态也能保持不变。通常与mutableStateOf配合使用：`val count = remember { mutableStateOf(0) }`。对于需要持久化的数据，应使用rememberSaveable或ViewModel。"
             },
             {
@@ -71660,12 +71680,12 @@
               "type": "single",
               "question": "在LazyColumn中使用items时，为什么要提供key参数？",
               "options": [
-                "为了让列表项可以排序",
                 "为了帮助Compose正确识别和复用列表项，提升性能",
+                "为了让列表项可以排序",
                 "为了加密列表数据",
                 "为了支持离线缓存"
               ],
-              "answer": 1,
+              "answer": 0,
               "explanation": "在LazyColumn中，key参数用于唯一标识每个列表项。当列表数据发生变化（添加、删除、移动）时，Compose使用key来追踪哪些项发生了变化，从而正确地复用现有的Composable实例，而不是重新创建所有项。这类似于RecyclerView中的ViewHolder机制。如果没有提供key，Compose会使用项的索引作为默认key，这在列表项顺序变化时会导致状态混乱和性能问题。最佳实践是使用数据的唯一ID作为key。"
             },
             {
@@ -72057,23 +72077,23 @@
               "question": "React Native中的Bridge机制主要负责什么？",
               "options": [
                 "连接WiFi和移动网络",
-                "在JavaScript线程和原生线程之间传递消息",
+                "处理用户的手势输入",
                 "管理应用的数据库连接",
-                "处理用户的手势输入"
+                "在JavaScript线程和原生线程之间传递消息"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "Bridge是React Native架构的核心组件，它负责在JavaScript线程和原生主线程之间进行异步通信。当JS代码需要更新UI或调用原生功能时，会将序列化的消息通过Bridge发送到原生端；原生端执行后将结果再通过Bridge返回给JS。这种设计使得JS和原生代码可以独立运行，但也带来了通信开销。新架构中的JSI（JavaScript Interface）正在逐步替代Bridge，实现更高效的同步调用。"
             },
             {
               "type": "single",
               "question": "在React Native中使用FlatList时，为什么推荐使用React.memo包裹Item组件？",
               "options": [
-                "为了美化Item的外观",
                 "为了避免不必要的重新渲染，提升性能",
+                "为了美化Item的外观",
                 "为了支持离线缓存",
                 "为了加密Item数据"
               ],
-              "answer": 1,
+              "answer": 0,
               "explanation": "FlatList会渲染大量列表项，如果父组件状态变化导致整个列表重新渲染，每个Item都会重新执行渲染函数。使用React.memo可以让Item组件只在props真正变化时才重新渲染，避免浪费。配合正确的keyExtractor和getItemLayout，可以显著提升长列表的滚动性能。此外，应避免在renderItem中传递内联函数或对象，因为这些每次都会创建新引用，导致memo失效。"
             },
             {
@@ -72092,12 +72112,12 @@
               "type": "single",
               "question": "在React Native中，如何处理iOS和Android的平台差异？",
               "options": [
-                "只开发iOS版本，忽略Android",
                 "使用Platform.OS判断并为不同平台编写适配代码",
+                "只开发iOS版本，忽略Android",
                 "让后端处理所有平台差异",
                 "使用相同的代码，期望它能在两平台正常工作"
               ],
-              "answer": 1,
+              "answer": 0,
               "explanation": "React Native提供了Platform模块来检测当前运行的平台。使用`Platform.OS === 'ios'`或`Platform.OS === 'android'`可以针对不同平台执行不同的逻辑。对于样式差异，可以使用Platform.select()方法：`const styles = Platform.select({ ios: {...}, android: {...} })`。对于复杂的平台特定功能，可以分别创建`.ios.js`和`.android.js`文件，React Native会自动根据平台选择正确的文件。忽视平台差异会导致应用在某一平台上出现bug或崩溃。"
             },
             {
@@ -72105,11 +72125,11 @@
               "question": "React Native中Image组件的默认单位是什么？",
               "options": [
                 "像素(px)",
-                "密度无关像素(dp)",
+                "毫米(mm)",
                 "点(pt)",
-                "毫米(mm)"
+                "密度无关像素(dp)"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "React Native中的所有尺寸单位默认都是密度无关像素（density-independent pixels，简称dp或dip）。这意味着你设置的宽度100在不同密度的屏幕上会自动缩放，保持物理尺寸大致相同。这与Web开发中的px不同，Web的px是绝对像素。在React Native中，你不需要手动进行dp到px的转换，框架会自动处理。如果需要获取屏幕的实际像素尺寸，可以使用PixelRatio API。"
             }
           ]
@@ -72189,11 +72209,11 @@
               "question": "关于技术选型的\"长期维护\"维度，以下哪个因素最重要？",
               "options": [
                 "框架当前的流行程度",
-                "框架背后的公司或社区是否持续投入",
+                "框架的首屏加载速度",
                 "框架的学习资料数量",
-                "框架的首屏加载速度"
+                "框架背后的公司或社区是否持续投入"
               ],
-              "answer": 1,
+              "answer": 3,
               "explanation": "长期维护的关键在于技术的可持续性。如果一个框架背后有强大的公司支持（如Google的Flutter、Meta的React Native）或活跃的开源社区，那么它更可能持续更新、修复bug、适配新系统版本。相比之下，流行程度可能会波动，学习资料可以逐步积累，首屏加载速度可以通过优化改善，但如果框架停止维护，整个项目将面临巨大风险。因此，评估框架的治理模式、更新频率、issue响应速度等指标至关重要。"
             }
           ]
@@ -72230,31 +72250,31 @@
                 "将所有数据永久保存在本地，不同步到服务器"
               ],
               "answer": 1,
-              "explanation": ""
+              "explanation": "离线优先的核心是把本地数据库当作唯一可信数据源：读写先落在本地（如 SQLite/Room/CoreData），界面永远从本地取数据保证秒开与可用；网络恢复后再把变更异步同步到服务端。选项「只在有网时才允许使用」和「禁用所有联网功能」都违背了离线可用的目标，「永不同步」则会造成多设备数据分叉。"
             },
             {
               "type": "single",
               "question": "在处理数据同步冲突时，\"最后写入获胜\"（LWW）策略的主要缺点是什么？",
               "options": [
                 "实现复杂度高",
-                "可能导致用户数据被意外覆盖而丢失",
                 "需要同步所有历史版本",
+                "可能导致用户数据被意外覆盖而丢失",
                 "只适用于数值类型数据"
               ],
-              "answer": 1,
-              "explanation": ""
+              "answer": 2,
+              "explanation": "LWW 依据时间戳选择较新的写入，实现确实简单，但两台设备离线各自修改同一记录时，后同步的一方会直接覆盖前者的改动，用户毫不知情地丢数据。它的缺点不是实现复杂，也不要求保存全部历史版本，对字符串、枚举等非数值数据同样适用。工程上常配合冲突检测表或字段级合并策略来弥补。"
             },
             {
               "type": "single",
               "question": "为什么增量同步比全量同步更适合移动应用？",
               "options": [
                 "增量同步的代码更简单",
-                "增量同步减少了数据传输量，节省流量和时间",
+                "增量同步可以保证100%的数据一致性",
                 "增量同步不需要服务器支持",
-                "增量同步可以保证100%的数据一致性"
+                "增量同步减少了数据传输量，节省流量和时间"
               ],
-              "answer": 1,
-              "explanation": ""
+              "answer": 3,
+              "explanation": "全量同步每次都要拉取整个数据集，移动场景下流量、电量和等待时间都不可接受。增量同步只传输自上次同步以来变化的记录，配合变更日志或版本号（如 last_modified）可把传输量降到最低。代价是需要服务端维护变更游标，且断点续传与删除墓碑要单独设计，代码并不比全量简单。"
             },
             {
               "type": "single",
@@ -72266,7 +72286,7 @@
                 "不存储任何敏感数据，每次都从服务器获取"
               ],
               "answer": 2,
-              "explanation": ""
+              "explanation": "敏感凭据必须走系统级安全存储：Android 用 EncryptedSharedPreferences 或 Keystore，iOS 用 Keychain 并设置合适的可访问性级别。明文存放等于把密钥写给任何拿到设备或备份的人；Base64 只是编码不是加密，随手可解。每次都找服务器取虽安全但破坏离线可用性，token 应短期有效并支持离线刷新。"
             },
             {
               "type": "single",
@@ -72278,7 +72298,7 @@
                 "在应用启动时同步一次，之后不再同步"
               ],
               "answer": 2,
-              "explanation": ""
+              "explanation": "后台同步要兼顾实时性与资源消耗：每秒轮询会迅速耗尽流量与电量，只靠手动触发又无法保证多端一致。合理策略是结合网络类型、充电状态与用户活跃时段触发，本地变更用 WorkManager/Background Tasks 排队，失败时按指数退避重试并设上限，同时留出合并窗口减少请求风暴。"
             }
           ],
           "prerequisites": [],
@@ -72311,12 +72331,12 @@
               "question": "为什么不应该在代码中硬编码API密钥？",
               "options": [
                 "因为会增加代码体积",
-                "因为反编译后可以轻易提取密钥，导致未授权访问",
+                "因为不同平台的API密钥格式不同",
                 "因为会影响应用性能",
-                "因为不同平台的API密钥格式不同"
+                "因为反编译后可以轻易提取密钥，导致未授权访问"
               ],
-              "answer": 1,
-              "explanation": ""
+              "answer": 3,
+              "explanation": "移动包（APK/IPA）极易被反编译，硬编码的 API 密钥、私钥会直接暴露给攻击者，被用来刷接口、产生费用或访问内部数据。正确做法是运行时向服务端换取短期令牌，密钥保存在服务端配置或密钥管理服务中。代码体积、性能与密钥格式都不是硬编码问题的本质。"
             },
             {
               "type": "single",
@@ -72328,20 +72348,19 @@
                 "混淆后的代码无法被恢复"
               ],
               "answer": 2,
-              "explanation": ""
+              "explanation": "混淆（R8/ProGuard、映射表）通过重命名类与方法、压缩与打乱代码结构来提高逆向阅读成本，但它是抬高门槛而非绝对防护，攻击者仍可结合日志与网络行为分析。混淆不改变程序运行逻辑，也无法说「完全防止」逆向或「无法恢复」——符号映射表在内部是可还原的。"
             },
             {
               "type": "single",
               "question": "HTTPS证书锁定（Certificate Pinning）的主要目的是什么？",
               "options": [
                 "加速HTTPS连接速度",
-                "防止中间人攻击，确保只信任特定的服务器证书",
-                "减少证书验证的计算开销",
                 "自动更新过期的证书",
-                "C、D都不是证书锁定的目的。"
+                "减少证书验证的计算开销",
+                "防止中间人攻击，确保只信任特定的服务器证书"
               ],
-              "answer": 1,
-              "explanation": ""
+              "answer": 3,
+              "explanation": "证书锁定让客户端只信任预置的服务器证书或公钥，即使攻击者诱导用户安装了恶意根证书，中间人代理也无法伪造通过校验，从而抵御针对性 MITM。它会增加证书轮换运维成本，但与加速连接、降低计算开销或自动更新证书无关。通常锁定公钥并预留备用键以平滑轮换。"
             },
             {
               "type": "single",
@@ -72353,19 +72372,19 @@
                 "使用Base64编码后存储"
               ],
               "answer": 2,
-              "explanation": ""
+              "explanation": "用户密码的正确处理是加盐慢哈希：bcrypt、scrypt 或 Argon2 可调工作因子，抵抗彩虹表与 GPU 暴破；MD5/Base64 太快或根本是编码，拿到哈希库即可批量还原。移动端通常只保存会话令牌，密码本体交由服务端哈希；明文存储更是直接违规。"
             },
             {
               "type": "single",
               "question": "关于移动应用的权限管理，\"最小权限原则\"指的是什么？",
               "options": [
                 "申请所有可能用到的权限以防万一",
-                "只申请当前功能必需的最少权限",
+                "只在Android上申请权限，iOS不需要",
                 "完全不申请任何权限以保证安全",
-                "只在Android上申请权限，iOS不需要"
+                "只申请当前功能必需的最少权限"
               ],
-              "answer": 1,
-              "explanation": ""
+              "answer": 3,
+              "explanation": "最小权限原则要求每个权限都能对应到具体功能：只申请当前功能必需的最少权限，在用户触发相关操作时再动态请求，并在系统设置中提供关闭入口。一次申请所有权限会吓退用户且违反应用商店审核政策；完全不申请则功能无法运行；iOS 同样有相机、定位等权限约束，并非只限 Android。"
             }
           ],
           "prerequisites": [],

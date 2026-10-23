@@ -17,26 +17,6 @@
 - 用本课示例验证 `dotnet test` 的行为，记录输入、输出与失败条件。
 - 遇到「Entity 直接返回」这类问题时，能说出触发条件与修复顺序。
 
-### 从概念到验证的学习链条
-
-1. `dotnet ef migrations add Init`：先掌握 生产环境应使用 EF Core 迁移（`dotnet ef migrations add Init`）而不是 `EnsureCreated`，再用它解释 `UseExceptionHandler` 为什么会出现。
-2. `UseExceptionHandler`：先掌握 加 `UseExceptionHandler` 统一错误响应，日志用 ILogger，再用它解释 `dotnet test` 为什么会出现。
-3. `dotnet test`：先掌握 CI 中执行 `dotnet format --verify-no-changes` 与 `dotnet test`，再用它解释 `实战` 为什么会出现。
-4. `实战`：先掌握 实战：Web API + EF Core解决了什么问题，而不是只背术语，再用它解释 `错误处理` 为什么会出现。
-5. `错误处理`：先掌握 识别、传播并恢复异常或失败路径，避免错误被吞掉或扩大影响，再用它解释 本课示例的观察结果 为什么会出现。
-
-**先修与衔接**：本课是「C#」分类的第 14 课。先修内容：《生态、测试与 Web 开发》。《生态、测试与 Web 开发》里的 `dotnet restore`、`Add-Migration` 是本课的前提。相关或后续课程：《实战：C# 库存管理 CLI》。
-
-### 完成判据
-
-- **定义关**：不看正文也能说明 `dotnet ef migrations add Init` 是 生产环境应使用 EF Core 迁移（`dotnet ef migrations add Init`）而不是 `EnsureCreated`，并指出一个反例。
-- **机制关**：能按“输入 → 转换 → 输出 → 验证”复述 `实战：Web API + EF Core`，而不是只背结论。
-- **示例关**：能运行或推演 `实战：Web API + EF Core` 的 `csharp` 示例，并说明一个真实出现的标识符或字面量。
-- **证据关**：能指出 `实战：Web API + EF Core` 示例里的 调用了 `Todo()`，并说明它支持或反驳了本课的哪一条结论。
-- **排错关**：能复现 Entity 直接返回，记录现象并按 用 DTO 修复。
-- **迁移关**：能把 `实战`、`ASP.NET Core`、`EF Core`、`xUnit` 放进一个与 `实战：Web API + EF Core` 不同的项目场景，并保持输入与验证条件可追踪。
-- **复盘关**：学完 `实战：Web API + EF Core` 后，用一句话写下仍然不确定的结论，并列出下一次验证需要的输入、环境和成功判据。
-
 ### 复习清单
 
 - [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
@@ -116,21 +96,9 @@ app.MapDelete("/api/todos/{id:int}", async (int id, AppDbContext db) =>
 - 升级前先用 EntityFrameworkCore 建立基线：记录版本、命令和输出，升级后只比较这些可观察量。
 - 官方说明：https://learn.microsoft.com/dotnet/core/whats-new/
 
-### 升级检查清单
-
-- 先固定当前版本，跑通全部示例与测验，再升级工具链。
-- 只改 实战 的版本变量，记录编译、测试与产物体积的变化。
-- 升级后重点回归 实战 的默认值、警告信息与错误格式。
-- 升级完成后更新本课「最后复核 / 下次复核」日期，并记录 实战 的版本变化。
-
-**教材衔接：交付评审：评分表、决策记录与证据链**
-
-
-
 ### 三、「实战：Web API + EF Core」的交付证据链
 
 本课未给出可执行命令，用下面的最小证据集代替：
-
 
 ### 五、评审记录模板
 
@@ -142,58 +110,6 @@ app.MapDelete("/api/todos/{id:int}", async (int id, AppDbContext db) =>
 | 证据位置 | 指向 evidence/ 目录下的具体文件 |
 | 风险与回滚 | 写清剩余风险、回滚步骤和验证方式 |
 | 结论 | 通过 / 有条件通过 / 不通过，三者选一 |
-
-### 机制拆解：每一步的输入、动作与输出
-
-#### 1. `dotnet ef migrations add Init`
-- 输入：`实战`；本步把 生产环境应使用 EF Core 迁移（`dotnet ef migrations add Init`）而不是 `EnsureCreated` 当作判断规则。
-- 动作：围绕 `dotnet ef migrations add Init` 保留中间状态，并记录它与 `UseExceptionHandler` 的对应关系。
-- 输出：`UseExceptionHandler`，它可以被下一段代码、测试或记录继续使用。
-- `dotnet ef migrations add Init` 的失败条件：只在「生产环境应使用 EF Core 迁移（`dotnet ef migrations add Init`）而不是 `EnsureCreated`」这一前提下成立，换输入或换环境要重新验证。
-
-#### 2. `UseExceptionHandler`
-- 输入：`dotnet ef migrations add Init`；本步把 加 `UseExceptionHandler` 统一错误响应，日志用 ILogger 当作判断规则。
-- 动作：围绕 `UseExceptionHandler` 保留中间状态，并记录它与 `dotnet test` 的对应关系。
-- 输出：`dotnet test`，它可以被下一段代码、测试或记录继续使用。
-- `UseExceptionHandler` 的失败条件：网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。
-
-#### 3. `dotnet test`
-- 输入：`UseExceptionHandler`；本步把 CI 中执行 `dotnet format --verify-no-changes` 与 `dotnet test` 当作判断规则。
-- 动作：围绕 `dotnet test` 保留中间状态，并记录它与 `实战` 的对应关系。
-- 输出：`实战`，它可以被下一段代码、测试或记录继续使用。
-- `dotnet test` 的失败条件：只在「CI 中执行 `dotnet format --verify-no-changes` 与 `dotnet test`」这一前提下成立，换输入或换环境要重新验证。
-
-#### 4. `实战`
-- 输入：`dotnet test`；本步把 实战：Web API + EF Core解决了什么问题，而不是只背术语 当作判断规则。
-- 动作：围绕 `实战` 保留中间状态，并记录它与 `错误处理` 的对应关系。
-- 输出：`错误处理`，它可以被下一段代码、测试或记录继续使用。
-- `实战` 的失败条件：不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。
-
-#### 5. `错误处理`
-- 输入：`实战`；本步把 识别、传播并恢复异常或失败路径，避免错误被吞掉或扩大影响 当作判断规则。
-- 动作：围绕 `错误处理` 保留中间状态，并记录它与 `Todo` 的对应关系。
-- 输出：`Todo`，它可以被下一段代码、测试或记录继续使用。
-- `错误处理` 的失败条件：只在「识别、传播并恢复异常或失败路径，避免错误被吞掉或扩大影响」这一前提下成立，换输入或换环境要重新验证。
-
-### 示例中的可观察事实
-
-1. 调用了 `Todo()`；它对应的课程主题是 `实战：Web API + EF Core`。
-2. 调用了 `TodoRequest()`；它对应的课程主题是 `实战：Web API + EF Core`。
-3. 调用了 `AppDbContext()`；它对应的课程主题是 `实战：Web API + EF Core`。
-4. 调用了 `base()`；它对应的课程主题是 `实战：Web API + EF Core`。
-5. 调用了 `MapGet()`；它对应的课程主题是 `实战：Web API + EF Core`。
-6. 调用了 `async()`；它对应的课程主题是 `实战：Web API + EF Core`。
-7. 调用了 `OrderByDescending()`；它对应的课程主题是 `实战：Web API + EF Core`。
-8. 调用了 `ToListAsync()`；它对应的课程主题是 `实战：Web API + EF Core`。
-
-### 复现实验记录
-
-- 环境：`实战：Web API + EF Core` 使用 `csharp` 示例，固定 `实战`、`ASP.NET Core`、`EF Core`、`xUnit` 作为第一组条件。
-- 首轮输入：先确认 调用了 `Todo()`，预测 `dotnet ef migrations add Init` 会怎样变化。
-- 基线观察：记录命令、输入、输出和错误原文，不用截图代替可复制的文本。
-- 单变量修改：只改变 `实战`，观察 `错误处理` 是否仍满足定义。
-- 失败注入：复现 Entity 直接返回，确认现象是 泄露字段。
-- 记录结论：把“修改前、修改后、预期变化、实际变化”写成四列表，这样复盘 `实战：Web API + EF Core` 时才能区分概念错误与实现错误。
 
 ## 典型应用场景
 
@@ -421,8 +337,6 @@ public class OrderEndpointTests(WebApplicationFactory<Program> factory)
 
 最小 API、DbContext、内存数据库测试与工程实践。 项目目标是把「实战、ASP.NET Core、EF Core、xUnit、DTO」落实为可运行、可测试、可回滚的交付物。
 
-
-
 ### 验收场景
 
 1. 正常路径：最小输入得到预期输出，并留下日志与指标。
@@ -442,7 +356,6 @@ tests/App.Tests/
 App.sln
 README.md
 ```
-
 
 ### 验收数据
 
@@ -590,21 +503,6 @@ public sealed class OrdersController : ControllerBase
 
 **运行方式**：运行 `实战：Web API + EF Core` 的示例时，用 `dotnet run` 运行；先确认 SDK 版本与项目文件一致。
 
-### 示例精读：先找证据，再改一个条件
-
-1. 调用了 `Todo()`；它出现在 `实战：Web API + EF Core` 的示例中，阅读时先确认它前后各发生了什么。
-2. 调用了 `TodoRequest()`；它出现在 `实战：Web API + EF Core` 的示例中，阅读时先确认它前后各发生了什么。
-3. 调用了 `AppDbContext()`；它出现在 `实战：Web API + EF Core` 的示例中，阅读时先确认它前后各发生了什么。
-4. 调用了 `base()`；它出现在 `实战：Web API + EF Core` 的示例中，阅读时先确认它前后各发生了什么。
-5. 调用了 `MapGet()`；它出现在 `实战：Web API + EF Core` 的示例中，阅读时先确认它前后各发生了什么。
-6. 调用了 `async()`；它出现在 `实战：Web API + EF Core` 的示例中，阅读时先确认它前后各发生了什么。
-7. 调用了 `OrderByDescending()`；它出现在 `实战：Web API + EF Core` 的示例中，阅读时先确认它前后各发生了什么。
-8. 调用了 `ToListAsync()`；它出现在 `实战：Web API + EF Core` 的示例中，阅读时先确认它前后各发生了什么。
-- 在 `实战：Web API + EF Core` 中与 `dotnet ef migrations add Init` 对照：示例必须能支持 生产环境应使用 EF Core 迁移（`dotnet ef migrations add Init`）而不是 `EnsureCreated`，否则说明这一段还缺少实现或验证步骤。
-- 在 `实战：Web API + EF Core` 中与 `UseExceptionHandler` 对照：示例必须能支持 加 `UseExceptionHandler` 统一错误响应，日志用 ILogger，否则说明这一段还缺少实现或验证步骤。
-- 在 `实战：Web API + EF Core` 中与 `dotnet test` 对照：示例必须能支持 CI 中执行 `dotnet format --verify-no-changes` 与 `dotnet test`，否则说明这一段还缺少实现或验证步骤。
-- 在 `实战：Web API + EF Core` 中与 `实战` 对照：示例必须能支持 实战：Web API + EF Core解决了什么问题，而不是只背术语，否则说明这一段还缺少实现或验证步骤。
-
 ## 时间/空间复杂度或性能分析
 
 **性能关注点（实战：Web API + EF Core）**：GC 与异步调度影响开销：记录吞吐、延迟与分配速率。
@@ -612,20 +510,6 @@ public sealed class OrdersController : ControllerBase
 **本课特有开销（实战：Web API + EF Core · 实战）**：缓存命中率比缓存实现本身更关键，先记录命中率与失效策略再谈优化。
 
 **测量方法**：以 `实战：Web API + EF Core` 的 `实战` 场景为对象，固定输入跑一遍记录基线，再把规模或并发度提高一个数量级复测；两次结果的差值与波动范围才是结论依据。
-
-### 需要控制的变量与记录项
-
-- `实战：Web API + EF Core` 的 `实战`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `实战：Web API + EF Core` 的 `ASP.NET Core`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `实战：Web API + EF Core` 的 `EF Core`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `实战：Web API + EF Core` 的 `xUnit`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `实战：Web API + EF Core` 的 `DTO`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `实战：Web API + EF Core` 中 `dotnet ef migrations add Init` 的边界：只在「生产环境应使用 EF Core 迁移（`dotnet ef migrations add Init`）而不是 `EnsureCreated`」这一前提下成立，换输入或换环境要重新验证。达到边界时不要外推，必须重新测量。
-- `实战：Web API + EF Core` 中 `UseExceptionHandler` 的边界：网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。达到边界时不要外推，必须重新测量。
-- `实战：Web API + EF Core` 中 `dotnet test` 的边界：只在「CI 中执行 `dotnet format --verify-no-changes` 与 `dotnet test`」这一前提下成立，换输入或换环境要重新验证。达到边界时不要外推，必须重新测量。
-- `实战：Web API + EF Core` 中 `实战` 的边界：不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。达到边界时不要外推，必须重新测量。
-- `实战：Web API + EF Core` 中 `错误处理` 的边界：只在「识别、传播并恢复异常或失败路径，避免错误被吞掉或扩大影响」这一前提下成立，换输入或换环境要重新验证。达到边界时不要外推，必须重新测量。
-- `实战：Web API + EF Core` 的代码证据：先验证 调用了 `Todo()`，再记录该路径的输入规模与耗时；只看代码行数不能推出复杂度。
 
 ## 常见误区与易错点
 
@@ -729,18 +613,6 @@ public sealed class OrdersController : ControllerBase
 - **术语归属**：`dotnet ef migrations add Init`、`UseExceptionHandler`、`dotnet test` 的定义以本课「核心概念定义」为准，换到其他课程时先确认定义是否被改写。
 - 同一分类的《生态、测试与 Web 开发》也涉及 `xUnit`；两课衔接时先确认这个术语的定义是否一致。
 - 同一分类的《实战：C# 库存管理 CLI》也涉及 `xUnit`；两课衔接时先确认这个术语的定义是否一致。
-
-### 先修与后续术语接口
-
-- `生态、测试与 Web 开发`：共同关键词 `xUnit`、`ASP.NET Core`、`EF Core`。
-- `实战：C# 库存管理 CLI`：共同关键词 `xUnit`。
-
-### 容易混淆的相邻概念
-
-- `dotnet ef migrations add Init` 与 `UseExceptionHandler`：前者强调 生产环境应使用 EF Core 迁移（`dotnet ef migrations add Init`）而不是 `EnsureCreated`；后者强调 加 `UseExceptionHandler` 统一错误响应，日志用 ILogger。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
-- `UseExceptionHandler` 与 `dotnet test`：前者强调 加 `UseExceptionHandler` 统一错误响应，日志用 ILogger；后者强调 CI 中执行 `dotnet format --verify-no-changes` 与 `dotnet test`。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
-- `dotnet test` 与 `实战`：前者强调 CI 中执行 `dotnet format --verify-no-changes` 与 `dotnet test`；后者强调 实战：Web API + EF Core解决了什么问题，而不是只背术语。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
-- `实战` 与 `错误处理`：前者强调 实战：Web API + EF Core解决了什么问题，而不是只背术语；后者强调 识别、传播并恢复异常或失败路径，避免错误被吞掉或扩大影响。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
 
 ## 自测题与参考答案
 
@@ -924,6 +796,8 @@ public sealed class OrdersController : ControllerBase
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
 ## 参考资料与复核
+
+- [本课资料锚点 csharp_project](https://zh.wikipedia.org/w/index.php?search=csharp_project)
 
 - 最后复核：2026-10-04
 - 下次复核：2027-03-10

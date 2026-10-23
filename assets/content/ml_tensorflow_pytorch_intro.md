@@ -1,4 +1,6 @@
-# TensorFlow与PyTorch框架对比入门 (TensorFlow vs PyTorch Framework Introduction)
+# TensorFlow与PyTorch框架对比入门
+
+![TensorFlow与PyTorch框架对比入门示意：diagram java order](images/diagram_java_order.webp)
 
 ## 本章摘要
 
@@ -123,7 +125,6 @@ history = tf_model.fit(
 test_loss, test_acc = tf_model.evaluate(x_test_tf, y_test_tf)
 print(f"\nTensorFlow测试准确率: {test_acc:.4f}")
 
-
 # ==================== PyTorch实现 ====================
 class TorchMNISTModel(nn.Module):
     """PyTorch风格的MNIST分类模型"""
@@ -244,7 +245,6 @@ history_with_callbacks = tf_model.fit(
 
 # 加载最佳模型
 best_model = tf.keras.models.load_model('best_tf_model.h5')
-
 
 # ==================== PyTorch手动实现类似功能 ====================
 
@@ -433,3 +433,178 @@ D. 两个框架的模型都必须保持原始框架环境才能部署
 **章节小结**
 
 通过本章学习，你已经掌握了TensorFlow和PyTorch的核心差异和基本用法。记住，选择框架不是非此即彼的决定，而是根据项目需求、团队熟悉度和部署目标来综合考量。在实际工作中，很多工程师会同时使用两个框架：用PyTorch进行快速原型开发和实验，用TensorFlow进行大规模生产和部署。下一章我们将进入计算机视觉领域，学习如何使用这些框架构建图像分类和目标检测模型。
+
+## 本节知识框架
+
+**课程定位**：分类「ml_practice」· 学习阶段 入门 · 建议用时 50 分钟。
+
+本课主线：对比两大主流框架，掌握张量操作、计算图和自动微分机制。
+
+### 复习清单
+
+- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
+- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
+
+## 核心概念定义
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| TensorFlow | 对比两大主流框架，掌握张量操作、计算图和自动微分机制。相关：正文给出可操作定义与适用边界。 |
+| PyTorch | 对比两大主流框架，掌握张量操作、计算图和自动微分机制。相关：正文给出可操作定义与适用边界。 |
+| 张量 | 对比两大主流框架，掌握张量操作、计算图和自动微分机制。相关：正文给出可操作定义与适用边界。 |
+| 自动微分 | 对比两大主流框架，掌握张量操作、计算图和自动微分机制。相关：正文给出可操作定义与适用边界。 |
+| 计算图 | 对比两大主流框架，掌握张量操作、计算图和自动微分机制。相关：正文给出可操作定义与适用边界。 |
+
+## 原理与运行机制
+
+正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
+
+## 典型应用场景
+
+- 结合「TensorFlow与PyTorch框架对比入门」的常见落地场景与选型边界，详见正文各章节的对比讨论。
+- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
+
+## 代码/协议/SQL 示例
+
+正文首个完整示例如下，先运行确认环境，再按正文步骤改一个输入观察输出变化。
+
+```python
+import tensorflow as tf
+import torch
+
+# TensorFlow方式创建张量
+tf_tensor = tf.constant([[1.0, 2.0], [3.0, 4.0]])
+print("TensorFlow张量形状:", tf_tensor.shape)
+print("TensorFlow张量值:\n", tf_tensor.numpy())
+
+# PyTorch方式创建张量
+torch_tensor = torch.tensor([[1.0, 2.0], [3.0, 4.0]])
+print("\nPyTorch张量形状:", torch_tensor.shape)
+print("PyTorch张量值:\n", torch_tensor)
+
+# 常见张量操作对比
+print("\n--- 张量运算对比 ---")
+print("TF加法:", tf.add(tf_tensor, tf_tensor).numpy())
+print("PT加法:", torch_tensor + torch_tensor)
+print("TF乘法:", tf.multiply(tf_tensor, 2.0).numpy())
+print("PT乘法:", torch_tensor * 2.0)
+```
+
+## 时间/空间复杂度或性能分析
+
+- 用本课方案处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
+- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
+
+## 常见误区与易错点
+
+| 错误做法 | 典型现象 | 修复方向 |
+| --- | --- | --- |
+| 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
+| 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
+| 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
+
+## 与其他知识点的关系
+
+本课与分类「ml_practice」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
+
+## 自测题与参考答案
+
+以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
+
+## 考点精讲
+
+### 考点 1
+
+关于TensorFlow和PyTorch的计算图机制，以下哪项描述是正确的？
+
+A. TensorFlow 2.x默认使用静态计算图，PyTorch默认使用动态计算图  
+B. TensorFlow 2.x默认使用动态计算图（Eager Execution），PyTorch也使用动态计算图 ✅  
+C. 两个框架都只支持静态计算图  
+D. 两个框架都只支持动态计算图  
+
+**正确答案：** B
+
+**解析：** TensorFlow 2.x引入了Eager Execution作为默认模式，这意味着操作会立即执行并返回结果，类似于PyTorch的动态图机制。这使得调试更加直观，代码更易理解。不过TensorFlow仍然可以通过`@tf.function`装饰器将函数转换为静态图以获得性能优化。PyTorch从一开始就采用动态计算图设计，每次前向传播都会重新构建计算图，提供了极大的灵活性。选项A描述的是TensorFlow 1.x的情况，选项C和D都不准确，因为现代框架都支持两种模式。
+
+### 考点 2
+
+在PyTorch中，为什么在每次训练迭代开始前需要调用`optimizer.zero_grad()`？
+
+A. 为了重置优化器的学习率  
+B. 因为PyTorch默认会累积梯度，不清零会导致梯度累加 ✅  
+C. 为了释放GPU内存  
+D. 这是一个可选操作，不影响训练结果  
+
+**正确答案：** B
+
+**解析：** PyTorch的自动微分机制默认会累积梯度，而不是覆盖之前的梯度值。这意味着如果你不在每次反向传播前清零梯度，新的梯度会与旧的梯度相加，导致梯度值越来越大，最终使模型无法正确收敛。这在一些特殊场景下是有用的（如小批量模拟大批量），但在标准训练中必须清零。TensorFlow的`GradientTape`每次使用时会自动创建新的tape，所以不存在这个问题。选项A错误，学习率由调度器控制；选项C不准确，清零梯度不会直接释放内存；选项D完全错误，这是必需操作。
+
+### 考点 3
+
+以下关于张量操作的描述，哪一项是错误的？
+
+A. TensorFlow的`tf.constant`创建的张量默认是不可变的  
+B. PyTorch的`torch.tensor`创建的张量默认是可变的  
+C. `tensor.reshape()`和`tensor.view()`在所有情况下都可以互换使用 ✅  
+D. 两个框架都支持广播（broadcasting）机制  
+
+**正确答案：** C
+
+**解析：** `reshape()`和`view()`虽然功能相似，但并非总是可以互换。`view()`要求张量在内存中是连续的（contiguous），如果张量经过转置或其他改变内存布局的操作后，直接调用`view()`会报错，此时需要先调用`.contiguous()`。而`reshape()`更加灵活，它会在必要时自动复制数据以确保连续性。因此，当不确定张量的内存布局时，使用`reshape()`更安全。选项A和B正确描述了两个框架的默认行为；选项D正确，广播机制是现代深度学习框架的标准特性。
+
+### 考点 4
+
+在使用TensorFlow Keras训练模型时，如果想实现"当验证集损失连续5个epoch没有改善时就停止训练"，应该使用哪个回调函数？
+
+A. `ModelCheckpoint`  
+B. `ReduceLROnPlateau`  
+C. `EarlyStopping` ✅  
+D. `TensorBoard`  
+
+**正确答案：** C
+
+**解析：** `EarlyStopping`回调函数专门用于实现早停机制。通过设置`monitor='val_loss'`和`patience=5`，它可以监控验证集损失，并在连续5个epoch没有改善时自动停止训练，还可以设置`restore_best_weights=True`来恢复最佳模型的权重。`ModelCheckpoint`用于保存模型文件，`ReduceLROnPlateau`用于动态调整学习率，`TensorBoard`用于可视化训练过程。这三个回调经常与`EarlyStopping`配合使用，但它们本身不具备早停功能。
+
+### 考点 5
+
+关于模型部署，以下哪种说法最为准确？
+
+A. TensorFlow模型只能部署在Google Cloud上  
+B. PyTorch模型无法转换为其他格式进行部署  
+C. TensorFlow的SavedModel格式和PyTorch的TorchScript都支持跨语言部署 ✅  
+D. 两个框架的模型都必须保持原始框架环境才能部署  
+
+**正确答案：** C
+
+**解析：** 现代深度学习框架都非常重视模型的部署能力。TensorFlow的SavedModel是一种语言无关的序列化格式，可以被Python、Java、C++等多种语言加载，并且可以转换为TensorFlow Lite用于移动端部署，或转换为TensorFlow.js用于浏览器部署。PyTorch的TorchScript可以将模型序列化为独立文件，无需Python环境即可在C++中加载运行，还可以通过ONNX格式与其他框架互操作。选项A和B明显错误，选项D也不准确，因为有多种方法可以将模型脱离原始框架部署。
+
+## 术语速查
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| TensorFlow | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| PyTorch | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 张量 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 自动微分 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 计算图 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+
+## 参考资料与复核
+
+- [本课资料锚点 ml_tensorflow_pytorch_intro](https://zh.wikipedia.org/w/index.php?search=ml_tensorflow_pytorch_intro)
+
+- 官方/权威资料：[scikit-learn 用户手册](https://scikit-learn.org/stable/user_guide.html)
+- 主题延伸：[关于「PyTorch」的检索页](https://zh.wikipedia.org/w/index.php?search=PyTorch)
+- 本课索引词：[锚点 ml_tensorflow_pytorch_intro](https://scikit-learn.org/stable/user_guide.html#TensorFlow)
+- 最后复核：2026-10-04
+- 下次复核：2026-11-19
+
+## 内容元数据
+
+- 内容更新时间：2026-10-06
+
+- 内容版本：v2.0
+- 课程标识：ml_tensorflow_pytorch_intro
+- 所属分类：ml_practice
+- 学习阶段：入门
+- 建议用时：50 分钟

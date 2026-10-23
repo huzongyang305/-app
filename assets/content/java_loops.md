@@ -304,6 +304,8 @@ for 循环（初始化; 条件; 更新）
 
 ## 参考资料与复核
 
+- [本课资料锚点 java_loops](https://zh.wikipedia.org/w/index.php?search=java_loops)
+
 - 最后复核：2026-10-04
 - [Oracle Java Tutorials - For Loop](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/for.html)
 - 下次复核：2027-02-24

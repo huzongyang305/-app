@@ -17,25 +17,6 @@
 - 用本课示例验证 `EF Core` 的行为，记录输入、输出与失败条件。
 - 遇到「Singleton 注入 Scoped」这类问题时，能说出触发条件与修复顺序。
 
-### 从概念到验证的学习链条
-
-1. `dotnet restore`：先掌握 版本号尽量显式固定；`dotnet restore` 会按 lock 文件还原依赖，保证 CI 与本地一致，再用它解释 `Add-Migration` 为什么会出现。
-2. `Add-Migration`：先掌握 EF Core 把 LINQ 翻译成 SQL，配合迁移（`Add-Migration` / `Database.Migrate()`）管理表结构，再用它解释 `EF Core` 为什么会出现。
-3. `EF Core`：先掌握 EF Core 把 LINQ 翻译成 SQL，配合迁移（Add-Migration / Database.Migrate()）管理表结构，再用它解释 `NuGet` 为什么会出现。
-4. `NuGet`：先掌握 .NET 的包管理器，restore 按项目文件解析并下载依赖，锁文件用于固定版本，再用它解释 本课示例的观察结果 为什么会出现。
-
-**先修与衔接**：本课是「C#」分类的第 13 课。先修内容：《异步编程与异常处理》。《异步编程与异常处理》里的 `async`、`CancellationTokenSource` 是本课的前提。相关或后续课程：《实战：Web API + EF Core》。
-
-### 完成判据
-
-- **定义关**：不看正文也能说明 `dotnet restore` 是 版本号尽量显式固定，`dotnet restore` 会按 lock 文件还原依赖，保证 CI 与本地一致，并指出一个反例。
-- **机制关**：能按“输入 → 转换 → 输出 → 验证”复述 `生态、测试与 Web 开发`，而不是只背结论。
-- **示例关**：能运行或推演 `生态、测试与 Web 开发` 的 `bash` 示例，并说明一个真实出现的标识符或字面量。
-- **证据关**：能指出 `生态、测试与 Web 开发` 示例里的 出现字面量 `Serilog`，并说明它支持或反驳了本课的哪一条结论。
-- **排错关**：能复现 Singleton 注入 Scoped，记录现象并按 按生命周期匹配，或注入 `IServiceScopeFactory` 修复。
-- **迁移关**：能把 `NuGet`、`xUnit`、`ASP.NET Core`、`EF Core` 放进一个与 `生态、测试与 Web 开发` 不同的项目场景，并保持输入与验证条件可追踪。
-- **复盘关**：学完 `生态、测试与 Web 开发` 后，用一句话写下仍然不确定的结论，并列出下一次验证需要的输入、环境和成功判据。
-
 ### 复习清单
 
 - [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
@@ -88,53 +69,6 @@
 - 若使用 AOT 或裁剪，Add_WorksForManyCases 的反射与动态加载路径需要重点验证。
 - 升级「生态、测试与 Web 开发」涉及的依赖前，先用 Add_WorksForManyCases 复现当前行为，再逐项核对版本说明与破坏性变更。
 - 官方说明：https://learn.microsoft.com/dotnet/core/whats-new/
-
-### 升级检查清单
-
-- 先固定当前版本，跑通全部示例与测验，再升级工具链。
-- 只改 NuGet 的版本变量，记录编译、测试与产物体积的变化。
-- 先回归 NuGet 与 xUnit 的默认行为和错误信息，再扩大测试范围。
-- 升级完成后更新本课「最后复核 / 下次复核」日期，并记录 NuGet 的版本变化。
-
-### 机制拆解：每一步的输入、动作与输出
-
-#### 1. `dotnet restore`
-- 输入：`NuGet`；本步把 版本号尽量显式固定；`dotnet restore` 会按 lock 文件还原依赖，保证 CI 与本地一致 当作判断规则。
-- 动作：围绕 `dotnet restore` 保留中间状态，并记录它与 `Add-Migration` 的对应关系。
-- 输出：`Add-Migration`，它可以被下一段代码、测试或记录继续使用。
-- `dotnet restore` 的失败条件：不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。
-
-#### 2. `Add-Migration`
-- 输入：`dotnet restore`；本步把 EF Core 把 LINQ 翻译成 SQL，配合迁移（`Add-Migration` / `Database.Migrate()`）管理表结构 当作判断规则。
-- 动作：围绕 `Add-Migration` 保留中间状态，并记录它与 `EF Core` 的对应关系。
-- 输出：`EF Core`，它可以被下一段代码、测试或记录继续使用。
-- `Add-Migration` 的失败条件：索引命中与数据分布决定实际开销，判断前先看执行计划而不是只看结果是否正确。
-
-#### 3. `EF Core`
-- 输入：`Add-Migration`；本步把 EF Core 把 LINQ 翻译成 SQL，配合迁移（Add-Migration / Database.Migrate()）管理表结构 当作判断规则。
-- 动作：围绕 `EF Core` 保留中间状态，并记录它与 `NuGet` 的对应关系。
-- 输出：`NuGet`，它可以被下一段代码、测试或记录继续使用。
-- `EF Core` 的失败条件：索引命中与数据分布决定实际开销，判断前先看执行计划而不是只看结果是否正确。
-
-#### 4. `NuGet`
-- 输入：`EF Core`；本步把 .NET 的包管理器，restore 按项目文件解析并下载依赖，锁文件用于固定版本 当作判断规则。
-- 动作：围绕 `NuGet` 保留中间状态，并记录它与 `Serilog` 的对应关系。
-- 输出：`Serilog`，它可以被下一段代码、测试或记录继续使用。
-- `NuGet` 的失败条件：不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。
-
-### 示例中的可观察事实
-
-1. 出现字面量 `Serilog`；它对应的课程主题是 `生态、测试与 Web 开发`。
-2. 出现字面量 `3.1.1`；它对应的课程主题是 `生态、测试与 Web 开发`。
-
-### 复现实验记录
-
-- 环境：`生态、测试与 Web 开发` 使用 `bash` 示例，固定 `NuGet`、`xUnit`、`ASP.NET Core`、`EF Core` 作为第一组条件。
-- 首轮输入：先确认 出现字面量 `Serilog`，预测 `dotnet restore` 会怎样变化。
-- 基线观察：记录命令、输入、输出和错误原文，不用截图代替可复制的文本。
-- 单变量修改：只改变 `NuGet`，观察 `NuGet` 是否仍满足定义。
-- 失败注入：复现 Singleton 注入 Scoped，确认现象是 启动时报错或运行异常。
-- 记录结论：把“修改前、修改后、预期变化、实际变化”写成四列表，这样复盘 `生态、测试与 Web 开发` 时才能区分概念错误与实现错误。
 
 ## 典型应用场景
 
@@ -510,15 +444,6 @@ dotnet publish src/MyApp.Api -c Release -o out
 
 **运行方式**：运行 `生态、测试与 Web 开发` 的示例时，用 `bash 文件名.sh` 运行；先 `bash -n` 做语法检查更稳妥。
 
-### 示例精读：先找证据，再改一个条件
-
-1. 出现字面量 `Serilog`；它出现在 `生态、测试与 Web 开发` 的示例中，阅读时先确认它前后各发生了什么。
-2. 出现字面量 `3.1.1`；它出现在 `生态、测试与 Web 开发` 的示例中，阅读时先确认它前后各发生了什么。
-- 在 `生态、测试与 Web 开发` 中与 `dotnet restore` 对照：示例必须能支持 版本号尽量显式固定；`dotnet restore` 会按 lock 文件还原依赖，保证 CI 与本地一致，否则说明这一段还缺少实现或验证步骤。
-- 在 `生态、测试与 Web 开发` 中与 `Add-Migration` 对照：示例必须能支持 EF Core 把 LINQ 翻译成 SQL，配合迁移（`Add-Migration` / `Database.Migrate()`）管理表结构，否则说明这一段还缺少实现或验证步骤。
-- 在 `生态、测试与 Web 开发` 中与 `EF Core` 对照：示例必须能支持 EF Core 把 LINQ 翻译成 SQL，配合迁移（Add-Migration / Database.Migrate()）管理表结构，否则说明这一段还缺少实现或验证步骤。
-- 在 `生态、测试与 Web 开发` 中与 `NuGet` 对照：示例必须能支持 .NET 的包管理器，restore 按项目文件解析并下载依赖，锁文件用于固定版本，否则说明这一段还缺少实现或验证步骤。
-
 ## 时间/空间复杂度或性能分析
 
 **性能关注点（生态、测试与 Web 开发）**：GC 与异步调度影响开销：记录吞吐、延迟与分配速率。
@@ -526,19 +451,6 @@ dotnet publish src/MyApp.Api -c Release -o out
 **本课特有开销（生态、测试与 Web 开发 · NuGet）**：小文件看元数据开销，大文件看吞吐，两者要分别测量。
 
 **测量方法**：以 `生态、测试与 Web 开发` 的 `NuGet` 场景为对象，固定输入跑一遍记录基线，再把规模或并发度提高一个数量级复测；两次结果的差值与波动范围才是结论依据。
-
-### 需要控制的变量与记录项
-
-- `生态、测试与 Web 开发` 的 `NuGet`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `生态、测试与 Web 开发` 的 `xUnit`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `生态、测试与 Web 开发` 的 `ASP.NET Core`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `生态、测试与 Web 开发` 的 `EF Core`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `生态、测试与 Web 开发` 的 `依赖注入`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `生态、测试与 Web 开发` 中 `dotnet restore` 的边界：不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。达到边界时不要外推，必须重新测量。
-- `生态、测试与 Web 开发` 中 `Add-Migration` 的边界：索引命中与数据分布决定实际开销，判断前先看执行计划而不是只看结果是否正确。达到边界时不要外推，必须重新测量。
-- `生态、测试与 Web 开发` 中 `EF Core` 的边界：索引命中与数据分布决定实际开销，判断前先看执行计划而不是只看结果是否正确。达到边界时不要外推，必须重新测量。
-- `生态、测试与 Web 开发` 中 `NuGet` 的边界：不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。达到边界时不要外推，必须重新测量。
-- `生态、测试与 Web 开发` 的代码证据：先验证 出现字面量 `Serilog`，再记录该路径的输入规模与耗时；只看代码行数不能推出复杂度。
 
 ## 常见误区与易错点
 
@@ -644,17 +556,6 @@ dotnet publish src/MyApp.Api -c Release -o out
 - **术语归属**：`dotnet restore`、`Add-Migration`、`EF Core` 的定义以本课「核心概念定义」为准，换到其他课程时先确认定义是否被改写。
 - 同一分类的《实战：Web API + EF Core》也涉及 `ASP.NET Core`；两课衔接时先确认这个术语的定义是否一致。
 - 同一分类的《实战：C# 库存管理 CLI》也涉及 `xUnit`；两课衔接时先确认这个术语的定义是否一致。
-
-### 先修与后续术语接口
-
-- `异步编程与异常处理`：两者通过本分类的学习顺序衔接，阅读时重点比较各自的输入与失败条件。
-- `实战：Web API + EF Core`：共同关键词 `ASP.NET Core`、`EF Core`、`xUnit`。
-
-### 容易混淆的相邻概念
-
-- `dotnet restore` 与 `Add-Migration`：前者强调 版本号尽量显式固定；`dotnet restore` 会按 lock 文件还原依赖，保证 CI 与本地一致；后者强调 EF Core 把 LINQ 翻译成 SQL，配合迁移（`Add-Migration` / `Database.Migrate()`）管理表结构。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
-- `Add-Migration` 与 `EF Core`：前者强调 EF Core 把 LINQ 翻译成 SQL，配合迁移（`Add-Migration` / `Database.Migrate()`）管理表结构；后者强调 EF Core 把 LINQ 翻译成 SQL，配合迁移（Add-Migration / Database.Migrate()）管理表结构。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
-- `EF Core` 与 `NuGet`：前者强调 EF Core 把 LINQ 翻译成 SQL，配合迁移（Add-Migration / Database.Migrate()）管理表结构；后者强调 .NET 的包管理器，restore 按项目文件解析并下载依赖，锁文件用于固定版本。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
 
 ## 自测题与参考答案
 
@@ -832,6 +733,8 @@ dotnet publish src/MyApp.Api -c Release -o out
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
 ## 参考资料与复核
+
+- [本课资料锚点 csharp_ecosystem](https://zh.wikipedia.org/w/index.php?search=csharp_ecosystem)
 
 - 最后复核：2026-10-04
 - 下次复核：2027-03-10

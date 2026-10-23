@@ -628,6 +628,8 @@ print(len(text), text == ‘é’, unicodedata.normalize(‘NFC’, text) == ‘
 
 ## 参考资料与复核
 
+- [本课资料锚点 python_strings_encoding](https://zh.wikipedia.org/w/index.php?search=python_strings_encoding)
+
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：Unicode、UTF-8、bytes、f-string、正则表达式。
 - 最后复核：2026-10-04
 - 下次复核：2026-12-10

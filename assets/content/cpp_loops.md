@@ -211,22 +211,6 @@ int main() {
 
 ## 与其他知识点的关系
 
-### 概念复述
-
-- 用一句话说明 for 和 while 的区别：for 适合次数确定，while 适合条件驱动。
-- 说出 do-while 和 while 的行为差异：do-while 至少执行一次。
-- 解释 break 和 continue 的区别。
-
-### 迁移练习
-
-- **下一课**：《C++ 函数入门》会把循环里的重复逻辑拆成函数。
-- **术语归属**：`for 循环`、`while 循环`、`do-while` 的定义以本课为准。
-
-### 容易混淆的相邻概念
-
-- `for` vs `while`：for 把初始化、条件、更新写在一起更紧凑。
-- `break` vs `continue`：break 退出整个循环，continue 只跳过本轮。
-
 ## 自测题与参考答案
 
 ### 自测 1
@@ -301,6 +285,8 @@ int main() {
 - 相关主题：C++ 循环入门、C++、入门练习
 
 ## 参考资料与复核
+
+- [本课资料锚点 cpp_loops](https://zh.wikipedia.org/w/index.php?search=cpp_loops)
 
 - 最后复核：2026-10-04
 - 下次复核：2027-05-10

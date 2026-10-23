@@ -301,7 +301,6 @@ JDK（开发工具箱）
 - **正确项**：字节码
 - **判断依据**：这道题落在术语 `JVM` 上：public static void main(String[] args) 的每个部分都有含义：public 让 JVM 能访问、static 无需实例化、void 无返回值、String[] args 接收命令行参数。复习时把 `JVM` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
 
-
 ## 延伸阅读
 
 想更直观地理解本课概念？推荐参阅以下图解专题：
@@ -320,6 +319,8 @@ JDK（开发工具箱）
 | `JAVA_HOME` | 指向 JDK 根目录的环境变量。 |
 
 ## 参考资料与复核
+
+- [本课资料锚点 java_basics](https://zh.wikipedia.org/w/index.php?search=java_basics)
 
 - 最后复核：2026-10-04
 - 下次复核：2027-02-24

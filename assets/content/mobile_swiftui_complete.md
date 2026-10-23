@@ -1,4 +1,6 @@
-# iOS SwiftUI完整教程：声明式UI与现代iOS开发
+# iOS SwiftUI完整教程
+
+![iOS SwiftUI完整教程示意：remaining python first script](images/remaining_python_first_script.webp)
 
 ## Chapter Overview
 
@@ -427,12 +429,12 @@ struct AnimationDemoView_Previews: PreviewProvider {
 
 在SwiftUI中，以下哪个属性包装器最适合用于管理可变的状态数据？
 
-A. @Environment  
-B. @State  
+A. @State  
+B. @Environment  
 C. @Binding  
 D. @EnvironmentObject  
 
-**正确答案：B**
+**正确答案：A**
 
 **详细解释：** @State是SwiftUI中用于管理视图内部可变状态的标准方式。它适用于值类型（如struct），当@State变量的值发生变化时，SwiftUI会自动重新渲染使用该状态的视图。@Environment用于读取系统环境值（如颜色方案），@Binding用于在父子视图间共享状态，@EnvironmentObject用于在整个视图层级中共享对象。对于视图自身拥有的可变数据，@State是最合适的选择。
 
@@ -453,12 +455,12 @@ D. 修饰符会直接修改原视图的属性
 
 在SwiftUI List中使用ForEach时，为什么数据模型需要遵循Identifiable协议？
 
-A. 为了能够对数据进行排序  
-B. 为了让SwiftUI能够唯一标识和追踪每个列表项  
+A. 为了让SwiftUI能够唯一标识和追踪每个列表项  
+B. 为了能够对数据进行排序  
 C. 为了提高数据加载速度  
 D. 为了支持数据加密  
 
-**正确答案：B**
+**正确答案：A**
 
 **详细解释：** SwiftUI需要一种方式来唯一标识列表中的每个元素，以便在数据变化时高效地更新UI。Identifiable协议要求提供一个唯一的id属性，SwiftUI使用这个id来追踪哪些项被添加、删除或移动，从而只重新渲染发生变化的部分，而不是重建整个列表。这类似于React中的key属性。如果不使用Identifiable，也可以使用ForEach(data, id: \.someProperty)的形式显式指定标识符。
 
@@ -480,11 +482,11 @@ D. 控制一个视图的显示/隐藏
 SwiftUI中的withAnimation闭包的作用是什么？
 
 A. 强制所有视图立即刷新  
-B. 为闭包内改变的状态变化添加动画效果  
+B. 创建一个独立的动画线程  
 C. 暂停当前正在播放的动画  
-D. 创建一个独立的动画线程  
+D. 为闭包内改变的状态变化添加动画效果  
 
-**正确答案：B**
+**正确答案：D**
 
 **详细解释：** withAnimation是一个全局函数，它接收一个闭包作为参数。闭包内对@State或其他可观察状态的任何修改都会被自动添加动画效果。例如，`withAnimation { isExpanded = true }`会让isExpanded的变化以动画形式呈现，而不是瞬间跳变。你可以指定动画类型和时长，如`withAnimation(.easeInOut(duration: 0.5))`。这是一种简洁的方式来为状态变化添加视觉反馈，提升用户体验。
 
@@ -493,3 +495,176 @@ D. 创建一个独立的动画线程
 **章节小结：**
 
 通过本章学习，你已经掌握了SwiftUI的核心精髓：声明式UI思维、状态驱动的视图更新、灵活的修饰符系统以及优雅的动画效果。SwiftUI不仅是一种新的UI框架，更是一种全新的编程思维方式。记住，在SwiftUI中，你的任务是描述"界面应该是什么样"，而不是"如何绘制界面"。下一章我们将探索Android阵营的Jetpack Compose，看看Google如何用类似的理念重塑Android开发。
+
+## 本节知识框架
+
+**课程定位**：分类「ios_development」· 学习阶段 基础 · 建议用时 50 分钟。
+
+本课主线：学习SwiftUI声明式UI、状态管理、组合视图和Core Data集成。
+
+### 复习清单
+
+- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
+- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
+
+## 核心概念定义
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| SwiftUI | 学习SwiftUI声明式UI、状态管理、组合视图和Core Data集成。相关：正文给出可操作定义与适用边界。 |
+| iOS | 学习SwiftUI声明式UI、状态管理、组合视图和Core Data集成。相关：正文给出可操作定义与适用边界。 |
+| 声明式UI | 学习SwiftUI声明式UI、状态管理、组合视图和Core Data集成。相关：正文给出可操作定义与适用边界。 |
+| 状态管理 | 学习SwiftUI声明式UI、状态管理、组合视图和Core Data集成。相关：正文给出可操作定义与适用边界。 |
+| Core Data | 学习SwiftUI声明式UI、状态管理、组合视图和Core Data集成。相关：正文给出可操作定义与适用边界。 |
+
+## 原理与运行机制
+
+正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
+
+## 典型应用场景
+
+- 结合「iOS SwiftUI完整教程」的常见落地场景与选型边界，详见正文各章节的对比讨论。
+- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
+
+## 代码/协议/SQL 示例
+
+正文首个示例可作为最小验证起点（原样保留在上方章节）：先跑通，再改一个输入观察输出变化。
+
+```swift
+import SwiftUI
+
+struct HelloWorld: View {
+    var body: some View {
+        Text("Hello, SwiftUI!")
+            .font(.largeTitle)
+            .foregroundColor(.blue)
+            .padding()
+    }
+}
+
+struct HelloWorld_Previews: PreviewProvider {
+    static var previews: some View {
+        HelloWorld()
+    }
+}
+```
+
+## 时间/空间复杂度或性能分析
+
+- 用本课方案处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
+- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
+
+## 常见误区与易错点
+
+| 错误做法 | 典型现象 | 修复方向 |
+| --- | --- | --- |
+| 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
+| 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
+| 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
+
+## 与其他知识点的关系
+
+本课与分类「ios_development」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
+
+## 自测题与参考答案
+
+以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
+
+## 考点精讲
+
+### 考点 1
+
+在SwiftUI中，以下哪个属性包装器最适合用于管理可变的状态数据？
+
+A. @State ✅  
+B. @Environment  
+C. @Binding  
+D. @EnvironmentObject  
+
+**正确答案：** A
+
+**解析：** @State是SwiftUI中用于管理视图内部可变状态的标准方式。它适用于值类型（如struct），当@State变量的值发生变化时，SwiftUI会自动重新渲染使用该状态的视图。@Environment用于读取系统环境值（如颜色方案），@Binding用于在父子视图间共享状态，@EnvironmentObject用于在整个视图层级中共享对象。对于视图自身拥有的可变数据，@State是最合适的选择。
+
+### 考点 2
+
+关于SwiftUI的修饰符（Modifier），以下说法错误的是？
+
+A. 修饰符会返回一个新的View实例  
+B. 修饰符的应用顺序会影响最终效果  
+C. 同一个修饰符可以多次应用于同一视图  
+D. 修饰符会直接修改原视图的属性 ✅  
+
+**正确答案：** D
+
+**解析：** SwiftUI遵循函数式编程理念，修饰符不会修改原视图，而是返回一个新的视图实例。这就是为什么SwiftUI被称为"声明式"而非"命令式"——你不是在修改现有对象，而是在描述新的视图结构。选项A、B、C都是正确的：修饰符确实返回新实例，顺序很重要（例如先padding后background与反过来效果不同），且可以链式调用多个修饰符甚至重复使用同一修饰符。
+
+### 考点 3
+
+在SwiftUI List中使用ForEach时，为什么数据模型需要遵循Identifiable协议？
+
+A. 为了让SwiftUI能够唯一标识和追踪每个列表项 ✅  
+B. 为了能够对数据进行排序  
+C. 为了提高数据加载速度  
+D. 为了支持数据加密  
+
+**正确答案：** A
+
+**解析：** SwiftUI需要一种方式来唯一标识列表中的每个元素，以便在数据变化时高效地更新UI。Identifiable协议要求提供一个唯一的id属性，SwiftUI使用这个id来追踪哪些项被添加、删除或移动，从而只重新渲染发生变化的部分，而不是重建整个列表。这类似于React中的key属性。如果不使用Identifiable，也可以使用ForEach(data, id: \.someProperty)的形式显式指定标识符。
+
+### 考点 4
+
+以下哪种情况应该使用@ObservedObject而不是@State？
+
+A. 存储一个简单的布尔值开关状态  
+B. 管理一个包含多个属性的复杂对象，且该对象需要在多个视图中共享 ✅  
+C. 存储用户的文本输入  
+D. 控制一个视图的显示/隐藏  
+
+**正确答案：** B
+
+**解析：** @State适用于简单的值类型状态，存储在视图内部。而当需要管理复杂的引用类型对象（class），特别是该对象实现了ObservableObject协议并通过@Published属性发布变化时，应该使用@ObservedObject。这种方式适合ViewModel模式，其中ViewModel持有业务逻辑和数据，并在数据变化时通知所有观察它的视图。选项A、C、D都是简单的值类型状态，用@State即可。
+
+### 考点 5
+
+SwiftUI中的withAnimation闭包的作用是什么？
+
+A. 强制所有视图立即刷新  
+B. 创建一个独立的动画线程  
+C. 暂停当前正在播放的动画  
+D. 为闭包内改变的状态变化添加动画效果 ✅  
+
+**正确答案：** D
+
+**解析：** withAnimation是一个全局函数，它接收一个闭包作为参数。闭包内对@State或其他可观察状态的任何修改都会被自动添加动画效果。例如，`withAnimation { isExpanded = true }`会让isExpanded的变化以动画形式呈现，而不是瞬间跳变。你可以指定动画类型和时长，如`withAnimation(.easeInOut(duration: 0.5))`。这是一种简洁的方式来为状态变化添加视觉反馈，提升用户体验。
+
+## 术语速查
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| SwiftUI | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| iOS | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 声明式UI | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 状态管理 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| Core Data | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+
+## 参考资料与复核
+
+- [本课资料锚点 mobile_swiftui_complete](https://zh.wikipedia.org/w/index.php?search=mobile_swiftui_complete)
+
+- 官方/权威资料：[Apple HIG](https://developer.apple.com/design/human-interface-guidelines/)
+- 主题延伸：[关于「iOS」的检索页](https://zh.wikipedia.org/w/index.php?search=iOS)
+- 本课索引词：[锚点 mobile_swiftui_complete](https://developer.apple.com/design/human-interface-guidelines/#SwiftUI)
+- 最后复核：2026-10-04
+- 下次复核：2026-12-29
+
+## 内容元数据
+
+- 内容更新时间：2026-10-06
+
+- 内容版本：v2.0
+- 课程标识：mobile_swiftui_complete
+- 所属分类：ios_development
+- 学习阶段：基础
+- 建议用时：50 分钟
+

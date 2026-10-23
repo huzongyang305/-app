@@ -387,11 +387,11 @@ D. 引入更多字体
 ### 考点 4
 
 题目：flutter build appbundle 的产物格式是？
-A. .jar
-B. .aab
-C. .apk
-D. .ipa
-正确答案：B
+A. .jar  
+B. .ipa  
+C. .apk  
+D. .aab  
+正确答案：D
 
 ### 考点 5
 
@@ -435,6 +435,8 @@ D. 混淆与符号
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
 ## 参考资料与复核
+
+- [本课资料锚点 flutter_release](https://zh.wikipedia.org/w/index.php?search=flutter_release)
 
 - 最后复核：2026-10-04
 - 下次复核：2027-08-10

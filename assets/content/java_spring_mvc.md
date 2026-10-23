@@ -1,10 +1,10 @@
-# Spring MVC 与 Web 开发
+# Spring MVC 详解
 
 > 内容更新时间：2026-10-20 · 学习阶段：进阶 · 预计用时：55 分钟
 
 > 学习阶段：进阶 · 预计用时：55 分钟 · 配图：Spring MVC 架构
 
-![Spring MVC 架构](images/spring_mvc_architecture.png)
+![Spring MVC 架构](images/spring_mvc_architecture.webp)
 
 ## 本节知识框架
 
@@ -544,12 +544,12 @@ D. \u201CDispatcherServlet\u201D 直接查找
 
 \u201C@RequestParam\u201D 和 \u201C@PathVariable\u201D 注解的区别是什么？
 
-A. \u201C@RequestParam\u201D 从 URL 路径中提取值，\u201C@PathVariable\u201D 从查询参数中获取值
-B. \u201C@RequestParam\u201D 从查询参数或表单数据中获取值，\u201C@PathVariable\u201D 从 URL 路径中提取变量值
-C. 两者功能完全相同，只是名称不同
-D. \u201C@RequestParam\u201D 只能用于 GET 请求，\u201C@PathVariable\u201D 只能用于 POST 请求
+A. \u201C@RequestParam\u201D 从 URL 路径中提取值，\u201C@PathVariable\u201D 从查询参数中获取值  
+B. \u201C@RequestParam\u201D 只能用于 GET 请求，\u201C@PathVariable\u201D 只能用于 POST 请求  
+C. 两者功能完全相同，只是名称不同  
+D. \u201C@RequestParam\u201D 从查询参数或表单数据中获取值，\u201C@PathVariable\u201D 从 URL 路径中提取变量值  
 
-**正确答案：B**
+**正确答案：D**
 
 **详细解释：** \u201C@RequestParam\u201D 用于绑定 URL 查询参数（如 \u201C?keyword=spring&page=1\u201D）或表单数据到方法参数；\u201C@PathVariable\u201D 用于从 URL 路径中提取变量值（如 \u201C/users/{id}\u201D 中的 \u201Cid\u201D）。简单记忆：\u201C@RequestParam\u201D 取问号后面的值，\u201C@PathVariable\u201D 取路径中的值。两者都可以用于各种 HTTP 方法。
 
@@ -574,12 +574,12 @@ D. 两者没有任何区别，可以随意互换使用
 
 在 Spring MVC 中，表单提交成功后为什么推荐使用 \u201Credirect:\u201D 重定向而不是直接返回视图名称？
 
-A. 重定向可以提高服务器处理速度
-B. 重定向可以让浏览器发送新的 GET 请求，防止用户刷新页面时重复提交表单
-C. 视图名称不支持包含中文字符，必须用重定向
-D. 重定向可以让页面加载更多的 JavaScript 资源
+A. 重定向可以让浏览器发送新的 GET 请求，防止用户刷新页面时重复提交表单  
+B. 重定向可以提高服务器处理速度  
+C. 视图名称不支持包含中文字符，必须用重定向  
+D. 重定向可以让页面加载更多的 JavaScript 资源  
 
-**正确答案：B**
+**正确答案：A**
 
 **详细解释：** 这称为 PRG（Post/Redirect/Get）模式。如果 POST 成功后直接返回视图名称，用户刷新页面时浏览器会重新发送 POST 请求，导致重复提交（如重复创建订单、重复扣款）。使用 \u201Credirect:\u201D 重定向后，浏览器发送新的 GET 请求到目标 URL，刷新页面只会重新加载结果页，不会重复提交表单。
 
@@ -602,7 +602,7 @@ D. 将方法返回值序列化为 XML 格式
 
 ## 术语速查
 
-| 术语 | 含义 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | DispatcherServlet | 前端控制器，所有请求的统一入口 |
 | HandlerMapping | 根据 URL 查找对应的 Controller 方法 |
@@ -621,6 +621,9 @@ D. 将方法返回值序列化为 XML 格式
 ---
 
 ## 参考资料与复核
+- 下次复核：2026-11-29
+
+- [本课资料锚点 java_spring_mvc](https://zh.wikipedia.org/w/index.php?search=java_spring_mvc)
 
 | 资料 | 说明 |
 | --- | --- |
@@ -628,10 +631,13 @@ D. 将方法返回值序列化为 XML 格式
 | [Spring Framework @RequestMapping 指南](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-ann-requestmapping) | 请求映射注解详解 |
 | [Thymeleaf + Spring 集成文档](https://www.thymeleaf.org/doc/tutorials/3.0/thymeleafspring.html) | 模板引擎与 Spring MVC 集成 |
 | 复核日期：2026-10-20 | |
+- 最后复核：2026-10-04
 
 ---
 
 ## 内容元数据
+
+- 内容更新时间：2026-10-06
 
 - 课程 ID：java_spring_mvc
 - 分类：Java Web 开发
@@ -640,3 +646,5 @@ D. 将方法返回值序列化为 XML 格式
 - 先修课程：Java 基础、Servlet 与 JSP 基础、Spring Framework 核心
 - 后续课程：Spring Boot 入门、Spring Security 安全框架
 - 内容版本：v2.0
+
+

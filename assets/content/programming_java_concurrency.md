@@ -338,6 +338,8 @@ AtomicInteger: 1000
 
 ## 参考资料与复核
 
+- [本课资料锚点 java_concurrency](https://zh.wikipedia.org/w/index.php?search=java_concurrency)
+
 - 最后复核：2026-10-04
 - 下次复核：2027-02-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践

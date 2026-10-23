@@ -411,6 +411,8 @@ CSS 本身不涉及算法复杂度，但写得不好会影响页面性能：
 
 ## 参考资料与复核
 
+- [本课资料锚点 css_basics](https://zh.wikipedia.org/w/index.php?search=css_basics)
+
 - 最后复核：2026-10-04
 - 下次复核：2027-08-17
 

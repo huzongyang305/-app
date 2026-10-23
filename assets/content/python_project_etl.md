@@ -151,7 +151,6 @@ def generate_report(total: int, success: int, skipped: int, rejected: int) -> st
 
 ---
 
-
 **教材衔接：项目专属规格**
 ## 典型应用场景
 
@@ -515,7 +514,6 @@ python -m pytest --tb=short -q
 3. **文档**：README 说明使用方法，关键函数有注释
 4. **复盘总结**：记录遇到的问题和解决方案
 
-
 ## 延伸阅读
 
 想更直观地理解本课概念？推荐参阅以下图解专题：
@@ -608,6 +606,8 @@ db.executemany(
 ---
 
 ## 参考资料与复核
+
+- [本课资料锚点 python_project_etl](https://zh.wikipedia.org/w/index.php?search=python_project_etl)
 
 - 最后复核：2026-10-04
 - 下次复核：2026-12-10

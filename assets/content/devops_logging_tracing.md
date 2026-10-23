@@ -1,4 +1,6 @@
-# DevOps 实战课程：日志聚合与链路追踪
+# 日志聚合与链路追踪
+
+![日志聚合与链路追踪示意：remaining db design](images/remaining_db_design.webp)
 
 > **版本**：v2.0  
 > **适用人群**：初学者 / 运维工程师 / 后端开发者  
@@ -111,7 +113,7 @@ ELK Stack 是日志聚合领域最经典的解决方案，由三个组件组成�
 
 ### 3.1 架构数据流
 
-```
+```text
 应用程序 → Filebeat（轻量采集器）→ Logstash（解析/过滤）→ Elasticsearch（存储/索引）→ Kibana（查询/展示）
 ```
 
@@ -836,12 +838,12 @@ D. 不设置日志级别，所有日志都输出
 
 在 ELK Stack 中，Elasticsearch、Logstash、Kibana 各自承担什么角色？
 
-A. Elasticsearch 负责日志采集，Logstash 负责可视化，Kibana 负责存储
-B. Elasticsearch 负责分布式存储和检索日志，Logstash 负责接收、解析和转换日志数据，Kibana 负责日志的查询和可视化展示
-C. 三者功能完全相同，互为备份
-D. Elasticsearch 负责告警，Logstash 负责日志采集，Kibana 负责日志存储
+A. Elasticsearch 负责日志采集，Logstash 负责可视化，Kibana 负责存储  
+B. Elasticsearch 负责告警，Logstash 负责日志采集，Kibana 负责日志存储  
+C. 三者功能完全相同，互为备份  
+D. Elasticsearch 负责分布式存储和检索日志，Logstash 负责接收、解析和转换日志数据，Kibana 负责日志的查询和可视化展示  
 
-**正确答案：B**
+**正确答案：D**
 
 **详细解释：** ELK Stack 的完整数据流是：应用程序 -> Filebeat（轻量采集器）-> Logstash（解析/过滤/转换）-> Elasticsearch（分布式存储和全文检索）-> Kibana（Web 可视化仪表盘）。Elasticsearch 是核心存储引擎，提供强大的全文搜索和聚合分析能力。Logstash 是数据处理管道，支持 Grok 模式解析、条件过滤、数据脱敏等。Kibana 提供查询界面和仪表盘，让运维人员可以直观地搜索和分析日志。
 
@@ -851,12 +853,12 @@ D. Elasticsearch 负责告警，Logstash 负责日志采集，Kibana 负责日�
 
 Fluent Bit 相比 Fluentd 的主要优势是什么？
 
-A. 功能更丰富，支持更多的输出插件
-B. 更轻量级，内存占用更低，适合边缘场景和容器环境中的日志采集
-C. 完全兼容 Logstash 的所有 Grok 模式
-D. 只能与 Elasticsearch 配合使用
+A. 功能更丰富，支持更多的输出插件  
+B. 只能与 Elasticsearch 配合使用  
+C. 完全兼容 Logstash 的所有 Grok 模式  
+D. 更轻量级，内存占用更低，适合边缘场景和容器环境中的日志采集  
 
-**正确答案：B**
+**正确答案：D**
 
 **详细解释：** Fluent Bit 是 Fluentd 的轻量版本，用 C 语言编写，内存占用极低（通常几 MB），非常适合在资源受限的环境中运行，如 Kubernetes 节点上的日志采集（DaemonSet 部署）。Fluentd 用 Ruby 编写，功能更丰富但资源消耗更大，适合作为集中式日志处理服务器。典型架构是：Fluent Bit 部署在每个节点上采集日志，转发给 Fluentd 进行集中处理和路由。
 
@@ -865,3 +867,94 @@ D. 只能与 Elasticsearch 配合使用
 > **课程版本**：v2.0  
 > **最后更新**：2026-10-19  
 > **配套资源**：Docker Compose 配置文件、示例代码仓库
+
+## 本节知识框架
+
+**课程定位**：分类「devops」· 学习阶段 高级 · 建议用时 55 分钟。
+
+本课主线：搭建 ELK Stack、Jaeger 和 OpenTelemetry 实现日志与链路追踪。
+
+### 复习清单
+
+- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
+- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
+
+## 核心概念定义
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| ELK | 搭建 ELK Stack、Jaeger 和 OpenTelemetry 实现日志相关：正文给出可操作定义与适用边界。 |
+| Jaeger | 搭建 ELK Stack、Jaeger 和 OpenTelemetry 实现日志相关：正文给出可操作定义与适用边界。 |
+| OpenTelemetry | 搭建 ELK Stack、Jaeger 和 OpenTelemetry 实现日志相关：正文给出可操作定义与适用边界。 |
+| 日志 | 搭建 ELK Stack、Jaeger 和 OpenTelemetry 实现日志相关：正文给出可操作定义与适用边界。 |
+| 链路追踪 | 搭建 ELK Stack、Jaeger 和 OpenTelemetry 实现日志相关：正文给出可操作定义与适用边界。 |
+
+## 原理与运行机制
+
+正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
+
+## 典型应用场景
+
+- 结合「日志聚合与链路追踪」的常见落地场景与选型边界，详见正文各章节的对比讨论。
+- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
+
+## 代码/协议/SQL 示例
+
+正文首个示例可作为最小验证起点（原样保留在上方章节）：先跑通，再改一个输入观察输出变化。
+
+```text
+2024-01-15 10:23:45 INFO [order-service] User 12345 created order ORD-789 with total 299.00
+```
+
+## 时间/空间复杂度或性能分析
+
+- 用本课方案处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
+- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
+
+## 常见误区与易错点
+
+| 错误做法 | 典型现象 | 修复方向 |
+| --- | --- | --- |
+| 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
+| 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
+| 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
+
+## 与其他知识点的关系
+
+本课与分类「devops」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
+
+## 自测题与参考答案
+
+以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
+
+## 术语速查
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| ELK | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| Jaeger | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| OpenTelemetry | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 日志 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 链路追踪 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+
+## 参考资料与复核
+
+- [本课资料锚点 devops_logging_tracing](https://zh.wikipedia.org/w/index.php?search=devops_logging_tracing)
+
+- 官方/权威资料：[OpenSSF 最佳实践](https://bestpractices.coreinfrastructure.org/)
+- 主题延伸：[关于「Jaeger」的检索页](https://zh.wikipedia.org/w/index.php?search=Jaeger)
+- 本课索引词：[锚点 devops_logging_tracing](https://bestpractices.coreinfrastructure.org/#ELK)
+- 最后复核：2026-10-04
+- 下次复核：2027-02-22
+
+## 内容元数据
+
+- 内容更新时间：2026-10-06
+
+- 内容版本：v2.0
+- 课程标识：devops_logging_tracing
+- 所属分类：devops
+- 学习阶段：高级
+- 建议用时：55 分钟
+

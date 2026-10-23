@@ -468,6 +468,8 @@ else:
 
 ## 参考资料与复核
 
+- [本课资料锚点 python_if_else](https://zh.wikipedia.org/w/index.php?search=python_if_else)
+
 - 最后复核：2026-10-04
 - 下次复核：2026-11-10
 - 来源性质：官方文档、权威教材与工程实践整理

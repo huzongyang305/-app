@@ -387,7 +387,6 @@ print(verify(b'secret', salt, stored), verify(b'wrong', salt, stored))
 - [ ] 能默写本课最重要的代码示例，并解释每一行的作用
 - [ ] 能说出本课内容和前后两课的联系
 
-
 ## 延伸阅读
 
 想更直观地理解本课概念？推荐参阅以下图解专题：
@@ -492,6 +491,8 @@ with open(user_filename) as handle:
 | 内容更新时间 | 2026-10-06 |
 
 ## 参考资料与复核
+
+- [本课资料锚点 python_security](https://zh.wikipedia.org/w/index.php?search=python_security)
 
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：密码哈希、secrets、注入、路径穿越、依赖审计。
 - 最后复核：2026-10-04

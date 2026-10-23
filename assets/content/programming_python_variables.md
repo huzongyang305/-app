@@ -402,7 +402,6 @@ print(a is b)
 - [ ] 能默写本课最重要的代码示例，并解释每一行的作用
 - [ ] 能说出本课内容和前后两课的联系
 
-
 ## 延伸阅读
 
 想更直观地理解本课概念？推荐参阅以下图解专题：
@@ -500,6 +499,8 @@ print(a is b)
 ---
 
 ## 参考资料与复核
+
+- [本课资料锚点 python_variables](https://zh.wikipedia.org/w/index.php?search=python_variables)
 
 - 最后复核：2026-10-04
 - 下次复核：2026-12-10

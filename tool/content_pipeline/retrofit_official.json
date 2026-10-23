@@ -1,0 +1,174 @@
+{
+ "flutter": [
+  "Flutter 官方文档",
+  "https://docs.flutter.dev/"
+ ],
+ "gamedev": [
+  "Game Programming Patterns",
+  "https://gameprogrammingpatterns.com/"
+ ],
+ "html_css": [
+  "MDN 文档",
+  "https://developer.mozilla.org/"
+ ],
+ "python": [
+  "Python 官方文档",
+  "https://docs.python.org/3/"
+ ],
+ "cpp": [
+  "cppreference",
+  "https://en.cppreference.com/w/cpp"
+ ],
+ "c": [
+  "cppreference C",
+  "https://en.cppreference.com/w/c"
+ ],
+ "java": [
+  "Oracle Java 文档",
+  "https://docs.oracle.com/en/java/"
+ ],
+ "javaweb": [
+  "Spring 官方文档",
+  "https://spring.io/projects"
+ ],
+ "kotlin": [
+  "Kotlin 文档",
+  "https://kotlinlang.org/docs/"
+ ],
+ "swift": [
+  "Swift 文档",
+  "https://docs.swift.org/swift-book/"
+ ],
+ "javascript": [
+  "MDN JavaScript",
+  "https://developer.mozilla.org/en/docs/Web/JavaScript"
+ ],
+ "csharp": [
+  "Microsoft Learn C#",
+  "https://learn.microsoft.com/dotnet/csharp/"
+ ],
+ "go": [
+  "Go 官方文档",
+  "https://go.dev/doc/"
+ ],
+ "rust": [
+  "Rust 文档",
+  "https://doc.rust-lang.org/book/"
+ ],
+ "typescript": [
+  "TypeScript 手册",
+  "https://www.typescriptlang.org/docs/handbook/intro.html"
+ ],
+ "shell": [
+  "GNU Bash 手册",
+  "https://www.gnu.org/software/bash/manual/"
+ ],
+ "fundamentals": [
+  "CS:APP 课程页",
+  "https://www.cs.cmu.edu/~213/"
+ ],
+ "discrete_mathematics": [
+  "MIT 6.042 公开课",
+  "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/"
+ ],
+ "compiler": [
+  "Crafting Interpreters",
+  "https://craftinginterpreters.com/"
+ ],
+ "algorithms": [
+  "MIT 6.006 公开课",
+  "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/"
+ ],
+ "network": [
+  "RFC 索引",
+  "https://www.rfc-editor.org/"
+ ],
+ "security": [
+  "OWASP 知识库",
+  "https://owasp.org/www-project-knowledge-base/"
+ ],
+ "blockchain": [
+  "Ethereum 文档",
+  "https://ethereum.org/en/developers/docs/"
+ ],
+ "database": [
+  "PostgreSQL 文档",
+  "https://www.postgresql.org/docs/"
+ ],
+ "data_engineering": [
+  "Airflow 文档",
+  "https://airflow.apache.org/docs/"
+ ],
+ "os": [
+  "Linux 内核文档",
+  "https://www.kernel.org/doc/html/latest/"
+ ],
+ "embedded": [
+  "ARM 开发者文档",
+  "https://developer.arm.com/documentation/"
+ ],
+ "toolchain": [
+  "Git 书籍",
+  "https://git-scm.com/book/zh/v2"
+ ],
+ "cloud": [
+  "CNCF 项目总览",
+  "https://landscape.cncf.io/"
+ ],
+ "ai": [
+  "PyTorch 文档",
+  "https://pytorch.org/docs/stable/index.html"
+ ],
+ "distributed": [
+  "MIT 6.824 公开课",
+  "https://pdos.csail.mit.edu/6.824/"
+ ],
+ "software_engineering": [
+  "SEI 知识库",
+  "https://www.sei.cmu.edu/library/"
+ ],
+ "math": [
+  "3Blue1Brown 系列",
+  "https://www.3blue1brown.com/"
+ ],
+ "cross_language": [
+  "TDPL 语言对比",
+  "https://softwareengineering.stackexchange.com/questions/351620/"
+ ],
+ "visual_guide": [
+  "VisUAL 可视化",
+  "https://visualgo.net/zh"
+ ],
+ "project_practice": [
+  "GitHub Docs",
+  "https://docs.github.com/"
+ ],
+ "devops": [
+  "OpenSSF 最佳实践",
+  "https://bestpractices.coreinfrastructure.org/"
+ ],
+ "frontend_frameworks": [
+  "web.dev 性能指南",
+  "https://web.dev/"
+ ],
+ "backend_development": [
+  "HTTP 规范",
+  "https://datatracker.ietf.org/doc/html/rfc9110"
+ ],
+ "ml_practice": [
+  "scikit-learn 用户手册",
+  "https://scikit-learn.org/stable/user_guide.html"
+ ],
+ "ios_development": [
+  "Apple HIG",
+  "https://developer.apple.com/design/human-interface-guidelines/"
+ ],
+ "android_development": [
+  "Android 开发者站",
+  "https://developer.android.com/develop"
+ ],
+ "cross_platform": [
+  "W3C 移动 Web",
+  "https://www.w3.org/2001/tag/doc/appr-best-web/"
+ ]
+}

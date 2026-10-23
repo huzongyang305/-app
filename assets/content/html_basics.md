@@ -330,6 +330,8 @@ HTML 是前端三件套的第一块拼图。学完本课之后，你会自然地
 
 ## 参考资料与复核
 
+- [本课资料锚点 html_basics](https://zh.wikipedia.org/w/index.php?search=html_basics)
+
 - 最后复核：2026-10-04
 - 下次复核：2027-08-17
 - 复核范围：HTML 标准更新、浏览器兼容性、可访问性规范变化

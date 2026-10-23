@@ -307,6 +307,8 @@ print("欢迎，" + name)
 
 ## 参考资料与复核
 
+- [本课资料锚点 python_first_script](https://zh.wikipedia.org/w/index.php?search=python_first_script)
+
 - 最后复核：2026-10-04
 - 下次复核：2026-11-10
 

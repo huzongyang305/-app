@@ -101,7 +101,6 @@ def world_to_screen(point, camera):
     sy = (point[1] - camera["y"]) * camera["zoom"] + camera["viewport_height"] / 2
     return (sx, sy)
 
-
 # 同一图集的精灵连续提交，减少纹理切换
 def draw_sprites(sprites, atlas, camera):
     """
@@ -119,7 +118,6 @@ def draw_sprites(sprites, atlas, camera):
         # 这里省略了实际的绘制调用，只统计次数
         draw_calls += 1
     return draw_calls
-
 
 # 试一试
 camera = {"x": 0, "y": 0, "zoom": 1.0, "viewport_width": 800, "viewport_height": 600}
@@ -208,13 +206,6 @@ print(f"屏幕坐标: {screen_point}")
 print(f"反变换回世界坐标: {back_to_world}")
 # 验证: back_to_world 应该等于 world_point
 ```
-
-### 示例精读
-
-- `world_to_screen` 函数集中处理了坐标换算：先减去相机位置（平移），再乘以缩放倍数，最后加上视口中心偏移。
-- `screen_to_world` 是逆变换，鼠标拾取时必须用它把屏幕坐标转回世界坐标。
-- `draw_frame` 先排序再绘制，排序键是 `(layer, depth)`，这保证了遮挡关系和透明混合的正确性。
-- `draw_calls` 计数器让你能看到这一帧到底提交了多少次绘制调用。
 
 ## 时间/空间复杂度或性能分析
 
@@ -343,6 +334,8 @@ print(f"反变换回世界坐标: {back_to_world}")
 | 内容更新时间 | 2026-10-06 |
 
 ## 参考资料与复核
+
+- [本课资料锚点 gamedev_2d_rendering](https://zh.wikipedia.org/w/index.php?search=gamedev_2d_rendering)
 
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：坐标系、精灵、批处理、纹理图集、相机。
 - 最后复核：2026-10-04

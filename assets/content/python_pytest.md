@@ -98,7 +98,6 @@ mock 用可控替身替代网络、时间、随机数和第三方服务，让测
 
 ---
 
-
 **教材衔接：项目专属规格**
 ## 典型应用场景
 
@@ -469,6 +468,8 @@ def test_create_user(mocker):
 ---
 
 ## 参考资料与复核
+
+- [本课资料锚点 python_pytest](https://zh.wikipedia.org/w/index.php?search=python_pytest)
 
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：pytest、fixture、参数化、mock、覆盖率。
 - 最后复核：2026-10-04

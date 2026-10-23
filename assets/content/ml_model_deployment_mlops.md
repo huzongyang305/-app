@@ -1,4 +1,6 @@
-# 模型部署与MLOps流程 (Model Deployment and MLOps Pipeline)
+# 模型部署与MLOps流程
+
+![模型部署与MLOps流程示意：category terraform](images/category_terraform.webp)
 
 ## 本章摘要
 
@@ -89,7 +91,6 @@ pred_original = tf_model.predict(test_input, verbose=0)
 pred_loaded = loaded_model_saved.predict(test_input, verbose=0)
 print(f"\n预测一致性检查: {np.allclose(pred_original, pred_loaded)}")
 
-
 # ==================== PyTorch模型保存与加载 ====================
 
 class SimpleTorchModel(torch.nn.Module):
@@ -136,7 +137,6 @@ with torch.no_grad():
     pred_loaded_pt = loaded_model_state(test_input_pt)
     print(f"\nPyTorch预测一致性检查: {torch.allclose(pred_original_pt, pred_loaded_pt)}")
 
-
 # ==================== 跨框架格式：ONNX ====================
 
 try:
@@ -167,7 +167,6 @@ try:
     
 except ImportError:
     print("\nONNX相关库未安装，跳过此部分")
-
 
 # ==================== Pickle序列化（适用于小型模型） ====================
 
@@ -907,3 +906,308 @@ D. 测试的持续时间
 **章节小结**
 
 通过本章学习，你已经掌握了模型部署和MLOps的核心实践：从模型序列化、API服务构建、容器化部署到完整的自动化流水线。MLOps的目标是让机器学习项目像软件工程一样可重复、可追踪、可扩展。记住，好的部署不仅关注技术实现，更要考虑可维护性、可观测性和安全性。在实际项目中，往往需要与运维团队、产品团队紧密协作，才能构建真正可靠的ML系统。下一章我们将深入数据预处理与特征工程，这是决定模型上限的关键环节。
+
+## 本节知识框架
+
+**课程定位**：分类「ml_practice」· 学习阶段 进阶 · 建议用时 50 分钟。
+
+本课主线：掌握模型序列化、FastAPI服务化、Docker容器化和MLflow追踪。
+
+### 复习清单
+
+- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
+- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
+
+## 核心概念定义
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| MLOps | 掌握模型序列化、FastAPI服务化、Docker容器化和MLflow追踪。相关：正文给出可操作定义与适用边界。 |
+| 模型部署 | 掌握模型序列化、FastAPI服务化、Docker容器化和MLflow追踪。相关：正文给出可操作定义与适用边界。 |
+| FastAPI | 掌握模型序列化、FastAPI服务化、Docker容器化和MLflow追踪。相关：正文给出可操作定义与适用边界。 |
+| Docker | 掌握模型序列化、FastAPI服务化、Docker容器化和MLflow追踪。相关：正文给出可操作定义与适用边界。 |
+| MLflow | 掌握模型序列化、FastAPI服务化、Docker容器化和MLflow追踪。相关：正文给出可操作定义与适用边界。 |
+
+## 原理与运行机制
+
+正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
+
+## 典型应用场景
+
+- 结合「模型部署与MLOps流程」的常见落地场景与选型边界，详见正文各章节的对比讨论。
+- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
+
+## 代码/协议/SQL 示例
+
+正文首个完整示例如下，先运行确认环境，再按正文步骤改一个输入观察输出变化。
+
+```python
+import tensorflow as tf
+import torch
+import pickle
+import joblib
+import numpy as np
+import os
+
+# ==================== TensorFlow模型保存与加载 ====================
+
+# 创建一个简单模型
+tf_model = tf.keras.Sequential([
+    tf.keras.layers.Dense(64, activation='relu', input_shape=(10,)),
+    tf.keras.layers.Dense(32, activation='relu'),
+    tf.keras.layers.Dense(1, activation='sigmoid')
+])
+
+# 编译模型（不需要实际训练）
+tf_model.compile(optimizer='adam', loss='binary_crossentropy')
+
+# 方法1：保存为H5格式
+tf_model.save('simple_model_tf.h5')
+print("已保存为H5格式")
+
+# 加载H5模型
+loaded_model_h5 = tf.keras.models.load_model('simple_model.h5')
+print("已从H5格式加载")
+
+# 方法2：保存为SavedModel格式（推荐）
+tf_model.save('saved_model_tf', save_format='tf')
+print("已保存为SavedModel格式")
+
+# 加载SavedModel
+loaded_model_saved = tf.keras.models.load_model('saved_model_tf')
+print("已从SavedModel格式加载")
+
+# 验证加载的模型能正常工作
+test_input = np.random.randn(5, 10).astype(np.float32)
+pred_original = tf_model.predict(test_input, verbose=0)
+pred_loaded = loaded_model_saved.predict(test_input, verbose=0)
+print(f"\n预测一致性检查: {np.allclose(pred_original, pred_loaded)}")
+
+# ==================== PyTorch模型保存与加载 ====================
+
+class SimpleTorchModel(torch.nn.Module):
+    def __init__(self):
+        super(SimpleTorchModel, self).__init__()
+        self.network = torch.nn.Sequential(
+            torch.nn.Linear(10, 64),
+            torch.nn.ReLU(),
+            torch.nn.Linear(64, 32),
+            torch.nn.ReLU(),
+            torch.nn.Linear(32, 1),
+            torch.nn.Sigmoid()
+        )
+    
+    def forward(self, x):
+        return self.network(x)
+
+# 创建模型
+torch_model = SimpleTorchModel()
+torch_model.eval()
+
+# 方法1：保存整个模型（不推荐用于生产）
+torch.save(torch_model, 'simple_model_torch_full.pt')
+print("\n已保存完整PyTorch模型")
+
+# 加载完整模型
+loaded_model_full = torch.load('simple_model_torch_full.pt')
+print("已加载完整模型")
+
+# 方法2：仅保存state_dict（推荐）
+torch.save(torch_model.state_dict(), 'simple_model_torch_state.pt')
+print("已保存state_dict")
+
+# 加载state_dict需要先创建模型架构
+loaded_model_state = SimpleTorchModel()
+loaded_model_state.load_state_dict(torch.load('simple_model_torch_state.pt'))
+loaded_model_state.eval()
+print("已从state_dict加载")
+
+# 验证
+test_input_pt = torch.randn(5, 10)
+with torch.no_grad():
+    pred_original_pt = torch_model(test_input_pt)
+    pred_loaded_pt = loaded_model_state(test_input_pt)
+    print(f"\nPyTorch预测一致性检查: {torch.allclose(pred_original_pt, pred_loaded_pt)}")
+
+# ==================== 跨框架格式：ONNX ====================
+
+try:
+    import torch.onnx
+    
+    # 导出PyTorch模型为ONNX
+    dummy_input = torch.randn(1, 10)
+    torch.onnx.export(
+        torch_model,
+        dummy_input,
+        "simple_model.onnx",
+        export_params=True,
+        opset_version=11,
+        input_names=['input'],
+        output_names=['output'],
+        dynamic_axes={'input': {0: 'batch_size'}, 'output': {0: 'batch_size'}}
+    )
+    print("\n已导出为ONNX格式")
+    
+    # 加载ONNX模型进行推理
+    import onnxruntime as ort
+    sess = ort.InferenceSession("simple_model.onnx")
+    input_name = sess.get_inputs()[0].name
+    output_name = sess.get_outputs()[0].name
+    
+    onnx_pred = sess.run([output_name], {input_name: test_input_pt.numpy()})[0]
+    print(f"ONNX推理成功，输出形状: {onnx_pred.shape}")
+    
+except ImportError:
+    print("\nONNX相关库未安装，跳过此部分")
+
+# ==================== Pickle序列化（适用于小型模型） ====================
+
+# 注意：Pickle不适合大型深度学习模型，更适合sklearn等传统ML模型
+from sklearn.ensemble import RandomForestClassifier
+
+# 训练一个简单的sklearn模型
+X_train = np.random.randn(100, 10)
+y_train = np.random.randint(0, 2, 100)
+sklearn_model = RandomForestClassifier(n_estimators=10)
+sklearn_model.fit(X_train, y_train)
+
+# 保存
+with open('sklearn_model.pkl', 'wb') as f:
+    pickle.dump(sklearn_model, f)
+print("\n已使用Pickle保存sklearn模型")
+
+# 加载
+with open('sklearn_model.pkl', 'rb') as f:
+    loaded_sklearn_model = pickle.load(f)
+
+# 验证
+test_X = np.random.randn(5, 10)
+pred_original_sk = sklearn_model.predict(test_X)
+pred_loaded_sk = loaded_sklearn_model.predict(test_X)
+print(f"Sklearn预测一致性检查: {np.array_equal(pred_original_sk, pred_loaded_sk)}")
+
+# 清理临时文件
+for f in ['simple_model_tf.h5', 'simple_model_torch_full.pt', 
+          'simple_model_torch_state.pt', 'sklearn_model.pkl']:
+    if os.path.exists(f):
+        os.remove(f)
+```
+
+## 时间/空间复杂度或性能分析
+
+- 用本课方案处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
+- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
+
+## 常见误区与易错点
+
+| 错误做法 | 典型现象 | 修复方向 |
+| --- | --- | --- |
+| 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
+| 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
+| 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
+
+## 与其他知识点的关系
+
+本课与分类「ml_practice」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
+
+## 自测题与参考答案
+
+以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
+
+## 考点精讲
+
+### 考点 1
+
+关于模型序列化格式的选择，以下哪项建议是最合理的？
+
+A. 始终使用Pickle，因为它最简单  
+B. TensorFlow模型用SavedModel，PyTorch模型用TorchScript，需要跨框架时用ONNX ✅  
+C. ONNX是所有场景的最佳选择，应该淘汰其他格式  
+D. 只保存模型权重（state_dict），不保存网络结构  
+
+**正确答案：** B
+
+**解析：** 不同序列化格式各有优劣：SavedModel和TorchScript是各自框架的原生格式，保留完整功能且优化良好；ONNX提供跨框架互操作性，适合需要在不同框架间转换的场景；Pickle简单但不安全且兼容性差，仅适用于小型传统ML模型。选择时应考虑部署目标、性能要求、跨平台需求等因素。选项A忽视了安全性和兼容性问题；选项C过于绝对，ONNX并非在所有场景都最优；选项D不完整，某些情况下需要完整模型。
+
+### 考点 2
+
+在MLOps流水线中，为什么需要模型注册中心（Model Registry）？
+
+A. 仅仅是为了存储模型文件，节省磁盘空间  
+B. 提供模型的版本管理、元数据记录、生命周期管理和审批流程 ✅  
+C. 加速模型推理速度  
+D. 自动优化模型性能  
+
+**正确答案：** B
+
+**解析：** 模型注册中心（如MLflow Model Registry）的核心价值在于管理模型的全生命周期：版本控制（追踪每次迭代）、元数据记录（训练参数、数据集、指标）、状态管理（Staging/Production/Archived）、审批流程（谁可以晋升模型到生产环境）。这使得团队协作更规范，问题追溯更容易，部署更可靠。选项A太片面；选项C和D不是注册中心的功能，那是模型优化和推理引擎的工作。
+
+### 考点 3
+
+关于容器化部署，以下说法错误的是？
+
+A. Docker容器确保了"在我机器上能运行"的问题得到解决  
+B. 容器镜像应该尽可能小以减少传输时间和启动延迟  
+C. 应该在容器中运行多个服务以节省资源 ✅  
+D. 使用多阶段构建可以减小最终镜像大小  
+
+**正确答案：** C
+
+**解析：** 容器设计的最佳实践是"一个容器一个进程"（Single Responsibility Principle）。在同一个容器中运行多个服务违反了这一原则，导致：日志混杂难以调试、资源隔离失效、扩缩容不灵活、故障隔离差。如果需要多个服务协作，应该使用Docker Compose或Kubernetes进行编排。选项A正确，这是容器化的核心价值；选项B正确，小镜像更快更安全；选项D正确，多阶段构建只保留运行时需要的文件。
+
+### 考点 4
+
+模型监控中，数据漂移（Data Drift）和概念漂移（Concept Drift）的区别是什么？
+
+A. 两者没有区别，是同一概念的不同名称  
+B. 数据漂移指输入数据分布变化，概念漂移指输入-输出映射关系变化 ✅  
+C. 数据漂移更容易检测，概念漂移无法检测  
+D. 数据漂移只发生在分类任务，概念漂移只发生在回归任务  
+
+**正确答案：** B
+
+**解析：** 数据漂移是指输入特征X的统计分布随时间变化（如用户年龄分布从年轻变为年老），但X到Y的映射关系可能保持不变。概念漂移是指给定相同的X，输出Y的概率分布发生变化（如同样特征的贷款申请人，由于经济环境变化，违约概率改变了）。数据漂移可以通过统计检验（KS检验、PSI）检测；概念漂移更难检测，通常需要监控模型性能指标或标注少量新数据进行验证。选项A错误，两者是不同的；选项C部分正确但不是本质区别；选项D错误，两种漂移都可能发生在任何类型的任务中。
+
+### 考点 5
+
+在A/B测试中，确定样本量的主要依据是什么？
+
+A. 服务器的处理能力  
+B. 预期的效应大小、显著性水平（alpha）和统计功效（power） ✅  
+C. 用户的总数  
+D. 测试的持续时间  
+
+**正确答案：** B
+
+**解析：** 样本量计算是统计学问题，取决于三个关键参数：效应大小（Effect Size，你希望检测到的最小差异）、显著性水平α（通常0.05，控制假阳性率）、统计功效1-β（通常0.8，控制假阴性率）。这三个参数决定了需要多少样本才能以足够的置信度检测到预期大小的效应。样本量过小会导致统计功效不足，无法检测到真实存在的差异；样本量过大会浪费资源。选项A、C、D都是实际约束条件，但不是决定样本量的统计学依据。
+
+## 术语速查
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| MLOps | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 模型部署 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| FastAPI | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| Docker | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| MLflow | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+
+## 参考资料与复核
+
+- [本课资料锚点 ml_model_deployment_mlops](https://zh.wikipedia.org/w/index.php?search=ml_model_deployment_mlops)
+
+- 官方/权威资料：[scikit-learn 用户手册](https://scikit-learn.org/stable/user_guide.html)
+- 主题延伸：[关于「模型部署」的检索页](https://zh.wikipedia.org/w/index.php?search=%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2)
+- 本课索引词：[锚点 ml_model_deployment_mlops](https://scikit-learn.org/stable/user_guide.html#MLOps)
+- 最后复核：2026-10-04
+- 下次复核：2026-12-24
+
+## 内容元数据
+
+- 内容更新时间：2026-10-06
+
+- 内容版本：v2.0
+- 课程标识：ml_model_deployment_mlops
+- 所属分类：ml_practice
+- 学习阶段：进阶
+- 建议用时：50 分钟

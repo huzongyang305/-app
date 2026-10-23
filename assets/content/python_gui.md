@@ -453,7 +453,6 @@ print(f"第一次: {len(first_drain)}, 第二次: {len(second_drain)}")
 - [ ] 能默写本课最重要的代码示例，并解释每一行的作用
 - [ ] 能说出本课内容和前后两课的联系
 
-
 ## 延伸阅读
 
 想更直观地理解本课概念？推荐参阅以下图解专题：
@@ -531,6 +530,8 @@ print(f"第一次: {len(first_drain)}, 第二次: {len(second_drain)}")
 | 内容更新时间 | 2026-10-06 |
 
 ## 参考资料与复核
+
+- [本课资料锚点 python_gui](https://zh.wikipedia.org/w/index.php?search=python_gui)
 
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：Tkinter、PySide6、事件循环、布局、后台线程。
 - 最后复核：2026-10-04

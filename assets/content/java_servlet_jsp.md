@@ -27,6 +27,12 @@ HTTP 协议基础 → Servlet 是什么 → 生命周期 → 请求与响应 →
 
 ---
 
+**复习清单**
+
+- [ ] 能不看正文说出「Servlet」在本课中的作用与失效条件
+- [ ] 能解释「JSP」出错时的现象，并给出排查顺序
+- [ ] 能用本课示例复现一次「Java Web」，说明输入、输出与判定标准
+
 ## 核心概念定义
 
 我们先用一张"生活对照表"来认识本课的核心术语。
@@ -401,12 +407,12 @@ D. \u201CdoPost()\u201D 方法
 
 关于 JSP 的本质，以下哪个说法是正确的？
 
-A. JSP 是一种独立于 Servlet 的模板引擎
-B. JSP 第一次被访问时会被编译成 Servlet 类
-C. JSP 只能处理静态 HTML 内容，不能嵌入 Java 代码
-D. JSP 需要手动在 \u201Cweb.xml\u201D 中注册才能使用
+A. JSP 是一种独立于 Servlet 的模板引擎  
+B. JSP 需要手动在 \u201Cweb.xml\u201D 中注册才能使用  
+C. JSP 只能处理静态 HTML 内容，不能嵌入 Java 代码  
+D. JSP 第一次被访问时会被编译成 Servlet 类  
 
-**正确答案：B**
+**正确答案：D**
 
 **详细解释：** JSP（Java Server Pages）本质上是 Servlet 的简化写法。当 JSP 文件第一次被访问时，Servlet 容器会将其编译成一个继承 \u201CHttpServlet\u201D 的 Java 类，之后的执行过程与 Servlet 完全一致。JSP 中可以嵌入 Java 代码（使用 \u201C<%= %>\u201D 等标签），且不需要在 \u201Cweb.xml\u201D 中手动注册。
 
@@ -459,7 +465,7 @@ D. POST 请求会被容器丢弃，客户端收不到任何响应
 
 ## 术语速查
 
-| 术语 | 含义 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | Servlet | Java 编写的服务端程序，处理 HTTP 请求并返回响应 |
 | Servlet 容器 | 管理 Servlet 生命周期的运行环境，如 Tomcat |
@@ -471,14 +477,22 @@ D. POST 请求会被容器丢弃，客户端收不到任何响应
 ---
 
 ## 参考资料与复核
+- 下次复核：2026-11-19
+
+- [本课资料锚点 java_servlet_jsp](https://zh.wikipedia.org/w/index.php?search=java_servlet_jsp)
 
 - [Oracle Servlet 规范](https://javaee.github.io/servlet-spec/)
 - [Apache Tomcat 官方文档](https://tomcat.apache.org/tomcat-9.0-doc/)
 - 复核日期：2026-10-20
+- 最后复核：2026-10-04
 
 ---
 
 ## 内容元数据
+
+- 内容更新时间：2026-10-06
+
+- 内容版本：v2.0
 
 - 课程 ID：java_servlet_jsp
 - 分类：Java Web 开发
@@ -486,3 +500,18 @@ D. POST 请求会被容器丢弃，客户端收不到任何响应
 - 预计用时：50 分钟
 - 先修课程：Java 基础、HTTP 基础
 - 后续课程：Spring MVC 与 Web 开发
+
+## 代码/协议/SQL 示例
+
+正文首个示例可作为最小验证起点（原样保留在上方章节）：先跑通，再改一个输入观察输出变化。
+
+```text
+HTTP 协议基础 → Servlet 是什么 → 生命周期 → 请求与响应 → JSP 原理 → 实战示例
+```
+
+## 时间/空间复杂度或性能分析
+
+- 用本课方案处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
+- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
+
+

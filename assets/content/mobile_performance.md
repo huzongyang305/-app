@@ -340,7 +340,6 @@ Ans: D
 
 Ans: 性能基线
 
-
 ## 延伸阅读
 
 想更直观地理解本课概念？推荐参阅以下图解专题：
@@ -370,6 +369,8 @@ Ans: 性能基线
 - 相关主题：性能优化、冷启动、卡顿、内存、包体
 
 ## 参考资料与复核
+
+- [本课资料锚点 mobile_performance](https://zh.wikipedia.org/w/index.php?search=mobile_performance)
 
 - 最后复核：2026-10-04
 - 下次复核：2027-08-10

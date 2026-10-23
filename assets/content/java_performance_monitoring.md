@@ -1,4 +1,4 @@
-# 性能优化与监控
+# 性能监控与调优
 
 > 内容更新时间：2026-10-20 · 学习阶段：高级 · 预计用时：55 分钟
 
@@ -433,12 +433,12 @@ Trace ID 是一个请求的全局唯一标识，贯穿整个调用链。Span ID 
 
 Spring Boot Actuator 默认暴露哪些端点？为什么生产环境不能暴露所有端点？
 
-A. 默认暴露所有端点，无需额外配置
-B. 默认只暴露 health 和 info；因为 env 会泄露密码和密钥，heapdump 会导出堆内存中的敏感数据，存在安全风险
-C. 默认不暴露任何端点，需要手动开启
-D. 默认只暴露 metrics 和 loggers；因为其他端点会影响应用性能
+A. 默认暴露所有端点，无需额外配置  
+B. 默认只暴露 metrics 和 loggers；因为其他端点会影响应用性能  
+C. 默认不暴露任何端点，需要手动开启  
+D. 默认只暴露 health 和 info；因为 env 会泄露密码和密钥，heapdump 会导出堆内存中的敏感数据，存在安全风险  
 
-**正确答案：B**
+**正确答案：D**
 
 **详细解释：** Spring Boot Actuator 默认只暴露 `health` 和 `info` 两个端点。生产环境不能暴露所有端点（如通过 `include: "*"`），因为 `env` 端点会暴露环境变量中的密码、密钥等敏感信息，`heapdump` 端点会导出整个 JVM 堆内存（其中可能包含用户数据和密钥），`threaddump` 会暴露线程信息。正确做法是通过 `management.endpoints.web.exposure.include` 只暴露必要的端点（如 health、metrics、info），其余敏感端点通过 Spring Security 进行认证控制。
 
@@ -478,12 +478,12 @@ D. 三者功能相同，可以任意替换使用
 
 分布式追踪中，Trace ID 和 Span ID 分别代表什么？它们如何配合工作？
 
-A. Trace ID 标识单个服务的处理时间，Span ID 标识数据库查询时间
-B. Trace ID 是一个请求的全局唯一标识，贯穿整个调用链；Span ID 是每个服务处理步骤的标识，一个 Trace 包含多个 Span
-C. Trace ID 和 Span ID 是同一个概念的不同名称
-D. Trace ID 用于标识数据库连接，Span ID 用于标识 HTTP 连接
+A. Trace ID 标识单个服务的处理时间，Span ID 标识数据库查询时间  
+B. Trace ID 用于标识数据库连接，Span ID 用于标识 HTTP 连接  
+C. Trace ID 和 Span ID 是同一个概念的不同名称  
+D. Trace ID 是一个请求的全局唯一标识，贯穿整个调用链；Span ID 是每个服务处理步骤的标识，一个 Trace 包含多个 Span  
 
-**正确答案：B**
+**正确答案：D**
 
 **详细解释：** 在分布式追踪中，Trace ID 是一个用户请求的全局唯一标识符，从请求进入系统到最终响应，贯穿整个调用链路。Span ID 代表一个\u201c工作单元\u201d，每个服务处理请求时都会产生一个 Span，记录该步骤的耗时和状态。一个 Trace 包含多个 Span，通过共同的 Trace ID 串联起来，就像快递单号（Trace ID）标识一个包裹的全程物流，每个中转站的扫描记录（Span ID）标识一段运输。通过 Trace ID 可以查看一个请求经过的所有服务以及每一步的耗时，快速定位性能瓶颈。
 
@@ -506,7 +506,7 @@ D. DEBUG 级别只适用于单元测试环境
 
 ## 术语速查
 
-| 术语 | 含义 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | Actuator | Spring Boot 内置的监控模块，提供 health、metrics、env 等 HTTP 端点 |
 | Health Check | 健康检查，返回应用及其依赖组件的运行状态 |
@@ -524,6 +524,8 @@ D. DEBUG 级别只适用于单元测试环境
 
 ## 内容元数据
 
+- 内容更新时间：2026-10-06
+
 - 内容版本：v2.0
 - 最后更新：2026-10-20
 - 学习阶段：高级
@@ -535,6 +537,8 @@ D. DEBUG 级别只适用于单元测试环境
 ---
 
 ## 参考资料与复核
+
+- [本课资料锚点 java_performance_monitoring](https://zh.wikipedia.org/w/index.php?search=java_performance_monitoring)
 
 - 最后复核：2026-10-20
 - 下次复核：2027-02-20
@@ -549,3 +553,7 @@ D. DEBUG 级别只适用于单元测试环境
 | [Micrometer Tracing 文档](https://micrometer.io/docs/tracing) | 分布式追踪官方指南 |
 | [HikariCP 性能调优](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing) | 数据库连接池配置最佳实践 |
 | [Logback 官方文档](https://logback.qos.ch/manual/) | 日志框架配置与使用 |
+- 最后复核：2026-10-04
+- 下次复核：2026-11-04
+
+

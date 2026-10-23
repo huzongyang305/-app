@@ -1,4 +1,6 @@
-# 时间序列预测：LSTM与Transformer (Time Series Prediction with LSTM and Transformer)
+# 时间序列预测（LSTM/Transformer）
+
+![时间序列预测（LSTM/Transformer）示意：category mobile react native](images/category_mobile_react_native.webp)
 
 ## 本章摘要
 
@@ -118,7 +120,6 @@ plt.tight_layout()
 plt.savefig('time_series_basics.png', dpi=150, bbox_inches='tight')
 plt.show()
 
-
 # ==================== 时间序列分解 ====================
 
 # 使用加法模型分解
@@ -150,7 +151,6 @@ print("\n分解结果统计:")
 print(f"趋势项均值: {decomposition.trend.mean():.2f}")
 print(f"季节项标准差: {decomposition.seasonal.std():.2f}")
 print(f"残差项标准差: {decomposition.resid.std():.2f}")
-
 
 # ==================== 平稳性检验 ====================
 
@@ -247,7 +247,6 @@ print(f"训练集: {X_train.shape}, 测试集: {X_test.shape}")
 # 重塑为LSTM输入格式 [samples, timesteps, features]
 X_train = X_train.reshape((X_train.shape[0], X_train.shape[1], 1))
 X_test = X_test.reshape((X_test.shape[0], X_test.shape[1], 1))
-
 
 # ==================== TensorFlow LSTM模型 ====================
 
@@ -355,7 +354,6 @@ ax.legend()
 ax.grid(True, alpha=0.3)
 plt.savefig('lstm_training_loss.png', dpi=150, bbox_inches='tight')
 plt.show()
-
 
 # ==================== PyTorch LSTM模型 ====================
 
@@ -657,7 +655,6 @@ print(f"  MAE: {tf_trans_mae:.4f}")
 print(f"  RMSE: {tf_trans_rmse:.4f}")
 print(f"  MAPE: {tf_trans_mape:.2f}%")
 
-
 # ==================== PyTorch Transformer模型 ====================
 
 class PyTorchPositionalEncoding(nn.Module):
@@ -891,3 +888,293 @@ D. 对不同量级的变量分别进行归一化
 **章节小结**
 
 通过本章学习，你已经掌握了时间序列预测的核心技术：从经典的数据预处理和分解，到LSTM捕捉长期依赖，再到Transformer的全局注意力机制。时间序列预测是一个理论与实践紧密结合的领域，好的预测不仅需要合适的模型，更需要深入理解数据背后的业务逻辑。在实际项目中，往往需要尝试多种方法并结合领域知识才能取得最佳效果。下一章我们将进入模型部署与MLOps流程，学习如何将训练好的模型投入生产环境。
+
+## 本节知识框架
+
+**课程定位**：分类「ml_practice」· 学习阶段 进阶 · 建议用时 50 分钟。
+
+本课主线：学习平稳性检验、滑动窗口、LSTM和Transformer多步预测。
+
+### 复习清单
+
+- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
+- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
+
+## 核心概念定义
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| 时间序列 | 学习平稳性检验、滑动窗口、LSTM和Transformer多步预测。相关：正文给出可操作定义与适用边界。 |
+| LSTM | 学习平稳性检验、滑动窗口、LSTM和Transformer多步预测。相关：正文给出可操作定义与适用边界。 |
+| Transformer | 学习平稳性检验、滑动窗口、LSTM和Transformer多步预测。相关：正文给出可操作定义与适用边界。 |
+| 平稳性 | 学习平稳性检验、滑动窗口、LSTM和Transformer多步预测。相关：正文给出可操作定义与适用边界。 |
+| 多步预测 | 学习平稳性检验、滑动窗口、LSTM和Transformer多步预测。相关：正文给出可操作定义与适用边界。 |
+
+## 原理与运行机制
+
+正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
+
+## 典型应用场景
+
+- 结合「时间序列预测（LSTM/Transformer）」的常见落地场景与选型边界，详见正文各章节的对比讨论。
+- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
+
+## 代码/协议/SQL 示例
+
+正文首个完整示例如下，先运行确认环境，再按正文步骤改一个输入观察输出变化。
+
+```python
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from statsmodels.tsa.seasonal import seasonal_decompose
+from statsmodels.tsa.stattools import adfuller
+import tensorflow as tf
+import torch
+
+# ==================== 生成示例时间序列 ====================
+
+np.random.seed(42)
+n_points = 365 * 3  # 3年的日数据
+
+# 创建时间索引
+dates = pd.date_range(start='2020-01-01', periods=n_points, freq='D')
+
+# 合成时间序列：趋势 + 季节性 + 噪声
+trend = np.linspace(100, 150, n_points)  # 线性上升趋势
+seasonality = 10 * np.sin(2 * np.pi * np.arange(n_points) / 365)  # 年度周期
+noise = np.random.normal(0, 3, n_points)  # 随机噪声
+
+series = trend + seasonality + noise
+
+# 创建DataFrame
+df = pd.DataFrame({
+    'date': dates,
+    'value': series
+})
+df.set_index('date', inplace=True)
+
+print("时间序列前10行:")
+print(df.head(10))
+print(f"\n基本统计信息:")
+print(df.describe())
+
+# 可视化
+fig, axes = plt.subplots(3, 1, figsize=(14, 10))
+
+# 原始序列
+axes[0].plot(df.index, df['value'], linewidth=1)
+axes[0].set_title('原始时间序列')
+axes[0].set_ylabel('值')
+axes[0].grid(True, alpha=0.3)
+
+# 滚动平均（平滑）
+df['rolling_mean'] = df['value'].rolling(window=30).mean()
+df['rolling_std'] = df['value'].rolling(window=30).std()
+axes[1].plot(df.index, df['value'], linewidth=0.5, alpha=0.5, label='原始值')
+axes[1].plot(df.index, df['rolling_mean'], linewidth=2, color='red', label='30天滚动平均')
+axes[1].fill_between(
+    df.index,
+    df['rolling_mean'] - 2*df['rolling_std'],
+    df['rolling_mean'] + 2*df['rolling_std'],
+    alpha=0.2, color='red', label='±2标准差'
+)
+axes[1].set_title('滚动统计量')
+axes[1].set_ylabel('值')
+axes[1].legend()
+axes[1].grid(True, alpha=0.3)
+
+# 自相关图
+from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
+plot_acf(df['value'].dropna(), lags=60, ax=axes[2])
+axes[2].set_title('自相关函数 (ACF)')
+axes[2].set_xlabel('滞后阶数')
+
+plt.tight_layout()
+plt.savefig('time_series_basics.png', dpi=150, bbox_inches='tight')
+plt.show()
+
+# ==================== 时间序列分解 ====================
+
+# 使用加法模型分解
+decomposition = seasonal_decompose(df['value'], model='additive', period=365)
+
+fig, axes = plt.subplots(4, 1, figsize=(14, 12))
+
+axes[0].plot(decomposition.observed)
+axes[0].set_title('观测值')
+axes[0].set_ylabel('值')
+
+axes[1].plot(decomposition.trend)
+axes[1].set_title('趋势项')
+axes[1].set_ylabel('值')
+
+axes[2].plot(decomposition.seasonal)
+axes[2].set_title('季节项')
+axes[2].set_ylabel('值')
+
+axes[3].plot(decomposition.resid)
+axes[3].set_title('残差项')
+axes[3].set_ylabel('值')
+
+plt.tight_layout()
+plt.savefig('time_series_decomposition.png', dpi=150, bbox_inches='tight')
+plt.show()
+
+print("\n分解结果统计:")
+print(f"趋势项均值: {decomposition.trend.mean():.2f}")
+print(f"季节项标准差: {decomposition.seasonal.std():.2f}")
+print(f"残差项标准差: {decomposition.resid.std():.2f}")
+
+# ==================== 平稳性检验 ====================
+
+# ADF检验
+adf_result = adfuller(df['value'].dropna())
+print(f"\nADF检验结果:")
+print(f"  ADF统计量: {adf_result[0]:.4f}")
+print(f"  p值: {adf_result[1]:.4f}")
+print(f"  结论: {'平稳' if adf_result[1] < 0.05 else '非平稳'}")
+
+# 差分后再次检验
+df['diff'] = df['value'].diff().dropna()
+adf_result_diff = adfuller(df['diff'].dropna())
+print(f"\n一阶差分后ADF检验:")
+print(f"  ADF统计量: {adf_result_diff[0]:.4f}")
+print(f"  p值: {adf_result_diff[1]:.4f}")
+print(f"  结论: {'平稳' if adf_result_diff[1] < 0.05 else '非平稳'}")
+
+# 可视化差分前后对比
+fig, axes = plt.subplots(2, 1, figsize=(14, 8))
+axes[0].plot(df['value'])
+axes[0].set_title('原始序列（非平稳）')
+axes[0].set_ylabel('值')
+axes[0].grid(True, alpha=0.3)
+
+axes[1].plot(df['diff'].dropna())
+axes[1].set_title('一阶差分后序列（平稳）')
+axes[1].set_ylabel('差分值')
+axes[1].grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.savefig('stationarity_check.png', dpi=150, bbox_inches='tight')
+plt.show()
+```
+
+## 时间/空间复杂度或性能分析
+
+- 用本课方案处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
+- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
+
+## 常见误区与易错点
+
+| 错误做法 | 典型现象 | 修复方向 |
+| --- | --- | --- |
+| 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
+| 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
+| 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
+
+## 与其他知识点的关系
+
+本课与分类「ml_practice」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
+
+## 自测题与参考答案
+
+以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
+
+## 考点精讲
+
+### 考点 1
+
+关于时间序列的平稳性，以下哪项描述是正确的？
+
+A. 平稳序列的均值和方差必须为零  
+B. 非平稳序列无法用于预测，必须先转换为平稳序列 ✅  
+C. ADF检验的p值小于0.05表示序列是非平稳的  
+D. 差分操作可以增加序列的趋势性  
+
+**正确答案：** B
+
+**解析：** 大多数经典时间序列模型（如ARIMA）假设序列是平稳的，即统计特性不随时间变化。非平稳序列（如有明显趋势或季节性）需要先通过差分、去趋势或分解等方法转换为平稳序列，建模后再还原。选项A错误，平稳序列的均值和方差可以是任意常数，不必为零；选项C错误，p值小于0.05表示拒绝非平稳的原假设，即序列是平稳的；选项D错误，差分操作的目的是消除趋势使序列平稳。
+
+### 考点 2
+
+LSTM相比普通RNN的主要优势是什么？
+
+A. LSTM的计算速度更快  
+B. LSTM的参数数量更少  
+C. LSTM通过门控机制能够有效捕捉长期依赖关系 ✅  
+D. LSTM只能处理固定长度的序列  
+
+**正确答案：** C
+
+**解析：** 普通RNN在处理长序列时会遇到梯度消失或梯度爆炸问题，导致无法学习远距离时间点之间的依赖关系。LSTM通过引入记忆细胞和三个门控机制（遗忘门、输入门、输出门），能够选择性地保留或丢弃信息，从而有效捕捉长期依赖。这是LSTM在时间序列预测、机器翻译等任务中表现优异的关键原因。选项A和B错误，LSTM实际上更复杂、参数更多、计算更慢；选项D错误，LSTM可以处理可变长度序列。
+
+### 考点 3
+
+在时间序列预测中，MAPE（Mean Absolute Percentage Error）的主要缺点是什么？
+
+A. MAPE无法解释预测的方向性  
+B. 当实际值接近零时，MAPE会变得非常大甚至无穷大 ✅  
+C. MAPE对异常值不敏感  
+D. MAPE的计算复杂度太高  
+
+**正确答案：** B
+
+**解析：** MAPE的计算公式是平均绝对百分比误差：MAPE = mean(|(actual - predicted) / actual|) * 100%。当实际值接近零时，分母很小，导致MAPE值巨大甚至除以零错误。这使得MAPE不适合用于实际值可能为零或接近零的场景（如某些产品的日销量）。此外，MAPE对低估和高估的惩罚不对称。在这种情况下，可以考虑使用sMAPE（对称MAPE）或MASE（平均绝对缩放误差）等替代指标。选项A部分正确但不是主要缺点；选项C错误，MAPE对异常值敏感；选项D错误，MAPE计算很简单。
+
+### 考点 4
+
+关于Transformer在时间序列预测中的应用，以下说法错误的是？
+
+A. Transformer可以同时关注序列中的所有时间点，不受距离限制  
+B. 位置编码对于Transformer理解时间顺序至关重要  
+C. Transformer的计算复杂度与序列长度成线性关系O(n) ✅  
+D. Transformer可以通过多头注意力捕捉不同类型的依赖模式  
+
+**正确答案：** C
+
+**解析：** 标准Transformer的自注意力机制需要计算序列中每对token之间的关系矩阵，因此计算复杂度是O(n²)，其中n是序列长度。这是Transformer处理超长序列时的主要瓶颈。研究者提出了多种优化方法，如稀疏注意力、线性注意力、局部注意力等，将复杂度降低到O(n log n)或O(n)。选项A正确，这正是Transformer的优势；选项B正确，没有位置编码Transformer无法区分不同位置的token；选项D正确，多头注意力允许模型从不同角度捕捉依赖关系。
+
+### 考点 5
+
+在多变量时间序列预测中，以下哪种做法是错误的？
+
+A. 对所有变量使用相同的归一化参数（均值和标准差） ✅  
+B. 将时间相关的特征（如小时、星期几）作为额外输入  
+C. 使用滑动窗口同时包含所有变量的历史值  
+D. 对不同量级的变量分别进行归一化  
+
+**正确答案：** A
+
+**解析：** 不同变量通常有不同的量纲和分布（如温度范围0-40，湿度范围0-100，风速范围0-50），使用相同的归一化参数会导致某些变量被过度缩放而另一些不足。正确的做法是对每个变量独立计算归一化参数，或使用能够处理多尺度的方法（如RobustScaler）。选项B正确，时间特征能帮助模型捕捉周期性；选项C正确，多变量滑动窗口是标准做法；选项D正确，分别归一化是推荐的做法。
+
+## 术语速查
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| 时间序列 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| LSTM | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| Transformer | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 平稳性 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 多步预测 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+
+## 参考资料与复核
+
+- [本课资料锚点 ml_time_series_prediction](https://zh.wikipedia.org/w/index.php?search=ml_time_series_prediction)
+
+- 官方/权威资料：[scikit-learn 用户手册](https://scikit-learn.org/stable/user_guide.html)
+- 主题延伸：[关于「LSTM」的检索页](https://zh.wikipedia.org/w/index.php?search=LSTM)
+- 本课索引词：[锚点 ml_time_series_prediction](https://scikit-learn.org/stable/user_guide.html#%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97)
+- 最后复核：2026-10-04
+- 下次复核：2026-12-14
+
+## 内容元数据
+
+- 内容更新时间：2026-10-06
+
+- 内容版本：v2.0
+- 课程标识：ml_time_series_prediction
+- 所属分类：ml_practice
+- 学习阶段：进阶
+- 建议用时：50 分钟

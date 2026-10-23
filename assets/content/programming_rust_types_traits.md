@@ -17,25 +17,6 @@
 - 用本课示例验证 `trait` 的行为，记录输入、输出与失败条件。
 - 遇到「`match` 漏分支」这类问题时，能说出触发条件与修复顺序。
 
-### 从概念到验证的学习链条
-
-1. `Rust`：先掌握 Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：Option 管空值、Result 管错误、trait 管行为、enum + match 管状态，再用它解释 `Option 与 Result` 为什么会出现。
-2. `Option 与 Result`：先掌握 用类型表达「可能没有值」和「可能失败」，编译器强制调用方处理这两种情况，再用它解释 `trait` 为什么会出现。
-3. `trait`：先掌握 描述类型必须实现的能力集合，既能当泛型约束，也能做动态分发，再用它解释 `派生宏` 为什么会出现。
-4. `派生宏`：先掌握 用 derive 自动生成 Debug、Clone、PartialEq 等实现，减少样板代码，再用它解释 本课示例的观察结果 为什么会出现。
-
-**先修与衔接**：本课是「Rust」分类的第 8 课。先修内容：《Rust 所有权、借用与生命周期》。《Rust 所有权、借用与生命周期》里的 `Copy`、`Vec` 是本课的前提。相关或后续课程：《Rust 并发与 Cargo 工程》。
-
-### 完成判据
-
-- **定义关**：不看正文也能说明 `Rust` 是 Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：Option 管空值、Result 管错误、trait 管行为、enum + match 管状态，并指出一个反例。
-- **机制关**：能按“输入 → 转换 → 输出 → 验证”复述 `Rust 类型系统：Option、Result 与 trait`，而不是只背结论。
-- **示例关**：能运行或推演 `Rust 类型系统：Option、Result 与 trait` 的 `rust` 示例，并说明一个真实出现的标识符或字面量。
-- **证据关**：能指出 `Rust 类型系统：Option、Result 与 trait` 示例里的 调用了 `derive()`，并说明它支持或反驳了本课的哪一条结论。
-- **排错关**：能复现 `match` 漏分支，记录现象并按 补齐或用 `_ =>` 修复。
-- **迁移关**：能把 `Rust`、`Option`、`Result`、`trait` 放进一个与 `Rust 类型系统：Option、Result 与 trait` 不同的项目场景，并保持输入与验证条件可追踪。
-- **复盘关**：学完 `Rust 类型系统：Option、Result 与 trait` 后，用一句话写下仍然不确定的结论，并列出下一次验证需要的输入、环境和成功判据。
-
 ### 复习清单
 
 - [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
@@ -279,59 +260,6 @@ fn main() {
 - 升级前先用 ParseIntError 建立基线：记录版本、命令和输出，升级后只比较这些可观察量。
 - 官方发布说明：https://blog.rust-lang.org/
 
-### 升级检查清单
-
-- 先固定当前版本，跑通全部示例与测验，再升级工具链。
-- 升级时只动一个依赖版本，用 ParseIntError 记录构建与运行结果。
-- 先回归 Rust 与 Option 的默认行为和错误信息，再扩大测试范围。
-- 升级完成后更新本课「最后复核 / 下次复核」日期，并记录 Rust 的版本变化。
-
-### 机制拆解：每一步的输入、动作与输出
-
-#### 1. `Rust`
-- 输入：`Rust`；本步把 Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：Option 管空值、Result 管错误、trait 管行为、enum + match 管状态 当作判断规则。
-- 动作：围绕 `Rust` 保留中间状态，并记录它与 `Option 与 Result` 的对应关系。
-- 输出：`Option 与 Result`，它可以被下一段代码、测试或记录继续使用。
-- `Rust` 的失败条件：静态检查只在编译期成立，运行期输入仍需校验。
-
-#### 2. `Option 与 Result`
-- 输入：`Rust`；本步把 用类型表达「可能没有值」和「可能失败」，编译器强制调用方处理这两种情况 当作判断规则。
-- 动作：围绕 `Option 与 Result` 保留中间状态，并记录它与 `trait` 的对应关系。
-- 输出：`trait`，它可以被下一段代码、测试或记录继续使用。
-- `Option 与 Result` 的失败条件：静态检查只在编译期成立，运行期输入仍需校验。
-
-#### 3. `trait`
-- 输入：`Option 与 Result`；本步把 描述类型必须实现的能力集合，既能当泛型约束，也能做动态分发 当作判断规则。
-- 动作：围绕 `trait` 保留中间状态，并记录它与 `派生宏` 的对应关系。
-- 输出：`派生宏`，它可以被下一段代码、测试或记录继续使用。
-- `trait` 的失败条件：当trait 方法签名不一致时，会出现does not match trait。
-
-#### 4. `派生宏`
-- 输入：`trait`；本步把 用 derive 自动生成 Debug、Clone、PartialEq 等实现，减少样板代码 当作判断规则。
-- 动作：围绕 `派生宏` 保留中间状态，并记录它与 `derive` 的对应关系。
-- 输出：`derive`，它可以被下一段代码、测试或记录继续使用。
-- `派生宏` 的失败条件：当忘记 `#[derive(Debug)]`时，会出现无法打印。
-
-### 示例中的可观察事实
-
-1. 调用了 `derive()`；它对应的课程主题是 `Rust 类型系统：Option、Result 与 trait`。
-2. 调用了 `area()`；它对应的课程主题是 `Rust 类型系统：Option、Result 与 trait`。
-3. 调用了 `find_user()`；它对应的课程主题是 `Rust 类型系统：Option、Result 与 trait`。
-4. 调用了 `Some()`；它对应的课程主题是 `Rust 类型系统：Option、Result 与 trait`。
-5. 调用了 `into()`；它对应的课程主题是 `Rust 类型系统：Option、Result 与 trait`。
-6. 调用了 `parse_age()`；它对应的课程主题是 `Rust 类型系统：Option、Result 与 trait`。
-7. 调用了 `trim()`；它对应的课程主题是 `Rust 类型系统：Option、Result 与 trait`。
-8. 调用了 `map_err()`；它对应的课程主题是 `Rust 类型系统：Option、Result 与 trait`。
-
-### 复现实验记录
-
-- 环境：`Rust 类型系统：Option、Result 与 trait` 使用 `rust` 示例，固定 `Rust`、`Option`、`Result`、`trait` 作为第一组条件。
-- 首轮输入：先确认 调用了 `derive()`，预测 `Rust` 会怎样变化。
-- 基线观察：记录命令、输入、输出和错误原文，不用截图代替可复制的文本。
-- 单变量修改：只改变 `Rust`，观察 `派生宏` 是否仍满足定义。
-- 失败注入：复现 `match` 漏分支，确认现象是 non-exhaustive patterns。
-- 记录结论：把“修改前、修改后、预期变化、实际变化”写成四列表，这样复盘 `Rust 类型系统：Option、Result 与 trait` 时才能区分概念错误与实现错误。
-
 ## 典型应用场景
 
 **课程内置实验入口**：`sandbox:rust`，用于动手验证《Rust 类型系统：Option、Result 与 trait》的机制；实验结论不替代概念定义与复杂度分析。
@@ -393,21 +321,6 @@ fn read_port(map: &std::collections::HashMap<String, String>) -> Result<u16, Con
 
 **运行方式**：运行 `Rust 类型系统：Option、Result 与 trait` 的示例时，用 `cargo run` 运行；编译期报错会直接指出所有权或类型问题。
 
-### 示例精读：先找证据，再改一个条件
-
-1. 调用了 `derive()`；它出现在 `Rust 类型系统：Option、Result 与 trait` 的示例中，阅读时先确认它前后各发生了什么。
-2. 调用了 `area()`；它出现在 `Rust 类型系统：Option、Result 与 trait` 的示例中，阅读时先确认它前后各发生了什么。
-3. 调用了 `find_user()`；它出现在 `Rust 类型系统：Option、Result 与 trait` 的示例中，阅读时先确认它前后各发生了什么。
-4. 调用了 `Some()`；它出现在 `Rust 类型系统：Option、Result 与 trait` 的示例中，阅读时先确认它前后各发生了什么。
-5. 调用了 `into()`；它出现在 `Rust 类型系统：Option、Result 与 trait` 的示例中，阅读时先确认它前后各发生了什么。
-6. 调用了 `parse_age()`；它出现在 `Rust 类型系统：Option、Result 与 trait` 的示例中，阅读时先确认它前后各发生了什么。
-7. 调用了 `trim()`；它出现在 `Rust 类型系统：Option、Result 与 trait` 的示例中，阅读时先确认它前后各发生了什么。
-8. 调用了 `map_err()`；它出现在 `Rust 类型系统：Option、Result 与 trait` 的示例中，阅读时先确认它前后各发生了什么。
-- 在 `Rust 类型系统：Option、Result 与 trait` 中与 `Rust` 对照：示例必须能支持 Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：Option 管空值、Result 管错误、trait 管行为、enum + match 管状态，否则说明这一段还缺少实现或验证步骤。
-- 在 `Rust 类型系统：Option、Result 与 trait` 中与 `Option 与 Result` 对照：示例必须能支持 用类型表达「可能没有值」和「可能失败」，编译器强制调用方处理这两种情况，否则说明这一段还缺少实现或验证步骤。
-- 在 `Rust 类型系统：Option、Result 与 trait` 中与 `trait` 对照：示例必须能支持 描述类型必须实现的能力集合，既能当泛型约束，也能做动态分发，否则说明这一段还缺少实现或验证步骤。
-- 在 `Rust 类型系统：Option、Result 与 trait` 中与 `派生宏` 对照：示例必须能支持 用 derive 自动生成 Debug、Clone、PartialEq 等实现，减少样板代码，否则说明这一段还缺少实现或验证步骤。
-
 ## 时间/空间复杂度或性能分析
 
 **性能关注点（Rust 类型系统：Option、Result 与 trait）**：零成本抽象不等于零开销：记录运行时间、内存峰值与编译时间。
@@ -415,19 +328,6 @@ fn read_port(map: &std::collections::HashMap<String, String>) -> Result<u16, Con
 **本课特有开销（Rust 类型系统：Option、Result 与 trait · Rust）**：并发度提高后要观察是否出现拐点：延迟上升而吞吐不增，说明瓶颈已转移。
 
 **测量方法**：以 `Rust 类型系统：Option、Result 与 trait` 的 `Rust` 场景为对象，固定输入跑一遍记录基线，再把规模或并发度提高一个数量级复测；两次结果的差值与波动范围才是结论依据。
-
-### 需要控制的变量与记录项
-
-- `Rust 类型系统：Option、Result 与 trait` 的 `Rust`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `Rust 类型系统：Option、Result 与 trait` 的 `Option`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `Rust 类型系统：Option、Result 与 trait` 的 `Result`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `Rust 类型系统：Option、Result 与 trait` 的 `trait`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `Rust 类型系统：Option、Result 与 trait` 的 `模式匹配`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `Rust 类型系统：Option、Result 与 trait` 中 `Rust` 的边界：静态检查只在编译期成立，运行期输入仍需校验。达到边界时不要外推，必须重新测量。
-- `Rust 类型系统：Option、Result 与 trait` 中 `Option 与 Result` 的边界：静态检查只在编译期成立，运行期输入仍需校验。达到边界时不要外推，必须重新测量。
-- `Rust 类型系统：Option、Result 与 trait` 中 `trait` 的边界：易错：does not match trait；正确做法是保证参数与返回类型一致。达到边界时不要外推，必须重新测量。
-- `Rust 类型系统：Option、Result 与 trait` 中 `派生宏` 的边界：易错：无法打印；正确做法是加上派生宏。达到边界时不要外推，必须重新测量。
-- `Rust 类型系统：Option、Result 与 trait` 的代码证据：先验证 调用了 `derive()`，再记录该路径的输入规模与耗时；只看代码行数不能推出复杂度。
 
 ## 常见误区与易错点
 
@@ -533,17 +433,6 @@ fn read_port(map: &std::collections::HashMap<String, String>) -> Result<u16, Con
 - **术语归属**：`Rust`、`Option 与 Result`、`trait` 的定义以本课「核心概念定义」为准，换到其他课程时先确认定义是否被改写。
 - 同一分类的《Rust Cargo 第一个程序》也涉及 `Rust`；两课衔接时先确认这个术语的定义是否一致。
 - 同一分类的《Rust 变量与可变性》也涉及 `Rust`；两课衔接时先确认这个术语的定义是否一致。
-
-### 先修与后续术语接口
-
-- `Rust 所有权、借用与生命周期`：共享术语 `Rust`，共同关键词 `Rust`。
-- `Rust 并发与 Cargo 工程`：共同关键词 `Rust`。
-
-### 容易混淆的相邻概念
-
-- `Rust` 与 `Option 与 Result`：前者强调 Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：Option 管空值、Result 管错误、trait 管行为、enum + match 管状态；后者强调 用类型表达「可能没有值」和「可能失败」，编译器强制调用方处理这两种情况。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
-- `Option 与 Result` 与 `trait`：前者强调 用类型表达「可能没有值」和「可能失败」，编译器强制调用方处理这两种情况；后者强调 描述类型必须实现的能力集合，既能当泛型约束，也能做动态分发。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
-- `trait` 与 `派生宏`：前者强调 描述类型必须实现的能力集合，既能当泛型约束，也能做动态分发；后者强调 用 derive 自动生成 Debug、Clone、PartialEq 等实现，减少样板代码。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
 
 ## 自测题与参考答案
 
@@ -721,6 +610,8 @@ fn read_port(map: &std::collections::HashMap<String, String>) -> Result<u16, Con
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
 ## 参考资料与复核
+
+- [本课资料锚点 rust_types_traits](https://zh.wikipedia.org/w/index.php?search=rust_types_traits)
 
 - 最后复核：2026-10-04
 - 下次复核：2027-06-10

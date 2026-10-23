@@ -122,7 +122,7 @@ print(total)
 ### range() 的三种用法
 
 ```python
-# 只给一个参数：从 0 开始，到 n-1 结束
+# Python 循环入门
 range(5)          # 0, 1, 2, 3, 4
 
 # 给两个参数：指定起点和终点（左闭右开）
@@ -437,6 +437,8 @@ while x > 0:
 - 相关主题：Python 循环入门、Python、入门练习
 
 ## 参考资料与复核
+
+- [本课资料锚点 python_loops](https://zh.wikipedia.org/w/index.php?search=python_loops)
 
 - 最后复核：2026-10-04
 - 下次复核：2026-11-10

@@ -534,7 +534,6 @@ def worker():
 - [ ] 能默写本课最重要的代码示例，并解释每一行的作用
 - [ ] 能说出本课内容和前后两课的联系
 
-
 ## 延伸阅读
 
 想更直观地理解本课概念？推荐参阅以下图解专题：
@@ -609,6 +608,8 @@ def worker():
 | 内容更新时间 | 2026-10-06 |
 
 ## 参考资料与复核
+
+- [本课资料锚点 python_concurrency_model](https://zh.wikipedia.org/w/index.php?search=python_concurrency_model)
 
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：GIL、线程、进程、竞态条件、线程池。
 - 最后复核：2026-10-04

@@ -1,4 +1,4 @@
-# Spring Boot 入门与自动配置
+# Spring Boot 入门
 
 > 内容更新时间：2026-10-20 · 学习阶段：入门 · 预计用时：45 分钟
 
@@ -458,12 +458,12 @@ public class TestController {
 
 \u201C@SpringBootApplication\u201D 是一个组合注解，它等同于以下哪三个注解的合体？
 
-A. \u201C@Configuration\u201D + \u201C@EnableScheduling\u201D + \u201C@ComponentScan\u201D
-B. \u201C@Configuration\u201D + \u201C@EnableAutoConfiguration\u201D + \u201C@ComponentScan\u201D
-C. \u201C@Bean\u201D + \u201C@EnableAutoConfiguration\u201D + \u201C@ComponentScan\u201D
-D. \u201C@Configuration\u201D + \u201C@EnableAutoConfiguration\u201D + \u201C@Import\u201D
+A. \u201C@Configuration\u201D + \u201C@EnableScheduling\u201D + \u201C@ComponentScan\u201D  
+B. \u201C@Configuration\u201D + \u201C@EnableAutoConfiguration\u201D + \u201C@Import\u201D  
+C. \u201C@Bean\u201D + \u201C@EnableAutoConfiguration\u201D + \u201C@ComponentScan\u201D  
+D. \u201C@Configuration\u201D + \u201C@EnableAutoConfiguration\u201D + \u201C@ComponentScan\u201D  
 
-**正确答案：B**
+**正确答案：D**
 
 **详细解释：** \u201C@SpringBootApplication\u201D 组合了三个核心注解：\u201C@SpringBootConfiguration\u201D（等同于 \u201C@Configuration\u201D，标记当前类为配置类）、\u201C@EnableAutoConfiguration\u201D（开启自动配置，根据 classpath 依赖自动注册 Bean）、\u201C@ComponentScan\u201D（组件扫描，自动扫描当前包及子包下的注解类）。只需在主类上写这一个注解，就能同时完成三项配置工作。
 
@@ -503,12 +503,12 @@ D. 每个 Spring Boot 项目必须且只能引入一个 Starter
 
 Spring Boot 的核心理念\u201C约定优于配置\u201D（Convention over Configuration）的含义是什么？
 
-A. 所有配置都必须按照固定格式编写，不允许自定义
-B. 框架提供合理的默认行为，开发者只需在需要偏离默认时才显式配置
-C. 开发者必须先完成所有配置，框架才能启动
-D. 框架会自动生成代码，开发者不需要写任何配置文件
+A. 所有配置都必须按照固定格式编写，不允许自定义  
+B. 框架会自动生成代码，开发者不需要写任何配置文件  
+C. 开发者必须先完成所有配置，框架才能启动  
+D. 框架提供合理的默认行为，开发者只需在需要偏离默认时才显式配置  
 
-**正确答案：B**
+**正确答案：D**
 
 **详细解释：** \u201C约定优于配置\u201D是指框架提供合理的默认值和默认行为，开发者在默认行为满足需求时无需做任何配置。例如 Spring Boot 默认启动端口是 8080，只有需要修改端口时才在 \u201Capplication.properties\u201D 中配置 \u201Cserver.port\u201D。这大大减少了配置量，但并非不允许自定义——需要偏离默认时随时可以显式配置。
 
@@ -531,7 +531,7 @@ D. 当应用运行在特定的操作系统上时才生效
 
 ## 术语速查
 
-| 术语 | 含义 |
+| 术语 | 一句话说明 |
 | --- | --- |
 | Spring Boot | 基于 Spring 的快速开发框架，提供自动配置和开箱即用体验 |
 | Auto-Configuration | 自动配置，根据 classpath 依赖自动推断并注册 Bean |
@@ -551,6 +551,9 @@ D. 当应用运行在特定的操作系统上时才生效
 ---
 
 ## 参考资料与复核
+- 下次复核：2026-11-24
+
+- [本课资料锚点 java_spring_boot_intro](https://zh.wikipedia.org/w/index.php?search=java_spring_boot_intro)
 
 | 资料 | 说明 |
 | --- | --- |
@@ -561,10 +564,13 @@ D. 当应用运行在特定的操作系统上时才生效
 | [Spring Boot Actuator 文档](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html) | Actuator 端点配置和使用详解 |
 
 复核日期：2026-10-20
+- 最后复核：2026-10-04
 
 ---
 
 ## 内容元数据
+
+- 内容更新时间：2026-10-06
 
 - 课程 ID：java_spring_boot_intro
 - 分类：Java Web 开发
@@ -573,3 +579,5 @@ D. 当应用运行在特定的操作系统上时才生效
 - 先修课程：Java 基础、Spring Framework 核心
 - 后续课程：Spring MVC 与 Web 开发、Spring Boot 数据访问、Spring Cloud 微服务
 - 内容版本：v2.0
+
+

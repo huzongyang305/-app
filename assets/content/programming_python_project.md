@@ -24,15 +24,6 @@
 - 用本课示例验证 `User-Agent` 的行为，记录输入、输出与失败条件。
 - 遇到「代码放在仓库根目录」这类问题时，能说出触发条件与修复顺序。
 
-### 从概念到验证的学习链条
-
-1. `timeout`：先掌握要点——`timeout` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性，再用它解释 `fillna` 为什么会出现。
-2. `fillna`：先掌握常见清洗动作——去空白、统一大小写、类型转换、缺失值处理（`fillna` / `dropna`）、去重（`drop_duplicates`），再用它解释 `User-Agent` 为什么会出现。
-3. `User-Agent`：先掌握抓取遵守 robots.txt 与服务条款，控制频率、加 `User-Agent`，再用它解释 `实战` 为什么会出现。
-4. `实战`：先掌握实战解决了什么问题，而不是只背术语，再用它解释本课示例的观察结果为什么会出现。
-
-**先修与衔接**：本课是 Python 分类的第 24 课。先修内容：《并发与异步》。《并发与异步》里的 `ProcessPoolExecutor`、`await` 是本课的前提。相关或后续课程：《实战：FastAPI 订单服务》。
-
 ## 核心概念定义
 
 别被术语吓到——每个概念我都会先用大白话解释，再给一个生活中的类比。
@@ -153,7 +144,6 @@ plt.savefig("tags.png", dpi=120)
 | 去重 | `df.drop_duplicates(subset=["id"])` | 删掉重复的 |
 | 缺失值 | `df.isna().sum()`、`df.fillna(0)`、`df.dropna()` | 处理空白格 |
 | 导出 | `df.to_csv("out.csv", index=False, encoding="utf-8-sig")` | 保存成文件 |
-
 
 **教材衔接：项目专属规格**
 ## 典型应用场景
@@ -362,12 +352,6 @@ loganalyzer/
 - **术语归属**：`timeout`、`fillna`、`User-Agent` 的定义以本课「核心概念定义」为准，换到其他课程时先确认定义是否被改写。
 - 同一分类的《Python 数据处理：NumPy、pandas 与 Polars》也涉及 `pandas`；两课衔接时先确认这个术语的定义是否一致。
 
-### 容易混淆的相邻概念
-
-- `timeout` 与 `fillna`：前者强调网络请求的超时控制；后者强调数据清洗中的缺失值处理。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
-- `fillna` 与 `User-Agent`：前者是 pandas 的数据清洗方法；后者是 HTTP 请求头中的身份标识。一个处理数据，一个处理网络请求。
-- `User-Agent` 与 `实战`：前者是爬虫礼仪（告诉对方你是谁）；后者是把所有技能组合起来完成一个完整项目。
-
 ## 自测题与参考答案
 
 > 先独立作答，再对照参考答案；答案都能在本课正文、术语表或错误表里找到依据。
@@ -433,7 +417,6 @@ python -m pytest --tb=short -q
 2. **测试报告**：单元测试和集成测试全部通过
 3. **文档**：README 说明使用方法，关键函数有注释
 4. **复盘总结**：记录遇到的问题和解决方案
-
 
 ## 延伸阅读
 
@@ -502,6 +485,8 @@ python -m pytest --tb=short -q
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
 ## 参考资料与复核
+
+- [本课资料锚点 python_project](https://zh.wikipedia.org/w/index.php?search=python_project)
 
 - 最后复核：2026-10-04
 - 下次复核：2026-12-10

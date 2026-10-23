@@ -350,7 +350,6 @@ std::cout << maybe.value_or(-1);
 
 **讲解**：`make_unique` 是 C++14 引入的智能指针工厂函数。它和泛型 lambda、返回值类型推导一起，构成了 C++14 最实用的三个新特性。
 
-
 ## 延伸阅读
 
 想更直观地理解本课概念？推荐参阅以下图解专题：
@@ -375,6 +374,8 @@ std::cout << maybe.value_or(-1);
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 参考资料与复核
+
+- [本课资料锚点 cpp_modern](https://zh.wikipedia.org/w/index.php?search=cpp_modern)
 
 - 最后复核：2026-10-04
 - 下次复核：2027-05-10

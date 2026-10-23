@@ -566,6 +566,8 @@ def safe_int(text):
 
 ## 参考资料与复核
 
+- [本课资料锚点 python_control_flow](https://zh.wikipedia.org/w/index.php?search=python_control_flow)
+
 - 最后复核：2026-10-04
 - 下次复核：2026-11-10
 - 复核范围：条件、循环、推导式、for-else

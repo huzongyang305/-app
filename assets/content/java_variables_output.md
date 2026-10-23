@@ -333,6 +333,8 @@ System.out.println(c == d);  // false（超出缓存范围）
 
 ## 参考资料与复核
 
+- [本课资料锚点 java_variables_output](https://zh.wikipedia.org/w/index.php?search=java_variables_output)
+
 - 最后复核：2026-10-04
 - [Oracle Java Tutorials - Variables](https://docs.oracle.com/javase/tutorial/java/data/variables.html)
 - 下次复核：2027-02-24

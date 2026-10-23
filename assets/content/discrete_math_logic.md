@@ -1,5 +1,7 @@
 # 命题逻辑与谓词逻辑
 
+![命题逻辑与谓词逻辑示意：lesson c arrays strings](images/lesson_c_arrays_strings.webp)
+
 > 学习阶段：进阶 · 预计用时：55分钟
 
 ## 本节知识框架
@@ -482,7 +484,7 @@ D. p∧r
 
 ## 术语速查
 
-| 术语 | 含义 |
+| 术语 | 一句话说明 |
 |------|------|
 | 命题 | 有真假值的陈述句 |
 | 联结词 | ¬(非) ∧(与) ∨(或) →(蕴含) ↔(等价) |
@@ -498,14 +500,25 @@ D. p∧r
 | 逆否命题 | p→q ⇔ ¬q→¬p |
 
 ## 参考资料与复核
+- 下次复核：2027-01-08
+
+- [本课资料锚点 discrete_math_logic](https://zh.wikipedia.org/w/index.php?search=discrete_math_logic)
 
 - 《离散数学及其应用》（Kenneth H. Rosen）第1-2章
 - MIT OpenCourseWare: Mathematics for Computer Science, Chapter 3
 - 《逻辑的引擎》（Martin Davis）
 - 复核日期：2026-04-15
 - 内容版本：v1.0
+- 最后复核：2026-10-04
+
+- 官方/权威资料：[MIT 6.042 公开课](https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/)
+- 主题延伸：[关于「逻辑」的检索页](https://zh.wikipedia.org/w/index.php?search=%E9%80%BB%E8%BE%91)
 
 ## 内容元数据
+
+- 内容更新时间：2026-10-06
+
+- 内容版本：v2.0
 
 ```yaml
 id: discrete_math_logic
@@ -526,3 +539,48 @@ tags:
   - 逻辑等价
   - 离散数学
 ```
+
+## 代码/协议/SQL 示例
+
+正文首个完整示例如下，先运行确认环境，再按正文步骤改一个输入观察输出变化。
+
+```text
+否定 ¬p：
+  p   | ¬p
+  T   | F
+  F   | T
+
+合取 p∧q（AND）：
+  p | q | p∧q
+  T | T | T
+  T | F | F
+  F | T | F
+  F | F | F
+
+析取 p∨q（OR）：
+  p | q | p∨q
+  T | T | T
+  T | F | T
+  F | T | T
+  F | F | F
+
+蕴含 p→q（IF-THEN）：
+  p | q | p→q
+  T | T | T
+  T | F | F
+  F | T | T    ← 注意：前提假时蕴含式为真
+  F | F | T
+
+双条件 p↔q（IFF）：
+  p | q | p↔q
+  T | T | T
+  T | F | F
+  F | T | F
+  F | F | T
+```
+
+## 时间/空间复杂度或性能分析
+
+- 用本课方案处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
+- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
+

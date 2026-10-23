@@ -1014,6 +1014,8 @@ D. 锁定会永久减少库存数量，扣减只是临时标记
 
 ## 内容元数据
 
+- 内容更新时间：2026-10-06
+
 - 内容版本：v2.0
 - 最后更新：2026-10-20
 - 学习阶段：高级
@@ -1023,6 +1025,8 @@ D. 锁定会永久减少库存数量，扣减只是临时标记
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
 ## 参考资料与复核
+
+- [本课资料锚点 java_project_ecommerce](https://zh.wikipedia.org/w/index.php?search=java_project_ecommerce)
 
 - 最后复核：2026-10-20
 - 下次复核：2027-04-20
@@ -1037,3 +1041,7 @@ D. 锁定会永久减少库存数量，扣减只是临时标记
 | [Redis 命令参考](https://redis.io/docs/latest/develop/interact/programmability/) | 缓存策略与购物车存储 |
 | [MySQL 参考手册](https://dev.mysql.com/doc/refman/8.0/en/) | 数据库设计与事务隔离 |
 | [Java 并发教程](https://docs.oracle.com/javase/tutorial/essential/concurrency/) | 并发库存扣减与乐观锁 |
+- 最后复核：2026-10-04
+- 下次复核：2026-11-14
+
+

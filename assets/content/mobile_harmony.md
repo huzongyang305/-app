@@ -321,12 +321,6 @@ export default class EntryAbility extends UIAbility {
 - **相关或后续**：《小程序开发要点》。本课术语会在后续课程里继续使用。
 - **术语归属**：Stage 模型、状态装饰器、ArkTS 的定义以本课为准，换到其他课程时先确认定义是否被改写。
 
-### 容易混淆的相邻概念
-
-- **Stage 模型 vs 状态装饰器**：Stage 模型讲的是应用怎么组织（UIAbility 是入口），状态装饰器讲的是数据怎么驱动界面刷新。一个是架构层面，一个是 UI 层面。
-- **ArkTS vs TypeScript**：ArkTS 基于 TypeScript，但禁用了一些动态特性（比如 any、运行时动态属性），编译期检查更严格。会写 TS 不代表会写 ArkTS，要注意语言约束。
-- **@Prop vs @Link**：@Prop 是父到子的单向数据流，子组件不能修改；@Link 是双向同步，子组件可以直接改。
-
 ## 自测题与参考答案
 
 > 先独立作答，再对照参考答案。
@@ -459,6 +453,8 @@ D. 只影响启动速度
 - 相关主题：鸿蒙、HarmonyOS、ArkTS、ArkUI、UIAbility
 
 ## 参考资料与复核
+
+- [本课资料锚点 mobile_harmony](https://zh.wikipedia.org/w/index.php?search=mobile_harmony)
 
 - 最后复核：2026-10-04
 - 下次复核：2027-08-10

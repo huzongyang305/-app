@@ -388,7 +388,6 @@ svr.Get("/tasks/:id", [](const auto& req, auto& res) {
 
 **讲解**：CMake 负责构建系统组织，RAII 负责资源管理。两者在本项目中分别解决了「怎么编译」和「怎么管理资源」两个核心问题。400 是非法 JSON 请求的错误状态码。
 
-
 ## 延伸阅读
 
 想更直观地理解本课概念？推荐参阅以下图解专题：
@@ -415,6 +414,8 @@ svr.Get("/tasks/:id", [](const auto& req, auto& res) {
 - 相关主题：CMake、cpp-httplib、JSON、RAII、单元测试
 
 ## 参考资料与复核
+
+- [本课资料锚点 cpp_project_http](https://zh.wikipedia.org/w/index.php?search=cpp_project_http)
 
 - 最后复核：2026-10-04
 - 下次复核：2027-05-10

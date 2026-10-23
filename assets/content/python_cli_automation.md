@@ -202,7 +202,6 @@ filetool = "mytool.cli:main"
 定义命令动作与参数契约 → 把业务逻辑做成可测试函数 → 默认先干跑并输出计划 → 安全执行外部命令并处理超时 → 记录退出码与可恢复状态
 ```
 
-
 **教材衔接：项目专属规格**
 ## 典型应用场景
 
@@ -551,7 +550,6 @@ python -m pytest --tb=short -q
 3. **文档**：README 说明使用方法，关键函数有注释
 4. **复盘总结**：记录遇到的问题和解决方案
 
-
 ## 延伸阅读
 
 想更直观地理解本课概念？推荐参阅以下图解专题：
@@ -630,6 +628,8 @@ for path in Path('.').glob('*.txt'):
 | 内容更新时间 | 2026-10-06 |
 
 ## 参考资料与复核
+
+- [本课资料锚点 python_cli_automation](https://zh.wikipedia.org/w/index.php?search=python_cli_automation)
 
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：argparse、subprocess、自动化、幂等、CLI
 - 最后复核：2026-10-04

@@ -316,11 +316,11 @@ D. 出现字面量 `收集一个可执行文件的基础诊断信息。`
 ### 考点 3
 
 题目：StatelessWidget 与 StatefulWidget 最本质的差别是？
-A. StatefulWidget 不能在 const 构造中使用
-B. StatefulWidget 通过 State 保存可变状态并触发重建
-C. StatelessWidget 无法接收构造参数和子 Widget
-D. StatelessWidget 的 build 只会执行一次
-正确答案：B
+A. StatefulWidget 不能在 const 构造中使用  
+B. StatelessWidget 的 build 只会执行一次  
+C. StatelessWidget 无法接收构造参数和子 Widget  
+D. StatefulWidget 通过 State 保存可变状态并触发重建  
+正确答案：D
 
 **解析**：本质差别在于状态的有无。StatelessWidget 没有可变状态，同样的输入永远得到同样的输出。StatefulWidget 通过 State 对象保存可变状态，调用 `setState` 后框架会重新 build。A 不是本质差别，C 是错的（StatelessWidget 可以接收参数和子 Widget），D 也是错的（build 可以被多次调用）。
 
@@ -374,6 +374,8 @@ D. 负责在后台线程里下载并缓存网络图片
 - 相关主题：Flutter Widget 入门、移动开发、入门练习
 
 ## 参考资料与复核
+
+- [本课资料锚点 flutter_widget_intro](https://zh.wikipedia.org/w/index.php?search=flutter_widget_intro)
 
 - 最后复核：2026-10-04
 - 下次复核：2027-08-10

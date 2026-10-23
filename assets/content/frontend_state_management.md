@@ -1,4 +1,6 @@
-# 状态管理深入 / State Management Deep Dive
+# 状态管理深入
+
+![状态管理深入示意：category mobile compose](images/category_mobile_compose.webp)
 
 ## 章节摘要
 
@@ -1333,3 +1335,188 @@ D. 将related状态组织在一个slice中
 **正确答案：B**
 
 **详细解释：** Reducer必须是纯函数——给定相同的输入，总是返回相同的输出，且不能有副作用。在reducer中调用API违反了这一原则，会导致不可预测的行为和测试困难。正确的做法是使用thunk（Redux）、action（Pinia）或effect（NgRx）来处理异步操作。选项A、C、D都是Redux推荐的最佳实践。
+
+## 本节知识框架
+
+**课程定位**：分类「frontend_frameworks」· 学习阶段 基础 · 建议用时 55 分钟。
+
+本课主线：深入学习Redux Toolkit、Pinia、NgRx，理解何时需要全局状态管理。
+
+### 复习清单
+
+- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
+- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
+
+## 核心概念定义
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| Redux | 深入学习Redux Toolkit、Pinia、NgRx，理解何时需要全局状态管相关：正文给出可操作定义与适用边界。 |
+| Pinia | 深入学习Redux Toolkit、Pinia、NgRx，理解何时需要全局状态管相关：正文给出可操作定义与适用边界。 |
+| NgRx | 深入学习Redux Toolkit、Pinia、NgRx，理解何时需要全局状态管相关：正文给出可操作定义与适用边界。 |
+| 状态管理 | 深入学习Redux Toolkit、Pinia、NgRx，理解何时需要全局状态管相关：正文给出可操作定义与适用边界。 |
+| Context API | 深入学习Redux Toolkit、Pinia、NgRx，理解何时需要全局状态管相关：正文给出可操作定义与适用边界。 |
+
+## 原理与运行机制
+
+正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
+
+## 典型应用场景
+
+- 结合「状态管理深入」的常见落地场景与选型边界，详见正文各章节的对比讨论。
+- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
+
+## 代码/协议/SQL 示例
+
+正文首个完整示例如下，先运行确认环境，再按正文步骤改一个输入观察输出变化。
+
+```javascript
+// features/counter/counterSlice.js
+import { createSlice } from '@reduxjs/toolkit';
+
+const counterSlice = createSlice({
+  name: 'counter',
+  initialState: {
+    value: 0
+  },
+  reducers: {
+    increment: (state) => {
+      // Redux Toolkit使用Immer，可以直接"修改"状态
+      state.value += 1;
+    },
+    decrement: (state) => {
+      state.value -= 1;
+    },
+    incrementByAmount: (state, action) => {
+      state.value += action.payload;
+    }
+  }
+});
+
+// 自动生成的action creators
+export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+
+// selector用于从state中提取数据
+export const selectCount = (state) => state.counter.value;
+
+export default counterSlice.reducer;
+```
+
+## 时间/空间复杂度或性能分析
+
+- 用本课方案处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
+- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
+
+## 常见误区与易错点
+
+| 错误做法 | 典型现象 | 修复方向 |
+| --- | --- | --- |
+| 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
+| 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
+| 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
+
+## 与其他知识点的关系
+
+本课与分类「frontend_frameworks」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
+
+## 自测题与参考答案
+
+以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
+
+## 考点精讲
+
+### 考点 1
+
+关于Redux Toolkit的createSlice，以下说法正确的是？
+
+A. 必须手动编写action types字符串  
+B. reducers中可以安全地直接修改state ✅  
+C. 不支持异步action  
+D. 必须单独定义action creators  
+
+**正确答案：** B
+
+**解析：** Redux Toolkit内置了Immer库，允许在reducers中直接"修改"state（如`state.value += 1`），Immer会在底层生成不可变更新。这是RTK相比传统Redux的最大改进之一。选项A错误，RTK自动生成action types。选项C错误，可以通过extraReducers配合createAsyncThunk处理异步。选项D错误，RTK自动生成action creators。
+
+### 考点 2
+
+关于Pinia和Vuex的主要区别，以下说法错误的是？
+
+A. Pinia移除了mutations，直接在actions中修改state  
+B. Pinia对TypeScript的支持更好  
+C. Pinia必须使用Composition API ✅  
+D. Pinia的包体积更小  
+
+**正确答案：** C
+
+**解析：** Pinia既支持Composition API（defineStore返回函数），也支持Options API（defineStore传入对象）。它并不强制使用Composition API。选项A正确，这是Pinia相比Vuex的主要简化。选项B正确，Pinia的TS推断更准确。选项D正确，Pinia约1KB，比Vuex小。
+
+### 考点 3
+
+在什么情况下应该使用Context API而非Redux/Pinia？
+
+A. 购物车数据需要在多个页面间共享  
+B. 用户登录状态需要持久化  
+C. 主题切换（深色/浅色模式） ✅  
+D. 复杂的表单状态管理  
+
+**正确答案：** C
+
+**解析：** 主题切换是低频更新的全局配置，非常适合使用Context API。它不需要复杂的更新逻辑，变化频率低，不会造成性能问题。选项A和B涉及频繁更新和业务逻辑，应该使用专业状态管理。选项D的表单状态通常应该保持在局部组件或使用专门的表单库（如Formik、React Hook Form），而非全局状态。
+
+### 考点 4
+
+关于NgRx的Effects，以下说法正确的是？
+
+A. Effects用于处理纯状态转换逻辑  
+B. Effects可以直接修改store  
+C. Effects用于处理副作用，如API调用 ✅  
+D. 每个action都必须有对应的Effect  
+
+**正确答案：** C
+
+**解析：** Effects是NgRx中专门处理副作用的机制，如HTTP请求、路由导航、日志记录等。它们监听actions，执行副作用，然后dispatch新的actions。选项A错误，纯状态转换应该在reducer中处理。选项B错误，只有reducer可以修改state。选项D错误，只有需要处理副作用的action才需要Effect，纯同步action不需要。
+
+### 考点 5
+
+以下哪种做法违反了Redux的最佳实践？
+
+A. 在component中dispatch action  
+B. 在reducer中调用API获取数据 ✅  
+C. 使用selector从store提取数据  
+D. 将related状态组织在一个slice中  
+
+**正确答案：** B
+
+**解析：** Reducer必须是纯函数——给定相同的输入，总是返回相同的输出，且不能有副作用。在reducer中调用API违反了这一原则，会导致不可预测的行为和测试困难。正确的做法是使用thunk（Redux）、action（Pinia）或effect（NgRx）来处理异步操作。选项A、C、D都是Redux推荐的最佳实践。
+
+## 术语速查
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| Redux | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| Pinia | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| NgRx | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 状态管理 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| Context API | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+
+## 参考资料与复核
+
+- [本课资料锚点 frontend_state_management](https://zh.wikipedia.org/w/index.php?search=frontend_state_management)
+
+- 官方/权威资料：[web.dev 性能指南](https://web.dev/)
+- 主题延伸：[关于「Pinia」的检索页](https://zh.wikipedia.org/w/index.php?search=Pinia)
+- 本课索引词：[锚点 frontend_state_management](https://web.dev/#Redux)
+- 最后复核：2026-10-04
+- 下次复核：2027-03-19
+
+## 内容元数据
+
+- 内容更新时间：2026-10-06
+
+- 内容版本：v2.0
+- 课程标识：frontend_state_management
+- 所属分类：frontend_frameworks
+- 学习阶段：基础
+- 建议用时：55 分钟

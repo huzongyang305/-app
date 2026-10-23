@@ -864,7 +864,6 @@ next(gen)
 - [ ] 能默写本课最重要的代码示例，并解释每一行的作用
 - [ ] 能说出本课内容和前后两课的联系
 
-
 ## 延伸阅读
 
 想更直观地理解本课概念？推荐参阅以下图解专题：
@@ -982,6 +981,8 @@ next(gen)
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
 ## 参考资料与复核
+
+- [本课资料锚点 python_context_iterators](https://zh.wikipedia.org/w/index.php?search=python_context_iterators)
 
 - 最后复核：2026-10-04
 - 下次复核：2026-11-10

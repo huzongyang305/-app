@@ -6,14 +6,56 @@
   "p0_touched_lessons": 300,
   "batches": [
     {
-      "batch_id": "python-1",
-      "category_id": "python",
-      "category_title": "Python",
+      "planned_review_at": "2026-10-10",
+      "lesson_ids": [
+        "mobile_flutter_advanced",
+        "backend_restful_api"
+      ]
+    },
+    {
+      "planned_review_at": "2026-10-15",
+      "lesson_ids": [
+        "mobile_performance_optimization",
+        "backend_nodejs_express"
+      ]
+    },
+    {
+      "planned_review_at": "2026-10-20",
+      "lesson_ids": [
+        "java_data_access",
+        "backend_fastapi_async"
+      ]
+    },
+    {
+      "planned_review_at": "2026-10-25",
+      "lesson_ids": [
+        "java_microservices",
+        "backend_gin_echo"
+      ]
+    },
+    {
+      "planned_review_at": "2026-10-30",
+      "lesson_ids": [
+        "java_testing",
+        "backend_database_integration"
+      ]
+    },
+    {
+      "planned_review_at": "2026-11-04",
+      "lesson_ids": [
+        "java_performance_monitoring",
+        "backend_auth_jwt_oauth"
+      ]
+    },
+    {
+      "planned_review_at": "2026-11-09",
+      "lesson_ids": [
+        "java_deployment",
+        "backend_graphql_apollo"
+      ]
+    },
+    {
       "planned_review_at": "2026-11-10",
-      "lesson_count": 24,
-      "p0_touched": 18,
-      "risk_high": 0,
-      "risk_medium": 0,
       "lesson_ids": [
         "python_asyncio",
         "python_basics",
@@ -27,7 +69,6 @@
         "python_data_structures",
         "python_database_sqlalchemy",
         "python_decorators_generators",
-        "python_errors_files",
         "python_errors_logging_files",
         "python_first_script",
         "python_functions",
@@ -37,19 +78,32 @@
         "python_input_output",
         "python_interop",
         "python_interview",
-        "python_list_dict_basics",
-        "python_loops"
+        "python_loops",
+        "kotlin_android",
+        "kotlin_basics",
+        "kotlin_collections",
+        "kotlin_conditions",
+        "kotlin_coroutines",
+        "kotlin_first_program",
+        "kotlin_functions",
+        "kotlin_functions_intro",
+        "kotlin_loops",
+        "kotlin_oop",
+        "kotlin_project",
+        "kotlin_project_cli_ledger",
+        "kotlin_testing",
+        "kotlin_variables_null"
       ]
     },
     {
-      "batch_id": "c-1",
-      "category_id": "c",
-      "category_title": "C 语言",
+      "planned_review_at": "2026-11-14",
+      "lesson_ids": [
+        "java_project_ecommerce",
+        "backend_microservices_patterns"
+      ]
+    },
+    {
       "planned_review_at": "2026-11-17",
-      "lesson_count": 16,
-      "p0_touched": 16,
-      "risk_high": 0,
-      "risk_medium": 0,
       "lesson_ids": [
         "c_arrays_strings",
         "c_basics",
@@ -70,14 +124,14 @@
       ]
     },
     {
-      "batch_id": "security-1",
-      "category_id": "security",
-      "category_title": "安全与合规",
+      "planned_review_at": "2026-11-19",
+      "lesson_ids": [
+        "java_servlet_jsp",
+        "ml_tensorflow_pytorch_intro"
+      ]
+    },
+    {
       "planned_review_at": "2026-11-24",
-      "lesson_count": 15,
-      "p0_touched": 15,
-      "risk_high": 0,
-      "risk_medium": 0,
       "lesson_ids": [
         "password_hash_intro",
         "security_auth_session",
@@ -93,44 +147,63 @@
         "security_secrets",
         "security_secure_coding",
         "security_supply_chain",
-        "security_threat_model"
+        "security_threat_model",
+        "java_spring_boot_intro",
+        "ml_data_preprocessing_feature_engineering"
       ]
     },
     {
-      "batch_id": "kotlin-1",
-      "category_id": "kotlin",
-      "category_title": "Kotlin",
-      "planned_review_at": "2026-11-10",
-      "lesson_count": 14,
-      "p0_touched": 14,
-      "risk_high": 0,
-      "risk_medium": 0,
+      "planned_review_at": "2026-11-29",
       "lesson_ids": [
-        "kotlin_android",
-        "kotlin_basics",
-        "kotlin_collections",
-        "kotlin_conditions",
-        "kotlin_coroutines",
-        "kotlin_first_program",
-        "kotlin_functions",
-        "kotlin_functions_intro",
-        "kotlin_loops",
-        "kotlin_oop",
-        "kotlin_project",
-        "kotlin_project_cli_ledger",
-        "kotlin_testing",
-        "kotlin_variables_null"
+        "java_spring_mvc",
+        "ml_computer_vision"
       ]
     },
     {
-      "batch_id": "swift-1",
-      "category_id": "swift",
-      "category_title": "Swift",
+      "planned_review_at": "2026-12-04",
+      "lesson_ids": [
+        "java_spring_security",
+        "ml_natural_language_processing"
+      ]
+    },
+    {
+      "planned_review_at": "2026-12-09",
+      "lesson_ids": [
+        "java_restful_api",
+        "ml_recommendation_systems"
+      ]
+    },
+    {
+      "planned_review_at": "2026-12-10",
+      "lesson_ids": [
+        "python_modern_features",
+        "python_modules_stdlib",
+        "python_oop",
+        "python_oop_advanced",
+        "python_packaging_performance",
+        "python_project",
+        "python_project_api",
+        "python_project_architecture",
+        "python_project_etl",
+        "python_pytest",
+        "python_runtime_memory_performance",
+        "python_security",
+        "python_stdlib",
+        "python_strings_encoding",
+        "python_typing_testing",
+        "python_variables",
+        "python_web_deployment"
+      ]
+    },
+    {
+      "planned_review_at": "2026-12-14",
+      "lesson_ids": [
+        "java_spring_core",
+        "ml_time_series_prediction"
+      ]
+    },
+    {
       "planned_review_at": "2026-12-17",
-      "lesson_count": 14,
-      "p0_touched": 14,
-      "risk_high": 0,
-      "risk_medium": 0,
       "lesson_ids": [
         "swift_async",
         "swift_basics",
@@ -149,14 +222,14 @@
       ]
     },
     {
-      "batch_id": "ai-1",
-      "category_id": "ai",
-      "category_title": "AI 与智能体",
+      "planned_review_at": "2026-12-19",
+      "lesson_ids": [
+        "discrete_math_set_theory",
+        "ml_model_evaluation_hyperparameter_tuning"
+      ]
+    },
+    {
       "planned_review_at": "2026-12-24",
-      "lesson_count": 24,
-      "p0_touched": 13,
-      "risk_high": 0,
-      "risk_medium": 0,
       "lesson_ids": [
         "agent_cost_performance",
         "agent_memory",
@@ -181,91 +254,34 @@
         "ai_graphrag",
         "ai_guardrails",
         "ai_mcp",
-        "ai_mlops"
+        "ai_mlops",
+        "discrete_math_relations_functions",
+        "ml_model_deployment_mlops"
       ]
     },
     {
-      "batch_id": "python-2",
-      "category_id": "python",
-      "category_title": "Python",
-      "planned_review_at": "2026-12-10",
-      "lesson_count": 17,
-      "p0_touched": 11,
-      "risk_high": 0,
-      "risk_medium": 0,
+      "planned_review_at": "2026-12-29",
       "lesson_ids": [
-        "python_modern_features",
-        "python_modules_stdlib",
-        "python_oop",
-        "python_oop_advanced",
-        "python_packaging_performance",
-        "python_project",
-        "python_project_api",
-        "python_project_architecture",
-        "python_project_etl",
-        "python_pytest",
-        "python_runtime_memory_performance",
-        "python_security",
-        "python_stdlib",
-        "python_strings_encoding",
-        "python_typing_testing",
-        "python_variables",
-        "python_web_deployment"
+        "discrete_math_graph_theory",
+        "mobile_swiftui_complete"
       ]
     },
     {
-      "batch_id": "blockchain-1",
-      "category_id": "blockchain",
-      "category_title": "区块链与 Web3",
-      "planned_review_at": "2027-01-17",
-      "lesson_count": 10,
-      "p0_touched": 10,
-      "risk_high": 0,
-      "risk_medium": 0,
+      "planned_review_at": "2027-01-03",
       "lesson_ids": [
-        "blockchain_basics",
-        "blockchain_bitcoin_consensus",
-        "blockchain_defi_security",
-        "blockchain_ethereum_smart_contract",
-        "blockchain_scaling_layer2",
-        "chain_audit_project",
-        "chain_oracle_bridge",
-        "chain_token_standards",
-        "chain_wallet_keys",
-        "chain_zk_privacy"
+        "discrete_math_combinatorics",
+        "android_flutter_release"
       ]
     },
     {
-      "batch_id": "compiler-1",
-      "category_id": "compiler",
-      "category_title": "编译原理与语言实现",
-      "planned_review_at": "2027-01-24",
-      "lesson_count": 10,
-      "p0_touched": 10,
-      "risk_high": 0,
-      "risk_medium": 0,
+      "planned_review_at": "2027-01-08",
       "lesson_ids": [
-        "compiler_bytecode_vm",
-        "compiler_codegen_vm",
-        "compiler_diagnostics",
-        "compiler_gc",
-        "compiler_ir_optimization",
-        "compiler_jit_inlining",
-        "compiler_lexer_parser",
-        "compiler_overview",
-        "compiler_project_minilang",
-        "compiler_semantic_types"
+        "discrete_math_logic",
+        "mobile_jetpack_compose_advanced"
       ]
     },
     {
-      "batch_id": "data_engineering-1",
-      "category_id": "data_engineering",
-      "category_title": "数据工程",
       "planned_review_at": "2027-01-10",
-      "lesson_count": 10,
-      "p0_touched": 10,
-      "risk_high": 0,
-      "risk_medium": 0,
       "lesson_ids": [
         "de_batch_processing",
         "de_cdc_incremental",
@@ -280,69 +296,77 @@
       ]
     },
     {
-      "batch_id": "embedded-1",
-      "category_id": "embedded",
-      "category_title": "嵌入式与物联网",
-      "planned_review_at": "2027-02-17",
-      "lesson_count": 10,
-      "p0_touched": 10,
-      "risk_high": 0,
-      "risk_medium": 0,
+      "planned_review_at": "2027-01-13",
       "lesson_ids": [
-        "embedded_bootloader",
-        "embedded_bus_protocols",
-        "embedded_debug_trace",
-        "embedded_gpio_interrupt",
-        "embedded_iot_security",
-        "embedded_low_power",
-        "embedded_mcu_basics",
-        "embedded_project_env_monitor",
-        "embedded_rtos_tasks",
-        "embedded_sensor_signal"
+        "devops_monitoring",
+        "mobile_react_native_deep"
       ]
     },
     {
-      "batch_id": "java-1",
-      "category_id": "java",
-      "category_title": "Java",
-      "planned_review_at": "2027-02-24",
-      "lesson_count": 21,
-      "p0_touched": 10,
-      "risk_high": 0,
-      "risk_medium": 0,
+      "planned_review_at": "2027-01-17",
       "lesson_ids": [
-        "java_basics",
-        "java_collections",
-        "java_concurrency",
-        "java_conditions",
-        "java_control_methods",
-        "java_exceptions",
-        "java_first_class",
-        "java_gc_tuning",
-        "java_inheritance",
-        "java_lambda_stream",
-        "java_loops",
-        "java_methods_intro",
-        "java_modern_features",
-        "java_oop",
-        "java_project",
-        "java_project_inventory",
-        "java_project_order_concurrency",
-        "java_tooling",
-        "java_types",
-        "java_variables_output",
-        "java_virtual_threads"
+        "blockchain_basics",
+        "blockchain_bitcoin_consensus",
+        "blockchain_defi_security",
+        "blockchain_ethereum_smart_contract",
+        "blockchain_scaling_layer2",
+        "chain_audit_project",
+        "chain_oracle_bridge",
+        "chain_token_standards",
+        "chain_wallet_keys",
+        "chain_zk_privacy"
       ]
     },
     {
-      "batch_id": "shell-1",
-      "category_id": "shell",
-      "category_title": "Shell",
+      "planned_review_at": "2027-01-18",
+      "lesson_ids": [
+        "devops_cicd_pipeline",
+        "mobile_cross_platform_comparison"
+      ]
+    },
+    {
+      "planned_review_at": "2027-01-23",
+      "lesson_ids": [
+        "devops_gitops_argocd",
+        "mobile_offline_first"
+      ]
+    },
+    {
+      "planned_review_at": "2027-01-24",
+      "lesson_ids": [
+        "compiler_bytecode_vm",
+        "compiler_codegen_vm",
+        "compiler_diagnostics",
+        "compiler_gc",
+        "compiler_ir_optimization",
+        "compiler_jit_inlining",
+        "compiler_lexer_parser",
+        "compiler_overview",
+        "compiler_project_minilang",
+        "compiler_semantic_types"
+      ]
+    },
+    {
+      "planned_review_at": "2027-01-28",
+      "lesson_ids": [
+        "devops_github_actions",
+        "mobile_security"
+      ]
+    },
+    {
+      "planned_review_at": "2027-02-02",
+      "lesson_ids": [
+        "devops_docker_registry"
+      ]
+    },
+    {
+      "planned_review_at": "2027-02-07",
+      "lesson_ids": [
+        "devops_deployment_strategies"
+      ]
+    },
+    {
       "planned_review_at": "2027-02-10",
-      "lesson_count": 22,
-      "p0_touched": 10,
-      "risk_high": 0,
-      "risk_medium": 0,
       "lesson_ids": [
         "shell_automation_advanced",
         "shell_bash",
@@ -369,69 +393,79 @@
       ]
     },
     {
-      "batch_id": "typescript-1",
-      "category_id": "typescript",
-      "category_title": "TypeScript",
-      "planned_review_at": "2027-03-17",
-      "lesson_count": 22,
-      "p0_touched": 10,
-      "risk_high": 0,
-      "risk_medium": 0,
+      "planned_review_at": "2027-02-12",
       "lesson_ids": [
-        "ts_arrays_objects",
-        "ts_basic_types",
-        "ts_build_performance",
-        "ts_build_test",
-        "ts_decorators_pro",
-        "ts_first_types",
-        "ts_fullstack_project",
-        "ts_function_types",
-        "ts_interface_intro",
-        "ts_monorepo",
-        "ts_narrowing_generics",
-        "ts_node_backend",
-        "ts_performance",
-        "ts_project",
-        "ts_project_cli",
-        "ts_project_websocket_dashboard",
-        "ts_runtime_validation",
-        "ts_testing",
-        "ts_type_challenges",
-        "ts_type_level",
-        "ts_utility_types",
-        "typescript"
+        "devops_terraform"
       ]
     },
     {
-      "batch_id": "cloud-1",
-      "category_id": "cloud",
-      "category_title": "云计算与云原生",
-      "planned_review_at": "2027-03-24",
-      "lesson_count": 9,
-      "p0_touched": 9,
-      "risk_high": 0,
-      "risk_medium": 0,
+      "planned_review_at": "2027-02-17",
       "lesson_ids": [
-        "cloud_containers_kubernetes",
-        "cloud_cost_finops",
-        "cloud_fundamentals",
-        "cloud_iac_terraform",
-        "cloud_k8s_operations",
-        "cloud_multicluster_dr",
-        "cloud_observability_sre",
-        "cloud_security_iam",
-        "cloud_serverless"
+        "embedded_bootloader",
+        "embedded_bus_protocols",
+        "embedded_debug_trace",
+        "embedded_gpio_interrupt",
+        "embedded_iot_security",
+        "embedded_low_power",
+        "embedded_mcu_basics",
+        "embedded_project_env_monitor",
+        "embedded_rtos_tasks",
+        "embedded_sensor_signal",
+        "devops_monitoring_alert"
       ]
     },
     {
-      "batch_id": "csharp-1",
-      "category_id": "csharp",
-      "category_title": "C#",
+      "planned_review_at": "2027-02-22",
+      "lesson_ids": [
+        "devops_logging_tracing"
+      ]
+    },
+    {
+      "planned_review_at": "2027-02-24",
+      "lesson_ids": [
+        "java_basics",
+        "java_collections",
+        "java_concurrency",
+        "java_conditions",
+        "java_control_methods",
+        "java_exceptions",
+        "java_first_class",
+        "java_gc_tuning",
+        "java_inheritance",
+        "java_lambda_stream",
+        "java_loops",
+        "java_methods_intro",
+        "java_modern_features",
+        "java_oop",
+        "java_project",
+        "java_project_inventory",
+        "java_project_order_concurrency",
+        "java_tooling",
+        "java_types",
+        "java_variables_output",
+        "java_virtual_threads"
+      ]
+    },
+    {
+      "planned_review_at": "2027-02-27",
+      "lesson_ids": [
+        "frontend_react_hooks"
+      ]
+    },
+    {
+      "planned_review_at": "2027-03-04",
+      "lesson_ids": [
+        "frontend_vue_composition"
+      ]
+    },
+    {
+      "planned_review_at": "2027-03-09",
+      "lesson_ids": [
+        "frontend_angular_basics"
+      ]
+    },
+    {
       "planned_review_at": "2027-03-10",
-      "lesson_count": 19,
-      "p0_touched": 9,
-      "risk_high": 0,
-      "risk_medium": 0,
       "lesson_ids": [
         "csharp_async",
         "csharp_async_streams",
@@ -455,15 +489,36 @@
       ]
     },
     {
-      "batch_id": "fundamentals-1",
-      "category_id": "fundamentals",
-      "category_title": "计算机基础",
-      "planned_review_at": "2027-03-17",
-      "lesson_count": 24,
-      "p0_touched": 9,
-      "risk_high": 0,
-      "risk_medium": 0,
+      "planned_review_at": "2027-03-14",
       "lesson_ids": [
+        "frontend_svelte_reactive"
+      ]
+    },
+    {
+      "planned_review_at": "2027-03-17",
+      "lesson_ids": [
+        "ts_arrays_objects",
+        "ts_basic_types",
+        "ts_build_performance",
+        "ts_build_test",
+        "ts_decorators_pro",
+        "ts_first_types",
+        "ts_fullstack_project",
+        "ts_function_types",
+        "ts_interface_intro",
+        "ts_monorepo",
+        "ts_narrowing_generics",
+        "ts_node_backend",
+        "ts_performance",
+        "ts_project",
+        "ts_project_cli",
+        "ts_project_websocket_dashboard",
+        "ts_runtime_validation",
+        "ts_testing",
+        "ts_type_challenges",
+        "ts_type_level",
+        "ts_utility_types",
+        "typescript",
         "assembly",
         "binary",
         "binary_intro",
@@ -491,35 +546,40 @@
       ]
     },
     {
-      "batch_id": "gamedev-1",
-      "category_id": "gamedev",
-      "category_title": "图形与游戏开发",
-      "planned_review_at": "2027-04-24",
-      "lesson_count": 9,
-      "p0_touched": 9,
-      "risk_high": 0,
-      "risk_medium": 0,
+      "planned_review_at": "2027-03-19",
       "lesson_ids": [
-        "gamedev_2d_rendering",
-        "gamedev_animation_fsm",
-        "gamedev_asset_pipeline",
-        "gamedev_collision_physics",
-        "gamedev_ecs_profiling",
-        "gamedev_game_loop",
-        "gamedev_multiplayer_sync",
-        "gamedev_performance_mobile",
-        "gamedev_render_pipeline"
+        "frontend_state_management"
       ]
     },
     {
-      "batch_id": "go-1",
-      "category_id": "go",
-      "category_title": "Go",
+      "planned_review_at": "2027-03-24",
+      "lesson_ids": [
+        "cloud_containers_kubernetes",
+        "cloud_cost_finops",
+        "cloud_fundamentals",
+        "cloud_iac_terraform",
+        "cloud_k8s_operations",
+        "cloud_multicluster_dr",
+        "cloud_observability_sre",
+        "cloud_security_iam",
+        "cloud_serverless",
+        "frontend_nextjs_ssr"
+      ]
+    },
+    {
+      "planned_review_at": "2027-03-29",
+      "lesson_ids": [
+        "frontend_performance_optimization"
+      ]
+    },
+    {
+      "planned_review_at": "2027-04-03",
+      "lesson_ids": [
+        "frontend_framework_comparison"
+      ]
+    },
+    {
       "planned_review_at": "2027-04-10",
-      "lesson_count": 22,
-      "p0_touched": 9,
-      "risk_high": 0,
-      "risk_medium": 0,
       "lesson_ids": [
         "go_basics",
         "go_cloud_native_security",
@@ -546,14 +606,7 @@
       ]
     },
     {
-      "batch_id": "ai-2",
-      "category_id": "ai",
-      "category_title": "AI 与智能体",
       "planned_review_at": "2027-04-17",
-      "lesson_count": 18,
-      "p0_touched": 8,
-      "risk_high": 0,
-      "risk_medium": 0,
       "lesson_ids": [
         "ai_model_serving",
         "ai_multi_agent",
@@ -576,14 +629,73 @@
       ]
     },
     {
-      "batch_id": "algorithms-1",
-      "category_id": "algorithms",
-      "category_title": "算法与数据结构",
+      "planned_review_at": "2027-04-24",
+      "lesson_ids": [
+        "gamedev_2d_rendering",
+        "gamedev_animation_fsm",
+        "gamedev_asset_pipeline",
+        "gamedev_collision_physics",
+        "gamedev_ecs_profiling",
+        "gamedev_game_loop",
+        "gamedev_multiplayer_sync",
+        "gamedev_performance_mobile",
+        "gamedev_render_pipeline"
+      ]
+    },
+    {
+      "planned_review_at": "2027-05-10",
+      "lesson_ids": [
+        "cpp_basics",
+        "cpp_concepts_ranges",
+        "cpp_concurrency_atomics",
+        "cpp_conditions",
+        "cpp_control_functions",
+        "cpp_first_program",
+        "cpp_functions_intro",
+        "cpp_loops",
+        "cpp_memory",
+        "cpp_modern",
+        "cpp_move_semantics",
+        "cpp_oop",
+        "cpp_pointers",
+        "cpp_project",
+        "cpp_project_http",
+        "cpp_project_taskdb",
+        "cpp_stl",
+        "cpp_templates",
+        "cpp_tooling",
+        "cpp_types",
+        "cpp_variables_io"
+      ]
+    },
+    {
+      "planned_review_at": "2027-05-17",
+      "lesson_ids": [
+        "js_arrays",
+        "js_async",
+        "js_basics",
+        "js_conditions_loops",
+        "js_console_start",
+        "js_dom_events",
+        "js_dom_intro",
+        "js_errors_debugging",
+        "js_execution_context",
+        "js_functions",
+        "js_functions_intro",
+        "js_memory_gc",
+        "js_modules_tooling",
+        "js_node_backend",
+        "js_objects",
+        "js_operators_control",
+        "js_project",
+        "js_project_node_api",
+        "js_project_realtime_chat",
+        "js_types",
+        "js_variables_types_intro"
+      ]
+    },
+    {
       "planned_review_at": "2027-05-24",
-      "lesson_count": 24,
-      "p0_touched": 8,
-      "risk_high": 0,
-      "risk_medium": 0,
       "lesson_ids": [
         "algo_computational_geometry",
         "algo_mst",
@@ -612,116 +724,7 @@
       ]
     },
     {
-      "batch_id": "cpp-1",
-      "category_id": "cpp",
-      "category_title": "C++",
-      "planned_review_at": "2027-05-10",
-      "lesson_count": 21,
-      "p0_touched": 8,
-      "risk_high": 0,
-      "risk_medium": 0,
-      "lesson_ids": [
-        "cpp_basics",
-        "cpp_concepts_ranges",
-        "cpp_concurrency_atomics",
-        "cpp_conditions",
-        "cpp_control_functions",
-        "cpp_first_program",
-        "cpp_functions_intro",
-        "cpp_loops",
-        "cpp_memory",
-        "cpp_modern",
-        "cpp_move_semantics",
-        "cpp_oop",
-        "cpp_pointers",
-        "cpp_project",
-        "cpp_project_http",
-        "cpp_project_taskdb",
-        "cpp_stl",
-        "cpp_templates",
-        "cpp_tooling",
-        "cpp_types",
-        "cpp_variables_io"
-      ]
-    },
-    {
-      "batch_id": "javascript-1",
-      "category_id": "javascript",
-      "category_title": "JavaScript",
-      "planned_review_at": "2027-05-17",
-      "lesson_count": 21,
-      "p0_touched": 8,
-      "risk_high": 0,
-      "risk_medium": 0,
-      "lesson_ids": [
-        "js_arrays",
-        "js_async",
-        "js_basics",
-        "js_conditions_loops",
-        "js_console_start",
-        "js_dom_events",
-        "js_dom_intro",
-        "js_errors_debugging",
-        "js_execution_context",
-        "js_functions",
-        "js_functions_intro",
-        "js_memory_gc",
-        "js_modules_tooling",
-        "js_node_backend",
-        "js_objects",
-        "js_operators_control",
-        "js_project",
-        "js_project_node_api",
-        "js_project_realtime_chat",
-        "js_types",
-        "js_variables_types_intro"
-      ]
-    },
-    {
-      "batch_id": "network-1",
-      "category_id": "network",
-      "category_title": "网络",
-      "planned_review_at": "2027-06-24",
-      "lesson_count": 24,
-      "p0_touched": 8,
-      "risk_high": 0,
-      "risk_medium": 0,
-      "lesson_ids": [
-        "auth_oauth",
-        "cdn_proxy",
-        "dns",
-        "http2_http3",
-        "http_basics",
-        "ip_port_intro",
-        "ip_transport",
-        "link_layer",
-        "network_attacks",
-        "network_bgp",
-        "network_ipv6",
-        "network_layers_intro",
-        "network_nat_vpn",
-        "network_p2p",
-        "network_performance",
-        "network_project",
-        "network_smtp",
-        "pentest_basics",
-        "socket_programming",
-        "tcp_ip",
-        "tls",
-        "web_security",
-        "websocket",
-        "wireless_mobile"
-      ]
-    },
-    {
-      "batch_id": "rust-1",
-      "category_id": "rust",
-      "category_title": "Rust",
       "planned_review_at": "2027-06-10",
-      "lesson_count": 18,
-      "p0_touched": 8,
-      "risk_high": 0,
-      "risk_medium": 0,
       "lesson_ids": [
         "rust_async_tokio",
         "rust_basics",
@@ -744,14 +747,7 @@
       ]
     },
     {
-      "batch_id": "database-1",
-      "category_id": "database",
-      "category_title": "数据库",
       "planned_review_at": "2027-06-17",
-      "lesson_count": 24,
-      "p0_touched": 7,
-      "risk_high": 0,
-      "risk_medium": 0,
       "lesson_ids": [
         "airflow_quality",
         "bigdata_batch_stream",
@@ -780,43 +776,36 @@
       ]
     },
     {
-      "batch_id": "os-1",
-      "category_id": "os",
-      "category_title": "操作系统",
-      "planned_review_at": "2027-07-24",
-      "lesson_count": 17,
-      "p0_touched": 7,
-      "risk_high": 0,
-      "risk_medium": 0,
+      "planned_review_at": "2027-06-24",
       "lesson_ids": [
-        "deadlock",
-        "file_system",
-        "ipc_io",
-        "os_boot_security",
-        "os_cgroups_namespaces",
-        "os_filesystem_impl",
-        "os_io_scheduling",
-        "os_io_uring",
-        "os_kernel_arch",
-        "os_linux_troubleshooting",
-        "os_project",
-        "os_rtos",
-        "os_synchronization",
-        "process_thread",
-        "process_thread_intro",
-        "scheduling",
-        "virtual_memory"
+        "auth_oauth",
+        "cdn_proxy",
+        "dns",
+        "http2_http3",
+        "http_basics",
+        "ip_port_intro",
+        "ip_transport",
+        "link_layer",
+        "network_attacks",
+        "network_bgp",
+        "network_ipv6",
+        "network_layers_intro",
+        "network_nat_vpn",
+        "network_p2p",
+        "network_performance",
+        "network_project",
+        "network_smtp",
+        "pentest_basics",
+        "socket_programming",
+        "tcp_ip",
+        "tls",
+        "web_security",
+        "websocket",
+        "wireless_mobile"
       ]
     },
     {
-      "batch_id": "visual_guide-1",
-      "category_id": "visual_guide",
-      "category_title": "图解专题",
       "planned_review_at": "2027-07-10",
-      "lesson_count": 21,
-      "p0_touched": 7,
-      "risk_high": 0,
-      "risk_medium": 0,
       "lesson_ids": [
         "visual_btree_index",
         "visual_call_stack",
@@ -842,14 +831,7 @@
       ]
     },
     {
-      "batch_id": "cross_language-1",
-      "category_id": "cross_language",
-      "category_title": "跨语言对照",
       "planned_review_at": "2027-07-17",
-      "lesson_count": 18,
-      "p0_touched": 3,
-      "risk_high": 0,
-      "risk_medium": 0,
       "lesson_ids": [
         "cross_api_contract",
         "cross_build_release",
@@ -872,15 +854,25 @@
       ]
     },
     {
-      "batch_id": "distributed-1",
-      "category_id": "distributed",
-      "category_title": "分布式与架构",
       "planned_review_at": "2027-07-24",
-      "lesson_count": 12,
-      "p0_touched": 2,
-      "risk_high": 0,
-      "risk_medium": 0,
       "lesson_ids": [
+        "deadlock",
+        "file_system",
+        "ipc_io",
+        "os_boot_security",
+        "os_cgroups_namespaces",
+        "os_filesystem_impl",
+        "os_io_scheduling",
+        "os_io_uring",
+        "os_kernel_arch",
+        "os_linux_troubleshooting",
+        "os_project",
+        "os_rtos",
+        "os_synchronization",
+        "process_thread",
+        "process_thread_intro",
+        "scheduling",
+        "virtual_memory",
         "dist_event_sourcing",
         "dist_transaction",
         "distributed_cache",
@@ -896,14 +888,7 @@
       ]
     },
     {
-      "batch_id": "flutter-1",
-      "category_id": "flutter",
-      "category_title": "移动开发",
       "planned_review_at": "2027-08-10",
-      "lesson_count": 12,
-      "p0_touched": 2,
-      "risk_high": 0,
-      "risk_medium": 0,
       "lesson_ids": [
         "flutter_basics",
         "flutter_layout_intro",
@@ -920,14 +905,7 @@
       ]
     },
     {
-      "batch_id": "html_css-1",
-      "category_id": "html_css",
-      "category_title": "HTML 与 CSS",
       "planned_review_at": "2027-08-17",
-      "lesson_count": 14,
-      "p0_touched": 2,
-      "risk_high": 0,
-      "risk_medium": 0,
       "lesson_ids": [
         "a11y_aria",
         "browser_rendering",
@@ -946,14 +924,7 @@
       ]
     },
     {
-      "batch_id": "toolchain-1",
-      "category_id": "toolchain",
-      "category_title": "工具链",
       "planned_review_at": "2027-08-24",
-      "lesson_count": 14,
-      "p0_touched": 2,
-      "risk_high": 0,
-      "risk_medium": 0,
       "lesson_ids": [
         "ci_cd",
         "cli",
@@ -972,14 +943,7 @@
       ]
     },
     {
-      "batch_id": "algorithms-2",
-      "category_id": "algorithms",
-      "category_title": "算法与数据结构",
       "planned_review_at": "2027-09-10",
-      "lesson_count": 11,
-      "p0_touched": 1,
-      "risk_high": 0,
-      "risk_medium": 0,
       "lesson_ids": [
         "probabilistic_structures",
         "segment_tree",
@@ -995,14 +959,7 @@
       ]
     },
     {
-      "batch_id": "database-2",
-      "category_id": "database",
-      "category_title": "数据库",
       "planned_review_at": "2027-09-17",
-      "lesson_count": 3,
-      "p0_touched": 1,
-      "risk_high": 0,
-      "risk_medium": 0,
       "lesson_ids": [
         "sql_table_intro",
         "storage_engine",
@@ -1010,14 +967,7 @@
       ]
     },
     {
-      "batch_id": "math-1",
-      "category_id": "math",
-      "category_title": "数学基础",
       "planned_review_at": "2027-09-24",
-      "lesson_count": 9,
-      "p0_touched": 1,
-      "risk_high": 0,
-      "risk_medium": 0,
       "lesson_ids": [
         "math_calculus_gradient",
         "math_convex_optimization",
@@ -1031,14 +981,7 @@
       ]
     },
     {
-      "batch_id": "project_practice-1",
-      "category_id": "project_practice",
-      "category_title": "项目实战",
       "planned_review_at": "2027-10-10",
-      "lesson_count": 18,
-      "p0_touched": 1,
-      "risk_high": 0,
-      "risk_medium": 0,
       "lesson_ids": [
         "project_algorithm_engineering",
         "project_coding_workflow",
@@ -1061,14 +1004,7 @@
       ]
     },
     {
-      "batch_id": "fundamentals-2",
-      "category_id": "fundamentals",
-      "category_title": "计算机基础",
       "planned_review_at": "2027-10-17",
-      "lesson_count": 6,
-      "p0_touched": 0,
-      "risk_high": 0,
-      "risk_medium": 0,
       "lesson_ids": [
         "ir_optimization",
         "linking_loading",
@@ -1079,14 +1015,7 @@
       ]
     },
     {
-      "batch_id": "software_engineering-1",
-      "category_id": "software_engineering",
-      "category_title": "软件工程",
       "planned_review_at": "2027-10-24",
-      "lesson_count": 12,
-      "p0_touched": 0,
-      "risk_high": 0,
-      "risk_medium": 0,
       "lesson_ids": [
         "design_patterns",
         "requirements_modeling",

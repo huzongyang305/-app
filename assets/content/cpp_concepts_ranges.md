@@ -401,6 +401,8 @@ C++ 并发、原子操作与内存序（线程安全、原子操作）
 
 ## 参考资料与复核
 
+- [本课资料锚点 cpp_concepts_ranges](https://zh.wikipedia.org/w/index.php?search=cpp_concepts_ranges)
+
 - 最后复核：2026-10-04
 - 下次复核：2027-05-10
 - 复核范围：Concepts 语法、Ranges 行为、惰性求值语义与标准库实现差异

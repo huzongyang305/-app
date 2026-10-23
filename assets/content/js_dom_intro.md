@@ -17,27 +17,6 @@
 - 用本课示例验证 `textContent 与 innerHTML` 的行为，记录输入、输出与失败条件。
 - 遇到「样式与文本状态各自为政」这类问题时，能说出触发条件与修复顺序。
 
-### 从概念到验证的学习链条
-
-1. `DOM`：先掌握 浏览器把 HTML 解析成的对象树，JavaScript 通过它读写页面，再用它解释 `querySelector` 为什么会出现。
-2. `querySelector`：先掌握 用 CSS 选择器找到第一个匹配元素，querySelectorAll 返回全部，再用它解释 `textContent 与 innerHTML` 为什么会出现。
-3. `textContent 与 innerHTML`：先掌握 前者按纯文本读写，后者会解析 HTML，有注入风险，再用它解释 `事件监听` 为什么会出现。
-4. `事件监听`：先掌握 addEventListener 把处理函数绑定到事件，回调里用 event 取详情，再用它解释 `事件冒泡` 为什么会出现。
-5. `事件冒泡`：先掌握 事件从触发元素向上传播，可用 stopPropagation 阻止，再用它解释 `函数` 为什么会出现。
-6. `函数`：先掌握 函数是一等对象，可以作为参数、返回值和对象属性，再用它解释 本课示例的观察结果 为什么会出现。
-
-**先修与衔接**：本课是「JavaScript」分类的第 5 课。先修内容：《JavaScript 函数入门》。《JavaScript 函数入门》里的 `函数声明`、`箭头函数` 是本课的前提。
-
-### 完成判据
-
-- **定义关**：不看正文也能说明 `DOM` 是 浏览器把 HTML 解析成的对象树，JavaScript 通过它读写页面，并指出一个反例。
-- **机制关**：能按“输入 → 转换 → 输出 → 验证”复述 `JavaScript DOM 入门`，而不是只背结论。
-- **示例关**：能运行或推演 `JavaScript DOM 入门` 的 `javascript` 示例，并说明一个真实出现的标识符或字面量。
-- **证据关**：能指出 `JavaScript DOM 入门` 示例里的 调用了 `createElement()`，并说明它支持或反驳了本课的哪一条结论。
-- **排错关**：能复现 样式与文本状态各自为政，记录现象并按 统一由状态驱动渲染，类名切换而不是零散改样式 修复。
-- **迁移关**：能把 `JavaScript DOM 入门`、`JavaScript`、`入门练习` 放进一个与 `JavaScript DOM 入门` 不同的项目场景，并保持输入与验证条件可追踪。
-- **复盘关**：学完 `JavaScript DOM 入门` 后，用一句话写下仍然不确定的结论，并列出下一次验证需要的输入、环境和成功判据。
-
 ### 复习清单
 
 - [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
@@ -89,69 +68,6 @@ Promise 表示未来完成或失败的结果，`async/await` 让异步代码更�
 
 - 打包与运行时版本会共同影响 JavaScript，升级前先固定二者版本。
 - 升级前先用 createElement 建立基线：记录版本、命令和输出，升级后只比较这些可观察量。
-
-### 升级检查清单
-
-- 先固定当前版本，跑通全部示例与测验，再升级工具链。
-- 一次只改一个版本条件，把 JavaScript DOM 入门 相关的差异单独记成一条结论。
-- 升级后重点回归 JavaScript DOM 入门 的默认值、警告信息与错误格式。
-- 升级后把 createElement 的实测版本写进「内容元数据」，再更新复核日期。
-
-### 机制拆解：每一步的输入、动作与输出
-
-#### 1. `DOM`
-- 输入：`JavaScript DOM 入门`；本步把 浏览器把 HTML 解析成的对象树，JavaScript 通过它读写页面 当作判断规则。
-- 动作：围绕 `DOM` 保留中间状态，并记录它与 `querySelector` 的对应关系。
-- 输出：`querySelector`，它可以被下一段代码、测试或记录继续使用。
-- `DOM` 的失败条件：只在「浏览器把 HTML 解析成的对象树，JavaScript 通过它读写页面」这一前提下成立，换输入或换环境要重新验证。
-
-#### 2. `querySelector`
-- 输入：`DOM`；本步把 用 CSS 选择器找到第一个匹配元素，querySelectorAll 返回全部 当作判断规则。
-- 动作：围绕 `querySelector` 保留中间状态，并记录它与 `textContent 与 innerHTML` 的对应关系。
-- 输出：`textContent 与 innerHTML`，它可以被下一段代码、测试或记录继续使用。
-- `querySelector` 的失败条件：只在「用 CSS 选择器找到第一个匹配元素，querySelectorAll 返回全部」这一前提下成立，换输入或换环境要重新验证。
-
-#### 3. `textContent 与 innerHTML`
-- 输入：`querySelector`；本步把 前者按纯文本读写，后者会解析 HTML，有注入风险 当作判断规则。
-- 动作：围绕 `textContent 与 innerHTML` 保留中间状态，并记录它与 `事件监听` 的对应关系。
-- 输出：`事件监听`，它可以被下一段代码、测试或记录继续使用。
-- `textContent 与 innerHTML` 的失败条件：权限与密钥策略变化会让结论失效，按最小权限并用真实凭据流程复验。
-
-#### 4. `事件监听`
-- 输入：`textContent 与 innerHTML`；本步把 addEventListener 把处理函数绑定到事件，回调里用 event 取详情 当作判断规则。
-- 动作：围绕 `事件监听` 保留中间状态，并记录它与 `事件冒泡` 的对应关系。
-- 输出：`事件冒泡`，它可以被下一段代码、测试或记录继续使用。
-- `事件监听` 的失败条件：只在「addEventListener 把处理函数绑定到事件，回调里用 event 取详情」这一前提下成立，换输入或换环境要重新验证。
-
-#### 5. `事件冒泡`
-- 输入：`事件监听`；本步把 事件从触发元素向上传播，可用 stopPropagation 阻止 当作判断规则。
-- 动作：围绕 `事件冒泡` 保留中间状态，并记录它与 `函数` 的对应关系。
-- 输出：`函数`，它可以被下一段代码、测试或记录继续使用。
-- `事件冒泡` 的失败条件：只在「事件从触发元素向上传播，可用 stopPropagation 阻止」这一前提下成立，换输入或换环境要重新验证。
-
-#### 6. `函数`
-- 输入：`事件冒泡`；本步把 函数是一等对象，可以作为参数、返回值和对象属性 当作判断规则。
-- 动作：围绕 `函数` 保留中间状态，并记录它与 `createElement` 的对应关系。
-- 输出：`createElement`，它可以被下一段代码、测试或记录继续使用。
-- `函数` 的失败条件：结果依赖数据分布、模型版本与算力预算，换数据集或换硬件都要重新评估。
-
-### 示例中的可观察事实
-
-1. 调用了 `createElement()`；它对应的课程主题是 `JavaScript DOM 入门`。
-2. 调用了 `append()`；它对应的课程主题是 `JavaScript DOM 入门`。
-3. 调用了 `log()`；它对应的课程主题是 `JavaScript DOM 入门`。
-4. 调用了 `querySelector()`；它对应的课程主题是 `JavaScript DOM 入门`。
-5. 出现字面量 `button`；它对应的课程主题是 `JavaScript DOM 入门`。
-6. 出现字面量 `点击我`；它对应的课程主题是 `JavaScript DOM 入门`。
-
-### 复现实验记录
-
-- 环境：`JavaScript DOM 入门` 使用 `javascript` 示例，固定 `JavaScript DOM 入门`、`JavaScript`、`入门练习` 作为第一组条件。
-- 首轮输入：先确认 调用了 `createElement()`，预测 `DOM` 会怎样变化。
-- 基线观察：记录命令、输入、输出和错误原文，不用截图代替可复制的文本。
-- 单变量修改：只改变 `JavaScript DOM 入门`，观察 `函数` 是否仍满足定义。
-- 失败注入：复现 样式与文本状态各自为政，确认现象是 界面与数据不一致。
-- 记录结论：把“修改前、修改后、预期变化、实际变化”写成四列表，这样复盘 `JavaScript DOM 入门` 时才能区分概念错误与实现错误。
 
 ## 典型应用场景
 
@@ -287,19 +203,6 @@ DOM 是浏览器把 HTML 解析成的一棵树，JavaScript 通过选择器找�
 
 **运行方式**：运行 `JavaScript DOM 入门` 的示例时，保存为 `.js` 后用 `node 文件名.js` 运行；涉及浏览器 API 的示例要放到页面里执行。
 
-### 示例精读：先找证据，再改一个条件
-
-1. 调用了 `createElement()`；它出现在 `JavaScript DOM 入门` 的示例中，阅读时先确认它前后各发生了什么。
-2. 调用了 `append()`；它出现在 `JavaScript DOM 入门` 的示例中，阅读时先确认它前后各发生了什么。
-3. 调用了 `log()`；它出现在 `JavaScript DOM 入门` 的示例中，阅读时先确认它前后各发生了什么。
-4. 调用了 `querySelector()`；它出现在 `JavaScript DOM 入门` 的示例中，阅读时先确认它前后各发生了什么。
-5. 出现字面量 `button`；它出现在 `JavaScript DOM 入门` 的示例中，阅读时先确认它前后各发生了什么。
-6. 出现字面量 `点击我`；它出现在 `JavaScript DOM 入门` 的示例中，阅读时先确认它前后各发生了什么。
-- 在 `JavaScript DOM 入门` 中与 `DOM` 对照：示例必须能支持 浏览器把 HTML 解析成的对象树，JavaScript 通过它读写页面，否则说明这一段还缺少实现或验证步骤。
-- 在 `JavaScript DOM 入门` 中与 `querySelector` 对照：示例必须能支持 用 CSS 选择器找到第一个匹配元素，querySelectorAll 返回全部，否则说明这一段还缺少实现或验证步骤。
-- 在 `JavaScript DOM 入门` 中与 `textContent 与 innerHTML` 对照：示例必须能支持 前者按纯文本读写，后者会解析 HTML，有注入风险，否则说明这一段还缺少实现或验证步骤。
-- 在 `JavaScript DOM 入门` 中与 `事件监听` 对照：示例必须能支持 addEventListener 把处理函数绑定到事件，回调里用 event 取详情，否则说明这一段还缺少实现或验证步骤。
-
 ## 时间/空间复杂度或性能分析
 
 **性能关注点（JavaScript DOM 入门）**：事件循环与 DOM 操作是瓶颈来源：记录脚本执行时间、长任务与主线程阻塞时长。
@@ -307,18 +210,6 @@ DOM 是浏览器把 HTML 解析成的一棵树，JavaScript 通过选择器找�
 **本课特有开销（JavaScript DOM 入门 · JavaScript DOM 入门）**：小文件看元数据开销，大文件看吞吐，两者要分别测量。
 
 **测量方法**：以 `JavaScript DOM 入门` 的 `JavaScript DOM 入门` 场景为对象，固定输入跑一遍记录基线，再把规模或并发度提高一个数量级复测；两次结果的差值与波动范围才是结论依据。
-
-### 需要控制的变量与记录项
-
-- `JavaScript DOM 入门` 的 `JavaScript DOM 入门`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `JavaScript DOM 入门` 的 `JavaScript`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `JavaScript DOM 入门` 的 `入门练习`：固定它的版本、输入范围和资源上限，分别记录速度、内存与失败率的变化。
-- `JavaScript DOM 入门` 中 `DOM` 的边界：只在「浏览器把 HTML 解析成的对象树，JavaScript 通过它读写页面」这一前提下成立，换输入或换环境要重新验证。达到边界时不要外推，必须重新测量。
-- `JavaScript DOM 入门` 中 `querySelector` 的边界：只在「用 CSS 选择器找到第一个匹配元素，querySelectorAll 返回全部」这一前提下成立，换输入或换环境要重新验证。达到边界时不要外推，必须重新测量。
-- `JavaScript DOM 入门` 中 `textContent 与 innerHTML` 的边界：权限与密钥策略变化会让结论失效，按最小权限并用真实凭据流程复验。达到边界时不要外推，必须重新测量。
-- `JavaScript DOM 入门` 中 `事件监听` 的边界：只在「addEventListener 把处理函数绑定到事件，回调里用 event 取详情」这一前提下成立，换输入或换环境要重新验证。达到边界时不要外推，必须重新测量。
-- `JavaScript DOM 入门` 中 `事件冒泡` 的边界：只在「事件从触发元素向上传播，可用 stopPropagation 阻止」这一前提下成立，换输入或换环境要重新验证。达到边界时不要外推，必须重新测量。
-- `JavaScript DOM 入门` 的代码证据：先验证 调用了 `createElement()`，再记录该路径的输入规模与耗时；只看代码行数不能推出复杂度。
 
 ## 常见误区与易错点
 
@@ -355,38 +246,6 @@ DOM 是浏览器把 HTML 解析成的一棵树，JavaScript 通过选择器找�
 ## 与其他知识点的关系
 
 **教材衔接：复习与迁移**
-
-### 概念复述
-
-- 用一句话说明「JavaScript DOM 入门」解决什么问题：查找元素、修改文本并响应用户点击。
-- 写出JavaScript DOM 入门、JavaScript、入门练习之间的关系，并各举一个例子。
-- 说出本课最容易混淆的两个概念，以及区分它们的判据。
-
-### 正文逐节复核
-
-- **JavaScript 基础机制速览**：JavaScript 是单线程执行模型，调用栈执行同步代码，事件循环在栈清空后处理任务队列和微任务队列。
-
-
-### 迁移练习
-
-<!-- language-intro-deep-dive:start -->
-
-- **先修**：`JavaScript 函数入门`。本课默认这些内容已经掌握。
-- **术语归属**：`DOM`、`querySelector`、`textContent 与 innerHTML` 的定义以本课「核心概念定义」为准，换到其他课程时先确认定义是否被改写。
-- 同一分类的《JavaScript 控制台入门》也涉及 `JavaScript`；两课衔接时先确认这个术语的定义是否一致。
-- 同一分类的《JavaScript 变量与类型入门》也涉及 `JavaScript`；两课衔接时先确认这个术语的定义是否一致。
-
-### 先修与后续术语接口
-
-- `JavaScript 函数入门`：共享术语 `函数`，共同关键词 `JavaScript`、`入门练习`。
-
-### 容易混淆的相邻概念
-
-- `DOM` 与 `querySelector`：前者强调 浏览器把 HTML 解析成的对象树，JavaScript 通过它读写页面；后者强调 用 CSS 选择器找到第一个匹配元素，querySelectorAll 返回全部。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
-- `querySelector` 与 `textContent 与 innerHTML`：前者强调 用 CSS 选择器找到第一个匹配元素，querySelectorAll 返回全部；后者强调 前者按纯文本读写，后者会解析 HTML，有注入风险。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
-- `textContent 与 innerHTML` 与 `事件监听`：前者强调 前者按纯文本读写，后者会解析 HTML，有注入风险；后者强调 addEventListener 把处理函数绑定到事件，回调里用 event 取详情。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
-- `事件监听` 与 `事件冒泡`：前者强调 addEventListener 把处理函数绑定到事件，回调里用 event 取详情；后者强调 事件从触发元素向上传播，可用 stopPropagation 阻止。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
-- `事件冒泡` 与 `函数`：前者强调 事件从触发元素向上传播，可用 stopPropagation 阻止；后者强调 函数是一等对象，可以作为参数、返回值和对象属性。判断时分别检查两条定义的适用范围，不要只看名称相似就互换。
 
 ## 自测题与参考答案
 
@@ -570,6 +429,8 @@ DOM 是浏览器把 HTML 解析成的一棵树，JavaScript 通过选择器找�
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
 ## 参考资料与复核
+
+- [本课资料锚点 js_dom_intro](https://zh.wikipedia.org/w/index.php?search=js_dom_intro)
 
 - 最后复核：2026-10-04
 - 下次复核：2027-05-17
