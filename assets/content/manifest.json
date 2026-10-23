@@ -13535,7 +13535,7 @@
             "Spring Data",
             "ORM"
           ],
-          "difficulty": "进阶",
+          "difficulty": "高级",
           "order": 27,
           "quiz": [
             {
@@ -13701,7 +13701,7 @@
             "测试",
             "覆盖率"
           ],
-          "difficulty": "进阶",
+          "difficulty": "高级",
           "order": 29,
           "quiz": [
             {
@@ -14571,7 +14571,7 @@
             "DI",
             "AOP"
           ],
-          "difficulty": "进阶",
+          "difficulty": "高级",
           "order": 6,
           "quiz": [
             {
@@ -68498,7 +68498,7 @@
             "矩阵策略",
             "Action"
           ],
-          "difficulty": "进阶",
+          "difficulty": "高级",
           "order": 2,
           "quiz": [
             {
@@ -68750,7 +68750,7 @@
             "模块",
             "状态管理"
           ],
-          "difficulty": "进阶",
+          "difficulty": "高级",
           "order": 5,
           "quiz": [
             {
@@ -68816,7 +68816,7 @@
           ]
         },
         {
-          "id": "devops_monitoring",
+          "id": "devops_monitoring_alert",
           "title": {
             "zh": "监控告警体系搭建",
             "en": "Monitoring & Alerting"
@@ -71191,7 +71191,7 @@
             "状态管理",
             "Core Data"
           ],
-          "difficulty": "入门",
+          "difficulty": "基础",
           "order": 1,
           "quiz": [
             {
@@ -71268,7 +71268,7 @@
       "color": "3DDC84",
       "lessons": [
         {
-          "id": "flutter_release",
+          "id": "android_flutter_release",
           "title": {
             "zh": "实战：Flutter 打包发布 Android",
             "en": "Flutter Release"
@@ -72197,6 +72197,179 @@
               "explanation": "长期维护的关键在于技术的可持续性。如果一个框架背后有强大的公司支持（如Google的Flutter、Meta的React Native）或活跃的开源社区，那么它更可能持续更新、修复bug、适配新系统版本。相比之下，流行程度可能会波动，学习资料可以逐步积累，首屏加载速度可以通过优化改善，但如果框架停止维护，整个项目将面临巨大风险。因此，评估框架的治理模式、更新频率、issue响应速度等指标至关重要。"
             }
           ]
+        },
+        {
+          "id": "mobile_offline_first",
+          "title": {
+            "zh": "离线优先架构与数据同步",
+            "en": "Offline-First Architecture & Data Sync"
+          },
+          "summary": {
+            "zh": "本地数据库选型、冲突解决、增量同步与后台任务",
+            "en": "Local DB, conflict resolution, incremental sync & background tasks"
+          },
+          "file": "assets/content/mobile_offline_first_architecture.md",
+          "difficulty": "高级",
+          "order": 5,
+          "minutes": 25,
+          "keywords": [
+            "离线优先",
+            "数据同步",
+            "冲突解决",
+            "SQLite",
+            "后台任务"
+          ],
+          "quiz": [
+            {
+              "type": "single",
+              "question": "离线优先架构的核心原则是什么？",
+              "options": [
+                "只在有网络时才允许用户使用应用",
+                "所有数据操作先在本地执行，再异步同步到服务器",
+                "禁用所有需要网络的功能",
+                "将所有数据永久保存在本地，不同步到服务器"
+              ],
+              "answer": 1,
+              "explanation": ""
+            },
+            {
+              "type": "single",
+              "question": "在处理数据同步冲突时，\"最后写入获胜\"（LWW）策略的主要缺点是什么？",
+              "options": [
+                "实现复杂度高",
+                "可能导致用户数据被意外覆盖而丢失",
+                "需要同步所有历史版本",
+                "只适用于数值类型数据"
+              ],
+              "answer": 1,
+              "explanation": ""
+            },
+            {
+              "type": "single",
+              "question": "为什么增量同步比全量同步更适合移动应用？",
+              "options": [
+                "增量同步的代码更简单",
+                "增量同步减少了数据传输量，节省流量和时间",
+                "增量同步不需要服务器支持",
+                "增量同步可以保证100%的数据一致性"
+              ],
+              "answer": 1,
+              "explanation": ""
+            },
+            {
+              "type": "single",
+              "question": "在离线优先应用中，如何处理敏感数据（如密码、token）的本地存储？",
+              "options": [
+                "明文存储在SharedPreferences或UserDefaults中",
+                "使用Base64编码后存储",
+                "使用加密存储，如Android的EncryptedSharedPreferences或iOS的Keychain",
+                "不存储任何敏感数据，每次都从服务器获取"
+              ],
+              "answer": 2,
+              "explanation": ""
+            },
+            {
+              "type": "single",
+              "question": "关于后台同步任务的调度，以下哪种策略最合理？",
+              "options": [
+                "每秒钟执行一次同步以确保数据实时性",
+                "仅在用户手动触发时同步",
+                "结合网络状态、电池电量和用户行为智能调度，并使用指数退避重试",
+                "在应用启动时同步一次，之后不再同步"
+              ],
+              "answer": 2,
+              "explanation": ""
+            }
+          ],
+          "prerequisites": [],
+          "related": []
+        },
+        {
+          "id": "mobile_security",
+          "title": {
+            "zh": "移动安全最佳实践",
+            "en": "Mobile Security Best Practices"
+          },
+          "summary": {
+            "zh": "数据加密、代码混淆、反调试与安全传输",
+            "en": "Encryption, obfuscation, anti-debugging & secure transport"
+          },
+          "file": "assets/content/mobile_security_best_practices.md",
+          "difficulty": "高级",
+          "order": 6,
+          "minutes": 25,
+          "keywords": [
+            "移动安全",
+            "加密",
+            "混淆",
+            "反调试",
+            "证书固定"
+          ],
+          "quiz": [
+            {
+              "type": "single",
+              "question": "为什么不应该在代码中硬编码API密钥？",
+              "options": [
+                "因为会增加代码体积",
+                "因为反编译后可以轻易提取密钥，导致未授权访问",
+                "因为会影响应用性能",
+                "因为不同平台的API密钥格式不同"
+              ],
+              "answer": 1,
+              "explanation": ""
+            },
+            {
+              "type": "single",
+              "question": "关于代码混淆，以下说法正确的是？",
+              "options": [
+                "混淆可以完全防止逆向工程",
+                "混淆会改变程序的运行逻辑",
+                "混淆通过重命名标识符、打乱控制流等方式增加阅读难度",
+                "混淆后的代码无法被恢复"
+              ],
+              "answer": 2,
+              "explanation": ""
+            },
+            {
+              "type": "single",
+              "question": "HTTPS证书锁定（Certificate Pinning）的主要目的是什么？",
+              "options": [
+                "加速HTTPS连接速度",
+                "防止中间人攻击，确保只信任特定的服务器证书",
+                "减少证书验证的计算开销",
+                "自动更新过期的证书",
+                "C、D都不是证书锁定的目的。"
+              ],
+              "answer": 1,
+              "explanation": ""
+            },
+            {
+              "type": "single",
+              "question": "在移动应用中存储用户密码时，最佳实践是什么？",
+              "options": [
+                "明文存储以便快速验证",
+                "使用MD5哈希后存储",
+                "使用bcrypt或Argon2加盐哈希后存储",
+                "使用Base64编码后存储"
+              ],
+              "answer": 2,
+              "explanation": ""
+            },
+            {
+              "type": "single",
+              "question": "关于移动应用的权限管理，\"最小权限原则\"指的是什么？",
+              "options": [
+                "申请所有可能用到的权限以防万一",
+                "只申请当前功能必需的最少权限",
+                "完全不申请任何权限以保证安全",
+                "只在Android上申请权限，iOS不需要"
+              ],
+              "answer": 1,
+              "explanation": ""
+            }
+          ],
+          "prerequisites": [],
+          "related": []
         }
       ]
     }

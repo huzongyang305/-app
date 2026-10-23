@@ -350,6 +350,18 @@ class AppStrings {
       'zh': '共 {count} 道错题待复习',
       'en': '{count} wrong questions to review',
     },
+    'addedToFavorites': {
+      'zh': '已收藏',
+      'en': 'Added to favorites',
+    },
+    'markedAsLearned': {
+      'zh': '已标记为已学',
+      'en': 'Marked as learned',
+    },
+    'delete': {
+      'zh': '删除',
+      'en': 'Delete',
+    },
     'reviewGradeTitle': {
       'zh': '这次复习感觉如何？',
       'en': 'How well did you recall it?',
