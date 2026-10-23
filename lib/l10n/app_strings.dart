@@ -346,6 +346,10 @@ class AppStrings {
       'en': 'Only your wrong answers — correct ones leave the book',
     },
     'wrongDrillEmpty': {'zh': '错题本是空的', 'en': 'Wrong-answer book is empty'},
+    'wrongBookSubtitle': {
+      'zh': '共 {count} 道错题待复习',
+      'en': '{count} wrong questions to review',
+    },
     'reviewGradeTitle': {
       'zh': '这次复习感觉如何？',
       'en': 'How well did you recall it?',

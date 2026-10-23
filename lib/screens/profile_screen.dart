@@ -23,11 +23,11 @@ import '../widgets/theme_selector.dart';
 import 'analytics_screen.dart';
 import 'exam_screen.dart';
 import 'lesson_screen.dart';
-import 'quiz_screen.dart';
 import 'achievements_screen.dart';
 import 'notes_screen.dart';
 import 'storage_diagnostics_screen.dart';
 import 'tutor_screen.dart';
+import 'wrong_answer_screen.dart';
 
 /// 我的：学习统计、收藏、笔记与设置。
 class ProfileScreen extends StatelessWidget {
@@ -1240,42 +1240,37 @@ class ProfileScreen extends StatelessWidget {
                       style: Theme.of(context).textTheme.labelMedium,
                     ),
                   ),
-                  if (progress.totalWrongQuestions > 0) ...[
-                    const Divider(height: 1),
-                    ListTile(
-                      leading: const Icon(Icons.play_circle_outline),
-                      title: Text(context.tr('wrongDrill')),
-                      subtitle: Text(context.tr('wrongDrillHint')),
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => const ExamScreen(
-                            wrongOnly: true,
-                            practiceMode: true,
-                          ),
+                  const Divider(height: 1),
+                  ListTile(
+                    leading: const Icon(Icons.menu_book_outlined),
+                    title: Text(context.tr('wrongBook')),
+                    subtitle: Text(
+                      context.trArgs('wrongBookSubtitle', {
+                        'count': progress.totalWrongQuestions,
+                      }),
+                    ),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const WrongAnswerScreen(),
+                      ),
+                    ),
+                  ),
+                  const Divider(height: 1),
+                  ListTile(
+                    leading: const Icon(Icons.play_circle_outline),
+                    title: Text(context.tr('wrongDrill')),
+                    subtitle: Text(context.tr('wrongDrillHint')),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const ExamScreen(
+                          wrongOnly: true,
+                          practiceMode: true,
                         ),
                       ),
                     ),
-                    const Divider(height: 1),
-                    for (final lesson in content.allLessons.where(
-                      (lesson) => progress.wrongCountFor(lesson.id) > 0,
-                    ))
-                      ListTile(
-                        leading: const Icon(Icons.error_outline),
-                        title: Text(
-                          lesson.title.of(context.strings.localeCode),
-                        ),
-                        subtitle: Text(
-                          '${context.tr('wrongCount')} '
-                          '${progress.wrongCountFor(lesson.id)}',
-                        ),
-                        trailing: const Icon(Icons.refresh),
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (_) => QuizScreen(lesson: lesson),
-                          ),
-                        ),
-                      ),
-                  ],
+                  ),
                 ],
               ),
             ),
