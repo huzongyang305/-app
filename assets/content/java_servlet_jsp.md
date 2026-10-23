@@ -244,7 +244,7 @@ public class HelloServlet extends HttpServlet {
 
 **运行步骤**：
 
-1. 创建 Maven 项目，添加依赖：
+**第 1 步**：创建 Maven 项目，添加依赖：
 
 ```xml
 <dependencies>
@@ -257,15 +257,15 @@ public class HelloServlet extends HttpServlet {
 </dependencies>
 ```
 
-2. 编译并打包成 WAR 文件：
+**第 2 步**：编译并打包成 WAR 文件：
 
 ```bash
 mvn clean package
 ```
 
-3. 将 WAR 文件放到 Tomcat 的 `webapps` 目录下，启动 Tomcat。
+**第 3 步**：将 WAR 文件放到 Tomcat 的 `webapps` 目录下，启动 Tomcat。
 
-4. 访问 `http://localhost:8080/your-app/hello?name=张三`
+**第 4 步**：访问 `http://localhost:8080/your-app/hello?name=张三`
 
 ### 表单处理示例
 
@@ -388,7 +388,7 @@ JSP 本质上是 Servlet。JSP 文件第一次被访问时会被编译成 Servle
 
 ## 考点精讲
 
-### 问题1
+### 考点 1
 
 在 Servlet 的生命周期中，以下哪个方法在整个 Servlet 实例的生命周期内只被执行一次？
 
@@ -403,7 +403,7 @@ D. \u201CdoPost()\u201D 方法
 
 ---
 
-### 问题2
+### 考点 2
 
 关于 JSP 的本质，以下哪个说法是正确的？
 
@@ -418,7 +418,7 @@ D. JSP 第一次被访问时会被编译成 Servlet 类
 
 ---
 
-### 问题3
+### 考点 3
 
 在 Servlet 中处理 HTTP 请求时，以下哪种做法会导致多个用户的数据互相覆盖？
 
@@ -433,7 +433,7 @@ D. 使用 \u201Creq.getParameter()\u201D 获取表单参数
 
 ---
 
-### 问题4
+### 考点 4
 
 以下关于 Servlet 中转发（forward）和重定向（sendRedirect）的说法，哪个是正确的？
 
@@ -448,7 +448,7 @@ D. 重定向只能跳转到同一应用内的页面
 
 ---
 
-### 问题5
+### 考点 5
 
 当客户端发送一个 POST 请求到某个 Servlet，但该 Servlet 只重写了 \u201CdoGet()\u201D 方法而没有重写 \u201CdoPost()\u201D 方法时，会发生什么？
 
@@ -503,7 +503,7 @@ D. POST 请求会被容器丢弃，客户端收不到任何响应
 
 ## 代码/协议/SQL 示例
 
-正文首个示例可作为最小验证起点（原样保留在上方章节）：先跑通，再改一个输入观察输出变化。
+《Servlet 与 JSP 基础》正文首个示例可作为最小验证起点（原样保留在上方章节）：先跑通，再改一个输入观察输出变化。
 
 ```text
 HTTP 协议基础 → Servlet 是什么 → 生命周期 → 请求与响应 → JSP 原理 → 实战示例
@@ -511,7 +511,7 @@ HTTP 协议基础 → Servlet 是什么 → 生命周期 → 请求与响应 →
 
 ## 时间/空间复杂度或性能分析
 
-- 用本课方案处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
+- 在《Servlet 与 JSP 基础》里处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
 - 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
 
 

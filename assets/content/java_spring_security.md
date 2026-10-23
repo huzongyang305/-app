@@ -522,7 +522,7 @@ CSRF 攻击利用的是浏览器自动携带 Cookie 的特性。JWT 通常存储
 
 ## 考点精讲
 
-### 问题1
+### 考点 1
 
 在 Spring Security 中，认证（Authentication）和授权（Authorization）的区别是什么？
 
@@ -537,7 +537,7 @@ D. 认证只用于 Web 应用，授权只用于移动端应用
 
 ---
 
-### 问题2
+### 考点 2
 
 JWT（JSON Web Token）由三部分组成，以下哪个选项正确描述了这三部分？
 
@@ -552,7 +552,7 @@ D. 头部（Header）、载荷（Payload）、签名（Signature）
 
 ---
 
-### 问题3
+### 考点 3
 
 Spring Security 推荐使用 BCrypt 算法存储密码，以下关于 BCrypt 的说法哪个是正确的？
 
@@ -567,7 +567,7 @@ D. BCrypt 是一种单向哈希算法，故意设计为慢速执行以防范暴�
 
 ---
 
-### 问题4
+### 考点 4
 
 在使用 JWT 认证的 Spring Security 配置中，为什么通常需要禁用 CSRF 保护？
 
@@ -582,7 +582,7 @@ D. 因为禁用 CSRF 可以提高 JWT 的加密强度
 
 ---
 
-### 问题5
+### 考点 5
 
 "@PreAuthorize" 和 "@Secured" 都用于方法级权限控制，它们的主要区别是什么？
 

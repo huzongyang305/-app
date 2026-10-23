@@ -482,7 +482,7 @@ ConfigMap 存储非机密的配置数据（如 URL、日志级别），以明文
 
 ## 考点精讲
 
-### 问题1
+### 考点 1
 
 Docker 镜像的分层机制有什么好处？为什么多阶段构建能减小镜像体积？
 
@@ -497,7 +497,7 @@ D. 分层可以复用和缓存加速构建；多阶段构建的最终镜像只�
 
 ---
 
-### 问题2
+### 考点 2
 
 Kubernetes 中 Deployment 的 `maxSurge` 和 `maxUnavailable` 分别是什么意思？如果 `replicas=3`、`maxSurge=1`、`maxUnavailable=0`，滚动更新时最多会有几个 Pod 同时运行？
 
@@ -512,7 +512,7 @@ D. 最多 4 个 Pod；maxSurge 控制更新时允许超出期望副本数的上�
 
 ---
 
-### 问题3
+### 考点 3
 
 在 Dockerfile 中，使用多阶段构建（multi-stage build）的主要目的是什么？
 
@@ -527,7 +527,7 @@ D. 将构建环境和运行环境分离，最终镜像只包含运行所需的�
 
 ---
 
-### 问题4
+### 考点 4
 
 Kubernetes 中 ConfigMap 和 Secret 的区别是什么？为什么说 Secret 的 Base64 编码不算真正的加密？
 
@@ -542,7 +542,7 @@ D. ConfigMap 存储非机密配置数据（明文），Secret 存储敏感数据
 
 ---
 
-### 问题5
+### 考点 5
 
 在 Kubernetes 中，Service 资源的核心作用是什么？
 

@@ -1,6 +1,6 @@
 # Flutter 状态管理与性能
 
-> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：30 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：35 分钟
 
 ![状态分层与重建范围](images/diagram_mobile_flutter_state.webp)
 
@@ -367,37 +367,37 @@ AnimationController、TextEditingController、StreamSubscription 创建后不释
 
 - **题目**：围绕“Flutter 状态管理与性能”中的 Flutter、状态管理、Provider，下列哪两项是本课强调的实践判断？
 - **正确项**：AC
-- **判断依据**：这道题落在术语 `Flutter` 上：用 Dart 编写、自带渲染引擎绘制界面的跨平台 UI 框架。学习 Flutter 时要同时说明输入、输出和失败路径，不能只看正常流程；验证状态管理时要固定版本并覆盖边界输入，结论才可复现。复习时把 `Flutter` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是学习 Flutter 时要同时说明输入、输出和失败路径，不能只看正常流程。术语 Flutter（Flutter 状态管理与性能）：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层，再配合 const、Selector 与 RepaintBoundary 控制性能，本题取学习 Flutter 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是整页 `Consumer` 包住所有内容会造成无谓重建，改法是只包需要的子树，干扰项只要 Flutter 的常规示例通过，就可以跳过边界与异常路径正踩在这条上。
 
 ### 考点 2：第 2 题
 
 - **题目**：代码语言为 `dart`，选自 `Flutter 状态管理与性能` 的 `Flutter` 部分。课程问题为状态分层、重建范围控制与生命周期陷阱。哪一项描述与代码一致？
 - **正确项**：B
-- **判断依据**：这道题落在术语 `Flutter` 上：用 Dart 编写、自带渲染引擎绘制界面的跨平台 UI 框架。本课代码示例中调用了 `ChangeNotifierProvider()`，用于在应用根部注入 CartProvider。复习时把 `Flutter` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是调用了 `ChangeNotifierProvider()`。术语 Flutter（Flutter 状态管理与性能）：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层，再配合 const、Selector 与 RepaintBoundary 控制性能，本题取调用了 `ChangeNotifierProvider()`这条。易错点是整页 `Consumer` 包住所有内容会造成无谓重建，改法是只包需要的子树，干扰项调用了 `round()`正踩在这条上。
 
 ### 考点 3：第 3 题
 
 - **题目**：忘记在 dispose 中释放控制器会导致？
 - **正确项**：A
-- **判断依据**：这道题检验本课主问题：状态分层、重建范围控制与生命周期陷阱。忘记释放控制器会导致内存泄漏与后台继续执行，AnimationController、TextEditingController、StreamSubscription 都要在 dispose 中释放。复习时先复述本课主问题，再举一个会让结论失效的输入。
+- **判断依据**：本题正确项是内存泄漏与后台继续执行。术语 Flutter（Flutter 状态管理与性能）：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层，再配合 const、Selector 与 RepaintBoundary 控制性能，本题取内存泄漏与后台继续执行这条。易错点是整页 `Consumer` 包住所有内容会造成无谓重建，改法是只包需要的子树，干扰项只引起一次性的 UI 卡顿正踩在这条上。
 
 ### 考点 4：第 4 题
 
 - **题目**：ChangeNotifier 子类中通知界面刷新的方法是？
 - **正确项**：D
-- **判断依据**：这道题检验本课主问题：状态分层、重建范围控制与生命周期陷阱。ChangeNotifier 通过 notifyListeners 通知订阅者重建；setState 属于 StatefulWidget 自身，refresh 和 updateUI 都不是框架 API。复习时先复述本课主问题，再举一个会让结论失效的输入。
+- **判断依据**：本题正确项是notifyListeners。术语 Flutter（Flutter 状态管理与性能）：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层，再配合 const、Selector 与 RepaintBoundary 控制性能，本题取notifyListeners这条。易错点是整页 `Consumer` 包住所有内容会造成无谓重建，改法是只包需要的子树，干扰项只属于 State 的 setState正踩在这条上。
 
 ### 考点 5：第 5 题
 
 - **题目**：订阅 Provider 时，只希望在某个字段变化时重建，应该用？
 - **正确项**：C
-- **判断依据**：这道题检验本课主问题：状态分层、重建范围控制与生命周期陷阱。context.select<Model, T>((m) => m.field) 只订阅单个字段，只有该字段变化时才重建组件。Provider.of 的 listen: false 不订阅，context.read 也不订阅。复习时先复述本课主问题，再举一个会让结论失效的输入。
+- **判断依据**：本题正确项是context.select<Model, T>((m) => m.field)。术语 Flutter（Flutter 状态管理与性能）：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层，再配合 const、Selector 与 RepaintBoundary 控制性能，本题取context.select<Model, T>((m) => m.field)这条。易错点是整页 `Consumer` 包住所有内容会造成无谓重建，改法是只包需要的子树，干扰项Provider.of<Model>(context, listen: false)正踩在这条上。
 
 ### 考点 6：第 6 题
 
 - **题目**：下面几项都与 `Flutter` 有关，请按 `Flutter 状态管理与性能` 的正文顺序排列；该课主线是状态分层、重建范围控制与生命周期陷阱。
 - **正确项**：ABCD
-- **判断依据**：这道题落在术语 `Flutter` 上：用 Dart 编写、自带渲染引擎绘制界面的跨平台 UI 框架。本课正文顺序为：状态分层 → 重建范围控制 → 生命周期要点 → 异步与错误处理。复习时把 `Flutter` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：术语 Flutter（Flutter 状态管理与性能）：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层，再配合 const、Selector 与 RepaintBoundary 控制性能，本题取状态分层这条。易错点是整页 `Consumer` 包住所有内容会造成无谓重建，改法是只包需要的子树，干扰项重建范围控制正踩在这条上。
 
 ## 术语速查
 

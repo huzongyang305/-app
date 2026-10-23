@@ -10,9 +10,21 @@
 
 ---
 
-## 第 1 章 · 课程概览与学习目标
+## 本节知识框架
 
-### 你将学到什么
+**课程定位**：分类「devops」· 学习阶段 高级 · 建议用时 65 分钟。
+
+本课主线：理解 GitOps 理念，使用 ArgoCD 实现声明式部署与自动同步。
+
+### 复习清单
+
+- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
+- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
+
+
+### 第 1 讲·课程概览与学习目标
+#### 你将学到什么
 
 本课程将带你从零开始掌握 **GitOps** 理念与 **ArgoCD** 工具链的实战应用。学完本课程后，你将能够：
 
@@ -22,7 +34,7 @@
 - 实现多环境（dev / staging / prod）的 GitOps 部署策略
 - 掌握密钥管理、自动同步、健康检查等生产级实践
 
-### 课程路线图
+#### 课程路线图
 
 ```text
 GitOps 理念 → ArgoCD 架构 → Application CRD → 同步策略
@@ -31,15 +43,74 @@ GitOps 理念 → ArgoCD 架构 → Application CRD → 同步策略
 
 ---
 
-## 第 2 章 · GitOps 核心理念：用“菜谱”理解声明式管理
 
-### 生活类比：Git 就是你的“菜谱”
+### 第 13 讲·复习清单与最佳实践总结
+#### 复习清单
+
+完成本课程后，请对照以下清单检查自己的掌握程度：
+
+- [ ] **GitOps 核心概念**：能否用自己的话解释 GitOps 的四大原则（声明式、版本化、自动拉取、持续协调）？能否说出 GitOps 与传统 CI/CD 的 Push 模式有什么本质区别？
+- [ ] **ArgoCD 架构**：能否画出 ArgoCD 的核心组件（Server、Repository Server、Application Controller）以及它们之间的交互流程？能否解释“期望状态 vs 实际状态”的对比机制？
+- [ ] **Application CRD**：能否独立编写一个 ArgoCD Application 资源？是否理解 `source`、`destination`、`syncPolicy` 各字段的含义？能否区分 Kustomize 和 Helm 两种 source 配置方式？
+- [ ] **同步策略**：能否为不同环境（dev/staging/prod）配置合适的同步策略？是否理解 `prune`、`selfHeal`、同步窗口、重试策略的作用和配置方式？
+- [ ] **Helm 集成**：能否创建一个基本的 Helm Chart？是否理解 `values.yaml`、`templates/`、`_helpers.tpl` 的作用？能否在 ArgoCD 中配置多环境 values 覆盖？
+- [ ] **Kustomize 集成**：能否用 base + overlays 模式组织多环境配置？是否理解 `kustomization.yaml` 中 `resources`、`patches`、`namePrefix`、`configMapGenerator` 的用法？
+- [ ] **密钥管理**：能否解释为什么密钥不能明文存储在 Git 中？是否掌握 Sealed Secrets 或 External Secrets 至少一种方案的使用方法？
+- [ ] **多环境管理**：能否设计一套完整的 dev -> staging -> prod 环境晋升流程？是否理解 AppProject 的作用和配置方式？
+- [ ] **排障能力**：能否处理常见的 ArgoCD 问题（OutOfSync、Degraded、同步卡住）？是否会使用 `argocd app diff`、`argocd app logs` 等命令进行诊断？
+
+#### 最佳实践总结
+
+1. **Git 是唯一的真相源**：永远不要手动修改集群中的资源，所有变更都通过 Git 提交
+2. **环境隔离**：使用 AppProject 和 SyncWindows 对不同环境实施差异化管控
+3. **渐进式自动化**：dev 环境全自动同步，staging 半自动，prod 需人工审批
+4. **密钥安全第一**：使用 Sealed Secrets 或 External Secrets，绝不明文存储密钥
+5. **监控与通知**：配置 Webhook 实现即时同步，配置通知让团队第一时间获知部署状态
+6. **回滚策略**：保持 Git 历史清晰，确保任何时候都能通过 `git revert` 快速回滚
+7. **资源限制**：为所有工作负载设置 `resources.requests` 和 `resources.limits`
+8. **健康检查**：为所有服务配置 `livenessProbe` 和 `readinessProbe`
+
+#### 推荐学习路径
+
+```text
+本课程完成后，建议继续学习：
+
+1. Argo Workflows -- 在 Kubernetes 上编排复杂工作流
+2. Argo Rollouts -- 实现金丝雀发布和蓝绿部署
+3. Prometheus + Grafana -- 监控 GitOps 流水线和集群状态
+4. HashiCorp Vault -- 企业级密钥管理
+5. Crossplane -- 用 GitOps 方式管理云基础设施
+```
+
+---
+
+---
+
+
+## 核心概念定义
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| GitOps | 理解 GitOps 理念，使用 ArgoCD 实现声明式部署与自动同步。相关：正文给出可操作定义与适用边界。 |
+| ArgoCD | 理解 GitOps 理念，使用 ArgoCD 实现声明式部署与自动同步。相关：正文给出可操作定义与适用边界。 |
+| 声明式 | 理解 GitOps 理念，使用 ArgoCD 实现声明式部署与自动同步。相关：正文给出可操作定义与适用边界。 |
+| Kubernetes | 理解 GitOps 理念，使用 ArgoCD 实现声明式部署与自动同步。相关：正文给出可操作定义与适用边界。 |
+| 自动同步 | 理解 GitOps 理念，使用 ArgoCD 实现声明式部署与自动同步。相关：正文给出可操作定义与适用边界。 |
+
+
+## 原理与运行机制
+
+《GitOps 与 ArgoCD 实战》正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
+
+
+### 第 2 讲·GitOps 核心理念：用“菜谱”理解声明式管理
+#### 生活类比：Git 就是你的“菜谱”
 
 想象你经营一家连锁餐厅。传统做法是：你亲自跑到每家分店，手把手教厨师做菜（命令式）。而 GitOps 的做法是：你维护一本**标准菜谱**（Git 仓库），每家分店的厨房会自动根据菜谱来制作菜品（Kubernetes 集群）。
 
 如果有人想改菜品的口味，他不能直接跑到厨房改——他必须**先修改菜谱**，然后厨房自动同步更新。这就是 GitOps 的精髓：**Git 是唯一的真相源（Single Source of Truth）**。
 
-### GitOps 四大原则
+#### GitOps 四大原则
 
 | 原则 | 说明 | 类比 |
 |------|------|------|
@@ -48,7 +119,7 @@ GitOps 理念 → ArgoCD 架构 → Application CRD → 同步策略
 | **自动拉取** | 系统自动对比“期望状态”与“实际状态”，并修复差异 | 厨房自动检查菜品是否符合菜谱 |
 | **持续协调** | 不断循环“检测差异 → 同步修复”的过程 | 质量监督员 24 小时巡检 |
 
-### GitOps vs 传统 CI/CD
+#### GitOps vs 传统 CI/CD
 
 ```text
 传统 CI/CD（Push 模式）：
@@ -62,9 +133,9 @@ GitOps（Pull 模式）：
 
 ---
 
-## 第 3 章 · Git 作为唯一真相源
 
-### 为什么选择 Git？
+### 第 3 讲·Git 作为唯一真相源
+#### 为什么选择 Git？
 
 Git 不仅仅是一个代码版本管理工具，它还是一个天然的**审计日志系统**：
 
@@ -73,7 +144,7 @@ Git 不仅仅是一个代码版本管理工具，它还是一个天然的**审�
 - **Pull Request** 提供了配置变更的审批流程
 - **回滚操作**只需 `git revert`，简单可靠
 
-### 仓库结构设计
+#### 仓库结构设计
 
 一个典型的 GitOps 仓库结构如下：
 
@@ -102,7 +173,7 @@ gitops-repo/
         └── backend-app.yaml
 ```
 
-### 工作流规则
+#### 工作流规则
 
 1. **禁止手动修改集群**：所有变更必须通过 Git 提交
 2. **变更必须经过 Review**：通过 Pull Request 审批
@@ -110,13 +181,13 @@ gitops-repo/
 
 ---
 
-## 第 4 章 · ArgoCD 架构与工作原理
 
-### ArgoCD 是什么？
+### 第 4 讲·ArgoCD 架构与工作原理
+#### ArgoCD 是什么？
 
 ArgoCD 是一个为 Kubernetes 设计的**声明式 GitOps 持续交付工具**。它运行在集群内部，持续监控 Git 仓库，确保集群状态与 Git 中声明的期望状态一致。
 
-### 架构图解
+#### 架构图解
 
 ```text
 ┌────────────────────────────────────────────────────────────────┐
@@ -146,14 +217,14 @@ ArgoCD 是一个为 Kubernetes 设计的**声明式 GitOps 持续交付工具**�
                               └────────────────────────────────┘
 ```
 
-### 核心组件说明
+#### 核心组件说明
 
 - **ArgoCD Server**：提供 Web UI 和 API，处理用户请求
 - **Repository Server**：与 Git 仓库交互，获取配置文件
 - **Application Controller**：核心控制器，持续对比期望状态与实际状态，执行同步操作
 - **Redis**：缓存 Git 仓库数据和会话信息
 
-### 安装 ArgoCD
+#### 安装 ArgoCD
 
 ```bash
 # 创建 ArgoCD 命名空间
@@ -166,14 +237,14 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/st
 kubectl get pods -n argocd
 ```
 
-### 获取初始管理员密码
+#### 获取初始管理员密码
 
 ```bash
 # 初始密码存储在 Secret 中
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 ```
 
-### 访问 ArgoCD Web UI
+#### 访问 ArgoCD Web UI
 
 ```bash
 # 端口转发到本地
@@ -186,136 +257,9 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 
 ---
 
-## 第 5 章 · Application CRD 配置详解
 
-### 什么是 Application CRD？
-
-ArgoCD 通过 Kubernetes 的自定义资源（CRD）来定义“应用”。每个 `Application` 资源描述了：
-
-- **从哪里获取配置**（Git 仓库地址、路径、分支）
-- **部署到哪里**（目标集群、命名空间）
-- **使用什么工具**（原生 Kustomize、Helm、Kustomize + Helm）
-
-### 基础 Application 示例
-
-```yaml
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: guestbook-app
-  namespace: argocd
-spec:
-  # 目标集群与命名空间
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: guestbook
-  # 源配置：Git 仓库信息
-  source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
-    targetRevision: HEAD
-    path: guestbook
-  # 项目归属
-  project: default
-  # 同步策略
-  syncPolicy:
-    automated:
-      prune: true      # 自动删除 Git 中已移除的资源
-      selfHeal: true   # 自动修复集群中的手动变更
-    syncOptions:
-      - CreateNamespace=true
-```
-
-### 使用 Kustomize 的 Application
-
-```yaml
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: frontend-kustomize
-  namespace: argocd
-spec:
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: frontend
-  source:
-    repoURL: https://github.com/example/gitops-repo.git
-    targetRevision: main
-    path: apps/frontend/overlays/dev
-  project: default
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-```
-
-### 使用 Helm 的 Application
-
-```yaml
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: backend-helm
-  namespace: argocd
-spec:
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: backend
-  source:
-    repoURL: https://github.com/example/gitops-repo.git
-    targetRevision: main
-    path: charts/backend
-    helm:
-      releaseName: backend-service
-      valueFiles:
-        - values-dev.yaml
-      parameters:
-        - name: image.tag
-          value: "v1.2.3"
-        - name: replicaCount
-          value: "3"
-  project: default
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-```
-
-### 使用 Helm Chart 仓库的 Application
-
-```yaml
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: nginx-helm-repo
-  namespace: argocd
-spec:
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: web
-  source:
-    repoURL: https://charts.bitnami.com/bitnami
-    chart: nginx
-    targetRevision: 15.3.0
-    helm:
-      releaseName: my-nginx
-      values: |
-        replicaCount: 2
-        service:
-          type: ClusterIP
-        resources:
-          limits:
-            cpu: 200m
-            memory: 256Mi
-  project: default
-```
-
----
-
-## 第 6 章 · 同步策略：自动/手动、同步窗口与健康检查
-
-### 同步模式对比
+### 第 6 讲·同步策略：自动/手动、同步窗口与健康检查
+#### 同步模式对比
 
 | 模式 | 适用场景 | 风险等级 |
 |------|----------|----------|
@@ -323,7 +267,7 @@ spec:
 | **手动同步** | 生产环境 | 高（需要人工审批） |
 | **半自动** | 预发布环境 | 中（自动检测，手动确认） |
 
-### 自动同步配置
+#### 自动同步配置
 
 ```yaml
 syncPolicy:
@@ -332,7 +276,7 @@ syncPolicy:
     selfHeal: true     # 集群中被手动修改的资源，自动恢复为 Git 中的状态
 ```
 
-### 同步窗口（Sync Windows）
+#### 同步窗口（Sync Windows）
 
 同步窗口限制了“什么时候可以自动同步”，常用于保护生产环境：
 
@@ -366,7 +310,7 @@ spec:
         - '*'
 ```
 
-### 健康检查（Health Checks）
+#### 健康检查（Health Checks）
 
 ArgoCD 内置了对常见资源的健康检查：
 
@@ -394,7 +338,7 @@ end
 return hs
 ```
 
-### 重试策略
+#### 重试策略
 
 ```yaml
 syncPolicy:
@@ -411,401 +355,9 @@ syncPolicy:
 
 ---
 
-## 第 7 章 · Helm 集成：用模板管理复杂配置
 
-### 什么是 Helm？
-
-Helm 是 Kubernetes 的“包管理器”，类似于 Ubuntu 的 `apt` 或 CentOS 的 `yum`。它用**模板**来生成 Kubernetes 资源清单，让你可以用变量和逻辑来复用配置。
-
-### 生活类比
-
-如果 Kubernetes manifest 是一份固定的“打印表格”，那 Helm 就是一个“智能表单生成器”——你只需要填入变量（应用名、副本数、镜像版本），它就能自动生成完整的表格。
-
-### Helm Chart 目录结构
-
-```text
-charts/
-└── myapp/
-    ├── Chart.yaml          # Chart 元信息
-    ├── values.yaml         # 默认配置值
-    ├── templates/
-    │   ├── deployment.yaml # Deployment 模板
-    │   ├── service.yaml    # Service 模板
-    │   ├── ingress.yaml    # Ingress 模板
-    │   ├── hpa.yaml        # 水平自动伸缩模板
-    │   └── _helpers.tpl    # 模板辅助函数
-    └── charts/             # 依赖的子 Chart
-```
-
-### Chart.yaml 示例
-
-```yaml
-apiVersion: v2
-name: myapp
-description: 一个示例微服务 Helm Chart
-type: application
-version: 0.1.0
-appVersion: "1.0.0"
-maintainers:
-  - name: DevOps Team
-    email: devops@example.com
-```
-
-### values.yaml 示例
-
-```yaml
-# 全局配置
-replicaCount: 2
-
-image:
-  repository: myregistry.example.com/myapp
-  pullPolicy: IfNotPresent
-  tag: "latest"
-
-nameOverride: ""
-fullnameOverride: ""
-
-service:
-  type: ClusterIP
-  port: 80
-  targetPort: 8080
-
-ingress:
-  enabled: true
-  className: nginx
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-  hosts:
-    - host: myapp.example.com
-      paths:
-        - path: /
-          pathType: Prefix
-  tls:
-    - secretName: myapp-tls
-      hosts:
-        - myapp.example.com
-
-resources:
-  limits:
-    cpu: 500m
-    memory: 512Mi
-  requests:
-    cpu: 200m
-    memory: 256Mi
-
-autoscaling:
-  enabled: false
-  minReplicas: 2
-  maxReplicas: 10
-  targetCPUUtilization: 80
-  targetMemoryUtilization: 80
-
-nodeSelector: {}
-tolerations: []
-affinity: {}
-```
-
-### Deployment 模板
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: {{ include "myapp.fullname" . }}
-  labels:
-    {{- include "myapp.labels" . | nindent 4 }}
-spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
-  selector:
-    matchLabels:
-      {{- include "myapp.selectorLabels" . | nindent 6 }}
-  template:
-    metadata:
-      labels:
-        {{- include "myapp.selectorLabels" . | nindent 8 }}
-    spec:
-      containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: {{ .Values.service.targetPort }}
-              protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /healthz
-              port: http
-            initialDelaySeconds: 15
-            periodSeconds: 20
-          readinessProbe:
-            httpGet:
-              path: /ready
-              port: http
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-```
-
-### _helpers.tpl 辅助函数
-
-```gotemplate
-{{/*
-生成完整的资源名称
-*/}}
-{{- define "myapp.fullname" -}}
-{{- if .Values.fullnameOverride }}
-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- $name := default .Chart.Name .Values.nameOverride }}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
-{{- end }}
-{{- end }}
-
-{{/*
-通用标签
-*/}}
-{{- define "myapp.labels" -}}
-helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
-{{ include "myapp.selectorLabels" . }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{- end }}
-
-{{/*
-选择器标签
-*/}}
-{{- define "myapp.selectorLabels" -}}
-app.kubernetes.io/name: {{ .Chart.Name }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end }}
-```
-
-### 在 ArgoCD 中使用多环境 values
-
-```yaml
-# argocd/application-dev.yaml
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: myapp-dev
-spec:
-  source:
-    repoURL: https://github.com/example/gitops-repo.git
-    targetRevision: develop
-    path: charts/myapp
-    helm:
-      valueFiles:
-        - values.yaml
-        - values-dev.yaml    # 开发环境覆盖值
----
-# argocd/application-prod.yaml
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: myapp-prod
-spec:
-  source:
-    repoURL: https://github.com/example/gitops-repo.git
-    targetRevision: main
-    path: charts/myapp
-    helm:
-      valueFiles:
-        - values.yaml
-        - values-prod.yaml   # 生产环境覆盖值
-```
-
----
-
-## 第 8 章 · Kustomize 集成：无模板的配置管理
-
-### 什么是 Kustomize？
-
-Kustomize 是 Kubernetes 内置的配置定制工具。与 Helm 不同，Kustomize **不使用模板语法**，而是通过“基础 + 覆盖层”的方式组合配置。
-
-### 生活类比
-
-Kustomize 就像“照片编辑”——你有一张原始照片（base），然后针对不同场景添加不同的滤镜和裁剪（overlays）。原始照片永远不变，每个场景的修改都是叠加上去的。
-
-### Kustomize 目录结构
-
-```text
-apps/
-└── backend/
-    ├── base/
-    │   ├── deployment.yaml
-    │   ├── service.yaml
-    │   └── kustomization.yaml
-    └── overlays/
-        ├── dev/
-        │   ├── kustomization.yaml
-        │   └── replica-patch.yaml
-        ├── staging/
-        └── prod/
-            ├── kustomization.yaml
-            ├── replica-patch.yaml
-            └── resource-patch.yaml
-```
-
-### Base 配置
-
-```yaml
-# apps/backend/base/deployment.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: backend
-  labels:
-    app: backend
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: backend
-  template:
-    metadata:
-      labels:
-        app: backend
-    spec:
-      containers:
-        - name: backend
-          image: myregistry.example.com/backend:latest
-          ports:
-            - containerPort: 8080
-          resources:
-            requests:
-              cpu: 100m
-              memory: 128Mi
-            limits:
-              cpu: 200m
-              memory: 256Mi
-```
-
-```yaml
-# apps/backend/base/service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: backend
-spec:
-  selector:
-    app: backend
-  ports:
-    - port: 80
-      targetPort: 8080
-  type: ClusterIP
-```
-
-```yaml
-# apps/backend/base/kustomization.yaml
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - deployment.yaml
-  - service.yaml
-commonLabels:
-  app.kubernetes.io/managed-by: kustomize
-```
-
-### Dev 覆盖层
-
-```yaml
-# apps/backend/overlays/dev/kustomization.yaml
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - ../../base
-namePrefix: dev-
-namespace: dev
-patches:
-  - path: replica-patch.yaml
-configMapGenerator:
-  - name: backend-config
-    literals:
-      - LOG_LEVEL=debug
-      - DATABASE_URL=postgresql://dev-db:5432/myapp
-```
-
-```yaml
-# apps/backend/overlays/dev/replica-patch.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: backend
-spec:
-  replicas: 1
-```
-
-### Prod 覆盖层
-
-```yaml
-# apps/backend/overlays/prod/kustomization.yaml
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - ../../base
-namePrefix: prod-
-namespace: production
-patches:
-  - path: replica-patch.yaml
-  - path: resource-patch.yaml
-configMapGenerator:
-  - name: backend-config
-    literals:
-      - LOG_LEVEL=warn
-      - DATABASE_URL=postgresql://prod-db:5432/myapp
-```
-
-```yaml
-# apps/backend/overlays/prod/replica-patch.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: backend
-spec:
-  replicas: 5
-```
-
-```yaml
-# apps/backend/overlays/prod/resource-patch.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: backend
-spec:
-  template:
-    spec:
-      containers:
-        - name: backend
-          resources:
-            requests:
-              cpu: 500m
-              memory: 512Mi
-            limits:
-              cpu: "1"
-              memory: 1Gi
-```
-
----
-
-## 第 9 章 · 多环境管理：Dev / Staging / Prod
-
-### 环境隔离策略
+### 第 9 讲·多环境管理：Dev / Staging / Prod
+#### 环境隔离策略
 
 在生产实践中，我们通常为每个环境创建独立的 Kubernetes 命名空间或独立集群：
 
@@ -824,7 +376,7 @@ spec:
 └────────────────────────────────────────────────────────────┘
 ```
 
-### AppProject 定义
+#### AppProject 定义
 
 ```yaml
 # argocd/projects.yaml
@@ -883,7 +435,7 @@ spec:
         - '*'
 ```
 
-### 多环境 Application 定义
+#### 多环境 Application 定义
 
 ```yaml
 # argocd/applications/frontend-dev.yaml
@@ -953,7 +505,7 @@ spec:
       - CreateNamespace=true
 ```
 
-### 环境晋升流程
+#### 环境晋升流程
 
 ```text
 开发者提交代码
@@ -973,13 +525,13 @@ staging 环境自动同步 → 集成测试
 
 ---
 
-## 第 10 章 · 密钥管理：Sealed Secrets 与 External Secrets
 
-### 问题：密钥不能明文存在 Git 中
+### 第 10 讲·密钥管理：Sealed Secrets 与 External Secrets
+#### 问题：密钥不能明文存在 Git 中
 
 GitOps 要求所有配置都在 Git 中，但密码、API Key 等敏感信息不能以明文存储。这就像菜谱可以公开，但保险箱密码不能写在菜谱上。
 
-### 方案一：Sealed Secrets
+#### 方案一：Sealed Secrets
 
 Sealed Secrets 由 Bitnami 开发，原理是用非对称加密对 Secret 进行加密，加密后的“密封密钥”可以安全地存储在 Git 中，只有集群内的 Sealed Secrets Controller 能解密。
 
@@ -1039,7 +591,7 @@ spec:
     type: Opaque
 ```
 
-### 方案二：External Secrets Operator
+#### 方案二：External Secrets Operator
 
 External Secrets 从外部密钥管理系统（如 AWS Secrets Manager、HashiCorp Vault、Azure Key Vault）中拉取密钥，并自动创建 Kubernetes Secret。
 
@@ -1101,7 +653,7 @@ spec:
         property: password
 ```
 
-### 方案对比
+#### 方案对比
 
 | 特性 | Sealed Secrets | External Secrets |
 |------|---------------|-----------------|
@@ -1113,9 +665,129 @@ spec:
 
 ---
 
-## 第 11 章 · 实战：部署完整的微服务应用
 
-### 项目概述
+### 第 12 讲·高级实践与排障指南
+#### Webhook 自动触发
+
+与其等待 ArgoCD 定期轮询 Git 仓库，不如配置 Webhook 让 Git 推送时立即触发同步：
+
+```bash
+# 在 ArgoCD 中获取 Webhook URL
+argocd repo get https://github.com/your-org/gitops-repo.git \
+  --output jsonpath='{.status.webhookUrl}'
+
+# 在 GitHub 仓库的 Settings -> Webhooks 中添加此 URL
+# Secret 填写 ArgoCD 的 webhook secret
+# Content type 选择 application/json
+# 触发事件选择 "Just the push event"
+```
+
+#### 应用资源排除
+
+某些资源不应当被 ArgoCD 管理，可以在配置中排除：
+
+```yaml
+# argocd-cm ConfigMap 中添加排除规则
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+  namespace: argocd
+data:
+  resource.exclusions: |
+    - apiGroups:
+        - cilium.io
+      kinds:
+        - CiliumIdentity
+      clusters:
+        - "*"
+```
+
+#### 常见排障场景
+
+**场景一：应用状态为 "OutOfSync"**
+
+```bash
+# 查看差异详情
+argocd app diff microservice-demo
+
+# 手动触发同步
+argocd app sync microservice-demo
+
+# 如果同步失败，查看事件日志
+kubectl describe application microservice-demo -n argocd
+```
+
+**场景二：应用状态为 "Degraded"**
+
+```bash
+# 查看不健康的资源
+argocd app get microservice-demo --health
+
+# 检查 Pod 状态
+kubectl get pods -n microservice-demo | grep -v Running
+
+# 查看 Pod 事件
+kubectl describe pod <pod-name> -n microservice-demo
+
+# 查看 Pod 日志
+kubectl logs <pod-name> -n microservice-demo
+```
+
+**场景三：同步卡住（Finalizer 阻塞）**
+
+```bash
+# 删除应用时可能被 finalizer 阻塞
+# 先移除 finalizer 再删除
+kubectl patch application microservice-demo -n argocd \
+  --type json -p '[{"op": "remove", "path": "/metadata/finalizers"}]'
+```
+
+#### 通知配置
+
+```yaml
+# argocd-notifications-cm ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-notifications-cm
+  namespace: argocd
+data:
+  service.webhook.dingtalk: |
+    url: https://oapi.dingtalk.com/robot/send?access_token=YOUR_TOKEN
+    headers:
+      - name: Content-Type
+        value: application/json
+  trigger.on-sync-succeeded: |
+    - description: 应用同步成功
+      send:
+        - dingtalk-sync-succeeded
+      when: app.status.operationState.phase in ['Succeeded']
+  template.dingtalk-sync-succeeded: |
+    webhook:
+      dingtalk:
+        method: POST
+        body: |
+          {
+            "msgtype": "markdown",
+            "markdown": {
+              "title": "ArgoCD 同步成功",
+              "text": "## 同步成功\n- 应用: {{.app.metadata.name}}\n- 状态: {{.app.status.sync.status}}\n- 仓库: {{.app.spec.source.repoURL}}"
+            }
+          }
+```
+
+---
+
+
+## 典型应用场景
+
+- 结合「GitOps 与 ArgoCD 实战」的常见落地场景与选型边界，详见正文各章节的对比讨论。
+- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
+
+
+### 第 11 讲·实战：部署完整的微服务应用
+#### 项目概述
 
 在本章中，我们将部署一个完整的微服务应用，包含：
 
@@ -1124,7 +796,7 @@ spec:
 - **Redis 缓存**
 - **PostgreSQL 数据库**
 
-### 第一步：准备 Kubernetes Manifests
+#### 第一步：准备 Kubernetes Manifests
 
 ```yaml
 # k8s/base/namespace.yaml
@@ -1343,7 +1015,7 @@ spec:
                   number: 3000
 ```
 
-### 第二步：创建 ArgoCD Application
+#### 第二步：创建 ArgoCD Application
 
 ```yaml
 # argocd/microservice-demo.yaml
@@ -1379,7 +1051,7 @@ spec:
         maxDuration: 3m
 ```
 
-### 第三步：使用 argocd CLI 操作
+#### 第三步：使用 argocd CLI 操作
 
 ```bash
 # 登录 ArgoCD
@@ -1413,7 +1085,7 @@ argocd app logs microservice-demo
 argocd app rollback microservice-demo 1
 ```
 
-### 第四步：验证部署
+#### 第四步：验证部署
 
 ```bash
 # 检查所有 Pod 状态
@@ -1436,166 +1108,564 @@ kubectl get ingress -n microservice-demo
 
 ---
 
-## 第 12 章 · 高级实践与排障指南
 
-### Webhook 自动触发
+## 代码/协议/SQL 示例
 
-与其等待 ArgoCD 定期轮询 Git 仓库，不如配置 Webhook 让 Git 推送时立即触发同步：
-
-```bash
-# 在 ArgoCD 中获取 Webhook URL
-argocd repo get https://github.com/your-org/gitops-repo.git \
-  --output jsonpath='{.status.webhookUrl}'
-
-# 在 GitHub 仓库的 Settings -> Webhooks 中添加此 URL
-# Secret 填写 ArgoCD 的 webhook secret
-# Content type 选择 application/json
-# 触发事件选择 "Just the push event"
-```
-
-### 应用资源排除
-
-某些资源不应当被 ArgoCD 管理，可以在配置中排除：
-
-```yaml
-# argocd-cm ConfigMap 中添加排除规则
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: argocd-cm
-  namespace: argocd
-data:
-  resource.exclusions: |
-    - apiGroups:
-        - cilium.io
-      kinds:
-        - CiliumIdentity
-      clusters:
-        - "*"
-```
-
-### 常见排障场景
-
-**场景一：应用状态为 "OutOfSync"**
-
-```bash
-# 查看差异详情
-argocd app diff microservice-demo
-
-# 手动触发同步
-argocd app sync microservice-demo
-
-# 如果同步失败，查看事件日志
-kubectl describe application microservice-demo -n argocd
-```
-
-**场景二：应用状态为 "Degraded"**
-
-```bash
-# 查看不健康的资源
-argocd app get microservice-demo --health
-
-# 检查 Pod 状态
-kubectl get pods -n microservice-demo | grep -v Running
-
-# 查看 Pod 事件
-kubectl describe pod <pod-name> -n microservice-demo
-
-# 查看 Pod 日志
-kubectl logs <pod-name> -n microservice-demo
-```
-
-**场景三：同步卡住（Finalizer 阻塞）**
-
-```bash
-# 删除应用时可能被 finalizer 阻塞
-# 先移除 finalizer 再删除
-kubectl patch application microservice-demo -n argocd \
-  --type json -p '[{"op": "remove", "path": "/metadata/finalizers"}]'
-```
-
-### 通知配置
-
-```yaml
-# argocd-notifications-cm ConfigMap
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: argocd-notifications-cm
-  namespace: argocd
-data:
-  service.webhook.dingtalk: |
-    url: https://oapi.dingtalk.com/robot/send?access_token=YOUR_TOKEN
-    headers:
-      - name: Content-Type
-        value: application/json
-  trigger.on-sync-succeeded: |
-    - description: 应用同步成功
-      send:
-        - dingtalk-sync-succeeded
-      when: app.status.operationState.phase in ['Succeeded']
-  template.dingtalk-sync-succeeded: |
-    webhook:
-      dingtalk:
-        method: POST
-        body: |
-          {
-            "msgtype": "markdown",
-            "markdown": {
-              "title": "ArgoCD 同步成功",
-              "text": "## 同步成功\n- 应用: {{.app.metadata.name}}\n- 状态: {{.app.status.sync.status}}\n- 仓库: {{.app.spec.source.repoURL}}"
-            }
-          }
-```
-
----
-
-## 第 13 章 · 复习清单与最佳实践总结
-
-### 复习清单
-
-完成本课程后，请对照以下清单检查自己的掌握程度：
-
-- [ ] **GitOps 核心概念**：能否用自己的话解释 GitOps 的四大原则（声明式、版本化、自动拉取、持续协调）？能否说出 GitOps 与传统 CI/CD 的 Push 模式有什么本质区别？
-- [ ] **ArgoCD 架构**：能否画出 ArgoCD 的核心组件（Server、Repository Server、Application Controller）以及它们之间的交互流程？能否解释“期望状态 vs 实际状态”的对比机制？
-- [ ] **Application CRD**：能否独立编写一个 ArgoCD Application 资源？是否理解 `source`、`destination`、`syncPolicy` 各字段的含义？能否区分 Kustomize 和 Helm 两种 source 配置方式？
-- [ ] **同步策略**：能否为不同环境（dev/staging/prod）配置合适的同步策略？是否理解 `prune`、`selfHeal`、同步窗口、重试策略的作用和配置方式？
-- [ ] **Helm 集成**：能否创建一个基本的 Helm Chart？是否理解 `values.yaml`、`templates/`、`_helpers.tpl` 的作用？能否在 ArgoCD 中配置多环境 values 覆盖？
-- [ ] **Kustomize 集成**：能否用 base + overlays 模式组织多环境配置？是否理解 `kustomization.yaml` 中 `resources`、`patches`、`namePrefix`、`configMapGenerator` 的用法？
-- [ ] **密钥管理**：能否解释为什么密钥不能明文存储在 Git 中？是否掌握 Sealed Secrets 或 External Secrets 至少一种方案的使用方法？
-- [ ] **多环境管理**：能否设计一套完整的 dev -> staging -> prod 环境晋升流程？是否理解 AppProject 的作用和配置方式？
-- [ ] **排障能力**：能否处理常见的 ArgoCD 问题（OutOfSync、Degraded、同步卡住）？是否会使用 `argocd app diff`、`argocd app logs` 等命令进行诊断？
-
-### 最佳实践总结
-
-1. **Git 是唯一的真相源**：永远不要手动修改集群中的资源，所有变更都通过 Git 提交
-2. **环境隔离**：使用 AppProject 和 SyncWindows 对不同环境实施差异化管控
-3. **渐进式自动化**：dev 环境全自动同步，staging 半自动，prod 需人工审批
-4. **密钥安全第一**：使用 Sealed Secrets 或 External Secrets，绝不明文存储密钥
-5. **监控与通知**：配置 Webhook 实现即时同步，配置通知让团队第一时间获知部署状态
-6. **回滚策略**：保持 Git 历史清晰，确保任何时候都能通过 `git revert` 快速回滚
-7. **资源限制**：为所有工作负载设置 `resources.requests` 和 `resources.limits`
-8. **健康检查**：为所有服务配置 `livenessProbe` 和 `readinessProbe`
-
-### 推荐学习路径
+《GitOps 与 ArgoCD 实战》正文首个示例可作为最小验证起点（原样保留在上方章节）：先跑通，再改一个输入观察输出变化。
 
 ```text
-本课程完成后，建议继续学习：
+GitOps 理念 → ArgoCD 架构 → Application CRD → 同步策略
+    → Helm/Kustomize 集成 → 多环境管理 → 密钥管理 → 实战项目
+```
 
-1. Argo Workflows -- 在 Kubernetes 上编排复杂工作流
-2. Argo Rollouts -- 实现金丝雀发布和蓝绿部署
-3. Prometheus + Grafana -- 监控 GitOps 流水线和集群状态
-4. HashiCorp Vault -- 企业级密钥管理
-5. Crossplane -- 用 GitOps 方式管理云基础设施
+
+### 第 5 讲·Application CRD 配置详解
+#### 什么是 Application CRD？
+
+ArgoCD 通过 Kubernetes 的自定义资源（CRD）来定义“应用”。每个 `Application` 资源描述了：
+
+- **从哪里获取配置**（Git 仓库地址、路径、分支）
+- **部署到哪里**（目标集群、命名空间）
+- **使用什么工具**（原生 Kustomize、Helm、Kustomize + Helm）
+
+#### 基础 Application 示例
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: guestbook-app
+  namespace: argocd
+spec:
+  # 目标集群与命名空间
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: guestbook
+  # 源配置：Git 仓库信息
+  source:
+    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    targetRevision: HEAD
+    path: guestbook
+  # 项目归属
+  project: default
+  # 同步策略
+  syncPolicy:
+    automated:
+      prune: true      # 自动删除 Git 中已移除的资源
+      selfHeal: true   # 自动修复集群中的手动变更
+    syncOptions:
+      - CreateNamespace=true
+```
+
+#### 使用 Kustomize 的 Application
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: frontend-kustomize
+  namespace: argocd
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: frontend
+  source:
+    repoURL: https://github.com/example/gitops-repo.git
+    targetRevision: main
+    path: apps/frontend/overlays/dev
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+```
+
+#### 使用 Helm 的 Application
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: backend-helm
+  namespace: argocd
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: backend
+  source:
+    repoURL: https://github.com/example/gitops-repo.git
+    targetRevision: main
+    path: charts/backend
+    helm:
+      releaseName: backend-service
+      valueFiles:
+        - values-dev.yaml
+      parameters:
+        - name: image.tag
+          value: "v1.2.3"
+        - name: replicaCount
+          value: "3"
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+```
+
+#### 使用 Helm Chart 仓库的 Application
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nginx-helm-repo
+  namespace: argocd
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: web
+  source:
+    repoURL: https://charts.bitnami.com/bitnami
+    chart: nginx
+    targetRevision: 15.3.0
+    helm:
+      releaseName: my-nginx
+      values: |
+        replicaCount: 2
+        service:
+          type: ClusterIP
+        resources:
+          limits:
+            cpu: 200m
+            memory: 256Mi
+  project: default
 ```
 
 ---
 
+
+### 第 7 讲·Helm 集成：用模板管理复杂配置
+#### 什么是 Helm？
+
+Helm 是 Kubernetes 的“包管理器”，类似于 Ubuntu 的 `apt` 或 CentOS 的 `yum`。它用**模板**来生成 Kubernetes 资源清单，让你可以用变量和逻辑来复用配置。
+
+#### 生活类比
+
+如果 Kubernetes manifest 是一份固定的“打印表格”，那 Helm 就是一个“智能表单生成器”——你只需要填入变量（应用名、副本数、镜像版本），它就能自动生成完整的表格。
+
+#### Helm Chart 目录结构
+
+```text
+charts/
+└── myapp/
+    ├── Chart.yaml          # Chart 元信息
+    ├── values.yaml         # 默认配置值
+    ├── templates/
+    │   ├── deployment.yaml # Deployment 模板
+    │   ├── service.yaml    # Service 模板
+    │   ├── ingress.yaml    # Ingress 模板
+    │   ├── hpa.yaml        # 水平自动伸缩模板
+    │   └── _helpers.tpl    # 模板辅助函数
+    └── charts/             # 依赖的子 Chart
+```
+
+#### Chart.yaml 示例
+
+```yaml
+apiVersion: v2
+name: myapp
+description: 一个示例微服务 Helm Chart
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+maintainers:
+  - name: DevOps Team
+    email: devops@example.com
+```
+
+#### values.yaml 示例
+
+```yaml
+# 全局配置
+replicaCount: 2
+
+image:
+  repository: myregistry.example.com/myapp
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  hosts:
+    - host: myapp.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: myapp-tls
+      hosts:
+        - myapp.example.com
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 200m
+    memory: 256Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilization: 80
+  targetMemoryUtilization: 80
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+```
+
+#### Deployment 模板
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "myapp.fullname" . }}
+  labels:
+    {{- include "myapp.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "myapp.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "myapp.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.targetPort }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+```
+
+#### _helpers.tpl 辅助函数
+
+```gotemplate
+{{/*
+生成完整的资源名称
+*/}}
+{{- define "myapp.fullname" -}}
+{{- if .Values.fullnameOverride }}
+{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- $name := default .Chart.Name .Values.nameOverride }}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+
+{{/*
+通用标签
+*/}}
+{{- define "myapp.labels" -}}
+helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+{{ include "myapp.selectorLabels" . }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+选择器标签
+*/}}
+{{- define "myapp.selectorLabels" -}}
+app.kubernetes.io/name: {{ .Chart.Name }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+```
+
+#### 在 ArgoCD 中使用多环境 values
+
+```yaml
+# argocd/application-dev.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: myapp-dev
+spec:
+  source:
+    repoURL: https://github.com/example/gitops-repo.git
+    targetRevision: develop
+    path: charts/myapp
+    helm:
+      valueFiles:
+        - values.yaml
+        - values-dev.yaml    # 开发环境覆盖值
 ---
+# argocd/application-prod.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: myapp-prod
+spec:
+  source:
+    repoURL: https://github.com/example/gitops-repo.git
+    targetRevision: main
+    path: charts/myapp
+    helm:
+      valueFiles:
+        - values.yaml
+        - values-prod.yaml   # 生产环境覆盖值
+```
+
+---
+
+
+### 第 8 讲·Kustomize 集成：无模板的配置管理
+#### 什么是 Kustomize？
+
+Kustomize 是 Kubernetes 内置的配置定制工具。与 Helm 不同，Kustomize **不使用模板语法**，而是通过“基础 + 覆盖层”的方式组合配置。
+
+#### 生活类比
+
+Kustomize 就像“照片编辑”——你有一张原始照片（base），然后针对不同场景添加不同的滤镜和裁剪（overlays）。原始照片永远不变，每个场景的修改都是叠加上去的。
+
+#### Kustomize 目录结构
+
+```text
+apps/
+└── backend/
+    ├── base/
+    │   ├── deployment.yaml
+    │   ├── service.yaml
+    │   └── kustomization.yaml
+    └── overlays/
+        ├── dev/
+        │   ├── kustomization.yaml
+        │   └── replica-patch.yaml
+        ├── staging/
+        └── prod/
+            ├── kustomization.yaml
+            ├── replica-patch.yaml
+            └── resource-patch.yaml
+```
+
+#### Base 配置
+
+```yaml
+# apps/backend/base/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: myregistry.example.com/backend:latest
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+```
+
+```yaml
+# apps/backend/base/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  selector:
+    app: backend
+  ports:
+    - port: 80
+      targetPort: 8080
+  type: ClusterIP
+```
+
+```yaml
+# apps/backend/base/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - deployment.yaml
+  - service.yaml
+commonLabels:
+  app.kubernetes.io/managed-by: kustomize
+```
+
+#### Dev 覆盖层
+
+```yaml
+# apps/backend/overlays/dev/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+namePrefix: dev-
+namespace: dev
+patches:
+  - path: replica-patch.yaml
+configMapGenerator:
+  - name: backend-config
+    literals:
+      - LOG_LEVEL=debug
+      - DATABASE_URL=postgresql://dev-db:5432/myapp
+```
+
+```yaml
+# apps/backend/overlays/dev/replica-patch.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+```
+
+#### Prod 覆盖层
+
+```yaml
+# apps/backend/overlays/prod/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+namePrefix: prod-
+namespace: production
+patches:
+  - path: replica-patch.yaml
+  - path: resource-patch.yaml
+configMapGenerator:
+  - name: backend-config
+    literals:
+      - LOG_LEVEL=warn
+      - DATABASE_URL=postgresql://prod-db:5432/myapp
+```
+
+```yaml
+# apps/backend/overlays/prod/replica-patch.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 5
+```
+
+```yaml
+# apps/backend/overlays/prod/resource-patch.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  template:
+    spec:
+      containers:
+        - name: backend
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+```
+
+---
+
+
+## 时间/空间复杂度或性能分析
+
+- 在《GitOps 与 ArgoCD 实战》里处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
+- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
+
+
+## 常见误区与易错点
+
+| 错误做法 | 典型现象 | 修复方向 |
+| --- | --- | --- |
+| 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
+| 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
+| 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
+
+
+## 与其他知识点的关系
+
+本课与分类「devops」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
+
+
+## 自测题与参考答案
+
+以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
+
 
 ## 考点精讲
 
-### 问题1
+### 考点 1
 
 GitOps 的核心理念中，"Git 是唯一真相源（Single Source of Truth）"意味着什么？
 
@@ -1610,7 +1680,7 @@ D. 所有基础设施和应用的期望状态都通过 Git 仓库管理，集群
 
 ---
 
-### 问题2
+### 考点 2
 
 在 ArgoCD 中，"Application" CRD 的 "syncPolicy.automated" 配置中，"prune: true" 和 "selfHeal: true" 分别表示什么？
 
@@ -1625,7 +1695,7 @@ D. "prune" 自动删除 Git 中已移除的资源；"selfHeal" 自动修复集�
 
 ---
 
-### 问题3
+### 考点 3
 
 ArgoCD 的同步窗口（Sync Windows）功能主要用于什么场景？
 
@@ -1640,7 +1710,7 @@ D. 限制自动同步的时间窗口，常用于保护生产环境（例如只�
 
 ---
 
-### 问题4
+### 考点 4
 
 关于 Helm 和 Kustomize 在 ArgoCD 中的使用，以下哪个说法是正确的？
 
@@ -1655,7 +1725,7 @@ D. Helm 不支持多环境配置，Kustomize 支持
 
 ---
 
-### 问题5
+### 考点 5
 
 在 GitOps 密钥管理方案中，Sealed Secrets 的主要优势是什么？
 
@@ -1674,6 +1744,29 @@ D. 密钥通过环境变量手动注入到每个 Pod 中
 > **最后更新**：2026 年 10 月
 > **适用 ArgoCD 版本**：v2.9+
 > **适用 Kubernetes 版本**：v1.27+
+
+## 术语速查
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| GitOps | 以Git仓库为唯一真相源的运维方式，控制器拉取配置差异并持续协调集群 |
+| ArgoCD | 开源GitOps持续部署工具，用Application这个CRD描述源仓库与目标集群 |
+| 声明式 | 只写期望状态而不写执行步骤的配置风格，由系统自行收敛到目标 |
+| Kubernetes | 容器编排平台，ArgoCD把Git里的YAML资源应用到集群并管理副本与探针 |
+| 自动同步 | syncPolicy让Git提交后自动应用到集群，selfHeal可纠正手工篡改 |
+
+
+## 参考资料与复核
+
+- [本课资料锚点 devops_gitops_argocd](https://zh.wikipedia.org/w/index.php?search=devops_gitops_argocd)
+
+- 官方/权威资料：[OpenSSF 最佳实践](https://bestpractices.coreinfrastructure.org/)
+- 主题延伸：[关于「ArgoCD」的检索页](https://zh.wikipedia.org/w/index.php?search=ArgoCD)
+- 本课索引词：[锚点 devops_gitops_argocd](https://bestpractices.coreinfrastructure.org/#GitOps)
+- 最后复核：2026-10-04
+- 下次复核：2027-01-23
+
+
 ## 验证命令与预期输出
 
 完成本课后，用下面三条命令核对交付质量：
@@ -1689,11 +1782,13 @@ cd 项目根目录 && 按 README 的安装命令准备环境
 
 预期输出：程序正常退出（退出码 0），关键结果与正文示例一致，无未捕获异常。
 
+
 ## 项目专属规格
 
 - 运行环境与版本要求以正文「环境准备」为准，跨平台需分别验证。
 - 数据规模、并发量与失败率阈值由验收用例定义，不得私自放宽。
 - 接口契约、错误码与日志格式在交付前冻结，变更须走评审。
+
 
 ## 项目交付物
 
@@ -1701,86 +1796,6 @@ cd 项目根目录 && 按 README 的安装命令准备环境
 - [ ] README：安装、运行、测试三步可复现
 - [ ] 验收清单逐条勾选并附运行截图或日志
 
-## 本节知识框架
-
-**课程定位**：分类「devops」· 学习阶段 高级 · 建议用时 65 分钟。
-
-本课主线：理解 GitOps 理念，使用 ArgoCD 实现声明式部署与自动同步。
-
-### 复习清单
-
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
-- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
-
-## 核心概念定义
-
-| 术语 | 一句话说明 |
-| --- | --- |
-| GitOps | 理解 GitOps 理念，使用 ArgoCD 实现声明式部署与自动同步。相关：正文给出可操作定义与适用边界。 |
-| ArgoCD | 理解 GitOps 理念，使用 ArgoCD 实现声明式部署与自动同步。相关：正文给出可操作定义与适用边界。 |
-| 声明式 | 理解 GitOps 理念，使用 ArgoCD 实现声明式部署与自动同步。相关：正文给出可操作定义与适用边界。 |
-| Kubernetes | 理解 GitOps 理念，使用 ArgoCD 实现声明式部署与自动同步。相关：正文给出可操作定义与适用边界。 |
-| 自动同步 | 理解 GitOps 理念，使用 ArgoCD 实现声明式部署与自动同步。相关：正文给出可操作定义与适用边界。 |
-
-## 原理与运行机制
-
-正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
-
-## 典型应用场景
-
-- 结合「GitOps 与 ArgoCD 实战」的常见落地场景与选型边界，详见正文各章节的对比讨论。
-- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
-
-## 代码/协议/SQL 示例
-
-正文首个示例可作为最小验证起点（原样保留在上方章节）：先跑通，再改一个输入观察输出变化。
-
-```text
-GitOps 理念 → ArgoCD 架构 → Application CRD → 同步策略
-    → Helm/Kustomize 集成 → 多环境管理 → 密钥管理 → 实战项目
-```
-
-## 时间/空间复杂度或性能分析
-
-- 用本课方案处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
-- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
-
-## 常见误区与易错点
-
-| 错误做法 | 典型现象 | 修复方向 |
-| --- | --- | --- |
-| 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
-| 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
-| 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
-
-## 与其他知识点的关系
-
-本课与分类「devops」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
-
-## 自测题与参考答案
-
-以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
-
-## 术语速查
-
-| 术语 | 一句话说明 |
-| --- | --- |
-| GitOps | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
-| ArgoCD | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
-| 声明式 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
-| Kubernetes | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
-| 自动同步 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
-
-## 参考资料与复核
-
-- [本课资料锚点 devops_gitops_argocd](https://zh.wikipedia.org/w/index.php?search=devops_gitops_argocd)
-
-- 官方/权威资料：[OpenSSF 最佳实践](https://bestpractices.coreinfrastructure.org/)
-- 主题延伸：[关于「ArgoCD」的检索页](https://zh.wikipedia.org/w/index.php?search=ArgoCD)
-- 本课索引词：[锚点 devops_gitops_argocd](https://bestpractices.coreinfrastructure.org/#GitOps)
-- 最后复核：2026-10-04
-- 下次复核：2027-01-23
 
 ## 内容元数据
 
@@ -1791,4 +1806,5 @@ GitOps 理念 → ArgoCD 架构 → Application CRD → 同步策略
 - 所属分类：devops
 - 学习阶段：高级
 - 建议用时：65 分钟
+
 

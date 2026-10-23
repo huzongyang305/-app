@@ -4,7 +4,7 @@
 
 ![Rust 类型系统：Option、Result 与 trait](images/remaining_rust_types_traits.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：40 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：45 分钟
 
 ## 本节知识框架
 
@@ -525,37 +525,37 @@ fn read_port(map: &std::collections::HashMap<String, String>) -> Result<u16, Con
 
 - **题目**：Rust 没有 null，表达「可能没有值」用？
 - **正确项**：Option<T>
-- **判断依据**：这道题落在术语 `Rust` 上：Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：Option 管空值、Result 管错误、trait 管行为、enum + match 管状态。复习时把 `Rust` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是Option<T>。术语 Rust（Rust 类型系统：Option、Result 与 trait）：Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：Option 管空值、Result 管错误、trait 管行为、enum + match 管状态，本题取Option<T>这条。易错点是`match` 漏分支会造成non-exhaustive patterns，改法是补齐或用 `_ =>`，干扰项Result<T, E>正踩在这条上。
 
 ### 考点 2：第 2 题
 
 - **题目**：围绕“Rust 类型系统：Option、Result 与 trait”中的 Rust、Option、Result，下列哪两项是本课强调的实践判断？
 - **正确项**：学习 Rust 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 Option 时要固定版本并覆盖边界输入，结论才可复现
-- **判断依据**：这道题落在术语 `Rust` 上：Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：Option 管空值、Result 管错误、trait 管行为、enum + match 管状态。复习时把 `Rust` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是学习 Rust 时要同时说明输入、输出和失败路径，不能只看正常流程。术语 Rust（Rust 类型系统：Option、Result 与 trait）：Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：Option 管空值、Result 管错误、trait 管行为、enum + match 管状态，本题取学习 Rust 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是`match` 漏分支会造成non-exhaustive patterns，改法是补齐或用 `_ =>`，干扰项只要 Rust 的常规示例通过，就可以跳过边界与异常路径正踩在这条上。
 
 ### 考点 3：第 3 题
 
 - **题目**：`Rust 类型系统：Option、Result 与 trait` 的示例代码用于验证 `Rust`，其背景是空值与错误表达、trait 分发、模式匹配与智能指针。代码的真实内容是下面哪一项？
 - **正确项**：调用了 `Some()`
-- **判断依据**：这道题落在术语 `Rust` 上：Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：Option 管空值、Result 管错误、trait 管行为、enum + match 管状态。复习时把 `Rust` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是调用了 `Some()`。术语 Rust（Rust 类型系统：Option、Result 与 trait）：Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：Option 管空值、Result 管错误、trait 管行为、enum + match 管状态，本题取调用了 `Some()`这条。易错点是`match` 漏分支会造成non-exhaustive patterns，改法是补齐或用 `_ =>`，干扰项调用了 `die()`正踩在这条上。
 
 ### 考点 4：第 4 题
 
 - **题目**：dyn Trait 与泛型 T: Trait 的核心区别是？
 - **正确项**：dyn 运行时动态分发，泛型编译期单态化
-- **判断依据**：这道题检验本课主问题：空值与错误表达、trait 分发、模式匹配与智能指针。复习时先复述本课主问题，再举一个会让结论失效的输入。
+- **判断依据**：本题正确项是dyn 运行时动态分发，泛型编译期单态化。术语 Rust（Rust 类型系统：Option、Result 与 trait）：Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：Option 管空值、Result 管错误、trait 管行为、enum + match 管状态，本题取dyn 运行时动态分发，泛型编译期单态化这条。易错点是`match` 漏分支会造成non-exhaustive patterns，改法是补齐或用 `_ =>`，干扰项dyn 不能在集合中使用，需要装箱，但它只覆盖了部分情况正踩在这条上。
 
 ### 考点 5：第 5 题
 
 - **题目**：Rust 的孤儿规则（orphan rule）限制是？
 - **正确项**：trait 或类型至少要有一个定义在当前 crate
-- **判断依据**：这道题落在术语 `Rust` 上：Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：Option 管空值、Result 管错误、trait 管行为、enum + match 管状态。复习时把 `Rust` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是trait 或类型至少要有一个定义在当前 crate。术语 Rust（Rust 类型系统：Option、Result 与 trait）：Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：Option 管空值、Result 管错误、trait 管行为、enum + match 管状态，本题取trait 或类型至少要有一个定义在当前 crate这条。易错点是`match` 漏分支会造成non-exhaustive patterns，改法是补齐或用 `_ =>`，干扰项任何类型都能实现任何 trait，不需要考虑所属 crate正踩在这条上。
 
 ### 考点 6：第 6 题
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `空值与错误表达、trait 分发、模式匹配与智能指针。`，这段说明是：`____`：描述类型必须实现的能力集合，既能当泛型约束，也能做动态分发。空缺处应填哪个术语？
 - **正确项**：trait
-- **判断依据**：这道题落在术语 `trait` 上：描述类型必须实现的能力集合，既能当泛型约束，也能做动态分发。复习时把 `trait` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：涉及术语 trait：描述类型必须实现的能力集合，既能当泛型约束，也能做动态分发。易错点：`match` 漏分支会造成non-exhaustive patterns。正确做法：补齐或用 `_ =>`。漏分支编译器会直接报错，用 _ 兜底要确认没有吞掉未来新增的情况。
 
 ### 考点 7：`Rust`
 

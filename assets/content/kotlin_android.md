@@ -1,6 +1,6 @@
 # Kotlin Android 架构
 
-> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：30 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：35 分钟
 
 ![Kotlin Android 应用的分层架构](images/diagram_kt_android.webp)
 
@@ -374,37 +374,37 @@ fun main() {
 
 - **题目**：在 `Kotlin Android 架构` 里，与 `Android` 有关的说法中，哪一项最符合用 ViewModel、Repository、生命周期和依赖注入组织 Android 应用。？
 - **正确项**：UI 层只负责渲染和事件，业务状态放在 ViewModel，数据访问放在 Repository。
-- **判断依据**：这道题落在术语 `Android` 上：谷歌的移动操作系统：应用以 Activity、Service 等组件运行在 ART 上，权限与生命周期由系统管理。复习时把 `Android` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是UI 层只负责渲染和事件，业务状态放在 ViewModel，数据访问放在 Repository。术语 Android（Kotlin Android 架构）：谷歌的移动操作系统：应用以 Activity、Service 等组件运行在 ART 上，权限与生命周期由系统管理，本题取UI 层只负责渲染和事件，业务状态放在 ViewModel，数据访问放在 Repository这条。易错点是业务逻辑堆在界面组件里会造成难测试，生命周期问题多，改法是拆分视图模型与数据层，干扰项默认参数和命名参数能减少重载，扩展函数让外部类型获得新能力但不修改原类正踩在这条上。
 
 ### 考点 2：第 2 题
 
 - **题目**：围绕“Kotlin Android 架构”中的 Android、ViewModel、Repository，下列哪两项是本课强调的实践判断？
 - **正确项**：学习 Android 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 ViewModel 时要固定版本并覆盖边界输入，结论才可复现
-- **判断依据**：这道题落在术语 `Android` 上：谷歌的移动操作系统：应用以 Activity、Service 等组件运行在 ART 上，权限与生命周期由系统管理。复习时把 `Android` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是学习 Android 时要同时说明输入、输出和失败路径，不能只看正常流程。术语 Android（Kotlin Android 架构）：谷歌的移动操作系统：应用以 Activity、Service 等组件运行在 ART 上，权限与生命周期由系统管理，本题取学习 Android 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是业务逻辑堆在界面组件里会造成难测试，生命周期问题多，改法是拆分视图模型与数据层，干扰项把 ViewModel 的单次运行结果当成所有版本和规模都成立正踩在这条上。
 
 ### 考点 3：第 3 题
 
 - **题目**：在 `Kotlin Android 架构` 里，与 `Android` 有关的说法中，哪一项最符合用 ViewModel、Repository、生命周期和依赖注入组织 Android 应用。？（Kotlin Android 架构·Kotlin 第 3 题）
 - **正确项**：依赖注入、协程作用域和生命周期必须匹配，避免泄漏和重复请求。
-- **判断依据**：这道题落在术语 `Android` 上：谷歌的移动操作系统：应用以 Activity、Service 等组件运行在 ART 上，权限与生命周期由系统管理。复习时把 `Android` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是依赖注入、协程作用域和生命周期必须匹配，避免泄漏和重复请求。术语 Android（Kotlin Android 架构）：谷歌的移动操作系统：应用以 Activity、Service 等组件运行在 ART 上，权限与生命周期由系统管理，本题取依赖注入、协程作用域和生命周期必须匹配，避免泄漏和重复请求这条。易错点是业务逻辑堆在界面组件里会造成难测试，生命周期问题多，改法是拆分视图模型与数据层，干扰项委托把实现交给其他对象，by lazy 和接口委托是常见用法正踩在这条上。
 
 ### 考点 4：第 4 题
 
 - **题目**：`Kotlin Android 架构` 的主线是：用 ViewModel、Repository、生命周期和依赖注入组织 Android 应用。下面哪一项与这条主线一致？
 - **正确项**：用 ViewModel，Repository
-- **判断依据**：这道题落在术语 `Android` 上：谷歌的移动操作系统：应用以 Activity、Service 等组件运行在 ART 上，权限与生命周期由系统管理。复习时把 `Android` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是用 ViewModel，Repository。术语 Android（Kotlin Android 架构）：谷歌的移动操作系统：应用以 Activity、Service 等组件运行在 ART 上，权限与生命周期由系统管理，本题取用 ViewModel，Repository这条。易错点是业务逻辑堆在界面组件里会造成难测试，生命周期问题多，改法是拆分视图模型与数据层，干扰项理解默认参数、扩展函数、高阶函数和内联正踩在这条上。
 
 ### 考点 5：第 5 题
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `用 ViewModel、Repository、生命周期和依赖注入组织 Android 应用。`，这段说明是：二、运行时与内存模型：围绕「Android、ViewModel、Repository、`____`」说明变量`____`、资源释放、并发模型和错误传播。空缺处应填哪个术语？
 - **正确项**：生命周期
-- **判断依据**：这道题落在术语 `Android` 上：谷歌的移动操作系统：应用以 Activity、Service 等组件运行在 ART 上，权限与生命周期由系统管理。复习时把 `Android` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：涉及术语 Android：谷歌的移动操作系统：应用以 Activity、Service 等组件运行在 ART 上，权限与生命周期由系统管理。易错点：业务逻辑堆在界面组件里会造成难测试，生命周期问题多。正确做法：拆分视图模型与数据层。本课Kotlin Android 架构要解决的是用 ViewModel、Repository、生命周期和依赖注入组织 Android 应用，本题问的是填空：补齐下面这段术语说明中的空缺，课程 `用 ViewModel、Repository、生命周。
 
 ### 考点 6：第 6 题
 
 - **题目**：`Kotlin Android 架构` 的示例代码服务于“用 ViewModel、Repository、生命周期和依赖注入组织 Android 应用。”。哪一条判断是正确的？
 - **正确项**：UI 层只负责渲染和事件，业务状态放在 ViewModel，数据访问放在 Repository。
-- **判断依据**：这道题落在术语 `Android` 上：谷歌的移动操作系统：应用以 Activity、Service 等组件运行在 ART 上，权限与生命周期由系统管理。复习时把 `Android` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是UI 层只负责渲染和事件，业务状态放在 ViewModel，数据访问放在 Repository。术语 Android（Kotlin Android 架构）：谷歌的移动操作系统：应用以 Activity、Service 等组件运行在 ART 上，权限与生命周期由系统管理，本题取UI 层只负责渲染和事件，业务状态放在 ViewModel，数据访问放在 Repository这条。易错点是业务逻辑堆在界面组件里会造成难测试，生命周期问题多，改法是拆分视图模型与数据层，干扰项val 声明只读引用，var 可重新赋值，集合内容是否可变由具体类型决定正踩在这条上。
 
 ### 考点 7：`Android`
 

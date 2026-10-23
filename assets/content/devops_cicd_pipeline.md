@@ -11,7 +11,18 @@
 
 ---
 
-## 第 1 章 · 本节知识框架
+## 本节知识框架
+
+**课程定位**：分类「devops」· 学习阶段 进阶 · 建议用时 60 分钟。
+
+本课主线：掌握 Jenkins、GitLab CI、GitHub Actions 的流水线配置与优化。
+
+### 复习清单
+
+- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
+- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
+
 
 ```text
 CI/CD 流水线设计与实现
@@ -48,7 +59,36 @@ CI/CD 流水线设计与实现
 
 ---
 
-## 第 2 章 · 核心概念定义
+
+### 复习清单
+完成本课程学习后，请确认你能够：
+
+- [ ] **概念理解**：用自己的话解释 CI、CD（交付 vs 部署）、Pipeline 的区别
+- [ ] **工具使用**：能够独立编写 Jenkinsfile / .gitlab-ci.yml / GitHub Actions workflow
+- [ ] **设计能力**：为一个新项目设计合理的流水线阶段划分和并行策略
+- [ ] **性能优化**：说出至少 3 种加速流水线的方法（缓存、并行、增量构建等）
+- [ ] **安全意识**：知道如何在流水线中集成安全扫描，以及密钥管理的最佳实践
+- [ ] **实战经验**：完成 Node.js 项目完整 CI/CD 流水线的搭建和调试
+- [ ] **故障排查**：能够分析流水线失败原因并修复（查看日志、定位问题阶段）
+- [ ] **知识关联**：理解 CI/CD 与 Git 分支策略、容器化、监控之间的关系
+
+---
+
+> 📌 **学习建议**：先通读全文理解概念，然后动手实践代码示例。建议从 GitHub Actions 开始（配置最简单），再学习 GitLab CI，最后挑战 Jenkins（功能最强但配置最复杂）。
+>
+> 🎯 **下一步**：完成本课程后，建议继续学习 Docker 容器化和 Kubernetes 编排，这些是 CI/CD 流水线的下游技术。
+
+
+## 核心概念定义
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| CI/CD | 掌握 Jenkins、GitLab CI、GitHub Actions 的流水线相关：正文给出可操作定义与适用边界。 |
+| Jenkins | 掌握 Jenkins、GitLab CI、GitHub Actions 的流水线相关：正文给出可操作定义与适用边界。 |
+| GitLab CI | 掌握 Jenkins、GitLab CI、GitHub Actions 的流水线相关：正文给出可操作定义与适用边界。 |
+| GitHub Actions | 掌握 Jenkins、GitLab CI、GitHub Actions 的流水线相关：正文给出可操作定义与适用边界。 |
+| 流水线 | 掌握 Jenkins、GitLab CI、GitHub Actions 的流水线相关：正文给出可操作定义与适用边界。 |
+
 
 ### 2.1 生活类比：CI/CD 就像汽车生产线
 
@@ -75,7 +115,11 @@ CI/CD 流水线设计与实现
 
 ---
 
-## 第 3 章 · 原理与运行机制
+
+## 原理与运行机制
+
+《CI/CD 流水线设计与实现》正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
+
 
 ### 3.1 CI/CD 流水线的运行机制
 
@@ -142,7 +186,12 @@ CI/CD 系统通过事件触发流水线：
 
 ---
 
-## 第 4 章 · 典型应用场景
+
+## 典型应用场景
+
+- 结合「CI/CD 流水线设计与实现」的常见落地场景与选型边界，详见正文各章节的对比讨论。
+- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
+
 
 ### 4.1 场景一：Web 应用自动部署
 
@@ -192,7 +241,44 @@ CI/CD 系统通过事件触发流水线：
 
 ---
 
-## 第 5 章 · 代码示例
+
+## 代码/协议/SQL 示例
+
+正文首个完整示例如下，先运行确认环境，再按正文步骤改一个输入观察输出变化。
+
+```text
+CI/CD 流水线设计与实现
+├── 1. CI/CD 核心概念与价值
+│   ├── 什么是持续集成（CI）
+│   ├── 什么是持续交付/部署（CD）
+│   └── CI/CD 带来的价值
+├── 2. 流水线设计原则
+│   ├── 阶段划分策略
+│   ├── 并行执行模式
+│   └── 缓存与复用策略
+├── 3. Jenkins Pipeline 实战
+│   ├── 声明式语法基础
+│   ├── 阶段（Stage）与步骤（Step）
+│   └── 后置操作（Post）
+├── 4. GitLab CI/CD 配置
+│   ├── .gitlab-ci.yml 结构
+│   ├── stages 与 jobs
+│   └── artifacts 与缓存
+├── 5. GitHub Actions 工作流
+│   ├── workflow / job / step / action
+│   ├── 事件触发机制
+│   └── 矩阵构建策略
+├── 6. 流水线优化
+│   ├── 并行测试分片
+│   ├── 依赖缓存
+│   └── 增量构建
+├── 7. 安全集成（DevSecOps）
+│   ├── 静态代码扫描（SAST）
+│   ├── 依赖漏洞检查（SCA）
+│   └── 密钥管理
+└── 8. 综合实战：Node.js 项目完整 CI/CD
+```
+
 
 ### 5.1 Jenkins Pipeline（声明式语法）
 
@@ -843,7 +929,12 @@ CMD ["node", "dist/main.js"]
 
 ---
 
-## 第 6 章 · 时间/空间复杂度与性能分析
+
+## 时间/空间复杂度或性能分析
+
+- 在《CI/CD 流水线设计与实现》里处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
+- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
+
 
 ### 6.1 流水线性能指标
 
@@ -897,7 +988,15 @@ S = n × t / (t + overhead)
 
 ---
 
-## 第 7 章 · 常见误区与易错点
+
+## 常见误区与易错点
+
+| 错误做法 | 典型现象 | 修复方向 |
+| --- | --- | --- |
+| 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
+| 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
+| 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
+
 
 ### 7.1 误区一：流水线里跑手动操作
 
@@ -972,7 +1071,11 @@ S = n × t / (t + overhead)
 
 ---
 
-## 第 8 章 · 与其他知识点的关系
+
+## 与其他知识点的关系
+
+本课与分类「devops」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
+
 
 ```text
 CI/CD 流水线 ─── 关联知识图谱
@@ -1004,7 +1107,11 @@ CI/CD 流水线 ─── 关联知识图谱
 
 ---
 
-## 第 9 章 · 自测题与参考答案
+
+## 自测题与参考答案
+
+以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
+
 
 ### 题目 1：概念理解
 
@@ -1091,7 +1198,84 @@ D. CI/CD 只适用于大型团队
 
 ---
 
-## 第 10 章 · 考点精讲
+
+## 考点精讲
+
+### 考点 1
+
+以下关于 CI/CD 的描述，哪个是正确的？
+
+A. 持续集成（CI）是指每天固定时间统一合并代码
+B. 持续部署（Continuous Deployment）意味着每次通过测试的代码变更都会自动部署到生产环境
+C. 持续交付（Continuous Delivery）要求每次变更都必须手动部署到生产环境
+D. CI/CD 只适用于大型团队
+
+**正确答案：B**
+
+**详细解释：** 持续部署的核心特征是每次通过测试的变更自动部署到生产环境，无需人工审批。A 错误，CI 强调频繁、小批量集成（每天多次），而非固定时间。C 错误，持续交付是"随时可以一键部署"，但部署动作本身可以是手动的。D 错误，任何规模的团队都可以从 CI/CD 中受益。
+
+---
+
+### 考点 2
+
+在 Jenkins 声明式流水线中，"post" 块的 "always"、"success"、"failure" 三个条件的执行顺序是怎样的？
+
+A. 只执行其中一个，根据流水线结果决定
+B. 先执行 "success" 或 "failure"，再执行 "always"
+C. 先执行 "always"，再根据结果执行 "success" 或 "failure"
+D. 三个条件同时并行执行
+
+**正确答案：C**
+
+**详细解释：** Jenkins 的 "post" 块执行顺序是：无论成功失败都先执行 "always"（适合归档产物、清理环境），然后根据流水线最终结果执行 "success"（发送成功通知）或 "failure"（发送告警通知）。"always" 是必定执行的，而 "success" 和 "failure" 是互斥的。
+
+---
+
+### 考点 3
+
+在 GitLab CI 中，"cache" 和 "artifacts" 的核心区别是什么？
+
+A. "cache" 用于加速后续构建（如 "node_modules"），"artifacts" 用于传递构建产物到后续阶段或供下载  
+B. "cache" 用于传递构建产物到后续阶段，"artifacts" 用于加速后续构建  
+C. 两者功能完全相同，只是语法不同  
+D. "cache" 只能缓存 Docker 镜像，"artifacts" 可以缓存任何文件  
+
+**正确答案：A**
+
+**详细解释：** "cache" 的主要目的是加速后续构建，例如缓存 "node_modules" 目录，避免每次都重新安装依赖，它可过期且会被覆盖。"artifacts" 的主要目的是在 Pipeline 的阶段之间传递构建产物（如编译输出、测试报告），也可在 Pipeline UI 中供用户下载，它与 Pipeline 绑定并可设置保留时间。
+
+---
+
+### 考点 4
+
+在 GitHub Actions 中，"needs" 关键字的作用是什么？如果一个 job 不设置 "needs"，会发生什么？
+
+A. "needs" 用于定义 job 之间的依赖关系；不设置则所有 job 并行执行
+B. "needs" 用于定义 step 之间的执行顺序；不设置则所有 step 并行执行
+C. "needs" 用于指定运行环境；不设置则使用默认环境
+D. "needs" 用于声明所需密钥；不设置则无法访问密钥
+
+**正确答案：A**
+
+**详细解释：** "needs" 用于定义 job 之间的依赖关系。设置了 "needs: [job-a, job-b]" 的 job 会等待 job-a 和 job-b 都完成后才执行。如果不设置 "needs"，所有 job 默认并行执行，没有先后顺序。"needs" 还可以传递 artifacts，后续 job 可以下载前置 job 上传的 artifacts。
+
+---
+
+### 考点 5
+
+以下哪种做法违反了 DevSecOps 中"安全左移"的原则？
+
+A. 在代码提交时通过 pre-commit hook 检测密钥泄露
+B. 在构建阶段运行 SAST 静态安全扫描
+C. 在部署到生产环境后才进行安全审计
+D. 在依赖安装时通过 "npm audit" 检查依赖漏洞
+
+**正确答案：C**
+
+**详细解释：** "安全左移"的核心理念是在开发流程中尽早发现安全问题。A、B、D 都是在流水线的前中期阶段进行安全检查，符合安全左移原则。C 将安全审计推迟到部署之后，此时发现问题的修复成本最高、风险最大，违背了安全左移的原则。正确的做法是在部署前就完成所有安全检查。
+
+---
+
 
 ### 考点 1：流水线阶段划分原则
 
@@ -1163,111 +1347,47 @@ tag (v*)：
 
 ---
 
-## 考点精讲
 
-### 问题1
+## 术语速查
 
-以下关于 CI/CD 的描述，哪个是正确的？
+| 术语 | 一句话说明 |
+| --- | --- |
+| CI/CD | 持续集成加持续交付或部署的实践，让提交自动构建测试并自动或一键发布 |
+| Jenkins | 自托管的自动化服务器，用Jenkinsfile写声明式Pipeline，插件生态最全 |
+| GitLab CI | 代码仓库内置的CI，用YAML定义stages与jobs，支持artifacts与缓存 |
+| GitHub Actions | 由push、PR等事件触发的GitHub托管自动化，流程YAML随仓库一起版本化 |
+| 流水线 | 把拉取代码、构建、测试、扫描、部署串成有序阶段的自动化通道，可并行与缓存加速 |
+| CI | Continuous Integration：持续集成：频繁合并代码并自动测试 |
+| CD | Continuous Delivery/Deployment：持续交付/部署：自动化发布流程 |
+| Pipeline | Pipeline：流水线：自动化任务的有序集合 |
+| Stage | Stage：阶段：流水线中的逻辑分组（如 Build、Test） |
+| Job | Job：作业：阶段中的具体执行单元 |
+| Step | Step：步骤：作业中的单个操作 |
+| Artifact | Artifact：产物：构建生成的文件（如 .jar、.zip） |
+| Runner/Agent | Runner / Agent：执行器：运行流水线任务的机器 |
+| Trigger | Trigger：触发器：启动流水线的条件（push、PR 等） |
+| Cache | Cache：缓存：跨次构建复用的依赖/文件 |
+| Secret | Secret：密钥：加密存储的敏感信息 |
+| Matrix | Matrix：矩阵：多版本/多平台并行测试策略 |
+| SAST | Static Application Security Testing：静态安全测试：扫描源代码中的漏洞 |
+| SCA | Software Composition Analysis：软件成分分析：检查第三方依赖漏洞 |
+| DAST | Dynamic Application Security Testing：动态安全测试：运行时检测安全问题 |
+| MTTR | Mean Time To Recovery：平均恢复时间 |
+| Idempotent | Idempotent：幂等性：多次执行结果与一次相同 |
+| Rollback | Rollback：回滚：部署失败后恢复到上一版本 |
+| Canary | Canary Release：金丝雀发布：先向少量用户发布新版本 |
+| Blue-Green | Blue-Green Deployment：蓝绿部署：两套环境切换实现零停机 |
 
-A. 持续集成（CI）是指每天固定时间统一合并代码
-B. 持续部署（Continuous Deployment）意味着每次通过测试的代码变更都会自动部署到生产环境
-C. 持续交付（Continuous Delivery）要求每次变更都必须手动部署到生产环境
-D. CI/CD 只适用于大型团队
+## 参考资料与复核
 
-**正确答案：B**
+- [本课资料锚点 devops_cicd_pipeline](https://zh.wikipedia.org/w/index.php?search=devops_cicd_pipeline)
 
-**详细解释：** 持续部署的核心特征是每次通过测试的变更自动部署到生产环境，无需人工审批。A 错误，CI 强调频繁、小批量集成（每天多次），而非固定时间。C 错误，持续交付是"随时可以一键部署"，但部署动作本身可以是手动的。D 错误，任何规模的团队都可以从 CI/CD 中受益。
+- 官方/权威资料：[OpenSSF 最佳实践](https://bestpractices.coreinfrastructure.org/)
+- 主题延伸：[关于「Jenkins」的检索页](https://zh.wikipedia.org/w/index.php?search=Jenkins)
+- 本课索引词：[锚点 devops_cicd_pipeline](https://bestpractices.coreinfrastructure.org/#CI%2FCD)
+- 最后复核：2026-10-04
+- 下次复核：2027-01-18
 
----
-
-### 问题2
-
-在 Jenkins 声明式流水线中，"post" 块的 "always"、"success"、"failure" 三个条件的执行顺序是怎样的？
-
-A. 只执行其中一个，根据流水线结果决定
-B. 先执行 "success" 或 "failure"，再执行 "always"
-C. 先执行 "always"，再根据结果执行 "success" 或 "failure"
-D. 三个条件同时并行执行
-
-**正确答案：C**
-
-**详细解释：** Jenkins 的 "post" 块执行顺序是：无论成功失败都先执行 "always"（适合归档产物、清理环境），然后根据流水线最终结果执行 "success"（发送成功通知）或 "failure"（发送告警通知）。"always" 是必定执行的，而 "success" 和 "failure" 是互斥的。
-
----
-
-### 问题3
-
-在 GitLab CI 中，"cache" 和 "artifacts" 的核心区别是什么？
-
-A. "cache" 用于加速后续构建（如 "node_modules"），"artifacts" 用于传递构建产物到后续阶段或供下载  
-B. "cache" 用于传递构建产物到后续阶段，"artifacts" 用于加速后续构建  
-C. 两者功能完全相同，只是语法不同  
-D. "cache" 只能缓存 Docker 镜像，"artifacts" 可以缓存任何文件  
-
-**正确答案：A**
-
-**详细解释：** "cache" 的主要目的是加速后续构建，例如缓存 "node_modules" 目录，避免每次都重新安装依赖，它可过期且会被覆盖。"artifacts" 的主要目的是在 Pipeline 的阶段之间传递构建产物（如编译输出、测试报告），也可在 Pipeline UI 中供用户下载，它与 Pipeline 绑定并可设置保留时间。
-
----
-
-### 问题4
-
-在 GitHub Actions 中，"needs" 关键字的作用是什么？如果一个 job 不设置 "needs"，会发生什么？
-
-A. "needs" 用于定义 job 之间的依赖关系；不设置则所有 job 并行执行
-B. "needs" 用于定义 step 之间的执行顺序；不设置则所有 step 并行执行
-C. "needs" 用于指定运行环境；不设置则使用默认环境
-D. "needs" 用于声明所需密钥；不设置则无法访问密钥
-
-**正确答案：A**
-
-**详细解释：** "needs" 用于定义 job 之间的依赖关系。设置了 "needs: [job-a, job-b]" 的 job 会等待 job-a 和 job-b 都完成后才执行。如果不设置 "needs"，所有 job 默认并行执行，没有先后顺序。"needs" 还可以传递 artifacts，后续 job 可以下载前置 job 上传的 artifacts。
-
----
-
-### 问题5
-
-以下哪种做法违反了 DevSecOps 中"安全左移"的原则？
-
-A. 在代码提交时通过 pre-commit hook 检测密钥泄露
-B. 在构建阶段运行 SAST 静态安全扫描
-C. 在部署到生产环境后才进行安全审计
-D. 在依赖安装时通过 "npm audit" 检查依赖漏洞
-
-**正确答案：C**
-
-**详细解释：** "安全左移"的核心理念是在开发流程中尽早发现安全问题。A、B、D 都是在流水线的前中期阶段进行安全检查，符合安全左移原则。C 将安全审计推迟到部署之后，此时发现问题的修复成本最高、风险最大，违背了安全左移的原则。正确的做法是在部署前就完成所有安全检查。
-
----
-
-## 第 11 章 · 术语速查
-
-| 术语 | 英文 | 含义 |
-|------|------|------|
-| CI | Continuous Integration | 持续集成：频繁合并代码并自动测试 |
-| CD | Continuous Delivery/Deployment | 持续交付/部署：自动化发布流程 |
-| Pipeline | Pipeline | 流水线：自动化任务的有序集合 |
-| Stage | Stage | 阶段：流水线中的逻辑分组（如 Build、Test） |
-| Job | Job | 作业：阶段中的具体执行单元 |
-| Step | Step | 步骤：作业中的单个操作 |
-| Artifact | Artifact | 产物：构建生成的文件（如 .jar、.zip） |
-| Runner/Agent | Runner / Agent | 执行器：运行流水线任务的机器 |
-| Trigger | Trigger | 触发器：启动流水线的条件（push、PR 等） |
-| Cache | Cache | 缓存：跨次构建复用的依赖/文件 |
-| Secret | Secret | 密钥：加密存储的敏感信息 |
-| Matrix | Matrix | 矩阵：多版本/多平台并行测试策略 |
-| SAST | Static Application Security Testing | 静态安全测试：扫描源代码中的漏洞 |
-| SCA | Software Composition Analysis | 软件成分分析：检查第三方依赖漏洞 |
-| DAST | Dynamic Application Security Testing | 动态安全测试：运行时检测安全问题 |
-| MTTR | Mean Time To Recovery | 平均恢复时间 |
-| Idempotent | Idempotent | 幂等性：多次执行结果与一次相同 |
-| Rollback | Rollback | 回滚：部署失败后恢复到上一版本 |
-| Canary | Canary Release | 金丝雀发布：先向少量用户发布新版本 |
-| Blue-Green | Blue-Green Deployment | 蓝绿部署：两套环境切换实现零停机 |
-
----
-
-## 第 12 章 · 参考资料与复核
 
 ### 官方文档（权威来源）
 
@@ -1299,7 +1419,17 @@ D. 在依赖安装时通过 "npm audit" 检查依赖漏洞
 
 ---
 
-## 第 13 章 · 内容元数据
+
+## 内容元数据
+
+- 内容更新时间：2026-10-06
+
+- 内容版本：v2.0
+- 课程标识：devops_cicd_pipeline
+- 所属分类：devops
+- 学习阶段：进阶
+- 建议用时：60 分钟
+
 
 ```yaml
 # 内容元数据
@@ -1342,140 +1472,3 @@ related_courses:
 
 ---
 
-## 复习清单
-
-完成本课程学习后，请确认你能够：
-
-- [ ] **概念理解**：用自己的话解释 CI、CD（交付 vs 部署）、Pipeline 的区别
-- [ ] **工具使用**：能够独立编写 Jenkinsfile / .gitlab-ci.yml / GitHub Actions workflow
-- [ ] **设计能力**：为一个新项目设计合理的流水线阶段划分和并行策略
-- [ ] **性能优化**：说出至少 3 种加速流水线的方法（缓存、并行、增量构建等）
-- [ ] **安全意识**：知道如何在流水线中集成安全扫描，以及密钥管理的最佳实践
-- [ ] **实战经验**：完成 Node.js 项目完整 CI/CD 流水线的搭建和调试
-- [ ] **故障排查**：能够分析流水线失败原因并修复（查看日志、定位问题阶段）
-- [ ] **知识关联**：理解 CI/CD 与 Git 分支策略、容器化、监控之间的关系
-
----
-
-> 📌 **学习建议**：先通读全文理解概念，然后动手实践代码示例。建议从 GitHub Actions 开始（配置最简单），再学习 GitLab CI，最后挑战 Jenkins（功能最强但配置最复杂）。
->
-> 🎯 **下一步**：完成本课程后，建议继续学习 Docker 容器化和 Kubernetes 编排，这些是 CI/CD 流水线的下游技术。
-
-## 本节知识框架
-
-**课程定位**：分类「devops」· 学习阶段 进阶 · 建议用时 60 分钟。
-
-本课主线：掌握 Jenkins、GitLab CI、GitHub Actions 的流水线配置与优化。
-
-### 复习清单
-
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
-- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
-
-## 核心概念定义
-
-| 术语 | 一句话说明 |
-| --- | --- |
-| CI/CD | 掌握 Jenkins、GitLab CI、GitHub Actions 的流水线相关：正文给出可操作定义与适用边界。 |
-| Jenkins | 掌握 Jenkins、GitLab CI、GitHub Actions 的流水线相关：正文给出可操作定义与适用边界。 |
-| GitLab CI | 掌握 Jenkins、GitLab CI、GitHub Actions 的流水线相关：正文给出可操作定义与适用边界。 |
-| GitHub Actions | 掌握 Jenkins、GitLab CI、GitHub Actions 的流水线相关：正文给出可操作定义与适用边界。 |
-| 流水线 | 掌握 Jenkins、GitLab CI、GitHub Actions 的流水线相关：正文给出可操作定义与适用边界。 |
-
-## 原理与运行机制
-
-正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
-
-## 典型应用场景
-
-- 结合「CI/CD 流水线设计与实现」的常见落地场景与选型边界，详见正文各章节的对比讨论。
-- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
-
-## 代码/协议/SQL 示例
-
-正文首个完整示例如下，先运行确认环境，再按正文步骤改一个输入观察输出变化。
-
-```text
-CI/CD 流水线设计与实现
-├── 1. CI/CD 核心概念与价值
-│   ├── 什么是持续集成（CI）
-│   ├── 什么是持续交付/部署（CD）
-│   └── CI/CD 带来的价值
-├── 2. 流水线设计原则
-│   ├── 阶段划分策略
-│   ├── 并行执行模式
-│   └── 缓存与复用策略
-├── 3. Jenkins Pipeline 实战
-│   ├── 声明式语法基础
-│   ├── 阶段（Stage）与步骤（Step）
-│   └── 后置操作（Post）
-├── 4. GitLab CI/CD 配置
-│   ├── .gitlab-ci.yml 结构
-│   ├── stages 与 jobs
-│   └── artifacts 与缓存
-├── 5. GitHub Actions 工作流
-│   ├── workflow / job / step / action
-│   ├── 事件触发机制
-│   └── 矩阵构建策略
-├── 6. 流水线优化
-│   ├── 并行测试分片
-│   ├── 依赖缓存
-│   └── 增量构建
-├── 7. 安全集成（DevSecOps）
-│   ├── 静态代码扫描（SAST）
-│   ├── 依赖漏洞检查（SCA）
-│   └── 密钥管理
-└── 8. 综合实战：Node.js 项目完整 CI/CD
-```
-
-## 时间/空间复杂度或性能分析
-
-- 用本课方案处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
-- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
-
-## 常见误区与易错点
-
-| 错误做法 | 典型现象 | 修复方向 |
-| --- | --- | --- |
-| 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
-| 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
-| 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
-
-## 与其他知识点的关系
-
-本课与分类「devops」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
-
-## 自测题与参考答案
-
-以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
-
-## 术语速查
-
-| 术语 | 一句话说明 |
-| --- | --- |
-| CI/CD | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
-| Jenkins | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
-| GitLab CI | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
-| GitHub Actions | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
-| 流水线 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
-
-## 参考资料与复核
-
-- [本课资料锚点 devops_cicd_pipeline](https://zh.wikipedia.org/w/index.php?search=devops_cicd_pipeline)
-
-- 官方/权威资料：[OpenSSF 最佳实践](https://bestpractices.coreinfrastructure.org/)
-- 主题延伸：[关于「Jenkins」的检索页](https://zh.wikipedia.org/w/index.php?search=Jenkins)
-- 本课索引词：[锚点 devops_cicd_pipeline](https://bestpractices.coreinfrastructure.org/#CI%2FCD)
-- 最后复核：2026-10-04
-- 下次复核：2027-01-18
-
-## 内容元数据
-
-- 内容更新时间：2026-10-06
-
-- 内容版本：v2.0
-- 课程标识：devops_cicd_pipeline
-- 所属分类：devops
-- 学习阶段：进阶
-- 建议用时：60 分钟

@@ -706,37 +706,37 @@ public sealed class OrdersController : ControllerBase
 
 - **题目**：下面这段 `csharp` 代码来自 `实战：Web API + EF Core`。课程主线是最小 API、DbContext、内存数据库测试与工程实践。代码与 `dotnet ef migrations add Init` 有关。哪一项是代码里真实出现的内容？
 - **正确项**：出现字面量 `标题不能为空`
-- **判断依据**：这道题落在术语 `dotnet ef migrations add Init` 上：生产环境应使用 EF Core 迁移（`dotnet ef migrations add Init`）而不是 `EnsureCreated`。复习时把 `dotnet ef migrations add Init` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是出现字面量 `标题不能为空`。术语 dotnet ef migrations add Init（实战：Web API + EF Core）：生产环境应使用 EF Core 迁移（`dotnet ef migrations add Init`）而不是 `EnsureCreated`，本题取出现字面量 `标题不能为空`这条。易错点是Entity 直接返回会造成泄露字段，改法是用 DTO，干扰项出现字面量 `fmt`正踩在这条上。
 
 ### 考点 2：第 2 题
 
 - **题目**：使用 DTO 而不是直接暴露实体，主要好处是？
 - **正确项**：隔离数据库结构与 API 契约
-- **判断依据**：这道题检验本课主问题：最小 API、DbContext、内存数据库测试与工程实践。复习时先复述本课主问题，再举一个会让结论失效的输入。
+- **判断依据**：本题正确项是隔离数据库结构与 API 契约。术语 dotnet ef migrations add Init（实战：Web API + EF Core）：生产环境应使用 EF Core 迁移（`dotnet ef migrations add Init`）而不是 `EnsureCreated`，本题取隔离数据库结构与 API 契约这条。易错点是Entity 直接返回会造成泄露字段，改法是用 DTO，干扰项提高并发正踩在这条上。
 
 ### 考点 3：第 3 题
 
 - **题目**：ASP.NET Core 中注册在依赖注入容器里的 DbContext 默认生命周期是？
 - **正确项**：Scoped（每请求一个）
-- **判断依据**：这道题检验本课主问题：最小 API、DbContext、内存数据库测试与工程实践。复习时先复述本课主问题，再举一个会让结论失效的输入。
+- **判断依据**：本题正确项是Scoped（每请求一个）。术语 dotnet ef migrations add Init（实战：Web API + EF Core）：生产环境应使用 EF Core 迁移（`dotnet ef migrations add Init`）而不是 `EnsureCreated`，本题取Scoped（每请求一个）这条。易错点是Entity 直接返回会造成泄露字段，改法是用 DTO，干扰项Singleton正踩在这条上。
 
 ### 考点 4：第 4 题
 
 - **题目**：围绕“实战：Web API + EF Core”中的 实战、ASP.NET Core、EF Core，下列哪两项是本课强调的实践判断？
 - **正确项**：学习 实战 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 ASP.NET Core 时要固定版本并覆盖边界输入，结论才可复现
-- **判断依据**：这道题落在术语 `实战` 上：实战：Web API + EF Core解决了什么问题，而不是只背术语。复习时把 `实战` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：按《实战：Web API + EF Core》的正文口径，本题正确项是「学习 实战 时要同时说明输入、输出和失败路径，不能只看正常流程」。《实战：Web API + EF Core》整课的主线是最小 API、DbContext、内存数据库测试与工程实践，本题按这条主线判定。常见错法是Entity 直接返回，其后果是泄露字段。正确做法是用 DTO。干扰项「把 ASP.NET Core 的单次运行结果当成所有版本和规模都成立」与题干「围绕“实战：Web API + EF Core”中的 实战、ASP.」的要求对不上，应排除。
 
 ### 考点 5：第 5 题
 
 - **题目**：创建资源成功后返回 201 Created 并结合 CreatedAtAction 的好处是？
 - **正确项**：既符合 REST 语义
-- **判断依据**：这道题检验本课主问题：最小 API、DbContext、内存数据库测试与工程实践。复习时先复述本课主问题，再举一个会让结论失效的输入。
+- **判断依据**：本题正确项是既符合 REST 语义。术语 dotnet ef migrations add Init（实战：Web API + EF Core）：生产环境应使用 EF Core 迁移（`dotnet ef migrations add Init`）而不是 `EnsureCreated`，本题取既符合 REST 语义这条。易错点是Entity 直接返回会造成泄露字段，改法是用 DTO，干扰项表示请求被拒绝正踩在这条上。
 
 ### 考点 6：第 6 题
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `最小 API、DbContext、内存数据库测试与工程实践。`，这段说明是：加 ``____`` 统一错误响应，日志用 ILogger。空缺处应填哪个术语？
 - **正确项**：UseExceptionHandler
-- **判断依据**：这道题落在术语 `UseExceptionHandler` 上：加 `UseExceptionHandler` 统一错误响应，日志用 ILogger。复习时把 `UseExceptionHandler` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：正确项：UseExceptionHandler。涉及术语 UseExceptionHandler：加 `UseExceptionHandler` 统一错误响应，日志用 ILogger。易错点：异常堆栈返回给用户会造成泄露细节。正确做法：统一错误响应。本课实战：Web API + EF Core要解决的是最小 API、DbContext、内存数据库测试与工程实践，本题问的是填空：补齐下面这段术语说明中的空缺，课程 `最小 API、DbContext、内存数据库测试与工。本题还要同时命中useexceptionhandler这条。
 
 ### 考点 7：`dotnet ef migrations add Init`
 

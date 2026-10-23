@@ -363,37 +363,37 @@ SELECT @@transaction_isolation;
 
 - **题目**：InnoDB 的行锁加在什么之上？
 - **正确项**：索引
-- **判断依据**：这道题落在术语 `InnoDB` 上：MySQL 的默认事务存储引擎，支持行锁、MVCC、崩溃恢复和外键。复习时把 `InnoDB` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：术语 InnoDB（MySQL 锁与 MVCC）：MySQL 的默认事务存储引擎，支持行锁、MVCC、崩溃恢复和外键，本题取索引这条。易错点是更新条件没有索引会造成锁住大量行甚至全表，改法是行锁加在索引上，没有可用索引会退化为扫描并锁住扫描到的记录，干扰项日志文件正踩在这条上。
 
 ### 考点 2：第 2 题
 
 - **题目**：围绕“MySQL 锁与 MVCC”中的 MySQL、InnoDB、锁，下列哪两项是本课强调的实践判断？
 - **正确项**：验证 InnoDB 时要固定版本并覆盖边界输入，结论才可复现；学习 MySQL 时要同时说明输入、输出和失败路径，不能只看正常流程
-- **判断依据**：这道题落在术语 `InnoDB` 上：MySQL 的默认事务存储引擎，支持行锁、MVCC、崩溃恢复和外键。复习时把 `InnoDB` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是验证 InnoDB 时要固定版本并覆盖边界输入，结论才可复现。术语 InnoDB（MySQL 锁与 MVCC）：MySQL 的默认事务存储引擎，支持行锁、MVCC、崩溃恢复和外键，本题取验证 InnoDB 时要固定版本并覆盖边界输入，结论才可复现这条。易错点是更新条件没有索引会造成锁住大量行甚至全表，改法是行锁加在索引上，没有可用索引会退化为扫描并锁住扫描到的记录，干扰项把 InnoDB 的单次运行结果当成所有版本和规模都成立正踩在这条上。
 
 ### 考点 3：第 3 题
 
 - **题目**：可重复读（RR）下 Read View 何时生成？
 - **正确项**：事务第一次查询时
-- **判断依据**：这道题检验本课主问题：行锁/间隙锁、undo log 与 Read View。复习时先复述本课主问题，再举一个会让结论失效的输入。
+- **判断依据**：本题正确项是事务第一次查询时。术语 SHOW ENGINE INNODB STATUS（MySQL 锁与 MVCC）：查看当前事务与锁等待：`SHOW ENGINE INNODB STATUS`、performance_schema.data_locks / data_waits，本题取事务第一次查询时这条。易错点是更新条件没有索引会造成锁住大量行甚至全表，改法是行锁加在索引上，没有可用索引会退化为扫描并锁住扫描到的记录，干扰项每次查询正踩在这条上。
 
 ### 考点 4：第 4 题
 
 - **题目**：这段 `sql` 代码对应 `MySQL 锁与 MVCC` 的 `SHOW ENGINE INNODB STATUS`。课程要解决的是行锁/间隙锁、undo log 与 Read View。关于代码内容，哪一项说法准确？
 - **正确项**：代码里出现了 `SHOW ENGINE INNODB STATUS` 这个名字
-- **判断依据**：这道题落在术语 `SHOW ENGINE INNODB STATUS` 上：查看当前事务与锁等待：`SHOW ENGINE INNODB STATUS`、performance_schema.data_locks / data_waits。复习时把 `SHOW ENGINE INNODB STATUS` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是代码里出现了 `SHOW ENGINE INNODB STATUS` 这个名字。术语 SHOW ENGINE INNODB STATUS（MySQL 锁与 MVCC）：查看当前事务与锁等待：`SHOW ENGINE INNODB STATUS`、performance_schema.data_locks / data_waits，本题取代码里出现了 `SHOW ENGINE INNODB STATUS` 这个名字这条。易错点是更新条件没有索引会造成锁住大量行甚至全表，改法是行锁加在索引上，没有可用索引会退化为扫描并锁住扫描到的记录，干扰项代码里出现了 `CAP` 这个名字正踩在这条上。
 
 ### 考点 5：第 5 题
 
 - **题目**：快照读与当前读的区别是？
 - **正确项**：快照读读历史版本，当前读读最新并加锁
-- **判断依据**：这道题落在术语 `锁` 上：限制同一时刻访问共享资源的同步原语，使用时要明确粒度、顺序和释放路径。复习时把 `锁` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是快照读读历史版本，当前读读最新并加锁。术语 锁（MySQL 锁与 MVCC）：限制同一时刻访问共享资源的同步原语，使用时要明确粒度、顺序和释放路径，本题取快照读读历史版本，当前读读最新并加锁这条。易错点是更新条件没有索引会造成锁住大量行甚至全表，改法是行锁加在索引上，没有可用索引会退化为扫描并锁住扫描到的记录，干扰项当前读不加锁正踩在这条上。
 
 ### 考点 6：第 6 题
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `行锁/间隙锁、undo log 与 Read View。`，这段说明是：查看当前事务与锁等待：``____``、performance_schema.data_locks / data_waits。空缺处应填哪个术语？
 - **正确项**：SHOW ENGINE INNODB STATUS
-- **判断依据**：这道题落在术语 `SHOW ENGINE INNODB STATUS` 上：查看当前事务与锁等待：`SHOW ENGINE INNODB STATUS`、performance_schema.data_locks / data_waits。复习时把 `SHOW ENGINE INNODB STATUS` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：正确项：SHOW ENGINE INNODB STATUS。涉及术语 SHOW ENGINE INNODB STATUS：查看当前事务与锁等待：`SHOW ENGINE INNODB STATUS`、performance_schema.data_locks / data_waits。易错点：更新条件没有索引会造成锁住大量行甚至全表。正确做法：行锁加在索引上，没有可用索引会退化为扫描并锁住扫描到的记录。本题还要同时命中show engine innodb status这条。
 
 ### 考点 7：`SHOW ENGINE INNODB STATUS`
 

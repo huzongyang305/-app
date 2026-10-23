@@ -1,6 +1,6 @@
 # Rust 错误处理、迭代器与异步
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：40 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：45 分钟
 
 ![错误处理、迭代器与异步的配合](images/diagram_rust_errors_iterators.webp)
 
@@ -509,37 +509,37 @@ fn main() {
 
 - **题目**：围绕“Rust 错误处理、迭代器与异步”中的 Rust、thiserror、anyhow，下列哪两项是本课强调的实践判断？
 - **正确项**：验证 thiserror 时要固定版本并覆盖边界输入，结论才可复现；学习 Rust 时要同时说明输入、输出和失败路径，不能只看正常流程
-- **判断依据**：这道题落在术语 `Rust` 上：collect 能把 Vec<Result<T, E>> 直接收成 Result<Vec<T>, E>，这是 Rust 里非常常用的技巧。复习时把 `Rust` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是验证 thiserror 时要固定版本并覆盖边界输入，结论才可复现。术语 Rust（Rust 错误处理、迭代器与异步）：collect 能把 Vec<Result<T, E>> 直接收成 Result<Vec<T>, E>，这是 Rust 里非常常用的技巧，本题取验证 thiserror 时要固定版本并覆盖边界输入，结论才可复现这条。易错点是到处 `unwrap()`会造成运行时 panic，改法是用 `?` 或 `unwrap_or`，干扰项把 thiserror 的单次运行结果当成所有版本和规模都成立正踩在这条上。
 
 ### 考点 2：第 2 题
 
 - **题目**：Rust 迭代器链会有运行时开销吗？
 - **正确项**：基本没有，会被优化成普通循环
-- **判断依据**：这道题落在术语 `Rust` 上：collect 能把 Vec<Result<T, E>> 直接收成 Result<Vec<T>, E>，这是 Rust 里非常常用的技巧。复习时把 `Rust` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是基本没有，会被优化成普通循环。术语 Rust（Rust 错误处理、迭代器与异步）：collect 能把 Vec<Result<T, E>> 直接收成 Result<Vec<T>, E>，这是 Rust 里非常常用的技巧，本题取基本没有，会被优化成普通循环这条。易错点是到处 `unwrap()`会造成运行时 panic，改法是用 `?` 或 `unwrap_or`，干扰项会分配堆内存正踩在这条上。
 
 ### 考点 3：第 3 题
 
 - **题目**：下面这段 `rust` 代码来自 `Rust 错误处理、迭代器与异步`。课程主线是thiserror/anyhow、零开销迭代器与 tokio 异步要点。代码与 `Rust` 有关。哪一项是代码里真实出现的内容？
 - **正确项**：调用了 `Parse()`
-- **判断依据**：这道题落在术语 `Rust` 上：collect 能把 Vec<Result<T, E>> 直接收成 Result<Vec<T>, E>，这是 Rust 里非常常用的技巧。复习时把 `Rust` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是调用了 `Parse()`。术语 Rust（Rust 错误处理、迭代器与异步）：collect 能把 Vec<Result<T, E>> 直接收成 Result<Vec<T>, E>，这是 Rust 里非常常用的技巧，本题取调用了 `Parse()`这条。易错点是到处 `unwrap()`会造成运行时 panic，改法是用 `?` 或 `unwrap_or`，干扰项调用了 `mark()`正踩在这条上。
 
 ### 考点 4：第 4 题
 
 - **题目**：Rust 迭代器是「惰性」的，这意味着？
 - **正确项**：不调用消费方法（collect/sum/for）就不会真正执行
-- **判断依据**：这道题落在术语 `Rust` 上：collect 能把 Vec<Result<T, E>> 直接收成 Result<Vec<T>, E>，这是 Rust 里非常常用的技巧。复习时把 `Rust` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是不调用消费方法（collect/sum/for）就不会真正执行。术语 Rust（Rust 错误处理、迭代器与异步）：collect 能把 Vec<Result<T, E>> 直接收成 Result<Vec<T>, E>，这是 Rust 里非常常用的技巧，本题取不调用消费方法（collect/sum/for）就不会真正执行这条。易错点是到处 `unwrap()`会造成运行时 panic，改法是用 `?` 或 `unwrap_or`，干扰项只能遍历一次正踩在这条上。
 
 ### 考点 5：第 5 题
 
 - **题目**：collect::<Result<Vec<_>, _>> 的作用是？
 - **正确项**：收集成 Result<Vec<_>, _>，遇 Err 短路
-- **判断依据**：这道题检验本课主问题：thiserror/anyhow、零开销迭代器与 tokio 异步要点。复习时先复述本课主问题，再举一个会让结论失效的输入。
+- **判断依据**：本题正确项是收集成 Result<Vec<_>, _>，遇 Err 短路。术语 Rust（Rust 错误处理、迭代器与异步）：collect 能把 Vec<Result<T, E>> 直接收成 Result<Vec<T>, E>，这是 Rust 里非常常用的技巧，本题取收集成 Result<Vec<_>, _>，遇 Err 短路这条。易错点是到处 `unwrap()`会造成运行时 panic，改法是用 `?` 或 `unwrap_or`，干扰项把 Result 转成字符串，再逐个手动拼接成结果输出，但它只覆盖了部分情况正踩在这条上。
 
 ### 考点 6：第 6 题
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `thiserror/anyhow、零开销迭代器与 tokio 异步要点。`，这段说明是：`____`：Rust 的异步运行时，提供任务调度、异步 I/O、定时器和同步原语。空缺处应填哪个术语？
 - **正确项**：tokio
-- **判断依据**：这道题落在术语 `Rust` 上：collect 能把 Vec<Result<T, E>> 直接收成 Result<Vec<T>, E>，这是 Rust 里非常常用的技巧。复习时把 `Rust` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：涉及术语 Rust：collect 能把 Vec<Result<T, E>> 直接收成 Result<Vec<T>, E>，这是 Rust 里非常常用的技巧。易错点：到处 `unwrap()`会造成运行时 panic。正确做法：用 `?` 或 `unwrap_or`。本课Rust 错误处理、迭代器与异步要解决的是thiserror/anyhow、零开销迭代器与 tokio 异步要点，本题问的是填空：补齐下面这段术语说明中的空缺，课程 `thiserror/anyhow、零开销迭代器与 t。
 
 ### 考点 7：`Rust`
 

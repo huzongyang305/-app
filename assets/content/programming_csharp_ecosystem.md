@@ -648,37 +648,37 @@ dotnet publish src/MyApp.Api -c Release -o out
 
 - **题目**：下面这段 `csharp` 代码来自 `生态、测试与 Web 开发`。课程主线是NuGet、xUnit 测试、ASP.NET Core 最小 API 与 EF Core。代码与 `dotnet restore` 有关。哪一项是代码里真实出现的内容？
 - **正确项**：出现字面量 `3.1.1`
-- **判断依据**：这道题落在术语 `dotnet restore` 上：版本号尽量显式固定，`dotnet restore` 会按 lock 文件还原依赖，保证 CI 与本地一致。复习时把 `dotnet restore` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是出现字面量 `3.1.1`。术语 dotnet restore（生态、测试与 Web 开发）：版本号尽量显式固定，`dotnet restore` 会按 lock 文件还原依赖，保证 CI 与本地一致，本题取出现字面量 `3.1.1`这条。易错点是Singleton 注入 Scoped会造成启动时报错或运行异常，改法是按生命周期匹配，或注入 `IServiceScopeFactory`，干扰项出现字面量 `CHECK TABLE orders;`正踩在这条上。
 
 ### 考点 2：第 2 题
 
 - **题目**：xUnit 中 [Theory] 配合 [InlineData] 用于？
 - **正确项**：参数化测试
-- **判断依据**：这道题检验本课主问题：NuGet、xUnit 测试、ASP.NET Core 最小 API 与 EF Core。复习时先复述本课主问题，再举一个会让结论失效的输入。
+- **判断依据**：本题正确项是参数化测试。术语 dotnet restore（生态、测试与 Web 开发）：版本号尽量显式固定，`dotnet restore` 会按 lock 文件还原依赖，保证 CI 与本地一致，本题取参数化测试这条。易错点是Singleton 注入 Scoped会造成启动时报错或运行异常，改法是按生命周期匹配，或注入 `IServiceScopeFactory`，干扰项性能测试正踩在这条上。
 
 ### 考点 3：第 3 题
 
 - **题目**：EF Core 的主要作用是？
 - **正确项**：ORM：把对象与 LINQ 映射到数据库
-- **判断依据**：这道题落在术语 `EF Core` 上：EF Core 把 LINQ 翻译成 SQL，配合迁移（Add-Migration / Database.Migrate()）管理表结构。复习时把 `EF Core` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是ORM：把对象与 LINQ 映射到数据库。术语 EF Core（生态、测试与 Web 开发）：EF Core 把 LINQ 翻译成 SQL，配合迁移（Add-Migration / Database.Migrate()）管理表结构，本题取ORM：把对象与 LINQ 映射到数据库这条。易错点是Singleton 注入 Scoped会造成启动时报错或运行异常，改法是按生命周期匹配，或注入 `IServiceScopeFactory`，干扰项生成前端页面正踩在这条上。
 
 ### 考点 4：第 4 题
 
 - **题目**：ASP.NET Core 中间件的执行方式是？
 - **正确项**：按注册顺序组成管道依次调用
-- **判断依据**：这道题检验本课主问题：NuGet、xUnit 测试、ASP.NET Core 最小 API 与 EF Core。复习时先复述本课主问题，再举一个会让结论失效的输入。
+- **判断依据**：本题正确项是按注册顺序组成管道依次调用。术语 dotnet restore（生态、测试与 Web 开发）：版本号尽量显式固定，`dotnet restore` 会按 lock 文件还原依赖，保证 CI 与本地一致，本题取按注册顺序组成管道依次调用这条。易错点是Singleton 注入 Scoped会造成启动时报错或运行异常，改法是按生命周期匹配，或注入 `IServiceScopeFactory`，干扰项随机顺序执行正踩在这条上。
 
 ### 考点 5：第 5 题
 
 - **题目**：围绕“生态、测试与 Web 开发”中的 NuGet、xUnit、ASP.NET Core，下列哪两项是本课强调的实践判断？
 - **正确项**：验证 xUnit 时要固定版本并覆盖边界输入，结论才可复现；学习 NuGet 时要同时说明输入、输出和失败路径，不能只看正常流程
-- **判断依据**：这道题落在术语 `NuGet` 上：.NET 的包管理器，restore 按项目文件解析并下载依赖，锁文件用于固定版本。复习时把 `NuGet` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是验证 xUnit 时要固定版本并覆盖边界输入，结论才可复现。术语 NuGet（生态、测试与 Web 开发）：.NET 的包管理器，restore 按项目文件解析并下载依赖，锁文件用于固定版本，本题取验证 xUnit 时要固定版本并覆盖边界输入，结论才可复现这条。易错点是Singleton 注入 Scoped会造成启动时报错或运行异常，改法是按生命周期匹配，或注入 `IServiceScopeFactory`，干扰项把 xUnit 的单次运行结果当成所有版本和规模都成立正踩在这条上。
 
 ### 考点 6：第 6 题
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `NuGet、xUnit 测试、ASP.NET Core 最小 API 与 EF Core。`，这段说明是：EF Core 把 LINQ 翻译成 SQL，配合迁移（``____`` / `Database.Migrate()`）管理表结构。空缺处应填哪个术语？
 - **正确项**：Add-Migration
-- **判断依据**：这道题落在术语 `Add-Migration` 上：EF Core 把 LINQ 翻译成 SQL，配合迁移（`Add-Migration` / `Database.Migrate()`）管理表结构。复习时把 `Add-Migration` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：正确项：Add-Migration。涉及术语 Add-Migration：EF Core 把 LINQ 翻译成 SQL，配合迁移（`Add-Migration` / `Database.Migrate()`）管理表结构。易错点：Singleton 注入 Scoped会造成启动时报错或运行异常。正确做法：按生命周期匹配，或注入 `IServiceScopeFactory`。本题还要同时命中add-migration这条。
 
 ### 考点 7：`dotnet restore`
 

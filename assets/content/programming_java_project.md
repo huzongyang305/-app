@@ -412,39 +412,39 @@ class UserControllerTest {
 
 ### 考点 1：第 1 题
 
-- - **题目**：围绕“实战：Spring Boot REST API”中的 实战、Spring Boot、REST，下列哪两项是本课强调的实践判断？
+- **题目**：围绕“实战：Spring Boot REST API”中的 实战、Spring Boot、REST，下列哪两项是本课强调的实践判断？
 - **正确项**：验证 Spring Boot 时要固定版本并覆盖边界输入，结论才可复现；学习 实战 时要同时说明输入、输出和失败路径，不能只看正常流程
-- **判断依据**：Spring Boot 项目需要在固定版本下验证边界输入才能确保结论可复现，同时每个功能都要覆盖正常、边界和失败路径。回到正文「验收场景」一节复习。
+- **判断依据**：按《实战：Spring Boot REST API》的正文口径，本题正确项是「验证 Spring Boot 时要固定版本并覆盖边界输入，结论才可复现」。《实战：Spring Boot REST API》整课的主线是分层结构、依赖注入、校验与集成测试，本题按这条主线判定。常见错法是Entity 直接当接口返回，其后果是泄露字段、耦合表结构。正确做法是用 DTO 转换。干扰项「把 Spring Boot 的单次运行结果当成所有版本和规模都成立」与题干「围绕“实战：Spring Boot REST API”中的 实战、S」的要求对不上，应排除。
 
 ### 考点 2：第 2 题
 
 - **题目**：使用构造器注入的主要好处是？
 - **正确项**：依赖显式且便于测试
-- **判断依据**：构造器注入让依赖关系在创建时就明确，不像字段注入那样隐藏依赖，测试时可以直接传入 mock 对象。回到正文「依赖注入」一节复习。
+- **判断依据**：本题正确项是依赖显式且便于测试。术语 测试（实战：Spring Boot REST API）：用可重复的输入和断言验证代码行为是否符合预期，本题取依赖显式且便于测试这条。易错点是字段注入 `@Autowired`会造成难以测试、隐藏依赖，改法是用构造器注入，干扰项提升运行速度正踩在这条上。
 
 ### 考点 3：第 3 题
 
 - **题目**：这段 `java` 代码对应 `实战：Spring Boot REST API` 的 `record`。课程要解决的是分层结构、依赖注入、校验与集成测试。关于代码内容，哪一项说法准确？
 - **正确项**：调用了 `Min()`
-- **判断依据**：代码中 `@Positive int quantity` 使用了 Bean Validation 注解，`@Min()` 是同类校验注解。回到正文 record 定义部分核对。
+- **判断依据**：本题正确项是调用了 `Min()`。术语 record（实战：Spring Boot REST API）：`record` 天生适合做 API 的请求/响应模型，`@NotBlank`、`@Min` 由 Bean Validation 在入口处自动校验，本题取调用了 `Min()`这条。易错点是Entity 直接当接口返回会造成泄露字段、耦合表结构，改法是用 DTO 转换，干扰项调用了 `fib_iter()`正踩在这条上。
 
 ### 考点 4：第 4 题
 
 - **题目**：@RestController 与 @Controller 的差别是？
 - **正确项**：@RestController 默认返回 JSON
-- **判断依据**：@RestController 等于 @Controller + @ResponseBody，返回值自动序列化为 JSON 而不是视图名。回到正文「Spring Boot 注解速查」复习。
+- **判断依据**：本题正确项是@RestController 默认返回 JSON。术语 record（实战：Spring Boot REST API）：`record` 天生适合做 API 的请求/响应模型，`@NotBlank`、`@Min` 由 Bean Validation 在入口处自动校验，本题取@RestController 默认返回 JSON这条。易错点是Entity 直接当接口返回会造成泄露字段、耦合表结构，改法是用 DTO 转换，干扰项@Controller 只能返回 JSON正踩在这条上。
 
 ### 考点 5：第 5 题
 
 - **题目**：JPA 中 N+1 查询问题的常见解法是？
 - **正确项**：用 join fetch / @EntityGraph 一次性预加载关联数据
-- **判断依据**：N+1 问题是指查 N 条记录时额外执行 N 次关联查询。用 join fetch 或 @EntityGraph 可以在一条 SQL 里把关联数据一起加载出来。回到正文「JPA 与事务速查」复习。
+- **判断依据**：本题正确项是用 join fetch / @EntityGraph 一次性预加载关联数据。术语 record（实战：Spring Boot REST API）：`record` 天生适合做 API 的请求/响应模型，`@NotBlank`、`@Min` 由 Bean Validation 在入口处自动校验，本题取用 join fetch / @EntityGraph 一次性预加载关联数据这条。易错点是Entity 直接当接口返回会造成泄露字段、耦合表结构，改法是用 DTO 转换，干扰项增加更多 @Transactional，但这会破坏事务边界，同时这会加重锁竞争正踩在这条上。
 
 ### 考点 6：第 6 题
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `分层结构、依赖注入、校验与集成测试。`，这段说明是：`____`：以资源 URI、HTTP 方法和状态码组织接口的无状态风格。空缺处应填哪个术语？
 - **正确项**：REST
-- **判断依据**：这是 REST 的定义——以资源 URI、HTTP 方法和状态码组织接口的无状态风格。回到正文「核心概念定义」核对原文。
+- **判断依据**：《实战：Spring Boot REST API》这题的填空口径是「REST」或「rest」，正文写法与其中任一项一致即可。术语「REST」在本课里的界定是以资源 URI、HTTP 方法和状态码组织接口的无状态风格，题干「填空：补齐下面这段术语说明中的空缺，课程 `分层结构、依赖注入、校验」问的就是这一条。常见错法是Entity 直接当接口返回，其后果是泄露字段、耦合表结构。正确做法是用 DTO 转换。
 
 ## 内容元数据
 

@@ -267,39 +267,39 @@ JDK（开发工具箱）
 
 ### 考点 1：第 1 题
 
-- - **题目**：围绕“环境与 JVM”中的 Java、JVM、JDK，下列哪两项是本课强调的实践判断？
+- **题目**：围绕“环境与 JVM”中的 Java、JVM、JDK，下列哪两项是本课强调的实践判断？
 - **正确项**：学习 Java 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 JVM 时要固定版本并覆盖边界输入，结论才可复现
-- **判断依据**：这道题落在术语 `Java` 上：编译带包名的代码：javac -d out src/com/example/app/Main.java，运行时用全限定名 java -cp out com.example.app.Main。复习时把 `Java` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是学习 Java 时要同时说明输入、输出和失败路径，不能只看正常流程。术语 Java（环境与 JVM）：编译带包名的代码：javac -d out src/com/example/app/Main.java，运行时用全限定名 java -cp out com.example.app.Main，本题取学习 Java 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是类名与文件名不一致会造成`class X is public, should be declared in a file named X.java`，改法是文件名改成与类名完全一致，干扰项只要 Java 的常规示例通过，就可以跳过边界与异常路径正踩在这条上。
 
 ### 考点 2：第 2 题
 
 - **题目**：public class Hello 的源文件名必须是？
 - **正确项**：Hello.java
-- **判断依据**：这道题检验本课主问题：JDK/JRE/JVM 区别、编译运行、包与类路径、JIT 与 GC。复习时先复述本课主问题，再举一个会让结论失效的输入。
+- **判断依据**：本题正确项是Hello.java。术语 Java（环境与 JVM）：编译带包名的代码：javac -d out src/com/example/app/Main.java，运行时用全限定名 java -cp out com.example.app.Main，本题取Hello.java这条。易错点是类名与文件名不一致会造成`class X is public, should be declared in a file named X.java`，改法是文件名改成与类名完全一致，干扰项任意名字正踩在这条上。
 
 ### 考点 3：第 3 题
 
 - **题目**：Java 实现「一次编写，到处运行」的关键是？
 - **正确项**：编译成字节码
-- **判断依据**：这道题落在术语 `Java` 上：编译带包名的代码：javac -d out src/com/example/app/Main.java，运行时用全限定名 java -cp out com.example.app.Main。复习时把 `Java` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是编译成字节码。术语 Java（环境与 JVM）：编译带包名的代码：javac -d out src/com/example/app/Main.java，运行时用全限定名 java -cp out com.example.app.Main，本题取编译成字节码这条。易错点是类名与文件名不一致会造成`class X is public, should be declared in a file named X.java`，改法是文件名改成与类名完全一致，干扰项使用 C 语言编写正踩在这条上。
 
 ### 考点 4：第 4 题
 
 - **题目**：阅读 `环境与 JVM` 的 `Java` 示例。它服务于JDK/JRE/JVM 区别、编译运行、包与类路径、JIT 与 GC。代码中实际包含下列哪一项？
 - **正确项**：出现字面量 `Hello, Java!`
-- **判断依据**：这道题落在术语 `Java` 上：编译带包名的代码：javac -d out src/com/example/app/Main.java，运行时用全限定名 java -cp out com.example.app.Main。复习时把 `Java` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是出现字面量 `Hello, Java!`。术语 Java（环境与 JVM）：编译带包名的代码：javac -d out src/com/example/app/Main.java，运行时用全限定名 java -cp out com.example.app.Main，本题取出现字面量 `Hello, Java!`这条。易错点是类名与文件名不一致会造成`class X is public, should be declared in a file named X.java`，改法是文件名改成与类名完全一致，干扰项出现字面量 `关闭超时：%v`正踩在这条上。
 
 ### 考点 5：第 5 题
 
 - **题目**：Java 程序入口方法的正确签名是？
 - **正确项**：public static void main(String[] args)
-- **判断依据**：这道题落在术语 `Java` 上：编译带包名的代码：javac -d out src/com/example/app/Main.java，运行时用全限定名 java -cp out com.example.app.Main。复习时把 `Java` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是public static void main(String[] args)。术语 Java（环境与 JVM）：编译带包名的代码：javac -d out src/com/example/app/Main.java，运行时用全限定名 java -cp out com.example.app.Main，本题取public static void main(String[] args)这条。易错点是类名与文件名不一致会造成`class X is public, should be declared in a file named X.java`，改法是文件名改成与类名完全一致，干扰项static int main(String[] args)正踩在这条上。
 
 ### 考点 6：第 6 题
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `JDK/JRE/JVM 区别、编译运行、包与类路径、JIT 与 GC。`，这段说明是：`____`：源码编译后的中间指令，由虚拟机解释或即时编译执行。空缺处应填哪个术语？
 - **正确项**：字节码
-- **判断依据**：这道题落在术语 `JVM` 上：public static void main(String[] args) 的每个部分都有含义：public 让 JVM 能访问、static 无需实例化、void 无返回值、String[] args 接收命令行参数。复习时把 `JVM` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：《环境与 JVM》这题的填空口径是「字节码」，正文写法与其中任一项一致即可。术语「JVM」在本课里的界定是public static void main(String[] args) 的每个部分都有含义：public 让 JVM 能访问、static 无需实例化、void 无返回值、String[] args 接收命令行参数，题干「填空：补齐下面这段术语说明中的空缺，课程 `JDK/JRE/JVM 」问的就是这一条。常见错法是类名与文件名不一致，其后果是`class X is public, should be declared in a file named X.java`。正确做法是文件名改成与类名完全一致。
 
 ## 延伸阅读
 

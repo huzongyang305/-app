@@ -53,6 +53,17 @@
 
 Android 开发的关键是**分层（UI/状态/数据）+ 空安全 + 协程**：把状态交给 ViewModel、把耗时操作交给协程、把数据来源收敛到 Repository。
 
+
+### 课程导言
+**Title:** Kotlin & Android
+
+**Summary:** Null safety, coroutines, layering and release.
+
+**Category:** Mobile Development
+**Level:** 基础
+**Key terms:** Kotlin, Android, 协程, ViewModel, AAB
+
+
 ## 核心概念定义
 
 > 阅读约定：本课先给「Kotlin 与 Android 开发」相关术语的操作性定义与适用边界；正文里的口语化说法与定义冲突时，以定义和可复现示例为准。
@@ -68,6 +79,7 @@ Android 开发的关键是**分层（UI/状态/数据）+ 空安全 + 协程**�
 ### 定义如何使用
 
 在「Kotlin 与 Android 开发」中判断一个说法是否成立，先确认它使用的是哪个对象的定义，再检查输入规模、运行环境与失败路径。定义不是口号，而是后续推导、代码示例和自测题共享的约束。
+
 
 ## 原理与运行机制
 
@@ -120,6 +132,7 @@ Android 开发的关键是**分层（UI/状态/数据）+ 空安全 + 协程**�
 | Foreground Service | 前台服务 | 需通知与权限说明 |
 | Room | 本地数据库 | 用 DAO 与 Flow 观察数据 |
 
+
 ## 典型应用场景
 
 | 场景 | 典型输入或前提 | 期望产物 |
@@ -140,6 +153,7 @@ Android 开发的关键是**分层（UI/状态/数据）+ 空安全 + 协程**�
 | 后台 | WorkManager | 可延迟、需保证执行的任务 |
 
 要点：**不要在 Activity 里写业务逻辑**；网络与数据库操作必须离开主线程（协程的 Dispatchers.IO）；用 `viewLifecycleOwner` 收集 Flow 避免泄漏。
+
 
 ## 代码/协议/SQL 示例
 
@@ -429,6 +443,7 @@ sealed interface ListUiState {
 - [ ] 知道为什么状态要放在 ViewModel 里。
 - [ ] 能说出 Compose 里副作用的正确位置。
 
+
 ## 时间/空间复杂度或性能分析
 
 **复杂度证据**：「Kotlin 与 Android 开发」的现有材料没有给出渐近时间或空间复杂度的明确结论，本课只做定性检查，不补写未经验证的 $O$ 记号。
@@ -440,6 +455,7 @@ sealed interface ListUiState {
 | 吞吐/资源 | 版本、调度、锁、IO、序列化或协议开销是否成为瓶颈。 | 固定环境做对照实验，改变一个变量。 |
 
 评估「Kotlin 与 Android 开发」时要区分“正确性成立”和“性能达标”两件事；材料没有给出基准时，本课只保留量级来源与测量方法，不写不可验证的绝对数字。
+
 
 ## 常见误区与易错点
 
@@ -498,6 +514,7 @@ sealed interface ListUiState {
 
 **验证**：保留《Kotlin 与 Android 开发》里触发“新系统版本崩溃”的输入、版本和日志，按“按版本分支申请权限”完成修改后原样重放；只有失败现象消失且相邻场景仍可解释，才保留改动。
 
+
 ## 与其他知识点的关系
 
 | 关系 | 课程 | 为什么 |
@@ -509,6 +526,7 @@ sealed interface ListUiState {
 | 后续顺序 | 《Swift 与 iOS 开发》 | 同分类中安排在本课之后，会继续使用本课术语。 |
 
 把「Kotlin 与 Android 开发」放回知识体系时，不只要记住“前面学过什么”，还要说明两个主题在输入、机制、资源边界和失败模式上的差异。这样才能把单课知识迁移到项目、排障和后续课程。
+
 
 ## 自测题与参考答案
 
@@ -666,6 +684,40 @@ D. 这段代码只做静态声明，没有循环、分支或可观察输出。
 
 ---
 
+
+## 考点精讲
+
+### 考点 1：多选辨析·Kotlin
+
+- **题目**：围绕“Kotlin 与 Android 开发”中的 Kotlin、Android、协程，下列哪两项是本课强调的实践判断？
+- **判断依据**：本题正确项是学习 Kotlin 时要同时说明输入、输出和失败路径，不能只看正常流程。术语 Kotlin（Kotlin 与 Android 开发）：运行于 JVM 等平台、强调空安全与简洁语法的现代编程语言，本题取学习 Kotlin 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是在 UI 里发网络请求会造成旋转屏幕后重复请求、崩溃，改法是放 ViewModel，干扰项只要 Kotlin 的常规示例通过，就可以跳过边界与异常路径正踩在这条上。
+
+### 考点 2：概念判断·Kotlin
+
+- **题目**：Android 中承载界面状态、配置变更后仍存活的组件是？
+- **判断依据**：本题正确项是ViewModel。术语 Android（Kotlin 与 Android 开发）：Android 开发的关键是分层（UI/状态/数据）+ 空安全 + 协程：把状态交给 ViewModel、把耗时操作交给协程、把数据来源收敛到 Repository，本题取ViewModel这条。易错点是在 UI 里发网络请求会造成旋转屏幕后重复请求、崩溃，改法是放 ViewModel，干扰项Adapter正踩在这条上。
+
+### 考点 3：概念判断·Kotlin
+
+- **题目**：Android 上架 Google Play 推荐的产物格式是？
+- **判断依据**：术语 Android（Kotlin 与 Android 开发）：Android 开发的关键是分层（UI/状态/数据）+ 空安全 + 协程：把状态交给 ViewModel、把耗时操作交给协程、把数据来源收敛到 Repository，本题取AAB这条。易错点是在 UI 里发网络请求会造成旋转屏幕后重复请求、崩溃，改法是放 ViewModel。
+
+### 考点 4：代码补全·Kotlin
+
+- **题目**：代码语言为 `kotlin`，选自 `Kotlin 与 Android 开发` 的 `Kotlin` 部分。课程问题为空安全、协程、分层架构与打包发布。哪一项描述与代码一致？
+- **判断依据**：本题正确项是出现字面量 `匿名用户`。术语 Kotlin（Kotlin 与 Android 开发）：运行于 JVM 等平台、强调空安全与简洁语法的现代编程语言，本题取出现字面量 `匿名用户`这条。易错点是在 UI 里发网络请求会造成旋转屏幕后重复请求、崩溃，改法是放 ViewModel，干扰项出现字面量 `雅可比迭代：适合对角占优的稀疏矩阵，`正踩在这条上。
+
+### 考点 5：概念判断·Kotlin
+
+- **题目**：在 Activity 中启动一个随生命周期自动取消的协程，常用写法是？
+- **判断依据**：本题正确项是lifecycleScope.launch { }。术语 协程（Kotlin 与 Android 开发）：协程把耗时工作挪出主线程，本题取lifecycleScope.launch { }这条。易错点是在 UI 里发网络请求会造成旋转屏幕后重复请求、崩溃，改法是放 ViewModel，干扰项GlobalScope.launch { }正踩在这条上。
+
+### 考点 6：顺序排列·Kotlin
+
+- **题目**：下面几项都与 `Kotlin` 有关，请按 `Kotlin 与 Android 开发` 的正文顺序排列；该课主线是空安全、协程、分层架构与打包发布。
+- **判断依据**：本题正确项是语言特性速览。术语 Kotlin（Kotlin 与 Android 开发）：运行于 JVM 等平台、强调空安全与简洁语法的现代编程语言，本题取语言特性速览这条。易错点是在 UI 里发网络请求会造成旋转屏幕后重复请求、崩溃，改法是放 ViewModel，干扰项Android 应用结构正踩在这条上。
+
+
 ## 术语速查
 
 把「Kotlin 与 Android 开发」里反复出现的术语集中放在一起。复习时先遮住右列，尝试用自己的话解释，再回到正文核对。
@@ -678,57 +730,6 @@ D. 这段代码只做静态声明，没有循环、分支或可观察输出。
 | `构建变体` | debug、release 等不同配置的产物，用变体维度管理签名、混淆与接口地址。 |
 | `协程` | 协程把耗时工作挪出主线程 |
 
-## 考点精讲
-
-### 考点 1：多选辨析·Kotlin
-
-- **题目**：围绕“Kotlin 与 Android 开发”中的 Kotlin、Android、协程，下列哪两项是本课强调的实践判断？
-- **判断依据**：本课把Kotlin 与 Android 开发拆成概念、示例与故障现场三部分，因此判断 Kotlin 时必须同时交代输入、输出和失败路径，这使“学习 Kotlin 时要同时说明输入、输出和失败路径，不能只看正常流程”成立。在Kotlin 与 Android 开发里，判断 Android 时要固定版本与边界输入，所以“验证 Android 时要固定版本并覆盖边界输入，结论才可复现”才可复现。
-
-### 考点 2：概念判断·Kotlin
-
-- **题目**：Android 中承载界面状态、配置变更后仍存活的组件是？
-- **判断依据**：在「Kotlin 与 Android 开发」里，Activity 旋转会重建，状态应放在 ViewModel 中。在「Kotlin 与 Android 开发」里，其他选项：Application 是进程级入口，Adapter 负责列表项绑定，Activity 在配置变更时会重建。
-
-### 考点 3：概念判断·Kotlin
-
-- **题目**：Android 上架 Google Play 推荐的产物格式是？
-- **判断依据**：AAB 让商店按设备下发，减小下载体积。其他选项：JAR 不是 Android 产物，DEX 是字节码格式，APK 虽可安装但并非商店推荐。如果只凭关键词作答，很容易把「JAR」、「APK」与「AAB」混在一起；这道题的关键在「Kotlin 与 Android 开发」的Kotlin、Android、协程：先确认题干“Android 上架 Google”问的是哪一步，再排除偷换前提的选项。
-
-### 考点 4：代码补全·Kotlin
-
-- **题目**：代码语言为 `kotlin`，选自 `Kotlin 与 Android 开发` 的 `Kotlin` 部分。课程问题为空安全、协程、分层架构与打包发布。哪一项描述与代码一致？
-- **判断依据**：在「Kotlin 与 Android 开发」里，这段代码包含异常处理分支，失败时会走专门的补救路径。这段代码出自「Kotlin 与 Android 开发」的正文示例，围绕Kotlin、Android、协程展开；把输入或边界换成空值、极值或失败情况后，结论要以「Kotlin 与 Android 开发」的实际运行结果为准。
-
-### 考点 5：概念判断·Kotlin
-
-- **题目**：在 Activity 中启动一个随生命周期自动取消的协程，常用写法是？
-- **判断依据**：在「Kotlin 与 Android 开发」里，lifecycleScope.launch { }。lifecycleScope 绑定组件生命周期，销毁时自动取消，避免泄漏。「Kotlin 与 Android 开发」要求先交代Kotlin、Android、协程的前提再下结论，所以“lifecycleScope.launc”只在题干“在 Activity 中启动一个随生命周期自动取消的协程”给定的条件下成立。
-
-### 考点 6：顺序排列·Kotlin
-
-- **题目**：下面几项都与 `Kotlin` 有关，请按 `Kotlin 与 Android 开发` 的正文顺序排列；该课主线是空安全、协程、分层架构与打包发布。
-- **判断依据**：在「Kotlin 与 Android 开发」里，正确的执行顺序是「语言特性速览」 → 「Android 应用结构」 → 「生命周期与常见崩溃」 → 「打包发布」。在「Kotlin 与 Android 开发」里，在本课中，正确顺序是：1. 语言特性速览 → 2. Android 应用结构 → 3. 生命周期与常见崩溃 → 4. 打包发布。
-
-## English Overview
-
-**Title:** Kotlin & Android
-
-**Summary:** Null safety, coroutines, layering and release.
-
-**Category:** Mobile Development
-**Level:** 基础
-**Key terms:** Kotlin, Android, 协程, ViewModel, AAB
-
-## 内容元数据
-
-- 内容版本：v2.0
-- 最后更新：2026-10-06
-- 学习阶段：基础
-- 适用环境：Flutter 3.x / Dart 3.x；本课聚焦 Kotlin。
-- 内容来源：内置结构化课程与工程实践整理
-- 相关主题：Kotlin、Android、协程、ViewModel、AAB
-- 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
 
 ## 参考资料与复核
 
@@ -746,3 +747,15 @@ D. 这段代码只做静态声明，没有循环、分支或可观察输出。
 | [Flutter 性能最佳实践](https://docs.flutter.dev/perf/best-practices) | 帧率、构建与内存优化 |
 
 > 「Kotlin 与 Android 开发」的链接用于离线阅读后的延伸核对；App 不会自动联网。
+
+
+## 内容元数据
+
+- 内容版本：v2.0
+- 最后更新：2026-10-06
+- 学习阶段：基础
+- 适用环境：Flutter 3.x / Dart 3.x；本课聚焦 Kotlin。
+- 内容来源：内置结构化课程与工程实践整理
+- 相关主题：Kotlin、Android、协程、ViewModel、AAB
+- 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
+

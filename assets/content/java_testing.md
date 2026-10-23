@@ -474,7 +474,7 @@ class OrderControllerTest {
 
 ## 考点精讲
 
-### 问题1
+### 考点 1
 
 在 JUnit 5 中，`@BeforeEach` 和 `@AfterEach` 注解标记的方法分别在什么时候执行？如果一个测试类有 3 个 `@Test` 方法，`@BeforeEach` 标记的方法会被执行几次？
 
@@ -489,7 +489,7 @@ D. 仅在第一个 `@Test` 方法执行前执行一次，共 1 次
 
 ---
 
-### 问题2
+### 考点 2
 
 `@WebMvcTest(OrderController.class)` 和 `@SpringBootTest` 在测试范围和性能上有什么核心区别？
 
@@ -504,7 +504,7 @@ D. `@WebMvcTest` 只加载 Web 层（Controller），启动速度快；`@SpringB
 
 ---
 
-### 问题3
+### 考点 3
 
 使用 Mockito 时，`@Mock` 和 `@InjectMocks` 注解分别起什么作用？
 
@@ -519,7 +519,7 @@ D. `@Mock` 创建模拟对象以替代真实依赖，`@InjectMocks` 创建被测
 
 ---
 
-### 问题4
+### 考点 4
 
 在测试金字塔中，单元测试、集成测试和端到端测试的数量比例和速度特点分别是什么？
 
@@ -534,7 +534,7 @@ D. 集成测试数量最多、速度最快；单元测试数量最少、速度�
 
 ---
 
-### 问题5
+### 考点 5
 
 在 MockMvc 测试中，为什么需要使用 `@MockBean` 注解替换 Service 层的依赖？
 

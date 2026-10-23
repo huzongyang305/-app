@@ -468,37 +468,37 @@ spec:
 
 - **题目**：下面这段 `bash` 代码来自 `Kubernetes 基础`。课程主线是声明式对象模型、Deployment/Service、探针与发布策略。代码与 `requests` 有关。哪一项是代码里真实出现的内容？
 - **正确项**：出现字面量 `512Mi`
-- **判断依据**：这道题落在术语 `requests` 上：`requests` 影响调度，`limits` 影响超限行为，**探针配错会导致容器反复重启**——readiness 失败只是摘流量，liveness 失败会重启容器。复习时把 `requests` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是出现字面量 `512Mi`。术语 requests（Kubernetes 基础）：`requests` 影响调度，`limits` 影响超限行为，**探针配错会导致容器反复重启**——readiness 失败只是摘流量，liveness 失败会重启容器，本题取出现字面量 `512Mi`这条。易错点是Pod 一直 Pending会造成`kubectl describe pod` 看 Events，改法是资源不足、节点选择器/污点不匹配、PVC 未绑定，干扰项出现字面量 `2 同步`正踩在这条上。
 
 ### 考点 2：第 2 题
 
 - **题目**：K8s 中最小的调度单位是？
 - **正确项**：Pod
-- **判断依据**：这道题落在术语 `调度` 上：kube-scheduler 按资源、污点与亲和性把 Pod 放到合适的节点上，Pending 多半卡在这一步。复习时把 `调度` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：术语 调度（Kubernetes 基础）：kube-scheduler 按资源、污点与亲和性把 Pod 放到合适的节点上，Pending 多半卡在这一步，本题取Pod这条。易错点是Pod 一直 Pending会造成`kubectl describe pod` 看 Events，改法是资源不足、节点选择器/污点不匹配、PVC 未绑定，干扰项Deployment正踩在这条上。
 
 ### 考点 3：第 3 题
 
 - **题目**：围绕“Kubernetes 基础”中的 Kubernetes、Pod、Deployment，下列哪两项是本课强调的实践判断？
 - **正确项**：学习 Kubernetes 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 Pod 时要固定版本并覆盖边界输入，结论才可复现
-- **判断依据**：这道题落在术语 `Pod` 上：Kubernetes 最小调度单元，包含一个或多个共享网络与存储的容器。复习时把 `Pod` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是学习 Kubernetes 时要同时说明输入、输出和失败路径，不能只看正常流程。术语 Pod（Kubernetes 基础）：Kubernetes 最小调度单元，包含一个或多个共享网络与存储的容器，本题取学习 Kubernetes 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是Pod 一直 Pending会造成`kubectl describe pod` 看 Events，改法是资源不足、节点选择器/污点不匹配、PVC 未绑定，干扰项只要 Kubernetes 的常规示例通过，就可以跳过边界与异常路径正踩在这条上。
 
 ### 考点 4：第 4 题
 
 - **题目**：Deployment 与 StatefulSet 的区别是？
 - **正确项**：Deployment 的 Pod 可互换
-- **判断依据**：这道题落在术语 `Pod` 上：Kubernetes 最小调度单元，包含一个或多个共享网络与存储的容器。复习时把 `Pod` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是Deployment 的 Pod 可互换。术语 Pod（Kubernetes 基础）：Kubernetes 最小调度单元，包含一个或多个共享网络与存储的容器，本题取Deployment 的 Pod 可互换这条。易错点是Pod 一直 Pending会造成`kubectl describe pod` 看 Events，改法是资源不足、节点选择器/污点不匹配、PVC 未绑定，干扰项两者完全等价正踩在这条上。
 
 ### 考点 5：第 5 题
 
 - **题目**：Kubernetes 中 Service 的作用是？
 - **正确项**：为一组 Pod 提供稳定虚拟 IP 与负载均衡
-- **判断依据**：这道题落在术语 `Pod` 上：Kubernetes 最小调度单元，包含一个或多个共享网络与存储的容器。复习时把 `Pod` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：本题正确项是为一组 Pod 提供稳定虚拟 IP 与负载均衡。术语 Pod（Kubernetes 基础）：Kubernetes 最小调度单元，包含一个或多个共享网络与存储的容器，本题取为一组 Pod 提供稳定虚拟 IP 与负载均衡这条。易错点是Pod 一直 Pending会造成`kubectl describe pod` 看 Events，改法是资源不足、节点选择器/污点不匹配、PVC 未绑定，干扰项持久化容器数据正踩在这条上。
 
 ### 考点 6：第 6 题
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `声明式对象模型、Deployment/Service、探针与发布策略。`，这段说明是：``____`` 影响调度，`limits` 影响超限行为；**探针配错会导致容器反复重启**——readiness 失败只是摘流量，liveness 失败会重启容器。空缺处应填哪个术语？
 - **正确项**：requests
-- **判断依据**：这道题落在术语 `requests` 上：`requests` 影响调度，`limits` 影响超限行为，**探针配错会导致容器反复重启**——readiness 失败只是摘流量，liveness 失败会重启容器。复习时把 `requests` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
+- **判断依据**：正确项：requests。涉及术语 requests：`requests` 影响调度，`limits` 影响超限行为，**探针配错会导致容器反复重启**——readiness 失败只是摘流量，liveness 失败会重启容器。易错点：Pod 一直 Pending会造成`kubectl describe pod` 看 Events。正确做法：资源不足、节点选择器/污点不匹配、PVC 未绑定。
 
 ### 考点 7：`requests`
 

@@ -587,7 +587,7 @@ Servlet/JSP → Spring 核心 → RESTful API → Spring Boot → 微服务
 
 ## 考点精讲
 
-### 问题1
+### 考点 1
 
 在 RESTful API 中，以下哪组 HTTP 方法都具有幂等性？
 
@@ -602,7 +602,7 @@ D. GET、POST、DELETE
 
 ---
 
-### 问题2
+### 考点 2
 
 在 RESTful API 中，创建资源成功后应该返回哪个 HTTP 状态码？
 
@@ -617,7 +617,7 @@ D. 301 Moved Permanently
 
 ---
 
-### 问题3
+### 考点 3
 
 关于 RESTful API 中使用 DTO（数据传输对象）而非直接返回数据库实体的原因，以下哪个说法是不正确的？
 
@@ -632,7 +632,7 @@ D. DTO 可以选择性地只暴露前端需要的字段
 
 ---
 
-### 问题4
+### 考点 4
 
 HATEOAS（Hypermedia As The Engine Of Application State）的核心思想是什么？
 
@@ -647,7 +647,7 @@ D. 客户端必须预先硬编码所有可用的 API 地址
 
 ---
 
-### 问题5
+### 考点 5
 
 在 Spring Boot 中实现 RESTful API 时，\u201CResponseEntity\u201D 相比直接返回对象有什么优势？
 

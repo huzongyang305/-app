@@ -363,37 +363,37 @@ vcpkg 的依赖树会随时间变化。如果你的 `vcpkg.json` 没有锁定版
 
 - **题目**：`构建、调试与工程实践` 的示例代码用于验证 `vcpkg.json`，其背景是CMake/Ninja、vcpkg/conan、gdb、sanitizer 与单元测试。代码的真实内容是下面哪一项？
 - **正确项**：调用了 `find_package()`
-- **判断依据**：示例代码中调用了 `find_package(fmt CONFIG REQUIRED)` 来查找 fmt 库，这正是 vcpkg 依赖管理的体现——通过 CMake 的 find_package 机制把 vcpkg 安装的库引入项目。
+- **判断依据**：本题正确项是调用了 `find_package()`。术语 vcpkg.json（构建、调试与工程实践）：团队中应固定依赖版本（`vcpkg.json` / `conanfile.txt`），避免「我这儿能编译」，本题取调用了 `find_package()`这条。易错点是Debug 与 Release 行为不同会造成只在 Release 崩溃，改法是两种配置都测，干扰项调用了 `edges()`正踩在这条上。
 
 ### 考点 2
 
-- - **题目**：围绕“构建、调试与工程实践”中的 CMake、Ninja、vcpkg，下列哪两项是本课强调的实践判断？
+- **题目**：围绕“构建、调试与工程实践”中的 CMake、Ninja、vcpkg，下列哪两项是本课强调的实践判断？
 - **正确项**：学习 CMake 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 Ninja 时要固定版本并覆盖边界输入，结论才可复现
-- **判断依据**：CMake 的配置（输入）→ 构建文件生成（输出）→ 编译失败（失败路径）构成完整链条。Ninja 的版本差异会影响构建行为，固定版本才能复现结论。
+- **判断依据**：本题正确项是学习 CMake 时要同时说明输入、输出和失败路径，不能只看正常流程。术语 vcpkg.json（构建、调试与工程实践）：团队中应固定依赖版本（`vcpkg.json` / `conanfile.txt`），避免「我这儿能编译」，本题取学习 CMake 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是Debug 与 Release 行为不同会造成只在 Release 崩溃，改法是两种配置都测，干扰项只要 CMake 的常规示例通过，就可以跳过边界与异常路径正踩在这条上。
 
 ### 考点 3
 
 - **题目**：用 gdb 调试时，编译需要加哪个选项？
 - **正确项**：-g
-- **判断依据**：`-g` 选项让编译器在二进制文件中嵌入调试符号（函数名、变量名、行号映射）。没有它，gdb 只能看到内存地址，无法显示源码级别的调试信息。
+- **判断依据**：术语 vcpkg.json（构建、调试与工程实践）：团队中应固定依赖版本（`vcpkg.json` / `conanfile.txt`），避免「我这儿能编译」，本题取-g这条。易错点是Debug 与 Release 行为不同会造成只在 Release 崩溃，改法是两种配置都测，干扰项-Wall正踩在这条上。
 
 ### 考点 4
 
 - **题目**：clang-format 的典型用途是？
 - **正确项**：按统一配置自动格式化代码风格
-- **判断依据**：clang-format 读取 `.clang-format` 配置文件，自动调整缩进、换行、空格等格式细节。团队协作时提交这个配置文件，就能保证所有人的代码风格一致。
+- **判断依据**：本题正确项是按统一配置自动格式化代码风格。术语 vcpkg.json（构建、调试与工程实践）：团队中应固定依赖版本（`vcpkg.json` / `conanfile.txt`），避免「我这儿能编译」，本题取按统一配置自动格式化代码风格这条。易错点是Debug 与 Release 行为不同会造成只在 Release 崩溃，改法是两种配置都测，干扰项管理依赖版本，但这会拖慢构建速度正踩在这条上。
 
 ### 考点 5
 
 - **题目**：clang-tidy 与 AddressSanitizer 的区别是？
 - **正确项**：clang-tidy 做静态检查
-- **判断依据**：clang-tidy 在编译期分析源码，发现潜在 bug 和代码风格问题（静态分析）。AddressSanitizer 在运行时检测内存越界和释放后使用等问题（动态分析）。两者互补，不能替代。
+- **判断依据**：本题正确项是clang-tidy 做静态检查。术语 vcpkg.json（构建、调试与工程实践）：团队中应固定依赖版本（`vcpkg.json` / `conanfile.txt`），避免「我这儿能编译」，本题取clang-tidy 做静态检查这条。易错点是Debug 与 Release 行为不同会造成只在 Release 崩溃，改法是两种配置都测，干扰项clang-tidy 只能检查注释正踩在这条上。
 
 ### 考点 6
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `CMake/Ninja、vcpkg/conan、gdb、sanitizer 与单元测试。`，这段说明是：团队中应固定依赖版本（``____`` / `conanfile.txt`），避免「我这儿能编译」。空缺处应填哪个术语？
 - **正确项**：vcpkg.json
-- **判断依据**：vcpkg.json 是 vcpkg 包管理器的清单文件，用来声明项目依赖及其版本。和 Conan 的 conanfile.txt 一样，它们都是锁定依赖版本的工具，确保团队成员和 CI 环境使用完全相同的依赖。
+- **判断依据**：正确项：vcpkg.json。涉及术语 vcpkg.json：团队中应固定依赖版本（`vcpkg.json` / `conanfile.txt`），避免「我这儿能编译」。易错点：Debug 与 Release 行为不同会造成只在 Release 崩溃。正确做法：两种配置都测。
 
 ## 术语速查
 

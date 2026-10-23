@@ -1,0 +1,40 @@
+assets/content/mobile_flutter_advanced.md :: Flutter, 动画, CustomPainter, Platform Channel, 渲染
+assets/content/mobile_performance_optimization.md :: 性能优化, 内存管理, 启动速度, 包体积, 渲染性能
+assets/content/devops_monitoring.md :: Prometheus, Grafana, Alertmanager, 监控告警, 可观测性
+assets/content/devops_cicd_pipeline.md :: CI/CD, Jenkins, GitLab CI, GitHub Actions, 流水线
+assets/content/devops_gitops_argocd.md :: GitOps, ArgoCD, 声明式, Kubernetes, 自动同步
+assets/content/devops_github_actions.md :: GitHub Actions, 工作流, 矩阵策略, Action
+assets/content/devops_docker_registry.md :: Docker, 镜像, Harbor, 安全扫描, 仓库
+assets/content/devops_deployment_strategies.md :: 蓝绿部署, 金丝雀, Istio, 流量分割, 回滚
+assets/content/devops_terraform.md :: Terraform, IaC, HCL, 模块, 状态管理
+assets/content/devops_logging_tracing.md :: ELK, Jaeger, OpenTelemetry, 日志, 链路追踪
+assets/content/frontend_react_hooks.md :: React, Hooks, useState, useEffect, 组件化
+assets/content/frontend_vue_composition.md :: Vue 3, Composition API, ref, reactive, 响应式
+assets/content/frontend_angular_basics.md :: Angular, 依赖注入, TypeScript, RxJS, 服务
+assets/content/frontend_svelte_reactive.md :: Svelte, 响应式, stores, transitions, 无虚拟DOM
+assets/content/frontend_state_management.md :: Redux, Pinia, NgRx, 状态管理, Context API
+assets/content/frontend_nextjs_ssr.md :: Next.js, SSR, SSG, App Router, 服务端渲染
+assets/content/frontend_performance_optimization.md :: 性能优化, 代码分割, 懒加载, Tree Shaking, 虚拟滚动
+assets/content/frontend_framework_comparison.md :: 框架对比, 性能基准, 选型指南, 生态系统, 最佳实践
+assets/content/backend_restful_api.md :: RESTful, API设计, HTTP, 版本化, 最佳实践
+assets/content/backend_nodejs_express.md :: Node.js, Express, Koa, 中间件, 事件驱动
+assets/content/backend_fastapi_async.md :: FastAPI, 异步, Pydantic, 依赖注入, SQLAlchemy
+assets/content/backend_gin_echo.md :: Go, Gin, Echo, Goroutine, GORM
+assets/content/backend_database_integration.md :: PostgreSQL, MongoDB, Redis, ORM, 连接池
+assets/content/backend_auth_jwt_oauth.md :: JWT, OAuth2, 认证, 授权, RBAC
+assets/content/backend_graphql_apollo.md :: GraphQL, Apollo Server, SDL, DataLoader, N+1问题
+assets/content/backend_microservices_patterns.md :: 微服务, API Gateway, Saga, 分布式追踪, CAP定理
+assets/content/ml_tensorflow_pytorch_intro.md :: TensorFlow, PyTorch, 张量, 自动微分, 计算图
+assets/content/ml_data_preprocessing_feature_engineering.md :: 数据预处理, 特征工程, 缺失值, 标准化, 特征选择
+assets/content/ml_computer_vision.md :: CNN, 图像分类, 目标检测, YOLO, 迁移学习
+assets/content/ml_natural_language_processing.md :: NLP, 词嵌入, Transformer, BERT, 情感分析
+assets/content/ml_recommendation_systems.md :: 推荐系统, 协同过滤, 矩阵分解, NeuMF, 冷启动
+assets/content/ml_time_series_prediction.md :: 时间序列, LSTM, Transformer, 平稳性, 多步预测
+assets/content/ml_model_evaluation_hyperparameter_tuning.md :: 模型评估, 超参数调优, 交叉验证, 网格搜索, 贝叶斯优化
+assets/content/ml_model_deployment_mlops.md :: MLOps, 模型部署, FastAPI, Docker, MLflow
+assets/content/mobile_swiftui_complete.md :: SwiftUI, iOS, 声明式UI, 状态管理, Core Data
+assets/content/mobile_jetpack_compose_advanced.md :: Jetpack Compose, Android, 布局系统, 副作用, Material 3
+assets/content/mobile_react_native_deep.md :: React Native, 原生模块, 桥接, 性能优化, TurboModules
+assets/content/mobile_cross_platform_comparison.md :: 跨平台, 架构对比, 选型指南, Flutter vs RN, 迁移
+assets/content/mobile_offline_first_architecture.md :: 离线优先, 数据同步, 冲突解决, SQLite, 后台任务
+assets/content/mobile_security_best_practices.md :: 移动安全, 加密, 混淆, 反调试, 证书固定

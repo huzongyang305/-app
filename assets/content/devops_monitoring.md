@@ -9,8 +9,20 @@
 
 ---
 
-## 章节总览
+## 本节知识框架
 
+**课程定位**：分类「cloud」· 学习阶段 高级 · 建议用时 60 分钟。
+
+本课主线：用 Prometheus、Grafana 与 Alertmanager 搭建完整的监控告警体系，覆盖指标采集、可视化与告警路由。
+
+### 复习清单
+
+- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
+- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
+
+
+### 课程导言
 | 序号 | 章节名称 | 核心内容 |
 |------|----------|----------|
 | 1 | 课程导言：为什么需要监控 | 监控的意义与生活类比 |
@@ -29,9 +41,9 @@
 
 ---
 
-## 第 1 章 课程导言：为什么需要监控
 
-### 1.1 生活中的监控：你的汽车仪表盘
+### 第 1 讲·课程导言：为什么需要监控
+#### 1.1 生活中的监控：你的汽车仪表盘
 
 想象你正在高速公路上开车。你的汽车仪表盘上有速度表、油量表、水温表、发动机故障灯——这些就是你的"监控系统"。
 
@@ -42,7 +54,7 @@
 
 如果没有仪表盘，你只能在车抛锚后才知道出了问题。同样，没有监控系统的服务就像一辆没有仪表盘的汽车——你不知道它什么时候会出问题，也不知道它现在运行得好不好。
 
-### 1.2 软件系统为什么需要监控
+#### 1.2 软件系统为什么需要监控
 
 在生产环境中，一个典型的 Web 应用可能包含：
 
@@ -59,7 +71,7 @@
 3. **提前预警**：在问题恶化前发出告警
 4. **数据支撑**：为容量规划和优化提供依据
 
-### 1.3 监控的发展历史
+#### 1.3 监控的发展历史
 
 | 时代 | 代表工具 | 特点 |
 |------|----------|------|
@@ -71,9 +83,81 @@
 
 ---
 
-## 第 2 章 可观测性三大支柱
 
-### 2.1 什么是可观测性
+### 第 13 讲·复习清单与进阶路线
+#### 13.1 复习清单
+
+完成本课程后，请逐项检查自己是否掌握了以下内容：
+
+#### 基础概念
+
+- [ ] 能解释可观测性三大支柱（指标、日志、链路追踪）的区别和联系
+- [ ] 能说出 Prometheus 四种指标类型（Counter、Gauge、Histogram、Summary）的适用场景
+- [ ] 能解释 Pull 模型和 Push 模型的区别及各自适用场景
+- [ ] 能用自己的话解释 SLI、SLO、SLA 的含义和关系
+
+#### 实操技能
+
+- [ ] 能独立编写 Prometheus 配置文件，添加抓取目标
+- [ ] 能使用 PromQL 编写常用查询（CPU/内存/磁盘使用率、错误率、延迟分位数）
+- [ ] 能配置 Alertmanager 的告警路由、分组和抑制规则
+- [ ] 能在 Grafana 中创建 Dashboard 并使用变量
+
+#### 生产实践
+
+- [ ] 能设计合理的告警策略，避免告警疲劳
+- [ ] 了解 Prometheus 高可用方案（Thanos/Cortex）
+- [ ] 能进行基本的故障排查（使用 promtool、检查 up 指标）
+- [ ] 了解安全加固措施（认证、加密、网络隔离）
+
+#### 13.2 进阶学习路线
+
+```text
+本课程（基础监控告警）
+    │
+    ├──► 日志系统：EFK/ELK Stack（Elasticsearch + Fluentd + Kibana）
+    │         或 Loki + Grafana（轻量级日志方案）
+    │
+    ├──► 链路追踪：Jaeger、Zipkin、OpenTelemetry
+    │
+    ├──► 长期存储：Thanos、Cortex、Mimir
+    │
+    ├──► 服务网格监控：Istio + Prometheus
+    │
+    └──► APM 平台：Datadog、New Relic、SkyWalking
+```
+
+#### 13.3 推荐资源
+
+| 资源 | 类型 | 说明 |
+|------|------|------|
+| Prometheus 官方文档 | 文档 | 最权威的参考资料 |
+| Grafana 官方教程 | 文档 | Dashboard 最佳实践 |
+| 《Prometheus 监控实战》 | 书籍 | 系统学习 Prometheus |
+| Google SRE Book | 书籍 | SLO/SLA 和运维文化 |
+| CNCF Landscape | 网站 | 了解云原生监控生态 |
+
+---
+
+
+## 核心概念定义
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| Prometheus | 用 Prometheus、Grafana 与 Alertmanager 搭建完整相关：正文给出可操作定义与适用边界。 |
+| Grafana | 用 Prometheus、Grafana 与 Alertmanager 搭建完整相关：正文给出可操作定义与适用边界。 |
+| Alertmanager | 用 Prometheus、Grafana 与 Alertmanager 搭建完整相关：正文给出可操作定义与适用边界。 |
+| 监控告警 | 用 Prometheus、Grafana 与 Alertmanager 搭建完整相关：正文给出可操作定义与适用边界。 |
+| 可观测性 | 用 Prometheus、Grafana 与 Alertmanager 搭建完整相关：正文给出可操作定义与适用边界。 |
+
+
+## 原理与运行机制
+
+《监控告警体系搭建》正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
+
+
+### 第 2 讲·可观测性三大支柱
+#### 2.1 什么是可观测性
 
 **可观测性（Observability）** 是指通过系统的外部输出（指标、日志、链路）来推断系统内部状态的能力。
 
@@ -83,7 +167,7 @@
 - **病人的描述**（日志 Logs）—— 详细的症状记录
 - **CT 扫描、X 光**（链路追踪 Traces）—— 追踪身体内部的具体情况
 
-### 2.2 支柱一：指标（Metrics）
+#### 2.2 支柱一：指标（Metrics）
 
 指标是数值型的时间序列数据，适合聚合和趋势分析。
 
@@ -103,7 +187,7 @@ http_requests_total{method="GET", status="200"} 98765
 http_request_duration_seconds{quantile="0.99"} 0.456
 ```
 
-### 2.3 支柱二：日志（Logs）
+#### 2.3 支柱二：日志（Logs）
 
 日志是离散的事件记录，包含丰富的上下文信息。
 
@@ -119,7 +203,7 @@ http_request_duration_seconds{quantile="0.99"} 0.456
 2024-01-15 10:23:47 [ERROR] 订单创建失败 order_id=67890 error="数据库超时"
 ```
 
-### 2.4 支柱三：链路追踪（Traces）
+#### 2.4 支柱三：链路追踪（Traces）
 
 链路追踪记录一个请求在分布式系统中的完整调用路径。
 
@@ -141,7 +225,7 @@ http_request_duration_seconds{quantile="0.99"} 0.456
       └── Payment Gateway (135ms)
 ```
 
-### 2.5 三大支柱的协同关系
+#### 2.5 三大支柱的协同关系
 
 ```text
                     ┌─────────────┐
@@ -167,9 +251,9 @@ http_request_duration_seconds{quantile="0.99"} 0.456
 
 ---
 
-## 第 3 章 Prometheus 架构与数据模型
 
-### 3.1 Prometheus 简介
+### 第 3 讲·Prometheus 架构与数据模型
+#### 3.1 Prometheus 简介
 
 Prometheus 是由 SoundCloud 开发的开源监控和告警系统，现在是 CNCF 的毕业项目。它就像监控世界的"瑞士军刀"——功能全面、生态丰富、社区活跃。
 
@@ -180,7 +264,7 @@ Prometheus 是由 SoundCloud 开发的开源监控和告警系统，现在是 CN
 - **服务发现**：自动发现监控目标（Kubernetes、Consul 等）
 - **告警管理**：通过 Alertmanager 处理告警路由
 
-### 3.2 Prometheus 架构图
+#### 3.2 Prometheus 架构图
 
 ```text
 ┌─────────────────────────────────────────────────────────┐
@@ -206,7 +290,7 @@ Prometheus 是由 SoundCloud 开发的开源监控和告警系统，现在是 CN
 └─────────────────────────────────────────────────────────┘
 ```
 
-### 3.3 核心组件说明
+#### 3.3 核心组件说明
 
 | 组件 | 作用 | 类比 |
 |------|------|------|
@@ -216,7 +300,7 @@ Prometheus 是由 SoundCloud 开发的开源监控和告警系统，现在是 CN
 | Alertmanager | 处理告警的路由、分组、抑制 | "报警中心" |
 | Grafana | 可视化仪表盘 | "仪表盘屏幕" |
 
-### 3.4 数据模型：时间序列
+#### 3.4 数据模型：时间序列
 
 Prometheus 中所有数据都是**时间序列（Time Series）**，由以下部分组成：
 
@@ -239,7 +323,7 @@ http_requests_total{method="POST", handler="/api/users", status="201"} 43 164224
 - 时间戳 = 行（每一行是一个时间点）
 - 数值 = 单元格中的值
 
-### 3.5 Prometheus 配置文件
+#### 3.5 Prometheus 配置文件
 
 一个完整的 Prometheus 配置示例：
 
@@ -307,9 +391,9 @@ scrape_configs:
 
 ---
 
-## 第 4 章 指标类型详解
 
-### 4.1 四种指标类型概览
+### 第 4 讲·指标类型详解
+#### 4.1 四种指标类型概览
 
 Prometheus 定义了四种指标类型，每种适用于不同的场景：
 
@@ -320,7 +404,7 @@ Prometheus 定义了四种指标类型，每种适用于不同的场景：
 | Histogram | 预定义桶的分布统计 | 请求延迟分布、响应大小 | 身高分布统计 |
 | Summary | 客户端计算分位数 | 请求延迟的 P99/P95 | 考试成绩分位数 |
 
-### 4.2 Counter（计数器）
+#### 4.2 Counter（计数器）
 
 Counter 是最简单的指标类型，只能递增或重置（如进程重启时归零）。
 
@@ -347,7 +431,7 @@ rate(http_requests_total[5m])
 rate(http_requests_total{status=~"5.."}[5m]) * 60
 ```
 
-### 4.3 Gauge（仪表盘）
+#### 4.3 Gauge（仪表盘）
 
 Gauge 可以任意增减，适合表示"当前值"的指标。
 
@@ -377,7 +461,7 @@ process_open_fds 256
 1 - (node_filesystem_avail_bytes / node_filesystem_size_bytes)
 ```
 
-### 4.4 Histogram（直方图）
+#### 4.4 Histogram（直方图）
 
 Histogram 将观测值放入预定义的桶（bucket）中，用于统计分布情况。
 
@@ -412,7 +496,7 @@ histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))
 rate(http_request_duration_seconds_sum[5m]) / rate(http_request_duration_seconds_count[5m])
 ```
 
-### 4.5 Summary（摘要）
+#### 4.5 Summary（摘要）
 
 Summary 与 Histogram 类似，但在客户端直接计算分位数。
 
@@ -431,7 +515,7 @@ http_request_duration_seconds_sum 4567.89
 http_request_duration_seconds_count 135890
 ```
 
-### 4.6 如何选择指标类型
+#### 4.6 如何选择指标类型
 
 ```text
 需要统计"总共发生了多少次"？
@@ -447,13 +531,13 @@ http_request_duration_seconds_count 135890
 
 ---
 
-## 第 5 章 PromQL 查询语言
 
-### 5.1 PromQL 简介
+### 第 5 讲·PromQL 查询语言
+#### 5.1 PromQL 简介
 
 PromQL（Prometheus Query Language）是 Prometheus 的查询语言，就像 SQL 之于数据库。它是监控系统的"查询引擎"，用于从时间序列数据中提取和计算信息。
 
-### 5.2 基础查询
+#### 5.2 基础查询
 
 ```promql
 # 选择所有时间序列
@@ -471,7 +555,7 @@ http_requests_total{status!~"5.."}       # 排除 5xx 状态码
 http_requests_total{method=~"GET|POST"}  # GET 或 POST
 ```
 
-### 5.3 时间范围与函数
+#### 5.3 时间范围与函数
 
 ```promql
 # 选择过去 5 分钟的数据
@@ -488,7 +572,7 @@ increase(http_requests_total[1h])       # 过去 1 小时的增量
 predict_linear(http_requests_total[1h], 3600)  # 预测 1 小时后的值
 ```
 
-### 5.4 聚合操作
+#### 5.4 聚合操作
 
 ```promql
 # 按标签聚合
@@ -504,7 +588,7 @@ count(up == 1)                                 # 统计在线实例数
 topk(5, rate(http_requests_total[5m]))         # 速率最高的 5 个序列
 ```
 
-### 5.5 常用查询实战案例
+#### 5.5 常用查询实战案例
 
 ```promql
 # 1. CPU 使用率（百分比）
@@ -529,7 +613,7 @@ avg_over_time(up{job="my-app"}[1h]) * 100
 rate(node_network_receive_bytes_total{device="eth0"}[5m]) / 1024 / 1024
 ```
 
-### 5.6 记录规则（Recording Rules）
+#### 5.6 记录规则（Recording Rules）
 
 对于复杂或频繁使用的查询，可以使用记录规则预先计算：
 
@@ -553,15 +637,15 @@ groups:
 
 ---
 
-## 第 6 章 Grafana 可视化
 
-### 6.1 Grafana 简介
+### 第 6 讲·Grafana 可视化
+#### 6.1 Grafana 简介
 
 如果说 Prometheus 是监控系统的"大脑"，那么 Grafana 就是它的"脸面"。Grafana 是一个开源的可视化平台，让你可以创建美观且功能强大的监控仪表盘。
 
 **类比**：Prometheus 是汽车的发动机和传感器，Grafana 就是你看到的仪表盘屏幕——把所有数据以图表的形式展示出来。
 
-### 6.2 数据源配置
+#### 6.2 数据源配置
 
 首先，需要将 Prometheus 添加为 Grafana 的数据源：
 
@@ -581,7 +665,7 @@ datasources:
       httpMethod: POST
 ```
 
-### 6.3 Dashboard 构建
+#### 6.3 Dashboard 构建
 
 一个完整的 Grafana Dashboard JSON 示例（Node Exporter 监控面板）：
 
@@ -716,7 +800,7 @@ datasources:
 }
 ```
 
-### 6.4 变量的使用
+#### 6.4 变量的使用
 
 变量让 Dashboard 更加灵活和可复用：
 
@@ -736,7 +820,7 @@ node_cpu_seconds_total{instance=~"$instance"}
 avg_over_time(node_cpu_seconds_total{instance=~"$instance"}[$interval])
 ```
 
-### 6.5 常用面板类型
+#### 6.5 常用面板类型
 
 - **Time Series**：时间序列折线图，最常用
 - **Gauge**：仪表盘，适合展示当前值
@@ -748,9 +832,9 @@ avg_over_time(node_cpu_seconds_total{instance=~"$instance"}[$interval])
 
 ---
 
-## 第 7 章 Alertmanager 告警路由
 
-### 7.1 Alertmanager 简介
+### 第 7 讲·Alertmanager 告警路由
+#### 7.1 Alertmanager 简介
 
 Alertmanager 是 Prometheus 生态中的告警处理组件。如果把 Prometheus 比作"发现问题的侦探"，那 Alertmanager 就是"负责通知的邮递员"——它接收告警，决定发给谁、怎么发、何时发。
 
@@ -760,7 +844,7 @@ Alertmanager 是 Prometheus 生态中的告警处理组件。如果把 Prometheu
 - **静默（Silencing）**：在维护窗口期间临时屏蔽告警
 - **路由（Routing）**：根据告警标签决定通知渠道
 
-### 7.2 Alertmanager 配置文件
+#### 7.2 Alertmanager 配置文件
 
 ```yaml
 # alertmanager.yml - Alertmanager 完整配置
@@ -850,7 +934,7 @@ inhibit_rules:
     equal: ["cluster"]
 ```
 
-### 7.3 告警规则定义
+#### 7.3 告警规则定义
 
 ```yaml
 # alert_rules.yml - Prometheus 告警规则
@@ -939,7 +1023,7 @@ groups:
           description: "P99 延迟超过 1 秒，当前值：{{ $value | printf \"%.3f\" }}s"
 ```
 
-### 7.4 告警生命周期
+#### 7.4 告警生命周期
 
 ```text
 触发条件满足 → Pending（等待 for 持续时间）→ Firing（发送告警）→ Resolved（恢复正常）
@@ -950,9 +1034,9 @@ groups:
 
 ---
 
-## 第 8 章 告警策略设计
 
-### 8.1 告警策略的三个层次
+### 第 8 讲·告警策略设计
+#### 8.1 告警策略的三个层次
 
 好的告警策略应该像洋葱一样，分层次覆盖不同的问题场景：
 
@@ -962,7 +1046,7 @@ groups:
 | 第二层 | 趋势告警 | 磁盘 4 小时内将满 | 体重每周增长 1kg |
 | 第三层 | 异常检测 | 请求量突然下降 50% | 心跳突然变慢 |
 
-### 8.2 阈值告警
+#### 8.2 阈值告警
 
 最基础也最常用的告警策略。关键是要设置合理的阈值和持续时间。
 
@@ -978,7 +1062,7 @@ groups:
 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle", env="staging"}[5m])) * 100) > 95
 ```
 
-### 8.3 趋势告警
+#### 8.3 趋势告警
 
 趋势告警关注的是"变化的方向和速度"，而不是绝对值。
 
@@ -994,7 +1078,7 @@ deriv(http_requests_total[1h]) > 100
 deriv(process_resident_memory_bytes[30m]) > 1048576  # 每分钟增长超过 1MB
 ```
 
-### 8.4 异常检测
+#### 8.4 异常检测
 
 异常检测用于发现偏离正常模式的行为。
 
@@ -1011,7 +1095,7 @@ histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))
 > 3 * histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m] offset 1d))
 ```
 
-### 8.5 告警疲劳的防范
+#### 8.5 告警疲劳的防范
 
 **告警疲劳**是运维团队的大敌。当告警太多时，人们会开始忽视告警，真正重要的告警也会被淹没。
 
@@ -1033,9 +1117,9 @@ histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))
 
 ---
 
-## 第 9 章 SLI/SLO/SLA 定义与实践
 
-### 9.1 概念解释
+### 第 9 讲·SLI/SLO/SLA 定义与实践
+#### 9.1 概念解释
 
 用餐厅的例子来理解这三个概念：
 
@@ -1047,7 +1131,7 @@ histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))
 
 **关系**：SLI 是实际值，SLO 是内部目标，SLA 是外部承诺。通常 SLA 比 SLO 更宽松，留出缓冲空间。
 
-### 9.2 定义 SLI
+#### 9.2 定义 SLI
 
 **常见的 SLI 类型**：
 
@@ -1067,7 +1151,7 @@ sum(rate(http_requests_total[5m]))
 sum(rate(http_requests_total{status=~"5.."}[30d])) / sum(rate(http_requests_total[30d]))
 ```
 
-### 9.3 设定 SLO
+#### 9.3 设定 SLO
 
 SLO 的设定需要平衡用户体验和技术可行性：
 
@@ -1095,7 +1179,7 @@ slos:
     window: 30d
 ```
 
-### 9.4 错误预算（Error Budget）
+#### 9.4 错误预算（Error Budget）
 
 错误预算是 SLO 实践中的核心概念。它量化了"允许出错的额度"。
 
@@ -1120,7 +1204,7 @@ SLO 目标：99.9% 可用性
 # 结果 > 1 表示已经超出错误预算
 ```
 
-### 9.5 SLA 与违约处理
+#### 9.5 SLA 与违约处理
 
 SLA 通常包含以下要素：
 
@@ -1131,9 +1215,91 @@ SLA 通常包含以下要素：
 
 ---
 
-## 第 10 章 实战：搭建完整监控告警体系
 
-### 10.1 架构总览
+### 第 11 讲·生产环境最佳实践
+#### 11.1 高可用部署
+
+生产环境中，单点故障是不可接受的。Prometheus 的高可用方案：
+
+```text
+                    ┌─────────────────────┐
+                    │     Load Balancer    │
+                    └──────────┬──────────┘
+                    ┌──────────┴──────────┐
+                    ▼                     ▼
+           ┌──────────────┐      ┌──────────────┐
+           │ Prometheus-1 │      │ Prometheus-2 │
+           │  (副本 A)     │      │  (副本 B)     │
+           └──────┬───────┘      └──────┬───────┘
+                  │                     │
+                  ▼                     ▼
+           ┌──────────────┐      ┌──────────────┐
+           │   Thanos     │      │   Thanos     │
+           │   Store      │      │   Store      │
+           └──────────────┘      └──────────────┘
+```
+
+**关键配置**：
+- 至少部署两个 Prometheus 实例
+- 使用 Thanos 或 Cortex 实现长期存储和全局查询
+- Alertmanager 集群至少 3 个节点（使用 Raft 共识）
+
+#### 11.2 存储优化
+
+```yaml
+# Prometheus 存储优化配置
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+# TSDB 配置
+storage:
+  tsdb:
+    retention.time: 30d       # 数据保留 30 天
+    retention.size: 10GB      # 最大存储空间
+    min-block-duration: 2h    # 最小块时长
+    max-block-duration: 36h   # 最大块时长
+```
+
+**存储优化建议**：
+- 使用 recording rules 预计算常用查询
+- 合理设置 scrape_interval（不需要太频繁）
+- 使用标签时避免高基数（如不要用 user_id 作为标签）
+- 定期清理不需要的指标
+
+#### 11.3 安全加固
+
+```yaml
+# Prometheus 基本认证配置
+scrape_configs:
+  - job_name: "secure-target"
+    basic_auth:
+      username: "prometheus"
+      password: "secure-password"
+    tls_config:
+      ca_file: "/etc/prometheus/ca.crt"
+      cert_file: "/etc/prometheus/client.crt"
+      key_file: "/etc/prometheus/client.key"
+```
+
+**安全检查清单**：
+- 启用 HTTPS 加密通信
+- 配置访问认证（Basic Auth 或 OAuth2）
+- 限制网络访问（只允许监控网络访问抓取端口）
+- 定期轮换凭证
+- 审计告警通知中的敏感信息
+
+---
+
+
+## 典型应用场景
+
+- 结合「监控告警体系搭建」的常见落地场景与选型边界，详见正文各章节的对比讨论。
+- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
+
+
+### 第 10 讲·实战：搭建完整监控告警体系
+#### 10.1 架构总览
 
 ![监控告警体系架构图](images/devops_monitoring_stack.webp)
 
@@ -1144,7 +1310,7 @@ SLA 通常包含以下要素：
 - Alertmanager：告警管理
 - Grafana：可视化仪表盘
 
-### 10.2 项目目录结构
+#### 10.2 项目目录结构
 
 ```text
 monitoring-stack/
@@ -1168,7 +1334,7 @@ monitoring-stack/
 └── .env
 ```
 
-### 10.3 Docker Compose 配置
+#### 10.3 Docker Compose 配置
 
 ```yaml
 # docker-compose.yml
@@ -1255,7 +1421,7 @@ networks:
     driver: bridge
 ```
 
-### 10.4 启动与验证
+#### 10.4 启动与验证
 
 ```bash
 # 1. 进入项目目录
@@ -1282,7 +1448,7 @@ docker compose logs -f alertmanager
 docker compose logs -f grafana
 ```
 
-### 10.5 验证 Prometheus 抓取
+#### 10.5 验证 Prometheus 抓取
 
 ```bash
 # 检查抓取目标状态
@@ -1297,85 +1463,39 @@ curl -s http://localhost:9090/api/v1/rules | python3 -m json.tool | head -50
 
 ---
 
-## 第 11 章 生产环境最佳实践
 
-### 11.1 高可用部署
+## 代码/协议/SQL 示例
 
-生产环境中，单点故障是不可接受的。Prometheus 的高可用方案：
+《监控告警体系搭建》正文首个示例可作为最小验证起点（原样保留在上方章节）：先跑通，再改一个输入观察输出变化。
 
 ```text
-                    ┌─────────────────────┐
-                    │     Load Balancer    │
-                    └──────────┬──────────┘
-                    ┌──────────┴──────────┐
-                    ▼                     ▼
-           ┌──────────────┐      ┌──────────────┐
-           │ Prometheus-1 │      │ Prometheus-2 │
-           │  (副本 A)     │      │  (副本 B)     │
-           └──────┬───────┘      └──────┬───────┘
-                  │                     │
-                  ▼                     ▼
-           ┌──────────────┐      ┌──────────────┐
-           │   Thanos     │      │   Thanos     │
-           │   Store      │      │   Store      │
-           └──────────────┘      └──────────────┘
+# 系统级指标
+node_cpu_seconds_total{cpu="0", mode="idle"} 123456.78
+node_memory_MemAvailable_bytes 4294967296
+
+# 应用级指标
+http_requests_total{method="GET", status="200"} 98765
+http_request_duration_seconds{quantile="0.99"} 0.456
 ```
 
-**关键配置**：
-- 至少部署两个 Prometheus 实例
-- 使用 Thanos 或 Cortex 实现长期存储和全局查询
-- Alertmanager 集群至少 3 个节点（使用 Raft 共识）
 
-### 11.2 存储优化
+## 时间/空间复杂度或性能分析
 
-```yaml
-# Prometheus 存储优化配置
-global:
-  scrape_interval: 15s
-  evaluation_interval: 15s
+- 在《监控告警体系搭建》里处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
+- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
 
-# TSDB 配置
-storage:
-  tsdb:
-    retention.time: 30d       # 数据保留 30 天
-    retention.size: 10GB      # 最大存储空间
-    min-block-duration: 2h    # 最小块时长
-    max-block-duration: 36h   # 最大块时长
-```
 
-**存储优化建议**：
-- 使用 recording rules 预计算常用查询
-- 合理设置 scrape_interval（不需要太频繁）
-- 使用标签时避免高基数（如不要用 user_id 作为标签）
-- 定期清理不需要的指标
+## 常见误区与易错点
 
-### 11.3 安全加固
+| 错误做法 | 典型现象 | 修复方向 |
+| --- | --- | --- |
+| 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
+| 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
+| 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
 
-```yaml
-# Prometheus 基本认证配置
-scrape_configs:
-  - job_name: "secure-target"
-    basic_auth:
-      username: "prometheus"
-      password: "secure-password"
-    tls_config:
-      ca_file: "/etc/prometheus/ca.crt"
-      cert_file: "/etc/prometheus/client.crt"
-      key_file: "/etc/prometheus/client.key"
-```
 
-**安全检查清单**：
-- 启用 HTTPS 加密通信
-- 配置访问认证（Basic Auth 或 OAuth2）
-- 限制网络访问（只允许监控网络访问抓取端口）
-- 定期轮换凭证
-- 审计告警通知中的敏感信息
-
----
-
-## 第 12 章 常见陷阱与排错指南
-
-### 12.1 常见问题与解决方案
+### 第 12 讲·常见陷阱与排错指南
+#### 12.1 常见问题与解决方案
 
 | 问题 | 可能原因 | 解决方案 |
 |------|----------|----------|
@@ -1385,7 +1505,7 @@ scrape_configs:
 | 查询缓慢 | 高基数标签或复杂查询 | 使用 recording rules 优化 |
 | 内存溢出 | 时间序列过多 | 减少标签维度或增加内存 |
 
-### 12.2 排错工具与命令
+#### 12.2 排错工具与命令
 
 ```bash
 # 1. 检查 Prometheus 配置是否正确
@@ -1409,7 +1529,7 @@ amtool check-config alertmanager.yml
 amtool alert add TestAlert severity=warning instance=test
 ```
 
-### 12.3 调试技巧
+#### 12.3 调试技巧
 
 ```promql
 # 调试抓取问题：检查 up 指标
@@ -1427,95 +1547,20 @@ http_requests_total[5m] offset 1h
 
 ---
 
-## 第 13 章 复习清单与进阶路线
 
-### 13.1 复习清单
+## 与其他知识点的关系
 
-完成本课程后，请逐项检查自己是否掌握了以下内容：
+先修与相关课程：cloud_observability_sre、docker。复习时对照这些课程的术语表，找出同名概念在不同场景下的边界差异。
 
-#### 基础概念
 
-- [ ] 能解释可观测性三大支柱（指标、日志、链路追踪）的区别和联系
-- [ ] 能说出 Prometheus 四种指标类型（Counter、Gauge、Histogram、Summary）的适用场景
-- [ ] 能解释 Pull 模型和 Push 模型的区别及各自适用场景
-- [ ] 能用自己的话解释 SLI、SLO、SLA 的含义和关系
+## 自测题与参考答案
 
-#### 实操技能
+以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
 
-- [ ] 能独立编写 Prometheus 配置文件，添加抓取目标
-- [ ] 能使用 PromQL 编写常用查询（CPU/内存/磁盘使用率、错误率、延迟分位数）
-- [ ] 能配置 Alertmanager 的告警路由、分组和抑制规则
-- [ ] 能在 Grafana 中创建 Dashboard 并使用变量
-
-#### 生产实践
-
-- [ ] 能设计合理的告警策略，避免告警疲劳
-- [ ] 了解 Prometheus 高可用方案（Thanos/Cortex）
-- [ ] 能进行基本的故障排查（使用 promtool、检查 up 指标）
-- [ ] 了解安全加固措施（认证、加密、网络隔离）
-
-### 13.2 进阶学习路线
-
-```text
-本课程（基础监控告警）
-    │
-    ├──► 日志系统：EFK/ELK Stack（Elasticsearch + Fluentd + Kibana）
-    │         或 Loki + Grafana（轻量级日志方案）
-    │
-    ├──► 链路追踪：Jaeger、Zipkin、OpenTelemetry
-    │
-    ├──► 长期存储：Thanos、Cortex、Mimir
-    │
-    ├──► 服务网格监控：Istio + Prometheus
-    │
-    └──► APM 平台：Datadog、New Relic、SkyWalking
-```
-
-### 13.3 推荐资源
-
-| 资源 | 类型 | 说明 |
-|------|------|------|
-| Prometheus 官方文档 | 文档 | 最权威的参考资料 |
-| Grafana 官方教程 | 文档 | Dashboard 最佳实践 |
-| 《Prometheus 监控实战》 | 书籍 | 系统学习 Prometheus |
-| Google SRE Book | 书籍 | SLO/SLA 和运维文化 |
-| CNCF Landscape | 网站 | 了解云原生监控生态 |
-
----
-
-## 附录 A：常用 Exporter 列表
-
-| Exporter | 监控目标 | 默认端口 |
-|----------|----------|----------|
-| Node Exporter | Linux 服务器指标 | 9100 |
-| cAdvisor | Docker 容器指标 | 8080 |
-| MySQL Exporter | MySQL 数据库指标 | 9104 |
-| Redis Exporter | Redis 缓存指标 | 9121 |
-| Blackbox Exporter | 网络探测（HTTP/TCP/ICMP） | 9115 |
-| Pushgateway | 短生命周期任务指标 | 9091 |
-| Kafka Exporter | Kafka 消息队列指标 | 9308 |
-| Nginx Exporter | Nginx Web 服务器指标 | 9113 |
-
-## 附录 B：PromQL 速查表
-
-| 场景 | PromQL 表达式 |
-|------|---------------|
-| CPU 使用率 | `100 - avg(rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100` |
-| 内存使用率 | `100 * (1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)` |
-| 磁盘使用率 | `100 * (1 - node_filesystem_avail_bytes / node_filesystem_size_bytes)` |
-| 请求速率 | `sum(rate(http_requests_total[5m]))` |
-| 错误率 | `sum(rate(http_requests_total{status=~"5.."}[5m])) / sum(rate(http_requests_total[5m]))` |
-| P99 延迟 | `histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))` |
-| 在线实例数 | `count(up == 1)` |
-| 网络接收速率 | `rate(node_network_receive_bytes_total[5m])` |
-
----
-
----
 
 ## 考点精讲
 
-### 问题1
+### 考点 1
 
 Prometheus 采用的数据收集模型是什么？与另一种模型相比有什么优势？
 
@@ -1530,7 +1575,7 @@ D. Pull 模型——Prometheus 主动从目标抓取（scrape）指标数据，�
 
 ---
 
-### 问题2
+### 考点 2
 
 在 Prometheus 的四种指标类型中，哪种类型的指标只能递增（或重置），最适合用来统计"总共发生了多少次"？
 
@@ -1545,7 +1590,7 @@ D. Summary
 
 ---
 
-### 问题3
+### 考点 3
 
 Alertmanager 中"抑制（Inhibition）"规则的作用是什么？
 
@@ -1560,7 +1605,7 @@ D. 当某个严重告警触发时，抑制同一服务或集群的相关低级�
 
 ---
 
-### 问题4
+### 考点 4
 
 关于 SLI、SLO、SLA 三个概念，以下哪个描述是正确的？
 
@@ -1575,7 +1620,7 @@ D. SLI 是实际测量的服务指标值，SLO 是内部设定的目标值，SLA
 
 ---
 
-### 问题5
+### 考点 5
 
 在 PromQL 中，"histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))" 这个查询的作用是什么？
 
@@ -1594,81 +1639,17 @@ D. 计算过去 5 分钟的每秒请求速率
 > **最后更新**：2026 年
 > **适用环境**：Prometheus 2.48+、Grafana 10.2+、Alertmanager 0.26+
 
-## 本节知识框架
-
-**课程定位**：分类「cloud」· 学习阶段 高级 · 建议用时 60 分钟。
-
-本课主线：用 Prometheus、Grafana 与 Alertmanager 搭建完整的监控告警体系，覆盖指标采集、可视化与告警路由。
-
-### 复习清单
-
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
-- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
-
-## 核心概念定义
-
-| 术语 | 一句话说明 |
-| --- | --- |
-| Prometheus | 用 Prometheus、Grafana 与 Alertmanager 搭建完整相关：正文给出可操作定义与适用边界。 |
-| Grafana | 用 Prometheus、Grafana 与 Alertmanager 搭建完整相关：正文给出可操作定义与适用边界。 |
-| Alertmanager | 用 Prometheus、Grafana 与 Alertmanager 搭建完整相关：正文给出可操作定义与适用边界。 |
-| 监控告警 | 用 Prometheus、Grafana 与 Alertmanager 搭建完整相关：正文给出可操作定义与适用边界。 |
-| 可观测性 | 用 Prometheus、Grafana 与 Alertmanager 搭建完整相关：正文给出可操作定义与适用边界。 |
-
-## 原理与运行机制
-
-正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
-
-## 典型应用场景
-
-- 结合「监控告警体系搭建」的常见落地场景与选型边界，详见正文各章节的对比讨论。
-- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
-
-## 代码/协议/SQL 示例
-
-正文首个示例可作为最小验证起点（原样保留在上方章节）：先跑通，再改一个输入观察输出变化。
-
-```text
-# 系统级指标
-node_cpu_seconds_total{cpu="0", mode="idle"} 123456.78
-node_memory_MemAvailable_bytes 4294967296
-
-# 应用级指标
-http_requests_total{method="GET", status="200"} 98765
-http_request_duration_seconds{quantile="0.99"} 0.456
-```
-
-## 时间/空间复杂度或性能分析
-
-- 用本课方案处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
-- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
-
-## 常见误区与易错点
-
-| 错误做法 | 典型现象 | 修复方向 |
-| --- | --- | --- |
-| 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
-| 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
-| 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
-
-## 与其他知识点的关系
-
-先修与相关课程：cloud_observability_sre、docker。复习时对照这些课程的术语表，找出同名概念在不同场景下的边界差异。
-
-## 自测题与参考答案
-
-以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
 
 ## 术语速查
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| Prometheus | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
-| Grafana | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
-| Alertmanager | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
-| 监控告警 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
-| 可观测性 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| Prometheus | 时序数据库，用Pull模式抓取指标并按标签用PromQL查询，是告警的数据源 |
+| Grafana | 可视化面板工具，接Prometheus等数据源画出Dashboard并支持模板变量 |
+| Alertmanager | 承接Prometheus规则触发的告警，做去重分组、抑制静默并按标签路由通知 |
+| 监控告警 | 持续采集运行指标并在越过阈值时通知人，回答系统现在好不好、哪里出问题 |
+| 可观测性 | 靠指标、日志、链路追踪三大支柱从外部推断系统内部状态的能力，比监控更完整 |
+
 
 ## 参考资料与复核
 
@@ -1680,6 +1661,37 @@ http_request_duration_seconds{quantile="0.99"} 0.456
 - 最后复核：2026-10-04
 - 下次复核：2027-01-13
 
+
+### 附录·常用 Exporter 列表
+| Exporter | 监控目标 | 默认端口 |
+|----------|----------|----------|
+| Node Exporter | Linux 服务器指标 | 9100 |
+| cAdvisor | Docker 容器指标 | 8080 |
+| MySQL Exporter | MySQL 数据库指标 | 9104 |
+| Redis Exporter | Redis 缓存指标 | 9121 |
+| Blackbox Exporter | 网络探测（HTTP/TCP/ICMP） | 9115 |
+| Pushgateway | 短生命周期任务指标 | 9091 |
+| Kafka Exporter | Kafka 消息队列指标 | 9308 |
+| Nginx Exporter | Nginx Web 服务器指标 | 9113 |
+
+
+### 附录·PromQL 速查表
+| 场景 | PromQL 表达式 |
+|------|---------------|
+| CPU 使用率 | `100 - avg(rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100` |
+| 内存使用率 | `100 * (1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)` |
+| 磁盘使用率 | `100 * (1 - node_filesystem_avail_bytes / node_filesystem_size_bytes)` |
+| 请求速率 | `sum(rate(http_requests_total[5m]))` |
+| 错误率 | `sum(rate(http_requests_total{status=~"5.."}[5m])) / sum(rate(http_requests_total[5m]))` |
+| P99 延迟 | `histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))` |
+| 在线实例数 | `count(up == 1)` |
+| 网络接收速率 | `rate(node_network_receive_bytes_total[5m])` |
+
+---
+
+---
+
+
 ## 内容元数据
 
 - 内容更新时间：2026-10-06
@@ -1689,4 +1701,5 @@ http_request_duration_seconds{quantile="0.99"} 0.456
 - 所属分类：cloud
 - 学习阶段：高级
 - 建议用时：60 分钟
+
 

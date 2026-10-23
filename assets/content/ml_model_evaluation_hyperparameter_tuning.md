@@ -2,14 +2,26 @@
 
 ![模型评估与超参数调优](images/diagram_rust_conditions.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：70 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：65 分钟
 
-## 本章摘要
+## 本节知识框架
 
+**课程定位**：分类「ml_practice」· 学习阶段 进阶 · 建议用时 50 分钟。
+
+本课主线：掌握评估指标、交叉验证、网格搜索和贝叶斯优化方法。
+
+### 复习清单
+
+- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
+- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
+
+
+### 课程导言
 模型评估和超参数调优是机器学习工作流中的最后两道关卡，就像考试前的模拟测试和复习策略调整。模型评估回答"这个模型有多好"的问题，需要选择合适的指标、设计合理的验证方案、进行统计显著性检验；超参数调优回答"如何让模型更好"的问题，需要在庞大的搜索空间中找到最优配置，平衡探索与计算成本。本章从基础的性能指标讲起，带你理解准确率、精确率、召回率、F1分数、AUC等指标的适用场景和局限性，然后深入学习交叉验证、自助法（Bootstrap）等验证技术，最后掌握网格搜索、随机搜索、贝叶斯优化等调参方法。我们将用体检报告、汽车 tuning等生活化比喻解释抽象概念，让你轻松掌握这个决定模型最终表现的关键环节。
 
-## 学习目标
 
+### 学习目标
 完成本章后，你将能够：
 
 1. 理解分类、回归、聚类等不同任务的评估指标及其适用场景
@@ -19,35 +31,207 @@
 5. 识别和处理过拟合与欠拟合：学习曲线、偏差-方差分解、正则化
 6. 进行统计显著性检验，判断模型改进是否真实可靠而非随机波动
 
-## 核心概念与生活类比
 
-### 1. 评估指标选择：体检报告的多维度
+## 核心概念定义
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| 模型评估 | 掌握评估指标、交叉验证、网格搜索和贝叶斯优化方法。相关：正文给出可操作定义与适用边界。 |
+| 超参数调优 | 掌握评估指标、交叉验证、网格搜索和贝叶斯优化方法。相关：正文给出可操作定义与适用边界。 |
+| 交叉验证 | 掌握评估指标、交叉验证、网格搜索和贝叶斯优化方法。相关：正文给出可操作定义与适用边界。 |
+| 网格搜索 | 掌握评估指标、交叉验证、网格搜索和贝叶斯优化方法。相关：正文给出可操作定义与适用边界。 |
+| 贝叶斯优化 | 掌握评估指标、交叉验证、网格搜索和贝叶斯优化方法。相关：正文给出可操作定义与适用边界。 |
+
+
+## 原理与运行机制
+
+《模型评估与超参数调优》正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
+
+
+### 生活类比拆解
+#### 1. 评估指标选择：体检报告的多维度
 
 模型评估就像做体检：不能只看一个指标（如体重），而要综合多项检查（血压、血糖、胆固醇等）。分类任务中，准确率（Accuracy）像总体健康评分，但在类别不平衡时会误导（99%的人没病，全预测为没病也有99%准确率）；精确率（Precision）像"确诊为正的患者中真正有病的比例"，关注预测的可靠性；召回率（Recall）像"所有真正有病的人中被检出的比例"，关注漏诊风险；F1分数是两者的调和平均，平衡精确率和召回率；AUC-ROC曲线下面积像整体诊断能力评分，不受阈值影响。选择哪个指标取决于业务目标：垃圾邮件过滤重视精确率（别误删重要邮件），癌症筛查重视召回率（别漏掉病人）。
 
-### 2. 交叉验证：多次模拟考试的平均分
+#### 2. 交叉验证：多次模拟考试的平均分
 
 留出法（Hold-out）就像只进行一次模拟考试，结果可能受题目难易、当天状态等偶然因素影响。K折交叉验证（K-Fold Cross-Validation）则像进行K次模拟考试：将数据分成K份，每次用K-1份训练、1份测试，轮流进行K次，最后取平均成绩。这样得到的评估更稳定可靠，能更好地估计模型在未知数据上的表现。分层抽样（Stratified Sampling）确保每份数据中各类别的比例与原数据集一致，避免某折中某一类样本过少导致评估偏差。对于时间序列数据，必须使用前向链式验证（Forward Chaining），不能用未来的数据预测过去。
 
-### 3. 超参数 vs 参数：汽车改装 vs 日常驾驶
+#### 3. 超参数 vs 参数：汽车改装 vs 日常驾驶
 
 参数（Parameters）是模型在训练过程中自动学习的内部变量，如神经网络的权重、线性回归的系数，就像开车时根据路况自动调整的油门和方向盘角度。超参数（Hyperparameters）是训练前需要手动设置的配置，如学习率、树的深度、隐藏层数量，就像改装汽车时选择的引擎型号、轮胎尺寸、悬挂硬度——这些选择在训练开始前就确定了，训练过程中不会改变。超参数调优就是在众多可能的配置组合中找到使模型性能最好的那一组，这通常需要大量实验和系统化的搜索策略。
 
-### 4. 网格搜索 vs 随机搜索：地毯式搜索 vs 随机采样
+#### 4. 网格搜索 vs 随机搜索：地毯式搜索 vs 随机采样
 
 网格搜索（Grid Search）像在地图上按经纬度格子逐一搜索目标：系统地遍历所有可能的超参数组合。这种方法保证找到网格内的最优解，但当超参数很多或取值范围很大时，组合数呈指数增长（维度灾难），计算成本极高。随机搜索（Random Search）像随机扔飞镖：从超参数空间中随机采样一定数量的组合进行评估。研究表明，随机搜索往往比网格搜索更高效，因为大多数超参数对性能影响不大，随机采样更有可能在高影响维度的多个不同值上探索。贝叶斯优化则更聪明：根据之前的实验结果建立代理模型，预测哪些区域可能有更好的解，有针对性地采样。
 
-### 5. 过拟合与欠拟合：死记硬背 vs 一窍不通
+#### 5. 过拟合与欠拟合：死记硬背 vs 一窍不通
 
 过拟合（Overfitting）就像学生死记硬背考题答案：在练习卷（训练集）上得满分，但换一套题（测试集）就不会做了。模型记住了训练数据中的噪声和细节，而非学习到泛化规律。欠拟合（Underfitting）则像学生根本没学好：练习卷和正式考试都考不好。模型太简单，无法捕捉数据中的模式。偏差-方差分解提供了理论框架：高偏差对应欠拟合（模型假设太强），高方差对应过拟合（模型太复杂）。学习曲线（Learning Curve）是诊断工具：绘制训练误差和验证误差随训练样本数的变化，两条曲线接近且都高说明欠拟合，差距大说明过拟合。
 
-### 6. 统计显著性检验：区分信号与噪音
+#### 6. 统计显著性检验：区分信号与噪音
 
 当比较两个模型的性能差异时，如何判断这是真实的改进还是随机波动？统计显著性检验提供了科学方法。配对t检验（Paired t-test）假设两次运行的差异服从正态分布，计算p值判断差异是否显著（p<0.05通常认为显著）。Wilcoxon符号秩检验是非参数版本，不假设正态分布，更鲁棒。McNemar检验专门用于比较两个分类器在同一测试集上的表现，考虑了配对相关性。需要注意的是，统计显著不等于实际显著：在大样本下，微小的性能差异也可能统计显著，但业务价值有限。效应量（Effect Size）衡量差异的实际大小，应与p值结合解读。
 
-## 渐进式代码示例
 
-### 最小化示例：基础评估指标
+## 典型应用场景
+
+- 结合「模型评估与超参数调优」的常见落地场景与选型边界，详见正文各章节的对比讨论。
+- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
+
+
+## 代码/协议/SQL 示例
+
+正文首个完整示例如下，先运行确认环境，再按正文步骤改一个输入观察输出变化。
+
+```python
+import numpy as np
+import pandas as pd
+from sklearn.metrics import (
+    accuracy_score, precision_score, recall_score, f1_score,
+    confusion_matrix, classification_report, roc_auc_score,
+    roc_curve, precision_recall_curve, auc,
+    mean_absolute_error, mean_squared_error, r2_score
+)
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# ==================== 分类任务评估 ====================
+
+np.random.seed(42)
+
+# 生成示例数据（二分类，类别不平衡）
+n_samples = 1000
+y_true = np.random.choice([0, 1], n_samples, p=[0.9, 0.1])  # 90%负类，10%正类
+y_pred_prob = np.random.uniform(0, 1, n_samples)
+
+# 根据概率生成预测（阈值0.5）
+threshold = 0.5
+y_pred = (y_pred_prob >= threshold).astype(int)
+
+print("=== 分类任务评估 ===\n")
+
+# 基础指标
+accuracy = accuracy_score(y_true, y_pred)
+precision = precision_score(y_true, y_pred, zero_division=0)
+recall = recall_score(y_true, y_pred, zero_division=0)
+f1 = f1_score(y_true, y_pred, zero_division=0)
+
+print(f"准确率 (Accuracy): {accuracy:.4f}")
+print(f"精确率 (Precision): {precision:.4f}")
+print(f"召回率 (Recall): {recall:.4f}")
+print(f"F1分数: {f1:.4f}")
+
+# 注意：在类别不平衡时，准确率高但其他指标可能很低
+print(f"\n⚠️  注意：由于类别不平衡（90%负类），准确率{accuracy:.2%}具有误导性")
+print(f"   如果全部预测为负类，准确率也会达到90%")
+
+# 混淆矩阵
+cm = confusion_matrix(y_true, y_pred)
+print(f"\n混淆矩阵:\n{cm}")
+print(f"  TN={cm[0][0]}, FP={cm[0][1]}")
+print(f"  FN={cm[1][0]}, TP={cm[1][1]}")
+
+# 详细分类报告
+print(f"\n详细分类报告:")
+print(classification_report(y_true, y_pred, target_names=['Negative', 'Positive']))
+
+# ROC曲线和AUC
+fpr, tpr, thresholds_roc = roc_curve(y_true, y_pred_prob)
+roc_auc = roc_auc_score(y_true, y_pred_prob)
+
+print(f"\nROC AUC: {roc_auc:.4f}")
+print(f"AUC解读: 0.5=随机猜测, 1.0=完美分类, {roc_auc:.4f}={'较好' if roc_auc > 0.7 else '一般'}")
+
+# PR曲线（更适合不平衡数据）
+precision_vals, recall_vals, thresholds_pr = precision_recall_curve(y_true, y_pred_prob)
+pr_auc = auc(recall_vals, precision_vals)
+print(f"PR AUC: {pr_auc:.4f}")
+
+# 可视化
+fig, axes = plt.subplots(1, 3, figsize=(18, 5))
+
+# 混淆矩阵热力图
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', ax=axes[0],
+            xticklabels=['Negative', 'Positive'],
+            yticklabels=['Negative', 'Positive'])
+axes[0].set_xlabel('Predicted')
+axes[0].set_ylabel('Actual')
+axes[0].set_title('Confusion Matrix')
+
+# ROC曲线
+axes[1].plot(fpr, tpr, 'b-', linewidth=2, label=f'ROC curve (AUC = {roc_auc:.3f})')
+axes[1].plot([0, 1], [0, 1], 'r--', linewidth=1, label='Random classifier')
+axes[1].set_xlabel('False Positive Rate')
+axes[1].set_ylabel('True Positive Rate')
+axes[1].set_title('ROC Curve')
+axes[1].legend(loc='lower right')
+axes[1].grid(True, alpha=0.3)
+
+# PR曲线
+axes[2].plot(recall_vals, precision_vals, 'g-', linewidth=2, label=f'PR curve (AUC = {pr_auc:.3f})')
+axes[2].set_xlabel('Recall')
+axes[2].set_ylabel('Precision')
+axes[2].set_title('Precision-Recall Curve')
+axes[2].legend(loc='lower left')
+axes[2].grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.savefig('classification_metrics.png', dpi=150, bbox_inches='tight')
+plt.show()
+
+# ==================== 回归任务评估 ====================
+
+print("\n=== 回归任务评估 ===\n")
+
+# 生成示例数据
+y_true_reg = np.random.randn(200) * 10 + 50
+y_pred_reg = y_true_reg + np.random.randn(200) * 3  # 添加噪声
+
+# 回归指标
+mae = mean_absolute_error(y_true_reg, y_pred_reg)
+mse = mean_squared_error(y_true_reg, y_pred_reg)
+rmse = np.sqrt(mse)
+r2 = r2_score(y_true_reg, y_pred_reg)
+
+print(f"平均绝对误差 (MAE): {mae:.4f}")
+print(f"均方误差 (MSE): {mse:.4f}")
+print(f"均方根误差 (RMSE): {rmse:.4f}")
+print(f"R²分数: {r2:.4f}")
+print(f"\nR²解读: 1.0=完美拟合, 0.0=不如均值预测, {r2:.4f}={'较好' if r2 > 0.7 else '一般'}")
+
+# 可视化残差
+residuals = y_true_reg - y_pred_reg
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+
+# 预测值vs实际值
+axes[0].scatter(y_true_reg, y_pred_reg, alpha=0.5, edgecolors='k', s=50)
+min_val = min(y_true_reg.min(), y_pred_reg.min())
+max_val = max(y_true_reg.max(), y_pred_reg.max())
+axes[0].plot([min_val, max_val], [min_val, max_val], 'r--', linewidth=2, label='Perfect prediction')
+axes[0].set_xlabel('Actual Values')
+axes[0].set_ylabel('Predicted Values')
+axes[0].set_title('Actual vs Predicted')
+axes[0].legend()
+axes[0].grid(True, alpha=0.3)
+
+# 残差分布
+axes[1].hist(residuals, bins=30, edgecolor='black', alpha=0.7, color='steelblue')
+axes[1].axvline(x=0, color='red', linestyle='--', linewidth=2)
+axes[1].set_xlabel('Residual (Actual - Predicted)')
+axes[1].set_ylabel('Frequency')
+axes[1].set_title('Residual Distribution')
+axes[1].grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.savefig('regression_metrics.png', dpi=150, bbox_inches='tight')
+plt.show()
+```
+
+
+### 渐进式代码示例
+#### 最小化示例：基础评估指标
 
 让我们从最基本的分类和回归评估指标开始。
 
@@ -198,7 +382,7 @@ plt.show()
 
 这个例子展示了分类和回归任务的核心评估指标。分类任务中，准确率在类别不平衡时会误导，应结合精确率、召回率、F1、AUC综合判断；ROC曲线适合平衡数据，PR曲线更适合不平衡数据。回归任务中，MAE直观易解释，RMSE对大误差惩罚更重，R²表示模型解释的方差比例。可视化工具（混淆矩阵、散点图、残差图）帮助直观理解模型表现。
 
-### 完整示例：交叉验证与模型比较
+#### 完整示例：交叉验证与模型比较
 
 现在我们来演示如何使用交叉验证进行可靠的模型评估和比较。
 
@@ -437,7 +621,7 @@ plt.show()
 
 这个完整示例展示了多种验证策略的使用场景：简单留出法快速初步评估，K折交叉验证提供更稳定的估计，分层抽样处理类别不平衡，留一法在小数据集上最大化利用数据。学习曲线帮助诊断过拟合/欠拟合，配对t检验判断模型差异的统计显著性。实际项目中，应根据数据规模、类别分布、时间特性选择合适的验证策略。
 
-### 实践示例：超参数调优
+#### 实践示例：超参数调优
 
 最后我们来实现多种超参数调优方法，并比较它们的效率。
 
@@ -704,8 +888,23 @@ print(f"  测试集准确率: {test_score:.4f}")
 
 这个实践示例展示了三种主流的超参数调优方法：网格搜索系统全面但计算成本高，随机搜索效率高且往往能找到不错的解，贝叶斯优化通过智能采样进一步减少评估次数。可视化帮助理解超参数对性能的影响，学习曲线揭示不同配置下的偏差-方差权衡。在实际项目中，通常先用随机搜索或贝叶斯优化快速定位大致范围，再用网格搜索精细调优。
 
-## 常见陷阱对照表
 
+## 时间/空间复杂度或性能分析
+
+- 在《模型评估与超参数调优》里处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
+- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
+
+
+## 常见误区与易错点
+
+| 错误做法 | 典型现象 | 修复方向 |
+| --- | --- | --- |
+| 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
+| 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
+| 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
+
+
+### 常见陷阱对照表
 | 陷阱类型 | 具体问题描述 | 影响后果 | 解决方案 |
 |---------|------------|---------|---------|
 | **数据泄露** | 在交叉验证前对整个数据进行预处理（如标准化、特征选择） | 评估指标虚高，实际部署失败 | 使用Pipeline确保预处理在每个fold内独立执行 |
@@ -719,279 +918,16 @@ print(f"  测试集准确率: {test_score:.4f}")
 | **计算资源不足** | 网格搜索组合爆炸导致超时或内存溢出 | 调参无法完成 | 先用随机搜索缩小范围，并行计算，使用云资源 |
 | **局部最优陷阱** | 搜索空间设置不合理，错过全局最优 | 得到次优超参数配置 | 扩大搜索范围，多起点初始化，结合领域知识 |
 
-## 自测题目
-
-### 问题1
-
-关于ROC曲线和PR曲线，以下说法正确的是？
-
-A. ROC曲线在不平衡数据集上更能反映模型性能  
-B. PR曲线更适合评估类别不平衡严重的分类任务  
-C. AUC-ROC和AUC-PR总是给出相同的模型排序  
-D. ROC曲线对阈值变化不敏感  
-
-**正确答案：B**
-
-**详细解释：** 当正负样本比例严重失衡时（如1:100），ROC曲线可能看起来很好（AUC接近1），因为FP率的分母是大量负样本，即使有很多假阳性，FP率仍然很低。而PR曲线的Precision直接受FP数量影响，能更敏感地反映模型在少数类上的表现。因此，在不平衡数据上应优先参考PR曲线。选项A错误，恰恰相反；选项C错误，两种AUC可能给出不同的模型排序；选项D错误，ROC曲线本身就是通过遍历所有阈值得到的。
-
-### 问题2
-
-在K折交叉验证中，为什么通常选择K=5或K=10，而不是K=2或K=N（样本数）？
-
-A. K=2计算太快但估计方差大，K=N（LOOCV）计算成本太高且估计方差可能更大  
-B. K=5和K=10是历史遗留的传统，没有特别理由  
-C. K必须等于5或10才能使用分层抽样  
-D. K越大越好，应该总是使用LOOCV  
-
-**正确答案：A**
-
-**详细解释：** K的选择需要在偏差、方差和计算成本之间权衡。K=2（即简单的train/test split）只用了一半数据训练，估计偏差较大，且单次划分的方差大。K=N（LOOCV）虽然偏差最小（几乎用全部数据训练），但各fold的训练集高度重叠，导致估计方差可能反而更大，且计算成本是O(N)。K=5或10在实践中取得了良好的平衡：偏差较小、方差可接受、计算成本合理。选项B错误，这是经过理论和实证研究的选择；选项C错误，任何K都可以分层；选项D错误，LOOCV并非总是最优。
-
-### 问题3
-
-关于超参数调优，随机搜索相比网格搜索的主要优势是什么？
-
-A. 随机搜索保证找到全局最优解  
-B. 随机搜索在相同评估次数下更有可能探索到高影响超参数的更多不同值  
-C. 随机搜索不需要指定超参数范围  
-D. 随机搜索的计算复杂度更低  
-
-**正确答案：B**
-
-**详细解释：** Bergstra和Bengio的经典论文证明，在超参数空间中，通常只有少数几个超参数对性能影响显著，大部分超参数影响很小。网格搜索在每个维度上均匀采样，导致在高影响维度上只能尝试有限的几个值。随机搜索则在每次采样中独立地从每个维度的分布中取值，因此在相同评估次数下，更有可能在高影响维度上探索到更多不同的值，从而更快找到好的配置。选项A错误，随机搜索不保证全局最优；选项C错误，仍需指定范围或分布；选项D错误，单次评估的成本相同。
-
-### 问题4
-
-在使用学习曲线诊断模型问题时，以下哪种情况说明模型存在高方差（过拟合）？
-
-A. 训练误差和验证误差都很高，且两者接近  
-B. 训练误差很低，但验证误差很高，两者差距大  
-C. 训练误差和验证误差都很低，且两者接近  
-D. 增加训练数据后，训练误差上升，验证误差下降  
-
-**正确答案：B**
-
-**详细解释：** 高方差（过拟合）的特征是模型在训练集上表现很好（训练误差低），但在验证集上表现差（验证误差高），两者之间存在显著差距。这说明模型记住了训练数据的噪声和细节，而非学习到泛化规律。解决方法包括：增加训练数据、简化模型、加强正则化、使用Dropout等。选项A描述的是高偏差（欠拟合）；选项C是理想情况；选项D是正常现象，不是问题诊断。
-
-### 问题5
-
-关于统计显著性检验在模型比较中的应用，以下说法错误的是？
-
-A. p值小于0.05意味着两个模型的性能差异在统计上显著  
-B. 统计显著一定意味着实际业务价值显著  
-C. 配对t检验假设差异服从正态分布  
-D. 在大样本情况下，微小的性能差异也可能统计显著  
-
-**正确答案：B**
-
-**详细解释：** 统计显著性和实际显著性是两个不同的概念。统计显著性（p<0.05）只表明观察到的差异不太可能是随机波动造成的，但不代表差异的大小具有实际业务价值。例如，在百万级用户数据上，准确率从0.850提升到0.851可能统计显著，但业务收益微乎其微。因此，除了p值，还应报告效应量（Effect Size）和业务指标（如收入提升、成本降低）。选项A正确描述了p值的含义；选项C正确，t检验的正态性假设；选项D正确，大样本提高了检验功效。
-
----
-
-**章节小结**
-
-通过本章学习，你已经掌握了模型评估和超参数调优的核心方法：从多维度评估指标的选择，到交叉验证的设计，再到系统化调参策略。记住，好的模型不仅需要正确的算法，更需要科学的评估和细致的调优。在实际项目中，评估和调优往往是迭代过程：发现问题→调整策略→重新评估→继续优化。同时，要始终警惕数据泄露和过拟合验证集的风险，保持对结果的批判性思考。恭喜你完成了整个机器学习实战课程！希望这些知识能帮助你在实际项目中构建出高性能、可信赖的机器学习系统。
-
-## 本节知识框架
-
-**课程定位**：分类「ml_practice」· 学习阶段 进阶 · 建议用时 50 分钟。
-
-本课主线：掌握评估指标、交叉验证、网格搜索和贝叶斯优化方法。
-
-### 复习清单
-
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
-- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
-
-## 核心概念定义
-
-| 术语 | 一句话说明 |
-| --- | --- |
-| 模型评估 | 掌握评估指标、交叉验证、网格搜索和贝叶斯优化方法。相关：正文给出可操作定义与适用边界。 |
-| 超参数调优 | 掌握评估指标、交叉验证、网格搜索和贝叶斯优化方法。相关：正文给出可操作定义与适用边界。 |
-| 交叉验证 | 掌握评估指标、交叉验证、网格搜索和贝叶斯优化方法。相关：正文给出可操作定义与适用边界。 |
-| 网格搜索 | 掌握评估指标、交叉验证、网格搜索和贝叶斯优化方法。相关：正文给出可操作定义与适用边界。 |
-| 贝叶斯优化 | 掌握评估指标、交叉验证、网格搜索和贝叶斯优化方法。相关：正文给出可操作定义与适用边界。 |
-
-## 原理与运行机制
-
-正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
-
-## 典型应用场景
-
-- 结合「模型评估与超参数调优」的常见落地场景与选型边界，详见正文各章节的对比讨论。
-- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
-
-## 代码/协议/SQL 示例
-
-正文首个完整示例如下，先运行确认环境，再按正文步骤改一个输入观察输出变化。
-
-```python
-import numpy as np
-import pandas as pd
-from sklearn.metrics import (
-    accuracy_score, precision_score, recall_score, f1_score,
-    confusion_matrix, classification_report, roc_auc_score,
-    roc_curve, precision_recall_curve, auc,
-    mean_absolute_error, mean_squared_error, r2_score
-)
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-# ==================== 分类任务评估 ====================
-
-np.random.seed(42)
-
-# 生成示例数据（二分类，类别不平衡）
-n_samples = 1000
-y_true = np.random.choice([0, 1], n_samples, p=[0.9, 0.1])  # 90%负类，10%正类
-y_pred_prob = np.random.uniform(0, 1, n_samples)
-
-# 根据概率生成预测（阈值0.5）
-threshold = 0.5
-y_pred = (y_pred_prob >= threshold).astype(int)
-
-print("=== 分类任务评估 ===\n")
-
-# 基础指标
-accuracy = accuracy_score(y_true, y_pred)
-precision = precision_score(y_true, y_pred, zero_division=0)
-recall = recall_score(y_true, y_pred, zero_division=0)
-f1 = f1_score(y_true, y_pred, zero_division=0)
-
-print(f"准确率 (Accuracy): {accuracy:.4f}")
-print(f"精确率 (Precision): {precision:.4f}")
-print(f"召回率 (Recall): {recall:.4f}")
-print(f"F1分数: {f1:.4f}")
-
-# 注意：在类别不平衡时，准确率高但其他指标可能很低
-print(f"\n⚠️  注意：由于类别不平衡（90%负类），准确率{accuracy:.2%}具有误导性")
-print(f"   如果全部预测为负类，准确率也会达到90%")
-
-# 混淆矩阵
-cm = confusion_matrix(y_true, y_pred)
-print(f"\n混淆矩阵:\n{cm}")
-print(f"  TN={cm[0][0]}, FP={cm[0][1]}")
-print(f"  FN={cm[1][0]}, TP={cm[1][1]}")
-
-# 详细分类报告
-print(f"\n详细分类报告:")
-print(classification_report(y_true, y_pred, target_names=['Negative', 'Positive']))
-
-# ROC曲线和AUC
-fpr, tpr, thresholds_roc = roc_curve(y_true, y_pred_prob)
-roc_auc = roc_auc_score(y_true, y_pred_prob)
-
-print(f"\nROC AUC: {roc_auc:.4f}")
-print(f"AUC解读: 0.5=随机猜测, 1.0=完美分类, {roc_auc:.4f}={'较好' if roc_auc > 0.7 else '一般'}")
-
-# PR曲线（更适合不平衡数据）
-precision_vals, recall_vals, thresholds_pr = precision_recall_curve(y_true, y_pred_prob)
-pr_auc = auc(recall_vals, precision_vals)
-print(f"PR AUC: {pr_auc:.4f}")
-
-# 可视化
-fig, axes = plt.subplots(1, 3, figsize=(18, 5))
-
-# 混淆矩阵热力图
-sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', ax=axes[0],
-            xticklabels=['Negative', 'Positive'],
-            yticklabels=['Negative', 'Positive'])
-axes[0].set_xlabel('Predicted')
-axes[0].set_ylabel('Actual')
-axes[0].set_title('Confusion Matrix')
-
-# ROC曲线
-axes[1].plot(fpr, tpr, 'b-', linewidth=2, label=f'ROC curve (AUC = {roc_auc:.3f})')
-axes[1].plot([0, 1], [0, 1], 'r--', linewidth=1, label='Random classifier')
-axes[1].set_xlabel('False Positive Rate')
-axes[1].set_ylabel('True Positive Rate')
-axes[1].set_title('ROC Curve')
-axes[1].legend(loc='lower right')
-axes[1].grid(True, alpha=0.3)
-
-# PR曲线
-axes[2].plot(recall_vals, precision_vals, 'g-', linewidth=2, label=f'PR curve (AUC = {pr_auc:.3f})')
-axes[2].set_xlabel('Recall')
-axes[2].set_ylabel('Precision')
-axes[2].set_title('Precision-Recall Curve')
-axes[2].legend(loc='lower left')
-axes[2].grid(True, alpha=0.3)
-
-plt.tight_layout()
-plt.savefig('classification_metrics.png', dpi=150, bbox_inches='tight')
-plt.show()
-
-# ==================== 回归任务评估 ====================
-
-print("\n=== 回归任务评估 ===\n")
-
-# 生成示例数据
-y_true_reg = np.random.randn(200) * 10 + 50
-y_pred_reg = y_true_reg + np.random.randn(200) * 3  # 添加噪声
-
-# 回归指标
-mae = mean_absolute_error(y_true_reg, y_pred_reg)
-mse = mean_squared_error(y_true_reg, y_pred_reg)
-rmse = np.sqrt(mse)
-r2 = r2_score(y_true_reg, y_pred_reg)
-
-print(f"平均绝对误差 (MAE): {mae:.4f}")
-print(f"均方误差 (MSE): {mse:.4f}")
-print(f"均方根误差 (RMSE): {rmse:.4f}")
-print(f"R²分数: {r2:.4f}")
-print(f"\nR²解读: 1.0=完美拟合, 0.0=不如均值预测, {r2:.4f}={'较好' if r2 > 0.7 else '一般'}")
-
-# 可视化残差
-residuals = y_true_reg - y_pred_reg
-
-fig, axes = plt.subplots(1, 2, figsize=(14, 5))
-
-# 预测值vs实际值
-axes[0].scatter(y_true_reg, y_pred_reg, alpha=0.5, edgecolors='k', s=50)
-min_val = min(y_true_reg.min(), y_pred_reg.min())
-max_val = max(y_true_reg.max(), y_pred_reg.max())
-axes[0].plot([min_val, max_val], [min_val, max_val], 'r--', linewidth=2, label='Perfect prediction')
-axes[0].set_xlabel('Actual Values')
-axes[0].set_ylabel('Predicted Values')
-axes[0].set_title('Actual vs Predicted')
-axes[0].legend()
-axes[0].grid(True, alpha=0.3)
-
-# 残差分布
-axes[1].hist(residuals, bins=30, edgecolor='black', alpha=0.7, color='steelblue')
-axes[1].axvline(x=0, color='red', linestyle='--', linewidth=2)
-axes[1].set_xlabel('Residual (Actual - Predicted)')
-axes[1].set_ylabel('Frequency')
-axes[1].set_title('Residual Distribution')
-axes[1].grid(True, alpha=0.3)
-
-plt.tight_layout()
-plt.savefig('regression_metrics.png', dpi=150, bbox_inches='tight')
-plt.show()
-```
-
-## 时间/空间复杂度或性能分析
-
-- 用本课方案处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
-- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
-
-## 常见误区与易错点
-
-| 错误做法 | 典型现象 | 修复方向 |
-| --- | --- | --- |
-| 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
-| 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
-| 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
 
 ## 与其他知识点的关系
 
 本课与分类「ml_practice」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
 
+
 ## 自测题与参考答案
 
 以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
+
 
 ## 考点精讲
 
@@ -1060,15 +996,17 @@ D. 在大样本情况下，微小的性能差异也可能统计显著
 
 **解析：** 统计显著性和实际显著性是两个不同的概念。统计显著性（p<0.05）只表明观察到的差异不太可能是随机波动造成的，但不代表差异的大小具有实际业务价值。例如，在百万级用户数据上，准确率从0.850提升到0.851可能统计显著，但业务收益微乎其微。因此，除了p值，还应报告效应量（Effect Size）和业务指标（如收入提升、成本降低）。选项A正确描述了p值的含义；选项C正确，t检验的正态性假设；选项D正确，大样本提高了检验功效。
 
+
 ## 术语速查
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| 模型评估 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
-| 超参数调优 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
-| 交叉验证 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
-| 网格搜索 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
-| 贝叶斯优化 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| 模型评估 | 用准确率、AUC等指标衡量模型泛化能力并判断能否上线。 |
+| 超参数调优 | 在学习率、树深度这类训练前手工设定的配置上搜索最优组合。 |
+| 交叉验证 | 把数据分成K折轮流训练与测试，用平均成绩换更稳定的表现估计。 |
+| 网格搜索 | 枚举候选取值的全部组合逐一训练，覆盖彻底但开销随维度暴涨。 |
+| 贝叶斯优化 | 用代理模型从已有实验结果预测有希望的参数区域，采样更省算力。 |
+
 
 ## 参考资料与复核
 
@@ -1080,6 +1018,7 @@ D. 在大样本情况下，微小的性能差异也可能统计显著
 - 最后复核：2026-10-04
 - 下次复核：2026-12-19
 
+
 ## 内容元数据
 
 - 内容更新时间：2026-10-06
@@ -1089,3 +1028,4 @@ D. 在大样本情况下，微小的性能差异也可能统计显著
 - 所属分类：ml_practice
 - 学习阶段：进阶
 - 建议用时：50 分钟
+

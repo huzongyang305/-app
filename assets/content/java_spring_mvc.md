@@ -525,7 +525,7 @@ DispatcherServlet 是 Spring MVC 的前端控制器，所有请求的统一入�
 
 ## 考点精讲
 
-### 问题1
+### 考点 1
 
 在 Spring MVC 的请求处理流程中，负责根据请求 URL 查找对应 Controller 方法的组件是？
 
@@ -540,7 +540,7 @@ D. \u201CDispatcherServlet\u201D 直接查找
 
 ---
 
-### 问题2
+### 考点 2
 
 \u201C@RequestParam\u201D 和 \u201C@PathVariable\u201D 注解的区别是什么？
 
@@ -555,7 +555,7 @@ D. \u201C@RequestParam\u201D 从查询参数或表单数据中获取值，\u201C
 
 ---
 
-### 问题3
+### 考点 3
 
 以下关于 \u201C@Controller\u201D 和 \u201C@RestController\u201D 的说法，哪个是正确的？
 
@@ -570,7 +570,7 @@ D. 两者没有任何区别，可以随意互换使用
 
 ---
 
-### 问题4
+### 考点 4
 
 在 Spring MVC 中，表单提交成功后为什么推荐使用 \u201Credirect:\u201D 重定向而不是直接返回视图名称？
 
@@ -585,7 +585,7 @@ D. 重定向可以让页面加载更多的 JavaScript 资源
 
 ---
 
-### 问题5
+### 考点 5
 
 在 Spring MVC 中，\u201C@RequestBody\u201D 注解适用于以下哪种场景？
 

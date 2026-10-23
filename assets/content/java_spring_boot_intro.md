@@ -454,7 +454,7 @@ public class TestController {
 
 ## 考点精讲
 
-### 问题1
+### 考点 1
 
 \u201C@SpringBootApplication\u201D 是一个组合注解，它等同于以下哪三个注解的合体？
 
@@ -469,7 +469,7 @@ D. \u201C@Configuration\u201D + \u201C@EnableAutoConfiguration\u201D + \u201C@Co
 
 ---
 
-### 问题2
+### 考点 2
 
 Spring Boot 自动配置中，\u201C@ConditionalOnMissingBean\u201D 注解的含义是什么？
 
@@ -484,7 +484,7 @@ D. 当 Spring 容器中已经存在指定类型的 Bean 时才创建新 Bean
 
 ---
 
-### 问题3
+### 考点 3
 
 关于 Spring Boot Starter 机制，以下哪个说法是正确的？
 
@@ -499,7 +499,7 @@ D. 每个 Spring Boot 项目必须且只能引入一个 Starter
 
 ---
 
-### 问题4
+### 考点 4
 
 Spring Boot 的核心理念\u201C约定优于配置\u201D（Convention over Configuration）的含义是什么？
 
@@ -514,7 +514,7 @@ D. 框架提供合理的默认行为，开发者只需在需要偏离默认时�
 
 ---
 
-### 问题5
+### 考点 5
 
 在 Spring Boot 自动配置的条件注解中，\u201C@ConditionalOnClass\u201D 的作用是什么？
 

@@ -8,15 +8,27 @@
 
 ---
 
-## 第 1 章：课程介绍与 IaC 理念
+## 本节知识框架
 
-### 什么是基础设施即代码？
+**课程定位**：分类「devops」· 学习阶段 高级 · 建议用时 65 分钟。
+
+本课主线：使用 Terraform 管理云资源，掌握 HCL、模块、状态管理与团队协作。
+
+### 复习清单
+
+- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
+- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
+
+
+### 第 1 讲·课程介绍与 IaC 理念
+#### 什么是基础设施即代码？
 
 想象你要装修一套房子。传统方式是每次需要改动——刷墙、铺地板、装灯——都要亲自跑一趟建材市场，手动搬运材料，凭记忆记录上次用了什么颜色、什么型号。如果下次要装修另一套房子，你还得从头来过。
 
 **基础设施即代码（Infrastructure as Code，IaC）** 就像是把装修方案写成了一份"万能施工图纸"。你只需要在图纸上描述"客厅铺木地板、墙面刷白色乳胶漆、安装三盏吸顶灯"，然后让机器自动按照图纸施工。下次需要复制同样的布局？直接复用图纸就行。
 
-### IaC 的核心优势
+#### IaC 的核心优势
 
 | 优势 | 说明 |
 |------|------|
@@ -26,64 +38,83 @@
 | 协作 | 团队成员可以审查和讨论基础设施变更 |
 | 成本节约 | 快速创建和销毁环境，按需使用云资源 |
 
-### 为什么选择 Terraform？
+#### 为什么选择 Terraform？
 
 如果把 IaC 工具比作乐高积木，Terraform 就是那套"万能积木套装"——它不绑定某一家云厂商，支持 AWS、Azure、GCP、阿里云等数百种 Provider。你用同一套语法，就能搭建不同云平台上的基础设施。
 
 ---
 
-## 第 2 章：Terraform 安装与环境配置
 
-### 安装 Terraform
+### 第 13 讲·课程总结与复习清单
+#### 核心概念回顾
 
-**Windows 用户**（使用 Chocolatey）：
+本课程中，我们从零开始学习了 Terraform 的核心概念和实战应用。Terraform 就像"基础设施的乐高积木"——通过 HCL 语法描述你想要的资源，Terraform 帮你自动创建、管理和维护这些资源。
 
-```powershell
-choco install terraform -y
-```
+#### 关键知识点
 
-**macOS 用户**（使用 Homebrew）：
+| 概念 | 类比 | 说明 |
+|------|------|------|
+| Provider | 翻译官 | 连接 Terraform 和云厂商 |
+| Resource | 积木块 | 实际创建的基础设施组件 |
+| Variable | 填空题 | 让配置更灵活，无需硬编码 |
+| Output | 收据 | 获取资源的关键信息 |
+| Data Source | 查字典 | 查询已存在的资源信息 |
+| State | 记忆 | 记录基础设施的当前状态 |
+| Module | 预制件 | 可复用的资源组合 |
+| Workspace | 平行宇宙 | 同一代码管理多个环境 |
 
-```bash
-brew install terraform
-```
+#### 复习清单
 
-**Linux 用户**（Ubuntu/Debian）：
+- [ ] 能否独立编写一个创建 EC2 实例的 Terraform 配置？
+- [ ] 是否理解了变量（variable）、输出（output）和数据源（data source）的区别？
+- [ ] 能否解释本地状态和远程状态的区别，以及为什么生产环境需要远程状态？
+- [ ] 是否掌握了模块的创建和使用方法？
+- [ ] 能否配置 Terraform 与 GitHub Actions 的 CI/CD 集成？
+- [ ] 是否理解了工作区（workspace）的作用和使用场景？
+- [ ] 能否独立完成 EKS 集群的 Terraform 部署？
 
-```bash
-wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-sudo apt update && sudo apt install terraform
-```
+#### 下一步学习建议
 
-### 验证安装
+1. **深入学习**：阅读 [Terraform 官方文档](https://developer.hashicorp.com/terraform/docs)
+2. **动手实践**：在 AWS 免费层中练习创建和销毁资源
+3. **探索模块**：浏览 [Terraform Registry](https://registry.terraform.io/) 学习社区模块
+4. **团队协作**：尝试使用 Terraform Cloud 进行团队协作
+5. **高级主题**：学习 Terraform 的 `for_each`、`dynamic` 块和自定义验证规则
 
-```bash
-terraform version
-# 输出示例：Terraform v1.7.0
-```
+#### 参考资源
 
-### 配置云厂商凭证
-
-以 AWS 为例，配置 CLI 凭证：
-
-```bash
-aws configure
-# AWS Access Key ID: YOUR_ACCESS_KEY
-# AWS Secret Access Key: YOUR_SECRET_KEY
-# Default region: us-east-1
-# Default output format: json
-```
+- [Terraform 官方文档](https://developer.hashicorp.com/terraform/docs)
+- [AWS Provider 文档](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
+- [Terraform 最佳实践](https://developer.hashicorp.com/terraform/cloud-docs/recommended-practices)
+- [HashiCorp Learn](https://developer.hashicorp.com/terraform/tutorials)
 
 ---
 
-## 第 3 章：HCL 语法基础
+---
 
-### HCL 是什么？
+
+## 核心概念定义
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| Terraform | 使用 Terraform 管理云资源，掌握 HCL、模块、状态管理与团队协作。相关：正文给出可操作定义与适用边界。 |
+| IaC | 使用 Terraform 管理云资源，掌握 HCL、模块、状态管理与团队协作。相关：正文给出可操作定义与适用边界。 |
+| HCL | 使用 Terraform 管理云资源，掌握 HCL、模块、状态管理与团队协作。相关：正文给出可操作定义与适用边界。 |
+| 模块 | 使用 Terraform 管理云资源，掌握 HCL、模块、状态管理与团队协作。相关：正文给出可操作定义与适用边界。 |
+| 状态管理 | 使用 Terraform 管理云资源，掌握 HCL、模块、状态管理与团队协作。相关：正文给出可操作定义与适用边界。 |
+
+
+## 原理与运行机制
+
+《基础设施即代码（Terraform）》正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
+
+
+### 第 3 讲·HCL 语法基础
+#### HCL 是什么？
 
 HCL（HashiCorp Configuration Language）是 Terraform 使用的"语言"。你可以把它想象成一种"装修合同模板"——它用人类可读的格式描述你想要的基础设施。
 
-### 基本语法结构
+#### 基本语法结构
 
 HCL 的核心结构是"块（Block）"，就像一个个带标签的盒子：
 
@@ -100,7 +131,7 @@ resource "aws_instance" "web_server" {
 }
 ```
 
-### 常见语法元素
+#### 常见语法元素
 
 ```hcl
 # 字符串
@@ -130,9 +161,9 @@ size = var.is_production ? "large" : "small"
 
 ---
 
-## 第 4 章：Provider 与 Resource 核心概念
 
-### Provider：云厂商的"翻译官"
+### 第 4 讲·Provider 与 Resource 核心概念
+#### Provider：云厂商的"翻译官"
 
 Provider 就像 Terraform 和云厂商之间的"翻译官"。你说中文（HCL），翻译官帮你翻译成 AWS 能听懂的 API 调用。
 
@@ -153,7 +184,7 @@ provider "aws" {
 }
 ```
 
-### Resource：基础设施的"积木块"
+#### Resource：基础设施的"积木块"
 
 Resource 是你实际要创建的基础设施组件，就像乐高积木中的每一块——一块是服务器，一块是数据库，一块是网络。
 
@@ -205,7 +236,7 @@ resource "aws_security_group" "web_sg" {
 }
 ```
 
-### Terraform 工作流
+#### Terraform 工作流
 
 ```bash
 # 1. 初始化（下载 Provider 插件）
@@ -223,9 +254,9 @@ terraform destroy
 
 ---
 
-## 第 5 章：变量与输出（Variable & Output）
 
-### 输入变量：让配置更灵活
+### 第 5 讲·变量与输出（Variable & Output）
+#### 输入变量：让配置更灵活
 
 变量就像"填空题"——你不需要每次修改配置都去改代码，只需要改变量的值。
 
@@ -261,7 +292,7 @@ variable "enable_monitoring" {
 }
 ```
 
-### 变量赋值方式
+#### 变量赋值方式
 
 ```bash
 # 方式 1：命令行参数
@@ -276,7 +307,7 @@ terraform apply -var="instance_type=t3.medium"
 # export TF_VAR_instance_type="t3.medium"
 ```
 
-### 输出值：获取资源信息
+#### 输出值：获取资源信息
 
 输出就像"收据"——资源创建完成后，你通过输出获取关键信息（如 IP 地址、ARN 等）。
 
@@ -300,9 +331,9 @@ output "s3_bucket_arn" {
 
 ---
 
-## 第 6 章：数据源（Data Source）
 
-### 什么是数据源？
+### 第 6 讲·数据源（Data Source）
+#### 什么是数据源？
 
 数据源就像"查字典"——你不需要创建新资源，而是查询已经存在的资源信息。比如你想知道某个 AMI 的最新 ID，或者某个 VPC 的 ID。
 
@@ -343,20 +374,20 @@ output "ami_id" {
 
 ---
 
-## 第 7 章：状态管理（State Management）
 
-### 什么是状态文件？
+### 第 7 讲·状态管理（State Management）
+#### 什么是状态文件？
 
 状态文件（terraform.tfstate）就像 Terraform 的"记忆"——它记录了当前基础设施的真实状态。每次执行 `terraform apply`，Terraform 都会对比"代码中描述的状态"和"状态文件中记录的实际状态"，然后决定需要做什么改动。
 
-### 本地状态（适合个人学习）
+#### 本地状态（适合个人学习）
 
 ```hcl
 # 默认情况下，状态保存在当前目录的 terraform.tfstate 文件中
 # 不建议在生产环境中使用本地状态！
 ```
 
-### 远程状态（团队协作必备）
+#### 远程状态（团队协作必备）
 
 ```hcl
 # 使用 S3 存储桶保存远程状态
@@ -371,7 +402,7 @@ terraform {
 }
 ```
 
-### 状态锁定（防止并发冲突）
+#### 状态锁定（防止并发冲突）
 
 ```hcl
 # 创建 DynamoDB 表用于状态锁定
@@ -387,7 +418,7 @@ resource "aws_dynamodb_table" "terraform_locks" {
 }
 ```
 
-### 常用状态操作命令
+#### 常用状态操作命令
 
 ```bash
 # 查看当前状态
@@ -408,13 +439,13 @@ terraform import aws_instance.app_server i-1234567890abcdef0
 
 ---
 
-## 第 8 章：模块设计（Module Design）
 
-### 什么是模块？
+### 第 8 讲·模块设计（Module Design）
+#### 什么是模块？
 
 模块就像"预制件"——你把一组相关的资源打包成一个可复用的组件。就像乐高套装中的"车轮组件"，你可以把它用在不同的模型上。
 
-### 目录结构
+#### 目录结构
 
 ```text
 terraform-project/
@@ -441,7 +472,7 @@ terraform-project/
 └── main.tf                     # 根模块
 ```
 
-### 创建 VPC 模块
+#### 创建 VPC 模块
 
 ```hcl
 # modules/vpc/variables.tf
@@ -505,7 +536,7 @@ output "public_subnet_ids" {
 }
 ```
 
-### 在根模块中使用模块
+#### 在根模块中使用模块
 
 ```hcl
 # main.tf（根模块）
@@ -528,7 +559,7 @@ output "vpc_id" {
 }
 ```
 
-### 模块注册表（Terraform Registry）
+#### 模块注册表（Terraform Registry）
 
 ```hcl
 # 使用官方 VPC 模块
@@ -550,13 +581,13 @@ module "vpc" {
 
 ---
 
-## 第 9 章：工作区与环境管理（dev/staging/prod）
 
-### 什么是工作区？
+### 第 9 讲·工作区与环境管理（dev/staging/prod）
+#### 什么是工作区？
 
 工作区就像"平行宇宙"——同一份代码可以在不同的工作区中运行，每个工作区有自己独立的状态文件。这样你就可以用同一套代码管理 dev、staging、prod 三个环境。
 
-### 使用工作区
+#### 使用工作区
 
 ```bash
 # 创建工作区
@@ -574,7 +605,7 @@ terraform workspace show
 terraform workspace list
 ```
 
-### 在工作区中使用变量
+#### 在工作区中使用变量
 
 ```hcl
 # variables.tf
@@ -603,7 +634,7 @@ resource "aws_instance" "app" {
 }
 ```
 
-### 使用 tfvars 文件管理多环境
+#### 使用 tfvars 文件管理多环境
 
 ```bash
 # dev.tfvars
@@ -625,13 +656,13 @@ terraform apply -var-file="prod.tfvars"
 
 ---
 
-## 第 10 章：Terraform Cloud 与团队协作
 
-### Terraform Cloud 是什么？
+### 第 10 讲·Terraform Cloud 与团队协作
+#### Terraform Cloud 是什么？
 
 Terraform Cloud 就像"团队协作工作台"——它提供了一个中央平台，让团队成员可以共同管理 Terraform 配置、状态文件和执行计划。
 
-### 配置 Terraform Cloud
+#### 配置 Terraform Cloud
 
 ```hcl
 terraform {
@@ -645,7 +676,7 @@ terraform {
 }
 ```
 
-### 团队协作最佳实践
+#### 团队协作最佳实践
 
 ```hcl
 # 使用远程执行模式
@@ -667,15 +698,15 @@ terraform {
 }
 ```
 
-### 版本控制集成
+#### 版本控制集成
 
 Terraform Cloud 支持与 GitHub、GitLab、Bitbucket 集成，当代码推送到主分支时自动触发 `terraform plan`，审批后执行 `terraform apply`。
 
 ---
 
-## 第 11 章：与 CI/CD 集成（自动化 plan/apply）
 
-### GitHub Actions 示例
+### 第 11 讲·与 CI/CD 集成（自动化 plan/apply）
+#### GitHub Actions 示例
 
 ```yaml
 # .github/workflows/terraform.yml
@@ -722,7 +753,7 @@ jobs:
         run: terraform apply -auto-approve tfplan
 ```
 
-### GitLab CI 示例
+#### GitLab CI 示例
 
 ```yaml
 # .gitlab-ci.yml
@@ -772,9 +803,15 @@ apply:
 
 ---
 
-## 第 12 章：实战——使用 Terraform 部署 AWS EKS 集群
 
-### 项目结构
+## 典型应用场景
+
+- 结合「基础设施即代码（Terraform）」的常见落地场景与选型边界，详见正文各章节的对比讨论。
+- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
+
+
+### 第 12 讲·实战——使用 Terraform 部署 AWS EKS 集群
+#### 项目结构
 
 ```text
 eks-deployment/
@@ -793,7 +830,7 @@ eks-deployment/
         └── outputs.tf
 ```
 
-### 版本配置
+#### 版本配置
 
 ```hcl
 # versions.tf
@@ -819,7 +856,7 @@ provider "aws" {
 }
 ```
 
-### 变量定义
+#### 变量定义
 
 ```hcl
 # variables.tf
@@ -866,7 +903,7 @@ variable "node_group_max_size" {
 }
 ```
 
-### VPC 模块
+#### VPC 模块
 
 ```hcl
 # modules/vpc/main.tf
@@ -956,7 +993,7 @@ resource "aws_route_table_association" "private" {
 }
 ```
 
-### EKS 模块
+#### EKS 模块
 
 ```hcl
 # modules/eks/main.tf
@@ -1045,7 +1082,7 @@ resource "aws_eks_node_group" "main" {
 }
 ```
 
-### 根模块组装
+#### 根模块组装
 
 ```hcl
 # main.tf
@@ -1073,7 +1110,7 @@ module "eks" {
 }
 ```
 
-### 输出配置
+#### 输出配置
 
 ```hcl
 # outputs.tf
@@ -1099,7 +1136,7 @@ output "kubeconfig_command" {
 }
 ```
 
-### 部署步骤
+#### 部署步骤
 
 ```bash
 # 1. 初始化 Terraform
@@ -1127,57 +1164,89 @@ kubectl get namespaces
 
 ---
 
-## 第 13 章：课程总结与复习清单
 
-### 核心概念回顾
+## 代码/协议/SQL 示例
 
-本课程中，我们从零开始学习了 Terraform 的核心概念和实战应用。Terraform 就像"基础设施的乐高积木"——通过 HCL 语法描述你想要的资源，Terraform 帮你自动创建、管理和维护这些资源。
+《基础设施即代码（Terraform）》正文首个示例可作为最小验证起点（原样保留在上方章节）：先跑通，再改一个输入观察输出变化。
 
-### 关键知识点
+```powershell
+choco install terraform -y
+```
 
-| 概念 | 类比 | 说明 |
-|------|------|------|
-| Provider | 翻译官 | 连接 Terraform 和云厂商 |
-| Resource | 积木块 | 实际创建的基础设施组件 |
-| Variable | 填空题 | 让配置更灵活，无需硬编码 |
-| Output | 收据 | 获取资源的关键信息 |
-| Data Source | 查字典 | 查询已存在的资源信息 |
-| State | 记忆 | 记录基础设施的当前状态 |
-| Module | 预制件 | 可复用的资源组合 |
-| Workspace | 平行宇宙 | 同一代码管理多个环境 |
 
-### 复习清单
+### 第 2 讲·Terraform 安装与环境配置
+#### 安装 Terraform
 
-- [ ] 能否独立编写一个创建 EC2 实例的 Terraform 配置？
-- [ ] 是否理解了变量（variable）、输出（output）和数据源（data source）的区别？
-- [ ] 能否解释本地状态和远程状态的区别，以及为什么生产环境需要远程状态？
-- [ ] 是否掌握了模块的创建和使用方法？
-- [ ] 能否配置 Terraform 与 GitHub Actions 的 CI/CD 集成？
-- [ ] 是否理解了工作区（workspace）的作用和使用场景？
-- [ ] 能否独立完成 EKS 集群的 Terraform 部署？
+**Windows 用户**（使用 Chocolatey）：
 
-### 下一步学习建议
+```powershell
+choco install terraform -y
+```
 
-1. **深入学习**：阅读 [Terraform 官方文档](https://developer.hashicorp.com/terraform/docs)
-2. **动手实践**：在 AWS 免费层中练习创建和销毁资源
-3. **探索模块**：浏览 [Terraform Registry](https://registry.terraform.io/) 学习社区模块
-4. **团队协作**：尝试使用 Terraform Cloud 进行团队协作
-5. **高级主题**：学习 Terraform 的 `for_each`、`dynamic` 块和自定义验证规则
+**macOS 用户**（使用 Homebrew）：
 
-### 参考资源
+```bash
+brew install terraform
+```
 
-- [Terraform 官方文档](https://developer.hashicorp.com/terraform/docs)
-- [AWS Provider 文档](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
-- [Terraform 最佳实践](https://developer.hashicorp.com/terraform/cloud-docs/recommended-practices)
-- [HashiCorp Learn](https://developer.hashicorp.com/terraform/tutorials)
+**Linux 用户**（Ubuntu/Debian）：
+
+```bash
+wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt update && sudo apt install terraform
+```
+
+#### 验证安装
+
+```bash
+terraform version
+# 输出示例：Terraform v1.7.0
+```
+
+#### 配置云厂商凭证
+
+以 AWS 为例，配置 CLI 凭证：
+
+```bash
+aws configure
+# AWS Access Key ID: YOUR_ACCESS_KEY
+# AWS Secret Access Key: YOUR_SECRET_KEY
+# Default region: us-east-1
+# Default output format: json
+```
 
 ---
 
----
+
+## 时间/空间复杂度或性能分析
+
+- 在《基础设施即代码（Terraform）》里处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
+- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
+
+
+## 常见误区与易错点
+
+| 错误做法 | 典型现象 | 修复方向 |
+| --- | --- | --- |
+| 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
+| 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
+| 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
+
+
+## 与其他知识点的关系
+
+本课与分类「devops」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
+
+
+## 自测题与参考答案
+
+以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
+
 
 ## 考点精讲
 
-### 问题1
+### 考点 1
 
 在 Terraform 中，Provider 的作用是什么？
 
@@ -1192,7 +1261,7 @@ D. 自动测试应用程序代码
 
 ---
 
-### 问题2
+### 考点 2
 
 Terraform 的状态文件（terraform.tfstate）的主要作用是什么？
 
@@ -1207,7 +1276,7 @@ D. 记录 Terraform 命令的执行历史
 
 ---
 
-### 问题3
+### 考点 3
 
 在 Terraform 中，"terraform.tfvars" 文件的用途是什么？
 
@@ -1222,7 +1291,7 @@ D. 定义 Provider 的认证信息
 
 ---
 
-### 问题4
+### 考点 4
 
 Terraform 工作区（Workspace）的本质是什么？
 
@@ -1237,7 +1306,7 @@ D. 同一份 Terraform 代码可以在不同的工作区中运行，每个工作
 
 ---
 
-### 问题5
+### 考点 5
 
 在 Terraform 模块设计中，"module" 块中的 "source" 参数的作用是什么？
 
@@ -1254,75 +1323,17 @@ D. 指定模块的运行环境
 
 > 恭喜你完成了 Terraform 实战课程！现在你已经掌握了基础设施即代码的核心技能，可以开始在实际项目中应用 Terraform 了。记住，实践是最好的老师——多动手，多尝试，你会越来越熟练！
 
-## 本节知识框架
-
-**课程定位**：分类「devops」· 学习阶段 高级 · 建议用时 65 分钟。
-
-本课主线：使用 Terraform 管理云资源，掌握 HCL、模块、状态管理与团队协作。
-
-### 复习清单
-
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
-- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
-
-## 核心概念定义
-
-| 术语 | 一句话说明 |
-| --- | --- |
-| Terraform | 使用 Terraform 管理云资源，掌握 HCL、模块、状态管理与团队协作。相关：正文给出可操作定义与适用边界。 |
-| IaC | 使用 Terraform 管理云资源，掌握 HCL、模块、状态管理与团队协作。相关：正文给出可操作定义与适用边界。 |
-| HCL | 使用 Terraform 管理云资源，掌握 HCL、模块、状态管理与团队协作。相关：正文给出可操作定义与适用边界。 |
-| 模块 | 使用 Terraform 管理云资源，掌握 HCL、模块、状态管理与团队协作。相关：正文给出可操作定义与适用边界。 |
-| 状态管理 | 使用 Terraform 管理云资源，掌握 HCL、模块、状态管理与团队协作。相关：正文给出可操作定义与适用边界。 |
-
-## 原理与运行机制
-
-正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
-
-## 典型应用场景
-
-- 结合「基础设施即代码（Terraform）」的常见落地场景与选型边界，详见正文各章节的对比讨论。
-- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
-
-## 代码/协议/SQL 示例
-
-正文首个示例可作为最小验证起点（原样保留在上方章节）：先跑通，再改一个输入观察输出变化。
-
-```powershell
-choco install terraform -y
-```
-
-## 时间/空间复杂度或性能分析
-
-- 用本课方案处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
-- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
-
-## 常见误区与易错点
-
-| 错误做法 | 典型现象 | 修复方向 |
-| --- | --- | --- |
-| 只验证正常输入 | 边界数据触发时才暴露问题 | 为每个结论补一个空值/极值/重复值用例 |
-| 背结论不跑实验 | 换个输入就失效 | 按「预测—实测—差异归因」三步复盘 |
-| 忽略环境与版本差异 | 本机可用线上报错 | 把版本、配置与依赖写入复现步骤 |
-
-## 与其他知识点的关系
-
-本课与分类「devops」内相邻课程互为补充，建议按清单顺序学完再做综合练习。
-
-## 自测题与参考答案
-
-以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
 
 ## 术语速查
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| Terraform | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
-| IaC | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
-| HCL | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
-| 模块 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
-| 状态管理 | 定位线索见正文小节；速查表只保留名称，避免脱离上下文使用。 |
+| Terraform | HashiCorp 开源的编排工具，用一份配置跨云厂商创建并管理基础设施。 |
+| IaC | 把服务器、网络等基础设施写成可版本化的代码，交由工具自动执行变更。 |
+| HCL | Terraform 使用的声明式配置语言，以 resource 等代码块描述期望状态。 |
+| 模块 | 将一组相关资源打包成可复用组件，通过变量传入参数、由输出返回结果。 |
+| 状态管理 | 维护记录真实资源的 tfstate 文件，配合远程后端与锁支撑多人协作。 |
+
 
 ## 参考资料与复核
 
@@ -1334,6 +1345,7 @@ choco install terraform -y
 - 最后复核：2026-10-04
 - 下次复核：2027-02-12
 
+
 ## 内容元数据
 
 - 内容更新时间：2026-10-06
@@ -1343,4 +1355,5 @@ choco install terraform -y
 - 所属分类：devops
 - 学习阶段：高级
 - 建议用时：65 分钟
+
 

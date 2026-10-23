@@ -1041,11 +1041,16 @@ int _glossaryTemplateRows(String section) {
   }
   var count = 0;
   for (final (term, explanation) in parsed) {
+    // 术语列写真正的函数名或产品名（print()、__iter__()、Next.js）是合法的，
+    // 只有掺进路径、赋值或整句代码才是生成残留，这里先放行这类裸名字。
+    final plainName =
+        RegExp(r'^[A-Za-z_][A-Za-z0-9_]*(\(\d?\))?$').hasMatch(term) ||
+        RegExp(r'^[A-Za-z][A-Za-z0-9]*\.js$').hasMatch(term);
     final templated =
         glossaryTemplateMarkers.any(explanation.contains) ||
         (explanations[explanation] ?? 0) > 1 ||
         explanation.startsWith('|') ||
-        (term != 'Node.js' &&
+        (!plainName &&
             RegExp(r'\s[-=]\s|\.py\b|\.js\b|\(\)|//|\.\./').hasMatch(term));
     if (templated) count++;
   }
