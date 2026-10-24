@@ -229,7 +229,7 @@ void _writeMetrics(
     ..writeln('| --- | --- | --- | --- |');
   for (final item in items) {
     buffer.writeln(
-      '| $item | 用本课正文给出的阈值，没有就写实测基线 | '
+      '| ${_escapeCell(item)} | 用本课正文给出的阈值，没有就写实测基线 | '
       '固定环境重复三次取中位数 | 回到对应小节定位，先修原因再重测 |',
     );
   }
@@ -384,7 +384,12 @@ List<String> _metricLines(String markdown, List<String> keywords) {
       inFence = !inFence;
       continue;
     }
-    if (inFence || line.isEmpty || line.startsWith('#')) continue;
+    if (inFence ||
+        line.isEmpty ||
+        line.startsWith('#') ||
+        line.startsWith('|')) {
+      continue;
+    }
     if (!RegExp(r'\d').hasMatch(line)) continue;
     if (!RegExp(r'(指标|耗时|延迟|QPS|吞吐|内存|磁盘|成本|阈值|预算)').hasMatch(line)) {
       continue;
