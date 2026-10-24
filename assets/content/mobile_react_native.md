@@ -1,6 +1,6 @@
 # React Native 跨平台开发
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：25 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：30 分钟
 
 ![React Native 新架构与性能优化](images/diagram_mobile_react_native.webp)
 
@@ -29,6 +29,8 @@
 | FlatList | RN 内置的虚拟化长列表组件，只渲染屏幕可见区域的行，避免一次性创建上千个视图 |
 | 桥接（Bridge） | JS 线程和原生线程之间传递消息的通道，像两部对讲机——传话有延迟，所以要尽量减少通话次数 |
 | JSI | 新架构里替代异步桥接的机制，让 JS 直接调用 C++ 层，像面对面说话而不是打电报 |
+| JS 线程 / UI 线程 | RN 有两条主线程：JS 线程算状态和业务，原生 UI 线程负责渲染与手势，一条被卡住另一条就掉帧 |
+| Image | RN 显示图片的组件，必须显式给宽高或 aspectRatio，否则布局阶段算不出尺寸 |
 
 ## 原理与运行机制
 
@@ -61,6 +63,23 @@
 ```
 
 关键点：JS 线程和原生线程是分开的。如果 JS 线程忙着算数据，动画就会卡——就像一边炒菜一边算账，总有一边会慢下来。
+
+### 双线程模型：谁在忙，谁在等
+
+RN 把活分成两份：JavaScript 线程跑你的逻辑（发请求、算列表、更新 state），原生 UI 线程把控件真正画到屏幕上并处理手势，两者通过 JSI/桥接通信。
+
+生活化类比：JS 线程是前台服务员，UI 线程是后厨。前台一边记账一边炒菜，两件事都会慢。所以"每 16 毫秒要重画一帧"的动画不能交给随时可能在算数据的 JS 线程——用 Animated 时打开 `useNativeDriver: true`，或用 Reanimated 把工作直接放到原生线程，这样即使 JS 线程被 fetch 卡住，画面照样顺。反过来，原生驱动只支持 opacity/transform 这类能直接映射到原生属性的动画，改 width、margin 这种布局属性就不能走原生线程。一个简单的判断标准：如果一个动效会因为后台请求而掉帧，那它就是跑错了线程。
+
+### 怎么验证一个跨端结论
+
+学 RN 不能只看"代码能不能跑起来"，要像做菜留配方一样留下可复现的证据。推荐的顺序是：
+
+1. 先写清楚这个页面的输入、输出和约束：数据规模、目标机型、系统版本、RN 与 Hermes 的开关。
+2. 跑一个最小示例，记录基线：首屏耗时、列表滚动是否掉帧、内存峰值。
+3. 只改一个变量（例如把 ScrollView 换成 FlatList），再看边界输入和失败路径怎么变。
+4. 固定 RN 版本、依赖和引擎开关，把结论写成能重现的一次记录。
+
+同一个"FlatList 比 ScrollView 省内存"的结论，在 100 条数据上可能不明显，在 5000 条上才显著；在开 Hermes 与关 Hermes 的两台低端机上表现也不同。所以一次运行通过，并不代表所有版本和规模都成立——一定要覆盖边界输入（空列表、超长文本、图片加载失败）和异常路径（请求超时、组件已卸载），而不是只测正常流程。
 
 ## 典型应用场景
 
@@ -182,6 +201,29 @@ const styles = StyleSheet.create({
 
 iOS 用 shadow 做阴影，Android 用 elevation。同一个样式属性在两个平台上写法不同，这就是需要用 Platform.OS 判断的地方。你也可以用分平台文件：Button.ios.js 和 Button.android.js 会被自动选用。
 
+### 图片为什么必须给尺寸
+
+```javascript
+import { Image, StyleSheet } from "react-native";
+
+export function Cover({ uri }) {
+  return (
+    <Image
+      source={{ uri }}
+      style={styles.cover}
+      resizeMode="cover"
+      defaultSource={require("../assets/placeholder.png")}
+    />
+  );
+}
+
+const styles = StyleSheet.create({
+  cover: { width: "100%", aspectRatio: 16 / 9, backgroundColor: "#e2e8f0" },
+});
+```
+
+`Image` 不像网页 `<img>` 那样能靠图片本身推断大小——RN 在布局阶段必须知道宽高，否则可能整张不显示或导致周围布局跳动。固定宽度时用 `aspectRatio` 锁定比例，等比缩放就不会塌陷；加载前先给个 `backgroundColor` 或 `defaultSource` 占位，能避免图片到位那一瞬间页面"跳一下"。
+
 ## 时间/空间复杂度或性能分析
 
 | 问题 | 原因 | 解决办法 |
@@ -275,6 +317,9 @@ Ans: AC
 | TurboModules | 按需加载原生模块，不再启动时全部初始化 |
 | Hooks | React 函数组件里管理状态和副作用的 API（useState、useEffect 等） |
 | StyleSheet | RN 的样式对象，类似 CSS 但用 JavaScript 写，单位是 dp |
+| React.memo | 只在 props 引用相等时跳过重渲染的高阶组件，需配合稳定回调才有意义 |
+| useCallback / useMemo | 分别缓存函数引用和计算结果，避免每次渲染都新建对象传给子组件 |
+| useNativeDriver | Animated 的开关，置为 true 时动画在原生线程执行 |
 
 ## 内容元数据
 

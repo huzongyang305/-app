@@ -950,7 +950,7 @@
             "en": "States, transitions, blending, root motion and animation events."
           },
           "file": "assets/content/gamedev_animation_fsm.md",
-          "minutes": 35,
+          "minutes": 40,
           "keywords": [
             "动画状态机",
             "转移条件",
@@ -7901,7 +7901,7 @@
             "en": "Fundamental types, auto, const, casts and undefined behaviour."
           },
           "file": "assets/content/programming_cpp_types.md",
-          "minutes": 30,
+          "minutes": 35,
           "keywords": [
             "类型",
             "auto",
@@ -8342,7 +8342,7 @@
             "en": "Encapsulation, constructors, inheritance, virtual functions."
           },
           "file": "assets/content/programming_cpp_oop.md",
-          "minutes": 25,
+          "minutes": 30,
           "keywords": [
             "class",
             "继承",
@@ -8563,7 +8563,7 @@
             "en": "Containers, iterators, algorithms and erase-remove."
           },
           "file": "assets/content/programming_cpp_stl.md",
-          "minutes": 25,
+          "minutes": 35,
           "keywords": [
             "STL",
             "vector",
@@ -9219,7 +9219,7 @@
             "en": "Learn value categories, move constructors, forwarding and RVO."
           },
           "file": "assets/content/cpp_move_semantics.md",
-          "minutes": 35,
+          "minutes": 40,
           "keywords": [
             "移动语义",
             "右值引用",
@@ -11439,7 +11439,7 @@
             "en": "Express branches with if/else and switch."
           },
           "file": "assets/content/java_conditions.md",
-          "minutes": 35,
+          "minutes": 40,
           "keywords": [
             "Java 条件判断",
             "Java",
@@ -42818,7 +42818,7 @@
             "en": "Build traceable supply-chain defenses from dependencies to signed artifacts."
           },
           "file": "assets/content/security_supply_chain.md",
-          "minutes": 25,
+          "minutes": 30,
           "keywords": [
             "供应链",
             "SBOM",
@@ -70193,7 +70193,7 @@
             "en": "Optionals, value types, ARC and SwiftUI state."
           },
           "file": "assets/content/mobile_swift.md",
-          "minutes": 25,
+          "minutes": 30,
           "keywords": [
             "Swift",
             "iOS",
@@ -70935,7 +70935,7 @@
             "en": "JSI, Fabric, Hermes and list virtualization."
           },
           "file": "assets/content/mobile_react_native.md",
-          "minutes": 25,
+          "minutes": 30,
           "keywords": [
             "React Native",
             "跨平台",

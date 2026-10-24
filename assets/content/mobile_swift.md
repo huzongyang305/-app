@@ -1,6 +1,6 @@
 # Swift 与 iOS 开发
 
-> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：25 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：30 分钟
 
 ![Swift UI 架构图](images/diagram_mobile_swift.webp)
 
@@ -27,6 +27,8 @@
 | struct | Swift 的值类型，赋值时会完整复制一份 |
 | class | Swift 的引用类型，赋值后多个变量指向同一个对象 |
 | async/await | Swift 的异步编程语法，写异步代码像写同步代码一样直观 |
+| 写时复制（COW） | 数组/字典这类容器赋值时先共享底层缓冲，直到某一方真改才复制 |
+| 可复现记录 | 把 Xcode、Swift、iOS 版本号与输入样本一起留下，结论才站得住 |
 
 ## 原理与运行机制
 
@@ -54,6 +56,17 @@ c2.value = 5
 print(c1.value)   // 5，c1 也被改了
 ```
 
+### 值类型的复制代价：写时复制
+
+上面说 struct 赋值会复制一份，但 Swift 对数组、字典、字符串这些标准库容器做了写时复制（Copy-On-Write）：赋值时只共享底层缓冲，直到某一方真的修改才复制。所以 `var users = oldUsers` 在没人改动之前是常数时间，`append` 那一刻才产生真实拷贝。
+
+```swift
+var users: [Lesson] = oldUsers              // 共享缓冲，成本 O(1)
+users.append(Lesson(id: "2", title: "ARC")) // 此刻才复制整份存储
+```
+
+要警惕的反而是另一种情形：struct 里装了一个 class 引用时，复制只复制指针，两个副本仍共用那个对象，值类型的隔离感当场失效。检验办法是复制后改副本，看原值是否跟着变。
+
 ### 可选类型的解包方式
 
 Swift 不允许你直接使用可能为 nil 的值。你必须先"打开盒子"确认里面有东西，才能使用。常用的安全解包方式有三种：
@@ -77,6 +90,21 @@ func greet(_ nickname: String?) -> String {
 // 方式三：空合并运算符 ?? —— 为 nil 时给一个默认值
 let shown = nickname ?? "未填写"
 let count = nickname?.count ?? 0
+```
+
+### 取值之后，把三条路径写在注释里
+
+初学者的 Swift 代码往往只有"顺利的那一条"。写完一个会取值的函数，先补三行注释再运行：正常路径（值存在且合法）、边界路径（nil、空字符串、0 条数据、1000 条数据）、失败路径（类型转换不上、请求超时、解码字段缺失）。可以借用自助结账机的画面来想：条码扫上了正常上架，条码模糊转成手输，需要称重核验的商品交给人工——三件事在同一个收银台，却对应三段不同的代码。
+
+以头像地址为例，`raw: String?` 来自用户自己填写，光测"填了一个正确链接"远远不够：
+
+```swift
+func avatarURL(from raw: String?) -> URL? {
+    guard let raw, !raw.isEmpty else { return nil }          // 失败路径：没填
+    let candidate = raw.trimmingCharacters(in: .whitespaces)
+    guard let url = URL(string: candidate) else { return nil } // 边界路径：含空格等非法字符
+    return url.scheme == "https" ? url : nil                  // 正常路径还要校验协议
+}
 ```
 
 ### ARC 与循环引用
@@ -128,6 +156,12 @@ SwiftUI 的界面是声明式的——你只需要描述"界面应该长什么�
 - 新项目首选，代码量少、跨苹果平台复用
 - 需要实时预览的界面开发（Xcode Preview）
 - 配合 @Observable 做数据驱动的界面
+
+### 从最小示例到可复现记录
+
+按四步推进最省事：先写清 Swift 侧的输入、输出与约束（id 允许空字符串吗？请求失败要返回什么？）；再在 Xcode Preview 或 `swift` 命令行跑一个最小示例，核对 iOS 上的基线结果；然后只改一个变量（把 nil 换成 `""`、把 1 条数据换成 1000 条），记录边界与失败路径怎么变；最后把 Xcode、Swift、iOS 版本连同这三步的结果一起写进提交说明。
+
+第 4 步不是形式主义：SwiftUI 的刷新时机在不同 iOS 主版本上表现不一致，"我这边是好的"不附版本号就等于没有证据。
 
 ### 新手常踩的坑
 

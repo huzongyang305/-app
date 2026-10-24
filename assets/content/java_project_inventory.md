@@ -37,6 +37,8 @@
 | `乐观锁` | 更新时带上版本号条件，冲突就重试而不是提前加锁，适合读多写少的场景。坑：高冲突场景重试次数要多。 |
 | `可观测性` | 由日志、指标与链路追踪组成，能在不重启、不改代码的前提下问出新问题。坑：只在当前前提下成立。 |
 | `JUnit` | Java 常用的单元测试框架，用注解声明测试、断言和生命周期。坑：必须在边界输入下复验。 |
+| `DTO` | 只承载接口出入参的数据对象，把外部契约和内部实体隔开，改表结构不牵连接口。 |
+| `集成测试` | 用真实或 H2 内存数据库跑一遍，覆盖单元测试测不到的映射、事务和唯一约束。 |
 
 ## 原理与运行机制
 
@@ -182,6 +184,42 @@ public class StockService {
 
 运行方式：保存为 `.java` 后用 `javac` 编译、`java` 运行；注意类名与文件名一致。
 
+### 用 DTO 隔开接口与实体
+
+```java
+// 对外契约：只暴露调用方真正需要的字段
+record DeductResponse(String skuId, int remaining, long version) {}
+
+@PostMapping("/stock/{skuId}/deduct")
+public DeductResponse deduct(@PathVariable String skuId,
+                             @Valid @RequestBody DeductRequest req) {
+    stockService.deduct(skuId, req.quantity());
+    Stock s = stockService.bySku(skuId);
+    return new DeductResponse(s.getSkuId(), s.getQuantity(), s.getVersion());
+}
+```
+
+直接返回 `Stock` 实体有三个隐患：`@Version`、审计字段这些内部信息会泄露给外部；实体里的懒加载关联在序列化成 JSON 时可能触发额外查询甚至抛异常；一旦改表结构，接口契约就被动跟着变。用 DTO 把"外部看得见的形状"和"内部实体"隔开，接口就能和数据库解耦，测试也只需盯住出入参。
+
+### 集成测试跑真实数据库
+
+```java
+@SpringBootTest
+class StockDeductTest {
+    @Autowired StockService service;
+    @Autowired StockRepository repo;
+
+    @Test
+    void insufficientStockRollsBack() {
+        Stock s = repo.save(new Stock("A-1", 5));
+        assertThrows(IllegalStateException.class, () -> service.deduct("A-1", 10));
+        assertEquals(5, repo.findById(s.getId()).orElseThrow().getQuantity());
+    }
+}
+```
+
+单元测试用 mock 只能验证"Service 调了哪个方法、参数对不对"；数据库映射、唯一约束、`@Transactional` 的回滚，只有在 `@SpringBootTest` 起真实（或 H2 内存）数据库时才测得出来——这正是集成测试比单元测试多覆盖的部分。想让结论可复现，还要固定 Spring Boot 与 JDK 版本，并把空值、库存刚好等于扣减量、并发冲突这些边界输入各跑一遍。
+
 ## 时间/空间复杂度或性能分析
 
 **性能关注点**：JVM 预热与 GC 影响测量——记录吞吐、P99 延迟与堆占用，先跑预热再采样。
@@ -199,6 +237,8 @@ public class StockService {
 | 异常被统一吞掉 | 出错后没有可追踪信息 | 统一异常处理，记录上下文并返回可读错误 |
 | 忘记 `@Transactional` | 多次写入出现半成功 | 在 Service 层声明事务 |
 | 实体关联默认急加载 | 查询变慢、笛卡尔积 | 按需设置 `FetchType.LAZY` 并用 `join fetch` |
+| 接口直接返回 JPA 实体 | 内部字段泄露、懒加载序列化报错 | 定义 DTO 做映射，隔离外部契约和内部实体 |
+| 同类内部直接调用 `@Transactional` 方法 | 事务注解不生效，出现半成功 | 经代理调用，或把事务方法拆到另一个 Bean |
 
 **现场排错示范**：
 
@@ -262,6 +302,8 @@ public class StockService {
 | `乐观锁` | 更新时带上版本号条件，冲突就重试而不是提前加锁，适合读多写少的场景。 |
 | `可观测性` | 由日志、指标与链路追踪组成，能在不重启、不改代码的前提下问出新问题。 |
 | `JUnit` | Java 常用的单元测试框架，用注解声明测试、断言和生命周期。 |
+| `DTO` | 接口出入参对象，把外部契约与内部实体分开，避免字段泄露和序列化陷阱。 |
+| `集成测试` | 起真实数据库验证映射、事务回滚与唯一约束，覆盖比单元测试更广。 |
 
 ## 考点精讲
 

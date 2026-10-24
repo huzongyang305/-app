@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-10-24T18:47:36.258783",
+  "generated_at": "2026-10-24T19:17:31.189099",
   "lesson_count": 686,
-  "total_chars": 10070811,
-  "min_chars": 9029,
+  "total_chars": 10085952,
+  "min_chars": 10010,
   "image_count": 1313,
   "lessons_with_image": 686,
   "lessons_with_lab_section": 67,
@@ -15,59 +15,8 @@
     "debug": 173
   },
   "lessons_without_code_question": 52,
-  "error_count": 10,
+  "error_count": 0,
   "warning_count": 0,
-  "issues": [
-    {
-      "level": "error",
-      "lesson_id": "gamedev_animation_fsm",
-      "message": "正文 9300 字符，低于目标 10000"
-    },
-    {
-      "level": "error",
-      "lesson_id": "cpp_types",
-      "message": "正文 9101 字符，低于目标 10000"
-    },
-    {
-      "level": "error",
-      "lesson_id": "cpp_oop",
-      "message": "正文 9367 字符，低于目标 10000"
-    },
-    {
-      "level": "error",
-      "lesson_id": "cpp_stl",
-      "message": "正文 9292 字符，低于目标 10000"
-    },
-    {
-      "level": "error",
-      "lesson_id": "cpp_move_semantics",
-      "message": "正文 9152 字符，低于目标 10000"
-    },
-    {
-      "level": "error",
-      "lesson_id": "java_conditions",
-      "message": "正文 9391 字符，低于目标 10000"
-    },
-    {
-      "level": "error",
-      "lesson_id": "java_project_inventory",
-      "message": "正文 9147 字符，低于目标 10000"
-    },
-    {
-      "level": "error",
-      "lesson_id": "security_supply_chain",
-      "message": "正文 9300 字符，低于目标 10000"
-    },
-    {
-      "level": "error",
-      "lesson_id": "mobile_swift",
-      "message": "正文 9356 字符，低于目标 10000"
-    },
-    {
-      "level": "error",
-      "lesson_id": "mobile_react_native",
-      "message": "正文 9029 字符，低于目标 10000"
-    }
-  ],
+  "issues": [],
   "template_sentences": []
 }

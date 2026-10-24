@@ -1,6 +1,6 @@
 # Java 条件判断
 
-> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：35 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：40 分钟
 
 ![Java 条件分支](images/diagram_java_if.webp)
 
@@ -132,7 +132,11 @@ System.out.println(a);         // 0.30000000000000004
 Math.abs(a - 0.3) < 1e-9  // true
 ```
 
-金额计算应该用 `BigDecimal`，不要用 `double`。
+金额计算应该用 `BigDecimal`，不要用 `double`。容差也别写死 1e-9：数值很大时要改用相对误差。
+
+### 一段分支是怎么跑起来的
+
+`java Main` 启动 JVM，加载 `Main` 类并调用 `public static void main(String[] args)`，条件判断就在这段方法体里按「从上往下、命中即止」执行。
 
 ## 典型应用场景
 
@@ -183,6 +187,12 @@ public class Main {
     }
 }
 ```
+
+### 给分支列一张输入清单
+
+以成绩等级为例，动手前列出这几类输入：阈值本身（60、90）、阈值两侧（59、89）、边界外（-1、101）、非数字、不带参数。每类各跑一次记下输出，才能发现「缺考 -1 被判成及格」这类顺序问题。
+
+记录还要带 `java -version` 输出与编译命令：Java 8 里 `switch` 表达式根本编译不过，Java 17+ 才允许枚举穷尽。不写版本，别人既复现不了结论，也无从判断报错来自语言规则还是编译器差异。
 
 ## 代码/协议/SQL 示例
 
@@ -240,6 +250,35 @@ public class Main {
 }
 ```
 
+### 练习：给成绩判断补上失败路径
+
+这版示例把没给参数、非数字、超范围三类输入都挡住：
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        if (args.length == 0) { System.out.println("用法：java Main <0-100>"); return; }
+        int score;
+        try {
+            score = Integer.parseInt(args[0]);
+        } catch (NumberFormatException e) {
+            System.out.println("请输入整数：" + args[0]); return;   // 失败路径
+        }
+        if (score < 0 || score > 100) {
+            System.out.println("超出范围：" + score);               // 边界路径
+        } else if (score >= 90) {
+            System.out.println("优秀");
+        } else if (score >= 60) {
+            System.out.println("及格");
+        } else {
+            System.out.println("需要补考");
+        }
+    }
+}
+```
+
+练一遍：按 `60`、`59`、`-1`、`abc`、不带参数各跑一次，记下每条走哪个分支。范围检查要排在阈值判断前，否则 `-1` 会归进「需要补考」。
+
 ## 时间/空间复杂度或性能分析
 
 条件判断本身的开销几乎为零——就是一条比较指令加一次跳转。但有几个值得注意的点：
@@ -257,6 +296,8 @@ public class Main {
 | 用等号比较字符串内容 | 比较的是引用地址，结果时对时错。 | 用 equals 比较内容，并先判断空值。 |
 | switch 缺少默认分支 | 新增枚举值后没有兜底行为。 | 写默认分支，或用 switch 表达式穷尽枚举。 |
 | 浮点数直接用等号比较 | 精度误差让分支不稳定。 | 用容差比较，金额类计算改用高精度类型。 |
+| 把 `compareTo` 当布尔条件 | 它返回负数、零、正数，写进 if 编译不过。 | 判等用 equals，排序才比 compareTo 与 0。 |
+| 以为 hashCode 相同内容就相同 | 不同字符串可能碰撞，判等出错。 | 哈希只用于分桶，判等仍要 equals。 |
 
 ### 误区一：`if (score)` 代替 `if (score >= 60)`
 
@@ -368,6 +409,7 @@ boolean（条件必须是 true/false）
 | `三元运算符` | 条件 ? 值1 : 值2，用于在表达式位置二选一。 |
 | `JVM` | Java 源码编译成平台无关的字节码，JVM 负责加载、验证、解释和即时编译。 |
 | `字符串` | 字符串不可变，拼接会产生新对象，循环中应使用 StringBuilder。 |
+| `贯穿（fall-through）` | 经典 switch 的 case 忘写 break 时，匹配后继续执行下一条语句。 |
 
 ## 参考资料与复核
 
