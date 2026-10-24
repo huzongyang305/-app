@@ -448,37 +448,37 @@ customElements.define("lesson-card", LessonCard);
 
 - **题目**：注册自定义元素时，标签名必须满足？
 - **正确项**：包含连字符
-- **判断依据**：本题正确项是包含连字符。术语 Web Components（Web Components 实战）：浏览器原生提供的可复用自定义元素标准集合，本题取包含连字符这条。易错点是在 `constructor` 里访问子节点或属性，会造成报错或取不到值，改法是放到 `connectedCallback`。
+- **判断依据**：本题正确项是「包含连字符」。术语 Web Components（Web Components 实战）：浏览器原生提供的可复用自定义元素标准集合，本题取「包含连字符」这条。易错点是在 `constructor` 里访问子节点或属性，会造成报错或取不到值，改法是放到 `connectedCallback`。
 
 ### 考点 2：第 2 题
 
 - **题目**：为什么不应在 constructor 中访问子节点或属性？
 - **正确项**：此时元素尚未插入文档
-- **判断依据**：本题正确项是此时元素尚未插入文档。术语 Web Components（Web Components 实战）：浏览器原生提供的可复用自定义元素标准集合，本题取此时元素尚未插入文档这条。易错点是元素名不用连字符，会造成注册失败，改法是必须形如 `my-component`。
+- **判断依据**：本题正确项是「此时元素尚未插入文档」。术语 Web Components（Web Components 实战）：浏览器原生提供的可复用自定义元素标准集合，本题取「此时元素尚未插入文档」这条。易错点是元素名不用连字符，会造成注册失败，改法是必须形如 `my-component`。
 
 ### 考点 3：第 3 题
 
 - **题目**：围绕“Web Components 实战”中的 WebComponents、自定义元素、ShadowDOM，下列哪两项是本课强调的实践判断？
 - **正确项**：学习 WebComponents 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 自定义元素 时要固定版本并覆盖边界输入，结论才可复现
-- **判断依据**：本题正确项是学习 WebComponents 时要同时说明输入、输出和失败路径，不能只看正常流程。术语 Web Components（Web Components 实战）：浏览器原生提供的可复用自定义元素标准集合，本题取学习 WebComponents 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是重复注册同名元素，会造成抛错，改法是注册前判断或集中注册。
+- **判断依据**：按《Web Components 实战》的正文口径，本题要同时选中「学习 WebComponents 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 自定义元素 时要固定版本并覆盖边界输入，结论才可复现」，漏掉任一项都算没答全。术语 Web Components（Web Components 实战）：浏览器原生提供的可复用自定义元素标准集合。易错点是重复注册同名元素，会造成抛错，改法是注册前判断或集中注册。
 
 ### 考点 4：第 4 题
 
 - **题目**：按“Web Components 实战”中 WebComponents、自定义元素、ShadowDOM 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
 - **正确项**：先明确 WebComponents 的输入、输出与约束 → 写出最小示例并核对 自定义元素 的基线结果 → 只改一个变量，记录边界与失败路径的变化 → 固定版本与证据，把“Web Components 实战”的结论写成可复现记录
-- **判断依据**：本题正确项是只改一个变量，记录边界与失败路径的变化（Web Components 实战）。术语 Web Components（Web Components 实战）：浏览器原生提供的可复用自定义元素标准集合，本题取只改一个变量，记录边界与失败路径的变化这条。易错点是在 `constructor` 里访问子节点或属性会造成报错或取不到值，改法是放到 `connectedCallback`。
+- **判断依据**：按《Web Components 实战》正文的先后，本题顺序是「先明确 WebComponents 的输入、输出与约束」 → 「写出最小示例并核对 自定义元素 的基线结果」 → 「只改一个变量，记录边界与失败路径的变化」 → 「固定版本与证据，把“Web Components 实战”的结论写成可复现记录」。术语 Web Components（Web Components 实战）：浏览器原生提供的可复用自定义元素标准集合。易错点是在 `constructor` 里访问子节点或属性会造成报错或取不到值，改法是放到 `connectedCallback`。
 
 ### 考点 5：第 5 题
 
 - **题目**：组件被移除后必须做什么以避免内存泄漏？
 - **正确项**：在 disconnectedCallback 中解绑事件并清理定时器
-- **判断依据**：本题正确项是在 disconnectedCallback 中解绑事件并清理定时器。术语 Web Components（Web Components 实战）：浏览器原生提供的可复用自定义元素标准集合，本题取在 disconnectedCallback 中解绑事件并清理定时器这条。易错点是直接给 Shadow 内部元素加外部类名，会造成样式不生效，改法是用 CSS 变量或 `::part`。
+- **判断依据**：本题正确项是「在 disconnectedCallback 中解绑事件并清理定时器」。术语 Web Components（Web Components 实战）：浏览器原生提供的可复用自定义元素标准集合，本题取「在 disconnectedCallback 中解绑事件并清理定时器」这条。易错点是直接给 Shadow 内部元素加外部类名，会造成样式不生效，改法是用 CSS 变量或 `::part`。
 
 ### 考点 6：第 6 题
 
 - **题目**：`Web Components 实战` 的示例代码服务于“自定义元素生命周期、Shadow DOM 隔离与事件穿透。”。哪一条判断是正确的？
 - **正确项**：包含连字符
-- **判断依据**：本题正确项是包含连字符。术语 Web Components（Web Components 实战）：浏览器原生提供的可复用自定义元素标准集合，本题取包含连字符这条。易错点是事件不设 `composed: true`，会造成跨 Shadow 边界收不到，改法是明确是否需要穿透。
+- **判断依据**：本题正确项是「包含连字符」。术语 Web Components（Web Components 实战）：浏览器原生提供的可复用自定义元素标准集合，本题取「包含连字符」这条。易错点是事件不设 `composed: true`，会造成跨 Shadow 边界收不到，改法是明确是否需要穿透。
 
 ### 考点 7：`Web Components`
 

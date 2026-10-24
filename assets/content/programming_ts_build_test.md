@@ -503,37 +503,37 @@ echo "发布前检查全部通过"
 
 - **题目**：库项目同时产出 ESM 与 CJS 常用？
 - **正确项**：tsup/esbuild 配合 tsc 生成 d.ts
-- **判断依据**：本题正确项是tsup/esbuild 配合 tsc 生成 d.ts。术语 tsup（TypeScript 构建工具链与测试）：库项目常见组合：tsup 产出 dist/index.mjs 与 dist/index.cjs + tsc 生成 .d.ts，并在 package.json 用 exports 字段声明条件导出，避免"双包危害"（同一依赖被加载两份），本题取tsup/esbuild 配合 tsc 生成 d.ts这条。易错点是以为打包器会做类型检查，会造成类型错误照样发布，改法是CI 单独跑 `tsc --noEmit`。
+- **判断依据**：本题正确项是「tsup/esbuild 配合 tsc 生成 d.ts」。术语 tsup（TypeScript 构建工具链与测试）：库项目常见组合：tsup 产出 dist/index.mjs 与 dist/index.cjs + tsc 生成 .d.ts，并在 package.json 用 exports 字段声明条件导出，避免"双包危害"（同一依赖被加载两份），本题取「tsup/esbuild 配合 tsc 生成 d.ts」这条。易错点是以为打包器会做类型检查，会造成类型错误照样发布，改法是CI 单独跑 `tsc --noEmit`。
 
 ### 考点 2：第 2 题
 
 - **题目**：代码语言为 `typescript`，选自 `TypeScript 构建工具链与测试` 的 `TypeScript` 部分。课程问题为tsc/tsup/Vite 选型、双格式产物与 vitest 测试。哪一项描述与代码一致？
 - **正确项**：出现字面量 `require`
-- **判断依据**：本题正确项是出现字面量 `require`。术语 TypeScript（TypeScript 构建工具链与测试）：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js，本题取出现字面量 `require`这条。易错点是只出 ESM 不兼容老项目，使用方 require 失败，改法是同时产出 CJS。本题干扰项「出现字面量 `case`」不成立：展示代码里找不到 `case`。
+- **判断依据**：本题正确项是「出现字面量 `require`」。术语 TypeScript（TypeScript 构建工具链与测试）：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js，本题取「出现字面量 `require`」这条。易错点是只出 ESM 不兼容老项目，使用方 require 失败，改法是同时产出 CJS。本题干扰项「出现字面量 `case`」不成立：展示代码里找不到 `case`。
 
 ### 考点 3：第 3 题
 
 - **题目**：能拦掉漏写 await 的 lint 规则是？
 - **正确项**：no-floating-promises
-- **判断依据**：本题正确项是no-floating-promises。术语 TypeScript（TypeScript 构建工具链与测试）：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js，本题取no-floating-promises这条。易错点是`exports` 路径写错，会造成装包后找不到入口，改法是本地 `npm pack` 验证。
+- **判断依据**：本题正确项是「no-floating-promises」。术语 TypeScript（TypeScript 构建工具链与测试）：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js，本题取「no-floating-promises」这条。易错点是`exports` 路径写错，会造成装包后找不到入口，改法是本地 `npm pack` 验证。
 
 ### 考点 4：第 4 题
 
 - **题目**：tsc --noEmit 的用途是？
 - **正确项**：只做类型检查，不生成 JS 文件
-- **判断依据**：本题正确项是只做类型检查，不生成 JS 文件。术语 TypeScript（TypeScript 构建工具链与测试）：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js，本题取只做类型检查，不生成 JS 文件这条。易错点是忘了 `files`，会造成把源码一起发布，改法是只发布 dist。
+- **判断依据**：本题正确项是「只做类型检查，不生成 JS 文件」。术语 TypeScript（TypeScript 构建工具链与测试）：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js，本题取「只做类型检查，不生成 JS 文件」这条。易错点是忘了 `files`，会造成把源码一起发布，改法是只发布 dist。
 
 ### 考点 5：第 5 题
 
 - **题目**：围绕“TypeScript 构建工具链与测试”中的 TypeScript、tsup、Vite，下列哪两项是本课强调的实践判断？
 - **正确项**：验证 tsup 时要固定版本并覆盖边界输入，结论才可复现；学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程
-- **判断依据**：本题正确项是验证 tsup 时要固定版本并覆盖边界输入，结论才可复现。术语 TypeScript（TypeScript 构建工具链与测试）：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js，本题取验证 tsup 时要固定版本并覆盖边界输入，结论才可复现这条。易错点是mock 过度，会造成重构后测试全红，改法是优先测行为。
+- **判断依据**：按《TypeScript 构建工具链与测试》的正文口径，本题要同时选中「验证 tsup 时要固定版本并覆盖边界输入，结论才可复现」、「学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程」，漏掉任一项都算没答全。术语 TypeScript（TypeScript 构建工具链与测试）：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js。易错点是mock 过度，会造成重构后测试全红，改法是优先测行为。
 
 ### 考点 6：第 6 题
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `tsc/tsup/Vite 选型、双格式产物与 vitest 测试。`，这段说明是：`____`：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js。空缺处应填哪个术语？
 - **正确项**：TypeScript
-- **判断依据**：《TypeScript 构建工具链与测试》这题的填空口径是「TypeScript」或「typescript」，正文写法与其中任一项一致即可。术语「TypeScript」在本课里的界定是在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js（TypeScript 构建工具链与测试），题干「填空：补齐下面这段术语说明中的空缺，课程 `tsc/tsup/Vit」问的就是这一条。常见错法是以为打包器会做类型检查，其后果是类型错误照样发布。正确做法是CI 单独跑 `tsc --noEmit`。
+- **判断依据**：《TypeScript 构建工具链与测试》这题的填空口径是「TypeScript」或「typescript」，正文写法与其中任一项一致即可。术语「TypeScript」在本课里的界定是在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js（TypeScript 构建工具链与测试），题干问的就是这一条。常见错法是以为打包器会做类型检查，其后果是类型错误照样发布。正确做法是CI 单独跑 `tsc --noEmit`。
 
 ### 考点 7：`TypeScript`
 

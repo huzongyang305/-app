@@ -536,37 +536,37 @@ list.addEventListener("click", (event) => {
 
 - **题目**：`DOM 与事件` 的示例代码用于验证 `DOM`，其背景是元素选择与修改、事件监听、冒泡与事件委托、表单与本地存储。代码的真实内容是下面哪一项？
 - **正确项**：调用了 `querySelectorAll()`
-- **判断依据**：本题正确项是调用了 `querySelectorAll()`。术语 DOM（DOM 与事件）：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据，本题取调用了 `querySelectorAll()`这条。易错点是脚本在元素之前执行，改法是用 `defer` 或放到 `</body>` 前。本题干扰项「调用了 `die()`」不成立：展示代码里找不到 `die()`。
+- **判断依据**：本题正确项是「调用了 `querySelectorAll()`」。术语 DOM（DOM 与事件）：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据，本题取「调用了 `querySelectorAll()`」这条。易错点是脚本在元素之前执行，改法是用 `defer` 或放到 `</body>` 前。本题干扰项「调用了 `die()`」不成立：展示代码里找不到 `die()`。
 
 ### 考点 2：第 2 题
 
 - **题目**：把用户输入插入页面，安全的做法是？
 - **正确项**：textContent
-- **判断依据**：本题正确项是textContent。术语 DOM（DOM 与事件）：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据，本题取textContent这条。易错点是用 `innerHTML` 拼接用户输入，会造成XSS 漏洞，改法是用 `textContent`。
+- **判断依据**：本题正确项是「textContent」。术语 DOM（DOM 与事件）：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据，本题取「textContent」这条。易错点是用 `innerHTML` 拼接用户输入，会造成XSS 漏洞，改法是用 `textContent`。
 
 ### 考点 3：第 3 题
 
 - **题目**：event.preventDefault 的作用是？
 - **正确项**：阻止浏览器默认行为（如提交表单、跳转链接）
-- **判断依据**：本题正确项是阻止浏览器默认行为（如提交表单、跳转链接）。术语 DOM（DOM 与事件）：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据，本题取阻止浏览器默认行为（如提交表单、跳转链接）这条。易错点是循环里绑定监听，会造成元素多时性能差，改法是用事件委托。
+- **判断依据**：本题正确项是「阻止浏览器默认行为（如提交表单、跳转链接）」。术语 DOM（DOM 与事件）：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据，本题取「阻止浏览器默认行为（如提交表单、跳转链接）」这条。易错点是循环里绑定监听，会造成元素多时性能差，改法是用事件委托。
 
 ### 考点 4：第 4 题
 
 - **题目**：围绕“DOM 与事件”中的 DOM、事件、冒泡，下列哪两项是本课强调的实践判断？
 - **正确项**：验证 事件 时要固定版本并覆盖边界输入，结论才可复现；学习 DOM 时要同时说明输入、输出和失败路径，不能只看正常流程
-- **判断依据**：本题正确项是验证 事件 时要固定版本并覆盖边界输入，结论才可复现。术语 DOM（DOM 与事件）：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据，本题取验证 事件 时要固定版本并覆盖边界输入，结论才可复现这条。易错点是`removeEventListener` 无效，会造成回调传的是新函数，改法是保存同一个函数引用。
+- **判断依据**：按《DOM 与事件》的正文口径，本题要同时选中「验证 事件 时要固定版本并覆盖边界输入，结论才可复现」、「学习 DOM 时要同时说明输入、输出和失败路径，不能只看正常流程」，漏掉任一项都算没答全。术语 DOM（DOM 与事件）：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据。易错点是`removeEventListener` 无效，会造成回调传的是新函数，改法是保存同一个函数引用。
 
 ### 考点 5：第 5 题
 
 - **题目**：DOMContentLoaded 与 load 的区别是？
 - **正确项**：DOMContentLoaded 在 HTML 解析完成时触发
-- **判断依据**：本题正确项是DOMContentLoaded 在 HTML 解析完成时触发。术语 DOM（DOM 与事件）：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据，本题取DOMContentLoaded 在 HTML 解析完成时触发这条。易错点是忘记 `preventDefault`，会造成表单刷新页面，改法是在提交处理里加上。
+- **判断依据**：本题正确项是「DOMContentLoaded 在 HTML 解析完成时触发」。术语 DOM（DOM 与事件）：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据，本题取「DOMContentLoaded 在 HTML 解析完成时触发」这条。易错点是忘记 `preventDefault`，会造成表单刷新页面，改法是在提交处理里加上。
 
 ### 考点 6：第 6 题
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `元素选择与修改、事件监听、冒泡与事件委托、表单与本地存储。`，这段说明是：`____`：浏览器提供的同源持久化键值存储，容量有限且只能存字符串。空缺处应填哪个术语？
 - **正确项**：localStorage
-- **判断依据**：《DOM 与事件》这题的填空口径是「localStorage」或「localstorage」，正文写法与其中任一项一致即可。术语「事件」在本课里的界定是事件是「用户做了什么」的通知，你注册回调函数来决定怎么响应，题干「填空：补齐下面这段术语说明中的空缺，课程 `元素选择与修改、事件监听」问的就是这一条。常见错法是脚本在元素之前执行，其后果是`Cannot read properties of null`。正确做法是用 `defer` 或放到 `</body>` 前。
+- **判断依据**：《DOM 与事件》这题的填空口径是「localStorage」或「localstorage」，正文写法与其中任一项一致即可。术语「事件」在本课里的界定是事件是「用户做了什么」的通知，你注册回调函数来决定怎么响应，题干问的就是这一条。常见错法是脚本在元素之前执行，其后果是`Cannot read properties of null`。正确做法是用 `defer` 或放到 `</body>` 前。
 
 ### 考点 7：`DOM`
 

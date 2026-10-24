@@ -532,37 +532,37 @@ async fn main() {
 
 - **题目**：Rust 中 Future 的特性是？
 - **正确项**：惰性，必须被 await 或 executor 驱动
-- **判断依据**：本题正确项是惰性，必须被 await 或 executor 驱动。术语 Rust（Rust 异步编程与 tokio）：Rust 的 async fn 由编译器生成状态机，返回 Future，Future 是惰性的，必须被 await 或被 executor 驱动才会推进，本题取惰性，必须被 await 或 executor 驱动这条。易错点是创建 Future 不 `.await`，会造成什么也没执行，改法是记得 await 或 spawn。
+- **判断依据**：本题正确项是「惰性，必须被 await 或 executor 驱动」。术语 Rust（Rust 异步编程与 tokio）：Rust 的 async fn 由编译器生成状态机，返回 Future，Future 是惰性的，必须被 await 或被 executor 驱动才会推进，本题取「惰性，必须被 await 或 executor 驱动」这条。易错点是创建 Future 不 `.await`，会造成什么也没执行，改法是记得 await 或 spawn。
 
 ### 考点 2：第 2 题
 
 - **题目**：在异步任务中执行 CPU 密集计算应该？
 - **正确项**：用 spawn_blocking 隔离到阻塞线程池
-- **判断依据**：本题正确项是用 spawn_blocking 隔离到阻塞线程池。术语 异步（Rust 异步编程与 tokio）：async/await 把等待交给执行器：任务在 await 处让出线程，适合高并发 IO，但不能阻塞线程，本题取用 spawn_blocking 隔离到阻塞线程池这条。易错点是在 async 里写阻塞调用，会造成运行时被卡住，改法是用异步版本或 `spawn_blocking`。
+- **判断依据**：本题正确项是「用 spawn_blocking 隔离到阻塞线程池」。术语 异步（Rust 异步编程与 tokio）：async/await 把等待交给执行器：任务在 await 处让出线程，适合高并发 IO，但不能阻塞线程，本题取「用 spawn_blocking 隔离到阻塞线程池」这条。易错点是在 async 里写阻塞调用，会造成运行时被卡住，改法是用异步版本或 `spawn_blocking`。
 
 ### 考点 3：第 3 题
 
 - **题目**：围绕“Rust 异步编程与 tokio”中的 Rust、异步、tokio，下列哪两项是本课强调的实践判断？
 - **正确项**：验证 异步 时要固定版本并覆盖边界输入，结论才可复现；学习 Rust 时要同时说明输入、输出和失败路径，不能只看正常流程
-- **判断依据**：本题正确项是验证 异步 时要固定版本并覆盖边界输入，结论才可复现。术语 Rust（Rust 异步编程与 tokio）：Rust 的 async fn 由编译器生成状态机，返回 Future，Future 是惰性的，必须被 await 或被 executor 驱动才会推进，本题取验证 异步 时要固定版本并覆盖边界输入，结论才可复现这条。易错点是用 `std::sync::Mutex` 跨 await，会造成可能死锁，改法是用 `tokio::sync::Mutex`。
+- **判断依据**：按《Rust 异步编程与 tokio》的正文口径，本题要同时选中「验证 异步 时要固定版本并覆盖边界输入，结论才可复现」、「学习 Rust 时要同时说明输入、输出和失败路径，不能只看正常流程」，漏掉任一项都算没答全。术语 Rust（Rust 异步编程与 tokio）：Rust 的 async fn 由编译器生成状态机，返回 Future，Future 是惰性的，必须被 await 或被 executor 驱动才会推进。易错点是用 `std::sync::Mutex` 跨 await，会造成可能死锁，改法是用 `tokio::sync::Mutex`。
 
 ### 考点 4：第 4 题
 
 - **题目**：tokio::select! 的作用是？
 - **正确项**：同时等待多个 future
-- **判断依据**：本题正确项是同时等待多个 future。术语 tokio（Rust 异步编程与 tokio）：用 std 的 Mutex 跨 await 持有，会导致死锁或编译错误，应使用 tokio::sync::Mutex，且尽量缩短持锁范围，本题取同时等待多个 future这条。易错点是忘了 `#[tokio::main]`，会造成编译报错，改法是加在 main 上。
+- **判断依据**：本题正确项是「同时等待多个 future」。术语 tokio（Rust 异步编程与 tokio）：用 std 的 Mutex 跨 await 持有，会导致死锁或编译错误，应使用 tokio::sync::Mutex，且尽量缩短持锁范围，本题取「同时等待多个 future」这条。易错点是忘了 `#[tokio::main]`，会造成编译报错，改法是加在 main 上。
 
 ### 考点 5：第 5 题
 
 - **题目**：阅读 `Rust 异步编程与 tokio` 的 `Rust` 示例。它服务于Future/executor 模型、tokio API 与五个高频坑。代码中实际包含下列哪一项？
 - **正确项**：调用了 `from_millis()`
-- **判断依据**：本题正确项是调用了 `from_millis()`。术语 Rust（Rust 异步编程与 tokio）：Rust 的 async fn 由编译器生成状态机，返回 Future，Future 是惰性的，必须被 await 或被 executor 驱动才会推进，本题取调用了 `from_millis()`这条。易错点是循环里逐个 await，会造成慢几倍，改法是用 `join_all` 或 `FuturesUnordered`。本题干扰项「调用了 `allow()`」不成立：展示代码里找不到 `allow()`。
+- **判断依据**：本题正确项是「调用了 `from_millis()`」。术语 Rust（Rust 异步编程与 tokio）：Rust 的 async fn 由编译器生成状态机，返回 Future，Future 是惰性的，必须被 await 或被 executor 驱动才会推进，本题取「调用了 `from_millis()`」这条。易错点是循环里逐个 await，会造成慢几倍，改法是用 `join_all` 或 `FuturesUnordered`。本题干扰项「调用了 `allow()`」不成立：展示代码里找不到 `allow()`。
 
 ### 考点 6：第 6 题
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `Future/executor 模型、tokio API 与五个高频坑。`，这段说明是：`____`：在异步任务里做阻塞操作（同步 IO、CPU 密集），会卡住整个执行线程，应用 spawnblocking 或限制线程数。空缺处应填哪个术语？
 - **正确项**：spawn_blocking
-- **判断依据**：正确项：spawn_blocking。涉及术语 异步：async/await 把等待交给执行器：任务在 await 处让出线程，适合高并发 IO，但不能阻塞线程。易错点：创建 Future 不 `.await`会造成什么也没执行。正确做法：记得 await 或 spawn。
+- **判断依据**：正确项：「spawn_blocking」。涉及术语 异步：async/await 把等待交给执行器：任务在 await 处让出线程，适合高并发 IO，但不能阻塞线程。易错点：创建 Future 不 `.await`会造成什么也没执行。正确做法：记得 await 或 spawn。
 
 ### 考点 7：`Rust`
 

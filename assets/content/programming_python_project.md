@@ -442,37 +442,37 @@ python -m pytest --tb=short -q
 
 - **题目**：这段 `python` 代码对应 `实战：爬虫与数据分析` 的 `timeout`。课程要解决的是requests 抓取、pandas 清洗统计与 matplotlib 可视化。关于代码内容，哪一项说法准确？
 - **正确项**：调用了 `quote.select_one()`
-- **判断依据**：本题正确项是调用了 `quote.select_one()`。术语 timeout（实战：爬虫与数据分析）：要点：`timeout` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性，本题取调用了 `quote.select_one()`这条。易错点是代码放在仓库根目录，会造成导入混乱，改法是用 `src/` 布局。本题干扰项「出现字面量 `你好，{name}！`」不成立：展示代码里找不到 `你好，{name}！`。
+- **判断依据**：本题正确项是「调用了 `quote.select_one()`」。术语 timeout（实战：爬虫与数据分析）：要点：`timeout` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性，本题取「调用了 `quote.select_one()`」这条。易错点是代码放在仓库根目录，会造成导入混乱，改法是用 `src/` 布局。本题干扰项「出现字面量 `你好，{name}！`」不成立：展示代码里找不到 `你好，{name}！`。
 
 ### 考点 2：第 2 题
 
 - **题目**：pandas 中按作者分组求均值应使用？
 - **正确项**：df.groupby('author')['x'].mean
-- **判断依据**：本题正确项是df.groupby('author')['x'].mean。术语 timeout（实战：爬虫与数据分析）：要点：`timeout` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性，本题取df.groupby('author')['x'].mean这条。易错点是逻辑与 IO 混在一起，会造成无法单测，改法是抽出纯函数。
+- **判断依据**：本题正确项是「df.groupby('author')['x'].mean」。术语 timeout（实战：爬虫与数据分析）：要点：`timeout` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性，本题取「df.groupby('author')['x'].mean」这条。易错点是逻辑与 IO 混在一起，会造成无法单测，改法是抽出纯函数。
 
 ### 考点 3：第 3 题
 
 - **题目**：围绕“实战：爬虫与数据分析”中的 实战、爬虫、pandas，下列哪两项是本课强调的实践判断？
 - **正确项**：学习 实战 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 爬虫 时要固定版本并覆盖边界输入，结论才可复现
-- **判断依据**：按《实战：爬虫与数据分析》的正文口径，本题正确项是「学习 实战 时要同时说明输入、输出和失败路径，不能只看正常流程」。《实战：爬虫与数据分析》整课的主线是requests 抓取、pandas 清洗统计与 matplotlib 可视化，本题按这条主线判定。常见错法是代码放在仓库根目录，其后果是导入混乱。正确做法是用 `src/` 布局。干扰项「只要 实战 的常规示例通过，就可以跳过边界与异常路径」与题干「围绕“实战：爬虫与数据分析”中的 实战、爬虫、pandas，下列哪两」的要求对不上，应排除。
+- **判断依据**：按《实战：爬虫与数据分析》的正文口径，本题要同时选中「学习 实战 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 爬虫 时要固定版本并覆盖边界输入，结论才可复现」，漏掉任一项都算没答全。《实战：爬虫与数据分析》整课的主线是requests 抓取、pandas 清洗统计与 matplotlib 可视化，本题按这条主线判定。常见错法是代码放在仓库根目录，其后果是导入混乱。正确做法是用 `src/` 布局。干扰项「只要 实战 的常规示例通过，就可以跳过边界与异常路径」与题干「围绕“实战：爬虫与数据分析”中的 实战、爬虫、pandas，下列哪两」的要求对不上，应排除。
 
 ### 考点 4：第 4 题
 
 - **题目**：给 requests 请求设置 timeout 的意义是？
 - **正确项**：避免网络异常时请求无限期挂起
-- **判断依据**：本题正确项是避免网络异常时请求无限期挂起。术语 timeout（实战：爬虫与数据分析）：要点：`timeout` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性，本题取避免网络异常时请求无限期挂起这条。易错点是用 print 当日志，会造成无法分级与开关，改法是用 logging。
+- **判断依据**：本题正确项是「避免网络异常时请求无限期挂起」。术语 timeout（实战：爬虫与数据分析）：要点：`timeout` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性，本题取「避免网络异常时请求无限期挂起」这条。易错点是用 print 当日志，会造成无法分级与开关，改法是用 logging。
 
 ### 考点 5：第 5 题
 
 - **题目**：pandas 中把 DataFrame 保存成 CSV 的方法是？
 - **正确项**：df.to_csv('out.csv')
-- **判断依据**：本题正确项是df.to_csv('out.csv')。术语 timeout（实战：爬虫与数据分析）：要点：`timeout` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性，本题取df.to_csv('out.csv')这条。易错点是`requests.get` 不设超时，会造成请求可能永久挂起，改法是一律设置 `timeout=(连接, 读取)`。
+- **判断依据**：本题正确项是「df.to_csv('out.csv')」。术语 timeout（实战：爬虫与数据分析）：要点：`timeout` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性，本题取「df.to_csv('out.csv')」这条。易错点是`requests.get` 不设超时，会造成请求可能永久挂起，改法是一律设置 `timeout=(连接, 读取)`。
 
 ### 考点 6：第 6 题
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `requests 抓取、pandas 清洗统计与 matplotlib 可视化。`，这段说明是：要点：``____`` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性。空缺处应填哪个术语？
 - **正确项**：timeout
-- **判断依据**：正确项：timeout。涉及术语 timeout：要点：`timeout` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性。易错点：代码放在仓库根目录会造成导入混乱。正确做法：用 `src/` 布局。本课实战：爬虫与数据分析要解决的是requests 抓取、pandas 清洗统计与 matplotlib 可视化，本题问的是填空：补齐下面这段术语说明中的空缺，课程 `requests 抓取、pandas 清洗统计与 m。
+- **判断依据**：正确项：「timeout」。涉及术语 timeout：要点：`timeout` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性。易错点：代码放在仓库根目录会造成导入混乱。正确做法：用 `src/` 布局。本课实战：爬虫与数据分析要解决的是requests 抓取、pandas 清洗统计与 matplotlib 可视化
 
 ## 内容元数据
 

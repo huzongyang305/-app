@@ -371,7 +371,7 @@ AnimationController、TextEditingController、StreamSubscription 创建后不释
   - C. 验证 状态管理 时要固定版本并覆盖边界输入，结论才可复现
   - D. 把 状态管理 的单次运行结果当成所有版本和规模都成立
 - **正确项**：AC
-- **判断依据**：本题正确项是学习 Flutter 时要同时说明输入、输出和失败路径，不能只看正常流程。术语 Flutter（Flutter 状态管理与性能）：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层，再配合 const、Selector 与 RepaintBoundary 控制性能，本题取学习 Flutter 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是整页 `Consumer` 包住所有内容，会造成无谓重建，改法是只包需要的子树。
+- **判断依据**：按《Flutter 状态管理与性能》的正文口径，本题要同时选中「学习 Flutter 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 状态管理 时要固定版本并覆盖边界输入，结论才可复现」，漏掉任一项都算没答全。术语 Flutter（Flutter 状态管理与性能）：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层，再配合 const、Selector 与 RepaintBoundary 控制性能。易错点是整页 `Consumer` 包住所有内容，会造成无谓重建，改法是只包需要的子树。
 
 ### 考点 2：第 2 题
 
@@ -381,7 +381,7 @@ AnimationController、TextEditingController、StreamSubscription 创建后不释
   - C. 调用了 `target_link_libraries()`
   - D. 调用了 `update()`
 - **正确项**：B
-- **判断依据**：本题正确项是调用了 `ChangeNotifierProvider()`。术语 Flutter（Flutter 状态管理与性能）：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层，再配合 const、Selector 与 RepaintBoundary 控制性能，本题取调用了 `ChangeNotifierProvider()`这条。易错点是用 `watch` 在回调里读，会造成报错或多余重建，改法是回调用 `read`。本题干扰项「调用了 `round()`」不成立：展示代码里找不到 `round()`。
+- **判断依据**：本题正确项是「调用了 `ChangeNotifierProvider()`」。术语 Flutter（Flutter 状态管理与性能）：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层，再配合 const、Selector 与 RepaintBoundary 控制性能，本题取「调用了 `ChangeNotifierProvider()`」这条。易错点是用 `watch` 在回调里读，会造成报错或多余重建，改法是回调用 `read`。本题干扰项「调用了 `round()`」不成立：展示代码里找不到 `round()`。
 
 ### 考点 3：第 3 题
 
@@ -391,7 +391,7 @@ AnimationController、TextEditingController、StreamSubscription 创建后不释
   - C. 无法打包
   - D. 编译错误
 - **正确项**：A
-- **判断依据**：本题正确项是内存泄漏与后台继续执行。术语 Flutter（Flutter 状态管理与性能）：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层，再配合 const、Selector 与 RepaintBoundary 控制性能，本题取内存泄漏与后台继续执行这条。易错点是忘记 `notifyListeners`，会造成界面不更新，改法是改完状态必须通知。
+- **判断依据**：本题正确项是「内存泄漏与后台继续执行」。术语 Flutter（Flutter 状态管理与性能）：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层，再配合 const、Selector 与 RepaintBoundary 控制性能，本题取「内存泄漏与后台继续执行」这条。易错点是忘记 `notifyListeners`，会造成界面不更新，改法是改完状态必须通知。
 
 ### 考点 4：第 4 题
 
@@ -401,7 +401,7 @@ AnimationController、TextEditingController、StreamSubscription 创建后不释
   - C. updateUI
   - D. notifyListeners
 - **正确项**：D
-- **判断依据**：本题正确项是notifyListeners。术语 Flutter（Flutter 状态管理与性能）：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层，再配合 const、Selector 与 RepaintBoundary 控制性能，本题取notifyListeners这条。易错点是忘记 `dispose`，会造成内存泄漏、后台继续跑，改法是控制器与订阅都要释放。
+- **判断依据**：本题正确项是「notifyListeners」。术语 Flutter（Flutter 状态管理与性能）：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层，再配合 const、Selector 与 RepaintBoundary 控制性能，本题取「notifyListeners」这条。易错点是忘记 `dispose`，会造成内存泄漏、后台继续跑，改法是控制器与订阅都要释放。
 
 ### 考点 5：第 5 题
 
@@ -411,7 +411,7 @@ AnimationController、TextEditingController、StreamSubscription 创建后不释
   - C. context.select<Model, T>((m) => m.field)
   - D. context.read<Model>
 - **正确项**：C
-- **判断依据**：本题正确项是context.select<Model, T>((m) => m.field)。术语 Flutter（Flutter 状态管理与性能）：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层，再配合 const、Selector 与 RepaintBoundary 控制性能，本题取context.select<Model, T>((m) => m.field)这条。易错点是状态放得太高，会造成到处都是依赖，改法是状态尽量下沉。
+- **判断依据**：本题正确项是「context.select<Model, T>((m) => m.field)」。术语 Flutter（Flutter 状态管理与性能）：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层，再配合 const、Selector 与 RepaintBoundary 控制性能，本题取「context.select<Model, T>((m) => m.field)」这条。易错点是状态放得太高，会造成到处都是依赖，改法是状态尽量下沉。
 
 ### 考点 6：第 6 题
 
@@ -421,7 +421,7 @@ AnimationController、TextEditingController、StreamSubscription 创建后不释
   - C. 生命周期要点
   - D. 异步与错误处理
 - **正确项**：ABCD
-- **判断依据**：术语 Flutter（Flutter 状态管理与性能）：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层，再配合 const、Selector 与 RepaintBoundary 控制性能，本题取状态分层这条。易错点是整页 `Consumer` 包住所有内容会造成无谓重建，改法是只包需要的子树。
+- **判断依据**：按《Flutter 状态管理与性能》正文的先后，本题顺序是「状态分层」 → 「重建范围控制」 → 「生命周期要点」 → 「异步与错误处理」。术语 Flutter（Flutter 状态管理与性能）：Flutter 状态管理的核心是分层与最小重建：局部用 setState、共享用 Provider/Riverpod、服务端数据走仓库层，再配合 const、Selector 与 RepaintBoundary 控制性能。易错点是整页 `Consumer` 包住所有内容会造成无谓重建，改法是只包需要的子树。
 
 ## 术语速查
 

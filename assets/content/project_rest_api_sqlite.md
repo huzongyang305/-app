@@ -445,7 +445,7 @@ COMMIT;
 
 - **题目**：代码语言为 `python`，选自 `实战：REST API 与 SQLite 事务服务` 的 `REST` 部分。课程问题为从接口契约到数据库事务，完成一个可测试、可回滚、支持幂等重试的库存预约服务。哪一项描述与代码一致？
 - **正确项**：这段示例用于说明本课术语 `事务` 的行为
-- **判断依据**：本题正确项是这段示例用于说明本课术语 `事务` 的行为。术语 `事务` 的行为。术语 `事务` 的行为。术语 `事务` 的行为。术语 REST（实战：REST API 与 SQLite 事务服务）：Explain what Project: REST API with SQLite Transactions solves and when it should be used.，本题取这段示例用于说明本课术语 `事务` 的行为这条。易错点是先查库存再单独更新，会造成并发请求造成超卖，改法是使用条件更新或事务锁。本题干扰项「代码里出现了 `轮换` 这个名字」不成立：展示代码里找不到 `轮换`。
+- **判断依据**：本题正确项是「这段示例用于说明本课术语 `事务` 的行为」。术语 `事务` 的行为。术语 `事务` 的行为。术语 `事务` 的行为。术语 REST（实战：REST API 与 SQLite 事务服务）：Explain what Project: REST API with SQLite Transactions solves and when it should be used.，本题取「这段示例用于说明本课术语 `事务` 的行为」这条。易错点是先查库存再单独更新，会造成并发请求造成超卖，改法是使用条件更新或事务锁。本题干扰项「代码里出现了 `轮换` 这个名字」不成立：展示代码里找不到 `轮换`。
 
 ### 考点 2：第 2 题
 
@@ -457,13 +457,13 @@ COMMIT;
 
 - **题目**：库存不足时返回 409 而不是 500 的主要理由是什么？
 - **正确项**：409 表示请求与当前资源状态冲突
-- **判断依据**：本题正确项是409 表示请求与当前资源状态冲突。术语 REST（实战：REST API 与 SQLite 事务服务）：Explain what Project: REST API with SQLite Transactions solves and when it should be used.，本题取409 表示请求与当前资源状态冲突这条。易错点是幂等键只放在内存，会造成重启后重复请求仍会写两次，改法是数据库唯一约束持久化幂等键。
+- **判断依据**：本题正确项是「409 表示请求与当前资源状态冲突」。术语 REST（实战：REST API 与 SQLite 事务服务）：Explain what Project: REST API with SQLite Transactions solves and when it should be used.，本题取「409 表示请求与当前资源状态冲突」这条。易错点是幂等键只放在内存，会造成重启后重复请求仍会写两次，改法是数据库唯一约束持久化幂等键。
 
 ### 考点 4：第 4 题
 
 - **题目**：围绕“实战：REST API 与 SQLite 事务服务”中的 REST、SQLite、事务，下列哪两项是本课强调的实践判断？
 - **正确项**：学习 REST 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 SQLite 时要固定版本并覆盖边界输入，结论才可复现
-- **判断依据**：本题正确项是学习 REST 时要同时说明输入、输出和失败路径，不能只看正常流程。术语 REST（实战：REST API 与 SQLite 事务服务）：Explain what Project: REST API with SQLite Transactions solves and when it should be used.，本题取学习 REST 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是取消接口没有状态检查，会造成已发货订单被错误取消，改法是校验状态机并返回冲突错误。
+- **判断依据**：按《实战：REST API 与 SQLite 事务服务》的正文口径，本题要同时选中「学习 REST 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 SQLite 时要固定版本并覆盖边界输入，结论才可复现」，漏掉任一项都算没答全。术语 REST（实战：REST API 与 SQLite 事务服务）：Explain what Project: REST API with SQLite Transactions solves and when it should be used.。易错点是取消接口没有状态检查，会造成已发货订单被错误取消，改法是校验状态机并返回冲突错误。
 
 ### 考点 5：第 5 题
 

@@ -351,37 +351,37 @@ Go 的并发口号是「**不要通过共享内存来通信，而要通过通信
 
 - **题目**：向已关闭的 channel 发送数据会？
 - **正确项**：panic
-- **判断依据**：本题正确项是panic。术语 context.WithTimeout（Go 并发：goroutine、channel 与 context）：超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`，本题取panic这条。易错点是传递数据、串起流水线，改法是数据流向清晰。
+- **判断依据**：本题正确项是「panic」。术语 context.WithTimeout（Go 并发：goroutine、channel 与 context）：超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`，本题取「panic」这条。易错点是传递数据、串起流水线，改法是数据流向清晰。
 
 ### 考点 2：第 2 题
 
 - **题目**：`Go 并发：goroutine、channel 与 context` 的示例代码用于验证 `context.WithTimeout`，其背景是channel 通信、worker pool、context 取消与竞态检测。代码的真实内容是下面哪一项？
 - **正确项**：调用了 `wg.Done()`
-- **判断依据**：本题正确项是调用了 `wg.Done()`。术语 context.WithTimeout（Go 并发：goroutine、channel 与 context）：超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`，本题取调用了 `wg.Done()`这条。易错点是保护一个计数器或缓存，改法是比开 channel 更直接。本题干扰项「调用了 `range()`」不成立：展示代码里找不到 `range()`。
+- **判断依据**：本题正确项是「调用了 `wg.Done()`」。术语 context.WithTimeout（Go 并发：goroutine、channel 与 context）：超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`，本题取「调用了 `wg.Done()`」这条。易错点是保护一个计数器或缓存，改法是比开 channel 更直接。本题干扰项「调用了 `range()`」不成立：展示代码里找不到 `range()`。
 
 ### 考点 3：第 3 题
 
 - **题目**：检测数据竞争的官方手段是？
 - **正确项**：go test -race
-- **判断依据**：本题正确项是go test -race。术语 数据竞争（Go 并发：goroutine、channel 与 context）：多个 goroutine 无同步地读写同一变量，用 -race 检测，靠互斥锁或 channel 消除，本题取go test -race这条。易错点是等一组任务结束，改法是计数归零即完成。
+- **判断依据**：本题正确项是「go test -race」。术语 数据竞争（Go 并发：goroutine、channel 与 context）：多个 goroutine 无同步地读写同一变量，用 -race 检测，靠互斥锁或 channel 消除，本题取「go test -race」这条。易错点是等一组任务结束，改法是计数归零即完成。
 
 ### 考点 4：第 4 题
 
 - **题目**：向无缓冲 channel 发送数据会阻塞，直到？
 - **正确项**：有接收方准备好接收
-- **判断依据**：本题正确项是有接收方准备好接收。术语 context.WithTimeout（Go 并发：goroutine、channel 与 context）：超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`，本题取有接收方准备好接收这条。易错点是取消、超时、传请求级数据，改法是标准做法，能层层传递。
+- **判断依据**：本题正确项是「有接收方准备好接收」。术语 context.WithTimeout（Go 并发：goroutine、channel 与 context）：超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`，本题取「有接收方准备好接收」这条。易错点是取消、超时、传请求级数据，改法是标准做法，能层层传递。
 
 ### 考点 5：第 5 题
 
 - **题目**：围绕“Go 并发：goroutine、channel 与 context”中的 Go、goroutine、channel，下列哪两项是本课强调的实践判断？
 - **正确项**：验证 goroutine 时要固定版本并覆盖边界输入，结论才可复现；学习 Go 时要同时说明输入、输出和失败路径，不能只看正常流程
-- **判断依据**：本题正确项是验证 goroutine 时要固定版本并覆盖边界输入，结论才可复现。术语 Go（Go 并发：goroutine、channel 与 context）：由 Google 设计的静态编译语言，强调简单语法、并发和部署便利，本题取验证 goroutine 时要固定版本并覆盖边界输入，结论才可复现这条。易错点是限制并发数量，会造成带缓冲 channel 当信号量，改法是简洁可控。
+- **判断依据**：按《Go 并发：goroutine、channel 与 context》的正文口径，本题要同时选中「验证 goroutine 时要固定版本并覆盖边界输入，结论才可复现」、「学习 Go 时要同时说明输入、输出和失败路径，不能只看正常流程」，漏掉任一项都算没答全。术语 Go（Go 并发：goroutine、channel 与 context）：由 Google 设计的静态编译语言，强调简单语法、并发和部署便利。易错点是限制并发数量，会造成带缓冲 channel 当信号量，改法是简洁可控。
 
 ### 考点 6：第 6 题
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `channel 通信、worker pool、context 取消与竞态检测。`，这段说明是：等待一组任务**：``____`` 的 Add/Done/Wait。空缺处应填哪个术语？
 - **正确项**：sync.WaitGroup
-- **判断依据**：《Go 并发：goroutine、channel 与 context》这题的填空口径是「sync.WaitGroup」或「sync.waitgroup」，正文写法与其中任一项一致即可。术语「sync.WaitGroup」在本课里的界定是等待一组任务**：`sync.WaitGroup` 的 Add/Done/Wait，题干「填空：补齐下面这段术语说明中的空缺，课程 `channel 通信、w」问的就是这一条。常见错法是传递数据、串起流水线，其后果是channel。正确做法是数据流向清晰。
+- **判断依据**：《Go 并发：goroutine、channel 与 context》这题的填空口径是「sync.WaitGroup」或「sync.waitgroup」，正文写法与其中任一项一致即可。术语「sync.WaitGroup」在本课里的界定是等待一组任务**：`sync.WaitGroup` 的 Add/Done/Wait，题干问的就是这一条。常见错法是传递数据、串起流水线，其后果是channel。正确做法是数据流向清晰。
 
 ### 考点 7：`context.WithTimeout`
 

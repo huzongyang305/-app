@@ -301,7 +301,7 @@ Flutter 基础与 Widget 树（本课）
 
 ### 考点 2
 
-- **题目**：长列表应该使用？
+- **题目**：渲染条目很多、长度可能不定的列表时，应该选择哪种方案？
   A. Column 全部展开
   B. ListView.builder 懒加载
   C. SingleChildScrollView 包 Column

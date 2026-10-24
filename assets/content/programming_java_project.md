@@ -414,37 +414,37 @@ class UserControllerTest {
 
 - **题目**：围绕“实战：Spring Boot REST API”中的 实战、Spring Boot、REST，下列哪两项是本课强调的实践判断？
 - **正确项**：验证 Spring Boot 时要固定版本并覆盖边界输入，结论才可复现；学习 实战 时要同时说明输入、输出和失败路径，不能只看正常流程
-- **判断依据**：按《实战：Spring Boot REST API》的正文口径，本题正确项是「验证 Spring Boot 时要固定版本并覆盖边界输入，结论才可复现」。《实战：Spring Boot REST API》整课的主线是分层结构、依赖注入、校验与集成测试，本题按这条主线判定。常见错法是Entity 直接当接口返回，其后果是泄露字段、耦合表结构。正确做法是用 DTO 转换。干扰项「把 Spring Boot 的单次运行结果当成所有版本和规模都成立」与题干「围绕“实战：Spring Boot REST API”中的 实战、S」的要求对不上，应排除。
+- **判断依据**：按《实战：Spring Boot REST API》的正文口径，本题要同时选中「验证 Spring Boot 时要固定版本并覆盖边界输入，结论才可复现」、「学习 实战 时要同时说明输入、输出和失败路径，不能只看正常流程」，漏掉任一项都算没答全。《实战：Spring Boot REST API》整课的主线是分层结构、依赖注入、校验与集成测试，本题按这条主线判定。常见错法是Entity 直接当接口返回，其后果是泄露字段、耦合表结构。正确做法是用 DTO 转换。干扰项「把 Spring Boot 的单次运行结果当成所有版本和规模都成立」与题干「围绕“实战：Spring Boot REST API”中的 实战、S」的要求对不上，应排除。
 
 ### 考点 2：第 2 题
 
 - **题目**：使用构造器注入的主要好处是？
 - **正确项**：依赖显式且便于测试
-- **判断依据**：本题正确项是依赖显式且便于测试。术语 测试（实战：Spring Boot REST API）：用可重复的输入和断言验证代码行为是否符合预期，本题取依赖显式且便于测试这条。易错点是用字段注入，会造成循环依赖、难测试，改法是用构造注入。易错点是把异常堆栈返回给用户，会造成泄露实现细节，改法是统一异常处理。
+- **判断依据**：本题正确项是「依赖显式且便于测试」。术语 测试（实战：Spring Boot REST API）：用可重复的输入和断言验证代码行为是否符合预期，本题取「依赖显式且便于测试」这条。易错点是用字段注入，会造成循环依赖、难测试，改法是用构造注入。易错点是把异常堆栈返回给用户，会造成泄露实现细节，改法是统一异常处理。
 
 ### 考点 3：第 3 题
 
 - **题目**：这段 `java` 代码对应 `实战：Spring Boot REST API` 的 `record`。课程要解决的是分层结构、依赖注入、校验与集成测试。关于代码内容，哪一项说法准确？
 - **正确项**：调用了 `Min()`
-- **判断依据**：本题正确项是调用了 `Min()`。术语 record（实战：Spring Boot REST API）：`record` 天生适合做 API 的请求/响应模型，`@NotBlank`、`@Min` 由 Bean Validation 在入口处自动校验，本题取调用了 `Min()`这条。易错点是把异常堆栈返回给用户，会造成泄露实现细节，改法是统一异常处理。本题干扰项「调用了 `fib_iter()`」不成立：展示代码里找不到 `fib_iter()`。
+- **判断依据**：本题正确项是「调用了 `Min()`」。术语 record（实战：Spring Boot REST API）：`record` 天生适合做 API 的请求/响应模型，`@NotBlank`、`@Min` 由 Bean Validation 在入口处自动校验，本题取「调用了 `Min()`」这条。易错点是把异常堆栈返回给用户，会造成泄露实现细节，改法是统一异常处理。本题干扰项「调用了 `fib_iter()`」不成立：展示代码里找不到 `fib_iter()`。
 
 ### 考点 4：第 4 题
 
 - **题目**：@RestController 与 @Controller 的差别是？
 - **正确项**：@RestController 默认返回 JSON
-- **判断依据**：本题正确项是@RestController 默认返回 JSON。术语 record（实战：Spring Boot REST API）：`record` 天生适合做 API 的请求/响应模型，`@NotBlank`、`@Min` 由 Bean Validation 在入口处自动校验，本题取@RestController 默认返回 JSON这条。易错点是事务加在 Controller，会造成事务边界不清，改法是加在 Service 方法。
+- **判断依据**：本题正确项是「@RestController 默认返回 JSON」。术语 record（实战：Spring Boot REST API）：`record` 天生适合做 API 的请求/响应模型，`@NotBlank`、`@Min` 由 Bean Validation 在入口处自动校验，本题取「@RestController 默认返回 JSON」这条。易错点是事务加在 Controller，会造成事务边界不清，改法是加在 Service 方法。
 
 ### 考点 5：第 5 题
 
 - **题目**：JPA 中 N+1 查询问题的常见解法是？
 - **正确项**：用 join fetch / @EntityGraph 一次性预加载关联数据
-- **判断依据**：本题正确项是用 join fetch / @EntityGraph 一次性预加载关联数据。术语 record（实战：Spring Boot REST API）：`record` 天生适合做 API 的请求/响应模型，`@NotBlank`、`@Min` 由 Bean Validation 在入口处自动校验，本题取用 join fetch / @EntityGraph 一次性预加载关联数据这条。易错点是配置硬编码，会造成换环境要改代码，改法是用环境变量与 profile。
+- **判断依据**：本题正确项是「用 join fetch / @EntityGraph 一次性预加载关联数据」。术语 record（实战：Spring Boot REST API）：`record` 天生适合做 API 的请求/响应模型，`@NotBlank`、`@Min` 由 Bean Validation 在入口处自动校验，本题取「用 join fetch / @EntityGraph 一次性预加载关联数据」这条。易错点是配置硬编码，会造成换环境要改代码，改法是用环境变量与 profile。
 
 ### 考点 6：第 6 题
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `分层结构、依赖注入、校验与集成测试。`，这段说明是：`____`：以资源 URI、HTTP 方法和状态码组织接口的无状态风格。空缺处应填哪个术语？
 - **正确项**：REST
-- **判断依据**：《实战：Spring Boot REST API》这题的填空口径是「REST」或「rest」，正文写法与其中任一项一致即可。术语「REST」在本课里的界定是以资源 URI、HTTP 方法和状态码组织接口的无状态风格，题干「填空：补齐下面这段术语说明中的空缺，课程 `分层结构、依赖注入、校验」问的就是这一条。常见错法是Entity 直接当接口返回，其后果是泄露字段、耦合表结构。正确做法是用 DTO 转换。
+- **判断依据**：《实战：Spring Boot REST API》这题的填空口径是「REST」或「rest」，正文写法与其中任一项一致即可。术语「REST」在本课里的界定是以资源 URI、HTTP 方法和状态码组织接口的无状态风格，题干问的就是这一条。常见错法是Entity 直接当接口返回，其后果是泄露字段、耦合表结构。正确做法是用 DTO 转换。
 
 ## 内容元数据
 

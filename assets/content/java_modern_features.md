@@ -293,33 +293,33 @@ Record、Sealed 和模式匹配在性能上几乎零开销：
 
 - **题目**：按“现代 Java：Record、Sealed 与模式匹配”中 Record、Sealed、模式匹配 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
 - **正确项**：先明确 Record 的输入、输出与约束 → 写出最小示例并核对 Sealed 的基线结果 → 只改一个变量，记录边界与失败路径的变化 → 固定版本与证据，把“现代 Java：Record、Sealed 与模式匹配”的结论写成可复现记录
-- **判断依据**：本题正确项是写出最小示例并核对 Sealed 的基线结果。术语 Record（现代 Java：Record、Sealed 与模式匹配）：按“现代 Java：Record、Sealed 与模式匹配”中 Record、Sealed、模式匹配 的实践顺序，把四个步骤排成从准备到复盘的合理顺序，本题取写出最小示例并核对 Sealed 的基线结果这条。易错点是在 record 里放可变字段会造成值语义被破坏，比较结果不符合预期，改法是record 保持不可变，用紧凑构造器做校验。
+- **判断依据**：按《现代 Java：Record、Sealed 与模式匹配》正文的先后，本题顺序是「先明确 Record 的输入、输出与约束」 → 「写出最小示例并核对 Sealed 的基线结果」 → 「只改一个变量，记录边界与失败路径的变化」 → 「固定版本与证据，把“现代 Java：Record、Sealed 与模式匹配”的结论写成可复现记录」。术语 Record（现代 Java：Record、Sealed 与模式匹配）：按“现代 Java：Record、Sealed 与模式匹配”中 Record、Sealed、模式匹配 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。易错点是在 record 里放可变字段会造成值语义被破坏，比较结果不符合预期，改法是record 保持不可变，用紧凑构造器做校验。
 
 ### 考点 2：第 2 题
 
 - **题目**：在 `现代 Java：Record、Sealed 与模式匹配` 里，与 `Record` 有关的说法中，哪一项最符合用 Record、密封类和模式匹配表达不可变数据与封闭类型层次。？（现代 Java：Record、Sealed 与模式匹配·Java 第 3 题）
 - **正确项**：Sealed 限制可继承类型集合
-- **判断依据**：本题正确项是模式匹配把类型判断、绑定和结构解构合并，减少样板代码。术语 Record（现代 Java：Record、Sealed 与模式匹配）：按“现代 Java：Record、Sealed 与模式匹配”中 Record、Sealed、模式匹配 的实践顺序，把四个步骤排成从准备到复盘的合理顺序，本题取模式匹配把类型判断、绑定和结构解构合并，减少样板代码这条。易错点是模式匹配顺序颠倒，会造成宽泛模式吞掉具体分支，改法是从具体到宽泛排列模式。：Record、Sealed 与模式匹配` 里，与 `Record` 有关的说法中，哪一项最符合用 Record、密封类和模式匹配表达不可变数据与封闭类型层次。？（现代 Java：Record、Sealed 与模式匹配·Java 第 3 题）
+- **判断依据**：本题正确项是「模式匹配把类型判断、绑定和结构解构合并，减少样板代码」。术语 Record（现代 Java：Record、Sealed 与模式匹配）：按“现代 Java：Record、Sealed 与模式匹配”中 Record、Sealed、模式匹配 的实践顺序，把四个步骤排成从准备到复盘的合理顺序，本题取「模式匹配把类型判断、绑定和结构解构合并，减少样板代码」这条。易错点是模式匹配顺序颠倒，会造成宽泛模式吞掉具体分支，改法是从具体到宽泛排列模式。：Record、Sealed 与模式匹配` 里，与 `Record` 有关的说法中，哪一项最符合用 Record、密封类和模式匹配表达不可变数据与封闭类型层次。？（现代 Java：Record、Sealed 与模式匹配·Java 第 3 题）
 - **正确项**：模式匹配把类型判断、绑定和结构解构合并，减少样板代码。
-- **判断依据**：本题正确项是模式匹配把类型判断、绑定和结构解构合并，减少样板代码。术语 Record（现代 Java：Record、Sealed 与模式匹配）：按“现代 Java：Record、Sealed 与模式匹配”中 Record、Sealed、模式匹配 的实践顺序，把四个步骤排成从准备到复盘的合理顺序，本题取模式匹配把类型判断、绑定和结构解构合并，减少样板代码这条。易错点是在 record 里放可变字段会造成值语义被破坏，比较结果不符合预期，改法是record 保持不可变，用紧凑构造器做校验。
+- **判断依据**：本题正确项是「模式匹配把类型判断、绑定和结构解构合并，减少样板代码」。术语 Record（现代 Java：Record、Sealed 与模式匹配）：按“现代 Java：Record、Sealed 与模式匹配”中 Record、Sealed、模式匹配 的实践顺序，把四个步骤排成从准备到复盘的合理顺序，本题取「模式匹配把类型判断、绑定和结构解构合并，减少样板代码」这条。易错点是在 record 里放可变字段会造成值语义被破坏，比较结果不符合预期，改法是record 保持不可变，用紧凑构造器做校验。
 
 ### 考点 4：第 4 题
 
 - **题目**：`现代 Java：Record、Sealed 与模式匹配` 的主线是：用 Record、密封类和模式匹配表达不可变数据与封闭类型层次。下面哪一项与这条主线一致？
 - **正确项**：用 Record、密封类和模式匹配表达不可变数据与封闭类型层次。
-- **判断依据**：本题正确项是用 Record、密封类和模式匹配表达不可变数据与封闭类型层次。术语 Record（现代 Java：Record、Sealed 与模式匹配）：按“现代 Java：Record、Sealed 与模式匹配”中 Record、Sealed、模式匹配 的实践顺序，把四个步骤排成从准备到复盘的合理顺序，本题取用 Record、密封类和模式匹配表达不可变数据与封闭类型层次这条。易错点是用 record 存 List 并外部修改，会造成内容变了但 record 引用没变，equals 仍为 true，改法是用不可变集合 `List.copyOf()` 包装。
+- **判断依据**：本题正确项是「用 Record、密封类和模式匹配表达不可变数据与封闭类型层次」。术语 Record（现代 Java：Record、Sealed 与模式匹配）：按“现代 Java：Record、Sealed 与模式匹配”中 Record、Sealed、模式匹配 的实践顺序，把四个步骤排成从准备到复盘的合理顺序，本题取「用 Record、密封类和模式匹配表达不可变数据与封闭类型层次」这条。易错点是用 record 存 List 并外部修改，会造成内容变了但 record 引用没变，equals 仍为 true，改法是用不可变集合 `List.copyOf()` 包装。
 
 ### 考点 5：第 5 题
 
 - **题目**：课程 `用 Record、密封类和模式匹配表达不可变数据与封闭类型层次。`。在 `现代 Java：Record、Sealed 与模式匹配` 里，`Record`、`Sealed` 与下面哪些选项属于同一层概念？（多选）
 - **正确项**：Record；Sealed
-- **判断依据**：本题正确项是Record。术语 Record（现代 Java：Record、Sealed 与模式匹配）：按“现代 Java：Record、Sealed 与模式匹配”中 Record、Sealed、模式匹配 的实践顺序，把四个步骤排成从准备到复盘的合理顺序，本题取Record这条。易错点是以为 record 是 enum，会造成record 是数据载体，enum 是单例集合，改法是有限固定值用 enum，有字段的数据用 record。
+- **判断依据**：按《现代 Java：Record、Sealed 与模式匹配》的正文口径，本题要同时选中「Record」、「Sealed」，漏掉任一项都算没答全。术语 Record（现代 Java：Record、Sealed 与模式匹配）：按“现代 Java：Record、Sealed 与模式匹配”中 Record、Sealed、模式匹配 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。易错点是以为 record 是 enum，会造成record 是数据载体，enum 是单例集合，改法是有限固定值用 enum，有字段的数据用 record。
 
 ### 考点 6：第 6 题
 
 - **题目**：结合 `现代 Java：Record、Sealed 与模式匹配` 中围绕 `Record` 的代码，哪一项说法与“用 Record、密封类和模式匹配表达不可变数据与封闭类型层次。”一致？
 - **正确项**：Record 用简洁语法生成不可变数据载体，equals
-- **判断依据**：本题正确项是Record 用简洁语法生成不可变数据载体，equals。术语 Record（现代 Java：Record、Sealed 与模式匹配）：按“现代 Java：Record、Sealed 与模式匹配”中 Record、Sealed、模式匹配 的实践顺序，把四个步骤排成从准备到复盘的合理顺序，本题取Record 用简洁语法生成不可变数据载体，equals这条。易错点是在 record 里放可变字段，会造成值语义被破坏，比较结果不符合预期，改法是record 保持不可变，用紧凑构造器做校验。
+- **判断依据**：本题正确项是「Record 用简洁语法生成不可变数据载体，equals」。术语 Record（现代 Java：Record、Sealed 与模式匹配）：按“现代 Java：Record、Sealed 与模式匹配”中 Record、Sealed、模式匹配 的实践顺序，把四个步骤排成从准备到复盘的合理顺序，本题取「Record 用简洁语法生成不可变数据载体，equals」这条。易错点是在 record 里放可变字段，会造成值语义被破坏，比较结果不符合预期，改法是record 保持不可变，用紧凑构造器做校验。
 
 ## 内容元数据
 

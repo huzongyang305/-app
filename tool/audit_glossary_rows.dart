@@ -55,6 +55,8 @@ const Set<String> junkHeadingTerms = <String>{
 const Set<String> headingTermWhitelist = <String>{
   '可变参数',
   '量词与否定',
+  // Java 语言特性名，正好也是 java_exceptions 的小节标题；术语列要能查到它。
+  'try-with-resources',
 };
 
 /// 判断一个术语是不是「把本课小节标题抄进了术语列」。
