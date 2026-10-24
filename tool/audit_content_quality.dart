@@ -301,9 +301,19 @@ List<_Issue> _auditQuiz(_LessonAudit lesson, Map<String, int> histogram) {
         .whereType<int>()
         .toList();
     final answerIndex = question['answer'];
+    // 排序题的判分依据是 correct_order（lib/models/lesson.dart:88），第 26 波已把多余的 answer
+    // 下标删干净，所以这里必须把它认成答案，否则全库排序题都会被报成「没有答案」。
+    final correctOrder =
+        ((question['correct_order'] as List<dynamic>?) ?? const [])
+            .map((item) => int.tryParse(item.toString()))
+            .whereType<int>()
+            .toList();
     final normalized = answers.isNotEmpty
         ? answers
-        : <int>[if (answerIndex is int) answerIndex];
+        : <int>[
+            if (answerIndex is int) answerIndex,
+            if (type == 'order') ...correctOrder,
+          ];
     if (type != 'fill' && normalized.isEmpty) {
       issues.add(_Issue('error', lesson.id, '第 ${index + 1} 题没有答案'));
     }
@@ -322,12 +332,8 @@ List<_Issue> _auditQuiz(_LessonAudit lesson, Map<String, int> histogram) {
       }
     }
     if (type == 'order') {
-      final order = ((question['correct_order'] as List<dynamic>?) ?? const [])
-          .map((item) => int.tryParse(item.toString()))
-          .whereType<int>()
-          .toList();
-      if (order.length != options.length ||
-          order.toSet().length != options.length) {
+      if (correctOrder.length != options.length ||
+          correctOrder.toSet().length != options.length) {
         issues.add(_Issue('error', lesson.id, '第 ${index + 1} 排序题顺序不完整'));
       }
     }
