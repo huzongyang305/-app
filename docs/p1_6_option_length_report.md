@@ -100,7 +100,7 @@
 - java_testing｜在测试金字塔中，单元测试、集成测试和端到端测试的数量比例和速度特点分别是什么？｜正确项=单元测试数量最多、速度最快（毫秒级）；集成测试居中；端到端测试数量最少、速度最慢（分钟级）｜最长干扰项=端到端测试数量最多、速度最快；单元测试数量最少、速度最慢｜差值=17
 - java_testing｜在 MockMvc 测试中，为什么需要使用 `@MockBean` 注解替换 Service 层的依赖？｜正确项=为了隔离 Controller 层测试，避免调用真实的 Service 逻辑和外部依赖，使测试更快更稳定｜最长干扰项=因为 MockMvc 不支持直接调用 Service 方法｜差值=23
 - java_performance_monitoring｜Spring Boot Actuator 默认暴露哪些端点？为什么生产环境不能暴露所有端点？｜正确项=默认只暴露 health 和 info；因为 env 会泄露密码和密钥，heapdump 会导出堆内存中的敏感数据，存在安全风险｜最长干扰项=默认只暴露 metrics 和 loggers；因为其他端点会影响应用性能｜差值=27
-- java_performance_monitoring｜在性能监控中，为什么只看平均响应时间不够？应该关注什么指标？｜正确项=平均值会掩盖极端情况，应关注 P99 或 P999 延迟，它反映\u201c最差的 1%用户\u201d的真实体感｜最长干扰项=平均响应时间已经足够反映系统性能，无需其他指标｜差值=34
+- java_performance_monitoring｜在性能监控中，为什么只看平均响应时间不够？应该关注什么指标？｜正确项=平均值会掩盖极端情况，应关注 P99 或 P999 延迟，它反映“最差的 1%用户”的真实体感｜最长干扰项=平均响应时间已经足够反映系统性能，无需其他指标｜差值=24
 - java_performance_monitoring｜在指标采集架构中，Micrometer、Prometheus 和 Grafana 分别承担什么角色？｜正确项=Micrometer 是采集层（埋点收集数据），Prometheus 是存储层（时序数据库，通过 pull 模式拉取数据），Grafana 是展示层（可视化仪表盘）｜最长干扰项=Micrometer 存储数据，Prometheus 展示图表，Grafana 采集指标｜差值=38
 - java_performance_monitoring｜分布式追踪中，Trace ID 和 Span ID 分别代表什么？它们如何配合工作？｜正确项=Trace ID 是一个请求的全局唯一标识，贯穿整个调用链；Span ID 是每个服务处理步骤的标识，一个 Trace 包含多个 Span｜最长干扰项=Trace ID 用于标识数据库连接，Span ID 用于标识 HTTP 连接｜差值=30
 - java_performance_monitoring｜生产环境中，为什么不能将日志级别设为 DEBUG？｜正确项=DEBUG 级别会产生大量日志输出，导致磁盘空间被撑爆，IO 性能下降；生产环境应使用 INFO 或 WARN 级别｜最长干扰项=DEBUG 级别的日志会导致应用无法正常运行｜差值=36
