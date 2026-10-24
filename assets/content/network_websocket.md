@@ -447,7 +447,7 @@ async def chat(websocket: WebSocket, room: str):
 
 - **题目**：WebSocket 断线后必须实现？
 - **正确项**：心跳、指数退避重连与消息序号补齐
-- **判断依据**：本题正确项是心跳、指数退避重连与消息序号补齐。术语 WebSocket（WebSocket 与实时通信）：WebSocket 通过一次 HTTP 握手升级协议，之后在同一条 TCP 连接上双向通信，本题取心跳、指数退避重连与消息序号补齐这条。易错点是容易踩的做法会造成实际现象，改法是原因与正确做法，干扰项直接更换一套新的通信协议，需要额外的验证与维护正踩在这条上。
+- **判断依据**：本题正确项是心跳、指数退避重连与消息序号补齐。术语 WebSocket（WebSocket 与实时通信）：WebSocket 通过一次 HTTP 握手升级协议，之后在同一条 TCP 连接上双向通信，本题取心跳、指数退避重连与消息序号补齐这条。易错点是容易踩的做法会造成实际现象，改法是原因与正确做法，干扰项直接更换一套新的通信协议正踩在这条上。
 
 ### 考点 3：第 3 题
 
@@ -465,7 +465,7 @@ async def chat(websocket: WebSocket, room: str):
 
 - **题目**：SSE（Server-Sent Events）与 WebSocket 的主要区别是？
 - **正确项**：SSE 是服务器到客户端的单向文本流（基于 HTTP），WebSocket 是全双工
-- **判断依据**：本题正确项是SSE 是服务器到客户端的单向文本流（基于 HTTP），WebSocket 是全双工。术语 WebSocket（WebSocket 与实时通信）：WebSocket 通过一次 HTTP 握手升级协议，之后在同一条 TCP 连接上双向通信，本题取SSE 是服务器到客户端的单向文本流（基于 HTTP），WebSocket 是全双工这条。易错点是容易踩的做法会造成实际现象，改法是原因与正确做法，干扰项WebSocket 只能推送文本，但这会带来额外的维护成本，不过这需要额外的前提条件正踩在这条上。
+- **判断依据**：本题正确项是SSE 是服务器到客户端的单向文本流（基于 HTTP），WebSocket 是全双工。术语 WebSocket（WebSocket 与实时通信）：WebSocket 通过一次 HTTP 握手升级协议，之后在同一条 TCP 连接上双向通信，本题取SSE 是服务器到客户端的单向文本流（基于 HTTP），WebSocket 是全双工这条。易错点是容易踩的做法会造成实际现象，改法是原因与正确做法，干扰项WebSocket 只能推送文本正踩在这条上。
 
 ### 考点 6：第 6 题
 

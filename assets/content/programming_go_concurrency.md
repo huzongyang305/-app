@@ -363,7 +363,7 @@ Go 的并发口号是「**不要通过共享内存来通信，而要通过通信
 
 - **题目**：检测数据竞争的官方手段是？
 - **正确项**：go test -race
-- **判断依据**：本题正确项是go test -race。术语 数据竞争（Go 并发：goroutine、channel 与 context）：多个 goroutine 无同步地读写同一变量，用 -race 检测，靠互斥锁或 channel 消除，本题取go test -race这条。易错点是传递数据、串起流水线会造成channel，改法是数据流向清晰，干扰项go fmt 格式化代码，需要额外的验证与维护正踩在这条上。
+- **判断依据**：本题正确项是go test -race。术语 数据竞争（Go 并发：goroutine、channel 与 context）：多个 goroutine 无同步地读写同一变量，用 -race 检测，靠互斥锁或 channel 消除，本题取go test -race这条。易错点是传递数据、串起流水线会造成channel，改法是数据流向清晰，干扰项go fmt 格式化代码正踩在这条上。
 
 ### 考点 4：第 4 题
 

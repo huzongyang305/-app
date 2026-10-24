@@ -456,22 +456,22 @@ public class TestController {
 
 ### 考点 1
 
-\u201C@SpringBootApplication\u201D 是一个组合注解，它等同于以下哪三个注解的合体？
+“@SpringBootApplication” 是一个组合注解，它等同于以下哪三个注解的合体？
 
-A. \u201C@Configuration\u201D + \u201C@EnableScheduling\u201D + \u201C@ComponentScan\u201D  
-B. \u201C@Configuration\u201D + \u201C@EnableAutoConfiguration\u201D + \u201C@Import\u201D  
-C. \u201C@Bean\u201D + \u201C@EnableAutoConfiguration\u201D + \u201C@ComponentScan\u201D  
-D. \u201C@Configuration\u201D + \u201C@EnableAutoConfiguration\u201D + \u201C@ComponentScan\u201D  
+A. “@Configuration” + “@EnableScheduling” + “@ComponentScan”  
+B. “@Configuration” + “@EnableAutoConfiguration” + “@Import”  
+C. “@Bean” + “@EnableAutoConfiguration” + “@ComponentScan”  
+D. “@Configuration” + “@EnableAutoConfiguration” + “@ComponentScan”  
 
 **正确答案：D**
 
-**详细解释：** \u201C@SpringBootApplication\u201D 组合了三个核心注解：\u201C@SpringBootConfiguration\u201D（等同于 \u201C@Configuration\u201D，标记当前类为配置类）、\u201C@EnableAutoConfiguration\u201D（开启自动配置，根据 classpath 依赖自动注册 Bean）、\u201C@ComponentScan\u201D（组件扫描，自动扫描当前包及子包下的注解类）。只需在主类上写这一个注解，就能同时完成三项配置工作。
+**详细解释：** “@SpringBootApplication” 组合了三个核心注解：“@SpringBootConfiguration”（等同于 “@Configuration”，标记当前类为配置类）、“@EnableAutoConfiguration”（开启自动配置，根据 classpath 依赖自动注册 Bean）、“@ComponentScan”（组件扫描，自动扫描当前包及子包下的注解类）。只需在主类上写这一个注解，就能同时完成三项配置工作。
 
 ---
 
 ### 考点 2
 
-Spring Boot 自动配置中，\u201C@ConditionalOnMissingBean\u201D 注解的含义是什么？
+Spring Boot 自动配置中，“@ConditionalOnMissingBean” 注解的含义是什么？
 
 A. 当 classpath 中存在某个类时才创建 Bean
 B. 当配置文件中某个属性满足条件时才生效
@@ -480,7 +480,7 @@ D. 当 Spring 容器中已经存在指定类型的 Bean 时才创建新 Bean
 
 **正确答案：C**
 
-**详细解释：** \u201C@ConditionalOnMissingBean\u201D 表示\u201C当容器中没有某个 Bean 时才创建\u201D。这是 Spring Boot 自动配置覆盖机制的核心：如果用户已经自定义了某个 Bean（如自定义 \u201CDataSource\u201D），自动配置就不会再创建默认的同类 Bean，避免冲突。这体现了\u201C约定优于配置\u201D的理念——默认行为开箱即用，用户随时可以覆盖。
+**详细解释：** “@ConditionalOnMissingBean” 表示“当容器中没有某个 Bean 时才创建”。这是 Spring Boot 自动配置覆盖机制的核心：如果用户已经自定义了某个 Bean（如自定义 “DataSource”），自动配置就不会再创建默认的同类 Bean，避免冲突。这体现了“约定优于配置”的理念——默认行为开箱即用，用户随时可以覆盖。
 
 ---
 
@@ -489,19 +489,19 @@ D. 当 Spring 容器中已经存在指定类型的 Bean 时才创建新 Bean
 关于 Spring Boot Starter 机制，以下哪个说法是正确的？
 
 A. Starter 是一种运行时容器，用于托管 Spring Bean
-B. \u201Cspring-boot-starter-web\u201D 只包含 Spring MVC 一个依赖
-C. Starter 本质上是一组预定义的依赖集合，引入一个 Starter 就自动获得某类功能所需的全部库
+B. “spring-boot-starter-web” 只包含 Spring MVC 一个依赖
+C. Starter 本质上是一组预定义的依赖集合，引入一个 Starter 就自动获得某类功能所需的全部库  
 D. 每个 Spring Boot 项目必须且只能引入一个 Starter
 
 **正确答案：C**
 
-**详细解释：** Starter 本质上是一个 Maven/Gradle 的 POM 文件，里面声明了一组相关依赖。例如 \u201Cspring-boot-starter-web\u201D 会自动引入 Spring MVC、Tomcat、Jackson、Hibernate Validator 等 Web 开发所需的全部库。Starter 可以嵌套组合，项目可以引入多个 Starter，开发者只需按需选择即可。
+**详细解释：** Starter 本质上是一个 Maven/Gradle 的 POM 文件，里面声明了一组相关依赖。例如 “spring-boot-starter-web” 会自动引入 Spring MVC、Tomcat、Jackson、Hibernate Validator 等 Web 开发所需的全部库。Starter 可以嵌套组合，项目可以引入多个 Starter，开发者只需按需选择即可。
 
 ---
 
 ### 考点 4
 
-Spring Boot 的核心理念\u201C约定优于配置\u201D（Convention over Configuration）的含义是什么？
+Spring Boot 的核心理念“约定优于配置”（Convention over Configuration）的含义是什么？
 
 A. 所有配置都必须按照固定格式编写，不允许自定义  
 B. 框架会自动生成代码，开发者不需要写任何配置文件  
@@ -510,13 +510,13 @@ D. 框架提供合理的默认行为，开发者只需在需要偏离默认时�
 
 **正确答案：D**
 
-**详细解释：** \u201C约定优于配置\u201D是指框架提供合理的默认值和默认行为，开发者在默认行为满足需求时无需做任何配置。例如 Spring Boot 默认启动端口是 8080，只有需要修改端口时才在 \u201Capplication.properties\u201D 中配置 \u201Cserver.port\u201D。这大大减少了配置量，但并非不允许自定义——需要偏离默认时随时可以显式配置。
+**详细解释：** “约定优于配置”是指框架提供合理的默认值和默认行为，开发者在默认行为满足需求时无需做任何配置。例如 Spring Boot 默认启动端口是 8080，只有需要修改端口时才在 “application.properties” 中配置 “server.port”。这大大减少了配置量，但并非不允许自定义——需要偏离默认时随时可以显式配置。
 
 ---
 
 ### 考点 5
 
-在 Spring Boot 自动配置的条件注解中，\u201C@ConditionalOnClass\u201D 的作用是什么？
+在 Spring Boot 自动配置的条件注解中，“@ConditionalOnClass” 的作用是什么？
 
 A. 当 Spring 容器中存在某个 Bean 时才生效
 B. 当配置文件中某个属性值满足条件时才生效
@@ -525,7 +525,7 @@ D. 当应用运行在特定的操作系统上时才生效
 
 **正确答案：C**
 
-**详细解释：** \u201C@ConditionalOnClass\u201D 检查 classpath 中是否存在某个类。只有当指定的类存在时，对应的自动配置类才会生效。例如，只有引入了 \u201Cspring-web\u201D 依赖（classpath 中有 \u201CDispatcherServlet\u201D 类），Web 相关的自动配置才会被激活。这就是为什么引入 \u201Cspring-boot-starter-web\u201D 后 Tomcat 会自动启动——因为 classpath 中有 Web 相关的类，条件满足。
+**详细解释：** “@ConditionalOnClass” 检查 classpath 中是否存在某个类。只有当指定的类存在时，对应的自动配置类才会生效。例如，只有引入了 “spring-web” 依赖（classpath 中有 “DispatcherServlet” 类），Web 相关的自动配置才会被激活。这就是为什么引入 “spring-boot-starter-web” 后 Tomcat 会自动启动——因为 classpath 中有 Web 相关的类，条件满足。
 
 ---
 

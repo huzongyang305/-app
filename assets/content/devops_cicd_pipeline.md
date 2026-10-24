@@ -1188,7 +1188,7 @@ D. CI/CD 只适用于大型团队
 
 A. 持续集成（CI）是指每天固定时间统一合并代码
 B. 持续部署（Continuous Deployment）意味着每次通过测试的代码变更都会自动部署到生产环境
-C. 持续交付（Continuous Delivery）要求每次变更都必须手动部署到生产环境
+C. 持续交付（Continuous Delivery）要求每次变更都必须手动部署到生产环境  
 D. CI/CD 只适用于大型团队
 
 **正确答案：B**

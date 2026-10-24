@@ -305,7 +305,7 @@ g++ -std=c++17    # 使用 C++17 标准
 ### 考点 3
 
 - **题目**：防止头文件被重复包含的常见做法是？
-- **选项**：加 inline / 把实现写进头文件，但这会引入新的复杂度，需要额外的验证与维护 / #pragma once 或 include guard / 使用 namespace
+- **选项**：加 inline / 把实现写进头文件 / #pragma once 或 include guard / 使用 namespace
 - **正确项**：#pragma once 或 include guard
 - **判断依据**：本题正确项是#pragma once 或 include guard。术语 main（环境与编译流程）：`main` 忘记 `return` 时 C++ 会隐式返回 0，但其他有返回值的函数不写 `return` 是未定义行为，本题取#pragma once 或 include guard这条。易错点是忘写分号会造成报错常常指向**下一行**，改法是看报错行号的上一行，干扰项加 inline正踩在这条上。
 

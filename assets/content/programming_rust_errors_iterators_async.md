@@ -533,7 +533,7 @@ fn main() {
 
 - **题目**：collect::<Result<Vec<_>, _>> 的作用是？
 - **正确项**：收集成 Result<Vec<_>, _>，遇 Err 短路
-- **判断依据**：本题正确项是收集成 Result<Vec<_>, _>，遇 Err 短路。术语 Rust（Rust 错误处理、迭代器与异步）：collect 能把 Vec<Result<T, E>> 直接收成 Result<Vec<T>, E>，这是 Rust 里非常常用的技巧，本题取收集成 Result<Vec<_>, _>，遇 Err 短路这条。易错点是到处 `unwrap()`会造成运行时 panic，改法是用 `?` 或 `unwrap_or`，干扰项把 Result 转成字符串，再逐个手动拼接成结果输出，但它只覆盖了部分情况正踩在这条上。
+- **判断依据**：本题正确项是收集成 Result<Vec<_>, _>，遇 Err 短路。术语 Rust（Rust 错误处理、迭代器与异步）：collect 能把 Vec<Result<T, E>> 直接收成 Result<Vec<T>, E>，这是 Rust 里非常常用的技巧，本题取收集成 Result<Vec<_>, _>，遇 Err 短路这条。易错点是到处 `unwrap()`会造成运行时 panic，改法是用 `?` 或 `unwrap_or`，干扰项把 Result 转成字符串，再逐个手动拼接成结果输出正踩在这条上。
 
 ### 考点 6：第 6 题
 

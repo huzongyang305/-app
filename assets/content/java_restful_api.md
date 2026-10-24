@@ -613,7 +613,7 @@ D. 301 Moved Permanently
 
 **正确答案：A**
 
-**详细解释：** REST 规范对状态码有明确要求：创建资源成功返回 \u201C201 Created\u201D（不是 200），表示新资源已被创建；删除资源成功返回 \u201C204 No Content\u201D，表示操作成功但没有内容需要返回；资源不存在返回 \u201C404 Not Found\u201D；参数校验失败返回 \u201C400 Bad Request\u201D。\u201C200 OK\u201D 用于一般的成功请求（如 GET 和 PUT 成功）。
+**详细解释：** REST 规范对状态码有明确要求：创建资源成功返回 “201 Created”（不是 200），表示新资源已被创建；删除资源成功返回 “204 No Content”，表示操作成功但没有内容需要返回；资源不存在返回 “404 Not Found”；参数校验失败返回 “400 Bad Request”。“200 OK” 用于一般的成功请求（如 GET 和 PUT 成功）。
 
 ---
 
@@ -637,28 +637,28 @@ D. DTO 可以选择性地只暴露前端需要的字段
 HATEOAS（Hypermedia As The Engine Of Application State）的核心思想是什么？
 
 A. API 响应中应该包含大量详细的错误堆栈信息
-B. API 的响应中应该包含\u201C下一步可以做什么\u201D的链接，客户端通过链接动态发现可用操作
+B. API 的响应中应该包含“下一步可以做什么”的链接  
 C. 所有 API 都必须使用 XML 格式返回数据
-D. 客户端必须预先硬编码所有可用的 API 地址
+D. 客户端必须预先硬编码所有可用的 API 地址，在本地维护一份接口清单再逐个调用  
 
 **正确答案：B**
 
-**详细解释：** HATEOAS 是 REST 的最高成熟度级别，核心思想是 API 响应中应包含可操作的超媒体链接（如 \u201Cself\u201D、\u201Cdelete\u201D、\u201Creviews\u201D 等），客户端不需要硬编码知道下一步该调用什么接口，而是从响应中的链接动态发现可用操作。这就像餐厅菜单上每道菜旁边都写着\u201C可以加辣\u201D\u201C可以配米饭\u201D——看菜单就知道能做什么。
+**详细解释：** HATEOAS 是 REST 的最高成熟度级别，核心思想是 API 响应中应包含可操作的超媒体链接（如 “self”、“delete”、“reviews” 等），客户端不需要硬编码知道下一步该调用什么接口，而是从响应中的链接动态发现可用操作。这就像餐厅菜单上每道菜旁边都写着“可以加辣”“可以配米饭”——看菜单就知道能做什么。
 
 ---
 
 ### 考点 5
 
-在 Spring Boot 中实现 RESTful API 时，\u201CResponseEntity\u201D 相比直接返回对象有什么优势？
+在 Spring Boot 中实现 RESTful API 时，“ResponseEntity” 相比直接返回对象有什么优势？
 
-A. \u201CResponseEntity\u201D 可以自动将对象保存到数据库
-B. \u201CResponseEntity\u201D 可以完整控制 HTTP 响应，包括状态码、响应头和响应体
-C. \u201CResponseEntity\u201D 只能返回 200 状态码
-D. \u201CResponseEntity\u201D 会自动压缩响应体以减少网络传输
+A. “ResponseEntity” 可以自动将对象保存到数据库
+B. “ResponseEntity” 可以完整控制 HTTP 响应  
+C. “ResponseEntity” 只能返回 200 状态码
+D. “ResponseEntity” 会自动压缩响应体以减少网络传输
 
 **正确答案：B**
 
-**详细解释：** \u201CResponseEntity<T>\u201D 是 Spring 提供的类，可以完整控制 HTTP 响应的三个要素：状态码（如 \u201C201 Created\u201D、\u201C404 Not Found\u201D）、响应头（如 \u201CLocation\u201D、\u201CContent-Type\u201D）和响应体（返回的数据对象）。直接返回对象只能控制响应体，状态码默认为 200。\u201CResponseEntity\u201D 就像完整的快递包裹：里面装着商品（响应体），外面贴着快递单（状态码），还有备注标签（响应头）。
+**详细解释：** “ResponseEntity<T>” 是 Spring 提供的类，可以完整控制 HTTP 响应的三个要素：状态码（如 “201 Created”、“404 Not Found”）、响应头（如 “Location”、“Content-Type”）和响应体（返回的数据对象）。直接返回对象只能控制响应体，状态码默认为 200。“ResponseEntity” 就像完整的快递包裹：里面装着商品（响应体），外面贴着快递单（状态码），还有备注标签（响应头）。
 
 ---
 

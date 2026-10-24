@@ -538,7 +538,7 @@ D. ConfigMap 存储非机密配置数据（明文），Secret 存储敏感数据
 
 **正确答案：D**
 
-**详细解释：** ConfigMap 用于存储非机密的配置数据（如数据库 URL、日志级别），以明文形式存储和展示。Secret 用于存储敏感数据（如密码、Token、证书），数据经过 Base64 编码。但 Base64 只是一种编码方式（类似\u201c翻译\u201d），不是加密（类似\u201c上锁\u201d）——任何人都可以瞬间解码还原原文，没有任何安全性。生产环境管理敏感配置应：启用 etcd 静态加密（Encryption at Rest），使用外部密钥管理系统（如 HashiCorp Vault），通过 RBAC 限制 Secret 的访问权限，或使用 Sealed Secrets 等工具在 Git 中安全存储加密后的 Secret。
+**详细解释：** ConfigMap 用于存储非机密的配置数据（如数据库 URL、日志级别），以明文形式存储和展示。Secret 用于存储敏感数据（如密码、Token、证书），数据经过 Base64 编码。但 Base64 只是一种编码方式（类似“翻译”），不是加密（类似“上锁”）——任何人都可以瞬间解码还原原文，没有任何安全性。生产环境管理敏感配置应：启用 etcd 静态加密（Encryption at Rest），使用外部密钥管理系统（如 HashiCorp Vault），通过 RBAC 限制 Secret 的访问权限，或使用 Sealed Secrets 等工具在 Git 中安全存储加密后的 Secret。
 
 ---
 
@@ -547,7 +547,7 @@ D. ConfigMap 存储非机密配置数据（明文），Secret 存储敏感数据
 在 Kubernetes 中，Service 资源的核心作用是什么？
 
 A. 为一组 Pod 提供稳定的网络入口（IP + 端口），即使 Pod 重启 IP 变化，Service 地址保持不变  
-B. 直接运行应用程序的代码  
+B. 直接运行应用程序的业务代码，负责容器内进程的启动与重启，并按配置执行存活探针检查  
 C. 管理 Docker 镜像的构建和推送  
 D. 存储应用的配置文件和环境变量  
 

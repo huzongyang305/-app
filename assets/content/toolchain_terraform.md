@@ -372,7 +372,7 @@ print(guard_production("prod", {"delete": 1}, allow_delete=False))
 
 - **题目**：Terraform 与 Ansible 的定位差异是？
 - **正确项**：Terraform 声明式管理基础设施资源
-- **判断依据**：本题正确项是Terraform 声明式管理基础设施资源。术语 Terraform（Terraform 与基础设施即代码）：漂移处理：定期跑 terraform plan，若出现非本次变更的差异说明有人手工改过资源，处理方式是把改动同步回代码（import 或补配置），而不是忽略差异——否则下次 apply 可能覆盖掉手工改动，本题取Terraform 声明式管理基础设施资源这条。易错点是所有环境共用一个状态会造成一处变更影响全部，改法是按环境隔离状态，干扰项Terraform 只能配置应用，但这会引入新的复杂度正踩在这条上。
+- **判断依据**：本题正确项是Terraform 声明式管理基础设施资源。术语 Terraform（Terraform 与基础设施即代码）：漂移处理：定期跑 terraform plan，若出现非本次变更的差异说明有人手工改过资源，处理方式是把改动同步回代码（import 或补配置），而不是忽略差异——否则下次 apply 可能覆盖掉手工改动，本题取Terraform 声明式管理基础设施资源这条。易错点是所有环境共用一个状态会造成一处变更影响全部，改法是按环境隔离状态，干扰项Terraform 只能配置应用正踩在这条上。
 
 ### 考点 6：第 6 题
 

@@ -532,7 +532,7 @@ async fn main() {
 
 - **题目**：Rust 中 Future 的特性是？
 - **正确项**：惰性，必须被 await 或 executor 驱动
-- **判断依据**：本题正确项是惰性，必须被 await 或 executor 驱动。术语 Rust（Rust 异步编程与 tokio）：Rust 的 async fn 由编译器生成状态机，返回 Future，Future 是惰性的，必须被 await 或被 executor 驱动才会推进，本题取惰性，必须被 await 或 executor 驱动这条。易错点是创建 Future 不 `.await`会造成什么也没执行，改法是记得 await 或 spawn，干扰项只能用于多线程，但这会引入新的复杂度，需要额外的验证与维护正踩在这条上。
+- **判断依据**：本题正确项是惰性，必须被 await 或 executor 驱动。术语 Rust（Rust 异步编程与 tokio）：Rust 的 async fn 由编译器生成状态机，返回 Future，Future 是惰性的，必须被 await 或被 executor 驱动才会推进，本题取惰性，必须被 await 或 executor 驱动这条。易错点是创建 Future 不 `.await`会造成什么也没执行，改法是记得 await 或 spawn，干扰项只能用于多线程正踩在这条上。
 
 ### 考点 2：第 2 题
 
@@ -550,7 +550,7 @@ async fn main() {
 
 - **题目**：tokio::select! 的作用是？
 - **正确项**：同时等待多个 future
-- **判断依据**：本题正确项是同时等待多个 future。术语 tokio（Rust 异步编程与 tokio）：用 std 的 Mutex 跨 await 持有，会导致死锁或编译错误，应使用 tokio::sync::Mutex，且尽量缩短持锁范围，本题取同时等待多个 future这条。易错点是创建 Future 不 `.await`会造成什么也没执行，改法是记得 await 或 spawn，干扰项创建新的线程池，但它只覆盖了部分情况正踩在这条上。
+- **判断依据**：本题正确项是同时等待多个 future。术语 tokio（Rust 异步编程与 tokio）：用 std 的 Mutex 跨 await 持有，会导致死锁或编译错误，应使用 tokio::sync::Mutex，且尽量缩短持锁范围，本题取同时等待多个 future这条。易错点是创建 Future 不 `.await`会造成什么也没执行，改法是记得 await 或 spawn，干扰项创建新的线程池正踩在这条上。
 
 ### 考点 5：第 5 题
 

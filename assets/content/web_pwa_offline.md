@@ -368,7 +368,7 @@ self.addEventListener("fetch", (event) => {
 
 - **题目**：Service Worker 注册的前置条件是？
 - **正确项**：必须使用 HTTPS（localhost 例外）
-- **判断依据**：本题正确项是必须使用 HTTPS（localhost 例外）。术语 PWA（PWA 与离线能力）：用 Service Worker、清单和缓存增强网页，使其具备安装与离线能力，本题取必须使用 HTTPS（localhost 例外）这条。易错点是在 HTTP 下注册 SW会造成注册失败，改法是必须 HTTPS（localhost 例外），干扰项必须有后端服务器推送证书，实际效果取决于具体实现正踩在这条上。
+- **判断依据**：本题正确项是必须使用 HTTPS（localhost 例外）。术语 PWA（PWA 与离线能力）：用 Service Worker、清单和缓存增强网页，使其具备安装与离线能力，本题取必须使用 HTTPS（localhost 例外）这条。易错点是在 HTTP 下注册 SW会造成注册失败，改法是必须 HTTPS（localhost 例外），干扰项必须有后端服务器推送证书正踩在这条上。
 
 ### 考点 2：第 2 题
 

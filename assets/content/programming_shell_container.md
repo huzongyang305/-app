@@ -531,7 +531,7 @@ exec "$@"
 
 - **题目**：K8s 排查问题的推荐顺序是？
 - **正确项**：get → describe → logs → exec
-- **判断依据**：本题正确项是get → describe → logs → exec。术语 Docker（Shell 与 Docker/K8s 交互）：把应用及依赖封装成镜像并在容器中运行的平台，本题取get → describe → logs → exec这条。易错点是启动脚本不用 exec会造成信号丢失，优雅退出失效，改法是末尾 `exec "$@"`，干扰项exec → describe → get，顺序反过来，但这会引入新的复杂度正踩在这条上。
+- **判断依据**：本题正确项是get → describe → logs → exec。术语 Docker（Shell 与 Docker/K8s 交互）：把应用及依赖封装成镜像并在容器中运行的平台，本题取get → describe → logs → exec这条。易错点是启动脚本不用 exec会造成信号丢失，优雅退出失效，改法是末尾 `exec "$@"`，干扰项exec → describe → get，顺序反过来正踩在这条上。
 
 ### 考点 4：第 4 题
 

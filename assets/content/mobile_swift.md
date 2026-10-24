@@ -357,7 +357,7 @@ D. struct 是值类型（复制语义）
 
 题目：guard let 与 if let 相比，最明显的特点是？
 A. guard 会忽略失败情况
-B. guard 只能用于循环内部，但这会带来额外的维护成本，实际效果取决于具体实现
+B. guard 只能用于循环内部
 C. guard 的条件不满足时必须在当前作用域退出（return/throw 等）
 D. guard 不能解包可选值
 正确答案：C

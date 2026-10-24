@@ -548,7 +548,7 @@ list.addEventListener("click", (event) => {
 
 - **题目**：event.preventDefault 的作用是？
 - **正确项**：阻止浏览器默认行为（如提交表单、跳转链接）
-- **判断依据**：本题正确项是阻止浏览器默认行为（如提交表单、跳转链接）。术语 DOM（DOM 与事件）：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据，本题取阻止浏览器默认行为（如提交表单、跳转链接）这条。易错点是脚本在元素之前执行会造成`Cannot read properties of null`，改法是用 `defer` 或放到 `</body>` 前，干扰项阻止事件冒泡，但这会引入新的复杂度，需要额外的验证与维护正踩在这条上。
+- **判断依据**：本题正确项是阻止浏览器默认行为（如提交表单、跳转链接）。术语 DOM（DOM 与事件）：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据，本题取阻止浏览器默认行为（如提交表单、跳转链接）这条。易错点是脚本在元素之前执行会造成`Cannot read properties of null`，改法是用 `defer` 或放到 `</body>` 前，干扰项阻止事件冒泡正踩在这条上。
 
 ### 考点 4：第 4 题
 
@@ -560,7 +560,7 @@ list.addEventListener("click", (event) => {
 
 - **题目**：DOMContentLoaded 与 load 的区别是？
 - **正确项**：DOMContentLoaded 在 HTML 解析完成时触发
-- **判断依据**：本题正确项是DOMContentLoaded 在 HTML 解析完成时触发。术语 DOM（DOM 与事件）：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据，本题取DOMContentLoaded 在 HTML 解析完成时触发这条。易错点是脚本在元素之前执行会造成`Cannot read properties of null`，改法是用 `defer` 或放到 `</body>` 前，干扰项DOMContentLoaded 只在 IE 可用，需要额外的验证与维护正踩在这条上。
+- **判断依据**：本题正确项是DOMContentLoaded 在 HTML 解析完成时触发。术语 DOM（DOM 与事件）：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据，本题取DOMContentLoaded 在 HTML 解析完成时触发这条。易错点是脚本在元素之前执行会造成`Cannot read properties of null`，改法是用 `defer` 或放到 `</body>` 前，干扰项DOMContentLoaded 只在 IE 可用正踩在这条上。
 
 ### 考点 6：第 6 题
 

@@ -1692,7 +1692,7 @@ D. 限制自动同步的时间窗口，常用于保护生产环境（例如只�
 
 关于 Helm 和 Kustomize 在 ArgoCD 中的使用，以下哪个说法是正确的？
 
-A. Helm 使用模板语法生成 Kubernetes 资源，Kustomize 通过"基础 + 覆盖层"方式组合配置，不使用模板
+A. Helm 使用模板语法生成 Kubernetes 资源，Kustomize 通过"基础 + 覆盖层"方式组合配置，不使用模板  
 B. Helm 和 Kustomize 功能完全相同，只是语法不同
 C. Kustomize 必须依赖外部 Chart 仓库才能工作
 D. Helm 不支持多环境配置，Kustomize 支持

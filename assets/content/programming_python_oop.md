@@ -380,7 +380,7 @@ python -m timeit "Dog('旺财', 3)" "from mymodule import Dog"
 
 - **题目**：@classmethod 与 @staticmethod 的区别是？
 - **正确项**：classmethod 第一个参数是 cls 可访问类本身，staticmethod 不接收自动参数
-- **判断依据**：本题正确项是classmethod 第一个参数是 cls 可访问类本身，staticmethod 不接收自动参数。术语 class（类与对象）：定义对象属性与行为的类型模板，实例化后得到具体对象，本题取classmethod 第一个参数是 cls 可访问类本身，staticmethod 不接收自动参数这条。易错点是忘了写 `self`会造成`TypeError: takes 1 positional argument but 2 were given`，改法是实例方法第一个参数必须是 `self`，干扰项staticmethod 能访问实例属性，也会自动接收 self，所以在任何场景下都可以互换，需要额外的验证与维护正踩在这条上。
+- **判断依据**：本题正确项是classmethod 第一个参数是 cls 可访问类本身，staticmethod 不接收自动参数。术语 class（类与对象）：定义对象属性与行为的类型模板，实例化后得到具体对象，本题取classmethod 第一个参数是 cls 可访问类本身，staticmethod 不接收自动参数这条。易错点是忘了写 `self`会造成`TypeError: takes 1 positional argument but 2 were given`，改法是实例方法第一个参数必须是 `self`，干扰项staticmethod 能访问实例属性，也会自动接收 self，所以在任何场景下都可以互换正踩在这条上。
 
 ### 考点 6：第 6 题
 

@@ -543,7 +543,7 @@ fn read_port(map: &std::collections::HashMap<String, String>) -> Result<u16, Con
 
 - **题目**：dyn Trait 与泛型 T: Trait 的核心区别是？
 - **正确项**：dyn 运行时动态分发，泛型编译期单态化
-- **判断依据**：本题正确项是dyn 运行时动态分发，泛型编译期单态化。术语 Rust（Rust 类型系统：Option、Result 与 trait）：Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：Option 管空值、Result 管错误、trait 管行为、enum + match 管状态，本题取dyn 运行时动态分发，泛型编译期单态化这条。易错点是`match` 漏分支会造成non-exhaustive patterns，改法是补齐或用 `_ =>`，干扰项dyn 不能在集合中使用，需要装箱，但它只覆盖了部分情况正踩在这条上。
+- **判断依据**：本题正确项是dyn 运行时动态分发，泛型编译期单态化。术语 Rust（Rust 类型系统：Option、Result 与 trait）：Rust 的类型系统把「可能为空」「可能失败」「行为契约」都写进类型：Option 管空值、Result 管错误、trait 管行为、enum + match 管状态，本题取dyn 运行时动态分发，泛型编译期单态化这条。易错点是`match` 漏分支会造成non-exhaustive patterns，改法是补齐或用 `_ =>`，干扰项dyn 不能在集合中使用，需要装箱正踩在这条上。
 
 ### 考点 5：第 5 题
 

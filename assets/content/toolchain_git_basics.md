@@ -475,7 +475,7 @@ refactor(cache): 抽取缓存重建逻辑
 
 - **题目**：git rebase 与 git merge 的区别是？
 - **正确项**：rebase 得到线性历史，merge 保留分支结构
-- **判断依据**：本题正确项是rebase 得到线性历史，merge 保留分支结构。术语 git revert（Git 版本控制）：共享分支上优先使用 `git revert`，不要用 `git reset` 改写已推送的历史，本题取rebase 得到线性历史，merge 保留分支结构这条。易错点是`git push -f` 到共享分支会造成同事的提交被抹掉，改法是共享分支用 `--force-with-lease`，或直接 `revert`，干扰项rebase 会产生合并提交，让历史变得更复杂，但它只覆盖了部分情况正踩在这条上。
+- **判断依据**：本题正确项是rebase 得到线性历史，merge 保留分支结构。术语 git revert（Git 版本控制）：共享分支上优先使用 `git revert`，不要用 `git reset` 改写已推送的历史，本题取rebase 得到线性历史，merge 保留分支结构这条。易错点是`git push -f` 到共享分支会造成同事的提交被抹掉，改法是共享分支用 `--force-with-lease`，或直接 `revert`，干扰项rebase 会产生合并提交，让历史变得更复杂正踩在这条上。
 
 ### 考点 5：第 5 题
 
