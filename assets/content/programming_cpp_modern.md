@@ -4,7 +4,7 @@
 
 ![现代 C++ 特性](images/remaining_cpp_modern.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：30 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：40 分钟
 
 ## 本节知识框架
 
@@ -151,6 +151,22 @@ auto even_squares = nums
 for (int value : even_squares) std::cout << value << ' ';   // 4 16 36
 ```
 
+### 值类别：先判断这个表达式能不能搬
+
+写 `std::move` 之前，脑子里过一遍表达式的类别，三种情况对应三种命运：
+
+```text
+具名变量、能取地址的东西          →  左值 lvalue    →  默认走拷贝，想省掉这次拷贝才写 std::move
+刚造出来的临时对象、返回非引用     →  纯右值 prvalue →  构造时直接接管资源，再写 std::move 是多此一举
+std::move(x) 这类 T&& 转换的结果  →  将亡值 xvalue  →  对象还在，但资源已被宣告交出，交给移动构造
+```
+
+粗略口诀：能 `&` 取地址的当左值看待，取不了地址的大多能直接搬。`auto [x, y] = ...` 里等号右边的返回值就是 prvalue，编译器本来就按移动处理。
+
+### 移动构造函数漏写 noexcept 会怎样
+
+`std::vector` 扩容时要不要走移动，取决于它能不能保证移动不会抛异常。判断标准就是 `noexcept`：漏写或条件没推导出真，容器会退回逐个拷贝，代码看起来一样、跑起来慢一截。给自定义类型写移动构造时直接标上 `noexcept`，成员本身都支持 `noexcept` 移动才敢省。
+
 ## 典型应用场景
 
 - **类型冗长或明显时**：用 `auto` 推导，比如迭代器、`make_unique` 返回值。
@@ -245,6 +261,64 @@ std::optional<int> maybe = std::nullopt;
 std::cout << maybe.value_or(-1);
 ```
 
+### 看得见的移动：给构造函数装个探针
+
+想知道「这一行到底是拷贝还是移动」，最省事的办法是给三种构造各打印一行：
+
+```cpp
+#include <iostream>
+#include <string>
+#include <utility>
+
+struct Probe {
+    std::string tag;
+    Probe(std::string t) : tag(std::move(t)) { std::cout << "构造 " << tag << '\n'; }
+    Probe(const Probe& o) : tag(o.tag) { std::cout << "拷贝 " << tag << '\n'; }
+    Probe(Probe&& o) noexcept : tag(std::move(o.tag)) { std::cout << "移动 " << tag << '\n'; }
+};
+
+int main() {
+    Probe a{"alpha"};
+    Probe b{a};               // 拷贝
+    Probe c{std::move(a)};    // 移动
+    std::cout << "b=" << b.tag << " c=" << c.tag << '\n';
+}
+```
+
+编译运行：`g++ -std=c++17 probe.cpp -o probe && ./probe`，屏幕上是四行：
+
+```text
+构造 alpha
+拷贝 alpha
+移动 alpha
+b=alpha c=alpha
+```
+
+最后一行只打印 `b` 和 `c`，故意不碰已经被搬空的 `a`。想做单变量实验，把 `Probe c{std::move(a)};` 改成 `Probe c{a};` 再跑一次，第三行马上变成「拷贝 alpha」，两者的差别就从猜测变成了日志。
+
+### optional 的空值分支怎么补全
+
+```cpp
+#include <iostream>
+#include <optional>
+#include <string>
+
+std::optional<std::string> nickName(int id) {
+    if (id == 1) return std::string{"小李"};
+    return std::nullopt;           // 没有昵称，明确说「没有」
+}
+
+int main() {
+    for (int id : {1, 2}) {
+        auto name = nickName(id);
+        std::cout << id << ": " << (name ? *name : std::string{"（未填）"}) << '\n';
+    }
+    std::cout << "兜底: " << nickName(2).value_or("默认同学") << '\n';
+}
+```
+
+输出 `1: 小李`、`2: （未填）`，第三行走 `value_or` 兜底。`if (name)` 判的是有没有值，`*name` 才是取值；空值时写 `*name` 是未定义行为，想让它老实报错就改用 `value()`，那时抛出来的才是 `std::bad_optional_access`。
+
 ## 时间/空间复杂度或性能分析
 
 现代 C++ 特性的性能影响：
@@ -268,6 +342,10 @@ std::cout << maybe.value_or(-1);
 | `constexpr` 函数里做 IO | 编译不过 | 保持纯计算 |
 | 头文件里写 `using namespace std;` | 污染使用方 | 写全限定名 |
 | `return std::move(local);` | 反而阻止返回值优化 | 直接 `return local;` |
+| 移动构造函数漏写 `noexcept` | vector 扩容时退回逐个拷贝，代码没变但慢一截 | 移动构造显式标 `noexcept`，成员也要能 `noexcept` 移动 |
+| 对 `const` 对象写 `std::move` | 拿到的是 const 右值，实际调了拷贝构造，连警告都没有 | 真要搬就别加 const；搬完让它立刻离开作用域 |
+| 想往 `optional` 里放引用 | `std::optional<T&>` 编译不过 | 存指针，或先把引用包成 `std::reference_wrapper` 再放进 optional |
+| 结构化绑定写成 `auto [k, v]` 去改容器 | 改的是副本，容器里的值一点没动 | 需要写回时加 `&`，写成 `auto& [k, v]` |
 
 ## 与其他知识点的关系
 
@@ -366,6 +444,10 @@ std::cout << maybe.value_or(-1);
 | atomic | C++ 原子类型，保证并发读写不可分割。 |
 | 移动语义 | 把资源「搬」过去而不是复制，用 std::move 标记。 |
 | 结构化绑定 | C++17 语法，一次解包多个值。 |
+| 右值引用 | 绑定临时对象的引用，写作 T&&，移动构造的入口。 |
+| 转发引用 | 模板参数里的 T&&，左值右值都能接，配合 std::forward 原样往下传。 |
+| noexcept | 承诺函数不抛异常；移动构造漏了它，容器扩容会放弃移动改走拷贝。 |
+| 类模板参数推导 | 常写作 CTAD，`std::vector{1, 2, 3}` 不用再重复尖括号里的元素类型。 |
 
 ## 复习清单
 

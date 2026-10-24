@@ -1,6 +1,6 @@
 # JavaScript 变量与类型入门
 
-> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：30 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：35 分钟
 
 ![变量、类型与模板字符串](images/diagram_js_var_intro.webp)
 
@@ -137,6 +137,55 @@ Ada born in 1815
 
 **运行方式**：运行 `JavaScript 变量与类型入门` 的示例时，保存为 `.js` 后用 `node 文件名.js` 运行；涉及浏览器 API 的示例要放到页面里执行。
 
+### 二段递进：先弄清 const 锁的是哪一层
+
+最小示例只回答一个问题——`const` 到底拦住了什么：
+
+```javascript
+const user = { name: "小明", score: 95 };
+user.score = 100;   // 允许：动的是对象里的字段
+// user = {};       // 报错：Assignment to constant variable
+console.log(user.score);   // 输出 100
+```
+
+名字锁的是「这个变量还指不指向别的东西」，值里面的内容照改不误。数组同理，`push` 永远能成功，重新赋值才失败。
+
+### 把四类高频判断装进一段脚本
+
+保存成 `check.js`，用 `node check.js` 一次跑完，先自己猜输出再核对：
+
+```javascript
+const langs = ["go", "js"];
+langs.push("rust");
+console.log(langs.length);                       // 3
+console.log(typeof null);                        // "object"
+console.log(Array.isArray(langs));               // true
+console.log(Number("42") + 1, "42" + 1, "42" - 1);   // 43 "421" 41
+console.log(Boolean(""), Boolean("0"));          // false true
+```
+
+预期输出四行：
+
+```text
+3
+object
+true
+43 "421" 41
+false true
+```
+
+三行值得停在原地的解释：
+
+- `+` 看到任意一边是字符串就改成拼接，`-` 只认数字，所以 `"42" + 1` 得 `"421"`、`"42" - 1` 得 41。别指望运算符替你转类型。
+- `Boolean("0")` 是 true：字符串只有空串算假，内容是 `"0"` 也算真。数字里只有 0 和 NaN 算假。
+- 43 是靠 `Number("42")` 显式转换拿到的。顺带记住两者的分工：`parseInt("42abc")` 给 42，`Number("42abc")` 给 NaN——前者的宽容正是脏数据混进计算的原因。
+
+### 动手改一行
+
+- 把 `const langs` 换成 `let langs`，再补一句 `langs = []`，比较两种声明各在哪一步被拦下。
+- 在 push 之前加一句 `Object.freeze(langs)`，再跑一次，观察它抛出的 TypeError 和报错原文。
+- 把 `typeof null` 换成 `null === null`，想清楚为什么判空值不该拿 typeof 来做。
+
 ## 时间/空间复杂度或性能分析
 
 **性能关注点（JavaScript 变量与类型入门）**：事件循环与 DOM 操作是瓶颈来源：记录脚本执行时间、长任务与主线程阻塞时长。
@@ -152,6 +201,9 @@ Ada born in 1815
 | 变量声明方式混用 | 作用域与提升行为混乱。 | 默认用常量声明，需要修改时用块级变量声明。 |
 | 混淆空值与未定义 | 判断出现意料之外的分支。 | 统一空值语义并集中处理。 |
 | 依赖隐式类型转换 | 加法与比较结果不符合预期。 | 显式转换类型后再运算。 |
+| 以为 `const` 连对象内容也锁住 | 字段照样赋值、数组照样 push，只有换成另一个对象才报错。 | 需要连内容一起冻住用 `Object.freeze`，或者先拷贝再改。 |
+| 拿 `typeof` 判数组 | `typeof []` 给的是 "object"，分支走到错误的一边。 | 数组用 `Array.isArray`，只有函数才用 `typeof x === "function"` 判。 |
+| 用 `===` 比两个内容相同的对象 | 结果永远是 false，被误判成赋值丢了。 | 引用类型比的是同一块内存，要比内容就逐字段比或先序列化。 |
 
 ### 现场 1：变量声明方式混用
 

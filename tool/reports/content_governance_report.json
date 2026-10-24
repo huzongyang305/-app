@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-24T09:11:15.122113Z",
+  "generated_at": "2026-10-24T09:45:24.727180Z",
   "lesson_count": 686,
   "question_count": 3829,
   "error_count": 0,
@@ -18,7 +18,7 @@
   "thin_glossaries": 0,
   "glossary_header_mismatches": 0,
   "unreviewed_mistake_tables": 0,
-  "glossary_template_rows": 0,
+  "glossary_template_rows": 2,
   "generic_mistake_rows": 0,
   "generic_fault_scenario_templates": 0,
   "fault_reference_drifts": 0,

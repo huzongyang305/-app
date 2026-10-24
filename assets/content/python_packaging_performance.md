@@ -1,6 +1,6 @@
 # Python 打包、发布与性能
 
-> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：25 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：40 分钟
 
 ![Python 打包、发布与性能优化](images/diagram_py_packaging.webp)
 
@@ -57,6 +57,28 @@
 - 正文依据：能用自己的话解释：发布要管理版本、许可证、README、变更日志和制品签名。
 - 落地检查：把「3. 性能优化先用 cProfile、py-spy 和基准测试定位，再考虑算法、缓存或原生扩展。」改写成一条可执行的核对项，逐条验证输入、超时与失败路径。
 
+### 4. 从源码到别人机器：这条链上每一环都换个名字
+
+打包发布不是一个动作，而是一条流水线。认识每一环产出什么，才能知道出错时该找谁：
+
+```text
+你的源码目录
+   ↓ python -m build（构建后端读 pyproject.toml）
+dist/ 里两个产物： .tar.gz（sdist，原始素材） 和 .whl（wheel，开箱即用）
+   ↓ twine upload（带版本、许可证、变更日志）
+包索引（PyPI 或公司内网源）
+   ↓ pip install 包名（解析依赖树，挑一个版本）
+对方机器上的 site-packages
+   ↓ import 失败 / 版本漂移 → 问题多半出在"解析"这一步，不在构建这一步
+```
+
+三个容易混淆的分工：
+- `pyproject.toml` 声明"我要什么"：构建后端、元数据、直接依赖的范围。
+- 锁文件或 constraints 记录"这次实际装了什么"：精确版本，最好带哈希，用于复现。
+- 构建后端（setuptools、hatchling、flit 等）负责"怎么装进包里"：换后端通常不改代码，只改 `[build-system]` 两行。
+
+发布产物出问题时，先判断是哪一环：`python -m build` 就失败 → 构建配置；装得上但 `import` 报错 → 打包时漏了子包；装上后行为不一致 → 版本解析。
+
 **教材衔接：关键流程**
 
 **教材衔接：实践路径**
@@ -89,6 +111,13 @@
 - 使用 `性能剖析` 时，先满足它的定义：用采样或插桩收集函数、调用栈和资源占用数据，定位真正的热点；越界、悬垂引用与释放顺序会破坏结论，必须在边界输入下复验。
 - 使用 `发布` 时，先满足它的定义：把通过验证的版本交付给用户或部署到目标环境；不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。
 
+### 排错现场：昨天还能装，今天 CI 直接红
+
+- **现象**：本地虚拟环境跑得好好的，CI 上 `pip install -r requirements.txt` 装完，`import` 就抛 `AttributeError`，日志里装的是 `requests-2.32.0`，本地是 `2.31.2`。
+- **根因**：依赖清单只写了开区间（`>=`），没有上界也没有锁；同一天上游发了新 minor 版本，传递依赖跟着换了一批，装出来的环境与开发机已经不是同一棵树。
+- **修复**：直接依赖收紧成 `requests>=2.31,<3` 这类带上界的范围；再用 `pip freeze > constraints.txt` 把整棵依赖树钉死，CI 里改成 `pip install -r requirements.txt -c constraints.txt`；内网源补上 `--require-hashes`。
+- **自检**：删掉虚拟环境从零重建一次，连做三件事——`pip check` 没有输出、`python -c "import 你的包名"` 成功、`pip list` 里的版本号与 constraints.txt 逐行一致。三项都过，才算这条问题真的关掉了；只重跑一次测试通过不能证明环境已经固定。
+
 ## 代码/协议/SQL 示例
 
 ### 最小可验证示例
@@ -109,6 +138,85 @@ print(f"ok={elapsed > 0}")
 ```text
 ok=True
 ```
+
+### 完整示例：一份能发的 pyproject.toml 与配套的构建动作
+
+```toml
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "demo-pack"
+version = "1.0.3"
+description = "用来演示打包与发布的最小包"
+requires-python = ">=3.10"
+dependencies = ["requests>=2.31,<3"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "build>=1.0"]
+
+[tool.setuptools]
+packages = ["demo_pack"]
+```
+
+`packages = ["demo_pack"]` 这一行是新手最容易漏的：源码目录里有 `demo_pack/` 但清单没写进去，构建照样成功，装到别人机器上就 `ModuleNotFoundError`。
+
+构建与自检命令（在项目的根目录执行）：
+
+```shell
+python -m venv .venv-build
+source .venv-build/bin/activate      # Windows 用 .venv-build\Scripts\activate
+pip install -e ".[dev]"              # 可编辑安装，顺带装上 dev 里的构建工具
+python -m build                      # 产出 dist/ 下的 .tar.gz 与 .whl
+twine check dist/*                   # 检查元数据与 README 渲染
+pip freeze > constraints.txt         # 固定这次解析出的完整依赖树
+```
+
+`twine check` 通过时的输出长这样，两行都必须是 PASSED：
+
+```text
+Checking dist/demo_pack-1.0.3-py3-none-any.whl: PASSED
+Checking dist/demo_pack-1.0.3.tar.gz: PASSED
+```
+
+### 剖析示例：先数一数搬了多少字，再决定要不要优化
+
+`timeit` 告诉你谁快，`cProfile` 告诉你快在哪一行；但很多性能结论其实靠算复杂度就能预判。这段代码不依赖机器速度，输出是确定的：
+
+```python
+def concat_cost(n: int) -> int:
+    """用 += 拼字符串：每追加一次，已有内容都要整串搬一遍。"""
+    moved = 0
+    length = 0
+    for _ in range(n):
+        length += 1
+        moved += length
+    return moved
+
+
+def join_cost(n: int) -> int:
+    """join 先算总长度、一次性分配，内容只搬一遍。"""
+    return n
+
+
+for n in (10, 100, 1000):
+    print(n, concat_cost(n), join_cost(n))
+```
+
+```text
+10 55 10
+100 5050 100
+1000 500500 1000
+```
+
+三行数字说明一件事：被搬运的字符总量按平方增长，而 `join` 是线性。这类问题不用跑 `py-spy` 也能定位；反过来，像字典哈希、序列化库这类看不出复杂度的热点，就必须交给剖析工具采样。
+
+### 动手练习
+
+1. 把 `for n in (10, 100, 1000)` 换成 `(10, 100, 1000, 10000)`，看第二列在 `n=10000` 时跳到多少——它比 1000 那行正好大一百倍，这就是平方增长的证据。
+2. 把上面 `pyproject.toml` 里的 `version` 改成 `1.0.4`，重新 `python -m build`，观察 `dist/` 里的文件名跟着变；再故意删掉 `packages` 那行重装一次，看 `import demo_pack` 什么时候失败。
+3. 在干净虚拟环境里用 `pip install -r requirements.txt -c constraints.txt` 装两遍，比较 `pip list` 输出是否逐行一致——一致才说明锁真的生效了。
 
 ## 时间/空间复杂度或性能分析
 
@@ -131,6 +239,8 @@ ok=True
 | 只写依赖清单不锁版本 | 部署结果不可复现。 | 锁定依赖版本并记录来源与哈希。 |
 | 用打印做性能分析 | 定位不到真正的热点。 | 用剖析工具按函数统计耗时。 |
 | 过早进行优化 | 复杂度没降，代码反而难读。 | 先测量再优化，并保留基准对比。 |
+| 只在开发机跑一轮基准就下结论 | 换台机器、换个 Python 版本，快慢就调了个个儿。 | 固定解释器版本与输入规模，多轮取中位数再比较。 |
+| 没跑 `twine check` 就上传产物 | 索引页 README 一片空白，元数据缺字段。 | 上传前先 `twine check dist/*`，两行都拿到 PASSED 再传。 |
 
 ### 现场 1：只写依赖清单不锁版本
 
@@ -246,6 +356,10 @@ ok=True
 | `pyproject` | Python 项目的标准配置文件：声明构建后端、依赖与工具配置，取代 setup.py 的中心地位。 |
 | `性能剖析` | 用采样或插桩收集函数、调用栈和资源占用数据，定位真正的热点。 |
 | `发布` | 把通过验证的版本交付给用户或部署到目标环境。 |
+| `sdist` | 源码分发包，通常是 `.tar.gz`，里面是原始素材，装的时候还要现场构建。 |
+| `wheel` | 已经构建好的 `.whl` 包，解压即用，不需要再跑构建后端。 |
+| `构建后端` | `[build-system]` 里指定的工具，决定源码怎么被打成上面两种产物。 |
+| `锁文件` | 记录某一次解析出的精确版本（必要时带哈希），用来保证换机器也能装出同一棵依赖树。 |
 
 **术语关系**：`打包`（把源码、依赖和元数据整理成可分发或可部署的产物） → `pyproject`（Python 项目的标准配置文件：声明构建后端、依赖与工具配置） → `性能剖析`（用采样或插桩收集函数、调用栈和资源占用数据） → `发布`（把通过验证的版本交付给用户或部署到目标环境）。
 

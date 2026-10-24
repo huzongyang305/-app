@@ -1,6 +1,6 @@
 # Shell 管道入门
 
-> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：30 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：35 分钟
 
 ![标准输入输出与管道的连接方式](images/diagram_shell_pipe_intro.webp)
 
@@ -194,6 +194,60 @@ awk '{print $3}' "$access_log" | sort | uniq -c | sort -rn
 
 **运行方式**：运行 `Shell 管道入门` 的示例时，用 `bash 文件名.sh` 运行；先 `bash -n` 做语法检查更稳妥。
 
+### 读题必练：末尾那个孤零零的减号是什么
+
+本课第一条示例是 `printf 'b\na\nc\n' | sort | paste -sd, -`。最后那个 `-` 不是占位符也不是省略号，它的意思是「从标准输入读」：`paste` 的参数位置本来要写文件名，可数据是上游 `sort` 递过来的，不写 `-` 它就会停下来等键盘，脚本看起来像卡死在那里。
+
+结果是 `a,b,c`：三行被压成一行，`-d,` 指定分隔符。把 `,` 换成 `;` 就变成 `a;b;c`，这一处只改一个字符，最适合当基线实验。
+
+### 三段递进：从一行到能交给别人跑的片段
+
+第一段确认管道能读能写，只留三个过滤器：
+
+```bash
+printf '%s\n' 'GET /index 200' 'GET /api 500' 'GET /api 500' |
+  grep 500 | wc -l
+```
+
+两行含 500，所以屏幕上是 2。想看清每一段各自交出了什么，在中间插一个 `tee /dev/stderr` 就能把分段结果打到错误流上，不打乱下游。
+
+第二段把结果变成参数，看清 xargs 的拆词规则：
+
+```bash
+printf '%s\n' go.txt rust.txt java.txt | xargs ls -l
+printf '%s\n' 'my report.txt' | xargs ls      # 错路：被空格劈成 my 和 report.txt 两段
+find . -maxdepth 1 -name '*.txt' -print0 | xargs -0 ls -l   # 正路：NUL 分隔，空格换行都不怕
+```
+
+第三段专挑退出码的岔子，两条命令只差一个 `set -o pipefail`：
+
+```bash
+bash -c 'echo missing | grep nope | wc -l; echo $?'
+bash -c 'set -o pipefail; echo missing | grep nope | wc -l; echo $?'
+```
+
+各自跑完是四行输出：
+
+```text
+0
+0
+0
+1
+```
+
+前两行是「wc 数出 0 行」加「整条管道返回 0」；后两行里那个 1 来自 grep 没匹配到内容——`set -e` 只盯最后一段，所以三件套 `set -euo pipefail` 里少了 pipefail 就等于留了个洞。
+
+### 常用组合抄一遍
+
+| 你想做的事 | 一行写法 | 最容易翻车的地方 |
+| --- | --- | --- |
+| 数出日志里 500 的行 | `grep -c ' 500 ' access.log` | 换成 `grep ... \| wc -l` 结果一样，但无匹配时 grep 返回 1，脚本会以为出错 |
+| 数出最常被访问的 10 个路径 | `awk '{print $2}' access.log \| sort \| uniq -c \| sort -rn \| head -10` | 忘了先 sort，uniq 只会合并相邻的重复行 |
+| 批量改名 | `ls *.txt \| xargs -n1 -I{} mv {} {}.bak` | 文件名带空格时被劈开；稳妥写法是 `for` 循环加引号 |
+| 中途留一份证据 | `sort data.txt \| tee step1.txt \| uniq` | tee 之后的下游读到的是原样数据，别让 step1.txt 又被当成输入读两遍 |
+
+**动手改一遍**：把第三段的两条命令分别包进 `if` 里判断成败，再只改一处——把 `grep nope` 换成 `grep missing`，看两条管道的退出码各变成什么。
+
 ## 时间/空间复杂度或性能分析
 
 **性能关注点（Shell 管道入门）**：进程启动与管道是主要成本：记录总耗时与子进程数量，避免在循环里反复启动外部命令。
@@ -209,6 +263,9 @@ awk '{print $3}' "$access_log" | sort | uniq -c | sort -rn
 | 管道中间失败被忽略 | 前半段失败但流程仍算成功。 | 开启管道失败检测，任何一段失败都算失败。 |
 | 错误输出没有进入管道 | 错误信息丢失在终端。 | 按需合并错误输出并单独记录。 |
 | 管道里塞复杂逻辑 | 难调试也难复用。 | 复杂步骤拆开或用脚本处理。 |
+| `uniq -c` 之前忘了排序 | 同一个值被拆成好几行统计，数字比真实的小。 | 固定顺序写成 `sort \| uniq -c \| sort -rn`。 |
+| 在管道里 `cd` 或给变量累加 | 脚本跑完赋值就没了，读到的还是旧值。 | 管道每一段都是子 shell，要留状态就改用 `{ ...; }` 分组或写进文件。 |
+| 拿 `head -1` 去截一条很长的命令 | 上游被 SIGPIPE 打断，开了 pipefail 之后整条管道报 141。 | 想在源头收手就用 `grep -m 1`、`awk 'NR==1{print; exit}'` 这类自带退出的写法。 |
 
 ### 现场 1：管道中间失败被忽略
 

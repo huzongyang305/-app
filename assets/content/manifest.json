@@ -1528,7 +1528,7 @@
             "en": "Frame budget, thermal throttling, memory, load time and battery usage."
           },
           "file": "assets/content/gamedev_performance_mobile.md",
-          "minutes": 25,
+          "minutes": 35,
           "keywords": [
             "帧预算",
             "发热降频",
@@ -1837,7 +1837,7 @@
             "en": "Structure, semantic tags, forms and a11y."
           },
           "file": "assets/content/html_basics.md",
-          "minutes": 25,
+          "minutes": 30,
           "keywords": [
             "HTML",
             "语义化",
@@ -6597,7 +6597,7 @@
             "en": "Use pyproject, lock files and build tools, then profile performance."
           },
           "file": "assets/content/python_packaging_performance.md",
-          "minutes": 25,
+          "minutes": 40,
           "keywords": [
             "打包",
             "pyproject",
@@ -8672,7 +8672,7 @@
             "en": "Move semantics, structured bindings, ranges and concurrency."
           },
           "file": "assets/content/programming_cpp_modern.md",
-          "minutes": 30,
+          "minutes": 40,
           "keywords": [
             "C++11",
             "C++17",
@@ -10379,7 +10379,7 @@
             "en": "Understand addresses, dereference, pointer arithmetic, null and dangling pointers."
           },
           "file": "assets/content/c_pointers.md",
-          "minutes": 25,
+          "minutes": 30,
           "keywords": [
             "指针",
             "地址",
@@ -11942,7 +11942,7 @@
             "en": "Branches, loops, overloads, varargs and pass-by-value."
           },
           "file": "assets/content/programming_java_control_methods.md",
-          "minutes": 35,
+          "minutes": 45,
           "keywords": [
             "if",
             "switch",
@@ -13156,7 +13156,7 @@
             "en": "Learn virtual threads for blocking IO, pool tradeoffs and structured concurrency."
           },
           "file": "assets/content/java_virtual_threads.md",
-          "minutes": 30,
+          "minutes": 35,
           "keywords": [
             "虚拟线程",
             "结构化并发",
@@ -17514,7 +17514,7 @@
             "en": "Learn let, const, coercion and strict equality."
           },
           "file": "assets/content/js_variables_types_intro.md",
-          "minutes": 30,
+          "minutes": 35,
           "keywords": [
             "JavaScript 变量与类型入门",
             "JavaScript",
@@ -19460,7 +19460,7 @@
             "en": "Learn reachability, leaks, heap snapshots and long tasks."
           },
           "file": "assets/content/js_memory_gc.md",
-          "minutes": 25,
+          "minutes": 30,
           "keywords": [
             "内存",
             "GC",
@@ -19969,7 +19969,7 @@
             "en": "Iterate with for, foreach and while."
           },
           "file": "assets/content/csharp_loops.md",
-          "minutes": 30,
+          "minutes": 35,
           "keywords": [
             "C# 循环入门",
             "C#",
@@ -20067,7 +20067,7 @@
             "en": "Define methods with parameters and returns."
           },
           "file": "assets/content/csharp_methods_intro.md",
-          "minutes": 30,
+          "minutes": 35,
           "keywords": [
             "C# 方法入门",
             "C#",
@@ -24514,7 +24514,7 @@
             "en": "Define functions with parameters and returns."
           },
           "file": "assets/content/rust_functions_intro.md",
-          "minutes": 30,
+          "minutes": 35,
           "keywords": [
             "Rust 函数入门",
             "Rust",
@@ -28037,7 +28037,7 @@
             "en": "Build type utilities with conditional, mapped, infer and template literal types."
           },
           "file": "assets/content/ts_type_level.md",
-          "minutes": 25,
+          "minutes": 30,
           "keywords": [
             "条件类型",
             "映射类型",
@@ -28691,7 +28691,7 @@
             "en": "Process lists and files with loops."
           },
           "file": "assets/content/shell_loops.md",
-          "minutes": 30,
+          "minutes": 35,
           "keywords": [
             "Shell 循环入门",
             "Shell",
@@ -28894,7 +28894,7 @@
             "en": "Combine filters, sorting and counting."
           },
           "file": "assets/content/shell_pipeline_intro.md",
-          "minutes": 30,
+          "minutes": 35,
           "keywords": [
             "Shell 管道入门",
             "Shell",
@@ -33665,7 +33665,7 @@
             "en": "Understand flash pages, FTL, write amplification, file systems and fsync."
           },
           "file": "assets/content/fundamentals_storage_stack.md",
-          "minutes": 25,
+          "minutes": 35,
           "keywords": [
             "SSD",
             "写放大",
@@ -34057,7 +34057,7 @@
             "en": "Learn graph definitions, paths, trees, coloring and shortest path algorithms."
           },
           "file": "assets/content/discrete_math_graph_theory.md",
-          "minutes": 30,
+          "minutes": 35,
           "keywords": [
             "图论",
             "树",
@@ -41981,7 +41981,7 @@
             "en": "Identify security risks before coding with assets, boundaries and STRIDE."
           },
           "file": "assets/content/security_threat_model.md",
-          "minutes": 25,
+          "minutes": 30,
           "keywords": [
             "威胁建模",
             "STRIDE",
@@ -50003,7 +50003,7 @@
             "en": "Use top, vmstat, iostat, ss, perf and trace to locate bottlenecks."
           },
           "file": "assets/content/os_linux_troubleshooting.md",
-          "minutes": 25,
+          "minutes": 30,
           "keywords": [
             "Linux",
             "性能",
@@ -56301,7 +56301,7 @@
             "en": "Learn image encoding, cross-modal alignment, VQA and multimodal evaluation."
           },
           "file": "assets/content/ai_vlm.md",
-          "minutes": 25,
+          "minutes": 30,
           "keywords": [
             "VLM",
             "视觉编码",
@@ -56404,7 +56404,7 @@
             "en": "Understand noise-denoising, conditioning, samplers and generation quality."
           },
           "file": "assets/content/ai_diffusion.md",
-          "minutes": 25,
+          "minutes": 30,
           "keywords": [
             "扩散模型",
             "图像生成",

@@ -1,6 +1,6 @@
 # 控制流与方法
 
-> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：35 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：45 分钟
 
 ![Java 分支、循环与方法](images/diagram_java_control.webp)
 
@@ -155,6 +155,39 @@ sum(1, 2, 3);         // 6
 
 可变参数必须放在参数列表最后，一个方法只能有一个。
 
+### 标签 break：一次从双层循环里跳干净
+
+`break` 只管最近的那一层循环。想在二维数组里找到目标就收工，得给外层循环贴个标签：
+
+```java
+public class LabeledBreak {
+    public static void main(String[] args) {
+        int[][] grid = { {2, 4, 6}, {8, 10, 12}, {14, 16, 18} };
+        int target = 12;
+        int foundRow = -1, foundCol = -1, steps = 0;
+
+        search:
+        for (int r = 0; r < grid.length; r++) {
+            for (int c = 0; c < grid[r].length; c++) {
+                steps++;
+                if (grid[r][c] == target) {
+                    foundRow = r;
+                    foundCol = c;
+                    break search;      // 两层循环一起停
+                }
+            }
+        }
+        System.out.println(target + " 位于 " + foundRow + "," + foundCol + "，比较了 " + steps + " 个格子");
+    }
+}
+```
+
+```text
+12 位于 1,2，比较了 6 个格子
+```
+
+把 `break search;` 改成 `break;` 再跑一遍，输出会变成 `比较了 9 个格子`：答案还是对的，但外层第二行还在白跑。找的就是这种"结果没错、力气白花"的写法——循环层数越多，浪费越明显。
+
 ## 典型应用场景
 
 | 场景 | 推荐写法 | 为什么 |
@@ -203,6 +236,42 @@ static void reassign(List<String> list) {
     list = new ArrayList<>();                       // 重新赋值引用：无效
 }
 ```
+
+把上面三条拼成一个能直接跑的完整程序，输出就是"值传递"最硬的证据：
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class PassByValue {
+    static void bump(int x) { x = x + 10; }
+
+    static void append(List<String> list) { list.add("新元素"); }
+
+    static void replace(List<String> list) { list = new ArrayList<>(); }
+
+    public static void main(String[] args) {
+        int n = 5;
+        bump(n);
+        System.out.println("bump 后 n = " + n);
+
+        List<String> names = new ArrayList<>();
+        names.add("原始");
+        append(names);
+        System.out.println("append 后 size = " + names.size());
+        replace(names);
+        System.out.println("replace 后 size = " + names.size());
+    }
+}
+```
+
+```text
+bump 后 n = 5
+append 后 size = 2
+replace 后 size = 2
+```
+
+三行输出对应三种命运：`bump` 改的是数字副本，外面纹丝不动；`append` 拿到的引用副本仍指向同一个列表，所以加元素对外可见；`replace` 把副本改指新列表，原列表的数量自然不变。
 
 ### 控制流速查
 
@@ -301,6 +370,7 @@ public class Demo {
 | 增强 for 里改数组 | 改了副本没效果 | 需要下标时用普通 for |
 | 递归无终止条件 | `StackOverflowError` | 先写出口条件 |
 | 方法名相同但只有返回类型不同 | 编译错误 | 重载必须参数列表不同 |
+| 双层循环里只写 `break` 就想收工 | 结果没错，外层还在空跑剩下的行 | 给外层贴标签：`outer:` 之后 `break outer;` 两层一起停 |
 | 可变参数前面再加普通参数顺序错 | 编译错误 | 可变参数必须在最后 |
 | `for (int i = 0; i <= list.size(); i++)` | `IndexOutOfBoundsException` | 用 `<` 或增强 for |
 | 用 `==` 比较字符串 | 结果不可靠 | 用 `equals` |
@@ -372,6 +442,8 @@ public class Demo {
 | 可变参数 | `int... nums`，调用时可传 0 个或多个参数 |
 | 值传递 | Java 只传值的副本，对象传的是引用副本 |
 | 方法重载 | 同名不同参数列表，返回值不参与判定 |
+| `switch` 表达式 | `case 8 -> "B"` 这种直接产出值的分支写法，Java 14 起可用，天然不穿透 |
+| 标签循环 | 在循环前写 `outer:`，配合 `break outer;` 或 `continue outer;` 控制外层 |
 
 ## 参考资料与复核
 

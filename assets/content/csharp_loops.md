@@ -1,6 +1,6 @@
 # C# 循环入门
 
-> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：30 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：35 分钟
 
 ![C# 三种循环结构](images/diagram_cs_loops.webp)
 
@@ -201,6 +201,50 @@ class Program
 
 **运行方式**：运行 `C# 循环入门` 的示例时，用 `dotnet run` 运行；先确认 SDK 版本与项目文件一致。
 
+### 读题必练：Write 与 WriteLine 决定输出长什么样
+
+```csharp
+for (int i = 0; i < 3; i++)
+{
+    Console.Write(i);
+}
+```
+
+`Write` 不追加换行，`WriteLine` 才换行，所以屏幕上是一整行连着的 `012`。把 `Write` 换成 `WriteLine`，0、1、2 就各占一行；把 `i < 3` 写成 `i <= 3`，会多吐一个 3，顺手把差一错误也复习了。
+
+### do-while：先进门再看条件
+
+```csharp
+int balance = 0;
+int rounds = 0;
+do
+{
+    balance += 100;
+    rounds++;
+} while (balance < 100 && rounds < 3);
+
+Console.WriteLine($"balance={balance} rounds={rounds}");
+```
+
+输出是 `balance=100 rounds=1`。开局条件不成立也照样跑过一遍：把 `balance` 初值改成 500，`rounds` 仍然变成 1。这份「至少执行一次」就是 while 替不了 do-while 的地方。
+
+### 删除元素的两种安全写法
+
+```csharp
+var names = new List<string> { "a", "b", "c" };
+var drop = new List<string>();
+foreach (var n in names)
+{
+    if (n == "b") drop.Add(n);
+}
+foreach (var n in drop) names.Remove(n);
+Console.WriteLine(string.Join(",", names));   // a,c
+```
+
+`foreach` 期间一个元素都不许增删，所以先把要处理的记到 `drop` 里，出了循环再动手。反过来写也行：`for (int i = names.Count - 1; i >= 0; i--)` 从尾巴往前删，前面元素的编号不会因为删掉一个而集体前移。这段依赖 `dotnet new console` 模板自带的隐式 using，自己的项目里报 CS0246 就补一行 `using System.Collections.Generic;`。
+
+三段代码可以依次贴进同一个 `Program.cs`，`dotnet run` 之后应当看到 `012`、`balance=100 rounds=1`、`a,c` 三行结果。
+
 ## 时间/空间复杂度或性能分析
 
 **复杂度证据**：本课正文出现 `O(1)` 等量级表达式；使用前要同时确认输入规模、最好/平均/最坏情况以及常数项来源。
@@ -218,6 +262,9 @@ class Program
 | 循环里修改集合 | 迭代过程中抛出集合已修改异常。 | 先收集待改元素，循环结束后统一处理。 |
 | 对链表结构用下标遍历 | 复杂度退化成平方级。 | 按数据结构选择遍历方式，链表用节点推进。 |
 | 循环边界差一 | 漏掉或重复处理最后一个元素。 | 写清区间开闭，用范围语法减少手写下标。 |
+| 给 foreach 的迭代变量赋值 | 编译阶段报 CS1656：无法赋值，因为它是迭代变量。 | 需要写回元素就换成 for 按下标操作集合。 |
+| 在 foreach 里直接调 Remove | 运行时抛 InvalidOperationException，说集合在枚举期间被改动。 | 先收集要处理的项，出循环再统一删，或者倒序 for。 |
+| 循环条件里每轮调一次 `Count()` | 数据一多就明显变慢，每一轮都把集合从头数到尾。 | 改用 `Count` 属性，或在循环开始前把数量存进局部变量。 |
 
 ### 现场 1：循环里修改集合
 

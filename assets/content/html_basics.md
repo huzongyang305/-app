@@ -1,6 +1,6 @@
 # HTML 基础与语义化
 
-> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：25 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：30 分钟
 
 ![HTML 基础结构示意图](images/category_html_basics.webp)
 
@@ -163,6 +163,48 @@
 │       └── <footer>        → 页脚
 ```
 
+### 递进练习：一个会自己拦住提交的表单
+
+最小版本只收两个字段，全部校验交给浏览器：
+
+```html
+<form action="/save" method="post">
+  <p>
+    <label for="email">邮箱</label>
+    <input id="email" name="email" type="email" required />
+  </p>
+  <p>
+    <label for="age">年龄</label>
+    <input id="age" name="age" type="number" min="16" max="120" />
+  </p>
+  <button type="submit">提交</button>
+</form>
+```
+
+在浏览器里打开，对着它按三次提交，会看到三种拦截：
+
+```text
+邮箱留空     → 请求没发出去，焦点落在 #email，浏览器给出必填提示
+邮箱写 abc   → 同样被拦下，提示这个值不是合法的邮箱格式
+年龄写 8     → 被 min="16" 拦住，提示值低于允许的下限
+再加 novalidate 到 <form> 上 → 上面三条提示全部消失，数据直接发出
+```
+
+最后一行是你必须知道的开关：原生校验只是省事，不是安全边界，服务端仍然要重新查一遍。
+
+在最小版本上再加三处，就把结构和无障碍补齐：
+
+```html
+<input id="email" name="email" type="email" required
+       autocomplete="email" aria-describedby="email-hint" />
+<span id="email-hint">用于接收课程提醒。</span>
+<button type="button" id="draft">存草稿</button>
+```
+
+`autocomplete` 让浏览器帮你回填，`aria-describedby` 把提示文字跟输入框绑在一起，`type="button"` 保证「存草稿」这一脚不会把表单交出去——同一个表单里混两种按钮，只有这一种干净写法。
+
+动手改一遍：给 `#draft` 加一段 JS，点击后把邮箱打印到控制台；然后合上鼠标只用 Tab 键走一遍，确认焦点顺序是 邮箱 → 年龄 → 存草稿 → 提交，屏幕阅读器每站都念得出标签名。
+
 ## 时间/空间复杂度或性能分析
 
 HTML 本身很轻量，但写得不好也会拖慢页面。几个值得关注的点：
@@ -187,6 +229,10 @@ HTML 本身很轻量，但写得不好也会拖慢页面。几个值得关注的
 | `outline: none` 去掉焦点样式 | 键盘用户找不到当前焦点在哪 | 保留焦点样式，或用 `:focus-visible` 自定义 |
 | 用表格 `<table>` 做页面布局 | 语义错误，响应式适配困难 | 改用 Flexbox 或 Grid 布局 |
 | 纯图标按钮没有文字说明 | 屏幕阅读器无法识别按钮用途 | 加 `aria-label` 提供可访问名称 |
+| `<input>` 一律写 `type="text"` | 手机上弹全键盘，邮箱和数字都拿不到原生校验 | 按内容选 `type="email"`、`type="tel"`、`type="number"` |
+| `<p>` 里套 `<div>` 之类的块级标签 | 浏览器会自动把 `<p>` 关掉，DOM 树和你写的对不上 | 段落里只放行内内容，块级容器换成 `<div>` 或 `<section>` |
+| 表单里的按钮全用默认的 `type="submit"` | 点哪一个都会把表单交出去 | 不提交的动作显式写 `type="button"`，逻辑交给 JS |
+| `<label>` 只有文字、没跟控件关联 | 点文字不聚焦，屏幕阅读器只念得出「编辑框」 | 补上 `for` 指向控件 `id`，或把控件直接包进 `<label>` |
 
 ## 与其他知识点的关系
 

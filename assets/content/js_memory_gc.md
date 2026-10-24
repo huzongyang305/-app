@@ -1,6 +1,6 @@
 # JavaScript 内存管理与垃圾回收
 
-> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：25 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：30 分钟
 
 ![JavaScript 标记清除与分代回收](images/diagram_js_memory_gc.webp)
 
@@ -116,6 +116,34 @@ tracked: true
 after release: false
 ```
 
+### 完整示例：把「标记-清除」跑一遍
+
+可达性是 GC 的判定核心，也正是本课排错题的落点。下面这段不依赖真实回收时机，用一个引用图模拟标记阶段：从根出发能走到的对象保留，走不到的才谈得上被清除。
+
+```javascript
+function sweep(roots, refs) {
+  const seen = new Set();
+  const stack = [...roots];
+  while (stack.length) {
+    const id = stack.pop();
+    if (seen.has(id)) continue;
+    seen.add(id);
+    for (const next of refs[id] || []) stack.push(next);
+  }
+  const collectable = Object.keys(refs).filter((id) => !seen.has(id));
+  return { retained: [...seen].sort(), collectable: collectable.sort() };
+}
+
+const refs = { A: ["B"], B: ["C"], C: [], D: ["E"], E: [] };
+console.log(sweep(["A"], refs));
+```
+
+```text
+{ retained: [ 'A', 'B', 'C' ], collectable: [ 'D', 'E' ] }
+```
+
+`D→E` 这串没挂在根上，所以整体判为可清除。动手练一练：把调用改成 `sweep(["A", "D"], refs)`，`collectable` 立刻变空数组——根多一个，能救回来的就是整条链。这也说明只要还剩一根引用连到根，对象就不会被回收：缓存拿对象当键时，换成 WeakMap 才不会把键钉死。
+
 ## 时间/空间复杂度或性能分析
 
 **性能关注点（JavaScript 内存管理与垃圾回收）**：事件循环与 DOM 操作是瓶颈来源：记录脚本执行时间、长任务与主线程阻塞时长。
@@ -159,6 +187,8 @@ after release: false
 ## 与其他知识点的关系
 
 **教材衔接：复习与迁移**
+
+内存这条线几乎处处和别的 JS 知识勾在一起。可达性判定的根里就包含调用栈上的局部变量和全局对象，所以闭包与词法作用域那节课直接决定你能不能看住引用——闭包留住了外层变量，等于给那个对象多挂了一根通往根的线。前端长任务接在事件循环上：一个同步大循环跑超过 50 毫秒，GC 再勤快也救不回卡顿。真排查时靠的是 DevTools 的 Memory 面板拍堆快照、用 Allocation instrumentation 看分配时间线，再配 Performance 面板定位长任务，这套工具链才是本课结论落地的地方。
 
 ## 自测题与参考答案
 
@@ -247,6 +277,9 @@ after release: false
 | `GC` | 垃圾回收，运行时自动回收不再可达的对象并管理内存。 |
 | `堆快照` | 按“JavaScript 内存管理与垃圾回收”中 内存、GC、堆快照 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。 |
 | `泄漏` | 资源、内存或敏感信息未被正确释放或被未授权方获取。 |
+| `可达性` | 从根对象出发沿引用能不能走到；走不到就视为垃圾。 |
+| `标记-清除` | GC 先从根标记所有可达对象，再清除没被标记到的对象。 |
+| `分代回收` | 按对象存活时长分代，年轻代回收更频繁、老年代回收较少。 |
 
 **术语关系**：`内存`（程序运行时保存指令、数据与对象的高速可寻址存储） → `GC`（垃圾回收） → `堆快照`（按“JavaScript 内存管理与垃圾回收”中 内存、GC、堆快照 的实践顺序） → `泄漏`（资源、内存或敏感信息未被正确释放或被未授权方获取）。
 

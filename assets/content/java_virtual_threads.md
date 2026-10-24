@@ -4,7 +4,7 @@
 
 ![Java 虚拟线程与结构化并发](images/lesson_java_virtual_threads.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：30 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：35 分钟
 
 ## 本节知识框架
 
@@ -119,6 +119,22 @@ try (var scope = new StructuredTaskScope<String>()) {
 
 注意：结构化并发在 Java 21 仍是预览特性，使用时需要 `--enable-preview`。
 
+### 挂载与摘下来：一次阻塞到底发生了什么
+
+载体线程不是"绑定了就不放"的座位，而是一块可以随时下车的站台：
+
+```text
+虚拟线程 VT-1 挂在载体线程 CT-2 上跑
+        ↓ 走到 socket.read()，数据还没来
+JVM 把 VT-1 的执行现场（continuation）连栈一起复制到堆上，CT-2 立刻空出来
+        ↓
+CT-2 从队列里领走 VT-57 继续跑                    VT-1 在堆上等着
+        ↓ 网络字节到达，IO 线程把 VT-1 重新投回队列
+VT-1 排到某个空闲载体，从上次停的那一行接着跑
+```
+
+三件事因此成立：其一，虚拟线程多到几万个也不怕，因为"等"的部分被搬进堆里，不占操作系统线程；其二，代码可以照旧写成同步的样子，让出与恢复是 JVM 做的；其三，只有 JVM 认得出的阻塞点才有这套待遇——`synchronized` 里阻塞、本地方法、以及某些直接压栈的第三方库会把 VT 钉在 CT 上（pinning），站台机制当场失效。第三点就是本课易错表第一条的由来。
+
 ## 典型应用场景
 
 学完原理，我们来看几个真实场景，帮你把概念落地：
@@ -180,6 +196,53 @@ virtual-thread-ok
 
 运行方式：保存为 `.java` 后用 `javac --release 21` 编译、`java` 运行。
 
+### 进阶示例：用 Semaphore 限并发，而不是靠线程数量限并发
+
+"能开几万个虚拟线程"不等于"该让几万个请求同时打出去"。下游只有 4 条连接的额度时，闸门要显式写：
+
+```java
+import java.time.Duration;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+
+public class VirtualThreadLimiter {
+    public static void main(String[] args) {
+        Semaphore permits = new Semaphore(4);   // 下游同时只扛 4 个请求
+        long start = System.nanoTime();
+
+        try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+            for (int i = 0; i < 40; i++) {
+                executor.submit(() -> {
+                    permits.acquireUninterruptibly();
+                    try {
+                        Thread.sleep(Duration.ofMillis(50));  // 模拟一次阻塞 IO
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    } finally {
+                        permits.release();
+                    }
+                    return "ok";
+                });
+            }
+        }   // 执行器关闭时会等所有任务跑完
+
+        long ms = Duration.ofNanos(System.nanoTime() - start).toMillis();
+        System.out.println("40 个任务、并发上限 4，用时约 " + ms + " ms");
+    }
+}
+```
+
+```text
+40 个任务、并发上限 4，用时约 517 ms
+```
+
+毫秒数会随机器浮动，但理论下界写得出：40 个任务分 4 路，10 轮 × 50 毫秒 = 500 毫秒。只要结果贴着 500 毫秒这一档，就说明闸门真的生效了；如果跑到 2000 毫秒以上，先查是不是哪里把许可漏了没 `release`，再看有没有在 `synchronized` 里阻塞导致载体线程被钉住。
+
+动手改三处，每次只改一处再重跑：
+1. 把 `new Semaphore(4)` 换成 `new Semaphore(40)`，输出应当接近 50 毫秒——闸门全开，40 个任务一轮跑完。
+2. 把 `finally` 里的 `permits.release()` 删掉，程序会卡在第五个任务附近不再返回，这就是"许可泄漏"的手感。
+3. 把 `Thread.sleep` 换成一个几亿次的累加循环，用时几乎不变甚至更慢：CPU 密集任务不会因为换成虚拟线程就变快。
+
 ## 时间/空间复杂度或性能分析
 
 虚拟线程的性能优势主要体现在"能同时处理多少阻塞任务"，而不是"每个任务更快"。
@@ -205,6 +268,8 @@ virtual-thread-ok
 | 忽略阻塞式本地调用 | 载体线程仍被占满 | 识别真正的阻塞点，改用异步 API 或独立线程池 |
 | 用虚拟线程跑 CPU 密集任务 | 不会加速，反而增加调度开销 | CPU 密集任务用平台线程池 |
 | 在虚拟线程里用 ThreadLocal 存大量数据 | 内存暴涨 | 虚拟线程数量极大，ThreadLocal 开销被放大 |
+| 以为线程开得多就等于并发高 | 下游连接池被填满，任务排队等到超时 | 用 `Semaphore` 显式卡住同时进行的请求数，跟线程数量脱钩 |
+| 把 `synchronized` 方法整个包住一次 RPC | 载体线程被钉住，几万个虚拟线程挤在几个载体上排队 | 临界区只留真正要互斥的那几行，阻塞部分移出锁外或换 `ReentrantLock` |
 
 **现场排错示范**：
 
@@ -267,6 +332,10 @@ virtual-thread-ok
 | `线程池` | 复用固定数量线程处理任务，避免频繁创建销毁。 |
 | `载体线程` | 虚拟线程实际运行其上的平台线程，也叫 carrier thread。 |
 | `newVirtualThreadPerTaskExecutor` | Java 21+ 创建虚拟线程执行器的工厂方法。 |
+| `pinning（钉住）` | 虚拟线程阻塞时没能从载体线程上摘下来，载体线程被它白白占住。 |
+| `Continuation` | 虚拟线程摘下来时存进堆里的执行现场，恢复时从停住的那一行接着跑。 |
+| `Thread.ofVirtual()` | 手工造单个虚拟线程的入口；对应的 `Thread.ofPlatform()` 显式要平台线程。 |
+| `Semaphore` | 许可闸门。虚拟线程时代用它限下游并发，而不是靠线程条数限。 |
 
 ## 考点精讲
 
