@@ -519,31 +519,31 @@ exec "$@"
 
 - **题目**：围绕“Shell 与 Docker/K8s 交互”中的 Shell、Docker、Kubernetes，下列哪两项是本课强调的实践判断？
 - **正确项**：学习 Shell 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 Docker 时要固定版本并覆盖边界输入，结论才可复现
-- **判断依据**：本题正确项是学习 Shell 时要同时说明输入、输出和失败路径，不能只看正常流程（Shell 与 Docker/K8s 交互）。术语 Docker（Shell 与 Docker/K8s 交互）：把应用及依赖封装成镜像并在容器中运行的平台，本题取学习 Shell 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是启动脚本不用 exec会造成信号丢失，优雅退出失效，改法是末尾 `exec "$@"`，干扰项只要 Shell 的常规示例通过，就可以跳过边界与异常路径正踩在这条上。
+- **判断依据**：本题正确项是学习 Shell 时要同时说明输入、输出和失败路径，不能只看正常流程（Shell 与 Docker/K8s 交互）。术语 Docker（Shell 与 Docker/K8s 交互）：把应用及依赖封装成镜像并在容器中运行的平台，本题取学习 Shell 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是启动脚本不用 exec，会造成信号丢失，优雅退出失效，改法是末尾 `exec "$@"`。
 
 ### 考点 2：第 2 题
 
 - **题目**：依赖服务暂时不可用时，应该影响哪种探针？
 - **正确项**：readiness
-- **判断依据**：本题正确项是readiness。术语 Docker（Shell 与 Docker/K8s 交互）：把应用及依赖封装成镜像并在容器中运行的平台，本题取readiness这条。易错点是启动脚本不用 exec会造成信号丢失，优雅退出失效，改法是末尾 `exec "$@"`，干扰项liveness正踩在这条上。
+- **判断依据**：本题正确项是readiness。术语 Docker（Shell 与 Docker/K8s 交互）：把应用及依赖封装成镜像并在容器中运行的平台，本题取readiness这条。易错点是用 shell 形式的 CMD，会造成同上，改法是用 exec 数组形式。
 
 ### 考点 3：第 3 题
 
 - **题目**：K8s 排查问题的推荐顺序是？
 - **正确项**：get → describe → logs → exec
-- **判断依据**：本题正确项是get → describe → logs → exec。术语 Docker（Shell 与 Docker/K8s 交互）：把应用及依赖封装成镜像并在容器中运行的平台，本题取get → describe → logs → exec这条。易错点是启动脚本不用 exec会造成信号丢失，优雅退出失效，改法是末尾 `exec "$@"`，干扰项exec → describe → get，顺序反过来正踩在这条上。
+- **判断依据**：本题正确项是get → describe → logs → exec。术语 Docker（Shell 与 Docker/K8s 交互）：把应用及依赖封装成镜像并在容器中运行的平台，本题取get → describe → logs → exec这条。易错点是liveness 检查依赖服务，会造成下游抖动引发全员重启，改法是依赖放 readiness。
 
 ### 考点 4：第 4 题
 
 - **题目**：阅读 `Shell 与 Docker/K8s 交互` 中围绕 `Docker` 的代码；课程主线是镜像标签、entrypoint 要点与 kubectl 排查顺序。下面哪项判断最准确？
 - **正确项**：镜像标签、entrypoint 要点与 kubectl 排查顺序。
-- **判断依据**：按《Shell 与 Docker/K8s 交互》的正文口径，本题正确项是「镜像标签、entrypoint 要点与 kubectl 排查顺序。」。术语「Docker」在本课里的界定是把应用及依赖封装成镜像并在容器中运行的平台，题干「阅读 `Shell 与 Docker/K8s 交互` 中围绕 `Do」问的就是这一条。常见错法是启动脚本不用 exec，其后果是信号丢失，优雅退出失效。正确做法是末尾 `exec "$@"`。干扰项「这段 Shell 代码只展示语法，不会读取任何输入或产生可验证输出。」与题干「阅读 `Shell 与 Docker/K8s 交互` 中围绕 `Do」的要求对不上，应排除。
+- **判断依据**：按《Shell 与 Docker/K8s 交互》的正文口径，本题正确项是「镜像标签、entrypoint 要点与 kubectl 排查顺序。」。术语「Docker」在本课里的界定是把应用及依赖封装成镜像并在容器中运行的平台，题干「阅读 `Shell 与 Docker/K8s 交互` 中围绕 `Do」问的就是这一条。常见错法是启动脚本不用 exec，其后果是信号丢失，优雅退出失效。正确做法是末尾 `exec "$@"`。
 
 ### 考点 5：第 5 题
 
 - **题目**：kubectl exec -it pod -- sh 的适用场景是？
 - **正确项**：进入容器内部排查问题
-- **判断依据**：本题正确项是进入容器内部排查问题。术语 Docker（Shell 与 Docker/K8s 交互）：把应用及依赖封装成镜像并在容器中运行的平台，本题取进入容器内部排查问题这条。易错点是启动脚本不用 exec会造成信号丢失，优雅退出失效，改法是末尾 `exec "$@"`，干扰项修改 Deployment 副本数正踩在这条上。
+- **判断依据**：本题正确项是进入容器内部排查问题。术语 Docker（Shell 与 Docker/K8s 交互）：把应用及依赖封装成镜像并在容器中运行的平台，本题取进入容器内部排查问题这条。易错点是忘了 `terminationGracePeriodSeconds`，会造成请求被硬中断，改法是设成大于最长请求时间。
 
 ### 考点 6：第 6 题
 

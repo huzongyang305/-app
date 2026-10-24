@@ -415,37 +415,37 @@ README.md
 
 - **题目**：三个核心 Web 指标的对应关系是？
 - **正确项**：LCP 管加载、INP 管响应、CLS 管稳定
-- **判断依据**：本题正确项是LCP 管加载、INP 管响应、CLS 管稳定。术语 PerformanceObserver（前端性能优化实战）：测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报），本题取LCP 管加载、INP 管响应、CLS 管稳定这条。易错点是只看实验室数据会造成与真实用户体验脱节，改法是结合字段数据（P75），干扰项LCP 管稳定、INP 管加载、CLS 管响应正踩在这条上。
+- **判断依据**：本题正确项是LCP 管加载、INP 管响应、CLS 管稳定。术语 PerformanceObserver（前端性能优化实战）：测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报），本题取LCP 管加载、INP 管响应、CLS 管稳定这条。易错点是只看实验室数据，会造成与真实用户体验脱节，改法是结合字段数据（P75）。
 
 ### 考点 2：第 2 题
 
 - **题目**：`前端性能优化实战` 的示例代码用于验证 `PerformanceObserver`，其背景是LCP/INP/CLS 三指标、加载与运行时优化、排查流程。代码的真实内容是下面哪一项？
 - **正确项**：出现字面量 `async`
-- **判断依据**：本题正确项是出现字面量 `async`。术语 PerformanceObserver（前端性能优化实战）：测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报），本题取出现字面量 `async`这条。易错点是只看实验室数据会造成与真实用户体验脱节，改法是结合字段数据（P75），干扰项出现字面量 `queue.h`正踩在这条上。
+- **判断依据**：本题正确项是出现字面量 `async`。术语 PerformanceObserver（前端性能优化实战）：测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报），本题取出现字面量 `async`这条。易错点是用平均分代替分布，会造成长尾被掩盖，改法是看 P75 与低端设备。本题干扰项「出现字面量 `queue.h`」不成立：展示代码里找不到 `queue.h`。
 
 ### 考点 3：第 3 题
 
 - **题目**：围绕“前端性能优化实战”中的 性能优化、LCP、INP，下列哪两项是本课强调的实践判断？
 - **正确项**：学习 性能优化 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 LCP 时要固定版本并覆盖边界输入，结论才可复现
-- **判断依据**：本题正确项是学习 性能优化 时要同时说明输入、输出和失败路径，不能只看正常流程。术语 PerformanceObserver（前端性能优化实战）：测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报），本题取学习 性能优化 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是只看实验室数据会造成与真实用户体验脱节，改法是结合字段数据（P75），干扰项把 LCP 的单次运行结果当成所有版本和规模都成立正踩在这条上。
+- **判断依据**：本题正确项是学习 性能优化 时要同时说明输入、输出和失败路径，不能只看正常流程。术语 PerformanceObserver（前端性能优化实战）：测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报），本题取学习 性能优化 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是首屏加载大量 JS，会造成LCP 与 INP 双差，改法是代码分割 + 关键路径优先。
 
 ### 考点 4：第 4 题
 
 - **题目**：preload 与 prefetch 的区别是？
 - **正确项**：preload 提前加载当前页面马上要用的资源
-- **判断依据**：本题正确项是preload 提前加载当前页面马上要用的资源。术语 PerformanceObserver（前端性能优化实战）：测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报），本题取preload 提前加载当前页面马上要用的资源这条。易错点是只看实验室数据会造成与真实用户体验脱节，改法是结合字段数据（P75），干扰项preload 用于图片，prefetch 用于字体正踩在这条上。
+- **判断依据**：本题正确项是preload 提前加载当前页面马上要用的资源。术语 PerformanceObserver（前端性能优化实战）：测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报），本题取preload 提前加载当前页面马上要用的资源这条。易错点是图片不设尺寸，会造成CLS 超标，改法是写宽高或用 `aspect-ratio`。
 
 ### 考点 5：第 5 题
 
 - **题目**：减小 JS 体积最常用的组合手段是？
 - **正确项**：代码分割 + tree shaking + 压缩（gzip/br）
-- **判断依据**：本题正确项是代码分割 + tree shaking + 压缩（gzip/br）。术语 PerformanceObserver（前端性能优化实战）：测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报），本题取代码分割 + tree shaking + 压缩（gzip/br）这条。易错点是首屏加载大量 JS会造成LCP 与 INP 双差，改法是代码分割 + 关键路径优先，干扰项把 JS 内联进 HTML，但这会让包体更大，同时这会引入额外的依赖正踩在这条上。
+- **判断依据**：本题正确项是代码分割 + tree shaking + 压缩（gzip/br）。术语 PerformanceObserver（前端性能优化实战）：测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报），本题取代码分割 + tree shaking + 压缩（gzip/br）这条。易错点是所有图片都懒加载，会造成首屏图延迟，改法是首屏图高优先级，其余懒加载。
 
 ### 考点 6：第 6 题
 
 - **题目**：把 `前端性能优化实战` 中与 `PerformanceObserver` 有关的步骤调整为正确顺序；该课主线是LCP/INP/CLS 三指标、加载与运行时优化、排查流程。
 - **正确项**：先用 Lighthouse 定位是加载问题还是运行时问题 → 打开 Performance 面板录制用户操作，找长任务（红色三角）与强制同步布局（紫色） → 用 Coverage 面板看未使用的 JS/CSS 占比 → 优化后用同一环境复测并记录前后数据，避免凭感觉判断
-- **判断依据**：本题正确项是先用 Lighthouse 定位是加载问题还是运行时问题。术语 PerformanceObserver（前端性能优化实战）：测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报），本题取先用 Lighthouse 定位是加载问题还是运行时问题这条。易错点是只看实验室数据会造成与真实用户体验脱节，改法是结合字段数据（P75），干扰项打开 Performance 面板录制用户操作，找长任务（红色三角）与强制同步布局（紫色）正踩在这条上。
+- **判断依据**：本题正确项是先用 Lighthouse 定位是加载问题还是运行时问题。术语 PerformanceObserver（前端性能优化实战）：测量方式：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报），本题取先用 Lighthouse 定位是加载问题还是运行时问题这条。易错点是只看实验室数据会造成与真实用户体验脱节，改法是结合字段数据（P75）。
 
 ### 考点 7：`PerformanceObserver`
 

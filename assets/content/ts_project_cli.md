@@ -416,7 +416,7 @@ export function parseConfig(input: unknown) {
 
 - **题目**：围绕“实战：TypeScript 类型安全 CLI”中的 TypeScript、Zod、CLI，下列哪两项是本课强调的实践判断？
 - **正确项**：学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 Zod 时要固定版本并覆盖边界输入，结论才可复现
-- **判断依据**：本题正确项是学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程（实战：TypeScript 类型安全 CLI）。术语 TypeScript（实战：TypeScript 类型安全 CLI）：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js，本题取学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是到处使用 any会造成类型检查失效，改法是使用 unknown 加运行时校验，干扰项只要 TypeScript 的常规示例通过，就可以跳过边界与异常路径正踩在这条上。
+- **判断依据**：本题正确项是学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程（实战：TypeScript 类型安全 CLI）。术语 TypeScript（实战：TypeScript 类型安全 CLI）：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js，本题取学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是只靠类型不做校验，会造成外部配置不可信，改法是在边界使用 Zod 等校验器。
 
 ### 考点 3：第 3 题
 
@@ -428,19 +428,19 @@ export function parseConfig(input: unknown) {
 
 - **题目**：dry-run 的主要价值是什么？
 - **正确项**：在不产生副作用的情况下验证行为
-- **判断依据**：本题正确项是在不产生副作用的情况下验证行为。术语 TypeScript（实战：TypeScript 类型安全 CLI）：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js，本题取在不产生副作用的情况下验证行为这条。易错点是到处使用 any会造成类型检查失效，改法是使用 unknown 加运行时校验，干扰项用来提升类型推断的准确性正踩在这条上。
+- **判断依据**：本题正确项是在不产生副作用的情况下验证行为。术语 TypeScript（实战：TypeScript 类型安全 CLI）：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js，本题取在不产生副作用的情况下验证行为这条。易错点是构建配置与开发不一致，会造成发布后路径错误，改法是在 CI 中运行构建产物测试。
 
 ### 考点 5：第 5 题
 
 - **题目**：配置中缺少 concurrency 字段时，Zod schema 会怎样？
 - **正确项**：使用默认值 4
-- **判断依据**：本题正确项是使用默认值 4。术语 Zod（实战：TypeScript 类型安全 CLI）：TypeScript 运行时校验库：用 schema 描述数据形状，解析时校验并推断出静态类型，本题取使用默认值 4这条。易错点是到处使用 any会造成类型检查失效，改法是使用 unknown 加运行时校验，干扰项抛出解析错误正踩在这条上。
+- **判断依据**：本题正确项是使用默认值 4。术语 Zod（实战：TypeScript 类型安全 CLI）：TypeScript 运行时校验库：用 schema 描述数据形状，解析时校验并推断出静态类型，本题取使用默认值 4这条。易错点是到处使用 any，会造成类型检查失效，改法是使用 unknown 加运行时校验。
 
 ### 考点 6：第 6 题
 
 - **题目**：下面几项都与 `TypeScript` 有关，请按 `实战：TypeScript 类型安全 CLI` 的正文顺序排列；该课主线是用 TypeScript、Zod 和 Vitest 实现配置校验 CLI，覆盖类型收窄、错误和发布。
 - **正确项**：项目背景 → 技术栈 → 架构与数据流 → 功能范围
-- **判断依据**：术语 TypeScript（实战：TypeScript 类型安全 CLI）：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js，本题取项目背景这条。易错点是到处使用 any会造成类型检查失效，改法是使用 unknown 加运行时校验，干扰项架构与数据流正踩在这条上。
+- **判断依据**：术语 TypeScript（实战：TypeScript 类型安全 CLI）：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js，本题取项目背景这条。易错点是到处使用 any会造成类型检查失效，改法是使用 unknown 加运行时校验。
 
 ### 考点 7：`TypeScript`
 

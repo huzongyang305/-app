@@ -420,25 +420,25 @@ class UserControllerTest {
 
 - **题目**：使用构造器注入的主要好处是？
 - **正确项**：依赖显式且便于测试
-- **判断依据**：本题正确项是依赖显式且便于测试。术语 测试（实战：Spring Boot REST API）：用可重复的输入和断言验证代码行为是否符合预期，本题取依赖显式且便于测试这条。易错点是字段注入 `@Autowired`会造成难以测试、隐藏依赖，改法是用构造器注入，干扰项提升运行速度正踩在这条上。
+- **判断依据**：本题正确项是依赖显式且便于测试。术语 测试（实战：Spring Boot REST API）：用可重复的输入和断言验证代码行为是否符合预期，本题取依赖显式且便于测试这条。易错点是用字段注入，会造成循环依赖、难测试，改法是用构造注入。易错点是把异常堆栈返回给用户，会造成泄露实现细节，改法是统一异常处理。
 
 ### 考点 3：第 3 题
 
 - **题目**：这段 `java` 代码对应 `实战：Spring Boot REST API` 的 `record`。课程要解决的是分层结构、依赖注入、校验与集成测试。关于代码内容，哪一项说法准确？
 - **正确项**：调用了 `Min()`
-- **判断依据**：本题正确项是调用了 `Min()`。术语 record（实战：Spring Boot REST API）：`record` 天生适合做 API 的请求/响应模型，`@NotBlank`、`@Min` 由 Bean Validation 在入口处自动校验，本题取调用了 `Min()`这条。易错点是Entity 直接当接口返回会造成泄露字段、耦合表结构，改法是用 DTO 转换，干扰项调用了 `fib_iter()`正踩在这条上。
+- **判断依据**：本题正确项是调用了 `Min()`。术语 record（实战：Spring Boot REST API）：`record` 天生适合做 API 的请求/响应模型，`@NotBlank`、`@Min` 由 Bean Validation 在入口处自动校验，本题取调用了 `Min()`这条。易错点是把异常堆栈返回给用户，会造成泄露实现细节，改法是统一异常处理。本题干扰项「调用了 `fib_iter()`」不成立：展示代码里找不到 `fib_iter()`。
 
 ### 考点 4：第 4 题
 
 - **题目**：@RestController 与 @Controller 的差别是？
 - **正确项**：@RestController 默认返回 JSON
-- **判断依据**：本题正确项是@RestController 默认返回 JSON。术语 record（实战：Spring Boot REST API）：`record` 天生适合做 API 的请求/响应模型，`@NotBlank`、`@Min` 由 Bean Validation 在入口处自动校验，本题取@RestController 默认返回 JSON这条。易错点是Entity 直接当接口返回会造成泄露字段、耦合表结构，改法是用 DTO 转换，干扰项@Controller 只能返回 JSON正踩在这条上。
+- **判断依据**：本题正确项是@RestController 默认返回 JSON。术语 record（实战：Spring Boot REST API）：`record` 天生适合做 API 的请求/响应模型，`@NotBlank`、`@Min` 由 Bean Validation 在入口处自动校验，本题取@RestController 默认返回 JSON这条。易错点是事务加在 Controller，会造成事务边界不清，改法是加在 Service 方法。
 
 ### 考点 5：第 5 题
 
 - **题目**：JPA 中 N+1 查询问题的常见解法是？
 - **正确项**：用 join fetch / @EntityGraph 一次性预加载关联数据
-- **判断依据**：本题正确项是用 join fetch / @EntityGraph 一次性预加载关联数据。术语 record（实战：Spring Boot REST API）：`record` 天生适合做 API 的请求/响应模型，`@NotBlank`、`@Min` 由 Bean Validation 在入口处自动校验，本题取用 join fetch / @EntityGraph 一次性预加载关联数据这条。易错点是Entity 直接当接口返回会造成泄露字段、耦合表结构，改法是用 DTO 转换，干扰项增加更多 @Transactional，但这会破坏事务边界，同时这会加重锁竞争正踩在这条上。
+- **判断依据**：本题正确项是用 join fetch / @EntityGraph 一次性预加载关联数据。术语 record（实战：Spring Boot REST API）：`record` 天生适合做 API 的请求/响应模型，`@NotBlank`、`@Min` 由 Bean Validation 在入口处自动校验，本题取用 join fetch / @EntityGraph 一次性预加载关联数据这条。易错点是配置硬编码，会造成换环境要改代码，改法是用环境变量与 profile。
 
 ### 考点 6：第 6 题
 

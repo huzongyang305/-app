@@ -399,7 +399,7 @@ func worker(ctx context.Context, jobs <-chan string, results chan<- Result, limi
 
 - **题目**：围绕“实战：Go 并发抓取与 Worker Pool”中的 goroutine、channel、context，下列哪两项是本课强调的实践判断？
 - **正确项**：验证 channel 时要固定版本并覆盖边界输入，结论才可复现；学习 goroutine 时要同时说明输入、输出和失败路径，不能只看正常流程
-- **判断依据**：本题正确项是验证 channel 时要固定版本并覆盖边界输入，结论才可复现。术语 goroutine（实战：Go 并发抓取与 Worker Pool）：Go 的轻量协程，由运行时调度到系统线程，创建成本低，优选 channel 通信而非共享内存，本题取验证 channel 时要固定版本并覆盖边界输入，结论才可复现这条。易错点是无限制创建协程会造成内存暴涨，下游被打垮，改法是用固定大小的工作池与有界队列，干扰项把 channel 的单次运行结果当成所有版本和规模都成立正踩在这条上。
+- **判断依据**：本题正确项是验证 channel 时要固定版本并覆盖边界输入，结论才可复现。术语 goroutine（实战：Go 并发抓取与 Worker Pool）：Go 的轻量协程，由运行时调度到系统线程，创建成本低，优选 channel 通信而非共享内存，本题取验证 channel 时要固定版本并覆盖边界输入，结论才可复现这条。易错点是无限制创建协程，会造成内存暴涨，下游被打垮，改法是用固定大小的工作池与有界队列。
 
 ### 考点 2：第 2 题
 
@@ -411,7 +411,7 @@ func worker(ctx context.Context, jobs <-chan string, results chan<- Result, limi
 
 - **题目**：阅读 `实战：Go 并发抓取与 Worker Pool` 的 `goroutine` 示例。它服务于用 goroutine、channel、context 和 errgroup 实现带限流、重试和取消的抓取任务。代码中实际包含下列哪一项？
 - **正确项**：这段示例用于说明本课术语 `errgroup` 的行为
-- **判断依据**：本题正确项是这段示例用于说明本课术语 `errgroup` 的行为。术语 `errgroup` 的行为。术语 `errgroup` 的行为。术语 `errgroup` 的行为。术语 goroutine（实战：Go 并发抓取与 Worker Pool）：Go 的轻量协程，由运行时调度到系统线程，创建成本低，优选 channel 通信而非共享内存，本题取这段示例用于说明本课术语 `errgroup` 的行为这条。易错点是无限制创建协程会造成内存暴涨，下游被打垮，改法是用固定大小的工作池与有界队列，干扰项代码里出现了 `PIC` 这个名字正踩在这条上。
+- **判断依据**：本题正确项是这段示例用于说明本课术语 `errgroup` 的行为。术语 `errgroup` 的行为。术语 `errgroup` 的行为。术语 `errgroup` 的行为。术语 goroutine（实战：Go 并发抓取与 Worker Pool）：Go 的轻量协程，由运行时调度到系统线程，创建成本低，优选 channel 通信而非共享内存，本题取这段示例用于说明本课术语 `errgroup` 的行为这条。易错点是结果收集不考虑顺序与重复，会造成输出混乱或重复写入，改法是明确结果顺序，并在写入前去重。本题干扰项「代码里出现了 `PIC` 这个名字」不成立：展示代码里找不到 `PIC`。
 
 ### 考点 4：第 4 题
 
@@ -423,7 +423,7 @@ func worker(ctx context.Context, jobs <-chan string, results chan<- Result, limi
 
 - **题目**：如何检查 goroutine 泄漏？
 - **正确项**：运行前后比较 goroutine 数量并使用阻塞分析
-- **判断依据**：本题正确项是运行前后比较 goroutine 数量并使用阻塞分析。术语 goroutine（实战：Go 并发抓取与 Worker Pool）：Go 的轻量协程，由运行时调度到系统线程，创建成本低，优选 channel 通信而非共享内存，本题取运行前后比较 goroutine 数量并使用阻塞分析这条。易错点是无限制创建协程会造成内存暴涨，下游被打垮，改法是用固定大小的工作池与有界队列，干扰项关闭数据库正踩在这条上。
+- **判断依据**：本题正确项是运行前后比较 goroutine 数量并使用阻塞分析。术语 goroutine（实战：Go 并发抓取与 Worker Pool）：Go 的轻量协程，由运行时调度到系统线程，创建成本低，优选 channel 通信而非共享内存，本题取运行前后比较 goroutine 数量并使用阻塞分析这条。易错点是取消信号不向下传递，会造成退出后仍有任务在写数据，改法是用上下文传播取消，并等待全部协程退出。
 
 ### 考点 6：第 6 题
 

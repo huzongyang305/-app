@@ -481,31 +481,31 @@ echo "备份完成：$ARCHIVE"
 
 - **题目**：脚本开头 set -e 的作用是？
 - **正确项**：命令失败时立即退出
-- **判断依据**：本题正确项是命令失败时立即退出。术语 脚本（Shell 与 Bash 脚本）：把多条命令写进文件按顺序执行，可带参数、判断与循环，首行 shebang 决定用哪个解释器，本题取命令失败时立即退出这条。易错点是赋值时加空格会造成`name: command not found`，改法是`name=value`，等号两边不留空格，干扰项输出调试信息正踩在这条上。
+- **判断依据**：本题正确项是命令失败时立即退出。术语 脚本（Shell 与 Bash 脚本）：把多条命令写进文件按顺序执行，可带参数、判断与循环，首行 shebang 决定用哪个解释器，本题取命令失败时立即退出这条。易错点是赋值时加空格，改法是`name=value`，等号两边不留空格。
 
 ### 考点 2：第 2 题
 
 - **题目**：围绕“Shell 与 Bash 脚本”中的 Shell、Bash、脚本，下列哪两项是本课强调的实践判断？
 - **正确项**：验证 Bash 时要固定版本并覆盖边界输入，结论才可复现；学习 Shell 时要同时说明输入、输出和失败路径，不能只看正常流程
-- **判断依据**：本题正确项是验证 Bash 时要固定版本并覆盖边界输入，结论才可复现。术语 Shell（Shell 与 Bash 脚本）：Shell 的精髓是组合：grep 过滤、sed 替换、awk 按列处理、sort/uniq 排序去重、cut 取列、xargs 批量执行、find 定位文件，本题取验证 Bash 时要固定版本并覆盖边界输入，结论才可复现这条。易错点是赋值时加空格会造成`name: command not found`，改法是`name=value`，等号两边不留空格，干扰项只要 Shell 的常规示例通过，就可以跳过边界与异常路径正踩在这条上。
+- **判断依据**：本题正确项是验证 Bash 时要固定版本并覆盖边界输入，结论才可复现。术语 Shell（Shell 与 Bash 脚本）：Shell 的精髓是组合：grep 过滤、sed 替换、awk 按列处理、sort/uniq 排序去重、cut 取列、xargs 批量执行、find 定位文件，本题取验证 Bash 时要固定版本并覆盖边界输入，结论才可复现这条。易错点是变量不加引号，会造成遇到空格或空值出错，改法是统一写 `"$var"`。
 
 ### 考点 3：第 3 题
 
 - **题目**：阅读 `Shell 与 Bash 脚本` 中围绕 `Shell` 的代码；课程主线是变量引号、健壮性三件套与管道组合。下面哪项判断最准确？
 - **正确项**：变量引号、健壮性三件套与管道组合。
-- **判断依据**：本题正确项是变量引号、健壮性三件套与管道组合。术语 Shell（Shell 与 Bash 脚本）：Shell 的精髓是组合：grep 过滤、sed 替换、awk 按列处理、sort/uniq 排序去重、cut 取列、xargs 批量执行、find 定位文件，本题取变量引号、健壮性三件套与管道组合这条。易错点是赋值时加空格会造成`name: command not found`，改法是`name=value`，等号两边不留空格，干扰项Shell、Bash、脚本 的结论只取决于关键字数量，与代码的控制流和边界条件无关正踩在这条上。
+- **判断依据**：本题正确项是变量引号、健壮性三件套与管道组合。术语 Shell（Shell 与 Bash 脚本）：Shell 的精髓是组合：grep 过滤、sed 替换、awk 按列处理、sort/uniq 排序去重、cut 取列、xargs 批量执行、find 定位文件，本题取变量引号、健壮性三件套与管道组合这条。易错点是用 `=` 比较，会造成只适合字符串，且要空格，改法是`[ "$a" = "$b" ]`，注意方括号内侧空格。
 
 ### 考点 4：第 4 题
 
 - **题目**：#!/usr/bin/env bash 相比 #!/bin/bash 的优势是？
 - **正确项**：通过 PATH 查找 bash
-- **判断依据**：本题正确项是通过 PATH 查找 bash。术语 Shell（Shell 与 Bash 脚本）：Shell 的精髓是组合：grep 过滤、sed 替换、awk 按列处理、sort/uniq 排序去重、cut 取列、xargs 批量执行、find 定位文件，本题取通过 PATH 查找 bash这条。易错点是赋值时加空格会造成`name: command not found`，改法是`name=value`，等号两边不留空格，干扰项启动更快正踩在这条上。
+- **判断依据**：本题正确项是通过 PATH 查找 bash。术语 Shell（Shell 与 Bash 脚本）：Shell 的精髓是组合：grep 过滤、sed 替换、awk 按列处理、sort/uniq 排序去重、cut 取列、xargs 批量执行、find 定位文件，本题取通过 PATH 查找 bash这条。易错点是数值用 `>`，会造成被当成重定向，改法是用 `-gt`、`-lt`、`-eq`。
 
 ### 考点 5：第 5 题
 
 - **题目**：source script.sh 与 bash script.sh 的关键区别是？
 - **正确项**：source 在当前 shell 中执行
-- **判断依据**：本题正确项是source 在当前 shell 中执行。术语 Shell（Shell 与 Bash 脚本）：Shell 的精髓是组合：grep 过滤、sed 替换、awk 按列处理、sort/uniq 排序去重、cut 取列、xargs 批量执行、find 定位文件，本题取source 在当前 shell 中执行这条。易错点是赋值时加空格会造成`name: command not found`，改法是`name=value`，等号两边不留空格，干扰项两者完全等价正踩在这条上。
+- **判断依据**：本题正确项是source 在当前 shell 中执行。术语 Shell（Shell 与 Bash 脚本）：Shell 的精髓是组合：grep 过滤、sed 替换、awk 按列处理、sort/uniq 排序去重、cut 取列、xargs 批量执行、find 定位文件，本题取source 在当前 shell 中执行这条。易错点是忘了 `set -e`，会造成出错还继续跑，改法是开头加 `set -euo pipefail`。
 
 ### 考点 6：第 6 题
 

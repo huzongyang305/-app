@@ -536,31 +536,31 @@ list.addEventListener("click", (event) => {
 
 - **题目**：`DOM 与事件` 的示例代码用于验证 `DOM`，其背景是元素选择与修改、事件监听、冒泡与事件委托、表单与本地存储。代码的真实内容是下面哪一项？
 - **正确项**：调用了 `querySelectorAll()`
-- **判断依据**：本题正确项是调用了 `querySelectorAll()`。术语 DOM（DOM 与事件）：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据，本题取调用了 `querySelectorAll()`这条。易错点是脚本在元素之前执行会造成`Cannot read properties of null`，改法是用 `defer` 或放到 `</body>` 前，干扰项调用了 `die()`正踩在这条上。
+- **判断依据**：本题正确项是调用了 `querySelectorAll()`。术语 DOM（DOM 与事件）：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据，本题取调用了 `querySelectorAll()`这条。易错点是脚本在元素之前执行，改法是用 `defer` 或放到 `</body>` 前。本题干扰项「调用了 `die()`」不成立：展示代码里找不到 `die()`。
 
 ### 考点 2：第 2 题
 
 - **题目**：把用户输入插入页面，安全的做法是？
 - **正确项**：textContent
-- **判断依据**：本题正确项是textContent。术语 DOM（DOM 与事件）：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据，本题取textContent这条。易错点是脚本在元素之前执行会造成`Cannot read properties of null`，改法是用 `defer` 或放到 `</body>` 前，干扰项eval正踩在这条上。
+- **判断依据**：本题正确项是textContent。术语 DOM（DOM 与事件）：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据，本题取textContent这条。易错点是用 `innerHTML` 拼接用户输入，会造成XSS 漏洞，改法是用 `textContent`。
 
 ### 考点 3：第 3 题
 
 - **题目**：event.preventDefault 的作用是？
 - **正确项**：阻止浏览器默认行为（如提交表单、跳转链接）
-- **判断依据**：本题正确项是阻止浏览器默认行为（如提交表单、跳转链接）。术语 DOM（DOM 与事件）：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据，本题取阻止浏览器默认行为（如提交表单、跳转链接）这条。易错点是脚本在元素之前执行会造成`Cannot read properties of null`，改法是用 `defer` 或放到 `</body>` 前，干扰项阻止事件冒泡正踩在这条上。
+- **判断依据**：本题正确项是阻止浏览器默认行为（如提交表单、跳转链接）。术语 DOM（DOM 与事件）：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据，本题取阻止浏览器默认行为（如提交表单、跳转链接）这条。易错点是循环里绑定监听，会造成元素多时性能差，改法是用事件委托。
 
 ### 考点 4：第 4 题
 
 - **题目**：围绕“DOM 与事件”中的 DOM、事件、冒泡，下列哪两项是本课强调的实践判断？
 - **正确项**：验证 事件 时要固定版本并覆盖边界输入，结论才可复现；学习 DOM 时要同时说明输入、输出和失败路径，不能只看正常流程
-- **判断依据**：本题正确项是验证 事件 时要固定版本并覆盖边界输入，结论才可复现。术语 DOM（DOM 与事件）：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据，本题取验证 事件 时要固定版本并覆盖边界输入，结论才可复现这条。易错点是脚本在元素之前执行会造成`Cannot read properties of null`，改法是用 `defer` 或放到 `</body>` 前，干扰项把 事件 的单次运行结果当成所有版本和规模都成立正踩在这条上。
+- **判断依据**：本题正确项是验证 事件 时要固定版本并覆盖边界输入，结论才可复现。术语 DOM（DOM 与事件）：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据，本题取验证 事件 时要固定版本并覆盖边界输入，结论才可复现这条。易错点是`removeEventListener` 无效，会造成回调传的是新函数，改法是保存同一个函数引用。
 
 ### 考点 5：第 5 题
 
 - **题目**：DOMContentLoaded 与 load 的区别是？
 - **正确项**：DOMContentLoaded 在 HTML 解析完成时触发
-- **判断依据**：本题正确项是DOMContentLoaded 在 HTML 解析完成时触发。术语 DOM（DOM 与事件）：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据，本题取DOMContentLoaded 在 HTML 解析完成时触发这条。易错点是脚本在元素之前执行会造成`Cannot read properties of null`，改法是用 `defer` 或放到 `</body>` 前，干扰项DOMContentLoaded 只在 IE 可用正踩在这条上。
+- **判断依据**：本题正确项是DOMContentLoaded 在 HTML 解析完成时触发。术语 DOM（DOM 与事件）：DOM 操作记住三件事：用 querySelector 选择、用 addEventListener 绑定、用事件委托处理动态列表，并把用户内容当作不可信数据，本题取DOMContentLoaded 在 HTML 解析完成时触发这条。易错点是忘记 `preventDefault`，会造成表单刷新页面，改法是在提交处理里加上。
 
 ### 考点 6：第 6 题
 

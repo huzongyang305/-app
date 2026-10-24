@@ -424,31 +424,31 @@ Python 数据库与 SQLAlchemy 2.x（本课）
 
 - **题目**：防止 SQL 注入最核心的做法是什么？
 - **正确项**：使用绑定参数让数据库区分 SQL 模板与输入值
-- **判断依据**：本题正确项是使用绑定参数让数据库区分 SQL 模板与输入值。术语 Engine（Python 数据库与 SQLAlchemy 2.x）：SQLAlchemy 管理数据库方言、连接池与执行策略的核心对象，本题取使用绑定参数让数据库区分 SQL 模板与输入值这条。易错点是在《Python 数据库与 SQLAlchemy 2.x》里的典型做法是写 f'SELECT * FROM users WHERE name = {name}'，用户输入可以改变语句结构，这样用字符串拼接 SQL会表现为结果错误、异常中断或状态不一致，改法是使用绑定参数 select(...).where(User.name == name)，让数据库区分代码与数据，干扰项把单引号替换成两个单引号正踩在这条上。
+- **判断依据**：本题正确项是使用绑定参数让数据库区分 SQL 模板与输入值。术语 Engine（Python 数据库与 SQLAlchemy 2.x）：SQLAlchemy 管理数据库方言、连接池与执行策略的核心对象，本题取使用绑定参数让数据库区分 SQL 模板与输入值这条。易错点是用字符串拼接 SQL，会造成在《Python 数据库与 SQLAlchemy 2.x》里采用「写 f'SELECT * FROM users WHERE name = {name}'，用户输入可以改变语句结构」时，用字符串拼接 SQL会表现为错误结果、异常中断或状态不一致，改法是使用绑定参数 select(...).where(User.name == name)，让数据库区分代码与数据。
 
 ### 考点 2：第 2 题
 
 - **题目**：SQLAlchemy 中修改 ORM 对象后，数据什么时候真正写入数据库？
 - **正确项**：调用 commit 提交事务时
-- **判断依据**：本题正确项是调用 commit 提交事务时。术语 事务（Python 数据库与 SQLAlchemy 2.x）：把多条数据库操作组成原子工作单元，成功时提交、失败时回滚，本题取调用 commit 提交事务时这条。易错点是在《Python 数据库与 SQLAlchemy 2.x》里的典型做法是写 f'SELECT * FROM users WHERE name = {name}'，用户输入可以改变语句结构，这样用字符串拼接 SQL会表现为结果错误、异常中断或状态不一致，改法是使用绑定参数 select(...).where(User.name == name)，让数据库区分代码与数据，干扰项访问对象属性的瞬间正踩在这条上。
+- **判断依据**：本题正确项是调用 commit 提交事务时。术语 事务（Python 数据库与 SQLAlchemy 2.x）：把多条数据库操作组成原子工作单元，成功时提交、失败时回滚，本题取调用 commit 提交事务时这条。易错点是修改后忘记提交或回滚，会造成在《Python 数据库与 SQLAlchemy 2.x》里采用「Session 中更新对象后直接关闭，数据没有写入且异常状态被丢给后续请求」时，修改后忘记提交或回滚会表现为错误结果、异常中断或状态不一致，改法是在明确的工作单元中提交，异常路径回滚并重新抛出。
 
 ### 考点 3：第 3 题
 
 - **题目**：关于连接池与事务，哪些说法正确？（多选）
 - **正确项**：池大小必须与数据库连接上限匹配；连接泄漏会让池最终耗尽；Session 应在使用后及时关闭并归还连接
-- **判断依据**：本题正确项是池大小必须与数据库连接上限匹配。术语 Session（Python 数据库与 SQLAlchemy 2.x）：跟踪对象变化、管理身份映射并在提交时形成工作单元的事务边界，本题取池大小必须与数据库连接上限匹配这条。易错点是在《Python 数据库与 SQLAlchemy 2.x》里的典型做法是写 f'SELECT * FROM users WHERE name = {name}'，用户输入可以改变语句结构，这样用字符串拼接 SQL会表现为结果错误、异常中断或状态不一致，改法是使用绑定参数 select(...).where(User.name == name)，让数据库区分代码与数据，干扰项连接泄漏会让池最终耗尽正踩在这条上。
+- **判断依据**：本题正确项是池大小必须与数据库连接上限匹配。术语 Session（Python 数据库与 SQLAlchemy 2.x）：跟踪对象变化、管理身份映射并在提交时形成工作单元的事务边界，本题取池大小必须与数据库连接上限匹配这条。易错点是循环中逐条查询关联对象，会造成在《Python 数据库与 SQLAlchemy 2.x》里采用「查询一百个订单后又在一百次循环里查询用户，产生 N+1 查询」时，循环中逐条查询关联对象会表现为错误结果、异常中断或状态不一致，改法是用 join 或 selectinload 批量加载关联数据，再用查询计数验证。
 
 ### 考点 4：第 4 题
 
 - **题目**：阅读代码，哪一项能避免 N+1 查询？  orders = session.scalars(select(Order)).all() for order in orders:     print(order.customer.name)
 - **正确项**：用 selectinload 或 join 一次性加载 customer 关联
-- **判断依据**：本题正确项是用 selectinload 或 join 一次性加载 customer 关联。术语 Engine（Python 数据库与 SQLAlchemy 2.x）：SQLAlchemy 管理数据库方言、连接池与执行策略的核心对象，本题取用 selectinload 或 join 一次性加载 customer 关联这条。易错点是在《Python 数据库与 SQLAlchemy 2.x》里的典型做法是写 f'SELECT * FROM users WHERE name = {name}'，用户输入可以改变语句结构，这样用字符串拼接 SQL会表现为结果错误、异常中断或状态不一致，改法是使用绑定参数 select(...).where(User.name == name)，让数据库区分代码与数据，干扰项把循环改成 while正踩在这条上。
+- **判断依据**：本题正确项是用 selectinload 或 join 一次性加载 customer 关联。术语 Engine（Python 数据库与 SQLAlchemy 2.x）：SQLAlchemy 管理数据库方言、连接池与执行策略的核心对象，本题取用 selectinload 或 join 一次性加载 customer 关联这条。易错点是长期占用连接或事务，会造成在《Python 数据库与 SQLAlchemy 2.x》里采用「在事务中调用远程接口、等待用户输入，连接池很快被占满」时，长期占用连接或事务会表现为错误结果、异常中断或状态不一致，改法是事务只包围数据库操作，外部调用放到事务之外，Session 用上下文管理器及时释放。
 
 ### 考点 5：第 5 题
 
 - **题目**：这段数据访问代码的主要风险是什么？
 - **正确项**：缺少余额校验与显式回滚，异常时可能部分修改或产生负余额
-- **判断依据**：本题正确项是缺少余额校验与显式回滚，异常时可能部分修改或产生负余额。术语 Engine（Python 数据库与 SQLAlchemy 2.x）：SQLAlchemy 管理数据库方言、连接池与执行策略的核心对象，本题取缺少余额校验与显式回滚，异常时可能部分修改或产生负余额这条。易错点是在《Python 数据库与 SQLAlchemy 2.x》里的典型做法是写 f'SELECT * FROM users WHERE name = {name}'，用户输入可以改变语句结构，这样用字符串拼接 SQL会表现为结果错误、异常中断或状态不一致，改法是使用绑定参数 select(...).where(User.name == name)，让数据库区分代码与数据，干扰项session.get 无法读取对象正踩在这条上。
+- **判断依据**：本题正确项是缺少余额校验与显式回滚，异常时可能部分修改或产生负余额。术语 Engine（Python 数据库与 SQLAlchemy 2.x）：SQLAlchemy 管理数据库方言、连接池与执行策略的核心对象，本题取缺少余额校验与显式回滚，异常时可能部分修改或产生负余额这条。易错点是用字符串拼接 SQL，会造成在《Python 数据库与 SQLAlchemy 2.x》里采用「写 f'SELECT * FROM users WHERE name = {name}'，用户输入可以改变语句结构」时，用字符串拼接 SQL会表现为错误结果、异常中断或状态不一致，改法是使用绑定参数 select(...).where(User.name == name)，让数据库区分代码与数据。
 
 ## 内容元数据
 

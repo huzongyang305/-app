@@ -340,25 +340,25 @@ DOM 是浏览器把 HTML 解析成的一棵树，JavaScript 通过选择器找�
 
 - **题目**：这段 `javascript` 代码对应 `JavaScript DOM 入门` 的 `DOM`。课程要解决的是查找元素、修改文本并响应用户点击。关于代码内容，哪一项说法准确？
 - **正确项**：调用了 `createElement()`
-- **判断依据**：本题正确项是调用了 `createElement()`。术语 DOM（JavaScript DOM 入门）：浏览器把 HTML 解析成的对象树，JavaScript 通过它读写页面，本题取调用了 `createElement()`这条。易错点是样式与文本状态各自为政会造成界面与数据不一致，改法是统一由状态驱动渲染，类名切换而不是零散改样式，干扰项调用了 `WeakSet()`正踩在这条上。
+- **判断依据**：本题正确项是调用了 `createElement()`。术语 DOM（JavaScript DOM 入门）：浏览器把 HTML 解析成的对象树，JavaScript 通过它读写页面，本题取调用了 `createElement()`这条。易错点是样式与文本状态各自为政，会造成界面与数据不一致，改法是统一由状态驱动渲染，类名切换而不是零散改样式。本题干扰项「调用了 `WeakSet()`」不成立：展示代码里找不到 `WeakSet()`。
 
 ### 考点 2：第 2 题
 
 - **题目**：围绕“JavaScript DOM 入门”中的 JavaScript DOM 入门、JavaScript、入门练习，下列哪两项是本课强调的实践判断？
 - **正确项**：学习 JavaScript DOM 入门 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 JavaScript 时要固定版本并覆盖边界输入，结论才可复现
-- **判断依据**：本题正确项是学习 JavaScript DOM 入门 时要同时说明输入、输出和失败路径，不能只看正常流程。术语 DOM（JavaScript DOM 入门）：浏览器把 HTML 解析成的对象树，JavaScript 通过它读写页面，本题取学习 JavaScript DOM 入门 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是样式与文本状态各自为政会造成界面与数据不一致，改法是统一由状态驱动渲染，类名切换而不是零散改样式，干扰项把 JavaScript 的单次运行结果当成所有版本和规模都成立正踩在这条上。
+- **判断依据**：本题正确项是学习 JavaScript DOM 入门 时要同时说明输入、输出和失败路径，不能只看正常流程。术语 DOM（JavaScript DOM 入门）：浏览器把 HTML 解析成的对象树，JavaScript 通过它读写页面，本题取学习 JavaScript DOM 入门 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是查询结果不判空就操作，会造成空引用直接报错，改法是查询后先判断元素是否存在。
 
 ### 考点 3：第 3 题
 
 - **题目**：示例中 console.log(document.querySelector("button").textContent) 输出什么？
 - **正确项**：点击我，读取的是按钮元素的文本内容
-- **判断依据**：本题正确项是点击我，读取的是按钮元素的文本内容。术语 querySelector（JavaScript DOM 入门）：用 CSS 选择器找到第一个匹配元素，querySelectorAll 返回全部，本题取点击我，读取的是按钮元素的文本内容这条。易错点是样式与文本状态各自为政会造成界面与数据不一致，改法是统一由状态驱动渲染，类名切换而不是零散改样式，干扰项空字符串，textContent 只能读取输入框的值正踩在这条上。
+- **判断依据**：本题正确项是点击我，读取的是按钮元素的文本内容。术语 querySelector（JavaScript DOM 入门）：用 CSS 选择器找到第一个匹配元素，querySelectorAll 返回全部，本题取点击我，读取的是按钮元素的文本内容这条。易错点是频繁读写布局属性，会造成触发多次重排，页面卡顿，改法是批量读写，先集中读再集中写。
 
 ### 考点 4：第 4 题
 
 - **题目**：要让按钮响应用户点击，应该使用哪个方法？
 - **正确项**：addEventListener
-- **判断依据**：本题正确项是addEventListener。术语 DOM（JavaScript DOM 入门）：浏览器把 HTML 解析成的对象树，JavaScript 通过它读写页面，本题取addEventListener这条。易错点是样式与文本状态各自为政会造成界面与数据不一致，改法是统一由状态驱动渲染，类名切换而不是零散改样式，干扰项append("click")正踩在这条上。
+- **判断依据**：本题正确项是addEventListener。术语 DOM（JavaScript DOM 入门）：浏览器把 HTML 解析成的对象树，JavaScript 通过它读写页面，本题取addEventListener这条。易错点是样式与文本状态各自为政，会造成界面与数据不一致，改法是统一由状态驱动渲染，类名切换而不是零散改样式。
 
 ### 考点 5：第 5 题
 

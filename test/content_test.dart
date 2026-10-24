@@ -1230,6 +1230,116 @@ void main() {
     expect(mdChecked, greaterThan(1000), reason: '课文断言的校验覆盖面不应塌缩');
   });
 
+  // 第 11 波给每题盖了一句「干扰项X正踩在这条上」，X 是随手抓的：抽检 2602 条尾句只有 61 条
+  // 与那条坑对得上，另有 4 条点名的其实是正确项。第 32 波把它们改成「能按展示代码核实的证明」
+  // 或「只讲本课易错点」，这条测试负责守住两件事：不再出现这类归因，以及点名的干扰项必须真是干扰项。
+  test('解析点名的干扰项必须是本题干扰项，且不再断言谁踩了坑', () async {
+    final attribution = RegExp('正踩在这条上');
+    final named = RegExp('干扰项「([^」]{2,120})」');
+    final dropped = RegExp(r'[\s`*_「」『』“”"]');
+    String flatten(String text) => text.replaceAll(dropped, '');
+    bool same(String a, String b) =>
+        a.isNotEmpty &&
+        b.isNotEmpty &&
+        (a.contains(b) || b.contains(a));
+
+    var checked = 0;
+    var mdChecked = 0;
+    var tailChecked = 0;
+    for (final category in categories) {
+      for (final lesson in category.lessons) {
+        final lessonDistractors = <String>{};
+        for (final question in lesson.quiz) {
+          // 逐题配对：解析点名的是「这道题」的哪个选项，不能拿同课别的题的选项来充数
+          final correct = question.correctIndexes.toSet();
+          final options = question.options.map(flatten).toList();
+          final truth = <String>{};
+          final distractors = <String>[];
+          for (var index = 0; index < options.length; index++) {
+            if (correct.contains(index)) {
+              truth.add(options[index]);
+            } else {
+              distractors.add(options[index]);
+            }
+          }
+          lessonDistractors.addAll(distractors);
+          expect(
+            attribution.hasMatch(question.explanation),
+            isFalse,
+            reason: '${lesson.id} 的解析又写回了「干扰项…正踩在这条上」这种没核实的归因',
+          );
+          for (final match in named.allMatches(question.explanation)) {
+            final want = flatten(match.group(1)!);
+            checked++;
+            // 断言里的选项原文要求逐字相等：「出现字面量 `10.`」是「出现字面量 `10.20.1.0/24`」
+            // 的前缀，用包含判定会把隔壁选项也判成命中
+            expect(
+              distractors.contains(want),
+              isTrue,
+              reason: '${lesson.id} 解析点名的「${match.group(1)}」不是这道题的干扰项原文',
+            );
+            expect(
+              truth.contains(want),
+              isFalse,
+              reason: '${lesson.id} 解析把这道题的正确项「${match.group(1)}」当成了干扰项',
+            );
+          }
+        }
+
+        final markdown = (await rootBundle.loadString(lesson.assetFile))
+            .replaceAll('\r\n', '\n');
+        final start = markdown.indexOf('\n## 考点精讲');
+        if (start < 0) continue;
+        final rest = markdown.substring(start + 1);
+        final cut = rest.substring(2).indexOf(RegExp('\n##(?!#)'));
+        final region = cut < 0 ? rest : rest.substring(0, cut + 2);
+        expect(
+          attribution.hasMatch(region),
+          isFalse,
+          reason: '${lesson.id} 课文考点精讲里还留着未核实的归因尾句',
+        );
+        for (final match in named.allMatches(region)) {
+          final want = flatten(match.group(1)!);
+          mdChecked++;
+          // 课文里的精讲条目会把选项和结论连写成一句，所以这里只要求点中本课某个干扰项
+          expect(
+            lessonDistractors.any((option) => same(option, want)),
+            isTrue,
+            reason: '${lesson.id} 课文点名的「${match.group(1)}」不是本课题库里的干扰项',
+          );
+        }
+
+        // 课文的判断依据是逐字抄过去的解析副本，第 11 波的「应排除」尾句在题库侧已被核实或删净，
+        // 第 34 波把课文里没跟上的那批清掉；这里守住它不会自己长回来，也不会漏在课文单边
+        String? blockStem;
+        var tails = 0;
+        for (final line in region.split('\n')) {
+          if (RegExp(r'^\s{0,3}#{2,4}\s').hasMatch(line)) blockStem = null;
+          final stemMatch = RegExp(r'^\s*-\s*\*\*(?:题目|题干)\*\*：(.*)$').firstMatch(line);
+          if (stemMatch != null) {
+            blockStem = flatten(stemMatch.group(1)!);
+            continue;
+          }
+          if (!line.contains('的要求对不上，应排除。')) continue;
+          final question = lesson.quiz
+              .where((item) => flatten(item.question) == blockStem)
+              .firstOrNull;
+          if (question == null) continue;
+          tails++;
+          expect(
+            question.explanation.contains('的要求对不上，应排除。'),
+            isTrue,
+            reason: '${lesson.id} 课文判断依据里的「应排除」尾句在本题解析里已经没有了',
+          );
+        }
+        tailChecked += tails;
+      }
+    }
+    expect(checked, greaterThan(400), reason: '解析点名干扰项的校验覆盖面不应塌缩');
+    expect(mdChecked, greaterThan(300), reason: '课文点名干扰项的校验覆盖面不应塌缩');
+    expect(tailChecked, greaterThan(80), reason: '课文「应排除」尾句与解析的比对覆盖不应塌缩');
+  });
+
   test('课文正文与题库解析不残留转义引号', () async {
     final fence = RegExp(r'^\s*(```|~~~)');
     final escaped = RegExp(r'\\"|\\“|\\”');

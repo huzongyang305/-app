@@ -648,31 +648,31 @@ dotnet publish src/MyApp.Api -c Release -o out
 
 - **题目**：下面这段 `csharp` 代码来自 `生态、测试与 Web 开发`。课程主线是NuGet、xUnit 测试、ASP.NET Core 最小 API 与 EF Core。代码与 `dotnet restore` 有关。哪一项是代码里真实出现的内容？
 - **正确项**：出现字面量 `3.1.1`
-- **判断依据**：本题正确项是出现字面量 `3.1.1`。术语 dotnet restore（生态、测试与 Web 开发）：版本号尽量显式固定，`dotnet restore` 会按 lock 文件还原依赖，保证 CI 与本地一致，本题取出现字面量 `3.1.1`这条。易错点是Singleton 注入 Scoped会造成启动时报错或运行异常，改法是按生命周期匹配，或注入 `IServiceScopeFactory`，干扰项出现字面量 `CHECK TABLE orders;`正踩在这条上。
+- **判断依据**：本题正确项是出现字面量 `3.1.1`。术语 dotnet restore（生态、测试与 Web 开发）：版本号尽量显式固定，`dotnet restore` 会按 lock 文件还原依赖，保证 CI 与本地一致，本题取出现字面量 `3.1.1`这条。易错点是Singleton 注入 Scoped，会造成启动时报错或运行异常，改法是按生命周期匹配，或注入 `IServiceScopeFactory`。本题干扰项「出现字面量 `CHECK TABLE orders;`」不成立：展示代码里找不到 `CHECK TABLE orders`。
 
 ### 考点 2：第 2 题
 
 - **题目**：xUnit 中 [Theory] 配合 [InlineData] 用于？
 - **正确项**：参数化测试
-- **判断依据**：本题正确项是参数化测试。术语 dotnet restore（生态、测试与 Web 开发）：版本号尽量显式固定，`dotnet restore` 会按 lock 文件还原依赖，保证 CI 与本地一致，本题取参数化测试这条。易错点是Singleton 注入 Scoped会造成启动时报错或运行异常，改法是按生命周期匹配，或注入 `IServiceScopeFactory`，干扰项性能测试正踩在这条上。
+- **判断依据**：本题正确项是参数化测试。术语 dotnet restore（生态、测试与 Web 开发）：版本号尽量显式固定，`dotnet restore` 会按 lock 文件还原依赖，保证 CI 与本地一致，本题取参数化测试这条。易错点是用 `new` 创建服务，会造成绕过依赖注入，难以测试，改法是全部从容器解析。
 
 ### 考点 3：第 3 题
 
 - **题目**：EF Core 的主要作用是？
 - **正确项**：ORM：把对象与 LINQ 映射到数据库
-- **判断依据**：本题正确项是ORM：把对象与 LINQ 映射到数据库。术语 EF Core（生态、测试与 Web 开发）：EF Core 把 LINQ 翻译成 SQL，配合迁移（Add-Migration / Database.Migrate()）管理表结构，本题取ORM：把对象与 LINQ 映射到数据库这条。易错点是Singleton 注入 Scoped会造成启动时报错或运行异常，改法是按生命周期匹配，或注入 `IServiceScopeFactory`，干扰项生成前端页面正踩在这条上。
+- **判断依据**：本题正确项是ORM：把对象与 LINQ 映射到数据库。术语 EF Core（生态、测试与 Web 开发）：EF Core 把 LINQ 翻译成 SQL，配合迁移（Add-Migration / Database.Migrate()）管理表结构，本题取ORM：把对象与 LINQ 映射到数据库这条。易错点是配置不校验，会造成运行到一半才崩，改法是`ValidateOnStart()`。
 
 ### 考点 4：第 4 题
 
 - **题目**：ASP.NET Core 中间件的执行方式是？
 - **正确项**：按注册顺序组成管道依次调用
-- **判断依据**：本题正确项是按注册顺序组成管道依次调用。术语 dotnet restore（生态、测试与 Web 开发）：版本号尽量显式固定，`dotnet restore` 会按 lock 文件还原依赖，保证 CI 与本地一致，本题取按注册顺序组成管道依次调用这条。易错点是Singleton 注入 Scoped会造成启动时报错或运行异常，改法是按生命周期匹配，或注入 `IServiceScopeFactory`，干扰项随机顺序执行正踩在这条上。
+- **判断依据**：本题正确项是按注册顺序组成管道依次调用。术语 dotnet restore（生态、测试与 Web 开发）：版本号尽量显式固定，`dotnet restore` 会按 lock 文件还原依赖，保证 CI 与本地一致，本题取按注册顺序组成管道依次调用这条。易错点是忘记 `TreatWarningsAsErrors`，会造成警告越积越多，改法是在 props 里统一开启。
 
 ### 考点 5：第 5 题
 
 - **题目**：围绕“生态、测试与 Web 开发”中的 NuGet、xUnit、ASP.NET Core，下列哪两项是本课强调的实践判断？
 - **正确项**：验证 xUnit 时要固定版本并覆盖边界输入，结论才可复现；学习 NuGet 时要同时说明输入、输出和失败路径，不能只看正常流程
-- **判断依据**：本题正确项是验证 xUnit 时要固定版本并覆盖边界输入，结论才可复现。术语 NuGet（生态、测试与 Web 开发）：.NET 的包管理器，restore 按项目文件解析并下载依赖，锁文件用于固定版本，本题取验证 xUnit 时要固定版本并覆盖边界输入，结论才可复现这条。易错点是Singleton 注入 Scoped会造成启动时报错或运行异常，改法是按生命周期匹配，或注入 `IServiceScopeFactory`，干扰项把 xUnit 的单次运行结果当成所有版本和规模都成立正踩在这条上。
+- **判断依据**：本题正确项是验证 xUnit 时要固定版本并覆盖边界输入，结论才可复现。术语 NuGet（生态、测试与 Web 开发）：.NET 的包管理器，restore 按项目文件解析并下载依赖，锁文件用于固定版本，本题取验证 xUnit 时要固定版本并覆盖边界输入，结论才可复现这条。易错点是每个项目各写版本，会造成版本不一致，改法是用 `Directory.Packages.props` 集中管理。
 
 ### 考点 6：第 6 题
 

@@ -442,13 +442,13 @@ python -m pytest --tb=short -q
 
 - **题目**：这段 `python` 代码对应 `实战：爬虫与数据分析` 的 `timeout`。课程要解决的是requests 抓取、pandas 清洗统计与 matplotlib 可视化。关于代码内容，哪一项说法准确？
 - **正确项**：调用了 `quote.select_one()`
-- **判断依据**：本题正确项是调用了 `quote.select_one()`。术语 timeout（实战：爬虫与数据分析）：要点：`timeout` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性，本题取调用了 `quote.select_one()`这条。易错点是代码放在仓库根目录会造成导入混乱，改法是用 `src/` 布局，干扰项出现字面量 `你好，{name}！`正踩在这条上。
+- **判断依据**：本题正确项是调用了 `quote.select_one()`。术语 timeout（实战：爬虫与数据分析）：要点：`timeout` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性，本题取调用了 `quote.select_one()`这条。易错点是代码放在仓库根目录，会造成导入混乱，改法是用 `src/` 布局。本题干扰项「出现字面量 `你好，{name}！`」不成立：展示代码里找不到 `你好，{name}！`。
 
 ### 考点 2：第 2 题
 
 - **题目**：pandas 中按作者分组求均值应使用？
 - **正确项**：df.groupby('author')['x'].mean
-- **判断依据**：本题正确项是df.groupby('author')['x'].mean。术语 timeout（实战：爬虫与数据分析）：要点：`timeout` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性，本题取df.groupby('author')['x'].mean这条。易错点是代码放在仓库根目录会造成导入混乱，改法是用 `src/` 布局，干扰项df.head正踩在这条上。
+- **判断依据**：本题正确项是df.groupby('author')['x'].mean。术语 timeout（实战：爬虫与数据分析）：要点：`timeout` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性，本题取df.groupby('author')['x'].mean这条。易错点是逻辑与 IO 混在一起，会造成无法单测，改法是抽出纯函数。
 
 ### 考点 3：第 3 题
 
@@ -460,13 +460,13 @@ python -m pytest --tb=short -q
 
 - **题目**：给 requests 请求设置 timeout 的意义是？
 - **正确项**：避免网络异常时请求无限期挂起
-- **判断依据**：本题正确项是避免网络异常时请求无限期挂起。术语 timeout（实战：爬虫与数据分析）：要点：`timeout` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性，本题取避免网络异常时请求无限期挂起这条。易错点是代码放在仓库根目录会造成导入混乱，改法是用 `src/` 布局，干扰项绕过反爬限制正踩在这条上。
+- **判断依据**：本题正确项是避免网络异常时请求无限期挂起。术语 timeout（实战：爬虫与数据分析）：要点：`timeout` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性，本题取避免网络异常时请求无限期挂起这条。易错点是用 print 当日志，会造成无法分级与开关，改法是用 logging。
 
 ### 考点 5：第 5 题
 
 - **题目**：pandas 中把 DataFrame 保存成 CSV 的方法是？
 - **正确项**：df.to_csv('out.csv')
-- **判断依据**：本题正确项是df.to_csv('out.csv')。术语 timeout（实战：爬虫与数据分析）：要点：`timeout` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性，本题取df.to_csv('out.csv')这条。易错点是代码放在仓库根目录会造成导入混乱，改法是用 `src/` 布局，干扰项df.export('out.csv')正踩在这条上。
+- **判断依据**：本题正确项是df.to_csv('out.csv')。术语 timeout（实战：爬虫与数据分析）：要点：`timeout` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性，本题取df.to_csv('out.csv')这条。易错点是`requests.get` 不设超时，会造成请求可能永久挂起，改法是一律设置 `timeout=(连接, 读取)`。
 
 ### 考点 6：第 6 题
 

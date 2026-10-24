@@ -368,25 +368,25 @@ await foreach (var value in Countdown(3))
 
 - **题目**：在 `C# 异步流与取消` 里，与 `IAsyncEnumerable` 有关的说法中，哪一项最符合理解 IAsyncEnumerable、CancellationToken 和异步资源释放。？
 - **正确项**：IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果。
-- **判断依据**：本题正确项是IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果。术语 IAsyncEnumerable（C# 异步流与取消）：C# 中按需异步产生多个值的流式接口，可配合 await foreach，本题取IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果这条。易错点是用 async void 代替 async Task会造成异常无法被捕获，调用方也无法等待，改法是除事件处理器外一律返回 Task 或 ValueTask，干扰项只要小数据能跑通，大规模和异常情况也一定正确正踩在这条上。
+- **判断依据**：本题正确项是IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果。术语 IAsyncEnumerable（C# 异步流与取消）：C# 中按需异步产生多个值的流式接口，可配合 await foreach，本题取IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果这条。易错点是用 async void 代替 async Task，会造成异常无法被捕获，调用方也无法等待，改法是除事件处理器外一律返回 Task 或 ValueTask。
 
 ### 考点 2：第 2 题
 
 - **题目**：围绕“C# 异步流与取消”中的 IAsyncEnumerable、CancellationToken、异步流，下列哪两项是本课强调的实践判断？
 - **正确项**：验证 CancellationToken 时要固定版本并覆盖边界输入，结论才可复现；学习 IAsyncEnumerable 时要同时说明输入、输出和失败路径，不能只看正常流程
-- **判断依据**：本题正确项是验证 CancellationToken 时要固定版本并覆盖边界输入，结论才可复现。术语 IAsyncEnumerable（C# 异步流与取消）：C# 中按需异步产生多个值的流式接口，可配合 await foreach，本题取验证 CancellationToken 时要固定版本并覆盖边界输入，结论才可复现这条。易错点是用 async void 代替 async Task会造成异常无法被捕获，调用方也无法等待，改法是除事件处理器外一律返回 Task 或 ValueTask，干扰项把 CancellationToken 的单次运行结果当成所有版本和规模都成立正踩在这条上。
+- **判断依据**：本题正确项是验证 CancellationToken 时要固定版本并覆盖边界输入，结论才可复现。术语 IAsyncEnumerable（C# 异步流与取消）：C# 中按需异步产生多个值的流式接口，可配合 await foreach，本题取验证 CancellationToken 时要固定版本并覆盖边界输入，结论才可复现这条。易错点是忘记传递取消令牌，会造成客户端断开后后台任务还在继续跑，改法是把 CancellationToken 一路传到最底层调用。
 
 ### 考点 3：第 3 题
 
 - **题目**：`C# 异步流与取消` 的示例代码用于验证 `IAsyncEnumerable`，其背景是理解 IAsyncEnumerable、CancellationToken 和异步资源释放。代码的真实内容是下面哪一项？
 - **正确项**：调用了 `foreach()`
-- **判断依据**：本题正确项是调用了 `foreach()`。术语 IAsyncEnumerable（C# 异步流与取消）：C# 中按需异步产生多个值的流式接口，可配合 await foreach，本题取调用了 `foreach()`这条。易错点是用 async void 代替 async Task会造成异常无法被捕获，调用方也无法等待，改法是除事件处理器外一律返回 Task 或 ValueTask，干扰项调用了 `CallChain()`正踩在这条上。
+- **判断依据**：本题正确项是调用了 `foreach()`。术语 IAsyncEnumerable（C# 异步流与取消）：C# 中按需异步产生多个值的流式接口，可配合 await foreach，本题取调用了 `foreach()`这条。易错点是异步流里阻塞等待，会造成线程被占用，吞吐明显下降，改法是用 await foreach 与异步 API，避免 Result 和 Wait。本题干扰项「调用了 `CallChain()`」不成立：展示代码里找不到 `CallChain()`。
 
 ### 考点 4：第 4 题
 
 - **题目**：`C# 异步流与取消` 的主线是：理解 IAsyncEnumerable、CancellationToken 和异步资源释放。下面哪一项与这条主线一致？
 - **正确项**：理解 IAsyncEnumerable
-- **判断依据**：本题正确项是理解 IAsyncEnumerable。术语 IAsyncEnumerable（C# 异步流与取消）：C# 中按需异步产生多个值的流式接口，可配合 await foreach，本题取理解 IAsyncEnumerable这条。易错点是用 async void 代替 async Task会造成异常无法被捕获，调用方也无法等待，改法是除事件处理器外一律返回 Task 或 ValueTask，干扰项用 record、with、模式匹配和不可变集合表达领域数据正踩在这条上。
+- **判断依据**：本题正确项是理解 IAsyncEnumerable。术语 IAsyncEnumerable（C# 异步流与取消）：C# 中按需异步产生多个值的流式接口，可配合 await foreach，本题取理解 IAsyncEnumerable这条。易错点是用 async void 代替 async Task，会造成异常无法被捕获，调用方也无法等待，改法是除事件处理器外一律返回 Task 或 ValueTask。
 
 ### 考点 5：第 5 题
 

@@ -699,31 +699,31 @@ cross build --release --target x86_64-unknown-linux-musl
 
 - **题目**：Rust CLI 最常用的参数解析库是？
 - **正确项**：clap
-- **判断依据**：术语 Rust（Rust 实战：命令行工具）：Rust CLI 的标准配方：clap 解析 + anyhow/thiserror 错误 + serde 序列化 + assertcmd 测试 + 多平台发布，类型系统让这类工具几乎"发布即稳定"，本题取clap这条。易错点是用 `unwrap()` 处理输入会造成用户看到 panic，改法是用 `?` 加 context，干扰项tracing正踩在这条上。
+- **判断依据**：术语 Rust（Rust 实战：命令行工具）：Rust CLI 的标准配方：clap 解析 + anyhow/thiserror 错误 + serde 序列化 + assertcmd 测试 + 多平台发布，类型系统让这类工具几乎"发布即稳定"，本题取clap这条。易错点是用 `unwrap()` 处理输入，会造成用户看到 panic，改法是用 `?` 加 context。
 
 ### 考点 2：第 2 题
 
 - **题目**：符合 Unix 习惯的输出方式是？
 - **正确项**：正常结果进 stdout
-- **判断依据**：本题正确项是正常结果进 stdout。术语 Rust（Rust 实战：命令行工具）：Rust CLI 的标准配方：clap 解析 + anyhow/thiserror 错误 + serde 序列化 + assertcmd 测试 + 多平台发布，类型系统让这类工具几乎"发布即稳定"，本题取正常结果进 stdout这条。易错点是用 `unwrap()` 处理输入会造成用户看到 panic，改法是用 `?` 加 context，干扰项只在出错时输出正踩在这条上。
+- **判断依据**：本题正确项是正常结果进 stdout。术语 Rust（Rust 实战：命令行工具）：Rust CLI 的标准配方：clap 解析 + anyhow/thiserror 错误 + serde 序列化 + assertcmd 测试 + 多平台发布，类型系统让这类工具几乎"发布即稳定"，本题取正常结果进 stdout这条。易错点是手写参数解析，会造成帮助信息不全，改法是用 clap derive。
 
 ### 考点 3：第 3 题
 
 - **题目**：测试二进制行为（stdout/退出码）常用？
 - **正确项**：assert_cmd
-- **判断依据**：本题正确项是assert_cmd。术语 Rust（Rust 实战：命令行工具）：Rust CLI 的标准配方：clap 解析 + anyhow/thiserror 错误 + serde 序列化 + assertcmd 测试 + 多平台发布，类型系统让这类工具几乎"发布即稳定"，本题取assert_cmd这条。易错点是用 `unwrap()` 处理输入会造成用户看到 panic，改法是用 `?` 加 context，干扰项bindgen正踩在这条上。
+- **判断依据**：本题正确项是assert_cmd。术语 Rust（Rust 实战：命令行工具）：Rust CLI 的标准配方：clap 解析 + anyhow/thiserror 错误 + serde 序列化 + assertcmd 测试 + 多平台发布，类型系统让这类工具几乎"发布即稳定"，本题取assert_cmd这条。易错点是错误信息没上下文，会造成不知道哪个文件出错，改法是用 `with_context`。
 
 ### 考点 4：第 4 题
 
 - **题目**：下面这段 `rust` 代码来自 `Rust 实战：命令行工具`。课程主线是clap 解析、错误处理、assert_cmd 测试与发布。代码与 `Rust` 有关。哪一项是代码里真实出现的内容？
 - **正确项**：出现字面量 `Rust的正常路径`
-- **判断依据**：本题正确项是出现字面量 `Rust的正常路径`。术语 Rust（Rust 实战：命令行工具）：Rust CLI 的标准配方：clap 解析 + anyhow/thiserror 错误 + serde 序列化 + assertcmd 测试 + 多平台发布，类型系统让这类工具几乎"发布即稳定"，本题取出现字面量 `Rust的正常路径`这条。易错点是用 `unwrap()` 处理输入会造成用户看到 panic，改法是用 `?` 加 context，干扰项出现字面量 `标题不能为空`正踩在这条上。
+- **判断依据**：本题正确项是出现字面量 `Rust的正常路径`。术语 Rust（Rust 实战：命令行工具）：Rust CLI 的标准配方：clap 解析 + anyhow/thiserror 错误 + serde 序列化 + assertcmd 测试 + 多平台发布，类型系统让这类工具几乎"发布即稳定"，本题取出现字面量 `Rust的正常路径`这条。易错点是配置不校验，会造成运行到一半才崩，改法是加载后立即校验。本题干扰项「出现字面量 `标题不能为空`」不成立：展示代码里找不到 `标题不能为空`。
 
 ### 考点 5：第 5 题
 
 - **题目**：围绕“Rust 实战：命令行工具”中的 Rust、CLI、clap，下列哪两项是本课强调的实践判断？
 - **正确项**：验证 CLI 时要固定版本并覆盖边界输入，结论才可复现；学习 Rust 时要同时说明输入、输出和失败路径，不能只看正常流程
-- **判断依据**：本题正确项是验证 CLI 时要固定版本并覆盖边界输入，结论才可复现。术语 Rust（Rust 实战：命令行工具）：Rust CLI 的标准配方：clap 解析 + anyhow/thiserror 错误 + serde 序列化 + assertcmd 测试 + 多平台发布，类型系统让这类工具几乎"发布即稳定"，本题取验证 CLI 时要固定版本并覆盖边界输入，结论才可复现这条。易错点是用 `unwrap()` 处理输入会造成用户看到 panic，改法是用 `?` 加 context，干扰项只要 Rust 的常规示例通过，就可以跳过边界与异常路径正踩在这条上。
+- **判断依据**：本题正确项是验证 CLI 时要固定版本并覆盖边界输入，结论才可复现。术语 Rust（Rust 实战：命令行工具）：Rust CLI 的标准配方：clap 解析 + anyhow/thiserror 错误 + serde 序列化 + assertcmd 测试 + 多平台发布，类型系统让这类工具几乎"发布即稳定"，本题取验证 CLI 时要固定版本并覆盖边界输入，结论才可复现这条。易错点是日志用 println，会造成无法分级与关闭，改法是用 tracing。
 
 ### 考点 6：第 6 题
 

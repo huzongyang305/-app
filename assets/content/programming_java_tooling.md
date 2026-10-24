@@ -238,31 +238,31 @@ when(repo.findById(1L)).thenReturn(Optional.of(new User("tom")));
 
 - **题目**：围绕“构建、测试与生态”中的 Maven、Gradle、JUnit，下列哪两项是本课强调的实践判断？
 - **正确项**：学习 Maven 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 Gradle 时要固定版本并覆盖边界输入，结论才可复现
-- **判断依据**：本题正确项是学习 Maven 时要同时说明输入、输出和失败路径，不能只看正常流程。术语 JUnit（构建、测试与生态）：Java 常用的单元测试框架，用注解声明测试、断言和生命周期，本题取学习 Maven 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是用 `system` 路径引本地 jar会造成换机器就失败，改法是装进私服或本地仓库，干扰项把 Gradle 的单次运行结果当成所有版本和规模都成立正踩在这条上。
+- **判断依据**：本题正确项是学习 Maven 时要同时说明输入、输出和失败路径，不能只看正常流程。术语 JUnit（构建、测试与生态）：Java 常用的单元测试框架，用注解声明测试、断言和生命周期，本题取学习 Maven 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是用 system 路径引本地 jar，会造成换机器就失败，改法是装进私服或本地仓库。
 
 ### 考点 2：第 2 题
 
 - **题目**：`构建、测试与生态` 的示例代码用于验证 `System.out.println`，其背景是Maven/Gradle、JUnit/Mockito、日志门面、JDBC 与常见框架选型。代码的真实内容是下面哪一项？
 - **正确项**：出现字面量 `java`
-- **判断依据**：本题正确项是出现字面量 `java`。术语 System.out.println（构建、测试与生态）：用 SLF4J 门面 + Logback/Log4j2 实现，避免直接使用 `System.out.println`，日志要带上下文，且不要输出密码、令牌等敏感信息，本题取出现字面量 `java`这条。易错点是用 `system` 路径引本地 jar会造成换机器就失败，改法是装进私服或本地仓库，干扰项出现字面量 `出现禁止内容：{keyword}`正踩在这条上。
+- **判断依据**：本题正确项是出现字面量 `java`。术语 System.out.println（构建、测试与生态）：用 SLF4J 门面 + Logback/Log4j2 实现，避免直接使用 `System.out.println`，日志要带上下文，且不要输出密码、令牌等敏感信息，本题取出现字面量 `java`这条。易错点是依赖版本冲突，改法是用 dependency:tree 排查。本题干扰项「出现字面量 `出现禁止内容：{keyword}`」不成立：展示代码里找不到 `出现禁止内容：{keyword}`。
 
 ### 考点 3：第 3 题
 
 - **题目**：防止 SQL 注入的正确做法是？
 - **正确项**：使用 PreparedStatement 参数占位符
-- **判断依据**：本题正确项是使用 PreparedStatement 参数占位符。术语 System.out.println（构建、测试与生态）：用 SLF4J 门面 + Logback/Log4j2 实现，避免直接使用 `System.out.println`，日志要带上下文，且不要输出密码、令牌等敏感信息，本题取使用 PreparedStatement 参数占位符这条。易错点是用 `system` 路径引本地 jar会造成换机器就失败，改法是装进私服或本地仓库，干扰项过滤单引号正踩在这条上。
+- **判断依据**：本题正确项是使用 PreparedStatement 参数占位符。术语 System.out.println（构建、测试与生态）：用 SLF4J 门面 + Logback/Log4j2 实现，避免直接使用 `System.out.println`，日志要带上下文，且不要输出密码、令牌等敏感信息，本题取使用 PreparedStatement 参数占位符这条。易错点是忘提交 wrapper，会造成构建环境不一致，改法是提交 mvnw / gradlew。
 
 ### 考点 4：第 4 题
 
 - **题目**：JUnit 5 中编写参数化测试使用哪个注解？
 - **正确项**：@ParameterizedTest
-- **判断依据**：本题正确项是@ParameterizedTest。术语 JUnit（构建、测试与生态）：Java 常用的单元测试框架，用注解声明测试、断言和生命周期，本题取@ParameterizedTest这条。易错点是用 `system` 路径引本地 jar会造成换机器就失败，改法是装进私服或本地仓库，干扰项@RepeatTest正踩在这条上。
+- **判断依据**：本题正确项是@ParameterizedTest。术语 JUnit（构建、测试与生态）：Java 常用的单元测试框架，用注解声明测试、断言和生命周期，本题取@ParameterizedTest这条。易错点是用 System.out.println 调试，会造成生产日志无法统一收集，改法是用日志框架并分级。
 
 ### 考点 5：第 5 题
 
 - **题目**：Gradle 中 settings.gradle 与 build.gradle 的分工是？
 - **正确项**：settings 定义项目结构（包含哪些模块）
-- **判断依据**：本题正确项是settings 定义项目结构（包含哪些模块）。术语 System.out.println（构建、测试与生态）：用 SLF4J 门面 + Logback/Log4j2 实现，避免直接使用 `System.out.println`，日志要带上下文，且不要输出密码、令牌等敏感信息，本题取settings 定义项目结构（包含哪些模块）这条。易错点是用 `system` 路径引本地 jar会造成换机器就失败，改法是装进私服或本地仓库，干扰项build 定义模块，settings 定义依赖正踩在这条上。
+- **判断依据**：本题正确项是settings 定义项目结构（包含哪些模块）。术语 System.out.println（构建、测试与生态）：用 SLF4J 门面 + Logback/Log4j2 实现，避免直接使用 `System.out.println`，日志要带上下文，且不要输出密码、令牌等敏感信息，本题取settings 定义项目结构（包含哪些模块）这条。易错点是测试依赖不标 test 范围，会造成打包体积变大，改法是测试依赖标 test scope。
 
 ### 考点 6：第 6 题
 

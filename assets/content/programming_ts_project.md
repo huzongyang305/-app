@@ -446,25 +446,25 @@ package.json
 
 - **题目**：围绕“TypeScript 工程配置与实践”中的 TypeScript、tsconfig、strict，下列哪两项是本课强调的实践判断？
 - **正确项**：学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 tsconfig 时要固定版本并覆盖边界输入，结论才可复现
-- **判断依据**：本题正确项是学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程（TypeScript 工程配置与实践）。术语 TypeScript（TypeScript 工程配置与实践）：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js，本题取学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是以为打包会查类型会造成类型错误照样上线，改法是CI 单独跑 `tsc --noEmit`，干扰项把 tsconfig 的单次运行结果当成所有版本和规模都成立正踩在这条上。
+- **判断依据**：本题正确项是学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程（TypeScript 工程配置与实践）。术语 TypeScript（TypeScript 工程配置与实践）：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js，本题取学习 TypeScript 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是以为打包会查类型，会造成类型错误照样上线，改法是CI 单独跑 `tsc --noEmit`。
 
 ### 考点 2：第 2 题
 
 - **题目**：接口返回数据应该如何处理？
 - **正确项**：用 zod 等做运行时校验后再使用
-- **判断依据**：本题正确项是用 zod 等做运行时校验后再使用。术语 TypeScript（TypeScript 工程配置与实践）：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js，本题取用 zod 等做运行时校验后再使用这条。易错点是以为打包会查类型会造成类型错误照样上线，改法是CI 单独跑 `tsc --noEmit`，干扰项加非空断言正踩在这条上。
+- **判断依据**：本题正确项是用 zod 等做运行时校验后再使用。术语 TypeScript（TypeScript 工程配置与实践）：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js，本题取用 zod 等做运行时校验后再使用这条。易错点是只配 tsconfig 别名，会造成运行时找不到模块，改法是打包器同步配置。
 
 ### 考点 3：第 3 题
 
 - **题目**：团队禁止 any 后，处理未知数据应使用？
 - **正确项**：unknown + 类型收窄
-- **判断依据**：本题正确项是unknown + 类型收窄。术语 TypeScript（TypeScript 工程配置与实践）：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js，本题取unknown + 类型收窄这条。易错点是以为打包会查类型会造成类型错误照样上线，改法是CI 单独跑 `tsc --noEmit`，干扰项never正踩在这条上。
+- **判断依据**：本题正确项是unknown + 类型收窄。术语 TypeScript（TypeScript 工程配置与实践）：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js，本题取unknown + 类型收窄这条。易错点是关掉 `strict`，会造成空值错误频发，改法是新项目一律开启。
 
 ### 考点 4：第 4 题
 
 - **题目**：下面这段 `typescript` 代码来自 `TypeScript 工程配置与实践`。课程主线是strict、tsc --noEmit、zod 运行时校验与团队规范。代码与 `TypeScript` 有关。哪一项是代码里真实出现的内容？
 - **正确项**：出现字面量 `module`
-- **判断依据**：本题正确项是出现字面量 `module`。术语 TypeScript（TypeScript 工程配置与实践）：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js，本题取出现字面量 `module`这条。易错点是以为打包会查类型会造成类型错误照样上线，改法是CI 单独跑 `tsc --noEmit`，干扰项出现字面量 `title`正踩在这条上。
+- **判断依据**：本题正确项是出现字面量 `module`。术语 TypeScript（TypeScript 工程配置与实践）：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js，本题取出现字面量 `module`这条。易错点是忽略 `noUncheckedIndexedAccess`，会造成数组取值可能 undefined，改法是开启并处理。本题干扰项「出现字面量 `title`」不成立：展示代码里找不到 `title`。
 
 ### 考点 5：第 5 题
 

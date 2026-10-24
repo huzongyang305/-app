@@ -527,31 +527,31 @@ shellcheck -S warning scripts/*.sh    # 静态检查
 
 - **题目**：阅读 `Shell 脚本工程化` 中围绕 `Shell` 的代码；课程主线是目录结构、bats 测试、shellcheck 与 CI 发布。下面哪项判断最准确？
 - **正确项**：目录结构、bats 测试、shellcheck 与 CI 发布。
-- **判断依据**：本题正确项是目录结构、bats 测试、shellcheck 与 CI 发布。术语 Shell（Shell 脚本工程化）：Shell 工程化 = 目录结构 + shellcheck/shfmt + bats 测试 + CI + 版本化发布，脚本一旦进入生产，就要按代码对待，本题取目录结构、bats 测试、shellcheck 与 CI 发布这条。易错点是不跑 shellcheck会造成低级错误上线，改法是CI 里加静态检查，干扰项这段 Shell 代码只展示语法，不会读取任何输入或产生可验证输出正踩在这条上。
+- **判断依据**：本题正确项是目录结构、bats 测试、shellcheck 与 CI 发布。术语 Shell（Shell 脚本工程化）：Shell 工程化 = 目录结构 + shellcheck/shfmt + bats 测试 + CI + 版本化发布，脚本一旦进入生产，就要按代码对待，本题取目录结构、bats 测试、shellcheck 与 CI 发布这条。易错点是不跑 shellcheck，会造成低级错误上线，改法是CI 里加静态检查。
 
 ### 考点 2：第 2 题
 
 - **题目**：Shell 静态检查的必装工具是？
 - **正确项**：shellcheck
-- **判断依据**：本题正确项是shellcheck。术语 Shell（Shell 脚本工程化）：Shell 工程化 = 目录结构 + shellcheck/shfmt + bats 测试 + CI + 版本化发布，脚本一旦进入生产，就要按代码对待，本题取shellcheck这条。易错点是不跑 shellcheck会造成低级错误上线，改法是CI 里加静态检查，干扰项pylint正踩在这条上。
+- **判断依据**：本题正确项是shellcheck。术语 Shell（Shell 脚本工程化）：Shell 工程化 = 目录结构 + shellcheck/shfmt + bats 测试 + CI + 版本化发布，脚本一旦进入生产，就要按代码对待，本题取shellcheck这条。易错点是没有 `usage`，会造成同事不会用，改法是每个脚本都写帮助。
 
 ### 考点 3：第 3 题
 
 - **题目**：围绕“Shell 脚本工程化”中的 Shell、bats、shellcheck，下列哪两项是本课强调的实践判断？
 - **正确项**：学习 Shell 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 bats 时要固定版本并覆盖边界输入，结论才可复现
-- **判断依据**：本题正确项是学习 Shell 时要同时说明输入、输出和失败路径，不能只看正常流程（Shell 脚本工程化）。术语 Shell（Shell 脚本工程化）：Shell 工程化 = 目录结构 + shellcheck/shfmt + bats 测试 + CI + 版本化发布，脚本一旦进入生产，就要按代码对待，本题取学习 Shell 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是不跑 shellcheck会造成低级错误上线，改法是CI 里加静态检查，干扰项只要 Shell 的常规示例通过，就可以跳过边界与异常路径正踩在这条上。
+- **判断依据**：本题正确项是学习 Shell 时要同时说明输入、输出和失败路径，不能只看正常流程（Shell 脚本工程化）。术语 Shell（Shell 脚本工程化）：Shell 工程化 = 目录结构 + shellcheck/shfmt + bats 测试 + CI + 版本化发布，脚本一旦进入生产，就要按代码对待，本题取学习 Shell 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是用 `$1` 直接取参，会造成少传参数就出错，改法是用 `getopts` 加校验。
 
 ### 考点 4：第 4 题
 
 - **题目**：set -x 与 set -v 的区别是？
 - **正确项**：-x 打印展开后实际执行的命令
-- **判断依据**：本题正确项是-x 打印展开后实际执行的命令。术语 Shell（Shell 脚本工程化）：Shell 工程化 = 目录结构 + shellcheck/shfmt + bats 测试 + CI + 版本化发布，脚本一旦进入生产，就要按代码对待，本题取-x 打印展开后实际执行的命令这条。易错点是不跑 shellcheck会造成低级错误上线，改法是CI 里加静态检查，干扰项-v 会关闭错误处理正踩在这条上。
+- **判断依据**：本题正确项是-x 打印展开后实际执行的命令。术语 Shell（Shell 脚本工程化）：Shell 工程化 = 目录结构 + shellcheck/shfmt + bats 测试 + CI + 版本化发布，脚本一旦进入生产，就要按代码对待，本题取-x 打印展开后实际执行的命令这条。易错点是出错继续跑，会造成结果不完整却报成功，改法是`set -e` 与显式 `exit`。
 
 ### 考点 5：第 5 题
 
 - **题目**：脚本要支持标准风格的短选项（-a -b 值），推荐用？
 - **正确项**：getopts
-- **判断依据**：本题正确项是getopts。术语 Shell（Shell 脚本工程化）：Shell 工程化 = 目录结构 + shellcheck/shfmt + bats 测试 + CI + 版本化发布，脚本一旦进入生产，就要按代码对待，本题取getopts这条。易错点是不跑 shellcheck会造成低级错误上线，改法是CI 里加静态检查，干扰项用 $1 依次取用即可正踩在这条上。
+- **判断依据**：本题正确项是getopts。术语 Shell（Shell 脚本工程化）：Shell 工程化 = 目录结构 + shellcheck/shfmt + bats 测试 + CI + 版本化发布，脚本一旦进入生产，就要按代码对待，本题取getopts这条。易错点是日志格式不统一，会造成排查困难，改法是统一 `log()` 函数。
 
 ### 考点 6：第 6 题
 

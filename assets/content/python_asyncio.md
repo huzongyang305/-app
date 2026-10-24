@@ -578,26 +578,26 @@ async def main():
 
 - **题目**：为什么在 async 函数中调用 time.sleep 会破坏并发？
 - **正确项**：它会阻塞事件循环线程，其他任务无法被调度
-- **判断依据**：本题正确项是它会阻塞事件循环线程，其他任务无法被调度。术语 事件循环（Python asyncio 异步编程：任务、超时与取消）：调度协程、回调和 I/O 事件的核心循环，本题取它会阻塞事件循环线程，其他任务无法被调度这条。易错点是在《Python asyncio 异步编程：任务、超时与取消》里的典型做法是async 函数中使用 time.sleep，所有并发任务一起卡住，这样在事件循环里调用 time.sleep会表现为结果错误、异常中断或状态不一致，改法是改用 asyncio.sleep，阻塞函数用 asyncio.to_thread 或线程池桥接，干扰项它会自动取消所有任务正踩在这条上。
+- **判断依据**：本题正确项是它会阻塞事件循环线程，其他任务无法被调度。术语 事件循环（Python asyncio 异步编程：任务、超时与取消）：调度协程、回调和 I/O 事件的核心循环，本题取它会阻塞事件循环线程，其他任务无法被调度这条。易错点是在事件循环里调用 time.sleep，会造成async 函数中使用 time.sleep，所有并发任务一起卡住，改法是改用 asyncio.sleep，阻塞函数用 asyncio.to_thread 或线程池桥接。
 
 ### 考点 2：第 2 题
 
 - **题目**：asyncio.gather 返回结果时的顺序是？
 - **正确项**：与传入的等待对象顺序一致，而不是完成顺序
-- **判断依据**：本题正确项是与传入的等待对象顺序一致，而不是完成顺序。术语 协程（Python asyncio 异步编程：任务、超时与取消）：async def 定义的可在 await 处暂停和恢复的函数调用形式，本题取与传入的等待对象顺序一致，而不是完成顺序这条。易错点是在《Python asyncio 异步编程：任务、超时与取消》里的典型做法是async 函数中使用 time.sleep，所有并发任务一起卡住，这样在事件循环里调用 time.sleep会表现为结果错误、异常中断或状态不一致，改法是改用 asyncio.sleep，阻塞函数用 asyncio.to_thread 或线程池桥接，干扰项永远按完成先后排列正踩在这条上。
+- **判断依据**：本题正确项是与传入的等待对象顺序一致，而不是完成顺序。术语 协程（Python asyncio 异步编程：任务、超时与取消）：async def 定义的可在 await 处暂停和恢复的函数调用形式，本题取与传入的等待对象顺序一致，而不是完成顺序这条。易错点是调用协程却不 await，会造成直接写 fetch() 或 create_task 后不保存引用，代码没有执行或任务被回收，改法是显式 await，或把任务收集到列表并用 TaskGroup 管理生命周期。
 
 ### 考点 3：第 3 题
 
 - **题目**：关于取消与超时，哪些说法正确？（多选）
 - **正确项**：取消通过 CancelledError 在协程暂停点传播；清理资源应放在 finally 或 async with 中；捕获 CancelledError 后不应静默忽略
-- **判断依据**：本题正确项是取消通过 CancelledError 在协程暂停点传播。术语 协程（Python asyncio 异步编程：任务、超时与取消）：async def 定义的可在 await 处暂停和恢复的函数调用形式，本题取取消通过 CancelledError 在协程暂停点传播这条。易错点是在《Python asyncio 异步编程：任务、超时与取消》里的典型做法是捕获 CancelledError 后继续执行且不重新抛出，上层超时失效，这样吞掉 CancelledError会表现为结果错误、异常中断或状态不一致，改法是在 finally 中清理资源，然后重新抛出取消异常，干扰项清理资源应放在 finally 或 async with 中正踩在这条上。
+- **判断依据**：本题正确项是取消通过 CancelledError 在协程暂停点传播。术语 协程（Python asyncio 异步编程：任务、超时与取消）：async def 定义的可在 await 处暂停和恢复的函数调用形式，本题取取消通过 CancelledError 在协程暂停点传播这条。易错点是吞掉 CancelledError，会造成捕获 CancelledError 后继续执行且不重新抛出，上层超时失效，改法是在 finally 中清理资源，然后重新抛出取消异常。
 
 ### 考点 4：第 4 题
 
 - **题目**：阅读 TaskGroup 代码，正常完成后的输出是什么？  async with asyncio.TaskGroup() as group:     tasks = [group.create_task(fetch(i)) for i in range(2)] print([task.result() for task in tasks])
 
 - **正确项**：按任务顺序输出两个结果
-- **判断依据**：本题正确项是按任务顺序输出两个结果。术语 Task（Python asyncio 异步编程：任务、超时与取消）：事件循环调度的协程包装，可查询状态、取消和获取结果，本题取按任务顺序输出两个结果这条。易错点是在《Python asyncio 异步编程：任务、超时与取消》里的典型做法是async 函数中使用 time.sleep，所有并发任务一起卡住，这样在事件循环里调用 time.sleep会表现为结果错误、异常中断或状态不一致，改法是改用 asyncio.sleep，阻塞函数用 asyncio.to_thread 或线程池桥接，干扰项只输出第一个结果正踩在这条上。
+- **判断依据**：本题正确项是按任务顺序输出两个结果。术语 Task（Python asyncio 异步编程：任务、超时与取消）：事件循环调度的协程包装，可查询状态、取消和获取结果，本题取按任务顺序输出两个结果这条。易错点是无界创建任务，会造成对一万条数据同时 create_task，内存和连接瞬间打满，改法是使用信号量或分批队列限制并发数量，形成背压。
 
 ### 考点 5：第 5 题
 

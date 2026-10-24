@@ -212,31 +212,31 @@ Map<String, List<Student>> byTeam = students.stream()
 
 - **题目**：Stream 的中间操作（filter/map）什么时候真正执行？
 - **正确项**：遇到终止操作才执行
-- **判断依据**：本题正确项是遇到终止操作时才执行。术语 Optional（Lambda 与 Stream API）：.findFirst()，本题取遇到终止操作时才执行这条。易错点是把 Stream 当集合复用会造成`IllegalStateException: stream has already been operated upon`，改法是每条流水线只用一个流，干扰项JVM 空闲时正踩在这条上。
+- **判断依据**：本题正确项是遇到终止操作时才执行。术语 Optional（Lambda 与 Stream API）：.findFirst()，本题取遇到终止操作时才执行这条。易错点是把 Stream 当集合复用，改法是流只能消费一次。易错点是中间操作不写终止操作，会造成什么也不执行，改法是流是惰性的。
 
 ### 考点 2：第 2 题
 
 - **题目**：代码语言为 `java`，选自 `Lambda 与 Stream API` 的 `Optional` 部分。课程问题为函数式接口、方法引用、Stream 惰性求值、Optional 与并行流。哪一项描述与代码一致？
 - **正确项**：调用了 `length()`
-- **判断依据**：本题正确项是调用了 `length()`。术语 Optional（Lambda 与 Stream API）：.findFirst()，本题取调用了 `length()`这条。易错点是把 Stream 当集合复用会造成`IllegalStateException: stream has already been operated upon`，改法是每条流水线只用一个流，干扰项调用了 `ValueError()`正踩在这条上。
+- **判断依据**：本题正确项是调用了 `length()`。术语 Optional（Lambda 与 Stream API）：.findFirst()，本题取调用了 `length()`这条。易错点是中间操作不写终止操作，会造成什么也不执行，改法是流是惰性的。本题干扰项「调用了 `ValueError()`」不成立：展示代码里找不到 `ValueError()`。
 
 ### 考点 3：第 3 题
 
 - **题目**：围绕“Lambda 与 Stream API”中的 lambda、Stream、Optional，下列哪两项是本课强调的实践判断？
 - **正确项**：验证 Stream 时要固定版本并覆盖边界输入，结论才可复现；学习 lambda 时要同时说明输入、输出和失败路径，不能只看正常流程
-- **判断依据**：本题正确项是验证 Stream 时要固定版本并覆盖边界输入，结论才可复现。术语 Optional（Lambda 与 Stream API）：.findFirst()，本题取验证 Stream 时要固定版本并覆盖边界输入，结论才可复现这条。易错点是把 Stream 当集合复用会造成`IllegalStateException: stream has already been operated upon`，改法是每条流水线只用一个流，干扰项只要 lambda 的常规示例通过，就可以跳过边界与异常路径正踩在这条上。
+- **判断依据**：本题正确项是验证 Stream 时要固定版本并覆盖边界输入，结论才可复现。术语 Optional（Lambda 与 Stream API）：.findFirst()，本题取验证 Stream 时要固定版本并覆盖边界输入，结论才可复现这条。易错点是Lambda 里改变量，会造成编译错误，改法是捕获的变量必须 effectively final。
 
 ### 考点 4：第 4 题
 
 - **题目**：Stream 的 collect 与 forEach 的区别是？
 - **正确项**：collect 是终止操作
-- **判断依据**：本题正确项是collect 是终止操作。术语 Optional（Lambda 与 Stream API）：.findFirst()，本题取collect 是终止操作这条。易错点是把 Stream 当集合复用会造成`IllegalStateException: stream has already been operated upon`，改法是每条流水线只用一个流，干扰项collect 只能用于并行流正踩在这条上。
+- **判断依据**：本题正确项是collect 是终止操作。术语 Optional（Lambda 与 Stream API）：.findFirst()，本题取collect 是终止操作这条。易错点是乱用并行流，会造成结果错乱或更慢，改法是只在纯计算大数据量时用。
 
 ### 考点 5：第 5 题
 
 - **题目**：方法引用 String::length 等价于哪个 lambda？
 - **正确项**：s -> s.length
-- **判断依据**：本题正确项是s -> s.length。术语 方法引用（Lambda 与 Stream API）：用双冒号语法把已有方法当作函数式接口的实现，比 lambda 更短也更易读，本题取s -> s.length这条。易错点是把 Stream 当集合复用会造成`IllegalStateException: stream has already been operated upon`，改法是每条流水线只用一个流，干扰项(a, b) -> a.length正踩在这条上。
+- **判断依据**：本题正确项是s -> s.length。术语 方法引用（Lambda 与 Stream API）：用双冒号语法把已有方法当作函数式接口的实现，比 lambda 更短也更易读，本题取s -> s.length这条。易错点是toMap 键重复，改法是提供合并函数 (a,b) -> a。
 
 ### 考点 6：第 6 题
 

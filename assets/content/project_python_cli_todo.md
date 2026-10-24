@@ -420,25 +420,25 @@ def add(title: str) -> dict:
 
 - **题目**：围绕“实战：Python CLI 待办工具”中的 CLI、argparse、JSON，下列哪两项是本课强调的实践判断？
 - **正确项**：学习 CLI 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 argparse 时要固定版本并覆盖边界输入，结论才可复现
-- **判断依据**：本题正确项是学习 CLI 时要同时说明输入、输出和失败路径，不能只看正常流程。术语 CLI（实战：Python CLI 待办工具）：Explain what Project: Python CLI Todo Tool solves and when it should be used.，本题取学习 CLI 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是直接覆盖原 JSON 文件会造成写入中断时文件变成半截 JSON，改法是先写同目录临时文件再原子替换，干扰项只要 CLI 的常规示例通过，就可以跳过边界与异常路径正踩在这条上。
+- **判断依据**：本题正确项是学习 CLI 时要同时说明输入、输出和失败路径，不能只看正常流程。术语 CLI（实战：Python CLI 待办工具）：Explain what Project: Python CLI Todo Tool solves and when it should be used.，本题取学习 CLI 时要同时说明输入、输出和失败路径，不能只看正常流程这条。易错点是直接覆盖原 JSON 文件，会造成写入中断时文件变成半截 JSON，改法是先写同目录临时文件再原子替换。
 
 ### 考点 2：第 2 题
 
 - **题目**：CLI 把待办数据写入 JSON 文件时，哪种写入方式更能避免文件损坏？
 - **正确项**：先写同目录临时文件
-- **判断依据**：本题正确项是先写同目录临时文件。术语 CLI（实战：Python CLI 待办工具）：Explain what Project: Python CLI Todo Tool solves and when it should be used.，本题取先写同目录临时文件这条。易错点是直接覆盖原 JSON 文件会造成写入中断时文件变成半截 JSON，改法是先写同目录临时文件再原子替换，干扰项打开目标文件后直接清空再写正踩在这条上。
+- **判断依据**：本题正确项是先写同目录临时文件。术语 CLI（实战：Python CLI 待办工具）：Explain what Project: Python CLI Todo Tool solves and when it should be used.，本题取先写同目录临时文件这条。易错点是用全局可变状态保存任务，会造成测试互相污染且难以恢复，改法是让仓储函数显式接收路径。
 
 ### 考点 3：第 3 题
 
 - **题目**：为 CLI 增加 --json 输出后，自动化测试最应该断言什么？
 - **正确项**：可解析的结构、字段语义和退出码
-- **判断依据**：本题正确项是可解析的结构、字段语义和退出码。术语 CLI（实战：Python CLI 待办工具）：Explain what Project: Python CLI Todo Tool solves and when it should be used.，本题取可解析的结构、字段语义和退出码这条。易错点是直接覆盖原 JSON 文件会造成写入中断时文件变成半截 JSON，改法是先写同目录临时文件再原子替换，干扰项终端颜色完全一致正踩在这条上。
+- **判断依据**：本题正确项是可解析的结构、字段语义和退出码。术语 CLI（实战：Python CLI 待办工具）：Explain what Project: Python CLI Todo Tool solves and when it should be used.，本题取可解析的结构、字段语义和退出码这条。易错点是所有错误都返回退出码 0，会造成脚本无法判断失败，改法是为参数、数据和运行时错误分配稳定退出码。
 
 ### 考点 4：第 4 题
 
 - **题目**：这段 `python` 代码对应 `实战：Python CLI 待办工具` 的 `CLI`。课程要解决的是从空目录实现可安装、可测试、可发布的命令行待办工具，覆盖参数解析、原子写入、错误码与打包。关于代码内容，哪一项说法准确？
 - **正确项**：这段示例用于说明本课术语 `JSON` 的行为
-- **判断依据**：本题正确项是这段示例用于说明本课术语 `JSON` 的行为。术语 `JSON` 的行为。术语 `JSON` 的行为。术语 `JSON` 的行为。术语 CLI（实战：Python CLI 待办工具）：Explain what Project: Python CLI Todo Tool solves and when it should be used.，本题取这段示例用于说明本课术语 `JSON` 的行为这条。易错点是直接覆盖原 JSON 文件会造成写入中断时文件变成半截 JSON，改法是先写同目录临时文件再原子替换，干扰项代码里出现了 `渲染` 这个名字正踩在这条上。
+- **判断依据**：本题正确项是这段示例用于说明本课术语 `JSON` 的行为。术语 `JSON` 的行为。术语 `JSON` 的行为。术语 `JSON` 的行为。术语 CLI（实战：Python CLI 待办工具）：Explain what Project: Python CLI Todo Tool solves and when it should be used.，本题取这段示例用于说明本课术语 `JSON` 的行为这条。易错点是只测试成功路径，会造成空列表和重复编号在线上才暴露，改法是覆盖空数据、非法编号和损坏文件。本题干扰项「代码里出现了 `渲染` 这个名字」不成立：展示代码里找不到 `渲染`。
 
 ### 考点 5：第 5 题
 
