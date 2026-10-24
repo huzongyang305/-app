@@ -1,6 +1,6 @@
 # Java 变量与输出
 
-> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：30 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：50 分钟
 
 ![变量声明与输出](images/diagram_java_vars.webp)
 
@@ -35,6 +35,11 @@
 | `类型转换` | 小范围到大范围自动提升，反向需要显式强制转换。 |
 | `格式化输出` | printf 或 String.format 用 %d、%s 控制输出格式。 |
 | `JVM` | Java 源码编译成平台无关的字节码，JVM 负责加载、验证、解释和即时编译。 |
+| `final 变量` | 加上 final 就只能赋值一次，声明时必须给初值；不变的值就该这么写。 |
+| `包装类` | 与基本类型成对出现的对象类型，`int` 配 `Integer`、`double` 配 `Double`，比较内容要用 equals。 |
+| `字面量类型` | 写下 `5` 就是 int，`5L` 是 long，`5.0` 是 double，`'A'` 是 char，`"Ada"` 是 String，后缀说了算。 |
+| `Scanner` | 从键盘读值的类。nextInt() 遇到非数字会抛 InputMismatchException，想读整行得用 nextLine()。 |
+| `var` | Java 10 起允许局部变量由初值推断类型，推断出来的类型照样是固定的，字段和方法参数不能用它。 |
 
 ## 原理与运行机制
 
@@ -97,6 +102,68 @@ System.out.printf("%s born in %d%n", name, year);
 
 常用占位符：`%d` 整数、`%f` 浮点数、`%s` 字符串、`%n` 换行。
 
+### 八种基本类型分别装什么、占多大
+
+| 类型 | 占几字节 | 能装的范围 | 默认值（只对字段和数组元素生效） |
+| --- | --- | --- | --- |
+| `byte` | 1 | -128 到 127 | 0 |
+| `short` | 2 | -32768 到 32767 | 0 |
+| `int` | 4 | 约正负 21 亿 | 0 |
+| `long` | 8 | 约正负 9.2 乘 10 的 18 次方 | 0 |
+| `char` | 2 | 0 到 65535，装一个 Unicode 码元 | 编号 0 的字符，不是空格 |
+| `float` | 4 | 约 7 位有效数字 | 0.0 |
+| `double` | 8 | 约 15 到 16 位有效数字 | 0.0 |
+| `boolean` | 规范未规定，HotSpot 常按 4 字节存 | true 或 false | false |
+
+日常选择很简单：整数用 `int`，装不下再换 `long`；带小数用 `double`；只有真假两种状态用 `boolean`；单个字符用 `char`，一串文字用 `String`。
+
+### 声明、赋值、使用：编译器在检查什么
+
+Java 对局部变量做「明确赋值」检查——每一条能走到使用点的路径都必须给变量赋过值，否则编译阶段就拦住。字段和数组元素有默认值，局部变量没有，这正是 `变量声明与初始化` 这条术语的真正落点：先声明类型和名字，紧接着赋初值。
+
+```java
+int score;
+if (args.length > 0) {
+    score = Integer.parseInt(args[0]);
+}
+System.out.println(score);   // 编译报错：else 路径没赋值，score 可能尚未初始化
+```
+
+把第一行改成 `int score = 0;`，或者补一个 `else` 分支，程序就能编译。报错信息里的 `might not have been initialized` 就是这条规则在说话。
+
+### 输出到底走到了哪里
+
+`System.out` 是一个打印流对象，`println` 每次写一行并自动补换行；`printf` 先把格式串解析一遍再写出，所以带占位符的调用比直译的 `println` 多做一点活。标准输出与标准错误是两条独立通道，可以被分别重定向：
+
+```bash
+java Main > out.txt 2> err.txt
+```
+
+在学习阶段养成把「正常结果」和「报错提示」分开的习惯，之后回看失败路径时不用在一堆文字里翻找。
+
+### 整数除法的三种写法与一条常见误改
+
+```java
+int a = 5;
+int b = 2;
+System.out.println((double) a / b);    // 2.5，先升成 double 再除
+System.out.println(1.0 * a / b);       // 2.5，一个 double 字面量把整条表达式带上去
+System.out.println(a / (double) b);    // 2.5，改右边也够
+System.out.println((double) (a / b));  // 2.0，错：括号里已经整除过了
+```
+
+最后一行是初学阶段最容易「看起来修好了」的写法：转换符号加了，结果仍然是整数。要小数就确保除法发生之前至少有一个操作数是浮点类型；涉及金额时更稳的做法是换成 `BigDecimal`，或者干脆以「分」为单位用 `long` 记账。
+
+### char 参与运算时会被当成数字
+
+```java
+System.out.println('A' + 1);          // 66
+System.out.println((char) ('A' + 1)); // B
+System.out.println("A" + 1);          // A1
+```
+
+单引号里的 `char` 本质是一个小整数，一旦参加加法就升成 `int`；双引号的 `String` 出现后整条表达式才变成拼接。搞混这两种引号，输出的就是数字而不是字母。
+
 ## 典型应用场景
 
 ### 场景一：声明不同类型的变量
@@ -151,6 +218,51 @@ public class Main {
 }
 ```
 
+### 场景四：把用户输入读进来，并接住非数字
+
+```java
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("请输入年龄：");
+        if (scanner.hasNextInt()) {
+            int age = scanner.nextInt();
+            System.out.printf("明年你 %d 岁%n", age + 1);
+        } else {
+            System.out.println("年龄必须是整数，你输入的是：" + scanner.next());
+        }
+        scanner.close();
+    }
+}
+```
+
+`input` 类操作有两条出口：读到数字、读到别的东西。程序只演示第一条就交付，等于把第二条留给用户去踩。分别试 `18`、`十八`、`18.5`、直接回车这四种输入，记下每条走到哪个分支。
+
+### 场景五：算平均分需要小数
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        int[] scores = {88, 92, 79};
+        int sum = 0;
+        for (int s : scores) {
+            sum += s;
+        }
+        double avg = (double) sum / scores.length;
+        System.out.println("原始平均分：" + avg);
+        System.out.printf("保留两位：%8.2f%n", avg);
+    }
+}
+```
+
+`sum` 与 `scores.length` 都是 `int`，不先转换就会丢掉小数部分——这是本课「整数除法」陷阱在真实统计场景里的样子。`%8.2f` 里的 8 控制总宽度、2 控制小数位数，报表对齐就靠它。
+
+### 场景六：把结论写成能被别人复现的记录
+
+同一份代码，换一台机器、换一个 JDK 版本，输出可能没变，但你的判断需要证据。按这个顺序留痕：先写清楚这个小程序的输入范围、期望输出和已知约束；再跑最小示例核对基线；然后一次只改一处（比如只把 `int` 换成 `double`）记录边界输入的表现差异；最后把 `java -version`、`javac --version` 的输出和边界清单（0、负数、`2147483648` 这种刚好越界的整数）一起归档。
+
 ## 代码/协议/SQL 示例
 
 ### 最小可验证示例
@@ -198,6 +310,46 @@ System.out.println("结果是：" + (x + y));  // 结果是：30（先算加法�
 
 `+` 遇到 String 就变成拼接运算符。如果希望先做算术运算，要用括号括起来。
 
+### 练习一：同名变量能不能重复声明
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        int count = 1;
+        {
+            // int count = 2;   // 编译报错：内层不能重复声明同名局部变量
+            int inner = 2;
+            System.out.println(count + inner);   // 3
+        }
+        System.out.println(count);               // 1，外层没被影响
+    }
+}
+```
+
+把注释那一行的斜杠去掉再编译一次，编译器会直接指出 `count` 已经在本方法里定义过（英文环境下是 `variable count is already defined in method main`）。理解这一点，后面读到「方法参数与局部变量同名」的代码就不会误判谁覆盖谁。
+
+### 练习二：常量与变量分开写
+
+```java
+public class Main {
+    static final int MAX_RETRY = 3;      // 类级常量：大写下划线命名
+
+    public static void main(String[] args) {
+        final double pi = 3.14159;       // 局部常量：声明时必须赋初值
+        int retry = 1;                   // 普通变量：后面还会变
+        System.out.printf("圆周率 %.4f，最多重试 %d 次，当前第 %d 次%n", pi, MAX_RETRY, retry);
+    }
+}
+```
+
+预期输出：
+
+```text
+圆周率 3.1416，最多重试 3 次，当前第 1 次
+```
+
+值不会再变的量就加 `final`；反过来，需要随着循环或输入变化的变量不要加，否则第二次赋值会编译失败。
+
 ## 时间/空间复杂度或性能分析
 
 对于入门阶段的变量和输出操作，性能不是首要关注点。但了解一些基本概念有助于养成好习惯：
@@ -215,6 +367,11 @@ System.out.println("结果是：" + (x + y));  // 结果是：30（先算加法�
 | 整数除法丢小数 | 结果与预期不符。 | 需要小数时先转成浮点或高精度类型。 |
 | 用等号比较包装类型 | 超出缓存范围后结果不一致。 | 用 equals 比较，或先拆箱再比较。 |
 | 字符串拼接与运算顺序混淆 | 得到拼接结果而不是计算结果。 | 用括号明确运算顺序。 |
+| 以为局部变量自带默认值 | 编译报 might not have been initialized。 | 声明时就赋初值，或保证每条到达路径都赋过值。 |
+| 用 int 存 2147483648 或手机号 | 编译报超出范围，或运算后变成负数。 | 大整数写 L 后缀用 long，编号类信息直接用 String 存。 |
+| 用 double 累加金额 | 9.9 减 9.6 打印出一长串多余小数位。 | 金额改用 BigDecimal，或以分为单位用 long 记账。 |
+| 忘记 import Scanner | 编译报 cannot find symbol。 | 文件顶部补一行 import java.util.Scanner。 |
+| 用 next() 读带空格的整行 | 只读到第一个空格之前的内容。 | 读整行用 nextLine()，并留意它会接住上一行剩下的换行符。 |
 
 ### 误区一：`int price = 9.9;`
 
@@ -330,6 +487,11 @@ System.out.println(c == d);  // false（超出缓存范围）
 | `类型转换` | 小范围到大范围自动提升，反向需要显式强制转换。 |
 | `格式化输出` | printf 或 String.format 用 %d、%s 控制输出格式。 |
 | `JVM` | Java 源码编译成平台无关的字节码，JVM 负责加载、验证、解释和即时编译。 |
+| `final 变量` | 只能赋值一次的变量，声明时必须给初值。 |
+| `包装类` | 与基本类型成对的对象版本，`int` 配 `Integer`；比较内容用 equals。 |
+| `字面量类型` | 源码里直接写下的值自带类型，`5L` 是 long，`5.0` 是 double。 |
+| `Scanner` | 读键盘输入的工具类，nextInt 遇到非数字会抛 InputMismatchException。 |
+| `明确赋值检查` | 编译器确认局部变量在使用前的每条路径都被赋过值，否则拒绝编译。 |
 
 ## 参考资料与复核
 

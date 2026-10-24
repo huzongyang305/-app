@@ -1,6 +1,6 @@
 # 环境与 JVM
 
-> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：30 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：45 分钟
 
 ![JDK JRE JVM 与字节码](images/diagram_java_runtime.webp)
 
@@ -36,6 +36,10 @@
 | `字节码` | 源码编译后的中间指令，由虚拟机解释或即时编译执行。 |
 | `包` | 把一组相关类型、函数或模块组织在一起的命名空间单元。 |
 | `JAVA_HOME` | 指向 JDK 根目录的环境变量。 |
+| `类路径（classpath）` | 包的根目录，`-cp` 用它定位 `.class`；`javac -d out` 与 `java -cp out` 里的 `out` 就是类路径的根。 |
+| `--release` | 编译时锁定目标 Java 版本，语法和 API 都按那个版本校验，避免高版本 JDK 编出低版本 JVM 拒收的字节码。 |
+| `JIT 编译器` | 运行期把被反复执行的热点字节码翻译成当前平台的机器码，所以要跑够轮数才看得到真实性能。 |
+| `退出码` | 进程结束时交给操作系统的整数。`main` 正常返回或调用 `System.exit(0)` 表示成功，非 0 让脚本和 CI 判断失败。 |
 
 ## 原理与运行机制
 
@@ -95,6 +99,37 @@ JVM 执行字节码有两种方式：
 
 **垃圾回收（GC）**：JVM 自动回收不再使用的对象占用的内存。你不需要像 C 语言那样手动 `free`。
 
+### 环境变量怎么配
+
+`javac` 和 `java` 都是 JDK 里的可执行文件，终端能不能找到它们取决于 `PATH`：
+
+1. 把 JDK 解压到不含空格和中文的路径，例如 `D:\dev\jdk-21`。
+2. 新建 `JAVA_HOME`，值写这个根目录本身；Windows 下不要以 `\bin` 或反斜杠结尾。
+3. 在 `PATH` 里追加 `%JAVA_HOME%\bin`（Linux/macOS 写 `$JAVA_HOME/bin`）。
+4. 重开一个终端验证：`java -version` 和 `javac -version` 都要能跑出来，而且版本号一致。
+
+最后那条尤其重要。两个版本号不一致，就正好埋下了"编译版本高于运行版本"那个坑。
+
+### 「跨平台」跨的到底是哪一层
+
+字节码跨的是指令层，不是整个运行环境。同一份 `.class` 在三个系统上都能被执行，因为三边的 JVM 都认识同一套指令。但下面这些仍然各平台不同：
+
+- 路径分隔符：`com/example/app` 与 `com\example\app`
+- 文本换行：`\n` 与 `\r\n`
+- 本机库：一旦用到 JNI，`.dll` 和 `.so` 得各准备一份
+
+所以那句口号的准确版本是：**源码只编译一次，字节码在任何装了匹配版本 JVM 的机器上都能跑**，而不是"什么都不用管"。
+
+### 每次运行都该留下三样记录
+
+判断自己是不是真跑通了，看三处：
+
+- **输入**：命令行参数给了什么、`-cp` 指向哪、JDK 哪个版本、当前工作目录在哪。
+- **输出**：`System.out` 的正文、异常栈走到的 `System.err`、进程退出码。
+- **失败路径**：类找不到时的 `ClassNotFoundException`、入口签名写错时 JVM 抛出的主方法相关提示、字节码版本不符时的 `UnsupportedClassVersionError`。
+
+只写一句"运行成功"的笔记下次没法复用；把这三样抄下来，换台机器也照样能对上。
+
 ## 典型应用场景
 
 ### 场景一：编译运行第一个程序
@@ -144,6 +179,40 @@ javac -d out com/example/app/Main.java
 java -cp out com.example.app.Main
 ```
 
+### 场景四：接收参数并给出退出码
+
+```java
+public class Rename {
+    public static void main(String[] args) {
+        if (args.length < 2) {
+            System.err.println("用法：java Rename 旧名 新名");
+            System.exit(2);
+        }
+        System.out.println(args[0] + " → " + args[1]);
+    }
+}
+```
+
+`args` 拿到的是 `main` 后面那些以空格分隔的词，`System.err.println` 走错误流，`System.exit(2)` 立刻结束并把 2 交给操作系统。在 shell 里敲 `java Rename 只给一个名字` 再用 `echo $?` 查看，打印出的 2 就是"参数没给够"这件事被程序自己承认了；参数给齐时打印的才是 0。
+
+### 场景五：确认手上的字节码是哪一代
+
+```bash
+javac --release 17 -d out src/com/example/app/Main.java
+javap -v -cp out com.example.app.Main | grep "major version"
+```
+
+`major version: 61` 对应 Java 17、`52` 对应 Java 8、`65` 对应 Java 21。对方说"我这台机器只有 11"，你就用 `--release 11` 重编一次再把 jar 给他，而不是让对方升级 JDK——这是最容易在群里来回扯皮的场景，一条命令就能把版本差异钉死。
+
+### 场景六：把编译产物交给别人
+
+```bash
+jar --create --file rename.jar --main-class Rename -C out .
+java -jar rename.jar old.txt new.txt
+```
+
+`--main-class` 会把入口类写进 jar 里的清单文件，之后 `java -jar` 就不必再敲 `-cp` 和类名。分发给别人时给一个 jar，比给一堆散落的 `.class` 稳妥得多。
+
 ## 代码/协议/SQL 示例
 
 ### 最小可验证示例
@@ -181,6 +250,24 @@ Hello, Java!
 | `jstack` | 查看线程状态 |
 | `jmap` | 查看堆内存 |
 
+### 把三步连成一条可复现的记录
+
+```bash
+java -version
+javac -d out src/com/example/app/Main.java
+java -cp out com.example.app.Main
+```
+
+三行连着敲，不出意外就能看到输出。哪一行断了，问题就在哪一层：第一行失败说明 `PATH` 或 `JAVA_HOME` 没配对；第二行失败是源码本身或目录结构对不上包名；第三行失败几乎总是类名、包名或 `-cp` 的根目录写错。把这三行连同版本号一起抄进笔记，下次换机器照着核对即可。
+
+### 反编译看一眼字节码里到底存了什么
+
+```bash
+javap -c -p -cp out com.example.app.Main
+```
+
+你会看到 `ldc` 往操作数栈上压字符串常量、`invokevirtual` 调用 `println` 这样的指令，而不是任何 CPU 机器码。`.class` 是"指令 + 常量池 + 符号表"的组合，方法名和类名以符号形式留在常量池中——这解释了为什么运行时要靠包名加类名去定位，也解释了 `-cp` 为什么必须指向包的根目录。
+
 ## 时间/空间复杂度或性能分析
 
 JVM 的性能有几个关键指标：
@@ -191,6 +278,23 @@ JVM 的性能有几个关键指标：
 - **内存占用**：JVM 本身需要一定内存（默认堆大小通常是物理内存的 1/4）。可以通过 `-Xmx` 设置最大堆。
 
 测量方法：固定输入跑一遍记录基线，再提高规模复测，两次结果的差值才是结论依据。
+
+### 下结论之前先固定这四样
+
+- `java -version` 和 `javac -version` 的完整输出，包含厂商与构建号
+- 启动参数：`-Xmx` 给了多少、用的是哪个回收器、有没有加 `-Xint`
+- 输入规模：加载多少个类、循环多少轮，写成具体数字而不是"跑了一下"
+- 预热轮次：解释执行阶段和 JIT 生效之后的差距，常常比你这次要测的那点优化本身还大
+
+同一台机器、同一份参数、连跑三次取中间那次，才是能对别人复述的结果。只凭一次运行就断言"这样写快三倍"，换一个 JDK 版本大概率不成立。
+
+### GC 停顿从哪里看
+
+```bash
+java -Xlog:gc*:file=gc.log -Xmx128m -cp out com.example.app.Main
+```
+
+日志里盯两个量：单次暂停的时长，以及回收之后老年代还剩多少。暂停只在流量高的短窗口变长，一般是分配速率上去了；如果暂停越来越长、回收后剩余量还降不下去，说明对象根本没死，该抓堆找引用链，继续调回收器参数不会有用。
 
 ## 常见误区与易错点
 

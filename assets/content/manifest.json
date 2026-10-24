@@ -350,7 +350,7 @@
             "en": "Build layouts with Row, Column and Expanded."
           },
           "file": "assets/content/flutter_layout_intro.md",
-          "minutes": 25,
+          "minutes": 30,
           "keywords": [
             "Flutter 布局入门",
             "移动开发",
@@ -855,7 +855,7 @@
             "en": "Cover frame budgets, fixed timestep, interpolation and stutter analysis."
           },
           "file": "assets/content/gamedev_game_loop.md",
-          "minutes": 20,
+          "minutes": 30,
           "keywords": [
             "游戏循环",
             "固定时间步",
@@ -1237,7 +1237,7 @@
             "en": "Draw calls, material state, batching, atlases and culling."
           },
           "file": "assets/content/gamedev_render_pipeline.md",
-          "minutes": 20,
+          "minutes": 30,
           "keywords": [
             "渲染管线",
             "Draw Call",
@@ -1431,7 +1431,7 @@
             "en": "Authoritative servers, state replication, interpolation, prediction and rollback."
           },
           "file": "assets/content/gamedev_multiplayer_sync.md",
-          "minutes": 20,
+          "minutes": 30,
           "keywords": [
             "权威服务器",
             "状态同步",
@@ -1625,7 +1625,7 @@
             "en": "Cover component layouts, cache-friendly iteration, pooling and profiling-driven optimisation."
           },
           "file": "assets/content/gamedev_ecs_profiling.md",
-          "minutes": 20,
+          "minutes": 30,
           "keywords": [
             "ECS",
             "数据局部性",
@@ -1731,7 +1731,7 @@
             "en": "Organize pages with headings, lists and links."
           },
           "file": "assets/content/html_tags_intro.md",
-          "minutes": 20,
+          "minutes": 30,
           "keywords": [
             "HTML 标签入门",
             "HTML 与 CSS",
@@ -3262,7 +3262,7 @@
             "en": "Install, run and print your first result."
           },
           "file": "assets/content/python_first_script.md",
-          "minutes": 25,
+          "minutes": 45,
           "keywords": [
             "Python 第一个脚本",
             "Python",
@@ -3355,7 +3355,7 @@
             "en": "Read input, convert types and format output."
           },
           "file": "assets/content/python_input_output.md",
-          "minutes": 35,
+          "minutes": 55,
           "keywords": [
             "Python 输入与输出",
             "Python",
@@ -3548,7 +3548,7 @@
             "en": "Repeat work with for and while loops."
           },
           "file": "assets/content/python_loops.md",
-          "minutes": 40,
+          "minutes": 65,
           "keywords": [
             "Python 循环入门",
             "Python",
@@ -3646,7 +3646,7 @@
             "en": "Start from the first program and master indentation, comments, I/O."
           },
           "file": "assets/content/programming_python_basics.md",
-          "minutes": 40,
+          "minutes": 65,
           "keywords": [
             "python",
             "缩进",
@@ -3764,7 +3764,7 @@
             "en": "Learn dynamic typing, conversions, mutable and immutable values."
           },
           "file": "assets/content/programming_python_variables.md",
-          "minutes": 35,
+          "minutes": 40,
           "keywords": [
             "变量",
             "类型",
@@ -7314,7 +7314,7 @@
             "en": "Compile and run a minimal C++ program."
           },
           "file": "assets/content/cpp_first_program.md",
-          "minutes": 30,
+          "minutes": 40,
           "keywords": [
             "C++ 第一个程序",
             "C++",
@@ -7408,7 +7408,7 @@
             "en": "Declare variables, read input and print results."
           },
           "file": "assets/content/cpp_variables_io.md",
-          "minutes": 25,
+          "minutes": 50,
           "keywords": [
             "C++ 变量与输入输出",
             "C++",
@@ -7502,7 +7502,7 @@
             "en": "Use conditions to handle input ranges."
           },
           "file": "assets/content/cpp_conditions.md",
-          "minutes": 25,
+          "minutes": 50,
           "keywords": [
             "C++ 条件判断",
             "C++",
@@ -7598,7 +7598,7 @@
             "en": "Master for, while and loop boundaries."
           },
           "file": "assets/content/cpp_loops.md",
-          "minutes": 25,
+          "minutes": 40,
           "keywords": [
             "C++ 循环入门",
             "C++",
@@ -7696,7 +7696,7 @@
             "en": "Extract reusable logic into functions."
           },
           "file": "assets/content/cpp_functions_intro.md",
-          "minutes": 30,
+          "minutes": 50,
           "keywords": [
             "C++ 函数入门",
             "C++",
@@ -7790,7 +7790,7 @@
             "en": "Preprocess, compile, assemble, link; headers and namespaces."
           },
           "file": "assets/content/programming_cpp_basics.md",
-          "minutes": 30,
+          "minutes": 35,
           "keywords": [
             "C++",
             "g++",
@@ -8454,7 +8454,7 @@
             "en": "Function/class templates, specialization, traits and concepts."
           },
           "file": "assets/content/programming_cpp_templates.md",
-          "minutes": 30,
+          "minutes": 45,
           "keywords": [
             "template",
             "泛型",
@@ -10047,7 +10047,7 @@
             "en": "Understand preprocessing, compiling, assembling and linking C programs."
           },
           "file": "assets/content/c_basics.md",
-          "minutes": 25,
+          "minutes": 35,
           "keywords": [
             "C",
             "编译",
@@ -11247,7 +11247,7 @@
             "en": "Write, compile and run a minimal Java class."
           },
           "file": "assets/content/java_first_class.md",
-          "minutes": 25,
+          "minutes": 30,
           "keywords": [
             "Java 第一个类",
             "Java",
@@ -11341,7 +11341,7 @@
             "en": "Understand types, variables and standard output."
           },
           "file": "assets/content/java_variables_output.md",
-          "minutes": 30,
+          "minutes": 50,
           "keywords": [
             "Java 变量与输出",
             "Java",
@@ -11535,7 +11535,7 @@
             "en": "Iterate and accumulate with loops."
           },
           "file": "assets/content/java_loops.md",
-          "minutes": 25,
+          "minutes": 55,
           "keywords": [
             "Java 循环入门",
             "Java",
@@ -11631,7 +11631,7 @@
             "en": "Define methods with parameters and return values."
           },
           "file": "assets/content/java_methods_intro.md",
-          "minutes": 30,
+          "minutes": 45,
           "keywords": [
             "Java 方法入门",
             "Java",
@@ -11725,7 +11725,7 @@
             "en": "JDK/JRE/JVM, compiling, packages and classpath."
           },
           "file": "assets/content/programming_java_basics.md",
-          "minutes": 30,
+          "minutes": 45,
           "keywords": [
             "Java",
             "JVM",
@@ -12053,7 +12053,7 @@
             "en": "Constructors, encapsulation, statics and immutability."
           },
           "file": "assets/content/programming_java_oop.md",
-          "minutes": 25,
+          "minutes": 35,
           "keywords": [
             "class",
             "构造器",
@@ -12162,7 +12162,7 @@
             "en": "Inheritance, interfaces, polymorphism and records."
           },
           "file": "assets/content/programming_java_inheritance.md",
-          "minutes": 20,
+          "minutes": 40,
           "keywords": [
             "继承",
             "接口",
@@ -12274,7 +12274,7 @@
             "en": "List, Set, Map, iteration, generics and wildcards."
           },
           "file": "assets/content/programming_java_collections.md",
-          "minutes": 25,
+          "minutes": 40,
           "keywords": [
             "List",
             "Set",
@@ -12391,7 +12391,7 @@
             "en": "Checked exceptions, try-with-resources, NIO.2."
           },
           "file": "assets/content/programming_java_exceptions.md",
-          "minutes": 25,
+          "minutes": 50,
           "keywords": [
             "异常",
             "try",
@@ -12503,7 +12503,7 @@
             "en": "Functional interfaces, streams, Optional and parallel streams."
           },
           "file": "assets/content/programming_java_lambda_stream.md",
-          "minutes": 25,
+          "minutes": 55,
           "keywords": [
             "lambda",
             "Stream",
@@ -12612,7 +12612,7 @@
             "en": "Maven/Gradle, JUnit, logging, JDBC and frameworks."
           },
           "file": "assets/content/programming_java_tooling.md",
-          "minutes": 30,
+          "minutes": 45,
           "keywords": [
             "Maven",
             "Gradle",
@@ -14967,7 +14967,7 @@
             "en": "Learn val/var, type inference, nullable types and safe calls."
           },
           "file": "assets/content/kotlin_basics.md",
-          "minutes": 25,
+          "minutes": 35,
           "keywords": [
             "Kotlin",
             "空安全",
@@ -16426,7 +16426,7 @@
             "en": "Learn let/var, optional binding, value types and error handling."
           },
           "file": "assets/content/swift_basics.md",
-          "minutes": 25,
+          "minutes": 40,
           "keywords": [
             "Swift",
             "Optional",
@@ -33891,7 +33891,7 @@
             "en": "Master set concepts, operations and identity proofs."
           },
           "file": "assets/content/discrete_math_set_theory.md",
-          "minutes": 25,
+          "minutes": 45,
           "keywords": [
             "集合论",
             "幂集",
@@ -70830,7 +70830,7 @@
             "en": "Dual-thread model, setData cost, subpackages and security."
           },
           "file": "assets/content/mobile_miniprogram.md",
-          "minutes": 25,
+          "minutes": 35,
           "keywords": [
             "小程序",
             "setData",
