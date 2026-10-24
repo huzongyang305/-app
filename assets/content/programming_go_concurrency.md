@@ -356,8 +356,8 @@ Go 的并发口号是「**不要通过共享内存来通信，而要通过通信
 ### 考点 2：第 2 题
 
 - **题目**：`Go 并发：goroutine、channel 与 context` 的示例代码用于验证 `context.WithTimeout`，其背景是channel 通信、worker pool、context 取消与竞态检测。代码的真实内容是下面哪一项？
-- **正确项**：调用了 `make()`
-- **判断依据**：本题正确项是调用了 `make()`。术语 context.WithTimeout（Go 并发：goroutine、channel 与 context）：超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`，本题取调用了 `make()`这条。易错点是传递数据、串起流水线会造成channel，改法是数据流向清晰，干扰项调用了 `range()`正踩在这条上。
+- **正确项**：调用了 `wg.Done()`
+- **判断依据**：本题正确项是调用了 `wg.Done()`。术语 context.WithTimeout（Go 并发：goroutine、channel 与 context）：超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`，本题取调用了 `wg.Done()`这条。易错点是传递数据、串起流水线会造成channel，改法是数据流向清晰，干扰项调用了 `range()`正踩在这条上。
 
 ### 考点 3：第 3 题
 

@@ -363,8 +363,8 @@ type Value = Awaited<Promise<number>>;   // number
 ### 考点 2：第 2 题
 
 - **题目**：`TypeScript 工具类型与声明文件` 的示例代码用于验证 `TypeScript`，其背景是Partial/Pick/Omit/Record、映射类型与 .d.ts。代码的真实内容是下面哪一项？
-- **正确项**：出现字面量 `done`
-- **判断依据**：本题正确项是出现字面量 `done`。术语 TypeScript（TypeScript 工具类型与声明文件）：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js，本题取出现字面量 `done`这条。易错点是到处复制字段会造成加字段时漏改，改法是用工具类型派生，干扰项出现字面量 `工具名`正踩在这条上。
+- **正确项**：出现字面量 `name`
+- **判断依据**：本题正确项是出现字面量 `name`。术语 TypeScript（TypeScript 工具类型与声明文件）：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js，本题取出现字面量 `name`这条。易错点是到处复制字段会造成加字段时漏改，改法是用工具类型派生，干扰项出现字面量 `工具名`正踩在这条上。
 
 ### 考点 3：第 3 题
 

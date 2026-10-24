@@ -414,8 +414,8 @@ FROM / JOIN  →  WHERE  →  GROUP BY  →  HAVING  →  SELECT  →  DISTINCT
 ### 考点 2：第 2 题
 
 - **题目**：阅读 `SQL 基础` 的 `SQL` 示例。它服务于建表、增删改查、聚合分组与连接查询。代码中实际包含下列哪一项？
-- **正确项**：调用了 `idx_user_created()`
-- **判断依据**：本题正确项是调用了 `idx_user_created()`。术语 SQL（SQL 基础）：用于查询和修改关系数据库的结构化查询语言，本题取调用了 `idx_user_created()`这条。易错点是`UPDATE` / `DELETE` 不带 `WHERE`会造成全表被改或被删，改法是先 `SELECT` 确认范围，再执行并限制影响行数，干扰项调用了 `round()`正踩在这条上。
+- **正确项**：代码里出现了 `students` 这个名字
+- **判断依据**：本题正确项是代码里出现了 `students` 这个名字。术语 SQL（SQL 基础）：用于查询和修改关系数据库的结构化查询语言，本题取代码里出现了 `students` 这个名字这条。易错点是`UPDATE` / `DELETE` 不带 `WHERE`会造成全表被改或被删，改法是先 `SELECT` 确认范围，再执行并限制影响行数，干扰项调用了 `round()`正踩在这条上。
 
 ### 考点 3：第 3 题
 

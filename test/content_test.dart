@@ -750,11 +750,7 @@ void main() {
             lesson.title.zh.contains('实战') ||
             lesson.title.zh.contains('项目');
         if (isProject) {
-          expect(
-            markdown,
-            contains('项目专属规格'),
-            reason: '${lesson.id} 缺少项目专属规格',
-          );
+          expect(markdown, contains('项目专属规格'), reason: '${lesson.id} 缺少项目专属规格');
         }
       }
     }
@@ -1037,8 +1033,9 @@ void main() {
         if (sectionStart < 0) continue;
         final rest = markdown.substring(sectionStart + 1);
         final nextSection = rest.substring(2).indexOf(RegExp('\n##(?!#)'));
-        final region =
-            nextSection < 0 ? rest : rest.substring(0, nextSection + 2);
+        final region = nextSection < 0
+            ? rest
+            : rest.substring(0, nextSection + 2);
 
         final kept = <int>[];
         final flat = StringBuffer();
@@ -1060,8 +1057,7 @@ void main() {
           }
           if (at < 0) continue;
           final tail = region.substring(kept[at + key.length - 1] + 1);
-          final blockEnd =
-              tail.indexOf(RegExp(r'\n#{3,4}\s*考点|考点\d+\s*[:：]'));
+          final blockEnd = tail.indexOf(RegExp(r'\n#{3,4}\s*考点|考点\d+\s*[:：]'));
           final block = blockEnd < 0 ? tail : tail.substring(0, blockEnd);
 
           String? marked;
@@ -1097,9 +1093,10 @@ void main() {
               : markedSorted == truthSorted;
           if (same) continue;
           final truthLetters = truthIndexes
-              .map((index) => index >= 0 && index < letters.length
-                  ? letters[index]
-                  : '?')
+              .map(
+                (index) =>
+                    index >= 0 && index < letters.length ? letters[index] : '?',
+              )
               .join(question.type == 'order' ? ' → ' : '');
           expect(
             same,
@@ -1109,6 +1106,128 @@ void main() {
         }
       }
     }
+  });
+
+  test('代码题的选项断言与展示代码逐项一致', () {
+    final assertion = RegExp(r'^\s*(?:\*\*)?(调用了|出现字面量|代码里出现了)\s*`([^`]+)`');
+    final wordChar = RegExp(r'[A-Za-z0-9_]');
+    String tokenPattern(String token) => token
+        .split('')
+        .map((ch) => RegExp(r'[.*+?^${}()|[\]\\]').hasMatch(ch) ? '\\$ch' : ch)
+        .join(r'\s*');
+
+    /// 成立口径：字面量允许原文空白，调用了必须带左括号，名字要求独立词
+    bool holds(String code, String kind, String token) {
+      if (token.isEmpty) return false;
+      final first = token[0];
+      final last = token[token.length - 1];
+      final pattern = '${tokenPattern(token)}${kind == 'call' ? r'\s*\(' : ''}';
+      for (final match in RegExp(pattern).allMatches(code)) {
+        final before = match.start > 0 ? code[match.start - 1] : '';
+        final after = match.end < code.length ? code[match.end] : '';
+        if ((kind != 'literal' || wordChar.hasMatch(first)) &&
+            wordChar.hasMatch(before)) {
+          continue;
+        }
+        if (kind != 'call' &&
+            wordChar.hasMatch(last) &&
+            wordChar.hasMatch(after)) {
+          continue;
+        }
+        return true;
+      }
+      return false;
+    }
+
+    var validated = 0;
+    for (final category in categories) {
+      for (final lesson in category.lessons) {
+        for (final question in lesson.quiz) {
+          if (question.type != 'code' && question.type != 'debug') continue;
+          final code = question.code ?? '';
+          if (code.trim().isEmpty) continue;
+          final truth = question.correctIndexes.toSet();
+          var marks = 0;
+          for (var index = 0; index < question.options.length; index++) {
+            final option = question.options[index];
+            final match = assertion.firstMatch(option);
+            if (match == null) continue;
+            final kind = switch (match.group(1)!) {
+              '调用了' => 'call',
+              '出现字面量' => 'literal',
+              _ => 'name',
+            };
+            final token = match
+                .group(2)!
+                .replaceAll(RegExp(r'\s+'), '')
+                .replaceAll(RegExp(r'\(\)$'), '');
+            if (token.length < 2) continue;
+            marks++;
+            final isCorrect = truth.contains(index);
+            expect(
+              holds(code, kind, token),
+              isCorrect,
+              reason:
+                  '${lesson.id} 选项「$option」在展示代码里'
+                  '${isCorrect ? '不成立' : '竟然成立'}',
+            );
+          }
+          if (marks > 0) validated++;
+        }
+      }
+    }
+    expect(validated, greaterThan(300), reason: '断言型代码题的校验覆盖面不应塌缩');
+  });
+
+  test('代码题解析里引用的断言都是该题选项原文', () async {
+    final mention = RegExp(r'(?:调用了|出现字面量|代码里出现了)\s*`[^`]+`');
+    final dropped = RegExp(r'[\s`]');
+    var checked = 0;
+    var mdChecked = 0;
+    for (final category in categories) {
+      for (final lesson in category.lessons) {
+        for (final question in lesson.quiz) {
+          if (question.type != 'code' && question.type != 'debug') continue;
+          final options = question.options
+              .map((o) => o.replaceAll(dropped, ''))
+              .toList();
+          for (final match in mention.allMatches(question.explanation)) {
+            final want = match[0]!.replaceAll(dropped, '');
+            checked++;
+            expect(
+              options.any((option) => option.contains(want)),
+              isTrue,
+              reason: '${lesson.id} 解析引用的「${match[0]}」不是任何选项原文',
+            );
+          }
+        }
+
+        final codeOptions = lesson.quiz
+            .where((q) => q.type == 'code' || q.type == 'debug')
+            .expand((q) => q.options)
+            .map((o) => o.replaceAll(dropped, ''))
+            .toList();
+        if (codeOptions.isEmpty) continue;
+        final markdown = (await rootBundle.loadString(lesson.assetFile))
+            .replaceAll('\r\n', '\n');
+        final start = markdown.indexOf('\n## 考点精讲');
+        if (start < 0) continue;
+        final rest = markdown.substring(start + 1);
+        final cut = rest.substring(2).indexOf(RegExp('\n##(?!#)'));
+        final region = cut < 0 ? rest : rest.substring(0, cut + 2);
+        for (final match in mention.allMatches(region)) {
+          final want = match[0]!.replaceAll(dropped, '');
+          mdChecked++;
+          expect(
+            codeOptions.any((option) => option.contains(want)),
+            isTrue,
+            reason: '${lesson.id} 课文引用的「${match[0]}」不是本课题库选项原文',
+          );
+        }
+      }
+    }
+    expect(checked, greaterThan(600), reason: '解析断言的校验覆盖面不应塌缩');
+    expect(mdChecked, greaterThan(1000), reason: '课文断言的校验覆盖面不应塌缩');
   });
 
   test('课文正文与题库解析不残留转义引号', () async {
@@ -1225,9 +1344,9 @@ void main() {
     );
 
     // P0 复核排期：每门课的「下次复核」不再全部同一天，而是按批次排期。
-    final schedule =
-        jsonDecode(File('docs/content_review_schedule.json').readAsStringSync())
-            as Map<String, dynamic>;
+    final schedule = jsonDecode(
+      File('docs/content_review_schedule.json').readAsStringSync(),
+    ) as Map<String, dynamic>;
     final plannedByLesson = <String, String>{
       for (final raw in schedule['batches'] as List<dynamic>)
         for (final id in (raw as Map)['lesson_ids'] as List<dynamic>)
@@ -1248,9 +1367,8 @@ void main() {
             !markdown.contains('- 下次复核：$planned')) {
           missingReferences.add(lesson.id);
         }
-        final plannedMatch = RegExp(
-          r'- 下次复核：(\d{4}-\d{2}-\d{2})',
-        ).firstMatch(markdown);
+        final plannedMatch = RegExp(r'- 下次复核：(\d{4}-\d{2}-\d{2})')
+            .firstMatch(markdown);
         if (plannedMatch != null) {
           seenDates.add(plannedMatch.group(1)!);
         }

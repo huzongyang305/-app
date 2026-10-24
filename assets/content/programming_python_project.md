@@ -441,8 +441,8 @@ python -m pytest --tb=short -q
 ### 考点 1：第 1 题
 
 - **题目**：这段 `python` 代码对应 `实战：爬虫与数据分析` 的 `timeout`。课程要解决的是requests 抓取、pandas 清洗统计与 matplotlib 可视化。关于代码内容，哪一项说法准确？
-- **正确项**：出现字面量 `loganalyzer.cli:main`
-- **判断依据**：本题正确项是出现字面量 `loganalyzer.cli:main`。术语 timeout（实战：爬虫与数据分析）：要点：`timeout` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性，本题取出现字面量 `loganalyzer.cli:main`这条。易错点是代码放在仓库根目录会造成导入混乱，改法是用 `src/` 布局，干扰项出现字面量 `你好，{name}，`正踩在这条上。
+- **正确项**：调用了 `quote.select_one()`
+- **判断依据**：本题正确项是调用了 `quote.select_one()`。术语 timeout（实战：爬虫与数据分析）：要点：`timeout` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性，本题取调用了 `quote.select_one()`这条。易错点是代码放在仓库根目录会造成导入混乱，改法是用 `src/` 布局，干扰项出现字面量 `你好，{name}！`正踩在这条上。
 
 ### 考点 2：第 2 题
 

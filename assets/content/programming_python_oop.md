@@ -373,8 +373,8 @@ python -m timeit "Dog('旺财', 3)" "from mymodule import Dog"
 ### 考点 4：第 4 题
 
 - **题目**：下面这段 `python` 代码来自 `类与对象`。课程主线是构造方法、封装、继承多态、dataclass 与魔术方法。代码与 `__init__` 有关。哪一项是代码里真实出现的内容？
-- **正确项**：出现字面量 `Dog({self.name})`
-- **判断依据**：本题正确项是出现字面量 `Dog({self.name})`。术语 __init__（类与对象）：`__init__` 是构造方法，`self` 指向实例本身，必须作为第一个参数，本题取出现字面量 `Dog({self.name})`这条。易错点是忘了写 `self`会造成`TypeError: takes 1 positional argument but 2 were given`，改法是实例方法第一个参数必须是 `self`，干扰项出现字面量 `: true, `正踩在这条上。
+- **正确项**：代码里出现了 `__init__` 这个名字
+- **判断依据**：本题正确项是代码里出现了 `__init__` 这个名字。术语 __init__（类与对象）：`__init__` 是构造方法，`self` 指向实例本身，必须作为第一个参数，本题取代码里出现了 `__init__` 这个名字这条。易错点是忘了写 `self`会造成`TypeError: takes 1 positional argument but 2 were given`，改法是实例方法第一个参数必须是 `self`，干扰项出现字面量 `: true, `正踩在这条上。
 
 ### 考点 5：第 5 题
 
