@@ -20,6 +20,13 @@ import 'dart:io';
 import 'option_length_bias_lib.dart';
 import 'option_length_curated.dart';
 
+/// 是否允许 B 策略给干扰项追加限定子句（默认关闭，见 B 策略注释）。
+bool allowCaveatClauses = false;
+
+/// 是否允许 A1/A2/A3 削短正确项文本（默认关闭：长度线索是次要问题，
+/// 答案被削掉信息是事实性损坏，例如 JWT 三部分只剩「头部（Header）」）。
+bool allowCorrectTrim = false;
+
 const String manifestPath = 'assets/content/manifest.json';
 const String reportPath = 'docs/p1_6_option_length_report.md';
 
@@ -29,6 +36,8 @@ const int visibleGap = 5;
 void main(List<String> args) {
   final write = args.contains('--write');
   final emitReport = args.contains('--report');
+  allowCaveatClauses = args.contains('--allow-caveat-clauses');
+  allowCorrectTrim = args.contains('--allow-correct-trim');
   final manifest =
       jsonDecode(File(manifestPath).readAsStringSync()) as Map<String, dynamic>;
 
@@ -196,9 +205,9 @@ _Outcome _fix({
   final longest = options[longestIndex].trim();
   final explanation = (question['explanation'] as String?) ?? '';
 
-  // A1：删除正确项尾部的补充说明括号。
+  // A1：删除正确项尾部的补充说明括号。默认关闭（见 allowCorrectTrim）。
   final parenMatch = RegExp(r'[（(]([^（）()]{2,40})[）)]$').firstMatch(correct);
-  if (parenMatch != null) {
+  if (allowCorrectTrim && parenMatch != null) {
     final inner = parenMatch.group(1)!;
     final base = correct.substring(0, parenMatch.start).trim();
     final innerCjk = RegExp(r'[\u4e00-\u9fff]').allMatches(inner).length;
@@ -230,9 +239,9 @@ _Outcome _fix({
     }
   }
 
-  // A2：把「主句 + 解释子句」截短到仍然完整的最长前缀。
+  // A2：把「主句 + 解释子句」截短到仍然完整的最长前缀。默认关闭（见 allowCorrectTrim）。
   final clauses = splitClauses(correct);
-  if (clauses.length > 1) {
+  if (allowCorrectTrim && clauses.length > 1) {
     var prefix = '';
     String? best;
     for (var i = 0; i < clauses.length - 1; i++) {
@@ -260,8 +269,8 @@ _Outcome _fix({
     }
   }
 
-  // A3：去掉正确项尾部的句号。
-  if (correct.endsWith('。') && correct.length - 1 <= longest.length) {
+  // A3：去掉正确项尾部的句号。默认关闭（见 allowCorrectTrim）。
+  if (allowCorrectTrim && correct.endsWith('。') && correct.length - 1 <= longest.length) {
     final base = correct.substring(0, correct.length - 1).trim();
     if (base.isNotEmpty &&
         _noConflict(base, options, answer) &&
@@ -278,6 +287,9 @@ _Outcome _fix({
   }
 
   // B：给错误项补自然限定子句，按长度从长到短尝试每个干扰项。
+  // 默认关闭：补出来的子句（「但这会引入新的复杂度」这类）换成任何一题都成立，
+  // 是没有信息量的填充，比长度线索更伤内容；需要时显式加 --allow-caveat-clauses 才启用。
+  if (!allowCaveatClauses) return _Outcome(false, 'B', correct);
   final distractors = <int>[
     for (var i = 0; i < options.length; i++)
       if (i != answer) i,

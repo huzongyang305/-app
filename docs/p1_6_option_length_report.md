@@ -1,10 +1,497 @@
 # P1-6 单选题长度线索复核报告
 
-- 严格最长（无并列）：408 道，占比 25.7%
-- 与干扰项并列最长：219 道
-- 差值 >= 5 的题目：0
-- 正确项长度排名分布：{0项更长: 627, 1项: 654, 2项: 161, 3项: 146}
+- 严格最长（无并列）：982 道，占比 51.5%
+- 与干扰项并列最长：196 道
+- 差值 >= 5 的题目：486
+- 正确项长度排名分布：{0项更长: 1178, 1项: 375, 2项: 185, 3项: 170}
 
 差值 <= 4 的题目保持原样：该量级不足以构成可感知的答题线索。
 
-未发现需要人工整理的题目。
+需要人工整理（486）：
+
+- flutter_release｜减小 APK 体积的常用做法是？｜正确项=使用 --split-per-abi 或 App Bundle｜最长干扰项=打包全部 ABI｜差值=23
+- mobile_flutter_advanced｜在Flutter中，AnimationController的vsync参数的作用是什么？｜正确项=防止屏幕撕裂，确保动画帧与屏幕刷新同步｜最长干扰项=决定动画是否循环播放｜差值=9
+- mobile_flutter_advanced｜关于CustomPainter的shouldRepaint方法，以下说法正确的是？｜正确项=返回true时会重新执行paint方法，返回false则跳过重绘｜最长干扰项=应该总是返回true以确保画面最新｜差值=15
+- mobile_flutter_advanced｜以下哪种情况最适合使用CustomPainter而不是组合现有Widget？｜正确项=绘制一个带有渐变色的复杂统计图表｜最长干扰项=创建一个带圆角的按钮｜差值=6
+- mobile_flutter_advanced｜在iOS平台上使用Platform Channel时，为什么需要注意线程问题？｜正确项=FlutterMethodCallHandler可能在后台线程执行，但UI更新必须在主线程｜最长干扰项=iOS的内存管理需要在特定线程进行｜差值=28
+- mobile_performance｜为了避免版本迭代后性能劣化，应该怎么做？｜正确项=建立性能基线并纳入持续集成与发布检查｜最长干扰项=只在出现用户投诉后优化｜差值=7
+- mobile_performance_optimization｜以下哪种情况最可能导致Android应用出现内存泄漏？｜正确项=在Activity中创建了匿名内部类的Handler且未移除消息｜最长干扰项=使用了RecyclerView｜差值=17
+- mobile_performance_optimization｜在Flutter中，如何有效减少应用包体积？｜正确项=启用代码混淆和资源压缩，移除未使用的代码和资源｜最长干扰项=将所有资源打包到主Bundle中｜差值=7
+- mobile_performance_optimization｜在React Native中，为什么FlatList比map渲染数组更适合长列表？｜正确项=FlatList支持虚拟渲染，只渲染可见区域的项｜最长干扰项=FlatList内置了网络请求功能｜差值=7
+- gamedev_game_loop｜固定时间步方案里，累积器的作用是什么？｜正确项=记录尚未被固定步长消费的真实时间｜最长干扰项=保存玩家输入的历史记录｜差值=5
+- gamedev_animation_fsm｜角色在跑步与待机之间高频抖动，最可能的原因是？｜正确项=两个状态的切换阈值相同且没有滞回｜最长干扰项=动画资源分辨率过高｜差值=7
+- gamedev_animation_fsm｜根运动与代码位移同时启用会导致？｜正确项=位移被重复叠加，出现速度异常与抖动｜最长干扰项=过渡时间自动归零｜差值=9
+- gamedev_collision_physics｜两个轴对齐包围盒相交的判定本质是什么？｜正确项=两个盒子在 x 与 y 轴上的投影都重叠｜最长干扰项=两个盒子的顶点数量相同｜差值=9
+- gamedev_asset_pipeline｜把共享资源抽到公共包的主要收益是？｜正确项=避免重复打包，减少下载与内存占用｜最长干扰项=减少美术制作投入｜差值=8
+- gamedev_multiplayer_sync｜关键判定放在服务器执行的核心原因是？｜正确项=防止客户端篡改结果，并保证所有玩家看到一致状态｜最长干扰项=减少显卡负担｜差值=17
+- gamedev_performance_mobile｜判断性能瓶颈的第一步是？｜正确项=分别测量 CPU 与 GPU 各环节耗时｜最长干扰项=换一台更高配的手机｜差值=11
+- css_advanced｜CSS 变量最核心的价值是？｜正确项=集中管理设计令牌并支持主题切换｜最长干扰项=替代类选择器｜差值=9
+- css_advanced｜clamp(1rem, 2.5vw, 2rem) 的含义是？｜正确项=在 1rem 与 2rem 之间按 2.5vw 弹性取值｜最长干扰项=先取 1rem 再取 2rem｜差值=13
+- a11y_aria｜图标按钮（只有图形没有文字）必须添加什么？｜正确项=aria-label 提供可访问名称｜最长干扰项=title 属性即可｜差值=8
+- web_performance｜减小 JS 体积最常用的组合手段是？｜正确项=代码分割 + tree shaking + 压缩（gzip/br）｜最长干扰项=把 JS 内联进 HTML｜差值=20
+- web_pwa_offline｜Service Worker 注册的前置条件是？｜正确项=必须使用 HTTPS（localhost 例外）｜最长干扰项=必须有后端服务器推送证书｜差值=12
+- web_pwa_offline｜发版后用户仍加载旧版 JS，最可能的原因是？｜正确项=Service Worker 缓存策略没有随版本更新｜最长干扰项=浏览器不支持 JavaScript｜差值=9
+- web_components｜组件被移除后必须做什么以避免内存泄漏？｜正确项=在 disconnectedCallback 中解绑事件并清理定时器｜最长干扰项=清空整个 Shadow DOM｜差值=19
+- python_functions｜函数内部给外部同名变量赋值，会发生什么？｜正确项=创建局部变量，外部变量不变｜最长干扰项=直接修改外部变量｜差值=5
+- python_functions｜lambda 最典型的使用场景是？｜正确项=作为 sorted(key=...)、map 等只需要一次的小函数｜最长干扰项=实现复杂业务逻辑｜差值=25
+- python_typing_testing｜pytest 中 fixture 的主要用途是？｜正确项=提供可复用的测试前置准备与清理逻辑｜最长干扰项=生成测试报告｜差值=11
+- python_containers_copy｜对嵌套字典做浅拷贝后修改其中的列表，会发生什么？｜正确项=原字典里的列表也会变化，因为内层对象仍然共享｜最长干扰项=浅拷贝会抛出 TypeError｜差值=6
+- python_containers_copy｜def add(item, box=[]) 连续调用两次会出现什么结果？｜正确项=两次调用共享同一个列表，第二次结果包含第一次的元素｜最长干扰项=每次调用都会创建新列表，结果互相独立｜差值=7
+- python_oop_advanced｜dataclass 中需要一个每个实例独立的列表字段，正确写法是？｜正确项=items: list = field(default_factory=list)｜最长干扰项=items: list = field(shared=True)｜差值=9
+- python_stdlib｜比较 datetime.now() 与带时区的 datetime 会发生什么？｜正确项=抛出 TypeError，因为 aware 与 naive 不能直接比较｜最长干扰项=返回 False 而不是报错｜差值=22
+- python_errors_logging_files｜raise ConfigError('找不到配置') from exc 的作用是什么？｜正确项=把原始异常保存为 __cause__，异常链保留完整因果｜最长干扰项=让程序忽略 ConfigError｜差值=11
+- python_errors_logging_files｜为什么写入重要配置时先写临时文件再 os.replace？｜正确项=读者只会看到完整的旧版本或新版本，不会读到半写内容｜最长干扰项=os.replace 会自动压缩文件｜差值=7
+- python_pytest｜pytest 中验证函数抛出特定异常并检查消息，正确写法是？｜正确项=with pytest.raises(ValueError, match='除数'): divide(1, 0)｜最长干扰项=assert divide(1, 0) == ValueError｜差值=23
+- python_pytest｜fixture 使用 yield 的主要目的是什么？｜正确项=在测试前准备资源，在测试后执行清理｜最长干扰项=把同步测试变成异步测试｜差值=6
+- python_modern_features｜match 语句中 case _ 的作用是什么？｜正确项=匹配任意值且不绑定变量，常作为兜底分支｜最长干扰项=只匹配下划线字符串｜差值=10
+- python_modern_features｜PEP 695 相比旧式泛型写法的主要改进是什么？｜正确项=可以直接在函数和类声明处写类型参数，作用域更清晰｜最长干扰项=让类型检查在运行时强制执行｜差值=11
+- python_cli_automation｜安全执行外部命令的推荐写法是？｜正确项=subprocess.run(['prog', arg], check=True, timeout=10)｜最长干扰项=subprocess.run('prog ' + arg, shell=True)｜差值=12
+- python_cli_automation｜自动化工具提供 dry-run 的主要价值是什么？｜正确项=在修改前输出将要执行的动作，让用户检查影响范围｜最长干扰项=让脚本运行得更快｜差值=15
+- python_gui｜GUI 回调中执行点击按钮后的网络下载，最可能的后果是什么？｜正确项=事件循环被占用，窗口无响应且无法重绘｜最长干扰项=网络请求会转到后台线程｜差值=7
+- python_gui｜后台线程完成计算后，正确更新控件的方式是？｜正确项=把结果放入线程安全队列，由 UI 线程取出后更新｜最长干扰项=让控件自己轮询后台变量并修改主线程｜差值=7
+- python_concurrency｜多线程共享计数变量时出现结果偏小，解决办法是？｜正确项=用 Lock 保护读-改-写过程｜最长干扰项=改用 asyncio｜差值=6
+- python_concurrency｜GIL 带来的实际影响是？｜正确项=多线程无法并行执行 Python 字节码，CPU 密集任务难以提速｜最长干扰项=所有 IO 操作都会阻塞｜差值=21
+- python_project｜给 requests 请求设置 timeout 的意义是？｜正确项=避免网络异常时请求无限期挂起｜最长干扰项=提高服务器响应速度｜差值=5
+- python_project_api｜取消已支付订单应该返回什么？｜正确项=409 Conflict 并说明状态不允许｜最长干扰项=500 并记录未知错误｜差值=10
+- python_concurrency_model｜传统 CPython 中，纯 Python CPU 密集任务为什么难以靠多线程加速？｜正确项=GIL 让同一进程内同一时刻只有一个线程执行 Python 字节码｜最长干扰项=多线程只能在 Windows 使用｜差值=16
+- python_concurrency_model｜四个线程各自执行 counter += 1 一万次，最终结果小于四万，最可能的原因是什么？｜正确项=读取、加一、写回不是原子操作，发生了竞态｜最长干扰项=Python 会自动丢弃异常｜差值=6
+- python_asyncio｜为什么在 async 函数中调用 time.sleep 会破坏并发？｜正确项=它会阻塞事件循环线程，其他任务无法被调度｜最长干扰项=它会自动取消所有任务｜差值=10
+- python_asyncio｜asyncio.gather 返回结果时的顺序是？｜正确项=与传入的等待对象顺序一致，而不是完成顺序｜最长干扰项=只返回第一个完成的结果｜差值=9
+- python_database_sqlalchemy｜防止 SQL 注入最核心的做法是什么？｜正确项=使用绑定参数让数据库区分 SQL 模板与输入值｜最长干扰项=把单引号替换成两个单引号｜差值=11
+- python_http_clients｜为什么 HTTP 请求必须设置超时？｜正确项=防止连接或读取无限等待，避免线程和连接池被耗尽｜最长干扰项=超时能自动修复服务端故障｜差值=11
+- python_security｜存储用户密码的正确方式是？｜正确项=为每个密码生成随机盐并使用 scrypt 等慢哈希｜最长干扰项=使用对称加密后保存密文和密钥在同一数据库｜差值=5
+- python_runtime_memory_performance｜使用 __slots__ 的主要收益是什么？｜正确项=大量实例时减少每个对象的内存占用并限制动态属性｜最长干扰项=让实例可以被序列化成 JSON｜差值=8
+- python_data_processing｜NumPy 向量化运算通常比 Python 逐元素循环快，主要原因是什么？｜正确项=运算在连续内存上批量执行，减少了逐元素的解释器开销｜最长干扰项=NumPy 会自动使用数据库｜差值=11
+- python_data_processing｜避免 pandas 链式赋值问题最直接的写法是？｜正确项=使用 df.loc[条件, 列] = 值 一次完成定位与赋值｜最长干扰项=把 DataFrame 转成列表后修改｜差值=11
+- python_web_deployment｜异步服务中 worker 数量不能盲目增加，最主要的原因是什么？｜正确项=每个 worker 都会消耗内存和数据库连接等有限资源｜最长干扰项=增加 worker 会让代码语法失效｜差值=9
+- python_interop｜ctypes 调用 C 函数前设置 argtypes 和 restype 的主要目的是什么？｜正确项=明确参数与返回值类型，避免错误转换和内存破坏｜最长干扰项=把函数转换为 Python 类｜差值=7
+- python_interop｜C 扩展中释放 GIL 后，哪件事是不能做的？｜正确项=访问 Python 对象或调用 Python API｜最长干扰项=操作不依赖 Python 的原生数据结构｜差值=6
+- python_project_architecture｜组合根的主要职责是什么？｜正确项=在启动处集中创建并连接具体依赖｜最长干扰项=保存所有业务规则｜差值=7
+- python_interview｜拿到编码题后第一步应该做什么？｜正确项=澄清输入输出、规模和边界假设｜最长干扰项=先优化到最优复杂度｜差值=5
+- cpp_functions_intro｜示例中 square(7) 的调用结果是？｜正确项=49，函数把参数相乘后通过 return 交回结果｜最长干扰项=编译错误，因为函数名与变量名冲突｜差值=9
+- cpp_basics｜防止头文件被重复包含的常见做法是？｜正确项=#pragma once 或 include guard｜最长干扰项=使用 namespace｜差值=16
+- cpp_basics｜把多个源文件分开编译的主要好处是？｜正确项=改动一个文件只需重编该文件｜最长干扰项=运行时更省内存｜差值=6
+- cpp_types｜C++ 中 auto 的含义是？｜正确项=由编译器根据初始化表达式推导出的静态类型｜最长干扰项=任意类型（不做检查）｜差值=10
+- cpp_types｜把负数赋给 size_t 或无符号变量时会发生什么？｜正确项=按模转换成一个很大的正数｜最长干扰项=运行时抛出异常｜差值=5
+- cpp_control_functions｜inline 关键字在现代 C++ 中的主要含义是？｜正确项=允许函数定义出现在多个编译单元而只保留一份，并给编译器内联建议｜最长干扰项=强制编译器必须内联展开｜差值=20
+- cpp_oop｜override 关键字的作用是？｜正确项=让编译器检查是否真的覆盖了基类虚函数｜最长干扰项=声明纯虚函数｜差值=12
+- cpp_templates｜模板的主要代价是？｜正确项=编译时间变长、代码体积可能变大｜最长干扰项=不能用于基本类型｜差值=7
+- cpp_tooling｜clang-format 的典型用途是？｜正确项=按统一配置自动格式化代码风格｜最长干扰项=管理依赖版本｜差值=8
+- cpp_project｜CMake 中 target_link_libraries(app PRIVATE fmt) 的作用是？｜正确项=给 app 目标声明需要链接的库及其传递属性｜最长干扰项=把 fmt 源码拷进项目｜差值=10
+- cpp_project_http｜为什么要在测试中开启 Sanitizer？｜正确项=发现越界、泄漏和数据竞争｜最长干扰项=替代单元测试｜差值=6
+- cpp_project_http｜共享任务容器最安全的默认策略是什么？｜正确项=用锁保护读写并缩小临界区｜最长干扰项=只读时不加锁｜差值=6
+- cpp_project_taskdb｜哪个做法最适合管理 sqlite3 句柄？｜正确项=RAII 包装并在析构关闭｜最长干扰项=只依赖进程退出｜差值=6
+- java_first_class｜public static void main(String[] args) 中 static 的作用是？｜正确项=让 JVM 无需创建对象就能直接调用这个入口方法｜最长干扰项=把方法的实现延迟到第一次调用时再编译｜差值=6
+- java_inheritance｜@Override 注解的价值是？｜正确项=让编译器检查是否真的重写了父类/接口方法，避免拼写错误｜最长干扰项=强制方法不能被再次重写｜差值=16
+- java_exceptions｜在 finally 中写 return 的风险是？｜正确项=会覆盖 try 中的返回值甚至吞掉异常｜最长干扰项=会让 finally 不执行｜差值=5
+- java_tooling｜防止 SQL 注入的正确做法是？｜正确项=使用 PreparedStatement 参数占位符｜最长干扰项=字符串拼接 SQL｜差值=17
+- java_project｜JPA 中 N+1 查询问题的常见解法是？｜正确项=用 join fetch / @EntityGraph 一次性预加载关联数据｜最长干扰项=增加更多 @Transactional｜差值=19
+- java_data_access｜在 JDBC 中，推荐使用 `PreparedStatement` 而非 `Statement` 的主要原因是什么？｜正确项=`PreparedStatement` 能防止 SQL 注入并支持预编译缓存，提高安全性和性能｜最长干扰项=`PreparedStatement` 可以同时执行多条不同结构的 SQL 语句｜差值=7
+- java_data_access｜JPA 的 N+1 查询问题的根本原因和推荐解决方案是什么？｜正确项=查询 N 条主记录后，JPA 为每条记录单独查询关联数据，共产生 1+N 次查询；解决方案是使用 JOIN FETCH 或 @EntityGraph 合并加载｜最长干扰项=JPA 的缓存机制失效导致重复查询；解决方案是改用 MyBatis 框架｜差值=43
+- java_data_access｜MyBatis 中 `#{}` 和 `${}` 的核心区别是什么？｜正确项=`${}` 是字符串直接替换，存在 SQL 注入风险；`#{}` 使用预编译占位符，安全且高效｜最长干扰项=`#{}` 用于整数类型参数，`${}` 用于字符串类型参数｜差值=17
+- java_data_access｜关于 HikariCP 连接池配置，`maximum-pool-size` 参数的作用是什么？｜正确项=设置连接池维持的最大连接数量，超出后新请求将等待直到有连接可用或超时｜最长干扰项=设置数据库服务器的最大内存使用量｜差值=18
+- java_data_access｜Spring 的 `@Transactional` 注解背后使用了什么机制来实现事务管理？｜正确项=使用 AOP 代理，在方法执行前开启事务，正常结束则提交，抛出异常则回滚｜最长干扰项=通过 JDBC 的 Savepoint 机制实现部分回滚｜差值=8
+- java_microservices｜在微服务架构中，当一个服务需要调用另一个服务时，它是怎样知道对方地址的？｜正确项=通过服务注册中心（如 Nacos、Eureka）查询目标服务的地址列表，再由负载均衡器选择一个实例发起调用｜最长干扰项=通过 API 网关转发所有请求，不需要知道目标服务地址｜差值=26
+- java_microservices｜API 网关在微服务架构中承担的核心职责是什么？｜正确项=作为所有外部请求的统一入口，负责路由转发、身份鉴权、限流和跨域处理｜最长干扰项=只负责将请求转发到后端服务，不做任何其他处理｜差值=11
+- java_microservices｜在微服务架构中，Feign 的主要作用是什么？｜正确项=作为声明式 HTTP 客户端，让微服务之间的远程调用像调用本地方法一样简单｜最长干扰项=实现分布式链路追踪和日志收集｜差值=23
+- java_microservices｜微服务架构中，为什么不能忽略熔断器和降级机制的配置？｜正确项=忽略熔断和降级会导致一个服务故障时请求不断重试，故障蔓延至整个系统，引发雪崩效应｜最长干扰项=不配置熔断器会影响 API 网关的路由转发效率｜差值=17
+- java_testing｜`@WebMvcTest(OrderController.class)` 和 `@SpringBootTest` 在测试范围和性能上有什么核心区别？｜正确项=`@WebMvcTest` 只加载 Web 层（Controller），启动速度快；`@SpringBootTest` 加载完整应用上下文，用于集成测试｜最长干扰项=`@WebMvcTest` 只能测试 GET 请求，`@SpringBootTest` 可以测试所有 HTTP 方法｜差值=18
+- java_testing｜使用 Mockito 时，`@Mock` 和 `@InjectMocks` 注解分别起什么作用？｜正确项=`@Mock` 创建模拟对象以替代真实依赖，`@InjectMocks` 创建被测对象并自动将 Mock 对象注入到其依赖中｜最长干扰项=`@Mock` 创建真实数据库连接，`@InjectMocks` 创建 HTTP 请求｜差值=19
+- java_testing｜在测试金字塔中，单元测试、集成测试和端到端测试的数量比例和速度特点分别是什么？｜正确项=单元测试数量最多、速度最快（毫秒级）；集成测试居中；端到端测试数量最少、速度最慢（分钟级）｜最长干扰项=端到端测试数量最多、速度最快；单元测试数量最少、速度最慢｜差值=17
+- java_testing｜在 MockMvc 测试中，为什么需要使用 `@MockBean` 注解替换 Service 层的依赖？｜正确项=为了隔离 Controller 层测试，避免调用真实的 Service 逻辑和外部依赖，使测试更快更稳定｜最长干扰项=因为 MockMvc 不支持直接调用 Service 方法｜差值=23
+- java_performance_monitoring｜Spring Boot Actuator 默认暴露哪些端点？为什么生产环境不能暴露所有端点？｜正确项=默认只暴露 health 和 info；因为 env 会泄露密码和密钥，heapdump 会导出堆内存中的敏感数据，存在安全风险｜最长干扰项=默认只暴露 metrics 和 loggers；因为其他端点会影响应用性能｜差值=27
+- java_performance_monitoring｜在性能监控中，为什么只看平均响应时间不够？应该关注什么指标？｜正确项=平均值会掩盖极端情况，应关注 P99 或 P999 延迟，它反映\u201c最差的 1%用户\u201d的真实体感｜最长干扰项=平均响应时间已经足够反映系统性能，无需其他指标｜差值=34
+- java_performance_monitoring｜在指标采集架构中，Micrometer、Prometheus 和 Grafana 分别承担什么角色？｜正确项=Micrometer 是采集层（埋点收集数据），Prometheus 是存储层（时序数据库，通过 pull 模式拉取数据），Grafana 是展示层（可视化仪表盘）｜最长干扰项=Micrometer 存储数据，Prometheus 展示图表，Grafana 采集指标｜差值=38
+- java_performance_monitoring｜分布式追踪中，Trace ID 和 Span ID 分别代表什么？它们如何配合工作？｜正确项=Trace ID 是一个请求的全局唯一标识，贯穿整个调用链；Span ID 是每个服务处理步骤的标识，一个 Trace 包含多个 Span｜最长干扰项=Trace ID 用于标识数据库连接，Span ID 用于标识 HTTP 连接｜差值=30
+- java_performance_monitoring｜生产环境中，为什么不能将日志级别设为 DEBUG？｜正确项=DEBUG 级别会产生大量日志输出，导致磁盘空间被撑爆，IO 性能下降；生产环境应使用 INFO 或 WARN 级别｜最长干扰项=DEBUG 级别的日志会导致应用无法正常运行｜差值=36
+- java_deployment｜Docker 镜像的分层机制有什么好处？为什么多阶段构建能减小镜像体积？｜正确项=分层可以复用和缓存加速构建；多阶段构建的最终镜像只包含运行阶段文件，构建阶段的编译器、源码等全部被丢弃｜最长干扰项=分层机制没有任何好处，多阶段构建只是为了让 Dockerfile 更复杂｜差值=15
+- java_deployment｜Kubernetes 中 Deployment 的 `maxSurge` 和 `maxUnavailable` 分别是什么意思？如果 `replicas=3`、`maxSurge=1`、`maxUnavailable=0`，滚动更新时最多会有几个 Pod 同时运行？｜正确项=最多 4 个 Pod；maxSurge 控制更新时允许超出期望副本数的上限，maxUnavailable 控制允许不可用的下限｜最长干扰项=最多 3 个 Pod；maxSurge 和 maxUnavailable 不影响 Pod 总数｜差值=16
+- java_deployment｜在 Dockerfile 中，使用多阶段构建（multi-stage build）的主要目的是什么？｜正确项=将构建环境和运行环境分离，最终镜像只包含运行所需的最小文件集，显著减小镜像体积｜最长干扰项=让 Dockerfile 支持多个操作系统｜差值=18
+- java_deployment｜Kubernetes 中 ConfigMap 和 Secret 的区别是什么？为什么说 Secret 的 Base64 编码不算真正的加密？｜正确项=ConfigMap 存储非机密配置数据（明文），Secret 存储敏感数据；Base64 只是编码方式而非加密，任何人可以瞬间解码还原原文｜最长干扰项=ConfigMap 用于存储密码，Secret 用于存储日志级别｜差值=37
+- java_deployment｜在 Kubernetes 中，Service 资源的核心作用是什么？｜正确项=为一组 Pod 提供稳定的网络入口（IP + 端口），即使 Pod 重启 IP 变化，Service 地址保持不变｜最长干扰项=承担镜像仓库的职责，把 Dockerfile 构建成镜像、按标签管理版本并推送到远端供节点拉取｜差值=10
+- java_project_ecommerce｜在电商系统中，为什么必须先锁定库存再创建订单？｜正确项=防止并发场景下的超卖——多个请求同时读取到相同库存量并都判断够用，导致实际卖出数量超过库存｜最长干扰项=为了让订单号按顺序递增，方便客服凭编号回溯历史订单并打印当月对账单｜差值=12
+- java_project_ecommerce｜电商系统中，支付回调为什么要做幂等校验？｜正确项=防止网络不可靠导致支付网关重复发送同一笔支付回调，造成重复扣款｜最长干扰项=为了兼容不同第三方支付平台的接口格式｜差值=13
+- java_project_ecommerce｜在电商系统中，商品详情查询为什么要使用 Redis 缓存？｜正确项=商品详情是读多写少的高频查询，缓存可以显著减少数据库压力并降低响应时间｜最长干扰项=因为 Redis 可以替代数据库，不再需要 MySQL｜差值=8
+- java_project_ecommerce｜在电商系统的实施步骤中，按照课程讲授顺序，以下哪个是正确的实施顺序？｜正确项=数据库设计 → 实体建模 → 服务层 → 控制器层 → 模块集成 → 缓存优化｜最长干扰项=控制器层 → 服务层 → 数据库设计 → 实体建模 → 缓存优化｜差值=7
+- java_project_ecommerce｜在电商系统的库存管理中，`锁定库存` 和 `扣减库存` 的区别是什么？｜正确项=锁定是预留库存（可释放），扣减是实际消耗库存（不可逆）｜最长干扰项=锁定会永久减少库存数量，扣减只是临时标记｜差值=7
+- java_servlet_jsp｜以下关于 Servlet 中转发（forward）和重定向（sendRedirect）的说法，哪个是正确的？｜正确项=转发使用 “req.getRequestDispatcher().forward(req, resp)” 实现，浏览器地址栏不变｜最长干扰项=转发会在响应里回写一个新的 Location，浏览器地址栏随之换成目标资源的完整地址｜差值=22
+- java_spring_boot_intro｜“@SpringBootApplication” 是一个组合注解，它等同于以下哪三个注解的合体？｜正确项=“@Configuration” + “@EnableAutoConfiguration” + “@ComponentScan”｜最长干扰项=“@Configuration” + “@EnableScheduling” + “@ComponentScan”｜差值=7
+- java_spring_boot_intro｜关于 Spring Boot Starter 机制，以下哪个说法是正确的？｜正确项=Starter 本质上是一组预定义的依赖集合，引入一个 Starter 就自动获得某类功能所需的全部库｜最长干扰项=“spring-boot-starter-web” 只包含 Spring MVC 一个依赖｜差值=6
+- java_spring_boot_intro｜Spring Boot 的核心理念“约定优于配置”（Convention over Configuration）的含义是什么？｜正确项=框架提供合理的默认行为，开发者只需在需要偏离默认时才显式配置｜最长干扰项=框架会自动生成代码，开发者不需要写任何配置文件｜差值=7
+- java_spring_mvc｜以下关于 “@Controller” 和 “@RestController” 的说法，哪个是正确的？｜正确项=“@RestController” 等同于 “@Controller” 加上 “@ResponseBody”｜最长干扰项=“@Controller” 返回的字符串会被直接写入 HTTP 响应体｜差值=19
+- java_spring_mvc｜在 Spring MVC 中，表单提交成功后为什么推荐使用 “redirect:” 重定向而不是直接返回视图名称？｜正确项=重定向可以让浏览器发送新的 GET 请求，防止用户刷新页面时重复提交表单｜最长干扰项=重定向可以让页面加载更多的 JavaScript 资源｜差值=9
+- java_spring_mvc｜在 Spring MVC 中，“@RequestBody” 注解适用于以下哪种场景？｜正确项=将 HTTP 请求体中的 JSON 数据自动反序列化为 Java 对象｜最长干扰项=从 URL 查询参数中获取字符串值｜差值=18
+- java_spring_security｜JWT（JSON Web Token）由三部分组成，以下哪个选项正确描述了这三部分？｜正确项=头部（Header）、载荷（Payload）、签名（Signature）｜最长干扰项=令牌 ID、过期时间、服务器地址｜差值=20
+- java_spring_security｜Spring Security 推荐使用 BCrypt 算法存储密码，以下关于 BCrypt 的说法哪个是正确的？｜正确项=BCrypt 是一种单向哈希算法，故意设计为慢速执行以防范暴力破解｜最长干扰项=BCrypt 每次加密相同密码产生的哈希值相同，便于比对｜差值=5
+- java_spring_security｜在使用 JWT 认证的 Spring Security 配置中，为什么通常需要禁用 CSRF 保护？｜正确项=因为 JWT 通常存储在 localStorage 中通过请求头手动携带，不会被浏览器自动发送，不存在 CSRF 风险｜最长干扰项=因为 Spring Security 不支持 JWT 和 CSRF 同时使用｜差值=21
+- java_project_inventory｜为什么接口要使用 DTO？｜正确项=隔离外部契约和内部实体｜最长干扰项=自动生成索引｜差值=5
+- java_spring_core｜关于 Spring 的 IoC（控制反转），以下哪个说法最准确地描述了其核心思想？｜正确项=IoC 是指把对象的创建和管理权从代码转移到 Spring 容器，由容器负责注入依赖｜最长干扰项=IoC 是指把 Java 程序的执行流程从操作系统转移到 JVM 中运行｜差值=6
+- kotlin_project_cli_ledger｜命令行工具用不同退出码的意义是什么？｜正确项=让脚本能区分成功与不同失败类型｜最长干扰项=提高程序的运行速度｜差值=6
+- swift_project_cli_metrics｜为什么要把业务逻辑放进库目标而不是可执行目标？｜正确项=测试目标可以直接导入这些类型进行单元测试｜最长干扰项=可执行目标不能包含函数｜差值=9
+- js_basics｜<script defer> 的作用是？｜正确项=HTML 解析完成后再执行脚本｜最长干扰项=异步下载但立即执行｜差值=6
+- js_basics｜"use strict" 严格模式的主要作用是？｜正确项=把未声明就赋值等静默错误改为直接抛错｜最长干扰项=提升脚本运行速度数倍｜差值=8
+- js_types｜const 声明的对象，能否修改它的属性？｜正确项=可以，const 只禁止重新赋值｜最长干扰项=取决于是否冻结｜差值=9
+- js_operators_control｜?? 与 || 的关键区别是？｜正确项=?? 只在 null/undefined 时取默认值｜最长干扰项=?? 只能用于字符串｜差值=16
+- js_functions｜剩余参数 ...args 相比 arguments 的优势是？｜正确项=它是真正的数组，只收集剩余参数｜最长干扰项=它能访问所有历史参数｜差值=5
+- js_objects｜相比普通对象，Map 的优势是？｜正确项=键可以是任意类型且提供 size 与迭代｜最长干扰项=自动序列化为 JSON｜差值=9
+- js_async｜Promise.allSettled 与 Promise.all 的关键区别是？｜正确项=allSettled 等全部完成并返回每个任务的成功/失败状态，不会因单个失败而短路｜最长干扰项=Promise.all 会忽略失败｜差值=25
+- js_dom_events｜event.preventDefault 的作用是？｜正确项=阻止浏览器默认行为（如提交表单、跳转链接）｜最长干扰项=阻止事件冒泡｜差值=15
+- js_dom_events｜DOMContentLoaded 与 load 的区别是？｜正确项=DOMContentLoaded 在 HTML 解析完成时触发｜最长干扰项=DOMContentLoaded 只在 IE 可用｜差值=6
+- js_errors_debugging｜未被捕获的 Promise 拒绝会导致？｜正确项=变成 unhandledrejection，可能静默失败｜最长干扰项=进程立即退出｜差值=22
+- js_project｜Vite 相比传统打包器在开发时的优势是？｜正确项=基于浏览器原生 ESM 按需编译｜最长干扰项=能替代 Node.js｜差值=5
+- csharp_basics｜.NET SDK 与运行时的区别是？｜正确项=SDK 包含编译器与 CLI 工具可以开发，运行时只能执行已编译程序｜最长干扰项=两者都必须安装才能运行程序｜差值=21
+- csharp_types｜C# 中 var 声明的变量类型是？｜正确项=编译期由初始化表达式推断的静态类型｜最长干扰项=等同于 dynamic｜差值=6
+- csharp_types｜开启可空引用类型后，string? 表示？｜正确项=明确声明该引用可能为 null｜最长干扰项=等同于 string｜差值=5
+- csharp_control_methods｜switch 表达式中 _ 分支的作用是？｜正确项=兜底分支，匹配所有其他情况｜最长干扰项=表示忽略该分支｜差值=6
+- csharp_oop｜record 的 with 表达式作用是？｜正确项=生成一个修改了部分属性的新对象｜最长干扰项=序列化为 JSON｜差值=6
+- csharp_oop｜属性（property）相比 public 字段的优势是？｜正确项=可在 get/set 中加校验与计算逻辑，并且能被接口约束、支持数据绑定｜最长干扰项=可以突破访问修饰符限制｜差值=25
+- csharp_collections_linq｜LINQ 查询是什么时候执行的？｜正确项=遍历结果或调用 ToList/Count 等终止操作时｜最长干扰项=写查询语句时｜差值=21
+- csharp_collections_linq｜Func<int, int, int> 表示什么？｜正确项=接收两个 int 返回 int 的委托｜最长干扰项=接收一个 int 的数组｜差值=7
+- csharp_ecosystem｜EF Core 的主要作用是？｜正确项=ORM：把对象与 LINQ 映射到数据库｜最长干扰项=管理 Git 分支｜差值=11
+- csharp_ecosystem｜ASP.NET Core 中间件的执行方式是？｜正确项=按注册顺序组成管道依次调用｜最长干扰项=只执行最后一个｜差值=6
+- csharp_project_blazor_admin｜EF Core 分页推荐使用什么？｜正确项=Skip/Take 加稳定排序｜最长干扰项=全表加载后过滤｜差值=8
+- go_basics｜Go 中 := 与 = 的区别是？｜正确项=:= 声明并推导类型（只能用在函数内），= 只做赋值｜最长干扰项=:= 可以用于包级变量｜差值=15
+- go_interfaces_errors｜errors.Is 与 errors.As 的区别是？｜正确项=Is 判断错误链中是否包含目标错误值｜最长干扰项=Is 只能用于 panic｜差值=5
+- go_performance｜减少切片扩容拷贝的常用做法是？｜正确项=make([]T, 0, n) 预分配容量｜最长干扰项=使用 append 不预分配｜差值=7
+- go_performance｜pprof 采集 CPU 性能数据的原理是？｜正确项=以固定频率采样 goroutine 调用栈并统计｜最长干扰项=记录每一次函数调用｜差值=15
+- go_pprof｜为什么生产环境的 pprof 端口不能暴露到公网？｜正确项=会泄露内部信息并可被用于性能攻击｜最长干扰项=会导致编译失败｜差值=9
+- go_pprof｜对比优化前后的基准数据，推荐？｜正确项=多次运行并用 benchstat 做统计对比｜最长干扰项=用 Debug 构建跑基准｜差值=9
+- go_testing｜模糊测试（fuzzing）最适合用来发现？｜正确项=边界输入导致的崩溃与断言失败｜最长干扰项=代码风格问题｜差值=8
+- go_testing｜测试里等待异步结果，推荐做法是？｜正确项=通过 channel 或轮询条件直到满足（带超时）｜最长干扰项=time.Sleep 固定时长｜差值=10
+- go_data_access｜遍历 Query 结果集后，必须做什么？｜正确项=关闭 rows 并检查 rows.Err｜最长干扰项=只需要 rows.Close｜差值=6
+- go_project_worker_pool｜如何检查 goroutine 泄漏？｜正确项=运行前后比较 goroutine 数量并使用阻塞分析｜最长干扰项=只看日志颜色｜差值=20
+- rust_ownership｜生命周期标注的作用是？｜正确项=向编译器说明引用的有效范围｜最长干扰项=手动释放内存｜差值=7
+- rust_concurrency_cargo｜Send 与 Sync 两个 auto trait 的区别是？｜正确项=Send 表示所有权可安全转移到别的线程｜最长干扰项=Sync 表示可以发送到线程｜差值=6
+- rust_errors_iterators｜Rust 迭代器是「惰性」的，这意味着？｜正确项=不调用消费方法（collect/sum/for）就不会真正执行｜最长干扰项=每次调用都要分配内存｜差值=21
+- rust_async_tokio｜Rust 中 Future 的特性是？｜正确项=惰性，必须被 await 或 executor 驱动｜最长干扰项=只能用于多线程｜差值=19
+- rust_async_tokio｜tokio::select! 的作用是？｜正确项=同时等待多个 future｜最长干扰项=创建新的线程池｜差值=6
+- rust_project_axum_api｜优雅关闭需要做什么？｜正确项=停止接收请求并等待在途任务｜最长干扰项=立即中止进程｜差值=7
+- rust_project_downloader｜Semaphore 许可被耗尽时，新下载任务会怎样？｜正确项=等待已有任务释放许可后再开始｜最长干扰项=自动提高并发上限｜差值=6
+- ts_project｜接口返回数据应该如何处理？｜正确项=用 zod 等做运行时校验后再使用｜最长干扰项=直接断言为业务类型｜差值=8
+- ts_build_test｜tsc --noEmit 的用途是？｜正确项=只做类型检查，不生成 JS 文件｜最长干扰项=把 TS 编译成 JS｜差值=5
+- ts_node_backend｜收到 SIGTERM 时，服务应该？｜正确项=停止接收新请求并等待在途请求完成后再退出｜最长干扰项=立刻退出进程｜差值=14
+- ts_node_backend｜关于错误响应，推荐的做法是？｜正确项=统一错误结构（code、message、details）并使用合适状态码｜最长干扰项=所有错误都返回 200 和错误文案｜差值=19
+- ts_monorepo｜CI 中让流水线更快的关键做法是？｜正确项=基于依赖图与缓存只跑受影响的任务｜最长干扰项=每次全量构建所有包｜差值=7
+- ts_monorepo｜共享包变更后，最需要做什么？｜正确项=触发下游应用的测试并标注影响面｜最长干扰项=直接发布到 npm｜差值=6
+- ts_testing｜测试里等待异步结果，推荐使用？｜正确项=findBy 系列查询或带轮询的断言（自动等待）｜最长干扰项=固定 setTimeout 延时｜差值=8
+- ts_fullstack_project｜保证前后端类型一致的最佳做法是？｜正确项=用共享的 zod schema 推导类型作为单一事实来源｜最长干扰项=各写一份类型｜差值=22
+- ts_type_challenges｜条件类型对联合类型会自动「分配」，想阻断这种分配应该？｜正确项=用 [T] extends [U] 这种方括号写法｜最长干扰项=加 readonly｜差值=15
+- ts_type_challenges｜模板字面量类型最典型的用途是？｜正确项=约束字符串键的命名格式（如 getX、onX）｜最长干扰项=在运行时拼接字符串｜差值=14
+- ts_build_performance｜大仓库中让类型检查只覆盖改动部分，常用？｜正确项=项目引用（composite）加增量构建｜最长干扰项=删除 tsconfig｜差值=9
+- ts_build_performance｜哪种类型写法最容易拖慢编译？｜正确项=上千成员的巨型联合类型与无深度限制的递归类型｜最长干扰项=使用 Pick 与 Omit｜差值=8
+- shell_variables_args｜为什么脚本中推荐把变量写成 "$path" 而不是 $path？｜正确项=双引号防止含空格或通配符的值被再次拆分成多个参数｜最长干扰项=双引号让变量在子进程中自动导出｜差值=9
+- shell_bash｜#!/usr/bin/env bash 相比 #!/bin/bash 的优势是？｜正确项=通过 PATH 查找 bash｜最长干扰项=可以省略脚本执行权限｜差值=5
+- shell_bash｜source script.sh 与 bash script.sh 的关键区别是？｜正确项=source 在当前 shell 中执行｜最长干扰项=source 只能执行一次｜差值=7
+- shell_robust｜set -euo pipefail 中 -u 的作用是？｜正确项=使用未定义变量时报错退出｜最长干扰项=输出调试信息｜差值=6
+- shell_robust｜trap 'cleanup' EXIT INT TERM 的作用是？｜正确项=在脚本退出或收到中断/终止信号时执行清理逻辑｜最长干扰项=把输出重定向到文件｜差值=13
+- shell_script_engineering｜set -x 与 set -v 的区别是？｜正确项=-x 打印展开后实际执行的命令｜最长干扰项=-v 会关闭错误处理｜差值=5
+- shell_text_advanced｜sed 原地修改文件前，推荐的做法是？｜正确项=先备份（如 -i.bak）或输出到临时文件验证后再替换｜最长干扰项=直接 sed -i 省事｜差值=15
+- shell_ops_scripts｜备份脚本中生成 sha256 校验值的意义是？｜正确项=恢复前能验证文件完整未被损坏｜最长干扰项=加快恢复速度｜差值=8
+- shell_ops_scripts｜巡检脚本的输出为什么建议结构化（状态 指标=值）？｜正确项=便于监控系统采集、解析与告警｜最长干扰项=能提升脚本速度｜差值=7
+- shell_ci_templates｜自动回滚触发条件通常是什么？｜正确项=错误率或延迟等关键指标超过阈值｜最长干扰项=部署耗时超过预期｜差值=7
+- shell_json_yaml｜用 yq/jq 原地修改配置文件前，推荐先做什么？｜正确项=先输出到临时文件比对 diff｜最长干扰项=直接 -i 写入｜差值=7
+- shell_json_yaml｜要把 JSON 转成 YAML，正确的思路是？｜正确项=用 yq 指定输入输出格式（-p=json -o=yaml）｜最长干扰项=用文本替换把大括号改成缩进｜差值=17
+- shell_security｜防止命令注入最根本的做法是？｜正确项=避免 eval 与字符串拼接｜最长干扰项=只在夜间执行脚本｜差值=6
+- shell_security｜敏感操作时如何避免密钥进入 CI 日志？｜正确项=临时关闭 xtrace（set +x）并对输出脱敏｜最长干扰项=把密钥写在脚本里｜差值=17
+- shell_project_deploy｜shellcheck 的价值是什么？｜正确项=静态发现常见 Shell 错误｜最长干扰项=自动写业务逻辑｜差值=8
+- cpu｜流水线技术主要提升了什么？｜正确项=每周期完成的指令数（吞吐量）｜最长干扰项=硬盘读写速度｜差值=8
+- encoding｜BOM（字节顺序标记）带来的常见问题是？｜正确项=某些解析器会把 BOM 当成正文内容，导致第一个字段出现异常字符｜最长干扰项=会让文件无法保存｜差值=24
+- semantics_analysis｜下面哪项属于控制流分析的用途？｜正确项=判断变量是否在所有路径上都被初始化｜最长干扰项=解析运算符优先级｜差值=9
+- semantics_analysis｜数据流分析中的「到达定值」主要用于？｜正确项=判断某点可能由哪些赋值到达｜最长干扰项=检查括号是否配对｜差值=5
+- memory_cache｜什么是伪共享（false sharing）？｜正确项=多线程修改同一缓存行中的不同变量｜最长干扰项=两个进程共用同一块内存｜差值=5
+- probability｜大数定律说的是？｜正确项=样本量增大时样本均值以概率收敛到总体期望｜最长干扰项=任何分布都能用正态近似｜差值=9
+- compiler_frontend｜「最长匹配」原则指的是？｜正确项=尽可能读入更多字符组成一个 Token｜最长干扰项=优先匹配最长的表达式｜差值=9
+- compiler_frontend｜递归下降解析器适合处理哪类文法？｜正确项=LL(1) 等无左递归文法（左递归需先消除）｜最长干扰项=任意含左递归的文法｜差值=13
+- ir_optimization｜程序中存在未定义行为（UB）时，优化可能？｜正确项=基于「UB 不会发生」的假设｜最长干扰项=自动修复 UB｜差值=7
+- ir_optimization｜死代码消除（DCE）的判断依据是？｜正确项=计算结果不影响程序可观察行为的代码可以删除｜最长干扰项=行数超过 100 行的函数｜差值=8
+- ir_optimization｜循环不变式外提（LICM）的收益是？｜正确项=把循环内每次结果都不变的计算移到循环外，减少重复执行｜最长干扰项=消除循环依赖｜差值=20
+- codegen_registers｜活跃变量分析回答的问题是？｜正确项=变量在某个位置之后是否还会被使用｜最长干扰项=变量占用多少内存｜差值=8
+- codegen_registers｜指令选择（instruction selection）要解决的问题是？｜正确项=用最合适的机器指令组合覆盖中间表示的模式，兼顾效率与合法性｜最长干扰项=判断语法是否正确｜差值=21
+- codegen_registers｜指令调度（instruction scheduling）的主要目标是？｜正确项=重排指令顺序以隐藏流水线延迟、提高指令级并行｜最长干扰项=减少代码行数｜差值=16
+- linking_loading｜PLT 与 GOT 的作用是？｜正确项=支持动态链接的地址跳转与缓存｜最长干扰项=压缩可执行文件｜差值=7
+- interrupt_exception｜异常与中断的根本区别是？｜正确项=异常由当前指令执行引起（同步）｜最长干扰项=两者都必须由内核处理｜差值=5
+- float_and_check｜IEEE 754 中 NaN 与 Inf 的产生原因是？｜正确项=0/0、无穷减无穷等未定义运算产生 NaN；溢出与除零产生 Inf｜最长干扰项=浮点寄存器损坏｜差值=26
+- fundamentals_project｜ldd 命令的用途是？｜正确项=查看可执行文件依赖哪些动态库｜最长干扰项=统计磁盘 IO｜差值=7
+- computation_theory｜NP 完全问题的含义是？｜正确项=属于 NP 且 NP 中所有问题都能归约到它｜最长干扰项=只能近似求解｜差值=16
+- computation_theory｜关于 P 与 NP，目前已知的结论是？｜正确项=P ⊆ NP，但 P 是否等于 NP 仍未解决｜最长干扰项=NP 完全问题都能在多项式时间内求解｜差值=5
+- cryptography｜数字签名能保证的性质是？｜正确项=数据完整性与来源可信（私钥持有者签发），但不提供机密性｜最长干扰项=防止重放攻击｜差值=21
+- graphics_media｜Alpha 混合的作用是？｜正确项=按透明通道把前景色与背景色按比例混合｜最长干扰项=生成动画关键帧｜差值=11
+- compiler_diagnostics｜恐慌模式恢复的核心动作是？｜正确项=丢弃记号直到同步点再继续解析｜最长干扰项=重新开始整个编译｜差值=6
+- compiler_diagnostics｜诊断里保留列与长度信息的主要价值是？｜正确项=编辑器可以精确高亮并生成替换建议｜最长干扰项=让错误数量变少｜差值=9
+- compiler_jit_inlining｜即时编译相比提前编译的主要优势是？｜正确项=可以利用运行时的类型与分支信息做更有针对性的优化｜最长干扰项=生成的代码体积总是更小｜差值=13
+- compiler_jit_inlining｜内联之所以重要，是因为？｜正确项=它为常量传播与逃逸分析等跨方法优化创造条件｜最长干扰项=它可以减少源文件行数｜差值=11
+- compiler_gc｜一对互相引用但外部已不可达的对象会怎样？｜正确项=被正确回收，因为可达性分析从根出发｜最长干扰项=永远不会被回收｜差值=10
+- compiler_gc｜写屏障的主要作用是？｜正确项=在引用写入时记录跨代关系，避免误回收｜最长干扰项=加快内存分配｜差值=12
+- compiler_bytecode_vm｜栈式虚拟机执行 MUL 指令时通常做什么？｜正确项=弹出两个操作数并把乘积压回栈顶｜最长干扰项=直接修改内存地址｜差值=7
+- compiler_project_minilang｜解析与求值分成两阶段的核心好处是？｜正确项=可以独立测试与扩展，并支持错误恢复｜最长干扰项=运行速度必然更快｜差值=9
+- binary_search｜写成 mid = left + (right - left) / 2 的主要好处是？｜正确项=避免 left + right 整数溢出｜最长干扰项=支持无序数组｜差值=14
+- stack_queue｜双端队列（deque）相比普通队列多了什么能力？｜正确项=两端都能 O(1) 插入与删除｜最长干扰项=能按优先级出队｜差值=8
+- linked_list｜双向链表相比单链表付出的主要代价是？｜正确项=每个节点多存一个前驱指针｜最长干扰项=随机访问变慢｜差值=6
+- tree_bst｜删除二叉搜索树中「有两个孩子」的节点，常用做法是？｜正确项=用中序后继（右子树最小）或中序前驱替换后递归删除｜最长干扰项=直接删除并断开子树｜差值=15
+- two_pointers｜滑动窗口模板中什么时候收缩左边界？｜正确项=窗口不再满足条件（或需要找更短的可行窗口）时收缩，直到重新满足条件｜最长干扰项=每次右移都收缩一次｜差值=24
+- backtracking｜回溯中「剪枝」的作用是？｜正确项=提前判断某分支不可能产生合法解｜最长干扰项=加快单次递归调用｜差值=7
+- backtracking｜N 皇后中如何把冲突检测降到 O(1)？｜正确项=用三个标记数组（列、主对角线、副对角线）或位掩码记录占用情况｜最长干扰项=用哈希表存所有坐标｜差值=21
+- greedy｜哈夫曼编码为什么属于贪心算法？｜正确项=每一步都合并当前频率最小的两个节点｜最长干扰项=它枚举了所有编码方案｜差值=7
+- greedy｜贪心与动态规划最典型的区别是？｜正确项=贪心每步只做局部最优选择且不回溯｜最长干扰项=贪心总能得到全局最优｜差值=6
+- prefix_sum｜二维前缀和求子矩阵和时为什么要加回 P[x1-1][y1-1]？｜正确项=该区域在前面两次相减中被多减了一次，需要补回来（容斥原理）｜最长干扰项=它是矩阵的边界值｜差值=21
+- union_find｜union(a, b) 返回 false 说明？｜正确项=a 与 b 已经在同一集合（再加边会成环）｜最长干扰项=需要路径压缩｜差值=15
+- monotonic_stack｜单调栈为什么能保证 O(n) 复杂度？｜正确项=每个元素最多入栈一次、出栈一次｜最长干扰项=它对数组做了排序｜差值=7
+- balanced_tree｜红黑树的五条性质保证了什么？｜正确项=最长路径不超过最短路径的两倍｜最长干扰项=查找为 O(1)｜差值=6
+- cache_eviction｜缓存雪崩的常见防护是？｜正确项=过期时间加随机抖动 + 多级缓存｜最长干扰项=统一设置相同过期时间｜差值=6
+- cache_eviction｜缓存击穿（热点 key 失效瞬间大量请求打到数据库）的常见防护是？｜正确项=单飞/互斥锁重建 + 逻辑过期（后台异步刷新）｜最长干扰项=增大 key 长度｜差值=14
+- algorithms_project｜求 TopK（k 远小于 n）的最优做法是？｜正确项=哈希计数加大小为 k 的小顶堆｜最长干扰项=全排序取前 k｜差值=8
+- algorithms_project｜海量 URL 去重常用的组合是？｜正确项=布隆过滤器初筛 + 哈希分片或精确存储复核｜最长干扰项=只用正则表达式｜差值=14
+- dynamic_programming｜最长公共子序列（LCS）中 dp[i][j] 的含义通常是？｜正确项=前 i 个字符与前 j 个字符的最长公共子序列长度｜最长干扰项=第 i 个和第 j 个字符是否相同｜差值=8
+- network_flow｜费用流相比最大流多了什么优化目标？｜正确项=在满足给定流量的前提下最小化总费用（每条边带单位费用）｜最长干扰项=最小化节点数｜差值=21
+- pentest_basics｜下面哪项验证 SQL 注入最有效？｜正确项=在参数中插入单引号观察报错与布尔差异｜最长干扰项=暴力破解管理员密码｜差值=9
+- pentest_basics｜CVSS 评分的作用是？｜正确项=用统一维度（可利用性、影响）量化漏洞严重程度，便于排序与沟通｜最长干扰项=检测漏洞是否存在｜差值=22
+- ip_port_intro｜在网络通信中，IP 地址与端口分别定位什么？｜正确项=IP 定位主机，端口定位该主机上的具体进程或服务｜最长干扰项=IP 定位进程，端口定位操作系统版本｜差值=6
+- dns｜DNS 的核心作用是什么？｜正确项=把域名解析成 IP 地址｜最长干扰项=加密网络数据｜差值=6
+- dns｜CNAME 记录与 A 记录的区别是？｜正确项=CNAME 把一个域名指向另一个域名｜最长干扰项=A 记录只能指向 IPv6｜差值=5
+- cdn_proxy｜CDN 中的「回源」指的是？｜正确项=边缘节点缓存未命中或内容过期时｜最长干扰项=把内容推送给所有节点｜差值=5
+- websocket｜SSE（Server-Sent Events）与 WebSocket 的主要区别是？｜正确项=SSE 是服务器到客户端的单向文本流（基于 HTTP），WebSocket 是全双工｜最长干扰项=WebSocket 只能推送文本｜差值=26
+- wireless_mobile｜5G 网络切片的含义是？｜正确项=在同一物理网络上划分多个逻辑网络｜最长干扰项=把 SIM 卡分区｜差值=7
+- wireless_mobile｜2.4GHz 与 5GHz 频段的取舍是？｜正确项=2.4G 穿墙好但干扰多，速率低｜最长干扰项=2.4G 速率更高｜差值=7
+- network_attacks｜UDP 反射放大攻击成立的两个前提是？｜正确项=伪造源 IP 与开放的可放大服务｜最长干扰项=高速网络与低延迟｜差值=8
+- network_attacks｜DDoS 与 DoS 的区别是？｜正确项=DDoS 由大量分布在不同位置的节点（僵尸网络）同时发起｜最长干扰项=DDoS 只针对 DNS｜差值=16
+- web_security｜防御 SQL 注入最有效的做法是？｜正确项=使用参数化查询（预编译语句）｜最长干扰项=隐藏错误信息｜差值=8
+- web_security｜防御 CSRF 的常用组合是？｜正确项=SameSite Cookie + CSRF Token｜最长干扰项=HTTPS + HSTS｜差值=16
+- web_security｜CSP（内容安全策略）的主要作用是？｜正确项=限制页面可加载/执行的脚本来源｜最长干扰项=防止 SQL 注入｜差值=6
+- http2_http3｜QUIC（HTTP/3）相比 TCP + TLS 的建连差异是？｜正确项=基于 UDP 并把 TLS 集成进握手｜最长干扰项=必须依赖 TCP 快速打开｜差值=6
+- ip_transport｜TCP 流量控制与拥塞控制的区别是？｜正确项=流量控制防止压垮接收方（接收窗口）｜最长干扰项=流量控制作用于路由器｜差值=7
+- socket_programming｜listen 的 backlog 参数表示？｜正确项=已完成握手但尚未被 accept 的队列长度｜最长干扰项=缓冲区字节数｜差值=16
+- socket_programming｜边缘触发（ET）模式下读数据必须？｜正确项=循环读直到返回 EAGAIN｜最长干扰项=使用阻塞套接字｜差值=7
+- chain_wallet_keys｜只备份助记词而不记录派生路径的风险是？｜正确项=恢复时可能找不到原有的地址与资金｜最长干扰项=交易手续费变高｜差值=9
+- chain_token_standards｜标准接口对钱包与交易所最重要的价值是？｜正确项=可以按统一接口接入任意符合标准的代币｜最长干扰项=降低代币价格波动｜差值=10
+- chain_token_standards｜无限授权最大的风险是？｜正确项=合约被攻破时资产可被一次性转走｜最长干扰项=转账速度变慢｜差值=9
+- chain_oracle_bridge｜合约读取喂价时为什么必须检查时间戳？｜正确项=避免在极端行情下用过时价格成交｜最长干扰项=让价格更好看｜差值=9
+- chain_oracle_bridge｜跨链桥安全性的根本取决于？｜正确项=验证模型的信任假设是否足够分散与可验证｜最长干扰项=源链的出块速度｜差值=12
+- chain_zk_privacy｜把全部计算放进电路会带来什么后果？｜正确项=约束数量膨胀，证明时间与成本大幅上升｜最长干扰项=隐私性下降为零｜差值=11
+- chain_audit_project｜审计开始阶段最重要的工作是？｜正确项=列出资产、权限与外部入口形成攻击面｜最长干扰项=立即逐行阅读全部代码｜差值=7
+- chain_audit_project｜重入漏洞的典型特征是？｜正确项=外部调用发生在状态更新之前｜最长干扰项=使用了循环语句｜差值=6
+- blockchain_defi_security｜闪电贷为什么能放大预言机操纵？｜正确项=它可以在单笔交易内获得巨额资金拉偏价格｜最长干扰项=它会自动修改合约的存储变量｜差值=6
+- blockchain_scaling_layer2｜Rollup 手续费更低的主要原因是什么？｜正确项=大量交易压缩后共享同一份主链数据成本｜最长干扰项=二层交易完全不写入链上数据｜差值=5
+- sql_basics｜COUNT(*) 与 COUNT(列名) 的关键区别是？｜正确项=COUNT(列名) 会忽略该列的 NULL 值｜最长干扰项=COUNT(列名) 只能用于主键｜差值=7
+- index｜覆盖索引带来的直接好处是？｜正确项=查询所需字段都在索引里｜最长干扰项=减少索引数量｜差值=5
+- db_design｜反范式化的主要动机是？｜正确项=通过冗余字段减少 JOIN｜最长干扰项=提高写入性能｜差值=7
+- nosql｜最终一致性的业务补偿常见手段是？｜正确项=幂等设计 + 重试 + 定时对账/补偿任务｜最长干扰项=把隔离级别调到串行化｜差值=11
+- redis｜Redis 单线程执行模型下最需要避免的是？｜正确项=慢命令与大 key 操作（如 KEYS、大集合全量遍历）阻塞整个实例｜最长干扰项=使用管道批量命令｜差值=26
+- olap_columnar｜向量化执行的作用是？｜正确项=按批处理数据并使用 CPU SIMD 指令，减少函数调用与解释开销｜最长干扰项=优化 JOIN 顺序｜差值=23
+- search_index｜分词器（analyzer）在全文检索中的作用是？｜正确项=把文本切分成词项并做归一化｜最长干扰项=压缩文档体积｜差值=7
+- search_index｜Elasticsearch 的 refresh 操作作用是？｜正确项=让新写入的文档对搜索可见（默认约 1 秒一次，故称近实时）｜最长干扰项=把数据刷盘持久化｜差值=21
+- bigdata_batch_stream｜Lambda 架构与 Kappa 架构的区别是？｜正确项=Lambda 同时维护批处理与流处理两套链路｜最长干扰项=Lambda 不能处理历史数据｜差值=7
+- airflow_quality｜Airflow 的 catchup 参数控制什么？｜正确项=是否自动补跑开始日期到当前之间遗漏的调度周期｜最长干扰项=任务失败后是否重试｜差值=13
+- db_ops｜给大表加字段的推荐做法是？｜正确项=使用在线 DDL 或 pt-online-schema-change｜最长干扰项=直接 ALTER 锁表执行｜差值=21
+- data_lakehouse｜湖仓中小文件问题如何缓解？｜正确项=定期执行 compaction 合并小文件，并控制写入批次大小｜最长干扰项=改用 CSV 格式｜差值=22
+- realtime_warehouse｜Flink 实现端到端精确一次的前提是？｜正确项=checkpoint 加支持事务或幂等的 sink｜最长干扰项=只靠 checkpoint｜差值=12
+- realtime_warehouse｜Flink 中 Checkpoint 与 Savepoint 的区别是？｜正确项=Checkpoint 由系统周期触发用于故障恢复｜最长干扰项=Checkpoint 不能恢复状态｜差值=7
+- de_orchestration_lineage｜回填历史数据前最重要的前置条件是？｜正确项=任务对同一分区可重复执行且结果一致｜最长干扰项=所有任务都改成串行｜差值=8
+- de_orchestration_lineage｜用时间对齐而不是显式依赖连接任务，最典型的后果是？｜正确项=上游延迟时下游读到不完整数据｜最长干扰项=调度器无法重启｜差值=7
+- de_cdc_incremental｜把位点提交与数据写入放在同一事务的目的是？｜正确项=避免丢事件或重复应用事件的不一致｜最长干扰项=减少磁盘占用｜差值=10
+- de_flink_windowing｜允许迟到参数的作用是？｜正确项=窗口触发后仍接受一段时间内的迟到数据｜最长干扰项=延后水位线产生｜差值=11
+- de_data_contract｜硬性规则与软性规则的分工是？｜正确项=硬性阻断发布，软性记录指标并可升级为阻断｜最长干扰项=硬性只用于日志，软性阻断发布｜差值=6
+- de_lakehouse_governance｜快照保留窗口设置过短的主要风险是？｜正确项=回滚与审计依赖的历史版本不可用｜最长干扰项=查询速度变慢｜差值=9
+- scheduling｜多级反馈队列的设计思想是？｜正确项=用多个优先级队列与不同时间片兼顾响应速度与吞吐，且不需要预知运行时间｜最长干扰项=完全按到达顺序执行｜差值=25
+- process_thread_intro｜上下文切换指的是什么？｜正确项=操作系统保存当前执行状态并切换到另一个任务继续执行｜最长干扰项=把源代码从一种编程语言翻译成另一种｜差值=8
+- deadlock｜数据库检测到死锁后，通常采取什么措施？｜正确项=回滚其中一个事务以打破循环｜最长干扰项=等待自动恢复｜差值=7
+- deadlock｜资源分配图中出现环是否一定意味着死锁？｜正确项=每种资源只有一个实例时是充分必要条件；多实例时只是必要条件｜最长干扰项=任何情况都一定是死锁｜差值=19
+- virtual_memory｜写时复制（Copy-on-Write）的好处是？｜正确项=fork 后父子进程共享页面｜最长干扰项=让进程无法修改内存｜差值=5
+- file_system｜硬链接与软链接的区别是？｜正确项=硬链接指向同一 inode 且不能跨文件系统｜最长干扰项=软链接增加 inode 引用计数｜差值=6
+- file_system｜fsync 调用的作用是？｜正确项=把文件数据与元数据强制刷到持久存储设备｜最长干扰项=把文件读入内存｜差值=12
+- ipc_io｜epoll 相比 select 的优势是？｜正确项=O(1) 事件回调且无连接数硬上限｜最长干扰项=不需要内核支持｜差值=10
+- os_synchronization｜条件变量为什么必须放在 while 中判断条件？｜正确项=防止虚假唤醒与竞争导致的丢失唤醒，醒来后需重新检查条件｜最长干扰项=这是编译器的要求｜差值=19
+- os_filesystem_impl｜SSD 上的写放大（write amplification）会导致什么？｜正确项=实际写入量大于逻辑写入量｜最长干扰项=读取速度变慢｜差值=6
+- os_boot_security｜容器实现隔离依赖的内核特性是？｜正确项=命名空间 + cgroups｜最长干扰项=虚拟机监控器｜差值=8
+- os_project｜优雅退出必须做到？｜正确项=设置关闭标志并唤醒所有等待线程｜最长干扰项=直接 kill -9｜差值=5
+- embedded_rtos_tasks｜在中断服务程序里与任务通信，推荐使用哪类接口？｜正确项=带 FromISR 后缀的非阻塞接口｜最长干扰项=带无限等待的队列接收｜差值=8
+- embedded_debug_trace｜异常处理里先把 LR 与栈指针保存下来的目的是？｜正确项=确定使用哪个栈并还原出错现场｜最长干扰项=让调试器自动复位｜差值=6
+- embedded_iot_security｜设备私钥明文写进固件的主要风险是？｜正确项=读出固件即可复制设备身份｜最长干扰项=固件体积变大｜差值=6
+- embedded_project_env_monitor｜设备上报后为什么要等服务端确认才推进读指针？｜正确项=确认到达才代表数据真正入库｜最长干扰项=可以减少固件体积｜差值=5
+- cli_intro｜命令执行后的退出码通常表示什么？｜正确项=0 表示成功，非 0 表示失败并可用于脚本判断｜最长干扰项=退出码由用户输入决定，与命令本身无关｜差值=5
+- debugging｜在日志中带上请求 ID（trace id）的价值是？｜正确项=串联同一次请求在不同服务与线程中的日志，便于还原完整链路｜最长干扰项=减少日志体积｜差值=22
+- debugging｜阅读异常堆栈时应优先关注哪一部分？｜正确项=最底部的 Caused by 根因，以及第一个出现的业务代码帧｜最长干扰项=最顶层的框架调用｜差值=23
+- docker｜Docker 构建中镜像层缓存失效的常见原因是？｜正确项=靠前指令（如 COPY 源码）的内容变化，导致其后所有层都要重建｜最长干扰项=容器数量太多｜差值=26
+- docker｜docker run -p 8080:80 的含义是？｜正确项=宿主机的 8080 端口映射到容器的 80 端口｜最长干扰项=容器的 8080 映射到宿主的 80｜差值=6
+- gateway｜四层与七层负载均衡的关键区别是？｜正确项=七层能理解 HTTP 内容并按路径/头部路由｜最长干扰项=是否支持 UDP｜差值=14
+- terraform｜Terraform 与 Ansible 的定位差异是？｜正确项=Terraform 声明式管理基础设施资源｜最长干扰项=Terraform 只能配置应用｜差值=5
+- linux_performance｜火焰图中函数条越宽说明？｜正确项=该函数占用 CPU 时间越多｜最长干扰项=代码行数越多｜差值=8
+- linux_performance｜iostat 中 %util 接近 100% 说明什么？｜正确项=磁盘几乎一直处于忙碌状态｜最长干扰项=CPU 已满载｜差值=5
+- cloud_cost_finops｜统一标签体系的首要作用是？｜正确项=把成本归属到业务与团队｜最长干扰项=提升网络速度｜差值=5
+- cloud_containers_kubernetes｜内存超过限制时，容器会发生什么？｜正确项=被终止并重启，事件记录 OOMKilled｜最长干扰项=转为只读模式继续服务｜差值=11
+- cloud_iac_terraform｜计划里出现替换标记意味着什么？｜正确项=资源会被销毁并重新创建｜最长干扰项=没有任何变化｜差值=5
+- cloud_iac_terraform｜状态文件集中存储并加锁的主要目的是？｜正确项=防止多人并发执行导致状态损坏｜最长干扰项=隐藏资源标识｜差值=8
+- cloud_k8s_operations｜资源请求的主要作用是？｜正确项=影响调度器把容器放到哪个节点｜最长干扰项=限制容器最大内存｜差值=6
+- cloud_security_iam｜策略中显式拒绝的作用是？｜正确项=优先级最高，覆盖任何允许语句｜最长干扰项=仅在调试时生效｜差值=7
+- cloud_security_iam｜用临时凭证替代长期密钥的主要收益是？｜正确项=泄露后影响时间被压缩到凭证有效期｜最长干扰项=访问速度更快｜差值=10
+- cloud_multicluster_dr｜复制延迟超出阈值时正确的处理是？｜正确项=暂停自动切换并人工评估数据损失｜最长干扰项=忽略延迟继续切换｜差值=7
+- cloud_multicluster_dr｜演练必须包含回切的原因是？｜正确项=回切涉及反向同步与配置差异，不练就无法验证｜最长干扰项=回切可以省略数据校验｜差值=11
+- devops_monitoring｜Prometheus 采用的数据收集模型是什么？与另一种模型相比有什么优势？｜正确项=Pull 模型——Prometheus 主动从目标抓取（scrape）指标数据，便于发现异常目标和统一管理｜最长干扰项=Push 模型——由应用主动推送指标到 Prometheus，适合所有场景｜差值=16
+- devops_monitoring｜Alertmanager 中"抑制（Inhibition）"规则的作用是什么？｜正确项=当某个严重告警触发时，抑制同一服务或集群的相关低级告警，避免告警风暴｜最长干扰项=自动修复触发告警的问题｜差值=23
+- devops_monitoring｜关于 SLI、SLO、SLA 三个概念，以下哪个描述是正确的？｜正确项=SLI 是实际测量的服务指标值，SLO 是内部设定的目标值，SLA 是对客户的外部承诺，通常 SLA 比 SLO 更宽松｜最长干扰项=SLI 是内部目标，SLO 是对客户的外部承诺，SLA 是实际测量值｜差值=26
+- devops_monitoring｜在 PromQL 中，"histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))" 这个查询的作用是什么？｜正确项=计算过去 5 分钟的 P99 请求延迟（即 99% 的请求延迟低于此值）｜最长干扰项=计算过去 5 分钟的平均请求延迟｜差值=20
+- ai_basics｜生成式 AI 与深度学习的关系是？｜正确项=生成式 AI 是深度学习的一个应用方向｜最长干扰项=生成式 AI 取代了深度学习｜差值=5
+- ml_fundamentals｜L1 与 L2 正则化的区别是？｜正确项=L1 倾向于把部分权重压到 0（稀疏），L2 倾向于让权重整体变小｜最长干扰项=L2 会产生稀疏解｜差值=24
+- ai_agent_basics｜为 Agent 设计工具时最关键的要求是？｜正确项=描述清晰，参数 schema 明确｜最长干扰项=把多个功能塞进一个工具｜差值=6
+- ai_deep_learning_llm｜位置编码（positional encoding）解决什么问题？｜正确项=自注意力本身对顺序不敏感｜最长干扰项=降低显存占用｜差值=6
+- ai_multimodal｜关于 AI 生成内容，正确做法是？｜正确项=按法规加标识或水印并保留生成记录｜最长干扰项=可随意使用他人肖像｜差值=7
+- ai_coding_assistant｜把 AI 编程助手接入仓库前应准备什么？｜正确项=明确项目约定（如 AGENTS.md），并让测试与静态检查成为合并门禁｜最长干扰项=让助手直接推送到主分支｜差值=24
+- ai_agent_evaluation｜一套有效的 Agent 评测集应该包含？｜正确项=真实任务、边界用例与对抗样本｜最长干扰项=只保留成功案例｜差值=7
+- multimodal_rag｜表格入库的推荐做法是？｜正确项=转成 Markdown 等结构化格式保留行列关系｜最长干扰项=拍平成纯文本｜差值=18
+- multimodal_rag｜跨模态检索的常见实现方式是？｜正确项=用多模态嵌入把文本与图像映射到同一向量空间后做相似度检索｜最长干扰项=先做 OCR 再全文检索｜差值=16
+- model_evaluation｜选择生产模型最应依据什么？｜正确项=用自己业务的私有评测集实测｜最长干扰项=公开榜单排名｜差值=7
+- agent_memory｜记忆检索常用的实现方式是？｜正确项=向量检索 + 元数据过滤（用户、时间、类型）｜最长干扰项=按创建顺序全量遍历｜差值=13
+- ai_data_engineering｜PII 脱敏在数据工程中的作用是？｜正确项=防止个人隐私信息进入训练数据与日志，满足合规要求｜最长干扰项=提升模型准确率｜差值=17
+- ai_rag_agent_project｜评测集应覆盖哪些类型？｜正确项=可直接查到，需跨文档综合｜最长干扰项=只有无答案问题｜差值=5
+- ai_rag_agent_project｜让回答可溯源应如何实现？｜正确项=检索片段携带文档 ID 与位置｜最长干扰项=把整篇文档塞进提示｜差值=6
+- vector_db｜元数据过滤在向量检索中的常见坑是？｜正确项=先过滤再检索与先检索再过滤的结果数量差异很大｜最长干扰项=过滤条件不能与向量检索同时使用｜差值=7
+- ai_mlops｜模型注册表必须记录数据与特征版本的原因是？｜正确项=出现问题时能复现当时的训练条件｜最长干扰项=可以减小模型体积｜差值=7
+- ai_recommender｜离线指标提升但线上下降，最可能的原因是？｜正确项=离线数据来自旧策略，存在选择偏差｜最长干扰项=服务器性能不足｜差值=9
+- ai_time_series｜时间序列建模时最常见的错误是？｜正确项=随机切分导致未来信息泄露到训练集｜最长干扰项=没有使用深度学习｜差值=8
+- ai_reinforcement_learning｜强化学习与监督学习最本质的差别是？｜正确项=没有直接给出正确答案，只能通过奖励反馈学习｜最长干扰项=不能使用神经网络｜差值=13
+- ai_reinforcement_learning｜奖励曲线很高但任务没有完成，最可能的原因是？｜正确项=奖励设计存在漏洞被智能体利用｜最长干扰项=状态数量太少｜差值=8
+- ai_engineering｜成本优化的合理顺序是？｜正确项=先砍无用 token，再缓存｜最长干扰项=先换最便宜的模型｜差值=6
+- ai_fine_tuning_deployment｜什么时候应该考虑微调而不是只改提示？｜正确项=需要稳定的特定风格/格式或专门任务能力，且提示工程与 RAG 已达到瓶颈｜最长干扰项=想减少调用成本的一半｜差值=26
+- ai_training｜开始训练前最应该做的一件事是？｜正确项=先用极小数据集跑通全流程并确认能过拟合｜最长干扰项=直接上全量数据｜差值=12
+- ai_training｜学习率预热（warmup）的作用是？｜正确项=训练初期使用较小学习率逐步升高，避免大更新破坏预训练权重｜最长干扰项=加快数据加载｜差值=22
+- distributed_fundamentals｜发生网络分区时 CAP 中的取舍是？｜正确项=只能在一致性与可用性之间选一个｜最长干扰项=必须放弃分区容错｜差值=7
+- distributed_fundamentals｜物理时钟漂移给分布式系统带来的主要困难是？｜正确项=无法用本地时间可靠判断事件的先后顺序，需要逻辑时钟或因果序｜最长干扰项=会导致网络中断｜差值=22
+- messaging_events｜要保证同一业务的消息局部有序，应该？｜正确项=把同一业务键路由到同一分区或队列｜最长干扰项=使用多线程消费｜差值=9
+- messaging_events｜事件（Event）与命令（Command）的区别是？｜正确项=事件描述已经发生的事实（过去时）｜最长干扰项=事件只能有一个消费者｜差值=6
+- distributed_id｜对外暴露的订单号不建议直接使用自增 ID，主要原因是？｜正确项=容易被枚举，暴露业务量并带来爬取风险｜最长干扰项=自增 ID 无法存储为数字｜差值=5
+- distributed_rate_limit｜固定窗口限流的典型缺陷是？｜正确项=窗口边界处可能出现瞬时双倍流量｜最长干扰项=无法统计请求数量｜差值=7
+- distributed_rate_limit｜限流触发时，服务端应该返回什么？｜正确项=429 并带上 Retry-After｜最长干扰项=500 内部错误｜差值=11
+- distributed_rate_limit｜熔断器进入打开状态后，还需要什么机制才能恢复？｜正确项=冷却后进入半开状态放少量探测请求｜最长干扰项=永久拒绝所有请求｜差值=8
+- distributed_cache｜为什么给缓存过期时间加随机抖动？｜正确项=避免大量 key 同时失效造成雪崩｜最长干扰项=让缓存更省内存｜差值=10
+- dist_transaction｜为什么跨服务写操作必须支持幂等？｜正确项=网络超时后的重试无法避免，重复请求必须安全｜最长干扰项=可以减少代码量｜差值=14
+- dist_transaction｜两阶段提交的主要代价是？｜正确项=协调期间资源被锁定，协调者故障会影响可用性｜最长干扰项=不支持任何数据库｜差值=13
+- dist_event_sourcing｜事件溯源中修改历史事件的含义会带来什么后果？｜正确项=历史数据的解释被改变，重放结果不再可信｜最长干扰项=存储空间增加｜差值=13
+- distributed_short_url_project｜读多写少的短链服务，性能关键在于？｜正确项=用 Redis 缓存短码到长链的映射｜最长干扰项=增加数据库连接｜差值=11
+- distributed_multisite｜多活架构上线后最重要的验证手段是？｜正确项=定期做故障注入与切换演练｜最长干扰项=增加单元数量｜差值=6
+- design_patterns｜单一职责原则的判断标准是？｜正确项=一个类只有一个引起它变化的原因（一个变化方向）｜最长干扰项=一个类不能超过 100 行｜差值=10
+- requirements_modeling｜用户故事的标准格式是？｜正确项=「作为<角色>，我想要<目标>｜最长干扰项=包含完整数据库设计｜差值=6
+- se_test_design｜正交实验法在设计用例时的作用是？｜正确项=用较少的组合覆盖多个因素及其交互，控制用例数量｜最长干扰项=随机生成用例｜差值=17
+- se_tdd_refactor｜改造遗留代码的第一步通常是？｜正确项=先补特征测试固定当前行为｜最长干扰项=删除无用代码｜差值=6
+- se_quality_metrics｜变更失败率（Change Failure Rate）主要衡量什么？｜正确项=进入生产环境的变更中需要回滚或紧急修复的比例｜最长干扰项=单元测试数量｜差值=16
+- se_quality_metrics｜质量度量的正确用途是？｜正确项=观察团队与流程趋势并驱动改进｜最长干扰项=考核个人绩效｜差值=8
+- se_tech_writing｜代码注释应该重点说明什么？｜正确项=为什么这样写，以及背后的权衡与坑｜最长干扰项=作者姓名与修改日期｜差值=7
+- sdl_security｜依赖漏洞扫描（SCA）主要解决什么问题？｜正确项=发现第三方库中的已知漏洞与许可证风险｜最长干扰项=检测业务逻辑漏洞｜差值=10
+- math_vectors_matrices｜矩阵的秩（rank）代表什么？｜正确项=线性无关的行（或列）的最大数量，即列空间的维数｜最长干扰项=矩阵元素之和｜差值=17
+- math_eigen_svd｜条件数很大意味着什么？｜正确项=问题病态：输入的微小扰动会引起解的大幅变化｜最长干扰项=矩阵是奇异的｜差值=15
+- math_calculus_gradient｜小批量随机梯度下降（mini-batch SGD）相比全量梯度下降的特点是？｜正确项=用一个小批量估计梯度，单步更快｜最长干扰项=一定收敛到全局最优｜差值=6
+- math_calculus_gradient｜Adam 优化器相比朴素 SGD 的改进是？｜正确项=用梯度的一阶与二阶矩估计自适应调整每个参数的步长｜最长干扰项=不需要反向传播｜差值=17
+- math_information_theory｜语言模型报告中困惑度（perplexity）为 20，意味着什么？｜正确项=模型平均在约 20 个等概率候选之间犹豫｜最长干扰项=模型准确率是 20%｜差值=10
+- math_graph_combinatorics｜用组合数公式计算 C(100,50) 时，为什么推荐乘法递推而不是阶乘相除？｜正确项=因为阶乘会迅速超出整数范围并带来巨大的中间值｜最长干扰项=因为乘法递推复杂度更低（O(1)）｜差值=5
+- math_convex_optimization｜处理「最小化 f(x) 且 x 必须落在区间 [0,1] 内」这类约束，最简单的做法是？｜正确项=每步更新后把 x 投影回 [0,1]｜最长干扰项=把学习率调大｜差值=12
+- cross_package_manage｜排查「编译通过但运行时报找不到方法」的依赖问题，第一步应该做什么？｜正确项=用依赖树命令查看实际生效的版本与来源｜最长干扰项=换成另一个包管理器｜差值=9
+- cross_concurrency｜关于取消与超时，跨语言共同的原则是？｜正确项=把取消或超时信号一路传到最底层的阻塞调用｜最长干扰项=所有语言的超时机制完全相同｜差值=7
+- cross_serialization｜YAML 中裸写 no 会有什么问题？｜正确项=被解析成布尔 false 而不是字符串｜最长干扰项=自动变成 null｜差值=10
+- cross_performance_profiling｜做基准测试时，为什么要加预热（warmup）？｜正确项=因为 JIT 编译与缓存会让前几次偏慢，预热后数据才稳定｜最长干扰项=为了增加测试次数｜差值=20
+- cross_api_contract｜在 CI 中执行 `git diff --exit-code ./src/api-types.ts` 的作用是？｜正确项=强制契约变更必须同步重新生成类型，否则失败｜最长干扰项=比对代码覆盖率｜差值=14
+- visual_http_timeline｜为避免累积布局偏移（CLS），图片应该？｜正确项=提前预留宽高或使用 aspect-ratio｜最长干扰项=统一用背景图｜差值=16
+- visual_btree_index｜「覆盖索引」指的是？｜正确项=查询需要的字段全部包含在索引里｜最长干扰项=索引覆盖所有查询｜差值=7
+- visual_tcp_handshake｜接收方缓冲区满时，TCP 会怎样？｜正确项=通过零窗口通知发送方暂停｜最长干扰项=自动扩容缓冲区｜差值=5
+- visual_tcp_handshake｜排查「大文件传输吞吐低」时，更应关注？｜正确项=重传率与拥塞窗口（cwnd）｜最长干扰项=TLS 证书链长度｜差值=5
+- visual_rag_pipeline｜回答出现编造内容时，最先应该检查什么？｜正确项=先看进入提示的片段是否正确｜最长干扰项=直接关闭 RAG｜差值=5
+- visual_db_isolation｜在并发场景下防止「重复插入」，最可靠的做法是？｜正确项=使用唯一约束，让数据库拒绝重复｜最长干扰项=把隔离级别调到最高｜差值=6
+- visual_mq_delivery｜配置死信队列（DLQ）的主要目的是？｜正确项=避免坏消息无限重试阻塞队列｜最长干扰项=降低存储成本｜差值=7
+- visual_oauth_flow｜校验令牌签名时，明确指定允许的算法（如 RS256）是为了防？｜正确项=防止 alg=none 等算法混淆攻击｜最长干扰项=提升验证速度｜差值=13
+- visual_rate_limit_circuit｜熔断器配置中，最小请求数参数的作用是？｜正确项=样本量不足时不触发熔断｜最长干扰项=限制重试次数｜差值=5
+- visual_vector_index｜Recall@K 衡量的是？｜正确项=ANN 结果与精确结果的重合比例，即检索质量｜最长干扰项=索引构建时间｜差值=16
+- visual_vector_index｜向量索引里删除一条数据后，常见现象是？｜正确项=多为软删除，仍可能被检索到｜最长干扰项=召回率自动提升｜差值=6
+- project_testing_quality｜质量门禁的设计原则是？｜正确项=客观、可修复、不可随意绕过｜最长干扰项=只做人工评审即可｜差值=5
+- project_retro_improve｜更现实的技术债治理方式是？｜正确项=每个迭代固定留出 10%~20% 容量持续处理｜最长干扰项=停掉所有业务功能，集中还债三个月｜差值=7
+- project_python_cli_todo｜为 CLI 增加 --json 输出后，自动化测试最应该断言什么？｜正确项=可解析的结构、字段语义和退出码｜最长干扰项=帮助文本包含作者名字｜差值=5
+- project_rest_api_sqlite｜为什么库存扣减与预约写入必须处于同一事务？｜正确项=避免出现扣了库存却没有预约的半完成状态｜最长干扰项=让 SQLite 文件更小｜差值=6
+- project_rag_agent_service｜为 Agent 工具设置白名单和参数校验的主要目的是什么？｜正确项=限制可执行操作并防止越权副作用｜最长干扰项=让所有请求自动成功｜差值=6
+- project_debug_performance_triage｜一次性能实验为什么应该只改变一个变量？｜正确项=可以把观察到的变化归因到该变量｜最长干扰项=减少测试数量｜差值=9
+- devops_cicd_pipeline｜以下关于 CI/CD 的描述，哪个是正确的？｜正确项=持续部署（Continuous Deployment）意味着每次通过测试的代码变更都会自动部署到生产环境｜最长干扰项=持续交付（Continuous Delivery）要求每次变更都必须手动部署到生产环境｜差值=9
+- devops_cicd_pipeline｜在 GitLab CI 中，"cache" 和 "artifacts" 的核心区别是什么？｜正确项="cache" 用于加速后续构建（如 "node_modules"），"artifacts" 用于传递构建产物到后续阶段或供下载｜最长干扰项="cache" 只能缓存 Docker 镜像，"artifacts" 可以缓存任何文件｜差值=21
+- devops_gitops_argocd｜GitOps 的核心理念中，"Git 是唯一真相源（Single Source of Truth）"意味着什么？｜正确项=所有基础设施和应用的期望状态都通过 Git 仓库管理，集群通过自动拉取 Git 中的配置来同步状态｜最长干扰项=Git 仓库只能存储 Kubernetes 配置文件，不能存储其他文件｜差值=14
+- devops_gitops_argocd｜在 ArgoCD 中，"Application" CRD 的 "syncPolicy.automated" 配置中，"prune: true" 和 "selfHeal: true" 分别表示什么？｜正确项="prune" 自动删除 Git 中已移除的资源；"selfHeal" 自动修复集群中被手动修改的资源为 Git 中的状态｜最长干扰项="prune" 自动更新镜像版本；"selfHeal" 自动重启失败的 Pod｜差值=22
+- devops_gitops_argocd｜ArgoCD 的同步窗口（Sync Windows）功能主要用于什么场景？｜正确项=限制自动同步的时间窗口，常用于保护生产环境（例如只允许工作日 10:00-14:00 自动同步，禁止周五下午同步）｜最长干扰项=自动合并多个 Pull Request｜差值=38
+- devops_gitops_argocd｜关于 Helm 和 Kustomize 在 ArgoCD 中的使用，以下哪个说法是正确的？｜正确项=Helm 使用模板语法生成 Kubernetes 资源，Kustomize 通过"基础 + 覆盖层"方式组合配置，不使用模板｜最长干扰项=Helm 和 Kustomize 功能完全相同，只是语法不同｜差值=32
+- devops_gitops_argocd｜在 GitOps 密钥管理方案中，Sealed Secrets 的主要优势是什么？｜正确项=加密后的密钥可以安全地存储在 Git 仓库中，只有集群内的 Sealed Secrets Controller 能解密｜最长干扰项=密钥以 Base64 编码存储在 Git 中，任何人都可以解码｜差值=28
+- devops_github_actions｜在 GitHub Actions 中，以下哪个事件触发方式支持配置自定义输入参数（如选择部署环境）？｜正确项="workflow_dispatch"｜最长干扰项="pull_request"｜差值=5
+- devops_github_actions｜在 GitHub Actions 的缓存配置中，以下哪个缓存键（key）设计最合理？｜正确项="${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}"（基于操作系统和锁文件哈希）｜最长干扰项="cache-${{ github.actor }}"（基于提交者用户名）｜差值=38
+- devops_github_actions｜GitHub Actions 中自定义 Composite Action 的主要优势是什么？｜正确项=可以将多个步骤打包成一个可复用的单元，在多个 workflow 中共享｜最长干扰项=可以让外部用户直接修改你的 workflow 文件｜差值=10
+- devops_github_actions｜在 GitHub Actions 中，关于环境变量和密钥（Secrets）的使用，以下哪个做法是正确的？｜正确项=使用 "${{ secrets.XXX }}" 引用密钥，密钥在日志中会自动被替换为 "***"｜最长干扰项=在 workflow 的 "run" 命令中用 "echo" 打印密钥值以便调试｜差值=8
+- devops_docker_registry｜Docker 多阶段构建（Multi-stage Build）的主要目的是什么？｜正确项=在构建阶段使用包含编译工具的完整镜像，在最终运行阶段只拷贝编译产物，从而大幅减小镜像体积并提高安全性｜最长干扰项=让 Dockerfile 的代码更简洁易读｜差值=29
+- devops_docker_registry｜关于 Docker 镜像标签策略，以下哪个做法是生产环境的最佳实践？｜正确项=使用语义化版本号（如 "1.2.3"）或 Git SHA 作为标签，避免使用 "latest"｜最长干扰项=使用日期作为唯一标签（如 "2024-01-15"）同时需要额外的缓存与清理｜差值=9
+- devops_docker_registry｜".dockerignore" 文件的作用是什么？｜正确项=告诉 Docker 在构建镜像时排除哪些文件不打包进镜像，类似于 ".gitignore"｜最长干扰项=定义 Docker 容器运行时可以访问的文件｜差值=23
+- devops_docker_registry｜Docker Hub 免费账户的拉取限制是什么？这对 CI/CD 流水线有什么影响？｜正确项=每 6 小时 100 次拉取限制，频繁拉取镜像的 CI/CD 流水线可能触发限流｜最长干扰项=限制只作用于中国地区的用户，其他地区用同一账号拉取不受任何影响｜差值=9
+- devops_deployment_strategies｜蓝绿部署（Blue-Green Deployment）的核心特点是什么？｜正确项=维护两套完全相同的生产环境，通过切换 Service selector 实现零停机部署和秒级回滚｜最长干扰项=先将少量流量导入新版本，观察指标正常后再逐步扩大流量｜差值=22
+- devops_deployment_strategies｜与滚动更新相比，金丝雀发布（Canary Release）的最大优势是什么？｜正确项=风险更低，可以先让少量用户流量进入新版本，观察指标正常后再逐步扩大流量｜最长干扰项=配置更简单，不需要服务网格｜差值=22
+- devops_deployment_strategies｜自动化回滚策略中，以下哪个指标最适合作为回滚触发条件？｜正确项=HTTP 5xx 错误率超过设定阈值（如 > 1%）｜最长干扰项=CPU 使用率从 40% 上升到 50%｜差值=6
+- devops_deployment_strategies｜数据库迁移中的 Expand-Contract 模式的核心思想是什么？｜正确项=先添加新字段同时保留旧字段（Expand），双写过渡并回填历史数据，最后确认无误后删除旧字段（Contract）｜最长干扰项=直接删除旧字段，创建新字段，然后停机迁移数据｜差值=34
+- devops_terraform｜在 Terraform 中，Provider 的作用是什么？｜正确项=作为 Terraform 和云厂商之间的"翻译官"，将 HCL 配置转换为云厂商的 API 调用｜最长干扰项=提供 Web 界面来管理基础设施，日常操作可以完全脱离命令行执行计划｜差值=14
+- devops_terraform｜Terraform 的状态文件（terraform.tfstate）的主要作用是什么？｜正确项=记录当前基础设施的实际状态，Terraform 通过对比代码描述和状态文件来决定需要做什么改动｜最长干扰项=记录 Terraform 命令的执行历史｜差值=27
+- devops_terraform｜在 Terraform 中，"terraform.tfvars" 文件的用途是什么？｜正确项=为变量提供具体的值，执行 "terraform apply" 时自动加载｜最长干扰项=定义 Terraform 的版本要求｜差值=18
+- devops_terraform｜Terraform 工作区（Workspace）的本质是什么？｜正确项=同一份 Terraform 代码可以在不同的工作区中运行，每个工作区有独立的状态文件，用于管理不同环境｜最长干扰项=一个专门编辑 HCL 配置文件的代码编辑器，带语法高亮和片段模板｜差值=19
+- devops_terraform｜在 Terraform 模块设计中，"module" 块中的 "source" 参数的作用是什么？｜正确项=指定模块的代码来源路径（本地目录或远程注册表）｜最长干扰项=指定模块的输出变量｜差值=14
+- devops_logging_tracing｜在链路追踪（Distributed Tracing）中，"Trace" 代表什么？｜正确项=一个请求从入口到结束的完整调用链路，包含经过的所有服务和耗时｜最长干扰项=单个服务内部的函数调用｜差值=19
+- devops_logging_tracing｜OpenTelemetry（OTel）项目解决了什么问题？｜正确项=统一了链路追踪、指标收集和日志记录的标准，提供"一次集成、多平台导出"的能力，类似可观测性领域的 USB 接口｜最长干扰项=替代了所有现有监控工具，接入之后可以卸载 Prometheus 与 Grafana｜差值=14
+- devops_logging_tracing｜在生产环境中，推荐的日志级别设置是什么？为什么？｜正确项=INFO——记录正常业务流程的关键信息，避免 DEBUG 日志的噪音淹没有用信息｜最长干扰项=DEBUG——记录尽可能多的信息，方便排查问题｜差值=17
+- devops_logging_tracing｜在 ELK Stack 中，Elasticsearch、Logstash、Kibana 各自承担什么角色？｜正确项=Elasticsearch 负责分布式存储和检索日志，Logstash 负责接收、解析和转换日志数据，Kibana 负责日志的查询和可视化展示｜最长干扰项=Elasticsearch 负责告警，Logstash 负责日志采集，Kibana 负责日志存储｜差值=23
+- frontend_react_hooks｜以下哪种情况最适合使用useRef？｜正确项=存储需要在重新渲染之间保持但不触发重新渲染的值｜最长干扰项=存储需要在界面上显示的动态数据｜差值=8
+- frontend_angular_basics｜关于Angular的依赖注入，以下说法正确的是？｜正确项=@Injectable({ providedIn: 'root' })会使服务成为单例｜最长干扰项=服务必须在@NgModule的providers中注册才能使用｜差值=12
+- frontend_nextjs_ssr｜关于App Router的布局系统，以下说法错误的是？｜正确项=layout中可以随意使用useState和useEffect｜最长干扰项=layout.jsx会在路由切换时保持状态｜差值=10
+- backend_restful_api｜关于PUT和PATCH的区别，以下说法正确的是？｜正确项=PUT必须发送完整资源，PATCH可以只发送变化的字段｜最长干扰项=PUT用于创建资源，PATCH用于更新资源｜差值=6
+- backend_restful_api｜API版本控制的最佳实践是什么？｜正确项=使用URL路径版本（如/api/v1/、/api/v2/）｜最长干扰项=直接在原有端点上修改，通知所有客户端｜差值=11
+- backend_nodejs_express｜Node.js的事件循环机制最适合处理哪种类型的任务？｜正确项=大量并发I/O操作如HTTP请求和数据库查询｜最长干扰项=大规模矩阵运算和图像处理｜差值=10
+- backend_nodejs_express｜在生产环境中，如何处理未捕获的异常和未处理的Promise拒绝？｜正确项=注册`process.on('uncaughtException')`和`process.on('unhandledRejection')`监听器｜最长干扰项=在每个控制器方法外层用 try-catch 包裹全部代码，把异常吞掉后返回错误码｜差值=33
+- backend_fastapi_async｜FastAPI自动生成API文档依赖于什么机制？｜正确项=Python类型提示和Pydantic模型｜最长干扰项=手动编写OpenAPI规范文件｜差值=6
+- backend_fastapi_async｜FastAPI的依赖注入系统中，使用`yield`的依赖函数有什么特殊作用？｜正确项=允许在依赖使用后执行清理代码｜最长干扰项=缓存依赖结果｜差值=8
+- backend_fastapi_async｜Pydantic v2中，如何让模型能够从SQLAlchemy ORM对象自动转换？｜正确项=设置`from_attributes = True`｜最长干扰项=设置`orm_mode = True`｜差值=7
+- backend_fastapi_async｜以下哪个场景最适合使用FastAPI的异步特性？｜正确项=大量并发的数据库查询和外部API调用｜最长干扰项=复杂的数学计算和数据处理｜差值=6
+- backend_gin_echo｜Go语言的goroutine与传统线程的主要区别是什么？｜正确项=goroutine的栈空间更小，由Go运行时调度｜最长干扰项=goroutine只能由操作系统调度｜差值=6
+- backend_gin_echo｜Gin和Echo在错误处理方式上的主要区别是什么？｜正确项=Gin手动返回JSON，Echo返回error由全局处理器转换｜最长干扰项=Gin返回error，Echo返回JSON｜差值=10
+- backend_database_integration｜在PostgreSQL中，以下哪种情况最适合使用GIN索引？｜正确项=对JSONB类型的用户偏好设置进行查询｜最长干扰项=对文章发布时间进行范围查询｜差值=6
+- backend_graphql_apollo｜在GraphQL Schema中，感叹号（!）的作用是什么？｜正确项=表示该字段是非空的（Non-Null）｜最长干扰项=表示该字段可以为null｜差值=7
+- backend_graphql_apollo｜在GraphQL中，如何实现实时数据推送功能？｜正确项=使用WebSocket建立长连接，配合Subscription类型｜最长干扰项=使用HTTP Server-Sent Events｜差值=8
+- backend_microservices_patterns｜在领域驱动设计（DDD）中，限界上下文（Bounded Context）的主要作用是？｜正确项=明确业务模型的边界和适用范围｜最长干扰项=指定服务间通信协议｜差值=5
+- ml_tensorflow_pytorch_intro｜关于TensorFlow和PyTorch的计算图机制，以下哪项描述是正确的？｜正确项=TensorFlow 2.x默认使用动态计算图（Eager Execution），PyTorch也使用动态计算图｜最长干扰项=TensorFlow 2.x默认使用静态计算图，PyTorch默认使用动态计算图｜差值=16
+- ml_tensorflow_pytorch_intro｜在PyTorch中，为什么在每次训练迭代开始前需要调用`optimizer.zero_grad()`？｜正确项=因为PyTorch默认会累积梯度，不清零会导致梯度累加｜最长干扰项=这是一个可选操作，不影响训练结果｜差值=11
+- ml_tensorflow_pytorch_intro｜以下关于张量操作的描述，哪一项是错误的？｜正确项=`tensor.reshape()`和`tensor.view()`在所有情况下都可以互换使用｜最长干扰项=TensorFlow的`tf.constant`创建的张量默认是不可变的｜差值=11
+- ml_tensorflow_pytorch_intro｜关于模型部署，以下哪种说法最为准确？｜正确项=TensorFlow的SavedModel格式和PyTorch的TorchScript都支持跨语言部署｜最长干扰项=TensorFlow模型只能部署在Google Cloud上｜差值=21
+- ml_data_preprocessing_feature_engineering｜在特征选择中，包裹法（Wrapper Methods）相比过滤法（Filter Methods）的优势是什么？｜正确项=考虑了特征之间的交互作用，并直接与模型性能挂钩｜最长干扰项=适用于任意数量的特征而不受计算限制｜差值=6
+- ml_data_preprocessing_feature_engineering｜关于特征缩放，以下说法正确的是？｜正确项=标准化（Standardization）将特征转换为均值为0、标准差为1的分布｜最长干扰项=树模型（如随机森林、XGBoost）对特征缩放非常敏感，必须先标准化｜差值=5
+- ml_computer_vision｜在迁移学习中，为什么通常采用"先冻结预训练层训练分类头，再解冻部分层微调"的两阶段策略？｜正确项=因为新添加的分类头权重是随机初始化的，需要先让其收敛到合理范围，避免破坏预训练特征｜最长干扰项=因为预训练层的权重已经是最佳的，不需要更新｜差值=20
+- ml_computer_vision｜关于目标检测中的IoU（Intersection over Union，交并比），以下计算正确的是？｜正确项=IoU = 交集面积 / (预测框面积 + 真实框面积 - 交集面积)｜最长干扰项=IoU = (预测框面积 + 真实框面积) / 交集面积｜差值=7
+- ml_computer_vision｜在图像分类任务中，以下哪种数据增强技术可能会改变图像的语义标签？｜正确项=将猫的图片垂直翻转180度｜最长干扰项=随机旋转±15度｜差值=5
+- ml_natural_language_processing｜在使用BERT进行文本分类时，为什么通常使用[CLS] token的输出作为整个句子的表示？｜正确项=因为[CLS] token在预训练时被专门设计用于聚合整个序列的信息｜最长干扰项=因为[CLS] token位于序列末尾，包含了所有后续信息｜差值=5
+- ml_natural_language_processing｜在NLP任务的数据预处理中，以下哪种操作可能会损害情感分析的效果？｜正确项=去除停用词（如"not"、"very"、"really"）｜最长干扰项=进行词干提取（stemming）｜差值=13
+- ml_recommendation_systems｜矩阵分解中，隐因子维度（latent dimension）的选择对模型性能有何影响？｜正确项=需要根据数据规模和稀疏度权衡，通常通过交叉验证选择｜最长干扰项=维度越低越好，计算更快且不易过拟合｜差值=8
+- ml_recommendation_systems｜在推荐系统评估中，NDCG（Normalized Discounted Cumulative Gain）相比简单准确率的优势是什么？｜正确项=NDCG考虑了推荐物品的排名位置，排在前列的正确推荐贡献更大｜最长干扰项=NDCG不需要真实标签即可计算｜差值=15
+- ml_recommendation_systems｜解决推荐系统冷启动问题的最有效策略组合是？｜正确项=结合基于内容的推荐、用户兴趣问卷、探索与利用平衡策略｜最长干扰项=等待用户产生足够多的行为数据后再启用推荐｜差值=6
+- ml_time_series_prediction｜LSTM相比普通RNN的主要优势是什么？｜正确项=LSTM通过门控机制能够有效捕捉长期依赖关系｜最长干扰项=LSTM只能处理固定长度的序列｜差值=7
+- ml_time_series_prediction｜在时间序列预测中，MAPE（Mean Absolute Percentage Error）的主要缺点是什么？｜正确项=当实际值接近零时，MAPE会变得非常大甚至无穷大｜最长干扰项=MAPE无法解释预测的方向性｜差值=10
+- ml_model_evaluation_hyperparameter_tuning｜在K折交叉验证中，为什么通常选择K=5或K=10，而不是K=2或K=N（样本数）？｜正确项=K=2计算太快但估计方差大，K=N（LOOCV）计算成本太高且估计方差可能更大｜最长干扰项=K=5和K=10是历史遗留的传统，没有特别理由｜差值=16
+- ml_model_evaluation_hyperparameter_tuning｜关于超参数调优，随机搜索相比网格搜索的主要优势是什么？｜正确项=随机搜索在相同评估次数下更有可能探索到高影响超参数的更多不同值｜最长干扰项=随机搜索不需要指定超参数范围｜差值=17
+- ml_model_deployment_mlops｜关于模型序列化格式的选择，以下哪项建议是最合理的？｜正确项=TensorFlow模型用SavedModel，PyTorch模型用TorchScript，需要跨框架时用ONNX｜最长干扰项=只保存模型权重（state_dict），不保存网络结构｜差值=30
+- ml_model_deployment_mlops｜在MLOps流水线中，为什么需要模型注册中心（Model Registry）？｜正确项=提供模型的版本管理、元数据记录、生命周期管理和审批流程｜最长干扰项=仅仅是为了存储模型文件，节省磁盘空间｜差值=9
+- ml_model_deployment_mlops｜模型监控中，数据漂移（Data Drift）和概念漂移（Concept Drift）的区别是什么？｜正确项=数据漂移指输入数据分布变化，概念漂移指输入-输出映射关系变化｜最长干扰项=数据漂移只发生在分类任务，概念漂移只发生在回归任务｜差值=5
+- ml_model_deployment_mlops｜在A/B测试中，确定样本量的主要依据是什么？｜正确项=预期的效应大小、显著性水平（alpha）和统计功效（power）｜最长干扰项=服务器的处理能力｜差值=24
+- mobile_swift｜guard let 与 if let 相比，最明显的特点是？｜正确项=guard 的条件不满足时必须在当前作用域退出（return/throw 等）｜最长干扰项=guard 只能用于循环内部｜差值=25
+- mobile_swiftui_complete｜在SwiftUI List中使用ForEach时，为什么数据模型需要遵循Identifiable协议？｜正确项=为了让SwiftUI能够唯一标识和追踪每个列表项｜最长干扰项=为了能够对数据进行排序｜差值=13
+- mobile_swiftui_complete｜以下哪种情况应该使用@ObservedObject而不是@State？｜正确项=管理一个包含多个属性的复杂对象，且该对象需要在多个视图中共享｜最长干扰项=存储一个简单的布尔值开关状态｜差值=16
+- mobile_swiftui_complete｜SwiftUI中的withAnimation闭包的作用是什么？｜正确项=为闭包内改变的状态变化添加动画效果｜最长干扰项=创建一个独立的动画线程｜差值=6
+- android_flutter_release｜关于 APK 与 AAB（Android App Bundle）这两种发布产物，下列说法正确的是？｜正确项=AAB 要先由商店或 bundletool 转换成设备专用 APK 才能安装｜最长干扰项=AAB 可以直接用 adb install 安装到真机做上架前验收｜差值=5
+- mobile_jetpack_compose_advanced｜在LazyColumn中使用items时，为什么要提供key参数？｜正确项=为了帮助Compose正确识别和复用列表项，提升性能｜最长干扰项=为了让列表项可以排序｜差值=16
+- mobile_jetpack_compose_advanced｜以下哪种方式最适合在Compose中执行网络请求等异步操作？｜正确项=在ViewModel中使用协程，然后通过State暴露结果｜最长干扰项=直接在Composable函数中调用网络API｜差值=6
+- mobile_miniprogram｜为什么小程序里不能使用 document 与 window？｜正确项=因为没有浏览器 DOM 环境｜最长干扰项=因为需要付费开通｜差值=6
+- mobile_react_native｜关于 RN 中的动画性能，正确做法是？｜正确项=用 Animated 或 Reanimated 让动画在原生线程执行｜最长干扰项=把动画放在 renderItem 里执行｜差值=14
+- mobile_harmony｜在 ArkUI 中让界面随数据变化刷新，应该怎么做？｜正确项=用 @State 等状态装饰器声明数据｜最长干扰项=用普通成员变量保存数据｜差值=8
+- mobile_react_native_deep｜React Native中的Bridge机制主要负责什么？｜正确项=在JavaScript线程和原生线程之间传递消息｜最长干扰项=连接WiFi和移动网络｜差值=13
+- mobile_react_native_deep｜在React Native中使用FlatList时，为什么推荐使用React.memo包裹Item组件？｜正确项=为了避免不必要的重新渲染，提升性能｜最长干扰项=为了美化Item的外观｜差值=6
+- mobile_react_native_deep｜关于React Native的原生模块开发，以下说法正确的是？｜正确项=需要在iOS和Android分别实现原生代码，然后通过Bridge暴露给JS｜最长干扰项=iOS和Android可以使用完全相同的代码｜差值=16
+- mobile_react_native_deep｜在React Native中，如何处理iOS和Android的平台差异？｜正确项=使用Platform.OS判断并为不同平台编写适配代码｜最长干扰项=使用相同的代码，期望它能在两平台正常工作｜差值=7
+- mobile_cross_platform_comparison｜以下哪种场景最适合选择Flutter作为技术方案？｜正确项=需要同时在iOS、Android和Web上保持一致的UI和性能｜最长干扰项=团队已有丰富的React经验，需要快速开发MVP｜差值=7
+- mobile_cross_platform_comparison｜在进行技术选型时，为什么需要考虑"招聘难度"这一因素？｜正确项=因为技术的人才储备影响项目的长期维护和扩展能力｜最长干扰项=因为招聘难度与技术性能成正比｜差值=9
+- mobile_cross_platform_comparison｜关于技术选型的"长期维护"维度，以下哪个因素最重要？｜正确项=框架背后的公司或社区是否持续投入｜最长干扰项=框架当前的流行程度｜差值=7
+- mobile_offline_first｜在处理数据同步冲突时，"最后写入获胜"（LWW）策略的主要缺点是什么？｜正确项=可能导致用户数据被意外覆盖而丢失｜最长干扰项=需要同步所有历史版本｜差值=6
+- mobile_offline_first｜在离线优先应用中，如何处理敏感数据（如密码、token）的本地存储？｜正确项=使用加密存储，如Android的EncryptedSharedPreferences或iOS的Keychain｜最长干扰项=明文存储在SharedPreferences或UserDefaults中｜差值=19
+- mobile_offline_first｜关于后台同步任务的调度，以下哪种策略最合理？｜正确项=结合网络状态、电池电量和用户行为智能调度，并使用指数退避重试｜最长干扰项=每秒钟执行一次同步以确保数据实时性｜差值=13
+- mobile_security｜为什么不应该在代码中硬编码API密钥？｜正确项=因为反编译后可以轻易提取密钥，导致未授权访问｜最长干扰项=因为不同平台的API密钥格式不同｜差值=6
+- mobile_security｜关于代码混淆，以下说法正确的是？｜正确项=混淆通过重命名标识符、打乱控制流等方式增加阅读难度｜最长干扰项=混淆可以完全防止逆向工程｜差值=13
+- mobile_security｜HTTPS证书锁定（Certificate Pinning）的主要目的是什么？｜正确项=防止中间人攻击，确保只信任特定的服务器证书｜最长干扰项=加速HTTPS连接速度｜差值=10
+- mobile_security｜在移动应用中存储用户密码时，最佳实践是什么？｜正确项=使用bcrypt或Argon2加盐哈希后存储｜最长干扰项=使用Base64编码后存储｜差值=9
