@@ -1020,6 +1020,128 @@ void main() {
     }
   });
 
+  test('课文考点精讲的字母答案标注与题库真值一致', () async {
+    const letters = 'ABCDEFGH';
+    final dropped = RegExp('[\\s\u3000*_「」『』\u201C\u201D"\'`]');
+    final marker = RegExp(
+      r'^\s*(?:[-*>]\s*)?(?:\*\*)?\s*(?:正确答案|正确项|正确选项|正确序号|参考答案|答案|[Aa]ns)(?:\s*\*\*)?\s*[:：]\s*(.*)$',
+    );
+    final letterRun = RegExp(r'^[A-H](?:\s*(?:[、，,/→]|或|和)?\s*[A-H])*$');
+    String normalized(String text) => text.replaceAll(dropped, '');
+
+    for (final category in categories) {
+      for (final lesson in category.lessons) {
+        final markdown = (await rootBundle.loadString(lesson.assetFile))
+            .replaceAll('\r\n', '\n');
+        final sectionStart = markdown.indexOf('\n## 考点精讲');
+        if (sectionStart < 0) continue;
+        final rest = markdown.substring(sectionStart + 1);
+        final nextSection = rest.substring(2).indexOf(RegExp('\n##(?!#)'));
+        final region =
+            nextSection < 0 ? rest : rest.substring(0, nextSection + 2);
+
+        final kept = <int>[];
+        final flat = StringBuffer();
+        for (var i = 0; i < region.length; i++) {
+          if (dropped.hasMatch(region[i])) continue;
+          flat.write(region[i]);
+          kept.add(i);
+        }
+        final normalizedRegion = flat.toString();
+
+        for (final question in lesson.quiz) {
+          final fullKey = normalized(question.question);
+          if (fullKey.isEmpty) continue;
+          var key = fullKey;
+          var at = normalizedRegion.indexOf(key);
+          if (at < 0 && key.length > 40) {
+            key = key.substring(0, 40);
+            at = normalizedRegion.indexOf(key);
+          }
+          if (at < 0) continue;
+          final tail = region.substring(kept[at + key.length - 1] + 1);
+          final blockEnd =
+              tail.indexOf(RegExp(r'\n#{3,4}\s*考点|考点\d+\s*[:：]'));
+          final block = blockEnd < 0 ? tail : tail.substring(0, blockEnd);
+
+          String? marked;
+          for (final line in block.split('\n')) {
+            final match = marker.firstMatch(line);
+            if (match == null) continue;
+            marked = match.group(1);
+            break;
+          }
+          if (marked == null) continue;
+          final value = marked
+              .replaceAll(RegExp(r'[（(].*$'), '')
+              .replaceAll(RegExp(r'[*\s.。]+$'), '');
+          if (!letterRun.hasMatch(value)) continue;
+          if (question.options.any(
+            (option) => normalized(option) == normalized(value),
+          )) {
+            continue;
+          }
+
+          final markedIndexes = value
+              .replaceAll(RegExp('[^A-H]'), '')
+              .split('')
+              .map((letter) => letters.indexOf(letter))
+              .toList();
+          final truthIndexes = question.type == 'order'
+              ? question.correctOrder
+              : question.correctIndexes;
+          final markedSorted = (markedIndexes.toSet().toList()..sort()).join();
+          final truthSorted = (truthIndexes.toSet().toList()..sort()).join();
+          final same = question.type == 'order'
+              ? markedIndexes.join(',') == truthIndexes.join(',')
+              : markedSorted == truthSorted;
+          if (same) continue;
+          final truthLetters = truthIndexes
+              .map((index) => index >= 0 && index < letters.length
+                  ? letters[index]
+                  : '?')
+              .join(question.type == 'order' ? ' → ' : '');
+          expect(
+            same,
+            isTrue,
+            reason: '${lesson.id} 课文答案标注 $value，题库真值是 $truthLetters',
+          );
+        }
+      }
+    }
+  });
+
+  test('课文正文与题库解析不残留转义引号', () async {
+    final fence = RegExp(r'^\s*(```|~~~)');
+    final escaped = RegExp(r'\\"|\\“|\\”');
+    for (final category in categories) {
+      for (final lesson in category.lessons) {
+        final markdown = (await rootBundle.loadString(lesson.assetFile))
+            .replaceAll('\r\n', '\n');
+        var inFence = false;
+        for (final line in markdown.split('\n')) {
+          if (fence.hasMatch(line)) {
+            inFence = !inFence;
+            continue;
+          }
+          if (inFence) continue;
+          expect(
+            escaped.hasMatch(line),
+            isFalse,
+            reason: '${lesson.id} 正文残留转义引号：${line.trim()}',
+          );
+        }
+        for (final question in lesson.quiz) {
+          expect(
+            escaped.hasMatch(question.explanation),
+            isFalse,
+            reason: '${lesson.id} 解析残留转义引号',
+          );
+        }
+      }
+    }
+  });
+
   test('学习路径引用的知识点都存在且数量充足', () async {
     final provider = ContentProvider();
     await provider.load();

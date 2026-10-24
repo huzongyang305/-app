@@ -593,7 +593,7 @@ D. "@PreAuthorize" 支持 SpEL 表达式编写复杂条件，"@Secured" 只能�
 
 **正确答案：D**
 
-**详细解释：** "@PreAuthorize" 是 Spring Security 推荐的方法级权限注解，支持 SpEL 表达式，可以编写复杂的条件逻辑（如 "#id == authentication.principal.id or hasRole('ADMIN')"）。"@Secured" 是 JSR-250 标准注解，功能较简单，只能指定允许访问的角色列表（如 "@Secured(\"ROLE_ADMIN\")"）。使用 "@PreAuthorize" 需要确保配置类添加了 "@EnableMethodSecurity"。
+**详细解释：** "@PreAuthorize" 是 Spring Security 推荐的方法级权限注解，支持 SpEL 表达式，可以编写复杂的条件逻辑（如 "#id == authentication.principal.id or hasRole('ADMIN')"）。"@Secured" 是 JSR-250 标准注解，功能较简单，只能指定允许访问的角色列表（如 "@Secured("ROLE_ADMIN")"）。使用 "@PreAuthorize" 需要确保配置类添加了 "@EnableMethodSecurity"。
 
 ---
 

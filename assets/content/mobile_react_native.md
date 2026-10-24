@@ -247,7 +247,7 @@ iOS 用 shadow 做阴影，Android 用 elevation。同一个样式属性在两�
 
 考点1: 按“React Native 跨平台开发”中 React Native、跨平台、Hermes 的实践顺序，把四个步骤排成从准备到复盘的合理顺序。
 A. 固定版本与证据，把“React Native 跨平台开发”的结论写成可复现记录 B. 先明确 React Native 的输入、输出与约束 C. 写出最小示例并核对 跨平台 的基线结果 D. 只改一个变量，记录边界与失败路径的变化
-Ans: ABCD (D→B→C→A → correct order: B→C→D→A)
+Ans: B → C → D → A
 
 考点2: 围绕“React Native 跨平台开发”中的 React Native、跨平台、Hermes，下列哪两项是本课强调的实践判断？
 A. 验证 跨平台 时要固定版本并覆盖边界输入，结论才可复现 B. 把 跨平台 的单次运行结果当成所有版本和规模都成立 C. 学习 React Native 时要同时说明输入、输出和失败路径，不能只看正常流程 D. 只要 React Native 的常规示例通过，就可以跳过边界与异常路径
@@ -255,7 +255,7 @@ Ans: AC
 
 考点3: Hermes 引擎带来的主要收益是？ A. 提升启动速度并降低内存占用 B. 取代原生模块 C. 让 JavaScript 支持多线程 D. 提升图片解码速度 Ans: A
 
-考点4: 关于 RN 中的动画性能，正确做法是？ A. 在 JS 线程逐帧修改样式 B. 用 Animated 或 Reanimated 让动画在原生线程执行 C. 用 setTimeout 模拟动画 D. 把动画放在 renderItem 里执行，但这会增加每帧的开销，同时这会让抖动更明显 Ans: B
+考点4: 关于 RN 中的动画性能，正确做法是？ A. 在 JS 线程逐帧修改样式 B. 用 Animated 或 Reanimated 让动画在原生线程执行 C. 用 setTimeout 模拟动画 D. 把动画放在 renderItem 里执行 Ans: B
 
 考点5: 图片在 RN 布局中不设置宽高会出现什么？ A. 只会影响 iOS B. 自动按比例缩放，没有问题 C. 图片自动使用屏幕宽度 D. 可能不显示或导致布局异常 Ans: D
 

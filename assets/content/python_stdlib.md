@@ -485,7 +485,7 @@ print("缓存:", square(5), square(5))  # 第二次直接命中缓存
 - **选项**：
   - A. “Path(base) / name”
   - B. “base + '/' + name”
-  - C. “base + '\\\\' + name”
+  - C. base + '\\' + name
   - D. “os.path.join(base, name) 后再强制转字符串”
 - **正确项**：“Path(base) / name”
 - **判断依据**：这道题落在术语 `Path` 上：pathlib 提供的路径对象，可跨平台完成拼接、解析与文件读写。`/` 运算符是 Path 对象重载的拼接方式，它会根据操作系统自动选择正确的分隔符。复习时把 `Path` 的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。

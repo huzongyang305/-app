@@ -437,8 +437,8 @@ D. 使用 “req.getParameter()” 获取表单参数
 
 以下关于 Servlet 中转发（forward）和重定向（sendRedirect）的说法，哪个是正确的？
 
-A. 转发会改变浏览器地址栏中的 URL
-B. 重定向是在服务器内部将请求传递给另一个资源
+A. 转发会在响应里回写一个新的 Location，浏览器地址栏随之换成目标资源的完整地址
+B. 重定向是由服务器在内部把请求直接交给另一个资源处理，浏览器只看到一次请求与一次响应
 C. 转发使用 “req.getRequestDispatcher().forward(req, resp)” 实现，浏览器地址栏不变
 D. 重定向只能跳转到同一应用内的页面，跨站点的 Location 会被容器直接拒绝  
 

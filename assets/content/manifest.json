@@ -14188,7 +14188,7 @@
                 "\"@PreAuthorize\" 支持 SpEL 表达式编写复杂条件，\"@Secured\" 只能指定角色列表"
               ],
               "answer": 3,
-              "explanation": "\"@PreAuthorize\" 是 Spring Security 推荐的方法级权限注解，支持 SpEL 表达式，可以编写复杂的条件逻辑（如 \"#id == authentication.principal.id or hasRole('ADMIN')\"）。\"@Secured\" 是 JSR-250 标准注解，功能较简单，只能指定允许访问的角色列表（如 \"@Secured(\\\"ROLE_ADMIN\\\")\"）。使用 \"@PreAuthorize\" 需要确保配置类添加了 \"@EnableMethodSecurity\"。本题正确项是\"@PreAuthorize\" 支持 SpEL 表达式编写复杂条件，\"@Secured\" 只能指定角色列表。"
+              "explanation": "\"@PreAuthorize\" 是 Spring Security 推荐的方法级权限注解，支持 SpEL 表达式，可以编写复杂的条件逻辑（如 \"#id == authentication.principal.id or hasRole('ADMIN')\"）。\"@Secured\" 是 JSR-250 标准注解，功能较简单，只能指定允许访问的角色列表（如 \"@Secured(\"ROLE_ADMIN\")\"）。使用 \"@PreAuthorize\" 需要确保配置类添加了 \"@EnableMethodSecurity\"。本题正确项是\"@PreAuthorize\" 支持 SpEL 表达式编写复杂条件，\"@Secured\" 只能指定角色列表。"
             }
           ]
         },
@@ -67892,7 +67892,7 @@
                 "定义 Provider 的认证信息"
               ],
               "answer": 0,
-              "explanation": "\"terraform.tfvars\" 文件用于为 \"variable\" 块中声明的变量提供具体的值。当执行 \"terraform apply\" 时，Terraform 会自动加载当前目录下的 \"terraform.tfvars\" 文件。你也可以使用 \"-var-file\" 参数指定不同的变量文件，例如 \"terraform apply -var-file=\\\"prod.tfvars\\\"\" 来为生产环境应用不同的配置值。这是一种将配置与代码分离的最佳实践。本题正确项是为变量提供具体的值，执行 \"terraform apply\" 时自动加载。"
+              "explanation": "\"terraform.tfvars\" 文件用于为 \"variable\" 块中声明的变量提供具体的值。当执行 \"terraform apply\" 时，Terraform 会自动加载当前目录下的 \"terraform.tfvars\" 文件。你也可以使用 \"-var-file\" 参数指定不同的变量文件，例如 \"terraform apply -var-file=\"prod.tfvars\"\" 来为生产环境应用不同的配置值。这是一种将配置与代码分离的最佳实践。本题正确项是为变量提供具体的值，执行 \"terraform apply\" 时自动加载。"
             },
             {
               "type": "single",
@@ -67916,7 +67916,7 @@
                 "指定模块的运行环境"
               ],
               "answer": 0,
-              "explanation": "\"source\" 参数指定模块的代码来源，Terraform 从这里加载模块的定义。支持多种来源方式：本地路径（\"source = \\\"./modules/vpc\\\"\"）、Terraform Registry（\"source = \\\"terraform-aws-modules/vpc/aws\\\"\"）、Git 仓库等。使用模块可以将一组相关资源打包成可复用的组件，就像\"预制件\"一样在不同项目中重复使用，提高代码的组织性和可维护性。本题正确项是指定模块的代码来源路径（本地目录或远程注册表）。"
+              "explanation": "\"source\" 参数指定模块的代码来源，Terraform 从这里加载模块的定义。支持多种来源方式：本地路径（\"source = \"./modules/vpc\"\"）、Terraform Registry（\"source = \"terraform-aws-modules/vpc/aws\"\"）、Git 仓库等。使用模块可以将一组相关资源打包成可复用的组件，就像\"预制件\"一样在不同项目中重复使用，提高代码的组织性和可维护性。本题正确项是指定模块的代码来源路径（本地目录或远程注册表）。"
             }
           ]
         },

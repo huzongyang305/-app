@@ -1230,7 +1230,7 @@ aws configure
 
 A. 作为 Terraform 和云厂商之间的"翻译官"，将 HCL 配置转换为云厂商的 API 调用  
 B. 提供代码编辑器功能，内置 HCL 语法高亮与自动补全来编写配置文件  
-C. 提供 Web 界面管理基础设施  
+C. 提供 Web 界面来管理基础设施，日常操作可以完全脱离命令行执行计划
 D. 自动测试应用程序的业务代码，在资源创建之前先跑一遍单元测试  
 
 **正确答案：A**
@@ -1265,7 +1265,7 @@ D. 定义 Provider 的认证信息
 
 **正确答案：A**
 
-**详细解释：** "terraform.tfvars" 文件用于为 "variable" 块中声明的变量提供具体的值。当执行 "terraform apply" 时，Terraform 会自动加载当前目录下的 "terraform.tfvars" 文件。你也可以使用 "-var-file" 参数指定不同的变量文件，例如 "terraform apply -var-file=\"prod.tfvars\"" 来为生产环境应用不同的配置值。这是一种将配置与代码分离的最佳实践。
+**详细解释：** "terraform.tfvars" 文件用于为 "variable" 块中声明的变量提供具体的值。当执行 "terraform apply" 时，Terraform 会自动加载当前目录下的 "terraform.tfvars" 文件。你也可以使用 "-var-file" 参数指定不同的变量文件，例如 "terraform apply -var-file="prod.tfvars"" 来为生产环境应用不同的配置值。这是一种将配置与代码分离的最佳实践。
 
 ---
 
@@ -1273,8 +1273,8 @@ D. 定义 Provider 的认证信息
 
 Terraform 工作区（Workspace）的本质是什么？
 
-A. 一个代码编辑器  
-B. 一种代码格式化工具  
+A. 一个专门编辑 HCL 配置文件的代码编辑器，带语法高亮和片段模板
+B. 一种对配置做格式化的工具，用来统一字段顺序、缩进与注释风格
 C. 一个团队协作工具，负责把多名工程师的改动合并后再统一提交评审  
 D. 同一份 Terraform 代码可以在不同的工作区中运行，每个工作区有独立的状态文件，用于管理不同环境  
 
@@ -1295,7 +1295,7 @@ D. 指定模块的运行环境
 
 **正确答案：A**
 
-**详细解释：** "source" 参数指定模块的代码来源，Terraform 从这里加载模块的定义。支持多种来源方式：本地路径（"source = \"./modules/vpc\""）、Terraform Registry（"source = \"terraform-aws-modules/vpc/aws\""）、Git 仓库等。使用模块可以将一组相关资源打包成可复用的组件，就像"预制件"一样在不同项目中重复使用，提高代码的组织性和可维护性。
+**详细解释：** "source" 参数指定模块的代码来源，Terraform 从这里加载模块的定义。支持多种来源方式：本地路径（"source = "./modules/vpc""）、Terraform Registry（"source = "terraform-aws-modules/vpc/aws""）、Git 仓库等。使用模块可以将一组相关资源打包成可复用的组件，就像"预制件"一样在不同项目中重复使用，提高代码的组织性和可维护性。
 
 ---
 

@@ -736,7 +736,7 @@ D. 在全局作用域创建数组并不断push数据 ✅
 在生产环境中，如何处理未捕获的异常和未处理的Promise拒绝？
 
 A. 忽略它们，让进程按默认策略直接退出，善后交给容器编排平台的重启机制  
-B. 使用try-catch包裹所有代码  
+B. 在每个控制器方法外层用 try-catch 包裹全部代码，把异常吞掉后返回错误码
 C. 注册`process.on('uncaughtException')`和`process.on('unhandledRejection')`监听器 ✅  
 D. 只在开发环境注册这两个监听器并打印日志，生产环境保持 Node 的默认行为  
 

@@ -25,9 +25,9 @@
 | 术语 | 一句话说明 |
 | --- | --- |
 | Flutter | Google 的跨平台 UI 框架，用 Dart 语言写一套代码就能跑在 Android、iOS、Web 和桌面上 |
-| Widget | 界面的基本积木块，就像乐高零件——描述界面\"长什么样\"，本身不可变 |
+| Widget | 界面的基本积木块，就像乐高零件——描述界面“长什么样”，本身不可变 |
 | Widget 树 | 所有 Widget 按嵌套关系组成的树形结构，Flutter 靠它来描述整个界面 |
-| 约束 (Constraints) | 父 Widget 告诉子 Widget\"你最大能多大、最小得多小\"的尺寸限制 |
+| 约束 (Constraints) | 父 Widget 告诉子 Widget“你最大能多大、最小得多小”的尺寸限制 |
 | 热重载 (Hot Reload) | 改完代码保存后，界面秒级刷新且保留当前状态，开发时最常用的快速验证手段 |
 | 懒加载 | 只构建当前屏幕可见的列表项，滚到新位置时才构建新的，避免一次性加载全部数据 |
 
@@ -37,7 +37,7 @@
 
 想象你在盖房子：
 
-- **Widget** 就像设计图纸——它描述\"这里有个客厅、那里有个卧室\"，但图纸本身不会住人。
+- **Widget** 就像设计图纸——它描述“这里有个客厅、那里有个卧室”，但图纸本身不会住人。
 - **Element** 是现场施工记录员——他拿着图纸（Widget），指挥实际的施工队，同时记录哪些房间需要翻新。
 - **RenderObject** 是真正的砖墙和地板——负责实际的测量、布局和绘制。
 
@@ -55,7 +55,7 @@ Flutter 的布局可以用三句话概括，记住这三句就能解释绝大多
 3. 父决定子位置 —— 父节点根据子节点的大小，决定把它放在哪里
 ```
 
-用传话游戏来理解：爸爸对孩子说\"桌子最多一米宽\"（约束向下），孩子说\"我要 80 厘米\"（尺寸向上），爸爸决定把桌子靠墙放（父定位置）。
+用传话游戏来理解：爸爸对孩子说“桌子最多一米宽”（约束向下），孩子说“我要 80 厘米”（尺寸向上），爸爸决定把桌子靠墙放（父定位置）。
 
 ### 布局流程 ASCII 图
 
@@ -236,7 +236,7 @@ Flutter 的性能关注点主要集中在三个方面：Widget 重建次数、�
 | Column 里直接放 ListView | 无限高度约束报错 | 用 `Expanded` 包 ListView 或设 `shrinkWrap` |
 | 忘记 dispose 控制器 | 内存泄漏 | 在 `dispose()` 里释放 AnimationController 等 |
 | 在 build 里发网络请求 | 每次重建都重复请求 | 放 `initState` 或用状态管理 |
-| setState 后 Widget 已卸载 | 报\"setState called after dispose\" | 加 `if (!mounted) return;` |
+| setState 后 Widget 已卸载 | 报"setState called after dispose" | 加 `if (!mounted) return;` |
 | 直接改 Widget 字段期望刷新 | 界面不更新 | 状态改变要走 `setState` 或状态管理 |
 | 列表项没有 key | 滚动或删改后元素错位 | 用 `ValueKey(item.id)` |
 | 硬编码固定尺寸 | 小屏设备上溢出 | 用比例或 `LayoutBuilder` 自适应 |
@@ -256,7 +256,7 @@ Flutter 基础与 Widget 树（本课）
 
 **关键联系**
 
-- **Widget 树 与 状态管理**：本课讲的 Widget 分类是理解 Provider、Riverpod 等状态管理方案的前提。状态管理的本质就是决定\"哪些 Widget 需要响应哪些数据变化\"。
+- **Widget 树 与 状态管理**：本课讲的 Widget 分类是理解 Provider、Riverpod 等状态管理方案的前提。状态管理的本质就是决定“哪些 Widget 需要响应哪些数据变化”。
 - **布局三原则 与 自定义布局**：约束向下、尺寸向上、父定位置这三条规则，在自定义 LayoutDelegate 和 Sliver 时同样适用。
 - **懒加载 与 性能优化**：ListView.builder 的懒加载思想会延伸到 GridView.builder、CustomScrollView 和 Sliver 系列。
 - **热重载 与 开发效率**：理解热重载保留 State 的特性，能帮你更快调试界面，也是后续学习 DevTools 的基础。
@@ -297,7 +297,7 @@ Flutter 基础与 Widget 树（本课）
   C. 调用了 `LayoutBuilder()`
   D. 调用了 `take_over_qps()`
 - **正确项**：C
-- **判断依据**：本课代码示例中 `adaptiveGrid` 函数使用了 `LayoutBuilder` 来获取父级约束并按可用宽度决定列数。复习时把布局三原则和 LayoutBuilder 的用法对照正文\"代码示例\"小节核对。
+- **判断依据**：本课代码示例中 `adaptiveGrid` 函数使用了 `LayoutBuilder` 来获取父级约束并按可用宽度决定列数。复习时把布局三原则和 LayoutBuilder 的用法对照正文“代码示例”小节核对。
 
 ### 考点 2
 
@@ -347,7 +347,7 @@ Flutter 基础与 Widget 树（本课）
   C. 尺寸由子决定一切
   D. 约束向下、尺寸向上、父决定位置
 - **正确项**：AD
-- **判断依据**：A 对应本课\"长列表一定用 builder\"的结论；D 是布局三原则的原文。B 错在理解输入和边界条件同样重要；C 错在尺寸并非全由子决定——子只能在父给的约束范围内选择大小。
+- **判断依据**：A 对应本课“长列表一定用 builder”的结论；D 是布局三原则的原文。B 错在理解输入和边界条件同样重要；C 错在尺寸并非全由子决定——子只能在父给的约束范围内选择大小。
 
 ## 术语速查
 
@@ -357,7 +357,7 @@ Flutter 基础与 Widget 树（本课）
 | 布局约束 | 父 Widget 给子 Widget 的尺寸限制，包含最小和最大宽高的允许范围 |
 | 热重载 | 保存代码后秒级刷新界面，保留当前 State，是日常开发最常用的刷新方式 |
 | 懒加载 | 只构建屏幕可见区域的列表项，滚动时按需加载，用 ListView.builder 实现 |
-| setState | StatefulWidget 里通知框架\"我的状态变了，请重新 build\"的方法 |
+| setState | StatefulWidget 里通知框架“我的状态变了，请重新 build”的方法 |
 | const Widget | 编译期就确定的不可变组件，不会因父级重建而重建，有助于减少性能开销 |
 
 ## 内容元数据
