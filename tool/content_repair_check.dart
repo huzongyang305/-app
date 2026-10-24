@@ -41,6 +41,19 @@ const List<String> _markdownTemplateMarkers = <String>[
 
 String _squeeze(String text) => text.replaceAll(RegExp(r'\s+'), '');
 
+/// 生成器把「引导词 + 片段」直接相连时，片段本身常以同一个字开头，
+/// 于是写出「第三步按按任务…」「改成改成借用…」这类残句。正文与题库一起守。
+const List<String> _doubledJoinMarkers = <String>[
+  '第三步按按',
+  '检验方式是按按',
+  '第一步按按',
+  '改成改成',
+  '复现复现',
+  '会造成造成',
+  '正确做法是是',
+  '整数有有符号',
+];
+
 void main(List<String> args) {
   final rootIndex = args.indexOf('--root');
   final root = rootIndex >= 0 && rootIndex + 1 < args.length
@@ -52,7 +65,8 @@ void main(List<String> args) {
     exitCode = 1;
     return;
   }
-  final manifest = jsonDecode(manifestFile.readAsStringSync()) as Map<String, dynamic>;
+  final manifestText = manifestFile.readAsStringSync();
+  final manifest = jsonDecode(manifestText) as Map<String, dynamic>;
 
   var lessonCount = 0;
   var questionCount = 0;
@@ -66,6 +80,10 @@ void main(List<String> args) {
   var uncovered = <String>[];
   var internalIds = <String>[];
   var templateHits = <String>[];
+  var doubledJoins = <String>[
+    for (final marker in _doubledJoinMarkers)
+      if (manifestText.contains(marker)) 'manifest($marker)',
+  ];
   final seenStems = <String, String>{};
   final duplicateStems = <String>[];
 
@@ -142,6 +160,9 @@ void main(List<String> args) {
       for (final marker in _markdownTemplateMarkers) {
         if (markdown.contains(marker)) templateHits.add('$id($marker)');
       }
+      for (final marker in _doubledJoinMarkers) {
+        if (markdown.contains(marker)) doubledJoins.add('$id($marker)');
+      }
 
       final quiz = (lesson['quiz'] as List<dynamic>? ?? const <dynamic>[])
           .map((raw) => (raw as Map).cast<String, dynamic>())
@@ -182,7 +203,11 @@ void main(List<String> args) {
     ..writeln('题库未进入考点精讲          ${uncovered.length}')
     ..writeln('内部题号残留                ${internalIds.length}')
     ..writeln('模板句残留                  ${templateHits.length}')
+    ..writeln('拼接重复字残留              ${doubledJoins.length}')
     ..writeln('题干重复                    ${duplicateStems.length}');
+  for (final sample in doubledJoins.take(5)) {
+    stdout.writeln('  重复字：$sample');
+  }
   for (final sample in uncovered.take(5)) {
     stdout.writeln('  未覆盖：$sample');
   }
@@ -200,6 +225,7 @@ void main(List<String> args) {
       uncovered.length +
       internalIds.length +
       templateHits.length +
+      doubledJoins.length +
       duplicateStems.length;
   if (hardFailures > 0) {
     stderr.writeln('自检失败：$hardFailures 项硬失败');

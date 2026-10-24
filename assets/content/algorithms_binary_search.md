@@ -229,7 +229,7 @@ count = upper_bound(nums, target) - lower_bound(nums, target)
 
 **根因与修复**：改成 `mid = (lo + hi + 1) // 2`。
 
-**自检**：在本课示例里复现「`lo = mid` 而不上取整」，改成改成 `mid = (lo + hi + 1) // 2`后重跑；如果症状消失且失败路径按预期变化，说明定位正确。
+**自检**：在本课示例里复现「`lo = mid` 而不上取整」，改成 `mid = (lo + hi + 1) // 2`后重跑；如果症状消失且失败路径按预期变化，说明定位正确。
 
 ### 现场 3：`hi = len(nums)` 却写 `nums[hi]`
 

@@ -393,7 +393,7 @@ fn main() {
 
 **根因与修复**：改成借用（&x）或 clone()，或调整生命周期。
 
-**自检**：在本课示例里复现「borrow of moved value」，改成改成借用（&x）或 clone()，或调整生命周期后重跑；如果症状消失且失败路径按预期变化，说明定位正确。
+**自检**：在本课示例里复现「borrow of moved value」，改成借用（&x）或 clone()，或调整生命周期后重跑；如果症状消失且失败路径按预期变化，说明定位正确。
 
 ### 现场 9：cannot borrow as mutable, as it is also borrowed as immutable
 

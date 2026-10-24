@@ -369,6 +369,27 @@ String trimEndPunctuation(String value) {
   return value.replaceAll(RegExp(r'[。；，、\s]+$'), '').trim();
 }
 
+/// 模板引导词与片段开头重叠时只留一份：fix 常以「按」「改成」或「是」起头，
+/// 直接相连会写出「第三步按按任务…」「改成改成借用…」这类残句。
+String joinLead(String lead, String body) {
+  for (var n = lead.length; n > 0; n--) {
+    if (body.startsWith(lead.substring(lead.length - n))) {
+      return lead.substring(0, lead.length - n) + body;
+    }
+  }
+  return '$lead$body';
+}
+
+/// 片段结尾已经带到尾词时不再补一遍，避免「依赖无法固定与复现复现」。
+String joinTail(String body, String tail) {
+  for (var n = tail.length; n > 0; n--) {
+    if (body.endsWith(tail.substring(0, n))) {
+      return '$body${tail.substring(n)}';
+    }
+  }
+  return '$body$tail';
+}
+
 /// 早期批量扩展留下的已知定义缺陷，按「课程 ID|术语」精确订正。
 const Map<String, String> _definitionFixes = <String, String>{
   'os_kernel_arch|内核':
@@ -559,7 +580,7 @@ String boundaryFor(String term, String definition, List<Mistake> mistakes) {
   for (final mistake in mistakes) {
     final haystack = '${mistake.wrong} ${mistake.symptom} ${mistake.fix}';
     if (term.length >= 2 && haystack.contains(term)) {
-      return '易错：${trimEndPunctuation(mistake.symptom)}；正确做法是${trimEndPunctuation(mistake.fix)}。';
+      return '易错：${trimEndPunctuation(mistake.symptom)}；正确做法${joinLead('是', trimEndPunctuation(mistake.fix))}。';
     }
   }
   for (final rule in _boundaryRules) {
@@ -1043,8 +1064,8 @@ String buildScenarios(
   for (final mistake in lesson.mistakes.take(4)) {
     scenarios.add(
       '- **${trimEndPunctuation(mistake.wrong)}**：典型现象是'
-      '${trimEndPunctuation(mistake.symptom)}；正确做法是'
-      '${trimEndPunctuation(mistake.fix)}。',
+      '${trimEndPunctuation(mistake.symptom)}；'
+      '${joinLead('正确做法是', trimEndPunctuation(mistake.fix))}。',
     );
   }
   if (scenarios.isEmpty) {
@@ -1303,7 +1324,7 @@ String buildMistakes(LessonRepair lesson) {
       buffer.writeln();
       buffer.writeln(
         '**自检**：在本课示例里复现「${trimEndPunctuation(mistake.wrong)}」，'
-        '改成${trimEndPunctuation(mistake.fix)}后重跑；'
+        '${joinLead('改成', trimEndPunctuation(mistake.fix))}后重跑；'
         '如果症状消失且失败路径按预期变化，说明定位正确。',
       );
       buffer.writeln();
@@ -1450,7 +1471,7 @@ String buildSelfTest(LessonRepair lesson) {
         '请写出它会出现的现象、根因，以及修复顺序。');
     buffer.writeln();
     buffer.writeln('**参考答案**：现象是${trimEndPunctuation(mistake.symptom)}；'
-        '正确做法是${trimEndPunctuation(mistake.fix)}。'
+        '${joinLead('正确做法是', trimEndPunctuation(mistake.fix))}。'
         '修复时先复现现象并保留证据，再改动一处假设重跑，确认现象消失。');
     buffer.writeln();
   }
@@ -1512,7 +1533,7 @@ String buildSelfTest(LessonRepair lesson) {
     final sample = lesson.mistakes.last;
     buffer.writeln('**参考答案**：例如「${trimEndPunctuation(sample.wrong)}」，'
         '它会导致${trimEndPunctuation(sample.symptom)}；'
-        '检验方式是按${trimEndPunctuation(sample.fix)}改一处再复现，'
+        '检验方式是${joinLead('按', trimEndPunctuation(sample.fix))}改一处再复现，'
         '确认现象消失且没有引入新的失败分支。');
   } else {
     buffer.writeln('**参考答案**：风险点要能对应到本课术语表中某个定义失效的条件。');
@@ -1544,9 +1565,10 @@ String buildSelfTest(LessonRepair lesson) {
         '请把“复现 ${trimEndPunctuation(target.symptom)} → 保留证据 → '
         '${trimEndPunctuation(target.fix)} → 回归验证”四步写成可执行的检查清单。');
     buffer.writeln();
-    buffer.writeln('**参考答案**：第一步按'
-        '${trimEndPunctuation(target.symptom)}复现；第二步记录输入、版本与完整报错；'
-        '第三步按${trimEndPunctuation(target.fix)}只改一处；'
+    buffer.writeln('**参考答案**：'
+        '${joinLead('第一步按', joinTail(trimEndPunctuation(target.symptom), '复现'))}；'
+        '第二步记录输入、版本与完整报错；'
+        '${joinLead('第三步按', trimEndPunctuation(target.fix))}只改一处；'
         '第四步重跑并确认失败路径也按预期变化。');
   } else {
     buffer.writeln('把本课结论整理成「复现 → 证据 → 修改 → 回归」四步清单。');
@@ -2092,9 +2114,9 @@ String buildExplanation(
   if (matchedMistake != null) {
     buffer.write(
       '在「${lesson.title}」第 $questionNumber 题中，错误表现方面，'
-      '${flattenSentence(matchedMistake.wrong)}会造成'
-      '${flattenSentence(matchedMistake.symptom)}，应按'
-      '${flattenSentence(matchedMistake.fix)}修复。',
+      '${flattenSentence(matchedMistake.wrong)}'
+      '${joinLead('会造成', flattenSentence(matchedMistake.symptom))}，'
+      '${joinLead('应按', flattenSentence(matchedMistake.fix))}修复。',
     );
   }
 
