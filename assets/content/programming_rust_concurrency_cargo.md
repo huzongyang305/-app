@@ -367,7 +367,7 @@ fn main() {
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `Send/Sync、Arc+Mutex、tokio 与 Cargo 工作流。`，这段说明是：`____`：Rust 的异步运行时，提供任务调度、异步 I/O、定时器和同步原语。空缺处应填哪个术语？
 - **正确项**：tokio
-- **判断依据**：涉及术语 Send：Rust 用两个标记 trait 保证并发安全：`Send`（可在线程间转移所有权）、`Arc<Mutex<T>>` 是跨线程共享可变状态的经典组合。易错点：闭包忘了 `move`会造成生命周期不够长。正确做法：加 `move` 转移所有权。本课Rust 并发与 Cargo 工程要解决的是Send/Sync、Arc+Mutex、tokio 与 Cargo 工作流
+- **判断依据**：涉及术语 Send：Rust 用两个标记 trait 保证并发安全：`Send`（可在线程间转移所有权）、`Arc<Mutex<T>>` 是跨线程共享可变状态的经典组合。易错点：闭包忘了 `move`会造成生命周期不够长。正确做法：加 `move` 转移所有权。本课《Rust 并发与 Cargo 工程》要解决的是Send/Sync、Arc+Mutex、tokio 与 Cargo 工作流
 
 ### 考点 7：`Send`
 

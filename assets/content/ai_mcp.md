@@ -270,7 +270,7 @@ print(score("agent"))
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `理解 MCP 的 Host、Client、Server、工具与资源模型及权限边界。`，这段说明是：`____`：Agent 可通过协议读取或操作的受控对象，访问范围必须经过授权。空缺处应填哪个术语？
 - **正确项**：资源
-- **判断依据**：涉及术语 MCP：Model Context Protocol，用统一协议把工具和数据源暴露给模型客户端。易错点：把 MCP 当普通 REST 接口会造成忽略初始化、能力协商与工具 schema。正确做法：按协议先声明能力，再按 schema 暴露工具与资源。本课MCP 模型上下文协议要解决的是理解 MCP 的 Host、Client、Server、工具与资源模型及权限边界
+- **判断依据**：涉及术语 MCP：Model Context Protocol，用统一协议把工具和数据源暴露给模型客户端。易错点：把 MCP 当普通 REST 接口会造成忽略初始化、能力协商与工具 schema。正确做法：按协议先声明能力，再按 schema 暴露工具与资源。本课《MCP 模型上下文协议》要解决的是理解 MCP 的 Host、Client、Server、工具与资源模型及权限边界
 
 ### 考点 6：第 6 题
 

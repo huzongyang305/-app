@@ -539,7 +539,7 @@ Console.WriteLine($"{celsius:F1}℃ = {fahrenheit:F1}℉");
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `IL 与 CLR、dotnet CLI、项目文件与命名空间。`，这段说明是：C# 代码跑在 .NET 上：**编译成 IL、由 CLR 托管执行**。掌握 ``____`` CLI 与 csproj 配置即可开始任何类型的项目。空缺处应填哪个术语？
 - **正确项**：dotnet
-- **判断依据**：涉及术语 dotnet：C# 代码跑在 .NET 上：**编译成 IL、由 CLR 托管执行**，掌握 `dotnet` CLI 与 csproj 配置即可开始任何类型的项目。易错点：顶层语句与 `Main` 混用会造成报「已定义多个入口点」。本课C# 与 .NET 平台要解决的是IL 与 CLR、dotnet CLI、项目文件与命名空间
+- **判断依据**：涉及术语 dotnet：C# 代码跑在 .NET 上：**编译成 IL、由 CLR 托管执行**，掌握 `dotnet` CLI 与 csproj 配置即可开始任何类型的项目。易错点：顶层语句与 `Main` 混用会造成报「已定义多个入口点」。本课《C# 与 .NET 平台》要解决的是IL 与 CLR、dotnet CLI、项目文件与命名空间
 
 ### 考点 7：`Nullable`
 

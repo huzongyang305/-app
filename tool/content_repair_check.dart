@@ -137,6 +137,35 @@ List<String> _visibleQuizText(Map<String, dynamic> question) {
   ];
 }
 
+/// 生成器把课程名直接粘在「本课」后面（本课事务要解决的是ACID…），读起来像半截短语。
+/// 第 45 波统一改成 本课《课程名》，这里守住它别自己长回来。
+int _benkeGluedCount(String text, String title) =>
+    title.isEmpty ? 0 : text.split('本课$title').length - 1;
+
+/// 概念表与术语表的首格应当是个术语；`）、回溯处理（` 这类从正文中间截出来的碎片要响。
+List<String> _brokenTermCells(List<String> lines) {
+  final out = <String>[];
+  var section = '';
+  for (final line in lines) {
+    if (line.startsWith('## ')) {
+      section = line.substring(3).trim();
+      continue;
+    }
+    if (section != '核心概念定义' && section != '术语速查') continue;
+    if (!line.startsWith('|') || RegExp(r'^\|\s*[-: ]+\|').hasMatch(line)) {
+      continue;
+    }
+    final cells = line.split('|').skip(1).toList();
+    if (cells.length < 3) continue;
+    final term = cells.first.trim();
+    if (term.isEmpty || RegExp(r'^(术语|概念|名词)$').hasMatch(term)) continue;
+    if (RegExp(r'^[）、，。；：]|[（「『“]$').hasMatch(term)) {
+      out.add('$section:$term');
+    }
+  }
+  return out;
+}
+
 void main(List<String> args) {
   final rootIndex = args.indexOf('--root');
   final root = rootIndex >= 0 && rootIndex + 1 < args.length
@@ -166,6 +195,8 @@ void main(List<String> args) {
   var punctuationHits = <String>[];
   var singleStepChains = <String>[];
   var orphanBold = <String>[];
+  var benkeGlued = <String>[];
+  var brokenTermCells = <String>[];
   var doubledJoins = <String>[
     for (final marker in _doubledJoinMarkers)
       if (manifestText.contains(marker)) 'manifest($marker)',
@@ -259,6 +290,12 @@ void main(List<String> args) {
       if (mdChains > 0) singleStepChains.add('$id(md:$mdChains)');
       final mdOrphans = _orphanBoldCount(prose);
       if (mdOrphans > 0) orphanBold.add('$id(md:$mdOrphans)');
+      final mdBenke = _benkeGluedCount(markdown, title);
+      if (mdBenke > 0) benkeGlued.add('$id(md:$mdBenke)');
+      final mdCells = _brokenTermCells(lines);
+      if (mdCells.isNotEmpty) {
+        brokenTermCells.add('$id(md:${mdCells.first})');
+      }
 
       final quiz = (lesson['quiz'] as List<dynamic>? ?? const <dynamic>[])
           .map((raw) => (raw as Map).cast<String, dynamic>())
@@ -285,6 +322,10 @@ void main(List<String> args) {
         final quizOrphans = _orphanBoldCount(visible);
         if (quizOrphans > 0) {
           orphanBold.add('$id#${index + 1}(quiz:$quizOrphans)');
+        }
+        final quizBenke = _benkeGluedCount(visible.join('\n'), title);
+        if (quizBenke > 0) {
+          benkeGlued.add('$id#${index + 1}(quiz:$quizBenke)');
         }
         final stem = _squeeze('${question['question'] ?? ''}');
         if (stem.isEmpty) continue;
@@ -318,6 +359,8 @@ void main(List<String> args) {
     ..writeln('标点碰撞残留                ${punctuationHits.length}')
     ..writeln('单步顺序链残留              ${singleStepChains.length}')
     ..writeln('孤儿粗体闭合残留            ${orphanBold.length}')
+    ..writeln('本课粘课程名                ${benkeGlued.length}')
+    ..writeln('表格首格碎片                ${brokenTermCells.length}')
     ..writeln('题干重复                    ${duplicateStems.length}');
   for (final sample in doubledJoins.take(5)) {
     stdout.writeln('  重复字：$sample');
@@ -330,6 +373,12 @@ void main(List<String> args) {
   }
   for (final sample in orphanBold.take(5)) {
     stdout.writeln('  孤儿粗体：$sample');
+  }
+  for (final sample in benkeGlued.take(5)) {
+    stdout.writeln('  本课粘名：$sample');
+  }
+  for (final sample in brokenTermCells.take(5)) {
+    stdout.writeln('  首格碎片：$sample');
   }
   for (final sample in uncovered.take(5)) {
     stdout.writeln('  未覆盖：$sample');
@@ -353,6 +402,8 @@ void main(List<String> args) {
       punctuationHits.length +
       singleStepChains.length +
       orphanBold.length +
+      benkeGlued.length +
+      brokenTermCells.length +
       duplicateStems.length;
   if (hardFailures > 0) {
     stderr.writeln('自检失败：$hardFailures 项硬失败');

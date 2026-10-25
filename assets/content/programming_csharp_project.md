@@ -736,7 +736,7 @@ public sealed class OrdersController : ControllerBase
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `最小 API、DbContext、内存数据库测试与工程实践。`，这段说明是：加 ``____`` 统一错误响应，日志用 ILogger。空缺处应填哪个术语？
 - **正确项**：UseExceptionHandler
-- **判断依据**：正确项：「UseExceptionHandler」。涉及术语 UseExceptionHandler：加 `UseExceptionHandler` 统一错误响应，日志用 ILogger。易错点：异常堆栈返回给用户会造成泄露细节。正确做法：统一错误响应。本课实战：Web API + EF Core要解决的是最小 API、DbContext、内存数据库测试与工程实践本题要填的是「UseExceptionHandler」。
+- **判断依据**：正确项：「UseExceptionHandler」。涉及术语 UseExceptionHandler：加 `UseExceptionHandler` 统一错误响应，日志用 ILogger。易错点：异常堆栈返回给用户会造成泄露细节。正确做法：统一错误响应。本课《实战：Web API + EF Core》要解决的是最小 API、DbContext、内存数据库测试与工程实践本题要填的是「UseExceptionHandler」。
 
 ### 考点 7：`dotnet ef migrations add Init`
 

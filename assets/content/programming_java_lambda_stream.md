@@ -479,7 +479,7 @@ System.out.println(avg);   // NaN，表示"没有均值可算"而不是 0
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `函数式接口、方法引用、Stream 惰性求值、Optional 与并行流。`，这段说明是：`____`使用公共 ForkJoinPool，适合纯计算且数据量大；有共享可变状态、IO 操作时不要用。空缺处应填哪个术语？
 - **正确项**：并行流
-- **判断依据**：涉及术语 Optional：.findFirst()。易错点：把 Stream 当集合复用会造成`IllegalStateException: stream has already been operated upon`。正确做法：每条流水线只用一个流。本课Lambda 与 Stream API要解决的是函数式接口、方法引用、Stream 惰性求值、Optional 与并行流
+- **判断依据**：涉及术语 Optional：.findFirst()。易错点：把 Stream 当集合复用会造成`IllegalStateException: stream has already been operated upon`。正确做法：每条流水线只用一个流。本课《Lambda 与 Stream API》要解决的是函数式接口、方法引用、Stream 惰性求值、Optional 与并行流
 
 ## 术语速查
 

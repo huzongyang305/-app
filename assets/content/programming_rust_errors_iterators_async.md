@@ -539,7 +539,7 @@ fn main() {
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `thiserror/anyhow、零开销迭代器与 tokio 异步要点。`，这段说明是：`____`：Rust 的异步运行时，提供任务调度、异步 I/O、定时器和同步原语。空缺处应填哪个术语？
 - **正确项**：tokio
-- **判断依据**：涉及术语 Rust：collect 能把 Vec<Result<T, E>> 直接收成 Result<Vec<T>, E>，这是 Rust 里非常常用的技巧。易错点：到处 `unwrap()`会造成运行时 panic。正确做法：用 `?` 或 `unwrap_or`。本课Rust 错误处理、迭代器与异步要解决的是thiserror/anyhow、零开销迭代器与 tokio 异步要点
+- **判断依据**：涉及术语 Rust：collect 能把 Vec<Result<T, E>> 直接收成 Result<Vec<T>, E>，这是 Rust 里非常常用的技巧。易错点：到处 `unwrap()`会造成运行时 panic。正确做法：用 `?` 或 `unwrap_or`。本课《Rust 错误处理、迭代器与异步》要解决的是thiserror/anyhow、零开销迭代器与 tokio 异步要点
 
 ### 考点 7：`Rust`
 

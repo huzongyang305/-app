@@ -472,7 +472,7 @@ python -m pytest --tb=short -q
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `requests 抓取、pandas 清洗统计与 matplotlib 可视化。`，这段说明是：要点：``____`` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性。空缺处应填哪个术语？
 - **正确项**：timeout
-- **判断依据**：正确项：「timeout」。涉及术语 timeout：要点：`timeout` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性。易错点：代码放在仓库根目录会造成导入混乱。正确做法：用 `src/` 布局。本课实战：爬虫与数据分析要解决的是requests 抓取、pandas 清洗统计与 matplotlib 可视化
+- **判断依据**：正确项：「timeout」。涉及术语 timeout：要点：`timeout` 必填，`raise_for_status()` 检查状态码，选择器优先用稳定的 class 或 data 属性。易错点：代码放在仓库根目录会造成导入混乱。正确做法：用 `src/` 布局。本课《实战：爬虫与数据分析》要解决的是requests 抓取、pandas 清洗统计与 matplotlib 可视化
 
 ## 内容元数据
 

@@ -436,7 +436,7 @@ new Counter().increment().increment().value;   // 2，支持链式调用
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `对象操作、原型链、class 与继承、Map/Set 与 JSON。`，这段说明是：`____`：属性查找会沿原型向上追溯，class 只是原型继承的语法糖。空缺处应填哪个术语？
 - **正确项**：原型链
-- **判断依据**：涉及术语 class：`class` 是原型继承的语法糖，但语义更清晰，`extends` 会自动维护原型链。易错点：用 `if (obj.k)` 判存在会造成0、空串被当成不存在。正确做法：用 `in` 或 `Object.hasOwn`。本课对象、原型与类要解决的是对象操作、原型链、class 与继承、Map/Set 与 JSON
+- **判断依据**：涉及术语 class：`class` 是原型继承的语法糖，但语义更清晰，`extends` 会自动维护原型链。易错点：用 `if (obj.k)` 判存在会造成0、空串被当成不存在。正确做法：用 `in` 或 `Object.hasOwn`。本课《对象、原型与类》要解决的是对象操作、原型链、class 与继承、Map/Set 与 JSON
 
 ### 考点 7：`Object.prototype`
 

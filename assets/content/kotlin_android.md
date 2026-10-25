@@ -398,7 +398,7 @@ fun main() {
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `用 ViewModel、Repository、生命周期和依赖注入组织 Android 应用。`，这段说明是：二、运行时与内存模型：围绕「Android、ViewModel、Repository、`____`」说明变量`____`、资源释放、并发模型和错误传播。空缺处应填哪个术语？
 - **正确项**：生命周期
-- **判断依据**：涉及术语 Android：谷歌的移动操作系统：应用以 Activity、Service 等组件运行在 ART 上，权限与生命周期由系统管理。易错点：业务逻辑堆在界面组件里会造成难测试，生命周期问题多。正确做法：拆分视图模型与数据层。本课Kotlin Android 架构要解决的是用 ViewModel、Repository、生命周期和依赖注入组织 Android 应用
+- **判断依据**：涉及术语 Android：谷歌的移动操作系统：应用以 Activity、Service 等组件运行在 ART 上，权限与生命周期由系统管理。易错点：业务逻辑堆在界面组件里会造成难测试，生命周期问题多。正确做法：拆分视图模型与数据层。本课《Kotlin Android 架构》要解决的是用 ViewModel、Repository、生命周期和依赖注入组织 Android 应用
 
 ### 考点 6：第 6 题
 

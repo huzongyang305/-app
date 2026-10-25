@@ -588,7 +588,7 @@ fetchUsers()
 
 - **题目**：填空：补齐下面这段术语说明中的空缺。课程 `ES Module、CommonJS、npm 与 package.json、常见构建工具。`，这段说明是：模块特性：自动严格模式、顶层 ``____`` 是 `undefined`、同一模块只执行一次、静态分析可做摇树优化（tree shaking）。空缺处应填哪个术语？
 - **正确项**：this
-- **判断依据**：涉及术语 this：模块特性：自动严格模式、顶层 `this` 是 `undefined`、同一模块只执行一次、静态分析可做摇树优化（tree shaking）。易错点：混用 `require` 与 `import`会造成运行时报错。正确做法：统一 ESM。本课模块化与工程化要解决的是ES Module、CommonJS、npm 与 package.json、常见构建工具
+- **判断依据**：涉及术语 this：模块特性：自动严格模式、顶层 `this` 是 `undefined`、同一模块只执行一次、静态分析可做摇树优化（tree shaking）。易错点：混用 `require` 与 `import`会造成运行时报错。正确做法：统一 ESM。本课《模块化与工程化》要解决的是ES Module、CommonJS、npm 与 package.json、常见构建工具
 
 ### 考点 7：`this`
 
