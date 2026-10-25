@@ -31,15 +31,15 @@
 | 时区 | 时间与时区：九种语言横向对照解决了什么问题，而不是只背术语。 | 易错：后端按服务器时区格式化；正确做法是前端按用户时区格式化。 |
 | UTC | 全球统一的时间基准，存储与传输用它，只在展示时换算成本地时区。 | 易错：存本地时间字符串；正确做法是存 UTC 时刻。 |
 | 时间戳 | 从固定起点开始计的秒数或毫秒数，不含时区信息，比较和排序最省事。 | 易错：相差 1000 倍；正确做法是明确秒还是毫秒。 |
-| Python | `datetime`（带 tzinfo） | 只在「`datetime`（带 tzinfo）」这一前提下成立，换输入或换环境要重新验证。 |
-| JavaScript | `Date`（内部为毫秒时间戳） | 只在「`Date`（内部为毫秒时间戳）」这一前提下成立，换输入或换环境要重新验证。 |
-| TypeScript | 同 JavaScript | 只在「同 JavaScript」这一前提下成立，换输入或换环境要重新验证。 |
-| Java | `Instant` / `ZonedDateTime` | 只在「`Instant` / `ZonedDateTime`」这一前提下成立，换输入或换环境要重新验证。 |
-| C# | `DateTimeOffset` | 只在「`DateTimeOffset`」这一前提下成立，换输入或换环境要重新验证。 |
-| C++ | `chrono::system_clock` | 只在「`chrono::system_clock`」这一前提下成立，换输入或换环境要重新验证。 |
-| Go | `time.Time` | 只在「`time.Time`」这一前提下成立，换输入或换环境要重新验证。 |
-| Rust | `chrono::DateTime<Utc>` | 只在「`chrono::DateTime<Utc>`」这一前提下成立，换输入或换环境要重新验证。 |
-| Shell | `date` | 只在「`date`」这一前提下成立，换输入或换环境要重新验证。 |
+| Python | `datetime`（带 tzinfo） | 丢了 tzinfo 它就退成正文里的 LocalDateTime，只剩墙上时钟读数，同一条记录换个 ZoneInfo 换算结果就不同。 |
+| JavaScript | `Date`（内部为毫秒时间戳） | 毫秒时刻本身不含时区，展示要交给示例里 `Intl.DateTimeFormat` 的 timeZone 参数，别拿格式化后的字符串去比较。 |
+| TypeScript | 同 JavaScript | 类型层只是复用 `Date`，编译期看不出存的是秒还是毫秒，相差 1000 倍那条坑要靠接口约定来挡。 |
+| Java | `Instant` / `ZonedDateTime` | 只有 `Instant` 是与时区无关的时刻，要展示才 `atZone`；用 `LocalDateTime` 接输入就是拿墙上时钟当绝对时刻。 |
+| C# | `DateTimeOffset` | 示例用 `+00:00` 这种带偏移的串解析、用 `"o"` 往返；偏移若在传输里被抹掉，跨端还原出的时刻就不唯一。 |
+| C++ | `chrono::system_clock` | 时钟类型给的是读数，不是带偏移的时刻；落库选不带时区的 `TIMESTAMP` 时，团队约定里要写死它按 UTC 存。 |
+| Go | `time.Time` | 示例先 `.UTC()` 再 Format，`LoadLocation` 的第二个返回值被 `_` 丢掉，时区数据缺失时错误会被静默吞掉。 |
+| Rust | `chrono::DateTime<Utc>` | 泛型位置写死的是 Utc，展示成别的时区要先做转换而不是改标注；示例里的 `?` 说明解析失败会向上抛出。 |
+| Shell | `date` | 不加 `-u` 就按机器当前时区输出，服务器时区一变，历史日志会被重新解释；临时看本地时间要在命令前挂 `TZ=`。 |
 
 ## 原理与运行机制
 

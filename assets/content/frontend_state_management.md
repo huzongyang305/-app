@@ -34,11 +34,11 @@
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| Redux | 深入学习Redux Toolkit、Pinia、NgRx，理解何时需要全局状态管相关：正文给出可操作定义与适用边界。 |
-| Pinia | 深入学习Redux Toolkit、Pinia、NgRx，理解何时需要全局状态管相关：正文给出可操作定义与适用边界。 |
-| NgRx | 深入学习Redux Toolkit、Pinia、NgRx，理解何时需要全局状态管相关：正文给出可操作定义与适用边界。 |
-| 状态管理 | 深入学习Redux Toolkit、Pinia、NgRx，理解何时需要全局状态管相关：正文给出可操作定义与适用边界。 |
-| Context API | 深入学习Redux Toolkit、Pinia、NgRx，理解何时需要全局状态管相关：正文给出可操作定义与适用边界。 |
+| Redux | 全应用一个 Store，视图发 action、reducer 算新状态，早期样板代码多到要靠 Toolkit 削减九成。 |
+| Pinia | Vue 团队用来取代 Vuex 的方案，靠 Vue 响应式直接改 state，不再区分 mutation。 |
+| NgRx | Angular 圈的 Redux 实现，另加 Effect 专门装 API 调用等副作用，selector 带记忆化。 |
+| 状态管理 | 把购物车、主题这些会变的数据收进统一容器按单向数据流更新，避免数据不同步和 bug 追不到来源。 |
+| Context API | React 自带的跨层传递，替掉 props 钻取，但值一变所有消费者都重渲染，只适合主题语言这类低频数据。 |
 
 ## 原理与运行机制
 

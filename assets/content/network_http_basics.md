@@ -28,7 +28,7 @@
 | 术语 | 操作性定义 | 常见边界与风险 |
 | --- | --- | --- |
 | 状态码 | 2xx 成功：200 OK、201 Created、204 No Content。 | 易错：客户端无法区分成功与失败；正确做法是正确使用 4xx / 5xx 状态码。 |
-| Cookie | Set-Cookie: session_id=abc123; HttpOnly; Secure。 | 只在「Set-Cookie: session_id=abc123; HttpOnly; Secure」这一前提下成立，换输入或换环境要重新验证。 |
+| Cookie | Set-Cookie: session_id=abc123; HttpOnly; Secure。 | 易错：写 Set-Cookie 时漏掉 HttpOnly、Secure 这类属性；浏览器后续请求会自动带上它，属性没配齐就一直带出去。 |
 | 请求 | 浏览器后续请求会自动带上 Cookie: session_id=abc123。 | 易错：请求可能被预取、重放；正确做法是有副作用的操作使用 `POST` / `PUT` / `DELETE`。 |
 | 幂等性 | 同一请求重复执行结果一致，GET、PUT、DELETE 应当幂等，重试前必须先判断这一点。 | 隔离级别与并发事务会影响可见性，换级别或换存储引擎后要重新验证。 |
 

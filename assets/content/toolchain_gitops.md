@@ -33,8 +33,8 @@
 | Sealed Secrets | 密钥不入 Git：用 Sealed Secrets、External Secrets 或 SOPS 加密后提交。 | 隔离级别与并发事务会影响可见性，换级别或换存储引擎后要重新验证。 |
 | Application | 一份"配置路径 → 目标集群/命名空间"的映射 | 易错：相互影响；正确做法是按环境隔离目录与 Application。 |
 | Sync | 把 Git 状态应用到集群 | 易错：实际与期望不一致；正确做法是定期检查 OutOfSync。 |
-| Sync Policy | 手动或自动同步，是否允许 prune（删除多余资源）与 self-heal | 只在「手动或自动同步，是否允许 prune（删除多余资源）与 self-heal」这一前提下成立，换输入或换环境要重新验证。 |
-| Health | 资源是否健康（Deployment 是否就绪、Pod 是否 Running） | 只在「资源是否健康（Deployment 是否就绪、Pod 是否 Running）」这一前提下成立，换输入或换环境要重新验证。 |
+| Sync Policy | 手动或自动同步，是否允许 prune（删除多余资源）与 self-heal | 示例把 prune 设成 false、selfHeal 设成 true：生产先不自动删资源，`decision()` 也把含删除的计划判为需人工确认。 |
+| Health | 资源是否健康（Deployment 是否就绪、Pod 是否 Running） | 典型流程把健康检查排在同步之后：只看同步成功不够，还要确认 Deployment 就绪与 Pod 处于 Running 才算走完。 |
 | Diff | 展示集群实际状态与 Git 期望状态的差异 | 缓存与状态残留会让结果过期，先明确失效策略再判断正确性。 |
 
 ## 原理与运行机制

@@ -33,11 +33,11 @@ Next.js是React生态中最流行的全栈框架，它让服务端渲染变得�
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| Next.js | 对比SSR/CSR/SSG渲染策略，掌握Next.js App Router和A相关：正文给出可操作定义与适用边界。 |
-| SSR | 对比SSR/CSR/SSG渲染策略，掌握Next.js App Router和A相关：正文给出可操作定义与适用边界。 |
-| SSG | 对比SSR/CSR/SSG渲染策略，掌握Next.js App Router和A相关：正文给出可操作定义与适用边界。 |
-| App Router | 对比SSR/CSR/SSG渲染策略，掌握Next.js App Router和A相关：正文给出可操作定义与适用边界。 |
-| 服务端渲染 | 对比SSR/CSR/SSG渲染策略，掌握Next.js App Router和A相关：正文给出可操作定义与适用边界。 |
+| Next.js | React 之上的全栈框架，本课用它把 CSR、SSR、SSG 三种策略按页面混在同一个应用里。 |
+| SSR | 服务器每次请求都现渲染完整 HTML 再下发，首屏快且 SEO 友好，代价是每次都重渲染、服务器压力大。 |
+| SSG | 构建时就把全部 HTML 生成好部署到 CDN，速度极快但数据更新不及时，适合博客与产品文档。 |
+| App Router | Next.js 13 引入的基于 React Server Components 的路由架构，用文件夹层级定义 layout、page、loading 与 error，支持嵌套布局。 |
+| 服务端渲染 | 组件在 Node 服务器上先执行成 HTML 再交给浏览器，所以这一段代码里碰不到 window 和 document。 |
 
 ## 原理与运行机制
 

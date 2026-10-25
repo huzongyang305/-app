@@ -27,7 +27,7 @@
 
 | 术语 | 操作性定义 | 常见边界与风险 |
 | --- | --- | --- |
-| PerformanceObserver | **测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（PerformanceObserver 采集上报）。 | 只在「**测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（PerformanceObserver 采集上报）」这一前提下成立，换输入或换环境要重新验证。 |
+| PerformanceObserver | **测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（PerformanceObserver 采集上报）。 | 易错：只拿实验室数据下结论；浏览器里采到的真实数据要按 P75 看分布，平均分会掩盖长尾。 |
 | defer | **关键路径**：首屏 CSS 内联，非关键 JS 用 defer/async，路由级代码分割。 | 易错：阻塞渲染；正确做法是`defer` / `async` 或延迟加载。 |
 | preconnect | **网络**：静态资源走 CDN、开启 HTTP/2 或 HTTP/3、避免域名分片、预连接关键域名（preconnect）。 | 网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。 |
 | immutable | **缓存**：带哈希的静态资源用 immutable 长缓存，HTML 用协商缓存。 | 静态检查只在编译期成立，运行期输入仍需校验。 |

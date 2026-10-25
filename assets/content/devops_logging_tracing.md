@@ -886,11 +886,11 @@ D. 更轻量级，内存占用更低，适合边缘场景和容器环境中的�
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| ELK | 搭建 ELK Stack、Jaeger 和 OpenTelemetry 实现日志相关：正文给出可操作定义与适用边界。 |
-| Jaeger | 搭建 ELK Stack、Jaeger 和 OpenTelemetry 实现日志相关：正文给出可操作定义与适用边界。 |
-| OpenTelemetry | 搭建 ELK Stack、Jaeger 和 OpenTelemetry 实现日志相关：正文给出可操作定义与适用边界。 |
-| 日志 | 搭建 ELK Stack、Jaeger 和 OpenTelemetry 实现日志相关：正文给出可操作定义与适用边界。 |
-| 链路追踪 | 搭建 ELK Stack、Jaeger 和 OpenTelemetry 实现日志相关：正文给出可操作定义与适用边界。 |
+| ELK | Elasticsearch 负责存储检索、Logstash 负责解析过滤、Kibana 负责展示查询的日志聚合三件套，前端通常接 Filebeat 采集。 |
+| Jaeger | Uber 开源的分布式追踪系统，链路是 Agent 收 Span、Collector 写存储后端、Query 配 UI 做查询与展示。 |
+| OpenTelemetry | CNCF 的统一采集标准，一次集成 SDK 就能把追踪、指标和日志按 OTLP 导出到 Jaeger 等不同后端，换平台不必改代码。 |
+| 日志 | 带 TRACE 到 FATAL 级别的运行记录，本课要求写成含 service、traceId 等字段的 JSON，好让机器解析与检索。 |
+| 链路追踪 | 用同一个 traceId 把请求跨服务的每次调用串成 Span 树，再靠 parentSpanId 还原调用层级与各段耗时。 |
 
 ## 原理与运行机制
 

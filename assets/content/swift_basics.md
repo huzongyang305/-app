@@ -32,10 +32,10 @@
 | 值类型 | 「Swift、Optional、值类型、错误处理」说明变量生命周期、资源释放、并发模型和错误传播。 | 易错：修改后的行为与预期不符；正确做法是明确结构体与类的语义差异。 |
 | 可选绑定 | 用 if let 或 guard let 解包可选值并绑定非空变量，替代危险的强制解包。 | 易错：运行期直接崩溃；正确做法是用可选绑定与默认值处理。 |
 | 可选类型 | Optional 表示值可能为 nil，必须显式解包（if let、guard let）才能使用，从类型层面消除空指针 | 静态检查只在编译期成立，运行期输入仍需校验。 |
-| 编译构建 | swiftc / xcodebuild | 只在「swiftc / xcodebuild」这一前提下成立，换输入或换环境要重新验证。 |
-| 测试 | XCTest + async 测试 | 只在「XCTest + async 测试」这一前提下成立，换输入或换环境要重新验证。 |
-| 性能 | Instruments / signpost | 只在「Instruments / signpost」这一前提下成立，换输入或换环境要重新验证。 |
-| 发布 | TestFlight + App Store 审核 | 只在「TestFlight + App Store 审核」这一前提下成立，换输入或换环境要重新验证。 |
+| 编译构建 | swiftc / xcodebuild | 易错：`swiftc` 只够单文件试编译，真做 iOS 工程要走 `xcodebuild` 并锁 SDK；换 Xcode 大版本前得核对 Swift 兼容范围。 |
+| 测试 | XCTest + async 测试 | 易错：只测有值的正常输入；要把为 nil、内容为空两条边界也跑齐，异步用例还得等 await 结束再断言。 |
+| 性能 | Instruments / signpost | 易错：凭直觉判断开销；派发方式、写时复制这类差距要靠 Instruments 计时或前后两版对比量化，不能只说看起来快。 |
+| 发布 | TestFlight + App Store 审核 | 易错：把 TestFlight 内测通过当成能上架；它只是分发渠道，正式上线仍要单独过 App Store 审核这道门。 |
 | let 与 var | let 绑定后不可重新赋值，var 才可以；编译器会把 let 的不变性用于优化，也替你拦住后续误改。 | 数组用 let 声明仍能 append，因为「不能重新绑定」不等于「内容不可变」。 |
 | guard let | 在函数开头把可选值解包，解不开就立刻退出，后续代码里用的都是非可选的常量。 | else 分支必须强制退出作用域，写成空分支过不了编译。 |
 | 写时复制 | struct 与 Array、Dictionary 的赋值语义是「值复制」，但底层只在真正修改时才分配副本。 | 语义上等价于深拷贝，性能上不等价；跨线程共享同一个可变引用时 COW 保护不了你。 |

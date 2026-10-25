@@ -33,11 +33,11 @@ Jetpack Compose是Google推出的现代Android UI工具包，它用声明式的�
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| Jetpack Compose | 掌握Compose布局系统、副作用处理和Material Design 3组件。相关：正文给出可操作定义与适用边界。 |
-| Android | 掌握Compose布局系统、副作用处理和Material Design 3组件。相关：正文给出可操作定义与适用边界。 |
-| 布局系统 | 掌握Compose布局系统、副作用处理和Material Design 3组件。相关：正文给出可操作定义与适用边界。 |
-| 副作用 | 掌握Compose布局系统、副作用处理和Material Design 3组件。相关：正文给出可操作定义与适用边界。 |
-| Material 3 | 掌握Compose布局系统、副作用处理和Material Design 3组件。相关：正文给出可操作定义与适用边界。 |
+| Jetpack Compose | Google的Kotlin声明式UI工具包，状态变化只重组受影响组件；remember在重组之间保住状态，Composable内禁做耗时IO。 |
+| Android | Compose所承载的运行平台：Activity随屏幕旋转重建会重置状态，须用ViewModel或rememberSaveable跨生命周期保存数据。 |
+| 布局系统 | Column、Row、Box、LazyColumn等容器完成测量与摆放；Modifier链顺序影响效果，LazyColumn的items要传唯一key防状态错乱。 |
+| 副作用 | 不能写在组合阶段的请求、订阅与状态写回：放进LaunchedEffect等专用API，否则重组触发更新再引发重组形成死循环。 |
+| Material 3 | 本课示例采用的第三代设计规范：Scaffold、TopAppBar、Card统一经MaterialTheme的colorScheme取色、typography定字阶。 |
 
 ## 原理与运行机制
 

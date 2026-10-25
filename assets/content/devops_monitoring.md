@@ -140,11 +140,11 @@
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| Prometheus | 用 Prometheus、Grafana 与 Alertmanager 搭建完整相关：正文给出可操作定义与适用边界。 |
-| Grafana | 用 Prometheus、Grafana 与 Alertmanager 搭建完整相关：正文给出可操作定义与适用边界。 |
-| Alertmanager | 用 Prometheus、Grafana 与 Alertmanager 搭建完整相关：正文给出可操作定义与适用边界。 |
-| 监控告警 | 用 Prometheus、Grafana 与 Alertmanager 搭建完整相关：正文给出可操作定义与适用边界。 |
-| 可观测性 | 用 Prometheus、Grafana 与 Alertmanager 搭建完整相关：正文给出可操作定义与适用边界。 |
+| Prometheus | 按拉取模型从 exporter 抓指标、存进 TSDB 并用 PromQL 查询的监控系统，指标分 Counter、Gauge、Histogram、Summary 四种。 |
+| Grafana | 把数据源里的指标画成 Dashboard 的可视化层，靠 Query 等变量让同一块面板适配不同实例与 job。 |
+| Alertmanager | Prometheus 告警的下游组件，负责路由、分组、抑制与静默，把一堆同源告警收敛成少数几条通知。 |
+| 监控告警 | 持续采集指标并在越过阈值或趋势异常时通知人的机制，兼顾实时感知、快速定位与提前预警，还要避免告警疲劳。 |
+| 可观测性 | 靠指标、日志、链路追踪三大支柱共同回答系统内部状态的能力，监控告警只覆盖其中的指标一侧。 |
 
 ## 原理与运行机制
 

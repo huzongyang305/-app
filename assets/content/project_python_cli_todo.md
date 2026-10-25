@@ -27,11 +27,11 @@
 
 | 术语 | 操作性定义 | 常见边界与风险 |
 | --- | --- | --- |
-| CLI | Explain what Project: Python CLI Todo Tool solves and when it should be used.。 | 只在「Explain what Project: Python CLI Todo Tool solves and when it should be used.」这一前提下成立，换输入或换环境要重新验证。 |
+| CLI | Explain what Project: Python CLI Todo Tool solves and when it should be used.。 | 易错：只给人看的好看输出；正文要求每条命令都能被脚本消费，即支持 `--json` 并返回稳定退出码。 |
 | argparse | Python 标准库中的命令行参数解析模块，支持类型与帮助信息。 | 静态检查只在编译期成立，运行期输入仍需校验。 |
 | JSON | 团队需要一个不依赖服务器的待办工具：支持添加、列出、完成和删除任务，数据保存在本机 JSON 文件中；即使进程中途退出，也不能留下半个损坏文件。 | 易错：写入中断时文件变成半截 JSON；正确做法是先写同目录临时文件再原子替换。 |
 | 原子写入 | 一句话摘要：从空目录实现可安装、可测试、可发布的命令行待办工具，覆盖参数解析、原子写入、错误码与打包。 | 结果依赖数据分布、模型版本与算力预算，换数据集或换硬件都要重新评估。 |
-| pytest | 本课涉及：CLI、argparse、JSON、原子写入、pytest。 | 只在「本课涉及：CLI、argparse、JSON、原子写入、pytest」这一前提下成立，换输入或换环境要重新验证。 |
+| pytest | 本课涉及：CLI、argparse、JSON、原子写入、pytest。 | 易错：用例靠全局可变状态串联、只测成功路径；正文让仓储函数显式接收路径，并补空数据、非法编号与损坏文件。 |
 
 ## 原理与运行机制
 

@@ -20,11 +20,11 @@
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| Go | 学习Go类型系统、Goroutine并发模型和Gin/Echo框架中间件。相关：正文给出可操作定义与适用边界。 |
-| Gin | 学习Go类型系统、Goroutine并发模型和Gin/Echo框架中间件。相关：正文给出可操作定义与适用边界。 |
-| Echo | 学习Go类型系统、Goroutine并发模型和Gin/Echo框架中间件。相关：正文给出可操作定义与适用边界。 |
-| Goroutine | 学习Go类型系统、Goroutine并发模型和Gin/Echo框架中间件。相关：正文给出可操作定义与适用边界。 |
-| GORM | 学习Go类型系统、Goroutine并发模型和Gin/Echo框架中间件。相关：正文给出可操作定义与适用边界。 |
+| Go | 编译型语言，用组合代替继承、用error返回值代替异常，并发交给goroutine |
+| Gin | 开箱即用的Go Web框架，gin.Default()自带Logger与Recovery，配binding tag绑定校验JSON |
+| Echo | 只保留核心路由与中间件、接口风格更统一的轻量Go框架，其余组件由你自己挑 |
+| Goroutine | 用go func()启动的轻量协程，初始栈仅2KB由运行时调度，缺退出条件就会泄漏 |
+| GORM | Go的ORM库，结构体内嵌gorm.Model并加标签即映射表，AutoMigrate自动建表 |
 
 ## 原理与运行机制
 

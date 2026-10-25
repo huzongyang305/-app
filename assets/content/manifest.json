@@ -9665,7 +9665,7 @@
             "en": "Use variables with printf and scanf."
           },
           "file": "assets/content/c_variables_io.md",
-          "minutes": 25,
+          "minutes": 30,
           "keywords": [
             "C 变量与输入输出",
             "C 语言",
@@ -31904,7 +31904,7 @@
             "en": "Tokens, DFA, recursive descent and ASTs."
           },
           "file": "assets/content/fundamentals_compiler_frontend.md",
-          "minutes": 40,
+          "minutes": 35,
           "keywords": [
             "编译原理",
             "词法分析",

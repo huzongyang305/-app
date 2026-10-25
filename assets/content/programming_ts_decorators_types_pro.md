@@ -27,7 +27,7 @@
 
 | 术语 | 操作性定义 | 常见边界与风险 |
 | --- | --- | --- |
-| React.FC | 组件 props 显式声明接口，避免 React.FC（隐式 children 已不推荐）。 | 只在「组件 props 显式声明接口，避免 React.FC（隐式 children 已不推荐）」这一前提下成立，换输入或换环境要重新验证。 |
+| React.FC | 组件 props 显式声明接口，避免 React.FC（隐式 children 已不推荐）。 | 换成显式接口后 children 不再自动可用，父组件要塞子内容就得自己在 props 里声明这个字段。 |
 | TypeScript | 在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js。 | 静态检查只在编译期成立，运行期输入仍需校验。 |
 | 装饰器 | 在不修改原函数主体的情况下包装或增强其行为的语法结构。 | 易错：数据照样出错；正确做法是用 zod 等显式校验。 |
 | 类型守卫 | 用 is 或断言函数把运行时校验的结果告诉编译器，替代不安全的 as 断言。 | 静态检查只在编译期成立，运行期输入仍需校验。 |
@@ -35,18 +35,18 @@
 | 分布式条件类型 | 对联合类型逐项处理 | 静态检查只在编译期成立，运行期输入仍需校验。 |
 | 模板字面量类型 | 生成事件名、CSS 属性、路由参数类型 | 静态检查只在编译期成立，运行期输入仍需校验。 |
 | 协变/逆变位置 | 理解函数参数为何是逆变的 | 结果依赖数据分布、模型版本与算力预算，换数据集或换硬件都要重新评估。 |
-| 组件 props | `type Props = { id: string; onSelect?: (id: string) => void }` | 只在「`type Props = { id: string; onSelect?: (id: string) => void }`」这一前提下成立，换输入或换环境要重新验证。 |
-| 函数组件 | `function Card({ id }: Props) { ... }` | 只在「`function Card({ id }: Props) { ... }`」这一前提下成立，换输入或换环境要重新验证。 |
-| 子节点 | `children: React.ReactNode` | 只在「`children: React.ReactNode`」这一前提下成立，换输入或换环境要重新验证。 |
-| 事件处理 | `(e: React.ChangeEvent<HTMLInputElement>) => void` | 只在「`(e: React.ChangeEvent<HTMLInputElement>) => void`」这一前提下成立，换输入或换环境要重新验证。 |
+| 组件 props | `type Props = { id: string; onSelect?: (id: string) => void }` | 带问号的 onSelect 是可选字段，父组件没传就直接调用会在运行期拿到 undefined，要先判空或给默认值。 |
+| 函数组件 | `function Card({ id }: Props) { ... }` | 解构出来的字段仍受 Props 约束，字段名写错当场报错；把 props 类型退化成 any 就等于放弃这层检查。 |
+| 子节点 | `children: React.ReactNode` | 要把可选性也一并声明清楚，否则要么传不进内容，要么不传时编译不过，隐式 children 已经靠不住。 |
+| 事件处理 | `(e: React.ChangeEvent<HTMLInputElement>) => void` | 换个元素就得换成对应的事件类型，写成 any 会丢掉自动补全，也丢掉 target 上的字段类型。 |
 | 泛型组件 | `function List<T>({ items }: { items: T[] }) { ... }` | 易错：丢失元素类型；正确做法是用 `<T,>` 泛型语法。 |
-| 状态 | `useState<User \| null>(null)` | 只在「初始值与返回值都要写成可空联合」这一前提下成立，换输入或换环境要重新验证。 |
-| Ref | `useRef<HTMLInputElement>(null)` | 只在「`useRef<HTMLInputElement>(null)`」这一前提下成立，换输入或换环境要重新验证。 |
+| 状态 | `useState<User \| null>(null)` | 初始值给 null 之后取出来的仍是可空类型，用字段前要先判空收窄，别用 as 断言把这一步混过去。 |
+| Ref | `useRef<HTMLInputElement>(null)` | 元素类型要写进泛型参数里，取 current 之前仍要判空，类型检查不会替你做这一步。 |
 | 上下文 | `createContext<Auth \| null>(null)` | 易错：忘记 Provider 导致运行时报错；正确做法是自定义 hook 在为空时抛错。 |
-| 前端读取 | 仅 `VITE_` 前缀会暴露给浏览器 | 只在「仅 `VITE_` 前缀会暴露给浏览器」这一前提下成立，换输入或换环境要重新验证。 |
-| Node 读取 | `process.env.NODE_ENV`，缺省需判空 | 只在「`process.env.NODE_ENV`，缺省需判空」这一前提下成立，换输入或换环境要重新验证。 |
-| 校验必填 | 启动时集中校验，缺失直接抛错 | 只在「启动时集中校验，缺失直接抛错」这一前提下成立，换输入或换环境要重新验证。 |
-| 类型声明 | `declare global { namespace NodeJS { interface ProcessEnv { DATABASE_URL: string } } }` | 只在「`declare global { namespace NodeJS { interface ProcessEnv { DATABASE_URL: string } } }`」这一前提下成立，换输入或换环境要重新验证。 |
+| 前端读取 | 仅 `VITE_` 前缀会暴露给浏览器 | 带这个前缀的值一定会被打包进产物给浏览器看到，密钥类变量绝不能挂这个前缀。 |
+| Node 读取 | `process.env.NODE_ENV`，缺省需判空 | 用感叹号强断言非空只骗过编译期，真缺失时仍是 undefined 静默出错，要在启动时统一校验。 |
+| 校验必填 | 启动时集中校验，缺失直接抛错 | 这一次只兜住进程内的环境变量，接口返回等运行期数据仍要各自 parse，出参也要一起校验。 |
+| 类型声明 | `declare global { namespace NodeJS { interface ProcessEnv { DATABASE_URL: string } } }` | 声明成 string 只是编译期承诺，实际缺失时照样是 undefined，还得配 schema 校验才靠得住。 |
 | 禁止 | 把密钥放前端环境变量（会被打包进产物） | 权限与密钥策略变化会让结论失效，按最小权限并用真实凭据流程复验。 |
 
 ## 原理与运行机制

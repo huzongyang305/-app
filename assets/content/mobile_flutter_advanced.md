@@ -33,11 +33,11 @@
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| Flutter | 掌握Implicit/Explicit动画、CustomPainter和Plat相关：正文给出可操作定义与适用边界。 |
-| 动画 | 掌握Implicit/Explicit动画、CustomPainter和Plat相关：正文给出可操作定义与适用边界。 |
-| CustomPainter | 掌握Implicit/Explicit动画、CustomPainter和Plat相关：正文给出可操作定义与适用边界。 |
-| Platform Channel | 掌握Implicit/Explicit动画、CustomPainter和Plat相关：正文给出可操作定义与适用边界。 |
-| 渲染 | 掌握Implicit/Explicit动画、CustomPainter和Plat相关：正文给出可操作定义与适用边界。 |
+| Flutter | 用Dart一套代码构建双端界面的框架，本课高级主题聚焦其动画体系、Canvas自定义绘制以及与iOS/Android原生互调的通道。 |
+| 动画 | 靠AnimationController逐帧驱动值变化：Tween给起止值，vsync接TickerProvider对齐刷新信号防撕裂，控制器必须在dispose释放。 |
+| CustomPainter | 绕开Widget组合、直接在Canvas上逐笔画图的接口，`shouldRepaint`要精确比较变化属性，总返回true会引发多余重绘卡顿。 |
+| Platform Channel | Dart与原生的通信桥：MethodChannel调方法、EventChannel收事件流，`invokeMethod`返回Future，iOS回调切主线程才能更新UI。 |
+| 渲染 | Widget转成画面的一环一环：CustomPaint要给明确size否则图形变形，大列表逐帧重建要用RepaintBoundary隔离重绘区域。 |
 
 ## 原理与运行机制
 

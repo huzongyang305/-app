@@ -32,11 +32,11 @@ React是目前最流行的前端框架之一，它的组件化思想和声明式
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| React | 掌握React组件化思想、虚拟DOM原理和常用Hooks（useState/useEffect/useContext）。相关：正文给出可操作定义与适用边界。 |
-| Hooks | 掌握React组件化思想、虚拟DOM原理和常用Hooks（useState/useEffect/useContext）。相关：正文给出可操作定义与适用边界。 |
-| useState | 掌握React组件化思想、虚拟DOM原理和常用Hooks（useState/useEffect/useContext）。相关：正文给出可操作定义与适用边界。 |
-| useEffect | 掌握React组件化思想、虚拟DOM原理和常用Hooks（useState/useEffect/useContext）。相关：正文给出可操作定义与适用边界。 |
-| 组件化 | 掌握React组件化思想、虚拟DOM原理和常用Hooks（useState/useEffect/useContext）。相关：正文给出可操作定义与适用边界。 |
+| React | 只声明「数据变了界面该长什么样」，新旧蓝图对比和最小 DOM 更新这些活交给它做。 |
+| Hooks | React 16.8 起让函数组件也能接上状态与生命周期的一组函数，类组件从此不再是必需。 |
+| useState | 组件里那份会变的数据，配套返回一个设置函数；调用后立刻读到的仍是旧值，要靠函数式更新。 |
+| useEffect | 把请求、订阅这类副作用放到渲染之后跑，并用返回的清理函数撤销，否则会内存泄漏或出竞态。 |
+| 组件化 | 把界面拆成积木，正文分成只负责显示的展示型组件和负责取数据管状态的容器型组件两类。 |
 
 ## 原理与运行机制
 

@@ -20,11 +20,11 @@
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| PostgreSQL | 学习PostgreSQL/MySQL ORM模式、MongoDB文档模型和Red相关：正文给出可操作定义与适用边界。 |
-| MongoDB | 学习PostgreSQL/MySQL ORM模式、MongoDB文档模型和Red相关：正文给出可操作定义与适用边界。 |
-| Redis | 学习PostgreSQL/MySQL ORM模式、MongoDB文档模型和Red相关：正文给出可操作定义与适用边界。 |
-| ORM | 学习PostgreSQL/MySQL ORM模式、MongoDB文档模型和Red相关：正文给出可操作定义与适用边界。 |
-| 连接池 | 学习PostgreSQL/MySQL ORM模式、MongoDB文档模型和Red相关：正文给出可操作定义与适用边界。 |
+| PostgreSQL | 表结构固定、带ACID事务和外键约束的关系库，本课用它存订单这类强关联数据 |
+| MongoDB | 以BSON文档为记录单位的NoSQL库，集合不预定义字段，适合结构多变的嵌套内容 |
+| Redis | 数据常驻内存、微秒级响应的键值库，本课用它做带TTL的缓存和会话存储 |
+| ORM | 在类与表、对象与行之间做翻译的中间层，用Prisma或Sequelize的API替掉手写SQL |
+| 连接池 | 预先建好并反复借还数据库连接的组件，省掉握手与认证开销，靠max限制并发 |
 
 ## 原理与运行机制
 

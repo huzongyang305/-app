@@ -33,11 +33,11 @@ Angular是一个功能完整的企业级前端框架，由Google维护。它以T
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| Angular | 学习Angular架构、TypeScript集成、依赖注入系统和RxJS响应式编相关：正文给出可操作定义与适用边界。 |
-| 依赖注入 | 学习Angular架构、TypeScript集成、依赖注入系统和RxJS响应式编相关：正文给出可操作定义与适用边界。 |
-| TypeScript | 学习Angular架构、TypeScript集成、依赖注入系统和RxJS响应式编相关：正文给出可操作定义与适用边界。 |
-| RxJS | 学习Angular架构、TypeScript集成、依赖注入系统和RxJS响应式编相关：正文给出可操作定义与适用边界。 |
-| 服务 | 学习Angular架构、TypeScript集成、依赖注入系统和RxJS响应式编相关：正文给出可操作定义与适用边界。 |
+| Angular | Google 维护的企业级框架，组件树配 Zone.js 变更检测，路由表单与 HTTP 客户端全自带，小项目会嫌它繁琐。 |
+| 依赖注入 | 组件只在构造函数里声明需要的类型，实例的创建、单例与销毁交给注入器，测试时可换成 mock。 |
+| TypeScript | Angular 强制使用的带静态类型 JavaScript 超集，多数错误在编译期就暴露，注入也靠参数的类型信息匹配。 |
+| RxJS | 用 Observable 承载异步数据流的操作库，HttpClient 的返回值就是它，手动订阅后不取消会造成内存泄漏。 |
+| 服务 | 加 `@Injectable` 标注、集中封装数据与业务逻辑的普通类，`providedIn: 'root'` 使它全应用共享一个实例。 |
 
 ## 原理与运行机制
 

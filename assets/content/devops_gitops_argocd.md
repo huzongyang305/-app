@@ -88,11 +88,11 @@ GitOps 理念 → ArgoCD 架构 → Application CRD → 同步策略
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| GitOps | 理解 GitOps 理念，使用 ArgoCD 实现声明式部署与自动同步。相关：正文给出可操作定义与适用边界。 |
-| ArgoCD | 理解 GitOps 理念，使用 ArgoCD 实现声明式部署与自动同步。相关：正文给出可操作定义与适用边界。 |
-| 声明式 | 理解 GitOps 理念，使用 ArgoCD 实现声明式部署与自动同步。相关：正文给出可操作定义与适用边界。 |
-| Kubernetes | 理解 GitOps 理念，使用 ArgoCD 实现声明式部署与自动同步。相关：正文给出可操作定义与适用边界。 |
-| 自动同步 | 理解 GitOps 理念，使用 ArgoCD 实现声明式部署与自动同步。相关：正文给出可操作定义与适用边界。 |
+| GitOps | 以 Git 仓库为唯一真相源的部署方式：改配置必须先提交，集群侧自动拉取并持续协调到期望状态。 |
+| ArgoCD | 落地 GitOps 的控制器，由 Server、Repository Server 与 Application Controller 组成，用 Application CRD 描述期望状态。 |
+| 声明式 | GitOps 四大原则之一：配置只写期望状态而不写执行步骤，由控制器自己算出差异并把集群修复过去。 |
+| Kubernetes | 本课的部署目标集群：Git 里的 YAML、Helm 或 Kustomize 配置被同步成集群中实际运行的工作负载与探针配置。 |
+| 自动同步 | `syncPolicy.automated` 让 Git 提交后由 ArgoCD 主动应用变更，`prune` 删掉 Git 里已移除的资源，`selfHeal` 把手工篡改改回来。 |
 
 ## 原理与运行机制
 

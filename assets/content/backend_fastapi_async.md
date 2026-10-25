@@ -38,11 +38,11 @@ FastAPI是Python生态中崛起最快的Web框架，它结合了Flask的简洁�
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| FastAPI | 理解async/await机制，掌握Pydantic数据验证和依赖注入系统。相关：正文给出可操作定义与适用边界。 |
-| 异步 | 理解async/await机制，掌握Pydantic数据验证和依赖注入系统。相关：正文给出可操作定义与适用边界。 |
-| Pydantic | 理解async/await机制，掌握Pydantic数据验证和依赖注入系统。相关：正文给出可操作定义与适用边界。 |
-| 依赖注入 | 理解async/await机制，掌握Pydantic数据验证和依赖注入系统。相关：正文给出可操作定义与适用边界。 |
-| SQLAlchemy | 理解async/await机制，掌握Pydantic数据验证和依赖注入系统。相关：正文给出可操作定义与适用边界。 |
+| FastAPI | 基于Starlette与Pydantic的Python Web框架，靠类型提示校验并零配置出Swagger文档 |
+| 异步 | 遇到数据库或HTTP等待时用await挂起当前协程，事件循环趁机去处理别的请求 |
+| Pydantic | 用带类型标注的类描述请求体，校验字段存在性与取值范围，不合格抛ValidationError |
+| 依赖注入 | 在路由签名里声明get_current_user这类依赖，由框架负责构造并能用yield收尾关会话 |
+| SQLAlchemy | 用User(Base)模型类映射users表、通过Session执行增删查的Python ORM工具包 |
 
 ## 原理与运行机制
 

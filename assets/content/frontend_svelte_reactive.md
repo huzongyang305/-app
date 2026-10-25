@@ -34,11 +34,11 @@ Svelte是一个革命性的前端框架，它摒弃了虚拟DOM，采用编译�
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| Svelte | 探索Svelte编译时响应式系统，掌握stores、transitions和ac相关：正文给出可操作定义与适用边界。 |
-| 响应式 | 探索Svelte编译时响应式系统，掌握stores、transitions和ac相关：正文给出可操作定义与适用边界。 |
-| stores | 探索Svelte编译时响应式系统，掌握stores、transitions和ac相关：正文给出可操作定义与适用边界。 |
-| transitions | 探索Svelte编译时响应式系统，掌握stores、transitions和ac相关：正文给出可操作定义与适用边界。 |
-| 无虚拟DOM | 探索Svelte编译时响应式系统，掌握stores、transitions和ac相关：正文给出可操作定义与适用边界。 |
+| Svelte | 在编译期就把组件预先切割成纯 JavaScript 成品的框架，包体积小、语法接近原生 HTML/CSS/JS。 |
+| 响应式 | 给变量赋值就自动重跑引用它的语句，`$:` 负责追踪依赖，不用手写订阅也不用 setState。 |
+| stores | 跨组件共享的可订阅状态，分 writable、readable、derived 三类，值一变订阅方自动刷新。 |
+| transitions | fade、slide、fly 这些内置过渡指令，只在元素被增删的瞬间播放，所以要配 `{#if}` 或 `{#each}`。 |
+| 无虚拟DOM | 省掉运行时比对新旧节点树这一步，编译期就理清变量与节点的依赖，更新时直接改写真实 DOM。 |
 
 ## 原理与运行机制
 

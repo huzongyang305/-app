@@ -20,11 +20,11 @@
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| GraphQL | 对比GraphQL与REST，掌握Schema定义、查询/变更/订阅和DataL相关：正文给出可操作定义与适用边界。 |
-| Apollo Server | 对比GraphQL与REST，掌握Schema定义、查询/变更/订阅和DataL相关：正文给出可操作定义与适用边界。 |
-| SDL | 对比GraphQL与REST，掌握Schema定义、查询/变更/订阅和DataL相关：正文给出可操作定义与适用边界。 |
-| DataLoader | 对比GraphQL与REST，掌握Schema定义、查询/变更/订阅和DataL相关：正文给出可操作定义与适用边界。 |
-| N+1问题 | 对比GraphQL与REST，掌握Schema定义、查询/变更/订阅和DataL相关：正文给出可操作定义与适用边界。 |
+| GraphQL | 让客户端在单次请求里自选所需字段与嵌套层级的API查询语言，返回精确匹配的数据树 |
+| Apollo Server | 开源的GraphQL服务端实现，装载typeDefs与resolvers，自带Schema校验和错误处理 |
+| SDL | 用type、Query、Mutation声明类型并用感叹号标注非空的Schema书写语法 |
+| DataLoader | Facebook出的批处理加缓存工具，把同一tick内的多次load合并成一次带ID数组的查询 |
+| N+1问题 | 先1次查列表再为每条各发1次关联查询，100个用户就变成101次数据库访问的陷阱 |
 
 ## 原理与运行机制
 

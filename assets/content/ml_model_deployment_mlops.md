@@ -33,11 +33,11 @@
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| MLOps | 掌握模型序列化、FastAPI服务化、Docker容器化和MLflow追踪。相关：正文给出可操作定义与适用边界。 |
-| 模型部署 | 掌握模型序列化、FastAPI服务化、Docker容器化和MLflow追踪。相关：正文给出可操作定义与适用边界。 |
-| FastAPI | 掌握模型序列化、FastAPI服务化、Docker容器化和MLflow追踪。相关：正文给出可操作定义与适用边界。 |
-| Docker | 掌握模型序列化、FastAPI服务化、Docker容器化和MLflow追踪。相关：正文给出可操作定义与适用边界。 |
-| MLflow | 掌握模型序列化、FastAPI服务化、Docker容器化和MLflow追踪。相关：正文给出可操作定义与适用边界。 |
+| MLOps | 把数据版本、实验跟踪、注册部署一路接到监控，做成可重复的流水线；正文用图书馆编目打比方，没有它线上出事就退不回稳定版本。 |
+| 模型部署 | 按目标环境先选序列化格式：Pickle 简单但不安全，ONNX 能跨框架，SavedModel 与 TorchScript 各锁自家生态，之后才包成对外服务。 |
+| FastAPI | 请求响应都写成 Pydantic 模型，端点里先判特征数是否为 10 再预测，模型挂在 startup 事件加载，还自动给出 /docs 交互文档。 |
+| Docker | 基础镜像固定 Python 版本、先装 requirements 再复制代码，顺带配一个定期探 /health 的 HEALTHCHECK，多服务交给 compose 编排。 |
+| MLflow | set_experiment 归组、start_run 里记参数指标和日志，评估步骤用 get_run 把 accuracy 与阈值比对，注册后拿到版本号才能回滚。 |
 
 ## 原理与运行机制
 

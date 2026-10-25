@@ -27,8 +27,8 @@
 
 | 术语 | 操作性定义 | 常见边界与风险 |
 | --- | --- | --- |
-| Shell | Shell 的精髓是组合：grep 过滤、sed 替换、awk 按列处理、sort/uniq 排序去重、cut 取列、xargs 批量执行、find 定位文件。 | 只在「Shell 的精髓是组合：grep 过滤、sed 替换、awk 按列处理、sort/uniq 排序去重、cut 取列、xargs 批量执行、find 定位文件」这一前提下成立，换输入或换环境要重新验证。 |
-| Bash | 常见 Unix Shell，用命令、变量、管道和脚本组合自动化系统任务。 | 只在「常见 Unix Shell，用命令、变量、管道和脚本组合自动化系统任务」这一前提下成立，换输入或换环境要重新验证。 |
+| Shell | Shell 的精髓是组合：grep 过滤、sed 替换、awk 按列处理、sort/uniq 排序去重、cut 取列、xargs 批量执行、find 定位文件。 | 易错：组合时假设文件名不含空格；`ls` 接 `xargs` 一遇空格就拆错，正文改用 `find -print0` 配 `xargs -0`。 |
+| Bash | 常见 Unix Shell，用命令、变量、管道和脚本组合自动化系统任务。 | 易错：把 `[[ ]]` 这类 Bash 增强写法塞进 `#!/bin/sh` 脚本；正文还提醒复杂逻辑宁可改用 Python。 |
 | 脚本 | 把多条命令写进文件按顺序执行，可带参数、判断与循环；首行 shebang 决定用哪个解释器。 | 易错：`Permission denied`；正确做法是`chmod +x script.sh`。 |
 | 管道 | 把一个命令或函数的输出直接作为下一个命令或函数的输入。 | 易错：前半段失败却继续；正确做法是加 `set -o pipefail`。 |
 | set -e | Shell 选项，命令失败时立即退出当前脚本，避免继续执行错误路径。 | 易错：出错还继续跑；正确做法是开头加 `set -euo pipefail`。 |

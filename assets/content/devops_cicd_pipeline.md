@@ -80,11 +80,11 @@ CI/CD 流水线设计与实现
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| CI/CD | 掌握 Jenkins、GitLab CI、GitHub Actions 的流水线相关：正文给出可操作定义与适用边界。 |
-| Jenkins | 掌握 Jenkins、GitLab CI、GitHub Actions 的流水线相关：正文给出可操作定义与适用边界。 |
-| GitLab CI | 掌握 Jenkins、GitLab CI、GitHub Actions 的流水线相关：正文给出可操作定义与适用边界。 |
-| GitHub Actions | 掌握 Jenkins、GitLab CI、GitHub Actions 的流水线相关：正文给出可操作定义与适用边界。 |
-| 流水线 | 掌握 Jenkins、GitLab CI、GitHub Actions 的流水线相关：正文给出可操作定义与适用边界。 |
+| CI/CD | 持续集成与持续交付或部署的合称：代码每次合并主干都自动构建测试，通过后自动或一键发布到生产。 |
+| Jenkins | 自托管的流水线引擎，本课用 Jenkinsfile 的声明式语法组织 Stage、Step 以及 always、success、failure 三类 post 后置操作。 |
+| GitLab CI | 在仓库根目录写 `.gitlab-ci.yml`，用 stages 划分阶段、jobs 定义任务，阶段之间靠 artifacts 传产物、cache 复用依赖。 |
+| GitHub Actions | 由事件触发的云端工作流，按 workflow、job、step、action 四层组织，配置最简单，还能用矩阵策略做多版本并行测试。 |
+| 流水线 | 把代码从提交到部署串成一串按顺序执行的自动化步骤，本课的形态是触发、拉代码、构建、测试、安全扫描、打包。 |
 
 ### 2.1 生活类比：CI/CD 就像汽车生产线
 

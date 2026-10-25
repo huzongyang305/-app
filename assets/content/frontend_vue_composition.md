@@ -33,11 +33,11 @@ Vue 3引入了革命性的组合式API（Composition API），它改变了我们
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| Vue 3 | 理解Composition API设计理念，掌握ref/reactive/com相关：正文给出可操作定义与适用边界。 |
-| Composition API | 理解Composition API设计理念，掌握ref/reactive/com相关：正文给出可操作定义与适用边界。 |
-| ref | 理解Composition API设计理念，掌握ref/reactive/com相关：正文给出可操作定义与适用边界。 |
-| reactive | 理解Composition API设计理念，掌握ref/reactive/com相关：正文给出可操作定义与适用边界。 |
-| 响应式 | 理解Composition API设计理念，掌握ref/reactive/com相关：正文给出可操作定义与适用边界。 |
+| Vue 3 | 响应式底层由 Object.defineProperty 换成 Proxy 的这一版，能侦测属性增删与数组变化。 |
+| Composition API | 在 setup 里按功能而不是按 data、methods 这些选项类型归拢逻辑，专治大组件逻辑被拆散。 |
+| ref | 装单个值的响应式盒子，脚本里读写都得走 `.value`，只有模板才会自动解包。 |
+| reactive | 把对象或数组套上 Proxy 变成响应式数据，一解构就丢掉响应性，得用 toRefs 转回来。 |
+| 响应式 | 数据一改，Vue 自己知道哪些地方依赖它就只更新那些地方，不必手动去碰 DOM。 |
 
 ## 原理与运行机制
 
