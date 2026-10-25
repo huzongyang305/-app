@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-10-25T12:37:45.133536",
+  "generated_at": "2026-10-25T13:30:07.841412",
   "lesson_count": 686,
-  "total_chars": 10100691,
-  "min_chars": 10010,
+  "total_chars": 10017932,
+  "min_chars": 9719,
   "image_count": 1313,
   "lessons_with_image": 686,
   "lessons_with_lab_section": 67,
@@ -15,8 +15,34 @@
     "debug": 173
   },
   "lessons_without_code_question": 52,
-  "error_count": 0,
+  "error_count": 5,
   "warning_count": 0,
-  "issues": [],
+  "issues": [
+    {
+      "level": "error",
+      "lesson_id": "gamedev_2d_rendering",
+      "message": "正文 9997 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "css_design_tokens",
+      "message": "正文 9911 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "python_data_structures",
+      "message": "正文 9777 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cpp_concepts_ranges",
+      "message": "正文 9719 字符，低于目标 10000"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cpp_concurrency_atomics",
+      "message": "正文 9836 字符，低于目标 10000"
+    }
+  ],
   "template_sentences": []
 }

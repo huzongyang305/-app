@@ -251,7 +251,7 @@ answer=42
 
 ### 考点 1：第 1 题
 
-- **题目**：在 `Swift 并发与 async/await` 里，与 `async` 有关的说法中，哪一项最符合理解 async/await、Task、Actor、取消和 Sendable。？
+- **题目**：在 `Swift 并发与 async/await` 里，与 `async` 有关的说法中，哪一项最符合理解 async/await、Task、Actor、取消和 Sendable？
 - **正确项**：async/await 把异步代码写成顺序结构，Task 提供取消和优先级。
 - **判断依据**：本题正确项是「async/await 把异步代码写成顺序结构，Task 提供取消和优先级」。术语 async（Swift 并发与 async/await）：标记异步函数或异步块，使内部可以使用 await 而不阻塞调用线程，本题取「async/await 把异步代码写成顺序结构，Task 提供取消和优先级」这条。易错点是在主线程做耗时任务，会造成界面卡顿甚至无响应，改法是把耗时工作放进并发任务，回到主线程再更新界面。
 
@@ -263,7 +263,7 @@ answer=42
 
 ### 考点 3：第 3 题
 
-- **题目**：在 `Swift 并发与 async/await` 里，与 `async` 有关的说法中，哪一项最符合理解 async/await、Task、Actor、取消和 Sendable。？（Swift 并发与 async/await·Swift 第 3 题）
+- **题目**：在 `Swift 并发与 async/await` 里，与 `async` 有关的说法中，哪一项最符合理解 async/await、Task、Actor、取消和 Sendable？（Swift 并发与 async/await·Swift 第 3 题）
 - **正确项**：取消是协作式的，长任务要在关键点检查取消并释放资源。
 - **判断依据**：按《Swift 并发与 async/await》的正文口径，本题正确项是「取消是协作式的，长任务要在关键点检查取消并释放资源。」。术语「async」在本课里的界定是标记异步函数或异步块，使内部可以使用 await 而不阻塞调用线程，题干问的就是这一条。常见错法是不检查任务取消，其后果是页面退出后任务仍在运行。正确做法是在关键点检查取消并向下传播。
 

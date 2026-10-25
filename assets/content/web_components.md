@@ -476,7 +476,7 @@ customElements.define("lesson-card", LessonCard);
 
 ### 考点 6：第 6 题
 
-- **题目**：`Web Components 实战` 的示例代码服务于“自定义元素生命周期、Shadow DOM 隔离与事件穿透。”。哪一条判断是正确的？
+- **题目**：`Web Components 实战` 的示例代码服务于“自定义元素生命周期、Shadow DOM 隔离与事件穿透。”哪一条判断是正确的？
 - **正确项**：包含连字符
 - **判断依据**：本题正确项是「包含连字符」。术语 Web Components（Web Components 实战）：浏览器原生提供的可复用自定义元素标准集合，本题取「包含连字符」这条。易错点是事件不设 `composed: true`，会造成跨 Shadow 边界收不到，改法是明确是否需要穿透。
 

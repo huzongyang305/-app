@@ -342,7 +342,7 @@ C++ 并发、原子操作与内存序（线程安全、原子操作）
 
 ### 考点 2
 
-**题目**：在 `C++ Concepts 与 Ranges` 里，与 `Concepts` 有关的说法中，哪一项最符合用 Concepts 约束模板，用 Ranges 组合惰性数据管道。？
+**题目**：在 `C++ Concepts 与 Ranges` 里，与 `Concepts` 有关的说法中，哪一项最符合用 Concepts 约束模板，用 Ranges 组合惰性数据管道？
 
 **答案**：Ranges 用 view 组合过滤、变换和截断，通常是惰性求值。
 
@@ -350,7 +350,7 @@ C++ 并发、原子操作与内存序（线程安全、原子操作）
 
 ### 考点 3
 
-**题目**：在 `C++ Concepts 与 Ranges` 里，与 `Concepts` 有关的说法中，哪一项最符合用 Concepts 约束模板，用 Ranges 组合惰性数据管道。？（C++ Concepts 与 Ranges·C++ 第 3 题）
+**题目**：在 `C++ Concepts 与 Ranges` 里，与 `Concepts` 有关的说法中，哪一项最符合用 Concepts 约束模板，用 Ranges 组合惰性数据管道？（C++ Concepts 与 Ranges·C++ 第 3 题）
 
 **答案**：惰性 view 要注意底层容器生命周期和重复遍历成本。
 

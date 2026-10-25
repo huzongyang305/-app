@@ -398,7 +398,7 @@ D. guard 不能解包可选值
 
 ### 考点 6
 
-题目：`Swift 与 iOS 开发` 的示例代码服务于“可选类型、值类型、ARC 与 SwiftUI 状态。”。哪一条判断是正确的？
+题目：`Swift 与 iOS 开发` 的示例代码服务于“可选类型、值类型、ARC 与 SwiftUI 状态。”哪一条判断是正确的？
 A. if let 或 guard let
 B. as! 转换
 C. 强制解包 !

@@ -372,7 +372,7 @@ fun main() {
 
 ### 考点 1：第 1 题
 
-- **题目**：在 `Kotlin Android 架构` 里，与 `Android` 有关的说法中，哪一项最符合用 ViewModel、Repository、生命周期和依赖注入组织 Android 应用。？
+- **题目**：在 `Kotlin Android 架构` 里，与 `Android` 有关的说法中，哪一项最符合用 ViewModel、Repository、生命周期和依赖注入组织 Android 应用？
 - **正确项**：UI 层只负责渲染和事件，业务状态放在 ViewModel，数据访问放在 Repository。
 - **判断依据**：本题正确项是「UI 层只负责渲染和事件，业务状态放在 ViewModel，数据访问放在 Repository」。术语 Android（Kotlin Android 架构）：谷歌的移动操作系统：应用以 Activity、Service 等组件运行在 ART 上，权限与生命周期由系统管理，本题取「UI 层只负责渲染和事件，业务状态放在 ViewModel，数据访问放在 Repository」这条。易错点是业务逻辑堆在界面组件里，会造成难测试，生命周期问题多，改法是拆分视图模型与数据层。
 
@@ -384,7 +384,7 @@ fun main() {
 
 ### 考点 3：第 3 题
 
-- **题目**：在 `Kotlin Android 架构` 里，与 `Android` 有关的说法中，哪一项最符合用 ViewModel、Repository、生命周期和依赖注入组织 Android 应用。？（Kotlin Android 架构·Kotlin 第 3 题）
+- **题目**：在 `Kotlin Android 架构` 里，与 `Android` 有关的说法中，哪一项最符合用 ViewModel、Repository、生命周期和依赖注入组织 Android 应用？（Kotlin Android 架构·Kotlin 第 3 题）
 - **正确项**：依赖注入、协程作用域和生命周期必须匹配，避免泄漏和重复请求。
 - **判断依据**：本题正确项是「依赖注入、协程作用域和生命周期必须匹配，避免泄漏和重复请求」。术语 Android（Kotlin Android 架构）：谷歌的移动操作系统：应用以 Activity、Service 等组件运行在 ART 上，权限与生命周期由系统管理，本题取「依赖注入、协程作用域和生命周期必须匹配，避免泄漏和重复请求」这条。易错点是配置变更后状态丢失，会造成旋转屏幕后界面重置，改法是把状态放进视图模型，必要时使用保存状态。
 
@@ -402,7 +402,7 @@ fun main() {
 
 ### 考点 6：第 6 题
 
-- **题目**：`Kotlin Android 架构` 的示例代码服务于“用 ViewModel、Repository、生命周期和依赖注入组织 Android 应用。”。哪一条判断是正确的？
+- **题目**：`Kotlin Android 架构` 的示例代码服务于“用 ViewModel、Repository、生命周期和依赖注入组织 Android 应用。”哪一条判断是正确的？
 - **正确项**：UI 层只负责渲染和事件，业务状态放在 ViewModel，数据访问放在 Repository。
 - **判断依据**：本题正确项是「UI 层只负责渲染和事件，业务状态放在 ViewModel，数据访问放在 Repository」。术语 Android（Kotlin Android 架构）：谷歌的移动操作系统：应用以 Activity、Service 等组件运行在 ART 上，权限与生命周期由系统管理，本题取「UI 层只负责渲染和事件，业务状态放在 ViewModel，数据访问放在 Repository」这条。易错点是配置变更后状态丢失，会造成旋转屏幕后界面重置，改法是把状态放进视图模型，必要时使用保存状态。
 

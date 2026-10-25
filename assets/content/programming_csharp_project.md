@@ -724,7 +724,7 @@ public sealed class OrdersController : ControllerBase
 
 - **题目**：围绕“实战：Web API + EF Core”中的 实战、ASP.NET Core、EF Core，下列哪两项是本课强调的实践判断？
 - **正确项**：学习 实战 时要同时说明输入、输出和失败路径，不能只看正常流程；验证 ASP.NET Core 时要固定版本并覆盖边界输入，结论才可复现
-- **判断依据**：按《实战：Web API + EF Core》的正文口径，本题要同时选中「学习 实战 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 ASP.NET Core 时要固定版本并覆盖边界输入，结论才可复现」，漏掉任一项都算没答全。《实战：Web API + EF Core》整课的主线是最小 API、DbContext、内存数据库测试与工程实践，本题按这条主线判定。常见错法是Entity 直接返回，其后果是泄露字段。正确做法是用 DTO。干扰项「把 ASP.NET Core 的单次运行结果当成所有版本和规模都成立」与题干「围绕“实战：Web API + EF Core”中的 实战、ASP.」的要求对不上，应排除。
+- **判断依据**：按《实战：Web API + EF Core》的正文口径，本题要同时选中「学习 实战 时要同时说明输入、输出和失败路径，不能只看正常流程」、「验证 ASP.NET Core 时要固定版本并覆盖边界输入，结论才可复现」，漏掉任一项都算没答全。《实战：Web API + EF Core》整课的主线是最小 API、DbContext、内存数据库测试与工程实践，本题按这条主线判定。常见错法是Entity 直接返回，其后果是泄露字段。正确做法是用 DTO。干扰项「把 ASP.NET Core 的单次运行结果当成所有版本和规模都成立」与题干「围绕实战：Web API + EF Core中的 实战、ASP.NET Core、EF Core，下列哪两项是本课强调的实践判断？」的要求对不上，应排除。
 
 ### 考点 5：第 5 题
 

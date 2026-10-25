@@ -467,7 +467,7 @@ print(summary(audit_nodes(nodes)))
 
 ### 考点 6：第 6 题
 
-- **题目**：`可访问性与 ARIA 实战` 的示例代码服务于“原生优先原则、常用 ARIA 属性与键盘焦点管理。”。哪一条判断是正确的？？ A. 用 a 标签但不写 href B. 用 div 加 onclick C. 用 span 加 role=button 但不处理键盘 D. 用 button 标签 Ans: D
+- **题目**：`可访问性与 ARIA 实战` 的示例代码服务于“原生优先原则、常用 ARIA 属性与键盘焦点管理。”哪一条判断是正确的？ A. 用 a 标签但不写 href B. 用 div 加 onclick C. 用 span 加 role=button 但不处理键盘 D. 用 button 标签 Ans: D
 - **正确项**：用 button 标签
 - **判断依据**：这道题落在术语「可访问性」上：让不同能力、设备和辅助技术的用户都能理解并操作界面。复习时把「可访问性」的定义、适用边界和一个反例一起说清楚，再回到「核心概念定义」核对原文。
 

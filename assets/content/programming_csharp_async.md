@@ -62,8 +62,8 @@
 ### 选择与边界
 
 - 使用 `async` 时，先满足它的定义：`async` 方法返回 `Task` / `Task<T>`；`await` 在等待期间释放线程，因此特别适合 IO 密集场景；易错：异常无法捕获，进程崩溃；正确做法是除事件处理器外都用 `Task`。
-- 使用 `CancellationTokenSource` 时，先满足它的定义：用 `CancellationTokenSource` 实现超时：；网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。
-- 使用 `IDisposable` 时，先满足它的定义：实现 `IDisposable` 的对象用 `using` 自动释放：；越界、悬垂引用与释放顺序会破坏结论，必须在边界输入下复验。
+- 使用 `CancellationTokenSource` 时，先满足它的定义：用 `CancellationTokenSource` 实现超时；网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。
+- 使用 `IDisposable` 时，先满足它的定义：实现 `IDisposable` 的对象用 `using` 自动释放；越界、悬垂引用与释放顺序会破坏结论，必须在边界输入下复验。
 - 使用 `配置等待` 时，先满足它的定义：决定 await 恢复时是否需要回到原来的同步上下文，库代码里通常传 false 以避免死锁；共享状态与调度顺序会改变结论，单线程或串行测试通过不等于并发下成立。
 - 使用 `取消` 时，先满足它的定义：取消要一路传下去：只在外层判断 token.IsCancellationRequested 而不传给底层调用，是无效取消；易错：取消失效；正确做法是参数一路传到底。
 
@@ -437,7 +437,7 @@ static async Task Main()
 
 **参考答案**：`async` 方法返回 `Task` / `Task<T>`；`await` 在等待期间释放线程，因此特别适合 IO 密集场景。
 
-`CancellationTokenSource` 的定位是：用 `CancellationTokenSource` 实现超时：；两者的差别要从适用对象与失败模式上说明。
+`CancellationTokenSource` 的定位是：用 `CancellationTokenSource` 实现超时；两者的差别要从适用对象与失败模式上说明。
 
 ### 自测 2（排错）
 

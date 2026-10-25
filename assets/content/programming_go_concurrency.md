@@ -27,8 +27,8 @@
 
 | 术语 | 操作性定义 | 常见边界与风险 |
 | --- | --- | --- |
-| context.WithTimeout | 超时与取消**：context.WithTimeout 传递取消信号，所有阻塞操作都要监听 ctx.Done()。 | 网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。 |
-| sync.WaitGroup | 等待一组任务**：sync.WaitGroup 的 Add/Done/Wait。 | 易错：`sync.WaitGroup`；正确做法是计数归零即完成。 |
+| context.WithTimeout | 超时与取消：context.WithTimeout 传递取消信号，所有阻塞操作都要监听 ctx.Done()。 | 网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。 |
+| sync.WaitGroup | 等待一组任务：sync.WaitGroup 的 Add/Done/Wait。 | 易错：`sync.WaitGroup`；正确做法是计数归零即完成。 |
 | Go | 由 Google 设计的静态编译语言，强调简单语法、并发和部署便利。 | 易错：所有 goroutine 用同一个值；正确做法是Go 1.22 已修复，旧版本要 `v := v`。 |
 | 数据竞争 | 多个 goroutine 无同步地读写同一变量，用 -race 检测，靠互斥锁或 channel 消除。 | 共享状态与调度顺序会改变结论，单线程或串行测试通过不等于并发下成立。 |
 
@@ -78,8 +78,8 @@ Go 的并发哲学：**不要通过共享内存来通信，而要通过通信来
 
 ### 选择与边界
 
-- 使用 `context.WithTimeout` 时，先满足它的定义：超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`；网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。
-- 使用 `sync.WaitGroup` 时，先满足它的定义：等待一组任务**：`sync.WaitGroup` 的 Add/Done/Wait；易错：`sync.WaitGroup`；正确做法是计数归零即完成。
+- 使用 `context.WithTimeout` 时，先满足它的定义：超时与取消：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`；网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。
+- 使用 `sync.WaitGroup` 时，先满足它的定义：等待一组任务：`sync.WaitGroup` 的 Add/Done/Wait；易错：`sync.WaitGroup`；正确做法是计数归零即完成。
 - 使用 `Go` 时，先满足它的定义：由 Google 设计的静态编译语言，强调简单语法、并发和部署便利；易错：所有 goroutine 用同一个值；正确做法是Go 1.22 已修复，旧版本要 `v := v`。
 - 使用 `数据竞争` 时，先满足它的定义：多个 goroutine 无同步地读写同一变量，用 -race 检测，靠互斥锁或 channel 消除；共享状态与调度顺序会改变结论，单线程或串行测试通过不等于并发下成立。
 
@@ -262,9 +262,9 @@ Go 的并发口号是「**不要通过共享内存来通信，而要通过通信
 
 不看正文，写出 `context.WithTimeout` 的操作性定义，并说明它与 `sync.WaitGroup` 的区别。
 
-**参考答案**：超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`。
+**参考答案**：超时与取消：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`。
 
-`sync.WaitGroup` 的定位是：等待一组任务**：`sync.WaitGroup` 的 Add/Done/Wait；两者的差别要从适用对象与失败模式上说明。
+`sync.WaitGroup` 的定位是：等待一组任务：`sync.WaitGroup` 的 Add/Done/Wait；两者的差别要从适用对象与失败模式上说明。
 
 ### 自测 2（排错）
 
@@ -282,7 +282,7 @@ Go 的并发口号是「**不要通过共享内存来通信，而要通过通信
 
 阅读本课开头的 `go` 示例，说明它体现了`context.WithTimeout` 的哪一条性质，并指出改动哪个输入会让这条性质不再成立。
 
-**参考答案**：`context.WithTimeout` 的定义是 超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`，示例正是在实现这条定义。改动与 `context.WithTimeout` 有关的一个输入后，如果结果不再符合 `Go 并发：goroutine、channel 与 context` 的正文描述，就说明该性质只在当前前提成立。
+**参考答案**：`context.WithTimeout` 的定义是 超时与取消：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`，示例正是在实现这条定义。改动与 `context.WithTimeout` 有关的一个输入后，如果结果不再符合 `Go 并发：goroutine、channel 与 context` 的正文描述，就说明该性质只在当前前提成立。
 
 ### 自测 5（迁移）
 
@@ -312,7 +312,7 @@ Go 的并发口号是「**不要通过共享内存来通信，而要通过通信
 
 不看正文，按输入、转换、输出、验证四段重建 `context.WithTimeout` → `sync.WaitGroup` → `Go` → `数据竞争` 的作用链。
 
-**参考答案**：起点是 `context.WithTimeout` 的定义 超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`；中间每一步都保留可观察状态；终点由 `数据竞争` 检查，失败时回到错误表定位第一个偏离定义的步骤。
+**参考答案**：起点是 `context.WithTimeout` 的定义 超时与取消：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`；中间每一步都保留可观察状态；终点由 `数据竞争` 检查，失败时回到错误表定位第一个偏离定义的步骤。
 
 ### 自测 10（综合排错）
 
@@ -336,8 +336,8 @@ Go 的并发口号是「**不要通过共享内存来通信，而要通过通信
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| `context.WithTimeout` | 超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`。 |
-| `sync.WaitGroup` | 等待一组任务**：`sync.WaitGroup` 的 Add/Done/Wait。 |
+| `context.WithTimeout` | 超时与取消：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`。 |
+| `sync.WaitGroup` | 等待一组任务：`sync.WaitGroup` 的 Add/Done/Wait。 |
 | `Go` | 由 Google 设计的静态编译语言，强调简单语法、并发和部署便利。 |
 | `数据竞争` | 多个 goroutine 无同步地读写同一变量，用 -race 检测，靠互斥锁或 channel 消除。 |
 
@@ -351,13 +351,13 @@ Go 的并发口号是「**不要通过共享内存来通信，而要通过通信
 
 - **题目**：向已关闭的 channel 发送数据会？
 - **正确项**：panic
-- **判断依据**：本题正确项是「panic」。术语 context.WithTimeout（Go 并发：goroutine、channel 与 context）：超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`，本题取「panic」这条。易错点是传递数据、串起流水线，改法是数据流向清晰。
+- **判断依据**：本题正确项是「panic」。术语 context.WithTimeout（Go 并发：goroutine、channel 与 context）：超时与取消：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`，本题取「panic」这条。易错点是传递数据、串起流水线，改法是数据流向清晰。
 
 ### 考点 2：第 2 题
 
 - **题目**：`Go 并发：goroutine、channel 与 context` 的示例代码用于验证 `context.WithTimeout`，其背景是channel 通信、worker pool、context 取消与竞态检测。代码的真实内容是下面哪一项？
 - **正确项**：调用了 `wg.Done()`
-- **判断依据**：本题正确项是「调用了 `wg.Done()`」。术语 context.WithTimeout（Go 并发：goroutine、channel 与 context）：超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`，本题取「调用了 `wg.Done()`」这条。易错点是保护一个计数器或缓存，改法是比开 channel 更直接。本题干扰项「调用了 `range()`」不成立：展示代码里找不到 `range()`。
+- **判断依据**：本题正确项是「调用了 `wg.Done()`」。术语 context.WithTimeout（Go 并发：goroutine、channel 与 context）：超时与取消：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`，本题取「调用了 `wg.Done()`」这条。易错点是保护一个计数器或缓存，改法是比开 channel 更直接。本题干扰项「调用了 `range()`」不成立：展示代码里找不到 `range()`。
 
 ### 考点 3：第 3 题
 
@@ -369,7 +369,7 @@ Go 的并发口号是「**不要通过共享内存来通信，而要通过通信
 
 - **题目**：向无缓冲 channel 发送数据会阻塞，直到？
 - **正确项**：有接收方准备好接收
-- **判断依据**：本题正确项是「有接收方准备好接收」。术语 context.WithTimeout（Go 并发：goroutine、channel 与 context）：超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`，本题取「有接收方准备好接收」这条。易错点是取消、超时、传请求级数据，改法是标准做法，能层层传递。
+- **判断依据**：本题正确项是「有接收方准备好接收」。术语 context.WithTimeout（Go 并发：goroutine、channel 与 context）：超时与取消：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`，本题取「有接收方准备好接收」这条。易错点是取消、超时、传请求级数据，改法是标准做法，能层层传递。
 
 ### 考点 5：第 5 题
 
@@ -379,18 +379,18 @@ Go 的并发口号是「**不要通过共享内存来通信，而要通过通信
 
 ### 考点 6：第 6 题
 
-- **题目**：填空：补齐下面这段术语说明中的空缺。课程 `channel 通信、worker pool、context 取消与竞态检测。`，这段说明是：等待一组任务**：``____`` 的 Add/Done/Wait。空缺处应填哪个术语？
+- **题目**：填空：补齐下面这段术语说明中的空缺。课程 `channel 通信、worker pool、context 取消与竞态检测。`，这段说明是：等待一组任务：``____`` 的 Add/Done/Wait。空缺处应填哪个术语？
 - **正确项**：sync.WaitGroup
-- **判断依据**：《Go 并发：goroutine、channel 与 context》这题的填空口径是「sync.WaitGroup」或「sync.waitgroup」，正文写法与其中任一项一致即可。术语「sync.WaitGroup」在本课里的界定是等待一组任务**：`sync.WaitGroup` 的 Add/Done/Wait，题干问的就是这一条。常见错法是传递数据、串起流水线，其后果是channel。正确做法是数据流向清晰。
+- **判断依据**：《Go 并发：goroutine、channel 与 context》这题的填空口径是「sync.WaitGroup」或「sync.waitgroup」，正文写法与其中任一项一致即可。术语「sync.WaitGroup」在本课里的界定是等待一组任务：`sync.WaitGroup` 的 Add/Done/Wait，题干问的就是这一条。常见错法是传递数据、串起流水线，其后果是channel。正确做法是数据流向清晰。
 
 ### 考点 7：`context.WithTimeout`
 
-- **要点**：超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`。
+- **要点**：超时与取消：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`。
 - **context.WithTimeout 的边界**：网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。
 
 ### 考点 8：`sync.WaitGroup`
 
-- **要点**：等待一组任务**：`sync.WaitGroup` 的 Add/Done/Wait。
+- **要点**：等待一组任务：`sync.WaitGroup` 的 Add/Done/Wait。
 - **sync.WaitGroup 的边界**：易错：`sync.WaitGroup`；正确做法是计数归零即完成。
 
 ### 考点 9：`Go`
@@ -415,7 +415,7 @@ Go 的并发口号是「**不要通过共享内存来通信，而要通过通信
 
 ### 考点 13：综合辨析——`context.WithTimeout` 与 `数据竞争`
 
-- **辨析点**：`context.WithTimeout` 的定义是 超时与取消**：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`；`数据竞争` 的定义是 多个 goroutine 无同步地读写同一变量，用 -race 检测，靠互斥锁或 channel 消除。
+- **辨析点**：`context.WithTimeout` 的定义是 超时与取消：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`；`数据竞争` 的定义是 多个 goroutine 无同步地读写同一变量，用 -race 检测，靠互斥锁或 channel 消除。
 - **答题要求**：面对 `Go 并发：goroutine、channel 与 context` 的题目，先判断描述的是 `context.WithTimeout` 还是 `数据竞争`，再归到对应定义，最后写出一个会让该定义失效的边界输入。
 
 ### 考点 14：排错评分点

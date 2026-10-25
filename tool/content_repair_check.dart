@@ -54,6 +54,89 @@ const List<String> _doubledJoinMarkers = <String>[
   '整数有有符号',
 ];
 
+/// 第 43 波收掉的四类标点与成对符号残留，在这里钉成硬指标，防止生成端再写出来。
+/// 只扫正文与题库的可读文本，code 字段里的 `int **pp` 和 `。。` 都可能是真代码。
+final List<RegExp> _punctuationCollisions = <RegExp>[
+  RegExp(r'([。；，！？])\1+'), // 同一标点连排：「。。」「，，」
+  RegExp(r'([。！？])”([。！？])'), // 引号里已点句末标点，引号外又点一次
+  RegExp(r'。？|：；'),
+];
+
+/// 排序题的判断依据只写了一步，等于把「A → B → C」抄丢了后两截。
+final RegExp _singleStepOrderChain = RegExp(r'本题顺序是「[^」\n]*」。');
+
+/// 行内代码用等长空格占位，下标仍然对得上：标点指标不该被代码片段触发。
+String _maskInline(String text) => text.replaceAllMapped(
+  RegExp(r'``[^`\n]*``|`[^`\n]*`'),
+  (match) => ' ' * match[0]!.length,
+);
+
+/// 跳过围栏代码块与行内代码后的正文行。
+List<String> _proseLines(String markdown) {
+  final out = <String>[];
+  var inFence = false;
+  for (final line in markdown.split('\n')) {
+    final trimmed = line.trimLeft();
+    if (trimmed.startsWith('```') || trimmed.startsWith('~~~')) {
+      inFence = !inFence;
+      continue;
+    }
+    if (inFence) continue;
+    out.add(_maskInline(line));
+  }
+  return out;
+}
+
+int _collisionCount(List<String> texts) {
+  var total = 0;
+  for (final pattern in _punctuationCollisions) {
+    for (final text in texts) {
+      total += pattern.allMatches(text).length;
+    }
+  }
+  return total;
+}
+
+/// 一行里 `**` 个数为奇数，且最后一个后接冒号或汉字时，那是个只剩半个的粗体闭合；
+/// 整行只有一个 ** 且它在行首时，那是「**答案：C → D → A → B」这类忘了收尾的开场。
+int _orphanBoldCount(List<String> prose) {
+  var count = 0;
+  for (final masked in prose) {
+    final marks = RegExp(r'\*\*')
+        .allMatches(masked)
+        .map((match) => match.start)
+        .toList();
+    if (marks.isEmpty || marks.length.isEven) continue;
+    if (marks.length == 1 && marks.first == 0) {
+      final trimmed = masked.trimRight();
+      if (!RegExp(r'^#').hasMatch(masked.trimLeft()) &&
+          !trimmed.endsWith('**')) {
+        count++;
+      }
+      continue;
+    }
+    final at = marks.last;
+    final before = at > 0 ? masked[at - 1] : '';
+    final after = at + 2 < masked.length ? masked[at + 2] : '';
+    if (before == '*' || after == '*' || before.isEmpty) continue;
+    if (RegExp(r'\s').hasMatch(before)) continue;
+    if (!RegExp(r'[：\u4e00-\u9fa5]').hasMatch(after)) continue;
+    count++;
+  }
+  return count;
+}
+
+/// 题目里要扫的可见文本：题干、解析、选项；code 与 language 不进来。
+List<String> _visibleQuizText(Map<String, dynamic> question) {
+  return <String>[
+    '${question['question'] ?? ''}',
+    '${question['explanation'] ?? ''}',
+    for (final option
+        in (question['options'] as List<dynamic>? ?? const <dynamic>[]))
+      '$option',
+  ];
+}
+
 void main(List<String> args) {
   final rootIndex = args.indexOf('--root');
   final root = rootIndex >= 0 && rootIndex + 1 < args.length
@@ -80,6 +163,9 @@ void main(List<String> args) {
   var uncovered = <String>[];
   var internalIds = <String>[];
   var templateHits = <String>[];
+  var punctuationHits = <String>[];
+  var singleStepChains = <String>[];
+  var orphanBold = <String>[];
   var doubledJoins = <String>[
     for (final marker in _doubledJoinMarkers)
       if (manifestText.contains(marker)) 'manifest($marker)',
@@ -92,8 +178,7 @@ void main(List<String> args) {
     for (final rawLesson in (category['lessons'] as List<dynamic>)) {
       final lesson = (rawLesson as Map).cast<String, dynamic>();
       final id = '${lesson['id']}';
-      final title =
-          '${(lesson['title'] as Map?)?['zh'] ?? id}'.trim();
+      final title = '${(lesson['title'] as Map?)?['zh'] ?? id}'.trim();
       final file = File('$root/${lesson['file']}');
       if (!file.existsSync()) {
         stderr.writeln('缺少正文：${file.path}');
@@ -147,8 +232,10 @@ void main(List<String> args) {
         }
         if (!hasBody) emptySections++;
       }
-      final checklist =
-          RegExp(r'^- \[ \] ', multiLine: true).allMatches(markdown).length;
+      final checklist = RegExp(
+        r'^- \[ \] ',
+        multiLine: true,
+      ).allMatches(markdown).length;
       if (checklist < 3) thinChecklist++;
       if (id.contains('project') ||
           title.contains('实战') ||
@@ -163,6 +250,15 @@ void main(List<String> args) {
       for (final marker in _doubledJoinMarkers) {
         if (markdown.contains(marker)) doubledJoins.add('$id($marker)');
       }
+      final prose = _proseLines(markdown);
+      final mdCollisions = _collisionCount(prose);
+      if (mdCollisions > 0) punctuationHits.add('$id(md:$mdCollisions)');
+      final mdChains = prose
+          .where((line) => _singleStepOrderChain.hasMatch(line))
+          .length;
+      if (mdChains > 0) singleStepChains.add('$id(md:$mdChains)');
+      final mdOrphans = _orphanBoldCount(prose);
+      if (mdOrphans > 0) orphanBold.add('$id(md:$mdOrphans)');
 
       final quiz = (lesson['quiz'] as List<dynamic>? ?? const <dynamic>[])
           .map((raw) => (raw as Map).cast<String, dynamic>())
@@ -174,6 +270,21 @@ void main(List<String> args) {
         final blob = jsonEncode(question);
         if (_internalQuestionId.hasMatch(blob)) {
           internalIds.add('$id#${index + 1}(quiz)');
+        }
+        final visible = _visibleQuizText(question).map(_maskInline).toList();
+        final quizCollisions = _collisionCount(visible);
+        if (quizCollisions > 0) {
+          punctuationHits.add('$id#${index + 1}(quiz:$quizCollisions)');
+        }
+        final quizChains = visible
+            .where((text) => _singleStepOrderChain.hasMatch(text))
+            .length;
+        if (quizChains > 0) {
+          singleStepChains.add('$id#${index + 1}(quiz:$quizChains)');
+        }
+        final quizOrphans = _orphanBoldCount(visible);
+        if (quizOrphans > 0) {
+          orphanBold.add('$id#${index + 1}(quiz:$quizOrphans)');
         }
         final stem = _squeeze('${question['question'] ?? ''}');
         if (stem.isEmpty) continue;
@@ -204,9 +315,21 @@ void main(List<String> args) {
     ..writeln('内部题号残留                ${internalIds.length}')
     ..writeln('模板句残留                  ${templateHits.length}')
     ..writeln('拼接重复字残留              ${doubledJoins.length}')
+    ..writeln('标点碰撞残留                ${punctuationHits.length}')
+    ..writeln('单步顺序链残留              ${singleStepChains.length}')
+    ..writeln('孤儿粗体闭合残留            ${orphanBold.length}')
     ..writeln('题干重复                    ${duplicateStems.length}');
   for (final sample in doubledJoins.take(5)) {
     stdout.writeln('  重复字：$sample');
+  }
+  for (final sample in punctuationHits.take(5)) {
+    stdout.writeln('  标点碰撞：$sample');
+  }
+  for (final sample in singleStepChains.take(5)) {
+    stdout.writeln('  单步链：$sample');
+  }
+  for (final sample in orphanBold.take(5)) {
+    stdout.writeln('  孤儿粗体：$sample');
   }
   for (final sample in uncovered.take(5)) {
     stdout.writeln('  未覆盖：$sample');
@@ -215,7 +338,8 @@ void main(List<String> args) {
     stdout.writeln('  重复：$sample');
   }
 
-  final hardFailures = noCode +
+  final hardFailures =
+      noCode +
       noImage +
       emptySections +
       thinChecklist +
@@ -226,6 +350,9 @@ void main(List<String> args) {
       internalIds.length +
       templateHits.length +
       doubledJoins.length +
+      punctuationHits.length +
+      singleStepChains.length +
+      orphanBold.length +
       duplicateStems.length;
   if (hardFailures > 0) {
     stderr.writeln('自检失败：$hardFailures 项硬失败');

@@ -27,7 +27,7 @@
 
 | 术语 | 操作性定义 | 常见边界与风险 |
 | --- | --- | --- |
-| execution_timeout | 超时与重试显式配置**：execution_timeout、retries、retry_delay 不要依赖默认值。 | 易错：卡死任务长期占用；正确做法是配置 `execution_timeout`。 |
+| execution_timeout | 超时与重试显式配置：execution_timeout、retries、retry_delay 不要依赖默认值。 | 易错：卡死任务长期占用；正确做法是配置 `execution_timeout`。 |
 | DAG | 有向无环图，用节点和依赖边描述任务执行顺序。 | 易错：解析慢、难测试；正确做法是逻辑抽到模块并写单测。 |
 | 幂等 | 同一请求执行一次或多次产生相同结果，使重试不会重复创建或扣减。 | 易错：重跑产生重复数据；正确做法是覆盖分区或用 upsert。 |
 | 数据质量 | 数据在完整性、准确性、唯一性、及时性和一致性上的满足程度。 | 易错：数据错但任务成功；正确做法是加数据质量校验任务。 |
@@ -135,7 +135,7 @@ with DAG(
 
 ### 选择与边界
 
-- 使用 `execution_timeout` 时，先满足它的定义：超时与重试显式配置**：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值；易错：卡死任务长期占用；正确做法是配置 `execution_timeout`。
+- 使用 `execution_timeout` 时，先满足它的定义：超时与重试显式配置：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值；易错：卡死任务长期占用；正确做法是配置 `execution_timeout`。
 - 使用 `DAG` 时，先满足它的定义：有向无环图，用节点和依赖边描述任务执行顺序；易错：解析慢、难测试；正确做法是逻辑抽到模块并写单测。
 - 使用 `幂等` 时，先满足它的定义：同一请求执行一次或多次产生相同结果，使重试不会重复创建或扣减；易错：重跑产生重复数据；正确做法是覆盖分区或用 upsert。
 - 使用 `数据质量` 时，先满足它的定义：数据在完整性、准确性、唯一性、及时性和一致性上的满足程度；易错：数据错但任务成功；正确做法是加数据质量校验任务。
@@ -287,7 +287,7 @@ WHERE dt = '{{ ds }}';
 
 不看正文，写出 `execution_timeout` 的操作性定义，并说明它与 `DAG` 的区别。
 
-**参考答案**：超时与重试显式配置**：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值。
+**参考答案**：超时与重试显式配置：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值。
 
 `DAG` 的定位是：有向无环图，用节点和依赖边描述任务执行顺序；两者的差别要从适用对象与失败模式上说明。
 
@@ -307,7 +307,7 @@ WHERE dt = '{{ ds }}';
 
 阅读本课开头的 `python` 示例，说明它体现了`execution_timeout` 的哪一条性质，并指出改动哪个输入会让这条性质不再成立。
 
-**参考答案**：`execution_timeout` 的定义是 超时与重试显式配置**：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值，示例正是在实现这条定义。改动与 `execution_timeout` 有关的一个输入后，如果结果不再符合 `Airflow 调度与数据质量` 的正文描述，就说明该性质只在当前前提成立。
+**参考答案**：`execution_timeout` 的定义是 超时与重试显式配置：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值，示例正是在实现这条定义。改动与 `execution_timeout` 有关的一个输入后，如果结果不再符合 `Airflow 调度与数据质量` 的正文描述，就说明该性质只在当前前提成立。
 
 ### 自测 5（迁移）
 
@@ -319,7 +319,7 @@ WHERE dt = '{{ ds }}';
 
 用一个表格对比 `execution_timeout` 与 `DAG`：各写一行适用场景、一行失败表现。
 
-**参考答案**：`execution_timeout` 的定义是超时与重试显式配置**：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值；`DAG` 的定义是有向无环图，用节点和依赖边描述任务执行顺序。两者的失败表现分别对应本课错误表里与本术语相关的行。
+**参考答案**：`execution_timeout` 的定义是超时与重试显式配置：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值；`DAG` 的定义是有向无环图，用节点和依赖边描述任务执行顺序。两者的失败表现分别对应本课错误表里与本术语相关的行。
 
 ### 自测 7（排错顺序）
 
@@ -337,7 +337,7 @@ WHERE dt = '{{ ds }}';
 
 不看正文，按输入、转换、输出、验证四段重建 `execution_timeout` → `DAG` → `幂等` → `数据质量` 的作用链。
 
-**参考答案**：起点是 `execution_timeout` 的定义 超时与重试显式配置**：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值；中间每一步都保留可观察状态；终点由 `数据质量` 检查，失败时回到错误表定位第一个偏离定义的步骤。
+**参考答案**：起点是 `execution_timeout` 的定义 超时与重试显式配置：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值；中间每一步都保留可观察状态；终点由 `数据质量` 检查，失败时回到错误表定位第一个偏离定义的步骤。
 
 ### 自测 10（综合排错）
 
@@ -355,12 +355,12 @@ WHERE dt = '{{ ds }}';
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| `execution_timeout` | 超时与重试显式配置**：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值。 |
+| `execution_timeout` | 超时与重试显式配置：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值。 |
 | `DAG` | 有向无环图，用节点和依赖边描述任务执行顺序。 |
 | `幂等` | 同一请求执行一次或多次产生相同结果，使重试不会重复创建或扣减。 |
 | `数据质量` | 数据在完整性、准确性、唯一性、及时性和一致性上的满足程度。 |
 
-**术语关系**：`execution_timeout`（超时与重试显式配置**：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值） → `DAG`（有向无环图） → `幂等`（同一请求执行一次或多次产生相同结果） → `数据质量`（数据在完整性、准确性、唯一性、及时性和一致性上的满足程度）。
+**术语关系**：`execution_timeout`（超时与重试显式配置：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值） → `DAG`（有向无环图） → `幂等`（同一请求执行一次或多次产生相同结果） → `数据质量`（数据在完整性、准确性、唯一性、及时性和一致性上的满足程度）。
 
 ## 考点精讲
 
@@ -376,35 +376,35 @@ WHERE dt = '{{ ds }}';
 
 - **题目**：Sensor 应使用哪种模式避免占满 worker？
 - **正确项**：reschedule
-- **判断依据**：本题正确项是「reschedule」。术语 execution_timeout（Airflow 调度与数据质量）：超时与重试显式配置**：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值，本题取「reschedule」这条。易错点是任务不幂等，会造成重跑产生重复数据，改法是覆盖分区或用 upsert。
+- **判断依据**：本题正确项是「reschedule」。术语 execution_timeout（Airflow 调度与数据质量）：超时与重试显式配置：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值，本题取「reschedule」这条。易错点是任务不幂等，会造成重跑产生重复数据，改法是覆盖分区或用 upsert。
 
 ### 考点 3：第 3 题
 
 - **题目**：下面这段 `sql` 代码来自 `Airflow 调度与数据质量`。课程主线是DAG/幂等/backfill 与六项数据质量检查。代码与 `execution_timeout` 有关。哪一项是代码里真实出现的内容？
 - **正确项**：调用了 `DAG()`
-- **判断依据**：本题正确项是「调用了 `DAG()`」。术语 execution_timeout（Airflow 调度与数据质量）：超时与重试显式配置**：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值，本题取「调用了 `DAG()`」这条。易错点是Sensor 用默认 poke 模式，会造成占满 worker，改法是改 `mode="reschedule"`。本题干扰项「调用了 `log()`」不成立：展示代码里找不到 `log()`。
+- **判断依据**：本题正确项是「调用了 `DAG()`」。术语 execution_timeout（Airflow 调度与数据质量）：超时与重试显式配置：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值，本题取「调用了 `DAG()`」这条。易错点是Sensor 用默认 poke 模式，会造成占满 worker，改法是改 `mode="reschedule"`。本题干扰项「调用了 `log()`」不成立：展示代码里找不到 `log()`。
 
 ### 考点 4：第 4 题
 
 - **题目**：Airflow 的 catchup 参数控制什么？
 - **正确项**：是否自动补跑开始日期到当前之间遗漏的调度周期
-- **判断依据**：本题正确项是「是否自动补跑开始日期到当前之间遗漏的调度周期」。术语 execution_timeout（Airflow 调度与数据质量）：超时与重试显式配置**：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值，本题取「是否自动补跑开始日期到当前之间遗漏的调度周期」这条。易错点是不设 `max_active_runs`，会造成多轮运行互相覆盖，改法是限制并发运行数。
+- **判断依据**：本题正确项是「是否自动补跑开始日期到当前之间遗漏的调度周期」。术语 execution_timeout（Airflow 调度与数据质量）：超时与重试显式配置：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值，本题取「是否自动补跑开始日期到当前之间遗漏的调度周期」这条。易错点是不设 `max_active_runs`，会造成多轮运行互相覆盖，改法是限制并发运行数。
 
 ### 考点 5：第 5 题
 
 - **题目**：数据新鲜度（freshness）监控的意义是？
 - **正确项**：发现数据未按时更新
-- **判断依据**：本题正确项是「发现数据未按时更新」。术语 execution_timeout（Airflow 调度与数据质量）：超时与重试显式配置**：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值，本题取「发现数据未按时更新」这条。易错点是任务粒度过粗，会造成失败重跑代价大，改法是拆分到合理粒度。
+- **判断依据**：本题正确项是「发现数据未按时更新」。术语 execution_timeout（Airflow 调度与数据质量）：超时与重试显式配置：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值，本题取「发现数据未按时更新」这条。易错点是任务粒度过粗，会造成失败重跑代价大，改法是拆分到合理粒度。
 
 ### 考点 6：第 6 题
 
-- **题目**：填空：补齐下面这段术语说明中的空缺。课程 `DAG/幂等/backfill 与六项数据质量检查。`，这段说明是：超时与重试显式配置**：``____``、`retries`、`retry_delay` 不要依赖默认值。空缺处应填哪个术语？
+- **题目**：填空：补齐下面这段术语说明中的空缺。课程 `DAG/幂等/backfill 与六项数据质量检查。`，这段说明是：超时与重试显式配置：``____``、`retries`、`retry_delay` 不要依赖默认值。空缺处应填哪个术语？
 - **正确项**：execution_timeout
-- **判断依据**：正确项：「execution_timeout」。涉及术语 execution_timeout：超时与重试显式配置**：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值。易错点：用 `datetime.now()` 取分区会造成重跑结果错乱。正确做法：用调度时间变量 `{{ ds }}`。
+- **判断依据**：正确项：「execution_timeout」。涉及术语 execution_timeout：超时与重试显式配置：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值。易错点：用 `datetime.now()` 取分区会造成重跑结果错乱。正确做法：用调度时间变量 `{{ ds }}`。
 
 ### 考点 7：`execution_timeout`
 
-- **要点**：超时与重试显式配置**：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值。
+- **要点**：超时与重试显式配置：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值。
 - **execution_timeout 的边界**：易错：卡死任务长期占用；正确做法是配置 `execution_timeout`。
 
 ### 考点 8：`DAG`
@@ -434,7 +434,7 @@ WHERE dt = '{{ ds }}';
 
 ### 考点 13：综合辨析——`execution_timeout` 与 `数据质量`
 
-- **辨析点**：`execution_timeout` 的定义是 超时与重试显式配置**：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值；`数据质量` 的定义是 数据在完整性、准确性、唯一性、及时性和一致性上的满足程度。
+- **辨析点**：`execution_timeout` 的定义是 超时与重试显式配置：`execution_timeout`、`retries`、`retry_delay` 不要依赖默认值；`数据质量` 的定义是 数据在完整性、准确性、唯一性、及时性和一致性上的满足程度。
 - **答题要求**：面对 `Airflow 调度与数据质量` 的题目，先判断描述的是 `execution_timeout` 还是 `数据质量`，再归到对应定义，最后写出一个会让该定义失效的边界输入。
 
 ### 考点 14：排错评分点

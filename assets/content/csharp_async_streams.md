@@ -366,7 +366,7 @@ await foreach (var value in Countdown(3))
 
 ### 考点 1：第 1 题
 
-- **题目**：在 `C# 异步流与取消` 里，与 `IAsyncEnumerable` 有关的说法中，哪一项最符合理解 IAsyncEnumerable、CancellationToken 和异步资源释放。？
+- **题目**：在 `C# 异步流与取消` 里，与 `IAsyncEnumerable` 有关的说法中，哪一项最符合理解 IAsyncEnumerable、CancellationToken 和异步资源释放？
 - **正确项**：IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果。
 - **判断依据**：本题正确项是「IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果」。术语 IAsyncEnumerable（C# 异步流与取消）：C# 中按需异步产生多个值的流式接口，可配合 await foreach，本题取「IAsyncEnumerable 按需异步产出数据，适合分页、日志流和实时结果」这条。易错点是用 async void 代替 async Task，会造成异常无法被捕获，调用方也无法等待，改法是除事件处理器外一律返回 Task 或 ValueTask。
 
@@ -398,7 +398,7 @@ await foreach (var value in Countdown(3))
 
 - **题目**：下面几项都与 `IAsyncEnumerable` 有关，请按 `C# 异步流与取消` 的正文顺序排列；该课主线是理解 IAsyncEnumerable、CancellationToken 和异步资源释放。
 - **正确项**：核心知识 → 关键流程 → 实践路径 → 常见误区
-- **判断依据**：按《C# 异步流与取消》正文的先后，本题顺序是「核心知识」。术语「IAsyncEnumerable」在本课里的界定是C# 中按需异步产生多个值的流式接口，可配合 await foreach，题干「下面几项都与 `IAsyncEnumerable` 有关，请按 `C」问的就是这一条。常见错法是用 async void 代替 async Task，其后果是异常无法被捕获，调用方也无法等待。正确做法是除事件处理器外一律返回 Task 或 ValueTask。
+- **判断依据**：按《C# 异步流与取消》正文的先后，本题顺序是「核心知识」 → 「关键流程」 → 「实践路径」 → 「常见误区」。术语「IAsyncEnumerable」在本课里的界定是C# 中按需异步产生多个值的流式接口，可配合 await foreach，题干「下面几项都与 `IAsyncEnumerable` 有关，请按 `C# 异步流与取消` 的正文顺序排列；该课主线是理解 IAsyncEnumerable、CancellationToken 和异步资源释放。」问的就是这一条。常见错法是用 async void 代替 async Task，其后果是异常无法被捕获，调用方也无法等待。正确做法是除事件处理器外一律返回 Task 或 ValueTask。
 
 ### 考点 7：`IAsyncEnumerable`
 
