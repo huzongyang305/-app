@@ -1,6 +1,6 @@
 # Angular基础与依赖注入
 
-![Angular基础与依赖注入](images/remaining_network_attacks.webp)
+![Angular基础与依赖注入](images/diagram_frontend_angular_basics.webp)
 
 > 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：60 分钟
 

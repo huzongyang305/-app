@@ -1,6 +1,6 @@
 # 集合论基础
 
-![集合论基础](images/spring_ioc_container.webp)
+![集合论基础](images/diagram_discrete_math_set_theory.webp)
 
 > 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：45 分钟
 

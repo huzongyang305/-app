@@ -1,6 +1,6 @@
 # Vue 3组合式API
 
-![Vue 3组合式API](images/category_cross_ci_config.webp)
+![Vue 3组合式API](images/diagram_frontend_vue_composition.webp)
 
 > 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：40 分钟
 

@@ -6,7 +6,7 @@
 > 建议投入：18 小时
 > 难度：进阶
 
-![数据工程 ETL 与质量治理实战 的架构与数据流](images/diagram_db_airflow_quality.webp)
+![数据工程 ETL 与质量治理实战](images/diagram_project_data_etl.webp)
 
 ## 本节知识框架
 

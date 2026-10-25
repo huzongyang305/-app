@@ -1,6 +1,6 @@
 # 模型部署与MLOps流程
 
-![模型部署与MLOps流程](images/category_terraform.webp)
+![模型部署与MLOps流程](images/diagram_ml_model_deployment_mlops.webp)
 
 > 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：60 分钟
 

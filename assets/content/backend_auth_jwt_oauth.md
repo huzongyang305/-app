@@ -1,6 +1,6 @@
 # 认证授权（JWT/OAuth2）
 
-![认证授权（JWT/OAuth2）](images/remaining_csharp_ecosystem.webp)
+![认证授权（JWT/OAuth2）](images/diagram_backend_auth_jwt_oauth.webp)
 
 > 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：75 分钟
 

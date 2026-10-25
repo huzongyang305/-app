@@ -1,6 +1,6 @@
 # 自然语言处理：文本分类与情感分析
 
-![自然语言处理：文本分类与情感分析](images/diagram_ts_project.webp)
+![自然语言处理：文本分类与情感分析](images/diagram_ml_natural_language_processing.webp)
 
 > 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：55 分钟
 

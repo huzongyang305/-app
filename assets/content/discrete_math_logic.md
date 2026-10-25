@@ -1,6 +1,6 @@
 # 命题逻辑与谓词逻辑
 
-![命题逻辑与谓词逻辑](images/lesson_c_arrays_strings.webp)
+![命题逻辑与谓词逻辑](images/diagram_discrete_math_logic.webp)
 
 > 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：35 分钟
 

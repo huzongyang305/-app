@@ -1,6 +1,6 @@
 # React Native深度实践与原生模块
 
-![React Native深度实践与原生模块](images/remaining_shell_process_cron.webp)
+![React Native深度实践与原生模块](images/diagram_mobile_react_native_deep.webp)
 
 > 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：50 分钟
 

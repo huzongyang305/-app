@@ -1,6 +1,6 @@
 # Go语言Gin/Echo框架实战
 
-![Go语言Gin/Echo框架实战](images/diagram_io_scheduling.webp)
+![Go语言Gin/Echo框架实战](images/diagram_backend_gin_echo.webp)
 
 > 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：125 分钟
 

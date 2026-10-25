@@ -1,6 +1,6 @@
 # GitOps 与 ArgoCD 实战
 
-![GitOps 与 ArgoCD 实战](images/memory_layout.webp)
+![GitOps 与 ArgoCD 实战](images/diagram_devops_gitops_argocd.webp)
 
 > **版本**：v2.0 | **难度**：初学者友好 | **前置知识**：Kubernetes 基础、Git 基本操作
 

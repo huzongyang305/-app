@@ -1,6 +1,6 @@
 # 移动端性能优化
 
-![移动端性能优化](images/lesson_embedded_bootloader.webp)
+![移动端性能优化](images/diagram_mobile_performance_optimization.webp)
 
 > 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：35 分钟
 

@@ -1,6 +1,6 @@
 # 微服务架构模式
 
-![微服务架构模式](images/diagram_ts_ws_dashboard.webp)
+![微服务架构模式](images/diagram_backend_microservices_patterns.webp)
 
 > 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：75 分钟
 

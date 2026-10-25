@@ -6,7 +6,7 @@
 > 建议投入：12 小时
 > 难度：进阶
 
-![网络抓包与协议分析实战 的架构与数据流](images/diagram_network_performance.webp)
+![网络抓包与协议分析实战](images/diagram_project_network_capture.webp)
 
 ## 本节知识框架
 

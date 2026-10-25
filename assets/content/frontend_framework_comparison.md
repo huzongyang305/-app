@@ -1,6 +1,6 @@
 # 框架对比与选型指南
 
-![框架对比与选型指南](images/diagram_sec_incident.webp)
+![框架对比与选型指南](images/diagram_frontend_framework_comparison.webp)
 
 > 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：60 分钟
 

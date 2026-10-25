@@ -1,6 +1,6 @@
 # Python FastAPI异步Web开发
 
-![Python FastAPI异步Web开发](images/p0x_embedded_rtos_tasks.webp)
+![Python FastAPI异步Web开发](images/diagram_backend_fastapi_async.webp)
 
 > 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：55 分钟
 

@@ -1,6 +1,6 @@
 # Svelte响应式编程
 
-![Svelte响应式编程](images/tcp_handshake.webp)
+![Svelte响应式编程](images/diagram_frontend_svelte_reactive.webp)
 
 > 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：50 分钟
 

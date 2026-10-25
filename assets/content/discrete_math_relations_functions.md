@@ -1,6 +1,6 @@
 # 关系与函数
 
-![关系与函数](images/python_data_processing_flow.webp)
+![关系与函数](images/diagram_discrete_math_relations.webp)
 
 > 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：35 分钟
 

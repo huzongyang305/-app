@@ -6,7 +6,7 @@
 > 建议投入：14 小时
 > 难度：进阶
 
-![数据库性能调优实战 的架构与数据流](images/btree_index.webp)
+![数据库性能调优实战](images/diagram_project_database_tuning.webp)
 
 ## 本节知识框架
 

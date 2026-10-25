@@ -1,6 +1,6 @@
 # 数据预处理与特征工程
 
-![数据预处理与特征工程](images/diagram_os_deadlock.webp)
+![数据预处理与特征工程](images/diagram_ml_data_preprocessing.webp)
 
 > 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：70 分钟
 

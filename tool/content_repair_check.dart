@@ -166,6 +166,39 @@ List<String> _brokenTermCells(List<String> lines) {
   return out;
 }
 
+final RegExp _imageRef = RegExp(r'!\[[^\]]*\]\((?:images/)?([^)\s]+)\)');
+final RegExp _imagePrefix = RegExp(
+  r'^(?:remaining|diagram|lesson|category|visual|p0x|p[0-2])_',
+);
+
+Set<String> _idTokens(String value) => value
+    .toLowerCase()
+    .split(RegExp(r'[^a-z0-9]+'))
+    .where((part) => part.length >= 2)
+    .toSet();
+
+/// 首图借用了别课的专属配图：图片词干正好是另一篇课文的 id，那篇课文也在用这张图，
+/// 而两个 id 的主题词不构成包含关系（java_microservices 用 microservices 的图不算）。
+List<String> _borrowedHeroes(
+  Map<String, String> heroById,
+  Map<String, List<String>> usersByImage,
+  Set<String> lessonIds,
+) {
+  final out = <String>[];
+  for (final entry in heroById.entries) {
+    final image = entry.value;
+    final stem = image
+        .replaceAll(RegExp(r'\.(webp|png|jpe?g|gif|svg)$'), '')
+        .replaceFirst(_imagePrefix, '');
+    if (stem == entry.key || !lessonIds.contains(stem)) continue;
+    if (!(usersByImage[image] ?? const <String>[]).contains(stem)) continue;
+    final selfTokens = _idTokens(entry.key);
+    if (_idTokens(stem).every(selfTokens.contains)) continue;
+    out.add('${entry.key}($image→$stem)');
+  }
+  return out;
+}
+
 void main(List<String> args) {
   final rootIndex = args.indexOf('--root');
   final root = rootIndex >= 0 && rootIndex + 1 < args.length
@@ -203,6 +236,9 @@ void main(List<String> args) {
   ];
   final seenStems = <String, String>{};
   final duplicateStems = <String>[];
+  final heroById = <String, String>{};
+  final usersByImage = <String, List<String>>{};
+  final lessonIds = <String>{};
 
   for (final rawCategory in (manifest['categories'] as List<dynamic>)) {
     final category = (rawCategory as Map).cast<String, dynamic>();
@@ -218,6 +254,15 @@ void main(List<String> args) {
       }
       final markdown = file.readAsStringSync();
       lessonCount++;
+      lessonIds.add(id);
+      final images = _imageRef
+          .allMatches(markdown)
+          .map((match) => match.group(1)!.split('/').last)
+          .toList();
+      if (images.isNotEmpty) heroById[id] = images.first;
+      for (final image in images) {
+        usersByImage.putIfAbsent(image, () => <String>[]).add(id);
+      }
       if (markdown.length < 6000) shortLesson++;
       for (final section in _coreSections) {
         if (!markdown.contains('## $section')) missingSection++;
@@ -342,6 +387,8 @@ void main(List<String> args) {
     }
   }
 
+  final borrowedHeroes = _borrowedHeroes(heroById, usersByImage, lessonIds);
+
   stdout
     ..writeln('课程数                     $lessonCount')
     ..writeln('题目数                     $questionCount')
@@ -361,6 +408,7 @@ void main(List<String> args) {
     ..writeln('孤儿粗体闭合残留            ${orphanBold.length}')
     ..writeln('本课粘课程名                ${benkeGlued.length}')
     ..writeln('表格首格碎片                ${brokenTermCells.length}')
+    ..writeln('首图借用别课专属图          ${borrowedHeroes.length}')
     ..writeln('题干重复                    ${duplicateStems.length}');
   for (final sample in doubledJoins.take(5)) {
     stdout.writeln('  重复字：$sample');
@@ -379,6 +427,9 @@ void main(List<String> args) {
   }
   for (final sample in brokenTermCells.take(5)) {
     stdout.writeln('  首格碎片：$sample');
+  }
+  for (final sample in borrowedHeroes.take(5)) {
+    stdout.writeln('  借用首图：$sample');
   }
   for (final sample in uncovered.take(5)) {
     stdout.writeln('  未覆盖：$sample');
@@ -404,6 +455,7 @@ void main(List<String> args) {
       orphanBold.length +
       benkeGlued.length +
       brokenTermCells.length +
+      borrowedHeroes.length +
       duplicateStems.length;
   if (hardFailures > 0) {
     stderr.writeln('自检失败：$hardFailures 项硬失败');

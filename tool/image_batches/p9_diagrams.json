@@ -1,0 +1,170 @@
+{
+  "frontend_react_hooks": {
+    "image": "images/diagram_frontend_react_hooks.webp",
+    "alt": "React核心概念与Hooks"
+  },
+  "frontend_vue_composition": {
+    "image": "images/diagram_frontend_vue_composition.webp",
+    "alt": "Vue 3组合式API"
+  },
+  "frontend_angular_basics": {
+    "image": "images/diagram_frontend_angular_basics.webp",
+    "alt": "Angular基础与依赖注入"
+  },
+  "frontend_svelte_reactive": {
+    "image": "images/diagram_frontend_svelte_reactive.webp",
+    "alt": "Svelte响应式编程"
+  },
+  "frontend_state_management": {
+    "image": "images/diagram_frontend_state_management.webp",
+    "alt": "状态管理深入"
+  },
+  "frontend_nextjs_ssr": {
+    "image": "images/diagram_frontend_nextjs_ssr.webp",
+    "alt": "Next.js服务端渲染"
+  },
+  "frontend_performance_optimization": {
+    "image": "images/diagram_frontend_performance_optimization.webp",
+    "alt": "性能优化最佳实践"
+  },
+  "frontend_framework_comparison": {
+    "image": "images/diagram_frontend_framework_comparison.webp",
+    "alt": "框架对比与选型指南"
+  },
+  "backend_restful_api": {
+    "image": "images/diagram_backend_restful_api.webp",
+    "alt": "RESTful API设计最佳实践"
+  },
+  "backend_nodejs_express": {
+    "image": "images/diagram_backend_nodejs_express.webp",
+    "alt": "Node.js与Express/Koa框架实战"
+  },
+  "backend_fastapi_async": {
+    "image": "images/diagram_backend_fastapi_async.webp",
+    "alt": "Python FastAPI异步Web开发"
+  },
+  "backend_gin_echo": {
+    "image": "images/diagram_backend_gin_echo.webp",
+    "alt": "Go语言Gin/Echo框架实战"
+  },
+  "backend_database_integration": {
+    "image": "images/diagram_backend_database_integration.webp",
+    "alt": "数据库集成（SQL/NoSQL）"
+  },
+  "backend_auth_jwt_oauth": {
+    "image": "images/diagram_backend_auth_jwt_oauth.webp",
+    "alt": "认证授权（JWT/OAuth2）"
+  },
+  "backend_graphql_apollo": {
+    "image": "images/diagram_backend_graphql_apollo.webp",
+    "alt": "GraphQL入门与Apollo Server"
+  },
+  "backend_microservices_patterns": {
+    "image": "images/diagram_backend_microservices_patterns.webp",
+    "alt": "微服务架构模式"
+  },
+  "ml_tensorflow_pytorch_intro": {
+    "image": "images/diagram_ml_tensorflow_pytorch_intro.webp",
+    "alt": "TensorFlow与PyTorch框架对比入门"
+  },
+  "ml_data_preprocessing_feature_engineering": {
+    "image": "images/diagram_ml_data_preprocessing.webp",
+    "alt": "数据预处理与特征工程"
+  },
+  "ml_computer_vision": {
+    "image": "images/diagram_ml_computer_vision.webp",
+    "alt": "计算机视觉：图像分类与目标检测"
+  },
+  "ml_natural_language_processing": {
+    "image": "images/diagram_ml_natural_language_processing.webp",
+    "alt": "自然语言处理：文本分类与情感分析"
+  },
+  "ml_recommendation_systems": {
+    "image": "images/diagram_ml_recommendation_systems.webp",
+    "alt": "推荐系统实现"
+  },
+  "ml_time_series_prediction": {
+    "image": "images/diagram_ml_time_series_prediction.webp",
+    "alt": "时间序列预测（LSTM/Transformer）"
+  },
+  "ml_model_evaluation_hyperparameter_tuning": {
+    "image": "images/diagram_ml_model_evaluation.webp",
+    "alt": "模型评估与超参数调优"
+  },
+  "ml_model_deployment_mlops": {
+    "image": "images/diagram_ml_model_deployment_mlops.webp",
+    "alt": "模型部署与MLOps流程"
+  },
+  "mobile_flutter_advanced": {
+    "image": "images/diagram_mobile_flutter_advanced.webp",
+    "alt": "Flutter高级主题（动画、自定义渲染、平台通道）"
+  },
+  "mobile_performance_optimization": {
+    "image": "images/diagram_mobile_performance_optimization.webp",
+    "alt": "移动端性能优化"
+  },
+  "mobile_swiftui_complete": {
+    "image": "images/diagram_mobile_swiftui_complete.webp",
+    "alt": "iOS SwiftUI完整教程"
+  },
+  "mobile_jetpack_compose_advanced": {
+    "image": "images/diagram_mobile_jetpack_compose_advanced.webp",
+    "alt": "Android Jetpack Compose进阶"
+  },
+  "mobile_react_native_deep": {
+    "image": "images/diagram_mobile_react_native_deep.webp",
+    "alt": "React Native深度实践与原生模块"
+  },
+  "mobile_cross_platform_comparison": {
+    "image": "images/diagram_mobile_cross_platform_comparison.webp",
+    "alt": "跨平台架构对比与选型"
+  },
+  "mobile_offline_first": {
+    "image": "images/diagram_mobile_offline_first.webp",
+    "alt": "离线优先架构与数据同步"
+  },
+  "mobile_security": {
+    "image": "images/diagram_mobile_security.webp",
+    "alt": "移动安全最佳实践"
+  },
+  "discrete_math_set_theory": {
+    "image": "images/diagram_discrete_math_set_theory.webp",
+    "alt": "集合论基础"
+  },
+  "discrete_math_relations_functions": {
+    "image": "images/diagram_discrete_math_relations.webp",
+    "alt": "关系与函数"
+  },
+  "discrete_math_graph_theory": {
+    "image": "images/diagram_discrete_math_graph.webp",
+    "alt": "图论基础"
+  },
+  "discrete_math_combinatorics": {
+    "image": "images/diagram_discrete_math_combinatorics.webp",
+    "alt": "组合数学"
+  },
+  "discrete_math_logic": {
+    "image": "images/diagram_discrete_math_logic.webp",
+    "alt": "命题逻辑与谓词逻辑"
+  },
+  "devops_gitops_argocd": {
+    "image": "images/diagram_devops_gitops_argocd.webp",
+    "alt": "GitOps 与 ArgoCD 实战"
+  },
+  "devops_github_actions": {
+    "image": "images/diagram_devops_github_actions.webp",
+    "alt": "GitHub Actions 自动化实战"
+  },
+  "project_database_tuning": {
+    "image": "images/diagram_project_database_tuning.webp",
+    "alt": "数据库性能调优实战"
+  },
+  "project_data_etl": {
+    "image": "images/diagram_project_data_etl.webp",
+    "alt": "数据工程 ETL 与质量治理实战"
+  },
+  "java_testing": {
+    "image": "images/diagram_java_testing.webp",
+    "alt": "Java 测试与质量"
+  }
+}

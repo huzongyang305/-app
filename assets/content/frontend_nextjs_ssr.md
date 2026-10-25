@@ -1,6 +1,6 @@
 # Next.js服务端渲染
 
-![Next.js服务端渲染](images/lesson_network_ipv6.webp)
+![Next.js服务端渲染](images/diagram_frontend_nextjs_ssr.webp)
 
 > 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：50 分钟
 

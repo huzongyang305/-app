@@ -1,6 +1,6 @@
 # Android Jetpack Compose进阶
 
-![Android Jetpack Compose进阶示意图](images/lesson_ai_realtime_api.webp)
+![Android Jetpack Compose进阶](images/diagram_mobile_jetpack_compose_advanced.webp)
 
 > 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：40 分钟
 

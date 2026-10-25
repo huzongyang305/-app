@@ -1,6 +1,6 @@
 # GitHub Actions 自动化实战
 
-![GitHub Actions 自动化实战](images/python_memory_allocation.webp)
+![GitHub Actions 自动化实战](images/diagram_devops_github_actions.webp)
 
 > **版本**：v2.0
 > **难度**：初学者友好

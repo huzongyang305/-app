@@ -2,7 +2,7 @@
 
 > 内容更新时间：2026-10-20 · 学习阶段：高级 · 预计用时：45 分钟
 
-![测试金字塔](images/diagram_test_pyramid.webp)
+![Java 测试与质量](images/diagram_java_testing.webp)
 
 ## 本节知识框架
 
