@@ -272,6 +272,16 @@ int main() {
 
 **陷阱**：重复遍历一个惰性 view 会重复计算。如果需要多次遍历，先物化成容器。
 
+**组合层数有代价**：每加一个适配器就多包一层模板，4 层管道展开成 `take_view<transform_view<filter_view<...>>>`，诊断信息跟着膨胀。GCC 的 `-fconcepts-diagnostics-depth=` 默认 3，控制约束提示的详细层数；同一个编译器的 `-ftemplate-depth` 默认 900，限制递归实例化。
+
+**`transform` 换元素类型但不搬内存**：`std::vector<User>` 接上取 `name` 的 `views::transform` 后，视图的 `value_type` 成了 `std::string`，源容器里躺着的仍然是 `User`；范围 `for` 遍历时逐个现算，两边都不落地。
+
+**projection 替掉自定义比较器**：`std::ranges::sort(users, {}, &User::age)` 的第三个参数就是投影，按 `age` 升序不必手写 lambda，比给老式算法写比较器少一层噪音。
+
+**算法对范围类别有硬要求**：`std::ranges::sort` 要求区间满足 `random_access_range`，换成 `std::forward_list`（单向链表）会被约束检查直接拒掉，得改用它的成员 `sort()`。查找类算法返回的也不是裸迭代器，而是首尾组成的一对 `subrange`，没命中时区间为空。
+
+**`std::span` 是最薄的一层视图**：C++20 里它只装一个指针加一个长度，数组和 `std::vector` 都能包住，函数签名不必写死容器种类。它同样不拥有元素，把右值容器管道进 view 尤其危险——语句一结束对象就析构，视图还指着那块内存；要让视图自己养数据，就显式用 `std::ranges::owning_view` 把容器移进去。
+
 ## 常见误区与易错点
 
 | 容易写错的做法 | 实际现象 | 正确做法 |

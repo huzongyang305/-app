@@ -1,6 +1,6 @@
 # C++ 并发、原子操作与内存序
 
-> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：35 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：40 分钟
 
 ![C++ 原子操作与内存序](images/diagram_cpp_atomics.webp)
 
@@ -208,6 +208,26 @@ void init() {
 ```
 
 这里用 acquire/release 内存序实现高效的延迟初始化：第一次检查用 acquire（看到 release 之后的写入），初始化完成后用 release（确保 resource 的构造在 initialized 设为 true 之前完成）。
+
+### 场景四：分片计数器与伪共享
+
+多线程各写各的槽位时，瓶颈常常不在原子指令，而在相邻槽位挤进同一条 64 字节缓存行被反复夺走，这就是伪共享（false sharing）。
+
+```cpp
+#include <atomic>
+
+struct alignas(64) Slot {   // 每槽独占一条缓存行
+    long local{0};          // 只有本线程会写它
+    std::atomic<long> handoff{0};
+};
+
+static_assert(std::atomic<long>::is_always_lock_free);  // 编译期自检
+
+// 线程收尾前：s.handoff.store(s.local, std::memory_order_release);
+// join() 之后：total += s.handoff.load(std::memory_order_acquire);
+```
+
+计数用 relaxed 足够，汇总的正确性来自 release 与 acquire 配对：只有配上才建立 happens-before，槽里排在旁边的普通写入才可见。`compare_exchange_weak` 允许伪失败、适合塞进重试循环，`strong` 不伪失败、适合只试一次的场合。x86 上 `fetch_add` 各档内存序常编成 `lock xaddl` 并自带全屏障；差别在读写两端：`load` 在 x86 上不论哪档内存序通常就是一条 `mov`，因为硬件读本身带 acquire 语义，而 seq_cst 的 `store` 要么编成 `xchg`、要么在 `mov` 之后补一条 `mfence`，用它把全屏障补回来。
 
 ## 代码/协议/SQL 示例
 

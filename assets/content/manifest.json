@@ -9448,7 +9448,7 @@
             "en": "Learn threads, mutexes, condition variables, atomics and memory order."
           },
           "file": "assets/content/cpp_concurrency_atomics.md",
-          "minutes": 35,
+          "minutes": 40,
           "keywords": [
             "线程",
             "atomic",
