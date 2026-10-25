@@ -208,9 +208,9 @@ class ListSkeleton extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: itemCount,
-      separatorBuilder: (_, __) => const SizedBox(height: 10),
+      separatorBuilder: (_, _) => const SizedBox(height: 10),
       itemBuilder: builder ??
-          (_, __) => const LessonCardSkeleton(),
+          (_, _) => const LessonCardSkeleton(),
     );
   }
 }

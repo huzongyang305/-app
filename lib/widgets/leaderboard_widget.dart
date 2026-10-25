@@ -4,9 +4,9 @@ class LeaderboardWidget extends StatelessWidget {
   final ScrollController scrollController;
 
   const LeaderboardWidget({
-    Key? key,
+    super.key,
     required this.scrollController,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

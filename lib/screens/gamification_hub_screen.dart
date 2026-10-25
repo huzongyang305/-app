@@ -6,7 +6,7 @@ import 'achievements_screen.dart';
 
 /// 游戏化功能中心页面 - 统一入口
 class GamificationHubScreen extends StatelessWidget {
-  const GamificationHubScreen({Key? key}) : super(key: key);
+  const GamificationHubScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +132,7 @@ class GamificationHubScreen extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: color.withOpacity(0.15),
+                      color: color.withValues(alpha: 0.15),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(icon, size: 40, color: color),

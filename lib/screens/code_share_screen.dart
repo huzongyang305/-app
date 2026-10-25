@@ -112,7 +112,7 @@ class _CodeShareScreenState extends State<CodeShareScreen> {
                         child: ListView.separated(
                           padding: const EdgeInsets.all(16),
                           itemCount: _shares.length,
-                          separatorBuilder: (_, __) => const SizedBox(height: 12),
+                          separatorBuilder: (_, _) => const SizedBox(height: 12),
                           itemBuilder: (context, index) {
                             final share = _shares[index];
                             return _CodeShareCard(

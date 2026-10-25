@@ -55,7 +55,7 @@ class _StudyGroupsScreenState extends State<StudyGroupsScreen> {
                   child: ListView.separated(
                     padding: const EdgeInsets.all(16),
                     itemCount: _groups.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 12),
+                    separatorBuilder: (_, _) => const SizedBox(height: 12),
                     itemBuilder: (context, index) {
                       final group = _groups[index];
                       return _GroupCard(group: group);

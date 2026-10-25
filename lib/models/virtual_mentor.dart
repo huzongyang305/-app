@@ -57,7 +57,7 @@ class VirtualMentor {
       'specialty': specialty,
       'personality': personality,
       'encouragingMessages': encouragingMessages,
-      'themeColor': themeColor.value,
+      'themeColor': themeColor.toARGB32(),
       'style': style.name,
     };
   }

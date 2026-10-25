@@ -6,10 +6,10 @@ class ChallengeCard extends StatefulWidget {
   final Function(bool success, int score) onComplete;
 
   const ChallengeCard({
-    Key? key,
+    super.key,
     required this.challenge,
     required this.onComplete,
-  }) : super(key: key);
+  });
 
   @override
   State<ChallengeCard> createState() => _ChallengeCardState();
@@ -61,7 +61,7 @@ class _ChallengeCardState extends State<ChallengeCard> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: _getDifficultyColor().withOpacity(0.2),
+                    color: _getDifficultyColor().withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(
@@ -89,7 +89,7 @@ class _ChallengeCardState extends State<ChallengeCard> {
                               _getDifficultyText(),
                               style: const TextStyle(fontSize: 12),
                             ),
-                            backgroundColor: _getDifficultyColor().withOpacity(0.2),
+                            backgroundColor: _getDifficultyColor().withValues(alpha: 0.2),
                           ),
                           const SizedBox(width: 8),
                           Chip(
@@ -97,7 +97,7 @@ class _ChallengeCardState extends State<ChallengeCard> {
                               widget.challenge.maxScore.toString(),
                               style: const TextStyle(fontSize: 12),
                             ),
-                            backgroundColor: Colors.blue.withOpacity(0.2),
+                            backgroundColor: Colors.blue.withValues(alpha: 0.2),
                           ),
                         ],
                       ),
@@ -156,7 +156,7 @@ class _ChallengeCardState extends State<ChallengeCard> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.green.withOpacity(0.1),
+                  color: Colors.green.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Row(
@@ -206,11 +206,14 @@ class _ChallengeCardState extends State<ChallengeCard> {
       // 模拟提交成功
       widget.onComplete(true, widget.challenge.maxScore);
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('提交失败: $e')),
       );
     } finally {
-      setState(() => _isSubmitting = false);
+      if (mounted) {
+        setState(() => _isSubmitting = false);
+      }
     }
   }
 }

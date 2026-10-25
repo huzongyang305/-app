@@ -27,11 +27,11 @@ class SmartPageRoute<T> extends MaterialPageRoute<T> {
   final bool isRelatedContent;
 
   SmartPageRoute({
-    required WidgetBuilder builder,
-    RouteSettings? settings,
+    required super.builder,
+    super.settings,
     this.type = PageTransitionType.slideRight,
     this.isRelatedContent = false,
-  }) : super(builder: builder, settings: settings);
+  });
 
   @override
   Widget buildTransitions(

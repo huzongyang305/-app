@@ -5,7 +5,7 @@ import '../widgets/challenge_card.dart';
 import '../widgets/leaderboard_widget.dart';
 
 class DailyChallengeScreen extends StatefulWidget {
-  const DailyChallengeScreen({Key? key}) : super(key: key);
+  const DailyChallengeScreen({super.key});
 
   @override
   State<DailyChallengeScreen> createState() => _DailyChallengeScreenState();
@@ -98,7 +98,7 @@ class _DailyChallengeScreenState extends State<DailyChallengeScreen> {
                   Text(
                     '连续挑战',
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.9),
+                      color: Colors.white.withValues(alpha: 0.9),
                       fontSize: 14,
                     ),
                   ),
@@ -113,7 +113,7 @@ class _DailyChallengeScreenState extends State<DailyChallengeScreen> {
                   Text(
                     _getStreakMessage(_streakDays),
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.9),
+                      color: Colors.white.withValues(alpha: 0.9),
                       fontSize: 12,
                     ),
                   ),

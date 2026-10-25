@@ -3,7 +3,7 @@ import '../models/skill_node.dart';
 import '../services/skill_tree_service.dart';
 
 class SkillTreeScreen extends StatefulWidget {
-  const SkillTreeScreen({Key? key}) : super(key: key);
+  const SkillTreeScreen({super.key});
 
   @override
   State<SkillTreeScreen> createState() => _SkillTreeScreenState();
@@ -112,14 +112,14 @@ class _SkillTreeScreenState extends State<SkillTreeScreen> {
                 const SizedBox(height: 8),
                 LinearProgressIndicator(
                   value: totalSkills > 0 ? masteredSkills / totalSkills : 0,
-                  backgroundColor: Colors.white.withOpacity(0.3),
+                  backgroundColor: Colors.white.withValues(alpha: 0.3),
                   valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   '$masteredSkills / $totalSkills 已掌握',
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha: 0.9),
                     fontSize: 12,
                   ),
                 ),
@@ -139,7 +139,7 @@ class _SkillTreeScreenState extends State<SkillTreeScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.2),
+        color: Colors.white.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -157,7 +157,7 @@ class _SkillTreeScreenState extends State<SkillTreeScreen> {
           Text(
             label,
             style: TextStyle(
-              color: Colors.white.withOpacity(0.8),
+              color: Colors.white.withValues(alpha: 0.8),
               fontSize: 10,
             ),
           ),
@@ -195,7 +195,7 @@ class SkillTreePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.blue.withOpacity(0.3)
+      ..color = Colors.blue.withValues(alpha: 0.3)
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
 
@@ -258,10 +258,10 @@ class SkillDetailSheet extends StatelessWidget {
   final ScrollController scrollController;
 
   const SkillDetailSheet({
-    Key? key,
+    super.key,
     required this.skill,
     required this.scrollController,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -205,9 +205,9 @@ abstract final class AccessibilityUtils {
   
   /// 计算相对亮度（WCAG 2.0公式）
   static double _relativeLuminance(Color color) {
-    final r = _linearize(color.red / 255.0);
-    final g = _linearize(color.green / 255.0);
-    final b = _linearize(color.blue / 255.0);
+    final r = _linearize(color.r);
+    final g = _linearize(color.g);
+    final b = _linearize(color.b);
     
     return 0.2126 * r + 0.7152 * g + 0.0722 * b;
   }
@@ -391,16 +391,16 @@ abstract final class DynamicColorSystem {
   static Color adjustColorTemperature(Color baseColor, int hour) {
     if (hour >= 6 && hour < 12) {
       // 早晨：增加蓝色成分，提神
-      final r = baseColor.red;
-      final g = baseColor.green;
-      final b = (baseColor.blue * 1.1).clamp(0, 255).toInt();
-      return Color.fromARGB(baseColor.alpha, r, g, b);
+      final r = (baseColor.r * 255).round();
+      final g = (baseColor.g * 255).round();
+      final b = (baseColor.b * 1.1 * 255).round().clamp(0, 255);
+      return Color.fromARGB((baseColor.a * 255).round(), r, g, b);
     } else if (hour >= 18 || hour < 6) {
       // 夜晚：增加红色成分，减少蓝光
-      final r = (baseColor.red * 1.15).clamp(0, 255).toInt();
-      final g = baseColor.green;
-      final b = (baseColor.blue * 0.85).clamp(0, 255).toInt();
-      return Color.fromARGB(baseColor.alpha, r, g, b);
+      final r = (baseColor.r * 1.15 * 255).round().clamp(0, 255);
+      final g = (baseColor.g * 255).round();
+      final b = (baseColor.b * 0.85 * 255).round().clamp(0, 255);
+      return Color.fromARGB((baseColor.a * 255).round(), r, g, b);
     }
     
     // 白天：返回原色

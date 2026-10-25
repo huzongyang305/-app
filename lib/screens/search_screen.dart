@@ -551,7 +551,7 @@ class _SuggestionsList extends StatelessWidget {
       child: ListView.separated(
         shrinkWrap: true,
         itemCount: suggestions.length,
-        separatorBuilder: (_, __) => Divider(
+        separatorBuilder: (_, _) => Divider(
           height: 1,
           color: theme.colorScheme.outlineVariant,
         ),

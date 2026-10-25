@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/virtual_mentor.dart';
 
 class MentorSelectionScreen extends StatefulWidget {
-  const MentorSelectionScreen({Key? key}) : super(key: key);
+  const MentorSelectionScreen({super.key});
 
   @override
   State<MentorSelectionScreen> createState() => _MentorSelectionScreenState();
@@ -65,7 +65,7 @@ class _MentorSelectionScreenState extends State<MentorSelectionScreen> {
                     child: Container(
                       decoration: BoxDecoration(
                         color: isSelected
-                            ? mentor.themeColor.withOpacity(0.2)
+                            ? mentor.themeColor.withValues(alpha: 0.2)
                             : Colors.grey.shade100,
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
@@ -80,7 +80,7 @@ class _MentorSelectionScreenState extends State<MentorSelectionScreen> {
                         children: [
                           CircleAvatar(
                             radius: 40,
-                            backgroundColor: mentor.themeColor.withOpacity(0.3),
+                            backgroundColor: mentor.themeColor.withValues(alpha: 0.3),
                             child: Icon(
                               Icons.person,
                               size: 40,
@@ -149,7 +149,7 @@ class _MentorSelectionScreenState extends State<MentorSelectionScreen> {
               Center(
                 child: CircleAvatar(
                   radius: 60,
-                  backgroundColor: mentor.themeColor.withOpacity(0.3),
+                  backgroundColor: mentor.themeColor.withValues(alpha: 0.3),
                   child: Icon(
                     Icons.person,
                     size: 60,
@@ -203,7 +203,7 @@ class _MentorSelectionScreenState extends State<MentorSelectionScreen> {
                     ],
                   ),
                 );
-              }).toList(),
+              }),
             ],
           ),
         ),
