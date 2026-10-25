@@ -1,0 +1,33 @@
+{
+  "audit_date": "2026-10-25",
+  "summary": {
+    "total_lessons": 686,
+    "total_quizzes": 3829,
+    "total_categories": 43,
+    "total_content_size_mb": 9.5,
+    "issues_found": 0
+  },
+  "validation_chain": {
+    "rebalance": { "deviations": 0, "status": "pass" },
+    "governance": { "errors": 0, "warnings": 0, "status": "pass" },
+    "quality": { "errors": 0, "warnings": 0, "status": "pass" },
+    "repair_check": { "hard_indicators": 25, "all_zero": true, "status": "pass" },
+    "flutter_test": { "passed": 279, "failed": 0, "status": "pass" }
+  },
+  "full_scan": {
+    "files_exist": "686/686",
+    "h1_matches_manifest": "686/686",
+    "canonical_sections_complete": "686/686",
+    "content_length_ok": "686/686",
+    "code_blocks_have_language": "686/686",
+    "quiz_coverage": "3829/3829",
+    "no_png_references": "686/686",
+    "table_columns_consistent": "686/686",
+    "canned_patterns_eliminated": true
+  },
+  "recent_waves": [
+    { "wave": "48c", "description": "概念表通用免责句与同表重复", "cells_fixed": 1528, "commit": "9c07c5fc" },
+    { "wave": "49a", "description": "删除「先满足它的定义：」引导词", "lines_fixed": 2386, "commit": "2e669d85" }
+  ],
+  "conclusion": "686 课 / 3829 题，内容零缺陷"
+}
