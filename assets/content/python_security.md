@@ -429,7 +429,7 @@ print(verify(b'secret', salt, stored), verify(b'wrong', salt, stored))
   - B. random
   - C. hashlib
   - D. uuid.uuid1
-- **正确项**：“secrets”
+- **正确项**：`secrets`
 - **判断依据**：secrets 从操作系统密码学安全随机源取值，适合生成会话令牌、密钥和重置链接。random 的梅森旋转算法可预测（B 错）。hashlib 是哈希工具不是随机数生成器（C 错）。uuid1 包含时间和节点信息，可预测且泄露机器信息（D 错）。
 
 ### 考点 3：第 3 题
@@ -452,7 +452,7 @@ print(verify(b'secret', salt, stored), verify(b'wrong', salt, stored))
   - B. True True
   - C. False True
   - D. False False
-- **正确项**：“True False”
+- **正确项**：`True False`
 - **判断依据**：相同密码 + 相同盐 + 相同参数 = 相同的派生值，所以 `verify('secret', ...)` 返回 True。不同密码得到不同的派生值，所以 `verify('wrong', ...)` 返回 False。注意 verify 函数内部应使用 `hmac.compare_digest` 做恒定时间比较。
 
 ### 考点 5：第 5 题

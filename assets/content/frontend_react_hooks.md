@@ -32,11 +32,11 @@ React是目前最流行的前端框架之一，它的组件化思想和声明式
 
 | 术语 | 一句话说明 |
 | --- | --- |
-| React | 掌握React组件化思想、虚拟DOM原理和常用Hooks（useState/us相关：正文给出可操作定义与适用边界。 |
-| Hooks | 掌握React组件化思想、虚拟DOM原理和常用Hooks（useState/us相关：正文给出可操作定义与适用边界。 |
-| useState | 掌握React组件化思想、虚拟DOM原理和常用Hooks（useState/us相关：正文给出可操作定义与适用边界。 |
-| useEffect | 掌握React组件化思想、虚拟DOM原理和常用Hooks（useState/us相关：正文给出可操作定义与适用边界。 |
-| 组件化 | 掌握React组件化思想、虚拟DOM原理和常用Hooks（useState/us相关：正文给出可操作定义与适用边界。 |
+| React | 掌握React组件化思想、虚拟DOM原理和常用Hooks（useState/useEffect/useContext）。相关：正文给出可操作定义与适用边界。 |
+| Hooks | 掌握React组件化思想、虚拟DOM原理和常用Hooks（useState/useEffect/useContext）。相关：正文给出可操作定义与适用边界。 |
+| useState | 掌握React组件化思想、虚拟DOM原理和常用Hooks（useState/useEffect/useContext）。相关：正文给出可操作定义与适用边界。 |
+| useEffect | 掌握React组件化思想、虚拟DOM原理和常用Hooks（useState/useEffect/useContext）。相关：正文给出可操作定义与适用边界。 |
+| 组件化 | 掌握React组件化思想、虚拟DOM原理和常用Hooks（useState/useEffect/useContext）。相关：正文给出可操作定义与适用边界。 |
 
 ## 原理与运行机制
 

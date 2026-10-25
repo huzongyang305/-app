@@ -374,7 +374,7 @@ print(digest[:12])
 
 - **题目**：下面几项都与 `OWASP` 有关，请按 `OWASP Top 10 实战` 的正文顺序排列；该课主线是理解访问控制、注入、加密失败、配置错误等常见 Web 风险的成因与修复。
 - **正确项**：核心知识 → 关键流程 → 实践路径 → 常见误区
-- **判断依据**：按《OWASP Top 10 实战》正文的先后，本题顺序是「核心知识」。术语「OWASP」在本课里的界定是Explain what OWASP Top 10 in Practice solves and when it should be used.，题干「下面几项都与 `OWASP` 有关，请按 `OWASP Top 10」问的就是这一条。常见错法是只修报告里的那一处，其后果是同类问题在别处继续存在。正确做法是按根因做全量排查与统一。
+- **判断依据**：按《OWASP Top 10 实战》正文的先后，本题顺序是「核心知识」 → 「关键流程」 → 「实践路径」 → 「常见误区」。术语「OWASP」在本课里的界定是Explain what OWASP Top 10 in Practice solves and when it should be used.，题干问的就是这一条。常见错法是只修报告里的那一处，其后果是同类问题在别处继续存在。正确做法是按根因做全量排查与统一。
 
 ### 考点 7：`OWASP`
 

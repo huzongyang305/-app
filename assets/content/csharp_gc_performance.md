@@ -28,7 +28,7 @@
 | 术语 | 操作性定义 | 常见边界与风险 |
 | --- | --- | --- |
 | GC | 垃圾回收器：自动回收不可达对象，按代回收；频繁分配与大对象会推高回收开销。 | 易错：GC 压力大，延迟抖动明显；正确做法是用 Span、ArrayPool 与结构体减少临时分配。 |
-| BenchmarkDotNet | 把「3. 用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化。 | 只在「把「3. 用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化」这一前提下成立，换输入或换环境要重新验证。 |
+| BenchmarkDotNet | 用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化。 | 只在「用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化」这一前提下成立，换输入或换环境要重新验证。 |
 | 分代回收 | .NET GC 按对象存活时间分成 0、1、2 代，优先回收短命对象，减少全堆扫描。 | 索引命中与数据分布决定实际开销，判断前先看执行计划而不是只看结果是否正确。 |
 | 大对象堆 | 大于 85 KB 的对象单独存放且默认不压缩，容易产生碎片并抬高回收成本。 | 易错：大对象进入大对象堆后内存长期不降；正确做法是复用缓冲区，避免频繁创建大数组。 |
 
@@ -92,7 +92,7 @@
 ### 选择与边界
 
 - 使用 `GC` 时，先满足它的定义：垃圾回收器：自动回收不可达对象，按代回收；频繁分配与大对象会推高回收开销；易错：GC 压力大，延迟抖动明显；正确做法是用 Span、ArrayPool 与结构体减少临时分配。
-- 使用 `BenchmarkDotNet` 时，先满足它的定义：把「3. 用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化；只在「把「3. 用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化」这一前提下成立，换输入或换环境要重新验证。
+- 使用 `BenchmarkDotNet` 时，先满足它的定义：用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化；只在「用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化」这一前提下成立，换输入或换环境要重新验证。
 - 使用 `分代回收` 时，先满足它的定义：.NET GC 按对象存活时间分成 0、1、2 代，优先回收短命对象，减少全堆扫描；索引命中与数据分布决定实际开销，判断前先看执行计划而不是只看结果是否正确。
 - 使用 `大对象堆` 时，先满足它的定义：大于 85 KB 的对象单独存放且默认不压缩，容易产生碎片并抬高回收成本；易错：大对象进入大对象堆后内存长期不降；正确做法是复用缓冲区，避免频繁创建大数组。
 
@@ -177,7 +177,7 @@ Console.WriteLine(string.Join(",", values.ToArray()));
 
 **参考答案**：垃圾回收器：自动回收不可达对象，按代回收；频繁分配与大对象会推高回收开销。
 
-`BenchmarkDotNet` 的定位是：把「3. 用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化；两者的差别要从适用对象与失败模式上说明。
+`BenchmarkDotNet` 的定位是：用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化；两者的差别要从适用对象与失败模式上说明。
 
 ### 自测 2（排错）
 
@@ -207,7 +207,7 @@ Console.WriteLine(string.Join(",", values.ToArray()));
 
 用一个表格对比 `GC` 与 `BenchmarkDotNet`：各写一行适用场景、一行失败表现。
 
-**参考答案**：`GC` 的定义是垃圾回收器：自动回收不可达对象，按代回收；频繁分配与大对象会推高回收开销；`BenchmarkDotNet` 的定义是把「3. 用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化。两者的失败表现分别对应本课错误表里与本术语相关的行。
+**参考答案**：`GC` 的定义是垃圾回收器：自动回收不可达对象，按代回收；频繁分配与大对象会推高回收开销；`BenchmarkDotNet` 的定义是用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化。两者的失败表现分别对应本课错误表里与本术语相关的行。
 
 ### 自测 7（排错顺序）
 
@@ -244,11 +244,11 @@ Console.WriteLine(string.Join(",", values.ToArray()));
 | 术语 | 一句话说明 |
 | --- | --- |
 | `GC` | 垃圾回收器：自动回收不可达对象，按代回收；频繁分配与大对象会推高回收开销。 |
-| `BenchmarkDotNet` | 把「3. 用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化。 |
+| `BenchmarkDotNet` | 用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化。 |
 | `分代回收` | .NET GC 按对象存活时间分成 0、1、2 代，优先回收短命对象，减少全堆扫描。 |
 | `大对象堆` | 大于 85 KB 的对象单独存放且默认不压缩，容易产生碎片并抬高回收成本。 |
 
-**术语关系**：`GC`（垃圾回收器：自动回收不可达对象） → `BenchmarkDotNet`（把「3. 用 BenchmarkDotNet 和 dotnet-counters 测量） → `分代回收`（.NET GC 按对象存活时间分成 0、1、2 代） → `大对象堆`（大于 85 KB 的对象单独存放且默认不压缩）。
+**术语关系**：`GC`（垃圾回收器：自动回收不可达对象） → `BenchmarkDotNet`（用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化） → `分代回收`（.NET GC 按对象存活时间分成 0、1、2 代） → `大对象堆`（大于 85 KB 的对象单独存放且默认不压缩）。
 
 ## 考点精讲
 
@@ -288,7 +288,7 @@ Console.WriteLine(string.Join(",", values.ToArray()));
 
 - **题目**：下面几项都与 `GC` 有关，请按 `C# GC、Span 与性能优化` 的正文顺序排列；该课主线是理解代际 GC、分配热点、Span、ArrayPool 和基准测试。
 - **正确项**：核心知识 → 关键流程 → 实践路径 → 常见误区
-- **判断依据**：按《C# GC、Span 与性能优化》正文的先后，本题顺序是「核心知识」。术语「GC」在本课里的界定是垃圾回收器：自动回收不可达对象，按代回收，频繁分配与大对象会推高回收开销，题干「下面几项都与 `GC` 有关，请按 `C# GC、Span 与性能优」问的就是这一条。常见错法是热点路径频繁分配，其后果是GC 压力大，延迟抖动明显。正确做法是用 Span、ArrayPool 与结构体减少临时分配。
+- **判断依据**：按《C# GC、Span 与性能优化》正文的先后，本题顺序是「核心知识」 → 「关键流程」 → 「实践路径」 → 「常见误区」。术语「GC」在本课里的界定是垃圾回收器：自动回收不可达对象，按代回收，频繁分配与大对象会推高回收开销，题干问的就是这一条。常见错法是热点路径频繁分配，其后果是GC 压力大，延迟抖动明显。正确做法是用 Span、ArrayPool 与结构体减少临时分配。
 
 ### 考点 7：`GC`
 
@@ -297,8 +297,8 @@ Console.WriteLine(string.Join(",", values.ToArray()));
 
 ### 考点 8：`BenchmarkDotNet`
 
-- **要点**：把「3. 用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化。
-- **BenchmarkDotNet 的边界**：只在「把「3. 用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化」这一前提下成立，换输入或换环境要重新验证。
+- **要点**：用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化。
+- **BenchmarkDotNet 的边界**：只在「用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化」这一前提下成立，换输入或换环境要重新验证。
 
 ### 考点 9：`分代回收`
 

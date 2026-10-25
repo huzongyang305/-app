@@ -28,7 +28,7 @@
 | 术语 | 操作性定义 | 常见边界与风险 |
 | --- | --- | --- |
 | SHOW ENGINE INNODB STATUS | 查看当前事务与锁等待：SHOW ENGINE INNODB STATUS、performance_schema.data_locks / data_waits。 | 共享状态与调度顺序会改变结论，单线程或串行测试通过不等于并发下成立。 |
-| age | 以 InnoDB 可重复读为例，表 t(id PK, name, age)，age 上无索引： | 索引命中与数据分布决定实际开销，判断前先看执行计划而不是只看结果是否正确。 |
+| age | 以 InnoDB 可重复读为例，表 t(id PK, name, age)，age 上无索引。 | 索引命中与数据分布决定实际开销，判断前先看执行计划而不是只看结果是否正确。 |
 | InnoDB | MySQL 的默认事务存储引擎，支持行锁、MVCC、崩溃恢复和外键。 | 共享状态与调度顺序会改变结论，单线程或串行测试通过不等于并发下成立。 |
 | 锁 | 限制同一时刻访问共享资源的同步原语，使用时要明确粒度、顺序和释放路径。 | 共享状态与调度顺序会改变结论，单线程或串行测试通过不等于并发下成立。 |
 | 共享锁 S | 读锁，多个事务可同时持有 | 共享状态与调度顺序会改变结论，单线程或串行测试通过不等于并发下成立。 |
@@ -136,7 +136,7 @@ MVCC 依赖的三个隐藏要素：事务 ID（`trx_id`）、回滚指针（`rol
 ### 选择与边界
 
 - 使用 `SHOW ENGINE INNODB STATUS` 时，先满足它的定义：查看当前事务与锁等待：`SHOW ENGINE INNODB STATUS`、performance_schema.data_locks / data_waits；共享状态与调度顺序会改变结论，单线程或串行测试通过不等于并发下成立。
-- 使用 `age` 时，先满足它的定义：以 InnoDB 可重复读为例，表 `t(id PK, name, age)`，`age` 上无索引：；索引命中与数据分布决定实际开销，判断前先看执行计划而不是只看结果是否正确。
+- 使用 `age` 时，先满足它的定义：以 InnoDB 可重复读为例，表 `t(id PK, name, age)`，`age` 上无索引；索引命中与数据分布决定实际开销，判断前先看执行计划而不是只看结果是否正确。
 - 使用 `InnoDB` 时，先满足它的定义：MySQL 的默认事务存储引擎，支持行锁、MVCC、崩溃恢复和外键；共享状态与调度顺序会改变结论，单线程或串行测试通过不等于并发下成立。
 - 使用 `锁` 时，先满足它的定义：限制同一时刻访问共享资源的同步原语，使用时要明确粒度、顺序和释放路径；共享状态与调度顺序会改变结论，单线程或串行测试通过不等于并发下成立。
 
@@ -276,7 +276,7 @@ SELECT @@transaction_isolation;
 
 **参考答案**：查看当前事务与锁等待：`SHOW ENGINE INNODB STATUS`、performance_schema.data_locks / data_waits。
 
-`age` 的定位是：以 InnoDB 可重复读为例，表 `t(id PK, name, age)`，`age` 上无索引：；两者的差别要从适用对象与失败模式上说明。
+`age` 的定位是：以 InnoDB 可重复读为例，表 `t(id PK, name, age)`，`age` 上无索引；两者的差别要从适用对象与失败模式上说明。
 
 ### 自测 2（排错）
 
@@ -402,7 +402,7 @@ SELECT @@transaction_isolation;
 
 ### 考点 8：`age`
 
-- **要点**：以 InnoDB 可重复读为例，表 `t(id PK, name, age)`，`age` 上无索引：
+- **要点**：以 InnoDB 可重复读为例，表 `t(id PK, name, age)`，`age` 上无索引。
 - **age 的边界**：索引命中与数据分布决定实际开销，判断前先看执行计划而不是只看结果是否正确。
 
 ### 考点 9：`InnoDB`

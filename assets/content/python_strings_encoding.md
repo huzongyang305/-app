@@ -575,8 +575,8 @@ re.match(r"[0-9]{4}-[0-9]{2}", "2026-10-08oops")
 ### 考点 2：文件读取的编码指定
 
 - **题目**：读取一个需要跨平台交换的文本文件，最稳妥的写法是？
-- **正确答案**：open(path, encoding=‘utf-8’)
-- **解析**：不指定编码时 Python 使用操作系统默认编码，中文 Windows 上是 GBK，Linux/Mac 上是 UTF-8。同一文件在不同系统上可能读出不同结果。显式传入 encoding=‘utf-8’ 才能跨平台一致。
+- **正确答案**：open(path, encoding='utf-8')
+- **解析**：不指定编码时 Python 使用操作系统默认编码，中文 Windows 上是 GBK，Linux/Mac 上是 UTF-8。同一文件在不同系统上可能读出不同结果。显式传入 encoding='utf-8' 才能跨平台一致。
 - **关联知识**：编码与解码、UTF-8
 
 ### 考点 3：编码边界的常见错误
@@ -590,11 +590,11 @@ re.match(r"[0-9]{4}-[0-9]{2}", "2026-10-08oops")
 
 - **题目**：阅读代码，输出与结论哪一项正确？  text = 'e' + chr(0x301) print(len(text), text == 'é', unicodedata.normalize('NFC', text) == 'é')
 - **正确答案**：2 False True
-- **解析**：text 由字母 e 和组合重音两个码点组成，len 为 2。直接与预组合形式的 ‘é’ 比较为 False（码点序列不同）。NFC 规范化把分解形式合并成预组合码点，所以规范化后比较为 True。代码等价于：
+- **解析**：text 由字母 e 和组合重音两个码点组成，len 为 2。直接与预组合形式的 'é' 比较为 False（码点序列不同）。NFC 规范化把分解形式合并成预组合码点，所以规范化后比较为 True。代码等价于：
 
 ```python
-text = ‘e’ + chr(0x301)
-print(len(text), text == ‘é’, unicodedata.normalize(‘NFC’, text) == ‘é’)
+text = 'e' + chr(0x301)
+print(len(text), text == 'é', unicodedata.normalize('NFC', text) == 'é')
 ```
 
 - **关联知识**：Unicode 码点、NFC 规范化
