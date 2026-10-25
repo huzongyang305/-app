@@ -27,10 +27,10 @@
 
 | 术语 | 操作性定义 | 常见边界与风险 |
 | --- | --- | --- |
-| context.WithTimeout | 超时与取消：context.WithTimeout 传递取消信号，所有阻塞操作都要监听 ctx.Done()。 | 网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。 |
+| context.WithTimeout | 超时与取消：context.WithTimeout 传递取消信号，所有阻塞操作都要监听 ctx.Done()。 | 只对监听 `ctx.Done()` 的分支起作用；阻塞调用没接 `select` 也没判 cancel 时，超时信号就中断不了它。 |
 | sync.WaitGroup | 等待一组任务：sync.WaitGroup 的 Add/Done/Wait。 | 易错：`sync.WaitGroup`；正确做法是计数归零即完成。 |
 | Go | 由 Google 设计的静态编译语言，强调简单语法、并发和部署便利。 | 易错：所有 goroutine 用同一个值；正确做法是Go 1.22 已修复，旧版本要 `v := v`。 |
-| 数据竞争 | 多个 goroutine 无同步地读写同一变量，用 -race 检测，靠互斥锁或 channel 消除。 | 共享状态与调度顺序会改变结论，单线程或串行测试通过不等于并发下成立。 |
+| 数据竞争 | 多个 goroutine 无同步地读写同一变量，用 -race 检测，靠互斥锁或 channel 消除。 | 串行跑通不代表没竞争，共享 map 不加锁要开 `go test -race` 复现，靠 Mutex 或 channel 才能消除。 |
 
 ## 原理与运行机制
 

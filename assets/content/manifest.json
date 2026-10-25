@@ -3034,7 +3034,7 @@
             "en": "Service worker caching strategies, offline queue and updates."
           },
           "file": "assets/content/web_pwa_offline.md",
-          "minutes": 30,
+          "minutes": 35,
           "keywords": [
             "PWA",
             "ServiceWorker",
@@ -17898,7 +17898,7 @@
             "en": "Browser vs Node, running code, strict mode and tooling."
           },
           "file": "assets/content/programming_js_basics.md",
-          "minutes": 40,
+          "minutes": 45,
           "keywords": [
             "JavaScript",
             "Node",
@@ -19773,7 +19773,7 @@
             "en": "Declare variables, read input and convert safely."
           },
           "file": "assets/content/csharp_variables_input.md",
-          "minutes": 25,
+          "minutes": 30,
           "keywords": [
             "C# 变量与输入",
             "C#",
@@ -20269,7 +20269,7 @@
             "en": "Value/reference types, nullable, casting and strings."
           },
           "file": "assets/content/programming_csharp_types.md",
-          "minutes": 35,
+          "minutes": 40,
           "keywords": [
             "值类型",
             "引用类型",
@@ -24824,7 +24824,7 @@
             "en": "Option/Result, traits, pattern matching and smart pointers."
           },
           "file": "assets/content/programming_rust_types_traits.md",
-          "minutes": 40,
+          "minutes": 45,
           "keywords": [
             "Rust",
             "Option",
@@ -26637,7 +26637,7 @@
             "en": "Narrowing, generics, utility types and strict mode."
           },
           "file": "assets/content/programming_typescript.md",
-          "minutes": 35,
+          "minutes": 40,
           "keywords": [
             "TypeScript",
             "类型",
@@ -28388,7 +28388,7 @@
             "en": "Create, run and debug a shell script."
           },
           "file": "assets/content/shell_first_script.md",
-          "minutes": 30,
+          "minutes": 35,
           "keywords": [
             "Shell 第一个脚本",
             "Shell",
@@ -28491,7 +28491,7 @@
             "en": "Read variables, positional args and environment."
           },
           "file": "assets/content/shell_variables_args.md",
-          "minutes": 25,
+          "minutes": 30,
           "keywords": [
             "Shell 变量与参数",
             "Shell",
@@ -37142,7 +37142,7 @@
             "en": "Prefix trees, autocomplete and trade-offs."
           },
           "file": "assets/content/algorithms_trie.md",
-          "minutes": 35,
+          "minutes": 40,
           "keywords": [
             "字典树",
             "Trie",
@@ -39935,7 +39935,7 @@
             "en": "Handshake, certificate chains and security guarantees."
           },
           "file": "assets/content/network_tls.md",
-          "minutes": 30,
+          "minutes": 35,
           "keywords": [
             "HTTPS",
             "TLS",
@@ -57307,7 +57307,7 @@
             "en": "LoRA, data quality and local serving."
           },
           "file": "assets/content/ai_fine_tuning_deployment.md",
-          "minutes": 35,
+          "minutes": 40,
           "keywords": [
             "微调",
             "LoRA",
@@ -58380,7 +58380,7 @@
             "en": "SLOs, stability patterns, Little's Law and drills."
           },
           "file": "assets/content/distributed_high_availability.md",
-          "minutes": 30,
+          "minutes": 35,
           "keywords": [
             "高可用",
             "SLO",

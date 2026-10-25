@@ -27,10 +27,10 @@
 
 | 术语 | 操作性定义 | 常见边界与风险 |
 | --- | --- | --- |
-| dotnet restore | 版本号尽量显式固定；dotnet restore 会按 lock 文件还原依赖，保证 CI 与本地一致。 | 不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。 |
-| Add-Migration | EF Core 把 LINQ 翻译成 SQL，配合迁移（Add-Migration / Database.Migrate()）管理表结构。 | 索引命中与数据分布决定实际开销，判断前先看执行计划而不是只看结果是否正确。 |
-| EF Core | EF Core 把 LINQ 翻译成 SQL，配合迁移（Add-Migration / Database.Migrate()）管理表结构。 | 索引命中与数据分布决定实际开销，判断前先看执行计划而不是只看结果是否正确。 |
-| NuGet | .NET 的包管理器，restore 按项目文件解析并下载依赖，锁文件用于固定版本。 | 不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。 |
+| dotnet restore | 版本号尽量显式固定；dotnet restore 会按 lock 文件还原依赖，保证 CI 与本地一致。 | 易错：各项目各写版本，本地还原成功但 CI 装到不同版本；靠 lock 文件与集中管理固定。 |
+| Add-Migration | EF Core 把 LINQ 翻译成 SQL，配合迁移（Add-Migration / Database.Migrate()）管理表结构。 | 生成迁移后还要执行 database update，否则模型与库表不一致；迁移要随实体变更一起提交。 |
+| EF Core | EF Core 把 LINQ 翻译成 SQL，配合迁移（Add-Migration / Database.Migrate()）管理表结构。 | 易错：在循环里逐条查询触发 N+1；要用 Include 或 Select 投影一次取回关联数据。 |
+| NuGet | .NET 的包管理器，restore 按项目文件解析并下载依赖，锁文件用于固定版本。 | restore 靠项目文件解析下载，若不提交锁文件，换机或离线时会装到不同版本；版本要显式固定。 |
 
 ## 原理与运行机制
 

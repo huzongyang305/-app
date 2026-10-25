@@ -28,11 +28,11 @@
 | 术语 | 操作性定义 | 常见边界与风险 |
 | --- | --- | --- |
 | Web Components | 浏览器原生提供的可复用自定义元素标准集合。 | 易错：标签名不带连字符就注册失败，且对外只能靠字符串属性和事件传值；它是浏览器原生标准，别当框架组件传 props。 |
-| Custom Elements | 定义和注册自定义 HTML 标签及其生命周期的 API。 | 不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。 |
-| Shadow DOM | 给元素附加隔离的 DOM 与样式作用域，避免外部样式泄漏。 | 隔离级别与并发事务会影响可见性，换级别或换存储引擎后要重新验证。 |
+| Custom Elements | 定义和注册自定义 HTML 标签及其生命周期的 API。 | 注册标签名必须含连字符，否则 `customElements.define` 直接失败；同名重复注册会抛错，应先判断或集中注册。 |
+| Shadow DOM | 给元素附加隔离的 DOM 与样式作用域，避免外部样式泄漏。 | 易错：外部类名对 Shadow 内部不生效、事件默认收不到；样式要用 CSS 变量或 `::part` 开放，事件需设 `composed: true` 才能穿透。 |
 | HTML Template | 用 template 标签保存可克隆但不立即渲染的 DOM 片段。 | 易错：template 里的片段在克隆前是惰性、不渲染的；要 `content.cloneNode(true)` 取副本用，直接引用整份只有一份。 |
-| constructor | 元素创建时 | 易错：报错或取不到值；正确做法是放到 `connectedCallback`。 |
-| connectedCallback | 插入文档 | 易错：报错或取不到值；正确做法是放到 `connectedCallback`。 |
+| constructor | 元素创建时 | 易错：constructor 执行时元素尚未插入文档，此处读子节点或属性会报错或取不到值；初始化逻辑要推迟到 `connectedCallback`。 |
+| connectedCallback | 插入文档 | 元素被移除后再次插入会重复触发 `connectedCallback`，其中绑定的事件若不成对解绑会内存泄漏，计数也可能被重复累加。 |
 | disconnectedCallback | 从文档移除 | 易错：内存泄漏；正确做法是成对绑定与解绑。 |
 | attributeChangedCallback | 监听属性变化 | 易错：属性没列进 `observedAttributes` 就不会触发回调，值也一律按字符串收；回调里还得自己挡 oldValue 与 newValue 相同的空转。 |
 | adoptedCallback | 移动到新文档 | 易错：把 adoptedCallback 当成元素被移除时的清理钩子；它只在元素被移到另一份文档时触发，解绑仍要放回 disconnectedCallback。 |

@@ -27,9 +27,9 @@
 
 | 术语 | 操作性定义 | 常见边界与风险 |
 | --- | --- | --- |
-| 并发模式 | 并发模式是「被反复验证过的 goroutine + channel 组合拳」。 | 共享状态与调度顺序会改变结论，单线程或串行测试通过不等于并发下成立。 |
+| 并发模式 | 并发模式是「被反复验证过的 goroutine + channel 组合拳」。 | 易错：用共享变量收集各 goroutine 的结果，串行跑一次没错、并发下就是数据竞争；模式成立的前提是走 channel 传递并配好退出条件。 |
 | worker 池 | 固定数量的 goroutine 从 channel 取任务，用有界并发保护下游与本地资源。 | 易错：资源耗尽；正确做法是用 semaphore 或 worker 池。 |
-| fan-in 与 fan-out | 把任务分发给多个 goroutine，再把结果汇聚回一个 channel 的经典并发结构。 | 共享状态与调度顺序会改变结论，单线程或串行测试通过不等于并发下成立。 |
+| fan-in 与 fan-out | 把任务分发给多个 goroutine，再把结果汇聚回一个 channel 的经典并发结构。 | 易错：几路 fan-out 各自去关同一个汇聚 channel 直接 panic；关闭要交给一个协程统一做，漏掉 close 时下游 range 永久阻塞。 |
 | 限流 | 用带缓冲 channel 或 rate.Limiter 控制单位时间放行的任务数，避免把下游打垮。 | 易错：内存暴涨、下游被打爆；正确做法是用 `SetLimit` 或信号量限流。 |
 
 ## 原理与运行机制

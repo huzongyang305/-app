@@ -28,9 +28,9 @@
 | 术语 | 操作性定义 | 常见边界与风险 |
 | --- | --- | --- |
 | async | async 方法返回 Task / Task<T>；await 在等待期间释放线程，因此特别适合 IO 密集场景。 | 易错：异常无法捕获，进程崩溃；正确做法是除事件处理器外都用 `Task`。 |
-| CancellationTokenSource | 用 CancellationTokenSource 实现超时： | 网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。 |
-| IDisposable | 实现 IDisposable 的对象用 using 自动释放： | 越界、悬垂引用与释放顺序会破坏结论，必须在边界输入下复验。 |
-| 配置等待 | 决定 await 恢复时是否需要回到原来的同步上下文，库代码里通常传 false 以避免死锁。 | 共享状态与调度顺序会改变结论，单线程或串行测试通过不等于并发下成立。 |
+| CancellationTokenSource | 用 CancellationTokenSource 实现超时： | 定时触发只负责产生取消信号；底层调用没接收这个 Token 时取消失效，请求仍会跑到自然结束。 |
+| IDisposable | 实现 IDisposable 的对象用 using 自动释放： | using 只管 IDisposable；对象实现的是 IAsyncDisposable 时要改用 await using，否则异步清理不会执行。 |
+| 配置等待 | 决定 await 恢复时是否需要回到原来的同步上下文，库代码里通常传 false 以避免死锁。 | 它只决定恢复点回到哪个上下文，不改变任务何时完成；库代码传 false 省下切换开销，UI 层一般不需要。 |
 | 取消 | 取消要一路传下去：只在外层判断 token.IsCancellationRequested 而不传给底层调用，是无效取消 | 易错：取消失效；正确做法是参数一路传到底。 |
 
 ## 原理与运行机制

@@ -68,11 +68,11 @@ Android 开发的关键是**分层（UI/状态/数据）+ 空安全 + 协程**�
 
 | 术语 | 操作性定义 | 本课中的边界 |
 | --- | --- | --- |
-| Kotlin | 运行于 JVM 等平台、强调空安全与简洁语法的现代编程语言。 | 仅在「Kotlin 与 Android 开发」明确给出的输入、版本与资源条件下成立。 |
-| Android | Android 开发的关键是分层（UI/状态/数据）+ 空安全 + 协程：把状态交给 ViewModel、把耗时操作交给协程、把数据来源收敛到 Repository。 | 仅在「Kotlin 与 Android 开发」明确给出的输入、版本与资源条件下成立。 |
-| AAB | Android App Bundle 发布格式，由应用商店按设备配置生成拆分后的 APK。 | 仅在「Kotlin 与 Android 开发」明确给出的输入、版本与资源条件下成立。 |
-| 构建变体 | debug、release 等不同配置的产物，用变体维度管理签名、混淆与接口地址。 | 仅在「Kotlin 与 Android 开发」明确给出的输入、版本与资源条件下成立。 |
-| 协程 | 协程把耗时工作挪出主线程 | 仅在「Kotlin 与 Android 开发」明确给出的输入、版本与资源条件下成立。 |
+| Kotlin | 运行于 JVM 等平台、强调空安全与简洁语法的现代编程语言。 | 空安全靠编译期拦住 `String?` 的直接取值，但 `!!` 能把这道检查绕过去，图省事用它的线上仍在空指针崩溃。 |
+| Android | Android 开发的关键是分层（UI/状态/数据）+ 空安全 + 协程：把状态交给 ViewModel、把耗时操作交给协程、把数据来源收敛到 Repository。 | 分层要在状态真进 ViewModel 后才起作用：请求写在 Activity 里，旋转屏幕重建就会重复请求甚至崩溃，ViewModel 也不能持有 View 引用。 |
+| AAB | Android App Bundle 发布格式，由应用商店按设备配置生成拆分后的 APK。 | 要由 `./gradlew bundleRelease` 产出、交给商店按设备拆分后才有可装机的 APK，签名凭据得外置到 `keystore.properties` 并排除出仓库。 |
+| 构建变体 | debug、release 等不同配置的产物，用变体维度管理签名、混淆与接口地址。 | 只在 debug 跑通不代表 release 可用：`minifyEnabled true` 会引入混淆规则，接口地址与签名要靠 productFlavors 分别配置。 |
+| 协程 | 协程把耗时工作挪出主线程 | 挂起不等于自动换线程：磁盘与网络要显式切到 `Dispatchers.IO`，否则界面卡顿甚至 ANR；用 `GlobalScope` 启动的协程不受生命周期约束，容易泄漏。 |
 
 ### 定义如何使用
 

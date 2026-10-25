@@ -27,13 +27,13 @@
 
 | 术语 | 操作性定义 | 常见边界与风险 |
 | --- | --- | --- |
-| TypeScript | 在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js。 | 静态检查只在编译期成立，运行期输入仍需校验。 |
-| tsup | 库项目常见组合：tsup 产出 dist/index.mjs 与 dist/index.cjs + tsc 生成 .d.ts，并在 package.json 用 exports 字段声明条件导出，避免"双包危害"（同一依赖被加载两份）。 | 不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。 |
-| Vite | 现代前端构建工具：开发时用原生 ESM 按需编译并热更新，打包时用 Rollup 产出静态资源。 | 静态检查只在编译期成立，运行期输入仍需校验。 |
-| 转译与类型检查分离 | esbuild、swc 只做语法转换，类型错误要靠 tsc --noEmit 单独把关。 | 静态检查只在编译期成立，运行期输入仍需校验。 |
+| TypeScript | 在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js。 | 易错：以为声明的类型在运行时也兜底——TS 的静态检查发生在编译前，运行期输入仍需自己校验。 |
+| tsup | 库项目常见组合：tsup 产出 dist/index.mjs 与 dist/index.cjs + tsc 生成 .d.ts，并在 package.json 用 exports 字段声明条件导出，避免"双包危害"（同一依赖被加载两份）。 | 易错：只出 ESM 不兼容老项目，使用方 require 失败；tsup 要同时出 .js 与 .cjs，发布物用 `npm pack` 本地验证。 |
+| Vite | 现代前端构建工具：开发时用原生 ESM 按需编译并热更新，打包时用 Rollup 产出静态资源。 | Vite 只转译打包不做类型检查；以为开发时没错就直接发布，类型错误照样发布，CI 要单独跑 `tsc --noEmit`。 |
+| 转译与类型检查分离 | esbuild、swc 只做语法转换，类型错误要靠 tsc --noEmit 单独把关。 | esbuild、swc 通过只代表语法转换没报错；CI 链漏掉 `tsc --noEmit`，类型错误会随打包成功一起发布。 |
 | tsc --noEmit | 全量类型检查，进 CI | 易错：类型错误照样发布；正确做法是CI 单独跑 `tsc --noEmit`。 |
-| tsd / expect-type | 断言类型行为（如 Omit 是否正确） | 静态检查只在编译期成立，运行期输入仍需校验。 |
-| ESLint + typescript-eslint | 禁 any、要求显式返回类型、限制浮空 Promise | 静态检查只在编译期成立，运行期输入仍需校验。 |
+| tsd / expect-type | 断言类型行为（如 Omit 是否正确） | 它们只断言类型层面的行为，替代不了 vitest 的运行期断言；「超过 100 元打九折」这类业务错误要靠执行才能暴露。 |
+| ESLint + typescript-eslint | 禁 any、要求显式返回类型、限制浮空 Promise | lint 全绿不代表类型正确：正文的 CI 顺序是先 lint 后跑 `tsc --noEmit`，漏掉任一步会分别放过浮空 Promise 或类型错误。 |
 
 ## 原理与运行机制
 

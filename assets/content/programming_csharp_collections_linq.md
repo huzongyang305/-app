@@ -27,10 +27,10 @@
 
 | 术语 | 操作性定义 | 常见边界与风险 |
 | --- | --- | --- |
-| List | 选择原则：有序可重复用 List<T>，键值查找用 Dictionary<TKey,TValue>，去重用 HashSet<T>。 | 易错：每次都重新计算（延迟执行）；正确做法是需要复用先 `ToList()` 物化。 |
+| List | 选择原则：有序可重复用 List<T>，键值查找用 Dictionary<TKey,TValue>，去重用 HashSet<T>。 | 易错：拿 `List<T>` 去重或按键查找；本课分工是去重换 `HashSet<T>`、查找换 `Dictionary`，可变列表也别跨线程共享。 |
 | Dictionary | C# 中的键值映射集合，按键快速查找且键通常唯一。 | 易错：`KeyNotFoundException`；正确做法是用 `TryGetValue`。 |
 | LINQ | LINQ 是延迟执行：只写 Where 不会立刻计算，直到 foreach、ToList()、Count() 之类的操作才真正跑。 | 易错：有时不如手写循环；正确做法是热点路径实测。 |
-| 延迟执行 | LINQ 查询在枚举时才真正执行，多次枚举会重复查询，必要时先物化成集合。 | 易错：每次都重新计算（延迟执行）；正确做法是需要复用先 `ToList()` 物化。 |
+| 延迟执行 | LINQ 查询在枚举时才真正执行，多次枚举会重复查询，必要时先物化成集合。 | 易错：同一条查询 foreach 两遍还以为结果有缓存；枚举一次就重算一次，要复用必须先 `ToList()` 物化。 |
 
 ## 原理与运行机制
 

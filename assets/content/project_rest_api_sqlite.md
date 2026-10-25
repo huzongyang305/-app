@@ -27,9 +27,9 @@
 
 | 术语 | 操作性定义 | 常见边界与风险 |
 | --- | --- | --- |
-| REST | Explain what Project: REST API with SQLite Transactions solves and when it should be used.。 | 不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。 |
+| REST | Explain what Project: REST API with SQLite Transactions solves and when it should be used.。 | 客户端会重试超时请求，响应必须是稳定错误结构；把错误原文拼进去会泄露 SQL 与堆栈，冲突要统一映射成 409。 |
 | 事务 | 从接口契约到数据库事务，完成一个可测试、可回滚、支持幂等重试的库存预约服务。 | 易错：并发请求造成超卖；正确做法是使用条件更新或事务锁。 |
-| API 契约 | 本课涉及：REST、SQLite、事务、幂等、API 契约。 | 不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。 |
+| API 契约 | 本课涉及：REST、SQLite、事务、幂等、API 契约。 | 契约要写清资源、请求字段与错误码，改动后用 OpenAPI 契约测试核对，且至少一条 REST 用例走失败路径。 |
 | 幂等键 | 客户端为写请求生成的唯一标识，服务端据此识别重复提交，避免重复扣减。 | 易错：重启后重复请求仍会写两次；正确做法是数据库唯一约束持久化幂等键。 |
 
 ## 原理与运行机制

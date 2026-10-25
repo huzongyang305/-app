@@ -27,10 +27,10 @@
 
 | 术语 | 操作性定义 | 常见边界与风险 |
 | --- | --- | --- |
-| Promise | 表示异步操作最终结果的对象，可链式处理成功和失败。 | 易错：拿到 Promise 对象而不是数据；正确做法是在 `async` 函数里 await。 |
-| async | 标记异步函数或异步块，使内部可以使用 await 而不阻塞调用线程。 | 易错：拿到 Promise 对象而不是数据；正确做法是在 `async` 函数里 await。 |
-| await | ② 忘记 await 使错误变成 unhandledRejection。 | 易错：拿到 Promise 对象而不是数据；正确做法是在 `async` 函数里 await。 |
-| 事件循环 | 运行时从任务队列取出回调并执行的调度循环，负责协调同步栈与异步任务。 | 越界、悬垂引用与释放顺序会破坏结论，必须在边界输入下复验。 |
+| Promise | 表示异步操作最终结果的对象，可链式处理成功和失败。 | 状态一旦 fulfilled 或 rejected 就不能再变；`Promise.all` 任一失败即整体 reject，4xx 也要自查 `res.ok`。 |
+| async | 标记异步函数或异步块，使内部可以使用 await 而不阻塞调用线程。 | `async` 函数总是返回 Promise；在非 async 函数里写 await 是语法错误，要加 async 或改用 `.then`。 |
+| await | ② 忘记 await 使错误变成 unhandledRejection。 | 漏写 await 会让错误变成 unhandledRejection；在 `forEach` 回调里 await 也不等待，要改 `for...of`。 |
+| 事件循环 | 运行时从任务队列取出回调并执行的调度循环，负责协调同步栈与异步任务。 | 只有一个主线程，长同步任务会堵住后续回调；`setTimeout(fn,0)` 排在微任务之后不会立即执行。 |
 | fetch | 浏览器和现代运行时提供的基于 Promise 的 HTTP 请求接口。 | 易错：请求失败无法被捕获；正确做法是必须 `await fetch(url)`，否则拿到的是 Promise。 |
 
 ## 原理与运行机制

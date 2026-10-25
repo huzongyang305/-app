@@ -228,6 +228,101 @@ bool _repeatsDefinition(String haystack, String definition) {
   return needle.length > 4 && _definitionKey(haystack).contains(needle);
 }
 
+/// 生成器把下面这 13 句抄进了几百篇不相干课文的「常见边界与风险」列：句子跟这一行的
+/// 术语毫无绑定，学生读到只会得到「什么都要重新验证」这种没用的结论。
+const List<String> _cannedBoundary = <String>[
+  '静态检查只在编译期成立，运行期输入仍需校验。',
+  '共享状态与调度顺序会改变结论，单线程或串行测试通过不等于并发下成立。',
+  '越界、悬垂引用与释放顺序会破坏结论，必须在边界输入下复验。',
+  '不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。',
+  '网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。',
+  '结果依赖数据分布、模型版本与算力预算，换数据集或换硬件都要重新评估。',
+  '权限与密钥策略变化会让结论失效，按最小权限并用真实凭据流程复验。',
+  '索引命中与数据分布决定实际开销，判断前先看执行计划而不是只看结果是否正确。',
+  '隔离级别与并发事务会影响可见性，换级别或换存储引擎后要重新验证。',
+  '缓存与状态残留会让结果过期，先明确失效策略再判断正确性。',
+  '结论随输入规模变化，小规模成立不代表大规模成立，需要重新测量。',
+  '换编码、换字节序或换平台都可能改变结果，处理前先固定输入编码。',
+  '容器与集群环境差异会改变行为，本地通过后仍需在目标编排环境复验。',
+];
+
+/// 「常见边界与风险」这一列的表头长法不止一种，按最后一列的列名判断是不是边界列。
+final RegExp _riskHeader = RegExp(r'(边界|风险|易错|坑|注意|失效|误用)');
+
+List<String> _tableCells(String line) => line
+    .trim()
+    .replaceFirst(RegExp(r'^\|'), '')
+    .replaceFirst(RegExp(r'\|$'), '')
+    .split(RegExp(r'(?<!\\)\|'))
+    .map((cell) => cell.trim())
+    .toList();
+
+/// 数出「核心概念定义」小节里两类空洞末列：通用免责句、同一张表内字面重复。
+({int canned, int duplicated}) _conceptTableFiller(String markdown) {
+  final lines = markdown.split('\n');
+  final separator = RegExp(r'^\s*\|[\s:|-]+\|[\s:|-]*$');
+  var canned = 0;
+  var duplicated = 0;
+  var inFence = false;
+  var inSection = false;
+  var header = <String>[];
+  var column = <String>[];
+  var pending = '';
+  void flushTable() {
+    if (header.isEmpty ||
+        header.length < 3 ||
+        !_riskHeader.hasMatch(header.last)) {
+      column = <String>[];
+      return;
+    }
+    final counts = <String, int>{};
+    for (final cell in column) {
+      counts[cell] = (counts[cell] ?? 0) + 1;
+    }
+    for (final entry in counts.entries) {
+      if (entry.value > 1) duplicated += entry.value;
+    }
+    column = <String>[];
+  }
+
+  for (final line in lines) {
+    if (line.startsWith('```')) {
+      inFence = !inFence;
+      continue;
+    }
+    if (inFence) continue;
+    if (line.startsWith('## ')) {
+      flushTable();
+      header = <String>[];
+      pending = '';
+      inSection = line.trim() == '## 核心概念定义';
+      continue;
+    }
+    if (!inSection) continue;
+    if (!line.trim().startsWith('|')) {
+      pending = '';
+      continue;
+    }
+    if (separator.hasMatch(line)) {
+      // 分隔行上面那一行就是表头。
+      flushTable();
+      header = pending.isEmpty ? <String>[] : _tableCells(pending);
+      pending = line;
+      continue;
+    }
+    pending = line;
+    final cells = _tableCells(line);
+    if (cells.length < 3) continue;
+    if (_cannedBoundary.contains(cells.last)) {
+      canned++;
+      continue;
+    }
+    column.add(cells.last);
+  }
+  flushTable();
+  return (canned: canned, duplicated: duplicated);
+}
+
 void main(List<String> args) {
   final rootIndex = args.indexOf('--root');
   final root = rootIndex >= 0 && rootIndex + 1 < args.length
@@ -272,6 +367,8 @@ void main(List<String> args) {
   final duplicateHeads = <String>[];
   final hedgeRepeats = <String>[];
   final hedgeCells = <String>[];
+  var cannedBoundaryCells = 0;
+  var duplicatedRiskCells = 0;
 
   for (final rawCategory in (manifest['categories'] as List<dynamic>)) {
     final category = (rawCategory as Map).cast<String, dynamic>();
@@ -288,6 +385,9 @@ void main(List<String> args) {
       final markdown = file.readAsStringSync();
       lessonCount++;
       lessonIds.add(id);
+      final filler = _conceptTableFiller(markdown);
+      cannedBoundaryCells += filler.canned;
+      duplicatedRiskCells += filler.duplicated;
       final images = _imageRef
           .allMatches(markdown)
           .map((match) => match.group(1)!.split('/').last)
@@ -486,6 +586,8 @@ void main(List<String> args) {
     ..writeln('同课重复小节                ${duplicateHeads.length}')
     ..writeln('定义复读套话（行内/考点）     ${hedgeRepeats.length}')
     ..writeln('概念表边界套话格            ${hedgeCells.length}')
+    ..writeln('概念表通用免责句          $cannedBoundaryCells')
+    ..writeln('概念表末列同表重复        $duplicatedRiskCells')
     ..writeln('题干重复                    ${duplicateStems.length}');
   for (final sample in doubledJoins.take(5)) {
     stdout.writeln('  重复字：$sample');
@@ -549,6 +651,8 @@ void main(List<String> args) {
       duplicateHeads.length +
       hedgeRepeats.length +
       hedgeCells.length +
+      cannedBoundaryCells +
+      duplicatedRiskCells +
       duplicateStems.length;
   if (hardFailures > 0) {
     stderr.writeln('自检失败：$hardFailures 项硬失败');

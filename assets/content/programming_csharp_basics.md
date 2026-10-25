@@ -30,7 +30,7 @@
 | Nullable | 开启 Nullable 后编译器会检查可能的空引用，新项目建议默认打开。 | 易错：空引用问题逃过检查；正确做法是在 csproj 中开启。 |
 | dotnet | C# 代码跑在 .NET 上：**编译成 IL、由 CLR 托管执行**。掌握 dotnet CLI 与 csproj 配置即可开始任何类型的项目。 | 易错：缺 using 或没装包；正确做法是补 `using` 或 `dotnet add package`。 |
 | C# | C# 是运行在 .NET 平台上的编译型语言：源码编译成中间语言（IL）。 | 易错：结果不确定；正确做法是C# 中 `==` 对 string 已重载为比值，但仍要注意 null。 |
-| .csproj | C# 项目文件：声明目标框架、依赖与编译项，dotnet build 依据它生成程序集。 | 不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。 |
+| .csproj | C# 项目文件：声明目标框架、依赖与编译项，dotnet build 依据它生成程序集。 | 易错：SDK 低于 `TargetFramework` 报 NETSDK1045；可空分析与资源复制都要在 csproj 里显式开启，否则空值逃过检查、发布后缺配置文件。 |
 
 ## 原理与运行机制
 

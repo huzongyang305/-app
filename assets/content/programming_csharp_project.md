@@ -28,9 +28,9 @@
 | 术语 | 操作性定义 | 常见边界与风险 |
 | --- | --- | --- |
 | dotnet ef migrations add Init | 生产环境应使用 EF Core 迁移（dotnet ef migrations add Init）而不是 EnsureCreated。 | 易错：命令生成的迁移文件不提交版本库、或手工改库结构，各环境就会不一致；脚本还应纳入 CI。 |
-| UseExceptionHandler | 加 UseExceptionHandler 统一错误响应，日志用 ILogger。 | 网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。 |
+| UseExceptionHandler | 加 UseExceptionHandler 统一错误响应，日志用 ILogger。 | 中间件只负责把异常统一转成 ProblemDetails，堆栈仅进日志；若把 exception 原文回吐给客户端就泄露细节。 |
 | dotnet test | CI 中执行 dotnet format --verify-no-changes 与 dotnet test。 | 易错：内存库单测全绿只证明业务规则，SQL 与迁移差异要靠端到端起真数据库那层，此命令本身覆盖不到。 |
-| 实战 | 实战：Web API + EF Core解决了什么问题，而不是只背术语。 | 不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。 |
+| 实战 | 实战：Web API + EF Core解决了什么问题，而不是只背术语。 | 只背 DTO、Scoped 之类的名词不算数，得能按正常、边界、失败、幂等、回滚五条路径逐一演示交付物。 |
 | 错误处理 | 识别、传播并恢复异常或失败路径，避免错误被吞掉或扩大影响 | 易错：把异常堆栈原样返回给用户会泄露细节，用异常做正常流程控制又慢又乱；堆栈只进日志，响应统一映射状态码。 |
 
 ## 原理与运行机制

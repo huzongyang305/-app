@@ -31,13 +31,13 @@
 | 探针 | liveness、readiness、startup 三种健康检查，配置不当会误杀容器或过早导入流量。 | 易错：`kubectl logs --previous`；正确做法是应用启动失败、配置缺失、探针过严。 |
 | 资源请求与限制 | requests 决定调度时的预留量，limits 决定运行时的上限，两者共同决定 Pod 的服务质量等级。 | 易错：内存用量一超 limits 就会被 OOMKilled；requests 定预留、limits 定上限，配错会拉低服务质量等级。 |
 | 调度 | kube-scheduler 按资源、污点与亲和性把 Pod 放到合适的节点上，Pending 多半卡在这一步。 | 易错：requests 要得太多、没有节点装得下，或目标节点带污点却没配容忍，Pod 就会一直卡在 Pending 等待调度。 |
-| Pod | Kubernetes 最小调度单元，包含一个或多个共享网络与存储的容器 | 易错：`kubectl describe pod` 看 Events；正确做法是资源不足、节点选择器/污点不匹配、PVC 未绑定。 |
-| Pod | 最小调度单位，包含一个或多个容器 | 易错：`kubectl describe pod` 看 Events；正确做法是资源不足、节点选择器/污点不匹配、PVC 未绑定。 |
+| Pod | Kubernetes 最小调度单元，包含一个或多个共享网络与存储的容器 | 同组容器共用网络与存储，一个容器占的端口或挂载会牵动其它容器；卡住时先 describe 看 Events。 |
+| Pod | 最小调度单位，包含一个或多个容器 | 与上一行的区别：这里强调 Pod 一般不直接创建而交给控制器，手工改单个 Pod 会在重建后丢掉改动。 |
 | Deployment | 管理 Pod 副本数、滚动更新与回滚 | 易错：重建后改动丢失；正确做法是改 Deployment 等控制器资源。 |
 | Service | 为一组 Pod 提供稳定访问入口与负载均衡 | 易错：`kubectl get endpoints web`；正确做法是selector 与 labels 不匹配，或 Pod 未 Ready。 |
 | Ingress | 七层入口，按域名/路径路由 | 易错：`kubectl describe ingress`；正确做法是path/host 规则不匹配、ingressClassName 错误。 |
-| ConfigMap / Secret | 注入配置与密钥 | 权限与密钥策略变化会让结论失效，按最小权限并用真实凭据流程复验。 |
-| StatefulSet | 有状态服务（数据库），Pod 有稳定标识与存储 | 索引命中与数据分布决定实际开销，判断前先看执行计划而不是只看结果是否正确。 |
+| ConfigMap / Secret | 注入配置与密钥 | 注入后不会自动生效：环境变量只在容器启动时读一次，改完配置要 rollout restart 或滚动更新才拿得到新值。 |
+| StatefulSet | 有状态服务（数据库），Pod 有稳定标识与存储 | 它的 Pod 要按顺序部署、各自挂 PVC 并保住稳定标识，不像 Deployment 的副本那样能随意互换。 |
 | Job / CronJob | 一次性任务与定时任务 | 易错：CronJob 上一轮没跑完、下一轮到点又并发起多个，要配好并发策略；历史成败记录不设保留数也会越堆越多。 |
 | HPA | 按 CPU/自定义指标自动扩缩容 | 易错：忘了配 requests 时 HPA 没有基准算不出利用率、也就不会扩容；它还依赖指标服务，指标一停摆扩缩容就失灵。 |
 
