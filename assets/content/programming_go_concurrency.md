@@ -78,10 +78,10 @@ Go 的并发哲学：**不要通过共享内存来通信，而要通过通信来
 
 ### 选择与边界
 
-- 使用 `context.WithTimeout` 时，先满足它的定义：超时与取消：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`；网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。
-- 使用 `sync.WaitGroup` 时，先满足它的定义：等待一组任务：`sync.WaitGroup` 的 Add/Done/Wait；易错：`sync.WaitGroup`；正确做法是计数归零即完成。
-- 使用 `Go` 时，先满足它的定义：由 Google 设计的静态编译语言，强调简单语法、并发和部署便利；易错：所有 goroutine 用同一个值；正确做法是Go 1.22 已修复，旧版本要 `v := v`。
-- 使用 `数据竞争` 时，先满足它的定义：多个 goroutine 无同步地读写同一变量，用 -race 检测，靠互斥锁或 channel 消除；共享状态与调度顺序会改变结论，单线程或串行测试通过不等于并发下成立。
+- 使用 `context.WithTimeout` 时，超时与取消：`context.WithTimeout` 传递取消信号，所有阻塞操作都要监听 `ctx.Done()`；网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。
+- 使用 `sync.WaitGroup` 时，等待一组任务：`sync.WaitGroup` 的 Add/Done/Wait；易错：`sync.WaitGroup`；正确做法是计数归零即完成。
+- 使用 `Go` 时，由 Google 设计的静态编译语言，强调简单语法、并发和部署便利；易错：所有 goroutine 用同一个值；正确做法是Go 1.22 已修复，旧版本要 `v := v`。
+- 使用 `数据竞争` 时，多个 goroutine 无同步地读写同一变量，用 -race 检测，靠互斥锁或 channel 消除；共享状态与调度顺序会改变结论，单线程或串行测试通过不等于并发下成立。
 
 ## 代码/协议/SQL 示例
 

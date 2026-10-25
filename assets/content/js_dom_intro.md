@@ -110,11 +110,11 @@ console.log(document.querySelector("button").textContent);
 
 ### 选择与边界
 
-- 使用 `DOM` 时，先满足它的定义：浏览器把 HTML 解析成的对象树，JavaScript 通过它读写页面。
-- 使用 `querySelector` 时，先满足它的定义：用 CSS 选择器找到第一个匹配元素，querySelectorAll 返回全部。
-- 使用 `textContent 与 innerHTML` 时，先满足它的定义：前者按纯文本读写，后者会解析 HTML，有注入风险；权限与密钥策略变化会让结论失效，按最小权限并用真实凭据流程复验。
-- 使用 `事件监听` 时，先满足它的定义：addEventListener 把处理函数绑定到事件，回调里用 event 取详情。
-- 使用 `事件冒泡` 时，先满足它的定义：事件从触发元素向上传播，可用 stopPropagation 阻止。
+- 使用 `DOM` 时，浏览器把 HTML 解析成的对象树，JavaScript 通过它读写页面。
+- 使用 `querySelector` 时，用 CSS 选择器找到第一个匹配元素，querySelectorAll 返回全部。
+- 使用 `textContent 与 innerHTML` 时，前者按纯文本读写，后者会解析 HTML，有注入风险；权限与密钥策略变化会让结论失效，按最小权限并用真实凭据流程复验。
+- 使用 `事件监听` 时，addEventListener 把处理函数绑定到事件，回调里用 event 取详情。
+- 使用 `事件冒泡` 时，事件从触发元素向上传播，可用 stopPropagation 阻止。
 
 ## 代码/协议/SQL 示例
 

@@ -80,11 +80,11 @@ const data = await response.json();
 
 ### 选择与边界
 
-- 使用 `Promise` 时，先满足它的定义：表示异步操作最终结果的对象，可链式处理成功和失败；易错：拿到 Promise 对象而不是数据；正确做法是在 `async` 函数里 await。
-- 使用 `async` 时，先满足它的定义：标记异步函数或异步块，使内部可以使用 await 而不阻塞调用线程；易错：拿到 Promise 对象而不是数据；正确做法是在 `async` 函数里 await。
-- 使用 `await` 时，先满足它的定义：② 忘记 await 使错误变成 unhandledRejection；易错：拿到 Promise 对象而不是数据；正确做法是在 `async` 函数里 await。
-- 使用 `事件循环` 时，先满足它的定义：运行时从任务队列取出回调并执行的调度循环，负责协调同步栈与异步任务；越界、悬垂引用与释放顺序会破坏结论，必须在边界输入下复验。
-- 使用 `fetch` 时，先满足它的定义：浏览器和现代运行时提供的基于 Promise 的 HTTP 请求接口；易错：请求失败无法被捕获；正确做法是必须 `await fetch(url)`，否则拿到的是 Promise。
+- 使用 `Promise` 时，表示异步操作最终结果的对象，可链式处理成功和失败；易错：拿到 Promise 对象而不是数据；正确做法是在 `async` 函数里 await。
+- 使用 `async` 时，标记异步函数或异步块，使内部可以使用 await 而不阻塞调用线程；易错：拿到 Promise 对象而不是数据；正确做法是在 `async` 函数里 await。
+- 使用 `await` 时，② 忘记 await 使错误变成 unhandledRejection；易错：拿到 Promise 对象而不是数据；正确做法是在 `async` 函数里 await。
+- 使用 `事件循环` 时，运行时从任务队列取出回调并执行的调度循环，负责协调同步栈与异步任务；越界、悬垂引用与释放顺序会破坏结论，必须在边界输入下复验。
+- 使用 `fetch` 时，浏览器和现代运行时提供的基于 Promise 的 HTTP 请求接口；易错：请求失败无法被捕获；正确做法是必须 `await fetch(url)`，否则拿到的是 Promise。
 
 ## 代码/协议/SQL 示例
 

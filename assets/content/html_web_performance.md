@@ -148,10 +148,10 @@ README.md
 
 ### 选择与边界
 
-- 使用 `PerformanceObserver` 时，先满足它的定义：**测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）。
-- 使用 `defer` 时，先满足它的定义：**关键路径**：首屏 CSS 内联，非关键 JS 用 `defer`/`async`，路由级代码分割；易错：阻塞渲染；正确做法是`defer` / `async` 或延迟加载。
-- 使用 `preconnect` 时，先满足它的定义：**网络**：静态资源走 CDN、开启 HTTP/2 或 HTTP/3、避免域名分片、预连接关键域名（`preconnect`）；网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。
-- 使用 `immutable` 时，先满足它的定义：**缓存**：带哈希的静态资源用 `immutable` 长缓存，HTML 用协商缓存；静态检查只在编译期成立，运行期输入仍需校验。
+- 使用 `PerformanceObserver` 时，**测量方式**：实验室用 Lighthouse/Performance 面板，真实用户用 CrUX 或自建 RUM（`PerformanceObserver` 采集上报）。
+- 使用 `defer` 时，**关键路径**：首屏 CSS 内联，非关键 JS 用 `defer`/`async`，路由级代码分割；易错：阻塞渲染；正确做法是`defer` / `async` 或延迟加载。
+- 使用 `preconnect` 时，**网络**：静态资源走 CDN、开启 HTTP/2 或 HTTP/3、避免域名分片、预连接关键域名（`preconnect`）；网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。
+- 使用 `immutable` 时，**缓存**：带哈希的静态资源用 `immutable` 长缓存，HTML 用协商缓存；静态检查只在编译期成立，运行期输入仍需校验。
 
 ### 项目专属规格
 

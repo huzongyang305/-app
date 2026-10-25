@@ -80,11 +80,11 @@ K8s 的复杂度是真实成本：集群、网络、存储、证书、监控都�
 
 ### 选择与边界
 
-- 使用 `requests` 时，先满足它的定义：`requests` 影响调度，`limits` 影响超限行为；**探针配错会导致容器反复重启**——readiness 失败只是摘流量，liveness 失败会重启容器；易错：只设置了 limits 没设 requests；正确做法是必须同时设置 requests。
-- 使用 `探针` 时，先满足它的定义：liveness、readiness、startup 三种健康检查，配置不当会误杀容器或过早导入流量；易错：`kubectl logs --previous`；正确做法是应用启动失败、配置缺失、探针过严。
-- 使用 `资源请求与限制` 时，先满足它的定义：requests 决定调度时的预留量，limits 决定运行时的上限，两者共同决定 Pod 的服务质量等级。
-- 使用 `调度` 时，先满足它的定义：kube-scheduler 按资源、污点与亲和性把 Pod 放到合适的节点上，Pending 多半卡在这一步。
-- 使用 `Pod` 时，先满足它的定义：Kubernetes 最小调度单元，包含一个或多个共享网络与存储的容器；易错：`kubectl describe pod` 看 Events；正确做法是资源不足、节点选择器/污点不匹配、PVC 未绑定。
+- 使用 `requests` 时，`requests` 影响调度，`limits` 影响超限行为；**探针配错会导致容器反复重启**——readiness 失败只是摘流量，liveness 失败会重启容器；易错：只设置了 limits 没设 requests；正确做法是必须同时设置 requests。
+- 使用 `探针` 时，liveness、readiness、startup 三种健康检查，配置不当会误杀容器或过早导入流量；易错：`kubectl logs --previous`；正确做法是应用启动失败、配置缺失、探针过严。
+- 使用 `资源请求与限制` 时，requests 决定调度时的预留量，limits 决定运行时的上限，两者共同决定 Pod 的服务质量等级。
+- 使用 `调度` 时，kube-scheduler 按资源、污点与亲和性把 Pod 放到合适的节点上，Pending 多半卡在这一步。
+- 使用 `Pod` 时，Kubernetes 最小调度单元，包含一个或多个共享网络与存储的容器；易错：`kubectl describe pod` 看 Events；正确做法是资源不足、节点选择器/污点不匹配、PVC 未绑定。
 
 ## 代码/协议/SQL 示例
 

@@ -87,10 +87,10 @@
 
 ### 选择与边界
 
-- 使用 `List` 时，先满足它的定义：选择原则：有序可重复用 List<T>，键值查找用 Dictionary<TKey,TValue>，去重用 HashSet<T>；易错：每次都重新计算（延迟执行）；正确做法是需要复用先 `ToList()` 物化。
-- 使用 `Dictionary` 时，先满足它的定义：C# 中的键值映射集合，按键快速查找且键通常唯一；易错：`KeyNotFoundException`；正确做法是用 `TryGetValue`。
-- 使用 `LINQ` 时，先满足它的定义：LINQ 是延迟执行：只写 Where 不会立刻计算，直到 foreach、ToList()、Count() 之类的操作才真正跑；易错：有时不如手写循环；正确做法是热点路径实测。
-- 使用 `延迟执行` 时，先满足它的定义：LINQ 查询在枚举时才真正执行，多次枚举会重复查询，必要时先物化成集合；易错：每次都重新计算（延迟执行）；正确做法是需要复用先 `ToList()` 物化。
+- 使用 `List` 时，选择原则：有序可重复用 List<T>，键值查找用 Dictionary<TKey,TValue>，去重用 HashSet<T>；易错：每次都重新计算（延迟执行）；正确做法是需要复用先 `ToList()` 物化。
+- 使用 `Dictionary` 时，C# 中的键值映射集合，按键快速查找且键通常唯一；易错：`KeyNotFoundException`；正确做法是用 `TryGetValue`。
+- 使用 `LINQ` 时，LINQ 是延迟执行：只写 Where 不会立刻计算，直到 foreach、ToList()、Count() 之类的操作才真正跑；易错：有时不如手写循环；正确做法是热点路径实测。
+- 使用 `延迟执行` 时，LINQ 查询在枚举时才真正执行，多次枚举会重复查询，必要时先物化成集合；易错：每次都重新计算（延迟执行）；正确做法是需要复用先 `ToList()` 物化。
 
 ## 代码/协议/SQL 示例
 

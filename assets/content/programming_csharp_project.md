@@ -385,11 +385,11 @@ README.md
 
 ### 选择与边界
 
-- 使用 `dotnet ef migrations add Init` 时，先满足它的定义：生产环境应使用 EF Core 迁移（`dotnet ef migrations add Init`）而不是 `EnsureCreated`。
-- 使用 `UseExceptionHandler` 时，先满足它的定义：加 `UseExceptionHandler` 统一错误响应，日志用 ILogger；网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。
-- 使用 `dotnet test` 时，先满足它的定义：CI 中执行 `dotnet format --verify-no-changes` 与 `dotnet test`。
-- 使用 `实战` 时，先满足它的定义：实战：Web API + EF Core解决了什么问题，而不是只背术语；不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。
-- 使用 `错误处理` 时，先满足它的定义：识别、传播并恢复异常或失败路径，避免错误被吞掉或扩大影响。
+- 使用 `dotnet ef migrations add Init` 时，生产环境应使用 EF Core 迁移（`dotnet ef migrations add Init`）而不是 `EnsureCreated`。
+- 使用 `UseExceptionHandler` 时，加 `UseExceptionHandler` 统一错误响应，日志用 ILogger；网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。
+- 使用 `dotnet test` 时，CI 中执行 `dotnet format --verify-no-changes` 与 `dotnet test`。
+- 使用 `实战` 时，实战：Web API + EF Core解决了什么问题，而不是只背术语；不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。
+- 使用 `错误处理` 时，识别、传播并恢复异常或失败路径，避免错误被吞掉或扩大影响。
 
 ## 代码/协议/SQL 示例
 

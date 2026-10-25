@@ -110,11 +110,11 @@ Shell 的精髓是组合：`grep` 过滤、`sed` 替换、`awk` 按列处理、`
 
 ### 选择与边界
 
-- 使用 `Shell` 时，先满足它的定义：Shell 的精髓是组合：grep 过滤、sed 替换、awk 按列处理、sort/uniq 排序去重、cut 取列、xargs 批量执行、find 定位文件。
-- 使用 `Bash` 时，先满足它的定义：常见 Unix Shell，用命令、变量、管道和脚本组合自动化系统任务。
-- 使用 `脚本` 时，先满足它的定义：把多条命令写进文件按顺序执行，可带参数、判断与循环；首行 shebang 决定用哪个解释器；易错：`Permission denied`；正确做法是`chmod +x script.sh`。
-- 使用 `管道` 时，先满足它的定义：把一个命令或函数的输出直接作为下一个命令或函数的输入；易错：前半段失败却继续；正确做法是加 `set -o pipefail`。
-- 使用 `set -e` 时，先满足它的定义：Shell 选项，命令失败时立即退出当前脚本，避免继续执行错误路径；易错：出错还继续跑；正确做法是开头加 `set -euo pipefail`。
+- 使用 `Shell` 时，Shell 的精髓是组合：grep 过滤、sed 替换、awk 按列处理、sort/uniq 排序去重、cut 取列、xargs 批量执行、find 定位文件。
+- 使用 `Bash` 时，常见 Unix Shell，用命令、变量、管道和脚本组合自动化系统任务。
+- 使用 `脚本` 时，把多条命令写进文件按顺序执行，可带参数、判断与循环；首行 shebang 决定用哪个解释器；易错：`Permission denied`；正确做法是`chmod +x script.sh`。
+- 使用 `管道` 时，把一个命令或函数的输出直接作为下一个命令或函数的输入；易错：前半段失败却继续；正确做法是加 `set -o pipefail`。
+- 使用 `set -e` 时，Shell 选项，命令失败时立即退出当前脚本，避免继续执行错误路径；易错：出错还继续跑；正确做法是开头加 `set -euo pipefail`。
 
 ## 代码/协议/SQL 示例
 

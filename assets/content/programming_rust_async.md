@@ -69,11 +69,11 @@
 
 ### 选择与边界
 
-- 使用 `Rust` 时，先满足它的定义：Rust 的 async fn 由编译器生成状态机，返回 Future；Future 是惰性的，必须被 await 或被 executor 驱动才会推进；静态检查只在编译期成立，运行期输入仍需校验。
-- 使用 `异步` 时，先满足它的定义：async/await 把等待交给执行器：任务在 await 处让出线程，适合高并发 IO，但不能阻塞线程；易错：运行时被卡住；正确做法是用异步版本或 `spawn_blocking`。
-- 使用 `tokio` 时，先满足它的定义：用 std 的 Mutex 跨 await 持有，会导致死锁或编译错误；应使用 tokio::sync::Mutex，且尽量缩短持锁范围；易错：可能死锁；正确做法是用 `tokio::sync::Mutex`。
-- 使用 `spawn_blocking` 时，先满足它的定义：在异步任务里做阻塞操作（同步 IO、CPU 密集），会卡住整个执行线程，应用 spawnblocking 或限制线程数；易错：运行时被卡住；正确做法是用异步版本或 `spawn_blocking`。
-- 使用 `Tokio` 时，先满足它的定义：Rust 的异步运行时：提供任务调度、定时器与异步 IO，配合 async/await 写高并发程序；共享状态与调度顺序会改变结论，单线程或串行测试通过不等于并发下成立。
+- 使用 `Rust` 时，Rust 的 async fn 由编译器生成状态机，返回 Future；Future 是惰性的，必须被 await 或被 executor 驱动才会推进；静态检查只在编译期成立，运行期输入仍需校验。
+- 使用 `异步` 时，async/await 把等待交给执行器：任务在 await 处让出线程，适合高并发 IO，但不能阻塞线程；易错：运行时被卡住；正确做法是用异步版本或 `spawn_blocking`。
+- 使用 `tokio` 时，用 std 的 Mutex 跨 await 持有，会导致死锁或编译错误；应使用 tokio::sync::Mutex，且尽量缩短持锁范围；易错：可能死锁；正确做法是用 `tokio::sync::Mutex`。
+- 使用 `spawn_blocking` 时，在异步任务里做阻塞操作（同步 IO、CPU 密集），会卡住整个执行线程，应用 spawnblocking 或限制线程数；易错：运行时被卡住；正确做法是用异步版本或 `spawn_blocking`。
+- 使用 `Tokio` 时，Rust 的异步运行时：提供任务调度、定时器与异步 IO，配合 async/await 写高并发程序；共享状态与调度顺序会改变结论，单线程或串行测试通过不等于并发下成立。
 
 ## 代码/协议/SQL 示例
 

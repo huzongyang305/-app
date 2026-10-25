@@ -87,10 +87,10 @@
 
 ### 选择与边界
 
-- 使用 `dotnet restore` 时，先满足它的定义：版本号尽量显式固定；`dotnet restore` 会按 lock 文件还原依赖，保证 CI 与本地一致；不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。
-- 使用 `Add-Migration` 时，先满足它的定义：EF Core 把 LINQ 翻译成 SQL，配合迁移（`Add-Migration` / `Database.Migrate()`）管理表结构；索引命中与数据分布决定实际开销，判断前先看执行计划而不是只看结果是否正确。
-- 使用 `EF Core` 时，先满足它的定义：EF Core 把 LINQ 翻译成 SQL，配合迁移（Add-Migration / Database.Migrate()）管理表结构；索引命中与数据分布决定实际开销，判断前先看执行计划而不是只看结果是否正确。
-- 使用 `NuGet` 时，先满足它的定义：.NET 的包管理器，restore 按项目文件解析并下载依赖，锁文件用于固定版本；不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。
+- 使用 `dotnet restore` 时，版本号尽量显式固定；`dotnet restore` 会按 lock 文件还原依赖，保证 CI 与本地一致；不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。
+- 使用 `Add-Migration` 时，EF Core 把 LINQ 翻译成 SQL，配合迁移（`Add-Migration` / `Database.Migrate()`）管理表结构；索引命中与数据分布决定实际开销，判断前先看执行计划而不是只看结果是否正确。
+- 使用 `EF Core` 时，EF Core 把 LINQ 翻译成 SQL，配合迁移（Add-Migration / Database.Migrate()）管理表结构；索引命中与数据分布决定实际开销，判断前先看执行计划而不是只看结果是否正确。
+- 使用 `NuGet` 时，.NET 的包管理器，restore 按项目文件解析并下载依赖，锁文件用于固定版本；不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。
 
 ## 代码/协议/SQL 示例
 

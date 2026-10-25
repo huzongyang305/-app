@@ -75,10 +75,10 @@
 
 ### 选择与边界
 
-- 使用 `break` 时，先满足它的定义：`break` 结束循环，`continue` 跳过本轮；`forEach` 中不能用 `break`，需要提前退出就用 `for...of`；易错：报错或无效；正确做法是改 `for...of`。
-- 使用 `循环` 时，先满足它的定义：break 结束循环，continue 跳过本轮；forEach 中不能用 break，需要提前退出就用 for...of。
-- 使用 `六个常用运算符` 时，先满足它的定义：const name = input ?? "匿名"; // input 为 null/undefined 时才用默认值。
-- 使用 `短路求值` 时，先满足它的定义：与、或运算符在结果已经确定时不再计算右侧，常用它写默认值与条件调用。
+- 使用 `break` 时，`break` 结束循环，`continue` 跳过本轮；`forEach` 中不能用 `break`，需要提前退出就用 `for...of`；易错：报错或无效；正确做法是改 `for...of`。
+- 使用 `循环` 时，break 结束循环，continue 跳过本轮；forEach 中不能用 break，需要提前退出就用 for...of。
+- 使用 `六个常用运算符` 时，const name = input ?? "匿名"; // input 为 null/undefined 时才用默认值。
+- 使用 `短路求值` 时，与、或运算符在结果已经确定时不再计算右侧，常用它写默认值与条件调用。
 
 ## 代码/协议/SQL 示例
 

@@ -104,10 +104,10 @@ Console.WriteLine(temperature > 30 ? "hot" : "normal");
 
 ### 选择与边界
 
-- 使用 `bool` 时，先满足它的定义：只有 true 与 false，条件表达式必须是它。
-- 使用 `if-else` 时，先满足它的定义：按条件选择分支，else if 依次判断。
-- 使用 `switch 与模式匹配` 时，先满足它的定义：按取值或模式分支，case 用 break 或 return 结束。
-- 使用 `可空类型判断` 时，先满足它的定义：用 is null、?? 与 ?. 处理可能为 null 的引用；越界、悬垂引用与释放顺序会破坏结论，必须在边界输入下复验。
+- 使用 `bool` 时，只有 true 与 false，条件表达式必须是它。
+- 使用 `if-else` 时，按条件选择分支，else if 依次判断。
+- 使用 `switch 与模式匹配` 时，按取值或模式分支，case 用 break 或 return 结束。
+- 使用 `可空类型判断` 时，用 is null、?? 与 ?. 处理可能为 null 的引用；越界、悬垂引用与释放顺序会破坏结论，必须在边界输入下复验。
 
 ## 代码/协议/SQL 示例
 
