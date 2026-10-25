@@ -10,33 +10,40 @@
 
 ---
 
-## 目录
+## 本节知识框架
 
-1. [课程介绍：认识你的"自动化机器人助手"](#1-课程介绍认识你的自动化机器人助手)
-2. [核心概念：Workflow、Job、Step、Action](#2-核心概念workflowjobstepaction)
-3. [事件触发机制：让自动化动起来](#3-事件触发机制让自动化动起来)
-4. [常用 Action 使用指南](#4-常用-action-使用指南)
-5. [实战一：构建 CI 持续集成流水线](#5-实战一构建-ci-持续集成流水线)
-6. [实战二：PR 检查自动化](#6-实战二pr-检查自动化)
-7. [实战三：定时任务与手动触发](#7-实战三定时任务与手动触发)
-8. [矩阵策略：多版本多系统测试](#8-矩阵策略多版本多系统测试)
-9. [环境变量与密钥管理](#9-环境变量与密钥管理)
-10. [缓存优化：加速你的流水线](#10-缓存优化加速你的流水线)
-11. [自定义 Composite Action](#11-自定义-composite-action)
-12. [实战四：构建完整 CI/CD 流水线（部署到云服务）](#12-实战四构建完整-cicd-流水线部署到云服务)
-13. [课程总结与复习清单](#13-课程总结与复习清单)
+**课程定位**：分类「devops」· 学习阶段 高级 · 建议用时 55 分钟。
 
----
+本课主线：掌握工作流配置、矩阵策略、自定义 Action 与 CI/CD 集成。
 
-## 1. 课程介绍：认识你的"自动化机器人助手"
+### 复习清单
 
-### 1.1 什么是 GitHub Actions？
+- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
+- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
+
+## 核心概念定义
+
+| 术语 | 一句话说明 |
+| --- | --- |
+| GitHub Actions | 掌握工作流配置、矩阵策略、自定义 Action 与 CI/CD 集成。相关：正文给出可操作定义与适用边界。 |
+| 工作流 | 掌握工作流配置、矩阵策略、自定义 Action 与 CI/CD 集成。相关：正文给出可操作定义与适用边界。 |
+| 矩阵策略 | 掌握工作流配置、矩阵策略、自定义 Action 与 CI/CD 集成。相关：正文给出可操作定义与适用边界。 |
+| Action | 掌握工作流配置、矩阵策略、自定义 Action 与 CI/CD 集成。相关：正文给出可操作定义与适用边界。 |
+
+## 原理与运行机制
+
+《GitHub Actions 自动化实战》正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
+
+### 课程介绍：认识你的"自动化机器人助手"
+
+#### 什么是 GitHub Actions？
 
 想象一下，你有一个超级勤劳的**机器人助手**，它 24 小时待命，只要你一推送代码，它就自动帮你做各种事情：检查代码有没有 bug、运行测试、打包应用、甚至把应用部署到服务器上。这个机器人助手就是 **GitHub Actions**。
 
 用更正式的话来说，GitHub Actions 是 GitHub 提供的 **CI/CD（持续集成/持续部署）** 平台。它让你能够在代码仓库中定义自动化的工作流程，从代码提交到应用上线，全程自动化。
 
-### 1.2 为什么需要 GitHub Actions？
+#### 为什么需要 GitHub Actions？
 
 | 传统方式 | 使用 GitHub Actions |
 |---------|-------------------|
@@ -45,7 +52,7 @@
 | 不同环境配置不一致 | 统一的 YAML 配置，团队共享 |
 | 需要自己搭建 CI 服务器 | GitHub 免费提供运行环境 |
 
-### 1.3 生活类比
+#### 生活类比
 
 把 GitHub Actions 想象成一个**智能厨房机器人**：
 
@@ -56,11 +63,9 @@
 
 机器人会严格按照菜谱执行，不会偷懒，也不会忘记任何步骤。
 
----
+### 核心概念：Workflow、Job、Step、Action
 
-## 2. 核心概念：Workflow、Job、Step、Action
-
-### 2.1 四大核心概念
+#### 四大核心概念
 
 ```yaml
 # 一个 workflow 文件的骨架
@@ -80,7 +85,7 @@ jobs:                           # Jobs：这个流程包含哪些任务
         run: npm test            # 再运行一条命令
 ```
 
-### 2.2 概念详解
+#### 概念详解
 
 **Workflow（工作流）**
 - 定义在 `.github/workflows/` 目录下的 YAML 文件
@@ -103,7 +108,7 @@ jobs:                           # Jobs：这个流程包含哪些任务
 - 也可以是社区开发的
 - 甚至可以是你自己仓库里的自定义 action
 
-### 2.3 Job 之间的依赖关系
+#### Job 之间的依赖关系
 
 ```yaml
 jobs:
@@ -127,11 +132,9 @@ jobs:
       - run: echo "部署到生产环境"
 ```
 
----
+### 事件触发机制：让自动化动起来
 
-## 3. 事件触发机制：让自动化动起来
-
-### 3.1 常见触发事件
+#### 常见触发事件
 
 GitHub Actions 支持多种触发方式，就像你家的智能闹钟可以设定多种闹钟模式一样：
 
@@ -166,7 +169,7 @@ on:
           - production
 ```
 
-### 3.2 组合多种触发条件
+#### 组合多种触发条件
 
 ```yaml
 on:
@@ -177,7 +180,7 @@ on:
   workflow_dispatch:            # 同时支持手动触发
 ```
 
-### 3.3 触发条件过滤
+#### 触发条件过滤
 
 ```yaml
 on:
@@ -191,11 +194,9 @@ on:
       - '**/*.md'              # 忽略所有 Markdown 文件
 ```
 
----
+### 常用 Action 使用指南
 
-## 4. 常用 Action 使用指南
-
-### 4.1 actions/checkout — 检出代码
+#### actions/checkout — 检出代码
 
 这是最常用的 action，它把你的代码"下载"到运行环境中：
 
@@ -207,7 +208,7 @@ steps:
       fetch-depth: 2            # 只获取最近 2 次提交（加速克隆）
 ```
 
-### 4.2 actions/setup-node — 配置 Node.js 环境
+#### actions/setup-node — 配置 Node.js 环境
 
 ```yaml
 steps:
@@ -218,7 +219,7 @@ steps:
       cache: 'npm'              # 自动缓存 npm 依赖
 ```
 
-### 4.3 actions/cache — 缓存依赖
+#### actions/cache — 缓存依赖
 
 缓存可以大幅加速你的流水线，就像把常用的工具放在手边，不用每次都去仓库取：
 
@@ -233,7 +234,7 @@ steps:
         ${{ runner.os }}-node-
 ```
 
-### 4.4 actions/upload-artifact 与 download-artifact
+#### actions/upload-artifact 与 download-artifact
 
 在 job 之间传递构建产物：
 
@@ -262,11 +263,9 @@ jobs:
       - run: ls dist/
 ```
 
----
+### 实战一：构建 CI 持续集成流水线
 
-## 5. 实战一：构建 CI 持续集成流水线
-
-### 5.1 Node.js 项目 CI 完整示例
+#### Node.js 项目 CI 完整示例
 
 下面是一个真实项目中常用的 CI 配置，每次推送代码都会自动运行：
 
@@ -334,7 +333,7 @@ jobs:
           retention-days: 7
 ```
 
-### 5.2 Python 项目 CI 示例
+#### Python 项目 CI 示例
 
 ```yaml
 # .github/workflows/ci-python.yml
@@ -372,11 +371,9 @@ jobs:
           path: coverage.xml
 ```
 
----
+### 实战二：PR 检查自动化
 
-## 6. 实战二：PR 检查自动化
-
-### 6.1 PR 自动检查清单
+#### PR 自动检查清单
 
 每次有人提交 Pull Request，自动运行以下检查：
 
@@ -436,7 +433,7 @@ jobs:
         run: npm run build
 ```
 
-### 6.2 PR 自动标签与评论
+#### PR 自动标签与评论
 
 ```yaml
 # .github/workflows/pr-labeler.yml
@@ -472,11 +469,9 @@ jobs:
             })
 ```
 
----
+### 实战三：定时任务与手动触发
 
-## 7. 实战三：定时任务与手动触发
-
-### 7.1 定时健康检查
+#### 定时健康检查
 
 ```yaml
 # .github/workflows/scheduled-health-check.yml
@@ -533,7 +528,7 @@ jobs:
         continue-on-error: true       # 即使有漏洞也不中断，只警告
 ```
 
-### 7.2 手动触发部署
+#### 手动触发部署
 
 ```yaml
 # .github/workflows/manual-deploy.yml
@@ -591,15 +586,13 @@ jobs:
           echo "模拟运行: ${{ inputs.dry_run }}"
 ```
 
----
+### 矩阵策略：多版本多系统测试
 
-## 8. 矩阵策略：多版本多系统测试
-
-### 8.1 什么是矩阵策略？
+#### 什么是矩阵策略？
 
 矩阵策略就像你开了一家连锁餐厅，需要在多个城市（操作系统）用不同的厨师团队（语言版本）来测试同一道菜谱（你的代码），确保它在任何地方都能做出同样的味道。
 
-### 8.2 多版本测试
+#### 多版本测试
 
 ```yaml
 # .github/workflows/matrix-test.yml
@@ -637,7 +630,7 @@ jobs:
         run: npm run test:coverage
 ```
 
-### 8.3 多语言多框架测试
+#### 多语言多框架测试
 
 ```yaml
 jobs:
@@ -668,11 +661,9 @@ jobs:
           ${{ matrix.test-cmd }}
 ```
 
----
+### 环境变量与密钥管理
 
-## 9. 环境变量与密钥管理
-
-### 9.1 环境变量的层级
+#### 环境变量的层级
 
 GitHub Actions 中环境变量有三个层级，就像你家的门禁系统有不同级别的权限：
 
@@ -705,7 +696,7 @@ jobs:
           echo "应用名称: $APP_NAME"
 ```
 
-### 9.2 Secrets 密钥管理
+#### Secrets 密钥管理
 
 密钥（Secrets）是敏感信息，如 API 密钥、数据库密码等。GitHub 会自动加密并隐藏它们：
 
@@ -729,7 +720,7 @@ jobs:
           echo "密钥已加载，开始部署"
 ```
 
-### 9.3 GitHub Environments
+#### GitHub Environments
 
 ```yaml
 jobs:
@@ -751,15 +742,13 @@ jobs:
 
 > **安全提示**：永远不要在 workflow 文件中硬编码密钥。始终使用 `${{ secrets.XXX }}` 引用，并在 GitHub 仓库的 Settings > Secrets and variables > Actions 中配置。
 
----
+### 缓存优化：加速你的流水线
 
-## 10. 缓存优化：加速你的流水线
-
-### 10.1 为什么需要缓存？
+#### 为什么需要缓存？
 
 想象你每天做饭都要去超市买食材（下载依赖），如果能把常用的食材提前放在冰箱里（缓存），做饭速度就会快很多。
 
-### 10.2 npm 依赖缓存
+#### npm 依赖缓存
 
 ```yaml
 steps:
@@ -777,7 +766,7 @@ steps:
   - run: npm test
 ```
 
-### 10.3 多语言缓存配置
+#### 多语言缓存配置
 
 ```yaml
 # Python 项目缓存
@@ -808,7 +797,7 @@ steps:
       ${{ runner.os }}-buildx-
 ```
 
-### 10.4 使用 setup-* action 内置缓存
+#### 使用 setup-* action 内置缓存
 
 很多官方 setup action 自带缓存功能，无需手动配置：
 
@@ -830,15 +819,13 @@ steps:
     cache: 'maven'                  # 自动缓存 Maven 依赖
 ```
 
----
+### 自定义 Composite Action
 
-## 11. 自定义 Composite Action
-
-### 11.1 什么是 Composite Action？
+#### 什么是 Composite Action？
 
 当你发现多个 workflow 中有重复的步骤组合时，可以把它们打包成一个**自定义 Action**，就像把常用的工具组合成一个"工具箱"，需要时直接拿来用。
 
-### 11.2 创建一个 Composite Action
+#### 创建一个 Composite Action
 
 目录结构：
 
@@ -901,7 +888,7 @@ runs:
         echo "缓存命中: ${{ steps.cache.outputs.cache-hit }}"
 ```
 
-### 11.3 在 Workflow 中使用
+#### 在 Workflow 中使用
 
 ```yaml
 # .github/workflows/ci.yml
@@ -934,11 +921,9 @@ jobs:
       - run: npm run build
 ```
 
----
+### 实战四：构建完整 CI/CD 流水线（部署到云服务）
 
-## 12. 实战四：构建完整 CI/CD 流水线（部署到云服务）
-
-### 12.1 完整流水线概览
+#### 完整流水线概览
 
 这是本课程的终极实战，我们将构建一个完整的 CI/CD 流水线：
 
@@ -949,7 +934,7 @@ jobs:
   触发器    Lint检查    单元测试   Docker构建   云端部署
 ```
 
-### 12.2 完整 Workflow 配置
+#### 完整 Workflow 配置
 
 ```yaml
 # .github/workflows/full-cicd.yml
@@ -1105,7 +1090,7 @@ jobs:
           echo "GCP 部署健康检查通过！"
 ```
 
-### 12.3 Dockerfile 示例
+#### Dockerfile 示例
 
 ```dockerfile
 # Dockerfile
@@ -1126,7 +1111,7 @@ HEALTHCHECK --interval=30s --timeout=3s CMD wget -qO- http://localhost:3000/heal
 CMD ["node", "dist/main.js"]
 ```
 
-### 12.4 部署通知
+#### 部署通知
 
 ```yaml
   notify:
@@ -1156,11 +1141,9 @@ CMD ["node", "dist/main.js"]
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 ```
 
----
+### 课程总结与复习清单
 
-## 13. 课程总结与复习清单
-
-### 13.1 知识回顾
+#### 知识回顾
 
 恭喜你完成了 GitHub Actions 自动化实战课程！让我们回顾一下学到的核心知识：
 
@@ -1179,7 +1162,7 @@ CMD ["node", "dist/main.js"]
 | 第 11 章 | 自定义 Composite Action | 复用 |
 | 第 12 章 | 完整 CI/CD 流水线（AWS/GCP 部署） | 端到端 |
 
-### 13.2 复习清单
+#### 复习清单
 
 请确保你能够独立完成以下任务，作为课程学习成果的检验：
 
@@ -1191,7 +1174,7 @@ CMD ["node", "dist/main.js"]
 - [ ] **复习项 6**：正确配置 Secrets 和 Environments，确保敏感信息不泄露，并为生产环境设置部署审批流程
 - [ ] **复习项 7**：实现缓存优化，对比优化前后 workflow 的运行时间，理解缓存键（key）的设计原则
 
-### 13.3 进阶学习路线
+#### 进阶学习路线
 
 完成本课程后，你可以继续探索以下方向：
 
@@ -1201,16 +1184,12 @@ CMD ["node", "dist/main.js"]
 4. **Actions 开发（JavaScript/Docker）** — 发布到 GitHub Marketplace
 5. **Terraform + GitHub Actions** — 基础设施即代码的自动化
 
-### 13.4 常用资源
+#### 常用资源
 
 - [GitHub Actions 官方文档](https://docs.github.com/en/actions)
 - [GitHub Actions Marketplace](https://github.com/marketplace?type=actions)
 - [Awesome Actions 社区合集](https://github.com/sdras/awesome-actions)
 - [Workflow 语法参考](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions)
-
----
-
----
 
 ## 考点精讲
 
@@ -1319,31 +1298,6 @@ cd 项目根目录 && 按 README 的安装命令准备环境
 - [ ] 可运行的完整源码与构建脚本
 - [ ] README：安装、运行、测试三步可复现
 - [ ] 验收清单逐条勾选并附运行截图或日志
-
-## 本节知识框架
-
-**课程定位**：分类「devops」· 学习阶段 高级 · 建议用时 55 分钟。
-
-本课主线：掌握工作流配置、矩阵策略、自定义 Action 与 CI/CD 集成。
-
-### 复习清单
-
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
-- [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
-
-## 核心概念定义
-
-| 术语 | 一句话说明 |
-| --- | --- |
-| GitHub Actions | 掌握工作流配置、矩阵策略、自定义 Action 与 CI/CD 集成。相关：正文给出可操作定义与适用边界。 |
-| 工作流 | 掌握工作流配置、矩阵策略、自定义 Action 与 CI/CD 集成。相关：正文给出可操作定义与适用边界。 |
-| 矩阵策略 | 掌握工作流配置、矩阵策略、自定义 Action 与 CI/CD 集成。相关：正文给出可操作定义与适用边界。 |
-| Action | 掌握工作流配置、矩阵策略、自定义 Action 与 CI/CD 集成。相关：正文给出可操作定义与适用边界。 |
-
-## 原理与运行机制
-
-《GitHub Actions 自动化实战》正文各章按「输入是什么 → 中间如何转换 → 输出到哪 → 失败时怎样表现」四问展开；复习时给每个机制补一句自己的复述，再回到对应章节核对。
 
 ## 典型应用场景
 

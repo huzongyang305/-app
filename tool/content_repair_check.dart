@@ -199,6 +199,20 @@ List<String> _borrowedHeroes(
   return out;
 }
 
+/// 第 47 波折平的旧课文骨架：讲义直搬的课文留着章节号标题和「本章摘要」「自我测试」
+/// 这类旧小节，retrofit 又在文末补了一份规范小节，同一篇里两个章节讲同一件事。
+const List<String> _legacySections = <String>[
+  '本章摘要',
+  '自我测试',
+  '自测题',
+  '代码示例',
+  '复杂度与性能分析',
+  '复杂度或性能分析',
+  '目录',
+];
+
+final RegExp _chapterNumber = RegExp(r'^\d+(?:\.\d+)*[\.、]\s');
+
 void main(List<String> args) {
   final rootIndex = args.indexOf('--root');
   final root = rootIndex >= 0 && rootIndex + 1 < args.length
@@ -239,6 +253,8 @@ void main(List<String> args) {
   final heroById = <String, String>{};
   final usersByImage = <String, List<String>>{};
   final lessonIds = <String>{};
+  final legacyHeads = <String>[];
+  final duplicateHeads = <String>[];
 
   for (final rawCategory in (manifest['categories'] as List<dynamic>)) {
     final category = (rawCategory as Map).cast<String, dynamic>();
@@ -277,6 +293,7 @@ void main(List<String> args) {
       // 空标题：H2 以下标题与下一个同级或更高级标题之间必须有正文。
       final lines = markdown.split('\n');
       final headings = <({int line, int level})>[];
+      final h2Titles = <String>[];
       var inFence = false;
       for (var index = 0; index < lines.length; index++) {
         final line = lines[index];
@@ -288,6 +305,20 @@ void main(List<String> args) {
         final match = RegExp(r'^(#{2,6})\s+').firstMatch(line);
         if (match != null) {
           headings.add((line: index, level: match.group(1)!.length));
+          if (match.group(1)!.length == 2) {
+            h2Titles.add(line.substring(3).trim());
+          }
+        }
+      }
+      for (final heading in h2Titles) {
+        if (_legacySections.contains(heading) ||
+            _chapterNumber.hasMatch(heading)) {
+          legacyHeads.add('$id($heading)');
+        }
+      }
+      for (final heading in h2Titles.toSet()) {
+        if (h2Titles.indexOf(heading) != h2Titles.lastIndexOf(heading)) {
+          duplicateHeads.add('$id($heading)');
         }
       }
       for (var index = 0; index < headings.length; index++) {
@@ -409,6 +440,8 @@ void main(List<String> args) {
     ..writeln('本课粘课程名                ${benkeGlued.length}')
     ..writeln('表格首格碎片                ${brokenTermCells.length}')
     ..writeln('首图借用别课专属图          ${borrowedHeroes.length}')
+    ..writeln('旧章节骨架残留              ${legacyHeads.length}')
+    ..writeln('同课重复小节                ${duplicateHeads.length}')
     ..writeln('题干重复                    ${duplicateStems.length}');
   for (final sample in doubledJoins.take(5)) {
     stdout.writeln('  重复字：$sample');
@@ -430,6 +463,12 @@ void main(List<String> args) {
   }
   for (final sample in borrowedHeroes.take(5)) {
     stdout.writeln('  借用首图：$sample');
+  }
+  for (final sample in legacyHeads.take(5)) {
+    stdout.writeln('  旧骨架：$sample');
+  }
+  for (final sample in duplicateHeads.take(5)) {
+    stdout.writeln('  重复小节：$sample');
   }
   for (final sample in uncovered.take(5)) {
     stdout.writeln('  未覆盖：$sample');
@@ -456,6 +495,8 @@ void main(List<String> args) {
       benkeGlued.length +
       brokenTermCells.length +
       borrowedHeroes.length +
+      legacyHeads.length +
+      duplicateHeads.length +
       duplicateStems.length;
   if (hardFailures > 0) {
     stderr.writeln('自检失败：$hardFailures 项硬失败');

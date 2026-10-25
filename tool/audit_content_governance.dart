@@ -1043,6 +1043,10 @@ int _glossaryTemplateRows(String section) {
   for (final (term, explanation) in parsed) {
     // 术语列写真正的函数名或产品名（print()、__iter__()、Next.js）是合法的，
     // 只有掺进路径、赋值或整句代码才是生成残留，这里先放行这类裸名字。
+    // 「单元类型 ()」这种「中文名 + 括号里给代码写法」也不是残留：先剥掉尾部括号再判断。
+    final termProbe = term
+        .replaceFirst(RegExp(r'\s*[\(（][^\(（\)）]*[\)）]\s*$'), '')
+        .trim();
     final plainName =
         RegExp(r'^[A-Za-z_][A-Za-z0-9_]*(\(\d?\))?$').hasMatch(term) ||
         RegExp(r'^[A-Za-z][A-Za-z0-9]*\.js$').hasMatch(term);
@@ -1051,7 +1055,8 @@ int _glossaryTemplateRows(String section) {
         (explanations[explanation] ?? 0) > 1 ||
         explanation.startsWith('|') ||
         (!plainName &&
-            RegExp(r'\s[-=]\s|\.py\b|\.js\b|\(\)|//|\.\./').hasMatch(term));
+            RegExp(r'\s[-=]\s|\.py\b|\.js\b|\(\)|//|\.\./')
+                .hasMatch(termProbe));
     if (templated) count++;
   }
   return count;
@@ -1145,7 +1150,8 @@ List<String> _splitSentences(String text) {
       }
     }
     buffer.write(char);
-    final isBoundary = char == '。' ||
+    final isBoundary =
+        char == '。' ||
         char == '！' ||
         char == '？' ||
         char == '!' ||
