@@ -92,7 +92,7 @@
 ### 选择与边界
 
 - 使用 `GC` 时，先满足它的定义：垃圾回收器：自动回收不可达对象，按代回收；频繁分配与大对象会推高回收开销；易错：GC 压力大，延迟抖动明显；正确做法是用 Span、ArrayPool 与结构体减少临时分配。
-- 使用 `BenchmarkDotNet` 时，先满足它的定义：用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化；只在「用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化」这一前提下成立，换输入或换环境要重新验证。
+- 使用 `BenchmarkDotNet` 时，先满足它的定义：用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化。
 - 使用 `分代回收` 时，先满足它的定义：.NET GC 按对象存活时间分成 0、1、2 代，优先回收短命对象，减少全堆扫描；索引命中与数据分布决定实际开销，判断前先看执行计划而不是只看结果是否正确。
 - 使用 `大对象堆` 时，先满足它的定义：大于 85 KB 的对象单独存放且默认不压缩，容易产生碎片并抬高回收成本；易错：大对象进入大对象堆后内存长期不降；正确做法是复用缓冲区，避免频繁创建大数组。
 
@@ -298,7 +298,6 @@ Console.WriteLine(string.Join(",", values.ToArray()));
 ### 考点 8：`BenchmarkDotNet`
 
 - **要点**：用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化。
-- **BenchmarkDotNet 的边界**：只在「用 BenchmarkDotNet 和 dotnet-counters 测量，再决定池化、结构体或算法优化」这一前提下成立，换输入或换环境要重新验证。
 
 ### 考点 9：`分代回收`
 

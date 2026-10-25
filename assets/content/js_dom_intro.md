@@ -110,11 +110,11 @@ console.log(document.querySelector("button").textContent);
 
 ### 选择与边界
 
-- 使用 `DOM` 时，先满足它的定义：浏览器把 HTML 解析成的对象树，JavaScript 通过它读写页面；只在「浏览器把 HTML 解析成的对象树，JavaScript 通过它读写页面」这一前提下成立，换输入或换环境要重新验证。
-- 使用 `querySelector` 时，先满足它的定义：用 CSS 选择器找到第一个匹配元素，querySelectorAll 返回全部；只在「用 CSS 选择器找到第一个匹配元素，querySelectorAll 返回全部」这一前提下成立，换输入或换环境要重新验证。
+- 使用 `DOM` 时，先满足它的定义：浏览器把 HTML 解析成的对象树，JavaScript 通过它读写页面。
+- 使用 `querySelector` 时，先满足它的定义：用 CSS 选择器找到第一个匹配元素，querySelectorAll 返回全部。
 - 使用 `textContent 与 innerHTML` 时，先满足它的定义：前者按纯文本读写，后者会解析 HTML，有注入风险；权限与密钥策略变化会让结论失效，按最小权限并用真实凭据流程复验。
-- 使用 `事件监听` 时，先满足它的定义：addEventListener 把处理函数绑定到事件，回调里用 event 取详情；只在「addEventListener 把处理函数绑定到事件，回调里用 event 取详情」这一前提下成立，换输入或换环境要重新验证。
-- 使用 `事件冒泡` 时，先满足它的定义：事件从触发元素向上传播，可用 stopPropagation 阻止；只在「事件从触发元素向上传播，可用 stopPropagation 阻止」这一前提下成立，换输入或换环境要重新验证。
+- 使用 `事件监听` 时，先满足它的定义：addEventListener 把处理函数绑定到事件，回调里用 event 取详情。
+- 使用 `事件冒泡` 时，先满足它的定义：事件从触发元素向上传播，可用 stopPropagation 阻止。
 
 ## 代码/协议/SQL 示例
 
@@ -369,12 +369,10 @@ DOM 是浏览器把 HTML 解析成的一棵树，JavaScript 通过选择器找�
 ### 考点 6：`DOM`
 
 - **要点**：浏览器把 HTML 解析成的对象树，JavaScript 通过它读写页面。
-- **DOM 的边界**：只在「浏览器把 HTML 解析成的对象树，JavaScript 通过它读写页面」这一前提下成立，换输入或换环境要重新验证。
 
 ### 考点 7：`querySelector`
 
 - **要点**：用 CSS 选择器找到第一个匹配元素，querySelectorAll 返回全部。
-- **querySelector 的边界**：只在「用 CSS 选择器找到第一个匹配元素，querySelectorAll 返回全部」这一前提下成立，换输入或换环境要重新验证。
 
 ### 考点 8：`textContent 与 innerHTML`
 
@@ -384,12 +382,10 @@ DOM 是浏览器把 HTML 解析成的一棵树，JavaScript 通过选择器找�
 ### 考点 9：`事件监听`
 
 - **要点**：addEventListener 把处理函数绑定到事件，回调里用 event 取详情。
-- **事件监听 的边界**：只在「addEventListener 把处理函数绑定到事件，回调里用 event 取详情」这一前提下成立，换输入或换环境要重新验证。
 
 ### 考点 10：`事件冒泡`
 
 - **要点**：事件从触发元素向上传播，可用 stopPropagation 阻止。
-- **事件冒泡 的边界**：只在「事件从触发元素向上传播，可用 stopPropagation 阻止」这一前提下成立，换输入或换环境要重新验证。
 
 ### 考点 11：`函数`
 

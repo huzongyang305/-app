@@ -159,9 +159,9 @@ README.md
 
 ### 选择与边界
 
-- 使用 `OWASP` 时，先满足它的定义：Explain what OWASP Top 10 in Practice solves and when it should be used.；只在「Explain what OWASP Top 10 in Practice solves and when it should be used.」这一前提下成立，换输入或换环境要重新验证。
+- 使用 `OWASP` 时，先满足它的定义：Explain what OWASP Top 10 in Practice solves and when it should be used.。
 - 使用 `注入` 时，先满足它的定义：把用户输入当成代码或命令执行（SQL、命令、模板注入）；用参数化查询与白名单校验防御；索引命中与数据分布决定实际开销，判断前先看执行计划而不是只看结果是否正确。
-- 使用 `访问控制` 时，先满足它的定义：判断主体是否有权对资源执行某个操作，并在入口处强制执行；只在「判断主体是否有权对资源执行某个操作，并在入口处强制执行」这一前提下成立，换输入或换环境要重新验证。
+- 使用 `访问控制` 时，先满足它的定义：判断主体是否有权对资源执行某个操作，并在入口处强制执行。
 - 使用 `越权` 时，先满足它的定义：已登录用户访问了不属于自己的资源，属于访问控制缺陷，必须在服务端按归属校验；易错：绕过前端即可越权；正确做法是所有校验在服务端执行。
 
 ## 代码/协议/SQL 示例
@@ -379,7 +379,6 @@ print(digest[:12])
 ### 考点 7：`OWASP`
 
 - **要点**：Explain what OWASP Top 10 in Practice solves and when it should be used.。
-- **OWASP 的边界**：只在「Explain what OWASP Top 10 in Practice solves and when it should be used.」这一前提下成立，换输入或换环境要重新验证。
 
 ### 考点 8：`注入`
 
@@ -389,7 +388,6 @@ print(digest[:12])
 ### 考点 9：`访问控制`
 
 - **要点**：判断主体是否有权对资源执行某个操作，并在入口处强制执行。
-- **访问控制 的边界**：只在「判断主体是否有权对资源执行某个操作，并在入口处强制执行」这一前提下成立，换输入或换环境要重新验证。
 
 ### 考点 10：`越权`
 

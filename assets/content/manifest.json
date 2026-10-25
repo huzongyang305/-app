@@ -9665,7 +9665,7 @@
             "en": "Use variables with printf and scanf."
           },
           "file": "assets/content/c_variables_io.md",
-          "minutes": 30,
+          "minutes": 25,
           "keywords": [
             "C 变量与输入输出",
             "C 语言",
@@ -14491,7 +14491,7 @@
             "en": "Write and run a minimal Kotlin program."
           },
           "file": "assets/content/kotlin_first_program.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "Kotlin 第一个程序",
             "Kotlin",
@@ -17106,7 +17106,7 @@
             "en": "Use XCTest, async tests, dependency injection and Instruments."
           },
           "file": "assets/content/swift_testing.md",
-          "minutes": 25,
+          "minutes": 30,
           "keywords": [
             "XCTest",
             "异步测试",
@@ -17898,7 +17898,7 @@
             "en": "Browser vs Node, running code, strict mode and tooling."
           },
           "file": "assets/content/programming_js_basics.md",
-          "minutes": 45,
+          "minutes": 40,
           "keywords": [
             "JavaScript",
             "Node",
@@ -18455,7 +18455,7 @@
             "en": "Array CRUD, map/filter/reduce, sorting and immutability."
           },
           "file": "assets/content/programming_js_arrays.md",
-          "minutes": 50,
+          "minutes": 45,
           "keywords": [
             "数组",
             "map",
@@ -19773,7 +19773,7 @@
             "en": "Declare variables, read input and convert safely."
           },
           "file": "assets/content/csharp_variables_input.md",
-          "minutes": 30,
+          "minutes": 25,
           "keywords": [
             "C# 变量与输入",
             "C#",
@@ -25038,7 +25038,7 @@
             "en": "thiserror/anyhow, iterators and tokio."
           },
           "file": "assets/content/programming_rust_errors_iterators_async.md",
-          "minutes": 45,
+          "minutes": 40,
           "keywords": [
             "Rust",
             "thiserror",
@@ -26148,7 +26148,7 @@
             "en": "Learn primitives, arrays and unions."
           },
           "file": "assets/content/ts_basic_types.md",
-          "minutes": 30,
+          "minutes": 35,
           "keywords": [
             "TypeScript 基础类型",
             "TypeScript",
@@ -27059,7 +27059,7 @@
             "en": "Decorators, advanced types and framework typing."
           },
           "file": "assets/content/programming_ts_decorators_types_pro.md",
-          "minutes": 45,
+          "minutes": 40,
           "keywords": [
             "TypeScript",
             "装饰器",
@@ -27381,7 +27381,7 @@
             "en": "Vitest, Testing Library and MSW in practice."
           },
           "file": "assets/content/ts_testing.md",
-          "minutes": 45,
+          "minutes": 40,
           "keywords": [
             "Vitest",
             "TestingLibrary",
@@ -28388,7 +28388,7 @@
             "en": "Create, run and debug a shell script."
           },
           "file": "assets/content/shell_first_script.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "Shell 第一个脚本",
             "Shell",
@@ -28491,7 +28491,7 @@
             "en": "Read variables, positional args and environment."
           },
           "file": "assets/content/shell_variables_args.md",
-          "minutes": 30,
+          "minutes": 25,
           "keywords": [
             "Shell 变量与参数",
             "Shell",
@@ -28691,7 +28691,7 @@
             "en": "Process lists and files with loops."
           },
           "file": "assets/content/shell_loops.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "Shell 循环入门",
             "Shell",
@@ -30403,7 +30403,7 @@
             "en": "Separate Bash extensions from POSIX behavior and handle tool differences."
           },
           "file": "assets/content/shell_portability.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "POSIX",
             "可移植性",
@@ -34529,7 +34529,7 @@
             "en": "Cover regular expressions, automata, recursive descent and LL/LR tradeoffs."
           },
           "file": "assets/content/compiler_lexer_parser.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "词法分析",
             "递归下降",
@@ -35453,7 +35453,7 @@
             "en": "Understand inputs, steps and complexity."
           },
           "file": "assets/content/algorithm_intro.md",
-          "minutes": 30,
+          "minutes": 25,
           "keywords": [
             "算法入门",
             "算法与数据结构",
@@ -35652,7 +35652,7 @@
             "en": "Halve the search range on a sorted array."
           },
           "file": "assets/content/algorithms_binary_search.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "二分查找",
             "有序数组",
@@ -35972,7 +35972,7 @@
             "en": "Hash functions, collisions, load factor and resizing."
           },
           "file": "assets/content/algorithms_hash_table.md",
-          "minutes": 40,
+          "minutes": 35,
           "keywords": [
             "哈希表",
             "哈希函数",
@@ -36930,7 +36930,7 @@
             "en": "O(1) range queries and range updates."
           },
           "file": "assets/content/algorithms_prefix_sum.md",
-          "minutes": 40,
+          "minutes": 35,
           "keywords": [
             "前缀和",
             "差分",
@@ -37142,7 +37142,7 @@
             "en": "Prefix trees, autocomplete and trade-offs."
           },
           "file": "assets/content/algorithms_trie.md",
-          "minutes": 40,
+          "minutes": 35,
           "keywords": [
             "字典树",
             "Trie",
@@ -38003,7 +38003,7 @@
             "en": "Learn Kruskal, Prim, union-find and cut properties."
           },
           "file": "assets/content/algo_mst.md",
-          "minutes": 25,
+          "minutes": 30,
           "keywords": [
             "MST",
             "Kruskal",
@@ -40044,7 +40044,7 @@
             "en": "Edge caching, cache headers, forward and reverse proxies."
           },
           "file": "assets/content/network_cdn_proxy.md",
-          "minutes": 30,
+          "minutes": 25,
           "keywords": [
             "CDN",
             "缓存",
@@ -41777,7 +41777,7 @@
             "en": "Understand assets, threats, vulnerabilities and risk."
           },
           "file": "assets/content/security_concept_intro.md",
-          "minutes": 30,
+          "minutes": 25,
           "keywords": [
             "安全概念入门",
             "安全与合规",
@@ -41878,7 +41878,7 @@
             "en": "Distinguish encryption, hashing, salting and slow hashes."
           },
           "file": "assets/content/password_hash_intro.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "密码与哈希入门",
             "安全与合规",
@@ -47269,7 +47269,7 @@
             "en": "Organize data with dimensional modeling, fact tables and layered warehouses."
           },
           "file": "assets/content/de_data_modeling.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "维度建模",
             "事实表",
@@ -47368,7 +47368,7 @@
             "en": "Understand partitions, shuffles, narrow/wide dependencies and skew in batch jobs."
           },
           "file": "assets/content/de_batch_processing.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "Spark",
             "分区",
@@ -47875,7 +47875,7 @@
             "en": "Event time, watermarks, window types, late data and stateful checkpoints."
           },
           "file": "assets/content/de_flink_windowing.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "Flink",
             "事件时间",
@@ -47976,7 +47976,7 @@
             "en": "Field contracts, ownership, validation rules, release gates and breaking-change process."
           },
           "file": "assets/content/de_data_contract.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "数据契约",
             "质量门禁",
@@ -48178,7 +48178,7 @@
             "en": "Prevent bad data with layered validation, contracts, lineage and ownership."
           },
           "file": "assets/content/de_data_quality.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "数据质量",
             "数据契约",
@@ -48920,7 +48920,7 @@
             "en": "Pipes, shared memory, sockets and IO models."
           },
           "file": "assets/content/os_ipc_io.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "IPC",
             "共享内存",
@@ -50621,7 +50621,7 @@
             "en": "Boot chain, vector table remap, image verification, A/B slots and power-fail rollback."
           },
           "file": "assets/content/embedded_bootloader.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "Bootloader",
             "固件升级",
@@ -51137,7 +51137,7 @@
             "en": "Init, commit, branch and sync."
           },
           "file": "assets/content/git_intro.md",
-          "minutes": 25,
+          "minutes": 30,
           "keywords": [
             "Git 入门",
             "工具链",
@@ -52437,7 +52437,7 @@
             "en": "CPU, memory, IO, network and flame graphs."
           },
           "file": "assets/content/toolchain_linux_performance.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "性能分析",
             "top",
@@ -52968,7 +52968,7 @@
             "en": "Understand function lifecycle, cold starts, event sources and idempotent handlers."
           },
           "file": "assets/content/cloud_serverless.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "Serverless",
             "冷启动",
@@ -53474,7 +53474,7 @@
             "en": "Use metrics, logs, traces and error budgets to run services with clear capacity and incident flows."
           },
           "file": "assets/content/cloud_observability_sre.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "指标",
             "日志",
@@ -59232,7 +59232,7 @@
             "en": "Cell design, capacity takeover and failover drills."
           },
           "file": "assets/content/distributed_multisite.md",
-          "minutes": 40,
+          "minutes": 35,
           "keywords": [
             "单元化",
             "多活",
@@ -59678,7 +59678,7 @@
             "en": "Equivalence, boundaries, decision tables and state transitions."
           },
           "file": "assets/content/se_test_design.md",
-          "minutes": 30,
+          "minutes": 25,
           "keywords": [
             "测试用例",
             "等价类",
@@ -60539,7 +60539,7 @@
             "en": "Debt taxonomy, scoring, repayment strategies and communication."
           },
           "file": "assets/content/se_tech_debt.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "技术债务",
             "重构",
@@ -62891,7 +62891,7 @@
             "en": "Profilers, flame graphs, benchmark discipline and common causes."
           },
           "file": "assets/content/cross_performance_profiling.md",
-          "minutes": 35,
+          "minutes": 30,
           "keywords": [
             "性能",
             "剖析",
@@ -64472,7 +64472,7 @@
             "en": "Pod lifecycle, scheduling, probes and graceful shutdown."
           },
           "file": "assets/content/visual_k8s_scheduling.md",
-          "minutes": 40,
+          "minutes": 35,
           "keywords": [
             "Kubernetes",
             "调度",

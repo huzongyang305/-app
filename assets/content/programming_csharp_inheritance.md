@@ -61,7 +61,7 @@
 
 ### 选择与边界
 
-- 使用 `virtual` 时，先满足它的定义：C# 类只能单继承；`virtual` 允许重写，`override` 重写，`sealed override` 禁止继续重写；只在「C# 类只能单继承；`virtual` 允许重写，`override` 重写，`sealed override` 禁止继续重写」这一前提下成立，换输入或换环境要重新验证。
+- 使用 `virtual` 时，先满足它的定义：C# 类只能单继承；`virtual` 允许重写，`override` 重写，`sealed override` 禁止继续重写。
 - 使用 `is` 时，先满足它的定义：`is` 配合模式匹配是最推荐的写法，`as` 失败返回 null 而不是抛异常；易错：空引用异常；正确做法是用 `is` 模式匹配。
 - 使用 `多态` 时，先满足它的定义：多态让父类变量在运行时表现出子类的行为；易错：变成新方法，多态失效；正确做法是加 `override` 让编译器检查。
 - 使用 `抽象类与接口` 时，先满足它的定义：抽象类复用实现并约束继承层次，接口只约定能力，一个类型可以实现多个接口；静态检查只在编译期成立，运行期输入仍需校验。
@@ -579,7 +579,6 @@ foreach (var m in methods)
 ### 考点 7：`virtual`
 
 - **要点**：C# 类只能单继承；`virtual` 允许重写，`override` 重写，`sealed override` 禁止继续重写。
-- **virtual 的边界**：只在「C# 类只能单继承；`virtual` 允许重写，`override` 重写，`sealed override` 禁止继续重写」这一前提下成立，换输入或换环境要重新验证。
 
 ### 考点 8：`is`
 

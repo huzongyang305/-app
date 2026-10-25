@@ -89,7 +89,7 @@
 
 - 使用 `timeout` 时，先满足它的定义：使用 `timeout` 尝试加锁，失败就释放已有资源重试；共享状态与调度顺序会改变结论，单线程或串行测试通过不等于并发下成立。
 - 使用 `jstack` 时，先满足它的定义：导出线程栈（Java 的 `jstack`、Linux 的 `gdb` 或 `pstack`）；共享状态与调度顺序会改变结论，单线程或串行测试通过不等于并发下成立。
-- 使用 `BLOCKED` 时，先满足它的定义：搜索 `BLOCKED` / `waiting to lock` 关键字；只在「搜索 `BLOCKED` / `waiting to lock` 关键字」这一前提下成立，换输入或换环境要重新验证。
+- 使用 `BLOCKED` 时，先满足它的定义：搜索 `BLOCKED` / `waiting to lock` 关键字。
 - 使用 `死锁` 时，先满足它的定义：多个执行单元互相等待对方持有的资源，导致都无法继续；易错：偶发死锁；正确做法是全局固定顺序或用有序锁封装。
 
 ## 代码/协议/SQL 示例
@@ -463,7 +463,6 @@ print(wait_for_graph({"P1": ["P2"], "P2": ["P3"], "P3": ["P1"]}))
 ### 考点 9：`BLOCKED`
 
 - **要点**：搜索 `BLOCKED` / `waiting to lock` 关键字。
-- **BLOCKED 的边界**：只在「搜索 `BLOCKED` / `waiting to lock` 关键字」这一前提下成立，换输入或换环境要重新验证。
 
 ### 考点 10：`死锁`
 

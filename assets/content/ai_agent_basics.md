@@ -132,7 +132,7 @@ def run_agent(question: str) -> str:
 ### 选择与边界
 
 - 使用 `Agent` 时，先满足它的定义：Agent = LLM + 工具 + 记忆 + 循环；易错：Agent 越权操作；正确做法是工具层做白名单与参数校验，不依赖提示词。
-- 使用 `ReAct` 时，先满足它的定义：ReAct = Reasoning + Acting，是最经典的 Agent 模式；只在「ReAct = Reasoning + Acting，是最经典的 Agent 模式」这一前提下成立，换输入或换环境要重新验证。
+- 使用 `ReAct` 时，先满足它的定义：ReAct = Reasoning + Acting，是最经典的 Agent 模式。
 - 使用 `工具调用` 时，先满足它的定义：模型按结构化参数请求外部函数或服务，并把结果带回后续推理；易错：无法发现绕路与危险调用；正确做法是评测完整轨迹与工具调用序列。
 - 使用 `MCP` 时，先满足它的定义：Model Context Protocol，用统一协议把工具和数据源暴露给模型客户端；网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。
 
@@ -447,7 +447,6 @@ tools = [{
 ### 考点 8：`ReAct`
 
 - **要点**：ReAct = Reasoning + Acting，是最经典的 Agent 模式。
-- **ReAct 的边界**：只在「ReAct = Reasoning + Acting，是最经典的 Agent 模式」这一前提下成立，换输入或换环境要重新验证。
 
 ### 考点 9：`工具调用`
 

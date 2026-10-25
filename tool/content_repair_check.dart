@@ -213,6 +213,19 @@ const List<String> _legacySections = <String>[
 
 final RegExp _chapterNumber = RegExp(r'^\d+(?:\.\d+)*[\.、]\s');
 
+/// 「只在「定义」这一前提下成立，换输入或换环境要重新验证。」——生成器把上一句
+/// 定义抄进括号再挂一句免责，读起来没有任何新信息。
+final RegExp _hedgePattern = RegExp(r'只在「(.+?)」这一前提下成立，换输入或换环境要重新验证。');
+
+/// 比对「是不是同一句定义」时忽略标点与空白，避免生成器多写一个顿号就漏检。
+String _definitionKey(String text) =>
+    text.replaceAll(RegExp("[\\s。．，,、；;：:！!？?“”\"'「」]"), '');
+
+bool _repeatsDefinition(String haystack, String definition) {
+  final needle = _definitionKey(definition);
+  return needle.length > 4 && _definitionKey(haystack).contains(needle);
+}
+
 void main(List<String> args) {
   final rootIndex = args.indexOf('--root');
   final root = rootIndex >= 0 && rootIndex + 1 < args.length
@@ -255,6 +268,8 @@ void main(List<String> args) {
   final lessonIds = <String>{};
   final legacyHeads = <String>[];
   final duplicateHeads = <String>[];
+  final hedgeRepeats = <String>[];
+  var hedgeCells = 0;
 
   for (final rawCategory in (manifest['categories'] as List<dynamic>)) {
     final category = (rawCategory as Map).cast<String, dynamic>();
@@ -319,6 +334,27 @@ void main(List<String> args) {
       for (final heading in h2Titles.toSet()) {
         if (h2Titles.indexOf(heading) != h2Titles.lastIndexOf(heading)) {
           duplicateHeads.add('$id($heading)');
+        }
+      }
+      // 定义复读套话：行内或上一行「要点」已经给出同一句定义，还要再抄一遍。
+      // 核心概念定义表格里的第三列同样空洞，但那要补的是真内容，先只做量化。
+      for (var index = 0; index < lines.length; index++) {
+        final trimmed = lines[index].trim();
+        final hedge = _hedgePattern.firstMatch(trimmed);
+        if (hedge == null) continue;
+        final definition = hedge.group(1)!;
+        if (trimmed.startsWith('|')) {
+          hedgeCells++;
+          continue;
+        }
+        final keyPoint = index > 0 ? lines[index - 1].trim() : '';
+        if (_repeatsDefinition(trimmed.substring(0, hedge.start), definition) ||
+            trimmed.startsWith('**参考答案**：只在「') ||
+            (keyPoint.startsWith('- **要点**：') &&
+                _repeatsDefinition(keyPoint, definition))) {
+          hedgeRepeats.add(
+            '$id(${definition.length > 24 ? '${definition.substring(0, 24)}…' : definition})',
+          );
         }
       }
       for (var index = 0; index < headings.length; index++) {
@@ -442,6 +478,8 @@ void main(List<String> args) {
     ..writeln('首图借用别课专属图          ${borrowedHeroes.length}')
     ..writeln('旧章节骨架残留              ${legacyHeads.length}')
     ..writeln('同课重复小节                ${duplicateHeads.length}')
+    ..writeln('定义复读套话（行内/考点）     ${hedgeRepeats.length}')
+    ..writeln('概念表边界待补写(P3)         $hedgeCells')
     ..writeln('题干重复                    ${duplicateStems.length}');
   for (final sample in doubledJoins.take(5)) {
     stdout.writeln('  重复字：$sample');
@@ -470,6 +508,9 @@ void main(List<String> args) {
   for (final sample in duplicateHeads.take(5)) {
     stdout.writeln('  重复小节：$sample');
   }
+  for (final sample in hedgeRepeats.take(5)) {
+    stdout.writeln('  定义复读：$sample');
+  }
   for (final sample in uncovered.take(5)) {
     stdout.writeln('  未覆盖：$sample');
   }
@@ -497,6 +538,7 @@ void main(List<String> args) {
       borrowedHeroes.length +
       legacyHeads.length +
       duplicateHeads.length +
+      hedgeRepeats.length +
       duplicateStems.length;
   if (hardFailures > 0) {
     stderr.writeln('自检失败：$hardFailures 项硬失败');

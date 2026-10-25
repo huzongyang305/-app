@@ -134,10 +134,10 @@ README.md
 
 ### 选择与边界
 
-- 使用 `Web Components` 时，先满足它的定义：浏览器原生提供的可复用自定义元素标准集合；只在「浏览器原生提供的可复用自定义元素标准集合」这一前提下成立，换输入或换环境要重新验证。
+- 使用 `Web Components` 时，先满足它的定义：浏览器原生提供的可复用自定义元素标准集合。
 - 使用 `Custom Elements` 时，先满足它的定义：定义和注册自定义 HTML 标签及其生命周期的 API；不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。
 - 使用 `Shadow DOM` 时，先满足它的定义：给元素附加隔离的 DOM 与样式作用域，避免外部样式泄漏；隔离级别与并发事务会影响可见性，换级别或换存储引擎后要重新验证。
-- 使用 `HTML Template` 时，先满足它的定义：用 template 标签保存可克隆但不立即渲染的 DOM 片段；只在「用 template 标签保存可克隆但不立即渲染的 DOM 片段」这一前提下成立，换输入或换环境要重新验证。
+- 使用 `HTML Template` 时，先满足它的定义：用 template 标签保存可克隆但不立即渲染的 DOM 片段。
 
 ## 代码/协议/SQL 示例
 
@@ -409,7 +409,7 @@ customElements.define("lesson-card", LessonCard);
 
 针对 `HTML Template`，分别写出“可以使用”的条件和“结论不再成立”的条件。
 
-**参考答案**：只在「用 template 标签保存可克隆但不立即渲染的 DOM 片段」这一前提下成立，换输入或换环境要重新验证。 同时要把 `HTML Template` 的定义 用 template 标签保存可克隆但不立即渲染的 DOM 片段 与实际输入逐项对照。
+**参考答案**：要把 `HTML Template` 的定义 用 template 标签保存可克隆但不立即渲染的 DOM 片段 与实际输入逐项对照。
 
 ### 自测 9（机制重建）
 
@@ -483,7 +483,6 @@ customElements.define("lesson-card", LessonCard);
 ### 考点 7：`Web Components`
 
 - **要点**：浏览器原生提供的可复用自定义元素标准集合。
-- **Web Components 的边界**：只在「浏览器原生提供的可复用自定义元素标准集合」这一前提下成立，换输入或换环境要重新验证。
 
 ### 考点 8：`Custom Elements`
 
@@ -498,7 +497,6 @@ customElements.define("lesson-card", LessonCard);
 ### 考点 10：`HTML Template`
 
 - **要点**：用 template 标签保存可克隆但不立即渲染的 DOM 片段。
-- **HTML Template 的边界**：只在「用 template 标签保存可克隆但不立即渲染的 DOM 片段」这一前提下成立，换输入或换环境要重新验证。
 
 ### 考点 11：排错——在 `constructor` 里访问子节点或属性
 

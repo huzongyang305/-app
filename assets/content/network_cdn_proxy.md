@@ -4,7 +4,7 @@
 
 ![CDN、代理与缓存](images/remaining_cdn_proxy.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：30 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：25 分钟
 
 ## 本节知识框架
 
@@ -59,10 +59,10 @@
 
 ### 选择与边界
 
-- 使用 `X-Forwarded-For` 时，先满足它的定义：反向代理转发时要带 `X-Forwarded-For` / `X-Real-IP`，否则后端只能看到代理的 IP；只在「反向代理转发时要带 `X-Forwarded-For` / `X-Real-IP`，否则后端只能看到代理的 IP」这一前提下成立，换输入或换环境要重新验证。
+- 使用 `X-Forwarded-For` 时，先满足它的定义：反向代理转发时要带 `X-Forwarded-For` / `X-Real-IP`，否则后端只能看到代理的 IP。
 - 使用 `CDN` 时，先满足它的定义：把静态或可缓存内容分发到边缘节点，降低源站压力和用户延迟；结论随输入规模变化，小规模成立不代表大规模成立，需要重新测量。
 - 使用 `缓存` 时，先满足它的定义：把计算或读取结果暂存到更快存储，后续请求直接复用；易错：发版后用户仍加载旧文件；正确做法是文件名带哈希加长缓存。
-- 使用 `Cache-Control` 时，先满足它的定义：Cache-Control: public, max-age=31536000, immutable；只在「Cache-Control: public, max-age=31536000, immutable」这一前提下成立，换输入或换环境要重新验证。
+- 使用 `Cache-Control` 时，先满足它的定义：Cache-Control: public, max-age=31536000, immutable。
 
 ## 代码/协议/SQL 示例
 
@@ -203,7 +203,7 @@ server {
 
 针对 `Cache-Control`，分别写出“可以使用”的条件和“结论不再成立”的条件。
 
-**参考答案**：只在「Cache-Control: public, max-age=31536000, immutable」这一前提下成立，换输入或换环境要重新验证。 同时要把 `Cache-Control` 的定义 Cache-Control: public, max-age=31536000, immutable 与实际输入逐项对照。
+**参考答案**：要把 `Cache-Control` 的定义 Cache-Control: public, max-age=31536000, immutable 与实际输入逐项对照。
 
 ### 自测 9（机制重建）
 
@@ -283,7 +283,6 @@ server {
 ### 考点 7：`X-Forwarded-For`
 
 - **要点**：反向代理转发时要带 `X-Forwarded-For` / `X-Real-IP`，否则后端只能看到代理的 IP。
-- **X-Forwarded-For 的边界**：只在「反向代理转发时要带 `X-Forwarded-For` / `X-Real-IP`，否则后端只能看到代理的 IP」这一前提下成立，换输入或换环境要重新验证。
 
 ### 考点 8：`CDN`
 
@@ -298,7 +297,6 @@ server {
 ### 考点 10：`Cache-Control`
 
 - **要点**：Cache-Control: public, max-age=31536000, immutable。
-- **Cache-Control 的边界**：只在「Cache-Control: public, max-age=31536000, immutable」这一前提下成立，换输入或换环境要重新验证。
 
 ### 考点 11：排错——静态资源不带指纹却设长缓存
 

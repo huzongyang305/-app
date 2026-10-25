@@ -94,8 +94,8 @@
 
 ### 选择与边界
 
-- 使用 `Object.prototype` 时，先满足它的定义：访问属性时会沿原型链向上查找，直到 `Object.prototype`，仍找不到才返回 `undefined`；只在「访问属性时会沿原型链向上查找，直到 `Object.prototype`，仍找不到才返回 `undefined`」这一前提下成立，换输入或换环境要重新验证。
-- 使用 `class` 时，先满足它的定义：`class` 是原型继承的语法糖，但语义更清晰，`extends` 会自动维护原型链；只在「`class` 是原型继承的语法糖，但语义更清晰，`extends` 会自动维护原型链」这一前提下成立，换输入或换环境要重新验证。
+- 使用 `Object.prototype` 时，先满足它的定义：访问属性时会沿原型链向上查找，直到 `Object.prototype`，仍找不到才返回 `undefined`。
+- 使用 `class` 时，先满足它的定义：`class` 是原型继承的语法糖，但语义更清晰，`extends` 会自动维护原型链。
 - 使用 `JSON` 时，先满足它的定义：用对象、数组、字符串和数字等表示结构化数据的文本格式；易错：比的是引用；正确做法是逐字段比较或用 `JSON.stringify`。
 - 使用 `原型链` 时，先满足它的定义：属性查找会沿原型向上追溯，class 只是原型继承的语法糖；易错：会带上原型链上的可枚举属性；正确做法是用 `Object.entries` 或 `Object.hasOwn` 过滤。
 
@@ -441,12 +441,10 @@ new Counter().increment().increment().value;   // 2，支持链式调用
 ### 考点 7：`Object.prototype`
 
 - **要点**：访问属性时会沿原型链向上查找，直到 `Object.prototype`，仍找不到才返回 `undefined`。
-- **Object.prototype 的边界**：只在「访问属性时会沿原型链向上查找，直到 `Object.prototype`，仍找不到才返回 `undefined`」这一前提下成立，换输入或换环境要重新验证。
 
 ### 考点 8：`class`
 
 - **要点**：`class` 是原型继承的语法糖，但语义更清晰，`extends` 会自动维护原型链。
-- **class 的边界**：只在「`class` 是原型继承的语法糖，但语义更清晰，`extends` 会自动维护原型链」这一前提下成立，换输入或换环境要重新验证。
 
 ### 考点 9：`JSON`
 

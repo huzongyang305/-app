@@ -226,11 +226,11 @@ README.md
 
 ### 选择与边界
 
-- 使用 `CLI` 时，先满足它的定义：Explain what Project: Python CLI Todo Tool solves and when it should be used.；只在「Explain what Project: Python CLI Todo Tool solves and when it should be used.」这一前提下成立，换输入或换环境要重新验证。
+- 使用 `CLI` 时，先满足它的定义：Explain what Project: Python CLI Todo Tool solves and when it should be used.。
 - 使用 `argparse` 时，先满足它的定义：Python 标准库中的命令行参数解析模块，支持类型与帮助信息；静态检查只在编译期成立，运行期输入仍需校验。
 - 使用 `JSON` 时，先满足它的定义：团队需要一个不依赖服务器的待办工具：支持添加、列出、完成和删除任务，数据保存在本机 JSON 文件中；即使进程中途退出，也不能留下半个损坏文件；易错：写入中断时文件变成半截 JSON；正确做法是先写同目录临时文件再原子替换。
 - 使用 `原子写入` 时，先满足它的定义：一句话摘要：从空目录实现可安装、可测试、可发布的命令行待办工具，覆盖参数解析、原子写入、错误码与打包；结果依赖数据分布、模型版本与算力预算，换数据集或换硬件都要重新评估。
-- 使用 `pytest` 时，先满足它的定义：本课涉及：CLI、argparse、JSON、原子写入、pytest；只在「本课涉及：CLI、argparse、JSON、原子写入、pytest」这一前提下成立，换输入或换环境要重新验证。
+- 使用 `pytest` 时，先满足它的定义：本课涉及：CLI、argparse、JSON、原子写入、pytest。
 
 ## 代码/协议/SQL 示例
 
@@ -381,7 +381,7 @@ def add(title: str) -> dict:
 
 针对 `pytest`，分别写出“可以使用”的条件和“结论不再成立”的条件。
 
-**参考答案**：只在「本课涉及：CLI、argparse、JSON、原子写入、pytest」这一前提下成立，换输入或换环境要重新验证。 同时要把 `pytest` 的定义 本课涉及：CLI、argparse、JSON、原子写入、pytest 与实际输入逐项对照。
+**参考答案**：要把 `pytest` 的定义 本课涉及：CLI、argparse、JSON、原子写入、pytest 与实际输入逐项对照。
 
 ### 自测 9（机制重建）
 
@@ -450,7 +450,6 @@ def add(title: str) -> dict:
 ### 考点 6：`CLI`
 
 - **要点**：Explain what Project: Python CLI Todo Tool solves and when it should be used.。
-- **CLI 的边界**：只在「Explain what Project: Python CLI Todo Tool solves and when it should be used.」这一前提下成立，换输入或换环境要重新验证。
 
 ### 考点 7：`argparse`
 
@@ -470,7 +469,6 @@ def add(title: str) -> dict:
 ### 考点 10：`pytest`
 
 - **要点**：本课涉及：CLI、argparse、JSON、原子写入、pytest。
-- **pytest 的边界**：只在「本课涉及：CLI、argparse、JSON、原子写入、pytest」这一前提下成立，换输入或换环境要重新验证。
 
 ### 考点 11：排错——直接覆盖原 JSON 文件
 

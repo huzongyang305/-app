@@ -385,11 +385,11 @@ README.md
 
 ### 选择与边界
 
-- 使用 `dotnet ef migrations add Init` 时，先满足它的定义：生产环境应使用 EF Core 迁移（`dotnet ef migrations add Init`）而不是 `EnsureCreated`；只在「生产环境应使用 EF Core 迁移（`dotnet ef migrations add Init`）而不是 `EnsureCreated`」这一前提下成立，换输入或换环境要重新验证。
+- 使用 `dotnet ef migrations add Init` 时，先满足它的定义：生产环境应使用 EF Core 迁移（`dotnet ef migrations add Init`）而不是 `EnsureCreated`。
 - 使用 `UseExceptionHandler` 时，先满足它的定义：加 `UseExceptionHandler` 统一错误响应，日志用 ILogger；网络延迟、超时与版本协商会改变行为，只在真实链路或多版本客户端上验证才算数。
-- 使用 `dotnet test` 时，先满足它的定义：CI 中执行 `dotnet format --verify-no-changes` 与 `dotnet test`；只在「CI 中执行 `dotnet format --verify-no-changes` 与 `dotnet test`」这一前提下成立，换输入或换环境要重新验证。
+- 使用 `dotnet test` 时，先满足它的定义：CI 中执行 `dotnet format --verify-no-changes` 与 `dotnet test`。
 - 使用 `实战` 时，先满足它的定义：实战：Web API + EF Core解决了什么问题，而不是只背术语；不同版本与依赖组合的行为可能不同，升级或换环境前要按官方变更说明重新验证。
-- 使用 `错误处理` 时，先满足它的定义：识别、传播并恢复异常或失败路径，避免错误被吞掉或扩大影响；只在「识别、传播并恢复异常或失败路径，避免错误被吞掉或扩大影响」这一前提下成立，换输入或换环境要重新验证。
+- 使用 `错误处理` 时，先满足它的定义：识别、传播并恢复异常或失败路径，避免错误被吞掉或扩大影响。
 
 ## 代码/协议/SQL 示例
 
@@ -666,7 +666,7 @@ public sealed class OrdersController : ControllerBase
 
 针对 `错误处理`，分别写出“可以使用”的条件和“结论不再成立”的条件。
 
-**参考答案**：只在「识别、传播并恢复异常或失败路径，避免错误被吞掉或扩大影响」这一前提下成立，换输入或换环境要重新验证。 同时要把 `错误处理` 的定义 识别、传播并恢复异常或失败路径，避免错误被吞掉或扩大影响 与实际输入逐项对照。
+**参考答案**：要把 `错误处理` 的定义 识别、传播并恢复异常或失败路径，避免错误被吞掉或扩大影响 与实际输入逐项对照。
 
 ### 自测 9（机制重建）
 
@@ -741,7 +741,6 @@ public sealed class OrdersController : ControllerBase
 ### 考点 7：`dotnet ef migrations add Init`
 
 - **要点**：生产环境应使用 EF Core 迁移（`dotnet ef migrations add Init`）而不是 `EnsureCreated`。
-- **dotnet ef migrations add Init 的边界**：只在「生产环境应使用 EF Core 迁移（`dotnet ef migrations add Init`）而不是 `EnsureCreated`」这一前提下成立，换输入或换环境要重新验证。
 
 ### 考点 8：`UseExceptionHandler`
 
@@ -751,7 +750,6 @@ public sealed class OrdersController : ControllerBase
 ### 考点 9：`dotnet test`
 
 - **要点**：CI 中执行 `dotnet format --verify-no-changes` 与 `dotnet test`。
-- **dotnet test 的边界**：只在「CI 中执行 `dotnet format --verify-no-changes` 与 `dotnet test`」这一前提下成立，换输入或换环境要重新验证。
 
 ### 考点 10：`实战`
 
@@ -761,7 +759,6 @@ public sealed class OrdersController : ControllerBase
 ### 考点 11：`错误处理`
 
 - **要点**：识别、传播并恢复异常或失败路径，避免错误被吞掉或扩大影响
-- **错误处理 的边界**：只在「识别、传播并恢复异常或失败路径，避免错误被吞掉或扩大影响」这一前提下成立，换输入或换环境要重新验证。
 
 ### 考点 12：排错——Entity 直接返回
 

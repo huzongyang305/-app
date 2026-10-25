@@ -1,6 +1,6 @@
 # TypeScript 基础类型
 
-> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：30 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：35 分钟
 
 ![TypeScript 基础类型一览](images/diagram_ts_basic_types.webp)
 
@@ -55,6 +55,17 @@
 ### 编译期类型与运行时 JavaScript
 
 TypeScript 在 JavaScript 之上增加静态类型检查，编译后类型信息会被擦除，运行时仍然是 JavaScript。因此类型标注不能替代输入校验，外部数据仍要在边界处验证。`tsc` 负责类型检查和输出，现代项目通常由构建工具调用它。开启 `strict` 能提前发现 null、隐式 any 和函数参数问题，是学习类型系统的重要反馈来源。
+
+### 检查发生的顺序
+
+注解和推断不会同时生效：写了就以注解为准，没写才照着初始值猜。另外 `tsc` 默认报了类型错照样生成 JS，加上 `--noEmit` 或 `--noEmitOnError` 才拦住产物，「有报错」不等于「跑不起来」。
+
+```text
+写法                    →  编译器做什么        →  产物里剩下什么
+let price: number = 3   →  照注解认定 number   →  let price = 3;
+let count = 3           →  按初始值推出 number →  let count = 3;
+count = "3"             →  报错，带 文件(行,列) →  默认仍生成 JS
+```
 
 ### 类型推断、注解与窄化
 
@@ -117,7 +128,7 @@ console.log(`count=${count}`);
 
 ### 选择与边界
 
-- 使用 `any 与 unknown` 时，先满足它的定义：any 关闭检查，unknown 强制先收窄，新代码优先用 unknown；只在「any 关闭检查，unknown 强制先收窄，新代码优先用 unknown」这一前提下成立，换输入或换环境要重新验证。
+- 使用 `any 与 unknown` 时，先满足它的定义：any 关闭检查，unknown 强制先收窄，新代码优先用 unknown。
 - 使用 `类型别名 type` 时，先满足它的定义：给复杂类型起名字，便于复用与阅读；静态检查只在编译期成立，运行期输入仍需校验。
 - 使用 `null 与 undefined` 时，先满足它的定义：在 strictNullChecks 下它们是独立类型，需要显式处理；静态检查只在编译期成立，运行期输入仍需校验。
 - 使用 `TypeScript` 时，先满足它的定义：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js；静态检查只在编译期成立，运行期输入仍需校验。
@@ -136,6 +147,27 @@ count=4
 ```
 
 **运行方式**：运行 `TypeScript 基础类型` 的示例时，保存为 `.ts` 后先编译或用 `ts-node` 运行；类型报错先解决再运行。
+
+### 从最小示例到完整示例
+
+接住上面的 `count`，再往同一文件追加数组、元组、字面量联合和 `typeof` 窄化，每加一段重跑一次。
+
+```typescript
+const values: number[] = [1, 2, 3];
+const sum = values.reduce((a, b) => a + b, 0);
+const seat: [string, number] = ["A 区", 12];
+const state: "open" | "done" = "done";
+const label = (v: string | number) => typeof v === "number" ? `数字 ${v}` : `文本 ${v}`;
+console.log(sum, label(state), label(sum), seat[0]);
+```
+
+```bash
+npx tsc basic.ts --strict && node basic.js
+```
+
+```text
+6 文本 done 数字 6 A 区
+```
 
 ## 时间/空间复杂度或性能分析
 
@@ -303,7 +335,6 @@ count=4
 ### 考点 6：`any 与 unknown`
 
 - **要点**：any 关闭检查，unknown 强制先收窄，新代码优先用 unknown。
-- **any 与 unknown 的边界**：只在「any 关闭检查，unknown 强制先收窄，新代码优先用 unknown」这一前提下成立，换输入或换环境要重新验证。
 
 ### 考点 7：`类型别名 type`
 
