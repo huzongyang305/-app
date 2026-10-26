@@ -56,7 +56,7 @@
 
 ### 分支指令与 PC 更新
 
-条件分支需要比较两个寄存器。一种常见做法是用 ALU 做减法，根据零标志判断是否相等；另一种是单独的比较器。若条件成立，下一条 PC 取分支目标地址，否则取 PC+4。分支目标通常由当前 PC 加上符号扩展后的立即数再左移一位得到。
+条件分支需要比较两个寄存器。一种常见做法是用 ALU 做减法，根据零标志判断是否相等；另一种是单独的比较器。若条件成立，下一条 PC 取分支目标地址，否则取 PC+4。分支目标通常由当前 PC（或 PC+4）加上符号扩展、并按指令长度对齐后的立即数得到。
 
 把 PC 的下一条值做成多路选择器，是控制逻辑的经典设计：普通指令选 PC+4，分支成立选目标地址，跳转指令选寄存器或拼接后的地址。选择信号来自控制单元和 ALU 的零标志，二者组合决定最终走向。只要这个多路选择器出错，程序就会「跑飞」，而且往往很难通过单条指令的测试发现。
 
@@ -103,12 +103,15 @@
 ### 用 Python 模拟单周期 CPU
 
 ```python
+# 16 位指令格式：op[15:12] rd[11:9] rs[8:6] imm[5:0]
+# add 指令把 imm 的低 3 位当作第二个源寄存器
 class CPU:
     def __init__(self, memory):
         self.mem = memory
         self.regs = [0] * 8
         self.pc = 0
         self.cycles = 0
+        self.halted = False
 
     def step(self):
         instr = self.mem[self.pc]
@@ -135,25 +138,25 @@ class CPU:
             else:
                 self.pc += 1
         elif op == 0xF:        # halt
-            self.pc += 1
+            self.halted = True
         else:
             raise ValueError(f"unknown opcode {op}")
 
     def run(self, limit=100):
-        while self.pc < len(self.mem) and self.cycles < limit:
+        while not self.halted and self.pc < len(self.mem) and self.cycles < limit:
             self.step()
         return self.regs, self.cycles
 
 memory = [0] * 64
 memory[0] = 0x1005   # addi r0, r0, 5
-memory[1] = 0x1103   # addi r0, r0, 3
+memory[1] = 0x1003   # addi r0, r0, 3
 memory[2] = 0x2208   # add r1, r0, r0
 memory[3] = 0xF000   # halt
 cpu = CPU(memory)
-print(cpu.run())
+print(cpu.run())     # ([8, 16, 0, 0, 0, 0, 0, 0], 4)
 ```
 
-这个模拟器把取指、译码、执行和写回压在一个 `step` 里，正好对应单周期模型。运行后可以打印 `regs` 和 `pc`，再对照每条指令的控制信号，验证结果是否符合预期。
+这个模拟器把取指、译码、执行和写回压在一个 `step` 里，正好对应单周期模型。运行后可以打印 `regs` 和 `cycles`，再对照每条指令的控制信号，验证结果是否符合预期。
 
 ### 用位字段表示控制信号
 

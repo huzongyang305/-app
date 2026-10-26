@@ -106,22 +106,23 @@ RAW 不一定都要停顿。如果结果在 EX 阶段就算出来，可以通过
 
 ```python
 def pipeline_cycles(instructions, forwarding=True):
-    # 每条指令记录它产生的寄存器结果和需要的源寄存器
-    produced = {}
+    # 记录每个寄存器最近一次由哪条指令产生、产生者是不是 load
+    producers = {}
     stalls = 0
     for index, (dst, srcs, is_load) in enumerate(instructions):
         for src in srcs:
-            producer = produced.get(src)
-            if producer is None:
+            if src not in producers:
                 continue
-            distance = index - producer
-            if is_load and distance == 1 and not forwarding:
+            produced_at, produced_by_load = producers[src]
+            distance = index - produced_at
+            if not forwarding:
+                # 要等生产者写回：距离 1 停 2 拍，距离 2 停 1 拍
+                stalls += max(0, 3 - distance)
+            elif produced_by_load and distance == 1:
+                # 转发也救不了紧邻的 load-use，仍需 1 拍
                 stalls += 1
-            elif is_load and distance == 1 and forwarding:
-                stalls += 1
-            elif distance < 2 and not forwarding:
-                stalls += 1
-        produced[dst] = index
+        if dst is not None:
+            producers[dst] = (index, is_load)
     return len(instructions) + 4 + stalls
 
 program = [
@@ -134,19 +135,19 @@ print("无转发:", pipeline_cycles(program, forwarding=False))
 print("有转发:", pipeline_cycles(program, forwarding=True))
 ```
 
-这个模型刻意简化了流水线寄存器数量和分支行为，只保留「生产—消费距离」这一核心。运行后可以看到，即使有转发，load 后紧跟使用其结果的指令仍然要多花一个周期；这正是 load-use 冒险的典型表现。
+这个模型刻意简化了流水线寄存器数量和分支行为，只保留「生产—消费距离」这一核心。运行后会看到：没有转发时两处距离为 1 的依赖各停 2 拍，总周期 12；开启转发后只剩 load-use 的 1 拍停顿，总周期 9，而理想值是 8。这正是 load-use 冒险无法被转发完全消除的典型表现。
 
 ### 用表格计算流水线时序
 
 ```text
-指令        IF  ID  EX  MEM WB
-add        1   2   3   4   5
-sub        2   3   4   5   6
-load       3   4   5   6   7
-use        4   5   -   7   8
+指令    IF  ID  停顿  EX  MEM WB
+add     1   2   -     3   4   5
+sub     2   3   -     4   5   6
+load    3   4   -     5   6   7
+use     4   5   1 拍  7   8   9
 ```
 
-`use` 在 EX 阶段需要 load 的结果，但 load 要到 MEM 结束才有数据，所以 EX 前插入一个气泡。表格法适合手算小段指令，能直观看出每个阶段是否空闲。真实处理器的流水线更深，但分析方法相同。
+`use` 在 EX 阶段需要 load 的结果，但 load 要到第 6 周期结束才有数据，所以在第 6 周期插入一个气泡，让 `use` 的 EX 推迟到第 7 周期，再从 MEM/WB 转发数据。表格法适合手算小段指令，能直观看出每个阶段是否空闲。真实处理器的流水线更深，但分析方法相同。
 
 ### 用 C 观察分支对性能的影响
 
@@ -201,7 +202,7 @@ int main(void) {
 | 流水线缩短了单条指令的延迟 | 流水线主要提高吞吐量，延迟可能略有增加 | 区分吞吐量与延迟 |
 | 流水线级数越多越快 | 深流水线会增加冒险惩罚和寄存器开销 | 结合负载与频率综合评估 |
 | 有转发就不需要任何停顿 | load-use 冒险仍需至少一个停顿 | 识别 load 后紧跟使用的情况 |
-| WAR 和 WAW 只存在于乱序执行 | 按序流水线也可能因阶段重叠产生写冲突 | 用寄存器重命名或调度避免 |
+| 按序五级流水线也要重点处理 WAR 和 WAW | 按序流水线按程序顺序读写，WAR/WAW 不会造成错误，主要处理 RAW | 乱序执行时才需要用重命名等手段消除 WAR/WAW |
 | 分支预测失败没有代价 | 需要清空流水线，浪费已取指令 | 统计失败率与惩罚周期 |
 | CPI 永远等于 1 | 缓存缺失、冒险和停顿都会让 CPI 大于 1 | 用性能计数器测量实际 CPI |
 | 结构冒险只发生在存储器 | 寄存器端口、执行单元和总线都可能冲突 | 检查所有共享资源 |
@@ -252,9 +253,9 @@ int main(void) {
 
 ### 自测 5
 
-运行本课的流水线模拟器，把 load 指令移到使用它的指令之后，观察周期数变化。
+在模拟器里给程序增加一条独立指令 `("x8", ["x2"], False)`，分别把它放在 `use` 之后和 `load` 与 `use` 之间，两种顺序的周期数各是多少？
 
-**参考答案**：调整顺序后，使用者在 load 之前已经执行，不再依赖 load 的结果，load-use 停顿消失，总周期数减少。这个实验说明指令调度可以通过改变顺序来隐藏访存延迟。
+**参考答案**：放在 `use` 之后时，load 与 use 距离为 1，有转发 10 个周期、无转发 13 个周期；放到 load 与 use 之间后，距离变成 2，load-use 停顿消失（无转发时也从 2 拍降到 1 拍），有转发 9 个周期、无转发 12 个周期。指令总数没变，只是调整了顺序，就省下 1 个周期，这正是指令调度的价值。
 
 ## 考点精讲
 

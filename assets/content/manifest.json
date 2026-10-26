@@ -74128,7 +74128,7 @@
           "en": "Paging, multi-level page tables, TLB, page faults, copy-on-write and huge pages."
         },
         "file": "assets/content/co_virtual_memory.md",
-        "minutes": 25,
+        "minutes": 30,
         "keywords": [
           "虚拟内存",
           "页表",

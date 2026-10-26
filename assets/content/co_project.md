@@ -53,6 +53,8 @@
 
 本项目采用 16 位定长指令，格式为「4 位操作码 + 4 位目标寄存器 + 8 位参数」。LOAD 和 STORE 用 8 位参数表示数据地址；ADD 和 SUB 用 8 位参数表示源寄存器编号；JNZ 用 8 位参数表示跳转目标；HALT 不使用参数。四个通用寄存器 r0 到 r3 足够演示数据依赖，又不会让编码复杂到难以调试。
 
+要注意，这是项目自定义的教学 ISA：它和《计算机组成原理导论》里的 8 位累加器示例、《CPU 数据通路与控制》里的 16 位三寄存器格式都不相同。位宽、寄存器编号和跳转语义以本课的规格表为准，不要把不同课程的机器码混在一起使用。
+
 ### 第二步：取指—译码—执行
 
 模拟器的主循环对应真实 CPU 的基本节拍。取指阶段根据 PC 从程序存储器取出指令字；译码阶段拆出操作码、目标寄存器和参数；执行阶段根据操作码更新寄存器、数据存储器或 PC；最后处理下一条指令。HALT 结束循环，PC 越界也应视为错误或正常终止，具体语义要在 README 里写清楚。
@@ -61,7 +63,7 @@ JNZ 的行为要特别小心。执行到 JNZ 时，PC 已经指向下一条指�
 
 ### 第三步：两遍扫描的汇编器
 
-汇编器第一遍只做一件事：记录每个标签对应的指令下标。第二遍才把助记符和操作数翻译成 Instruction 对象。之所以不能一遍完成，是因为向前跳转的目标地址在第一次遇到时还没出现，必须先收集完标签才能回填。
+汇编器第一遍只做一件事：记录每个标签对应的指令下标。第二遍才把助记符和操作数解析、校验并编码成机器字。之所以不能一遍完成，是因为向前跳转的目标地址在第一次遇到时还没出现，必须先收集完标签才能回填。
 
 解析操作数时要区分三类 token：寄存器 `r0` 到 `r3`、标签名、十进制或十六进制数字。统一用一个 `resolve` 函数处理，可以让 LOAD、STORE、ADD、JNZ 共用同一套逻辑。错误处理也要明确：未知操作码、寄存器越界、标签未定义都应该抛出带行号的异常，而不是悄悄变成 0。
 
@@ -110,7 +112,7 @@ JNZ 的行为要特别小心。执行到 JNZ 时，PC 已经指向下一条指�
 | 数据地址 | 0 到 255 | LOAD/STORE 不得越界 |
 | Cache | 8 行 × 4 字，缺失代价 4 周期 | 命中与缺失计数可核对 |
 | 执行上限 | 最多 10000 步 | 死循环必须停止并报告 |
-| 交付文件 | 五个源码/测试文件加报告 | 每条验收命令可复现 |
+| 交付文件 | 四个源码/测试文件，加 REPORT.md 与验收记录 | 每条验收命令可复现 |
 
 这些规格是项目的硬边界。扩展位数、寄存器数量或 Cache 参数时，要同步修改编码、汇编器和测试，不能只改其中一层。规格写进 README，评审者才能判断你的实现是否完整，而不是只看程序能不能跑出一个结果。
 
@@ -139,13 +141,19 @@ class Instruction:
     arg: int = 0
 
 
+def _check_operands(opcode, rd, arg):
+    if not 0 <= rd <= 3:
+        raise ValueError(f"register out of range: {rd}")
+    if not 0 <= arg <= 0xFF:
+        raise ValueError(f"operand out of range: {arg}")
+    if opcode in ("ADD", "SUB") and not 0 <= arg <= 3:
+        raise ValueError(f"source register out of range: {arg}")
+
+
 def encode(inst):
     if inst.opcode not in OPCODES:
         raise ValueError(f"unknown opcode: {inst.opcode}")
-    if not 0 <= inst.rd <= 3:
-        raise ValueError(f"register out of range: {inst.rd}")
-    if not 0 <= inst.arg <= 0xFF:
-        raise ValueError(f"operand out of range: {inst.arg}")
+    _check_operands(inst.opcode, inst.rd, inst.arg)
     return (OPCODES[inst.opcode] << 12) | (inst.rd << 8) | inst.arg
 
 
@@ -153,15 +161,17 @@ def decode(word):
     code = (word >> 12) & 0xF
     if code not in NAMES:
         raise ValueError(f"unknown instruction word: {word:#06x}")
-    return Instruction(NAMES[code], (word >> 8) & 0xF, word & 0xFF)
+    inst = Instruction(NAMES[code], (word >> 8) & 0xF, word & 0xFF)
+    _check_operands(inst.opcode, inst.rd, inst.arg)
+    return inst
 ```
 
-编码把操作码放在高 4 位，目标寄存器放在中间 4 位，参数放在低 8 位。`encode` 和 `decode` 必须互为逆运算，测试里可以随机生成合法指令做往返验证。参数只有 8 位，所以数据地址和跳转目标都不能超过 255；这是本项目明确的设计边界。
+编码把操作码放在高 4 位，目标寄存器放在中间 4 位，参数放在低 8 位。`encode` 和 `decode` 必须互为逆运算，测试里可以随机生成合法指令做往返验证。参数只有 8 位，所以数据地址和跳转目标都不能超过 255；`_check_operands` 还会检查寄存器编号不超过 3，ADD/SUB 的参数也必须指向 r0 到 r3。这是本项目明确的设计边界。
 
 ### 两遍汇编器：assembler.py
 
 ```python
-from mini_isa import Instruction
+from mini_isa import OPCODES, Instruction, encode
 
 
 def assemble(source):
@@ -176,6 +186,8 @@ def assemble(source):
             continue
         parts = line.split(None, 1)
         opcode = parts[0].upper()
+        if opcode not in OPCODES:
+            raise ValueError(f"line {line_number}: unknown opcode {opcode}")
         operands = []
         if len(parts) > 1:
             operands = [item.strip() for item in parts[1].split(",")]
@@ -193,20 +205,32 @@ def assemble(source):
                 f"line {line_number}: unknown symbol {token}"
             ) from error
 
+    def check(value, low, high, what, line_number):
+        if not low <= value <= high:
+            raise ValueError(
+                f"line {line_number}: {what} out of range: {value}"
+            )
+
     program = []
     for line_number, opcode, operands in pending:
         rd = resolve(operands[0], line_number) if operands else 0
         arg = resolve(operands[1], line_number) if len(operands) > 1 else 0
-        program.append(Instruction(opcode, rd, arg))
+        check(rd, 0, 3, "register", line_number)
+        check(arg, 0, 0xFF, "operand", line_number)
+        if opcode in ("ADD", "SUB"):
+            check(arg, 0, 3, "source register", line_number)
+        program.append(encode(Instruction(opcode, rd, arg)))
     return program, labels
 ```
 
-第一遍把 `pending` 的下标作为指令地址记录标签，第二遍才解析操作数。`resolve` 先判断寄存器，再查标签，最后按数字解析，因此 `JNZ r1, loop` 中的 `r1` 和 `loop` 能走不同分支。行号用于报错，缺少它时定位汇编错误会非常痛苦。
+第一遍把 `pending` 的下标作为指令地址记录标签，第二遍才解析操作数、校验范围并编码成机器字。`resolve` 先判断寄存器，再查标签，最后按数字解析，因此 `JNZ r1, loop` 中的 `r1` 和 `loop` 能走不同分支。行号用于报错，缺少它时定位汇编错误会非常痛苦。
+
+这里的校验不能省：`ADD r0, 7` 的参数是源寄存器编号，只有 0 到 3 合法；`LOAD r0, 256` 超出 8 位地址范围；写错的操作码也不该被当成别的指令执行。汇编阶段就把这些错误拦下来，模拟器才不用处理非法机器码。
 
 ### 执行循环与 Cache：machine.py
 
 ```python
-from mini_isa import decode, encode
+from mini_isa import decode
 
 
 class DirectMappedCache:
@@ -247,7 +271,7 @@ class Machine:
     def run(self, max_steps=10000):
         steps = 0
         while self.pc < len(self.program) and steps < max_steps:
-            inst = self.program[self.pc]
+            inst = decode(self.program[self.pc])
             self.pc += 1
             self.cycles += 1
             steps += 1
@@ -269,7 +293,7 @@ class Machine:
         return self.cycles
 ```
 
-`run` 同时设置 `pc` 边界和 `max_steps` 上限，防止错误跳转造成死循环。每条指令固定 1 个周期，LOAD/STORE 再叠加 Cache 返回的缺失代价。ADD 和 SUB 对 0xFF 取与，模拟 8 位寄存器回绕；如果要扩展成 32 位，必须同时修改编码、立即数范围和掩码。
+`program` 里存的是机器字，`run` 每轮先用 `decode` 还原指令，再按操作码执行，这才真正走完取指—译码—执行的流程；如果直接存 `Instruction` 对象，译码阶段就被绕过了。`run` 同时设置 `pc` 边界和 `max_steps` 上限，防止错误跳转造成死循环。每条指令固定 1 个周期，LOAD/STORE 再叠加 Cache 返回的缺失代价。ADD 和 SUB 对 0xFF 取与，模拟 8 位寄存器回绕；如果要扩展成 32 位，必须同时修改编码、立即数范围和掩码。
 
 ### 黄金测试：tests/test_machine.py
 
@@ -291,8 +315,30 @@ start:
     HALT
 """
 
+LOOP_SOURCE = """
+start:
+    LOAD r1, 3
+    LOAD r2, 4
+    SUB r1, r2
+    STORE r1, 3
+    JNZ r1, start
+    HALT
+"""
+
 
 class MachineTest(unittest.TestCase):
+    def test_loop_takes_branch_and_terminates(self):
+        program, labels = assemble(LOOP_SOURCE)
+        self.assertEqual(labels["start"], 0)
+        machine = Machine(program)
+        machine.data[3] = 3
+        machine.data[4] = 1
+        cycles = machine.run()
+        self.assertEqual(machine.data[3], 0)
+        self.assertEqual(machine.pc, len(program))
+        self.assertEqual(cycles, 24)
+        self.assertEqual(machine.cache.hits, 7)
+
     def test_sum_and_halt(self):
         program, labels = assemble(SOURCE)
         self.assertEqual(labels["start"], 0)
@@ -301,46 +347,61 @@ class MachineTest(unittest.TestCase):
         machine.data[1] = 5
         cycles = machine.run()
         self.assertEqual(machine.data[2], 12)
-        self.assertGreater(cycles, 8)
-        self.assertGreater(machine.cache.hit_rate, 0.0)
+        self.assertEqual(machine.pc, len(program))
+        self.assertEqual(cycles, 12)
+        self.assertAlmostEqual(machine.cache.hit_rate, 0.75)
 
     def test_unknown_label_is_rejected(self):
         with self.assertRaises(ValueError):
             assemble("LOAD r1, nowhere")
 
 
-unittest.main()
+if __name__ == "__main__":
+    unittest.main()
 ```
 
-测试断言了标签地址、最终内存值、周期数下限和命中率。`test_unknown_label_is_rejected` 守住错误处理，避免未定义标签被悄悄解析成 0。运行测试时如果 `assembler` 无法导入，通常是工作目录不在项目根目录，而不是汇编器本身有问题。
+测试断言了标签地址、最终内存值、精确周期数、跳转终止和命中率。`test_loop_takes_branch_and_terminates` 让循环执行三次，覆盖 JNZ 成立与最终不成立两条路径；`test_sum_and_halt` 覆盖算术、load/store 往返和 HALT；`test_unknown_label_is_rejected` 守住错误处理，避免未定义标签被悄悄解析成 0。运行测试时如果 `assembler` 无法导入，通常是工作目录不在项目根目录，而不是汇编器本身有问题。
 
 ### 验证命令与预期输出
 
 ```text
 $ cd mini-computer
 $ python -m unittest discover -s tests -v
-test_unknown_label_is_rejected (tests.test_machine.MachineTest) ... ok
-test_sum_and_halt (tests.test_machine.MachineTest) ... ok
+test_loop_takes_branch_and_terminates (test_machine.MachineTest) ... ok
+test_sum_and_halt (test_machine.MachineTest) ... ok
+test_unknown_label_is_rejected (test_machine.MachineTest) ... ok
 
 ----------------------------------------------------------------------
-Ran 2 tests in 0.002s
+Ran 3 tests in 0.002s
 
 OK
 
 $ python - <<'PY'
 from assembler import assemble
 from machine import Machine
-source = open("examples/sum.asm").read()
-program, _ = assemble(source)
+
+SOURCE = """
+start:
+    LOAD r1, 0
+    LOAD r2, 1
+    ADD r1, r2
+    STORE r1, 2
+    LOAD r2, 2
+    SUB r2, r1
+    JNZ r2, start
+    HALT
+"""
+program, _ = assemble(SOURCE)
 machine = Machine(program)
 machine.data[0], machine.data[1] = 7, 5
-print("result", machine.data[2], "cycles", machine.run(),
+cycles = machine.run()
+print("result", machine.data[2], "cycles", cycles,
       "hit_rate", round(machine.cache.hit_rate, 3))
 PY
-result 12 cycles 22 hit_rate 0.5
+result 12 cycles 12 hit_rate 0.75
 ```
 
-具体周期数会随 Cache 参数和程序版本变化，验收时以自己仓库 `REPORT.md` 记录的基线为准。真正必须一致的是最终结果 12、HALT 能终止、命中率在 0 到 1 之间且与访问模式相符。如果结果不是 12，先检查 ADD 的目标寄存器和 STORE 的地址，再检查 JNZ 是否在条件不成立时错误跳转。
+本课默认参数下应得到 `result 12`、`cycles 12`、`hit_rate 0.75`。改动 Cache 行数、行大小或缺失代价后，周期数和命中率会变化，但最终结果 12 和 HALT 能终止必须保持一致。如果结果不是 12，先检查 ADD 的目标寄存器和 STORE 的地址，再检查 JNZ 是否在条件不成立时错误跳转；如果周期数异常大，检查模拟器是否触发了 `max_steps`。
 
 ## 时间/空间复杂度或性能分析
 
