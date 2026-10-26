@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-10-26T05:05:09.863412Z",
+  "generated_at": "2026-10-26T10:32:16.628144Z",
   "content_version": "2.0",
   "batch_size": 24,
-  "batch_count": 49,
+  "batch_count": 50,
   "records_path": "docs/content_review_records.json",
   "batches": [
     {
@@ -2030,6 +2030,135 @@
           "characters": 12074,
           "questions": 5,
           "images": 2,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        }
+      ]
+    },
+    {
+      "batch_id": "computer_organization-1",
+      "category_id": "computer_organization",
+      "category_title": "计算机组成原理",
+      "lesson_count": 10,
+      "reviewed": 0,
+      "status": "pending",
+      "risk_high": 0,
+      "risk_medium": 0,
+      "risk_low": 10,
+      "focus": [
+        "正文事实与术语是否准确，有无过时结论或含糊表述。",
+        "代码块能否按正文步骤运行，输出与解析是否一致。",
+        "测验题干、选项与解析是否自洽，答案下标是否正确。",
+        "参考资料链接可访问，且与课程主题匹配。"
+      ],
+      "lessons": [
+        {
+          "lesson_id": "co_bus_io",
+          "title": "总线、中断与 I/O 系统",
+          "risk": "low",
+          "characters": 9776,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "co_cpu_datapath",
+          "title": "CPU 数据通路与控制",
+          "risk": "low",
+          "characters": 8582,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "co_data_representation",
+          "title": "数据表示与编码",
+          "risk": "low",
+          "characters": 8636,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "co_instruction_system",
+          "title": "指令系统与汇编基础",
+          "risk": "low",
+          "characters": 8779,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "co_intro",
+          "title": "计算机组成原理导论",
+          "risk": "low",
+          "characters": 8790,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "co_logic_circuits",
+          "title": "数字逻辑与电路基础",
+          "risk": "low",
+          "characters": 8838,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "co_memory_hierarchy",
+          "title": "存储层次与 Cache",
+          "risk": "low",
+          "characters": 10365,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "co_pipeline",
+          "title": "指令流水线",
+          "risk": "low",
+          "characters": 8596,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "co_project",
+          "title": "实战项目：搭建一台迷你计算机模拟器",
+          "risk": "low",
+          "characters": 12483,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "co_virtual_memory",
+          "title": "虚拟内存与地址转换",
+          "risk": "low",
+          "characters": 9720,
+          "questions": 5,
+          "images": 1,
           "machine_issues": [],
           "review_status": "pending",
           "review_method": ""

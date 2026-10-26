@@ -1,0 +1,42 @@
+{
+  "co_intro": {
+    "image": "images/diagram_co_intro.webp",
+    "alt": "冯·诺依曼机器的五个部件"
+  },
+  "co_data_representation": {
+    "image": "images/diagram_co_data_representation.webp",
+    "alt": "原码、反码与补码的表示规则对比"
+  },
+  "co_logic_circuits": {
+    "image": "images/diagram_co_logic_circuits.webp",
+    "alt": "从布尔代数到有限状态机的抽象流程"
+  },
+  "co_instruction_system": {
+    "image": "images/diagram_co_instruction_system.webp",
+    "alt": "RISC 与 CISC 指令集设计对比"
+  },
+  "co_cpu_datapath": {
+    "image": "images/diagram_co_cpu_datapath.webp",
+    "alt": "单周期 CPU 数据通路的五个阶段"
+  },
+  "co_pipeline": {
+    "image": "images/diagram_co_pipeline.webp",
+    "alt": "流水线三类冒险的成因与缓解手段"
+  },
+  "co_memory_hierarchy": {
+    "image": "images/diagram_co_memory_hierarchy.webp",
+    "alt": "寄存器到硬盘的存储层次"
+  },
+  "co_bus_io": {
+    "image": "images/diagram_co_bus_io.webp",
+    "alt": "程序查询、中断与 DMA 三种 I/O 方式对比"
+  },
+  "co_virtual_memory": {
+    "image": "images/diagram_co_virtual_memory.webp",
+    "alt": "虚拟地址经过 TLB 与页表转换到物理内存"
+  },
+  "co_project": {
+    "image": "images/diagram_co_project.webp",
+    "alt": "迷你计算机模拟器的五层交付结构"
+  }
+}

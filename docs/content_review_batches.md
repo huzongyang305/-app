@@ -1,6 +1,6 @@
 # 人工复核批次台账
 
-- 生成时间：2026-10-26T05:05:09.886457Z
+- 生成时间：2026-10-26T10:32:16.648650Z
 - 批次大小：每批最多 24 门课
 - 记录入口：`docs/content_review_records.json` 的 `human_reviews`
 
@@ -330,6 +330,29 @@
 | 编译流程与解释执行概览（compiler_overview） | low | 12487 | 5 | 2 | 待复核 |
 | 项目：实现一门迷你语言（compiler_project_minilang） | low | 13836 | 5 | 2 | 待复核 |
 | 语义分析与类型系统（compiler_semantic_types） | low | 12074 | 5 | 2 | 待复核 |
+
+## computer_organization-1 · 计算机组成原理
+
+- 课程数：10 · 已人工复核：0 · 状态：pending
+- 风险分布：高 0 · 中 0 · 低 10
+- 复核重点：
+  - 正文事实与术语是否准确，有无过时结论或含糊表述。
+  - 代码块能否按正文步骤运行，输出与解析是否一致。
+  - 测验题干、选项与解析是否自洽，答案下标是否正确。
+  - 参考资料链接可访问，且与课程主题匹配。
+
+| 课程 | 风险 | 字数 | 题目 | 配图 | 状态 |
+| --- | --- | --- | --- | --- | --- |
+| 总线、中断与 I/O 系统（co_bus_io） | low | 9776 | 5 | 1 | 待复核 |
+| CPU 数据通路与控制（co_cpu_datapath） | low | 8582 | 5 | 1 | 待复核 |
+| 数据表示与编码（co_data_representation） | low | 8636 | 5 | 1 | 待复核 |
+| 指令系统与汇编基础（co_instruction_system） | low | 8779 | 5 | 1 | 待复核 |
+| 计算机组成原理导论（co_intro） | low | 8790 | 5 | 1 | 待复核 |
+| 数字逻辑与电路基础（co_logic_circuits） | low | 8838 | 5 | 1 | 待复核 |
+| 存储层次与 Cache（co_memory_hierarchy） | low | 10365 | 5 | 1 | 待复核 |
+| 指令流水线（co_pipeline） | low | 8596 | 5 | 1 | 待复核 |
+| 实战项目：搭建一台迷你计算机模拟器（co_project） | low | 12483 | 5 | 1 | 待复核 |
+| 虚拟内存与地址转换（co_virtual_memory） | low | 9720 | 5 | 1 | 待复核 |
 
 ## cpp-1 · C++
 

@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-10-08T09:21:48.688488Z",
+  "generated_at": "2026-10-26T00:00:00.000000Z",
   "schedule_months": 12,
   "first_month": "2026-11",
-  "batch_count": 39,
+  "batch_count": 69,
   "p0_touched_lessons": 300,
   "batches": [
     {
@@ -1049,6 +1049,21 @@
         "se_tech_writing",
         "se_test_design",
         "testing_strategy"
+      ]
+    },
+    {
+      "planned_review_at": "2027-10-25",
+      "lesson_ids": [
+        "co_intro",
+        "co_data_representation",
+        "co_logic_circuits",
+        "co_instruction_system",
+        "co_cpu_datapath",
+        "co_pipeline",
+        "co_memory_hierarchy",
+        "co_bus_io",
+        "co_virtual_memory",
+        "co_project"
       ]
     }
   ]

@@ -91,6 +91,9 @@ const GROUPS = {
     './curriculum_diagrams/p9_backend_ml',
     './curriculum_diagrams/p9_mobile_math',
   ],
+  p10: [
+    './curriculum_diagrams/p10_co',
+  ],
 };
 
 // 分组到批次文件名的映射；p0p1 沿用历史文件名，避免流程中断。
@@ -104,6 +107,7 @@ const BATCH_NAMES = {
   p7: 'p7_diagrams.json',
   p8: 'p8_diagrams.json',
   p9: 'p9_diagrams.json',
+  p10: 'p10_diagrams.json',
 };
 
 function loadGroup(name) {
@@ -121,6 +125,7 @@ const DIAGRAMS = Object.assign(
   loadGroup('p7'),
   loadGroup('p8'),
   loadGroup('p9'),
+  loadGroup('p10'),
 );
 
 const OUT_DIR = path.join(__dirname, '..', 'assets', 'content', 'images');
@@ -161,8 +166,12 @@ async function main() {
     const def = diagrams[id];
     try {
       const output = path.join(OUT_DIR, def.image);
-      const info = await sharp(Buffer.from(render(def)))
-        .webp({ quality: 92, effort: 5 })
+      let pipeline = sharp(Buffer.from(render(def)));
+      if (def.width) {
+        pipeline = pipeline.resize(def.width, Math.round(def.width * 0.6));
+      }
+      const info = await pipeline
+        .webp({ quality: def.quality || 92, effort: 5 })
         .toFile(output);
       batch[id] = { image: `images/${def.image}`, alt: def.alt };
       console.log(`  ${id} -> ${path.basename(output)} (${Math.round(info.size / 1024)} KB)`);
