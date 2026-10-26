@@ -14037,7 +14037,7 @@
             "en": "ORM mapping, dynamic SQL, caching and pagination in practice."
           },
           "file": "assets/content/javaweb_mybatis.md",
-          "minutes": 30,
+          "minutes": 45,
           "difficulty": "入门",
           "prerequisites": [
             "java_spring_boot_intro"
@@ -14060,7 +14060,7 @@
                 "压缩数据库"
               ],
               "answer": 2,
-              "explanation": "ORM（Object-Relational Mapping）把表行映射为对象，字段映射为属性，开发者用对象操作代替 SQL。 换句话说，ORM 把 CRUD 从拼接字符串转为调用对象方法，MyBatis 属于半自动 ORM，SQL 仍由开发者掌控。",
+              "explanation": "ORM（Object-Relational Mapping）把表行映射为对象，字段映射为属性，开发者用对象操作代替 SQL。 换句话说，ORM 把 CRUD 从拼接字符串转为调用对象方法，MyBatis 属于半自动 ORM，SQL 仍由开发者掌控。 本题正确项是「将数据库表映射为程序中的对象，用面向对象方式操作数据」。",
               "type": "single"
             },
             {
@@ -14072,7 +14072,7 @@
                 "#{} 只能用于数字"
               ],
               "answer": 1,
-              "explanation": "#{} 用 PreparedStatement 占位符，安全防注入；${} 直接拼接字符串，用于动态表名/列名，需确保输入安全。 记住一条硬规则：凡是用户输入拼进 SQL 的位置一律用 #{}，只有表名、列名等无法预编译的结构才考虑 ${} 并做白名单校验。",
+              "explanation": "#{} 用 PreparedStatement 占位符，安全防注入；${} 直接拼接字符串，用于动态表名/列名，需确保输入安全。 记住一条硬规则：凡是用户输入拼进 SQL 的位置一律用 #{}，只有表名、列名等无法预编译的结构才考虑 ${} 并做白名单校验。 本题正确项是「#{} 是预编译参数（防 SQL 注入），${} 是字符串替换（有注入风险）」。",
               "type": "single"
             },
             {
@@ -14084,7 +14084,7 @@
                 "一级缓存不存在"
               ],
               "answer": 1,
-              "explanation": "一级缓存默认开启，作用域为 SqlSession；二级缓存需手动配置，作用域为 Mapper 的 namespace，跨 SqlSession 共享。 还要注意二级缓存需要实体可序列化，并且在多表关联查询时容易读到脏数据，生产环境通常只对稳定字典表开启。",
+              "explanation": "一级缓存默认开启，作用域为 SqlSession；二级缓存需手动配置，作用域为 Mapper 的 namespace，跨 SqlSession 共享。 还要注意二级缓存需要实体可序列化，并且在多表关联查询时容易读到脏数据，生产环境通常只对稳定字典表开启。 本题正确项是「一级缓存是 SqlSession 级别，二级缓存是 Mapper 级别（跨 SqlSession）」。",
               "type": "single"
             },
             {
@@ -14096,7 +14096,7 @@
                 "定义结果映射"
               ],
               "answer": 1,
-              "explanation": "<if> 标签根据 OGNL 表达式条件决定是否包含内部 SQL 片段，实现灵活的动态查询条件。 实际项目里常把 <if>、<where>、<foreach> 组合使用，<where> 会自动去掉多余的 AND，避免拼接出语法错误的 SQL。",
+              "explanation": "<if> 标签根据 OGNL 表达式条件决定是否包含内部 SQL 片段，实现灵活的动态查询条件。 实际项目里常把 <if>、<where>、<foreach> 组合使用，<where> 会自动去掉多余的 AND，避免拼接出语法错误的 SQL。 本题正确项是「当 name 不为 null 时才包含该 SQL 片段」。",
               "type": "single"
             },
             {
@@ -14108,7 +14108,7 @@
                 "缓存所有数据"
               ],
               "answer": 1,
-              "explanation": "懒加载延迟加载关联数据，只有代码真正访问关联属性时才发 SQL，减少不必要的数据库查询。 使用时要注意：懒加载必须在 Session 打开期间访问关联对象，否则会抛出 LazyInitializationException，可以提前用 fetch join 取回数据。",
+              "explanation": "懒加载延迟加载关联数据，只有代码真正访问关联属性时才发 SQL，减少不必要的数据库查询。 使用时要注意：懒加载必须在 Session 打开期间访问关联对象，否则会抛出 LazyInitializationException，可以提前用 fetch join 取回数据。 本题正确项是「关联对象在首次访问时才从数据库加载，而非查询时立即加载」。",
               "type": "single"
             }
           ],
@@ -14575,7 +14575,7 @@
             "en": "Service registry, config center, gateway and circuit breaker."
           },
           "file": "assets/content/javaweb_spring_cloud.md",
-          "minutes": 35,
+          "minutes": 45,
           "difficulty": "高级",
           "prerequisites": [
             "java_spring_boot_intro"
@@ -14598,7 +14598,7 @@
                 "管理数据库"
               ],
               "answer": 2,
-              "explanation": "服务注册发现让每个服务启动时注册自己的地址，调用方通过注册中心获取目标地址，实现动态路由。 注册中心同时承担健康检查职责，实例下线或心跳超时会被自动剔除，调用方拿到的列表始终是可用的。 如果注册中心整体不可用，调用方应保留本地缓存的服务列表并支持降级调用，否则一次注册中心故障会放大成全站不可用。",
+              "explanation": "服务注册发现让每个服务启动时注册自己的地址，调用方通过注册中心获取目标地址，实现动态路由。 注册中心同时承担健康检查职责，实例下线或心跳超时会被自动剔除，调用方拿到的列表始终是可用的。 如果注册中心整体不可用，调用方应保留本地缓存的服务列表并支持降级调用，否则一次注册中心故障会放大成全站不可用。 本题正确项是「让服务能动态找到彼此的网络地址，无需硬编码」。",
               "type": "single"
             },
             {
@@ -14610,7 +14610,7 @@
                 "日志存储"
               ],
               "answer": 1,
-              "explanation": "Gateway 是微服务的统一入口，负责请求路由到不同服务，同时处理跨切面关注点（认证、限流、日志）。 网关通常还负责统一跨域配置、请求头透传和灰度路由，把鉴权放在网关可以避免每个服务重复实现。 路由配置可以来自配置文件或配置中心，改完无需重启即可生效，但要注意路由顺序，先匹配的规则会优先命中。",
+              "explanation": "Gateway 是微服务的统一入口，负责请求路由到不同服务，同时处理跨切面关注点（认证、限流、日志）。 网关通常还负责统一跨域配置、请求头透传和灰度路由，把鉴权放在网关可以避免每个服务重复实现。 路由配置可以来自配置文件或配置中心，改完无需重启即可生效，但要注意路由顺序，先匹配的规则会优先命中。 本题正确项是「统一入口、路由转发、鉴权和限流」。",
               "type": "single"
             },
             {
@@ -14622,7 +14622,7 @@
                 "代码编译错误"
               ],
               "answer": 1,
-              "explanation": "熔断器监控调用失败率，超过阈值时\"断开电路\"直接返回降级响应，避免大量请求堆积拖垮整个系统。 熔断器一般有三种状态：关闭、打开和半开，半开状态会放少量请求试探下游是否恢复，恢复后再完全关闭。 阈值不能拍脑袋设置，通常结合错误率和慢调用比例，并配合重试预算，避免把可恢复的抖动误判成故障。",
+              "explanation": "熔断器监控调用失败率，超过阈值时\"断开电路\"直接返回降级响应，避免大量请求堆积拖垮整个系统。 熔断器一般有三种状态：关闭、打开和半开，半开状态会放少量请求试探下游是否恢复，恢复后再完全关闭。 阈值不能拍脑袋设置，通常结合错误率和慢调用比例，并配合重试预算，避免把可恢复的抖动误判成故障。 本题正确项是「防止服务级联故障，当下游服务不可用时快速失败」。",
               "type": "single"
             },
             {
@@ -14634,7 +14634,7 @@
                 "消息队列"
               ],
               "answer": 1,
-              "explanation": "Feign 让远程服务调用像本地方法一样，通过接口 + 注解定义，自动处理负载均衡和序列化。 接口上写 @FeignClient 并配合服务名，Feign 会结合 LoadBalancer 在多个实例之间轮询，业务代码感知不到地址变化。 超时时间要显式配置，默认值往往偏长，下游变慢时会把调用方线程和连接一起拖住。",
+              "explanation": "Feign 让远程服务调用像本地方法一样，通过接口 + 注解定义，自动处理负载均衡和序列化。 接口上写 @FeignClient 并配合服务名，Feign 会结合 LoadBalancer 在多个实例之间轮询，业务代码感知不到地址变化。 超时时间要显式配置，默认值往往偏长，下游变慢时会把调用方线程和连接一起拖住。 本题正确项是「声明式 HTTP 客户端，用接口注解调用远程服务」。",
               "type": "single"
             },
             {
@@ -14646,7 +14646,7 @@
                 "日志收集"
               ],
               "answer": 1,
-              "explanation": "配置中心把分散在各服务的配置集中管理，修改后无需重启即可生效，避免配置不一致导致的问题。 生产使用时通常配合命名空间和环境隔离，避免测试配置误推到线上，同时保留本地配置作为兜底。 敏感配置应加密存储并做权限隔离，同时保留变更审计，出问题时才能定位是哪次配置修改引发的故障。",
+              "explanation": "配置中心把分散在各服务的配置集中管理，修改后无需重启即可生效，避免配置不一致导致的问题。 生产使用时通常配合命名空间和环境隔离，避免测试配置误推到线上，同时保留本地配置作为兜底。 敏感配置应加密存储并做权限隔离，同时保留变更审计，出问题时才能定位是哪次配置修改引发的故障。 本题正确项是「集中管理所有微服务的配置文件，支持动态刷新」。",
               "type": "single"
             }
           ],
@@ -14693,7 +14693,7 @@
                 "WebSocket 只能发送文本"
               ],
               "answer": 2,
-              "explanation": "WebSocket 是全双工协议，建立连接后客户端和服务器可随时互发消息，无需反复建立连接。 HTTP 每次请求都要携带完整头部，而 WebSocket 建立一次连接后帧头只有几个字节，因此高频实时消息的传输开销更小。 握手阶段仍然复用 HTTP 的 Upgrade 机制，通过 101 状态码切换协议，因此鉴权通常放在握手请求的 Cookie 或 token 里。",
+              "explanation": "WebSocket 是全双工协议，建立连接后客户端和服务器可随时互发消息，无需反复建立连接。 HTTP 每次请求都要携带完整头部，而 WebSocket 建立一次连接后帧头只有几个字节，因此高频实时消息的传输开销更小。 握手阶段仍然复用 HTTP 的 Upgrade 机制，通过 101 状态码切换协议，因此鉴权通常放在握手请求的 Cookie 或 token 里。 本题正确项是「WebSocket 支持全双工通信，双方可同时发送数据」。",
               "type": "single"
             },
             {
@@ -14705,7 +14705,7 @@
                 "管理连接池"
               ],
               "answer": 1,
-              "explanation": "STOMP 为 WebSocket 提供消息路由框架，支持 /topic（广播）和 /queue（点对点）两种消息模式。 如果不使用 STOMP，开发者需要自己设计消息格式和路由规则，STOMP 把这些约定标准化，Spring 也内置了对应的消息代理支持。",
+              "explanation": "STOMP 为 WebSocket 提供消息路由框架，支持 /topic（广播）和 /queue（点对点）两种消息模式。 如果不使用 STOMP，开发者需要自己设计消息格式和路由规则，STOMP 把这些约定标准化，Spring 也内置了对应的消息代理支持。 本题正确项是「提供消息路由和订阅机制（主题/队列）」。",
               "type": "single"
             },
             {
@@ -14717,7 +14717,7 @@
                 "压缩数据帧"
               ],
               "answer": 1,
-              "explanation": "许多代理和防火墙会断开长时间无数据传输的连接，心跳定期发送探测包保持连接活跃。 浏览器端 WebSocket API 本身不带心跳，通常由应用层定时发送 ping 帧或业务心跳消息，并在超时后主动重连。 心跳间隔要小于中间设备的空闲超时，常见取值是 30 秒左右，同时服务端要清理超时未响应的会话，防止连接泄漏。",
+              "explanation": "许多代理和防火墙会断开长时间无数据传输的连接，心跳定期发送探测包保持连接活跃。 浏览器端 WebSocket API 本身不带心跳，通常由应用层定时发送 ping 帧或业务心跳消息，并在超时后主动重连。 心跳间隔要小于中间设备的空闲超时，常见取值是 30 秒左右，同时服务端要清理超时未响应的会话，防止连接泄漏。 本题正确项是「防止代理/防火墙断开空闲连接」。",
               "type": "single"
             },
             {
@@ -14729,7 +14729,7 @@
                 "定义安全规则"
               ],
               "answer": 1,
-              "explanation": "@MessageMapping 类似 @RequestMapping，把客户端发送到特定目标地址的消息路由到对应的 Java 方法。 方法内部可以配合 @SendTo 指定广播目标，或用 SimpMessagingTemplate 向指定用户会话推送消息，灵活控制消息流向。",
+              "explanation": "@MessageMapping 类似 @RequestMapping，把客户端发送到特定目标地址的消息路由到对应的 Java 方法。 方法内部可以配合 @SendTo 指定广播目标，或用 SimpMessagingTemplate 向指定用户会话推送消息，灵活控制消息流向。 本题正确项是「将客户端消息路由到对应的处理方法」。",
               "type": "single"
             },
             {
@@ -14741,7 +14741,7 @@
                 "禁用压缩"
               ],
               "answer": 1,
-              "explanation": "单机连接数有上限，通过外部消息代理让多个服务器实例共享消息，实现水平扩展。 除了消息代理，还要考虑把连接注册表放在 Redis 中，才能知道某个用户在哪个节点上，从而定向推送点对点消息。 跨节点广播要区分广播和定向两种需求，广播用订阅主题，定向推送则要按用户标识路由到目标节点所在的会话。",
+              "explanation": "单机连接数有上限，通过外部消息代理让多个服务器实例共享消息，实现水平扩展。 除了消息代理，还要考虑把连接注册表放在 Redis 中，才能知道某个用户在哪个节点上，从而定向推送点对点消息。 跨节点广播要区分广播和定向两种需求，广播用订阅主题，定向推送则要按用户标识路由到目标节点所在的会话。 本题正确项是「使用外部消息代理（Redis/RabbitMQ）实现跨节点消息广播」。",
               "type": "single"
             }
           ],
@@ -34704,7 +34704,7 @@
             "en": "Boolean operations, Karnaugh map simplification, gate circuits and combinational logic."
           },
           "file": "assets/content/discrete_boolean_algebra.md",
-          "minutes": 30,
+          "minutes": 35,
           "difficulty": "进阶",
           "prerequisites": [
             "discrete_math_set_theory"
@@ -34739,7 +34739,7 @@
                 "计算真值表"
               ],
               "answer": 1,
-              "explanation": "卡诺图通过图形方式合并相邻最小项，直观地化简布尔表达式，减少门电路数量。 使用时要把真值表填进卡诺图，圈出 1、2、4、8 个相邻格组成的最大矩形组，圈越大得到的乘积项越短。 卡诺图只适合变量较少的情况，变量超过五个后图形相邻关系难以维护，通常改用奎因-麦克拉斯基算法。",
+              "explanation": "卡诺图通过图形方式合并相邻最小项，直观地化简布尔表达式，减少门电路数量。 使用时要把真值表填进卡诺图，圈出 1、2、4、8 个相邻格组成的最大矩形组，圈越大得到的乘积项越短。 卡诺图只适合变量较少的情况，变量超过五个后图形相邻关系难以维护，通常改用奎因-麦克拉斯基算法。 本题正确项是「化简布尔表达式，找到最简与或式」。",
               "type": "single"
             },
             {
@@ -34763,7 +34763,7 @@
                 "(A+B)' = A · B"
               ],
               "answer": 2,
-              "explanation": "德摩根定律：(A+B)' = A'·B'，(A·B)' = A'+B'。或非等于各非的与，与非等于各非的或。 理解时把「非」看成对括号内整体取反，横线断开时与或互换，记住这个口诀就不会把两条公式写混。 写公式时先看括号外是或还是与，再把每一项分别取反并交换运算符，最后检查非号是否落到每个变量上。",
+              "explanation": "德摩根定律：(A+B)' = A'·B'，(A·B)' = A'+B'。或非等于各非的与，与非等于各非的或。 理解时把「非」看成对括号内整体取反，横线断开时与或互换，记住这个口诀就不会把两条公式写混。 写公式时先看括号外是或还是与，再把每一项分别取反并交换运算符，最后检查非号是否落到每个变量上。 本题正确项是「(A+B)' = A' · B'」。",
               "type": "single"
             },
             {
@@ -34775,7 +34775,7 @@
                 "需要时钟信号"
               ],
               "answer": 1,
-              "explanation": "组合逻辑电路的输出只由当前输入决定，不包含存储元件（如触发器），没有记忆功能。 与之对应的是时序逻辑电路，它含触发器并引入时钟，输出同时取决于当前输入和历史状态，两者要分开分析。 判断电路类型时看有没有时钟和存储元件，只有门电路的组合逻辑没有状态，给定输入就能唯一确定输出。",
+              "explanation": "组合逻辑电路的输出只由当前输入决定，不包含存储元件（如触发器），没有记忆功能。 与之对应的是时序逻辑电路，它含触发器并引入时钟，输出同时取决于当前输入和历史状态，两者要分开分析。 判断电路类型时看有没有时钟和存储元件，只有门电路的组合逻辑没有状态，给定输入就能唯一确定输出。 本题正确项是「输出仅取决于当前输入，无记忆功能」。",
               "type": "single"
             }
           ],
@@ -34799,7 +34799,7 @@
             "en": "Divisibility, modular arithmetic, Euler function and RSA encryption principles."
           },
           "file": "assets/content/discrete_number_theory.md",
-          "minutes": 30,
+          "minutes": 40,
           "difficulty": "进阶",
           "prerequisites": [
             "discrete_math_set_theory"
@@ -34822,7 +34822,7 @@
                 "矩阵乘法"
               ],
               "answer": 2,
-              "explanation": "RSA 的安全性基于大整数分解的困难性：将两个大素数的乘积分解回原素数在计算上不可行。 实际密钥长度至少 2048 位，因为分解算法的进步会不断降低短密钥的安全余量，密钥太短会被直接攻破。 实际系统还会关注量子计算进展，因此后量子密码正在标准化，单靠加大密钥长度并不能永久保证安全。",
+              "explanation": "RSA 的安全性基于大整数分解的困难性：将两个大素数的乘积分解回原素数在计算上不可行。 实际密钥长度至少 2048 位，因为分解算法的进步会不断降低短密钥的安全余量，密钥太短会被直接攻破。 实际系统还会关注量子计算进展，因此后量子密码正在标准化，单靠加大密钥长度并不能永久保证安全。 本题正确项是「大整数分解问题」。",
               "type": "single"
             },
             {
@@ -34834,7 +34834,7 @@
                 "n 的二进制位数"
               ],
               "answer": 1,
-              "explanation": "φ(n) 计算 1 到 n 中与 n 互素（最大公约数为 1）的数的个数。如 φ(10) = 4（1,3,7,9）。 当 n 是素数 p 时 φ(p) = p - 1，这条性质正是 RSA 计算私钥指数时使用的关键一步。 欧拉函数是积性函数，当 m 与 n 互素时 φ(mn) = φ(m)·φ(n)，这条性质让大数计算可以拆成小素数幂分别处理。",
+              "explanation": "φ(n) 计算 1 到 n 中与 n 互素（最大公约数为 1）的数的个数。如 φ(10) = 4（1,3,7,9）。 当 n 是素数 p 时 φ(p) = p - 1，这条性质正是 RSA 计算私钥指数时使用的关键一步。 欧拉函数是积性函数，当 m 与 n 互素时 φ(mn) = φ(m)·φ(n)，这条性质让大数计算可以拆成小素数幂分别处理。 本题正确项是「小于等于 n 且与 n 互素的正整数个数」。",
               "type": "single"
             },
             {
@@ -34846,7 +34846,7 @@
                 "a 和 b 都是素数"
               ],
               "answer": 1,
-              "explanation": "同余关系：a mod n = b mod n，即 a-b 能被 n 整除。这是密码学和哈希函数的基础。 同余关系可以像等式一样做加减乘运算，但除法只在模数与除数互素时才安全，否则需要先求逆元。 同余式两边可以同时加、减、乘同一个整数，但约分时要格外小心，例如 2x ≡ 2 (mod 4) 不能直接约成 x ≡ 1。",
+              "explanation": "同余关系：a mod n = b mod n，即 a-b 能被 n 整除。这是密码学和哈希函数的基础。 同余关系可以像等式一样做加减乘运算，但除法只在模数与除数互素时才安全，否则需要先求逆元。 同余式两边可以同时加、减、乘同一个整数，但约分时要格外小心，例如 2x ≡ 2 (mod 4) 不能直接约成 x ≡ 1。 本题正确项是「a 和 b 除以 n 的余数相同」。",
               "type": "single"
             },
             {
@@ -34858,7 +34858,7 @@
                 "模幂运算"
               ],
               "answer": 0,
-              "explanation": "扩展欧几里得算法在求 gcd(a,b) 的同时找到 x,y 使得 ax + by = gcd(a,b)，用于求模逆元。 求模逆元时把等式写成 ax ≡ 1 (mod n)，再用扩展欧几里得算法回代，就能得到 a 在模 n 下的逆元。 回代时从最后一个余数等式往前推，把余数表示成原始两数的线性组合，系数就是贝祖等式里的 x 和 y。",
+              "explanation": "扩展欧几里得算法在求 gcd(a,b) 的同时找到 x,y 使得 ax + by = gcd(a,b)，用于求模逆元。 求模逆元时把等式写成 ax ≡ 1 (mod n)，再用扩展欧几里得算法回代，就能得到 a 在模 n 下的逆元。 回代时从最后一个余数等式往前推，把余数表示成原始两数的线性组合，系数就是贝祖等式里的 x 和 y。 本题正确项是「最大公约数和贝祖等式的系数」。",
               "type": "single"
             },
             {
@@ -34870,7 +34870,7 @@
                 "数据加密"
               ],
               "answer": 1,
-              "explanation": "费马小定理 a^(p-1) ≡ 1 (mod p) 用于快速模幂运算（RSA 核心）和素性检测。 注意费马小定理只对素数模成立，实际做素性检测时常用米勒-拉宾算法，它能以极高概率排除合数。 快速模幂用平方-乘算法把指数拆成二进制，每一步都取模，因此计算大指数时不会产生天文数字般的中间结果。",
+              "explanation": "费马小定理 a^(p-1) ≡ 1 (mod p) 用于快速模幂运算（RSA 核心）和素性检测。 注意费马小定理只对素数模成立，实际做素性检测时常用米勒-拉宾算法，它能以极高概率排除合数。 快速模幂用平方-乘算法把指数拆成二进制，每一步都取模，因此计算大指数时不会产生天文数字般的中间结果。 本题正确项是「快速计算模幂和素数判定」。",
               "type": "single"
             }
           ],
@@ -34894,7 +34894,7 @@
             "en": "Recursive algorithm analysis, recurrence solving, Master theorem and divide-and-conquer complexity."
           },
           "file": "assets/content/discrete_recursion.md",
-          "minutes": 30,
+          "minutes": 40,
           "difficulty": "进阶",
           "prerequisites": [
             "discrete_math_set_theory"
@@ -34929,7 +34929,7 @@
                 "树的遍历顺序"
               ],
               "answer": 1,
-              "explanation": "主定理给出 T(n) = aT(n/b) + f(n) 形式递推的渐近解，快速分析分治算法复杂度。 使用时先确认递推形式符合 aT(n/b) + f(n)，再比较 f(n) 与 n^(log_b a) 的量级，判断落在三种情况的哪一种。 如果 f(n) 与 n^(log_b a) 同阶，答案要多乘一个 log n 因子，这是最容易记错的一种情况。",
+              "explanation": "主定理给出 T(n) = aT(n/b) + f(n) 形式递推的渐近解，快速分析分治算法复杂度。 使用时先确认递推形式符合 aT(n/b) + f(n)，再比较 f(n) 与 n^(log_b a) 的量级，判断落在三种情况的哪一种。 如果 f(n) 与 n^(log_b a) 同阶，答案要多乘一个 log n 因子，这是最容易记错的一种情况。 本题正确项是「分治算法的时间复杂度递推方程」。",
               "type": "single"
             },
             {
@@ -34953,7 +34953,7 @@
                 "x^3 - 3x + 2 = 0"
               ],
               "answer": 1,
-              "explanation": "将 a_n = r^n 代入递推，得 r^n = 3r^{n-1} - 2r^{n-2}，除以 r^{n-2} 得特征方程 r^2 - 3r + 2 = 0。 解出特征根 r1、r2 后，通解是 a_n = C1·r1^n + C2·r2^n，再用前两项初始值联立求出常数。",
+              "explanation": "将 a_n = r^n 代入递推，得 r^n = 3r^{n-1} - 2r^{n-2}，除以 r^{n-2} 得特征方程 r^2 - 3r + 2 = 0。 解出特征根 r1、r2 后，通解是 a_n = C1·r1^n + C2·r2^n，再用前两项初始值联立求出常数。 本题正确项是「x^2 - 3x + 2 = 0」。",
               "type": "single"
             },
             {
@@ -34965,7 +34965,7 @@
                 "数组"
               ],
               "answer": 1,
-              "explanation": "递归需要基本情况（直接返回答案的终止条件）和递归步骤（将问题缩小直到达到基本情况）。 写递归时还要保证每一步都朝基本情况靠近，比如参数递减，否则即使写了 base case 也可能无限递归。 实际调试时可以打印每层参数，确认参数确实在变小，同时检查是否有分支绕过了基本情况。",
+              "explanation": "递归需要基本情况（直接返回答案的终止条件）和递归步骤（将问题缩小直到达到基本情况）。 写递归时还要保证每一步都朝基本情况靠近，比如参数递减，否则即使写了 base case 也可能无限递归。 实际调试时可以打印每层参数，确认参数确实在变小，同时检查是否有分支绕过了基本情况。 本题正确项是「基本情况（base case）和递归步骤」。",
               "type": "single"
             }
           ],
@@ -34989,7 +34989,7 @@
             "en": "Ordinary generating functions, exponential generating functions, combinatorial identity proofs and counting applications."
           },
           "file": "assets/content/discrete_generating_functions.md",
-          "minutes": 35,
+          "minutes": 40,
           "difficulty": "高级",
           "prerequisites": [
             "discrete_math_set_theory"
@@ -35024,7 +35024,7 @@
                 "只能处理简单问题"
               ],
               "answer": 1,
-              "explanation": "生成函数把序列编码为幂级数，计数问题变成求系数的代数操作（乘法、求导等）。 典型用法是把「选几个」编码成 (1 + x + x^2 + ...)，把不同选项相乘后再找目标次数项的系数。 当多个生成函数相乘时，乘积中 x^n 的系数正是两个序列的卷积，这正好对应「先选一部分再选另一部分」的分类计数。",
+              "explanation": "生成函数把序列编码为幂级数，计数问题变成求系数的代数操作（乘法、求导等）。 典型用法是把「选几个」编码成 (1 + x + x^2 + ...)，把不同选项相乘后再找目标次数项的系数。 当多个生成函数相乘时，乘积中 x^n 的系数正是两个序列的卷积，这正好对应「先选一部分再选另一部分」的分类计数。 本题正确项是「将计数问题转化为代数运算，用系数提取答案」。",
               "type": "single"
             },
             {
@@ -35048,7 +35048,7 @@
                 "反证法"
               ],
               "answer": 1,
-              "explanation": "(1+x)^m 的 x^k 系数是 C(m,k)，乘积的 x^r 系数是卷积 Σ C(m,k)C(n,r-k)，等于 (1+x)^{m+n} 的 x^r 系数 C(m+n,r)。 这类证明的关键是把组合恒等式翻译成多项式乘法，系数比较自动完成了原本需要分类讨论的计数。",
+              "explanation": "(1+x)^m 的 x^k 系数是 C(m,k)，乘积的 x^r 系数是卷积 Σ C(m,k)C(n,r-k)，等于 (1+x)^{m+n} 的 x^r 系数 C(m+n,r)。 这类证明的关键是把组合恒等式翻译成多项式乘法，系数比较自动完成了原本需要分类讨论的计数。 本题正确项是「利用 (1+x)^m · (1+x)^n = (1+x)^{m+n}，比较两边 x^r 系数」。",
               "type": "single"
             },
             {
@@ -35060,7 +35060,7 @@
                 "没有区别"
               ],
               "answer": 1,
-              "explanation": "指数生成函数 Σ a_n x^n/n! 天然处理排列（有序）问题，普通生成函数处理组合（无序）问题。 判断用哪一种时看对象有没有顺序：选集合用普通生成函数，排队伍用指数生成函数，这是最直接的区分标准。 两者的选择取决于元素是否可区分，排队、排列这类有序对象用指数生成函数，组合、子集这类无序对象用普通生成函数。",
+              "explanation": "指数生成函数 Σ a_n x^n/n! 天然处理排列（有序）问题，普通生成函数处理组合（无序）问题。 判断用哪一种时看对象有没有顺序：选集合用普通生成函数，排队伍用指数生成函数，这是最直接的区分标准。 两者的选择取决于元素是否可区分，排队、排列这类有序对象用指数生成函数，组合、子集这类无序对象用普通生成函数。 本题正确项是「指数生成函数用 x^n/n! 而非 x^n，适合排列计数」。",
               "type": "single"
             }
           ],
@@ -71051,7 +71051,7 @@
             "en": "URLSession, Codable, Core Data and SwiftData."
           },
           "file": "assets/content/mobile_ios_networking.md",
-          "minutes": 30,
+          "minutes": 35,
           "difficulty": "基础",
           "prerequisites": [
             "mobile_swift"
@@ -71074,7 +71074,7 @@
                 "DataTask 自动缓存所有响应"
               ],
               "answer": 2,
-              "explanation": "DataTask 是最常用的网络任务类型，返回 (Data, URLResponse)，适合 REST API 调用等场景。 如果响应体很大，应该改用 downloadTask 下载到文件，避免把整个内容读进内存导致峰值占用过高。 上传文件用 uploadTask，边下载边解析用 delegate 接收增量数据，选错任务类型会让内存和性能都吃亏。",
+              "explanation": "DataTask 是最常用的网络任务类型，返回 (Data, URLResponse)，适合 REST API 调用等场景。 如果响应体很大，应该改用 downloadTask 下载到文件，避免把整个内容读进内存导致峰值占用过高。 上传文件用 uploadTask，边下载边解析用 delegate 接收增量数据，选错任务类型会让内存和性能都吃亏。 本题正确项是「DataTask 返回 Data 和 URLResponse，适合中小规模数据传输」。",
               "type": "single"
             },
             {
@@ -71086,7 +71086,7 @@
                 "管理网络连接池"
               ],
               "answer": 1,
-              "explanation": "Codable = Encodable + Decodable，让 Swift 结构体可以自动序列化为 JSON 或从 JSON 反序列化。 遇到字段名不一致时用 CodingKeys 映射，日期和嵌套结构则通过自定义 DateFormatter 或嵌套 Codable 类型处理。",
+              "explanation": "Codable = Encodable + Decodable，让 Swift 结构体可以自动序列化为 JSON 或从 JSON 反序列化。 遇到字段名不一致时用 CodingKeys 映射，日期和嵌套结构则通过自定义 DateFormatter 或嵌套 Codable 类型处理。 本题正确项是「在 Swift 对象和 JSON 之间自动转换」。",
               "type": "single"
             },
             {
@@ -71098,7 +71098,7 @@
                 "Core Data 只能存字符串"
               ],
               "answer": 1,
-              "explanation": "Core Data 支持复杂关系查询和大量数据，UserDefaults 仅适合偏好设置等少量简单数据。 UserDefaults 底层是 plist，读写会占用启动时间，存放大列表会让启动变慢，所以只放开关和少量偏好。 需要跨设备同步或复杂查询时再考虑 Core Data 或 SwiftData，简单偏好设置不要为了统一而强行上数据库。",
+              "explanation": "Core Data 支持复杂关系查询和大量数据，UserDefaults 仅适合偏好设置等少量简单数据。 UserDefaults 底层是 plist，读写会占用启动时间，存放大列表会让启动变慢，所以只放开关和少量偏好。 需要跨设备同步或复杂查询时再考虑 Core Data 或 SwiftData，简单偏好设置不要为了统一而强行上数据库。 本题正确项是「Core Data 是对象图管理器，适合复杂数据模型；UserDefaults 只适合少量键值对」。",
               "type": "single"
             },
             {
@@ -71110,7 +71110,7 @@
                 "不需要 iOS 系统"
               ],
               "answer": 1,
-              "explanation": "SwiftData 是 Apple 在 iOS 17 推出的现代数据框架，用 @Model 宏替代 NSManagedObject，代码更简洁。 SwiftData 的迁移也要提前规划，使用 VersionedSchema 管理模型版本，才能在后续升级中平滑演进。",
+              "explanation": "SwiftData 是 Apple 在 iOS 17 推出的现代数据框架，用 @Model 宏替代 NSManagedObject，代码更简洁。 SwiftData 的迁移也要提前规划，使用 VersionedSchema 管理模型版本，才能在后续升级中平滑演进。 本题正确项是「使用宏和属性包装器，API 更简洁，与 SwiftUI 深度集成」。",
               "type": "single"
             },
             {
@@ -71122,7 +71122,7 @@
                 "这是可选的优化"
               ],
               "answer": 1,
-              "explanation": "主线程负责 UI 渲染，耗时的网络和数据解析操作应放到后台线程，完成后切回主线程更新 UI。 URLSession 的回调本身运行在后台队列，但更新 UI 必须切回主线程，用 MainActor 或 DispatchQueue.main 包一层。",
+              "explanation": "主线程负责 UI 渲染，耗时的网络和数据解析操作应放到后台线程，完成后切回主线程更新 UI。 URLSession 的回调本身运行在后台队列，但更新 UI 必须切回主线程，用 MainActor 或 DispatchQueue.main 包一层。 本题正确项是「避免阻塞主线程导致 UI 卡顿」。",
               "type": "single"
             }
           ],
@@ -71146,7 +71146,7 @@
             "en": "APNs, local notifications, Background Fetch and BGTaskScheduler."
           },
           "file": "assets/content/mobile_ios_notifications.md",
-          "minutes": 30,
+          "minutes": 35,
           "difficulty": "进阶",
           "prerequisites": [
             "mobile_swift"
@@ -71181,7 +71181,7 @@
                 "远程推送不需要网络"
               ],
               "answer": 1,
-              "explanation": "远程推送需要服务器通过 APNs 发送，本地通知由 App 在设备上按计划触发，不需要网络。 本地通知适合提醒类场景，比如待办到期；需要由服务器实时触达用户时，仍然要走 APNs 远程推送。 判断标准很简单：内容由服务器决定且需要触达离线用户就选远程推送，只是本地定时提醒就用本地通知。",
+              "explanation": "远程推送需要服务器通过 APNs 发送，本地通知由 App 在设备上按计划触发，不需要网络。 本地通知适合提醒类场景，比如待办到期；需要由服务器实时触达用户时，仍然要走 APNs 远程推送。 判断标准很简单：内容由服务器决定且需要触达离线用户就选远程推送，只是本地定时提醒就用本地通知。 本题正确项是「远程推送通过 APNs 从服务器发送，本地通知由设备自身触发」。",
               "type": "single"
             },
             {
@@ -71193,7 +71193,7 @@
                 "处理用户触摸事件"
               ],
               "answer": 1,
-              "explanation": "BGTaskScheduler 让 App 在系统分配的后台时间窗口执行数据同步、数据库清理等任务。 系统只会在它认为合适的时机调用后台任务，所以任务要设计成幂等且可中断，不能假设一定会按时执行。 BGTaskScheduler 需要提前注册任务标识，并在 Info.plist 和后台模式里声明权限，否则系统不会调度。",
+              "explanation": "BGTaskScheduler 让 App 在系统分配的后台时间窗口执行数据同步、数据库清理等任务。 系统只会在它认为合适的时机调用后台任务，所以任务要设计成幂等且可中断，不能假设一定会按时执行。 BGTaskScheduler 需要提前注册任务标识，并在 Info.plist 和后台模式里声明权限，否则系统不会调度。 本题正确项是「在后台执行数据同步、清理等耗时任务」。",
               "type": "single"
             },
             {
@@ -71217,7 +71217,7 @@
                 "卸载 App"
               ],
               "answer": 1,
-              "explanation": "应尊重用户选择，可通过 App 内消息中心、角标等方式提供替代方案。 iOS 只允许请求一次通知授权，被拒绝后只能引导用户去系统设置手动开启，不能反复弹自定义授权框。 引导开启时机的选择也很重要，最好在用户刚完成一个需要通知的功能后再请求授权，通过率会明显更高。",
+              "explanation": "应尊重用户选择，可通过 App 内消息中心、角标等方式提供替代方案。 iOS 只允许请求一次通知授权，被拒绝后只能引导用户去系统设置手动开启，不能反复弹自定义授权框。 引导开启时机的选择也很重要，最好在用户刚完成一个需要通知的功能后再请求授权，通过率会明显更高。 本题正确项是「尊重用户选择，在 App 内提供替代的通知方式」。",
               "type": "single"
             }
           ],
@@ -71241,7 +71241,7 @@
             "en": "Apple Developer account, certificate config, TestFlight and review guidelines."
           },
           "file": "assets/content/mobile_ios_appstore.md",
-          "minutes": 30,
+          "minutes": 45,
           "difficulty": "进阶",
           "prerequisites": [
             "mobile_swift"
@@ -71264,7 +71264,7 @@
                 "代码行数太多"
               ],
               "answer": 1,
-              "explanation": "隐私政策是审核硬性要求，缺失或不合规是最常见的拒绝原因之一。 除了隐私政策，崩溃、失效链接和未说明的数据收集用途也会被拒，提审前应逐条对照审核指南自查。 提审前用 App Store Connect 的预检和 TestFlight 走一遍完整流程，多数低级问题能在正式审核前被发现。",
+              "explanation": "隐私政策是审核硬性要求，缺失或不合规是最常见的拒绝原因之一。 除了隐私政策，崩溃、失效链接和未说明的数据收集用途也会被拒，提审前应逐条对照审核指南自查。 提审前用 App Store Connect 的预检和 TestFlight 走一遍完整流程，多数低级问题能在正式审核前被发现。 本题正确项是「隐私政策缺失或不符合要求」。",
               "type": "single"
             },
             {
@@ -71276,7 +71276,7 @@
                 "设计 UI"
               ],
               "answer": 1,
-              "explanation": "TestFlight 是 Apple 官方的 Beta 测试平台，支持内部测试（100人）和外部测试（10000人）。 内部测试人员需要先加入 App Store Connect 团队，外部测试的首个构建仍需经过一次简化审核。 外部测试适合收集真实用户反馈，但构建版本一旦进入外部测试就不能再修改，只能上传新的构建号。",
+              "explanation": "TestFlight 是 Apple 官方的 Beta 测试平台，支持内部测试（100人）和外部测试（10000人）。 内部测试人员需要先加入 App Store Connect 团队，外部测试的首个构建仍需经过一次简化审核。 外部测试适合收集真实用户反馈，但构建版本一旦进入外部测试就不能再修改，只能上传新的构建号。 本题正确项是「分发 Beta 版本给测试人员进行内测」。",
               "type": "single"
             },
             {
@@ -71288,7 +71288,7 @@
                 "只有代码签名密钥"
               ],
               "answer": 1,
-              "explanation": "Provisioning Profile 是证书 + App ID + 授权设备的组合，用于签名和授权 App 在特定设备上运行。 开发证书用于调试安装，分发证书用于上架和 TestFlight，两者用途不同，不能混用。 Xcode 的自动签名会根据证书和 App ID 生成描述文件，团队协作时更容易出现冲突，建议用 Fastlane match 统一管理。",
+              "explanation": "Provisioning Profile 是证书 + App ID + 授权设备的组合，用于签名和授权 App 在特定设备上运行。 开发证书用于调试安装，分发证书用于上架和 TestFlight，两者用途不同，不能混用。 Xcode 的自动签名会根据证书和 App ID 生成描述文件，团队协作时更容易出现冲突，建议用 Fastlane match 统一管理。 本题正确项是「证书、App ID 和设备列表的组合」。",
               "type": "single"
             },
             {
@@ -71312,7 +71312,7 @@
                 "优化运行速度"
               ],
               "answer": 1,
-              "explanation": "代码签名用开发者证书对 App 进行数字签名，系统验证签名确认来源可信且代码完整。 证书和描述文件都有有效期，过期后新构建无法签名，CI 里通常用 Fastlane match 统一管理并自动续期。 签名校验发生在安装和启动阶段，被篡改的包会直接无法运行，这也是 iOS 分发安全的基础。",
+              "explanation": "代码签名用开发者证书对 App 进行数字签名，系统验证签名确认来源可信且代码完整。 证书和描述文件都有有效期，过期后新构建无法签名，CI 里通常用 Fastlane match 统一管理并自动续期。 签名校验发生在安装和启动阶段，被篡改的包会直接无法运行，这也是 iOS 分发安全的基础。 本题正确项是「验证开发者身份和确保代码未被篡改」。",
               "type": "single"
             }
           ],
@@ -71336,7 +71336,7 @@
             "en": "Instruments, memory management, launch optimization and hang analysis."
           },
           "file": "assets/content/mobile_ios_performance.md",
-          "minutes": 30,
+          "minutes": 35,
           "difficulty": "高级",
           "prerequisites": [
             "mobile_swift"
@@ -71359,7 +71359,7 @@
                 "检查 UI 布局"
               ],
               "answer": 1,
-              "explanation": "Time Profiler 采样记录 CPU 调用栈，帮助找出耗时最多的函数和代码路径。 使用时先录一段真实操作，再按耗时排序调用栈，重点关注主线程上占比高的函数而不是采样到的所有方法。 采样时勾选 Separate by Thread，能更直观看到主线程被哪些函数占用，避免把后台线程的开销误算到 UI 上。",
+              "explanation": "Time Profiler 采样记录 CPU 调用栈，帮助找出耗时最多的函数和代码路径。 使用时先录一段真实操作，再按耗时排序调用栈，重点关注主线程上占比高的函数而不是采样到的所有方法。 采样时勾选 Separate by Thread，能更直观看到主线程被哪些函数占用，避免把后台线程的开销误算到 UI 上。 本题正确项是「分析 CPU 时间消耗，找出性能瓶颈函数」。",
               "type": "single"
             },
             {
@@ -71371,7 +71371,7 @@
                 "使用 let 常量"
               ],
               "answer": 1,
-              "explanation": "闭包默认强引用捕获的变量，如果 self 也持有闭包，就形成循环引用。应用 [weak self] 打破。 除了闭包，delegate 用 strong 引用、Timer 持有 target 也会造成循环引用，可以用 Instruments 的 Leaks 模板定位。",
+              "explanation": "闭包默认强引用捕获的变量，如果 self 也持有闭包，就形成循环引用。应用 [weak self] 打破。 除了闭包，delegate 用 strong 引用、Timer 持有 target 也会造成循环引用，可以用 Instruments 的 Leaks 模板定位。 本题正确项是「闭包捕获 self 且未使用 weak/unowned」。",
               "type": "single"
             },
             {
@@ -71383,7 +71383,7 @@
                 "增加内存使用"
               ],
               "answer": 1,
-              "explanation": "冷启动优化核心是减少 dylib 加载和初始化时间，把非必要工作推迟到启动完成后。 冷启动时间还包括动态库加载和 Objective-C 类初始化，减少启动时注册的第三方 SDK 往往比微调代码更有效。 启动阶段尽量把网络请求和数据库初始化延后，首屏只需要渲染最小可用界面，其余内容异步补齐。",
+              "explanation": "冷启动优化核心是减少 dylib 加载和初始化时间，把非必要工作推迟到启动完成后。 冷启动时间还包括动态库加载和 Objective-C 类初始化，减少启动时注册的第三方 SDK 往往比微调代码更有效。 启动阶段尽量把网络请求和数据库初始化延后，首屏只需要渲染最小可用界面，其余内容异步补齐。 本题正确项是「减少主线程初始化工作，延迟加载非必要组件」。",
               "type": "single"
             },
             {
@@ -71395,7 +71395,7 @@
                 "Core Animation"
               ],
               "answer": 1,
-              "explanation": "Leaks 模板检测循环引用导致的内存泄漏，Allocations 模板跟踪内存分配和释放。 循环引用不会立刻泄漏，而是让对象引用计数永远不归零，所以要在页面退出后对比内存快照确认对象是否释放。 除了 Leaks，还可以用 Memory Graph 查看对象引用关系，直接找到是谁强持有了本该释放的对象。",
+              "explanation": "Leaks 模板检测循环引用导致的内存泄漏，Allocations 模板跟踪内存分配和释放。 循环引用不会立刻泄漏，而是让对象引用计数永远不归零，所以要在页面退出后对比内存快照确认对象是否释放。 除了 Leaks，还可以用 Memory Graph 查看对象引用关系，直接找到是谁强持有了本该释放的对象。 本题正确项是「Leaks / Allocations」。",
               "type": "single"
             },
             {
@@ -71407,7 +71407,7 @@
                 "这是 iOS 的 bug"
               ],
               "answer": 1,
-              "explanation": "列表滚动时 cell 创建和布局在主线程执行，如果包含图片解码、数据计算等耗时操作，就会掉帧卡顿。 图片解码、日期格式化和大量文本排版最容易拖慢 cell 配置，可以预解码图片并把结果缓存起来复用。 滚动性能可以用 Core Animation 模板观察帧率和离屏渲染，先把掉帧定位到具体视图再优化。",
+              "explanation": "列表滚动时 cell 创建和布局在主线程执行，如果包含图片解码、数据计算等耗时操作，就会掉帧卡顿。 图片解码、日期格式化和大量文本排版最容易拖慢 cell 配置，可以预解码图片并把结果缓存起来复用。 滚动性能可以用 Core Animation 模板观察帧率和离屏渲染，先把掉帧定位到具体视图再优化。 本题正确项是「UITableView/UICollectionView 的 cellForRow 在主线程执行，耗时操作会掉帧」。",
               "type": "single"
             }
           ],
@@ -71431,7 +71431,7 @@
             "en": "XCTest, XCUITest, Fastlane and CI/CD pipelines."
           },
           "file": "assets/content/mobile_ios_testing.md",
-          "minutes": 30,
+          "minutes": 40,
           "difficulty": "高级",
           "prerequisites": [
             "mobile_swift"
@@ -71454,7 +71454,7 @@
                 "数据库测试"
               ],
               "answer": 2,
-              "explanation": "XCTest 是 Apple 官方测试框架，支持单元测试（XCTestCase）和性能测试（measure block）。 写单元测试时把网络和数据库依赖抽成协议，用假实现注入，就能在不启动模拟器的情况下快速验证逻辑。 XCTest 还支持异步测试和期望值，网络或回调场景用 expectation 等待结果，避免测试提前结束。",
+              "explanation": "XCTest 是 Apple 官方测试框架，支持单元测试（XCTestCase）和性能测试（measure block）。 写单元测试时把网络和数据库依赖抽成协议，用假实现注入，就能在不启动模拟器的情况下快速验证逻辑。 XCTest 还支持异步测试和期望值，网络或回调场景用 expectation 等待结果，避免测试提前结束。 本题正确项是「单元测试和性能测试」。",
               "type": "single"
             },
             {
@@ -71466,7 +71466,7 @@
                 "XCUITest 不需要模拟器"
               ],
               "answer": 1,
-              "explanation": "XCUITest 通过 UI 元素交互测试 App 行为，XCTest 直接测试函数和方法的逻辑正确性。 UI 测试运行速度慢且容易受环境波动影响，所以测试金字塔建议多写单元测试，只把关键用户路径放进 XCUITest。 XCUITest 通过 accessibilityIdentifier 定位元素，给控件补上稳定的标识比依赖文案更不容易因改版失效。",
+              "explanation": "XCUITest 通过 UI 元素交互测试 App 行为，XCTest 直接测试函数和方法的逻辑正确性。 UI 测试运行速度慢且容易受环境波动影响，所以测试金字塔建议多写单元测试，只把关键用户路径放进 XCUITest。 XCUITest 通过 accessibilityIdentifier 定位元素，给控件补上稳定的标识比依赖文案更不容易因改版失效。 本题正确项是「XCUITest 模拟用户操作（点击、滑动），XCTest 测试代码逻辑」。",
               "type": "single"
             },
             {
@@ -71478,7 +71478,7 @@
                 "管理数据库"
               ],
               "answer": 1,
-              "explanation": "Fastlane 是开源的自动化工具链，可以一键完成截图生成、证书管理、TestFlight 上传和 App Store 发布。 Fastlane 的 lane 可以把测试、打包和发布串成一条命令，配合 CI 每次合并请求自动跑一遍。 Fastlane 配合 match 管理证书，配合 gym 打包、pilot 上传 TestFlight，几行配置就能复用整套发布流程。",
+              "explanation": "Fastlane 是开源的自动化工具链，可以一键完成截图生成、证书管理、TestFlight 上传和 App Store 发布。 Fastlane 的 lane 可以把测试、打包和发布串成一条命令，配合 CI 每次合并请求自动跑一遍。 Fastlane 配合 match 管理证书，配合 gym 打包、pilot 上传 TestFlight，几行配置就能复用整套发布流程。 本题正确项是「自动化构建、签名、截图和发布流程」。",
               "type": "single"
             },
             {
@@ -71490,7 +71490,7 @@
                 "减少 App 体积"
               ],
               "answer": 1,
-              "explanation": "代码覆盖率显示有多少代码被执行到，低覆盖率的区域可能是测试盲区，但不代表高覆盖率就无 bug。 覆盖率要关注分支覆盖而不是只看行覆盖，条件判断只走了一个分支时，行覆盖再高也可能漏掉 bug。 覆盖率要按模块看，核心支付、登录等路径应接近全覆盖，工具类偏低可以接受但要评估风险。",
+              "explanation": "代码覆盖率显示有多少代码被执行到，低覆盖率的区域可能是测试盲区，但不代表高覆盖率就无 bug。 覆盖率要关注分支覆盖而不是只看行覆盖，条件判断只走了一个分支时，行覆盖再高也可能漏掉 bug。 覆盖率要按模块看，核心支付、登录等路径应接近全覆盖，工具类偏低可以接受但要评估风险。 本题正确项是「衡量测试代码覆盖了多少源代码路径，帮助发现未测试的代码」。",
               "type": "single"
             },
             {
@@ -71502,7 +71502,7 @@
                 "每月一次"
               ],
               "answer": 1,
-              "explanation": "CI/CD 的核心是每次代码变更自动触发构建和测试，尽早发现问题。 流水线还应缓存依赖并并行执行测试，否则完整测试套件会让每次提交的反馈时间变得难以接受。 除了提交触发，还可以配置每日定时跑全量回归，防止依赖升级或环境变化引入的隐性回归没人发现。",
+              "explanation": "CI/CD 的核心是每次代码变更自动触发构建和测试，尽早发现问题。 流水线还应缓存依赖并并行执行测试，否则完整测试套件会让每次提交的反馈时间变得难以接受。 除了提交触发，还可以配置每日定时跑全量回归，防止依赖升级或环境变化引入的隐性回归没人发现。 本题正确项是「每次代码提交/合并请求时自动运行」。",
               "type": "single"
             }
           ],
@@ -71526,7 +71526,7 @@
             "en": "MVC, MVVM, Clean Architecture and modular design."
           },
           "file": "assets/content/mobile_ios_architecture.md",
-          "minutes": 35,
+          "minutes": 45,
           "difficulty": "高级",
           "prerequisites": [
             "mobile_swift"
@@ -71549,7 +71549,7 @@
                 "VIPER"
               ],
               "answer": 1,
-              "explanation": "Apple 在 UIKit 和 SwiftUI 文档中主要推荐 MVC 模式，Controller 协调 Model 和 View。 MVC 的争议在于 Controller 容易变胖，实际项目里可以把网络、存储等职责下沉为独立服务来给 Controller 减负。",
+              "explanation": "Apple 在 UIKit 和 SwiftUI 文档中主要推荐 MVC 模式，Controller 协调 Model 和 View。 MVC 的争议在于 Controller 容易变胖，实际项目里可以把网络、存储等职责下沉为独立服务来给 Controller 减负。 本题正确项是「MVC（Model-View-Controller）」。",
               "type": "single"
             },
             {
@@ -71561,7 +71561,7 @@
                 "处理网络请求"
               ],
               "answer": 1,
-              "explanation": "ViewModel 持有 View 的状态和业务逻辑，通过 Combine/Observables 让 View 自动响应数据变化。 ViewModel 不应该持有 View 的强引用，只暴露状态给 View 订阅，这样业务逻辑可以脱离 UI 单独测试。",
+              "explanation": "ViewModel 持有 View 的状态和业务逻辑，通过 Combine/Observables 让 View 自动响应数据变化。 ViewModel 不应该持有 View 的强引用，只暴露状态给 View 订阅，这样业务逻辑可以脱离 UI 单独测试。 本题正确项是「封装业务逻辑和状态，为 View 提供可观察的数据」。",
               "type": "single"
             },
             {
@@ -71573,7 +71573,7 @@
                 "UI 和逻辑混合"
               ],
               "answer": 1,
-              "explanation": "Clean Architecture 把系统分为实体、用例、接口适配器等层，业务逻辑在核心层，不依赖外部框架。 依赖规则的意思是内层不知道外层的存在，数据库和网络实现都放在外层，通过协议注入到用例层。 落地时可以先用协议把业务用例和 UI 隔开，再逐步抽离数据库与网络实现，不必一次性重构整个项目。",
+              "explanation": "Clean Architecture 把系统分为实体、用例、接口适配器等层，业务逻辑在核心层，不依赖外部框架。 依赖规则的意思是内层不知道外层的存在，数据库和网络实现都放在外层，通过协议注入到用例层。 落地时可以先用协议把业务用例和 UI 隔开，再逐步抽离数据库与网络实现，不必一次性重构整个项目。 本题正确项是「依赖规则指向内层，业务逻辑不依赖框架」。",
               "type": "single"
             },
             {
@@ -71585,7 +71585,7 @@
                 "减少内存使用"
               ],
               "answer": 1,
-              "explanation": "DI 让对象通过参数接收依赖而非内部创建，便于 Mock 测试和模块替换。 在 Swift 中可以用初始化器注入或依赖容器实现 DI，测试时传入 Mock 对象即可隔离外部依赖。 依赖注入不等于引入第三方框架，简单的初始化器注入就能解决大部分问题，团队规模变大后再考虑容器。",
+              "explanation": "DI 让对象通过参数接收依赖而非内部创建，便于 Mock 测试和模块替换。 在 Swift 中可以用初始化器注入或依赖容器实现 DI，测试时传入 Mock 对象即可隔离外部依赖。 依赖注入不等于引入第三方框架，简单的初始化器注入就能解决大部分问题，团队规模变大后再考虑容器。 本题正确项是「降低耦合，便于测试和替换依赖」。",
               "type": "single"
             },
             {
@@ -71597,7 +71597,7 @@
                 "只能由一个人开发"
               ],
               "answer": 1,
-              "explanation": "模块化把 App 拆分为独立功能模块（如网络、存储、UI），每个模块可独立开发和测试。 模块化通常从拆出网络层、存储层开始，配合 SPM 本地包管理，逐步把独立业务域拆成独立模块。 拆分模块时要先理清依赖方向，避免模块之间互相引用形成环，否则编译时间和维护成本都会上升。",
+              "explanation": "模块化把 App 拆分为独立功能模块（如网络、存储、UI），每个模块可独立开发和测试。 模块化通常从拆出网络层、存储层开始，配合 SPM 本地包管理，逐步把独立业务域拆成独立模块。 拆分模块时要先理清依赖方向，避免模块之间互相引用形成环，否则编译时间和维护成本都会上升。 本题正确项是「各模块独立开发、测试和复用，降低耦合」。",
               "type": "single"
             }
           ],
@@ -72054,7 +72054,7 @@
             "en": "Retrofit interface definition, OkHttp interceptors, coroutine network requests and error handling."
           },
           "file": "assets/content/mobile_android_networking.md",
-          "minutes": 30,
+          "minutes": 40,
           "difficulty": "进阶",
           "prerequisites": [
             "mobile_kotlin"
@@ -72077,7 +72077,7 @@
                 "只支持 GET 请求"
               ],
               "answer": 2,
-              "explanation": "Retrofit 用 Java/Kotlin 接口 + 注解（@GET、@POST、@Path 等）声明 API，自动生成实现。 接口方法的返回值用 suspend 函数配合协程，Retrofit 会自动把响应切到后台线程执行，主线程只拿到结果。",
+              "explanation": "Retrofit 用 Java/Kotlin 接口 + 注解（@GET、@POST、@Path 等）声明 API，自动生成实现。 接口方法的返回值用 suspend 函数配合协程，Retrofit 会自动把响应切到后台线程执行，主线程只拿到结果。 本题正确项是「通过接口注解声明式定义 HTTP API」。",
               "type": "single"
             },
             {
@@ -72089,7 +72089,7 @@
                 "管理数据库"
               ],
               "answer": 1,
-              "explanation": "Interceptor 可以在请求链中插入逻辑，如自动添加 Authorization header、记录请求日志、处理重试。 多个拦截器按添加顺序组成链，应用拦截器适合加公共头和日志，网络拦截器则能看到重定向和缓存细节。 拦截器里要避免做耗时操作，日志拦截器最好只在 debug 构建启用，否则每个请求都会被拖慢。",
+              "explanation": "Interceptor 可以在请求链中插入逻辑，如自动添加 Authorization header、记录请求日志、处理重试。 多个拦截器按添加顺序组成链，应用拦截器适合加公共头和日志，网络拦截器则能看到重定向和缓存细节。 拦截器里要避免做耗时操作，日志拦截器最好只在 debug 构建启用，否则每个请求都会被拖慢。 本题正确项是「在请求发送前或响应返回后统一处理（如添加 Token、日志记录）」。",
               "type": "single"
             },
             {
@@ -72101,7 +72101,7 @@
                 "协程自动缓存数据"
               ],
               "answer": 1,
-              "explanation": "协程的 suspend 函数让网络请求代码看起来像同步，但实际在后台线程执行，不阻塞主线程。 协程的结构化并发还带来取消传播，页面销毁时作用域取消，未完成的请求会自动中止，避免资源泄漏。 注意 withContext(Dispatchers.IO) 只切换线程，真正的取消和异常传播仍由协程作用域负责，要选对作用域。",
+              "explanation": "协程的 suspend 函数让网络请求代码看起来像同步，但实际在后台线程执行，不阻塞主线程。 协程的结构化并发还带来取消传播，页面销毁时作用域取消，未完成的请求会自动中止，避免资源泄漏。 注意 withContext(Dispatchers.IO) 只切换线程，真正的取消和异常传播仍由协程作用域负责，要选对作用域。 本题正确项是「协程以同步写法处理异步操作，避免回调地狱」。",
               "type": "single"
             },
             {
@@ -72113,7 +72113,7 @@
                 "设置超时时间"
               ],
               "answer": 1,
-              "explanation": "@Body 把 Kotlin/Java 对象通过 Converter（如 GsonConverter）序列化为 HTTP 请求体。 GET 请求通常用 @Query 拼查询参数，POST 表单则用 @FormUrlEncoded 配合 @Field，不要把两者混用。",
+              "explanation": "@Body 把 Kotlin/Java 对象通过 Converter（如 GsonConverter）序列化为 HTTP 请求体。 GET 请求通常用 @Query 拼查询参数，POST 表单则用 @FormUrlEncoded 配合 @Field，不要把两者混用。 本题正确项是「将对象序列化为请求体（如 JSON）」。",
               "type": "single"
             },
             {
@@ -72125,7 +72125,7 @@
                 "强制退出 App"
               ],
               "answer": 1,
-              "explanation": "网络不可靠是常态，应捕获 IOException/HttpException，给用户可操作的错误提示和重试按钮。 重试要设置上限并配合退避策略，否则网络持续不可用时会不断放大请求量，反而加重服务端压力。 错误提示要区分网络断开、超时和服务端错误，给出不同的处理建议，而不是统一弹一句加载失败。",
+              "explanation": "网络不可靠是常态，应捕获 IOException/HttpException，给用户可操作的错误提示和重试按钮。 重试要设置上限并配合退避策略，否则网络持续不可用时会不断放大请求量，反而加重服务端压力。 错误提示要区分网络断开、超时和服务端错误，给出不同的处理建议，而不是统一弹一句加载失败。 本题正确项是「捕获异常，显示友好错误提示，提供重试机制」。",
               "type": "single"
             }
           ],
@@ -72149,7 +72149,7 @@
             "en": "Room database, DataStore, SharedPreferences and file storage selection."
           },
           "file": "assets/content/mobile_android_data.md",
-          "minutes": 30,
+          "minutes": 45,
           "difficulty": "进阶",
           "prerequisites": [
             "mobile_kotlin"
@@ -72172,7 +72172,7 @@
                 "Retrofit、OkHttp、Gson"
               ],
               "answer": 1,
-              "explanation": "Room 由 @Entity（表结构）、@Dao（数据访问方法）和 @Database（数据库持有者）三部分组成。 @Database 类通常继承 RoomDatabase，用单例持有，避免每次创建连接导致资源浪费和锁竞争。 数据库实例建议用 @Volatile 加双重检查或依赖注入提供单例，避免多线程初始化出多个连接。",
+              "explanation": "Room 由 @Entity（表结构）、@Dao（数据访问方法）和 @Database（数据库持有者）三部分组成。 @Database 类通常继承 RoomDatabase，用单例持有，避免每次创建连接导致资源浪费和锁竞争。 数据库实例建议用 @Volatile 加双重检查或依赖注入提供单例，避免多线程初始化出多个连接。 本题正确项是「Entity、DAO、Database」。",
               "type": "single"
             },
             {
@@ -72184,7 +72184,7 @@
                 "不需要 Android 系统"
               ],
               "answer": 1,
-              "explanation": "DataStore 用 Kotlin 协程和 Flow 替代 SharedPreferences，避免 ANR，支持 RxJava/Flow 响应式读取。 DataStore 分 Preferences 和 Proto 两种，简单键值用前者，需要结构化对象和 schema 演进时用后者。",
+              "explanation": "DataStore 用 Kotlin 协程和 Flow 替代 SharedPreferences，避免 ANR，支持 RxJava/Flow 响应式读取。 DataStore 分 Preferences 和 Proto 两种，简单键值用前者，需要结构化对象和 schema 演进时用后者。 本题正确项是「基于协程和 Flow，类型安全，异步操作不阻塞主线程」。",
               "type": "single"
             },
             {
@@ -72196,7 +72196,7 @@
                 "升级数据库版本"
               ],
               "answer": 1,
-              "explanation": "@Query 让开发者直接写 SQL 查询，Room 在编译时验证 SQL 语法，避免运行时错误。 @Query 返回 Flow 时，表数据变化会自动触发重新查询并推送新结果，UI 无需手动刷新。 复杂查询要避免在主线程执行，Room 的 suspend 或 Flow 接口会自动切到后台线程，阻塞式接口则要自己切换。",
+              "explanation": "@Query 让开发者直接写 SQL 查询，Room 在编译时验证 SQL 语法，避免运行时错误。 @Query 返回 Flow 时，表数据变化会自动触发重新查询并推送新结果，UI 无需手动刷新。 复杂查询要避免在主线程执行，Room 的 suspend 或 Flow 接口会自动切到后台线程，阻塞式接口则要自己切换。 本题正确项是「定义自定义 SQL 查询语句」。",
               "type": "single"
             },
             {
@@ -72208,7 +72208,7 @@
                 "存储配置信息"
               ],
               "answer": 1,
-              "explanation": "文件存储适合二进制大文件，数据库适合结构化查询。图片/视频等应存为文件，路径存入数据库。 文件要放在应用私有目录，卸载时系统会自动清理，敏感内容还应加密后再写入磁盘。 缓存目录和文件目录要分开，系统可能清理缓存目录，重要文件必须放在不会被自动删除的位置。",
+              "explanation": "文件存储适合二进制大文件，数据库适合结构化查询。图片/视频等应存为文件，路径存入数据库。 文件要放在应用私有目录，卸载时系统会自动清理，敏感内容还应加密后再写入磁盘。 缓存目录和文件目录要分开，系统可能清理缓存目录，重要文件必须放在不会被自动删除的位置。 本题正确项是「存储大文件如图片、视频、下载的文件」。",
               "type": "single"
             },
             {
@@ -72220,7 +72220,7 @@
                 "同步到云端"
               ],
               "answer": 1,
-              "explanation": "Migration 定义旧版本到新版本的转换逻辑（如添加列、重命名表），确保升级 App 时用户数据不丢失。 忘记写 Migration 而直接改表结构，Room 会在启动时校验 schema 失败并崩溃，所以每次改表都要同步升版本号。 迁移要有测试覆盖，Room 支持导出 schema，用 MigrationTestHelper 可以在升级时验证数据没有丢失。",
+              "explanation": "Migration 定义旧版本到新版本的转换逻辑（如添加列、重命名表），确保升级 App 时用户数据不丢失。 忘记写 Migration 而直接改表结构，Room 会在启动时校验 schema 失败并崩溃，所以每次改表都要同步升版本号。 迁移要有测试覆盖，Room 支持导出 schema，用 MigrationTestHelper 可以在升级时验证数据没有丢失。 本题正确项是「在表结构变更时保留用户数据并更新 Schema」。",
               "type": "single"
             }
           ],
@@ -72244,7 +72244,7 @@
             "en": "Foreground Service, WorkManager, AlarmManager and background restriction handling."
           },
           "file": "assets/content/mobile_android_background.md",
-          "minutes": 30,
+          "minutes": 50,
           "difficulty": "进阶",
           "prerequisites": [
             "mobile_kotlin"
@@ -72267,7 +72267,7 @@
                 "前台用户交互"
               ],
               "answer": 1,
-              "explanation": "WorkManager 是 Android 推荐的可延迟任务方案，即使 App 退出或设备重启，任务仍会执行。 WorkManager 支持链式任务和唯一工作队列，重复任务用 uniqueWork 去重，避免同一同步任务被排队多次。 任务要设置合理的约束和重试策略，并保证幂等，因为系统可能因重启或条件变化而重复执行同一个任务。",
+              "explanation": "WorkManager 是 Android 推荐的可延迟任务方案，即使 App 退出或设备重启，任务仍会执行。 WorkManager 支持链式任务和唯一工作队列，重复任务用 uniqueWork 去重，避免同一同步任务被排队多次。 任务要设置合理的约束和重试策略，并保证幂等，因为系统可能因重启或条件变化而重复执行同一个任务。 本题正确项是「可延迟的、需要保证执行的后台任务（如数据同步、日志上传）」。",
               "type": "single"
             },
             {
@@ -72279,7 +72279,7 @@
                 "只能运行 10 秒"
               ],
               "answer": 1,
-              "explanation": "Foreground Service 通过持久通知让用户知道 App 在后台工作（如音乐播放、导航），系统不会轻易回收。 Android 14 起前台服务还必须声明具体类型，不同类型对应不同的权限和上架审核要求。 前台服务的通知不能被随意隐藏，Android 要求通知可见且能说明正在进行的操作，用户才能感知后台行为。",
+              "explanation": "Foreground Service 通过持久通知让用户知道 App 在后台工作（如音乐播放、导航），系统不会轻易回收。 Android 14 起前台服务还必须声明具体类型，不同类型对应不同的权限和上架审核要求。 前台服务的通知不能被随意隐藏，Android 要求通知可见且能说明正在进行的操作，用户才能感知后台行为。 本题正确项是「显示持久通知，优先级高，不易被系统杀死」。",
               "type": "single"
             },
             {
@@ -72291,7 +72291,7 @@
                 "只限制网络访问"
               ],
               "answer": 1,
-              "explanation": "为节省电量和内存，Android 8.0+ 限制后台 Service，长时间任务需用 WorkManager 或 Foreground Service。 如果任务必须立即执行，可以使用前台服务并展示通知，但滥用前台服务会影响续航，也可能被应用商店审核关注。",
+              "explanation": "为节省电量和内存，Android 8.0+ 限制后台 Service，长时间任务需用 WorkManager 或 Foreground Service。 如果任务必须立即执行，可以使用前台服务并展示通知，但滥用前台服务会影响续航，也可能被应用商店审核关注。 本题正确项是「App 进入后台后几分钟内必须停止后台 Service，需改用 WorkManager 或 Foreground Service」。",
               "type": "single"
             },
             {
@@ -72315,7 +72315,7 @@
                 "加密任务数据"
               ],
               "answer": 1,
-              "explanation": "Constraints 让任务只在满足条件时执行，如 setRequiredNetworkType(NetworkType.CONNECTED) 确保有网络才同步。 任务重试策略也要配置，backoffPolicy 决定失败后如何退避，否则失败任务会立即重跑并快速耗尽电量。",
+              "explanation": "Constraints 让任务只在满足条件时执行，如 setRequiredNetworkType(NetworkType.CONNECTED) 确保有网络才同步。 任务重试策略也要配置，backoffPolicy 决定失败后如何退避，否则失败任务会立即重跑并快速耗尽电量。 本题正确项是「定义任务执行条件（如需要网络、充电中、存储空间充足）」。",
               "type": "single"
             }
           ],
@@ -72339,7 +72339,7 @@
             "en": "JUnit unit tests, Espresso UI tests, UI Automator and test doubles."
           },
           "file": "assets/content/mobile_android_testing.md",
-          "minutes": 30,
+          "minutes": 55,
           "difficulty": "高级",
           "prerequisites": [
             "mobile_compose"
@@ -72362,7 +72362,7 @@
                 "网络测试"
               ],
               "answer": 2,
-              "explanation": "Espresso 专为单 App UI 测试设计，自动同步主线程，测试代码在 UI 空闲时才执行操作，减少 flaky test。 Espresso 的 onView 加 withId 定位控件，perform 执行点击输入，check 断言结果，三段式结构让测试读起来很直观。",
+              "explanation": "Espresso 专为单 App UI 测试设计，自动同步主线程，测试代码在 UI 空闲时才执行操作，减少 flaky test。 Espresso 的 onView 加 withId 定位控件，perform 执行点击输入，check 断言结果，三段式结构让测试读起来很直观。 本题正确项是「单 App 内 UI 测试，自动等待 UI 空闲后执行操作」。",
               "type": "single"
             },
             {
@@ -72374,7 +72374,7 @@
                 "没有区别"
               ],
               "answer": 1,
-              "explanation": "UI Automator 通过系统级 API 操作任何 App 和系统 UI（如通知栏），Espresso 专注于被测 App 内的 View 交互。 UI Automator 常用在跨应用流程，比如从通知栏进入 App，因为它能操作系统 UI 和别的应用界面。",
+              "explanation": "UI Automator 通过系统级 API 操作任何 App 和系统 UI（如通知栏），Espresso 专注于被测 App 内的 View 交互。 UI Automator 常用在跨应用流程，比如从通知栏进入 App，因为它能操作系统 UI 和别的应用界面。 本题正确项是「UI Automator 可跨 App 测试和系统级交互，Espresso 限于单 App 内」。",
               "type": "single"
             },
             {
@@ -72386,7 +72386,7 @@
                 "测试 UI"
               ],
               "answer": 1,
-              "explanation": "Mock 对象模拟依赖的行为，让单元测试只关注被测逻辑，不受外部系统（网络延迟、数据库状态）影响。 Mock 和 Fake 不同，Fake 往往带一个简单可用的真实实现，适合测试状态变化，Mock 更关注调用是否发生。 Mockito 的 verify 可以断言某个依赖方法被调用了多少次，配合参数匹配器能精确验证交互行为。",
+              "explanation": "Mock 对象模拟依赖的行为，让单元测试只关注被测逻辑，不受外部系统（网络延迟、数据库状态）影响。 Mock 和 Fake 不同，Fake 往往带一个简单可用的真实实现，适合测试状态变化，Mock 更关注调用是否发生。 Mockito 的 verify 可以断言某个依赖方法被调用了多少次，配合参数匹配器能精确验证交互行为。 本题正确项是「隔离被测代码，用假对象替代真实依赖（如网络、数据库）」。",
               "type": "single"
             },
             {
@@ -72398,7 +72398,7 @@
                 "生成测试报告"
               ],
               "answer": 1,
-              "explanation": "这个注解告诉 JUnit 使用 Android 测试运行器，才能访问 Android API 和 Context。 本地 JVM 测试不需要设备，速度快，只有需要 Context 或真实 UI 时才放到 instrumented 测试里跑。",
+              "explanation": "这个注解告诉 JUnit 使用 Android 测试运行器，才能访问 Android API 和 Context。 本地 JVM 测试不需要设备，速度快，只有需要 Context 或真实 UI 时才放到 instrumented 测试里跑。 本题正确项是「指定测试运行器，让 JUnit 在 Android 环境中执行测试」。",
               "type": "single"
             },
             {
@@ -72410,7 +72410,7 @@
                 "优化性能"
               ],
               "answer": 1,
-              "explanation": "JaCoCo 在测试运行时记录代码执行情况，生成覆盖率报告，低覆盖率区域提示需要补充测试。 覆盖率只是发现盲区的手段，核心业务分支应当优先补齐测试，单纯追求数字容易写出不验证行为的空测试。 报告要关注新增代码的覆盖率，老代码覆盖低不一定要补，但本次改动涉及的分支必须测到。",
+              "explanation": "JaCoCo 在测试运行时记录代码执行情况，生成覆盖率报告，低覆盖率区域提示需要补充测试。 覆盖率只是发现盲区的手段，核心业务分支应当优先补齐测试，单纯追求数字容易写出不验证行为的空测试。 报告要关注新增代码的覆盖率，老代码覆盖低不一定要补，但本次改动涉及的分支必须测到。 本题正确项是「统计有多少代码行/分支被测试执行到，帮助发现测试盲区」。",
               "type": "single"
             }
           ],
@@ -72466,7 +72466,7 @@
                 "没有区别"
               ],
               "answer": 1,
-              "explanation": "Flutter 不依赖原生组件，用 Skia/Impeller 引擎直接绘制 UI，保证跨平台一致性；RN 映射到原生组件。 自绘引擎的代价是包体积更大，也意味着系统控件更新不会自动同步，需要等 Flutter 引擎和框架适配。 因此 Flutter 应用在不同系统上的观感高度一致，但也要自己处理平台差异化的交互习惯和返回手势。",
+              "explanation": "Flutter 不依赖原生组件，用 Skia/Impeller 引擎直接绘制 UI，保证跨平台一致性；RN 映射到原生组件。 自绘引擎的代价是包体积更大，也意味着系统控件更新不会自动同步，需要等 Flutter 引擎和框架适配。 因此 Flutter 应用在不同系统上的观感高度一致，但也要自己处理平台差异化的交互习惯和返回手势。 本题正确项是「Flutter 自带渲染引擎（Skia/Impeller），直接绘制像素；RN 使用原生组件桥接」。",
               "type": "single"
             },
             {
@@ -72478,7 +72478,7 @@
                 "没有区别"
               ],
               "answer": 1,
-              "explanation": "Stateless Widget 构建后不变，Stateful Widget 持有 State 对象，状态变化时触发 rebuild。 需要跨组件共享状态时，通常借助 Provider、Riverpod 或 BLoC，把状态提升到 Widget 树上层统一管理。",
+              "explanation": "Stateless Widget 构建后不变，Stateful Widget 持有 State 对象，状态变化时触发 rebuild。 需要跨组件共享状态时，通常借助 Provider、Riverpod 或 BLoC，把状态提升到 Widget 树上层统一管理。 本题正确项是「Stateful 持有可变状态，Stateless 不可变」。",
               "type": "single"
             },
             {
@@ -72490,7 +72490,7 @@
                 "管理数据库"
               ],
               "answer": 1,
-              "explanation": "Platform Channel 让 Flutter 调用原生 API（如相机、GPS），原生代码也可向 Dart 发送消息。 Channel 调用是异步的，频繁的小数据往返会有序列化开销，批量传输或改用 FFI 往往更高效。 如果共享逻辑较重，可以只把 Flutter 当作 UI 层，把业务逻辑放在 Dart 包或原生 SDK 中复用。",
+              "explanation": "Platform Channel 让 Flutter 调用原生 API（如相机、GPS），原生代码也可向 Dart 发送消息。 Channel 调用是异步的，频繁的小数据往返会有序列化开销，批量传输或改用 FFI 往往更高效。 如果共享逻辑较重，可以只把 Flutter 当作 UI 层，把业务逻辑放在 Dart 包或原生 SDK 中复用。 本题正确项是「在 Dart 和原生平台代码（Kotlin/Swift）之间通信」。",
               "type": "single"
             },
             {
@@ -72502,7 +72502,7 @@
                 "自动修复 bug"
               ],
               "answer": 1,
-              "explanation": "Hot Reload 把代码变更注入运行中的 Dart VM，UI 立即更新且保留当前页面状态，大幅提升开发效率。 热重载保留的是 Dart 层状态，原生代码改动和部分静态初始化仍需完整重启才能生效。 频繁热重载会积累旧的 State，遇到状态异常时先执行 Hot Restart，再判断是代码问题还是调试环境问题。",
+              "explanation": "Hot Reload 把代码变更注入运行中的 Dart VM，UI 立即更新且保留当前页面状态，大幅提升开发效率。 热重载保留的是 Dart 层状态，原生代码改动和部分静态初始化仍需完整重启才能生效。 频繁热重载会积累旧的 State，遇到状态异常时先执行 Hot Restart，再判断是代码问题还是调试环境问题。 本题正确项是「修改代码后毫秒级刷新 UI，保留应用状态」。",
               "type": "single"
             },
             {
@@ -72514,7 +72514,7 @@
                 "Widget 包含 Element"
               ],
               "answer": 1,
-              "explanation": "Widget 是不可变的配置，Framework 根据 Widget 创建 Element 形成 Element Tree，Element 才是实际渲染的对象。 Widget 可以频繁重建，Element 会被复用，判断两个 Widget 能否复用同一 Element 靠的是 runtimeType 和 key。",
+              "explanation": "Widget 是不可变的配置，Framework 根据 Widget 创建 Element 形成 Element Tree，Element 才是实际渲染的对象。 Widget 可以频繁重建，Element 会被复用，判断两个 Widget 能否复用同一 Element 靠的是 runtimeType 和 key。 本题正确项是「Widget 是配置描述，Element 是 Widget 的实例化对象，管理渲染树」。",
               "type": "single"
             }
           ],
@@ -73050,7 +73050,7 @@
                 "自动 UI 适配"
               ],
               "answer": 1,
-              "explanation": "Expect 在共享模块声明平台相关的接口/类，Actual 在各平台模块（Android/iOS）提供具体实现。 expect 只能声明，不能有实现，编译器会强制每个目标平台都提供 actual，漏写会在编译期报错。 编译时 Gradle 会为每个目标平台分别编译 commonMain 和对应的平台源集，最终产出各平台的库文件。",
+              "explanation": "Expect 在共享模块声明平台相关的接口/类，Actual 在各平台模块（Android/iOS）提供具体实现。 expect 只能声明，不能有实现，编译器会强制每个目标平台都提供 actual，漏写会在编译期报错。 编译时 Gradle 会为每个目标平台分别编译 commonMain 和对应的平台源集，最终产出各平台的库文件。 本题正确项是「Expect/Actual —— 共享模块声明接口，各平台提供实现」。",
               "type": "single"
             },
             {
@@ -73062,7 +73062,7 @@
                 "手势处理"
               ],
               "answer": 1,
-              "explanation": "KMP 擅长共享业务逻辑层（网络、数据库、算法），UI 层因平台差异大通常各自实现或用 Compose Multiplatform。 判断能否共享的标准是这段逻辑是否依赖平台 API，纯算法和数据模型最容易共享，UI 和权限相关代码则要分平台实现。",
+              "explanation": "KMP 擅长共享业务逻辑层（网络、数据库、算法），UI 层因平台差异大通常各自实现或用 Compose Multiplatform。 判断能否共享的标准是这段逻辑是否依赖平台 API，纯算法和数据模型最容易共享，UI 和权限相关代码则要分平台实现。 本题正确项是「业务逻辑、网络请求、数据模型等平台无关代码」。",
               "type": "single"
             },
             {
@@ -73074,7 +73074,7 @@
                 "只支持 Web"
               ],
               "answer": 1,
-              "explanation": "Compose Multiplatform 把 Jetpack Compose 扩展到更多平台，一套 UI 代码多端运行。 Compose Multiplatform 目前对 iOS 的支持已经稳定，但复杂原生交互仍需要和 SwiftUI 混合使用。",
+              "explanation": "Compose Multiplatform 把 Jetpack Compose 扩展到更多平台，一套 UI 代码多端运行。 Compose Multiplatform 目前对 iOS 的支持已经稳定，但复杂原生交互仍需要和 SwiftUI 混合使用。 本题正确项是「用一套 Compose UI 代码运行在 Android、iOS、Desktop 和 Web」。",
               "type": "single"
             },
             {
@@ -73086,7 +73086,7 @@
                 "存放构建脚本"
               ],
               "answer": 1,
-              "explanation": "commonMain 是共享代码的源集，包含业务逻辑和 expect 声明，编译到所有目标平台。 依赖 Android 的代码要放到 androidMain，依赖 iOS 的放到 iosMain，公共代码只能引用 commonMain 里声明的 API。",
+              "explanation": "commonMain 是共享代码的源集，包含业务逻辑和 expect 声明，编译到所有目标平台。 依赖 Android 的代码要放到 androidMain，依赖 iOS 的放到 iosMain，公共代码只能引用 commonMain 里声明的 API。 本题正确项是「存放各平台共享的代码，可访问 expect 声明」。",
               "type": "single"
             },
             {
@@ -73098,7 +73098,7 @@
                 "构建工具"
               ],
               "answer": 1,
-              "explanation": "Ktor Client 支持 Kotlin Multiplatform，在 commonMain 中编写网络请求代码，自动适配各平台底层实现。 Ktor 的引擎是可替换的，Android 用 OkHttp，iOS 用 Darwin，切换引擎不需要改动共享层的请求代码。",
+              "explanation": "Ktor Client 支持 Kotlin Multiplatform，在 commonMain 中编写网络请求代码，自动适配各平台底层实现。 Ktor 的引擎是可替换的，Android 用 OkHttp，iOS 用 Darwin，切换引擎不需要改动共享层的请求代码。 本题正确项是「跨平台 HTTP 客户端，在共享模块中发起网络请求」。",
               "type": "single"
             }
           ],
@@ -73317,7 +73317,7 @@
                 "手动刷新 UI"
               ],
               "answer": 1,
-              "explanation": "BLoC（Business Logic Component）接收事件，处理业务逻辑，输出新状态，UI 监听状态变化自动重建。 使用 BLoC 时要保证事件处理是单向的，UI 只发事件不直接改状态，这样状态变化才可追踪、可复现。 事件和状态都应该是不可变对象，配合 Equatable 或 == 判断，UI 才能准确知道状态是否真的发生了变化。",
+              "explanation": "BLoC（Business Logic Component）接收事件，处理业务逻辑，输出新状态，UI 监听状态变化自动重建。 使用 BLoC 时要保证事件处理是单向的，UI 只发事件不直接改状态，这样状态变化才可追踪、可复现。 事件和状态都应该是不可变对象，配合 Equatable 或 == 判断，UI 才能准确知道状态是否真的发生了变化。 本题正确项是「通过事件（Event）触发状态（State）变化，UI 响应式重建」。",
               "type": "single"
             },
             {
@@ -73329,7 +73329,7 @@
                 "不支持测试"
               ],
               "answer": 1,
-              "explanation": "Riverpod 在编译时检查依赖关系，不需要 BuildContext，天然支持 FutureProvider/StreamProvider。 Provider 依赖 BuildContext 查找依赖，Riverpod 把依赖声明在全局 Provider 里，测试时替换 override 更方便。",
+              "explanation": "Riverpod 在编译时检查依赖关系，不需要 BuildContext，天然支持 FutureProvider/StreamProvider。 Provider 依赖 BuildContext 查找依赖，Riverpod 把依赖声明在全局 Provider 里，测试时替换 override 更方便。 本题正确项是「编译时安全，不依赖 Context，支持异步和自动销毁」。",
               "type": "single"
             },
             {
@@ -73341,7 +73341,7 @@
                 "不支持中间件"
               ],
               "answer": 1,
-              "explanation": "Zustand 只有一个 create 函数和 useStore hook，无需 Provider 包裹，API 极简但功能完整。 Zustand 的状态更新走不可变合并，选择器可以精确订阅某个字段，避免无关状态变化触发整个组件重渲染。 状态多了以后可以拆成多个小 store，用选择器组合读取，避免单个巨型 store 让所有组件都跟着重渲染。",
+              "explanation": "Zustand 只有一个 create 函数和 useStore hook，无需 Provider 包裹，API 极简但功能完整。 Zustand 的状态更新走不可变合并，选择器可以精确订阅某个字段，避免无关状态变化触发整个组件重渲染。 状态多了以后可以拆成多个小 store，用选择器组合读取，避免单个巨型 store 让所有组件都跟着重渲染。 本题正确项是「极简 API，无 Provider 包裹，用 hook 直接访问和更新状态」。",
               "type": "single"
             },
             {
@@ -73353,7 +73353,7 @@
                 "只能用于 Android"
               ],
               "answer": 1,
-              "explanation": "Android ViewModel 有生命周期感知，iOS 没有对应概念，KMP 共享 ViewModel 需要抽象生命周期差异。 共享 ViewModel 时通常把状态暴露成 Flow，Android 用 collectAsState，iOS 用 Swift 包装层把 Flow 转成可观察对象。",
+              "explanation": "Android ViewModel 有生命周期感知，iOS 没有对应概念，KMP 共享 ViewModel 需要抽象生命周期差异。 共享 ViewModel 时通常把状态暴露成 Flow，Android 用 collectAsState，iOS 用 Swift 包装层把 Flow 转成可观察对象。 本题正确项是「需要抽象平台差异（如 iOS 没有 ViewModel 生命周期），用 expect/actual 适配」。",
               "type": "single"
             },
             {
@@ -73365,7 +73365,7 @@
                 "压缩数据"
               ],
               "answer": 1,
-              "explanation": "响应式流让 UI 订阅数据源，数据变化时自动通知订阅者更新 UI，避免手动同步状态。 响应式流还要处理背压和生命周期，页面销毁时要取消订阅，否则会继续接收数据并造成内存泄漏。 把 UI 状态和业务状态分开管理，加载中、错误这些临时状态留在页面内，跨页面共享的才放进全局状态。",
+              "explanation": "响应式流让 UI 订阅数据源，数据变化时自动通知订阅者更新 UI，避免手动同步状态。 响应式流还要处理背压和生命周期，页面销毁时要取消订阅，否则会继续接收数据并造成内存泄漏。 把 UI 状态和业务状态分开管理，加载中、错误这些临时状态留在页面内，跨页面共享的才放进全局状态。 本题正确项是「让 UI 自动订阅数据变化，数据更新时 UI 自动刷新」。",
               "type": "single"
             }
           ],

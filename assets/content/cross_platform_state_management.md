@@ -454,7 +454,7 @@ D. 手动刷新 UI
 
 **正确答案：B**
 
-**详细解释**：BLoC（Business Logic Component）接收事件，处理业务逻辑，输出新状态，UI 监听状态变化自动重建。 使用 BLoC 时要保证事件处理是单向的，UI 只发事件不直接改状态，这样状态变化才可追踪、可复现。 事件和状态都应该是不可变对象，配合 Equatable 或 == 判断，UI 才能准确知道状态是否真的发生了变化。
+**详细解释**：BLoC（Business Logic Component）接收事件，处理业务逻辑，输出新状态，UI 监听状态变化自动重建。 使用 BLoC 时要保证事件处理是单向的，UI 只发事件不直接改状态，这样状态变化才可追踪、可复现。 事件和状态都应该是不可变对象，配合 Equatable 或 == 判断，UI 才能准确知道状态是否真的发生了变化。 本题正确项是「通过事件（Event）触发状态（State）变化，UI 响应式重建」。
 
 ---
 
@@ -472,7 +472,7 @@ D. 不支持测试
 
 **正确答案：B**
 
-**详细解释**：Riverpod 在编译时检查依赖关系，不需要 BuildContext，天然支持 FutureProvider/StreamProvider。 Provider 依赖 BuildContext 查找依赖，Riverpod 把依赖声明在全局 Provider 里，测试时替换 override 更方便。
+**详细解释**：Riverpod 在编译时检查依赖关系，不需要 BuildContext，天然支持 FutureProvider/StreamProvider。 Provider 依赖 BuildContext 查找依赖，Riverpod 把依赖声明在全局 Provider 里，测试时替换 override 更方便。 本题正确项是「编译时安全，不依赖 Context，支持异步和自动销毁」。
 
 ---
 
@@ -490,7 +490,7 @@ D. 不支持中间件
 
 **正确答案：B**
 
-**详细解释**：Zustand 只有一个 create 函数和 useStore hook，无需 Provider 包裹，API 极简但功能完整。 Zustand 的状态更新走不可变合并，选择器可以精确订阅某个字段，避免无关状态变化触发整个组件重渲染。 状态多了以后可以拆成多个小 store，用选择器组合读取，避免单个巨型 store 让所有组件都跟着重渲染。
+**详细解释**：Zustand 只有一个 create 函数和 useStore hook，无需 Provider 包裹，API 极简但功能完整。 Zustand 的状态更新走不可变合并，选择器可以精确订阅某个字段，避免无关状态变化触发整个组件重渲染。 状态多了以后可以拆成多个小 store，用选择器组合读取，避免单个巨型 store 让所有组件都跟着重渲染。 本题正确项是「极简 API，无 Provider 包裹，用 hook 直接访问和更新状态」。
 
 ---
 
@@ -508,7 +508,7 @@ D. 只能用于 Android
 
 **正确答案：B**
 
-**详细解释**：Android ViewModel 有生命周期感知，iOS 没有对应概念，KMP 共享 ViewModel 需要抽象生命周期差异。 共享 ViewModel 时通常把状态暴露成 Flow，Android 用 collectAsState，iOS 用 Swift 包装层把 Flow 转成可观察对象。
+**详细解释**：Android ViewModel 有生命周期感知，iOS 没有对应概念，KMP 共享 ViewModel 需要抽象生命周期差异。 共享 ViewModel 时通常把状态暴露成 Flow，Android 用 collectAsState，iOS 用 Swift 包装层把 Flow 转成可观察对象。 本题正确项是「需要抽象平台差异（如 iOS 没有 ViewModel 生命周期），用 expect/actual 适配」。
 
 ---
 
@@ -526,8 +526,7 @@ D. 压缩数据
 
 **正确答案：B**
 
-**详细解释**：响应式流让 UI 订阅数据源，数据变化时自动通知订阅者更新 UI，避免手动同步状态。 响应式流还要处理背压和生命周期，页面销毁时要取消订阅，否则会继续接收数据并造成内存泄漏。 把 UI 状态和业务状态分开管理，加载中、错误这些临时状态留在页面内，跨页面共享的才放进全局状态。
-
+**详细解释**：响应式流让 UI 订阅数据源，数据变化时自动通知订阅者更新 UI，避免手动同步状态。 响应式流还要处理背压和生命周期，页面销毁时要取消订阅，否则会继续接收数据并造成内存泄漏。 把 UI 状态和业务状态分开管理，加载中、错误这些临时状态留在页面内，跨页面共享的才放进全局状态。 本题正确项是「让 UI 自动订阅数据变化，数据更新时 UI 自动刷新」。
 
 ## 术语速查
 

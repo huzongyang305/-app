@@ -304,7 +304,7 @@ D. 自动 UI 适配
 
 **正确答案：B**
 
-**详细解释**：Expect 在共享模块声明平台相关的接口/类，Actual 在各平台模块（Android/iOS）提供具体实现。 expect 只能声明，不能有实现，编译器会强制每个目标平台都提供 actual，漏写会在编译期报错。 编译时 Gradle 会为每个目标平台分别编译 commonMain 和对应的平台源集，最终产出各平台的库文件。
+**详细解释**：Expect 在共享模块声明平台相关的接口/类，Actual 在各平台模块（Android/iOS）提供具体实现。 expect 只能声明，不能有实现，编译器会强制每个目标平台都提供 actual，漏写会在编译期报错。 编译时 Gradle 会为每个目标平台分别编译 commonMain 和对应的平台源集，最终产出各平台的库文件。 本题正确项是「Expect/Actual —— 共享模块声明接口，各平台提供实现」。
 
 ---
 
@@ -322,7 +322,7 @@ D. 手势处理
 
 **正确答案：B**
 
-**详细解释**：KMP 擅长共享业务逻辑层（网络、数据库、算法），UI 层因平台差异大通常各自实现或用 Compose Multiplatform。 判断能否共享的标准是这段逻辑是否依赖平台 API，纯算法和数据模型最容易共享，UI 和权限相关代码则要分平台实现。
+**详细解释**：KMP 擅长共享业务逻辑层（网络、数据库、算法），UI 层因平台差异大通常各自实现或用 Compose Multiplatform。 判断能否共享的标准是这段逻辑是否依赖平台 API，纯算法和数据模型最容易共享，UI 和权限相关代码则要分平台实现。 本题正确项是「业务逻辑、网络请求、数据模型等平台无关代码」。
 
 ---
 
@@ -340,7 +340,7 @@ D. 只支持 Web
 
 **正确答案：B**
 
-**详细解释**：Compose Multiplatform 把 Jetpack Compose 扩展到更多平台，一套 UI 代码多端运行。 Compose Multiplatform 目前对 iOS 的支持已经稳定，但复杂原生交互仍需要和 SwiftUI 混合使用。
+**详细解释**：Compose Multiplatform 把 Jetpack Compose 扩展到更多平台，一套 UI 代码多端运行。 Compose Multiplatform 目前对 iOS 的支持已经稳定，但复杂原生交互仍需要和 SwiftUI 混合使用。 本题正确项是「用一套 Compose UI 代码运行在 Android、iOS、Desktop 和 Web」。
 
 ---
 
@@ -358,7 +358,7 @@ D. 存放构建脚本
 
 **正确答案：B**
 
-**详细解释**：commonMain 是共享代码的源集，包含业务逻辑和 expect 声明，编译到所有目标平台。 依赖 Android 的代码要放到 androidMain，依赖 iOS 的放到 iosMain，公共代码只能引用 commonMain 里声明的 API。
+**详细解释**：commonMain 是共享代码的源集，包含业务逻辑和 expect 声明，编译到所有目标平台。 依赖 Android 的代码要放到 androidMain，依赖 iOS 的放到 iosMain，公共代码只能引用 commonMain 里声明的 API。 本题正确项是「存放各平台共享的代码，可访问 expect 声明」。
 
 ---
 
@@ -376,8 +376,7 @@ D. 构建工具
 
 **正确答案：B**
 
-**详细解释**：Ktor Client 支持 Kotlin Multiplatform，在 commonMain 中编写网络请求代码，自动适配各平台底层实现。 Ktor 的引擎是可替换的，Android 用 OkHttp，iOS 用 Darwin，切换引擎不需要改动共享层的请求代码。
-
+**详细解释**：Ktor Client 支持 Kotlin Multiplatform，在 commonMain 中编写网络请求代码，自动适配各平台底层实现。 Ktor 的引擎是可替换的，Android 用 OkHttp，iOS 用 Darwin，切换引擎不需要改动共享层的请求代码。 本题正确项是「跨平台 HTTP 客户端，在共享模块中发起网络请求」。
 
 ## 术语速查
 

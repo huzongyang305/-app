@@ -319,7 +319,7 @@ D. 没有区别
 
 **正确答案：B**
 
-**详细解释**：Flutter 不依赖原生组件，用 Skia/Impeller 引擎直接绘制 UI，保证跨平台一致性；RN 映射到原生组件。 自绘引擎的代价是包体积更大，也意味着系统控件更新不会自动同步，需要等 Flutter 引擎和框架适配。 因此 Flutter 应用在不同系统上的观感高度一致，但也要自己处理平台差异化的交互习惯和返回手势。
+**详细解释**：Flutter 不依赖原生组件，用 Skia/Impeller 引擎直接绘制 UI，保证跨平台一致性；RN 映射到原生组件。 自绘引擎的代价是包体积更大，也意味着系统控件更新不会自动同步，需要等 Flutter 引擎和框架适配。 因此 Flutter 应用在不同系统上的观感高度一致，但也要自己处理平台差异化的交互习惯和返回手势。 本题正确项是「Flutter 自带渲染引擎（Skia/Impeller），直接绘制像素；RN 使用原生组件桥接」。
 
 ---
 
@@ -337,7 +337,7 @@ D. 没有区别
 
 **正确答案：B**
 
-**详细解释**：Stateless Widget 构建后不变，Stateful Widget 持有 State 对象，状态变化时触发 rebuild。 需要跨组件共享状态时，通常借助 Provider、Riverpod 或 BLoC，把状态提升到 Widget 树上层统一管理。
+**详细解释**：Stateless Widget 构建后不变，Stateful Widget 持有 State 对象，状态变化时触发 rebuild。 需要跨组件共享状态时，通常借助 Provider、Riverpod 或 BLoC，把状态提升到 Widget 树上层统一管理。 本题正确项是「Stateful 持有可变状态，Stateless 不可变」。
 
 ---
 
@@ -355,7 +355,7 @@ D. 管理数据库
 
 **正确答案：B**
 
-**详细解释**：Platform Channel 让 Flutter 调用原生 API（如相机、GPS），原生代码也可向 Dart 发送消息。 Channel 调用是异步的，频繁的小数据往返会有序列化开销，批量传输或改用 FFI 往往更高效。 如果共享逻辑较重，可以只把 Flutter 当作 UI 层，把业务逻辑放在 Dart 包或原生 SDK 中复用。
+**详细解释**：Platform Channel 让 Flutter 调用原生 API（如相机、GPS），原生代码也可向 Dart 发送消息。 Channel 调用是异步的，频繁的小数据往返会有序列化开销，批量传输或改用 FFI 往往更高效。 如果共享逻辑较重，可以只把 Flutter 当作 UI 层，把业务逻辑放在 Dart 包或原生 SDK 中复用。 本题正确项是「在 Dart 和原生平台代码（Kotlin/Swift）之间通信」。
 
 ---
 
@@ -373,7 +373,7 @@ D. 自动修复 bug
 
 **正确答案：B**
 
-**详细解释**：Hot Reload 把代码变更注入运行中的 Dart VM，UI 立即更新且保留当前页面状态，大幅提升开发效率。 热重载保留的是 Dart 层状态，原生代码改动和部分静态初始化仍需完整重启才能生效。 频繁热重载会积累旧的 State，遇到状态异常时先执行 Hot Restart，再判断是代码问题还是调试环境问题。
+**详细解释**：Hot Reload 把代码变更注入运行中的 Dart VM，UI 立即更新且保留当前页面状态，大幅提升开发效率。 热重载保留的是 Dart 层状态，原生代码改动和部分静态初始化仍需完整重启才能生效。 频繁热重载会积累旧的 State，遇到状态异常时先执行 Hot Restart，再判断是代码问题还是调试环境问题。 本题正确项是「修改代码后毫秒级刷新 UI，保留应用状态」。
 
 ---
 
@@ -391,8 +391,7 @@ D. Widget 包含 Element
 
 **正确答案：B**
 
-**详细解释**：Widget 是不可变的配置，Framework 根据 Widget 创建 Element 形成 Element Tree，Element 才是实际渲染的对象。 Widget 可以频繁重建，Element 会被复用，判断两个 Widget 能否复用同一 Element 靠的是 runtimeType 和 key。
-
+**详细解释**：Widget 是不可变的配置，Framework 根据 Widget 创建 Element 形成 Element Tree，Element 才是实际渲染的对象。 Widget 可以频繁重建，Element 会被复用，判断两个 Widget 能否复用同一 Element 靠的是 runtimeType 和 key。 本题正确项是「Widget 是配置描述，Element 是 Widget 的实例化对象，管理渲染树」。
 
 ## 术语速查
 

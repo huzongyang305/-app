@@ -1,6 +1,6 @@
 # iOS 网络编程与数据持久化
 
-> 内容更新时间：2026-10-06 · 学习阶段：中级 · 预计用时：30 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：中级 · 预计用时：35 分钟
 
 ![iOS 网络编程架构图](images/diagram_mobile_ios_networking.webp)
 
@@ -401,7 +401,7 @@ D. DataTask 自动缓存所有响应
 
 **正确答案：C**
 
-**详细解释**：DataTask 是最常用的网络任务类型，返回 (Data, URLResponse)，适合 REST API 调用等场景。 如果响应体很大，应该改用 downloadTask 下载到文件，避免把整个内容读进内存导致峰值占用过高。 上传文件用 uploadTask，边下载边解析用 delegate 接收增量数据，选错任务类型会让内存和性能都吃亏。
+**详细解释**：DataTask 是最常用的网络任务类型，返回 (Data, URLResponse)，适合 REST API 调用等场景。 如果响应体很大，应该改用 downloadTask 下载到文件，避免把整个内容读进内存导致峰值占用过高。 上传文件用 uploadTask，边下载边解析用 delegate 接收增量数据，选错任务类型会让内存和性能都吃亏。 本题正确项是「DataTask 返回 Data 和 URLResponse，适合中小规模数据传输」。
 
 ---
 
@@ -419,7 +419,7 @@ D. 管理网络连接池
 
 **正确答案：B**
 
-**详细解释**：Codable = Encodable + Decodable，让 Swift 结构体可以自动序列化为 JSON 或从 JSON 反序列化。 遇到字段名不一致时用 CodingKeys 映射，日期和嵌套结构则通过自定义 DateFormatter 或嵌套 Codable 类型处理。
+**详细解释**：Codable = Encodable + Decodable，让 Swift 结构体可以自动序列化为 JSON 或从 JSON 反序列化。 遇到字段名不一致时用 CodingKeys 映射，日期和嵌套结构则通过自定义 DateFormatter 或嵌套 Codable 类型处理。 本题正确项是「在 Swift 对象和 JSON 之间自动转换」。
 
 ---
 
@@ -437,7 +437,7 @@ D. Core Data 只能存字符串
 
 **正确答案：B**
 
-**详细解释**：Core Data 支持复杂关系查询和大量数据，UserDefaults 仅适合偏好设置等少量简单数据。 UserDefaults 底层是 plist，读写会占用启动时间，存放大列表会让启动变慢，所以只放开关和少量偏好。 需要跨设备同步或复杂查询时再考虑 Core Data 或 SwiftData，简单偏好设置不要为了统一而强行上数据库。
+**详细解释**：Core Data 支持复杂关系查询和大量数据，UserDefaults 仅适合偏好设置等少量简单数据。 UserDefaults 底层是 plist，读写会占用启动时间，存放大列表会让启动变慢，所以只放开关和少量偏好。 需要跨设备同步或复杂查询时再考虑 Core Data 或 SwiftData，简单偏好设置不要为了统一而强行上数据库。 本题正确项是「Core Data 是对象图管理器，适合复杂数据模型；UserDefaults 只适合少量键值对」。
 
 ---
 
@@ -455,7 +455,7 @@ D. 不需要 iOS 系统
 
 **正确答案：B**
 
-**详细解释**：SwiftData 是 Apple 在 iOS 17 推出的现代数据框架，用 @Model 宏替代 NSManagedObject，代码更简洁。 SwiftData 的迁移也要提前规划，使用 VersionedSchema 管理模型版本，才能在后续升级中平滑演进。
+**详细解释**：SwiftData 是 Apple 在 iOS 17 推出的现代数据框架，用 @Model 宏替代 NSManagedObject，代码更简洁。 SwiftData 的迁移也要提前规划，使用 VersionedSchema 管理模型版本，才能在后续升级中平滑演进。 本题正确项是「使用宏和属性包装器，API 更简洁，与 SwiftUI 深度集成」。
 
 ---
 
@@ -473,8 +473,7 @@ D. 这是可选的优化
 
 **正确答案：B**
 
-**详细解释**：主线程负责 UI 渲染，耗时的网络和数据解析操作应放到后台线程，完成后切回主线程更新 UI。 URLSession 的回调本身运行在后台队列，但更新 UI 必须切回主线程，用 MainActor 或 DispatchQueue.main 包一层。
-
+**详细解释**：主线程负责 UI 渲染，耗时的网络和数据解析操作应放到后台线程，完成后切回主线程更新 UI。 URLSession 的回调本身运行在后台队列，但更新 UI 必须切回主线程，用 MainActor 或 DispatchQueue.main 包一层。 本题正确项是「避免阻塞主线程导致 UI 卡顿」。
 
 ## 术语速查
 
