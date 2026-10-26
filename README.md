@@ -269,21 +269,22 @@ flutter build apk --release
 > 导致 release 编译仍引用 debug 专用的 `integration_test` 插件而失败。
 > 先 `flutter pub get`，再执行不带 `--no-pub` 的构建命令即可。
 
-产物与实测体积（v1.7.0+18，本机 Flutter 3.13+ / AGP 9 环境）：
+产物与实测体积（v2.7.0+24，706 篇课程，本机 Flutter 3.13+ / AGP 9 环境）：
 
 | 命令 | 产物 | 体积 |
 | --- | --- | ---: |
-| `--target-platform android-arm,android-arm64` | `app-release.apk`（ARM 双 ABI，发布用） | 91.54 MiB / 门禁 95 MiB |
-| `--split-per-abi` | `app-arm64-v8a-release.apk` | 72.05 MiB / 门禁 95 MiB |
-| | `app-armeabi-v7a-release.apk` | 70.05 MiB / 门禁 95 MiB |
-| | `app-x86_64-release.apk` | 73.59 MiB / 门禁 95 MiB |
-| `flutter build apk --release` | 3 ABI 通用包 | 114.32 MiB，超过门禁，仅用于本机安装验证 |
+| `--target-platform android-arm,android-arm64` | `app-release.apk`（ARM 双 ABI，发布用） | 94.78 MiB / 门禁 95 MiB |
+| `--split-per-abi` | `app-arm64-v8a-release.apk` | 74.66 MiB / 门禁 95 MiB |
+| | `app-armeabi-v7a-release.apk` | 72.69 MiB / 门禁 95 MiB |
+| | `app-x86_64-release.apk` | 76.14 MiB / 门禁 95 MiB |
+| `flutter build apk --release` | 3 ABI 通用包 | 超过 95 MiB 门禁，仅用于本机安装验证 |
 
-体积主要来自两部分：内置课程资产约 65.6 MiB（629 篇 Markdown 25.2 MiB、1242 张配图 35.4 MiB
-与内容清单 5.0 MiB 等）和沙箱运行时等资源约 15.0 MiB；ARM 双 ABI 原生库约 37 MiB。
-体积最大的 184 张 WebP 配图已压到最长边 1000px、`quality 65 / effort 6`，
-单张平均约为原体积的 42%。正文再增约 0.09M 字符后，ARM 双 ABI 包实测 91.54 MiB，
-仍在 95 MiB 门禁内，给 CI 环境差异留出余量。
+体积主要来自两部分：内置课程资产约 63.5 MiB（706 篇 Markdown 20.1 MiB、1327 张配图 38.7 MiB
+与内容清单 4.8 MiB 等）和沙箱运行时等资源约 15.0 MiB；ARM 双 ABI 原生库约 42 MiB。
+配图统一为 WebP：体积最大的 40 张已压到最长边 1000px、`quality 65 / effort 6`（其余大图
+按原尺寸 `quality 60` 重编码），本轮清掉 7 张后缀写成 `.webp` 的 1792×1024 PNG，
+合计省下约 12.4 MiB。ARM 双 ABI 包实测 94.78 MiB，只剩约 0.2 MiB 余量，
+后续新增课程需同步压缩配图，否则会触发门禁。
 CI 里有体积门禁，会对 ARM 通用包和三个 ABI 分包逐一执行
 `dart tool/apk_size_report.dart --budget-mb=95 <apk...>`。
 
