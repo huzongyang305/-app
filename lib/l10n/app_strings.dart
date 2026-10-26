@@ -253,6 +253,46 @@ class AppStrings {
       'zh': '错题本里有 {n} 道题待消灭，集中重练一遍',
       'en': '{n} wrong questions to clear — drill them together',
     },
+    'reviewQuestionQueue': {'zh': '题目级复习', 'en': 'Question review'},
+    'reviewQuestionQueueSummary': {
+      'zh': '{n} 道题到期 · 预计 {minutes} 分钟',
+      'en': '{n} questions due · about {minutes} min',
+    },
+    'reviewQuestionQueueHint': {
+      'zh': '每道题按自己的遗忘曲线排期，答错会重置间隔',
+      'en': 'Each question follows its own forgetting curve; a wrong answer resets it',
+    },
+    'reviewQuestionQueueDeferred': {
+      'zh': '另有 {n} 道题超出本次预算，顺延到下次',
+      'en': '{n} more questions deferred to the next session',
+    },
+    'reviewQuestionTitle': {'zh': '题目复习', 'en': 'Question review'},
+    'reviewQuestionProgress': {
+      'zh': '第 {current}/{total} 题',
+      'en': 'Question {current} of {total}',
+    },
+    'reviewVariantBadge': {'zh': '同知识点变式', 'en': 'Same-concept variant'},
+    'reviewVariantHint': {
+      'zh': '题目会在同一知识点内轮换，避免只记住某一道题的位置',
+      'en': 'Questions rotate within the same concept so you do not memorize one wording',
+    },
+    'reviewQuestionEmpty': {
+      'zh': '暂时没有到期的题目',
+      'en': 'No questions due right now',
+    },
+    'reviewQuestionEmptyHint': {
+      'zh': '做完测验后，答过的题会按间隔重复自动进入这里',
+      'en': 'Questions you answer in quizzes enter this queue automatically',
+    },
+    'reviewQuestionResult': {
+      'zh': '本次题目复习完成',
+      'en': 'Question review complete',
+    },
+    'reviewQuestionResultSummary': {
+      'zh': '答对 {correct}/{total} 题，其中 {variants} 道是变式题',
+      'en': '{correct}/{total} correct, including {variants} variants',
+    },
+    'reviewQuestionBackToPlan': {'zh': '返回复习计划', 'en': 'Back to review plan'},
     'flashcardTitle': {'zh': '闪卡复习', 'en': 'Flashcards'},
     'flashcardHint': {
       'zh': '先回想，再翻面自评，结果会写入复习计划',

@@ -11,6 +11,7 @@ import '../services/settings_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/index_card.dart';
 import 'exam_screen.dart';
+import 'question_review_screen.dart';
 import 'quiz_screen.dart';
 
 /// 复习队列：今日计划、分类筛选、场次时长与未来复习日历。
@@ -40,6 +41,11 @@ class _ReviewPlanScreenState extends State<ReviewPlanScreen> {
     final upcoming = progress.upcomingReviewCandidates(
       content.allLessons,
       days: 7,
+      categoryId: categoryId,
+    );
+    final questionPlan = progress.questionReviewPlanFor(
+      content.allLessons,
+      budgetMinutes: settings.reviewSessionMinutes,
       categoryId: categoryId,
     );
 
@@ -160,6 +166,84 @@ class _ReviewPlanScreenState extends State<ReviewPlanScreen> {
                 const SizedBox(height: AppSpacing.md),
                 // 复习安排：暂停 / 恢复、允许复习的星期、最近场次总结
                 _ReviewControlsCard(progress: progress),
+                // 题目级间隔重复：每道题按自己的遗忘曲线排期
+                if (questionPlan.totalCount > 0) ...[
+                  const SizedBox(height: AppSpacing.md),
+                  IndexCard(
+                    accent: theme.colorScheme.tertiary,
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) =>
+                            QuestionReviewScreen(plan: questionPlan),
+                      ),
+                    ),
+                    semanticLabel: context.trArgs(
+                      'reviewQuestionQueueSummary',
+                      {
+                        'n': questionPlan.count,
+                        'minutes': questionPlan.totalMinutes,
+                      },
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 44,
+                          height: 44,
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.tertiary.withValues(
+                              alpha: 0.10,
+                            ),
+                            borderRadius: AppRadii.control,
+                          ),
+                          child: Icon(
+                            Icons.psychology_alt,
+                            color: theme.colorScheme.tertiary,
+                          ),
+                        ),
+                        const SizedBox(width: AppSpacing.md),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                context.tr('reviewQuestionQueue'),
+                                style: theme.textTheme.titleSmall?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                context.trArgs('reviewQuestionQueueSummary', {
+                                  'n': questionPlan.count,
+                                  'minutes': questionPlan.totalMinutes,
+                                }),
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: theme.colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                              if (questionPlan.deferredCount > 0) ...[
+                                const SizedBox(height: 2),
+                                Text(
+                                  context.trArgs(
+                                    'reviewQuestionQueueDeferred',
+                                    {'n': questionPlan.deferredCount},
+                                  ),
+                                  style: theme.textTheme.labelSmall?.copyWith(
+                                    color: theme.colorScheme.onSurfaceVariant,
+                                  ),
+                                ),
+                              ],
+                            ],
+                          ),
+                        ),
+                        Icon(
+                          Icons.play_circle_outline,
+                          color: theme.colorScheme.tertiary,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
                 // 错题专项队列：把错题本里的题目集中重练
                 if (progress.totalWrongQuestions > 0) ...[
                   const SizedBox(height: AppSpacing.md),

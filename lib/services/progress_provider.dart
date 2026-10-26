@@ -10,6 +10,7 @@ import '../models/review_grade.dart';
 import '../models/study_center.dart';
 import 'backup_document_service.dart';
 import 'practice_question_factory.dart';
+import 'question_review_planner.dart';
 import 'review_planner.dart';
 import 'storage_service.dart';
 
@@ -23,6 +24,7 @@ class ProgressProvider extends ChangeNotifier {
     _restoreQuizResults();
     _restoreWrongCounts();
     _restoreReview();
+    _restoreQuestionReview();
     _restoreStudyDays();
     _restoreActivity();
     _restoreStudySeconds();
@@ -57,6 +59,14 @@ class ProgressProvider extends ChangeNotifier {
   final Map<String, double> _reviewEase = <String, double>{};
   final Map<String, int> _reviewInterval = <String, int>{};
   final Map<String, int> _reviewRepetitions = <String, int>{};
+
+  /// 题目级间隔重复：键为「知识点ID#题号」。
+  final Map<String, String> _questionReviewDue = <String, String>{};
+  final Map<String, int> _questionReviewInterval = <String, int>{};
+  final Map<String, double> _questionReviewEase = <String, double>{};
+  final Map<String, int> _questionReviewRepetitions = <String, int>{};
+  final Map<String, int> _questionReviewLapses = <String, int>{};
+
   final Set<String> _studyDays = <String>{};
   final Map<String, int> _dailyActivity = <String, int>{};
   final Map<String, int> _dailyStudySeconds = <String, int>{};
@@ -551,6 +561,157 @@ class ProgressProvider extends ChangeNotifier {
     return List<ReviewCandidate>.unmodifiable(result);
   }
 
+  /// 今日到期的题目（题目级间隔重复），尊重暂停与星期限制。
+  ///
+  /// 只返回仍能在当前课程表里找到的题，内容更新后残留的旧键会被忽略。
+  List<QuestionReviewCandidate> dueQuestionReviewCandidates(
+    List<Lesson> lessons, {
+    String? categoryId,
+  }) {
+    if (reviewsPaused || !_reviewWeekdays.contains(_now().weekday)) {
+      return const <QuestionReviewCandidate>[];
+    }
+    final now = _now();
+    final byId = <String, Lesson>{
+      for (final lesson in lessons)
+        if (lesson.totalQuestionCount > 0 &&
+            (categoryId == null || lesson.categoryId == categoryId))
+          lesson.id: lesson,
+    };
+    final candidates = <QuestionReviewCandidate>[];
+    for (final entry in _questionReviewDue.entries) {
+      final due = DateTime.tryParse(entry.value);
+      if (due == null || due.isAfter(now)) continue;
+      final parts = entry.key.split('#');
+      if (parts.length != 2) continue;
+      final lesson = byId[parts[0]];
+      final index = int.tryParse(parts[1]);
+      if (lesson == null ||
+          index == null ||
+          index < 0 ||
+          index >= lesson.allQuiz.length) {
+        continue;
+      }
+      candidates.add(
+        QuestionReviewCandidate(
+          lesson: lesson,
+          questionIndex: index,
+          dueAt: due,
+          intervalDays: _questionReviewInterval[entry.key] ?? 1,
+          lapses: _questionReviewLapses[entry.key] ?? 0,
+          wrongCount: _wrongCounts[entry.key] ?? 0,
+        ),
+      );
+    }
+    return candidates;
+  }
+
+  /// 题目级复习队列：按逾期、错题次数和一次性遗忘次数排序。
+  QuestionReviewPlan questionReviewPlanFor(
+    List<Lesson> lessons, {
+    int budgetMinutes = 30,
+    String? categoryId,
+  }) => buildQuestionReviewPlan(
+    dueQuestionReviewCandidates(lessons, categoryId: categoryId),
+    budgetMinutes: budgetMinutes,
+    now: _now(),
+  );
+
+  /// 不考虑暂停和星期限制的到期题目数，用于设置页展示真实积压。
+  int get rawDueQuestionReviewCount {
+    final now = _now();
+    return _questionReviewDue.values.where((value) {
+      final due = DateTime.tryParse(value);
+      return due != null && !due.isAfter(now);
+    }).length;
+  }
+
+  DateTime? questionReviewDueAt(String lessonId, int questionIndex) =>
+      DateTime.tryParse(_questionReviewDue['$lessonId#$questionIndex'] ?? '');
+
+  int questionReviewIntervalOf(String lessonId, int questionIndex) =>
+      (_questionReviewInterval['$lessonId#$questionIndex'] ?? 1).clamp(
+        1,
+        _maxIntervalDays,
+      );
+
+  int questionReviewRepetitionsOf(String lessonId, int questionIndex) =>
+      _questionReviewRepetitions['$lessonId#$questionIndex'] ?? 0;
+
+  int questionReviewLapsesOf(String lessonId, int questionIndex) =>
+      _questionReviewLapses['$lessonId#$questionIndex'] ?? 0;
+
+  double questionReviewEaseOf(String lessonId, int questionIndex) =>
+      _questionReviewEase['$lessonId#$questionIndex'] ?? _initialEase;
+
+  /// 某道题累计作答次数，用于变式题轮换。
+  int questionAttemptsOf(String lessonId, int questionIndex) {
+    final stat = _questionStats['$lessonId#$questionIndex'];
+    return (stat?['attempts'] as int?) ?? 0;
+  }
+
+  /// 单题调度：全对按 SM-2 拉长，部分得分小幅延长，答错重置并记为一次遗忘。
+  void _scheduleQuestionReview(String key, double score) {
+    final ease = (_questionReviewEase[key] ?? _initialEase)
+        .clamp(_minEase, _maxEase)
+        .toDouble();
+    final repetitions = _questionReviewRepetitions[key] ?? 0;
+    final previous = _questionReviewInterval[key] ?? 0;
+    var nextEase = ease;
+    var nextRepetitions = repetitions;
+    var interval = previous;
+    if (score >= 0.999) {
+      nextRepetitions = repetitions + 1;
+      nextEase += 0.08;
+      if (nextRepetitions <= 1) {
+        interval = 1;
+      } else if (nextRepetitions == 2) {
+        interval = 3;
+      } else {
+        interval = (previous * nextEase).round();
+      }
+    } else if (score >= 0.5) {
+      nextEase -= 0.12;
+      interval = previous == 0 ? 1 : (previous * 1.2).round();
+    } else {
+      nextRepetitions = 0;
+      nextEase -= 0.25;
+      interval = 1;
+      _questionReviewLapses[key] = (_questionReviewLapses[key] ?? 0) + 1;
+    }
+    interval = interval.clamp(1, _maxIntervalDays);
+    nextEase = nextEase.clamp(_minEase, _maxEase).toDouble();
+    _questionReviewEase[key] = double.parse(nextEase.toStringAsFixed(3));
+    _questionReviewRepetitions[key] = nextRepetitions;
+    _questionReviewInterval[key] = interval;
+    _questionReviewDue[key] = _now()
+        .add(Duration(days: interval))
+        .toIso8601String();
+  }
+
+  Future<void> _persistQuestionReview() async {
+    await _storage.write(
+      'question_review_due',
+      Map<String, String>.from(_questionReviewDue),
+    );
+    await _storage.write(
+      'question_review_interval',
+      Map<String, int>.from(_questionReviewInterval),
+    );
+    await _storage.write(
+      'question_review_ease',
+      Map<String, double>.from(_questionReviewEase),
+    );
+    await _storage.write(
+      'question_review_repetitions',
+      Map<String, int>.from(_questionReviewRepetitions),
+    );
+    await _storage.write(
+      'question_review_lapses',
+      Map<String, int>.from(_questionReviewLapses),
+    );
+  }
+
   Future<void> _persistReview() async {
     await _storage.write('review_due', Map<String, String>.from(_reviewDue));
     await _storage.write('review_stage', Map<String, int>.from(_reviewStage));
@@ -669,11 +830,13 @@ class ProgressProvider extends ChangeNotifier {
       _wrongCounts[key] = (_wrongCounts[key] ?? 0) + 1;
       _wrongEverKeys.add(key);
     }
+    _scheduleQuestionReview(key, score);
     notifyListeners();
     await _storage.write('question_stats', _questionStats);
     await _storage.write('error_cause_counts', _errorCauseCounts);
     await _storage.write('wrong_counts', Map<String, int>.from(_wrongCounts));
     await _storage.write('wrong_ever_keys', _wrongEverKeys.toList());
+    await _persistQuestionReview();
   }
 
   /// 阅读书签：与收藏知识点分开，用于标记“正在读 / 稍后继续”。
@@ -959,6 +1122,47 @@ class ProgressProvider extends ChangeNotifier {
     }
   }
 
+  void _restoreQuestionReview() {
+    final due = _storage.read('question_review_due');
+    if (due is Map) {
+      due.forEach(
+        (key, value) => _questionReviewDue[key.toString()] = value.toString(),
+      );
+    }
+    final interval = _storage.read('question_review_interval');
+    if (interval is Map) {
+      interval.forEach((key, value) {
+        if (value is int && value > 0) {
+          _questionReviewInterval[key.toString()] = value;
+        }
+      });
+    }
+    final ease = _storage.read('question_review_ease');
+    if (ease is Map) {
+      ease.forEach((key, value) {
+        if (value is num) {
+          _questionReviewEase[key.toString()] = value.toDouble();
+        }
+      });
+    }
+    final repetitions = _storage.read('question_review_repetitions');
+    if (repetitions is Map) {
+      repetitions.forEach((key, value) {
+        if (value is int && value >= 0) {
+          _questionReviewRepetitions[key.toString()] = value;
+        }
+      });
+    }
+    final lapses = _storage.read('question_review_lapses');
+    if (lapses is Map) {
+      lapses.forEach((key, value) {
+        if (value is int && value > 0) {
+          _questionReviewLapses[key.toString()] = value;
+        }
+      });
+    }
+  }
+
   void _restoreStudyDays() {
     final raw = _storage.read('study_days', defaultValue: const <String>[]);
     _studyDays
@@ -1088,6 +1292,15 @@ class ProgressProvider extends ChangeNotifier {
         'review_ease': Map<String, double>.from(_reviewEase),
         'review_interval': Map<String, int>.from(_reviewInterval),
         'review_repetitions': Map<String, int>.from(_reviewRepetitions),
+        'question_review_due': Map<String, String>.from(_questionReviewDue),
+        'question_review_interval': Map<String, int>.from(
+          _questionReviewInterval,
+        ),
+        'question_review_ease': Map<String, double>.from(_questionReviewEase),
+        'question_review_repetitions': Map<String, int>.from(
+          _questionReviewRepetitions,
+        ),
+        'question_review_lapses': Map<String, int>.from(_questionReviewLapses),
         'study_days': _studyDays.toList(),
         'daily_activity': Map<String, int>.from(_dailyActivity),
         'daily_study_seconds': Map<String, int>.from(_dailyStudySeconds),
@@ -1184,6 +1397,11 @@ class ProgressProvider extends ChangeNotifier {
       ..._boolMap(incoming['project_milestones']),
     };
     result['review_due'] = _mergeReviewDue(current, incoming);
+    result['question_review_due'] = _mergeReviewDue(
+      current,
+      incoming,
+      key: 'question_review_due',
+    );
     result['review_history'] = <dynamic>[
       ...((current['review_history'] as List?) ?? const []),
       ...((incoming['review_history'] as List?) ?? const []),
@@ -1280,10 +1498,11 @@ class ProgressProvider extends ChangeNotifier {
 
   Map<String, dynamic> _mergeReviewDue(
     Map<String, dynamic> current,
-    Map<String, dynamic> incoming,
-  ) {
-    final result = <String, dynamic>{..._mapOf(current['review_due'])};
-    final right = _mapOf(incoming['review_due']);
+    Map<String, dynamic> incoming, {
+    String key = 'review_due',
+  }) {
+    final result = <String, dynamic>{..._mapOf(current[key])};
+    final right = _mapOf(incoming[key]);
     for (final entry in right.entries) {
       final leftValue = result[entry.key]?.toString();
       final rightValue = entry.value.toString();
@@ -1416,6 +1635,26 @@ class ProgressProvider extends ChangeNotifier {
       (data['review_repetitions'] as Map?) ?? const {},
     );
     await _storage.write(
+      'question_review_due',
+      (data['question_review_due'] as Map?) ?? const {},
+    );
+    await _storage.write(
+      'question_review_interval',
+      (data['question_review_interval'] as Map?) ?? const {},
+    );
+    await _storage.write(
+      'question_review_ease',
+      (data['question_review_ease'] as Map?) ?? const {},
+    );
+    await _storage.write(
+      'question_review_repetitions',
+      (data['question_review_repetitions'] as Map?) ?? const {},
+    );
+    await _storage.write(
+      'question_review_lapses',
+      (data['question_review_lapses'] as Map?) ?? const {},
+    );
+    await _storage.write(
       'bookmarked_ids',
       (data['bookmarked_ids'] as List?) ?? const [],
     );
@@ -1466,6 +1705,12 @@ class ProgressProvider extends ChangeNotifier {
     _reviewInterval.clear();
     _reviewRepetitions.clear();
     _restoreReview();
+    _questionReviewDue.clear();
+    _questionReviewInterval.clear();
+    _questionReviewEase.clear();
+    _questionReviewRepetitions.clear();
+    _questionReviewLapses.clear();
+    _restoreQuestionReview();
     _studyDays.clear();
     _restoreStudyDays();
     _dailyActivity.clear();
