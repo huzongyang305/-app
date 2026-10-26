@@ -1,6 +1,6 @@
 # 人工复核批次台账
 
-- 生成时间：2026-10-26T04:57:11.468429Z
+- 生成时间：2026-10-26T05:05:09.886457Z
 - 批次大小：每批最多 24 门课
 - 记录入口：`docs/content_review_records.json` 的 `human_reviews`
 
@@ -566,9 +566,9 @@
 | 生成函数（discrete_generating_functions） | low | 9863 | 5 | 1 | 待复核 |
 | 离散数学与逻辑（discrete_math） | low | 10623 | 6 | 2 | 待复核 |
 | 组合数学（discrete_math_combinatorics） | low | 8649 | 5 | 1 | 待复核 |
-| 图论基础（discrete_math_graph_theory） | low | 7729 | 5 | 1 | 待复核 |
+| 图论基础（discrete_math_graph_theory） | low | 7927 | 5 | 1 | 待复核 |
 | 命题逻辑与谓词逻辑（discrete_math_logic） | low | 9524 | 5 | 1 | 待复核 |
-| 关系与函数（discrete_math_relations_functions） | low | 7968 | 5 | 1 | 待复核 |
+| 关系与函数（discrete_math_relations_functions） | low | 8171 | 5 | 1 | 待复核 |
 | 集合论基础（discrete_math_set_theory） | low | 10031 | 5 | 1 | 待复核 |
 | 数论基础（密码学应用）（discrete_number_theory） | low | 9331 | 5 | 1 | 待复核 |
 | 递归与递推关系（discrete_recursion） | low | 9397 | 5 | 1 | 待复核 |
@@ -911,8 +911,8 @@
 | Spring MVC 详解（java_spring_mvc） | low | 16080 | 5 | 1 | 待复核 |
 | Spring Security 认证授权（java_spring_security） | low | 14212 | 5 | 1 | 待复核 |
 | MyBatis/Hibernate ORM（javaweb_mybatis） | low | 12340 | 5 | 1 | 待复核 |
-| Spring Cloud 微服务（javaweb_spring_cloud） | low | 11216 | 5 | 1 | 待复核 |
-| Java WebSocket 实时通信（javaweb_websocket） | low | 7012 | 5 | 1 | 待复核 |
+| Spring Cloud 微服务（javaweb_spring_cloud） | low | 11252 | 5 | 1 | 待复核 |
+| Java WebSocket 实时通信（javaweb_websocket） | low | 8199 | 5 | 1 | 待复核 |
 
 ## kotlin-1 · Kotlin
 
