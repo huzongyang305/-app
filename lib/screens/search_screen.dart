@@ -155,11 +155,12 @@ class _SearchScreenState extends State<SearchScreen> {
       return;
     }
     final content = context.read<ContentProvider>();
+    final localeCode = context.localeCodeRead;
     final lowerQuery = query.toLowerCase();
     final suggestions = <_Suggestion>[];
     
     for (final lesson in content.allLessons) {
-      final title = lesson.title.of(context.strings.localeCode);
+      final title = lesson.title.of(localeCode);
       if (title.toLowerCase().contains(lowerQuery)) {
         final category = content.categories.firstWhere(
           (c) => c.lessons.any((l) => l.id == lesson.id),
@@ -167,7 +168,7 @@ class _SearchScreenState extends State<SearchScreen> {
         );
         suggestions.add(_Suggestion(
           title: title,
-          subtitle: category.title.of(context.strings.localeCode),
+          subtitle: category.title.of(localeCode),
           lessonId: lesson.id,
         ));
         if (suggestions.length >= 5) break;
@@ -540,48 +541,53 @@ class _SuggestionsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      constraints: const BoxConstraints(maxHeight: 240),
-      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.page),
-      decoration: BoxDecoration(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.page),
+      child: Material(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: theme.colorScheme.outlineVariant),
-      ),
-      child: ListView.separated(
-        shrinkWrap: true,
-        itemCount: suggestions.length,
-        separatorBuilder: (_, _) => Divider(
-          height: 1,
-          color: theme.colorScheme.outlineVariant,
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+          side: BorderSide(color: theme.colorScheme.outlineVariant),
         ),
-        itemBuilder: (context, index) {
-          final suggestion = suggestions[index];
-          return ListTile(
-            dense: true,
-            leading: Icon(
-              Icons.article_outlined,
-              size: 20,
-              color: theme.colorScheme.primary,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxHeight: 240),
+          child: ListView.separated(
+            shrinkWrap: true,
+            itemCount: suggestions.length,
+            separatorBuilder: (_, _) => Divider(
+              height: 1,
+              color: theme.colorScheme.outlineVariant,
             ),
-            title: Text(
-              suggestion.title,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            subtitle: Text(
-              suggestion.subtitle,
-              style: theme.textTheme.bodySmall,
-            ),
-            trailing: Icon(
-              Icons.north_east,
-              size: 16,
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-            onTap: () => onSelected(suggestion.lessonId),
-          );
-        },
+            itemBuilder: (context, index) {
+              final suggestion = suggestions[index];
+              return ListTile(
+                dense: true,
+                leading: Icon(
+                  Icons.article_outlined,
+                  size: 20,
+                  color: theme.colorScheme.primary,
+                ),
+                title: Text(
+                  suggestion.title,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                subtitle: Text(
+                  suggestion.subtitle,
+                  style: theme.textTheme.bodySmall,
+                ),
+                trailing: Icon(
+                  Icons.north_east,
+                  size: 16,
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+                onTap: () => onSelected(suggestion.lessonId),
+              );
+            },
+          ),
+        ),
       ),
     );
   }

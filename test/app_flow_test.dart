@@ -133,5 +133,23 @@ void main() {
     expect(progressBox, isNotNull);
     expect(progressBox!.contains('python_first_script'), isTrue);
     expect(storage.read('quiz_result_python_first_script'), isNotNull);
+
+    // 搜索建议在输入回调里读取本地化文案，不应在 build 之外订阅 Provider。
+    await tester.tap(find.byTooltip('搜索知识点'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), '函数');
+    expect(tester.takeException(), isNull);
+    await tester.pump();
+    expect(find.byType(ListTile), findsWidgets);
+    await tester.pump(const Duration(milliseconds: 300));
+    for (var i = 0; i < 50; i++) {
+      await tester.runAsync(
+        () => Future<void>.delayed(const Duration(milliseconds: 100)),
+      );
+      await tester.pump();
+      if (find.byType(Card).evaluate().isNotEmpty) break;
+    }
+    expect(tester.takeException(), isNull);
+    expect(find.byType(Card), findsWidgets);
   });
 }
