@@ -983,6 +983,13 @@
     {
       "planned_review_at": "2027-10-10",
       "lesson_ids": [
+        "discrete_boolean_algebra",
+        "discrete_generating_functions",
+        "discrete_number_theory",
+        "discrete_recursion",
+        "javaweb_mybatis",
+        "javaweb_spring_cloud",
+        "javaweb_websocket",
         "project_algorithm_engineering",
         "project_coding_workflow",
         "project_concurrency_runtime",
@@ -1006,9 +1013,18 @@
     {
       "planned_review_at": "2027-10-17",
       "lesson_ids": [
+        "cross_platform_flutter",
+        "cross_platform_kmp",
+        "cross_platform_state_management",
         "ir_optimization",
         "linking_loading",
         "memory_cache",
+        "mobile_ios_appstore",
+        "mobile_ios_architecture",
+        "mobile_ios_networking",
+        "mobile_ios_notifications",
+        "mobile_ios_performance",
+        "mobile_ios_testing",
         "performance_metrics",
         "probability",
         "semantics_analysis"
@@ -1018,6 +1034,10 @@
       "planned_review_at": "2027-10-24",
       "lesson_ids": [
         "design_patterns",
+        "mobile_android_background",
+        "mobile_android_data",
+        "mobile_android_networking",
+        "mobile_android_testing",
         "requirements_modeling",
         "sdl_security",
         "se_code_review",

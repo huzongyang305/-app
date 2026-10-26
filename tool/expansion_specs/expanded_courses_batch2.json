@@ -1,0 +1,304 @@
+{
+  "lessons": [
+    {
+      "id": "mobile_ios_networking",
+      "category": "iOS 开发",
+      "title": { "zh": "iOS 网络编程与数据持久化" },
+      "summary": { "zh": "URLSession、Codable、Core Data 与 SwiftData 的组合实践" },
+      "difficulty": "基础",
+      "minutes": 30,
+      "concepts": [
+        { "name": "URLSession", "plain": "原生网络会话，统一管理请求、缓存与认证" },
+        { "name": "Codable", "plain": "声明式 JSON 编解码，结构体自动映射字段" },
+        { "name": "Core Data", "plain": "对象图管理器，处理复杂关系与大量数据" },
+        { "name": "SwiftData", "plain": "@Model 宏驱动的现代持久化方案" }
+      ],
+      "steps": ["发起请求", "解码响应", "写入持久层", "界面刷新"]
+    },
+    {
+      "id": "mobile_ios_notifications",
+      "category": "iOS 开发",
+      "title": { "zh": "iOS 推送通知与后台任务" },
+      "summary": { "zh": "APNs、本地通知、Background Fetch 与 BGTaskScheduler" },
+      "difficulty": "进阶",
+      "minutes": 30,
+      "concepts": [
+        { "name": "APNs", "plain": "苹果推送服务，连接业务服务器与设备" },
+        { "name": "本地通知", "plain": "设备按计划触发的提醒，无需网络" },
+        { "name": "Background Fetch", "plain": "系统给机会定时拉取新内容" },
+        { "name": "BGTaskScheduler", "plain": "注册可延后的后台任务" }
+      ],
+      "steps": ["注册权限", "获取设备令牌", "发送推送", "处理回调"]
+    },
+    {
+      "id": "mobile_ios_performance",
+      "category": "iOS 开发",
+      "title": { "zh": "iOS 性能优化与调试" },
+      "summary": { "zh": "Instruments、内存管理、启动优化与卡顿分析" },
+      "difficulty": "高级",
+      "minutes": 35,
+      "concepts": [
+        { "name": "Instruments", "plain": "Xcode 性能分析工具套件" },
+        { "name": "Time Profiler", "plain": "采样 CPU 调用栈定位耗时热点" },
+        { "name": "Leaks", "plain": "检测循环引用造成的内存泄漏" },
+        { "name": "启动优化", "plain": "削减冷启动阶段的初始化工作" }
+      ],
+      "steps": ["录制基线", "定位热点", "单点优化", "回归验证"]
+    },
+    {
+      "id": "mobile_ios_appstore",
+      "category": "iOS 开发",
+      "title": { "zh": "App Store 上架流程" },
+      "summary": { "zh": "账号、证书、TestFlight 与审核指南的完整链路" },
+      "difficulty": "进阶",
+      "minutes": 30,
+      "concepts": [
+        { "name": "App Store Connect", "plain": "管理 App、构建与审核的后台" },
+        { "name": "证书与描述文件", "plain": "代码签名与设备授权凭据" },
+        { "name": "TestFlight", "plain": "官方 Beta 分发与测试平台" },
+        { "name": "审核指南", "plain": "上架前逐条自查的规则清单" }
+      ],
+      "steps": ["配置签名", "上传构建", "内测验证", "提交审核"]
+    },
+    {
+      "id": "mobile_ios_testing",
+      "category": "iOS 开发",
+      "title": { "zh": "iOS 测试与 CI/CD" },
+      "summary": { "zh": "XCTest、XCUITest、Fastlane 与持续集成流水线" },
+      "difficulty": "高级",
+      "minutes": 35,
+      "concepts": [
+        { "name": "XCTest", "plain": "单元测试与性能测试框架" },
+        { "name": "XCUITest", "plain": "模拟用户操作的 UI 测试" },
+        { "name": "Fastlane", "plain": "自动化构建与发布工具链" },
+        { "name": "CI/CD", "plain": "每次提交自动构建与测试" }
+      ],
+      "steps": ["编写单测", "补关键 UI 路径", "接入流水线", "覆盖率复盘"]
+    },
+    {
+      "id": "mobile_ios_architecture",
+      "category": "iOS 开发",
+      "title": { "zh": "iOS 架构设计模式" },
+      "summary": { "zh": "MVC、MVVM、Clean Architecture 与模块化设计" },
+      "difficulty": "高级",
+      "minutes": 35,
+      "concepts": [
+        { "name": "MVC", "plain": "Apple 推荐的经典三层结构" },
+        { "name": "MVVM", "plain": "ViewModel 承载状态与业务逻辑" },
+        { "name": "Clean Architecture", "plain": "依赖向内，业务独立于框架" },
+        { "name": "依赖注入", "plain": "通过参数注入依赖，便于替换与测试" }
+      ],
+      "steps": ["划分职责", "抽离业务逻辑", "注入依赖", "拆分模块"]
+    },
+    {
+      "id": "mobile_android_networking",
+      "category": "Android 开发",
+      "title": { "zh": "Android 网络编程与 Retrofit" },
+      "summary": { "zh": "Retrofit 接口、OkHttp 拦截器、协程请求与错误处理" },
+      "difficulty": "进阶",
+      "minutes": 30,
+      "concepts": [
+        { "name": "Retrofit", "plain": "注解声明式 HTTP 客户端" },
+        { "name": "OkHttp", "plain": "连接池、拦截器与缓存底座" },
+        { "name": "协程", "plain": "用同步写法处理异步请求" },
+        { "name": "拦截器", "plain": "统一添加 Token、日志与重试" }
+      ],
+      "steps": ["定义接口", "配置客户端", "发起请求", "处理错误"]
+    },
+    {
+      "id": "mobile_android_data",
+      "category": "Android 开发",
+      "title": { "zh": "Android 数据存储" },
+      "summary": { "zh": "Room、DataStore、SharedPreferences 与文件存储选型" },
+      "difficulty": "进阶",
+      "minutes": 30,
+      "concepts": [
+        { "name": "Room", "plain": "Google 官方 SQLite ORM 库" },
+        { "name": "DataStore", "plain": "协程友好的类型安全键值存储" },
+        { "name": "SharedPreferences", "plain": "轻量同步键值存储" },
+        { "name": "文件存储", "plain": "存放大文件与二进制内容" }
+      ],
+      "steps": ["选择方案", "定义实体", "编写 DAO", "处理迁移"]
+    },
+    {
+      "id": "mobile_android_background",
+      "category": "Android 开发",
+      "title": { "zh": "Android 后台服务与 WorkManager" },
+      "summary": { "zh": "Foreground Service、WorkManager、AlarmManager 与后台限制" },
+      "difficulty": "进阶",
+      "minutes": 30,
+      "concepts": [
+        { "name": "WorkManager", "plain": "可延迟且保证执行的任务调度器" },
+        { "name": "Foreground Service", "plain": "带常驻通知的高优先级服务" },
+        { "name": "AlarmManager", "plain": "定时唤醒与精确闹钟" },
+        { "name": "后台限制", "plain": "Android 8.0+ 的后台执行约束" }
+      ],
+      "steps": ["选择方案", "定义约束", "提交任务", "处理重试"]
+    },
+    {
+      "id": "mobile_android_testing",
+      "category": "Android 开发",
+      "title": { "zh": "Android 测试" },
+      "summary": { "zh": "JUnit 单元测试、Espresso UI 测试、UI Automator 与测试替身" },
+      "difficulty": "高级",
+      "minutes": 35,
+      "concepts": [
+        { "name": "JUnit", "plain": "本地 JVM 单元测试框架" },
+        { "name": "Espresso", "plain": "单 App 内 UI 测试" },
+        { "name": "UI Automator", "plain": "跨应用与系统级测试" },
+        { "name": "Mock", "plain": "隔离外部依赖的测试替身" }
+      ],
+      "steps": ["编写单测", "Mock 依赖", "运行 UI 测试", "查看覆盖率"]
+    },
+    {
+      "id": "discrete_boolean_algebra",
+      "category": "离散数学",
+      "title": { "zh": "布尔代数与逻辑电路" },
+      "summary": { "zh": "布尔运算、卡诺图化简、门电路与组合逻辑" },
+      "difficulty": "进阶",
+      "minutes": 30,
+      "concepts": [
+        { "name": "布尔运算", "plain": "AND、OR、NOT 的代数规则" },
+        { "name": "真值表", "plain": "枚举输入输出验证逻辑等价" },
+        { "name": "卡诺图", "plain": "图形化合并相邻最小项" },
+        { "name": "组合逻辑", "plain": "无记忆，输出只由当前输入决定" }
+      ],
+      "steps": ["列真值表", "写表达式", "化简", "画门电路"]
+    },
+    {
+      "id": "discrete_number_theory",
+      "category": "离散数学",
+      "title": { "zh": "数论基础（密码学应用）" },
+      "summary": { "zh": "整除性、模运算、欧拉函数与 RSA 加密原理" },
+      "difficulty": "进阶",
+      "minutes": 30,
+      "concepts": [
+        { "name": "模运算", "plain": "同余关系与余数运算" },
+        { "name": "欧拉函数", "plain": "统计与 n 互素的正整数个数" },
+        { "name": "扩展欧几里得", "plain": "求最大公约数与模逆元" },
+        { "name": "RSA", "plain": "基于大整数分解的困难性" }
+      ],
+      "steps": ["求最大公约数", "求模逆元", "生成密钥", "加解密"]
+    },
+    {
+      "id": "discrete_recursion",
+      "category": "离散数学",
+      "title": { "zh": "递归与递推关系" },
+      "summary": { "zh": "递归算法分析、递推方程求解、主定理与分治复杂度" },
+      "difficulty": "进阶",
+      "minutes": 30,
+      "concepts": [
+        { "name": "递推关系", "plain": "用前项定义后项的等式" },
+        { "name": "特征方程", "plain": "求解常系数线性递推" },
+        { "name": "主定理", "plain": "分治复杂度递推的渐近解" },
+        { "name": "基本情况", "plain": "递归能够终止的必要条件" }
+      ],
+      "steps": ["写递推", "求通解", "代入初值", "验证复杂度"]
+    },
+    {
+      "id": "discrete_generating_functions",
+      "category": "离散数学",
+      "title": { "zh": "生成函数" },
+      "summary": { "zh": "普通生成函数、指数生成函数、组合恒等式证明与计数应用" },
+      "difficulty": "高级",
+      "minutes": 35,
+      "concepts": [
+        { "name": "普通生成函数", "plain": "Σ aₙxⁿ 编码组合计数" },
+        { "name": "指数生成函数", "plain": "Σ aₙxⁿ/n! 处理排列问题" },
+        { "name": "卷积", "plain": "乘积系数对应分类计数" },
+        { "name": "卡特兰数", "plain": "满足 C(x)=1+xC(x)² 的经典序列" }
+      ],
+      "steps": ["建立生成函数", "做代数运算", "提取系数", "解释计数"]
+    },
+    {
+      "id": "javaweb_mybatis",
+      "category": "Java Web",
+      "title": { "zh": "MyBatis/Hibernate ORM" },
+      "summary": { "zh": "ORM 映射、动态 SQL、缓存与分页实战" },
+      "difficulty": "入门",
+      "minutes": 30,
+      "concepts": [
+        { "name": "ORM 映射", "plain": "表行映射为对象，字段映射为属性" },
+        { "name": "动态 SQL", "plain": "用 if、where、foreach 组合查询条件" },
+        { "name": "一级缓存", "plain": "SqlSession 级别的默认缓存" },
+        { "name": "二级缓存", "plain": "Mapper 级别的跨会话缓存" }
+      ],
+      "steps": ["定义实体", "编写 Mapper", "配置动态 SQL", "调优缓存"]
+    },
+    {
+      "id": "javaweb_spring_cloud",
+      "category": "Java Web",
+      "title": { "zh": "Spring Cloud 微服务" },
+      "summary": { "zh": "服务注册发现、配置中心、网关与熔断器" },
+      "difficulty": "高级",
+      "minutes": 35,
+      "concepts": [
+        { "name": "注册发现", "plain": "服务地址动态注册与查询" },
+        { "name": "配置中心", "plain": "集中管理并动态刷新配置" },
+        { "name": "网关", "plain": "统一入口、路由与鉴权" },
+        { "name": "熔断器", "plain": "快速失败防止级联故障" }
+      ],
+      "steps": ["注册服务", "网关路由", "远程调用", "熔断降级"]
+    },
+    {
+      "id": "javaweb_websocket",
+      "category": "Java Web",
+      "title": { "zh": "Java WebSocket 实时通信" },
+      "summary": { "zh": "WebSocket 协议、Spring WebSocket、STOMP 与消息广播" },
+      "difficulty": "高级",
+      "minutes": 35,
+      "concepts": [
+        { "name": "协议握手", "plain": "通过 HTTP Upgrade 切换全双工" },
+        { "name": "STOMP", "plain": "消息路由与订阅协议" },
+        { "name": "心跳", "plain": "保持连接活跃并检测断线" },
+        { "name": "消息代理", "plain": "跨节点广播与定向推送" }
+      ],
+      "steps": ["建立连接", "订阅主题", "收发消息", "保活与重连"]
+    },
+    {
+      "id": "cross_platform_flutter",
+      "category": "跨平台开发",
+      "title": { "zh": "Flutter 跨平台开发" },
+      "summary": { "zh": "Dart 语言基础、Widget 体系、Platform Channel 与平台适配" },
+      "difficulty": "入门",
+      "minutes": 30,
+      "concepts": [
+        { "name": "Dart", "plain": "Flutter 使用的编程语言" },
+        { "name": "Widget", "plain": "不可变的 UI 配置描述" },
+        { "name": "Element", "plain": "Widget 的实例化与复用节点" },
+        { "name": "Platform Channel", "plain": "Dart 与原生代码通信的通道" }
+      ],
+      "steps": ["描述 Widget", "构建 Element", "渲染上屏", "调用原生能力"]
+    },
+    {
+      "id": "cross_platform_kmp",
+      "category": "跨平台开发",
+      "title": { "zh": "Kotlin Multiplatform" },
+      "summary": { "zh": "Expect/Actual 机制、共享业务逻辑、Compose Multiplatform 与 iOS 集成" },
+      "difficulty": "进阶",
+      "minutes": 30,
+      "concepts": [
+        { "name": "commonMain", "plain": "各平台共享代码的源集" },
+        { "name": "Expect/Actual", "plain": "声明与平台实现分离" },
+        { "name": "Compose Multiplatform", "plain": "一套 UI 代码多端运行" },
+        { "name": "Ktor", "plain": "跨平台 HTTP 客户端" }
+      ],
+      "steps": ["编写共享逻辑", "声明 expect", "各平台 actual", "集成打包"]
+    },
+    {
+      "id": "cross_platform_state_management",
+      "category": "跨平台开发",
+      "title": { "zh": "跨平台状态管理" },
+      "summary": { "zh": "Riverpod/BLoC、Zustand/Redux、共享 ViewModel 与响应式数据流" },
+      "difficulty": "高级",
+      "minutes": 35,
+      "concepts": [
+        { "name": "Riverpod", "plain": "编译期安全且不依赖 Context" },
+        { "name": "BLoC", "plain": "事件驱动状态变化" },
+        { "name": "Zustand", "plain": "极简 hook 状态库" },
+        { "name": "响应式流", "plain": "UI 自动订阅数据变化" }
+      ],
+      "steps": ["定义状态", "发送事件", "更新状态", "UI 自动刷新"]
+    }
+  ]
+}
