@@ -240,9 +240,35 @@ class AppStrings {
     },
     'reviewSessionHint': {'zh': '每次复习 {n} 分钟', 'en': '{n} minutes per session'},
     'reviewSessionSetting': {'zh': '单次复习时长', 'en': 'Review session'},
+    'dailyNewCards': {'zh': '每日新卡上限', 'en': 'New cards per day'},
+    'dailyNewCardsHint': {
+      'zh': '每天最多引入 {n} 张未学新卡，避免一次堆积太多',
+      'en': 'Up to {n} unseen cards per day to avoid overload',
+    },
     'reviewUpcoming': {'zh': '未来 7 天', 'en': 'Next 7 days'},
     'reviewTomorrow': {'zh': '明天', 'en': 'Tomorrow'},
     'reviewInDays': {'zh': '{n} 天后', 'en': 'In {n} days'},
+    'reviewForecastTitle': {
+      'zh': '未来 7 天复习量',
+      'en': 'Review load · next 7 days',
+    },
+    'reviewForecastHint': {
+      'zh': '按实际排期统计，逾期计入今天',
+      'en': 'Based on current schedule; overdue counts as today',
+    },
+    'reviewForecastToday': {'zh': '今天', 'en': 'Today'},
+    'reviewForecastLegend': {
+      'zh': '今天：{lessons} 个知识点 · {questions} 道题 · {flashcards} 张闪卡',
+      'en': 'Today: {lessons} lessons · {questions} questions · {flashcards} cards',
+    },
+    'reviewForecastEmpty': {
+      'zh': '未来 7 天暂无排期',
+      'en': 'Nothing scheduled in the next 7 days',
+    },
+    'reviewForecastA11y': {
+      'zh': '未来 7 天复习量，今天 {today} 项，明天 {tomorrow} 项',
+      'en': 'Review load for the next 7 days: {today} due today, {tomorrow} tomorrow',
+    },
     'reviewAheadOfSchedule': {'zh': '提前复习', 'en': 'Review now'},
     'reviewQueueEmptyHint': {
       'zh': '今天没有到期内容，可以提前复习',

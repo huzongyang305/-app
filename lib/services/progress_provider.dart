@@ -6,6 +6,7 @@ import '../models/note.dart';
 import '../models/note_anchor.dart';
 import '../models/quiz_answer.dart';
 import '../models/quiz_result.dart';
+import '../models/review_forecast.dart';
 import '../models/review_grade.dart';
 import '../models/study_center.dart';
 import 'backup_document_service.dart';
@@ -26,6 +27,7 @@ class ProgressProvider extends ChangeNotifier {
     _restoreReview();
     _restoreQuestionReview();
     _restoreFlashcardReview();
+    _restoreNewCardBudget();
     _restoreStudyDays();
     _restoreActivity();
     _restoreStudySeconds();
@@ -74,6 +76,10 @@ class ProgressProvider extends ChangeNotifier {
   final Map<String, double> _flashcardEase = <String, double>{};
   final Map<String, int> _flashcardRepetitions = <String, int>{};
   final Map<String, int> _flashcardLapses = <String, int>{};
+
+  /// 当天已通过闪卡引入的新卡，用于每日新卡上限。
+  String _newCardsDay = '';
+  final Set<String> _newCardsToday = <String>{};
 
   final Set<String> _studyDays = <String>{};
   final Map<String, int> _dailyActivity = <String, int>{};
@@ -667,6 +673,72 @@ class ProgressProvider extends ChangeNotifier {
     return result;
   }
 
+  /// 未来 [days] 天的复习量预测（含今天），按天汇总知识点、题目与闪卡。
+  ///
+  /// 已逾期的内容计入今天，超出窗口的排期不计入；[lessonIds] 用于分类
+  /// 筛选。预测按实际排期统计，不受暂停与星期设置影响。
+  List<ReviewForecastDay> reviewForecast({
+    int days = 7,
+    Set<String>? lessonIds,
+  }) {
+    if (days <= 0) return const <ReviewForecastDay>[];
+    final now = _now();
+    final today = DateTime(now.year, now.month, now.day);
+    final lessons = List<int>.filled(days, 0);
+    final questions = List<int>.filled(days, 0);
+    final flashcards = List<int>.filled(days, 0);
+
+    void add(
+      Map<String, String> source,
+      String? Function(String key) lessonOf,
+      List<int> target,
+    ) {
+      for (final entry in source.entries) {
+        final due = DateTime.tryParse(entry.value);
+        if (due == null) continue;
+        final lessonId = lessonOf(entry.key);
+        if (lessonId == null) continue;
+        if (lessonIds != null && !lessonIds.contains(lessonId)) continue;
+        final offset = DateTime(
+          due.year,
+          due.month,
+          due.day,
+        ).difference(today).inDays;
+        if (offset >= days) continue;
+        target[offset < 0 ? 0 : offset]++;
+      }
+    }
+
+    add(_reviewDue, (key) => key, lessons);
+    add(_questionReviewDue, _lessonIdOfQuestionKey, questions);
+    add(_flashcardDue, _lessonIdOfCardKey, flashcards);
+
+    return List<ReviewForecastDay>.generate(days, (index) {
+      return ReviewForecastDay(
+        date: today.add(Duration(days: index)),
+        lessons: lessons[index],
+        questions: questions[index],
+        flashcards: flashcards[index],
+      );
+    }, growable: false);
+  }
+
+  /// 今天已经通过闪卡引入的新卡数量。
+  int get newCardsIntroducedToday =>
+      _newCardsDay == _dayKey(_now()) ? _newCardsToday.length : 0;
+
+  /// 记录一张新卡已引入；同一天重复记录不会重复计数。
+  Future<void> markNewCardIntroduced(String cardId) async {
+    final today = _dayKey(_now());
+    if (_newCardsDay != today) {
+      _newCardsDay = today;
+      _newCardsToday.clear();
+    }
+    if (!_newCardsToday.add(cardId)) return;
+    await _storage.write('new_cards_day', _newCardsDay);
+    await _storage.write('new_cards_today', _newCardsToday.toList());
+  }
+
   DateTime? questionReviewDueAt(String lessonId, int questionIndex) =>
       DateTime.tryParse(_questionReviewDue['$lessonId#$questionIndex'] ?? '');
 
@@ -840,6 +912,12 @@ class ProgressProvider extends ChangeNotifier {
     final separator = rest.indexOf('#');
     if (separator <= 0) return null;
     return rest.substring(0, separator);
+  }
+
+  /// 从 `课程#题号` 这类键里取出课程 ID。
+  String? _lessonIdOfQuestionKey(String key) {
+    final separator = key.lastIndexOf('#');
+    return separator <= 0 ? null : key.substring(0, separator);
   }
 
   Future<void> _persistFlashcardReview() async {
@@ -1378,6 +1456,24 @@ class ProgressProvider extends ChangeNotifier {
           _flashcardLapses[key.toString()] = value;
         }
       });
+    }
+  }
+
+  void _restoreNewCardBudget() {
+    final day = _storage.read('new_cards_day', defaultValue: '');
+    _newCardsDay = day is String ? day : '';
+    final ids = _storage.read(
+      'new_cards_today',
+      defaultValue: const <String>[],
+    );
+    _newCardsToday.clear();
+    if (ids is List) {
+      _newCardsToday.addAll(ids.map((item) => item.toString()));
+    }
+    final today = _dayKey(_now());
+    if (_newCardsDay != today) {
+      _newCardsDay = today;
+      _newCardsToday.clear();
     }
   }
 

@@ -59,6 +59,8 @@ class SettingsProvider extends ChangeNotifier {
     _dailyGoalMinutes = (goal is int) ? goal.clamp(5, 240) : 20;
     final session = _storage.read('review_session_minutes', defaultValue: 30);
     _reviewSessionMinutes = (session is int) ? session.clamp(5, 120) : 30;
+    final newCards = _storage.read('daily_new_card_limit', defaultValue: 20);
+    _dailyNewCardLimit = (newCards is int) ? newCards.clamp(5, 40) : 20;
     final celebrated = _storage.read('goal_celebrated_date', defaultValue: '');
     _goalCelebratedDate = celebrated is String ? celebrated : '';
     _autoBackupEnabled =
@@ -145,6 +147,7 @@ class SettingsProvider extends ChangeNotifier {
   bool _reviewReminderEnabled = false;
   int _dailyGoalMinutes = 20;
   int _reviewSessionMinutes = 30;
+  int _dailyNewCardLimit = 20;
   String _goalCelebratedDate = '';
   bool _autoBackupEnabled = false;
   int _autoBackupIntervalDays = 1;
@@ -223,6 +226,9 @@ class SettingsProvider extends ChangeNotifier {
   /// 每次复习场次的时间预算（分钟），默认 30 分钟。
   int get reviewSessionMinutes => _reviewSessionMinutes;
 
+  /// 每天最多通过闪卡引入的新卡数量，默认 20 张。
+  int get dailyNewCardLimit => _dailyNewCardLimit;
+
   /// 已经庆祝过目标的日期（yyyy-MM-dd），用于每天只提醒一次。
   String get goalCelebratedDate => _goalCelebratedDate;
 
@@ -240,6 +246,14 @@ class SettingsProvider extends ChangeNotifier {
     _reviewSessionMinutes = clamped;
     notifyListeners();
     await _storage.write('review_session_minutes', clamped);
+  }
+
+  Future<void> setDailyNewCardLimit(int value) async {
+    final clamped = value.clamp(5, 40);
+    if (_dailyNewCardLimit == clamped) return;
+    _dailyNewCardLimit = clamped;
+    notifyListeners();
+    await _storage.write('daily_new_card_limit', clamped);
   }
 
   /// 记录某天已经庆祝过目标达成，避免重复发通知。

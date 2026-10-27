@@ -10,6 +10,7 @@ import '../models/review_grade.dart';
 import '../services/content_provider.dart';
 import '../services/flashcard_service.dart';
 import '../services/progress_provider.dart';
+import '../services/settings_provider.dart';
 import '../services/terminology_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/empty_state.dart';
@@ -57,6 +58,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
     final token = ++_buildToken;
     final content = context.read<ContentProvider>();
     final progress = context.read<ProgressProvider>();
+    final settings = context.read<SettingsProvider>();
     final seed = DateTime.now().millisecondsSinceEpoch % 100000 + _round;
     final base = FlashcardService.buildQueue(
       content.allLessons,
@@ -72,6 +74,11 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
       <Flashcard>[...base, ...terms],
       now: progress.now,
       dueAt: (card) => _dueAt(progress, card),
+      isPriority: (card) => _isWrongAnswerCard(progress, card),
+      maxNewCards: math.max(
+        0,
+        settings.dailyNewCardLimit - progress.newCardsIntroducedToday,
+      ),
     );
     setState(() {
       _queue = ordered;
@@ -156,6 +163,13 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
     return progress.flashcardDueAt(card.id);
   }
 
+  /// 错题本里的题目卡在未学新卡中优先出现，先消灭易错点。
+  bool _isWrongAnswerCard(ProgressProvider progress, Flashcard card) {
+    final index = card.questionIndex;
+    if (card.kind != FlashcardKind.question || index == null) return false;
+    return progress.wrongCountOf(card.lessonId, index) > 0;
+  }
+
   void _rebuildQueue() {
     setState(() {
       _round++;
@@ -168,6 +182,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
   Future<void> _grade(Flashcard card, ReviewGrade grade) async {
     final progress = context.read<ProgressProvider>();
     final index = card.questionIndex;
+    final wasNew = _dueAt(progress, card) == null;
     if (card.kind == FlashcardKind.question && index != null) {
       await progress.scheduleQuestionReviewWithGrade(
         card.lessonId,
@@ -176,6 +191,9 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
       );
     } else {
       await progress.scheduleFlashcardWithGrade(card.id, grade);
+    }
+    if (wasNew) {
+      await progress.markNewCardIntroduced(card.id);
     }
     if (!mounted) return;
     setState(() {

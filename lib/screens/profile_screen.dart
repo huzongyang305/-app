@@ -1090,6 +1090,47 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 const Divider(height: 1),
+                ListTile(
+                  leading: const Icon(Icons.style_outlined),
+                  title: Text(context.tr('dailyNewCards')),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SegmentedButton<int>(
+                          segments: const [
+                            ButtonSegment(value: 10, label: Text('10')),
+                            ButtonSegment(value: 20, label: Text('20')),
+                            ButtonSegment(value: 30, label: Text('30')),
+                            ButtonSegment(value: 40, label: Text('40')),
+                          ],
+                          selected: {
+                            const [
+                                  10,
+                                  20,
+                                  30,
+                                  40,
+                                ].contains(settings.dailyNewCardLimit)
+                                ? settings.dailyNewCardLimit
+                                : 20,
+                          },
+                          showSelectedIcon: false,
+                          onSelectionChanged: (value) =>
+                              settings.setDailyNewCardLimit(value.first),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          context.trArgs('dailyNewCardsHint', {
+                            'n': settings.dailyNewCardLimit,
+                          }),
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const Divider(height: 1),
                 SwitchListTile(
                   secondary: const Icon(Icons.notifications_active_outlined),
                   title: Text(context.tr('reviewReminder')),

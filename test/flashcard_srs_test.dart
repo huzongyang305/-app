@@ -132,6 +132,31 @@ void main() {
       );
       expect(ordered.map((card) => card.id), ['overdue', 'due']);
     });
+
+    test('错题新卡优先，每日新卡上限只截断新卡', () {
+      final now = DateTime(2026, 10, 26, 9);
+      List<String> order({required int maxNewCards}) {
+        final cards = FlashcardService.orderByDue(
+          [
+            _card('new1'),
+            _card('wrong1'),
+            _card('new2'),
+            _card('wrong2'),
+            _card('future'),
+          ],
+          now: now,
+          dueAt: (card) =>
+              card.id == 'future' ? now.add(const Duration(days: 2)) : null,
+          isPriority: (card) => card.id.startsWith('wrong'),
+          maxNewCards: maxNewCards,
+          maxCards: 10,
+        );
+        return cards.map((card) => card.id).toList();
+      }
+
+      expect(order(maxNewCards: 2), ['wrong1', 'wrong2', 'future']);
+      expect(order(maxNewCards: 0), ['future']);
+    });
   });
 
   group('术语卡', () {
@@ -240,6 +265,26 @@ void main() {
       expect(progress.rawDueFlashcardCount, 2);
       expect(progress.dueFlashcardCount, 0);
       expect(progress.dueFlashcardLessonIds, containsAll(['l1', 'l2']));
+    });
+
+    test('每日新卡上限按天计数、持久化并跨天清零', () async {
+      var clock = DateTime(2026, 10, 26, 9);
+      final storage = StorageService.inMemory();
+      var progress = ProgressProvider(storage, now: () => clock);
+      expect(progress.newCardsIntroducedToday, 0);
+
+      await progress.markNewCardIntroduced('term:l1#闭包');
+      await progress.markNewCardIntroduced('term:l1#闭包');
+      await progress.markNewCardIntroduced('note:l1');
+      expect(progress.newCardsIntroducedToday, 2);
+
+      progress = ProgressProvider(storage, now: () => clock);
+      expect(progress.newCardsIntroducedToday, 2);
+
+      clock = clock.add(const Duration(days: 1));
+      expect(progress.newCardsIntroducedToday, 0);
+      await progress.markNewCardIntroduced('term:l1#闭包');
+      expect(progress.newCardsIntroducedToday, 1);
     });
   });
 

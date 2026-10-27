@@ -94,4 +94,18 @@ void main() {
       expect(restored.reminderMinute, 0);
     });
   });
+
+  group('每日新卡上限', () {
+    test('默认 20 张，越界值会被裁剪并持久化', () async {
+      expect(settings.dailyNewCardLimit, 20);
+
+      await settings.setDailyNewCardLimit(100);
+      expect(settings.dailyNewCardLimit, 40);
+      expect(SettingsProvider(storage).dailyNewCardLimit, 40);
+
+      await settings.setDailyNewCardLimit(1);
+      expect(settings.dailyNewCardLimit, 5);
+      expect(SettingsProvider(storage).dailyNewCardLimit, 5);
+    });
+  });
 }

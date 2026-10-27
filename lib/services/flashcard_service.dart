@@ -18,21 +18,31 @@ class FlashcardService {
   /// 一场闪卡最多刷多少张；排期到期优先时按这个上限截断。
   static const int maxSessionCards = 40;
 
-  /// 按单卡排期重新排序：到期卡 → 未学过的新卡 → 未来到期卡。
+  /// 按单卡排期重新排序：到期卡 → 错题新卡 → 其他新卡 → 未来到期卡。
   ///
   /// [dueAt] 返回该卡的下次到期时间，null 表示从未排期；
+  /// [isPriority] 标记需要优先出现的新卡（如错题本里的题目）；
+  /// [maxNewCards] 限制本次引入的未学新卡数量，到期卡与未来卡不受影响。
   /// 同类卡片保持原顺序，保证没有排期数据时行为与随机队列一致。
   static List<Flashcard> orderByDue(
     List<Flashcard> cards, {
     required DateTime now,
     required DateTime? Function(Flashcard card) dueAt,
+    bool Function(Flashcard card)? isPriority,
+    int? maxNewCards,
     int? maxCards,
   }) {
     final ranked = <({int rank, DateTime? due, int order, Flashcard card})>[];
     for (var i = 0; i < cards.length; i++) {
-      final due = dueAt(cards[i]);
-      final rank = due == null ? 1 : (due.isAfter(now) ? 2 : 0);
-      ranked.add((rank: rank, due: due, order: i, card: cards[i]));
+      final card = cards[i];
+      final due = dueAt(card);
+      final int rank;
+      if (due == null) {
+        rank = (isPriority?.call(card) ?? false) ? 1 : 2;
+      } else {
+        rank = due.isAfter(now) ? 3 : 0;
+      }
+      ranked.add((rank: rank, due: due, order: i, card: card));
     }
     ranked.sort((a, b) {
       if (a.rank != b.rank) return a.rank.compareTo(b.rank);
@@ -42,9 +52,18 @@ class FlashcardService {
       }
       return a.order.compareTo(b.order);
     });
-    final ordered = ranked.map((entry) => entry.card).toList(growable: false);
+    final selected = <Flashcard>[];
+    var newCards = 0;
+    for (final entry in ranked) {
+      final isNew = entry.rank == 1 || entry.rank == 2;
+      if (isNew && maxNewCards != null) {
+        if (newCards >= maxNewCards) continue;
+        newCards++;
+      }
+      selected.add(entry.card);
+    }
     final limit = maxCards ?? maxSessionCards;
-    return ordered.length <= limit ? ordered : ordered.sublist(0, limit);
+    return selected.length <= limit ? selected : selected.sublist(0, limit);
   }
 
   /// 生成卡片队列。

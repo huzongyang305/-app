@@ -1,8 +1,11 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../l10n/l10n_extension.dart';
 import '../models/lesson.dart';
+import '../models/review_forecast.dart';
 import '../services/content_provider.dart';
 import '../services/practice_question_factory.dart';
 import '../services/progress_provider.dart';
@@ -47,6 +50,15 @@ class _ReviewPlanScreenState extends State<ReviewPlanScreen> {
       content.allLessons,
       budgetMinutes: settings.reviewSessionMinutes,
       categoryId: categoryId,
+    );
+    final forecast = progress.reviewForecast(
+      days: 7,
+      lessonIds: categoryId == null
+          ? null
+          : content.allLessons
+                .where((lesson) => lesson.categoryId == categoryId)
+                .map((lesson) => lesson.id)
+                .toSet(),
     );
 
     return Scaffold(
@@ -163,6 +175,9 @@ class _ReviewPlanScreenState extends State<ReviewPlanScreen> {
                     ),
                   ),
                 ],
+                const SizedBox(height: AppSpacing.md),
+                // 未来 7 天复习量：按知识点 / 题目 / 闪卡堆叠展示
+                _ReviewForecastCard(forecast: forecast),
                 const SizedBox(height: AppSpacing.md),
                 // 复习安排：暂停 / 恢复、允许复习的星期、最近场次总结
                 _ReviewControlsCard(progress: progress),
@@ -558,6 +573,201 @@ String _dueLabel(BuildContext context, DateTime due, DateTime now) {
   return context.trArgs('reviewInDays', {'n': diff});
 }
 
+/// 1 = 周一 … 7 = 周日，与 DateTime.weekday 一致。
+String _weekdayLabel(BuildContext context, int weekday) => switch (weekday) {
+  1 => context.tr('weekdayMon'),
+  2 => context.tr('weekdayTue'),
+  3 => context.tr('weekdayWed'),
+  4 => context.tr('weekdayThu'),
+  5 => context.tr('weekdayFri'),
+  6 => context.tr('weekdaySat'),
+  _ => context.tr('weekdaySun'),
+};
+
+/// 未来 7 天复习量：堆叠柱展示每天到期的知识点、题目与闪卡数量。
+class _ReviewForecastCard extends StatelessWidget {
+  const _ReviewForecastCard({required this.forecast});
+
+  final List<ReviewForecastDay> forecast;
+
+  static const double _chartHeight = 60;
+
+  String _dayLabel(BuildContext context, int index) {
+    if (index == 0) return context.tr('reviewForecastToday');
+    if (index == 1) return context.tr('reviewTomorrow');
+    return _weekdayLabel(context, forecast[index].date.weekday);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final total = forecast.fold<int>(0, (sum, day) => sum + day.total);
+    final maxTotal = math.max(
+      1,
+      forecast.fold<int>(0, (max, day) => math.max(max, day.total)),
+    );
+    final today = forecast.isEmpty ? null : forecast.first;
+    final tomorrow = forecast.length > 1 ? forecast[1].total : 0;
+
+    return IndexCard(
+      accent: scheme.primary,
+      semanticLabel: total == 0
+          ? context.tr('reviewForecastEmpty')
+          : context.trArgs('reviewForecastA11y', {
+              'today': today?.total ?? 0,
+              'tomorrow': tomorrow,
+            }),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.insights_outlined, size: 18, color: scheme.primary),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: Text(
+                  context.tr('reviewForecastTitle'),
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            context.tr('reviewForecastHint'),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: scheme.onSurfaceVariant,
+            ),
+          ),
+          if (total == 0)
+            Padding(
+              padding: const EdgeInsets.only(top: AppSpacing.md),
+              child: Text(
+                context.tr('reviewForecastEmpty'),
+                style: theme.textTheme.bodyMedium,
+              ),
+            )
+          else ...[
+            const SizedBox(height: AppSpacing.md),
+            SizedBox(
+              height: _chartHeight + 44,
+              child: ExcludeSemantics(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    for (var i = 0; i < forecast.length; i++)
+                      Expanded(
+                        child: _ForecastBar(
+                          day: forecast[i],
+                          label: _dayLabel(context, i),
+                          isToday: i == 0,
+                          maxTotal: maxTotal,
+                          chartHeight: _chartHeight,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+            if (today != null) ...[
+              const SizedBox(height: AppSpacing.xs),
+              Text(
+                context.trArgs('reviewForecastLegend', {
+                  'lessons': today.lessons,
+                  'questions': today.questions,
+                  'flashcards': today.flashcards,
+                }),
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: scheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// 单日柱：知识点（主色）/ 题目（第三色）/ 闪卡（次色）自下而上堆叠。
+class _ForecastBar extends StatelessWidget {
+  const _ForecastBar({
+    required this.day,
+    required this.label,
+    required this.isToday,
+    required this.maxTotal,
+    required this.chartHeight,
+  });
+
+  final ReviewForecastDay day;
+  final String label;
+  final bool isToday;
+  final int maxTotal;
+  final double chartHeight;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final barHeight = day.total == 0
+        ? 4.0
+        : math.max(8.0, chartHeight * day.total / maxTotal);
+    final unit = day.total == 0 ? 0.0 : barHeight / day.total;
+
+    Widget segment(int value, Color color) => value == 0
+        ? const SizedBox.shrink()
+        : SizedBox(
+            height: unit * value,
+            width: double.infinity,
+            child: ColoredBox(color: color),
+          );
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Text(
+          day.total == 0 ? '' : '${day.total}',
+          style: theme.textTheme.labelSmall?.copyWith(
+            fontWeight: FontWeight.w700,
+            color: scheme.onSurfaceVariant,
+          ),
+        ),
+        const SizedBox(height: 4),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(5),
+          child: SizedBox(
+            width: 18,
+            height: barHeight,
+            child: day.total == 0
+                ? ColoredBox(color: scheme.outlineVariant)
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      segment(day.flashcards, scheme.secondary),
+                      segment(day.questions, scheme.tertiary),
+                      segment(day.lessons, scheme.primary),
+                    ],
+                  ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: theme.textTheme.labelSmall?.copyWith(
+            fontWeight: isToday ? FontWeight.w700 : FontWeight.w400,
+            color: isToday ? scheme.primary : scheme.onSurfaceVariant,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 /// 复习安排控制卡：暂停 / 恢复、允许复习的星期与最近场次总结。
 class _ReviewControlsCard extends StatelessWidget {
   const _ReviewControlsCard({required this.progress});
@@ -566,16 +776,6 @@ class _ReviewControlsCard extends StatelessWidget {
 
   /// 1 = 周一 … 7 = 周日，与 DateTime.weekday 一致。
   static const List<int> _weekdays = <int>[1, 2, 3, 4, 5, 6, 7];
-
-  String _weekdayLabel(BuildContext context, int weekday) => switch (weekday) {
-    1 => context.tr('weekdayMon'),
-    2 => context.tr('weekdayTue'),
-    3 => context.tr('weekdayWed'),
-    4 => context.tr('weekdayThu'),
-    5 => context.tr('weekdayFri'),
-    6 => context.tr('weekdaySat'),
-    _ => context.tr('weekdaySun'),
-  };
 
   String _formatDate(DateTime date) =>
       '${date.year}-${date.month.toString().padLeft(2, '0')}-'
