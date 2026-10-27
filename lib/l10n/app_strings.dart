@@ -295,21 +295,22 @@ class AppStrings {
     'reviewQuestionBackToPlan': {'zh': '返回复习计划', 'en': 'Back to review plan'},
     'flashcardTitle': {'zh': '闪卡复习', 'en': 'Flashcards'},
     'flashcardHint': {
-      'zh': '先回想，再翻面自评，结果会写入复习计划',
-      'en': 'Recall first, flip to grade; results feed the review plan',
+      'zh': '先回想，再翻面自评，每张卡按自己的节奏排期',
+      'en': 'Recall, flip and grade; each card keeps its own schedule',
     },
     'flashcardTapToFlip': {'zh': '点击卡片翻面', 'en': 'Tap to flip'},
     'flashcardFront': {'zh': '问题', 'en': 'Question'},
     'flashcardBack': {'zh': '答案', 'en': 'Answer'},
     'flashcardNoteCard': {'zh': '我的笔记', 'en': 'My note'},
+    'flashcardTermCard': {'zh': '课文术语', 'en': 'Lesson term'},
     'flashcardSwipeHint': {
       'zh': '左滑 = 忘记，右滑 = 记得',
       'en': 'Swipe left to forget, right to remember',
     },
     'flashcardEmpty': {'zh': '暂无可用的闪卡', 'en': 'No flashcards yet'},
     'flashcardEmptyHint': {
-      'zh': '学完带测验的课程，或写一条课程笔记后再来',
-      'en': 'Finish a lesson with quizzes or write a note first',
+      'zh': '学习带「术语速查」的课程，或写一条课程笔记后再来',
+      'en': 'Open a lesson with a term table or write a note first',
     },
     'flashcardDone': {'zh': '本场闪卡已完成', 'en': 'Session complete'},
     'flashcardSummary': {
@@ -319,8 +320,8 @@ class AppStrings {
     'flashcardAgain': {'zh': '再来一轮', 'en': 'Another round'},
     'flashcardExit': {'zh': '返回', 'en': 'Done'},
     'flashcardEntryHint': {
-      'zh': '题目与笔记自动生成卡片，自评后进入间隔复习',
-      'en': 'Cards from quizzes and notes, graded into spaced review',
+      'zh': '题目、术语与笔记自动成卡，单卡独立排期',
+      'en': 'Cards from quizzes, terms and notes with per-card scheduling',
     },
     'dailyQuestionTitle': {'zh': '每日一题', 'en': 'Daily question'},
     'dailyQuestionHint': {

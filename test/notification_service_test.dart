@@ -32,7 +32,9 @@ void main() {
       service.scheduleDailyReview(
         hour: 20,
         minute: 30,
-        dueCount: 5,
+        lessonCount: 5,
+        questionCount: 3,
+        flashcardCount: 4,
         isEnglish: false,
       ),
       completes,
@@ -41,7 +43,7 @@ void main() {
       service.scheduleDailyReview(
         hour: 7,
         minute: 0,
-        dueCount: 0,
+        lessonCount: 0,
         isEnglish: true,
       ),
       completes,

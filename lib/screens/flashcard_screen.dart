@@ -10,6 +10,7 @@ import '../models/review_grade.dart';
 import '../services/content_provider.dart';
 import '../services/flashcard_service.dart';
 import '../services/progress_provider.dart';
+import '../services/terminology_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/empty_state.dart';
 import '../widgets/index_card.dart';
@@ -35,47 +36,146 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
   int _fuzzy = 0;
   int _forgot = 0;
   int _round = 0;
+  bool _loading = true;
+  bool _started = false;
+  int _buildToken = 0;
+
+  /// 术语卡最多解析几门课，控制进入闪卡页时的 Markdown 读取量。
+  static const int _maxTermLessons = 6;
+
+  static const int _maxTermsPerLesson = 3;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _queue ??= _buildQueue();
+    if (_started) return;
+    _started = true;
+    _prepareQueue();
   }
 
-  List<Flashcard> _buildQueue() {
+  Future<void> _prepareQueue() async {
+    final token = ++_buildToken;
     final content = context.read<ContentProvider>();
     final progress = context.read<ProgressProvider>();
-    return FlashcardService.buildQueue(
+    final seed = DateTime.now().millisecondsSinceEpoch % 100000 + _round;
+    final base = FlashcardService.buildQueue(
       content.allLessons,
       notes: progress.notes.values.toList(),
       categoryId: widget.categoryId,
       lessonId: widget.lessonId,
-      seed: DateTime.now().millisecondsSinceEpoch % 100000 + _round,
+      maxCards: FlashcardService.maxSessionCards + 20,
+      seed: seed,
     );
+    final terms = await _loadTermCards(content, progress, base, seed);
+    if (!mounted || token != _buildToken) return;
+    final ordered = FlashcardService.orderByDue(
+      <Flashcard>[...base, ...terms],
+      now: progress.now,
+      dueAt: (card) => _dueAt(progress, card),
+    );
+    setState(() {
+      _queue = ordered;
+      _index = 0;
+      _remembered = 0;
+      _fuzzy = 0;
+      _forgot = 0;
+      _loading = false;
+    });
+  }
+
+  /// 从课文「术语速查」表补充术语卡，只解析少量课程避免拖慢入场。
+  Future<List<Flashcard>> _loadTermCards(
+    ContentProvider content,
+    ProgressProvider progress,
+    List<Flashcard> base,
+    int seed,
+  ) async {
+    final cards = <Flashcard>[];
+    for (final lesson in _termSourceLessons(content, progress, base)) {
+      try {
+        final markdown = await content.markdownOf(lesson);
+        final terms = TerminologyService.extract(markdown);
+        if (terms.isEmpty) continue;
+        terms.shuffle(math.Random(seed + lesson.id.hashCode));
+        for (final term in terms.take(_maxTermsPerLesson)) {
+          cards.add(
+            Flashcard.fromTerm(
+              lesson: lesson,
+              term: term.term,
+              explanation: term.explanation,
+            ),
+          );
+        }
+      } catch (_) {
+        // 单个课件读取失败时跳过，不影响其余闪卡。
+      }
+    }
+    return cards;
+  }
+
+  List<Lesson> _termSourceLessons(
+    ContentProvider content,
+    ProgressProvider progress,
+    List<Flashcard> base,
+  ) {
+    final selected = <Lesson>[];
+    final seen = <String>{};
+    void add(Lesson? lesson) {
+      if (lesson == null || !seen.add(lesson.id)) return;
+      selected.add(lesson);
+    }
+
+    final lessonId = widget.lessonId;
+    if (lessonId != null) {
+      add(content.lessonById(lessonId));
+      return selected;
+    }
+    // 到期闪卡所在课程优先，保证逾期术语能重新出现。
+    for (final id in progress.dueFlashcardLessonIds) {
+      if (selected.length >= _maxTermLessons) break;
+      final lesson = content.lessonById(id);
+      if (lesson == null) continue;
+      if (widget.categoryId != null && lesson.categoryId != widget.categoryId) {
+        continue;
+      }
+      add(lesson);
+    }
+    for (final card in base) {
+      if (selected.length >= _maxTermLessons) break;
+      add(content.lessonById(card.lessonId));
+    }
+    return selected;
+  }
+
+  /// 题目卡复用题目级排期，术语 / 笔记卡使用闪卡排期。
+  DateTime? _dueAt(ProgressProvider progress, Flashcard card) {
+    final index = card.questionIndex;
+    if (card.kind == FlashcardKind.question && index != null) {
+      return progress.questionReviewDueAt(card.lessonId, index);
+    }
+    return progress.flashcardDueAt(card.id);
   }
 
   void _rebuildQueue() {
     setState(() {
       _round++;
-      _queue = _buildQueue();
-      _index = 0;
-      _remembered = 0;
-      _fuzzy = 0;
-      _forgot = 0;
+      _queue = null;
+      _loading = true;
     });
+    _prepareQueue();
   }
 
   Future<void> _grade(Flashcard card, ReviewGrade grade) async {
     final progress = context.read<ProgressProvider>();
-    final content = context.read<ContentProvider>();
-    final lesson = content.lessonById(card.lessonId);
-    if (lesson != null) {
-      await progress.scheduleReviewWithGrade(
-        lesson.id,
+    final index = card.questionIndex;
+    if (card.kind == FlashcardKind.question && index != null) {
+      await progress.scheduleQuestionReviewWithGrade(
+        card.lessonId,
+        index,
         grade,
-        difficulty: lesson.difficulty,
-        wrongCount: grade == ReviewGrade.forgot ? 1 : 0,
       );
+    } else {
+      await progress.scheduleFlashcardWithGrade(card.id, grade);
     }
     if (!mounted) return;
     setState(() {
@@ -99,7 +199,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
 
     return Scaffold(
       appBar: AppBar(title: Text(context.tr('flashcardTitle'))),
-      body: content.isLoading
+      body: content.isLoading || _loading
           ? const Center(child: CircularProgressIndicator())
           : finished
           ? _SummaryView(
@@ -271,9 +371,17 @@ class _FlashcardViewState extends State<_FlashcardView>
                             ),
                           )
                         : _CardFace(
-                            label: card.kind == FlashcardKind.note
-                                ? context.tr('flashcardNoteCard')
-                                : context.tr('flashcardFront'),
+                            label: switch (card.kind) {
+                              FlashcardKind.note => context.tr(
+                                'flashcardNoteCard',
+                              ),
+                              FlashcardKind.term => context.tr(
+                                'flashcardTermCard',
+                              ),
+                              FlashcardKind.question => context.tr(
+                                'flashcardFront',
+                              ),
+                            },
                             accent: theme.colorScheme.primary,
                             child: _FrontContent(card: card),
                           ),

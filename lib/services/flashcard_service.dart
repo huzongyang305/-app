@@ -15,6 +15,38 @@ class FlashcardService {
   /// 每门课最多抽取的题目卡数量，避免一门课淹没整场复习。
   static const int maxQuestionsPerLesson = 4;
 
+  /// 一场闪卡最多刷多少张；排期到期优先时按这个上限截断。
+  static const int maxSessionCards = 40;
+
+  /// 按单卡排期重新排序：到期卡 → 未学过的新卡 → 未来到期卡。
+  ///
+  /// [dueAt] 返回该卡的下次到期时间，null 表示从未排期；
+  /// 同类卡片保持原顺序，保证没有排期数据时行为与随机队列一致。
+  static List<Flashcard> orderByDue(
+    List<Flashcard> cards, {
+    required DateTime now,
+    required DateTime? Function(Flashcard card) dueAt,
+    int? maxCards,
+  }) {
+    final ranked = <({int rank, DateTime? due, int order, Flashcard card})>[];
+    for (var i = 0; i < cards.length; i++) {
+      final due = dueAt(cards[i]);
+      final rank = due == null ? 1 : (due.isAfter(now) ? 2 : 0);
+      ranked.add((rank: rank, due: due, order: i, card: cards[i]));
+    }
+    ranked.sort((a, b) {
+      if (a.rank != b.rank) return a.rank.compareTo(b.rank);
+      if (a.due != null && b.due != null) {
+        final byDue = a.due!.compareTo(b.due!);
+        if (byDue != 0) return byDue;
+      }
+      return a.order.compareTo(b.order);
+    });
+    final ordered = ranked.map((entry) => entry.card).toList(growable: false);
+    final limit = maxCards ?? maxSessionCards;
+    return ordered.length <= limit ? ordered : ordered.sublist(0, limit);
+  }
+
   /// 生成卡片队列。
   ///
   /// [categoryId] / [lessonId] 为空表示不过滤；[seed] 用于稳定洗牌，

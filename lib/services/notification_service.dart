@@ -155,13 +155,15 @@ class NotificationService {
 
   /// 安排「每天 [hour]:[minute] 提醒复习」。
   ///
-  /// [dueCount] 为当前到期数量，用于生成更有信息量的提醒文案；
+  /// 传入知识点、题目与闪卡的到期数量，用于生成更有信息量的提醒文案；
   /// 每次调度都会覆盖旧计划，因此可以随时用最新数量刷新。
   Future<void> scheduleDailyReview({
     required int hour,
     required int minute,
-    required int dueCount,
+    required int lessonCount,
     required bool isEnglish,
+    int questionCount = 0,
+    int flashcardCount = 0,
   }) async {
     await init();
     if (!_available) return;
@@ -188,13 +190,16 @@ class NotificationService {
         );
       }
 
+      final total = lessonCount + questionCount + flashcardCount;
       final title = isEnglish ? 'Time to review' : '该复习啦';
       final body = isEnglish
-          ? (dueCount > 0
-                ? '$dueCount lesson(s) waiting in your review queue'
-                : 'Learn one new lesson to keep your streak going')
-          : (dueCount > 0
-                ? '复习队列里有 $dueCount 个知识点，花几分钟巩固一下'
+          ? (total > 0
+                ? '$total item(s) due today: '
+                      '${_englishCounts(lessonCount, questionCount, flashcardCount)}'
+                : 'Nothing due today. Learn one new lesson to keep your streak going')
+          : (total > 0
+                ? '今天有 $total 项待复习：'
+                      '${_chineseCounts(lessonCount, questionCount, flashcardCount)}'
                 : '今天没有待复习内容，学一篇新知识点保持连续学习');
 
       await _plugin.zonedSchedule(
@@ -219,6 +224,26 @@ class NotificationService {
     } catch (error) {
       debugPrint('安排复习提醒失败：$error');
     }
+  }
+
+  static String _chineseCounts(int lessons, int questions, int flashcards) {
+    final parts = <String>[
+      if (lessons > 0) '$lessons 个知识点',
+      if (questions > 0) '$questions 道题',
+      if (flashcards > 0) '$flashcards 张闪卡',
+    ];
+    return parts.isEmpty ? '知识点、题目与闪卡' : parts.join('、');
+  }
+
+  static String _englishCounts(int lessons, int questions, int flashcards) {
+    final parts = <String>[
+      if (lessons > 0) '$lessons lesson(s)',
+      if (questions > 0) '$questions question(s)',
+      if (flashcards > 0) '$flashcards flashcard(s)',
+    ];
+    return parts.isEmpty
+        ? 'lessons, questions and flashcards'
+        : parts.join(', ');
   }
 
   /// 撤销每日提醒（用户关闭开关时调用）。

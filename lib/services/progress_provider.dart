@@ -25,6 +25,7 @@ class ProgressProvider extends ChangeNotifier {
     _restoreWrongCounts();
     _restoreReview();
     _restoreQuestionReview();
+    _restoreFlashcardReview();
     _restoreStudyDays();
     _restoreActivity();
     _restoreStudySeconds();
@@ -66,6 +67,13 @@ class ProgressProvider extends ChangeNotifier {
   final Map<String, double> _questionReviewEase = <String, double>{};
   final Map<String, int> _questionReviewRepetitions = <String, int>{};
   final Map<String, int> _questionReviewLapses = <String, int>{};
+
+  /// 闪卡级间隔重复：键为 Flashcard.id（术语卡 / 笔记卡）。
+  final Map<String, String> _flashcardDue = <String, String>{};
+  final Map<String, int> _flashcardInterval = <String, int>{};
+  final Map<String, double> _flashcardEase = <String, double>{};
+  final Map<String, int> _flashcardRepetitions = <String, int>{};
+  final Map<String, int> _flashcardLapses = <String, int>{};
 
   final Set<String> _studyDays = <String>{};
   final Map<String, int> _dailyActivity = <String, int>{};
@@ -626,6 +634,39 @@ class ProgressProvider extends ChangeNotifier {
     }).length;
   }
 
+  /// 今天是否允许安排复习（未暂停且当前星期被勾选）。
+  bool get reviewsActiveToday =>
+      !reviewsPaused && _reviewWeekdays.contains(_now().weekday);
+
+  /// 今天到期的题目数；暂停或非复习日返回 0，用于提醒文案。
+  int get dueQuestionReviewCount =>
+      reviewsActiveToday ? rawDueQuestionReviewCount : 0;
+
+  /// 今天到期的术语 / 笔记闪卡数，题目卡已计入 [dueQuestionReviewCount]。
+  int get dueFlashcardCount => reviewsActiveToday ? rawDueFlashcardCount : 0;
+
+  /// 不考虑暂停与星期限制的到期闪卡数。
+  int get rawDueFlashcardCount {
+    final now = _now();
+    return _flashcardDue.values.where((value) {
+      final due = DateTime.tryParse(value);
+      return due != null && !due.isAfter(now);
+    }).length;
+  }
+
+  /// 到期闪卡所属的课程 ID，用于优先解析这些课程的术语表。
+  Set<String> get dueFlashcardLessonIds {
+    final now = _now();
+    final result = <String>{};
+    for (final entry in _flashcardDue.entries) {
+      final due = DateTime.tryParse(entry.value);
+      if (due == null || due.isAfter(now)) continue;
+      final lessonId = _lessonIdOfCardKey(entry.key);
+      if (lessonId != null) result.add(lessonId);
+    }
+    return result;
+  }
+
   DateTime? questionReviewDueAt(String lessonId, int questionIndex) =>
       DateTime.tryParse(_questionReviewDue['$lessonId#$questionIndex'] ?? '');
 
@@ -678,6 +719,48 @@ class ProgressProvider extends ChangeNotifier {
     await _persistQuestionReview();
   }
 
+  DateTime? flashcardDueAt(String cardId) =>
+      DateTime.tryParse(_flashcardDue[cardId] ?? '');
+
+  int flashcardIntervalOf(String cardId) =>
+      (_flashcardInterval[cardId] ?? 1).clamp(1, _maxIntervalDays);
+
+  int flashcardRepetitionsOf(String cardId) =>
+      _flashcardRepetitions[cardId] ?? 0;
+
+  int flashcardLapsesOf(String cardId) => _flashcardLapses[cardId] ?? 0;
+
+  double flashcardEaseOf(String cardId) =>
+      _flashcardEase[cardId] ?? _initialEase;
+
+  /// 用三档自评调度一张闪卡（术语 / 笔记），返回新的间隔天数。
+  Future<int> scheduleFlashcardWithGrade(
+    String cardId,
+    ReviewGrade grade,
+  ) async {
+    _applySrs(
+      cardId,
+      full: grade == ReviewGrade.remembered,
+      partial: grade == ReviewGrade.fuzzy,
+      dueMap: _flashcardDue,
+      intervalMap: _flashcardInterval,
+      easeMap: _flashcardEase,
+      repetitionsMap: _flashcardRepetitions,
+      lapsesMap: _flashcardLapses,
+    );
+    notifyListeners();
+    await _persistFlashcardReview();
+    return _flashcardInterval[cardId] ?? 1;
+  }
+
+  /// 稍后复习：把一张闪卡顺延到未来几天。
+  Future<void> snoozeFlashcard(String cardId, {int days = 1}) async {
+    final value = days.clamp(1, 30);
+    _flashcardDue[cardId] = _now().add(Duration(days: value)).toIso8601String();
+    notifyListeners();
+    await _persistFlashcardReview();
+  }
+
   /// 单题调度：全对/记得按 SM-2 拉长，部分得分/模糊小幅延长，
   /// 答错/忘记重置并记为一次遗忘。
   void _scheduleQuestionReview(
@@ -691,11 +774,34 @@ class ProgressProvider extends ChangeNotifier {
     final partial = grade != null
         ? grade == ReviewGrade.fuzzy
         : !full && score! >= 0.5;
-    final ease = (_questionReviewEase[key] ?? _initialEase)
+    _applySrs(
+      key,
+      full: full,
+      partial: partial,
+      dueMap: _questionReviewDue,
+      intervalMap: _questionReviewInterval,
+      easeMap: _questionReviewEase,
+      repetitionsMap: _questionReviewRepetitions,
+      lapsesMap: _questionReviewLapses,
+    );
+  }
+
+  /// 题目与闪卡共用的 SM-2 推进逻辑，只是写入不同的持久化映射。
+  void _applySrs(
+    String key, {
+    required bool full,
+    required bool partial,
+    required Map<String, String> dueMap,
+    required Map<String, int> intervalMap,
+    required Map<String, double> easeMap,
+    required Map<String, int> repetitionsMap,
+    required Map<String, int> lapsesMap,
+  }) {
+    final ease = (easeMap[key] ?? _initialEase)
         .clamp(_minEase, _maxEase)
         .toDouble();
-    final repetitions = _questionReviewRepetitions[key] ?? 0;
-    final previous = _questionReviewInterval[key] ?? 0;
+    final repetitions = repetitionsMap[key] ?? 0;
+    final previous = intervalMap[key] ?? 0;
     var nextEase = ease;
     var nextRepetitions = repetitions;
     var interval = previous;
@@ -716,16 +822,47 @@ class ProgressProvider extends ChangeNotifier {
       nextRepetitions = 0;
       nextEase -= 0.25;
       interval = 1;
-      _questionReviewLapses[key] = (_questionReviewLapses[key] ?? 0) + 1;
+      lapsesMap[key] = (lapsesMap[key] ?? 0) + 1;
     }
     interval = interval.clamp(1, _maxIntervalDays);
     nextEase = nextEase.clamp(_minEase, _maxEase).toDouble();
-    _questionReviewEase[key] = double.parse(nextEase.toStringAsFixed(3));
-    _questionReviewRepetitions[key] = nextRepetitions;
-    _questionReviewInterval[key] = interval;
-    _questionReviewDue[key] = _now()
-        .add(Duration(days: interval))
-        .toIso8601String();
+    easeMap[key] = double.parse(nextEase.toStringAsFixed(3));
+    repetitionsMap[key] = nextRepetitions;
+    intervalMap[key] = interval;
+    dueMap[key] = _now().add(Duration(days: interval)).toIso8601String();
+  }
+
+  /// 从 `note:课程` / `term:课程#术语` 这类键里取出课程 ID。
+  String? _lessonIdOfCardKey(String key) {
+    if (key.startsWith('note:')) return key.substring(5);
+    if (!key.startsWith('term:')) return null;
+    final rest = key.substring(5);
+    final separator = rest.indexOf('#');
+    if (separator <= 0) return null;
+    return rest.substring(0, separator);
+  }
+
+  Future<void> _persistFlashcardReview() async {
+    await _storage.write(
+      'flashcard_due',
+      Map<String, String>.from(_flashcardDue),
+    );
+    await _storage.write(
+      'flashcard_interval',
+      Map<String, int>.from(_flashcardInterval),
+    );
+    await _storage.write(
+      'flashcard_ease',
+      Map<String, double>.from(_flashcardEase),
+    );
+    await _storage.write(
+      'flashcard_repetitions',
+      Map<String, int>.from(_flashcardRepetitions),
+    );
+    await _storage.write(
+      'flashcard_lapses',
+      Map<String, int>.from(_flashcardLapses),
+    );
   }
 
   Future<void> _persistQuestionReview() async {
@@ -1203,6 +1340,47 @@ class ProgressProvider extends ChangeNotifier {
     }
   }
 
+  void _restoreFlashcardReview() {
+    final due = _storage.read('flashcard_due');
+    if (due is Map) {
+      due.forEach(
+        (key, value) => _flashcardDue[key.toString()] = value.toString(),
+      );
+    }
+    final interval = _storage.read('flashcard_interval');
+    if (interval is Map) {
+      interval.forEach((key, value) {
+        if (value is int && value > 0) {
+          _flashcardInterval[key.toString()] = value;
+        }
+      });
+    }
+    final ease = _storage.read('flashcard_ease');
+    if (ease is Map) {
+      ease.forEach((key, value) {
+        if (value is num) {
+          _flashcardEase[key.toString()] = value.toDouble();
+        }
+      });
+    }
+    final repetitions = _storage.read('flashcard_repetitions');
+    if (repetitions is Map) {
+      repetitions.forEach((key, value) {
+        if (value is int && value >= 0) {
+          _flashcardRepetitions[key.toString()] = value;
+        }
+      });
+    }
+    final lapses = _storage.read('flashcard_lapses');
+    if (lapses is Map) {
+      lapses.forEach((key, value) {
+        if (value is int && value > 0) {
+          _flashcardLapses[key.toString()] = value;
+        }
+      });
+    }
+  }
+
   void _restoreStudyDays() {
     final raw = _storage.read('study_days', defaultValue: const <String>[]);
     _studyDays
@@ -1341,6 +1519,11 @@ class ProgressProvider extends ChangeNotifier {
           _questionReviewRepetitions,
         ),
         'question_review_lapses': Map<String, int>.from(_questionReviewLapses),
+        'flashcard_due': Map<String, String>.from(_flashcardDue),
+        'flashcard_interval': Map<String, int>.from(_flashcardInterval),
+        'flashcard_ease': Map<String, double>.from(_flashcardEase),
+        'flashcard_repetitions': Map<String, int>.from(_flashcardRepetitions),
+        'flashcard_lapses': Map<String, int>.from(_flashcardLapses),
         'study_days': _studyDays.toList(),
         'daily_activity': Map<String, int>.from(_dailyActivity),
         'daily_study_seconds': Map<String, int>.from(_dailyStudySeconds),
@@ -1441,6 +1624,11 @@ class ProgressProvider extends ChangeNotifier {
       current,
       incoming,
       key: 'question_review_due',
+    );
+    result['flashcard_due'] = _mergeReviewDue(
+      current,
+      incoming,
+      key: 'flashcard_due',
     );
     result['review_history'] = <dynamic>[
       ...((current['review_history'] as List?) ?? const []),
@@ -1695,6 +1883,26 @@ class ProgressProvider extends ChangeNotifier {
       (data['question_review_lapses'] as Map?) ?? const {},
     );
     await _storage.write(
+      'flashcard_due',
+      (data['flashcard_due'] as Map?) ?? const {},
+    );
+    await _storage.write(
+      'flashcard_interval',
+      (data['flashcard_interval'] as Map?) ?? const {},
+    );
+    await _storage.write(
+      'flashcard_ease',
+      (data['flashcard_ease'] as Map?) ?? const {},
+    );
+    await _storage.write(
+      'flashcard_repetitions',
+      (data['flashcard_repetitions'] as Map?) ?? const {},
+    );
+    await _storage.write(
+      'flashcard_lapses',
+      (data['flashcard_lapses'] as Map?) ?? const {},
+    );
+    await _storage.write(
       'bookmarked_ids',
       (data['bookmarked_ids'] as List?) ?? const [],
     );
@@ -1751,6 +1959,12 @@ class ProgressProvider extends ChangeNotifier {
     _questionReviewRepetitions.clear();
     _questionReviewLapses.clear();
     _restoreQuestionReview();
+    _flashcardDue.clear();
+    _flashcardInterval.clear();
+    _flashcardEase.clear();
+    _flashcardRepetitions.clear();
+    _flashcardLapses.clear();
+    _restoreFlashcardReview();
     _studyDays.clear();
     _restoreStudyDays();
     _dailyActivity.clear();

@@ -426,6 +426,9 @@ class _HomeScreenState extends State<HomeScreen> {
           icon: Icons.style_outlined,
           titleKey: 'flashcardTitle',
           subtitleKey: 'flashcardEntryHint',
+          badge: progress.dueFlashcardCount > 0
+              ? '${progress.dueFlashcardCount}'
+              : null,
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute<void>(builder: (_) => const FlashcardScreen()),
           ),

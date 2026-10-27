@@ -1,9 +1,10 @@
 import 'lesson.dart';
 
-/// 闪卡来源：测验题卡、笔记卡。
+/// 闪卡来源：测验题卡、笔记卡、课文术语卡。
 enum FlashcardKind {
   question('question'),
-  note('note');
+  note('note'),
+  term('term');
 
   const FlashcardKind(this.storageKey);
 
@@ -31,7 +32,8 @@ class Flashcard {
     this.explanation,
   });
 
-  /// 稳定标识：题目卡为 `课程#题号`，笔记卡为 `note:课程`。
+  /// 稳定标识：题目卡为 `课程#题号`，笔记卡为 `note:课程`，
+  /// 术语卡为 `term:课程#术语`。
   final String id;
   final String lessonId;
   final String categoryId;
@@ -64,6 +66,24 @@ class Flashcard {
       code: question.code,
       questionIndex: questionIndex,
       explanation: question.explanation.isEmpty ? null : question.explanation,
+    );
+  }
+
+  /// 从课文的「术语速查」表生成闪卡：正面是术语，背面是一句话解释。
+  ///
+  /// 标识里包含术语文本而非行号，课文增删其他术语时排期不会错位。
+  factory Flashcard.fromTerm({
+    required Lesson lesson,
+    required String term,
+    required String explanation,
+  }) {
+    return Flashcard(
+      id: 'term:${lesson.id}#$term',
+      lessonId: lesson.id,
+      categoryId: lesson.categoryId,
+      kind: FlashcardKind.term,
+      front: term,
+      back: explanation,
     );
   }
 

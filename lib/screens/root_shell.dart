@@ -141,6 +141,8 @@ class _RootShellState extends State<RootShell> with WidgetsBindingObserver {
         '${settings.reviewReminderEnabled}|'
         '${settings.reminderTimeLabel}|'
         '${progress.dueReviewCount}|'
+        '${progress.dueQuestionReviewCount}|'
+        '${progress.dueFlashcardCount}|'
         '${settings.localeCode}|dq';
     if (signature == _reminderSignature) return;
     _reminderSignature = signature;
@@ -153,7 +155,9 @@ class _RootShellState extends State<RootShell> with WidgetsBindingObserver {
     await service.scheduleDailyReview(
       hour: settings.reminderHour,
       minute: settings.reminderMinute,
-      dueCount: progress.dueReviewCount,
+      lessonCount: progress.dueReviewCount,
+      questionCount: progress.dueQuestionReviewCount,
+      flashcardCount: progress.dueFlashcardCount,
       isEnglish: settings.isEnglish,
     );
     // 每日一题固定中午 12:30 提醒，与复习提醒错开时段。
