@@ -10,6 +10,7 @@ import '../models/sandbox_challenge.dart';
 import '../models/sandbox_language.dart';
 import '../services/code_sandbox_service.dart';
 import '../services/sandbox_challenge_service.dart';
+import '../services/sandbox_draft_service.dart';
 import '../services/share_service.dart';
 import '../services/snippet_service.dart';
 import '../services/settings_provider.dart';
@@ -54,6 +55,9 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
   final Map<SandboxLanguage, String> _stdinDrafts = <SandboxLanguage, String>{};
 
   SnippetService? _snippets;
+  SandboxDraftService? _draftStore;
+  Timer? _draftSaveTimer;
+  bool _draftsRestored = false;
   String _output = '';
   bool _running = false;
 
@@ -63,8 +67,8 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
   /// 最近一次挑战运行是否通过；为空表示还没运行过。
   bool? _challengePassed;
 
-  /// 最近一次挑战运行的真实输出，用于失败时对照。
-  String _challengeActual = '';
+  /// 最近一次挑战运行每个用例的实际输出，用于失败时逐条对照。
+  List<_ChallengeCaseResult> _challengeResults = const <_ChallengeCaseResult>[];
 
   bool _challengeHintVisible = false;
 
@@ -95,6 +99,8 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
     if (challenge == null && (widget.initialStdin?.isNotEmpty ?? false)) {
       _stdinDrafts[_language] = widget.initialStdin!;
     }
+    _code.addListener(_scheduleDraftSave);
+    _stdin.addListener(_scheduleDraftSave);
   }
 
   /// 按挑战 id 反查语言并选中该挑战；找不到时保持普通编辑模式。
@@ -115,6 +121,11 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _snippets ??= _resolveSnippets(context);
+    if (!_draftsRestored) {
+      _draftStore = _resolveDraftStore(context);
+      _restoreDrafts();
+      _draftsRestored = true;
+    }
   }
 
   /// 片段库依赖本地存储；测试等没有注入存储的场景自动降级为不可用。
@@ -126,9 +137,67 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
     }
   }
 
+  SandboxDraftService? _resolveDraftStore(BuildContext context) {
+    try {
+      return SandboxDraftService(context.read<StorageService>());
+    } on ProviderNotFoundException {
+      return null;
+    }
+  }
+
+  /// 恢复上次退出时保存的草稿；从搜索 / 教程显式带进来的代码优先。
+  void _restoreDrafts() {
+    final store = _draftStore;
+    if (store == null) return;
+    final hasInitialInput =
+        widget.initialChallengeId != null ||
+        (widget.initialCode?.trim().isNotEmpty ?? false) ||
+        (widget.initialStdin?.isNotEmpty ?? false);
+    if (!hasInitialInput) {
+      final draft = store.forLanguage(_language.id);
+      if (draft != null) {
+        _code.text = draft.code;
+        _stdin.text = draft.stdin;
+      }
+    }
+    for (final language in SandboxLanguage.values) {
+      if (language == _language) continue;
+      final draft = store.forLanguage(language.id);
+      if (draft == null) continue;
+      _drafts[language] = draft.code;
+      _stdinDrafts[language] = draft.stdin;
+    }
+  }
+
+  void _scheduleDraftSave() {
+    if (_draftStore == null) return;
+    _draftSaveTimer?.cancel();
+    _draftSaveTimer = Timer(
+      const Duration(milliseconds: 400),
+      _persistCurrentDraft,
+    );
+  }
+
+  void _persistCurrentDraft() {
+    _draftSaveTimer?.cancel();
+    _draftSaveTimer = null;
+    final store = _draftStore;
+    if (store == null) return;
+    // 与示例完全一致的内容不算草稿，避免每次打开都写一条默认代码。
+    if (_code.text == _language.sampleCode && _stdin.text.trim().isEmpty) {
+      unawaited(store.remove(_language.id));
+      return;
+    }
+    unawaited(
+      store.save(_language.id, code: _code.text, stdin: _stdin.text),
+    );
+  }
+
   @override
   void dispose() {
     // 退出页面时销毁后台 WebView，避免残留页面继续占用内存。
+    _draftSaveTimer?.cancel();
+    _persistCurrentDraft();
     unawaited(CodeSandboxService.destroy());
     _code.dispose();
     _stdin.dispose();
@@ -270,7 +339,7 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
     setState(() {
       _challenge = challenge;
       _challengePassed = null;
-      _challengeActual = '';
+      _challengeResults = const <_ChallengeCaseResult>[];
       _challengeHintVisible = false;
       _code.text = challenge.starterCode;
       _stdin.text = challenge.stdin;
@@ -284,7 +353,7 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
     setState(() {
       _challenge = null;
       _challengePassed = null;
-      _challengeActual = '';
+      _challengeResults = const <_ChallengeCaseResult>[];
       _challengeHintVisible = false;
     });
   }
@@ -298,7 +367,7 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
       _drafts[_language] = challenge.starterCode;
       _stdinDrafts[_language] = challenge.stdin;
       _challengePassed = null;
-      _challengeActual = '';
+      _challengeResults = const <_ChallengeCaseResult>[];
       _output = '';
     });
     ScaffoldMessenger.of(context).showSnackBar(
@@ -306,7 +375,7 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
     );
   }
 
-  /// 运行挑战：执行代码 → 规范化输出 → 与期望输出比对 → 记录通关。
+  /// 运行挑战：逐个执行测试用例 → 比对输出 → 全部通过才记录通关。
   Future<void> _runChallenge() async {
     final challenge = _challenge;
     if (challenge == null || _running) return;
@@ -318,27 +387,47 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
     }
     FocusScope.of(context).unfocus();
     final token = ++_runToken;
+    final cases = challenge.cases;
     setState(() {
       _running = true;
       _output = '';
       _challengePassed = null;
-      _challengeActual = '';
+      _challengeResults = const <_ChallengeCaseResult>[];
     });
-    final output = await CodeSandboxService.runCode(
-      _language,
-      _code.text,
-      stdin: _language.supportsStdin ? _stdin.text : '',
-    );
-    if (!mounted || token != _runToken) return;
-    final passed = SandboxChallengeService.matches(
-      actual: output,
-      expected: challenge.expectedOutput,
+    final actuals = <String>[];
+    for (final testCase in cases) {
+      final output = await CodeSandboxService.runCode(
+        _language,
+        _code.text,
+        stdin: _language.supportsStdin ? testCase.stdin : '',
+      );
+      if (!mounted || token != _runToken) return;
+      actuals.add(output);
+      final casePassed = SandboxChallengeService.matches(
+        actual: output,
+        expected: testCase.expectedOutput,
+      );
+      setState(() {
+        _challengeResults = <_ChallengeCaseResult>[
+          ..._challengeResults,
+          _ChallengeCaseResult(
+            testCase: testCase,
+            actual: output,
+            passed: casePassed,
+          ),
+        ];
+        _output = actuals.length == 1
+            ? output
+            : _combinedOutput(cases, actuals);
+      });
+    }
+    final passed = SandboxChallengeService.passesAll(
+      challenge: challenge,
+      actualOutputs: actuals,
     );
     setState(() {
       _running = false;
-      _output = output;
       _challengePassed = passed;
-      _challengeActual = output;
     });
     if (passed) {
       final settings = context.read<SettingsProvider>();
@@ -358,6 +447,23 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
     );
   }
 
+  /// 多组用例依次运行后，输出面板按用例分段展示，方便对照。
+  String _combinedOutput(
+    List<SandboxChallengeCase> cases,
+    List<String> actuals,
+  ) {
+    final buffer = StringBuffer();
+    for (var index = 0; index < actuals.length; index++) {
+      if (index > 0) buffer.writeln();
+      buffer.writeln(
+        '--- ${context.trReadArgs('sandboxChallengeCase', {'n': index + 1})} ---',
+      );
+      buffer.write(actuals[index]);
+      if (index != actuals.length - 1) buffer.writeln();
+    }
+    return buffer.toString();
+  }
+
   /// 停止运行：销毁 WebView，并让正在等待的旧结果失效。
   Future<void> _stop() async {
     if (!_running) return;
@@ -375,6 +481,7 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
     if (language == _language || _running) return;
     _drafts[_language] = _code.text;
     _stdinDrafts[_language] = _stdin.text;
+    _persistCurrentDraft();
     setState(() {
       _language = language;
       _code.text = _drafts[language] ?? language.sampleCode;
@@ -382,7 +489,7 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
       _output = '';
       _challenge = null;
       _challengePassed = null;
-      _challengeActual = '';
+      _challengeResults = const <_ChallengeCaseResult>[];
       _challengeHintVisible = false;
     });
   }
@@ -396,12 +503,13 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
       _output = '';
       _challenge = null;
       _challengePassed = null;
-      _challengeActual = '';
+      _challengeResults = const <_ChallengeCaseResult>[];
       _challengeHintVisible = false;
     });
   }
 
   void _resetSample() {
+    _draftSaveTimer?.cancel();
     setState(() {
       _drafts.remove(_language);
       _stdinDrafts.remove(_language);
@@ -410,9 +518,62 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
       _output = '';
       _challenge = null;
       _challengePassed = null;
-      _challengeActual = '';
+      _challengeResults = const <_ChallengeCaseResult>[];
       _challengeHintVisible = false;
     });
+    // 控制器赋值会再触发一次保存计时，这里取消并把本地草稿一并删掉。
+    _draftSaveTimer?.cancel();
+    final store = _draftStore;
+    if (store != null) {
+      unawaited(store.remove(_language.id));
+    }
+  }
+
+  /// 清除所有语言保存的草稿，恢复各自的示例代码。
+  Future<void> _clearAllDrafts() async {
+    final store = _draftStore;
+    if (store == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(context.trRead('sandboxDraftUnavailable'))),
+      );
+      return;
+    }
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(dialogContext.tr('sandboxDraftClear')),
+        content: Text(dialogContext.tr('sandboxDraftClearConfirm')),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(dialogContext.tr('cancel')),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(dialogContext.tr('clear')),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !mounted) return;
+    _draftSaveTimer?.cancel();
+    await store.clear();
+    if (!mounted) return;
+    setState(() {
+      _drafts.clear();
+      _stdinDrafts.clear();
+      _code.text = _language.sampleCode;
+      _stdin.text = '';
+      _output = '';
+      _challenge = null;
+      _challengePassed = null;
+      _challengeResults = const <_ChallengeCaseResult>[];
+      _challengeHintVisible = false;
+    });
+    _draftSaveTimer?.cancel();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(context.trRead('sandboxDraftCleared'))),
+    );
   }
 
   Future<void> _copy(String text, String messageKey) async {
@@ -651,19 +812,19 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
       _output = '';
       _challenge = null;
       _challengePassed = null;
-      _challengeActual = '';
+      _challengeResults = const <_ChallengeCaseResult>[];
       _challengeHintVisible = false;
     });
   }
 
-  /// 挑战面板：任务要求、输入 / 期望输出、运行结果与操作按钮。
+  /// 挑战面板：任务要求、全部测试用例、运行结果与操作按钮。
   Widget _buildChallengeCard(ThemeData theme) {
     final challenge = _challenge!;
     final localeCode = context.strings.localeCode;
     final passed = _challengePassed;
-    final actual = _challengeActual.isEmpty
-        ? ''
-        : SandboxChallengeService.normalize(_challengeActual);
+    final cases = challenge.cases;
+    final results = _challengeResults;
+    final passedCount = results.where((result) => result.passed).length;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(AppSpacing.lg),
@@ -723,27 +884,53 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
             style: theme.textTheme.bodyMedium,
           ),
           const SizedBox(height: AppSpacing.md),
-          _buildChallengeField(
-            theme,
-            context.tr('sandboxChallengeStdin'),
-            challenge.stdin.isEmpty
-                ? context.tr('sandboxChallengeNoStdin')
-                : challenge.stdin,
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          _buildChallengeField(
-            theme,
-            context.tr('sandboxChallengeExpected'),
-            challenge.expectedOutput,
-          ),
-          if (passed == false && actual.isNotEmpty) ...[
-            const SizedBox(height: AppSpacing.sm),
-            _buildChallengeField(
+          if (cases.length == 1)
+            ..._buildSingleCaseFields(
               theme,
-              context.tr('sandboxChallengeActual'),
-              actual,
-              accent: AppPalette.danger,
+              cases.first,
+              results.isEmpty ? null : results.first,
+            )
+          else ...[
+            Row(
+              children: [
+                Text(
+                  context.trArgs('sandboxChallengeCases', {
+                    'n': cases.length,
+                  }),
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const Spacer(),
+                if (results.isNotEmpty)
+                  Text(
+                    results.length == cases.length && passedCount == cases.length
+                        ? context.tr('sandboxChallengeAllPassed')
+                        : context.trArgs('sandboxChallengeCaseSummary', {
+                            'passed': passedCount,
+                            'total': cases.length,
+                          }),
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: passedCount == cases.length
+                          ? AppPalette.success
+                          : theme.colorScheme.onSurfaceVariant,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+              ],
             ),
+            const SizedBox(height: AppSpacing.sm),
+            for (var index = 0; index < cases.length; index++) ...[
+              _buildCaseTile(
+                theme,
+                index: index,
+                testCase: cases[index],
+                result: index < results.length ? results[index] : null,
+              ),
+              if (index != cases.length - 1)
+                const SizedBox(height: AppSpacing.sm),
+            ],
           ],
           if (challenge.hint != null) ...[
             const SizedBox(height: AppSpacing.xs),
@@ -831,6 +1018,159 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
               fontFamily: 'monospace',
               fontSize: 12.5,
               height: 1.4,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// 单用例挑战沿用原来的「输入 / 期望 / 实际」三块布局。
+  List<Widget> _buildSingleCaseFields(
+    ThemeData theme,
+    SandboxChallengeCase testCase,
+    _ChallengeCaseResult? result,
+  ) {
+    return [
+      _buildChallengeField(
+        theme,
+        context.tr('sandboxChallengeStdin'),
+        testCase.stdin.isEmpty
+            ? context.tr('sandboxChallengeNoStdin')
+            : testCase.stdin,
+      ),
+      const SizedBox(height: AppSpacing.sm),
+      _buildChallengeField(
+        theme,
+        context.tr('sandboxChallengeExpected'),
+        testCase.expectedOutput,
+      ),
+      if (result != null && !result.passed) ...[
+        const SizedBox(height: AppSpacing.sm),
+        _buildChallengeField(
+          theme,
+          context.tr('sandboxChallengeActual'),
+          SandboxChallengeService.normalize(result.actual),
+          accent: AppPalette.danger,
+        ),
+      ],
+    ];
+  }
+
+  /// 多用例挑战中的一条用例：标题、输入、期望输出与失败时的实际输出。
+  Widget _buildCaseTile(
+    ThemeData theme, {
+    required int index,
+    required SandboxChallengeCase testCase,
+    required _ChallengeCaseResult? result,
+  }) {
+    final statusColor = result == null
+        ? theme.colorScheme.onSurfaceVariant
+        : result.passed
+        ? AppPalette.success
+        : AppPalette.danger;
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(AppSpacing.md),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: AppRadii.control,
+        border: Border.all(
+          color: result == null
+              ? theme.colorScheme.outlineVariant
+              : statusColor.withValues(alpha: 0.5),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                result == null
+                    ? Icons.radio_button_unchecked
+                    : result.passed
+                    ? Icons.check_circle
+                    : Icons.cancel,
+                size: 16,
+                color: statusColor,
+              ),
+              const SizedBox(width: 6),
+              Text(
+                context.trArgs('sandboxChallengeCase', {'n': index + 1}),
+                style: theme.textTheme.labelLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const Spacer(),
+              if (result != null)
+                Text(
+                  context.tr(
+                    result.passed
+                        ? 'sandboxChallengePassedTag'
+                        : 'sandboxChallengeFailedTag',
+                  ),
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: statusColor,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          _buildCaseLine(
+            theme,
+            context.tr('sandboxChallengeStdin'),
+            testCase.stdin.isEmpty
+                ? context.tr('sandboxChallengeNoStdin')
+                : testCase.stdin,
+          ),
+          const SizedBox(height: 4),
+          _buildCaseLine(
+            theme,
+            context.tr('sandboxChallengeExpected'),
+            testCase.expectedOutput,
+          ),
+          if (result != null && !result.passed) ...[
+            const SizedBox(height: 4),
+            _buildCaseLine(
+              theme,
+              context.tr('sandboxChallengeActual'),
+              SandboxChallengeService.normalize(result.actual),
+              accent: AppPalette.danger,
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCaseLine(
+    ThemeData theme,
+    String label,
+    String value, {
+    Color? accent,
+  }) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 86,
+          child: Text(
+            label,
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: accent ?? theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ),
+        Expanded(
+          child: SelectableText(
+            value,
+            style: TextStyle(
+              fontFamily: 'monospace',
+              fontSize: 12,
+              height: 1.35,
+              color: accent,
             ),
           ),
         ),
@@ -991,6 +1331,8 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
                       setState(() => _code.clear());
                     case 'reset':
                       _resetSample();
+                    case 'clearDrafts':
+                      _clearAllDrafts();
                   }
                 },
                 itemBuilder: (context) => [
@@ -1008,11 +1350,15 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
                   ),
                   PopupMenuItem(
                     value: 'clear',
-                    child: Text(context.tr('sandboxClear')),
+                    child: Text(context.trRead('sandboxClear')),
                   ),
                   PopupMenuItem(
                     value: 'reset',
-                    child: Text(context.tr('sandboxReset')),
+                    child: Text(context.trRead('sandboxReset')),
+                  ),
+                  PopupMenuItem(
+                    value: 'clearDrafts',
+                    child: Text(context.trRead('sandboxDraftClear')),
                   ),
                 ],
               ),
@@ -1177,4 +1523,17 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
       ),
     );
   }
+}
+
+/// 单个测试用例的运行结果（多做例挑战逐条展示）。
+class _ChallengeCaseResult {
+  const _ChallengeCaseResult({
+    required this.testCase,
+    required this.actual,
+    required this.passed,
+  });
+
+  final SandboxChallengeCase testCase;
+  final String actual;
+  final bool passed;
 }

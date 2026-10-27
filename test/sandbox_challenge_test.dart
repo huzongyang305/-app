@@ -1,4 +1,5 @@
 import 'package:code_learn_app/data/sandbox_challenges.dart';
+import 'package:code_learn_app/models/sandbox_challenge.dart';
 import 'package:code_learn_app/models/sandbox_language.dart';
 import 'package:code_learn_app/screens/code_sandbox_screen.dart';
 import 'package:code_learn_app/services/sandbox_challenge_service.dart';
@@ -58,6 +59,71 @@ void main() {
     });
   });
 
+  group('多用例挑战', () {
+    SandboxChallenge cppAddTwo() => sandboxChallengesByLanguage['cpp']!
+        .firstWhere((item) => item.id == 'cpp-add-two');
+
+    test('cases 合并首组用例与附加用例', () {
+      final challenge = cppAddTwo();
+      expect(challenge.caseCount, 3);
+      expect(challenge.cases.length, 3);
+      expect(challenge.cases.first.stdin, '3 5');
+      expect(challenge.cases.first.expectedOutput, '8');
+      expect(challenge.cases[1].stdin, '-2 7');
+      expect(challenge.cases[1].expectedOutput, '5');
+      expect(challenge.cases[2].stdin, '100 200');
+      expect(challenge.cases[2].expectedOutput, '300');
+    });
+
+    test('没有附加用例时只有一个用例', () {
+      final challenge = sandboxChallengesByLanguage['javascript']!
+          .firstWhere((item) => item.id == 'js-sum-1-100');
+      expect(challenge.caseCount, 1);
+      expect(challenge.cases, hasLength(1));
+      expect(challenge.cases.single.expectedOutput, '5050');
+    });
+
+    test('passedCaseCount 逐条统计，passesAll 要求全部一致', () {
+      final challenge = cppAddTwo();
+      expect(
+        SandboxChallengeService.passedCaseCount(
+          challenge: challenge,
+          actualOutputs: const ['8', '5', '300'],
+        ),
+        3,
+      );
+      expect(
+        SandboxChallengeService.passesAll(
+          challenge: challenge,
+          actualOutputs: const ['8', '5', '300'],
+        ),
+        isTrue,
+      );
+      expect(
+        SandboxChallengeService.passedCaseCount(
+          challenge: challenge,
+          actualOutputs: const ['8', '6', '300'],
+        ),
+        2,
+      );
+      expect(
+        SandboxChallengeService.passesAll(
+          challenge: challenge,
+          actualOutputs: const ['8', '6', '300'],
+        ),
+        isFalse,
+      );
+      // 少跑一组用例不能算通过。
+      expect(
+        SandboxChallengeService.passesAll(
+          challenge: challenge,
+          actualOutputs: const ['8', '5'],
+        ),
+        isFalse,
+      );
+    });
+  });
+
   group('挑战题库', () {
     test('至少覆盖 6 种有真实运行时的语言', () {
       expect(sandboxChallengesByLanguage.length, greaterThanOrEqualTo(6));
@@ -87,6 +153,13 @@ void main() {
           expect(challenge.prompt.zh.trim(), isNotEmpty);
           expect(challenge.starterCode.trim(), isNotEmpty);
           expect(challenge.expectedOutput.trim(), isNotEmpty);
+          for (final testCase in challenge.cases) {
+            expect(
+              testCase.expectedOutput.trim(),
+              isNotEmpty,
+              reason: '${challenge.id} 存在空的期望输出',
+            );
+          }
         }
       }
     });
@@ -203,6 +276,86 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('已通过'), findsOneWidget);
     expect(settings.isSandboxChallengePassed('js-sum-1-100'), isTrue);
+  });
+
+  testWidgets('多用例挑战逐条运行并只在全部通过时记录通关', (tester) async {
+    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.devicePixelRatio = 3.0;
+    addTearDown(tester.view.reset);
+
+    const channel = MethodChannel('code_learn_app/sandbox');
+    final messenger =
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+    final stdins = <String?>[];
+    messenger.setMockMethodCallHandler(channel, (call) async {
+      if (call.method != 'runCode') return null;
+      final args = (call.arguments as Map).cast<String, Object?>();
+      final stdin = args['stdin'] as String?;
+      stdins.add(stdin);
+      switch (stdin?.trim()) {
+        case '3 5':
+          return '8';
+        case '-2 7':
+          return '6'; // 故意错一组，验证不会误判通关。
+        case '100 200':
+          return '300';
+      }
+      return '';
+    });
+    addTearDown(() => messenger.setMockMethodCallHandler(channel, null));
+
+    final storage = StorageService.inMemory();
+    final settings = SettingsProvider(storage);
+    await tester.pumpWidget(
+      ChangeNotifierProvider<SettingsProvider>.value(
+        value: settings,
+        child: MaterialApp(
+          theme: AppTheme.light(),
+          home: const CodeSandboxScreen(
+            initialChallengeId: 'cpp-add-two',
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('测试用例（3 个）'), findsOneWidget);
+    expect(find.text('用例 1'), findsOneWidget);
+    expect(find.text('用例 2'), findsOneWidget);
+    expect(find.text('用例 3'), findsOneWidget);
+
+    await tester.ensureVisible(find.text('运行测试用例'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('运行测试用例'));
+    await tester.pumpAndSettle();
+
+    expect(stdins, ['3 5', '-2 7', '100 200']);
+    expect(find.text('本次通过 2/3 个用例'), findsOneWidget);
+    expect(find.text('未通过'), findsWidgets);
+    expect(settings.isSandboxChallengePassed('cpp-add-two'), isFalse);
+
+    // 修正后三组全对，才记录通关。
+    messenger.setMockMethodCallHandler(channel, (call) async {
+      if (call.method != 'runCode') return null;
+      final args = (call.arguments as Map).cast<String, Object?>();
+      switch ((args['stdin'] as String? ?? '').trim()) {
+        case '3 5':
+          return '8';
+        case '-2 7':
+          return '5';
+        case '100 200':
+          return '300';
+      }
+      return '';
+    });
+    await tester.ensureVisible(find.text('运行测试用例'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('运行测试用例'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('已通过'), findsWidgets);
+    expect(find.text('全部测试用例通过'), findsOneWidget);
+    expect(settings.isSandboxChallengePassed('cpp-add-two'), isTrue);
   });
 
   testWidgets('静态追踪语言给出无挑战提示', (tester) async {

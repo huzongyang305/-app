@@ -1958,6 +1958,105 @@ class AppStrings {
     },
     'searchRetryLesson': {'zh': '重练本课', 'en': 'Practice this lesson'},
     'searchWrongCorrect': {'zh': '正确答案', 'en': 'Correct answer'},
+
+    // ---- 分享卡片与学习证书 ----
+    'profileShareCard': {'zh': '学习成果卡片', 'en': 'Study summary card'},
+    'profileShareCardHint': {
+      'zh': '把学习进度生成图片分享给朋友',
+      'en': 'Share your progress as an image',
+    },
+    'profileCertificate': {'zh': '学习证书', 'en': 'Certificates'},
+    'profileCertificateHint': {
+      'zh': '已完成 {n}/{m} 个分类',
+      'en': '{n}/{m} categories completed',
+    },
+    'shareCardTitle': {'zh': '学习成果卡片', 'en': 'Study card'},
+    'shareCardHint': {
+      'zh': '卡片根据本机学习数据生成，分享时不会上传任何内容。',
+      'en': 'The card is generated from on-device data; nothing is uploaded.',
+    },
+    'shareCardHeader': {'zh': '我的学习成果', 'en': 'My learning journey'},
+    'shareCardTagline': {'zh': '坚持学习，积少成多', 'en': 'Small steps, big progress'},
+    'shareCardLearned': {'zh': '已学课程', 'en': 'Lessons learned'},
+    'shareCardStreak': {'zh': '连续学习', 'en': 'Day streak'},
+    'shareCardStudyTime': {'zh': '累计学习', 'en': 'Study time'},
+    'shareCardAccuracy': {'zh': '测验正确率', 'en': 'Quiz accuracy'},
+    'shareCardAchievements': {'zh': '成就', 'en': 'Achievements'},
+    'shareCardDays': {'zh': '天', 'en': 'days'},
+    'shareCardMinutesValue': {'zh': '{n} 分钟', 'en': '{n} min'},
+    'shareCardHoursValue': {'zh': '{n} 小时', 'en': '{n} h'},
+    'shareCardFootprint': {
+      'zh': '已收藏 {favorites} · 笔记 {notes}',
+      'en': '{favorites} favorites · {notes} notes',
+    },
+    'shareImageAction': {'zh': '分享图片', 'en': 'Share image'},
+    'shareImageRendering': {'zh': '正在生成图片…', 'en': 'Rendering image…'},
+    'shareImageFailed': {
+      'zh': '图片生成失败，请重试',
+      'en': 'Could not render the image, please retry',
+    },
+    'shareImageUnavailable': {
+      'zh': '当前环境不支持分享图片',
+      'en': 'Image sharing is not available here',
+    },
+    'shareImageStarted': {
+      'zh': '已打开系统分享面板',
+      'en': 'Share sheet opened',
+    },
+    'certificateTitle': {'zh': '学习证书', 'en': 'Certificates'},
+    'certificateHint': {
+      'zh': '把某个分类的全部课程标记为已学，即可领取该分类的结业证书。',
+      'en': 'Mark every lesson in a category as learned to earn its certificate.',
+    },
+    'certificateOverall': {
+      'zh': '已领取 {n}/{m} 个分类证书',
+      'en': '{n}/{m} category certificates earned',
+    },
+    'certificateProgress': {
+      'zh': '已学 {done}/{total} 门',
+      'en': '{done}/{total} lessons',
+    },
+    'certificateUnlocked': {'zh': '可领取', 'en': 'Ready'},
+    'certificateLocked': {'zh': '学习中', 'en': 'In progress'},
+    'certificateCertifies': {'zh': '兹证明', 'en': 'This certifies that'},
+    'certificateLearner': {'zh': '坚持学习的你', 'en': 'a dedicated learner'},
+    'certificateCompleted': {
+      'zh': '已完成《{category}》全部 {n} 门课程的学习',
+      'en': 'has completed all {n} lessons in “{category}”',
+    },
+    'certificateIssuedAt': {'zh': '颁发日期', 'en': 'Issued'},
+    'certificateIssuer': {
+      'zh': '计算机与编程学习中心',
+      'en': 'CS & Coding Learning Center',
+    },
+    'certificateShare': {'zh': '分享证书', 'en': 'Share certificate'},
+    'certificateMissing': {
+      'zh': '没有找到这个分类的课程',
+      'en': 'This category could not be found',
+    },
+
+    // ---- 沙箱草稿 ----
+    'sandboxDraftClear': {'zh': '清除全部草稿', 'en': 'Clear all drafts'},
+    'sandboxDraftClearConfirm': {
+      'zh': '将删除各语言保存的代码和输入草稿，恢复为示例代码。',
+      'en': 'This removes saved code and input drafts for every language.',
+    },
+    'sandboxDraftCleared': {'zh': '已清除全部沙箱草稿', 'en': 'Sandbox drafts cleared'},
+    'sandboxDraftUnavailable': {
+      'zh': '当前环境无法保存草稿',
+      'en': 'Drafts are unavailable here',
+    },
+
+    // ---- 多用例挑战 ----
+    'sandboxChallengeCases': {
+      'zh': '测试用例（{n} 个）',
+      'en': 'Test cases ({n})',
+    },
+    'sandboxChallengeCase': {'zh': '用例 {n}', 'en': 'Case {n}'},
+    'sandboxChallengeCaseSummary': {
+      'zh': '本次通过 {passed}/{total} 个用例',
+      'en': '{passed}/{total} cases passed this run',
+    },
   };
 
   String get(String key) {

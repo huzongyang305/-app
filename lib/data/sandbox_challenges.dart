@@ -61,6 +61,10 @@ const numbers = line.split(" ").map(Number);
 ''',
       stdin: '3 17 8 42 5',
       expectedOutput: '42',
+      extraCases: <SandboxChallengeCase>[
+        SandboxChallengeCase(stdin: '9', expectedOutput: '9'),
+        SandboxChallengeCase(stdin: '-5 -2 -9', expectedOutput: '-2'),
+      ],
       hint: LocalizedText(
         zh: '可以用 Math.max(...numbers)，也可以自己写循环比较。',
         en: 'Math.max(...numbers) works, or write your own loop.',
@@ -145,6 +149,11 @@ print(is_prime)
 ''',
       stdin: '91',
       expectedOutput: 'False',
+      extraCases: <SandboxChallengeCase>[
+        SandboxChallengeCase(stdin: '2', expectedOutput: 'True'),
+        SandboxChallengeCase(stdin: '97', expectedOutput: 'True'),
+        SandboxChallengeCase(stdin: '9', expectedOutput: 'False'),
+      ],
       hint: LocalizedText(
         zh: '只要 n 能被 2..int(n ** 0.5) 中任意一个数整除，就不是素数。',
         en: 'If any number in 2..int(n ** 0.5) divides n, it is not prime.',
@@ -163,6 +172,12 @@ line = input()
 ''',
       stdin: 'hello flutter world',
       expectedOutput: '3',
+      extraCases: <SandboxChallengeCase>[
+        SandboxChallengeCase(
+          stdin: 'one two three four',
+          expectedOutput: '4',
+        ),
+      ],
     ),
     SandboxChallenge(
       id: 'py-fib-10',
@@ -367,6 +382,35 @@ int main() {
 }
 ''',
       expectedOutput: '110',
+    ),
+    SandboxChallenge(
+      id: 'cpp-add-two',
+      title: LocalizedText(zh: '两数求和', en: 'Add two numbers'),
+      prompt: LocalizedText(
+        zh: '从一行输入中读取两个整数，输出它们的和。程序会用多组输入检查。',
+        en:
+            'Read two integers from one line and print their sum. Multiple '
+            'inputs will be checked.',
+      ),
+      starterCode: r'''
+#include <stdio.h>
+
+int main() {
+    int a, b;
+    // TODO: 用 scanf 读取两个整数并输出它们的和
+    return 0;
+}
+''',
+      stdin: '3 5',
+      expectedOutput: '8',
+      extraCases: <SandboxChallengeCase>[
+        SandboxChallengeCase(stdin: '-2 7', expectedOutput: '5'),
+        SandboxChallengeCase(stdin: '100 200', expectedOutput: '300'),
+      ],
+      hint: LocalizedText(
+        zh: 'scanf("%d %d", &a, &b); 之后用 printf 输出 a + b。',
+        en: 'Use scanf("%d %d", &a, &b); then printf the sum.',
+      ),
     ),
   ],
 };

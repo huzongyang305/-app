@@ -1,3 +1,5 @@
+import '../models/sandbox_challenge.dart';
+
 /// 沙箱挑战的输出比对逻辑（纯 Dart，可单测，不依赖平台通道）。
 class SandboxChallengeService {
   const SandboxChallengeService._();
@@ -33,6 +35,39 @@ class SandboxChallengeService {
   /// 判断运行输出是否通过挑战：规范化后逐字符完全一致。
   static bool matches({required String actual, required String expected}) {
     return normalize(actual) == normalize(expected);
+  }
+
+  /// 统计多组用例中通过的个数；缺失的输出按未通过处理。
+  static int passedCaseCount({
+    required SandboxChallenge challenge,
+    required List<String> actualOutputs,
+  }) {
+    final cases = challenge.cases;
+    var passed = 0;
+    for (var index = 0; index < cases.length; index++) {
+      if (index >= actualOutputs.length) break;
+      if (matches(
+        actual: actualOutputs[index],
+        expected: cases[index].expectedOutput,
+      )) {
+        passed++;
+      }
+    }
+    return passed;
+  }
+
+  /// 全部用例都通过才算挑战通过。
+  static bool passesAll({
+    required SandboxChallenge challenge,
+    required List<String> actualOutputs,
+  }) {
+    final total = challenge.cases.length;
+    return actualOutputs.length == total &&
+        passedCaseCount(
+              challenge: challenge,
+              actualOutputs: actualOutputs,
+            ) ==
+            total;
   }
 
   /// 判断输出是否像一条运行错误（用于给学习者更明确的失败提示）。

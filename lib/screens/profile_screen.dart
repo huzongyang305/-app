@@ -24,7 +24,9 @@ import 'analytics_screen.dart';
 import 'exam_screen.dart';
 import 'lesson_screen.dart';
 import 'achievements_screen.dart';
+import 'certificate_screen.dart';
 import 'notes_screen.dart';
+import 'share_card_screen.dart';
 import 'storage_diagnostics_screen.dart';
 import 'tutor_screen.dart';
 import 'wrong_answer_screen.dart';
@@ -767,6 +769,12 @@ class ProfileScreen extends StatelessWidget {
     final notedLessons = content.allLessons
         .where((lesson) => progress.noteOf(lesson.id) != null)
         .toList();
+    final completedCategories = content.categories.where((category) {
+      if (category.lessons.isEmpty) return false;
+      return category.lessons.every(
+        (lesson) => progress.isLearned(lesson.id),
+      );
+    }).length;
 
     return Scaffold(
       appBar: AppBar(title: Text(context.tr('navProfile'))),
@@ -874,6 +882,50 @@ class ProfileScreen extends StatelessWidget {
                   builder: (_) => const AnalyticsScreen(),
                 ),
               ),
+            ),
+          ),
+
+          // 学习成果卡片与证书
+          const SizedBox(height: 10),
+          Card(
+            clipBehavior: Clip.antiAlias,
+            child: Column(
+              children: [
+                ListTile(
+                  leading: Icon(
+                    Icons.ios_share,
+                    color: theme.colorScheme.primary,
+                  ),
+                  title: Text(context.tr('profileShareCard')),
+                  subtitle: Text(context.tr('profileShareCardHint')),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => const ShareCardScreen(),
+                    ),
+                  ),
+                ),
+                const Divider(height: 1),
+                ListTile(
+                  leading: Icon(
+                    Icons.workspace_premium_outlined,
+                    color: theme.colorScheme.primary,
+                  ),
+                  title: Text(context.tr('profileCertificate')),
+                  subtitle: Text(
+                    context.trArgs('profileCertificateHint', {
+                      'n': completedCategories,
+                      'm': content.categories.length,
+                    }),
+                  ),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => const CertificateScreen(),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
 

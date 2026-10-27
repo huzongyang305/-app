@@ -197,6 +197,12 @@ class MainActivity : FlutterActivity() {
                         call.argument<String>("subject"),
                         result,
                     )
+                    "shareImage" -> shareImage(
+                        call.argument<ByteArray>("bytes"),
+                        call.argument<String>("fileName"),
+                        call.argument<String>("text"),
+                        result,
+                    )
                     else -> result.notImplemented()
                 }
             }
@@ -390,6 +396,52 @@ class MainActivity : FlutterActivity() {
                 }
             }
             startActivity(Intent.createChooser(sendIntent, subject ?: "分享"))
+            result.success(true)
+        } catch (error: Exception) {
+            result.success(false)
+        }
+    }
+
+    /**
+     * 图片分享：学习卡片 / 证书由 Flutter 侧渲染成 PNG。
+     *
+     * 图片先写入缓存目录，再通过 FileProvider 授权给系统分享面板，
+     * 不申请存储权限；图片过大或分享面板不可用时返回 false。
+     */
+    private fun shareImage(
+        bytes: ByteArray?,
+        fileName: String?,
+        text: String?,
+        result: MethodChannel.Result,
+    ) {
+        if (bytes == null || bytes.isEmpty()) {
+            result.success(false)
+            return
+        }
+        if (bytes.size > MAX_SHARE_IMAGE_BYTES) {
+            result.success(false)
+            return
+        }
+        try {
+            val directory = File(cacheDir, SHARE_IMAGE_DIR).apply {
+                if (exists()) deleteRecursively()
+                mkdirs()
+            }
+            val file = File(directory, safeImageName(fileName))
+            file.writeBytes(bytes)
+            val uri = FileProvider.getUriForFile(
+                this,
+                "$packageName.fileprovider",
+                file,
+            )
+            val sendIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "image/png"
+                putExtra(Intent.EXTRA_STREAM, uri)
+                putExtra(Intent.EXTRA_TITLE, file.name)
+                if (!text.isNullOrEmpty()) putExtra(Intent.EXTRA_TEXT, text)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            startActivity(Intent.createChooser(sendIntent, "分享学习卡片"))
             result.success(true)
         } catch (error: Exception) {
             result.success(false)
@@ -758,6 +810,20 @@ class MainActivity : FlutterActivity() {
             fallback
         } else {
             "$fallback.json"
+        }
+    }
+
+    private fun safeImageName(raw: String?): String {
+        val cleaned = raw
+            ?.replace(Regex("[^A-Za-z0-9._-]"), "_")
+            ?.trim('_')
+            ?.take(80)
+            .orEmpty()
+        val fallback = cleaned.ifBlank { "code_learn_card" }
+        return if (fallback.endsWith(".png", ignoreCase = true)) {
+            fallback
+        } else {
+            "$fallback.png"
         }
     }
 
@@ -1217,7 +1283,9 @@ class MainActivity : FlutterActivity() {
         const val MAX_CONTENT_PACK_BYTES = 8 * 1024 * 1024
         // 单次分享的文本上限（256 KB），超过则退回复制到剪贴板。
         const val MAX_SHARE_TEXT_BYTES = 256 * 1024
+        const val MAX_SHARE_IMAGE_BYTES = 8 * 1024 * 1024
         const val MAX_BACKUP_BYTES = 16 * 1024 * 1024
         const val BACKUP_SHARE_DIR = "backup_share"
+        const val SHARE_IMAGE_DIR = "share_images"
     }
 }
