@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../data/asset_content_source.dart';
+import '../models/global_search.dart';
 import '../models/lesson.dart';
 import '../models/lesson_category.dart';
 import '../models/search_hit.dart';
@@ -26,7 +27,7 @@ class ContentProvider extends ChangeNotifier {
   final OfflineContentPackService _contentPackService;
 
   /// 搜索索引持久缓存键；内容指纹变化时自动失效重建。
-  static const String searchCacheKey = 'search_index_cache_v1';
+  static const String searchCacheKey = 'search_index_cache_v2';
 
   final List<LessonCategory> _categories = <LessonCategory>[];
   final Map<String, String> _markdownCache = <String, String>{};
@@ -210,15 +211,27 @@ class ContentProvider extends ChangeNotifier {
   }) async {
     final keyword = query.trim();
     if (keyword.isEmpty) return const <SearchHit>[];
-    final index = _searchIndex ??= LessonSearchIndex();
-    if (!index.isBuilt) {
-      final restored = _restoreSearchCache(index);
-      if (!restored) {
-        await index.build(_categories, plainTextOf);
-        await _persistSearchCache(index);
-      }
-    }
+    final index = await _ensureSearchIndex();
     return index.search(keyword, categoryId: categoryId, lessonIds: lessonIds);
+  }
+
+  /// 在课文「术语速查」表里检索；首次构建索引时顺带抽取，无需额外读盘。
+  Future<List<TermHit>> searchTerms(String query, {String? categoryId}) async {
+    final keyword = query.trim();
+    if (keyword.isEmpty) return const <TermHit>[];
+    final index = await _ensureSearchIndex();
+    return index.searchTerms(keyword, categoryId: categoryId);
+  }
+
+  Future<LessonSearchIndex> _ensureSearchIndex() async {
+    final index = _searchIndex ??= LessonSearchIndex();
+    if (index.isBuilt) return index;
+    final restored = _restoreSearchCache(index);
+    if (!restored) {
+      await index.build(_categories, plainTextOf, markdownOf: markdownOf);
+      await _persistSearchCache(index);
+    }
+    return index;
   }
 
   /// 尝试用上次构建的索引缓存直接恢复，避免 500+ 篇 Markdown 重新索引。

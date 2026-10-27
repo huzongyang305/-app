@@ -15,7 +15,7 @@ class AppStrings {
     'navTools': {'zh': '工具', 'en': 'Tools'},
     'search': {'zh': '搜索知识点', 'en': 'Search lessons'},
     'searchHint': {'zh': '输入关键词，如「二分」「HTTP」', 'en': 'Try "binary" or "HTTP"'},
-    'searchEmpty': {'zh': '没有找到相关知识点', 'en': 'No matching lessons'},
+    'searchEmpty': {'zh': '没有找到相关内容', 'en': 'No matching content'},
     'searchTip': {
       'zh': '支持搜索标题、关键词与教程正文',
       'en': 'Searches titles, keywords and content',
@@ -1922,6 +1922,42 @@ class AppStrings {
       'en': 'Output does not match yet',
     },
     'sandboxChallengeNoStdin': {'zh': '无需输入', 'en': 'No input needed'},
+    'focusTitle': {'zh': '专注计时', 'en': 'Focus timer'},
+    'focusStart': {'zh': '开始专注', 'en': 'Start focus'},
+    'focusPause': {'zh': '暂停计时', 'en': 'Pause'},
+    'focusResume': {'zh': '继续计时', 'en': 'Resume'},
+    'focusStop': {'zh': '结束并记录', 'en': 'Finish & log'},
+    'focusDone': {'zh': '完成', 'en': 'Done'},
+    'focusTarget': {'zh': '目标 {n} 分钟', 'en': 'Target {n} min'},
+    'focusFinished': {
+      'zh': '本次专注 {n} 分钟，已计入今日学习时长',
+      'en': '{n} min of focus logged to today\'s study time',
+    },
+    'focusTooShort': {
+      'zh': '不足 5 秒的专注不会记录',
+      'en': 'Sessions under 5 seconds are not logged',
+    },
+    'focusHint': {
+      'zh': '计时只统计本页面在前台的时间，切到后台会自动暂停，每分钟自动保存一次。阅读课文的时间会自动计入，无需另开计时。',
+      'en':
+          'The timer only counts while this screen is in the foreground, pauses in the background, and saves every full minute. Lesson reading time is tracked automatically.',
+    },
+    'dailyGoalFocusEntry': {
+      'zh': '课文外学习也可以计时',
+      'en': 'Log study time outside lessons',
+    },
+    'searchGroupLessons': {'zh': '课程', 'en': 'Lessons'},
+    'searchGroupNotes': {'zh': '笔记', 'en': 'Notes'},
+    'searchGroupWrong': {'zh': '错题', 'en': 'Wrong questions'},
+    'searchGroupTerms': {'zh': '术语', 'en': 'Terms'},
+    'searchGroupSnippets': {'zh': '代码片段', 'en': 'Snippets'},
+    'searchGroupChallenges': {'zh': '沙箱挑战', 'en': 'Challenges'},
+    'searchFlashcardAction': {
+      'zh': '去闪卡复习',
+      'en': 'Review with flashcards',
+    },
+    'searchRetryLesson': {'zh': '重练本课', 'en': 'Practice this lesson'},
+    'searchWrongCorrect': {'zh': '正确答案', 'en': 'Correct answer'},
   };
 
   String get(String key) {

@@ -325,7 +325,7 @@ class ProgressProvider extends ChangeNotifier {
 
   bool get signedToday => _studyDays.contains(_dayKey(_now()));
 
-  /// 今日已记录的真实学习时长（秒），由教程页在离开时回传。
+  /// 今日已记录的真实学习时长（秒）：教程页离开时回传 + 专注计时逐分钟累加。
   int get studySecondsToday => _dailyStudySeconds[_dayKey(_now())] ?? 0;
 
   /// 累计学习时长（分钟）。
@@ -354,18 +354,30 @@ class ProgressProvider extends ChangeNotifier {
       ((_dailyStudySeconds[_dayKey(day)] ?? 0) / 60).ceil();
 
   /// 记录一次真实学习时长；单次上限 2 小时，低于 5 秒的抖动直接忽略。
-  Future<void> addStudySeconds(String lessonId, int seconds) async {
+  Future<void> addStudySeconds(String lessonId, int seconds) =>
+      _recordStudySeconds(seconds, lessonId: lessonId);
+
+  /// 记录专注计时的时间；不改变「最近学习」课程，只累计当日时长。
+  Future<void> addFocusStudySeconds(int seconds) =>
+      _recordStudySeconds(seconds);
+
+  Future<void> _recordStudySeconds(
+    int seconds, {
+    String? lessonId,
+  }) async {
     final value = seconds.clamp(0, 7200);
     if (value < 5) return;
     final key = _dayKey(_now());
     _dailyStudySeconds[key] = (_dailyStudySeconds[key] ?? 0) + value;
-    _lastLessonId = lessonId;
+    if (lessonId != null) _lastLessonId = lessonId;
     await _markStudyToday();
     await _storage.write(
       'daily_study_seconds',
       Map<String, int>.from(_dailyStudySeconds),
     );
-    await _storage.write('last_lesson_id', lessonId);
+    if (lessonId != null) {
+      await _storage.write('last_lesson_id', lessonId);
+    }
     notifyListeners();
   }
 

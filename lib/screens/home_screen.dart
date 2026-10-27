@@ -21,6 +21,7 @@ import '../widgets/lesson_card.dart';
 import '../widgets/skeleton_loader.dart';
 import 'category_screen.dart';
 import 'daily_question_screen.dart';
+import 'focus_session_screen.dart';
 import 'lesson_screen.dart';
 import 'learning_path_screen.dart';
 import 'flashcard_screen.dart';
@@ -531,6 +532,9 @@ class _DailyGoalCard extends StatelessWidget {
         'done': done,
         'goal': goal,
       }),
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute<void>(builder: (_) => const FocusSessionScreen()),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -558,6 +562,12 @@ class _DailyGoalCard extends StatelessWidget {
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
               ),
+              const SizedBox(width: AppSpacing.sm),
+              Icon(
+                Icons.timer_outlined,
+                size: 18,
+                color: theme.colorScheme.primary,
+              ),
             ],
           ),
           const SizedBox(height: 10),
@@ -567,6 +577,13 @@ class _DailyGoalCard extends StatelessWidget {
               value: ratio,
               minHeight: 6,
               color: accent,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            context.tr('dailyGoalFocusEntry'),
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
         ],

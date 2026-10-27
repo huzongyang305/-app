@@ -28,11 +28,17 @@ class CodeSandboxScreen extends StatefulWidget {
     super.key,
     this.initialCode,
     this.initialLanguageId,
+    this.initialStdin,
+    this.initialChallengeId,
   });
 
-  /// 从题目跳转过来时可直接预填代码和语言。
+  /// 从题目 / 搜索结果跳转过来时可直接预填代码、语言与标准输入。
   final String? initialCode;
   final String? initialLanguageId;
+  final String? initialStdin;
+
+  /// 从搜索结果直接进入某个挑战。
+  final String? initialChallengeId;
 
   @override
   State<CodeSandboxScreen> createState() => _CodeSandboxScreenState();
@@ -71,12 +77,37 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
     _language =
         SandboxLanguage.tryFromId(widget.initialLanguageId) ??
         SandboxLanguage.javascript;
+    _applyInitialChallenge(widget.initialChallengeId);
+    final challenge = _challenge;
     _code = TextEditingController(
-      text: widget.initialCode ?? _language.sampleCode,
+      text:
+          challenge?.starterCode ?? widget.initialCode ?? _language.sampleCode,
     );
-    _stdin = TextEditingController();
-    if (widget.initialCode?.trim().isNotEmpty ?? false) {
+    _stdin = TextEditingController(
+      text: challenge?.stdin ?? widget.initialStdin ?? '',
+    );
+    if (challenge != null) {
+      _drafts[_language] = challenge.starterCode;
+      _stdinDrafts[_language] = challenge.stdin;
+    } else if (widget.initialCode?.trim().isNotEmpty ?? false) {
       _drafts[_language] = widget.initialCode!;
+    }
+    if (challenge == null && (widget.initialStdin?.isNotEmpty ?? false)) {
+      _stdinDrafts[_language] = widget.initialStdin!;
+    }
+  }
+
+  /// 按挑战 id 反查语言并选中该挑战；找不到时保持普通编辑模式。
+  void _applyInitialChallenge(String? challengeId) {
+    if (challengeId == null || challengeId.isEmpty) return;
+    for (final language in SandboxLanguage.values) {
+      for (final challenge in language.challenges) {
+        if (challenge.id == challengeId) {
+          _language = language;
+          _challenge = challenge;
+          return;
+        }
+      }
     }
   }
 

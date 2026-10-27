@@ -1,7 +1,9 @@
 import '../data/pinyin_map.dart';
+import '../models/global_search.dart';
 import '../models/lesson.dart';
 import '../models/lesson_category.dart';
 import '../models/search_hit.dart';
+import 'terminology_service.dart';
 
 /// 课程搜索索引：倒排索引 + 中文二元组 + 拼音/首字母 + 同义词扩展。
 ///
@@ -13,6 +15,7 @@ class LessonSearchIndex {
 
   final Map<String, _SearchDocument> _documents = <String, _SearchDocument>{};
   final Map<String, Set<String>> _postings = <String, Set<String>>{};
+  final Map<String, _TermDocument> _termDocuments = <String, _TermDocument>{};
   String _fingerprint = '';
 
   /// 当前索引对应的内容指纹，用于判断持久缓存是否过期。
@@ -58,6 +61,11 @@ class LessonSearchIndex {
           ],
         )
         .toList(growable: false),
+    'terms': _termDocuments.values
+        .map(
+          (doc) => <String>[doc.lesson.id, doc.term, doc.explanation],
+        )
+        .toList(growable: false),
     'postings': _postings.map(
       (token, ids) => MapEntry(token, ids.toList(growable: false)),
     ),
@@ -80,6 +88,12 @@ class LessonSearchIndex {
     final byCategory = <String, LessonCategory>{
       for (final category in categories) category.id: category,
     };
+    final categoryOf = <String, LessonCategory>{};
+    for (final category in categories) {
+      for (final lesson in category.lessons) {
+        categoryOf[lesson.id] = category;
+      }
+    }
     final documents = <String, _SearchDocument>{};
     for (final raw in rawDocuments) {
       if (raw is! List || raw.length < 9) return false;
@@ -123,22 +137,51 @@ class LessonSearchIndex {
       }
     }
 
+    final terms = <String, _TermDocument>{};
+    final rawTerms = cache['terms'];
+    if (rawTerms is List) {
+      for (final raw in rawTerms) {
+        if (raw is! List || raw.length < 3) continue;
+        final lesson = lessons[raw[0].toString()];
+        final category = lesson == null ? null : categoryOf[lesson.id];
+        final term = raw[1].toString().trim();
+        final explanation = raw[2].toString().trim();
+        if (lesson == null ||
+            category == null ||
+            term.isEmpty ||
+            explanation.isEmpty) {
+          continue;
+        }
+        terms['${lesson.id}#$term'] = _TermDocument(
+          lesson: lesson,
+          category: category,
+          term: term,
+          explanation: explanation,
+        );
+      }
+    }
+
     _documents
       ..clear()
       ..addAll(documents);
     _postings
       ..clear()
       ..addAll(postings);
+    _termDocuments
+      ..clear()
+      ..addAll(terms);
     _fingerprint = fingerprint;
     return true;
   }
 
   Future<void> build(
     List<LessonCategory> categories,
-    Future<String> Function(Lesson lesson) plainTextOf,
-  ) async {
+    Future<String> Function(Lesson lesson) plainTextOf, {
+    Future<String> Function(Lesson lesson)? markdownOf,
+  }) async {
     _documents.clear();
     _postings.clear();
+    _termDocuments.clear();
 
     for (final category in categories) {
       final categoryText = _normalize(
@@ -166,6 +209,21 @@ class LessonSearchIndex {
           ),
         );
         _documents[lesson.id] = document;
+        if (markdownOf != null) {
+          try {
+            final terms = TerminologyService.extract(await markdownOf(lesson));
+            for (final term in terms) {
+              _termDocuments['${lesson.id}#${term.term}'] = _TermDocument(
+                lesson: lesson,
+                category: category,
+                term: term.term,
+                explanation: term.explanation,
+              );
+            }
+          } catch (_) {
+            // 单篇课文读取失败不影响其余索引。
+          }
+        }
         for (final token in _tokensFor(
           '$title $summary $keywords $categoryText $body',
         )) {
@@ -233,6 +291,45 @@ class LessonSearchIndex {
       return a.hit.lesson.id.compareTo(b.hit.lesson.id);
     });
     return scored.take(40).map((item) => item.hit).toList();
+  }
+
+  /// 在「术语速查」表里检索：术语命中优先，其次解释命中。
+  List<TermHit> searchTerms(String rawQuery, {String? categoryId}) {
+    final query = _normalizeTerm(rawQuery);
+    if (query.length < 2 || _termDocuments.isEmpty) return const <TermHit>[];
+
+    final scored = <_ScoredTermHit>[];
+    for (final document in _termDocuments.values) {
+      if (categoryId != null && document.category.id != categoryId) continue;
+      final term = _normalizeTerm(document.term);
+      final explanation = _normalizeTerm(document.explanation);
+      var score = 0;
+      if (term == query) {
+        score += 40;
+      } else if (term.contains(query)) {
+        score += 24;
+      }
+      if (explanation.contains(query)) score += 8;
+      if (score == 0) continue;
+      scored.add(
+        _ScoredTermHit(
+          hit: TermHit(
+            lesson: document.lesson,
+            category: document.category,
+            term: document.term,
+            explanation: document.explanation,
+            matchedTerms: <String>[rawQuery.trim()],
+          ),
+          score: score,
+        ),
+      );
+    }
+    scored.sort((a, b) {
+      final byScore = b.score.compareTo(a.score);
+      if (byScore != 0) return byScore;
+      return a.hit.term.compareTo(b.hit.term);
+    });
+    return scored.take(20).map((item) => item.hit).toList(growable: false);
   }
 
   int _score(
@@ -361,6 +458,27 @@ class _ScoredSearchHit {
   final int score;
 }
 
+class _TermDocument {
+  const _TermDocument({
+    required this.lesson,
+    required this.category,
+    required this.term,
+    required this.explanation,
+  });
+
+  final Lesson lesson;
+  final LessonCategory category;
+  final String term;
+  final String explanation;
+}
+
+class _ScoredTermHit {
+  const _ScoredTermHit({required this.hit, required this.score});
+
+  final TermHit hit;
+  final int score;
+}
+
 const Map<String, List<String>> _synonyms = <String, List<String>>{
   'http': <String>['超文本传输协议', 'https', '请求', '响应'],
   'https': <String>['tls', '证书', '加密', 'http'],
@@ -448,6 +566,10 @@ String _normalize(String text) => text
     )
     .replaceAll(RegExp(r'\s+'), ' ')
     .trim();
+
+/// 术语检索保留 `+`、`#` 等符号，避免把 C++ 之类术语归一成单字母。
+String _normalizeTerm(String text) =>
+    text.toLowerCase().replaceAll(RegExp(r'\s+'), ' ').trim();
 
 String _pinyinFor(String text) {
   final buffer = StringBuffer();
