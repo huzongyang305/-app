@@ -650,8 +650,47 @@ class ProgressProvider extends ChangeNotifier {
     return (stat?['attempts'] as int?) ?? 0;
   }
 
-  /// 单题调度：全对按 SM-2 拉长，部分得分小幅延长，答错重置并记为一次遗忘。
-  void _scheduleQuestionReview(String key, double score) {
+  /// 用三档自评调度单题，返回新的间隔天数。
+  Future<int> scheduleQuestionReviewWithGrade(
+    String lessonId,
+    int questionIndex,
+    ReviewGrade grade,
+  ) async {
+    final key = '$lessonId#$questionIndex';
+    _scheduleQuestionReview(key, grade: grade);
+    notifyListeners();
+    await _persistQuestionReview();
+    return _questionReviewInterval[key] ?? 1;
+  }
+
+  /// 稍后复习：把单题顺延到未来几天。
+  Future<void> snoozeQuestionReview(
+    String lessonId,
+    int questionIndex, {
+    int days = 1,
+  }) async {
+    final key = '$lessonId#$questionIndex';
+    final value = days.clamp(1, 30);
+    _questionReviewDue[key] = _now()
+        .add(Duration(days: value))
+        .toIso8601String();
+    notifyListeners();
+    await _persistQuestionReview();
+  }
+
+  /// 单题调度：全对/记得按 SM-2 拉长，部分得分/模糊小幅延长，
+  /// 答错/忘记重置并记为一次遗忘。
+  void _scheduleQuestionReview(
+    String key, {
+    double? score,
+    ReviewGrade? grade,
+  }) {
+    final full = grade != null
+        ? grade == ReviewGrade.remembered
+        : score! >= 0.999;
+    final partial = grade != null
+        ? grade == ReviewGrade.fuzzy
+        : !full && score! >= 0.5;
     final ease = (_questionReviewEase[key] ?? _initialEase)
         .clamp(_minEase, _maxEase)
         .toDouble();
@@ -660,7 +699,7 @@ class ProgressProvider extends ChangeNotifier {
     var nextEase = ease;
     var nextRepetitions = repetitions;
     var interval = previous;
-    if (score >= 0.999) {
+    if (full) {
       nextRepetitions = repetitions + 1;
       nextEase += 0.08;
       if (nextRepetitions <= 1) {
@@ -670,7 +709,7 @@ class ProgressProvider extends ChangeNotifier {
       } else {
         interval = (previous * nextEase).round();
       }
-    } else if (score >= 0.5) {
+    } else if (partial) {
       nextEase -= 0.12;
       interval = previous == 0 ? 1 : (previous * 1.2).round();
     } else {
@@ -807,6 +846,7 @@ class ProgressProvider extends ChangeNotifier {
     required double score,
     required AnswerConfidence confidence,
     String? errorCause,
+    bool scheduleReview = true,
   }) async {
     final key = '$lessonId#$questionIndex';
     final stat = _questionStats.putIfAbsent(key, () => <String, dynamic>{});
@@ -830,7 +870,7 @@ class ProgressProvider extends ChangeNotifier {
       _wrongCounts[key] = (_wrongCounts[key] ?? 0) + 1;
       _wrongEverKeys.add(key);
     }
-    _scheduleQuestionReview(key, score);
+    if (scheduleReview) _scheduleQuestionReview(key, score: score);
     notifyListeners();
     await _storage.write('question_stats', _questionStats);
     await _storage.write('error_cause_counts', _errorCauseCounts);

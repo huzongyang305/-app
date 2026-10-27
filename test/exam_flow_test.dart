@@ -99,5 +99,17 @@ void main() {
     final wrong = storage.read('wrong_counts');
     expect(wrong, isA<Map<dynamic, dynamic>>());
     expect((wrong as Map).isNotEmpty, isTrue, reason: '随机选第一个选项必然有错题');
+
+    // 交卷后每道已作答题都应写入题目统计和题目级复习队列
+    final stats = storage.read('question_stats');
+    expect(stats, isA<Map<dynamic, dynamic>>());
+    expect((stats as Map).isNotEmpty, isTrue, reason: '交卷后应写入逐题统计');
+    final questionReview = storage.read('question_review_due');
+    expect(questionReview, isA<Map<dynamic, dynamic>>());
+    expect(
+      (questionReview as Map).isNotEmpty,
+      isTrue,
+      reason: '交卷后每道已作答题应进入题目级复习',
+    );
   });
 }

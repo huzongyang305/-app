@@ -58,22 +58,19 @@ class _DailyQuestionScreenState extends State<DailyQuestionScreen> {
       _correct = correct;
     });
     await progress.markDailyQuestionAnswered(correct: correct);
-    if (correct) {
-      await progress.scheduleReviewWithGrade(
-        daily.lesson.id,
-        ReviewGrade.remembered,
-        difficulty: daily.lesson.difficulty,
-      );
-    } else {
-      // 答错同步进错题本与复习队列，后续可以在错题专项里重练。
-      await progress.recordWrong(daily.lesson.id, daily.questionIndex);
-      await progress.scheduleReviewWithGrade(
-        daily.lesson.id,
-        ReviewGrade.forgot,
-        difficulty: daily.lesson.difficulty,
-        wrongCount: 1,
-      );
-    }
+    // 每日一题也进入题目级间隔重复，避免只有测验页作答才排期。
+    await progress.recordAnswerOutcome(
+      daily.lesson.id,
+      daily.questionIndex,
+      score: correct ? 1 : 0,
+      confidence: _answer.confidence,
+    );
+    await progress.scheduleReviewWithGrade(
+      daily.lesson.id,
+      correct ? ReviewGrade.remembered : ReviewGrade.forgot,
+      difficulty: daily.lesson.difficulty,
+      wrongCount: correct ? 0 : 1,
+    );
   }
 
   @override

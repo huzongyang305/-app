@@ -67,6 +67,7 @@ class _ExamScreenState extends State<ExamScreen> {
   int _index = 0;
   QuizAnswer? _answer;
   bool _finished = false;
+  bool _finishing = false;
   Timer? _timer;
   late int _remainingSeconds = widget.minutes * 60;
   late bool _practiceMode = widget.practiceMode;
@@ -209,27 +210,34 @@ class _ExamScreenState extends State<ExamScreen> {
     _saveDraft();
   }
 
-  void _finish() {
+  Future<void> _finish() async {
+    if (_finished || _finishing) return;
+    _finishing = true;
     _timer?.cancel();
-    _recordWrongAnswers();
+    final progress = _progress ?? context.read<ProgressProvider>();
+    await _recordOutcomes(progress);
+    if (!mounted) return;
     setState(() => _finished = true);
-    _progress?.clearExamDraft();
+    progress.clearExamDraft();
+    _finishing = false;
   }
 
-  /// 交卷后把答错的题写进错题本，答对的题清除对应的历史错题记录。
+  /// 交卷后逐题写回题目统计、错题本与题目级复习调度。
   ///
   /// 未作答的题（例如超时自动交卷）不写入，避免污染错题本。
-  void _recordWrongAnswers() {
+  Future<void> _recordOutcomes(ProgressProvider progress) async {
     final paper = _paper;
     if (paper == null) return;
-    final progress = context.read<ProgressProvider>();
     for (var i = 0; i < paper.length && i < _answers.length; i++) {
-      final question = paper[i];
-      if (_answers[i].matches(question.question)) {
-        progress.clearWrong(question.lesson.id, question.questionIndex);
-      } else {
-        progress.recordWrong(question.lesson.id, question.questionIndex);
-      }
+      final item = paper[i];
+      final answer = _answers[i];
+      if (!answer.hasResponse) continue;
+      await progress.recordAnswerOutcome(
+        item.lesson.id,
+        item.questionIndex,
+        score: answer.scoreFor(item.question),
+        confidence: answer.confidence,
+      );
     }
   }
 

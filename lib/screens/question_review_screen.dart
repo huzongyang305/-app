@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../l10n/l10n_extension.dart';
 import '../models/lesson.dart';
 import '../models/quiz_answer.dart';
+import '../models/review_grade.dart';
 import '../services/progress_provider.dart';
 import '../services/question_review_planner.dart';
 import '../services/variant_question_service.dart';
@@ -29,6 +30,7 @@ class _QuestionReviewScreenState extends State<QuestionReviewScreen> {
   double _score = 0;
   int _correct = 0;
   int _variantsUsed = 0;
+  ReviewGrade? _grade;
   int? _nextIntervalDays;
   bool _finished = false;
 
@@ -63,6 +65,7 @@ class _QuestionReviewScreenState extends State<QuestionReviewScreen> {
     _answer = QuizAnswer.initial(_question);
     _submitted = false;
     _score = 0;
+    _grade = null;
     _nextIntervalDays = null;
     if (countVariant && _variant.isVariant) _variantsUsed++;
   }
@@ -80,24 +83,51 @@ class _QuestionReviewScreenState extends State<QuestionReviewScreen> {
       _score = score;
       if (score >= 0.999) _correct++;
     });
-    final progress = context.read<ProgressProvider>();
-    await progress.recordAnswerOutcome(
+    await context.read<ProgressProvider>().recordAnswerOutcome(
       _item.lesson.id,
       _item.questionIndex,
       score: score,
       confidence: _answer.confidence,
+      scheduleReview: false,
+    );
+  }
+
+  /// 三档自评决定本次排期；每题只允许评一次，避免重复拉长间隔。
+  Future<void> _rate(ReviewGrade grade) async {
+    if (!_submitted || _grade != null) return;
+    final progress = context.read<ProgressProvider>();
+    final days = await progress.scheduleQuestionReviewWithGrade(
+      _item.lesson.id,
+      _item.questionIndex,
+      grade,
     );
     if (!mounted) return;
     setState(() {
-      _nextIntervalDays = progress.questionReviewIntervalOf(
-        _item.lesson.id,
-        _item.questionIndex,
-      );
+      _grade = grade;
+      _nextIntervalDays = days;
     });
+  }
+
+  /// 稍后复习：不记录本次作答，把题目顺延一天后跳到下一题。
+  Future<void> _snooze() async {
+    if (_submitted) return;
+    await context.read<ProgressProvider>().snoozeQuestionReview(
+      _item.lesson.id,
+      _item.questionIndex,
+    );
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(context.trReadArgs('reviewSnoozed', {'n': 1}))),
+    );
+    _goNext();
   }
 
   void _advance() {
     if (!_submitted) return;
+    _goNext();
+  }
+
+  void _goNext() {
     if (_index >= _items.length - 1) {
       setState(() => _finished = true);
       return;
@@ -132,6 +162,14 @@ class _QuestionReviewScreenState extends State<QuestionReviewScreen> {
             ),
           ],
         ),
+        actions: [
+          if (!_submitted)
+            IconButton(
+              tooltip: context.tr('reviewSnooze'),
+              onPressed: _snooze,
+              icon: const Icon(Icons.schedule),
+            ),
+        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(4),
           child: LinearProgressIndicator(
@@ -228,6 +266,8 @@ class _QuestionReviewScreenState extends State<QuestionReviewScreen> {
               expectedOutput: _question.expectedOutput,
               nextIntervalDays: _nextIntervalDays,
             ),
+            const SizedBox(height: AppSpacing.md),
+            _ReviewGradePanel(grade: _grade, onGrade: _rate),
           ],
         ],
       ),
@@ -240,22 +280,24 @@ class _QuestionReviewScreenState extends State<QuestionReviewScreen> {
             AppSpacing.md,
           ),
           child: _submitted
-              ? SizedBox(
-                  width: double.infinity,
-                  child: FilledButton.icon(
-                    onPressed: _advance,
-                    icon: Icon(
-                      _index == _items.length - 1
-                          ? Icons.check
-                          : Icons.arrow_forward,
-                    ),
-                    label: Text(
-                      _index == _items.length - 1
-                          ? context.tr('reviewQuestionResult')
-                          : context.tr('quizNextQuestion'),
-                    ),
-                  ),
-                )
+              ? _grade == null
+                    ? const SizedBox.shrink()
+                    : SizedBox(
+                        width: double.infinity,
+                        child: FilledButton.icon(
+                          onPressed: _advance,
+                          icon: Icon(
+                            _index == _items.length - 1
+                                ? Icons.check
+                                : Icons.arrow_forward,
+                          ),
+                          label: Text(
+                            _index == _items.length - 1
+                                ? context.tr('reviewQuestionResult')
+                                : context.tr('quizNextQuestion'),
+                          ),
+                        ),
+                      )
               : _question.isSingleChoice
               ? const SizedBox.shrink()
               : SizedBox(
@@ -476,6 +518,87 @@ class _ReviewFeedback extends StatelessWidget {
             ],
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// 三档自评：用户对本次回忆的主观难度，决定下一次间隔。
+class _ReviewGradePanel extends StatelessWidget {
+  const _ReviewGradePanel({required this.grade, required this.onGrade});
+
+  final ReviewGrade? grade;
+  final ValueChanged<ReviewGrade> onGrade;
+
+  String _label(BuildContext context, ReviewGrade value) => switch (value) {
+    ReviewGrade.forgot => context.tr('gradeForgot'),
+    ReviewGrade.fuzzy => context.tr('gradeFuzzy'),
+    ReviewGrade.remembered => context.tr('gradeRemembered'),
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final selected = grade;
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(AppSpacing.lg),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerLow,
+        borderRadius: AppRadii.card,
+        border: Border.all(color: theme.colorScheme.outlineVariant),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            context.tr('reviewGradeTitle'),
+            style: theme.textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          if (selected == null)
+            Wrap(
+              spacing: AppSpacing.sm,
+              runSpacing: AppSpacing.xs,
+              children: [
+                OutlinedButton.icon(
+                  onPressed: () => onGrade(ReviewGrade.forgot),
+                  icon: const Icon(Icons.replay, size: 18),
+                  label: Text(context.tr('gradeForgot')),
+                ),
+                OutlinedButton.icon(
+                  onPressed: () => onGrade(ReviewGrade.fuzzy),
+                  icon: const Icon(Icons.help_outline, size: 18),
+                  label: Text(context.tr('gradeFuzzy')),
+                ),
+                FilledButton.icon(
+                  onPressed: () => onGrade(ReviewGrade.remembered),
+                  icon: const Icon(Icons.check, size: 18),
+                  label: Text(context.tr('gradeRemembered')),
+                ),
+              ],
+            )
+          else
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  size: 18,
+                  color: theme.colorScheme.primary,
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  _label(context, selected),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.primary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+        ],
       ),
     );
   }

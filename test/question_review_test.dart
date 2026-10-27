@@ -2,6 +2,7 @@ import 'package:code_learn_app/l10n/app_strings.dart';
 import 'package:code_learn_app/models/lesson.dart';
 import 'package:code_learn_app/models/localized_text.dart';
 import 'package:code_learn_app/models/quiz_answer.dart';
+import 'package:code_learn_app/models/review_grade.dart';
 import 'package:code_learn_app/screens/question_review_screen.dart';
 import 'package:code_learn_app/services/practice_question_factory.dart';
 import 'package:code_learn_app/services/progress_provider.dart';
@@ -208,6 +209,79 @@ void main() {
       expect(fromBackup.questionReviewDueAt('l1', 1), isNull);
       expect(fromBackup.rawDueQuestionReviewCount, 0);
     });
+
+    test('三档自评决定排期，稍后复习只顺延到期日', () async {
+      var clock = DateTime(2026, 10, 26, 9);
+      final progress = ProgressProvider(
+        StorageService.inMemory(),
+        now: () => clock,
+      );
+      const id = 'graded';
+
+      await progress.recordAnswerOutcome(
+        id,
+        0,
+        score: 1,
+        confidence: AnswerConfidence.confident,
+        scheduleReview: false,
+      );
+      // 只记录作答，不排期；等自评后再写调度。
+      expect(progress.questionReviewDueAt(id, 0), isNull);
+      expect(progress.questionReviewRepetitionsOf(id, 0), 0);
+      expect(progress.questionAttemptsOf(id, 0), 1);
+
+      expect(
+        await progress.scheduleQuestionReviewWithGrade(
+          id,
+          0,
+          ReviewGrade.remembered,
+        ),
+        1,
+      );
+      expect(progress.questionReviewRepetitionsOf(id, 0), 1);
+      expect(progress.questionReviewEaseOf(id, 0), closeTo(2.58, 0.001));
+      expect(
+        progress.questionReviewDueAt(id, 0)!.difference(clock).inHours,
+        closeTo(24, 1),
+      );
+
+      clock = clock.add(const Duration(days: 1));
+      expect(
+        await progress.scheduleQuestionReviewWithGrade(
+          id,
+          0,
+          ReviewGrade.remembered,
+        ),
+        3,
+      );
+      expect(progress.questionReviewRepetitionsOf(id, 0), 2);
+
+      final fuzzyDays = await progress.scheduleQuestionReviewWithGrade(
+        id,
+        0,
+        ReviewGrade.fuzzy,
+      );
+      expect(fuzzyDays, greaterThanOrEqualTo(3));
+      expect(progress.questionReviewRepetitionsOf(id, 0), 2);
+
+      expect(
+        await progress.scheduleQuestionReviewWithGrade(
+          id,
+          0,
+          ReviewGrade.forgot,
+        ),
+        1,
+      );
+      expect(progress.questionReviewRepetitionsOf(id, 0), 0);
+      expect(progress.questionReviewLapsesOf(id, 0), 1);
+
+      await progress.snoozeQuestionReview(id, 0);
+      expect(progress.questionReviewIntervalOf(id, 0), 1);
+      expect(
+        progress.questionReviewDueAt(id, 0)!.difference(clock).inHours,
+        closeTo(24, 1),
+      );
+    });
   });
 
   group('变式题', () {
@@ -341,9 +415,79 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text(AppStrings('zh').get('correct')), findsOneWidget);
-    expect(progress.questionReviewDueAt('widget', 0), isNotNull);
-    expect(progress.questionReviewRepetitionsOf('widget', 0), 1);
+    expect(find.text(AppStrings('zh').get('reviewGradeTitle')), findsOneWidget);
+    // 提交只记录作答，选择自评档位后才写入排期。
+    expect(progress.questionReviewRepetitionsOf('widget', 0), 0);
     expect(progress.wrongCountOf('widget', 0), 0);
+
+    final remembered = find.text(AppStrings('zh').get('gradeRemembered'));
+    await tester.scrollUntilVisible(
+      remembered,
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.tap(remembered);
+    await tester.pumpAndSettle();
+
+    expect(progress.questionReviewRepetitionsOf('widget', 0), 1);
+    expect(progress.questionReviewIntervalOf('widget', 0), 1);
+    expect(
+      progress.questionReviewDueAt('widget', 0)!.difference(now).inHours,
+      closeTo(24, 1),
+    );
+    expect(
+      find.text(
+        AppStrings('zh').get('reviewScheduled').replaceAll('{days}', '1'),
+      ),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('稍后复习把题目顺延一天且不记录作答', (tester) async {
+    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    final now = DateTime(2026, 10, 26, 9);
+    final storage = StorageService.inMemory();
+    final target = lesson('snooze', count: 1);
+    await storage.write('question_review_due', <String, String>{
+      'snooze#0': now.subtract(const Duration(days: 1)).toIso8601String(),
+    });
+    final progress = ProgressProvider(storage, now: () => now);
+    final plan = progress.questionReviewPlanFor(<Lesson>[
+      target,
+    ], budgetMinutes: 30);
+
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ProgressProvider>.value(value: progress),
+          ChangeNotifierProvider<SettingsProvider>(
+            create: (_) => SettingsProvider(StorageService.inMemory()),
+          ),
+        ],
+        child: MaterialApp(
+          theme: AppTheme.light(),
+          home: QuestionReviewScreen(plan: plan),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.schedule));
+    await tester.pumpAndSettle();
+
+    expect(
+      progress.questionReviewDueAt('snooze', 0)!.difference(now).inHours,
+      closeTo(24, 1),
+    );
+    expect(progress.questionReviewRepetitionsOf('snooze', 0), 0);
+    expect(progress.questionAttemptsOf('snooze', 0), 0);
+    expect(
+      find.text(AppStrings('zh').get('reviewQuestionResult')),
+      findsWidgets,
+    );
   });
 }
 
