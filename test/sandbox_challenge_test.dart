@@ -105,6 +105,19 @@ void main() {
       }
     });
 
+    test('素数挑战的输入让骨架代码必然判负', () {
+      final challenge = sandboxChallengesByLanguage['python']!.firstWhere(
+        (item) => item.id == 'py-prime-check',
+      );
+      // 骨架先按 n > 1 预设 is_prime 并直接打印；输入必须是非素数，
+      // 否则一行不改也能通过（原来 stdin=17 / 期望 True 就有这个问题）。
+      expect(challenge.starterCode, contains('is_prime = n > 1'));
+      expect(challenge.starterCode, contains('print(is_prime)'));
+      final n = int.parse(challenge.stdin.trim());
+      expect(_isPrime(n), isFalse, reason: '输入必须是非素数，骨架才会输出错误的 True');
+      expect(challenge.expectedOutput.trim(), 'False');
+    });
+
     test('静态追踪模式的语言没有挑战', () {
       for (final language in SandboxLanguage.values.where(
         (l) => l.isTraceOnly,
@@ -214,4 +227,12 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('当前语言暂无挑战用例'), findsOneWidget);
   });
+}
+
+bool _isPrime(int n) {
+  if (n < 2) return false;
+  for (var i = 2; i * i <= n; i++) {
+    if (n % i == 0) return false;
+  }
+  return true;
 }

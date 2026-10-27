@@ -143,8 +143,8 @@ is_prime = n > 1
 # TODO: 用循环检查 2 到 n 的平方根之间是否存在因子
 print(is_prime)
 ''',
-      stdin: '17',
-      expectedOutput: 'True',
+      stdin: '91',
+      expectedOutput: 'False',
       hint: LocalizedText(
         zh: '只要 n 能被 2..int(n ** 0.5) 中任意一个数整除，就不是素数。',
         en: 'If any number in 2..int(n ** 0.5) divides n, it is not prime.',

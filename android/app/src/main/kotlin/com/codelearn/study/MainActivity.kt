@@ -52,6 +52,15 @@ class MainActivity : FlutterActivity() {
     private var activeWebView: WebView? = null
     private var activeTimeout: Runnable? = null
     private var activePageFile: File? = null
+    private var activeSession: SandboxSession? = null
+
+    /**
+     * 沙箱运行代次：每次运行、停止或销毁都会推进。
+     *
+     * 页面拼接在后台线程完成，期间用户可能已经点过停止；回主线程启动
+     * WebView 前必须核对代次，否则停止只会改界面，后台仍会把页面跑起来。
+     */
+    private var sandboxGeneration = 0
     private var pendingContentPackResult: MethodChannel.Result? = null
     private var pendingBackupOpenResult: MethodChannel.Result? = null
     private var pendingBackupCreateResult: MethodChannel.Result? = null
@@ -878,17 +887,25 @@ class MainActivity : FlutterActivity() {
         stdin: String,
         result: MethodChannel.Result,
     ) {
+        // 新运行会推进代次，让仍在拼接页面的旧任务失效。
+        val generation = ++sandboxGeneration
         Thread {
             var page: File? = null
             var errorText: String? = null
             try {
-                page = writeSandboxPage(language, code, stdin)
+                page = writeSandboxPage(language, code, stdin, generation)
             } catch (error: Exception) {
                 errorText = error.message ?: error.toString()
             }
             val pageFile = page
             val failure = errorText
             Handler(Looper.getMainLooper()).post {
+                if (generation != sandboxGeneration) {
+                    // 拼接期间用户已停止或又发起了新运行：不再启动 WebView。
+                    pageFile?.delete()
+                    result.success(SANDBOX_STOPPED_OUTPUT)
+                    return@post
+                }
                 if (pageFile == null) {
                     result.success("执行失败：沙箱资源加载出错（$failure）。")
                 } else {
@@ -900,10 +917,12 @@ class MainActivity : FlutterActivity() {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun showSandbox(page: File, result: MethodChannel.Result) {
-        destroySandbox()
+        // 旧会话可能还在等结果，先以「已停止」结束它，避免通道回复悬挂。
+        releaseSandbox()
         val session = SandboxSession(result)
         val bridge = ConsoleBridge(session)
         val webView = WebView(this)
+        activeSession = session
         activeWebView = webView
         activePageFile = page
         with(webView.settings) {
@@ -939,9 +958,11 @@ class MainActivity : FlutterActivity() {
         language: String,
         code: String,
         stdin: String,
+        generation: Int,
     ): File {
         val dir = File(cacheDir, SANDBOX_DIR).apply { mkdirs() }
-        val page = File(dir, "$language.html")
+        // 每次运行使用独立文件名，避免把上一次仍在加载的页面覆盖。
+        val page = File(dir, "$language-$generation.html")
         page.writeText(buildSandboxHtml(language, code, stdin), Charsets.UTF_8)
         return page
     }
@@ -1021,7 +1042,14 @@ class MainActivity : FlutterActivity() {
         return stdin.replace("\r\n", "\n").replace('\r', '\n').split('\n')
     }
 
+    /** 停止当前运行：让拼接中的页面失效，销毁 WebView 并结束等待中的调用。 */
     private fun destroySandbox() {
+        sandboxGeneration++
+        releaseSandbox()
+    }
+
+    /** 释放页面资源；调用方负责先决定如何结束 activeSession。 */
+    private fun releaseSandboxResources() {
         activeTimeout?.let { Handler(Looper.getMainLooper()).removeCallbacks(it) }
         activeTimeout = null
         activeWebView?.let { webView ->
@@ -1032,6 +1060,14 @@ class MainActivity : FlutterActivity() {
         activeWebView = null
         activePageFile?.delete()
         activePageFile = null
+    }
+
+    /** 结束当前会话并以「已停止」回传，防止 Dart 侧通道回复一直悬挂。 */
+    private fun releaseSandbox() {
+        val session = activeSession
+        activeSession = null
+        releaseSandboxResources()
+        session?.finishWithoutOutput(SANDBOX_STOPPED_OUTPUT)
     }
 
     /** 一次执行会话：保证结果只回传一次，并在回传后清理 WebView。 */
@@ -1045,9 +1081,22 @@ class MainActivity : FlutterActivity() {
                 finished = true
             }
             Handler(Looper.getMainLooper()).post {
-                destroySandbox()
+                // 只有仍是当前会话时才清理，避免旧会话的迟到结果误杀新运行。
+                if (activeSession === this) {
+                    activeSession = null
+                    releaseSandboxResources()
+                }
                 result.success(output)
             }
+        }
+
+        /** 被停止或被新运行替换时立即结束，不用等到 Dart 侧超时。 */
+        fun finishWithoutOutput(message: String) {
+            synchronized(lock) {
+                if (finished) return
+                finished = true
+            }
+            result.success(message)
         }
     }
 
@@ -1156,6 +1205,8 @@ class MainActivity : FlutterActivity() {
         // 比 Dart 侧最长的超时（Python / SQL 30 秒）再多 2 秒，
         // 让正常流程由 Dart 侧给出统一提示，这里是最后的兜底。
         const val SANDBOX_TIMEOUT_MS = 32_000L
+        // 被用户停止或被新运行替换时回传给 Dart 的哨兵文本。
+        const val SANDBOX_STOPPED_OUTPUT = "已停止"
         const val CONTENT_PACK_REQUEST = 4201
         const val BACKUP_OPEN_REQUEST = 4301
         const val BACKUP_CREATE_REQUEST = 4302

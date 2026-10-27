@@ -231,6 +231,23 @@ print("next year =", age + 1)
     ['name = 小明', 'next year = 18'],
     stdin: '小明\n17',
   ),
+  // 挑战 py-prime-check：91 不是素数，骨架的 is_prime = n > 1 会输出 True，
+  // 必须补上因子检查才会得到挑战要求的 False。
+  _SandboxCase(
+    'python',
+    '''
+n = int(input())
+is_prime = n > 1
+i = 2
+while i * i <= n and is_prime:
+    if n % i == 0:
+        is_prime = False
+    i += 1
+print(is_prime)
+''',
+    ['False'],
+    stdin: '91',
+  ),
   _SandboxCase(
     'scheme',
     '''
