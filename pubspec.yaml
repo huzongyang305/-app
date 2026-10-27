@@ -1,7 +1,7 @@
 name: code_learn_app
 description: "计算机与编程学习：离线教程、代码示例与测验。"
 publish_to: 'none'
-version: 2.11.0+28
+version: 2.12.0+29
 
 environment:
   sdk: ^3.13.0
