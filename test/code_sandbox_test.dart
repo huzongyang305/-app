@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:code_learn_app/models/sandbox_language.dart';
@@ -24,6 +25,48 @@ void main() {
   test('沙箱在当前平台不可用时安全降级', () async {
     final output = await CodeSandboxService.runJavaScript('1 + 1');
     expect(output, isNotEmpty);
+  });
+
+  testWidgets('停止后重跑不会被上一次调用的超时误杀', (tester) async {
+    const channel = MethodChannel('code_learn_app/sandbox');
+    final messenger =
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+    final methods = <String>[];
+    messenger.setMockMethodCallHandler(channel, (call) {
+      methods.add(call.method);
+      if (call.method == 'runCode') {
+        // 模拟一直不返回的原生执行，只有超时兜底能结束它。
+        return Completer<String>().future;
+      }
+      return null;
+    });
+    addTearDown(() => messenger.setMockMethodCallHandler(channel, null));
+
+    final first = CodeSandboxService.runCode(SandboxLanguage.javascript, 'a');
+    await tester.pump();
+
+    // 用户点「停止」：WebView 被销毁，但第一次调用仍在等自己的超时。
+    await CodeSandboxService.destroy();
+    // 错开两者的超时计时，才能分别观察旧调用与新调用的兜底行为。
+    await tester.pump(const Duration(seconds: 2));
+    final second = CodeSandboxService.runCode(SandboxLanguage.javascript, 'b');
+    await tester.pump();
+
+    // 第一次调用的超时到期时，不能销毁用户之后启动的新会话。
+    await tester.pump(const Duration(seconds: 13));
+    expect(
+      methods.where((method) => method == 'destroySandbox').length,
+      1,
+      reason: '旧调用的超时不应销毁新会话',
+    );
+
+    // 第二次调用自己的超时到期后才允许兜底销毁。
+    await tester.pump(const Duration(seconds: 3));
+    await tester.pump();
+    expect(methods.where((method) => method == 'destroySandbox').length, 2);
+
+    expect(await first, contains('执行超时'));
+    expect(await second, contains('执行超时'));
   });
 
   test('每种语言的元数据完整', () {

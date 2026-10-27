@@ -26,11 +26,15 @@ class _SandboxCase {
     this.expects, {
     this.stdin = '',
     this.checkNetwork = false,
+    this.absents = const <String>[],
   });
 
   final String language;
   final String code;
   final List<String> expects;
+
+  /// 输出里不应出现的文本（例如沙箱自己插入的宿主提示）。
+  final List<String> absents;
 
   /// 沙箱 stdin 输入框内容，按行拆分后注入页面。
   final String stdin;
@@ -202,6 +206,19 @@ console.log("next year =", age + 1);
     ['name = 小明', 'next year = 18'],
     stdin: '小明\n17',
     checkNetwork: true,
+    absents: ['已预置'],
+  ),
+  // 挑战按整段输出严格比对：预置 stdin 时输出里只能有程序自己的内容，
+  // 页面插入的宿主提示会让正确答案也判负。
+  _SandboxCase(
+    'javascript',
+    r'''
+const numbers = readLine().split(" ").map(Number);
+console.log(Math.max(...numbers));
+''',
+    ['42'],
+    stdin: '3 17 8 42 5',
+    absents: ['已预置'],
   ),
   _SandboxCase(
     'python',
@@ -261,6 +278,7 @@ int main() {
     ['3 + 4 = 7'],
     stdin: '3 4',
     checkNetwork: true,
+    absents: ['已预置'],
   ),
   _SandboxCase(
     'cpp',
@@ -540,36 +558,59 @@ Future<void> main(List<String> args) async {
 
 String _resolveBrowser() {
   final explicit = Platform.environment['CHROME_EXECUTABLE']?.trim();
-  if (explicit != null && explicit.isNotEmpty && File(explicit).existsSync()) {
-    return explicit;
+  if (explicit != null && explicit.isNotEmpty) {
+    if (File(explicit).existsSync()) return explicit;
+    // CI 里常写裸可执行文件名（例如 chrome），需要按 PATH 解析。
+    final resolved = _which(explicit);
+    if (resolved.isNotEmpty && File(resolved).existsSync()) return resolved;
   }
   for (final path in _browserCandidates) {
     if (File(path).existsSync()) return path;
   }
-  if (!Platform.isWindows) {
-    for (final executable in const [
-      'google-chrome',
-      'chromium',
-      'chromium-browser',
-    ]) {
-      final result = Process.runSync('which', <String>[executable]);
-      final path = result.stdout.toString().trim();
-      if (result.exitCode == 0 && path.isNotEmpty && File(path).existsSync()) {
-        return path;
-      }
-    }
+  for (final executable in const [
+    'google-chrome',
+    'chromium',
+    'chromium-browser',
+    'chrome',
+    'msedge',
+    'microsoft-edge',
+  ]) {
+    final path = _which(executable);
+    if (path.isNotEmpty && File(path).existsSync()) return path;
   }
   return '';
 }
 
+/// 按 PATH 查找可执行文件：Windows 用 where，其它平台用 which。
+String _which(String executable) {
+  final locator = Platform.isWindows ? 'where' : 'which';
+  try {
+    final result = Process.runSync(locator, <String>[executable]);
+    if (result.exitCode != 0) return '';
+    return result.stdout
+        .toString()
+        .split(RegExp(r'\r?\n'))
+        .map((line) => line.trim())
+        .firstWhere((line) => line.isNotEmpty, orElse: () => '');
+  } catch (_) {
+    return '';
+  }
+}
+
 int _report(String title, _SandboxCase item, String output) {
   final missing = item.expects.where((text) => !output.contains(text)).toList();
-  if (missing.isEmpty) {
+  final leaked = item.absents.where(output.contains).toList();
+  if (missing.isEmpty && leaked.isEmpty) {
     stdout.writeln('通过  $title');
     return 0;
   }
   stdout.writeln('失败  $title');
-  stdout.writeln('  期望包含：${item.expects.join(' / ')}');
+  if (missing.isNotEmpty) {
+    stdout.writeln('  期望包含：${missing.join(' / ')}');
+  }
+  if (leaked.isNotEmpty) {
+    stdout.writeln('  不应出现：${leaked.join(' / ')}');
+  }
   stdout.writeln('  实际输出：');
   for (final line in output.split('\n')) {
     stdout.writeln('    $line');

@@ -17,6 +17,13 @@ class CodeSandboxService {
   /// 沙箱支持的语言，顺序即界面展示顺序。
   static const List<SandboxLanguage> languages = SandboxLanguage.values;
 
+  /// 当前运行代号：每次运行或主动销毁都会推进。
+  ///
+  /// 停止 / 退出页面只会销毁 WebView，正在等待的 MethodChannel 调用要等到
+  /// 自己的超时才返回；超时兜底必须只清理自己发起的那次运行，否则会把用户
+  /// 之后启动的新 WebView 一起销毁。
+  static int _activeRun = 0;
+
   /// 执行代码并返回输出文本；出错时返回可直接展示的提示文本。
   ///
   /// [stdin] 是按行提供的标准输入，支持 stdin 的语言可以在代码里
@@ -36,6 +43,7 @@ class CodeSandboxService {
           : '\n\n提示：${language.id} 教学模式暂不读取标准输入，stdin 已忽略。';
       return '$rendered$hint';
     }
+    final run = ++_activeRun;
     try {
       final result = await _channel
           .invokeMethod<String>('runCode', <String, Object?>{
@@ -49,7 +57,9 @@ class CodeSandboxService {
       return '当前平台暂不支持代码沙箱，请在 Android 设备上运行。';
     } on TimeoutException {
       // 原生层超时会自行销毁 WebView，这里再兜底一次，避免遗留后台页面。
-      await destroy();
+      if (run == _activeRun) {
+        await destroy();
+      }
       return '执行超时：请检查是否有死循环、未结束的异步任务或过大的输入。';
     } on PlatformException catch (error) {
       return '执行失败：${error.message ?? error.code}';
@@ -64,6 +74,7 @@ class CodeSandboxService {
 
   /// 主动销毁正在运行的沙箱页面（例如用户中途返回）。
   static Future<void> destroy() async {
+    _activeRun++;
     try {
       await _channel.invokeMethod<void>('destroySandbox');
     } catch (_) {

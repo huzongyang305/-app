@@ -91,6 +91,20 @@ void main() {
       }
     });
 
+    test('预置标准输入不会向程序输出插入宿主提示', () async {
+      // 挑战按整段输出比对，页面自己打印的提示会让正确答案也判负。
+      for (final id in const ['javascript', 'typescript', 'cpp']) {
+        final harness = await rootBundle.loadString(
+          'assets/sandbox/harness/$id.html',
+        );
+        expect(
+          harness,
+          isNot(contains('已预置')),
+          reason: '$id 模板不应把预置 stdin 的提示写进程序输出',
+        );
+      }
+    });
+
     test('静态追踪模式的语言没有挑战', () {
       for (final language in SandboxLanguage.values.where(
         (l) => l.isTraceOnly,

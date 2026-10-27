@@ -53,9 +53,6 @@
       return;
     }
     var stdinLines = window.__sandboxStdinLines();
-    if (stdinLines.length) {
-      __sandboxPush('（已预置 ' + stdinLines.length + ' 行标准输入）');
-    }
     var buffer = '';
     JSCPP.run(applyShims(__USER_CODE__), stdinLines.join('\n'), {
       maxTimeout: 8000,
