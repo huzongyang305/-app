@@ -2004,6 +2004,7 @@ class AppStrings {
       'en': 'Share sheet opened',
     },
     'certificateTitle': {'zh': '学习证书', 'en': 'Certificates'},
+    'certificateCardTitle': {'zh': '结业证书', 'en': 'Certificate'},
     'certificateHint': {
       'zh': '把某个分类的全部课程标记为已学，即可领取该分类的结业证书。',
       'en': 'Mark every lesson in a category as learned to earn its certificate.',

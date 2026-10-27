@@ -49,6 +49,11 @@ class _ShareCardScreenState extends State<ShareCardScreen> {
           ),
         ),
       );
+    } catch (_) {
+      if (!mounted) return;
+      messenger.showSnackBar(
+        SnackBar(content: Text(context.trRead('shareImageFailed'))),
+      );
     } finally {
       if (mounted) setState(() => _sharing = false);
     }
@@ -177,224 +182,238 @@ class _LearningCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 2),
-          Text(
-            label,
-            style: const TextStyle(color: whiteMuted, fontSize: 10),
-          ),
+          Text(label, style: const TextStyle(color: whiteMuted, fontSize: 10)),
         ],
       ),
     );
 
-    return Container(
-      width: 340,
-      height: 440,
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF17308F), Color(0xFF2F6BFF), Color(0xFF6EA8FF)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+    // 分享图宽度固定以保持版式，较长文案允许卡片变高而不被裁切。
+    return MediaQuery.withClampedTextScaling(
+      maxScaleFactor: 1.2,
+      child: Container(
+        width: 340,
+        constraints: const BoxConstraints(minHeight: 440),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [Color(0xFF17308F), Color(0xFF2F6BFF), Color(0xFF6EA8FF)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(28),
         ),
-        borderRadius: BorderRadius.circular(28),
-      ),
-      child: Stack(
-        children: [
-          Positioned(
-            right: -50,
-            top: -50,
-            child: Container(
-              width: 180,
-              height: 180,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white.withValues(alpha: 0.08),
+        child: Stack(
+          fit: StackFit.passthrough,
+          children: [
+            Positioned(
+              right: -50,
+              top: -50,
+              child: Container(
+                width: 180,
+                height: 180,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.08),
+                ),
               ),
             ),
-          ),
-          Positioned(
-            left: -60,
-            bottom: -80,
-            child: Container(
-              width: 200,
-              height: 200,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white.withValues(alpha: 0.06),
+            Positioned(
+              left: -60,
+              bottom: -80,
+              child: Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.06),
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 28,
-                      height: 28,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.16),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Icon(
-                        Icons.school_rounded,
-                        color: white,
-                        size: 17,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    const Expanded(
-                      child: Text(
-                        'Code Learn',
-                        style: TextStyle(
+            Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 28,
+                        height: 28,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.16),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Icon(
+                          Icons.school_rounded,
                           color: white,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 0.5,
+                          size: 17,
                         ),
                       ),
-                    ),
-                    Text(
-                      date,
-                      style: const TextStyle(color: whiteMuted, fontSize: 11),
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                Text(
-                  context.tr('shareCardHeader'),
-                  style: const TextStyle(
-                    color: white,
-                    fontSize: 26,
-                    fontWeight: FontWeight.w800,
-                    height: 1.2,
+                      const SizedBox(width: 8),
+                      const Expanded(
+                        child: Text(
+                          'Code Learn',
+                          style: TextStyle(
+                            color: white,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        date,
+                        style: const TextStyle(color: whiteMuted, fontSize: 11),
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  context.tr('shareCardTagline'),
-                  style: const TextStyle(color: whiteMuted, fontSize: 12),
-                ),
-                const SizedBox(height: 24),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        context.tr('shareCardHeader'),
+                        style: const TextStyle(
+                          color: white,
+                          fontSize: 26,
+                          fontWeight: FontWeight.w800,
+                          height: 1.2,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        context.tr('shareCardTagline'),
+                        style: const TextStyle(color: whiteMuted, fontSize: 12),
+                      ),
+                      const SizedBox(height: 24),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.baseline,
-                            textBaseline: TextBaseline.alphabetic,
-                            children: [
-                              Text(
-                                '$learned',
-                                style: const TextStyle(
-                                  color: white,
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.w800,
-                                  height: 1,
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.baseline,
+                                  textBaseline: TextBaseline.alphabetic,
+                                  children: [
+                                    Text(
+                                      '$learned',
+                                      style: const TextStyle(
+                                        color: white,
+                                        fontSize: 40,
+                                        fontWeight: FontWeight.w800,
+                                        height: 1,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      '/ $total',
+                                      style: const TextStyle(
+                                        color: whiteMuted,
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                  ],
                                 ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  context.tr('shareCardLearned'),
+                                  style: const TextStyle(
+                                    color: whiteMuted,
+                                    fontSize: 11,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.baseline,
+                                textBaseline: TextBaseline.alphabetic,
+                                children: [
+                                  Text(
+                                    '$streak',
+                                    style: const TextStyle(
+                                      color: white,
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.w800,
+                                      height: 1,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 3),
+                                  Text(
+                                    context.tr('shareCardDays'),
+                                    style: const TextStyle(
+                                      color: whiteMuted,
+                                      fontSize: 11,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(width: 4),
+                              const SizedBox(height: 4),
                               Text(
-                                '/ $total',
+                                context.tr('shareCardStreak'),
                                 style: const TextStyle(
                                   color: whiteMuted,
-                                  fontSize: 13,
+                                  fontSize: 11,
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            context.tr('shareCardLearned'),
-                            style: const TextStyle(
-                              color: whiteMuted,
-                              fontSize: 11,
-                            ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(99),
+                        child: LinearProgressIndicator(
+                          value: ratio,
+                          minHeight: 6,
+                          backgroundColor: Colors.white.withValues(alpha: 0.2),
+                          valueColor: const AlwaysStoppedAnimation<Color>(
+                            white,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          stat(studyTime, context.tr('shareCardStudyTime')),
+                          stat('$accuracy%', context.tr('shareCardAccuracy')),
+                          stat(
+                            '$achievements',
+                            context.tr('shareCardAchievements'),
                           ),
                         ],
                       ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.baseline,
-                          textBaseline: TextBaseline.alphabetic,
-                          children: [
-                            Text(
-                              '$streak',
-                              style: const TextStyle(
-                                color: white,
-                                fontSize: 28,
-                                fontWeight: FontWeight.w800,
-                                height: 1,
-                              ),
-                            ),
-                            const SizedBox(width: 3),
-                            Text(
-                              context.tr('shareCardDays'),
-                              style: const TextStyle(
-                                color: whiteMuted,
-                                fontSize: 11,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          context.tr('shareCardStreak'),
-                          style: const TextStyle(
-                            color: whiteMuted,
-                            fontSize: 11,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(99),
-                  child: LinearProgressIndicator(
-                    value: ratio,
-                    minHeight: 6,
-                    backgroundColor: Colors.white.withValues(alpha: 0.2),
-                    valueColor: const AlwaysStoppedAnimation<Color>(white),
+                    ],
                   ),
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  children: [
-                    stat(studyTime, context.tr('shareCardStudyTime')),
-                    stat('$accuracy%', context.tr('shareCardAccuracy')),
-                    stat('$achievements', context.tr('shareCardAchievements')),
-                  ],
-                ),
-                const Spacer(),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.auto_awesome,
-                      color: whiteMuted,
-                      size: 13,
-                    ),
-                    const SizedBox(width: 6),
-                    Text(
-                      context.trArgs('shareCardFootprint', {
-                        'favorites': favorites,
-                        'notes': notes,
-                      }),
-                      style: const TextStyle(color: whiteMuted, fontSize: 10),
-                    ),
-                  ],
-                ),
-              ],
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.auto_awesome,
+                        color: whiteMuted,
+                        size: 13,
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        context.trArgs('shareCardFootprint', {
+                          'favorites': favorites,
+                          'notes': notes,
+                        }),
+                        style: const TextStyle(color: whiteMuted, fontSize: 10),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

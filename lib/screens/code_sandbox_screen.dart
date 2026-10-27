@@ -75,6 +75,10 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
   /// 每次运行的令牌：用户中途停止或连续运行多次时，只接受最新一次的结果。
   int _runToken = 0;
 
+  /// 进入挑战前的编辑器内容，退出挑战时恢复，避免题目代码覆盖通用草稿。
+  String? _preChallengeCode;
+  String? _preChallengeStdin;
+
   @override
   void initState() {
     super.initState();
@@ -90,14 +94,13 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
     _stdin = TextEditingController(
       text: challenge?.stdin ?? widget.initialStdin ?? '',
     );
-    if (challenge != null) {
-      _drafts[_language] = challenge.starterCode;
-      _stdinDrafts[_language] = challenge.stdin;
-    } else if (widget.initialCode?.trim().isNotEmpty ?? false) {
-      _drafts[_language] = widget.initialCode!;
-    }
-    if (challenge == null && (widget.initialStdin?.isNotEmpty ?? false)) {
-      _stdinDrafts[_language] = widget.initialStdin!;
+    if (challenge == null) {
+      if (widget.initialCode?.trim().isNotEmpty ?? false) {
+        _drafts[_language] = widget.initialCode!;
+      }
+      if (widget.initialStdin?.isNotEmpty ?? false) {
+        _stdinDrafts[_language] = widget.initialStdin!;
+      }
     }
     _code.addListener(_scheduleDraftSave);
     _stdin.addListener(_scheduleDraftSave);
@@ -183,14 +186,14 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
     _draftSaveTimer = null;
     final store = _draftStore;
     if (store == null) return;
+    // 挑战模式的内容来自题目，覆盖进去会把进入挑战前的草稿冲掉。
+    if (_challenge != null) return;
     // 与示例完全一致的内容不算草稿，避免每次打开都写一条默认代码。
     if (_code.text == _language.sampleCode && _stdin.text.trim().isEmpty) {
       unawaited(store.remove(_language.id));
       return;
     }
-    unawaited(
-      store.save(_language.id, code: _code.text, stdin: _stdin.text),
-    );
+    unawaited(store.save(_language.id, code: _code.text, stdin: _stdin.text));
   }
 
   @override
@@ -336,6 +339,13 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
 
   /// 选中挑战：填入起始代码、输入数据并重置挑战状态。
   void _startChallenge(SandboxChallenge challenge) {
+    _invalidateRun();
+    // 连续切换挑战时保留最初的暂存内容，只记录第一次进入前的内容。
+    if (_challenge == null) {
+      _preChallengeCode = _code.text;
+      _preChallengeStdin = _stdin.text;
+      _persistCurrentDraft();
+    }
     setState(() {
       _challenge = challenge;
       _challengePassed = null;
@@ -343,29 +353,35 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
       _challengeHintVisible = false;
       _code.text = challenge.starterCode;
       _stdin.text = challenge.stdin;
-      _drafts[_language] = challenge.starterCode;
-      _stdinDrafts[_language] = challenge.stdin;
       _output = '';
     });
   }
 
   void _exitChallenge() {
+    _invalidateRun();
+    final restoreCode =
+        _preChallengeCode ?? _drafts[_language] ?? _language.sampleCode;
+    final restoreStdin = _preChallengeStdin ?? _stdinDrafts[_language] ?? '';
     setState(() {
       _challenge = null;
       _challengePassed = null;
       _challengeResults = const <_ChallengeCaseResult>[];
       _challengeHintVisible = false;
+      _preChallengeCode = null;
+      _preChallengeStdin = null;
+      _code.text = restoreCode;
+      _stdin.text = restoreStdin;
+      _output = '';
     });
   }
 
   void _loadStarterCode() {
     final challenge = _challenge;
     if (challenge == null) return;
+    _invalidateRun();
     setState(() {
       _code.text = challenge.starterCode;
       _stdin.text = challenge.stdin;
-      _drafts[_language] = challenge.starterCode;
-      _stdinDrafts[_language] = challenge.stdin;
       _challengePassed = null;
       _challengeResults = const <_ChallengeCaseResult>[];
       _output = '';
@@ -388,6 +404,7 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
     FocusScope.of(context).unfocus();
     final token = ++_runToken;
     final cases = challenge.cases;
+    final source = _code.text;
     setState(() {
       _running = true;
       _output = '';
@@ -398,7 +415,7 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
     for (final testCase in cases) {
       final output = await CodeSandboxService.runCode(
         _language,
-        _code.text,
+        source,
         stdin: _language.supportsStdin ? testCase.stdin : '',
       );
       if (!mounted || token != _runToken) return;
@@ -425,6 +442,7 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
       challenge: challenge,
       actualOutputs: actuals,
     );
+    if (!mounted || token != _runToken) return;
     setState(() {
       _running = false;
       _challengePassed = passed;
@@ -477,13 +495,27 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
     });
   }
 
+  /// 让进行中的运行失效：重置、切换挑战或清空草稿都会打断旧结果。
+  void _invalidateRun() {
+    _runToken++;
+    if (!_running) return;
+    _running = false;
+    unawaited(CodeSandboxService.destroy());
+  }
+
   void _selectLanguage(SandboxLanguage language) {
     if (language == _language || _running) return;
-    _drafts[_language] = _code.text;
-    _stdinDrafts[_language] = _stdin.text;
-    _persistCurrentDraft();
+    _invalidateRun();
+    // 挑战里的内容属于题目，不写进该语言的通用草稿；原草稿仍在 _drafts 里。
+    if (_challenge == null) {
+      _drafts[_language] = _code.text;
+      _stdinDrafts[_language] = _stdin.text;
+      _persistCurrentDraft();
+    }
     setState(() {
       _language = language;
+      _preChallengeCode = null;
+      _preChallengeStdin = null;
       _code.text = _drafts[language] ?? language.sampleCode;
       _stdin.text = _stdinDrafts[language] ?? '';
       _output = '';
@@ -495,6 +527,7 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
   }
 
   void _applyExample(SandboxExample example) {
+    _invalidateRun();
     setState(() {
       _code.text = example.code;
       _stdin.text = example.stdin;
@@ -505,10 +538,13 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
       _challengePassed = null;
       _challengeResults = const <_ChallengeCaseResult>[];
       _challengeHintVisible = false;
+      _preChallengeCode = null;
+      _preChallengeStdin = null;
     });
   }
 
   void _resetSample() {
+    _invalidateRun();
     _draftSaveTimer?.cancel();
     setState(() {
       _drafts.remove(_language);
@@ -520,6 +556,8 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
       _challengePassed = null;
       _challengeResults = const <_ChallengeCaseResult>[];
       _challengeHintVisible = false;
+      _preChallengeCode = null;
+      _preChallengeStdin = null;
     });
     // 控制器赋值会再触发一次保存计时，这里取消并把本地草稿一并删掉。
     _draftSaveTimer?.cancel();
@@ -556,6 +594,7 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
       ),
     );
     if (confirmed != true || !mounted) return;
+    _invalidateRun();
     _draftSaveTimer?.cancel();
     await store.clear();
     if (!mounted) return;
@@ -569,6 +608,8 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
       _challengePassed = null;
       _challengeResults = const <_ChallengeCaseResult>[];
       _challengeHintVisible = false;
+      _preChallengeCode = null;
+      _preChallengeStdin = null;
     });
     _draftSaveTimer?.cancel();
     ScaffoldMessenger.of(context).showSnackBar(
@@ -894,9 +935,7 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
             Row(
               children: [
                 Text(
-                  context.trArgs('sandboxChallengeCases', {
-                    'n': cases.length,
-                  }),
+                  context.trArgs('sandboxChallengeCases', {'n': cases.length}),
                   style: theme.textTheme.labelMedium?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w600,
@@ -905,7 +944,8 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
                 const Spacer(),
                 if (results.isNotEmpty)
                   Text(
-                    results.length == cases.length && passedCount == cases.length
+                    results.length == cases.length &&
+                            passedCount == cases.length
                         ? context.tr('sandboxChallengeAllPassed')
                         : context.trArgs('sandboxChallengeCaseSummary', {
                             'passed': passedCount,
@@ -1350,14 +1390,17 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
                   ),
                   PopupMenuItem(
                     value: 'clear',
+                    enabled: !_running,
                     child: Text(context.trRead('sandboxClear')),
                   ),
                   PopupMenuItem(
                     value: 'reset',
+                    enabled: !_running,
                     child: Text(context.trRead('sandboxReset')),
                   ),
                   PopupMenuItem(
                     value: 'clearDrafts',
+                    enabled: !_running,
                     child: Text(context.trRead('sandboxDraftClear')),
                   ),
                 ],
@@ -1366,6 +1409,7 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
           ),
           CodeEditorField(
             controller: _code,
+            readOnly: _running,
             minLines: 10,
             maxLines: 22,
             style: TextStyle(
@@ -1433,6 +1477,7 @@ class _CodeSandboxScreenState extends State<CodeSandboxScreen> {
             const SizedBox(height: 8),
             TextField(
               controller: _stdin,
+              readOnly: _running,
               minLines: 2,
               maxLines: 5,
               autocorrect: false,

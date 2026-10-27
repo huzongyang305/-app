@@ -29,6 +29,7 @@ void main() {
     Widget screen, {
     required StorageService storage,
     required ProgressProvider progress,
+    double textScale = 1.0,
   }) async {
     tester.view.physicalSize = const Size(390, 844);
     tester.view.devicePixelRatio = 1;
@@ -45,6 +46,13 @@ void main() {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: AppTheme.light(),
+          builder: textScale == 1.0
+              ? null
+              : (context, child) => MediaQuery(
+                  data: MediaQuery.of(context)
+                      .copyWith(textScaler: TextScaler.linear(textScale)),
+                  child: child!,
+                ),
           home: screen,
         ),
       ),
@@ -156,7 +164,10 @@ void main() {
       progress: progress,
     );
 
-    expect(find.text('已领取 1/${content.categories.length} 个分类证书'), findsOneWidget);
+    expect(
+      find.text('已领取 1/${content.categories.length} 个分类证书'),
+      findsOneWidget,
+    );
     expect(find.text('可领取'), findsOneWidget);
     expect(find.text('学习中'), findsWidgets);
     expect(find.text(title), findsOneWidget);
@@ -185,7 +196,10 @@ void main() {
       progress: progress,
     );
 
-    expect(find.text('已领取 0/${content.categories.length} 个分类证书'), findsOneWidget);
+    expect(
+      find.text('已领取 0/${content.categories.length} 个分类证书'),
+      findsOneWidget,
+    );
     await tester.ensureVisible(find.text(category.title.zh));
     await tester.pumpAndSettle();
     await tester.tap(find.text(category.title.zh));
@@ -195,12 +209,74 @@ void main() {
     expect(find.text('分享证书'), findsNothing);
     expect(find.text('学习证书'), findsOneWidget);
   });
+
+  testWidgets('系统 2 倍字号下分享卡与证书都不溢出', (tester) async {
+    final storage = StorageService.inMemory();
+    final progress = ProgressProvider(storage);
+
+    await pumpScreen(
+      tester,
+      const ShareCardScreen(),
+      storage: storage,
+      progress: progress,
+      textScale: 2.0,
+    );
+    expect(tester.takeException(), isNull);
+
+    await pumpScreen(
+      tester,
+      CertificateViewScreen(
+        categoryId: _smallestCategory(content.categories).id,
+      ),
+      storage: storage,
+      progress: progress,
+      textScale: 2.0,
+    );
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('英文界面证书与分享卡都使用英文且不溢出', (tester) async {
+    final storage = StorageService.inMemory();
+    await storage.write('locale_code', 'en');
+    final progress = ProgressProvider(storage);
+
+    await pumpScreen(
+      tester,
+      CertificateViewScreen(
+        categoryId: _smallestCategory(content.categories).id,
+      ),
+      storage: storage,
+      progress: progress,
+    );
+
+    expect(find.text('Certificate'), findsOneWidget);
+    expect(find.text('结业证书'), findsNothing);
+    expect(tester.takeException(), isNull);
+
+    await pumpScreen(
+      tester,
+      const ShareCardScreen(),
+      storage: storage,
+      progress: progress,
+    );
+
+    expect(find.text('My learning journey'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+
+    await pumpScreen(
+      tester,
+      const ShareCardScreen(),
+      storage: storage,
+      progress: progress,
+      textScale: 2.0,
+    );
+
+    expect(tester.takeException(), isNull);
+  });
 }
 
 LessonCategory _smallestCategory(List<LessonCategory> categories) {
   return categories
       .where((category) => category.lessons.isNotEmpty)
-      .reduce(
-        (a, b) => a.lessons.length <= b.lessons.length ? a : b,
-      );
+      .reduce((a, b) => a.lessons.length <= b.lessons.length ? a : b);
 }

@@ -423,11 +423,13 @@ class MainActivity : FlutterActivity() {
             return
         }
         try {
-            val directory = File(cacheDir, SHARE_IMAGE_DIR).apply {
-                if (exists()) deleteRecursively()
-                mkdirs()
+            val directory = File(cacheDir, SHARE_IMAGE_DIR)
+            if (!directory.exists() && !directory.mkdirs()) {
+                result.success(false)
+                return
             }
-            val file = File(directory, safeImageName(fileName))
+            pruneStaleShareImages(directory)
+            val file = File(directory, uniqueShareImageName(fileName))
             file.writeBytes(bytes)
             val uri = FileProvider.getUriForFile(
                 this,
@@ -824,6 +826,20 @@ class MainActivity : FlutterActivity() {
             fallback
         } else {
             "$fallback.png"
+        }
+    }
+
+    /// 文件名带时间戳，再次分享不会覆盖分享面板仍可能读取的旧文件。
+    private fun uniqueShareImageName(raw: String?): String =
+        "${System.currentTimeMillis()}_${safeImageName(raw)}"
+
+    /// 只清理一天前的旧图，避免缓存无限增长。
+    private fun pruneStaleShareImages(directory: File) {
+        val cutoff = System.currentTimeMillis() - SHARE_IMAGE_TTL_MS
+        directory.listFiles()?.forEach { file ->
+            if (file.isFile && file.lastModified() < cutoff) {
+                file.delete()
+            }
         }
     }
 
@@ -1287,5 +1303,6 @@ class MainActivity : FlutterActivity() {
         const val MAX_BACKUP_BYTES = 16 * 1024 * 1024
         const val BACKUP_SHARE_DIR = "backup_share"
         const val SHARE_IMAGE_DIR = "share_images"
+        const val SHARE_IMAGE_TTL_MS = 24L * 60 * 60 * 1000
     }
 }

@@ -31,12 +31,13 @@ class SandboxDraftService {
       decoded.forEach((key, value) {
         if (key is! String || value is! Map) return;
         final code = value['code'];
-        if (code is! String || code.isEmpty) return;
         final stdin = value['stdin'];
-        drafts[key] = SandboxDraft(
-          code: code,
-          stdin: stdin is String ? stdin : '',
-        );
+        if (code is! String && stdin is! String) return;
+        final codeText = code is String ? code : '';
+        final stdinText = stdin is String ? stdin : '';
+        // 只填了标准输入也算有效草稿，与 save 的空内容规则保持一致。
+        if (codeText.isEmpty && stdinText.isEmpty) return;
+        drafts[key] = SandboxDraft(code: codeText, stdin: stdinText);
       });
       return drafts;
     } catch (_) {

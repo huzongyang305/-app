@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:code_learn_app/data/sandbox_challenges.dart';
 import 'package:code_learn_app/models/sandbox_challenge.dart';
 import 'package:code_learn_app/models/sandbox_language.dart';
@@ -76,8 +78,9 @@ void main() {
     });
 
     test('没有附加用例时只有一个用例', () {
-      final challenge = sandboxChallengesByLanguage['javascript']!
-          .firstWhere((item) => item.id == 'js-sum-1-100');
+      final challenge = sandboxChallengesByLanguage['javascript']!.firstWhere(
+        (item) => item.id == 'js-sum-1-100',
+      );
       expect(challenge.caseCount, 1);
       expect(challenge.cases, hasLength(1));
       expect(challenge.cases.single.expectedOutput, '5050');
@@ -311,9 +314,7 @@ void main() {
         value: settings,
         child: MaterialApp(
           theme: AppTheme.light(),
-          home: const CodeSandboxScreen(
-            initialChallengeId: 'cpp-add-two',
-          ),
+          home: const CodeSandboxScreen(initialChallengeId: 'cpp-add-two'),
         ),
       ),
     );
@@ -356,6 +357,91 @@ void main() {
     expect(find.text('已通过'), findsWidgets);
     expect(find.text('全部测试用例通过'), findsOneWidget);
     expect(settings.isSandboxChallengePassed('cpp-add-two'), isTrue);
+  });
+
+  testWidgets('运行中锁定编辑器与写入菜单，并沿用一个代码快照', (tester) async {
+    // 挑战卡片较高，画面放足够大才能让下方编辑器一起构建出来。
+    tester.view.physicalSize = const Size(1080, 6000);
+    tester.view.devicePixelRatio = 3.0;
+    addTearDown(tester.view.reset);
+
+    const channel = MethodChannel('code_learn_app/sandbox');
+    final messenger =
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+    final codes = <String?>[];
+    final firstRun = Completer<String>();
+    messenger.setMockMethodCallHandler(channel, (call) async {
+      if (call.method != 'runCode') return null;
+      final args = (call.arguments as Map).cast<String, Object?>();
+      codes.add(args['code'] as String?);
+      if (codes.length == 1) return firstRun.future;
+      switch ((args['stdin'] as String? ?? '').trim()) {
+        case '-2 7':
+          return '5';
+        case '100 200':
+          return '300';
+      }
+      return '';
+    });
+    addTearDown(() => messenger.setMockMethodCallHandler(channel, null));
+
+    final storage = StorageService.inMemory();
+    final settings = SettingsProvider(storage);
+    await tester.pumpWidget(
+      ChangeNotifierProvider<SettingsProvider>.value(
+        value: settings,
+        child: MaterialApp(
+          theme: AppTheme.light(),
+          home: const CodeSandboxScreen(initialChallengeId: 'cpp-add-two'),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final editor = find.descendant(
+      of: find.byType(CodeEditorField),
+      matching: find.byType(TextField),
+    );
+    final codeController = tester.widget<TextField>(editor).controller!;
+    final original = codeController.text;
+
+    await tester.ensureVisible(find.text('运行测试用例'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('运行测试用例'));
+    await tester.pump();
+
+    expect(codes, hasLength(1));
+    expect(tester.widget<TextField>(editor).readOnly, isTrue);
+    expect(
+      tester.widget<TextField>(find.byType(TextField).at(1)).readOnly,
+      isTrue,
+    );
+
+    // 运行中「更多」里的写操作全部禁用，避免改代码或重置。
+    await tester.ensureVisible(find.byTooltip('更多操作'));
+    await tester.pump();
+    await tester.tap(find.byTooltip('更多操作'));
+    await tester.pump(const Duration(milliseconds: 300));
+    for (final value in const ['clear', 'reset', 'clearDrafts']) {
+      final item = tester.widget<PopupMenuItem<String>>(
+        find.byWidgetPredicate(
+          (widget) => widget is PopupMenuItem<String> && widget.value == value,
+        ),
+      );
+      expect(item.enabled, isFalse, reason: '$value 应在运行中禁用');
+    }
+    await tester.tapAt(const Offset(10, 10));
+    await tester.pump(const Duration(milliseconds: 300));
+
+    // 即使控制器被程序性改写，后续用例仍应执行运行前的快照。
+    codeController.text = 'MUTATED';
+    firstRun.complete('8');
+    await tester.pumpAndSettle();
+
+    expect(codes, hasLength(3));
+    expect(codes.every((code) => code == original), isTrue);
+    expect(settings.isSandboxChallengePassed('cpp-add-two'), isTrue);
+    await tester.pump(const Duration(milliseconds: 600));
   });
 
   testWidgets('静态追踪语言给出无挑战提示', (tester) async {

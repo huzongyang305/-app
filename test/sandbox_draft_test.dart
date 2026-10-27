@@ -54,16 +54,29 @@ void main() {
       expect(service.forLanguage('python'), isNull);
     });
 
-    test('忽略缺少代码的无效条目', () async {
+    test('保留只有标准输入的草稿，忽略完全空白的条目', () async {
       final storage = StorageService.inMemory();
       await storage.write(
         SandboxDraftService.storageKey,
-        '{"python":{"stdin":"1"},"lua":{"code":"print(1)","stdin":""}}',
+        '{"python":{"stdin":"1"},"empty":{"code":"","stdin":""},'
+        '"lua":{"code":"print(1)","stdin":""}}',
       );
       final service = SandboxDraftService(storage);
-      expect(service.length, 1);
-      expect(service.forLanguage('python'), isNull);
+      expect(service.length, 2);
+      expect(service.forLanguage('python')?.code, '');
+      expect(service.forLanguage('python')?.stdin, '1');
+      expect(service.forLanguage('empty'), isNull);
       expect(service.forLanguage('lua')?.code, 'print(1)');
+    });
+
+    test('只有标准输入时保存后也能读回', () async {
+      final storage = StorageService.inMemory();
+      final service = SandboxDraftService(storage);
+      await service.save('python', code: '', stdin: '42');
+      final restored = SandboxDraftService(storage);
+      expect(restored.forLanguage('python')?.code, '');
+      expect(restored.forLanguage('python')?.stdin, '42');
+      expect(restored.length, 1);
     });
   });
 
@@ -108,9 +121,7 @@ void main() {
 
     final controller = tester.widget<TextField>(editor()).controller;
     expect(controller?.text, 'const answer = 42;');
-    final stdinField = tester.widget<TextField>(
-      find.byType(TextField).at(1),
-    );
+    final stdinField = tester.widget<TextField>(find.byType(TextField).at(1));
     expect(stdinField.controller?.text, '1 2 3');
 
     await tester.pumpWidget(const SizedBox.shrink());
@@ -159,6 +170,67 @@ void main() {
           ?.text,
       contains('计算 1~10 的平方和'),
     );
+
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pumpAndSettle();
+  });
+
+  testWidgets('进入挑战保留原草稿，退出后恢复', (tester) async {
+    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.devicePixelRatio = 3.0;
+    addTearDown(tester.view.reset);
+
+    final storage = StorageService.inMemory();
+    final settings = SettingsProvider(storage);
+    final store = SandboxDraftService(storage);
+
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<SettingsProvider>.value(value: settings),
+          Provider<StorageService>.value(value: storage),
+        ],
+        child: MaterialApp(
+          theme: AppTheme.light(),
+          home: const CodeSandboxScreen(),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final codeField = find.descendant(
+      of: find.byType(CodeEditorField),
+      matching: find.byType(TextField),
+    );
+    final codeController = tester.widget<TextField>(codeField).controller!;
+    final stdinController = tester
+        .widget<TextField>(find.byType(TextField).at(1))
+        .controller!;
+
+    await tester.enterText(codeField, 'const mine = 1;');
+    await tester.enterText(find.byType(TextField).at(1), '1 2');
+    await tester.pump(const Duration(milliseconds: 600));
+
+    await tester.tap(find.textContaining('挑战模式'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('1 到 100 求和'));
+    await tester.pumpAndSettle();
+
+    expect(codeController.text, contains('TODO'));
+    // 挑战内容不应写进该语言的通用草稿。
+    await tester.pump(const Duration(milliseconds: 600));
+    expect(store.forLanguage('javascript')?.code, 'const mine = 1;');
+    expect(store.forLanguage('javascript')?.stdin, '1 2');
+
+    await tester.ensureVisible(find.text('退出挑战'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('退出挑战'));
+    await tester.pumpAndSettle();
+
+    expect(codeController.text, 'const mine = 1;');
+    expect(stdinController.text, '1 2');
+    await tester.pump(const Duration(milliseconds: 600));
+    expect(store.forLanguage('javascript')?.code, 'const mine = 1;');
 
     await tester.pumpWidget(const SizedBox.shrink());
     await tester.pumpAndSettle();

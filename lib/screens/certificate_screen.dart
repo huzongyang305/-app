@@ -21,25 +21,26 @@ class CertificateScreen extends StatelessWidget {
     final theme = Theme.of(context);
     final localeCode = context.strings.localeCode;
 
-    final entries = content.categories
-        .map(
-          (category) => _CategoryProgress(
-            category: category,
-            learned: category.lessons
-                .where((lesson) => progress.isLearned(lesson.id))
-                .length,
-            total: category.lessons.length,
-          ),
-        )
-        .toList()
-      ..sort((a, b) {
-        if (a.isComplete != b.isComplete) return a.isComplete ? -1 : 1;
-        final ratioDiff = b.ratio.compareTo(a.ratio);
-        if (ratioDiff != 0) return ratioDiff;
-        return a.category.title
-            .of(localeCode)
-            .compareTo(b.category.title.of(localeCode));
-      });
+    final entries =
+        content.categories
+            .map(
+              (category) => _CategoryProgress(
+                category: category,
+                learned: category.lessons
+                    .where((lesson) => progress.isLearned(lesson.id))
+                    .length,
+                total: category.lessons.length,
+              ),
+            )
+            .toList()
+          ..sort((a, b) {
+            if (a.isComplete != b.isComplete) return a.isComplete ? -1 : 1;
+            final ratioDiff = b.ratio.compareTo(a.ratio);
+            if (ratioDiff != 0) return ratioDiff;
+            return a.category.title
+                .of(localeCode)
+                .compareTo(b.category.title.of(localeCode));
+          });
     final earned = entries.where((entry) => entry.isComplete).length;
 
     return Scaffold(
@@ -268,6 +269,11 @@ class _CertificateViewScreenState extends State<CertificateViewScreen> {
           ),
         ),
       );
+    } catch (_) {
+      if (!mounted) return;
+      messenger.showSnackBar(
+        SnackBar(content: Text(context.trRead('shareImageFailed'))),
+      );
     } finally {
       if (mounted) setState(() => _sharing = false);
     }
@@ -376,144 +382,157 @@ class _CertificateCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 340,
-      height: 480,
-      decoration: BoxDecoration(
-        color: _paper,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: _gold, width: 2),
-      ),
-      padding: const EdgeInsets.all(10),
+    // 证书以固定宽度出图，限制系统字号；较长文案允许卡片向下延伸。
+    return MediaQuery.withClampedTextScaling(
+      maxScaleFactor: 1.2,
       child: Container(
-        padding: const EdgeInsets.fromLTRB(20, 22, 20, 20),
+        width: 340,
+        constraints: const BoxConstraints(minHeight: 480),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: _gold.withValues(alpha: 0.45)),
+          color: _paper,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: _gold, width: 2),
         ),
-        child: Column(
-          children: [
-            const Icon(
-              Icons.workspace_premium_rounded,
-              color: _gold,
-              size: 38,
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              '结业证书',
-              style: TextStyle(
-                color: _ink,
-                fontSize: 25,
-                fontWeight: FontWeight.w800,
-                letterSpacing: 6,
-              ),
-            ),
-            const SizedBox(height: 4),
-            const Text(
-              'CERTIFICATE OF COMPLETION',
-              style: TextStyle(
-                color: _goldDark,
-                fontSize: 8,
-                letterSpacing: 1.6,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Container(width: 60, height: 1.5, color: _gold),
-            const SizedBox(height: 18),
-            Text(
-              context.tr('certificateCertifies'),
-              style: const TextStyle(color: _muted, fontSize: 11),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              context.tr('certificateLearner'),
-              style: const TextStyle(
-                color: _ink,
-                fontSize: 21,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 2,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              context.trArgs('certificateCompleted', {
-                'category': categoryTitle,
-                'n': lessons,
-              }),
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: _ink,
-                fontSize: 12.5,
-                height: 1.6,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: _CertificateStat(
-                    label: context.tr('shareCardStudyTime'),
-                    value: context.trArgs('shareCardMinutesValue', {
-                      'n': minutes,
+        padding: const EdgeInsets.all(10),
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(20, 22, 20, 20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: _gold.withValues(alpha: 0.45)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.workspace_premium_rounded,
+                    color: _gold,
+                    size: 38,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    context.tr('certificateCardTitle'),
+                    style: const TextStyle(
+                      color: _ink,
+                      fontSize: 25,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 6,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  const Text(
+                    'CERTIFICATE OF COMPLETION',
+                    style: TextStyle(
+                      color: _goldDark,
+                      fontSize: 8,
+                      letterSpacing: 1.6,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Container(width: 60, height: 1.5, color: _gold),
+                  const SizedBox(height: 18),
+                  Text(
+                    context.tr('certificateCertifies'),
+                    style: const TextStyle(color: _muted, fontSize: 11),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    context.tr('certificateLearner'),
+                    style: const TextStyle(
+                      color: _ink,
+                      fontSize: 21,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 2,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    context.trArgs('certificateCompleted', {
+                      'category': categoryTitle,
+                      'n': lessons,
                     }),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: _ink,
+                      fontSize: 12.5,
+                      height: 1.6,
+                    ),
                   ),
-                ),
-                Container(
-                  width: 1,
-                  height: 26,
-                  color: _gold.withValues(alpha: 0.3),
-                ),
-                Expanded(
-                  child: _CertificateStat(
-                    label: context.tr('shareCardAccuracy'),
-                    value: '$accuracy%',
-                  ),
-                ),
-              ],
-            ),
-            const Spacer(),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Container(
-                  width: 46,
-                  height: 46,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: _gold, width: 2),
-                    color: _gold.withValues(alpha: 0.08),
-                  ),
-                  child: const Icon(
-                    Icons.check_rounded,
-                    color: _goldDark,
-                    size: 24,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  const SizedBox(height: 16),
+                  Row(
                     children: [
-                      Text(
-                        context.tr('certificateIssuer'),
-                        style: const TextStyle(
-                          color: _ink,
-                          fontSize: 10.5,
-                          fontWeight: FontWeight.w700,
+                      Expanded(
+                        child: _CertificateStat(
+                          label: context.tr('shareCardStudyTime'),
+                          value: context.trArgs('shareCardMinutesValue', {
+                            'n': minutes,
+                          }),
                         ),
                       ),
-                      const SizedBox(height: 3),
-                      Text(
-                        '${context.tr('certificateIssuedAt')} · $date',
-                        style: const TextStyle(color: _muted, fontSize: 9),
+                      Container(
+                        width: 1,
+                        height: 26,
+                        color: _gold.withValues(alpha: 0.3),
+                      ),
+                      Expanded(
+                        child: _CertificateStat(
+                          label: context.tr('shareCardAccuracy'),
+                          value: '$accuracy%',
+                        ),
                       ),
                     ],
                   ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Container(
+                      width: 46,
+                      height: 46,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: _gold, width: 2),
+                        color: _gold.withValues(alpha: 0.08),
+                      ),
+                      child: const Icon(
+                        Icons.check_rounded,
+                        color: _goldDark,
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            context.tr('certificateIssuer'),
+                            style: const TextStyle(
+                              color: _ink,
+                              fontSize: 10.5,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const SizedBox(height: 3),
+                          Text(
+                            '${context.tr('certificateIssuedAt')} · $date',
+                            style: const TextStyle(color: _muted, fontSize: 9),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -541,10 +560,7 @@ class _CertificateStat extends StatelessWidget {
         const SizedBox(height: 2),
         Text(
           label,
-          style: const TextStyle(
-            color: _CertificateCard._muted,
-            fontSize: 9,
-          ),
+          style: const TextStyle(color: _CertificateCard._muted, fontSize: 9),
         ),
       ],
     );
