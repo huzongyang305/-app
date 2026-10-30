@@ -2,8 +2,7 @@
 
 > Translation status: machine translation (lightweight zh-en model). Technical terms may need review; use the Chinese tutorial as the authoritative version.
 
-
-I'm sorry.
+> Learn val/var, type inference, nullable types and safe calls.
 
 > Content update time: 2026-10-03 Learning stage: Foundation = Projected duration: 20 minutes
 

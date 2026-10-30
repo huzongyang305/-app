@@ -560,7 +560,7 @@ D. “@RequestParam” 从查询参数或表单数据中获取值
 以下关于 “@Controller” 和 “@RestController” 的说法，哪个是正确的？
 
 A. “@RestController” 只能返回 JSON 格式的数据
-B. “@Controller” 返回的字符串会被直接写入 HTTP 响应体
+B. “@Controller” 返回的字符串会被直接写入 HTTP 响应体，由消息转换器直接序列化  
 C. “@RestController” 等同于 “@Controller” 加上 “@ResponseBody”
 D. 两者没有任何区别，可以随意互换使用
 
@@ -577,7 +577,7 @@ D. 两者没有任何区别，可以随意互换使用
 A. 重定向可以让浏览器发送新的 GET 请求，防止用户刷新页面时重复提交表单  
 B. 重定向可以提高服务器处理速度  
 C. 视图名称不支持包含中文字符，必须用重定向  
-D. 重定向可以让页面加载更多的 JavaScript 资源  
+D. 重定向可以让页面加载更多的 JavaScript 资源，地址栏变化会整页刷新  
 
 **正确答案：A**
 
@@ -589,7 +589,7 @@ D. 重定向可以让页面加载更多的 JavaScript 资源
 
 在 Spring MVC 中，“@RequestBody” 注解适用于以下哪种场景？
 
-A. 从 URL 查询参数中获取字符串值  
+A. 从 URL 查询参数中获取字符串值，再通过类型转换器绑定到方法参数上  
 B. 从 URL 路径中提取变量值
 C. 将 HTTP 请求体中的 JSON 数据自动反序列化为 Java 对象
 D. 将方法返回值序列化为 XML 格式
@@ -597,6 +597,15 @@ D. 将方法返回值序列化为 XML 格式
 **正确答案：C**
 
 **详细解释：** “@RequestBody” 用于将 HTTP 请求体中的 JSON（或 XML）数据自动反序列化为 Java 对象，通常配合 “@PostMapping” 或 “@PutMapping” 使用。它只能接收 “application/json” 类型的数据，不能用于表单数据（表单应使用 “@ModelAttribute”）。“@RequestParam” 用于查询参数，“@PathVariable” 用于路径变量，“@ResponseBody” 用于返回值序列化。
+
+---
+
+### 考点 6
+
+题目：填空：本课术语表里有一条解释被挖掉了术语名称，请补全。解释：前端控制器，所有请求的统一入口。空缺处应填哪个术语？
+正确答案：「DispatcherServlet」
+
+**解析**：正确项：「DispatcherServlet」。本课术语表对它的解释是：前端控制器，所有请求的统一入口。题干只挖掉了术语名称，填「DispatcherServlet」或「dispatcherservlet」都算正确。容易和它混淆的是「HandlerMapping」：两者在「Spring MVC 详解」里分别对应不同的使用场景，答题时先看定义里描述的对象和边界，再决定填哪一个。
 
 ---
 

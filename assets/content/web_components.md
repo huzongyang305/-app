@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能复述 WebComponents 的职责，并给出一个输入越界时的反例。
+- [ ] 能用「Web Components 实战」的示例复现结果，并说明自定义元素出错时输出的第一条信息。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -112,7 +112,7 @@ README.md
 {
   "project": "web_components",
   "scenario": "WebComponents的正常路径",
-  "input": {"case": "normal", "value": "createElement"},
+  "input": {"case": "normal", "value": "validation_error"},
   "expected": {"ok": true, "checks": ["WebComponents可复现", "自定义元素有记录"]},
   "failure_case": {"case": "自定义元素越界或缺失", "error": "validation_error"},
   "idempotency_key": "web_components-001"
@@ -524,7 +524,7 @@ customElements.define("lesson-card", LessonCard);
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：高级
-- 适用环境：现代浏览器（Chrome/Firefox/Safari）
+- 适用环境：现代浏览器（Chrome/Firefox/Safari）；本课聚焦 WebComponents。
 ；本课聚焦 WebComponents。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：WebComponents、自定义元素、ShadowDOM、slot、设计系统

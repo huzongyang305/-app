@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能用自己的话说明「C# 异步流与取消」里的 IAsyncEnumerable，再举一个它不成立的场景。
+- [ ] 能跑通 IAsyncEnumerable 的最小示例，记录一组正常输出和一组失败输出。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -297,7 +297,7 @@ await foreach (var value in Countdown(3))
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，改动其中一个输入后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，改动一个与 IAsyncEnumerable 有关的输入后重跑，记录输出与错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；改动输入后，如果结果改变或报错，先核对它是否满足 `C# 异步流与取消` 中`IAsyncEnumerable` 的适用范围，再检查错误表里是否有同类现象。
 
@@ -397,8 +397,8 @@ await foreach (var value in Countdown(3))
 ### 考点 6：第 6 题
 
 - **题目**：下面几项都与 `IAsyncEnumerable` 有关，请按 `C# 异步流与取消` 的正文顺序排列；该课主线是理解 IAsyncEnumerable、CancellationToken 和异步资源释放。
-- **正确项**：核心知识 → 关键流程 → 实践路径 → 常见误区
-- **判断依据**：按《C# 异步流与取消》正文的先后，本题顺序是「核心知识」 → 「关键流程」 → 「实践路径」 → 「常见误区」。术语「IAsyncEnumerable」在本课里的界定是C# 中按需异步产生多个值的流式接口，可配合 await foreach，题干「下面几项都与 `IAsyncEnumerable` 有关，请按 `C# 异步流与取消` 的正文顺序排列；该课主线是理解 IAsyncEnumerable、CancellationToken 和异步资源释放。」问的就是这一条。常见错法是用 async void 代替 async Task，其后果是异常无法被捕获，调用方也无法等待。正确做法是除事件处理器外一律返回 Task 或 ValueTask。
+- **正确项**：异步流 → 取消 → IAsyncEnumerable → CancellationToken
+- **判断依据**：按《C# 异步流与取消》正文首次出现的先后，本题顺序是「异步流」 → 「取消」 → 「IAsyncEnumerable」 → 「CancellationToken」。术语「IAsyncEnumerable」在本课里的界定是C# 中按需异步产生多个值的流式接口，可配合 await foreach，题干「下面几项都与 `IAsyncEnumerable` 有关，请按 `C# 异步流与取消` 的正文顺序排列；该课主线是理解 IAsyncEnumerable、CancellationToken 和异步资源释放。」问的就是这一条。常见错法是用 async void 代替 async Task，其后果是异常无法被捕获，调用方也无法等待。正确做法是除事件处理器外一律返回 Task 或 ValueTask。
 
 ### 考点 7：`IAsyncEnumerable`
 

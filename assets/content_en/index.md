@@ -2,8 +2,7 @@
 
 > Translation status: machine translation (lightweight zh-en model). Technical terms may need review; use the Chinese tutorial as the authoritative version.
 
-
-I'm sorry.
+> B+ trees, leftmost prefix and when indexes fail.
 
 > Content update time: 2026-10-03 Learning stage: progress
 

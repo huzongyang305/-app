@@ -482,7 +482,7 @@ void LoadLevel() {
 
 下面列出的资料用于核对本课结论，复习时可以对照阅读：
 - [Android 官方文档：性能与功耗](https://developer.android.com/topic/performance)
-- [Unity 官方手册：移动端优化](https://docs.unity3d.com/Manual/MobileOptimizationPracticalGuide.html)
+- [Unity 官方手册：性能分析](https://docs.unity3d.com/Manual/UnderstandingPerformance.html)
 - [Apple 开发者文档：性能优化](https://developer.apple.com/documentation/xcode/improving-your-app-s-performance)
 
 | [本课术语索引：移动端性能与功耗优化](#核心概念定义) | 按本课输入、术语边界和错误表现逐项核对 |

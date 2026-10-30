@@ -531,7 +531,7 @@ std::cin.tie(nullptr);
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：入门
-- 适用环境：C++17 / GCC 13+ 或 Clang 17+
+- 适用环境：C++17 / GCC 13+ 或 Clang 17+；本课聚焦 C++ 变量与输入输出。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：C++ 变量与输入输出、C++、入门练习
 
@@ -544,5 +544,5 @@ std::cin.tie(nullptr);
 | 参考资料 | 本课用途 |
 | --- | --- |
 | [cppreference - std::cin](https://en.cppreference.com/w/cpp/io/cin) | 标准输入流详解 |
-| [Learn C++ - Variables](https://www.learncpp.com/cpp-tutorial/variables-and-assignment/) | 变量与赋值入门 |
+| [Learn C++ - Variables](https://www.learncpp.com/cpp-tutorial/variable-assignment-and-initialization/) | 变量与赋值入门 |
 | [cplusplus.com - string](https://cplusplus.com/reference/string/string/) | std::string 参考 |

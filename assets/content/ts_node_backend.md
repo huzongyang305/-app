@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能复述 Node后端 的职责，并给出一个输入越界时的反例。
+- [ ] 能推演 Node后端 的示例：先写预期输出，再运行并记录差异与失败现象。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -605,7 +605,7 @@ app.get("/users", async (req, reply) => {
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：进阶
-- 适用环境：TypeScript 5.x / Node.js 22+
+- 适用环境：TypeScript 5.x / Node.js 22+；本课聚焦 Node后端。
 ；本课聚焦 Node后端。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：Node后端、Fastify、NestJS、zod、优雅关闭、健康检查
@@ -620,7 +620,7 @@ app.get("/users", async (req, reply) => {
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [TypeScript Node 指南](https://nodejs.org/en/learn/typescript) | Node 中的 TypeScript |
+| [TypeScript Node 指南](https://nodejs.org/en/learn/typescript/introduction) | Node 中的 TypeScript |
 | [Everyday Types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html) | 常用类型与收窄 |
 | [泛型文档](https://www.typescriptlang.org/docs/handbook/2/generics.html) | 泛型约束与复用 |
 

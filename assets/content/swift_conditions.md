@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能用自己的话说明「Swift 条件判断」里的 Swift 条件判断，再举一个它不成立的场景。
+- [ ] 能跑通 Swift 条件判断 的最小示例，记录一组正常输出和一组失败输出。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -460,7 +460,7 @@ print("结果：\(level)")
 | 参考资料 | 本课用途 |
 | --- | --- |
 | [Swift 语言指南](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/) | 语法、类型与内存模型 |
-| [Apple 内存管理](https://developer.apple.com/documentation/swift/automatic-reference-counting) | ARC 与循环引用 |
+| [Apple 内存管理](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/) | ARC 与循环引用 |
 | [Swift Package Manager](https://www.swift.org/documentation/package-manager/) | 依赖与模块化 |
 
 | [本课术语索引：Swift 条件判断](#核心概念定义) | 按本课输入、术语边界和错误表现逐项核对 |

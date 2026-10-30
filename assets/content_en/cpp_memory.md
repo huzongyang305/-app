@@ -2,8 +2,7 @@
 
 > Translation status: machine translation (lightweight zh-en model). Technical terms may need review; use the Chinese tutorial as the authoritative version.
 
-
-I'm sorry.
+> Stack vs heap, RAII, smart pointers and memory bugs.
 
 > Content update time: 2026-10-03 Learning stage: progress
 

@@ -543,7 +543,7 @@ JWT（JSON Web Token）由三部分组成，以下哪个选项正确描述了这
 
 A. 用户名、密码、角色  
 B. 公钥、私钥、对称密钥  
-C. 令牌 ID、过期时间、服务器地址  
+C. 令牌 ID、过期时间、服务器地址，三段之间用 Base64 编码后以冒号拼接  
 D. 头部（Header）、载荷（Payload）、签名（Signature）  
 
 **正确答案：D**
@@ -572,7 +572,7 @@ D. BCrypt 是一种单向哈希算法，故意设计为慢速执行以防范暴�
 在使用 JWT 认证的 Spring Security 配置中，为什么通常需要禁用 CSRF 保护？
 
 A. 因为 JWT 令牌太长了，无法放入 CSRF Token 中  
-B. 因为 Spring Security 不支持 JWT 和 CSRF 同时使用  
+B. 因为 Spring Security 不支持 JWT 和 CSRF 同时使用，两者的过滤器链会互相覆盖导致应用启动报错  
 C. 因为 JWT 通常存储在 localStorage 中通过请求头手动携带，不会被浏览器自动发送，不存在 CSRF 风险  
 D. 因为禁用 CSRF 可以提高 JWT 的加密强度  
 
@@ -594,6 +594,19 @@ D. "@PreAuthorize" 支持 SpEL 表达式编写复杂条件，"@Secured" 只能�
 **正确答案：D**
 
 **详细解释：** "@PreAuthorize" 是 Spring Security 推荐的方法级权限注解，支持 SpEL 表达式，可以编写复杂的条件逻辑（如 "#id == authentication.principal.id or hasRole('ADMIN')"）。"@Secured" 是 JSR-250 标准注解，功能较简单，只能指定允许访问的角色列表（如 "@Secured("ROLE_ADMIN")"）。使用 "@PreAuthorize" 需要确保配置类添加了 "@EnableMethodSecurity"。
+
+---
+
+### 考点 6
+
+题目：在「Spring Security 认证授权」的术语表里，下列术语与解释的配对哪些是正确的？（多选）
+A. 「Authorization」：方法执行前的权限检查注解  
+B. 「@Secured」：方法级角色控制注解  
+C. 「@PreAuthorize」：授权，决定用户能访问哪些资源  
+D. 「JWT」：JSON Web Token，无状态认证令牌  
+正确答案：BD
+
+**解析**：本题正确项是「@Secured」：方法级角色控制注解，以及「JWT」：JSON Web Token，无状态认证令牌，这两组配对与术语表一致。另外两组把术语和解释张冠李戴：「Authorization」被安上了方法执行前的权限检查注解的解释，「@PreAuthorize」反而拿到了授权，决定用户能访问哪些资源的定义，所以两组都不能选。复习时回到「Spring Security 认证授权」的术语速查表逐条核对，配对题考的是定义里描述的对象和边界，而不是术语的字面长相。
 
 ---
 

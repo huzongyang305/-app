@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能复述 WSGI 的职责，并给出一个输入越界时的反例。
+- [ ] 能推演 WSGI 的示例：先写预期输出，再运行并记录差异与失败现象。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -303,7 +303,7 @@ asyncio.run(main())
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，改动其中一个输入后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，改动一个与 WSGI 有关的输入后重跑，记录输出与错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；改动输入后，如果结果改变或报错，先核对它是否满足 `Python Web 部署：WSGI、ASGI 与容器化` 中`WSGI` 的适用范围，再检查错误表里是否有同类现象。
 
@@ -487,7 +487,7 @@ asyncio.run(main())
 下面列出的资料用于核对本课结论，复习时可以对照阅读：
 - [ASGI 规范](https://asgi.readthedocs.io/en/latest/)
 - [Uvicorn 部署文档](https://www.uvicorn.org/deployment/)
-- [Gunicorn 设计文档](https://docs.gunicorn.org/en/stable/design.html)
+- [Gunicorn 设计文档](https://gunicorn.org/design/)
 - [Docker Python 镜像指南](https://docs.docker.com/language/python/)
 
 | [本课术语索引：Python Web 部署：WSGI、ASGI 与容器化](#核心概念定义) | 按本课输入、术语边界和错误表现逐项核对 |

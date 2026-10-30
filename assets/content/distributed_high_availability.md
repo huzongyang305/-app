@@ -4,7 +4,7 @@
 
 ![高可用与容量规划](images/category_high_availability.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：35 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：30 分钟
 
 ## 本节知识框架
 
@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能讲清 高可用 与 SLO 的分工，并指出其中一个前提失效的边界。
+- [ ] 能跑通 高可用 的最小示例，记录一组正常输出和一组失败输出。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -524,7 +524,7 @@ print(health.is_ready(timeout=-1))
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [CAP 定理资料](https://www.cs.princeton.edu/courses/archive/fall20/cos418/papers/brew.pdf) | 一致性、可用性与分区 |
+| [CAP 定理资料](https://www.ibm.com/think/topics/cap-theorem) | 一致性、可用性与分区 |
 | [Google SRE 书](https://sre.google/books/) | 可靠性、容量与事故响应 |
 | [Microsoft 云设计模式](https://learn.microsoft.com/azure/architecture/patterns/) | 重试、熔断与队列模式 |
 

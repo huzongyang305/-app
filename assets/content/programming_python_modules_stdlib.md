@@ -451,7 +451,7 @@ data = json.loads(config_path.read_text(encoding="utf-8"))
 
 ## 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例
+- [ ] 能不看正文复述 import，并指出 模块 的一个边界或反例。
 - [ ] 能默写本课最重要的代码示例，并解释每一行的作用
 - [ ] 能说出本课内容和前后两课的联系
 
@@ -523,7 +523,7 @@ data = json.loads(config_path.read_text(encoding="utf-8"))
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：进阶
-- 适用环境：Python 3.12+
+- 适用环境：Python 3.12+；本课聚焦 import。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：import、模块、包、venv、pip、标准库
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全

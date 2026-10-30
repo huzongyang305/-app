@@ -494,7 +494,7 @@ D. 仅在第一个 `@Test` 方法执行前执行一次，共 1 次
 `@WebMvcTest(OrderController.class)` 和 `@SpringBootTest` 在测试范围和性能上有什么核心区别？
 
 A. `@WebMvcTest` 加载完整的应用上下文，`@SpringBootTest` 只加载 Web 层  
-B. `@WebMvcTest` 只能测试 GET 请求，`@SpringBootTest` 可以测试所有 HTTP 方法  
+B. `@WebMvcTest` 只能测试 GET 请求，`@SpringBootTest` 可以测试所有 HTTP 方法，因为前者默认不加载 DataSource 自动配置  
 C. 两者功能完全相同，只是注解名称不同  
 D. `@WebMvcTest` 只加载 Web 层（Controller），启动速度快；`@SpringBootTest` 加载完整应用上下文，用于集成测试  
 
@@ -508,7 +508,7 @@ D. `@WebMvcTest` 只加载 Web 层（Controller），启动速度快；`@SpringB
 
 使用 Mockito 时，`@Mock` 和 `@InjectMocks` 注解分别起什么作用？
 
-A. `@Mock` 创建真实数据库连接，`@InjectMocks` 创建 HTTP 请求  
+A. `@Mock` 创建真实数据库连接，`@InjectMocks` 创建 HTTP 请求，让测试直接连到测试库并复用同一套 DAO  
 B. `@Mock` 和 `@InjectMocks` 功能相同，可以互换使用  
 C. `@Mock` 用于断言测试结果，`@InjectMocks` 用于初始化测试数据  
 D. `@Mock` 创建模拟对象以替代真实依赖，`@InjectMocks` 创建被测对象并自动将 Mock 对象注入到其依赖中  
@@ -523,7 +523,7 @@ D. `@Mock` 创建模拟对象以替代真实依赖，`@InjectMocks` 创建被测
 
 在测试金字塔中，单元测试、集成测试和端到端测试的数量比例和速度特点分别是什么？
 
-A. 端到端测试数量最多、速度最快；单元测试数量最少、速度最慢
+A. 端到端测试数量最多、速度最快；单元测试数量最少、速度最慢，因为端到端测试不用启动浏览器  
 B. 三种测试数量和速度完全相同
 C. 单元测试数量最多、速度最快（毫秒级）；集成测试居中；端到端测试数量最少、速度最慢（分钟级）
 D. 集成测试数量最多、速度最快；单元测试数量最少、速度最慢
@@ -540,12 +540,25 @@ D. 集成测试数量最多、速度最快；单元测试数量最少、速度�
 
 A. 为了隔离 Controller 层测试，避免调用真实的 Service 逻辑和外部依赖，使测试更快更稳定  
 B. 为了让测试能够连接真实的数据库进行验证  
-C. 因为 MockMvc 不支持直接调用 Service 方法  
+C. 因为 MockMvc 不支持直接调用 Service 方法，测试只能发起 HTTP 请求走一遍控制器  
 D. 为了增加测试的代码覆盖率  
 
 **正确答案：A**
 
 **详细解释：** `@WebMvcTest` 只加载 Web 层（Controller）相关的 Bean，不会自动创建 Service 层的实例。使用 `@MockBean` 可以为 Service 层提供一个模拟实现，这样测试只关注 Controller 层的请求路由、参数绑定和响应格式，而不会涉及真实的业务逻辑或数据库操作。这种隔离使测试运行更快、结果更稳定，不会因为数据库连接失败或 Service 层 Bug 导致 Controller 测试失败。同时，可以通过 `when(...).thenReturn(...)` 精确控制 Service 的返回值，测试 Controller 在各种情况下的行为。
+
+---
+
+### 考点 6
+
+题目：在「Java 测试与质量」的术语表里，下列术语与解释的配对哪些是正确的？（多选）
+A. 「@SpringBootTest」：加载完整应用上下文的集成测试注解  
+B. 「测试覆盖率」：只加载 Controller 层的测试注解  
+C. 「@WebMvcTest」：测试代码覆盖业务代码的比例  
+D. 「@MockBean」：在测试上下文中用 Mock 替换真实 Bean  
+正确答案：AD
+
+**解析**：本题正确项是「@SpringBootTest」：加载完整应用上下文的集成测试注解，以及「@MockBean」：在测试上下文中用 Mock 替换真实 Bean，这两组配对与术语表一致。另外两组把术语和解释张冠李戴：「测试覆盖率」被安上了只加载 Controller 层的测试注解的解释，「@WebMvcTest」反而拿到了测试代码覆盖业务代码的比例的定义，所以两组都不能选。复习时回到「Java 测试与质量」的术语速查表逐条核对，配对题考的是定义里描述的对象和边界，而不是术语的字面长相。
 
 ---
 
@@ -573,7 +586,7 @@ D. 为了增加测试的代码覆盖率
 ---
 
 ## 参考资料与复核
-- 下次复核：2026-10-30
+- 下次复核：2026-11-09
 
 | 资料名称 | 说明 |
 | --- | --- |
@@ -583,7 +596,6 @@ D. 为了增加测试的代码覆盖率
 | [Spring MockMvc 文档](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#spring-mvc-test-framework) | MockMvc 框架详细使用说明 |
 | [JaCoCo 覆盖率工具](https://www.jacoco.org/jacoco/trunk/doc/) | Java 代码覆盖率测量工具官方文档 |
 
-复核日期：2026-10-20
 - 最后复核：2026-10-04
 
 ---

@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能复述 TypeScript 的职责，并给出一个输入越界时的反例。
+- [ ] 能用「TypeScript 工程配置与实践」的示例复现结果，并说明tsconfig出错时输出的第一条信息。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -523,7 +523,7 @@ package.json
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：基础
-- 适用环境：TypeScript 5.x / Node.js 22+
+- 适用环境：TypeScript 5.x / Node.js 22+；本课聚焦 TypeScript。
 ；本课聚焦 TypeScript。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：TypeScript、tsconfig、strict、zod、CI
@@ -539,7 +539,7 @@ package.json
 | 参考资料 | 本课用途 |
 | --- | --- |
 | [tsconfig 参考](https://www.typescriptlang.org/tsconfig/) | 编译选项与严格模式 |
-| [TypeScript Node 指南](https://nodejs.org/en/learn/typescript) | Node 中的 TypeScript |
+| [TypeScript Node 指南](https://nodejs.org/en/learn/typescript/introduction) | Node 中的 TypeScript |
 | [声明文件](https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html) | 类型声明与发布 |
 
 | [本课术语索引：TypeScript 工程配置与实践](#核心概念定义) | 按本课输入、术语边界和错误表现逐项核对 |

@@ -21,8 +21,7 @@
 - Review before starting: TCP, UDP, IP.
 - If you can't read it at a certain step, record the specific card points and then go back to them.
 
-
-I'm sorry.
+> Layering, three-way handshake, TCP vs UDP.
 
 ## Layer Model
 

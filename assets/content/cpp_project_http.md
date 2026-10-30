@@ -409,7 +409,7 @@ svr.Get("/tasks/:id", [](const auto& req, auto& res) {
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：高级
-- 适用环境：C++20 / GCC 13+ 或 Clang 17+
+- 适用环境：C++20 / GCC 13+ 或 Clang 17+；本课聚焦 CMake。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：CMake、cpp-httplib、JSON、RAII、单元测试
 

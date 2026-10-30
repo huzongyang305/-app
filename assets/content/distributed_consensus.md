@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能复述 Raft 的职责，并给出一个输入越界时的反例。
+- [ ] 能推演 Raft 的示例：先写预期输出，再运行并记录差异与失败现象。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -224,7 +224,7 @@ README.md
 {
   "project": "distributed_consensus",
   "scenario": "Raft的正常路径",
-  "input": {"case": "normal", "value": "default_factory"},
+  "input": {"case": "normal", "value": "distributed_consensus"},
   "expected": {"ok": true, "checks": ["Raft可复现", "共识有记录"]},
   "failure_case": {"case": "共识越界或缺失", "error": "validation_error"},
   "idempotency_key": "distributed_consensus-001"
@@ -462,7 +462,7 @@ print(node.advance_commit({"n1": 2, "n2": 2, "n3": 1}))
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，改动其中一个输入后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，改动一个与 Raft 有关的输入后重跑，记录输出与错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；改动输入后，如果结果改变或报错，先核对它是否满足 `共识与复制：Raft 实战要点` 中`Raft` 的适用范围，再检查错误表里是否有同类现象。
 

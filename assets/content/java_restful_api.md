@@ -662,6 +662,15 @@ D. “ResponseEntity” 会自动压缩响应体以减少网络传输
 
 ---
 
+### 考点 6
+
+题目：填空：本课术语表里有一条解释被挖掉了术语名称，请补全。解释：表述性状态转移，一种基于 HTTP 的无状态架构风格。空缺处应填哪个术语？
+正确答案：「REST」
+
+**解析**：正确项：「REST」。本课术语表对它的解释是：表述性状态转移，一种基于 HTTP 的无状态架构风格。题干只挖掉了术语名称，填「REST」或「rest」都算正确。容易和它混淆的是「URI」：两者在「RESTful API 设计与实现」里分别对应不同的使用场景，答题时先看定义里描述的对象和边界，再决定填哪一个。
+
+---
+
 ## 术语速查
 
 | 术语 | 一句话说明 |
@@ -694,7 +703,6 @@ D. “ResponseEntity” 会自动压缩响应体以减少网络传输
 | [Roy Fielding REST 论文原文](https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm) | REST 架构风格的学术源头 |
 | [Microsoft REST API 设计指南](https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design) | 业界 REST API 设计最佳实践 |
 
-复核日期：2026-10-20
 - 最后复核：2026-10-04
 
 ---

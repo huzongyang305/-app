@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能用自己的话说明「TypeScript 编译与运行性能」里的 增量编译，再举一个它不成立的场景。
+- [ ] 能跑通 增量编译 的最小示例，记录一组正常输出和一组失败输出。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -184,7 +184,7 @@ total=499500
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，改动其中一个输入后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，只改 增量编译 的一个输入并比较两次输出，抄下第一条错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；改动输入后，如果结果改变或报错，先核对它是否满足 `TypeScript 编译与运行性能` 中`增量编译` 的适用范围，再检查错误表里是否有同类现象。
 
@@ -355,7 +355,7 @@ total=499500
 | --- | --- |
 | [项目引用](https://www.typescriptlang.org/docs/handbook/project-references.html) | 大型项目拆分与增量构建 |
 | [Everyday Types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html) | 常用类型与收窄 |
-| [TypeScript Node 指南](https://nodejs.org/en/learn/typescript) | Node 中的 TypeScript |
+| [TypeScript Node 指南](https://nodejs.org/en/learn/typescript/introduction) | Node 中的 TypeScript |
 
 | [本课术语索引：TypeScript 编译与运行性能](#核心概念定义) | 按本课输入、术语边界和错误表现逐项核对 |
 > 「TypeScript 编译与运行性能」的链接用于离线阅读后的延伸核对；App 不会自动联网。

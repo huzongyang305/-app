@@ -365,7 +365,7 @@ Flutter 基础与 Widget 树（本课）
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：入门
-- 适用环境：Flutter 3.x / Dart 3.x
+- 适用环境：Flutter 3.x / Dart 3.x；本课聚焦 Flutter。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：Flutter、Widget、布局、约束、热重载
 - 主线：Widget 分类、布局三原则与常用布局对照

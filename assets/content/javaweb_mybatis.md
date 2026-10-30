@@ -1,8 +1,8 @@
 # MyBatis/Hibernate ORM
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：45 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：50 分钟
 
-> 学习阶段：进阶 · 预计用时：45 分钟 · 配图：ORM 映射流程
+> 学习阶段：入门 · 预计用时：50 分钟 · 配图：ORM 映射流程
 
 
 ![MyBatis ORM 映射流程](images/diagram_javaweb_mybatis.webp)
@@ -479,7 +479,7 @@ JDBC 基础（Java 基础课程）
 
 ORM 的核心思想是什么？
 
-A. 手动写 SQL
+A. 手动写 SQL 并把结果集逐行拼装成对象，只把表名和类名做对应  
 
 B. 加密数据
 
@@ -503,7 +503,7 @@ B. #{} 是预编译参数（防 SQL 注入），${} 是字符串替换（有注�
 
 C. ${} 更安全
 
-D. #{} 只能用于数字
+D. #{} 只能用于数字，占位符绑定只提供 setInt 这类数值方法  
 
 **正确答案：B**
 
@@ -519,7 +519,7 @@ A. 一级缓存更大
 
 B. 一级缓存是 SqlSession 级别，二级缓存是 Mapper 级别（跨 SqlSession）
 
-C. 二级缓存默认开启
+C. 二级缓存默认开启，作用范围与一级缓存相同，只在当前 SqlSession 内可复用，换会话后失效  
 
 D. 一级缓存不存在
 
@@ -537,7 +537,7 @@ A. 定义变量
 
 B. 当 name 不为 null 时才包含该 SQL 片段
 
-C. 循环生成 SQL
+C. 循环生成 SQL，按集合长度重复拼接同一段条件  
 
 D. 定义结果映射
 
@@ -551,7 +551,7 @@ D. 定义结果映射
 
 Hibernate 中懒加载（Lazy Loading）的含义是什么？
 
-A. 延迟应用启动
+A. 延迟应用启动，把 Session 的创建推迟到首次访问时  
 
 B. 关联对象在首次访问时才从数据库加载，而非查询时立即加载
 
@@ -562,6 +562,17 @@ D. 缓存所有数据
 **正确答案：B**
 
 **详细解释**：懒加载延迟加载关联数据，只有代码真正访问关联属性时才发 SQL，减少不必要的数据库查询。 使用时要注意：懒加载必须在 Session 打开期间访问关联对象，否则会抛出 LazyInitializationException，可以提前用 fetch join 取回数据。 本题正确项是「关联对象在首次访问时才从数据库加载，而非查询时立即加载」。
+
+---
+
+### 考点 6
+
+题目：填空：本课术语表里有一条解释被挖掉了术语名称，请补全。解释：对象关系映射，自动转换 Java 对象与数据库记录。空缺处应填哪个术语？
+正确答案：「ORM」
+
+**解析**：正确项：「ORM」。本课术语表对它的解释是：对象关系映射，自动转换 Java 对象与数据库记录。题干只挖掉了术语名称，填「ORM」或「orm」都算正确。容易和它混淆的是「MyBatis」：两者在「MyBatis/Hibernate ORM」里分别对应不同的使用场景，答题时先看定义里描述的对象和边界，再决定填哪一个。
+
+---
 
 ## 术语速查
 
@@ -584,7 +595,7 @@ D. 缓存所有数据
 
 ## 参考资料与复核
 
-- [MyBatis 官方文档](https://mybatis.org/mybatis-3/zh/index.html)
+- [MyBatis 官方文档](https://mybatis.org/mybatis-3/zh_CN/index.html)
 - [Hibernate 官方文档](https://hibernate.org/orm/documentation/)
 - [MyBatis-Spring-Boot-Starter](https://mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/)
 - [Spring Data JPA 参考](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/)
@@ -599,8 +610,8 @@ D. 缓存所有数据
 
 - 内容版本：v2.0
 - 最后更新：2026-10-06
-- 学习阶段：进阶
-- 适用环境：通用开发环境
+- 学习阶段：入门
+- 适用环境：通用开发环境；本课聚焦 MyBatis。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：javaweb mybatis
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全

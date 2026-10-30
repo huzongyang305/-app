@@ -542,7 +542,7 @@ re.match(r"[0-9]{4}-[0-9]{2}", "2026-10-08oops")
 
 ## 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例
+- [ ] 能复述 Unicode 的职责，并给出一个输入越界时的反例。
 - [ ] 能默写本课最重要的代码示例，并解释每一行的作用
 - [ ] 能说出本课内容和前后两课的联系
 
@@ -640,6 +640,6 @@ print(len(text), text == 'é', unicodedata.normalize('NFC', text) == 'é')
 - [Python re 模块文档](https://docs.python.org/3/library/re.html) —— 正则表达式的完整参考
 - [字符串格式规格迷你语言](https://docs.python.org/3/library/string.html#format-specification-mini-language) —— f-string 和 format 的格式规格语法大全
 - [Python PEP 393: Flexible String Representation](https://peps.python.org/pep-0393/) —— 了解 Python 3 内部如何存储字符串
-- [Joel on Software: The Absolute Minimum Every Software Developer Must Know About Unicode](https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positive-must-know-about-unicode-and-character-sets-no-excuses/) —— 经典必读，用通俗语言解释 Unicode 和字符集
+- [Python 官方 Unicode HOWTO](https://docs.python.org/3/howto/unicode.html) —— 系统讲解码点、编码与常见解码错误
 
 > 复核提示：本课结论如与上述资料冲突，以资料中的规范文本为准，并在笔记里记录差异与日期。

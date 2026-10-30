@@ -1,62 +1,43 @@
 {
-  "generated_at": "2026-10-26T00:00:00.000000Z",
+  "generated_at": "2026-10-30",
   "schedule_months": 12,
   "first_month": "2026-11",
-  "batch_count": 69,
-  "p0_touched_lessons": 300,
+  "batch_count": 68,
+  "p0_touched_lessons": 716,
   "batches": [
-    {
-      "planned_review_at": "2026-10-10",
-      "lesson_ids": [
-        "mobile_flutter_advanced",
-        "backend_restful_api"
-      ]
-    },
-    {
-      "planned_review_at": "2026-10-15",
-      "lesson_ids": [
-        "mobile_performance_optimization",
-        "backend_nodejs_express"
-      ]
-    },
-    {
-      "planned_review_at": "2026-10-20",
-      "lesson_ids": [
-        "java_data_access",
-        "backend_fastapi_async"
-      ]
-    },
-    {
-      "planned_review_at": "2026-10-25",
-      "lesson_ids": [
-        "java_microservices",
-        "backend_gin_echo"
-      ]
-    },
-    {
-      "planned_review_at": "2026-10-30",
-      "lesson_ids": [
-        "java_testing",
-        "backend_database_integration"
-      ]
-    },
     {
       "planned_review_at": "2026-11-04",
       "lesson_ids": [
-        "java_performance_monitoring",
-        "backend_auth_jwt_oauth"
+        "backend_auth_jwt_oauth",
+        "java_performance_monitoring"
       ]
     },
     {
       "planned_review_at": "2026-11-09",
       "lesson_ids": [
+        "backend_database_integration",
+        "backend_graphql_apollo",
         "java_deployment",
-        "backend_graphql_apollo"
+        "java_testing"
       ]
     },
     {
       "planned_review_at": "2026-11-10",
       "lesson_ids": [
+        "kotlin_android",
+        "kotlin_basics",
+        "kotlin_collections",
+        "kotlin_conditions",
+        "kotlin_coroutines",
+        "kotlin_first_program",
+        "kotlin_functions",
+        "kotlin_functions_intro",
+        "kotlin_loops",
+        "kotlin_oop",
+        "kotlin_project",
+        "kotlin_project_cli_ledger",
+        "kotlin_testing",
+        "kotlin_variables_null",
         "python_asyncio",
         "python_basics",
         "python_cli_automation",
@@ -78,28 +59,14 @@
         "python_input_output",
         "python_interop",
         "python_interview",
-        "python_loops",
-        "kotlin_android",
-        "kotlin_basics",
-        "kotlin_collections",
-        "kotlin_conditions",
-        "kotlin_coroutines",
-        "kotlin_first_program",
-        "kotlin_functions",
-        "kotlin_functions_intro",
-        "kotlin_loops",
-        "kotlin_oop",
-        "kotlin_project",
-        "kotlin_project_cli_ledger",
-        "kotlin_testing",
-        "kotlin_variables_null"
+        "python_loops"
       ]
     },
     {
       "planned_review_at": "2026-11-14",
       "lesson_ids": [
-        "java_project_ecommerce",
-        "backend_microservices_patterns"
+        "backend_microservices_patterns",
+        "java_project_ecommerce"
       ]
     },
     {
@@ -133,6 +100,8 @@
     {
       "planned_review_at": "2026-11-24",
       "lesson_ids": [
+        "java_spring_boot_intro",
+        "ml_data_preprocessing_feature_engineering",
         "password_hash_intro",
         "security_auth_session",
         "security_cloud",
@@ -147,9 +116,7 @@
         "security_secrets",
         "security_secure_coding",
         "security_supply_chain",
-        "security_threat_model",
-        "java_spring_boot_intro",
-        "ml_data_preprocessing_feature_engineering"
+        "security_threat_model"
       ]
     },
     {
@@ -160,10 +127,24 @@
       ]
     },
     {
+      "planned_review_at": "2026-11-30",
+      "lesson_ids": [
+        "backend_restful_api",
+        "mobile_flutter_advanced"
+      ]
+    },
+    {
       "planned_review_at": "2026-12-04",
       "lesson_ids": [
         "java_spring_security",
         "ml_natural_language_processing"
+      ]
+    },
+    {
+      "planned_review_at": "2026-12-05",
+      "lesson_ids": [
+        "backend_nodejs_express",
+        "mobile_performance_optimization"
       ]
     },
     {
@@ -203,6 +184,13 @@
       ]
     },
     {
+      "planned_review_at": "2026-12-15",
+      "lesson_ids": [
+        "backend_fastapi_async",
+        "java_data_access"
+      ]
+    },
+    {
       "planned_review_at": "2026-12-17",
       "lesson_ids": [
         "swift_async",
@@ -226,6 +214,13 @@
       "lesson_ids": [
         "discrete_math_set_theory",
         "ml_model_evaluation_hyperparameter_tuning"
+      ]
+    },
+    {
+      "planned_review_at": "2026-12-20",
+      "lesson_ids": [
+        "backend_gin_echo",
+        "java_microservices"
       ]
     },
     {
@@ -269,8 +264,8 @@
     {
       "planned_review_at": "2027-01-03",
       "lesson_ids": [
-        "discrete_math_combinatorics",
-        "android_flutter_release"
+        "android_flutter_release",
+        "discrete_math_combinatorics"
       ]
     },
     {
@@ -401,6 +396,7 @@
     {
       "planned_review_at": "2027-02-17",
       "lesson_ids": [
+        "devops_monitoring_alert",
         "embedded_bootloader",
         "embedded_bus_protocols",
         "embedded_debug_trace",
@@ -410,8 +406,7 @@
         "embedded_mcu_basics",
         "embedded_project_env_monitor",
         "embedded_rtos_tasks",
-        "embedded_sensor_signal",
-        "devops_monitoring_alert"
+        "embedded_sensor_signal"
       ]
     },
     {
@@ -497,28 +492,6 @@
     {
       "planned_review_at": "2027-03-17",
       "lesson_ids": [
-        "ts_arrays_objects",
-        "ts_basic_types",
-        "ts_build_performance",
-        "ts_build_test",
-        "ts_decorators_pro",
-        "ts_first_types",
-        "ts_fullstack_project",
-        "ts_function_types",
-        "ts_interface_intro",
-        "ts_monorepo",
-        "ts_narrowing_generics",
-        "ts_node_backend",
-        "ts_performance",
-        "ts_project",
-        "ts_project_cli",
-        "ts_project_websocket_dashboard",
-        "ts_runtime_validation",
-        "ts_testing",
-        "ts_type_challenges",
-        "ts_type_level",
-        "ts_utility_types",
-        "typescript",
         "assembly",
         "binary",
         "binary_intro",
@@ -542,7 +515,29 @@
         "fundamentals_simd",
         "fundamentals_storage_stack",
         "graphics_media",
-        "interrupt_exception"
+        "interrupt_exception",
+        "ts_arrays_objects",
+        "ts_basic_types",
+        "ts_build_performance",
+        "ts_build_test",
+        "ts_decorators_pro",
+        "ts_first_types",
+        "ts_fullstack_project",
+        "ts_function_types",
+        "ts_interface_intro",
+        "ts_monorepo",
+        "ts_narrowing_generics",
+        "ts_node_backend",
+        "ts_performance",
+        "ts_project",
+        "ts_project_cli",
+        "ts_project_websocket_dashboard",
+        "ts_runtime_validation",
+        "ts_testing",
+        "ts_type_challenges",
+        "ts_type_level",
+        "ts_utility_types",
+        "typescript"
       ]
     },
     {
@@ -857,8 +852,20 @@
       "planned_review_at": "2027-07-24",
       "lesson_ids": [
         "deadlock",
+        "dist_event_sourcing",
+        "dist_transaction",
+        "distributed_cache",
+        "distributed_consensus",
+        "distributed_fundamentals",
+        "distributed_id",
+        "distributed_multisite",
+        "distributed_rate_limit",
+        "distributed_short_url_project",
         "file_system",
+        "high_availability",
         "ipc_io",
+        "messaging_events",
+        "microservices",
         "os_boot_security",
         "os_cgroups_namespaces",
         "os_filesystem_impl",
@@ -872,19 +879,7 @@
         "process_thread",
         "process_thread_intro",
         "scheduling",
-        "virtual_memory",
-        "dist_event_sourcing",
-        "dist_transaction",
-        "distributed_cache",
-        "distributed_consensus",
-        "distributed_fundamentals",
-        "distributed_id",
-        "distributed_multisite",
-        "distributed_rate_limit",
-        "distributed_short_url_project",
-        "high_availability",
-        "messaging_events",
-        "microservices"
+        "virtual_memory"
       ]
     },
     {
@@ -1054,16 +1049,16 @@
     {
       "planned_review_at": "2027-10-25",
       "lesson_ids": [
-        "co_intro",
-        "co_data_representation",
-        "co_logic_circuits",
-        "co_instruction_system",
-        "co_cpu_datapath",
-        "co_pipeline",
-        "co_memory_hierarchy",
         "co_bus_io",
-        "co_virtual_memory",
-        "co_project"
+        "co_cpu_datapath",
+        "co_data_representation",
+        "co_instruction_system",
+        "co_intro",
+        "co_logic_circuits",
+        "co_memory_hierarchy",
+        "co_pipeline",
+        "co_project",
+        "co_virtual_memory"
       ]
     }
   ]

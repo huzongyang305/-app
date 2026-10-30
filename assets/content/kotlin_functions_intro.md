@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能讲清 Kotlin 函数入门 与 Kotlin 的分工，并指出其中一个前提失效的边界。
+- [ ] 能运行「Kotlin 函数入门」的示例，记录输入、输出与第一次失败的现象。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -461,7 +461,7 @@ fun main() {
 | --- | --- |
 | [Kotlin 基础语法](https://kotlinlang.org/docs/basic-syntax.html) | 语法、类型与函数 |
 | [Kotlin 协程](https://kotlinlang.org/docs/coroutines-guide.html) | 结构化并发与异步流 |
-| [Kotlin 测试](https://kotlinlang.org/docs/testing.html) | 单元测试与断言 |
+| [Kotlin 测试](https://kotlinlang.org/docs/jvm-test-using-junit.html) | 单元测试与断言 |
 
 | [本课术语索引：Kotlin 函数入门](#核心概念定义) | 按本课输入、术语边界和错误表现逐项核对 |
 > 「Kotlin 函数入门」的链接用于离线阅读后的延伸核对；App 不会自动联网。

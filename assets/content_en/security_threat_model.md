@@ -2,8 +2,7 @@
 
 > Translation status: machine translation (lightweight zh-en model). Technical terms may need review; use the Chinese tutorial as the authoritative version.
 
-
-I'm sorry.
+> Identify security risks before coding with assets, boundaries and STRIDE.
 
 > Content update time: 2026-10-03 Learning stage: progress = Estimated duration: 22 minutes
 

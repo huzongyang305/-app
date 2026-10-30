@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能不看正文复述 IEEE754，并指出 浮点数 的一个边界或反例。
+- [ ] 能用「浮点数与校验码」的示例复现结果，并说明浮点数出错时输出的第一条信息。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -444,7 +444,7 @@ print(f"CRC-32 of 'hello' = {crc32_hex(b'hello')}")
 | --- | --- |
 | [CS50 计算机科学导论](https://cs50.harvard.edu/x/) | 计算机科学综合入门 |
 | [MIT 6.033 计算机系统工程](https://ocw.mit.edu/courses/6-033-computer-system-engineering-spring-2018/) | 系统设计与并发 |
-| [NIST 二进制与数据表示](https://www.nist.gov/pml/owm/binary-information) | 二进制、位与数据单位 |
+| [Khan Academy：位与二进制](https://www.khanacademy.org/computing/computers-and-internet/xcae6f4a7ff015e7d:digital-information/xcae6f4a7ff015e7d:binary-numbers/a/bits-and-binary) | 二进制、位与数据单位 |
 
 | [本课术语索引：浮点数与校验码](#核心概念定义) | 按本课输入、术语边界和错误表现逐项核对 |
 > 「浮点数与校验码」的链接用于离线阅读后的延伸核对；App 不会自动联网。

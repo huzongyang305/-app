@@ -459,7 +459,7 @@ double mean(const std::vector<double>& values) {
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：高级
-- 适用环境：C++20 / GCC 13+ 或 Clang 17+
+- 适用环境：C++20 / GCC 13+ 或 Clang 17+；本课聚焦 实战。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：实战、CMake、CTest、sanitizer、工程结构
 
@@ -472,6 +472,6 @@ double mean(const std::vector<double>& values) {
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [Catch2 文档](https://catchorg.github.io/Catch2/latest/) | 单元测试框架的使用方法与最佳实践 |
+| [Catch2 文档](https://github.com/catchorg/Catch2/blob/devel/docs/tutorial.md) | 单元测试框架的使用方法与最佳实践 |
 | [C++ 核心指南](https://isocpp.github.io/CppCoreGuidelines/) | 工程规范、命名约定与资源管理 |
 | [GCC 在线文档](https://gcc.gnu.org/onlinedocs/) | 编译器选项、Sanitizer 参数与警告控制 |

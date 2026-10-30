@@ -23,8 +23,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能讲清 httpx 与 超时 的分工，并指出其中一个前提失效的边界。
+- [ ] 能跑通 httpx 的最小示例，记录一组正常输出和一组失败输出。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -298,7 +298,7 @@ def fetch_all_pages(client, max_pages=100):
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，改动其中一个输入后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，只改 httpx 的一个输入并比较两次输出，抄下第一条错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；改动输入后，如果结果改变或报错，先核对它是否满足 `Python HTTP 客户端工程：超时、重试与认证` 中`连接超时` 的适用范围，再检查错误表里是否有同类现象。
 
@@ -477,8 +477,8 @@ def fetch_all_pages(client, max_pages=100):
 - 复核范围：版本兼容、API 行为与工程实践
 
 下面列出的资料用于核对本课结论，复习时可以对照阅读：
-- [HTTPX 官方文档 - 超时配置](https://www.python-httpx.org/timeouts/)
-- [HTTPX 官方文档 - 高级客户端用法](https://www.python-httpx.org/advanced/)
+- [HTTPX 官方文档 - 超时配置](https://www.python-httpx.org/advanced/clients/timeouts/)
+- [HTTPX 官方文档 - 高级客户端用法](https://www.python-httpx.org/advanced/clients/)
 - [RFC 9110：HTTP 语义与内容](https://www.rfc-editor.org/rfc/rfc9110.html)
 - [MDN Web Docs - Retry-After 响应头](https://developer.mozilla.org/docs/Web/HTTP/Headers/Retry-After)
 - [RFC 6585 - HTTP 429 Too Many Requests 状态码](https://www.rfc-editor.org/rfc/rfc6585.html)

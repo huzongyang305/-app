@@ -460,5 +460,5 @@ D. 纹理分辨率不足
 
 - [Unity 官方文档：批处理与绘制调用优化](https://docs.unity3d.com/Manual/optimizing-draw-calls.html)
 - [Godot 官方文档：渲染性能优化](https://docs.godotengine.org/en/stable/tutorials/performance/general_optimization.html)
-- [NVIDIA GPU Architecture Overview](https://developer.nvidia.com/gpu-architecture)
+- [NVIDIA CUDA 编程指南（GPU 架构章节）](https://docs.nvidia.com/cuda/cuda-programming-guide/index.html)
 - [LearnOpenGL: Advanced GLSL - Instancing](https://learnopengl.com/Advanced-OpenGL/Instancing)

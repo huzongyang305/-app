@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能复述 低功耗 的职责，并给出一个输入越界时的反例。
+- [ ] 能用「低功耗与电池续航设计」的示例复现结果，并说明睡眠模式出错时输出的第一条信息。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 **本课配图**
@@ -240,7 +240,7 @@ static void enter_stop_mode_until_rtc(void) {
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，改动其中一个输入后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，改动一个与 低功耗 有关的输入后重跑，记录输出与错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；改动输入后，如果结果改变或报错，先核对它是否满足 `低功耗与电池续航设计` 中`占空比` 的适用范围，再检查错误表里是否有同类现象。
 
@@ -408,7 +408,7 @@ static void enter_stop_mode_until_rtc(void) {
 - 复核范围：版本兼容、API 行为与工程实践
 
 下面列出的资料用于核对本课结论，复习时可以对照阅读：
-- [STM32 低功耗模式应用笔记](https://www.st.com/resource/en/application_note/an3194-using-the-hardware-rtc-and-low-power-modes-of-the-stm32f0xx-microcontrollers-stmicroelectronics.pdf)
+- [STM32F0 参考手册（低功耗与 RTC 章节）](https://www.st.com/resource/en/reference_manual/rm0091-stm32f0x1stm32f0x2stm32f0x8-advanced-armbased-32bit-mcus-stmicroelectronics.pdf)
 - [ARM Cortex-M 低功耗设计指南](https://developer.arm.com/documentation/100166/latest/)
 
 | [本课术语索引：低功耗与电池续航设计](#核心概念定义) | 按本课输入、术语边界和错误表现逐项核对 |

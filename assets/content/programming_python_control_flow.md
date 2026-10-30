@@ -32,7 +32,7 @@
 ---
 
 ### 复习清单
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例
+- [ ] 能复述 if 的职责，并给出一个输入越界时的反例。
 - [ ] 能默写本课最重要的代码示例，并解释每一行的作用
 - [ ] 能说出本课内容和前后两课的联系
 
@@ -479,7 +479,7 @@ for / while       ──→  推导式          ──→  生成器表达式
 - 内容版本：v2.0
 - 最后更新：2026-10-19
 - 学习阶段：基础
-- 适用环境：Python 3.12+
+- 适用环境：Python 3.12+；本课聚焦 if。
 - 先修课程：python_functions（函数）、python_if_else（条件判断）、python_loops（循环）
 - 相关课程：python_data_structures（数据结构）、python_errors_files（异常处理与文件操作）
 - 关键词：match-case、三元表达式、推导式、异常处理、try-except、break、continue、for-else

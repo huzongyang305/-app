@@ -1,7 +1,511 @@
 {
-  "generated_at": "2026-10-07T17:59:18.345685",
-  "lesson_count": 609,
+  "generated_at": "2026-10-30T20:17:08.110475",
+  "lesson_count": 716,
   "threshold": 8,
-  "repeated_line_count": 0,
-  "repeated_lines": []
+  "repeated_line_count": 28,
+  "repeated_lines": [
+    {
+      "lessons": 38,
+      "line": "- [图解内存布局：栈、堆与引用](visual_memory_layout.md)",
+      "lesson_ids": [
+        "c_arrays_strings",
+        "c_basics",
+        "c_debugging",
+        "c_pointers",
+        "c_structs",
+        "c_types",
+        "compiler_gc",
+        "cpp_basics",
+        "cpp_memory",
+        "cpp_modern",
+        "cpp_move_semantics",
+        "cpp_oop",
+        "cpp_pointers",
+        "cpp_stl",
+        "cpp_types",
+        "js_memory_gc",
+        "memory_cache",
+        "mobile_compose",
+        "mobile_performance",
+        "os_kernel_arch",
+        "python_basics",
+        "python_containers_copy",
+        "python_data_processing",
+        "python_data_structures",
+        "python_gui",
+        "python_interop",
+        "python_interview",
+        "python_modern_features",
+        "python_oop",
+        "python_oop_advanced",
+        "python_packaging_performance",
+        "python_runtime_memory_performance",
+        "python_stdlib",
+        "python_typing_testing",
+        "python_variables",
+        "rust_ownership",
+        "ts_narrowing_generics",
+        "virtual_memory"
+      ]
+    },
+    {
+      "lessons": 22,
+      "line": "- [图解一次网页请求的完整链路](visual_http_timeline.md)",
+      "lesson_ids": [
+        "c_project",
+        "cloud_serverless",
+        "cpp_project",
+        "cpp_project_http",
+        "gateway",
+        "go_grpc",
+        "go_microservice",
+        "go_project_rest_api",
+        "http_basics",
+        "microservices",
+        "network_bgp",
+        "network_performance",
+        "observability",
+        "python_cli_automation",
+        "python_http_clients",
+        "python_project",
+        "python_project_api",
+        "python_project_architecture",
+        "python_project_etl",
+        "python_web_deployment",
+        "ts_fullstack_project",
+        "websocket"
+      ]
+    },
+    {
+      "lessons": 18,
+      "line": "- [图解 B+ 树与数据库索引](visual_btree_index.md)",
+      "lesson_ids": [
+        "balanced_tree",
+        "database_project",
+        "db_graph",
+        "db_ops",
+        "db_postgresql_deep",
+        "db_time_series",
+        "go_data_access",
+        "hash_table",
+        "olap_columnar",
+        "probabilistic_structures",
+        "python_database_sqlalchemy",
+        "redis",
+        "search_index",
+        "segment_tree",
+        "sql_advanced",
+        "storage_engine",
+        "tree_bst",
+        "trie"
+      ]
+    },
+    {
+      "lessons": 18,
+      "line": "- [图解 Kubernetes 调度与探针](visual_k8s_scheduling.md)",
+      "lesson_ids": [
+        "ai_engineering",
+        "ai_mlops",
+        "ai_model_serving",
+        "cloud_containers_kubernetes",
+        "cloud_k8s_operations",
+        "cloud_multicluster_dr",
+        "distributed_multisite",
+        "docker",
+        "gitops_argocd",
+        "go_cloud_native_security",
+        "go_microservice",
+        "kubernetes",
+        "microservices",
+        "os_cgroups_namespaces",
+        "python_web_deployment",
+        "security_cloud",
+        "security_container_k8s",
+        "terraform"
+      ]
+    },
+    {
+      "lessons": 17,
+      "line": "- [图解 RAG 检索增强生成流程](visual_rag_pipeline.md)",
+      "lesson_ids": [
+        "agent_memory",
+        "ai_a2a",
+        "ai_agent_basics",
+        "ai_browser_agent",
+        "ai_coding_agent",
+        "ai_coding_assistant",
+        "ai_computer_use",
+        "ai_embeddings_rag",
+        "ai_engineering",
+        "ai_graphrag",
+        "ai_mcp",
+        "ai_multi_agent",
+        "ai_prompt_engineering",
+        "ai_rag_agent_project",
+        "ai_tool_calling",
+        "multimodal_rag",
+        "python_project"
+      ]
+    },
+    {
+      "lessons": 15,
+      "line": "- [图解并发调度：线程、协程与 Goroutine](visual_concurrency_schedule.md)",
+      "lesson_ids": [
+        "cpp_concurrency_atomics",
+        "deadlock",
+        "go_concurrency",
+        "go_concurrency_patterns",
+        "ipc_io",
+        "kotlin_coroutines",
+        "os_io_uring",
+        "os_synchronization",
+        "process_thread",
+        "python_concurrency",
+        "python_concurrency_model",
+        "rust_async_tokio",
+        "rust_concurrency_cargo",
+        "scheduling",
+        "swift_async"
+      ]
+    },
+    {
+      "lessons": 14,
+      "line": "- [图解调用栈与递归](visual_call_stack.md)",
+      "lesson_ids": [
+        "c_files",
+        "compiler",
+        "compiler_bytecode_vm",
+        "compiler_ir_optimization",
+        "cpp_templates",
+        "js_execution_context",
+        "process_thread",
+        "python_context_iterators",
+        "python_decorators_generators",
+        "python_errors_logging_files",
+        "python_functions",
+        "python_interview",
+        "python_modules_stdlib",
+        "ts_decorators_pro"
+      ]
+    },
+    {
+      "lessons": 12,
+      "line": "- [图解 HTTPS 证书链与 TLS 握手](visual_https_cert.md)",
+      "lesson_ids": [
+        "go_cloud_native_security",
+        "network_attacks",
+        "python_security",
+        "security_auth_session",
+        "security_owasp_top10",
+        "security_sdl",
+        "security_secrets",
+        "security_secure_coding",
+        "security_supply_chain",
+        "security_threat_model",
+        "tls",
+        "web_security"
+      ]
+    },
+    {
+      "lessons": 12,
+      "line": "- **要点**：接收命令并调用操作系统程序的命令行解释器与脚本环境",
+      "lesson_ids": [
+        "shell_automation_advanced",
+        "shell_ci_templates",
+        "shell_container",
+        "shell_first_script",
+        "shell_json_yaml",
+        "shell_loops",
+        "shell_portability",
+        "shell_project_deploy",
+        "shell_project_log_analysis",
+        "shell_security",
+        "shell_security_hardening",
+        "shell_variables_args"
+      ]
+    },
+    {
+      "lessons": 11,
+      "line": "- **TypeScript 的边界**：静态检查只在编译期成立，运行期输入仍需校验。",
+      "lesson_ids": [
+        "ts_arrays_objects",
+        "ts_basic_types",
+        "ts_build_test",
+        "ts_decorators_pro",
+        "ts_fullstack_project",
+        "ts_narrowing_generics",
+        "ts_project",
+        "ts_project_cli",
+        "ts_project_websocket_dashboard",
+        "ts_utility_types",
+        "typescript"
+      ]
+    },
+    {
+      "lessons": 11,
+      "line": "针对 `Shell`，分别写出“可以使用”的条件和“结论不再成立”的条件。",
+      "lesson_ids": [
+        "shell_ci_templates",
+        "shell_container",
+        "shell_first_script",
+        "shell_json_yaml",
+        "shell_loops",
+        "shell_portability",
+        "shell_project_deploy",
+        "shell_project_log_analysis",
+        "shell_security",
+        "shell_security_hardening",
+        "shell_variables_args"
+      ]
+    },
+    {
+      "lessons": 10,
+      "line": "- 使用 `TypeScript` 时，在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js；静态检查只在编译期成立，运行期输入仍需校验。",
+      "lesson_ids": [
+        "ts_arrays_objects",
+        "ts_basic_types",
+        "ts_build_test",
+        "ts_decorators_pro",
+        "ts_fullstack_project",
+        "ts_narrowing_generics",
+        "ts_project",
+        "ts_project_cli",
+        "ts_utility_types",
+        "typescript"
+      ]
+    },
+    {
+      "lessons": 10,
+      "line": "- **要点**：在 JavaScript 上增加静态类型系统的语言，编译后可运行在浏览器或 Node.js。",
+      "lesson_ids": [
+        "ts_arrays_objects",
+        "ts_basic_types",
+        "ts_build_test",
+        "ts_decorators_pro",
+        "ts_fullstack_project",
+        "ts_narrowing_generics",
+        "ts_project",
+        "ts_project_cli",
+        "ts_utility_types",
+        "typescript"
+      ]
+    },
+    {
+      "lessons": 10,
+      "line": "**参考答案**：要把 `Shell` 的定义 接收命令并调用操作系统程序的命令行解释器与脚本环境 与实际输入逐项对照。",
+      "lesson_ids": [
+        "shell_ci_templates",
+        "shell_container",
+        "shell_first_script",
+        "shell_loops",
+        "shell_portability",
+        "shell_project_deploy",
+        "shell_project_log_analysis",
+        "shell_security",
+        "shell_security_hardening",
+        "shell_variables_args"
+      ]
+    },
+    {
+      "lessons": 10,
+      "line": "- 使用 `Shell` 时，接收命令并调用操作系统程序的命令行解释器与脚本环境。",
+      "lesson_ids": [
+        "shell_automation_advanced",
+        "shell_conditions",
+        "shell_container",
+        "shell_pipeline",
+        "shell_pipeline_intro",
+        "shell_portability",
+        "shell_project_log_analysis",
+        "shell_robust",
+        "shell_security",
+        "shell_security_hardening"
+      ]
+    },
+    {
+      "lessons": 9,
+      "line": "针对 `可观测性`，分别写出“可以使用”的条件和“结论不再成立”的条件。",
+      "lesson_ids": [
+        "go_microservice",
+        "go_project_rest_api",
+        "js_project_node_api",
+        "project_debug_performance_triage",
+        "project_deploy_ops",
+        "project_devops_pipeline",
+        "rust_project_axum_api",
+        "shell_automation_advanced",
+        "ts_project_websocket_dashboard"
+      ]
+    },
+    {
+      "lessons": 9,
+      "line": "- **要点**：把计算或读取结果暂存到更快存储，后续请求直接复用。",
+      "lesson_ids": [
+        "agent_cost_performance",
+        "cdn_proxy",
+        "cross_ci_config",
+        "distributed_short_url_project",
+        "dns",
+        "memory_cache",
+        "redis",
+        "ts_monorepo",
+        "visual_cdn_cache"
+      ]
+    },
+    {
+      "lessons": 9,
+      "line": "- [图解大模型推理与显存占用](visual_llm_inference.md)",
+      "lesson_ids": [
+        "ai_deep_learning_llm",
+        "ai_diffusion",
+        "ai_fine_tuning_deployment",
+        "ai_mlops",
+        "ai_model_serving",
+        "ai_multimodal",
+        "ai_realtime_api",
+        "ai_training",
+        "ai_vlm"
+      ]
+    },
+    {
+      "lessons": 8,
+      "line": "- **要点**：系统在给定负载下表现出的吞吐、延迟、资源占用和稳定性。",
+      "lesson_ids": [
+        "cross_performance_profiling",
+        "go_generics_deep",
+        "go_performance",
+        "js_errors_debugging",
+        "os_linux_troubleshooting",
+        "performance_metrics",
+        "time_complexity",
+        "ts_performance"
+      ]
+    },
+    {
+      "lessons": 8,
+      "line": "**参考答案**：要把 `可观测性` 的定义 由日志、指标与链路追踪组成，能在不重启、不改代码的前提下问出新问题 与实际输入逐项对照。",
+      "lesson_ids": [
+        "go_microservice",
+        "go_project_rest_api",
+        "js_project_node_api",
+        "project_debug_performance_triage",
+        "project_devops_pipeline",
+        "rust_project_axum_api",
+        "shell_automation_advanced",
+        "ts_project_websocket_dashboard"
+      ]
+    },
+    {
+      "lessons": 8,
+      "line": "- 同一分类的《Rust Cargo 第一个程序》也涉及 `Rust`；两课衔接时先确认这个术语的定义是否一致。",
+      "lesson_ids": [
+        "rust_async_tokio",
+        "rust_basics",
+        "rust_cli_project",
+        "rust_concurrency_cargo",
+        "rust_errors_iterators",
+        "rust_ownership",
+        "rust_types_traits",
+        "rust_unsafe_ffi"
+      ]
+    },
+    {
+      "lessons": 8,
+      "line": "- 同一分类的《Rust 变量与可变性》也涉及 `Rust`；两课衔接时先确认这个术语的定义是否一致。",
+      "lesson_ids": [
+        "rust_async_tokio",
+        "rust_basics",
+        "rust_cli_project",
+        "rust_concurrency_cargo",
+        "rust_errors_iterators",
+        "rust_ownership",
+        "rust_types_traits",
+        "rust_unsafe_ffi"
+      ]
+    },
+    {
+      "lessons": 8,
+      "line": "- **Rust 的边界**：静态检查只在编译期成立，运行期输入仍需校验。",
+      "lesson_ids": [
+        "rust_async_tokio",
+        "rust_cli_project",
+        "rust_macros_wasm",
+        "rust_ownership",
+        "rust_project_downloader",
+        "rust_smart_pointers",
+        "rust_traits_generics",
+        "rust_types_traits"
+      ]
+    },
+    {
+      "lessons": 8,
+      "line": "- 同一分类的《TypeScript 第一个类型》也涉及 `TypeScript`；两课衔接时先确认这个术语的定义是否一致。",
+      "lesson_ids": [
+        "ts_build_test",
+        "ts_decorators_pro",
+        "ts_fullstack_project",
+        "ts_narrowing_generics",
+        "ts_project",
+        "ts_project_cli",
+        "ts_utility_types",
+        "typescript"
+      ]
+    },
+    {
+      "lessons": 8,
+      "line": "- 同一分类的《TypeScript 基础类型》也涉及 `TypeScript`；两课衔接时先确认这个术语的定义是否一致。",
+      "lesson_ids": [
+        "ts_build_test",
+        "ts_decorators_pro",
+        "ts_fullstack_project",
+        "ts_narrowing_generics",
+        "ts_project",
+        "ts_project_cli",
+        "ts_utility_types",
+        "typescript"
+      ]
+    },
+    {
+      "lessons": 8,
+      "line": "本课与分类「frontend_frameworks」内相邻课程互为补充，建议按清单顺序学完再做综合练习。",
+      "lesson_ids": [
+        "frontend_angular_basics",
+        "frontend_framework_comparison",
+        "frontend_nextjs_ssr",
+        "frontend_performance_optimization",
+        "frontend_react_hooks",
+        "frontend_state_management",
+        "frontend_svelte_reactive",
+        "frontend_vue_composition"
+      ]
+    },
+    {
+      "lessons": 8,
+      "line": "本课与分类「backend_development」内相邻课程互为补充，建议按清单顺序学完再做综合练习。",
+      "lesson_ids": [
+        "backend_auth_jwt_oauth",
+        "backend_database_integration",
+        "backend_fastapi_async",
+        "backend_gin_echo",
+        "backend_graphql_apollo",
+        "backend_microservices_patterns",
+        "backend_nodejs_express",
+        "backend_restful_api"
+      ]
+    },
+    {
+      "lessons": 8,
+      "line": "本课与分类「ml_practice」内相邻课程互为补充，建议按清单顺序学完再做综合练习。",
+      "lesson_ids": [
+        "ml_computer_vision",
+        "ml_data_preprocessing_feature_engineering",
+        "ml_model_deployment_mlops",
+        "ml_model_evaluation_hyperparameter_tuning",
+        "ml_natural_language_processing",
+        "ml_recommendation_systems",
+        "ml_tensorflow_pytorch_intro",
+        "ml_time_series_prediction"
+      ]
+    }
+  ]
 }

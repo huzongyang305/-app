@@ -1,6 +1,6 @@
 # 性能监控与调优
 
-> 内容更新时间：2026-10-20 · 学习阶段：高级 · 预计用时：40 分钟
+> 内容更新时间：2026-10-20 · 学习阶段：高级 · 预计用时：45 分钟
 
 ![应用监控架构](images/application_monitoring.webp)
 
@@ -434,7 +434,7 @@ Trace ID 是一个请求的全局唯一标识，贯穿整个调用链。Span ID 
 Spring Boot Actuator 默认暴露哪些端点？为什么生产环境不能暴露所有端点？
 
 A. 默认暴露所有端点，无需额外配置  
-B. 默认只暴露 metrics 和 loggers；因为其他端点会影响应用性能  
+B. 默认只暴露 metrics 和 loggers；因为其他端点会影响应用性能，例如 /metrics 抓取时要遍历全部 Meter 并聚合  
 C. 默认不暴露任何端点，需要手动开启  
 D. 默认只暴露 health 和 info；因为 env 会泄露密码和密钥，heapdump 会导出堆内存中的敏感数据，存在安全风险  
 
@@ -448,7 +448,7 @@ D. 默认只暴露 health 和 info；因为 env 会泄露密码和密钥，heapd
 
 在性能监控中，为什么只看平均响应时间不够？应该关注什么指标？
 
-A. 平均响应时间已经足够反映系统性能，无需其他指标
+A. 平均响应时间已经足够反映系统性能，无需其他指标，只要平均值达标就说明绝大多数用户体验良好  
 B. 平均值会掩盖极端情况，应关注 P99 或 P999 延迟，它反映“最差的 1%用户”的真实体感  
 C. 应该只关注最快请求的响应时间
 D. 应该关注总请求数而非响应时间
@@ -463,7 +463,7 @@ D. 应该关注总请求数而非响应时间
 
 在指标采集架构中，Micrometer、Prometheus 和 Grafana 分别承担什么角色？
 
-A. Micrometer 存储数据，Prometheus 展示图表，Grafana 采集指标
+A. Micrometer 存储数据，Prometheus 展示图表，Grafana 采集指标，由 Micrometer 把指标写入本地时序库供 Prometheus 读取  
 B. Micrometer 是采集层（埋点收集数据），Prometheus 是存储层（时序数据库，通过 pull 模式拉取数据），Grafana 是展示层（可视化仪表盘）  
 C. Micrometer 是展示层，Prometheus 是采集层，Grafana 是存储层
 D. 三者功能相同，可以任意替换使用
@@ -479,7 +479,7 @@ D. 三者功能相同，可以任意替换使用
 分布式追踪中，Trace ID 和 Span ID 分别代表什么？它们如何配合工作？
 
 A. Trace ID 标识单个服务的处理时间，Span ID 标识数据库查询时间  
-B. Trace ID 用于标识数据库连接，Span ID 用于标识 HTTP 连接  
+B. Trace ID 用于标识数据库连接，Span ID 用于标识 HTTP 连接，两者只在单个服务内部有效，无法跨服务关联同一次请求  
 C. Trace ID 和 Span ID 是同一个概念的不同名称  
 D. Trace ID 是一个请求的全局唯一标识，贯穿整个调用链；Span ID 是每个服务处理步骤的标识，一个 Trace 包含多个 Span  
 
@@ -493,7 +493,7 @@ D. Trace ID 是一个请求的全局唯一标识，贯穿整个调用链；Span 
 
 生产环境中，为什么不能将日志级别设为 DEBUG？
 
-A. DEBUG 级别的日志会导致应用无法正常运行
+A. DEBUG 级别的日志会导致应用无法正常运行，因为 DEBUG 级别会把每个异常的完整堆栈都打印出来并写入磁盘  
 B. DEBUG 级别会产生大量日志输出，导致磁盘空间被撑爆，IO 性能下降；生产环境应使用 INFO 或 WARN 级别  
 C. DEBUG 级别会泄露数据库密码
 D. DEBUG 级别只适用于单元测试环境
@@ -501,6 +501,15 @@ D. DEBUG 级别只适用于单元测试环境
 **正确答案：B**
 
 **详细解释：** DEBUG 级别的日志会记录非常详细的信息，包括 SQL 语句详情、方法入参、变量值等。在生产环境的高并发场景下，这些日志量极其庞大，会迅速占满磁盘空间，同时大量的日志写入操作会严重影响磁盘 IO 性能，进而拖慢应用本身的响应速度。正确做法是：生产环境将日志级别设为 INFO 或 WARN，只记录关键业务事件和潜在问题；当需要排查特定问题时，可以通过 Actuator 的 `/actuator/loggers` 端点动态临时调整某个包的日志级别为 DEBUG，排查完毕后恢复。
+
+---
+
+### 考点 6
+
+题目：填空：本课术语表里有一条解释被挖掉了术语名称，请补全。解释：Spring Boot 内置的监控模块，提供 health、metrics、env 等 HTTP 端点。空缺处应填哪个术语？
+正确答案：「Actuator」
+
+**解析**：正确项：「Actuator」。本课术语表对它的解释是：Spring Boot 内置的监控模块，提供 health、metrics、env 等 HTTP 端点。题干只挖掉了术语名称，填「Actuator」或「actuator」都算正确。容易和它混淆的是「Health Check」：两者在「性能监控与调优」里分别对应不同的使用场景，答题时先看定义里描述的对象和边界，再决定填哪一个。
 
 ---
 
@@ -538,8 +547,9 @@ D. DEBUG 级别只适用于单元测试环境
 
 ## 参考资料与复核
 
-- 最后复核：2026-10-20
-- 下次复核：2027-02-20
+- 最后复核：2026-10-04
+- 下次复核：2026-11-04
+
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：Actuator、Metrics、Tracing、日志管理、性能调优。
 
@@ -548,8 +558,6 @@ D. DEBUG 级别只适用于单元测试环境
 | [Spring Boot Actuator 官方文档](https://docs.spring.io/spring-boot/docs/current/actuator/html/) | Actuator 端点配置与使用 |
 | [Micrometer 文档](https://micrometer.io/docs) | 指标采集门面库官方文档 |
 | [Prometheus 入门](https://prometheus.io/docs/introduction/overview/) | 时序数据库与监控系统 |
-| [Micrometer Tracing 文档](https://micrometer.io/docs/tracing) | 分布式追踪官方指南 |
+| [Micrometer Tracing 文档](https://docs.micrometer.io/tracing/reference/) | 分布式追踪官方指南 |
 | [HikariCP 性能调优](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing) | 数据库连接池配置最佳实践 |
 | [Logback 官方文档](https://logback.qos.ch/manual/) | 日志框架配置与使用 |
-- 最后复核：2026-10-04
-- 下次复核：2026-11-04

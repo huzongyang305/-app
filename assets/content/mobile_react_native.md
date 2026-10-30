@@ -1,6 +1,6 @@
 # React Native 跨平台开发
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：30 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：30 分钟
 
 ![React Native 新架构与性能优化](images/diagram_mobile_react_native.webp)
 
@@ -325,8 +325,8 @@ Ans: AC
 
 - 内容版本：v2.0
 - 最后更新：2026-10-06
-- 学习阶段：进阶
-- 适用环境：React Native 0.7x+ / Hermes 默认启用
+- 学习阶段：基础
+- 适用环境：React Native 0.7x+ / Hermes 默认启用；本课聚焦 React Native。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：React Native、跨平台、Hermes、Fabric、FlatList
 

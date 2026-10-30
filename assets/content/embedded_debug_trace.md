@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能用自己的话说明「嵌入式调试与追踪」里的 SWD，再举一个它不成立的场景。
+- [ ] 能跑通 SWD 的最小示例，记录一组正常输出和一组失败输出。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 **本课配图**
@@ -248,7 +248,7 @@ void capture_fault(uint32_t *stack) {
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，改动其中一个输入后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，只改 SWD 的一个输入并比较两次输出，抄下第一条错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；改动输入后，如果结果改变或报错，先核对它是否满足 `嵌入式调试与追踪` 中`SWD` 的适用范围，再检查错误表里是否有同类现象。
 
@@ -417,7 +417,7 @@ void capture_fault(uint32_t *stack) {
 
 下面列出的资料用于核对本课结论，复习时可以对照阅读：
 - [ARM CoreSight 调试与追踪文档](https://developer.arm.com/documentation/102520/latest/)
-- [FreeRTOS 官方文档：调试与追踪](https://www.freertos.org/Documentation/02-Kernel/03-Supported-devices/04-Demos/01-Demo-Applications-Overview)
+- [FreeRTOS 官方文档：RTOS 追踪功能](https://freertos.org/Documentation/02-Kernel/02-Kernel-features/09-RTOS-trace-feature)
 
 | [本课术语索引：嵌入式调试与追踪](#核心概念定义) | 按本课输入、术语边界和错误表现逐项核对 |
 > 复核提示：《嵌入式调试与追踪》的结论如与资料冲突，以资料中的规范文本为准，并在笔记里记录差异与日期。

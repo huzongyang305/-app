@@ -2,7 +2,7 @@
 
 ![TensorFlow与PyTorch框架对比入门](images/diagram_ml_tensorflow_pytorch_intro.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：35 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：40 分钟
 
 ## 本节知识框架
 
@@ -12,8 +12,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能讲清 TensorFlow 与 PyTorch 的分工，并指出其中一个前提失效的边界。
+- [ ] 能跑通 TensorFlow 的最小示例，记录一组正常输出和一组失败输出。
 - [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
 
 ### 课程导言
@@ -71,11 +71,11 @@
 ## 典型应用场景
 
 - 结合「TensorFlow与PyTorch框架对比入门」的常见落地场景与选型边界，详见正文各章节的对比讨论。
-- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
+- 迁移 TensorFlow 前先确认新项目的规模与失败代价，再决定保留多少机制。
 
 ## 代码/协议/SQL 示例
 
-正文首个完整示例如下，先运行确认环境，再按正文步骤改一个输入观察输出变化。
+「TensorFlow与PyTorch框架对比入门」的第一个完整示例先建立 TensorFlow 的基线，再按正文步骤改动一个输入。
 
 ```python
 import tensorflow as tf
@@ -404,7 +404,7 @@ manager.train(train_loader, test_loader, num_epochs=20)
 ## 时间/空间复杂度或性能分析
 
 - 在《TensorFlow与PyTorch框架对比入门》里处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
-- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
+- 关于 TensorFlow 的性能结论要写明输入分布，环境或规模一变就必须重测。
 
 ## 常见误区与易错点
 
@@ -434,7 +434,7 @@ manager.train(train_loader, test_loader, num_epochs=20)
 
 ## 自测题与参考答案
 
-以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
+下列题目考查 TensorFlow 的判断依据；先作答再看解析，并把错项改写成反例。
 
 ## 考点精讲
 
@@ -442,7 +442,7 @@ manager.train(train_loader, test_loader, num_epochs=20)
 
 关于TensorFlow和PyTorch的计算图机制，以下哪项描述是正确的？
 
-A. TensorFlow 2.x默认使用静态计算图，PyTorch默认使用动态计算图  
+A. TensorFlow 2.x默认使用静态计算图，PyTorch默认使用动态计算图，需要先构图再启动 Session  
 B. TensorFlow 2.x默认使用动态计算图（Eager Execution），PyTorch也使用动态计算图 ✅  
 C. 两个框架都只支持静态计算图  
 D. 两个框架都只支持动态计算图  
@@ -458,7 +458,7 @@ D. 两个框架都只支持动态计算图
 A. 为了重置优化器的学习率  
 B. 因为PyTorch默认会累积梯度，不清零会导致梯度累加 ✅  
 C. 为了释放GPU内存  
-D. 这是一个可选操作，不影响训练结果  
+D. 这是一个可选操作，不影响训练结果，梯度缓冲区会一直保留  
 
 **正确答案：** B
 
@@ -468,7 +468,7 @@ D. 这是一个可选操作，不影响训练结果
 
 以下关于张量操作的描述，哪一项是错误的？
 
-A. TensorFlow的`tf.constant`创建的张量默认是不可变的  
+A. TensorFlow的`tf.constant`创建的张量默认是不可变的，修改后需要重新创建张量  
 B. PyTorch的`torch.tensor`创建的张量默认是可变的  
 C. `tensor.reshape()`和`tensor.view()`在所有情况下都可以互换使用 ✅  
 D. 两个框架都支持广播（broadcasting）机制  
@@ -494,7 +494,7 @@ D. `TensorBoard`
 
 关于模型部署，以下哪种说法最为准确？
 
-A. TensorFlow模型只能部署在Google Cloud上  
+A. TensorFlow模型只能部署在Google Cloud上，需要借助 Vertex AI 托管端点加载  
 B. PyTorch模型无法转换为其他格式进行部署  
 C. TensorFlow的SavedModel格式和PyTorch的TorchScript都支持跨语言部署 ✅  
 D. 两个框架的模型都必须保持原始框架环境才能部署  
@@ -502,6 +502,17 @@ D. 两个框架的模型都必须保持原始框架环境才能部署
 **正确答案：** C
 
 **解析：** 现代深度学习框架都非常重视模型的部署能力。TensorFlow的SavedModel是一种语言无关的序列化格式，可以被Python、Java、C++等多种语言加载，并且可以转换为TensorFlow Lite用于移动端部署，或转换为TensorFlow.js用于浏览器部署。PyTorch的TorchScript可以将模型序列化为独立文件，无需Python环境即可在C++中加载运行，还可以通过ONNX格式与其他框架互操作。选项A和B明显错误，选项D也不准确，因为有多种方法可以将模型脱离原始框架部署。
+
+---
+
+### 考点 6
+
+题目：填空：本课术语表里有一条解释被挖掉了术语名称，请补全。解释：Google开源的工业级深度学习框架，静态图编译与完整生态便于大规模训练部署。空缺处应填哪个术语？
+正确答案：「TensorFlow」
+
+**解析**：正确项：「TensorFlow」。本课术语表对它的解释是：Google开源的工业级深度学习框架，静态图编译与完整生态便于大规模训练部署。题干只挖掉了术语名称，填「TensorFlow」或「tensorflow」都算正确。容易和它混淆的是「PyTorch」：两者在「TensorFlow与PyTorch框架对比入门」里分别对应不同的使用场景，答题时先看定义里描述的对象和边界，再决定填哪一个。
+
+---
 
 ## 术语速查
 

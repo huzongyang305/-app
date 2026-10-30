@@ -380,7 +380,7 @@ D. 出现字面量 `error`
 题目：减小 APK 体积的常用做法是？
 A. 使用 --split-per-abi 或 App Bundle
 B. 内嵌高清图
-C. 打包全部 ABI
+C. 打包全部 ABI，让每台设备都内置全部指令集对应的原生库  
 D. 引入更多字体
 正确答案：A
 
@@ -429,7 +429,7 @@ D. 混淆与符号
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：基础
-- 适用环境：Flutter 3.x / Dart 3.x / Android Gradle Plugin 8.x
+- 适用环境：Flutter 3.x / Dart 3.x / Android Gradle Plugin 8.x；本课聚焦 Flutter。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：Flutter、发布、签名、混淆、体积优化
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全

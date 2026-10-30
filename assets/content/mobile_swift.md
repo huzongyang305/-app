@@ -391,7 +391,7 @@ D. struct 是值类型（复制语义）
 
 题目：guard let 与 if let 相比，最明显的特点是？
 A. guard 会忽略失败情况
-B. guard 只能用于循环内部
+B. guard 只能用于循环内部，用来在每轮迭代开始时跳过不满足条件的元素  
 C. guard 的条件不满足时必须在当前作用域退出（return/throw 等）
 D. guard 不能解包可选值
 正确答案：C
@@ -423,7 +423,7 @@ D. 直接使用
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：基础
-- 适用环境：Xcode 15+ / Swift 5.9+ / iOS 17+
+- 适用环境：Xcode 15+ / Swift 5.9+ / iOS 17+；本课聚焦 Swift。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：Swift、iOS、SwiftUI、ARC、TestFlight
 

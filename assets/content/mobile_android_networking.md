@@ -449,7 +449,7 @@ Retrofit 的核心设计思想是什么？
 
 A. 手动解析 JSON
 
-B. 直接操作 Socket
+B. 直接操作 Socket，自己维护连接与读写  
 
 C. 通过接口注解声明式定义 HTTP API
 
@@ -471,7 +471,7 @@ B. 在请求发送前或响应返回后统一处理（如添加 Token、日志�
 
 C. 压缩图片
 
-D. 管理数据库
+D. 管理数据库，把每次请求与响应的字段写入本地数据库表供离线查询  
 
 **正确答案：B**
 
@@ -487,7 +487,7 @@ A. 协程速度更快
 
 B. 协程以同步写法处理异步操作，避免回调地狱
 
-C. 协程不需要网络权限
+C. 协程不需要网络权限，安装时即默认授予  
 
 D. 协程自动缓存数据
 
@@ -501,7 +501,7 @@ D. 协程自动缓存数据
 
 Retrofit 中 @Body 注解的作用是什么？
 
-A. 指定 URL 路径
+A. 指定 URL 路径，把参数拼进请求地址  
 
 B. 将对象序列化为请求体（如 JSON）
 
@@ -525,11 +525,26 @@ B. 捕获异常，显示友好错误提示，提供重试机制
 
 C. 忽略错误
 
-D. 强制退出 App
+D. 强制退出 App，避免异常状态影响后续请求  
 
 **正确答案：B**
 
 **详细解释**：网络不可靠是常态，应捕获 IOException/HttpException，给用户可操作的错误提示和重试按钮。 重试要设置上限并配合退避策略，否则网络持续不可用时会不断放大请求量，反而加重服务端压力。 错误提示要区分网络断开、超时和服务端错误，给出不同的处理建议，而不是统一弹一句加载失败。 本题正确项是「捕获异常，显示友好错误提示，提供重试机制」。
+
+---
+
+### 考点 6
+
+题目：在「Android 网络编程与 Retrofit」的术语表里，下列术语与解释的配对哪些是正确的？（多选）
+A. 「Dispatcher」：OkHttp 的并发控制器，管理最大请求数  
+B. 「Converter」：把 HTTP body 转成 Kotlin 对象（JSON → data class）  
+C. 「Moshi」：把 Retrofit 的 Call<T> 转成其他返回类型（如协程的 suspend）  
+D. 「CallAdapter」：Square 出品的 JSON 库，Kotlin 友好  
+正确答案：AB
+
+**解析**：本题正确项是「Dispatcher」：OkHttp 的并发控制器，管理最大请求数，以及「Converter」：把 HTTP body 转成 Kotlin 对象（JSON → data class），这两组配对与术语表一致。另外两组把术语和解释张冠李戴：「Moshi」被安上了把 Retrofit 的 Call<T> 转成其他返回类型（如协程的 suspend）的解释，「CallAdapter」反而拿到了Square 出品的 JSON 库，Kotlin 友好的定义，所以两组都不能选。复习时回到「Android 网络编程与 Retrofit」的术语速查表逐条核对，配对题考的是定义里描述的对象和边界，而不是术语的字面长相。
+
+---
 
 ## 术语速查
 
@@ -546,8 +561,8 @@ D. 强制退出 App
 
 ## 参考资料与复核
 
-1. [Retrofit 官方文档](https://square.github.io/retrofit/) — 接口声明、Converter 配置、CallAdapter 扩展。
-2. [OkHttp 官方文档](https://square.github.io/okhttp/) — Interceptor 链、连接池、缓存策略。
+1. [Retrofit 官方仓库](https://github.com/lysine-dev/retrofit) — 接口声明、Converter 配置、CallAdapter 扩展。
+2. [OkHttp 官方仓库](https://github.com/lysine-dev/okhttp) — Interceptor 链、连接池、缓存策略。
 3. [Moshi 文档](https://github.com/square/moshi) — Kotlin codegen 用法与空安全处理。
 4. [Kotlin 协程与 Retrofit](https://kotlinlang.org/docs/coroutines-guide.html) — `suspend` 函数与协程上下文。
 5. **复核要点**：本课代码示例基于 Retrofit 2.9+、OkHttp 4.10+、Moshi 1.14+，Kotlin 1.8+。Interceptor 链的执行顺序在 OkHttp 3.x 和 4.x 中一致。
@@ -560,7 +575,7 @@ D. 强制退出 App
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：进阶
-- 适用环境：通用开发环境
+- 适用环境：通用开发环境；本课聚焦 Retrofit。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：mobile android networking
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全

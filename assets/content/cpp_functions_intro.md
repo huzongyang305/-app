@@ -520,7 +520,7 @@ double average(const int* ptr, int n) { ... }
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：基础
-- 适用环境：C++17 / GCC 13+ 或 Clang 17+
+- 适用环境：C++17 / GCC 13+ 或 Clang 17+；本课聚焦 C++ 函数入门。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：C++ 函数入门、C++、入门练习
 
@@ -533,5 +533,5 @@ double average(const int* ptr, int n) { ... }
 | 参考资料 | 本课用途 |
 | --- | --- |
 | [cppreference - Functions](https://en.cppreference.com/w/cpp/language/functions) | C++ 函数语义详解 |
-| [Learn C++ - Functions](https://www.learncpp.com/cpp-tutorial/function-basics/) | 函数入门教程 |
+| [Learn C++ - Functions](https://www.learncpp.com/cpp-tutorial/introduction-to-functions/) | 函数入门教程 |
 | [cplusplus.com - Functions](https://cplusplus.com/doc/tutorial/functions/) | 函数定义与调用 |

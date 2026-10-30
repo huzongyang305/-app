@@ -441,7 +441,7 @@ D. 使用 “req.getParameter()” 获取表单参数
 
 以下关于 Servlet 中转发（forward）和重定向（sendRedirect）的说法，哪个是正确的？
 
-A. 转发会在响应里回写一个新的 Location，浏览器地址栏随之换成目标资源的完整地址
+A. 转发会在响应里回写一个新的 Location，浏览器地址栏随之换成目标资源的完整地址，并返回 302 状态码让浏览器重新发起请求  
 B. 重定向是由服务器在内部把请求直接交给另一个资源处理，浏览器只看到一次请求与一次响应
 C. 转发使用 “req.getRequestDispatcher().forward(req, resp)” 实现，浏览器地址栏不变
 D. 重定向只能跳转到同一应用内的页面，跨站点的 Location 会被容器直接拒绝  
@@ -464,6 +464,19 @@ D. POST 请求会被容器丢弃，客户端收不到任何响应
 **正确答案：C**
 
 **详细解释：** “HttpServlet” 的 “service()” 方法会根据请求类型分派到对应的 “doGet()”、“doPost()” 等方法。如果只重写了 “doGet()” 而没有重写 “doPost()”，当 POST 请求到达时，父类 “HttpServlet” 的默认 “doPost()” 实现会返回 405 Method Not Allowed 状态码，表示该 Servlet 不支持 POST 方法。因此必须根据需求重写对应的处理方法。
+
+---
+
+### 考点 6
+
+题目：在「Servlet 与 JSP 基础」的术语表里，下列术语与解释的配对哪些是正确的？（多选）
+A. 「Request」：Java Server Pages，本质是 Servlet 的简化写法  
+B. 「Servlet 容器」：管理 Servlet 生命周期的运行环境，如 Tomcat  
+C. 「JSP」：客户端发送给服务器的数据  
+D. 「Servlet」：Java 编写的服务端程序，处理 HTTP 请求并返回响应  
+正确答案：BD
+
+**解析**：本题正确项是「Servlet 容器」：管理 Servlet 生命周期的运行环境，如 Tomcat，以及「Servlet」：Java 编写的服务端程序，处理 HTTP 请求并返回响应，这两组配对与术语表一致。另外两组把术语和解释张冠李戴：「Request」被安上了Java Server Pages，本质是 Servlet 的简化写法的解释，「JSP」反而拿到了客户端发送给服务器的数据的定义，所以两组都不能选。复习时回到「Servlet 与 JSP 基础」的术语速查表逐条核对，配对题考的是定义里描述的对象和边界，而不是术语的字面长相。
 
 ---
 

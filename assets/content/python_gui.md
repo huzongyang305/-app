@@ -449,7 +449,7 @@ print(f"第一次: {len(first_drain)}, 第二次: {len(second_drain)}")
 
 ## 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例
+- [ ] 能用自己的话说明「Python GUI 开发：Tkinter 与 PySide6」里的 Tkinter，再举一个它不成立的场景。
 - [ ] 能默写本课最重要的代码示例，并解释每一行的作用
 - [ ] 能说出本课内容和前后两课的联系
 
@@ -541,7 +541,7 @@ print(f"第一次: {len(first_drain)}, 第二次: {len(second_drain)}")
 - [PySide6 官方文档](https://doc.qt.io/qtforpython-6/)
 - [Python threading 文档](https://docs.python.org/3/library/threading.html)
 - [PyInstaller 官方文档](https://pyinstaller.org/en/stable/)
-- [Tkinter 布局教程 - Grid, Pack, Place](https://www.pythontutorial.net/tkinter/tkinter-geometry-managers/)
+- [Tkinter Grid 布局教程](https://www.pythontutorial.net/tkinter/tkinter-grid/)
 - [Real Python - GUI Programming with Tkinter](https://realpython.com/python-gui-with-tkinter/)
 
 | [本课术语索引：Python GUI 开发：Tkinter 与 PySide6](#核心概念定义) | 按本课输入、术语边界和错误表现逐项核对 |

@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能复述 实战 的职责，并给出一个输入越界时的反例。
+- [ ] 能用「实战：文档问答助手（RAG + Agent）」的示例复现结果，并说明RAG出错时输出的第一条信息。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -213,7 +213,7 @@ README.md
 {
   "project": "ai_rag_agent_project",
   "scenario": "实战的正常路径",
-  "input": {"case": "normal", "value": "default_factory"},
+  "input": {"case": "normal", "value": "ai_rag_agent_project"},
   "expected": {"ok": true, "checks": ["实战可复现", "RAG有记录"]},
   "failure_case": {"case": "RAG越界或缺失", "error": "validation_error"},
   "idempotency_key": "ai_rag_agent_project-001"
@@ -395,7 +395,7 @@ print(answer_policy(retrieved=0, top_score=0.0))
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，改动其中一个输入后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，把 RAG 相关的一个值换成边界值，记录输出差异与错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；改动输入后，如果结果改变或报错，先核对它是否满足 `实战：文档问答助手（RAG + Agent）` 中`实战` 的适用范围，再检查错误表里是否有同类现象。
 

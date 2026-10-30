@@ -2,8 +2,7 @@
 
 > Translation status: machine translation (lightweight zh-en model). Technical terms may need review; use the Chinese tutorial as the authoritative version.
 
-
-I'm sorry.
+> Move/Copy, borrow rules and lifetimes.
 
 > Content update time: 2026-10-03 Learning stage: Introduction Expected duration: 16 minutes
 

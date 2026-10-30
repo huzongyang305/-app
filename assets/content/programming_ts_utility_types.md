@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能讲清 TypeScript 与 工具类型 的分工，并指出其中一个前提失效的边界。
+- [ ] 能运行「TypeScript 工具类型与声明文件」的示例，记录输入、输出与第一次失败的现象。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -436,7 +436,7 @@ type Value = Awaited<Promise<number>>;   // number
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：入门
-- 适用环境：TypeScript 5.x / Node.js 22+
+- 适用环境：TypeScript 5.x / Node.js 22+；本课聚焦 TypeScript。
 ；本课聚焦 TypeScript。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：TypeScript、工具类型、映射类型、声明文件
@@ -453,7 +453,7 @@ type Value = Awaited<Promise<number>>;   // number
 | --- | --- |
 | [声明文件](https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html) | 类型声明与发布 |
 | [Utility Types](https://www.typescriptlang.org/docs/handbook/utility-types.html) | 内置类型变换 |
-| [TypeScript Node 指南](https://nodejs.org/en/learn/typescript) | Node 中的 TypeScript |
+| [TypeScript Node 指南](https://nodejs.org/en/learn/typescript/introduction) | Node 中的 TypeScript |
 
 | [本课术语索引：TypeScript 工具类型与声明文件](#核心概念定义) | 按本课输入、术语边界和错误表现逐项核对 |
 > 「TypeScript 工具类型与声明文件」的链接用于离线阅读后的延伸核对；App 不会自动联网。

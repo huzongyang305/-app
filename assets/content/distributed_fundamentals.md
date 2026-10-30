@@ -21,8 +21,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能讲清 分布式 与 CAP 的分工，并指出其中一个前提失效的边界。
+- [ ] 能运行「分布式系统原理」的示例，记录输入、输出与第一次失败的现象。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -497,7 +497,7 @@ def apply(order_id, payload):
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [CAP 定理资料](https://www.cs.princeton.edu/courses/archive/fall20/cos418/papers/brew.pdf) | 一致性、可用性与分区 |
+| [CAP 定理资料](https://www.ibm.com/think/topics/cap-theorem) | 一致性、可用性与分区 |
 | [Martin Fowler 事件驱动](https://martinfowler.com/articles/201701-event-driven.html) | 事件、消息与一致性 |
 | [AWS 架构中心](https://aws.amazon.com/architecture/) | 高可用与云架构模式 |
 

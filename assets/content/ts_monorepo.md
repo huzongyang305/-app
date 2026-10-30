@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能不看正文复述 Monorepo，并指出 pnpm 的一个边界或反例。
+- [ ] 能用「Monorepo 工程实践」的示例复现结果，并说明pnpm出错时输出的第一条信息。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -606,7 +606,7 @@ pnpm turbo run typecheck --filter='...[origin/main]'
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：进阶
-- 适用环境：TypeScript 5.x / Node.js 22+
+- 适用环境：TypeScript 5.x / Node.js 22+；本课聚焦 Monorepo。
 ；本课聚焦 Monorepo。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：Monorepo、pnpm、Turborepo、Changesets、依赖图、缓存

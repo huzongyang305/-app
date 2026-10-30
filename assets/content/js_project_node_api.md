@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能不看正文复述 Node.js，并指出 Express 的一个边界或反例。
+- [ ] 能用「实战：Node.js + Express REST API」的示例复现结果，并说明Express出错时输出的第一条信息。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -216,7 +216,7 @@ package.json
 {
   "project": "js_project_node_api",
   "scenario": "Node.js的正常路径",
-  "input": {"case": "normal", "value": "CreateTask"},
+  "input": {"case": "normal", "value": "js_project_node_api"},
   "expected": {"ok": true, "checks": ["Node.js可复现", "Express有记录"]},
   "failure_case": {"case": "Express越界或缺失", "error": "validation_error"},
   "idempotency_key": "js_project_node_api-001"
@@ -348,7 +348,7 @@ export default app;
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，改动其中一个输入后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，改动一个与 Node.js 有关的输入后重跑，记录输出与错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；改动输入后，如果结果改变或报错，先核对它是否满足 `实战：Node.js + Express REST API` 中`Node.js` 的适用范围，再检查错误表里是否有同类现象。
 

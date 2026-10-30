@@ -486,7 +486,7 @@ ConfigMap 存储非机密的配置数据（如 URL、日志级别），以明文
 
 Docker 镜像的分层机制有什么好处？为什么多阶段构建能减小镜像体积？
 
-A. 分层机制没有任何好处，多阶段构建只是为了让 Dockerfile 更复杂  
+A. 分层机制没有任何好处，多阶段构建只是为了让 Dockerfile 更复杂，好让每个阶段单独写一份依赖清单  
 B. 分层机制仅用于版本管理，与镜像体积无关  
 C. 分层会增加镜像体积，多阶段构建会增大镜像体积  
 D. 分层可以复用和缓存加速构建；多阶段构建的最终镜像只包含运行阶段文件，构建阶段的编译器、源码等全部被丢弃  
@@ -501,7 +501,7 @@ D. 分层可以复用和缓存加速构建；多阶段构建的最终镜像只�
 
 Kubernetes 中 Deployment 的 `maxSurge` 和 `maxUnavailable` 分别是什么意思？如果 `replicas=3`、`maxSurge=1`、`maxUnavailable=0`，滚动更新时最多会有几个 Pod 同时运行？
 
-A. 最多 3 个 Pod；maxSurge 和 maxUnavailable 不影响 Pod 总数  
+A. 最多 3 个 Pod；maxSurge 和 maxUnavailable 不影响 Pod 总数，只决定新 Pod 的创建顺序  
 B. 最多 2 个 Pod；更新时必须先删除旧 Pod 再创建新 Pod  
 C. 最多 5 个 Pod；maxSurge 和 maxUnavailable 各自独立计算  
 D. 最多 4 个 Pod；maxSurge 控制更新时允许超出期望副本数的上限，maxUnavailable 控制允许不可用的下限  
@@ -516,7 +516,7 @@ D. 最多 4 个 Pod；maxSurge 控制更新时允许超出期望副本数的上�
 
 在 Dockerfile 中，使用多阶段构建（multi-stage build）的主要目的是什么？
 
-A. 让 Dockerfile 支持多个操作系统  
+A. 让 Dockerfile 支持多个操作系统，每个 FROM 阶段可用不同基础镜像  
 B. 让容器可以同时运行多个应用  
 C. 让多个开发者可以同时构建同一个项目  
 D. 将构建环境和运行环境分离，最终镜像只包含运行所需的最小文件集，显著减小镜像体积  
@@ -533,7 +533,7 @@ Kubernetes 中 ConfigMap 和 Secret 的区别是什么？为什么说 Secret 的
 
 A. ConfigMap 和 Secret 完全相同，没有区别  
 B. Secret 使用 AES-256 加密，安全性极高  
-C. ConfigMap 用于存储密码，Secret 用于存储日志级别  
+C. ConfigMap 用于存储密码，Secret 用于存储日志级别，因为 Secret 以 tmpfs 卷挂载到 Pod 中，不会落盘  
 D. ConfigMap 存储非机密配置数据（明文），Secret 存储敏感数据；Base64 只是编码方式而非加密，任何人可以瞬间解码还原原文  
 
 **正确答案：D**
@@ -554,6 +554,19 @@ D. 集中保存应用的配置文件与环境变量，以键值对形式挂载�
 **正确答案：A**
 
 **详细解释：** Kubernetes 中的 Pod 是临时的——Pod 可能因为更新、故障或节点缩容而被销毁和重建，每次重建后 IP 地址都会变化。Service 为一组具有相同标签的 Pod 提供一个稳定的网络入口（固定的 ClusterIP 和端口），通过 selector 匹配后端 Pod。即使后端 Pod 的 IP 发生变化，Service 的地址始终不变，其他服务或客户端只需访问 Service 地址即可。Service 还支持负载均衡，将请求自动分发到后端的多个 Pod 实例上，类似于一个店铺的统一电话号码——不管哪个店员接电话，顾客只需要拨这一个号。
+
+---
+
+### 考点 6
+
+题目：在「部署与容器化」的术语表里，下列术语与解释的配对哪些是正确的？（多选）
+A. 「PV/PVC」：持久化存储卷与存储卷申请  
+B. 「Secret」：HTTP/HTTPS 路由和外部流量入口  
+C. 「ConfigMap」：存储非机密配置数据的 K8s 对象  
+D. 「Ingress」：存储敏感数据的 K8s 对象（Base64 编码）  
+正确答案：AC
+
+**解析**：本题正确项是「PV/PVC」：持久化存储卷与存储卷申请，以及「ConfigMap」：存储非机密配置数据的 K8s 对象，这两组配对与术语表一致。另外两组把术语和解释张冠李戴：「Secret」被安上了HTTP/HTTPS 路由和外部流量入口的解释，「Ingress」反而拿到了存储敏感数据的 K8s 对象（Base64 编码）的定义，所以两组都不能选。复习时回到「部署与容器化」的术语速查表逐条核对，配对题考的是定义里描述的对象和边界，而不是术语的字面长相。
 
 ---
 
@@ -591,7 +604,7 @@ D. 集中保存应用的配置文件与环境变量，以键值对形式挂载�
 | --- | --- |
 | [Docker 官方文档](https://docs.docker.com/) | Docker 引擎、CLI、Compose 的权威参考 |
 | [Kubernetes 官方文档](https://kubernetes.io/docs/) | K8s 核心概念、API 参考和教程 |
-| [Spring Boot Docker 指南](https://spring.io/guides/topicals/spring-boot-docker/) | Spring Boot 官方提供的容器化最佳实践 |
+| [Spring Boot Docker 指南](https://docs.spring.io/spring-boot/reference/packaging/container-images/dockerfiles.html) | Spring Boot 官方提供的容器化最佳实践 |
 | [Dockerfile 最佳实践](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/) | 编写高效 Dockerfile 的官方建议 |
 | [Kubernetes Deployment 策略](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy) | 滚动更新与蓝绿部署的官方说明 |
 - 最后复核：2026-10-04

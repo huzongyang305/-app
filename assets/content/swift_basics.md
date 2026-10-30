@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能复述 Swift 的职责，并给出一个输入越界时的反例。
+- [ ] 能用「Swift 基础与可选类型」的示例复现结果，并说明Optional出错时输出的第一条信息。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -311,7 +311,7 @@ do {
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，改动其中一个输入后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，把 Optional 相关的一个值换成边界值，记录输出差异与错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；改动输入后，如果结果改变或报错，先核对它是否满足 `Swift 基础与可选类型` 中`Swift` 的适用范围，再检查错误表里是否有同类现象。
 
@@ -417,8 +417,8 @@ do {
 ### 考点 6：第 6 题
 
 - **题目**：下面几项都与 `Swift` 有关，请按 `Swift 基础与可选类型` 的正文顺序排列；该课主线是掌握 let/var、可选绑定、值类型和错误处理。
-- **正确项**：核心知识 → 关键流程 → 实践路径 → 常见误区
-- **判断依据**：按《Swift 基础与可选类型》正文的先后，本题顺序是「核心知识」 → 「关键流程」 → 「实践路径」 → 「常见误区」。术语「Swift」在本课里的界定是Apple 推出的静态类型编程语言，用于 iOS、macOS 等平台开发，题干问的就是这一条。常见错法是强制解包可选值，其后果是运行期直接崩溃。正确做法是用可选绑定与默认值处理。
+- **正确项**：Swift → 值类型 → 错误处理 → Optional
+- **判断依据**：按《Swift 基础与可选类型》正文首次出现的先后，本题顺序是「Swift」 → 「值类型」 → 「错误处理」 → 「Optional」。术语「Swift」在本课里的界定是Apple 推出的静态类型编程语言，用于 iOS、macOS 等平台开发，题干问的就是这一条。常见错法是强制解包可选值，其后果是运行期直接崩溃。正确做法是用可选绑定与默认值处理。
 
 ### 考点 7：`Swift`
 
@@ -487,7 +487,7 @@ do {
 | --- | --- |
 | [Swift 语言指南](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/) | 语法、类型与内存模型 |
 | [Apple 人机界面指南](https://developer.apple.com/design/human-interface-guidelines/) | iOS 设计规范与可访问性 |
-| [Apple 内存管理](https://developer.apple.com/documentation/swift/automatic-reference-counting) | ARC 与循环引用 |
+| [Apple 内存管理](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/) | ARC 与循环引用 |
 
 | [本课术语索引：Swift 基础与可选类型](#核心概念定义) | 按本课输入、术语边界和错误表现逐项核对 |
 > 「Swift 基础与可选类型」的链接用于离线阅读后的延伸核对；App 不会自动联网。

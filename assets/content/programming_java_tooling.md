@@ -457,6 +457,6 @@ try (PreparedStatement ps = conn.prepareStatement(safe)) {
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：进阶
-- 适用环境：Java 21+ / Maven 或 Gradle
+- 适用环境：Java 21+ / Maven 或 Gradle；本课聚焦 Maven。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：Maven、Gradle、JUnit、Mockito、SLF4J、JDBC

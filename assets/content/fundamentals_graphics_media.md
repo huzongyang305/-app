@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能用自己的话说明「计算机图形学与多媒体」里的 图形学，再举一个它不成立的场景。
+- [ ] 能跑通 图形学 的最小示例，记录一组正常输出和一组失败输出。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -421,7 +421,7 @@ print(gop_seconds(60, 30))                    # 2 秒
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，改动其中一个输入后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，把 渲染管线 相关的一个值换成边界值，记录输出差异与错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；改动输入后，如果结果改变或报错，先核对它是否满足 `计算机图形学与多媒体` 中`图形学` 的适用范围，再检查错误表里是否有同类现象。
 
@@ -595,7 +595,7 @@ print(gop_seconds(60, 30))                    # 2 秒
 | 参考资料 | 本课用途 |
 | --- | --- |
 | [MDN 计算机基础](https://developer.mozilla.org/docs/Learn_web_development/Core) | Web 相关计算机基础 |
-| [NIST 二进制与数据表示](https://www.nist.gov/pml/owm/binary-information) | 二进制、位与数据单位 |
+| [Khan Academy：位与二进制](https://www.khanacademy.org/computing/computers-and-internet/xcae6f4a7ff015e7d:digital-information/xcae6f4a7ff015e7d:binary-numbers/a/bits-and-binary) | 二进制、位与数据单位 |
 | [Intel 开发者文档](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html) | x86 指令集与体系结构 |
 
 | [本课术语索引：计算机图形学与多媒体](#核心概念定义) | 按本课输入、术语边界和错误表现逐项核对 |

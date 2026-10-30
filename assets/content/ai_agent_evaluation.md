@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能不看正文复述 Agent 评测，并指出 轨迹 的一个边界或反例。
+- [ ] 能用「Agent 评测实战」的示例复现结果，并说明轨迹出错时输出的第一条信息。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -220,7 +220,7 @@ README.md
 {
   "project": "ai_agent_evaluation",
   "scenario": "Agent 评测的正常路径",
-  "input": {"case": "normal", "value": "must_not_include"},
+  "input": {"case": "normal", "value": "failed_tool_calls"},
   "expected": {"ok": true, "checks": ["Agent 评测可复现", "轨迹有记录"]},
   "failure_case": {"case": "轨迹越界或缺失", "error": "validation_error"},
   "idempotency_key": "ai_agent_evaluation-001"

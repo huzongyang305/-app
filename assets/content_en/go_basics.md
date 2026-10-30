@@ -2,8 +2,7 @@
 
 > Translation status: machine translation (lightweight zh-en model). Technical terms may need review; use the Chinese tutorial as the authoritative version.
 
-
-I'm sorry.
+> Goroutines, channels and explicit errors.
 
 > Content update time: 2026-10-03 Learning stage: Foundation = Projected duration: 15 minutes
 
@@ -178,7 +177,7 @@ Its core philosophy is "visibility" -- error returns. Variables are visible, so 
 | --- | --- | --- |
 |Package|A drawer.|Put the relevant code together.|
 |Module|Item Folder|Defined by ⟦0, managing dependency|
-|I'm sorry.|The gate.|The program starts at zero.|
+| Entry `main` | The front gate | The program starts executing at `main.main` |
 | goroutine |Light-duty workers|How many KBs can open?|
 |Return value|Sign back.|Every time you call, see if there's a mistake.|
 

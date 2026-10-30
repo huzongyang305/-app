@@ -108,7 +108,7 @@ README.md
 {
   "project": "a11y_aria",
   "scenario": "可访问性的正常路径",
-  "input": {"case": "normal", "value": "viewBox"},
+  "input": {"case": "normal", "value": "validation_error"},
   "expected": {"ok": true, "checks": ["可访问性可复现", "ARIA有记录"]},
   "failure_case": {"case": "ARIA越界或缺失", "error": "validation_error"},
   "idempotency_key": "a11y_aria-001"

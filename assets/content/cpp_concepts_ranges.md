@@ -386,9 +386,9 @@ C++ 并发、原子操作与内存序（线程安全、原子操作）
 
 **题目**：下面几项都与 `Concepts` 有关，请按 `C++ Concepts 与 Ranges` 的正文顺序排列；该课主线是用 Concepts 约束模板，用 Ranges 组合惰性数据管道。
 
-**答案**：核心知识 → 关键流程 → 实践路径 → 常见误区
+**答案**：模板 → Concepts → Ranges → 约束
 
-**讲解**：本课的组织顺序是：先讲核心知识（Concepts 定义、requires 表达式），然后是关键流程（Ranges view 管道、惰性求值），接着是实践路径（数值计算、数据处理、自定义 Concept），最后是常见误区（约束过严、悬垂引用、忽视生命周期）。
+**讲解**：按《C++ Concepts 与 Ranges》正文首次出现的先后，本题顺序是「模板」 → 「Concepts」 → 「Ranges」 → 「约束」。术语「Concepts」在本课里的界定是C++20 的编译期约束：用命名要求限定模板参数，让报错指向真正不满足的条件，题干问的就是这一条。常见错法是把类型约束写在注释里，其后果是模板报错依旧晦涩，错误发生在很深的位置。正确做法是用 concept 显式约束参数，让错误在调用点暴露。
 
 ## 术语速查
 
@@ -405,7 +405,7 @@ C++ 并发、原子操作与内存序（线程安全、原子操作）
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：高级
-- 适用环境：C++20 / GCC 13+ 或 Clang 17+
+- 适用环境：C++20 / GCC 13+ 或 Clang 17+；本课聚焦 Concepts。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：Concepts、Ranges、模板、约束
 
@@ -420,4 +420,4 @@ C++ 并发、原子操作与内存序（线程安全、原子操作）
 | --- | --- |
 | [C++ Concepts 教程](https://en.cppreference.com/w/cpp/language/constraints) | concept 定义、约束组合与重载选择的权威参考 |
 | [Ranges 库参考](https://en.cppreference.com/w/cpp/ranges) | view 适配器、算法与管道操作符的完整文档 |
-| [C++20 标准草案](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/n4860.pdf) | Concepts 和 Ranges 的规范定义与设计动机 |
+| [C++20 标准草案](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/n4861.pdf) | Concepts 和 Ranges 的规范定义与设计动机 |

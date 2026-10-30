@@ -2,8 +2,7 @@
 
 > Translation status: machine translation (lightweight zh-en model). Technical terms may need review; use the Chinese tutorial as the authoritative version.
 
-
-I'm sorry.
+> Strict mode, tsc in CI, runtime validation and conventions.
 
 > Content update time: 2026-10-03 Learning stage: Foundation = Projected duration: 15 minutes
 

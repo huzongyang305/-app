@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能用自己的话说明「TypeScript 函数类型」里的 TypeScript 函数类型，再举一个它不成立的场景。
+- [ ] 能运行「TypeScript 函数类型」的示例，记录输入、输出与第一次失败的现象。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -371,7 +371,7 @@ console.log(format(42));
 | 参考资料 | 本课用途 |
 | --- | --- |
 | [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html) | 类型系统与语言指南 |
-| [TypeScript Node 指南](https://nodejs.org/en/learn/typescript) | Node 中的 TypeScript |
+| [TypeScript Node 指南](https://nodejs.org/en/learn/typescript/introduction) | Node 中的 TypeScript |
 | [tsconfig 参考](https://www.typescriptlang.org/tsconfig/) | 编译选项与严格模式 |
 
 | [本课术语索引：TypeScript 函数类型](#核心概念定义) | 按本课输入、术语边界和错误表现逐项核对 |

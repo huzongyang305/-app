@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能不看正文复述 iOS 项目，并指出 SwiftUI 的一个边界或反例。
+- [ ] 能用「实战：SwiftUI iOS 客户端」的示例复现结果，并说明SwiftUI出错时输出的第一条信息。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -302,7 +302,7 @@ print(tasks.filter { $0.done }.count)
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，改动其中一个输入后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，把 SwiftUI 相关的一个值换成边界值，记录输出差异与错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；改动输入后，如果结果改变或报错，先核对它是否满足 `实战：SwiftUI iOS 客户端` 中`iOS 项目` 的适用范围，再检查错误表里是否有同类现象。
 
@@ -459,7 +459,7 @@ print(tasks.filter { $0.done }.count)
 | 参考资料 | 本课用途 |
 | --- | --- |
 | [SwiftUI 文档](https://developer.apple.com/documentation/swiftui) | 声明式界面与状态 |
-| [Apple 内存管理](https://developer.apple.com/documentation/swift/automatic-reference-counting) | ARC 与循环引用 |
+| [Apple 内存管理](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/) | ARC 与循环引用 |
 | [Swift 语言指南](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/) | 语法、类型与内存模型 |
 
 | [本课术语索引：实战：SwiftUI iOS 客户端](#核心概念定义) | 按本课输入、术语边界和错误表现逐项核对 |

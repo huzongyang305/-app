@@ -2,7 +2,7 @@
 
 > 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：65 分钟
 
-![告警从触发、分组、路由到抑制静默与复盘的完整链路](images/lesson_devops_monitoring_alert.webp)
+![监控告警体系架构：数据汇聚、告警触发与看板呈现](images/devops_monitoring_stack.webp)
 
 ## 本节知识框架
 
@@ -652,7 +652,7 @@ D. 把更多规则统一提到 critical 级别并全部接入页面通道，以�
 - 最后更新：2026-10-06
 - 学习阶段：高级
 - 预计用时：65 分钟
-- 适用环境：Prometheus 2.x 与 Alertmanager 0.2x（matchers、time_intervals 等字段的可用性与语义随版本演进，落地前以本机版本文档为准）
+- 适用环境：Prometheus 2.x 与 Alertmanager 0.2x（matchers、time_intervals 等字段的可用性与语义随版本演进，落地前以本机版本文档为准）；本课聚焦 分组路由。
 - 内容来源：内置结构化课程、官方配置文档与值班工程实践整理
 - 相关主题：分组路由、抑制与静默、错误预算、多窗口燃速、告警疲劳
 - 配套实践：observability 目录下的规则即代码骨架与告警月度评审清单
@@ -665,7 +665,7 @@ D. 把更多规则统一提到 critical 级别并全部接入页面通道，以�
 | [Best practices for writing alerting rules](https://prometheus.io/docs/practices/alerting/) | 阈值、for 与静默抑制的实践建议 |
 | [Alerting on SLOs - Google SRE Workbook](https://sre.google/workbook/alerting-on-slos/) | 错误预算与多窗口多燃速阈值的推导方式 |
 | [Configuration - Prometheus alerting rules](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) | 规则文件结构、annotations 与记录规则写法 |
-| [amtool 命令行参考](https://prometheus.io/docs/alerting/latest/amtool/) | 配置校验、静默创建与告警试跑的操作入口 |
+| [Alertmanager 官方文档](https://prometheus.io/docs/alerting/latest/alertmanager/) | 配置校验、静默创建与告警试跑的操作入口 |
 
 - 最后复核：2026-10-04
 - 下次复核：2027-02-17

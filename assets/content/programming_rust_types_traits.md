@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能用自己的话说明「Rust 类型系统：Option、Result 与 trait」里的 Rust，再举一个它不成立的场景。
+- [ ] 能运行「Rust 类型系统：Option、Result 与 trait」的示例，记录输入、输出与第一次失败的现象。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -603,7 +603,7 @@ fn read_port(map: &std::collections::HashMap<String, String>) -> Result<u16, Con
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：进阶
-- 适用环境：Rust 1.85+ / Cargo
+- 适用环境：Rust 1.85+ / Cargo；本课聚焦 Rust。
 ；本课聚焦 Rust。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：Rust、Option、Result、trait、模式匹配

@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能用自己的话说明「实战：JavaScript 实时聊天室」里的 WebSocket，再举一个它不成立的场景。
+- [ ] 能跑通 WebSocket 的最小示例，记录一组正常输出和一组失败输出。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -207,7 +207,7 @@ package.json
 {
   "project": "js_project_realtime_chat",
   "scenario": "WebSocket的正常路径",
-  "input": {"case": "normal", "value": "WebSocketServer"},
+  "input": {"case": "normal", "value": "js_project_realtime_chat"},
   "expected": {"ok": true, "checks": ["WebSocket可复现", "Node.js有记录"]},
   "failure_case": {"case": "Node.js越界或缺失", "error": "validation_error"},
   "idempotency_key": "js_project_realtime_chat-001"
@@ -353,7 +353,7 @@ wss.on('connection', (socket) => {
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，改动其中一个输入后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，只改 WebSocket 的一个输入并比较两次输出，抄下第一条错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；改动输入后，如果结果改变或报错，先核对它是否满足 `实战：JavaScript 实时聊天室` 中`WebSocket` 的适用范围，再检查错误表里是否有同类现象。
 

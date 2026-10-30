@@ -2,8 +2,7 @@
 
 > Translation status: machine translation (lightweight zh-en model). Technical terms may need review; use the Chinese tutorial as the authoritative version.
 
-
-I'm sorry.
+> How AI, ML, DL and GenAI relate.
 
 > Content update time: 2026-10-03 Learning stage: Foundation = Projected duration: 13 minutes
 

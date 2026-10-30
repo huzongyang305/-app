@@ -579,7 +579,7 @@ def test_read(shared_data):
 
 ## 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例
+- [ ] 能复述 类型注解 的职责，并给出一个输入越界时的反例。
 - [ ] 能默写本课最重要的代码示例，并解释每一行的作用
 - [ ] 能说出本课内容和前后两课的联系
 
@@ -649,7 +649,7 @@ def test_read(shared_data):
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：进阶
-- 适用环境：Python 3.12+
+- 适用环境：Python 3.12+；本课聚焦 类型注解。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：类型注解、mypy、pytest、ruff、单元测试、unittest
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全
@@ -667,7 +667,7 @@ def test_read(shared_data):
 | [mypy 官方文档](https://mypy.readthedocs.io/en/stable/) | 静态类型检查工具的配置、用法和常见报错解释 |
 | [pytest 官方文档](https://docs.pytest.org/en/stable/) | fixture、parametrize、raises 等测试功能的完整说明 |
 | [ruff 官方文档](https://docs.astral.sh/ruff/) | 代码检查与格式化工具的配置和规则参考 |
-| [Python 类型注解入门教程](https://docs.python.org/3/tutorial/annotations.html) | 官方入门级注解教程，适合初学者 |
+| [Python 官方 typing 模块文档](https://docs.python.org/3/library/typing.html) | 类型注解、泛型与静态检查参考 |
 | [PEP 484 -- Type Hints](https://peps.python.org/pep-0484/) | 类型注解的 Python 增强提案，理解设计初衷 |
 | [PEP 604 -- Allow writing union types as X \| Y](https://peps.python.org/pep-0604/) | `X \| Y` 联合类型写法的提案原文 |
 | [Real Python: Type Checking](https://realpython.com/python-type-checking/) | 面向实战的类型检查教程，含大量示例 |

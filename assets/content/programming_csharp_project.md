@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能复述 实战 的职责，并给出一个输入越界时的反例。
+- [ ] 能用「实战：Web API + EF Core」的示例复现结果，并说明ASP.NET Core出错时输出的第一条信息。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -363,7 +363,7 @@ README.md
 {
   "project": "csharp_project",
   "scenario": "实战的正常路径",
-  "input": {"case": "normal", "value": "EntityFrameworkCore"},
+  "input": {"case": "normal", "value": "IsNullOrWhiteSpace"},
   "expected": {"ok": true, "checks": ["实战可复现", "ASP.NET Core有记录"]},
   "failure_case": {"case": "ASP.NET Core越界或缺失", "error": "validation_error"},
   "idempotency_key": "csharp_project-001"
@@ -786,7 +786,7 @@ public sealed class OrdersController : ControllerBase
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：高级
-- 适用环境：.NET 9 / C# 13
+- 适用环境：.NET 9 / C# 13；本课聚焦 实战。
 ；本课聚焦 实战。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：实战、ASP.NET Core、EF Core、xUnit、DTO

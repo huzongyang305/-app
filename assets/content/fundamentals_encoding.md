@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能不看正文复述 编码，并指出 Unicode 的一个边界或反例。
+- [ ] 能推演 编码 的示例：先写预期输出，再运行并记录差异与失败现象。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -338,7 +338,7 @@ UTF-8 BOM = EF BB BF（3 字节）
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，把其中的 `1` 换成一个边界值后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，改动一个与 编码 有关的输入后重跑，记录输出与错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；把 `1` 换成边界值后，如果结果改变或报错，先核对它是否满足 `字符编码与 Unicode` 中`码点` 的适用范围，再检查错误表里是否有同类现象。
 
@@ -486,7 +486,7 @@ UTF-8 BOM = EF BB BF（3 字节）
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：基础
-- 适用环境：通用计算机体系结构知识
+- 适用环境：通用计算机体系结构知识；本课聚焦 编码。
 ；本课聚焦 编码。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：编码、Unicode、UTF-8、ASCII、乱码
@@ -501,7 +501,7 @@ UTF-8 BOM = EF BB BF（3 字节）
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [NIST 二进制与数据表示](https://www.nist.gov/pml/owm/binary-information) | 二进制、位与数据单位 |
+| [Khan Academy：位与二进制](https://www.khanacademy.org/computing/computers-and-internet/xcae6f4a7ff015e7d:digital-information/xcae6f4a7ff015e7d:binary-numbers/a/bits-and-binary) | 二进制、位与数据单位 |
 | [CS50 计算机科学导论](https://cs50.harvard.edu/x/) | 计算机科学综合入门 |
 | [MIT 6.006 算法导论](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/) | 算法与数据结构基础 |
 

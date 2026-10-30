@@ -2,8 +2,7 @@
 
 > Translation status: machine translation (lightweight zh-en model). Technical terms may need review; use the Chinese tutorial as the authoritative version.
 
-
-I'm sorry.
+> JDK/JRE/JVM, compiling, packages and classpath.
 
 > Content update time: 2026-10-03 Learning stage: Foundation = Estimated duration: 14 minutes
 
@@ -149,7 +148,7 @@ Version and characterization:
 | `NoClassDefFoundError` |Synchronising folder|Reliance group path or package with construction tool|
 | `ClassNotFoundException` |Reflect or drive class missing|Check Dependency and Spelling|
 | `UnsupportedClassVersionError` |Compiled version over run version|Unified JDK version or downgraded ⟦|
-|It doesn't match the file name.|I'm sorry.|File name must be consistent with public|
+| Class name does not match file name | `class X is public, should be declared in a file named X.java` | Rename the file to exactly match the class name |
 | `package ... does not exist` |Lack of dependency or wrong path|Reliance and check directory structure|
 | `error: cannot find symbol` |Not Imported, Spelled or Incorrect|Fill or Spell|
 | `OutOfMemoryError: Java heap space` |Inadequate or memory leaks|We're gonna do a leak.|

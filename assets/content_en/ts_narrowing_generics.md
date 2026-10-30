@@ -2,8 +2,7 @@
 
 > Translation status: machine translation (lightweight zh-en model). Technical terms may need review; use the Chinese tutorial as the authoritative version.
 
-
-I'm sorry.
+> Narrowing, discriminated unions, generics and infer.
 
 > Content update time: 2026-10-03 Learning stage: Introduction Expected duration: 16 minutes
 
@@ -263,7 +262,7 @@ const n = get(u, "name");               // 推断为 string
 |I'm gonna make it up to you.|Error while running|Check it out with type.|
 |Parameters|Unknown|Let T appear in parameter position|
 |It's too much.|The caller can't get in.|We're going to use the Zero limit.|
-|I forgot to take care of it.|I'm sorry.|Zero or zero first.|
+| Forgot to handle `null` | `strictNullChecks` error | Check for null first or use `?.` |
 |The type guards will only be given one.|Embedded fields still reporting error|Level by Level|
 |I'm going to go around the wrong side of it.|All clear.|We're going to need a few more guards.|
 |Default branch does not write ⟦0|Add Status Leaking|We'll take the bottom of it.|

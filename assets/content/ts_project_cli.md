@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能讲清 TypeScript 与 Zod 的分工，并指出其中一个前提失效的边界。
+- [ ] 能运行「实战：TypeScript 类型安全 CLI」的示例，记录输入、输出与第一次失败的现象。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -202,7 +202,7 @@ package.json
 {
   "project": "ts_project_cli",
   "scenario": "TypeScript的正常路径",
-  "input": {"case": "normal", "value": "parseConfig"},
+  "input": {"case": "normal", "value": "validation_error"},
   "expected": {"ok": true, "checks": ["TypeScript可复现", "Zod有记录"]},
   "failure_case": {"case": "Zod越界或缺失", "error": "validation_error"},
   "idempotency_key": "ts_project_cli-001"
@@ -231,9 +231,9 @@ package.json
 ### 项目专属规格
 
 - **交付目标**：完成 `实战：TypeScript 类型安全 CLI` 描述的可运行产物，并留下可复查的证据。
-- **必须交付**：源代码、运行说明、测试或验证记录、失败路径说明。
+- 必须交付：TypeScript 的源代码、运行说明、测试记录与失败路径说明。
 - **验收标准**：按本课「项目交付物」和「考点精讲」逐项核对，不能只展示正常路径。
-- **排错要求**：至少记录一次失败输入、现象、定位过程和修复结论。
+- 排错要求：至少记录一次 TypeScript 的失败输入、现象、定位过程与修复结论。
 
 ## 代码/协议/SQL 示例
 
@@ -342,7 +342,7 @@ export function parseConfig(input: unknown) {
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，改动其中一个输入后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，把 Zod 相关的一个值换成边界值，记录输出差异与错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；改动输入后，如果结果改变或报错，先核对它是否满足 `实战：TypeScript 类型安全 CLI` 中`TypeScript` 的适用范围，再检查错误表里是否有同类现象。
 
@@ -505,7 +505,7 @@ export function parseConfig(input: unknown) {
 | 参考资料 | 本课用途 |
 | --- | --- |
 | [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html) | 类型系统与语言指南 |
-| [TypeScript 发布说明](https://www.typescriptlang.org/docs/release-notes/) | 版本变化与兼容性 |
+| [TypeScript 发布说明](https://www.typescriptlang.org/docs/handbook/release-notes/overview.html) | 版本变化与兼容性 |
 | [tsconfig 参考](https://www.typescriptlang.org/tsconfig/) | 编译选项与严格模式 |
 
 | [本课术语索引：实战：TypeScript 类型安全 CLI](#核心概念定义) | 按本课输入、术语边界和错误表现逐项核对 |

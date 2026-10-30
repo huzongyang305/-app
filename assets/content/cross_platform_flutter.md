@@ -2,7 +2,7 @@
 
 ![Flutter 跨平台开发](images/diagram_cross_platform_flutter.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：30 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：入门 · 预计用时：35 分钟
 
 ## 本节知识框架
 
@@ -12,8 +12,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能不看正文复述 Flutter，并指出 Dart 的一个边界或反例。
+- [ ] 能推演 Flutter 的示例：先写预期输出，再运行并记录差异与失败现象。
 - [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
 
 ### 课程导言
@@ -261,7 +261,7 @@ class ResponsiveLayout extends StatelessWidget {
 ## 时间/空间复杂度或性能分析
 
 - 在《Flutter 跨平台开发》里处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
-- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
+- 关于 Flutter 的性能结论要写明输入分布，环境或规模一变就必须重测。
 
 ### Flutter 渲染性能关键点
 
@@ -301,7 +301,7 @@ class ResponsiveLayout extends StatelessWidget {
 
 ## 自测题与参考答案
 
-以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
+本课测验与题库同源，答题时先写 Flutter 与 Dart 的判断依据，再对照解析修正。
 
 ## 考点精讲
 
@@ -309,7 +309,7 @@ class ResponsiveLayout extends StatelessWidget {
 
 Flutter 的渲染机制与 React Native 的核心区别是什么？
 
-A. Flutter 使用原生组件
+A. Flutter 使用原生组件，界面上的滚动回弹和原生控件外观会跟随系统大版本自动更新迭代  
 
 B. Flutter 自带渲染引擎（Skia/Impeller），直接绘制像素；RN 使用原生组件桥接
 
@@ -331,7 +331,7 @@ A. Stateful 更慢
 
 B. Stateful 持有可变状态，Stateless 不可变
 
-C. Stateless 支持动画
+C. Stateless 支持动画，靠帧回调在内部反复重建自身  
 
 D. 没有区别
 
@@ -349,7 +349,7 @@ A. 管理状态
 
 B. 在 Dart 和原生平台代码（Kotlin/Swift）之间通信
 
-C. 处理网络请求
+C. 处理网络请求，由原生侧统一发起 HTTP 调用再回传响应体  
 
 D. 管理数据库
 
@@ -369,7 +369,7 @@ B. 修改代码后毫秒级刷新 UI，保留应用状态
 
 C. 减少内存使用
 
-D. 自动修复 bug
+D. 自动修复 bug，靠热重载把修改后的逻辑立即注入运行中的实例  
 
 **正确答案：B**
 
@@ -385,13 +385,28 @@ A. 完全相同
 
 B. Widget 是配置描述，Element 是 Widget 的实例化对象，管理渲染树
 
-C. Element 是 Widget 的子类
+C. Element 是 Widget 的子类，因此能直接放进 children 列表  
 
 D. Widget 包含 Element
 
 **正确答案：B**
 
 **详细解释**：Widget 是不可变的配置，Framework 根据 Widget 创建 Element 形成 Element Tree，Element 才是实际渲染的对象。 Widget 可以频繁重建，Element 会被复用，判断两个 Widget 能否复用同一 Element 靠的是 runtimeType 和 key。 本题正确项是「Widget 是配置描述，Element 是 Widget 的实例化对象，管理渲染树」。
+
+---
+
+### 考点 6
+
+题目：在「Flutter 跨平台开发」的术语表里，下列术语与解释的配对哪些是正确的？（多选）
+A. 「Skia / Impeller」：Dart 的并发单元，独立内存堆，通过消息传递通信，用于后台计算  
+B. 「Platform Channel」：Dart 与宿主平台之间的异步消息通道，分 Method/Event/BasicMessage 三种  
+C. 「Isolate」：Flutter 的 2D 渲染引擎，Impeller 预编译着色器消除首帧卡顿  
+D. 「条件导入」：根据 dart.library.io / dart.library.html 在不同平台导入不同实现  
+正确答案：BD
+
+**解析**：本题正确项是「Platform Channel」：Dart 与宿主平台之间的异步消息通道，分 Method/Event/BasicMessage 三种，以及「条件导入」：根据 dart.library.io / dart.library.html 在不同平台导入不同实现，这两组配对与术语表一致。另外两组把术语和解释张冠李戴：「Skia / Impeller」被安上了Dart 的并发单元，独立内存堆，通过消息传递通信，用于后台计算的解释，「Isolate」反而拿到了Flutter 的 2D 渲染引擎，Impeller 预编译着色器消除首帧卡顿的定义，所以两组都不能选。复习时回到「Flutter 跨平台开发」的术语速查表逐条核对，配对题考的是定义里描述的对象和边界，而不是术语的字面长相。
+
+---
 
 ## 术语速查
 
@@ -417,8 +432,8 @@ D. Widget 包含 Element
 
 - 内容版本：v2.0
 - 最后更新：2026-10-06
-- 学习阶段：进阶
-- 适用环境：通用开发环境
+- 学习阶段：入门
+- 适用环境：通用开发环境；本课聚焦 Flutter。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：cross platform flutter
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全

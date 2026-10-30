@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能讲清 GPIO 与 中断 的分工，并指出其中一个前提失效的边界。
+- [ ] 能跑通 GPIO 的最小示例，记录一组正常输出和一组失败输出。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 **本课配图**
@@ -274,7 +274,7 @@ int main(void) {
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，改动其中一个输入后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，改动一个与 GPIO 有关的输入后重跑，记录输出与错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；改动输入后，如果结果改变或报错，先核对它是否满足 `外设编程：GPIO、中断与定时器` 中`GPIO` 的适用范围，再检查错误表里是否有同类现象。
 
@@ -446,7 +446,7 @@ int main(void) {
 
 下面列出的资料用于核对本课结论，复习时可以对照阅读：
 - [STM32 参考手册（中断与定时器章节）](https://www.st.com/en/microcontrollers-microprocessors/stm32-32-bit-arm-cortex-mcus.html)
-- [FreeRTOS 中断与临界区说明](https://www.freertos.org/Documentation/02-Kernel/02-Kernel-basics/03-Tasks)
+- [FreeRTOS 延迟中断处理](https://www.freertos.org/Documentation/02-Kernel/02-Kernel-features/11-Deferred-interrupt-handling)
 
 | [本课术语索引：外设编程：GPIO、中断与定时器](#核心概念定义) | 按本课输入、术语边界和错误表现逐项核对 |
 > 复核提示：《外设编程：GPIO、中断与定时器》的结论如与资料冲突，以资料中的规范文本为准，并在笔记里记录差异与日期。

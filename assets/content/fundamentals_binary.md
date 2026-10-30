@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能复述 二进制 的职责，并给出一个输入越界时的反例。
+- [ ] 能用「二进制与进制转换」的示例复现结果，并说明bit出错时输出的第一条信息。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -596,7 +596,7 @@ assert hex(255) == "0xff"
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：基础
-- 适用环境：通用计算机体系结构知识
+- 适用环境：通用计算机体系结构知识；本课聚焦 二进制。
 ；本课聚焦 二进制。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：二进制、bit、byte、进制、补码、十六进制
@@ -611,7 +611,7 @@ assert hex(255) == "0xff"
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [NIST 二进制与数据表示](https://www.nist.gov/pml/owm/binary-information) | 二进制、位与数据单位 |
+| [Khan Academy：位与二进制](https://www.khanacademy.org/computing/computers-and-internet/xcae6f4a7ff015e7d:digital-information/xcae6f4a7ff015e7d:binary-numbers/a/bits-and-binary) | 二进制、位与数据单位 |
 | [CS50 计算机科学导论](https://cs50.harvard.edu/x/) | 计算机科学综合入门 |
 | [MDN 计算机基础](https://developer.mozilla.org/docs/Learn_web_development/Core) | Web 相关计算机基础 |
 

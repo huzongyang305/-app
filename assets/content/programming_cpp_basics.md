@@ -410,7 +410,7 @@ g++ main.o -o demo            # 命令行里漏了 math_utils
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：基础
-- 适用环境：C++17 / GCC 13+ 或 Clang 17+
+- 适用环境：C++17 / GCC 13+ 或 Clang 17+；本课聚焦 C++。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：C++、g++、编译、链接、头文件、namespace
 
@@ -424,4 +424,4 @@ g++ main.o -o demo            # 命令行里漏了 math_utils
 | --- | --- |
 | [cppreference - Preprocessor](https://en.cppreference.com/w/cpp/preprocessor) | 预处理指令详解 |
 | [Learn C++ - Compiling](https://www.learncpp.com/cpp-tutorial/compiling-your-first-program/) | 编译流程入门 |
-| [GCC Manual - Invoking G++](https://gcc.gnu.org/onlinedocs/gcc/Invoking-G.html) | g++ 编译选项参考 |
+| [GCC Manual - Invoking GCC](https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html) | g++ 编译选项参考 |

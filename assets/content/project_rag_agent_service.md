@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能用自己的话说明「实战：本地 RAG 客服 Agent」里的 RAG，再举一个它不成立的场景。
+- [ ] 能运行「实战：本地 RAG 客服 Agent」的示例，记录输入、输出与第一次失败的现象。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -205,7 +205,7 @@ README.md
 {
   "project": "project_rag_agent_service",
   "scenario": "RAG的正常路径",
-  "input": {"case": "normal", "value": "answer_question"},
+  "input": {"case": "normal", "value": "project_rag_agent_service"},
   "expected": {"ok": true, "checks": ["RAG可复现", "Agent有记录"]},
   "failure_case": {"case": "Agent越界或缺失", "error": "validation_error"},
   "idempotency_key": "project_rag_agent_service-001"
@@ -346,7 +346,7 @@ def answer_question(question: str, retriever, llm) -> dict:
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，改动其中一个输入后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，改动一个与 RAG 有关的输入后重跑，记录输出与错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；改动输入后，如果结果改变或报错，先核对它是否满足 `实战：本地 RAG 客服 Agent` 中`RAG` 的适用范围，再检查错误表里是否有同类现象。
 

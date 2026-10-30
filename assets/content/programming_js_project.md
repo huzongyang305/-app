@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能不看正文复述 实战，并指出 React 的一个边界或反例。
+- [ ] 能推演 实战 的示例：先写预期输出，再运行并记录差异与失败现象。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -342,7 +342,7 @@ package.json
 {
   "project": "js_project",
   "scenario": "实战的正常路径",
-  "input": {"case": "normal", "value": "useState"},
+  "input": {"case": "normal", "value": "createStore"},
   "expected": {"ok": true, "checks": ["实战可复现", "React有记录"]},
   "failure_case": {"case": "React越界或缺失", "error": "validation_error"},
   "idempotency_key": "js_project-001"
@@ -645,7 +645,7 @@ setState((prev) => ({
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，改动其中一个输入后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，只改 实战 的一个输入并比较两次输出，抄下第一条错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；改动输入后，如果结果改变或报错，先核对它是否满足 `实战：Vite + React 待办应用` 中`prev.map` 的适用范围，再检查错误表里是否有同类现象。
 
@@ -792,7 +792,7 @@ setState((prev) => ({
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：高级
-- 适用环境：Node.js 22+ / 现代浏览器
+- 适用环境：Node.js 22+ / 现代浏览器；本课聚焦 实战。
 ；本课聚焦 实战。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：实战、React、Vite、useState、useEffect

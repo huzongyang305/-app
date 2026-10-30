@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能不看正文复述 TypeScript，并指出 全栈 的一个边界或反例。
+- [ ] 能推演 TypeScript 的示例：先写预期输出，再运行并记录差异与失败现象。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -309,7 +309,7 @@ package.json
 {
   "project": "ts_fullstack_project",
   "scenario": "TypeScript的正常路径",
-  "input": {"case": "normal", "value": "CreateOrderSchema"},
+  "input": {"case": "normal", "value": "CreateUserSchema"},
   "expected": {"ok": true, "checks": ["TypeScript可复现", "全栈有记录"]},
   "failure_case": {"case": "全栈越界或缺失", "error": "validation_error"},
   "idempotency_key": "ts_fullstack_project-001"
@@ -340,9 +340,9 @@ package.json
 ### 项目专属规格
 
 - **交付目标**：完成 `TypeScript 实战：全栈类型安全` 描述的可运行产物，并留下可复查的证据。
-- **必须交付**：源代码、运行说明、测试或验证记录、失败路径说明。
+- 必须交付：TypeScript 的实现、启动命令、验证记录和一次失败复盘。
 - **验收标准**：按本课「项目交付物」和「考点精讲」逐项核对，不能只展示正常路径。
-- **排错要求**：至少记录一次失败输入、现象、定位过程和修复结论。
+- 排错要求：至少记录一次 TypeScript 的失败输入、现象、定位过程与修复结论。
 
 ## 代码/协议/SQL 示例
 

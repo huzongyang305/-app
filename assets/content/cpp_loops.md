@@ -502,7 +502,7 @@ for (int i = 0; i < 10; ++i) {
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：入门
-- 适用环境：C++17 / GCC 13+ 或 Clang 17+
+- 适用环境：C++17 / GCC 13+ 或 Clang 17+；本课聚焦 C++ 循环入门。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：C++ 循环入门、C++、入门练习
 
@@ -515,5 +515,5 @@ for (int i = 0; i < 10; ++i) {
 | 参考资料 | 本课用途 |
 | --- | --- |
 | [cppreference - for loop](https://en.cppreference.com/w/cpp/language/for) | for 循环语义详解 |
-| [Learn C++ - Loops](https://www.learncpp.com/cpp-tutorial/for-loops/) | 循环入门教程 |
+| [Learn C++ - Loops](https://www.learncpp.com/cpp-tutorial/for-statements/) | 循环入门教程 |
 | [cplusplus.com - Control Flow](https://cplusplus.com/doc/tutorial/control/) | 循环与跳转语句 |

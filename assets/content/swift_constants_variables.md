@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能复述 Swift 常量与变量 的职责，并给出一个输入越界时的反例。
+- [ ] 能推演 Swift 常量与变量 的示例：先写预期输出，再运行并记录差异与失败现象。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -378,7 +378,7 @@ Ada 1816
 | 参考资料 | 本课用途 |
 | --- | --- |
 | [Swift 语言指南](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/) | 语法、类型与内存模型 |
-| [Apple 内存管理](https://developer.apple.com/documentation/swift/automatic-reference-counting) | ARC 与循环引用 |
+| [Apple 内存管理](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/) | ARC 与循环引用 |
 | [Swift 官方文档](https://www.swift.org/documentation/) | 工具链、包管理与语言演进 |
 
 | [本课术语索引：Swift 常量与变量](#核心概念定义) | 按本课输入、术语边界和错误表现逐项核对 |

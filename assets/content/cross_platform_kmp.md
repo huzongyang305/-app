@@ -2,7 +2,7 @@
 
 ![Kotlin Multiplatform](images/diagram_cross_platform_kmp.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：30 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：35 分钟
 
 ## 本节知识框架
 
@@ -12,8 +12,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能复述 KMP 的职责，并给出一个输入越界时的反例。
+- [ ] 能用「Kotlin Multiplatform」的示例复现结果，并说明Expect/Actual出错时输出的第一条信息。
 - [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
 
 ### 课程导言
@@ -245,7 +245,7 @@ struct ComposeView: UIViewControllerRepresentable {
 ## 时间/空间复杂度或性能分析
 
 - 在《Kotlin Multiplatform》里处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
-- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
+- 关于 KMP 的性能结论要写明输入分布，环境或规模一变就必须重测。
 
 ### KMP 各端编译产物分析
 
@@ -286,7 +286,7 @@ struct ComposeView: UIViewControllerRepresentable {
 
 ## 自测题与参考答案
 
-以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
+本课测验与题库同源，答题时先写 KMP 与 Expect/Actual 的判断依据，再对照解析修正。
 
 ## 考点精讲
 
@@ -300,7 +300,7 @@ B. Expect/Actual —— 共享模块声明接口，各平台提供实现
 
 C. 字节码转换
 
-D. 自动 UI 适配
+D. 自动 UI 适配，把共享的布局按屏幕尺寸映射成各平台原生控件  
 
 **正确答案：B**
 
@@ -312,7 +312,7 @@ D. 自动 UI 适配
 
 KMP 最适合共享什么类型的代码？
 
-A. UI 组件
+A. UI 组件，由共享模块直接生成各平台原生控件树  
 
 B. 业务逻辑、网络请求、数据模型等平台无关代码
 
@@ -330,7 +330,7 @@ D. 手势处理
 
 Compose Multiplatform 的目标是什么？
 
-A. 只支持 Android
+A. 只支持 Android，Compose 运行时必须挂在一个 Android View 上才能启动  
 
 B. 用一套 Compose UI 代码运行在 Android、iOS、Desktop 和 Web
 
@@ -348,7 +348,7 @@ D. 只支持 Web
 
 KMP 项目中 commonMain 源集的作用是什么？
 
-A. 存放 Android 专属代码
+A. 存放 Android 专属代码，由 Gradle 自动拆分  
 
 B. 存放各平台共享的代码，可访问 expect 声明
 
@@ -366,7 +366,7 @@ D. 存放构建脚本
 
 Ktor 在 KMP 项目中的角色是什么？
 
-A. UI 框架
+A. UI 框架，用 Composable 函数拼出界面  
 
 B. 跨平台 HTTP 客户端，在共享模块中发起网络请求
 
@@ -377,6 +377,21 @@ D. 构建工具
 **正确答案：B**
 
 **详细解释**：Ktor Client 支持 Kotlin Multiplatform，在 commonMain 中编写网络请求代码，自动适配各平台底层实现。 Ktor 的引擎是可替换的，Android 用 OkHttp，iOS 用 Darwin，切换引擎不需要改动共享层的请求代码。 本题正确项是「跨平台 HTTP 客户端，在共享模块中发起网络请求」。
+
+---
+
+### 考点 6
+
+题目：在「Kotlin Multiplatform」的术语表里，下列术语与解释的配对哪些是正确的？（多选）
+A. 「Kotlin/Native」：将 Kotlin 编译为 LLVM 原生代码的技术，用于 iOS 等平台无需虚拟机  
+B. 「Ktor」：JetBrains 跨平台方案，共享 Kotlin 逻辑，平台特定部分用 Expect/Actual 实现  
+C. 「Kotlin Multiplatform」：JetBrains 跨平台网络库，common 模块统一调用 HTTP 接口  
+D. 「Expect/Actual」：common 模块声明 expect 接口，各平台模块提供 actual 实现，编译时强制检查一致性  
+正确答案：AD
+
+**解析**：本题正确项是「Kotlin/Native」：将 Kotlin 编译为 LLVM 原生代码的技术，用于 iOS 等平台无需虚拟机，以及「Expect/Actual」：common 模块声明 expect 接口，各平台模块提供 actual 实现，编译时强制检查一致性，这两组配对与术语表一致。另外两组把术语和解释张冠李戴：「Ktor」被安上了JetBrains 跨平台方案，共享 Kotlin 逻辑，平台特定部分用 Expect/Actual 实现的解释，「Kotlin Multiplatform」反而拿到了JetBrains 跨平台网络库，common 模块统一调用 HTTP 接口的定义，所以两组都不能选。复习时回到「Kotlin Multiplatform」的术语速查表逐条核对，配对题考的是定义里描述的对象和边界，而不是术语的字面长相。
+
+---
 
 ## 术语速查
 
@@ -392,7 +407,7 @@ D. 构建工具
 
 - 官方/权威资料：[Kotlin Multiplatform 官方文档](https://kotlinlang.org/docs/multiplatform.html)
 - 主题延伸：[Compose Multiplatform](https://www.jetbrains.com/lp/compose-multiplatform/)
-- 主题延伸：[Ktor Client 跨平台网络](https://ktor.io/docs/client-get-started.html)
+- 主题延伸：[Ktor Client 跨平台网络](https://ktor.io/docs/client-create-new-application.html)
 
 - 最后复核：2026-10-04
 - 下次复核：2027-10-17
@@ -402,7 +417,7 @@ D. 构建工具
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：进阶
-- 适用环境：通用开发环境
+- 适用环境：通用开发环境；本课聚焦 KMP。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：cross platform kmp
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全

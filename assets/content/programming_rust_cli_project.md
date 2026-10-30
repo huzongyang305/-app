@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能不看正文复述 Rust，并指出 CLI 的一个边界或反例。
+- [ ] 能推演 Rust 的示例：先写预期输出，再运行并记录差异与失败现象。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -127,7 +127,7 @@ Cargo.toml
 {
   "project": "rust_cli_project",
   "scenario": "Rust的正常路径",
-  "input": {"case": "normal", "value": "read_to_string"},
+  "input": {"case": "normal", "value": "rust_cli_project"},
   "expected": {"ok": true, "checks": ["Rust可复现", "CLI有记录"]},
   "failure_case": {"case": "CLI越界或缺失", "error": "validation_error"},
   "idempotency_key": "rust_cli_project-001"
@@ -628,7 +628,7 @@ cross build --release --target x86_64-unknown-linux-musl
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，改动其中一个输入后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，把 CLI 相关的一个值换成边界值，记录输出差异与错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；改动输入后，如果结果改变或报错，先核对它是否满足 `Rust 实战：命令行工具` 中`Rust` 的适用范围，再检查错误表里是否有同类现象。
 
@@ -776,7 +776,7 @@ cross build --release --target x86_64-unknown-linux-musl
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：高级
-- 适用环境：Rust 1.85+ / Cargo
+- 适用环境：Rust 1.85+ / Cargo；本课聚焦 Rust。
 ；本课聚焦 Rust。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：Rust、CLI、clap、anyhow、发布

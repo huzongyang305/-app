@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能讲清 JUnit 与 协程测试 的分工，并指出其中一个前提失效的边界。
+- [ ] 能运行「Kotlin 测试与协程测试」的示例，记录输入、输出与第一次失败的现象。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -312,7 +312,7 @@ test passed
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，改动其中一个输入后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，只改 JUnit 的一个输入并比较两次输出，抄下第一条错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；改动输入后，如果结果改变或报错，先核对它是否满足 `Kotlin 测试与协程测试` 中`JUnit` 的适用范围，再检查错误表里是否有同类现象。
 
@@ -474,7 +474,7 @@ test passed
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [Kotlin 测试](https://kotlinlang.org/docs/testing.html) | 单元测试与断言 |
+| [Kotlin 测试](https://kotlinlang.org/docs/jvm-test-using-junit.html) | 单元测试与断言 |
 | [Android Kotlin](https://developer.android.com/kotlin) | Android 官方 Kotlin 实践 |
 | [Kotlin 基础语法](https://kotlinlang.org/docs/basic-syntax.html) | 语法、类型与函数 |
 

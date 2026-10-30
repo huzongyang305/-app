@@ -2,7 +2,7 @@
 
 ![Android Jetpack Compose进阶](images/diagram_mobile_jetpack_compose_advanced.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：40 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：45 分钟
 
 ## 本节知识框架
 
@@ -12,8 +12,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能不看正文复述 Jetpack Compose，并指出 Android 的一个边界或反例。
+- [ ] 能用「Android Jetpack Compose进阶」的示例复现结果，并说明Android出错时输出的第一条信息。
 - [ ] 能完成一次自测，并把错题对照考点精讲定位原因。
 
 ### 课程导言
@@ -59,7 +59,7 @@ Compose的Modifier就像给礼物包装的多层包装纸。你可以先包一�
 ## 典型应用场景
 
 - 结合「Android Jetpack Compose进阶」的常见落地场景与选型边界，详见正文各章节的对比讨论。
-- 迁移到新项目时，先明确输入规模、失败代价与可观测手段，再决定采用深度。
+- 把「Android Jetpack Compose进阶」的做法搬到新项目时，先评估 Android 的规模与可观测条件。
 
 ## 代码/协议/SQL 示例
 
@@ -601,7 +601,7 @@ fun DashboardScreen() {
 ## 时间/空间复杂度或性能分析
 
 - 在《Android Jetpack Compose进阶》里处理规模 n 时，先估计主循环与嵌套层数，再决定优化方向；小样本上的耗时读数不能外推。
-- 性能结论要绑定输入分布：换数据规模、并发度或缓存命中情况后须重新测量。
+- 关于 Jetpack Compose 的性能结论要写明输入分布，环境或规模一变就必须重测。
 
 ## 常见误区与易错点
 
@@ -631,7 +631,7 @@ fun DashboardScreen() {
 
 ## 自测题与参考答案
 
-以下题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
+以下 Jetpack Compose 题目与题库同源，作答后再看解析；错误项要能说出错在哪一步。
 
 ## 考点精讲
 
@@ -666,7 +666,7 @@ D. 重组会导致所有remember的状态丢失
 在LazyColumn中使用items时，为什么要提供key参数？
 
 A. 为了帮助Compose正确识别和复用列表项，提升性能 ✅  
-B. 为了让列表项可以排序  
+B. 为了让列表项可以排序，先把数据排好序再交给 items  
 C. 为了加密列表数据  
 D. 为了支持离线缓存  
 
@@ -699,6 +699,21 @@ D. Modifier可以直接修改Composable的内部状态 ✅
 **正确答案：** D
 
 **解析：** Modifier是Compose中用于修饰组件外观和行为的不可变对象。每次调用Modifier的方法（如padding、background、clickable）都会返回一个新的Modifier实例，形成一条处理链。顺序确实很重要，例如`.padding(16.dp).background(Color.Red)`和`.background(Color.Red).padding(16.dp)`会产生不同的视觉效果。然而，Modifier不能直接修改Composable的内部状态，它只能影响组件的绘制、布局和输入处理。状态的修改需要通过状态管理API（如mutableStateOf）来完成。
+
+---
+
+### 考点 6
+
+题目：在「Android Jetpack Compose进阶」的术语表里，下列术语与解释的配对哪些是正确的？（多选）
+A. 「布局系统」：Column、Row、Box等容器按父级约束完成测量与摆放两个阶段  
+B. 「Material 3」：第三代设计规范在Compose里的实现，提供动态取色与成套组件  
+C. 「副作用」：谷歌开源移动平台，应用以组件与生命周期为单位运行并受权限约束  
+D. 「Android」：借LaunchedEffect把请求与订阅挪出组合阶段，避免重组时重复触发  
+正确答案：AB
+
+**解析**：本题正确项是「布局系统」：Column、Row、Box等容器按父级约束完成测量与摆放两个阶段，以及「Material 3」：第三代设计规范在Compose里的实现，提供动态取色与成套组件，这两组配对与术语表一致。另外两组把术语和解释张冠李戴：「副作用」被安上了谷歌开源移动平台，应用以组件与生命周期为单位运行并受权限约束的解释，「Android」反而拿到了借LaunchedEffect把请求与订阅挪出组合阶段，避免重组时重复触发的定义，所以两组都不能选。复习时回到「Android Jetpack Compose进阶」的术语速查表逐条核对，配对题考的是定义里描述的对象和边界，而不是术语的字面长相。
+
+---
 
 ## 术语速查
 

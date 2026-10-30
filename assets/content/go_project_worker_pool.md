@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能用自己的话说明「实战：Go 并发抓取与 Worker Pool」里的 goroutine，再举一个它不成立的场景。
+- [ ] 能跑通 goroutine 的最小示例，记录一组正常输出和一组失败输出。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -194,7 +194,7 @@ go.mod
 {
   "project": "go_project_worker_pool",
   "scenario": "goroutine的正常路径",
-  "input": {"case": "normal", "value": "HTTP"},
+  "input": {"case": "normal", "value": "go_project_worker_pool"},
   "expected": {"ok": true, "checks": ["goroutine可复现", "channel有记录"]},
   "failure_case": {"case": "channel越界或缺失", "error": "validation_error"},
   "idempotency_key": "go_project_worker_pool-001"
@@ -329,7 +329,7 @@ func worker(ctx context.Context, jobs <-chan string, results chan<- Result, limi
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，改动其中一个输入后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，改动一个与 goroutine 有关的输入后重跑，记录输出与错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；改动输入后，如果结果改变或报错，先核对它是否满足 `实战：Go 并发抓取与 Worker Pool` 中`goroutine` 的适用范围，再检查错误表里是否有同类现象。
 

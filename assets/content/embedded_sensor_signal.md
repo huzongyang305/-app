@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能用自己的话说明「传感器采集与信号调理」里的 ADC，再举一个它不成立的场景。
+- [ ] 能跑通 ADC 的最小示例，记录一组正常输出和一组失败输出。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 **本课配图**
@@ -245,7 +245,7 @@ static uint16_t moving_average(uint16_t sample) {
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，改动其中一个输入后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，只改 ADC 的一个输入并比较两次输出，抄下第一条错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；改动输入后，如果结果改变或报错，先核对它是否满足 `传感器采集与信号调理` 中`采样率` 的适用范围，再检查错误表里是否有同类现象。
 
@@ -418,7 +418,7 @@ static uint16_t moving_average(uint16_t sample) {
 - 复核范围：版本兼容、API 行为与工程实践
 
 下面列出的资料用于核对本课结论，复习时可以对照阅读：
-- [TI 精密 ADC 应用手册](https://www.ti.com/lit/an/sbaa407/sbaa407.pdf)
+- [TI 精密 ADC 概览](https://www.ti.com/product-category/data-converters/adcs/precision/overview.html)
 - [Microchip 传感器调理技术文档](https://ww1.microchip.com/downloads/en/Appnotes/00713a.pdf)
 
 | [本课术语索引：传感器采集与信号调理](#核心概念定义) | 按本课输入、术语边界和错误表现逐项核对 |

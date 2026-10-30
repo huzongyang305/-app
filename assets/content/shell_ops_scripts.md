@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能讲清 运维脚本 与 备份 的分工，并指出其中一个前提失效的边界。
+- [ ] 能跑通 运维脚本 的最小示例，记录一组正常输出和一组失败输出。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -299,7 +299,7 @@ README.md
 {
   "project": "shell_ops_scripts",
   "scenario": "运维脚本的正常路径",
-  "input": {"case": "normal", "value": "BACKUP_ROOT"},
+  "input": {"case": "normal", "value": "TARGET_DIR"},
   "expected": {"ok": true, "checks": ["运维脚本可复现", "备份有记录"]},
   "failure_case": {"case": "备份越界或缺失", "error": "validation_error"},
   "idempotency_key": "shell_ops_scripts-001"
@@ -717,7 +717,7 @@ check_load
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：进阶
-- 适用环境：Bash 5 / POSIX Shell
+- 适用环境：Bash 5 / POSIX Shell；本课聚焦 运维脚本。
 ；本课聚焦 运维脚本。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：运维脚本、备份、巡检、批量操作、并发控制、幂等

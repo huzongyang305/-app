@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能复述 条件类型 的职责，并给出一个输入越界时的反例。
+- [ ] 能用「TypeScript 类型体操进阶」的示例复现结果，并说明infer出错时输出的第一条信息。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -417,7 +417,7 @@ type Listeners = {
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：高级
-- 适用环境：TypeScript 5.x / Node.js 22+
+- 适用环境：TypeScript 5.x / Node.js 22+；本课聚焦 条件类型。
 ；本课聚焦 条件类型。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：条件类型、infer、映射类型、模板字面量类型、类型体操
@@ -434,7 +434,7 @@ type Listeners = {
 | --- | --- |
 | [Utility Types](https://www.typescriptlang.org/docs/handbook/utility-types.html) | 内置类型变换 |
 | [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html) | 类型系统与语言指南 |
-| [TypeScript 发布说明](https://www.typescriptlang.org/docs/release-notes/) | 版本变化与兼容性 |
+| [TypeScript 发布说明](https://www.typescriptlang.org/docs/handbook/release-notes/overview.html) | 版本变化与兼容性 |
 
 | [本课术语索引：TypeScript 类型体操进阶](#核心概念定义) | 按本课输入、术语边界和错误表现逐项核对 |
 > 「TypeScript 类型体操进阶」的链接用于离线阅读后的延伸核对；App 不会自动联网。

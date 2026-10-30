@@ -1,6 +1,6 @@
 # iOS 网络编程与数据持久化
 
-> 内容更新时间：2026-10-06 · 学习阶段：中级 · 预计用时：35 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：基础 · 预计用时：35 分钟
 
 ![iOS 网络编程架构图](images/diagram_mobile_ios_networking.webp)
 
@@ -391,7 +391,7 @@ Codable 协议中，如果 JSON 字段名和 Swift 属性名不一致怎么办�
 
 关于 URLSession 的数据任务（DataTask），下列哪项描述最准确？
 
-A. DataTask 只能发送 GET 请求
+A. DataTask 只能发送 GET 请求，自定义请求头和请求体都不会被发送  
 
 B. DataTask 不支持异步等待
 
@@ -415,7 +415,7 @@ B. 在 Swift 对象和 JSON 之间自动转换
 
 C. 压缩数据体积
 
-D. 管理网络连接池
+D. 管理网络连接池，复用底层 TCP 长连接  
 
 **正确答案：B**
 
@@ -427,7 +427,7 @@ D. 管理网络连接池
 
 Core Data 和 UserDefaults 的主要区别是什么？
 
-A. UserDefaults 适合存储大量结构化数据
+A. UserDefaults 适合存储大量结构化数据，底层 plist 支持按字段建索引和关系查询  
 
 B. Core Data 是对象图管理器，适合复杂数据模型；UserDefaults 只适合少量键值对
 
@@ -451,7 +451,7 @@ B. 使用宏和属性包装器，API 更简洁，与 SwiftUI 深度集成
 
 C. 支持更多数据库
 
-D. 不需要 iOS 系统
+D. 不需要 iOS 系统，框架自带运行时，可在任意平台复用模型  
 
 **正确答案：B**
 
@@ -474,6 +474,21 @@ D. 这是可选的优化
 **正确答案：B**
 
 **详细解释**：主线程负责 UI 渲染，耗时的网络和数据解析操作应放到后台线程，完成后切回主线程更新 UI。 URLSession 的回调本身运行在后台队列，但更新 UI 必须切回主线程，用 MainActor 或 DispatchQueue.main 包一层。 本题正确项是「避免阻塞主线程导致 UI 卡顿」。
+
+---
+
+### 考点 6
+
+题目：在「iOS 网络编程与数据持久化」的术语表里，下列术语与解释的配对哪些是正确的？（多选）
+A. 「URLCache」：HTTP 缓存实现，自动缓存响应数据减少重复请求  
+B. 「CodingKeys」：Apple 原生网络请求 API，支持 data/download/upload 三种任务  
+C. 「URLSession」：Codable 的关联枚举，用于映射 JSON 字段名与 Swift 属性名  
+D. 「UserDefaults」：轻量级键值持久化存储，适合用户偏好设置  
+正确答案：AD
+
+**解析**：本题正确项是「URLCache」：HTTP 缓存实现，自动缓存响应数据减少重复请求，以及「UserDefaults」：轻量级键值持久化存储，适合用户偏好设置，这两组配对与术语表一致。另外两组把术语和解释张冠李戴：「CodingKeys」被安上了Apple 原生网络请求 API，支持 data/download/upload 三种任务的解释，「URLSession」反而拿到了Codable 的关联枚举，用于映射 JSON 字段名与 Swift 属性名的定义，所以两组都不能选。复习时回到「iOS 网络编程与数据持久化」的术语速查表逐条核对，配对题考的是定义里描述的对象和边界，而不是术语的字面长相。
+
+---
 
 ## 术语速查
 
@@ -508,8 +523,8 @@ D. 这是可选的优化
 
 - 内容版本：v2.0
 - 最后更新：2026-10-06
-- 学习阶段：进阶
-- 适用环境：通用开发环境
+- 学习阶段：基础
+- 适用环境：通用开发环境；本课聚焦 URLSession。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：mobile ios networking
 - 质量版本：P0 测验标准 + P1 覆盖扩展 + P2 体验补全

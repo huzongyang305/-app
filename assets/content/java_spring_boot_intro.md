@@ -489,7 +489,7 @@ D. 当 Spring 容器中已经存在指定类型的 Bean 时才创建新 Bean
 关于 Spring Boot Starter 机制，以下哪个说法是正确的？
 
 A. Starter 是一种运行时容器，用于托管 Spring Bean
-B. “spring-boot-starter-web” 只包含 Spring MVC 一个依赖
+B. “spring-boot-starter-web” 只包含 Spring MVC 一个依赖，其余库都要手动逐个声明版本  
 C. Starter 本质上是一组预定义的依赖集合，引入一个 Starter 就自动获得某类功能所需的全部库  
 D. 每个 Spring Boot 项目必须且只能引入一个 Starter
 
@@ -529,6 +529,19 @@ D. 当应用运行在特定的操作系统上时才生效
 
 ---
 
+### 考点 6
+
+题目：在「Spring Boot 入门」的术语表里，下列术语与解释的配对哪些是正确的？（多选）
+A. 「@ConditionalOnClass」：条件注解：classpath 存在某类时生效  
+B. 「@ConditionalOnMissingBean」：预定义的依赖集合，简化 Maven/Gradle 配置  
+C. 「Actuator」：生产级监控模块，暴露健康检查和运行指标  
+D. 「Starter」：条件注解：容器中不存在某 Bean 时生效  
+正确答案：AC
+
+**解析**：本题正确项是「@ConditionalOnClass」：条件注解：classpath 存在某类时生效，以及「Actuator」：生产级监控模块，暴露健康检查和运行指标，这两组配对与术语表一致。另外两组把术语和解释张冠李戴：「@ConditionalOnMissingBean」被安上了预定义的依赖集合，简化 Maven/Gradle 配置的解释，「Starter」反而拿到了条件注解：容器中不存在某 Bean 时生效的定义，所以两组都不能选。复习时回到「Spring Boot 入门」的术语速查表逐条核对，配对题考的是定义里描述的对象和边界，而不是术语的字面长相。
+
+---
+
 ## 术语速查
 
 | 术语 | 一句话说明 |
@@ -557,11 +570,10 @@ D. 当应用运行在特定的操作系统上时才生效
 | --- | --- |
 | [Spring Boot 官方文档](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) | 最权威的参考，涵盖自动配置、Starter、Actuator 等全部内容 |
 | [Spring Initializr](https://start.spring.io/) | 在线生成 Spring Boot 项目，支持 Maven/Gradle 和多种 Starter 选择 |
-| [Spring Boot 自动配置源码](https://github.com/spring-projects/spring-boot/tree/main/spring-boot-project/spring-boot-autoconfigure) | 查看所有内置自动配置类的实现 |
+| [Spring Boot 自动配置参考](https://docs.spring.io/spring-boot/reference/using/auto-configuration.html) | 内置自动配置的机制与条件装配说明 |
 | [Baeldung Spring Boot Tutorial](https://www.baeldung.com/spring-boot) | 优质的第三方教程，包含大量实战示例 |
 | [Spring Boot Actuator 文档](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html) | Actuator 端点配置和使用详解 |
 
-复核日期：2026-10-20
 - 最后复核：2026-10-04
 
 ---

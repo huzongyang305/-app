@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能讲清 符号表 与 作用域 的分工，并指出其中一个前提失效的边界。
+- [ ] 能跑通 符号表 的最小示例，记录一组正常输出和一组失败输出。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 **本课配图**
@@ -274,7 +274,7 @@ console.log('外层 rate 声明行:', global.lookup('rate').line);
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，改动其中一个输入后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，把 作用域 相关的一个值换成边界值，记录输出差异与错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；改动输入后，如果结果改变或报错，先核对它是否满足 `语义分析与类型系统` 中`符号表` 的适用范围，再检查错误表里是否有同类现象。
 
@@ -449,7 +449,7 @@ console.log('外层 rate 声明行:', global.lookup('rate').line);
 
 下面列出的资料用于核对本课结论，复习时可以对照阅读：
 - [Crafting Interpreters：Resolving and Binding](https://craftinginterpreters.com/resolving-and-binding.html)
-- [Type Systems（Luca Cardelli 综述）](https://www.cs.cmu.edu/~crary/819-f09/Cardelli97.pdf)
+- [Type Systems（Luca Cardelli 综述）](https://lucacardelli.name/Papers/TypeSystems.pdf)
 
 | [本课术语索引：语义分析与类型系统](#核心概念定义) | 按本课输入、术语边界和错误表现逐项核对 |
 > 复核提示：《语义分析与类型系统》的结论如与资料冲突，以资料中的规范文本为准，并在笔记里记录差异与日期。

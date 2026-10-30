@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能不看正文复述 链接，并指出 重定位 的一个边界或反例。
+- [ ] 能用「链接与加载」的示例复现结果，并说明重定位出错时输出的第一条信息。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -393,7 +393,7 @@ PLT 提供跳转桩，GOT 保存运行时地址，两者共同支持延迟绑定
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，改动其中一个输入后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，把 重定位 相关的一个值换成边界值，记录输出差异与错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；改动输入后，如果结果改变或报错，先核对它是否满足 `链接与加载` 中`链接` 的适用范围，再检查错误表里是否有同类现象。
 
@@ -562,7 +562,7 @@ PLT 提供跳转桩，GOT 保存运行时地址，两者共同支持延迟绑定
 
 | 参考资料 | 本课用途 |
 | --- | --- |
-| [NIST 二进制与数据表示](https://www.nist.gov/pml/owm/binary-information) | 二进制、位与数据单位 |
+| [Khan Academy：位与二进制](https://www.khanacademy.org/computing/computers-and-internet/xcae6f4a7ff015e7d:digital-information/xcae6f4a7ff015e7d:binary-numbers/a/bits-and-binary) | 二进制、位与数据单位 |
 | [Arm 架构文档](https://developer.arm.com/documentation) | 处理器与内存体系结构 |
 | [Nand2Tetris](https://www.nand2tetris.org/) | 从逻辑门到计算机系统 |
 

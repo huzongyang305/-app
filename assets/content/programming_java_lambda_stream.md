@@ -514,6 +514,6 @@ System.out.println(avg);   // NaN，表示"没有均值可算"而不是 0
 - 内容版本：v2.0
 - 最后更新：2026-10-06
 - 学习阶段：进阶
-- 适用环境：Java 21+ / Maven 或 Gradle
+- 适用环境：Java 21+ / Maven 或 Gradle；本课聚焦 lambda。
 - 内容来源：内置结构化课程与工程实践整理
 - 相关主题：lambda、Stream、Optional、函数式接口、并行流、方法引用

@@ -2,8 +2,7 @@
 
 > Translation status: machine translation (lightweight zh-en model). Technical terms may need review; use the Chinese tutorial as the authoritative version.
 
-
-I'm sorry.
+> clap, error handling, assert_cmd and release.
 
 > Content update time: 2026-10-03 Learning stage: Advanced
 
@@ -146,7 +145,7 @@ fn counts_lines() {
 |Do not process large files|One-time reading memory resulting in OOM|Zero fluent treatment|
 |Overwrite User File|Data lost|Default Refuse, Provide ⟦0|
 |Hard Encoding Path Separator|Cross-platform Failed|Use 0 and 1|
-|Ignore non-UTF-8 input|I'm sorry.|Use 0+1|
+| Ignore non-UTF-8 input | `read_to_string` errors out | Use `read` + `String::from_utf8_lossy` |
 |Do not write integration test|Parameter Parsing Undetected|Use stdout/ exit code|
 |Released without ⟦|Run slow|Published by 0|
 

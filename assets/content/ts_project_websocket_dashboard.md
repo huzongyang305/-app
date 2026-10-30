@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能讲清 TypeScript 与 WebSocket 的分工，并指出其中一个前提失效的边界。
+- [ ] 能运行「实战：TypeScript 实时监控面板」的示例，记录输入、输出与第一次失败的现象。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -209,7 +209,7 @@ package.json
 {
   "project": "ts_project_websocket_dashboard",
   "scenario": "TypeScript的正常路径",
-  "input": {"case": "normal", "value": "discriminatedUnion"},
+  "input": {"case": "normal", "value": "ts_project_websocket_dashboard"},
   "expected": {"ok": true, "checks": ["TypeScript可复现", "WebSocket有记录"]},
   "failure_case": {"case": "WebSocket越界或缺失", "error": "validation_error"},
   "idempotency_key": "ts_project_websocket_dashboard-001"
@@ -324,7 +324,7 @@ export type MetricMessage = Extract<z.infer<typeof Message>, { type: 'metric' }>
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，改动其中一个输入后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，把 WebSocket 相关的一个值换成边界值，记录输出差异与错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；改动输入后，如果结果改变或报错，先核对它是否满足 `实战：TypeScript 实时监控面板` 中`TypeScript` 的适用范围，再检查错误表里是否有同类现象。
 
@@ -494,7 +494,7 @@ export type MetricMessage = Extract<z.infer<typeof Message>, { type: 'metric' }>
 | --- | --- |
 | [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html) | 类型系统与语言指南 |
 | [Everyday Types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html) | 常用类型与收窄 |
-| [TypeScript 发布说明](https://www.typescriptlang.org/docs/release-notes/) | 版本变化与兼容性 |
+| [TypeScript 发布说明](https://www.typescriptlang.org/docs/handbook/release-notes/overview.html) | 版本变化与兼容性 |
 
 | [本课术语索引：实战：TypeScript 实时监控面板](#核心概念定义) | 按本课输入、术语边界和错误表现逐项核对 |
 > 「实战：TypeScript 实时监控面板」的链接用于离线阅读后的延伸核对；App 不会自动联网。

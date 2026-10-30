@@ -19,8 +19,8 @@
 
 ### 复习清单
 
-- [ ] 能不看正文复述本课核心术语，并指出一个边界或反例。
-- [ ] 能运行或推演本课示例，记录输入、输出与失败现象。
+- [ ] 能不看正文复述 Android 项目，并指出 网络 的一个边界或反例。
+- [ ] 能推演 Android 项目 的示例：先写预期输出，再运行并记录差异与失败现象。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
 
 ## 核心概念定义
@@ -306,7 +306,7 @@ fun main() {
 
 ### 自测 3（动手验证）
 
-运行本课的 `text` 示例，改动其中一个输入后重新运行，记录输出与错误信息。
+运行本课的 `text` 示例，改动一个与 Android 项目 有关的输入后重跑，记录输出与错误信息。
 
 **参考答案**：正常输入下 `text` 示例应当复现正文给出的结果；改动输入后，如果结果改变或报错，先核对它是否满足 `实战：Kotlin Android 客户端` 中`Android 项目` 的适用范围，再检查错误表里是否有同类现象。
 
@@ -464,7 +464,7 @@ fun main() {
 | --- | --- |
 | [Android 架构指南](https://developer.android.com/topic/architecture) | 分层、状态与生命周期 |
 | [Kotlin 基础语法](https://kotlinlang.org/docs/basic-syntax.html) | 语法、类型与函数 |
-| [Kotlin 测试](https://kotlinlang.org/docs/testing.html) | 单元测试与断言 |
+| [Kotlin 测试](https://kotlinlang.org/docs/jvm-test-using-junit.html) | 单元测试与断言 |
 
 | [本课术语索引：实战：Kotlin Android 客户端](#核心概念定义) | 按本课输入、术语边界和错误表现逐项核对 |
 > 「实战：Kotlin Android 客户端」的链接用于离线阅读后的延伸核对；App 不会自动联网。
