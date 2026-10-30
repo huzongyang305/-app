@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../models/study_group.dart';
 import '../services/social_service.dart';
 
@@ -37,31 +38,22 @@ class _StudyGroupsScreenState extends State<StudyGroupsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('学习小组'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: _showCreateGroupDialog,
-          ),
-        ],
-      ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _groups.isEmpty
-              ? _buildEmptyState()
-              : RefreshIndicator(
-                  onRefresh: _loadGroups,
-                  child: ListView.separated(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: _groups.length,
-                    separatorBuilder: (_, _) => const SizedBox(height: 12),
-                    itemBuilder: (context, index) {
-                      final group = _groups[index];
-                      return _GroupCard(group: group);
-                    },
-                  ),
-                ),
+          ? _buildEmptyState()
+          : RefreshIndicator(
+              onRefresh: _loadGroups,
+              child: ListView.separated(
+                padding: const EdgeInsets.all(16),
+                itemCount: _groups.length,
+                separatorBuilder: (_, _) => const SizedBox(height: 12),
+                itemBuilder: (context, index) {
+                  final group = _groups[index];
+                  return _GroupCard(group: group);
+                },
+              ),
+            ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _showCreateGroupDialog,
         icon: const Icon(Icons.add),
@@ -71,32 +63,36 @@ class _StudyGroupsScreenState extends State<StudyGroupsScreen> {
   }
 
   Widget _buildEmptyState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.groups_outlined,
-            size: 80,
-            color: Colors.grey.shade400,
-          ),
-          const SizedBox(height: 16),
-          Text(
-            '暂无学习小组',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.grey.shade600,
+    return LayoutBuilder(
+      builder: (context, constraints) => SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: constraints.maxHeight),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.groups_outlined,
+                    size: 80,
+                    color: Colors.grey.shade400,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    '暂无学习小组',
+                    style: TextStyle(fontSize: 18, color: Colors.grey.shade600),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '创建或加入小组，与志同道合的人一起学习',
+                    style: TextStyle(fontSize: 14, color: Colors.grey.shade500),
+                  ),
+                ],
+              ),
             ),
           ),
-          const SizedBox(height: 8),
-          Text(
-            '创建或加入小组，与志同道合的人一起学习',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey.shade500,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -110,9 +106,7 @@ class _StudyGroupsScreenState extends State<StudyGroupsScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextField(
-                decoration: const InputDecoration(labelText: '小组名称'),
-              ),
+              TextField(decoration: const InputDecoration(labelText: '小组名称')),
               const SizedBox(height: 12),
               TextField(
                 decoration: const InputDecoration(labelText: '描述'),
@@ -163,7 +157,7 @@ class _GroupCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Card(
       child: InkWell(
         onTap: () {
@@ -202,7 +196,11 @@ class _GroupCard extends StatelessWidget {
               const SizedBox(height: 12),
               Row(
                 children: [
-                  Icon(Icons.people, size: 16, color: theme.colorScheme.primary),
+                  Icon(
+                    Icons.people,
+                    size: 16,
+                    color: theme.colorScheme.primary,
+                  ),
                   const SizedBox(width: 4),
                   Text('${group.memberCount}/${group.maxMembers}'),
                   const Spacer(),

@@ -771,9 +771,7 @@ class ProfileScreen extends StatelessWidget {
         .toList();
     final completedCategories = content.categories.where((category) {
       if (category.lessons.isEmpty) return false;
-      return category.lessons.every(
-        (lesson) => progress.isLearned(lesson.id),
-      );
+      return category.lessons.every((lesson) => progress.isLearned(lesson.id));
     }).length;
 
     return Scaffold(
@@ -795,40 +793,58 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      _StatItem(
-                        value: '$learned/$total',
-                        label: context.tr('learnedLessons'),
-                        color: theme.colorScheme.primary,
-                      ),
-                      _StatItem(
-                        value:
-                            '${(progress.averageQuizAccuracy * 100).round()}%',
-                        label: context.tr('quizAverage'),
-                        color: theme.colorScheme.onSurface,
-                      ),
-                      _StatItem(
-                        value: '${progress.favoriteIds.length}',
-                        label: context.tr('favorites'),
-                        color: theme.colorScheme.onSurface,
-                      ),
-                      _StatItem(
-                        value: '${progress.notes.length}',
-                        label: context.tr('notes'),
-                        color: theme.colorScheme.onSurface,
-                      ),
-                      _StatItem(
-                        value: '${progress.totalWrongQuestions}',
-                        label: context.tr('wrongBook'),
-                        color: theme.colorScheme.onSurface,
-                      ),
-                      _StatItem(
-                        value: '${progress.streakDays}',
-                        label: context.tr('streak'),
-                        color: theme.colorScheme.onSurface,
-                      ),
-                    ],
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      // 3 列两行保证 390 宽也能完整显示标签，平板宽屏回到单行 6 列。
+                      final columns = constraints.maxWidth >= 520 ? 6 : 3;
+                      final itemWidth =
+                          (constraints.maxWidth -
+                              AppSpacing.md * (columns - 1)) /
+                          columns;
+                      return Wrap(
+                        spacing: AppSpacing.md,
+                        runSpacing: AppSpacing.md,
+                        children: [
+                          _StatItem(
+                            width: itemWidth,
+                            value: '$learned/$total',
+                            label: context.tr('learnedLessons'),
+                            color: theme.colorScheme.primary,
+                          ),
+                          _StatItem(
+                            width: itemWidth,
+                            value:
+                                '${(progress.averageQuizAccuracy * 100).round()}%',
+                            label: context.tr('quizAverage'),
+                            color: theme.colorScheme.onSurface,
+                          ),
+                          _StatItem(
+                            width: itemWidth,
+                            value: '${progress.favoriteIds.length}',
+                            label: context.tr('favorites'),
+                            color: theme.colorScheme.onSurface,
+                          ),
+                          _StatItem(
+                            width: itemWidth,
+                            value: '${progress.notes.length}',
+                            label: context.tr('notes'),
+                            color: theme.colorScheme.onSurface,
+                          ),
+                          _StatItem(
+                            width: itemWidth,
+                            value: '${progress.totalWrongQuestions}',
+                            label: context.tr('wrongBook'),
+                            color: theme.colorScheme.onSurface,
+                          ),
+                          _StatItem(
+                            width: itemWidth,
+                            value: '${progress.streakDays}',
+                            label: context.tr('streak'),
+                            color: theme.colorScheme.onSurface,
+                          ),
+                        ],
+                      );
+                    },
                   ),
                   const SizedBox(height: 14),
                   ClipRRect(
@@ -1622,11 +1638,13 @@ class _BackupPasswordDialogState extends State<_BackupPasswordDialog> {
 
 class _StatItem extends StatelessWidget {
   const _StatItem({
+    required this.width,
     required this.value,
     required this.label,
     required this.color,
   });
 
+  final double width;
   final String value;
   final String label;
   final Color color;
@@ -1634,11 +1652,15 @@ class _StatItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Expanded(
+    return SizedBox(
+      width: width,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             value,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: theme.textTheme.titleLarge?.copyWith(
               color: color,
               fontWeight: FontWeight.bold,

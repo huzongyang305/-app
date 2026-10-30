@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../models/friend.dart';
 import '../services/social_service.dart';
 
@@ -37,67 +38,67 @@ class _FriendsScreenState extends State<FriendsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('好友'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.person_add),
-            onPressed: _showAddFriendDialog,
-          ),
-        ],
-      ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _friends.isEmpty
-              ? _buildEmptyState()
-              : RefreshIndicator(
-                  onRefresh: _loadFriends,
-                  child: ListView.separated(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: _friends.length,
-                    separatorBuilder: (_, _) => const SizedBox(height: 8),
-                    itemBuilder: (context, index) {
-                      final friend = _friends[index];
-                      return _FriendCard(friend: friend);
-                    },
-                  ),
-                ),
+          ? _buildEmptyState()
+          : RefreshIndicator(
+              onRefresh: _loadFriends,
+              child: ListView.separated(
+                padding: const EdgeInsets.all(16),
+                itemCount: _friends.length,
+                separatorBuilder: (_, _) => const SizedBox(height: 8),
+                itemBuilder: (context, index) {
+                  final friend = _friends[index];
+                  return _FriendCard(friend: friend);
+                },
+              ),
+            ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showAddFriendDialog,
+        tooltip: '添加好友',
+        child: const Icon(Icons.person_add),
+      ),
     );
   }
 
   Widget _buildEmptyState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.people_outline,
-            size: 80,
-            color: Colors.grey.shade400,
-          ),
-          const SizedBox(height: 16),
-          Text(
-            '暂无好友',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.grey.shade600,
+    return LayoutBuilder(
+      builder: (context, constraints) => SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: constraints.maxHeight),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.people_outline,
+                    size: 80,
+                    color: Colors.grey.shade400,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    '暂无好友',
+                    style: TextStyle(fontSize: 18, color: Colors.grey.shade600),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '添加好友一起学习交流吧',
+                    style: TextStyle(fontSize: 14, color: Colors.grey.shade500),
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton.icon(
+                    onPressed: _showAddFriendDialog,
+                    icon: const Icon(Icons.person_add),
+                    label: const Text('添加好友'),
+                  ),
+                ],
+              ),
             ),
           ),
-          const SizedBox(height: 8),
-          Text(
-            '添加好友一起学习交流吧',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey.shade500,
-            ),
-          ),
-          const SizedBox(height: 24),
-          ElevatedButton.icon(
-            onPressed: _showAddFriendDialog,
-            icon: const Icon(Icons.person_add),
-            label: const Text('添加好友'),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -139,7 +140,7 @@ class _FriendCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Card(
       child: ListTile(
         leading: Stack(
@@ -185,7 +186,11 @@ class _FriendCard extends StatelessWidget {
                 const SizedBox(width: 4),
                 Text('${friend.totalPoints} 积分'),
                 const SizedBox(width: 12),
-                Icon(Icons.local_fire_department, size: 14, color: Colors.orange),
+                Icon(
+                  Icons.local_fire_department,
+                  size: 14,
+                  color: Colors.orange,
+                ),
                 const SizedBox(width: 4),
                 Text('${friend.streakDays} 天'),
               ],

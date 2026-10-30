@@ -36,6 +36,7 @@ class CategoryCard extends StatelessWidget {
         padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               children: [
@@ -61,7 +62,7 @@ class CategoryCard extends StatelessWidget {
                 ),
               ],
             ),
-            const Spacer(),
+            const SizedBox(height: AppSpacing.sm),
             Text(
               title,
               style: theme.textTheme.titleMedium,
@@ -71,6 +72,8 @@ class CategoryCard extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               '$learnedCount/$total ${context.tr('lessons')}',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: theme.textTheme.bodySmall,
             ),
             const SizedBox(height: AppSpacing.sm),

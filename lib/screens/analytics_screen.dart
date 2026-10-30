@@ -239,10 +239,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
             ),
           const SizedBox(height: 16),
           // 知识点掌握度矩阵
-          _SectionTitle(
-            title: '知识点掌握度',
-            subtitle: '直观展示各知识点的掌握情况',
-          ),
+          _SectionTitle(title: '知识点掌握度', subtitle: '直观展示各知识点的掌握情况'),
           Card(
             child: Padding(
               padding: const EdgeInsets.all(16),
@@ -255,10 +252,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
           ),
           const SizedBox(height: 16),
           // 学习曲线分析
-          _SectionTitle(
-            title: '学习曲线',
-            subtitle: '学习效率随时间的变化趋势',
-          ),
+          _SectionTitle(title: '学习曲线', subtitle: '学习效率随时间的变化趋势'),
           Card(
             child: Padding(
               padding: const EdgeInsets.all(16),
@@ -273,14 +267,8 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
           ),
           const SizedBox(height: 16),
           // 智能推荐
-          _SectionTitle(
-            title: '智能推荐',
-            subtitle: '基于学习数据的个性化建议',
-          ),
-          SmartRecommendations(
-            lessons: content.allLessons,
-            progress: progress,
-          ),
+          _SectionTitle(title: '智能推荐', subtitle: '基于学习数据的个性化建议'),
+          SmartRecommendations(lessons: content.allLessons, progress: progress),
           const SizedBox(height: 16),
           // 概念级掌握度：按课程关键词聚合测验与错题数据
           _SectionTitle(
@@ -616,25 +604,29 @@ class _Metric extends StatelessWidget {
         children: [
           Icon(icon, color: color, size: 21),
           const SizedBox(width: 8),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                value,
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: color,
-                  fontWeight: FontWeight.bold,
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  value,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: color,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              Text(
-                label,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.labelSmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
+                Text(
+                  label,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

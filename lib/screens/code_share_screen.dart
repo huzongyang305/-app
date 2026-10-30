@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../models/code_share.dart';
 import '../services/social_service.dart';
 
@@ -25,7 +26,9 @@ class _CodeShareScreenState extends State<CodeShareScreen> {
   Future<void> _loadShares() async {
     setState(() => _isLoading = true);
     try {
-      final shares = await _socialService.getCodeShares(language: _selectedLanguage);
+      final shares = await _socialService.getCodeShares(
+        language: _selectedLanguage,
+      );
       setState(() {
         _shares = shares;
         _isLoading = false;
@@ -38,14 +41,10 @@ class _CodeShareScreenState extends State<CodeShareScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('代码分享'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: _showShareCodeDialog,
-          ),
-        ],
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showShareCodeDialog,
+        tooltip: '分享代码',
+        child: const Icon(Icons.add),
       ),
       body: Column(
         children: [
@@ -100,28 +99,28 @@ class _CodeShareScreenState extends State<CodeShareScreen> {
               ),
             ),
           ),
-          
+
           // 代码列表
           Expanded(
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : _shares.isEmpty
-                    ? _buildEmptyState()
-                    : RefreshIndicator(
-                        onRefresh: _loadShares,
-                        child: ListView.separated(
-                          padding: const EdgeInsets.all(16),
-                          itemCount: _shares.length,
-                          separatorBuilder: (_, _) => const SizedBox(height: 12),
-                          itemBuilder: (context, index) {
-                            final share = _shares[index];
-                            return _CodeShareCard(
-                              share: share,
-                              onLike: () => _toggleLike(share.id),
-                            );
-                          },
-                        ),
-                      ),
+                ? _buildEmptyState()
+                : RefreshIndicator(
+                    onRefresh: _loadShares,
+                    child: ListView.separated(
+                      padding: const EdgeInsets.all(16),
+                      itemCount: _shares.length,
+                      separatorBuilder: (_, _) => const SizedBox(height: 12),
+                      itemBuilder: (context, index) {
+                        final share = _shares[index];
+                        return _CodeShareCard(
+                          share: share,
+                          onLike: () => _toggleLike(share.id),
+                        );
+                      },
+                    ),
+                  ),
           ),
         ],
       ),
@@ -129,30 +128,33 @@ class _CodeShareScreenState extends State<CodeShareScreen> {
   }
 
   Widget _buildEmptyState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.code_off,
-            size: 80,
-            color: Colors.grey.shade400,
-          ),
-          const SizedBox(height: 16),
-          Text(
-            '暂无代码分享',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.grey.shade600,
+    return LayoutBuilder(
+      builder: (context, constraints) => SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: constraints.maxHeight),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.code_off, size: 80, color: Colors.grey.shade400),
+                  const SizedBox(height: 16),
+                  Text(
+                    '暂无代码分享',
+                    style: TextStyle(fontSize: 18, color: Colors.grey.shade600),
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton.icon(
+                    onPressed: _showShareCodeDialog,
+                    icon: const Icon(Icons.add),
+                    label: const Text('分享代码'),
+                  ),
+                ],
+              ),
             ),
           ),
-          const SizedBox(height: 24),
-          ElevatedButton.icon(
-            onPressed: _showShareCodeDialog,
-            icon: const Icon(Icons.add),
-            label: const Text('分享代码'),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -166,9 +168,7 @@ class _CodeShareScreenState extends State<CodeShareScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextField(
-                decoration: const InputDecoration(labelText: '标题'),
-              ),
+              TextField(decoration: const InputDecoration(labelText: '标题')),
               const SizedBox(height: 12),
               DropdownButtonFormField<String>(
                 decoration: const InputDecoration(labelText: '语言'),
@@ -243,10 +243,7 @@ class _LanguageChip extends StatelessWidget {
 }
 
 class _CodeShareCard extends StatelessWidget {
-  const _CodeShareCard({
-    required this.share,
-    required this.onLike,
-  });
+  const _CodeShareCard({required this.share, required this.onLike});
 
   final CodeShare share;
   final VoidCallback onLike;
@@ -254,7 +251,7 @@ class _CodeShareCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -302,9 +299,9 @@ class _CodeShareCard extends StatelessWidget {
                 ),
               ],
             ),
-            
+
             const SizedBox(height: 12),
-            
+
             // 标题和描述
             Text(
               share.title,
@@ -321,9 +318,9 @@ class _CodeShareCard extends StatelessWidget {
                 ),
               ),
             ],
-            
+
             const SizedBox(height: 12),
-            
+
             // 代码块
             Container(
               width: double.infinity,
@@ -333,18 +330,15 @@ class _CodeShareCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                share.code.length > 200 
+                share.code.length > 200
                     ? '${share.code.substring(0, 200)}...'
                     : share.code,
-                style: const TextStyle(
-                  fontFamily: 'monospace',
-                  fontSize: 13,
-                ),
+                style: const TextStyle(fontFamily: 'monospace', fontSize: 13),
               ),
             ),
-            
+
             const SizedBox(height: 12),
-            
+
             // 操作按钮
             Row(
               children: [
@@ -382,7 +376,7 @@ class _CodeShareCard extends StatelessWidget {
   String _formatTime(DateTime time) {
     final now = DateTime.now();
     final diff = now.difference(time);
-    
+
     if (diff.inMinutes < 1) return '刚刚';
     if (diff.inMinutes < 60) return '${diff.inMinutes}分钟前';
     if (diff.inHours < 24) return '${diff.inHours}小时前';

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'daily_challenge_screen.dart';
 import 'skill_tree_screen.dart';
 import 'mentor_selection_screen.dart';
@@ -28,9 +29,8 @@ class GamificationHubScreen extends StatelessWidget {
           children: [
             Text(
               '让学习更有趣！',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(context).textTheme.headlineSmall
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
@@ -39,11 +39,21 @@ class GamificationHubScreen extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                childAspectRatio: 1.1,
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 12,
+              child: GridView(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 12,
+                  crossAxisSpacing: 12,
+                  // 图标圈 + 标题/副标题行高 + 内边距，随系统字号增长。
+                  mainAxisExtent:
+                      64 +
+                      12 +
+                      MediaQuery.textScalerOf(context).scale(24) +
+                      4 +
+                      MediaQuery.textScalerOf(context).scale(18) +
+                      32 +
+                      8,
+                ),
                 children: [
                   _buildCard(
                     context,
@@ -140,6 +150,8 @@ class GamificationHubScreen extends StatelessWidget {
                   const SizedBox(height: 12),
                   Text(
                     title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -149,10 +161,9 @@ class GamificationHubScreen extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     subtitle,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey.shade600,
-                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -262,10 +273,7 @@ class GamificationHubScreen extends StatelessWidget {
                 ),
                 Text(
                   description,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey.shade600,
-                  ),
+                  style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
                 ),
               ],
             ),

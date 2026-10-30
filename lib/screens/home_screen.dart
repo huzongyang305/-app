@@ -81,7 +81,12 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           content.isLoading
               ? ListView(
-                  padding: const EdgeInsets.fromLTRB(AppSpacing.page, AppSpacing.sm, AppSpacing.page, AppSpacing.xxl),
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.page,
+                    AppSpacing.sm,
+                    AppSpacing.page,
+                    AppSpacing.xxl,
+                  ),
                   children: const [
                     ProgressCardSkeleton(),
                     SizedBox(height: 16),
@@ -100,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 )
               : _buildBody(context, content, progress, settings, theme),
-          
+
           // 成就庆祝动画overlay
           if (_celebratingAchievement != null)
             Positioned.fill(
@@ -351,29 +356,32 @@ class _HomeScreenState extends State<HomeScreen> {
         const SizedBox(height: AppSpacing.xl),
         SectionBand(index: '04', title: context.tr('categories')),
         const SizedBox(height: AppSpacing.md),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          // 用固定高度而不是宽高比，避免窄屏上卡片内部内容溢出。
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 10,
-            crossAxisSpacing: 10,
-            mainAxisExtent: 164,
-          ),
-          itemCount: content.categories.length,
-          itemBuilder: (context, index) {
-            final category = content.categories[index];
-            return CategoryCard(
-              category: category,
-              learnedCount: category.lessons
-                  .where((lesson) => progress.isLearned(lesson.id))
-                  .length,
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (_) => CategoryScreen(categoryId: category.id),
-                ),
-              ),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            // 高度交给内容决定，窄屏或大字号时卡片自然增高，不再被固定高度裁切。
+            const spacing = 10.0;
+            final cardWidth = (constraints.maxWidth - spacing) / 2;
+            return Wrap(
+              spacing: spacing,
+              runSpacing: spacing,
+              children: [
+                for (final category in content.categories)
+                  SizedBox(
+                    width: cardWidth,
+                    child: CategoryCard(
+                      category: category,
+                      learnedCount: category.lessons
+                          .where((lesson) => progress.isLearned(lesson.id))
+                          .length,
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) =>
+                              CategoryScreen(categoryId: category.id),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
             );
           },
         ),

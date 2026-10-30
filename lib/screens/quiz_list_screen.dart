@@ -117,10 +117,14 @@ class QuizListScreen extends StatelessWidget {
                           color: theme.colorScheme.primary,
                         ),
                         const SizedBox(width: 8),
-                        Text(
-                          category.title.of(context.strings.localeCode),
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
+                        Expanded(
+                          child: Text(
+                            category.title.of(context.strings.localeCode),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ],

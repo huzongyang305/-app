@@ -105,19 +105,26 @@ class _AchievementCard extends StatelessWidget {
             Row(
               children: [
                 Icon(achievement.icon, size: 22, color: accent),
-                const Spacer(),
-                if (earned)
-                  Icon(Icons.verified, size: 16, color: accent)
-                else
-                  Text(
-                    context.trArgs('achievementProgress', {
-                      'n': status.displayValue,
-                      'm': status.targetValue,
-                    }),
-                    style: theme.textTheme.labelSmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: earned
+                        ? Icon(Icons.verified, size: 16, color: accent)
+                        : Text(
+                            context.trArgs('achievementProgress', {
+                              'n': status.displayValue,
+                              'm': status.targetValue,
+                            }),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.end,
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
+                          ),
                   ),
+                ),
               ],
             ),
             const SizedBox(height: 8),

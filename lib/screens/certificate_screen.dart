@@ -127,7 +127,8 @@ class _CategoryCertificateCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final color = Color(entry.category.colorValue);
+    // colorValue 只存 0xRRGGBB，补上不透明 alpha 后才能正常着色。
+    final color = Color(0xFF000000 | entry.category.colorValue);
     final title = entry.category.title.of(context.strings.localeCode);
     final complete = entry.isComplete;
 

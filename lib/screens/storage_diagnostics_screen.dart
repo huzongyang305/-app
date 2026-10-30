@@ -173,14 +173,27 @@ class _StatTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    // 数值放进标题行，避免大字号下 trailing 撑满整行导致 ListTile 布局断言。
     return ListTile(
       leading: Icon(icon, color: theme.colorScheme.primary),
-      title: Text(label),
-      trailing: Text(
-        value,
-        style: theme.textTheme.titleSmall?.copyWith(
-          fontFamily: AppTheme.monoFamily,
-        ),
+      title: Row(
+        children: [
+          Expanded(
+            child: Text(label, maxLines: 2, overflow: TextOverflow.ellipsis),
+          ),
+          const SizedBox(width: AppSpacing.sm),
+          Flexible(
+            child: Text(
+              value,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.end,
+              style: theme.textTheme.titleSmall?.copyWith(
+                fontFamily: AppTheme.monoFamily,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../models/lesson.dart';
 import '../services/progress_provider.dart';
 
@@ -21,12 +22,18 @@ class MasteryMatrix extends StatelessWidget {
       return const Center(child: Text('暂无数据'));
     }
 
+    // 行高按字号推算：2 行标题 + 百分比 + 错题角标 + 内边距，
+    // 避免固定宽高比在窄屏或大字号下把单元格内容挤爆。
+    final scaler = MediaQuery.textScalerOf(context);
+    final cellHeight =
+        16 + scaler.scale(18) * 2 + 4 + scaler.scale(14) + 2 + 12 + 6;
+
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: columns,
-        childAspectRatio: 1.2,
+        mainAxisExtent: cellHeight,
         crossAxisSpacing: 8,
         mainAxisSpacing: 8,
       ),
@@ -36,7 +43,7 @@ class MasteryMatrix extends StatelessWidget {
         final result = progress.resultOf(lesson.id);
         final isLearned = progress.isLearned(lesson.id);
         final wrongCount = progress.wrongCountFor(lesson.id);
-        
+
         double mastery = 0;
         if (result != null) {
           mastery = result.accuracy;
@@ -82,7 +89,7 @@ class _MasteryCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(8),

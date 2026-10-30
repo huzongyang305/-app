@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../models/friend.dart';
 import '../services/social_service.dart';
 
@@ -38,9 +39,6 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('排行榜'),
-      ),
       body: Column(
         children: [
           // 排行榜类型切换
@@ -78,7 +76,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
               },
             ),
           ),
-          
+
           // 排行榜列表
           Expanded(
             child: _isLoading
@@ -106,10 +104,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
 }
 
 class _LeaderboardItem extends StatelessWidget {
-  const _LeaderboardItem({
-    required this.friend,
-    required this.rank,
-  });
+  const _LeaderboardItem({required this.friend, required this.rank});
 
   final Friend friend;
   final int rank;
@@ -124,7 +119,7 @@ class _LeaderboardItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Card(
       child: ListTile(
         leading: Container(
@@ -156,11 +151,7 @@ class _LeaderboardItem extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (rank <= 3)
-              Icon(
-                Icons.emoji_events,
-                color: _getRankColor(),
-                size: 24,
-              ),
+              Icon(Icons.emoji_events, color: _getRankColor(), size: 24),
             const SizedBox(width: 8),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -173,10 +164,7 @@ class _LeaderboardItem extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
-                  '积分',
-                  style: theme.textTheme.labelSmall,
-                ),
+                Text('积分', style: theme.textTheme.labelSmall),
               ],
             ),
           ],

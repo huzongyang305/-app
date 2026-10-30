@@ -301,18 +301,26 @@ class _SectionTitle extends StatelessWidget {
         children: [
           Icon(icon, size: 18, color: theme.colorScheme.primary),
           const SizedBox(width: AppSpacing.sm),
-          Text(
-            title,
-            style: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w700,
+          Expanded(
+            child: Text(
+              title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
-          const Spacer(),
           if (trailing != null)
-            Text(
-              trailing!,
-              style: theme.textTheme.labelSmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
+            Flexible(
+              child: Text(
+                trailing!,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.end,
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
               ),
             ),
         ],
