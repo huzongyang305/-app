@@ -13279,7 +13279,7 @@
             "en": "Learn heap regions, GC algorithms, pauses, allocation rate and tuning."
           },
           "file": "assets/content/java_gc_tuning.md",
-          "minutes": 30,
+          "minutes": 40,
           "keywords": [
             "GC",
             "堆",
@@ -15934,7 +15934,7 @@
             "en": "Learn suspend functions, scopes, cancellation, structured concurrency and Flow."
           },
           "file": "assets/content/kotlin_coroutines.md",
-          "minutes": 25,
+          "minutes": 35,
           "keywords": [
             "协程",
             "suspend",
@@ -17396,7 +17396,7 @@
             "en": "Learn async/await, Task, Actor, cancellation and Sendable."
           },
           "file": "assets/content/swift_async.md",
-          "minutes": 25,
+          "minutes": 40,
           "keywords": [
             "async",
             "Actor",
@@ -21879,7 +21879,7 @@
             "en": "Use records, with, pattern matching and immutable collections."
           },
           "file": "assets/content/csharp_records_patterns.md",
-          "minutes": 25,
+          "minutes": 35,
           "keywords": [
             "record",
             "模式匹配",
@@ -42579,7 +42579,7 @@
             "en": "Learn autonomous systems, route selection, prefix announcements, hijacking and convergence."
           },
           "file": "assets/content/network_bgp.md",
-          "minutes": 25,
+          "minutes": 40,
           "keywords": [
             "BGP",
             "自治系统",
@@ -42683,7 +42683,7 @@
             "en": "Cover BDP, windows, queues, congestion control, TCP tuning and observability."
           },
           "file": "assets/content/network_performance.md",
-          "minutes": 25,
+          "minutes": 30,
           "keywords": [
             "带宽时延积",
             "拥塞控制",
@@ -47750,7 +47750,7 @@
             "en": "Learn property graphs, Cypher, multi-hop queries, graph algorithms and boundaries."
           },
           "file": "assets/content/db_graph.md",
-          "minutes": 25,
+          "minutes": 35,
           "keywords": [
             "图数据库",
             "Cypher",
@@ -50922,7 +50922,7 @@
             "en": "Learn hard/soft real-time, priority inversion, latency and worst-case execution time."
           },
           "file": "assets/content/os_rtos.md",
-          "minutes": 25,
+          "minutes": 30,
           "keywords": [
             "RTOS",
             "实时性",
@@ -56706,7 +56706,7 @@
             "en": "Select, compress, order and refresh information in model context."
           },
           "file": "assets/content/ai_context_engineering.md",
-          "minutes": 25,
+          "minutes": 30,
           "keywords": [
             "上下文工程",
             "摘要",

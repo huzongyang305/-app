@@ -4,7 +4,7 @@
 
 ![JVM 垃圾回收与性能调优](images/lesson_java_gc_tuning.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：30 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：40 分钟
 
 ## 本节知识框架
 
@@ -81,6 +81,60 @@ JVM 的堆内存被分成几个区域，就像书桌被分成"桌面""浅抽屉"
 **G1 是当前默认收集器**（Java 9+）。它把堆切成很多 Region，每次只回收一部分，通过 `-XX:MaxGCPauseMillis` 设置停顿目标（默认 200ms）。
 
 **ZGC** 是 Java 15+ 的生产级收集器，停顿时间几乎恒定在 1ms 以内，不管堆多大。代价是吞吐量略低、内存占用更大。
+
+### 分代假设、TLAB 与跨代引用
+
+分代回收能成立，靠的是两条经验假设：
+
+- **弱分代假设**：绝大多数对象朝生夕死。
+- **强分代假设**：熬过越多次回收的对象，越可能继续存活。
+
+第一条让年轻代可以频繁、廉价地回收，第二条让老年代可以低频回收。但分代带来一个新问题：老年代对象可能引用年轻代对象。如果每次 Minor GC 都扫描整个老年代，分代就白分了。JVM 的解法是**卡表**（card table）与**记忆集**（remembered set）：把老年代按固定大小切成卡页，对象引用字段被写入时由**写屏障**（write barrier）把对应卡页标记为脏；Minor GC 只扫描脏卡指向的跨代引用，把它们当作 GC Roots 的一部分。
+
+分配侧也有优化：每个线程在 Eden 里预留一小块私有的 **TLAB**（Thread Local Allocation Buffer），对象优先在 TLAB 内用指针碰撞分配，不需要原子操作；TLAB 用完再申请新的。这解释了为什么分配速率可以接近内存带宽。对象大于 TLAB 时会退化为共享 Eden 分配，线程竞争随之上升。
+
+大对象还有特殊路径：G1 中超过 Region 一半大小的对象叫 **Humongous 对象**，直接占用连续的 Region，回收成本高。频繁创建大数组是线上抖动的常见来源，改法是复用缓冲区或分块处理。
+
+### G1 的回收周期
+
+G1 把堆切成约 2048 个大小相等的 **Region**（1~32 MB，2 的幂），每个 Region 动态扮演 Eden、Survivor 或 Old。它按"回收收益"排序，优先回收垃圾比例最高的 Region，这就是 Garbage First 名字的来源。
+
+一次完整的 G1 周期包含四类动作：
+
+1. **Young GC**：Eden 满时触发，只回收年轻代 Region，存活对象复制到 Survivor 或晋升。这是 STW 停顿。
+2. **并发标记**：老年代占用超过 `-XX:InitiatingHeapOccupancyPercent`（默认 45%）时启动，标记期间应用线程继续运行，靠 SATB（Snapshot-At-The-Beginning）写屏障记录引用变化。
+3. **Mixed GC**：标记完成后，除年轻代外还回收部分垃圾比例高的老年代 Region，分多次做完，避免单次停顿过长。
+4. **Full GC**：并发标记跟不上分配或晋升失败（evacuation failure）时退化为单线程 Full GC，停顿可能到秒级，是要极力避免的路径。
+
+`-XX:MaxGCPauseMillis` 是软目标：G1 按历史数据预测本次能回收多少 Region。设得太小（比如 20ms）会让每次只回收少量 Region，Mixed GC 追不上分配，反而更容易掉进 Full GC。
+
+### ZGC 的着色指针与读屏障
+
+ZGC 的核心思路是把 GC 状态编码进指针本身：64 位指针里划出若干位作为标记位（Marked0、Marked1、Remapped、Finalizable），对象地址只占低位。这样"对象是否已标记""是否已重定位"可以直接从指针读出来，不需要额外访问对象头。
+
+应用线程读取引用时要经过**读屏障**（load barrier）：如果指针颜色表明对象已经移动，屏障先修正指针再返回，修正工作由应用线程分摊。因此 ZGC 的 STW 停顿只做根扫描等极短工作，标记与整理绝大部分并发完成。
+
+Java 21 起 ZGC 支持分代（JEP 439），解决了"每次都要标记整个堆"的成本问题；Java 23 起分代成为默认。代价是读屏障带来几个百分点的吞吐开销，以及更多的元数据内存。
+
+### 读一条 GC 日志
+
+Java 9+ 用统一日志：`-Xlog:gc*:file=gc.log:time,uptime,level,tags`。一条 Young GC 大致长这样：
+
+```text
+[2026-10-06T10:00:01.123+0800][1.234s][info][gc,start] GC(12) Pause Young (Normal) (G1 Evacuation Pause)
+[2026-10-06T10:00:01.155+0800][1.266s][info][gc,phases] GC(12) Phase 1: Ext Root Scanning 0.512ms
+[2026-10-06T10:00:01.156+0800][1.267s][info][gc,heap] GC(12) Eden: 512M->0M(1024M) Survivor: 32M->64M(128M) Old: 1024M->1024M(2048M)
+[2026-10-06T10:00:01.156+0800][1.267s][info][gc] GC(12) Pause Young (Normal) 33.201ms
+```
+
+读法：
+
+- `Pause Young` 与结尾的 `33.201ms`：本次 STW 停顿的时长。
+- `Eden: 512M->0M(1024M)`：回收前 Eden 用了 512 MB，回收后归零，容量 1 GB。说明 Eden 接近打满才触发。
+- `Survivor: 32M->64M(128M)`：存活对象翻倍，要留意 Survivor 是否快溢出。
+- `Old: 1024M->1024M`：本次没有对象晋升。如果每次 Young GC 后 Old 都上涨，说明有对象泄漏或过早晋升。
+
+分析时先把所有 `Pause` 行按停顿排序看 P99，再统计 Full GC 次数，最后对照时间轴找业务峰值。平均值会把一次 2 秒的 Full GC 稀释掉，不能作为验收依据。
 
 ### 分配速率：决定 GC 频率的关键
 
@@ -215,6 +269,68 @@ GC 调优不像算法题用大 O 衡量，更关注"在给定硬件下，停顿�
 | P99 停顿 | 99% 的 GC 停顿不超过这个值 | 用户体感的真实延迟 |
 | GC 频率 | 每秒触发 GC 的次数 | 太频繁说明分配速率过高 |
 
+### 用公式估算停顿与频率
+
+三个够用的近似公式：
+
+1. Young GC 间隔 ≈ Eden 容量 ÷ 分配速率。
+2. 晋升速率 ≈ 每次 Young GC 晋升字节 × Young GC 频率。
+3. 单次停顿大致正比于本次要复制和扫描的存活对象大小；G1 的经验值大约是每 GB 活跃对象几十毫秒，具体取决于机器与对象图。
+
+代入一组具体数字：Eden 1 GB、分配速率 512 MB/s，平均每 2 秒一次 Young GC；每次晋升 20 MB，则老年代每秒增加 10 MB，2 GB 老年代约 205 秒被填满。若一次 Young GC 要复制 256 MB 存活对象，按 0.8 ms/MB 的简化成本估算，停顿约 205 ms，已经超过 200 ms 的默认目标。这时该做的是降低分配速率或减少存活对象，而不是继续调大 `-Xmx`。
+
+```java
+public class GcBudget {
+    public static void main(String[] args) {
+        long edenMb = 1024;
+        long allocationRateMbPerSec = 512;
+        long promotedPerGcMb = 20;
+        long oldGenMb = 2048;
+        long copiedPerGcMb = 256;
+        double copyCostMsPerMb = 0.8;
+
+        double intervalSec = (double) edenMb / allocationRateMbPerSec;
+        double youngGcPerMinute = 60 / intervalSec;
+        double promotedMbPerSec = promotedPerGcMb / intervalSec;
+        double secondsToFillOld = oldGenMb / promotedMbPerSec;
+        double estimatedPauseMs = copiedPerGcMb * copyCostMsPerMb;
+
+        System.out.printf("Young GC 间隔: %.1f 秒%n", intervalSec);
+        System.out.printf("每分钟约 %.1f 次%n", youngGcPerMinute);
+        System.out.printf("老年代约 %.0f 秒填满%n", secondsToFillOld);
+        System.out.printf("估算停顿: %.0f ms%n", estimatedPauseMs);
+        System.out.println("within-target=" + (estimatedPauseMs <= 200));
+    }
+}
+```
+
+```text
+Young GC 间隔: 2.0 秒
+每分钟约 30.0 次
+老年代约 205 秒填满
+估算停顿: 205 ms
+within-target=false
+```
+
+### 常用参数与调优顺序
+
+| 参数 | 作用 | 常见误用 |
+| --- | --- | --- |
+| `-Xms` / `-Xmx` | 初始堆与最大堆，通常设成相同值 | 容器里只设 `-Xmx` 不设 `-Xms`，堆反复伸缩 |
+| `-XX:MaxGCPauseMillis` | G1 的停顿软目标 | 设得过小，每次只回收少量 Region |
+| `-XX:InitiatingHeapOccupancyPercent` | 启动并发标记的老年代占用阈值 | 调得过高，标记来不及完成就 Full GC |
+| `-XX:SurvivorRatio` | Eden 与单个 Survivor 的比例 | 设得过大，Survivor 太小导致对象过早晋升 |
+| `-Xlog:gc*` | 打开 GC 详细日志 | 只在出问题时才开，缺少历史基线 |
+| `-XX:ActiveProcessorCount` | 显式指定可用 CPU 数 | 容器 CPU limit 小于宿主机时仍按宿主机核数开 GC 线程 |
+
+调优顺序比参数本身重要：
+
+1. **固定基线**：同一压测脚本下记录吞吐、P99、Young/Full GC 次数与堆占用。
+2. **先治泄漏与分配热点**：用 JFR 或 async-profiler 的分配采样定位，别急着改收集器。
+3. **再选收集器**：Web 服务先用 G1；堆很大且停顿要求苛刻时再评估 ZGC。
+4. **最后动堆和停顿目标**：每次只改一组参数，记录改动前后的同一组指标。
+5. **回归验证**：确认 Full GC 次数为 0 或可解释，且 P99 与吞吐都落在 SLA 内。
+
 **测量方法**：
 1. 先固定 JVM 参数跑一遍基线，记录吞吐、P99 延迟和堆占用。
 2. 把数据量或并发度提高一个数量级复测。
@@ -231,6 +347,9 @@ GC 调优不像算法题用大 O 衡量，更关注"在给定硬件下，停顿�
 | 手动触发回收 | 打乱回收节奏，掩盖真实问题 | 从减少分配和缩短对象生命周期入手 |
 | 不看 GC 日志就调参 | 改了参数不知道效果 | 加 `-Xlog:gc*` 记录每次 GC 的详情 |
 | 容器里不设 -Xmx | 堆和容器 limit 不对齐，被 OOMKilled | -Xmx 设为容器 memory limit 的 60-75% |
+| Survivor 区设得过小 | 对象过早晋升，老年代增长快 | 看日志里的 Survivor 溢出与晋升速率，增大 Survivor 或降低分配速率 |
+| 容器里沿用宿主机核数 | GC 线程抢占 CPU，请求抖动 | 按容器 CPU limit 设置 `-XX:ActiveProcessorCount`，给应用留余量 |
+| 沿用已移除的 CMS 参数 | 启动报错或参数被静默忽略 | CMS 在 Java 14 已移除，迁移到 G1/ZGC 后重新压测 |
 
 **现场排错示范**：
 
@@ -299,6 +418,13 @@ GC 调优不像算法题用大 O 衡量，更关注"在给定硬件下，停顿�
 | `调优` | 基于测量结果调整参数、数据结构或资源分配，在目标指标上获得可复现改善。 |
 | `分配速率` | 每秒创建的对象字节数，决定 GC 频率的核心因素。 |
 | `分代回收` | 把堆分成年轻代和老年代，不同区域用不同频率回收。 |
+| `TLAB` | 线程私有的 Eden 分配缓冲区，用指针碰撞快速分配对象。 |
+| `卡表` | 记录老年代哪些卡页含跨代引用的结构，配合写屏障维护。 |
+| `Region` | G1 对堆的等分切块，每块动态扮演 Eden、Survivor 或 Old。 |
+| `SATB` | 并发标记开始时给对象图拍快照，用写屏障记录之后的变化。 |
+| `晋升` | 存活足够多次 GC 的对象从年轻代移动到老年代。 |
+| `Humongous` | G1 中超过 Region 一半的大对象，单独占用连续 Region。 |
+| `着色指针` | ZGC 把标记与重定位状态编码进指针位，减少停顿。 |
 
 ## 考点精讲
 
