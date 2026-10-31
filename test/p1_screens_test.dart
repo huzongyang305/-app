@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:code_learn_app/screens/content_pack_workbench_screen.dart';
 import 'package:code_learn_app/screens/learning_hub_screen.dart';
 import 'package:code_learn_app/screens/notes_screen.dart';
+import 'package:code_learn_app/screens/skill_tree_screen.dart';
 import 'package:code_learn_app/services/content_pack_workbench.dart';
 import 'package:code_learn_app/services/content_provider.dart';
 import 'package:code_learn_app/services/progress_provider.dart';
@@ -146,5 +147,53 @@ void main() {
 
     expect(clipboardText, contains('这是导出测试笔记'));
     expect(find.textContaining('已复制'), findsOneWidget);
+  });
+
+  testWidgets('技能树按真实进度展示节点，锁定节点不能开始学习', (tester) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    final progress = ProgressProvider(StorageService.inMemory());
+    await tester.runAsync(() => progress.markLearned('html_basics'));
+
+    await _pumpScreen(
+      tester,
+      const SkillTreeScreen(),
+      content: content,
+      progress: progress,
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('技能树'), findsOneWidget);
+    expect(find.text('总体进度'), findsOneWidget);
+    expect(find.text('0 / 9 已掌握'), findsOneWidget);
+
+    final tree = find.byWidgetPredicate(
+      (widget) => widget is CustomPaint && widget.painter is SkillTreePainter,
+    );
+    expect(tree, findsOneWidget);
+    final origin = tester.getTopLeft(tree);
+
+    // HTML/CSS 已学 1/3，可以打开详情并继续学习。
+    await tester.tapAt(origin + const Offset(180, 160));
+    await tester.pumpAndSettle();
+    expect(find.text('HTML / CSS'), findsOneWidget);
+    expect(find.text('33% · 1/3 门课已学'), findsOneWidget);
+    expect(find.text('继续学习'), findsOneWidget);
+
+    // 关闭详情，点 JavaScript：前置未掌握，按钮不可用。
+    Navigator.of(tester.element(find.text('HTML / CSS'))).pop();
+    await tester.pumpAndSettle();
+    await tester.tapAt(origin + const Offset(180, 340));
+    await tester.pumpAndSettle();
+    expect(find.text('JavaScript'), findsOneWidget);
+    expect(find.text('HTML / CSS · 33%'), findsOneWidget);
+    await tester.scrollUntilVisible(
+      find.text('请先完成前置技能'),
+      200,
+      scrollable: find.byType(Scrollable).last,
+    );
+    expect(find.text('请先完成前置技能'), findsOneWidget);
   });
 }

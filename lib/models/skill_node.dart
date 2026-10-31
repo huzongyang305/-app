@@ -1,88 +1,76 @@
 import 'package:flutter/material.dart';
 
+/// 技能树节点。
+///
+/// 进度不再单独持久化，而是由 [SkillTreeService] 根据已学课程实时计算，
+/// 避免技能树、课程列表和复习计划出现三套互相矛盾的进度。
 class SkillNode {
-  final String id;
-  final String title;
-  final String description;
-  final String category;
-  final IconData icon;
-  final int progress; // 0-100
-  final List<String> prerequisites;
-  final List<String> relatedLessons;
-  final DifficultyLevel difficulty;
-  final DateTime? unlockedAt;
-  
-  SkillNode({
+  const SkillNode({
     required this.id,
     required this.title,
     required this.description,
     required this.category,
     required this.icon,
-    required this.progress,
     required this.prerequisites,
     required this.relatedLessons,
     required this.difficulty,
-    this.unlockedAt,
+    required this.order,
+    this.progress = 0,
   });
 
+  final String id;
+  final String title;
+  final String description;
+  final String category;
+  final IconData icon;
+  final List<String> prerequisites;
+  final List<String> relatedLessons;
+  final DifficultyLevel difficulty;
+
+  /// 同分类内的纵向序号，保证同难度节点不会叠在一起。
+  final int order;
+
+  /// 0–100，由关联课程的已学比例计算。
+  final int progress;
+
+  /// 节点尺寸与列顺序：绘制和点击命中共用同一份常量。
+  static const Size nodeSize = Size(168, 100);
+  static const List<String> categoryOrder = <String>[
+    'frontend',
+    'backend',
+    'mobile',
+    'devops',
+  ];
+
   bool get isMastered => progress >= 100;
-  bool get isLocked => prerequisites.isNotEmpty && !prerequisites.every(_isPrerequisiteMet);
-  
-  bool _isPrerequisiteMet(String prereqId) {
-    // TODO: 从用户进度中检查前置技能是否完成
-    return false;
-  }
+
+  /// 前置技能全部掌握后解锁；没有前置技能时直接解锁。
+  bool isUnlocked(Map<String, SkillNode> byId) =>
+      prerequisites.every((id) => byId[id]?.isMastered ?? false);
+
+  SkillNode copyWith({int? progress}) => SkillNode(
+    id: id,
+    title: title,
+    description: description,
+    category: category,
+    icon: icon,
+    prerequisites: prerequisites,
+    relatedLessons: relatedLessons,
+    difficulty: difficulty,
+    order: order,
+    progress: progress ?? this.progress,
+  );
 
   Offset get position {
-    // 根据类别和难度计算在技能树中的位置
-    final categoryIndex = ['frontend', 'backend', 'mobile', 'devops'].indexOf(category);
-    final difficultyValue = difficulty.index;
-    
-    return Offset(
-      200 + categoryIndex * 400,
-      200 + difficultyValue * 150,
-    );
+    final index = categoryOrder.indexOf(category);
+    return Offset(180 + (index < 0 ? 0 : index) * 430, 160 + order * 180);
   }
 
-  factory SkillNode.fromJson(Map<String, dynamic> json) {
-    return SkillNode(
-      id: json['id'] as String,
-      title: json['title'] as String,
-      description: json['description'] as String,
-      category: json['category'] as String,
-      icon: const IconData(0xe1b1, fontFamily: 'MaterialIcons'), // Default icon
-      progress: json['progress'] as int,
-      prerequisites: List<String>.from(json['prerequisites'] ?? []),
-      relatedLessons: List<String>.from(json['relatedLessons'] ?? []),
-      difficulty: DifficultyLevel.values.firstWhere(
-        (e) => e.name == json['difficulty'],
-        orElse: () => DifficultyLevel.easy,
-      ),
-      unlockedAt: json['unlockedAt'] != null 
-          ? DateTime.parse(json['unlockedAt'] as String) 
-          : null,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'title': title,
-      'description': description,
-      'category': category,
-      'icon': icon.codePoint,
-      'progress': progress,
-      'prerequisites': prerequisites,
-      'relatedLessons': relatedLessons,
-      'difficulty': difficulty.name,
-      'unlockedAt': unlockedAt?.toIso8601String(),
-    };
-  }
+  Rect get bounds => Rect.fromCenter(
+    center: position,
+    width: nodeSize.width,
+    height: nodeSize.height,
+  );
 }
 
-enum DifficultyLevel {
-  easy,
-  medium,
-  hard,
-  expert,
-}
+enum DifficultyLevel { easy, medium, hard, expert }
