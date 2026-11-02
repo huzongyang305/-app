@@ -4,7 +4,7 @@
 
 ![STL 容器与算法](images/remaining_cpp_stl.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：35 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：50 分钟
 
 ## 本节知识框架
 
@@ -57,6 +57,35 @@ STL 的设计思路其实很简单：**把「存数据」和「处理数据」�
 | `unordered_map` | 哈希表 | 平均 O(1) | 平均 O(1) | 需要极速查找 |
 | `array` | 固定数组 | O(n) | 长度不可变 | 编译期确定大小 |
 
+### vector 扩容：capacity 为什么总比 size 大
+
+`size()` 是住了多少人，`capacity()` 是房子能住多少人。人满了就换一间更大的房子，把所有人搬过去、旧房退租——这一步既分配又搬家，还会让所有指向旧地址的指针、引用、迭代器同时失效。
+
+```cpp
+#include <iostream>
+#include <vector>
+
+int main() {
+    std::vector<int> v;
+    std::size_t last = v.capacity();
+    for (int i = 0; i < 10; ++i) {
+        v.push_back(i);
+        if (v.capacity() != last) {
+            std::cout << "size=" << v.size() << " capacity=" << v.capacity() << '\n';
+            last = v.capacity();
+        }
+    }
+}
+```
+
+典型输出是 1、2、4、8、16：libstdc++ 与 libc++ 按 2 倍增长，MSVC 按 1.5 倍。为什么不是每次 +1？按倍数增长时搬运总量是 n + n/2 + n/4 + … < 2n，均摊到每次 `push_back` 就是 O(1)；按 +1 增长则总拷贝次数退化成 O(n²)。
+
+三条实用推论：
+
+- 已知规模就 `reserve(n)`，一次分配到位，后续 `push_back` 不再触发扩容。
+- `clear()` 只把 size 归零，capacity 原封不动；真想还内存用 `shrink_to_fit()`（非强制）或 `std::vector<T>(v).swap(v)`。
+- `reserve` 之后 `size()` 仍然是 0，别拿它当「已有多少元素」用。
+
 ### 迭代器：容器与算法的桥梁
 
 迭代器是容器与算法之间的统一接口。不管数据存在 vector 还是 list 里，只要提供迭代器，算法就能工作。
@@ -70,6 +99,31 @@ nums.erase(std::remove(nums.begin(), nums.end(), 1), nums.end());  // erase-remo
 ```
 
 注意：修改容器结构（如 `push_back`）可能让迭代器失效。
+
+### 迭代器失效规则速查
+
+| 容器 | 插入 | 删除 | 补充 |
+| --- | --- | --- | --- |
+| `vector` | 扩容则全部失效；否则插入点之后的失效 | 删除点及之后失效 | `reserve` 后尾部插入只有 `end()` 变 |
+| `deque` | 两端插入使迭代器失效，引用仍有效 | 两端删除只失效被删的 | 中间插入/删除全部失效 |
+| `list` / `forward_list` | 都不失效 | 只有被删元素失效 | 适合「边遍历边删」 |
+| `map` / `set` | 都不失效 | 只有被删元素失效 | 节点式存储，元素地址稳定 |
+| `unordered_*` | rehash 时迭代器全部失效 | 只有被删元素失效 | rehash 后指针与引用仍有效 |
+
+「插入一定失效」是常见误解：`vector` 不扩容时，插入点之前的迭代器照样能用。反过来，`unordered_map` 的引用在 rehash 后仍然有效（标准明确保证），失效的只有迭代器——两者要分开记。
+
+```cpp
+#include <vector>
+
+void removeEvens(std::vector<int>& v) {
+    for (auto it = v.begin(); it != v.end(); ) {
+        if (*it % 2 == 0) it = v.erase(it);   // 用返回值接住新位置
+        else ++it;
+    }
+}
+```
+
+`erase` 返回被删元素的下一个位置；写成 `v.erase(it); ++it;` 时 `it` 已经失效，`++it` 就是未定义行为。
 
 ### 算法库：加工机器
 
@@ -123,6 +177,83 @@ std::erase_if(v, [](int x) { return x % 2 == 1; });
 ### 自定义类型当键：两种容器要求不同
 
 `map` 只要能「比大小」，写一个比较器丢进第三个模板参数即可；`unordered_map` 同时要能「算哈希」和「判等」——既要特化 `std::hash<Point>`（提供 `operator()` 且标 `noexcept`），又要给出 `operator==`，缺一个就在编译期报错。哈希函数把键映到桶编号，`operator==` 用来在同一桶内确认是不是同一个键，两者职责不同，不能互相替代。
+
+### ranges 视图：不拷贝的流水线
+
+传统算法每一步要么原地改容器，要么生成一个新容器；视图（view）只描述「怎么取」，元素一个都不复制，遍历到哪算到哪。像在水管上装滤网和加压泵，水还是那根管子里的水。
+
+```cpp
+#include <iostream>
+#include <ranges>
+#include <vector>
+
+int main() {
+    std::vector<int> nums{1, 2, 3, 4, 5, 6, 7, 8};
+
+    auto view = nums
+              | std::views::filter([](int x) { return x % 2 == 0; })
+              | std::views::transform([](int x) { return x * x; })
+              | std::views::take(3);
+
+    for (int v : view) std::cout << v << ' ';   // 4 16 36
+}
+```
+
+要点是三条：视图是**惰性**的，构造 `view` 时没有做任何计算，遍历几次就算几次；视图**不拥有数据**，源容器销毁后再用就是悬垂；`filter` 里捕获的 lambda 同样受生命周期约束。常用的还有 `views::reverse`、`views::drop`、`views::iota`、`views::join`，C++23 补上了 `views::enumerate` 与 `views::zip`。
+
+### optional 与 variant：把「可能没有」写进类型
+
+函数「找不到」有几种老办法：返回 -1（那 -1 是合法值怎么办）、返回指针（谁 new、谁释放）、抛异常（这真的算异常吗）。`std::optional<T>` 把「有值 / 没有值」写进类型，调用方必须显式处理。
+
+```cpp
+#include <iostream>
+#include <optional>
+#include <string>
+#include <variant>
+
+std::optional<int> parsePort(const std::string& s) {
+    try {
+        return std::stoi(s);        // 有值
+    } catch (...) {
+        return std::nullopt;        // 没有值，不把异常甩给调用方
+    }
+}
+
+using Field = std::variant<int, double, std::string>;
+
+void print(const Field& f) {
+    std::visit([](const auto& v) { std::cout << v << '\n'; }, f);
+}
+```
+
+| 类型 | 表达什么 | 空间开销 | 典型用法 |
+| --- | --- | --- | --- |
+| `T*` | 可能没有对象 | 8 字节 | 指向已有对象，不表达所有权 |
+| `std::optional<T>` | 可能有一个 `T` | `sizeof(T)` + 对齐填充 | 函数返回值 |
+| `std::variant<A,B,C>` | 恰好是其中之一 | 最大成员 + 判别标签 | 替代小规模类层次 |
+
+`std::optional<T&>` 不合法（引用必须绑定到对象），需要「可能没有的引用」就用指针或 `std::reference_wrapper`。`variant` 的大小由最大成员决定，别把它和巨大的类型塞在一起，否则每个值都要为那个最大成员买单。
+
+### allocator：容器的内存从哪来
+
+容器自己不直接 `new`，而是通过分配器申请内存。分配器是容器背后的仓管：`allocate(n)` 给一块能放 n 个元素的原始内存，`deallocate` 收回去，元素的构造与析构由容器另外调用。换分配器就能换掉整套内存来源，这正是 `std::pmr`（多态内存资源）的用途。
+
+```cpp
+#include <cstddef>
+#include <memory_resource>
+#include <vector>
+
+int main() {
+    alignas(std::max_align_t) char buffer[4096];
+    std::pmr::monotonic_buffer_resource pool{buffer, sizeof buffer};
+    std::pmr::vector<int> nums{&pool};        // 内存只来自上面这块栈空间
+
+    for (int i = 0; i < 10; ++i) nums.push_back(i);
+    return static_cast<int>(nums.size()) - 10;   // 0
+}
+```
+
+`monotonic_buffer_resource` 只把指针往前推、不做回收，析构时一次性释放，所以 `push_back` 几乎没有分配开销，适合「活一小段时间、元素很多」的场合。注意 `std::pmr::vector<int>` 与 `std::vector<int>` 是**不同类型**，不能直接互相赋值；跨类型传数据用迭代器或 `span`，或者在接口层统一用 `pmr`。
 
 ## 典型应用场景
 
@@ -258,6 +389,15 @@ std::cout << *it;        // 未定义行为：Debug 版直接断言，Release �
 
 性能建议：已知规模就 `reserve`；传容器用 `const&` 避免拷贝；`emplace_back` 比 `push_back` 少一次移动。
 
+### 哈希表的隐藏常数
+
+`unordered_map` 的 O(1) 只描述「桶定位」，每个元素的真实成本还包括：一个节点的堆分配（键、值、next 指针）、一次指针追逐、一次键比较。规模只有几十个键时，`map` 往往更快——节点少，遍历时的局部性反而更好。
+
+- **负载因子**：默认 1.0，元素数超过「桶数 × 负载因子」就 rehash，桶数组整体重建，迭代器全部失效。
+- **预留**：`reserve(n)` 按当前负载因子一次开够桶，避免边插边 rehash。
+- **调松**：`max_load_factor(0.7f)` 让桶更稀疏、冲突更少，代价是内存。要先调负载因子再 `reserve`，否则预留的桶数还是按旧值算的。
+- **键的哈希**：`std::string` 键每次求哈希都要扫一遍字符，热路径上可以改用 `string_view` 或整数 ID 当键。
+
 ## 常见误区与易错点
 
 | 容易写错的做法 | 实际现象 | 原因与正确做法 |
@@ -272,6 +412,25 @@ std::cout << *it;        // 未定义行为：Debug 版直接断言，Release �
 | 拷贝大容器 | 性能差 | 传 `const&`，或用移动 |
 | 以为 `remove_if` 已经删掉了元素 | 容器长度不变，尾部留着旧值 | 再 `erase` 到 `end()`，或直接用 C++20 的 `std::erase_if` |
 | 在 `set` / `map` 上用 `operator[]` | 编译不过，或凭空插入一个默认值 | 关联容器改用 `find`、`count` 或 `contains` |
+
+### 比较器必须是严格弱序
+
+`sort`、`map`、`set` 都要求比较器构成**严格弱序**：`comp(x, x)` 必须为假、传递性成立，并且能区分「小于」与「等价」。最常见的错误是把 `<=` 当比较器——它让 `comp(x, x)` 为真，快排的分区会越界，MSVC 的 Debug 版直接抛 `invalid comparator`，Release 版则可能悄悄写坏内存。
+
+```cpp
+std::sort(v.begin(), v.end(), [](int a, int b) { return a > b; });    // 降序，正确
+std::sort(v.begin(), v.end(), [](int a, int b) { return a >= b; });   // 错误：不是严格弱序
+```
+
+多字段排序也别写成 `a.x <= b.x && a.y <= b.y`，用 `std::tie` 逐字段做字典序比较，语义和正确性都不用自己操心：
+
+```cpp
+std::sort(people.begin(), people.end(), [](const Person& a, const Person& b) {
+    return std::tie(a.age, a.name) < std::tie(b.age, b.name);
+});
+```
+
+另一个隐蔽的坑：比较器里捕获了会在排序期间变化的变量（比如 `std::sort` 内部又改了计数器），会让同一元素在不同时刻比出不同结果，同样违反严格弱序。比较器应当是纯函数。
 
 ## 与其他知识点的关系
 

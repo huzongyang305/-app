@@ -4,7 +4,7 @@
 
 ![CDN、代理与缓存](images/remaining_cdn_proxy.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：25 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：35 分钟
 
 ## 本节知识框架
 
@@ -44,6 +44,35 @@
 - 静态资源不带指纹却设长缓存 → 发版后用户仍加载旧文件 → 文件名带哈希加长缓存。
 - 接口响应设 max-age → 用户看到过期数据 → 接口用 no-store 或短缓存加校验。
 - 忘记 Vary → 压缩与非压缩内容串用 → 按 Accept-Encoding 等维度区分。
+
+### DNS 调度与 Anycast：用户是怎么被送到「就近」节点的
+
+CDN 的第一步不是缓存，而是选路。把 `static.example.com` 用 CNAME 指到 CDN 分配的域名后，节点选择就交给了 CDN 的权威 DNS。它主要看两样输入：递归解析器带来的出口 IP（开启 EDNS Client Subnet 时还能拿到用户的网段），以及一张记录各节点健康度与负载的表。GeoDNS 的做法是「按 IP 段查表、返回最近的节点 IP」，代价是表要持续维护，用户换了运营商就可能被分到跨网节点。
+
+Anycast 换了个思路：所有节点对外宣告同一段 IP，靠 BGP 让流量落到路由意义上最近的一台。好处是省掉了 DNS 查表和 TTL 等待，节点故障时路由收敛后自动切走；坏处是「路由最近」不等于「质量最好」，跨境时可能落到链路拥塞的节点，而且单条 TCP 连接中途换节点会断，长连接场景要靠 QUIC 的连接迁移兜底。
+
+常见组合是 DNS 做粗调度（大洲、运营商），Anycast 做细调度（同城多机房）。排查「为什么我这里特别慢」时，先 `dig static.example.com` 看解析到哪个节点，再用 `curl -w '%{time_connect} %{time_starttransfer}\n' -o /dev/null -s https://static.example.com/a.png` 分开看握手与首字节，才能判断是调度错了还是节点本身慢。
+
+### 回源链路与 Origin Shield：miss 之后还有几道闸
+
+边缘未命中并不等于直接打源站。设想 100 个边缘节点同时收到同一张刚发布的图，若各自独立回源，源站瞬间要扛 100 个相同请求——这是「缓存击穿」在 CDN 尺度上的放大版。两种收口手段：
+
+- 合并回源：同一节点内对相同缓存键的并发请求只放一个出去，其余挂起等结果。Nginx 的 `proxy_cache_lock` 做的就是这件事。
+- 中间父层（origin shield）：边缘只向父层回源，源站只看到父层的少量请求。代价是多一跳，命中率不够高时反而更慢。
+
+回源还要区分「过期」和「本来就没有」。过期对象带 `If-None-Match` 回源，源站答 304 就只刷新元数据、正文继续用缓存；不存在的对象返回 404，这个 404 也该缓存十几秒，否则爬虫扫不存在的路径会把源站打满。回源请求必须带正确的 `Host` 头，否则虚拟主机站点会返回默认站点的内容——这是自建 CDN 时最常见的 404 来源。
+
+### 缓存键、Vary 与重新验证：一份内容能被复用几次
+
+缓存键决定「哪些请求算同一个对象」。默认键大致是 `scheme + host + path + query`，工程上要显式决定三件事：
+
+- 查询串是否入键。`?utm_source=xxx` 这类营销参数一旦入键，同一张图会被缓存成几千份，命中率断崖下跌；做法是在边缘按白名单剥掉参数。
+- 是否按设备或语言分。把设备类型编进键，比写 `Vary: User-Agent` 可控得多，因为 User-Agent 的取值几乎无限，等于把缓存打穿。
+- `Vary: Accept-Encoding` 必须有。gzip 与 br 的字节流不同，共用一份缓存会让浏览器收到无法解码的内容。
+
+新鲜度分两级。`Cache-Control: max-age=600` 是强缓存，600 秒内浏览器和 CDN 都不问源站；过期后转入协商缓存，CDN 带 `If-None-Match: "abc123"`（ETag）回源，源站答 304 就续命，省掉一次正文传输。ETag 适合用内容哈希生成；`Last-Modified` 只有秒级精度，还会被部署工具改掉，两者同时存在时以 ETag 为准。
+
+两个常被忽略的指令：`stale-while-revalidate=60` 允许过期后 60 秒内先返回旧内容、后台异步回源，用户感知不到回源延迟；`s-maxage=3600` 只约束共享缓存，可以让 CDN 缓存一小时而浏览器只缓存五分钟，发版时 HTML 很快就能更新。
 
 ## 典型应用场景
 
@@ -106,6 +135,30 @@ server {
 ```
 
 反向代理转发时要带 `X-Forwarded-For` / `X-Real-IP`，否则后端只能看到代理的 IP。
+
+### 带缓存的 Nginx 反向代理配置
+
+把上面那段续写成「带缓存」的版本：`proxy_cache_path` 写在 `http {}` 里，`location` 沿用前一例的 `backend` upstream。
+
+```nginx
+proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=static_cache:100m
+                 max_size=10g inactive=7d use_temp_path=off;
+
+server {
+    location /static/ {
+        proxy_pass http://backend;
+        proxy_cache static_cache;
+        proxy_cache_key "$scheme$host$uri";      # 刻意不带 query
+        proxy_cache_valid 200 206 7d;
+        proxy_cache_lock on;
+        proxy_cache_use_stale error timeout updating;
+        proxy_ignore_headers Set-Cookie;
+        add_header X-Cache-Status $upstream_cache_status always;
+    }
+}
+```
+
+`keys_zone` 的 100m 是元数据区，1 MB 约放 8000 个键，够几十万个小文件用；`proxy_cache_lock on` 让同一缓存键只有一个请求回源；`proxy_ignore_headers Set-Cookie` 不能省，否则源站一设 Cookie，Nginx 就判定响应不可缓存，命中率会莫名归零。响应头 `X-Cache-Status` 的 HIT / MISS / EXPIRED / STALE 就是查命中率的第一手证据。
 
 ## 时间/空间复杂度或性能分析
 

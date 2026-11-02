@@ -66,7 +66,10 @@ class AppStrings {
     'themeLight': {'zh': '浅色', 'en': 'Light'},
     'themeDark': {'zh': '深色', 'en': 'Dark'},
     'themePreset': {'zh': '主题风格', 'en': 'Theme Style'},
-    'themePresetHint': {'zh': '选择你喜欢的界面配色方案', 'en': 'Choose your preferred color scheme'},
+    'themePresetHint': {
+      'zh': '选择你喜欢的界面配色方案',
+      'en': 'Choose your preferred color scheme',
+    },
     'themePresetDescription': {
       'zh': '切换主题后，整个应用的色彩会立即更新。你可以在不同主题间自由切换，找到最适合自己的视觉体验。',
       'en': 'The app colors update instantly when you switch themes. Feel free to explore and find the perfect visual experience for you.',
@@ -417,18 +420,9 @@ class AppStrings {
       'zh': '共 {count} 道错题待复习',
       'en': '{count} wrong questions to review',
     },
-    'addedToFavorites': {
-      'zh': '已收藏',
-      'en': 'Added to favorites',
-    },
-    'markedAsLearned': {
-      'zh': '已标记为已学',
-      'en': 'Marked as learned',
-    },
-    'delete': {
-      'zh': '删除',
-      'en': 'Delete',
-    },
+    'addedToFavorites': {'zh': '已收藏', 'en': 'Added to favorites'},
+    'markedAsLearned': {'zh': '已标记为已学', 'en': 'Marked as learned'},
+    'delete': {'zh': '删除', 'en': 'Delete'},
     'reviewGradeTitle': {
       'zh': '这次复习感觉如何？',
       'en': 'How well did you recall it?',
@@ -712,7 +706,10 @@ class AppStrings {
       'zh': 'C++ 与内存 → 向量与矩阵 → 游戏循环/渲染/物理 → 同步与性能 → 移动端优化实战',
       'en': 'C++ and memory → vectors/matrices → loop/rendering/physics → sync and perf → mobile optimisation',
     },
-    'pathCompiler': {'zh': '编译原理与语言实现', 'en': 'Compilers & Language Implementation'},
+    'pathCompiler': {
+      'zh': '编译原理与语言实现',
+      'en': 'Compilers & Language Implementation',
+    },
     'pathCompilerSub': {
       'zh': '语言与指针 → 前端词法/语法 → 语义与类型 → IR 与优化 → 代码生成与虚拟机',
       'en': 'Language/pointers → lexing/parsing → semantics/typing → IR and optimisation → codegen and VM',
@@ -1169,6 +1166,22 @@ class AppStrings {
       'en': '{i}. "{text}"  at {start}-{end}',
     },
     'toolsRegexGroup': {'zh': '  分组: {groups}', 'en': '  groups: {groups}'},
+    'toolsRegexInvalid': {
+      'zh': '正则表达式不合法：{error}',
+      'en': 'Invalid regular expression: {error}',
+    },
+    'toolsRegexTimeout': {
+      'zh': '匹配超时，请简化表达式或减少文本',
+      'en': 'Matching timed out; simplify the pattern or text',
+    },
+    'toolsRegexTooLong': {
+      'zh': '输入过长（表达式最多 {p} 字符，文本最多 {t} 字符）',
+      'en': 'Input too long (pattern ≤ {p} chars, text ≤ {t} chars)',
+    },
+    'toolsRegexTruncated': {
+      'zh': '仅显示前 {n} 条匹配。',
+      'en': 'Showing the first {n} matches.',
+    },
     // ── 学习分析 ──
     'learningAnalytics': {'zh': '学习分析', 'en': 'Learning analytics'},
     'learningAnalyticsHint': {
@@ -1939,8 +1952,7 @@ class AppStrings {
     },
     'focusHint': {
       'zh': '计时只统计本页面在前台的时间，切到后台会自动暂停，每分钟自动保存一次。阅读课文的时间会自动计入，无需另开计时。',
-      'en':
-          'The timer only counts while this screen is in the foreground, pauses in the background, and saves every full minute. Lesson reading time is tracked automatically.',
+      'en': 'The timer only counts while this screen is in the foreground, pauses in the background, and saves every full minute. Lesson reading time is tracked automatically.',
     },
     'dailyGoalFocusEntry': {
       'zh': '课文外学习也可以计时',
@@ -1952,10 +1964,7 @@ class AppStrings {
     'searchGroupTerms': {'zh': '术语', 'en': 'Terms'},
     'searchGroupSnippets': {'zh': '代码片段', 'en': 'Snippets'},
     'searchGroupChallenges': {'zh': '沙箱挑战', 'en': 'Challenges'},
-    'searchFlashcardAction': {
-      'zh': '去闪卡复习',
-      'en': 'Review with flashcards',
-    },
+    'searchFlashcardAction': {'zh': '去闪卡复习', 'en': 'Review with flashcards'},
     'searchRetryLesson': {'zh': '重练本课', 'en': 'Practice this lesson'},
     'searchWrongCorrect': {'zh': '正确答案', 'en': 'Correct answer'},
 
@@ -1999,15 +2008,13 @@ class AppStrings {
       'zh': '当前环境不支持分享图片',
       'en': 'Image sharing is not available here',
     },
-    'shareImageStarted': {
-      'zh': '已打开系统分享面板',
-      'en': 'Share sheet opened',
-    },
+    'shareImageStarted': {'zh': '已打开系统分享面板', 'en': 'Share sheet opened'},
     'certificateTitle': {'zh': '学习证书', 'en': 'Certificates'},
     'certificateCardTitle': {'zh': '结业证书', 'en': 'Certificate'},
     'certificateHint': {
       'zh': '把某个分类的全部课程标记为已学，即可领取该分类的结业证书。',
-      'en': 'Mark every lesson in a category as learned to earn its certificate.',
+      'en':
+          'Mark every lesson in a category as learned to earn its certificate.',
     },
     'certificateOverall': {
       'zh': '已领取 {n}/{m} 个分类证书',
@@ -2049,10 +2056,7 @@ class AppStrings {
     },
 
     // ---- 多用例挑战 ----
-    'sandboxChallengeCases': {
-      'zh': '测试用例（{n} 个）',
-      'en': 'Test cases ({n})',
-    },
+    'sandboxChallengeCases': {'zh': '测试用例（{n} 个）', 'en': 'Test cases ({n})'},
     'sandboxChallengeCase': {'zh': '用例 {n}', 'en': 'Case {n}'},
     'sandboxChallengeCaseSummary': {
       'zh': '本次通过 {passed}/{total} 个用例',

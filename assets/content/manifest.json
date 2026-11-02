@@ -1073,7 +1073,7 @@
             "en": "Cover world coordinates, sprite batching, atlases, camera transforms and draw order."
           },
           "file": "assets/content/gamedev_2d_rendering.md",
-          "minutes": 25,
+          "minutes": 35,
           "keywords": [
             "坐标系",
             "精灵",
@@ -8146,7 +8146,7 @@
             "en": "Addresses, dereferencing, nullptr, arithmetic and references."
           },
           "file": "assets/content/programming_cpp_pointers.md",
-          "minutes": 30,
+          "minutes": 45,
           "keywords": [
             "指针",
             "引用",
@@ -8368,7 +8368,7 @@
             "en": "Encapsulation, constructors, inheritance, virtual functions."
           },
           "file": "assets/content/programming_cpp_oop.md",
-          "minutes": 30,
+          "minutes": 45,
           "keywords": [
             "class",
             "继承",
@@ -8589,7 +8589,7 @@
             "en": "Containers, iterators, algorithms and erase-remove."
           },
           "file": "assets/content/programming_cpp_stl.md",
-          "minutes": 35,
+          "minutes": 50,
           "keywords": [
             "STL",
             "vector",
@@ -9023,7 +9023,7 @@
             "en": "Build a small C++ JSON HTTP service with CMake."
           },
           "file": "assets/content/cpp_project_http.md",
-          "minutes": 70,
+          "minutes": 75,
           "keywords": [
             "CMake",
             "cpp-httplib",
@@ -9245,7 +9245,7 @@
             "en": "Learn value categories, move constructors, forwarding and RVO."
           },
           "file": "assets/content/cpp_move_semantics.md",
-          "minutes": 40,
+          "minutes": 45,
           "keywords": [
             "移动语义",
             "右值引用",
@@ -38909,7 +38909,7 @@
             "en": "Compare BFS, Dijkstra, Bellman-Ford, Floyd and heuristic search."
           },
           "file": "assets/content/algo_shortest_paths.md",
-          "minutes": 25,
+          "minutes": 30,
           "keywords": [
             "Dijkstra",
             "Bellman-Ford",
@@ -41066,7 +41066,7 @@
             "en": "Edge caching, cache headers, forward and reverse proxies."
           },
           "file": "assets/content/network_cdn_proxy.md",
-          "minutes": 25,
+          "minutes": 35,
           "keywords": [
             "CDN",
             "缓存",
@@ -41830,7 +41830,7 @@
             "en": "Learn SMTP, IMAP, SPF, DKIM, DMARC and delivery flow."
           },
           "file": "assets/content/network_smtp.md",
-          "minutes": 25,
+          "minutes": 35,
           "keywords": [
             "SMTP",
             "DKIM",

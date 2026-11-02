@@ -54,11 +54,6 @@ void main() {
         isFalse,
       );
     });
-
-    test('可以识别运行错误输出', () {
-      expect(SandboxChallengeService.looksLikeError('Error: boom'), isTrue);
-      expect(SandboxChallengeService.looksLikeError('42'), isFalse);
-    });
   });
 
   group('多用例挑战', () {

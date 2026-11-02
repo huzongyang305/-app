@@ -16,7 +16,7 @@ jobs:
         # 在旧系统和新系统上的行为，避免只在最新 API 上验证。
         api-level: [30, 33, 35]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
@@ -56,7 +56,7 @@ jobs:
             exit $status
       - name: Archive performance baseline
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: performance-baseline-api${{ matrix.api-level }}
           path: performance-${{ matrix.api-level }}.log

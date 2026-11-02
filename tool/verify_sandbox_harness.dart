@@ -652,6 +652,12 @@ Future<({String output, bool complete})> _runHeadlessOnce({
   required String profileDir,
   required List<String> expects,
 }) async {
+  // GitHub Actions 的 Chrome 由 setup-chrome 安装，chrome-sandbox 的属主/权限
+  // 不满足 SUID 要求，启动会直接 abort。校验只加载本地临时页面，CI 下关闭
+  // 浏览器沙箱；本机默认保持开启。
+  final disableSandbox =
+      Platform.environment['CI'] == 'true' ||
+      Platform.environment['CHROME_NO_SANDBOX'] == '1';
   final result = await Process.run(
     browser,
     [
@@ -659,6 +665,7 @@ Future<({String output, bool complete})> _runHeadlessOnce({
       '--disable-gpu',
       '--no-first-run',
       '--no-proxy-server',
+      if (disableSandbox) '--no-sandbox',
       '--user-data-dir=$profileDir',
       // sql.js 等 WASM 运行时首次加载较慢，给足虚拟时间预算。
       '--virtual-time-budget=30000',

@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-10-30T15:50:59.135944",
+  "generated_at": "2026-11-02T12:34:08.606059",
   "lesson_count": 716,
-  "total_chars": 10362589,
-  "min_chars": 10028,
+  "total_chars": 10490155,
+  "min_chars": 10112,
   "image_count": 1343,
   "lessons_with_image": 716,
   "lessons_with_lab_section": 67,
   "question_type_histogram": {
     "single": 2058,
-    "multi": 631,
-    "fill": 360,
+    "multi": 685,
+    "fill": 387,
     "order": 279,
     "code": 478,
     "debug": 173

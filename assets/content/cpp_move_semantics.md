@@ -1,6 +1,6 @@
 # C++ 移动语义与右值引用
 
-> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：40 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：45 分钟
 
 ![C++ 移动语义与右值引用](images/diagram_cpp_move.webp)
 
@@ -65,6 +65,18 @@ std::string s = std::string("hello");  // string("hello") 是右值
 
 移动语义的关键洞察：右值（临时对象）马上就要被销毁了，与其销毁它再创建一个新的，不如直接把它的资源「偷」过来。
 
+### 值类别不止两种：左值、纯右值与将亡值
+
+课本常说「左值、右值」，标准里其实分三档，区别在于有没有身份（能不能取地址）以及这份值是不是还要继续用：
+
+| 值类别 | 例子 | 能取地址 | 含义 |
+| --- | --- | --- | --- |
+| 左值 lvalue | `x`、`arr[i]`、`*p`、`++i` | 能 | 资源还要继续用 |
+| 纯右值 prvalue | `42`、`x + 1`、`std::string("hi")` | 不能 | 一次性的中间结果 |
+| 将亡值 xvalue | `std::move(x)`、`static_cast<Buffer&&>(b)` | 能 | 同一个对象，但挂了「可搬走」的牌子 |
+
+`std::move(x)` 不产生新对象，它只是给 `x` 贴上「将亡值」标签，地址仍然是原来那个，所以别把它理解成「创建了一个右值」。用 `decltype` 能直接看出差别：`decltype(x)` 是 `int`，`decltype(std::move(x))` 是 `int&&`，而 `decltype((x))` 是 `int&`——多一层括号，问的从「声明类型」变成「表达式类别」。
+
 ### 2. std::move 只是类型转换
 
 `std::move` 本身不做任何运行期操作——它只是把一个左值「转换」为右值引用，告诉编译器：「这个对象我不需要了，你可以偷它的资源。」
@@ -118,6 +130,35 @@ public:
 
 注意 `noexcept`！这很重要。如果移动构造可能抛异常，`std::vector` 在扩容时会退回到拷贝而不是移动——因为它需要保证强异常安全。所以移动构造没有标记不抛异常会导致容器扩容退回复制而不是移动。
 
+### 为什么 noexcept 会改变扩容成本
+
+扩容要把旧缓冲区里的元素搬到新缓冲区。搬到一半抛异常的话，旧的已经搬走、新的还不完整，`vector` 承诺的强异常安全就破了。标准库的解法是 `std::move_if_noexcept`：只有移动构造是 `noexcept`（或该类型根本不可拷贝）时它才返回右值引用，否则退回 `const` 左值引用，逼容器老老实实复制。
+
+```cpp
+#include <type_traits>
+#include <utility>
+
+struct Good {
+    Good() = default;
+    Good(const Good&) {}
+    Good(Good&&) noexcept = default;
+};
+
+struct Bad {
+    Bad() = default;
+    Bad(const Bad&) {}
+    Bad(Bad&&) {}          // 忘了 noexcept，被当成「可能抛」
+};
+
+static_assert(std::is_nothrow_move_constructible_v<Good>);
+static_assert(!std::is_nothrow_move_constructible_v<Bad>);
+// Good 拿到右值引用走移动；Bad 退回 const 左值引用，只能拷贝
+static_assert(std::is_same_v<decltype(std::move_if_noexcept(std::declval<Good&>())), Good&&>);
+static_assert(std::is_same_v<decltype(std::move_if_noexcept(std::declval<Bad&>())), const Bad&>);
+```
+
+这几行 `static_assert` 把「为什么必须写 `noexcept`」变成编译期可验证的事实，也说明了一个反直觉推论：如果类型不可拷贝、移动又可能抛，`move_if_noexcept` 只能返回右值，此时 `vector` 不再提供强异常安全——它没有第二条路。
+
 ### 4. 完美转发
 
 完美转发解决的问题：你写了一个包装函数，想把参数原封不动地传给另一个函数，同时保持参数是左值还是右值的「身份」。
@@ -131,6 +172,22 @@ void wrapper(T&& arg) {
 ```
 
 `T&&` 是万能引用（universal reference）——它既能绑定左值也能绑定右值。`std::forward<T>` 根据 `T` 的实际类型决定转发为左值还是右值。完美转发用万能引用和 forward 保持参数值类别，但要避免悬垂引用——如果转发的是一个临时对象的引用，而你在函数返回后还持有这个引用，就会访问已销毁的对象。
+
+### 万能引用不是「右值引用的别名」
+
+看到 `T&&` 就以为它只能接右值，是完美转发最常见的误判。`T&&` 只有在模板参数推导或 `auto&&` 的场合才是万能引用；类型一旦确定，它就是普通右值引用。
+
+| 写法 | 是万能引用吗 | 能接左值吗 |
+| --- | --- | --- |
+| `template<class T> void f(T&&)` | 是 | 能，`T` 推导成 `U&` |
+| `void f(int&&)` | 不是 | 不能 |
+| `template<class T> void C<T>::f(T&&)` | 不是（`T` 在实例化 `C` 时已定） | 不能 |
+| `template<class T> void f(const T&&)` | 不是（带 `const`） | 不能 |
+| `auto&& x = expr;` | 是 | 能 |
+
+推导只有一条规则：实参是左值 `U` 时 `T` 推导为 `U&`，引用折叠把 `T&&` 变成 `U&`；实参是右值时 `T` 推导为 `U`，`T&&` 保持 `U&&`。类模板成员的 `T&&` 失效，是因为 `T` 在 `C<int>` 实例化时就已经固定，函数调用不再参与推导——「写了 `T&&` 却接不住左值」的代码多半栽在这里。
+
+还有一处混淆：`forward` 和 `move` 不能互换。`arg` 是有名字的形参，本身就是左值，往下传必须写成 `std::forward<T>(arg)`；写成 `std::move(arg)` 会把左值实参也强行转成右值，调用方之后再用这个实参就会读到被搬空的对象。判据很简单：转发用 `forward`，确实要放弃所有权时才用 `move`。
 
 ### 5. RVO（返回值优化）
 

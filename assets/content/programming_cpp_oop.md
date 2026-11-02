@@ -4,7 +4,7 @@
 
 ![类与面向对象](images/remaining_cpp_oop.webp)
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：30 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：45 分钟
 
 ## 本节知识框架
 
@@ -129,6 +129,61 @@ for (const auto& s : shapes) std::cout << s->area() << '\n';
 
 另一条容易被忽略的规则：派生类必须把所有纯虚函数都实现掉，漏一个它自己就仍是抽象类。只补了 `area()` 忘了 `name()`，`new Circle` 照样报错。
 
+### 对象的内存布局：vptr 藏在哪里
+
+对象里并不打包成员函数，**只放数据成员**；成员函数在代码段里全类共用一份。带虚函数的类还要额外放一个隐藏指针 `vptr`，指向全类共享的虚函数表（vtable）。好比每个房间门口挂一张卡片，写着「报面积请找 3 号窗口」，而窗口清单贴在楼道里，同类房间共用同一张。
+
+```cpp
+#include <iostream>
+
+struct Plain { int a; int b; };                     // 8 字节
+
+struct Poly {
+    virtual ~Poly() = default;
+    virtual int id() const { return 1; }
+    int value = 0;
+};
+
+int main() {
+    std::cout << sizeof(Plain) << ' ' << sizeof(Poly) << '\n';  // 常见输出：8 16
+}
+```
+
+64 位上 `Poly` = 8（vptr）+ 4（`value`）+ 4（对齐填充）= 16 字节。多数 ABI（Itanium 与 MSVC）把 `vptr` 放在对象起始处，但这不是标准规定，别依赖它的位置。vtable 里按固定槽位排虚函数地址，析构函数通常占两格（complete 与 deleting 版本），旁边还有一个指向 RTTI 的指针——`dynamic_cast` 与 `typeid` 就靠它工作。
+
+| 成员 | 存在哪里 | 占对象空间 |
+| --- | --- | --- |
+| 非静态数据成员 | 对象内部 | 是 |
+| 静态数据成员 | 静态区，全类一份 | 否 |
+| 普通成员函数 | 代码段，全类一份 | 否 |
+| 虚函数 | 代码段 + vtable 槽位 | 只占一个 vptr |
+| 空基类 | 可被优化掉（EBO） | 通常 0 |
+
+### 虚析构：一个 virtual 挡住的泄漏
+
+拆房子时只拆了地基，违建还立在那儿——`delete` 一个基类指针，而基类析构不是虚的，编译器只会调用 `Base::~Base()`，派生类的析构函数根本不执行，成员持有的内存、文件句柄全部漏掉。
+
+```cpp
+#include <string>
+
+class Base {
+public:
+    virtual ~Base() = default;      // 少了 virtual，delete 基类指针只析构 Base 子对象
+};
+
+class Derived : public Base {
+public:
+    ~Derived() override = default;
+    std::string payload = std::string(64, 'x');
+};
+```
+
+三条可以直接背下来的判断：
+
+- 只要有人可能通过基类指针删除对象，基类析构就必须 `virtual`；或者声明为 `protected` 且非虚，用「不许经基类删除」把错误挡在编译期。
+- 析构一旦是虚的，编译器就不再隐式生成移动构造与移动赋值，需要的话得写 `= default`。
+- 用 `delete[]` 删除 `Base*` 指向的派生数组，没有虚析构同样是未定义行为；`std::vector<std::unique_ptr<Base>>` 能彻底避开这个坑。
+
 ### 运算符重载：让自定义类型像内置类型一样使用
 
 ```cpp
@@ -146,6 +201,129 @@ struct Vector2 {
 ```
 
 不要滥用运算符重载：只有当语义直观（数学运算、比较、流输出）时才用。
+
+### 对象切片：按值传递会切掉派生部分
+
+把派生对象按值塞进基类变量，就像把「带阳台的房子」压进「标准房间」的模具：多出来的部分直接被切掉，连 vptr 都重设成基类那张表。
+
+```cpp
+#include <iostream>
+#include <string>
+
+struct Shape {
+    virtual ~Shape() = default;
+    virtual std::string name() const { return "shape"; }
+};
+
+struct Circle : Shape {
+    std::string name() const override { return "circle"; }
+};
+
+void byValue(Shape s)      { std::cout << s.name() << '\n'; }  // 输出 shape
+void byRef(const Shape& s) { std::cout << s.name() << '\n'; }  // 输出 circle
+
+int main() {
+    Circle c;
+    byValue(c);      // 切片：形参是一块全新的 Shape
+    byRef(c);        // 引用：保留真实类型，虚调用生效
+}
+```
+
+同样的道理，`std::vector<Shape>` 里装的永远是 `Shape`，`push_back(Circle{})` 只会存下基类子对象。想放多态对象，用 `std::vector<std::unique_ptr<Shape>>`，或者在类型集合固定时用 `std::vector<std::variant<Circle, Square>>`。函数参数统一写 `const Shape&`，是最省事的一条防线。
+
+### Rule of 0/3/5：先看成员，再决定写几个
+
+| 类里有什么 | 该写哪些特殊成员函数 |
+| --- | --- |
+| 只有 `int`、`std::string`、`std::vector` 这类值语义成员 | 一个都不写（Rule of 0），编译器生成的版本全部正确 |
+| 裸指针、`FILE*`、系统句柄 | 析构 + 拷贝构造 + 拷贝赋值（Rule of 3），需要转移语义再加移动（Rule of 5） |
+| 资源只能有一个主人 | 拷贝 `= delete`，保留移动并标 `noexcept` |
+| 多态基类 | 虚析构 + 禁止拷贝，同时挡住切片与双重所有权 |
+
+```cpp
+#include <cstdio>
+#include <utility>
+
+class LogFile {
+public:
+    explicit LogFile(const char* path) : fp_(std::fopen(path, "w")) {}
+    ~LogFile() { if (fp_) std::fclose(fp_); }
+
+    LogFile(const LogFile&) = delete;                 // 句柄不能有两个主人
+    LogFile& operator=(const LogFile&) = delete;
+
+    LogFile(LogFile&& other) noexcept : fp_(other.fp_) { other.fp_ = nullptr; }
+
+    LogFile& operator=(LogFile&& other) noexcept {
+        if (this != &other) std::swap(fp_, other.fp_);  // 旧句柄随 other 析构关闭
+        return *this;
+    }
+
+    void write(const char* s) { if (fp_) std::fputs(s, fp_); }
+
+private:
+    std::FILE* fp_ = nullptr;
+};
+```
+
+注意 `noexcept` 不是装饰：`std::vector` 扩容时只有移动构造被标记为不抛出，才会搬元素，否则退回逐元素拷贝。写了移动却不标 `noexcept`，等于白写。
+
+### RTTI 与 dynamic_cast：安全地向下转型
+
+基类指针想拿回派生类的接口，需要运行时类型信息（RTTI）。`dynamic_cast` 会真的查对象里的类型描述符，转型失败时指针版本返回 `nullptr`、引用版本抛 `std::bad_cast`，比 `static_cast` 的「无脑信任」安全得多。
+
+```cpp
+#include <iostream>
+#include <memory>
+#include <vector>
+
+struct Shape { virtual ~Shape() = default; virtual double area() const = 0; };
+
+struct Circle : Shape {
+    explicit Circle(double r) : r_(r) {}
+    double area() const override { return 3.14159 * r_ * r_; }
+    double radius() const { return r_; }
+private:
+    double r_;
+};
+
+void report(const std::vector<std::unique_ptr<Shape>>& shapes) {
+    for (const auto& s : shapes) {
+        if (auto* c = dynamic_cast<Circle*>(s.get())) {   // 失败返回 nullptr
+            std::cout << "圆，半径 " << c->radius() << '\n';
+        }
+    }
+}
+```
+
+两个前提和一条代价：基类必须至少有一个虚函数，否则 `dynamic_cast` 编译不过；一次转型要读 vptr 再比对类型信息，比虚调用更贵，别放进内层循环。分派逻辑能用虚函数表达就优先用虚函数，`dynamic_cast` 适合插件式架构里「少数几个类型要特殊处理」的场合。`typeid(*p).name()` 的字符串是实现定义的，不能拿来做逻辑判断。
+
+### CRTP：把多态挪到编译期
+
+虚函数用一张表在运行时找实现；CRTP（奇异递归模板模式）让基类模板拿派生类当参数，调用在编译期就定死，因此可以内联，对象里也不需要 vptr。
+
+```cpp
+template <typename Derived>
+struct Counter {
+    void tick() { static_cast<Derived*>(this)->onTick(); }  // 编译期确定，可内联
+    int count() const { return count_; }
+protected:
+    int count_ = 0;
+};
+
+struct TcpConn : Counter<TcpConn> {          // 把自己当模板参数传回去
+    void onTick() { ++count_; }              // 不需要 virtual / override
+};
+
+int main() {
+    TcpConn c;
+    c.tick();
+    c.tick();
+    return c.count() - 2;                    // 0
+}
+```
+
+`static_cast<Derived*>(this)` 是这套写法的核心：基类模板实例化时已经知道派生类型，转型不产生任何运行时开销。代价是**没有运行时多态**——容器里放不了 `Counter*`，也不能在运行中替换实现。常见用途是「基类定骨架、派生类填细节」的静态接口，以及给一批类型批量补上比较运算符。
 
 ## 典型应用场景
 

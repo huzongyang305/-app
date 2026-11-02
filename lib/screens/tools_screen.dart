@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
@@ -8,6 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../l10n/app_strings.dart';
 import '../l10n/l10n_extension.dart';
+import '../services/regex_tool_service.dart';
 import '../services/settings_provider.dart';
 import 'code_sandbox_screen.dart';
 import 'flashcard_screen.dart';
@@ -296,7 +298,7 @@ class ToolSpec {
   final String titleKey;
   final IconData icon;
   final String hintKey;
-  final String Function(String input, AppStrings strings) run;
+  final FutureOr<String> Function(String input, AppStrings strings) run;
   final bool noInput;
 }
 
@@ -313,12 +315,13 @@ class _ToolRunnerScreenState extends State<ToolRunnerScreen> {
   final TextEditingController _input = TextEditingController();
   String _output = '';
   String? _error;
+  int _runToken = 0;
 
   @override
   void initState() {
     super.initState();
     if (widget.spec.noInput) {
-      WidgetsBinding.instance.addPostFrameCallback((_) => _run());
+      WidgetsBinding.instance.addPostFrameCallback((_) => unawaited(_run()));
     }
   }
 
@@ -328,17 +331,18 @@ class _ToolRunnerScreenState extends State<ToolRunnerScreen> {
     super.dispose();
   }
 
-  void _run() {
+  Future<void> _run() async {
+    final token = ++_runToken;
+    final strings = AppStrings(context.read<SettingsProvider>().localeCode);
     try {
-      final value = widget.spec.run(
-        _input.text,
-        AppStrings(context.read<SettingsProvider>().localeCode),
-      );
+      final value = await widget.spec.run(_input.text, strings);
+      if (!mounted || token != _runToken) return;
       setState(() {
         _output = value;
         _error = null;
       });
     } catch (error) {
+      if (!mounted || token != _runToken) return;
       setState(() {
         _output = '';
         _error = context.trReadArgs('toolsFailed', {'error': error});
@@ -380,13 +384,13 @@ class _ToolRunnerScreenState extends State<ToolRunnerScreen> {
               onChanged: (_) {
                 if (widget.spec.id.startsWith('json') ||
                     widget.spec.id == 'text_stats') {
-                  _run();
+                  unawaited(_run());
                 }
               },
             ),
             const SizedBox(height: 12),
             FilledButton.icon(
-              onPressed: _run,
+              onPressed: () => unawaited(_run()),
               icon: const Icon(Icons.play_arrow),
               label: Text(context.tr('toolsConvert')),
             ),
@@ -546,35 +550,63 @@ String _color(String input, AppStrings strings) {
       'Flutter: Color(0xFF${hex.toUpperCase()})';
 }
 
-String _regex(String input, AppStrings strings) {
+Future<String> _regex(String input, AppStrings strings) async {
   final lines = input.split('\n');
   if (lines.isEmpty) return '';
   final pattern = lines.first.trim();
   final text = lines.skip(1).join('\n');
-  final matches = RegExp(pattern).allMatches(text).toList();
-  if (matches.isEmpty) return strings.get('toolsRegexNone');
+  final RegexToolResult result;
+  try {
+    result = await RegexToolService.match(pattern: pattern, text: text);
+  } on RegexToolException catch (error) {
+    throw FormatException(_regexErrorMessage(error, strings));
+  }
+  if (result.matches.isEmpty) return strings.get('toolsRegexNone');
   final buffer = StringBuffer(
-    '${strings.get('toolsRegexCount').replaceAll('{n}', '${matches.length}')}\n',
+    '${strings.get('toolsRegexCount').replaceAll('{n}', '${result.matches.length}')}\n',
   );
-  for (var i = 0; i < matches.length; i++) {
-    final m = matches[i];
+  for (var i = 0; i < result.matches.length; i++) {
+    final match = result.matches[i];
     final item = strings
         .get('toolsRegexItem')
         .replaceAll('{i}', '${i + 1}')
-        .replaceAll('{text}', '${m.group(0)}')
-        .replaceAll('{start}', '${m.start}')
-        .replaceAll('{end}', '${m.end}');
-    final groups = m.groupCount > 0
+        .replaceAll('{text}', match.text)
+        .replaceAll('{start}', '${match.start}')
+        .replaceAll('{end}', '${match.end}');
+    final groups = match.groups.isNotEmpty
         ? strings
               .get('toolsRegexGroup')
-              .replaceAll(
-                '{groups}',
-                List.generate(m.groupCount, (j) => m.group(j + 1)).join(' | '),
-              )
+              .replaceAll('{groups}', match.groups.join(' | '))
         : '';
     buffer.writeln('$item$groups');
   }
+  if (result.truncated) {
+    buffer.writeln(
+      strings
+          .get('toolsRegexTruncated')
+          .replaceAll('{n}', '${result.matches.length}'),
+    );
+  }
   return buffer.toString().trimRight();
+}
+
+String _regexErrorMessage(RegexToolException error, AppStrings strings) {
+  switch (error.kind) {
+    case RegexToolError.patternTooLong:
+    case RegexToolError.textTooLong:
+      return strings
+          .get('toolsRegexTooLong')
+          .replaceAll('{p}', '${RegexToolService.maxPatternLength}')
+          .replaceAll('{t}', '${RegexToolService.maxTextLength}');
+    case RegexToolError.timeout:
+      return strings.get('toolsRegexTimeout');
+    case RegexToolError.invalidPattern:
+      return strings
+          .get('toolsRegexInvalid')
+          .replaceAll('{error}', error.detail ?? '');
+    case RegexToolError.failed:
+      return error.detail ?? error.kind.name;
+  }
 }
 
 String _uuid() {

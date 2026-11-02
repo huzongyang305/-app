@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
@@ -33,26 +33,26 @@ jobs:
       - name: Brand asset checks
         run: dart tool/check_brand_assets.dart
       - name: Setup Chrome for sandbox verification
-        uses: browser-actions/setup-chrome@v1
+        uses: browser-actions/setup-chrome@v2
         with:
           chrome-version: stable
       - name: Verify offline sandbox harness
         env:
           CHROME_EXECUTABLE: chrome
+          CHROME_NO_SANDBOX: '1'
         run: dart tool/verify_sandbox_harness.dart
       - name: Build release APKs
         # 不能用 --no-pub：插件注册文件需要按 release 模式重新生成，
         # 否则会残留 debug 模式的 integration_test 插件引用导致编译失败。
         run: |
           flutter build apk --release --target-platform android-arm,android-arm64
-          flutter build apk --release --split-per-abi
+          flutter build apk --release --split-per-abi --target-platform android-arm,android-arm64
       - name: Enforce release APK size budget
         run: |
           for apk in \
             build/app/outputs/flutter-apk/app-release.apk \
             build/app/outputs/flutter-apk/app-arm64-v8a-release.apk \
-            build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk \
-            build/app/outputs/flutter-apk/app-x86_64-release.apk; do
+            build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk; do
             dart tool/check_apk_size.dart "$apk" 95
           done
       - name: Write APK size report
@@ -60,8 +60,7 @@ jobs:
           dart tool/apk_size_report.dart --budget-mb=95 \
             build/app/outputs/flutter-apk/app-release.apk \
             build/app/outputs/flutter-apk/app-arm64-v8a-release.apk \
-            build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk \
-            build/app/outputs/flutter-apk/app-x86_64-release.apk
+            build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
       - name: Generate release manifest (SHA-256)
         run: |
           dart tool/release_manifest.dart \
@@ -70,7 +69,7 @@ jobs:
             build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
       - name: Upload visual diff artifacts
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: visual-regression-diffs
           path: |
@@ -78,13 +77,13 @@ jobs:
             **/*.diff.png
           if-no-files-found: ignore
       - name: Upload APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: code-learn-release-apk
           path: build/app/outputs/flutter-apk/*.apk
           if-no-files-found: error
       - name: Upload size and release reports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: code-learn-release-reports
           path: |

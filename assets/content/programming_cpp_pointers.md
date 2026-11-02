@@ -1,6 +1,6 @@
 # 指针与引用
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：30 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：45 分钟
 
 ![指针与引用的语义对比](images/diagram_cpp_pointers.webp)
 
@@ -140,6 +140,150 @@ void print(const int* maybe) {
     if (maybe != nullptr) std::cout << *maybe;
 }
 ```
+
+### 栈、堆与静态区：对象住在哪里
+
+内存像一栋分层的楼：**栈**是前台的小抽屉，函数一进门就分配、一出门就清空；**堆**是仓库，钥匙在自己手里，不还就一直占着；**静态区**是墙上的固定招牌，程序启动时挂上，进程结束才摘。
+
+| 区域 | 谁分配 | 生命周期 | 存放什么 |
+| --- | --- | --- | --- |
+| 栈 | 编译器自动 | 随作用域结束 | 局部变量、函数参数、返回地址 |
+| 堆 | `new` / 分配器 | 手动释放或智能指针接管 | 动态数组、多态对象、大对象 |
+| 静态/全局区 | 加载时 | 整个进程 | 全局变量、`static` 局部变量 |
+| 只读段 | 加载时 | 整个进程 | 字符串字面量、常量全局量 |
+
+```cpp
+#include <iostream>
+
+int global = 1;                  // 静态区：进程活着它就在
+
+int main() {
+    int local = 2;               // 栈：main 返回即消失
+    static int counter = 0;      // 静态区：只初始化一次
+    ++counter;
+    auto* heap = new int(3);     // 堆：地址由分配器给出
+    const char* text = "hello";  // 指针在栈上，字面量在只读段
+
+    std::cout << &global << ' ' << &local << ' ' << heap << ' '
+              << static_cast<const void*>(text) << ' ' << counter << '\n';
+    delete heap;
+}
+```
+
+三个地址打印出来通常相差很远：64 位 Linux 上栈与堆往往隔着数 GB。这解释了两件事：
+
+- 返回局部变量的地址，函数一返回那块栈帧就被后来者复用，指针看似有效、内容却已经换人——这是悬垂指针最典型的来源。
+- `static` 局部变量不在栈上，初始化只发生一次，而且 C++11 起这个初始化是线程安全的（所谓 magic static），可以放心用来实现惰性单例。
+
+### 指针算术：尾后指针是唯一例外
+
+数组像一排连号的储物柜，`p + 1` 就是走到下一格。加法加的不是 1 个字节，而是 `sizeof(T)` 个字节；两个指针相减得到的是**元素个数**，类型为 `std::ptrdiff_t`。
+
+```cpp
+#include <cstddef>
+#include <iostream>
+
+int main() {
+    int a[4] = {10, 20, 30, 40};
+    int* p = a;
+    int* end = a + 4;                  // 尾后指针：可以比较，不能解引用
+
+    std::cout << *(p + 2) << '\n';     // 30，等价于 a[2]
+    std::cout << (end - p) << '\n';    // 4，是元素个数而不是字节数
+
+    for (int* it = p; it != end; ++it) std::cout << *it << ' ';
+    std::cout << '\n';
+    // *end = 0;                       // 未定义行为：它没有指向任何 int 对象
+}
+```
+
+标准只允许指针走到「最后一个元素的下一个位置」，再多一步就是未定义行为，哪怕不解引用。所以 `it != end` 这种循环是合法的，而 `it <= end` 虽然常见却更脆弱。另外，来自不同数组的两个指针相减没有定义，用 `<` 比较它们也只是未指明行为，别拿来做逻辑判断。
+
+### 函数指针与回调
+
+回调就是把「待会儿要做的事」写成一张纸条交给别人。函数指针是这张纸条的原始形态：只记函数地址，不携带状态，调用开销和普通函数一样。
+
+```cpp
+#include <functional>
+#include <iostream>
+
+int add(int a, int b) { return a + b; }
+int mul(int a, int b) { return a * b; }
+
+int apply(int x, int y, int (*op)(int, int)) {   // 裸函数指针
+    return op(x, y);
+}
+
+int main() {
+    std::cout << apply(3, 4, add) << ' ' << apply(3, 4, mul) << '\n';  // 7 12
+
+    int base = 10;
+    std::function<int(int)> withState = [base](int v) { return base + v; };
+    std::cout << withState(5) << '\n';           // 15，捕获了 base
+}
+```
+
+| 形式 | 能携带状态 | 调用开销 | 适用场合 |
+| --- | --- | --- | --- |
+| 裸函数指针 `int(*)(int,int)` | 否 | 一次间接跳转，可内联 | C 接口、排序比较器 |
+| 无捕获 lambda | 否（可隐式转成函数指针） | 同上 | 临时传给 C 风格 API |
+| `std::function` | 是 | 类型擦除，捕获大时堆分配 | 存进成员、回调注册表 |
+| 模板参数 `F` | 是 | 零开销，完全内联 | 泛型算法、热路径 |
+
+`std::function` 的代价来自类型擦除：它要能装下任意可调用对象，捕获较大时会在堆上分配，调用时还多一层间接跳转。注册一次、调用百万次的场景，优先把可调用对象做成模板参数。
+
+### 严格别名：同一块内存不能随便换身份
+
+编译器把内存当成贴了标签的柜子。你声明「这格是 `int`」，就不能用 `float*` 从同一格取出来再当 `int` 用——优化器会按标签重排读写顺序，两边看到的可能不是同一份数据，这就是**严格别名规则**。违反它的代码在 `-O0` 下常常「正常」，一开 `-O2` 就出错。
+
+标准允许的别名只有几类：同类型、加了 `const`/`volatile` 的版本、有符号与无符号的对应版本、`char`/`unsigned char`/`std::byte`，以及包含该类型的聚合体。要在类型之间搬运位模式，用 C++20 的 `std::bit_cast`：
+
+```cpp
+#include <bit>
+#include <cstdint>
+#include <cstring>
+
+float toFloat(std::uint32_t bits) {
+    return std::bit_cast<float>(bits);        // 合法，且能在编译期求值
+}
+
+std::uint32_t toBits(float f) {
+    std::uint32_t out{};
+    std::memcpy(&out, &f, sizeof out);        // C++20 之前的标准做法
+    return out;
+}
+```
+
+`*reinterpret_cast<float*>(&bits)` 这类写法正是典型的违规示例：看起来只多一个星号，实际把优化器的假设打碎了。
+
+### std::span：指针加长度，但更安全
+
+传数组给函数时，指针会丢掉长度，只能再补一个 `size` 参数，两者很容易对不上。`std::span` 把「起始地址 + 长度」打包成一个不拥有数据的视图，签名一眼就能看出它要一段连续内存。
+
+```cpp
+#include <span>
+#include <vector>
+
+int sum(std::span<const int> data) {          // 数组、vector、std::array 都能直接传
+    int total = 0;
+    for (int v : data) total += v;
+    return total;
+}
+
+int main() {
+    int raw[4] = {1, 2, 3, 4};
+    std::vector<int> vec{5, 6};
+    return sum(raw) + sum(vec) - 21;          // 10 + 11 - 21 = 0
+}
+```
+
+| 写法 | 知道长度 | 拥有数据 | 能否接任意连续区间 |
+| --- | --- | --- | --- |
+| `const int*` + `size_t` | 靠调用方约定 | 否 | 能，但要自己管长度 |
+| `const std::vector<int>&` | 是 | 否（只借用） | 不能，只接受 vector |
+| `std::span<const int>` | 是 | 否 | 能，数组 / vector / array 都行 |
+
+`std::span<int, 4>` 把长度写进类型，编译期就能检查；默认的 `std::span<int>` 长度在运行时确定。它不拥有数据，因此**永远不要返回指向局部数组的 span**，也不要让它的寿命超过源容器。
 
 ### 函数参数怎么选
 

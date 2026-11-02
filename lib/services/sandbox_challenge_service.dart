@@ -69,15 +69,4 @@ class SandboxChallengeService {
             ) ==
             total;
   }
-
-  /// 判断输出是否像一条运行错误（用于给学习者更明确的失败提示）。
-  static bool looksLikeError(String output) {
-    final text = normalize(output);
-    if (text.isEmpty) return false;
-    return text.startsWith('Error:') ||
-        text.contains('\nError:') ||
-        text.startsWith('执行失败') ||
-        text.startsWith('执行超时') ||
-        text.contains('Traceback (most recent call last)');
-  }
 }

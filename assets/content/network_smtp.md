@@ -1,6 +1,6 @@
 # SMTP、邮件协议与反垃圾
 
-> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：25 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：进阶 · 预计用时：35 分钟
 
 ![邮件投递链路与认证机制](images/diagram_net_smtp.webp)
 
@@ -62,6 +62,49 @@
 **教材衔接：实践路径**
 
 **教材衔接：验证步骤**
+
+### SMTP 会话逐行看：命令、应答码与扩展
+
+SMTP 是「一问一答」的文本协议，把一次投递的会话抓下来，比读十遍定义都直观。下面这段是往 587 端口提交信件时的会话（用 `openssl s_client -starttls smtp -crlf -connect smtp.example.com:587` 抓取，`-crlf` 保证行尾是协议要求的 CRLF）：
+
+```text
+220 smtp.example.com ESMTP Postfix
+EHLO mail.example.com
+250-smtp.example.com
+250-PIPELINING
+250-SIZE 35882577
+250-STARTTLS
+250-AUTH LOGIN PLAIN
+250-8BITMIME
+250 SMTPUTF8
+STARTTLS
+220 2.0.0 Ready to start TLS
+<完成 TLS 握手后重新 EHLO>
+EHLO mail.example.com
+250-smtp.example.com
+250-PIPELINING
+250-SIZE 35882577
+250-AUTH LOGIN PLAIN
+250-8BITMIME
+250 SMTPUTF8
+AUTH PLAIN AG5vcmVwbHkAc2VjcmV0
+235 2.7.0 Authentication successful
+MAIL FROM:<noreply@example.com> SIZE=2048
+250 2.1.0 Ok
+RCPT TO:<student@example.net>
+250 2.1.5 Ok
+DATA
+354 End data with <CR><LF>.<CR><LF>
+Subject: 选课提醒
+...
+250 2.0.0 Ok: queued as 4F2C1A3B
+QUIT
+221 2.0.0 Bye
+```
+
+读法有几条硬规则。第一行 `220` 是服务端问候，客户端必须先等它再说 `EHLO`；`250-` 表示后面还有一行，`250 `（空格）表示最后一行，这一组就是服务端声明的扩展：`SIZE` 是单封上限，`8BITMIME` 允许 8 位正文，`PIPELINING` 允许把 `MAIL`/`RCPT` 连着发出去而不等逐条应答。`AUTH` 必须在 TLS 之后、`MAIL FROM` 之前；`DATA` 收到 `354`（中间态，不是成功）才开始送正文，正文以单独一行的 `.` 结束，因此正文里以 `.` 开头的行要写成两个点，这叫 dot-stuffing。最后的 `250 2.0.0` 表示已入队，`2.0.0` 是增强状态码，能区分「语法对但策略拒」这类细节。
+
+投递之前还有一步 DNS：`dig MX example.net` 会返回若干条记录，优先级数字小的先试，全部失败才退信；MX 指向 CNAME 属于违规配置，会直接被判无效；`MX 0 .` 是 null MX，明确声明「这个域不收信」。另外，自己的发信 IP 必须有与发信域名匹配的 PTR 反向解析记录，否则不少服务商会直接回 5xx 或把邮件丢进垃圾箱。
 
 ## 典型应用场景
 
@@ -153,6 +196,72 @@ print(socket.gethostbyname("localhost"))
 127.0.0.1
 ```
 
+### 用 smtplib 发信：认证、STARTTLS 与错误分支
+
+真实发信不要自己拼字符串，标准库的 `EmailMessage` 会处理编码、换行与头部折行：
+
+```python
+import smtplib
+import ssl
+from email.message import EmailMessage
+from email.utils import formataddr, make_msgid
+from smtplib import SMTPAuthenticationError, SMTPRecipientsRefused
+
+def send_mail(to_addr, subject, body):
+    msg = EmailMessage()
+    msg["From"] = formataddr(("课程通知", "noreply@example.com"))
+    msg["To"] = to_addr
+    msg["Subject"] = subject
+    msg["Message-ID"] = make_msgid(domain="example.com")
+    msg.set_content(body)
+
+    context = ssl.create_default_context()
+    with smtplib.SMTP("smtp.example.com", 587, timeout=10) as smtp:
+        smtp.ehlo()
+        smtp.starttls(context=context)   # 明文升级为加密通道
+        smtp.ehlo()                      # 升级后扩展列表变了，必须重新 EHLO
+        smtp.login("noreply@example.com", "app-specific-password")
+        smtp.send_message(msg)
+    return msg["Message-ID"]
+```
+
+几个容易写错的点：`starttls()` 之后必须再 `ehlo()`，否则服务端不认升级后的能力；`login()` 传的是应用专用授权码，不是邮箱登录密码（主流服务商早已关闭明文密码认证）；`send_message` 会从 `To`、`Cc` 推导收件人，并自动删掉 `Bcc` 头，所以密送不会泄漏。失败要按应答码分流：
+
+```python
+try:
+    send_mail("student@example.net", "选课提醒", "今晚 22:00 截止选课")
+except SMTPAuthenticationError as err:
+    print("535 认证失败，检查账号与授权码，重试无意义", err.smtp_code)
+except SMTPRecipientsRefused as err:
+    print("550 收件人不存在，直接标记退信", err.recipients)
+except (OSError, smtplib.SMTPException) as err:
+    print("连接超时或 4xx，投入重试队列", err)
+```
+
+分支顺序不能反：`SMTPAuthenticationError` 和 `SMTPRecipientsRefused` 都是 `SMTPException` 的子类，若把宽泛的 `except` 写在前面，前两类就永远进不来，表现是「认证失败也重试三次」。
+
+### MIME multipart：正文、HTML 与附件怎么套在一起
+
+`set_content` 写纯文本，`add_alternative` 追加 HTML 版本，`add_attachment` 追加附件，库会自动把结构升级成 `multipart/alternative` 套在 `multipart/mixed` 里：
+
+```python
+from email.message import EmailMessage
+
+msg = EmailMessage()
+msg["Subject"] = "第 3 周作业批改结果"
+msg["From"] = "teacher@example.com"
+msg["To"] = "student@example.net"
+msg.set_content("你的作业已批改，详见附件。")          # text/plain
+msg.add_alternative("<p>你的作业已批改，<b>详见附件</b>。</p>", subtype="html")
+msg.add_attachment(b"%PDF-1.4 demo", maintype="application",
+                   subtype="pdf", filename="score.pdf")
+
+head = msg.as_string().split("\n\n", 1)[0]
+print(head)   # 能看到 multipart/mixed、boundary 与编码后的 Subject
+```
+
+结构上要理解三件事。一是 `boundary`：每个 part 之间用一行 `--boundary` 分隔，最后以 `--boundary--` 收尾，客户端靠它切分内容，所以正文里出现同名字符串会把邮件拆坏。二是 `Content-Transfer-Encoding`：非 ASCII 正文通常用 quoted-printable（保留可读性），附件用 base64，而 base64 会让体积膨胀约 33%，一封 10 MB 的附件实际占 13.3 MB，超过对方 25 MB 上限时会被 552 拒收。三是头部编码：中文主题会变成 `=?utf-8?b?...?=` 的 RFC 2047 形式，这是正常现象，不是乱码。排查「为什么对方只看到纯文本」时，先看客户端是否优先渲染 `alternative` 里的 HTML 部分，再看 HTML 是不是被当成附件塞进了 `mixed`。
+
 ## 时间/空间复杂度或性能分析
 
 **性能关注点（SMTP、邮件协议与反垃圾）**：往返延迟与带宽是主要成本：记录 RTT、吞吐与重传率，区分局域网与真实链路。
@@ -160,6 +269,14 @@ print(socket.gethostbyname("localhost"))
 **本课特有开销（SMTP、邮件协议与反垃圾 · SMTP）**：重试与超时会成倍放大尾延迟，记录 P99 而不是平均值。
 
 **测量方法**：以 `SMTP、邮件协议与反垃圾` 的 `SMTP` 场景为对象，固定输入跑一遍记录基线，再把规模或并发度提高一个数量级复测；两次结果的差值与波动范围才是结论依据。
+
+### 重试队列与发信限流：把尾延迟和容量算清楚
+
+4xx 是临时失败（421 服务不可用、450 邮箱暂时不可达、451 服务端临时处理失败），5xx 是永久失败（550 用户不存在、553 参数非法）。重试节奏通常是 1 分钟、5 分钟、30 分钟、2 小时、6 小时，总窗口控制在 24 到 72 小时，超出就判过期退信，不再无限重投。
+
+容量估算：日发 10 万封、首投临时失败率 2%，即 2000 封进重试队列，平均重试 2.5 次，每天多出 5000 次投递尝试。摊到 24 小时只有 0.06 QPS，但活动通知的高峰会把它们压进几秒钟，所以队列要按「下次可投时间」建最小堆，而不是先进先出死等。
+
+限流要同时看三条线：单 IP 的并发连接数（多数服务商上限 10 到 20 条）、单域名每小时的收件人数、以及对方主动返回的 421 限流码。任一条触顶都该退避重排，而不是换 IP 重投——换 IP 会同时破坏 SPF 授权与 IP 信誉，短期多发出几百封，长期可能整段 IP 被打入黑名单。
 
 ## 常见误区与易错点
 

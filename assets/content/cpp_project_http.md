@@ -1,6 +1,6 @@
 # 实战：C++ HTTP JSON 服务
 
-> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：70 分钟
+> 内容更新时间：2026-10-06 · 学习阶段：高级 · 预计用时：75 分钟
 
 ![C++ HTTP JSON 服务的请求链路](images/diagram_cpp_http_project.webp)
 
@@ -64,6 +64,28 @@
 - 参数校验：检查 JSON 格式和必填字段
 - 业务逻辑：用 try-catch 捕获异常，转换为统一错误响应
 - 响应阶段：设置正确的 Content-Type 和状态码
+
+### HTTP/1.1 报文由哪几块拼成
+
+把请求想成寄挂号信：信封正面写收件地址和寄件人（请求行与头部字段），信封里才是信纸（消息体），中间用一条折痕（空行）隔开。`cpp-httplib` 拆完信封后，把 `req.method`、`req.path`、`req.body` 直接交给你。
+
+| 部分 | 请求侧样子 | 响应侧对应写法 | 本项目容易踩的点 |
+| --- | --- | --- | --- |
+| 起始行 | `POST /tasks HTTP/1.1` | `HTTP/1.1 201 Created` | 方法与路径决定落到哪个路由 |
+| 头部字段 | `Content-Type: application/json` | `set_content(body, "application/json")` | 漏声明类型，前端 `fetch().json()` 解析前就抛错 |
+| 消息体 | JSON 文本 | `res.body` | 只有体里的 JSON 才是业务数据，头部不是 |
+
+状态码是客户端唯一可靠的判断依据，本项目的映射是：`200` 读取成功、`201` 新建成功、`204` 删除成功且无正文、`400` 请求本身不合法、`404` 资源不存在、`409` 幂等键重复但载荷不同、`500` 服务端自身异常。一条纪律：4xx 的响应体要点名哪个字段错了，5xx 只回通用文案——把 `what()` 原样返回等于泄露内部结构。
+
+### TCP 只交字节流：粘包、半包与谁来定界
+
+TCP 保证字节按序到达，不保证一次 `recv` 恰好给你一条完整请求。像往水管里倒三桶水，接的人可能一次舀到两桶半。HTTP/1.1 用两种方式定界：`Content-Length: 42` 表示头部之后精确读 42 字节，多余的留给下一条请求；`Transfer-Encoding: chunked` 用「长度前缀 + 数据块」逐块读。两者都没有的请求只能读到连接关闭，放在长连接上会把服务卡死。
+
+`cpp-httplib` 为每个连接维护读缓冲区，凑够一条完整报文才回调你的 lambda，所以 `req.body` 永远是完整的。需要自己接管的是手动 `read()` 套接字的场合：必须处理「读到的字节数少于期望」并设超时；另外 `set_content` 要求整段 `std::string` 驻留内存，10 万条任务一次吐出会让内存翻倍，这时该分页。
+
+### 线程模型：谁在阻塞，谁在排队
+
+默认的 `cpp-httplib` 是「每连接一线程」：主线程阻塞在 `accept`，来一个连接起一个线程，关闭才回收。内网几十并发够用，公网要算两笔账：每个线程默认保留 8 MB 虚拟栈，几千连接就是几十 GB 虚拟内存；慢客户端用 1 KB/s 上传 10 MB 正文，几十个连接就能把线程占满。所以先给单连接设 `set_read_timeout`、`set_write_timeout`、`set_payload_max_length`，再谈线程池或 epoll。
 
 ### 第一步：最小 HTTP 服务
 
@@ -268,6 +290,38 @@ svr.Get("/tasks/:id", [](const auto& req, auto& res) {
     res.set_content(task->to_json().dump(), "application/json");
 });
 ```
+
+### 用 RAII 管住文件句柄
+
+日志、上传的临时文件都会开句柄。手写 `fopen`/`fclose` 的漏洞不在正常路径，而在「中途抛异常」「提前 return」这两条岔路上：漏一次 `fclose`，句柄就随请求次数增长，直到 `ulimit -n` 打满，之后新连接 `accept` 全部失败——现象是服务跑几小时后突然全线超时，而日志空白。
+
+```cpp
+#include <cstdio>
+#include <stdexcept>
+#include <utility>
+
+// 只做一件事：离开作用域时 fclose 一定被调用；拷贝会双重关闭，所以只允许移动。
+class FileHandle {
+public:
+    explicit FileHandle(const char* path) : fp_(std::fopen(path, "wb")) {
+        if (fp_ == nullptr) throw std::runtime_error("无法打开文件");
+    }
+    ~FileHandle() { if (fp_ != nullptr) std::fclose(fp_); }
+    FileHandle(const FileHandle&) = delete;
+    FileHandle& operator=(const FileHandle&) = delete;
+    FileHandle(FileHandle&& o) noexcept : fp_(o.fp_) { o.fp_ = nullptr; }
+    FileHandle& operator=(FileHandle&& o) noexcept {
+        if (this != &o) std::swap(fp_, o.fp_);  // 换手后旧句柄由 o 关闭
+        return *this;
+    }
+    std::FILE* get() const noexcept { return fp_; }
+
+private:
+    std::FILE* fp_;
+};
+```
+
+代码里三处设计各自对应一个坑：构造函数失败抛异常，而不是留一个 nullptr 对象；拷贝被 `= delete` 掉，否则两个对象析构时会关闭同一句柄两次；移动赋值用 `std::swap` 换手，`this == &o` 也不会踩空。POSIX 版只是把 `fopen`/`fclose` 换成 `open`/`close`。
 
 ## 时间/空间复杂度或性能分析
 
