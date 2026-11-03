@@ -1,6 +1,6 @@
 # 代码块验证报告
 
-生成时间：2026-11-02T12:35:20.291287
+生成时间：2026-11-03T20:31:23.061764
 
 > 片段是课程里有意截取、无法独立编译的示例，不计入硬失败；
 > 排错练习是课程里有意保留错误的代码，同样不计入硬失败；
@@ -51,7 +51,7 @@
 | promql | 15 | 0 | 0 | 0 |
 | properties | 5 | 0 | 0 | 0 |
 | protobuf | 4 | 0 | 0 | 0 |
-| python | 905 | 5 | 0 | 0 |
+| python | 905 | 5 | 1 | 0 |
 | ruby | 2 | 0 | 0 | 0 |
 | rust | 68 | 1 | 0 | 0 |
 | shell | 1 | 0 | 0 | 0 |
@@ -102,6 +102,7 @@
 - programming_rust_cli_project:287 rust 已标注片段
 - shell_ci_templates:145 bash 已标注片段
 - web_pwa_offline:149 javascript 已标注片段
+- python_first_script:268 python 代码排错练习（有意保留错误）
 - 未找到 Python 解释器，Python 代码块降级为结构校验（可设置 PYTHON 环境变量）
 - ai_context_engineering:165 python 结构不平衡
 - ai_engineering:197 python 结构不平衡
@@ -117,7 +118,7 @@
 - fundamentals_storage_stack:129 python 结构不平衡
 - gamedev_2d_rendering:240 python 结构不平衡
 - go_pprof:229 bash 结构不平衡
-- java_spring_boot_intro:166 java C:\Users\m1899\AppData\Local\Temp\code_learn_blocks_90c64c6b\DemoApplication.java:3: 错误: 程序包org.springframework.boot不存在 import org.springframework.boot.SpringApplication;                                ^ C:\Users\m1899\AppData\Local\Temp\code_learn_blocks_90c64c6b\DemoApplication.java:4: 错误: 程序包org.springframework.boot.autoconfigure不存在 import org.springframework.boot.autoconfigure.SpringBootApplication;                                              ^ C:\Users\m1899\AppData\Local\Temp\code_learn_blocks_90c64c6b\DemoApplication.java:6: 错误: 找不到符号 @SpringBootApplication  // 一个注解搞定：配置 + 自动配置 + 组件扫描  ^   符号: 类 SpringBootApplication C:\Users\m1899\AppData\Local\Temp\code_learn_blocks_90c64c6b\DemoApplication.java:10: 错误: 找不到符号         SpringApplication.run(DemoApplication.class, args);         ^   符号:   变量 SpringApplication   位置: 类 DemoApplication 4 个错误 
+- java_spring_boot_intro:166 java C:\Users\m1899\AppData\Local\Temp\code_learn_blocks_859791b5\DemoApplication.java:3: 错误: 程序包org.springframework.boot不存在 import org.springframework.boot.SpringApplication;                                ^ C:\Users\m1899\AppData\Local\Temp\code_learn_blocks_859791b5\DemoApplication.java:4: 错误: 程序包org.springframework.boot.autoconfigure不存在 import org.springframework.boot.autoconfigure.SpringBootApplication;                                              ^ C:\Users\m1899\AppData\Local\Temp\code_learn_blocks_859791b5\DemoApplication.java:6: 错误: 找不到符号 @SpringBootApplication  // 一个注解搞定：配置 + 自动配置 + 组件扫描  ^   符号: 类 SpringBootApplication C:\Users\m1899\AppData\Local\Temp\code_learn_blocks_859791b5\DemoApplication.java:10: 错误: 找不到符号         SpringApplication.run(DemoApplication.class, args);         ^   符号:   变量 SpringApplication   位置: 类 DemoApplication 4 个错误 
 - ml_recommendation_systems:609 python 结构不平衡
 - ml_time_series_prediction:365 python 结构不平衡
 - mobile_ios_appstore:279 bash 结构不平衡
@@ -125,7 +126,6 @@
 - programming_python_basics:268 python 结构不平衡
 - programming_python_basics:576 python 结构不平衡
 - programming_shell_flow:176 bash 结构不平衡
-- python_first_script:268 python 结构不平衡
 - se_test_design:140 python 结构不平衡
 - shell_json_yaml:140 bash 结构不平衡
 - shell_json_yaml:178 bash 结构不平衡
