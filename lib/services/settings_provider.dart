@@ -499,6 +499,159 @@ class SettingsProvider extends ChangeNotifier {
     await _storage.write('passed_sandbox_challenges', const <String>[]);
   }
 
+  /// 导出可跨设备恢复的界面偏好。
+  ///
+  /// 自动备份目录、上次备份时间、目标庆祝日期与搜索历史属于设备本地状态，
+  /// 不进入备份包，避免恢复后误改新设备的备份计划。
+  Map<String, dynamic> exportPreferences() => <String, dynamic>{
+    'theme_mode': _themeMode.name,
+    'theme_preset': _themePresetId,
+    'locale_code': _localeCode,
+    'reading_font_scale': _readingFontScale,
+    'code_font_scale': _codeFontScale,
+    'code_wrap_lines': _codeWrapLines,
+    'reduce_motion': _reduceMotion,
+    'high_contrast': _highContrast,
+    'selected_path_id': _selectedPathId,
+    'sandbox_font_scale': _sandboxFontScale,
+    'home_shortcuts': List<String>.from(_homeShortcuts),
+    'nav_tabs': List<String>.from(_navTabs),
+    'daily_goal_minutes': _dailyGoalMinutes,
+    'review_session_minutes': _reviewSessionMinutes,
+    'daily_new_card_limit': _dailyNewCardLimit,
+    'review_reminder_enabled': _reviewReminderEnabled,
+    'review_reminder_hour': _reminderHour,
+    'review_reminder_minute': _reminderMinute,
+    'passed_sandbox_challenges': _passedSandboxChallenges.toList(),
+  };
+
+  /// 恢复备份中的界面偏好；缺失或类型不符的字段保持当前值。
+  Future<void> applyPreferences(Map<String, dynamic> data) async {
+    if (data.isEmpty) return;
+    final writes = <String, dynamic>{};
+
+    final theme = data['theme_mode'];
+    if (theme is String) {
+      _themeMode = _themeModeFromName(theme);
+      writes['theme_mode'] = _themeMode.name;
+    }
+
+    final preset = data['theme_preset'];
+    if (preset is String &&
+        AppThemes.allPresets.any((item) => item.id == preset)) {
+      _themePresetId = preset;
+      writes['theme_preset'] = preset;
+    }
+
+    final locale = data['locale_code'];
+    if (locale == 'zh' || locale == 'en') {
+      _localeCode = locale as String;
+      writes['locale_code'] = _localeCode;
+    }
+
+    final readingScale = data['reading_font_scale'];
+    if (readingScale is num) {
+      _readingFontScale = readingScale.toDouble().clamp(0.85, 1.4);
+      writes['reading_font_scale'] = _readingFontScale;
+    }
+
+    final codeScale = data['code_font_scale'];
+    if (codeScale is num) {
+      _codeFontScale = codeScale.toDouble().clamp(0.8, 1.6);
+      writes['code_font_scale'] = _codeFontScale;
+    }
+
+    final sandboxScale = data['sandbox_font_scale'];
+    if (sandboxScale is num) {
+      _sandboxFontScale = sandboxScale.toDouble().clamp(0.8, 1.8);
+      writes['sandbox_font_scale'] = _sandboxFontScale;
+    }
+
+    for (final entry in <String, void Function(bool)>{
+      'code_wrap_lines': (value) => _codeWrapLines = value,
+      'reduce_motion': (value) => _reduceMotion = value,
+      'high_contrast': (value) => _highContrast = value,
+      'review_reminder_enabled': (value) => _reviewReminderEnabled = value,
+    }.entries) {
+      final value = data[entry.key];
+      if (value is bool) {
+        entry.value(value);
+        writes[entry.key] = value;
+      }
+    }
+
+    final path = data['selected_path_id'];
+    if (path is String) {
+      _selectedPathId = path;
+      writes['selected_path_id'] = path;
+    }
+
+    final shortcuts = data['home_shortcuts'];
+    if (shortcuts is List) {
+      _homeShortcuts = _normalize(
+        shortcuts.map((item) => item.toString()).toList(),
+        homeShortcutIds,
+        minimum: 1,
+      );
+      writes['home_shortcuts'] = List<String>.from(_homeShortcuts);
+    }
+
+    final tabs = data['nav_tabs'];
+    if (tabs is List) {
+      _navTabs = _normalize(
+        tabs.map((item) => item.toString()).toList(),
+        navTabIds,
+        minimum: 2,
+      );
+      writes['nav_tabs'] = List<String>.from(_navTabs);
+    }
+
+    final goal = data['daily_goal_minutes'];
+    if (goal is num) {
+      _dailyGoalMinutes = goal.toInt().clamp(5, 240);
+      writes['daily_goal_minutes'] = _dailyGoalMinutes;
+    }
+
+    final session = data['review_session_minutes'];
+    if (session is num) {
+      _reviewSessionMinutes = session.toInt().clamp(5, 120);
+      writes['review_session_minutes'] = _reviewSessionMinutes;
+    }
+
+    final newCards = data['daily_new_card_limit'];
+    if (newCards is num) {
+      _dailyNewCardLimit = newCards.toInt().clamp(5, 40);
+      writes['daily_new_card_limit'] = _dailyNewCardLimit;
+    }
+
+    final hour = data['review_reminder_hour'];
+    if (hour is num) {
+      _reminderHour = hour.toInt().clamp(0, 23);
+      writes['review_reminder_hour'] = _reminderHour;
+    }
+
+    final minute = data['review_reminder_minute'];
+    if (minute is num) {
+      _reminderMinute = minute.toInt().clamp(0, 59);
+      writes['review_reminder_minute'] = _reminderMinute;
+    }
+
+    final challenges = data['passed_sandbox_challenges'];
+    if (challenges is List) {
+      _passedSandboxChallenges = challenges
+          .map((item) => item.toString())
+          .where((item) => item.isNotEmpty)
+          .toSet();
+      writes['passed_sandbox_challenges'] = _passedSandboxChallenges.toList();
+    }
+
+    if (writes.isEmpty) return;
+    notifyListeners();
+    for (final entry in writes.entries) {
+      await _storage.write(entry.key, entry.value);
+    }
+  }
+
   /// 过滤掉未知 ID 并按可选值顺序排列；不足 [minimum] 时回落到默认值。
   static List<String> _normalize(
     List<String> values,

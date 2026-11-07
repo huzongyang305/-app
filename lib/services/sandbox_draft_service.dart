@@ -77,6 +77,39 @@ class SandboxDraftService {
     await _storage.delete(storageKey);
   }
 
+  /// 备份用：全部草稿的 JSON 表示。
+  Map<String, dynamic> exportJson() => <String, dynamic>{
+    for (final entry in _readAll().entries)
+      entry.key: <String, dynamic>{
+        'code': entry.value.code,
+        'stdin': entry.value.stdin,
+      },
+  };
+
+  /// 从备份恢复草稿；[merge] 为 true 时保留本机同语言草稿。
+  ///
+  /// 传入非 Map（旧版备份没有该分区）时保持现有草稿不变。
+  Future<void> importJson(dynamic raw, {bool merge = false}) async {
+    if (raw is! Map) return;
+    final drafts = merge ? _readAll() : <String, SandboxDraft>{};
+    raw.forEach((key, value) {
+      if (key is! String || value is! Map) return;
+      final code = value['code'];
+      final stdin = value['stdin'];
+      if (code is! String && stdin is! String) return;
+      final codeText = code is String ? code : '';
+      final stdinText = stdin is String ? stdin : '';
+      if (codeText.isEmpty && stdinText.isEmpty) return;
+      if (merge && drafts.containsKey(key)) return;
+      drafts[key] = SandboxDraft(code: codeText, stdin: stdinText);
+    });
+    if (drafts.isEmpty) {
+      await clear();
+    } else {
+      await _writeAll(drafts);
+    }
+  }
+
   Future<void> _writeAll(Map<String, SandboxDraft> drafts) {
     final payload = <String, dynamic>{
       for (final entry in drafts.entries)

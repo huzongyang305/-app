@@ -5,9 +5,11 @@ import 'package:provider/provider.dart';
 
 import '../l10n/l10n_extension.dart';
 import '../services/auto_backup_service.dart';
+import '../services/backup_bundle_service.dart';
 import '../services/notification_service.dart';
 import '../services/progress_provider.dart';
 import '../services/settings_provider.dart';
+import '../services/storage_service.dart';
 import '../widgets/responsive_content.dart';
 import 'daily_question_screen.dart';
 import 'gamification_hub_screen.dart';
@@ -189,7 +191,12 @@ class _RootShellState extends State<RootShell> with WidgetsBindingObserver {
 
     _autoBackupRunning = true;
     try {
-      final payload = jsonEncode(progress.exportData());
+      final bundle = BackupBundleService(
+        context.read<StorageService>(),
+        progress,
+        settings,
+      );
+      final payload = jsonEncode(bundle.buildExportData());
       final name = await const AutoBackupCoordinator().maybeRun(
         enabled: true,
         intervalDays: settings.autoBackupIntervalDays,

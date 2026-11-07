@@ -12,6 +12,9 @@ class BackupPreview {
     required this.notes,
     required this.wrongQuestions,
     required this.studyDays,
+    this.settings = 0,
+    this.snippets = 0,
+    this.sandboxDrafts = 0,
   });
 
   final DateTime? exportedAt;
@@ -22,6 +25,15 @@ class BackupPreview {
   final int notes;
   final int wrongQuestions;
   final int studyDays;
+
+  /// 备份中包含的界面设置项数；0 表示旧版备份没有该分区。
+  final int settings;
+
+  /// 代码片段数量。
+  final int snippets;
+
+  /// 沙盒草稿数量（按语言计）。
+  final int sandboxDrafts;
 
   factory BackupPreview.fromData(Map<String, dynamic> data) {
     Map<String, dynamic> map(dynamic value) =>
@@ -38,6 +50,9 @@ class BackupPreview {
       notes: map(data['notes']).length,
       wrongQuestions: map(data['wrong_counts']).length,
       studyDays: list(data['study_days']).length,
+      settings: map(data['settings']).length,
+      snippets: list(data['snippets']).length,
+      sandboxDrafts: map(data['sandbox_drafts']).length,
     );
   }
 

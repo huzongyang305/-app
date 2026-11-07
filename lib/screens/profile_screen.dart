@@ -7,6 +7,7 @@ import '../l10n/app_strings.dart';
 import '../l10n/l10n_extension.dart';
 import '../models/achievement.dart';
 import '../models/backup_preview.dart';
+import '../services/backup_bundle_service.dart';
 import '../services/backup_crypto_service.dart';
 import '../services/backup_document_service.dart';
 import '../services/backup_file_service.dart';
@@ -16,6 +17,7 @@ import '../services/notification_service.dart';
 import '../services/offline_content_pack_service.dart';
 import '../services/progress_provider.dart';
 import '../services/settings_provider.dart';
+import '../services/storage_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/empty_state.dart';
 import '../widgets/lesson_card.dart';
@@ -54,7 +56,8 @@ class ProfileScreen extends StatelessWidget {
     final messenger = ScaffoldMessenger.of(context);
     final strings = AppStrings(context.read<SettingsProvider>().localeCode);
     try {
-      final payload = await _buildBackupPayload(progress, password);
+      final bundle = _bundleFor(context, progress);
+      final payload = await _buildBackupPayload(bundle, password);
       final saved = await const BackupFileService().saveBackup(
         payload: payload,
         suggestedName: _backupFileName(),
@@ -102,7 +105,8 @@ class ProfileScreen extends StatelessWidget {
     final messenger = ScaffoldMessenger.of(context);
     final strings = AppStrings(context.read<SettingsProvider>().localeCode);
     try {
-      final payload = await _buildBackupPayload(progress, password);
+      final bundle = _bundleFor(context, progress);
+      final payload = await _buildBackupPayload(bundle, password);
       final shared = await const BackupFileService().shareBackup(
         payload: payload,
         suggestedName: _backupFileName(),
@@ -182,8 +186,8 @@ class ProfileScreen extends StatelessWidget {
       if (!context.mounted) return;
       // 先展示备份内容预览，再由用户决定替换还是合并。
       final mode = await _askImportMode(context, progress.previewImport(data));
-      if (mode == null) return;
-      await progress.importData(data, mode: mode);
+      if (mode == null || !context.mounted) return;
+      await _bundleFor(context, progress).restore(data, mode: mode);
       if (context.mounted) {
         final modeLabel = context.trRead(
           mode == BackupImportMode.merge
@@ -251,6 +255,12 @@ class ProfileScreen extends StatelessWidget {
               row(context.tr('backupPreviewNotes'), preview.notes),
               row(context.tr('backupPreviewWrong'), preview.wrongQuestions),
               row(context.tr('backupPreviewStudyDays'), preview.studyDays),
+              if (preview.settings > 0)
+                row(context.tr('backupPreviewSettings'), preview.settings),
+              if (preview.snippets > 0)
+                row(context.tr('backupPreviewSnippets'), preview.snippets),
+              if (preview.sandboxDrafts > 0)
+                row(context.tr('backupPreviewDrafts'), preview.sandboxDrafts),
               const Divider(height: AppSpacing.xl),
               Text(
                 context.tr('backupImportModeTitle'),
@@ -406,6 +416,7 @@ class ProfileScreen extends StatelessWidget {
     BuildContext context,
     ProgressProvider progress,
   ) async {
+    final bundle = _bundleFor(context, progress);
     final messenger = ScaffoldMessenger.of(context);
     final confirmText = context.tr('backupRollbackConfirm');
     final cancelText = context.tr('cancel');
@@ -429,15 +440,24 @@ class ProfileScreen extends StatelessWidget {
       ),
     );
     if (confirmed != true) return;
-    final ok = await progress.rollbackLastImport();
+    final ok = await bundle.rollbackLastImport();
     messenger.showSnackBar(SnackBar(content: Text(ok ? doneText : noneText)));
   }
 
-  Future<String> _buildBackupPayload(
+  BackupBundleService _bundleFor(
+    BuildContext context,
     ProgressProvider progress,
+  ) => BackupBundleService(
+    context.read<StorageService>(),
+    progress,
+    context.read<SettingsProvider>(),
+  );
+
+  Future<String> _buildBackupPayload(
+    BackupBundleService bundle,
     String password,
   ) async {
-    final data = progress.exportData();
+    final data = bundle.buildExportData();
     return password.isEmpty
         ? jsonEncode(data)
         : await const BackupCryptoService().encryptJson(data, password);
@@ -459,7 +479,10 @@ class ProfileScreen extends StatelessWidget {
     AppStrings strings,
   ) async {
     try {
-      final payload = await _buildBackupPayload(progress, password);
+      final payload = await _buildBackupPayload(
+        _bundleFor(context, progress),
+        password,
+      );
       final file = await const LegacyBackupStore().write(payload);
       if (!context.mounted) return;
       messenger.showSnackBar(
@@ -1774,8 +1797,13 @@ class _AutoBackupSectionState extends State<_AutoBackupSection> {
   ) async {
     setState(() => _busy = true);
     try {
+      final bundle = BackupBundleService(
+        context.read<StorageService>(),
+        progress,
+        settings,
+      );
       final result = await const AutoBackupService().writeBackup(
-        payload: jsonEncode(progress.exportData()),
+        payload: jsonEncode(bundle.buildExportData()),
         suggestedName: AutoBackupService.backupFileName(progress.now),
         keepCount: settings.autoBackupKeepCount,
       );

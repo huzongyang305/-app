@@ -361,10 +361,7 @@ class ProgressProvider extends ChangeNotifier {
   Future<void> addFocusStudySeconds(int seconds) =>
       _recordStudySeconds(seconds);
 
-  Future<void> _recordStudySeconds(
-    int seconds, {
-    String? lessonId,
-  }) async {
+  Future<void> _recordStudySeconds(int seconds, {String? lessonId}) async {
     final value = seconds.clamp(0, 7200);
     if (value < 5) return;
     final key = _dayKey(_now());
@@ -1591,6 +1588,60 @@ class ProgressProvider extends ChangeNotifier {
     await _storage.write('reading_offset_$lessonId', offset);
   }
 
+  /// 备份用：最近阅读课程与各知识点的滚动位置。
+  Map<String, dynamic> exportReadingProgress() {
+    final offsets = <String, double>{};
+    for (final key in _storage.keys) {
+      if (!key.startsWith('reading_offset_')) continue;
+      final value = _storage.read(key);
+      if (value is num && value > 0) {
+        offsets[key.substring('reading_offset_'.length)] = value.toDouble();
+      }
+    }
+    return <String, dynamic>{
+      'last_lesson_id': _lastLessonId ?? '',
+      'offsets': offsets,
+    };
+  }
+
+  /// 恢复阅读位置；[merge] 为 true 时保留本机已有的滚动位置。
+  Future<void> applyReadingProgress(
+    Map<String, dynamic> data, {
+    bool merge = false,
+  }) async {
+    if (!merge) {
+      for (final key in _storage.keys.toList()) {
+        if (key.startsWith('reading_offset_')) await _storage.delete(key);
+      }
+    }
+    final offsets = data['offsets'];
+    if (offsets is Map) {
+      for (final entry in offsets.entries) {
+        final lessonId = entry.key.toString();
+        final value = entry.value;
+        if (lessonId.isEmpty || value is! num || value <= 0) continue;
+        final key = 'reading_offset_$lessonId';
+        if (merge && _storage.read(key) != null) continue;
+        await _storage.write(key, value.toDouble());
+      }
+    }
+    if (!merge) {
+      final last = data['last_lesson_id']?.toString() ?? '';
+      _lastLessonId = last.isEmpty ? null : last;
+      if (last.isEmpty) {
+        await _storage.delete('last_lesson_id');
+      } else {
+        await _storage.write('last_lesson_id', last);
+      }
+    } else if (_lastLessonId == null) {
+      await _storage.delete('last_lesson_id');
+    } else {
+      // importData 会先清掉 last_lesson_id，合并模式下按内存值写回本机位置。
+      await _storage.write('last_lesson_id', _lastLessonId!);
+    }
+    notifyListeners();
+  }
+
   /// 模拟考试草稿：保存题目、作答与剩余时间，支持断点续考。
   Map<String, dynamic>? get examDraft {
     final raw = _storage.read('exam_draft');
@@ -1655,22 +1706,16 @@ class ProgressProvider extends ChangeNotifier {
   Future<void> importData(
     Map<String, dynamic> data, {
     BackupImportMode mode = BackupImportMode.replace,
+    bool writeSnapshot = true,
   }) async {
     data = BackupDocumentService.normalizeForImport(data);
-    await _storage.write('backup_rollback_snapshot', exportData());
+    if (writeSnapshot) {
+      await _storage.write('backup_rollback_snapshot', exportData());
+    }
     final effective = mode == BackupImportMode.merge
         ? _mergeImportData(data)
         : data;
     await _applyImportData(effective);
-  }
-
-  /// 撤销上一次恢复，回到导入前的本地快照。
-  Future<bool> rollbackLastImport() async {
-    final raw = _storage.read('backup_rollback_snapshot');
-    if (raw is! Map) return false;
-    await _applyImportData(raw.cast<String, dynamic>());
-    await _storage.delete('backup_rollback_snapshot');
-    return true;
   }
 
   Map<String, dynamic> _mergeImportData(Map<String, dynamic> incoming) {

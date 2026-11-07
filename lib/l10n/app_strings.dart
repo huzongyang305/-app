@@ -1770,6 +1770,9 @@ class AppStrings {
     'backupPreviewNotes': {'zh': '笔记', 'en': 'Notes'},
     'backupPreviewWrong': {'zh': '错题', 'en': 'Mistakes'},
     'backupPreviewStudyDays': {'zh': '学习天数', 'en': 'Study days'},
+    'backupPreviewSettings': {'zh': '界面设置', 'en': 'Preferences'},
+    'backupPreviewSnippets': {'zh': '代码片段', 'en': 'Code snippets'},
+    'backupPreviewDrafts': {'zh': '沙盒草稿', 'en': 'Sandbox drafts'},
     'backupImportModeTitle': {'zh': '选择恢复方式', 'en': 'Choose how to restore'},
     'backupImportReplace': {'zh': '替换本机数据', 'en': 'Replace local data'},
     'backupImportReplaceHint': {

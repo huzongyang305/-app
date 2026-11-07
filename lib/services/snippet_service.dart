@@ -98,6 +98,50 @@ class SnippetService {
     await _persist();
   }
 
+  /// 备份用：全部片段的 JSON 表示。
+  List<Map<String, dynamic>> exportJson() =>
+      _snippets.map((item) => item.toJson()).toList();
+
+  /// 从备份恢复片段；[merge] 为 true 时同 id 仅保留更新时间较新的版本。
+  ///
+  /// 传入非列表（旧版备份没有该分区）时保持现有片段不变。
+  Future<void> importJson(dynamic raw, {bool merge = false}) async {
+    if (raw is! List) return;
+    final incoming = <CodeSnippet>[];
+    for (final item in raw) {
+      if (item is! Map) continue;
+      final snippet = CodeSnippet.fromJson(item.cast<String, dynamic>());
+      if (snippet.id.isEmpty || snippet.code.isEmpty) continue;
+      incoming.add(snippet);
+    }
+    if (!merge) _snippets.clear();
+    for (final snippet in incoming) {
+      final index = _snippets.indexWhere((item) => item.id == snippet.id);
+      if (index < 0) {
+        _snippets.add(snippet);
+      } else if (snippet.updatedAt.isAfter(_snippets[index].updatedAt)) {
+        _snippets[index] = snippet;
+      }
+    }
+    _trimToLimit();
+    await _persist();
+  }
+
+  void _trimToLimit() {
+    while (_snippets.length > maxSnippets) {
+      final sorted = List<CodeSnippet>.from(_snippets)
+        ..sort((a, b) {
+          if (a.favorite != b.favorite) return a.favorite ? 1 : -1;
+          return a.updatedAt.compareTo(b.updatedAt);
+        });
+      final removable = sorted.firstWhere(
+        (item) => !item.favorite,
+        orElse: () => sorted.first,
+      );
+      _snippets.removeWhere((item) => item.id == removable.id);
+    }
+  }
+
   Future<void> _persist() async {
     await _storage.write(
       _storageKey,
