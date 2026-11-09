@@ -1,0 +1,52 @@
+{
+  "category": "408_exam",
+  "lessons": [
+    {
+      "id": "408_net_app",
+      "title": { "zh": "计算机网络：应用层协议", "en": "Network: Application Layer Protocols" },
+      "summary": { "zh": "DNS 域名系统（递归/迭代查询、记录类型）、HTTP 协议（请求方法、状态码、持久连接）、FTP 文件传输、SMTP/POP3/IMAP 邮件协议、Socket 编程基础。", "en": "DNS (recursive/iterative queries, record types), HTTP (methods, status codes, persistent connections), FTP, SMTP/POP3/IMAP email protocols, and Socket programming basics." },
+      "file": "assets/content/408_net_app.md",
+      "minutes": 40,
+      "keywords": ["DNS", "HTTP", "FTP", "SMTP", "Socket", "域名系统"],
+      "difficulty": "基础",
+      "order": 9,
+      "quiz": [
+        {
+          "type": "single",
+          "question": "DNS 查询默认使用什么协议和端口？",
+          "options": ["TCP 53", "TCP 80", "UDP 53", "UDP 80"],
+          "answer": 2,
+          "explanation": "本题正确项是「UDP 53」。DNS 查询默认使用 UDP 协议、端口号 53。选择 UDP 的原因是 DNS 查询报文通常短小（不超过 512 字节），UDP 无需建立连接，速度快、开销低。只有当响应数据超过 512 字节或进行区域传送（zone transfer）时，DNS 才会切换到 TCP 协议以保证数据传输的可靠性。选项 A（TCP 53）是干扰项，选项 B（TCP 80）是 HTTP 的默认端口，选项 D（UDP 80）不是标准服务端口。"
+        },
+        {
+          "type": "single",
+          "question": "HTTP 状态码 301 表示？",
+          "options": ["永久重定向", "临时重定向", "请求成功", "资源未找到"],
+          "answer": 0,
+          "explanation": "本题正确项是「永久重定向」。HTTP 状态码 301（Moved Permanently）表示请求的资源已永久移动到新的 URL，客户端和搜索引擎应当更新链接指向新地址。与 302（Found，临时重定向）不同，301 是永久性质的，搜索引擎会将权重转移到新 URL。选项 B（302）表示请求成功临时重定向，选项 C（200）表示请求成功，选项 D（404）表示资源未找到。在 SEO 优化和网站迁移场景中，正确使用 301 重定向对保持搜索排名至关重要。"
+        },
+        {
+          "type": "single",
+          "question": "DNS 递归查询的特点是？",
+          "options": ["由客户端自行完成全部查询过程", "由服务器代为完成全部查询过程", "每次返回下一级 DNS 服务器地址", "只查询本地缓存不访问网络"],
+          "answer": 1,
+          "explanation": "本题正确项是「由服务器代为完成全部查询过程」。DNS 递归查询中，客户端向本地 DNS 服务器发出请求后，本地 DNS 服务器负责向根 DNS、顶级域 DNS、权威 DNS 依次查询，最终将确切的 IP 地址返回给客户端。客户端无需参与中间查询过程，只需等待最终结果。选项 A 描述的是迭代查询（客户端自行继续查询），选项 C 也是迭代查询的特征（每次返回下一级地址），选项 D 描述的是纯缓存查询，不属于递归查询的范畴。"
+        },
+        {
+          "type": "single",
+          "question": "SMTP 协议用于？",
+          "options": ["接收邮件（拉取协议）", "域名解析", "传输文件", "发送邮件（推送协议）"],
+          "answer": 3,
+          "explanation": "本题正确项是「发送邮件（推送协议）」。SMTP（Simple Mail Transfer Protocol）是简单邮件传送协议，用于将邮件从发送方客户端传送到发送方邮件服务器，再中转到接收方邮件服务器。SMTP 是推送协议，只能发送邮件，不能从邮件服务器拉取邮件。接收邮件需要使用 POP3（端口 110）或 IMAP（端口 143）协议。选项 A 是 POP3/IMAP 的功能，选项 B 是 DNS 的功能，选项 C 是 FTP 的功能。记忆口诀：SMTP = Send Mail，POP3/IMAP = Receive Mail。"
+        },
+        {
+          "type": "single",
+          "question": "HTTP/1.1 默认使用持久连接，其特点是？",
+          "options": ["每个请求需新建 TCP 连接", "使用 UDP 传输提高速度", "一个 TCP 连接可传输多个 HTTP 请求", "连接建立后只能传输一个响应"],
+          "answer": 2,
+          "explanation": "本题正确项是「一个 TCP 连接可传输多个 HTTP 请求」。HTTP/1.1 默认使用持久连接（persistent connection），所有请求和响应可以通过同一个 TCP 连接依次传输，无需为每个对象单独建立连接。这大大减少了 TCP 三次握手的开销。非持久连接（HTTP/1.0 默认）才是每个请求新建 TCP 连接（选项 A）。持久连接支持流水线模式（连续发送多个请求）和非流水线模式（逐个等待响应）。选项 B 错误，HTTP 基于 TCP 而非 UDP；选项 D 描述的是非持久连接的特征。"
+        }
+      ]
+    }
+  ]
+}

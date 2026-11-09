@@ -1,0 +1,52 @@
+{
+  "category": "408_exam",
+  "lessons": [
+    {
+      "id": "408_exam_mock1",
+      "title": { "zh": "408 全真模拟卷（一）", "en": "408 Comprehensive Mock Exam (1)" },
+      "summary": { "zh": "综合模拟——涵盖数据结构（链表逆置算法）、计组（Cache 映射计算）、操作系统（PV 操作设计）、网络（子网划分）四科典型大题。", "en": "Comprehensive mock covering linked list reversal, Cache mapping calculation, PV operation design, and subnet division across all four subjects." },
+      "file": "assets/content/408_exam_mock1.md",
+      "minutes": 60,
+      "keywords": ["模拟卷", "综合", "链表逆置", "Cache", "PV操作", "子网划分"],
+      "difficulty": "高级",
+      "order": 10,
+      "quiz": [
+        {
+          "type": "single",
+          "question": "单链表逆置算法的核心操作是？",
+          "options": ["删除所有节点后重新创建", "交换相邻节点的数据域", "将每个节点的 next 指针指向前驱节点", "将头节点移到尾部"],
+          "answer": 2,
+          "explanation": "本题正确项是「将每个节点的 next 指针指向前驱节点」。单链表逆置的核心思想是遍历链表，依次将每个节点的 next 指针从指向后继改为指向前驱。实现时需要三个指针配合：prev 记录前驱（初始为 NULL），curr 指向当前节点，next 保存后继节点以防断链。每步操作先保存 next = curr->next，再反转 curr->next = prev，然后 prev 和 curr 各前进一步。选项 A 是重建而非逆置，选项 B 只交换数据不改变结构，选项 D 不是逆置操作。"
+        },
+        {
+          "type": "single",
+          "question": "直接映射 Cache 中，主存块号与 Cache 块号的关系是？",
+          "options": ["Cache块号 = 主存块号 mod Cache总块数", "Cache块号 = 主存块号 / Cache总块数", "Cache块号 = 主存块号 × Cache总块数", "Cache块号 = 主存块号 + Cache总块数"],
+          "answer": 0,
+          "explanation": "本题正确项是「Cache块号 = 主存块号 mod Cache总块数」。直接映射 Cache 的核心规则是每个主存块只能映射到 Cache 中唯一确定的位置，映射关系通过取模运算确定。例如 Cache 有 8 块，则主存第 0、8、16 块都映射到 Cache 第 0 块，第 1、9、17 块都映射到第 1 块。这种映射方式硬件实现简单、查找速度快（O(1)），但容易产生冲突缺失——多个活跃主存块竞争同一 Cache 行时频繁替换。选项 B 是整除运算，选项 C 和 D 的运算结果会超出 Cache 范围。"
+        },
+        {
+          "type": "single",
+          "question": "用信号量实现互斥时，信号量的初值应为？",
+          "options": ["0", "可用资源的数量（通常为1）", "-1", "进程的数量"],
+          "answer": 1,
+          "explanation": "本题正确项是「可用资源的数量（通常为1）」。互斥信号量 mutex 初值设为 1，表示临界区当前可用，允许一个进程进入。第一个到达的进程执行 P(mutex) 后信号量减为 0，成功进入临界区；后续进程执行 P(mutex) 时发现信号量为 0，被阻塞等待。离开临界区时执行 V(mutex) 将信号量恢复为 1，唤醒等待进程。互斥信号量初值为 1（一个资源），同步信号量初值通常为 0（尚无事件发生）。选项 A（0）会导致第一个进程也被阻塞，选项 C（-1）和 D（进程数）都不符合信号量语义。"
+        },
+        {
+          "type": "single",
+          "question": "将 192.168.1.0/24 划分为 4 个子网，每个子网最多多少台主机？",
+          "options": ["30 台", "126 台", "254 台", "62 台"],
+          "answer": 3,
+          "explanation": "本题正确项是「62 台」。将 /24 网络划分为 4 个子网，需要借用 2 位主机位（2^2=4），新前缀长度为 /26。每个子网剩余 6 位主机位，总地址数为 2^6=64 个。可用主机数需减去网络地址（主机位全 0）和广播地址（主机位全 1），即 64-2=62 台。子网掩码为 255.255.255.192。选项 A（30 台）对应 /27 子网，选项 B（126 台）对应 /25 子网（只能分 2 个），选项 C（254 台）是不划分子网时的主机数。"
+        },
+        {
+          "type": "single",
+          "question": "快速排序的平均时间复杂度是？",
+          "options": ["O(n log n)", "O(n)", "O(n²)", "O(log n)"],
+          "answer": 0,
+          "explanation": "本题正确项是「O(n log n)」。快速排序采用分治策略：选一个基准元素，将数组分为小于和大于基准的两部分，递归排序。平均情况下每次分区较均匀，递归树深度为 O(log n)，每层分区操作耗时 O(n)，总时间 O(n log n)。最坏情况（已排序数组 + 固定选首/尾元素为基准）退化为 O(n²)，可通过随机化基准或三数取中法避免。选项 B（O(n)）是线性扫描的复杂度，选项 C（O(n²)）是快排最坏情况，选项 D（O(log n)）是二分查找的复杂度。"
+        }
+      ]
+    }
+  ]
+}

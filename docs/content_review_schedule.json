@@ -2,9 +2,31 @@
   "generated_at": "2026-10-30",
   "schedule_months": 12,
   "first_month": "2026-11",
-  "batch_count": 68,
-  "p0_touched_lessons": 716,
+  "batch_count": 70,
+  "p0_touched_lessons": 728,
   "batches": [
+    {
+      "planned_review_at": "2026-11-10",
+      "lesson_ids": [
+        "408_exam_overview",
+        "408_ds_linear",
+        "408_ds_tree_graph",
+        "408_ds_sort_search",
+        "408_co_data"
+      ]
+    },
+    {
+      "planned_review_at": "2026-11-10",
+      "lesson_ids": [
+        "408_co_cpu",
+        "408_os_process",
+        "408_os_memory",
+        "408_net_layer",
+        "408_net_app",
+        "408_exam_mock1",
+        "408_exam_mock2"
+      ]
+    },
     {
       "planned_review_at": "2026-11-04",
       "lesson_ids": [

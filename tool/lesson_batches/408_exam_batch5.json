@@ -1,0 +1,52 @@
+{
+  "category": "408_exam",
+  "lessons": [
+    {
+      "id": "408_net_layer",
+      "title": { "zh": "计算机网络：网络层与传输层", "en": "Computer Networks: Network Layer & Transport Layer" },
+      "summary": { "zh": "IP协议与IPv4/IPv6、子网划分与CIDR、路由协议（RIP/OSPF/BGP）、TCP与UDP对比、三次握手/四次挥手、流量控制与拥塞控制。", "en": "IP protocol, subnetting and CIDR, routing protocols (RIP/OSPF/BGP), TCP vs UDP, three-way handshake, flow and congestion control." },
+      "file": "assets/content/408_net_layer.md",
+      "minutes": 45,
+      "keywords": ["IP", "子网划分", "TCP", "UDP", "三次握手", "拥塞控制", "路由"],
+      "difficulty": "进阶",
+      "order": 8,
+      "quiz": [
+        {
+          "type": "single",
+          "question": "IPv4 地址长度为多少位？",
+          "options": ["16 位", "32 位", "64 位", "128 位"],
+          "answer": 1,
+          "explanation": "本题正确项是「32 位」。IPv4 地址长度为 32 位（4 字节），通常用点分十进制表示法，将 32 位分成 4 组，每组 8 位转换为十进制数，用点号分隔，如 192.168.1.1。32 位地址总共可提供约 43 亿个地址（2^32 ≈ 4.29×10⁹）。由于互联网快速发展，IPv4 地址已耗尽，因此引入了 128 位的 IPv6 地址，地址空间极其庞大，足以满足未来需求。"
+        },
+        {
+          "type": "single",
+          "question": "TCP 建立连接需要几次握手？",
+          "options": ["2 次", "3 次", "4 次", "5 次"],
+          "answer": 1,
+          "explanation": "本题正确项是「3 次」。TCP 建立连接需要 3 次握手。第一次：客户端发送 SYN 报文（seq=x），进入 SYN_SENT 状态；第二次：服务器收到后回复 SYN+ACK 报文（seq=y，ack=x+1），进入 SYN_RCVD 状态；第三次：客户端收到后发送 ACK 报文（ack=y+1），双方进入 ESTABLISHED 状态。三次握手的目的是同步双方的初始序列号，并确认双方的发送和接收能力都正常。两次握手不足以防止历史重复连接的初始化。"
+        },
+        {
+          "type": "single",
+          "question": "CIDR 地址块 192.168.0.0/20 包含多少个 C 类网络？",
+          "options": ["4", "8", "16", "32"],
+          "answer": 2,
+          "explanation": "本题正确项是「16」。CIDR 地址块 192.168.0.0/20 的前缀长度为 20 位，而传统 C 类网络的前缀长度为 24 位。两者前缀长度之差为 24 - 20 = 4 位，因此该 /20 地址块包含 2^4 = 16 个 C 类网络。具体来说，这 16 个 C 类网络的地址范围是 192.168.0.0/24 到 192.168.15.0/24。CIDR 的核心优势在于消除了传统分类地址的浪费，支持灵活的路由聚合，大幅减小了路由器路由表的规模。"
+        },
+        {
+          "type": "single",
+          "question": "TCP 和 UDP 的主要区别是？",
+          "options": ["TCP 面向连接可靠，UDP 无连接不可靠", "TCP 速度快，UDP 速度慢", "TCP 用于局域网，UDP 用于广域网", "TCP 首部短，UDP 首部长"],
+          "answer": 0,
+          "explanation": "本题正确项是「TCP 面向连接可靠，UDP 无连接不可靠」。TCP（传输控制协议）是面向连接的可靠传输协议，通过三次握手建立连接，提供确认重传、滑动窗口流量控制、拥塞控制等机制，保证数据按序、无差错、不丢失不重复地到达接收方。UDP（用户数据报协议）是无连接的不可靠传输协议，不建立连接、不保证送达、不保证顺序，但首部仅 8 字节开销极小，传输延迟低。TCP 适用于 HTTP、FTP、SMTP 等场景；UDP 适用于 DNS、视频直播、在线游戏等场景。"
+        },
+        {
+          "type": "single",
+          "question": "OSPF 使用什么算法计算最短路径？",
+          "options": ["Bellman-Ford 算法", "Dijkstra 算法（链路状态）", "距离向量算法", "RIP 算法"],
+          "answer": 1,
+          "explanation": "本题正确项是「Dijkstra 算法（链路状态）」。OSPF（开放最短路径优先）使用 Dijkstra 最短路径算法计算从本路由器到所有目的网络的最短路径树。每个 OSPF 路由器通过洪泛法向本区域所有路由器发送链路状态通告（LSA），收集到所有 LSA 后构建完整的网络拓扑数据库，然后以自己为根节点运行 Dijkstra 算法计算最短路径。与 RIP 的距离向量算法不同，OSPF 每个路由器拥有全局拓扑视图，因此收敛速度快、不会产生路由环路。"
+        }
+      ]
+    }
+  ]
+}
