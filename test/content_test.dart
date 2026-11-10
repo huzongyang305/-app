@@ -1499,13 +1499,31 @@ void main() {
 
     final imageDirectory = Directory('assets/content/images');
     expect(imageDirectory.existsSync(), isTrue);
+    final imageFiles = imageDirectory.listSync().whereType<File>().toList();
     expect(
-      imageDirectory.listSync().whereType<File>().where(
-        (file) => file.path.toLowerCase().endsWith('.png'),
-      ),
+      imageFiles.where((file) => file.path.toLowerCase().endsWith('.png')),
       isEmpty,
       reason: 'PNG 转 WebP 后不应再保留 PNG 文件',
     );
+    // 扩展名是 .webp 但内容仍是 PNG 的配图不会被 WebP 解码器优化，体积可达 40 倍，
+    // 曾把通用包从 88 MiB 顶到 98 MiB 并撑破发版门禁，这里按文件头魔数拦截。
+    final notWebp = <String>[];
+    for (final file in imageFiles.where(
+      (file) => file.path.toLowerCase().endsWith('.webp'),
+    )) {
+      final raf = file.openSync();
+      final header = Uint8List(12);
+      try {
+        raf.readIntoSync(header);
+      } finally {
+        raf.closeSync();
+      }
+      final isWebp =
+          String.fromCharCodes(header.sublist(0, 4)) == 'RIFF' &&
+          String.fromCharCodes(header.sublist(8, 12)) == 'WEBP';
+      if (!isWebp) notWebp.add(file.uri.pathSegments.last);
+    }
+    expect(notWebp, isEmpty, reason: '以下 .webp 文件实际不是 WebP 编码');
   });
 
   test('P0/P1 内容治理：H1、占位符、内部题号、复习章节与语言匹配', () async {
