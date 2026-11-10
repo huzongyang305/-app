@@ -1,0 +1,479 @@
+{
+  "category": "harmonyos",
+  "lessons": [
+    {
+      "id": "harmonyos_overview",
+      "title": {
+        "zh": "HarmonyOS NEXT 全景与生态定位",
+        "en": "HarmonyOS NEXT Landscape & Positioning"
+      },
+      "summary": {
+        "zh": "纯血鸿蒙与 OpenHarmony 的边界、API 分层与 Kit 导入口径、HMS Core 位置、HAP/HSP 包形态与开发者身份。",
+        "en": "Boundaries of pure HarmonyOS, API layering and Kit imports, HMS Core role, package forms and developer identity."
+      },
+      "file": "assets/content/harmonyos_overview.md",
+      "minutes": 30,
+      "keywords": ["纯血鸿蒙", "ArkTS", "HAP", "AppGallery"],
+      "difficulty": "入门",
+      "order": 0,
+      "quiz": [
+        {
+          "type": "single",
+          "question": "HarmonyOS NEXT 被称为「纯血鸿蒙」的最直接依据是？",
+          "options": [
+            "自研鸿蒙微内核替代宏内核",
+            "全面采用 ArkTS 开发语言",
+            "移除 AOSP 与 APK 兼容层",
+            "开放 @kit 命名空间的 API"
+          ],
+          "answer": 2,
+          "explanation": "本题正确项是「移除 AOSP 与 APK 兼容层」。NEXT 把安卓运行时与兼容框架整体撤掉，应用只能以 ArkTS 或 C++ 形态运行在方舟运行时上，这是它与此前可侧载 APK 的鸿蒙版本之间唯一的硬边界，也是所有迁移工作的起点。自研内核与新的界面框架是同步发生的配套替换，API 命名空间重整只是文档口径变化，都不足以单独构成「纯血」的判据。"
+        },
+        {
+          "type": "single",
+          "question": "下列关于 OpenHarmony 与 HarmonyOS 关系的说法成立的是？",
+          "options": [
+            "两者接口完全一致可互相替换",
+            "后者在前者之上叠加商用能力",
+            "前者仅面向手表与车机设备",
+            "后者不开源也没有认证版本"
+          ],
+          "answer": 1,
+          "explanation": "本题正确项是「后者在前者之上叠加商用能力」。OpenHarmony 由开放原子基金会托管，提供 Foundation 层与 System API 参考实现；商用 HarmonyOS 在此之上加入 HMS Core、OS API、安全补丁与上架体系，并有明确的 API 版本认证。两者共享部分接口但发布节奏与可用能力不同，把开源每日构建镜像直接当发货系统会缺少生态与合规支撑。"
+        },
+        {
+          "type": "single",
+          "question": "API 12 起在 ArkTS 中引用系统能力，官方推荐的导入写法是？",
+          "options": [
+            "按文件相对路径逐级导入",
+            "在 tsconfig 里配置包别名",
+            "按 `@kit.*` 模块聚合导入",
+            "用字符串动态 require 加载"
+          ],
+          "answer": 2,
+          "explanation": "本题正确项是「按 `@kit.*` 模块聚合导入」。从这一代 SDK 开始，网络、UI、能力等接口以 Kit 为单位聚合导出，类型提示、文档与能力清单都按 Kit 组织，原先细粒度的 `@ohos.*` 路径仍可用但不再作为主口径。相对路径只用于工程内文件，包别名解决的是模块解析而不是能力可见性，ArkTS 也禁止用字符串动态求值的方式加载模块。"
+        },
+        {
+          "type": "single",
+          "question": "需要在同一应用的多个模块间共享一份代码，应选用的包形态是？",
+          "options": [
+            "HSP 共享包",
+            "HAR 静态库",
+            "独立 HAP 特性包",
+            "原子化服务包"
+          ],
+          "answer": 0,
+          "explanation": "本题正确项是「HSP 共享包」。HSP 在安装期随宿主应用一起被解析，只在本应用范围内共享，能避免同一份逻辑在多个 HAP 里重复打包，符合「应用内共享」这一诉求。HAR 是编译期静态库，适合跨应用分发但会被打进每个使用方；独立 HAP 是可安装的能力包而不是共享库；原子化服务对应免安装的元服务形态，与代码共享无关。"
+        },
+        {
+          "type": "code",
+          "question": "下面代码打印出的 os 字段最可能反映什么？\nimport { deviceInfo } from '@kit.BasicServicesKit';\n@Entry\n@Component\nstruct Probe {\n  build() {\n    Column() {\n      Text(deviceInfo.osFullName)\n    }\n  }\n}",
+          "code": "import { deviceInfo } from '@kit.BasicServicesKit';\n@Entry\n@Component\nstruct Probe {\n  build() {\n    Column() {\n      Text(deviceInfo.osFullName)\n    }\n  }\n}",
+          "options": [
+            "设备的发行系统名称",
+            "当前应用的版本名称",
+            "方舟编译器的版本号",
+            "设备厂商的型号字符串"
+          ],
+          "answer": 0,
+          "explanation": "本题正确项是「设备的发行系统名称」。`deviceInfo.osFullName` 返回设备发货时写入的完整发行版字符串，在 NEXT 机型上可用于与 `sdkApiVersion` 交叉验证运行环境，是迁移评估阶段最常用的判据之一。应用版本名要从包管理接口读取，编译器版本不会作为运行时字段暴露给应用层，厂商型号另有对应字段而不是这个属性。"
+        }
+      ]
+    },
+    {
+      "id": "harmonyos_deveco_setup",
+      "title": {
+        "zh": "DevEco Studio 与工程结构",
+        "en": "DevEco Studio & Project Layout"
+      },
+      "summary": {
+        "zh": "IDE 与 SDK 安装、模拟器能力边界、模块与 HAP/HSP 目录结构、三份配置的层级与签名调试流程。",
+        "en": "IDE and SDK setup, emulator limits, module layout, config layering, signing and debugging workflow."
+      },
+      "file": "assets/content/harmonyos_deveco_setup.md",
+      "minutes": 35,
+      "keywords": ["DevEco Studio", "hvigor", "build-profile.json5", "签名", "模拟器"],
+      "difficulty": "入门",
+      "order": 1,
+      "quiz": [
+        {
+          "type": "single",
+          "question": "DevEco Studio 的 Local Emulator 无法覆盖下列哪项验证？",
+          "options": [
+            "多分辨率手机屏幕",
+            "系统相册与通知面板",
+            "横竖屏与折叠态切换",
+            "真实设备的分布式组网"
+          ],
+          "answer": 3,
+          "explanation": "本题正确项是「真实设备的分布式组网」。本机模拟器用 x86 镜像模拟屏幕尺寸、传感器、相册与系统界面，日常布局与交互验证足够用，但软总线组网、真实指纹、NFC 与部分硬件编解码链路依赖实体设备与真实网络环境，必须回到真机验证。多分辨率与折叠态可以通过新建不同设备实例覆盖，通知面板属于系统 UI 的一部分，模拟器能够呈现。"
+        },
+        {
+          "type": "single",
+          "question": "想让一个模块只在本应用内被其他模块共享，`module.json5` 中 type 应设为？",
+          "options": [
+            "entry",
+            "shared",
+            "feature",
+            "atomicService"
+          ],
+          "answer": 1,
+          "explanation": "本题正确项是「shared」。声明为 shared 的模块构建为 HSP，随宿主应用一起安装并只在应用内共享，可以避免同一份逻辑被重复打包进多个能力包。entry 是承载主入口的能力包，feature 是可按需分发的特性能力包，两者都不是共享库语义；atomicService 对应免安装的元服务形态，用来承载轻交互入口，与代码共享没有对应关系。"
+        },
+        {
+          "type": "single",
+          "question": "项目级 `build-profile.json5` 中 products 数组的主要作用是？",
+          "options": [
+            "定义产物与目标 SDK 配置",
+            "登记所有依赖的三方库",
+            "声明应用页面的路由表",
+            "配置签名证书的密码"
+          ],
+          "answer": 0,
+          "explanation": "本题正确项是「定义产物与目标 SDK 配置」。每个 product 描述一套可交付形态，包含名称、引用的签名配置、运行时系统标识与编译兼容的 SDK 版本，构建时按 product 选择产物。三方依赖登记在包描述文件里，页面路由写在模块清单的 pages 字段，证书与密钥材料属于 signingConfigs 的 material 部分，这三处都不归 products 管。"
+        },
+        {
+          "type": "single",
+          "question": "调试签名与发布签名必须使用不同材料，根本原因是？",
+          "options": [
+            "调试证书无法安装到真机",
+            "发布签名能跳过混淆配置",
+            "两套证书的用途与信任链不同",
+            "市场只校验包名不校验签名"
+          ],
+          "answer": 2,
+          "explanation": "本题正确项是「两套证书的用途与信任链不同」。调试证书由开发工具代申请、Profile 限定可调试的设备列表，用于真机联调；发布证书需在开发者后台按主体申请，Profile 覆盖上架分发场景，两者不可互换。调试证书恰恰可以安装到已登记的调试真机，签名与包名必须一致否则安装被拒，上架时市场会严格校验发布签名而不只是包名。"
+        },
+        {
+          "type": "code",
+          "question": "关于下面这段工程配置片段，哪一项说法正确？\n// build-profile.json5 片段\n{\n  \"products\": [{\n    \"name\": \"default\",\n    \"signingConfig\": \"default\",\n    \"runtimeOS\": \"HarmonyOS\",\n    \"compileSdkVersion\": \"5.0.0(12)\"\n  }]\n}",
+          "code": "// build-profile.json5 片段\n{\n  \"products\": [{\n    \"name\": \"default\",\n    \"signingConfig\": \"default\",\n    \"runtimeOS\": \"HarmonyOS\",\n    \"compileSdkVersion\": \"5.0.0(12)\"\n  }]\n}",
+          "options": [
+            "可以省略 runtimeOS 字段",
+            "JSON5 允许注释与尾逗号",
+            "一个工程只能声明一个产物",
+            "signingConfig 必须与 name 同名"
+          ],
+          "answer": 1,
+          "explanation": "本题正确项是「JSON5 允许注释与尾逗号」。鸿蒙的这几个配置文件都是 JSON5 方言，首行注释与数组尾逗号都属合法写法，这也是它们以 json5 结尾的原因。`runtimeOS` 用于区分产物运行的系统分支，去掉会改变默认口径，不应随意省略；一个工程可以声明多个 product 覆盖不同设备与渠道；signingConfig 只是引用名，与 product 名相同是团队习惯而非语法约束。"
+        }
+      ]
+    },
+    {
+      "id": "harmonyos_arkts_basics",
+      "title": {
+        "zh": "ArkTS 语言基础",
+        "en": "ArkTS Language Fundamentals"
+      },
+      "summary": {
+        "zh": "TS 子集与静态约束、类与接口建模、联合类型收窄、被禁的动态特性与装饰器语法基线。",
+        "en": "Typed TS subset, class and interface modeling, union narrowing, banned dynamic features and decorator baseline."
+      },
+      "file": "assets/content/harmonyos_arkts_basics.md",
+      "minutes": 45,
+      "keywords": ["静态类型", "类型收窄", "装饰器", "动态属性禁令"],
+      "difficulty": "入门",
+      "order": 2,
+      "quiz": [
+        {
+          "type": "single",
+          "question": "ArkTS 相对 TypeScript 最主要的收紧体现在哪一点？",
+          "options": [
+            "取消了泛型与接口语法",
+            "禁止使用类与模块系统",
+            "强制静态类型并限制动态特性",
+            "要求所有函数写成箭头形式"
+          ],
+          "answer": 2,
+          "explanation": "本题正确项是「强制静态类型并限制动态特性」。ArkTS 保留 TypeScript 的语法外壳，但取消 any 与隐式 any、禁止给对象动态增删属性、限制结构等价赋值，目的是让编译器在编译期确定对象布局与方法表，从而支撑 AOT 与稳定的运行期性能。泛型与接口仍然存在，类与模块系统是最基础的语法单元，函数写法也没有被强制成某一种形式，三项都不是收紧点。"
+        },
+        {
+          "type": "single",
+          "question": "下列哪种做法符合 ArkTS 的对象建模规范？",
+          "options": [
+            "显式声明接口再实现方法",
+            "把任意键挂到对象上",
+            "把对象字面量赋给接口",
+            "用字符串键索引动态取值"
+          ],
+          "answer": 0,
+          "explanation": "本题正确项是「显式声明接口再实现方法」。先给对象形状命名，再用类实现行为，字段与方法都在编译期可查，这是 ArkTS 推荐的建模路径。给已有类型的对象追加新属性、用字符串键动态索引取值都触碰动态特性禁令；把匿名对象字面量直接赋给接口类型也不被结构化赋值规则允许，需要先构造有名字的类实例再传递。"
+        },
+        {
+          "type": "single",
+          "question": "需要把接口返回的 JSON 文本转成带方法的模型对象，ArkTS 推荐做法是？",
+          "options": [
+            "直接断言成目标接口类型",
+            "用类承载并逐字段赋值",
+            "用动态求值解析后再转型",
+            "把结果存成 ESObject 传递"
+          ],
+          "answer": 1,
+          "explanation": "本题正确项是「用类承载并逐字段赋值」。在静态约束下方法必须来自真实的类原型，集中写一个转换函数还能顺带完成默认值兜底与字段容错。类型断言只做兼容检查，不会给对象补出方法，缺字段要到访问时才暴露；动态求值一类写法本就被禁用；跨语言边界类型只该出现在与原生交互的入口，把它当类型传进界面层等于放弃编译期检查。"
+        },
+        {
+          "type": "single",
+          "question": "`@State` 装饰器允许标注在什么位置？",
+          "options": [
+            "全局常量声明文件中",
+            "普通类的静态成员上",
+            "函数体的局部变量上",
+            "自定义组件的成员变量上"
+          ],
+          "answer": 3,
+          "explanation": "本题正确项是「自定义组件的成员变量上」。`@State` 表示组件内部可观察状态，编译器会在被标注的自定义组件内生成读写拦截逻辑，因此只能出现在组件成员变量声明处。写在全局常量、普通类成员或函数局部变量上都不会产生可观察效果，跨组件同步要改用单向或双向绑定装饰器，跨页面共享则交给应用级状态容器。"
+        },
+        {
+          "type": "code",
+          "question": "下面代码的输出是？\nclass Dog { bark(): string { return 'woof'; } }\nclass Cat { meow(): string { return 'meow'; } }\nfunction speak(a: Dog | Cat): string {\n  if (a instanceof Dog) { return a.bark(); }\n  return a.meow();\n}\nconsole.info(speak(new Cat()));",
+          "code": "class Dog { bark(): string { return 'woof'; } }\nclass Cat { meow(): string { return 'meow'; } }\nfunction speak(a: Dog | Cat): string {\n  if (a instanceof Dog) { return a.bark(); }\n  return a.meow();\n}\nconsole.info(speak(new Cat()));",
+          "options": [
+            "输出 meow",
+            "输出 woof",
+            "编译期直接报错",
+            "运行期抛出异常"
+          ],
+          "answer": 0,
+          "explanation": "本题正确项是「输出 meow」。入参声明为联合类型，`instanceof` 把 if 分支收窄到 Dog，else 分支自动收窄为 Cat，因此调用 Cat 独有方法是合法写法；实参传入的正是 Cat 实例，所以打印 meow。换成 Dog 实参才会走前一分支得到 woof；这段代码符合联合类型收窄规则，不会在编译期被拒绝，也不存在运行期找不到方法的异常路径。"
+        }
+      ]
+    },
+    {
+      "id": "harmonyos_arkui_first_page",
+      "title": {
+        "zh": "ArkUI 声明式 UI 首个页面",
+        "en": "First Declarative Page with ArkUI"
+      },
+      "summary": {
+        "zh": "@Entry/@Component/@Builder 三种粒度、常用基础组件与属性链、@Styles 与 @Extend 的样式复用边界。",
+        "en": "Granularity of page, component and builder, core components with chained attributes, style reuse rules."
+      },
+      "file": "assets/content/harmonyos_arkui_first_page.md",
+      "minutes": 45,
+      "keywords": ["@Entry", "属性链", "@Builder", "@Extend", "资源引用"],
+      "difficulty": "基础",
+      "order": 3,
+      "quiz": [
+        {
+          "type": "single",
+          "question": "`@Entry` 装饰器在一个页面文件中的作用是？",
+          "options": [
+            "把结构体标记成可复用组件",
+            "把一个组件标记为页面入口",
+            "把方法标记成轻量构建函数",
+            "把变量标记成组件内部状态"
+          ],
+          "answer": 1,
+          "explanation": "本题正确项是「把一个组件标记为页面入口」。它告诉框架这个自定义组件对应一个可加载页面，需要与组件装饰器同时出现，并在页面路由表里登记后才能被跳转。可复用组件由 `@Component` 表达，组件内的轻量片段由 `@Builder` 表达，组件内部状态由 `@State` 表达，三者描述的都是复用粒度或数据归属，与「页面入口」这一职责无关。"
+        },
+        {
+          "type": "single",
+          "question": "关于 `@Builder` 的说法，下列哪项成立？",
+          "options": [
+            "只能定义在自定义组件外部",
+            "必须显式返回一个组件实例",
+            "内部可以写任意循环语句",
+            "用于抽取组件内的复用片段"
+          ],
+          "answer": 3,
+          "explanation": "本题正确项是「用于抽取组件内的复用片段」。它定义在自定义组件内部，被调用时把一段界面描述就地展开，因此没有独立生命周期，也不拥有独立状态作用域。组件外部同样可以定义全局构建函数，所以「只能在外部」不成立；它不需要返回实例，内部仍受声明式语句边界约束，不能随手塞命令式循环，这一点与普通函数不同。"
+        },
+        {
+          "type": "single",
+          "question": "`@Styles` 与 `@Extend` 的关键差别是？",
+          "options": [
+            "前者能带参数而后者不能",
+            "前者只能作用于文本组件",
+            "前者可跨组件通用后者限定类型",
+            "两者完全等价只是写法不同"
+          ],
+          "answer": 2,
+          "explanation": "本题正确项是「前者可跨组件通用后者限定类型」。样式集合可以被任何支持这些属性的组件引用，但不接受参数；按组件扩展的写法绑定具体组件类型，可以带形参，因此需要按尺寸或颜色参数化时必须走后者，选项一把方向说反了。两者都不是文本组件专属，作用域与参数能力都不同，说等价会让人在编译错误面前无从下手。"
+        },
+        {
+          "type": "single",
+          "question": "要在用户输入时实时拿到文本内容，最直接的写法是？",
+          "options": [
+            "在 onChange 里写入状态变量",
+            "在 onAppear 里读取一次文本",
+            "给组件加 id 后再查询节点",
+            "在生命周期回调里轮询属性"
+          ],
+          "answer": 0,
+          "explanation": "本题正确项是「在 onChange 里写入状态变量」。输入组件每次文本变化都会触发该回调，把值写进可观察状态后，依赖它的组件自动刷新，这是声明式框架里唯一可靠的取值路径。出现回调只在组件挂载时执行一次拿不到过程值，ArkUI 没有公开的命令式节点查询接口，在生命周期里轮询既消耗主线程也无法覆盖用户正在输入的每一个字符。"
+        },
+        {
+          "type": "code",
+          "question": "点击一次按钮后，屏幕上 Text 显示的内容是？\n@Component\nstruct T {\n  @State tip: string = 'hi';\n  build() {\n    Column() {\n      Text(this.tip + ' !').fontSize(24)\n      Button('go').onClick(() => { this.tip = 'ok'; })\n    }\n  }\n}",
+          "code": "@Component\nstruct T {\n  @State tip: string = 'hi';\n  build() {\n    Column() {\n      Text(this.tip + ' !').fontSize(24)\n      Button('go').onClick(() => { this.tip = 'ok'; })\n    }\n  }\n}",
+          "options": [
+            "仍然显示 hi !",
+            "显示 hi ! ok !",
+            "显示 ok hi !",
+            "显示 ok !"
+          ],
+          "answer": 3,
+          "explanation": "本题正确项是「显示 ok !」。按钮回调把可观察状态从 hi 改成 ok，框架据此重建该组件并重新计算字符串拼接结果，因此屏幕上只剩新值加一个感叹号。若变量没有被状态装饰器修饰，才会停在首次渲染的旧值；两个值并列的写法需要额外的累加逻辑，回调里只是整体赋值，不会产生拼接残留。"
+        }
+      ]
+    },
+    {
+      "id": "harmonyos_layout_system",
+      "title": {
+        "zh": "布局系统：Flex/Grid/Stack",
+        "en": "Layout: Flex, Grid & Stack"
+      },
+      "summary": {
+        "zh": "线性与弹性布局、层叠与相对容器、List 长列表回收、栅格断点与折叠屏适配策略。",
+        "en": "Linear and flex layout, stacking and relative containers, list recycling, grid breakpoints and foldable adaptation."
+      },
+      "file": "assets/content/harmonyos_layout_system.md",
+      "minutes": 50,
+      "keywords": ["Flex", "layoutWeight", "RelativeContainer", "List 懒加载", "断点"],
+      "difficulty": "基础",
+      "order": 4,
+      "quiz": [
+        {
+          "type": "single",
+          "question": "下列关于 Row 与 Flex 差别的说法正确的是？",
+          "options": [
+            "Flex 支持换行而 Row 不换行",
+            "Row 支持换行而 Flex 不换行",
+            "两者完全等价只是名字不同",
+            "Flex 只能用于纵向排列场景"
+          ],
+          "answer": 0,
+          "explanation": "本题正确项是「Flex 支持换行而 Row 不换行」。Row 是单行线性容器的特化写法，内容超出主轴时只会挤压或溢出；弹性容器暴露方向与换行开关，能在空间不足时折到下一行。两者共享同一套测量逻辑，方向都不是唯一固定值，也不存在数量级上的性能代差，真正的选择依据是「是否需要换行」以及可读性。"
+        },
+        {
+          "type": "single",
+          "question": "子组件上设置 `layoutWeight(1)` 的含义是？",
+          "options": [
+            "固定宽度为父容器的一半",
+            "让子组件按内容自适应宽度",
+            "按比例分配父容器的剩余空间",
+            "把子组件的最小宽度设为零"
+          ],
+          "answer": 2,
+          "explanation": "本题正确项是「按比例分配父容器的剩余空间」。父容器先给不带权重的兄弟节点分配固定尺寸，再把主轴剩余空间按权重比值分给带权重节点，因此既不是取一半也不是按内容自适应。剩余空间不足时权重项会被压到很小，这正是「加了权重反而被挤没」的成因，与最小宽度概念无关。"
+        },
+        {
+          "type": "single",
+          "question": "在 Stack 里让某个子层相对默认位置做小幅偏移，应使用哪个属性？",
+          "options": [
+            "用 alignment 设置对齐基准",
+            "用 zIndex 调整叠放次序",
+            "用 clip 裁掉越界内容",
+            "用 offset 做相对偏移"
+          ],
+          "answer": 3,
+          "explanation": "本题正确项是「用 offset 做相对偏移」。它在不改变布局尺寸的前提下做相对位移，适合角标、气泡这类微调场景。对齐属性决定的是整个容器内子节点的对齐基准而不是单个偏移量，层级属性只控制谁盖住谁，裁剪属性负责是否显示越界部分，三者都实现不了「按坐标挪一点」这个需求。"
+        },
+        {
+          "type": "single",
+          "question": "承载上千条记录且要求滑动流畅，最合适的方案是？",
+          "options": [
+            "用 Column 全量渲染并预加载",
+            "用 List 配合懒加载与复用",
+            "用 Grid 并把列数设置成一",
+            "用 Scroll 套 Stack 来渲染"
+          ],
+          "answer": 1,
+          "explanation": "本题正确项是「用 List 配合懒加载与复用」。列表容器只维护视口与缓存区内的条目，滑出后进入回收池，配合稳定键与组件复用可把常驻节点数压到常数级。用普通线性容器全量渲染会让首帧耗时随条目数线性增长；把网格列数设成一并不会改变它的测量模型，反而绕远；滚动容器套层叠容器同样没有回收能力，只是把问题藏得更深。"
+        },
+        {
+          "type": "code",
+          "question": "父 Row 宽度为 300，中间 Text('B') 的实际宽度是？\n@Component\nstruct Weights {\n  build() {\n    Row() {\n      Text('A').width(60)\n      Text('B').layoutWeight(1)\n      Text('C').width(40)\n    }.width(300)\n  }\n}",
+          "code": "@Component\nstruct Weights {\n  build() {\n    Row() {\n      Text('A').width(60)\n      Text('B').layoutWeight(1)\n      Text('C').width(40)\n    }.width(300)\n  }\n}",
+          "options": [
+            "宽度为 60",
+            "宽度为 300",
+            "宽度为 200",
+            "宽度为 120"
+          ],
+          "answer": 2,
+          "explanation": "本题正确项是「宽度为 200」。父容器先在主轴上给 A 与 C 分别留出 60 与 40，剩余 300 减 100 等于 200，再由唯一的带权重节点全部获得。选 60 是把固定宽度当成了权重语义，选 300 忽略了兄弟节点已经占用的空间，选 120 则没有任何分配规则能够推出该数值。"
+        }
+      ]
+    },
+    {
+      "id": "harmonyos_state_management",
+      "title": {
+        "zh": "状态管理与数据传递",
+        "en": "State Management & Data Flow"
+      },
+      "summary": {
+        "zh": "@State/@Prop/@Link/@Provide 家族的可观察范围、深对象更新、四类状态容器与持久化边界。",
+        "en": "Observer scope of decorators, deep object updates, four state containers and persistence boundaries."
+      },
+      "file": "assets/content/harmonyos_state_management.md",
+      "minutes": 55,
+      "keywords": ["@State", "@Link", "@ObjectLink", "AppStorage", "PersistentStorage"],
+      "difficulty": "基础",
+      "order": 5,
+      "quiz": [
+        {
+          "type": "single",
+          "question": "子组件修改后要立刻回写到父组件，应当选择的传递方式是？",
+          "options": [
+            "@Prop 建立只读值副本",
+            "@State 各自维护数据",
+            "@Watch 注册变化回调",
+            "@Link 与父组件双向同步"
+          ],
+          "answer": 3,
+          "explanation": "本题正确项是「@Link 与父组件双向同步」。它让父子引用同一份状态，任一侧写入都会让另一侧重建，正是编辑弹窗这类场景需要的语义。单向副本在父级下次下发时会覆盖子侧改动；组件内部状态各自持有，两边看到的是不同数据；变化回调只是副作用出口，本身不建立数据通道，也不能替代传递方式。"
+        },
+        {
+          "type": "single",
+          "question": "关于 `@Provide` 与 `@Consume` 的作用范围，下列说法正确的是？",
+          "options": [
+            "按同名键跨层级传递数据",
+            "只能在直接父子一层之间使用",
+            "必须由根页面逐层显式传参",
+            "会自动把数据写入持久化层"
+          ],
+          "answer": 0,
+          "explanation": "本题正确项是「按同名键跨层级传递数据」。这对装饰器以键名配对，祖先声明提供方后，子孙在自己的子树里声明消费即可直接读写，中间层不必逐层透传。它并不需要根页面显式传参，也不碰任何磁盘存储；一旦跳出提供方所在的组件子树，配对关系就不复存在，跨页面共享要改用应用级状态容器。"
+        },
+        {
+          "type": "single",
+          "question": "列表项内部字段被修改后希望该行刷新，子组件应如何接收数据？",
+          "options": [
+            "用 @Prop 复制一份对象",
+            "用 @State 持有整个数组",
+            "用 @ObjectLink 接收该实例",
+            "用 @Link 绑定一个字符串"
+          ],
+          "answer": 2,
+          "explanation": "本题正确项是「用 @ObjectLink 接收该实例」。配合类上的可观察装饰器，它把实例属性也纳入拦截范围，因此第二层字段变化能定位到具体条目重建。单向副本只拿到值且不会观察深层属性；整个数组放在组件内部状态上会让所有条目一起重建；绑定一个字符串字段与列表项对象无关，三者都解决不了深层不刷新。"
+        },
+        {
+          "type": "single",
+          "question": "`PersistentStorage` 在这套容器体系里承担的职责是？",
+          "options": [
+            "在多个应用间共享内存数据",
+            "把指定键的状态写入磁盘",
+            "缓存网络请求返回的响应",
+            "保存数据库的事务重做日志"
+          ],
+          "answer": 1,
+          "explanation": "本题正确项是「把指定键的状态写入磁盘」。它包装全局容器中被显式登记过的键，在变化时序列化落盘、启动时回填，因此只应放小而关键的配置。未被登记的键依旧只存在于内存，重启后回到默认值；它不承担跨应用共享，也不负责网络缓存或数据库日志，那些分别属于各自的能力域。"
+        },
+        {
+          "type": "code",
+          "question": "首次渲染显示什么？点击一次按钮后 Text 的内容是？\n@Component\nstruct Counter {\n  @State count: number = 3;\n  build() {\n    Column() {\n      Text(`count=${this.count}`).fontSize(20)\n      Button('+').onClick(() => { this.count++; })\n    }\n  }\n}",
+          "code": "@Component\nstruct Counter {\n  @State count: number = 3;\n  build() {\n    Column() {\n      Text(`count=${this.count}`).fontSize(20)\n      Button('+').onClick(() => { this.count++; })\n    }\n  }\n}",
+          "options": [
+            "先显示 count=3，点击后变 4",
+            "先显示 count=3，点击后不刷新",
+            "编译报错，模板串不支持",
+            "先显示 count=0，点击后变 1"
+          ],
+          "answer": 0,
+          "explanation": "本题正确项是「先显示 count=3，点击后变 4」。可观察状态的写入会触发所属组件重建，重建时重新求值模板字符串，于是数字随之更新，初值来自声明处的 3。若把变量声明成普通成员而没有装饰器，才会出现点击后画面不动的现象；ArkTS 完整支持模板字符串与反引号插值，不会因为写法报编译错误。"
+        }
+      ]
+    }
+  ]
+}

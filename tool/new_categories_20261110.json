@@ -1,0 +1,16 @@
+[
+  {
+    "id": "llm_apps",
+    "title": {"zh": "LLM 应用开发", "en": "LLM Application Development"},
+    "icon": "smart_toy",
+    "color": "7C3AED",
+    "after": "ai"
+  },
+  {
+    "id": "harmonyos",
+    "title": {"zh": "鸿蒙 HarmonyOS NEXT", "en": "HarmonyOS NEXT"},
+    "icon": "developer_board",
+    "color": "059669",
+    "after": "android_development"
+  }
+]

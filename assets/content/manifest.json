@@ -59067,6 +59067,1049 @@
       ]
     },
     {
+      "id": "llm_apps",
+      "title": {
+        "zh": "LLM 应用开发",
+        "en": "LLM Application Development"
+      },
+      "icon": "smart_toy",
+      "color": "7C3AED",
+      "lessons": [
+        {
+          "id": "llm_apps_overview",
+          "title": {
+            "zh": "LLM 应用开发全景与选型",
+            "en": "LLM App Landscape & Tech Selection"
+          },
+          "summary": {
+            "zh": "应用范式分层、主流模型生态、SDK 与 API 抽象层、Token 成本估算与供应商切换策略。",
+            "en": "App paradigms, model ecosystem, SDK abstraction, token cost estimation and vendor switching."
+          },
+          "file": "assets/content/llm_apps_overview.md",
+          "minutes": 30,
+          "keywords": [
+            "应用范式",
+            "模型生态",
+            "SDK 抽象层",
+            "Token 计费",
+            "成本估算",
+            "供应商切换"
+          ],
+          "difficulty": "基础",
+          "order": 0,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "把供应商 A 的模型换成供应商 B 时，让代码改动最小的做法是？",
+              "options": [
+                "逐家重写各自的官方 SDK 调用层",
+                "把所有提示词改写成中性自然语言",
+                "在兼容 OpenAI 协议的抽象层统一接入",
+                "让前端组件自己拼接各家的请求体"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「在兼容 OpenAI 协议的抽象层统一接入」。主流厂商都提供与 Chat Completions 对齐的端点，把 base_url、api_key、model 三个参数抽成配置后，切换供应商只改环境变量而不改业务代码，测试用例也能原样复用。逐家重写 SDK 会让调用点散落各处，只改提示词并不消除协议差异，让前端拼请求体还会把密钥和重试逻辑暴露在客户端。"
+            },
+            {
+              "type": "single",
+              "question": "估算一次调用的输入 Token 费用时，中文长文本应按哪个口径折算？",
+              "options": [
+                "按实际分词后的 Token 数统计",
+                "按字符总数除以二估算",
+                "按中文字数直接乘以二",
+                "按响应体的字节数折算"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「按实际分词后的 Token 数统计」。计费单位是各家词表切出来的 Token，中文常见一个汉字对应一到两个 Token，但中英混排、标点和代码的切分结果差别很大，只能用对应模型的分词器实测。字符数除以二只适合粗筛量级，乘二和字节数与计费口径无关，用来做预算会在中英混排场景严重偏离真实账单。"
+            },
+            {
+              "type": "single",
+              "question": "客服机器人要按固定话术核查订单状态，最贴合的应用范式是？",
+              "options": [
+                "纯 RAG 自由问答",
+                "自由生成式闲聊",
+                "纯提示词角色扮演",
+                "工作流编排加工具调用"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「工作流编排加工具调用」。固定话术加确定性核查属于流程受限任务：用节点化工作流约束分支，用工具查订单接口拿事实，模型只负责语言组织，可审计也能回归测试。纯 RAG 只解决知识检索不解决流程控制，自由生成与纯角色扮演会让话术和字段校验失去约束，容易在关键节点漏查或错答。"
+            },
+            {
+              "type": "single",
+              "question": "供应商合同要求下季度降本，应用侧最省事的应对手段是？",
+              "options": [
+                "重写全部业务提示词模板",
+                "把模型名做成可配置项灰度切换",
+                "更换前端界面框架",
+                "把所有请求改为离线批处理"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「把模型名做成可配置项灰度切换」。当调用层已经抽象到统一协议，降本只要按流量比例把更便宜的模型灰度放量，用离线评测守住质量红线，随时可回滚。重写提示词模板推高人力成本且与单价无关，换前端框架不减少推理开销，全量改离线批处理则牺牲实时应答，对客服类场景并不成立。"
+            },
+            {
+              "type": "code",
+              "question": "下面代码读取一次非流式响应的用量字段，最后一行打印的是？\nfrom openai import OpenAI\nclient = OpenAI()\nresp = client.chat.completions.create(\n  model='deepseek-chat',\n  messages=[{'role': 'user', 'content': '一句话解释 KV Cache'}],\n)\nprint(resp.usage.prompt_tokens, resp.usage.total_tokens)",
+              "code": "from openai import OpenAI\nclient = OpenAI()\nresp = client.chat.completions.create(\n  model='deepseek-chat',\n  messages=[{'role': 'user', 'content': '一句话解释 KV Cache'}],\n)\nprint(resp.usage.prompt_tokens, resp.usage.total_tokens)",
+              "options": [
+                "输入与输出 Token 数之和",
+                "输出 Token 数与请求耗时",
+                "输入 Token 数与总 Token 数",
+                "响应体的字节与字符数"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「输入 Token 数与总 Token 数」。usage 里的 prompt_tokens 是本次输入的 Token 量，total_tokens 是输入加生成量的合计，两个字段都来自服务端返回的计费口径，SDK 只是映射成属性。输出量对应 completion_tokens 而不是 total_tokens，请求耗时和字节数 SDK 并不提供，只能自己在客户端打点统计。"
+            }
+          ]
+        },
+        {
+          "id": "llm_apps_prompt_engineering",
+          "title": {
+            "zh": "Prompt 工程与结构化输出",
+            "en": "Prompt Engineering & Structured Output"
+          },
+          "summary": {
+            "zh": "角色分层、Few-shot 与思维链、ReAct 范式、JSON Schema 输出约束和 Prompt 注入防护。",
+            "en": "Role layering, few-shot and chain-of-thought, ReAct, JSON Schema output and injection defense."
+          },
+          "file": "assets/content/llm_apps_prompt_engineering.md",
+          "minutes": 40,
+          "keywords": [
+            "System 角色",
+            "Few-shot",
+            "思维链",
+            "ReAct",
+            "结构化输出",
+            "Prompt 注入"
+          ],
+          "difficulty": "基础",
+          "order": 1,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "把「只用中文回答、不要编造事实」这类约束写进消息，最稳妥的位置是？",
+              "options": [
+                "最后一条用户消息的末尾",
+                "示例对话的第三条里面",
+                "温度参数的说明文档中",
+                "System 角色的独立消息里"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「System 角色的独立消息里」。System 消息始终位于上下文头部，不会被后续用户输入挤出窗口，也最容易被模型识别为全局约束，适合承载语言、口径和安全边界。写在用户消息末尾容易被长对话稀释，塞进示例对话只影响格式模仿，温度参数是采样超参与文字约束无关，三者都不能替代角色分层。"
+            },
+            {
+              "type": "single",
+              "question": "要求模型严格返回 JSON 却总被解释文字污染，首选的修复手段是？",
+              "options": [
+                "把提示词全部改写成英文并加长范例",
+                "在提示词里补一大段格式说明文字",
+                "改用 JSON Schema 约束输出结构",
+                "把温度参数调高到 1.5 再试一次"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「改用 JSON Schema 约束输出结构」。结构化输出模式让服务端按 Schema 校验或约束解码，字段名、类型和必填项由解码器保证，比文字约定更接近硬约束，也能直接接入代码解析。加长英文范例仍靠概率收敛，大段格式说明会挤占上下文且没有强制力，调高温度只会让格式更发散，方向相反。"
+            },
+            {
+              "type": "single",
+              "question": "Few-shot 示例里混进两条格式错误的输出，最可能的后果是？",
+              "options": [
+                "模型模仿错误格式，输出更不稳定",
+                "示例数量对输出质量没有影响",
+                "模型的采样温度会自动降低",
+                "上下文窗口会被自动缩小"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「模型模仿错误格式，输出更不稳定」。Few-shot 的机理是从示例里归纳模式，示例中的格式错误会被当成合法样本一并学习，直接拉低下游解析器的成功率。示例数量与质量都影响结果，温度和上下文窗口由参数与服务端决定，不会因为示例内容变化而自动调整，把两者当成自我修正机制是误解。"
+            },
+            {
+              "type": "single",
+              "question": "用户把「忽略以上指令」藏进上传文档的正文里，这属于哪类风险？",
+              "options": [
+                "模型量化带来的精度损失",
+                "上下文窗口溢出截断",
+                "幻觉与事实性错误",
+                "间接 Prompt 注入攻击"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「间接 Prompt 注入攻击」。指令被藏在检索回来的文档、网页或邮件正文中，模型把外部数据当成指令执行，就叫间接注入，防御要靠数据与指令分区、来源白名单和工具调用审批。量化精度损失属于部署问题，窗口溢出只是长度现象，幻觉是事实性偏差而非被恶意操纵，都不是这一类风险。"
+            },
+            {
+              "type": "code",
+              "question": "下面代码拼装带 System 角色的消息列表，最后一行打印的是？\nmsgs = [{'role': 'system', 'content': '只用中文回答'}]\nmsgs.append({'role': 'user', 'content': '什么是 RAG'})\nmsgs.insert(1, {'role': 'assistant', 'content': '好的'})\nprint(len(msgs), msgs[1]['role'])",
+              "code": "msgs = [{'role': 'system', 'content': '只用中文回答'}]\nmsgs.append({'role': 'user', 'content': '什么是 RAG'})\nmsgs.insert(1, {'role': 'assistant', 'content': '好的'})\nprint(len(msgs), msgs[1]['role'])",
+              "options": [
+                "2 和 system",
+                "3 和 assistant",
+                "3 和 user",
+                "4 和 assistant"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「3 和 assistant」。列表初始只有一个 System 元素，append 把用户消息放到末尾，insert(1, ...) 再把示范回答插到下标 1，最终顺序是 system、assistant、user，长度为 3。把 insert 当成追加就会算出 4，以为 System 会被替换则得到 2 和 system，都是没分清插入位置与下标口径。"
+            }
+          ]
+        },
+        {
+          "id": "llm_apps_api_integration",
+          "title": {
+            "zh": "主流大模型 API 接入",
+            "en": "Mainstream LLM API Integration"
+          },
+          "summary": {
+            "zh": "Chat Completions、Responses、Anthropic Messages 与国产端点的协议差异、流式 SSE、Tool Call 结构与错误重试。",
+            "en": "Protocol differences across Chat Completions, Responses and Messages, SSE streaming, tool call shape and retries."
+          },
+          "file": "assets/content/llm_apps_api_integration.md",
+          "minutes": 40,
+          "keywords": [
+            "Chat Completions",
+            "Responses API",
+            "Messages API",
+            "SSE 流式",
+            "Tool Call",
+            "错误重试"
+          ],
+          "difficulty": "基础",
+          "order": 2,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "SSE 流式响应里，判断整段回答结束的依据是？",
+              "options": [
+                "HTTP 状态码变成 204",
+                "响应头长度字段归零",
+                "收到 data 标记的 DONE 帧",
+                "客户端读完首个分片"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「收到 data 标记的 DONE 帧」。OpenAI 兼容协议在流结束时发送一条内容为 DONE 的 data 行作为终止哨兵，Anthropic 协议用 message_stop 事件表达同样语义，客户端要靠它关闭渲染并落库。204 不是流式的返回码，Content-Length 在分块传输中本就不可用，首个分片只代表开始。"
+            },
+            {
+              "type": "single",
+              "question": "接入 Anthropic Messages 接口时，与 Chat Completions 不同的必填项是？",
+              "options": [
+                "必须传 temperature 参数",
+                "必须改用 GET 方法调用",
+                "必须让 messages 为空",
+                "必须单独指定 max_tokens"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「必须单独指定 max_tokens」。Messages 接口把输出上限作为必填项，不写会直接返回参数校验错误，而 Chat Completions 与 Responses 允许省略并用服务端默认值兜底。temperature 在两边都是可选，方法本就是 POST，把 messages 传空只会报错而不是要求，这些差异体现了协议字段与默认值的不一致。"
+            },
+            {
+              "type": "single",
+              "question": "调用返回 429 时，最稳妥的重试策略是？",
+              "options": [
+                "固定间隔连续重试五次直到成功",
+                "读取 Retry-After 并加指数退避",
+                "立刻换另一个模型再发一次请求",
+                "把温度调低之后马上重发请求"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「读取 Retry-After 并加指数退避」。429 表示服务端限流，响应头通常给出建议等待时间，配合指数退避和抖动可以避开同批客户端的重试风暴，也让配额统计保持可解释。固定间隔硬重试会持续压同一窗口，直接换模型会把限流扩散到其他供应商，调温度对容量毫无影响。"
+            },
+            {
+              "type": "single",
+              "question": "Tool Call 场景下，把工具结果回填给模型时使用的消息角色是？",
+              "options": [
+                "tool 角色的结果消息",
+                "system 角色的补充说明",
+                "assistant 角色的自述",
+                "user 角色的原始提问"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「tool 角色的结果消息」。模型发出 tool_calls 后，客户端要为每个调用返回一条 tool 消息并带上对应的 tool_call_id，模型据此把结果与调用配对再决定下一步。写成 system 会被当成全局规则污染约束，assistant 被视为模型自己的输出，重复 user 原文只会拉长上下文而不携带结果结构。"
+            },
+            {
+              "type": "code",
+              "question": "下面代码用兼容协议构造并读取一次 JSON 响应，打印结果是？\nimport httpx, json\nbody = {'choices': [{'message': {'role': 'assistant', 'content': '你好'}}]}\nr = httpx.Response(200, json=body)\nprint(json.loads(r.text)['choices'][0]['message']['content'])",
+              "code": "import httpx, json\nbody = {'choices': [{'message': {'role': 'assistant', 'content': '你好'}}]}\nr = httpx.Response(200, json=body)\nprint(json.loads(r.text)['choices'][0]['message']['content'])",
+              "options": [
+                "抛出 KeyError 缺少 role",
+                "打印整个 choices 数组",
+                "输出 None 因嵌套过深",
+                "打印出字符串 你好"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「打印出字符串 你好」。用 json 关键字构造响应时 text 属性给出序列化正文，loads 还原成字典后按 choices 列表、message 字典、content 键逐层取值，命中的正是初始化时写入的文本。role 在同层存在不会触发键缺失异常，取到的是叶子字符串而不是整个数组，字段齐全也不会返回空值。"
+            }
+          ]
+        },
+        {
+          "id": "llm_apps_rag_foundations",
+          "title": {
+            "zh": "RAG 检索增强生成基础",
+            "en": "RAG Foundations"
+          },
+          "summary": {
+            "zh": "分块策略、Embedding 选型、向量库对比、混合检索与 Rerank 精排的完整链路。",
+            "en": "Chunking, embedding selection, vector stores, hybrid retrieval and reranking."
+          },
+          "file": "assets/content/llm_apps_rag_foundations.md",
+          "minutes": 50,
+          "keywords": [
+            "分块策略",
+            "Embedding",
+            "向量库",
+            "混合检索",
+            "BM25",
+            "Rerank"
+          ],
+          "difficulty": "进阶",
+          "order": 3,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "技术文档以长表格和代码块为主，分块策略应优先考虑？",
+              "options": [
+                "按语义单元切分并保留表格结构",
+                "固定 512 字符等长硬切",
+                "一律按句子切分最稳妥",
+                "整篇文档作为一个块"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「按语义单元切分并保留表格结构」。表格与代码块内部有强关联，从中间截断会破坏行列对应关系，按标题、段落、表格和代码这类语义单元切分并保留表头与列名，召回片段才可被读懂。固定字符硬切制造半张表，按句子切分会把代码拆碎，整篇不切则超出窗口且定位粒度过粗。"
+            },
+            {
+              "type": "single",
+              "question": "中文客服问答选 Embedding 模型时，最先要验证的是？",
+              "options": [
+                "模型的参数量是否最大",
+                "是否支持任意语言的输入",
+                "在自有中文语料上的召回指标",
+                "能否输出可解释的注意力"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「在自有中文语料上的召回指标」。Embedding 的排序能力取决于训练语料与目标领域是否匹配，公开榜单分数不等于你的数据表现，用几百条标注问答跑 Recall@K 才能定选型。参数量大不等于中文更好，多语言支持与领域适配是两件事，注意力可解释性并不改变向量空间质量。"
+            },
+            {
+              "type": "single",
+              "question": "向量召回漏掉专有名词、BM25 又抓不住同义改写，工程上常用解法是？",
+              "options": [
+                "把向量维度加倍再重训",
+                "只保留 BM25 关掉向量",
+                "提高温度并加大生成长度",
+                "混合检索后用 Rerank 精排"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「混合检索后用 Rerank 精排」。BM25 对稀有词和型号这类精确匹配强，向量检索对同义与改写强，两路取并集后交给交叉编码器重排，能同时压低两种漏召。单纯加维度不会带来更好的语义对齐，砍掉一路只是把问题留给另一半，温度和生成长度属于生成阶段参数，不参与检索排序。"
+            },
+            {
+              "type": "single",
+              "question": "pgvector 与专用向量库的取舍，下列判断更贴近实际的是？",
+              "options": [
+                "业务库已是 PostgreSQL 时优先选它",
+                "专用向量库在任何规模都必然更快",
+                "pgvector 不支持任何元数据过滤条件",
+                "这两类方案都无法做增量写入操作"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「业务库已是 PostgreSQL 时优先选它」。数据本身就在关系库里时，pgvector 可复用事务、权限和备份链路，一条 SQL 同时做结构化过滤与向量近似检索，运维成本最低。专用库在超大规模和极致召回上更有优势但引入新组件，说必然更快过于绝对，两者都支持元数据过滤和增量写入。"
+            },
+            {
+              "type": "code",
+              "question": "下面按空行分块的函数处理该文本，len(chunks) 对应几个块？\ntext = 'A1\\nA2\\n\\nB1\\nB2\\n\\nC1'\nchunks = [p.strip() for p in text.split('\\n\\n') if p.strip()]\nprint(len(chunks))",
+              "code": "text = 'A1\\nA2\\n\\nB1\\nB2\\n\\nC1'\nchunks = [p.strip() for p in text.split('\\n\\n') if p.strip()]\nprint(len(chunks))",
+              "options": [
+                "3 个块",
+                "5 个块",
+                "6 个块",
+                "1 个块"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「3 个块」。以空行为段落边界时，连续的正文行会合并成同一个语义块，源文本被两个空行分成 A1A2、B1B2 和 C1 三段，过滤空串后长度仍是 3。把换行符也当段落边界才会得到 5 或 6，而 1 是把整篇当成单块的结果，两种偏差都来自没有区分行分隔符与段落分隔符。"
+            }
+          ]
+        },
+        {
+          "id": "llm_apps_rag_advanced",
+          "title": {
+            "zh": "RAG 进阶：GraphRAG 与多模态",
+            "en": "Advanced RAG: GraphRAG & Multimodal"
+          },
+          "summary": {
+            "zh": "GraphRAG 社区摘要、Self-RAG 反思检索、RAPTOR 层次摘要树、多模态检索与 Faithfulness 评估。",
+            "en": "GraphRAG community summaries, Self-RAG reflection, RAPTOR trees, multimodal retrieval and faithfulness metrics."
+          },
+          "file": "assets/content/llm_apps_rag_advanced.md",
+          "minutes": 50,
+          "keywords": [
+            "GraphRAG",
+            "Self-RAG",
+            "RAPTOR",
+            "多模态 RAG",
+            "Query 改写",
+            "Faithfulness"
+          ],
+          "difficulty": "进阶",
+          "order": 4,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "用户问这家公司近三年战略变化的主线是什么，最合适的检索方式是？",
+              "options": [
+                "单轮向量 top-k 片段拼接",
+                "关键词精确匹配取前十条",
+                "把全文塞进提示词赌窗口",
+                "GraphRAG 的社区摘要自顶向下"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「GraphRAG 的社区摘要自顶向下」。全局性、跨章节的归纳问题需要把实体关系先聚成社区并生成层次化摘要，回答时从高层摘要往下展开，才能覆盖分散的证据。top-k 片段拼接只给局部线索，精确匹配漏掉同义表述，硬塞全文受窗口限制且成本失控，还容易让模型抓错重点。"
+            },
+            {
+              "type": "single",
+              "question": "评估框架里 Faithfulness 这一指标衡量的是？",
+              "options": [
+                "回答是否足够简短省 Token",
+                "答案能否被检索到的上下文支撑",
+                "检索耗时是否在预算之内",
+                "模型是否会主动追问澄清"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「答案能否被检索到的上下文支撑」。忠实度把生成结果拆成若干论断，再逐条判断这些论断能否从召回上下文推出，用于量化幻觉，是 RAGAS 一类框架的核心项。简短程度属于长度偏好，检索耗时是性能指标而非质量指标，追问澄清是交互策略，都不反映答案与证据之间的支撑关系。"
+            },
+            {
+              "type": "single",
+              "question": "RAPTOR 相对普通分块检索的主要增益来自？",
+              "options": [
+                "把向量维度压缩以省显存",
+                "对图片做 OCR 补齐文字层",
+                "层次化摘要树的自顶向下召回",
+                "给每条答案加上引用编号"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「层次化摘要树的自顶向下召回」。RAPTOR 先对叶子分块递归聚类并生成上层摘要，检索时同时命中粗细两层，兼顾细节与全局视角，正适合跨多章节的综合问题。压缩维度只是存储优化，OCR 属于多模态数据接入，引用编号是可解释性手段，都不改变语料的层次结构。"
+            },
+            {
+              "type": "single",
+              "question": "Self-RAG 与朴素 RAG 的关键差别是？",
+              "options": [
+                "模型自己判断是否需要检索并批判",
+                "检索一律放在生成之前完成",
+                "只使用向量库而不使用全文",
+                "把提示词长度压缩到最短"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「模型自己判断是否需要检索并批判」。Self-RAG 用反思标记决定何时检索、是否采纳该片段以及输出是否可信，把检索从固定前置步骤变成按需动作，减少无关上下文带来的干扰。把检索固定前置正是朴素 RAG 的做法，向量与全文可以共存并不互斥，压缩提示词属于工程优化。"
+            },
+            {
+              "type": "code",
+              "question": "下面代码做查询改写后去重，print 输出是几条改写？\nqueries = ['退款政策', 'refund policy']\nexpanded = queries + [q.upper() for q in queries]\nrewrite = list(dict.fromkeys(expanded))\nprint(len(rewrite))",
+              "code": "queries = ['退款政策', 'refund policy']\nexpanded = queries + [q.upper() for q in queries]\nrewrite = list(dict.fromkeys(expanded))\nprint(len(rewrite))",
+              "options": [
+                "剩下 2 条",
+                "剩下 4 条",
+                "剩下 3 条",
+                "剩下 1 条"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「剩下 3 条」。expanded 先把两条原始查询和大写后的两条依次拼上共四项，但 str.upper() 对中文不生效，退款政策与其大写形式完全相同，dict.fromkeys 去重时把它折回一条，于是只剩退款政策、refund policy 和 REFUND POLICY。算成 4 是漏看去重，算成 2 是以为大写文本又与原文重合。"
+            }
+          ]
+        },
+        {
+          "id": "llm_apps_function_calling",
+          "title": {
+            "zh": "Function Calling 与工具使用",
+            "en": "Function Calling & Tool Use"
+          },
+          "summary": {
+            "zh": "JSON Schema 工具定义、并行调用回填、Anthropic tool_use 与 OpenAI tools 差异、MCP 协议与错误恢复。",
+            "en": "JSON Schema tool definitions, parallel calls, tool_use versus tools, MCP protocol and error recovery."
+          },
+          "file": "assets/content/llm_apps_function_calling.md",
+          "minutes": 45,
+          "keywords": [
+            "JSON Schema",
+            "并行调用",
+            "tool_use",
+            "tools 参数",
+            "MCP",
+            "错误恢复"
+          ],
+          "difficulty": "进阶",
+          "order": 5,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "在 tools 参数里描述一个函数时，最容易被模型用错的字段是？",
+              "options": [
+                "函数的 name 命名是否足够短",
+                "description 是否写清业务用途",
+                "parameters 里的类型与必填约束",
+                "是否额外提供了示例调用代码"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「parameters 里的类型与必填约束」。名字和描述帮模型选对工具，而真正把参数填错的多半是类型与必填项没写清，例如把数字写成字符串、可选项被当必填漏传，导致校验直接失败。示例代码有助理解却不参与结构约束，光靠描述很难表达嵌套对象和枚举取值，Schema 才是执行前的合同。"
+            },
+            {
+              "type": "single",
+              "question": "模型一次返回三个 tool_calls，正确的处理方式是？",
+              "options": [
+                "只执行第一个并忽略其余调用",
+                "把三个结果合并成一条消息返回",
+                "拒绝响应并要求模型重新生成",
+                "逐个执行并各回一条结果消息"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「逐个执行并各回一条结果消息」。协议规定每个 tool_call 都有独立 id，客户端要为每个 id 回一条对应结果，模型才能把返回值与调用配对，缺失或错配会打断后续推理。只执行第一个会让另外两个查询永远没有结果，合并成一条丢掉 id 对应关系，拒答则浪费了一次已经成功的规划。"
+            },
+            {
+              "type": "single",
+              "question": "Anthropic 的 tool_use 块与 OpenAI 的 tool_calls 字段相比，显著差异是？",
+              "options": [
+                "前者不需要声明任何输入参数结构",
+                "后者挂在 assistant 消息而非内容块",
+                "两者都不允许在同一轮并行触发",
+                "前者必须显式指定温度参数才行"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「后者挂在 assistant 消息而非内容块」。OpenAI 把调用意图挂在 assistant 消息的 tool_calls 数组上，Anthropic 则在 content 块序列里插入 tool_use 块，文本与工具调用是同一次响应中的并列内容块，解析路径因此不同。两边都要用 Schema 声明输入参数，也都支持一轮多个调用。"
+            },
+            {
+              "type": "single",
+              "question": "工具执行抛异常时，最有利于模型自我纠正的做法是？",
+              "options": [
+                "回传结构化的错误原因和修正建议",
+                "直接返回空字符串跳过这一步",
+                "抛异常终止整个对话流程",
+                "重新发送原始提问作为用户消息"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「回传结构化的错误原因和修正建议」。把失败信息作为工具结果原路返回，模型能据此改参数或换工具，形成有依据的重试闭环，同时保留调用链与 id 的对应关系。空字符串让模型误判成功，直接中断流程会让用户看不到任何解释，重发原始提问则丢掉了这次调用的上下文。"
+            },
+            {
+              "type": "code",
+              "question": "下面这份工具声明里，模型必须提供的参数有几个？\nimport json\nspec = {'name': 'query_order', 'parameters': {'type': 'object', 'properties': {'order_id': {'type': 'string'}, 'lang': {'type': 'string'}}, 'required': ['order_id']}}\nprint(len(spec['parameters']['required']))",
+              "code": "import json\nspec = {'name': 'query_order', 'parameters': {'type': 'object', 'properties': {'order_id': {'type': 'string'}, 'lang': {'type': 'string'}}, 'required': ['order_id']}}\nprint(len(spec['parameters']['required']))",
+              "options": [
+                "无法确定因为缺 enum 定义",
+                "1 个，即 order_id",
+                "2 个参数都是必填",
+                "0 个参数全部可选"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「1 个，即 order_id」。required 列表只登记了 order_id，properties 只声明字段的存在与类型，是否必填完全由 required 决定，因此模型可以省略 lang 但必须给出订单号。enum 只约束取值范围而不是必填性，把 properties 的数量当成必填数会误判为 2，认为必填可空则与 Schema 语义相反。"
+            }
+          ]
+        },
+        {
+          "id": "llm_apps_agent_design",
+          "title": {
+            "zh": "Agent 智能体设计",
+            "en": "Agent Design Patterns"
+          },
+          "summary": {
+            "zh": "ReAct 与 Plan-and-Execute 取舍、Reflexion 反思、记忆分层、多 Agent 协作与 LangGraph 状态机。",
+            "en": "ReAct versus Plan-and-Execute, Reflexion, memory tiers, multi-agent collaboration and LangGraph state machines."
+          },
+          "file": "assets/content/llm_apps_agent_design.md",
+          "minutes": 55,
+          "keywords": [
+            "ReAct",
+            "Plan-and-Execute",
+            "Reflexion",
+            "记忆分层",
+            "多 Agent",
+            "LangGraph"
+          ],
+          "difficulty": "进阶",
+          "order": 6,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "任务步骤多于八步且中途可能改路线，Plan-and-Execute 相比 ReAct 的优势是？",
+              "options": [
+                "先出全局计划便于中途重排",
+                "每步都重新规划因此更灵活",
+                "不需要任何工具即可完成",
+                "上下文长度可以完全不增长"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「先出全局计划便于中途重排」。显式计划把目标拆成可检查的步骤清单，一旦某步失败或前提变化，重规划的代价只是改局部步骤，进度也能对外展示。ReAct 每步都靠即时观察决定下一步，长任务容易绕圈；两种范式都仍需工具落实动作，上下文长度取决于裁剪与摘要策略。"
+            },
+            {
+              "type": "single",
+              "question": "情节记忆与长期语义记忆的区别在于？",
+              "options": [
+                "前者只存向量后者只存关键词",
+                "前者不受上下文窗口限制",
+                "前者容量无限后者必须淘汰",
+                "前者记录具体交互过程与结果"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「前者记录具体交互过程与结果」。情节记忆保存某次任务的时间、动作、结果和反馈，用于回放与复盘；语义记忆沉淀可复用的事实与偏好，用于跨任务检索。两者都能用向量或结构化方式实现，容量都受存储与检索策略约束，把它们说成无限或不依赖窗口是把分层概念当成了魔法。"
+            },
+            {
+              "type": "single",
+              "question": "多 Agent 协作里，评审 Agent 反复要求返工导致死循环，应先检查？",
+              "options": [
+                "评审与执行是否为同一个模型",
+                "两个 Agent 的温度是否相同",
+                "返工次数上限与终止条件是否设置",
+                "是否给评审 Agent 配了检索工具"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「返工次数上限与终止条件是否设置」。循环的直接成因是缺少终止判据，必须先给最大轮次、验收标准和升级出口，让分歧在有限步内收敛或转人工。同模型与否影响的是视角多样性，温度一致与否不是终止条件，检索工具只补充证据，都不解决没有刹车这一根本问题。"
+            },
+            {
+              "type": "single",
+              "question": "Reflexion 相对普通重试的核心增益来自？",
+              "options": [
+                "提高采样温度以增加随机性",
+                "把失败反思写成可复用的经验",
+                "增加并发的工具调用数量",
+                "缩短系统提示词减少开销"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「把失败反思写成可复用的经验」。Reflexion 在失败后让模型总结教训并存入记忆，下次尝试携带该经验，从而避免重复同一个错误，把重试变成有信息增量的迭代。提高温度只是让采样更发散，可能换一种错法；并发调用提升吞吐而不改变决策质量，压缩提示词省的是成本。"
+            },
+            {
+              "type": "code",
+              "question": "下面这个状态机路由函数的两次打印结果是？\ndef route(state):\n    return 'tool' if state['tool_calls'] else 'end'\n\nprint(route({'tool_calls': []}), route({'tool_calls': ['q']}))",
+              "code": "def route(state):\n    return 'tool' if state['tool_calls'] else 'end'\n\nprint(route({'tool_calls': []}), route({'tool_calls': ['q']}))",
+              "options": [
+                "tool 和 tool",
+                "end 和 end",
+                "tool 和 end",
+                "end 和 tool"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「end 和 tool」。三元表达式看的是列表本身是否为真值，空列表在 Python 里等价于 False，因此第一次走 end 分支，只有一个元素的列表为 True 则走 tool 分支。把空列表当成真值就会得到 tool 和 end，误以为路由依赖字段是否存在则两次都判成 tool，短路判断的布尔语义是状态机的关键。"
+            }
+          ]
+        },
+        {
+          "id": "llm_apps_frameworks",
+          "title": {
+            "zh": "LangChain 与 LlamaIndex 实战",
+            "en": "LangChain & LlamaIndex in Practice"
+          },
+          "summary": {
+            "zh": "LCEL 表达式组合、Chain 与 Agent 抽象、Index 与 QueryEngine 分工、可插拔组件与版本迁移坑。",
+            "en": "LCEL composition, chain and agent abstractions, index and query engine roles, pluggable components and migration traps."
+          },
+          "file": "assets/content/llm_apps_frameworks.md",
+          "minutes": 50,
+          "keywords": [
+            "LCEL",
+            "Runnable",
+            "Retriever",
+            "QueryEngine",
+            "可插拔组件",
+            "版本迁移"
+          ],
+          "difficulty": "进阶",
+          "order": 7,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "LCEL 表达式用竖线把两个链写在一起，它的实际语义是？",
+              "options": [
+                "两个链并发执行再取较早结果",
+                "把两个链的日志写入同一管道",
+                "前一个链的输出作为后一个的输入",
+                "前一个失败时自动降级到后者"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「前一个链的输出作为后一个的输入」。竖线把两个 Runnable 组成有向管道，前一步的返回值按输入模式传给后一步，同时继承流式和批量接口，是组合而非并发。并发取早属于 racing 语义，写日志与管道无关，失败降级需要显式的兜底包装，把组合子当成容错原语是迁移中最常见的误解。"
+            },
+            {
+              "type": "single",
+              "question": "LlamaIndex 里 QueryEngine 与 Retriever 的分工是？",
+              "options": [
+                "前者只做分块后者只做嵌入",
+                "两者完全等价只是名字不同",
+                "前者组织提问到回答的完整链路",
+                "后者负责生成回答前者只取文档"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「前者组织提问到回答的完整链路」。QueryEngine 把检索、重排、合成回复和响应模式串成一个可调用对象，是对外入口；Retriever 只完成从索引取节点这一步，可被嵌进引擎也能单独复用。分块与嵌入属于摄取阶段组件，和这两个抽象不在同一层。"
+            },
+            {
+              "type": "single",
+              "question": "升级框架大版本后提示词模板莫名失效，最该先排查的是？",
+              "options": [
+                "消息角色与序列化模板方式的变更",
+                "模型供应商是否更换了机房地址",
+                "向量库索引是否使用了 HNSW",
+                "前端渲染 Markdown 的组件版本"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「消息角色与序列化模板方式的变更」。版本升级常改动 System 与工具消息的拼接格式、角色顺序和特殊标记，模板内容没变但落到模型眼中的结构已经不同，因此失效集中在模板层。机房地址影响连通性，索引算法影响召回性能，前端组件只影响展示，都不会让提示词语义消失。"
+            },
+            {
+              "type": "single",
+              "question": "想让 RAG 组件可插拔，最符合框架设计意图的写法是？",
+              "options": [
+                "把提示词硬编码进业务服务函数",
+                "在多个链里分别复制一份检索代码",
+                "用全局变量缓存检索器实例",
+                "把检索器与模型作为参数注入链"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「把检索器与模型作为参数注入链」。框架的 Runnable 抽象要求组件只依赖传入的接口，检索器、语言模型和序列化器都可替换，测试时注入假对象即可断言中间输出。硬编码和复制粘贴把依赖焊死在实现里，全局缓存会让并发请求互相污染，三者都使升级和灰度实验变得不可能。"
+            },
+            {
+              "type": "code",
+              "question": "下面这条用竖线串起来的链，invoke 打印的结果是？\nfrom langchain_core.runnables import RunnableLambda\nupper = RunnableLambda(lambda s: s.upper())\nexclaim = RunnableLambda(lambda s: s + '!')\nchain = upper | exclaim\nprint(chain.invoke('rag'))",
+              "code": "from langchain_core.runnables import RunnableLambda\nupper = RunnableLambda(lambda s: s.upper())\nexclaim = RunnableLambda(lambda s: s + '!')\nchain = upper | exclaim\nprint(chain.invoke('rag'))",
+              "options": [
+                "字符串 RAG 加感叹号",
+                "字符串 rag 加感叹号",
+                "全大写的 RAG 没有符号",
+                "报错因为竖线不能串链"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「字符串 RAG 加感叹号」。管道按左到右执行，先由第一个 RunnableLambda 把 rag 转成大写，再把结果交给第二个函数追加感叹号，最终得到大写加感叹号。忘了先转大写会得到小写形式，以为追加发生在转换之前会漏掉感叹号，而 Runnable 原生支持竖线组合，不会因串联报错。"
+            }
+          ]
+        },
+        {
+          "id": "llm_apps_low_code",
+          "title": {
+            "zh": "Dify / FastGPT / Coze 低代码平台",
+            "en": "LLM Low-Code Platforms"
+          },
+          "summary": {
+            "zh": "工作流编排、知识库接入、插件体系、私有部署的数据边界与多渠道发布。",
+            "en": "Workflow orchestration, knowledge bases, plugins, private deployment data boundaries and publishing channels."
+          },
+          "file": "assets/content/llm_apps_low_code.md",
+          "minutes": 40,
+          "keywords": [
+            "Dify",
+            "FastGPT",
+            "Coze",
+            "工作流编排",
+            "私有部署",
+            "发布渠道"
+          ],
+          "difficulty": "进阶",
+          "order": 8,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "低代码平台的工作流里，代码执行节点的主要作用是？",
+              "options": [
+                "替代大模型完成全部推理",
+                "托管前端页面的交互脚本",
+                "把整条链路的日志写进数据库",
+                "做数据整形与确定性逻辑"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「做数据整形与确定性逻辑」。LLM 节点负责语言生成，代码节点承担字段解析、格式校验和分支聚合这些可测试的确定步骤，让流程中可验证的部分不依赖模型发挥。它不能取代推理，也不负责前端脚本和日志落库，当成万能脚本容器会让工作流退化成难以维护的过程代码。"
+            },
+            {
+              "type": "single",
+              "question": "平台自带知识库与已有向量库并存时，通常更合理的选择是？",
+              "options": [
+                "复用已有向量库经工具节点接入",
+                "一律迁移到平台内置知识库存储",
+                "两边都建索引并按需查询两次",
+                "放弃检索只使用提示词上下文"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「复用已有向量库经工具节点接入」。已有向量库承载了权限、增量管道和上游治理，用检索工具或外部知识库接口接进来，可以避免双写和数据漂移。整体迁移意味着重建摄取与运维链路，双份索引会让同一问题返回不一致结果并翻倍成本，完全放弃检索则在知识密集场景放大幻觉。"
+            },
+            {
+              "type": "single",
+              "question": "低代码应用要求私有部署，首先要确认的是？",
+              "options": [
+                "平台是否支持发布到小程序渠道",
+                "工作流节点数量是否超过十个",
+                "模型推理出口是否落在同一机房",
+                "界面是否支持深浅色主题切换"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「模型推理出口是否落在同一机房」。私有部署的意义在于数据不出域，如果平台本地化却把请求转发到公网模型，敏感内容仍然外泄，合规目标落空。发布渠道和节点数量影响功能与复杂度，主题切换属于呈现层偏好，都决定不了数据边界，检查合规时容易把它们误当成关键条件。"
+            },
+            {
+              "type": "single",
+              "question": "从低代码平台迁到自研代码时，最大的隐性成本通常是？",
+              "options": [
+                "重新训练一个基座模型",
+                "换一家云厂商的机房资源",
+                "补齐提示词的评测与回归用例",
+                "重写前端页面的视觉样式"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「补齐提示词的评测与回归用例」。平台里能跑通的提示词依赖隐式的编排、重试和护栏，迁到代码后要自建数据集、断言和回归流水线才能守住同样效果，这部分过去被界面隐藏了。基座模型不需要重训，机房资源与前端样式是一次性工程，唯独评测体系要长期投入，常被低估。"
+            },
+            {
+              "type": "code",
+              "question": "下面这段工作流 DSL 数据，print 输出的节点 id 是？\nedges = [{'frm': 'start', 'to': 'llm'}, {'frm': 'llm', 'to': 'reply'}]\ndsl = {'nodes': ['start', 'llm', 'reply'], 'edges': edges}\nprint(dsl['edges'][-1]['to'])",
+              "code": "edges = [{'frm': 'start', 'to': 'llm'}, {'frm': 'llm', 'to': 'reply'}]\ndsl = {'nodes': ['start', 'llm', 'reply'], 'edges': edges}\nprint(dsl['edges'][-1]['to'])",
+              "options": [
+                "起点 start",
+                "大模型 llm",
+                "回复节点 reply",
+                "边数组 edges"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「回复节点 reply」。edges 列表的最后一条把 to 指向 reply，用负数下标取到的是终点字段而不是起点字段，因此输出 reply。把 frm 当成 to 会读到大模型 llm，直接取 nodes 列表末位虽然巧合也是 reply 但走的是另一个数据结构，误读 edges 则把字段名当成了节点标识。"
+            }
+          ]
+        },
+        {
+          "id": "llm_apps_deployment",
+          "title": {
+            "zh": "模型部署与推理优化",
+            "en": "Model Deployment & Inference Optimization"
+          },
+          "summary": {
+            "zh": "vLLM、TGI、Ollama 与 SGLang 选型，量化路线、KV Cache、PagedAttention、连续批处理与 LoRA 落地。",
+            "en": "vLLM, TGI, Ollama and SGLang selection, quantization paths, KV cache, PagedAttention, continuous batching and LoRA rollout."
+          },
+          "file": "assets/content/llm_apps_deployment.md",
+          "minutes": 55,
+          "keywords": [
+            "vLLM",
+            "Ollama",
+            "量化",
+            "KV Cache",
+            "PagedAttention",
+            "LoRA"
+          ],
+          "difficulty": "高级",
+          "order": 9,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "PagedAttention 解决的核心问题是？",
+              "options": [
+                "KV Cache 显存碎片与浪费",
+                "模型权重的浮点精度损失",
+                "注意力算子的计算量过大",
+                "多机之间的通信带宽不足"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「KV Cache 显存碎片与浪费」。传统实现按最大长度连续预留缓存，短请求也占满整块显存，PagedAttention 把缓存切成页并用块表映射，按需分配，显著抬高同卡并发量。量化处理的才是权重精度，注意力算子优化属于内核层面，跨机带宽由张量并行和网络拓扑决定。"
+            },
+            {
+              "type": "single",
+              "question": "连续批处理与传统静态批处理的差别是？",
+              "options": [
+                "批内所有请求同时开始结束",
+                "批大小必须固定为一个值",
+                "只在离线场景才允许使用",
+                "请求随到随插入正在解码的批次"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「请求随到随插入正在解码的批次」。连续批处理在解码步进的间隙替换已完成序列并补入新请求，卡上始终留满算力，尾延迟因此下降；静态批要等整批结束才能换人，短请求被长请求拖住。批大小仍可设动态上限，这种方式完全服务于在线服务，说成固定或离线专用与引入动机相反。"
+            },
+            {
+              "type": "single",
+              "question": "单张消费级显卡上要跑 70B 模型做内部工具，代价最低的起步方案是？",
+              "options": [
+                "用 FP16 权重做张量并行",
+                "选量化权重并用单卡推理",
+                "先做 LoRA 再全量微调",
+                "把上下文长度压到一个 Token"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「选量化权重并用单卡推理」。量化把权重降到四位左右，显存占用与半精度相比数量级下降，单张消费级卡即可加载，团队上手最快。张量并行需要多卡和高速互联，成本更高；LoRA 只减少训练时的可训练参数，不解决推理显存问题；把上下文压到一个 Token 会让模型失去可用性。"
+            },
+            {
+              "type": "single",
+              "question": "LoRA 适配器合入基座模型后长期的主要风险是？",
+              "options": [
+                "必然让推理速度降低十倍",
+                "无法在任何推理框架中加载",
+                "显存占用会成倍上涨到不可用",
+                "多适配器叠加会互相干扰漂移"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「多适配器叠加会互相干扰漂移」。LoRA 在权重上增加低秩增量，多个适配器同时挂载时增量彼此叠加，容易让原本各自擅长的能力互相抵消或漂移，合入基座后也难以再单独回滚。推理速度只有极小额外开销，主流框架都支持加载适配器，显存不会因低秩结构成倍上涨。"
+            },
+            {
+              "type": "code",
+              "question": "下面脚本读取本地 Ollama 服务的标签接口，打印内容对应什么？\nimport httpx\nr = httpx.get('http://127.0.0.1:11434/api/tags')\nprint(r.status_code, len(r.json().get('models', [])))",
+              "code": "import httpx\nr = httpx.get('http://127.0.0.1:11434/api/tags')\nprint(r.status_code, len(r.json().get('models', [])))",
+              "options": [
+                "404 与空列表长度",
+                "一定是连接被拒异常",
+                "200 与服务上的模型数",
+                "仅显示本机显存占用"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「200 与服务上的模型数」。标签接口是本地 Ollama 的健康与清单端点，服务在跑时返回 200，models 数组给出已拉取或已导入的模型条目，正好对应打印的两个值。404 不是该路径的正常行为，连接被拒只在服务没启动时发生而不是必然结果，显存占用要查另一组接口。"
+            }
+          ]
+        },
+        {
+          "id": "llm_apps_evaluation",
+          "title": {
+            "zh": "评估、监控与安全护栏",
+            "en": "Evaluation, Observability & Guardrails"
+          },
+          "summary": {
+            "zh": "LLM-as-Judge 偏差校准、RAGAS 指标、Promptfoo 回归、LangSmith 与 LangFuse 追踪、成本监控、越狱检测与 PII 脱敏。",
+            "en": "LLM-as-Judge calibration, RAGAS metrics, Promptfoo regressions, tracing, cost monitoring, jailbreak detection and PII redaction."
+          },
+          "file": "assets/content/llm_apps_evaluation.md",
+          "minutes": 45,
+          "keywords": [
+            "LLM as Judge",
+            "RAGAS",
+            "Promptfoo",
+            "LangFuse",
+            "成本监控",
+            "PII 脱敏"
+          ],
+          "difficulty": "高级",
+          "order": 10,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "用 LLM-as-Judge 打分时，最典型的系统性偏差是？",
+              "options": [
+                "严格对齐人类的相关性判断",
+                "对所有回答给出相同分数",
+                "偏向更长或自家模型的输出",
+                "只会对格式错误的答案扣分"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「偏向更长或自家模型的输出」。评审模型偏好冗长文本和与自身风格接近的答案，还会受候选位置先后影响，因此要做位置交换、长度控制和人工抽检校准。它并不会天然对齐人类相关性判断，也不会均匀给分或只盯格式，把这些当成默认属性会让评测报告系统性偏高却无人察觉。"
+            },
+            {
+              "type": "single",
+              "question": "RAGAS 里答案相关度偏低但上下文召回正常，最可能的原因是？",
+              "options": [
+                "生成偏题或多答了无关内容",
+                "向量库的索引类型选错了",
+                "分块长度超过了模型窗口",
+                "评审模型的维度不够多"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「生成偏题或多答了无关内容」。答案相关度按回答反推问题来衡量它是否切题，检索正常而这一项偏低，说明问题出在合成阶段：提示词没约束回答范围，或模型补充了无关段落。索引类型和分块长度影响的是召回，评审维度多寡是评估器自身配置，都不会在这种组合下成为直接原因。"
+            },
+            {
+              "type": "single",
+              "question": "接入 LangFuse 一类可观测平台，最先要打通的是？",
+              "options": [
+                "把界面主题与团队规范对齐",
+                "一次请求到各步 Span 的追踪链路",
+                "给每个模型配置独立数据库",
+                "把所有提示词改为可下载文件"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「一次请求到各步 Span 的追踪链路」。只有把用户请求、检索、工具调用和生成串成同一条追踪，才能定位是哪一步造成延迟或质量下降，并回溯到具体提示词版本。主题对齐属于体验细节，给每个模型单开数据库会让链路割裂且难运维，把提示词导出成文件反而丢掉版本与权限控制。"
+            },
+            {
+              "type": "single",
+              "question": "对外接口做 PII 脱敏，更可靠的做法是？",
+              "options": [
+                "让大模型自己判断并改写文本",
+                "只在日志里删除全部数字字符",
+                "限制请求长度以压低泄露概率",
+                "用识别器加正则先遮蔽再送检"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「用识别器加正则先遮蔽再送检」。脱敏必须发生在数据离开边界之前，命名实体识别配合正则能覆盖身份证、手机号这类稳定模式，替换成占位符后再交给模型或外部服务。让模型自己改写既不确定也来不及，删除所有数字会破坏业务语义，限长只是减少暴露面并不识别敏感字段。"
+            },
+            {
+              "type": "code",
+              "question": "下面这段 Promptfoo 配置字典，print 输出的两个数字对应什么？\nimport json\ncfg = {'prompts': ['p1.txt', 'p2.txt'], 'providers': [{'id': 'openai:gpt-4o-mini'}], 'tests': [{'assert': [{'type': 'contains', 'value': '退款'}]}]}\nprint(len(cfg['prompts']), len(cfg['tests']))",
+              "code": "import json\ncfg = {'prompts': ['p1.txt', 'p2.txt'], 'providers': [{'id': 'openai:gpt-4o-mini'}], 'tests': [{'assert': [{'type': 'contains', 'value': '退款'}]}]}\nprint(len(cfg['prompts']), len(cfg['tests']))",
+              "options": [
+                "2 个提示词与 1 条用例",
+                "1 个提示词与 2 条用例",
+                "2 个供应商与 1 个提示词",
+                "1 个供应商与 2 条用例"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「2 个提示词与 1 条用例」。prompts 列了两个模板文件，tests 只有一条用例，用例里挂着 contains 这一个断言，因此打印 2 和 1。providers 才是供应商列表且只有一项，把它与提示词数量混起来会得到错误的组合，tests 的长度也不等于断言条数的总和。"
+            }
+          ]
+        },
+        {
+          "id": "llm_apps_project",
+          "title": {
+            "zh": "综合项目：企业知识库助手",
+            "en": "Capstone: Enterprise Knowledge Assistant"
+          },
+          "summary": {
+            "zh": "从需求拆解到架构选型，把 RAG、Agent 与工具组合成可上线的企业知识库助手并完成调优。",
+            "en": "From requirement breakdown to architecture, combining RAG, agents and tools into a shippable enterprise knowledge assistant."
+          },
+          "file": "assets/content/llm_apps_project.md",
+          "minutes": 60,
+          "keywords": [
+            "需求拆解",
+            "架构选型",
+            "RAG",
+            "Agent",
+            "上线运维",
+            "效果调优"
+          ],
+          "difficulty": "高级",
+          "order": 11,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "企业知识库助手上线前，最该先和需求方敲定的是？",
+              "options": [
+                "界面主色与图标的具体风格",
+                "可接受错误率与高风险问题清单",
+                "代码仓库的分支命名规范",
+                "机房服务器的采购型号"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「可接受错误率与高风险问题清单」。知识库助手的价值边界由答错的代价决定，先明确哪些领域宁可不答、可接受的错误比例是多少，才能反推检索深度、引用要求和人工接管阈值。配色、分支规范和采购型号都是执行细节，没有质量底线时讨论它们只会让验收标准变成主观印象。"
+            },
+            {
+              "type": "single",
+              "question": "问答里一半问题需要跨部门流程推理，一半只需查条款原文，架构上合理的方案是？",
+              "options": [
+                "全部走自由生成的对话式问答",
+                "只用关键词检索以追求响应最快",
+                "统一走 GraphRAG 以简化实现",
+                "路由分流到检索问答与工作流"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「路由分流到检索问答与工作流」。条款查询用混合检索加引用即可，跨部门推理需要步骤化编排和工具校验，用一个意图路由把两类请求分发到不同链路，能同时保住成本与质量。全部自由生成会放大幻觉，只用关键词检索会漏掉改写，统一走重型方案让简单问题付出成倍延迟。"
+            },
+            {
+              "type": "single",
+              "question": "上线后指标显示答案质量稳定但成本翻倍，优先做的调优是？",
+              "options": [
+                "压缩上下文并缓存高频问答结果",
+                "把模型换成更大参数量的一号模型",
+                "取消所有引用以降低生成负担",
+                "把流式输出改成一次性返回"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「压缩上下文并缓存高频问答结果」。成本主要来自输入 Token 与重复请求，收紧召回数量、做片段级摘要并按问题哈希缓存高频答案，可以在不损失质量的前提下直接削减调用量。换更大模型会增加单价，取消引用牺牲可验证性，改一次性返回只影响首字延迟而对 Token 消耗没有帮助。"
+            },
+            {
+              "type": "single",
+              "question": "知识库文档更新后仍然返回旧政策，最先检查的是？",
+              "options": [
+                "前端是否缓存了历史回答文本",
+                "提示词里是否写明要求最新",
+                "模型温度是否设得过低了",
+                "摄取管道的增量同步是否生效"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「摄取管道的增量同步是否生效」。文档改了而检索结果没变，说明索引侧的数据没有更新，应检查抓取任务、分块与写入库的增量流程和删除标记是否遗漏。前端缓存与提示词措辞都可能干扰观感，但真正决定内容新旧的是索引数据；温度只影响采样随机性，不能刷新知识来源。"
+            },
+            {
+              "type": "code",
+              "question": "下面这段压测汇总脚本打印的数字代表什么？\nimport time\nlat = [0.9, 1.2, 2.5, 3.1, 4.0]\nlat.sort()\np95 = lat[int(0.95 * len(lat)) - 1]\nprint(round(p95, 1))",
+              "code": "import time\nlat = [0.9, 1.2, 2.5, 3.1, 4.0]\nlat.sort()\np95 = lat[int(0.95 * len(lat)) - 1]\nprint(round(p95, 1))",
+              "options": [
+                "首 Token 的等待时长",
+                "约 3.1 秒的 P95 延迟",
+                "全部请求的平均延迟",
+                "最大延迟即 4.0 秒"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「约 3.1 秒的 P95 延迟」。排序后用样本数乘分位系数再减一取下标，五个数得到下标 3，对应升序第四个数 3.1，即这组样本的近似高分位延迟。平均值要除以样本数而不是按下标取，最大值会直接落在末位的 4.0，首 Token 时延需要另外打点，与整体延迟口径不同。"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "distributed",
       "title": {
         "zh": "分布式与架构",
@@ -73334,6 +74377,1034 @@
             "language": "kotlin",
             "slot": "nullsafe"
           }
+        }
+      ]
+    },
+    {
+      "id": "harmonyos",
+      "title": {
+        "zh": "鸿蒙 HarmonyOS NEXT",
+        "en": "HarmonyOS NEXT"
+      },
+      "icon": "developer_board",
+      "color": "059669",
+      "lessons": [
+        {
+          "id": "harmonyos_overview",
+          "title": {
+            "zh": "HarmonyOS NEXT 全景与生态定位",
+            "en": "HarmonyOS NEXT Landscape & Positioning"
+          },
+          "summary": {
+            "zh": "纯血鸿蒙与 OpenHarmony 的边界、API 分层与 Kit 导入口径、HMS Core 位置、HAP/HSP 包形态与开发者身份。",
+            "en": "Boundaries of pure HarmonyOS, API layering and Kit imports, HMS Core role, package forms and developer identity."
+          },
+          "file": "assets/content/harmonyos_overview.md",
+          "minutes": 30,
+          "keywords": [
+            "纯血鸿蒙",
+            "ArkTS",
+            "HAP",
+            "AppGallery"
+          ],
+          "difficulty": "入门",
+          "order": 0,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "HarmonyOS NEXT 被称为「纯血鸿蒙」的最直接依据是？",
+              "options": [
+                "自研鸿蒙微内核替代宏内核",
+                "全面采用 ArkTS 开发语言",
+                "移除 AOSP 与 APK 兼容层",
+                "开放 @kit 命名空间的 API"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「移除 AOSP 与 APK 兼容层」。NEXT 把安卓运行时与兼容框架整体撤掉，应用只能以 ArkTS 或 C++ 形态运行在方舟运行时上，这是它与此前可侧载 APK 的鸿蒙版本之间唯一的硬边界，也是所有迁移工作的起点。自研内核与新的界面框架是同步发生的配套替换，API 命名空间重整只是文档口径变化，都不足以单独构成「纯血」的判据。"
+            },
+            {
+              "type": "single",
+              "question": "下列关于 OpenHarmony 与 HarmonyOS 关系的说法成立的是？",
+              "options": [
+                "两者接口完全一致可互相替换",
+                "后者在前者之上叠加商用能力",
+                "前者仅面向手表与车机设备",
+                "后者不开源也没有认证版本"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「后者在前者之上叠加商用能力」。OpenHarmony 由开放原子基金会托管，提供 Foundation 层与 System API 参考实现；商用 HarmonyOS 在此之上加入 HMS Core、OS API、安全补丁与上架体系，并有明确的 API 版本认证。两者共享部分接口但发布节奏与可用能力不同，把开源每日构建镜像直接当发货系统会缺少生态与合规支撑。"
+            },
+            {
+              "type": "single",
+              "question": "API 12 起在 ArkTS 中引用系统能力，官方推荐的导入写法是？",
+              "options": [
+                "按文件相对路径逐级导入",
+                "在 tsconfig 里配置包别名",
+                "按 `@kit.*` 模块聚合导入",
+                "用字符串动态 require 加载"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「按 `@kit.*` 模块聚合导入」。从这一代 SDK 开始，网络、UI、能力等接口以 Kit 为单位聚合导出，类型提示、文档与能力清单都按 Kit 组织，原先细粒度的 `@ohos.*` 路径仍可用但不再作为主口径。相对路径只用于工程内文件，包别名解决的是模块解析而不是能力可见性，ArkTS 也禁止用字符串动态求值的方式加载模块。"
+            },
+            {
+              "type": "single",
+              "question": "需要在同一应用的多个模块间共享一份代码，应选用的包形态是？",
+              "options": [
+                "HSP 共享包",
+                "HAR 静态库",
+                "独立 HAP 特性包",
+                "原子化服务包"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「HSP 共享包」。HSP 在安装期随宿主应用一起被解析，只在本应用范围内共享，能避免同一份逻辑在多个 HAP 里重复打包，符合「应用内共享」这一诉求。HAR 是编译期静态库，适合跨应用分发但会被打进每个使用方；独立 HAP 是可安装的能力包而不是共享库；原子化服务对应免安装的元服务形态，与代码共享无关。"
+            },
+            {
+              "type": "code",
+              "question": "下面代码打印出的 os 字段最可能反映什么？\nimport { deviceInfo } from '@kit.BasicServicesKit';\n@Entry\n@Component\nstruct Probe {\n  build() {\n    Column() {\n      Text(deviceInfo.osFullName)\n    }\n  }\n}",
+              "code": "import { deviceInfo } from '@kit.BasicServicesKit';\n@Entry\n@Component\nstruct Probe {\n  build() {\n    Column() {\n      Text(deviceInfo.osFullName)\n    }\n  }\n}",
+              "options": [
+                "设备的发行系统名称",
+                "当前应用的版本名称",
+                "方舟编译器的版本号",
+                "设备厂商的型号字符串"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「设备的发行系统名称」。`deviceInfo.osFullName` 返回设备发货时写入的完整发行版字符串，在 NEXT 机型上可用于与 `sdkApiVersion` 交叉验证运行环境，是迁移评估阶段最常用的判据之一。应用版本名要从包管理接口读取，编译器版本不会作为运行时字段暴露给应用层，厂商型号另有对应字段而不是这个属性。"
+            }
+          ]
+        },
+        {
+          "id": "harmonyos_deveco_setup",
+          "title": {
+            "zh": "DevEco Studio 与工程结构",
+            "en": "DevEco Studio & Project Layout"
+          },
+          "summary": {
+            "zh": "IDE 与 SDK 安装、模拟器能力边界、模块与 HAP/HSP 目录结构、三份配置的层级与签名调试流程。",
+            "en": "IDE and SDK setup, emulator limits, module layout, config layering, signing and debugging workflow."
+          },
+          "file": "assets/content/harmonyos_deveco_setup.md",
+          "minutes": 35,
+          "keywords": [
+            "DevEco Studio",
+            "hvigor",
+            "build-profile.json5",
+            "签名",
+            "模拟器"
+          ],
+          "difficulty": "入门",
+          "order": 1,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "DevEco Studio 的 Local Emulator 无法覆盖下列哪项验证？",
+              "options": [
+                "多分辨率手机屏幕",
+                "系统相册与通知面板",
+                "横竖屏与折叠态切换",
+                "真实设备的分布式组网"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「真实设备的分布式组网」。本机模拟器用 x86 镜像模拟屏幕尺寸、传感器、相册与系统界面，日常布局与交互验证足够用，但软总线组网、真实指纹、NFC 与部分硬件编解码链路依赖实体设备与真实网络环境，必须回到真机验证。多分辨率与折叠态可以通过新建不同设备实例覆盖，通知面板属于系统 UI 的一部分，模拟器能够呈现。"
+            },
+            {
+              "type": "single",
+              "question": "想让一个模块只在本应用内被其他模块共享，`module.json5` 中 type 应设为？",
+              "options": [
+                "entry",
+                "shared",
+                "feature",
+                "atomicService"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「shared」。声明为 shared 的模块构建为 HSP，随宿主应用一起安装并只在应用内共享，可以避免同一份逻辑被重复打包进多个能力包。entry 是承载主入口的能力包，feature 是可按需分发的特性能力包，两者都不是共享库语义；atomicService 对应免安装的元服务形态，用来承载轻交互入口，与代码共享没有对应关系。"
+            },
+            {
+              "type": "single",
+              "question": "项目级 `build-profile.json5` 中 products 数组的主要作用是？",
+              "options": [
+                "定义产物与目标 SDK 配置",
+                "登记所有依赖的三方库",
+                "声明应用页面的路由表",
+                "配置签名证书的密码"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「定义产物与目标 SDK 配置」。每个 product 描述一套可交付形态，包含名称、引用的签名配置、运行时系统标识与编译兼容的 SDK 版本，构建时按 product 选择产物。三方依赖登记在包描述文件里，页面路由写在模块清单的 pages 字段，证书与密钥材料属于 signingConfigs 的 material 部分，这三处都不归 products 管。"
+            },
+            {
+              "type": "single",
+              "question": "调试签名与发布签名必须使用不同材料，根本原因是？",
+              "options": [
+                "调试证书无法安装到真机",
+                "发布签名能跳过混淆配置",
+                "两套证书的用途与信任链不同",
+                "市场只校验包名不校验签名"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「两套证书的用途与信任链不同」。调试证书由开发工具代申请、Profile 限定可调试的设备列表，用于真机联调；发布证书需在开发者后台按主体申请，Profile 覆盖上架分发场景，两者不可互换。调试证书恰恰可以安装到已登记的调试真机，签名与包名必须一致否则安装被拒，上架时市场会严格校验发布签名而不只是包名。"
+            },
+            {
+              "type": "code",
+              "question": "关于下面这段工程配置片段，哪一项说法正确？\n// build-profile.json5 片段\n{\n  \"products\": [{\n    \"name\": \"default\",\n    \"signingConfig\": \"default\",\n    \"runtimeOS\": \"HarmonyOS\",\n    \"compileSdkVersion\": \"5.0.0(12)\"\n  }]\n}",
+              "code": "// build-profile.json5 片段\n{\n  \"products\": [{\n    \"name\": \"default\",\n    \"signingConfig\": \"default\",\n    \"runtimeOS\": \"HarmonyOS\",\n    \"compileSdkVersion\": \"5.0.0(12)\"\n  }]\n}",
+              "options": [
+                "可以省略 runtimeOS 字段",
+                "JSON5 允许注释与尾逗号",
+                "一个工程只能声明一个产物",
+                "signingConfig 必须与 name 同名"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「JSON5 允许注释与尾逗号」。鸿蒙的这几个配置文件都是 JSON5 方言，首行注释与数组尾逗号都属合法写法，这也是它们以 json5 结尾的原因。`runtimeOS` 用于区分产物运行的系统分支，去掉会改变默认口径，不应随意省略；一个工程可以声明多个 product 覆盖不同设备与渠道；signingConfig 只是引用名，与 product 名相同是团队习惯而非语法约束。"
+            }
+          ]
+        },
+        {
+          "id": "harmonyos_arkts_basics",
+          "title": {
+            "zh": "ArkTS 语言基础",
+            "en": "ArkTS Language Fundamentals"
+          },
+          "summary": {
+            "zh": "TS 子集与静态约束、类与接口建模、联合类型收窄、被禁的动态特性与装饰器语法基线。",
+            "en": "Typed TS subset, class and interface modeling, union narrowing, banned dynamic features and decorator baseline."
+          },
+          "file": "assets/content/harmonyos_arkts_basics.md",
+          "minutes": 45,
+          "keywords": [
+            "静态类型",
+            "类型收窄",
+            "装饰器",
+            "动态属性禁令"
+          ],
+          "difficulty": "入门",
+          "order": 2,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "ArkTS 相对 TypeScript 最主要的收紧体现在哪一点？",
+              "options": [
+                "取消了泛型与接口语法",
+                "禁止使用类与模块系统",
+                "强制静态类型并限制动态特性",
+                "要求所有函数写成箭头形式"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「强制静态类型并限制动态特性」。ArkTS 保留 TypeScript 的语法外壳，但取消 any 与隐式 any、禁止给对象动态增删属性、限制结构等价赋值，目的是让编译器在编译期确定对象布局与方法表，从而支撑 AOT 与稳定的运行期性能。泛型与接口仍然存在，类与模块系统是最基础的语法单元，函数写法也没有被强制成某一种形式，三项都不是收紧点。"
+            },
+            {
+              "type": "single",
+              "question": "下列哪种做法符合 ArkTS 的对象建模规范？",
+              "options": [
+                "显式声明接口再实现方法",
+                "把任意键挂到对象上",
+                "把对象字面量赋给接口",
+                "用字符串键索引动态取值"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「显式声明接口再实现方法」。先给对象形状命名，再用类实现行为，字段与方法都在编译期可查，这是 ArkTS 推荐的建模路径。给已有类型的对象追加新属性、用字符串键动态索引取值都触碰动态特性禁令；把匿名对象字面量直接赋给接口类型也不被结构化赋值规则允许，需要先构造有名字的类实例再传递。"
+            },
+            {
+              "type": "single",
+              "question": "需要把接口返回的 JSON 文本转成带方法的模型对象，ArkTS 推荐做法是？",
+              "options": [
+                "直接断言成目标接口类型",
+                "用类承载并逐字段赋值",
+                "用动态求值解析后再转型",
+                "把结果存成 ESObject 传递"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「用类承载并逐字段赋值」。在静态约束下方法必须来自真实的类原型，集中写一个转换函数还能顺带完成默认值兜底与字段容错。类型断言只做兼容检查，不会给对象补出方法，缺字段要到访问时才暴露；动态求值一类写法本就被禁用；跨语言边界类型只该出现在与原生交互的入口，把它当类型传进界面层等于放弃编译期检查。"
+            },
+            {
+              "type": "single",
+              "question": "`@State` 装饰器允许标注在什么位置？",
+              "options": [
+                "全局常量声明文件中",
+                "普通类的静态成员上",
+                "函数体的局部变量上",
+                "自定义组件的成员变量上"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「自定义组件的成员变量上」。`@State` 表示组件内部可观察状态，编译器会在被标注的自定义组件内生成读写拦截逻辑，因此只能出现在组件成员变量声明处。写在全局常量、普通类成员或函数局部变量上都不会产生可观察效果，跨组件同步要改用单向或双向绑定装饰器，跨页面共享则交给应用级状态容器。"
+            },
+            {
+              "type": "code",
+              "question": "下面代码的输出是？\nclass Dog { bark(): string { return 'woof'; } }\nclass Cat { meow(): string { return 'meow'; } }\nfunction speak(a: Dog | Cat): string {\n  if (a instanceof Dog) { return a.bark(); }\n  return a.meow();\n}\nconsole.info(speak(new Cat()));",
+              "code": "class Dog { bark(): string { return 'woof'; } }\nclass Cat { meow(): string { return 'meow'; } }\nfunction speak(a: Dog | Cat): string {\n  if (a instanceof Dog) { return a.bark(); }\n  return a.meow();\n}\nconsole.info(speak(new Cat()));",
+              "options": [
+                "输出 meow",
+                "输出 woof",
+                "编译期直接报错",
+                "运行期抛出异常"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「输出 meow」。入参声明为联合类型，`instanceof` 把 if 分支收窄到 Dog，else 分支自动收窄为 Cat，因此调用 Cat 独有方法是合法写法；实参传入的正是 Cat 实例，所以打印 meow。换成 Dog 实参才会走前一分支得到 woof；这段代码符合联合类型收窄规则，不会在编译期被拒绝，也不存在运行期找不到方法的异常路径。"
+            }
+          ]
+        },
+        {
+          "id": "harmonyos_arkui_first_page",
+          "title": {
+            "zh": "ArkUI 声明式 UI 首个页面",
+            "en": "First Declarative Page with ArkUI"
+          },
+          "summary": {
+            "zh": "@Entry/@Component/@Builder 三种粒度、常用基础组件与属性链、@Styles 与 @Extend 的样式复用边界。",
+            "en": "Granularity of page, component and builder, core components with chained attributes, style reuse rules."
+          },
+          "file": "assets/content/harmonyos_arkui_first_page.md",
+          "minutes": 45,
+          "keywords": [
+            "@Entry",
+            "属性链",
+            "@Builder",
+            "@Extend",
+            "资源引用"
+          ],
+          "difficulty": "基础",
+          "order": 3,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "`@Entry` 装饰器在一个页面文件中的作用是？",
+              "options": [
+                "把结构体标记成可复用组件",
+                "把一个组件标记为页面入口",
+                "把方法标记成轻量构建函数",
+                "把变量标记成组件内部状态"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「把一个组件标记为页面入口」。它告诉框架这个自定义组件对应一个可加载页面，需要与组件装饰器同时出现，并在页面路由表里登记后才能被跳转。可复用组件由 `@Component` 表达，组件内的轻量片段由 `@Builder` 表达，组件内部状态由 `@State` 表达，三者描述的都是复用粒度或数据归属，与「页面入口」这一职责无关。"
+            },
+            {
+              "type": "single",
+              "question": "关于 `@Builder` 的说法，下列哪项成立？",
+              "options": [
+                "只能定义在自定义组件外部",
+                "必须显式返回一个组件实例",
+                "内部可以写任意循环语句",
+                "用于抽取组件内的复用片段"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「用于抽取组件内的复用片段」。它定义在自定义组件内部，被调用时把一段界面描述就地展开，因此没有独立生命周期，也不拥有独立状态作用域。组件外部同样可以定义全局构建函数，所以「只能在外部」不成立；它不需要返回实例，内部仍受声明式语句边界约束，不能随手塞命令式循环，这一点与普通函数不同。"
+            },
+            {
+              "type": "single",
+              "question": "`@Styles` 与 `@Extend` 的关键差别是？",
+              "options": [
+                "前者能带参数而后者不能",
+                "前者只能作用于文本组件",
+                "前者可跨组件通用后者限定类型",
+                "两者完全等价只是写法不同"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「前者可跨组件通用后者限定类型」。样式集合可以被任何支持这些属性的组件引用，但不接受参数；按组件扩展的写法绑定具体组件类型，可以带形参，因此需要按尺寸或颜色参数化时必须走后者，选项一把方向说反了。两者都不是文本组件专属，作用域与参数能力都不同，说等价会让人在编译错误面前无从下手。"
+            },
+            {
+              "type": "single",
+              "question": "要在用户输入时实时拿到文本内容，最直接的写法是？",
+              "options": [
+                "在 onChange 里写入状态变量",
+                "在 onAppear 里读取一次文本",
+                "给组件加 id 后再查询节点",
+                "在生命周期回调里轮询属性"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「在 onChange 里写入状态变量」。输入组件每次文本变化都会触发该回调，把值写进可观察状态后，依赖它的组件自动刷新，这是声明式框架里唯一可靠的取值路径。出现回调只在组件挂载时执行一次拿不到过程值，ArkUI 没有公开的命令式节点查询接口，在生命周期里轮询既消耗主线程也无法覆盖用户正在输入的每一个字符。"
+            },
+            {
+              "type": "code",
+              "question": "点击一次按钮后，屏幕上 Text 显示的内容是？\n@Component\nstruct T {\n  @State tip: string = 'hi';\n  build() {\n    Column() {\n      Text(this.tip + ' !').fontSize(24)\n      Button('go').onClick(() => { this.tip = 'ok'; })\n    }\n  }\n}",
+              "code": "@Component\nstruct T {\n  @State tip: string = 'hi';\n  build() {\n    Column() {\n      Text(this.tip + ' !').fontSize(24)\n      Button('go').onClick(() => { this.tip = 'ok'; })\n    }\n  }\n}",
+              "options": [
+                "仍然显示 hi !",
+                "显示 hi ! ok !",
+                "显示 ok hi !",
+                "显示 ok !"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「显示 ok !」。按钮回调把可观察状态从 hi 改成 ok，框架据此重建该组件并重新计算字符串拼接结果，因此屏幕上只剩新值加一个感叹号。若变量没有被状态装饰器修饰，才会停在首次渲染的旧值；两个值并列的写法需要额外的累加逻辑，回调里只是整体赋值，不会产生拼接残留。"
+            }
+          ]
+        },
+        {
+          "id": "harmonyos_layout_system",
+          "title": {
+            "zh": "布局系统：Flex/Grid/Stack",
+            "en": "Layout: Flex, Grid & Stack"
+          },
+          "summary": {
+            "zh": "线性与弹性布局、层叠与相对容器、List 长列表回收、栅格断点与折叠屏适配策略。",
+            "en": "Linear and flex layout, stacking and relative containers, list recycling, grid breakpoints and foldable adaptation."
+          },
+          "file": "assets/content/harmonyos_layout_system.md",
+          "minutes": 50,
+          "keywords": [
+            "Flex",
+            "layoutWeight",
+            "RelativeContainer",
+            "List 懒加载",
+            "断点"
+          ],
+          "difficulty": "基础",
+          "order": 4,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "下列关于 Row 与 Flex 差别的说法正确的是？",
+              "options": [
+                "Flex 支持换行而 Row 不换行",
+                "Row 支持换行而 Flex 不换行",
+                "两者完全等价只是名字不同",
+                "Flex 只能用于纵向排列场景"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「Flex 支持换行而 Row 不换行」。Row 是单行线性容器的特化写法，内容超出主轴时只会挤压或溢出；弹性容器暴露方向与换行开关，能在空间不足时折到下一行。两者共享同一套测量逻辑，方向都不是唯一固定值，也不存在数量级上的性能代差，真正的选择依据是「是否需要换行」以及可读性。"
+            },
+            {
+              "type": "single",
+              "question": "子组件上设置 `layoutWeight(1)` 的含义是？",
+              "options": [
+                "固定宽度为父容器的一半",
+                "让子组件按内容自适应宽度",
+                "按比例分配父容器的剩余空间",
+                "把子组件的最小宽度设为零"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「按比例分配父容器的剩余空间」。父容器先给不带权重的兄弟节点分配固定尺寸，再把主轴剩余空间按权重比值分给带权重节点，因此既不是取一半也不是按内容自适应。剩余空间不足时权重项会被压到很小，这正是「加了权重反而被挤没」的成因，与最小宽度概念无关。"
+            },
+            {
+              "type": "single",
+              "question": "在 Stack 里让某个子层相对默认位置做小幅偏移，应使用哪个属性？",
+              "options": [
+                "用 alignment 设置对齐基准",
+                "用 zIndex 调整叠放次序",
+                "用 clip 裁掉越界内容",
+                "用 offset 做相对偏移"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「用 offset 做相对偏移」。它在不改变布局尺寸的前提下做相对位移，适合角标、气泡这类微调场景。对齐属性决定的是整个容器内子节点的对齐基准而不是单个偏移量，层级属性只控制谁盖住谁，裁剪属性负责是否显示越界部分，三者都实现不了「按坐标挪一点」这个需求。"
+            },
+            {
+              "type": "single",
+              "question": "承载上千条记录且要求滑动流畅，最合适的方案是？",
+              "options": [
+                "用 Column 全量渲染并预加载",
+                "用 List 配合懒加载与复用",
+                "用 Grid 并把列数设置成一",
+                "用 Scroll 套 Stack 来渲染"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「用 List 配合懒加载与复用」。列表容器只维护视口与缓存区内的条目，滑出后进入回收池，配合稳定键与组件复用可把常驻节点数压到常数级。用普通线性容器全量渲染会让首帧耗时随条目数线性增长；把网格列数设成一并不会改变它的测量模型，反而绕远；滚动容器套层叠容器同样没有回收能力，只是把问题藏得更深。"
+            },
+            {
+              "type": "code",
+              "question": "父 Row 宽度为 300，中间 Text('B') 的实际宽度是？\n@Component\nstruct Weights {\n  build() {\n    Row() {\n      Text('A').width(60)\n      Text('B').layoutWeight(1)\n      Text('C').width(40)\n    }.width(300)\n  }\n}",
+              "code": "@Component\nstruct Weights {\n  build() {\n    Row() {\n      Text('A').width(60)\n      Text('B').layoutWeight(1)\n      Text('C').width(40)\n    }.width(300)\n  }\n}",
+              "options": [
+                "宽度为 60",
+                "宽度为 300",
+                "宽度为 200",
+                "宽度为 120"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「宽度为 200」。父容器先在主轴上给 A 与 C 分别留出 60 与 40，剩余 300 减 100 等于 200，再由唯一的带权重节点全部获得。选 60 是把固定宽度当成了权重语义，选 300 忽略了兄弟节点已经占用的空间，选 120 则没有任何分配规则能够推出该数值。"
+            }
+          ]
+        },
+        {
+          "id": "harmonyos_state_management",
+          "title": {
+            "zh": "状态管理与数据传递",
+            "en": "State Management & Data Flow"
+          },
+          "summary": {
+            "zh": "@State/@Prop/@Link/@Provide 家族的可观察范围、深对象更新、四类状态容器与持久化边界。",
+            "en": "Observer scope of decorators, deep object updates, four state containers and persistence boundaries."
+          },
+          "file": "assets/content/harmonyos_state_management.md",
+          "minutes": 55,
+          "keywords": [
+            "@State",
+            "@Link",
+            "@ObjectLink",
+            "AppStorage",
+            "PersistentStorage"
+          ],
+          "difficulty": "基础",
+          "order": 5,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "子组件修改后要立刻回写到父组件，应当选择的传递方式是？",
+              "options": [
+                "@Prop 建立只读值副本",
+                "@State 各自维护数据",
+                "@Watch 注册变化回调",
+                "@Link 与父组件双向同步"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「@Link 与父组件双向同步」。它让父子引用同一份状态，任一侧写入都会让另一侧重建，正是编辑弹窗这类场景需要的语义。单向副本在父级下次下发时会覆盖子侧改动；组件内部状态各自持有，两边看到的是不同数据；变化回调只是副作用出口，本身不建立数据通道，也不能替代传递方式。"
+            },
+            {
+              "type": "single",
+              "question": "关于 `@Provide` 与 `@Consume` 的作用范围，下列说法正确的是？",
+              "options": [
+                "按同名键跨层级传递数据",
+                "只能在直接父子一层之间使用",
+                "必须由根页面逐层显式传参",
+                "会自动把数据写入持久化层"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「按同名键跨层级传递数据」。这对装饰器以键名配对，祖先声明提供方后，子孙在自己的子树里声明消费即可直接读写，中间层不必逐层透传。它并不需要根页面显式传参，也不碰任何磁盘存储；一旦跳出提供方所在的组件子树，配对关系就不复存在，跨页面共享要改用应用级状态容器。"
+            },
+            {
+              "type": "single",
+              "question": "列表项内部字段被修改后希望该行刷新，子组件应如何接收数据？",
+              "options": [
+                "用 @Prop 复制一份对象",
+                "用 @State 持有整个数组",
+                "用 @ObjectLink 接收该实例",
+                "用 @Link 绑定一个字符串"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「用 @ObjectLink 接收该实例」。配合类上的可观察装饰器，它把实例属性也纳入拦截范围，因此第二层字段变化能定位到具体条目重建。单向副本只拿到值且不会观察深层属性；整个数组放在组件内部状态上会让所有条目一起重建；绑定一个字符串字段与列表项对象无关，三者都解决不了深层不刷新。"
+            },
+            {
+              "type": "single",
+              "question": "`PersistentStorage` 在这套容器体系里承担的职责是？",
+              "options": [
+                "在多个应用间共享内存数据",
+                "把指定键的状态写入磁盘",
+                "缓存网络请求返回的响应",
+                "保存数据库的事务重做日志"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「把指定键的状态写入磁盘」。它包装全局容器中被显式登记过的键，在变化时序列化落盘、启动时回填，因此只应放小而关键的配置。未被登记的键依旧只存在于内存，重启后回到默认值；它不承担跨应用共享，也不负责网络缓存或数据库日志，那些分别属于各自的能力域。"
+            },
+            {
+              "type": "code",
+              "question": "首次渲染显示什么？点击一次按钮后 Text 的内容是？\n@Component\nstruct Counter {\n  @State count: number = 3;\n  build() {\n    Column() {\n      Text(`count=${this.count}`).fontSize(20)\n      Button('+').onClick(() => { this.count++; })\n    }\n  }\n}",
+              "code": "@Component\nstruct Counter {\n  @State count: number = 3;\n  build() {\n    Column() {\n      Text(`count=${this.count}`).fontSize(20)\n      Button('+').onClick(() => { this.count++; })\n    }\n  }\n}",
+              "options": [
+                "先显示 count=3，点击后变 4",
+                "先显示 count=3，点击后不刷新",
+                "编译报错，模板串不支持",
+                "先显示 count=0，点击后变 1"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「先显示 count=3，点击后变 4」。可观察状态的写入会触发所属组件重建，重建时重新求值模板字符串，于是数字随之更新，初值来自声明处的 3。若把变量声明成普通成员而没有装饰器，才会出现点击后画面不动的现象；ArkTS 完整支持模板字符串与反引号插值，不会因为写法报编译错误。"
+            }
+          ]
+        },
+        {
+          "id": "harmonyos_navigation",
+          "title": {
+            "zh": "路由与页面导航",
+            "en": "Routing & Navigation"
+          },
+          "summary": {
+            "zh": "@ohos.router 与 Navigation 两套方案的分工、NavPathStack 栈操作语义、页面与组件生命周期时机、跨页结果回传方式。",
+            "en": "Division between router and Navigation, NavPathStack semantics, page and component lifecycle timing, cross-page result passing."
+          },
+          "file": "assets/content/harmonyos_navigation.md",
+          "minutes": 45,
+          "keywords": [
+            "NavPathStack",
+            "NavDestination",
+            "页面栈",
+            "onPageShow"
+          ],
+          "difficulty": "进阶",
+          "order": 6,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "下列关于 `@ohos.router` 与 `Navigation` 的说法正确的是？",
+              "options": [
+                "Navigation 只能整页跳转不支持分栏",
+                "两套方案无法在同一工程里共存",
+                "router 适合简单的页面级跳转",
+                "Navigation 的栈不可由业务编程控制"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「router 适合简单的页面级跳转」。它以文件路径寻址、整窗替换内容，栈由系统维护，页面数少时心智负担最小；`Navigation` 把导航做成组件，因此能承担分栏、弹层与可编程栈这些复杂形态，说它只能整页跳转并不准确。两套方案在同一工程里可以共存，只是不建议对同一条链路同时使用，避免两套生命周期互相干扰。"
+            },
+            {
+              "type": "single",
+              "question": "`NavPathStack.pushPath` 被调用后的效果是？",
+              "options": [
+                "用新页面替换当前的栈顶节点",
+                "回退到指定命名的历史节点",
+                "清空整条导航栈并回到根页面",
+                "向导航栈压入一个新页面"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「向导航栈压入一个新页面」。它追加节点并保留上一页，随后调用内容构建工厂生成对应的导航节点并播放转场。替换栈顶是 `replacePath` 的语义，回退到指定命名节点要用 `popToName`，清空整栈另有 `clear` 方法，四者动作完全不同，混用会造成返回逻辑与预期不符。"
+            },
+            {
+              "type": "single",
+              "question": "关于页面可见性回调，下列说法正确的是？",
+              "options": [
+                "onPageShow 在页面切前台时触发",
+                "aboutToDisappear 在页面被盖住时触发",
+                "onBackPress 无法阻止系统的默认返回",
+                "可见性回调会在每次构建时重复触发"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「onPageShow 在页面切前台时触发」。页面被上层盖住时触发隐藏回调，重新回到前台时触发显示回调，做数据刷新与播放恢复应挂在这里。组件销毁对应的是 `aboutToDisappear`，它只在节点真正出栈销毁时执行；返回拦截回调想阻止默认返回必须显式返回 true，而不是「拦不住」；该回调也不会在每次构建时重复触发。"
+            },
+            {
+              "type": "single",
+              "question": "子页面完成后要把选择结果带回上一页，最合适的做法是？",
+              "options": [
+                "子页面直接改写父页面的状态",
+                "出栈时携带结果并由回调接收",
+                "把结果写入磁盘后由父页面重新读取",
+                "让父页面定时轮询一个共享变量"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「出栈时携带结果并由回调接收」。结果随出栈动作返回，上一页在入栈时注册的回调里接收并写入自己的状态，数据所有权清晰、页面可复用。直接改父页面状态会让两页强耦合，写磁盘再读延迟高且引入一致性问题，定时轮询既耗资源也拿不到准确的完成时机，都不适合作为跨页通信手段。"
+            },
+            {
+              "type": "code",
+              "question": "下面代码最后一行打印的是？\nconst stack: NavPathStack = new NavPathStack();\nstack.pushPath({ name: 'detail' });\nstack.pushPath({ name: 'settings' });\nstack.pushPath({ name: 'detail' });\nconsole.info(`${stack.size()}-${stack.getAllPathName().length}`);",
+              "code": "const stack: NavPathStack = new NavPathStack();\nstack.pushPath({ name: 'detail' });\nstack.pushPath({ name: 'settings' });\nstack.pushPath({ name: 'detail' });\nconsole.info(`${stack.size()}-${stack.getAllPathName().length}`);",
+              "options": [
+                "打印 3-3",
+                "打印 3-2",
+                "打印 1-3",
+                "打印 2-2"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「打印 3-3」。三次入栈都会追加节点，重复的名字不会被合并，因此栈深是 3；`getAllPathName()` 返回的是按栈序排列的全部名字数组，同样包含重复项，长度也是 3。要按名字数量去重得自己转成集合，指望命名路由自动去重是常见误解。"
+            }
+          ]
+        },
+        {
+          "id": "harmonyos_network_data",
+          "title": {
+            "zh": "网络、数据与文件",
+            "en": "Networking, Data & Files"
+          },
+          "summary": {
+            "zh": "NetworkKit 请求与超时控制、RPC 的适用边界、关系型数据库与首选项的选型、应用沙箱目录分层与后台任务约束。",
+            "en": "NetworkKit requests and timeouts, RPC boundaries, relational store versus preferences, sandbox layout and background limits."
+          },
+          "file": "assets/content/harmonyos_network_data.md",
+          "minutes": 55,
+          "keywords": [
+            "NetworkKit",
+            "relationalStore",
+            "preferences",
+            "应用沙箱",
+            "后台任务"
+          ],
+          "difficulty": "进阶",
+          "order": 7,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "应用需要向自家服务端发一次 HTTPS 请求，优先选用的能力是？",
+              "options": [
+                "用 NetworkKit 的 http 模块",
+                "自己实现底层套接字收发原始字节流",
+                "用界面组件发起跨域请求取回数据",
+                "把网络字节流代理成本地文件读写"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「用 NetworkKit 的 http 模块」。它已封装连接池、超时、证书校验与错误码，是官方推荐的应用层入口。自己写底层套接字要重新处理 TLS、代理与并发限制；用界面组件发跨域请求把业务逻辑与渲染耦合在一起；把网络字节流代理到文件读写更是绕开了整套错误与超时模型，三者都不该作为首选。"
+            },
+            {
+              "type": "single",
+              "question": "在关系型数据库中避免 SQL 注入的正确做法是？",
+              "options": [
+                "把所有单引号从用户输入里删掉",
+                "用占位符传参而非拼接文本",
+                "先做一层自定义编码再拼进语句",
+                "限定可查询的表名来缩小范围"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「用占位符传参而非拼接文本」。值走绑定参数后由数据库处理转义与类型，用户输入里的引号不会改变语句结构；条件构造器本质上也是同一机制。删掉引号会破坏正常数据，先做一层自定义编码挡不住构造好的恶意片段，限定表名只影响可见范围与注入无关。"
+            },
+            {
+              "type": "single",
+              "question": "需要保存少量开关与上次浏览位置这类配置，最合适的载体是？",
+              "options": [
+                "用文件手写序列化保存全部配置",
+                "建一张单行表存进关系型数据库",
+                "只放 AppStorage 依靠内存缓存",
+                "首选项 preferences"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「首选项 preferences」。它以键值形式提供内存缓存加异步落盘，读写接口简单，正适合小量配置。用文件手写序列化要自己处理并发与损坏，用关系型数据库为几个字段建表与查询过重，只放 AppStorage 则在进程结束后丢失，不满足重启后仍在的要求。"
+            },
+            {
+              "type": "single",
+              "question": "应用退到后台后还要完成一次短暂的订单补发，应选用的机制是？",
+              "options": [
+                "在后台用定时器循环等待完成",
+                "把逻辑留在主线程等它被挂起",
+                "申请短时任务窗口",
+                "提交周期任务由系统挑时机执行"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「申请短时任务窗口」。短时任务给关键动作一小段受控执行时间，超时后进程被冻结，符合「马上要完成但不能长期跑」的语义。用循环或定时器在后台空跑会被省电策略直接终止，把逻辑继续留在主线程等它被挂起则根本执行不完；延迟与周期任务由系统挑时机，不保证立刻执行。"
+            },
+            {
+              "type": "code",
+              "question": "最后一次 get 的返回值是？\nimport { preferences } from '@kit.ArkData';\nconst store = await preferences.getPreferences(ctx, 'settings');\nawait store.put('volume', 20);\nawait store.flush();\nawait store.delete('volume');\nconst value = await store.get('volume', 5);",
+              "code": "import { preferences } from '@kit.ArkData';\nconst store = await preferences.getPreferences(ctx, 'settings');\nawait store.put('volume', 20);\nawait store.flush();\nawait store.delete('volume');\nconst value = await store.get('volume', 5);",
+              "options": [
+                "返回写入过的 20",
+                "返回默认值 5",
+                "返回一个空值对象",
+                "抛出键不存在的异常"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「返回默认值 5」。键被删除后存储里已不存在该条目，`get` 的第二个参数就是缺失时的兜底值，因此返回 5。flush 只影响是否落盘，不会让删除回滚；ArkTS 的接口在缺键时返回调用方给的默认值而不是抛异常，也不会返回空值，所以拿 20、拿空或等异常三种预期都不成立。"
+            }
+          ]
+        },
+        {
+          "id": "harmonyos_multimedia",
+          "title": {
+            "zh": "多媒体与图形渲染",
+            "en": "Multimedia & Graphics"
+          },
+          "summary": {
+            "zh": "四类渲染方案的选型边界、AVPlayer 状态机驱动、相机与画布绘制、三层动画体系的覆盖关系与 Web 混合渲染限制。",
+            "en": "Rendering option selection, AVPlayer state machine, camera and canvas drawing, animation layers and embedded web limits."
+          },
+          "file": "assets/content/harmonyos_multimedia.md",
+          "minutes": 50,
+          "keywords": [
+            "AVPlayer",
+            "XComponent",
+            "Canvas",
+            "animateTo",
+            "Web 组件"
+          ],
+          "difficulty": "进阶",
+          "order": 8,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "要在页面里播放一段本地 mp4 并复用系统提供的画面承载，最省事的方案是？",
+              "options": [
+                "用画布组件逐帧把像素画到界面",
+                "用 AVPlayer 配 XComponent",
+                "用图片组件按定时器轮播帧",
+                "把播放器塞进内嵌网页里播放"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「用 AVPlayer 配 XComponent」。播放引擎负责解码与状态管理，`XComponent` 提供外部表面让画面直接合成，几乎不占用主线程。用画布逐帧绘制要自己搬像素；用图片组件轮播帧既没有音轨也无法稳定帧间隔；把播放器塞进内嵌网页多带一个内核且桥接复杂，三者都不是首选。"
+            },
+            {
+              "type": "single",
+              "question": "`animateTo` 在 ArkUI 动画体系中的作用是？",
+              "options": [
+                "为页面注册一条命名的路由路径",
+                "描述组件插入移除时的转场效果",
+                "在构建阶段预先计算好布局尺寸",
+                "让闭包内的状态变化带动画"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「让闭包内的状态变化带动画」。它把闭包执行期间发生的所有状态改动收集起来，按给定时长与曲线插值执行，因此适合一次改动驱动多处动画的场景。它既不注册路由，也不定义组件转场，更不是在构建阶段预计算布局；需要描述插入移除效果时应使用转场能力，两者解决的问题不同。"
+            },
+            {
+              "type": "single",
+              "question": "需要在图表里绘制上千个图元并且频繁重绘，性能最好的方案是？",
+              "options": [
+                "Canvas 配合脏矩形重绘",
+                "给每个图元建一个组件节点",
+                "用声明式形状组件逐个排列",
+                "把整张图渲染成位图再展示"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「Canvas 配合脏矩形重绘」。命令式画布的图元不产生组件节点，重绘成本主要在绘制调用上，配合脏区只补变化部分可以稳定在一帧预算内。给每个图元建组件会让节点数与布局成本失控，声明式形状组件同样受节点数量限制，把图形转成位图则牺牲清晰度与交互命中能力。"
+            },
+            {
+              "type": "single",
+              "question": "应用内需要嵌入 H5 页面并与原生双向通信，应选用的能力是？",
+              "options": [
+                "下载资源后自己实现排版渲染",
+                "在原生层解析 HTML 文本内容",
+                "Web 组件加桥接代理",
+                "用图片组件展示页面截图"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「Web 组件加桥接代理」。它内嵌浏览器引擎，并通过脚本代理与消息通道实现双向调用，是复用现有 H5 的标准做法。下载资源后自己渲染意味着要重写整套排版，在原生层解析 HTML 文本只能拿到内容拿不到交互，用图片展示页面更是完全丧失可操作性。"
+            },
+            {
+              "type": "code",
+              "question": "点击按钮后 Row 的高度变化表现为？\n@Entry\n@Component\nstruct Bar {\n  @State h: number = 40;\n  build() {\n    Column() { Row().height(this.h).animation({ duration: 300 })\n      Button('go').onClick(() => { this.h = 160; })\n    }\n  }\n}",
+              "code": "@Entry\n@Component\nstruct Bar {\n  @State h: number = 40;\n  build() {\n    Column() { Row().height(this.h).animation({ duration: 300 })\n      Button('go').onClick(() => { this.h = 160; })\n    }\n  }\n}",
+              "options": [
+                "高度在 300 毫秒内过渡到 160",
+                "高度立刻跳到 160 没有过渡",
+                "编译报错 animation 不是合法属性",
+                "高度保持 40 完全不发生变化"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「高度在 300 毫秒内过渡到 160」。属性动画声明在高度变化之前生效，因此被 `@State` 驱动的高度改动会被插值执行。ArkTS 中 `animation` 是合法通用属性，不会编译失败；只有把动画声明写在高度设置之前，或状态根本没有可观察能力时，才会退化成瞬间跳变或完全不变化。"
+            }
+          ]
+        },
+        {
+          "id": "harmonyos_system_capabilities",
+          "title": {
+            "zh": "系统能力与权限",
+            "en": "System Capabilities & Permissions"
+          },
+          "summary": {
+            "zh": "三档授权方式与运行时申请流程、位置传感器通知剪贴板蓝牙的接入要点、后台任务约束与元服务的能力边界。",
+            "en": "Three grant modes and runtime requests, location, sensor, notification, clipboard and bluetooth integration, background limits."
+          },
+          "file": "assets/content/harmonyos_system_capabilities.md",
+          "minutes": 50,
+          "keywords": [
+            "权限申请",
+            "geoLocationManager",
+            "notificationManager",
+            "长时任务",
+            "元服务"
+          ],
+          "difficulty": "进阶",
+          "order": 9,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "关于应用使用敏感权限，下列说法正确的是？",
+              "options": [
+                "在配置清单声明后即可在代码中直接使用",
+                "这类权限安装时一次性授予且不可撤回",
+                "运行时需弹窗请求且用户可拒绝或撤回",
+                "被拒一次后系统会在下次启动自动放行"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「运行时需弹窗请求且用户可拒绝或撤回」。敏感权限在安装时并不生效，必须由应用在使用时机主动请求，用户既能当场拒绝也能事后可设置里关闭。清单声明只是让接口有资格被调用，它本身不产生授权；安装时一次性授予的说法把低风险的普通权限与敏感权限混为一谈；被拒一次后系统在连续拒绝情形下会转为静默策略而不是自动放行，指望重启获得授权没有依据。"
+            },
+            {
+              "type": "single",
+              "question": "调用定位能力获取连续位置前，除代码外必须先完成的是？",
+              "options": [
+                "在模块配置中声明定位相关权限",
+                "把应用注册为桌面快捷方式入口",
+                "在构建脚本里开启位置编译开关",
+                "为页面添加显示地图的容器组件"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「在模块配置中声明定位相关权限」。定位属于敏感能力，清单里缺少对应声明时，运行时请求会在权限校验阶段就失败，业务永远等不到回调。注册桌面入口、打开编译开关、添加地图容器都与权限链路无关，它们既不影响系统对能力的授权判定，也不能替代声明这一步。"
+            },
+            {
+              "type": "single",
+              "question": "发布一条前台通知前必须满足的前提是？",
+              "options": [
+                "应用已完成上架并取得正式包名",
+                "已获得通知授权且渠道未被用户关闭",
+                "在资源目录准备通知提示音文件",
+                "为每条通知分配全局唯一的自增编号"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「已获得通知授权且渠道未被用户关闭」。未授权或被用户关闭时发布调用不会抛异常，系统只是静默丢弃，这正是排查困难的原因。正式包名与提示音文件都不是必要条件，通知可用系统默认声；标识编号只需在同一应用内保持稳定以便更新，并不要求全局唯一。"
+            },
+            {
+              "type": "single",
+              "question": "关于后台任务的运行约束，下列说法正确的是？",
+              "options": [
+                "退到后台后可以无限期运行任意任务",
+                "长时任务无需说明场景只要申请即通过",
+                "短时任务窗口足够完成一次大文件下载",
+                "长时任务需匹配指定场景并在结束后释放"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「长时任务需匹配指定场景并在结束后释放」。这类任务的配额与系统对业务场景的判断绑定，声明与行为不符时会被提前回收，用完不释放则长期占用配额。后台无限运行在任何受限移动系统上都不成立；短时的收尾窗口只有分钟级，撑不起一次完整的大文件下载；延迟与周期任务由系统择机执行，不能靠它们保证实时性。"
+            },
+            {
+              "type": "code",
+              "question": "关于这段权限申请代码，说法正确的是？\nconst atManager = abilityAccessCtrl.createAtManager();\nconst perms: Array<Permissions> = ['ohos.permission.LOCATION'];\nconst result = await atManager.requestPermissionsFromUser(ctx, perms);\nconst granted: boolean = result.authResults[0] === 0;",
+              "code": "const atManager = abilityAccessCtrl.createAtManager();\nconst perms: Array<Permissions> = ['ohos.permission.LOCATION'];\nconst result = await atManager.requestPermissionsFromUser(ctx, perms);\nconst granted: boolean = result.authResults[0] === 0;",
+              "options": [
+                "弹窗只在首次调用出现之后系统自动放行",
+                "authResults 返回的是权限名称字符串",
+                "granted 为假时业务应降级并说明用途再请求",
+                "该接口无需在配置清单声明权限即可调用"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「granted 为假时业务应降级并说明用途再请求」。结果为假说明用户没有授权，正确姿势是给出可理解的用途解释并提供手动开启入口，而不是立刻重发同一次请求。返回值是数值型授权结果而不是权限名称字符串，需要与授权枚举比较；未弹框与当场拒绝是两种不同情形，要借助弹框标记区分；清单声明是接口能工作的前提，缺了它这条调用只会失败。"
+            }
+          ]
+        },
+        {
+          "id": "harmonyos_distributed",
+          "title": {
+            "zh": "分布式软总线与跨端流转",
+            "en": "Distributed Soft Bus & Cross-Device Continuation"
+          },
+          "summary": {
+            "zh": "软总线三层职责与设备信任关系、应用级迁移的状态握手、三种跨端数据载体取舍与服务卡片的运行模型。",
+            "en": "Soft bus layers and trust, continuation handshake, cross-device data carriers and the widget runtime model."
+          },
+          "file": "assets/content/harmonyos_distributed.md",
+          "minutes": 60,
+          "keywords": [
+            "软总线",
+            "distributedDeviceManager",
+            "onContinue",
+            "分布式数据对象",
+            "服务卡片"
+          ],
+          "difficulty": "高级",
+          "order": 10,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "分布式软总线在 HarmonyOS 体系中的角色是？",
+              "options": [
+                "把异构设备虚拟成同一总线的近场通信底座",
+                "一种面向应用的分布式关系型数据库",
+                "用于打包多设备复合制品的构建工具",
+                "编译期合并多份源码的插件机制"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「把异构设备虚拟成同一总线的近场通信底座」。它在物理链路之上统一了发现、组网与传输，应用只面对逻辑设备与逻辑通道，不必关心走的是哪种无线制式。数据库、打包工具与构建插件分别属于存储、制品与编译阶段，跟这层通信底座没有关系，把它们混进来是课程内不同层次概念的常见串台。"
+            },
+            {
+              "type": "single",
+              "question": "应用间跨设备迁移页面时，`onContinue` 回调的职责是？",
+              "options": [
+                "在目标设备上重建整个应用进程",
+                "通知源设备可以立即释放全部资源",
+                "由系统自动搬运全部内存无需干预",
+                "把不能自动携带的状态序列化进 wantParam"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「把不能自动携带的状态序列化进 wantParam」。框架负责搬运能力实例与窗口信息，业务自定义的进度、选中项、草稿等内容必须在这个回调里显式写入参数对象，目标端才能按同样的键恢复。它不负责在远端重建进程，也不是释放资源的信号，更不是系统全自动完成内存快照；返回成功却没写任何状态，恰恰是迁移后回到首页这类问题的直接来源。"
+            },
+            {
+              "type": "single",
+              "question": "关于分布式数据对象，下列说法正确的是？",
+              "options": [
+                "它对成员的要求与普通赋值毫无差别",
+                "它适合用来同步整段视频这类大文件",
+                "它要求成员可序列化并限制嵌套深度",
+                "它只能由系统预置应用创建和共享"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「它要求成员可序列化并限制嵌套深度」。共享对象在设备间以快照形式同步，函数、循环引用与超大二进制都无法成为合法成员，整体体积也有上限。它并非与普通赋值毫无差别，静默丢弃超限字段就是最常见的失败形态；大文件应由分布式文件承担，视频段落更不该塞进对象；普通三方应用同样可以使用该能力，把它说成系统专属不成立。"
+            },
+            {
+              "type": "single",
+              "question": "关于服务卡片的运行模型，下列说法正确的是？",
+              "options": [
+                "卡片与宿主应用共享同一份进程内状态",
+                "卡片由提供方渲染并由框架托管周期刷新",
+                "卡片内可运行任意脚本并自由访问网络",
+                "卡片一旦发布其内容就再也无法更新"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「卡片由提供方渲染并由框架托管周期刷新」。提供方定义内容并推送数据变化，宿主负责展示与刷新调度，两者通过事件与参数通信。卡片不与宿主共享进程内状态，运行环境只开放受限组件与动作集合，不能执行任意脚本，也不能自由访问网络；内容更新恰恰是它的基本能力，「发布后无法更新」与实际机制完全相反。"
+            },
+            {
+              "type": "code",
+              "question": "这段迁移代码要解决的问题是？\nonContinue(wantParam: Record<string, Object>): abilityContinuation.OnContinueResult {\n  wantParam.progress = this.playback.progress;\n  this.session.save(wantParam);\n  return abilityContinuation.OnContinueResult.SUCCESS;\n}",
+              "code": "onContinue(wantParam: Record<string, Object>): abilityContinuation.OnContinueResult {\n  wantParam.progress = this.playback.progress;\n  this.session.save(wantParam);\n  return abilityContinuation.OnContinueResult.SUCCESS;\n}",
+              "options": [
+                "让目标设备从头重新播放全部内容",
+                "把播放进度写进迁移参数供对端恢复",
+                "阻止这个应用被迁移到其他设备",
+                "要求用户在新设备上重新完成登录"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「把播放进度写进迁移参数供对端恢复」。回调在迁移发起时被调用，业务在此把无法自动搬运的自定义状态写入参数对象，返回成功表示同意迁移。参数会随能力实例投递到目标设备，因此既不等于源端立即释放，也不会让对端从头播放；代码里没有任何拒绝语义，也与登录流程无关。"
+            }
+          ]
+        },
+        {
+          "id": "harmonyos_release_optimization",
+          "title": {
+            "zh": "性能调优与上架 AppGallery",
+            "en": "Performance Tuning & AppGallery Release"
+          },
+          "summary": {
+            "zh": "冷启动阶段拆分与掉帧四类归因、卡顿采集与内存泄漏路径、包体裁剪层次、混淆保留规则与上架合规检查项。",
+            "en": "Startup phasing and frame attribution, jank capture, memory paths, size trimming, obfuscation keeps and release checklist."
+          },
+          "file": "assets/content/harmonyos_release_optimization.md",
+          "minutes": 55,
+          "keywords": [
+            "冷启动",
+            "掉帧归因",
+            "内存水位",
+            "代码混淆",
+            "AppGallery Connect"
+          ],
+          "difficulty": "高级",
+          "order": 11,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "关于应用启动优化，下列做法正确的是？",
+              "options": [
+                "在创建阶段同步预加载全部资源",
+                "把首屏必需的初始化推迟到交互之后",
+                "用轮询等待异步任务以确保数据就绪",
+                "拆分初始化并按首屏必需、可延后分组"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「拆分初始化并按首屏必需、可延后分组」。启动优化的本质是重新分配工作发生的时间，只有先把清单按是否影响第一帧分类，才谈得上把无关项挪到首帧之后或并发执行。创建阶段同步预加载全部资源会把解码与 IO 压进首屏路径；把首屏必需的初始化推到交互之后会让第一帧缺内容；用轮询或超时兜底的写法只会把不确定性推给线上，三者都不是可行做法。"
+            },
+            {
+              "type": "single",
+              "question": "定位页面掉帧原因最合适的做法是？",
+              "options": [
+                "在构建日志里搜耗时最长的接口名",
+                "让用户截图描述卡顿发生的页面",
+                "用分析工具采集帧率与主线程长任务",
+                "在发布说明里承诺新版本不再卡顿"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「用分析工具采集帧率与主线程长任务」。掉帧必须区分构建、测量布局、绘制、合成四类归因，只有带时间线的采样数据能给出这种区分。构建日志里的接口耗时与代码无关；用户截图能说明现象却无法定位到帧与函数；在发布说明里承诺不出现卡顿不产生任何可验证信息，对复现与回归毫无帮助。"
+            },
+            {
+              "type": "single",
+              "question": "关于代码混淆，下列说法正确的是？",
+              "options": [
+                "开启前需为反射与序列化入口保留名单",
+                "混淆后包体一定会明显增大需要再裁剪",
+                "任何情况下都不应该改变类的名称",
+                "混淆等同加密可以直接替代安全评估"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「开启前需为反射与序列化入口保留名单」。混淆会重命名标识符，凡是以字符串形式被查找的名字都必须在规则里显式保留，否则故障只在发布版出现。混淆通常让产物略有变小而非显著增大；它的目的恰恰是改变类与成员名称；它抬高的是静态阅读成本，与传输加密和运行时鉴权无关，不能替代安全评估。"
+            },
+            {
+              "type": "single",
+              "question": "上架前做包体裁剪，下列做法合理的是？",
+              "options": [
+                "删除全部语言资源只保留简体中文",
+                "按需拆分特性模块让首包只含必需",
+                "把所有位图转成常量内嵌省去解码",
+                "去掉发布配置里的签名信息压体积"
+              ],
+              "answer": 1,
+              "explanation": "本题正确项是「按需拆分特性模块让首包只含必需」。把低频功能从入口包剥离，首包只保留主路径，既降下载体积又不牺牲能力。删除全部语言资源会让已声明的地区与语言范围名不副实；把位图改成常量内嵌既增大代码体积又绕开按显示尺寸解码；签名信息是安装的必要条件，删掉只会导致产物无法安装。"
+            },
+            {
+              "type": "code",
+              "question": "这段启动期代码最可能造成的问题是？\nclass EntryAbility extends UIAbility {\n  onCreate(want: Want): void {\n    this.loadTheme();\n    this.preloadAllImages();\n    this.warmUpDatabase();\n    this.fetchRemoteConfig();\n  }\n}",
+              "code": "class EntryAbility extends UIAbility {\n  onCreate(want: Want): void {\n    this.loadTheme();\n    this.preloadAllImages();\n    this.warmUpDatabase();\n    this.fetchRemoteConfig();\n  }\n}",
+              "options": [
+                "主题加载顺序不对导致首屏显示空白",
+                "数据库预热不足引发首次查询失败",
+                "远程配置未就绪使功能开关全部失效",
+                "无关初始化挤占首帧时间拖慢启动"
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「无关初始化挤占首帧时间拖慢启动」。全量图片解码与数据库建表迁移都发生在第一帧之前，属于典型的可延后工作，把它们串在创建阶段会直接拉长冷启动。主题加载是首屏必需项，顺序本身没有错；数据库预热不足只会变慢而不会报错；远程配置此时尚未返回是设计使然，只要业务有本地兜底就不构成功能失效。"
+            }
+          ]
         }
       ]
     },

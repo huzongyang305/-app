@@ -2,9 +2,38 @@
   "generated_at": "2026-10-30",
   "schedule_months": 12,
   "first_month": "2026-11",
-  "batch_count": 70,
-  "p0_touched_lessons": 728,
+  "batch_count": 71,
+  "p0_touched_lessons": 752,
   "batches": [
+    {
+      "planned_review_at": "2026-11-10",
+      "lesson_ids": [
+        "llm_apps_overview",
+        "llm_apps_prompt_engineering",
+        "llm_apps_api_integration",
+        "llm_apps_rag_foundations",
+        "llm_apps_rag_advanced",
+        "llm_apps_function_calling",
+        "llm_apps_agent_design",
+        "llm_apps_frameworks",
+        "llm_apps_low_code",
+        "llm_apps_deployment",
+        "llm_apps_evaluation",
+        "llm_apps_project",
+        "harmonyos_overview",
+        "harmonyos_deveco_setup",
+        "harmonyos_arkts_basics",
+        "harmonyos_arkui_first_page",
+        "harmonyos_layout_system",
+        "harmonyos_state_management",
+        "harmonyos_navigation",
+        "harmonyos_network_data",
+        "harmonyos_multimedia",
+        "harmonyos_system_capabilities",
+        "harmonyos_distributed",
+        "harmonyos_release_optimization"
+      ]
+    },
     {
       "planned_review_at": "2026-11-10",
       "lesson_ids": [

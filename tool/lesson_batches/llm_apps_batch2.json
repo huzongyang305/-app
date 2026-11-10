@@ -1,0 +1,469 @@
+{
+  "category": "llm_apps",
+  "lessons": [
+    {
+      "id": "llm_apps_agent_design",
+      "title": {
+        "zh": "Agent 智能体设计",
+        "en": "Agent Design Patterns"
+      },
+      "summary": {
+        "zh": "ReAct 与 Plan-and-Execute 取舍、Reflexion 反思、记忆分层、多 Agent 协作与 LangGraph 状态机。",
+        "en": "ReAct versus Plan-and-Execute, Reflexion, memory tiers, multi-agent collaboration and LangGraph state machines."
+      },
+      "file": "assets/content/llm_apps_agent_design.md",
+      "minutes": 55,
+      "keywords": ["ReAct", "Plan-and-Execute", "Reflexion", "记忆分层", "多 Agent", "LangGraph"],
+      "difficulty": "进阶",
+      "order": 6,
+      "quiz": [
+        {
+          "type": "single",
+          "question": "任务步骤多于八步且中途可能改路线，Plan-and-Execute 相比 ReAct 的优势是？",
+          "options": [
+            "先出全局计划便于中途重排",
+            "每步都重新规划因此更灵活",
+            "不需要任何工具即可完成",
+            "上下文长度可以完全不增长"
+          ],
+          "answer": 0,
+          "explanation": "本题正确项是「先出全局计划便于中途重排」。显式计划把目标拆成可检查的步骤清单，一旦某步失败或前提变化，重规划的代价只是改局部步骤，进度也能对外展示。ReAct 每步都靠即时观察决定下一步，长任务容易绕圈；两种范式都仍需工具落实动作，上下文长度取决于裁剪与摘要策略。"
+        },
+        {
+          "type": "single",
+          "question": "情节记忆与长期语义记忆的区别在于？",
+          "options": [
+            "前者只存向量后者只存关键词",
+            "前者不受上下文窗口限制",
+            "前者容量无限后者必须淘汰",
+            "前者记录具体交互过程与结果"
+          ],
+          "answer": 3,
+          "explanation": "本题正确项是「前者记录具体交互过程与结果」。情节记忆保存某次任务的时间、动作、结果和反馈，用于回放与复盘；语义记忆沉淀可复用的事实与偏好，用于跨任务检索。两者都能用向量或结构化方式实现，容量都受存储与检索策略约束，把它们说成无限或不依赖窗口是把分层概念当成了魔法。"
+        },
+        {
+          "type": "single",
+          "question": "多 Agent 协作里，评审 Agent 反复要求返工导致死循环，应先检查？",
+          "options": [
+            "评审与执行是否为同一个模型",
+            "两个 Agent 的温度是否相同",
+            "返工次数上限与终止条件是否设置",
+            "是否给评审 Agent 配了检索工具"
+          ],
+          "answer": 2,
+          "explanation": "本题正确项是「返工次数上限与终止条件是否设置」。循环的直接成因是缺少终止判据，必须先给最大轮次、验收标准和升级出口，让分歧在有限步内收敛或转人工。同模型与否影响的是视角多样性，温度一致与否不是终止条件，检索工具只补充证据，都不解决没有刹车这一根本问题。"
+        },
+        {
+          "type": "single",
+          "question": "Reflexion 相对普通重试的核心增益来自？",
+          "options": [
+            "提高采样温度以增加随机性",
+            "把失败反思写成可复用的经验",
+            "增加并发的工具调用数量",
+            "缩短系统提示词减少开销"
+          ],
+          "answer": 1,
+          "explanation": "本题正确项是「把失败反思写成可复用的经验」。Reflexion 在失败后让模型总结教训并存入记忆，下次尝试携带该经验，从而避免重复同一个错误，把重试变成有信息增量的迭代。提高温度只是让采样更发散，可能换一种错法；并发调用提升吞吐而不改变决策质量，压缩提示词省的是成本。"
+        },
+        {
+          "type": "code",
+          "question": "下面这个状态机路由函数的两次打印结果是？\ndef route(state):\n    return 'tool' if state['tool_calls'] else 'end'\n\nprint(route({'tool_calls': []}), route({'tool_calls': ['q']}))",
+          "code": "def route(state):\n    return 'tool' if state['tool_calls'] else 'end'\n\nprint(route({'tool_calls': []}), route({'tool_calls': ['q']}))",
+          "options": ["tool 和 tool", "end 和 end", "tool 和 end", "end 和 tool"],
+          "answer": 3,
+          "explanation": "本题正确项是「end 和 tool」。三元表达式看的是列表本身是否为真值，空列表在 Python 里等价于 False，因此第一次走 end 分支，只有一个元素的列表为 True 则走 tool 分支。把空列表当成真值就会得到 tool 和 end，误以为路由依赖字段是否存在则两次都判成 tool，短路判断的布尔语义是状态机的关键。"
+        }
+      ]
+    },
+    {
+      "id": "llm_apps_frameworks",
+      "title": {
+        "zh": "LangChain 与 LlamaIndex 实战",
+        "en": "LangChain & LlamaIndex in Practice"
+      },
+      "summary": {
+        "zh": "LCEL 表达式组合、Chain 与 Agent 抽象、Index 与 QueryEngine 分工、可插拔组件与版本迁移坑。",
+        "en": "LCEL composition, chain and agent abstractions, index and query engine roles, pluggable components and migration traps."
+      },
+      "file": "assets/content/llm_apps_frameworks.md",
+      "minutes": 50,
+      "keywords": ["LCEL", "Runnable", "Retriever", "QueryEngine", "可插拔组件", "版本迁移"],
+      "difficulty": "进阶",
+      "order": 7,
+      "quiz": [
+        {
+          "type": "single",
+          "question": "LCEL 表达式用竖线把两个链写在一起，它的实际语义是？",
+          "options": [
+            "两个链并发执行再取较早结果",
+            "把两个链的日志写入同一管道",
+            "前一个链的输出作为后一个的输入",
+            "前一个失败时自动降级到后者"
+          ],
+          "answer": 2,
+          "explanation": "本题正确项是「前一个链的输出作为后一个的输入」。竖线把两个 Runnable 组成有向管道，前一步的返回值按输入模式传给后一步，同时继承流式和批量接口，是组合而非并发。并发取早属于 racing 语义，写日志与管道无关，失败降级需要显式的兜底包装，把组合子当成容错原语是迁移中最常见的误解。"
+        },
+        {
+          "type": "single",
+          "question": "LlamaIndex 里 QueryEngine 与 Retriever 的分工是？",
+          "options": [
+            "前者只做分块后者只做嵌入",
+            "两者完全等价只是名字不同",
+            "前者组织提问到回答的完整链路",
+            "后者负责生成回答前者只取文档"
+          ],
+          "answer": 2,
+          "explanation": "本题正确项是「前者组织提问到回答的完整链路」。QueryEngine 把检索、重排、合成回复和响应模式串成一个可调用对象，是对外入口；Retriever 只完成从索引取节点这一步，可被嵌进引擎也能单独复用。分块与嵌入属于摄取阶段组件，和这两个抽象不在同一层。"
+        },
+        {
+          "type": "single",
+          "question": "升级框架大版本后提示词模板莫名失效，最该先排查的是？",
+          "options": [
+            "消息角色与序列化模板方式的变更",
+            "模型供应商是否更换了机房地址",
+            "向量库索引是否使用了 HNSW",
+            "前端渲染 Markdown 的组件版本"
+          ],
+          "answer": 0,
+          "explanation": "本题正确项是「消息角色与序列化模板方式的变更」。版本升级常改动 System 与工具消息的拼接格式、角色顺序和特殊标记，模板内容没变但落到模型眼中的结构已经不同，因此失效集中在模板层。机房地址影响连通性，索引算法影响召回性能，前端组件只影响展示，都不会让提示词语义消失。"
+        },
+        {
+          "type": "single",
+          "question": "想让 RAG 组件可插拔，最符合框架设计意图的写法是？",
+          "options": [
+            "把提示词硬编码进业务服务函数",
+            "在多个链里分别复制一份检索代码",
+            "用全局变量缓存检索器实例",
+            "把检索器与模型作为参数注入链"
+          ],
+          "answer": 3,
+          "explanation": "本题正确项是「把检索器与模型作为参数注入链」。框架的 Runnable 抽象要求组件只依赖传入的接口，检索器、语言模型和序列化器都可替换，测试时注入假对象即可断言中间输出。硬编码和复制粘贴把依赖焊死在实现里，全局缓存会让并发请求互相污染，三者都使升级和灰度实验变得不可能。"
+        },
+        {
+          "type": "code",
+          "question": "下面这条用竖线串起来的链，invoke 打印的结果是？\nfrom langchain_core.runnables import RunnableLambda\nupper = RunnableLambda(lambda s: s.upper())\nexclaim = RunnableLambda(lambda s: s + '!')\nchain = upper | exclaim\nprint(chain.invoke('rag'))",
+          "code": "from langchain_core.runnables import RunnableLambda\nupper = RunnableLambda(lambda s: s.upper())\nexclaim = RunnableLambda(lambda s: s + '!')\nchain = upper | exclaim\nprint(chain.invoke('rag'))",
+          "options": [
+            "字符串 RAG 加感叹号",
+            "字符串 rag 加感叹号",
+            "全大写的 RAG 没有符号",
+            "报错因为竖线不能串链"
+          ],
+          "answer": 0,
+          "explanation": "本题正确项是「字符串 RAG 加感叹号」。管道按左到右执行，先由第一个 RunnableLambda 把 rag 转成大写，再把结果交给第二个函数追加感叹号，最终得到大写加感叹号。忘了先转大写会得到小写形式，以为追加发生在转换之前会漏掉感叹号，而 Runnable 原生支持竖线组合，不会因串联报错。"
+        }
+      ]
+    },
+    {
+      "id": "llm_apps_low_code",
+      "title": {
+        "zh": "Dify / FastGPT / Coze 低代码平台",
+        "en": "LLM Low-Code Platforms"
+      },
+      "summary": {
+        "zh": "工作流编排、知识库接入、插件体系、私有部署的数据边界与多渠道发布。",
+        "en": "Workflow orchestration, knowledge bases, plugins, private deployment data boundaries and publishing channels."
+      },
+      "file": "assets/content/llm_apps_low_code.md",
+      "minutes": 40,
+      "keywords": ["Dify", "FastGPT", "Coze", "工作流编排", "私有部署", "发布渠道"],
+      "difficulty": "进阶",
+      "order": 8,
+      "quiz": [
+        {
+          "type": "single",
+          "question": "低代码平台的工作流里，代码执行节点的主要作用是？",
+          "options": [
+            "替代大模型完成全部推理",
+            "托管前端页面的交互脚本",
+            "把整条链路的日志写进数据库",
+            "做数据整形与确定性逻辑"
+          ],
+          "answer": 3,
+          "explanation": "本题正确项是「做数据整形与确定性逻辑」。LLM 节点负责语言生成，代码节点承担字段解析、格式校验和分支聚合这些可测试的确定步骤，让流程中可验证的部分不依赖模型发挥。它不能取代推理，也不负责前端脚本和日志落库，当成万能脚本容器会让工作流退化成难以维护的过程代码。"
+        },
+        {
+          "type": "single",
+          "question": "平台自带知识库与已有向量库并存时，通常更合理的选择是？",
+          "options": [
+            "复用已有向量库经工具节点接入",
+            "一律迁移到平台内置知识库存储",
+            "两边都建索引并按需查询两次",
+            "放弃检索只使用提示词上下文"
+          ],
+          "answer": 0,
+          "explanation": "本题正确项是「复用已有向量库经工具节点接入」。已有向量库承载了权限、增量管道和上游治理，用检索工具或外部知识库接口接进来，可以避免双写和数据漂移。整体迁移意味着重建摄取与运维链路，双份索引会让同一问题返回不一致结果并翻倍成本，完全放弃检索则在知识密集场景放大幻觉。"
+        },
+        {
+          "type": "single",
+          "question": "低代码应用要求私有部署，首先要确认的是？",
+          "options": [
+            "平台是否支持发布到小程序渠道",
+            "工作流节点数量是否超过十个",
+            "模型推理出口是否落在同一机房",
+            "界面是否支持深浅色主题切换"
+          ],
+          "answer": 2,
+          "explanation": "本题正确项是「模型推理出口是否落在同一机房」。私有部署的意义在于数据不出域，如果平台本地化却把请求转发到公网模型，敏感内容仍然外泄，合规目标落空。发布渠道和节点数量影响功能与复杂度，主题切换属于呈现层偏好，都决定不了数据边界，检查合规时容易把它们误当成关键条件。"
+        },
+        {
+          "type": "single",
+          "question": "从低代码平台迁到自研代码时，最大的隐性成本通常是？",
+          "options": [
+            "重新训练一个基座模型",
+            "换一家云厂商的机房资源",
+            "补齐提示词的评测与回归用例",
+            "重写前端页面的视觉样式"
+          ],
+          "answer": 2,
+          "explanation": "本题正确项是「补齐提示词的评测与回归用例」。平台里能跑通的提示词依赖隐式的编排、重试和护栏，迁到代码后要自建数据集、断言和回归流水线才能守住同样效果，这部分过去被界面隐藏了。基座模型不需要重训，机房资源与前端样式是一次性工程，唯独评测体系要长期投入，常被低估。"
+        },
+        {
+          "type": "code",
+          "question": "下面这段工作流 DSL 数据，print 输出的节点 id 是？\nedges = [{'frm': 'start', 'to': 'llm'}, {'frm': 'llm', 'to': 'reply'}]\ndsl = {'nodes': ['start', 'llm', 'reply'], 'edges': edges}\nprint(dsl['edges'][-1]['to'])",
+          "code": "edges = [{'frm': 'start', 'to': 'llm'}, {'frm': 'llm', 'to': 'reply'}]\ndsl = {'nodes': ['start', 'llm', 'reply'], 'edges': edges}\nprint(dsl['edges'][-1]['to'])",
+          "options": ["起点 start", "大模型 llm", "回复节点 reply", "边数组 edges"],
+          "answer": 2,
+          "explanation": "本题正确项是「回复节点 reply」。edges 列表的最后一条把 to 指向 reply，用负数下标取到的是终点字段而不是起点字段，因此输出 reply。把 frm 当成 to 会读到大模型 llm，直接取 nodes 列表末位虽然巧合也是 reply 但走的是另一个数据结构，误读 edges 则把字段名当成了节点标识。"
+        }
+      ]
+    },
+    {
+      "id": "llm_apps_deployment",
+      "title": {
+        "zh": "模型部署与推理优化",
+        "en": "Model Deployment & Inference Optimization"
+      },
+      "summary": {
+        "zh": "vLLM、TGI、Ollama 与 SGLang 选型，量化路线、KV Cache、PagedAttention、连续批处理与 LoRA 落地。",
+        "en": "vLLM, TGI, Ollama and SGLang selection, quantization paths, KV cache, PagedAttention, continuous batching and LoRA rollout."
+      },
+      "file": "assets/content/llm_apps_deployment.md",
+      "minutes": 55,
+      "keywords": ["vLLM", "Ollama", "量化", "KV Cache", "PagedAttention", "LoRA"],
+      "difficulty": "高级",
+      "order": 9,
+      "quiz": [
+        {
+          "type": "single",
+          "question": "PagedAttention 解决的核心问题是？",
+          "options": [
+            "KV Cache 显存碎片与浪费",
+            "模型权重的浮点精度损失",
+            "注意力算子的计算量过大",
+            "多机之间的通信带宽不足"
+          ],
+          "answer": 0,
+          "explanation": "本题正确项是「KV Cache 显存碎片与浪费」。传统实现按最大长度连续预留缓存，短请求也占满整块显存，PagedAttention 把缓存切成页并用块表映射，按需分配，显著抬高同卡并发量。量化处理的才是权重精度，注意力算子优化属于内核层面，跨机带宽由张量并行和网络拓扑决定。"
+        },
+        {
+          "type": "single",
+          "question": "连续批处理与传统静态批处理的差别是？",
+          "options": [
+            "批内所有请求同时开始结束",
+            "批大小必须固定为一个值",
+            "只在离线场景才允许使用",
+            "请求随到随插入正在解码的批次"
+          ],
+          "answer": 3,
+          "explanation": "本题正确项是「请求随到随插入正在解码的批次」。连续批处理在解码步进的间隙替换已完成序列并补入新请求，卡上始终留满算力，尾延迟因此下降；静态批要等整批结束才能换人，短请求被长请求拖住。批大小仍可设动态上限，这种方式完全服务于在线服务，说成固定或离线专用与引入动机相反。"
+        },
+        {
+          "type": "single",
+          "question": "单张消费级显卡上要跑 70B 模型做内部工具，代价最低的起步方案是？",
+          "options": [
+            "用 FP16 权重做张量并行",
+            "选量化权重并用单卡推理",
+            "先做 LoRA 再全量微调",
+            "把上下文长度压到一个 Token"
+          ],
+          "answer": 1,
+          "explanation": "本题正确项是「选量化权重并用单卡推理」。量化把权重降到四位左右，显存占用与半精度相比数量级下降，单张消费级卡即可加载，团队上手最快。张量并行需要多卡和高速互联，成本更高；LoRA 只减少训练时的可训练参数，不解决推理显存问题；把上下文压到一个 Token 会让模型失去可用性。"
+        },
+        {
+          "type": "single",
+          "question": "LoRA 适配器合入基座模型后长期的主要风险是？",
+          "options": [
+            "必然让推理速度降低十倍",
+            "无法在任何推理框架中加载",
+            "显存占用会成倍上涨到不可用",
+            "多适配器叠加会互相干扰漂移"
+          ],
+          "answer": 3,
+          "explanation": "本题正确项是「多适配器叠加会互相干扰漂移」。LoRA 在权重上增加低秩增量，多个适配器同时挂载时增量彼此叠加，容易让原本各自擅长的能力互相抵消或漂移，合入基座后也难以再单独回滚。推理速度只有极小额外开销，主流框架都支持加载适配器，显存不会因低秩结构成倍上涨。"
+        },
+        {
+          "type": "code",
+          "question": "下面脚本读取本地 Ollama 服务的标签接口，打印内容对应什么？\nimport httpx\nr = httpx.get('http://127.0.0.1:11434/api/tags')\nprint(r.status_code, len(r.json().get('models', [])))",
+          "code": "import httpx\nr = httpx.get('http://127.0.0.1:11434/api/tags')\nprint(r.status_code, len(r.json().get('models', [])))",
+          "options": [
+            "404 与空列表长度",
+            "一定是连接被拒异常",
+            "200 与服务上的模型数",
+            "仅显示本机显存占用"
+          ],
+          "answer": 2,
+          "explanation": "本题正确项是「200 与服务上的模型数」。标签接口是本地 Ollama 的健康与清单端点，服务在跑时返回 200，models 数组给出已拉取或已导入的模型条目，正好对应打印的两个值。404 不是该路径的正常行为，连接被拒只在服务没启动时发生而不是必然结果，显存占用要查另一组接口。"
+        }
+      ]
+    },
+    {
+      "id": "llm_apps_evaluation",
+      "title": {
+        "zh": "评估、监控与安全护栏",
+        "en": "Evaluation, Observability & Guardrails"
+      },
+      "summary": {
+        "zh": "LLM-as-Judge 偏差校准、RAGAS 指标、Promptfoo 回归、LangSmith 与 LangFuse 追踪、成本监控、越狱检测与 PII 脱敏。",
+        "en": "LLM-as-Judge calibration, RAGAS metrics, Promptfoo regressions, tracing, cost monitoring, jailbreak detection and PII redaction."
+      },
+      "file": "assets/content/llm_apps_evaluation.md",
+      "minutes": 45,
+      "keywords": ["LLM as Judge", "RAGAS", "Promptfoo", "LangFuse", "成本监控", "PII 脱敏"],
+      "difficulty": "高级",
+      "order": 10,
+      "quiz": [
+        {
+          "type": "single",
+          "question": "用 LLM-as-Judge 打分时，最典型的系统性偏差是？",
+          "options": [
+            "严格对齐人类的相关性判断",
+            "对所有回答给出相同分数",
+            "偏向更长或自家模型的输出",
+            "只会对格式错误的答案扣分"
+          ],
+          "answer": 2,
+          "explanation": "本题正确项是「偏向更长或自家模型的输出」。评审模型偏好冗长文本和与自身风格接近的答案，还会受候选位置先后影响，因此要做位置交换、长度控制和人工抽检校准。它并不会天然对齐人类相关性判断，也不会均匀给分或只盯格式，把这些当成默认属性会让评测报告系统性偏高却无人察觉。"
+        },
+        {
+          "type": "single",
+          "question": "RAGAS 里答案相关度偏低但上下文召回正常，最可能的原因是？",
+          "options": [
+            "生成偏题或多答了无关内容",
+            "向量库的索引类型选错了",
+            "分块长度超过了模型窗口",
+            "评审模型的维度不够多"
+          ],
+          "answer": 0,
+          "explanation": "本题正确项是「生成偏题或多答了无关内容」。答案相关度按回答反推问题来衡量它是否切题，检索正常而这一项偏低，说明问题出在合成阶段：提示词没约束回答范围，或模型补充了无关段落。索引类型和分块长度影响的是召回，评审维度多寡是评估器自身配置，都不会在这种组合下成为直接原因。"
+        },
+        {
+          "type": "single",
+          "question": "接入 LangFuse 一类可观测平台，最先要打通的是？",
+          "options": [
+            "把界面主题与团队规范对齐",
+            "一次请求到各步 Span 的追踪链路",
+            "给每个模型配置独立数据库",
+            "把所有提示词改为可下载文件"
+          ],
+          "answer": 1,
+          "explanation": "本题正确项是「一次请求到各步 Span 的追踪链路」。只有把用户请求、检索、工具调用和生成串成同一条追踪，才能定位是哪一步造成延迟或质量下降，并回溯到具体提示词版本。主题对齐属于体验细节，给每个模型单开数据库会让链路割裂且难运维，把提示词导出成文件反而丢掉版本与权限控制。"
+        },
+        {
+          "type": "single",
+          "question": "对外接口做 PII 脱敏，更可靠的做法是？",
+          "options": [
+            "让大模型自己判断并改写文本",
+            "只在日志里删除全部数字字符",
+            "限制请求长度以压低泄露概率",
+            "用识别器加正则先遮蔽再送检"
+          ],
+          "answer": 3,
+          "explanation": "本题正确项是「用识别器加正则先遮蔽再送检」。脱敏必须发生在数据离开边界之前，命名实体识别配合正则能覆盖身份证、手机号这类稳定模式，替换成占位符后再交给模型或外部服务。让模型自己改写既不确定也来不及，删除所有数字会破坏业务语义，限长只是减少暴露面并不识别敏感字段。"
+        },
+        {
+          "type": "code",
+          "question": "下面这段 Promptfoo 配置字典，print 输出的两个数字对应什么？\nimport json\ncfg = {'prompts': ['p1.txt', 'p2.txt'], 'providers': [{'id': 'openai:gpt-4o-mini'}], 'tests': [{'assert': [{'type': 'contains', 'value': '退款'}]}]}\nprint(len(cfg['prompts']), len(cfg['tests']))",
+          "code": "import json\ncfg = {'prompts': ['p1.txt', 'p2.txt'], 'providers': [{'id': 'openai:gpt-4o-mini'}], 'tests': [{'assert': [{'type': 'contains', 'value': '退款'}]}]}\nprint(len(cfg['prompts']), len(cfg['tests']))",
+          "options": [
+            "2 个提示词与 1 条用例",
+            "1 个提示词与 2 条用例",
+            "2 个供应商与 1 个提示词",
+            "1 个供应商与 2 条用例"
+          ],
+          "answer": 0,
+          "explanation": "本题正确项是「2 个提示词与 1 条用例」。prompts 列了两个模板文件，tests 只有一条用例，用例里挂着 contains 这一个断言，因此打印 2 和 1。providers 才是供应商列表且只有一项，把它与提示词数量混起来会得到错误的组合，tests 的长度也不等于断言条数的总和。"
+        }
+      ]
+    },
+    {
+      "id": "llm_apps_project",
+      "title": {
+        "zh": "综合项目：企业知识库助手",
+        "en": "Capstone: Enterprise Knowledge Assistant"
+      },
+      "summary": {
+        "zh": "从需求拆解到架构选型，把 RAG、Agent 与工具组合成可上线的企业知识库助手并完成调优。",
+        "en": "From requirement breakdown to architecture, combining RAG, agents and tools into a shippable enterprise knowledge assistant."
+      },
+      "file": "assets/content/llm_apps_project.md",
+      "minutes": 60,
+      "keywords": ["需求拆解", "架构选型", "RAG", "Agent", "上线运维", "效果调优"],
+      "difficulty": "高级",
+      "order": 11,
+      "quiz": [
+        {
+          "type": "single",
+          "question": "企业知识库助手上线前，最该先和需求方敲定的是？",
+          "options": [
+            "界面主色与图标的具体风格",
+            "可接受错误率与高风险问题清单",
+            "代码仓库的分支命名规范",
+            "机房服务器的采购型号"
+          ],
+          "answer": 1,
+          "explanation": "本题正确项是「可接受错误率与高风险问题清单」。知识库助手的价值边界由答错的代价决定，先明确哪些领域宁可不答、可接受的错误比例是多少，才能反推检索深度、引用要求和人工接管阈值。配色、分支规范和采购型号都是执行细节，没有质量底线时讨论它们只会让验收标准变成主观印象。"
+        },
+        {
+          "type": "single",
+          "question": "问答里一半问题需要跨部门流程推理，一半只需查条款原文，架构上合理的方案是？",
+          "options": [
+            "全部走自由生成的对话式问答",
+            "只用关键词检索以追求响应最快",
+            "统一走 GraphRAG 以简化实现",
+            "路由分流到检索问答与工作流"
+          ],
+          "answer": 3,
+          "explanation": "本题正确项是「路由分流到检索问答与工作流」。条款查询用混合检索加引用即可，跨部门推理需要步骤化编排和工具校验，用一个意图路由把两类请求分发到不同链路，能同时保住成本与质量。全部自由生成会放大幻觉，只用关键词检索会漏掉改写，统一走重型方案让简单问题付出成倍延迟。"
+        },
+        {
+          "type": "single",
+          "question": "上线后指标显示答案质量稳定但成本翻倍，优先做的调优是？",
+          "options": [
+            "压缩上下文并缓存高频问答结果",
+            "把模型换成更大参数量的一号模型",
+            "取消所有引用以降低生成负担",
+            "把流式输出改成一次性返回"
+          ],
+          "answer": 0,
+          "explanation": "本题正确项是「压缩上下文并缓存高频问答结果」。成本主要来自输入 Token 与重复请求，收紧召回数量、做片段级摘要并按问题哈希缓存高频答案，可以在不损失质量的前提下直接削减调用量。换更大模型会增加单价，取消引用牺牲可验证性，改一次性返回只影响首字延迟而对 Token 消耗没有帮助。"
+        },
+        {
+          "type": "single",
+          "question": "知识库文档更新后仍然返回旧政策，最先检查的是？",
+          "options": [
+            "前端是否缓存了历史回答文本",
+            "提示词里是否写明要求最新",
+            "模型温度是否设得过低了",
+            "摄取管道的增量同步是否生效"
+          ],
+          "answer": 3,
+          "explanation": "本题正确项是「摄取管道的增量同步是否生效」。文档改了而检索结果没变，说明索引侧的数据没有更新，应检查抓取任务、分块与写入库的增量流程和删除标记是否遗漏。前端缓存与提示词措辞都可能干扰观感，但真正决定内容新旧的是索引数据；温度只影响采样随机性，不能刷新知识来源。"
+        },
+        {
+          "type": "code",
+          "question": "下面这段压测汇总脚本打印的数字代表什么？\nimport time\nlat = [0.9, 1.2, 2.5, 3.1, 4.0]\nlat.sort()\np95 = lat[int(0.95 * len(lat)) - 1]\nprint(round(p95, 1))",
+          "code": "import time\nlat = [0.9, 1.2, 2.5, 3.1, 4.0]\nlat.sort()\np95 = lat[int(0.95 * len(lat)) - 1]\nprint(round(p95, 1))",
+          "options": [
+            "首 Token 的等待时长",
+            "约 3.1 秒的 P95 延迟",
+            "全部请求的平均延迟",
+            "最大延迟即 4.0 秒"
+          ],
+          "answer": 1,
+          "explanation": "本题正确项是「约 3.1 秒的 P95 延迟」。排序后用样本数乘分位系数再减一取下标，五个数得到下标 3，对应升序第四个数 3.1，即这组样本的近似高分位延迟。平均值要除以样本数而不是按下标取，最大值会直接落在末位的 4.0，首 Token 时延需要另外打点，与整体延迟口径不同。"
+        }
+      ]
+    }
+  ]
+}

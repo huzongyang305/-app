@@ -1,0 +1,479 @@
+{
+  "category": "harmonyos",
+  "lessons": [
+    {
+      "id": "harmonyos_navigation",
+      "title": {
+        "zh": "路由与页面导航",
+        "en": "Routing & Navigation"
+      },
+      "summary": {
+        "zh": "@ohos.router 与 Navigation 两套方案的分工、NavPathStack 栈操作语义、页面与组件生命周期时机、跨页结果回传方式。",
+        "en": "Division between router and Navigation, NavPathStack semantics, page and component lifecycle timing, cross-page result passing."
+      },
+      "file": "assets/content/harmonyos_navigation.md",
+      "minutes": 45,
+      "keywords": ["NavPathStack", "NavDestination", "页面栈", "onPageShow"],
+      "difficulty": "进阶",
+      "order": 6,
+      "quiz": [
+        {
+          "type": "single",
+          "question": "下列关于 `@ohos.router` 与 `Navigation` 的说法正确的是？",
+          "options": [
+            "Navigation 只能整页跳转不支持分栏",
+            "两套方案无法在同一工程里共存",
+            "router 适合简单的页面级跳转",
+            "Navigation 的栈不可由业务编程控制"
+          ],
+          "answer": 2,
+          "explanation": "本题正确项是「router 适合简单的页面级跳转」。它以文件路径寻址、整窗替换内容，栈由系统维护，页面数少时心智负担最小；`Navigation` 把导航做成组件，因此能承担分栏、弹层与可编程栈这些复杂形态，说它只能整页跳转并不准确。两套方案在同一工程里可以共存，只是不建议对同一条链路同时使用，避免两套生命周期互相干扰。"
+        },
+        {
+          "type": "single",
+          "question": "`NavPathStack.pushPath` 被调用后的效果是？",
+          "options": [
+            "用新页面替换当前的栈顶节点",
+            "回退到指定命名的历史节点",
+            "清空整条导航栈并回到根页面",
+            "向导航栈压入一个新页面"
+          ],
+          "answer": 3,
+          "explanation": "本题正确项是「向导航栈压入一个新页面」。它追加节点并保留上一页，随后调用内容构建工厂生成对应的导航节点并播放转场。替换栈顶是 `replacePath` 的语义，回退到指定命名节点要用 `popToName`，清空整栈另有 `clear` 方法，四者动作完全不同，混用会造成返回逻辑与预期不符。"
+        },
+        {
+          "type": "single",
+          "question": "关于页面可见性回调，下列说法正确的是？",
+          "options": [
+            "onPageShow 在页面切前台时触发",
+            "aboutToDisappear 在页面被盖住时触发",
+            "onBackPress 无法阻止系统的默认返回",
+            "可见性回调会在每次构建时重复触发"
+          ],
+          "answer": 0,
+          "explanation": "本题正确项是「onPageShow 在页面切前台时触发」。页面被上层盖住时触发隐藏回调，重新回到前台时触发显示回调，做数据刷新与播放恢复应挂在这里。组件销毁对应的是 `aboutToDisappear`，它只在节点真正出栈销毁时执行；返回拦截回调想阻止默认返回必须显式返回 true，而不是「拦不住」；该回调也不会在每次构建时重复触发。"
+        },
+        {
+          "type": "single",
+          "question": "子页面完成后要把选择结果带回上一页，最合适的做法是？",
+          "options": [
+            "子页面直接改写父页面的状态",
+            "出栈时携带结果并由回调接收",
+            "把结果写入磁盘后由父页面重新读取",
+            "让父页面定时轮询一个共享变量"
+          ],
+          "answer": 1,
+          "explanation": "本题正确项是「出栈时携带结果并由回调接收」。结果随出栈动作返回，上一页在入栈时注册的回调里接收并写入自己的状态，数据所有权清晰、页面可复用。直接改父页面状态会让两页强耦合，写磁盘再读延迟高且引入一致性问题，定时轮询既耗资源也拿不到准确的完成时机，都不适合作为跨页通信手段。"
+        },
+        {
+          "type": "code",
+          "question": "下面代码最后一行打印的是？\nconst stack: NavPathStack = new NavPathStack();\nstack.pushPath({ name: 'detail' });\nstack.pushPath({ name: 'settings' });\nstack.pushPath({ name: 'detail' });\nconsole.info(`${stack.size()}-${stack.getAllPathName().length}`);",
+          "code": "const stack: NavPathStack = new NavPathStack();\nstack.pushPath({ name: 'detail' });\nstack.pushPath({ name: 'settings' });\nstack.pushPath({ name: 'detail' });\nconsole.info(`${stack.size()}-${stack.getAllPathName().length}`);",
+          "options": [
+            "打印 3-3",
+            "打印 3-2",
+            "打印 1-3",
+            "打印 2-2"
+          ],
+          "answer": 0,
+          "explanation": "本题正确项是「打印 3-3」。三次入栈都会追加节点，重复的名字不会被合并，因此栈深是 3；`getAllPathName()` 返回的是按栈序排列的全部名字数组，同样包含重复项，长度也是 3。要按名字数量去重得自己转成集合，指望命名路由自动去重是常见误解。"
+        }
+      ]
+    },
+    {
+      "id": "harmonyos_network_data",
+      "title": {
+        "zh": "网络、数据与文件",
+        "en": "Networking, Data & Files"
+      },
+      "summary": {
+        "zh": "NetworkKit 请求与超时控制、RPC 的适用边界、关系型数据库与首选项的选型、应用沙箱目录分层与后台任务约束。",
+        "en": "NetworkKit requests and timeouts, RPC boundaries, relational store versus preferences, sandbox layout and background limits."
+      },
+      "file": "assets/content/harmonyos_network_data.md",
+      "minutes": 55,
+      "keywords": ["NetworkKit", "relationalStore", "preferences", "应用沙箱", "后台任务"],
+      "difficulty": "进阶",
+      "order": 7,
+      "quiz": [
+        {
+          "type": "single",
+          "question": "应用需要向自家服务端发一次 HTTPS 请求，优先选用的能力是？",
+          "options": [
+            "用 NetworkKit 的 http 模块",
+            "自己实现底层套接字收发原始字节流",
+            "用界面组件发起跨域请求取回数据",
+            "把网络字节流代理成本地文件读写"
+          ],
+          "answer": 0,
+          "explanation": "本题正确项是「用 NetworkKit 的 http 模块」。它已封装连接池、超时、证书校验与错误码，是官方推荐的应用层入口。自己写底层套接字要重新处理 TLS、代理与并发限制；用界面组件发跨域请求把业务逻辑与渲染耦合在一起；把网络字节流代理到文件读写更是绕开了整套错误与超时模型，三者都不该作为首选。"
+        },
+        {
+          "type": "single",
+          "question": "在关系型数据库中避免 SQL 注入的正确做法是？",
+          "options": [
+            "把所有单引号从用户输入里删掉",
+            "用占位符传参而非拼接文本",
+            "先做一层自定义编码再拼进语句",
+            "限定可查询的表名来缩小范围"
+          ],
+          "answer": 1,
+          "explanation": "本题正确项是「用占位符传参而非拼接文本」。值走绑定参数后由数据库处理转义与类型，用户输入里的引号不会改变语句结构；条件构造器本质上也是同一机制。删掉引号会破坏正常数据，先做一层自定义编码挡不住构造好的恶意片段，限定表名只影响可见范围与注入无关。"
+        },
+        {
+          "type": "single",
+          "question": "需要保存少量开关与上次浏览位置这类配置，最合适的载体是？",
+          "options": [
+            "用文件手写序列化保存全部配置",
+            "建一张单行表存进关系型数据库",
+            "只放 AppStorage 依靠内存缓存",
+            "首选项 preferences"
+          ],
+          "answer": 3,
+          "explanation": "本题正确项是「首选项 preferences」。它以键值形式提供内存缓存加异步落盘，读写接口简单，正适合小量配置。用文件手写序列化要自己处理并发与损坏，用关系型数据库为几个字段建表与查询过重，只放 AppStorage 则在进程结束后丢失，不满足重启后仍在的要求。"
+        },
+        {
+          "type": "single",
+          "question": "应用退到后台后还要完成一次短暂的订单补发，应选用的机制是？",
+          "options": [
+            "在后台用定时器循环等待完成",
+            "把逻辑留在主线程等它被挂起",
+            "申请短时任务窗口",
+            "提交周期任务由系统挑时机执行"
+          ],
+          "answer": 2,
+          "explanation": "本题正确项是「申请短时任务窗口」。短时任务给关键动作一小段受控执行时间，超时后进程被冻结，符合「马上要完成但不能长期跑」的语义。用循环或定时器在后台空跑会被省电策略直接终止，把逻辑继续留在主线程等它被挂起则根本执行不完；延迟与周期任务由系统挑时机，不保证立刻执行。"
+        },
+        {
+          "type": "code",
+          "question": "最后一次 get 的返回值是？\nimport { preferences } from '@kit.ArkData';\nconst store = await preferences.getPreferences(ctx, 'settings');\nawait store.put('volume', 20);\nawait store.flush();\nawait store.delete('volume');\nconst value = await store.get('volume', 5);",
+          "code": "import { preferences } from '@kit.ArkData';\nconst store = await preferences.getPreferences(ctx, 'settings');\nawait store.put('volume', 20);\nawait store.flush();\nawait store.delete('volume');\nconst value = await store.get('volume', 5);",
+          "options": [
+            "返回写入过的 20",
+            "返回默认值 5",
+            "返回一个空值对象",
+            "抛出键不存在的异常"
+          ],
+          "answer": 1,
+          "explanation": "本题正确项是「返回默认值 5」。键被删除后存储里已不存在该条目，`get` 的第二个参数就是缺失时的兜底值，因此返回 5。flush 只影响是否落盘，不会让删除回滚；ArkTS 的接口在缺键时返回调用方给的默认值而不是抛异常，也不会返回空值，所以拿 20、拿空或等异常三种预期都不成立。"
+        }
+      ]
+    },
+    {
+      "id": "harmonyos_multimedia",
+      "title": {
+        "zh": "多媒体与图形渲染",
+        "en": "Multimedia & Graphics"
+      },
+      "summary": {
+        "zh": "四类渲染方案的选型边界、AVPlayer 状态机驱动、相机与画布绘制、三层动画体系的覆盖关系与 Web 混合渲染限制。",
+        "en": "Rendering option selection, AVPlayer state machine, camera and canvas drawing, animation layers and embedded web limits."
+      },
+      "file": "assets/content/harmonyos_multimedia.md",
+      "minutes": 50,
+      "keywords": ["AVPlayer", "XComponent", "Canvas", "animateTo", "Web 组件"],
+      "difficulty": "进阶",
+      "order": 8,
+      "quiz": [
+        {
+          "type": "single",
+          "question": "要在页面里播放一段本地 mp4 并复用系统提供的画面承载，最省事的方案是？",
+          "options": [
+            "用画布组件逐帧把像素画到界面",
+            "用 AVPlayer 配 XComponent",
+            "用图片组件按定时器轮播帧",
+            "把播放器塞进内嵌网页里播放"
+          ],
+          "answer": 1,
+          "explanation": "本题正确项是「用 AVPlayer 配 XComponent」。播放引擎负责解码与状态管理，`XComponent` 提供外部表面让画面直接合成，几乎不占用主线程。用画布逐帧绘制要自己搬像素；用图片组件轮播帧既没有音轨也无法稳定帧间隔；把播放器塞进内嵌网页多带一个内核且桥接复杂，三者都不是首选。"
+        },
+        {
+          "type": "single",
+          "question": "`animateTo` 在 ArkUI 动画体系中的作用是？",
+          "options": [
+            "为页面注册一条命名的路由路径",
+            "描述组件插入移除时的转场效果",
+            "在构建阶段预先计算好布局尺寸",
+            "让闭包内的状态变化带动画"
+          ],
+          "answer": 3,
+          "explanation": "本题正确项是「让闭包内的状态变化带动画」。它把闭包执行期间发生的所有状态改动收集起来，按给定时长与曲线插值执行，因此适合一次改动驱动多处动画的场景。它既不注册路由，也不定义组件转场，更不是在构建阶段预计算布局；需要描述插入移除效果时应使用转场能力，两者解决的问题不同。"
+        },
+        {
+          "type": "single",
+          "question": "需要在图表里绘制上千个图元并且频繁重绘，性能最好的方案是？",
+          "options": [
+            "Canvas 配合脏矩形重绘",
+            "给每个图元建一个组件节点",
+            "用声明式形状组件逐个排列",
+            "把整张图渲染成位图再展示"
+          ],
+          "answer": 0,
+          "explanation": "本题正确项是「Canvas 配合脏矩形重绘」。命令式画布的图元不产生组件节点，重绘成本主要在绘制调用上，配合脏区只补变化部分可以稳定在一帧预算内。给每个图元建组件会让节点数与布局成本失控，声明式形状组件同样受节点数量限制，把图形转成位图则牺牲清晰度与交互命中能力。"
+        },
+        {
+          "type": "single",
+          "question": "应用内需要嵌入 H5 页面并与原生双向通信，应选用的能力是？",
+          "options": [
+            "下载资源后自己实现排版渲染",
+            "在原生层解析 HTML 文本内容",
+            "Web 组件加桥接代理",
+            "用图片组件展示页面截图"
+          ],
+          "answer": 2,
+          "explanation": "本题正确项是「Web 组件加桥接代理」。它内嵌浏览器引擎，并通过脚本代理与消息通道实现双向调用，是复用现有 H5 的标准做法。下载资源后自己渲染意味着要重写整套排版，在原生层解析 HTML 文本只能拿到内容拿不到交互，用图片展示页面更是完全丧失可操作性。"
+        },
+        {
+          "type": "code",
+          "question": "点击按钮后 Row 的高度变化表现为？\n@Entry\n@Component\nstruct Bar {\n  @State h: number = 40;\n  build() {\n    Column() { Row().height(this.h).animation({ duration: 300 })\n      Button('go').onClick(() => { this.h = 160; })\n    }\n  }\n}",
+          "code": "@Entry\n@Component\nstruct Bar {\n  @State h: number = 40;\n  build() {\n    Column() { Row().height(this.h).animation({ duration: 300 })\n      Button('go').onClick(() => { this.h = 160; })\n    }\n  }\n}",
+          "options": [
+            "高度在 300 毫秒内过渡到 160",
+            "高度立刻跳到 160 没有过渡",
+            "编译报错 animation 不是合法属性",
+            "高度保持 40 完全不发生变化"
+          ],
+          "answer": 0,
+          "explanation": "本题正确项是「高度在 300 毫秒内过渡到 160」。属性动画声明在高度变化之前生效，因此被 `@State` 驱动的高度改动会被插值执行。ArkTS 中 `animation` 是合法通用属性，不会编译失败；只有把动画声明写在高度设置之前，或状态根本没有可观察能力时，才会退化成瞬间跳变或完全不变化。"
+        }
+      ]
+    },
+    {
+      "id": "harmonyos_system_capabilities",
+      "title": {
+        "zh": "系统能力与权限",
+        "en": "System Capabilities & Permissions"
+      },
+      "summary": {
+        "zh": "三档授权方式与运行时申请流程、位置传感器通知剪贴板蓝牙的接入要点、后台任务约束与元服务的能力边界。",
+        "en": "Three grant modes and runtime requests, location, sensor, notification, clipboard and bluetooth integration, background limits."
+      },
+      "file": "assets/content/harmonyos_system_capabilities.md",
+      "minutes": 50,
+      "keywords": ["权限申请", "geoLocationManager", "notificationManager", "长时任务", "元服务"],
+      "difficulty": "进阶",
+      "order": 9,
+      "quiz": [
+        {
+          "type": "single",
+          "question": "关于应用使用敏感权限，下列说法正确的是？",
+          "options": [
+            "在配置清单声明后即可在代码中直接使用",
+            "这类权限安装时一次性授予且不可撤回",
+            "运行时需弹窗请求且用户可拒绝或撤回",
+            "被拒一次后系统会在下次启动自动放行"
+          ],
+          "answer": 2,
+          "explanation": "本题正确项是「运行时需弹窗请求且用户可拒绝或撤回」。敏感权限在安装时并不生效，必须由应用在使用时机主动请求，用户既能当场拒绝也能事后可设置里关闭。清单声明只是让接口有资格被调用，它本身不产生授权；安装时一次性授予的说法把低风险的普通权限与敏感权限混为一谈；被拒一次后系统在连续拒绝情形下会转为静默策略而不是自动放行，指望重启获得授权没有依据。"
+        },
+        {
+          "type": "single",
+          "question": "调用定位能力获取连续位置前，除代码外必须先完成的是？",
+          "options": [
+            "在模块配置中声明定位相关权限",
+            "把应用注册为桌面快捷方式入口",
+            "在构建脚本里开启位置编译开关",
+            "为页面添加显示地图的容器组件"
+          ],
+          "answer": 0,
+          "explanation": "本题正确项是「在模块配置中声明定位相关权限」。定位属于敏感能力，清单里缺少对应声明时，运行时请求会在权限校验阶段就失败，业务永远等不到回调。注册桌面入口、打开编译开关、添加地图容器都与权限链路无关，它们既不影响系统对能力的授权判定，也不能替代声明这一步。"
+        },
+        {
+          "type": "single",
+          "question": "发布一条前台通知前必须满足的前提是？",
+          "options": [
+            "应用已完成上架并取得正式包名",
+            "已获得通知授权且渠道未被用户关闭",
+            "在资源目录准备通知提示音文件",
+            "为每条通知分配全局唯一的自增编号"
+          ],
+          "answer": 1,
+          "explanation": "本题正确项是「已获得通知授权且渠道未被用户关闭」。未授权或被用户关闭时发布调用不会抛异常，系统只是静默丢弃，这正是排查困难的原因。正式包名与提示音文件都不是必要条件，通知可用系统默认声；标识编号只需在同一应用内保持稳定以便更新，并不要求全局唯一。"
+        },
+        {
+          "type": "single",
+          "question": "关于后台任务的运行约束，下列说法正确的是？",
+          "options": [
+            "退到后台后可以无限期运行任意任务",
+            "长时任务无需说明场景只要申请即通过",
+            "短时任务窗口足够完成一次大文件下载",
+            "长时任务需匹配指定场景并在结束后释放"
+          ],
+          "answer": 3,
+          "explanation": "本题正确项是「长时任务需匹配指定场景并在结束后释放」。这类任务的配额与系统对业务场景的判断绑定，声明与行为不符时会被提前回收，用完不释放则长期占用配额。后台无限运行在任何受限移动系统上都不成立；短时的收尾窗口只有分钟级，撑不起一次完整的大文件下载；延迟与周期任务由系统择机执行，不能靠它们保证实时性。"
+        },
+        {
+          "type": "code",
+          "question": "关于这段权限申请代码，说法正确的是？\nconst atManager = abilityAccessCtrl.createAtManager();\nconst perms: Array<Permissions> = ['ohos.permission.LOCATION'];\nconst result = await atManager.requestPermissionsFromUser(ctx, perms);\nconst granted: boolean = result.authResults[0] === 0;",
+          "code": "const atManager = abilityAccessCtrl.createAtManager();\nconst perms: Array<Permissions> = ['ohos.permission.LOCATION'];\nconst result = await atManager.requestPermissionsFromUser(ctx, perms);\nconst granted: boolean = result.authResults[0] === 0;",
+          "options": [
+            "弹窗只在首次调用出现之后系统自动放行",
+            "authResults 返回的是权限名称字符串",
+            "granted 为假时业务应降级并说明用途再请求",
+            "该接口无需在配置清单声明权限即可调用"
+          ],
+          "answer": 2,
+          "explanation": "本题正确项是「granted 为假时业务应降级并说明用途再请求」。结果为假说明用户没有授权，正确姿势是给出可理解的用途解释并提供手动开启入口，而不是立刻重发同一次请求。返回值是数值型授权结果而不是权限名称字符串，需要与授权枚举比较；未弹框与当场拒绝是两种不同情形，要借助弹框标记区分；清单声明是接口能工作的前提，缺了它这条调用只会失败。"
+        }
+      ]
+    },
+    {
+      "id": "harmonyos_distributed",
+      "title": {
+        "zh": "分布式软总线与跨端流转",
+        "en": "Distributed Soft Bus & Cross-Device Continuation"
+      },
+      "summary": {
+        "zh": "软总线三层职责与设备信任关系、应用级迁移的状态握手、三种跨端数据载体取舍与服务卡片的运行模型。",
+        "en": "Soft bus layers and trust, continuation handshake, cross-device data carriers and the widget runtime model."
+      },
+      "file": "assets/content/harmonyos_distributed.md",
+      "minutes": 60,
+      "keywords": ["软总线", "distributedDeviceManager", "onContinue", "分布式数据对象", "服务卡片"],
+      "difficulty": "高级",
+      "order": 10,
+      "quiz": [
+        {
+          "type": "single",
+          "question": "分布式软总线在 HarmonyOS 体系中的角色是？",
+          "options": [
+            "把异构设备虚拟成同一总线的近场通信底座",
+            "一种面向应用的分布式关系型数据库",
+            "用于打包多设备复合制品的构建工具",
+            "编译期合并多份源码的插件机制"
+          ],
+          "answer": 0,
+          "explanation": "本题正确项是「把异构设备虚拟成同一总线的近场通信底座」。它在物理链路之上统一了发现、组网与传输，应用只面对逻辑设备与逻辑通道，不必关心走的是哪种无线制式。数据库、打包工具与构建插件分别属于存储、制品与编译阶段，跟这层通信底座没有关系，把它们混进来是课程内不同层次概念的常见串台。"
+        },
+        {
+          "type": "single",
+          "question": "应用间跨设备迁移页面时，`onContinue` 回调的职责是？",
+          "options": [
+            "在目标设备上重建整个应用进程",
+            "通知源设备可以立即释放全部资源",
+            "由系统自动搬运全部内存无需干预",
+            "把不能自动携带的状态序列化进 wantParam"
+          ],
+          "answer": 3,
+          "explanation": "本题正确项是「把不能自动携带的状态序列化进 wantParam」。框架负责搬运能力实例与窗口信息，业务自定义的进度、选中项、草稿等内容必须在这个回调里显式写入参数对象，目标端才能按同样的键恢复。它不负责在远端重建进程，也不是释放资源的信号，更不是系统全自动完成内存快照；返回成功却没写任何状态，恰恰是迁移后回到首页这类问题的直接来源。"
+        },
+        {
+          "type": "single",
+          "question": "关于分布式数据对象，下列说法正确的是？",
+          "options": [
+            "它对成员的要求与普通赋值毫无差别",
+            "它适合用来同步整段视频这类大文件",
+            "它要求成员可序列化并限制嵌套深度",
+            "它只能由系统预置应用创建和共享"
+          ],
+          "answer": 2,
+          "explanation": "本题正确项是「它要求成员可序列化并限制嵌套深度」。共享对象在设备间以快照形式同步，函数、循环引用与超大二进制都无法成为合法成员，整体体积也有上限。它并非与普通赋值毫无差别，静默丢弃超限字段就是最常见的失败形态；大文件应由分布式文件承担，视频段落更不该塞进对象；普通三方应用同样可以使用该能力，把它说成系统专属不成立。"
+        },
+        {
+          "type": "single",
+          "question": "关于服务卡片的运行模型，下列说法正确的是？",
+          "options": [
+            "卡片与宿主应用共享同一份进程内状态",
+            "卡片由提供方渲染并由框架托管周期刷新",
+            "卡片内可运行任意脚本并自由访问网络",
+            "卡片一旦发布其内容就再也无法更新"
+          ],
+          "answer": 1,
+          "explanation": "本题正确项是「卡片由提供方渲染并由框架托管周期刷新」。提供方定义内容并推送数据变化，宿主负责展示与刷新调度，两者通过事件与参数通信。卡片不与宿主共享进程内状态，运行环境只开放受限组件与动作集合，不能执行任意脚本，也不能自由访问网络；内容更新恰恰是它的基本能力，「发布后无法更新」与实际机制完全相反。"
+        },
+        {
+          "type": "code",
+          "question": "这段迁移代码要解决的问题是？\nonContinue(wantParam: Record<string, Object>): abilityContinuation.OnContinueResult {\n  wantParam.progress = this.playback.progress;\n  this.session.save(wantParam);\n  return abilityContinuation.OnContinueResult.SUCCESS;\n}",
+          "code": "onContinue(wantParam: Record<string, Object>): abilityContinuation.OnContinueResult {\n  wantParam.progress = this.playback.progress;\n  this.session.save(wantParam);\n  return abilityContinuation.OnContinueResult.SUCCESS;\n}",
+          "options": [
+            "让目标设备从头重新播放全部内容",
+            "把播放进度写进迁移参数供对端恢复",
+            "阻止这个应用被迁移到其他设备",
+            "要求用户在新设备上重新完成登录"
+          ],
+          "answer": 1,
+          "explanation": "本题正确项是「把播放进度写进迁移参数供对端恢复」。回调在迁移发起时被调用，业务在此把无法自动搬运的自定义状态写入参数对象，返回成功表示同意迁移。参数会随能力实例投递到目标设备，因此既不等于源端立即释放，也不会让对端从头播放；代码里没有任何拒绝语义，也与登录流程无关。"
+        }
+      ]
+    },
+    {
+      "id": "harmonyos_release_optimization",
+      "title": {
+        "zh": "性能调优与上架 AppGallery",
+        "en": "Performance Tuning & AppGallery Release"
+      },
+      "summary": {
+        "zh": "冷启动阶段拆分与掉帧四类归因、卡顿采集与内存泄漏路径、包体裁剪层次、混淆保留规则与上架合规检查项。",
+        "en": "Startup phasing and frame attribution, jank capture, memory paths, size trimming, obfuscation keeps and release checklist."
+      },
+      "file": "assets/content/harmonyos_release_optimization.md",
+      "minutes": 55,
+      "keywords": ["冷启动", "掉帧归因", "内存水位", "代码混淆", "AppGallery Connect"],
+      "difficulty": "高级",
+      "order": 11,
+      "quiz": [
+        {
+          "type": "single",
+          "question": "关于应用启动优化，下列做法正确的是？",
+          "options": [
+            "在创建阶段同步预加载全部资源",
+            "把首屏必需的初始化推迟到交互之后",
+            "用轮询等待异步任务以确保数据就绪",
+            "拆分初始化并按首屏必需、可延后分组"
+          ],
+          "answer": 3,
+          "explanation": "本题正确项是「拆分初始化并按首屏必需、可延后分组」。启动优化的本质是重新分配工作发生的时间，只有先把清单按是否影响第一帧分类，才谈得上把无关项挪到首帧之后或并发执行。创建阶段同步预加载全部资源会把解码与 IO 压进首屏路径；把首屏必需的初始化推到交互之后会让第一帧缺内容；用轮询或超时兜底的写法只会把不确定性推给线上，三者都不是可行做法。"
+        },
+        {
+          "type": "single",
+          "question": "定位页面掉帧原因最合适的做法是？",
+          "options": [
+            "在构建日志里搜耗时最长的接口名",
+            "让用户截图描述卡顿发生的页面",
+            "用分析工具采集帧率与主线程长任务",
+            "在发布说明里承诺新版本不再卡顿"
+          ],
+          "answer": 2,
+          "explanation": "本题正确项是「用分析工具采集帧率与主线程长任务」。掉帧必须区分构建、测量布局、绘制、合成四类归因，只有带时间线的采样数据能给出这种区分。构建日志里的接口耗时与代码无关；用户截图能说明现象却无法定位到帧与函数；在发布说明里承诺不出现卡顿不产生任何可验证信息，对复现与回归毫无帮助。"
+        },
+        {
+          "type": "single",
+          "question": "关于代码混淆，下列说法正确的是？",
+          "options": [
+            "开启前需为反射与序列化入口保留名单",
+            "混淆后包体一定会明显增大需要再裁剪",
+            "任何情况下都不应该改变类的名称",
+            "混淆等同加密可以直接替代安全评估"
+          ],
+          "answer": 0,
+          "explanation": "本题正确项是「开启前需为反射与序列化入口保留名单」。混淆会重命名标识符，凡是以字符串形式被查找的名字都必须在规则里显式保留，否则故障只在发布版出现。混淆通常让产物略有变小而非显著增大；它的目的恰恰是改变类与成员名称；它抬高的是静态阅读成本，与传输加密和运行时鉴权无关，不能替代安全评估。"
+        },
+        {
+          "type": "single",
+          "question": "上架前做包体裁剪，下列做法合理的是？",
+          "options": [
+            "删除全部语言资源只保留简体中文",
+            "按需拆分特性模块让首包只含必需",
+            "把所有位图转成常量内嵌省去解码",
+            "去掉发布配置里的签名信息压体积"
+          ],
+          "answer": 1,
+          "explanation": "本题正确项是「按需拆分特性模块让首包只含必需」。把低频功能从入口包剥离，首包只保留主路径，既降下载体积又不牺牲能力。删除全部语言资源会让已声明的地区与语言范围名不副实；把位图改成常量内嵌既增大代码体积又绕开按显示尺寸解码；签名信息是安装的必要条件，删掉只会导致产物无法安装。"
+        },
+        {
+          "type": "code",
+          "question": "这段启动期代码最可能造成的问题是？\nclass EntryAbility extends UIAbility {\n  onCreate(want: Want): void {\n    this.loadTheme();\n    this.preloadAllImages();\n    this.warmUpDatabase();\n    this.fetchRemoteConfig();\n  }\n}",
+          "code": "class EntryAbility extends UIAbility {\n  onCreate(want: Want): void {\n    this.loadTheme();\n    this.preloadAllImages();\n    this.warmUpDatabase();\n    this.fetchRemoteConfig();\n  }\n}",
+          "options": [
+            "主题加载顺序不对导致首屏显示空白",
+            "数据库预热不足引发首次查询失败",
+            "远程配置未就绪使功能开关全部失效",
+            "无关初始化挤占首帧时间拖慢启动"
+          ],
+          "answer": 3,
+          "explanation": "本题正确项是「无关初始化挤占首帧时间拖慢启动」。全量图片解码与数据库建表迁移都发生在第一帧之前，属于典型的可延后工作，把它们串在创建阶段会直接拉长冷启动。主题加载是首屏必需项，顺序本身没有错；数据库预热不足只会变慢而不会报错；远程配置此时尚未返回是设计使然，只要业务有本地兜底就不构成功能失效。"
+        }
+      ]
+    }
+  ]
+}
