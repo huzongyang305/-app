@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../l10n/l10n_extension.dart';
+import '../models/backup_preview.dart';
 import '../services/auto_backup_service.dart';
 import '../services/backup_bundle_service.dart';
 import '../services/notification_service.dart';
 import '../services/progress_provider.dart';
 import '../services/settings_provider.dart';
 import '../services/storage_service.dart';
+import '../services/webdav_sync_service.dart';
 import '../widgets/responsive_content.dart';
 import 'daily_question_screen.dart';
 import 'gamification_hub_screen.dart';
@@ -40,6 +42,9 @@ class _RootShellState extends State<RootShell> with WidgetsBindingObserver {
 
   /// 自动备份执行中标志，避免设置刷新时重入。
   bool _autoBackupRunning = false;
+
+  /// WebDAV 自动同步执行中标志，同样用于防重入。
+  bool _autoSyncRunning = false;
 
   @override
   void initState() {
@@ -124,6 +129,8 @@ class _RootShellState extends State<RootShell> with WidgetsBindingObserver {
 
     // 自动备份：到期的每日/每周备份在这里顺带完成。
     await _maybeAutoBackup();
+    // WebDAV：距上次成功同步满一天时静默合并一次。
+    await _maybeAutoSync();
 
     // 目标达成祝贺：仅在用户开启提醒时发送，且每天最多一次。
     final goalMinutes = settings.dailyGoalMinutes;
@@ -212,6 +219,32 @@ class _RootShellState extends State<RootShell> with WidgetsBindingObserver {
       debugPrint('自动备份失败：$error');
     } finally {
       _autoBackupRunning = false;
+    }
+  }
+
+  /// WebDAV 静默自动同步：仅在开关打开且距上次成功同步满一天时执行。
+  Future<void> _maybeAutoSync() async {
+    if (_autoSyncRunning || !mounted) return;
+    final storage = context.read<StorageService>();
+    final service = WebDavSyncService(storage);
+    if (!service.isAutoSyncDue(context.read<ProgressProvider>().now)) return;
+    _autoSyncRunning = true;
+    try {
+      final bundle = BackupBundleService(
+        storage,
+        context.read<ProgressProvider>(),
+        context.read<SettingsProvider>(),
+      );
+      await service.sync(
+        buildBundle: bundle.buildExportData,
+        applyRemote: (remote) =>
+            bundle.restore(remote, mode: BackupImportMode.merge),
+      );
+    } catch (error) {
+      // 同步失败不打断学习，状态已记录在设置页可直接查看。
+      debugPrint('WebDAV 自动同步失败：$error');
+    } finally {
+      _autoSyncRunning = false;
     }
   }
 

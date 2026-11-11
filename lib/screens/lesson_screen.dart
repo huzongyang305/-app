@@ -44,6 +44,9 @@ class _LessonScreenState extends State<LessonScreen> {
   final ScrollController _scrollController = ScrollController();
   bool _speaking = false;
 
+  /// 宽屏同屏答题：课文与测验面板并排，替代跳转到独立测验页。
+  bool _splitQuiz = false;
+
   @override
   void initState() {
     super.initState();
@@ -350,19 +353,36 @@ class _LessonScreenState extends State<LessonScreen> {
                     if (constraints.maxWidth < AppBreakpoints.wideReading) {
                       return article;
                     }
+                    final canSplitQuiz = widget.lesson.totalQuestionCount > 0;
+                    final showQuizPane = canSplitQuiz && _splitQuiz;
                     return Row(
                       key: const ValueKey('lesson-wide-layout'),
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        SizedBox(
-                          width: 320,
-                          child: _LessonOverviewPane(
-                            lesson: widget.lesson,
-                            isLearned: isLearned,
+                        // 答题面板比目录更占空间，同屏答题时让出目录栏。
+                        if (!showQuizPane) ...[
+                          SizedBox(
+                            width: 320,
+                            child: _LessonOverviewPane(
+                              lesson: widget.lesson,
+                              isLearned: isLearned,
+                            ),
                           ),
-                        ),
-                        const VerticalDivider(width: 1),
+                          const VerticalDivider(width: 1),
+                        ],
                         Expanded(child: article),
+                        if (showQuizPane) ...[
+                          const VerticalDivider(width: 1),
+                          SizedBox(
+                            key: const ValueKey('lesson-quiz-pane'),
+                            width: 400,
+                            child: QuizScreen(
+                              lesson: widget.lesson,
+                              embedded: true,
+                              onExit: () => setState(() => _splitQuiz = false),
+                            ),
+                          ),
+                        ],
                       ],
                     );
                   },
@@ -377,6 +397,21 @@ class _LessonScreenState extends State<LessonScreen> {
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
           child: Row(
             children: [
+              if (widget.lesson.totalQuestionCount > 0 &&
+                  MediaQuery.sizeOf(context).width >=
+                      AppBreakpoints.splitQuiz) ...[
+                IconButton(
+                  key: const ValueKey('lesson-split-quiz-toggle'),
+                  isSelected: _splitQuiz,
+                  tooltip: context.tr(
+                    _splitQuiz ? 'splitQuizOff' : 'splitQuizOn',
+                  ),
+                  onPressed: () => setState(() => _splitQuiz = !_splitQuiz),
+                  icon: const Icon(Icons.view_column_outlined),
+                  selectedIcon: const Icon(Icons.view_column),
+                ),
+                const SizedBox(width: 4),
+              ],
               if (widget.lesson.totalQuestionCount > 0) ...[
                 Expanded(
                   child: FilledButton.icon(

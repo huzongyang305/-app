@@ -107,4 +107,40 @@ void main() {
     expect(find.byType(SnackBar), findsOneWidget);
     expect(find.textContaining('朗读引擎'), findsOneWidget);
   });
+
+  testWidgets('P2 折叠屏同屏答题可开合', (tester) async {
+    tester.view.physicalSize = const Size(1400, 900);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final semantics = tester.ensureSemantics();
+    await tester.pumpWidget(
+      CodeLearnApp(
+        storage: StorageService.inMemory(),
+        contentProvider: content,
+      ),
+    );
+    await settleWithIo(tester);
+    await openFirstLesson(tester);
+
+    // 默认仍是「目录 + 正文」，不改变既有翻页答题的流程。
+    expect(find.byKey(const ValueKey('lesson-quiz-pane')), findsNothing);
+    expect(find.byKey(const ValueKey('lesson-split-quiz-toggle')), findsOneWidget);
+
+    await tester.tap(find.byKey(const ValueKey('lesson-split-quiz-toggle')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('lesson-quiz-pane')), findsOneWidget);
+    expect(find.byKey(const ValueKey('lesson-wide-layout')), findsOneWidget);
+    expect(find.bySemanticsLabel(RegExp(r'选项 A：')), findsOneWidget);
+
+    await tester.tap(find.byKey(const ValueKey('lesson-split-quiz-toggle')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('lesson-quiz-pane')), findsNothing);
+
+    // 收起后「开始测验」依旧进入全屏测验页。
+    await tester.tap(find.text('开始测验'));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('quiz-wide-layout')), findsOneWidget);
+
+    semantics.dispose();
+  });
 }

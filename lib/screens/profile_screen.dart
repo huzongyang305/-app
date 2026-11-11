@@ -31,6 +31,7 @@ import 'notes_screen.dart';
 import 'share_card_screen.dart';
 import 'storage_diagnostics_screen.dart';
 import 'tutor_screen.dart';
+import 'webdav_sync_screen.dart';
 import 'wrong_answer_screen.dart';
 
 /// 我的：学习统计、收藏、笔记与设置。
@@ -1252,6 +1253,18 @@ class ProfileScreen extends StatelessWidget {
                 ],
                 const Divider(height: 1),
                 const _AutoBackupSection(),
+                const Divider(height: 1),
+                ListTile(
+                  leading: const Icon(Icons.sync_outlined),
+                  title: Text(context.tr('webdavEntry')),
+                  subtitle: Text(context.tr('webdavEntryHint')),
+                  trailing: const Icon(Icons.chevron_right, size: 18),
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => const WebDavSyncScreen(),
+                    ),
+                  ),
+                ),
                 const Divider(height: 1),
                 ListTile(
                   leading: const Icon(Icons.backup_outlined),

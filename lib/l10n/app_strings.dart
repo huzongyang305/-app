@@ -77,6 +77,8 @@ class AppStrings {
     'lessons': {'zh': '个知识点', 'en': 'lessons'},
     'minutes': {'zh': '分钟', 'en': 'min'},
     'startQuiz': {'zh': '开始测验', 'en': 'Start quiz'},
+    'splitQuizOn': {'zh': '同屏答题', 'en': 'Quiz beside text'},
+    'splitQuizOff': {'zh': '收起答题面板', 'en': 'Close quiz panel'},
     'openLab': {'zh': '打开互动实验', 'en': 'Open interactive lab'},
     'openLabTrace': {
       'zh': '打开教学模式实验（静态检查，不真正编译运行）',
@@ -395,6 +397,108 @@ class AppStrings {
     'autoBackupFailed': {
       'zh': '自动备份失败：{error}',
       'en': 'Auto backup failed: {error}',
+    },
+    'webdavEntry': {'zh': 'WebDAV 多设备同步', 'en': 'WebDAV sync'},
+    'webdavEntryHint': {
+      'zh': '把完整学习记录同步到自建网盘，多台设备互不覆盖',
+      'en': 'Sync all progress to your own WebDAV drive',
+    },
+    'webdavTitle': {'zh': 'WebDAV 同步', 'en': 'WebDAV sync'},
+    'webdavIntro': {
+      'zh': '同步内容包含学习进度、笔记、错题、闪卡、界面设置、代码片段与沙盒草稿。'
+          '同步按条目合并：手机和平板各自学过的内容都会保留，不会互相覆盖。',
+      'en': 'Sync covers progress, notes, mistakes, flashcards, settings, '
+          'snippets and sandbox drafts, merged item by item across devices.',
+    },
+    'webdavEndpoint': {'zh': '备份文件地址', 'en': 'Backup file URL'},
+    'webdavEndpointHint': {
+      'zh': '填到文件名，例：https://dav.example.com/code_learn/backup.json',
+      'en': 'Include the file name, e.g. https://dav.example.com/app/backup.json',
+    },
+    'webdavUsername': {'zh': '用户名（可留空）', 'en': 'User (optional)'},
+    'webdavPassword': {'zh': '密码 / 应用专用密码', 'en': 'Password or app token'},
+    'webdavPasswordKept': {
+      'zh': '已保存密码，留空表示不修改',
+      'en': 'Saved; leave blank to keep it',
+    },
+    'webdavPasswordEmpty': {
+      'zh': '只保存在本机，不会写入日志',
+      'en': 'Stored on this device only, never logged',
+    },
+    'webdavInsecureWarning': {
+      'zh': '该地址是明文 HTTP，密码与学习记录会被网络中间方看到。'
+          '请使用 https，或改用不含密码的匿名目录。',
+      'en': 'This is plain HTTP: credentials and study data would be visible '
+          'to anyone on the network. Use https or a password-less share.',
+    },
+    'webdavEnabled': {'zh': '启用 WebDAV 同步', 'en': 'Enable WebDAV sync'},
+    'webdavEnabledHint': {
+      'zh': '关闭后仍可手动点「立即同步」',
+      'en': 'You can still sync manually when off',
+    },
+    'webdavAutoSync': {'zh': '打开 App 时自动同步', 'en': 'Sync on launch'},
+    'webdavAutoSyncHint': {
+      'zh': '距上次成功同步满一天才会执行，失败只记录不打扰',
+      'en': 'Runs at most once a day; failures are only recorded',
+    },
+    'webdavSave': {'zh': '保存设置', 'en': 'Save'},
+    'webdavTest': {'zh': '测试连接', 'en': 'Test'},
+    'webdavSyncNow': {'zh': '立即同步', 'en': 'Sync now'},
+    'webdavSaved': {'zh': '已保存 WebDAV 设置', 'en': 'WebDAV settings saved'},
+    'webdavTestOk': {'zh': '连接正常', 'en': 'Connection OK'},
+    'webdavSyncDone': {'zh': '同步完成', 'en': 'Sync finished'},
+    'webdavStatusTitle': {'zh': '同步状态', 'en': 'Status'},
+    'webdavNeverSynced': {'zh': '还没有成功同步过', 'en': 'No successful sync yet'},
+    'webdavLastSync': {
+      'zh': '上次成功：{time} · 备份 {size}',
+      'en': 'Last sync: {time} · {size}',
+    },
+    'webdavSecurityNote': {
+      'zh': '提示：网盘账号请用「应用专用密码」，权限限制到该目录即可；'
+          '换设备时用同一份设置拉回数据。',
+      'en': 'Tip: use an app-specific password scoped to this folder so a '
+          'leaked token cannot touch the rest of your drive.',
+    },
+    'webdavFailedUnknown': {
+      'zh': '同步未完成，请检查地址与网盘状态',
+      'en': 'Sync did not finish; check the URL and drive status',
+    },
+    'webdavErrUrlMissing': {'zh': '请先填写备份文件地址', 'en': 'Backup URL is empty'},
+    'webdavErrUrlInvalid': {
+      'zh': '地址格式不对，需要以 http:// 或 https:// 开头',
+      'en': 'Invalid URL; it must start with http:// or https://',
+    },
+    'webdavErrInsecure': {
+      'zh': '明文 HTTP 不允许携带密码，请改用 https',
+      'en': 'Plain HTTP cannot carry a password; use https',
+    },
+    'webdavErrUnauthorized': {
+      'zh': '用户名或密码不对，网盘拒绝了访问',
+      'en': 'Rejected credentials',
+    },
+    'webdavErrParentMissing': {
+      'zh': '网盘里的上级目录不存在，请先建好目录再同步',
+      'en': 'Remote folder does not exist; create it first',
+    },
+    'webdavErrUnreachable': {
+      'zh': '连不上网盘，请检查网络或稍后再试',
+      'en': 'Cannot reach the drive; check the network',
+    },
+    'webdavErrServer': {
+      'zh': '网盘返回了错误',
+      'en': 'The drive returned an error',
+    },
+    'webdavErrUnsupported': {
+      'zh': '网盘不支持直接读取该文件，请换用文件直链地址',
+      'en': 'The drive does not return the file directly; use a plain file URL',
+    },
+    'webdavErrBadBackup': {
+      'zh': '远端文件不是本 App 的备份格式，已停止以免覆盖',
+      'en': 'Remote file is not a backup from this app; nothing was overwritten',
+    },
+    'webdavErrTooLarge': {
+      'zh': '备份包超过 16 MB 上限，请先清理笔记或片段',
+      'en': 'Backup exceeds the 16 MB limit; trim notes or snippets',
     },
     'reviewPlanEstimate': {'zh': '预计 {n} 分钟', 'en': 'About {n} min'},
     'reviewPlanEmpty': {

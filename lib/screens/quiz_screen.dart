@@ -15,12 +15,24 @@ import '../widgets/responsive_content.dart';
 
 /// 测验页：逐题作答，提交后立即判定并显示解析。
 class QuizScreen extends StatefulWidget {
-  const QuizScreen({super.key, required this.lesson, this.isReview = false});
+  const QuizScreen({
+    super.key,
+    required this.lesson,
+    this.isReview = false,
+    this.embedded = false,
+    this.onExit,
+  });
 
   final Lesson lesson;
 
   /// 从复习计划进入时记录一次复习场次，用于「最近复习场次」总结。
   final bool isReview;
+
+  /// 平板同屏答题：由课文页内嵌，不渲染自己的 AppBar，也不走路由栈。
+  final bool embedded;
+
+  /// 内嵌模式下「返回」的实际动作，通常是收起答题面板。
+  final VoidCallback? onExit;
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
@@ -361,16 +373,26 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final progress = LinearProgressIndicator(
+      value: _finished ? 1 : _answeredCount / _questions.length,
+      minHeight: 4,
+    );
     if (_questions.isEmpty) {
       return Scaffold(
-        appBar: AppBar(),
+        appBar: widget.embedded
+            ? null
+            : AppBar(automaticallyImplyLeading: false),
         body: Center(child: Text(context.tr('loadFailed'))),
       );
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.lesson.title.of(context.strings.localeCode)),
+        // 内嵌时没有路由栈，不能渲染返回按钮，标题位让给答题进度。
+        automaticallyImplyLeading: !widget.embedded,
+        title: widget.embedded
+            ? Text('$_answeredCount / ${_questions.length}')
+            : Text(widget.lesson.title.of(context.strings.localeCode)),
         actions: [
           IconButton(
             tooltip: _flagged.contains(_index)
@@ -390,10 +412,7 @@ class _QuizScreenState extends State<QuizScreen> {
         ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(4),
-          child: LinearProgressIndicator(
-            value: _finished ? 1 : _answeredCount / _questions.length,
-            minHeight: 4,
-          ),
+          child: progress,
         ),
       ),
       body: AnimatedSwitcher(
@@ -404,7 +423,13 @@ class _QuizScreenState extends State<QuizScreen> {
                 correct: _correctCount,
                 total: _questions.length,
                 onRestart: _restart,
-                onBack: () => Navigator.of(context).pop(),
+                onBack: () {
+                  if (widget.embedded) {
+                    widget.onExit?.call();
+                  } else {
+                    Navigator.of(context).pop();
+                  }
+                },
                 onGrade: _gradeReview,
                 gradedDays: _gradedDays,
               )

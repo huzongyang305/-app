@@ -9,6 +9,9 @@ class AppBreakpoints {
 
   /// 宽屏阅读布局：教程和答题页开始分栏。
   static const double wideReading = 960;
+
+  /// 同屏答题：正文与答题面板并排，需要比纯分栏阅读再宽一档才不至于挤压行长。
+  static const double splitQuiz = 1040;
 }
 
 /// 居中的阅读容器；手机保持全宽，平板限制行长，避免正文过宽。
