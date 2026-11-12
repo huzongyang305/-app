@@ -529,7 +529,7 @@ D. 两个框架的模型都必须保持原始框架环境才能部署
 - 官方/权威资料：[scikit-learn 用户手册](https://scikit-learn.org/stable/user_guide.html)
 - 主题延伸：[PyTorch 官方文档](https://pytorch.org/docs/stable/index.html)
 - 最后复核：2026-10-04
-- 下次复核：2026-11-19
+- 下次复核：2027-08-24
 
 ## 内容元数据
 

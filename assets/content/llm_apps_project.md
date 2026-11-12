@@ -345,7 +345,7 @@ print(round(p95, 1))
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2026-11-10
+- 下次复核：2027-07-10
 - [Retrieval-augmented generation 概念说明](https://aws.amazon.com/what-is/retrieval-augmented-generation/)
 - [Monitoring Distributed Systems](https://sre.google/sre-book/monitoring-distributed-systems/)
 - [Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks](https://arxiv.org/abs/2005.11401)

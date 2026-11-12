@@ -852,7 +852,7 @@ D. 「性能优化」：减少跨桥通信、做好列表复用与图片缓存�
 - 官方/权威资料：[MDN：渐进式 Web 应用（PWA）](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)
 - 主题延伸：[React Native 原生模块指南](https://reactnative.dev/docs/legacy/native-modules-android)
 - 最后复核：2026-10-04
-- 下次复核：2027-01-13
+- 下次复核：2027-03-17
 
 ## 内容元数据
 

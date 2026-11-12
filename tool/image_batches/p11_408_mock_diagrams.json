@@ -1,0 +1,34 @@
+{
+  "408_mock_set1": {
+    "image": "images/diagram_408_mock_set1.webp",
+    "alt": "仿真卷一的四科单选与综合题分值结构"
+  },
+  "408_mock_set2": {
+    "image": "images/diagram_408_mock_set2.webp",
+    "alt": "数据结构与算法题型的解题流程"
+  },
+  "408_mock_set3": {
+    "image": "images/diagram_408_mock_set3.webp",
+    "alt": "主存地址到 Cache 的三段划分"
+  },
+  "408_mock_set4": {
+    "image": "images/diagram_408_mock_set4.webp",
+    "alt": "操作系统三大计算题支柱"
+  },
+  "408_mock_set5": {
+    "image": "images/diagram_408_mock_set5.webp",
+    "alt": "网络分层封装与排错顺序"
+  },
+  "408_mock_set6": {
+    "image": "images/diagram_408_mock_set6.webp",
+    "alt": "一条指令跨四科的执行链路"
+  },
+  "408_mock_set7": {
+    "image": "images/diagram_408_mock_set7.webp",
+    "alt": "四类高难计算题的公式清单"
+  },
+  "408_mock_set8": {
+    "image": "images/diagram_408_mock_set8.webp",
+    "alt": "180 分钟考试的节奏分配"
+  }
+}

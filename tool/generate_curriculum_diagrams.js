@@ -135,9 +135,16 @@ async function main() {
   const groupArg = rawArgs.find((arg) => arg.startsWith('--group='));
   const groupName = groupArg ? groupArg.slice('--group='.length) : null;
   if (groupName && !GROUPS[groupName]) {
-    console.error(`未知分组 ${groupName}；可用：${Object.keys(GROUPS).join(', ')}`);
-    process.exitCode = 1;
-    return;
+    // 允许直接按模块名渲染单个文件，新增分类不必先改这里的分组表。
+    try {
+      require.resolve(path.join(__dirname, 'curriculum_diagrams', groupName));
+      GROUPS[groupName] = [`./curriculum_diagrams/${groupName}`];
+      BATCH_NAMES[groupName] = `${groupName}_diagrams.json`;
+    } catch {
+      console.error(`未知分组 ${groupName}；可用：${Object.keys(GROUPS).join(', ')}`);
+      process.exitCode = 1;
+      return;
+    }
   }
   const diagrams = groupName ? loadGroup(groupName) : DIAGRAMS;
   const filters = rawArgs.filter((arg) => !arg.startsWith('--'));

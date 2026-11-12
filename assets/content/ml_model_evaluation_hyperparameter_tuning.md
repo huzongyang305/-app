@@ -1008,7 +1008,7 @@ D. 在大样本情况下，微小的性能差异也可能统计显著
 - 官方/权威资料：[scikit-learn 用户手册](https://scikit-learn.org/stable/user_guide.html)
 - 主题延伸：[scikit-learn 网格搜索与超参数调优](https://scikit-learn.org/stable/modules/grid_search.html)
 - 最后复核：2026-10-04
-- 下次复核：2026-12-19
+- 下次复核：2027-08-24
 
 ## 内容元数据
 

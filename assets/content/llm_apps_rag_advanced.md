@@ -331,7 +331,7 @@ print(len(rewrite))
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2026-11-10
+- 下次复核：2027-07-10
 - [Microsoft GraphRAG 文档](https://microsoft.github.io/graphrag/)
 - [RAGAS 评估框架文档](https://docs.ragas.io/en/stable/)
 - [RAPTOR：递归摘要树检索论文](https://arxiv.org/abs/2401.18059)

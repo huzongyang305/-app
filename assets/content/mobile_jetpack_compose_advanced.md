@@ -730,7 +730,7 @@ D. 「Android」：借LaunchedEffect把请求与订阅挪出组合阶段，避�
 - 官方/权威资料：[Android 开发者站](https://developer.android.com/develop)
 - 主题延伸：[Jetpack Compose 官方文档](https://developer.android.google.cn/develop/ui/compose/documentation)
 - 最后复核：2026-10-04
-- 下次复核：2027-01-08
+- 下次复核：2027-02-24
 
 ## 内容元数据
 

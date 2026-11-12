@@ -329,7 +329,7 @@ print(len(msgs), msgs[1]['role'])
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2026-11-10
+- 下次复核：2027-07-10
 - [OpenAI Prompt engineering guide](https://platform.openai.com/docs/guides/prompt-engineering)
 - [Anthropic Prompt engineering overview](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview)
 - [OpenAI Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs)

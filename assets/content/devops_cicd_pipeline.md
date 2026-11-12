@@ -1375,7 +1375,7 @@ D. 「DAST」：Dynamic Application Security Testing：动态安全测试：运�
 - 官方/权威资料：[OpenSSF 最佳实践](https://bestpractices.coreinfrastructure.org/)
 - 主题延伸：[Jenkins Pipeline 官方手册](https://www.jenkins.io/doc/book/pipeline/)
 - 最后复核：2026-10-04
-- 下次复核：2027-01-18
+- 下次复核：2027-04-10
 
 ### 官方文档（权威来源）
 

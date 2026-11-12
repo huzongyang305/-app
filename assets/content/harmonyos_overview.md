@@ -333,7 +333,7 @@ struct Probe {
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2026-11-10
+- 下次复核：2027-06-17
 - [HarmonyOS NEXT 开发者官网](https://developer.huawei.com/consumer/cn/harmonyos-next/)
 - [HarmonyOS 与 OpenHarmony 的关系说明](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/harmonyos-and-openharmony)
 - [Stage 模型应用架构说明](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/application-models)

@@ -331,7 +331,7 @@ print(route({'tool_calls': []}), route({'tool_calls': ['q']}))
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2026-11-10
+- 下次复核：2027-07-10
 - [ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/abs/2210.03629)
 - [Reflexion: Language Agents with Verbal Reinforcement Learning](https://arxiv.org/abs/2303.11366)
 - [LangGraph 官方文档](https://langchain-ai.github.io/langgraph/)

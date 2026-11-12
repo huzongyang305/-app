@@ -326,7 +326,7 @@ steps 与 dropped_ms 要放在一起读：steps 长期为 1，说明渲染帧率
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2027-04-24
+- 下次复核：2026-12-24
 - 复核范围：版本兼容、API 行为与工程实践
 
 - [Game Programming Patterns: Game Loop](https://gameprogrammingpatterns.com/game-loop.html)

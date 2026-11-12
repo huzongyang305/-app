@@ -1099,7 +1099,7 @@ D. 对不同量级的变量分别进行归一化
 - 官方/权威资料：[scikit-learn 用户手册](https://scikit-learn.org/stable/user_guide.html)
 - 主题延伸：[PyTorch LSTM 接口文档](https://pytorch.org/docs/stable/generated/torch.nn.LSTM.html)
 - 最后复核：2026-10-04
-- 下次复核：2026-12-14
+- 下次复核：2027-08-24
 
 ## 内容元数据
 

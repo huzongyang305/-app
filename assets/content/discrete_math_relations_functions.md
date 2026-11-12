@@ -458,7 +458,7 @@ D. 「偏序关系」：(a,b)∈R → (b,a)∈R
 | 复合函数 | g∘f(x) = g(f(x)) |
 
 ## 参考资料与复核
-- 下次复核：2026-12-24
+- 下次复核：2027-04-17
 
 - 《离散数学及其应用》（Kenneth H. Rosen）第7-9章
 - MIT OpenCourseWare: Mathematics for Computer Science, Chapter 5

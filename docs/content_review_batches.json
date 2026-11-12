@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-11-02T04:34:14.709815Z",
+  "generated_at": "2026-11-12T04:27:55.292020Z",
   "content_version": "2.0",
   "batch_size": 24,
-  "batch_count": 50,
+  "batch_count": 58,
   "records_path": "docs/content_review_records.json",
   "batches": [
     {
@@ -308,6 +308,242 @@
           "characters": 9808,
           "questions": 6,
           "images": 2,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        }
+      ]
+    },
+    {
+      "batch_id": "408_exam-1",
+      "category_id": "408_exam",
+      "category_title": "考研 408 冲刺",
+      "lesson_count": 12,
+      "reviewed": 0,
+      "status": "pending",
+      "risk_high": 0,
+      "risk_medium": 0,
+      "risk_low": 12,
+      "focus": [
+        "正文事实与术语是否准确，有无过时结论或含糊表述。",
+        "代码块能否按正文步骤运行，输出与解析是否一致。",
+        "测验题干、选项与解析是否自洽，答案下标是否正确。",
+        "参考资料链接可访问，且与课程主题匹配。"
+      ],
+      "lessons": [
+        {
+          "lesson_id": "408_co_cpu",
+          "title": "计算机组成原理：CPU与指令系统",
+          "risk": "low",
+          "characters": 12571,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "408_co_data",
+          "title": "计算机组成：数据表示与运算",
+          "risk": "low",
+          "characters": 5242,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "408_ds_linear",
+          "title": "数据结构：线性表与栈队列",
+          "risk": "low",
+          "characters": 6262,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "408_ds_sort_search",
+          "title": "数据结构：排序与查找",
+          "risk": "low",
+          "characters": 5664,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "408_ds_tree_graph",
+          "title": "数据结构：树与图",
+          "risk": "low",
+          "characters": 5728,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "408_exam_mock1",
+          "title": "408 全真模拟卷（一）",
+          "risk": "low",
+          "characters": 11233,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "408_exam_mock2",
+          "title": "408 全真模拟卷（二）",
+          "risk": "low",
+          "characters": 11299,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "408_exam_overview",
+          "title": "408 考纲全景与复习策略",
+          "risk": "low",
+          "characters": 6875,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "408_net_app",
+          "title": "计算机网络：应用层协议",
+          "risk": "low",
+          "characters": 11534,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "408_net_layer",
+          "title": "计算机网络：网络层与传输层",
+          "risk": "low",
+          "characters": 13255,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "408_os_memory",
+          "title": "操作系统：内存管理",
+          "risk": "low",
+          "characters": 11839,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "408_os_process",
+          "title": "操作系统：进程管理",
+          "risk": "low",
+          "characters": 11044,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        }
+      ]
+    },
+    {
+      "batch_id": "408_mock-1",
+      "category_id": "408_mock",
+      "category_title": "考研 408 仿真试卷",
+      "lesson_count": 6,
+      "reviewed": 0,
+      "status": "pending",
+      "risk_high": 0,
+      "risk_medium": 0,
+      "risk_low": 6,
+      "focus": [
+        "正文事实与术语是否准确，有无过时结论或含糊表述。",
+        "代码块能否按正文步骤运行，输出与解析是否一致。",
+        "测验题干、选项与解析是否自洽，答案下标是否正确。",
+        "参考资料链接可访问，且与课程主题匹配。"
+      ],
+      "lessons": [
+        {
+          "lesson_id": "408_mock_set1",
+          "title": "408 仿真模拟卷（一）：全卷分值地图与四科均衡题",
+          "risk": "low",
+          "characters": 10023,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "408_mock_set2",
+          "title": "408 仿真模拟卷（二）：数据结构与算法设计题专攻",
+          "risk": "low",
+          "characters": 9358,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "408_mock_set3",
+          "title": "408 仿真模拟卷（三）：存储层次与 Cache 地址划分",
+          "risk": "low",
+          "characters": 9311,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "408_mock_set4",
+          "title": "408 仿真模拟卷（四）：页面置换、磁盘调度与死锁计算",
+          "risk": "low",
+          "characters": 9987,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "408_mock_set5",
+          "title": "408 仿真模拟卷（五）：分层封装、子网划分与可靠传输",
+          "risk": "low",
+          "characters": 9225,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "408_mock_set6",
+          "title": "408 仿真模拟卷（六）：一条 store 指令串起四科知识",
+          "risk": "low",
+          "characters": 9450,
+          "questions": 6,
+          "images": 1,
           "machine_issues": [],
           "review_status": "pending",
           "review_method": ""
@@ -2763,6 +2999,80 @@
       ]
     },
     {
+      "batch_id": "cs_english-1",
+      "category_id": "cs_english",
+      "category_title": "计算机专业英语",
+      "lesson_count": 5,
+      "reviewed": 0,
+      "status": "pending",
+      "risk_high": 0,
+      "risk_medium": 0,
+      "risk_low": 5,
+      "focus": [
+        "正文事实与术语是否准确，有无过时结论或含糊表述。",
+        "代码块能否按正文步骤运行，输出与解析是否一致。",
+        "测验题干、选项与解析是否自洽，答案下标是否正确。",
+        "参考资料链接可访问，且与课程主题匹配。"
+      ],
+      "lessons": [
+        {
+          "lesson_id": "cs_english_db_bigdata",
+          "title": "数据库与大数据英语：ACID、OLAP 与论文里的定义句",
+          "risk": "low",
+          "characters": 17013,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "cs_english_hardware",
+          "title": "硬件与体系结构英语：数据手册、论文与工具链里的三类措辞",
+          "risk": "low",
+          "characters": 16277,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "cs_english_network_web",
+          "title": "网络与 Web 英语：RFC 原文、HTTP 报文与日志精读",
+          "risk": "low",
+          "characters": 15240,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "cs_english_os_software",
+          "title": "操作系统与软件工程英语：从需求到发布的术语链",
+          "risk": "low",
+          "characters": 15361,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "cs_english_overview",
+          "title": "计算机专业英语导论：构词法与词根词缀",
+          "risk": "low",
+          "characters": 14669,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        }
+      ]
+    },
+    {
       "batch_id": "csharp-1",
       "category_id": "csharp",
       "category_title": "C#",
@@ -4805,6 +5115,157 @@
       ]
     },
     {
+      "batch_id": "harmonyos-1",
+      "category_id": "harmonyos",
+      "category_title": "鸿蒙 HarmonyOS NEXT",
+      "lesson_count": 12,
+      "reviewed": 0,
+      "status": "pending",
+      "risk_high": 0,
+      "risk_medium": 0,
+      "risk_low": 12,
+      "focus": [
+        "正文事实与术语是否准确，有无过时结论或含糊表述。",
+        "代码块能否按正文步骤运行，输出与解析是否一致。",
+        "测验题干、选项与解析是否自洽，答案下标是否正确。",
+        "参考资料链接可访问，且与课程主题匹配。"
+      ],
+      "lessons": [
+        {
+          "lesson_id": "harmonyos_arkts_basics",
+          "title": "ArkTS 语言基础",
+          "risk": "low",
+          "characters": 10154,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "harmonyos_arkui_first_page",
+          "title": "ArkUI 声明式 UI 首个页面",
+          "risk": "low",
+          "characters": 9468,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "harmonyos_deveco_setup",
+          "title": "DevEco Studio 与工程结构",
+          "risk": "low",
+          "characters": 10244,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "harmonyos_distributed",
+          "title": "分布式软总线与跨端流转",
+          "risk": "low",
+          "characters": 10842,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "harmonyos_layout_system",
+          "title": "布局系统：Flex/Grid/Stack",
+          "risk": "low",
+          "characters": 10016,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "harmonyos_multimedia",
+          "title": "多媒体与图形渲染",
+          "risk": "low",
+          "characters": 10146,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "harmonyos_navigation",
+          "title": "路由与页面导航",
+          "risk": "low",
+          "characters": 9846,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "harmonyos_network_data",
+          "title": "网络、数据与文件",
+          "risk": "low",
+          "characters": 10465,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "harmonyos_overview",
+          "title": "HarmonyOS NEXT 全景与生态定位",
+          "risk": "low",
+          "characters": 11534,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "harmonyos_release_optimization",
+          "title": "性能调优与上架 AppGallery",
+          "risk": "low",
+          "characters": 9785,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "harmonyos_state_management",
+          "title": "状态管理与数据传递",
+          "risk": "low",
+          "characters": 10349,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "harmonyos_system_capabilities",
+          "title": "系统能力与权限",
+          "risk": "low",
+          "characters": 12302,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        }
+      ]
+    },
+    {
       "batch_id": "html_css-1",
       "category_id": "html_css",
       "category_title": "HTML 与 CSS",
@@ -5791,6 +6252,69 @@
       ]
     },
     {
+      "batch_id": "kaoyan_math-1",
+      "category_id": "kaoyan_math",
+      "category_title": "考研数学（数学一 / 数学二 / 数学三）",
+      "lesson_count": 4,
+      "reviewed": 0,
+      "status": "pending",
+      "risk_high": 0,
+      "risk_medium": 0,
+      "risk_low": 4,
+      "focus": [
+        "正文事实与术语是否准确，有无过时结论或含糊表述。",
+        "代码块能否按正文步骤运行，输出与解析是否一致。",
+        "测验题干、选项与解析是否自洽，答案下标是否正确。",
+        "参考资料链接可访问，且与课程主题匹配。"
+      ],
+      "lessons": [
+        {
+          "lesson_id": "kaoyan_math_limit_continuity",
+          "title": "函数极限与连续：七种未定式与求极限的工具选择",
+          "risk": "low",
+          "characters": 11499,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "kaoyan_math_matrix",
+          "title": "行列式、矩阵与线性方程组：线性代数的四层计算地基",
+          "risk": "low",
+          "characters": 11119,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "kaoyan_math_overview",
+          "title": "考研数学考纲全景与复习路线",
+          "risk": "low",
+          "characters": 9339,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "kaoyan_math_single_diff",
+          "title": "一元函数微分学：中值定理与导数的四大应用",
+          "risk": "low",
+          "characters": 11155,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        }
+      ]
+    },
+    {
       "batch_id": "kotlin-1",
       "category_id": "kotlin",
       "category_title": "Kotlin",
@@ -5958,6 +6482,157 @@
           "characters": 10707,
           "questions": 5,
           "images": 2,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        }
+      ]
+    },
+    {
+      "batch_id": "llm_apps-1",
+      "category_id": "llm_apps",
+      "category_title": "LLM 应用开发",
+      "lesson_count": 12,
+      "reviewed": 0,
+      "status": "pending",
+      "risk_high": 0,
+      "risk_medium": 0,
+      "risk_low": 12,
+      "focus": [
+        "正文事实与术语是否准确，有无过时结论或含糊表述。",
+        "代码块能否按正文步骤运行，输出与解析是否一致。",
+        "测验题干、选项与解析是否自洽，答案下标是否正确。",
+        "参考资料链接可访问，且与课程主题匹配。"
+      ],
+      "lessons": [
+        {
+          "lesson_id": "llm_apps_agent_design",
+          "title": "Agent 智能体设计",
+          "risk": "low",
+          "characters": 8235,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "llm_apps_api_integration",
+          "title": "主流大模型 API 接入",
+          "risk": "low",
+          "characters": 9473,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "llm_apps_deployment",
+          "title": "模型部署与推理优化",
+          "risk": "low",
+          "characters": 7780,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "llm_apps_evaluation",
+          "title": "评估、监控与安全护栏",
+          "risk": "low",
+          "characters": 7882,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "llm_apps_frameworks",
+          "title": "LangChain 与 LlamaIndex 实战",
+          "risk": "low",
+          "characters": 8330,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "llm_apps_function_calling",
+          "title": "Function Calling 与工具使用",
+          "risk": "low",
+          "characters": 8749,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "llm_apps_low_code",
+          "title": "Dify / FastGPT / Coze 低代码平台",
+          "risk": "low",
+          "characters": 7405,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "llm_apps_overview",
+          "title": "LLM 应用开发全景与选型",
+          "risk": "low",
+          "characters": 9960,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "llm_apps_project",
+          "title": "综合项目：企业知识库助手",
+          "risk": "low",
+          "characters": 8663,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "llm_apps_prompt_engineering",
+          "title": "Prompt 工程与结构化输出",
+          "risk": "low",
+          "characters": 9291,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "llm_apps_rag_advanced",
+          "title": "RAG 进阶：GraphRAG 与多模态",
+          "risk": "low",
+          "characters": 8477,
+          "questions": 5,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "llm_apps_rag_foundations",
+          "title": "RAG 检索增强生成基础",
+          "risk": "low",
+          "characters": 8586,
+          "questions": 5,
+          "images": 1,
           "machine_issues": [],
           "review_status": "pending",
           "review_method": ""
@@ -6181,6 +6856,102 @@
           "title": "时间序列预测（LSTM/Transformer）",
           "risk": "low",
           "characters": 27707,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        }
+      ]
+    },
+    {
+      "batch_id": "ncre-1",
+      "category_id": "ncre",
+      "category_title": "全国计算机等级二级",
+      "lesson_count": 7,
+      "reviewed": 0,
+      "status": "pending",
+      "risk_high": 0,
+      "risk_medium": 0,
+      "risk_low": 7,
+      "focus": [
+        "正文事实与术语是否准确，有无过时结论或含糊表述。",
+        "代码块能否按正文步骤运行，输出与解析是否一致。",
+        "测验题干、选项与解析是否自洽，答案下标是否正确。",
+        "参考资料链接可访问，且与课程主题匹配。"
+      ],
+      "lessons": [
+        {
+          "lesson_id": "ncre_c_control_function",
+          "title": "二级 C：流程控制结构与函数",
+          "risk": "low",
+          "characters": 12686,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "ncre_c_data_expr",
+          "title": "二级 C：数据类型、常量变量与表达式求值",
+          "risk": "low",
+          "characters": 11741,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "ncre_c_pointer_array_string",
+          "title": "二级 C：指针、数组与字符串",
+          "risk": "low",
+          "characters": 12259,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "ncre_c_struct_file",
+          "title": "二级 C：结构体、共用体与文件操作",
+          "risk": "low",
+          "characters": 13522,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "ncre_exam_overview",
+          "title": "二级报考、科目选择与真考环境全景",
+          "risk": "low",
+          "characters": 10546,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "ncre_public_data_structure",
+          "title": "公共基础：数据结构与算法选择题套路",
+          "risk": "low",
+          "characters": 9986,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "ncre_public_prog_db_net",
+          "title": "公共基础：程序设计方法、软件工程、数据库与网络信息安全",
+          "risk": "low",
+          "characters": 13386,
           "questions": 6,
           "images": 1,
           "machine_issues": [],
@@ -7358,6 +8129,69 @@
           "characters": 18373,
           "questions": 5,
           "images": 2,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        }
+      ]
+    },
+    {
+      "batch_id": "ruankao-1",
+      "category_id": "ruankao",
+      "category_title": "软考初级与中级",
+      "lesson_count": 4,
+      "reviewed": 0,
+      "status": "pending",
+      "risk_high": 0,
+      "risk_medium": 0,
+      "risk_low": 4,
+      "focus": [
+        "正文事实与术语是否准确，有无过时结论或含糊表述。",
+        "代码块能否按正文步骤运行，输出与解析是否一致。",
+        "测验题干、选项与解析是否自洽，答案下标是否正确。",
+        "参考资料链接可访问，且与课程主题匹配。"
+      ],
+      "lessons": [
+        {
+          "lesson_id": "ruankao_cs_basics",
+          "title": "计算机科学基础：数制转换、码制与算术逻辑",
+          "risk": "low",
+          "characters": 12433,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "ruankao_data_structure",
+          "title": "数据结构与算法：树、图、查找与排序",
+          "risk": "low",
+          "characters": 13125,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "ruankao_exam_overview",
+          "title": "软考级别、资格与报名：初级/中级/高级怎么选",
+          "risk": "low",
+          "characters": 9037,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "ruankao_os_and_arch",
+          "title": "操作系统与系统结构：进程管理、存储层次与流水线",
+          "risk": "low",
+          "characters": 12570,
+          "questions": 6,
+          "images": 1,
           "machine_issues": [],
           "review_status": "pending",
           "review_method": ""

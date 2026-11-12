@@ -464,7 +464,7 @@ tcp_congestion_simulation()
 - [OSPF 链路状态路由协议 - Cisco Networking Academy](https://www.cisco.com/c/en/us/support/docs/ip/open-shortest-path-first-ospf/ospf-protocol-reference.html)
 - [IPv4 子网划分与 CIDR 计算指南](https://networklessons.com/subnetting/subnetting-and-cidr-explained)
 - 最后复核：2026-10-04
-- 下次复核：2026-11-10
+- 下次复核：2027-01-17
 
 - [ ] 能不看正文复述本课核心概念，并指出一个边界或反例。
 - [ ] 能推演本课示例：先写预期输出，再运行并记录差异。

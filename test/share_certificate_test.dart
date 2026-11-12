@@ -200,7 +200,13 @@ void main() {
       find.text('已领取 0/${content.categories.length} 个分类证书'),
       findsOneWidget,
     );
-    await tester.ensureVisible(find.text(category.title.zh));
+    // 未完成分类按标题排在列表深处，ListView 只构建视口附近的卡片，
+    // ensureVisible 找不到未构建的项，必须先滚动把它滚出来。
+    await tester.scrollUntilVisible(
+      find.text(category.title.zh),
+      320,
+      scrollable: find.byType(Scrollable).first,
+    );
     await tester.pumpAndSettle();
     await tester.tap(find.text(category.title.zh));
     await tester.pumpAndSettle();

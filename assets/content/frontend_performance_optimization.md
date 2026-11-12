@@ -1198,7 +1198,7 @@ D. 过小的chunk会增加HTTP请求数量
 - 官方/权威资料：[web.dev 性能指南](https://web.dev/)
 - 主题延伸：[webpack 代码分割指南](https://webpack.js.org/guides/code-splitting/)
 - 最后复核：2026-10-04
-- 下次复核：2027-03-29
+- 下次复核：2027-05-10
 
 ## 内容元数据
 

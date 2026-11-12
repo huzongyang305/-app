@@ -335,7 +335,7 @@ print(chain.invoke('rag'))
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2026-11-10
+- 下次复核：2027-07-10
 - [LangChain LCEL 概念说明](https://python.langchain.com/docs/concepts/lcel/)
 - [LlamaIndex Query Engine 模块指南](https://docs.llamaindex.ai/en/stable/module_guides/deploying/query_engine/)
 - [LangChain 版本迁移指南](https://python.langchain.com/docs/versions/migrating_chains/)

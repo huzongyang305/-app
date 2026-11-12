@@ -324,7 +324,7 @@ print(len(cfg['prompts']), len(cfg['tests']))
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2026-11-10
+- 下次复核：2027-07-10
 - [RAGAS 指标定义](https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/)
 - [Promptfoo 配置说明](https://www.promptfoo.dev/docs/configuration/expected-outputs/)
 - [LangFuse 追踪文档](https://langfuse.com/docs/tracing)

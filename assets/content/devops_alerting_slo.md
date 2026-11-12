@@ -668,5 +668,5 @@ D. 把更多规则统一提到 critical 级别并全部接入页面通道，以�
 | [Alertmanager 官方文档](https://prometheus.io/docs/alerting/latest/alertmanager/) | 配置校验、静默创建与告警试跑的操作入口 |
 
 - 最后复核：2026-10-04
-- 下次复核：2027-02-17
+- 下次复核：2027-04-10
 - 复核范围：matchers 与 match/match_re 在本机 Alertmanager 版本的等价性、mute_time_intervals 与 active_time_intervals 的行为差异、被静默的抑制源是否仍参与计算、燃速参考表与本机 SLO 周期的换算、promtool 与 amtool 命令参数写法

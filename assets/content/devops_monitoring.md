@@ -1642,7 +1642,7 @@ D. 计算过去 5 分钟的每秒请求速率
 - 官方/权威资料：[CNCF 项目总览](https://landscape.cncf.io/)
 - 主题延伸：[Grafana 官方文档](https://grafana.com/docs/grafana/latest/)
 - 最后复核：2026-10-04
-- 下次复核：2027-01-13
+- 下次复核：2026-11-17
 
 ### 附录·常用 Exporter 列表
 | Exporter | 监控目标 | 默认端口 |

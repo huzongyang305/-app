@@ -357,7 +357,7 @@ class EntryAbility extends UIAbility {
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2026-11-10
+- 下次复核：2027-06-17
 - [HarmonyOS NEXT 开发者官网](https://developer.huawei.com/consumer/cn/harmonyos-next/)
 - [ArkTS 代码混淆配置](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-code-obfuscation)
 - [HiChecker 性能检测](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/hi-trace-sdk)

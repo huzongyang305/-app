@@ -921,7 +921,7 @@ D. 「推荐系统」：依据历史行为与物品属性为用户排序候选�
 - 官方/权威资料：[scikit-learn 用户手册](https://scikit-learn.org/stable/user_guide.html)
 - 主题延伸：[scikit-surprise 推荐算法库文档](https://surprise.readthedocs.io/en/stable/)
 - 最后复核：2026-10-04
-- 下次复核：2026-12-09
+- 下次复核：2027-08-24
 
 ## 内容元数据
 

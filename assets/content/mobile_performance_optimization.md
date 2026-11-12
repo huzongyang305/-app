@@ -623,7 +623,7 @@ D. FlatList内置了网络请求功能
 - 官方/权威资料：[Flutter 官方文档](https://docs.flutter.dev/)
 - 主题延伸：[Flutter 性能最佳实践](https://flutter.cn/docs/perf/best-practices)
 - 最后复核：2026-10-04
-- 下次复核：2026-12-05
+- 下次复核：2027-05-24
 
 ## 内容元数据
 

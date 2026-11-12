@@ -527,7 +527,7 @@ func analyze(paths: [String]) async throws -> [String: Int] {
 
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：Swift、Swift Package Manager、async/await、并发、测试。
 - 最后复核：2026-10-04
-- 下次复核：2026-12-17
+- 下次复核：2027-01-24
 - 复核范围：版本兼容、API 行为与工程实践
 
 下面列出的资料用于核对本课结论，复习时可以对照阅读：

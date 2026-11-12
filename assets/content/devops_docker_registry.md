@@ -1108,7 +1108,7 @@ docker history node:18-alpine
 - 官方/权威资料：[OpenSSF 最佳实践](https://bestpractices.coreinfrastructure.org/)
 - 主题延伸：[Docker Registry 官方文档](https://docs.docker.com/registry/)
 - 最后复核：2026-10-04
-- 下次复核：2027-02-02
+- 下次复核：2027-04-10
 
 ## 内容元数据
 

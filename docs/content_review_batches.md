@@ -1,6 +1,6 @@
 # 人工复核批次台账
 
-- 生成时间：2026-11-02T04:34:14.732860Z
+- 生成时间：2026-11-12T04:27:55.313546Z
 - 批次大小：每批最多 24 门课
 - 记录入口：`docs/content_review_records.json` 的 `human_reviews`
 
@@ -58,6 +58,50 @@
 | 安全编码与输入校验（security_secure_coding） | low | 10539 | 6 | 2 | 待复核 |
 | 软件供应链安全（security_supply_chain） | low | 9506 | 5 | 2 | 待复核 |
 | 威胁建模与 STRIDE（security_threat_model） | low | 9808 | 6 | 2 | 待复核 |
+
+## 408_exam-1 · 考研 408 冲刺
+
+- 课程数：12 · 已人工复核：0 · 状态：pending
+- 风险分布：高 0 · 中 0 · 低 12
+- 复核重点：
+  - 正文事实与术语是否准确，有无过时结论或含糊表述。
+  - 代码块能否按正文步骤运行，输出与解析是否一致。
+  - 测验题干、选项与解析是否自洽，答案下标是否正确。
+  - 参考资料链接可访问，且与课程主题匹配。
+
+| 课程 | 风险 | 字数 | 题目 | 配图 | 状态 |
+| --- | --- | --- | --- | --- | --- |
+| 计算机组成原理：CPU与指令系统（408_co_cpu） | low | 12571 | 5 | 1 | 待复核 |
+| 计算机组成：数据表示与运算（408_co_data） | low | 5242 | 5 | 1 | 待复核 |
+| 数据结构：线性表与栈队列（408_ds_linear） | low | 6262 | 6 | 1 | 待复核 |
+| 数据结构：排序与查找（408_ds_sort_search） | low | 5664 | 5 | 1 | 待复核 |
+| 数据结构：树与图（408_ds_tree_graph） | low | 5728 | 5 | 1 | 待复核 |
+| 408 全真模拟卷（一）（408_exam_mock1） | low | 11233 | 5 | 1 | 待复核 |
+| 408 全真模拟卷（二）（408_exam_mock2） | low | 11299 | 5 | 1 | 待复核 |
+| 408 考纲全景与复习策略（408_exam_overview） | low | 6875 | 5 | 1 | 待复核 |
+| 计算机网络：应用层协议（408_net_app） | low | 11534 | 5 | 1 | 待复核 |
+| 计算机网络：网络层与传输层（408_net_layer） | low | 13255 | 5 | 1 | 待复核 |
+| 操作系统：内存管理（408_os_memory） | low | 11839 | 5 | 1 | 待复核 |
+| 操作系统：进程管理（408_os_process） | low | 11044 | 5 | 1 | 待复核 |
+
+## 408_mock-1 · 考研 408 仿真试卷
+
+- 课程数：6 · 已人工复核：0 · 状态：pending
+- 风险分布：高 0 · 中 0 · 低 6
+- 复核重点：
+  - 正文事实与术语是否准确，有无过时结论或含糊表述。
+  - 代码块能否按正文步骤运行，输出与解析是否一致。
+  - 测验题干、选项与解析是否自洽，答案下标是否正确。
+  - 参考资料链接可访问，且与课程主题匹配。
+
+| 课程 | 风险 | 字数 | 题目 | 配图 | 状态 |
+| --- | --- | --- | --- | --- | --- |
+| 408 仿真模拟卷（一）：全卷分值地图与四科均衡题（408_mock_set1） | low | 10023 | 6 | 1 | 待复核 |
+| 408 仿真模拟卷（二）：数据结构与算法设计题专攻（408_mock_set2） | low | 9358 | 6 | 1 | 待复核 |
+| 408 仿真模拟卷（三）：存储层次与 Cache 地址划分（408_mock_set3） | low | 9311 | 6 | 1 | 待复核 |
+| 408 仿真模拟卷（四）：页面置换、磁盘调度与死锁计算（408_mock_set4） | low | 9987 | 6 | 1 | 待复核 |
+| 408 仿真模拟卷（五）：分层封装、子网划分与可靠传输（408_mock_set5） | low | 9225 | 6 | 1 | 待复核 |
+| 408 仿真模拟卷（六）：一条 store 指令串起四科知识（408_mock_set6） | low | 9450 | 6 | 1 | 待复核 |
 
 ## ai-1 · AI 与智能体
 
@@ -443,6 +487,24 @@
 | React Native深度实践与原生模块（mobile_react_native_deep） | low | 17207 | 6 | 1 | 待复核 |
 | 移动安全最佳实践（mobile_security） | low | 16175 | 6 | 1 | 待复核 |
 
+## cs_english-1 · 计算机专业英语
+
+- 课程数：5 · 已人工复核：0 · 状态：pending
+- 风险分布：高 0 · 中 0 · 低 5
+- 复核重点：
+  - 正文事实与术语是否准确，有无过时结论或含糊表述。
+  - 代码块能否按正文步骤运行，输出与解析是否一致。
+  - 测验题干、选项与解析是否自洽，答案下标是否正确。
+  - 参考资料链接可访问，且与课程主题匹配。
+
+| 课程 | 风险 | 字数 | 题目 | 配图 | 状态 |
+| --- | --- | --- | --- | --- | --- |
+| 数据库与大数据英语：ACID、OLAP 与论文里的定义句（cs_english_db_bigdata） | low | 17013 | 6 | 1 | 待复核 |
+| 硬件与体系结构英语：数据手册、论文与工具链里的三类措辞（cs_english_hardware） | low | 16277 | 6 | 1 | 待复核 |
+| 网络与 Web 英语：RFC 原文、HTTP 报文与日志精读（cs_english_network_web） | low | 15240 | 6 | 1 | 待复核 |
+| 操作系统与软件工程英语：从需求到发布的术语链（cs_english_os_software） | low | 15361 | 6 | 1 | 待复核 |
+| 计算机专业英语导论：构词法与词根词缀（cs_english_overview） | low | 14669 | 5 | 1 | 待复核 |
+
 ## csharp-1 · C#
 
 - 课程数：19 · 已人工复核：0 · 状态：pending
@@ -777,6 +839,31 @@
 | Go 测试进阶：基准、模糊与集成（go_testing） | low | 14324 | 6 | 2 | 待复核 |
 | Go 变量与输入（go_variables_input） | low | 10379 | 6 | 2 | 待复核 |
 
+## harmonyos-1 · 鸿蒙 HarmonyOS NEXT
+
+- 课程数：12 · 已人工复核：0 · 状态：pending
+- 风险分布：高 0 · 中 0 · 低 12
+- 复核重点：
+  - 正文事实与术语是否准确，有无过时结论或含糊表述。
+  - 代码块能否按正文步骤运行，输出与解析是否一致。
+  - 测验题干、选项与解析是否自洽，答案下标是否正确。
+  - 参考资料链接可访问，且与课程主题匹配。
+
+| 课程 | 风险 | 字数 | 题目 | 配图 | 状态 |
+| --- | --- | --- | --- | --- | --- |
+| ArkTS 语言基础（harmonyos_arkts_basics） | low | 10154 | 5 | 1 | 待复核 |
+| ArkUI 声明式 UI 首个页面（harmonyos_arkui_first_page） | low | 9468 | 5 | 1 | 待复核 |
+| DevEco Studio 与工程结构（harmonyos_deveco_setup） | low | 10244 | 5 | 1 | 待复核 |
+| 分布式软总线与跨端流转（harmonyos_distributed） | low | 10842 | 5 | 1 | 待复核 |
+| 布局系统：Flex/Grid/Stack（harmonyos_layout_system） | low | 10016 | 5 | 1 | 待复核 |
+| 多媒体与图形渲染（harmonyos_multimedia） | low | 10146 | 5 | 1 | 待复核 |
+| 路由与页面导航（harmonyos_navigation） | low | 9846 | 5 | 1 | 待复核 |
+| 网络、数据与文件（harmonyos_network_data） | low | 10465 | 5 | 1 | 待复核 |
+| HarmonyOS NEXT 全景与生态定位（harmonyos_overview） | low | 11534 | 5 | 1 | 待复核 |
+| 性能调优与上架 AppGallery（harmonyos_release_optimization） | low | 9785 | 5 | 1 | 待复核 |
+| 状态管理与数据传递（harmonyos_state_management） | low | 10349 | 5 | 1 | 待复核 |
+| 系统能力与权限（harmonyos_system_capabilities） | low | 12302 | 5 | 1 | 待复核 |
+
 ## html_css-1 · HTML 与 CSS
 
 - 课程数：14 · 已人工复核：0 · 状态：pending
@@ -937,6 +1024,23 @@
 | Spring Cloud 微服务（javaweb_spring_cloud） | low | 11565 | 6 | 1 | 待复核 |
 | Java WebSocket 实时通信（javaweb_websocket） | low | 8729 | 6 | 1 | 待复核 |
 
+## kaoyan_math-1 · 考研数学（数学一 / 数学二 / 数学三）
+
+- 课程数：4 · 已人工复核：0 · 状态：pending
+- 风险分布：高 0 · 中 0 · 低 4
+- 复核重点：
+  - 正文事实与术语是否准确，有无过时结论或含糊表述。
+  - 代码块能否按正文步骤运行，输出与解析是否一致。
+  - 测验题干、选项与解析是否自洽，答案下标是否正确。
+  - 参考资料链接可访问，且与课程主题匹配。
+
+| 课程 | 风险 | 字数 | 题目 | 配图 | 状态 |
+| --- | --- | --- | --- | --- | --- |
+| 函数极限与连续：七种未定式与求极限的工具选择（kaoyan_math_limit_continuity） | low | 11499 | 6 | 1 | 待复核 |
+| 行列式、矩阵与线性方程组：线性代数的四层计算地基（kaoyan_math_matrix） | low | 11119 | 6 | 1 | 待复核 |
+| 考研数学考纲全景与复习路线（kaoyan_math_overview） | low | 9339 | 6 | 1 | 待复核 |
+| 一元函数微分学：中值定理与导数的四大应用（kaoyan_math_single_diff） | low | 11155 | 6 | 1 | 待复核 |
+
 ## kotlin-1 · Kotlin
 
 - 课程数：14 · 已人工复核：0 · 状态：pending
@@ -964,6 +1068,31 @@
 | 实战：Kotlin 命令行记账工具（kotlin_project_cli_ledger） | low | 13226 | 5 | 2 | 待复核 |
 | Kotlin 测试与协程测试（kotlin_testing） | low | 10845 | 5 | 2 | 待复核 |
 | Kotlin 变量与空值（kotlin_variables_null） | low | 10707 | 5 | 2 | 待复核 |
+
+## llm_apps-1 · LLM 应用开发
+
+- 课程数：12 · 已人工复核：0 · 状态：pending
+- 风险分布：高 0 · 中 0 · 低 12
+- 复核重点：
+  - 正文事实与术语是否准确，有无过时结论或含糊表述。
+  - 代码块能否按正文步骤运行，输出与解析是否一致。
+  - 测验题干、选项与解析是否自洽，答案下标是否正确。
+  - 参考资料链接可访问，且与课程主题匹配。
+
+| 课程 | 风险 | 字数 | 题目 | 配图 | 状态 |
+| --- | --- | --- | --- | --- | --- |
+| Agent 智能体设计（llm_apps_agent_design） | low | 8235 | 5 | 1 | 待复核 |
+| 主流大模型 API 接入（llm_apps_api_integration） | low | 9473 | 5 | 1 | 待复核 |
+| 模型部署与推理优化（llm_apps_deployment） | low | 7780 | 5 | 1 | 待复核 |
+| 评估、监控与安全护栏（llm_apps_evaluation） | low | 7882 | 5 | 1 | 待复核 |
+| LangChain 与 LlamaIndex 实战（llm_apps_frameworks） | low | 8330 | 5 | 1 | 待复核 |
+| Function Calling 与工具使用（llm_apps_function_calling） | low | 8749 | 5 | 1 | 待复核 |
+| Dify / FastGPT / Coze 低代码平台（llm_apps_low_code） | low | 7405 | 5 | 1 | 待复核 |
+| LLM 应用开发全景与选型（llm_apps_overview） | low | 9960 | 5 | 1 | 待复核 |
+| 综合项目：企业知识库助手（llm_apps_project） | low | 8663 | 5 | 1 | 待复核 |
+| Prompt 工程与结构化输出（llm_apps_prompt_engineering） | low | 9291 | 5 | 1 | 待复核 |
+| RAG 进阶：GraphRAG 与多模态（llm_apps_rag_advanced） | low | 8477 | 5 | 1 | 待复核 |
+| RAG 检索增强生成基础（llm_apps_rag_foundations） | low | 8586 | 5 | 1 | 待复核 |
 
 ## math-1 · 数学基础
 
@@ -1007,6 +1136,26 @@
 | 推荐系统实现（ml_recommendation_systems） | low | 24569 | 6 | 1 | 待复核 |
 | TensorFlow与PyTorch框架对比入门（ml_tensorflow_pytorch_intro） | low | 14417 | 6 | 1 | 待复核 |
 | 时间序列预测（LSTM/Transformer）（ml_time_series_prediction） | low | 27707 | 6 | 1 | 待复核 |
+
+## ncre-1 · 全国计算机等级二级
+
+- 课程数：7 · 已人工复核：0 · 状态：pending
+- 风险分布：高 0 · 中 0 · 低 7
+- 复核重点：
+  - 正文事实与术语是否准确，有无过时结论或含糊表述。
+  - 代码块能否按正文步骤运行，输出与解析是否一致。
+  - 测验题干、选项与解析是否自洽，答案下标是否正确。
+  - 参考资料链接可访问，且与课程主题匹配。
+
+| 课程 | 风险 | 字数 | 题目 | 配图 | 状态 |
+| --- | --- | --- | --- | --- | --- |
+| 二级 C：流程控制结构与函数（ncre_c_control_function） | low | 12686 | 6 | 1 | 待复核 |
+| 二级 C：数据类型、常量变量与表达式求值（ncre_c_data_expr） | low | 11741 | 6 | 1 | 待复核 |
+| 二级 C：指针、数组与字符串（ncre_c_pointer_array_string） | low | 12259 | 6 | 1 | 待复核 |
+| 二级 C：结构体、共用体与文件操作（ncre_c_struct_file） | low | 13522 | 6 | 1 | 待复核 |
+| 二级报考、科目选择与真考环境全景（ncre_exam_overview） | low | 10546 | 6 | 1 | 待复核 |
+| 公共基础：数据结构与算法选择题套路（ncre_public_data_structure） | low | 9986 | 6 | 1 | 待复核 |
+| 公共基础：程序设计方法、软件工程、数据库与网络信息安全（ncre_public_prog_db_net） | low | 13386 | 6 | 1 | 待复核 |
 
 ## network-1 · 网络
 
@@ -1172,6 +1321,23 @@
 | 类型注解与测试（python_typing_testing） | low | 13851 | 6 | 2 | 待复核 |
 | 变量与数据类型（python_variables） | low | 9311 | 6 | 1 | 待复核 |
 | Python Web 部署：WSGI、ASGI 与容器化（python_web_deployment） | low | 18373 | 5 | 2 | 待复核 |
+
+## ruankao-1 · 软考初级与中级
+
+- 课程数：4 · 已人工复核：0 · 状态：pending
+- 风险分布：高 0 · 中 0 · 低 4
+- 复核重点：
+  - 正文事实与术语是否准确，有无过时结论或含糊表述。
+  - 代码块能否按正文步骤运行，输出与解析是否一致。
+  - 测验题干、选项与解析是否自洽，答案下标是否正确。
+  - 参考资料链接可访问，且与课程主题匹配。
+
+| 课程 | 风险 | 字数 | 题目 | 配图 | 状态 |
+| --- | --- | --- | --- | --- | --- |
+| 计算机科学基础：数制转换、码制与算术逻辑（ruankao_cs_basics） | low | 12433 | 6 | 1 | 待复核 |
+| 数据结构与算法：树、图、查找与排序（ruankao_data_structure） | low | 13125 | 6 | 1 | 待复核 |
+| 软考级别、资格与报名：初级/中级/高级怎么选（ruankao_exam_overview） | low | 9037 | 6 | 1 | 待复核 |
+| 操作系统与系统结构：进程管理、存储层次与流水线（ruankao_os_and_arch） | low | 12570 | 6 | 1 | 待复核 |
 
 ## rust-1 · Rust
 

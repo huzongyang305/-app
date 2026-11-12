@@ -1118,7 +1118,7 @@ D. 使用了async管道订阅Observable
 - 官方/权威资料：[web.dev 性能指南](https://web.dev/)
 - 主题延伸：[Angular 依赖注入指南](https://angular.cn/guide/di)
 - 最后复核：2026-10-04
-- 下次复核：2027-03-09
+- 下次复核：2027-05-10
 
 ## 内容元数据
 

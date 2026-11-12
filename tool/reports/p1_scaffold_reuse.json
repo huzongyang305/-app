@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-10-30T20:17:08.110475",
-  "lesson_count": 716,
+  "generated_at": "2026-11-10T18:35:12.501597",
+  "lesson_count": 752,
   "threshold": 8,
-  "repeated_line_count": 28,
+  "repeated_line_count": 31,
   "repeated_lines": [
     {
       "lessons": 38,
@@ -222,6 +222,60 @@
         "shell_security",
         "shell_security_hardening",
         "shell_variables_args"
+      ]
+    },
+    {
+      "lessons": 12,
+      "line": "- 相关主题：ArkTS、ArkUI、分布式软总线、上架 AppGallery",
+      "lesson_ids": [
+        "harmonyos_arkts_basics",
+        "harmonyos_arkui_first_page",
+        "harmonyos_deveco_setup",
+        "harmonyos_distributed",
+        "harmonyos_layout_system",
+        "harmonyos_multimedia",
+        "harmonyos_navigation",
+        "harmonyos_network_data",
+        "harmonyos_overview",
+        "harmonyos_release_optimization",
+        "harmonyos_state_management",
+        "harmonyos_system_capabilities"
+      ]
+    },
+    {
+      "lessons": 12,
+      "line": "- [ ] 能不看正文复述本课核心概念，并指出一个边界或反例。",
+      "lesson_ids": [
+        "408_co_cpu",
+        "408_co_data",
+        "408_ds_linear",
+        "408_ds_sort_search",
+        "408_ds_tree_graph",
+        "408_exam_mock1",
+        "408_exam_mock2",
+        "408_exam_overview",
+        "408_net_app",
+        "408_net_layer",
+        "408_os_memory",
+        "408_os_process"
+      ]
+    },
+    {
+      "lessons": 12,
+      "line": "- [ ] 能推演本课示例：先写预期输出，再运行并记录差异。",
+      "lesson_ids": [
+        "408_co_cpu",
+        "408_co_data",
+        "408_ds_linear",
+        "408_ds_sort_search",
+        "408_ds_tree_graph",
+        "408_exam_mock1",
+        "408_exam_mock2",
+        "408_exam_overview",
+        "408_net_app",
+        "408_net_layer",
+        "408_os_memory",
+        "408_os_process"
       ]
     },
     {

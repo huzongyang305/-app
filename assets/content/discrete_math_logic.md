@@ -546,7 +546,7 @@ D. 「命题」：有真假值的陈述句
 | 逆否命题 | p→q ⇔ ¬q→¬p |
 
 ## 参考资料与复核
-- 下次复核：2027-01-08
+- 下次复核：2027-04-17
 
 - 《离散数学及其应用》（Kenneth H. Rosen）第1-2章
 - MIT OpenCourseWare: Mathematics for Computer Science, Chapter 3

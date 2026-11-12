@@ -282,7 +282,7 @@ IEEE 754 单精度浮点数的表示范围是多少？
 - [二进制补码维基百科](https://en.wikipedia.org/wiki/Two%27s_complement)
 - [GeeksforGeeks IEEE 754 浮点数](https://www.geeksforgeeks.org/ieee-standard-754-floating-point-numbers/)
 - 最后复核：2026-10-04
-- 下次复核：2026-11-10
+- 下次复核：2027-01-17
 
 - [ ] 能不看正文复述本课核心概念，并指出一个边界或反例。
 - [ ] 能推演本课示例：先写预期输出，再运行并记录差异。

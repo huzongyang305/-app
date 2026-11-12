@@ -328,7 +328,7 @@ print(len(spec['parameters']['required']))
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2026-11-10
+- 下次复核：2027-07-10
 - [OpenAI Function calling guide](https://platform.openai.com/docs/guides/function-calling)
 - [Anthropic Tool use 文档](https://docs.anthropic.com/en/docs/build-with-claude/tool-use)
 - [Model Context Protocol 规范](https://modelcontextprotocol.io/)

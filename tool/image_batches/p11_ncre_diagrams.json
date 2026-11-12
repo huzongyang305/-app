@@ -1,0 +1,42 @@
+{
+  "ncre_exam_overview": {
+    "image": "images/diagram_ncre_exam_overview.webp",
+    "alt": "二级报考到取证的六步无纸化流程"
+  },
+  "ncre_public_data_structure": {
+    "image": "images/diagram_ncre_public_data_structure.webp",
+    "alt": "公共基础数据结构与算法考点矩阵"
+  },
+  "ncre_public_prog_db_net": {
+    "image": "images/diagram_ncre_public_prog_db_net.webp",
+    "alt": "程序设计方法、软件工程与数据库设计的关系"
+  },
+  "ncre_c_data_expr": {
+    "image": "images/diagram_ncre_c_data_expr.webp",
+    "alt": "C 表达式求值的类型提升与截断过程"
+  },
+  "ncre_c_control_function": {
+    "image": "images/diagram_ncre_c_control_function.webp",
+    "alt": "三种流程控制结构与函数调用栈"
+  },
+  "ncre_c_pointer_array_string": {
+    "image": "images/diagram_ncre_c_pointer_array_string.webp",
+    "alt": "数组、指针与字符串的内存关系"
+  },
+  "ncre_c_struct_file": {
+    "image": "images/diagram_ncre_c_struct_file.webp",
+    "alt": "结构体链表与文件读写的运行机制"
+  },
+  "ncre_python_basics": {
+    "image": "images/diagram_ncre_python_basics.webp",
+    "alt": "Python 语法元素与标准库能力分层"
+  },
+  "ncre_python_data_file": {
+    "image": "images/diagram_ncre_python_data_file.webp",
+    "alt": "从文本到结构化数据再写回文件的处理链"
+  },
+  "ncre_mysql_database": {
+    "image": "images/diagram_ncre_mysql_database.webp",
+    "alt": "MySQL 五类 SQL 语句与上机操作路径"
+  }
+}

@@ -861,7 +861,7 @@ D. 进行词干提取（stemming），把同一词根的变体合并起来
 - 官方/权威资料：[scikit-learn 用户手册](https://scikit-learn.org/stable/user_guide.html)
 - 主题延伸：[NLTK Book（自然语言处理入门教材）](https://www.nltk.org/book/)
 - 最后复核：2026-10-04
-- 下次复核：2026-12-04
+- 下次复核：2027-08-24
 
 ## 内容元数据
 

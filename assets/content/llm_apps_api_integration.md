@@ -354,7 +354,7 @@ print(json.loads(r.text)['choices'][0]['message']['content'])
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2026-11-10
+- 下次复核：2027-07-10
 - [OpenAI API Reference](https://platform.openai.com/docs/api-reference)
 - [Anthropic Messages API](https://docs.anthropic.com/en/api/messages)
 - [Moonshot Kimi 开放平台 API 文档](https://platform.moonshot.cn/docs/api-reference)

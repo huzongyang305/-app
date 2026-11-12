@@ -362,7 +362,7 @@ struct Weights {
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2026-11-10
+- 下次复核：2027-06-17
 - [HarmonyOS NEXT 开发者官网](https://developer.huawei.com/consumer/cn/harmonyos-next/)
 - [ArkUI 布局容器开发指导](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkts-layout-development-overview)
 - [弹性布局与 Flex 属性说明](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkts-layout-development-flex-layout)

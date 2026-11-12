@@ -513,7 +513,7 @@ D. 「容斥原理」：并集基数要减掉重复计入的交集，三集合�
 | 划分 | 把集合拆成若干非空且两两不相交的子集，其并集恰为原集合 |
 
 ## 参考资料与复核
-- 下次复核：2026-12-19
+- 下次复核：2027-04-17
 
 - 《离散数学及其应用》（Kenneth H. Rosen）第2章
 - MIT OpenCourseWare: Mathematics for Computer Science

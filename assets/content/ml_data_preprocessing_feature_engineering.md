@@ -1099,7 +1099,7 @@ D. 对滞后特征（lag features）使用过去的值
 - 官方/权威资料：[scikit-learn 用户手册](https://scikit-learn.org/stable/user_guide.html)
 - 主题延伸：[scikit-learn 预处理与特征工程](https://scikit-learn.org/stable/modules/preprocessing.html)
 - 最后复核：2026-10-04
-- 下次复核：2026-11-24
+- 下次复核：2027-08-24
 
 ## 内容元数据
 

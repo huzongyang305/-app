@@ -491,7 +491,7 @@ int main(void) {
 - [CPU Data Path and Control - Stanford CS140e](https://web.stanford.edu/class/cs140e/lectures/08-pipeline.pdf)
 - [RISC vs CISC Architecture Comparison](https://www.cs.uca.edu/~yokilm/cpsc3350/notes/risc-cisc.html)
 - 最后复核：2026-10-04
-- 下次复核：2026-11-10
+- 下次复核：2027-01-17
 
 - [ ] 能不看正文复述本课核心概念，并指出一个边界或反例。
 - [ ] 能推演本课示例：先写预期输出，再运行并记录差异。

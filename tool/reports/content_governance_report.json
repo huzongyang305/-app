@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-11-02T04:34:05.799624Z",
-  "lesson_count": 716,
-  "question_count": 4060,
-  "error_count": 0,
+  "generated_at": "2026-11-10T10:35:06.517516Z",
+  "lesson_count": 752,
+  "question_count": 4241,
+  "error_count": 55,
   "warning_count": 0,
   "difficulty_inversions": 0,
   "prerequisite_violations": 0,
   "order_gaps": 0,
-  "minutes_drift": 0,
+  "minutes_drift": 34,
   "placeholder_title_hits": 0,
   "internal_question_id_hits": 0,
   "duplicate_review_sections": 0,
@@ -22,13 +22,344 @@
   "generic_mistake_rows": 0,
   "generic_fault_scenario_templates": 0,
   "fault_reference_drifts": 0,
-  "code_questions_without_domain_link": 0,
+  "code_questions_without_domain_link": 21,
   "explanations_with_meta_markers": 0,
   "language_mismatches": 0,
   "repeated_explanation_sentence_classes": 0,
   "repeated_markdown_paragraph_classes": 0,
   "duplicate_reference_sets": 0,
-  "issues": [],
+  "issues": [
+    {
+      "level": "error",
+      "lesson_id": "llm_apps_overview",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "llm_apps_prompt_engineering",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "llm_apps_api_integration",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "llm_apps_rag_foundations",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "llm_apps_rag_advanced",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "llm_apps_function_calling",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "llm_apps_agent_design",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "llm_apps_low_code",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "llm_apps_evaluation",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "llm_apps_project",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "harmonyos_overview",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "harmonyos_deveco_setup",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "harmonyos_arkui_first_page",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "harmonyos_layout_system",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "harmonyos_state_management",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "harmonyos_navigation",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "harmonyos_network_data",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "harmonyos_multimedia",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "harmonyos_system_capabilities",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "harmonyos_distributed",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "408_ds_linear",
+      "kind": "code_question_domain_link",
+      "message": "第 6 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "llm_apps_prompt_engineering",
+      "kind": "minutes_drift",
+      "message": "预计用时 40 分钟与内容量不符：9291 字 / 7 个代码块 / 5 题，模型应为 30 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "llm_apps_api_integration",
+      "kind": "minutes_drift",
+      "message": "预计用时 40 分钟与内容量不符：9473 字 / 8 个代码块 / 5 题，模型应为 30 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "llm_apps_rag_foundations",
+      "kind": "minutes_drift",
+      "message": "预计用时 50 分钟与内容量不符：8586 字 / 7 个代码块 / 5 题，模型应为 30 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "llm_apps_rag_advanced",
+      "kind": "minutes_drift",
+      "message": "预计用时 50 分钟与内容量不符：8477 字 / 7 个代码块 / 5 题，模型应为 30 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "llm_apps_function_calling",
+      "kind": "minutes_drift",
+      "message": "预计用时 45 分钟与内容量不符：8749 字 / 7 个代码块 / 5 题，模型应为 30 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "llm_apps_agent_design",
+      "kind": "minutes_drift",
+      "message": "预计用时 55 分钟与内容量不符：8235 字 / 6 个代码块 / 5 题，模型应为 25 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "llm_apps_frameworks",
+      "kind": "minutes_drift",
+      "message": "预计用时 50 分钟与内容量不符：8330 字 / 6 个代码块 / 5 题，模型应为 60 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "llm_apps_low_code",
+      "kind": "minutes_drift",
+      "message": "预计用时 40 分钟与内容量不符：7405 字 / 7 个代码块 / 5 题，模型应为 25 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "llm_apps_deployment",
+      "kind": "minutes_drift",
+      "message": "预计用时 55 分钟与内容量不符：7780 字 / 9 个代码块 / 5 题，模型应为 30 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "llm_apps_evaluation",
+      "kind": "minutes_drift",
+      "message": "预计用时 45 分钟与内容量不符：7882 字 / 8 个代码块 / 5 题，模型应为 30 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "harmonyos_overview",
+      "kind": "minutes_drift",
+      "message": "预计用时 30 分钟与内容量不符：11534 字 / 5 个代码块 / 5 题，模型应为 35 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "harmonyos_deveco_setup",
+      "kind": "minutes_drift",
+      "message": "预计用时 35 分钟与内容量不符：10244 字 / 6 个代码块 / 5 题，模型应为 30 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "harmonyos_arkts_basics",
+      "kind": "minutes_drift",
+      "message": "预计用时 45 分钟与内容量不符：10154 字 / 6 个代码块 / 5 题，模型应为 30 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "harmonyos_arkui_first_page",
+      "kind": "minutes_drift",
+      "message": "预计用时 45 分钟与内容量不符：9468 字 / 6 个代码块 / 5 题，模型应为 30 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "harmonyos_layout_system",
+      "kind": "minutes_drift",
+      "message": "预计用时 50 分钟与内容量不符：10016 字 / 6 个代码块 / 5 题，模型应为 30 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "harmonyos_state_management",
+      "kind": "minutes_drift",
+      "message": "预计用时 55 分钟与内容量不符：10349 字 / 6 个代码块 / 5 题，模型应为 30 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "harmonyos_navigation",
+      "kind": "minutes_drift",
+      "message": "预计用时 45 分钟与内容量不符：9846 字 / 5 个代码块 / 5 题，模型应为 30 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "harmonyos_network_data",
+      "kind": "minutes_drift",
+      "message": "预计用时 55 分钟与内容量不符：10465 字 / 6 个代码块 / 5 题，模型应为 30 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "harmonyos_multimedia",
+      "kind": "minutes_drift",
+      "message": "预计用时 50 分钟与内容量不符：10146 字 / 6 个代码块 / 5 题，模型应为 30 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "harmonyos_system_capabilities",
+      "kind": "minutes_drift",
+      "message": "预计用时 50 分钟与内容量不符：12302 字 / 7 个代码块 / 5 题，模型应为 35 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "harmonyos_distributed",
+      "kind": "minutes_drift",
+      "message": "预计用时 60 分钟与内容量不符：10842 字 / 7 个代码块 / 5 题，模型应为 35 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "harmonyos_release_optimization",
+      "kind": "minutes_drift",
+      "message": "预计用时 55 分钟与内容量不符：9785 字 / 6 个代码块 / 5 题，模型应为 30 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "408_exam_overview",
+      "kind": "minutes_drift",
+      "message": "预计用时 25 分钟与内容量不符：6875 字 / 3 个代码块 / 5 题，模型应为 20 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "408_ds_linear",
+      "kind": "minutes_drift",
+      "message": "预计用时 40 分钟与内容量不符：6262 字 / 4 个代码块 / 6 题，模型应为 20 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "408_ds_tree_graph",
+      "kind": "minutes_drift",
+      "message": "预计用时 45 分钟与内容量不符：5728 字 / 3 个代码块 / 5 题，模型应为 20 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "408_ds_sort_search",
+      "kind": "minutes_drift",
+      "message": "预计用时 40 分钟与内容量不符：5664 字 / 3 个代码块 / 5 题，模型应为 20 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "408_co_data",
+      "kind": "minutes_drift",
+      "message": "预计用时 35 分钟与内容量不符：5242 字 / 2 个代码块 / 5 题，模型应为 15 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "408_co_cpu",
+      "kind": "minutes_drift",
+      "message": "预计用时 40 分钟与内容量不符：12571 字 / 2 个代码块 / 5 题，模型应为 30 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "408_os_process",
+      "kind": "minutes_drift",
+      "message": "预计用时 45 分钟与内容量不符：11044 字 / 3 个代码块 / 5 题，模型应为 30 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "408_os_memory",
+      "kind": "minutes_drift",
+      "message": "预计用时 45 分钟与内容量不符：11839 字 / 4 个代码块 / 5 题，模型应为 35 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "408_net_layer",
+      "kind": "minutes_drift",
+      "message": "预计用时 45 分钟与内容量不符：13255 字 / 5 个代码块 / 5 题，模型应为 35 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "408_net_app",
+      "kind": "minutes_drift",
+      "message": "预计用时 40 分钟与内容量不符：11534 字 / 6 个代码块 / 5 题，模型应为 35 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "408_exam_mock1",
+      "kind": "minutes_drift",
+      "message": "预计用时 60 分钟与内容量不符：11233 字 / 5 个代码块 / 5 题，模型应为 30 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "408_exam_mock2",
+      "kind": "minutes_drift",
+      "message": "预计用时 60 分钟与内容量不符：11299 字 / 3 个代码块 / 5 题，模型应为 30 分钟"
+    }
+  ],
   "top_repeated_explanation_sentences": [],
   "top_repeated_markdown_paragraphs": [],
   "duplicate_reference_set_details": []

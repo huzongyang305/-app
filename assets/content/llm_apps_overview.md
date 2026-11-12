@@ -343,7 +343,7 @@ print(resp.usage.prompt_tokens, resp.usage.total_tokens)
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2026-11-10
+- 下次复核：2027-07-10
 - [OpenAI Chat Completions API Reference](https://platform.openai.com/docs/api-reference/chat)
 - [DeepSeek 开放平台 API 文档](https://api-docs.deepseek.com/)
 - [阿里云百炼模型列表与计费说明](https://help.aliyun.com/zh/model-studio/models)

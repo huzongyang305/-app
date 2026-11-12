@@ -1136,7 +1136,7 @@ D. 「Docker」：将模型连同依赖与运行环境打包成镜像，消除�
 - 官方/权威资料：[scikit-learn 用户手册](https://scikit-learn.org/stable/user_guide.html)
 - 主题延伸：[MLflow 官方文档](https://mlflow.org/docs/latest/)
 - 最后复核：2026-10-04
-- 下次复核：2026-12-24
+- 下次复核：2027-08-24
 
 ## 内容元数据
 

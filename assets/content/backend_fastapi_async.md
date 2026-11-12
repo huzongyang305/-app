@@ -793,7 +793,7 @@ D. 「Pydantic」：借Python类型提示的高性能Web框架，兼具Flask的�
 - 官方/权威资料：[HTTP 规范](https://datatracker.ietf.org/doc/html/rfc9110)
 - 主题延伸：[FastAPI 异步路由官方指南](https://fastapi.tiangolo.com/async/)
 - 最后复核：2026-10-04
-- 下次复核：2026-12-15
+- 下次复核：2027-02-10
 
 ### 进阶学习资源
 - **官方文档**：[FastAPI Docs](https://fastapi.tiangolo.com/) - 极其详尽，包含大量示例

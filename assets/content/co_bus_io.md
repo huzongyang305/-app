@@ -422,7 +422,7 @@ D. 设备寄存器会自动缓存，不需要考虑一致性
 | [Operating Systems: Three Easy Pieces - I/O Devices](https://pages.cs.wisc.edu/~remzi/OSTEP/file-devices.pdf) | 操作系统视角的设备、中断与驱动讲解 |
 
 - 最后复核：2026-10-04
-- 下次复核：2027-10-25
+- 下次复核：2027-02-17
 
 ## 内容元数据
 

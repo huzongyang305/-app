@@ -496,7 +496,7 @@ python tools/compare_baseline.py benchmark/current.json benchmark/baseline.json
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2027-10-10
+- 下次复核：2027-08-10
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：算法工程、基准测试、复杂度、二分查找、动态规划、性能回归。
 

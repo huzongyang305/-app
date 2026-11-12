@@ -577,7 +577,7 @@ D. 「离屏渲染」：内存泄漏检测器，发现循环引用导致的泄�
 | [WWDC Performance Sessions](https://developer.apple.com/videos/frameworks/ios-performance/) | WWDC 性能优化专题视频 |
 
 - 最后复核：2026-10-04
-- 下次复核：2027-10-17
+- 下次复核：2027-06-10
 
 ## 内容元数据
 

@@ -337,7 +337,7 @@ typedef struct Node {
 - [LeetCode 150 逆波兰表达式求值](https://leetcode.cn/problems/evaluate-reverse-polish-notation/)
 - [LeetCode 622 设计循环队列](https://leetcode.cn/problems/design-circular-queue/)
 - 最后复核：2026-10-04
-- 下次复核：2026-11-10
+- 下次复核：2027-01-17
 
 - [ ] 能不看正文复述本课核心概念，并指出一个边界或反例。
 - [ ] 能推演本课示例：先写预期输出，再运行并记录差异。

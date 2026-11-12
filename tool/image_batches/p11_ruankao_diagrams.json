@@ -1,0 +1,42 @@
+{
+  "ruankao_exam_overview": {
+    "image": "images/diagram_ruankao_overview.webp",
+    "alt": "软考初级、中级、高级三个级别的科目与职称对照"
+  },
+  "ruankao_cs_basics": {
+    "image": "images/diagram_ruankao_number_code.webp",
+    "alt": "奇偶校验、海明码与循环冗余校验三种校验码对比"
+  },
+  "ruankao_os_and_arch": {
+    "image": "images/diagram_ruankao_cache_map.webp",
+    "alt": "Cache 三种映射方式的地址划分与代价对比"
+  },
+  "ruankao_data_structure": {
+    "image": "images/diagram_ruankao_dtree.webp",
+    "alt": "下午题常考数据结构的知识树"
+  },
+  "ruankao_db_design": {
+    "image": "images/diagram_ruankao_normal_form.webp",
+    "alt": "从第一范式到 BC 范式的逐级分解流程"
+  },
+  "ruankao_network_security": {
+    "image": "images/diagram_ruankao_protocol_stack.webp",
+    "alt": "TCP/IP 五层模型与常考协议、设备对应关系"
+  },
+  "ruankao_uml_patterns": {
+    "image": "images/diagram_ruankao_uml_seq.webp",
+    "alt": "UML 顺序图示例：下单请求在各对象间的消息流"
+  },
+  "ruankao_ip_law_standard": {
+    "image": "images/diagram_ruankao_ip_rights.webp",
+    "alt": "著作权、专利权、商标权的取得方式与保护期对比"
+  },
+  "ruankao_project_mgmt": {
+    "image": "images/diagram_ruankao_schedule.webp",
+    "alt": "活动网络图对应的甘特条与关键路径"
+  },
+  "ruankao_afternoon_case": {
+    "image": "images/diagram_ruankao_case_method.webp",
+    "alt": "下午案例分析的五步解题流程"
+  }
+}

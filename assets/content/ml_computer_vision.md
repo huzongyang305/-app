@@ -816,7 +816,7 @@ D. 「目标检测」：单阶段检测器，一次前向同时预测类别与�
 - 官方/权威资料：[scikit-learn 用户手册](https://scikit-learn.org/stable/user_guide.html)
 - 主题延伸：[OpenCV 官方文档](https://docs.opencv.org/4.x/)
 - 最后复核：2026-10-04
-- 下次复核：2026-11-29
+- 下次复核：2027-08-24
 
 ## 内容元数据
 

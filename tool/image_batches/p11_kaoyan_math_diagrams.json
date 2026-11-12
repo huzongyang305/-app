@@ -1,0 +1,42 @@
+{
+  "kaoyan_math_overview": {
+    "image": "images/diagram_kaoyan_math_overview.webp",
+    "alt": "考研数学三卷种的题型分值与复习三轮安排"
+  },
+  "kaoyan_math_limit_continuity": {
+    "image": "images/diagram_kaoyan_math_limit_continuity.webp",
+    "alt": "七种未定式到极限工具的选型流程"
+  },
+  "kaoyan_math_matrix": {
+    "image": "images/diagram_kaoyan_math_matrix.webp",
+    "alt": "行列式、矩阵、初等变换与秩的支撑关系"
+  },
+  "kaoyan_math_single_diff": {
+    "image": "images/diagram_kaoyan_math_single_diff.webp",
+    "alt": "中值定理从条件到辅助函数的构造路径"
+  },
+  "kaoyan_math_integral": {
+    "image": "images/diagram_kaoyan_math_integral.webp",
+    "alt": "不定积分、定积分与几何应用的方法分支"
+  },
+  "kaoyan_math_multivar_diff": {
+    "image": "images/diagram_kaoyan_math_multivar_diff.webp",
+    "alt": "连续、偏导存在、可微三者之间的强弱关系"
+  },
+  "kaoyan_math_multiple_integral": {
+    "image": "images/diagram_kaoyan_math_multiple_integral.webp",
+    "alt": "从二重积分到曲线曲面积分的升维路线"
+  },
+  "kaoyan_math_ode": {
+    "image": "images/diagram_kaoyan_math_ode.webp",
+    "alt": "常微分方程按类型选择的识别流程"
+  },
+  "kaoyan_math_series": {
+    "image": "images/diagram_kaoyan_math_series.webp",
+    "alt": "数项级数与幂级数的判别与展开流程"
+  },
+  "kaoyan_math_eigen_probability": {
+    "image": "images/diagram_kaoyan_math_eigen_probability.webp",
+    "alt": "特征值对角化与概率统计高频题的对照"
+  }
+}

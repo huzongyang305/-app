@@ -327,7 +327,7 @@ print(len(chunks))
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2026-11-10
+- 下次复核：2027-07-10
 - [Chroma 官方文档](https://docs.trychroma.com/)
 - [FAISS 使用手册与索引说明](https://github.com/facebookresearch/faiss/wiki)
 - [pgvector 扩展 README 与索引类型](https://github.com/pgvector/pgvector)

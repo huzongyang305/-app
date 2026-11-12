@@ -311,7 +311,7 @@ print(dsl['edges'][-1]['to'])
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2026-11-10
+- 下次复核：2027-07-10
 - [Dify 工作流文档](https://docs.dify.ai/guides/workflow)
 - [FastGPT 使用手册](https://doc.fastgpt.io/docs/introduction)
 - [Coze 开发者文档](https://www.coze.com/open/docs/guides)

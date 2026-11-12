@@ -329,7 +329,7 @@ print(r.status_code, len(r.json().get('models', [])))
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2026-11-10
+- 下次复核：2027-07-10
 - [vLLM 官方文档](https://docs.vllm.ai/en/latest/)
 - [Text Generation Inference 文档](https://huggingface.co/docs/text-generation-inference/index)
 - [Efficient Memory Management for LLM Serving with PagedAttention](https://arxiv.org/abs/2309.06180)

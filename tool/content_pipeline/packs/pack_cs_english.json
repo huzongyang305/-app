@@ -1,0 +1,514 @@
+{
+  "category": {
+    "id": "cs_english",
+    "title": {
+      "zh": "计算机专业英语",
+      "en": "Computer Science Professional English"
+    },
+    "icon": "translate",
+    "color": "B45309",
+    "lessons": [
+      {
+        "id": "cs_english_overview",
+        "title": {
+          "zh": "计算机专业英语导论：构词法与词根词缀",
+          "en": "Introduction to CS Professional English: Word Formation, Roots and Affixes"
+        },
+        "summary": {
+          "zh": "从专业英语与四六级英语的差异切入，建立词根加前后缀的术语生产线模型，用真实摘要、报错与文档段落练习当场推断生词。",
+          "en": "Locate professional English apart from general exams, build a root-plus-affix production line for terminology, and infer unknown words from real abstracts, compiler errors and documentation."
+        },
+        "file": "assets/content/cs_english_overview.md",
+        "minutes": 40,
+        "keywords": [
+          "构词法",
+          "词根词缀",
+          "首字母缩略词",
+          "假朋友",
+          "术语定名"
+        ],
+        "difficulty": "入门",
+        "order": 0,
+        "quiz": [
+          {
+            "type": "single",
+            "answer": 2,
+            "question": "术语 `deserialization` 的正确拆解方式，以及它在数据库与网络编程中的实际含义，下列哪一项说得最完整？",
+            "options": [
+              "de + serialization，即「去掉序列化的行为」，指把数据从内存搬到磁盘",
+              "des + erial + ization 三个部分各自独立成词，含义是串行化开关",
+              "de-(去除、逆转) + serial(序列) + -ization(过程)，指把已序列化的字节流还原成原始数据结构的过程",
+              "serial + ization，与 serialize 同义，只是英式拼写差异"
+            ],
+            "explanation": "本题正确项是「de-(去除、逆转) + serial(序列) + -ization(过程)，指把已序列化的字节流还原成原始数据结构的过程」。英语里 `de-` 常表「逆转前一动作」，配对词还有 `encode/decode`、`compress/decompress`、`compile/decompile`，所以反序列化必然发生在序列化之后、方向相反。干扰项「des + erial + ization 三个部分各自独立成词，含义是串行化开关」把 `des` 当成否定前缀，而 `des-` 并非英语的否定前缀（`descend`、`design` 都不表否定），这样切分本身就不成立。"
+          },
+          {
+            "type": "code",
+            "answer": 0,
+            "language": "c",
+            "expected_output": "undefined reference to `compute_checksum`",
+            "code": "/* a.c：只有声明，没有任何定义 */\nextern int compute_checksum(const unsigned char *buf, int n);\nint main(void) { return compute_checksum(0, 0); }",
+            "question": "下面的 C 片段编译通过但链接失败，报 undefined reference to compute_checksum。关于这条报错，下列判断正确的是哪一项？",
+            "options": [
+              "链接期只找到了声明而找不到定义，应把实现所在的源文件一并加入链接命令",
+              "`extern` 关键字不能用于函数声明，必须改写为 `static`",
+              "`compute_checksum` 名字里有下划线，属于保留标识符，编译器会拒绝处理",
+              "这条报错说明 `main` 函数的返回类型写错了"
+            ],
+            "explanation": "本题正确项是「链接期只找到了声明而找不到定义，应把实现所在的源文件一并加入链接命令」。`undefined reference` 是链接器 `ld` 的措辞，含义是符号在当前目标文件集合里查不到定义，最直接的补救是把缺少的 `.o` 或库补进链接命令。干扰项「`extern` 关键字不能用于函数声明，必须改写为 `static`」正说反了：函数声明本来就默认可见，改成 `static` 会把符号限制在本文件内，链接时更找不到。干扰项「这条报错说明 `main` 函数的返回类型写错了」把符号解析问题错当成返回类型问题，返回类型写错触发的是另一条告警。"
+          },
+          {
+            "type": "single",
+            "answer": 2,
+            "question": "学术论文中 `significant` 一词的规范理解是哪一个？",
+            "options": [
+              "说话人主观认为很重要",
+              "数量上非常大",
+              "经过统计检验后差异显著",
+              "值得关注的、明显的"
+            ],
+            "explanation": "本题正确项是「经过统计检验后差异显著」。学术写作里的 `significant` 通常意味着通过了假设检验，常与 p 值或置信区间同时出现；日常含义「明显的」在论文里要换成 `notable` 或 `substantial`。把统计结论译成主观评价，等于篡改了证据强度。干扰项「数量上非常大」对应的其实是 `substantial`，两者经常成对出现，一个描述幅度、一个描述可信度，混译会丢掉其中一维信息。"
+          },
+          {
+            "type": "multi",
+            "answer": 0,
+            "answers": [
+              0,
+              2,
+              3
+            ],
+            "question": "下列哪些做法符合「用词根词缀法推断陌生术语」的正确流程？（多选）",
+            "options": [
+              "先切出可能的前缀与后缀，确定方向与词性，再用词根核对语义",
+              "只要词长得像某个中文谐音，就直接按谐音记忆",
+              "把 pipeline 拆成 pipe 与 line 两个部件，进而理解流水线这一技术含义",
+              "遇到缩写先还原全称，例如把 ACID 还原为 Atomicity、Consistency、Isolation、Durability"
+            ],
+            "explanation": "本题要同时选中「把 pipeline 拆成 pipe 与 line 两个部件，进而理解流水线这一技术含义」和「遇到缩写先还原全称，例如把 ACID 还原为 Atomicity、Consistency、Isolation、Durability」，而「先切出可能的前缀与后缀，确定方向与词性，再用词根核对语义」是整套方法的第一步，三条合起来才是完整流程。`pipeline` 的比喻来自工厂传送带；`ACID` 还原成全称后，四个字母各自对应并发数据库的一条属性。干扰项「只要词长得像某个中文谐音，就直接按谐音记忆」属于无效联想：`daemon` 读音接近 `demon`，但它是磁盘外的后台进程，词源是希腊语里掌管隐形事务的神，谐音只会把人带偏。"
+          },
+          {
+            "type": "fill",
+            "answer": 0,
+            "options": [],
+            "accepted_answers": [
+              "隐藏",
+              "藏起来",
+              "躲藏",
+              "to hide",
+              "hide"
+            ],
+            "question": "填空：全国科学技术名词审定委员会给 `cache` 的规范定名是「高速缓冲存储器」，而这个术语的构词来自法语 `cacher`，其本义是「____」。",
+            "explanation": "空缺处应填「隐藏」一类表示藏起来的说法。`cache` 与 `cachet` 同源，本义是被人藏起来的东西，正因为它藏在 CPU 与主存之间、对上层程序透明，才被定名为缓冲存储器。把这个本义记成「加速」就无法解释 `cache` 与 `buffer` 为什么定名不同：后者的 `buff` 表示抵住、缓冲，重点是协调两边的速率差，而不是保存一份对上层透明的副本。判分时忽略大小写与空白，填 hide 或 to hide 同样算对。"
+          }
+        ]
+      },
+      {
+        "id": "cs_english_hardware",
+        "title": {
+          "zh": "硬件与体系结构英语：数据手册、论文与工具链里的三类措辞",
+          "en": "Hardware and Architecture English: Datasheets, Papers and Toolchain Messages"
+        },
+        "summary": {
+          "zh": "按教材论文、数据手册、工具链输出三类文本拆硬件英语的词根、缩写还原与被动句式，并用真实文档段落做逐句带读。",
+          "en": "Split hardware English into papers, datasheets and toolchain output, then drill roots, acronym expansion and passive patterns on authentic documentation excerpts."
+        },
+        "file": "assets/content/cs_english_hardware.md",
+        "minutes": 40,
+        "keywords": [
+          "词根词缀",
+          "缩写还原",
+          "被动语态",
+          "数据手册英文"
+        ],
+        "difficulty": "基础",
+        "order": 1,
+        "quiz": [
+          {
+            "type": "single",
+            "answer": 0,
+            "question": "数据手册同时给出 `latency` 与 `throughput` 两个指标，关于这两个词的英文本义与中文定名，下列说法正确的是哪一项？",
+            "options": [
+              "latency 的词根 latere 表「躲藏」，本义是看不见的等待时间，中文定名时延；throughput 指单位时间内完成的量",
+              "latency 与 throughput 只是同一件事的两种单位写法，前者写纳秒、后者写字节，所以在任何手册表格里两者数值总是一样",
+              "latency 指带宽，也就是链路能容纳的数据量；throughput 指时延，也就是一次往返要等多久，二者只差在测量工具不同",
+              "latency 只在网络文档里出现，throughput 只在磁盘文档里出现，因此阅读硬件手册时基本不会同时遇到这两个词"
+            ],
+            "explanation": "本题正确项是「latency 的词根 latere 表「躲藏」，本义是看不见的等待时间，中文定名时延；throughput 指单位时间内完成的量」。抓住 `latere`「躲藏」这一本义，就能解释为什么英文用 latency 描述「你看不见的那段等待」，而 `through`（贯穿）+ `put`（放置）描述「单位时间里放过去了多少」；加缓存往往让 throughput 上升而 latency 抖动，两者并不绑定。干扰项「latency 指带宽，也就是链路能容纳的数据量；throughput 指时延，也就是一次往返要等多久，二者只差在测量工具不同」把两组概念整个对调，带宽对应的英文是 `bandwidth`；干扰项「latency 只在网络文档里出现，throughput 只在磁盘文档里出现，因此阅读硬件手册时基本不会同时遇到这两个词」也不成立，同一份存储器手册经常并列这两列数据。"
+          },
+          {
+            "type": "single",
+            "answer": 1,
+            "question": "数据手册中 Stresses exceeding the values listed in this section may cause permanent damage 一句，正确的理解与译法是哪一项？",
+            "options": [
+              "只要器件从不工作在这些数值下，就能保证长期可靠运行，因此这行字实际上是被当作质量保证条款来写的",
+              "stresses 指超出规格的电压或温度应力，may 表可能性而非许可，整句意为应力超限可能导致永久损坏",
+              "本节列出的是推荐工作条件，意味着器件可以长时间在这些数值下正常工作，只是能效指标会有所下降",
+              "这句话是对测试仪器说的，意思是超出这些数值可能损坏测试设备，与器件本身的耐受能力并无关系"
+            ],
+            "explanation": "本题正确项是「stresses 指超出规格的电压或温度应力，may 表可能性而非许可，整句意为应力超限可能导致永久损坏」。RFC 2119 确立的分级用词传统同样渗透进数据手册：`may` 只表可能性，`shall/must` 才是强制，`should` 是建议；加上主语 `stresses exceeding ...` 是现在分词短语作后置定语，句子才读得完整。干扰项「本节列出的是推荐工作条件，意味着器件可以长时间在这些数值下正常工作，只是能效指标会有所下降」把绝对额定值与推荐条件混为一谈，这两段在手册里是分开列出的；干扰项「只要器件从不工作在这些数值下，就能保证长期可靠运行，因此这行字实际上是被当作质量保证条款来写的」把一个可能性声明读成了保证承诺，原文完全没有这种语气。"
+          },
+          {
+            "type": "code",
+            "answer": 2,
+            "language": "bash",
+            "expected_output": "cc1: error: unrecognized command line option '-mavx512f'",
+            "code": "$ gcc -O2 -march=native -mavx512f app.c\ncc1: error: unrecognized command line option '-mavx512f'; did you mean '-mavx2'?\n$ gcc --version\ngcc (Ubuntu 11.4.0) 11.4.0",
+            "question": "在 x86-64 机器上执行下面的命令后得到这条报错，关于报错原文的读法与下一步动作，哪一项判断是正确的？",
+            "options": [
+              "报错说明编译器不认识这组指令，等同于本机 CPU 不支持 AVX-512，只能换一台服务器才能继续编译",
+              "error 级别说明源码已被破坏，应当先把 app.c 恢复到初始版本，再重新执行一次同样的命令",
+              "unrecognized command line option 指该选项在这个编译器版本的选项表里不存在，应先查版本再改写",
+              "选项名里的 -m 前缀表示它只适用于 macOS，在 Linux 上必须把 -mavx512f 换成 /avx512f 形式"
+            ],
+            "explanation": "本题正确项是「unrecognized command line option 指该选项在这个编译器版本的选项表里不存在，应先查版本再改写」。这条报错由编译后端 `cc1` 发出，关键词是 `unrecognized`（无法识别），它的对象是「command line option」而不是 CPU，因此第一动作永远是 `gcc --version` 与 `gcc -Q --help=target`，对照本版本到底有哪些机器选项；后面的 `did you mean` 是拼写建议，与错误原因无关。干扰项「报错说明编译器不认识这组指令，等同于本机 CPU 不支持 AVX-512，只能换一台服务器才能继续编译」把编译期选项检查误当成运行期能力检测，二者口径完全不同；干扰项「选项名里的 -m 前缀表示它只适用于 macOS，在 Linux 上必须把 -mavx512f 换成 /avx512f 形式」也不对，`-m` 只是机器相关选项的惯例前缀，与操作系统无关。"
+          },
+          {
+            "type": "single",
+            "answer": 3,
+            "question": "论文中 Our scheme reduces the average memory access time by 18% 一句，译文里最关键的一处处理是什么？",
+            "options": [
+              "by 18% 要译成「降低到原来的 18%」，因为英文介词 by 后面接的是变化之后的最终结果",
+              "average 在这里是「普通的、不上不下的」，整句其实在说访存表现平平，并没有任何量化含义",
+              "reduces 后面跟的是指标名，所以中文里最好保留英文缩写不译，写成 reduces AMAT 18% 最稳妥",
+              "by 18% 表示变化的幅度，必须译成「降低了 18%」，而平均访存时间这一指标名要还原成中文全称"
+            ],
+            "explanation": "本题正确项是「by 18% 表示变化的幅度，必须译成「降低了 18%」，而平均访存时间这一指标名要还原成中文全称」。英文里 `increase/decrease by X` 说的是差值，`increase/decrease to X` 才是结果值，这一字之差在论文复现里代价极大；`average memory access time` 展开后就是 AMAT，术语在中文正文里应给全称并附缩写。干扰项「reduces 后面跟的是指标名，所以中文里最好保留英文缩写不译，写成 reduces AMAT 18% 最稳妥」放弃了还原全称这一步，读者根本不知道指标指的是什么；另一项把 by 读成「降低到」，等于把性能夸大了好几倍，属于典型的介词误译。"
+          },
+          {
+            "type": "single",
+            "answer": 2,
+            "question": "把 `TLB` 还原为 Translation Lookaside Buffer 之后，关于这个术语的读法与中文定名，哪一项最准确？",
+            "options": [
+              "lookaside 是「向后看」的意思，所以这块缓冲存放上一次被淘汰的页表项，中文应当叫它回看缓冲",
+              "buffer 说明它就是一级缓存，因此 `TLB` 与 `L1 cache` 是同一个部件的两种叫法，只是文档习惯不同",
+              "lookaside 字面是在旁边看一眼，指为加速页表地址转换而设的旁路缓存，中文定名转换旁路缓冲器",
+              "Translation 在这里指自然语言翻译，整个术语描述的是把中文指令翻译成英文指令的那套部件"
+            ],
+            "explanation": "本题正确项是「lookaside 字面是在旁边看一眼，指为加速页表地址转换而设的旁路缓存，中文定名转换旁路缓冲器」。`aside` 是「放到一边」，加 `look-` 就是「顺路看一眼」，因此它不是主路径上的数据缓存，而是为地址转换单开的一条快路；`Translation` 指的是虚拟地址到物理地址的转换，与语言翻译无关。干扰项「buffer 说明它就是一级缓存，因此 `TLB` 与 `L1 cache` 是同一个部件的两种叫法，只是文档习惯不同」混淆了两类部件存的内容，一个存地址映射、一个存数据；干扰项「Translation 在这里指自然语言翻译，整个术语描述的是把中文指令翻译成英文指令的那套部件」把体系结构术语错接到语言学义项上，还原全称即可排除。"
+          },
+          {
+            "type": "order",
+            "question": "阅读数据手册正文时，下面四个动作的合理先后顺序是哪一项？",
+            "options": [
+              "把缩写还原成全称，例如把 DDR 还原成 Double Data Rate 再理解",
+              "确认这句话属于哪一类信息：绝对额定值、推荐工作条件还是功能描述",
+              "把单位与数值口径核对一遍，例如把 MT/s 换算成时钟频率之后再比较",
+              "找出句子的谓语与隐含施事者，判断它是被动陈述还是条件加结果"
+            ],
+            "correct_order": [
+              1,
+              0,
+              3,
+              2
+            ],
+            "explanation": "顺序是「确认这句话属于哪一类信息」先行，因为同一句 `the device may be damaged` 在额定值段落与功能描述段落里的含义完全不同；接着「把缩写还原成全称，例如把 DDR 还原成 Double Data Rate 再理解」，缩写不展开后面全白读；第三步「找出句子的谓语与隐含施事者，判断它是被动陈述还是条件加结果」决定中文要不要补出主语；最后「把单位与数值口径核对一遍，例如把 MT/s 换算成时钟频率之后再比较」，因为口径核对依赖前三步建立的语境。把单位核对放在开头是最常见的读法错误：数值抄得再快，落在错误的段落类型上也只能得到错误的结论。"
+          }
+        ]
+      },
+      {
+        "id": "cs_english_os_software",
+        "title": {
+          "zh": "操作系统与软件工程英语：从需求到发布的术语链",
+          "en": "Operating System and Software Engineering English: Terminology from Requirement to Release"
+        },
+        "summary": {
+          "zh": "以 man page、内核文档与工程流程文档为语料，掌握祈使句与虚拟语气的读法、错误码原文精读，以及 mutex、daemon 一类术语的词源还原。",
+          "en": "Use man pages, kernel docs and engineering process docs as corpora to master imperative and subjunctive readings, error-message close reading, and etymology of terms like mutex and daemon."
+        },
+        "file": "assets/content/cs_english_os_software.md",
+        "minutes": 38,
+        "keywords": [
+          "手册页英文",
+          "祈使语气",
+          "错误码精读",
+          "词源还原"
+        ],
+        "difficulty": "基础",
+        "order": 2,
+        "quiz": [
+          {
+            "type": "single",
+            "answer": 0,
+            "question": "Linux 手册页 DESCRIPTION 一节里 `sched_setscheduler(2) Set the scheduling policy and parameters of a specified thread.` 这句的英文写法特征，下列说明正确的是哪一项？",
+            "options": [
+              "用动词原形开头的祈使句，主语被省略，术语成对出现，末尾的 (2) 指手册分节号而非参数",
+              "用一般现在时的陈述句，主语是本函数，(2) 表示该接口在头文件里排第二个位置",
+              "用被动语态强调动作承受者，policy 与 parameters 是同一件事的两种拼法，(2) 是版本号",
+              "用虚拟语气表达建议，因为调度策略由用户决定，(2) 说明它是第二个可选参数"
+            ],
+            "explanation": "本题正确项是「用动词原形开头的祈使句，主语被省略，术语成对出现，末尾的 (2) 指手册分节号而非参数」。man page 的定义句几乎都以 `Set`、`Return`、`Fetch` 这类动词原形起头，读者要抓的是「动作 + 宾语 + 限定范围」三件事；分节号 1 到 8 各有含义，2 是系统调用、3 是库函数，查错分节会读到完全不同的说明。干扰项「用一般现在时的陈述句，主语是本函数，(2) 表示该接口在头文件里排第二个位置」把祈使句误当陈述句，还编造了排序含义；干扰项「用被动语态强调动作承受者，policy 与 parameters 是同一件事的两种拼法，(2) 是版本号」既弄错了语态又把两个正交维度说成同义词。"
+          },
+          {
+            "type": "debug",
+            "answer": 3,
+            "language": "c",
+            "expected_output": "mmap failed: No memory is available",
+            "code": "void *p = mmap(NULL, len, PROT_READ, MAP_PRIVATE, fd, 0);\nif (p == MAP_FAILED) {\n    /* errno == ENOMEM */\n    fprintf(stderr, \"mmap failed: %s\\n\", strerror(errno));\n}",
+            "question": "上面这段代码打印出 mmap failed: No memory is available，关于这条英文输出与它背后的错误码，下列判断正确的是哪一项？",
+            "options": [
+              "strerror 的输出可以随意改写，只要程序能崩在正确位置，排查思路不受这句话影响",
+              "这句话只可能是物理内存耗尽，因为 man page 里 ENOMEM 的定义就是没有可用内存",
+              "只要把 len 改小就能验证结论，英文提示里的 available 一词已经指明是容量问题",
+              "手册页对 ENOMEM 给了两条说明，除内存耗尽外还有映射条数超上限，需要结合调用点判断"
+            ],
+            "explanation": "本题正确项是「手册页对 ENOMEM 给了两条说明，除内存耗尽外还有映射条数超上限，需要结合调用点判断」。man page 的 ERRORS 一节允许同一个宏名挂多条句子，第二条用的是虚拟语气 `would have been exceeded`，说的是配额检查而非内存不足；日志里 `%s` 打出来的英文短句只是第一条说明的字符串形式，不能当作唯一诊断。干扰项「这句话只可能是物理内存耗尽，因为 man page 里 ENOMEM 的定义就是没有可用内存」正是被单条说明误导的典型结论；干扰项「只要把 len 改小就能验证结论，英文提示里的 available 一词已经指明是容量问题」把映射数超限的可能排除掉了，改小长度反而会让真正的原因继续隐藏；干扰项「strerror 的输出可以随意改写，只要程序能崩在正确位置，排查思路不受这句话影响」忽视了固定英文短语的诊断价值。"
+          },
+          {
+            "type": "single",
+            "answer": 1,
+            "question": "手册页中 The process's maximum number of mappings would have been exceeded 一句里 would have been exceeded 的语法作用是什么？",
+            "options": [
+              "表示过去某个时刻确实超过了上限，属于对历史事实的回忆性陈述",
+              "用虚拟语气说明检查机制拦下了这次调用，本会超过但因被拒绝而未发生",
+              "表示将来的推测，等价于 will be exceeded，只是行文更正式一些",
+              "构成条件句的主句，必须有 if 从句出现在同一句里才算合法用法"
+            ],
+            "explanation": "本题正确项是「用虚拟语气说明检查机制拦下了这次调用，本会超过但因被拒绝而未发生」。工程英文里 `would + have + 过去分词` 常用来描述「如果没有这道检查就会怎样」，它把「拦截成功」这一事实压缩进动词形态，中文要显式补出「本会……但因被拒绝而未发生」。这一形态与上一条 `No memory is available` 的一般现在时形成对照：前者讲拦截规则，后者讲实际资源。干扰项「表示将来的推测，等价于 will be exceeded，只是行文更正式一些」抹掉了虚拟语气与真实将来之间的差别，会把排查方向引向容量预测；干扰项「构成条件句的主句，必须有 if 从句出现在同一句里才算合法用法」也不成立，技术文档里虚拟语气经常独立成句，条件由上下文提供。"
+          },
+          {
+            "type": "single",
+            "answer": 2,
+            "question": "把 `mutex` 与 `semaphore` 两个术语按构词还原，下面哪一项的说法站得住？",
+            "options": [
+              "mutex 拆成 mut + tex，semaphore 拆成 semi + phone，前者与变化有关、后者与电话有关",
+              "两个词都是希腊语原生的复合名词，在英语里没有被重新拼合过，因此无法拆解",
+              "mutex 由 mutual 与 exclusion 混成，semaphore 由 sema（标志）与 phoros（携带）组成",
+              "mutex 是人名缩写，semaphore 来自日语，两者都属于专有名词而非普通术语"
+            ],
+            "explanation": "本题正确项是「mutex 由 mutual 与 exclusion 混成，semaphore 由 sema（标志）与 phoros（携带）组成」。混成词（portmanteau）在英语里并不少见，`brunch` 由 breakfast 与 lunch 拼成，`mutex` 同理，必须还原成 `mutual exclusion` 才能明白它同时表达「相互」与「排除」；`semaphore` 的两个希腊零件字面是「携带标志」，Dijkstra 借用铁路臂板信号机的意象为 P、V 操作命名。干扰项「mutex 拆成 mut + tex，semaphore 拆成 semi + phone，前者与变化有关、后者与电话有关」是把 `semi-`（一半）与 `phone`（声音）硬贴上去的假拆词，`mutex` 中间并没有 `semi`；干扰项「两个词都是希腊语原生的复合名词，在英语里没有被重新拼合过，因此无法拆解」否认了混成这一构词手段，与 `brunch` 这类常见词的证据矛盾。"
+          },
+          {
+            "type": "single",
+            "answer": 3,
+            "question": "内核文档写道 Describe your changes in imperative mood, e.g. \"make xyzzy do frotz\" ，对这条要求的正确执行方式是哪一项？",
+            "options": [
+              "写成 this patch fixes a NULL pointer dereference，说明补丁做了什么更清楚",
+              "写成 I changed the driver to handle the reset case，把作者作为主语更易追溯",
+              "写成 the bug has been fixed in the interrupt path，用被动语态显得客观中立",
+              "写成 handle the reset case in the interrupt path，动词原形开头且不带主语"
+            ],
+            "explanation": "本题正确项是「写成 handle the reset case in the interrupt path，动词原形开头且不带主语」。内核文档给出的理由是把代码库当成下命令的对象：`make xyzzy do frotz` 读起来像「让 xyzzy 去做 frotz」，因此标题行应是命令而不是记叙；三种被否决的写法分别落在「补丁作主语」「作者作主语」「被动完成时」，都是同一类错误。干扰项「写成 this patch fixes a NULL pointer dereference，说明补丁做了什么更清楚」恰好是文档点名反对的写法；干扰项「写成 I changed the driver to handle the reset case，把作者作为主语更易追溯」同样违规，而且日志里没人能追溯「I」是谁。"
+          },
+          {
+            "type": "multi",
+            "answer": 0,
+            "answers": [
+              0,
+              2,
+              3
+            ],
+            "question": "阅读英文 man page 与内核文档时，下列哪些做法符合正确的读法要求？（多选）",
+            "options": [
+              "先看分节号再读内容，例如 2 查系统调用、3 查库函数，两者报错层次不同",
+              "把 since Linux 2.5.37 这类限定语当成时态线索，据此判断句子的动作发生在过去",
+              "对同一宏名下的多条说明逐条核对，例如 ENOMEM 既可能是内存耗尽也可能是映射数超限",
+              "把 nit: 与 LGTM 视为语气强弱不同的评审用语，前者是小建议、后者是认可"
+            ],
+            "explanation": "本题要同时选中「先看分节号再读内容，例如 2 查系统调用、3 查库函数，两者报错层次不同」和「对同一宏名下的多条说明逐条核对，例如 ENOMEM 既可能是内存耗尽也可能是映射数超限」，再加上「把 nit: 与 LGTM 视为语气强弱不同的评审用语，前者是小建议、后者是认可」，三条覆盖了查手册、查错误码、读评审三种场景。干扰项「把 since Linux 2.5.37 这类限定语当成时态线索，据此判断句子的动作发生在过去」把版本限定语误读成完成时线索：它限定的是行为在哪个版本开始出现，与动词时态无关，按过去时理解会让人以为旧内核才有这个行为。"
+          }
+        ]
+      },
+      {
+        "id": "cs_english_network_web",
+        "title": {
+          "zh": "网络与 Web 英语：RFC 原文、HTTP 报文与日志精读",
+          "en": "Network and Web English: RFC Text, HTTP Messages and Log Close Reading"
+        },
+        "summary": {
+          "zh": "以 RFC 9110、RFC 2119 与 curl/Nginx 日志为语料，掌握规范关键词强度、定义句式、报文三件套和连接失败短语的读法。",
+          "en": "Read RFC 9110, RFC 2119 and curl/Nginx logs to master normative keywords, definition patterns, the three parts of an HTTP message, and connection-failure phrases."
+        },
+        "file": "assets/content/cs_english_network_web.md",
+        "minutes": 40,
+        "keywords": [
+          "RFC 措辞",
+          "HTTP 报文",
+          "日志精读",
+          "缩写还原"
+        ],
+        "difficulty": "基础",
+        "order": 3,
+        "quiz": [
+          {
+            "type": "single",
+            "answer": 0,
+            "question": "规范文本里 SHOULD 与 MAY 两个关键词的合规强度，下列理解正确的是哪一项？",
+            "options": [
+              "SHOULD 允许在有充分理由时偏离但需慎重评估，MAY 只表许可不含推荐，二者强度不同",
+              "SHOULD 与 MAY 强度相同，都只表示编写者个人的偏好，工程上可以一律忽略",
+              "MAY 表示有可能发生，属于推测语气，因此它比 SHOULD 的强制程度更强一些",
+              "SHOULD 等价于 MUST，只是行文更客气，评审时必须按绝对要求逐条落实不允许偏离"
+            ],
+            "explanation": "本题正确项是「SHOULD 允许在有充分理由时偏离但需慎重评估，MAY 只表许可不含推荐，二者强度不同」。RFC 2119 对 SHOULD 的后半句写得很清楚：违背可以，但必须先理解全部影响并慎重评估；`MAY` 则纯粹是许可，既不鼓励也不描述概率。中文里把 SHOULD 译成「应该」、MAY 译成「可能」都会丢掉强度信息。干扰项「MAY 表示有可能发生，属于推测语气，因此它比 SHOULD 的强制程度更强一些」把许可误读成推测，还颠倒了强度顺序；干扰项「SHOULD 等价于 MUST，只是行文更客气，评审时必须按绝对要求逐条落实不允许偏离」抹掉了规范文本刻意保留的偏离空间，会把可选实现判成缺陷。"
+          },
+          {
+            "type": "single",
+            "answer": 1,
+            "question": "RFC 9110 中 A request method is considered \"idempotent\" if the intended effect on the server of multiple identical requests with that method is the same as the effect for a single such request. 一句的读法要点是什么？",
+            "options": [
+              "主干是多次请求等于一次请求，因此只要状态码相同就可以判定该方法幂等",
+              "主干是被动加主语补足语，判断对象是意图上的效果而非返回值，such 表同类而非这样的",
+              "主干是 if 引导的条件句，intended 一词说明该定义只适用于作者打算实现的那些方法",
+              "主干是比较级结构，multiple 与 single 相对，因此幂等只在并发场景下才有讨论意义"
+            ],
+            "explanation": "本题正确项是「主干是被动加主语补足语，判断对象是意图上的效果而非返回值，such 表同类而非这样的」。`is considered \"idempotent\"` 属于「被动 + 主语补足语」结构，中文要把 if 条件提前；`intended effect` 限定的是意图效果，所以重复删除同一条记录第二次返回未找到，仍然满足幂等；`such` 在条文里读作「同一类的」，`a single such request` 即「同类的一次请求」。干扰项「主干是多次请求等于一次请求，因此只要状态码相同就可以判定该方法幂等」把判断对象从效果换成状态码，与原文的 intended 相冲突；干扰项「主干是 if 引导的条件句，intended 一词说明该定义只适用于作者打算实现的那些方法」把 intended 错解成「作者的打算」，逻辑主语也读错了。"
+          },
+          {
+            "type": "code",
+            "answer": 3,
+            "language": "bash",
+            "expected_output": "curl: (7) Failed to connect to shop.acme.io port 443 after 3021 ms: Connection refused",
+            "code": "$ curl -sv https://shop.acme.io/api/v1/items\n*   Trying 203.0.113.27:443...\n* connect to 203.0.113.27 port 443 failed: Connection refused\n* Failed to connect to shop.acme.io port 443 after 3021 ms: Connection refused\ncurl: (7) Failed to connect to shop.acme.io port 443 after 3021 ms: Connection refused",
+            "question": "执行上面的命令得到这条英文输出，关于它的读法与排查方向，下列判断正确的是哪一项？",
+            "options": [
+              "Connection refused 说明域名解析失败，应当先修改 hosts 文件再重试这条命令",
+              "after 3021 ms 表示服务端处理耗时三千余毫秒，问题在后端业务代码的响应速度",
+              "Failed to connect 意味着 TLS 证书校验未通过，需要换成 http 协议才能继续排查",
+              "这句话表明 TCP 连接被对端拒绝，方向是确认目标端口有无监听以及是否有拦截策略"
+            ],
+            "explanation": "本题正确项是「这句话表明 TCP 连接被对端拒绝，方向是确认目标端口有无监听以及是否有拦截策略」。`Connection refused` 对应错误码宏名 `ECONNREFUSED`，它是收到 RST 之后的结果，说明包已到达对端但没人监听这个端口或被中间设备主动拒绝；与之相对，`Connection timed out` 才是 SYN 发出去无声响。`after 3021 ms` 是 curl 统计的建连耗时而不是服务端处理时间，读这类句要盯主语是谁。干扰项「Connection refused 说明域名解析失败，应当先修改 hosts 文件再重试这条命令」混淆了 DNS 与传输层，解析失败的固定说法是 Could not resolve host；干扰项「Failed to connect 意味着 TLS 证书校验未通过，需要换成 http 协议才能继续排查」把证书类错误与建连被拒混为一谈，证书问题会明确写出与证书相关的字样；干扰项「after 3021 ms 表示服务端处理耗时三千余毫秒，问题在后端业务代码的响应速度」读错了时间量的归属对象。"
+          },
+          {
+            "type": "single",
+            "answer": 2,
+            "question": "HTTP 语义里 safe method 一词中 safe 的准确含义是哪一项？",
+            "options": [
+              "指该方法启用了加密套件，通信内容不会被中间设备读取或篡改",
+              "指该方法实现完善、不会抛出异常，可以在任何客户端里放心调用",
+              "指规范不假定该方法会改变服务器状态，与是否加密和是否健壮都没有关系",
+              "指该方法只能由管理员权限调用，普通用户发起时会被网关直接拒绝"
+            ],
+            "explanation": "本题正确项是「指规范不假定该方法会改变服务器状态，与是否加密和是否健壮都没有关系」。`safe` 在这里是「无副作用」的技术含义，判断依据是规范措辞 rather than 实现质量，它和 `idempotent` 是两个正交维度：GET 通常既安全又幂等，POST 通常既不安全也不幂等，而 PUT 不安全却幂等。加密相关的英文是 `secure`、`TLS`，健壮相关的英文是 `robust`。干扰项「指该方法启用了加密套件，通信内容不会被中间设备读取或篡改」把 safe 与 secure 混译，这是专业英语阅读里最容易犯的词义串线；干扰项「指该方法实现完善、不会抛出异常，可以在任何客户端里放心调用」则把规范层面的约定当成实现质量承诺，方向完全偏离。"
+          },
+          {
+            "type": "single",
+            "answer": 3,
+            "question": "性能报告里 reduce the p99 latency of the checkout API by 30% under a load of 200 RPS 这句，口径理解正确的是哪一项？",
+            "options": [
+              "by 30% 指下降到 30 毫秒，200 RPS 是压测脚本的并发线程数量，两者都是绝对值",
+              "p99 表示平均值的 99 倍，under a load 说明测试是在低于设计负载的情况下完成的",
+              "reduce 后接的是接口名，因此这句只描述成功率提升，与时延和负载条件均无关联",
+              "by 30% 是相对下降幅度，p99 是第 99 百分位口径，under a load 给出压力条件"
+            ],
+            "explanation": "本题正确项是「by 30% 是相对下降幅度，p99 是第 99 百分位口径，under a load 给出压力条件」。英文指标句的口径几乎全靠介词承担：`reduce by X` 是差值、`reduce to X` 是结果值、`at p99` 是百分位、`under a load of 200 RPS` 是压力前提，其中 `of the checkout API` 修饰 latency 而非 reduce 的宾语。四个口径一起读出，才能判断结论能不能复现。干扰项「by 30% 指下降到 30 毫秒，200 RPS 是压测脚本的并发线程数量，两者都是绝对值」把 by 与 to 混掉，又把 RPS（每秒请求数）当成线程数；干扰项「p99 表示平均值的 99 倍，under a load 说明测试是在低于设计负载的情况下完成的」对百分位的理解根本错误，`under` 也不含「低于设计值」这层意思。"
+          },
+          {
+            "type": "fill",
+            "answer": 0,
+            "options": [],
+            "accepted_answers": [
+              "Identifier",
+              "identifier",
+              "统一资源标识符"
+            ],
+            "question": "填空：URI 还原成全称是 Uniform Resource ____，它与 URL 的差别在于前者只标识「它是什么」，后者给出「怎么找到它」。",
+            "explanation": "空缺处应填 Identifier 一词，中文定名是标识符。`Uniform` 表统一格式、`Resource` 指可反复取用的对象、`Identifier` 来自 identify，只回答「这是哪个东西」；而 Locator 里的 `locate` 是「定位」，额外要求给出访问路径，所以 URL 是 URI 的子集。记住这一字之差，读 RFC 与浏览器文档时就不会把两者当同义词替换。"
+          }
+        ]
+      },
+      {
+        "id": "cs_english_db_bigdata",
+        "title": {
+          "zh": "数据库与大数据英语：ACID、OLAP 与论文里的定义句",
+          "en": "Database and Big Data English: ACID, OLAP and Definition Sentences in Papers"
+        },
+        "summary": {
+          "zh": "用 SQL 标准转述段、SQLite 原子提交段与 Spark shuffle 段做逐句带读，掌握虚拟语气、机制加代价句式与 ACID、OLAP、DML 等缩写还原。",
+          "en": "Close-read the SQL standard paraphrase, SQLite atomic-commit prose and Spark shuffle definition to master subjunctive mood, mechanism-plus-cost patterns, and acronyms such as ACID, OLAP and DML."
+        },
+        "file": "assets/content/cs_english_db_bigdata.md",
+        "minutes": 42,
+        "keywords": [
+          "定义句式",
+          "虚拟语气",
+          "缩写还原",
+          "报错精读"
+        ],
+        "difficulty": "进阶",
+        "order": 4,
+        "quiz": [
+          {
+            "type": "single",
+            "answer": 2,
+            "question": "ACID 里 Durability 一词的英文本义与中文定名的对应关系，下列说法正确的是哪一项？",
+            "options": [
+              "来自 durable 的名词化，指数据被备份到多份副本因而不会丢失，中文应译成冗余性",
+              "词根 dur 表坚硬，因此该属性描述的是存储介质的物理强度，与事务提交顺序无关",
+              "词根 dur 表持续，与 endure 同族，含义是提交完成后即使断电也不再丢失，中文定名持久性",
+              "与 duration 同源，含义是事务存活时间足够长，中文应译成持续性并用于超时配置"
+            ],
+            "explanation": "本题正确项是「词根 dur 表持续，与 endure 同族，含义是提交完成后即使断电也不再丢失，中文定名持久性」。`durare` 是拉丁语「持续」，派生出 `durable`、`durability`、`endure`，在事务语境里专指已提交的写入不会因掉电或崩溃被抹去，实现手段就是先写日志再改数据页。备份多份属于冗余（`redundancy`），时长设置属于 `duration`，这两者都不能拿来解释 ACID 的 D。干扰项「来自 durable 的名词化，指数据被备份到多份副本因而不会丢失，中文应译成冗余性」把冗余与持久混为一谈；干扰项「与 duration 同源，含义是事务存活时间足够长，中文应译成持续性并用于超时配置」虽抓住同源词却把语义换成时间长度，方向偏了。"
+          },
+          {
+            "type": "single",
+            "answer": 1,
+            "question": "SQLite 文档里 Suppose the power to the computer were cut part way through the commit operation 一句，读法要点是什么？",
+            "options": [
+              "用一般过去时叙述一次真实发生过的断电事故，后文会给出该事故的处理结果",
+              "用 Suppose 引导假设、were 表虚拟语气，构想的场景并未发生，中文要说设想断电发生在中途",
+              "用被动语态说明电源被运维人员按计划切断，part way 指切断了线路的一部分而非时间",
+              "用祈使句要求读者亲手切断电源以复现故障，属于实验步骤而不是假设推理"
+            ],
+            "explanation": "本题正确项是「用 Suppose 引导假设、were 表虚拟语气，构想的场景并未发生，中文要说设想断电发生在中途」。判断依据有两处：`Suppose` 后接从句时主句动词用原形，从句动词用 were 而不是 was，是虚拟语气的形式标记；`part way through the commit operation` 说的是「提交过程进行到一半」，part way 修饰时间进度。全句为下一句的回滚设计提供前提。干扰项「用一般过去时叙述一次真实发生过的断电事故，后文会给出该事故的处理结果」把虚拟语气读成过去事实，正是文档阅读里最常见的一次语义跳跃；干扰项「用被动语态说明电源被运维人员按计划切断，part way 指切断了线路的一部分而非时间」补出了原文根本没有的施事者，也曲解了 part way。"
+          },
+          {
+            "type": "code",
+            "answer": 0,
+            "language": "sql",
+            "expected_output": "ERROR: column u.name must appear in the GROUP BY clause or be used in an aggregate function",
+            "code": "SELECT u.id, u.name, count(*) AS n\n  FROM users u JOIN orders o ON o.user_id = u.id\n GROUP BY u.id;",
+            "question": "执行上面的查询得到 must appear in the GROUP BY clause or be used in an aggregate function 这条报错，关于英文原句的理解，下列判断正确的是哪一项？",
+            "options": [
+              "报错给出两个可选动作：把该列加入分组，或把它包进聚合函数，二选一即可通过语法检查",
+              "报错说明该列名拼写有误，引擎找不到名为 name 的列，需要核对表结构后再重新提交",
+              "报错要求删除该列，因为 GROUP BY 之后任何非分组列都不允许出现在选择列表里",
+              "报错说明连接条件写错导致出现重复行，应先修正 ON 子句再考虑分组问题"
+            ],
+            "explanation": "本题正确项是「报错给出两个可选动作：把该列加入分组，或把它包进聚合函数，二选一即可通过语法检查」。关键词是 `or` 连接的两个被动与不定式结构：`must appear in the GROUP BY clause` 与 `must be used in an aggregate function`，引擎把两种修复路径都写进了同一条句子，这在英文报错里很常见，读到 `or` 就该知道自己在做选择题。干扰项「报错说明该列名拼写有误，引擎找不到名为 name 的列，需要核对表结构后再重新提交」把语法约束错当成对象不存在，找不到列的固定说法是 column 加 does not exist；干扰项「报错要求删除该列，因为 GROUP BY 之后任何非分组列都不允许出现在选择列表里」漏掉了原文给的另一个选项，把可选择题读成了禁止题；干扰项「报错说明连接条件写错导致出现重复行，应先修正 ON 子句再考虑分组问题」则无中生有，原文没有涉及连接语义。"
+          },
+          {
+            "type": "single",
+            "answer": 3,
+            "question": "论文摘要里 We trade strong consistency for availability during a network partition 一句，译文的正确方向是哪一项？",
+            "options": [
+              "在分区期间用可用性换取强一致性，即牺牲可用性来保证一致性不被破坏",
+              "在分区期间把一致性交给可用性模块处理，两者通过接口交换数据来完成读写",
+              "在分区期间同时保住强一致性与可用性，二者互相交换以实现最优的读性能",
+              "在分区期间放弃强一致性以换取可用性，即允许部分节点继续服务而可能读到旧值"
+            ],
+            "explanation": "本题正确项是「在分区期间放弃强一致性以换取可用性，即允许部分节点继续服务而可能读到旧值」。`trade A for B` 的骨架是「放弃 A、得到 B」，A 在 for 之前、B 在 for 之后，与 `replace A with B` 的方向一致但语义更弱；`during a network partition` 限定的是分区这段窗口，正常时期不受影响。这一句式对应 BASE 口径里的 Basically Available 与 Eventual consistency。干扰项「在分区期间用可用性换取强一致性，即牺牲可用性来保证一致性不被破坏」把 A 与 B 对调了，恰好是 CAP 取舍的另一端，方向错误会让结论反转；干扰项「在分区期间同时保住强一致性与可用性，二者互相交换以实现最优的读性能」把 trade 误读成互相交换，抹掉了这句里的牺牲含义。"
+          },
+          {
+            "type": "multi",
+            "answer": 0,
+            "answers": [
+              1,
+              2,
+              3
+            ],
+            "question": "关于数据系统文档里几个常见缩写的还原，下列哪些说法是正确的？（多选）",
+            "options": [
+              "OLAP 的第三个字母来自 Application，说明它面向应用层调用，与联机事务处理在英文定名上并无区别",
+              "DML 是 Data Manipulation Language，处理表中的数据行，建表与改结构属于 DDL 而非 DML",
+              "WAL 的 Write-Ahead 表示日志必须先于数据页落盘，ahead 在此读作在……之前",
+              "MVCC 的 Multi-Version 指同一行保留多个历史版本，靠快照读代替加锁读以提高并发"
+            ],
+            "explanation": "本题要同时选中「DML 是 Data Manipulation Language，处理表中的数据行，建表与改结构属于 DDL 而非 DML」，以及「WAL 的 Write-Ahead 表示日志必须先于数据页落盘，ahead 在此读作在……之前」和「MVCC 的 Multi-Version 指同一行保留多个历史版本，靠快照读代替加锁读以提高并发」，三条都符合先还原全称再理解的路径。OLAP 的第三个字母来自 Analytical 而不是 Application，它与 OLTP 的差别恰好就在 Transaction 与 Analytical 这两个名词上，把它当成应用层调用就丢了整个语义。干扰项「OLAP 的第三个字母来自 Application，说明它面向应用层调用，与联机事务处理在英文定名上并无区别」错在词首还原，两个缩写的 online 都指即时响应而非联网，第三个字母才是区分关键；把 DDL 与 DML 混为一谈则是另一类高频错误，一个改结构定义、一个改数据行。"
+          },
+          {
+            "type": "single",
+            "answer": 0,
+            "question": "引擎报错 duplicate key value violates unique constraint \"users_email_key\" 中，主语与谓语的关系应如何理解？",
+            "options": [
+              "主语是被插入的键值，违反约束的是这条语句，数据库只是判定并拒绝的一方",
+              "主语是数据库进程，说明数据库实现有缺陷，应当提交缺陷报告等待补丁发布",
+              "主语是唯一约束本身，它违反了键值的要求，因此需要删除该约束才能继续写入",
+              "主语与谓语之间缺少助动词，这句是残缺句子，真实含义无法从英文原文判断"
+            ],
+            "explanation": "本题正确项是「主语是被插入的键值，违反约束的是这条语句，数据库只是判定并拒绝的一方」。`duplicate key value` 是名词短语作主语，`violates` 用一般现在时第三人称单数与主语保持一致，这类句子的中文翻译要把施事者还原清楚：「（本次写入的）重复键值违反了唯一约束」，而不是「数据库违反了约束」。约束名 `users_email_key` 遵循表名加列名加类型的自动命名规则，读后缀即可判断约束类别。干扰项「主语是数据库进程，说明数据库实现有缺陷，应当提交缺陷报告等待补丁发布」把责任主体安错位置，这类报错是预期内的完整性检查；干扰项「主语是唯一约束本身，它违反了键值的要求，因此需要删除该约束才能继续写入」把主宾颠倒，删除约束更是把校验整个关掉的高危动作。"
+          }
+        ]
+      }
+    ]
+  }
+}

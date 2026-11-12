@@ -612,7 +612,7 @@ fn read_port(map: &std::collections::HashMap<String, String>) -> Result<u16, Con
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2027-06-10
+- 下次复核：2027-09-17
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：Rust、Option、Result、trait、模式匹配。
 

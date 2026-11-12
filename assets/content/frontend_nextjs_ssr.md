@@ -972,7 +972,7 @@ D. ISR只能用于getServerSideProps
 - 官方/权威资料：[web.dev 性能指南](https://web.dev/)
 - 主题延伸：[Next.js 官方文档](https://nextjs.org/docs)
 - 最后复核：2026-10-04
-- 下次复核：2027-03-24
+- 下次复核：2027-05-10
 
 ## 内容元数据
 

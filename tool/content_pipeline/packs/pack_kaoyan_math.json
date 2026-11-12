@@ -1,0 +1,420 @@
+{
+  "category": {
+    "id": "kaoyan_math",
+    "title": {
+      "zh": "考研数学（数学一 / 数学二 / 数学三）",
+      "en": "Postgraduate Entrance Mathematics (Math I / II / III)"
+    },
+    "icon": "psychology",
+    "color": "0F766E",
+    "lessons": [
+      {
+        "title": {
+          "zh": "考研数学考纲全景与复习路线",
+          "en": "Exam Syllabus Overview and Revision Roadmap for Postgraduate Mathematics"
+        },
+        "summary": {
+          "zh": "把数学一、数学二、数学三的范围差异、150 分的题型结构与三轮复习的时间预算写成可勾选清单，先定卷种再分配时间。",
+          "en": "Scope differences among Math I, II and III, the 150-point question structure, and a three-round time budget you can check off."
+        },
+        "minutes": 30,
+        "keywords": [
+          "卷种范围",
+          "题型分值",
+          "三轮复习",
+          "时间预算"
+        ],
+        "difficulty": "入门",
+        "quiz": [
+          {
+            "type": "single",
+            "question": "考研数学三种卷种在题型结构与满分设置上的共同点是？",
+            "options": [
+              "都是 10 道选择、6 道填空、6 道解答，满分 150 分",
+              "三种卷种都是 8 道选择、8 道填空、6 道解答，满分 150 分",
+              "数学一与数学三有解答题，数学二只考客观题",
+              "选择题每题 4 分，填空题每题 5 分，总分 145 分"
+            ],
+            "answer": 0,
+            "explanation": "本题正确项是「都是 10 道选择、6 道填空、6 道解答，满分 150 分」。干扰项「三种卷种都是 8 道选择、8 道填空、6 道解答，满分 150 分」把选择与填空的题数改成了对半分配，与大纲规定的 10 道选择（50 分）加 6 道填空（30 分）结构不符，正确做法是把客观题 80 分这个数字记牢。"
+          },
+          {
+            "type": "single",
+            "question": "按大纲给出的内容占比，数学二与数学一在分数分布上的关键差别是？",
+            "options": [
+              "数学二的线性代数占比明显高于数学一",
+              "三种卷种的内容占比相同，只是题号排列不同",
+              "数学二高等数学约 60%，概率统计约 20%，与数学一相同",
+              "数学二高等数学约 80% 且不考概率统计"
+            ],
+            "answer": 3,
+            "explanation": "本题正确项是「数学二高等数学约 80% 且不考概率统计」。干扰项「数学二高等数学约 60%，概率统计约 20%，与数学一相同」把数一的比例套到了数二上，数二实际是把概率统计的 20% 并进了高等数学，使高数占比升到约 80%，线代仍是 20%。"
+          },
+          {
+            "type": "multi",
+            "question": "下列哪两项属于数学一而不属于数学三的内容？",
+            "options": [
+              "三重积分的计算与用法",
+              "函数极限与连续的计算",
+              "向量代数与空间解析几何",
+              "二重积分在直角坐标下的计算"
+            ],
+            "answers": [
+              0,
+              2
+            ],
+            "explanation": "按大纲范围口径，本题要同时选中「三重积分的计算与用法」、「向量代数与空间解析几何」，漏掉任一项都算没答全。数三的二重积分仍要考，但不上升到三重积分与空间解析几何；把「数三不考曲线积分」误推成「数三不考任何多元积分」会连带漏掉二重积分。复习数三时应把这两块从任务清单里整块删去，只保留二重积分的对称性与换元训练。"
+          },
+          {
+            "type": "code",
+            "language": "python",
+            "question": "运行下面的 Python 代码，控制台输出是什么？",
+            "code": "total_score = 150\nobjective = 10 * 5 + 6 * 5          # 选择 10 题 + 填空 6 题\nanswers = 70                        # 解答题共 70 分\nweights = {\"高数\": 0.6, \"线代\": 0.2, \"概率\": 0.2}\n\nprint(\"客观题\", objective, \"解答题\", answers)\nfor name, ratio in weights.items():\n    print(name, int(total_score * ratio))",
+            "expected_output": "客观题 80 解答题 70\n高数 90\n线代 30\n概率 30",
+            "options": [
+              "只有 高数 90 这一行输出",
+              "80 70 90 30 30 五个数字依次换行输出",
+              "高数 90 换行 线代 30 换行 概率 30",
+              "客观题 80 解答题 70"
+            ],
+            "answer": 2,
+            "explanation": "本题正确项是「高数 90 换行 线代 30 换行 概率 30」。逐项算：150×0.6=90、150×0.2=30、150×0.2=30，`print` 每次输出一行，因此是三行。干扰项「客观题 80 解答题 70」是代码前两条语句合并输出的结果，只对应 `print(\"客观题\", objective, \"解答题\", answers)`，不是循环输出的内容。"
+          },
+          {
+            "type": "order",
+            "question": "把三轮复习法的四个动作排成从起步到考前检测的合理顺序。",
+            "options": [
+              "用大纲勾选必考与不考模块",
+              "按分值权重做小时预算",
+              "真题分类做专项突破",
+              "限时套卷统计失分类型"
+            ],
+            "correct_order": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "explanation": "按本课正文的先后，本题顺序是「用大纲勾选必考与不考模块」 → 「按分值权重做小时预算」 → 「真题分类做专项突破」 → 「限时套卷统计失分类型」。先定范围再定预算，先专项再套卷：范围错了预算就错，专项不足套卷只能反复暴露同一个漏洞。顺序倒过来做，等于用套卷的时间去补范围与预算的缺口，是投入产出比最低的安排。"
+          },
+          {
+            "type": "fill",
+            "question": "填空：数学三在常微分方程部分比数学一、数学二多要求的内容是____。",
+            "options": [],
+            "accepted_answers": [
+              "差分方程"
+            ],
+            "explanation": "涉及术语 差分方程：数学三特有的方程类型，用来描述按周期变动的经济动态模型，考试要求会解一阶线性差分方程并讨论解的稳定性。填空处应填「差分方程」，判断时先确认卷种，再对照大纲逐条勾选，避免把辅导书目录当成考试范围。因此用数三教材备考时，凡涉及差分方程与经济应用的章节都不能跳过，反而空间解析几何可以整章删掉。"
+          }
+        ],
+        "id": "kaoyan_math_overview",
+        "order": 0,
+        "file": "assets/content/kaoyan_math_overview.md"
+      },
+      {
+        "title": {
+          "zh": "函数极限与连续：七种未定式与求极限的工具选择",
+          "en": "Limits and Continuity: Seven Indeterminate Forms and Tool Selection"
+        },
+        "summary": {
+          "zh": "从 lim(x→0) (1 − cos x)/x² 这一道最小例题出发，把等价无穷小、洛必达、泰勒、夹逼与单调有界串成一条「先定型再选工具」的解题流水线，并给出间断点与闭区间连续定理的判定顺序。",
+          "en": "Starting from one tiny limit example, chain equivalent infinitesimals, L'Hopital, Taylor expansion, squeezing and monotone bounded convergence into a classify-then-choose workflow, and add the discontinuity and closed-interval theorems."
+        },
+        "minutes": 40,
+        "keywords": [
+          "未定式定型",
+          "等价无穷小",
+          "洛必达与泰勒",
+          "夹逼准则",
+          "间断点分类"
+        ],
+        "difficulty": "基础",
+        "quiz": [
+          {
+            "type": "single",
+            "question": "lim(x→0) (tan x − sin x)/x³ 的正确结果是？",
+            "options": [
+              "极限值为 1/2",
+              "极限值为 1",
+              "极限值为 0",
+              "极限不存在"
+            ],
+            "answer": 0,
+            "explanation": "本题正确项是「极限值为 1/2」。分子提出 tan x 后写成 tan x(1 − cos x)，两个因子分别等价于 x 与 x²/2，于是分子是 x³/2，与分母同阶。干扰项「极限值为 0」来自最典型的错误：把 tan x 与 sin x 各换成 x 后写成 x − x = 0，主部抵消时等价无穷小必须升阶，改法是用泰勒展开到 x³ 或直接提因子。"
+          },
+          {
+            "type": "single",
+            "question": "lim(x→∞) (1 + 2/x)^(3x) 的值最接近下面哪个数？",
+            "options": [
+              "1.000，因为底数趋于 1",
+              "403.43，即 e 的 6 次方",
+              "20.09，即 e 的 3 次方",
+              "7.39，即 e 的 2 次方"
+            ],
+            "answer": 1,
+            "explanation": "本题正确项是「403.43，即 e 的 6 次方」。这是 1^∞ 型，用 lim u^v = e^{lim (u−1)v}：u − 1 = 2/x，v = 3x，乘积恒等于 6，所以结果是 e^6 ≈ 403.4288。干扰项「1.000，因为底数趋于 1」只看了底数没看指数，幂指函数两侧同时变化时必须先取对数，否则会把非 1 的答案读成 1。"
+          },
+          {
+            "type": "single",
+            "question": "求 lim(x→0) (tan x − sin x)/x³ 时，符合评分口径的变形做法是？",
+            "options": [
+              "分别用 tan x ~ x 与 sin x ~ x 替换，直接把分子写成 0",
+              "把分子分母同乘 cos x，再把 sin x 整体换成 x²",
+              "提取因子写成 tan x(1 − cos x)，再用 x 与 x²/2 替换得 x³/2",
+              "判定分子是分母的高阶无穷小，因此极限等于 0"
+            ],
+            "answer": 2,
+            "explanation": "本题正确项是「提取因子写成 tan x(1 − cos x)，再用 x 与 x²/2 替换得 x³/2」。等价无穷小只能作用在乘除因子上，化成乘积之后两个因子各自的主部不再抵消，分母 x³ 也刚好对上。干扰项「分别用 tan x ~ x 与 sin x ~ x 替换，直接把分子写成 0」正是加减替换踩的坑，泰勒展到三阶同样能看出正确答案是 1/2。"
+          },
+          {
+            "type": "single",
+            "question": "函数 f(x) = sin x / |x| 在 x = 0 处无定义，该点属于哪一种间断点？",
+            "options": [
+              "可去间断点，因为左右极限相等",
+              "无穷间断点，因为分母趋于 0",
+              "振荡间断点，因为分子反复变号",
+              "跳跃间断点，左极限 −1 而右极限 1"
+            ],
+            "answer": 3,
+            "explanation": "本题正确项是「跳跃间断点，左极限 −1 而右极限 1」。去掉绝对值分两侧算：x 趋于 0+ 时是 sin x/x → 1，x 趋于 0− 时 sin x/(−x) → −1，两侧都存在但不相等，正好落在第一类间断点的跳跃情形。干扰项「可去间断点，因为左右极限相等」把两侧当成同一个值，凡出现绝对值、e^(1/x)、分段表达式都要逐侧验证。"
+          },
+          {
+            "type": "code",
+            "language": "python",
+            "question": "阅读下面的 Python 代码，随着 n 变大，输出的数值稳定在哪个数上？",
+            "code": "import math\nfor n in (10, 1000, 100000):\n    s = sum(1 / math.sqrt(n * n + k) for k in range(1, n + 1))\n    print(n, round(s, 4))",
+            "expected_output": "10 0.9739\n1000 0.9997\n100000 1.0",
+            "options": [
+              "0.5，说明每一项单独取极限后再相加",
+              "0，说明根号的增长速度比项数更快",
+              "1，与夹逼准则推出的极限一致",
+              "e，说明和式里含有指数增长"
+            ],
+            "answer": 2,
+            "explanation": "本题正确项是「1，与夹逼准则推出的极限一致」。这段代码算的是 Σ(k=1..n) 1/√(n²+k)，把分母放成 √(n²+n) 与 √(n²+1) 两个边界，两端都趋于 1，因此 n = 100000 时 round(s, 4) 直接输出 1.0。干扰项「0.5，说明每一项单独取极限后再相加」错在先对每项取极限再求和，n 个趋于 0 的项相加结果由项数与阶数共同决定，不能逐项极限。"
+          },
+          {
+            "type": "multi",
+            "question": "关于闭区间上连续函数的三条定理，下面哪些说法是准确的？",
+            "options": [
+              "在闭区间上连续的函数一定有界，并且能取到最大值与最小值",
+              "只在开区间内连续、两端函数值异号时，区间内部就一定有零点",
+              "连续函数在闭区间上能取到两端函数值之间的一切值",
+              "函数在闭区间上存在最大值，就足以说明它在该区间上连续"
+            ],
+            "answers": [
+              0,
+              2
+            ],
+            "explanation": "多选题要逐条比对前提，本题选中的是「在闭区间上连续的函数一定有界，并且能取到最大值与最小值」与「连续函数在闭区间上能取到两端函数值之间的一切值」：前者是有界性与最值定理，后者是介值定理，两条都把闭区间加连续当成前提。第三条干扰描述把区间换成开区间后结论不一定成立，例如 f(x) = x 在 (0,1) 内就取不到端点处的值；第四条把最值定理的方向倒过来用，能取到最大值推不出连续。"
+          }
+        ],
+        "id": "kaoyan_math_limit_continuity",
+        "order": 1,
+        "file": "assets/content/kaoyan_math_limit_continuity.md"
+      },
+      {
+        "title": {
+          "zh": "行列式、矩阵与线性方程组：线性代数的四层计算地基",
+          "en": "Determinants, Matrices and Linear Systems: The Four-Layer Foundation of Linear Algebra"
+        },
+        "summary": {
+          "zh": "从 2×2 矩阵 A² − 3A + 2E = O 这一道最小例子起楼，把行列式、矩阵运算、初等变换与秩四层串成一条判据链，并用 NumPy 复核逆矩阵、秩与方程组解的结构。",
+          "en": "Build up from one 2x2 matrix identity: determinants, matrix products, elementary transformations and rank form a single chain of criteria, all re-checked with NumPy."
+        },
+        "minutes": 40,
+        "keywords": [
+          "行列式展开",
+          "伴随矩阵",
+          "初等行变换",
+          "矩阵的秩",
+          "方程组解的结构"
+        ],
+        "difficulty": "基础",
+        "quiz": [
+          {
+            "type": "single",
+            "question": "三阶行列式 D = |1 2 3; 2 4 5; 3 5 6| 的值与由此得到的结论是？",
+            "options": [
+              "D = −1，因此这个矩阵可逆",
+              "D = 0，因此这个矩阵降秩",
+              "D = 6，等于主对角线三个元素之积",
+              "D = −6，交换两行后整体变号一次"
+            ],
+            "answer": 0,
+            "explanation": "本题正确项是「D = −1，因此这个矩阵可逆」。按第一行展开得 1·(24−25) − 2·(12−15) + 3·(10−12) = −1 + 6 − 6 = −1，不为零即可逆。干扰项「D = 6，等于主对角线三个元素之积」只在三角行列式里成立，本题既不是上三角也不是下三角，主对角线乘积没有任何依据。"
+          },
+          {
+            "type": "single",
+            "question": "设 D(a) = |1 1 1; 1 2 a; 1 4 a²|，使 D(a) = 0 的 a 取值是？",
+            "options": [
+              "a = 0 或 a = 3",
+              "a = 1 或 a = 2",
+              "只有 a = 1 这一个值",
+              "任意实数 a 都使 D(a) = 0"
+            ],
+            "answer": 1,
+            "explanation": "本题正确项是「a = 1 或 a = 2」。这三行按 1、x、x² 排列，是范德蒙德形状，值等于 (2 − 1)(a − 1)(a − 2)，零点只有 a = 1 与 a = 2。代入核对：a = 3 时得 2，a = 0 时也得 2，与因式分解结果一致。干扰项「a = 0 或 a = 3」把两个使行列式为 2 的值当成了零点。"
+          },
+          {
+            "type": "single",
+            "question": "设 A = [[1, 2], [0, 1]]、B = [[1, 0], [3, 1]]，关于 AB 与 BA 的说法正确的是？",
+            "options": [
+              "AB = BA，因为两者都由三角矩阵相乘得到",
+              "AB 与 BA 都等于二阶单位矩阵 E",
+              "AB = [[7, 2], [3, 1]]，BA = [[1, 2], [3, 7]]，两者不相等",
+              "AB 的行列式为 0，因此乘积不可逆"
+            ],
+            "answer": 2,
+            "explanation": "本题正确项是「AB = [[7, 2], [3, 1]]，BA = [[1, 2], [3, 7]]，两者不相等」。逐项乘出来：AB 的第一行是 1·1 + 2·3 = 7 与 1·0 + 2·1 = 2，BA 的第一行是 1·1 + 0·0 = 1 与 1·2 + 0·1 = 2，两个矩阵确实不同。干扰项「AB 的行列式为 0，因此乘积不可逆」不成立，det(A) = det(B) = 1，乘积的行列式也是 1。"
+          },
+          {
+            "type": "single",
+            "question": "设 A 为三阶矩阵且 det(A) = −1，A* 是它的伴随矩阵，则 det(A*) 等于？",
+            "options": [
+              "−1，与 det(A) 保持同号",
+              "−3，因为要把阶数 3 乘进去",
+              "1/3，因为伴随矩阵相当于除以 3",
+              "1，因为三阶时 det(A*) = det(A)²"
+            ],
+            "answer": 3,
+            "explanation": "本题正确项是「1，因为三阶时 det(A*) = det(A)²」。一般公式是 det(A*) = det(A)^(n−1)，n = 3 时指数为 2，于是 (−1)² = 1。配套的另一条是 A A* = det(A) E，本题里等于负的单位矩阵。干扰项「−3，因为要把阶数 3 乘进去」把数乘行列式的 det(kA) = k³det(A) 与伴随矩阵的公式混在了一起。"
+          },
+          {
+            "type": "debug",
+            "language": "python",
+            "question": "下面这段 NumPy 代码想解线性方程组 Ax = b，最后一行抛出 LinAlgError。正确的诊断是？",
+            "code": "import numpy as np\n\nA = np.array([[1, 2, 3], [2, 4, 6], [1, 3, 5]], dtype=float)\nb = np.array([1, 1, 0], dtype=float)\nprint(np.linalg.matrix_rank(A), np.linalg.matrix_rank(np.c_[A, b]))\nprint(np.linalg.solve(A, b))",
+            "expected_output": "2 3\nLinAlgError: Singular matrix",
+            "options": [
+              "dtype 应该写成整数，浮点转换让秩算错了",
+              "np.c_ 用法不对，应改用 np.vstack 拼增广矩阵",
+              "只要把 b 改成列向量形状，solve 就能正常返回",
+              "系数矩阵秩为 2 而增广矩阵秩为 3，方程组本就无解"
+            ],
+            "answer": 3,
+            "explanation": "本题正确项是「系数矩阵秩为 2 而增广矩阵秩为 3，方程组本就无解」。前两行输出的 2 与 3 已经把结论写出来了：r(A) ≠ r(A 拼 b)，按解的判定定理属于无解情形，solve 找不到解才抛异常。干扰项「只要把 b 改成列向量形状，solve 就能正常返回」把问题归给形状，实际矩阵奇异与形状无关，改判之前先算两个秩。"
+          },
+          {
+            "type": "fill",
+            "question": "填空：设 A 为 n 阶方阵、k 为非零常数，则 det(kA) =____（用 k 的幂与 det(A) 表示）。",
+            "options": [],
+            "accepted_answers": [
+              "k^n·det(A)",
+              "kⁿdet(A)",
+              "k 的 n 次方乘 det(A)"
+            ],
+            "explanation": "填空处应填 k^n·det(A)。理由是 kA 相当于把 A 的每一行都乘以 k，而行列式对每一行都能提出一个公因子，n 行就提出 n 个 k。三阶时 det(2A) = 8det(A)，代进 det(A) = −1 得到 −8，与直接展开 2A 的结果一致。写成 k·det(A) 是漏掉了「按行提因子」这一步，只在一阶方阵时偶然成立。"
+          }
+        ],
+        "id": "kaoyan_math_matrix",
+        "order": 2,
+        "file": "assets/content/kaoyan_math_matrix.md"
+      },
+      {
+        "title": {
+          "zh": "一元函数微分学：中值定理与导数的四大应用",
+          "en": "Single-Variable Differential Calculus: Mean Value Theorems and Applications of Derivatives"
+        },
+        "summary": {
+          "zh": "从 f(x) = x² 在 [1,3] 上算出中值点 ξ = 2 这一道最小例题起楼，串起导数定义题、三个反例、五步构造辅助函数的证明流程，以及单调极值、凹凸拐点、渐近线与曲率四类计算。",
+          "en": "One tiny mean-value example, then derivative-definition tricks, three classic counterexamples, a five-step auxiliary-function routine, and four families of derivative applications."
+        },
+        "minutes": 45,
+        "keywords": [
+          "导数定义",
+          "罗尔定理",
+          "辅助函数构造",
+          "极值与拐点",
+          "曲率与渐近线"
+        ],
+        "difficulty": "进阶",
+        "quiz": [
+          {
+            "type": "single",
+            "question": "设 f 在 x0 处可导，则 lim(h→0) [f(x0 + 2h) − f(x0 − h)]/h 等于？",
+            "options": [
+              "极限等于 3 f′(x0)",
+              "极限等于 f′(x0)",
+              "极限等于 2 f′(x0)",
+              "极限不一定存在，与 f 的具体形式有关"
+            ],
+            "answer": 0,
+            "explanation": "本题正确项是「极限等于 3 f′(x0)」。把分子拆成两段增量：前一段的增量是 2h，除以 h 后多出系数 2；后一段的增量是 −h，除以 h 后带出一个负号，与分子里的减号抵消得系数 1，两段都趋于 f′(x0)，合计 3 倍。干扰项「极限等于 2 f′(x0)」只处理了前一段，漏掉后半段那份 f′(x0)，是这类题最常见的漏项。"
+          },
+          {
+            "type": "single",
+            "question": "曲线 y = x² 在原点处的曲率与曲率半径分别是多少？",
+            "options": [
+              "曲率为 0，因为该点切线水平",
+              "曲率为 2，曲率半径为 1/2",
+              "曲率为 1，曲率半径为 1",
+              "曲率为 4，曲率半径为 1/4"
+            ],
+            "answer": 1,
+            "explanation": "本题正确项是「曲率为 2，曲率半径为 1/2」。代公式 k = |y″| 除以 (1 + (y′)²) 的 3/2 次方：y′ = 2x 在原点为 0，y″ = 2，于是 k = 2/1 = 2，半径取倒数得 1/2。干扰项「曲率为 0，因为该点切线水平」把 y′ = 0 当成了曲率为 0，实际上曲率衡量的是切线转动的快慢，由 y″ 主导。"
+          },
+          {
+            "type": "single",
+            "question": "关于 f(x) = |x| 在区间 [−1, 1] 上能否使用罗尔定理，下列说法正确的是？",
+            "options": [
+              "三条条件全部满足，因此必存在 ξ 使 f′(ξ) = 0",
+              "它在区间上不连续，所以罗尔定理完全不适用",
+              "闭区间上连续但 x = 0 不可导，条件不满足且确实找不到这样的 ξ",
+              "只要两端函数值相等，罗尔定理就一定可以使用"
+            ],
+            "answer": 2,
+            "explanation": "本题正确项是「闭区间上连续但 x = 0 不可导，条件不满足且确实找不到这样的 ξ」。f(−1) = f(1) = 1 满足第三条，连续也满足，唯独在 0 处左右导数分别为 −1 与 1，开区间可导这一条被破坏；而 f′ 只能取 ±1，结论里的 ξ 确实不存在。干扰项「只要两端函数值相等，罗尔定理就一定可以使用」把三条条件压成一条，正是这类判断题的陷阱。"
+          },
+          {
+            "type": "single",
+            "question": "设 f 在 [0,1] 连续、在 (0,1) 内可导且 f(1) = 0，要证明存在 ξ 使 ξ f′(ξ) + 2f(ξ) = 0，应取的辅助函数是？",
+            "options": [
+              "F(x) = f(x) − x²",
+              "F(x) = e^(2x) f(x)",
+              "F(x) = f(x)/x",
+              "F(x) = x² f(x)，且 F(0) = F(1) = 0"
+            ],
+            "answer": 3,
+            "explanation": "本题正确项是「F(x) = x² f(x)，且 F(0) = F(1) = 0」。把待证等式两边同乘 x 就得到 x² f′(x) + 2x f(x) = 0，它正好是 (x² f(x))′；又 F(0) = 0、F(1) = 1²·f(1) = 0，罗尔定理直接可用。干扰项「F(x) = e^(2x) f(x)」对应的是 f′(ξ) + 2f(ξ) = 0 这一型，式子里没有 ξ 系数时才用它，两类模板不能混。"
+          },
+          {
+            "type": "code",
+            "language": "python",
+            "question": "阅读下面的 Python 代码，两行输出的含义是？",
+            "code": "f = lambda x: x * x\na, b = 1.0, 3.0\nslope = (f(b) - f(a)) / (b - a)\nprint(slope, slope / 2)",
+            "expected_output": "4.0 2.0",
+            "options": [
+              "割线斜率 4.0，使 f′(ξ) = 4 的点 ξ = 2.0 落在区间内",
+              "割线斜率 4.0，但中值点 ξ = 1.0 落在区间之外",
+              "割线斜率 2.0，对应中值点 ξ = 4.0 已超出区间",
+              "这段代码无法验证中值定理，因为 x 的平方非线性"
+            ],
+            "answer": 0,
+            "explanation": "本题正确项是「割线斜率 4.0，使 f′(ξ) = 4 的点 ξ = 2.0 落在区间内」。slope 算的是 (9 − 1)/(3 − 1) = 4，而 f′(x) = 2x，解 2ξ = 4 得 ξ = 2，正好是 slope/2，也在 (1,3) 内部。干扰项「割线斜率 2.0，对应中值点 ξ = 4.0 已超出区间」把两个数值调了个位置，代码里的 slope 与 slope/2 各有明确含义，读输出时要按表达式的顺序对照。"
+          },
+          {
+            "type": "order",
+            "question": "把中值定理证明题的四个动作按从读题到收尾的先后顺序排列：",
+            "options": [
+              "验证辅助函数在端点取值相等且在闭区间连续、开区间可导",
+              "把结论里的 ξ 换成 x，写出关于 x 的等式",
+              "对辅助函数套用罗尔定理，写出存在 ξ 的结论",
+              "移项整理成 F′(x) = 0 的形状并积分还原出 F(x)"
+            ],
+            "correct_order": [
+              1,
+              3,
+              0,
+              2
+            ],
+            "explanation": "本题顺序是「把结论里的 ξ 换成 x，写出关于 x 的等式」 → 「移项整理成 F′(x) = 0 的形状并积分还原出 F(x)」 → 「验证辅助函数在端点取值相等且在闭区间连续、开区间可导」 → 「对辅助函数套用罗尔定理，写出存在 ξ 的结论」。先读结论才知道要构造什么，先还原才知道构造对不对，条件验证必须写在套定理之前，否则整段证明的逻辑链是断的。"
+          }
+        ],
+        "id": "kaoyan_math_single_diff",
+        "order": 3,
+        "file": "assets/content/kaoyan_math_single_diff.md"
+      }
+    ]
+  }
+}
