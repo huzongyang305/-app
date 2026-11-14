@@ -7,6 +7,8 @@
  *   node tool/content_pipeline/merge_pack.js --apply               # 真正写盘
  *   node tool/content_pipeline/merge_pack.js pack_ncre.json --apply # 只并指定分片
  *
+ * 分片默认建新分类；分类里写 "mode": "append" 则把课时追加到已入库的同名分类尾部。
+ *
  * 这是 manifest 的唯一写入口：并库前先校验（课时数、id 唯一、正文存在、
  * 单选答案全局分布），不通过就整体不写，避免半并状态把测试打红。
  * 并库后按顺序跑：
@@ -33,7 +35,8 @@ const ICONS = new Set([
   'translate', 'insights', 'rocket', 'security', 'phone_iphone', 'link',
   'cloud', 'transform', 'sports_esports', 'school',
 ]);
-const DIFFICULTY = new Set(['入门', '基础', '进阶', '高级']);
+const DIFFICULTY = ['入门', '基础', '进阶', '高级'];
+const isDifficulty = (value) => DIFFICULTY.includes(value);
 // content_test 的 P0 质量门禁：单选四个下标各占 22%~28%。
 const BALANCE = [22, 28];
 
@@ -62,7 +65,6 @@ if (!Array.isArray(manifest.categories)) {
   throw new Error('manifest.categories 不是数组，先人工确认结构再并库');
 }
 
-const existingCategories = new Set(manifest.categories.map((c) => c.id));
 const existingLessons = new Set();
 const singleAnswers = new Map(); // answer 下标 -> 数量（type=single）
 for (const c of manifest.categories) {
@@ -76,6 +78,9 @@ for (const c of manifest.categories) {
   }
 }
 let singleTotal = [...singleAnswers.values()].reduce((a, b) => a + b, 0);
+// 下面会边校验边把待并课时计进来，先留一份真实入库基线用于打印。
+const baselineLessons = existingLessons.size;
+const baselineSingles = singleTotal;
 
 function shareOf(index) {
   if (singleTotal === 0) return 0;
@@ -97,6 +102,7 @@ if (!packFiles.length) {
 }
 
 const staged = [];
+const appended = [];
 const errors = [];
 
 for (const file of packFiles) {
@@ -114,10 +120,27 @@ for (const file of packFiles) {
     continue;
   }
   const packRel = `${label}`;
-
-  if (existingCategories.has(category.id)) {
-    errors.push(`${packRel}: 分类 ${category.id} 已存在于 manifest，需人工决定是补课还是换 id`);
+  const append = category.mode === 'append';
+  if (category.mode !== undefined && !append) {
+    errors.push(`${packRel}: mode 只支持 "append"，当前「${category.mode}」`);
     continue;
+  }
+  const target = manifest.categories.find((c) => c.id === category.id);
+  if (target && !append) {
+    errors.push(`${packRel}: 分类 ${category.id} 已存在于 manifest，补课请写 "mode":"append"`);
+    continue;
+  }
+  if (!target && append) {
+    errors.push(`${packRel}: 标了 append，但分类 ${category.id} 还没并进去`);
+    continue;
+  }
+  if (target) {
+    if (target.icon !== category.icon) {
+      errors.push(`${packRel}: icon「${category.icon}」与已入库的「${target.icon}」不一致`);
+    }
+    if (String(target.color).toUpperCase() !== String(category.color).toUpperCase()) {
+      errors.push(`${packRel}: color「${category.color}」与已入库的「${target.color}」不一致`);
+    }
   }
   if (!ICONS.has(category.icon)) {
     errors.push(`${packRel}: icon「${category.icon}」不在 icon_mapper 支持列表里`);
@@ -125,9 +148,10 @@ for (const file of packFiles) {
   if (!/^[0-9A-Fa-f]{6}$/.test(String(category.color || ''))) {
     errors.push(`${packRel}: color 必须是 6 位 hex，当前「${category.color}」`);
   }
-  if (category.lessons.length < 3) {
+  const baseCount = target ? target.lessons.length : 0;
+  if (baseCount + category.lessons.length < 3) {
     errors.push(
-      `${packRel}: 只有 ${category.lessons.length} 课，分类门禁要求 ≥3 课（先把这个分片放着一轮）`,
+      `${packRel}: 只有 ${baseCount + category.lessons.length} 课，分类门禁要求 ≥3 课（先把这个分片放着一轮）`,
     );
     continue;
   }
@@ -141,8 +165,9 @@ for (const file of packFiles) {
       return;
     }
     seenInPack.add(lesson.id);
-    if (lesson.order !== index) lesson.order = index; // 统一成 0 基下标
-    if (!DIFFICULTY.has(lesson.difficulty)) {
+    existingLessons.add(lesson.id); // 防止同一轮里两个分片抢同一个课时 id
+    lesson.order = baseCount + index; // 统一成分类内的 0 基下标
+    if (!isDifficulty(lesson.difficulty)) {
       errors.push(`${where}: difficulty「${lesson.difficulty}」不在四档之内`);
     }
     const mdPath = path.join(ROOT, lesson.file || `assets/content/${lesson.id}.md`);
@@ -175,10 +200,32 @@ for (const file of packFiles) {
     errors.push(`${packRel}: 有课时被判定不合格，整个分类本轮不并`);
     continue;
   }
-  staged.push({
-    ...pickKeys(category, CATEGORY_KEYS),
-    lessons,
+  // content_test 的难度阶梯：同分类内不减，首课不高级，末课不入门。
+  const ladder = [...(target ? target.lessons : []), ...lessons];
+  const label0 = target ? `${category.id} 并库后` : packRel;
+  ladder.forEach((lesson, i) => {
+    const rank = DIFFICULTY.indexOf(lesson.difficulty);
+    const prev = DIFFICULTY.indexOf(ladder[i - 1]?.difficulty);
+    if (i > 0 && rank < prev) {
+      errors.push(
+        `${label0}: 第 ${i + 1} 课 ${lesson.id}「${lesson.difficulty}」低于前一课「${ladder[i - 1].difficulty}」，难度阶梯会断`,
+      );
+    }
   });
+  if (ladder[0]?.difficulty === '高级') errors.push(`${label0}: 第一课不能标为高级`);
+  if (ladder[ladder.length - 1]?.difficulty === '入门') {
+    errors.push(`${label0}: 最后一课不能标为入门`);
+  }
+  if (target) {
+    // 直接改内存里的分类，错误时整体不写盘，所以演练同样是真序。
+    target.lessons.push(...lessons);
+    appended.push({ category, lessons });
+  } else {
+    staged.push({
+      ...pickKeys(category, CATEGORY_KEYS),
+      lessons,
+    });
+  }
   // 本分类内部先检查一遍，避免并完才发现分布超标。
   for (let index = 0; index < 4; index += 1) {
     const percent = shareOf(index);
@@ -191,12 +238,18 @@ for (const file of packFiles) {
 }
 
 console.log(
-  `并库演练：现有 ${manifest.categories.length} 类 / ${existingLessons.size} 课 / ${singleTotal} 道单选`,
+  `并库演练：现有 ${manifest.categories.length} 类 / ${baselineLessons} 课 / ${baselineSingles} 道单选`,
 );
 for (const c of staged) {
   const questions = c.lessons.reduce((sum, l) => sum + (l.quiz || []).length, 0);
   console.log(
     `  + ${c.id}（${c.title.zh}）${c.lessons.length} 课 ${questions} 题`,
+  );
+}
+for (const a of appended) {
+  const questions = a.lessons.reduce((sum, l) => sum + (l.quiz || []).length, 0);
+  console.log(
+    `  → ${a.category.id} 追加 ${a.lessons.length} 课 ${questions} 题（order ${a.lessons[0].order} 起）`,
   );
 }
 for (let index = 0; index < 4; index += 1) {
@@ -210,7 +263,7 @@ if (errors.length) {
   process.exit(1);
 }
 
-if (!staged.length) {
+if (!staged.length && !appended.length) {
   console.log('没有可并的分类。');
   process.exit(0);
 }
@@ -222,4 +275,6 @@ if (!APPLY) {
 
 manifest.categories.push(...staged);
 fs.writeFileSync(MANIFEST_PATH, JSON.stringify(manifest, null, 2));
-console.log(`\n已写入 manifest.json：新增 ${staged.length} 个分类。`);
+console.log(
+  `\n已写入 manifest.json：新增 ${staged.length} 个分类、追加 ${appended.length} 个已有分类。`,
+);

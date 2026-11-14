@@ -4,6 +4,11 @@
  *
  * 用法：
  *   node tool/content_pipeline/validate_pack.js build/audit/pack_ncre.json [更多片段...]
+ *   node tool/content_pipeline/validate_pack.js --order-base=7 pack_ruankao_c.json
+ *
+ * append 分片（分类里写 "mode":"append"）校验的是往已入库分类尾部补课，
+ * order 从该分类现有课数往后数；同一次调用里多个 append 分片会自动累加偏移，
+ * 分两批写同一分类时可用 --order-base 指定这一批的真实起点。
  *
  * 片段格式（与 manifest.categories[i] 同构，只是单独成文件）：
  *   { "category": { "id","title":{"zh","en"},"icon","color","lessons":[...] } }
@@ -17,6 +22,7 @@ const ROOT = path.resolve(__dirname, '..', '..');
 const MANIFEST = JSON.parse(
   fs.readFileSync(path.join(ROOT, 'assets/content/manifest.json'), 'utf8'),
 );
+const CATEGORY_BY_ID = new Map(MANIFEST.categories.map((c) => [c.id, c]));
 const IMAGE_FILES = new Set(
   fs.readdirSync(path.join(ROOT, 'assets/content/images')),
 );
@@ -341,9 +347,12 @@ function checkLesson(lesson, category, ctx) {
 }
 
 function main() {
-  const fragments = process.argv.slice(2);
+  const argv = process.argv.slice(2);
+  const fragments = argv.filter((arg) => !arg.startsWith('--'));
+  const baseArg = argv.find((arg) => arg.startsWith('--order-base='));
+  const orderBaseOverride = baseArg ? Number(baseArg.slice('--order-base='.length)) : null;
   if (fragments.length === 0) {
-    console.error('用法：node tool/content_pipeline/validate_pack.js <pack.json> [...]');
+    console.error('用法：node tool/content_pipeline/validate_pack.js [--order-base=N] <pack.json> [...]');
     process.exit(2);
   }
 
@@ -357,9 +366,12 @@ function main() {
 
   const errors = [];
   const warns = [];
+  const appendedCount = new Map();
   for (const fragment of fragments) {
     const pack = JSON.parse(fs.readFileSync(fragment, 'utf8'));
     const category = pack.category || pack;
+    // append 分片不建新分类，只往已并库的分类尾部补课，order/难度都要接着原序列排。
+    const append = category.mode === 'append';
     const required = ['id', 'icon', 'color', 'lessons'];
     for (const key of required) {
       if (!category[key]) errors.push(`${fragment}: 分类缺 ${key}`);
@@ -370,15 +382,57 @@ function main() {
     if (!/^[0-9A-Fa-f]{6}$/.test(String(category.color || ''))) {
       errors.push(`${fragment}: color 应为 6 位十六进制`);
     }
-    if (MANIFEST.categories.some((c) => c.id === category.id)) {
-      errors.push(`${fragment}: 分类 id 已存在：${category.id}`);
+    if (category.mode !== undefined && category.mode !== 'append') {
+      errors.push(`${fragment}: mode 只支持 "append"，当前「${category.mode}」`);
     }
-    if (category.lessons.length < 3) errors.push(`${fragment}: 课程数 ${category.lessons.length} 少于 3`);
+    const existing = CATEGORY_BY_ID.get(category.id);
+    if (existing && !append) {
+      errors.push(`${fragment}: 分类 id 已存在：${category.id}（补课请在分类里加 "mode":"append"）`);
+    }
+    if (!existing && append) {
+      errors.push(`${fragment}: 标了 append 但分类 ${category.id} 还没并进 manifest`);
+    }
+    let orderBase = 0;
+    let ladder = [];
+    if (existing) {
+      if (existing.icon !== category.icon) {
+        errors.push(`${fragment}: icon「${category.icon}」与已入库的「${existing.icon}」不一致`);
+      }
+      if (String(existing.color).toUpperCase() !== String(category.color).toUpperCase()) {
+        errors.push(`${fragment}: color「${category.color}」与已入库的「${existing.color}」不一致`);
+      }
+      if (existing.title.zh !== category.title.zh) {
+        warns.push(`${fragment}: 分类中文标题与已入库的不一致，以 manifest 为准`);
+      }
+      // 同一轮里分批往同一个分类补课，后一批的起点要接着前一批往后数。
+      const already = appendedCount.get(category.id) ?? 0;
+      const start = orderBaseOverride ?? existing.lessons.length;
+      orderBase = start + already;
+      appendedCount.set(category.id, already + category.lessons.length);
+      ladder = existing.lessons.map((l) => DIFFICULTY.indexOf(l.difficulty));
+    }
+    const total = orderBase + category.lessons.length;
+    if (total < 3) errors.push(`${fragment}: 课程数 ${total} 少于 3`);
     category.lessons.forEach((lesson, index) => {
-      ctx.orderCursor = index;
+      ctx.orderCursor = orderBase + index;
+      const before = errors.length;
       const result = checkLesson(lesson, category, ctx);
       errors.push(...result.errors);
       warns.push(...result.warns);
+      if (errors.length === before) {
+        const rank = DIFFICULTY.indexOf(lesson.difficulty);
+        const prev = ladder[ladder.length - 1];
+        // content_test 要求同一分类内难度不减、最后一课不能是入门。
+        if (rank < prev) {
+          errors.push(
+            `[${lesson.id}] 难度「${lesson.difficulty}」低于前一课「${DIFFICULTY[prev]}」，会打乱阶梯`,
+          );
+        }
+        if (rank === 0) {
+          errors.push(`[${lesson.id}] append 的课排在分类末尾，不能标「入门」`);
+        }
+        ladder.push(rank);
+      }
     });
   }
 
