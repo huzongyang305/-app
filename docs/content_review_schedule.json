@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-15T08:54:15.842601Z",
+  "generated_at": "2026-11-15T09:00:56.449484Z",
   "schedule_months": 12,
   "first_month": "2026-11",
   "batch_count": 58,
@@ -1113,7 +1113,7 @@
       "category_id": "ncre",
       "category_title": "全国计算机等级二级",
       "planned_review_at": "2027-08-10",
-      "lesson_count": 9,
+      "lesson_count": 10,
       "p0_touched": 0,
       "risk_high": 0,
       "risk_medium": 0,
@@ -1126,7 +1126,8 @@
         "ncre_public_data_structure",
         "ncre_public_prog_db_net",
         "ncre_python_basics",
-        "ncre_python_combo_type"
+        "ncre_python_combo_type",
+        "ncre_python_function_file"
       ]
     },
     {

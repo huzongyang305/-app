@@ -1,0 +1,121 @@
+{
+  "category": {
+    "id": "ncre",
+    "mode": "append",
+    "title": {
+      "zh": "全国计算机等级二级",
+      "en": "NCRE Level 2"
+    },
+    "icon": "quiz",
+    "color": "2563EB",
+    "lessons": [
+      {
+        "id": "ncre_python_function_file",
+        "title": {
+          "zh": "Python 函数、异常与文件读写",
+          "en": "Python Functions, Exceptions, and File I/O"
+        },
+        "summary": {
+          "zh": "把函数定义、参数传递、返回结果、异常保护、打开文件、读写关闭串成一条六环链，重点讲默认参数只求值一次、LEGB 作用域、try-except-else-finally 分工与三种打开模式的差别，配 6 道原创题。",
+          "en": "A six-link chain from defining a function to closing a file, focusing on default arguments evaluated once, LEGB scope, the four exception blocks, and the r/w/a open modes, with six original questions."
+        },
+        "file": "assets/content/ncre_python_function_file.md",
+        "minutes": 50,
+        "keywords": [
+          "默认参数只求值一次",
+          "可变默认值与 None 写法",
+          "try-except-else-finally 分工",
+          "r 与 w 与 a 模式差别",
+          "csv 与 json 读写收尾"
+        ],
+        "difficulty": "高级",
+        "order": 9,
+        "quiz": [
+          {
+            "type": "single",
+            "question": "下列关于 Python 函数默认参数的说法，正确的是？",
+            "options": [
+              "默认值在每次调用时重新求值，所以用可变列表做默认值不会跨调用累积",
+              "无默认值的位置参数可以写在带默认值的参数之后，调用时按位置匹配即可",
+              "*args 与 **kwargs 可以共存，且定义时 **kwargs 必须排在 *args 之前",
+              "默认值在定义函数那一刻只求值一次，可变列表会被多次调用共享同一个对象"
+            ],
+            "answer": 3,
+            "explanation": "本题正确项是「默认值在定义函数那一刻只求值一次，可变列表会被多次调用共享同一个对象」。def f(item, box=[]) 里的空列表随 def 语句执行而创建一次，之后所有省略第二个实参的调用拿到的都是同一个对象，追加会一直累积；把默认值改成 None 并在函数体里新建列表才是标准写法。干扰项「默认值在每次调用时重新求值，所以用可变列表做默认值不会跨调用累积」把求值时机说错，正好与真现象相反；干扰项「无默认值的位置参数可以写在带默认值的参数之后，调用时按位置匹配即可」会被直接判为语法错，无默认值的形参必须排在前面；干扰项「*args 与 **kwargs 可以共存，且定义时 **kwargs 必须排在 *args 之前」把两者次序写反，**kwargs 永远是最后一档。"
+          },
+          {
+            "type": "single",
+            "question": "关于 try-except-else-finally 四块的执行时机，下列说法正确的是？",
+            "options": [
+              "只要写了 finally，except 分支就永远轮不到，收尾代码全部交给 finally",
+              "else 块在 try 抛出异常时执行，用来接住没有匹配到 except 的错误",
+              "try 块完整走完没有异常时才执行 else，无论有没有异常 finally 都会在离开前执行",
+              "finally 里写 return 只影响自己的返回值，不会改变 try 中已经算好的结果"
+            ],
+            "answer": 2,
+            "explanation": "本题正确项是「try 块完整走完没有异常时才执行 else，无论有没有异常 finally 都会在离开前执行」。四块分工是：try 放可能出错的代码，except 自上而下按类型接住异常，else 是「没事才做」的分支（适合放成功后才写的结果文件），finally 是无条件收尾。干扰项「只要写了 finally，except 分支就永远轮不到，收尾代码全部交给 finally」把两块职责混为一谈，捕获仍由 except 完成；干扰项「else 块在 try 抛出异常时执行，用来接住没有匹配到 except 的错误」方向正好相反，未匹配的异常会继续向上抛；干扰项「finally 里写 return 只影响自己的返回值，不会改变 try 中已经算好的结果」低估了它的破坏性，finally 里的 return 会覆盖前面的返回值并吞掉正在传播的异常。"
+          },
+          {
+            "type": "single",
+            "question": "用 open('data.txt', 'a', encoding='utf-8') 打开一个已存在的文件，下列说法正确的是？",
+            "options": [
+              "写入位置固定在文件末尾，原有内容保留，文件不存在时会自动新建",
+              "写入位置在文件开头，超出原长度的部分被覆盖，效果与模式 w 相同",
+              "该模式只允许读不允许写，调用 write 会抛出 FileExistsError",
+              "每次写入前都必须调用 seek(0)，否则缓冲区内容不会落盘"
+            ],
+            "answer": 0,
+            "explanation": "本题正确项是「写入位置固定在文件末尾，原有内容保留，文件不存在时会自动新建」。a 是 append 模式，打开不清空、写入点固定在末尾，这是日志类需求的默认选择；w 会在打开那一刻就清空原内容，r 则要求文件必须存在否则抛 FileNotFoundError。干扰项「写入位置在文件开头，超出原长度的部分被覆盖，效果与模式 w 相同」说的是 r+ 从 0 位置写入的现象，与 a 无关；干扰项「该模式只允许读不允许写，调用 write 会抛出 FileExistsError」把只读模式安在了 a 上，且 FileExistsError 通常来自 x 模式；干扰项「每次写入前都必须调用 seek(0)，否则缓冲区内容不会落盘」把定位与刷盘两件事混在一起，落盘由 flush、关闭或缓冲区满触发。"
+          },
+          {
+            "type": "code",
+            "question": "阅读下面的 Python 代码，输出结果是什么？",
+            "code": "def total(*nums, offset=0):\n    return sum(nums) + offset\n\ndata = [1, 2, 3]\nprint(total(*data), total(4, offset=10))",
+            "options": [
+              "6 14",
+              "7 14",
+              "6 4",
+              "14 14"
+            ],
+            "answer": 0,
+            "explanation": "本题正确项是「6 14」。*nums 把位置实参收集成元组，total(*data) 把列表展开成 1、2、3 三个实参，元组求和得 6，offset 用默认值 0；第二次调用给出位置参数 4 与关键字参数 offset=10，nums 是 (4,)，结果为 14。干扰项「7 14」把 sum(nums) 多加了一个元素个数；干扰项「6 4」忽略了关键字参数传入的偏移量；干扰项「14 14」误以为两次调用共享了同一个 offset，而默认参数只在定义时求值一次、每次调用可被实参覆盖。"
+          },
+          {
+            "type": "multi",
+            "question": "关于文件读写与异常处理，下列说法正确的是？",
+            "options": [
+              "with 语句在块结束时自动调用 close，即使块内抛出异常也能释放文件句柄",
+              "read() 与 readlines() 的返回值是同一类型，都是每行组成的列表",
+              "以 r 模式打开不存在的文件会抛 FileNotFoundError，可先用 os.path.exists 判断或直接用异常兜住",
+              "二进制模式 rb 可以同时指定 encoding='utf-8'，读出来仍是字符串",
+              "except ValueError as e 之后，str(e) 得到错误信息，type(e).__name__ 得到异常类名"
+            ],
+            "answers": [
+              0,
+              2,
+              4
+            ],
+            "explanation": "多选题要同时选中「with 语句在块结束时自动调用 close，即使块内抛出异常也能释放文件句柄」、「以 r 模式打开不存在的文件会抛 FileNotFoundError，可先用 os.path.exists 判断或直接用异常兜住」与「except ValueError as e 之后，str(e) 得到错误信息，type(e).__name__ 得到异常类名」三条。with 的价值在于把资源释放交给语言机制，比手写 close 更能覆盖异常路径；文件不存在属于「可预期的正常失败」，先判断再打开与直接捕获异常两种写法都成立，后者更贴近 Python 的风格；as e 拿到的是异常对象而不是字符串，因此两个函数各司其职。干扰项「read() 与 readlines() 的返回值是同一类型，都是每行组成的列表」把两者类型说错，前者返回整串字符串；干扰项「二进制模式 rb 可以同时指定 encoding='utf-8'，读出来仍是字符串」违反模式约定，二进制模式下给出 encoding 会在 open 那一刻就报 ValueError。"
+          },
+          {
+            "type": "order",
+            "question": "把「读取逗号分隔的成绩文件并统计第二列之和」的四个动作按执行先后排列：",
+            "options": [
+              "用 float() 把取出的字符串转成数值并累加到计数器变量",
+              "用 open 以只读文本模式打开文件，并显式给出 encoding='utf-8'",
+              "把文件对象交给 csv.reader，按行迭代并取出每行的第二个字段",
+              "结束读取后打印统计结果，必要时用 write 写入结果文件"
+            ],
+            "correct_order": [
+              1,
+              2,
+              0,
+              3
+            ],
+            "explanation": "本题顺序是「用 open 以只读文本模式打开文件，并显式给出 encoding='utf-8'」→「把文件对象交给 csv.reader，按行迭代并取出每行的第二个字段」→「用 float() 把取出的字符串转成数值并累加到计数器变量」→「结束读取后打印统计结果，必要时用 write 写入结果文件」。这条链的形状与本课配图的六个环节一致：先建立边界，再把集合结果逐行送进逻辑，转换必须紧跟在取值之后，否则加法会变成字符串拼接；最后一步的输出放在 with 块之外或 else 分支里，可以避免文件不存在时写出一个误导性的 0。"
+          }
+        ]
+      }
+    ]
+  }
+}
