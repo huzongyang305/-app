@@ -1,0 +1,14 @@
+{
+  "ruankao_algo_design": {
+    "image": "images/diagram_ruankao_algo_strategy.webp",
+    "alt": "分治、贪心与动态规划三类算法策略的适用条件对比"
+  },
+  "ruankao_ip_law_std": {
+    "image": "images/diagram_ruankao_term_rules.webp",
+    "alt": "著作权、专利权、商标权的起算点、期限与续展规则对照表"
+  },
+  "ruankao_case_paper": {
+    "image": "images/diagram_ruankao_afternoon_plan.webp",
+    "alt": "下午应用技术科目五道大题的考点、问法、作答要点与时间预算对照表"
+  }
+}

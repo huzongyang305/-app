@@ -1,0 +1,115 @@
+// P12 软考批次 B（算法设计、知识产权与标准、下午科目方法）课程配图数据。
+// 键为 lesson_id，供 tool/generate_curriculum_diagrams.js --group=p12_ruankao_b 使用。
+// 与 p11_ruankao.js 同一口径：文字密度高，统一 900px、WebP 质量 60，控制 APK 体积。
+const diagrams = {
+  ruankao_algo_design: {
+    image: 'diagram_ruankao_algo_strategy.webp',
+    alt: '分治、贪心与动态规划三类算法策略的适用条件对比',
+    title: '三类策略：能不能贪、要不要记表',
+    type: 'compare',
+    columns: [
+      {
+        title: '分治',
+        items: [
+          '大问题拆成同型子问题',
+          '子问题彼此独立',
+          '分解—求解—合并三步',
+          '递归式定复杂度',
+          '归并快排与二分',
+        ],
+      },
+      {
+        title: '贪心',
+        items: [
+          '每步取当前最优',
+          '要证贪心选择性质',
+          '做出选择后不再回退',
+          '分数背包可、0-1 背包不可',
+          '活动安排与哈夫曼树',
+        ],
+      },
+      {
+        title: '动态规划',
+        items: [
+          '最优子结构加重叠子问题',
+          '状态与转移方程是核心',
+          '边界初值决定成败',
+          '遍历顺序须满足无后效性',
+          '背包、LCS、矩阵连乘',
+        ],
+      },
+    ],
+    notes: ['判断口诀：能一步到位且不后悔就贪心；子问题反复出现就记表；只需合并结果就分治'],
+    caption: '上午题问复杂度与适用条件，下午题给算法骨架让你补状态转移与循环边界。',
+  },
+  ruankao_ip_law_std: {
+    image: 'diagram_ruankao_term_rules.webp',
+    alt: '著作权、专利权、商标权的起算点、期限与续展规则对照表',
+    title: '保护期判定：起算点、年限与到期日',
+    type: 'grid',
+    rows: 3,
+    cols: 4,
+    rowLabels: ['著作权', '专利权', '商标权'],
+    colLabels: ['权利取得', '起算点', '保护年限', '能否续展'],
+    cells: [
+      { r: 0, c: 0, text: '作品完成自动产生', bold: true },
+      { r: 0, c: 1, text: '自然人：死亡之年' },
+      { r: 0, c: 2, text: '终生＋50 年' },
+      { r: 0, c: 3, text: '不续展，期满进公有领域' },
+      { r: 1, c: 0, text: '申请并经审查授权', bold: true },
+      { r: 1, c: 1, text: '申请日' },
+      { r: 1, c: 2, text: '20 / 10 / 15 年' },
+      { r: 1, c: 3, text: '不续展，缴年费维持' },
+      { r: 2, c: 0, text: '注册取得专用权', bold: true },
+      { r: 2, c: 1, text: '核准注册之日' },
+      { r: 2, c: 2, text: '10 年' },
+      { r: 2, c: 3, text: '提前 12 月＋6 月宽展' },
+    ],
+    notes: [
+      '专利三类年限 20／10／15 年，都自申请日起算',
+      '只有著作权把到期日归到当年 12 月 31 日',
+    ],
+    caption: '先把「从哪天算」定下来，再套年限；只有著作权会把届满日归整到那一年的年末。',
+  },
+  ruankao_case_paper: {
+    image: 'diagram_ruankao_afternoon_plan.webp',
+    alt: '下午应用技术科目五道大题的考点、问法、作答要点与时间预算对照表',
+    title: '下午五道大题：问法与作答要点',
+    type: 'grid',
+    rows: 5,
+    cols: 4,
+    rowLabels: ['试题一 需求', '试题二 数据库', '试题三 UML', '试题四 算法', '试题五 模式'],
+    colLabels: ['主干考点', '高频问法', '作答要点', '时间预算'],
+    cells: [
+      { r: 0, c: 0, text: '数据流图与功能分解' },
+      { r: 0, c: 1, text: '补实体、加工与存储' },
+      { r: 0, c: 2, text: '父子图平衡、数据守恒' },
+      { r: 0, c: 3, text: '25 分钟', bold: true },
+      { r: 1, c: 0, text: 'E-R 模型与关系模式' },
+      { r: 1, c: 1, text: '补联系类型与主键' },
+      { r: 1, c: 2, text: '先定候选键再判范式' },
+      { r: 1, c: 3, text: '27 分钟', bold: true },
+      { r: 2, c: 0, text: '用例图、类图与顺序图' },
+      { r: 2, c: 1, text: '补关系名与多重度' },
+      { r: 2, c: 2, text: '术语照大纲写' },
+      { r: 2, c: 3, text: '26 分钟', bold: true },
+      { r: 3, c: 0, text: '算法设计与代码填空' },
+      { r: 3, c: 1, text: '补循环边界与转移式' },
+      { r: 3, c: 2, text: '小样例手工模拟一遍' },
+      { r: 3, c: 3, text: '34 分钟', bold: true },
+      { r: 4, c: 0, text: '设计模式与代码结构' },
+      { r: 4, c: 1, text: '补方法名、类型与参数' },
+      { r: 4, c: 2, text: '对照类图找缺失角色' },
+      { r: 4, c: 3, text: '26 分钟', bold: true },
+    ],
+    notes: ['每题 15 分，剩余 12 分钟统一回查空位、单位与数量'],
+    caption: '按分值预算时间而不是按难度，算法题最容易吃满后面的回查分钟。',
+  },
+};
+
+module.exports = Object.fromEntries(
+  Object.entries(diagrams).map(([id, def]) => [
+    id,
+    { width: 900, quality: 60, ...def },
+  ]),
+);
