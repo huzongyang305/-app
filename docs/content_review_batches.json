@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-15T08:40:19.084941Z",
+  "generated_at": "2026-11-15T08:50:01.598193Z",
   "content_version": "2.0",
   "batch_size": 24,
   "batch_count": 58,
@@ -8194,12 +8194,12 @@
       "batch_id": "ruankao-1",
       "category_id": "ruankao",
       "category_title": "软考初级与中级",
-      "lesson_count": 4,
+      "lesson_count": 6,
       "reviewed": 0,
       "status": "pending",
       "risk_high": 0,
       "risk_medium": 0,
-      "risk_low": 4,
+      "risk_low": 6,
       "focus": [
         "正文事实与术语是否准确，有无过时结论或含糊表述。",
         "代码块能否按正文步骤运行，输出与解析是否一致。",
@@ -8207,6 +8207,17 @@
         "参考资料链接可访问，且与课程主题匹配。"
       ],
       "lessons": [
+        {
+          "lesson_id": "ruankao_algo_design",
+          "title": "算法设计与复杂度分析",
+          "risk": "low",
+          "characters": 16917,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
         {
           "lesson_id": "ruankao_cs_basics",
           "title": "计算机科学基础：数制转换、码制与算术逻辑",
@@ -8223,6 +8234,17 @@
           "title": "数据结构与算法：树、图、查找与排序",
           "risk": "low",
           "characters": 13141,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "ruankao_db_and_sql",
+          "title": "数据库系统：关系代数、SQL 与规范化",
+          "risk": "low",
+          "characters": 17117,
           "questions": 6,
           "images": 1,
           "machine_issues": [],
