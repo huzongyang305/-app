@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-15T09:11:53.801279Z",
+  "generated_at": "2026-11-15T09:28:58.353751Z",
   "schedule_months": 12,
   "first_month": "2026-11",
   "batch_count": 58,
@@ -1032,13 +1032,15 @@
       "category_id": "kaoyan_math",
       "category_title": "考研数学（数学一 / 数学二 / 数学三）",
       "planned_review_at": "2027-07-24",
-      "lesson_count": 4,
+      "lesson_count": 6,
       "p0_touched": 0,
       "risk_high": 0,
       "risk_medium": 0,
       "lesson_ids": [
+        "kaoyan_math_integral",
         "kaoyan_math_limit_continuity",
         "kaoyan_math_matrix",
+        "kaoyan_math_multivar_diff",
         "kaoyan_math_overview",
         "kaoyan_math_single_diff"
       ]
