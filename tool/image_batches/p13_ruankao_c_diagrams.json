@@ -2,5 +2,13 @@
   "ruankao_db_and_sql": {
     "image": "images/diagram_ruankao_db_and_sql.webp",
     "alt": "数据库三级模式两级映像与规范化判定的主线"
+  },
+  "ruankao_net_security": {
+    "image": "images/diagram_ruankao_net_security.webp",
+    "alt": "OSI 与 TCP/IP 分层、加密体系与安全设备位置的总体框架"
+  },
+  "ruankao_ood_uml": {
+    "image": "images/diagram_ruankao_ood_uml.webp",
+    "alt": "面向对象三大特征、UML 两类十四图与设计模式三族的总体框架"
   }
 }

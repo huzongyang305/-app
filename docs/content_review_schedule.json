@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-15T08:50:05.467116Z",
+  "generated_at": "2026-11-15T08:54:15.842601Z",
   "schedule_months": 12,
   "first_month": "2026-11",
   "batch_count": 58,
@@ -1292,7 +1292,7 @@
       "category_id": "ruankao",
       "category_title": "软考初级与中级",
       "planned_review_at": "2027-09-10",
-      "lesson_count": 6,
+      "lesson_count": 8,
       "p0_touched": 0,
       "risk_high": 0,
       "risk_medium": 0,
@@ -1302,6 +1302,8 @@
         "ruankao_data_structure",
         "ruankao_db_and_sql",
         "ruankao_exam_overview",
+        "ruankao_net_security",
+        "ruankao_ood_uml",
         "ruankao_os_and_arch"
       ]
     },
