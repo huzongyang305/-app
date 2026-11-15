@@ -308,7 +308,7 @@ bool search(int key) {
 - [LeetCode 705 设计哈希集合](https://leetcode.cn/problems/design-hashset/)
 - [LeetCode 347 前 K 个高频元素](https://leetcode.cn/problems/top-k-frequent-elements/)
 - 最后复核：2026-10-04
-- 下次复核：2027-01-17
+- 下次复核：2027-01-24
 
 - [ ] 能不看正文复述本课核心概念，并指出一个边界或反例。
 - [ ] 能推演本课示例：先写预期输出，再运行并记录差异。

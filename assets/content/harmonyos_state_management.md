@@ -400,7 +400,7 @@ struct Counter {
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2027-06-17
+- 下次复核：2027-06-24
 - [HarmonyOS NEXT 开发者官网](https://developer.huawei.com/consumer/cn/harmonyos-next/)
 - [ArkUI 状态管理概述](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkui-state-management)
 - [自定义组件间数据传递](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkts-user-defined-observe-data-send)

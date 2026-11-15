@@ -562,7 +562,7 @@ D. 存储表单的验证错误信息
 - 官方/权威资料：[web.dev 性能指南](https://web.dev/)
 - 主题延伸：[React Hooks 官方参考](https://react.dev/reference/react/hooks)
 - 最后复核：2026-10-04
-- 下次复核：2027-05-10
+- 下次复核：2027-05-17
 
 ## 内容元数据
 

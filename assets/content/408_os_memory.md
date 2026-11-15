@@ -456,7 +456,7 @@ print(f"OPT 总缺页次数: {result}")  # 输出: 7
 - [页面置换算法可视化演示 - OS-Virtual-Memory](https://www.geeksforgeeks.org/page-replacement-algorithms-in-operating-systems/)
 - [虚拟内存与工作集模型 - Carnegie Mellon University](https://www.cs.cmu.edu/~410-notebooks/09-VirtMem.pdf)
 - 最后复核：2026-10-04
-- 下次复核：2027-01-17
+- 下次复核：2027-01-24
 
 - [ ] 能不看正文复述本课核心概念，并指出一个边界或反例。
 - [ ] 能推演本课示例：先写预期输出，再运行并记录差异。

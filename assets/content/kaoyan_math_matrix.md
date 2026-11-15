@@ -368,7 +368,7 @@ print(np.linalg.solve(A, np.array([1, 2, 3])))
 - [MIT OpenCourseWare 18.06 线性代数](https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/)
 - [NumPy 官方文档 线性代数例程](https://numpy.org/doc/stable/reference/routines.linalg.html)
 - 最后复核：2026-10-04
-- 下次复核：2027-07-24
+- 下次复核：2027-01-10
 - 来源性质：官方大纲 + 公开课与工具文档，用于核对定义与数值结果
 - 数值结论复核方式：行列式、秩、逆矩阵与解的验算均由脚本重跑
 

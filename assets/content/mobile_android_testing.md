@@ -858,7 +858,7 @@ D. 「MockWebServer」：本地模拟 HTTP 服务器
 5. **复核要点**：本课代码示例基于 Espresso 3.5+、UI Automator 2.2+、JUnit 4.13+、MockWebServer 4.11+，Kotlin 1.8+。
 
 - 最后复核：2026-10-04
-- 下次复核：2027-02-24
+- 下次复核：2027-02-10
 
 ## 内容元数据
 

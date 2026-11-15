@@ -1376,7 +1376,7 @@ jobs:                           # Jobs：这个流程包含哪些任务
 - 官方/权威资料：[OpenSSF 最佳实践](https://bestpractices.coreinfrastructure.org/)
 - 主题延伸：[GitHub Actions 官方文档](https://docs.github.com/en/actions)
 - 最后复核：2026-10-04
-- 下次复核：2027-04-10
+- 下次复核：2027-04-17
 
 ## 内容元数据
 

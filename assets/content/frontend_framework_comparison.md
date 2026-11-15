@@ -1187,7 +1187,7 @@ D. 「最佳实践」：经真实项目验证的做法，如优先匹配团队�
 - 官方/权威资料：[web.dev 性能指南](https://web.dev/)
 - 主题延伸：[JS 框架基准测试（krausest/js-framework-benchmark）](https://krausest.github.io/js-framework-benchmark/current.html)
 - 最后复核：2026-10-04
-- 下次复核：2027-05-10
+- 下次复核：2027-05-17
 
 ## 内容元数据
 

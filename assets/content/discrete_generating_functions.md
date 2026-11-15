@@ -606,7 +606,7 @@ D. 没有区别
 - 主题延伸：[Wilf《generatingfunctionology》完整版](https://www.math.upenn.edu/~wilf/gfologyLinked2.html)
 
 - 最后复核：2026-10-04
-- 下次复核：2027-04-17
+- 下次复核：2027-05-24
 
 ## 内容元数据
 

@@ -629,7 +629,7 @@ D. 「选型指南」：沿渲染路径、通信方式与生态成熟度三个�
 - 官方/权威资料：[MDN：渐进式 Web 应用（PWA）](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)
 - 主题延伸：[Flutter 支持的平台](https://flutter.cn/docs/reference/supported-platforms)
 - 最后复核：2026-10-04
-- 下次复核：2027-03-17
+- 下次复核：2027-03-24
 
 ## 内容元数据
 

@@ -1231,7 +1231,7 @@ D. 「CAP定理」：将跨服务的长事务拆成一串本地事务并为每�
 - 官方/权威资料：[HTTP 规范](https://datatracker.ietf.org/doc/html/rfc9110)
 - 主题延伸：[microservices.io：API Gateway 模式](https://microservices.io/patterns/apigateway.html)
 - 最后复核：2026-10-04
-- 下次复核：2027-02-10
+- 下次复核：2027-02-17
 
 ## 内容元数据
 

@@ -549,5 +549,5 @@ D. 上传产物，填写商店 listing、隐私政策与数据安全表单
 | [创建应用绑定 - Play Console 帮助中心](https://support.google.com/googleplay/android-developer/answer/7384423) | versionCode、应用标识与覆盖安装规则 |
 
 - 最后复核：2026-10-04
-- 下次复核：2027-02-24
+- 下次复核：2027-02-10
 - 复核范围：AGP 版本相关的签名属性名与 DSL 写法、商店 targetSdk 当年政策、各发布轨道放量规则与密钥轮换流程

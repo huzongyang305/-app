@@ -1443,7 +1443,7 @@ D. 「状态管理」：Angular 生态中的 Redux 实现，用 effects 隔离�
 - 官方/权威资料：[web.dev 性能指南](https://web.dev/)
 - 主题延伸：[Pinia 官方入门](https://pinia.vuejs.org/getting-started.html)
 - 最后复核：2026-10-04
-- 下次复核：2027-05-10
+- 下次复核：2027-05-17
 
 ## 内容元数据
 

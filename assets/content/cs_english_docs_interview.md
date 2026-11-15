@@ -388,7 +388,7 @@ STAR 的四拍是 Situation、Task、Action、Result：先用一句话交代系�
 | [LLVM Language Reference Manual](https://llvm.org/docs/LangRef.html) | 大型语言参考文档的章节组织与术语定义写法范例 |
 
 - 最后复核：2026-10-04
-- 下次复核：2027-03-24
+- 下次复核：2027-03-10
 
 ## 内容元数据
 

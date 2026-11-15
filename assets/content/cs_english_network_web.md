@@ -420,7 +420,7 @@ D. by 30% 是相对下降幅度，p99 是第 99 百分位口径，under a load �
 | [MDN: HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP) | 状态码 reason phrase 与首部字段名的工程侧对照 |
 
 - 最后复核：2026-10-04
-- 下次复核：2027-03-24
+- 下次复核：2027-03-10
 
 ## 内容元数据
 

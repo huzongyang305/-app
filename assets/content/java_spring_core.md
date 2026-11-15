@@ -546,7 +546,7 @@ D. IoC 是指把对象的创建和管理权从代码转移到 Spring 容器，�
 ---
 
 ## 参考资料与复核
-- 下次复核：2027-07-17
+- 下次复核：2027-07-24
 
 - [Spring Framework 官方文档](https://docs.spring.io/spring-framework/docs/current/reference/html/)
 - [Spring IoC 容器](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans)

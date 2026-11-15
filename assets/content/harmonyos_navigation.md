@@ -358,7 +358,7 @@ console.info(`${stack.size()}-${stack.getAllPathName().length}`);
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2027-06-17
+- 下次复核：2027-06-24
 - [HarmonyOS NEXT 开发者官网](https://developer.huawei.com/consumer/cn/harmonyos-next/)
 - [Navigation 组件导航开发指导](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkui-navigation)
 - [页面路由 Router 接口文档](https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-router)

@@ -385,7 +385,7 @@ D. 两条指令在同一周期争用同一硬件资源
 | [Forwarding (computing)](https://en.wikipedia.org/wiki/Forwarding_%28computing%29) | 转发机制与数据通路旁路 |
 
 - 最后复核：2026-10-04
-- 下次复核：2027-02-17
+- 下次复核：2027-03-24
 
 ## 内容元数据
 

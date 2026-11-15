@@ -385,7 +385,7 @@ print(round(simpson(1.0, 1.0e4, 200000, lambda x: 1.0 / (x * x)), 4))
 - [SymPy 微积分模块文档（integrate 与极限求导）](https://docs.sympy.org/latest/modules/calculus.html)
 - [SymPy 官方文档首页](https://docs.sympy.org/latest/index.html)
 - 最后复核：2026-10-04
-- 下次复核：2027-07-24
+- 下次复核：2027-01-10
 - 来源性质：官方大纲与计算机代数系统文档，用于核对积分公式、判敛条件与公式前提
 - 数值结论复核方式：本节的定积分值、旋转体积、弧长与反常积分截断误差均由辛普森数值积分独立重算
 

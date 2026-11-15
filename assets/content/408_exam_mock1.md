@@ -477,7 +477,7 @@ O(n log n)。在平均情况下，每次分区操作能将数组较均匀地分�
 - [RFC 4632 - CIDR Notation for Subnet Division](https://datatracker.ietf.org/doc/html/rfc4632)
 - [Stanford OS - Producer Consumer Problem](https://cs.stanford.edu/~wlam/410/lec08_synchronization.pdf)
 - 最后复核：2026-10-04
-- 下次复核：2027-01-17
+- 下次复核：2027-01-24
 
 - [ ] 能不看正文复述本课核心概念，并指出一个边界或反例。
 - [ ] 能推演本课示例：先写预期输出，再运行并记录差异。

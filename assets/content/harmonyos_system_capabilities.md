@@ -373,7 +373,7 @@ const granted: boolean = result.authResults[0] === 0;
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2027-06-17
+- 下次复核：2027-06-24
 - [HarmonyOS NEXT 开发者官网](https://developer.huawei.com/consumer/cn/harmonyos-next/)
 - [声明应用权限](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/declare-permissions)
 - [应用内请求授权](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/request-privilege-in-app)

@@ -450,7 +450,7 @@ D. 找出句子的谓语与隐含施事者，判断它是被动陈述还是条�
 | [The Linux Kernel documentation: Kernel Coding Style](https://www.kernel.org/doc/html/latest/process/coding-style.html) | 核对 C 代码注释与命名中的英文写法 |
 
 - 最后复核：2026-10-04
-- 下次复核：2027-03-24
+- 下次复核：2027-03-10
 
 ## 内容元数据
 

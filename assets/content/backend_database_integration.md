@@ -1542,7 +1542,7 @@ D. 「PostgreSQL」：在类与表、对象与行之间做映射的中间层，�
 - 官方/权威资料：[HTTP 规范](https://datatracker.ietf.org/doc/html/rfc9110)
 - 主题延伸：[MongoDB 官方手册](https://www.mongodb.com/docs/)
 - 最后复核：2026-10-04
-- 下次复核：2027-02-10
+- 下次复核：2027-02-17
 
 ## 内容元数据
 

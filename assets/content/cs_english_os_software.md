@@ -439,7 +439,7 @@ D. 把 nit: 与 LGTM 视为语气强弱不同的评审用语，前者是小建�
 | [Zephyr Project Documentation: Introduction](https://docs.zephyrproject.org/latest/introduction/index.html) | 无 MMU/MPU 平台的单镜像描述，用于练习限定条件前置的长句 |
 
 - 最后复核：2026-10-04
-- 下次复核：2027-03-24
+- 下次复核：2027-03-10
 
 ## 内容元数据
 

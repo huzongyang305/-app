@@ -376,7 +376,7 @@ monotone bounded: 2.0
 - [MIT OpenCourseWare 18.01SC 单变量微积分](https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/)
 - [UC Davis 数学系 B. Hunter《Introduction to Real Analysis》](https://www.math.ucdavis.edu/~hunter/intro_analysis_pdf/)
 - 最后复核：2026-10-04
-- 下次复核：2027-07-24
+- 下次复核：2027-01-10
 - 来源性质：官方大纲渠道 + 公开课与教材讲义，用于核对范围与定理表述
 - 数值结论复核方式：所有近似值均由脚本重算，误差量级与正文一致
 

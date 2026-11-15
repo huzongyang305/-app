@@ -466,7 +466,7 @@ double mean(const std::vector<double>& values) {
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2027-03-24
+- 下次复核：2027-03-10
 - 复核范围：CMake 版本兼容、Sanitizer 行为、CTest 配置与工程实践
 - 来源性质：官方文档、标准或权威教材
 

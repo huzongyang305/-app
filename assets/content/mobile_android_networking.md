@@ -568,7 +568,7 @@ D. 「CallAdapter」：Square 出品的 JSON 库，Kotlin 友好
 5. **复核要点**：本课代码示例基于 Retrofit 2.9+、OkHttp 4.10+、Moshi 1.14+，Kotlin 1.8+。Interceptor 链的执行顺序在 OkHttp 3.x 和 4.x 中一致。
 
 - 最后复核：2026-10-04
-- 下次复核：2027-02-24
+- 下次复核：2027-02-10
 
 ## 内容元数据
 

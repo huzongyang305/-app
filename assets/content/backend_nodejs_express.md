@@ -770,7 +770,7 @@ D. 只在开发环境注册这两个监听器并打印日志，生产环境保�
 - 官方/权威资料：[HTTP 规范](https://datatracker.ietf.org/doc/html/rfc9110)
 - 主题延伸：[Express 官方指南](https://expressjs.com/)
 - 最后复核：2026-10-04
-- 下次复核：2027-02-10
+- 下次复核：2027-02-17
 
 ### 进阶学习资源
 - **官方文档**：[Node.js Docs](https://nodejs.org/docs/)、[Express Guide](https://expressjs.com/en/guide/routing.html)、[Koa Wiki](https://github.com/koajs/koa/wiki)

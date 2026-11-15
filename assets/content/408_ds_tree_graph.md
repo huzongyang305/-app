@@ -319,7 +319,7 @@ Dijkstra 算法能否处理负权边？为什么？
 - [LeetCode 743 网络延迟时间](https://leetcode.cn/problems/network-delay-time/)
 - [LeetCode 1584 连接所有点的最小费用](https://leetcode.cn/problems/min-cost-to-connect-all-points/)
 - 最后复核：2026-10-04
-- 下次复核：2027-01-17
+- 下次复核：2027-01-24
 
 - [ ] 能不看正文复述本课核心概念，并指出一个边界或反例。
 - [ ] 能推演本课示例：先写预期输出，再运行并记录差异。

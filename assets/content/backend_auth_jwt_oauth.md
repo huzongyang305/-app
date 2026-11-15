@@ -1110,7 +1110,7 @@ D. 「认证」：核实来访者是不是他声称的那个人，回答你是�
 - 官方/权威资料：[HTTP 规范](https://datatracker.ietf.org/doc/html/rfc9110)
 - 主题延伸：[OAuth 2.0 授权框架（RFC 6749）](https://datatracker.ietf.org/doc/html/rfc6749)
 - 最后复核：2026-10-04
-- 下次复核：2027-02-10
+- 下次复核：2027-02-17
 
 ## 内容元数据
 

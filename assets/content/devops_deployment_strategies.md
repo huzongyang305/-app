@@ -1378,7 +1378,7 @@ spec:
 - 官方/权威资料：[OpenSSF 最佳实践](https://bestpractices.coreinfrastructure.org/)
 - 主题延伸：[Martin Fowler：金丝雀发布](https://martinfowler.com/bliki/CanaryRelease.html)
 - 最后复核：2026-10-04
-- 下次复核：2027-04-10
+- 下次复核：2027-04-17
 
 ## 内容元数据
 

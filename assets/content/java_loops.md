@@ -569,7 +569,7 @@ for 循环（初始化; 条件; 更新）
 
 - 最后复核：2026-10-04
 - [Oracle Java Tutorials - For Loop](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/for.html)
-- 下次复核：2027-06-17
+- 下次复核：2027-06-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
 
 | 参考资料 | 本课用途 |

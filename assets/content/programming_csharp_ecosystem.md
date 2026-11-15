@@ -735,7 +735,7 @@ dotnet publish src/MyApp.Api -c Release -o out
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2027-03-10
+- 下次复核：2027-04-17
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：NuGet、xUnit、ASP.NET Core、EF Core、依赖注入。
 

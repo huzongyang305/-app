@@ -342,7 +342,7 @@ related work 的段落形状是一只漏斗：先给源头（were first proposed
 | [RFC 2119: Key words for use in RFCs](https://www.rfc-editor.org/rfc/rfc2119) | must、should、may 强度分级，用于校准论文里的语气动词 |
 
 - 最后复核：2026-10-04
-- 下次复核：2027-03-24
+- 下次复核：2027-03-10
 
 ## 内容元数据
 

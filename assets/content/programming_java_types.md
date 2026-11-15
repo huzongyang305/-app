@@ -380,7 +380,7 @@ int total = count + 1;
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2027-06-17
+- 下次复核：2027-06-24
 - [Java 官方教程：基本数据类型](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html)
 - [Java API：String 类](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html)
 - [Java API：BigDecimal 类](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html)
