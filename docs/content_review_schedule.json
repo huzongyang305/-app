@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-12T04:29:42.136237Z",
+  "generated_at": "2026-11-15T08:40:38.494647Z",
   "schedule_months": 12,
   "first_month": "2026-11",
   "batch_count": 58,
@@ -586,16 +586,19 @@
       "category_id": "cs_english",
       "category_title": "计算机专业英语",
       "planned_review_at": "2027-03-24",
-      "lesson_count": 5,
+      "lesson_count": 8,
       "p0_touched": 0,
       "risk_high": 0,
       "risk_medium": 0,
       "lesson_ids": [
+        "cs_english_ai_ml",
         "cs_english_db_bigdata",
+        "cs_english_docs_interview",
         "cs_english_hardware",
         "cs_english_network_web",
         "cs_english_os_software",
-        "cs_english_overview"
+        "cs_english_overview",
+        "cs_english_paper_writing"
       ]
     },
     {
@@ -1110,7 +1113,7 @@
       "category_id": "ncre",
       "category_title": "全国计算机等级二级",
       "planned_review_at": "2027-08-10",
-      "lesson_count": 7,
+      "lesson_count": 9,
       "p0_touched": 0,
       "risk_high": 0,
       "risk_medium": 0,
@@ -1121,7 +1124,9 @@
         "ncre_c_struct_file",
         "ncre_exam_overview",
         "ncre_public_data_structure",
-        "ncre_public_prog_db_net"
+        "ncre_public_prog_db_net",
+        "ncre_python_basics",
+        "ncre_python_combo_type"
       ]
     },
     {

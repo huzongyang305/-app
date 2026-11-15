@@ -1,0 +1,119 @@
+{
+  "category": {
+    "id": "ncre",
+    "mode": "append",
+    "title": {
+      "zh": "全国计算机等级二级",
+      "en": "NCRE Level 2"
+    },
+    "icon": "quiz",
+    "color": "2563EB",
+    "lessons": [
+      {
+        "id": "ncre_python_basics",
+        "title": {
+          "zh": "Python 语言程序设计：基本语法元素与数据类型",
+          "en": "Python Basics: Syntax Elements and Data Types"
+        },
+        "summary": {
+          "zh": "二级 Python 方向的第一课：一次讲清标识符与保留字、四个内置数值类型与转换、/ // % ** 的优先级与结合方向，以及 input 与 print 的进出场规矩，配 6 道原创题练现场手算输出。",
+          "en": "The opening Python lesson: identifiers and keywords, numeric types and conversions, the precedence of / // % **, and how input and print move data in and out, with six original questions for hand-tracing output."
+        },
+        "file": "assets/content/ncre_python_basics.md",
+        "minutes": 45,
+        "keywords": [
+          "标识符与保留字",
+          "数据类型转换",
+          "运算符优先级",
+          "整除与取余",
+          "input 返回字符串"
+        ],
+        "difficulty": "进阶",
+        "order": 7,
+        "quiz": [
+          {
+            "type": "single",
+            "question": "下列选项中，能够作为 Python 变量名（标识符）使用的是？",
+            "options": [
+              "student_name",
+              "3rd_score",
+              "class",
+              "a-b"
+            ],
+            "answer": 0,
+            "explanation": "本题正确项是「student_name」。标识符由字母、数字和下划线组成，且不能以数字开头，同时要区分大小写、不能占用保留字，`student_name` 三条都满足。干扰项「3rd_score」以下划线之外的数字开头，解释器会把它当成数值起始；干扰项「class」是定义类的保留字，拿来赋值会报语法错误；干扰项「a-b」里的减号会被解析成减法，读作 a 减 b。"
+          },
+          {
+            "type": "single",
+            "question": "在交互环境里执行 s = input()，然后从键盘键入 12 并回车，此时 type(s) 的结果是？",
+            "options": [
+              "int",
+              "float",
+              "str",
+              "bool"
+            ],
+            "answer": 2,
+            "explanation": "本题正确项是「str」。`input()` 的任务是把键盘上的一行原样收进来，返回类型永远是字符串，屏幕上看着像数字的 `12` 实际是 `\"12\"`。要参与算术必须再套一层 `int()` 或 `float()`。干扰项「int」是把屏幕显示误当成对象类型；干扰项「bool」只有在显式写 `bool(s)` 时才会出现，空串转布尔为假、非空串为真。"
+          },
+          {
+            "type": "single",
+            "question": "表达式 7 / 2、7 // 2、7 % 2 的值依次写成一组，与真值相符的是？",
+            "options": [
+              "3 1 3.5",
+              "3.5 1 3",
+              "3.5 3 1",
+              "3 3.5 1"
+            ],
+            "answer": 2,
+            "explanation": "本题正确项是「3.5 3 1」。`/` 在 Python 3 里做真实除法，两个整数相除也返回浮点数，得 3.5；`//` 先算 3.5 再向下取整得 3；`%` 取 7 除以 2 的余数得 1。干扰项「3 1 3.5」把真除与整除的结果互换了位置，是沿用 C 语言整数除法印象的典型错法；干扰项「3.5 1 3」把商与余数颠倒；干扰项「3 3.5 1」把浮点结果放到了整除的位置上。"
+          },
+          {
+            "type": "code",
+            "question": "阅读下面的 Python 代码，它的输出结果是？",
+            "code": "a = 10\nb = 3\nprint(a ** 2 // b, a % b, round(a / b))",
+            "options": [
+              "34 1 3",
+              "33 1 3",
+              "33 1 3.33",
+              "33 0 3"
+            ],
+            "answer": 1,
+            "explanation": "本题正确项是「33 1 3」。`a ** 2` 得 100，100 与 3 之间用 `//` 做整除得 33；`a % b` 取 10 除以 3 的余数得 1；`round(a / b)` 先把 10/3 算成 3.3333 再四舍五入得 3，`round` 不带第二个参数时返回整数而不是浮点数。干扰项「33 1 3.33」把 `round` 的作用漏掉了，`round` 只有一个参数时结果必须是 int。"
+          },
+          {
+            "type": "order",
+            "question": "把「读入一个整数并输出它的平方」的四个步骤按执行先后排列：",
+            "options": [
+              "把读入的字符串用 int() 转换成整数",
+              "用 input() 从键盘读入一行内容",
+              "输出平方后的结果",
+              "计算该整数的平方并存入变量"
+            ],
+            "correct_order": [
+              1,
+              0,
+              3,
+              2
+            ],
+            "explanation": "本题顺序是「用 input() 从键盘读入一行内容」 → 「把读入的字符串用 int() 转换成整数」 → 「计算该整数的平方并存入变量」 → 「输出平方后的结果」。读入、转换、计算、输出是所有一元计算程序共同的骨架：`input()` 只能拿到字符串，转换必须紧跟其后，否则平方那一步会变成字符串重复。"
+          },
+          {
+            "type": "multi",
+            "question": "下列关于 Python 变量与类型的说法中，正确的两项是？",
+            "options": [
+              "赋值语句同时完成名字的创建与对象引用的绑定，不需要先声明类型",
+              "同一个变量可以在程序不同位置被重新绑定为不同类型的对象",
+              "Python 的整数运算结果永远精确，因此可以无限制替代 Decimal 做金额计算",
+              "type() 与 isinstance() 的作用完全相同，任何时候都可以互相替换"
+            ],
+            "answers": [
+              0,
+              1
+            ],
+            "explanation": "本题要同时选中「赋值语句同时完成名字的创建与对象引用的绑定，不需要先声明类型」与「同一个变量可以在程序不同位置被重新绑定为不同类型的对象」，这两句合起来就是动态类型的完整表述。干扰项「Python 的整数运算结果永远精确，因此可以无限制替代 Decimal 做金额计算」把整数的情形搬到了小数上，float 有精度上限；干扰项「type() 与 isinstance() 的作用完全相同，任何时候都可以互相替换」忽略了 `isinstance()` 会承认继承关系。"
+          }
+        ]
+      }
+    ]
+  }
+}

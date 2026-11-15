@@ -1,0 +1,14 @@
+{
+  "ncre_python_basics": {
+    "image": "images/diagram_ncre_python_basics.webp",
+    "alt": "Python 语法骨架、数据类型与表达式的三行九格对照"
+  },
+  "ncre_python_combo_type": {
+    "image": "images/diagram_ncre_python_combo_type.webp",
+    "alt": "Python 五类组合数据类型的分类树"
+  },
+  "ncre_python_function_file": {
+    "image": "images/diagram_ncre_python_function_file.webp",
+    "alt": "从函数定义到文件读写的六个环节"
+  }
+}

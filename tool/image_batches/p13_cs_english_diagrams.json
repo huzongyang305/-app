@@ -1,0 +1,14 @@
+{
+  "cs_english_ai_ml": {
+    "image": "images/diagram_cs_english_ai_ml.webp",
+    "alt": "AI 论文四段式的英文信号词与对应读法"
+  },
+  "cs_english_paper_writing": {
+    "image": "images/diagram_cs_english_paper_writing.webp",
+    "alt": "中式英文与地道英文在四类句子上的对照"
+  },
+  "cs_english_docs_interview": {
+    "image": "images/diagram_cs_english_docs_interview.webp",
+    "alt": "从 README 到英文面试的六个环节"
+  }
+}

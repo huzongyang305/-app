@@ -79696,6 +79696,327 @@
               "explanation": "本题正确项是「主语是被插入的键值，违反约束的是这条语句，数据库只是判定并拒绝的一方」。`duplicate key value` 是名词短语作主语，`violates` 用一般现在时第三人称单数与主语保持一致，这类句子的中文翻译要把施事者还原清楚：「（本次写入的）重复键值违反了唯一约束」，而不是「数据库违反了约束」。约束名 `users_email_key` 遵循表名加列名加类型的自动命名规则，读后缀即可判断约束类别。干扰项「主语是数据库进程，说明数据库实现有缺陷，应当提交缺陷报告等待补丁发布」把责任主体安错位置，这类报错是预期内的完整性检查；干扰项「主语是唯一约束本身，它违反了键值的要求，因此需要删除该约束才能继续写入」把主宾颠倒，删除约束更是把校验整个关掉的高危动作。"
             }
           ]
+        },
+        {
+          "id": "cs_english_ai_ml",
+          "title": {
+            "zh": "AI 与机器学习文献精读",
+            "en": "Reading AI and Machine Learning Literature"
+          },
+          "summary": {
+            "zh": "按摘要、引言、方法、实验四拍定位英文信号词，练习长难句拆分与图表口径的读法。",
+            "en": "Locate signal words across abstract, introduction, method and evaluation, then parse long sentences and read figures with their stated metric conventions."
+          },
+          "file": "assets/content/cs_english_ai_ml.md",
+          "minutes": 42,
+          "keywords": [
+            "文献结构信号词",
+            "长难句拆分",
+            "术语构词",
+            "图表与指标口径",
+            "消融实验"
+          ],
+          "difficulty": "进阶",
+          "order": 5,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "论文摘要里 In this paper we propose a lightweight module that outperforms previous state-of-the-art systems on four benchmarks 一句话承担的功能，下列判断正确的是哪一项？",
+              "options": [
+                "只交代研究背景，说明这一领域此前的工作很多，尚未给出本文的贡献",
+                "只交代实验设置，four benchmarks 说的是数据划分方式，与本文方法无关",
+                "同时给出贡献声明与结果声明，propose 标记方法新颖性，outperforms 标记实验结论",
+                "表示作者在转述他人工作，因为 propose 这个动词不能用于描述自己的工作"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「同时给出贡献声明与结果声明，propose 标记方法新颖性，outperforms 标记实验结论」。摘要的四拍通常是问题、方法、结果、意义，第二句用 we propose / we present / we introduce 亮出方法，第三句用 outperforms / achieves / yields 给出量化结论，两句被压进同一行时，动词就是最可靠的定位标记。干扰项「表示作者在转述他人工作，因为 propose 这个动词不能用于描述自己的工作」把主语读错了：转述他人多用 they propose 或被动式 has been proposed，一旦出现 we propose 就是本文主张。干扰项「只交代实验设置，four benchmarks 说的是数据划分方式，与本文方法无关」把评测基准降格成分割说明，benchmarks 指公开数据集上的比较，不指 train-test split。"
+            },
+            {
+              "type": "single",
+              "question": "关于 overfitting 与 regularization 的构词与配对关系，下列说法正确的是哪一项？",
+              "options": [
+                "over- 表过度，fit 加 -ing 指拟合过头；regularization 是用约束换泛化的手段",
+                "两个词都直接借自拉丁语，与英语动词 fit 和形容词 regular 没有派生关系",
+                "-ization 表示一次完成的动作，正则化做完之后模型就不再需要任何约束",
+                "over- 在这里表不足，overfitting 说的是训练数据太少以致采样不充分"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「over- 表过度，fit 加 -ing 指拟合过头；regularization 是用约束换泛化的手段」。这对词在论文里总是成对出现：方法段给出正则项（L2 penalty、dropout、early stopping），实验段报告它把验证误差压了下去；构词上 regular 加 -ize 是「使之有规则」，再加 -ation 名词化。干扰项「两个词都直接借自拉丁语，与英语动词 fit 和形容词 regular 没有派生关系」忽略了最表层的一层派生，英语母语者看到的就是 fit 与 regular 加词缀。干扰项「-ization 表示一次完成的动作，正则化做完之后模型就不再需要任何约束」把过程名词读成一次性事件，正则强度是训练全程都要设定的超参数。"
+            },
+            {
+              "type": "code",
+              "question": "读下面这段 scikit-learn 片段，关于 alpha、fit 与 score 三个英文名的实际含义，下列说法正确的是哪一项？",
+              "options": [
+                "alpha 是学习率，fit 表示绘制拟合曲线，score 输出训练集上的损失值",
+                "Ridge 一名说明该模型做无监督降维，train_test_split 只是把行打乱",
+                "score 只用到训练集，因此删掉 X_test 与 y_test 这段代码仍能运行",
+                "alpha 控制正则强度，fit 就是训练，score 在测试集上返回 R² 得分"
+              ],
+              "answer": 3,
+              "code": "from sklearn.linear_model import Ridge\nfrom sklearn.model_selection import train_test_split\n\nX_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)\nmodel = Ridge(alpha=10.0).fit(X_train, y_train)\nprint(model.score(X_test, y_test))",
+              "language": "python",
+              "explanation": "本题正确项是「alpha 控制正则强度，fit 就是训练，score 在测试集上返回 R² 得分」。Ridge 回归的英文名来自解曲面上那道凸起的脊，alpha 是 L2 惩罚系数，值越大模型越平滑、越不容易 overfitting；fit 取「让曲线贴合数据」的日常义，score 在回归器里默认是 R² 而不是 accuracy。干扰项「alpha 是学习率，fit 表示绘制拟合曲线，score 输出训练集上的损失值」把三个名字全部挪到别的语境，学习率在梯度下降类框架里通常写作 learning_rate。干扰项「Ridge 一名说明该模型做无监督降维，train_test_split 只是把行打乱」混淆了有监督回归与 PCA；干扰项「score 只用到训练集，因此删掉 X_test 与 y_test 这段代码仍能运行」忽略了泛化评估的基本前提。"
+            },
+            {
+              "type": "multi",
+              "question": "读 AI 论文的实验图与表，关于坐标轴、图例与脚注里几个英文词的作用，下列说法正确的有哪些？（多选）",
+              "options": [
+                "error bar 表示不确定度，其跨度通常是标准差或置信区间而非性能差距",
+                "baseline 指的是横轴起点，也就是那个数值为零的参考线位置",
+                "ground truth 是标注真值，模型预测与之不符时应改模型而不是改标注",
+                "表格里加粗与上标箭头通常表示该列最优或差异在统计上显著"
+              ],
+              "answer": 0,
+              "answers": [
+                0,
+                2,
+                3
+              ],
+              "explanation": "本题要同时选中「error bar 表示不确定度，其跨度通常是标准差或置信区间而非性能差距」、「ground truth 是标注真值，模型预测与之不符时应改模型而不是改标注」和「表格里加粗与上标箭头通常表示该列最优或差异在统计上显著」三条。误差棒描述多次随机种子运行之间的波动范围，两根柱子是否有差距要按统计检验判断，不能靠目测长短下结论；ground truth 是评测的参照标准，论文里写 evaluated against the ground truth。干扰项「baseline 指的是横轴起点，也就是那个数值为零的参考线位置」把 baseline 读成坐标原点，而论文里的 baseline 永远指用来对照的已有方法或最简方法，句子通常写成 compared with the strongest baseline。"
+            },
+            {
+              "type": "order",
+              "question": "把下面四句引言段的英文按论文正常的推进顺序（背景、缺口、方法、结果）排列，正确的是哪一项？",
+              "options": [
+                "We therefore introduce a lightweight module that restores accuracy with fewer parameters.",
+                "Deep networks have been widely applied to image recognition tasks in recent years.",
+                "Experiments on three public datasets confirm the effectiveness of the proposed module.",
+                "However, these methods degrade sharply when the training set becomes small."
+              ],
+              "correct_order": [
+                1,
+                3,
+                0,
+                2
+              ],
+              "explanation": "引言段的推进是漏斗形的：先说这个方向已被广泛使用，再用 However 或 remains an open problem 打开缺口，然后用 We therefore / To address this problem 把自己的方法填进缺口，最后用 Experiments ... confirm 收口。排序线索就写在连接词里：therefore 必须紧跟在缺口之后，however 必须紧跟在背景之后，而 Experiments 一句只能落在段尾。把这四句的顺序记熟，读任何一篇会议论文的引言都能在两分钟内预判下一句说什么。"
+            },
+            {
+              "type": "fill",
+              "question": "在空格处填入一个表示「消融」的英文术语：To show that each component matters, we conduct an ________ study by removing one module at a time.（填一个单词）",
+              "options": [],
+              "accepted_answers": [
+                "ablation"
+              ],
+              "explanation": "本题正确项是「ablation」。这个词借自医学与气象学的 ablation（切除、移除），在机器学习里固定搭配是 ablation study 或 ablation experiment，含义是每次只拆掉一个模块再跑一遍，用性能落差证明各部分的独立贡献，论文里也常见 we ablate the attention block 这种动词用法。填 remove 或 delete 虽然意思接近，但不是文献里的标准术语，审稿人会认为作者没有做系统性对照。作答时先认出 conduct an ... study 这个空需要名词，再由 removing one module at a time 推出语义。"
+            }
+          ]
+        },
+        {
+          "id": "cs_english_paper_writing",
+          "title": {
+            "zh": "英文论文写作与审稿回复",
+            "en": "Writing Papers and Answering Reviewers"
+          },
+          "summary": {
+            "zh": "从时态分工、名词化改写和 rebuttal 三步结构入手，把中文思路写成审稿人愿意接受的英文。",
+            "en": "Turn Chinese-flavoured drafts into reviewer-friendly English through tense control, verb-first rewriting and a three-step rebuttal."
+          },
+          "file": "assets/content/cs_english_paper_writing.md",
+          "minutes": 45,
+          "keywords": [
+            "时态选择",
+            "名词化改写",
+            "相关工作句式",
+            "审稿回复三步",
+            "易混词辨析"
+          ],
+          "difficulty": "进阶",
+          "order": 6,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "关于论文里实验描述与普适结论的时态分工，下列说法正确的是哪一项？",
+              "options": [
+                "实验过程与普遍事实都写过去时，因为论文记录的都是已经做完的工作",
+                "全文统一用现在完成时，既能表达过去又能衔接现在，不会出时态错误",
+                "实验过程用一般过去时，图表与普适结论用一般现在时，如 Table 2 shows",
+                "实验过程用一般现在时，因为读者读到那句话时实验正在被重演"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「实验过程用一般过去时，图表与普适结论用一般现在时，如 Table 2 shows」。判断标准是这件事是否只在你那次运行里发生：We trained the model for 200 epochs 是一次性动作，用过去时；而 Table 2 shows a clear gap、Dropout reduces overfitting 表达的是文本与规律本身，读者每次翻开都在，用现在时。干扰项「实验过程与普遍事实都写过去时，因为论文记录的都是已经做完的工作」把两类句子压成一类，审稿人会直接写成语不一致的意见。干扰项「实验过程用一般现在时，因为读者读到那句话时实验正在被重演」把阅读时刻误当成实验时刻，只有描述程序行为时才这样用。"
+            },
+            {
+              "type": "single",
+              "question": "把「我们对系统进行了优化，使性能得到了提升」写成英文，下列哪一句最接近地道表达？",
+              "options": [
+                "We have done the optimization of the system, which makes the performance be improved.",
+                "The optimization to the system is done by us, so the performance has the improvement.",
+                "In order to improve the performance, the system was taken an optimization action.",
+                "We optimized the system and improved throughput by 18 percent on the same workload."
+              ],
+              "answer": 3,
+              "explanation": "本题正确项是「We optimized the system and improved throughput by 18 percent on the same workload.」。中文习惯用「进行 + 名词」把动作包起来，英文更常用单个及物动词承担动作，do the optimization、take an optimization action 这类写法是名词化的直译痕迹，第一句还额外拖出 make ... be improved 的被动尾巴。把性能提升落到可测量的 throughput 上并给出数字，也是英文论文的通行做法。干扰项「In order to improve the performance, the system was taken an optimization action.」里 the system 不能 take action，施事者错位；干扰项「We have done the optimization of the system, which makes the performance be improved.」虽然语法能过，但两层名词化加一层被动，读起来像在绕路。"
+            },
+            {
+              "type": "debug",
+              "question": "下面这段投稿文本里有三处用词问题，关于错在哪里以及怎么改，下列判断正确的是哪一项？",
+              "options": [
+                "effects 用得没错，它在此处作名词；真正的问题只是 less 与 fewer 语义重复",
+                "三处都属于拼写问题，把 GPU-hours 改成 gpu_hours 之后句子就完全通顺了",
+                "effects 应为 affects，GPU-hours 可数故 less 应改 fewer，a fewer number of 应简化",
+                "句子没有用词错误，只需把加粗的 Results 改成 Result 以与其他小节标题一致"
+              ],
+              "answer": 2,
+              "code": "\\textbf{Results.} The proposed method effects the training time only slightly,\nbecause it requires less GPU-hours and produces a fewer number of failed runs.",
+              "language": "latex",
+              "explanation": "本题正确项是「effects 应为 affects，GPU-hours 可数故 less 应改 fewer，a fewer number of 应简化」。affect 是动词「影响」，effect 作名词才是「效果」，直译「影响」时最容易顺手写错；less 配不可数（less memory），fewer 配可数复数（fewer failed runs），GPU-hours 有明确复数形式，只能用 fewer；a fewer number of 把比较级包进名词短语，英文写作惯例是砍成 fewer。干扰项「effects 用得没错，它在此处作名词；真正的问题只是 less 与 fewer 语义重复」漏掉了动词位置的要求，此处紧跟主语需要谓语动词。干扰项「三处都属于拼写问题，把 GPU-hours 改成 gpu_hours 之后句子就完全通顺了」把用词错误说成大小写问题，改完仍然不通。"
+            },
+            {
+              "type": "multi",
+              "question": "关于 rebuttal（审稿回复）的写法，下列哪些做法符合通行惯例？（多选）",
+              "options": [
+                "先用一句话复述审稿人的关切并致谢，再分条作答，编号与意见编号一一对应",
+                "对无法补做的实验直接沉默，避免在回复里承认任何做不到的事情",
+                "认同的部分写 We agree and have revised，需要解释的部分写 We clarify that",
+                "每条修改都指出落在正文的位置，例如 revised text in Section 4, line 213"
+              ],
+              "answer": 0,
+              "answers": [
+                0,
+                2,
+                3
+              ],
+              "explanation": "本题要同时选中「先用一句话复述审稿人的关切并致谢，再分条作答，编号与意见编号一一对应」、「认同的部分写 We agree and have revised，需要解释的部分写 We clarify that」和「每条修改都指出落在正文的位置，例如 revised text in Section 4, line 213」三条。rebuttal 的三步是 acknowledge、clarify、evidence：先承认对方看到了什么，再说明自己的原意或取舍，最后给行号、图表号或新实验数字作为证据。干扰项「对无法补做的实验直接沉默，避免在回复里承认任何做不到的事情」是最危险的做法，沉默会被理解成无视意见，正确写法是明确写进 Limitations 并说明留给后续工作。"
+            },
+            {
+              "type": "order",
+              "question": "把 related work 段的四句英文按从领域现状收敛到本文位置的正常顺序排列，正确的是哪一项？",
+              "options": [
+                "Smith et al. extended this line of work by introducing a sparse attention mask.",
+                "Attention mechanisms were first proposed to align source and target tokens.",
+                "None of these approaches, however, report results under a fixed parameter budget.",
+                "Our study revisits this setting and isolates the effect of the budget from the mask."
+              ],
+              "correct_order": [
+                1,
+                0,
+                2,
+                3
+              ],
+              "explanation": "related work 的段落形状是一只漏斗：先给源头（were first proposed），再给延伸（extended this line of work），然后用 None of these 或 However little attention has been paid 指出缺口，最后一句把自己的工作挂到缺口上（revisits、in contrast）。第三句的 however 与第四句的 this setting 都是回指线索，它们必须出现在被指代内容之后，因此不可能放在段首。按这个顺序读，可以在两分钟内判断一篇论文的 related work 是否真的把本文位置说清楚了。"
+            },
+            {
+              "type": "fill",
+              "question": "在空格处填入一个表示「尽管」的英文让步连词，使这句审稿回复成立：________ the suggested experiment would require re-running all baselines, we have added the requested analysis in Appendix B.（首字母大写）",
+              "options": [],
+              "accepted_answers": [
+                "While",
+                "Although",
+                "Though"
+              ],
+              "explanation": "本题正确项是「While」。While 在句首作让步连词时意思是「尽管」，与 Although、Though 互换，比 but 更适合学术文体，因为它把让步放在主句之前，语气更克制；Although 更正式，Though 稍口语。要注意 While 还有「当……时」的时间用法，判别办法是看它能否被 Although 替换：能替换就是让步用法。这一句式在 rebuttal 里专门用于承认成本后再给证据，属于礼貌而坚定的典型骨架。"
+            }
+          ]
+        },
+        {
+          "id": "cs_english_docs_interview",
+          "title": {
+            "zh": "技术文档、提交信息与英文面试",
+            "en": "Technical Docs, Commit Messages and Interviews"
+          },
+          "summary": {
+            "zh": "掌握 README、提交信息与日志行的英文惯例，再用 STAR 结构把中文简历条目讲成英文面试答案。",
+            "en": "Master the wording conventions of READMEs, commit messages and log lines, then retell Chinese résumé bullets as STAR answers in an English interview."
+          },
+          "file": "assets/content/cs_english_docs_interview.md",
+          "minutes": 42,
+          "keywords": [
+            "文档祈使句",
+            "Conventional Commits",
+            "报错与日志读法",
+            "英文面试句式",
+            "STAR 简历改写"
+          ],
+          "difficulty": "高级",
+          "order": 7,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "Conventional Commits 与 Git 社区惯例都要求提交标题用祈使句，例如写 fix a bug 而不写 fixed a bug，其主要理由是？",
+              "options": [
+                "标题描述的是应用该提交后代码发生的变化，与 Git 自动生成的合并回滚消息同构",
+                "过去式在英文里属于非法词形，Git 解析标题时会把 added 识别为未知关键字并报错",
+                "祈使句更短，可以节省一行字符，因此只是排版偏好，与工具生成的消息没有关联",
+                "标题会被 shell 再次解释成命令，所以必须以动词原形开头才能通过命令行语法检查"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「标题描述的是应用该提交后代码发生的变化，与 Git 自动生成的合并回滚消息同构」。判断口诀是把标题填进 If applied, this commit will ___ 这个句式：填 fix a bug 读得通，填 fixed a bug 读不通。Git 自己生成的合并与回滚消息就是祈使句（Merge branch ...、Revert ...），人为提交保持同样语气，历史里才不会出现两种时态混排。干扰项「过去式在英文里属于非法词形，Git 解析标题时会把 added 识别为未知关键字并报错」不存在这种解析，Git 不检查英语语法。干扰项「标题会被 shell 再次解释成命令，所以必须以动词原形开头才能通过命令行语法检查」把标题与命令行之混淆，标题只是普通字符串。"
+            },
+            {
+              "type": "code",
+              "question": "上面这段 git log 输出里有一条提交信息不符合英文惯例，关于它的问题所在，下列说法正确的是哪一项？",
+              "options": [
+                "55e0b1a 用了过去时且类型前缀缺失，other stuff 无法说明改了什么",
+                "docs: 一行没有括号作用域，因此所有不带作用域的写法都非法",
+                "refactor(api) 一行有问题，动词应当写在括号内而不是括号外",
+                "55e0b1a 写法合理，依赖升级属于日常维护，用过去式更能表达已完成"
+              ],
+              "answer": 0,
+              "code": "a1f9c2d feat(auth): add refresh token rotation\n73be104 fix(parser): handle escaped quotes in raw strings\n9c2d5e7 docs: correct the install steps for Windows\n55e0b1a updated the dependencies and other stuff\ne7b1234 refactor(api): remove unused legacy headers",
+              "language": "bash",
+              "explanation": "本题正确项是「55e0b1a 用了过去时且类型前缀缺失，other stuff 无法说明改了什么」。Conventional Commits 的标题形状是 type(scope): imperative summary，updated the dependencies and other stuff 三处偏离：动词用了过去式、没有 type 前缀、other stuff 这类含糊名词让读者与工具都无法判断变更边界。干扰项「docs: 一行没有括号作用域，因此所有不带作用域的写法都非法」把作用域说成必填，规范里 scope 是可选的；干扰项「refactor(api) 一行有问题，动词应当写在括号内而不是括号外」正好记反了格式，括号里放的是影响范围而不是动词。"
+            },
+            {
+              "type": "debug",
+              "question": "读下面这段英文报错，关于它的定位方式与修复方向，下列说法正确的是哪一项？",
+              "options": [
+                "AttributeError 表示 BertModel 类型选错，必须换成另一个模型库重写脚本",
+                "line 42 指的是解释器自身源码的行号，与用户脚本无关，改代码没有用",
+                "has no attribute 说明对象缺该属性，encode 属于上层封装类，应换用提供者",
+                "Traceback 一词说明这是缩进引起的语法错误，调整空白后即可正常运行"
+              ],
+              "answer": 2,
+              "code": "Traceback (most recent call last):\n  File \"infer.py\", line 42, in <module>\n    logits = model.encode(texts)\nAttributeError: 'BertModel' object has no attribute 'encode'",
+              "language": "python",
+              "explanation": "本题正确项是「has no attribute 说明对象缺该属性，encode 属于上层封装类，应换用提供者」。读法顺序是最后一行的异常名加宾语（AttributeError、'BertModel' object、no attribute encode），再回到倒数第二段看文件名与行号，最后看回显的那行代码确认调用点；encode 通常由高层封装类提供，换成提供该方法的类或改调用它已有的方法即可。干扰项「line 42 指的是解释器自身源码的行号，与用户脚本无关，改代码没有用」把栈帧的行号读反，infer.py 才是需要改的文件；干扰项「Traceback 一词说明这是缩进引起的语法错误，调整空白后即可正常运行」把异常类型当成语法错误，IndentationError 才是缩进问题的名字。"
+            },
+            {
+              "type": "multi",
+              "question": "关于 README、API 文档与错误码表的英文惯例，下列说法正确的有哪些？（多选）",
+              "options": [
+                "README 的 Usage 小节用祈使句给最短可运行命令，原理介绍另起小节",
+                "文档里的 must 与 may 可以随意互换，读者会自己判断约束的强弱",
+                "错误码表按含义、触发条件、建议动作三列书写，解释句用一般现在时",
+                "安装步骤写成过去时更准确，因为读者照着做的时候步骤已经完成了"
+              ],
+              "answer": 0,
+              "answers": [
+                0,
+                2
+              ],
+              "explanation": "本题要同时选中「README 的 Usage 小节用祈使句给最短可运行命令，原理介绍另起小节」和「错误码表按含义、触发条件、建议动作三列书写，解释句用一般现在时」两条。技术文档的第二人称隐含主语是读者，动作由读者执行，所以动词用原形开头（Install the package、Run the script）；错误码描述的是每次触发都成立的规律，因此用一般现在时。干扰项「文档里的 must 与 may 可以随意互换，读者会自己判断约束的强弱」把规范关键词当普通词，会直接改变接口语义；干扰项「安装步骤写成过去时更准确，因为读者照着做的时候步骤已经完成了」时态方向弄反了，安装动作由读者在未来执行。"
+            },
+            {
+              "type": "order",
+              "question": "面试里回答「讲一个你优化系统的经历」，把下面四句英文按 STAR 结构的正常讲述顺序排列，正确的是哪一项？",
+              "options": [
+                "As a result, the p99 latency dropped from 450 to 120 milliseconds.",
+                "I was responsible for the reporting service used by 300 internal analysts.",
+                "I profiled the query path, replaced the N+1 lookups with a batch loader, and added a cache.",
+                "Because the dashboard timed out during month-end close, we had to rebuild the read path."
+              ],
+              "correct_order": [
+                1,
+                3,
+                2,
+                0
+              ],
+              "explanation": "STAR 的四拍是 Situation、Task、Action、Result：先用一句话交代系统与角色，再说明为什么必须动手，然后讲自己具体做了哪几件事，最后给可核查的数字。四句里的连接词本身就是线索：Because 引出触发条件，只能紧跟情境；As a result 只能收尾；中间那句一连串动词（profiled、replaced、added）是 Action 段的标志。面试官追问的通常就是这三层：你个人的动作、动作与结果的因果、数字的口径。"
+            },
+            {
+              "type": "fill",
+              "question": "把中文简历条目「负责报表系统的性能优化」改写成英文简历 bullet 时，开头应换成有产出的动词。在空格处填入一个表示「重构」的过去式动词：________ the monolithic report job into three idempotent tasks, cutting month-end latency by 70%.（首字母大写，只填一个词）",
+              "options": [],
+              "accepted_answers": [
+                "Refactored",
+                "Rewrote",
+                "Restructured",
+                "Redesigned"
+              ],
+              "explanation": "本题正确项是「Refactored」。英文简历忌讳以 Responsible for 或 In charge of 开头，那只是在描述岗位而不是贡献；动词过去式加宾语再加量化结果，才是 bullet 的标准形状。Refactored ... into ... 表达「改变内部结构而外部行为不变」，与后面 cutting month-end latency by 70% 的因果关系成立。Rewrote、Restructured 同样可接受，但若写成 Optimized the report job 就丢了手段信息，读的人不知道你具体动了哪一层结构。"
+            }
+          ]
         }
       ]
     },
@@ -80844,6 +81165,217 @@
                 0
               ],
               "explanation": "本题顺序是「用 fopen 得到文件指针，并判断它是否为空指针」 → 「执行 fprintf 或 fwrite 把数据写出」 → 「在读回之前用 rewind 或 fseek 把位置指针移回文件开头」 → 「调用 fclose 关闭文件指针，让缓冲区内容真正落到磁盘」。打开必须先判空，写完的位置指针停在末尾所以读回前要定位，fclose 放在最后，它同时承担刷新缓冲区的作用。"
+            }
+          ]
+        },
+        {
+          "id": "ncre_python_basics",
+          "title": {
+            "zh": "Python 语言程序设计：基本语法元素与数据类型",
+            "en": "Python Basics: Syntax Elements and Data Types"
+          },
+          "summary": {
+            "zh": "二级 Python 方向的第一课：一次讲清标识符与保留字、四个内置数值类型与转换、/ // % ** 的优先级与结合方向，以及 input 与 print 的进出场规矩，配 6 道原创题练现场手算输出。",
+            "en": "The opening Python lesson: identifiers and keywords, numeric types and conversions, the precedence of / // % **, and how input and print move data in and out, with six original questions for hand-tracing output."
+          },
+          "file": "assets/content/ncre_python_basics.md",
+          "minutes": 45,
+          "keywords": [
+            "标识符与保留字",
+            "数据类型转换",
+            "运算符优先级",
+            "整除与取余",
+            "input 返回字符串"
+          ],
+          "difficulty": "进阶",
+          "order": 7,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "下列选项中，能够作为 Python 变量名（标识符）使用的是？",
+              "options": [
+                "student_name",
+                "3rd_score",
+                "class",
+                "a-b"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「student_name」。标识符由字母、数字和下划线组成，且不能以数字开头，同时要区分大小写、不能占用保留字，`student_name` 三条都满足。干扰项「3rd_score」以下划线之外的数字开头，解释器会把它当成数值起始；干扰项「class」是定义类的保留字，拿来赋值会报语法错误；干扰项「a-b」里的减号会被解析成减法，读作 a 减 b。"
+            },
+            {
+              "type": "single",
+              "question": "在交互环境里执行 s = input()，然后从键盘键入 12 并回车，此时 type(s) 的结果是？",
+              "options": [
+                "int",
+                "float",
+                "str",
+                "bool"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「str」。`input()` 的任务是把键盘上的一行原样收进来，返回类型永远是字符串，屏幕上看着像数字的 `12` 实际是 `\"12\"`。要参与算术必须再套一层 `int()` 或 `float()`。干扰项「int」是把屏幕显示误当成对象类型；干扰项「bool」只有在显式写 `bool(s)` 时才会出现，空串转布尔为假、非空串为真。"
+            },
+            {
+              "type": "single",
+              "question": "表达式 7 / 2、7 // 2、7 % 2 的值依次写成一组，与真值相符的是？",
+              "options": [
+                "3 1 3.5",
+                "3.5 1 3",
+                "3.5 3 1",
+                "3 3.5 1"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「3.5 3 1」。`/` 在 Python 3 里做真实除法，两个整数相除也返回浮点数，得 3.5；`//` 先算 3.5 再向下取整得 3；`%` 取 7 除以 2 的余数得 1。干扰项「3 1 3.5」把真除与整除的结果互换了位置，是沿用 C 语言整数除法印象的典型错法；干扰项「3.5 1 3」把商与余数颠倒；干扰项「3 3.5 1」把浮点结果放到了整除的位置上。"
+            },
+            {
+              "type": "code",
+              "question": "阅读下面的 Python 代码，它的输出结果是？",
+              "options": [
+                "34 1 3",
+                "33 1 3",
+                "33 1 3.33",
+                "33 0 3"
+              ],
+              "answer": 1,
+              "code": "a = 10\nb = 3\nprint(a ** 2 // b, a % b, round(a / b))",
+              "explanation": "本题正确项是「33 1 3」。`a ** 2` 得 100，100 与 3 之间用 `//` 做整除得 33；`a % b` 取 10 除以 3 的余数得 1；`round(a / b)` 先把 10/3 算成 3.3333 再四舍五入得 3，`round` 不带第二个参数时返回整数而不是浮点数。干扰项「33 1 3.33」把 `round` 的作用漏掉了，`round` 只有一个参数时结果必须是 int。"
+            },
+            {
+              "type": "order",
+              "question": "把「读入一个整数并输出它的平方」的四个步骤按执行先后排列：",
+              "options": [
+                "把读入的字符串用 int() 转换成整数",
+                "用 input() 从键盘读入一行内容",
+                "输出平方后的结果",
+                "计算该整数的平方并存入变量"
+              ],
+              "correct_order": [
+                1,
+                0,
+                3,
+                2
+              ],
+              "explanation": "本题顺序是「用 input() 从键盘读入一行内容」 → 「把读入的字符串用 int() 转换成整数」 → 「计算该整数的平方并存入变量」 → 「输出平方后的结果」。读入、转换、计算、输出是所有一元计算程序共同的骨架：`input()` 只能拿到字符串，转换必须紧跟其后，否则平方那一步会变成字符串重复。"
+            },
+            {
+              "type": "multi",
+              "question": "下列关于 Python 变量与类型的说法中，正确的两项是？",
+              "options": [
+                "赋值语句同时完成名字的创建与对象引用的绑定，不需要先声明类型",
+                "同一个变量可以在程序不同位置被重新绑定为不同类型的对象",
+                "Python 的整数运算结果永远精确，因此可以无限制替代 Decimal 做金额计算",
+                "type() 与 isinstance() 的作用完全相同，任何时候都可以互相替换"
+              ],
+              "answers": [
+                0,
+                1
+              ],
+              "explanation": "本题要同时选中「赋值语句同时完成名字的创建与对象引用的绑定，不需要先声明类型」与「同一个变量可以在程序不同位置被重新绑定为不同类型的对象」，这两句合起来就是动态类型的完整表述。干扰项「Python 的整数运算结果永远精确，因此可以无限制替代 Decimal 做金额计算」把整数的情形搬到了小数上，float 有精度上限；干扰项「type() 与 isinstance() 的作用完全相同，任何时候都可以互相替换」忽略了 `isinstance()` 会承认继承关系。"
+            }
+          ]
+        },
+        {
+          "id": "ncre_python_combo_type",
+          "title": {
+            "zh": "Python 组合数据类型：列表、元组、字符串、字典与集合",
+            "en": "Python Composite Types: List, Tuple, String, Dict and Set"
+          },
+          "summary": {
+            "zh": "把二级 Python 最爱考的五类容器一次摊开：切片的三个参数与负步长、元组锁绑定不锁内容、字典键必须可哈希、集合靠哈希定位、浅拷贝与深拷贝的分界，配 6 道原创题现场手算。",
+            "en": "Five container types at once: slice arguments and negative steps, tuples that freeze bindings rather than contents, hashable dictionary keys, hash-based set lookups, and the shallow-versus-deep copy boundary, with six original questions."
+          },
+          "file": "assets/content/ncre_python_combo_type.md",
+          "minutes": 50,
+          "keywords": [
+            "切片与负步长",
+            "元组不可变",
+            "字典键要可哈希",
+            "集合去重",
+            "浅拷贝与深拷贝"
+          ],
+          "difficulty": "进阶",
+          "order": 8,
+          "quiz": [
+            {
+              "type": "single",
+              "question": "已知 a = [1, 2, 3, 4, 5]，则表达式 a[::-2] 的值是？",
+              "options": [
+                "[5, 3, 1]",
+                "[1, 3, 5]",
+                "[5, 4, 3, 2, 1]",
+                "[5, 3]"
+              ],
+              "answer": 0,
+              "explanation": "本题正确项是「[5, 3, 1]」。步长为负数时切片方向反过来，缺省的起点是最后一个下标、终点是越过 0，于是依次取下标 4、2、0 三个位置上的元素，得 [5, 3, 1]。干扰项「[1, 3, 5]」把方向当成了从左往右，那是步长写正数 2 的结果；干扰项「[5, 4, 3, 2, 1]」是步长写成 -1 时的整体倒序；干扰项「[5, 3]」把缺省起点的下标少挪了一格，漏掉了末尾元素。"
+            },
+            {
+              "type": "single",
+              "question": "已知 t = (1, [2, 3])，下列对 t 的操作中，能够正常执行且不报错的是？",
+              "options": [
+                "t[0] = 0",
+                "t[1] = [4, 5]",
+                "t[1].append(4)",
+                "del t[1]"
+              ],
+              "answer": 2,
+              "explanation": "本题正确项是「t[1].append(4)」。元组锁住的是下标到对象的绑定关系，它不允许增删元素、也不允许把某个下标换成另一个对象，却管不到被引用对象内部的内容，所以向内层列表追加元素合法，执行后 t 变成 (1, [2, 3, 4])。干扰项「t[0] = 0」与干扰项「t[1] = [4, 5]」都属于对元组下标赋值，会抛 TypeError；干扰项「del t[1]」试图删除元组的一个元素，同样不被允许。"
+            },
+            {
+              "type": "code",
+              "question": "阅读下面的 Python 代码，data 是 [3, 1, 4, 1, 5]，它的输出结果是？",
+              "options": [
+                "[3, 1, 4] 3 5",
+                "[1, 4, 1] 3 4",
+                "[1, 4] 5 5",
+                "[1, 4, 1] 5 4"
+              ],
+              "answer": 3,
+              "code": "data = [3, 1, 4, 1, 5]\nprint(data[1:4], data[::-1][0], len(set(data)))",
+              "explanation": "本题正确项是「[1, 4, 1] 5 4」。切片 1:4 取下标 1、2、3 上的三个元素，得 [1, 4, 1]；data[::-1] 先把整个表倒过来，取出的首元素是原表最后那个 5；set(data) 去掉重复的 1 之后剩 {1, 3, 4, 5} 四个元素。干扰项「[3, 1, 4] 3 5」把切片的起点当成了长度，又拿原表长度去充数集合大小；干扰项「[1, 4, 1] 3 4」把倒序后的首元素误写成原表首个 3；干扰项「[1, 4] 5 5」漏掉了终点元素并混淆了两处长度。"
+            },
+            {
+              "type": "debug",
+              "question": "下面代码有一处运行时报错，出错的是哪一行？（行号从上往下数）",
+              "options": [
+                "第 4 行，列表不是可哈希对象，不能当作字典的键",
+                "第 1 行，列表里不能同时放元组和列表两种元素",
+                "第 3 行，for 循环不能直接遍历一个装了两类对象的列表",
+                "第 4 行，get 方法要求键必须已经存在于字典中"
+              ],
+              "answer": 0,
+              "code": "pairs = [(1, 2), [3, 4]]\ncounts = {}\nfor item in pairs:\n    counts[item] = counts.get(item, 0) + 1",
+              "explanation": "本题正确项是「第 4 行，列表不是可哈希对象，不能当作字典的键」。列表是可变对象，可变对象一律算不出稳定的哈希值，因此 `counts[item]` 在 `item` 取到 [3, 4] 那一刻抛 TypeError，报错位置在循环体内而不是创建字典处。干扰项「第 1 行，列表里不能同时放元组和列表两种元素」不成立，动态类型允许列表装混合元素；干扰项「第 4 行，get 方法要求键必须已经存在于字典中」把 get 的默认返回值机制理解反了，缺键正是它返回 0 的那一步。"
+            },
+            {
+              "type": "order",
+              "question": "把「统计一句话里每个单词出现的次数并输出最高频的词」的四个步骤按先后排列：",
+              "options": [
+                "输出词和次数，格式用 format 或 f 串写好",
+                "用 split() 把整句按空白切成单词列表",
+                "创建空字典，对每个单词执行 d[w] = d.get(w, 0) + 1",
+                "在字典里找出值最大的那一项，可用 max 与 items 配合"
+              ],
+              "correct_order": [
+                1,
+                2,
+                3,
+                0
+              ],
+              "explanation": "本题顺序是「用 split() 把整句按空白切成单词列表」 → 「创建空字典，对每个单词执行 d[w] = d.get(w, 0) + 1」 → 「在字典里找出值最大的那一项，可用 max 与 items 配合」 → 「输出词和次数，格式用 format 或 f 串写好」。先切分才能逐个处理单词，字典必须先存在再累加，累加全部完成后才谈得上比较大小，输出永远是最后一步。中间三步分别对应容器转换、容器累加、容器查询，换了单词、换了统计对象，这个骨架也不变。"
+            },
+            {
+              "type": "multi",
+              "question": "下列关于组合数据类型与拷贝的说法中，正确的两项是？",
+              "options": [
+                "浅拷贝只复制外层结构，内层列表仍与原对象共用同一个对象",
+                "深拷贝后的列表与原件内容相同，因此用 == 比较的结果为假",
+                "集合用 in 判断元素是否存在，其平均耗时与集合大小成正比",
+                "列表推导式在每次求值时都会重新创建一个新的列表对象"
+              ],
+              "answers": [
+                0,
+                3
+              ],
+              "explanation": "本题要同时选中「浅拷贝只复制外层结构，内层列表仍与原对象共用同一个对象」与「列表推导式在每次求值时都会重新创建一个新的列表对象」，前者解释了改内层为什么会连带原件，后者说明推导式每次跑出一个全新的表。干扰项「深拷贝后的列表与原件内容相同，因此用 == 比较的结果为假」把内容与身份混成了一件事，`==` 比内容所以为真，`is` 比身份才为假；干扰项「集合用 in 判断元素是否存在，其平均耗时与集合大小成正比」说的是列表的比对方式，集合靠哈希定位，平均与大小无关。"
             }
           ]
         }

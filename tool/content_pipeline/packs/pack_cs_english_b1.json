@@ -1,0 +1,335 @@
+{
+  "category": {
+    "id": "cs_english",
+    "mode": "append",
+    "title": {
+      "zh": "计算机专业英语",
+      "en": "Computer Science Professional English"
+    },
+    "icon": "translate",
+    "color": "B45309",
+    "lessons": [
+      {
+        "id": "cs_english_ai_ml",
+        "title": {
+          "zh": "AI 与机器学习文献精读",
+          "en": "Reading AI and Machine Learning Literature"
+        },
+        "summary": {
+          "zh": "按摘要、引言、方法、实验四拍定位英文信号词，练习长难句拆分与图表口径的读法。",
+          "en": "Locate signal words across abstract, introduction, method and evaluation, then parse long sentences and read figures with their stated metric conventions."
+        },
+        "file": "assets/content/cs_english_ai_ml.md",
+        "minutes": 42,
+        "keywords": [
+          "文献结构信号词",
+          "长难句拆分",
+          "术语构词",
+          "图表与指标口径",
+          "消融实验"
+        ],
+        "difficulty": "进阶",
+        "order": 5,
+        "quiz": [
+          {
+            "type": "single",
+            "question": "论文摘要里 In this paper we propose a lightweight module that outperforms previous state-of-the-art systems on four benchmarks 一句话承担的功能，下列判断正确的是哪一项？",
+            "options": [
+              "只交代研究背景，说明这一领域此前的工作很多，尚未给出本文的贡献",
+              "只交代实验设置，four benchmarks 说的是数据划分方式，与本文方法无关",
+              "同时给出贡献声明与结果声明，propose 标记方法新颖性，outperforms 标记实验结论",
+              "表示作者在转述他人工作，因为 propose 这个动词不能用于描述自己的工作"
+            ],
+            "explanation": "本题正确项是「同时给出贡献声明与结果声明，propose 标记方法新颖性，outperforms 标记实验结论」。摘要的四拍通常是问题、方法、结果、意义，第二句用 we propose / we present / we introduce 亮出方法，第三句用 outperforms / achieves / yields 给出量化结论，两句被压进同一行时，动词就是最可靠的定位标记。干扰项「表示作者在转述他人工作，因为 propose 这个动词不能用于描述自己的工作」把主语读错了：转述他人多用 they propose 或被动式 has been proposed，一旦出现 we propose 就是本文主张。干扰项「只交代实验设置，four benchmarks 说的是数据划分方式，与本文方法无关」把评测基准降格成分割说明，benchmarks 指公开数据集上的比较，不指 train-test split。",
+            "answer": 2
+          },
+          {
+            "type": "single",
+            "question": "关于 overfitting 与 regularization 的构词与配对关系，下列说法正确的是哪一项？",
+            "options": [
+              "over- 表过度，fit 加 -ing 指拟合过头；regularization 是用约束换泛化的手段",
+              "两个词都直接借自拉丁语，与英语动词 fit 和形容词 regular 没有派生关系",
+              "-ization 表示一次完成的动作，正则化做完之后模型就不再需要任何约束",
+              "over- 在这里表不足，overfitting 说的是训练数据太少以致采样不充分"
+            ],
+            "explanation": "本题正确项是「over- 表过度，fit 加 -ing 指拟合过头；regularization 是用约束换泛化的手段」。这对词在论文里总是成对出现：方法段给出正则项（L2 penalty、dropout、early stopping），实验段报告它把验证误差压了下去；构词上 regular 加 -ize 是「使之有规则」，再加 -ation 名词化。干扰项「两个词都直接借自拉丁语，与英语动词 fit 和形容词 regular 没有派生关系」忽略了最表层的一层派生，英语母语者看到的就是 fit 与 regular 加词缀。干扰项「-ization 表示一次完成的动作，正则化做完之后模型就不再需要任何约束」把过程名词读成一次性事件，正则强度是训练全程都要设定的超参数。",
+            "answer": 0
+          },
+          {
+            "type": "code",
+            "question": "读下面这段 scikit-learn 片段，关于 alpha、fit 与 score 三个英文名的实际含义，下列说法正确的是哪一项？",
+            "options": [
+              "alpha 是学习率，fit 表示绘制拟合曲线，score 输出训练集上的损失值",
+              "Ridge 一名说明该模型做无监督降维，train_test_split 只是把行打乱",
+              "score 只用到训练集，因此删掉 X_test 与 y_test 这段代码仍能运行",
+              "alpha 控制正则强度，fit 就是训练，score 在测试集上返回 R² 得分"
+            ],
+            "explanation": "本题正确项是「alpha 控制正则强度，fit 就是训练，score 在测试集上返回 R² 得分」。Ridge 回归的英文名来自解曲面上那道凸起的脊，alpha 是 L2 惩罚系数，值越大模型越平滑、越不容易 overfitting；fit 取「让曲线贴合数据」的日常义，score 在回归器里默认是 R² 而不是 accuracy。干扰项「alpha 是学习率，fit 表示绘制拟合曲线，score 输出训练集上的损失值」把三个名字全部挪到别的语境，学习率在梯度下降类框架里通常写作 learning_rate。干扰项「Ridge 一名说明该模型做无监督降维，train_test_split 只是把行打乱」混淆了有监督回归与 PCA；干扰项「score 只用到训练集，因此删掉 X_test 与 y_test 这段代码仍能运行」忽略了泛化评估的基本前提。",
+            "answer": 3,
+            "code": "from sklearn.linear_model import Ridge\nfrom sklearn.model_selection import train_test_split\n\nX_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)\nmodel = Ridge(alpha=10.0).fit(X_train, y_train)\nprint(model.score(X_test, y_test))",
+            "language": "python"
+          },
+          {
+            "type": "multi",
+            "question": "读 AI 论文的实验图与表，关于坐标轴、图例与脚注里几个英文词的作用，下列说法正确的有哪些？（多选）",
+            "options": [
+              "error bar 表示不确定度，其跨度通常是标准差或置信区间而非性能差距",
+              "baseline 指的是横轴起点，也就是那个数值为零的参考线位置",
+              "ground truth 是标注真值，模型预测与之不符时应改模型而不是改标注",
+              "表格里加粗与上标箭头通常表示该列最优或差异在统计上显著"
+            ],
+            "explanation": "本题要同时选中「error bar 表示不确定度，其跨度通常是标准差或置信区间而非性能差距」、「ground truth 是标注真值，模型预测与之不符时应改模型而不是改标注」和「表格里加粗与上标箭头通常表示该列最优或差异在统计上显著」三条。误差棒描述多次随机种子运行之间的波动范围，两根柱子是否有差距要按统计检验判断，不能靠目测长短下结论；ground truth 是评测的参照标准，论文里写 evaluated against the ground truth。干扰项「baseline 指的是横轴起点，也就是那个数值为零的参考线位置」把 baseline 读成坐标原点，而论文里的 baseline 永远指用来对照的已有方法或最简方法，句子通常写成 compared with the strongest baseline。",
+            "answers": [
+              0,
+              2,
+              3
+            ],
+            "answer": 0
+          },
+          {
+            "type": "order",
+            "question": "把下面四句引言段的英文按论文正常的推进顺序（背景、缺口、方法、结果）排列，正确的是哪一项？",
+            "options": [
+              "We therefore introduce a lightweight module that restores accuracy with fewer parameters.",
+              "Deep networks have been widely applied to image recognition tasks in recent years.",
+              "Experiments on three public datasets confirm the effectiveness of the proposed module.",
+              "However, these methods degrade sharply when the training set becomes small."
+            ],
+            "explanation": "引言段的推进是漏斗形的：先说这个方向已被广泛使用，再用 However 或 remains an open problem 打开缺口，然后用 We therefore / To address this problem 把自己的方法填进缺口，最后用 Experiments ... confirm 收口。排序线索就写在连接词里：therefore 必须紧跟在缺口之后，however 必须紧跟在背景之后，而 Experiments 一句只能落在段尾。把这四句的顺序记熟，读任何一篇会议论文的引言都能在两分钟内预判下一句说什么。",
+            "correct_order": [
+              1,
+              3,
+              0,
+              2
+            ]
+          },
+          {
+            "type": "fill",
+            "question": "在空格处填入一个表示「消融」的英文术语：To show that each component matters, we conduct an ________ study by removing one module at a time.（填一个单词）",
+            "options": [],
+            "explanation": "本题正确项是「ablation」。这个词借自医学与气象学的 ablation（切除、移除），在机器学习里固定搭配是 ablation study 或 ablation experiment，含义是每次只拆掉一个模块再跑一遍，用性能落差证明各部分的独立贡献，论文里也常见 we ablate the attention block 这种动词用法。填 remove 或 delete 虽然意思接近，但不是文献里的标准术语，审稿人会认为作者没有做系统性对照。作答时先认出 conduct an ... study 这个空需要名词，再由 removing one module at a time 推出语义。",
+            "accepted_answers": [
+              "ablation"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "cs_english_paper_writing",
+        "title": {
+          "zh": "英文论文写作与审稿回复",
+          "en": "Writing Papers and Answering Reviewers"
+        },
+        "summary": {
+          "zh": "从时态分工、名词化改写和 rebuttal 三步结构入手，把中文思路写成审稿人愿意接受的英文。",
+          "en": "Turn Chinese-flavoured drafts into reviewer-friendly English through tense control, verb-first rewriting and a three-step rebuttal."
+        },
+        "file": "assets/content/cs_english_paper_writing.md",
+        "minutes": 45,
+        "keywords": [
+          "时态选择",
+          "名词化改写",
+          "相关工作句式",
+          "审稿回复三步",
+          "易混词辨析"
+        ],
+        "difficulty": "进阶",
+        "order": 6,
+        "quiz": [
+          {
+            "type": "single",
+            "question": "关于论文里实验描述与普适结论的时态分工，下列说法正确的是哪一项？",
+            "options": [
+              "实验过程与普遍事实都写过去时，因为论文记录的都是已经做完的工作",
+              "全文统一用现在完成时，既能表达过去又能衔接现在，不会出时态错误",
+              "实验过程用一般过去时，图表与普适结论用一般现在时，如 Table 2 shows",
+              "实验过程用一般现在时，因为读者读到那句话时实验正在被重演"
+            ],
+            "explanation": "本题正确项是「实验过程用一般过去时，图表与普适结论用一般现在时，如 Table 2 shows」。判断标准是这件事是否只在你那次运行里发生：We trained the model for 200 epochs 是一次性动作，用过去时；而 Table 2 shows a clear gap、Dropout reduces overfitting 表达的是文本与规律本身，读者每次翻开都在，用现在时。干扰项「实验过程与普遍事实都写过去时，因为论文记录的都是已经做完的工作」把两类句子压成一类，审稿人会直接写成语不一致的意见。干扰项「实验过程用一般现在时，因为读者读到那句话时实验正在被重演」把阅读时刻误当成实验时刻，只有描述程序行为时才这样用。",
+            "answer": 2
+          },
+          {
+            "type": "single",
+            "question": "把「我们对系统进行了优化，使性能得到了提升」写成英文，下列哪一句最接近地道表达？",
+            "options": [
+              "We have done the optimization of the system, which makes the performance be improved.",
+              "The optimization to the system is done by us, so the performance has the improvement.",
+              "In order to improve the performance, the system was taken an optimization action.",
+              "We optimized the system and improved throughput by 18 percent on the same workload."
+            ],
+            "explanation": "本题正确项是「We optimized the system and improved throughput by 18 percent on the same workload.」。中文习惯用「进行 + 名词」把动作包起来，英文更常用单个及物动词承担动作，do the optimization、take an optimization action 这类写法是名词化的直译痕迹，第一句还额外拖出 make ... be improved 的被动尾巴。把性能提升落到可测量的 throughput 上并给出数字，也是英文论文的通行做法。干扰项「In order to improve the performance, the system was taken an optimization action.」里 the system 不能 take action，施事者错位；干扰项「We have done the optimization of the system, which makes the performance be improved.」虽然语法能过，但两层名词化加一层被动，读起来像在绕路。",
+            "answer": 3
+          },
+          {
+            "type": "debug",
+            "question": "下面这段投稿文本里有三处用词问题，关于错在哪里以及怎么改，下列判断正确的是哪一项？",
+            "options": [
+              "effects 用得没错，它在此处作名词；真正的问题只是 less 与 fewer 语义重复",
+              "三处都属于拼写问题，把 GPU-hours 改成 gpu_hours 之后句子就完全通顺了",
+              "effects 应为 affects，GPU-hours 可数故 less 应改 fewer，a fewer number of 应简化",
+              "句子没有用词错误，只需把加粗的 Results 改成 Result 以与其他小节标题一致"
+            ],
+            "explanation": "本题正确项是「effects 应为 affects，GPU-hours 可数故 less 应改 fewer，a fewer number of 应简化」。affect 是动词「影响」，effect 作名词才是「效果」，直译「影响」时最容易顺手写错；less 配不可数（less memory），fewer 配可数复数（fewer failed runs），GPU-hours 有明确复数形式，只能用 fewer；a fewer number of 把比较级包进名词短语，英文写作惯例是砍成 fewer。干扰项「effects 用得没错，它在此处作名词；真正的问题只是 less 与 fewer 语义重复」漏掉了动词位置的要求，此处紧跟主语需要谓语动词。干扰项「三处都属于拼写问题，把 GPU-hours 改成 gpu_hours 之后句子就完全通顺了」把用词错误说成大小写问题，改完仍然不通。",
+            "answer": 2,
+            "code": "\\textbf{Results.} The proposed method effects the training time only slightly,\nbecause it requires less GPU-hours and produces a fewer number of failed runs.",
+            "language": "latex"
+          },
+          {
+            "type": "multi",
+            "question": "关于 rebuttal（审稿回复）的写法，下列哪些做法符合通行惯例？（多选）",
+            "options": [
+              "先用一句话复述审稿人的关切并致谢，再分条作答，编号与意见编号一一对应",
+              "对无法补做的实验直接沉默，避免在回复里承认任何做不到的事情",
+              "认同的部分写 We agree and have revised，需要解释的部分写 We clarify that",
+              "每条修改都指出落在正文的位置，例如 revised text in Section 4, line 213"
+            ],
+            "explanation": "本题要同时选中「先用一句话复述审稿人的关切并致谢，再分条作答，编号与意见编号一一对应」、「认同的部分写 We agree and have revised，需要解释的部分写 We clarify that」和「每条修改都指出落在正文的位置，例如 revised text in Section 4, line 213」三条。rebuttal 的三步是 acknowledge、clarify、evidence：先承认对方看到了什么，再说明自己的原意或取舍，最后给行号、图表号或新实验数字作为证据。干扰项「对无法补做的实验直接沉默，避免在回复里承认任何做不到的事情」是最危险的做法，沉默会被理解成无视意见，正确写法是明确写进 Limitations 并说明留给后续工作。",
+            "answers": [
+              0,
+              2,
+              3
+            ],
+            "answer": 0
+          },
+          {
+            "type": "order",
+            "question": "把 related work 段的四句英文按从领域现状收敛到本文位置的正常顺序排列，正确的是哪一项？",
+            "options": [
+              "Smith et al. extended this line of work by introducing a sparse attention mask.",
+              "Attention mechanisms were first proposed to align source and target tokens.",
+              "None of these approaches, however, report results under a fixed parameter budget.",
+              "Our study revisits this setting and isolates the effect of the budget from the mask."
+            ],
+            "explanation": "related work 的段落形状是一只漏斗：先给源头（were first proposed），再给延伸（extended this line of work），然后用 None of these 或 However little attention has been paid 指出缺口，最后一句把自己的工作挂到缺口上（revisits、in contrast）。第三句的 however 与第四句的 this setting 都是回指线索，它们必须出现在被指代内容之后，因此不可能放在段首。按这个顺序读，可以在两分钟内判断一篇论文的 related work 是否真的把本文位置说清楚了。",
+            "correct_order": [
+              1,
+              0,
+              2,
+              3
+            ]
+          },
+          {
+            "type": "fill",
+            "question": "在空格处填入一个表示「尽管」的英文让步连词，使这句审稿回复成立：________ the suggested experiment would require re-running all baselines, we have added the requested analysis in Appendix B.（首字母大写）",
+            "options": [],
+            "explanation": "本题正确项是「While」。While 在句首作让步连词时意思是「尽管」，与 Although、Though 互换，比 but 更适合学术文体，因为它把让步放在主句之前，语气更克制；Although 更正式，Though 稍口语。要注意 While 还有「当……时」的时间用法，判别办法是看它能否被 Although 替换：能替换就是让步用法。这一句式在 rebuttal 里专门用于承认成本后再给证据，属于礼貌而坚定的典型骨架。",
+            "accepted_answers": [
+              "While",
+              "Although",
+              "Though"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "cs_english_docs_interview",
+        "title": {
+          "zh": "技术文档、提交信息与英文面试",
+          "en": "Technical Docs, Commit Messages and Interviews"
+        },
+        "summary": {
+          "zh": "掌握 README、提交信息与日志行的英文惯例，再用 STAR 结构把中文简历条目讲成英文面试答案。",
+          "en": "Master the wording conventions of READMEs, commit messages and log lines, then retell Chinese résumé bullets as STAR answers in an English interview."
+        },
+        "file": "assets/content/cs_english_docs_interview.md",
+        "minutes": 42,
+        "keywords": [
+          "文档祈使句",
+          "Conventional Commits",
+          "报错与日志读法",
+          "英文面试句式",
+          "STAR 简历改写"
+        ],
+        "difficulty": "高级",
+        "order": 7,
+        "quiz": [
+          {
+            "type": "single",
+            "question": "Conventional Commits 与 Git 社区惯例都要求提交标题用祈使句，例如写 fix a bug 而不写 fixed a bug，其主要理由是？",
+            "options": [
+              "标题描述的是应用该提交后代码发生的变化，与 Git 自动生成的合并回滚消息同构",
+              "过去式在英文里属于非法词形，Git 解析标题时会把 added 识别为未知关键字并报错",
+              "祈使句更短，可以节省一行字符，因此只是排版偏好，与工具生成的消息没有关联",
+              "标题会被 shell 再次解释成命令，所以必须以动词原形开头才能通过命令行语法检查"
+            ],
+            "explanation": "本题正确项是「标题描述的是应用该提交后代码发生的变化，与 Git 自动生成的合并回滚消息同构」。判断口诀是把标题填进 If applied, this commit will ___ 这个句式：填 fix a bug 读得通，填 fixed a bug 读不通。Git 自己生成的合并与回滚消息就是祈使句（Merge branch ...、Revert ...），人为提交保持同样语气，历史里才不会出现两种时态混排。干扰项「过去式在英文里属于非法词形，Git 解析标题时会把 added 识别为未知关键字并报错」不存在这种解析，Git 不检查英语语法。干扰项「标题会被 shell 再次解释成命令，所以必须以动词原形开头才能通过命令行语法检查」把标题与命令行之混淆，标题只是普通字符串。",
+            "answer": 0
+          },
+          {
+            "type": "code",
+            "question": "上面这段 git log 输出里有一条提交信息不符合英文惯例，关于它的问题所在，下列说法正确的是哪一项？",
+            "options": [
+              "55e0b1a 用了过去时且类型前缀缺失，other stuff 无法说明改了什么",
+              "docs: 一行没有括号作用域，因此所有不带作用域的写法都非法",
+              "refactor(api) 一行有问题，动词应当写在括号内而不是括号外",
+              "55e0b1a 写法合理，依赖升级属于日常维护，用过去式更能表达已完成"
+            ],
+            "explanation": "本题正确项是「55e0b1a 用了过去时且类型前缀缺失，other stuff 无法说明改了什么」。Conventional Commits 的标题形状是 type(scope): imperative summary，updated the dependencies and other stuff 三处偏离：动词用了过去式、没有 type 前缀、other stuff 这类含糊名词让读者与工具都无法判断变更边界。干扰项「docs: 一行没有括号作用域，因此所有不带作用域的写法都非法」把作用域说成必填，规范里 scope 是可选的；干扰项「refactor(api) 一行有问题，动词应当写在括号内而不是括号外」正好记反了格式，括号里放的是影响范围而不是动词。",
+            "answer": 0,
+            "code": "a1f9c2d feat(auth): add refresh token rotation\n73be104 fix(parser): handle escaped quotes in raw strings\n9c2d5e7 docs: correct the install steps for Windows\n55e0b1a updated the dependencies and other stuff\ne7b1234 refactor(api): remove unused legacy headers",
+            "language": "bash"
+          },
+          {
+            "type": "debug",
+            "question": "读下面这段英文报错，关于它的定位方式与修复方向，下列说法正确的是哪一项？",
+            "options": [
+              "AttributeError 表示 BertModel 类型选错，必须换成另一个模型库重写脚本",
+              "line 42 指的是解释器自身源码的行号，与用户脚本无关，改代码没有用",
+              "has no attribute 说明对象缺该属性，encode 属于上层封装类，应换用提供者",
+              "Traceback 一词说明这是缩进引起的语法错误，调整空白后即可正常运行"
+            ],
+            "explanation": "本题正确项是「has no attribute 说明对象缺该属性，encode 属于上层封装类，应换用提供者」。读法顺序是最后一行的异常名加宾语（AttributeError、'BertModel' object、no attribute encode），再回到倒数第二段看文件名与行号，最后看回显的那行代码确认调用点；encode 通常由高层封装类提供，换成提供该方法的类或改调用它已有的方法即可。干扰项「line 42 指的是解释器自身源码的行号，与用户脚本无关，改代码没有用」把栈帧的行号读反，infer.py 才是需要改的文件；干扰项「Traceback 一词说明这是缩进引起的语法错误，调整空白后即可正常运行」把异常类型当成语法错误，IndentationError 才是缩进问题的名字。",
+            "answer": 2,
+            "code": "Traceback (most recent call last):\n  File \"infer.py\", line 42, in <module>\n    logits = model.encode(texts)\nAttributeError: 'BertModel' object has no attribute 'encode'",
+            "language": "python"
+          },
+          {
+            "type": "multi",
+            "question": "关于 README、API 文档与错误码表的英文惯例，下列说法正确的有哪些？（多选）",
+            "options": [
+              "README 的 Usage 小节用祈使句给最短可运行命令，原理介绍另起小节",
+              "文档里的 must 与 may 可以随意互换，读者会自己判断约束的强弱",
+              "错误码表按含义、触发条件、建议动作三列书写，解释句用一般现在时",
+              "安装步骤写成过去时更准确，因为读者照着做的时候步骤已经完成了"
+            ],
+            "explanation": "本题要同时选中「README 的 Usage 小节用祈使句给最短可运行命令，原理介绍另起小节」和「错误码表按含义、触发条件、建议动作三列书写，解释句用一般现在时」两条。技术文档的第二人称隐含主语是读者，动作由读者执行，所以动词用原形开头（Install the package、Run the script）；错误码描述的是每次触发都成立的规律，因此用一般现在时。干扰项「文档里的 must 与 may 可以随意互换，读者会自己判断约束的强弱」把规范关键词当普通词，会直接改变接口语义；干扰项「安装步骤写成过去时更准确，因为读者照着做的时候步骤已经完成了」时态方向弄反了，安装动作由读者在未来执行。",
+            "answers": [
+              0,
+              2
+            ],
+            "answer": 0
+          },
+          {
+            "type": "order",
+            "question": "面试里回答「讲一个你优化系统的经历」，把下面四句英文按 STAR 结构的正常讲述顺序排列，正确的是哪一项？",
+            "options": [
+              "As a result, the p99 latency dropped from 450 to 120 milliseconds.",
+              "I was responsible for the reporting service used by 300 internal analysts.",
+              "I profiled the query path, replaced the N+1 lookups with a batch loader, and added a cache.",
+              "Because the dashboard timed out during month-end close, we had to rebuild the read path."
+            ],
+            "explanation": "STAR 的四拍是 Situation、Task、Action、Result：先用一句话交代系统与角色，再说明为什么必须动手，然后讲自己具体做了哪几件事，最后给可核查的数字。四句里的连接词本身就是线索：Because 引出触发条件，只能紧跟情境；As a result 只能收尾；中间那句一连串动词（profiled、replaced、added）是 Action 段的标志。面试官追问的通常就是这三层：你个人的动作、动作与结果的因果、数字的口径。",
+            "correct_order": [
+              1,
+              3,
+              2,
+              0
+            ]
+          },
+          {
+            "type": "fill",
+            "question": "把中文简历条目「负责报表系统的性能优化」改写成英文简历 bullet 时，开头应换成有产出的动词。在空格处填入一个表示「重构」的过去式动词：________ the monolithic report job into three idempotent tasks, cutting month-end latency by 70%.（首字母大写，只填一个词）",
+            "options": [],
+            "explanation": "本题正确项是「Refactored」。英文简历忌讳以 Responsible for 或 In charge of 开头，那只是在描述岗位而不是贡献；动词过去式加宾语再加量化结果，才是 bullet 的标准形状。Refactored ... into ... 表达「改变内部结构而外部行为不变」，与后面 cutting month-end latency by 70% 的因果关系成立。Rewrote、Restructured 同样可接受，但若写成 Optimized the report job 就丢了手段信息，读的人不知道你具体动了哪一层结构。",
+            "accepted_answers": [
+              "Refactored",
+              "Rewrote",
+              "Restructured",
+              "Redesigned"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
