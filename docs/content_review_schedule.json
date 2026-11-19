@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-19T05:28:32.116648Z",
+  "generated_at": "2026-11-19T05:51:10.908174Z",
   "schedule_months": 12,
   "first_month": "2026-11",
   "batch_count": 58,
@@ -362,7 +362,7 @@
       "category_id": "408_mock",
       "category_title": "考研 408 仿真试卷",
       "planned_review_at": "2027-01-24",
-      "lesson_count": 6,
+      "lesson_count": 8,
       "p0_touched": 0,
       "risk_high": 0,
       "risk_medium": 0,
@@ -372,7 +372,9 @@
         "408_mock_set3",
         "408_mock_set4",
         "408_mock_set5",
-        "408_mock_set6"
+        "408_mock_set6",
+        "408_mock_set7",
+        "408_mock_set8"
       ]
     },
     {
