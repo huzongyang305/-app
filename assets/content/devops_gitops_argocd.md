@@ -1753,7 +1753,7 @@ D. 「Kubernetes」：容器编排平台，ArgoCD把Git里的YAML资源应用到
 - 官方/权威资料：[OpenSSF 最佳实践](https://bestpractices.coreinfrastructure.org/)
 - 主题延伸：[Argo CD 官方文档](https://argo-cd.readthedocs.io/en/stable/)
 - 最后复核：2026-10-04
-- 下次复核：2027-04-17
+- 下次复核：2027-04-10
 
 ## 验证命令与预期输出
 

@@ -363,7 +363,7 @@ print(round(math.sqrt(1.05), 9), 1 + 0.05 / 2)
 - [OpenStax《Calculus Volume 1》](https://openstax.org/details/books/calculus-volume-1)
 - [Khan Academy 微积分 AB（导数与中值定理单元）](https://www.khanacademy.org/math/ap-calculus-ab)
 - 最后复核：2026-10-04
-- 下次复核：2027-01-10
+- 下次复核：2027-07-24
 - 来源性质：官方大纲 + 开放教材与公开课，用于核对定理条件与公式形式
 - 数值结论复核方式：中值点、曲率、渐近线与近似误差均由脚本重算
 

@@ -1136,7 +1136,7 @@ D. 「Goroutine」：由Go运行时而非操作系统调度的轻量并发单元
 - 官方/权威资料：[HTTP 规范](https://datatracker.ietf.org/doc/html/rfc9110)
 - 主题延伸：[Gin Web 框架官方文档](https://gin-gonic.com/en/docs/)
 - 最后复核：2026-10-04
-- 下次复核：2027-02-17
+- 下次复核：2027-02-10
 
 ### 进阶学习资源
 - **官方文档**：[Go Docs](https://go.dev/doc/)、[Gin Guide](https://gin-gonic.com/en/docs/)、[Echo Guide](https://echo.labstack.com/)

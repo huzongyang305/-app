@@ -405,7 +405,7 @@ D. 遇到缩写先还原全称，例如把 ACID 还原为 Atomicity、Consistenc
 | [GNU Git Book（Pro Git 英文版）](https://git-scm.com/book/en/v2) | 阅读工程类英文长文档，练习把段落压成主干 |
 
 - 最后复核：2026-10-04
-- 下次复核：2027-03-10
+- 下次复核：2027-03-24
 
 ## 内容元数据
 

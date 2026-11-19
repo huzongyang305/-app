@@ -815,7 +815,7 @@ D. 需要手动指定监听的依赖项
 - 官方/权威资料：[web.dev 性能指南](https://web.dev/)
 - 主题延伸：[Vue 3 组合式 API 常见问题](https://vuejs.org/guide/extras/composition-api-faq.html)
 - 最后复核：2026-10-04
-- 下次复核：2027-05-17
+- 下次复核：2027-05-10
 
 ## 内容元数据
 

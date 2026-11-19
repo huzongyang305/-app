@@ -389,7 +389,7 @@ D. 「全加器」：两个一位输入的加法电路
 | [Adder (electronics)](https://en.wikipedia.org/wiki/Adder_%28electronics%29) | 半加器、全加器与超前进位的结构 |
 
 - 最后复核：2026-10-04
-- 下次复核：2027-03-24
+- 下次复核：2027-02-17
 
 ## 内容元数据
 

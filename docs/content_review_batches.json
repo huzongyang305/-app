@@ -1,122 +1,10 @@
 {
-  "generated_at": "2026-11-15T09:46:29.768951Z",
+  "generated_at": "2026-11-19T05:28:25.650476Z",
   "content_version": "2.0",
   "batch_size": 24,
   "batch_count": 58,
   "records_path": "docs/content_review_records.json",
   "batches": [
-    {
-      "batch_id": "kaoyan_math-1",
-      "category_id": "kaoyan_math",
-      "category_title": "考研数学（数学一 / 数学二 / 数学三）",
-      "lesson_count": 8,
-      "reviewed": 0,
-      "status": "pending",
-      "risk_high": 2,
-      "risk_medium": 0,
-      "risk_low": 6,
-      "focus": [
-        "正文事实与术语是否准确，有无过时结论或含糊表述。",
-        "代码块能否按正文步骤运行，输出与解析是否一致。",
-        "测验题干、选项与解析是否自洽，答案下标是否正确。",
-        "参考资料链接可访问，且与课程主题匹配。",
-        "该批存在参考资料集合重复，需替换为与课程对应的来源。"
-      ],
-      "lessons": [
-        {
-          "lesson_id": "kaoyan_math_multiple_integral",
-          "title": "重积分、曲线与曲面积分：从二重积分到升维",
-          "risk": "high",
-          "characters": 13229,
-          "questions": 6,
-          "images": 1,
-          "machine_issues": [
-            "分类内参考资料集合重复"
-          ],
-          "review_status": "pending",
-          "review_method": ""
-        },
-        {
-          "lesson_id": "kaoyan_math_multivar_diff",
-          "title": "多元函数微分学：偏导数、全微分与极值",
-          "risk": "high",
-          "characters": 12966,
-          "questions": 6,
-          "images": 1,
-          "machine_issues": [
-            "分类内参考资料集合重复"
-          ],
-          "review_status": "pending",
-          "review_method": ""
-        },
-        {
-          "lesson_id": "kaoyan_math_integral",
-          "title": "一元函数积分学：不定积分、定积分与几何应用",
-          "risk": "low",
-          "characters": 14378,
-          "questions": 6,
-          "images": 1,
-          "machine_issues": [],
-          "review_status": "pending",
-          "review_method": ""
-        },
-        {
-          "lesson_id": "kaoyan_math_limit_continuity",
-          "title": "函数极限与连续：七种未定式与求极限的工具选择",
-          "risk": "low",
-          "characters": 11499,
-          "questions": 6,
-          "images": 1,
-          "machine_issues": [],
-          "review_status": "pending",
-          "review_method": ""
-        },
-        {
-          "lesson_id": "kaoyan_math_matrix",
-          "title": "行列式、矩阵与线性方程组：线性代数的四层计算地基",
-          "risk": "low",
-          "characters": 11119,
-          "questions": 6,
-          "images": 1,
-          "machine_issues": [],
-          "review_status": "pending",
-          "review_method": ""
-        },
-        {
-          "lesson_id": "kaoyan_math_ode",
-          "title": "常微分方程：先认类型，再套解法，最后定常数",
-          "risk": "low",
-          "characters": 13509,
-          "questions": 6,
-          "images": 1,
-          "machine_issues": [],
-          "review_status": "pending",
-          "review_method": ""
-        },
-        {
-          "lesson_id": "kaoyan_math_overview",
-          "title": "考研数学考纲全景与复习路线",
-          "risk": "low",
-          "characters": 9339,
-          "questions": 6,
-          "images": 1,
-          "machine_issues": [],
-          "review_status": "pending",
-          "review_method": ""
-        },
-        {
-          "lesson_id": "kaoyan_math_single_diff",
-          "title": "一元函数微分学：中值定理与导数的四大应用",
-          "risk": "low",
-          "characters": 11155,
-          "questions": 6,
-          "images": 1,
-          "machine_issues": [],
-          "review_status": "pending",
-          "review_method": ""
-        }
-      ]
-    },
     {
       "batch_id": "gamedev-1",
       "category_id": "gamedev",
@@ -6388,6 +6276,135 @@
           "title": "Java WebSocket 实时通信",
           "risk": "low",
           "characters": 8729,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        }
+      ]
+    },
+    {
+      "batch_id": "kaoyan_math-1",
+      "category_id": "kaoyan_math",
+      "category_title": "考研数学（数学一 / 数学二 / 数学三）",
+      "lesson_count": 10,
+      "reviewed": 0,
+      "status": "pending",
+      "risk_high": 0,
+      "risk_medium": 0,
+      "risk_low": 10,
+      "focus": [
+        "正文事实与术语是否准确，有无过时结论或含糊表述。",
+        "代码块能否按正文步骤运行，输出与解析是否一致。",
+        "测验题干、选项与解析是否自洽，答案下标是否正确。",
+        "参考资料链接可访问，且与课程主题匹配。"
+      ],
+      "lessons": [
+        {
+          "lesson_id": "kaoyan_math_eigen_probability",
+          "title": "特征值、二次型与概率统计：两栏对照的流程题",
+          "risk": "low",
+          "characters": 14078,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "kaoyan_math_integral",
+          "title": "一元函数积分学：不定积分、定积分与几何应用",
+          "risk": "low",
+          "characters": 14378,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "kaoyan_math_limit_continuity",
+          "title": "函数极限与连续：七种未定式与求极限的工具选择",
+          "risk": "low",
+          "characters": 11499,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "kaoyan_math_matrix",
+          "title": "行列式、矩阵与线性方程组：线性代数的四层计算地基",
+          "risk": "low",
+          "characters": 11119,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "kaoyan_math_multiple_integral",
+          "title": "重积分、曲线与曲面积分：从二重积分到升维",
+          "risk": "low",
+          "characters": 13425,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "kaoyan_math_multivar_diff",
+          "title": "多元函数微分学：偏导数、全微分与极值",
+          "risk": "low",
+          "characters": 12966,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "kaoyan_math_ode",
+          "title": "常微分方程：先认类型，再套解法，最后定常数",
+          "risk": "low",
+          "characters": 13509,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "kaoyan_math_overview",
+          "title": "考研数学考纲全景与复习路线",
+          "risk": "low",
+          "characters": 9339,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "kaoyan_math_series",
+          "title": "无穷级数：判敛、求和函数与傅里叶展开",
+          "risk": "low",
+          "characters": 13035,
+          "questions": 6,
+          "images": 1,
+          "machine_issues": [],
+          "review_status": "pending",
+          "review_method": ""
+        },
+        {
+          "lesson_id": "kaoyan_math_single_diff",
+          "title": "一元函数微分学：中值定理与导数的四大应用",
+          "risk": "low",
+          "characters": 11155,
           "questions": 6,
           "images": 1,
           "machine_issues": [],

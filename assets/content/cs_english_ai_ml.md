@@ -335,7 +335,7 @@ print(model.score(X_test, y_test))
 | [NumPy linalg routines](https://numpy.org/doc/stable/reference/routines.linalg.html) | norm、matrix multiplication 等术语在数值库文档里的英文用法 |
 
 - 最后复核：2026-10-04
-- 下次复核：2027-03-10
+- 下次复核：2027-03-24
 
 ## 内容元数据
 

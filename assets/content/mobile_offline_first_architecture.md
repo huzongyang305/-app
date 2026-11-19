@@ -917,7 +917,7 @@ D. 在应用启动时同步一次，之后不再同步
 - 官方/权威资料：[MDN：渐进式 Web 应用（PWA）](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)
 - 主题延伸：[Android Room 持久化官方指南](https://developer.android.google.cn/training/data-storage/room)
 - 最后复核：2026-10-04
-- 下次复核：2027-03-24
+- 下次复核：2027-03-17
 
 ## 内容元数据
 

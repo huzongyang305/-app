@@ -371,7 +371,7 @@ struct Bar {
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2027-06-24
+- 下次复核：2027-06-17
 - [HarmonyOS NEXT 开发者官网](https://developer.huawei.com/consumer/cn/harmonyos-next/)
 - [AVPlayer 音视频播放开发指导](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/media-kit-user-drive-play)
 - [CameraKit 相机开发指导](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/camera-kit-guide)

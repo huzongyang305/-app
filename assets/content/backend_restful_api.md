@@ -851,7 +851,7 @@ D. 只在请求头中指定版本，URL保持不变
 - 官方/权威资料：[HTTP 规范](https://datatracker.ietf.org/doc/html/rfc9110)
 - 主题延伸：[OpenAPI 规范](https://swagger.io/specification/)
 - 最后复核：2026-10-04
-- 下次复核：2027-02-17
+- 下次复核：2027-02-10
 
 ### 进阶学习资源
 - **官方规范**：[RFC 7231](https://tools.ietf.org/html/rfc7231)（HTTP语义）、[OpenAPI Specification](https://swagger.io/specification/)

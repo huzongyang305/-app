@@ -445,7 +445,7 @@ bool banker_request(int req[], int pid, int n) {
 - [Deadlock Prevention and Avoidance - GeeksforGeeks](https://www.geeksforgeeks.org/deadlock-prevention-avoidance/)
 - [Banker's Algorithm Explained - Programiz](https://www.programiz.com/operating-system/bankers-algorithm)
 - 最后复核：2026-10-04
-- 下次复核：2027-01-24
+- 下次复核：2027-01-17
 
 - [ ] 能不看正文复述本课核心概念，并指出一个边界或反例。
 - [ ] 能推演本课示例：先写预期输出，再运行并记录差异。

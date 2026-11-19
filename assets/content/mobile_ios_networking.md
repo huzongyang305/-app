@@ -517,7 +517,7 @@ D. 「UserDefaults」：轻量级键值持久化存储，适合用户偏好设�
 | [Apple Security Overview](https://developer.apple.com/documentation/security) | iOS 安全机制概览，包含 Keychain 服务 |
 
 - 最后复核：2026-10-04
-- 下次复核：2027-06-17
+- 下次复核：2027-06-10
 
 ## 内容元数据
 

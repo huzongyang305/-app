@@ -1121,7 +1121,7 @@ D. beforeUpdate → afterUpdate → onMount → onDestroy
 - 官方/权威资料：[web.dev 性能指南](https://web.dev/)
 - 主题延伸：[Svelte 官方文档：响应式概览](https://svelte.dev/docs/svelte/overview)
 - 最后复核：2026-10-04
-- 下次复核：2027-05-17
+- 下次复核：2027-05-10
 
 ## 内容元数据
 

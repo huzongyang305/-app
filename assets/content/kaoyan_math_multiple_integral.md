@@ -390,7 +390,7 @@ print(round(mass, 5), round(math.pi / 2.0, 5))
 - [OpenStax《Calculus Volume 3》多重积分与向量积分](https://openstax.org/details/books/calculus-volume-3)
 - [Paul's Online Notes 曲线积分与格林公式](https://tutorial.math.lamar.edu/classes/calciii/lineintegralspti.aspx)
 - 最后复核：2026-10-04
-- 下次复核：2027-01-10
+- 下次复核：2027-07-24
 - 来源性质：官方大纲、开放教材与计算机代数系统文档，用于核对公式前提、方向约定与坐标换元
 - 数值结论复核方式：半球体积、薄片质量、格林公式闭曲线积分与路径无关势函数均由网格求积脚本独立重算
 

@@ -588,7 +588,7 @@ D. 为闭包内改变的状态变化添加动画效果 ✅
 - 官方/权威资料：[Apple HIG](https://developer.apple.com/design/human-interface-guidelines/)
 - 主题延伸：[The Swift Programming Language 官方教材](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/)
 - 最后复核：2026-10-04
-- 下次复核：2027-06-17
+- 下次复核：2027-06-10
 
 ## 内容元数据
 

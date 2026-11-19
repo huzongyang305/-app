@@ -426,7 +426,7 @@ D. 「条件导入」：根据 dart.library.io / dart.library.html 在不同平�
 - 主题延伸：[Platform Channels 详解](https://docs.flutter.dev/platform-integration/platform-channels)
 
 - 最后复核：2026-10-04
-- 下次复核：2027-03-24
+- 下次复核：2027-03-17
 
 ## 内容元数据
 

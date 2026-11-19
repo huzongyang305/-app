@@ -497,7 +497,7 @@ System.out.println(c == d);  // false（超出缓存范围）
 
 - 最后复核：2026-10-04
 - [Oracle Java Tutorials - Variables](https://docs.oracle.com/javase/tutorial/java/data/variables.html)
-- 下次复核：2027-07-10
+- 下次复核：2027-06-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
 
 | 参考资料 | 本课用途 |

@@ -614,7 +614,7 @@ D. 「Flutter」：Dart与原生侧的通信桥，分方法调用、事件流和
 - 官方/权威资料：[Flutter 官方文档](https://docs.flutter.dev/)
 - 主题延伸：[Flutter 动画概览](https://flutter.cn/docs/ui/animations)
 - 最后复核：2026-10-04
-- 下次复核：2027-05-10
+- 下次复核：2027-05-24
 
 ## 内容元数据
 

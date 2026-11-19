@@ -412,7 +412,7 @@ D. 「CISC」：定长指令、访存受限的精简指令集
 | [Calling convention](https://en.wikipedia.org/wiki/Calling_convention) | 参数传递、寄存器保存与栈帧规则 |
 
 - 最后复核：2026-10-04
-- 下次复核：2027-03-24
+- 下次复核：2027-02-17
 
 ## 内容元数据
 

@@ -365,7 +365,7 @@ struct T {
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2027-06-24
+- 下次复核：2027-06-17
 - [HarmonyOS NEXT 开发者官网](https://developer.huawei.com/consumer/cn/harmonyos-next/)
 - [ArkUI 声明式开发框架概览](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ui-js-overview)
 - [ArkUI 常用基础组件参考](https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-basiccomponents-text)

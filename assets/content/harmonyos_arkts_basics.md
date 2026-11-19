@@ -369,7 +369,7 @@ console.info(speak(new Cat()));
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2027-06-24
+- 下次复核：2027-06-17
 - [HarmonyOS NEXT 开发者官网](https://developer.huawei.com/consumer/cn/harmonyos-next/)
 - [ArkTS 语言介绍](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkts)
 - [ArkTS 语法适配与限制说明](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/typescript-to-arkts-migration-guide)

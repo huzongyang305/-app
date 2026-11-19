@@ -960,7 +960,7 @@ D. 「OpenTelemetry」：CNCF 制定的可观测性数据标准，一次埋点�
 - 官方/权威资料：[OpenSSF 最佳实践](https://bestpractices.coreinfrastructure.org/)
 - 主题延伸：[Jaeger 官方文档](https://www.jaegertracing.io/docs/2.0/)
 - 最后复核：2026-10-04
-- 下次复核：2027-04-17
+- 下次复核：2027-04-10
 
 ## 内容元数据
 

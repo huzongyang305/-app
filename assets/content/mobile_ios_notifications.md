@@ -580,7 +580,7 @@ D. 「UNNotificationRequest」：一次通知请求，包含内容、触发器�
 | [App Lifecycle](https://developer.apple.com/documentation/uikit/app_and_environment/managing_your_app_s_life_cycle) | App 生命周期管理官方文档 |
 
 - 最后复核：2026-10-04
-- 下次复核：2027-06-17
+- 下次复核：2027-06-10
 
 ## 内容元数据
 

@@ -780,7 +780,7 @@ D. 「反调试」：客户端只认预设的服务端证书或公钥，装抓�
 - 官方/权威资料：[MDN：渐进式 Web 应用（PWA）](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)
 - 主题延伸：[OWASP 移动端安全测试指南](https://mas.owasp.org/)
 - 最后复核：2026-10-04
-- 下次复核：2027-03-24
+- 下次复核：2027-03-17
 
 ## 内容元数据
 

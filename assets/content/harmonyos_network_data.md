@@ -354,7 +354,7 @@ const value = await store.get('volume', 5);
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2027-06-24
+- 下次复核：2027-06-17
 - [HarmonyOS NEXT 开发者官网](https://developer.huawei.com/consumer/cn/harmonyos-next/)
 - [NetworkKit 网络访问开发指导](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/http-slab-remoting)
 - [ArkData 关系型数据库指导](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/data-persistence-by-rdb-store)

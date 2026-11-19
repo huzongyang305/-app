@@ -1331,7 +1331,7 @@ D. 「状态管理」：维护记录真实资源的 tfstate 文件，配合远�
 - 官方/权威资料：[OpenSSF 最佳实践](https://bestpractices.coreinfrastructure.org/)
 - 主题延伸：[Terraform 官方文档](https://developer.hashicorp.com/terraform/docs)
 - 最后复核：2026-10-04
-- 下次复核：2027-04-17
+- 下次复核：2027-04-10
 
 ## 内容元数据
 

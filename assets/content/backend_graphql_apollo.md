@@ -1108,7 +1108,7 @@ D. 「GraphQL」：由Facebook发起的API查询语言，客户端在单个请�
 - 官方/权威资料：[HTTP 规范](https://datatracker.ietf.org/doc/html/rfc9110)
 - 主题延伸：[Apollo Server 官方文档](https://www.apollographql.com/docs/apollo-server/)
 - 最后复核：2026-10-04
-- 下次复核：2027-02-17
+- 下次复核：2027-02-10
 
 ## 内容元数据
 

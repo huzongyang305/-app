@@ -532,7 +532,7 @@ D. 需要时钟信号
 - 主题延伸：[Wolfram MathWorld：布尔代数](https://mathworld.wolfram.com/BooleanAlgebra.html)
 
 - 最后复核：2026-10-04
-- 下次复核：2027-05-24
+- 下次复核：2027-04-17
 
 ## 内容元数据
 

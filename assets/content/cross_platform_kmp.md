@@ -410,7 +410,7 @@ D. 「Expect/Actual」：common 模块声明 expect 接口，各平台模块提�
 - 主题延伸：[Ktor Client 跨平台网络](https://ktor.io/docs/client-create-new-application.html)
 
 - 最后复核：2026-10-04
-- 下次复核：2027-03-24
+- 下次复核：2027-03-17
 
 ## 内容元数据
 

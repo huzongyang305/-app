@@ -720,7 +720,7 @@ D. 「Foreground Service」：带持久通知的 Service，系统不会轻易杀
 5. **复核要点**：本课代码示例基于 WorkManager 2.8+、Kotlin 1.8+、AndroidX。Foreground Service 的 `foregroundServiceType` 在 Android 14（API 34）开始强制要求。
 
 - 最后复核：2026-10-04
-- 下次复核：2027-02-10
+- 下次复核：2027-02-24
 
 ## 内容元数据
 

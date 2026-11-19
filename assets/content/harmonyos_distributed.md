@@ -345,7 +345,7 @@ onContinue(wantParam: Record<string, Object>): abilityContinuation.OnContinueRes
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2027-06-24
+- 下次复核：2027-06-17
 - [HarmonyOS NEXT 开发者官网](https://developer.huawei.com/consumer/cn/harmonyos-next/)
 - [分布式能力总览](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/soft-bus-overview)
 - [应用接续开发指导](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/in-app-continuation-overview)

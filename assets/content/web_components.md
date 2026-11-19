@@ -533,7 +533,7 @@ customElements.define("lesson-card", LessonCard);
 ## 参考资料与复核
 
 - 最后复核：2026-10-04
-- 下次复核：2027-06-10
+- 下次复核：2027-06-24
 - 复核范围：版本兼容、API 行为、安全建议与工程实践
 - 来源性质：官方文档、标准或权威教材；本课核对关键词：WebComponents、自定义元素、ShadowDOM、slot、设计系统。
 

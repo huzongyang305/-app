@@ -494,7 +494,7 @@ D. 「Servlet」：Java 编写的服务端程序，处理 HTTP 请求并返回�
 ---
 
 ## 参考资料与复核
-- 下次复核：2027-07-24
+- 下次复核：2027-07-17
 
 - [Oracle Servlet 规范](https://javaee.github.io/servlet-spec/)
 - [Apache Tomcat 官方文档](https://tomcat.apache.org/tomcat-9.0-doc/)
