@@ -8,4 +8,10 @@
     <!-- Flutter 首帧之前的窗口底色，避免白/黑闪屏 -->
     <color name="normal_background_light">#FFF8FAFC</color>
     <color name="normal_background_dark">#FF0F172A</color>
+    <!-- 桌面小组件：亮色主题配色（夜间见 values-night/colors.xml） -->
+    <color name="widget_surface">#FFFFFFFF</color>
+    <color name="widget_border">#14000000</color>
+    <color name="widget_text_primary">#FF0F172A</color>
+    <color name="widget_text_secondary">#FF64748B</color>
+    <color name="widget_track">#1A6C8FF8</color>
 </resources>

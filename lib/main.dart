@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'app.dart';
+import 'services/home_widget_service.dart';
 import 'services/notification_service.dart';
 import 'services/storage_service.dart';
 import 'services/storage_migration_service.dart';
@@ -26,7 +27,17 @@ Future<void> main() async {
     await notifications.requestPermission();
   }
 
-  runApp(CodeLearnApp(storage: storage, notifications: notifications));
+  // 桌面小组件：注册点击跳转的回调，并取回冷启动时小组件带来的目标。
+  final homeWidget = HomeWidgetService();
+  await homeWidget.init();
+
+  runApp(
+    CodeLearnApp(
+      storage: storage,
+      notifications: notifications,
+      homeWidget: homeWidget,
+    ),
+  );
 }
 
 /// 数据版本高于当前客户端时的只读错误页，不会自动清空用户数据。

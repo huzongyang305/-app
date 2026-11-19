@@ -7,6 +7,7 @@ import '../l10n/l10n_extension.dart';
 import '../models/backup_preview.dart';
 import '../services/auto_backup_service.dart';
 import '../services/backup_bundle_service.dart';
+import '../services/home_widget_service.dart';
 import '../services/notification_service.dart';
 import '../services/progress_provider.dart';
 import '../services/settings_provider.dart';
@@ -36,6 +37,7 @@ class _RootShellState extends State<RootShell> with WidgetsBindingObserver {
   SettingsProvider? _settings;
   ProgressProvider? _progress;
   NotificationService? _notifications;
+  HomeWidgetService? _homeWidget;
 
   /// 上次已下发的提醒方案签名，避免每次重建都重复调度。
   String? _reminderSignature;
@@ -66,16 +68,33 @@ class _RootShellState extends State<RootShell> with WidgetsBindingObserver {
       _progress?.removeListener(_syncReminder);
       _progress = progress..addListener(_syncReminder);
     }
+    final previousNotifications = _notifications;
     final notifications = context.read<NotificationService>();
-    if (!identical(_notifications, notifications)) {
+    if (!identical(previousNotifications, notifications)) {
       NotificationService.pendingPayload.removeListener(_onNotificationPayload);
       _notifications = notifications;
       NotificationService.pendingPayload.addListener(_onNotificationPayload);
-      // 冷启动时可能已经带着通知跳转目标，补一次处理。
+    }
+    final previousHomeWidget = _homeWidget;
+    final homeWidget = context.read<HomeWidgetService>();
+    if (!identical(previousHomeWidget, homeWidget)) {
+      HomeWidgetService.pendingRoute.removeListener(_onWidgetRoute);
+      _homeWidget = homeWidget;
+      HomeWidgetService.pendingRoute.addListener(_onWidgetRoute);
+    }
+    // 冷启动时可能已经带着跳转目标（通知或桌面小组件），补一次处理。
+    if (!identical(previousNotifications, notifications) ||
+        !identical(previousHomeWidget, homeWidget)) {
       WidgetsBinding.instance.addPostFrameCallback(
-        (_) => _onNotificationPayload(),
+        (_) => _consumePendingRoutes(),
       );
     }
+  }
+
+  /// 取回并分发待处理的跳转目标：先通知，后桌面小组件。
+  void _consumePendingRoutes() {
+    _onNotificationPayload();
+    _onWidgetRoute();
   }
 
   @override
@@ -83,18 +102,32 @@ class _RootShellState extends State<RootShell> with WidgetsBindingObserver {
     _settings?.removeListener(_syncReminder);
     _progress?.removeListener(_syncReminder);
     NotificationService.pendingPayload.removeListener(_onNotificationPayload);
+    HomeWidgetService.pendingRoute.removeListener(_onWidgetRoute);
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
-  /// 通知点击跳转：复习计划 / 每日一题。
+  /// 通知点击跳转。
   void _onNotificationPayload() {
     if (!mounted) return;
     final payload = NotificationService.consumePendingPayload();
     if (payload == null) return;
+    _openRoute(payload);
+  }
+
+  /// 桌面小组件点击跳转，路由取值与通知一致。
+  void _onWidgetRoute() {
+    if (!mounted) return;
+    final route = HomeWidgetService.consumePendingRoute();
+    if (route == null) return;
+    _openRoute(route);
+  }
+
+  /// 打开跳转目标对应的页面。
+  void _openRoute(String route) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      switch (payload) {
+      switch (route) {
         case 'review':
           Navigator.of(context).push(
             MaterialPageRoute<void>(builder: (_) => const ReviewPlanScreen()),
@@ -131,6 +164,8 @@ class _RootShellState extends State<RootShell> with WidgetsBindingObserver {
     await _maybeAutoBackup();
     // WebDAV：距上次成功同步满一天时静默合并一次。
     await _maybeAutoSync();
+    // 桌面小组件：数字有变化才写快照，放在提醒的早退分支之前。
+    await _syncWidget(settings, progress);
 
     // 目标达成祝贺：仅在用户开启提醒时发送，且每天最多一次。
     final goalMinutes = settings.dailyGoalMinutes;
@@ -174,6 +209,24 @@ class _RootShellState extends State<RootShell> with WidgetsBindingObserver {
       hour: 12,
       minute: 30,
       isEnglish: settings.isEnglish,
+    );
+  }
+
+  /// 把今日复习数据写进桌面小组件；快照内容未变化时服务内部会跳过写入。
+  Future<void> _syncWidget(
+    SettingsProvider settings,
+    ProgressProvider progress,
+  ) async {
+    final service = _homeWidget;
+    if (service == null || !service.isAvailable) return;
+    await service.sync(
+      HomeWidgetSnapshot.normalized(
+        dueQuestions: progress.dueQuestionReviewCount,
+        dueFlashcards: progress.dueFlashcardCount,
+        streakDays: progress.streakDays,
+        minutesToday: (progress.studySecondsToday / 60).ceil(),
+        goalMinutes: settings.dailyGoalMinutes,
+      ),
     );
   }
 

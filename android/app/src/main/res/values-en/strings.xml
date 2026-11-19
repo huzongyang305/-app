@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">CS &amp; Coding</string>
+    <!-- Home-screen widget -->
+    <string name="widget_review_label">Daily review</string>
+    <string name="widget_review_description">Shows due questions, cards and the study streak</string>
+    <string name="widget_review_title">Daily review</string>
+    <string name="widget_review_due_questions">Questions</string>
+    <string name="widget_review_due_flashcards">Cards</string>
+    <string name="widget_review_minutes_today">Minutes</string>
+    <string name="widget_review_streak">%1$d-day streak</string>
+    <string name="widget_review_goal">Goal %1$d of %2$d min</string>
+    <string name="widget_review_goal_done">Daily goal reached</string>
+    <string name="widget_review_all_clear">Nothing due today</string>
+    <string name="widget_review_daily_button">Daily question</string>
+    <string name="widget_review_pending">Open the app to sync</string>
 </resources>

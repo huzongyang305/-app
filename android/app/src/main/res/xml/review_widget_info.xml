@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  「每日复习」小组件声明。
+  updatePeriodMillis 系统最小只生效 30 分钟，真正的即时刷新由 App 在前台时
+  通过 ReviewWidgetProvider.ACTION_REFRESH 主动广播完成。
+-->
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:description="@string/widget_review_description"
+    android:initialLayout="@layout/widget_review"
+    android:minHeight="140dp"
+    android:minWidth="180dp"
+    android:previewLayout="@layout/widget_review"
+    android:resizeMode="horizontal|vertical"
+    android:targetCellHeight="2"
+    android:targetCellWidth="2"
+    android:updatePeriodMillis="1800000"
+    android:widgetCategory="home_screen"
+    tools:ignore="UnusedAttribute" />

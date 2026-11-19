@@ -5,6 +5,7 @@ import 'screens/root_shell.dart';
 import 'l10n/app_strings.dart';
 import 'services/achievement_unlock_service.dart';
 import 'services/content_provider.dart';
+import 'services/home_widget_service.dart';
 import 'services/notification_service.dart';
 import 'services/progress_provider.dart';
 import 'services/settings_provider.dart';
@@ -24,7 +25,7 @@ ThemeData _buildThemeWithPreset(
   // 如果不是默认主题，应用自定义主题色
   if (presetId != 'default') {
     final preset = AppThemes.findById(presetId);
-    
+
     return baseTheme.copyWith(
       colorScheme: baseTheme.colorScheme.copyWith(
         primary: preset.primary,
@@ -70,6 +71,7 @@ class CodeLearnApp extends StatelessWidget {
     super.key,
     required this.storage,
     this.notifications,
+    this.homeWidget,
     this.contentProvider,
     this.clock,
   });
@@ -78,6 +80,9 @@ class CodeLearnApp extends StatelessWidget {
 
   /// 本地提醒服务；测试或不需要通知时可不传，内部会自动降级。
   final NotificationService? notifications;
+
+  /// 桌面小组件服务；未初始化时只跳过写入，不影响其余功能。
+  final HomeWidgetService? homeWidget;
 
   /// 测试可注入预加载内容仓库；正式运行留空，由 App 自己加载 assets。
   final ContentProvider? contentProvider;
@@ -95,9 +100,8 @@ class CodeLearnApp extends StatelessWidget {
           create: (_) => ProgressProvider(storage, now: clock),
         ),
         ChangeNotifierProvider(
-          create: (context) => AchievementUnlockService(
-            context.read<ProgressProvider>(),
-          ),
+          create: (context) =>
+              AchievementUnlockService(context.read<ProgressProvider>()),
         ),
         if (contentProvider != null)
           ChangeNotifierProvider<ContentProvider>.value(value: contentProvider!)
@@ -107,6 +111,9 @@ class CodeLearnApp extends StatelessWidget {
           ),
         Provider<NotificationService>.value(
           value: notifications ?? NotificationService(),
+        ),
+        Provider<HomeWidgetService>.value(
+          value: homeWidget ?? HomeWidgetService(),
         ),
       ],
       child: Consumer<SettingsProvider>(

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 桌面小组件：深色主题配色，只覆盖小组件用到的五项，其余沿用 values/colors.xml -->
+    <color name="widget_surface">#FF1E293B</color>
+    <color name="widget_border">#22FFFFFF</color>
+    <color name="widget_text_primary">#FFF1F5F9</color>
+    <color name="widget_text_secondary">#FF94A3B8</color>
+    <color name="widget_track">#33FFFFFF</color>
+</resources>

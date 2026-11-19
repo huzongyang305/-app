@@ -2,4 +2,18 @@
 <resources>
     <!-- 桌面图标名称（默认中文，英文见 values-en） -->
     <string name="app_name">计算机与编程学习</string>
+    <!-- 桌面小组件：列表里的名称与说明 -->
+    <string name="widget_review_label">每日复习</string>
+    <string name="widget_review_description">显示今日到期题目、闪卡与连续打卡</string>
+    <!-- 桌面小组件：卡片内文案 -->
+    <string name="widget_review_title">每日复习</string>
+    <string name="widget_review_due_questions">到期题目</string>
+    <string name="widget_review_due_flashcards">到期闪卡</string>
+    <string name="widget_review_minutes_today">今日分钟</string>
+    <string name="widget_review_streak">连续 %1$d 天</string>
+    <string name="widget_review_goal">今日目标 %1$d / %2$d 分钟</string>
+    <string name="widget_review_goal_done">今日目标已完成</string>
+    <string name="widget_review_all_clear">到期复习都清空了</string>
+    <string name="widget_review_daily_button">每日一题</string>
+    <string name="widget_review_pending">打开 App 同步数据</string>
 </resources>

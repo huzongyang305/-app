@@ -48,6 +48,7 @@ class MainActivity : FlutterActivity() {
     private val contentPackChannelName = "code_learn_app/content_pack"
     private val shareChannelName = "code_learn_app/share"
     private val ttsChannelName = "code_learn_app/tts"
+    private val widgetChannelName = "code_learn_app/home_widget"
     private val assetCache = HashMap<String, String>()
     private var activeWebView: WebView? = null
     private var activeTimeout: Runnable? = null
@@ -70,6 +71,7 @@ class MainActivity : FlutterActivity() {
         getSharedPreferences("code_learn_backup", MODE_PRIVATE)
     }
     private var ttsChannel: MethodChannel? = null
+    private var widgetChannel: MethodChannel? = null
     private var textToSpeech: TextToSpeech? = null
     private var ttsReady = false
     private var pendingTtsText: String? = null
@@ -271,6 +273,51 @@ class MainActivity : FlutterActivity() {
                 else -> result.notImplemented()
             }
         }
+
+        // 桌面小组件：App 侧写完快照后请求立即重绘，并接管小组件点击的跳转。
+        val widget = MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            widgetChannelName,
+        )
+        widgetChannel = widget
+        widget.setMethodCallHandler { call, result ->
+            when (call.method) {
+                "refresh" -> {
+                    runCatching { ReviewWidgetProvider.refresh(this) }
+                        .fold(
+                            onSuccess = { result.success(true) },
+                            onFailure = { result.success(false) },
+                        )
+                }
+                "takeLaunchRoute" -> result.success(takePendingWidgetRoute())
+                else -> result.notImplemented()
+            }
+        }
+        captureWidgetRoute(intent)
+    }
+
+    // 小组件点击后，系统把带路由的 Intent 送到这里（Activity 被复用的情形）。
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        val route = captureWidgetRoute(intent)
+        if (route != null) {
+            widgetChannel?.invokeMethod("onRoute", route)
+        }
+    }
+
+    // 暂存小组件带来的跳转目标；Dart 侧尚未监听时靠它兜住冷启动。
+    private fun captureWidgetRoute(intent: Intent?): String? {
+        val route = intent?.getStringExtra(ReviewWidgetProvider.EXTRA_ROUTE) ?: return null
+        pendingWidgetRoute = route
+        return route
+    }
+
+    // 取走并清空暂存的跳转目标。
+    private fun takePendingWidgetRoute(): String? {
+        val route = pendingWidgetRoute
+        pendingWidgetRoute = null
+        return route
     }
 
     /** 首次调用时初始化系统语音引擎；初始化完成后立即处理排队的请求。 */
@@ -1275,6 +1322,9 @@ class MainActivity : FlutterActivity() {
     }
 
     private companion object {
+        // 小组件点击带来的跳转目标，等 Dart 侧启动后来取（冷启动用）。
+        var pendingWidgetRoute: String? = null
+
         const val SANDBOX_DIR = "sandbox"
         const val ENVELOPE_PREFIX = "CLB1:"
         const val KDF_SHA256: Byte = 1
