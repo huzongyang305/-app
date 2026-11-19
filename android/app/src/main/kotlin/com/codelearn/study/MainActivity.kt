@@ -16,6 +16,10 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.core.content.FileProvider
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.TextRecognizer
+import com.google.mlkit.vision.text.chinese.ChineseTextRecognizerOptions
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -49,6 +53,7 @@ class MainActivity : FlutterActivity() {
     private val shareChannelName = "code_learn_app/share"
     private val ttsChannelName = "code_learn_app/tts"
     private val widgetChannelName = "code_learn_app/home_widget"
+    private val ocrChannelName = "code_learn_app/ocr"
     private val assetCache = HashMap<String, String>()
     private var activeWebView: WebView? = null
     private var activeTimeout: Runnable? = null
@@ -72,6 +77,8 @@ class MainActivity : FlutterActivity() {
     }
     private var ttsChannel: MethodChannel? = null
     private var widgetChannel: MethodChannel? = null
+    // 识别器内部持有模型与线程池：懒创建、整个 Activity 复用，退出时关闭。
+    private var textRecognizer: TextRecognizer? = null
     private var textToSpeech: TextToSpeech? = null
     private var ttsReady = false
     private var pendingTtsText: String? = null
@@ -294,6 +301,51 @@ class MainActivity : FlutterActivity() {
             }
         }
         captureWidgetRoute(intent)
+
+        // 错题拍照收录：ML Kit 中文识别在设备内完成，图片不离开本机、不上传。
+        MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            ocrChannelName,
+        ).setMethodCallHandler { call, result ->
+            when (call.method) {
+                "recognizeText" -> recognizeText(call.argument<String>("path"), result)
+                else -> result.notImplemented()
+            }
+        }
+    }
+
+    // 识别器内部持有模型与线程池，第一次用到才创建，之后整个 Activity 复用。
+    private fun recognizer(): TextRecognizer =
+        textRecognizer ?: TextRecognition.getClient(
+            ChineseTextRecognizerOptions.Builder().build(),
+        ).also { textRecognizer = it }
+
+    // 识别结果回调跑在 ML Kit 自己的线程上，MethodChannel.Result 必须回主线程。
+    private fun recognizeText(path: String?, result: MethodChannel.Result) {
+        if (path.isNullOrBlank()) {
+            result.error("bad_path", "缺少图片路径", null)
+            return
+        }
+        val image = try {
+            val uri = if (path.startsWith("content://")) {
+                Uri.parse(path)
+            } else {
+                Uri.fromFile(File(path))
+            }
+            InputImage.fromFilePath(this, uri)
+        } catch (error: Exception) {
+            result.error("read_failed", "无法读取图片：${error.message}", null)
+            return
+        }
+        recognizer().process(image)
+            .addOnSuccessListener { text ->
+                Handler(Looper.getMainLooper()).post { result.success(text.text) }
+            }
+            .addOnFailureListener { error ->
+                Handler(Looper.getMainLooper()).post {
+                    result.error("ocr_failed", "文字识别失败：${error.message}", null)
+                }
+            }
     }
 
     // 小组件点击后，系统把带路由的 Intent 送到这里（Activity 被复用的情形）。
@@ -1006,6 +1058,8 @@ class MainActivity : FlutterActivity() {
         pendingBackupFolderResult?.error("activity_destroyed", "Activity destroyed", null)
         pendingBackupFolderResult = null
         pendingBackupPayload = null
+        runCatching { textRecognizer?.close() }
+        textRecognizer = null
         super.onDestroy()
     }
 

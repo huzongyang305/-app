@@ -257,10 +257,10 @@ dart tool/check_brand_assets.dart    # 自检尺寸、安全区与资源引用
 ### 直接分发 APK
 
 ```bash
-# 推荐：ARM 双 ABI 通用包，覆盖绝大多数 Android 真机
+# 推荐：按 ABI 拆分发布，单包更小、下载更快
+flutter build apk --release --split-per-abi --target-platform android-arm,android-arm64
+# ARM 双 ABI 通用包（覆盖绝大多数 Android 真机，但体积较大）
 flutter build apk --release --target-platform android-arm,android-arm64
-# 按 ABI 拆分（含 x86_64 模拟器包，单包更小）
-flutter build apk --release --split-per-abi
 # 完整三 ABI 通用包（含 x86_64，仅本机验证用；体积会超过 CI 门禁）
 flutter build apk --release
 ```
@@ -269,36 +269,35 @@ flutter build apk --release
 > 导致 release 编译仍引用 debug 专用的 `integration_test` 插件而失败。
 > 先 `flutter pub get`，再执行不带 `--no-pub` 的构建命令即可。
 
-产物与实测体积（v2.7.0+24，706 篇课程，本机 Flutter 3.13+ / AGP 9 环境）：
+产物与实测体积（v2.18.0+35，728 篇课程，本机 Flutter 3.47 / AGP 9.1 环境）：
 
 | 命令 | 产物 | 体积 |
 | --- | --- | ---: |
-| `--target-platform android-arm,android-arm64` | `app-release.apk`（ARM 双 ABI，发布用） | 94.78 MiB / 门禁 95 MiB |
-| `--split-per-abi` | `app-arm64-v8a-release.apk` | 74.66 MiB / 门禁 95 MiB |
-| | `app-armeabi-v7a-release.apk` | 72.69 MiB / 门禁 95 MiB |
-| | `app-x86_64-release.apk` | 76.14 MiB / 门禁 95 MiB |
+| `--split-per-abi` | `app-arm64-v8a-release.apk`（发布用） | 82.9 MiB / 门禁 95 MiB |
+| | `app-armeabi-v7a-release.apk`（发布用） | 76.9 MiB / 门禁 95 MiB |
+| `--target-platform android-arm,android-arm64` | `app-release.apk`（ARM 双 ABI） | 约 95 MiB |
 | `flutter build apk --release` | 3 ABI 通用包 | 超过 95 MiB 门禁，仅用于本机安装验证 |
 
-体积主要来自两部分：内置课程资产约 63.5 MiB（706 篇 Markdown 20.1 MiB、1327 张配图 38.7 MiB
-与内容清单 4.8 MiB 等）和沙箱运行时等资源约 15.0 MiB；ARM 双 ABI 原生库约 42 MiB。
+体积主要来自两部分：内置课程资产约 63.5 MiB（728 篇 Markdown、配图与内容清单等）
+和沙箱运行时等资源约 15.0 MiB；ARM 双 ABI 原生库约 42 MiB。
 配图统一为 WebP：体积最大的 40 张已压到最长边 1000px、`quality 65 / effort 6`（其余大图
-按原尺寸 `quality 60` 重编码），本轮清掉 7 张后缀写成 `.webp` 的 1792×1024 PNG，
-合计省下约 12.4 MiB。ARM 双 ABI 包实测 94.78 MiB，只剩约 0.2 MiB 余量，
-后续新增课程需同步压缩配图，否则会触发门禁。
-CI 里有体积门禁，会对 ARM 通用包和三个 ABI 分包逐一执行
+按原尺寸 `quality 60` 重编码），合计省下约 12.4 MiB。
+**发布改为仅 split-per-abi 分包**：arm64-v8a 包（82.9 MiB）包含 ML Kit 中文 OCR 库，
+armeabi-v7a 包（76.9 MiB）体积更小，两者都在 95 MiB 门禁内，余量充足。
+CI 里有体积门禁，会对两个 ABI 分包逐一执行
 `dart tool/apk_size_report.dart --budget-mb=95 <apk...>`。
 
 发布签名（`android/key.properties` 存在时走发布证书）：
 
 ```text
-apksigner verify --verbose --print-certs build/app/outputs/flutter-apk/app-release.apk
+apksigner verify --verbose --print-certs build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
 → Verified using v2 scheme: true
 → Verified using v3 scheme: true
 → V3.0 Signer certificate DN: CN=Code Learn, OU=Mobile, O=Code Learn, L=Beijing, ST=Beijing, C=CN
 ```
 
 APK 权限仅 `POST_NOTIFICATIONS` / `RECEIVE_BOOT_COMPLETED` / `VIBRATE`，
-**没有** `INTERNET`，不依赖任何网络服务。
+**没有** `INTERNET`，不依赖任何网络服务（ML Kit OCR 完全在本机运行）。
 
 ### 签名配置
 

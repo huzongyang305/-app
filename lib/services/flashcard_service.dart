@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import '../models/custom_question.dart';
 import '../models/flashcard.dart';
 import '../models/lesson.dart';
 import '../models/note.dart';
@@ -17,6 +18,9 @@ class FlashcardService {
 
   /// 一场闪卡最多刷多少张；排期到期优先时按这个上限截断。
   static const int maxSessionCards = 40;
+
+  /// 自录错题每场最多几张，避免记录攒多后挤掉课程复习。
+  static const int maxCustomPerSession = 8;
 
   /// 按单卡排期重新排序：到期卡 → 错题新卡 → 其他新卡 → 未来到期卡。
   ///
@@ -69,10 +73,12 @@ class FlashcardService {
   /// 生成卡片队列。
   ///
   /// [categoryId] / [lessonId] 为空表示不过滤；[seed] 用于稳定洗牌，
-  /// 传 null 时按当前时间随机。
+  /// 传 null 时按当前时间随机。自录错题不属于任何课程，因此只在
+  /// 不限定分类与课程时参与，且每场最多 [maxCustomPerSession] 张。
   static List<Flashcard> buildQueue(
     List<Lesson> lessons, {
     List<Note> notes = const <Note>[],
+    List<CustomQuestion> customQuestions = const <CustomQuestion>[],
     String? categoryId,
     String? lessonId,
     bool includeNotes = true,
@@ -114,6 +120,15 @@ class FlashcardService {
         final content = note.content.trim();
         if (content.isEmpty) continue;
         cards.add(Flashcard.fromNote(lesson: lesson, content: content));
+      }
+    }
+
+    // 自录错题不属于任何课程，只在不限定分类与课程时参与，避免单课复习被串题。
+    if (categoryId == null && lessonId == null && customQuestions.isNotEmpty) {
+      final custom = customQuestions.where((item) => item.isValid).toList()
+        ..shuffle(Random(seed == null ? null : seed + 7));
+      for (final item in custom.take(maxCustomPerSession)) {
+        cards.add(Flashcard.fromCustom(question: item));
       }
     }
 

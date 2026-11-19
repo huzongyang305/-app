@@ -186,6 +186,77 @@ class AppStrings {
     'wrongBook': {'zh': '错题本', 'en': 'Wrong answers'},
     'wrongCount': {'zh': '答错', 'en': 'Wrong'},
     'noWrongQuestions': {'zh': '还没有错题，继续保持', 'en': 'No wrong answers yet'},
+    'ocrCapture': {'zh': '拍照收录', 'en': 'Capture by photo'},
+    'ocrCaptureTitle': {'zh': '收录错题', 'en': 'Add a wrong question'},
+    'ocrTakePhoto': {'zh': '拍照', 'en': 'Take photo'},
+    'ocrFromGallery': {'zh': '从相册选择', 'en': 'From gallery'},
+    'ocrRecognizing': {
+      'zh': '正在识别图片中的文字…',
+      'en': 'Reading text from the image…',
+    },
+    'ocrUnavailable': {
+      'zh': '本机暂不支持文字识别，可直接手动填写。',
+      'en': 'On-device text recognition is unavailable here — type it in manually.',
+    },
+    'ocrFailed': {
+      'zh': '识别失败，可手动填写或换一张图片。',
+      'en': 'Recognition failed. Type it in manually or try another photo.',
+    },
+    'ocrEmpty': {
+      'zh': '没有从图片里识别到文字，可手动填写或换一张图片。',
+      'en': 'No text found in the image. Type it in manually or try another photo.',
+    },
+    'ocrRedo': {'zh': '换一张', 'en': 'Another photo'},
+    'ocrQuestionLabel': {'zh': '题干', 'en': 'Question'},
+    'ocrQuestionHint': {
+      'zh': '识别结果可以直接在这里改',
+      'en': 'Edit the recognized text as needed',
+    },
+    'ocrAnswerLabel': {'zh': '答案', 'en': 'Answer'},
+    'ocrAnswerHint': {'zh': '核对后的正确答案', 'en': 'The answer you verified'},
+    'ocrExplanationLabel': {'zh': '解析（选填）', 'en': 'Explanation (optional)'},
+    'ocrExplanationHint': {
+      'zh': '为什么这样答、你错在哪',
+      'en': 'Why this is correct and where you slipped',
+    },
+    'ocrSave': {'zh': '收录到错题本', 'en': 'Save to wrong-answer book'},
+    'ocrSaveUpdate': {'zh': '保存修改', 'en': 'Save changes'},
+    'ocrEditTitle': {'zh': '编辑错题', 'en': 'Edit a wrong question'},
+    'ocrEdit': {'zh': '编辑', 'en': 'Edit'},
+    'ocrDone': {
+      'zh': '已识别出文字，请核对题干与答案',
+      'en': 'Text recognized — check the question and the answer',
+    },
+    'ocrPhotoHint': {
+      'zh': '点右上角相机拍题面，或从相册选一张',
+      'en':
+          'Tap the camera to shoot the page, or pick a photo from the gallery',
+    },
+    'ocrOfflineNote': {
+      'zh': '识别在本机完成，照片不保存也不上传',
+      'en': 'Recognition runs on-device; the photo is neither stored nor uploaded',
+    },
+    'ocrUpdated': {'zh': '错题已更新', 'en': 'Question updated'},
+    'ocrNeedFields': {
+      'zh': '题干和答案都要填上才能收录',
+      'en': 'Both the question and the answer are required',
+    },
+    'ocrSaved': {'zh': '已收录 1 道错题', 'en': 'Question saved'},
+    'customQuestions': {'zh': '自录错题', 'en': 'Self-added questions'},
+    'customQuestionsCount': {
+      'zh': '自录错题 {n} 道',
+      'en': '{n} self-added questions',
+    },
+    'customQuestionsEmpty': {
+      'zh': '还没有自录错题，点右上角「拍照收录」添加',
+      'en': 'No self-added questions yet — use "Capture by photo" to add one',
+    },
+    'customQuestionCard': {'zh': '自录错题卡', 'en': 'Self-added card'},
+    'customQuestionDeleted': {'zh': '已删除该错题', 'en': 'Question deleted'},
+    'customQuestionDeleteConfirm': {
+      'zh': '删除后，它的复习排期也会一起清掉。要删除这道错题吗？',
+      'en': 'Its review schedule is removed too. Delete this question?',
+    },
     'wrongResolved': {'zh': '错题消灭率', 'en': 'Wrong resolved'},
     'wrongResolvedValue': {
       'zh': '已消灭 {done}/{total}',
@@ -405,15 +476,18 @@ class AppStrings {
     },
     'webdavTitle': {'zh': 'WebDAV 同步', 'en': 'WebDAV sync'},
     'webdavIntro': {
-      'zh': '同步内容包含学习进度、笔记、错题、闪卡、界面设置、代码片段与沙盒草稿。'
+      'zh':
+          '同步内容包含学习进度、笔记、错题、闪卡、界面设置、代码片段与沙盒草稿。'
           '同步按条目合并：手机和平板各自学过的内容都会保留，不会互相覆盖。',
-      'en': 'Sync covers progress, notes, mistakes, flashcards, settings, '
+      'en':
+          'Sync covers progress, notes, mistakes, flashcards, settings, '
           'snippets and sandbox drafts, merged item by item across devices.',
     },
     'webdavEndpoint': {'zh': '备份文件地址', 'en': 'Backup file URL'},
     'webdavEndpointHint': {
       'zh': '填到文件名，例：https://dav.example.com/code_learn/backup.json',
-      'en': 'Include the file name, e.g. https://dav.example.com/app/backup.json',
+      'en':
+          'Include the file name, e.g. https://dav.example.com/app/backup.json',
     },
     'webdavUsername': {'zh': '用户名（可留空）', 'en': 'User (optional)'},
     'webdavPassword': {'zh': '密码 / 应用专用密码', 'en': 'Password or app token'},
@@ -426,9 +500,11 @@ class AppStrings {
       'en': 'Stored on this device only, never logged',
     },
     'webdavInsecureWarning': {
-      'zh': '该地址是明文 HTTP，密码与学习记录会被网络中间方看到。'
+      'zh':
+          '该地址是明文 HTTP，密码与学习记录会被网络中间方看到。'
           '请使用 https，或改用不含密码的匿名目录。',
-      'en': 'This is plain HTTP: credentials and study data would be visible '
+      'en':
+          'This is plain HTTP: credentials and study data would be visible '
           'to anyone on the network. Use https or a password-less share.',
     },
     'webdavEnabled': {'zh': '启用 WebDAV 同步', 'en': 'Enable WebDAV sync'},
@@ -454,9 +530,11 @@ class AppStrings {
       'en': 'Last sync: {time} · {size}',
     },
     'webdavSecurityNote': {
-      'zh': '提示：网盘账号请用「应用专用密码」，权限限制到该目录即可；'
+      'zh':
+          '提示：网盘账号请用「应用专用密码」，权限限制到该目录即可；'
           '换设备时用同一份设置拉回数据。',
-      'en': 'Tip: use an app-specific password scoped to this folder so a '
+      'en':
+          'Tip: use an app-specific password scoped to this folder so a '
           'leaked token cannot touch the rest of your drive.',
     },
     'webdavFailedUnknown': {
@@ -484,17 +562,15 @@ class AppStrings {
       'zh': '连不上网盘，请检查网络或稍后再试',
       'en': 'Cannot reach the drive; check the network',
     },
-    'webdavErrServer': {
-      'zh': '网盘返回了错误',
-      'en': 'The drive returned an error',
-    },
+    'webdavErrServer': {'zh': '网盘返回了错误', 'en': 'The drive returned an error'},
     'webdavErrUnsupported': {
       'zh': '网盘不支持直接读取该文件，请换用文件直链地址',
       'en': 'The drive does not return the file directly; use a plain file URL',
     },
     'webdavErrBadBackup': {
       'zh': '远端文件不是本 App 的备份格式，已停止以免覆盖',
-      'en': 'Remote file is not a backup from this app; nothing was overwritten',
+      'en':
+          'Remote file is not a backup from this app; nothing was overwritten',
     },
     'webdavErrTooLarge': {
       'zh': '备份包超过 16 MB 上限，请先清理笔记或片段',

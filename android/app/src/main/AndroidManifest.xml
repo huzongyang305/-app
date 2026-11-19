@@ -3,6 +3,9 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <!-- 重启手机后重新注册已安排的本地通知 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <!-- WebDAV 多设备同步：仅在用户自行填写服务器地址并开启同步后发起请求。
+         这条权限此前靠视觉库的传递依赖带入，显式声明以免依赖调整后静默失效。 -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="@string/app_name"
         android:name="${applicationName}"

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../models/backup_preview.dart';
+import '../models/custom_question.dart';
 import '../models/lesson.dart';
 import '../models/note.dart';
 import '../models/note_anchor.dart';
@@ -22,6 +23,7 @@ class ProgressProvider extends ChangeNotifier {
     _learnedIds = _storage.readStringSet('learned_ids');
     _favoriteIds = _storage.readStringSet('favorite_ids');
     _restoreNotes();
+    _restoreCustomQuestions();
     _restoreQuizResults();
     _restoreWrongCounts();
     _restoreReview();
@@ -53,6 +55,10 @@ class ProgressProvider extends ChangeNotifier {
   Set<String> _noteIds = <String>{};
   Set<String> _quizIds = <String>{};
   final Map<String, Note> _notes = <String, Note>{};
+
+  /// 用户拍照收录或手录的错题，键为记录ID。
+  final Map<String, CustomQuestion> _customQuestions =
+      <String, CustomQuestion>{};
   final Map<String, QuizResult> _quizResults = <String, QuizResult>{};
   final Map<String, int> _wrongCounts = <String, int>{};
   final Set<String> _wrongEverKeys = <String>{};
@@ -127,6 +133,20 @@ class ProgressProvider extends ChangeNotifier {
   Set<String> get learnedIds => _learnedIds;
   Set<String> get favoriteIds => _favoriteIds;
   Map<String, Note> get notes => Map.unmodifiable(_notes);
+
+  /// 自录错题（拍照收录或手动补录），键为记录ID。
+  Map<String, CustomQuestion> get customQuestions =>
+      Map.unmodifiable(_customQuestions);
+
+  /// 自录错题按最后编辑时间倒序，最近改过的排在最前。
+  List<CustomQuestion> get customQuestionsNewestFirst {
+    final items = _customQuestions.values.toList();
+    items.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+    return List<CustomQuestion>.unmodifiable(items);
+  }
+
+  int get customQuestionCount => _customQuestions.length;
+  CustomQuestion? customQuestionOf(String id) => _customQuestions[id];
   Map<String, QuizResult> get quizResults => Map.unmodifiable(_quizResults);
   Set<String> get bookmarkedIds => Set<String>.unmodifiable(_bookmarkedIds);
   Map<String, int> get errorCauseCounts =>
@@ -1270,6 +1290,77 @@ class ProgressProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// 收录一道自录错题：题干与答案缺一即拒绝，返回 null 表示未保存。
+  ///
+  /// 识别结果只是草稿，用户确认后的文本才是最终内容；图片本身不入库。
+  Future<CustomQuestion?> addCustomQuestion({
+    required String question,
+    required String answer,
+    String explanation = '',
+  }) async {
+    final created = _now();
+    final item = CustomQuestion(
+      id: 'ocr-${created.microsecondsSinceEpoch}',
+      question: question,
+      answer: answer,
+      explanation: explanation,
+      createdAt: created,
+      updatedAt: created,
+    );
+    if (!item.isValid) return null;
+    await _writeCustomQuestion(item);
+    notifyListeners();
+    return item;
+  }
+
+  /// 更新自录错题；题干或答案被清空时拒绝保存，避免留下空白卡片。
+  Future<void> updateCustomQuestion(
+    String id, {
+    required String question,
+    required String answer,
+    required String explanation,
+  }) async {
+    final existing = _customQuestions[id];
+    if (existing == null) return;
+    final updated = existing.copyWith(
+      question: question,
+      answer: answer,
+      explanation: explanation,
+      updatedAt: _now(),
+    );
+    if (!updated.isValid) return;
+    await _writeCustomQuestion(updated);
+    notifyListeners();
+  }
+
+  /// 删除自录错题，同时清掉它的闪卡排期，避免残留记录计入待复习数量。
+  Future<void> deleteCustomQuestion(String id) async {
+    if (!_customQuestions.containsKey(id)) return;
+    _customQuestions.remove(id);
+    _flashcardDue.remove('custom:$id');
+    _flashcardInterval.remove('custom:$id');
+    _flashcardEase.remove('custom:$id');
+    _flashcardRepetitions.remove('custom:$id');
+    _flashcardLapses.remove('custom:$id');
+    await _storage.delete('custom_q_$id');
+    await _storage.write(
+      'all_custom_question_ids',
+      _customQuestions.keys.toList(),
+    );
+    // 排期表整体落盘，否则重启后这条到期记录会重新冒出来计入待复习数。
+    await _persistFlashcardReview();
+    notifyListeners();
+  }
+
+  Future<void> _writeCustomQuestion(CustomQuestion item) async {
+    _customQuestions[item.id] = item;
+    await _storage.write('custom_q_${item.id}', item.toJson());
+    await _storage.write(
+      'all_custom_question_ids',
+      _customQuestions.keys.toList(),
+    );
+  }
+
   /// 保存测验成绩：保留历史最好成绩，同时累加作答次数。
   Future<void> saveQuizResult(String lessonId, int correct, int total) async {
     await _markStudyToday();
@@ -1300,6 +1391,23 @@ class ProgressProvider extends ChangeNotifier {
       if (data is Map) {
         final note = Note.fromJson(data.cast<String, dynamic>());
         _notes[note.lessonId] = note;
+      }
+    }
+  }
+
+  /// 自录错题按记录ID存成独立键，导入与恢复都走同一套读写。
+  void _restoreCustomQuestions() {
+    final raw = _storage.read(
+      'all_custom_question_ids',
+      defaultValue: const <String>[],
+    );
+    for (final id in (raw as List).map((item) => item.toString())) {
+      final data = _storage.read('custom_q_$id');
+      if (data is Map) {
+        final item = CustomQuestion.fromJson(data.cast<String, dynamic>());
+        // 题干或答案缺失的导入记录直接丢弃，避免空白卡片进复习队列。
+        if (!item.isValid) continue;
+        _customQuestions[item.id] = item;
       }
     }
   }
@@ -1689,6 +1797,9 @@ class ProgressProvider extends ChangeNotifier {
         'daily_question_date': _dailyQuestionDate,
         'daily_question_correct': _dailyQuestionCorrect,
         'notes': _notes.map((key, value) => MapEntry(key, value.toJson())),
+        'custom_questions': _customQuestions.map(
+          (key, value) => MapEntry(key, value.toJson()),
+        ),
         'bookmarked_ids': _bookmarkedIds.toList(),
         'question_stats': _questionStats,
         'error_cause_counts': Map<String, int>.from(_errorCauseCounts),
@@ -1747,6 +1858,7 @@ class ProgressProvider extends ChangeNotifier {
     }.toList();
     result['quiz_results'] = _mergeQuizResults(current, incoming);
     result['notes'] = _mergeNotes(current, incoming);
+    result['custom_questions'] = _mergeCustomQuestions(current, incoming);
     result['wrong_counts'] = _mergeIntMaps(
       current['wrong_counts'],
       incoming['wrong_counts'],
@@ -1839,6 +1951,39 @@ class ProgressProvider extends ChangeNotifier {
           candidateTime == null ||
           (existingTime != null && candidateTime.isAfter(existingTime))) {
         result[entry.key] = candidate;
+      }
+    }
+    return result;
+  }
+
+  /// 合并两端自录错题：同 ID 取更新时间较新的一份，无效记录直接丢弃。
+  Map<String, dynamic> _mergeCustomQuestions(
+    Map<String, dynamic> current,
+    Map<String, dynamic> incoming,
+  ) {
+    final result = <String, dynamic>{};
+    for (final source in <Map<String, dynamic>>[
+      _mapOf(current['custom_questions']),
+      _mapOf(incoming['custom_questions']),
+    ]) {
+      for (final entry in source.entries) {
+        final id = entry.key.toString();
+        if (id.isEmpty) continue;
+        final candidate = CustomQuestion.fromJson(
+          (entry.value as Map).cast<String, dynamic>(),
+        );
+        if (!candidate.isValid) continue;
+        final existingRaw = result[id];
+        if (existingRaw == null) {
+          result[id] = candidate.toJson();
+          continue;
+        }
+        final existing = CustomQuestion.fromJson(
+          (existingRaw as Map).cast<String, dynamic>(),
+        );
+        if (candidate.updatedAt.isAfter(existing.updatedAt)) {
+          result[id] = candidate.toJson();
+        }
       }
     }
     return result;
@@ -1970,6 +2115,17 @@ class ProgressProvider extends ChangeNotifier {
       noteIds.add(id);
     }
     await _storage.write('all_note_ids', noteIds);
+
+    final customQuestions = (data['custom_questions'] as Map?) ?? const {};
+    final customQuestionIds = <String>[];
+    for (final entry in customQuestions.entries) {
+      final id = entry.key.toString();
+      if (id.isEmpty) continue;
+      final json = (entry.value as Map).cast<String, dynamic>();
+      await _storage.write('custom_q_$id', json);
+      customQuestionIds.add(id);
+    }
+    await _storage.write('all_custom_question_ids', customQuestionIds);
 
     await _storage.write(
       'study_days',
@@ -2131,6 +2287,8 @@ class ProgressProvider extends ChangeNotifier {
     _notes.clear();
     _noteIds = noteIds.toSet();
     _restoreNotes();
+    _customQuestions.clear();
+    _restoreCustomQuestions();
     _bookmarkedIds.clear();
     _restoreBookmarks();
     _questionStats.clear();

@@ -73,6 +73,8 @@ android {
 
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
+    // 错题拍照收录：ML Kit 中文文字识别，模型随包，离线可用、不依赖 Play 服务、不上传照片。
+    implementation("com.google.mlkit:text-recognition-chinese:16.0.1")
 }
 
 kotlin {

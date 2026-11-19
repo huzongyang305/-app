@@ -24,6 +24,15 @@
 # shared_preferences 保护
 -keep class io.flutter.plugins.sharedpreferences.** { *; }
 
+# ML Kit 文字识别：识别器通过反射装配模型与内部实现，R8 full mode 会裁掉这些入口。
+-keep class com.google.mlkit.** { *; }
+-keep class com.google.android.libraries.vision.** { *; }
+-keep class com.google.android.libraries.phenotype.** { *; }
+-keep class ni.ai.** { *; }
+-dontwarn com.google.mlkit.**
+-dontwarn com.google.android.libraries.**
+-dontwarn ni.ai.**
+
 # Gson 保护（如果使用）
 -keepattributes Signature
 -keepclassmembers class * implements java.io.Serializable {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../l10n/l10n_extension.dart';
+import '../models/custom_question.dart';
 import '../models/lesson.dart';
 import '../models/lesson_category.dart';
 import '../services/content_provider.dart';
@@ -10,6 +11,7 @@ import '../services/progress_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/empty_state.dart';
 import 'exam_screen.dart';
+import 'ocr_capture_screen.dart';
 import 'quiz_screen.dart';
 
 class WrongAnswerScreen extends StatefulWidget {
@@ -28,10 +30,13 @@ class _WrongAnswerScreenState extends State<WrongAnswerScreen> {
     final progress = context.watch<ProgressProvider>();
     final content = context.watch<ContentProvider>();
     final wrongKeys = progress.wrongQuestionKeys;
+    final customs = progress.customQuestionsNewestFirst;
+    // 自录错题不属于任何分类，只在「全部」视图里出现，避免分类筛选串题。
+    final showCustomSection = customs.isNotEmpty && _selectedCategoryId == null;
 
-    if (wrongKeys.isEmpty) {
+    if (wrongKeys.isEmpty && customs.isEmpty) {
       return Scaffold(
-        appBar: AppBar(title: Text(context.tr('wrongBook'))),
+        appBar: _captureAppBar(drillEnabled: false),
         body: EmptyState(
           icon: Icons.task_alt,
           message: context.tr('noWrongQuestions'),
@@ -39,65 +44,133 @@ class _WrongAnswerScreenState extends State<WrongAnswerScreen> {
       );
     }
 
-    final lessonWrongCounts =
-        _groupWrongByLesson(wrongKeys, content.allLessons);
-    final categoriesWithWrong =
-        _extractCategories(lessonWrongCounts, content.categories);
+    final lessonWrongCounts = _groupWrongByLesson(
+      wrongKeys,
+      content.allLessons,
+    );
+    final categoriesWithWrong = _extractCategories(
+      lessonWrongCounts,
+      content.categories,
+    );
     final filteredLessons = _selectedCategoryId == null
         ? lessonWrongCounts
         : lessonWrongCounts
-            .where((entry) => entry.key.categoryId == _selectedCategoryId)
-            .toList();
+              .where((entry) => entry.key.categoryId == _selectedCategoryId)
+              .toList();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.tr('wrongBook')),
-        actions: [
+      appBar: _captureAppBar(drillEnabled: wrongKeys.isNotEmpty),
+      body: Column(
+        children: [
+          if (wrongKeys.isNotEmpty) _StatsHeader(progress: progress),
+          if (categoriesWithWrong.length > 1)
+            _CategoryFilter(
+              categories: categoriesWithWrong,
+              selected: _selectedCategoryId,
+              onSelected: (cat) => setState(() => _selectedCategoryId = cat),
+            ),
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.all(AppSpacing.md),
+              children: [
+                ...filteredLessons.map((entry) {
+                  final lesson = entry.key;
+                  final wrongIndices = entry.value;
+                  return _LessonWrongCard(
+                    lesson: lesson,
+                    wrongIndices: wrongIndices,
+                    isExpanded: _expandedLessons.contains(lesson.id),
+                    onToggle: () => setState(() {
+                      if (_expandedLessons.contains(lesson.id)) {
+                        _expandedLessons.remove(lesson.id);
+                      } else {
+                        _expandedLessons.add(lesson.id);
+                      }
+                    }),
+                    onMastered: () => _markAllMastered(lesson.id, wrongIndices),
+                    onRetake: () => _retakeLesson(context, lesson),
+                  );
+                }),
+                if (showCustomSection) ...[
+                  _CustomQuestionsHeader(count: customs.length),
+                  ...customs.map(
+                    (item) => _CustomQuestionCard(
+                      question: item,
+                      onEdit: () => _editCustom(item),
+                      onDelete: () => _deleteCustom(item),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  AppBar _captureAppBar({required bool drillEnabled}) {
+    return AppBar(
+      title: Text(context.tr('wrongBook')),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.photo_camera_outlined),
+          tooltip: context.tr('ocrCapture'),
+          onPressed: _openCapture,
+        ),
+        if (drillEnabled)
           IconButton(
             icon: const Icon(Icons.refresh),
             tooltip: context.tr('wrongDrill'),
             onPressed: () => _startWrongDrill(context),
           ),
-        ],
-      ),
-      body: Column(
-        children: [
-          _StatsHeader(progress: progress),
-          if (categoriesWithWrong.length > 1)
-            _CategoryFilter(
-              categories: categoriesWithWrong,
-              selected: _selectedCategoryId,
-              onSelected: (cat) =>
-                  setState(() => _selectedCategoryId = cat),
-            ),
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(AppSpacing.md),
-              itemCount: filteredLessons.length,
-              itemBuilder: (context, index) {
-                final entry = filteredLessons[index];
-                final lesson = entry.key;
-                final wrongIndices = entry.value;
-                return _LessonWrongCard(
-                  lesson: lesson,
-                  wrongIndices: wrongIndices,
-                  isExpanded: _expandedLessons.contains(lesson.id),
-                  onToggle: () => setState(() {
-                    if (_expandedLessons.contains(lesson.id)) {
-                      _expandedLessons.remove(lesson.id);
-                    } else {
-                      _expandedLessons.add(lesson.id);
-                    }
-                  }),
-                  onMastered: () =>
-                      _markAllMastered(lesson.id, wrongIndices),
-                  onRetake: () => _retakeLesson(context, lesson),
-                );
-              },
-            ),
+      ],
+    );
+  }
+
+  Future<void> _openCapture() async {
+    final saved = await Navigator.of(context).push<bool>(
+      MaterialPageRoute<bool>(builder: (_) => const OcrCaptureScreen()),
+    );
+    if (saved == true && mounted) {
+      setState(() {});
+    }
+  }
+
+  Future<void> _editCustom(CustomQuestion item) async {
+    final saved = await Navigator.of(context).push<bool>(
+      MaterialPageRoute<bool>(builder: (_) => OcrCaptureScreen(existing: item)),
+    );
+    if (saved != true) return;
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(context.trRead('ocrUpdated'))),
+    );
+  }
+
+  Future<void> _deleteCustom(CustomQuestion item) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        content: Text(dialogContext.tr('customQuestionDeleteConfirm')),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(dialogContext.tr('cancel')),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(dialogContext.tr('delete')),
           ),
         ],
       ),
+    );
+    if (confirmed != true) return;
+    if (!mounted) return;
+    await context.read<ProgressProvider>().deleteCustomQuestion(item.id);
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(context.trRead('customQuestionDeleted'))),
     );
   }
 
@@ -130,9 +203,7 @@ class _WrongAnswerScreenState extends State<WrongAnswerScreen> {
     for (final entry in lessons) {
       catIds.add(entry.key.categoryId);
     }
-    return allCategories
-        .where((cat) => catIds.contains(cat.id))
-        .toList();
+    return allCategories.where((cat) => catIds.contains(cat.id)).toList();
   }
 
   void _markAllMastered(String lessonId, List<int> wrongIndices) async {
@@ -144,20 +215,15 @@ class _WrongAnswerScreenState extends State<WrongAnswerScreen> {
   }
 
   void _retakeLesson(BuildContext context, Lesson lesson) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => QuizScreen(lesson: lesson),
-      ),
-    );
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute<void>(builder: (_) => QuizScreen(lesson: lesson)));
   }
 
   void _startWrongDrill(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) => const ExamScreen(
-          wrongOnly: true,
-          practiceMode: true,
-        ),
+        builder: (_) => const ExamScreen(wrongOnly: true, practiceMode: true),
       ),
     );
   }
@@ -222,8 +288,7 @@ class _StatsHeader extends StatelessWidget {
               value: ratio,
               minHeight: 6,
               backgroundColor: Colors.white24,
-              valueColor:
-                  const AlwaysStoppedAnimation<Color>(Colors.white),
+              valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
             ),
           ),
         ],
@@ -295,15 +360,17 @@ class _CategoryFilter extends StatelessWidget {
             onSelected: (_) => onSelected(null),
           ),
           const SizedBox(width: 8),
-          ...categories.map((cat) => Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: FilterChip(
-                  label: Text(cat.title.of(locale)),
-                  selected: selected == cat.id,
-                  onSelected: (_) =>
-                      onSelected(cat.id == selected ? null : cat.id),
-                ),
-              )),
+          ...categories.map(
+            (cat) => Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: FilterChip(
+                label: Text(cat.title.of(locale)),
+                selected: selected == cat.id,
+                onSelected: (_) =>
+                    onSelected(cat.id == selected ? null : cat.id),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -375,11 +442,7 @@ class _LessonWrongCardState extends State<_LessonWrongCard> {
                   tooltip: context.tr('wrongResolved'),
                   onPressed: widget.onMastered,
                 ),
-                Icon(
-                  widget.isExpanded
-                      ? Icons.expand_less
-                      : Icons.expand_more,
-                ),
+                Icon(widget.isExpanded ? Icons.expand_less : Icons.expand_more),
               ],
             ),
             onTap: widget.onToggle,
@@ -393,10 +456,12 @@ class _LessonWrongCardState extends State<_LessonWrongCard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: widget.wrongIndices
-                    .map((idx) => _WrongQuestionItem(
-                          questionIndex: idx,
-                          lesson: widget.lesson,
-                        ))
+                    .map(
+                      (idx) => _WrongQuestionItem(
+                        questionIndex: idx,
+                        lesson: widget.lesson,
+                      ),
+                    )
                     .toList(),
               ),
             ),
@@ -407,10 +472,7 @@ class _LessonWrongCardState extends State<_LessonWrongCard> {
 }
 
 class _WrongQuestionItem extends StatelessWidget {
-  const _WrongQuestionItem({
-    required this.questionIndex,
-    required this.lesson,
-  });
+  const _WrongQuestionItem({required this.questionIndex, required this.lesson});
 
   final int questionIndex;
   final Lesson lesson;
@@ -440,20 +502,15 @@ class _WrongQuestionItem extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           ...question.options.asMap().entries.map((entry) {
-            final isCorrect =
-                question.correctIndexes.contains(entry.key);
+            final isCorrect = question.correctIndexes.contains(entry.key);
             return Padding(
               padding: const EdgeInsets.only(bottom: 4),
               child: Row(
                 children: [
                   Icon(
-                    isCorrect
-                        ? Icons.check_circle
-                        : Icons.circle_outlined,
+                    isCorrect ? Icons.check_circle : Icons.circle_outlined,
                     size: 16,
-                    color: isCorrect
-                        ? AppPalette.success
-                        : AppPalette.inkMuted,
+                    color: isCorrect ? AppPalette.success : AppPalette.inkMuted,
                   ),
                   const SizedBox(width: 8),
                   Expanded(
@@ -461,8 +518,7 @@ class _WrongQuestionItem extends StatelessWidget {
                       entry.value,
                       style: TextStyle(
                         color: isCorrect ? AppPalette.success : null,
-                        fontWeight:
-                            isCorrect ? FontWeight.w600 : null,
+                        fontWeight: isCorrect ? FontWeight.w600 : null,
                       ),
                     ),
                   ),
@@ -502,6 +558,147 @@ class _WrongQuestionItem extends StatelessWidget {
               ),
             ),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+class _CustomQuestionsHeader extends StatelessWidget {
+  const _CustomQuestionsHeader({required this.count});
+
+  final int count;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: AppSpacing.xs,
+        bottom: AppSpacing.sm,
+        top: AppSpacing.xs,
+      ),
+      child: Row(
+        children: [
+          Icon(
+            Icons.photo_camera_outlined,
+            size: 18,
+            color: AppPalette.primary,
+          ),
+          const SizedBox(width: 6),
+          Text(
+            context.trArgs('customQuestionsCount', {'n': count}),
+            style: theme.textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// 自录错题卡：题干与答案都先给一行摘要，点开再看解析。
+class _CustomQuestionCard extends StatefulWidget {
+  const _CustomQuestionCard({
+    required this.question,
+    required this.onEdit,
+    required this.onDelete,
+  });
+
+  final CustomQuestion question;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
+
+  @override
+  State<_CustomQuestionCard> createState() => _CustomQuestionCardState();
+}
+
+class _CustomQuestionCardState extends State<_CustomQuestionCard> {
+  bool _expanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final item = widget.question;
+    final explanation = item.explanation.trim();
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: AppSpacing.md),
+      child: Column(
+        children: [
+          ListTile(
+            leading: CircleAvatar(
+              backgroundColor: AppPalette.primary.withValues(alpha: 0.1),
+              child: const Icon(
+                Icons.photo_camera_outlined,
+                size: 18,
+                color: AppPalette.primary,
+              ),
+            ),
+            title: Text(
+              item.question,
+              maxLines: _expanded ? null : 2,
+              overflow: _expanded ? null : TextOverflow.ellipsis,
+              style: theme.textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            subtitle: Text(
+              item.answer,
+              maxLines: _expanded ? null : 1,
+              overflow: _expanded ? null : TextOverflow.ellipsis,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: AppPalette.success,
+              ),
+            ),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.edit_outlined, size: 20),
+                  tooltip: context.tr('ocrEdit'),
+                  onPressed: widget.onEdit,
+                ),
+                IconButton(
+                  icon: const Icon(Icons.delete_outline, size: 20),
+                  tooltip: context.tr('delete'),
+                  onPressed: widget.onDelete,
+                ),
+                if (explanation.isNotEmpty)
+                  Icon(_expanded ? Icons.expand_less : Icons.expand_more),
+              ],
+            ),
+            onTap: explanation.isEmpty
+                ? widget.onEdit
+                : () => setState(() => _expanded = !_expanded),
+          ),
+          if (_expanded && explanation.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.md,
+                0,
+                AppSpacing.md,
+                AppSpacing.md,
+              ),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppPalette.primary.withValues(alpha: 0.05),
+                  borderRadius: AppRadii.card,
+                  border: Border.all(
+                    color: AppPalette.primary.withValues(alpha: 0.2),
+                  ),
+                ),
+                child: Text(
+                  explanation,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: AppPalette.ink,
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );

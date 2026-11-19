@@ -1,10 +1,12 @@
+import 'custom_question.dart';
 import 'lesson.dart';
 
-/// 闪卡来源：测验题卡、笔记卡、课文术语卡。
+/// 闪卡来源：测验题卡、笔记卡、课文术语卡、用户自录错题卡。
 enum FlashcardKind {
   question('question'),
   note('note'),
-  term('term');
+  term('term'),
+  custom('custom');
 
   const FlashcardKind(this.storageKey);
 
@@ -33,7 +35,7 @@ class Flashcard {
   });
 
   /// 稳定标识：题目卡为 `课程#题号`，笔记卡为 `note:课程`，
-  /// 术语卡为 `term:课程#术语`。
+  /// 术语卡为 `term:课程#术语`，自录错题卡为 `custom:记录ID`。
   final String id;
   final String lessonId;
   final String categoryId;
@@ -99,6 +101,22 @@ class Flashcard {
       kind: FlashcardKind.note,
       front: lesson.title.zh,
       back: content,
+    );
+  }
+
+  /// 从用户自录错题生成闪卡：正面题干，背面答案，解析另附。
+  ///
+  /// 自录错题不属于任何课程，`lessonId` / `categoryId` 留空，
+  /// 排期与统计都只认 [CustomQuestion.id]。
+  factory Flashcard.fromCustom({required CustomQuestion question}) {
+    return Flashcard(
+      id: 'custom:${question.id}',
+      lessonId: '',
+      categoryId: '',
+      kind: FlashcardKind.custom,
+      front: question.question,
+      back: question.answer,
+      explanation: question.explanation.isEmpty ? null : question.explanation,
     );
   }
 

@@ -63,6 +63,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
     final base = FlashcardService.buildQueue(
       content.allLessons,
       notes: progress.notes.values.toList(),
+      customQuestions: progress.customQuestions.values.toList(),
       categoryId: widget.categoryId,
       lessonId: widget.lessonId,
       maxCards: FlashcardService.maxSessionCards + 20,
@@ -398,6 +399,9 @@ class _FlashcardViewState extends State<_FlashcardView>
                               ),
                               FlashcardKind.question => context.tr(
                                 'flashcardFront',
+                              ),
+                              FlashcardKind.custom => context.tr(
+                                'customQuestionCard',
                               ),
                             },
                             accent: theme.colorScheme.primary,
