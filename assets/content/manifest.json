@@ -2762,7 +2762,7 @@
                 "代码里出现了 `一元 RPC` 这个名字"
               ],
               "answer": 1,
-              "explanation": "按《实战：响应式落地页》的正文口径，本题正确项是「代码里出现了 `响应式` 这个名字」。题干里的「下面这段css代码来自实战响应式」要放回《实战：响应式落地页》的主线里看：语义结构、Flex/Grid 布局、深色模式与质量检查。常见错法是用 div 堆砌所有区块，其后果是结构无语义、SEO 差。正确做法是用语义标签。干扰项「代码里出现了 `subprocess` 这个名字」与题干「下面这段 `css` 代码来自 `实战：响应式落地页`。课程主线是语义结构、Flex/Grid 布局、深色模式与质量检查。代码与 `实战` 有关。哪一项是代码里真实出现的内容？」的要求对不上，应排除。",
+              "explanation": "按《实战：响应式落地页》的正文口径，本题正确项是「代码里出现了 `响应式` 这个名字」。 术语 实战（实战：响应式落地页）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。题干里的「下面这段css代码来自实战响应式」要放回《实战：响应式落地页》的主线里看：语义结构、Flex/Grid 布局、深色模式与质量检查。常见错法是用 div 堆砌所有区块，其后果是结构无语义、SEO 差。正确做法是用语义标签。干扰项「代码里出现了 `subprocess` 这个名字」与题干「下面这段 `css` 代码来自 `实战：响应式落地页`。课程主线是语义结构、Flex/Grid 布局、深色模式与质量检查。代码与 `实战` 有关。哪一项是代码里真实出现的内容？」的要求对不上，应排除。",
               "type": "code",
               "code": "/* 落地页骨架：响应式特性网格 + 深色模式支持 */\r\n:root {\r\n  --brand: #2563eb;\r\n  --bg: #ffffff;\r\n  --fg: #0f172a;\r\n  --muted: #64748b;\r\n  --card: #f8fafc;\r\n  --radius: 8px;\r\n  --space: clamp(1rem, 3vw, 2rem);\r\n}\r\n\r\n@media (prefers-color-scheme: dark) {\r\n  :root {\r\n    --bg: #0b1220;\r\n    --fg: #e5e7eb;\r\n    --muted: #94a3b8;\r\n    --card: #111c31;\r\n  }\r\n}\r\n\r\nbody {\r\n  margin: 0;\r\n  background: var(--bg);\r\n  color: var(--fg);\r\n  font-family: system-ui, sans-serif;\r\n  line-height: 1.6;\r\n}\r\n\r\n.container {\r\n  max-width: 72rem;\r\n  margin-inline: auto;\r\n  padding-inline: var(--space);\r\n}\r\n\r\n.features {\r\n  display: grid;\r\n  gap: var(--space);\r\n  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));\r\n}\r\n\r\n.feature {\r\n  background: var(--card);\r\n  border-radius: var(--radius);\r\n  padding: var(--space);\r\n}\r\n\r\n.cta {\r\n  display: inline-flex;\r\n  align-items: center;\r\n  gap: 0.5rem;\r\n  padding: 0.75rem 1.25rem;\r\n  border-radius: var(--radius);\r\n  background: var(--brand);\r\n  color: #ffffff;\r\n  text-decoration: none;\r\n  font-weight: 600;\r\n}\r\n\r\n.cta:focus-visible {\r\n  outline: 2px solid var(--fg);\r\n  outline-offset: 3px;\r\n}",
               "language": "css"
@@ -24402,7 +24402,7 @@
                 "调用了 `fmt.Sprint()`"
               ],
               "answer": 3,
-              "explanation": "按《Go 性能剖析与调优（进阶）》的正文口径，本题正确项是「调用了 `fmt.Sprint()`」。题干里的「这段go代码对应Go性能剖析与调」要放回《Go 性能剖析与调优（进阶）》的主线里看：用 pprof、trace、基准和逃逸分析定位 CPU、内存、锁和调度问题。做「这段go代码对应Go性能剖析与调」这类判断时，常踩的坑是只做 CPU 剖析，其后果是阻塞与内存问题看不到。按本课口径，「这段go代码对应Go性能剖析与调」这类题应结合阻塞、互斥与堆剖析一起看。干扰项「出现字面量 `healthy`」与题干的要求对不上，应排除。",
+              "explanation": "按《Go 性能剖析与调优（进阶）》的正文口径，本题正确项是「调用了 `fmt.Sprint()`」。 术语 pprof（Go 性能剖析与调优（进阶））：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。题干里的「这段go代码对应Go性能剖析与调」要放回《Go 性能剖析与调优（进阶）》的主线里看：用 pprof、trace、基准和逃逸分析定位 CPU、内存、锁和调度问题。做「这段go代码对应Go性能剖析与调」这类判断时，常踩的坑是只做 CPU 剖析，其后果是阻塞与内存问题看不到。按本课口径，「这段go代码对应Go性能剖析与调」这类题应结合阻塞、互斥与堆剖析一起看。干扰项「出现字面量 `healthy`」与题干的要求对不上，应排除。",
               "type": "code",
               "code": "package main\r\n\r\nimport (\r\n\t\"fmt\"\r\n\t\"testing\"\r\n)\r\n\r\nfunc BenchmarkConcat(b *testing.B) {\r\n\tfor i := 0; i < b.N; i++ {\r\n\t\t_ = fmt.Sprint(\"a\", \"b\")\r\n\t}\r\n}\r\n\r\nfunc main() {\r\n\tresult := testing.Benchmark(BenchmarkConcat)\r\n\tfmt.Println(\"rounds>0:\", result.N > 0)\r\n}",
               "language": "go"
@@ -31063,7 +31063,7 @@
                 "它说明 命令注入、权限、临时文件 只需要记忆结论，不需要记录版本、输入与运行结果。"
               ],
               "answer": 1,
-              "explanation": "按《Shell 脚本安全加固（进阶）》的正文口径，本题正确项是「覆盖命令注入、权限、临时文件、密钥和危险命令保护。」。读这段代码要先确认它真的读取了外部输入并产生可核对的输出，否则无法判断防护有没有生效。正确项之所以是那条覆盖清单，是因为命令注入、权限、临时文件、密钥和危险命令五个面缺一个都可能出事。干扰项「这段 Shell 代码只展示语法，不会读取任何输入或产生可验证输出。」与题干的要求对不上，应排除。",
+              "explanation": "按《Shell 脚本安全加固（进阶）》的正文口径，本题正确项是「覆盖命令注入、权限、临时文件、密钥和危险命令保护。」。 术语 命令注入（Shell 脚本安全加固（进阶））：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。读这段代码要先确认它真的读取了外部输入并产生可核对的输出，否则无法判断防护有没有生效。正确项之所以是那条覆盖清单，是因为命令注入、权限、临时文件、密钥和危险命令五个面缺一个都可能出事。干扰项「这段 Shell 代码只展示语法，不会读取任何输入或产生可验证输出。」与题干的要求对不上，应排除。",
               "type": "code",
               "code": "#!/usr/bin/env bash\nset -euo pipefail\nIFS=$'\\n\\t'\n\nworkdir=\"$(mktemp -d)\"\ntrap 'rm -rf \"$workdir\"' EXIT\n\ntarget=\"${workdir}/report.txt\"\nprintf 'safe\\n' > \"$target\"\nif [[ -f \"$target\" ]]; then",
               "language": "shell"
@@ -32447,7 +32447,7 @@
                 "出现字面量 `每帧可用时间预算。`"
               ],
               "answer": 0,
-              "explanation": "按《编译前端：词法与语法分析》的正文口径，本题正确项是「出现字面量 `KEYWORD`」。《编译前端：词法与语法分析》整课的主线是Token、正则/DFA、递归下降与 AST，本题按这条主线判定。常见错法是把语法错误和语义错误混在一起，其后果是报错阶段和修复建议都不准确。正确做法是让词法/语法只判断结构，语义阶段检查名字与类型。干扰项「出现字面量 `pid>0:`」与题干「`编译前端：词法与语法分析` 的示例代码用于验证 `最长匹配与回溯处理`，其背景是Token、正则/DFA、递归下降与 AST。代码的真实内容是下面哪一项？」的要求对不上，应排除。",
+              "explanation": "按《编译前端：词法与语法分析》的正文口径，本题正确项是「出现字面量 `KEYWORD`」。 术语 编译原理（编译前端：词法与语法分析）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。《编译前端：词法与语法分析》整课的主线是Token、正则/DFA、递归下降与 AST，本题按这条主线判定。常见错法是把语法错误和语义错误混在一起，其后果是报错阶段和修复建议都不准确。正确做法是让词法/语法只判断结构，语义阶段检查名字与类型。干扰项「出现字面量 `pid>0:`」与题干「`编译前端：词法与语法分析` 的示例代码用于验证 `最长匹配与回溯处理`，其背景是Token、正则/DFA、递归下降与 AST。代码的真实内容是下面哪一项？」的要求对不上，应排除。",
               "type": "code",
               "code": "import re\r\nfrom dataclasses import dataclass\r\n\r\n@dataclass\r\nclass Token:\r\n    kind: str\r\n    value: str\r\n    position: int\r\n\r\n# 词法分析：按正则规则切分，注意规则顺序（关键字先于标识符）\r\nTOKEN_RULES = [\r\n    (\"NUMBER\", re.compile(r\"\\d+(\\.\\d+)?\")),\r\n    (\"IDENT\", re.compile(r\"[A-Za-z_]\\w*\")),\r\n    (\"OP\", re.compile(r\"[+\\-*/=<>!]+\")),\r\n    (\"PUNCT\", re.compile(r\"[(){};,.]\")),\r\n    (\"SPACE\", re.compile(r\"\\s+\")),\r\n]\r\nKEYWORDS = {\"if\", \"else\", \"while\", \"return\"}\r\n\r\ndef tokenize(source: str):\r\n    tokens, index = [], 0\r\n    while index < len(source):\r\n        for kind, pattern in TOKEN_RULES:\r\n            match = pattern.match(source, index)\r\n            if not match:\r\n                continue\r\n            text = match.group()\r\n            if kind != \"SPACE\":                       # 跳过空白\r\n                if kind == \"IDENT\" and text in KEYWORDS:\r\n                    kind = \"KEYWORD\"\r\n                tokens.append(Token(kind, text, index))\r\n            index = match.end()\r\n            break\r\n        else:\r\n            raise SyntaxError(f\"无法识别的字符 {source[index]!r}（位置 {index}）\")\r\n    return tokens\r\n\r\nfor token in tokenize(\"if count >= 10 { total = total + 1 }\"):\r\n    print(token)",
               "language": "python"
@@ -33315,7 +33315,7 @@
                 "出现字面量 `ap-southeast-1a`"
               ],
               "answer": 0,
-              "explanation": "按《实战：追踪程序的全生命周期》的正文口径，本题正确项是「出现字面量 `deps`」。题干里的「这段bash代码对应实战追踪程序」要放回《实战：追踪程序的全生命周期》的主线里看：从预处理到加载执行，对照 /proc 与 perf 验证。做「这段bash代码对应实战追踪程序」这类判断时，常踩的坑是只看应用日志，其后果是错过系统层面原因。按本课口径，「这段bash代码对应实战追踪程序」这类题应结合 dmesg（OOM、IO 错误）。干扰项「出现字面量 `validation_error`」与题干的要求对不上，应排除。",
+              "explanation": "按《实战：追踪程序的全生命周期》的正文口径，本题正确项是「出现字面量 `deps`」。 术语 实战（实战：追踪程序的全生命周期）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。题干里的「这段bash代码对应实战追踪程序」要放回《实战：追踪程序的全生命周期》的主线里看：从预处理到加载执行，对照 /proc 与 perf 验证。做「这段bash代码对应实战追踪程序」这类判断时，常踩的坑是只看应用日志，其后果是错过系统层面原因。按本课口径，「这段bash代码对应实战追踪程序」这类题应结合 dmesg（OOM、IO 错误）。干扰项「出现字面量 `validation_error`」与题干的要求对不上，应排除。",
               "type": "code",
               "code": "import subprocess\n\ndef run_diagnostics(binary: str) -> dict:\n    \"\"\"收集一个可执行文件的基础诊断信息。\"\"\"\n    def capture(args):\n        try:\n            result = subprocess.run(args, capture_output=True, text=True, timeout=10)\n            return result.stdout.strip()\n        except (OSError, subprocess.SubprocessError) as exc:\n            return f\"执行失败：{exc}\"\n\n    return {\n        \"file\": capture([\"file\", binary]),\n        \"deps\": capture([\"ldd\", binary]),\n        \"missing_symbols\": capture([\"nm\", \"-u\", binary]),\n    }\n\ninfo = run_diagnostics(\"/bin/ls\")     # 换成自己的产物路径即可\nprint(info[\"file\"])",
               "language": "bash"
@@ -38208,7 +38208,7 @@
                 "出现字面量 `可访问性的正常路径`"
               ],
               "answer": 0,
-              "explanation": "按《字典树（Trie）》的正文口径，本题正确项是「出现字面量 `is_end`」。题干里的「这段python代码对应字典树（」要放回《字典树（Trie）》的主线里看：前缀树结构、搜索联想与 Trie vs 哈希表。做「这段python代码对应字典树（」这类判断时，常踩的坑是用完整字符串比较代替 Trie，其后果是前缀查询退化。按本课口径，「这段python代码对应字典树（」这类题应需要前缀能力时用 Trie。干扰项「出现字面量 `compensated`」与题干的要求对不上，应排除。",
+              "explanation": "按《字典树（Trie）》的正文口径，本题正确项是「出现字面量 `is_end`」。 术语 字典树（字典树（Trie））：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。题干里的「这段python代码对应字典树（」要放回《字典树（Trie）》的主线里看：前缀树结构、搜索联想与 Trie vs 哈希表。做「这段python代码对应字典树（」这类判断时，常踩的坑是用完整字符串比较代替 Trie，其后果是前缀查询退化。按本课口径，「这段python代码对应字典树（」这类题应需要前缀能力时用 Trie。干扰项「出现字面量 `compensated`」与题干的要求对不上，应排除。",
               "type": "code",
               "code": "class TrieNode:\r\n    __slots__ = (\"children\", \"is_end\", \"count\")\r\n    def __init__(self):\r\n        self.children = {}\r\n        self.is_end = False      # 是否是某个单词的结尾\r\n        self.count = 0           # 经过该节点的单词数（用于前缀统计）\r\n\r\nclass Trie:\r\n    def __init__(self):\r\n        self.root = TrieNode()\r\n\r\n    def insert(self, word: str) -> None:\r\n        node = self.root\r\n        for ch in word:\r\n            node = node.children.setdefault(ch, TrieNode())\r\n            node.count += 1\r\n        node.is_end = True\r\n\r\n    def search(self, word: str) -> bool:\r\n        node = self._walk(word)\r\n        return node is not None and node.is_end\r\n\r\n    def starts_with(self, prefix: str) -> bool:\r\n        return self._walk(prefix) is not None\r\n\r\n    def count_prefix(self, prefix: str) -> int:\r\n        node = self._walk(prefix)\r\n        return node.count if node else 0\r\n\r\n    def _walk(self, text: str):\r\n        node = self.root\r\n        for ch in text:\r\n            if ch not in node.children:\r\n                return None\r\n            node = node.children[ch]\r\n        return node",
               "language": "python"
@@ -41673,7 +41673,7 @@
                 "调用了 `println()`"
               ],
               "answer": 2,
-              "explanation": "按《实战：抓包分析一次真实请求》的正文口径，本题正确项是「出现字面量 `tcp port 443`」。题干里的「阅读实战抓包分析一次真实请求的实」要放回《实战：抓包分析一次真实请求》的主线里看：DNS 到 HTTP 全链路观察与三道排查题。做「阅读实战抓包分析一次真实请求的实」这类判断时，常踩的坑是首次慢、后续快，其后果是DNS 或连接未复用。按本课口径，「阅读实战抓包分析一次真实请求的实」这类题应是对比 `time_namelookup` 与连接复用。干扰项「调用了 `async()`」与题干「阅读 `实战：抓包分析一次真实请求` 的 `实战` 示例。它服务于DNS 到 HTTP 全链路观察与三道排查题。代码中实际包含下列哪一项？」的要求对不上，应排除。",
+              "explanation": "按《实战：抓包分析一次真实请求》的正文口径，本题正确项是「出现字面量 `tcp port 443`」。 术语 实战（实战：抓包分析一次真实请求）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。题干里的「阅读实战抓包分析一次真实请求的实」要放回《实战：抓包分析一次真实请求》的主线里看：DNS 到 HTTP 全链路观察与三道排查题。做「阅读实战抓包分析一次真实请求的实」这类判断时，常踩的坑是首次慢、后续快，其后果是DNS 或连接未复用。按本课口径，「阅读实战抓包分析一次真实请求的实」这类题应是对比 `time_namelookup` 与连接复用。干扰项「调用了 `async()`」与题干「阅读 `实战：抓包分析一次真实请求` 的 `实战` 示例。它服务于DNS 到 HTTP 全链路观察与三道排查题。代码中实际包含下列哪一项？」的要求对不上，应排除。",
               "type": "code",
               "code": "# 一、耗时分解：DNS、连接、TLS、首字节、总时间\r\ncurl -o /dev/null -s -w \\\r\n  'dns=%{time_namelookup} connect=%{time_connect} tls=%{time_appconnect} ttfb=%{time_starttransfer} total=%{time_total}\\n' \\\r\n  https://example.com/api/health\r\n\r\n# 二、DNS 与路由\r\ndig +stats example.com\r\nmtr -n -c 20 example.com\r\n\r\n# 三、抓包（含轮转，避免写满磁盘）\r\ntcpdump -i any -s 0 -w /tmp/cap.pcap -C 100 -W 5 'tcp port 443'\r\n\r\n# 四、Wireshark 常用过滤器\r\n# http.request or http.response                   只看 HTTP 请求与响应\r\n# tcp.analysis.retransmission                     只看重传\r\n# tcp.flags.reset == 1                            只看 RST\r\n# tls.handshake.type == 1 or tls.handshake.type == 2   ClientHello / ServerHello\r\n# ip.addr == 10.0.0.5 and tcp.port == 443         指定主机与端口\r\n# frame.time_delta_displayed > 1                  看相邻包间隔超过 1 秒\r\n\r\n# 五、统计与提取\r\ntshark -r /tmp/cap.pcap -q -z io,stat,1 | head      # 每秒流量统计\r\ntshark -r /tmp/cap.pcap -Y 'http.response.code >= 500' -T fields -e http.response.code",
               "language": "bash"
@@ -46926,7 +46926,7 @@
                 "出现字面量 `/lesson.png`"
               ],
               "answer": 0,
-              "explanation": "按《实战：设计并优化一个订单库》的正文口径，本题正确项是「出现字面量 `channel`」。《实战：设计并优化一个订单库》整课的主线是建模、造数据、加索引、事务并发与分页归档，本题按这条主线判定。常见错法是金额用浮点数，其后果是对账出现精度误差。正确做法是使用整数分或 DECIMAL。干扰项「出现字面量 ` + 2; // `」与题干的要求对不上，应排除。",
+              "explanation": "按《实战：设计并优化一个订单库》的正文口径，本题正确项是「出现字面量 `channel`」。 术语 实战（实战：设计并优化一个订单库）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。《实战：设计并优化一个订单库》整课的主线是建模、造数据、加索引、事务并发与分页归档，本题按这条主线判定。常见错法是金额用浮点数，其后果是对账出现精度误差。正确做法是使用整数分或 DECIMAL。干扰项「出现字面量 ` + 2; // `」与题干的要求对不上，应排除。",
               "type": "code",
               "code": "-- 防超卖：条件更新，不依赖先读后写\r\nUPDATE inventory\r\nSET available = available - 1,\r\n    reserved  = reserved + 1,\r\n    version   = version + 1\r\nWHERE product_id = 1001\r\n  AND available >= 1;\r\n-- 影响行数为 0 说明库存不足，业务层据此返回失败\r\n\r\n-- 幂等下单：唯一索引兜底防重复提交\r\nCREATE TABLE idempotency_keys (\r\n    key_id VARCHAR(64) PRIMARY KEY,\r\n    user_id BIGINT NOT NULL,\r\n    created_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),\r\n    response_body JSON NULL\r\n);\r\n\r\n-- 每组取最新一条（用户最近订单）：窗口函数\r\nSELECT *\r\nFROM (\r\n    SELECT o.*,\r\n           ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY created_at DESC, id DESC) AS rn\r\n    FROM orders o\r\n) t\r\nWHERE rn = 1;\r\n\r\n-- 订单状态流转审计\r\nINSERT INTO order_events (order_id, event_type, payload)\r\nVALUES (1001, 'paid', JSON_OBJECT('channel', 'alipay', 'amount', 59.70));",
               "language": "sql"
@@ -47687,7 +47687,7 @@
                 "调用了 `uuid4()`"
               ],
               "answer": 2,
-              "explanation": "按《实时数仓：从 Kafka 到 Flink》的正文口径，本题正确项是「调用了 `dws_user_actions()`」。《实时数仓：从 Kafka 到 Flink》整课的主线是链路分层、乱序与精确一次、分区与状态管理，本题按这条主线判定。常见错法是只用处理时间做窗口，其后果是网络延迟导致结果漂移。正确做法是使用事件时间和水位线。干扰项「调用了 `DAG()`」与题干的要求对不上，应排除。",
+              "explanation": "按《实时数仓：从 Kafka 到 Flink》的正文口径，本题正确项是「调用了 `dws_user_actions()`」。 术语 实时数仓（实时数仓：从 Kafka 到 Flink）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。《实时数仓：从 Kafka 到 Flink》整课的主线是链路分层、乱序与精确一次、分区与状态管理，本题按这条主线判定。常见错法是只用处理时间做窗口，其后果是网络延迟导致结果漂移。正确做法是使用事件时间和水位线。干扰项「调用了 `DAG()`」与题干的要求对不上，应排除。",
               "type": "code",
               "code": "-- ClickHouse / Doris 风格：实时表按天分区，按查询模式排序\r\nCREATE TABLE dws_user_actions (\r\n    dt          Date,\r\n    user_id     UInt64,\r\n    action_type LowCardinality(String),\r\n    action_cnt  UInt32,\r\n    updated_at  DateTime\r\n) ENGINE = ReplacingMergeTree(updated_at)\r\nPARTITION BY dt\r\nORDER BY (action_type, user_id);\r\n\r\n-- 实时看板：近 5 分钟聚合（配合物化视图或增量表）\r\nSELECT action_type, sum(action_cnt) AS total\r\nFROM dws_user_actions\r\nWHERE dt = today()\r\nGROUP BY action_type\r\nORDER BY total DESC\r\nLIMIT 10;",
               "language": "sql"
@@ -50451,7 +50451,7 @@
               "answer": 0,
               "code": "import queue\nimport threading\nimport time\nfrom dataclasses import dataclass, field\n\n@dataclass\nclass Metrics:\n    processed: int = 0\n    failed: int = 0\n    total_wait_ms: float = 0.0\n    total_run_ms: float = 0.0\n\n    def summary(self) -> dict:\n        processed = max(1, self.processed)\n        return {\n            \"processed\": self.processed,\n            \"failed\": self.failed,\n            \"avg_wait_ms\": round(self.total_wait_ms / processed, 2),\n            \"avg_run_ms\": round(self.total_run_ms / processed, 2),\n        }\n\n@dataclass\nclass TaskQueue:\n    \"\"\"有界任务队列 + 优雅关闭：支持背压与在途任务完成。\"\"\"\n\n    c\n// ...",
               "language": "python",
-              "explanation": "按《实战：实现一个多线程任务队列》的正文口径，本题正确项是「用无锁计数器多线程累加」。《实战：实现一个多线程任务队列》整课的主线是竞态、死锁、优雅退出与背压四类问题实操，本题按这条主线判定。常见错法是关闭时直接杀线程，其后果是任务半途中断、数据不一致。正确做法是停止接收 + 等待在途完成。干扰项「减少线程」与题干的要求对不上，应排除。"
+              "explanation": "按《实战：实现一个多线程任务队列》的正文口径，本题正确项是「用无锁计数器多线程累加」。 术语 实战（实战：实现一个多线程任务队列）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。《实战：实现一个多线程任务队列》整课的主线是竞态、死锁、优雅退出与背压四类问题实操，本题按这条主线判定。常见错法是关闭时直接杀线程，其后果是任务半途中断、数据不一致。正确做法是停止接收 + 等待在途完成。干扰项「减少线程」与题干的要求对不上，应排除。"
             }
           ],
           "order": 10,
@@ -56349,7 +56349,7 @@
               "answer": 3,
               "code": "from dataclasses import dataclass, field\n\n@dataclass\nclass QAResult:\n    question: str\n    answer: str\n    citations: list\n    retrieved: int\n    steps: int\n    tokens: int\n    latency_ms: float\n    refused: bool = False\n\n@dataclass\nclass ProjectMetrics:\n    results: list = field(default_factory=list)\n\n    def add(self, result: QAResult) -> None:\n        self.results.append(result)\n\n    def summary(self) -> dict:\n        total = len(self.results)\n        if not total:\n            return {\"cases\": 0}\n        with_citation = sum(1 for r in self.results if r.citations)\n        latencies = sorted(\n// ...",
               "language": "python",
-              "explanation": "本课的主线是数据准备、混合检索、引用生成、工具调用与评测集，四段真正决定回答质量的是检索回来的片段能不能支撑结论；一旦片段不支撑，模型缺少依据而编造答案就是最直接的表现，所以这一项与主线描述一致。响应更快、引用更准、成本降低都是期望的收益，正文并没有把它们写成这条主线的必然结果，脱离评测数据无法判断，因此不能作为与主线一致的说法。"
+              "explanation": "术语 实战（实战：文档问答助手（RAG + Agent））：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。 本课的主线是数据准备、混合检索、引用生成、工具调用与评测集，四段真正决定回答质量的是检索回来的片段能不能支撑结论；一旦片段不支撑，模型缺少依据而编造答案就是最直接的表现，所以这一项与主线描述一致。响应更快、引用更准、成本降低都是期望的收益，正文并没有把它们写成这条主线的必然结果，脱离评测数据无法判断，因此不能作为与主线一致的说法。"
             }
           ],
           "order": 15,
@@ -59157,7 +59157,7 @@
                 "响应体的字节与字符数"
               ],
               "answer": 2,
-              "explanation": "本题正确项是「输入 Token 数与总 Token 数」。usage 里的 prompt_tokens 是本次输入的 Token 量，total_tokens 是输入加生成量的合计，两个字段都来自服务端返回的计费口径，SDK 只是映射成属性。输出量对应 completion_tokens 而不是 total_tokens，请求耗时和字节数 SDK 并不提供，只能自己在客户端打点统计。"
+              "explanation": "本题正确项是「输入 Token 数与总 Token 数」。 术语 应用范式（LLM 应用开发全景与选型）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。usage 里的 prompt_tokens 是本次输入的 Token 量，total_tokens 是输入加生成量的合计，两个字段都来自服务端返回的计费口径，SDK 只是映射成属性。输出量对应 completion_tokens 而不是 total_tokens，请求耗时和字节数 SDK 并不提供，只能自己在客户端打点统计。"
             }
           ]
         },
@@ -59243,7 +59243,7 @@
                 "4 和 assistant"
               ],
               "answer": 1,
-              "explanation": "本题正确项是「3 和 assistant」。列表初始只有一个 System 元素，append 把用户消息放到末尾，insert(1, ...) 再把示范回答插到下标 1，最终顺序是 system、assistant、user，长度为 3。把 insert 当成追加就会算出 4，以为 System 会被替换则得到 2 和 system，都是没分清插入位置与下标口径。"
+              "explanation": "本题正确项是「3 和 assistant」。 术语 System 角色（Prompt 工程与结构化输出）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。列表初始只有一个 System 元素，append 把用户消息放到末尾，insert(1, ...) 再把示范回答插到下标 1，最终顺序是 system、assistant、user，长度为 3。把 insert 当成追加就会算出 4，以为 System 会被替换则得到 2 和 system，都是没分清插入位置与下标口径。"
             }
           ]
         },
@@ -59329,7 +59329,7 @@
                 "打印出字符串 你好"
               ],
               "answer": 3,
-              "explanation": "本题正确项是「打印出字符串 你好」。用 json 关键字构造响应时 text 属性给出序列化正文，loads 还原成字典后按 choices 列表、message 字典、content 键逐层取值，命中的正是初始化时写入的文本。role 在同层存在不会触发键缺失异常，取到的是叶子字符串而不是整个数组，字段齐全也不会返回空值。"
+              "explanation": "本题正确项是「打印出字符串 你好」。 术语 Chat Completions（主流大模型 API 接入）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。用 json 关键字构造响应时 text 属性给出序列化正文，loads 还原成字典后按 choices 列表、message 字典、content 键逐层取值，命中的正是初始化时写入的文本。role 在同层存在不会触发键缺失异常，取到的是叶子字符串而不是整个数组，字段齐全也不会返回空值。"
             }
           ]
         },
@@ -59415,7 +59415,7 @@
                 "1 个块"
               ],
               "answer": 0,
-              "explanation": "本题正确项是「3 个块」。以空行为段落边界时，连续的正文行会合并成同一个语义块，源文本被两个空行分成 A1A2、B1B2 和 C1 三段，过滤空串后长度仍是 3。把换行符也当段落边界才会得到 5 或 6，而 1 是把整篇当成单块的结果，两种偏差都来自没有区分行分隔符与段落分隔符。"
+              "explanation": "本题正确项是「3 个块」。 术语 分块策略（RAG 检索增强生成基础）：本题考查代码执行流程与输出结果，需要逐步跟踪变量变化。以空行为段落边界时，连续的正文行会合并成同一个语义块，源文本被两个空行分成 A1A2、B1B2 和 C1 三段，过滤空串后长度仍是 3。把换行符也当段落边界才会得到 5 或 6，而 1 是把整篇当成单块的结果，两种偏差都来自没有区分行分隔符与段落分隔符。"
             }
           ]
         },
@@ -59501,7 +59501,7 @@
                 "剩下 1 条"
               ],
               "answer": 2,
-              "explanation": "本题正确项是「剩下 3 条」。expanded 先把两条原始查询和大写后的两条依次拼上共四项，但 str.upper() 对中文不生效，退款政策与其大写形式完全相同，dict.fromkeys 去重时把它折回一条，于是只剩退款政策、refund policy 和 REFUND POLICY。算成 4 是漏看去重，算成 2 是以为大写文本又与原文重合。"
+              "explanation": "本题正确项是「剩下 3 条」。 术语 GraphRAG（RAG 进阶：GraphRAG 与多模态）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。expanded 先把两条原始查询和大写后的两条依次拼上共四项，但 str.upper() 对中文不生效，退款政策与其大写形式完全相同，dict.fromkeys 去重时把它折回一条，于是只剩退款政策、refund policy 和 REFUND POLICY。算成 4 是漏看去重，算成 2 是以为大写文本又与原文重合。"
             }
           ]
         },
@@ -59587,7 +59587,7 @@
                 "0 个参数全部可选"
               ],
               "answer": 1,
-              "explanation": "本题正确项是「1 个，即 order_id」。required 列表只登记了 order_id，properties 只声明字段的存在与类型，是否必填完全由 required 决定，因此模型可以省略 lang 但必须给出订单号。enum 只约束取值范围而不是必填性，把 properties 的数量当成必填数会误判为 2，认为必填可空则与 Schema 语义相反。"
+              "explanation": "本题正确项是「1 个，即 order_id」。 术语 JSON Schema（Function Calling 与工具使用）：本题考查代码执行流程与输出结果，需要逐步跟踪变量变化。required 列表只登记了 order_id，properties 只声明字段的存在与类型，是否必填完全由 required 决定，因此模型可以省略 lang 但必须给出订单号。enum 只约束取值范围而不是必填性，把 properties 的数量当成必填数会误判为 2，认为必填可空则与 Schema 语义相反。"
             }
           ]
         },
@@ -59673,7 +59673,7 @@
                 "end 和 tool"
               ],
               "answer": 3,
-              "explanation": "本题正确项是「end 和 tool」。三元表达式看的是列表本身是否为真值，空列表在 Python 里等价于 False，因此第一次走 end 分支，只有一个元素的列表为 True 则走 tool 分支。把空列表当成真值就会得到 tool 和 end，误以为路由依赖字段是否存在则两次都判成 tool，短路判断的布尔语义是状态机的关键。"
+              "explanation": "本题正确项是「end 和 tool」。 术语 ReAct（Agent 智能体设计）：本题考查代码执行流程与输出结果，需要逐步跟踪变量变化。三元表达式看的是列表本身是否为真值，空列表在 Python 里等价于 False，因此第一次走 end 分支，只有一个元素的列表为 True 则走 tool 分支。把空列表当成真值就会得到 tool 和 end，误以为路由依赖字段是否存在则两次都判成 tool，短路判断的布尔语义是状态机的关键。"
             }
           ]
         },
@@ -59759,7 +59759,7 @@
                 "报错因为竖线不能串链"
               ],
               "answer": 0,
-              "explanation": "本题正确项是「字符串 RAG 加感叹号」。管道按左到右执行，先由第一个 RunnableLambda 把 rag 转成大写，再把结果交给第二个函数追加感叹号，最终得到大写加感叹号。忘了先转大写会得到小写形式，以为追加发生在转换之前会漏掉感叹号，而 Runnable 原生支持竖线组合，不会因串联报错。"
+              "explanation": "本题正确项是「字符串 RAG 加感叹号」。 术语 LCEL（LangChain 与 LlamaIndex 实战）：本题考查代码执行流程与输出结果，需要逐步跟踪变量变化。管道按左到右执行，先由第一个 RunnableLambda 把 rag 转成大写，再把结果交给第二个函数追加感叹号，最终得到大写加感叹号。忘了先转大写会得到小写形式，以为追加发生在转换之前会漏掉感叹号，而 Runnable 原生支持竖线组合，不会因串联报错。"
             }
           ]
         },
@@ -59845,7 +59845,7 @@
                 "边数组 edges"
               ],
               "answer": 2,
-              "explanation": "本题正确项是「回复节点 reply」。edges 列表的最后一条把 to 指向 reply，用负数下标取到的是终点字段而不是起点字段，因此输出 reply。把 frm 当成 to 会读到大模型 llm，直接取 nodes 列表末位虽然巧合也是 reply 但走的是另一个数据结构，误读 edges 则把字段名当成了节点标识。"
+              "explanation": "本题正确项是「回复节点 reply」。 术语 Dify（Dify / FastGPT / Coze 低代码平台）：本题考查代码执行流程与输出结果，需要逐步跟踪变量变化。edges 列表的最后一条把 to 指向 reply，用负数下标取到的是终点字段而不是起点字段，因此输出 reply。把 frm 当成 to 会读到大模型 llm，直接取 nodes 列表末位虽然巧合也是 reply 但走的是另一个数据结构，误读 edges 则把字段名当成了节点标识。"
             }
           ]
         },
@@ -59931,7 +59931,7 @@
                 "仅显示本机显存占用"
               ],
               "answer": 2,
-              "explanation": "本题正确项是「200 与服务上的模型数」。标签接口是本地 Ollama 的健康与清单端点，服务在跑时返回 200，models 数组给出已拉取或已导入的模型条目，正好对应打印的两个值。404 不是该路径的正常行为，连接被拒只在服务没启动时发生而不是必然结果，显存占用要查另一组接口。"
+              "explanation": "本题正确项是「200 与服务上的模型数」。 术语 vLLM（模型部署与推理优化）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。标签接口是本地 Ollama 的健康与清单端点，服务在跑时返回 200，models 数组给出已拉取或已导入的模型条目，正好对应打印的两个值。404 不是该路径的正常行为，连接被拒只在服务没启动时发生而不是必然结果，显存占用要查另一组接口。"
             }
           ]
         },
@@ -60017,7 +60017,7 @@
                 "1 个供应商与 2 条用例"
               ],
               "answer": 0,
-              "explanation": "本题正确项是「2 个提示词与 1 条用例」。prompts 列了两个模板文件，tests 只有一条用例，用例里挂着 contains 这一个断言，因此打印 2 和 1。providers 才是供应商列表且只有一项，把它与提示词数量混起来会得到错误的组合，tests 的长度也不等于断言条数的总和。"
+              "explanation": "本题正确项是「2 个提示词与 1 条用例」。 术语 LLM as Judge（评估、监控与安全护栏）：本题考查代码执行流程与输出结果，需要逐步跟踪变量变化。prompts 列了两个模板文件，tests 只有一条用例，用例里挂着 contains 这一个断言，因此打印 2 和 1。providers 才是供应商列表且只有一项，把它与提示词数量混起来会得到错误的组合，tests 的长度也不等于断言条数的总和。"
             }
           ]
         },
@@ -60103,7 +60103,7 @@
                 "最大延迟即 4.0 秒"
               ],
               "answer": 1,
-              "explanation": "本题正确项是「约 3.1 秒的 P95 延迟」。排序后用样本数乘分位系数再减一取下标，五个数得到下标 3，对应升序第四个数 3.1，即这组样本的近似高分位延迟。平均值要除以样本数而不是按下标取，最大值会直接落在末位的 4.0，首 Token 时延需要另外打点，与整体延迟口径不同。"
+              "explanation": "本题正确项是「约 3.1 秒的 P95 延迟」。 术语 需求拆解（综合项目：企业知识库助手）：本题考查代码执行流程与输出结果，需要逐步跟踪变量变化。排序后用样本数乘分位系数再减一取下标，五个数得到下标 3，对应升序第四个数 3.1，即这组样本的近似高分位延迟。平均值要除以样本数而不是按下标取，最大值会直接落在末位的 4.0，首 Token 时延需要另外打点，与整体延迟口径不同。"
             }
           ]
         }
@@ -62319,7 +62319,7 @@
               "answer": 0,
               "code": "@dataclass\nclass Threat:\n    category: str            # STRIDE 之一\n    asset: str\n    scenario: str\n    likelihood: int          # 1 到 5\n    impact: int              # 1 到 5\n    mitigation: str = \"\"\n\n    def risk(self) -> int:\n        return self.likelihood * self.impact",
               "language": "python",
-              "explanation": "按《安全开发生命周期（SDL）》的正文口径，本题正确项是「按资产梳理威胁场景、评估可能性与影响并给出缓解措施，优先处理高风险项」。题干里的「阅读这份威胁建模数据下面哪项判断」要放回《安全开发生命周期（SDL）》的主线里看：六阶段安全活动、STRIDE 威胁建模与落地要点。做「阅读这份威胁建模数据下面哪项判断」这类判断时，常踩的坑是上线前才做安全测试，其后果是问题发现太晚、成本高。按本课口径，「阅读这份威胁建模数据下面哪项判断」这类题应需求与设计阶段就介入。干扰项「安全设计只需上线前做一次渗透测试，开发阶段不必建模」与题干「阅读这份威胁建模数据，下面哪项判断是正确的」的要求对不上，应排除。"
+              "explanation": "按《安全开发生命周期（SDL）》的正文口径，本题正确项是「按资产梳理威胁场景、评估可能性与影响并给出缓解措施，优先处理高风险项」。 术语 SDL（安全开发生命周期（SDL））：本题考查SDL的核心概念与应用。题干里的「阅读这份威胁建模数据下面哪项判断」要放回《安全开发生命周期（SDL）》的主线里看：六阶段安全活动、STRIDE 威胁建模与落地要点。做「阅读这份威胁建模数据下面哪项判断」这类判断时，常踩的坑是上线前才做安全测试，其后果是问题发现太晚、成本高。按本课口径，「阅读这份威胁建模数据下面哪项判断」这类题应需求与设计阶段就介入。干扰项「安全设计只需上线前做一次渗透测试，开发阶段不必建模」与题干「阅读这份威胁建模数据，下面哪项判断是正确的」的要求对不上，应排除。"
             },
             {
               "question": "围绕“安全开发生命周期（SDL）”中的 SDL、威胁建模、STRIDE，下列哪两项是本课强调的实践判断？",
@@ -62768,7 +62768,7 @@
                 "出现字面量 `expected`"
               ],
               "answer": 2,
-              "explanation": "按《线性代数：向量与矩阵》的正文口径，本题正确项是「出现字面量 `形状不满足乘法条件`」。《线性代数：向量与矩阵》整课的主线是点积与余弦相似度、矩阵乘法形状规则、秩与最小二乘，本题按这条主线判定。常见错法是忽略矩阵乘法形状，其后果是结果维度不符或报错。正确做法是先校验中间维度相等。干扰项「出现字面量 `onPending`」与题干「阅读 `线性代数：向量与矩阵` 的 `线性代数` 示例。它服务于点积与余弦相似度、矩阵乘法形状规则、秩与最小二乘。代码中实际包含下列哪一项？」的要求对不上，应排除。",
+              "explanation": "按《线性代数：向量与矩阵》的正文口径，本题正确项是「出现字面量 `形状不满足乘法条件`」。 术语 线性代数（线性代数：向量与矩阵）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。《线性代数：向量与矩阵》整课的主线是点积与余弦相似度、矩阵乘法形状规则、秩与最小二乘，本题按这条主线判定。常见错法是忽略矩阵乘法形状，其后果是结果维度不符或报错。正确做法是先校验中间维度相等。干扰项「出现字面量 `onPending`」与题干「阅读 `线性代数：向量与矩阵` 的 `线性代数` 示例。它服务于点积与余弦相似度、矩阵乘法形状规则、秩与最小二乘。代码中实际包含下列哪一项？」的要求对不上，应排除。",
               "type": "code",
               "code": "import math\r\nfrom typing import Sequence\r\n\r\nVector = Sequence[float]\r\nMatrix = Sequence[Sequence[float]]\r\n\r\ndef dot(a: Vector, b: Vector) -> float:\r\n    if len(a) != len(b):\r\n        raise ValueError(\"维度不一致\")\r\n    return sum(x * y for x, y in zip(a, b))\r\n\r\ndef norm(a: Vector) -> float:\r\n    return math.sqrt(dot(a, a))\r\n\r\ndef cosine(a: Vector, b: Vector) -> float:\r\n    na, nb = norm(a), norm(b)\r\n    return 0.0 if na == 0 or nb == 0 else dot(a, b) / (na * nb)\r\n\r\ndef matmul(a: Matrix, b: Matrix) -> list:\r\n    \"\"\"矩阵乘法：形状 (m,n) x (n,p) 得到 (m,p)。\"\"\"\r\n    if not a or not b or len(a[0]) != len(b):\r\n        raise ValueError(\"形状不满足乘法条件\")\r\n    b_t = list(zip(*b))\r\n    return [[dot(row, col) for col in b_t] for row in a]\r\n\r\ndef transpose(a: Matrix) -> list:\r\n    return [list(row) for row in zip(*a)]\r\n\r\ndef project(a: Vector, b: Vector) -> Vector:\r\n    \"\"\"把 a 投影到 b 上：分量 = (a·b / b·b) * b。\"\"\"\r\n    bb = dot(b, b)\r\n    if bb == 0:\r\n        raise ValueError(\"不能投影到零向量\")\r\n    scale = dot(a, b) / bb\r\n    return [scale * value for value in b]\r\n\r\nprint(round(cosine([1, 2, 3], [2, 4, 6]), 6))          # 1.0，方向相同\r\nprint(matmul([[1, 2], [3, 4]], [[5, 6], [7, 8]]))\r\nprint(project([3, 4], [1, 0]))",
               "language": "python"
@@ -63327,7 +63327,7 @@
                 "调用了 `Text()`"
               ],
               "answer": 2,
-              "explanation": "按《信息论：熵与交叉熵》的正文口径，本题正确项是「调用了 `zip()`」。《信息论：熵与交叉熵》整课的主线是熵、交叉熵、KL 散度与困惑度，以及它们与损失函数的关系，本题按这条主线判定。常见错法是把 KL 散度当距离，其后果是计算「距离」结果不对称。正确做法是KL 不是度量，需要对称时用 JS 散度。干扰项「调用了 `boundary_cases()`」与题干「下面这段 `python` 代码来自 `信息论：熵与交叉熵`。课程主线是熵、交叉熵、KL 散度与困惑度，以及它们与损失函数的关系。代码与 `信息论` 有关。哪一项是代码里真实出现的内容？」的要求对不上，应排除。",
+              "explanation": "按《信息论：熵与交叉熵》的正文口径，本题正确项是「调用了 `zip()`」。 术语 信息论（信息论：熵与交叉熵）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。《信息论：熵与交叉熵》整课的主线是熵、交叉熵、KL 散度与困惑度，以及它们与损失函数的关系，本题按这条主线判定。常见错法是把 KL 散度当距离，其后果是计算「距离」结果不对称。正确做法是KL 不是度量，需要对称时用 JS 散度。干扰项「调用了 `boundary_cases()`」与题干「下面这段 `python` 代码来自 `信息论：熵与交叉熵`。课程主线是熵、交叉熵、KL 散度与困惑度，以及它们与损失函数的关系。代码与 `信息论` 有关。哪一项是代码里真实出现的内容？」的要求对不上，应排除。",
               "type": "code",
               "code": "import math\r\n\r\ndef entropy(probabilities: list) -> float:\r\n    \"\"\"香农熵：分布越均匀，熵越大。\"\"\"\r\n    return -sum(p * math.log2(p) for p in probabilities if p > 0)\r\n\r\ndef cross_entropy(p: list, q: list) -> float:\r\n    \"\"\"交叉熵：p 是真实分布，q 是预测分布。\"\"\"\r\n    if len(p) != len(q):\r\n        raise ValueError(\"分布长度不一致\")\r\n    return -sum(pi * math.log2(qi) for pi, qi in zip(p, q) if pi > 0 and qi > 0)\r\n\r\ndef kl_divergence(p: list, q: list) -> float:\r\n    \"\"\"KL 散度：非负，且与参数顺序有关。\"\"\"\r\n    return cross_entropy(p, q) - entropy(p)\r\n\r\ndef one_hot_cross_entropy(correct_index: int, probs: list) -> float:\r\n    \"\"\"分类任务的实际形式：只保留正确类别的 -log q。\"\"\"\r\n    return -math.log(probs[correct_index])\r\n\r\nuniform = [0.25, 0.25, 0.25, 0.25]\r\npeaked = [0.97, 0.01, 0.01, 0.01]\r\nprint(round(entropy(uniform), 4), round(entropy(peaked), 4))\r\nprint(round(kl_divergence([0.7, 0.3], [0.5, 0.5]), 4))\r\nprint(round(one_hot_cross_entropy(0, [0.9, 0.05, 0.03, 0.02]), 4))",
               "language": "python"
@@ -63910,7 +63910,7 @@
               "answer": 1,
               "code": "# Python：类型错误会直接抛异常\n\"1\" + 1          # TypeError\n\"1\" + str(1)     # \"11\"\nint(\"1\") + 1     # 2",
               "language": "python",
-              "explanation": "按《类型与变量：九种语言横向对照》的正文口径，本题正确项是「Rust」。题干里的「类型与变量九种语言横向对照的示例」要放回《类型与变量：九种语言横向对照》的主线里看：静态与动态、可变与不可变、空值表达的横向对照。做「类型与变量九种语言横向对照的示例」这类判断时，常踩的坑是用一门语言的类型规则套另一门，其后果是隐式转换与溢出行为完全不同。按本课口径，「类型与变量九种语言横向对照的示例」这类题应是先查目标语言的数据模型与转换规则再迁移代码。干扰项「JavaScript」与题干「`类型与变量：九种语言横向对照` 的示例代码服务于静态与动态、可变与不可变、空值表达的横向对照。哪一条判断是正确的？」的要求对不上，应排除。"
+              "explanation": "按《类型与变量：九种语言横向对照》的正文口径，本题正确项是「Rust」。 术语 类型系统（类型与变量：九种语言横向对照）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。题干里的「类型与变量九种语言横向对照的示例」要放回《类型与变量：九种语言横向对照》的主线里看：静态与动态、可变与不可变、空值表达的横向对照。做「类型与变量九种语言横向对照的示例」这类判断时，常踩的坑是用一门语言的类型规则套另一门，其后果是隐式转换与溢出行为完全不同。按本课口径，「类型与变量九种语言横向对照的示例」这类题应是先查目标语言的数据模型与转换规则再迁移代码。干扰项「JavaScript」与题干「`类型与变量：九种语言横向对照` 的示例代码服务于静态与动态、可变与不可变、空值表达的横向对照。哪一条判断是正确的？」的要求对不上，应排除。"
             },
             {
               "type": "multi",
@@ -64183,7 +64183,7 @@
                 "出现字面量 `fast`"
               ],
               "answer": 3,
-              "explanation": "按《命令行参数解析：九种语言横向对照》的正文口径，本题正确项是「出现字面量 `fast`」。《命令行参数解析：九种语言横向对照》整课的主线是各语言参数解析方案、四个共同概念与退出码约定，本题按这条主线判定。常见错法是手写 `argv[1]` 解析，其后果是组合选项立刻出错。正确做法是用成熟的解析库。干扰项「出现字面量 `请输入年龄：`」与题干「阅读 `命令行参数解析：九种语言横向对照` 的 `参数解析` 示例。它服务于各语言参数解析方案、四个共同概念与退出码约定。代码中实际包含下列哪一项？」的要求对不上，应排除。",
+              "explanation": "按《命令行参数解析：九种语言横向对照》的正文口径，本题正确项是「出现字面量 `fast`」。 术语 命令行（命令行参数解析：九种语言横向对照）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。《命令行参数解析：九种语言横向对照》整课的主线是各语言参数解析方案、四个共同概念与退出码约定，本题按这条主线判定。常见错法是手写 `argv[1]` 解析，其后果是组合选项立刻出错。正确做法是用成熟的解析库。干扰项「出现字面量 `请输入年龄：`」与题干「阅读 `命令行参数解析：九种语言横向对照` 的 `参数解析` 示例。它服务于各语言参数解析方案、四个共同概念与退出码约定。代码中实际包含下列哪一项？」的要求对不上，应排除。",
               "type": "code",
               "code": "use clap::Parser;\r\nuse std::path::PathBuf;\r\n\r\n#[derive(Parser)]\r\n#[command(name = \"app\", about = \"示例工具\")]\r\nstruct Cli {\r\n    /// 输入文件\r\n    input: PathBuf,\r\n    /// 输出路径\r\n    #[arg(short, long)]\r\n    output: Option<PathBuf>,\r\n    /// 输出详细日志\r\n    #[arg(short, long)]\r\n    verbose: bool,\r\n    /// 处理模式\r\n    #[arg(long, default_value = \"safe\", value_parser = [\"fast\", \"safe\"])]\r\n    mode: String,\r\n}\r\n\r\nfn main() {\r\n    let cli = Cli::parse();\r\n    println!(\"{:?} {:?} {} {}\", cli.input, cli.output, cli.verbose, cli.mode);\r\n}",
               "language": "rust"
@@ -64276,7 +64276,7 @@
                 "出现字面量 `children`"
               ],
               "answer": 2,
-              "explanation": "按《字符串与正则：九种语言横向对照》的正文口径，本题正确项是「出现字面量 `(?<=user_id=)\\d+`」。题干里的「代码语言为python选自字符串」要放回《字符串与正则：九种语言横向对照》的主线里看：字符串可变性、四个基础操作、正则引擎差异与原始字符串写法。常见错法是循环里拼接字符串，其后果是数据量大时极慢。正确做法是用 Builder 或 join。干扰项「出现字面量 `download`」与题干的要求对不上，应排除。",
+              "explanation": "按《字符串与正则：九种语言横向对照》的正文口径，本题正确项是「出现字面量 `(?<=user_id=)\\d+`」。 术语 字符串（字符串与正则：九种语言横向对照）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。题干里的「代码语言为python选自字符串」要放回《字符串与正则：九种语言横向对照》的主线里看：字符串可变性、四个基础操作、正则引擎差异与原始字符串写法。常见错法是循环里拼接字符串，其后果是数据量大时极慢。正确做法是用 Builder 或 join。干扰项「出现字面量 `download`」与题干的要求对不上，应排除。",
               "type": "code",
               "code": "# 从日志里提取用户 ID：三种写法\ngrep -oE 'user_id=[0-9]+' app.log          # 扩展正则\ngrep -oP '(?<=user_id=)\\d+' app.log        # Perl 环视（GNU）\nsed -E 's/.*user_id=([0-9]+).*/\\1/' app.log",
               "language": "python"
@@ -64714,7 +64714,7 @@
                 "出现字面量 `iso`"
               ],
               "answer": 3,
-              "explanation": "按《日志与可观测性：九种生态横向对照》的正文口径，本题正确项是「出现字面量 `iso`」。题干里的「日志与可观测性九种生态横向对照的」要放回《日志与可观测性：九种生态横向对照》的主线里看：结构化日志、级别选择、可观测性三支柱与日志安全底线。做「日志与可观测性九种生态横向对照的」这类判断时，常踩的坑是用字符串拼接日志，其后果是无法检索字段。按本课口径，「日志与可观测性九种生态横向对照的」这类题应用结构化键值对。干扰项「出现字面量 `/dev/tcp/${host}/${port}`」与题干的要求对不上，应排除。",
+              "explanation": "按《日志与可观测性：九种生态横向对照》的正文口径，本题正确项是「出现字面量 `iso`」。 术语 日志（日志与可观测性：九种生态横向对照）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。题干里的「日志与可观测性九种生态横向对照的」要放回《日志与可观测性：九种生态横向对照》的主线里看：结构化日志、级别选择、可观测性三支柱与日志安全底线。做「日志与可观测性九种生态横向对照的」这类判断时，常踩的坑是用字符串拼接日志，其后果是无法检索字段。按本课口径，「日志与可观测性九种生态横向对照的」这类题应用结构化键值对。干扰项「出现字面量 `/dev/tcp/${host}/${port}`」与题干的要求对不上，应排除。",
               "type": "code",
               "code": "import logging\nimport structlog\n\nstructlog.configure(\n    processors=[structlog.processors.add_log_level,\n                structlog.processors.TimeStamper(fmt=\"iso\"),\n                structlog.processors.JSONRenderer()],\n)\nlog = structlog.get_logger()\nlog.info(\"order_created\", user_id=42, amount=99.5, trace_id=trace_id)",
               "language": "bash"
@@ -65570,7 +65570,7 @@
                 "调用了 `async()`"
               ],
               "answer": 1,
-              "explanation": "按《图解内存布局：栈、堆与引用》的正文口径，本题正确项是「调用了 `copy()`」。《图解内存布局：栈、堆与引用》整课的主线是用示意图讲清栈、堆、静态区，以及赋值时到底复制了什么，本题按这条主线判定。常见错法是把引用复制当成对象复制，其后果是修改一个变量影响另一个。正确做法是明确赋值语义并使用拷贝。干扰项「调用了 `ReentrantLock()`」与题干「`图解内存布局：栈、堆与引用` 的示例代码用于验证 `内存布局`，其背景是用示意图讲清栈、堆、静态区，以及赋值时到底复制了什么。代码的真实内容是下面哪一项？」的要求对不上，应排除。",
+              "explanation": "按《图解内存布局：栈、堆与引用》的正文口径，本题正确项是「调用了 `copy()`」。 术语 内存布局（图解内存布局：栈、堆与引用）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。《图解内存布局：栈、堆与引用》整课的主线是用示意图讲清栈、堆、静态区，以及赋值时到底复制了什么，本题按这条主线判定。常见错法是把引用复制当成对象复制，其后果是修改一个变量影响另一个。正确做法是明确赋值语义并使用拷贝。干扰项「调用了 `ReentrantLock()`」与题干「`图解内存布局：栈、堆与引用` 的示例代码用于验证 `内存布局`，其背景是用示意图讲清栈、堆、静态区，以及赋值时到底复制了什么。代码的真实内容是下面哪一项？」的要求对不上，应排除。",
               "type": "code",
               "code": "a = [1, 2, 3]\nb = a              # b 与 a 指向同一个列表\nb.append(4)\nprint(a)           # [1, 2, 3, 4]\n\nc = a.copy()       # 真正的浅拷贝\nc.append(5)\nprint(a)           # [1, 2, 3, 4]，不受影响",
               "language": "cpp"
@@ -70335,7 +70335,7 @@
                 "count初始值应该是null"
               ],
               "answer": 1,
-              "explanation": "React的Hooks规则明确规定，Hook必须在组件的顶层调用，不能在条件语句、循环或嵌套函数中调用。这是因为React依靠Hook的调用顺序来关联状态和组件实例。在上述代码中，`useState`被放在了if语句内部，这违反了Hook规则。当count<=5时，这个Hook根本不会被调用，导致Hook调用顺序混乱，React会抛出错误。正确的做法是将所有Hook放在组件函数的最顶部，无论条件如何都执行。本题正确项是「在条件语句中调用了Hook」。",
+              "explanation": "React的Hooks规则明确规定，Hook必须在组件的顶层调用，不能在条件语句、循环或嵌套函数中调用。这是因为React依靠Hook的调用顺序来关联状态和组件实例。在上述代码中，`useState`被放在了if语句内部，这违反了Hook规则。当count<=5时，这个Hook根本不会被调用，导致Hook调用顺序混乱，React会抛出错误。正确的做法是将所有Hook放在组件函数的最顶部，无论条件如何都执行。本题正确项是「在条件语句中调用了Hook」。 术语 React（React核心概念与Hooks）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。",
               "code": "function Counter() {\n  const [count, setCount] = useState(0);\n  \n  if (count > 5) {\n    const [message, setMessage] = useState('超过限制了');\n  }\n  \n  return <div>{count}</div>;\n}",
               "language": "jsx"
             },
@@ -70361,7 +70361,7 @@
                 "渲染, count: 0 → Effect执行, count: 0 → 点击后, count: 0 → 渲染, count: 1"
               ],
               "answer": 2,
-              "explanation": "这是一个考察React渲染流程和setState异步特性的经典问题。首次渲染时输出\"渲染, count: 0\"。点击按钮时，首先执行onClick中的同步代码，此时count还是0（因为setState是异步的），所以输出\"点击后, count: 0\"。然后React调度了一次重新渲染，在这次渲染中count变为1，输出\"渲染, count: 1\"。渲染完成后，React检查useEffect的依赖，发现count从0变成了1，于是执行effect，输出\"Effect执行, count: 1\"。本题正确项是「渲染, count: 0 → 点击后, count: 0 → 渲染, count: 1 → Effect执行, count: 1」。",
+              "explanation": "这是一个考察React渲染流程和setState异步特性的经典问题。首次渲染时输出\"渲染, count: 0\"。点击按钮时，首先执行onClick中的同步代码，此时count还是0（因为setState是异步的），所以输出\"点击后, count: 0\"。然后React调度了一次重新渲染，在这次渲染中count变为1，输出\"渲染, count: 1\"。渲染完成后，React检查useEffect的依赖，发现count从0变成了1，于是执行effect，输出\"Effect执行, count: 1\"。本题正确项是「渲染, count: 0 → 点击后, count: 0 → 渲染, count: 1 → Effect执行, count: 1」。 术语 React（React核心概念与Hooks）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。",
               "code": "function Example() {\n  const [count, setCount] = useState(0);\n  \n  useEffect(() => {\n    console.log('Effect执行, count:', count);\n  }, [count]);\n  \n  console.log('渲染, count:', count);\n  \n  return (\n    <button onClick={() => {\n      setCount(count + 1);\n      console.log('点击后, count:', count);\n    }}>\n      点击\n    </button>\n  );\n}",
               "language": "jsx"
             },
@@ -70423,7 +70423,7 @@
                 "报错，不能直接修改reactive对象"
               ],
               "answer": 0,
-              "explanation": "按《Vue 3组合式API》的正文口径，本题正确项是「0, 张三, 1, 26」。《Vue 3组合式API》整课的主线是理解Composition API设计理念，掌握ref/reactive/computed/watch等响应式API，本题按这条主线判定。干扰项「0, 张三, 0, 25」与题干「以下代码的输出是什么」的要求对不上，应排除。",
+              "explanation": "按《Vue 3组合式API》的正文口径，本题正确项是「0, 张三, 1, 26」。 术语 Vue 3（Vue 3组合式API）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。《Vue 3组合式API》整课的主线是理解Composition API设计理念，掌握ref/reactive/computed/watch等响应式API，本题按这条主线判定。干扰项「0, 张三, 0, 25」与题干「以下代码的输出是什么」的要求对不上，应排除。",
               "code": "import { ref, reactive } from 'vue'\n\nconst count = ref(0)\nconst user = reactive({ name: '张三', age: 25 })\n\nconsole.log(count.value)\nconsole.log(user.name)\n\ncount.value++\nuser.age = 26\n\nconsole.log(count.value)\nconsole.log(user.age)",
               "language": "javascript"
             },
@@ -70449,7 +70449,7 @@
                 "没有导入必要的函数"
               ],
               "answer": 1,
-              "explanation": "按《Vue 3组合式API》的正文口径，本题正确项是「解构后的变量失去了响应性」。《Vue 3组合式API》整课的主线是理解Composition API设计理念，掌握ref/reactive/computed/watch等响应式API，本题按这条主线判定。干扰项「reactive不能用于对象」与题干「在 Vue 3 组合式 API 中，下面这段解构 reactive 对象的代码有什么问题？」的要求对不上，应排除。",
+              "explanation": "按《Vue 3组合式API》的正文口径，本题正确项是「解构后的变量失去了响应性」。 术语 Vue 3（Vue 3组合式API）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。《Vue 3组合式API》整课的主线是理解Composition API设计理念，掌握ref/reactive/computed/watch等响应式API，本题按这条主线判定。干扰项「reactive不能用于对象」与题干「在 Vue 3 组合式 API 中，下面这段解构 reactive 对象的代码有什么问题？」的要求对不上，应排除。",
               "code": "import { reactive } from 'vue'\n\nconst state = reactive({\n  name: '张三',\n  age: 25\n})\n\n// 解构\nconst { name, age } = state\n\n// 尝试修改\nname = '李四'\nage = 30",
               "language": "javascript"
             },
@@ -70523,7 +70523,7 @@
                 "没有导入必要的模块"
               ],
               "answer": 1,
-              "explanation": "在Angular模板中直接调用方法是一个常见的性能陷阱。Angular的变更检测机制会在每次检测到变化时重新评估模板表达式，这意味着`getData()`会被频繁调用，即使数据没有变化。控制台会看到大量的\"getData called\"输出。正确的做法是使用属性或pure pipe：要么直接将data暴露给模板`<div>{{ data }}</div>`，要么创建一个pure pipe来处理数据转换。pure pipe只有在输入参数变化时才会重新执行，可以避免这个问题。本题正确项是「每次变更检测都会调用getData，影响性能」。",
+              "explanation": "在Angular模板中直接调用方法是一个常见的性能陷阱。Angular的变更检测机制会在每次检测到变化时重新评估模板表达式，这意味着`getData()`会被频繁调用，即使数据没有变化。控制台会看到大量的\"getData called\"输出。正确的做法是使用属性或pure pipe：要么直接将data暴露给模板`<div>{{ data }}</div>`，要么创建一个pure pipe来处理数据转换。pure pipe只有在输入参数变化时才会重新执行，可以避免这个问题。本题正确项是「每次变更检测都会调用getData，影响性能」。 术语 Angular（Angular基础与依赖注入）：本题考查Angular的核心概念与应用。",
               "code": "@Component({\n  selector: 'app-example',\n  template: `<div>{{ getData() }}</div>`\n})\nexport class ExampleComponent {\n  data = [1, 2, 3];\n  \n  getData(): number[] {\n    console.log('getData called');\n    return this.data;\n  }\n}",
               "language": "typescript"
             },
@@ -70597,7 +70597,7 @@
                 "4次"
               ],
               "answer": 1,
-              "explanation": "按《Svelte响应式编程》的正文口径，本题正确项是「2次」。《Svelte响应式编程》整课的主线是探索Svelte编译时响应式系统，掌握stores、transitions和actions，本题按这条主线判定。作答时先回到《Svelte响应式编程》对应小节核对定义，再逐项排除与题干「关于Svelte的$:响应式声明，以下代码的输出是什么？ 首次点击按钮后，控制台输出几次日志？」不符的说法。",
+              "explanation": "按《Svelte响应式编程》的正文口径，本题正确项是「2次」。 术语 Svelte（Svelte响应式编程）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。《Svelte响应式编程》整课的主线是探索Svelte编译时响应式系统，掌握stores、transitions和actions，本题按这条主线判定。作答时先回到《Svelte响应式编程》对应小节核对定义，再逐项排除与题干「关于Svelte的$:响应式声明，以下代码的输出是什么？ 首次点击按钮后，控制台输出几次日志？」不符的说法。",
               "code": "<script>\n  let count = 0;\n  let doubled = 0;\n  \n  $: doubled = count * 2;\n  $: console.log('Count:', count, 'Doubled:', doubled);\n  \n  function increment() {\n    count += 1;\n  }\n</script>\n\n<button on:click={increment}>增加</button>",
               "language": "svelte"
             },
@@ -70635,7 +70635,7 @@
                 "需要使用in:fade而非transition:fade"
               ],
               "answer": 1,
-              "explanation": "Svelte的transition只在元素被添加到DOM或从DOM移除时触发。在这个例子中，div元素始终存在于DOM中，只是visible变量在变化，但这并不影响div的存在。要让transition生效，需要使用条件渲染：`{#if visible}<div transition:fade>...</div>{/if}`。这样当visible变为false时，div会从DOM移除，触发淡出动画；变为true时，div被添加，触发淡入动画。选项A不是问题，duration有默认值。选项D也不是必须的，transition同时处理进入和退出。本题正确项是「transition不会触发，因为没有条件渲染」。",
+              "explanation": "Svelte的transition只在元素被添加到DOM或从DOM移除时触发。在这个例子中，div元素始终存在于DOM中，只是visible变量在变化，但这并不影响div的存在。要让transition生效，需要使用条件渲染：`{#if visible}<div transition:fade>...</div>{/if}`。这样当visible变为false时，div会从DOM移除，触发淡出动画；变为true时，div被添加，触发淡入动画。选项A不是问题，duration有默认值。选项D也不是必须的，transition同时处理进入和退出。本题正确项是「transition不会触发，因为没有条件渲染」。 术语 Svelte（Svelte响应式编程）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。",
               "code": "<script>\n  import { fade } from 'svelte/transition';\n  let visible = true;\n</script>\n\n<div transition:fade>\n  这段文字会淡入淡出\n</div>\n\n<button on:click={() => visible = !visible}>\n  切换可见性\n</button>",
               "language": "svelte"
             },
@@ -70797,7 +70797,7 @@
                 "缺少必要的导入语句"
               ],
               "answer": 1,
-              "explanation": "正确项是在服务端代码中访问了window对象。Next.js 的 getServerSideProps 跑在 Node.js 服务器上，不是浏览器里，因此 window、document、localStorage 这些浏览器 API 都不存在，读 window.innerWidth 会抛 ReferenceError 让请求返回 500。要按屏幕宽度做适配，只能在客户端组件里用 useEffect 或 CSS 媒体查询取值，不能放进 Next.js 的服务端取数钩子。",
+              "explanation": "术语 Next.js（Next.js服务端渲染）：本题考查Next.js的核心概念与应用。 正确项是在服务端代码中访问了window对象。Next.js 的 getServerSideProps 跑在 Node.js 服务器上，不是浏览器里，因此 window、document、localStorage 这些浏览器 API 都不存在，读 window.innerWidth 会抛 ReferenceError 让请求返回 500。要按屏幕宽度做适配，只能在客户端组件里用 useEffect 或 CSS 媒体查询取值，不能放进 Next.js 的服务端取数钩子。",
               "code": "export default function Page({ data }) {\n  return <div>{data.message}</div>;\n}\n\nexport async function getServerSideProps() {\n  const data = { message: 'Hello' };\n  \n  // 尝试访问浏览器API\n  const screenWidth = window.innerWidth;\n  \n  return {\n    props: { data }\n  };\n}",
               "language": "jsx"
             },
@@ -70895,7 +70895,7 @@
                 "initAnalytics的副作用代码可能被错误移除"
               ],
               "answer": 3,
-              "explanation": "Tree Shaking基于静态分析，无法准确判断哪些代码有副作用。`initAnalytics`函数虽然未被导入，但它包含副作用（修改window对象）。如果构建工具错误地认为它未被使用而移除，会导致运行时错误。正确的做法是在package.json中标记`sideEffects: [\"./src/utils.js\"]`，告诉构建工具这个文件有副作用，不要完全移除。选项A和C理论上正确，但实际行为取决于构建配置。选项B错误，现代构建工具可以进行细粒度的tree shaking。本题正确项是「initAnalytics的副作用代码可能被错误移除」。",
+              "explanation": "Tree Shaking基于静态分析，无法准确判断哪些代码有副作用。`initAnalytics`函数虽然未被导入，但它包含副作用（修改window对象）。如果构建工具错误地认为它未被使用而移除，会导致运行时错误。正确的做法是在package.json中标记`sideEffects: [\"./src/utils.js\"]`，告诉构建工具这个文件有副作用，不要完全移除。选项A和C理论上正确，但实际行为取决于构建配置。选项B错误，现代构建工具可以进行细粒度的tree shaking。本题正确项是「initAnalytics的副作用代码可能被错误移除」。 术语 性能优化（性能优化最佳实践）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。",
               "code": "// utils.js\nexport function formatDate(date) { /* ... */ }\nexport function formatCurrency(amount) { /* ... */ }\nexport function initAnalytics() {\n  // 有副作用的代码\n  window.analytics = new Analytics();\n}\n\n// app.js\nimport { formatDate } from './utils';",
               "language": "javascript"
             },
@@ -74469,7 +74469,7 @@
                 "设备厂商的型号字符串"
               ],
               "answer": 0,
-              "explanation": "本题正确项是「设备的发行系统名称」。`deviceInfo.osFullName` 返回设备发货时写入的完整发行版字符串，在 NEXT 机型上可用于与 `sdkApiVersion` 交叉验证运行环境，是迁移评估阶段最常用的判据之一。应用版本名要从包管理接口读取，编译器版本不会作为运行时字段暴露给应用层，厂商型号另有对应字段而不是这个属性。"
+              "explanation": "本题正确项是「设备的发行系统名称」。 术语 纯血鸿蒙（HarmonyOS NEXT 全景与生态定位）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。`deviceInfo.osFullName` 返回设备发货时写入的完整发行版字符串，在 NEXT 机型上可用于与 `sdkApiVersion` 交叉验证运行环境，是迁移评估阶段最常用的判据之一。应用版本名要从包管理接口读取，编译器版本不会作为运行时字段暴露给应用层，厂商型号另有对应字段而不是这个属性。"
             }
           ]
         },
@@ -74554,7 +74554,7 @@
                 "signingConfig 必须与 name 同名"
               ],
               "answer": 1,
-              "explanation": "本题正确项是「JSON5 允许注释与尾逗号」。鸿蒙的这几个配置文件都是 JSON5 方言，首行注释与数组尾逗号都属合法写法，这也是它们以 json5 结尾的原因。`runtimeOS` 用于区分产物运行的系统分支，去掉会改变默认口径，不应随意省略；一个工程可以声明多个 product 覆盖不同设备与渠道；signingConfig 只是引用名，与 product 名相同是团队习惯而非语法约束。"
+              "explanation": "本题正确项是「JSON5 允许注释与尾逗号」。 术语 DevEco Studio（DevEco Studio 与工程结构）：本题考查DevEco Studio的核心概念与应用。鸿蒙的这几个配置文件都是 JSON5 方言，首行注释与数组尾逗号都属合法写法，这也是它们以 json5 结尾的原因。`runtimeOS` 用于区分产物运行的系统分支，去掉会改变默认口径，不应随意省略；一个工程可以声明多个 product 覆盖不同设备与渠道；signingConfig 只是引用名，与 product 名相同是团队习惯而非语法约束。"
             }
           ]
         },
@@ -74638,7 +74638,7 @@
                 "运行期抛出异常"
               ],
               "answer": 0,
-              "explanation": "本题正确项是「输出 meow」。入参声明为联合类型，`instanceof` 把 if 分支收窄到 Dog，else 分支自动收窄为 Cat，因此调用 Cat 独有方法是合法写法；实参传入的正是 Cat 实例，所以打印 meow。换成 Dog 实参才会走前一分支得到 woof；这段代码符合联合类型收窄规则，不会在编译期被拒绝，也不存在运行期找不到方法的异常路径。"
+              "explanation": "本题正确项是「输出 meow」。 术语 静态类型（ArkTS 语言基础）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。入参声明为联合类型，`instanceof` 把 if 分支收窄到 Dog，else 分支自动收窄为 Cat，因此调用 Cat 独有方法是合法写法；实参传入的正是 Cat 实例，所以打印 meow。换成 Dog 实参才会走前一分支得到 woof；这段代码符合联合类型收窄规则，不会在编译期被拒绝，也不存在运行期找不到方法的异常路径。"
             }
           ]
         },
@@ -74723,7 +74723,7 @@
                 "显示 ok !"
               ],
               "answer": 3,
-              "explanation": "本题正确项是「显示 ok !」。按钮回调把可观察状态从 hi 改成 ok，框架据此重建该组件并重新计算字符串拼接结果，因此屏幕上只剩新值加一个感叹号。若变量没有被状态装饰器修饰，才会停在首次渲染的旧值；两个值并列的写法需要额外的累加逻辑，回调里只是整体赋值，不会产生拼接残留。"
+              "explanation": "本题正确项是「显示 ok !」。 术语 @Entry（ArkUI 声明式 UI 首个页面）：本题考查@Entry的核心概念与应用。按钮回调把可观察状态从 hi 改成 ok，框架据此重建该组件并重新计算字符串拼接结果，因此屏幕上只剩新值加一个感叹号。若变量没有被状态装饰器修饰，才会停在首次渲染的旧值；两个值并列的写法需要额外的累加逻辑，回调里只是整体赋值，不会产生拼接残留。"
             }
           ]
         },
@@ -74808,7 +74808,7 @@
                 "宽度为 120"
               ],
               "answer": 2,
-              "explanation": "本题正确项是「宽度为 200」。父容器先在主轴上给 A 与 C 分别留出 60 与 40，剩余 300 减 100 等于 200，再由唯一的带权重节点全部获得。选 60 是把固定宽度当成了权重语义，选 300 忽略了兄弟节点已经占用的空间，选 120 则没有任何分配规则能够推出该数值。"
+              "explanation": "本题正确项是「宽度为 200」。 术语 Flex（布局系统：Flex/Grid/Stack）：本题考查Flex的核心概念与应用。父容器先在主轴上给 A 与 C 分别留出 60 与 40，剩余 300 减 100 等于 200，再由唯一的带权重节点全部获得。选 60 是把固定宽度当成了权重语义，选 300 忽略了兄弟节点已经占用的空间，选 120 则没有任何分配规则能够推出该数值。"
             }
           ]
         },
@@ -74893,7 +74893,7 @@
                 "先显示 count=0，点击后变 1"
               ],
               "answer": 0,
-              "explanation": "本题正确项是「先显示 count=3，点击后变 4」。可观察状态的写入会触发所属组件重建，重建时重新求值模板字符串，于是数字随之更新，初值来自声明处的 3。若把变量声明成普通成员而没有装饰器，才会出现点击后画面不动的现象；ArkTS 完整支持模板字符串与反引号插值，不会因为写法报编译错误。"
+              "explanation": "本题正确项是「先显示 count=3，点击后变 4」。 术语 @State（状态管理与数据传递）：本题考查@State的核心概念与应用。可观察状态的写入会触发所属组件重建，重建时重新求值模板字符串，于是数字随之更新，初值来自声明处的 3。若把变量声明成普通成员而没有装饰器，才会出现点击后画面不动的现象；ArkTS 完整支持模板字符串与反引号插值，不会因为写法报编译错误。"
             }
           ]
         },
@@ -74977,7 +74977,7 @@
                 "打印 2-2"
               ],
               "answer": 0,
-              "explanation": "本题正确项是「打印 3-3」。三次入栈都会追加节点，重复的名字不会被合并，因此栈深是 3；`getAllPathName()` 返回的是按栈序排列的全部名字数组，同样包含重复项，长度也是 3。要按名字数量去重得自己转成集合，指望命名路由自动去重是常见误解。"
+              "explanation": "本题正确项是「打印 3-3」。 术语 NavPathStack（路由与页面导航）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。三次入栈都会追加节点，重复的名字不会被合并，因此栈深是 3；`getAllPathName()` 返回的是按栈序排列的全部名字数组，同样包含重复项，长度也是 3。要按名字数量去重得自己转成集合，指望命名路由自动去重是常见误解。"
             }
           ]
         },
@@ -75062,7 +75062,7 @@
                 "抛出键不存在的异常"
               ],
               "answer": 1,
-              "explanation": "本题正确项是「返回默认值 5」。键被删除后存储里已不存在该条目，`get` 的第二个参数就是缺失时的兜底值，因此返回 5。flush 只影响是否落盘，不会让删除回滚；ArkTS 的接口在缺键时返回调用方给的默认值而不是抛异常，也不会返回空值，所以拿 20、拿空或等异常三种预期都不成立。"
+              "explanation": "本题正确项是「返回默认值 5」。 术语 NetworkKit（网络、数据与文件）：本题考查NetworkKit的核心概念与应用。键被删除后存储里已不存在该条目，`get` 的第二个参数就是缺失时的兜底值，因此返回 5。flush 只影响是否落盘，不会让删除回滚；ArkTS 的接口在缺键时返回调用方给的默认值而不是抛异常，也不会返回空值，所以拿 20、拿空或等异常三种预期都不成立。"
             }
           ]
         },
@@ -75147,7 +75147,7 @@
                 "高度保持 40 完全不发生变化"
               ],
               "answer": 0,
-              "explanation": "本题正确项是「高度在 300 毫秒内过渡到 160」。属性动画声明在高度变化之前生效，因此被 `@State` 驱动的高度改动会被插值执行。ArkTS 中 `animation` 是合法通用属性，不会编译失败；只有把动画声明写在高度设置之前，或状态根本没有可观察能力时，才会退化成瞬间跳变或完全不变化。"
+              "explanation": "本题正确项是「高度在 300 毫秒内过渡到 160」。 术语 AVPlayer（多媒体与图形渲染）：本题考查AVPlayer的核心概念与应用。属性动画声明在高度变化之前生效，因此被 `@State` 驱动的高度改动会被插值执行。ArkTS 中 `animation` 是合法通用属性，不会编译失败；只有把动画声明写在高度设置之前，或状态根本没有可观察能力时，才会退化成瞬间跳变或完全不变化。"
             }
           ]
         },
@@ -75232,7 +75232,7 @@
                 "该接口无需在配置清单声明权限即可调用"
               ],
               "answer": 2,
-              "explanation": "本题正确项是「granted 为假时业务应降级并说明用途再请求」。结果为假说明用户没有授权，正确姿势是给出可理解的用途解释并提供手动开启入口，而不是立刻重发同一次请求。返回值是数值型授权结果而不是权限名称字符串，需要与授权枚举比较；未弹框与当场拒绝是两种不同情形，要借助弹框标记区分；清单声明是接口能工作的前提，缺了它这条调用只会失败。"
+              "explanation": "本题正确项是「granted 为假时业务应降级并说明用途再请求」。 术语 权限申请（系统能力与权限）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。结果为假说明用户没有授权，正确姿势是给出可理解的用途解释并提供手动开启入口，而不是立刻重发同一次请求。返回值是数值型授权结果而不是权限名称字符串，需要与授权枚举比较；未弹框与当场拒绝是两种不同情形，要借助弹框标记区分；清单声明是接口能工作的前提，缺了它这条调用只会失败。"
             }
           ]
         },
@@ -75317,7 +75317,7 @@
                 "要求用户在新设备上重新完成登录"
               ],
               "answer": 1,
-              "explanation": "本题正确项是「把播放进度写进迁移参数供对端恢复」。回调在迁移发起时被调用，业务在此把无法自动搬运的自定义状态写入参数对象，返回成功表示同意迁移。参数会随能力实例投递到目标设备，因此既不等于源端立即释放，也不会让对端从头播放；代码里没有任何拒绝语义，也与登录流程无关。"
+              "explanation": "本题正确项是「把播放进度写进迁移参数供对端恢复」。 术语 软总线（分布式软总线与跨端流转）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。回调在迁移发起时被调用，业务在此把无法自动搬运的自定义状态写入参数对象，返回成功表示同意迁移。参数会随能力实例投递到目标设备，因此既不等于源端立即释放，也不会让对端从头播放；代码里没有任何拒绝语义，也与登录流程无关。"
             }
           ]
         },
@@ -75402,7 +75402,7 @@
                 "无关初始化挤占首帧时间拖慢启动"
               ],
               "answer": 3,
-              "explanation": "本题正确项是「无关初始化挤占首帧时间拖慢启动」。全量图片解码与数据库建表迁移都发生在第一帧之前，属于典型的可延后工作，把它们串在创建阶段会直接拉长冷启动。主题加载是首屏必需项，顺序本身没有错；数据库预热不足只会变慢而不会报错；远程配置此时尚未返回是设计使然，只要业务有本地兜底就不构成功能失效。"
+              "explanation": "本题正确项是「无关初始化挤占首帧时间拖慢启动」。 术语 冷启动（性能调优与上架 AppGallery）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。全量图片解码与数据库建表迁移都发生在第一帧之前，属于典型的可延后工作，把它们串在创建阶段会直接拉长冷启动。主题加载是首屏必需项，顺序本身没有错；数据库预热不足只会变慢而不会报错；远程配置此时尚未返回是设计使然，只要业务有本地兜底就不构成功能失效。"
             }
           ]
         }
@@ -77710,7 +77710,7 @@
                 "head->next = p->next; p->next = head->next;"
               ],
               "answer": 1,
-              "explanation": "本题正确项是「p->next = head->next; head->next = p;」。头插法的关键是先让新节点的 next 指向头节点当前的后继（p->next = head->next），再让头节点的 next 指向新节点（head->next = p）。顺序不能颠倒，否则会断链。选项 A 先断开原有连接导致丢失后继节点，选项 C 是替换头节点而非插入，选项 D 的赋值逻辑混乱。"
+              "explanation": "本题正确项是「p->next = head->next; head->next = p;」。 术语 线性表（数据结构：线性表与栈队列）：本题考查线性表的核心概念与应用。头插法的关键是先让新节点的 next 指向头节点当前的后继（p->next = head->next），再让头节点的 next 指向新节点（head->next = p）。顺序不能颠倒，否则会断链。选项 A 先断开原有连接导致丢失后继节点，选项 C 是替换头节点而非插入，选项 D 的赋值逻辑混乱。"
             }
           ]
         },
@@ -78861,7 +78861,7 @@
               "code": "unsigned addr = 0x00C3F8A7u;          /* 落在 26 位地址空间内 */\nunsigned off  = addr & 0x3Fu;         /* 低 6 位：块内地址 */\nunsigned line = (addr >> 6) & 0x3FFu; /* 中间 10 位：行号 */\nunsigned tag  = addr >> 16;           /* 高 10 位：标记 */\nprintf(\"%u %u %u\\n\", tag, line, off);",
               "language": "c",
               "expected_output": "195 994 39",
-              "explanation": "本题正确项是「输出 195 994 39，三段依次是标记、行号、块内地址」。addr 的低 6 位取 0xA7 的后六位得 0x27 即 39；右移 6 位后是 200674，再对 1024 取余得 994；右移 16 位得到 0xC3 即 195。回拼验证 195×1024+994=200674 号块，200674×64+39 正好还原原地址。干扰项「输出 195 200674 39，把整块号当成了行号写出来」漏掉了掩码 0x3FF 这一步，输出的其实是主存块号。"
+              "explanation": "本题正确项是「输出 195 994 39，三段依次是标记、行号、块内地址」。 术语 地址划分（408 仿真模拟卷（三）：存储层次与 Cache 地址划分）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。addr 的低 6 位取 0xA7 的后六位得 0x27 即 39；右移 6 位后是 200674，再对 1024 取余得 994；右移 16 位得到 0xC3 即 195。回拼验证 195×1024+994=200674 号块，200674×64+39 正好还原原地址。干扰项「输出 195 200674 39，把整块号当成了行号写出来」漏掉了掩码 0x3FF 这一步，输出的其实是主存块号。"
             },
             {
               "type": "multi",
@@ -79166,7 +79166,7 @@
               "code": "unsigned la = 0x00A3B1C2u;        /* 32 位逻辑地址 */\nunsigned page = la >> 12;         /* 高 20 位：页号 */\nunsigned off  = la & 0xFFFu;      /* 低 12 位：页内偏移 */\nprintf(\"%X %X\\n\", page, off);",
               "language": "c",
               "expected_output": "A3B 1C2",
-              "explanation": "本题正确项是「输出 A3B 1C2，页号与页内偏移能回拼成原逻辑地址」。右移 12 位即丢掉末尾三个十六进制位，得到 0xA3B；掩码 0xFFF 留下末三位 0x1C2；回拼 0xA3B 左移 12 位为 0xA3B000，加 0x1C2 正好还原 0x00A3B1C2。干扰项「输出 A3B1 2，把最后一个十六进制位当成了页内偏移」对应的移位位数是 8 位而不是 12 位，与 4 KB 页的偏移位数不符。"
+              "explanation": "本题正确项是「输出 A3B 1C2，页号与页内偏移能回拼成原逻辑地址」。 术语 逻辑地址（408 仿真模拟卷（六）：一条 store 指令串起四科知识）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。右移 12 位即丢掉末尾三个十六进制位，得到 0xA3B；掩码 0xFFF 留下末三位 0x1C2；回拼 0xA3B 左移 12 位为 0xA3B000，加 0x1C2 正好还原 0x00A3B1C2。干扰项「输出 A3B1 2，把最后一个十六进制位当成了页内偏移」对应的移位位数是 8 位而不是 12 位，与 4 KB 页的偏移位数不符。"
             },
             {
               "type": "multi",
@@ -79243,7 +79243,7 @@
               ],
               "answer": 2,
               "code": "prefix, last = 27, 130\nsize = 2 ** (32 - prefix)\nnet = last - last % size\nprint(int(size), int(net), int(net + size - 1))\n",
-              "explanation": "本题正确项是「输出 32 128 159，主机位 5 位定出块 32 并把末段向下取整」。前缀 27 意味着主机位 32 − 27 = 5 位，size = 2^5 = 32；130 减去 130 % 32 = 2 得 net = 128；广播地址是 net + size − 1 = 159，所以三个数是 32、128、159。干扰项「输出 32 130 161，网络号直接用了主机地址本身」跳过了取整这一步，得到的 130 是主机地址而不是网络号，广播也相应偏了 2；干扰项「输出 30 120 149，把可用主机数当成了块大小来取整」用 2^h − 2 = 30 当基数，130 % 30 = 10，于是网络号落到 120、广播落到 149；干扰项「输出 5 128 159，把主机位数当成了块大小打印出来」打印的是位数 5 而不是 2^5 = 32，后两个数却还是按 32 算出来的，前后不一致。"
+              "explanation": "本题正确项是「输出 32 128 159，主机位 5 位定出块 32 并把末段向下取整」。 术语 Cache 串行与并行口径（408 仿真模拟卷（七）：四类高难计算题的公式与单位）：本题考查代码执行流程与输出结果，需要逐步跟踪变量变化。前缀 27 意味着主机位 32 − 27 = 5 位，size = 2^5 = 32；130 减去 130 % 32 = 2 得 net = 128；广播地址是 net + size − 1 = 159，所以三个数是 32、128、159。干扰项「输出 32 130 161，网络号直接用了主机地址本身」跳过了取整这一步，得到的 130 是主机地址而不是网络号，广播也相应偏了 2；干扰项「输出 30 120 149，把可用主机数当成了块大小来取整」用 2^h − 2 = 30 当基数，130 % 30 = 10，于是网络号落到 120、广播落到 149；干扰项「输出 5 128 159，把主机位数当成了块大小打印出来」打印的是位数 5 而不是 2^5 = 32，后两个数却还是按 32 算出来的，前后不一致。"
             },
             {
               "type": "single",
@@ -79351,7 +79351,7 @@
               ],
               "answer": 2,
               "code": "TOTAL, INTRO, TAIL = 180, 8, 20\nMC, SUBJ = 87, 65\nprint(INTRO + MC + SUBJ + TAIL, TOTAL - INTRO - TAIL)\nprint(round(MC / 40, 4), round(SUBJ / 70, 4))\n",
-              "explanation": "本题正确项是「输出 180 152 与 2.175 0.9286，前一行后一个数是扣掉浏览与收尾的作答分钟数」。第一行 8 + 87 + 65 + 20 = 180 是四段总长，180 − 8 − 20 = 152 是有效作答分钟数；第二行 87 / 40 = 2.175 是每题预算，65 / 70 = 0.9286 是综合段的每分耗时。干扰项「输出 180 152 与 2.175 0.9286，后一行是每道综合题的平均分钟数」数字全对但解释错了一半：第二个数是 65 除以分值 70 而不是除以题量 7，按题量摊应是约 9.3 分钟每题；干扰项「输出 180 160 与 2.175 0.9286，第二个数只减收尾段而没减浏览段」给出的 160 对应 180 − 20，代码里 INTRO 也参与了减法；干扰项「输出 172 152 与 2.175 1.0875，把综合段的耗时按单选段口径摊了一遍」的两个数分别对应漏减收尾段（180 − 8 = 172）与用 87 除以分值 80，都不是这段代码实际算出的结果。"
+              "explanation": "本题正确项是「输出 180 152 与 2.175 0.9286，前一行后一个数是扣掉浏览与收尾的作答分钟数」。 术语 180 分钟四段切分（408 仿真模拟卷（八）：180 分钟节奏表与全卷复盘）：本题考查代码执行流程与输出结果，需要逐步跟踪变量变化。第一行 8 + 87 + 65 + 20 = 180 是四段总长，180 − 8 − 20 = 152 是有效作答分钟数；第二行 87 / 40 = 2.175 是每题预算，65 / 70 = 0.9286 是综合段的每分耗时。干扰项「输出 180 152 与 2.175 0.9286，后一行是每道综合题的平均分钟数」数字全对但解释错了一半：第二个数是 65 除以分值 70 而不是除以题量 7，按题量摊应是约 9.3 分钟每题；干扰项「输出 180 160 与 2.175 0.9286，第二个数只减收尾段而没减浏览段」给出的 160 对应 180 − 20，代码里 INTRO 也参与了减法；干扰项「输出 172 152 与 2.175 1.0875，把综合段的耗时按单选段口径摊了一遍」的两个数分别对应漏减收尾段（180 − 8 = 172）与用 87 除以分值 80，都不是这段代码实际算出的结果。"
             },
             {
               "type": "single",
@@ -79459,7 +79459,7 @@
               "code": "/* a.c：只有声明，没有任何定义 */\nextern int compute_checksum(const unsigned char *buf, int n);\nint main(void) { return compute_checksum(0, 0); }",
               "language": "c",
               "expected_output": "undefined reference to `compute_checksum`",
-              "explanation": "本题正确项是「链接期只找到了声明而找不到定义，应把实现所在的源文件一并加入链接命令」。`undefined reference` 是链接器 `ld` 的措辞，含义是符号在当前目标文件集合里查不到定义，最直接的补救是把缺少的 `.o` 或库补进链接命令。干扰项「`extern` 关键字不能用于函数声明，必须改写为 `static`」正说反了：函数声明本来就默认可见，改成 `static` 会把符号限制在本文件内，链接时更找不到。干扰项「这条报错说明 `main` 函数的返回类型写错了」把符号解析问题错当成返回类型问题，返回类型写错触发的是另一条告警。"
+              "explanation": "本题正确项是「链接期只找到了声明而找不到定义，应把实现所在的源文件一并加入链接命令」。 术语 构词法（计算机专业英语导论：构词法与词根词缀）：本题考查代码错误诊断能力，需要定位问题并给出修复方案。`undefined reference` 是链接器 `ld` 的措辞，含义是符号在当前目标文件集合里查不到定义，最直接的补救是把缺少的 `.o` 或库补进链接命令。干扰项「`extern` 关键字不能用于函数声明，必须改写为 `static`」正说反了：函数声明本来就默认可见，改成 `static` 会把符号限制在本文件内，链接时更找不到。干扰项「这条报错说明 `main` 函数的返回类型写错了」把符号解析问题错当成返回类型问题，返回类型写错触发的是另一条告警。"
             },
             {
               "type": "single",
@@ -79564,7 +79564,7 @@
               "code": "$ gcc -O2 -march=native -mavx512f app.c\ncc1: error: unrecognized command line option '-mavx512f'; did you mean '-mavx2'?\n$ gcc --version\ngcc (Ubuntu 11.4.0) 11.4.0",
               "language": "bash",
               "expected_output": "cc1: error: unrecognized command line option '-mavx512f'",
-              "explanation": "本题正确项是「unrecognized command line option 指该选项在这个编译器版本的选项表里不存在，应先查版本再改写」。这条报错由编译后端 `cc1` 发出，关键词是 `unrecognized`（无法识别），它的对象是「command line option」而不是 CPU，因此第一动作永远是 `gcc --version` 与 `gcc -Q --help=target`，对照本版本到底有哪些机器选项；后面的 `did you mean` 是拼写建议，与错误原因无关。干扰项「报错说明编译器不认识这组指令，等同于本机 CPU 不支持 AVX-512，只能换一台服务器才能继续编译」把编译期选项检查误当成运行期能力检测，二者口径完全不同；干扰项「选项名里的 -m 前缀表示它只适用于 macOS，在 Linux 上必须把 -mavx512f 换成 /avx512f 形式」也不对，`-m` 只是机器相关选项的惯例前缀，与操作系统无关。"
+              "explanation": "本题正确项是「unrecognized command line option 指该选项在这个编译器版本的选项表里不存在，应先查版本再改写」。 术语 词根词缀（硬件与体系结构英语：数据手册、论文与工具链里的三类措辞）：本题考查代码错误诊断能力，需要定位问题并给出修复方案。这条报错由编译后端 `cc1` 发出，关键词是 `unrecognized`（无法识别），它的对象是「command line option」而不是 CPU，因此第一动作永远是 `gcc --version` 与 `gcc -Q --help=target`，对照本版本到底有哪些机器选项；后面的 `did you mean` 是拼写建议，与错误原因无关。干扰项「报错说明编译器不认识这组指令，等同于本机 CPU 不支持 AVX-512，只能换一台服务器才能继续编译」把编译期选项检查误当成运行期能力检测，二者口径完全不同；干扰项「选项名里的 -m 前缀表示它只适用于 macOS，在 Linux 上必须把 -mavx512f 换成 /avx512f 形式」也不对，`-m` 只是机器相关选项的惯例前缀，与操作系统无关。"
             },
             {
               "type": "single",
@@ -79655,7 +79655,7 @@
               "code": "void *p = mmap(NULL, len, PROT_READ, MAP_PRIVATE, fd, 0);\nif (p == MAP_FAILED) {\n    /* errno == ENOMEM */\n    fprintf(stderr, \"mmap failed: %s\\n\", strerror(errno));\n}",
               "language": "c",
               "expected_output": "mmap failed: No memory is available",
-              "explanation": "本题正确项是「手册页对 ENOMEM 给了两条说明，除内存耗尽外还有映射条数超上限，需要结合调用点判断」。man page 的 ERRORS 一节允许同一个宏名挂多条句子，第二条用的是虚拟语气 `would have been exceeded`，说的是配额检查而非内存不足；日志里 `%s` 打出来的英文短句只是第一条说明的字符串形式，不能当作唯一诊断。干扰项「这句话只可能是物理内存耗尽，因为 man page 里 ENOMEM 的定义就是没有可用内存」正是被单条说明误导的典型结论；干扰项「只要把 len 改小就能验证结论，英文提示里的 available 一词已经指明是容量问题」把映射数超限的可能排除掉了，改小长度反而会让真正的原因继续隐藏；干扰项「strerror 的输出可以随意改写，只要程序能崩在正确位置，排查思路不受这句话影响」忽视了固定英文短语的诊断价值。"
+              "explanation": "本题正确项是「手册页对 ENOMEM 给了两条说明，除内存耗尽外还有映射条数超上限，需要结合调用点判断」。 术语 手册页英文（操作系统与软件工程英语：从需求到发布的术语链）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。man page 的 ERRORS 一节允许同一个宏名挂多条句子，第二条用的是虚拟语气 `would have been exceeded`，说的是配额检查而非内存不足；日志里 `%s` 打出来的英文短句只是第一条说明的字符串形式，不能当作唯一诊断。干扰项「这句话只可能是物理内存耗尽，因为 man page 里 ENOMEM 的定义就是没有可用内存」正是被单条说明误导的典型结论；干扰项「只要把 len 改小就能验证结论，英文提示里的 available 一词已经指明是容量问题」把映射数超限的可能排除掉了，改小长度反而会让真正的原因继续隐藏；干扰项「strerror 的输出可以随意改写，只要程序能崩在正确位置，排查思路不受这句话影响」忽视了固定英文短语的诊断价值。"
             },
             {
               "type": "single",
@@ -79770,7 +79770,7 @@
               "code": "$ curl -sv https://shop.acme.io/api/v1/items\n*   Trying 203.0.113.27:443...\n* connect to 203.0.113.27 port 443 failed: Connection refused\n* Failed to connect to shop.acme.io port 443 after 3021 ms: Connection refused\ncurl: (7) Failed to connect to shop.acme.io port 443 after 3021 ms: Connection refused",
               "language": "bash",
               "expected_output": "curl: (7) Failed to connect to shop.acme.io port 443 after 3021 ms: Connection refused",
-              "explanation": "本题正确项是「这句话表明 TCP 连接被对端拒绝，方向是确认目标端口有无监听以及是否有拦截策略」。`Connection refused` 对应错误码宏名 `ECONNREFUSED`，它是收到 RST 之后的结果，说明包已到达对端但没人监听这个端口或被中间设备主动拒绝；与之相对，`Connection timed out` 才是 SYN 发出去无声响。`after 3021 ms` 是 curl 统计的建连耗时而不是服务端处理时间，读这类句要盯主语是谁。干扰项「Connection refused 说明域名解析失败，应当先修改 hosts 文件再重试这条命令」混淆了 DNS 与传输层，解析失败的固定说法是 Could not resolve host；干扰项「Failed to connect 意味着 TLS 证书校验未通过，需要换成 http 协议才能继续排查」把证书类错误与建连被拒混为一谈，证书问题会明确写出与证书相关的字样；干扰项「after 3021 ms 表示服务端处理耗时三千余毫秒，问题在后端业务代码的响应速度」读错了时间量的归属对象。"
+              "explanation": "本题正确项是「这句话表明 TCP 连接被对端拒绝，方向是确认目标端口有无监听以及是否有拦截策略」。 术语 RFC 措辞（网络与 Web 英语：RFC 原文、HTTP 报文与日志精读）：本题考查代码执行流程与输出结果，需要逐步跟踪变量变化。`Connection refused` 对应错误码宏名 `ECONNREFUSED`，它是收到 RST 之后的结果，说明包已到达对端但没人监听这个端口或被中间设备主动拒绝；与之相对，`Connection timed out` 才是 SYN 发出去无声响。`after 3021 ms` 是 curl 统计的建连耗时而不是服务端处理时间，读这类句要盯主语是谁。干扰项「Connection refused 说明域名解析失败，应当先修改 hosts 文件再重试这条命令」混淆了 DNS 与传输层，解析失败的固定说法是 Could not resolve host；干扰项「Failed to connect 意味着 TLS 证书校验未通过，需要换成 http 协议才能继续排查」把证书类错误与建连被拒混为一谈，证书问题会明确写出与证书相关的字样；干扰项「after 3021 ms 表示服务端处理耗时三千余毫秒，问题在后端业务代码的响应速度」读错了时间量的归属对象。"
             },
             {
               "type": "single",
@@ -79868,7 +79868,7 @@
               "code": "SELECT u.id, u.name, count(*) AS n\n  FROM users u JOIN orders o ON o.user_id = u.id\n GROUP BY u.id;",
               "language": "sql",
               "expected_output": "ERROR: column u.name must appear in the GROUP BY clause or be used in an aggregate function",
-              "explanation": "本题正确项是「报错给出两个可选动作：把该列加入分组，或把它包进聚合函数，二选一即可通过语法检查」。关键词是 `or` 连接的两个被动与不定式结构：`must appear in the GROUP BY clause` 与 `must be used in an aggregate function`，引擎把两种修复路径都写进了同一条句子，这在英文报错里很常见，读到 `or` 就该知道自己在做选择题。干扰项「报错说明该列名拼写有误，引擎找不到名为 name 的列，需要核对表结构后再重新提交」把语法约束错当成对象不存在，找不到列的固定说法是 column 加 does not exist；干扰项「报错要求删除该列，因为 GROUP BY 之后任何非分组列都不允许出现在选择列表里」漏掉了原文给的另一个选项，把可选择题读成了禁止题；干扰项「报错说明连接条件写错导致出现重复行，应先修正 ON 子句再考虑分组问题」则无中生有，原文没有涉及连接语义。"
+              "explanation": "本题正确项是「报错给出两个可选动作：把该列加入分组，或把它包进聚合函数，二选一即可通过语法检查」。 术语 定义句式（数据库与大数据英语：ACID、OLAP 与论文里的定义句）：本题考查代码错误诊断能力，需要定位问题并给出修复方案。关键词是 `or` 连接的两个被动与不定式结构：`must appear in the GROUP BY clause` 与 `must be used in an aggregate function`，引擎把两种修复路径都写进了同一条句子，这在英文报错里很常见，读到 `or` 就该知道自己在做选择题。干扰项「报错说明该列名拼写有误，引擎找不到名为 name 的列，需要核对表结构后再重新提交」把语法约束错当成对象不存在，找不到列的固定说法是 column 加 does not exist；干扰项「报错要求删除该列，因为 GROUP BY 之后任何非分组列都不允许出现在选择列表里」漏掉了原文给的另一个选项，把可选择题读成了禁止题；干扰项「报错说明连接条件写错导致出现重复行，应先修正 ON 子句再考虑分组问题」则无中生有，原文没有涉及连接语义。"
             },
             {
               "type": "single",
@@ -79971,7 +79971,7 @@
               "answer": 3,
               "code": "from sklearn.linear_model import Ridge\nfrom sklearn.model_selection import train_test_split\n\nX_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)\nmodel = Ridge(alpha=10.0).fit(X_train, y_train)\nprint(model.score(X_test, y_test))",
               "language": "python",
-              "explanation": "本题正确项是「alpha 控制正则强度，fit 就是训练，score 在测试集上返回 R² 得分」。Ridge 回归的英文名来自解曲面上那道凸起的脊，alpha 是 L2 惩罚系数，值越大模型越平滑、越不容易 overfitting；fit 取「让曲线贴合数据」的日常义，score 在回归器里默认是 R² 而不是 accuracy。干扰项「alpha 是学习率，fit 表示绘制拟合曲线，score 输出训练集上的损失值」把三个名字全部挪到别的语境，学习率在梯度下降类框架里通常写作 learning_rate。干扰项「Ridge 一名说明该模型做无监督降维，train_test_split 只是把行打乱」混淆了有监督回归与 PCA；干扰项「score 只用到训练集，因此删掉 X_test 与 y_test 这段代码仍能运行」忽略了泛化评估的基本前提。"
+              "explanation": "本题正确项是「alpha 控制正则强度，fit 就是训练，score 在测试集上返回 R² 得分」。 术语 文献结构信号词（AI 与机器学习文献精读）：本题考查文献结构信号词的核心概念与应用。Ridge 回归的英文名来自解曲面上那道凸起的脊，alpha 是 L2 惩罚系数，值越大模型越平滑、越不容易 overfitting；fit 取「让曲线贴合数据」的日常义，score 在回归器里默认是 R² 而不是 accuracy。干扰项「alpha 是学习率，fit 表示绘制拟合曲线，score 输出训练集上的损失值」把三个名字全部挪到别的语境，学习率在梯度下降类框架里通常写作 learning_rate。干扰项「Ridge 一名说明该模型做无监督降维，train_test_split 只是把行打乱」混淆了有监督回归与 PCA；干扰项「score 只用到训练集，因此删掉 X_test 与 y_test 这段代码仍能运行」忽略了泛化评估的基本前提。"
             },
             {
               "type": "multi",
@@ -80076,7 +80076,7 @@
               "answer": 2,
               "code": "\\textbf{Results.} The proposed method effects the training time only slightly,\nbecause it requires less GPU-hours and produces a fewer number of failed runs.",
               "language": "latex",
-              "explanation": "本题正确项是「effects 应为 affects，GPU-hours 可数故 less 应改 fewer，a fewer number of 应简化」。affect 是动词「影响」，effect 作名词才是「效果」，直译「影响」时最容易顺手写错；less 配不可数（less memory），fewer 配可数复数（fewer failed runs），GPU-hours 有明确复数形式，只能用 fewer；a fewer number of 把比较级包进名词短语，英文写作惯例是砍成 fewer。干扰项「effects 用得没错，它在此处作名词；真正的问题只是 less 与 fewer 语义重复」漏掉了动词位置的要求，此处紧跟主语需要谓语动词。干扰项「三处都属于拼写问题，把 GPU-hours 改成 gpu_hours 之后句子就完全通顺了」把用词错误说成大小写问题，改完仍然不通。"
+              "explanation": "本题正确项是「effects 应为 affects，GPU-hours 可数故 less 应改 fewer，a fewer number of 应简化」。 术语 时态选择（英文论文写作与审稿回复）：本题考查时态选择的核心概念与应用。affect 是动词「影响」，effect 作名词才是「效果」，直译「影响」时最容易顺手写错；less 配不可数（less memory），fewer 配可数复数（fewer failed runs），GPU-hours 有明确复数形式，只能用 fewer；a fewer number of 把比较级包进名词短语，英文写作惯例是砍成 fewer。干扰项「effects 用得没错，它在此处作名词；真正的问题只是 less 与 fewer 语义重复」漏掉了动词位置的要求，此处紧跟主语需要谓语动词。干扰项「三处都属于拼写问题，把 GPU-hours 改成 gpu_hours 之后句子就完全通顺了」把用词错误说成大小写问题，改完仍然不通。"
             },
             {
               "type": "multi",
@@ -80171,7 +80171,7 @@
               "answer": 0,
               "code": "a1f9c2d feat(auth): add refresh token rotation\n73be104 fix(parser): handle escaped quotes in raw strings\n9c2d5e7 docs: correct the install steps for Windows\n55e0b1a updated the dependencies and other stuff\ne7b1234 refactor(api): remove unused legacy headers",
               "language": "bash",
-              "explanation": "本题正确项是「55e0b1a 用了过去时且类型前缀缺失，other stuff 无法说明改了什么」。Conventional Commits 的标题形状是 type(scope): imperative summary，updated the dependencies and other stuff 三处偏离：动词用了过去式、没有 type 前缀、other stuff 这类含糊名词让读者与工具都无法判断变更边界。干扰项「docs: 一行没有括号作用域，因此所有不带作用域的写法都非法」把作用域说成必填，规范里 scope 是可选的；干扰项「refactor(api) 一行有问题，动词应当写在括号内而不是括号外」正好记反了格式，括号里放的是影响范围而不是动词。"
+              "explanation": "本题正确项是「55e0b1a 用了过去时且类型前缀缺失，other stuff 无法说明改了什么」。 术语 文档祈使句（技术文档、提交信息与英文面试）：本题考查代码执行流程与输出结果，需要逐步跟踪变量变化。Conventional Commits 的标题形状是 type(scope): imperative summary，updated the dependencies and other stuff 三处偏离：动词用了过去式、没有 type 前缀、other stuff 这类含糊名词让读者与工具都无法判断变更边界。干扰项「docs: 一行没有括号作用域，因此所有不带作用域的写法都非法」把作用域说成必填，规范里 scope 是可选的；干扰项「refactor(api) 一行有问题，动词应当写在括号内而不是括号外」正好记反了格式，括号里放的是影响范围而不是动词。"
             },
             {
               "type": "debug",
@@ -80185,7 +80185,7 @@
               "answer": 2,
               "code": "Traceback (most recent call last):\n  File \"infer.py\", line 42, in <module>\n    logits = model.encode(texts)\nAttributeError: 'BertModel' object has no attribute 'encode'",
               "language": "python",
-              "explanation": "本题正确项是「has no attribute 说明对象缺该属性，encode 属于上层封装类，应换用提供者」。读法顺序是最后一行的异常名加宾语（AttributeError、'BertModel' object、no attribute encode），再回到倒数第二段看文件名与行号，最后看回显的那行代码确认调用点；encode 通常由高层封装类提供，换成提供该方法的类或改调用它已有的方法即可。干扰项「line 42 指的是解释器自身源码的行号，与用户脚本无关，改代码没有用」把栈帧的行号读反，infer.py 才是需要改的文件；干扰项「Traceback 一词说明这是缩进引起的语法错误，调整空白后即可正常运行」把异常类型当成语法错误，IndentationError 才是缩进问题的名字。"
+              "explanation": "本题正确项是「has no attribute 说明对象缺该属性，encode 属于上层封装类，应换用提供者」。 术语 文档祈使句（技术文档、提交信息与英文面试）：本题考查代码错误诊断能力，需要定位问题并给出修复方案。读法顺序是最后一行的异常名加宾语（AttributeError、'BertModel' object、no attribute encode），再回到倒数第二段看文件名与行号，最后看回显的那行代码确认调用点；encode 通常由高层封装类提供，换成提供该方法的类或改调用它已有的方法即可。干扰项「line 42 指的是解释器自身源码的行号，与用户脚本无关，改代码没有用」把栈帧的行号读反，infer.py 才是需要改的文件；干扰项「Traceback 一词说明这是缩进引起的语法错误，调整空白后即可正常运行」把异常类型当成语法错误，IndentationError 才是缩进问题的名字。"
             },
             {
               "type": "multi",
@@ -80318,7 +80318,7 @@
               "code": "total_score = 150\nobjective = 10 * 5 + 6 * 5          # 选择 10 题 + 填空 6 题\nanswers = 70                        # 解答题共 70 分\nweights = {\"高数\": 0.6, \"线代\": 0.2, \"概率\": 0.2}\n\nprint(\"客观题\", objective, \"解答题\", answers)\nfor name, ratio in weights.items():\n    print(name, int(total_score * ratio))",
               "language": "python",
               "expected_output": "客观题 80 解答题 70\n高数 90\n线代 30\n概率 30",
-              "explanation": "本题正确项是「高数 90 换行 线代 30 换行 概率 30」。逐项算：150×0.6=90、150×0.2=30、150×0.2=30，`print` 每次输出一行，因此是三行。干扰项「客观题 80 解答题 70」是代码前两条语句合并输出的结果，只对应 `print(\"客观题\", objective, \"解答题\", answers)`，不是循环输出的内容。"
+              "explanation": "本题正确项是「高数 90 换行 线代 30 换行 概率 30」。 术语 卷种范围（考研数学考纲全景与复习路线）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。逐项算：150×0.6=90、150×0.2=30、150×0.2=30，`print` 每次输出一行，因此是三行。干扰项「客观题 80 解答题 70」是代码前两条语句合并输出的结果，只对应 `print(\"客观题\", objective, \"解答题\", answers)`，不是循环输出的内容。"
             },
             {
               "type": "order",
@@ -80431,7 +80431,7 @@
               "code": "import math\nfor n in (10, 1000, 100000):\n    s = sum(1 / math.sqrt(n * n + k) for k in range(1, n + 1))\n    print(n, round(s, 4))",
               "language": "python",
               "expected_output": "10 0.9739\n1000 0.9997\n100000 1.0",
-              "explanation": "本题正确项是「1，与夹逼准则推出的极限一致」。这段代码算的是 Σ(k=1..n) 1/√(n²+k)，把分母放成 √(n²+n) 与 √(n²+1) 两个边界，两端都趋于 1，因此 n = 100000 时 round(s, 4) 直接输出 1.0。干扰项「0.5，说明每一项单独取极限后再相加」错在先对每项取极限再求和，n 个趋于 0 的项相加结果由项数与阶数共同决定，不能逐项极限。"
+              "explanation": "本题正确项是「1，与夹逼准则推出的极限一致」。 术语 未定式定型（函数极限与连续：七种未定式与求极限的工具选择）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。这段代码算的是 Σ(k=1..n) 1/√(n²+k)，把分母放成 √(n²+n) 与 √(n²+1) 两个边界，两端都趋于 1，因此 n = 100000 时 round(s, 4) 直接输出 1.0。干扰项「0.5，说明每一项单独取极限后再相加」错在先对每项取极限再求和，n 个趋于 0 的项相加结果由项数与阶数共同决定，不能逐项极限。"
             },
             {
               "type": "multi",
@@ -80533,7 +80533,7 @@
               "code": "import numpy as np\n\nA = np.array([[1, 2, 3], [2, 4, 6], [1, 3, 5]], dtype=float)\nb = np.array([1, 1, 0], dtype=float)\nprint(np.linalg.matrix_rank(A), np.linalg.matrix_rank(np.c_[A, b]))\nprint(np.linalg.solve(A, b))",
               "language": "python",
               "expected_output": "2 3\nLinAlgError: Singular matrix",
-              "explanation": "本题正确项是「系数矩阵秩为 2 而增广矩阵秩为 3，方程组本就无解」。前两行输出的 2 与 3 已经把结论写出来了：r(A) ≠ r(A 拼 b)，按解的判定定理属于无解情形，solve 找不到解才抛异常。干扰项「只要把 b 改成列向量形状，solve 就能正常返回」把问题归给形状，实际矩阵奇异与形状无关，改判之前先算两个秩。"
+              "explanation": "本题正确项是「系数矩阵秩为 2 而增广矩阵秩为 3，方程组本就无解」。 术语 行列式展开（行列式、矩阵与线性方程组：线性代数的四层计算地基）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。前两行输出的 2 与 3 已经把结论写出来了：r(A) ≠ r(A 拼 b)，按解的判定定理属于无解情形，solve 找不到解才抛异常。干扰项「只要把 b 改成列向量形状，solve 就能正常返回」把问题归给形状，实际矩阵奇异与形状无关，改判之前先算两个秩。"
             },
             {
               "type": "fill",
@@ -80631,7 +80631,7 @@
               "code": "f = lambda x: x * x\na, b = 1.0, 3.0\nslope = (f(b) - f(a)) / (b - a)\nprint(slope, slope / 2)",
               "language": "python",
               "expected_output": "4.0 2.0",
-              "explanation": "本题正确项是「割线斜率 4.0，使 f′(ξ) = 4 的点 ξ = 2.0 落在区间内」。slope 算的是 (9 − 1)/(3 − 1) = 4，而 f′(x) = 2x，解 2ξ = 4 得 ξ = 2，正好是 slope/2，也在 (1,3) 内部。干扰项「割线斜率 2.0，对应中值点 ξ = 4.0 已超出区间」把两个数值调了个位置，代码里的 slope 与 slope/2 各有明确含义，读输出时要按表达式的顺序对照。"
+              "explanation": "本题正确项是「割线斜率 4.0，使 f′(ξ) = 4 的点 ξ = 2.0 落在区间内」。 术语 导数定义（一元函数微分学：中值定理与导数的四大应用）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。slope 算的是 (9 − 1)/(3 − 1) = 4，而 f′(x) = 2x，解 2ξ = 4 得 ξ = 2，正好是 slope/2，也在 (1,3) 内部。干扰项「割线斜率 2.0，对应中值点 ξ = 4.0 已超出区间」把两个数值调了个位置，代码里的 slope 与 slope/2 各有明确含义，读输出时要按表达式的顺序对照。"
             },
             {
               "type": "order",
@@ -80721,7 +80721,7 @@
               ],
               "answer": 0,
               "code": "import math\n\ndef integral_ln(x):\n    return x * math.log(x) - x\n\nprint(round(integral_ln(2) - integral_ln(1), 6))\nprint(round(math.pi * 1 / 5, 5))\nprint(round(math.pi / 2, 5))\n",
-              "explanation": "本题正确项是「0.386294，0.62832 与 1.5708」。integral_ln 是 ln x 的原函数 x ln x − x，差值 (2 ln 2 − 2) − (−1) = 2 ln 2 − 1 ≈ 0.386294，正好是 ∫1^2 ln x dx；后两行分别是 π/5 与 π/2 保留 5 位小数的结果，对应同一个曲边三角形绕 x 轴与绕 y 轴的体积。干扰项「0.636294，0.62832 与 1.5708」把 ∫1^2 x ln x dx 的值 2 ln 2 − 3/4 当成了 ∫1^2 ln x dx；干扰项「0.386294，1.5708 与 0.62832」把绕 x 轴与绕 y 轴两个体积调了顺序，代码里 π*1/5 先打印；干扰项「0.386294，0.62832 与 1.57079」多留了一位小数，round 到 5 位时 π/2 输出的是 1.5708。"
+              "explanation": "本题正确项是「0.386294，0.62832 与 1.5708」。 术语 凑微分与分部积分的选型（一元函数积分学：不定积分、定积分与几何应用）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。integral_ln 是 ln x 的原函数 x ln x − x，差值 (2 ln 2 − 2) − (−1) = 2 ln 2 − 1 ≈ 0.386294，正好是 ∫1^2 ln x dx；后两行分别是 π/5 与 π/2 保留 5 位小数的结果，对应同一个曲边三角形绕 x 轴与绕 y 轴的体积。干扰项「0.636294，0.62832 与 1.5708」把 ∫1^2 x ln x dx 的值 2 ln 2 − 3/4 当成了 ∫1^2 ln x dx；干扰项「0.386294，1.5708 与 0.62832」把绕 x 轴与绕 y 轴两个体积调了顺序，代码里 π*1/5 先打印；干扰项「0.386294，0.62832 与 1.57079」多留了一位小数，round 到 5 位时 π/2 输出的是 1.5708。"
             },
             {
               "type": "multi",
@@ -80816,7 +80816,7 @@
               ],
               "answer": 2,
               "code": "f = lambda x, y: x ** 3 + y ** 3 - 3 * x * y\ngrad = lambda x, y: (3 * x * x - 3 * y, 3 * y * y - 3 * x)\nhess = lambda x, y: (6 * x, -3.0, 6 * y)\n\nfor p in ((0.0, 0.0), (1.0, 1.0)):\n    fx, fy = grad(*p)\n    A, B, C = hess(*p)\n    print(p[0], p[1], round(fx, 6), round(fy, 6), round(A * C - B * B, 3), round(f(*p), 3))\n",
-              "explanation": "本题正确项是「原点处判别式为 −9 不是极值，点 (1, 1) 处判别式为 27 且函数值为 −1 取极小」。grad 给出 (3x² − 3y, 3y² − 3x)，两个驻点上都是 (0, 0)，确认它们是驻点；hess 给出 A = 6x、B = −3、C = 6y，在原点 AC − B² = 0 − 9 = −9，为负说明是鞍点而非极值，在 (1, 1) 得 36 − 9 = 27 为正且 A = 6 > 0，故取极小值 f(1,1) = 1 + 1 − 3 = −1。干扰项「两处一阶偏导都为 0，判别式也都是正数，故两个驻点都取极小值」把原点那行的 −9 看成了正数；干扰项「原点处判别式为 27 取极小，点 (1, 1) 处判别式为 −9 不是极值」把两行的结果调换了位置；干扰项「两处一阶偏导都为 0，因此都只是驻点，二阶判别式对它们都不适用」误以为驻点就不能继续判，实际上二阶判别式正是给驻点用的。"
+              "explanation": "本题正确项是「原点处判别式为 −9 不是极值，点 (1, 1) 处判别式为 27 且函数值为 −1 取极小」。 术语 可微判定的强弱链（多元函数微分学：偏导数、全微分与极值）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。grad 给出 (3x² − 3y, 3y² − 3x)，两个驻点上都是 (0, 0)，确认它们是驻点；hess 给出 A = 6x、B = −3、C = 6y，在原点 AC − B² = 0 − 9 = −9，为负说明是鞍点而非极值，在 (1, 1) 得 36 − 9 = 27 为正且 A = 6 > 0，故取极小值 f(1,1) = 1 + 1 − 3 = −1。干扰项「两处一阶偏导都为 0，判别式也都是正数，故两个驻点都取极小值」把原点那行的 −9 看成了正数；干扰项「原点处判别式为 27 取极小，点 (1, 1) 处判别式为 −9 不是极值」把两行的结果调换了位置；干扰项「两处一阶偏导都为 0，因此都只是驻点，二阶判别式对它们都不适用」误以为驻点就不能继续判，实际上二阶判别式正是给驻点用的。"
             },
             {
               "type": "single",
@@ -80935,7 +80935,7 @@
               ],
               "answer": 3,
               "code": "import math\n\nn = 240\ntotal = 0.0\nfor i in range(n):\n    for j in range(n):\n        r = (i + 0.5) / n\n        total += r * r * r\n\narea_element = (1.0 / n) * (2.0 * math.pi / n)\nprint(round(total * area_element, 4), round(math.pi / 2, 4))\n",
-              "explanation": "本题正确项是「两个值同为 1.5708，即密度 x² + y² 在单位圆盘上的积分是 π/2」。循环里累加的是 r²·r，第三个 r 正是极坐标的雅可比因子，所以 total 乘 area_element 算的就是 ∫∫_{x²+y²≤1} (x² + y²) dσ = 2π∫0^1 r³ dr = π/2；后一个打印直接给出 math.pi/2 保留四位的结果，两者应当相同。干扰项「网格值 1.5708 大于闭式值 π/2，说明极坐标网格步长取得太粗」把两个完全相等的数读成了大小关系；干扰项「网格值 0.7854 与闭式值 π/4 相符，对应上半球内 z 的三重积分」串到了本题没有的 π/4 那个结果；干扰项「两个值都是 6.2832，即密度 r² 在单位圆盘上的积分是 2π」把角度积分的因子 2π 又乘了一遍。"
+              "explanation": "本题正确项是「两个值同为 1.5708，即密度 x² + y² 在单位圆盘上的积分是 π/2」。 术语 累次积分交换次序（重积分、曲线与曲面积分：从二重积分到升维）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。循环里累加的是 r²·r，第三个 r 正是极坐标的雅可比因子，所以 total 乘 area_element 算的就是 ∫∫_{x²+y²≤1} (x² + y²) dσ = 2π∫0^1 r³ dr = π/2；后一个打印直接给出 math.pi/2 保留四位的结果，两者应当相同。干扰项「网格值 1.5708 大于闭式值 π/2，说明极坐标网格步长取得太粗」把两个完全相等的数读成了大小关系；干扰项「网格值 0.7854 与闭式值 π/4 相符，对应上半球内 z 的三重积分」串到了本题没有的 π/4 那个结果；干扰项「两个值都是 6.2832，即密度 r² 在单位圆盘上的积分是 2π」把角度积分的因子 2π 又乘了一遍。"
             },
             {
               "type": "multi",
@@ -81042,7 +81042,7 @@
               ],
               "answer": 1,
               "code": "import math\n\nsalt = lambda t: 500.0 * (1.0 - math.exp(-t / 50.0))\n\nprint(round(salt(100), 2), round(salt(250), 1))\nprint(round(salt(100) / 500, 4), round(salt(250) / 500, 4))\nprint(round(50.0 * math.log(2.0), 3))\n",
-              "explanation": "本题正确项是「盐量趋于稳态 500 g，t = 100 与 250 min 时为 432.33 g 与 496.6 g，0.8647 是前一时刻达到的比例」。代码里的式子来自 dx/dt = 10 − x/50、x(0) = 0，稳态由右端为零解出 x = 500，特征时间是 50 min。t = 100 与 250 分别是两个与五个时间常数，故达到 1 − e^(−2) = 0.8647 与 1 − e^(−5) = 0.9933，第三行的 34.657 是 50 ln2，即盐量到达稳态一半所需的半衰期。干扰项「盐量先升后降，t = 250 min 时回落到 432.33 g」把 1 − e^(−t/50) 的单调性读反，这个式子只会一路上趋；干扰项「盐量随时间指数增长且没有上限，t = 250 min 时已超过 1000 g」把它读成了 500 e^(t/50)，方向同样错了。"
+              "explanation": "本题正确项是「盐量趋于稳态 500 g，t = 100 与 250 min 时为 432.33 g 与 496.6 g，0.8647 是前一时刻达到的比例」。 术语 积分因子的来历（常微分方程：先认类型，再套解法，最后定常数）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。代码里的式子来自 dx/dt = 10 − x/50、x(0) = 0，稳态由右端为零解出 x = 500，特征时间是 50 min。t = 100 与 250 分别是两个与五个时间常数，故达到 1 − e^(−2) = 0.8647 与 1 − e^(−5) = 0.9933，第三行的 34.657 是 50 ln2，即盐量到达稳态一半所需的半衰期。干扰项「盐量先升后降，t = 250 min 时回落到 432.33 g」把 1 − e^(−t/50) 的单调性读反，这个式子只会一路上趋；干扰项「盐量随时间指数增长且没有上限，t = 250 min 时已超过 1000 g」把它读成了 500 e^(t/50)，方向同样错了。"
             },
             {
               "type": "multi",
@@ -81150,7 +81150,7 @@
               ],
               "answer": 2,
               "code": "import math\n\ndef partial(f, n):\n    return sum(f(k) for k in range(1, n + 1))\n\nalt = lambda k: (-1) ** (k - 1) / k\npos = lambda k: 1.0 / (k * k)\n\nfor n in (10, 100, 1000):\n    print(n, round(partial(alt, n), 6), round(partial(pos, n), 6))\n\nprint(round(math.pi ** 2 / 6, 6), round(math.log(2), 6))\n",
-              "explanation": "本题正确项是「左列误差由 1/(n + 1) 控制、收敛较慢，右列向 π²/6 = 1.644934 逼近，两者都不是指数收敛」。alt 是 Σ(−1)^(k−1)/k，向 ln 2 逼近：10 项 0.645635、100 项 0.688172、1000 项 0.692647，误差严格按约十分之一递减，正是莱布尼茨余项 |R_n| ≤ a_{n+1} 的表现；pos 是 Σ 1/k²，向 π²/6 逼近，误差约 1/n，同样只有多项式速度。最后一行列出两个闭式值供对照，说明两列都在正确收敛而不是算错。干扰项「最后一行的 1.644934 与 0.693147 说明代码里的两个级数都算错了」把闭式参照值误读成矛盾证据，实际上第四行的作用恰恰是验证前三行。"
+              "explanation": "本题正确项是「左列误差由 1/(n + 1) 控制、收敛较慢，右列向 π²/6 = 1.644934 逼近，两者都不是指数收敛」。 术语 正项级数判敛四把刀（无穷级数：判敛、求和函数与傅里叶展开）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。alt 是 Σ(−1)^(k−1)/k，向 ln 2 逼近：10 项 0.645635、100 项 0.688172、1000 项 0.692647，误差严格按约十分之一递减，正是莱布尼茨余项 |R_n| ≤ a_{n+1} 的表现；pos 是 Σ 1/k²，向 π²/6 逼近，误差约 1/n，同样只有多项式速度。最后一行列出两个闭式值供对照，说明两列都在正确收敛而不是算错。干扰项「最后一行的 1.644934 与 0.693147 说明代码里的两个级数都算错了」把闭式参照值误读成矛盾证据，实际上第四行的作用恰恰是验证前三行。"
             },
             {
               "type": "multi",
@@ -81258,7 +81258,7 @@
               ],
               "answer": 2,
               "code": "import math\n\ndef det3(m):\n    return (m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1])\n            - m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0])\n            + m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]))\n\nlam = [2.0 - math.sqrt(2.0), 2.0, 2.0 + math.sqrt(2.0)]\na = [[2.0, -1.0, 0.0], [-1.0, 2.0, -1.0], [0.0, -1.0, 2.0]]\nprint(round(sum(lam), 5), round(lam[0] * lam[1] * lam[2], 5))\nprint(round(det3(a), 5), round(lam[0] ** 2 + lam[1] ** 2 + lam[2] ** 2, 5))\n",
-              "explanation": "本题正确项是「特征值之和 6.0 等于迹、特征值之积 4.0 等于行列式、平方和 16.0 等于九元素平方和，三条验算同时通过」。代码里 lam 是 2 − √2、2、2 + √2，和为 6 恰好是三个对角元之和，积为 4 与 det3(a) 的展开一致；平方和 (2 − √2)² + 4 + (2 + √2)² = 16，而 A 的九个元素平方和是 3 个 4 加 4 个 1，也是 16。干扰项「det3(a) 与特征值之积不相等，说明特征值算错了」把浮点误差当成矛盾证据，实际两者都是 4.0；干扰项「平方和 16.0 只能用来验对称性，与特征值无关」说反了，平方和是特征值的性质，对称矩阵只是让它等于元素平方和。"
+              "explanation": "本题正确项是「特征值之和 6.0 等于迹、特征值之积 4.0 等于行列式、平方和 16.0 等于九元素平方和，三条验算同时通过」。 术语 特征方程与特征子空间（特征值、二次型与概率统计：两栏对照的流程题）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。代码里 lam 是 2 − √2、2、2 + √2，和为 6 恰好是三个对角元之和，积为 4 与 det3(a) 的展开一致；平方和 (2 − √2)² + 4 + (2 + √2)² = 16，而 A 的九个元素平方和是 3 个 4 加 4 个 1，也是 16。干扰项「det3(a) 与特征值之积不相等，说明特征值算错了」把浮点误差当成矛盾证据，实际两者都是 4.0；干扰项「平方和 16.0 只能用来验对称性，与特征值无关」说反了，平方和是特征值的性质，对称矩阵只是让它等于元素平方和。"
             },
             {
               "type": "multi",
@@ -81377,7 +81377,7 @@
               "code": "s = 120 * 60\nprint(s)",
               "language": "python",
               "expected_output": "7200",
-              "explanation": "本题正确项是「二级科目 120 分钟考试时长换算成秒」。算式 120 * 60 的结果 7200 正好等于二级统一时长的秒数，本课给选择题的建议用时是 25 分钟，换算只有 1500 秒。干扰项「一级科目的考试时长换算成秒」对应 90 分钟即 5400 秒，与代码输出对不上；成绩开放查询用的是日期而不是秒数，无法由这条算式解释。"
+              "explanation": "本题正确项是「二级科目 120 分钟考试时长换算成秒」。 术语 科目代码（二级报考、科目选择与真考环境全景）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。算式 120 * 60 的结果 7200 正好等于二级统一时长的秒数，本课给选择题的建议用时是 25 分钟，换算只有 1500 秒。干扰项「一级科目的考试时长换算成秒」对应 90 分钟即 5400 秒，与代码输出对不上；成绩开放查询用的是日期而不是秒数，无法由这条算式解释。"
             },
             {
               "type": "order",
@@ -81477,7 +81477,7 @@
               "code": "int i, j, k = 0;\nfor (i = 1; i <= n; i *= 2) {\n    for (j = 1; j <= i; j++) {\n        k = k + 1;\n    }\n}",
               "language": "c",
               "expected_output": "循环共执行 2n-1 次基本操作",
-              "explanation": "本题正确项是「O(n)」。外层 i 依次取 1、2、4 直到不超过 n，内层次数跟着当前的 i 而不是 n，总次数是等比数列之和 2n - 1，量级线性。干扰项「O(nlog2 n)」的错法是把外层轮数与内层次数直接相乘，只有在内层每轮都跑满 n 次时才成立，这里并不满足。"
+              "explanation": "本题正确项是「O(n)」。 术语 循环队列（公共基础：数据结构与算法选择题套路）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。外层 i 依次取 1、2、4 直到不超过 n，内层次数跟着当前的 i 而不是 n，总次数是等比数列之和 2n - 1，量级线性。干扰项「O(nlog2 n)」的错法是把外层轮数与内层次数直接相乘，只有在内层每轮都跑满 n 次时才成立，这里并不满足。"
             },
             {
               "type": "multi",
@@ -81578,7 +81578,7 @@
               "code": "SELECT dept, COUNT(*) FROM student GROUP BY dept HAVING COUNT(*) > 50;",
               "language": "sql",
               "expected_output": "每个满足条件的 dept 输出一行，第二列是该系的人数",
-              "explanation": "本题正确项是「统计各系人数，只保留人数超过 50 的系」。GROUP BY dept 把学生按系分成若干组，COUNT(*) 在每组内部计数，HAVING 再对分组结果做过滤，不满足条件的组不会出现在输出里。干扰项「按 dept 分组并显示所有系的人数，不做任何过滤」丢掉了 HAVING 的作用，把分组与筛选两件事合并成了一件；语句里没有 ORDER BY，输出也不是学生明细，所以第一条与第二条同样不成立。"
+              "explanation": "本题正确项是「统计各系人数，只保留人数超过 50 的系」。 术语 结构化程序设计（公共基础：程序设计方法、软件工程、数据库与网络信息安全）：本题考查结构化程序设计的核心概念与应用。GROUP BY dept 把学生按系分成若干组，COUNT(*) 在每组内部计数，HAVING 再对分组结果做过滤，不满足条件的组不会出现在输出里。干扰项「按 dept 分组并显示所有系的人数，不做任何过滤」丢掉了 HAVING 的作用，把分组与筛选两件事合并成了一件；语句里没有 ORDER BY，输出也不是学生明细，所以第一条与第二条同样不成立。"
             },
             {
               "type": "order",
@@ -81684,7 +81684,7 @@
               "code": "int i = 5;\ndouble s = 1;\ns = s + i / 2;",
               "language": "c",
               "expected_output": "s 的值为 3.0",
-              "explanation": "本题正确项是「3.0」。右侧先算 i / 2，两个 int 相除得 2，小数部分被丢掉；再与 double 型的 s 相加，按算术转换把 2 提升为 double 得 3.0，最后赋回 s。若写成 s = s + (double)i / 2; 才会得到 3.5。干扰项「2」只看了 i / 2 这一步，忘了 s 原来的 1 还在算式里。"
+              "explanation": "本题正确项是「3.0」。 术语 整数除法（二级 C：数据类型、常量变量与表达式求值）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。右侧先算 i / 2，两个 int 相除得 2，小数部分被丢掉；再与 double 型的 s 相加，按算术转换把 2 提升为 double 得 3.0，最后赋回 s。若写成 s = s + (double)i / 2; 才会得到 3.5。干扰项「2」只看了 i / 2 这一步，忘了 s 原来的 1 还在算式里。"
             },
             {
               "type": "order",
@@ -81790,7 +81790,7 @@
               "code": "int f(int n)\n{\n    if (n == 1) return 1;\n    return n + f(n - 1);\n}\n\nint main(void)\n{\n    printf(\"%d\", f(4));\n    return 0;\n}",
               "language": "c",
               "expected_output": "10",
-              "explanation": "本题正确项是「10」。f(4) 返回 4 + f(3)，一路展开到 f(1) 返回 1，合成 4 + 3 + 2 + 1 得 10，递归在这里充当了循环。干扰项「24」是把 return 那句里的加法看成了乘法，那才是阶乘的写法，24 对应 4 * 3 * 2 * 1；2 与 1 都不满足任何一条展开路径。"
+              "explanation": "本题正确项是「10」。 术语 if-else 配对（二级 C：流程控制结构与函数）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。f(4) 返回 4 + f(3)，一路展开到 f(1) 返回 1，合成 4 + 3 + 2 + 1 得 10，递归在这里充当了循环。干扰项「24」是把 return 那句里的加法看成了乘法，那才是阶乘的写法，24 对应 4 * 3 * 2 * 1；2 与 1 都不满足任何一条展开路径。"
             },
             {
               "type": "fill",
@@ -81890,7 +81890,7 @@
               "code": "int a[5];\nint *p = a;\np = p + 1;\na = a + 1;",
               "language": "c",
               "expected_output": "第 4 行编译报错：数组名不能被赋值",
-              "explanation": "本题正确项是「第 4 行，数组名代表的首地址不能被重新赋值」。数组名在表达式里转换成指向首元素的常量地址，它没有可写存储位置，因此不能出现在赋值号左边；想移动窗口就把这个地址赋给指针变量，再对指针做 p = p + 1。干扰项「第 2 行，不能把数组名直接赋给同类型的指针变量」不成立，int *p = a; 正是合法的初始化写法。"
+              "explanation": "本题正确项是「第 4 行，数组名代表的首地址不能被重新赋值」。 术语 指针运算（二级 C：指针、数组与字符串）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。数组名在表达式里转换成指向首元素的常量地址，它没有可写存储位置，因此不能出现在赋值号左边；想移动窗口就把这个地址赋给指针变量，再对指针做 p = p + 1。干扰项「第 2 行，不能把数组名直接赋给同类型的指针变量」不成立，int *p = a; 正是合法的初始化写法。"
             },
             {
               "type": "order",
@@ -81996,7 +81996,7 @@
               "code": "struct Node {\n    int data;\n    struct Node *next;\n};\n\nvoid insert_front(struct Node **head, struct Node *newnode) {\n    newnode->next = *head;\n    *head = newnode;\n}",
               "language": "c",
               "expected_output": "新结点成为第一个结点，原表头接在它后面",
-              "explanation": "本题正确项是「新结点先接住原表头，然后头指针改指向新结点」。两句的顺序不能换：先让新结点的 next 保存原来的头地址，再把头指针更新，这样任何时刻链表都没有断链。干扰项「头指针先指向新结点，再让新结点接住原表头」正是把两行写反的后果，原表头地址在赋值那一刻就丢了，其余结点全部失联。"
+              "explanation": "本题正确项是「新结点先接住原表头，然后头指针改指向新结点」。 术语 结构体与链表（二级 C：结构体、共用体与文件操作）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。两句的顺序不能换：先让新结点的 next 保存原来的头地址，再把头指针更新，这样任何时刻链表都没有断链。干扰项「头指针先指向新结点，再让新结点接住原表头」正是把两行写反的后果，原表头地址在赋值那一刻就丢了，其余结点全部失联。"
             },
             {
               "type": "fill",
@@ -82097,7 +82097,7 @@
               ],
               "answer": 1,
               "code": "a = 10\nb = 3\nprint(a ** 2 // b, a % b, round(a / b))",
-              "explanation": "本题正确项是「33 1 3」。`a ** 2` 得 100，100 与 3 之间用 `//` 做整除得 33；`a % b` 取 10 除以 3 的余数得 1；`round(a / b)` 先把 10/3 算成 3.3333 再四舍五入得 3，`round` 不带第二个参数时返回整数而不是浮点数。干扰项「33 1 3.33」把 `round` 的作用漏掉了，`round` 只有一个参数时结果必须是 int。"
+              "explanation": "本题正确项是「33 1 3」。 术语 标识符与保留字（Python 语言程序设计：基本语法元素与数据类型）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。`a ** 2` 得 100，100 与 3 之间用 `//` 做整除得 33；`a % b` 取 10 除以 3 的余数得 1；`round(a / b)` 先把 10/3 算成 3.3333 再四舍五入得 3，`round` 不带第二个参数时返回整数而不是浮点数。干扰项「33 1 3.33」把 `round` 的作用漏掉了，`round` 只有一个参数时结果必须是 int。"
             },
             {
               "type": "order",
@@ -82190,7 +82190,7 @@
               ],
               "answer": 3,
               "code": "data = [3, 1, 4, 1, 5]\nprint(data[1:4], data[::-1][0], len(set(data)))",
-              "explanation": "本题正确项是「[1, 4, 1] 5 4」。切片 1:4 取下标 1、2、3 上的三个元素，得 [1, 4, 1]；data[::-1] 先把整个表倒过来，取出的首元素是原表最后那个 5；set(data) 去掉重复的 1 之后剩 {1, 3, 4, 5} 四个元素。干扰项「[3, 1, 4] 3 5」把切片的起点当成了长度，又拿原表长度去充数集合大小；干扰项「[1, 4, 1] 3 4」把倒序后的首元素误写成原表首个 3；干扰项「[1, 4] 5 5」漏掉了终点元素并混淆了两处长度。"
+              "explanation": "本题正确项是「[1, 4, 1] 5 4」。 术语 切片与负步长（Python 组合数据类型：列表、元组、字符串、字典与集合）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。切片 1:4 取下标 1、2、3 上的三个元素，得 [1, 4, 1]；data[::-1] 先把整个表倒过来，取出的首元素是原表最后那个 5；set(data) 去掉重复的 1 之后剩 {1, 3, 4, 5} 四个元素。干扰项「[3, 1, 4] 3 5」把切片的起点当成了长度，又拿原表长度去充数集合大小；干扰项「[1, 4, 1] 3 4」把倒序后的首元素误写成原表首个 3；干扰项「[1, 4] 5 5」漏掉了终点元素并混淆了两处长度。"
             },
             {
               "type": "debug",
@@ -82203,7 +82203,7 @@
               ],
               "answer": 0,
               "code": "pairs = [(1, 2), [3, 4]]\ncounts = {}\nfor item in pairs:\n    counts[item] = counts.get(item, 0) + 1",
-              "explanation": "本题正确项是「第 4 行，列表不是可哈希对象，不能当作字典的键」。列表是可变对象，可变对象一律算不出稳定的哈希值，因此 `counts[item]` 在 `item` 取到 [3, 4] 那一刻抛 TypeError，报错位置在循环体内而不是创建字典处。干扰项「第 1 行，列表里不能同时放元组和列表两种元素」不成立，动态类型允许列表装混合元素；干扰项「第 4 行，get 方法要求键必须已经存在于字典中」把 get 的默认返回值机制理解反了，缺键正是它返回 0 的那一步。"
+              "explanation": "本题正确项是「第 4 行，列表不是可哈希对象，不能当作字典的键」。 术语 切片与负步长（Python 组合数据类型：列表、元组、字符串、字典与集合）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。列表是可变对象，可变对象一律算不出稳定的哈希值，因此 `counts[item]` 在 `item` 取到 [3, 4] 那一刻抛 TypeError，报错位置在循环体内而不是创建字典处。干扰项「第 1 行，列表里不能同时放元组和列表两种元素」不成立，动态类型允许列表装混合元素；干扰项「第 4 行，get 方法要求键必须已经存在于字典中」把 get 的默认返回值机制理解反了，缺键正是它返回 0 的那一步。"
             },
             {
               "type": "order",
@@ -82308,7 +82308,7 @@
               ],
               "answer": 0,
               "code": "def total(*nums, offset=0):\n    return sum(nums) + offset\n\ndata = [1, 2, 3]\nprint(total(*data), total(4, offset=10))",
-              "explanation": "本题正确项是「6 14」。*nums 把位置实参收集成元组，total(*data) 把列表展开成 1、2、3 三个实参，元组求和得 6，offset 用默认值 0；第二次调用给出位置参数 4 与关键字参数 offset=10，nums 是 (4,)，结果为 14。干扰项「7 14」把 sum(nums) 多加了一个元素个数；干扰项「6 4」忽略了关键字参数传入的偏移量；干扰项「14 14」误以为两次调用共享了同一个 offset，而默认参数只在定义时求值一次、每次调用可被实参覆盖。"
+              "explanation": "本题正确项是「6 14」。 术语 默认参数只求值一次（Python 函数、异常与文件读写）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。*nums 把位置实参收集成元组，total(*data) 把列表展开成 1、2、3 三个实参，元组求和得 6，offset 用默认值 0；第二次调用给出位置参数 4 与关键字参数 offset=10，nums 是 (4,)，结果为 14。干扰项「7 14」把 sum(nums) 多加了一个元素个数；干扰项「6 4」忽略了关键字参数传入的偏移量；干扰项「14 14」误以为两次调用共享了同一个 offset，而默认参数只在定义时求值一次、每次调用可被实参覆盖。"
             },
             {
               "type": "multi",
@@ -82427,7 +82427,7 @@
               "code": "def is_pass(scores, line=45):\n    return all(s >= line for s in scores)\n\nprint(is_pass([44, 60]), is_pass([45, 45]))",
               "language": "python",
               "expected_output": "False True",
-              "explanation": "本题正确项是「False True」。all() 逐项求值，第一组里 44 不小于 45，整个表达式为假，返回 False；第二组两个 45 都满足大于等于关系，返回 True，也就是说压线算通过。这道题真正考的是合格线口径：单科不够就整体不过，恰好 45 分属于通过区间。干扰项「True False」只是把两组的输出顺序写反，机考时最容易顺手点错这一档。"
+              "explanation": "本题正确项是「False True」。 术语 软考级别（软考级别、资格与报名：初级/中级/高级怎么选）：本题考查代码执行流程与输出结果，需要逐步跟踪变量变化。all() 逐项求值，第一组里 44 不小于 45，整个表达式为假，返回 False；第二组两个 45 都满足大于等于关系，返回 True，也就是说压线算通过。这道题真正考的是合格线口径：单科不够就整体不过，恰好 45 分属于通过区间。干扰项「True False」只是把两组的输出顺序写反，机考时最容易顺手点错这一档。"
             },
             {
               "type": "single",
@@ -82541,7 +82541,7 @@
               "code": "data = [1, 0, 1, 1, 0, 0, 1]\npoly = [1, 0, 1, 1]\npad = [0] * (len(poly) - 1)\ndividend = data + pad\nprint(len(pad), \"\".join(map(str, dividend)))",
               "language": "python",
               "expected_output": "3 1011001000",
-              "explanation": "本题正确项是「3 1011001000」。生成多项式 1011 共有 4 位，最高次数是 3，因此要在信息位末尾补 3 个 0，1011001 加上这 3 位得到 10 位的被除数 1011001000，print 先输出补零个数再输出整串。接着用 1011 做模 2 除法，减法是异或、不借位，最后的余数是 011，那才是真正拼到帧尾的冗余位。「补几个 0」与「余数是什么」是两件事，把它们混起来就会挑错答案；而按多项式位数 4 去补零，或者把次数减成 2，同样对不上竖式的位数要求。"
+              "explanation": "本题正确项是「3 1011001000」。 术语 数制转换（计算机科学基础：数制转换、码制与算术逻辑）：本题考查代码执行流程与输出结果，需要逐步跟踪变量变化。生成多项式 1011 共有 4 位，最高次数是 3，因此要在信息位末尾补 3 个 0，1011001 加上这 3 位得到 10 位的被除数 1011001000，print 先输出补零个数再输出整串。接着用 1011 做模 2 除法，减法是异或、不借位，最后的余数是 011，那才是真正拼到帧尾的冗余位。「补几个 0」与「余数是什么」是两件事，把它们混起来就会挑错答案；而按多项式位数 4 去补零，或者把次数减成 2，同样对不上竖式的位数要求。"
             },
             {
               "type": "order",
@@ -82645,7 +82645,7 @@
               "code": "addr = 0x1234\npage_size = 4096\nprint(addr // page_size, addr % page_size)",
               "language": "python",
               "expected_output": "1 564",
-              "explanation": "本题正确项是「1 564」。0x1234 等于十进制 4660，页大小 4096 是 2 的 12 次方，整除得页号 1，取余得页内偏移 564；换成位运算就是右移 12 位与低 12 位相与，这两步与硬件的页表变换完全一致。算的时候有个捷径：十六进制下页号取最高一位、偏移取后三位，因为 4096 正好对应 3 个十六进制位，所以 0x1234 拆成 1 与 0x234，而 0x234 折成十进制就是 564。选成 580 通常是把 0x234 按 0x244 折算，选成 2 564 则是把页数当成了 2048 或把整除写成了向上取整。"
+              "explanation": "本题正确项是「1 564」。 术语 进程调度（操作系统与系统结构：进程管理、存储层次与流水线）：本题考查代码执行流程与输出结果，需要逐步跟踪变量变化。0x1234 等于十进制 4660，页大小 4096 是 2 的 12 次方，整除得页号 1，取余得页内偏移 564；换成位运算就是右移 12 位与低 12 位相与，这两步与硬件的页表变换完全一致。算的时候有个捷径：十六进制下页号取最高一位、偏移取后三位，因为 4096 正好对应 3 个十六进制位，所以 0x1234 拆成 1 与 0x234，而 0x234 折成十进制就是 564。选成 580 通常是把 0x234 按 0x244 折算，选成 2 564 则是把页数当成了 2048 或把整除写成了向上取整。"
             },
             {
               "type": "multi",
@@ -82747,7 +82747,7 @@
               "code": "import heapq\n\na = [49, 38, 65, 97, 76, 13, 27]\nheapq.heapify(a)\nprint(a[0], [heapq.heappop(a) for _ in range(3)])",
               "language": "python",
               "expected_output": "13 [13, 27, 38]",
-              "explanation": "本题正确项是「13 [13, 27, 38]」。heapify 把普通列表原地调成最小堆，堆顶永远存在下标 0 的位置，因此 a[0] 是全集最小值 13；heappop 每次取走堆顶并把剩余元素重新调整，连续三次得到的就是升序的前三个元素 13、27、38。print 先算第一个表达式再算列表推导，所以堆顶在弹出前已被读出。把它当成排序结果是这一类题最常见的误读：heapq 是 Python 内部的稳定最小堆实现，pop 顺序严格升序，因此「[13, 38, 27]」这种先小后大又回落的序列不可能出现；「[49, 38, 65]」是把原始下标顺序误当成堆顶，「[97, 76, 65]」则是把它当成了最大堆。"
+              "explanation": "本题正确项是「13 [13, 27, 38]」。 术语 二叉树遍历（数据结构与算法：树、图、查找与排序）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。heapify 把普通列表原地调成最小堆，堆顶永远存在下标 0 的位置，因此 a[0] 是全集最小值 13；heappop 每次取走堆顶并把剩余元素重新调整，连续三次得到的就是升序的前三个元素 13、27、38。print 先算第一个表达式再算列表推导，所以堆顶在弹出前已被读出。把它当成排序结果是这一类题最常见的误读：heapq 是 Python 内部的稳定最小堆实现，pop 顺序严格升序，因此「[13, 38, 27]」这种先小后大又回落的序列不可能出现；「[49, 38, 65]」是把原始下标顺序误当成堆顶，「[97, 76, 65]」则是把它当成了最大堆。"
             },
             {
               "type": "multi",
@@ -82835,7 +82835,7 @@
               ],
               "answer": 0,
               "code": "a = [3, 10, 7, 15, 9, 11]\ndp = [1] * len(a)\nfor i in range(1, len(a)):\n    for j in range(i):\n        if a[j] < a[i]:\n            dp[i] = max(dp[i], dp[j] + 1)\nprint(max(dp), dp.index(max(dp)) + 1)",
-              "explanation": "本题正确项是「4 6」。dp[i] 表示以第 i 个元素结尾的上升子序列的最大长度，逐格回看所有前驱：3、10、7、15、9、11 对应的 dp 依次是 1、2、2、3、3、4，最大值 4 出现在下标 5，程序输出下标的 1 基位置 6，因此打印 4 6。这条递推的时间是 O(n²)，因为每个状态都要回看它的全部前驱。干扰项「3 5」是把 3、7、15 这类可见的三元组当成答案而漏掉 11；「4 5」只错在下标起点，把 0 基位置当成 1 基位置；「6 6」则把 dp 数组长度本身当成了最大长度。"
+              "explanation": "本题正确项是「4 6」。 术语 主定理（算法设计与复杂度分析）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。dp[i] 表示以第 i 个元素结尾的上升子序列的最大长度，逐格回看所有前驱：3、10、7、15、9、11 对应的 dp 依次是 1、2、2、3、3、4，最大值 4 出现在下标 5，程序输出下标的 1 基位置 6，因此打印 4 6。这条递推的时间是 O(n²)，因为每个状态都要回看它的全部前驱。干扰项「3 5」是把 3、7、15 这类可见的三元组当成答案而漏掉 11；「4 5」只错在下标起点，把 0 基位置当成 1 基位置；「6 6」则把 dp 数组长度本身当成了最大长度。"
             },
             {
               "type": "multi",
@@ -82942,7 +82942,7 @@
               ],
               "answer": 0,
               "code": "SELECT dept, COUNT(*) AS cnt\nFROM student\nGROUP BY dept\nWHERE cnt > 3\nORDER BY cnt DESC;",
-              "explanation": "本题正确项是「WHERE 在 GROUP BY 之前求值，此时列别名 cnt 还没生成，条件应写进 HAVING」。SELECT 的逻辑次序是 FROM、JOIN 与 ON、WHERE、GROUP BY、HAVING、SELECT 与 DISTINCT、ORDER BY，别名要到 SELECT 阶段才绑定，所以 WHERE 里既看不到 cnt 也看不到聚集值；把这行条件挪到 HAVING 即可，而 ORDER BY 在 SELECT 之后求值，那里引用 cnt 是合法的。干扰项「COUNT(*) 不能出现在 SELECT 列表里，必须写成 COUNT(dept) 才合法」把聚集参数的选择当成了语法禁令，两种写法都合法只是含义不同；干扰项「GROUP BY 必须与 ORDER BY 使用同一个属性，否则分组结果无法排序」混淆了分组键与排序键，排序键完全可以是聚集结果；干扰项「聚集函数结果不能参与比较，必须先在子查询里算出 cnt 再到外层用 WHERE 过滤」把 HAVING 的存在意义抹掉了，绕道子查询只是给同一个判断多穿一层衣服。"
+              "explanation": "本题正确项是「WHERE 在 GROUP BY 之前求值，此时列别名 cnt 还没生成，条件应写进 HAVING」。 术语 三级模式与两级映像（数据库系统：关系代数、SQL 与规范化）：本题考查代码错误诊断能力，需要定位问题并给出修复方案。SELECT 的逻辑次序是 FROM、JOIN 与 ON、WHERE、GROUP BY、HAVING、SELECT 与 DISTINCT、ORDER BY，别名要到 SELECT 阶段才绑定，所以 WHERE 里既看不到 cnt 也看不到聚集值；把这行条件挪到 HAVING 即可，而 ORDER BY 在 SELECT 之后求值，那里引用 cnt 是合法的。干扰项「COUNT(*) 不能出现在 SELECT 列表里，必须写成 COUNT(dept) 才合法」把聚集参数的选择当成了语法禁令，两种写法都合法只是含义不同；干扰项「GROUP BY 必须与 ORDER BY 使用同一个属性，否则分组结果无法排序」混淆了分组键与排序键，排序键完全可以是聚集结果；干扰项「聚集函数结果不能参与比较，必须先在子查询里算出 cnt 再到外层用 WHERE 过滤」把 HAVING 的存在意义抹掉了，绕道子查询只是给同一个判断多穿一层衣服。"
             },
             {
               "type": "multi",
@@ -83048,7 +83048,7 @@
               ],
               "answer": 0,
               "code": "iptables -A INPUT -p tcp -s 10.20.30.0/24 --dport 22 -j DROP\niptables -A INPUT -p tcp --dport 22 -j ACCEPT",
-              "explanation": "本题正确项是「两条规则都用 -A 追加且先 DROP 后 ACCEPT，链内自上而下命中即止，ACCEPT 永远轮不到」。iptables 的规则链是自上而下线性匹配、命中即止，所以写法要「先具体后一般」：该网段的放行必须排在通用拒绝之前，追加到链尾还得用 -I INPUT 1 插到链首。这里第二条 ACCEPT 没有限定源地址，一旦顺序改对，就等于对所有来源开放 22 端口，两处要一起改——改完用 iptables -L INPUT -n --line-numbers 核一遍次序。干扰项「--dport 22 必须写成 --destination-port 才能在 filter 表里被识别」是伪语法问题，两个写法是同一选项的长短路；干扰项「-s 指定网段时必须写子网掩码 255.255.255.0，CIDR 写法在新内核已被废弃」与事实相反，CIDR 前缀长度正是 iptables 的标准写法；干扰项「SSH 走 UDP 协议，-p tcp 与 --dport 22 组合在一起根本匹配不到任何报文」搞错了传输层选型，SSH 是面向连接的 TCP 22。"
+              "explanation": "本题正确项是「两条规则都用 -A 追加且先 DROP 后 ACCEPT，链内自上而下命中即止，ACCEPT 永远轮不到」。 术语 协议端口与传输层选型（网络安全与信息安全基础）：本题考查协议端口与传输层选型的核心概念与应用。iptables 的规则链是自上而下线性匹配、命中即止，所以写法要「先具体后一般」：该网段的放行必须排在通用拒绝之前，追加到链尾还得用 -I INPUT 1 插到链首。这里第二条 ACCEPT 没有限定源地址，一旦顺序改对，就等于对所有来源开放 22 端口，两处要一起改——改完用 iptables -L INPUT -n --line-numbers 核一遍次序。干扰项「--dport 22 必须写成 --destination-port 才能在 filter 表里被识别」是伪语法问题，两个写法是同一选项的长短路；干扰项「-s 指定网段时必须写子网掩码 255.255.255.0，CIDR 写法在新内核已被废弃」与事实相反，CIDR 前缀长度正是 iptables 的标准写法；干扰项「SSH 走 UDP 协议，-p tcp 与 --dport 22 组合在一起根本匹配不到任何报文」搞错了传输层选型，SSH 是面向连接的 TCP 22。"
             },
             {
               "type": "multi",
@@ -83155,7 +83155,7 @@
               ],
               "answer": 2,
               "code": "interface Strategy {\n    int apply(int price);\n}\n\nclass NoDiscount implements Strategy {\n    public int apply(int price) {\n        return price;\n    }\n}\n\nclass TenPercentOff implements Strategy {\n    public int apply(int price) {\n        return price * 9 / 10;\n    }\n}\n\nclass Checkout {\n    private Strategy strategy = new NoDiscount();\n\n    void setStrategy(Strategy strategy) {\n        this.strategy = strategy;\n    }\n\n    int pay(int price) {\n        return strategy.apply(price);\n    }\n}\n\npublic class Demo {\n    public static void main(String[] args) {\n        Checkout c = new Checkout();\n        c.setStrategy(new TenPercentOff());\n        System.out.println(c.pay(199) + \" \" + new Checkout().pay(199));\n    }\n}",
-              "explanation": "本题正确项是「179 199」。第一个实例先被 setStrategy 换成 TenPercentOff，199 乘 9 得 1791，再与 10 做整数除法得 179；后面那个 new Checkout() 是全新对象，字段初始化给的是默认策略 NoDiscount，直接返回原价 199。整段代码没有任何一处 if 判断折扣种类，新增折扣只加一个实现类，这就是开闭原则与策略模式合用的效果。干扰项「179.1 199」把整数运算当成了浮点运算，两个 int 相除结果仍是 int；干扰项「199 199」漏看了 setStrategy 已经生效；干扰项「179 179」误以为新对象沿用了 c 的策略，而策略引用是实例字段而不是静态字段。"
+              "explanation": "本题正确项是「179 199」。 术语 结构图与行为图归类（面向对象分析与设计：UML 与设计模式）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。第一个实例先被 setStrategy 换成 TenPercentOff，199 乘 9 得 1791，再与 10 做整数除法得 179；后面那个 new Checkout() 是全新对象，字段初始化给的是默认策略 NoDiscount，直接返回原价 199。整段代码没有任何一处 if 判断折扣种类，新增折扣只加一个实现类，这就是开闭原则与策略模式合用的效果。干扰项「179.1 199」把整数运算当成了浮点运算，两个 int 相除结果仍是 int；干扰项「199 199」漏看了 setStrategy 已经生效；干扰项「179 179」误以为新对象沿用了 c 的策略，而策略引用是实例字段而不是静态字段。"
             },
             {
               "type": "multi",
@@ -83261,7 +83261,7 @@
               ],
               "answer": 0,
               "code": "START = {'著作权（法人作品）': '首次发表', '发明专利': '申请日', '注册商标': '核准注册'}\nTERM = {'著作权（法人作品）': 50, '发明专利': 20, '注册商标': 10}\nROUND_YEAR_END = {'著作权（法人作品）': True, '发明专利': False, '注册商标': False}\n\n\ndef brief(item, since):\n    year = since + TERM[item]\n    tail = '年的 12 月 31 日' if ROUND_YEAR_END[item] else '年对应日'\n    return f'{item}自{START[item]}起算，到第 {year} {tail}届满'\n\n\nprint(brief('著作权（法人作品）', 2016))\nprint(brief('发明专利', 2021))",
-              "explanation": "本题正确项是「发明专利自申请日起算，到第 2041 年对应日届满」。第二个实参给出 2021，字典查到的年限是 20，相加得 2041；ROUND_YEAR_END 对发明专利取 False，尾巴因此是「年对应日」而不是「年的 12 月 31 日」，起算点取的是「申请日」。这段代码写的正是判分口径本身：年末归整只属于著作权。干扰项「发明专利自授权日起算，到第 2041 年对应日届满」与代码里 START 的取值不符，是全库最高频的期限起点错误；干扰项「发明专利自申请日起算，到第 2061 年的 12 月 31 日届满」把著作权的 50 年套到了专利上；干扰项「发明专利自申请日起算，到第 2041 年的 12 月 31 日届满」年限与起点都对，却把归整规则误用到了专利上。"
+              "explanation": "本题正确项是「发明专利自申请日起算，到第 2041 年对应日届满」。 术语 起算点与年末归整（知识产权与标准规范）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。第二个实参给出 2021，字典查到的年限是 20，相加得 2041；ROUND_YEAR_END 对发明专利取 False，尾巴因此是「年对应日」而不是「年的 12 月 31 日」，起算点取的是「申请日」。这段代码写的正是判分口径本身：年末归整只属于著作权。干扰项「发明专利自授权日起算，到第 2041 年对应日届满」与代码里 START 的取值不符，是全库最高频的期限起点错误；干扰项「发明专利自申请日起算，到第 2061 年的 12 月 31 日届满」把著作权的 50 年套到了专利上；干扰项「发明专利自申请日起算，到第 2041 年的 12 月 31 日届满」年限与起点都对，却把归整规则误用到了专利上。"
             },
             {
               "type": "multi",
@@ -83368,7 +83368,7 @@
               ],
               "answer": 0,
               "code": "int max_subarray(const int *a, int n) {\n    int best = a[0], cur = a[0];\n    for (int i = 1; i < n; i++) {\n        cur = (cur + a[i] > a[i]) ? cur + a[i] : a[i];\n        if (cur > best) {\n            best = cur;\n        }\n    }\n    return best;\n}\n\nint a[] = {6, -3, 9, -2, 7, -5, 4};\nprintf(\"%d\\n\", max_subarray(a, 7));",
-              "explanation": "本题正确项是「17」。逐轮写出 cur 的值是 6、3、12、10、17、12、16，best 在第 5 轮被更新到 17 之后再没被超过，因此返回 17，对应的子段是前五个元素 6、-3、9、-2、7 这一段。三目表达式的作用是在「延续前一段」与「从当前元素重新起一段」之间取较大者，初值取 a[0] 而不是 0，这保证全为负数时返回的仍是最大的那个负数。干扰项「16」是最后一轮的 cur 值，把它当成了历史最大值；干扰项「12」只统计到第 6 轮就停了；干扰项「21」把 6、9、7 与最后的 4 直接相加，忽略了题目要求的是连续子段。"
+              "explanation": "本题正确项是「17」。 术语 五道大题时间预算（下午应用技术科目作答方法）：本题考查代码阅读与理解能力，需要结合课程主线分析代码逻辑。逐轮写出 cur 的值是 6、3、12、10、17、12、16，best 在第 5 轮被更新到 17 之后再没被超过，因此返回 17，对应的子段是前五个元素 6、-3、9、-2、7 这一段。三目表达式的作用是在「延续前一段」与「从当前元素重新起一段」之间取较大者，初值取 a[0] 而不是 0，这保证全为负数时返回的仍是最大的那个负数。干扰项「16」是最后一轮的 cur 值，把它当成了历史最大值；干扰项「12」只统计到第 6 轮就停了；干扰项「21」把 6、9、7 与最后的 4 直接相加，忽略了题目要求的是连续子段。"
             },
             {
               "type": "multi",

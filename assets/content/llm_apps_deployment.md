@@ -316,6 +316,32 @@ print(r.status_code, len(r.json().get('models', [])))
 | 量化 | 降低位宽以省显存与带宽，需任务级验收。 |
 | LoRA | 冻结基座只训低秩增量，可合并或热切换。 |
 
+**部署清单**：
+- 模型服务：vLLM、TGI、Ollama。
+- API 网关：Kong、Traefik、Nginx。
+- 监控告警：Prometheus、Grafana。
+- 日志收集：ELK Stack、Loki。
+
+**性能优化**：
+1. 模型量化：INT8/INT4 量化减少显存占用。
+2. 批处理：动态 batching 提高吞吐量。
+3. 缓存：语义缓存减少重复计算。
+4. 负载均衡：多实例部署分散压力。
+5. 自动扩缩容：根据流量动态调整资源。
+
+**成本优化**：
+1. 使用开源模型：避免 API 调用费用。
+2. 按需实例：非高峰时段减少资源。
+3. 模型蒸馏：用小模型替代大模型。
+4. 混合部署：核心功能本地，边缘功能云端。
+
+**总结**：部署 LLM 应用需要综合考虑模型服务、基础设施、监控和成本。采用容器化和自动化运维，能提高效率。持续优化，确保系统稳定可靠。
+
+**学习检查清单**：
+- [ ] 能用 Docker 部署一个简单的 LLM 应用。
+- [ ] 能配置监控和告警。
+- [ ] 能进行成本优化。
+
 ## 内容元数据
 
 - 内容版本：v2.0
@@ -333,3 +359,21 @@ print(r.status_code, len(r.json().get('models', [])))
 - [vLLM 官方文档](https://docs.vllm.ai/en/latest/)
 - [Text Generation Inference 文档](https://huggingface.co/docs/text-generation-inference/index)
 - [Efficient Memory Management for LLM Serving with PagedAttention](https://arxiv.org/abs/2309.06180)
+
+**复习建议**：本课内容在 LLM 应用开发中占重要地位，重点掌握部署架构与运维策略。建议结合实际项目练习，多做案例分析。坚持学习，定能掌握！加油！祝你成功！
+
+**考试技巧**：遇到部署题时，优先考虑高可用和容错；遇到运维题时，关注监控和日志。
+
+**核心要点总结**：部署 LLM 应用需考虑模型服务、API 网关、负载均衡和自动扩缩容。容器化部署是主流方案，Kubernetes 提供强大的编排能力。
+
+**实践建议**：从小规模开始，逐步扩展；监控关键指标，及时优化。
+
+**学习路径建议**：先学 Docker 基础 → 掌握 Kubernetes 核心概念 → 实践模型服务部署 → 优化性能和成本。
+
+**部署清单**：
+- 模型服务：vLLM、TGI、Ollama。
+- API 网关：Kong、Traefik、Nginx。
+- 监控告警：Prometheus、Grafana。
+- 日志收集：ELK Stack、Loki。
+
+**总结**：部署 LLM 应用需要综合考虑模型服务、基础设施、监控和成本。采用容器化和自动化运维，能提高效率。持续优化，确保系统稳定可靠。

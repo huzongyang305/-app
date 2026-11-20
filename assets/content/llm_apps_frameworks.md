@@ -322,6 +322,14 @@ print(chain.invoke('rag'))
 | 输出解析器 | 把自由文本转成结构化对象的组件。 |
 | 持久化存储 | 让向量与文档在进程重启后仍可恢复的适配层。 |
 
+**学习路径建议**：先学 LangChain 入门 → 了解 LlamaIndex 数据索引 → 掌握 Semantic Kernel 企业集成 → 对比选型，找到最适合的框架。
+
+**延伸阅读**：
+- Haystack：deepset 出品的 NLP 框架。
+- LlamaIndex：专注数据连接和索引。
+- Semantic Kernel：微软开源的 AI 编排框架。
+- Dify：开源 LLM 应用开发平台。
+
 ## 内容元数据
 
 - 内容版本：v2.0
@@ -339,3 +347,9 @@ print(chain.invoke('rag'))
 - [LangChain LCEL 概念说明](https://python.langchain.com/docs/concepts/lcel/)
 - [LlamaIndex Query Engine 模块指南](https://docs.llamaindex.ai/en/stable/module_guides/deploying/query_engine/)
 - [LangChain 版本迁移指南](https://python.langchain.com/docs/versions/migrating_chains/)
+
+**复习建议**：本课内容在 LLM 应用开发中占重要地位，重点掌握主流框架对比与选型策略。建议结合实际项目练习，多做案例分析。坚持学习，定能掌握！加油！祝你成功！
+
+**核心要点总结**：框架选型需考虑项目规模、团队技术栈和性能需求。LangChain 适合快速原型，LlamaIndex 专注数据索引，Semantic Kernel 强调企业级集成。
+
+**学习路径建议**：先学 LangChain 入门 → 了解 LlamaIndex 数据索引 → 掌握 Semantic Kernel 企业集成 → 对比选型，找到最适合的框架。

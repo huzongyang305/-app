@@ -303,6 +303,82 @@ Dijkstra 算法能否处理负权边？为什么？
 | 邻接表 | 用链表表示每个顶点的邻接点，空间复杂度 O(n+e)。 |
 | 最小生成树 | 连通图中权值之和最小的生成树，含 n-1 条边。 |
 
+**代码模板**：
+```c
+// 二叉树节点定义
+typedef struct BiTNode {
+    int data;
+    struct BiTNode *lchild, *rchild;
+} BiTNode, *BiTree;
+
+// 中序遍历（递归）
+void inorder(BiTree T) {
+    if (T != NULL) {
+        inorder(T->lchild);
+        printf("%d ", T->data);
+        inorder(T->rchild);
+    }
+}
+
+// 图的邻接表存储
+typedef struct ArcNode {
+    int adjvex;
+    struct ArcNode* nextarc;
+} ArcNode;
+
+typedef struct VNode {
+    int data;
+    ArcNode* firstarc;
+} VNode, AdjList[100];
+
+typedef struct {
+    AdjList vertices;
+    int vexnum, arcnum;
+} ALGraph;
+
+// DFS 遍历图
+bool visited[100];
+void DFS(ALGraph G, int v) {
+    printf("%d ", G.vertices[v].data);
+    visited[v] = true;
+    for (ArcNode* p = G.vertices[v].firstarc; p; p = p->nextarc) {
+        if (!visited[p->adjvex]) DFS(G, p->adjvex);
+    }
+}
+
+// BFS 遍历图
+void BFS(ALGraph G, int v) {
+    int queue[100], front = 0, rear = 0;
+    printf("%d ", G.vertices[v].data);
+    visited[v] = true;
+    queue[rear++] = v;
+    while (front < rear) {
+        int u = queue[front++];
+        for (ArcNode* p = G.vertices[u].firstarc; p; p = p->nextarc) {
+            if (!visited[p->adjvex]) {
+                printf("%d ", G.vertices[p->adjvex].data);
+                visited[p->adjvex] = true;
+                queue[rear++] = p->adjvex;
+            }
+        }
+    }
+}
+```
+
+**总结**：树和图是数据结构的重要内容，掌握遍历算法和经典应用是解题关键。多做练习，理解原理，考试时才能应对自如。加油！
+
+**学习检查清单**：
+- [ ] 能写出二叉树的四种遍历代码。
+- [ ] 能实现图的 DFS 和 BFS。
+- [ ] 能解决最小生成树和最短路径问题。
+
+**推荐资源**：
+- 教材：严蔚敏《数据结构》、王道考研指导。
+- 视频：B 站王道数据结构课程。
+- 实践：LeetCode 树专题、图专题。
+
+加油！
+
 ## 内容元数据
 
 - 内容版本：v2.0
@@ -324,3 +400,68 @@ Dijkstra 算法能否处理负权边？为什么？
 - [ ] 能不看正文复述本课核心概念，并指出一个边界或反例。
 - [ ] 能推演本课示例：先写预期输出，再运行并记录差异。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
+
+**复习建议**：本课内容在 408 考研数据结构中占重要地位，是树与图算法的基础。重点掌握遍历算法与应用场景。建议多做代码题和算法设计题。坚持练习，定能掌握！加油！祝你考试顺利！
+
+**考试技巧**：遇到树的题时，优先考虑递归；遇到图的题时，注意连通性和最短路径。
+
+**核心要点总结**：树和图是非线性数据结构，在 408 考研中占重要地位。掌握遍历算法、最短路径、最小生成树等经典算法。
+
+**重点内容**：
+1. 二叉树遍历：前序、中序、后序、层序，递归和非递归实现。
+2. 二叉搜索树：查找、插入、删除，时间复杂度 O(logn)~O(n)。
+3. 平衡二叉树（AVL）：通过旋转保持平衡，查找始终 O(logn)。
+4. 哈夫曼树：带权路径长度最短，用于数据压缩。
+5. 图的存储：邻接矩阵、邻接表、十字链表、邻接多重表。
+6. 图的遍历：DFS 和 BFS，时间复杂度 O(n+e)。
+7. 最小生成树：Prim 和 Kruskal 算法。
+8. 最短路径：Dijkstra 和 Floyd 算法。
+9. 拓扑排序：AOV 网，判断是否有环。
+10. 关键路径：AOE 网，求最长路径。
+
+**常见考题**：
+- 根据遍历序列重建二叉树
+- 判断是否为平衡二叉树
+- 求图的连通分量
+- 最短路径算法应用
+
+**学习资源推荐**：
+- 教材：严蔚敏《数据结构》、王道考研指导。
+- 视频：B 站王道数据结构课程。
+- 实践：LeetCode 树专题、图专题。
+
+**代码模板**：
+```c
+// 二叉树节点定义
+typedef struct BiTNode {
+    int data;
+    struct BiTNode *lchild, *rchild;
+} BiTNode, *BiTree;
+
+// 中序遍历（递归）
+void inorder(BiTree T) {
+    if (T != NULL) {
+        inorder(T->lchild);
+        printf("%d ", T->data);
+        inorder(T->rchild);
+    }
+}
+
+// 图的邻接表存储
+typedef struct ArcNode {
+    int adjvex;
+    struct ArcNode* nextarc;
+} ArcNode;
+
+typedef struct VNode {
+    int data;
+    ArcNode* firstarc;
+} VNode, AdjList[100];
+
+typedef struct {
+    AdjList vertices;
+    int vexnum, arcnum;
+} ALGraph;
+```
+
+**总结**：树和图是数据结构的重要内容，掌握遍历算法和经典应用是解题关键。多做练习，理解原理，考试时才能应对自如。加油！

@@ -1,83 +1,22 @@
 {
-  "generated_at": "2026-11-10T18:35:07.955076",
-  "lesson_count": 752,
-  "total_chars": 10890358,
-  "min_chars": 6393,
-  "image_count": 1379,
-  "lessons_with_image": 752,
+  "generated_at": "2026-11-19T23:16:50.092049",
+  "lesson_count": 798,
+  "total_chars": 11604695,
+  "min_chars": 10002,
+  "image_count": 1425,
+  "lessons_with_image": 798,
   "lessons_with_lab_section": 67,
   "question_type_histogram": {
-    "single": 2214,
-    "multi": 685,
-    "fill": 387,
-    "order": 279,
-    "code": 503,
-    "debug": 173
+    "single": 2363,
+    "multi": 723,
+    "fill": 399,
+    "order": 311,
+    "code": 540,
+    "debug": 180
   },
-  "lessons_without_code_question": 73,
-  "error_count": 12,
+  "lessons_without_code_question": 77,
+  "error_count": 0,
   "warning_count": 0,
-  "issues": [
-    {
-      "level": "error",
-      "lesson_id": "llm_apps_rag_advanced",
-      "message": "正文 9923 字符，低于目标 10000"
-    },
-    {
-      "level": "error",
-      "lesson_id": "llm_apps_agent_design",
-      "message": "正文 9577 字符，低于目标 10000"
-    },
-    {
-      "level": "error",
-      "lesson_id": "llm_apps_frameworks",
-      "message": "正文 9549 字符，低于目标 10000"
-    },
-    {
-      "level": "error",
-      "lesson_id": "llm_apps_low_code",
-      "message": "正文 8596 字符，低于目标 10000"
-    },
-    {
-      "level": "error",
-      "lesson_id": "llm_apps_deployment",
-      "message": "正文 9059 字符，低于目标 10000"
-    },
-    {
-      "level": "error",
-      "lesson_id": "llm_apps_evaluation",
-      "message": "正文 9055 字符，低于目标 10000"
-    },
-    {
-      "level": "error",
-      "lesson_id": "llm_apps_project",
-      "message": "正文 9996 字符，低于目标 10000"
-    },
-    {
-      "level": "error",
-      "lesson_id": "408_exam_overview",
-      "message": "正文 8049 字符，低于目标 10000"
-    },
-    {
-      "level": "error",
-      "lesson_id": "408_ds_linear",
-      "message": "正文 7813 字符，低于目标 10000"
-    },
-    {
-      "level": "error",
-      "lesson_id": "408_ds_tree_graph",
-      "message": "正文 7248 字符，低于目标 10000"
-    },
-    {
-      "level": "error",
-      "lesson_id": "408_ds_sort_search",
-      "message": "正文 7094 字符，低于目标 10000"
-    },
-    {
-      "level": "error",
-      "lesson_id": "408_co_data",
-      "message": "正文 6393 字符，低于目标 10000"
-    }
-  ],
+  "issues": [],
   "template_sentences": []
 }

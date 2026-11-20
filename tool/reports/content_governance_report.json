@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-11-10T10:35:06.517516Z",
-  "lesson_count": 752,
-  "question_count": 4241,
-  "error_count": 55,
-  "warning_count": 0,
+  "generated_at": "2026-11-19T14:55:59.951486Z",
+  "lesson_count": 798,
+  "question_count": 4516,
+  "error_count": 138,
+  "warning_count": 5,
   "difficulty_inversions": 0,
   "prerequisite_violations": 0,
   "order_gaps": 0,
-  "minutes_drift": 34,
+  "minutes_drift": 76,
   "placeholder_title_hits": 0,
   "internal_question_id_hits": 0,
   "duplicate_review_sections": 0,
@@ -22,7 +22,7 @@
   "generic_mistake_rows": 0,
   "generic_fault_scenario_templates": 0,
   "fault_reference_drifts": 0,
-  "code_questions_without_domain_link": 21,
+  "code_questions_without_domain_link": 62,
   "explanations_with_meta_markers": 0,
   "language_mismatches": 0,
   "repeated_explanation_sentence_classes": 0,
@@ -154,6 +154,282 @@
       "lesson_id": "408_ds_linear",
       "kind": "code_question_domain_link",
       "message": "第 6 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "408_mock_set3",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "408_mock_set7",
+      "kind": "code_question_domain_link",
+      "message": "第 3 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "408_mock_set8",
+      "kind": "code_question_domain_link",
+      "message": "第 3 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cs_english_overview",
+      "kind": "code_question_domain_link",
+      "message": "第 2 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cs_english_hardware",
+      "kind": "code_question_domain_link",
+      "message": "第 3 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "cs_english_hardware",
+      "kind": "explanation_missing_answer",
+      "message": "第 6 题解析未包含 1/4 个正确答案片段"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cs_english_os_software",
+      "kind": "code_question_domain_link",
+      "message": "第 2 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cs_english_network_web",
+      "kind": "code_question_domain_link",
+      "message": "第 3 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cs_english_db_bigdata",
+      "kind": "code_question_domain_link",
+      "message": "第 3 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cs_english_ai_ml",
+      "kind": "code_question_domain_link",
+      "message": "第 3 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "cs_english_ai_ml",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 4/4 个正确答案片段"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cs_english_paper_writing",
+      "kind": "code_question_domain_link",
+      "message": "第 3 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "cs_english_paper_writing",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 4/4 个正确答案片段"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cs_english_docs_interview",
+      "kind": "code_question_domain_link",
+      "message": "第 3 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "cs_english_docs_interview",
+      "kind": "explanation_missing_answer",
+      "message": "第 5 题解析未包含 4/4 个正确答案片段"
+    },
+    {
+      "level": "error",
+      "lesson_id": "kaoyan_math_overview",
+      "kind": "code_question_domain_link",
+      "message": "第 4 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "kaoyan_math_matrix",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "kaoyan_math_single_diff",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "kaoyan_math_integral",
+      "kind": "code_question_domain_link",
+      "message": "第 4 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "kaoyan_math_multivar_diff",
+      "kind": "code_question_domain_link",
+      "message": "第 3 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "kaoyan_math_multiple_integral",
+      "kind": "code_question_domain_link",
+      "message": "第 4 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "kaoyan_math_ode",
+      "kind": "code_question_domain_link",
+      "message": "第 4 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "kaoyan_math_series",
+      "kind": "code_question_domain_link",
+      "message": "第 4 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "kaoyan_math_eigen_probability",
+      "kind": "code_question_domain_link",
+      "message": "第 4 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ncre_exam_overview",
+      "kind": "code_question_domain_link",
+      "message": "第 4 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ncre_public_data_structure",
+      "kind": "code_question_domain_link",
+      "message": "第 4 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ncre_public_prog_db_net",
+      "kind": "code_question_domain_link",
+      "message": "第 4 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ncre_c_data_expr",
+      "kind": "code_question_domain_link",
+      "message": "第 4 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ncre_c_control_function",
+      "kind": "code_question_domain_link",
+      "message": "第 4 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ncre_c_pointer_array_string",
+      "kind": "code_question_domain_link",
+      "message": "第 4 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ncre_c_struct_file",
+      "kind": "code_question_domain_link",
+      "message": "第 4 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ncre_python_basics",
+      "kind": "code_question_domain_link",
+      "message": "第 4 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ncre_python_combo_type",
+      "kind": "code_question_domain_link",
+      "message": "第 3 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ncre_python_combo_type",
+      "kind": "code_question_domain_link",
+      "message": "第 4 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ncre_python_function_file",
+      "kind": "code_question_domain_link",
+      "message": "第 4 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ruankao_exam_overview",
+      "kind": "code_question_domain_link",
+      "message": "第 4 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ruankao_cs_basics",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "warn",
+      "lesson_id": "ruankao_cs_basics",
+      "kind": "explanation_missing_answer",
+      "message": "第 6 题解析未包含 4/4 个正确答案片段"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ruankao_os_and_arch",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ruankao_data_structure",
+      "kind": "code_question_domain_link",
+      "message": "第 5 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ruankao_algo_design",
+      "kind": "code_question_domain_link",
+      "message": "第 4 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ruankao_db_and_sql",
+      "kind": "code_question_domain_link",
+      "message": "第 4 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ruankao_net_security",
+      "kind": "code_question_domain_link",
+      "message": "第 4 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ruankao_ood_uml",
+      "kind": "code_question_domain_link",
+      "message": "第 4 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ruankao_ip_law_std",
+      "kind": "code_question_domain_link",
+      "message": "第 4 题代码题的解析没有对应本课主题或关键词"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ruankao_case_paper",
+      "kind": "code_question_domain_link",
+      "message": "第 4 题代码题的解析没有对应本课主题或关键词"
     },
     {
       "level": "error",
@@ -358,6 +634,258 @@
       "lesson_id": "408_exam_mock2",
       "kind": "minutes_drift",
       "message": "预计用时 60 分钟与内容量不符：11299 字 / 3 个代码块 / 5 题，模型应为 30 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "408_mock_set1",
+      "kind": "minutes_drift",
+      "message": "预计用时 50 分钟与内容量不符：10023 字 / 1 个代码块 / 6 题，模型应为 25 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "408_mock_set2",
+      "kind": "minutes_drift",
+      "message": "预计用时 55 分钟与内容量不符：9358 字 / 1 个代码块 / 6 题，模型应为 25 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "408_mock_set3",
+      "kind": "minutes_drift",
+      "message": "预计用时 55 分钟与内容量不符：9311 字 / 2 个代码块 / 6 题，模型应为 25 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "408_mock_set4",
+      "kind": "minutes_drift",
+      "message": "预计用时 55 分钟与内容量不符：9987 字 / 1 个代码块 / 6 题，模型应为 25 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "408_mock_set5",
+      "kind": "minutes_drift",
+      "message": "预计用时 55 分钟与内容量不符：9225 字 / 1 个代码块 / 6 题，模型应为 25 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "408_mock_set6",
+      "kind": "minutes_drift",
+      "message": "预计用时 60 分钟与内容量不符：9450 字 / 2 个代码块 / 6 题，模型应为 25 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "408_mock_set7",
+      "kind": "minutes_drift",
+      "message": "预计用时 60 分钟与内容量不符：13732 字 / 3 个代码块 / 6 题，模型应为 35 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "408_mock_set8",
+      "kind": "minutes_drift",
+      "message": "预计用时 60 分钟与内容量不符：11822 字 / 3 个代码块 / 6 题，模型应为 30 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cs_english_hardware",
+      "kind": "minutes_drift",
+      "message": "预计用时 40 分钟与内容量不符：16277 字 / 4 个代码块 / 6 题，模型应为 45 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cs_english_os_software",
+      "kind": "minutes_drift",
+      "message": "预计用时 38 分钟与内容量不符：15361 字 / 4 个代码块 / 6 题，模型应为 40 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cs_english_network_web",
+      "kind": "minutes_drift",
+      "message": "预计用时 40 分钟与内容量不符：15240 字 / 6 个代码块 / 6 题，模型应为 45 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cs_english_db_bigdata",
+      "kind": "minutes_drift",
+      "message": "预计用时 42 分钟与内容量不符：17013 字 / 6 个代码块 / 6 题，模型应为 45 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cs_english_ai_ml",
+      "kind": "minutes_drift",
+      "message": "预计用时 42 分钟与内容量不符：17386 字 / 4 个代码块 / 6 题，模型应为 45 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "cs_english_docs_interview",
+      "kind": "minutes_drift",
+      "message": "预计用时 42 分钟与内容量不符：16340 字 / 8 个代码块 / 6 题，模型应为 45 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "kaoyan_math_overview",
+      "kind": "minutes_drift",
+      "message": "预计用时 30 分钟与内容量不符：9339 字 / 3 个代码块 / 6 题，模型应为 25 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "kaoyan_math_limit_continuity",
+      "kind": "minutes_drift",
+      "message": "预计用时 40 分钟与内容量不符：11499 字 / 3 个代码块 / 6 题，模型应为 30 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "kaoyan_math_matrix",
+      "kind": "minutes_drift",
+      "message": "预计用时 40 分钟与内容量不符：11119 字 / 3 个代码块 / 6 题，模型应为 30 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "kaoyan_math_single_diff",
+      "kind": "minutes_drift",
+      "message": "预计用时 45 分钟与内容量不符：11155 字 / 3 个代码块 / 6 题，模型应为 30 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "kaoyan_math_integral",
+      "kind": "minutes_drift",
+      "message": "预计用时 45 分钟与内容量不符：14378 字 / 3 个代码块 / 6 题，模型应为 40 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "kaoyan_math_multivar_diff",
+      "kind": "minutes_drift",
+      "message": "预计用时 50 分钟与内容量不符：12966 字 / 3 个代码块 / 6 题，模型应为 35 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "kaoyan_math_multiple_integral",
+      "kind": "minutes_drift",
+      "message": "预计用时 50 分钟与内容量不符：13425 字 / 3 个代码块 / 6 题，模型应为 35 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "kaoyan_math_ode",
+      "kind": "minutes_drift",
+      "message": "预计用时 50 分钟与内容量不符：13509 字 / 3 个代码块 / 6 题，模型应为 35 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "kaoyan_math_series",
+      "kind": "minutes_drift",
+      "message": "预计用时 55 分钟与内容量不符：13035 字 / 3 个代码块 / 6 题，模型应为 35 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "kaoyan_math_eigen_probability",
+      "kind": "minutes_drift",
+      "message": "预计用时 55 分钟与内容量不符：14078 字 / 3 个代码块 / 6 题，模型应为 35 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ncre_public_data_structure",
+      "kind": "minutes_drift",
+      "message": "预计用时 45 分钟与内容量不符：9986 字 / 2 个代码块 / 6 题，模型应为 30 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ncre_public_prog_db_net",
+      "kind": "minutes_drift",
+      "message": "预计用时 45 分钟与内容量不符：13386 字 / 7 个代码块 / 6 题，模型应为 40 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ncre_c_data_expr",
+      "kind": "minutes_drift",
+      "message": "预计用时 50 分钟与内容量不符：11741 字 / 5 个代码块 / 6 题，模型应为 35 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ncre_c_control_function",
+      "kind": "minutes_drift",
+      "message": "预计用时 50 分钟与内容量不符：12686 字 / 8 个代码块 / 6 题，模型应为 40 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ncre_c_pointer_array_string",
+      "kind": "minutes_drift",
+      "message": "预计用时 55 分钟与内容量不符：12259 字 / 9 个代码块 / 6 题，模型应为 40 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ncre_c_struct_file",
+      "kind": "minutes_drift",
+      "message": "预计用时 55 分钟与内容量不符：13522 字 / 8 个代码块 / 6 题，模型应为 40 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ncre_python_basics",
+      "kind": "minutes_drift",
+      "message": "预计用时 45 分钟与内容量不符：12890 字 / 9 个代码块 / 6 题，模型应为 40 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ncre_python_function_file",
+      "kind": "minutes_drift",
+      "message": "预计用时 50 分钟与内容量不符：17388 字 / 3 个代码块 / 6 题，模型应为 45 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ruankao_exam_overview",
+      "kind": "minutes_drift",
+      "message": "预计用时 30 分钟与内容量不符：9016 字 / 3 个代码块 / 6 题，模型应为 25 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ruankao_cs_basics",
+      "kind": "minutes_drift",
+      "message": "预计用时 40 分钟与内容量不符：12449 字 / 4 个代码块 / 6 题，模型应为 35 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ruankao_os_and_arch",
+      "kind": "minutes_drift",
+      "message": "预计用时 45 分钟与内容量不符：12586 字 / 3 个代码块 / 6 题，模型应为 35 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ruankao_data_structure",
+      "kind": "minutes_drift",
+      "message": "预计用时 45 分钟与内容量不符：13141 字 / 3 个代码块 / 6 题，模型应为 35 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ruankao_algo_design",
+      "kind": "minutes_drift",
+      "message": "预计用时 55 分钟与内容量不符：16917 字 / 3 个代码块 / 6 题，模型应为 45 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ruankao_db_and_sql",
+      "kind": "minutes_drift",
+      "message": "预计用时 50 分钟与内容量不符：17117 字 / 5 个代码块 / 6 题，模型应为 45 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ruankao_net_security",
+      "kind": "minutes_drift",
+      "message": "预计用时 50 分钟与内容量不符：16916 字 / 4 个代码块 / 6 题，模型应为 45 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ruankao_ood_uml",
+      "kind": "minutes_drift",
+      "message": "预计用时 50 分钟与内容量不符：16917 字 / 3 个代码块 / 6 题，模型应为 45 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ruankao_ip_law_std",
+      "kind": "minutes_drift",
+      "message": "预计用时 50 分钟与内容量不符：15687 字 / 3 个代码块 / 6 题，模型应为 40 分钟"
+    },
+    {
+      "level": "error",
+      "lesson_id": "ruankao_case_paper",
+      "kind": "minutes_drift",
+      "message": "预计用时 55 分钟与内容量不符：13779 字 / 3 个代码块 / 6 题，模型应为 35 分钟"
     }
   ],
   "top_repeated_explanation_sentences": [],

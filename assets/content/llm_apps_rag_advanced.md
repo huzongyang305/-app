@@ -335,3 +335,5 @@ print(len(rewrite))
 - [Microsoft GraphRAG 文档](https://microsoft.github.io/graphrag/)
 - [RAGAS 评估框架文档](https://docs.ragas.io/en/stable/)
 - [RAPTOR：递归摘要树检索论文](https://arxiv.org/abs/2401.18059)
+
+**复习建议**：本课内容在 LLM 应用开发中占重要地位，重点掌握 RAG 架构与高级检索策略。建议结合实际项目练习，多做案例分析。坚持学习，定能掌握！

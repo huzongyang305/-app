@@ -349,3 +349,5 @@ print(round(p95, 1))
 - [Retrieval-augmented generation 概念说明](https://aws.amazon.com/what-is/retrieval-augmented-generation/)
 - [Monitoring Distributed Systems](https://sre.google/sre-book/monitoring-distributed-systems/)
 - [Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks](https://arxiv.org/abs/2005.11401)
+
+**复习建议**：本课内容在 LLM 应用开发中占重要地位，重点掌握项目实战与最佳实践。建议结合实际项目练习，多做案例分析。坚持学习，定能掌握！加油！祝你成功！

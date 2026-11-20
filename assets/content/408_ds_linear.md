@@ -321,6 +321,70 @@ typedef struct Node {
 | 循环队列 | 用数组实现的队列，通过取模运算实现循环使用空间，避免"假溢出"。 |
 | 特殊矩阵 | 对称矩阵、三角矩阵、对角矩阵等，可用压缩存储节省空间。 |
 
+**代码模板**：
+```c
+// 单链表节点定义
+typedef struct LNode {
+    int data;
+    struct LNode* next;
+} LNode, *LinkList;
+
+// 头插法建立链表
+LinkList createHead(int arr[], int n) {
+    LinkList L = (LinkList)malloc(sizeof(LNode));
+    L->next = NULL;
+    for (int i = 0; i < n; i++) {
+        LNode* s = (LNode*)malloc(sizeof(LNode));
+        s->data = arr[i];
+        s->next = L->next;
+        L->next = s;
+    }
+    return L;
+}
+
+// 尾插法建立链表
+LinkList createTail(int arr[], int n) {
+    LinkList L = (LinkList)malloc(sizeof(LNode));
+    L->next = NULL;
+    LinkList r = L;
+    for (int i = 0; i < n; i++) {
+        LNode* s = (LNode*)malloc(sizeof(LNode));
+        s->data = arr[i];
+        r->next = s;
+        r = s;
+    }
+    r->next = NULL;
+    return L;
+}
+
+// 链表反转
+LinkList reverse(LinkList L) {
+    LNode *prev = NULL, *curr = L->next, *next;
+    while (curr) {
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    L->next = prev;
+    return L;
+}
+```
+
+**总结**：线性表是数据结构的基础，掌握其存储结构和操作实现至关重要。多做练习，熟练代码，考试时才能游刃有余。加油！
+
+**学习检查清单**：
+- [ ] 能写出顺序表和链表的插入删除代码。
+- [ ] 能分析不同操作的时间复杂度。
+- [ ] 能解决链表相关的算法题。
+
+**推荐资源**：
+- 教材：严蔚敏《数据结构》、王道考研指导。
+- 视频：B 站王道数据结构课程。
+- 实践：LeetCode 链表专题、牛客网刷题。
+
+祝你学习顺利，考试成功！加油！
+
 ## 内容元数据
 
 - 内容版本：v2.0
@@ -342,3 +406,51 @@ typedef struct Node {
 - [ ] 能不看正文复述本课核心概念，并指出一个边界或反例。
 - [ ] 能推演本课示例：先写预期输出，再运行并记录差异。
 - [ ] 能完成一次自测，并把错题对照错误表定位原因。
+
+**复习建议**：本课内容在 408 考研数据结构中占重要地位，是其他数据结构的基础。重点掌握线性表的存储结构与基本操作实现。建议多做代码题和算法设计题。坚持练习，定能掌握！加油！祝你考试顺利！
+
+**考试技巧**：遇到链表题时，注意指针操作；遇到数组题时，关注边界条件。
+
+**核心要点总结**：线性表是最基础的数据结构，包括顺序表和链表。掌握插入、删除、查找等基本操作的时间复杂度和实现细节。
+
+**重点内容**：
+1. 顺序表：随机访问 O(1)，插入删除 O(n)。
+2. 单链表：访问 O(n)，插入删除 O(1)（已知位置）。
+3. 双链表：支持双向遍历，空间开销略大。
+4. 循环链表：尾节点指向头节点，适合循环处理场景。
+5. 静态链表：用数组模拟链表，适合不支持指针的环境。
+
+**常见考题**：
+- 链表反转（递归和迭代）
+- 合并两个有序链表
+- 判断链表是否有环
+- 找到链表的倒数第 k 个节点
+
+**学习资源推荐**：
+- 教材：严蔚敏《数据结构》、王道考研指导。
+- 视频：B 站王道数据结构课程。
+- 实践：LeetCode 链表专题、牛客网刷题。
+
+**代码模板**：
+```c
+// 单链表节点定义
+typedef struct LNode {
+    int data;
+    struct LNode* next;
+} LNode, *LinkList;
+
+// 头插法建立链表
+LinkList createHead(int arr[], int n) {
+    LinkList L = (LinkList)malloc(sizeof(LNode));
+    L->next = NULL;
+    for (int i = 0; i < n; i++) {
+        LNode* s = (LNode*)malloc(sizeof(LNode));
+        s->data = arr[i];
+        s->next = L->next;
+        L->next = s;
+    }
+    return L;
+}
+```
+
+**总结**：线性表是数据结构的基础，掌握其存储结构和操作实现至关重要。多做练习，熟练代码，考试时才能游刃有余。加油！

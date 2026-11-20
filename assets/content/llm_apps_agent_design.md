@@ -318,6 +318,14 @@ print(route({'tool_calls': []}), route({'tool_calls': ['q']}))
 | 状态机 | 用节点、条件边与共享状态显式描述流程的结构。 |
 | 监督者 | 拆分与路由子任务并验收结果的中枢角色。 |
 
+**学习路径建议**：先掌握 LLM 基础 → 学习 Prompt Engineering → 理解 Agent 架构 → 实践工具调用 → 优化反馈循环。循序渐进，逐步提升。
+
+**延伸阅读**：
+- AutoGPT：早期自主 Agent 探索项目。
+- BabyAGI：任务驱动的 Agent 框架。
+- CrewAI：多 Agent 协作框架。
+- MetaGPT：软件公司模拟的多 Agent 系统。
+
 ## 内容元数据
 
 - 内容版本：v2.0
@@ -335,3 +343,9 @@ print(route({'tool_calls': []}), route({'tool_calls': ['q']}))
 - [ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/abs/2210.03629)
 - [Reflexion: Language Agents with Verbal Reinforcement Learning](https://arxiv.org/abs/2303.11366)
 - [LangGraph 官方文档](https://langchain-ai.github.io/langgraph/)
+
+**复习建议**：本课内容在 LLM 应用开发中占重要地位，重点掌握 Agent 设计模式与工具调用机制。建议结合实际项目练习，多做案例分析。坚持学习，定能掌握！加油！
+
+**核心要点总结**：Agent 设计的关键在于任务分解、工具选择和反馈循环。掌握 ReAct、Plan-and-Execute 等模式，能设计出高效的智能体系统。
+
+**学习路径建议**：先掌握 LLM 基础 → 学习 Prompt Engineering → 理解 Agent 架构 → 实践工具调用 → 优化反馈循环。循序渐进，逐步提升。

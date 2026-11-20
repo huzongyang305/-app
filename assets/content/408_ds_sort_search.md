@@ -70,6 +70,51 @@
 3. 装填因子 α = 表中元素数 / 表长，α 越大冲突越多。
 4. 查找成功平均长度（ASL）与装填因子正相关。
 
+**教材衔接：堆排序**
+
+1. 将无序序列构建成大顶堆（每个节点值大于等于子节点值）。
+2. 将堆顶元素（最大值）与末尾交换，剩余元素重新调整为大顶堆。
+3. 重复步骤 2，直到所有元素有序。
+4. 时间复杂度始终 O(nlogn)，空间 O(1)，不稳定。
+
+```c
+void heapify(int arr[], int n, int i) {
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+    
+    if (left < n && arr[left] > arr[largest]) largest = left;
+    if (right < n && arr[right] > arr[largest]) largest = right;
+    
+    if (largest != i) {
+        swap(&arr[i], &arr[largest]);
+        heapify(arr, n, largest);
+    }
+}
+
+void heapSort(int arr[], int n) {
+    for (int i = n / 2 - 1; i >= 0; i--) heapify(arr, n, i);
+    for (int i = n - 1; i > 0; i--) {
+        swap(&arr[0], &arr[i]);
+        heapify(arr, i, 0);
+    }
+}
+```
+
+**教材衔接：希尔排序**
+
+1. 选定增量序列（如 Hibbard 增量：1, 3, 7, 15, ...）。
+2. 按增量将序列分组，对每组进行插入排序。
+3. 逐步缩小增量，重复步骤 2，直到增量为 1。
+4. 时间复杂度 O(n^1.3)~O(n^1.5)，空间 O(1)，不稳定。
+
+**教材衔接：基数排序**
+
+1. 将整数按位数切割成不同数字（如个位、十位、百位）。
+2. 从最低位开始，依次进行一次稳定排序（常用计数排序）。
+3. 对所有位都处理完后，序列有序。
+4. 时间复杂度 O(d(n+r))，d 为位数，r 为基数，空间 O(r)，稳定。
+
 ## 典型应用场景
 
 | 场景 | 典型输入或前提 | 期望产物 |
@@ -182,6 +227,71 @@ bool search(int key) {
 }
 ```
 
+**教材衔接：哈希函数设计**
+
+常用哈希函数构造方法：
+
+| 方法 | 原理 | 适用场景 |
+| --- | --- | --- |
+| 直接定址法 | H(key) = a·key + b | 关键字分布连续且均匀 |
+| 除留余数法 | H(key) = key mod p | 最常用，p 选不大于表长的质数 |
+| 数字分析法 | 提取关键字中分布均匀的几位 | 关键字位数较多，某些位分布均匀 |
+| 平方取中法 | 取关键字平方后的中间几位 | 关键字分布未知，位数较少 |
+| 折叠法 | 将关键字分段叠加 | 关键字位数较多，分布均匀 |
+
+**教材衔接：开放定址法**
+
+```c
+#define TABLE_SIZE 10
+#define DELETED -1
+
+int hashTable[TABLE_SIZE];
+
+int hash(int key) {
+    return key % TABLE_SIZE;
+}
+
+// 线性探测法
+int insert_linear(int key) {
+    int index = hash(key);
+    int i = 0;
+    while (hashTable[(index + i) % TABLE_SIZE] != 0 && 
+           hashTable[(index + i) % TABLE_SIZE] != DELETED) {
+        i++;
+        if (i == TABLE_SIZE) return -1; // 表满
+    }
+    hashTable[(index + i) % TABLE_SIZE] = key;
+    return (index + i) % TABLE_SIZE;
+}
+
+// 二次探测法
+int insert_quadratic(int key) {
+    int index = hash(key);
+    int i = 0;
+    while (hashTable[(index + i * i) % TABLE_SIZE] != 0 && 
+           hashTable[(index + i * i) % TABLE_SIZE] != DELETED) {
+        i++;
+        if (i * i >= TABLE_SIZE) return -1; // 表满
+    }
+    hashTable[(index + i * i) % TABLE_SIZE] = key;
+    return (index + i * i) % TABLE_SIZE;
+}
+```
+
+**教材衔接：外部排序流程**
+
+外部排序典型流程（以磁盘文件为例）：
+
+1. **分割**：将大文件分割成若干个小文件（归并段），每个小到可以完全装入内存。
+2. **内部排序**：对每个小文件进行内部排序（如快速排序），生成有序的初始归并段。
+3. **多路归并**：使用 k 路归并算法，将多个有序归并段合并成更大的归并段。
+4. **重复归并**：重复步骤 3，直到所有归并段合并成一个完整的有序文件。
+
+优化策略：
+- 增加归并路数 k：从 2 路增加到 k 路，减少归并趟数。
+- 减少初始归并段数：用置换-选择排序生成不等长的初始归并段。
+- 使用败者树：加速多路归并中的最小值选择。
+
 ## 时间/空间复杂度或性能分析
 
 **性能关注点（排序算法）**：时间复杂度、空间复杂度、稳定性是主要指标。
@@ -191,6 +301,30 @@ bool search(int key) {
 - 归并排序始终 O(nlogn)，空间 O(n)。
 - 堆排序始终 O(nlogn)，空间 O(1)。
 - 散列表查找平均 O(1)，最坏 O(n)（冲突严重时）。
+
+**排序算法选择指南**：
+
+| 数据规模 | 推荐算法 | 理由 |
+| --- | --- | --- |
+| n < 50 | 插入排序 | 简单，小数据快 |
+| 50 ≤ n < 10000 | 快速排序 | 平均性能最优 |
+| n ≥ 10000 | 归并排序或堆排序 | 稳定 O(nlogn) |
+| 要求稳定性 | 归并排序 | 保持相等元素原序 |
+| 内存受限 | 堆排序 | 空间 O(1) |
+| 链表排序 | 归并排序 | 无需额外空间 |
+| 外部排序 | 归并排序 | 适合磁盘 I/O |
+
+**散列表性能分析**：
+
+装填因子 α 与平均查找长度（ASL）的关系：
+
+| 冲突处理方法 | 查找成功 ASL | 查找失败 ASL |
+| --- | --- | --- |
+| 线性探测法 | (1 + 1/(1-α)) / 2 | (1 + 1/(1-α)²) / 2 |
+| 二次探测法 | 约等于线性探测 | 约等于线性探测 |
+| 链地址法 | 1 + α/2 | 1 + α |
+
+当 α > 0.75 时，建议扩容或更换哈希函数。
 
 ## 常见误区与易错点
 
