@@ -1,6 +1,6 @@
 # 计算机组成原理：CPU与指令系统
 
-![CPU结构与指令流水线](images/diagram_408_CO_CPU.webp)
+![CPU结构与指令流水线](images/diagram_408_co_cpu.webp)
 
 > 内容更新时间：2026-10-06 · 学习阶段：冲刺 · 预计用时：40 分钟
 

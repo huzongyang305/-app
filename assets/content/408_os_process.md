@@ -1,6 +1,6 @@
 # 操作系统：进程管理
 
-![进程管理与调度](images/diagram_408_OS_Process.webp)
+![进程管理与调度](images/diagram_408_os_process.webp)
 
 > 内容更新时间：2026-10-06 · 学习阶段：冲刺 · 预计用时：45 分钟
 
